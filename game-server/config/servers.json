@@ -1,0 +1,15 @@
+{
+  "development":{
+    "connector": [
+      {"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientHost": "127.0.0.1", "clientPort": 3010, "frontend": true,"auto-restart": true},
+      {"id": "connector-server-2", "host": "127.0.0.1", "port": 3151, "clientHost": "127.0.0.1", "clientPort": 3011, "frontend": true,"auto-restart": true}
+    ],
+    "gate":[
+       {"id": "gate-server-1", "host": "127.0.0.1", "port": 3850, "clientHost": "127.0.0.1", "clientPort": 3910, "frontend": true}
+    ],
+    "area":[
+      {"id": "area-server-1", "host": "127.0.0.1", "port": 3250},
+      {"id": "area-server-2", "host": "127.0.0.1", "port": 3251}
+    ]
+  }
+}

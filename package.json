@@ -1,0 +1,11 @@
+{
+    "name": "onlineGame",
+    "version": "0.0.1",
+    "private": false,
+    "dependencies": {
+        "bearcat": "^0.4.29",
+        "express": "^4.16.4",
+        "pomelo": "2.2.5",
+        "redis": "^2.8.0"
+    }
+}
