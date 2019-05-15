@@ -10,13 +10,14 @@ heroDao.prototype.createHero = function(otps) {
 		atk : otps.atk || 10,
 		def : otps.def || 0
 	}
-	this.redisDao.db.hmset("area:area"+otps.areaId+":"+otps.uid+":heroInfo:"+otps.heroId,HeroInfo)
-	this.redisDao.db.hset("area:area"+otps.areaId+":"+otps.uid+":heroMap",otps.heroId,true)
+	this.redisDao.db.hmset("area:area"+otps.areaId+":player:"+otps.uid+":heroInfo:"+otps.heroId,HeroInfo)
+	this.redisDao.db.hset("area:area"+otps.areaId+":player:"+otps.uid+":heroMap",otps.heroId,true)
+	return HeroInfo
 }
 //获取英雄信息
 heroDao.prototype.getHeroInfo = function(otps,cb) {
 	var self = this
-	self.redisDao.db.hgetall("area:area"+otps.areaId+":"+otps.uid+":heroMap",function(err,data) {
+	self.redisDao.db.hgetall("area:area"+otps.areaId+":player:"+otps.uid+":heroMap",function(err,data) {
 		if(err || !data){
 			cb([])
 			return
@@ -24,7 +25,7 @@ heroDao.prototype.getHeroInfo = function(otps,cb) {
 		var multiList = []
 		for(var heroId in data){
 			if(data[heroId] == "true"){
-				multiList.push(["hgetall","area:area"+otps.areaId+":"+otps.uid+":heroInfo:"+heroId])
+				multiList.push(["hgetall","area:area"+otps.areaId+":player:"+otps.uid+":heroInfo:"+heroId])
 			}
 		}
 		self.redisDao.multi(multiList,function(err,list) {

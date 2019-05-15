@@ -41,15 +41,19 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
 	session.push("nickname")
 	session.set("head",userInfo.head)
 	session.push("head")
-	session.on("close",onUserLeave.bind(this))
+	session.on("closed",onUserLeave.bind(this))
 	console.log(session.get("nickname") + " "+session.get("uid") + "  entrySuccess..")
   	next(null, {flag : true,msg : userInfo});
 }
 var onUserLeave = function(session) {
-  if(!session || !session.uid) {
+  console.log("onUserLeave : "+session.get("uid"))
+  if(!session) {
     return
   }
-  console.log("onUserLeave : "+session.get("uid"))
+  var serverId = session.get("serverId")
+  if(serverId){
+  	this.app.rpc.area.areaRemote.userLeave.toServer(serverId,session.get("uid"),null)
+  }
 }
 
 module.exports = function(app) {

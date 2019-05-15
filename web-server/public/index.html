@@ -51,8 +51,8 @@
           });
         })
       }
-      var loginGame = function() {
-        pomelo.request("connector.loginHandler.loginGame", "hello pomelo", function(data) {
+      var loginArea = function(areaId) {
+        pomelo.request("connector.loginHandler.loginArea", {areaId : areaId}, function(data) {
             console.log(data);
         });
       }

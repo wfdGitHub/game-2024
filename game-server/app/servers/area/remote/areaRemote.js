@@ -8,6 +8,17 @@ areaRemote.prototype.loadArea = function(areaId,cb) {
 	this.areaManager.loadArea(areaId)
 	cb()
 }
+//玩家加入
+areaRemote.prototype.userLogin = function(uid,areaId,cb) {
+	this.areaManager.userLogin(uid,areaId,cb)
+}
+
+//玩家离开
+areaRemote.prototype.userLeave = function(uid,cb) {
+	this.areaManager.userLeave(uid)
+	cb()
+}
+
 
 module.exports = function(app) {
 	return bearcat.getBean({

@@ -1,30 +1,56 @@
+var bearcat = require("bearcat")
 var playerDao = function() {}
 //创建新角色
-playerDao.prototype.createPlayer = function(otps) {
+playerDao.prototype.createPlayer = function(otps,cb) {
 	var playerInfo = {
 		uid : otps.uid,
-		areaId : otps.areaId,
 		name : otps.name
 	}
-	this.redisDao.db.hmset("area:area"+otps.areaId+":"+otps.uid+":playerInfo",playerInfo)
-	this.heroDao.createHero({name : "游侠",heroId : 1,areaId : otps.areaId,uid : otps.uid})
-	this.heroDao.createHero({name : "战士",heroId : 2,areaId : otps.areaId,uid : otps.uid})
+	var self = this
+	self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+otps.uid+":playerInfo",playerInfo,function(err,data) {
+		if(!err){
+			playerInfo.heros = []
+			playerInfo.heros.push(self.heroDao.createHero({name : "游侠",heroId : 1,areaId : otps.areaId,uid : otps.uid}))
+			playerInfo.heros.push(self.heroDao.createHero({name : "战士",heroId : 2,areaId : otps.areaId,uid : otps.uid}))
+			cb(playerInfo)
+		}else{
+			cb(false)
+		}
+	})
 }
 //获取角色信息
 playerDao.prototype.getPlayerInfo = function(otps,cb) {
 	var self = this
-	self.redisDao.db.hgetall("area:area"+otps.areaId+":"+otps.uid+":playerInfo",function(err,playerInfo) {
+	self.redisDao.db.hgetall("area:area"+otps.areaId+":player:"+otps.uid+":playerInfo",function(err,playerInfo) {
 		console.log(err,playerInfo)
 		if(err || !playerInfo){
 			cb(false)
 		}else{
 			self.heroDao.getHeroInfo(otps,function(heros) {
 				playerInfo.heros = heros
-				cb(true,playerInfo)
+				cb(playerInfo)
 			})
 		}
 	})
 }
+//玩家登陆、若不存在则注册、获取玩家信息
+playerDao.prototype.userLogin = function(otps,cb) {
+	var uid = otps.uid
+	var areaId = otps.areaId
+	var self = this
+	self.redisDao.db.exists("area:area"+areaId+":player:"+uid+":playerInfo",function(err,data) {
+		if(err || !data){
+			//TODO 随机名字算法
+			otps.name = "名字"
+			//不存在则创建
+			self.createPlayer(otps,cb)
+		}else{
+			//存在则获取
+			self.getPlayerInfo(otps,cb)
+		}
+	})
+}
+
 module.exports = {
 	id : "playerDao",
 	func : playerDao,
