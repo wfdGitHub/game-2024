@@ -1,3 +1,4 @@
+var bearcat = require("bearcat")
 var area = function(otps) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName
@@ -13,7 +14,7 @@ area.prototype.userLogin = function(uid,cb) {
 	var self = this
 	self.playerDao.userLogin({areaId : self.areaId,uid : uid},function(playerInfo) {
 		if(playerInfo){
-			self.players[uid] = playerInfo
+			self.players[uid] = bearcat.getBean("player",playerInfo)
 		}
 		cb(playerInfo)
 	})

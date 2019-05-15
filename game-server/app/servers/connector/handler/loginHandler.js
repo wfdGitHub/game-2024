@@ -22,7 +22,6 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 		return
 	}
 	this.app.rpc.area.areaRemote.userLogin(session,uid,areaId,function(playerInfo) {
-		console.log("playerInfo ",playerInfo)
 		if(!playerInfo){
 			next(null,{flag : false,err : "登陆失败"})
 			return
@@ -31,7 +30,7 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 		session.set("areaId",areaId)
 		session.push("serverId")
 		session.push("areaId")
-		next(null,{flag : true,msg : "登陆成功"})
+		next(null,{flag : true,msg : playerInfo})
 	})
 }
 
