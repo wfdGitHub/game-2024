@@ -7,6 +7,9 @@
     "gate":[
        {"id": "gate-server-1", "host": "127.0.0.1", "port": 3850, "clientHost": "127.0.0.1", "clientPort": 3910, "frontend": true}
     ],
+    "admin":[
+       {"id": "admin-server-1", "host": "127.0.0.1", "port": 3950}
+    ],
     "area":[
       {"id": "area-server-1", "host": "127.0.0.1", "port": 3250},
       {"id": "area-server-2", "host": "127.0.0.1", "port": 3251}

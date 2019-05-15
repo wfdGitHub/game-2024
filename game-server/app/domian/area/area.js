@@ -18,5 +18,9 @@ module.exports = {
 	id : "area",
 	func : area,
 	scope : "prototype",
-	init : "init"
+	init : "init",
+	args : [{
+		name : "otps",
+		type : "Object"
+	}]
 }

@@ -2,8 +2,8 @@ var bearcat = require("bearcat")
 
 var entryHandler = function(app) {
   this.app = app;
-  this.bearcat = bearcat
   this.sessionService = this.app.get('sessionService')
+  this.areaDeploy = this.app.get('areaDeploy')
 };
 
 //登陆账号

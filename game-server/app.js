@@ -48,5 +48,11 @@ bearcat.start(function() {
     areaManager.init(app)
     app.set("areaManager",areaManager)
   });
+  app.configure('production|development', 'admin|connector', function(){
+    var areaDeploy = bearcat.getBean("areaDeploy")
+    areaDeploy.init(app)
+    app.set("areaDeploy",areaDeploy)
+  });
+
 	app.start()
 })

@@ -2,11 +2,10 @@ var bearcat = require("bearcat")
 var areaRemote = function(app) {
 	this.app = app
 	this.areaManager = this.app.get("areaManager")
-	console.log(this.areaManager)
 }
 //创建新服务器
-areaRemote.prototype.openArea = function(cb) {
-	console.log("openArea")
+areaRemote.prototype.loadArea = function(areaId,cb) {
+	this.areaManager.loadArea(areaId)
 	cb()
 }
 
