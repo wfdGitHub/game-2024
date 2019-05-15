@@ -19,14 +19,12 @@ areaDeploy.prototype.init = function(app) {
 		if(data){
 			for(var i = 0;i < data.length;i++){
 				self.areaList.push(JSON.parse(data[i]))
-				console.log("areaDeploy",self.app.serverId,self.areaList)
 			}
 		}
 	})
 	self.areaDao.getAreaServerMap(function(data) {
 		if(data){
 			self.serverMap = data
-			console.log("areaDeploy",self.app.serverId,self.serverMap)
 		}
 	})
 }
@@ -46,6 +44,10 @@ areaDeploy.prototype.openArea = function(otps) {
 //关闭游戏服务器
 areaDeploy.prototype.closeArea = function() {
 
+}
+//获取游戏服对应服务器映射表
+areaDeploy.prototype.getServerMap = function() {
+	return this.serverMap
 }
 //获取游戏服对应服务器
 areaDeploy.prototype.getServer = function(areaId) {
