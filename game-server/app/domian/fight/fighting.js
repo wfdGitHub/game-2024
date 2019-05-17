@@ -10,7 +10,7 @@ var fighting = function(atkTeam,defTeam) {
 //时间推进
 fighting.prototype.update = function(dt) {
 	this.curTime += dt
-	console.log("update : ",this.curTime)
+	// console.log("update : ",this.curTime)
 	for(var i in this.atkTeam){
 		if(!this.atkTeam[i].died){
 			for(var skillId in this.atkTeam[i].fightSkills){

@@ -9,7 +9,7 @@ var attackSkill = function(opts,character) {
 }
 //更新技能CD
 attackSkill.prototype.updateCD = function(curTime) {
-	this.coolDownTime = curTime + this.skillCD
+	this.coolDownTime = curTime + this.skillCD * 1000
 }
 //获取冷却时间
 attackSkill.prototype.getCoolDownTime = function() {

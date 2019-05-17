@@ -44,7 +44,7 @@ character.prototype.reduceHp = function(damageValue) {
   }
 }
 character.prototype.afterDied = function() {
-	console.log("")
+	console.log(this.name +"已死亡")
 }
 //获取总攻击值
 character.prototype.getTotalAttack = function() {

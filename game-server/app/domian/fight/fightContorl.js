@@ -6,8 +6,8 @@ var fightContorl = function() {
 //获取战斗结果 atkTeam 攻方阵容 defTeam  守方阵容
 fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo) {
 	var curTime = 0			//当前时间
-	var stepper = 100    	//单位时间
-	var maxTime = 180000	//最大时间
+	var stepper = 50    	//单位时间
+	var maxTime = 180000		//最大时间
 	var atkTeam = []
 	var defTeam = []
 	for(var i in atkTeamInfo){
@@ -23,13 +23,13 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo) {
 		defTeam[i].setEnemyTeam(atkTeam)
 	}
 	var fighting = bearcat.getBean("fighting",atkTeam,defTeam)
-	for(i = 0;i < maxTime;i += stepper){
+	for(curTime = 0;curTime < maxTime;curTime += stepper){
 	 	fighting.update(stepper)
 	 	if(fighting.isOver()){
 	 		break
 	 	}
 	}
-	console.log("result : ",fighting.getResult())
+	console.log("result : ",curTime,fighting.getResult())
 }
 module.exports = {
 	id : "fightContorl",
