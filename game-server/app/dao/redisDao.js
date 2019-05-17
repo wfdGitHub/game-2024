@@ -9,10 +9,10 @@ var redisDao = function() {
 }
 redisDao.prototype.init = function(cb) {
 	console.log("redisDao init")
-	this.db = redis.createClient(RDS_PORT,RDS_HOST,RDS_OPTS)
-	this.db.on("ready",function(res) {
-		cb()
-	})
+	// this.db = redis.createClient(RDS_PORT,RDS_HOST,RDS_OPTS)
+	// this.db.on("ready",function(res) {
+	// 	cb()
+	// })
 }
 redisDao.prototype.multi = function(list,cb) {
  	multi = this.db.multi(list).exec(function (err, replies) {
