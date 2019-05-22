@@ -17,22 +17,21 @@ attackSkill.prototype.getCoolDownTime = function() {
 }
 //使用技能
 attackSkill.prototype.use = function() {
-	var target = this.formula.getAttackTarget(this.character,this.character.enemyTeam,this)
+	var target = formula.getAttackTarget(this.character,this.character.enemyTeam,this)
 	if(!target){
-		return {result: "target error", damage: 0};
+		return {result: "target error", damage: 0,target : target};
 	}
 	//判断命中率
-	var missRate = this.character.hitRate * (1 - target.dodgeRate/100) / 100;
+	var missRate = target.dodgeRate / (this.character.hitRate + 100)
 	if(Math.random() < missRate){
 		return {result: "miss", damage: 0};
 	}
-	var damageInfo = this.formula.calDamage(this.character, target, this);
+	var damageInfo = formula.calDamage(this.character, target, this);
 	target.hit(this.character, damageInfo);
-	//If normal attack, use attack speed
 	if (target.died) {
-		return {result: "kill", damageInfo: damageInfo};
+		return {result: "kill", damageInfo: damageInfo,target : target};
 	} else{
-		return {result: "success", damageInfo: damageInfo};
+		return {result: "success", damageInfo: damageInfo,target : target};
 	}
 }
 module.exports = {
