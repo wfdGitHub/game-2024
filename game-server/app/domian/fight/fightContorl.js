@@ -14,7 +14,7 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo) {
 		atkTeam.push(bearcat.getBean("hero",atkTeamInfo[i]))
 	}
 	for(var i in defTeamInfo){
-		defTeam.push(bearcat.getBean("hero",defTeamInfo[i]))
+		defTeam.push(bearcat.getBean("mob",defTeamInfo[i]))
 	}
 	for(var i in atkTeam){
 		atkTeam[i].setEnemyTeam(defTeam)

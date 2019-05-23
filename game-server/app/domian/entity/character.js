@@ -8,13 +8,12 @@ var character = function(otps) {
 	this.atk = otps.atk	|| 10			//攻击力
 	this.def = otps.def	|| 0			//防御力
 	this.atkSpeed = otps.atkSpeed || 1  //攻速 每几秒攻击一次
-	this.relSpeed = otps.relSpeed || 1  //出手速度,越大出手越快
 	this.crit = otps.crit || 0		  	//暴击值
 	this.critDef = otps.critDef || 0	//抗暴值
 	this.hitRate = 0					//命中率
 	this.dodgeRate = 0					//闪避率
 	this.fightSkills = {} 				//技能列表
-	this.curSkill = 1 					//默认攻击
+	this.defaultSkill = false 			//默认攻击
 	this.target = false					//当前目标
 	this.died = false 					//死亡标记
 }
@@ -25,15 +24,20 @@ character.prototype.setEnemyTeam = function(enemyTeam) {
 character.prototype.addFightSkill = function(skill) {
 	this.fightSkills[skill.skillId] = skill
 }
+//设置默认攻击技能
+character.prototype.setDefaultSkill = function(skillId) {
+	if(this.fightSkills[skillId]){
+		this.defaultSkill = this.fightSkills[skillId]
+	}
+}
 //攻击
-character.prototype.useSkill = function(skillId) {
-	var result = this.fightSkills[skillId].use()
-	console.log(this.name + " 攻击 ",result)
+character.prototype.useSkill = function(skillId,curTime) {
+	var result = this.fightSkills[skillId].use(curTime)
 }
 //被攻击
 character.prototype.hit = function(attacker, damageInfo) {
   	this.reduceHp(damageInfo.damage);
-	console.log(this.name + " 被攻击 ","-"+damageInfo.damage,"当前血量 : ",this.hp)
+	console.log(attacker.name + " 使用 "+damageInfo.skill.name+" 攻击 "+this.name,"-"+damageInfo.damage," 剩余血量 : ",this.hp)
 }
 //生命值减少
 character.prototype.reduceHp = function(damageValue) {

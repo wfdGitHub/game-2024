@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "name": "普通攻击",
+    "detail": "普通攻击",
+    "mul": 1,
+    "fixed": 0,
+    "skillCD": 0,
+    "targetType": 1
+  },
+  {
+    "id": 1,
+    "name": "法术攻击",
+    "detail": "法术攻击",
+    "mul": 1,
+    "fixed": 0,
+    "skillCD": 0,
+    "targetType": 1
+  },
+  {
+    "id": 2,
+    "name": "降龙十八掌",
+    "detail": "丐帮不传之秘",
+    "mul": 3,
+    "fixed": 100,
+    "skillCD": 10,
+    "targetType": 3
+  },
+  {
+    "id": 3,
+    "name": "六脉神剑",
+    "detail": "大理段氏的秘传绝艺",
+    "mul": 4,
+    "fixed": 50,
+    "skillCD": 15,
+    "targetType": 2
+  },
+  {
+    "id": 4,
+    "name": "九阳神功",
+    "detail": "失传绝学",
+    "mul": 5,
+    "fixed": 0,
+    "skillCD": 12,
+    "targetType": 2
+  }
+]

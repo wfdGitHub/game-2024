@@ -2,10 +2,11 @@ var bearcat = require("bearcat")
 var mob = function(otps) {
 	this.mobId = otps.id			//ID
 	var character = bearcat.getFunction('character');
-  	character.call(this,opts);
+  	character.call(this,otps);
   	//增加普攻技能
-  	var skill = bearcat.getBean("attackSkill",{skillId : 1001,mul : 1,fixed : fixed,skillCD : this.atkSpeed,targetType : 1},this)
+  	var skill = bearcat.getBean("attackSkill",{skillId : 0},this)
   	this.addFightSkill(skill)
+  	this.setDefaultSkill(skill.skillId)
 }
 module.exports = {
 	id : "mob",

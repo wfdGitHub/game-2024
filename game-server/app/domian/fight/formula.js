@@ -23,7 +23,7 @@ formula.prototype.calDamage = function(attacker, target, skill) {
 			logger.error('attack a died character!!! %j', target);
 		}
 	}
-	return {damage : Math.round(damage),crit : critFlag}
+	return {damage : Math.round(damage),crit : critFlag,skill : skill}
 };
 //获取攻击目标
 formula.prototype.getAttackTarget = function(attacker,team,skill) {
@@ -69,11 +69,35 @@ formula.prototype.getTargetNormal = function(attacker,team) {
 }
 //获取血量最少目标
 formula.prototype.getTargetMinHP = function(attacker,team) {
-	return false
+	var minIndex = -1
+	team.forEach(function(character,index) {
+		if(!character.died){
+			if(minIndex === -1 || character.hp < team[minIndex].hp){
+				minIndex = index
+			}
+		}
+	})
+	if(minIndex === -1){
+		return false
+	}else{
+		return team[minIndex]
+	}
 }
 //获取血量最多目标
 formula.prototype.getTargetMaxHP = function(attacker,team) {
-	return false
+	var maxIndex = -1
+	team.forEach(function(character,index) {
+		if(!character.died){
+			if(maxIndex === -1 || character.hp > team[maxIndex].hp){
+				maxIndex = index
+			}
+		}
+	})
+	if(maxIndex === -1){
+		return false
+	}else{
+		return team[maxIndex]
+	}
 }
 module.exports = {
 	id : "formula",
