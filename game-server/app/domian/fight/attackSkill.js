@@ -1,5 +1,6 @@
 var skills = require("../../../config/fight/skills.json")
 var attackSkill = function(opts,character) {
+	this.curTime = 0
 	this.character = character				//所属角色
 	this.skillId = opts.skillId 			//技能ID
 	var skillInfo = skills[this.skillId]
@@ -17,11 +18,19 @@ var attackSkill = function(opts,character) {
 	}
 	this.targetType = skillInfo.targetType || 1  //选取目标类型 1 默认目标 2 血量最少 3 血量最多
 	this.coolDownTime = 0					//可以使用时间
-	this.updateCD(0)
+	this.state = false 							 //可用状态
+	this.updateCD()
 }
 //更新技能CD
-attackSkill.prototype.updateCD = function(curTime) {
-	this.coolDownTime = curTime + this.skillCD * 1000
+attackSkill.prototype.updateCD = function() {
+	this.coolDownTime = this.curTime + this.skillCD * 1000
+	this.state = false 	
+}
+attackSkill.prototype.updateTime = function(dt) {
+	this.curTime += dt
+	if(!this.state && this.curTime >= this.coolDownTime){
+		this.state = true
+	}
 }
 //获取冷却时间
 attackSkill.prototype.getCoolDownTime = function() {
@@ -29,31 +38,33 @@ attackSkill.prototype.getCoolDownTime = function() {
 }
 //检查技能可用
 attackSkill.prototype.checkCondition = function(curTime) {
-	if(curTime >= this.coolDownTime){
-		return true
-	}else{
-		return false
-	}
+	return this.state
 }
 //使用技能
 attackSkill.prototype.use = function(curTime) {
+	if(!this.state){
+		return
+	}
+	this.useSkill()
+}
+attackSkill.prototype.useSkill = function() {
 	var target = this.formula.getAttackTarget(this.character,this.character.enemyTeam,this)
 	if(!target){
 		console.log("target error")
-		return {result: "target error", damage: 0,target : target};
+		return {state: false, damage: 0,target : target,curTime : this.curTime};
 	}
-	this.updateCD(curTime)
+	this.updateCD()
 	//判断命中率
 	var missRate = target.dodgeRate / (this.character.hitRate + 100)
 	if(Math.random() < missRate){
-		return {result: "miss", damage: 0};
+		return {state: "miss", damage: 0,curTime : this.curTime,miss : true};
 	}
 	var damageInfo = this.formula.calDamage(this.character, target, this);
 	target.hit(this.character, damageInfo);
 	if (target.died) {
-		return {result: "kill", damageInfo: damageInfo,target : target};
+		return {state: "kill", damageInfo: damageInfo,target : target,curTime : this.curTime};
 	} else{
-		return {result: "success", damageInfo: damageInfo,target : target};
+		return {state: "success", damageInfo: damageInfo,target : target,curTime : this.curTime};
 	}
 }
 module.exports = {

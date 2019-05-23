@@ -16,13 +16,13 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo) {
 	for(var i in defTeamInfo){
 		defTeam.push(bearcat.getBean("mob",defTeamInfo[i]))
 	}
+	var fighting = bearcat.getBean("fighting",atkTeam,defTeam)
 	for(var i in atkTeam){
-		atkTeam[i].setEnemyTeam(defTeam)
+		atkTeam[i].setArg(defTeam,fighting)
 	}
 	for(var i in defTeam){
-		defTeam[i].setEnemyTeam(atkTeam)
+		defTeam[i].setArg(atkTeam,fighting)
 	}
-	var fighting = bearcat.getBean("fighting",atkTeam,defTeam)
 	for(curTime = 0;curTime < maxTime;curTime += stepper){
 	 	fighting.update(stepper)
 	 	if(fighting.isOver()){

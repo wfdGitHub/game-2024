@@ -12,27 +12,33 @@ var character = function(otps) {
 	this.critDef = otps.critDef || 0	//抗暴值
 	this.hitRate = 0					//命中率
 	this.dodgeRate = 0					//闪避率
-	this.fightSkills = {} 				//技能列表
+	this.fightSkills = {}				//技能列表
 	this.defaultSkill = false 			//默认攻击
 	this.target = false					//当前目标
 	this.died = false 					//死亡标记
 }
-character.prototype.setEnemyTeam = function(enemyTeam) {
+character.prototype.setArg = function(enemyTeam,fighting) {
 	this.enemyTeam = enemyTeam
+	this.fighting = fighting
 }
 //添加技能列表
 character.prototype.addFightSkill = function(skill) {
 	this.fightSkills[skill.skillId] = skill
 }
 //设置默认攻击技能
-character.prototype.setDefaultSkill = function(skillId) {
-	if(this.fightSkills[skillId]){
-		this.defaultSkill = this.fightSkills[skillId]
-	}
+character.prototype.setDefaultSkill = function(skill) {
+    if(skill){
+    	this.fightSkills[skill.skillId] = skill
+        this.defaultSkill = skill
+    }
 }
-//攻击
-character.prototype.useSkill = function(skillId,curTime) {
-	var result = this.fightSkills[skillId].use(curTime)
+//使用技能
+character.prototype.useSkill = function(skillId) {
+	if(this.fightSkills[skillId]){
+		this.fightSkills[skillId].use()
+	}else{
+		new Error("技能不存在 : "+skillId)
+	}
 }
 //被攻击
 character.prototype.hit = function(attacker, damageInfo) {

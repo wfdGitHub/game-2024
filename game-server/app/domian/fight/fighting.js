@@ -9,17 +9,33 @@ var fighting = function(atkTeam,defTeam) {
 //时间推进
 fighting.prototype.update = function(dt) {
 	this.curTime += dt
-	// console.log("update : ",this.curTime)
 	var self = this
-	this.characterArr.forEach(function(character,index) {
-		if(!character.died){
-			for(var skillId in character.fightSkills){
-				if(character.fightSkills[skillId].checkCondition(self.curTime)){
-					character.useSkill(skillId,self.curTime)
-				}
-			}
-		}
-	})
+    //更新技能
+    this.characterArr.forEach(function(character,index) {
+        if(!character.died){
+        	for(var skillId in character.fightSkills){
+        		character.fightSkills[skillId].updateTime(dt)
+        	}
+        }
+    })
+    //检测默认攻击技能
+    // this.characterArr.forEach(function(character,index) {
+    //     if(!character.died){
+    //     	if(character.defaultSkill && character.defaultSkill.checkCondition()){
+    //     		character.defaultSkill.use()
+    //     	}
+    //     }
+    // })
+    //检测全部攻击技能
+    this.characterArr.forEach(function(character,index) {
+        if(!character.died){
+        	for(var skillId in character.fightSkills){
+        		if(character.fightSkills[skillId].checkCondition()){
+        			character.fightSkills[skillId].use()
+        		}
+        	}
+        }
+    })
 	this.checkOver()
 }
 //结束标识

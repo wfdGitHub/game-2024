@@ -3,13 +3,17 @@ var hero = function(otps) {
 	this.heroId = otps.id			//ID
 	var character = bearcat.getFunction('character');
   	character.call(this,otps);
+  	this.characterType = "hero"
   	//增加普攻技能
   	var skill = bearcat.getBean("attackSkill",{skillId : 0},this)
-  	this.addFightSkill(skill)
-  	var skill2 = bearcat.getBean("attackSkill",{skillId : 2},this)
-  	this.addFightSkill(skill2)
-  	console.log(this.fightSkills)
-  	this.setDefaultSkill(skill.skillId)
+  	this.setDefaultSkill(skill)
+    if(otps.specialSkills){
+      var self = this
+      otps.specialSkills.forEach(function(skillId) {
+        var specialSkill =  bearcat.getBean("attackSkill",{skillId : skillId},self)
+        self.addFightSkill(specialSkill)
+      })
+    }
 }
 module.exports = {
 	id : "hero",
