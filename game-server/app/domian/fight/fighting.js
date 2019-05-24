@@ -5,6 +5,7 @@ var fighting = function(atkTeam,defTeam) {
 	this.characterArr = this.atkTeam.concat(this.defTeam)
 	this.over = false
 	this.result = "deuce"	//deuce  win   lose
+	this.skillList = []		//使用技能列表
 }
 //时间推进
 fighting.prototype.update = function(dt) {
@@ -19,23 +20,18 @@ fighting.prototype.update = function(dt) {
         }
     })
     //检测默认攻击技能
-    // this.characterArr.forEach(function(character,index) {
-    //     if(!character.died){
-    //     	if(character.defaultSkill && character.defaultSkill.checkCondition()){
-    //     		character.defaultSkill.use()
-    //     	}
-    //     }
-    // })
-    //检测全部攻击技能
     this.characterArr.forEach(function(character,index) {
         if(!character.died){
-        	for(var skillId in character.fightSkills){
-        		if(character.fightSkills[skillId].checkCondition()){
-        			character.fightSkills[skillId].use()
-        		}
+        	if(character.defaultSkill && character.defaultSkill.checkCondition()){
+        		character.defaultSkill.use()
         	}
         }
     })
+    //检测使用技能
+    this.skillList.forEach(function(skill) {
+    	skill.useSkill()
+    })
+    this.skillList = []
 	this.checkOver()
 }
 //结束标识

@@ -45,7 +45,7 @@ attackSkill.prototype.use = function(curTime) {
 	if(!this.state){
 		return
 	}
-	this.useSkill()
+	this.character.fighting.skillList.push(this)
 }
 attackSkill.prototype.useSkill = function() {
 	var target = this.formula.getAttackTarget(this.character,this.character.enemyTeam,this)
