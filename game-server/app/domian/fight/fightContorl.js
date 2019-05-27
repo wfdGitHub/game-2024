@@ -1,7 +1,6 @@
 var bearcat = require("bearcat")
 var fightContorl = function() {
-	this.maxTime = 30000 			//最长战斗时间
-
+	this.maxCount = 2000	//最长计算次数
 }
 //获取战斗结果 atkTeam 攻方阵容 defTeam  守方阵容
 fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo) {
@@ -16,20 +15,18 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo) {
 	for(var i in defTeamInfo){
 		defTeam.push(bearcat.getBean("mob",defTeamInfo[i]))
 	}
-	var fighting = bearcat.getBean("fighting",atkTeam,defTeam)
+	var fighting = bearcat.getBean("fighting",atkTeam,defTeam,{maxTime : maxTime})
 	for(var i in atkTeam){
 		atkTeam[i].setArg(defTeam,fighting)
 	}
 	for(var i in defTeam){
 		defTeam[i].setArg(atkTeam,fighting)
 	}
-	for(curTime = 0;curTime < maxTime;curTime += stepper){
+	var count = 0
+	while(!fighting.isOver() && count++ < this.maxCount){
 	 	fighting.update(stepper)
-	 	if(fighting.isOver()){
-	 		break
-	 	}
 	}
-	console.log("result : ",curTime,fighting.getResult())
+	console.log("result : ",fighting.getResult())
 }
 module.exports = {
 	id : "fightContorl",

@@ -1,41 +1,49 @@
-var fighting = function(atkTeam,defTeam) {
+var fighting = function(atkTeam,defTeam,otps) {
 	this.curTime = 0
 	this.atkTeam = atkTeam
 	this.defTeam = defTeam
+	this.maxTime = otps.maxTime
 	this.characterArr = this.atkTeam.concat(this.defTeam)
 	this.over = false
-	this.result = "deuce"	//deuce  win   lose
+	this.result = "none"	//deuce  win   lose
 	this.skillList = []		//使用技能列表
 }
 //时间推进
 fighting.prototype.update = function(dt) {
-	this.curTime += dt
 	var self = this
-    //更新技能
-    this.characterArr.forEach(function(character,index) {
-        if(!character.died){
-        	for(var skillId in character.fightSkills){
-        		character.fightSkills[skillId].updateTime(dt)
-        	}
-        }
-    })
-    //检测默认攻击技能
-    this.characterArr.forEach(function(character,index) {
-        if(!character.died){
-        	if(character.defaultSkill && character.defaultSkill.checkCondition()){
-        		character.defaultSkill.use()
-        	}
-        }
-    })
+
     //检测使用技能
-    this.skillList.forEach(function(skill) {
-    	skill.useSkill()
-    })
-    this.skillList = []
+    if(this.skillList.length){
+		var skill = this.skillList.shift()
+		skill.useSkill()
+    }else{
+		this.curTime += dt
+	    //更新技能
+	    this.characterArr.forEach(function(character,index) {
+	        if(!character.died){
+	        	for(var skillId in character.fightSkills){
+	        		character.fightSkills[skillId].updateTime(dt)
+	        	}
+	        }
+	    })
+	    //检测默认攻击技能
+	    this.characterArr.forEach(function(character,index) {
+	        if(!character.died){
+	        	if(character.defaultSkill && character.defaultSkill.checkCondition()){
+	        		character.defaultSkill.use()
+	        	}
+	        }
+	    })
+    }
 	this.checkOver()
 }
 //结束标识
 fighting.prototype.checkOver = function() {
+	if(this.curTime >= this.maxTime){
+		this.over = true
+		this.result = "deuce"
+		return
+	}
 	var flag = true
 	for(var i in this.atkTeam){
 		if(!this.atkTeam[i].died){
@@ -77,6 +85,9 @@ module.exports = {
 		type : "Object"
 	},{
 		name : "defTeam",
+		type : "Object"
+	},{
+		name : "otps",
 		type : "Object"
 	}],
 	props : [{
