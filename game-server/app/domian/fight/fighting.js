@@ -11,11 +11,12 @@ var fighting = function(atkTeam,defTeam,otps) {
 //时间推进
 fighting.prototype.update = function(dt) {
 	var self = this
-
     //检测使用技能
     if(this.skillList.length){
-		var skill = this.skillList.shift()
-		skill.useSkill()
+    	var skill = this.skillList.shift()
+    	if(!skill.character.died){
+    		skill.useSkill()
+    	}
     }else{
 		this.curTime += dt
 	    //更新技能
