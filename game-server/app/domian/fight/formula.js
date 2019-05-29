@@ -37,6 +37,8 @@ formula.prototype.getAttackTarget = function(attacker,team,skill) {
 		case 3:
 			return this.getTargetMaxHP(attacker,team)
 		break
+		case 4:
+			return formula.getTargetRandom(attacker,team,3)
 		default:
 			return false
 		break
@@ -45,7 +47,7 @@ formula.prototype.getAttackTarget = function(attacker,team,skill) {
 //获取普通目标
 formula.prototype.getTargetNormal = function(attacker,team) {
 	if(attacker.target && !attacker.target.died){
-		return attacker.target
+		return [attacker.target]
 	}
 	attacker.target = false
 	var target = false
@@ -65,7 +67,11 @@ formula.prototype.getTargetNormal = function(attacker,team) {
 		}
 		curRand += arr[i]
 	}
-	return attacker.target
+	if(attacker.target){
+		return [attacker.target]
+	}else{
+		return false
+	}
 }
 //获取血量最少目标
 formula.prototype.getTargetMinHP = function(attacker,team) {
@@ -80,7 +86,7 @@ formula.prototype.getTargetMinHP = function(attacker,team) {
 	if(minIndex === -1){
 		return false
 	}else{
-		return team[minIndex]
+		return [team[minIndex]]
 	}
 }
 //获取血量最多目标
@@ -96,8 +102,26 @@ formula.prototype.getTargetMaxHP = function(attacker,team) {
 	if(maxIndex === -1){
 		return false
 	}else{
-		return team[maxIndex]
+		return [team[maxIndex]]
 	}
+}
+//获取指定数量随机目标
+formula.getTargetRandom = function(attacker,team,count) {
+    var list = []
+    team.forEach(function(character,index) {
+        if(!character.died){
+        	list.push(index)
+        }
+    })
+    if(list.length === 0){
+        return false
+    }else{
+    	list.sort(function(a,b){return Math.random() > 0.5})
+    	for(var i = 0; i < count && i < list.length;i++){
+    		list[i] = team[list[i]]
+    	}
+        return list
+    }
 }
 module.exports = {
 	id : "formula",

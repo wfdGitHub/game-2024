@@ -30,6 +30,7 @@ attackSkill.prototype.updateTime = function(dt) {
 	this.curTime += dt
 	if(!this.state && this.curTime >= this.coolDownTime){
 		this.state = true
+		this.use()
 	}
 }
 //获取冷却时间
@@ -48,23 +49,23 @@ attackSkill.prototype.use = function(curTime) {
 	this.character.fighting.skillList.push(this)
 }
 attackSkill.prototype.useSkill = function() {
-	var target = this.formula.getAttackTarget(this.character,this.character.enemyTeam,this)
-	if(!target){
-		console.log("target error")
-		return {state: false, damage: 0,target : target,curTime : this.curTime};
-	}
-	this.updateCD()
-	//判断命中率
-	var missRate = target.dodgeRate / (this.character.hitRate + 100)
-	if(Math.random() < missRate){
-		return {state: "miss", damage: 0,curTime : this.curTime,miss : true};
-	}
-	var damageInfo = this.formula.calDamage(this.character, target, this);
-	target.hit(this.character, damageInfo);
-	if (target.died) {
-		return {state: "kill", damageInfo: damageInfo,target : target,curTime : this.curTime};
-	} else{
-		return {state: "success", damageInfo: damageInfo,target : target,curTime : this.curTime};
+	var targets = this.formula.getAttackTarget(this.character,this.character.enemyTeam,this)
+	if(!targets){
+		console.log("targets error")
+		return {state: false,targets : targets,curTime : this.curTime};
+	}else{
+		this.updateCD()
+		var self = this
+		targets.forEach(function(target) {
+			//判断命中率
+			var missRate = target.dodgeRate / (self.character.hitRate + 100)
+			if(Math.random() < missRate){
+				return {state: "miss", damage: 0,curTime : self.curTime,miss : true};
+			}
+			var damageInfo = self.formula.calDamage(self.character, target, self);
+			target.hit(self.character, damageInfo);
+		})
+		return {state: true,targets : targets,curTime : this.curTime};
 	}
 }
 module.exports = {
