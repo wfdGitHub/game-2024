@@ -1,6 +1,5 @@
 var skills = require("../../../config/fight/skills.json")
 var attackSkill = function(opts,character) {
-	this.curTime = 0
 	this.character = character				//所属角色
 	this.skillId = opts.skillId 			//技能ID
 	var skillInfo = skills[this.skillId]
@@ -23,14 +22,16 @@ var attackSkill = function(opts,character) {
 }
 //更新技能CD
 attackSkill.prototype.updateCD = function() {
-	this.coolDownTime = this.curTime + this.skillCD * 1000
+	this.coolDownTime = this.skillCD * 1000
 	this.state = false 	
 }
 attackSkill.prototype.updateTime = function(dt) {
-	this.curTime += dt
-	if(!this.state && this.curTime >= this.coolDownTime){
-		this.state = true
-		this.use()
+	if(!this.state){
+		this.coolDownTime -= dt
+		if(this.coolDownTime <= 0){
+			this.coolDownTime = 0
+			this.state = true
+		}
 	}
 }
 //获取冷却时间
@@ -38,11 +39,11 @@ attackSkill.prototype.getCoolDownTime = function() {
 	return this.coolDownTime
 }
 //检查技能可用
-attackSkill.prototype.checkCondition = function(curTime) {
+attackSkill.prototype.checkCondition = function() {
 	return this.state
 }
 //使用技能
-attackSkill.prototype.use = function(curTime) {
+attackSkill.prototype.use = function() {
 	if(!this.state){
 		return
 	}
@@ -52,7 +53,7 @@ attackSkill.prototype.useSkill = function() {
 	var targets = this.formula.getAttackTarget(this.character,this.character.enemyTeam,this)
 	if(!targets){
 		console.log("targets error")
-		return {state: false,targets : targets,curTime : this.curTime};
+		return {state: false,targets : targets};
 	}else{
 		this.updateCD()
 		var self = this
@@ -60,12 +61,12 @@ attackSkill.prototype.useSkill = function() {
 			//判断命中率
 			var missRate = target.dodgeRate / (self.character.hitRate + 100)
 			if(Math.random() < missRate){
-				return {state: "miss", damage: 0,curTime : self.curTime,miss : true};
+				return {state: "miss", damage: 0,miss : true};
 			}
 			var damageInfo = self.formula.calDamage(self.character, target, self);
 			target.hit(self.character, damageInfo);
 		})
-		return {state: true,targets : targets,curTime : this.curTime};
+		return {state: true,targets : targets};
 	}
 }
 module.exports = {
