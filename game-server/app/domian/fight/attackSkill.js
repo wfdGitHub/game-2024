@@ -16,7 +16,7 @@ var attackSkill = function(opts,character) {
 		this.skillCD = this.character.atkSpeed
 	}
 	this.targetType = skillInfo.targetType || 1  //选取目标类型 1 默认目标 2 血量最少 3 血量最多
-	this.coolDownTime = 0					//可以使用时间
+	this.coolDownTime = 0						 //剩余冷却时间
 	this.state = false 							 //可用状态
 	this.updateCD()
 }

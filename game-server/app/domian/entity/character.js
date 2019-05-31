@@ -68,6 +68,9 @@ character.prototype.update = function(stepper) {
 	for(var skillId in this.fightSkills){
 		this.fightSkills[skillId].updateTime(stepper)
 	}
+	if(this.defaultSkill && this.defaultSkill.state){
+		this.defaultSkill.use()
+	}
 }
 module.exports = {
 	id : "character",

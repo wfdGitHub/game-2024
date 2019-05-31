@@ -20,18 +20,10 @@ fighting.prototype.update = function() {
     	}
     }else{
 		this.curTime += this.stepper
-	    //更新技能
+	    //更新
 	    this.characterArr.forEach(function(character,index) {
 	        if(!character.died){
 	        	character.update(self.stepper)
-	        }
-	    })
-	    //检测默认攻击技能
-	    this.characterArr.forEach(function(character,index) {
-	        if(!character.died){
-	        	if(character.defaultSkill && character.defaultSkill.checkCondition()){
-	        		character.defaultSkill.use()
-	        	}
 	        }
 	    })
     }
