@@ -15,7 +15,7 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo) {
 	for(var i in defTeamInfo){
 		defTeam.push(bearcat.getBean("mob",defTeamInfo[i]))
 	}
-	var fighting = bearcat.getBean("fighting",atkTeam,defTeam,{maxTime : maxTime})
+	var fighting = bearcat.getBean("fighting",atkTeam,defTeam,{maxTime : maxTime,stepper : stepper})
 	for(var i in atkTeam){
 		atkTeam[i].setArg(defTeam,fighting)
 	}
@@ -24,7 +24,7 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo) {
 	}
 	var count = 0
 	while(!fighting.isOver() && count++ < this.maxCount){
-	 	fighting.update(stepper)
+	 	fighting.update()
 	}
 	console.log("result : ",fighting.getResult())
 }

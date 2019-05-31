@@ -64,6 +64,11 @@ character.prototype.getTotalAttack = function() {
 character.prototype.getTotalDefence = function() {
 	return this.def
 }
+character.prototype.update = function(stepper) {
+	for(var skillId in this.fightSkills){
+		this.fightSkills[skillId].updateTime(stepper)
+	}
+}
 module.exports = {
 	id : "character",
 	func : character,

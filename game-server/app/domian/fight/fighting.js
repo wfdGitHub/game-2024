@@ -2,6 +2,7 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.curTime = 0
 	this.atkTeam = atkTeam
 	this.defTeam = defTeam
+	this.stepper = otps.stepper
 	this.maxTime = otps.maxTime
 	this.characterArr = this.atkTeam.concat(this.defTeam)
 	this.over = false
@@ -9,7 +10,7 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.skillList = []		//使用技能列表
 }
 //时间推进
-fighting.prototype.update = function(dt) {
+fighting.prototype.update = function() {
 	var self = this
     //检测使用技能
     if(this.skillList.length){
@@ -18,13 +19,11 @@ fighting.prototype.update = function(dt) {
     		skill.useSkill()
     	}
     }else{
-		this.curTime += dt
+		this.curTime += this.stepper
 	    //更新技能
 	    this.characterArr.forEach(function(character,index) {
 	        if(!character.died){
-	        	for(var skillId in character.fightSkills){
-	        		character.fightSkills[skillId].updateTime(dt)
-	        	}
+	        	character.update(self.stepper)
 	        }
 	    })
 	    //检测默认攻击技能
