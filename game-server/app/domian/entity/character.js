@@ -1,6 +1,5 @@
 var bearcat = require("bearcat")
 var character = function(otps) {
-	console.log("otps",otps)
 	this.name = otps.name || "noname"	//名称
 	this.level = otps.level || 1		//等级
 	this.maxHP = otps.maxHP || 100		//最大血量
@@ -13,9 +12,12 @@ var character = function(otps) {
 	this.hitRate = 0					//命中率
 	this.dodgeRate = 0					//闪避率
 	this.fightSkills = {}				//技能列表
+	this.buffs = {}						//buff列表
 	this.defaultSkill = false 			//默认攻击
 	this.target = false					//当前目标
 	this.died = false 					//死亡标记
+	this.frozen = false					//冰冻标识  冰冻时技能CD停止
+	this.dizzy = false					//眩晕标识  眩晕时不能行动
 }
 character.prototype.setArg = function(enemyTeam,fighting) {
 	this.enemyTeam = enemyTeam
@@ -28,6 +30,7 @@ character.prototype.addFightSkill = function(skill) {
 //设置默认攻击技能
 character.prototype.setDefaultSkill = function(skill) {
     if(skill){
+    	skill.defaultSkill = true
     	this.fightSkills[skill.skillId] = skill
         this.defaultSkill = skill
     }
@@ -65,12 +68,42 @@ character.prototype.getTotalDefence = function() {
 	return this.def
 }
 character.prototype.update = function(stepper) {
-	for(var skillId in this.fightSkills){
-		this.fightSkills[skillId].updateTime(stepper)
+	for(var i in this.buffs){
+		this.buffs[i].update(stepper)
 	}
-	if(this.defaultSkill && this.defaultSkill.state){
-		this.defaultSkill.use()
+	if(!this.frozen){
+		for(var skillId in this.fightSkills){
+			this.fightSkills[skillId].updateTime(stepper)
+		}
 	}
+	if(!this.dizzy && !this.frozen){
+		if(this.defaultSkill && this.defaultSkill.state){
+			this.defaultSkill.use()
+		}
+	}
+}
+character.prototype.addBuff = function(otps) {
+	var buffId = otps.buffId
+	if(this.buffs[buffId]){
+		this.buffs[buffId].overlay(otps)
+		console.log("刷新buff",this.buffs[buffId].name)
+	}else{
+		var buff = this.buffFactory.getBuff(this,otps)
+		if(buff){
+			buff.init()
+			this.buffs[buffId] = buff
+			console.log("新buff",buff.name)
+		}else{
+			console.log("buff 不存在")
+		}
+	}
+}
+character.prototype.removeBuff = function(buffId) {
+	console.log("removeBuff ",buffId)
+	if(this.buffs[buffId]){
+		delete this.buffs[buffId]
+	}
+	console.log("removeBuff ",this.buffs)
 }
 module.exports = {
 	id : "character",
@@ -78,6 +111,10 @@ module.exports = {
 	args : [{
 		name : "otps",
 		type : "Object" 
+	}],
+	props : [{
+		name : "buffFactory",
+		ref : "buffFactory" 
 	}],
 	lazy : true,
 	scope : "prototype"

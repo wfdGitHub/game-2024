@@ -1,15 +1,20 @@
 var skills = require("../../../config/fight/skills.json")
-var attackSkill = function(opts,character) {
+var buffs = require("../../../config/fight/buffs.json")
+var attackSkill = function(otps,character) {
 	this.character = character				//所属角色
-	this.skillId = opts.skillId 			//技能ID
+	this.skillId = otps.skillId 			//技能ID
 	var skillInfo = skills[this.skillId]
+	this.buffId = skillInfo.buffId
+	this.buffArg = skillInfo.buffArg
+	this.duration = skillInfo.duration
 	if(!skillInfo){
-		console.log(new Error("skillInfo not found "+opts.skillId))
+		console.log(new Error("skillInfo not found "+otps.skillId))
 	}
 	this.name = skillInfo.name					//技能名称
 	this.mul = skillInfo.mul || 1				//技能系数
 	this.fixed = skillInfo.fixed	|| 0		//固定伤害
 	this.skillCD = skillInfo.skillCD			//技能CD
+	this.defaultSkill = false					//普攻技能
 	if(skillInfo.skillCD){
 		this.skillCD = skillInfo.skillCD		//技能CD为0时设为攻速			
 	}else{
@@ -31,6 +36,9 @@ attackSkill.prototype.updateTime = function(dt) {
 		if(this.coolDownTime <= 0){
 			this.coolDownTime = 0
 			this.state = true
+			if(!this.defaultSkill){
+				this.use()
+			}
 		}
 	}
 }
@@ -44,7 +52,8 @@ attackSkill.prototype.checkCondition = function() {
 }
 //使用技能
 attackSkill.prototype.use = function() {
-	if(!this.state){
+	//技能未达成或处于眩晕状态不能使用
+	if(!this.state || this.character.dizzy || this.character.frozen){
 		return
 	}
 	this.character.fighting.skillList.push(this)
@@ -58,6 +67,7 @@ attackSkill.prototype.useSkill = function() {
 		this.updateCD()
 		var self = this
 		targets.forEach(function(target) {
+			//技能伤害
 			//判断命中率
 			var missRate = target.dodgeRate / (self.character.hitRate + 100)
 			if(Math.random() < missRate){
@@ -65,6 +75,15 @@ attackSkill.prototype.useSkill = function() {
 			}
 			var damageInfo = self.formula.calDamage(self.character, target, self);
 			target.hit(self.character, damageInfo);
+			//施加BUFF
+			// console.log(self.buffId,typeof(self.buffId))
+			if(typeof(self.buffId) === "number"){
+				var buffotps = buffs[self.buffId]
+				buffotps.buffId = self.buffId
+				buffotps.buffArg = self.buffArg
+				buffotps.duration = self.duration
+				target.addBuff(buffotps)
+			}
 		})
 		return {state: true,targets : targets};
 	}
@@ -73,7 +92,7 @@ module.exports = {
 	id : "attackSkill",
 	func : attackSkill,
 	args : [{
-		name : "opts",
+		name : "otps",
 		type : "Object"
 	},{
 		name : "character",

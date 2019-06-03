@@ -1,0 +1,44 @@
+[
+  {
+    "buffId": 0,
+    "name": "冰冻",
+    "detail": "冰冻敌方同时冰冻技能CD",
+    "buffArg": 0,
+    "duration": 3
+  },
+  {
+    "buffId": 1,
+    "name": "眩晕",
+    "detail": "被眩晕的角色无法攻击",
+    "buffArg": 0,
+    "duration": 3
+  },
+  {
+    "buffId": 2,
+    "name": "中毒",
+    "detail": "持续受到毒素伤害",
+    "buffArg": 200,
+    "duration": 3
+  },
+  {
+    "buffId": 3,
+    "name": "燃烧",
+    "detail": "持续受到燃烧伤害",
+    "buffArg": 100,
+    "duration": 3
+  },
+  {
+    "buffId": 4,
+    "name": "缠绕",
+    "detail": "降低攻速",
+    "buffArg": 100,
+    "duration": 3
+  },
+  {
+    "buffId": 5,
+    "name": "混乱",
+    "detail": "不分敌我，随机选择目标",
+    "buffArg": 0,
+    "duration": 3
+  }
+]
