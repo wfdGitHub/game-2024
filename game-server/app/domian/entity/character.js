@@ -1,4 +1,5 @@
 var bearcat = require("bearcat")
+var buffFactory = require("../fight/buffFactory.js")
 var character = function(otps) {
 	this.name = otps.name || "noname"	//名称
 	this.level = otps.level || 1		//等级
@@ -44,9 +45,9 @@ character.prototype.useSkill = function(skillId) {
 	}
 }
 //被攻击
-character.prototype.hit = function(attacker, damageInfo) {
+character.prototype.hit = function(attacker, damageInfo,source) {
   	this.reduceHp(damageInfo.damage);
-	console.log(attacker.name + " 使用 "+damageInfo.skill.name+" 攻击 "+this.name,"-"+damageInfo.damage," 剩余血量 : ",this.hp)
+	console.log(attacker.name + " 使用 "+source.name+" 攻击 "+this.name,"-"+damageInfo.damage," 剩余血量 : ",this.hp)
 }
 //生命值减少
 character.prototype.reduceHp = function(damageValue) {
@@ -82,13 +83,13 @@ character.prototype.update = function(stepper) {
 		}
 	}
 }
-character.prototype.addBuff = function(otps) {
+character.prototype.addBuff = function(attacker,otps) {
 	var buffId = otps.buffId
 	if(this.buffs[buffId]){
-		this.buffs[buffId].overlay(otps)
+		this.buffs[buffId].overlay(attacker,otps)
 		console.log("刷新buff",this.buffs[buffId].name)
 	}else{
-		var buff = this.buffFactory.getBuff(this,otps)
+		var buff = buffFactory.getBuff(attacker,this,otps)
 		if(buff){
 			buff.initialize()
 			this.buffs[buffId] = buff
@@ -99,11 +100,9 @@ character.prototype.addBuff = function(otps) {
 	}
 }
 character.prototype.removeBuff = function(buffId) {
-	console.log("removeBuff ",buffId)
 	if(this.buffs[buffId]){
 		delete this.buffs[buffId]
 	}
-	console.log("removeBuff ",this.buffs)
 }
 module.exports = {
 	id : "character",
@@ -111,10 +110,6 @@ module.exports = {
 	args : [{
 		name : "otps",
 		type : "Object" 
-	}],
-	props : [{
-		name : "buffFactory",
-		ref : "buffFactory" 
 	}],
 	lazy : true,
 	scope : "prototype"

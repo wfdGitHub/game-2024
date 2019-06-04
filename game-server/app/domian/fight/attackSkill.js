@@ -3,6 +3,7 @@ var buffs = require("../../../config/fight/buffs.json")
 var attackSkill = function(otps,character) {
 	this.character = character				//所属角色
 	this.skillId = otps.skillId 			//技能ID
+	this.type = "skill"
 	var skillInfo = skills[this.skillId]
 	this.buffId = skillInfo.buffId
 	this.buffArg = skillInfo.buffArg
@@ -74,7 +75,7 @@ attackSkill.prototype.useSkill = function() {
 				return {state: "miss", damage: 0,miss : true};
 			}
 			var damageInfo = self.formula.calDamage(self.character, target, self);
-			target.hit(self.character, damageInfo);
+            target.hit(self.character, damageInfo,self);
 			//施加BUFF
 			// console.log(self.buffId,typeof(self.buffId))
 			if(typeof(self.buffId) === "number"){
@@ -82,7 +83,7 @@ attackSkill.prototype.useSkill = function() {
 				buffotps.buffId = self.buffId
 				buffotps.buffArg = self.buffArg
 				buffotps.duration = self.duration
-				target.addBuff(buffotps)
+				target.addBuff(self.character,buffotps)
 			}
 		})
 		return {state: true,targets : targets};

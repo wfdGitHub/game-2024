@@ -33,7 +33,7 @@ var atkTeamInfo = [{
 var defTeamInfo = [{
     name : "BOSS",  //名称
     spriteType : "mob1",  //类型
-    maxHP : 1000,   //最大血量
+    maxHP : 10000,   //最大血量
     atk : 80,       //攻击力
     def : 1,        //防御力
     atkSpeed : 2.5  //攻速 每几秒攻击一次

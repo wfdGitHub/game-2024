@@ -1,13 +1,14 @@
 var buffBasic = require("./buffBasic.js")
 //眩晕buff
-var dizzy = function(target,otps) {
-	buffBasic.call(this,target,otps)
+var dizzy = function(character,target,otps) {
+	buffBasic.call(this,character,target,otps)
 	this.init = function() {
 		this.target.dizzy = true
 		console.log("dizzy init")
 		console.log(this.duration)
 	}
-	this.overlay = function(otps) {
+	this.overlay = function(character,otps) {
+		this.character = character
 		console.log("旧持续时间",this.duration)
 		if(this.duration < otps.duration * 1000){
 			this.duration = otps.duration * 1000
