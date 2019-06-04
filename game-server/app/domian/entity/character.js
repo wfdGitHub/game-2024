@@ -90,7 +90,7 @@ character.prototype.addBuff = function(otps) {
 	}else{
 		var buff = this.buffFactory.getBuff(this,otps)
 		if(buff){
-			buff.init()
+			buff.initialize()
 			this.buffs[buffId] = buff
 			console.log("新buff",buff.name)
 		}else{
