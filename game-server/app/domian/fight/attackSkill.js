@@ -57,6 +57,7 @@ attackSkill.prototype.use = function() {
 	if(!this.state || this.character.dizzy || this.character.frozen){
 		return
 	}
+	this.state = false
 	this.character.fighting.skillList.push(this)
 }
 attackSkill.prototype.useSkill = function() {
