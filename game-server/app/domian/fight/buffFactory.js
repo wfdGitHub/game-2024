@@ -1,6 +1,7 @@
 var frozen = require("./buff/frozen.js")
 var dizzy = require("./buff/dizzy.js")
 var poison = require("./buff/poison.js")
+var burn = require("./buff/burn.js")
 var buffFactory = function() {
 
 }
@@ -14,10 +15,11 @@ buffFactory.getBuff = function(character,target,otps) {
 			return new dizzy(character,target,otps)
 		case 2:
 			return new poison(character,target,otps)
+		case 3:
+			return new burn(character,target,otps)
 		default:
 			return false
 	}
 }
-
 
 module.exports = buffFactory
