@@ -9,7 +9,7 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.over = false
 	this.result = "none"	//deuce  win   lose
 	this.skillList = []		//使用技能列表
-	this.seeded = new seeded(otps.seeded || (new Date).getTime())
+	this.seeded = new seeded(otps.seeded || (new Date()).getTime())
 }
 //时间推进
 fighting.prototype.update = function() {
