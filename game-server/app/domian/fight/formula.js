@@ -9,7 +9,7 @@ formula.prototype.calDamage = function(attacker, target, skill) {
 	//暴击计算
 	var critFlag = false
 	var crit = 0.05 + ((Math.pow(attacker.crit,2) || 0) / ((attacker.critDef + target.critDef) || 1)) / 100
-	if(Math.random() < crit){
+	if(attacker.fighting.seeded.random() < crit){
 		critFlag = true
 		damage = Math.ceil(damage * 1.5)
 	}
@@ -71,7 +71,7 @@ formula.prototype.getTargetNormal = function(attacker,team) {
 		allRand += rand
 		arr.push(rand)
 	}
-	var rand = Math.random() * allRand
+	var rand = attacker.fighting.seeded.random() * allRand
 	var curRand = 0
 	for(var i = 0;i < arr.length;i++){
 		if(rand > curRand && rand <= arr[i] + curRand){
@@ -129,7 +129,7 @@ formula.getTargetRandom = function(attacker,team,count) {
     if(list.length === 0){
         return false
     }else{
-    	list.sort(function(a,b){return Math.random() > 0.5})
+    	list.sort(function(a,b){return attacker.fighting.seeded.random() > 0.5})
     	for(var i = 0; i < count && i < list.length;i++){
     		list[i] = team[list[i]]
     	}

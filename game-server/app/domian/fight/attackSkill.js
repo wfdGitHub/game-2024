@@ -72,7 +72,7 @@ attackSkill.prototype.useSkill = function() {
 			//技能伤害
 			//判断命中率
 			var missRate = target.dodgeRate / (self.character.hitRate + 100)
-			if(Math.random() < missRate){
+			if(self.character.fighting.seeded.random() < missRate){
 				return {state: "miss", damage: 0,miss : true};
 			}
 			var damageInfo = self.formula.calDamage(self.character, target, self);

@@ -15,7 +15,7 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo) {
 	for(var i in defTeamInfo){
 		defTeam.push(bearcat.getBean("mob",defTeamInfo[i]))
 	}
-	var fighting = bearcat.getBean("fighting",atkTeam,defTeam,{maxTime : maxTime,stepper : stepper})
+	var fighting = bearcat.getBean("fighting",atkTeam,defTeam,{maxTime : maxTime,stepper : stepper,seeded : 101})
 	for(var i in atkTeam){
 		atkTeam[i].setArg(defTeam,fighting)
 	}
