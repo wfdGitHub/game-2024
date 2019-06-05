@@ -19,6 +19,7 @@ var character = function(otps) {
 	this.died = false 					//死亡标记
 	this.frozen = false					//冰冻标识  冰冻时技能CD停止
 	this.dizzy = false					//眩晕标识  眩晕时不能行动
+	this.chaos = false  				//混乱标识
 }
 character.prototype.setArg = function(enemyTeam,fighting) {
 	this.enemyTeam = enemyTeam
@@ -79,8 +80,16 @@ character.prototype.update = function(stepper) {
 	}
 	if(!this.dizzy && !this.frozen){
 		if(this.defaultSkill && this.defaultSkill.state){
-			this.defaultSkill.use()
+			this.defaultSkill.useSkill()
 		}
+	}
+}
+//是否不可使用技能
+character.prototype.banUse = function() {
+	if(this.dizzy || this.frozen || this.chaos){
+		return true
+	}else{
+		return false
 	}
 }
 character.prototype.addBuff = function(attacker,otps) {

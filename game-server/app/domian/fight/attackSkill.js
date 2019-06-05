@@ -29,7 +29,7 @@ var attackSkill = function(otps,character) {
 //更新技能CD
 attackSkill.prototype.updateCD = function() {
 	this.coolDownTime = this.skillCD * 1000
-	this.state = false 	
+	this.state = false
 }
 attackSkill.prototype.updateTime = function(dt) {
 	if(!this.state){
@@ -54,7 +54,7 @@ attackSkill.prototype.checkCondition = function() {
 //使用技能
 attackSkill.prototype.use = function() {
 	//技能未达成或处于眩晕状态不能使用
-	if(!this.state || this.character.dizzy || this.character.frozen){
+	if(!this.state || this.character.banUse()){
 		return
 	}
 	this.state = false

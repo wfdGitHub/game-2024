@@ -46,11 +46,24 @@ formula.prototype.getAttackTarget = function(attacker,team,skill) {
 }
 //获取普通目标
 formula.prototype.getTargetNormal = function(attacker,team) {
+	var target = false
+	if(attacker.chaos){
+		var list = []
+		attacker.fighting.characterArr.forEach(function(character) {
+			if(!character.died && attacker != character){
+				list.push(character)
+			}
+		})
+		if(list.length > 0){
+			target = list[parseInt(attacker.fighting.seeded.random() * list.length)]
+			console.log("混乱随机选择目标 : ",target.name)
+		}
+		return [target]
+	}
 	if(attacker.target && !attacker.target.died){
 		return [attacker.target]
 	}
 	attacker.target = false
-	var target = false
 	var arr = []
 	var allRand = 0
 	for(var i = 0;i < team.length;i++){
