@@ -31,6 +31,7 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 	}
 	var serverId = this.areaDeploy.getServer(areaId)
 	if(!serverId){
+		console.log(this.areaDeploy.getServerMap())
 		next(null,{flag : false,err : "服务器不存在"})
 		return
 	}
