@@ -4,7 +4,7 @@ var loginHandler = function(app) {
   this.areaDeploy = this.app.get('areaDeploy')
 }
 //获取服务器列表
-entryHandler.prototype.getAreaList = function(msg, session, next) {
+loginHandler.prototype.getAreaList = function(msg, session, next) {
 	if(msg.type == "all"){
 		next(null,{flag : true,areaList : this.areaDeploy.areaList})
 	}else{
