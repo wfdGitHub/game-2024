@@ -33,7 +33,7 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 		next(null,{flag : false,err : "服务器不存在"})
 		return
 	}
-	this.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,function(playerInfo) {
+	this.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,this.app.serverId,function(playerInfo) {
 		if(!playerInfo){
 			next(null,{flag : false,err : "登陆失败"})
 			return

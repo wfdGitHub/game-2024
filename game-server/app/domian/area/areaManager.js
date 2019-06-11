@@ -4,6 +4,7 @@ var areaManager = function() {
 	this.name = "areaManager"
 	this.areaMap = {}
 	this.userMap = {}
+	this.connectorMap = {}
 	this.fightContorl = new fightContorlFun()
 }
 //初始化
@@ -38,7 +39,7 @@ areaManager.prototype.closeArea = function() {
 
 }
 //玩家登录游戏服
-areaManager.prototype.userLogin = function(uid,areaId,cb) {
+areaManager.prototype.userLogin = function(uid,areaId,cid,cb) {
 	var self = this
 	if(!self.areaMap[areaId]){
 		console.log(self.areaMap,areaId)
@@ -47,6 +48,7 @@ areaManager.prototype.userLogin = function(uid,areaId,cb) {
 	}
 	self.areaMap[areaId].userLogin(uid,function(playerInfo) {
 		if(playerInfo){
+			self.connectorMap[uid] = cid
 			self.userMap[uid] = areaId
 		}
 		cb(playerInfo)
@@ -56,6 +58,7 @@ areaManager.prototype.userLogin = function(uid,areaId,cb) {
 areaManager.prototype.userLeave = function(uid) {
 	var areaId = this.userMap[uid]
 	delete this.userMap[uid]
+	delete this.connectorMap[uid]
 	if(areaId && this.areaMap[areaId]){
 		this.areaMap[areaId].userLeave(uid)
 	}
@@ -65,8 +68,8 @@ areaManager.prototype.removeServers = function(ids) {
 	console.log(ids)
 	var self = this
 	ids.forEach(function(serverId) {
-		for(var uid in self.userMap){
-			if(self.userMap[uid] == serverId){
+		for(var uid in self.connectorMap){
+			if(self.connectorMap[uid] == serverId){
 				self.userLeave(uid)
 			}
 		}
