@@ -50,9 +50,12 @@ var onUserLeave = function(session) {
   if(!session) {
     return
   }
-  var serverId = session.get("serverId")
-  if(serverId){
-  	this.app.rpc.area.areaRemote.userLeave.toServer(serverId,session.get("uid"),null)
+  var areaId = session.get("areaId")
+  if(areaId){
+  	var serverId = this.areaDeploy.getServer(areaId)
+  	if(serverId){
+  		this.app.rpc.area.areaRemote.userLeave.toServer(serverId,session.get("uid"),null)
+  	}
   }
 }
 

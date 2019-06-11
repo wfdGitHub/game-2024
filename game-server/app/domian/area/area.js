@@ -1,3 +1,4 @@
+//服务器
 var bearcat = require("bearcat")
 var area = function(otps) {
 	this.areaId = otps.areaId
