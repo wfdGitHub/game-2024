@@ -1,8 +1,10 @@
 var bearcat = require("bearcat")
+var fightContorlFun = require("../fight/fightContorl.js")
 var areaManager = function() {
 	this.name = "areaManager"
 	this.areaMap = {}
 	this.userMap = {}
+	this.fightContorl = new fightContorlFun()
 }
 //初始化
 areaManager.prototype.init = function(app) {
