@@ -6,9 +6,11 @@ var areaManager = function() {
 }
 //初始化
 areaManager.prototype.init = function(app) {
+	console.log("init")
 	this.app = app
 	var self = this
 	self.areaDao.getAreaServerMap(function(data) {
+		console.log("getAreaServerMap",data,self.app.serverId)
 		if(data){
 			for(var areaId in data){
 				if(data[areaId] == self.app.serverId){
@@ -20,6 +22,7 @@ areaManager.prototype.init = function(app) {
 }
 //加载游戏服务器
 areaManager.prototype.loadArea = function(areaId) {
+	console.log("loadArea ",areaId)
 	var self = this
 	self.areaDao.getAreaInfo(areaId,function(areaInfo) {
 		if(areaInfo){
@@ -35,6 +38,7 @@ areaManager.prototype.closeArea = function() {
 areaManager.prototype.userLogin = function(uid,areaId,cb) {
 	var self = this
 	if(!self.areaMap[areaId]){
+		console.log(self.areaMap,areaId)
 		cb(false)
 		return
 	}
