@@ -1,7 +1,6 @@
-var bearcat = require("bearcat")
-var contextPath = require.resolve('./context.json');
-bearcat.createApp([contextPath])
-bearcat.start(function() {})
+var fightContorlFun = require("./app/domian/fight/fightContorl.js")
+var mobFun = require("./app/domian/entity/mob.js")
+var heroFun = require("./app/domian/entity/hero.js")
 var atkTeamInfo = [{
     name : "战士",    //名称
     spriteType : "hero1",  //类型
@@ -38,5 +37,5 @@ var defTeamInfo = [{
     def : 1,        //防御力
     atkSpeed : 2.5  //攻速 每几秒攻击一次
 }]
-var fightContorl = bearcat.getBean("fightContorl")
+var fightContorl = new fightContorlFun()
 fightContorl.fighting(atkTeamInfo,defTeamInfo)

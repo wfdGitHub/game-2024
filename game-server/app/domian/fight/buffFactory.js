@@ -18,8 +18,8 @@ buffFactory.getBuff = function(character,target,otps) {
 			return new poison(character,target,otps)
 		case 3:
 			return new burn(character,target,otps)
-		case 4:
-			return new chaos(character,target,otps)
+        case 4:
+            return new chaos(character,target,otps)
 		default:
 			return false
 	}

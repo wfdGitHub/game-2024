@@ -1,28 +1,19 @@
-var bearcat = require("bearcat")
+var characterFun = require("./character.js")
+var attackSkill = require("../fight/attackSkill.js")
 var hero = function(otps) {
-	this.heroId = otps.id			//ID
-	var character = bearcat.getFunction('character');
-  	character.call(this,otps);
-  	this.characterType = "hero"
-  	//增加普攻技能
-  	var skill = bearcat.getBean("attackSkill",{skillId : 0},this)
-  	this.setDefaultSkill(skill)
+    characterFun.call(this,otps)
+    this.characterType = "hero"
+    // var character = new characterFun(otps,sprite,direction);
+    //增加普攻技能
+    var skill =  new attackSkill({skillId : 0},this)
+    this.setDefaultSkill(skill)
     if(otps.specialSkills){
       var self = this
       otps.specialSkills.forEach(function(skillId) {
-        var specialSkill =  bearcat.getBean("attackSkill",{skillId : skillId},self)
+        var specialSkill =  new attackSkill({skillId : skillId},self)
         self.addFightSkill(specialSkill)
       })
     }
 }
-module.exports = {
-	id : "hero",
-	func : hero,
-	parent : "character",
-	args : [{
-		name : "otps",
-		type : "Object"
-	}],
-	lazy : true,
-	scope : "prototype"
-}
+hero.prototype = characterFun.prototype
+module.exports = hero
