@@ -30,6 +30,6 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo,seededNum,rea
 	while(!fighting.isOver() && count++ < this.maxCount){
 	 	fighting.update()
 	}
-	console.log("result : ",fighting.getResult())
+	return fighting.getResult()
 }
 module.exports = fightContorl

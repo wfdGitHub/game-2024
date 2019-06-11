@@ -91,10 +91,15 @@ fighting.prototype.isOver = function() {
 }
 //获取战斗结果
 fighting.prototype.getResult = function() {
-	return {
-			result : this.result,
-			recordList : this.recordList,
-			seededNum : this.seededNum
+	var info = {
+		result : this.result,
+		recordList : this.recordList,
+		seededNum : this.seededNum,
+		characterArr : []
 	}
+	this.characterArr.forEach(function(character) {
+		info.characterArr.push(character.getInfo())
+	})
+	return info
 }
 module.exports = fighting

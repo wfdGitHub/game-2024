@@ -23,7 +23,13 @@ var character = function(otps) {
     this.chaos = false      				//混乱标识
 	this.event = new EventEmitter();
 }
-
+character.prototype.getInfo = function() {
+	var info = {
+		name : this.name,
+		hp : this.hp
+	}
+	return info
+}
 character.prototype.setArg = function(enemyTeam,fighting) {
 	this.enemyTeam = enemyTeam
 	this.fighting = fighting
