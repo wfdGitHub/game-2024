@@ -5,18 +5,37 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.defTeam = defTeam
 	this.stepper = otps.stepper
 	this.maxTime = otps.maxTime
+    this.characterCount = 0
 	this.characterArr = this.atkTeam.concat(this.defTeam)
+    var self = this
+    this.characterArr.forEach(function(character) {
+        character.characterId = self.characterCount++
+    })
 	this.over = false
 	this.result = "none"	//deuce  win   lose
 	this.skillList = []		//使用技能列表
+    this.recordList = []
+    this.readList = []
 	this.seeded = new seeded(otps.seeded || (new Date()).getTime())
 }
 //时间推进
 fighting.prototype.update = function() {
 	var self = this
+    //检测读取记录
+    if(this.readList.length && this.readList[0].t == this.curTime){
+        var record = this.readList.shift()
+        console.log(record)
+        this.characterArr[record.c].fightSkills[record.s].use()
+    }
     //检测使用技能
     if(this.skillList.length){
     	var skill = this.skillList.shift()
+        var record = {
+            t : this.curTime,
+            c : skill.character.characterId,
+            s : skill.skillId
+        }
+        this.recordList.push(record)
     	if(!skill.character.died){
     		skill.useSkill()
     	}
