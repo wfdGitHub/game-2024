@@ -15,8 +15,9 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.result = "none"	//deuce  win   lose
 	this.skillList = []
 	this.recordList = []
-	this.readList = []
-    this.seeded = new seeded(otps.seeded || (new Date()).getTime())
+	this.readList = otps.readList || []
+	this.seededNum = otps.seededNum || (new Date()).getTime()
+    this.seeded = new seeded(this.seededNum)
 }
 //时间推进
 fighting.prototype.update = function() {
@@ -90,6 +91,10 @@ fighting.prototype.isOver = function() {
 }
 //获取战斗结果
 fighting.prototype.getResult = function() {
-	return this.result
+	return {
+			result : this.result,
+			recordList : this.recordList,
+			seededNum : this.seededNum
+	}
 }
 module.exports = fighting
