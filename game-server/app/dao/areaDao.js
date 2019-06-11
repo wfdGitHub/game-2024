@@ -32,7 +32,7 @@ areaDao.prototype.getAreaInfo = function(areaId,cb) {
 }
 //获取服务器列表
 areaDao.prototype.getAreaList = function(cb) {
-	this.redisDao.db.lrange("area:list",-10,-1,function(err,data) {
+	this.redisDao.db.lrange("area:list",0,-1,function(err,data) {
 		cb(data)
 	})
 }
