@@ -24,14 +24,12 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 		next(null,{flag : false,err : "玩家未登录"})
 		return
 	}
-	var areaId = session.get("areaId")
-	if(areaId !== undefined){
+	if(session.get("areaId")){
 		next(null,{flag : false,err : "已登录游戏服务器"})
 		return
 	}
 	var serverId = this.areaDeploy.getServer(areaId)
 	if(!serverId){
-		console.log(this.areaDeploy.getServerMap())
 		next(null,{flag : false,err : "服务器不存在"})
 		return
 	}
