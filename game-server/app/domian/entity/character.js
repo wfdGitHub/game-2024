@@ -9,7 +9,6 @@ var character = function(otps) {
 	this.atk = otps.atk	|| 10				//攻击力
 	this.def = otps.def	|| 0				//防御力
 	this.atkSpeed = otps.atkSpeed || 1  	//攻速 每几秒攻击一次
-	this.relSpeed = otps.relSpeed || 1  	//出手速度,越大出手越快
 	this.crit = otps.crit || 0		  		//暴击值
 	this.critDef = otps.critDef || 0		//抗暴值
 	this.hitRate = otps.hitRate || 0		//命中率

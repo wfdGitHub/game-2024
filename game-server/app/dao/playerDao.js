@@ -9,9 +9,8 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 	var self = this
 	self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+otps.uid+":playerInfo",playerInfo,function(err,data) {
 		if(!err){
-			playerInfo.heros = []
-			playerInfo.heros.push(self.heroDao.createHero({name : "游侠",heroId : 1,areaId : otps.areaId,uid : otps.uid}))
-			playerInfo.heros.push(self.heroDao.createHero({name : "战士",heroId : 2,areaId : otps.areaId,uid : otps.uid}))
+			playerInfo.characters = []
+			playerInfo.characters.push(self.characterDao.createCharacter({name : "主角",characterId : 0}))
 			cb(playerInfo)
 		}else{
 			cb(false)
@@ -26,8 +25,8 @@ playerDao.prototype.getPlayerInfo = function(otps,cb) {
 		if(err || !playerInfo){
 			cb(false)
 		}else{
-			self.heroDao.getHeroInfo(otps,function(heros) {
-				playerInfo.heros = heros
+			self.characterDao.getCharacters(otps,function(characters) {
+				playerInfo.characters = characters
 				cb(playerInfo)
 			})
 		}
@@ -58,7 +57,7 @@ module.exports = {
 		name : "redisDao",
 		ref : "redisDao"
 	},{
-		name : "heroDao",
-		ref : "heroDao"
+		name : "characterDao",
+		ref : "characterDao"
 	}]
 }

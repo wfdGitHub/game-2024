@@ -14,7 +14,7 @@ area.prototype.userLogin = function(uid,cb) {
 	var self = this
 	self.playerDao.userLogin({areaId : self.areaId,uid : uid},function(playerInfo) {
 		if(playerInfo){
-			self.players[uid] = bearcat.getBean("player",playerInfo)
+			self.players[uid] = playerInfo
 		}
 		cb(playerInfo)
 	})

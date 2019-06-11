@@ -27,9 +27,11 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 			return
 		}
 		session.set("serverId",serverId)
-		session.set("areaId",areaId)
 		session.push("serverId")
+		session.set("areaId",areaId)
 		session.push("areaId")
+		session.set("playerInfo",playerInfo)
+		session.push("playerInfo")
 		next(null,{flag : true,msg : playerInfo})
 	})
 }

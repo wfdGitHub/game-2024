@@ -6,6 +6,7 @@ var areaHandler = function(app) {
 };
 areaHandler.prototype.say = function(msg, session, next) {
 	console.log("areaHandler say")
+  console.log(session.get("playerInfo"))
 	next(null)
 }
 module.exports = function(app) {
