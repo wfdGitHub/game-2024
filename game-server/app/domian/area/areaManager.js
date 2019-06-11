@@ -21,6 +21,7 @@ areaManager.prototype.init = function(app) {
 			}
 		}
 	})
+	this.app.event.on("remove_servers", this.removeServers.bind(this));
 }
 //加载游戏服务器
 areaManager.prototype.loadArea = function(areaId) {
@@ -58,6 +59,10 @@ areaManager.prototype.userLeave = function(uid) {
 	if(areaId && this.areaMap[areaId]){
 		this.areaMap[areaId].userLeave(uid)
 	}
+}
+areaManager.prototype.removeServers = function(ids) {
+	console.log("removeServers")
+	console.log(ids)
 }
 module.exports = {
 	id : "areaManager",
