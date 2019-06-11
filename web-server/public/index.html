@@ -19,7 +19,7 @@
     <script type="text/javascript">
       var pomelo = window.pomelo;
       var host = "120.55.61.144";
-      host = "127.0.0.1"
+      // host = "127.0.0.1"
       var queryEntry = function(callback) {
         var route = 'gate.gateHandler.queryClientEntry';
         pomelo.init({
@@ -51,6 +51,11 @@
             });
           });
         })
+      }
+      var getAreaList = function(index) {
+        pomelo.request("connector.loginHandler.getAreaList", {index : index}, function(data) {
+            console.log(data);
+        });
       }
       var loginArea = function(areaId) {
         pomelo.request("connector.loginHandler.loginArea", {areaId : areaId}, function(data) {
