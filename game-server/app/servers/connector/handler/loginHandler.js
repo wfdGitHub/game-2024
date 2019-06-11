@@ -21,13 +21,11 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 		next(null,{flag : false,err : "服务器不存在"})
 		return
 	}
-	this.app.rpc.area.areaRemote.userLogin(session,uid,areaId,function(playerInfo) {
+	this.app.rpc.area.areaRemote.userLogin.toServer(serverId,session,uid,areaId,function(playerInfo) {
 		if(!playerInfo){
 			next(null,{flag : false,err : "登陆失败"})
 			return
 		}
-		session.set("serverId",serverId)
-		session.push("serverId")
 		session.set("areaId",areaId)
 		session.push("areaId")
 		session.set("playerInfo",playerInfo)
