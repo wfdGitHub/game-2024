@@ -1,8 +1,8 @@
 var daoConfig = require("../../config/daoConfig.json")
 var redis = require("redis")
-var RDS_PORT = daoConfig.port
-var RDS_HOST = daoConfig.host
-var RDS_PWD = daoConfig.pwd
+var RDS_PORT = daoConfig.redis.port
+var RDS_HOST = daoConfig.redis.host
+var RDS_PWD = daoConfig.redis.pwd
 var RDS_OPTS = {auth_pass : RDS_PWD}
 var redisDao = function() {
 	this.db = false
