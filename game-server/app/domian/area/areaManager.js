@@ -63,6 +63,14 @@ areaManager.prototype.userLeave = function(uid) {
 areaManager.prototype.removeServers = function(ids) {
 	console.log("removeServers")
 	console.log(ids)
+	var self = this
+	ids.forEach(function(serverId) {
+		for(var uid in self.userMap){
+			if(self.userMap[uid] == serverId){
+				self.userLeave(uid)
+			}
+		}
+	})
 }
 module.exports = {
 	id : "areaManager",
