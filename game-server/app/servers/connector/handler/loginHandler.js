@@ -3,7 +3,14 @@ var loginHandler = function(app) {
   this.app = app;
   this.areaDeploy = this.app.get('areaDeploy')
 }
-
+//获取服务器列表
+entryHandler.prototype.getAreaList = function(msg, session, next) {
+	if(msg.type == "all"){
+		next(null,{flag : true,areaList : this.areaDeploy.areaList})
+	}else{
+		next(null,{flag : true,areaList : this.areaDeploy.areaList.slice(-10)})
+	}
+}
 //登录游戏
 loginHandler.prototype.loginArea = function(msg, session, next) {
 	var areaId = msg.areaId
