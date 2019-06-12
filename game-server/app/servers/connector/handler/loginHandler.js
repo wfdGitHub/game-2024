@@ -33,6 +33,15 @@ loginHandler.prototype.chooseArea = function(msg, session, next) {
 		next(null,{flag : false,err : "服务器不存在"})
 	}
 }
+//获取当前所在服务器
+loginHandler.prototype.getLocationAreaId = function(msg, session, next) {
+	var areaId = session.get("areaId")
+	if(areaId){
+		next(null,{flag : true,msg : areaId})
+	}else{
+		next(null,{flag : false})
+	}
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "loginHandler",

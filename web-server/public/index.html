@@ -18,7 +18,7 @@
     </script> 
     <script type="text/javascript">
       var pomelo = window.pomelo;
-      // var host = "120.55.61.144";
+      var host = "120.55.61.144";
       host = "127.0.0.1"
       var queryEntry = function(callback) {
         var route = 'gate.gateHandler.queryClientEntry';
@@ -74,6 +74,11 @@
       }   
       var loginArea = function(areaId) {
         pomelo.request("area.areaLoginHandler.loginArea", {areaId : areaId}, function(data) {
+            console.log(data);
+        });
+      }
+      var getLocationAreaId = function() {
+        pomelo.request("connector.loginHandler.getLocationAreaId", {}, function(data) {
             console.log(data);
         });
       }
