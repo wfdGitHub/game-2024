@@ -9,8 +9,8 @@ areaRemote.prototype.loadArea = function(areaId,cb) {
 	cb()
 }
 //玩家加入
-areaRemote.prototype.userLogin = function(uid,areaId,cb) {
-	this.areaManager.userLogin(uid,areaId,cb)
+areaRemote.prototype.userLogin = function(uid,areaId,cid,cb) {
+	this.areaManager.userLogin(uid,areaId,cid,cb)
 }
 
 //玩家离开

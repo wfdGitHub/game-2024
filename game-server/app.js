@@ -53,6 +53,18 @@ bearcat.start(function() {
     areaDeploy.init(app)
     app.set("areaDeploy",areaDeploy)
   });
-
+  //后端服务器分配路由
+  var areaRoute = function(session, msg, app, cb) {
+    //获取用户游戏服务器ID
+    var serverId = session.get("serverId")
+    if(!serverId){
+      cb("未登录游戏服务器")
+      return
+    }
+    cb(null, serverId);
+  };
+  app.configure('production|development', function() {
+    app.route('area', areaRoute);
+  });
 	app.start()
 })
