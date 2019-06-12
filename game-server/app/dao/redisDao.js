@@ -12,10 +12,10 @@ redisDao.prototype.init = function(cb) {
 	this.db = redis.createClient(RDS_PORT,RDS_HOST,RDS_OPTS)
 	var self = this
 	self.db.on("ready",function(res) {
-		self.db.get("nn:acc:lastid",function(err,data) {
+		self.db.get("acc:lastid",function(err,data) {
 			if(data === null){
-		        console.log("\033[33m[INFO] DataBase check - nn:acc:lastid\033[0m");
-		        self.db.set("nn:acc:lastid",10000);
+		        console.log("\033[33m[INFO] DataBase check - acc:lastid\033[0m");
+		        self.db.set("acc:lastid",10000);
     		}
 		})
 		cb()
