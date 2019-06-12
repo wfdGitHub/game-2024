@@ -74,12 +74,10 @@ attackSkill.prototype.useSkill = function() {
 		this.character.event.emit("useSkill",this,result)
 		targets.forEach(function(target) {
 			//判断命中率
-			var missRate = target.dodgeRate / (self.character.hitRate + 100)
-            if(self.character.fighting.seeded.random() < missRate){
-				var damageInfo = {damage: 0,miss : true};
+			var damageInfo = formula.calDamage(self.character, target, self);
+			if(damageInfo.miss){
 				target.event.emit("hit",self.character,damageInfo,self)
 			}else{
-				var damageInfo = formula.calDamage(self.character, target, self);
 				target.hit(self.character,damageInfo,self);
 			}
             //施加BUFF

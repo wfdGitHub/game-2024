@@ -1,5 +1,9 @@
 var formula = function() {}
 formula.calDamage = function(attacker, target, skill) {
+	var missRate = target.dodgeRate / (attacker.hitRate + 100)
+	if(attacker.fighting.seeded.random() < missRate){
+		return {damage : 0,miss : true}
+	}
 	var atk = attacker.getTotalAttack();
 	var def = target.getTotalDefence();
 	var mul = Math.sqrt(Math.abs(atk-def))/5 + 1;
