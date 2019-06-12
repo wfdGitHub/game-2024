@@ -18,8 +18,8 @@
     </script> 
     <script type="text/javascript">
       var pomelo = window.pomelo;
-      var host = "120.55.61.144";
-      // host = "127.0.0.1"
+      // var host = "120.55.61.144";
+      host = "127.0.0.1"
       var queryEntry = function(callback) {
         var route = 'gate.gateHandler.queryClientEntry';
         pomelo.init({
@@ -57,8 +57,23 @@
             console.log(data);
         });
       }
+      var chooseArea = function(areaId) {
+        pomelo.request("connector.loginHandler.chooseArea", {areaId : areaId}, function(data) {
+            console.log(data);
+        });
+      }
+      var getPlayerInfo = function(areaId) {
+        pomelo.request("area.areaLoginHandler.getPlayerInfo", {areaId : areaId}, function(data) {
+            console.log(data);
+        });
+      }
+      var register = function(areaId,name) {
+        pomelo.request("area.areaLoginHandler.register", {areaId : areaId,name : name}, function(data) {
+            console.log(data);
+        });
+      }   
       var loginArea = function(areaId) {
-        pomelo.request("connector.loginHandler.loginArea", {areaId : areaId}, function(data) {
+        pomelo.request("area.areaLoginHandler.loginArea", {areaId : areaId}, function(data) {
             console.log(data);
         });
       }

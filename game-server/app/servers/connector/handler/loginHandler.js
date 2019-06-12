@@ -12,11 +12,10 @@ loginHandler.prototype.getAreaList = function(msg, session, next) {
 		next(null,{flag : true,areaList : this.areaDeploy.areaList.slice(-10),index : -10})
 	}
 }
-//登录游戏
-loginHandler.prototype.loginArea = function(msg, session, next) {
-	var areaId = msg.areaId
-	if(!areaId || typeof(areaId) != "number"){
-		next(null,{flag : false,err : "areaId error : "+areaId})
+//选择服务器
+loginHandler.prototype.chooseArea = function(msg, session, next) {
+	if(session.get("areaId")){
+		next(null,{flag : false,err : "已登录游戏服务器"})
 		return
 	}
 	var uid = session.get("uid")
@@ -24,30 +23,16 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 		next(null,{flag : false,err : "玩家未登录"})
 		return
 	}
-	if(session.get("areaId")){
-		next(null,{flag : false,err : "已登录游戏服务器"})
-		return
-	}
+	var areaId = msg.areaId
 	var serverId = this.areaDeploy.getServer(areaId)
-	if(!serverId){
-		next(null,{flag : false,err : "服务器不存在"})
-		return
-	}
-	this.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,this.app.serverId,function(playerInfo) {
-		if(!playerInfo){
-			next(null,{flag : false,err : "登陆失败"})
-			return
-		}
+	if(serverId){
 		session.set("serverId",serverId)
 		session.push("serverId")
-		session.set("areaId",areaId)
-		session.push("areaId")
-		session.set("playerInfo",playerInfo)
-		session.push("playerInfo")
-		next(null,{flag : true,msg : playerInfo})
-	})
+		next(null,{flag : true})
+	}else{
+		next(null,{flag : false,err : "服务器不存在"})
+	}
 }
-
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "loginHandler",

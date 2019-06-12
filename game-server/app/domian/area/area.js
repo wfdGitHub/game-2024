@@ -13,7 +13,7 @@ area.prototype.init = function() {
 area.prototype.userLogin = function(uid,cb) {
 	console.log("userLogin : ",uid)
 	var self = this
-	self.playerDao.userLogin({areaId : self.areaId,uid : uid},function(playerInfo) {
+	self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
 		if(playerInfo){
 			self.players[uid] = playerInfo
 		}

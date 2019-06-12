@@ -32,23 +32,23 @@ playerDao.prototype.getPlayerInfo = function(otps,cb) {
 		}
 	})
 }
-//玩家登陆、若不存在则注册、获取玩家信息
-playerDao.prototype.userLogin = function(otps,cb) {
-	var uid = otps.uid
-	var areaId = otps.areaId
-	var self = this
-	self.redisDao.db.exists("area:area"+areaId+":player:"+uid+":playerInfo",function(err,data) {
-		if(err || !data){
-			//TODO 随机名字算法
-			otps.name = "名字"
-			//不存在则创建
-			self.createPlayer(otps,cb)
-		}else{
-			//存在则获取
-			self.getPlayerInfo(otps,cb)
-		}
-	})
-}
+// //玩家登陆、若不存在则注册、获取玩家信息
+// playerDao.prototype.userLogin = function(otps,cb) {
+// 	var uid = otps.uid
+// 	var areaId = otps.areaId
+// 	var self = this
+// 	self.redisDao.db.exists("area:area"+areaId+":player:"+uid+":playerInfo",function(err,data) {
+// 		if(err || !data){
+// 			//TODO 随机名字算法
+// 			otps.name = "名字"
+// 			//不存在则创建
+// 			self.createPlayer(otps,cb)
+// 		}else{
+// 			//存在则获取
+// 			self.getPlayerInfo(otps,cb)
+// 		}
+// 	})
+// }
 
 module.exports = {
 	id : "playerDao",

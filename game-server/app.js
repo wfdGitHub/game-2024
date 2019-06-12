@@ -1,6 +1,7 @@
 var pomelo = require('pomelo');
 var bearcat = require("bearcat")
 var contextPath = require.resolve('./context.json');
+var areaFilter = require('./util/filters/areaFilter.js');
 var app = pomelo.createApp();
 /**
  * Init app for client.
@@ -21,7 +22,7 @@ bearcat.start(function() {
     app.set('connectorConfig',
       {
         connector : pomelo.connectors.hybridconnector,
-        heartbeat : 20,
+        heartbeat : 3,
         disconnectOnTimeout : true,
         useDict : true,
         useProtobuf : true
@@ -32,7 +33,7 @@ bearcat.start(function() {
     app.set('connectorConfig',
       {
         connector : pomelo.connectors.hybridconnector,
-        heartbeat : 20,
+        heartbeat : 3,
         disconnectOnTimeout: true,
         useDict : true,
         useProtobuf : true,
@@ -65,6 +66,9 @@ bearcat.start(function() {
   };
   app.configure('production|development', function() {
     app.route('area', areaRoute);
+  });
+  app.configure('production|development', 'area', function() {
+    app.before(areaFilter());
   });
 	app.start()
 })
