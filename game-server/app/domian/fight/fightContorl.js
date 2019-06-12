@@ -32,4 +32,6 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo,seededNum,rea
 	}
 	return fighting.getResult()
 }
-module.exports = fightContorl
+module.exports = function() {
+	return new fightContorl()
+}

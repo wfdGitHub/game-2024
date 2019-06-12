@@ -37,6 +37,6 @@ var defTeamInfo = [{
     def : 1,        //防御力
     atkSpeed : 2.5  //攻速 每几秒攻击一次
 }]
-var fightContorl = new fightContorlFun()
+fightContorl = fightContorlFun()
 var result = fightContorl.fighting(atkTeamInfo,defTeamInfo)
 console.log(result)
