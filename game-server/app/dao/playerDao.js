@@ -4,7 +4,8 @@ var playerDao = function() {}
 playerDao.prototype.createPlayer = function(otps,cb) {
 	var playerInfo = {
 		uid : otps.uid,
-		name : otps.name
+		name : otps.name,
+		sex : otps.sex === 1? 1 : 0
 	}
 	var self = this
 	self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+otps.uid+":playerInfo",playerInfo,function(err,data) {

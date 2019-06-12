@@ -19,13 +19,14 @@ areaLoginHandler.prototype.getPlayerInfo = function(msg, session, next) {
 areaLoginHandler.prototype.register = function(msg, session, next) {
 	var areaId = msg.areaId
 	var name = msg.name
+	var sex = msg.sex
 	if(!areaId){
 		next(null,{flag : false,err : "areaId error"})
 		return
 	}
 	var uid = session.get("uid")
 	var self = this
-	var otps = {areaId : areaId,uid : uid,name : name}
+	var otps = {areaId : areaId,uid : uid,name : name,sex : sex}
 	self.playerDao.getPlayerInfo(otps,function(playerInfo) {
 		if(playerInfo){
 			next(null,{flag : false,err : "账号已存在"})
