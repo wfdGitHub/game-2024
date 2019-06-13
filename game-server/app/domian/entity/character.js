@@ -9,10 +9,24 @@ var character = function(otps) {
 	this.atk = otps.atk	|| 10				//攻击力
 	this.def = otps.def	|| 0				//防御力
 	this.atkSpeed = otps.atkSpeed || 1  	//攻速 每几秒攻击一次
-	this.crit = otps.crit || 0		  		//暴击值
-	this.critDef = otps.critDef || 0		//抗暴值
-	this.hitRate = otps.hitRate || 0		//命中率
-	this.dodgeRate = otps.dodgeRate || 0	//闪避率
+	this.crit = otps.crit || 0 + 0.05		//暴击
+	this.critDef = otps.critDef || 0		//抗暴
+	this.slay = otps.slay || 0				//必杀
+	this.hitRate = otps.hitRate || 0		//命中
+	this.dodgeRate = otps.dodgeRate || 0	//闪避
+	this.wreck = otps.wreck || 0 			//破击
+	this.block = otps.block || 0			//格挡
+	this.blockRate = otps.blockRate || 0	//格挡效果
+	this.frozenAtk = otps.frozenAtk || 0	//冰冻命中
+	this.frozenDef = otps.frozenDef || 0	//冰冻抗性
+	this.dizzyAtk = otps.dizzyAtk || 0		//眩晕命中
+	this.dizzyDef = otps.dizzyDef || 0		//眩晕抗性
+	this.burnAtk = otps.burnAtk || 0		//燃烧命中
+	this.burnDef = otps.burnDef || 0		//燃烧抗性
+	this.poisonAtk = otps.poisonAtk || 0	//毒素命中
+	this.poisonDef = otps.poisonDef || 0	//毒素抗性
+	this.chaosAtk = otps.chaosAtk || 0		//混乱命中
+	this.chaosDef = otps.chaosDef || 0		//混乱抗性
 	this.fightSkills = {} 					//技能列表
     this.buffs = {}                        	//buff列表
     this.defaultSkill = false             	//默认攻击
@@ -105,7 +119,11 @@ character.prototype.banUse = function() {
         return false
     }
 }
-character.prototype.addBuff = function(attacker,otps) {
+character.prototype.addBuff = function(attacker,skill,otps) {
+	//判断是否命中
+	if(!buffFactory.checkBuffRate(attacker,this,skill)){
+		return
+	}
     var buffId = otps.buffId
     if(this.buffs[buffId]){
         this.buffs[buffId].overlay(attacker,otps)

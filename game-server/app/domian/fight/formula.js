@@ -1,30 +1,54 @@
+var K = 1
+var A = 1
 var formula = function() {}
 formula.calDamage = function(attacker, target, skill) {
-	var missRate = target.dodgeRate / (attacker.hitRate + 100)
-	if(attacker.fighting.seeded.random() < missRate){
-		return {damage : 0,miss : true}
+	var damageInfo = {damage : 0,skill : skill}
+	//命中判断
+	var hitRate = 	0.3 + 0.55 * (attacker.hitRate / (K * target.dodgeRate || 1))
+	// console.log("hitRate",hitRate)
+	if(attacker.fighting.seeded.random()  > hitRate){
+		damageInfo.miss = true
+		return damageInfo
 	}
+	//暴击判断
+	var crit = 0.05 * ((attacker.crit) / (K * target.critDef || 1))
+	// console.log("crit",crit)
+	if(attacker.fighting.seeded.random()  < crit){
+		damageInfo.crit = true
+	}
+	//格挡判断
+	var block = 0.1 *  (K * target.block / (attacker.wreck || 1))
+	// console.log("block",block)
+	if(attacker.fighting.seeded.random()  < block){
+		damageInfo.block = true
+	}
+	//伤害计算
 	var atk = attacker.getTotalAttack();
 	var def = target.getTotalDefence();
-	var mul = Math.sqrt(Math.abs(atk-def))/5 + 1;
-	var damage = Math.ceil(atk*skill.mul + skill.fixed)
-	var critFlag = false
-	var crit = 0.05 + ((Math.pow(attacker.crit,2) || 0) / ((attacker.critDef + target.critDef) || 1)) / 100
-	if(attacker.fighting.seeded.random() < crit){
-		critFlag = true
-		damage = Math.ceil(damage * 1.5)
+	var basic = Math.floor(atk*skill.mul + skill.fixed)
+	var damage = Math.pow(basic,2) / ((basic + (A * def)) || 1)
+	// console.log("basic : " + basic + " damage : "+damage,atk)
+	if(damageInfo.crit){
+		damage = Math.floor(damage * (1.5 + attacker.slay / 1000))
+		// console.log("暴击 "+damage)
 	}
-	
-	if (damage <= 0) {
+	if(damageInfo.block){
+		damage = Math.floor(damage * (1 - target.blockRate))
+		// console.log("格挡 "+damage)
+	}
+	//最小伤害
+	if (damage <= 1) {
 		damage = 1;
 	}
-	if (damage > target.hp) {
+	//溢出判断
+	if(damage > target.hp){
 		damage = target.hp;
-		if(damage == 0){
-			logger.error('attack a died character!!! %j', target);
+		if(damage <= 0){
+			damage = 0
 		}
 	}
-    return {damage : Math.round(damage),crit : critFlag,skill : skill}
+	damageInfo.damage = Math.floor(damage)
+    return damageInfo
 };
 formula.getAttackTarget = function(attacker,team,skill) {
 	switch(skill.targetType){

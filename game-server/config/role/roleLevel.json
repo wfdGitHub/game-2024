@@ -9,6 +9,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -21,6 +25,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -33,6 +41,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -45,6 +57,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -57,6 +73,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -69,6 +89,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -81,6 +105,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -93,6 +121,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -105,6 +137,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -117,6 +153,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -129,6 +169,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -141,6 +185,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -153,6 +201,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -165,6 +217,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -177,6 +233,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -189,6 +249,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -201,6 +265,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -213,6 +281,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -225,6 +297,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -237,6 +313,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -249,6 +329,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -261,6 +345,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -273,6 +361,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -285,6 +377,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -297,6 +393,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -309,6 +409,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -321,6 +425,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -333,6 +441,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -345,6 +457,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -357,6 +473,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -369,6 +489,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -381,6 +505,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -393,6 +521,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -405,6 +537,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -417,6 +553,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -429,6 +569,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -441,6 +585,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -453,6 +601,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -465,6 +617,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -477,6 +633,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -489,6 +649,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -501,6 +665,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -513,6 +681,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -525,6 +697,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -537,6 +713,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -549,6 +729,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -561,6 +745,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -573,6 +761,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -585,6 +777,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -597,6 +793,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -609,6 +809,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -621,6 +825,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -633,6 +841,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -645,6 +857,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -657,6 +873,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -669,6 +889,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -681,6 +905,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -693,6 +921,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -705,6 +937,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -717,6 +953,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -729,6 +969,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -741,6 +985,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -753,6 +1001,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -765,6 +1017,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -777,6 +1033,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -789,6 +1049,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -801,6 +1065,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -813,6 +1081,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -825,6 +1097,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -837,6 +1113,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -849,6 +1129,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -861,6 +1145,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -873,6 +1161,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -885,6 +1177,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -897,6 +1193,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -909,6 +1209,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -921,6 +1225,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -933,6 +1241,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -945,6 +1257,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -957,6 +1273,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -969,6 +1289,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -981,6 +1305,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -993,6 +1321,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1005,6 +1337,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1017,6 +1353,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1029,6 +1369,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1041,6 +1385,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1053,6 +1401,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1065,6 +1417,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1077,6 +1433,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1089,6 +1449,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1101,6 +1465,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1113,6 +1481,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1125,6 +1497,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1137,6 +1513,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1149,6 +1529,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1161,6 +1545,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1173,6 +1561,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1185,6 +1577,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1197,6 +1593,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1209,6 +1609,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1221,6 +1625,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1233,6 +1641,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1245,6 +1657,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1257,6 +1673,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1269,6 +1689,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1281,6 +1705,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1293,6 +1721,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1305,6 +1737,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1317,6 +1753,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1329,6 +1769,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1341,6 +1785,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1353,6 +1801,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1365,6 +1817,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1377,6 +1833,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1389,6 +1849,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1401,6 +1865,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1413,6 +1881,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1425,6 +1897,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1437,6 +1913,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1449,6 +1929,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1461,6 +1945,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1473,6 +1961,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1485,6 +1977,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1497,6 +1993,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1509,6 +2009,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1521,6 +2025,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1533,6 +2041,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1545,6 +2057,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1557,6 +2073,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1569,6 +2089,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1581,6 +2105,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1593,6 +2121,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1605,6 +2137,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1617,6 +2153,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1629,6 +2169,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1641,6 +2185,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1653,6 +2201,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1665,6 +2217,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1677,6 +2233,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1689,6 +2249,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1701,6 +2265,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1713,6 +2281,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1725,6 +2297,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1737,6 +2313,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1749,6 +2329,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1761,6 +2345,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1773,6 +2361,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1785,6 +2377,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1797,6 +2393,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1809,6 +2409,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1821,6 +2425,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1833,6 +2441,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1845,6 +2457,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1857,6 +2473,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1869,6 +2489,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1881,6 +2505,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1893,6 +2521,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1905,6 +2537,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1917,6 +2553,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1929,6 +2569,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1941,6 +2585,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1953,6 +2601,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1965,6 +2617,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1977,6 +2633,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -1989,6 +2649,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2001,6 +2665,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2013,6 +2681,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2025,6 +2697,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2037,6 +2713,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2049,6 +2729,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2061,6 +2745,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2073,6 +2761,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2085,6 +2777,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2097,6 +2793,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2109,6 +2809,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2121,6 +2825,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2133,6 +2841,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2145,6 +2857,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2157,6 +2873,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2169,6 +2889,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2181,6 +2905,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2193,6 +2921,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2205,6 +2937,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2217,6 +2953,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2229,6 +2969,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2241,6 +2985,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2253,6 +3001,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2265,6 +3017,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2277,6 +3033,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2289,6 +3049,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2301,6 +3065,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2313,6 +3081,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2325,6 +3097,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2337,6 +3113,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2349,6 +3129,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2361,6 +3145,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2373,6 +3161,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2385,6 +3177,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2397,6 +3193,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2409,6 +3209,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2421,6 +3225,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2433,6 +3241,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2445,6 +3257,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2457,6 +3273,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2469,6 +3289,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2481,6 +3305,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2493,6 +3321,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2505,6 +3337,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2517,6 +3353,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2529,6 +3369,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2541,6 +3385,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2553,6 +3401,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2565,6 +3417,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2577,6 +3433,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2589,6 +3449,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2601,6 +3465,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2613,6 +3481,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2625,6 +3497,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2637,6 +3513,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2649,6 +3529,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2661,6 +3545,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2673,6 +3561,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2685,6 +3577,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2697,6 +3593,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2709,6 +3609,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2721,6 +3625,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2733,6 +3641,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2745,6 +3657,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2757,6 +3673,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2769,6 +3689,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2781,6 +3705,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2793,6 +3721,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2805,6 +3737,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2817,6 +3753,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2829,6 +3769,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2841,6 +3785,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2853,6 +3801,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2865,6 +3817,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2877,6 +3833,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2889,6 +3849,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2901,6 +3865,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2913,6 +3881,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2925,6 +3897,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2937,6 +3913,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2949,6 +3929,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2961,6 +3945,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2973,6 +3961,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2985,6 +3977,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -2997,6 +3993,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3009,6 +4009,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3021,6 +4025,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3033,6 +4041,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3045,6 +4057,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3057,6 +4073,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3069,6 +4089,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3081,6 +4105,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3093,6 +4121,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3105,6 +4137,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3117,6 +4153,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3129,6 +4169,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3141,6 +4185,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3153,6 +4201,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3165,6 +4217,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3177,6 +4233,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3189,6 +4249,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3201,6 +4265,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3213,6 +4281,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3225,6 +4297,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3237,6 +4313,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3249,6 +4329,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3261,6 +4345,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3273,6 +4361,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3285,6 +4377,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3297,6 +4393,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3309,6 +4409,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3321,6 +4425,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3333,6 +4441,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3345,6 +4457,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3357,6 +4473,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3369,6 +4489,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3381,6 +4505,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3393,6 +4521,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3405,6 +4537,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3417,6 +4553,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3429,6 +4569,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3441,6 +4585,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3453,6 +4601,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3465,6 +4617,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3477,6 +4633,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3489,6 +4649,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3501,6 +4665,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3513,6 +4681,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3525,6 +4697,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3537,6 +4713,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3549,6 +4729,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3561,6 +4745,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3573,6 +4761,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3585,6 +4777,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3597,6 +4793,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3609,6 +4809,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3621,6 +4825,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3633,6 +4841,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3645,6 +4857,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3657,6 +4873,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3669,6 +4889,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3681,6 +4905,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3693,6 +4921,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3705,6 +4937,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3717,6 +4953,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3729,6 +4969,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3741,6 +4985,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3753,6 +5001,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3765,6 +5017,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3777,6 +5033,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3789,6 +5049,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3801,6 +5065,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3813,6 +5081,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3825,6 +5097,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3837,6 +5113,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3849,6 +5129,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3861,6 +5145,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3873,6 +5161,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3885,6 +5177,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3897,6 +5193,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3909,6 +5209,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3921,6 +5225,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3933,6 +5241,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3945,6 +5257,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3957,6 +5273,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3969,6 +5289,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3981,6 +5305,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -3993,6 +5321,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4005,6 +5337,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4017,6 +5353,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4029,6 +5369,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4041,6 +5385,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4053,6 +5401,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4065,6 +5417,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4077,6 +5433,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4089,6 +5449,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4101,6 +5465,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4113,6 +5481,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4125,6 +5497,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4137,6 +5513,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4149,6 +5529,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4161,6 +5545,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4173,6 +5561,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4185,6 +5577,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4197,6 +5593,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4209,6 +5609,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4221,6 +5625,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4233,6 +5641,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4245,6 +5657,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4257,6 +5673,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4269,6 +5689,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4281,6 +5705,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4293,6 +5721,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4305,6 +5737,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4317,6 +5753,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4329,6 +5769,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4341,6 +5785,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4353,6 +5801,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4365,6 +5817,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4377,6 +5833,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4389,6 +5849,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4401,6 +5865,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4413,6 +5881,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4425,6 +5897,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4437,6 +5913,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4449,6 +5929,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4461,6 +5945,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4473,6 +5961,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4485,6 +5977,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4497,6 +5993,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4509,6 +6009,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4521,6 +6025,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4533,6 +6041,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4545,6 +6057,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4557,6 +6073,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4569,6 +6089,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4581,6 +6105,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4593,6 +6121,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4605,6 +6137,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4617,6 +6153,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4629,6 +6169,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4641,6 +6185,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4653,6 +6201,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4665,6 +6217,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4677,6 +6233,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4689,6 +6249,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4701,6 +6265,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4713,6 +6281,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4725,6 +6297,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4737,6 +6313,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4749,6 +6329,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4761,6 +6345,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4773,6 +6361,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4785,6 +6377,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4797,6 +6393,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   },
   {
@@ -4809,6 +6409,10 @@
     "critDef": 0,
     "hitRate": 0,
     "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
     "exp": 1000
   }
 ]

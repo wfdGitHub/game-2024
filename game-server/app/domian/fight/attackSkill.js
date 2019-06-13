@@ -9,6 +9,7 @@ var attackSkill = function(otps,character) {
     this.buffId = skillInfo.buffId
     this.buffArg = skillInfo.buffArg
     this.duration = skillInfo.duration
+    this.buffRate = skillInfo.buffRate
     if(!skillInfo){
         console.log(new Error("skillInfo not found "+otps.skillId))
     }
@@ -39,6 +40,9 @@ attackSkill.prototype.updateTime = function(dt) {
 			this.coolDownTime = 0
 			this.state = true
 			this.character.event.emit("skillReady",this)
+				if(!this.defaultSkill){
+					this.use()
+				}
 		}
 		this.character.event.emit("skillUpdate",this)
 	}
@@ -82,11 +86,12 @@ attackSkill.prototype.useSkill = function() {
 			}
             //施加BUFF
             if(typeof(self.buffId) === "number"){
+            	//计算命中率
                 var buffotps = buffs[self.buffId]
                 buffotps.buffId = self.buffId
                 buffotps.buffArg = self.buffArg
                 buffotps.duration = self.duration
-                target.addBuff(self.character,buffotps)
+                target.addBuff(self.character,self,buffotps)
             }
 		})
 	}
