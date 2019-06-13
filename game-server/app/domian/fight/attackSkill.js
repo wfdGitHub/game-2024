@@ -40,9 +40,6 @@ attackSkill.prototype.updateTime = function(dt) {
 			this.coolDownTime = 0
 			this.state = true
 			this.character.event.emit("skillReady",this)
-				if(!this.defaultSkill){
-					this.use()
-				}
 		}
 		this.character.event.emit("skillUpdate",this)
 	}
