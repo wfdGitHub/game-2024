@@ -4,7 +4,7 @@ var character = function(otps) {
 	this.characterId = otps.characterId		//角色ID
 	this.name =otps.name		//名称
 	this.spriteType = otps.spriteType || 0 	//类型
-	this.level = otps.level || 1			//等级
+	this.level = otps.level || 0			//等级
 	//=========================================//
 	this.b_arg = {}
 	for(var i in otps){

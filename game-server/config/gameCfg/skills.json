@@ -1,6 +1,6 @@
-[
-  {
-    "skillId": 0,
+{
+  "20001": {
+    "id": 20001,
     "name": "普通攻击",
     "detail": "普通攻击",
     "mul": 1,
@@ -12,8 +12,8 @@
     "buffRate": 0.5,
     "duration": 0
   },
-  {
-    "skillId": 1,
+  "20002": {
+    "id": 20002,
     "name": "法术攻击",
     "detail": "法术攻击",
     "mul": 1,
@@ -25,73 +25,73 @@
     "buffRate": 0.5,
     "duration": 0
   },
-  {
-    "skillId": 2,
+  "20003": {
+    "id": 20003,
     "name": "冰冻攻击",
     "detail": "冰冻攻击",
     "mul": 3,
     "fixed": 100,
     "skillCD": 10,
     "targetType": 1,
-    "buffId": 0,
+    "buffId": 21001,
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 3
   },
-  {
-    "skillId": 3,
+  "20004": {
+    "id": 20004,
     "name": "眩晕攻击",
     "detail": "眩晕攻击",
     "mul": 3,
     "fixed": 100,
     "skillCD": 10,
     "targetType": 1,
-    "buffId": 1,
+    "buffId": 21002,
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 3
   },
-  {
-    "skillId": 4,
+  "20005": {
+    "id": 20005,
     "name": "中毒攻击",
     "detail": "中毒攻击",
     "mul": 3,
     "fixed": 100,
     "skillCD": 8,
     "targetType": 1,
-    "buffId": 2,
+    "buffId": 21003,
     "buffArg": 10000,
     "buffRate": 0.5,
     "duration": 3
   },
-  {
-    "skillId": 5,
+  "20006": {
+    "id": 20006,
     "name": "燃烧攻击",
     "detail": "燃烧攻击",
     "mul": 3,
     "fixed": 100,
     "skillCD": 8,
     "targetType": 1,
-    "buffId": 3,
+    "buffId": 21004,
     "buffArg": 10000,
     "buffRate": 0.5,
     "duration": 3
   },
-  {
-    "skillId": 6,
+  "20007": {
+    "id": 20007,
     "name": "混乱攻击",
     "detail": "混乱攻击",
     "mul": 3,
     "fixed": 100,
     "skillCD": 10,
     "targetType": 1,
-    "buffId": 4,
+    "buffId": 21005,
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 3
   },
-  {
-    "skillId": 7,
+  "20008": {
+    "id": 20008,
     "name": "群体攻击",
     "detail": "群体攻击",
     "mul": 2,
@@ -103,8 +103,8 @@
     "buffRate": 0.5,
     "duration": 0
   },
-  {
-    "skillId": 8,
+  "20009": {
+    "id": 20009,
     "name": "单体高伤",
     "detail": "单体高伤",
     "mul": 5,
@@ -116,4 +116,4 @@
     "buffRate": 0.5,
     "duration": 0
   }
-]
+}

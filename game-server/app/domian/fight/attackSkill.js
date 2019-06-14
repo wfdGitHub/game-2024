@@ -1,6 +1,6 @@
 var formula = require("./formula.js")
-var skills = require("../../../config/fight/skills.json")
-var buffs = require("../../../config/fight/buffs.json")
+var skills = require("../../../config/gameCfg/skills.json")
+var buffs = require("../../../config/gameCfg/buffs.json")
 var attackSkill = function(otps,character) {
     this.character = character                //所属角色
     this.skillId = otps.skillId             //技能ID

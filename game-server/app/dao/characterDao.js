@@ -1,6 +1,6 @@
 console.log(__dirname)
 var characterFun = require("../domian/entity/character.js")
-var charactersJson = require("../../config/character/characters.json")
+var charactersJson = require("../../config/gameCfg/characters.json")
 var attributeType =   {
 	"characterId" : "number",
 	"name" : "string",

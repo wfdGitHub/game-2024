@@ -5,11 +5,12 @@ var hero = function(otps) {
     this.characterType = "hero"
     // var character = new characterFun(otps,sprite,direction);
     //增加普攻技能
-    var skill =  new attackSkill({skillId : 0},this)
+    var skill =  new attackSkill({skillId : 20001},this)
     this.setDefaultSkill(skill)
-    if(otps.specialSkills){
+    if(otps.skills){
       var self = this
-      otps.specialSkills.forEach(function(skillId) {
+      var skills = JSON.parse(otps.skills)
+      skills.forEach(function(skillId) {
         var specialSkill =  new attackSkill({skillId : skillId},self)
         self.addFightSkill(specialSkill)
       })
