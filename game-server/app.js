@@ -8,7 +8,7 @@ var app = pomelo.createApp();
  */
 app.set('name', 'onlineGame');
 // app configuration
-bearcat.createApp([contextPath])
+bearcat.createApp([contextPath],{ BEARCAT_HOT: "on"})
 bearcat.start(function() {
   app.configure('production|development',function() {
     //消息串行化
@@ -17,6 +17,10 @@ bearcat.start(function() {
     app.before(pomelo.filters.toobusy());
     //处理超时进行警告，默认三秒
     app.filter(pomelo.filters.timeout());
+    app.set('serverConfig', { 
+      "reloadHandlers": true,
+      "reloadRemotes": true
+    });
   })
   app.configure('production|development', 'connector', function(){
     app.set('connectorConfig',
