@@ -52,31 +52,37 @@
           });
         })
       }
+      //获取服务器列表
       var getAreaList = function(index) {
         pomelo.request("connector.loginHandler.getAreaList", {index : index}, function(data) {
             console.log(data);
         });
       }
+      //选择服务器
       var chooseArea = function(areaId) {
         pomelo.request("connector.loginHandler.chooseArea", {areaId : areaId}, function(data) {
             console.log(data);
         });
       }
+      //获取该服务器角色信息
       var getPlayerInfo = function(areaId) {
         pomelo.request("area.areaLoginHandler.getPlayerInfo", {areaId : areaId}, function(data) {
             console.log(data);
         });
       }
+      //注册角色
       var register = function(areaId,name) {
         pomelo.request("area.areaLoginHandler.register", {areaId : areaId,name : name}, function(data) {
             console.log(data);
         });
-      }   
+      }
+      //登录服务器
       var loginArea = function(areaId) {
         pomelo.request("area.areaLoginHandler.loginArea", {areaId : areaId}, function(data) {
             console.log(data);
         });
       }
+      //获取所处服务器
       var getLocationAreaId = function() {
         pomelo.request("connector.loginHandler.getLocationAreaId", {}, function(data) {
             console.log(data);

@@ -3,6 +3,7 @@ var fightHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+//模拟战斗
 fightHandler.prototype.mockFight = function(msg, session, next) {
   var atkTeam = msg.atkTeam
   var defTeam = msg.defTeam
@@ -15,6 +16,7 @@ fightHandler.prototype.mockFight = function(msg, session, next) {
     next(null,{flag : false,err : "args error"})
   }
 }
+
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "fightHandler",

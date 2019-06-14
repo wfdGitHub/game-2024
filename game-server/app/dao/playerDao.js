@@ -11,7 +11,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 	self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+otps.uid+":playerInfo",playerInfo,function(err,data) {
 		if(!err){
 			playerInfo.characters = []
-			playerInfo.characters.push(self.characterDao.createCharacter({areaId : otps.areaId,uid : otps.uid,name : "主角",characterId : 0}))
+			playerInfo.characters.push(self.characterDao.createCharacter({areaId : otps.areaId,uid : otps.uid,characterId : 0}))
 			cb(playerInfo)
 		}else{
 			cb(false)

@@ -1,4 +1,6 @@
-var roleLevel = require("../../config/role/roleLevel.json")
+console.log(__dirname)
+var characterFun = require("../domian/entity/character.js")
+var charactersJson = require("../../config/character/characters.json")
 var attributeType =   {
 	"characterId" : "number",
 	"name" : "string",
@@ -18,7 +20,6 @@ var characterDao = function() {}
 characterDao.prototype.createCharacter = function(otps) {
 	var characterInfo = {
 		characterId : otps.characterId,
-		name : otps.name,
 		level : 1,
 		exp : 0
 	}
@@ -49,17 +50,12 @@ characterDao.prototype.getCharacters = function(otps,cb) {
 	})
 }
 //获取角色属性
-characterDao.prototype.getCharacterAttribute = function(character) {
-	for(var attribute in character){
-		if(attributeType[attribute] == "number"){
-			character[attribute] = Number(character[attribute])
-		}
+characterDao.prototype.getCharacterAttribute = function(characterInfo) {
+	for(var i in charactersJson[characterInfo.characterId]){
+		characterInfo[i] = charactersJson[characterInfo.characterId][i]
 	}
-	var level = character["level"]
-    for(var attribute in roleLevel[level]){
-        character[attribute] = roleLevel[level][attribute]
-    }
-    return character
+	var character = new characterFun(characterInfo)
+    return character.getInfo()
 }
 module.exports = {
 	id : "characterDao",

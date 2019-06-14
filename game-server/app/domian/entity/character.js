@@ -1,32 +1,47 @@
 var EventEmitter = require('events').EventEmitter;     // 引入事件模块
 var buffFactory = require("../fight/buffFactory.js")
 var character = function(otps) {
-	this.name = otps.name || "noname"		//名称
-	this.spriteType = otps.spriteType || "warrior"		//类型
+	this.characterId = otps.characterId		//角色ID
+	this.name =otps.name		//名称
+	this.spriteType = otps.spriteType || 0 	//类型
 	this.level = otps.level || 1			//等级
-	this.maxHP = otps.maxHP || 100			//最大血量
-	this.hp = this.maxHP					//当前血量
-	this.atk = otps.atk	|| 10				//攻击力
-	this.def = otps.def	|| 0				//防御力
-	this.atkSpeed = otps.atkSpeed || 1  	//攻速 每几秒攻击一次
-	this.crit = otps.crit || 0 + 0.05		//暴击
-	this.critDef = otps.critDef || 0		//抗暴
-	this.slay = otps.slay || 0				//必杀
-	this.hitRate = otps.hitRate || 0		//命中
-	this.dodgeRate = otps.dodgeRate || 0	//闪避
-	this.wreck = otps.wreck || 0 			//破击
-	this.block = otps.block || 0			//格挡
-	this.blockRate = otps.blockRate || 0	//格挡效果
-	this.frozenAtk = otps.frozenAtk || 0	//冰冻命中
-	this.frozenDef = otps.frozenDef || 0	//冰冻抗性
-	this.dizzyAtk = otps.dizzyAtk || 0		//眩晕命中
-	this.dizzyDef = otps.dizzyDef || 0		//眩晕抗性
-	this.burnAtk = otps.burnAtk || 0		//燃烧命中
-	this.burnDef = otps.burnDef || 0		//燃烧抗性
-	this.poisonAtk = otps.poisonAtk || 0	//毒素命中
-	this.poisonDef = otps.poisonDef || 0	//毒素抗性
-	this.chaosAtk = otps.chaosAtk || 0		//混乱命中
-	this.chaosDef = otps.chaosDef || 0		//混乱抗性
+	//=========================================//
+	this.b_arg = {}
+	for(var i in otps){
+		this.b_arg[i] = otps[i] || 0
+	}
+	//================战斗属性==================//
+	//一级属性
+	this.str = Math.floor(this.b_arg.str + this.level * this.b_arg.strA) || 0		//力量
+	this.agi = Math.floor(this.b_arg.agi + this.level * this.b_arg.agiA) || 0 		//敏捷
+	this.vit = Math.floor(this.b_arg.vit + this.level * this.b_arg.vitA) || 0 		//耐力
+	this.phy = Math.floor(this.b_arg.phy + this.level * this.b_arg.phyA) || 0		//体力
+	//二级属性
+	this.atk = Math.floor(this.b_arg.atk + this.str * 2.2) || 0	//攻击力
+	this.def = Math.floor(this.b_arg.def + this.vit * 1.8) || 0	//防御力
+	this.maxHP = Math.floor(this.b_arg.maxHP + this.phy * 20) || 0	//最大血量
+	this.hp = this.maxHP
+	//三级属性
+	this.atkSpeed = this.b_arg.atkSpeed || 1  					//攻速 每几秒攻击一次
+	this.crit = this.b_arg.crit || 0								//暴击
+	this.critDef = Math.floor(this.b_arg.critDef + this.vit * 1.5) || 0	//抗暴
+	this.slay = this.b_arg.slay || 0								//必杀
+	this.hitRate = Math.floor(this.b_arg.hitRate + this.agi * 0.5) || 0//命中
+	this.dodgeRate =  Math.floor(this.b_arg.dodgeRate + this.agi * 0.5) || 0//闪避
+	this.wreck = this.b_arg.wreck || 0 							//破击
+	this.block = this.b_arg.block || 0							//格挡
+	this.blockRate = this.b_arg.blockRate || 0					//格挡效果
+	this.frozenAtk = this.b_arg.frozenAtk || 0					//冰冻命中
+	this.frozenDef = this.b_arg.frozenDef || 0					//冰冻抗性
+	this.dizzyAtk = this.b_arg.dizzyAtk || 0						//眩晕命中
+	this.dizzyDef = this.b_arg.dizzyDef || 0						//眩晕抗性
+	this.burnAtk = this.b_arg.burnAtk || 0						//燃烧命中
+	this.burnDef = this.b_arg.burnDef || 0						//燃烧抗性
+	this.poisonAtk = this.b_arg.poisonAtk || 0					//毒素命中
+	this.poisonDef = this.b_arg.poisonDef || 0					//毒素抗性
+	this.chaosAtk = this.b_arg.chaosAtk || 0						//混乱命中
+	this.chaosDef = this.b_arg.chaosDef || 0						//混乱抗性
+	//=========================================//
 	this.fightSkills = {} 					//技能列表
     this.buffs = {}                        	//buff列表
     this.defaultSkill = false             	//默认攻击
@@ -40,7 +55,33 @@ var character = function(otps) {
 character.prototype.getInfo = function() {
 	var info = {
 		name : this.name,
-		hp : this.hp
+		str : this.str,
+		agi : this.agi,
+		vit : this.vit,
+		phy : this.phy,
+		maxHP : this.maxHP,
+		hp : this.hp,
+		atk : this.atk,
+		def : this.def,
+		atkSpeed : this.atkSpeed,
+		crit : this.crit,
+		critDef : this.critDef,
+		slay : this.slay,
+		hitRate : this.hitRate,
+		dodgeRate : this.dodgeRate,
+		wreck : this.wreck,
+		block : this.block,
+		blockRate : this.blockRate,
+		frozenAtk : this.frozenAtk,
+		frozenDef : this.frozenDef,
+		dizzyAtk : this.dizzyAtk,
+		dizzyDef : this.dizzyDef,
+		burnAtk : this.burnAtk,
+		burnDef : this.burnDef,
+		poisonAtk : this.poisonAtk,
+		poisonDef : this.poisonDef,
+		chaosAtk : this.chaosAtk,
+		chaosDef : this.chaosDef,
 	}
 	return info
 }
