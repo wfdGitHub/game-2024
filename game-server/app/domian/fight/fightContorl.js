@@ -26,6 +26,11 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo,seededNum,rea
 	for(var i in defTeam){
 		defTeam[i].setArg(atkTeam,fighting)
 	}
+	fighting.characterArr.forEach(function(character) {
+		if(character.defaultSkill){
+			character.defaultSkill.updateCD()
+		}
+	})
 	var count = 0
 	while(!fighting.isOver() && count++ < this.maxCount){
 	 	fighting.update()
