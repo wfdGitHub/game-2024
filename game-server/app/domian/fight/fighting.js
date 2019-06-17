@@ -9,7 +9,7 @@ var fighting = function(atkTeam,defTeam,otps) {
     this.characterArr = this.atkTeam.concat(this.defTeam)
 	var self = this
 	this.characterArr.forEach(function(character) {
-		character.characterId = self.characterCount++
+		character.nodeId = self.characterCount++
 	})
 	this.over = false
 	this.result = "none"	//deuce  win   lose
@@ -35,7 +35,7 @@ fighting.prototype.update = function() {
     	var skill = this.skillList.shift()
     	var record = {
     		t : this.curTime,
-    		c : skill.character.characterId,
+    		c : skill.character.nodeId,
     		s : skill.skillId
     	}
     	this.recordList.push(record)
