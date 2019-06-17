@@ -5,11 +5,11 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.defTeam = defTeam
 	this.stepper = otps.stepper
 	this.maxTime = otps.maxTime
-    this.characterCount = 0
+    this.nodeCount = 0
     this.characterArr = this.atkTeam.concat(this.defTeam)
 	var self = this
 	this.characterArr.forEach(function(character) {
-		character.nodeId = self.characterCount++
+		character.nodeId = self.nodeCount++
 	})
 	this.over = false
 	this.result = "none"	//deuce  win   lose
