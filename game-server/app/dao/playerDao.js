@@ -26,11 +26,10 @@ playerDao.prototype.getPlayerInfo = function(otps,cb) {
 		if(err || !playerInfo){
 			cb(false)
 		}else{
-			playerInfo.characters = characters
-			cb(playerInfo)
-			// self.characterDao.getCharacters(otps,function(characters) {
-				
-			// })
+			self.characterDao.getCharacters(otps,function(characters) {
+				playerInfo.characters = characters
+				cb(playerInfo)
+			})
 		}
 	})
 }

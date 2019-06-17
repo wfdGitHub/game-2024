@@ -19,7 +19,7 @@
     <script type="text/javascript">
       var pomelo = window.pomelo;
       var host = "120.55.61.144";
-      host = "127.0.0.1"
+      // host = "127.0.0.1"
       var queryEntry = function(callback) {
         var route = 'gate.gateHandler.queryClientEntry';
         pomelo.init({
@@ -66,19 +66,19 @@
       }
       //获取该服务器角色信息
       var getPlayerInfo = function(areaId) {
-        pomelo.request("area.areaLoginHandler.getPlayerInfo", {areaId : areaId}, function(data) {
+        pomelo.request("connector.loginHandler.getPlayerInfo", {areaId : areaId}, function(data) {
             console.log(data);
         });
       }
       //注册角色
       var register = function(areaId,name) {
-        pomelo.request("area.areaLoginHandler.register", {areaId : areaId,name : name}, function(data) {
+        pomelo.request("connector.loginHandler.register", {areaId : areaId,name : name}, function(data) {
             console.log(data);
         });
       }
       //登录服务器
       var loginArea = function(areaId) {
-        pomelo.request("area.areaLoginHandler.loginArea", {areaId : areaId}, function(data) {
+        pomelo.request("connector.loginHandler.loginArea", {areaId : areaId}, function(data) {
             console.log(data);
         });
       }

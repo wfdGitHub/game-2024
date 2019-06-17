@@ -42,9 +42,9 @@ characterDao.prototype.getCharacters = function(otps,cb) {
 			}
 		}
 		self.redisDao.multi(multiList,function(err,list) {
-			for(var i = 0;i < list.length;i++){
-				list[i] = self.getCharacterAttribute(list[i])
-			}
+			// for(var i = 0;i < list.length;i++){
+			// 	list[i] = self.getCharacterAttribute(list[i])
+			// }
 			cb(list)
 		})
 	})
