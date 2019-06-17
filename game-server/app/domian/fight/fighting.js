@@ -95,10 +95,11 @@ fighting.prototype.getResult = function() {
 		result : this.result,
 		recordList : this.recordList,
 		seededNum : this.seededNum,
+		time : this.curTime,
 		characterArr : []
 	}
 	this.characterArr.forEach(function(character) {
-		info.characterArr.push(character.getInfo())
+		info.characterArr.push(character.getSimpleInfo())
 	})
 	return info
 }

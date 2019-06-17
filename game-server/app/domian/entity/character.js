@@ -52,6 +52,14 @@ var character = function(otps) {
     this.chaos = false      				//混乱标识
 	this.event = new EventEmitter();
 }
+character.prototype.getSimpleInfo = function() {
+	var info = {
+		name : this.name,
+		maxHP : this.maxHP,
+		hp : this.hp
+	}
+	return info
+}
 character.prototype.getInfo = function() {
 	var info = {
 		name : this.name,
