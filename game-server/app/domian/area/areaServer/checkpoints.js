@@ -37,7 +37,7 @@ module.exports = function() {
 		      	cb(false)
 		      	return
 		    }
-		    var atkTeam = otps.characters
+		    var atkTeam = self.players[uid].characters
 		    var defTeam = [{characterId : checkpointsCfg[level].bossId,level : checkpointsCfg[level].bossLevel}]
 		    if(checkpointsCfg[level].mon_list){
 		      var monList = JSON.parse(checkpointsCfg[level].mon_list)

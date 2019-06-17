@@ -101,8 +101,6 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 	        session.push("areaId")
 	        session.set("serverId",serverId)
 	        session.push("serverId")
-	        session.set("playerInfo",playerInfo)
-	        session.push("playerInfo")
 	        next(null,{flag : true,msg : playerInfo})
 		}else{
 			next(null,{flag : false,msg : "未注册角色"})
