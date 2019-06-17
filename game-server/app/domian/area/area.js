@@ -1,10 +1,17 @@
 //服务器
 var bearcat = require("bearcat")
+var dao = require("./areaServer/dao.js")
+var checkpoints = require("./areaServer/checkpoints.js")
+var fightContorlFun = require("../fight/fightContorl.js")
+var charactersCfg = require("../../../config/gameCfg/characters.json")
 var area = function(otps) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName
 	this.players = {}
 	this.onlineNum = 0
+	this.fightContorl = fightContorlFun()
+	dao.call(this)
+	checkpoints.call(this)
 }
 //服务器初始化
 area.prototype.init = function() {
@@ -30,6 +37,20 @@ area.prototype.userLeave = function(uid) {
 		this.onlineNum--
 	}
 }
+//根据配置表获取角色数据
+area.prototype.characterDeploy = function(info) {
+	var newInfo = {}
+	var characterId = info.characterId
+	if(!charactersCfg[info.characterId]){
+		return false
+	}
+	for(var i in charactersCfg[characterId]){
+		newInfo[i] = charactersCfg[characterId][i]
+	}
+	newInfo.level = info.level
+	return newInfo
+}
+
 module.exports = {
 	id : "area",
 	func : area,
@@ -40,6 +61,9 @@ module.exports = {
 		type : "Object"
 	}],
 	props : [{
+		name : "redisDao",
+		ref : "redisDao"
+	},{
 		name : "playerDao",
 		ref : "playerDao"
 	}]
