@@ -101,6 +101,11 @@ fighting.prototype.getResult = function() {
 	this.characterArr.forEach(function(character) {
 		info.characterArr.push(character.getSimpleInfo())
 	})
+	var verify = ""+info.result+info.recordList.length+info.seededNum+info.time
+	info.characterArr.forEach(function(character) {
+		verify += character.name+character.hp+"/"+character.maxHP
+	})
+	info.verify = verify
 	return info
 }
 module.exports = fighting
