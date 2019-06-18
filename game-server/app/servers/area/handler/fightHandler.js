@@ -30,11 +30,10 @@ fightHandler.prototype.getCheckpointsInfo = function(msg, session, next) {
 fightHandler.prototype.challengeCheckpoints = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
-  var seededNum = msg.seededNum || Date.now()
-  var readList = msg.readList || []
   var otps = {
     seededNum : msg.seededNum || Date.now(),
-    readList : msg.readList || []
+    readList : msg.readList || [],
+    verify : msg.verify
   }
   console.log(otps)
   this.areaManager.areaMap[areaId].challengeCheckpoints(uid,otps,function(flag,result) {

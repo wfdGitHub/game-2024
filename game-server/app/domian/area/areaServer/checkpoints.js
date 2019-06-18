@@ -37,7 +37,7 @@ module.exports = function() {
 		      	cb(false)
 		      	return
 		    }
-		    var atkTeam = self.players[uid].characters
+		    var atkTeam = self.players[uid].characters.concat()
 		    var defTeam = [{characterId : checkpointsCfg[level].bossId,level : checkpointsCfg[level].bossLevel}]
 		    if(checkpointsCfg[level].mon_list){
 		      var monList = JSON.parse(checkpointsCfg[level].mon_list)
@@ -52,8 +52,12 @@ module.exports = function() {
 		    	defTeam[i] = self.characterDeploy(defTeam[i])
 		    }
 		    var result = self.fightContorl.fighting(atkTeam,defTeam,otps.seededNum,otps.readList)
-		    self.checkpointsResult(uid,result)
-		    cb(true,result)
+		    if(result.verify === otps.verify){
+		    	self.checkpointsResult(uid,result)
+		    	cb(true,result)
+		    }else{
+		    	cb(false,"verify fail")
+		    }
 		})
 	}
 }
