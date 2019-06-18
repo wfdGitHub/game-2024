@@ -42,11 +42,31 @@ characterDao.prototype.getCharacters = function(otps,cb) {
 			}
 		}
 		self.redisDao.multi(multiList,function(err,list) {
-			// for(var i = 0;i < list.length;i++){
-			// 	list[i] = self.getCharacterAttribute(list[i])
-			// }
+			for(var i = 0;i < list.length;i++){
+				for(var j in list[i]){
+					list[i][j] = Number(list[i][j])
+				}
+			}
 			cb(list)
 		})
+	})
+}
+//获取角色属性
+characterDao.prototype.getCharacterInfo = function(otps,cb) {
+	this.redisDao.db.hgetall("area:area"+otps.areaId+":player:"+otps.uid+":characters:"+otps.characterId,function(err,data) {
+		if(err || !data){
+			console.log("getCharacterInfo error ",otps)
+			cb(false)
+		}else{
+			cb(true,data)
+		}
+	})
+}
+//增减角色属性
+characterDao.prototype.incrbyCharacterInfo = function(otps,cb) {
+	this.redisDao.db.hincrby("area:area"+otps.areaId+":player:"+otps.uid+":characters:"+otps.characterId,otps.name,otps.value,function(err,data) {
+		if(cb)
+			cb(true,data)
 	})
 }
 //获取角色属性

@@ -30,7 +30,7 @@ areaManager.prototype.loadArea = function(areaId) {
 	var self = this
 	self.areaDao.getAreaInfo(areaId,function(areaInfo) {
 		if(areaInfo){
-			self.areaMap[areaId] = bearcat.getBean("area",areaInfo)
+			self.areaMap[areaId] = bearcat.getBean("area",areaInfo,self.app)
 		}
 	})
 }
@@ -46,7 +46,7 @@ areaManager.prototype.userLogin = function(uid,areaId,cid,cb) {
 		cb(false)
 		return
 	}
-	self.areaMap[areaId].userLogin(uid,function(playerInfo) {
+	self.areaMap[areaId].userLogin(uid,cid,function(playerInfo) {
 		if(playerInfo){
 			self.connectorMap[uid] = cid
 			self.userMap[uid] = areaId

@@ -26,7 +26,7 @@ entryHandler.prototype.entryAccount = function(msg, session, next) {
 }
 //登录成功
 entryHandler.entrySuccess = function(session,userInfo,next) {
-	var uid = userInfo.uid
+	var uid = Number(userInfo.uid)
 	//检查重复登录
 	if( !! this.sessionService.getByUid(uid)) {
 		console.log("检测到重复登录",this.sessionService.getByUid(uid))
