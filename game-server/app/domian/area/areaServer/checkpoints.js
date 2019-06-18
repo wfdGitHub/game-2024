@@ -51,6 +51,7 @@ module.exports = function() {
 		    for(var i = 0;i < defTeam.length;i++){
 		    	defTeam[i] = self.characterDeploy(defTeam[i])
 		    }
+		    console.log(atkTeam,defTeam)
 		    var result = self.fightContorl.fighting(atkTeam,defTeam,otps.seededNum,otps.readList)
 		    if(result.verify === otps.verify){
 		    	self.checkpointsResult(uid,result)
