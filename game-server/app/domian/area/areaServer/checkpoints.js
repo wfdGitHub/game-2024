@@ -37,6 +37,10 @@ module.exports = function() {
 		      	cb(false)
 		      	return
 		    }
+		    if(!self.players[uid]){
+		    	cb(true,"userInfo error")
+		    	return
+		    }
 		    var atkTeam = self.players[uid].characters.concat()
 		    var defTeam = [{characterId : checkpointsCfg[level].bossId,level : checkpointsCfg[level].bossLevel}]
 		    if(checkpointsCfg[level].mon_list){
