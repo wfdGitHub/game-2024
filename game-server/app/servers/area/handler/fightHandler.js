@@ -18,15 +18,21 @@ fightHandler.prototype.mockFight = function(msg, session, next) {
     next(null,{flag : false,err : "args error"})
   }
 }
+//获取BOSS关卡挑战信息
+fightHandler.prototype.getCheckpointsInfo = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getCheckpointsInfo(uid,function(data) {
+    next(null,{flag : true,msg : data})
+  })
+}
 //挑战BOSS关卡
 fightHandler.prototype.challengeCheckpoints = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
-  var playerInfo = session.get("playerInfo")
   var seededNum = msg.seededNum || Date.now()
   var readList = msg.readList || []
   var otps = {
-    characters : playerInfo.characters,
     seededNum : msg.seededNum || Date.now(),
     readList : msg.readList || []
   }
