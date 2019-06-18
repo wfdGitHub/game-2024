@@ -56,6 +56,7 @@ module.exports = function() {
 		    	self.checkpointsResult(uid,result)
 		    	cb(true,result)
 		    }else{
+		    	console.log(otps.verify,result.verify)
 		    	cb(false,"verify fail")
 		    }
 		})
