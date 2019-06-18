@@ -42,6 +42,7 @@ area.prototype.characterDeploy = function(info) {
 	var newInfo = {}
 	var characterId = info.characterId
 	if(!charactersCfg[info.characterId]){
+		console.log("characterDeploy error ",info,charactersCfg[info.characterId])
 		return false
 	}
 	for(var i in charactersCfg[characterId]){

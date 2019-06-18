@@ -38,7 +38,7 @@ module.exports = function() {
 		      	return
 		    }
 		    if(!self.players[uid]){
-		    	cb(true,"userInfo error")
+		    	cb(false,"userInfo error")
 		    	return
 		    }
 		    var atkTeam = self.players[uid].characters.concat()
@@ -51,6 +51,10 @@ module.exports = function() {
 		    }
 		    for(var i = 0;i < atkTeam.length;i++){
 		    	atkTeam[i] = self.characterDeploy(atkTeam[i])
+		    	if(!atkTeam[i]){
+			    	cb(false,"characterInfo error")
+			    	return
+		    	}
 		    }
 		    for(var i = 0;i < defTeam.length;i++){
 		    	defTeam[i] = self.characterDeploy(defTeam[i])
