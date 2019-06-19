@@ -2,12 +2,12 @@ var lvexpCfg = require("../../../../config/gameCfg/lv_exp.json")
 //主角相关
 module.exports = function() {
 	//增加主角经验
-	this.addProEXP = function(uid,value,cb) {
+	this.addEXP = function(uid,characterId,value,cb) {
 		var self = this
 		var otps = {
 			areaId : this.areaId,
 			uid : uid,
-			characterId : 10001,
+			characterId : characterId,
 			value : value,
 			name : "exp"
 		}

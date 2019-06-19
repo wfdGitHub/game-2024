@@ -7,12 +7,27 @@ module.exports = function() {
 		switch(otps.itemId){
 			case 100:
 				//主角经验
-				this.addProEXP(otps.uid,otps.value,this.addItemCB(otps,cb))
+				this.addEXP(otps.uid,10001,otps.value,this.addItemCB(otps,cb))
 			break
 			default:
 				console.log("addItem error : "+otps.itemId)
-				cb(false,"itemId error : "+otps.itemId)
+				if(cb)
+					cb(false,"itemId error : "+otps.itemId)
 		}
+	}
+	this.addItemStr = function(otps,str) {
+		var list = str.split("&")
+		var self = this
+		list.forEach(function(m_str) {
+			var m_list = m_str.split(":")
+			var itemId = Number(m_list[0])
+			var value = Number(m_list[1])
+			var info = Object.assign(otps,{
+				itemId : itemId,
+				value : value
+			})
+			self.addItem(info)
+		})
 	}
 	this.addItemCB = function(otps,cb) {
 		var self = this
@@ -29,7 +44,8 @@ module.exports = function() {
 			      sid: self.connectorMap[otps.uid]
 			    }])
 			}
-			cb(flag,curValue)
+			if(cb)
+				cb(flag,curValue)
 		}
 	}
 }

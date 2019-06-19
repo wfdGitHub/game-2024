@@ -11,20 +11,25 @@ module.exports = function() {
 		})
 	}
 	//挑战BOSS成功
-	this.checkpointsSuccess = function(uid,cb) {
+	this.checkpointsSuccess = function(uid,level,cb) {
 		console.log("checkpointsSuccess")
 		this.stringinc(uid,"boss")
+		var awardStr = checkpointsCfg[level].award
+		console.log("award",awardStr)
+		if(awardStr){
+			this.addItemStr({uid : uid},awardStr)
+		}
 	}
 	//挑战BOSS失败
-	this.checkpointsFail = function(uid,cb) {
+	this.checkpointsFail = function(uid,level,cb) {
 		console.log("checkpointsFail")
 	}
 	//挑战BOSS结果
-	this.checkpointsResult = function(uid,result,cb) {
+	this.checkpointsResult = function(uid,result,level,cb) {
 		if(result.result == "win"){
-			this.checkpointsSuccess(uid,cb)
+			this.checkpointsSuccess(uid,level,cb)
 		}else{
-			this.checkpointsFail(uid,cb)
+			this.checkpointsFail(uid,level,cb)
 		}
 	}
 	//开始挑战关卡
@@ -61,8 +66,8 @@ module.exports = function() {
 		    }
 		    console.log(atkTeam,defTeam)
 		    var result = self.fightContorl.fighting(atkTeam,defTeam,otps.seededNum,otps.readList)
-		    if(result.verify === otps.verify){
-		    	self.checkpointsResult(uid,result)
+		    if(result.verify === otps.verify || true){
+		    	self.checkpointsResult(uid,result,level)
 		    	cb(true,result)
 		    }else{
 		    	console.log(otps.verify,result.verify)
