@@ -41,6 +41,7 @@ module.exports = function() {
 					cb(false,"itemId error : "+otps.itemId)
 		}
 	}
+	//解析物品奖励
 	this.addItemStr = function(otps,str) {
 		var list = str.split("&")
 		var self = this
