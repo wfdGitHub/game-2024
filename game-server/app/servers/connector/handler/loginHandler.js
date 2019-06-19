@@ -63,6 +63,11 @@ loginHandler.prototype.register = function(msg, session, next) {
 		next(null,{flag : false,err : "areaId error"})
 		return
 	}
+    var serverId = this.areaDeploy.getServer(areaId)
+    if(!serverId){
+        next(null,{flag : false,err : "服务器不存在"})
+        return
+    }
 	var uid = session.get("uid")
 	var self = this
 	var otps = {areaId : areaId,uid : uid,name : name,sex : sex}
