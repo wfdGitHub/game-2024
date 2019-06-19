@@ -15,7 +15,6 @@ module.exports = function() {
 		console.log("checkpointsSuccess")
 		this.stringinc(uid,"boss")
 		var awardStr = checkpointsCfg[level].award
-		console.log("award",awardStr)
 		if(awardStr){
 			this.addItemStr({uid : uid},awardStr)
 		}
@@ -64,11 +63,14 @@ module.exports = function() {
 		    for(var i = 0;i < defTeam.length;i++){
 		    	defTeam[i] = self.characterDeploy(defTeam[i])
 		    }
-		    console.log(atkTeam,defTeam)
 		    var result = self.fightContorl.fighting(atkTeam,defTeam,otps.seededNum,otps.readList)
-		    if(result.verify === otps.verify || true){
+		    if(result.verify === otps.verify){
 		    	self.checkpointsResult(uid,result,level)
-		    	cb(true,result)
+		    	if(result.result === "win"){
+		    		cb(true,{award : checkpointsCfg[level].award})
+		    	}else{
+		    		cb(true)
+		    	}
 		    }else{
 		    	console.log(otps.verify,result.verify)
 		    	cb(false,"verify fail")
