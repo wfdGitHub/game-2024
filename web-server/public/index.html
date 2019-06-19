@@ -19,7 +19,7 @@
     <script type="text/javascript">
       var pomelo = window.pomelo;
       var host = "120.55.61.144";
-      // host = "127.0.0.1"
+      host = "127.0.0.1"
       var queryEntry = function(callback) {
         var route = 'gate.gateHandler.queryClientEntry';
         pomelo.init({
@@ -52,6 +52,10 @@
           });
         })
       }
+      pomelo.on("onMessage",function(data) {
+        console.log("onMessage")
+        console.log(data)
+      })
       //获取服务器列表
       var getAreaList = function(index) {
         pomelo.request("connector.loginHandler.getAreaList", {index : index}, function(data) {
@@ -98,44 +102,274 @@
             console.log(data);
         });
       }
+      var challengeCheckpoints = function(seededNum,readList) {
+        pomelo.request("area.fightHandler.challengeCheckpoints",{seededNum : seededNum,readList : readList}, function(data) {
+            console.log(data);
+        })
+      }
+      var getCheckpointsInfo = function() {
+        pomelo.request("area.fightHandler.getCheckpointsInfo",{}, function(data) {
+            console.log(data);
+        })
+      }
+      var test = function() {
+        pomelo.notify("area.fightHandler.test",{}, function(data) {
+            console.log(data);
+        })
+      }
       var mockFight = function(seededNum,readList) {
         var atkTeam = [{
-            name : "战士",    //名称
-            spriteType : "hero1",  //类型
-            maxHP : 1000, //最大血量
-            atk : 12,        //攻击力
-            def : 2,        //防御力
-            dodgeRate : 0,  //闪避
-            atkSpeed : 2, //攻速 每几秒攻击一次
-            specialSkills : [2] //技能列表
-        },{
-            name : "游侠",    //名称
-            spriteType : "hero2",  //类型
-            maxHP : 600,    //最大血量
-            atk : 10,        //攻击力
-            def : 0,        //防御力
-            dodgeRate : 0,  //闪避
-            atkSpeed : 1.2, //攻速 每几秒攻击一次
-            specialSkills : [3] //技能列表
-        },{
-            name : "法师",    //名称
-            spriteType : "hero3",  //类型
-            maxHP : 500, //最大血量
-            atk : 30,        //攻击力
-            def : 0,        //防御力
-            dodgeRate : 0,  //闪避
-            atkSpeed : 3, //攻速 每几秒攻击一次
-            specialSkills : [4] //技能列表
+          agi: 35,
+          agiA: 5,
+          atk: 1491,
+          atkSpeed: "1.72",
+          block: 8,
+          blockRate: 5,
+          burnAtk: 5,
+          burnDef: 7,
+          chaosAtk: 8,
+          chaosDef: 5,
+          crit: 5,
+          critDef: 7,
+          def: 230,
+          des: "有主角光环不怂",
+          dizzyAtk: 9,
+          dizzyDef: 7,
+          dodgeRate: 8,
+          frozenAtk: 8,
+          frozenDef: 6,
+          hitRate: 8,
+          id: 55551,
+          level: 12,
+          maxHP: 77704,
+          name: "主角1",
+          phy: 11,
+          phyA: 1,
+          poisonAtk: 6,
+          poisonDef: 10,
+          skills: "[20007]",
+          slay: 7,
+          spriteType: "hero1",
+          str: 68,
+          strA: 1,
+          vit: 15,
+          vitA: 1,
+          wreck: 9
+        },
+        {
+          agi: 18,
+          agiA: 3,
+          atk: 1295,
+          atkSpeed: "1.27",
+          block: 8,
+          blockRate: 5,
+          burnAtk: 9,
+          burnDef: 5,
+          chaosAtk: 10,
+          chaosDef: 7,
+          crit: 10,
+          critDef: 6,
+          def: 278,
+          des: "有主角光环不怂",
+          dizzyAtk: 8,
+          dizzyDef: 10,
+          dodgeRate: 8,
+          frozenAtk: 7,
+          frozenDef: 9,
+          hitRate: 9,
+          id: 55552,
+          level: 18,
+          maxHP: 52499,
+          name: "主角2",
+          phy: 34,
+          phyA: 5,
+          poisonAtk: 8,
+          poisonDef: 9,
+          skills: "[20009]",
+          slay: 6,
+          spriteType: "hero2",
+          str: 35,
+          strA: 3,
+          vit: 12,
+          vitA: 2,
+          wreck: 10
+        },
+        {
+          agi: 12,
+          agiA: 5,
+          atk: 2281,
+          atkSpeed: "2.08",
+          block: 6,
+          blockRate: 8,
+          burnAtk: 6,
+          burnDef: 9,
+          chaosAtk: 7,
+          chaosDef: 5,
+          crit: 9,
+          critDef: 8,
+          def: 123,
+          des: "有主角光环不怂",
+          dizzyAtk: 9,
+          dizzyDef: 7,
+          dodgeRate: 6,
+          frozenAtk: 10,
+          frozenDef: 7,
+          hitRate: 7,
+          id: 55553,
+          level: 17,
+          maxHP: 73348,
+          name: "主角1",
+          phy: 42,
+          phyA: 1,
+          poisonAtk: 8,
+          poisonDef: 5,
+          skills: "[20006]",
+          slay: 7,
+          spriteType: "hero3",
+          str: 98,
+          strA: 4,
+          vit: 19,
+          vitA: 4,
+          wreck: 6
         }]
         var defTeam = [{
-            name : "BOSS",  //名称
-            spriteType : "mob1",  //类型
-            maxHP : 10000,   //最大血量
-            atk : 80,       //攻击力
-            def : 1,        //防御力
-            atkSpeed : 2.5  //攻速 每几秒攻击一次
+          agi: 10,
+          agiA: 1,
+          atk: 1163,
+          atkSpeed: "1.81",
+          block: 8,
+          blockRate: 9,
+          burnAtk: 8,
+          burnDef: 9,
+          chaosAtk: 6,
+          chaosDef: 5,
+          crit: 8,
+          critDef: 7,
+          def: 209,
+          des: "炮灰送经验",
+          dizzyAtk: 7,
+          dizzyDef: 6,
+          dodgeRate: 6,
+          frozenAtk: 8,
+          frozenDef: 7,
+          hitRate: 10,
+          id: 66661,
+          level: 11,
+          maxHP: 51191,
+          name: "小怪1",
+          phy: 41,
+          phyA: 3,
+          poisonAtk: 7,
+          poisonDef: 5,
+          skills: "[]",
+          slay: 7,
+          spriteType: "mob18",
+          str: 65,
+          strA: 5,
+          vit: 84,
+          vitA: 2,
+          wreck: 8
+        },
+        {
+          agi: 47,
+          agiA: 4,
+          atk: 1542,
+          atkSpeed: "2.24",
+          block: 9,
+          blockRate: 5,
+          burnAtk: 10,
+          burnDef: 5,
+          chaosAtk: 10,
+          chaosDef: 5,
+          crit: 10,
+          critDef: 8,
+          def: 181,
+          des: "大BOSS砍翻你",
+          dizzyAtk: 7,
+          dizzyDef: 10,
+          dodgeRate: 10,
+          frozenAtk: 9,
+          frozenDef: 10,
+          hitRate: 10,
+          id: 66662,
+          level: 18,
+          maxHP: 57843,
+          name: "BOSS",
+          phy: 37,
+          phyA: 5,
+          poisonAtk: 10,
+          poisonDef: 7,
+          skills: "[20009]",
+          slay: 8,
+          spriteType: "mob5",
+          str: 26,
+          strA: 4,
+          vit: 37,
+          vitA: 2,
+          wreck: 6
+        },
+        {
+          agi: 100,
+          agiA: 1,
+          atk: 2976,
+          atkSpeed: "2.17",
+          block: 9,
+          blockRate: 7,
+          burnAtk: 6,
+          burnDef: 9,
+          chaosAtk: 6,
+          chaosDef: 7,
+          crit: 5,
+          critDef: 6,
+          def: 111,
+          des: "炮灰送经验",
+          dizzyAtk: 9,
+          dizzyDef: 9,
+          dodgeRate: 5,
+          frozenAtk: 8,
+          frozenDef: 6,
+          hitRate: 8,
+          id: 66663,
+          level: 17,
+          maxHP: 91557,
+          name: "小怪2",
+          phy: 15,
+          phyA: 1,
+          poisonAtk: 7,
+          poisonDef: 5,
+          skills: "[]",
+          slay: 8,
+          spriteType: "mob13",
+          str: 100,
+          strA: 2,
+          vit: 10,
+          vitA: 5,
+          wreck: 5
         }]
-        pomelo.request("area.fightHandler.mockFight", {atkTeam : atkTeam,defTeam : defTeam,seededNum : seededNum,readList : readList}, function(data) {
+        readList = [{t: 50, c: 4, s: 20009},
+                    {t: 1750, c: 0, s: 20007},
+                    {t: 1750, c: 1, s: 20009},
+                    {t: 1750, c: 2, s: 20006},
+                    {t: 5050, c: 4, s: 20009},
+                    {t: 6750, c: 1, s: 20009},
+                    {t: 9750, c: 2, s: 20006},
+                    {t: 10050, c: 4, s: 20009},
+                    {t: 11750, c: 0, s: 20007},
+                    {t: 15050, c: 4, s: 20009},
+                    {t: 17750, c: 2, s: 20006},
+                    {t: 21750, c: 0, s: 20007},
+                    {t: 25750, c: 2, s: 20006},
+                    {t: 31750, c: 0, s: 20007},
+                    {t: 33750, c: 2, s: 20006},
+                    {t: 41750, c: 0, s: 20007},
+                    {t: 41750, c: 2, s: 20006},
+                    {t: 49750, c: 2, s: 20006},
+                    {t: 51750, c: 0, s: 20007},
+                    {t: 57750, c: 2, s: 20006},
+                    {t: 65750, c: 2, s: 20006},
+                    {t: 73750, c: 2, s: 20006},
+                    {t: 81750, c: 2, s: 20006}]
+        pomelo.request("area.fightHandler.mockFight", {atkTeam : atkTeam,defTeam : defTeam,seededNum : 1560754376398,readList : readList}, function(data) {
             console.log(data);
         });
       }

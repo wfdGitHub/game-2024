@@ -1,7 +1,15 @@
 var lvexpCfg = require("../../../../config/gameCfg/lv_exp.json")
+var openCfg = require("../../../../config/gameCfg/open.json")
+var openMap = {}
+for(var i in openCfg){
+	if(!openMap[openCfg[i].lv])
+		openMap[openCfg[i].lv] = []
+	openMap[openCfg[i].lv].push(openCfg[i].key)
+}
+console.log(openMap)
 //主角相关
 module.exports = function() {
-	//增加主角经验
+	//增加经验
 	this.addEXP = function(uid,characterId,value,cb) {
 		var self = this
 		var otps = {
@@ -52,7 +60,32 @@ module.exports = function() {
 			      uid: otps.uid,
 			      sid: self.connectorMap[otps.uid]
 			    }])
+			    self.protagonistUpgrade(otps.uid,oldLv,lv)
 			}
 		})
+	}
+	//主角升级
+	this.protagonistUpgrade = function(uid,oldLv,curLv) {
+		var count = curLv - oldLv
+		var self = this
+		for(var lv = oldLv + 1;lv <= curLv;lv++){
+			if(openMap[lv]){
+				openMap[lv].forEach(function(key) {
+					self.sysOpen(uid,key)
+				})
+			}
+		}
+	}
+	//功能开启
+	this.sysOpen = function(uid,key) {
+		console.log("sysOpen ",uid,key)
+		switch(key){
+			case "partner1":
+				this.openPartner1(uid)
+			break
+			case "partner2":
+				this.openPartner2(uid)
+			break
+		}
 	}
 }

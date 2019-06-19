@@ -40,6 +40,17 @@ fightHandler.prototype.challengeCheckpoints = function(msg, session, next) {
     next(null,{flag : flag,result : result})
   })
 }
+fightHandler.prototype.test = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var otps = {
+    uid : uid
+  }
+  this.areaManager.areaMap[areaId].addItemStr(otps,"100:1000",function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+  next()
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "fightHandler",

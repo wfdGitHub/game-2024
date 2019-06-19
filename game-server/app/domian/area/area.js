@@ -5,9 +5,12 @@ var checkpoints = require("./areaServer/checkpoints.js")
 var fightContorlFun = require("../fight/fightContorl.js")
 var itemFun = require("./areaServer/item.js")
 var expFun = require("./areaServer/exp.js")
+var partnerFun = require("./areaServer/partner.js")
 var charactersCfg = require("../../../config/gameCfg/characters.json")
 var charactersMap = {
-	10001 : 0
+	10001 : 0,
+	10002 : 1,
+	10003 : 2
 }
 var area = function(otps,app) {
 	this.areaId = otps.areaId
@@ -22,6 +25,7 @@ var area = function(otps,app) {
 	checkpoints.call(this)
 	itemFun.call(this)
 	expFun.call(this)
+	partnerFun.call(this)
 }
 //服务器初始化
 area.prototype.init = function() {
@@ -63,6 +67,13 @@ area.prototype.incrbyCharacterInfo = function(otps,cb) {
 		if(cb)
 			cb(flag,data)
 	})
+}
+//增加角色
+area.prototype.createCharacter = function(otps) {
+	console.log("createCharacter",otps)
+	var characterInfo = this.characterDao.createCharacter(otps)
+	this.players[otps.uid].characters[charactersMap[characterInfo.characterId]] = characterInfo
+	console.log(this.players[otps.uid])
 }
 //根据配置表获取角色数据
 area.prototype.characterDeploy = function(info) {
