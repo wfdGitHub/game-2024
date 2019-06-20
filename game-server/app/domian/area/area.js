@@ -51,6 +51,7 @@ area.prototype.userLeave = function(uid) {
 //增减角色属性
 area.prototype.incrbyCharacterInfo = function(otps,cb) {
 	var info = Object.assign({},otps)
+	info.areaId = this.areaId
 	var index = charactersMap[otps.characterId]
 	var self = this
 	self.characterDao.incrbyCharacterInfo(info,function(flag,data) {

@@ -28,7 +28,7 @@ module.exports = function() {
 		switch(otps.itemId){
 			case 3001:
 				//伙伴经验丹
-				if(otps.characterId === 10002 || otps.characterId === 10003){
+				if((otps.characterId === 10002 || otps.characterId === 10003) && this.players[otps.uid] && this.players[otps.uid].characters[otps.characterId -10001]){
 					this.addEXP(otps.uid,otps.characterId,otps.value * 500)
 					otps.value = -otps.value
 					this.addItem(otps.uid,otps.itemId,otps.value,cb)

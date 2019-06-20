@@ -47,9 +47,10 @@ module.exports = function() {
 				otps.name = "exp"
 				otps.value = exp - oldExp
 				self.incrbyCharacterInfo(otps)
-				otps.name = "level"
-				otps.value = lv - oldLv
-				self.incrbyCharacterInfo(otps)
+				var otps2 = Object.assign({},otps)
+				otps2.name = "level"
+				otps2.value = lv - oldLv
+				self.incrbyCharacterInfo(otps2)
 				var notify = {
 					"type" : "characterUpgrade",
 					"characterId" : otps.characterId,
@@ -61,7 +62,8 @@ module.exports = function() {
 			      uid: otps.uid,
 			      sid: self.connectorMap[otps.uid]
 			    }])
-			    self.protagonistUpgrade(otps.uid,oldLv,lv)
+			    if(otps.characterId === 10001)
+			    	self.protagonistUpgrade(otps.uid,oldLv,lv)
 			}
 		})
 	}
