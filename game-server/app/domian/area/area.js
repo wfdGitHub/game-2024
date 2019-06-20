@@ -71,6 +71,18 @@ area.prototype.createCharacter = function(otps) {
 	this.players[otps.uid].characters[charactersMap[characterInfo.characterId]] = characterInfo
 	console.log(this.players[otps.uid])
 }
+//根据id获取角色信息
+
+area.prototype.getCharacterById = function(uid,characterId) {
+	if(this.players[uid] && this.players[uid].characters){
+		for(var i = 0;i < this.players[uid].characters.length;i++){
+			if(this.players[uid].characters[i].characterId == characterId){
+				return this.players[uid].characters[i]
+			}
+		}
+	}
+	return false
+}
 //根据配置表获取角色数据
 area.prototype.characterDeploy = function(info) {
 	var newInfo = {}

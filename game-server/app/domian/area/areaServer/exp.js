@@ -39,7 +39,14 @@ module.exports = function() {
 			var lv = oldLv
 			var oldExp = Number(characterInfo.exp)
 			var exp = oldExp
+			if(!(self.players[otps.uid] && self.players[otps.uid].characters[0] && self.players[otps.uid].characters[0].level)){
+				return
+			}
+			var proLv = self.players[otps.uid].characters[0].level
 			while(lvexpCfg[lv] && lvexpCfg[lv][characterId] && exp >= lvexpCfg[lv][characterId]){
+				if(characterId != 10001 && lv >= proLv){
+					break
+				}
 				exp -= lvexpCfg[lv][characterId]
 				lv += 1
 			}
