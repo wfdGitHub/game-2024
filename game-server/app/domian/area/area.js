@@ -1,12 +1,8 @@
 //服务器
 var bearcat = require("bearcat")
-var dao = require("./areaServer/dao.js")
-var checkpoints = require("./areaServer/checkpoints.js")
 var fightContorlFun = require("../fight/fightContorl.js")
-var itemFun = require("./areaServer/item.js")
-var expFun = require("./areaServer/exp.js")
-var partnerFun = require("./areaServer/partner.js")
 var charactersCfg = require("../../../config/gameCfg/characters.json")
+var areaServers = ["item","exp","partner","bag","dao","checkpoints"]
 var charactersMap = {
 	10001 : 0,
 	10002 : 1,
@@ -21,11 +17,10 @@ var area = function(otps,app) {
 	this.connectorMap = {}
 	this.onlineNum = 0
 	this.fightContorl = fightContorlFun()
-	dao.call(this)
-	checkpoints.call(this)
-	itemFun.call(this)
-	expFun.call(this)
-	partnerFun.call(this)
+	for(var i = 0;i < areaServers.length;i++){
+		var fun = require("./areaServer/"+areaServers[i]+".js")
+		fun.call(this)
+	}
 }
 //服务器初始化
 area.prototype.init = function() {

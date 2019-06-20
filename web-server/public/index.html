@@ -112,8 +112,20 @@
             console.log(data);
         })
       }
+      //otps包含  itemId   value 及使用物品其他参数   如经验丹需characterId
+      var useItem = function(otps) {
+        pomelo.request("area.normalHandler.useItem",otps, function(data) {
+            console.log(data);
+        })
+      }
+      //增加背包物品  测试功能
+      var addItem = function(itemId,value) {
+        pomelo.request("area.normalHandler.addItem",{itemId : itemId,value : value}, function(data) {
+            console.log(data);
+        })
+      }
       var test = function() {
-        pomelo.notify("area.fightHandler.test",{}, function(data) {
+        pomelo.request("area.fightHandler.test",{}, function(data) {
             console.log(data);
         })
       }

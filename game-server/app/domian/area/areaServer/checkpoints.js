@@ -16,7 +16,7 @@ module.exports = function() {
 		this.stringinc(uid,"boss")
 		var awardStr = checkpointsCfg[level].award
 		if(awardStr){
-			this.addItemStr({uid : uid},awardStr)
+			this.addItemStr(uid,awardStr)
 		}
 	}
 	//挑战BOSS失败

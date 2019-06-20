@@ -7,7 +7,7 @@ for(var i in openCfg){
 	openMap[openCfg[i].lv].push(openCfg[i].key)
 }
 console.log(openMap)
-//主角相关
+//经验相关
 module.exports = function() {
 	//增加经验
 	this.addEXP = function(uid,characterId,value,cb) {
@@ -23,7 +23,8 @@ module.exports = function() {
 			if(flag){
 				self.checkUpgrade(otps,curValue)
 			}
-			cb(flag,curValue)
+			if(cb)
+				cb(flag,curValue)
 		})
 	}
 	//检查升级
