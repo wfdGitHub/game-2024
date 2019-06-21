@@ -1,8 +1,8 @@
 var characterFun = require("./character.js")
 var attackSkill = require("../fight/attackSkill.js")
-//怪物
-var mob = function(otps) {
-    console.log("new mob")
+//伙伴
+var partner = function(otps) {
+    console.log("new partner")
     characterFun.call(this,otps)
     //注册事件
     //增加普攻技能
@@ -17,5 +17,5 @@ var mob = function(otps) {
         })
     }
 }
-mob.prototype = characterFun.prototype
-module.exports = mob
+partner.prototype = characterFun.prototype
+module.exports = partner

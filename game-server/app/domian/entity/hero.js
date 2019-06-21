@@ -1,8 +1,9 @@
 var characterFun = require("./character.js")
 var attackSkill = require("../fight/attackSkill.js")
+//主角
 var hero = function(otps) {
+    console.log("new hero")
     characterFun.call(this,otps)
-    this.characterType = "hero"
     // var character = new characterFun(otps,sprite,direction);
     //增加普攻技能
     var skill =  new attackSkill({skillId : 20001},this)

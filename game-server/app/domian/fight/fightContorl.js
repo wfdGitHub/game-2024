@@ -1,5 +1,4 @@
-var mobFun = require("../entity/mob.js")
-var heroFun = require("../entity/hero.js")
+var entityFun = require("../entity/entity.js")
 var fightingFun = require("./fighting.js")
 var fightContorl = function() {
 	this.maxCount = 2000			//最长计算次数
@@ -14,10 +13,10 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo,seededNum,rea
 	var atkTeam = []
 	var defTeam = []
 	for(var i in atkTeamInfo){
-		atkTeam.push(new heroFun(atkTeamInfo[i]))
+		atkTeam.push(entityFun(atkTeamInfo[i]))
 	}
 	for(var i in defTeamInfo){
-		defTeam.push(new heroFun(defTeamInfo[i]))
+		defTeam.push(entityFun(defTeamInfo[i]))
 	}
 	var fighting = new fightingFun(atkTeam,defTeam,{stepper : this.stepper,maxTime : this.maxTime,seededNum : seededNum,readList : readList})
 	for(var i in atkTeam){
