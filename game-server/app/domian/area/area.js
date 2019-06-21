@@ -60,6 +60,18 @@ area.prototype.incrbyCharacterInfo = function(uid,characterId,name,value,cb) {
 				}
 				self.players[uid].characters[index][name] += value
 			}
+			var notify = {
+				"type" : "characterInfoChange",
+				"characterId" : characterId,
+				"index" : index,
+				"name" : name,
+				"value" : value,
+				"curValue" : self.players[uid].characters[index][name]
+			}
+			self.channelService.pushMessageByUids('onMessage', notify, [{
+		      uid: uid,
+		      sid: self.connectorMap[uid]
+		    }])
 		}
 		if(cb)
 			cb(flag,data)
