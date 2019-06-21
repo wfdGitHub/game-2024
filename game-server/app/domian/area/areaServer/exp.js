@@ -12,37 +12,34 @@ module.exports = function() {
 	//增加经验
 	this.addEXP = function(uid,characterId,value,cb) {
 		var self = this
-		var otps = {
-			areaId : this.areaId,
-			uid : uid,
-			characterId : characterId,
-			value : value,
-			name : "exp"
-		}
-		this.incrbyCharacterInfo(otps,function(flag,curValue) {
+		this.incrbyCharacterInfo(uid,characterId,"exp",value,function(flag,curValue) {
 			if(flag){
-				self.checkUpgrade(otps,curValue)
+				self.checkUpgrade(uid,characterId,curValue)
 			}
 			if(cb)
 				cb(flag,curValue)
 		})
 	}
 	//检查升级
-	this.checkUpgrade = function(otps,curValue) {
+	this.checkUpgrade = function(uid,characterId,curValue) {
 		var self = this
+		var otps = {
+			areaId : this.areaId,
+			uid : uid,
+			characterId : characterId
+		}
 		self.characterDao.getCharacterInfo(otps,function(flag,characterInfo) {
 			if(!flag){
 				return
 			}
-			var characterId = Number(characterInfo.characterId)
 			var oldLv = Number(characterInfo.level)
 			var lv = oldLv
 			var oldExp = Number(characterInfo.exp)
 			var exp = oldExp
-			if(!(self.players[otps.uid] && self.players[otps.uid].characters[0] && self.players[otps.uid].characters[0].level)){
+			if(!(self.players[uid] && self.players[uid].characters[0] && self.players[uid].characters[0].level)){
 				return
 			}
-			var proLv = self.players[otps.uid].characters[0].level
+			var proLv = self.players[uid].characters[0].level
 			while(lvexpCfg[lv] && lvexpCfg[lv][characterId] && exp >= lvexpCfg[lv][characterId]){
 				if(characterId != 10001 && lv >= proLv){
 					break
@@ -51,26 +48,21 @@ module.exports = function() {
 				lv += 1
 			}
 			if(lv != oldLv){
-				otps.name = "exp"
-				otps.value = exp - oldExp
-				self.incrbyCharacterInfo(otps)
-				var otps2 = Object.assign({},otps)
-				otps2.name = "level"
-				otps2.value = lv - oldLv
-				self.incrbyCharacterInfo(otps2)
+				self.incrbyCharacterInfo(uid,characterId,"exp",exp - oldExp)
+				self.incrbyCharacterInfo(uid,characterId,"level",lv - oldLv)
 				var notify = {
 					"type" : "characterUpgrade",
-					"characterId" : otps.characterId,
+					"characterId" : characterId,
 					"oldLv" : oldLv,
 					"curLv" : lv,
 					"exp" : exp
 				}
 				self.channelService.pushMessageByUids('onMessage', notify, [{
-			      uid: otps.uid,
-			      sid: self.connectorMap[otps.uid]
+			      uid: uid,
+			      sid: self.connectorMap[uid]
 			    }])
-			    if(otps.characterId === 10001)
-			    	self.protagonistUpgrade(otps.uid,oldLv,lv)
+			    if(characterId === 10001)
+			    	self.protagonistUpgrade(uid,oldLv,lv)
 			}
 		})
 	}

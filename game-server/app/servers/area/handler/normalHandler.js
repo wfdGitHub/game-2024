@@ -1,6 +1,4 @@
 var bearcat = require("bearcat")
-var checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
-var charactersCfg = require("../../../../config/gameCfg/characters.json")
 var normalHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
@@ -25,7 +23,15 @@ normalHandler.prototype.addItem = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
-
+//测试
+normalHandler.prototype.test = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var items = msg.items
+  this.areaManager.areaMap[areaId].getBagItemList(uid,items,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "normalHandler",

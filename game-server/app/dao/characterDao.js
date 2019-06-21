@@ -51,7 +51,7 @@ characterDao.prototype.getCharacters = function(otps,cb) {
 		})
 	})
 }
-//获取角色属性
+//获取角色属性 {areaId,uid,characterId}
 characterDao.prototype.getCharacterInfo = function(otps,cb) {
 	this.redisDao.db.hgetall("area:area"+otps.areaId+":player:"+otps.uid+":characters:"+otps.characterId,function(err,data) {
 		if(err || !data){
@@ -63,8 +63,8 @@ characterDao.prototype.getCharacterInfo = function(otps,cb) {
 	})
 }
 //增减角色属性
-characterDao.prototype.incrbyCharacterInfo = function(otps,cb) {
-	this.redisDao.db.hincrby("area:area"+otps.areaId+":player:"+otps.uid+":characters:"+otps.characterId,otps.name,otps.value,function(err,data) {
+characterDao.prototype.incrbyCharacterInfo = function(areaId,uid,characterId,name,value,cb) {
+	this.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":characters:"+characterId,name,value,function(err,data) {
 		if(cb)
 			cb(true,data)
 	})

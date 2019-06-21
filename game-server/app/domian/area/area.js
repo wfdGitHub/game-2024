@@ -3,11 +3,6 @@ var bearcat = require("bearcat")
 var fightContorlFun = require("../fight/fightContorl.js")
 var charactersCfg = require("../../../config/gameCfg/characters.json")
 var areaServers = ["item","exp","partner","bag","dao","checkpoints"]
-var charactersMap = {
-	10001 : 0,
-	10002 : 1,
-	10003 : 2
-}
 var area = function(otps,app) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName
@@ -20,6 +15,11 @@ var area = function(otps,app) {
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
 		fun.call(this)
+	}
+	this.charactersMap = {
+		10001 : 0,
+		10002 : 1,
+		10003 : 2
 	}
 }
 //服务器初始化
@@ -48,16 +48,17 @@ area.prototype.userLeave = function(uid) {
 		this.onlineNum--
 	}
 }
-//增减角色属性
-area.prototype.incrbyCharacterInfo = function(otps,cb) {
-	var info = Object.assign({},otps)
-	info.areaId = this.areaId
-	var index = charactersMap[otps.characterId]
+//增减角色属性 {uid,characterId,name,value}
+area.prototype.incrbyCharacterInfo = function(uid,characterId,name,value,cb) {
+	var index = this.charactersMap[characterId]
 	var self = this
-	self.characterDao.incrbyCharacterInfo(info,function(flag,data) {
+	self.characterDao.incrbyCharacterInfo(this.areaId,uid,characterId,name,value,function(flag,data) {
 		if(flag){
-			if(self.players[info.uid] && self.players[info.uid].characters && self.players[info.uid].characters[index]){
-				self.players[info.uid].characters[index][info.name] += info.value
+			if(self.players[uid] && self.players[uid].characters && self.players[uid].characters[index]){
+				if(!self.players[uid].characters[index][name]){
+					self.players[uid].characters[index][name] = 0
+				}
+				self.players[uid].characters[index][name] += value
 			}
 		}
 		if(cb)
@@ -68,11 +69,10 @@ area.prototype.incrbyCharacterInfo = function(otps,cb) {
 area.prototype.createCharacter = function(otps) {
 	console.log("createCharacter",otps)
 	var characterInfo = this.characterDao.createCharacter(otps)
-	this.players[otps.uid].characters[charactersMap[characterInfo.characterId]] = characterInfo
+	this.players[otps.uid].characters[this.charactersMap[characterInfo.characterId]] = characterInfo
 	console.log(this.players[otps.uid])
 }
 //根据id获取角色信息
-
 area.prototype.getCharacterById = function(uid,characterId) {
 	if(this.players[uid] && this.players[uid].characters){
 		for(var i = 0;i < this.players[uid].characters.length;i++){
