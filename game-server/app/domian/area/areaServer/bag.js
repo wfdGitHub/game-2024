@@ -75,4 +75,17 @@ module.exports = function() {
 			}
 		})
 	}
+	//获取指定物品数量
+	this.getBagItemList = function(uid,items,cb) {
+		var multiList = []
+		for(var i = 0;i < items.length;i++){
+			multiList.push(["hget","area:area"+this.areaId+":player:"+uid+":bag",items[i]])
+		}
+		this.redisDao.multi(multiList,function(err,list) {
+			for(var i = 0;i < list.length;i++){
+				list[i] = Number(list[i])
+			}
+			cb(list)
+		})
+	}
 }
