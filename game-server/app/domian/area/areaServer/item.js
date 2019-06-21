@@ -43,13 +43,16 @@ module.exports = function() {
 		}
 	}
 	//解析物品奖励
-	this.addItemStr = function(uid,str) {
+	this.addItemStr = function(uid,str,rate) {
 		var list = str.split("&")
 		var self = this
+		if(!rate){
+			rate = 1
+		}
 		list.forEach(function(m_str) {
 			var m_list = m_str.split(":")
 			var itemId = Number(m_list[0])
-			var value = Number(m_list[1])
+			var value = Math.floor(Number(m_list[1]) * rate)
 			self.addItem(uid,itemId,value)
 		})
 	}

@@ -77,4 +77,30 @@ module.exports = function() {
 		    }
 		})
 	}
+	//获取挂机奖励
+	this.getOnhookAward = function(uid,power,cb) {
+		var self = this
+		self.getPlayerData(uid,"onhookLastTime",function(onhookLastTime) {
+			var curTime = Date.now()
+			var tmpTime = Math.floor((curTime - onhookLastTime) / (60 * 1000))
+			console.log("tmpTime ",tmpTime)
+			if(tmpTime < 5){
+				cb(false,"time is too short "+tmpTime)
+			  	return
+			}
+			self.getCheckpointsInfo(uid,function(level) {
+				if(!checkpointsCfg[level]){
+					cb(false,"level config error "+level)
+					return
+				}
+			  	var on_hook_award = checkpointsCfg[level].on_hook_award
+			  	console.log("on_hook_award ",on_hook_award)
+			  	var rate = (tmpTime * power) / 60 
+			  	console.log("rate ",rate,"tmpTime ",tmpTime)
+			  	self.incrbyPlayerData(uid,"onhookLastTime",tmpTime * 60 * 1000)
+			  	self.addItemStr(uid,on_hook_award,rate)
+			  	cb(true,tmpTime)
+			})
+		})
+	}
 }

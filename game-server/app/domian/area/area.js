@@ -34,8 +34,14 @@ area.prototype.register = function(otps,cb) {
 			cb(false,"账号已存在")
 		}else{
 			self.playerDao.createPlayer(otps,function(playerInfo) {
+				if(!playerInfo){
+					cb(false,playerInfo)
+					return
+				}
+				self.addPlayerData(otps.uid,"onhookLastTime",Date.now())
 				cb(true,playerInfo)
 			})
+
 		}
 	})
 }
@@ -48,6 +54,15 @@ area.prototype.userLogin = function(uid,cid,cb) {
 			this.onlineNum++
 			self.players[uid] = playerInfo
 			self.connectorMap[uid] = cid
+			self.getOnhookAward(uid,1,function(flag,data) {
+				if(flag){
+					var notify = {
+						type : "offlineOnhookAward",
+						data : data
+					}
+					self.sendToUser(uid,notify)
+				}
+			})
 		}
 		cb(playerInfo)
 	})
@@ -81,10 +96,7 @@ area.prototype.incrbyCharacterInfo = function(uid,characterId,name,value,cb) {
 				"value" : value,
 				"curValue" : self.players[uid].characters[index][name]
 			}
-			self.channelService.pushMessageByUids('onMessage', notify, [{
-		      uid: uid,
-		      sid: self.connectorMap[uid]
-		    }])
+			self.sendToUser(uid,notify)
 		}
 		if(cb)
 			cb(flag,data)
@@ -122,7 +134,12 @@ area.prototype.characterDeploy = function(info) {
 	newInfo.level = info.level
 	return newInfo
 }
-
+area.prototype.sendToUser = function(uid,notify) {
+	this.channelService.pushMessageByUids('onMessage', notify, [{
+      uid: uid,
+      sid: this.connectorMap[uid]
+    }])
+}
 module.exports = {
 	id : "area",
 	func : area,

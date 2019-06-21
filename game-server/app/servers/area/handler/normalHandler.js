@@ -13,6 +13,15 @@ normalHandler.prototype.useItem = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//在线领取挂机奖励
+normalHandler.prototype.getOnhookAward = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getOnhookAward(uid,1.2,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+
 //增加物品  测试功能
 normalHandler.prototype.addItem = function(msg, session, next) {
   var uid = session.get("uid")
