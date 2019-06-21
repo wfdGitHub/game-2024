@@ -26,6 +26,19 @@ var area = function(otps,app) {
 area.prototype.init = function() {
 	console.log("area init")
 }
+//玩家注册
+area.prototype.register = function(otps,cb) {
+	var self = this
+	self.playerDao.getPlayerInfo(otps,function(playerInfo) {
+		if(playerInfo){
+			cb(false,"账号已存在")
+		}else{
+			self.playerDao.createPlayer(otps,function(playerInfo) {
+				cb(true,playerInfo)
+			})
+		}
+	})
+}
 //玩家加入
 area.prototype.userLogin = function(uid,cid,cb) {
 	console.log("userLogin : ",uid)

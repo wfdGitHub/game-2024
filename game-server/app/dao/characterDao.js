@@ -16,7 +16,7 @@ var attributeType =   {
     "exp": "number"
 }
 var characterDao = function() {}
-//创建新角色
+//角色DB
 characterDao.prototype.createCharacter = function(otps) {
 	var characterInfo = {
 		characterId : otps.characterId,

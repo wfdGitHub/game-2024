@@ -2,7 +2,7 @@ var checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
 module.exports = function() {
 	//获取BOSS挑战信息
 	this.getCheckpointsInfo = function(uid,cb) {
-		this.getString(uid,"boss",function(data) {
+		this.getPlayerData(uid,"boss",function(data) {
 			data = Number(data)
 			if(!data){
 				data = 0
@@ -13,7 +13,7 @@ module.exports = function() {
 	//挑战BOSS成功
 	this.checkpointsSuccess = function(uid,level,cb) {
 		console.log("checkpointsSuccess")
-		this.stringinc(uid,"boss")
+		this.incrbyPlayerData(uid,"boss",1)
 		var awardStr = checkpointsCfg[level].award
 		if(awardStr){
 			this.addItemStr(uid,awardStr)

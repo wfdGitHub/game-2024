@@ -69,15 +69,12 @@ loginHandler.prototype.register = function(msg, session, next) {
         return
     }
 	var uid = session.get("uid")
-	var self = this
 	var otps = {areaId : areaId,uid : uid,name : name,sex : sex}
-	self.playerDao.getPlayerInfo(otps,function(playerInfo) {
-		if(playerInfo){
-			next(null,{flag : false,err : "账号已存在"})
+    this.app.rpc.area.areaRemote.register.toServer(serverId,otps,function(flag,data) {
+		if(flag){
+	        next(null,{flag : true,msg : data})
 		}else{
-			self.playerDao.createPlayer(otps,function(playerInfo) {
-				next(null,{flag : true,msg : playerInfo})
-			})
+			next(null,{flag : false,err : data})
 		}
 	})
 }

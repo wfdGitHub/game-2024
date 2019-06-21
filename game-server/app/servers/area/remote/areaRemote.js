@@ -8,6 +8,10 @@ areaRemote.prototype.loadArea = function(areaId,cb) {
 	this.areaManager.loadArea(areaId)
 	cb()
 }
+//注册账号
+areaRemote.prototype.register = function(otps,cb) {
+	this.areaManager.areaMap[otps.areaId].register(otps,cb)
+}
 //玩家加入
 areaRemote.prototype.userLogin = function(uid,areaId,cid,cb) {
 	this.areaManager.userLogin(uid,areaId,cid,cb)

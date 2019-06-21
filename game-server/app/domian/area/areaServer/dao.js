@@ -47,4 +47,52 @@ module.exports = function() {
 			}
 		})
 	}
+	//新增数据
+	this.addPlayerData = function(uid,name,value,cb) {
+		this.redisDao.db.hset("area:area"+this.areaId+":player:"+uid+":playerData",name,value,function(err,data) {
+			if(err){
+				console.log(err)
+				if(cb)
+					cb(false)
+			}else{
+				if(cb)
+					cb(data)
+			}
+		})
+	}
+	//增减数据
+	this.incrbyPlayerData = function(uid,name,value,cb) {
+		this.redisDao.db.hincrby("area:area"+this.areaId+":player:"+uid+":playerData",name,value,function(err,data) {
+			if(err){
+				console.log(err)
+				if(cb)
+					cb(false)
+			}else{
+				if(cb)
+					cb(data)
+			}
+		})
+	}
+	//获取数据
+	this.getPlayerData = function(uid,name,cb) {
+		this.redisDao.db.hget("area:area"+this.areaId+":player:"+uid+":playerData",name,function(err,data) {
+			if(err){
+				console.log(err)
+				cb(false)
+			}else{
+				cb(data)
+			}
+		})
+	}
+	//获取全部用户数据
+	this.getPlayerDataAll = function(uid,name,cb) {
+		this.redisDao.db.hgetall("area:area"+this.areaId+":player:"+uid+":playerData",function(err,data) {
+			if(err){
+				console.log(err)
+				cb(false)
+			}else{
+				cb(data)
+			}
+		})
+	}
 }
