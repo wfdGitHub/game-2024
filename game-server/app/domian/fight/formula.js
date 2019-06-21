@@ -149,7 +149,12 @@ formula.getTargetRandom = function(attacker,team,count) {
     if(list.length === 0){
         return false
     }else{
-    	list.sort(function(a,b){return attacker.fighting.seeded.random() > 0.5})
+    	for(var i = 0;i < list.length;i++){
+    		var index = Math.floor(attacker.fighting.seeded.random("排序") * list.length)
+    		var tmp = list[i]
+    		list[i] = list[index]
+    		list[index] = tmp
+    	}
     	for(var i = 0; i < count && i < list.length;i++){
     		list[i] = team[list[i]]
     	}
