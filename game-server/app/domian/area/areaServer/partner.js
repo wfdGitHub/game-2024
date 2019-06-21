@@ -39,7 +39,7 @@ module.exports = function() {
 			cb(false,"partner_advance max")
 			return
 		}
-		var consumeStr = partner_advance[curAdvance]["pc"+this.charactersMap[characterId]]
+		var consumeStr = partner_advance[curAdvance]["pc"+characterId]
 		console.log("consumeStr",consumeStr)
 		var strList = consumeStr.split("&")
 		var items = []

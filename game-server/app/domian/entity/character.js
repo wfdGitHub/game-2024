@@ -1,8 +1,8 @@
 var EventEmitter = require('events').EventEmitter;     // 引入事件模块
 var buffFactory = require("../fight/buffFactory.js")
 var character = function(otps) {
-	this.characterId = otps.characterId		//角色ID
-	this.name =otps.name		//名称
+	this.characterId = otps.id		//角色ID
+	this.name =otps.name			//名称
 	this.spriteType = otps.spriteType || 0 	//类型
 	this.characterType = otps.characterType	//角色类型
 	this.level = otps.level || 0			//等级
