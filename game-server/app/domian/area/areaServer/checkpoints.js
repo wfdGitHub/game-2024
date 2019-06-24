@@ -93,13 +93,17 @@ module.exports = function() {
 					cb(false,"level config error "+level)
 					return
 				}
+			  	self.incrbyPlayerData(uid,"onhookLastTime",tmpTime * 60 * 1000)
+			  	var awardTime = tmpTime
+			  	if(awardTime > 1440){
+			  		awardTime = 1440
+			  	}
 			  	var on_hook_award = checkpointsCfg[level].on_hook_award
 			  	console.log("on_hook_award ",on_hook_award)
-			  	var rate = (tmpTime * power) / 60 
-			  	console.log("rate ",rate,"tmpTime ",tmpTime)
-			  	self.incrbyPlayerData(uid,"onhookLastTime",tmpTime * 60 * 1000)
+			  	var rate = (awardTime * power) / 60 
+			  	console.log("rate ",rate,"awardTime ",awardTime)
 			  	self.addItemStr(uid,on_hook_award,rate)
-			  	cb(true,tmpTime)
+			  	cb(true,{allTime : tmpTime,awardTime : awardTime})
 			})
 		})
 	}
