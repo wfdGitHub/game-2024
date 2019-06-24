@@ -63,6 +63,7 @@ areaManager.prototype.userLeave = function(uid) {
 		this.areaMap[areaId].userLeave(uid)
 	}
 }
+//服务器实体机器移除
 areaManager.prototype.removeServers = function(ids) {
 	console.log("removeServers")
 	console.log(ids)

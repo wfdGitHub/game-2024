@@ -31,7 +31,9 @@ bearcat.start(function() {
         useDict : true,
         useProtobuf : true
       });
-
+      var connectorManager = bearcat.getBean("connectorManager")
+      connectorManager.init(app)
+      app.set("connectorManager",connectorManager)
   });
   app.configure('production|development', 'gate', function(){
     app.set('connectorConfig',

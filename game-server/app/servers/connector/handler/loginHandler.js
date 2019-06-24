@@ -81,7 +81,6 @@ loginHandler.prototype.register = function(msg, session, next) {
 //登录游戏
 loginHandler.prototype.loginArea = function(msg, session, next) {
 	var areaId = msg.areaId
-	var cid = session.frontendId
 	var uid = session.get("uid")
 	if(session.get("areaId")){
 		next(null,{flag : false,err : "已登录"})
