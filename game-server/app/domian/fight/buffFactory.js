@@ -32,7 +32,6 @@ buffFactory.getBuff = function(attacker,target,otps) {
 }
 //判断BUFF命中率
 buffFactory.checkBuffRate = function(attacker,target,skill) {
-	return true
 	var buffId = skill.buffId
 	var buffRate = skill.buffRate
 	var tmpRate = 0

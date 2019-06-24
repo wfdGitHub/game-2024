@@ -35,7 +35,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "10002": {
     "id": 10002,
@@ -73,7 +77,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "10003": {
     "id": 10003,
@@ -111,7 +119,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "11001": {
     "id": 11001,
@@ -149,7 +161,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "11002": {
     "id": 11002,
@@ -187,7 +203,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "11003": {
     "id": 11003,
@@ -225,7 +245,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "11004": {
     "id": 11004,
@@ -263,7 +287,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "11005": {
     "id": 11005,
@@ -301,7 +329,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "11006": {
     "id": 11006,
@@ -339,7 +371,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "11007": {
     "id": 11007,
@@ -377,7 +413,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "11008": {
     "id": 11008,
@@ -415,7 +455,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "11009": {
     "id": 11009,
@@ -453,7 +497,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "11010": {
     "id": 11010,
@@ -491,7 +539,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "12001": {
     "id": 12001,
@@ -528,7 +580,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "12002": {
     "id": 12002,
@@ -565,7 +621,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "12003": {
     "id": 12003,
@@ -602,7 +662,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "12004": {
     "id": 12004,
@@ -639,7 +703,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "12005": {
     "id": 12005,
@@ -676,7 +744,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "12006": {
     "id": 12006,
@@ -713,7 +785,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "12007": {
     "id": 12007,
@@ -750,7 +826,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "12008": {
     "id": 12008,
@@ -787,7 +867,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "12009": {
     "id": 12009,
@@ -824,7 +908,11 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   },
   "12010": {
     "id": 12010,
@@ -861,6 +949,10 @@
     "poisonAtk": 0,
     "poisonDef": 0,
     "chaosAtk": 0,
-    "chaosDef": 0
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
   }
 }
