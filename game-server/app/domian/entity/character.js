@@ -34,14 +34,18 @@ var character = function(otps) {
 	this.blockRate = this.b_arg.blockRate || 0					//格挡效果
 	this.frozenAtk = this.b_arg.frozenAtk || 0					//冰冻命中
 	this.frozenDef = this.b_arg.frozenDef || 0					//冰冻抗性
-	this.dizzyAtk = this.b_arg.dizzyAtk || 0						//眩晕命中
-	this.dizzyDef = this.b_arg.dizzyDef || 0						//眩晕抗性
+	this.dizzyAtk = this.b_arg.dizzyAtk || 0					//眩晕命中
+	this.dizzyDef = this.b_arg.dizzyDef || 0					//眩晕抗性
 	this.burnAtk = this.b_arg.burnAtk || 0						//燃烧命中
 	this.burnDef = this.b_arg.burnDef || 0						//燃烧抗性
 	this.poisonAtk = this.b_arg.poisonAtk || 0					//毒素命中
 	this.poisonDef = this.b_arg.poisonDef || 0					//毒素抗性
-	this.chaosAtk = this.b_arg.chaosAtk || 0						//混乱命中
-	this.chaosDef = this.b_arg.chaosDef || 0						//混乱抗性
+	this.chaosAtk = this.b_arg.chaosAtk || 0					//混乱命中
+	this.chaosDef = this.b_arg.chaosDef || 0					//混乱抗性
+	this.blackArtAtk = this.b_arg.blackArtAtk || 0				//妖术命中
+	this.blackArtDef = this.b_arg.blackArtDef || 0				//妖术抗性
+	this.silenceAtk = this.b_arg.silenceAtk || 0				//沉默命中
+	this.silenceDef = this.b_arg.silenceDef || 0				//沉默抗性
 	//=========================================//
 	this.fightSkills = {} 					//技能列表
     this.buffs = {}                        	//buff列表
@@ -51,6 +55,8 @@ var character = function(otps) {
     this.frozen = false                    	//冰冻标识  冰冻时技能CD停止
     this.dizzy = false                    	//眩晕标识  眩晕时不能行动
     this.chaos = false      				//混乱标识
+    this.blackArt = false					//妖术标识
+    this.silence = false					//沉默标识
 	this.event = new EventEmitter();
 }
 character.prototype.getSimpleInfo = function() {
@@ -91,6 +97,7 @@ character.prototype.getInfo = function() {
 		poisonDef : this.poisonDef,
 		chaosAtk : this.chaosAtk,
 		chaosDef : this.chaosDef,
+		blackArt : this.blackArt,
 	}
 	return info
 }
@@ -123,7 +130,7 @@ character.prototype.useSkill = function(skillId) {
 //被攻击
 character.prototype.hit = function(attacker, damageInfo,source) {
   	this.reduceHp(damageInfo.damage)
-  	console.log(attacker.name + " 使用 "+source.name+" 攻击 "+this.name,"-"+damageInfo.damage," 剩余血量 : ",this.hp)
+  	console.log(this.fighting.curTime + " " + attacker.name + " 使用 "+source.name+" 攻击 "+this.name,"-"+damageInfo.damage," 剩余血量 : ",this.hp)
   	this.event.emit("hit",attacker, damageInfo,source)
 }
 //生命值减少
@@ -155,7 +162,8 @@ character.prototype.update = function(stepper) {
 			this.fightSkills[skillId].updateTime(stepper)
 		}
 	}
-	if(!this.dizzy && !this.frozen){
+	//判断普攻
+	if(!this.dizzy && !this.frozen && !this.blackArt){
 		if(this.defaultSkill && this.defaultSkill.state){
 			this.defaultSkill.useSkill()
 		}
@@ -163,7 +171,7 @@ character.prototype.update = function(stepper) {
 }
 //是否不可使用技能
 character.prototype.banUse = function() {
-    if(this.dizzy || this.frozen || this.chaos){
+    if(this.dizzy || this.frozen || this.chaos || this.blackArt){
         return true
     }else{
         return false

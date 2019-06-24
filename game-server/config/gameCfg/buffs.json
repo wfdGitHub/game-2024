@@ -33,5 +33,19 @@
     "detail": "不分敌我，随机选择目标",
     "buffArg": 0,
     "duration": 3
+  },
+  "21006": {
+    "id": 21006,
+    "name": "妖术",
+    "detail": "变为小动物，无法攻击",
+    "buffArg": 0,
+    "duration": 3
+  },
+  "21007": {
+    "id": 21007,
+    "name": "沉默",
+    "detail": "不能使用除普攻外的技能",
+    "buffArg": 0,
+    "duration": 3
   }
 }

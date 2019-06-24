@@ -36,7 +36,7 @@
     "buffId": 21001,
     "buffArg": 0,
     "buffRate": 0.5,
-    "duration": 3
+    "duration": 10
   },
   "20004": {
     "id": 20004,
@@ -115,5 +115,31 @@
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 0
+  },
+  "20010": {
+    "id": 20010,
+    "name": "妖术",
+    "detail": "妖术",
+    "mul": 1,
+    "fixed": 0,
+    "skillCD": 5,
+    "targetType": 2,
+    "buffId": 21006,
+    "buffArg": 0,
+    "buffRate": 0.5,
+    "duration": 10
+  },
+  "20011": {
+    "id": 20011,
+    "name": "沉默",
+    "detail": "沉默",
+    "mul": 1,
+    "fixed": 0,
+    "skillCD": 5,
+    "targetType": 2,
+    "buffId": 21007,
+    "buffArg": 0,
+    "buffRate": 0.5,
+    "duration": 10
   }
 }
