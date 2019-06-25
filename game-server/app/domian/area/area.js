@@ -51,7 +51,7 @@ area.prototype.userLogin = function(uid,cid,cb) {
 	var self = this
 	self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
 		if(playerInfo){
-			this.onlineNum++
+			self.onlineNum++
 			self.players[uid] = playerInfo
 			self.connectorMap[uid] = cid
 			self.getOnhookAward(uid,1,function(flag,data) {
@@ -139,6 +139,15 @@ area.prototype.sendToUser = function(uid,notify) {
       uid: uid,
       sid: this.connectorMap[uid]
     }])
+}
+//获取服务器信息
+area.prototype.getAreaServerInfo = function(){
+	var info = {
+		areaId : this.areaId,
+		name : this.areaName,
+		onlineNum : this.onlineNum
+	}
+	return info
 }
 module.exports = {
 	id : "area",

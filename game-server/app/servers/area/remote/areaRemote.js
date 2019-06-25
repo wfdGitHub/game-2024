@@ -22,7 +22,11 @@ areaRemote.prototype.userLeave = function(uid,cb) {
 	this.areaManager.userLeave(uid)
 	cb()
 }
-
+//获取服务器信息
+areaRemote.prototype.getAreaServerInfos = function(cb) {
+	var list = this.areaManager.getAreaServerInfos()
+	cb(list)
+}
 
 module.exports = function(app) {
 	return bearcat.getBean({

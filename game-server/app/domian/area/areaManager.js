@@ -76,6 +76,14 @@ areaManager.prototype.removeServers = function(ids) {
 		}
 	})
 }
+//获取服务器状态
+areaManager.prototype.getAreaServerInfos = function() {
+	var list = {}
+	for(var i in this.areaMap){
+		list[i] = this.areaMap[i].getAreaServerInfo()
+	}
+	return list
+}
 module.exports = {
 	id : "areaManager",
 	func : areaManager,

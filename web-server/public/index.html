@@ -52,6 +52,9 @@
           });
         })
       }
+      pomelo.on("close",function(reason) {
+        console.log("close",reason)
+      })
       pomelo.on("onMessage",function(data) {
         console.log("onMessage")
         console.log(data)
@@ -99,6 +102,12 @@
       }
       var openArea = function() {
         pomelo.request("admin.adminHandler.openArea", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取服务器信息
+      var getAreaServerInfos = function() {
+        pomelo.request("admin.adminHandler.getAreaServerInfos", {}, function(data) {
             console.log(data);
         });
       }
