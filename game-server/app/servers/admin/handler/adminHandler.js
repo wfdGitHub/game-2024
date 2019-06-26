@@ -11,7 +11,7 @@ adminHanlder.prototype.activatePrivileges = function(msg, session, next) {
 		if(limit >= 10){
 			session.set("limit",limit)
 			session.push("limit")
-			next(null,{flag : true})
+			next(null,{flag : true,limit : limit})
 		}else{
 			next(null,{flag : false})
 		}
