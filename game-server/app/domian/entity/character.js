@@ -171,7 +171,7 @@ character.prototype.update = function(stepper) {
 }
 //是否不可使用技能
 character.prototype.banUse = function() {
-    if(this.dizzy || this.frozen || this.chaos || this.blackArt){
+    if(this.dizzy || this.frozen || this.chaos || this.blackArt || this.silence){
         return true
     }else{
         return false
