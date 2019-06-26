@@ -41,6 +41,19 @@ accountDao.prototype.getAccountInfo = function(otps,cb) {
 		}
 	})
 }
+//获取账号属性
+accountDao.prototype.getAccountData = function(otps,cb) {
+	var uid = otps.uid
+	var name = otps.name
+	var self = this
+	self.redisDao.db.hget("acc:user"+uid,name,function(err,data) {
+		if(err || !data){
+			cb(false)
+		}else{
+			cb(true,data)
+		}
+	})
+}
 module.exports = {
 	id : "accountDao",
 	func : accountDao,

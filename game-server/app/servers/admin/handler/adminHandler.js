@@ -3,6 +3,20 @@ var adminHanlder = function(app) {
 	this.app = app
 	this.areaDeploy = this.app.get("areaDeploy")
 }
+//激活管理员模式
+adminHanlder.prototype.activatePrivileges = function(msg, session, next) {
+	var uid = session.get("uid")
+	this.accountDao.getAccountData({uid : uid,name : "limit"},function(flag,limit) {
+		limit = parseInt(limit)
+		if(limit >= 10){
+			session.set("limit",limit)
+			session.push("limit")
+			next(null,{flag : true})
+		}else{
+			next(null,{flag : false})
+		}
+	})
+}
 //创建新服务器
 adminHanlder.prototype.openArea = function(msg, session, next) {
 	console.log("openArea")
@@ -31,6 +45,10 @@ module.exports = function(app) {
 		args : [{
 			name : "app",
 			value : app
+		}],
+		props : [{
+			name : "accountDao",
+			ref : "accountDao"
 		}]
 	})
 }

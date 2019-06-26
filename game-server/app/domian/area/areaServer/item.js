@@ -4,7 +4,8 @@ module.exports = function() {
 	//增加物品
 	this.addItem = function(uid,itemId,value,cb) {
 		if(!itemCfg[itemId]){
-			cb(false,"item not exist")
+			if(cb)
+				cb(false,"item not exist")
 			return
 		}
 		var self = this

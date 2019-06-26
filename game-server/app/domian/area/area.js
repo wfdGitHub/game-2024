@@ -41,7 +41,6 @@ area.prototype.register = function(otps,cb) {
 				self.addPlayerData(otps.uid,"onhookLastTime",Date.now())
 				cb(true,playerInfo)
 			})
-
 		}
 	})
 }
@@ -87,16 +86,16 @@ area.prototype.incrbyCharacterInfo = function(uid,characterId,name,value,cb) {
 					self.players[uid].characters[index][name] = 0
 				}
 				self.players[uid].characters[index][name] += value
+				var notify = {
+					"type" : "characterInfoChange",
+					"characterId" : characterId,
+					"index" : index,
+					"name" : name,
+					"value" : value,
+					"curValue" : self.players[uid].characters[index][name]
+				}
+				self.sendToUser(uid,notify)
 			}
-			var notify = {
-				"type" : "characterInfoChange",
-				"characterId" : characterId,
-				"index" : index,
-				"name" : name,
-				"value" : value,
-				"curValue" : self.players[uid].characters[index][name]
-			}
-			self.sendToUser(uid,notify)
 		}
 		if(cb)
 			cb(flag,data)
