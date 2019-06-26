@@ -1,7 +1,6 @@
 //服务器调配器,开服管理器
 var areaDeploy = function() {
 	this.name = "areaDeploy"
-	this.index = 0
 	this.areaList = []
 	this.serverMap = {}
 }
@@ -9,12 +8,6 @@ var areaDeploy = function() {
 areaDeploy.prototype.init = function(app) {
 	this.app = app
 	var self = this
-	self.areaDao.getAreaLastId(function(data) {
-		var lastId = parseInt(data)
-		if(data && lastId){
-			self.index = lastId
-		}
-	})
 	self.areaDao.getAreaList(function(data) {
 		if(data){
 			for(var i = 0;i < data.length;i++){
@@ -63,14 +56,26 @@ areaDeploy.prototype.deploy = function(areaInfo) {
 	if(!areaServers){
 		return false
 	}
-	this.index++;
-	if(this.index >= areaServers.length){
-		this.index = 0
+	var areaServersMap = {}
+	for(var i = 0;i < areaServers.length;i++){
+		areaServersMap[areaServers[i].id] = 0
 	}
-	var serverId = areaServers[this.index % areaServers.length].id
+	for(var areaId in this.serverMap){
+		areaServersMap[this.serverMap[areaId]]++
+	}
+	console.log("areaServersMap",areaServersMap)
+	var serverId = false
+	for(var i in areaServersMap){
+		if(serverId === false || areaServersMap[serverId] > areaServersMap[i]){
+			serverId = i
+		}
+	}
+	console.log("serverId ",serverId)
+	if(serverId === false)
+		return false
 	this.areaDao.setAreaServer(areaInfo.areaId,serverId)
 	this.updateArea(areaInfo,serverId)
-	return this.serverMap[areaInfo.areaId]
+	return serverId
 }
 //同步更新游戏服务器
 areaDeploy.prototype.updateArea = function(areaInfo,serverId) {
