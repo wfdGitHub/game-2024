@@ -59,6 +59,10 @@
         console.log("onMessage")
         console.log(data)
       })
+      pomelo.on("onChat",function(data) {
+        console.log("onChat")
+        console.log(data)
+      })
       //获取服务器列表
       var getAreaList = function(index) {
         pomelo.request("connector.loginHandler.getAreaList", {index : index}, function(data) {
@@ -95,8 +99,21 @@
             console.log(data);
         });
       }
-      var areaSay = function() {
-        pomelo.request("area.areaHandler.say", "hello pomelo", function(data) {
+      //加入聊天室
+      var joinChatRoom = function(roomName) {
+        pomelo.request("chat.chatHandler.joinChatRoom",{roomName : roomName}, function(data) {
+            console.log(data);
+        });
+      }
+      //离开聊天室
+      var leaveChatRoom = function(roomName) {
+        pomelo.request("chat.chatHandler.leaveChatRoom",{roomName : roomName}, function(data) {
+            console.log(data);
+        });
+      }
+      //发送聊天消息
+      var say = function(roomName,text) {
+        pomelo.notify("chat.chatHandler.say",{roomName : roomName,text : text}, function(data) {
             console.log(data);
         });
       }

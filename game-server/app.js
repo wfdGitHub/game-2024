@@ -2,6 +2,7 @@ var pomelo = require('pomelo');
 var bearcat = require("bearcat")
 var contextPath = require.resolve('./context.json');
 var areaFilter = require('./util/filters/areaFilter.js');
+var chatFilter = require('./util/filters/chatFilter.js');
 var app = pomelo.createApp();
 /**
  * Init app for client.
@@ -31,9 +32,6 @@ bearcat.start(function() {
         useDict : true,
         useProtobuf : true
       });
-      var connectorManager = bearcat.getBean("connectorManager")
-      connectorManager.init(app)
-      app.set("connectorManager",connectorManager)
   });
   app.configure('production|development', 'gate', function(){
     app.set('connectorConfig',
@@ -49,16 +47,6 @@ bearcat.start(function() {
         //   cert: fs.readFileSync('./keys/server.crt'),
         // }
       });
-  });
-  app.configure('production|development', 'area', function(){
-    var areaManager = bearcat.getBean("areaManager")
-    areaManager.init(app)
-    app.set("areaManager",areaManager)
-  });
-  app.configure('production|development', 'admin|connector', function(){
-    var areaDeploy = bearcat.getBean("areaDeploy")
-    areaDeploy.init(app)
-    app.set("areaDeploy",areaDeploy)
   });
   //后端服务器分配路由
   var areaRoute = function(session, msg, app, cb) {
@@ -76,5 +64,29 @@ bearcat.start(function() {
   app.configure('production|development', 'area', function() {
     app.before(areaFilter());
   });
-	app.start()
+  app.configure('production|development', 'chat', function() {
+    app.before(chatFilter());
+  });
+	app.start(function() {
+    app.configure('production|development', 'chat', function(){
+      var chat = bearcat.getBean("chat")
+      chat.init(app)
+      app.set("chat",chat)
+    });
+    app.configure('production|development', 'area', function(){
+      var areaManager = bearcat.getBean("areaManager")
+      areaManager.init(app)
+      app.set("areaManager",areaManager)
+    });
+    app.configure('production|development', 'admin|connector', function(){
+      var areaDeploy = bearcat.getBean("areaDeploy")
+      areaDeploy.init(app)
+      app.set("areaDeploy",areaDeploy)
+    });
+    app.configure('production|development', 'connector', function(){
+        var connectorManager = bearcat.getBean("connectorManager")
+        connectorManager.init(app)
+        app.set("connectorManager",connectorManager)
+    });
+  })
 })

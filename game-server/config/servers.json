@@ -13,6 +13,9 @@
     "area":[
       {"id": "area-server-1", "host": "127.0.0.1", "port": 3250,"auto-restart": true},
       {"id": "area-server-2", "host": "127.0.0.1", "port": 3251,"auto-restart": true}
+    ],
+    "chat":[
+      {"id": "chat-server-1", "host": "127.0.0.1", "port": 3400,"auto-restart": true}
     ]
   }
 }

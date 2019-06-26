@@ -46,14 +46,18 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
   	next(null, {flag : true,msg : userInfo});
 }
 var onUserLeave = function(session) {
-  console.log("onUserLeave : "+session.get("uid"))
-  if(!session) {
-    return
-  }
-  var serverId = session.get("serverId")
-  if(serverId){
-  	this.app.rpc.area.areaRemote.userLeave.toServer(serverId,session.get("uid"),null)
-  }
+	var uid = session.get("uid")
+	console.log("onUserLeave : "+uid)
+	if(uid){
+		if(!session) {
+			return
+		}
+		var serverId = session.get("serverId")
+		if(serverId){
+			this.app.rpc.area.areaRemote.userLeave.toServer(serverId,uid,null)
+		}
+		this.app.rpc.chat.chatRemote.userLeave(null,uid,this.app.serverId,null)
+	}
 }
 
 module.exports = function(app) {
