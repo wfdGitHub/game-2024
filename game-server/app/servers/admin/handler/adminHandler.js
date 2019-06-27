@@ -38,6 +38,18 @@ adminHanlder.prototype.getAreaServerInfos = function(msg, session, next) {
 		})
 	}
 }
+//获取服务器内玩家信息
+adminHanlder.prototype.getAreaPlayers = function(msg, session, next) {
+	var areaId = msg.areaId
+	var serverId = this.areaDeploy.getServer(areaId)
+    if(!serverId){
+        next(null,{flag : false,err : "服务器不存在"})
+        return
+    }
+    this.app.rpc.area.areaRemote.getAreaPlayers.toServer(serverId,areaId,function(flag,list) {
+    	next(null,{flag : true,list : list})
+	})
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "adminHanlder",

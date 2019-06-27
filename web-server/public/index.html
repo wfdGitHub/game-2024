@@ -140,13 +140,20 @@
             console.log(data);
         });
       }
+      //获取服务器成员
+      var getAreaPlayers = function(areaId) {
+        pomelo.request("admin.adminHandler.getAreaPlayers", {areaId : areaId}, function(data) {
+            console.log(data);
+        });
+      }
+      getAreaPlayers
       //获取聊天室列表
       var getChatRooms = function() {
         pomelo.request("chat.adminChat.getChatRooms", {}, function(data) {
             console.log(data);
         });
       }
-      //获取聊天室列表
+      //获取聊天室成员
       var getMembers = function(roomName) {
         pomelo.request("chat.adminChat.getMembers", {roomName : roomName}, function(data) {
             console.log(data);

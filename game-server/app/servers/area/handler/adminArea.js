@@ -4,6 +4,7 @@ var adminArea = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+//发放物品
 adminArea.prototype.sendItem = function(msg, session, next) {
   var limit = session.get("limit")
   if(!limit || limit < 10){

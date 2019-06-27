@@ -27,6 +27,15 @@ areaRemote.prototype.getAreaServerInfos = function(cb) {
 	var list = this.areaManager.getAreaServerInfos()
 	cb(list)
 }
+//获取服务器内玩家信息
+areaRemote.prototype.getAreaPlayers = function(areaId,cb) {
+	if(this.areaManager.areaMap[areaId]){
+		var list = this.areaManager.areaMap[areaId].getAreaPlayers()
+		cb(true,list)
+	}else{
+		cb(false)
+	}
+}
 
 module.exports = function(app) {
 	return bearcat.getBean({

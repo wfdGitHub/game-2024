@@ -146,6 +146,10 @@ area.prototype.getAreaServerInfo = function(){
 	}
 	return info
 }
+//获取服务器内玩家信息
+area.prototype.getAreaPlayers = function(){
+	return this.players
+}
 module.exports = {
 	id : "area",
 	func : area,
