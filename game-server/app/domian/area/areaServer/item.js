@@ -28,6 +28,10 @@ module.exports = function() {
 	}
 	//增加物品回调
 	this.addItemCB = function(uid,itemId,value,cb) {
+		if(typeof(itemId) !== "number"){
+			cb(false,"type error "+typeof(itemId))
+			return
+		}
 		if(itemCfg[itemId] && itemCfg[itemId].isBag){
 			this.addBagItem(uid,itemId,value,cb)
 		}else{
