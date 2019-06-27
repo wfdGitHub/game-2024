@@ -43,7 +43,7 @@ Handler.prototype.queryClientEntry = function(msg, session, next) {
 		return;
 	}
 	this.index++;
-	console.log("index : ",this.index,connectors.length)
+	// console.log("index : ",this.index,connectors.length)
 	if(this.index >= connectors.length){
 		this.index = 0
 	}

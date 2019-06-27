@@ -40,7 +40,7 @@ module.exports = function() {
 			return
 		}
 		var consumeStr = partner_advance[curAdvance]["pc"+characterId]
-		console.log("consumeStr",consumeStr)
+		// console.log("consumeStr",consumeStr)
 		var strList = consumeStr.split("&")
 		var items = []
 		var values = []

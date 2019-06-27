@@ -63,14 +63,14 @@ areaDeploy.prototype.deploy = function(areaInfo) {
 	for(var areaId in this.serverMap){
 		areaServersMap[this.serverMap[areaId]]++
 	}
-	console.log("areaServersMap",areaServersMap)
+	// console.log("areaServersMap",areaServersMap)
 	var serverId = false
 	for(var i in areaServersMap){
 		if(serverId === false || areaServersMap[serverId] > areaServersMap[i]){
 			serverId = i
 		}
 	}
-	console.log("serverId ",serverId)
+	// console.log("serverId ",serverId)
 	if(serverId === false)
 		return false
 	this.areaDao.setAreaServer(areaInfo.areaId,serverId)

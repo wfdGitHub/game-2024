@@ -7,11 +7,9 @@ var connectorRemote = function(app) {
 //更新
 connectorRemote.prototype.updateArea = function(areaInfo,serverId,cb) {
 	this.areaDeploy.updateArea(areaInfo,serverId)
-	console.log("updateArea  ",this.app.serverId,this.areaDeploy.getServerMap())
 	cb()
 }
 connectorRemote.prototype.sendByUid = function(uid,notify,cb) {
-	console.log(this.channelService,typeof(uid))
 	this.channelService.pushMessageByUids('onMessage', notify, [{
       uid: uid,
       sid: this.app.get('serverId')

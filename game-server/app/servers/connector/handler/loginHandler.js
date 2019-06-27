@@ -95,7 +95,6 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
         next(null,{flag : false,err : "服务器不存在"})
         return
     }
-    console.log("serverId",serverId,this.app.serverId)
     this.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,this.app.serverId,function(playerInfo) {
 		if(playerInfo){
 	        session.set("areaId",areaId)
