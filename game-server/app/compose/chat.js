@@ -59,7 +59,6 @@ chat.prototype.leaveChatRoom = function(uid,sid,roomName,cb) {
 
 //玩家离线
 chat.prototype.userLeave = function(uid,sid) {
-	console.log("玩家离线",uid,sid,this.userMap[uid])
 	if(this.userMap[uid]){
 		for(var roomName in this.userMap[uid]){
 			if(this.userMap[uid][roomName] === sid){

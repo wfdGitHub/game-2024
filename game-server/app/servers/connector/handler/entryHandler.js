@@ -42,7 +42,7 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
 	session.set("head",userInfo.head)
 	session.push("head")
 	session.on("closed",onUserLeave.bind(this))
-	console.log(session.get("nickname") + " "+session.get("uid") + "  entrySuccess..")
+	console.log(session.get("uid") + "  entrySuccess..")
   	next(null, {flag : true,msg : userInfo});
 }
 var onUserLeave = function(session) {
