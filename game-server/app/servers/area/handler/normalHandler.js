@@ -21,7 +21,24 @@ normalHandler.prototype.getOnhookAward = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
-
+//角色进阶
+normalHandler.prototype.advanced = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var characterId = msg.characterId
+  this.areaManager.areaMap[areaId].advanced(uid,characterId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//角色突破
+normalHandler.prototype.breakthrough = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var characterId = msg.characterId
+  this.areaManager.areaMap[areaId].breakthrough(uid,characterId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //增加物品  测试功能
 normalHandler.prototype.addItem = function(msg, session, next) {
   var uid = session.get("uid")

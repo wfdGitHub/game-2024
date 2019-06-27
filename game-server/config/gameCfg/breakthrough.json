@@ -1,0 +1,92 @@
+{
+  "1": {
+    "name": "突破1",
+    "hero_pc": "3003:1&3002:100",
+    "hero_pa": "atk:1&def:1",
+    "partner_pc": "3003:1&3002:100",
+    "partner_pa": "atk:1&def:1",
+    "pet_pc": "3004:1&3002:100",
+    "pet_pa": "atk:1&def:1"
+  },
+  "2": {
+    "name": "突破2",
+    "hero_pc": "3003:1&3002:100",
+    "hero_pa": "atk:1&def:2",
+    "partner_pc": "3003:1&3002:100",
+    "partner_pa": "atk:1&def:2",
+    "pet_pc": "3004:1&3002:100",
+    "pet_pa": "atk:1&def:2"
+  },
+  "3": {
+    "name": "突破3",
+    "hero_pc": "3003:1&3002:100",
+    "hero_pa": "atk:1&def:3",
+    "partner_pc": "3003:1&3002:100",
+    "partner_pa": "atk:1&def:3",
+    "pet_pc": "3004:1&3002:100",
+    "pet_pa": "atk:1&def:3"
+  },
+  "4": {
+    "name": "突破4",
+    "hero_pc": "3003:1&3002:100",
+    "hero_pa": "atk:1&def:4",
+    "partner_pc": "3003:1&3002:100",
+    "partner_pa": "atk:1&def:4",
+    "pet_pc": "3004:1&3002:100",
+    "pet_pa": "atk:1&def:4"
+  },
+  "5": {
+    "name": "突破5",
+    "hero_pc": "3003:1&3002:100",
+    "hero_pa": "atk:1&def:5",
+    "partner_pc": "3003:1&3002:100",
+    "partner_pa": "atk:1&def:5",
+    "pet_pc": "3004:1&3002:100",
+    "pet_pa": "atk:1&def:5"
+  },
+  "6": {
+    "name": "突破6",
+    "hero_pc": "3003:1&3002:100",
+    "hero_pa": "atk:1&def:6",
+    "partner_pc": "3003:1&3002:100",
+    "partner_pa": "atk:1&def:6",
+    "pet_pc": "3004:1&3002:100",
+    "pet_pa": "atk:1&def:6"
+  },
+  "7": {
+    "name": "突破7",
+    "hero_pc": "3003:1&3002:100",
+    "hero_pa": "atk:1&def:7",
+    "partner_pc": "3003:1&3002:100",
+    "partner_pa": "atk:1&def:7",
+    "pet_pc": "3004:1&3002:100",
+    "pet_pa": "atk:1&def:7"
+  },
+  "8": {
+    "name": "突破8",
+    "hero_pc": "3003:1&3002:100",
+    "hero_pa": "atk:1&def:8",
+    "partner_pc": "3003:1&3002:100",
+    "partner_pa": "atk:1&def:8",
+    "pet_pc": "3004:1&3002:100",
+    "pet_pa": "atk:1&def:8"
+  },
+  "9": {
+    "name": "突破9",
+    "hero_pc": "3003:1&3002:100",
+    "hero_pa": "atk:1&def:9",
+    "partner_pc": "3003:1&3002:100",
+    "partner_pa": "atk:1&def:9",
+    "pet_pc": "3004:1&3002:100",
+    "pet_pa": "atk:1&def:9"
+  },
+  "10": {
+    "name": "突破10",
+    "hero_pc": "3003:1&3002:100",
+    "hero_pa": "atk:1&def:10",
+    "partner_pc": "3003:1&3002:100",
+    "partner_pa": "atk:1&def:10",
+    "pet_pc": "3004:1&3002:100",
+    "pet_pa": "atk:1&def:10"
+  }
+}

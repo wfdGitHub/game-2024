@@ -192,9 +192,15 @@
             console.log(data);
         })
       }
-      //伙伴进阶
-      var advancedPartner = function(characterId) {
-        pomelo.request("area.partnerHandler.advancedPartner",{characterId : characterId}, function(data) {
+      //角色进阶
+      var advanced = function(characterId) {
+        pomelo.request("area.normalHandler.advanced",{characterId : characterId}, function(data) {
+            console.log(data);
+        })
+      }
+      //角色突破
+      var breakthrough = function(characterId) {
+        pomelo.request("area.normalHandler.breakthrough",{characterId : characterId}, function(data) {
             console.log(data);
         })
       }
