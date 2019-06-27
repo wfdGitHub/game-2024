@@ -140,6 +140,18 @@
             console.log(data);
         });
       }
+      //获取聊天室列表
+      var getChatRooms = function() {
+        pomelo.request("chat.adminChat.getChatRooms", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取聊天室列表
+      var getMembers = function(roomName) {
+        pomelo.request("chat.adminChat.getMembers", {roomName : roomName}, function(data) {
+            console.log(data);
+        });
+      }
       var challengeCheckpoints = function(seededNum,readList) {
         pomelo.request("area.fightHandler.challengeCheckpoints",{seededNum : seededNum,readList : readList}, function(data) {
             console.log(data);
