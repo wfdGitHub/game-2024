@@ -1,4 +1,5 @@
 var lvexpCfg = require("../../../../config/gameCfg/lv_exp.json")
+var charactersCfg = require("../../../../config/gameCfg/characters.json")
 var openCfg = require("../../../../config/gameCfg/open.json")
 var openMap = {}
 for(var i in openCfg){
@@ -39,11 +40,12 @@ module.exports = function() {
 				return
 			}
 			var proLv = self.players[uid].characters[0].level
-			while(lvexpCfg[lv] && lvexpCfg[lv][characterId] && exp >= lvexpCfg[lv][characterId]){
-				if(characterId != 10001 && lv >= proLv){
+			var characterType = charactersCfg[characterId].characterType
+			while(lvexpCfg[lv] && lvexpCfg[lv][characterType] && exp >= lvexpCfg[lv][characterType]){
+				if(characterType != "hero" && lv >= proLv){
 					break
 				}
-				exp -= lvexpCfg[lv][characterId]
+				exp -= lvexpCfg[lv][characterType]
 				lv += 1
 			}
 			if(lv != oldLv){
