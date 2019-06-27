@@ -103,10 +103,8 @@ area.prototype.incrbyCharacterInfo = function(uid,characterId,name,value,cb) {
 }
 //增加角色
 area.prototype.createCharacter = function(otps) {
-	console.log("createCharacter",otps)
 	var characterInfo = this.characterDao.createCharacter(otps)
 	this.players[otps.uid].characters[this.charactersMap[characterInfo.characterId]] = characterInfo
-	console.log(this.players[otps.uid])
 }
 //根据id获取角色信息
 area.prototype.getCharacterById = function(uid,characterId) {

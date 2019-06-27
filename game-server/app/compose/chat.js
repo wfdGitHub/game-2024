@@ -45,11 +45,9 @@ chat.prototype.leaveChatRoom = function(uid,sid,roomName,cb) {
 	if(this.userMap[uid] && this.userMap[uid][roomName] && this.rooms[roomName]){
 		this.rooms[roomName].leave(uid,sid)
 		delete this.userMap[uid][roomName]
-		console.log("聊天室当前人数",this.rooms[roomName].getUserAmount())
 		if(this.rooms[roomName].getUserAmount() <= 0){
 			this.rooms[roomName].destroy()
 			delete this.rooms[roomName]
-			console.log("移除聊天室",this.rooms,this.channelService.channels)
 		}
 		if(cb)
 			cb(true)

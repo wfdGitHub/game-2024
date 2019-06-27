@@ -99,9 +99,9 @@ module.exports = function() {
 			  		awardTime = 1440
 			  	}
 			  	var on_hook_award = checkpointsCfg[level].on_hook_award
-			  	console.log("on_hook_award ",on_hook_award)
+			  	// console.log("on_hook_award ",on_hook_award)
 			  	var rate = (awardTime * power) / 60 
-			  	console.log("rate ",rate,"awardTime ",awardTime)
+			  	// console.log("rate ",rate,"awardTime ",awardTime)
 			  	self.addItemStr(uid,on_hook_award,rate)
 			  	cb(true,{allTime : tmpTime,awardTime : awardTime})
 			})

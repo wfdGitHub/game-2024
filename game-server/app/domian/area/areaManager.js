@@ -13,7 +13,6 @@ areaManager.prototype.init = function(app) {
 	this.app = app
 	var self = this
 	self.areaDao.getAreaServerMap(function(data) {
-		console.log("getAreaServerMap",data,self.app.serverId)
 		if(data){
 			for(var areaId in data){
 				if(data[areaId] == self.app.serverId){

@@ -88,5 +88,6 @@ bearcat.start(function() {
         connectorManager.init(app)
         app.set("connectorManager",connectorManager)
     });
+    console.log(app.serverId + " is ready")
   })
 })

@@ -1,4 +1,3 @@
-console.log(__dirname)
 var characterFun = require("../domian/entity/character.js")
 var charactersJson = require("../../config/gameCfg/characters.json")
 var attributeType =   {

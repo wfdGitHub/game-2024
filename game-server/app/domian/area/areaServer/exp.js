@@ -6,7 +6,6 @@ for(var i in openCfg){
 		openMap[openCfg[i].lv] = []
 	openMap[openCfg[i].lv].push(openCfg[i].key)
 }
-console.log(openMap)
 //经验相关
 module.exports = function() {
 	//增加经验
@@ -80,7 +79,6 @@ module.exports = function() {
 	}
 	//功能开启
 	this.sysOpen = function(uid,key) {
-		console.log("sysOpen ",uid,key)
 		switch(key){
 			case "partner1":
 				this.openPartner1(uid)

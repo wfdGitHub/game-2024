@@ -23,7 +23,6 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 playerDao.prototype.getPlayerInfo = function(otps,cb) {
 	var self = this
 	self.redisDao.db.hgetall("area:area"+otps.areaId+":player:"+otps.uid+":playerInfo",function(err,playerInfo) {
-		console.log(err,playerInfo)
 		if(err || !playerInfo){
 			cb(false)
 		}else{
