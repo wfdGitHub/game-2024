@@ -85,8 +85,9 @@ module.exports = function() {
 			var tmpTime = Math.floor((curTime - onhookLastTime) / (60 * 1000))
 			// console.log("tmpTime ",tmpTime)
 			if(tmpTime < 5){
-				cb(false,"time is too short "+tmpTime)
-			  	return
+				tmpTime = 5
+				// cb(false,"time is too short "+tmpTime)
+			 //  	return
 			}
 			self.getCheckpointsInfo(uid,function(level) {
 				if(!checkpointsCfg[level]){
