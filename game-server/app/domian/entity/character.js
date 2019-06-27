@@ -1,11 +1,16 @@
 var EventEmitter = require('events').EventEmitter;     // 引入事件模块
 var buffFactory = require("../fight/buffFactory.js")
+var advanceCfg = require("../../../config/gameCfg/advance.json")
+var breakthroughCfg = require("../../../config/gameCfg/breakthrough.json")
+var innateCfg = require("../../../config/gameCfg/innate.json")
+var talentCfg = require("../../../config/gameCfg/talent.json")
 var character = function(otps) {
 	this.characterId = otps.id		//角色ID
 	this.name =otps.name			//名称
 	this.spriteType = otps.spriteType || 0 	//类型
 	this.characterType = otps.characterType	//角色类型
 	this.level = otps.level || 0			//等级
+	this.addition(otps)
 	//=========================================//
 	this.b_arg = {}
 	for(var i in otps){
@@ -58,6 +63,49 @@ var character = function(otps) {
     this.blackArt = false					//妖术标识
     this.silence = false					//沉默标识
 	this.event = new EventEmitter();
+}
+//计算加成效果
+character.prototype.addition = function(otps) {
+	//进阶加成
+    if(otps.advance && advanceCfg[otps.advance]){
+	    var advanceStr = advanceCfg[otps.advance][this.characterType+"_pa"]
+	      	if(advanceStr){
+	        console.log("进阶加成",advanceStr)
+	        this.formula(otps,advanceStr)
+	    }
+		//天赋加成
+		var curLevel = advanceCfg[otps.advance][this.characterType+"_ie"]
+		if(curLevel && innateCfg[this.characterId] && innateCfg[this.characterId][curLevel]){
+			for(var i = 1;i <= curLevel;i++){
+				if(talentCfg[innateCfg[this.characterId][i]]){
+					var str = talentCfg[innateCfg[this.characterId][i]].pa
+					console.log("天赋加成",str)
+					this.formula(otps,str)
+				}
+			}
+		}
+    }
+	//突破加成
+    if(otps.breakthrough && breakthroughCfg[otps.breakthrough] && breakthroughCfg[otps.breakthrough][this.characterType+"_pa"]){
+      var breakthroughStr = breakthroughCfg[otps.breakthrough][this.characterType+"_pa"]
+      if(breakthroughStr){
+        console.log("突破加成",breakthroughStr)
+        this.formula(otps,breakthroughStr)
+      }
+    }
+}
+//属性加成公式
+character.prototype.formula = function(otps,str) {
+	var strList = str.split("&")
+    strList.forEach(function(m_str) {
+      var m_list = m_str.split(":")
+      var name = m_list[0]
+      var value = Number(m_list[1])
+      if(!otps[name]){
+        otps[name] = 0
+      }
+      otps[name] += value
+    })
 }
 character.prototype.getSimpleInfo = function() {
 	var info = {
