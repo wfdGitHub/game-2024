@@ -1,7 +1,6 @@
 var EventEmitter = require('events').EventEmitter;     // 引入事件模块
 var buffFactory = require("../fight/buffFactory.js")
 var advanceCfg = require("../../../config/gameCfg/advance.json")
-var breakthroughCfg = require("../../../config/gameCfg/breakthrough.json")
 var innateCfg = require("../../../config/gameCfg/innate.json")
 var talentCfg = require("../../../config/gameCfg/talent.json")
 var character = function(otps) {
@@ -84,14 +83,6 @@ character.prototype.addition = function(otps) {
 				}
 			}
 		}
-    }
-	//突破加成
-    if(otps.breakthrough && breakthroughCfg[otps.breakthrough] && breakthroughCfg[otps.breakthrough][this.characterType+"_pa"]){
-      var breakthroughStr = breakthroughCfg[otps.breakthrough][this.characterType+"_pa"]
-      if(breakthroughStr){
-        console.log("突破加成",breakthroughStr)
-        this.formula(otps,breakthroughStr)
-      }
     }
 }
 //属性加成公式
