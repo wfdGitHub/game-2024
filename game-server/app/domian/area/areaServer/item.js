@@ -17,10 +17,7 @@ module.exports = function() {
 					"value" : value,
 					"curValue" : curValue
 				}
-				self.channelService.pushMessageByUids('onMessage', notify, [{
-			      uid: uid,
-			      sid: self.connectorMap[uid]
-			    }])
+				self.sendToUser(uid,notify)
 			}
 			if(cb)
 				cb(flag,curValue)
@@ -38,7 +35,7 @@ module.exports = function() {
 			switch(itemId){
 				case 100:
 					//主角经验
-					this.addEXP(uid,10001,value,cb)
+					this.addCharacterEXP(uid,10001,value,cb)
 				break
 				default:
 					console.log("addItem error : "+itemId)

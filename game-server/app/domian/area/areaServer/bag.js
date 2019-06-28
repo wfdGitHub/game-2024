@@ -37,7 +37,7 @@ module.exports = function() {
 						cb(false,"character level limit : "+otps.characterId)
 						return
 					}
-					this.addEXP(otps.uid,otps.characterId,otps.value * 500)
+					this.addCharacterEXP(otps.uid,otps.characterId,otps.value * 500)
 					otps.value = -otps.value
 					this.addItem(otps.uid,otps.itemId,otps.value,cb)
 				}else{

@@ -30,6 +30,15 @@ normalHandler.prototype.advanced = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//角色转生
+normalHandler.prototype.characterSamsara = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var characterId = msg.characterId
+  this.areaManager.areaMap[areaId].characterSamsara(uid,characterId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //增加物品  测试功能
 normalHandler.prototype.addItem = function(msg, session, next) {
   var uid = session.get("uid")

@@ -22,6 +22,10 @@ module.exports = function() {
 			cb(false,"advance max")
 			return
 		}
+		if(!advanceCfg[curAdvance][characters[characterId].characterType+"_pc"]){
+			cb(false,"characterType error "+characters[characterId].characterType)
+			return
+		}
 		var consumeStr = advanceCfg[curAdvance][characters[characterId].characterType+"_pc"]
 		// console.log("consumeStr",consumeStr)
 		var strList = consumeStr.split("&")

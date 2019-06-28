@@ -198,6 +198,12 @@
             console.log(data);
         })
       }
+      //角色转生
+      var characterSamsara = function(characterId) {
+        pomelo.request("area.normalHandler.characterSamsara",{characterId : characterId}, function(data) {
+            console.log(data);
+        })
+      }
     </script>
   </head>
   <body>
