@@ -1,4 +1,4 @@
-//背包系统
+//背包物品系统
 var itemCfg = require("../../../../config/gameCfg/item.json")
 module.exports = function() {
 	this.playerBags = {}
@@ -86,6 +86,63 @@ module.exports = function() {
 				list[i] = Number(list[i])
 			}
 			cb(list)
+		})
+	}
+	//增加物品
+	this.addItem = function(uid,itemId,value,cb) {
+		if(!itemCfg[itemId]){
+			if(cb)
+				cb(false,"item not exist")
+			return
+		}
+		var self = this
+		self.addItemCB(uid,itemId,value,function(flag,curValue) {
+			if(flag){
+				var notify = {
+					"type" : "addItem",
+					"itemId" : itemId,
+					"value" : value,
+					"curValue" : curValue
+				}
+				self.sendToUser(uid,notify)
+			}
+			if(cb)
+				cb(flag,curValue)
+		})
+	}
+	//增加物品回调
+	this.addItemCB = function(uid,itemId,value,cb) {
+		if(typeof(itemId) !== "number"){
+			cb(false,"type error "+typeof(itemId))
+			return
+		}
+		if(itemCfg[itemId] && itemCfg[itemId].isBag){
+			this.addBagItem(uid,itemId,value,cb)
+		}else{
+			switch(itemId){
+				case 100:
+					//主角经验
+					this.addCharacterEXP(uid,10001,value,cb)
+				break
+				default:
+					console.log("addItem error : "+itemId)
+					if(cb)
+						cb(false,"itemId error : "+itemId)
+			}
+		}
+	}
+	//解析物品奖励
+	this.addItemStr = function(uid,str,rate) {
+		var list = str.split("&")
+		var self = this
+		if(!rate){
+			rate = 1
+		}
+		list.forEach(function(m_str) {
+			var m_list = m_str.split(":")
+			var itemId = Number(m_list[0])
+			var value = Math.floor(Number(m_list[1]) * rate)
+			self.addItem(uid,itemId,value)
 		})
 	}
 }
