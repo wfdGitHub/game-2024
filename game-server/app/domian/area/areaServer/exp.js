@@ -34,7 +34,7 @@ module.exports = function() {
 			return
 		}
 		var characterType = charactersCfg[characterId].characterType
-		var samsara = Math.floor((curLv / 100))
+		var samsara = Math.floor(((curLv - 1) / 100))
 		samsara++
 		if(!samsaraCfg[samsara] || !samsaraCfg[samsara][characterType+"_pc"]){
 			cb(false,"level error "+curLv)

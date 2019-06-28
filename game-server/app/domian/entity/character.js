@@ -3,6 +3,7 @@ var buffFactory = require("../fight/buffFactory.js")
 var advanceCfg = require("../../../config/gameCfg/advance.json")
 var innateCfg = require("../../../config/gameCfg/innate.json")
 var talentCfg = require("../../../config/gameCfg/talent.json")
+var samsaraCfg = require("../../../config/gameCfg/samsara.json")
 var character = function(otps) {
 	this.characterId = otps.id		//角色ID
 	this.name =otps.name			//名称
@@ -17,10 +18,10 @@ var character = function(otps) {
 	}
 	//================战斗属性==================//
 	//一级属性
-	this.str = Math.floor(this.b_arg.str + this.level * this.b_arg.strA) || 0		//力量
-	this.agi = Math.floor(this.b_arg.agi + this.level * this.b_arg.agiA) || 0 		//敏捷
-	this.vit = Math.floor(this.b_arg.vit + this.level * this.b_arg.vitA) || 0 		//耐力
-	this.phy = Math.floor(this.b_arg.phy + this.level * this.b_arg.phyA) || 0		//体力
+	this.str = this.b_arg.str || 0		//力量
+	this.agi = this.b_arg.agi || 0		//敏捷
+	this.vit = this.b_arg.vit || 0 		//耐力
+	this.phy = this.b_arg.phy || 0		//体力
 	//二级属性
 	this.atk = Math.floor(this.b_arg.atk + this.str * 2.2) || 0	//攻击力
 	this.def = Math.floor(this.b_arg.def + this.vit * 1.8) || 0	//防御力
@@ -83,6 +84,20 @@ character.prototype.addition = function(otps) {
 				}
 			}
 		}
+    }
+    if(otps.level){
+    	//等级加成
+	    otps.str = ((otps.str || 0) + Math.floor(otps.level * otps.strA)) || 0		//力量
+	    otps.agi = ((otps.agi || 0) + Math.floor(otps.level * otps.agiA)) || 0		//力量
+	    otps.vit = ((otps.vit || 0) + Math.floor(otps.level * otps.vitA)) || 0		//力量
+	    otps.phy = ((otps.phy || 0) + Math.floor(otps.level * otps.phyA)) || 0		//力量
+	    //转生加成
+	    var samsara = Math.floor(((otps.level - 1) / 100))
+	    if(samsara && samsaraCfg[samsara] && samsaraCfg[samsara][this.characterType+"_pa"]){
+	    	var samsaraStr = samsaraCfg[samsara][this.characterType+"_pa"]
+	    	console.log("转生加成",samsaraStr)
+	    	this.formula(otps,samsaraStr)
+	    }
     }
 }
 //属性加成公式
