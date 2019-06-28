@@ -33,6 +33,11 @@ module.exports = function() {
 			cb(false,"level error "+curLv)
 			return
 		}
+		var proLv = this.players[uid].characters[0].level
+		if(characterType != "hero" && curLv >= proLv){
+			cb(false,"can't over hero level "+proLv)
+			return
+		}
 		var characterType = charactersCfg[characterId].characterType
 		var samsara = Math.floor(((curLv - 1) / 100))
 		samsara++
