@@ -1,0 +1,38 @@
+{
+  "13001": {
+    "minstr": 1000,
+    "maxstr": 2000,
+    "minagi": 1000,
+    "maxagi": 2000,
+    "minvit": 1000,
+    "maxvit": 2000,
+    "minphy": 1000,
+    "maxphy": 2000,
+    "mingrowth": 1,
+    "maxgrowth": 2
+  },
+  "13002": {
+    "minstr": 2000,
+    "maxstr": 3000,
+    "minagi": 2000,
+    "maxagi": 3000,
+    "minvit": 2000,
+    "maxvit": 3000,
+    "minphy": 2000,
+    "maxphy": 3000,
+    "mingrowth": 2,
+    "maxgrowth": 3
+  },
+  "13003": {
+    "minstr": 3000,
+    "maxstr": 4000,
+    "minagi": 3000,
+    "maxagi": 4000,
+    "minvit": 3000,
+    "maxvit": 4000,
+    "minphy": 3000,
+    "maxphy": 4000,
+    "mingrowth": 3,
+    "maxgrowth": 4
+  }
+}

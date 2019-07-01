@@ -102,9 +102,9 @@ area.prototype.incrbyCharacterInfo = function(uid,characterId,name,value,cb) {
 	})
 }
 //增加角色
-area.prototype.createCharacter = function(otps) {
-	var characterInfo = this.characterDao.createCharacter(otps)
-	this.players[otps.uid].characters[this.charactersMap[characterInfo.characterId]] = characterInfo
+area.prototype.createCharacter = function(areaId,uid,characterId) {
+	var characterInfo = this.characterDao.createCharacter(areaId,uid,characterId)
+	this.players[uid].characters[this.charactersMap[characterInfo.characterId]] = characterInfo
 }
 //根据id获取角色信息
 area.prototype.getCharacterById = function(uid,characterId) {
@@ -131,6 +131,7 @@ area.prototype.characterDeploy = function(info) {
 	newInfo.level = info.level
 	return newInfo
 }
+//发送消息给玩家
 area.prototype.sendToUser = function(uid,notify) {
 	this.channelService.pushMessageByUids('onMessage', notify, [{
       uid: uid,
@@ -149,6 +150,17 @@ area.prototype.getAreaServerInfo = function(){
 //获取服务器内玩家信息
 area.prototype.getAreaPlayers = function(){
 	return this.players
+}
+//获取玩家上阵配置
+area.prototype.getFightTeam = function(uid) {
+	if(!this.players[uid]){
+		return false
+	}
+	var team = this.players[uid].characters.concat()
+	var fightPet = this.players[uid].fightPet
+
+	console.log(team)
+	return team
 }
 module.exports = {
 	id : "area",

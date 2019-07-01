@@ -1,6 +1,5 @@
 {
   "10001": {
-    "id": 10001,
     "name": "主角",
     "spriteType": "hero1",
     "characterType": "hero",
@@ -42,7 +41,6 @@
     "silenceDef": 0
   },
   "10002": {
-    "id": 10002,
     "name": "伙伴1",
     "spriteType": "hero2",
     "characterType": "partner",
@@ -84,7 +82,6 @@
     "silenceDef": 0
   },
   "10003": {
-    "id": 10003,
     "name": "伙伴2",
     "spriteType": "hero3",
     "characterType": "partner",
@@ -126,7 +123,6 @@
     "silenceDef": 0
   },
   "11001": {
-    "id": 11001,
     "name": "BOSS1",
     "spriteType": "mob1",
     "characterType": "mob",
@@ -168,7 +164,6 @@
     "silenceDef": 0
   },
   "11002": {
-    "id": 11002,
     "name": "BOSS2",
     "spriteType": "mob2",
     "characterType": "mob",
@@ -210,7 +205,6 @@
     "silenceDef": 0
   },
   "11003": {
-    "id": 11003,
     "name": "BOSS3",
     "spriteType": "mob3",
     "characterType": "mob",
@@ -252,7 +246,6 @@
     "silenceDef": 0
   },
   "11004": {
-    "id": 11004,
     "name": "BOSS4",
     "spriteType": "mob4",
     "characterType": "mob",
@@ -294,7 +287,6 @@
     "silenceDef": 0
   },
   "11005": {
-    "id": 11005,
     "name": "BOSS5",
     "spriteType": "mob5",
     "characterType": "mob",
@@ -336,7 +328,6 @@
     "silenceDef": 0
   },
   "11006": {
-    "id": 11006,
     "name": "BOSS6",
     "spriteType": "mob6",
     "characterType": "mob",
@@ -378,7 +369,6 @@
     "silenceDef": 0
   },
   "11007": {
-    "id": 11007,
     "name": "BOSS7",
     "spriteType": "mob7",
     "characterType": "mob",
@@ -420,7 +410,6 @@
     "silenceDef": 0
   },
   "11008": {
-    "id": 11008,
     "name": "BOSS8",
     "spriteType": "mob8",
     "characterType": "mob",
@@ -462,7 +451,6 @@
     "silenceDef": 0
   },
   "11009": {
-    "id": 11009,
     "name": "BOSS9",
     "spriteType": "mob9",
     "characterType": "mob",
@@ -504,7 +492,6 @@
     "silenceDef": 0
   },
   "11010": {
-    "id": 11010,
     "name": "BOSS10",
     "spriteType": "mob10",
     "characterType": "mob",
@@ -546,7 +533,6 @@
     "silenceDef": 0
   },
   "12001": {
-    "id": 12001,
     "name": "小怪1",
     "spriteType": "mob11",
     "characterType": "mob",
@@ -587,7 +573,6 @@
     "silenceDef": 0
   },
   "12002": {
-    "id": 12002,
     "name": "小怪2",
     "spriteType": "mob12",
     "characterType": "mob",
@@ -628,7 +613,6 @@
     "silenceDef": 0
   },
   "12003": {
-    "id": 12003,
     "name": "小怪3",
     "spriteType": "mob13",
     "characterType": "mob",
@@ -669,7 +653,6 @@
     "silenceDef": 0
   },
   "12004": {
-    "id": 12004,
     "name": "小怪4",
     "spriteType": "mob14",
     "characterType": "mob",
@@ -710,7 +693,6 @@
     "silenceDef": 0
   },
   "12005": {
-    "id": 12005,
     "name": "小怪5",
     "spriteType": "mob15",
     "characterType": "mob",
@@ -751,7 +733,6 @@
     "silenceDef": 0
   },
   "12006": {
-    "id": 12006,
     "name": "小怪6",
     "spriteType": "mob16",
     "characterType": "mob",
@@ -792,7 +773,6 @@
     "silenceDef": 0
   },
   "12007": {
-    "id": 12007,
     "name": "小怪7",
     "spriteType": "mob17",
     "characterType": "mob",
@@ -833,7 +813,6 @@
     "silenceDef": 0
   },
   "12008": {
-    "id": 12008,
     "name": "小怪8",
     "spriteType": "mob18",
     "characterType": "mob",
@@ -874,7 +853,6 @@
     "silenceDef": 0
   },
   "12009": {
-    "id": 12009,
     "name": "小怪9",
     "spriteType": "mob19",
     "characterType": "mob",
@@ -915,7 +893,6 @@
     "silenceDef": 0
   },
   "12010": {
-    "id": 12010,
     "name": "小怪10",
     "spriteType": "mob20",
     "characterType": "mob",
@@ -932,6 +909,129 @@
     "atk": 10,
     "def": 0,
     "atkSpeed": 3,
+    "crit": 0,
+    "critDef": 0,
+    "hitRate": 0,
+    "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
+    "frozenAtk": 0,
+    "frozenDef": 0,
+    "dizzyAtk": 0,
+    "dizzyDef": 0,
+    "burnAtk": 0,
+    "burnDef": 0,
+    "poisonAtk": 0,
+    "poisonDef": 0,
+    "chaosAtk": 0,
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
+  },
+  "13001": {
+    "name": "宠物1",
+    "spriteType": "mob17",
+    "characterType": "pet",
+    "des": "宠物1",
+    "skills": "[20004]",
+    "str": 10,
+    "agi": 10,
+    "vit": 10,
+    "phy": 10,
+    "strA": 1,
+    "agiA": 1,
+    "vitA": 1,
+    "phyA": 1,
+    "maxHP": 200,
+    "atk": 10,
+    "def": 0,
+    "atkSpeed": 2,
+    "crit": 0,
+    "critDef": 0,
+    "hitRate": 0,
+    "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
+    "frozenAtk": 0,
+    "frozenDef": 0,
+    "dizzyAtk": 0,
+    "dizzyDef": 0,
+    "burnAtk": 0,
+    "burnDef": 0,
+    "poisonAtk": 0,
+    "poisonDef": 0,
+    "chaosAtk": 0,
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
+  },
+  "13002": {
+    "name": "宠物2",
+    "spriteType": "mob18",
+    "characterType": "pet",
+    "des": "宠物2",
+    "skills": "[20004]",
+    "str": 10,
+    "agi": 10,
+    "vit": 10,
+    "phy": 10,
+    "strA": 1,
+    "agiA": 1,
+    "vitA": 1,
+    "phyA": 1,
+    "maxHP": 200,
+    "atk": 10,
+    "def": 0,
+    "atkSpeed": 2,
+    "crit": 0,
+    "critDef": 0,
+    "hitRate": 0,
+    "dodgeRate": 0,
+    "slay": 0,
+    "wreck": 0,
+    "block": 0,
+    "blockRate": 0,
+    "frozenAtk": 0,
+    "frozenDef": 0,
+    "dizzyAtk": 0,
+    "dizzyDef": 0,
+    "burnAtk": 0,
+    "burnDef": 0,
+    "poisonAtk": 0,
+    "poisonDef": 0,
+    "chaosAtk": 0,
+    "chaosDef": 0,
+    "blackArtAtk": 0,
+    "blackArtDef": 0,
+    "silenceAtk": 0,
+    "silenceDef": 0
+  },
+  "13003": {
+    "name": "宠物3",
+    "spriteType": "mob19",
+    "characterType": "pet",
+    "des": "宠物3",
+    "skills": "[20004]",
+    "str": 10,
+    "agi": 10,
+    "vit": 10,
+    "phy": 10,
+    "strA": 1,
+    "agiA": 1,
+    "vitA": 1,
+    "phyA": 1,
+    "maxHP": 200,
+    "atk": 10,
+    "def": 0,
+    "atkSpeed": 2,
     "crit": 0,
     "critDef": 0,
     "hitRate": 0,

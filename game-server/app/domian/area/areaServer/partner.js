@@ -2,20 +2,10 @@
 module.exports = function() {
 	//开启伙伴1
 	this.openPartner1 = function(uid) {
-		var otps = {
-			characterId : 10002,
-			areaId : this.areaId,
-			uid : uid
-		}
-		this.createCharacter(otps)
+		this.createCharacter(this.areaId,uid,10002)
 	}
 	//开启伙伴2
 	this.openPartner2 = function(uid) {
-		var otps = {
-			characterId : 10003,
-			areaId : this.areaId,
-			uid : uid
-		}
-		this.createCharacter(otps)
+		this.createCharacter(this.areaId,uid,10003)
 	}
 }

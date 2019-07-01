@@ -12,7 +12,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 	self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+otps.uid+":playerInfo",playerInfo,function(err,data) {
 		if(!err){
 			playerInfo.characters = []
-			playerInfo.characters.push(self.characterDao.createCharacter({areaId : otps.areaId,uid : otps.uid,characterId : 10001}))
+			playerInfo.characters.push(self.characterDao.createCharacter(otps.areaId,otps.uid,10001))
 			cb(playerInfo)
 		}else{
 			cb(false)
@@ -26,9 +26,12 @@ playerDao.prototype.getPlayerInfo = function(otps,cb) {
 		if(err || !playerInfo){
 			cb(false)
 		}else{
-			self.characterDao.getCharacters(otps,function(characters) {
+			self.characterDao.getCharacters(otps.areaId,otps.uid,function(characters) {
 				playerInfo.characters = characters
-				cb(playerInfo)
+				self.petDao.getPets(otps.areaId,otps.uid,function(pets) {
+					playerInfo.pets = pets
+					cb(playerInfo)
+				})
 			})
 		}
 	})
@@ -42,5 +45,8 @@ module.exports = {
 	},{
 		name : "characterDao",
 		ref : "characterDao"
+	},{
+		name : "petDao",
+		ref : "petDao"
 	}]
 }
