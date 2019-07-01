@@ -151,6 +151,9 @@ module.exports = function() {
 			case "partner4":
 				this.openPartner(uid,10005)
 			break
+			case "addPetAmount":
+				this.addPetAmount(uid)
+			break
 		}
 	}
 }

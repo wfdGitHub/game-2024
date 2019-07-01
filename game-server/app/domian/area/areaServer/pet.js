@@ -10,7 +10,8 @@ module.exports = function() {
 					self.players[uid].petAmount = 0
 				self.players[uid].petAmount += 1
 			}
-			cb(flag,self.players[uid].petAmount)
+			if(cb)
+				cb(flag,self.players[uid].petAmount)
 		})
 	}
 	//获得宠物
@@ -20,7 +21,8 @@ module.exports = function() {
 			if(flag){
 				self.players[uid].pets[petInfo.id] = petInfo
 			}
-			cb(flag,petInfo)
+			if(cb)
+				cb(flag,petInfo)
 		})
 	}
 	//移除宠物

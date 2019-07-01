@@ -1,14 +1,32 @@
 {
   "1": {
-    "id": 1,
     "key": "partner1",
     "des": "伙伴1",
     "lv": 5
   },
   "2": {
-    "id": 2,
     "key": "partner2",
     "des": "伙伴2",
     "lv": 10
+  },
+  "3": {
+    "key": "partner3",
+    "des": "伙伴3",
+    "lv": 20
+  },
+  "4": {
+    "key": "partner4",
+    "des": "伙伴4",
+    "lv": 30
+  },
+  "5": {
+    "key": "addPetAmount",
+    "des": "增加宠物栏",
+    "lv": 15
+  },
+  "6": {
+    "key": "addPetAmount",
+    "des": "增加宠物栏",
+    "lv": 50
   }
 }

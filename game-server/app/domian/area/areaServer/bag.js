@@ -1,6 +1,6 @@
 //背包物品系统
 var itemCfg = require("../../../../config/gameCfg/item.json")
-var checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
+var charactersCfg = require("../../../../config/gameCfg/characters.json")
 module.exports = function() {
 	this.playerBags = {}
 	//使用背包物品
@@ -29,7 +29,7 @@ module.exports = function() {
 		switch(otps.itemId){
 			case 3001:
 				//伙伴经验丹
-				if(checkpointsCfg[otps.characterId].characterType == "partner"){
+				if(charactersCfg[otps.characterId] && charactersCfg[otps.characterId].characterType == "partner"){
 					if(!(this.players[otps.uid] && this.getCharacterById(otps.uid,otps.characterId))){
 						cb(false,"character lock : "+otps.characterId)
 						return
