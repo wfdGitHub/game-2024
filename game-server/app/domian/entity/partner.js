@@ -8,7 +8,7 @@ var partner = function(otps) {
     //增加普攻技能
     var skill =  new attackSkill({skillId : 20001},this)
     this.setDefaultSkill(skill)
-      if(otps.skills){
+    if(otps.skills){
         var self = this
         var skills = JSON.parse(otps.skills)
         skills.forEach(function(skillId) {
