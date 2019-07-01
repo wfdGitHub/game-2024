@@ -2,7 +2,7 @@ var petCfg = require("../../../../config/gameCfg/pet.json")
 //宠物系统
 module.exports = function() {
 	//增加宠物栏
-	this.addPetStore = function(areaId,uid,cb) {
+	this.addPetAmount = function(areaId,uid,cb) {
 		var self = this
 		self.petDao.addPetAmount(areaId,uid,function(flag,data) {
 			if(flag){
