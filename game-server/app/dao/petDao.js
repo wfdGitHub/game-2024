@@ -60,10 +60,10 @@ petDao.prototype.createPet = function(characterId) {
 		level : 1,
 		exp : 0
 	}
-	petInfo.strAptitude = Math.floor(Math.random() * (petCfg[characterId].maxstr - petCfg[characterId].minstr) + petCfg[characterId].minstr) || 0
-	petInfo.agiAptitude = Math.floor(Math.random() * (petCfg[characterId].maxagi - petCfg[characterId].minagi) + petCfg[characterId].minagi) || 0
-	petInfo.vitAptitude = Math.floor(Math.random() * (petCfg[characterId].maxvit - petCfg[characterId].minvit) + petCfg[characterId].minvit) || 0
-	petInfo.phyAptitude = Math.floor(Math.random() * (petCfg[characterId].maxphy - petCfg[characterId].minphy) + petCfg[characterId].minphy) || 0
+	petInfo.strAp = Math.floor(Math.random() * (petCfg[characterId].maxstr - petCfg[characterId].minstr) + petCfg[characterId].minstr) || 0
+	petInfo.agiAp = Math.floor(Math.random() * (petCfg[characterId].maxagi - petCfg[characterId].minagi) + petCfg[characterId].minagi) || 0
+	petInfo.vitAp = Math.floor(Math.random() * (petCfg[characterId].maxvit - petCfg[characterId].minvit) + petCfg[characterId].minvit) || 0
+	petInfo.phyAp = Math.floor(Math.random() * (petCfg[characterId].maxphy - petCfg[characterId].minphy) + petCfg[characterId].minphy) || 0
 	petInfo.growth = Number((Math.random() * (petCfg[characterId].maxgrowth - petCfg[characterId].mingrowth) + petCfg[characterId].mingrowth).toFixed(2))
 	return petInfo
 }
