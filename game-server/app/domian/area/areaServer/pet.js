@@ -2,9 +2,9 @@ var petCfg = require("../../../../config/gameCfg/pet.json")
 //宠物系统
 module.exports = function() {
 	//增加宠物栏
-	this.addPetAmount = function(areaId,uid,cb) {
+	this.addPetAmount = function(uid,cb) {
 		var self = this
-		self.petDao.addPetAmount(areaId,uid,function(flag,data) {
+		self.petDao.addPetAmount(self.areaId,uid,function(flag,data) {
 			if(flag){
 				if(!self.players[uid].petAmount)
 					self.players[uid].petAmount = 0
@@ -14,9 +14,9 @@ module.exports = function() {
 		})
 	}
 	//获得宠物
-	this.obtainPet = function(areaId,uid,characterId,cb) {
+	this.obtainPet = function(uid,characterId,cb) {
 		var self = this
-		self.petDao.obtainPet(areaId,uid,characterId,function(flag,petInfo) {
+		self.petDao.obtainPet(self.areaId,uid,characterId,function(flag,petInfo) {
 			if(flag){
 				self.players[uid].pets[petInfo.id] = petInfo
 			}
@@ -24,13 +24,13 @@ module.exports = function() {
 		})
 	}
 	//移除宠物
-	this.removePet = function(areaId,uid,id,cb) {
+	this.removePet = function(uid,id,cb) {
 		var self = this
-		self.petDao.removePet(areaId,uid,id,function(flag) {
+		self.petDao.removePet(self.areaId,uid,id,function(flag) {
 			if(flag){
 				delete self.players[uid].pets[id]
 				if(self.players[uid].fightPet == id){
-					self.petRest(areaId,uid,cb)
+					self.petRest(self.areaId,uid,cb)
 				}else{
 					cb(flag)
 				}
@@ -40,9 +40,9 @@ module.exports = function() {
 		})
 	}
 	//设置宠物出战
-	this.setFightPet = function(areaId,uid,id,cb) {
+	this.setFightPet = function(uid,id,cb) {
 		var self = this
-		self.petDao.setFightPet(areaId,uid,id,function(flag) {
+		self.petDao.setFightPet(self.areaId,uid,id,function(flag) {
 			if(flag){
 				self.players[uid].fightPet = id
 			}
@@ -50,9 +50,9 @@ module.exports = function() {
 		})
 	}
 	//宠物休息
-	this.petRest = function(areaId,uid,cb) {
+	this.petRest = function(uid,cb) {
 		var self = this
-		self.petDao.petRest(areaId,uid,function(flag) {
+		self.petDao.petRest(self.areaId,uid,function(flag) {
 			if(flag){
 				delete self.players[uid].fightPet
 			}

@@ -7,7 +7,7 @@ var petHandler = function(app) {
 petHandler.prototype.addPetAmount = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].addPetAmount(areaId,uid,function(flag,data) {
+  this.areaManager.areaMap[areaId].addPetAmount(uid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -16,7 +16,7 @@ petHandler.prototype.obtainPet = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
   var characterId = msg.characterId
-  this.areaManager.areaMap[areaId].obtainPet(areaId,uid,characterId,function(flag,data) {
+  this.areaManager.areaMap[areaId].obtainPet(uid,characterId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -24,7 +24,7 @@ petHandler.prototype.obtainPet = function(msg, session, next) {
 petHandler.prototype.getPets = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getPets(areaId,uid,function(flag,data) {
+  this.areaManager.areaMap[areaId].getPets(uid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -33,7 +33,7 @@ petHandler.prototype.removePet = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
   var id = msg.id
-  this.areaManager.areaMap[areaId].removePet(areaId,uid,id,function(flag,data) {
+  this.areaManager.areaMap[areaId].removePet(uid,id,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -42,7 +42,7 @@ petHandler.prototype.setFightPet = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
   var id = msg.id
-  this.areaManager.areaMap[areaId].setFightPet(areaId,uid,id,function(flag,data) {
+  this.areaManager.areaMap[areaId].setFightPet(uid,id,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -50,7 +50,7 @@ petHandler.prototype.setFightPet = function(msg, session, next) {
 petHandler.prototype.petRest = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].petRest(areaId,uid,function(flag,data) {
+  this.areaManager.areaMap[areaId].petRest(uid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
