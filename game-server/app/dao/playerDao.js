@@ -26,6 +26,11 @@ playerDao.prototype.getPlayerInfo = function(otps,cb) {
 		if(err || !playerInfo){
 			cb(false)
 		}else{
+			for(var i in playerInfo){
+				var tmp = Number(playerInfo[i])
+				if(tmp == playerInfo[i])
+					playerInfo[i] = tmp
+			}
 			self.characterDao.getCharacters(otps.areaId,otps.uid,function(characters) {
 				playerInfo.characters = characters
 				self.petDao.getPets(otps.areaId,otps.uid,function(pets) {

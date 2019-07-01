@@ -56,7 +56,9 @@ petDao.prototype.createPet = function(characterId) {
 	}
 	var petInfo = {
 		characterId : characterId,
-		id : uuid.v1()
+		id : uuid.v1(),
+		level : 1,
+		exp : 0
 	}
 	petInfo.strAptitude = Math.floor(Math.random() * (petCfg[characterId].maxstr - petCfg[characterId].minstr) + petCfg[characterId].minstr) || 0
 	petInfo.agiAptitude = Math.floor(Math.random() * (petCfg[characterId].maxagi - petCfg[characterId].minagi) + petCfg[characterId].minagi) || 0

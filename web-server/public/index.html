@@ -81,6 +81,11 @@
             console.log(data);
         });
       }
+      var getPlayerInfo2 = function() {
+        pomelo.request("area.petHandler.getPlayerInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
       //注册角色
       var register = function(areaId,name) {
         pomelo.request("connector.loginHandler.register", {areaId : areaId,name : name}, function(data) {
@@ -201,6 +206,42 @@
       //角色转生
       var characterSamsara = function(characterId) {
         pomelo.request("area.normalHandler.characterSamsara",{characterId : characterId}, function(data) {
+            console.log(data);
+        })
+      }
+      //增加宠物栏
+      var addPetAmount = function() {
+        pomelo.request("area.petHandler.addPetAmount",{}, function(data) {
+            console.log(data);
+        })
+      }
+      //获得宠物
+      var obtainPet = function(characterId) {
+        pomelo.request("area.petHandler.obtainPet",{characterId : characterId}, function(data) {
+            console.log(data);
+        })
+      }
+      //获取宠物列表
+      var getPets = function() {
+        pomelo.request("area.petHandler.getPets",{}, function(data) {
+            console.log(data);
+        })
+      }
+      //移除宠物
+      var removePet = function(id) {
+        pomelo.request("area.petHandler.removePet",{id : id}, function(data) {
+            console.log(data);
+        })
+      }
+      //设置出战宠物
+      var setFightPet = function(id) {
+        pomelo.request("area.petHandler.setFightPet",{id : id}, function(data) {
+            console.log(data);
+        })
+      }
+      //宠物休息
+      var petRest = function() {
+        pomelo.request("area.petHandler.petRest",{}, function(data) {
             console.log(data);
         })
       }

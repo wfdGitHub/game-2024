@@ -2,7 +2,7 @@
 var bearcat = require("bearcat")
 var fightContorlFun = require("../fight/fightContorl.js")
 var charactersCfg = require("../../../config/gameCfg/characters.json")
-var areaServers = ["exp","partner","bag","dao","checkpoints","advance"]
+var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet"]
 var area = function(otps,app) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName
@@ -119,7 +119,7 @@ area.prototype.getCharacterById = function(uid,characterId) {
 }
 //根据配置表获取角色数据
 area.prototype.characterDeploy = function(info) {
-	var newInfo = {}
+	var newInfo = Object.assign(info,{})
 	var characterId = info.characterId
 	if(!charactersCfg[info.characterId]){
 		console.log("characterDeploy error ",info,charactersCfg[info.characterId])
@@ -128,7 +128,6 @@ area.prototype.characterDeploy = function(info) {
 	for(var i in charactersCfg[characterId]){
 		newInfo[i] = charactersCfg[characterId][i]
 	}
-	newInfo.level = info.level
 	return newInfo
 }
 //发送消息给玩家
@@ -158,7 +157,9 @@ area.prototype.getFightTeam = function(uid) {
 	}
 	var team = this.players[uid].characters.concat()
 	var fightPet = this.players[uid].fightPet
-
+	if(fightPet && this.players[uid].pets && this.players[uid].pets[fightPet]){
+		team = team.concat(this.players[uid].pets[fightPet])
+	}
 	console.log(team)
 	return team
 }
@@ -183,5 +184,8 @@ module.exports = {
 	},{
 		name : "characterDao",
 		ref : "characterDao"
+	},{
+		name : "petDao",
+		ref : "petDao"
 	}]
 }
