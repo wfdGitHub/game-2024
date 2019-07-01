@@ -140,10 +140,16 @@ module.exports = function() {
 	this.sysOpen = function(uid,key) {
 		switch(key){
 			case "partner1":
-				this.openPartner1(uid)
+				this.openPartner(uid,10002)
 			break
 			case "partner2":
-				this.openPartner2(uid)
+				this.openPartner(uid,10003)
+			break
+			case "partner3":
+				this.openPartner(uid,10004)
+			break
+			case "partner4":
+				this.openPartner(uid,10005)
 			break
 		}
 	}

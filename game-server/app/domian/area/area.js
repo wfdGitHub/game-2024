@@ -19,7 +19,9 @@ var area = function(otps,app) {
 	this.charactersMap = {
 		10001 : 0,
 		10002 : 1,
-		10003 : 2
+		10003 : 2,
+		10004 : 3,
+		10005 : 4
 	}
 }
 //服务器初始化
