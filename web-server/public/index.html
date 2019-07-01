@@ -221,12 +221,6 @@
             console.log(data);
         })
       }
-      //获取宠物列表
-      var getPets = function() {
-        pomelo.request("area.petHandler.getPets",{}, function(data) {
-            console.log(data);
-        })
-      }
       //移除宠物
       var removePet = function(id) {
         pomelo.request("area.petHandler.removePet",{id : id}, function(data) {

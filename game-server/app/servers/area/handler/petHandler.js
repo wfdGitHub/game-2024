@@ -20,14 +20,6 @@ petHandler.prototype.obtainPet = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
-//获取宠物列表
-petHandler.prototype.getPets = function(msg, session, next) {
-  var uid = session.get("uid")
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getPets(uid,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
 //移除宠物
 petHandler.prototype.removePet = function(msg, session, next) {
   var uid = session.get("uid")
