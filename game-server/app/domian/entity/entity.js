@@ -3,20 +3,21 @@ var mobFun = require("./mob.js")
 var partnerFun = require("./partner.js")
 var petFun = require("./pet.js")
 module.exports = function(otps) {
-	switch(otps.characterType){
+	var info = Object.assign({},otps)
+	switch(info.characterType){
 		case "hero":
-			return new heroFun(otps)
+			return new heroFun(info)
 		break
 		case "partner":
-			return new partnerFun(otps)
+			return new partnerFun(info)
 		break
 		case "mob":
-			return new mobFun(otps)
+			return new mobFun(info)
 		break
 		case "pet":
-			return new petFun(otps)
+			return new petFun(info)
 		break
 		default:
-			return new mobFun(otps)
+			return new mobFun(info)
 	}
 }
