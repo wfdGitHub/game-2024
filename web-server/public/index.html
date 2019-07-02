@@ -251,6 +251,12 @@
             console.log(data);
         })
       }
+      //获取宠物图鉴
+      var getPetArchive = function() {
+        pomelo.request("area.petHandler.getPetArchive",{}, function(data) {
+            console.log(data);
+        })
+      }
     </script>
   </head>
   <body>

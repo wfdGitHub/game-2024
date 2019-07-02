@@ -70,6 +70,14 @@ petHandler.prototype.petAdvanced = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//获取宠物图鉴
+petHandler.prototype.getPetArchive = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getPetArchive(uid,function(data) {
+    next(null,{flag : true,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "petHandler",

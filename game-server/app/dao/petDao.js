@@ -44,6 +44,7 @@ petDao.prototype.obtainPet = function(areaId,uid,characterId,cb) {
 			}
 			self.redisDao.db.hset("area:area"+areaId+":player:"+uid+":petMap",petInfo.id,Date.now())
 			self.redisDao.db.hmset("area:area"+areaId+":player:"+uid+":pets:"+petInfo.id,petInfo)
+			self.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":petArchive",characterId,1)
 			cb(true,petInfo)
 		})
 	})
@@ -136,14 +137,17 @@ petDao.prototype.incrbyPetInfo = function(areaId,uid,id,name,value,cb) {
 			cb(true,data)
 	})
 }
-//宠物进阶
-
-//宠物升级
-
-//宠物转生
-
-//宠物洗练
-
+//获取宠物图鉴
+petDao.prototype.getPetArchive = function(areaId,uid,cb) {
+	this.redisDao.db.hgetall("area:area"+areaId+":player:"+uid+":petArchive",function(err,data) {
+		if(err || !data){
+			cb({})
+		}else{
+			cb(data)
+		}
+	})
+	
+}
 module.exports = {
 	id : "petDao",
 	func : petDao,

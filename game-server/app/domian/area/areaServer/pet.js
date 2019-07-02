@@ -94,11 +94,11 @@ module.exports = function() {
 				cb(flag,data)
 		})
 	}
-	//宠物进阶
-
-	//宠物升级
-
-	//宠物转生
-
+	//获取宠物图鉴
+	this.getPetArchive = function(uid,cb) {
+		this.petDao.getPetArchive(this.areaId,uid,function(data) {
+		    cb(data)
+		 })
+	}
 	//宠物洗练
 }
