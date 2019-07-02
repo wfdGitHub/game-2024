@@ -155,10 +155,11 @@ formula.getTargetRandom = function(attacker,team,count) {
     		list[i] = list[index]
     		list[index] = tmp
     	}
+    	var tmpTeam = []
     	for(var i = 0; i < count && i < list.length;i++){
-    		list[i] = team[list[i]]
+    		tmpTeam.push(team[list[i]])
     	}
-        return list
+        return tmpTeam
     }
 }
 module.exports = formula
