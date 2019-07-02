@@ -25,6 +25,9 @@ petDao.prototype.obtainPet = function(areaId,uid,characterId,cb) {
 			cb(false,"characterId error by petCfg")
 		return
 	}
+	petInfo.id = uuid.v1()
+	petInfo.level = 1
+	petInfo.exp = 0
 	var self = this
 	var maxAmount = 0
 	var curAmount = 0
@@ -56,10 +59,7 @@ petDao.prototype.createPet = function(characterId) {
 		return false
 	}
 	var petInfo = {
-		characterId : characterId,
-		id : uuid.v1(),
-		level : 1,
-		exp : 0
+		characterId : characterId
 	}
 	petInfo.strAp = Math.floor(Math.random() * (petCfg[characterId].maxstr - petCfg[characterId].minstr) + petCfg[characterId].minstr) || 0
 	petInfo.agiAp = Math.floor(Math.random() * (petCfg[characterId].maxagi - petCfg[characterId].minagi) + petCfg[characterId].minagi) || 0

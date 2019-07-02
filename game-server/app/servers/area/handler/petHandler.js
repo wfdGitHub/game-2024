@@ -70,6 +70,24 @@ petHandler.prototype.petAdvanced = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//宠物洗练
+petHandler.prototype.washPet = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var id = msg.id
+  this.areaManager.areaMap[areaId].washPet(uid,id,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//保存洗练属性
+petHandler.prototype.saveWashPet = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var id = msg.id
+  this.areaManager.areaMap[areaId].saveWashPet(uid,id,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //获取宠物图鉴
 petHandler.prototype.getPetArchive = function(msg, session, next) {
   var uid = session.get("uid")

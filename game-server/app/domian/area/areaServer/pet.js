@@ -1,6 +1,7 @@
 var petCfg = require("../../../../config/gameCfg/pet.json")
 //宠物系统
 module.exports = function() {
+	this.washTmp = {}
 	//增加宠物栏
 	this.addPetAmount = function(uid,cb) {
 		var self = this
@@ -101,4 +102,37 @@ module.exports = function() {
 		 })
 	}
 	//宠物洗练
+	this.washPet = function(uid,id,cb) {
+		if(!this.players[uid] || !this.players[uid].pets || !this.players[uid].pets[id]){
+			cb(false)
+			return
+		}
+		var self = this
+		//判断洗练道具
+		self.getBagItem(uid,2004,function(value) {
+			if(value >= 1){
+				self.addItem(uid,2004,-1)
+				var petInfo = self.players[uid].pets[id]
+				var tmpPetInfo = self.petDao.createPet(petInfo.characterId)
+				self.washTmp[id] = tmpPetInfo
+				cb(true,tmpPetInfo)
+			}else{
+				cb(false,"item 2004 value "+value)
+			}
+		})
+	}
+	//保存洗练结果
+	this.saveWashPet = function(uid,id,cb) {
+		if(!this.players[uid] || !this.players[uid].pets || !this.players[uid].pets[id] || !this.washTmp[id]){
+			cb(false)
+			return
+		}
+		var tmpPetInfo = this.washTmp[id]
+		for(var i in tmpPetInfo){
+			this.players[uid].pets[id][i] = tmpPetInfo[i]
+		}
+		this.redisDao.db.hmset("area:area"+this.areaId+":player:"+uid+":pets:"+id,tmpPetInfo)
+		delete this.washTmp[id]
+		cb(true,this.players[uid].pets[id])
+	}
 }

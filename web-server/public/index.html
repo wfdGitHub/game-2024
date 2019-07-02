@@ -257,6 +257,18 @@
             console.log(data);
         })
       }
+      //宠物洗练
+      var washPet = function(id) {
+        pomelo.request("area.petHandler.washPet",{id : id}, function(data) {
+            console.log(data);
+        })
+      }
+      //保存洗练效果
+      var saveWashPet = function(id) {
+        pomelo.request("area.petHandler.saveWashPet",{id : id}, function(data) {
+            console.log(data);
+        })
+      }
     </script>
   </head>
   <body>
