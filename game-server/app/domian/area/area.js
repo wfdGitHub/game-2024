@@ -65,8 +65,8 @@ area.prototype.userLogin = function(uid,cid,cb) {
 area.prototype.userLeave = function(uid) {
 	console.log("userLeave : ",uid)
 	if(this.players[uid]){
-		delete this.players[uid]
-		delete this.connectorMap[uid]
+		// delete this.players[uid]
+		// delete this.connectorMap[uid]
 		this.onlineNum--
 	}
 }
