@@ -2,7 +2,7 @@
 var bearcat = require("bearcat")
 var fightContorlFun = require("../fight/fightContorl.js")
 var charactersCfg = require("../../../config/gameCfg/characters.json")
-var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet"]
+var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet","character"]
 var area = function(otps,app) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName
@@ -15,13 +15,6 @@ var area = function(otps,app) {
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
 		fun.call(this)
-	}
-	this.charactersMap = {
-		10001 : 0,
-		10002 : 1,
-		10003 : 2,
-		10004 : 3,
-		10005 : 4
 	}
 }
 //服务器初始化
@@ -76,61 +69,6 @@ area.prototype.userLeave = function(uid) {
 		delete this.connectorMap[uid]
 		this.onlineNum--
 	}
-}
-//增减角色属性 {uid,characterId,name,value}
-area.prototype.incrbyCharacterInfo = function(uid,characterId,name,value,cb) {
-	var index = this.charactersMap[characterId]
-	var self = this
-	self.characterDao.incrbyCharacterInfo(this.areaId,uid,characterId,name,value,function(flag,data) {
-		if(flag){
-			if(self.players[uid] && self.players[uid].characters && self.players[uid].characters[index]){
-				if(!self.players[uid].characters[index][name]){
-					self.players[uid].characters[index][name] = 0
-				}
-				self.players[uid].characters[index][name] += value
-				var notify = {
-					"type" : "characterInfoChange",
-					"characterId" : characterId,
-					"index" : index,
-					"name" : name,
-					"value" : value,
-					"curValue" : self.players[uid].characters[index][name]
-				}
-				self.sendToUser(uid,notify)
-			}
-		}
-		if(cb)
-			cb(flag,data)
-	})
-}
-//增加角色
-area.prototype.createCharacter = function(areaId,uid,characterId) {
-	var characterInfo = this.characterDao.createCharacter(areaId,uid,characterId)
-	this.players[uid].characters[this.charactersMap[characterInfo.characterId]] = characterInfo
-}
-//根据id获取角色信息
-area.prototype.getCharacterById = function(uid,characterId) {
-	if(this.players[uid] && this.players[uid].characters){
-		for(var i = 0;i < this.players[uid].characters.length;i++){
-			if(this.players[uid].characters[i].characterId == characterId){
-				return this.players[uid].characters[i]
-			}
-		}
-	}
-	return false
-}
-//根据配置表获取角色数据
-area.prototype.characterDeploy = function(info) {
-	var newInfo = Object.assign(info,{})
-	var characterId = info.characterId
-	if(!charactersCfg[info.characterId]){
-		console.log("characterDeploy error ",info,charactersCfg[info.characterId])
-		return false
-	}
-	for(var i in charactersCfg[characterId]){
-		newInfo[i] = charactersCfg[characterId][i]
-	}
-	return newInfo
 }
 //发送消息给玩家
 area.prototype.sendToUser = function(uid,notify) {
