@@ -24,7 +24,6 @@ formula.calDamage = function(attacker, target, skill) {
 	}
 	//伤害计算
 	var atk = attacker.getTotalAttack();
-	console.log("target",target)
 	var def = target.getTotalDefence();
 	var basic = Math.round(atk*skill.mul + skill.fixed)
 	var damage = Math.pow(basic,2) / ((basic + (A * def)) || 1)

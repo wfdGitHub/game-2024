@@ -67,6 +67,10 @@ module.exports = function() {
 		    for(var i = 0;i < defTeam.length;i++){
 		    	defTeam[i] = self.characterDeploy(defTeam[i])
 		    }
+		    self.redisDao.db.hset("test:fight","atkTeam",JSON.stringify(atkTeam))
+		    self.redisDao.db.hset("test:fight","defTeam",JSON.stringify(defTeam))
+		    self.redisDao.db.hset("test:fight","seededNum",otps.seededNum)
+		    self.redisDao.db.hset("test:fight","readList",JSON.stringify(otps.readList))
 		    var result = self.fightContorl.fighting(atkTeam,defTeam,otps.seededNum,otps.readList)
 		    if(result.verify === otps.verify){
 		    	self.checkpointsResult(uid,result,level)
