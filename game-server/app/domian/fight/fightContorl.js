@@ -13,18 +13,18 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo,seededNum,rea
 	var atkTeam = []
 	var defTeam = []
 	for(var i in atkTeamInfo){
-		console.log(atkTeamInfo[i].getInfo())
 		atkTeam.push(entityFun(atkTeamInfo[i]))
 	}
 	for(var i in defTeamInfo){
-		console.log(defTeamInfo[i].getInfo())
 		defTeam.push(entityFun(defTeamInfo[i]))
 	}
 	var fighting = new fightingFun(atkTeam,defTeam,{stepper : this.stepper,maxTime : this.maxTime,seededNum : seededNum,readList : readList})
 	for(var i in atkTeam){
+		console.log(atkTeam[i].getInfo())
 		atkTeam[i].setArg(defTeam,fighting)
 	}
 	for(var i in defTeam){
+		console.log(defTeam[i].getInfo())
 		defTeam[i].setArg(atkTeam,fighting)
 	}
 	fighting.characterArr.forEach(function(character) {
