@@ -81,12 +81,14 @@ petDao.prototype.getPets = function(areaId,uid,cb) {
 		}
 		self.redisDao.multi(multiList,function(err,list) {
 			var hash = {}
+			console.log(list)
 			for(var i = 0;i < list.length;i++){
 				for(var j in list[i]){
 					var tmp = Number(list[i][j])
 					if(tmp == list[i][j])
 						list[i][j] = tmp
 				}
+				console.log(list[i],i)
 				hash[list[i].id] = list[i]
 			}
 			cb(hash)
