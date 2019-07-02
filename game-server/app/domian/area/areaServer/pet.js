@@ -108,17 +108,55 @@ module.exports = function() {
 			return
 		}
 		var self = this
-		//判断洗练道具
-		self.getBagItem(uid,2004,function(value) {
-			if(value >= 1){
-				self.addItem(uid,2004,-1)
-				var petInfo = self.players[uid].pets[id]
-				var tmpPetInfo = self.petDao.createPet(petInfo.characterId)
-				self.washTmp[id] = tmpPetInfo
-				cb(true,tmpPetInfo)
-			}else{
-				cb(false,"item 2004 value "+value)
+		var characterId = this.players[uid].pets[id].characterId
+		var c = petCfg[characterId]
+		var consumeStr = petCfg[characterId].washPc
+		// console.log("consumeStr",consumeStr)
+		var strList = consumeStr.split("&")
+		var items = []
+		var values = []
+		var self = this
+		var variation = false
+		if(this.players[uid].pets[id].variation == 1){
+			variation = true
+		}
+		strList.forEach(function(m_str) {
+			var m_list = m_str.split(":")
+			var itemId = Number(m_list[0])
+			var value = Number(m_list[1])
+			if(variation){
+				value = Math.round(value * 3)
 			}
+			items.push(itemId)
+			values.push(value)
+		})
+		//判断道具是否足够
+		self.getBagItemList(uid,items,function(list) {
+			for(var i = 0;i < values.length;i++){
+				if(list[i] < values[i]){
+					cb(false,"item not enough "+items[i]+" "+list[i]+" "+values[i])
+					return
+				}
+			}
+			//扣除道具
+			for(var i = 0;i < values.length;i++){
+				self.addItem(uid,items[i],-values[i])
+			}
+			//洗练
+			var petInfo = self.players[uid].pets[id]
+			var tmpPetInfo = self.petDao.createPet(petInfo.characterId)
+			if(Math.random() < 0.03){
+				tmpPetInfo.variation = 1
+				tmpPetInfo.strAp += petCfg[characterId].vPhy
+				tmpPetInfo.agiAp += petCfg[characterId].vPhy
+				tmpPetInfo.vitAp += petCfg[characterId].vPhy
+				tmpPetInfo.phyAp += petCfg[characterId].vPhy
+				tmpPetInfo.growth += petCfg[characterId].vgrowth
+			}else{
+				tmpPetInfo.variation = 0
+			}
+			self.washTmp[id] = tmpPetInfo
+			cb(true,tmpPetInfo)
 		})
 	}
 	//保存洗练结果

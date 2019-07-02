@@ -1,5 +1,6 @@
 {
   "13001": {
+    "petType": "normal",
     "minstr": 1000,
     "maxstr": 2000,
     "minagi": 1000,
@@ -8,22 +9,30 @@
     "maxvit": 2000,
     "minphy": 1000,
     "maxphy": 2000,
+    "vPhy": 200,
+    "vgrowth": 0.2,
     "mingrowth": 1,
-    "maxgrowth": 2
+    "maxgrowth": 2,
+    "washPc": "2004:1"
   },
   "13002": {
-    "minstr": 2000,
-    "maxstr": 3000,
-    "minagi": 2000,
-    "maxagi": 3000,
-    "minvit": 2000,
-    "maxvit": 3000,
-    "minphy": 2000,
-    "maxphy": 3000,
-    "mingrowth": 2,
-    "maxgrowth": 3
+    "petType": "normal",
+    "minstr": 1500,
+    "maxstr": 2000,
+    "minagi": 1500,
+    "maxagi": 2000,
+    "minvit": 1500,
+    "maxvit": 2000,
+    "minphy": 1500,
+    "maxphy": 2000,
+    "vPhy": 200,
+    "vgrowth": 0.2,
+    "mingrowth": 1.5,
+    "maxgrowth": 2,
+    "washPc": "2004:2"
   },
   "13003": {
+    "petType": "holy",
     "minstr": 3000,
     "maxstr": 4000,
     "minagi": 3000,
@@ -32,7 +41,26 @@
     "maxvit": 4000,
     "minphy": 3000,
     "maxphy": 4000,
+    "vPhy": 200,
+    "vgrowth": 0.2,
     "mingrowth": 3,
-    "maxgrowth": 4
+    "maxgrowth": 4,
+    "washPc": "2004:3"
+  },
+  "13004": {
+    "petType": "mythical",
+    "minstr": 3000,
+    "maxstr": 4000,
+    "minagi": 3000,
+    "maxagi": 4000,
+    "minvit": 3000,
+    "maxvit": 4000,
+    "minphy": 3000,
+    "maxphy": 4000,
+    "vPhy": 200,
+    "vgrowth": 0.2,
+    "mingrowth": 3,
+    "maxgrowth": 4,
+    "washPc": "2004:4"
   }
 }

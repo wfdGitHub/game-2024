@@ -7,12 +7,12 @@
   "101": {
     "name": "金币",
     "des": "金币",
-    "isBag": false
+    "isBag": true
   },
   "102": {
     "name": "钻石",
     "des": "钻石",
-    "isBag": false
+    "isBag": true
   },
   "2001": {
     "name": "宠物经验丹",
