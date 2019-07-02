@@ -13,12 +13,13 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo,seededNum,rea
 	var atkTeam = []
 	var defTeam = []
 	for(var i in atkTeamInfo){
+		console.log(atkTeamInfo[i].getInfo())
 		atkTeam.push(entityFun(atkTeamInfo[i]))
 	}
 	for(var i in defTeamInfo){
+		console.log(defTeamInfo[i].getInfo())
 		defTeam.push(entityFun(defTeamInfo[i]))
 	}
-	console.log(atkTeam,defTeam)
 	var fighting = new fightingFun(atkTeam,defTeam,{stepper : this.stepper,maxTime : this.maxTime,seededNum : seededNum,readList : readList})
 	for(var i in atkTeam){
 		atkTeam[i].setArg(defTeam,fighting)
