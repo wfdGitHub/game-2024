@@ -3,7 +3,7 @@ var advanceCfg = require("../../../../config/gameCfg/advance.json")
 var characters = require("../../../../config/gameCfg/characters.json")
 module.exports = function() {
 	//进阶
-	this.advanced = function(uid,characterId,cb) {
+	this.characterAdvanced = function(uid,characterId,cb) {
 		if(this.charactersMap[characterId] === undefined){
 			cb(false,"characterId error "+characterId)
 			return

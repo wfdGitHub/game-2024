@@ -198,8 +198,8 @@
         })
       }
       //角色进阶
-      var advanced = function(characterId) {
-        pomelo.request("area.normalHandler.advanced",{characterId : characterId}, function(data) {
+      var characterAdvanced = function(characterId) {
+        pomelo.request("area.normalHandler.characterAdvanced",{characterId : characterId}, function(data) {
             console.log(data);
         })
       }

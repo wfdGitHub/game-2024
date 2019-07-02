@@ -22,11 +22,11 @@ normalHandler.prototype.getOnhookAward = function(msg, session, next) {
   })
 }
 //角色进阶
-normalHandler.prototype.advanced = function(msg, session, next) {
+normalHandler.prototype.characterAdvanced = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
   var characterId = msg.characterId
-  this.areaManager.areaMap[areaId].advanced(uid,characterId,function(flag,data) {
+  this.areaManager.areaMap[areaId].characterAdvanced(uid,characterId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
