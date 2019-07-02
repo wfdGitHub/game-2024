@@ -61,6 +61,15 @@ petHandler.prototype.petSamsara = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//宠物进阶
+petHandler.prototype.petAdvanced = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var id = msg.id
+  this.areaManager.areaMap[areaId].petAdvanced(uid,id,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "petHandler",

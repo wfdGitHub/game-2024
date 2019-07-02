@@ -203,6 +203,12 @@
             console.log(data);
         })
       }
+      //宠物进阶
+      var petAdvanced = function(id) {
+        pomelo.request("area.petHandler.petAdvanced",{id : id}, function(data) {
+            console.log(data);
+        })
+      }
       //角色转生
       var characterSamsara = function(characterId) {
         pomelo.request("area.normalHandler.characterSamsara",{characterId : characterId}, function(data) {
