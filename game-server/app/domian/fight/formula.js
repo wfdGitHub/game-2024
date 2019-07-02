@@ -25,15 +25,15 @@ formula.calDamage = function(attacker, target, skill) {
 	//伤害计算
 	var atk = attacker.getTotalAttack();
 	var def = target.getTotalDefence();
-	var basic = Math.floor(atk*skill.mul + skill.fixed)
+	var basic = Math.round(atk*skill.mul + skill.fixed)
 	var damage = Math.pow(basic,2) / ((basic + (A * def)) || 1)
 	// console.log("basic : " + basic + " damage : "+damage,atk)
 	if(damageInfo.crit){
-		damage = Math.floor(damage * (1.5 + attacker.slay / 1000))
+		damage = Math.round(damage * (1.5 + attacker.slay / 1000))
 		// console.log("暴击 "+damage)
 	}
 	if(damageInfo.block){
-		damage = Math.floor(damage * (1 - target.blockRate))
+		damage = Math.round(damage * (1 - target.blockRate))
 		// console.log("格挡 "+damage)
 	}
 	//最小伤害
@@ -47,7 +47,7 @@ formula.calDamage = function(attacker, target, skill) {
 			damage = 0
 		}
 	}
-	damageInfo.damage = Math.floor(damage)
+	damageInfo.damage = Math.round(damage)
     return damageInfo
 };
 formula.getAttackTarget = function(attacker,team,skill) {
