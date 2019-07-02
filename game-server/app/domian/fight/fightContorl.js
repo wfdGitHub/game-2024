@@ -18,7 +18,7 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo,seededNum,rea
 	for(var i in defTeamInfo){
 		defTeam.push(entityFun(defTeamInfo[i]))
 	}
-	// console.log(atkTeam,defTeam)
+	console.log(atkTeam,defTeam)
 	var fighting = new fightingFun(atkTeam,defTeam,{stepper : this.stepper,maxTime : this.maxTime,seededNum : seededNum,readList : readList})
 	for(var i in atkTeam){
 		atkTeam[i].setArg(defTeam,fighting)
