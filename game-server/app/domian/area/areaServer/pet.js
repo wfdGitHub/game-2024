@@ -61,6 +61,39 @@ module.exports = function() {
 			cb(flag)
 		})
 	}
+	//根据id获取宠物信息
+	this.getPetById = function(uid,id) {
+		if(this.players[uid] && this.players[uid].pets){
+			if(this.players[uid].pets[id]){
+				return this.players[uid].pets[id]
+			}
+		}
+		return false
+	}
+	//增减宠物属性
+	this.incrbyPetInfo = function(uid,id,name,value,cb) {
+		var self = this
+		self.petDao.incrbyPetInfo(this.areaId,uid,id,name,value,function(flag,data) {
+			if(flag){
+				if(self.players[uid] && self.players[uid].pets && self.players[uid].pets[id]){
+					if(!self.players[uid].pets[id][name]){
+						self.players[uid].pets[id][name] = 0
+					}
+					self.players[uid].pets[id][name] += value
+					var notify = {
+						"type" : "petInfoChange",
+						"id" : id,
+						"name" : name,
+						"value" : value,
+						"curValue" : self.players[uid].pets[id][name]
+					}
+					self.sendToUser(uid,notify)
+				}
+			}
+			if(cb)
+				cb(flag,data)
+		})
+	}
 	//宠物进阶
 
 	//宠物升级

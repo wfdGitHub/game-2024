@@ -43,7 +43,7 @@ petDao.prototype.obtainPet = function(areaId,uid,characterId,cb) {
 				return
 			}
 			self.redisDao.db.hset("area:area"+areaId+":player:"+uid+":petMap",petInfo.id,Date.now())
-			self.redisDao.db.hmset("area:area"+areaId+":player:"+uid+":petList:"+petInfo.id,petInfo)
+			self.redisDao.db.hmset("area:area"+areaId+":player:"+uid+":pets:"+petInfo.id,petInfo)
 			cb(true,petInfo)
 		})
 	})
@@ -71,20 +71,21 @@ petDao.prototype.createPet = function(characterId) {
 petDao.prototype.getPets = function(areaId,uid,cb) {
 	var self = this
 	self.redisDao.db.hgetall("area:area"+areaId+":player:"+uid+":petMap",function(err,data) {
-		console.log("data111",data)
 		if(err || !data){
 			cb({})
 			return
 		}
 		var multiList = []
 		for(var id in data){
-			multiList.push(["hgetall","area:area"+areaId+":player:"+uid+":petList:"+id])
+			multiList.push(["hgetall","area:area"+areaId+":player:"+uid+":pets:"+id])
 		}
 		self.redisDao.multi(multiList,function(err,list) {
 			var hash = {}
 			for(var i = 0;i < list.length;i++){
 				for(var j in list[i]){
-					list[i][j] = Number(list[i][j]) || list[i][j]
+					var tmp = Number(list[i][j])
+					if(tmp == list[i][j])
+						list[i][j] = tmp
 				}
 				hash[list[i].id] = list[i]
 			}
@@ -101,7 +102,7 @@ petDao.prototype.removePet = function(areaId,uid,id,cb) {
 			cb(false)
 			return
 		}
-		self.redisDao.db.del("area:area"+areaId+":player:"+uid+":petList:"+id)
+		self.redisDao.db.del("area:area"+areaId+":player:"+uid+":pets:"+id)
 		cb(true)
 	})
 }
@@ -124,6 +125,13 @@ petDao.prototype.petRest = function(areaId,uid,cb) {
 	var self = this
 	self.redisDao.db.hdel("area:area"+areaId+":player:"+uid+":playerInfo","fightPet",function(err,data) {
 		cb(true)
+	})
+}
+//增减宠物属性
+petDao.prototype.incrbyPetInfo = function(areaId,uid,id,name,value,cb) {
+	this.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":pets:"+id,name,value,function(err,data) {
+		if(cb)
+			cb(true,data)
 	})
 }
 //宠物进阶

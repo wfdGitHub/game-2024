@@ -209,6 +209,12 @@
             console.log(data);
         })
       }
+      //宠物转生
+      var petSamsara = function(id) {
+        pomelo.request("area.petHandler.petSamsara",{id : id}, function(data) {
+            console.log(data);
+        })
+      }
       //增加宠物栏
       var addPetAmount = function() {
         pomelo.request("area.petHandler.addPetAmount",{}, function(data) {

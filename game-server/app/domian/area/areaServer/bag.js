@@ -29,21 +29,37 @@ module.exports = function() {
 		switch(otps.itemId){
 			case 3001:
 				//伙伴经验丹
-				if(charactersCfg[otps.characterId] && charactersCfg[otps.characterId].characterType == "partner"){
-					if(!(this.players[otps.uid] && this.getCharacterById(otps.uid,otps.characterId))){
-						cb(false,"character lock : "+otps.characterId)
-						return
-					}
-					if(this.players[otps.uid].characters[otps.characterId -10001].level >= this.players[otps.uid].characters[0].level){
-						cb(false,"character level limit : "+otps.characterId)
-						return
-					}
-					this.addCharacterEXP(otps.uid,otps.characterId,otps.value * 500)
-					otps.value = -otps.value
-					this.addItem(otps.uid,otps.itemId,otps.value,cb)
-				}else{
+				if(!charactersCfg[otps.characterId] || charactersCfg[otps.characterId].characterType != "partner"){
 					cb(false,"characterId error : "+otps.characterId)
+					return
 				}
+				var characterInfo = this.getCharacterById(otps.uid,otps.characterId)
+				if(!this.players[otps.uid] || !characterInfo){
+					cb(false,"character lock : "+otps.characterId)
+					return
+				}
+				if(characterInfo.level >= this.players[otps.uid].characters[0].level){
+					cb(false,"character level limit : "+otps.characterId)
+					return
+				}
+				this.addCharacterEXP(otps.uid,otps.characterId,otps.value * 500)
+				otps.value = -otps.value
+				this.addItem(otps.uid,otps.itemId,otps.value,cb)
+			break
+			case 2001:
+				//宠物经验丹
+				var petInfo = this.getPetById(otps.uid,otps.id)
+				if(!petInfo){
+					cb(false,"id error : "+otps.id)
+					return
+				}
+				if(petInfo.level >= this.players[otps.uid].characters[0].level){
+					cb(false,"character level limit : "+otps.id)
+					return
+				}
+				this.addPetEXP(otps.uid,otps.id,otps.value * 500)
+				otps.value = -otps.value
+				this.addItem(otps.uid,otps.itemId,otps.value,cb)
 			break
 			default:
 				console.log("itemId can't use "+otps.itemId)

@@ -52,6 +52,15 @@ petHandler.prototype.getPlayerInfo = function(msg, session, next) {
   var areaId = session.get("areaId")
   next(null,{flag : true,data : this.areaManager.areaMap[areaId].players[uid]})
 }
+//宠物转生
+petHandler.prototype.petSamsara = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var id = msg.id
+  this.areaManager.areaMap[areaId].petSamsara(uid,id,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "petHandler",

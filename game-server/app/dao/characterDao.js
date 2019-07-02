@@ -27,7 +27,9 @@ characterDao.prototype.getCharacters = function(areaId,uid,cb) {
 		self.redisDao.multi(multiList,function(err,list) {
 			for(var i = 0;i < list.length;i++){
 				for(var j in list[i]){
-					list[i][j] = Number(list[i][j])
+					var tmp = Number(list[i][j])
+					if(tmp == list[i][j])
+						list[i][j] = tmp
 				}
 			}
 			cb(list)
