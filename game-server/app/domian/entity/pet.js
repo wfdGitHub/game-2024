@@ -1,5 +1,4 @@
 var characterFun = require("./character.js")
-var attackSkill = require("../fight/attackSkill.js")
 //宠物
 var pet = function(otps) {
     console.log("new pet")
@@ -10,18 +9,6 @@ var pet = function(otps) {
     otps.phy = ((otps.phy || 0) + Math.floor(otps.phyAp * 0.001 * otps.level * otps.growth)) || 0    //力量
     characterFun.call(this,otps)
     console.log(this.getInfo())
-    //注册事件
-    //增加普攻技能
-    var skill =  new attackSkill({skillId : 20001},this)
-    this.setDefaultSkill(skill)
-    if(otps.skills){
-        var self = this
-        var skills = JSON.parse(otps.skills)
-        skills.forEach(function(skillId) {
-          var specialSkill =  new attackSkill({skillId : skillId},self)
-          self.addFightSkill(specialSkill)
-        })
-    }
 }
 pet.prototype = characterFun.prototype
 module.exports = pet

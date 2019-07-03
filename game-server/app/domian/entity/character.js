@@ -4,6 +4,7 @@ var advanceCfg = require("../../../config/gameCfg/advance.json")
 var innateCfg = require("../../../config/gameCfg/innate.json")
 var talentCfg = require("../../../config/gameCfg/talent.json")
 var samsaraCfg = require("../../../config/gameCfg/samsara.json")
+var attackSkill = require("../fight/attackSkill.js")
 var character = function(otps) {
 	this.characterId = otps.characterId		//角色ID
 	this.name =otps.name			//名称
@@ -64,6 +65,17 @@ var character = function(otps) {
     this.blackArt = false					//妖术标识
     this.silence = false					//沉默标识
 	this.event = new EventEmitter();
+    //增加普攻技能
+    var skill =  new attackSkill({skillId : 20001},this)
+    this.setDefaultSkill(skill)
+    if(otps.skills){
+        var self = this
+        var skills = JSON.parse(otps.skills)
+        skills.forEach(function(skillId) {
+          var specialSkill =  new attackSkill({skillId : skillId},self)
+          self.addFightSkill(specialSkill)
+        })
+    }
 }
 //计算加成效果
 character.prototype.addition = function(otps) {
