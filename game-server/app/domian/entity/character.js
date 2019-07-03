@@ -37,6 +37,7 @@ var character = function(otps) {
 	this.wreck = this.b_arg.wreck || 0 							//破击
 	this.block = this.b_arg.block || 0							//格挡
 	this.blockRate = this.b_arg.blockRate || 0					//格挡效果
+	this.amp = this.b_arg.amp || 0								//伤害加深
 	this.frozenAtk = this.b_arg.frozenAtk || 0					//冰冻命中
 	this.frozenDef = this.b_arg.frozenDef || 0					//冰冻抗性
 	this.dizzyAtk = this.b_arg.dizzyAtk || 0					//眩晕命中
@@ -142,6 +143,7 @@ character.prototype.getInfo = function() {
 		wreck : this.wreck,
 		block : this.block,
 		blockRate : this.blockRate,
+		amp : this.amp,
 		frozenAtk : this.frozenAtk,
 		frozenDef : this.frozenDef,
 		dizzyAtk : this.dizzyAtk,

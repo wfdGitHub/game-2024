@@ -36,6 +36,10 @@ formula.calDamage = function(attacker, target, skill) {
 		damage = Math.round(damage * (1 - target.blockRate))
 		// console.log("格挡 "+damage)
 	}
+	//伤害加深
+	if(attacker.amp){
+		damage = Math.round(damage * (attacker.amp + 1))
+	}
 	//最小伤害
 	if (damage <= 1) {
 		damage = 1;
