@@ -67,10 +67,21 @@ formula.getAttackTarget = function(attacker,team,skill) {
 		break
 		case 4:
 			return formula.getTargetRandom(attacker,team,3)
+		case 5:
+			return formula.getAllTeam(attacker,team)
 		default:
 			return false
 		break
 	}
+}
+formula.getAllTeam = function(attacker,team) {
+    var list = []
+    team.forEach(function(character,index) {
+        if(!character.died){
+        	list.push(character)
+        }
+    })
+    return list
 }
 formula.getTargetNormal = function(attacker,team) {
     var target = false
