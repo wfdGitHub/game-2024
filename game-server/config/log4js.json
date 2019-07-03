@@ -102,8 +102,8 @@
     "con-log" : "ERROR",
     "rpc-debug" : "ERROR",
     "crash-log" : "ERROR",
-    "pomelo" : "DEBUG",
-    "pomelo-rpc" : "DEBUG"
+    "pomelo" : "ERROR",
+    "pomelo-rpc" : "ERROR"
   },
 
   "replaceConsole": true,
