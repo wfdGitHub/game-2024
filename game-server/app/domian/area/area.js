@@ -9,6 +9,7 @@ var area = function(otps,app) {
 	this.app = app
 	this.channelService = this.app.get('channelService')
 	this.players = {}
+	this.offLinePlayers = {}
 	this.connectorMap = {}
 	this.onlineNum = 0
 	this.fightContorl = fightContorlFun()
@@ -20,6 +21,19 @@ var area = function(otps,app) {
 //服务器初始化
 area.prototype.init = function() {
 	console.log("area init")
+	setInterval(this.update.bind(this),1000)
+}
+//update
+area.prototype.update = function() {
+	var curTime = Date.now()
+	for(var uid in this.offLinePlayers){
+		if(curTime > this.offLinePlayers[uid] + 60000){
+			console.log("离线过长，删除玩家 ",uid)
+			delete this.players[uid]
+			delete this.connectorMap[uid]
+			delete this.offLinePlayers[uid]
+		}
+	}
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
@@ -42,31 +56,38 @@ area.prototype.register = function(otps,cb) {
 //玩家加入
 area.prototype.userLogin = function(uid,cid,cb) {
 	console.log("userLogin : ",uid)
-	var self = this
-	self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
-		if(playerInfo){
-			self.onlineNum++
-			self.players[uid] = playerInfo
-			self.connectorMap[uid] = cid
-			self.getOnhookAward(uid,1,function(flag,data) {
-				if(flag){
-					var notify = {
-						type : "offlineOnhookAward",
-						data : data
+	if(this.connectorMap[uid] && this.players[uid] && this.connectorMap[uid]){
+		console.log("已缓存无需重新获取",uid)
+		this.connectorMap[uid] = cid
+		delete this.offLinePlayers[uid]
+		cb(this.players[uid])
+	}else{
+		var self = this
+		self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
+			if(playerInfo){
+				delete self.offLinePlayers[uid]
+				self.onlineNum++
+				self.players[uid] = playerInfo
+				self.connectorMap[uid] = cid
+				self.getOnhookAward(uid,1,function(flag,data) {
+					if(flag){
+						var notify = {
+							type : "offlineOnhookAward",
+							data : data
+						}
+						self.sendToUser(uid,notify)
 					}
-					self.sendToUser(uid,notify)
-				}
-			})
-		}
-		cb(playerInfo)
-	})
+				})
+			}
+			cb(playerInfo)
+		})
+	}
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
 	console.log("userLeave : ",uid)
 	if(this.players[uid]){
-		// delete this.players[uid]
-		// delete this.connectorMap[uid]
+		this.offLinePlayers[uid] = Date.now()
 		this.onlineNum--
 	}
 }
