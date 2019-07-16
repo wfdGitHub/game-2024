@@ -8,11 +8,7 @@ normalHandler.prototype.getBagList = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].getBagList(uid,function(data) {
-    if(data){
-      next(null,{flag : true,data : data})
-    }else{
-      next(null,{flag : false})
-    }
+    next(null,{flag : true,data : data || {}})
   })
 }
 //使用物品
