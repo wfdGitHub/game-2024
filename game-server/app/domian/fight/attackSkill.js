@@ -73,6 +73,11 @@ attackSkill.prototype.useSkill = function() {
 		var self = this
 		result = {state: false,targets : targets};
 		this.character.event.emit("useSkill",this,result)
+		var doubleFlag = false
+		//判断连击
+		if(self.character.doubleHitRate && self.character.doubleHitRate < self.character.fighting.seeded.random()){
+			doubleFlag = true
+		}
 		targets.forEach(function(target) {
 			//判断命中率
 			var damageInfo = formula.calDamage(self.character, target, self);
@@ -80,6 +85,11 @@ attackSkill.prototype.useSkill = function() {
 				target.event.emit("hit",self.character,damageInfo,self)
 			}else{
 				target.hit(self.character,damageInfo,self);
+				if(doubleFlag){
+					damageInfo.damage = Math.round(damageInfo.damage * self.character.doubleHitPower)
+					damageInfo.double = true
+					target.hit(self.character,damageInfo,self);
+				}
 			}
             //施加BUFF
             if(typeof(self.buffId) === "number"){
@@ -91,6 +101,7 @@ attackSkill.prototype.useSkill = function() {
                 target.addBuff(self.character,self,buffotps)
             }
 		})
+
 	}
 }
 module.exports = attackSkill

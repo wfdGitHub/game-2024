@@ -4,6 +4,7 @@ var advanceCfg = require("../../../config/gameCfg/advance.json")
 var innateCfg = require("../../../config/gameCfg/innate.json")
 var talentCfg = require("../../../config/gameCfg/talent.json")
 var samsaraCfg = require("../../../config/gameCfg/samsara.json")
+var passiveCfg = require("../../../config/gameCfg/passive.json")
 var attackSkill = require("../fight/attackSkill.js")
 var character = function(otps) {
 	this.characterId = otps.characterId		//角色ID
@@ -11,6 +12,24 @@ var character = function(otps) {
 	this.spriteType = otps.spriteType || 0 	//类型
 	this.characterType = otps.characterType	//角色类型
 	this.level = otps.level || 0			//等级
+	this.fightSkills = {} 					//主动技能列表
+	this.passives = []						//被动技能列表
+    this.buffs = {}                        	//buff列表
+    this.defaultSkill = false             	//默认攻击
+	this.target = false						//当前目标
+	this.died = false 						//死亡标记
+    this.frozen = false                    	//冰冻标识  冰冻时技能CD停止
+    this.dizzy = false                    	//眩晕标识  眩晕时不能行动
+    this.chaos = false      				//混乱标识
+    this.blackArt = false					//妖术标识
+    this.silence = false					//沉默标识
+    this.doubleHitRate = 0					//连击概率
+    this.doubleHitPower = 0					//连击伤害
+	this.event = new EventEmitter();
+	//=========================================//
+    if(otps.passives){
+    	this.passives = JSON.parse(otps.passives)
+    }
 	this.addition(otps)
 	//=========================================//
 	this.b_arg = {}
@@ -54,17 +73,6 @@ var character = function(otps) {
 	this.silenceAtk = this.b_arg.silenceAtk || 0				//沉默命中
 	this.silenceDef = this.b_arg.silenceDef || 0				//沉默抗性
 	//=========================================//
-	this.fightSkills = {} 					//技能列表
-    this.buffs = {}                        	//buff列表
-    this.defaultSkill = false             	//默认攻击
-	this.target = false						//当前目标
-	this.died = false 						//死亡标记
-    this.frozen = false                    	//冰冻标识  冰冻时技能CD停止
-    this.dizzy = false                    	//眩晕标识  眩晕时不能行动
-    this.chaos = false      				//混乱标识
-    this.blackArt = false					//妖术标识
-    this.silence = false					//沉默标识
-	this.event = new EventEmitter();
     //增加普攻技能
     var skill =  new attackSkill({skillId : 20001},this)
     this.setDefaultSkill(skill)
@@ -111,6 +119,19 @@ character.prototype.addition = function(otps) {
 	    	console.log("转生加成",samsaraStr)
 	    	this.formula(otps,samsaraStr)
 	    }
+    }
+    //被动技能
+    console.log(this.passives)
+    for(var i = 0;i < this.passives.length;i++){
+    	var passive = passiveCfg[this.passives[i]]
+    	if(passive){
+	    	switch(passive.type){
+	    		case "doubleHit":
+	    			this.doubleHitRate = passive.rate
+	    			this.doubleHitPower = passive.arg
+	    		break
+	    	}
+    	}
     }
 }
 //属性加成公式
@@ -199,6 +220,9 @@ character.prototype.useSkill = function(skillId) {
 //被攻击
 character.prototype.hit = function(attacker, damageInfo,source) {
   	this.reduceHp(damageInfo.damage)
+  	if(damageInfo.double){
+  		console.log("连击!")
+  	}
   	console.log(this.fighting.curTime + " " + attacker.name + " 使用 "+source.name+" 攻击 "+this.name,"-"+damageInfo.damage," 剩余血量 : ",this.hp)
   	this.event.emit("hit",attacker, damageInfo,source)
 }
