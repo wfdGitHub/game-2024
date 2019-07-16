@@ -3,7 +3,18 @@ var normalHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
-
+//获取背包
+normalHandler.prototype.getBagList = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getBagList(uid,function(data) {
+    if(data){
+      next(null,{flag : true,data : data})
+    }else{
+      next(null,{flag : false})
+    }
+  })
+}
 //使用物品
 normalHandler.prototype.useItem = function(msg, session, next) {
   var uid = session.get("uid")
