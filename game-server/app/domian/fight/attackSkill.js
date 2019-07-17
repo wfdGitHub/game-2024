@@ -98,10 +98,23 @@ attackSkill.prototype.useSkill = function() {
                 buffotps.buffId = self.buffId
                 buffotps.buffArg = self.buffArg
                 buffotps.duration = self.duration
-                target.addBuff(self.character,self,buffotps)
+                buffotps.buffRate = self.buffRate
+                target.addBuff(self.character,buffotps)
+            }else if(!damageInfo.miss && self.character.passiveBuffs.length){
+            	// console.log(self.character.passiveBuffs)
+            	for(var i = 0;i < self.character.passiveBuffs.length;i++){
+            		var buffotps = buffs[self.character.passiveBuffs[i].buffId]
+	                buffotps.buffId = self.character.passiveBuffs[i].buffId
+	                buffotps.duration = self.character.passiveBuffs[i].duration
+	                buffotps.buffRate = self.character.passiveBuffs[i].buffRate
+	                buffotps.buffArg = 0
+	                if(self.character.passiveBuffs[i].power && damageInfo.damage){
+	                	buffotps.buffArg = Math.round(self.character.passiveBuffs[i].power * damageInfo.damage)
+	                }
+	                target.addBuff(self.character,buffotps)
+            	}
             }
 		})
-
 	}
 }
 module.exports = attackSkill

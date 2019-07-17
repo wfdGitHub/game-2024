@@ -31,9 +31,9 @@ buffFactory.getBuff = function(attacker,target,otps) {
 	}
 }
 //判断BUFF命中率
-buffFactory.checkBuffRate = function(attacker,target,skill) {
-	var buffId = skill.buffId
-	var buffRate = skill.buffRate
+buffFactory.checkBuffRate = function(attacker,target,otps) {
+	var buffId = otps.buffId
+	var buffRate = otps.buffRate
 	var tmpRate = 0
 	switch(buffId){
 		case 21001:

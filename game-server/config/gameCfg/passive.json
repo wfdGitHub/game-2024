@@ -8,14 +8,6 @@
     "arg": 0.65
   },
   "30002": {
-    "name": "善恶审判",
-    "des": "有65%的概率造成2倍伤害，有35%的机会给对方增加100%的气血",
-    "type": "gae",
-    "img": 0,
-    "rate": 0,
-    "arg": 0.65
-  },
-  "30003": {
     "name": "神佑",
     "des": "有概率复活",
     "type": "revive",
@@ -23,7 +15,7 @@
     "rate": 0.25,
     "arg": 0.5
   },
-  "30004": {
+  "30003": {
     "name": "必杀",
     "des": "增加暴击伤害",
     "type": "increase",
@@ -31,7 +23,7 @@
     "rate": 0,
     "arg": "slay:10"
   },
-  "30005": {
+  "30004": {
     "name": "暴击",
     "des": "增加暴击概率",
     "type": "increase",
@@ -39,7 +31,7 @@
     "rate": 0,
     "arg": "crit:10"
   },
-  "30006": {
+  "30005": {
     "name": "破击",
     "des": "增加破击值",
     "type": "increase",
@@ -47,7 +39,7 @@
     "rate": 0,
     "arg": "wreck:10"
   },
-  "30007": {
+  "30006": {
     "name": "强力",
     "des": "伤害加深",
     "type": "increase",
@@ -55,7 +47,7 @@
     "rate": 0,
     "arg": "amp:0.1"
   },
-  "30008": {
+  "30007": {
     "name": "幸运",
     "des": "增加抗暴值",
     "type": "increase",
@@ -63,7 +55,7 @@
     "rate": 0,
     "arg": "critDef:20"
   },
-  "30009": {
+  "30008": {
     "name": "必中",
     "des": "增加命中率",
     "type": "increase",
@@ -71,7 +63,7 @@
     "rate": 0,
     "arg": "hitRate:10"
   },
-  "30010": {
+  "30009": {
     "name": "身强体壮",
     "des": "增加体力",
     "type": "increase",
@@ -79,7 +71,7 @@
     "rate": 0,
     "arg": "phy:10"
   },
-  "30011": {
+  "30010": {
     "name": "天生神力",
     "des": "增加力量",
     "type": "increase",
@@ -87,37 +79,52 @@
     "rate": 0,
     "arg": "str:10"
   },
-  "30012": {
+  "30011": {
     "name": "冰冻",
     "des": "攻击时有概率使敌人冰冻",
     "type": "buff",
     "img": 0,
-    "rate": 0.03,
-    "arg": "duration:5"
+    "rate": 1,
+    "buffId": 21001,
+    "duration": 5
   },
-  "30013": {
+  "30012": {
     "name": "眩晕",
     "des": "攻击时有概率使敌人眩晕",
     "type": "buff",
     "img": 0,
     "rate": 0.03,
-    "arg": "duration:5"
+    "buffId": 21002,
+    "duration": 5
   },
-  "30014": {
-    "name": "毒",
+  "30013": {
+    "name": "中毒",
     "des": "攻击时有概率使敌人中毒",
     "type": "buff",
     "img": 0,
     "rate": 0.03,
-    "arg": "buffArg:1000&duration:5"
+    "buffId": 21003,
+    "duration": 5,
+    "power": 0.1
   },
-  "30015": {
+  "30014": {
     "name": "燃烧",
     "des": "攻击时有概率使敌人燃烧",
     "type": "buff",
     "img": 0,
     "rate": 0.03,
-    "arg": "buffArg:1000&duration:5"
+    "buffId": 21004,
+    "duration": 5,
+    "power": 0.1
+  },
+  "30015": {
+    "name": "混乱",
+    "des": "攻击时有概率使敌人混乱",
+    "type": "buff",
+    "img": 0,
+    "rate": 0.03,
+    "buffId": 21005,
+    "duration": 5
   },
   "30016": {
     "name": "妖术",
@@ -125,6 +132,16 @@
     "type": "buff",
     "img": 0,
     "rate": 0.03,
-    "arg": "duration:5"
+    "buffId": 21006,
+    "duration": 5
+  },
+  "30017": {
+    "name": "沉默",
+    "des": "攻击时有概率使敌人沉默",
+    "type": "buff",
+    "img": 0,
+    "rate": 0.03,
+    "buffId": 21007,
+    "duration": 5
   }
 }

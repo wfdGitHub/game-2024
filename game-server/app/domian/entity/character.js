@@ -23,8 +23,12 @@ var character = function(otps) {
     this.chaos = false      				//混乱标识
     this.blackArt = false					//妖术标识
     this.silence = false					//沉默标识
+    //被动技能属性
     this.doubleHitRate = 0					//连击概率
     this.doubleHitPower = 0					//连击伤害
+    this.reviveRate = 0						//复活概率
+    this.revivePower = 0					//复活生命比例
+    this.passiveBuffs = []					//被动buff列表
 	this.event = new EventEmitter();
 	//=========================================//
     if(otps.passives){
@@ -127,8 +131,19 @@ character.prototype.addition = function(otps) {
     	if(passive){
 	    	switch(passive.type){
 	    		case "doubleHit":
-	    			this.doubleHitRate = passive.rate
-	    			this.doubleHitPower = passive.arg
+	    			this.doubleHitRate = Number(passive.rate) || 0
+	    			this.doubleHitPower =  Number(passive.arg) || 0
+	    		break
+	    		case "revive":
+	    			this.reviveRate =  Number(passive.rate) || 0
+	    			this.revivePower =  Number(passive.arg) || 0
+	    		break
+	    		case "increase":
+	    			var increaseStr = passive.arg
+	    			this.formula(otps,increaseStr)
+	    		break
+	    		case "buff":
+	    			this.passiveBuffs.push({buffId : passive.buffId,duration : passive.duration,power : passive.power,buffRate : passive.rate})
 	    		break
 	    	}
     	}
@@ -230,9 +245,22 @@ character.prototype.hit = function(attacker, damageInfo,source) {
 character.prototype.reduceHp = function(damageValue) {
   this.hp -= damageValue;
   if (this.hp <= 0) {
-    this.died = true;
+    this.died = true
     this.afterDied(this.name + " is died");
+    //判断复活
+    if(this.reviveRate > this.fighting.seeded.random()){
+    	this.revive()
+    }
   }
+}
+//复活
+character.prototype.revive = function() {
+	if(this.revivePower){
+		this.hp = Math.round(this.maxHP * this.revivePower)
+		this.died = false
+		this.event.emit("revive",this.hp)
+		console.log("复活! 当前生命值 : ",this.hp)
+	}
 }
 character.prototype.afterDied = function() {
 	this.event.emit("died")
@@ -270,9 +298,9 @@ character.prototype.banUse = function() {
         return false
     }
 }
-character.prototype.addBuff = function(attacker,skill,otps) {
+character.prototype.addBuff = function(attacker,otps) {
 	//判断是否命中
-	if(!buffFactory.checkBuffRate(attacker,this,skill)){
+	if(!buffFactory.checkBuffRate(attacker,this,otps)){
 		return
 	}
     var buffId = otps.buffId
@@ -295,6 +323,5 @@ character.prototype.removeBuff = function(buffId) {
     if(this.buffs[buffId]){
         delete this.buffs[buffId]
     }
-    console.log("removeBuff ",this.buffs)
 }
 module.exports = character
