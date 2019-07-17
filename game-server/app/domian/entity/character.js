@@ -8,12 +8,13 @@ var passiveCfg = require("../../../config/gameCfg/passive.json")
 var attackSkill = require("../fight/attackSkill.js")
 var character = function(otps) {
 	this.characterId = otps.characterId		//角色ID
-	this.name =otps.name			//名称
+	this.name =otps.name					//名称
 	this.spriteType = otps.spriteType || 0 	//类型
 	this.characterType = otps.characterType	//角色类型
 	this.level = otps.level || 0			//等级
 	this.fightSkills = {} 					//主动技能列表
 	this.passives = []						//被动技能列表
+	this.globalSkills = []					//全局技能列表
     this.buffs = {}                        	//buff列表
     this.defaultSkill = false             	//默认攻击
 	this.target = false						//当前目标
@@ -32,11 +33,50 @@ var character = function(otps) {
 	this.event = new EventEmitter();
 	//=========================================//
     if(otps.passives){
-    	this.passives = JSON.parse(otps.passives)
+    	this.passives = JSON.parse(otps.passives) || []
+    }
+    if(otps.golbal_skill){
+    	this.globalSkills = JSON.parse(otps.golbal_skill) || []
     }
 	this.addition(otps)
 	//=========================================//
-	this.b_arg = {}
+	this.b_arg = {
+		"str" : 0,
+		"agi" : 0,
+		"vit" : 0,
+		"phy" : 0,
+		"strA" : 0,
+		"agiA" : 0,
+		"vitA" : 0,
+		"phyA" : 0,
+		"maxHP" : 0,
+		"atk" : 0,
+		"def" : 0,
+		"atkSpeed" : 0,
+		"crit" : 0,
+		"critDef" : 0,
+		"hitRate" : 0,
+		"dodgeRate" : 0,
+		"slay" : 0,
+		"wreck" : 0,
+		"block" : 0,
+		"blockRate" : 0,
+		"amp" : 0,
+		"frozenAtk" : 0,
+		"frozenDef" : 0,
+		"dizzyAtk" : 0,
+		"dizzyDef" : 0,
+		"burnAtk" : 0,
+		"burnDef" : 0,
+		"poisonAtk" : 0,
+		"poisonDef" : 0,
+		"chaosAtk" : 0,
+		"chaosDef" : 0,
+		"blackArtAtk" : 0,
+		"blackArtDef" : 0,
+		"silenceAtk" : 0,
+		"silenceDef" : 0
+	}
 	for(var i in otps){
 		this.b_arg[i] = otps[i] || 0
 	}
@@ -160,6 +200,19 @@ character.prototype.formula = function(otps,str) {
         otps[name] = 0
       }
       otps[name] += value
+    })
+}
+//百分比属性加成公式
+character.prototype.percentformula = function(otps,str) {
+	var strList = str.split("&")
+    strList.forEach(function(m_str) {
+      var m_list = m_str.split(":")
+      var name = m_list[0]
+      var value = Number(m_list[1])
+      if(!otps[name]){
+        otps[name] = 0
+      }
+      otps[name] += Math.round(value * otps[name])
     })
 }
 character.prototype.getSimpleInfo = function() {

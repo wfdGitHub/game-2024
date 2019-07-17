@@ -19,19 +19,6 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo,seededNum,rea
 		defTeam.push(entityFun(defTeamInfo[i]))
 	}
 	var fighting = new fightingFun(atkTeam,defTeam,{stepper : this.stepper,maxTime : this.maxTime,seededNum : seededNum,readList : readList})
-	for(var i in atkTeam){
-		console.log(atkTeam[i].getInfo())
-		atkTeam[i].setArg(defTeam,fighting)
-	}
-	for(var i in defTeam){
-		console.log(defTeam[i].getInfo())
-		defTeam[i].setArg(atkTeam,fighting)
-	}
-	fighting.characterArr.forEach(function(character) {
-		if(character.defaultSkill){
-			character.defaultSkill.updateCD()
-		}
-	})
 	var count = 0
 	while(!fighting.isOver() && count++ < this.maxCount){
 	 	fighting.update()

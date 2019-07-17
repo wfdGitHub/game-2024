@@ -1,4 +1,5 @@
 var seeded = require("./seeded.js")
+var golbal_skill = require("../../../config/gameCfg/golbal_skill.json")
 var fighting = function(atkTeam,defTeam,otps) {
 	this.curTime = 0
 	this.atkTeam = atkTeam
@@ -18,6 +19,48 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.readList = otps.readList || []
 	this.seededNum = otps.seededNum || (new Date()).getTime()
     this.seeded = new seeded(this.seededNum)
+	for(var i in this.atkTeam){
+		this.atkTeam[i].setArg(this.defTeam,this)
+		if(this.atkTeam[i].globalSkills.length){
+			for(var j = 0;j < this.atkTeam[i].globalSkills.length;j++){
+					var tmpSkill = golbal_skill[this.atkTeam[i].globalSkills[j]]
+					var arg = tmpSkill.arg
+					if(tmpSkill.team == "we"){
+						for(var z = 0;z < this.atkTeam.length;z++){
+							this.atkTeam[z].percentformula(this.atkTeam[z],arg)
+						}
+					}else if(tmpSkill.team == "they"){
+						for(var z = 0;z < this.defTeam.length;z++){
+							this.defTeam[z].percentformula(this.defTeam[z],arg)
+						}
+					}
+			}
+		}
+	}
+	for(var i in this.defTeam){
+		this.defTeam[i].setArg(this.atkTeam,this)
+		if(this.defTeam[i].globalSkills.length){
+			for(var j = 0;j < this.defTeam[i].globalSkills.length;j++){
+					var tmpSkill = golbal_skill[this.defTeam[i].globalSkills[j]]
+					var arg = tmpSkill.arg
+					if(tmpSkill.team == "we"){
+						for(var z = 0;z < this.defTeam.length;z++){
+							this.defTeam[z].percentformula(this.defTeam[z],arg)
+						}
+					}else if(tmpSkill.team == "they"){
+						for(var z = 0;z < this.atkTeam.length;z++){
+							this.atkTeam[z].percentformula(this.atkTeam[z],arg)
+						}
+					}
+			}
+		}
+	}
+	this.characterArr.forEach(function(character) {
+		console.log(character.getInfo())
+		if(character.defaultSkill){
+			character.defaultSkill.updateCD()
+		}
+	})
 }
 //时间推进
 fighting.prototype.update = function() {
