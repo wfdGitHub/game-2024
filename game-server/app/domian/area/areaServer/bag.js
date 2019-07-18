@@ -180,7 +180,7 @@ module.exports = function() {
 		var values = []
 		var self = this
 		var strList = str.split("&")
-		if(!rate || parseInt(rate) != rate || typeof(rate) != "number"){
+		if(!rate || parseFloat(rate) != rate || typeof(rate) != "number"){
 			rate = 1
 		}
 		strList.forEach(function(m_str) {
@@ -209,7 +209,7 @@ module.exports = function() {
 	this.addItemStr = function(uid,str,rate) {
 		var list = str.split("&")
 		var self = this
-		if(!rate || parseInt(rate) != rate || typeof(rate) != "number"){
+		if(!rate || parseFloat(rate) != rate || typeof(rate) != "number"){
 			rate = 1
 		}
 		list.forEach(function(m_str) {
