@@ -135,25 +135,30 @@ module.exports = function() {
 	}
 	//增加物品
 	this.addItem = function(uid,itemId,value,cb) {
-		if(!itemCfg[itemId]){
-			if(cb)
-				cb(false,"item not exist")
-			return
-		}
 		var self = this
-		self.addItemCB(uid,itemId,value,function(flag,curValue) {
-			if(flag){
-				var notify = {
-					"type" : "addItem",
-					"itemId" : itemId,
-					"value" : value,
-					"curValue" : curValue
-				}
-				self.sendToUser(uid,notify)
+		if(itemId == 100){
+			//主角经验
+			this.addCharacterEXP(uid,10001,value,cb)
+		}else{
+			if(!itemCfg[itemId]){
+				if(cb)
+					cb(false,"item not exist")
+				return
 			}
-			if(cb)
-				cb(flag,curValue)
-		})
+			self.addItemCB(uid,itemId,value,function(flag,curValue) {
+				if(flag){
+					var notify = {
+						"type" : "addItem",
+						"itemId" : itemId,
+						"value" : value,
+						"curValue" : curValue
+					}
+					self.sendToUser(uid,notify)
+				}
+				if(cb)
+					cb(flag,curValue)
+			})
+		}
 	}
 	//增加物品回调
 	this.addItemCB = function(uid,itemId,value,cb) {
@@ -161,19 +166,12 @@ module.exports = function() {
 			cb(false,"type error "+typeof(itemId))
 			return
 		}
-		if(itemCfg[itemId] && itemCfg[itemId].isBag){
+		if(itemCfg[itemId]){
 			this.addBagItem(uid,itemId,value,cb)
 		}else{
-			switch(itemId){
-				case 100:
-					//主角经验
-					this.addCharacterEXP(uid,10001,value,cb)
-				break
-				default:
-					console.log("addItem error : "+itemId)
-					if(cb)
-						cb(false,"itemId error : "+itemId)
-			}
+			console.log("addItem error : "+itemId)
+			if(cb)
+				cb(false,"itemId error : "+itemId)
 		}
 	}
 	//扣除道具
