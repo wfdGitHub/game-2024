@@ -492,5 +492,23 @@
     "maxHP": 200,
     "atk": 10,
     "atkSpeed": 2
+  },
+  "13004": {
+    "name": "宠物4",
+    "spriteType": "mob19",
+    "characterType": "pet",
+    "des": "宠物4",
+    "skills": "[20004]",
+    "str": 10,
+    "agi": 10,
+    "vit": 10,
+    "phy": 10,
+    "strA": 1,
+    "agiA": 1,
+    "vitA": 1,
+    "phyA": 1,
+    "maxHP": 200,
+    "atk": 10,
+    "atkSpeed": 2
   }
 }

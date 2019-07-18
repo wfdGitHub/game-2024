@@ -5,8 +5,8 @@ module.exports = function() {
 	this.playerBags = {}
 	//使用背包物品
 	this.useItem = function(otps,cb) {
-		if(!itemCfg[otps.itemId]){
-			cb(false,"item not exist")
+		if(!itemCfg[otps.itemId] || !itemCfg[otps.itemId].useType){
+			cb(false,"item not exist or can't use")
 			return
 		}
 		//判断物品数量是否足够
@@ -26,8 +26,9 @@ module.exports = function() {
 	}
 	//使用物品逻辑
 	this.useItemCB = function(otps,cb) {
-		switch(otps.itemId){
-			case 3001:
+		var self = this
+		switch(itemCfg[otps.itemId].useType){
+			case "partnerExp":
 				//伙伴经验丹
 				if(!charactersCfg[otps.characterId] || charactersCfg[otps.characterId].characterType != "partner"){
 					cb(false,"characterId error : "+otps.characterId)
@@ -42,11 +43,11 @@ module.exports = function() {
 					cb(false,"character level limit : "+otps.characterId)
 					return
 				}
-				this.addCharacterEXP(otps.uid,otps.characterId,otps.value * 500)
+				this.addCharacterEXP(otps.uid,otps.characterId,parseInt(otps.value * itemCfg[otps.itemId].arg) || 0)
 				otps.value = -otps.value
 				this.addItem(otps.uid,otps.itemId,otps.value,cb)
 			break
-			case 2001:
+			case "petExp":
 				//宠物经验丹
 				var petInfo = this.getPetById(otps.uid,otps.id)
 				if(!petInfo){
@@ -57,9 +58,35 @@ module.exports = function() {
 					cb(false,"character level limit : "+otps.id)
 					return
 				}
-				this.addPetEXP(otps.uid,otps.id,otps.value * 500)
+				this.addPetEXP(otps.uid,otps.id,parseInt(otps.value * itemCfg[otps.itemId].arg) || 0)
 				otps.value = -otps.value
 				this.addItem(otps.uid,otps.itemId,otps.value,cb)
+			break
+			case "petEgg":
+				//宠物蛋
+				var arg = itemCfg[otps.itemId].arg
+				var strs = arg.split("&")
+				var list = []
+				var allNumber = 0
+				strs.forEach(function(m_str) {
+					var m_list = m_str.split(":")
+					allNumber += Number(m_list[1])
+					list.push({petId : Number(m_list[0]),rand : allNumber})
+				})
+				var rand = Math.random() * allNumber
+				var characterId = list[0].petId
+				for(var i = 0;i < list.length;i++){
+					if(rand < list[i].rand){
+						characterId = list[i].petId
+						break
+					}
+				}
+				this.obtainPet(otps.uid,characterId,function(flag,petInfo) {
+					if(flag){
+						self.addItem(otps.uid,otps.itemId,-1)
+					}
+					cb(flag,petInfo)
+				})
 			break
 			default:
 				console.log("itemId can't use "+otps.itemId)
