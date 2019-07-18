@@ -21,6 +21,11 @@ module.exports = function() {
 		self.petDao.obtainPet(self.areaId,uid,characterId,function(flag,petInfo) {
 			if(flag){
 				self.players[uid].pets[petInfo.id] = petInfo
+				var notify = {
+					"type" : "obtainPet",
+					"petInfo" : petInfo
+				}
+				self.sendToUser(uid,notify)
 			}
 			if(cb)
 				cb(flag,petInfo)

@@ -37,6 +37,11 @@ module.exports = function() {
 	this.createCharacter = function(areaId,uid,characterId) {
 		var characterInfo = this.characterDao.createCharacter(areaId,uid,characterId)
 		this.players[uid].characters[this.charactersMap[characterInfo.characterId]] = characterInfo
+		var notify = {
+			"type" : "createCharacter",
+			"characterInfo" : characterInfo
+		}
+		this.sendToUser(uid,notify)
 	}
 	//根据id获取角色信息
 	this.getCharacterById = function(uid,characterId) {
