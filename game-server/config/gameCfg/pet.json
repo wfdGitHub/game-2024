@@ -1,6 +1,8 @@
 {
   "13001": {
     "petType": "normal",
+    "passives": "[30001,30002,30003,30004]",
+    "golbal_skill": "[40001,40002,40003]",
     "minstr": 1000,
     "maxstr": 2000,
     "minagi": 1000,

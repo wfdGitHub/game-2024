@@ -50,16 +50,16 @@ module.exports = function() {
 		return false
 	}
 	//根据配置表获取角色数据
-	this.characterDeploy = function(info) {
-		var newInfo = Object.assign(info,{})
-		var characterId = info.characterId
-		if(!charactersCfg[info.characterId]){
-			console.log("characterDeploy error ",info,charactersCfg[info.characterId])
-			return false
-		}
-		for(var i in charactersCfg[characterId]){
-			newInfo[i] = charactersCfg[characterId][i]
-		}
-		return newInfo
-	}
+	// this.characterDeploy = function(info) {
+	// 	var newInfo = Object.assign(info,{})
+	// 	var characterId = info.characterId
+	// 	if(!charactersCfg[info.characterId]){
+	// 		console.log("characterDeploy error ",info,charactersCfg[info.characterId])
+	// 		return false
+	// 	}
+	// 	for(var i in charactersCfg[characterId]){
+	// 		newInfo[i] = charactersCfg[characterId][i]
+	// 	}
+	// 	return newInfo
+	// }
 }

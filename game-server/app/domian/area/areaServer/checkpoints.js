@@ -57,16 +57,6 @@ module.exports = function() {
 		        defTeam.push({characterId,characterId,level : checkpointsCfg[level].mobLevel})
 		      })
 		    }
-		    for(var i = 0;i < atkTeam.length;i++){
-		    	atkTeam[i] = self.characterDeploy(atkTeam[i])
-		    	if(!atkTeam[i]){
-			    	cb(false,"characterInfo error")
-			    	return
-		    	}
-		    }
-		    for(var i = 0;i < defTeam.length;i++){
-		    	defTeam[i] = self.characterDeploy(defTeam[i])
-		    }
 		    self.redisDao.db.hset("test:fight","atkTeam",JSON.stringify(atkTeam))
 		    self.redisDao.db.hset("test:fight","defTeam",JSON.stringify(defTeam))
 		    self.redisDao.db.hset("test:fight","seededNum",otps.seededNum)

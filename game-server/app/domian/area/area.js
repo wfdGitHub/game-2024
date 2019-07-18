@@ -111,7 +111,7 @@ area.prototype.getAreaServerInfo = function(){
 area.prototype.getAreaPlayers = function(){
 	return this.players
 }
-//获取玩家上阵配置
+//获取玩家上阵配置(出战阵容)
 area.prototype.getFightTeam = function(uid) {
 	if(!this.players[uid]){
 		return false

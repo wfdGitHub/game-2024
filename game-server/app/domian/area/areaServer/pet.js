@@ -145,6 +145,7 @@ module.exports = function() {
 			//洗练
 			var petInfo = self.players[uid].pets[id]
 			var tmpPetInfo = self.petDao.createPet(petInfo.characterId)
+			//判断变异
 			if(variation || Math.random() < 0.03){
 				tmpPetInfo.variation = 1
 				tmpPetInfo.strAp += petCfg[characterId].vPhy

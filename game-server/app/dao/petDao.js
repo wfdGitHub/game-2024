@@ -66,6 +66,23 @@ petDao.prototype.createPet = function(characterId) {
 	petInfo.vitAp = Math.floor(Math.random() * (petCfg[characterId].maxvit - petCfg[characterId].minvit) + petCfg[characterId].minvit) || 0
 	petInfo.phyAp = Math.floor(Math.random() * (petCfg[characterId].maxphy - petCfg[characterId].minphy) + petCfg[characterId].minphy) || 0
 	petInfo.growth = Number((Math.random() * (petCfg[characterId].maxgrowth - petCfg[characterId].mingrowth) + petCfg[characterId].mingrowth).toFixed(2))
+	if(petCfg[characterId].golbal_skill)
+		petInfo.golbal_skill = petCfg[characterId].golbal_skill
+	//生成被动技能列表
+	if(petCfg[characterId].passives){
+		var passives = []
+		var passivesList = JSON.parse(petCfg[characterId].passives)
+		if(passivesList.length){
+			for(var i = 0;i < passivesList.length;i++){
+				if(Math.random() < 0.3){
+					passives.push(passivesList[i])
+				}
+			}
+		}
+		if(passives.length >= 1){
+			petInfo.passives = JSON.stringify(passives)
+		}
+	}
 	return petInfo
 }
 //获取宠物列表
