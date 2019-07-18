@@ -1,6 +1,7 @@
 //背包物品系统
 var itemCfg = require("../../../../config/gameCfg/item.json")
 var charactersCfg = require("../../../../config/gameCfg/characters.json")
+var shopCfg = require("../../../../config/gameCfg/shop.json")
 module.exports = function() {
 	this.playerBags = {}
 	//使用背包物品
@@ -175,11 +176,42 @@ module.exports = function() {
 			}
 		}
 	}
+	//扣除道具
+	this.consumeItems = function(uid,str,rate,cb) {
+		var items = []
+		var values = []
+		var self = this
+		var strList = str.split("&")
+		if(!rate || parseInt(rate) != rate || typeof(rate) != "number"){
+			rate = 1
+		}
+		strList.forEach(function(m_str) {
+			var m_list = m_str.split(":")
+			var itemId = Number(m_list[0])
+			var value = Math.floor(Number(m_list[1]) * rate)
+			items.push(itemId)
+			values.push(value)
+		})
+		//判断道具是否足够
+		self.getBagItemList(uid,items,function(list) {
+			for(var i = 0;i < values.length;i++){
+				if(list[i] < values[i]){
+					cb(false,"item not enough "+items[i]+" "+list[i]+" "+values[i])
+					return
+				}
+			}
+			//扣除道具
+			for(var i = 0;i < values.length;i++){
+				self.addItem(uid,items[i],-values[i])
+			}
+			cb(true)
+		})
+	}
 	//解析物品奖励
 	this.addItemStr = function(uid,str,rate) {
 		var list = str.split("&")
 		var self = this
-		if(!rate){
+		if(!rate || parseInt(rate) != rate || typeof(rate) != "number"){
 			rate = 1
 		}
 		list.forEach(function(m_str) {
@@ -187,6 +219,27 @@ module.exports = function() {
 			var itemId = Number(m_list[0])
 			var value = Math.floor(Number(m_list[1]) * rate)
 			self.addItem(uid,itemId,value)
+		})
+	}
+	//商城购买物品
+	this.buyShop = function(uid,shopId,count,cb) {
+		if(parseInt(shopId) != shopId || parseInt(count) != count){
+			cb(false,"args type error")
+			return
+		}
+		var shopInfo = shopCfg[shopId]
+		if(!shopInfo){
+			cb(false,"shopId error "+shopId)
+			return
+		}
+		var self = this
+		self.consumeItems(uid,shopInfo.pc,count,function(flag,err) {
+			if(!flag){
+				cb(flag,err)
+				return
+			}
+			self.addItemStr(uid,shopInfo.pa,count)
+			cb(true,shopInfo.pa)
 		})
 	}
 }

@@ -269,6 +269,12 @@
             console.log(data);
         })
       }
+      //购买商城物品
+      var buyShop = function(shopId,count) {
+        pomelo.request("area.normalHandler.buyShop",{shopId : shopId,count : count}, function(data) {
+            console.log(data);
+        })
+      }
     </script>
   </head>
   <body>

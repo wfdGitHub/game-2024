@@ -56,6 +56,16 @@ normalHandler.prototype.addItem = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//购买商城物品
+normalHandler.prototype.buyShop = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var shopId = msg.shopId
+  var count = msg.count
+  this.areaManager.areaMap[areaId].buyShop(uid,shopId,count,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //测试
 normalHandler.prototype.test = function(msg, session, next) {
   var uid = session.get("uid")
