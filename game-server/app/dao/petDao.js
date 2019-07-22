@@ -70,17 +70,19 @@ petDao.prototype.createPet = function(characterId) {
 		petInfo.vitAp = Math.floor(Math.random() * (petCfg[characterId].maxvit - petCfg[characterId].minvit) + petCfg[characterId].minvit) || 0
 		petInfo.phyAp = Math.floor(Math.random() * (petCfg[characterId].maxphy - petCfg[characterId].minphy) + petCfg[characterId].minphy) || 0
 		petInfo.growth = Number((Math.random() * (petCfg[characterId].maxgrowth - petCfg[characterId].mingrowth) + petCfg[characterId].mingrowth).toFixed(2))
-		var passives = []
-		var passivesList = JSON.parse(petCfg[characterId].passives)
-		if(passivesList.length){
-			for(var i = 0;i < passivesList.length;i++){
-				if(Math.random() < 0.3){
-					passives.push(passivesList[i])
+		if(petCfg[characterId].passives){
+			var passives = []
+			var passivesList = JSON.parse(petCfg[characterId].passives)
+			if(Array.isArray(passivesList)){
+				for(var i = 0;i < passivesList.length;i++){
+					if(Math.random() < 0.3){
+						passives.push(passivesList[i])
+					}
 				}
 			}
-		}
-		if(passives.length >= 1){
-			petInfo.passives = JSON.stringify(passives)
+			if(passives.length >= 1){
+				petInfo.passives = JSON.stringify(passives)
+			}
 		}
 	}else{
 		//圣兽、神兽获得全部技能、最高成长资质
@@ -89,7 +91,9 @@ petDao.prototype.createPet = function(characterId) {
 		petInfo.vitAp = Math.floor(petCfg[characterId].maxvit) || 0
 		petInfo.phyAp = Math.floor(petCfg[characterId].maxphy) || 0
 		petInfo.growth = Number(petCfg[characterId].maxgrowth)
-		petInfo.passives = petCfg[characterId].passives
+		if(petCfg[characterId].passives){
+			petInfo.passives = petCfg[characterId].passives
+		}
 	}
 	return petInfo
 }
