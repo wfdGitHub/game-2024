@@ -70,17 +70,22 @@ petDao.prototype.createPet = function(characterId) {
 		petInfo.golbal_skill = petCfg[characterId].golbal_skill
 	//生成被动技能列表
 	if(petCfg[characterId].passives){
-		var passives = []
-		var passivesList = JSON.parse(petCfg[characterId].passives)
-		if(passivesList.length){
-			for(var i = 0;i < passivesList.length;i++){
-				if(Math.random() < 0.3){
-					passives.push(passivesList[i])
+		if(petCfg[characterId].petType == "normal"){
+			var passives = []
+			var passivesList = JSON.parse(petCfg[characterId].passives)
+			if(passivesList.length){
+				for(var i = 0;i < passivesList.length;i++){
+					if(Math.random() < 0.3){
+						passives.push(passivesList[i])
+					}
 				}
 			}
-		}
-		if(passives.length >= 1){
-			petInfo.passives = JSON.stringify(passives)
+			if(passives.length >= 1){
+				petInfo.passives = JSON.stringify(passives)
+			}
+		}else{
+			//圣兽、神兽获得全部技能
+			petInfo.passives = petCfg[characterId].passives
 		}
 	}
 	return petInfo

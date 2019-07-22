@@ -114,7 +114,10 @@ module.exports = function() {
 		}
 		var self = this
 		var characterId = this.players[uid].pets[id].characterId
-		var c = petCfg[characterId]
+		if(petCfg[characterId].petType != "normal"){
+			cb(false,"petType not normal")
+			return
+		}
 		var consumeStr = petCfg[characterId].washPc
 		var self = this
 		self.consumeItems(uid,consumeStr,1,function(flag,err) {
