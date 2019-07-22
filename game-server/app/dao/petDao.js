@@ -61,32 +61,35 @@ petDao.prototype.createPet = function(characterId) {
 	var petInfo = {
 		characterId : characterId
 	}
-	petInfo.strAp = Math.floor(Math.random() * (petCfg[characterId].maxstr - petCfg[characterId].minstr) + petCfg[characterId].minstr) || 0
-	petInfo.agiAp = Math.floor(Math.random() * (petCfg[characterId].maxagi - petCfg[characterId].minagi) + petCfg[characterId].minagi) || 0
-	petInfo.vitAp = Math.floor(Math.random() * (petCfg[characterId].maxvit - petCfg[characterId].minvit) + petCfg[characterId].minvit) || 0
-	petInfo.phyAp = Math.floor(Math.random() * (petCfg[characterId].maxphy - petCfg[characterId].minphy) + petCfg[characterId].minphy) || 0
-	petInfo.growth = Number((Math.random() * (petCfg[characterId].maxgrowth - petCfg[characterId].mingrowth) + petCfg[characterId].mingrowth).toFixed(2))
+	//获得全部全局技能
 	if(petCfg[characterId].golbal_skill)
 		petInfo.golbal_skill = petCfg[characterId].golbal_skill
-	//生成被动技能列表
-	if(petCfg[characterId].passives){
-		if(petCfg[characterId].petType == "normal"){
-			var passives = []
-			var passivesList = JSON.parse(petCfg[characterId].passives)
-			if(passivesList.length){
-				for(var i = 0;i < passivesList.length;i++){
-					if(Math.random() < 0.3){
-						passives.push(passivesList[i])
-					}
+	if(petCfg[characterId].petType == "normal"){
+		petInfo.strAp = Math.floor(Math.random() * (petCfg[characterId].maxstr - petCfg[characterId].minstr) + petCfg[characterId].minstr) || 0
+		petInfo.agiAp = Math.floor(Math.random() * (petCfg[characterId].maxagi - petCfg[characterId].minagi) + petCfg[characterId].minagi) || 0
+		petInfo.vitAp = Math.floor(Math.random() * (petCfg[characterId].maxvit - petCfg[characterId].minvit) + petCfg[characterId].minvit) || 0
+		petInfo.phyAp = Math.floor(Math.random() * (petCfg[characterId].maxphy - petCfg[characterId].minphy) + petCfg[characterId].minphy) || 0
+		petInfo.growth = Number((Math.random() * (petCfg[characterId].maxgrowth - petCfg[characterId].mingrowth) + petCfg[characterId].mingrowth).toFixed(2))
+		var passives = []
+		var passivesList = JSON.parse(petCfg[characterId].passives)
+		if(passivesList.length){
+			for(var i = 0;i < passivesList.length;i++){
+				if(Math.random() < 0.3){
+					passives.push(passivesList[i])
 				}
 			}
-			if(passives.length >= 1){
-				petInfo.passives = JSON.stringify(passives)
-			}
-		}else{
-			//圣兽、神兽获得全部技能
-			petInfo.passives = petCfg[characterId].passives
 		}
+		if(passives.length >= 1){
+			petInfo.passives = JSON.stringify(passives)
+		}
+	}else{
+		//圣兽、神兽获得全部技能、最高成长资质
+		petInfo.strAp = Math.floor(petCfg[characterId].maxstr) || 0
+		petInfo.agiAp = Math.floor(petCfg[characterId].maxagi) || 0
+		petInfo.vitAp = Math.floor(petCfg[characterId].maxvit) || 0
+		petInfo.phyAp = Math.floor(petCfg[characterId].maxphy) || 0
+		petInfo.growth = Number(petCfg[characterId].maxgrowth)
+		petInfo.passives = petCfg[characterId].passives
 	}
 	return petInfo
 }
