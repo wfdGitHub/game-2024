@@ -1,0 +1,62 @@
+{
+  "e1": {
+    "name": "武器",
+    "attribute": "atk:1&hitRate:1",
+    "sd": 100,
+    "sc": 200
+  },
+  "e2": {
+    "name": "头盔",
+    "attribute": "atk:1&hitRate:1",
+    "sd": 80,
+    "sc": 160
+  },
+  "e3": {
+    "name": "护肩",
+    "attribute": "atk:1&hitRate:1",
+    "sd": 80,
+    "sc": 160
+  },
+  "e4": {
+    "name": "胸甲",
+    "attribute": "atk:1&hitRate:1",
+    "sd": 50,
+    "sc": 100
+  },
+  "e5": {
+    "name": "腰带",
+    "attribute": "atk:1&hitRate:1",
+    "sd": 50,
+    "sc": 100
+  },
+  "e6": {
+    "name": "项链",
+    "attribute": "atk:1&hitRate:1",
+    "sd": 50,
+    "sc": 100
+  },
+  "e7": {
+    "name": "护腿",
+    "attribute": "atk:1&hitRate:1",
+    "sd": 30,
+    "sc": 60
+  },
+  "e8": {
+    "name": "手套",
+    "attribute": "atk:1&hitRate:1",
+    "sd": 30,
+    "sc": 60
+  },
+  "e9": {
+    "name": "鞋子",
+    "attribute": "atk:1&hitRate:1",
+    "sd": 30,
+    "sc": 60
+  },
+  "e10": {
+    "name": "戒指",
+    "attribute": "atk:1&hitRate:1",
+    "sd": 30,
+    "sc": 60
+  }
+}
