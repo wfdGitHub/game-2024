@@ -106,6 +106,9 @@ formula.getTargetNormal = function(attacker,team) {
 	var allRand = 0
 	for(var i = 0;i < team.length;i++){
 		var rand = team[i].hp / team[i].maxHP
+		if(rand < 0){
+			rand = 0
+		}
 		allRand += rand
 		arr.push(rand)
 	}

@@ -298,6 +298,7 @@ character.prototype.hit = function(attacker, damageInfo,source) {
 character.prototype.reduceHp = function(damageValue) {
   this.hp -= damageValue;
   if (this.hp <= 0) {
+  	this.hp = 0
     this.died = true
     this.afterDied(this.name + " is died");
     //判断复活
