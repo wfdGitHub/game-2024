@@ -7,9 +7,25 @@ var equip_quality = require("../../../../config/gameCfg/equip_quality.json")
 var equip_wash = require("../../../../config/gameCfg/equip_wash.json")
 var currencyId = equip_config.currencyId.value
 module.exports = function() {
+	//获取装备列表
+	this.getEquipList = function(uid,cb) {
+		this.redisDao.db.hgetall("area:area"+this.areaId+":player:"+uid+":equip",function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
 	//获得新装备
-	this.addEquip = function(uid,eId,samsara,quality) {
+	this.addEquip = function(uid,eId,samsara,quality,cb) {
+		if(!equip_base[eId] || !equip_level[samsara] || !equip_quality[quality]){
+			console.log("addEquip error"+eId,samsara,quality)
+			if(cb){
+				cb(false,"can't find equip")
+			}
+			return
+		}
 		var estr = this.equipStr(eId,samsara,quality)
+		var self = this
 		this.redisDao.db.hincrby("area:area"+this.areaId+":player:"+uid+":equip",estr,1,function(err,data) {
 			var notify = {
 				"type" : "addEquip",
@@ -18,6 +34,9 @@ module.exports = function() {
 				"curValue" : data
 			}
 			self.sendToUser(uid,notify)
+			if(cb){
+				cb(true)
+			}
 		})
 	}
 	//删除装备
@@ -26,14 +45,18 @@ module.exports = function() {
 	}
 	//批量分解装备 elist : {eStr : 1}
 	this.resolveEquip = function(uid,elist,cb) {
+		var self = this
+		if(typeof(elist) != "object"){
+			cb(false,"elist not object")
+			return
+		}
 		//参数检查
 		for(var i in elist){
-			if(!Number.isInteger(elist[i])){
-				cb(false,i + " not integer")
+			if(!self.equipParse(i) || !Number.isInteger(elist[i])){
+				cb(false,i + " 参数错误")
 				return
 			}
 		}
-		var self = this
 		//查询并扣除装备
 		self.consumeEquips(uid,elist,function(flag,err) {
 			if(!flag){
@@ -47,6 +70,7 @@ module.exports = function() {
 				var tmpValue = equip_base[eInfo.eId]["sd"]
 				tmpValue *= equip_level[eInfo.samsara]["sRate"]
 				tmpValue *= equip_quality[eInfo.quality]["sRate"]
+				tmpValue *= elist[i]
 				tmpValue = parseInt(tmpValue)
 				if(Number.isInteger(tmpValue)){
 					value += tmpValue
@@ -55,7 +79,7 @@ module.exports = function() {
 				}
 			}
 			if(value > 0){
-				this.addItem(uid,currencyId,value)
+				self.addItem(uid,currencyId,value)
 			}
 			cb(true,value)
 		})
@@ -91,30 +115,39 @@ module.exports = function() {
 			samsara : Number(list[1]),
 			quality : Number(list[2])
 		}
+		if(!equip_base[info.eId] || !equip_level[info.samsara] || !equip_quality[info.quality]){
+			console.log("equipParse error"+info.eId,info.samsara,info.quality)
+			return false
+		}
+		return info
 	}
 	//扣除装备
 	this.consumeEquips = function(uid,elist,cb) {
 		var self = this
+		var eArr = []
+		for(var i in elist){
+			eArr.push(i)
+		}
 		//判断装备是否足够
-		self.getEquipList(uid,elist,function(list) {
-			for(var i = 0;i < elist.length;i++){
-				if(list[i] < elist[i]){
-					cb(false,"equip not enough "+i+" "+list[i]+" "+elist[i])
+		self.getEquipItemList(uid,eArr,function(list) {
+			for(var i = 0;i < eArr.length;i++){
+				if(list[i] < elist[eArr[i]]){
+					cb(false,"equip not enough "+eArr[i]+" "+list[i]+" "+elist[eArr[i]])
 					return
 				}
 			}
 			//扣除装备
-			for(var i = 0;i < elist.length;i++){
-				self.deleteEquip(uid,i,-elist[i])
+			for(var i in elist){
+				self.deleteEquip(uid,i,elist[i])
 			}
 			cb(true)
 		})
 	}
 	//获取指定装备数量
-	this.getEquipList = function(uid,elist,cb) {
+	this.getEquipItemList = function(uid,eArr,cb) {
 		var multiList = []
-		for(var i in elist){
-			multiList.push(["hget","area:area"+this.areaId+":player:"+uid+":equip",i])
+		for(var i = 0;i < eArr.length;i++){
+			multiList.push(["hget","area:area"+this.areaId+":player:"+uid+":equip",eArr[i]])
 		}
 		this.redisDao.multi(multiList,function(err,list) {
 			for(var i = 0;i < list.length;i++){

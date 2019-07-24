@@ -63,6 +63,25 @@
         console.log("onChat")
         console.log(data)
       })
+      //获取装备列表
+      var getEquipList = function() {
+        pomelo.request("area.equipHandler.getEquipList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取装备
+      var addEquip = function(eId,samsara,quality) {
+        pomelo.request("area.equipHandler.addEquip", {eId : eId,samsara : samsara,quality : quality}, function(data) {
+            console.log(data);
+        });
+      }
+      //批量分解装备
+      var resolveEquip = function(elist) {
+        pomelo.request("area.equipHandler.resolveEquip", {elist}, function(data) {
+            console.log(data);
+        });
+      }
+
       //获取服务器列表
       var getAreaList = function(index) {
         pomelo.request("connector.loginHandler.getAreaList", {index : index}, function(data) {
