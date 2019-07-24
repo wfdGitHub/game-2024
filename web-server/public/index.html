@@ -64,6 +64,12 @@
         console.log(data)
       })
       //============装备================//
+      //强化装备
+      var equipIntensify = function(eId) {
+        pomelo.request("area.equipHandler.equipIntensify", {eId : eId}, function(data) {
+            console.log(data);
+        });
+      }
       //获取装备池列表
       var getEquipList = function() {
         pomelo.request("area.equipHandler.getEquipList", {}, function(data) {

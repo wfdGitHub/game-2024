@@ -7,6 +7,26 @@ module.exports = function() {
 		10004 : 3,
 		10005 : 4
 	}
+	//查询主角属性
+	this.getRoleArg = function(uid,name,cb) {
+		this.redisDao.db.hget("area:area"+this.areaId+":player:"+uid+":characters:10001",name,function(err,data) {
+			if(err || !data){
+				cb(false)
+			}else{
+				cb(data)
+			}
+		})
+	}
+	//查询角色属性
+	this.getCharacterArg = function(uid,characterId,name,cb) {
+		this.redisDao.db.hget("area:area"+this.areaId+":player:"+uid+":characters:"+characterId,name,function(err,data) {
+			if(err || !data){
+				cb(false)
+			}else{
+				cb(data)
+			}
+		})
+	}
 	//增减角色属性 {uid,characterId,name,value}
 	this.incrbyCharacterInfo = function(uid,characterId,name,value,cb) {
 		var index = this.charactersMap[characterId]
@@ -54,17 +74,4 @@ module.exports = function() {
 		}
 		return false
 	}
-	//根据配置表获取角色数据
-	// this.characterDeploy = function(info) {
-	// 	var newInfo = Object.assign(info,{})
-	// 	var characterId = info.characterId
-	// 	if(!charactersCfg[info.characterId]){
-	// 		console.log("characterDeploy error ",info,charactersCfg[info.characterId])
-	// 		return false
-	// 	}
-	// 	for(var i in charactersCfg[characterId]){
-	// 		newInfo[i] = charactersCfg[characterId][i]
-	// 	}
-	// 	return newInfo
-	// }
 }

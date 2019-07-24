@@ -3,6 +3,15 @@ var equipHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+//强化装备
+equipHandler.prototype.equipIntensify = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  this.areaManager.areaMap[areaId].equipIntensify(uid,eId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //获取装备池列表
 equipHandler.prototype.getEquipList = function(msg, session, next) {
   var uid = session.get("uid")

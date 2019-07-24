@@ -220,6 +220,48 @@ module.exports = function() {
 
 	//装备洗练
 
+	//装备强化
+	this.equipIntensify = function(uid,eId,cb) {
+		var self = this
+		if(!equip_base[eId]){
+			cb(false,"eId error "+eId)
+			return
+		}
+		if(!self.players[uid] || !self.players[uid].characters[0]){
+			cb(false,"system error")
+			return
+		}
+		var characterInfo = self.players[uid].characters[0]
+		var curLv = Number(characterInfo.level)
+		var samsara = Math.floor((curLv / 100))
+
+		self.getRoleArg(uid,"i_"+eId,function(data) {
+			var curIL = Number(data)
+			if(!curIL){
+				curIL = 0
+			}
+			curIL++
+			if(curIL > equip_level[samsara]["il"]){
+				cb(false,"已达到当前等级上限")
+				return
+			}
+			var isamsara = Math.floor(curIL / 10)
+			var ilv = Math.floor((curIL - 1) % 10 + 1)
+			if(!equip_level[isamsara] || !equip_level[isamsara]["ipc"]){
+				cb(false,"不可升级")
+				return
+			}
+			var ipc = equip_level[isamsara]["ipc"]
+			var pc = equip_intensify[ilv]["pc"]
+			self.consumeItems(uid,pc,ipc,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+					return
+				}
+				self.incrbyCharacterInfo(uid,10001,"i_"+eId,1,cb)
+			})
+		})
+	}
 	//生成装备信息 装备ID   转生等级  装备品质  强化等级
 	this.equipInfo = function(eId,samsara,quality) {
 		var info = {
