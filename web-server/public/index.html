@@ -63,13 +63,20 @@
         console.log("onChat")
         console.log(data)
       })
-      //获取装备列表
+      //============装备================//
+      //获取装备池列表
       var getEquipList = function() {
         pomelo.request("area.equipHandler.getEquipList", {}, function(data) {
             console.log(data);
         });
       }
-      //获取装备
+      //获取装备池列表
+      var getWearableList = function() {
+        pomelo.request("area.equipHandler.getWearableList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获得装备池装备
       var addEquip = function(eId,samsara,quality) {
         pomelo.request("area.equipHandler.addEquip", {eId : eId,samsara : samsara,quality : quality}, function(data) {
             console.log(data);
@@ -87,6 +94,19 @@
             console.log(data);
         });
       }
+      //转换可穿戴装备
+      var changeWearable = function(eId,samsara,quality) {
+        pomelo.request("area.equipHandler.changeWearable", {eId : eId,samsara : samsara,quality : quality}, function(data) {
+            console.log(data);
+        });
+      }
+      //可穿戴转换回装备池
+      var changeEquip = function(wId) {
+        pomelo.request("area.equipHandler.changeEquip", {wId : wId}, function(data) {
+            console.log(data);
+        });
+      }
+      //=========================================//
       //获取服务器列表
       var getAreaList = function(index) {
         pomelo.request("connector.loginHandler.getAreaList", {index : index}, function(data) {

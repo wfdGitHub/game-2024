@@ -1,4 +1,5 @@
 //装备系统
+var uuid = require("uuid")
 var equip_base = require("../../../../config/gameCfg/equip_base.json")
 var equip_config = require("../../../../config/gameCfg/equip_config.json")
 var equip_intensify = require("../../../../config/gameCfg/equip_intensify.json")
@@ -13,7 +14,7 @@ for(var i in equip_quality){
 }
 var currencyId = equip_config.currencyId.value
 module.exports = function() {
-	//获取装备列表
+	//获取装备池列表
 	this.getEquipList = function(uid,cb) {
 		this.redisDao.db.hgetall("area:area"+this.areaId+":player:"+uid+":equip",function(err,data) {
 			if(cb){
@@ -21,7 +22,15 @@ module.exports = function() {
 			}
 		})
 	}
-	//获得新装备
+	//获取可穿戴装备列表
+	this.getWearableList = function(uid,cb) {
+		this.redisDao.db.hgetall("area:area"+this.areaId+":player:"+uid+":wearable",function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
+	//获得装备池装备
 	this.addEquip = function(uid,eId,samsara,quality,cb) {
 		if(!equip_base[eId] || !equip_level[samsara] || !equip_quality[quality]){
 			console.log("addEquip error"+eId,samsara,quality)
@@ -30,18 +39,41 @@ module.exports = function() {
 			}
 			return
 		}
-		var estr = this.equipStr(eId,samsara,quality)
 		var self = this
-		this.redisDao.db.hincrby("area:area"+this.areaId+":player:"+uid+":equip",estr,1,function(err,data) {
+		var estr = self.equipStr(eId,samsara,quality)
+		self.redisDao.db.hincrby("area:area"+self.areaId+":player:"+uid+":equip",estr,1,function(err,data) {
 			var notify = {
 				"type" : "addEquip",
-				"equip" : estr,
+				"estr" : estr,
 				"value" : 1,
 				"curValue" : data
 			}
 			self.sendToUser(uid,notify)
 			if(cb){
 				cb(true)
+			}
+		})
+	}
+	//获得可穿戴装备
+	this.addWearable = function(uid,eId,samsara,quality,cb) {
+		if(!equip_base[eId] || !equip_level[samsara] || !equip_quality[quality]){
+			console.log("addWearable error"+eId,samsara,quality)
+			if(cb){
+				cb(false,"can't find equip")
+			}
+			return
+		}
+		var self = this
+		var eInfo = self.equipInfo(eId,samsara,quality)
+		eInfo.wId = uuid.v1()
+		self.redisDao.db.hset("area:area"+self.areaId+":player:"+uid+":wearable",eInfo.wId,JSON.stringify(eInfo),function(err,data) {
+			var notify = {
+				"type" : "addWearable",
+				"eInfo" : eInfo
+			}
+			self.sendToUser(uid,notify)
+			if(cb){
+				cb(true,eInfo)
 			}
 		})
 	}
@@ -53,6 +85,10 @@ module.exports = function() {
 				self.redisDao.db.hdel("area:area"+self.areaId+":player:"+uid+":equip",estr)
 			}
 		})
+	}
+	//删除可穿戴装备
+	this.deleteWearable = function(uid,wId) {
+		this.redisDao.db.hdel("area:area"+this.areaId+":player:"+uid+":wearable",wId)
 	}
 	//批量分解装备 elist : {eStr : 1}
 	this.resolveEquip = function(uid,elist,cb) {
@@ -129,7 +165,54 @@ module.exports = function() {
 			}
 			self.addEquip(uid,eId,samsara,quality,cb)
 		})
-
+	}
+	//转换成可穿戴装备
+	this.changeWearable = function(uid,eId,samsara,quality,cb) {
+		var self = this
+		if(!equip_base[eId] || !equip_level[samsara] || !equip_quality[quality]){
+			console.log("addEquip error"+eId,samsara,quality)
+			if(cb){
+				cb(false,"can't find equip")
+			}
+			return
+		}
+		var elist = {}
+		var eStr = self.equipStr(eId,samsara,quality)
+		elist[eStr] = 1
+		self.consumeEquips(uid,elist,function(flag,err) {
+			if(!flag){
+				cb(false,err)
+				return
+			}
+			self.addWearable(uid,eId,samsara,quality,cb)
+		})
+	}
+	//可穿戴转换回装备池
+	this.changeEquip = function(uid,wId,cb) {
+		if(!wId){
+			cb(false,"wId "+wId)
+			return
+		}
+		var self = this
+		self.redisDao.db.hget("area:area"+self.areaId+":player:"+uid+":wearable",wId,function(err,data) {
+			if(err || !data){
+				cb(false,err)
+				return
+			}
+			var eInfo = JSON.parse(data)
+			if(!eInfo || !eInfo.wId){
+				cb(false,"eInfo error "+eInfo)
+				return
+			}
+			if(!equip_base[eInfo.eId] || !equip_level[eInfo.samsara] || !equip_quality[eInfo.quality]){
+				if(cb){
+					cb(false,"can't find equip")
+				}
+				return
+			}
+			self.deleteWearable(uid,wId)
+			self.addEquip(uid,eInfo.eId,eInfo.samsara,eInfo.quality,cb)
+		})
 	}
 	//穿戴装备
 

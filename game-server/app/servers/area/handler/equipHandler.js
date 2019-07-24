@@ -3,7 +3,7 @@ var equipHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
-//获取装备列表
+//获取装备池列表
 equipHandler.prototype.getEquipList = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
@@ -11,7 +11,15 @@ equipHandler.prototype.getEquipList = function(msg, session, next) {
     next(null,{flag : true,data : data || {}})
   })
 }
-//获得新装备
+//获取可穿戴列表
+equipHandler.prototype.getWearableList = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getWearableList(uid,function(data) {
+    next(null,{flag : true,data : data || {}})
+  })
+}
+//获得装备池装备
 equipHandler.prototype.addEquip = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
@@ -41,7 +49,26 @@ equipHandler.prototype.buyEquip = function(msg, session, next) {
     next(null,{flag : flag})
   })
 }
-
+//转换可穿戴装备
+equipHandler.prototype.changeWearable = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  var samsara = msg.samsara
+  var quality = msg.quality
+  this.areaManager.areaMap[areaId].changeWearable(uid,eId,samsara,quality,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//可穿戴转换回装备池
+equipHandler.prototype.changeEquip = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var wId = msg.wId
+  this.areaManager.areaMap[areaId].changeEquip(uid,wId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "equipHandler",
