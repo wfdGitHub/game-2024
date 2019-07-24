@@ -81,7 +81,12 @@
             console.log(data);
         });
       }
-
+      //兑换装备
+      var buyEquip = function(eId,samsara) {
+        pomelo.request("area.equipHandler.buyEquip", {eId : eId,samsara : samsara}, function(data) {
+            console.log(data);
+        });
+      }
       //获取服务器列表
       var getAreaList = function(index) {
         pomelo.request("connector.loginHandler.getAreaList", {index : index}, function(data) {

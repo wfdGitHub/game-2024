@@ -1,38 +1,44 @@
 {
-  "1": {
+  "0": {
     "name": "白",
     "aRate": 1,
     "sRate": 1,
-    "weight": 0
+    "weight": 0,
+    "wash": 0
   },
-  "2": {
+  "1": {
     "name": "绿",
     "aRate": 1.2,
     "sRate": 2,
-    "weight": 0
+    "weight": 0,
+    "wash": 0
   },
-  "3": {
+  "2": {
     "name": "蓝",
     "aRate": 1.3,
     "sRate": 3,
-    "weight": 0
+    "weight": 0,
+    "wash": 0
   },
-  "4": {
+  "3": {
     "name": "紫",
     "aRate": 1.4,
     "sRate": 4,
-    "weight": 200
+    "weight": 200,
+    "wash": 3
   },
-  "5": {
+  "4": {
     "name": "橙",
     "aRate": 1.5,
     "sRate": 5,
-    "weight": 10
+    "weight": 10,
+    "wash": 4
   },
-  "6": {
+  "5": {
     "name": "红",
     "aRate": 1.6,
     "sRate": 6,
-    "weight": 1
+    "weight": 1,
+    "wash": 5
   }
 }

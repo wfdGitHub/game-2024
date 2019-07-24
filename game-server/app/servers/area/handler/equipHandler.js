@@ -31,6 +31,16 @@ equipHandler.prototype.resolveEquip = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//兑换装备
+equipHandler.prototype.buyEquip = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  var samsara = msg.samsara
+  this.areaManager.areaMap[areaId].buyEquip(uid,eId,samsara,function(flag) {
+    next(null,{flag : flag})
+  })
+}
 
 module.exports = function(app) {
   return bearcat.getBean({

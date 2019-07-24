@@ -5,6 +5,12 @@ var equip_intensify = require("../../../../config/gameCfg/equip_intensify.json")
 var equip_level = require("../../../../config/gameCfg/equip_level.json")
 var equip_quality = require("../../../../config/gameCfg/equip_quality.json")
 var equip_wash = require("../../../../config/gameCfg/equip_wash.json")
+var quality_weight = []
+var qualityAllRand = 0
+for(var i in equip_quality){
+	qualityAllRand += equip_quality[i].weight
+	quality_weight.push(qualityAllRand)
+}
 var currencyId = equip_config.currencyId.value
 module.exports = function() {
 	//获取装备列表
@@ -41,7 +47,12 @@ module.exports = function() {
 	}
 	//删除装备
 	this.deleteEquip = function(uid,estr,value) {
-		this.redisDao.db.hincrby("area:area"+this.areaId+":player:"+uid+":equip",estr,-value)
+		var self = this
+		self.redisDao.db.hincrby("area:area"+self.areaId+":player:"+uid+":equip",estr,-value,function(err,curValue) {
+			if(!err && curValue <= 0){
+				self.redisDao.db.hdel("area:area"+self.areaId+":player:"+uid+":equip",estr)
+			}
+		})
 	}
 	//批量分解装备 elist : {eStr : 1}
 	this.resolveEquip = function(uid,elist,cb) {
@@ -85,8 +96,40 @@ module.exports = function() {
 		})
 	}
 	//兑换装备
-	this.buyEquip = function(uid,eId,samsara) {
-		
+	this.buyEquip = function(uid,eId,samsara,cb) {
+		if(!equip_base[eId] || !equip_level[samsara]){
+			console.log("addEquip error"+eId,samsara)
+			if(cb){
+				cb(false,"can't find equip")
+			}
+			return
+		}
+		var self = this
+		//判断熔炼值是否足够
+		var needValue = parseInt(equip_base[eId]["sc"] *  equip_level[samsara]["sRate"])
+		if(!Number.isInteger(needValue) || needValue < 0){
+			cb(false,"needValue error "+needValue)
+			return
+		}
+		self.getBagItem(uid,currencyId,function(value) {
+			if(value < needValue){
+				cb(false,"currencyId "+currencyId+" not enough "+value+" "+needValue)
+				return
+			}
+			//扣除货币
+			self.addItem(uid,currencyId,-needValue)
+			//计算品质
+			var rand = Math.random() * qualityAllRand
+			var quality = 0
+			for(var i = 0;i < quality_weight.length;i++){
+				if(rand < quality_weight[i]){
+					quality = i
+					break
+				}
+			}
+			self.addEquip(uid,eId,samsara,quality,cb)
+		})
+
 	}
 	//穿戴装备
 
