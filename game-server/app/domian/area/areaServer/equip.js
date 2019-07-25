@@ -91,7 +91,7 @@ module.exports = function() {
 		self.getRoleArg(uid,"d_"+eInfo.eId,function(data) {
 			if(data){
 				//若已穿戴，将装备放回可穿戴装备池
-				self.addWearable(uid,eInfo)
+				self.addWearable(uid,JSON.parse(data))
 			}
 			self.deleteWearable(uid,eInfo.wId)
 			self.changeCharacterInfo(uid,10001,"d_"+eInfo.eId,JSON.stringify(eInfo),function(err) {
