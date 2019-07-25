@@ -64,6 +64,18 @@
         console.log(data)
       })
       //============装备================//
+      //穿戴装备
+      var dressedEquip = function(wId) {
+        pomelo.request("area.equipHandler.dressedEquip", {wId : wId}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下装备
+      var takeofEquip = function(eId) {
+        pomelo.request("area.equipHandler.takeofEquip", {eId : eId}, function(data) {
+            console.log(data);
+        });
+      }
       //强化装备
       var equipIntensify = function(eId) {
         pomelo.request("area.equipHandler.equipIntensify", {eId : eId}, function(data) {

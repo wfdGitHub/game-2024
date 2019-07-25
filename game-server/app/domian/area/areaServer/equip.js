@@ -55,17 +55,15 @@ module.exports = function() {
 		})
 	}
 	//获得可穿戴装备
-	this.addWearable = function(uid,eId,samsara,quality,cb) {
-		if(!equip_base[eId] || !equip_level[samsara] || !equip_quality[quality]){
-			console.log("addWearable error"+eId,samsara,quality)
+	this.addWearable = function(uid,eInfo,cb) {
+		if(!equip_base[eInfo.eId] || !equip_level[eInfo.samsara] || !equip_quality[eInfo.quality]){
+			console.log("addWearable error"+eInfo.eId,eInfo.samsara,eInfo.quality)
 			if(cb){
 				cb(false,"can't find equip")
 			}
 			return
 		}
 		var self = this
-		var eInfo = self.equipInfo(eId,samsara,quality)
-		eInfo.wId = uuid.v1()
 		self.redisDao.db.hset("area:area"+self.areaId+":player:"+uid+":wearable",eInfo.wId,JSON.stringify(eInfo),function(err,data) {
 			var notify = {
 				"type" : "addWearable",
@@ -75,6 +73,24 @@ module.exports = function() {
 			if(cb){
 				cb(true,eInfo)
 			}
+		})
+	}
+	//获得已穿戴装备
+	this.addDressed = function(uid,eInfo,cb) {
+		var self = this
+		self.getRoleArg(uid,"d_"+eInfo.eId,function(data) {
+			if(data){
+				//若已穿戴，将装备放回可穿戴装备池
+				self.addWearable(uid,eInfo)
+			}
+			self.deleteWearable(uid,eInfo.wId)
+			self.changeCharacterInfo(uid,10001,"d_"+eInfo.eId,JSON.stringify(eInfo),function(err) {
+				if(!err){
+					cb(true)
+				}else{
+					cb(false,err)
+				}
+			})
 		})
 	}
 	//删除装备
@@ -184,7 +200,9 @@ module.exports = function() {
 				cb(false,err)
 				return
 			}
-			self.addWearable(uid,eId,samsara,quality,cb)
+			var eInfo = self.equipInfo(eId,samsara,quality)
+			eInfo.wId = uuid.v1()
+			self.addWearable(uid,eInfo,cb)
 		})
 	}
 	//可穿戴转换回装备池
@@ -215,11 +233,49 @@ module.exports = function() {
 		})
 	}
 	//穿戴装备
-
+	this.dressedEquip = function(uid,wId,cb) {
+		var self = this
+		self.redisDao.db.hget("area:area"+self.areaId+":player:"+uid+":wearable",wId,function(err,data) {
+			if(err || !data){
+				cb(false,"装备不存在")
+				return
+			}
+			var eInfo = JSON.parse(data)
+			if(!eInfo || !eInfo.wId){
+				cb(false,"eInfo error "+eInfo)
+				return
+			}
+			//不能超过人物等级
+			var curLv = self.players[uid].characters[0].level
+			var samsara = Math.floor(((curLv - 1) / 100))
+			if(eInfo.samsara > samsara){
+				cb(false,"未到达穿戴等级")
+				return
+			}
+			self.addDressed(uid,eInfo,cb)
+		})
+	}
 	//卸下装备
+	this.takeofEquip = function(uid,eId,cb) {
+		var self = this
+		self.getRoleArg(uid,"d_"+eId,function(data) {
+			if(!data){
+				cb(false,"未穿戴装备")
+				return
+			}
+			var eInfo = JSON.parse(data)
+			self.delCharacterInfo(uid,10001,"d_"+eId)
+			self.addWearable(uid,eInfo,cb)
+		})
+	}
+	//可穿戴装备洗练
+	this.equipWash = function(uid,wId,cb) {
 
-	//装备洗练
+	}
+	//已穿戴装备洗练
+	this.dressedWash = function(uid,eId,cb) {
 
+	}
 	//装备强化
 	this.equipIntensify = function(uid,eId,cb) {
 		var self = this

@@ -3,6 +3,24 @@ var equipHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+//穿戴装备
+equipHandler.prototype.dressedEquip = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var wId = msg.wId
+  this.areaManager.areaMap[areaId].dressedEquip(uid,wId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//卸下装备
+equipHandler.prototype.takeofEquip = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  this.areaManager.areaMap[areaId].takeofEquip(uid,eId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //强化装备
 equipHandler.prototype.equipIntensify = function(msg, session, next) {
   var uid = session.get("uid")

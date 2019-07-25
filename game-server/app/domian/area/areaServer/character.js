@@ -53,6 +53,49 @@ module.exports = function() {
 				cb(flag,data)
 		})
 	}
+	//设置角色属性
+	this.changeCharacterInfo = function(uid,characterId,name,value,cb) {
+		var index = this.charactersMap[characterId]
+		var self = this
+		self.characterDao.changeCharacterInfo(this.areaId,uid,characterId,name,value,function(flag,data) {
+			if(flag){
+				if(self.players[uid] && self.players[uid].characters && self.players[uid].characters[index]){
+					self.players[uid].characters[index][name] = value
+					var notify = {
+						"type" : "characterInfoChange",
+						"characterId" : characterId,
+						"index" : index,
+						"name" : name,
+						"curValue" : data
+					}
+					self.sendToUser(uid,notify)
+				}
+			}
+			if(cb)
+				cb(flag,data)
+		})
+	}
+	//删除角色属性
+	this.delCharacterInfo = function(uid,characterId,name,cb) {
+		var index = this.charactersMap[characterId]
+		var self = this
+		self.characterDao.delCharacterInfo(this.areaId,uid,characterId,name,function(flag,data) {
+			if(flag){
+				if(self.players[uid] && self.players[uid].characters && self.players[uid].characters[index]){
+					delete self.players[uid].characters[index][name]
+					var notify = {
+						"type" : "delCharacterInfo",
+						"characterId" : characterId,
+						"index" : index,
+						"name" : name
+					}
+					self.sendToUser(uid,notify)
+				}
+			}
+			if(cb)
+				cb(flag,data)
+		})
+	}
 	//增加角色
 	this.createCharacter = function(areaId,uid,characterId) {
 		var characterInfo = this.characterDao.createCharacter(areaId,uid,characterId)
