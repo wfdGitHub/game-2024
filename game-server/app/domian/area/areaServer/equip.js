@@ -94,12 +94,9 @@ module.exports = function() {
 				self.addWearable(uid,JSON.parse(data))
 			}
 			self.deleteWearable(uid,eInfo.wId)
-			self.changeCharacterInfo(uid,10001,"d_"+eInfo.eId,JSON.stringify(eInfo),function(err) {
-				if(!err){
-					cb(true)
-				}else{
-					cb(false,err)
-				}
+			self.changeCharacterInfo(uid,10001,"d_"+eInfo.eId,JSON.stringify(eInfo),function(flag) {
+				if(cb)
+					cb(flag)
 			})
 		})
 	}
@@ -310,12 +307,9 @@ module.exports = function() {
 					cb(false,newInfo)
 					return
 				}
-				self.changeCharacterInfo(uid,10001,"d_"+newInfo.eId,JSON.stringify(newInfo),function(err) {
-					if(!err){
-						cb(true)
-					}else{
-						cb(false,err)
-					}
+				self.changeCharacterInfo(uid,10001,"d_"+newInfo.eId,JSON.stringify(newInfo),function(flag) {
+					if(cb)
+						cb(flag)
 				})
 			})
 		})
