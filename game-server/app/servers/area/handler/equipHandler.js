@@ -96,6 +96,26 @@ equipHandler.prototype.changeEquip = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//可穿戴装备洗练
+equipHandler.prototype.wearableWash = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var wId = msg.wId
+  var locks = msg.locks
+  this.areaManager.areaMap[areaId].wearableWash(uid,wId,locks,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//已穿戴装备洗练
+equipHandler.prototype.dressedWash = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  var locks = msg.locks
+  this.areaManager.areaMap[areaId].dressedWash(uid,eId,locks,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "equipHandler",

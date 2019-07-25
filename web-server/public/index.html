@@ -64,6 +64,18 @@
         console.log(data)
       })
       //============装备================//
+      //可穿戴装备洗练
+      var wearableWash = function(wId,locks) {
+        pomelo.request("area.equipHandler.wearableWash", {wId : wId,locks : locks}, function(data) {
+            console.log(data);
+        });
+      }
+      //已穿戴装备洗练
+      var dressedWash = function(eId,locks) {
+        pomelo.request("area.equipHandler.dressedWash", {eId : eId,locks : locks}, function(data) {
+            console.log(data);
+        });
+      }
       //穿戴装备
       var dressedEquip = function(wId) {
         pomelo.request("area.equipHandler.dressedEquip", {wId : wId}, function(data) {

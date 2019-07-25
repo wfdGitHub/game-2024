@@ -12,6 +12,16 @@ for(var i in equip_quality){
 	qualityAllRand += equip_quality[i].weight
 	quality_weight.push(qualityAllRand)
 }
+var wash_weight = []
+var washAllRand = 0
+for(var i = 1;i <= 5;i++){
+	washAllRand += equip_config["wash_"+i].value
+	wash_weight.push(washAllRand)
+}
+var washArr = []
+for(var i in equip_wash[0]){
+	washArr.push(i)
+}
 var currencyId = equip_config.currencyId.value
 module.exports = function() {
 	//获取装备池列表
@@ -241,7 +251,7 @@ module.exports = function() {
 				return
 			}
 			var eInfo = JSON.parse(data)
-			if(!eInfo || !eInfo.wId){
+			if(!eInfo){
 				cb(false,"eInfo error "+eInfo)
 				return
 			}
@@ -269,12 +279,101 @@ module.exports = function() {
 		})
 	}
 	//可穿戴装备洗练
-	this.equipWash = function(uid,wId,cb) {
-
+	this.wearableWash = function(uid,wId,locks,cb) {
+		var self = this
+		self.redisDao.db.hget("area:area"+self.areaId+":player:"+uid+":wearable",wId,function(err,data) {
+			if(err || !data){
+				cb(false,"装备不存在")
+				return
+			}
+			var eInfo = JSON.parse(data)
+			self.equipWash(uid,eInfo,locks,function(flag,newInfo) {
+				if(!flag){
+					cb(false,newInfo)
+					return
+				}
+				self.addWearable(uid,newInfo,cb)
+			})
+		})
 	}
 	//已穿戴装备洗练
-	this.dressedWash = function(uid,eId,cb) {
+	this.dressedWash = function(uid,eId,locks,cb) {
+		var self = this
+		self.redisDao.db.hget("area:area"+self.areaId+":player:"+uid+":wearable",wId,function(err,data) {
+			if(err || !data){
+				cb(false,"未穿戴装备")
+				return
+			}
+			var eInfo = JSON.parse(data)
+			self.equipWash(uid,eInfo,locks,function(flag,newInfo) {
+				if(!flag){
+					cb(false,newInfo)
+					return
+				}
+				self.changeCharacterInfo(uid,10001,"d_"+newInfo.eId,JSON.stringify(newInfo),function(err) {
+					if(!err){
+						cb(true)
+					}else{
+						cb(false,err)
+					}
+				})
+			})
+		})
+	}
+	//装备洗练
+	this.equipWash = function(uid,eInfo,locks,cb) {
 
+		if(!equip_wash[eInfo.samsara] && equip_wash[eInfo.samsara + 1]){
+			cb(false,"配置错误")
+			return
+		}
+		// wash_weight
+		var pc = equip_level[eInfo.samsara]["wpc"]
+		var wcount = equip_quality[eInfo.quality]["wash"]
+		var oldWash = eInfo.wash
+		var lockMap = {}
+		var lockCount = 0
+		if(oldWash){
+			oldWash = JSON.parse(oldWash)
+			if(locks){
+				for(var i = 0;i < locks.length;i++){
+					if(Number.isInteger(locks[i]) && locks[i] >= 0 && locks[i] < wcount && !lockMap[locks[i]]){
+						lockMap[locks[i]] = true
+						lockCount++
+					}
+				}
+			}
+		}
+		var rate = Math.pow(2,lockCount)
+		this.consumeItems(uid,pc,rate,function(flag,err) {
+			if(!flag){
+				cb(false,err)
+				return
+			}
+			var baseWashLv = equip_level[eInfo.samsara]["wash"]
+			var newWash = []
+			for(var i = 0;i < wcount;i++){
+				if(!lockMap[i] || !oldWash[i]){
+					var rand = Math.random() * washAllRand
+					var addLv = 0
+					for(var j = 0;j < wash_weight.length;j++){
+						if(rand < wash_weight[j]){
+							addLv = j
+							break
+						}
+					}
+					var endWashLv = baseWashLv + addLv
+					var name = washArr[Math.floor(Math.random() * washArr.length)]
+					var value = equip_wash[eInfo.samsara][name] + Math.floor(Math.random() * (equip_wash[eInfo.samsara + 1][name] - equip_wash[eInfo.samsara][name]))
+					var str = name+":"+value
+					newWash.push(str)
+				}else{
+					newWash.push(oldWash[i])
+				}
+			}
+			eInfo.wash = JSON.stringify(newWash)
+			cb(true,eInfo)
+		})
 	}
 	//装备强化
 	this.equipIntensify = function(uid,eId,cb) {
