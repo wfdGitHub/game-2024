@@ -355,18 +355,18 @@ module.exports = function() {
 			for(var i = 0;i < wcount;i++){
 				if(!lockMap[i] || !oldWash[i]){
 					var rand = Math.random() * washAllRand
-					var addLv = 0
+					var quality = 0
 					for(var j = 0;j < wash_weight.length;j++){
 						if(rand < wash_weight[j]){
-							addLv = j
+							quality = j
 							break
 						}
 					}
-					var endWashLv = baseWashLv + addLv
+					var endWashLv = baseWashLv + quality
 					var name = washArr[Math.floor(Math.random() * washArr.length)]
 					var value = equip_wash[eInfo.samsara][name] + Math.floor(Math.random() * (equip_wash[eInfo.samsara + 1][name] - equip_wash[eInfo.samsara][name]))
 					var str = name+":"+value
-					newWash.push(str)
+					newWash.push({pa : str,quality : quality})
 				}else{
 					newWash.push(oldWash[i])
 				}
