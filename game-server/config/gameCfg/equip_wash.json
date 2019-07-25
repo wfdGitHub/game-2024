@@ -1,0 +1,189 @@
+{
+  "0": {
+    "maxHP": 10,
+    "atk": 2,
+    "def": 3,
+    "crit": 3,
+    "critDef": 3,
+    "hitRate": 3,
+    "dodgeRate": 3,
+    "wreck": 3,
+    "block": 3
+  },
+  "1": {
+    "maxHP": 20,
+    "atk": 5,
+    "def": 6,
+    "crit": 6,
+    "critDef": 6,
+    "hitRate": 6,
+    "dodgeRate": 6,
+    "wreck": 6,
+    "block": 6
+  },
+  "2": {
+    "maxHP": 30,
+    "atk": 8,
+    "def": 9,
+    "crit": 9,
+    "critDef": 9,
+    "hitRate": 9,
+    "dodgeRate": 9,
+    "wreck": 9,
+    "block": 9
+  },
+  "3": {
+    "maxHP": 40,
+    "atk": 11,
+    "def": 12,
+    "crit": 12,
+    "critDef": 12,
+    "hitRate": 12,
+    "dodgeRate": 12,
+    "wreck": 12,
+    "block": 12
+  },
+  "4": {
+    "maxHP": 50,
+    "atk": 14,
+    "def": 15,
+    "crit": 15,
+    "critDef": 15,
+    "hitRate": 15,
+    "dodgeRate": 15,
+    "wreck": 15,
+    "block": 15
+  },
+  "5": {
+    "maxHP": 60,
+    "atk": 17,
+    "def": 18,
+    "crit": 18,
+    "critDef": 18,
+    "hitRate": 18,
+    "dodgeRate": 18,
+    "wreck": 18,
+    "block": 18
+  },
+  "6": {
+    "maxHP": 70,
+    "atk": 20,
+    "def": 21,
+    "crit": 21,
+    "critDef": 21,
+    "hitRate": 21,
+    "dodgeRate": 21,
+    "wreck": 21,
+    "block": 21
+  },
+  "7": {
+    "maxHP": 80,
+    "atk": 23,
+    "def": 24,
+    "crit": 24,
+    "critDef": 24,
+    "hitRate": 24,
+    "dodgeRate": 24,
+    "wreck": 24,
+    "block": 24
+  },
+  "8": {
+    "maxHP": 90,
+    "atk": 26,
+    "def": 27,
+    "crit": 27,
+    "critDef": 27,
+    "hitRate": 27,
+    "dodgeRate": 27,
+    "wreck": 27,
+    "block": 27
+  },
+  "9": {
+    "maxHP": 100,
+    "atk": 29,
+    "def": 30,
+    "crit": 30,
+    "critDef": 30,
+    "hitRate": 30,
+    "dodgeRate": 30,
+    "wreck": 30,
+    "block": 30
+  },
+  "10": {
+    "maxHP": 110,
+    "atk": 32,
+    "def": 33,
+    "crit": 33,
+    "critDef": 33,
+    "hitRate": 33,
+    "dodgeRate": 33,
+    "wreck": 33,
+    "block": 33
+  },
+  "11": {
+    "maxHP": 120,
+    "atk": 35,
+    "def": 36,
+    "crit": 36,
+    "critDef": 36,
+    "hitRate": 36,
+    "dodgeRate": 36,
+    "wreck": 36,
+    "block": 36
+  },
+  "12": {
+    "maxHP": 130,
+    "atk": 38,
+    "def": 39,
+    "crit": 39,
+    "critDef": 39,
+    "hitRate": 39,
+    "dodgeRate": 39,
+    "wreck": 39,
+    "block": 39
+  },
+  "13": {
+    "maxHP": 140,
+    "atk": 41,
+    "def": 42,
+    "crit": 42,
+    "critDef": 42,
+    "hitRate": 42,
+    "dodgeRate": 42,
+    "wreck": 42,
+    "block": 42
+  },
+  "14": {
+    "maxHP": 150,
+    "atk": 44,
+    "def": 45,
+    "crit": 45,
+    "critDef": 45,
+    "hitRate": 45,
+    "dodgeRate": 45,
+    "wreck": 45,
+    "block": 45
+  },
+  "15": {
+    "maxHP": 160,
+    "atk": 47,
+    "def": 48,
+    "crit": 48,
+    "critDef": 48,
+    "hitRate": 48,
+    "dodgeRate": 48,
+    "wreck": 48,
+    "block": 48
+  },
+  "16": {
+    "maxHP": 170,
+    "atk": 50,
+    "def": 51,
+    "crit": 51,
+    "critDef": 51,
+    "hitRate": 51,
+    "dodgeRate": 51,
+    "wreck": 51,
+    "block": 51
+  }
+}
