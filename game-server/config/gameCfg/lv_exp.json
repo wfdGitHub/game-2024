@@ -1,502 +1,502 @@
 {
   "1": {
-    "hero": 1440,
+    "hero": 1000,
     "partner": 1000,
     "pet": 1000
   },
   "2": {
-    "hero": 1960,
-    "partner": 1110,
-    "pet": 1110
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "3": {
-    "hero": 2560,
-    "partner": 1230,
-    "pet": 1230
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "4": {
-    "hero": 3240,
-    "partner": 1360,
-    "pet": 1360
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "5": {
-    "hero": 4000,
-    "partner": 1500,
-    "pet": 1500
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "6": {
-    "hero": 4840,
-    "partner": 1650,
-    "pet": 1650
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "7": {
-    "hero": 5760,
-    "partner": 1810,
-    "pet": 1810
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "8": {
-    "hero": 6760,
-    "partner": 1980,
-    "pet": 1980
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "9": {
-    "hero": 7840,
-    "partner": 2160,
-    "pet": 2160
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "10": {
-    "hero": 9000,
-    "partner": 2350,
-    "pet": 2350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "11": {
-    "hero": 10240,
-    "partner": 2550,
-    "pet": 2550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "12": {
-    "hero": 11560,
-    "partner": 2750,
-    "pet": 2750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "13": {
-    "hero": 12960,
-    "partner": 2950,
-    "pet": 2950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "14": {
-    "hero": 14440,
-    "partner": 3150,
-    "pet": 3150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "15": {
-    "hero": 16000,
-    "partner": 3350,
-    "pet": 3350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "16": {
-    "hero": 17640,
-    "partner": 3550,
-    "pet": 3550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "17": {
-    "hero": 19360,
-    "partner": 3750,
-    "pet": 3750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "18": {
-    "hero": 21160,
-    "partner": 3950,
-    "pet": 3950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "19": {
-    "hero": 23040,
-    "partner": 4150,
-    "pet": 4150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "20": {
-    "hero": 25000,
-    "partner": 4350,
-    "pet": 4350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "21": {
-    "hero": 27040,
-    "partner": 4550,
-    "pet": 4550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "22": {
-    "hero": 29160,
-    "partner": 4750,
-    "pet": 4750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "23": {
-    "hero": 31360,
-    "partner": 4950,
-    "pet": 4950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "24": {
-    "hero": 33640,
-    "partner": 5150,
-    "pet": 5150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "25": {
-    "hero": 36000,
-    "partner": 5350,
-    "pet": 5350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "26": {
-    "hero": 38440,
-    "partner": 5550,
-    "pet": 5550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "27": {
-    "hero": 40960,
-    "partner": 5750,
-    "pet": 5750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "28": {
-    "hero": 43560,
-    "partner": 5950,
-    "pet": 5950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "29": {
-    "hero": 46240,
-    "partner": 6150,
-    "pet": 6150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "30": {
-    "hero": 49000,
-    "partner": 6350,
-    "pet": 6350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "31": {
-    "hero": 51840,
-    "partner": 6550,
-    "pet": 6550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "32": {
-    "hero": 54760,
-    "partner": 6750,
-    "pet": 6750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "33": {
-    "hero": 57760,
-    "partner": 6950,
-    "pet": 6950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "34": {
-    "hero": 60840,
-    "partner": 7150,
-    "pet": 7150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "35": {
-    "hero": 64000,
-    "partner": 7350,
-    "pet": 7350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "36": {
-    "hero": 67240,
-    "partner": 7550,
-    "pet": 7550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "37": {
-    "hero": 70560,
-    "partner": 7750,
-    "pet": 7750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "38": {
-    "hero": 73960,
-    "partner": 7950,
-    "pet": 7950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "39": {
-    "hero": 77440,
-    "partner": 8150,
-    "pet": 8150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "40": {
-    "hero": 81000,
-    "partner": 8350,
-    "pet": 8350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "41": {
-    "hero": 84640,
-    "partner": 8550,
-    "pet": 8550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "42": {
-    "hero": 88360,
-    "partner": 8750,
-    "pet": 8750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "43": {
-    "hero": 92160,
-    "partner": 8950,
-    "pet": 8950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "44": {
-    "hero": 96040,
-    "partner": 9150,
-    "pet": 9150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "45": {
-    "hero": 100000,
-    "partner": 9350,
-    "pet": 9350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "46": {
-    "hero": 104040,
-    "partner": 9550,
-    "pet": 9550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "47": {
-    "hero": 108160,
-    "partner": 9750,
-    "pet": 9750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "48": {
-    "hero": 112360,
-    "partner": 9950,
-    "pet": 9950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "49": {
-    "hero": 116640,
-    "partner": 10150,
-    "pet": 10150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "50": {
-    "hero": 121000,
-    "partner": 10350,
-    "pet": 10350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "51": {
-    "hero": 188160,
-    "partner": 10550,
-    "pet": 10550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "52": {
-    "hero": 194940,
-    "partner": 10750,
-    "pet": 10750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "53": {
-    "hero": 201840,
-    "partner": 10950,
-    "pet": 10950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "54": {
-    "hero": 208860,
-    "partner": 11150,
-    "pet": 11150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "55": {
-    "hero": 216000,
-    "partner": 11350,
-    "pet": 11350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "56": {
-    "hero": 223260,
-    "partner": 11550,
-    "pet": 11550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "57": {
-    "hero": 230640,
-    "partner": 11750,
-    "pet": 11750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "58": {
-    "hero": 238140,
-    "partner": 11950,
-    "pet": 11950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "59": {
-    "hero": 245760,
-    "partner": 12150,
-    "pet": 12150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "60": {
-    "hero": 253500,
-    "partner": 12350,
-    "pet": 12350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "61": {
-    "hero": 261360,
-    "partner": 12550,
-    "pet": 12550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "62": {
-    "hero": 269340,
-    "partner": 12750,
-    "pet": 12750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "63": {
-    "hero": 277440,
-    "partner": 12950,
-    "pet": 12950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "64": {
-    "hero": 285660,
-    "partner": 13150,
-    "pet": 13150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "65": {
-    "hero": 294000,
-    "partner": 13350,
-    "pet": 13350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "66": {
-    "hero": 302460,
-    "partner": 13550,
-    "pet": 13550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "67": {
-    "hero": 311040,
-    "partner": 13750,
-    "pet": 13750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "68": {
-    "hero": 319740,
-    "partner": 13950,
-    "pet": 13950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "69": {
-    "hero": 328560,
-    "partner": 14150,
-    "pet": 14150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "70": {
-    "hero": 337500,
-    "partner": 14350,
-    "pet": 14350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "71": {
-    "hero": 346560,
-    "partner": 14550,
-    "pet": 14550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "72": {
-    "hero": 355740,
-    "partner": 14750,
-    "pet": 14750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "73": {
-    "hero": 365040,
-    "partner": 14950,
-    "pet": 14950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "74": {
-    "hero": 374460,
-    "partner": 15150,
-    "pet": 15150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "75": {
-    "hero": 384000,
-    "partner": 15350,
-    "pet": 15350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "76": {
-    "hero": 393660,
-    "partner": 15550,
-    "pet": 15550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "77": {
-    "hero": 403440,
-    "partner": 15750,
-    "pet": 15750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "78": {
-    "hero": 413340,
-    "partner": 15950,
-    "pet": 15950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "79": {
-    "hero": 423360,
-    "partner": 16150,
-    "pet": 16150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "80": {
-    "hero": 433500,
-    "partner": 16350,
-    "pet": 16350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "81": {
-    "hero": 443760,
-    "partner": 16550,
-    "pet": 16550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "82": {
-    "hero": 454140,
-    "partner": 16750,
-    "pet": 16750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "83": {
-    "hero": 464640,
-    "partner": 16950,
-    "pet": 16950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "84": {
-    "hero": 475260,
-    "partner": 17150,
-    "pet": 17150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "85": {
-    "hero": 486000,
-    "partner": 17350,
-    "pet": 17350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "86": {
-    "hero": 496860,
-    "partner": 17550,
-    "pet": 17550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "87": {
-    "hero": 507840,
-    "partner": 17750,
-    "pet": 17750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "88": {
-    "hero": 518940,
-    "partner": 17950,
-    "pet": 17950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "89": {
-    "hero": 530160,
-    "partner": 18150,
-    "pet": 18150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "90": {
-    "hero": 541500,
-    "partner": 18350,
-    "pet": 18350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "91": {
-    "hero": 552960,
-    "partner": 18550,
-    "pet": 18550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "92": {
-    "hero": 564540,
-    "partner": 18750,
-    "pet": 18750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "93": {
-    "hero": 576240,
-    "partner": 18950,
-    "pet": 18950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "94": {
-    "hero": 588060,
-    "partner": 19150,
-    "pet": 19150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "95": {
-    "hero": 600000,
-    "partner": 19350,
-    "pet": 19350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "96": {
-    "hero": 612060,
-    "partner": 19550,
-    "pet": 19550
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "97": {
-    "hero": 624240,
-    "partner": 19750,
-    "pet": 19750
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "98": {
-    "hero": 636540,
-    "partner": 19950,
-    "pet": 19950
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "99": {
-    "hero": 648960,
-    "partner": 20150,
-    "pet": 20150
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   },
   "100": {
-    "hero": 661500,
-    "partner": 20350,
-    "pet": 20350
+    "hero": 1000,
+    "partner": 1000,
+    "pet": 1000
   }
 }

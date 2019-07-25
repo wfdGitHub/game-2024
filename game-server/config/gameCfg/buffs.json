@@ -1,41 +1,48 @@
 {
   "21001": {
+    "id": 21001,
     "name": "冰冻",
     "detail": "冰冻敌方同时冰冻技能CD",
     "buffArg": 0,
     "duration": 3
   },
   "21002": {
+    "id": 21002,
     "name": "眩晕",
     "detail": "被眩晕的角色无法攻击",
     "buffArg": 0,
     "duration": 3
   },
   "21003": {
+    "id": 21003,
     "name": "中毒",
     "detail": "持续受到毒素伤害",
     "buffArg": 200,
     "duration": 3
   },
   "21004": {
+    "id": 21004,
     "name": "燃烧",
     "detail": "持续受到燃烧伤害",
     "buffArg": 100,
     "duration": 3
   },
   "21005": {
+    "id": 21005,
     "name": "混乱",
     "detail": "不分敌我，随机选择目标",
     "buffArg": 0,
     "duration": 3
   },
   "21006": {
+    "id": 21006,
     "name": "妖术",
     "detail": "变为小动物，无法攻击",
     "buffArg": 0,
     "duration": 3
   },
   "21007": {
+    "id": 21007,
     "name": "沉默",
     "detail": "不能使用除普攻外的技能",
     "buffArg": 0,
