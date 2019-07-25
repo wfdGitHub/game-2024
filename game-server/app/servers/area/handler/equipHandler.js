@@ -46,17 +46,6 @@ equipHandler.prototype.getWearableList = function(msg, session, next) {
     next(null,{flag : true,data : data || {}})
   })
 }
-//获得装备池装备
-equipHandler.prototype.addEquip = function(msg, session, next) {
-  var uid = session.get("uid")
-  var areaId = session.get("areaId")
-  var eId = msg.eId
-  var samsara = msg.samsara
-  var quality = msg.quality
-  this.areaManager.areaMap[areaId].addEquip(uid,eId,samsara,quality,function(flag) {
-    next(null,{flag : flag})
-  })
-}
 //批量分解装备
 equipHandler.prototype.resolveEquip = function(msg, session, next) {
   var uid = session.get("uid")
