@@ -91,3 +91,6 @@ bearcat.start(function() {
     console.log(app.serverId + " is ready")
   })
 })
+process.on('uncaughtException', function (err) {
+  console.error(' !!! Caught exception: ' + err.stack);
+});
