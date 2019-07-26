@@ -190,12 +190,15 @@ character.prototype.addition = function(otps) {
     }
 }
 //属性加成公式
-character.prototype.formula = function(otps,str) {
+character.prototype.formula = function(otps,str,rate) {
+	if(!rate || typeof(rate) != "number"){
+		rate = 1
+	}
 	var strList = str.split("&")
     strList.forEach(function(m_str) {
       var m_list = m_str.split(":")
       var name = m_list[0]
-      var value = Number(m_list[1])
+      var value = Number(m_list[1] * rate)
       if(!otps[name]){
         otps[name] = 0
       }

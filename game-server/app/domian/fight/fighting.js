@@ -56,7 +56,6 @@ var fighting = function(atkTeam,defTeam,otps) {
 		}
 	}
 	this.characterArr.forEach(function(character) {
-		console.log(character.getInfo())
 		if(character.defaultSkill){
 			character.defaultSkill.updateCD()
 		}

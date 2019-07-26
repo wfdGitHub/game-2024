@@ -296,8 +296,8 @@ module.exports = function() {
 	//已穿戴装备洗练
 	this.dressedWash = function(uid,eId,locks,cb) {
 		var self = this
-		self.redisDao.db.hget("area:area"+self.areaId+":player:"+uid+":wearable",wId,function(err,data) {
-			if(err || !data){
+		self.getCharacterArg(uid,10001,"d_"+eId,function(data) {
+			if(!data){
 				cb(false,"未穿戴装备")
 				return
 			}
@@ -316,7 +316,6 @@ module.exports = function() {
 	}
 	//装备洗练
 	this.equipWash = function(uid,eInfo,locks,cb) {
-
 		if(!equip_wash[eInfo.samsara] && equip_wash[eInfo.samsara + 1]){
 			cb(false,"配置错误")
 			return
@@ -395,7 +394,7 @@ module.exports = function() {
 				return
 			}
 			var isamsara = Math.floor(curIL / 10)
-			var ilv = Math.floor((curIL - 1) % 10 + 1)
+			var ilv = Math.floor(curIL % 10)
 			if(!equip_level[isamsara] || !equip_level[isamsara]["ipc"]){
 				cb(false,"不可升级")
 				return

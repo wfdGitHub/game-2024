@@ -35,7 +35,6 @@ fightHandler.prototype.challengeCheckpoints = function(msg, session, next) {
     readList : msg.readList || [],
     verify : msg.verify
   }
-  console.log(otps)
   this.areaManager.areaMap[areaId].challengeCheckpoints(uid,otps,function(flag,result) {
     next(null,{flag : flag,result : result})
   })
