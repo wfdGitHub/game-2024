@@ -1,4 +1,4 @@
-var petCfg = require("../../../../config/gameCfg/petCfg.json")
+var petCfg = require("../../../../config/gameCfg/pet_cfg.json")
 //宠物系统
 module.exports = function() {
 	this.washTmp = {}

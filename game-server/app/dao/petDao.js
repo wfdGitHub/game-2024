@@ -1,6 +1,6 @@
 var characterFun = require("../domian/entity/character.js")
 var charactersCfg = require("../../config/gameCfg/characters.json")
-var petCfg = require("../../config/gameCfg/petCfg.json")
+var petCfg = require("../../config/gameCfg/pet_cfg.json")
 var uuid = require("uuid")
 //宠物DB
 var petDao = function() {}
