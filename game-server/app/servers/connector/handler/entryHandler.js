@@ -5,11 +5,6 @@ var entryHandler = function(app) {
   this.sessionService = this.app.get('sessionService')
   this.areaDeploy = this.app.get('areaDeploy')
 };
-//测试代码
-entryHandler.prototype.test = function(msg, session, next) {
-	var a = msg.arsg.a.b
-	next(null, {flag : true,msg : a});
-}
 //登陆账号
 entryHandler.prototype.entryAccount = function(msg, session, next) {
 	var unionid = msg.unionid

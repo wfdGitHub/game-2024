@@ -70,10 +70,11 @@ normalHandler.prototype.buyShop = function(msg, session, next) {
 normalHandler.prototype.test = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
-  var items = msg.items
-  this.areaManager.areaMap[areaId].getBagItemList(uid,items,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
+  var a = 0
+  while(true){
+    a = Math.random()
+  }
+  next(null,{flag : true})
 }
 module.exports = function(app) {
   return bearcat.getBean({
