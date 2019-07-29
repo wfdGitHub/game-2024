@@ -28,6 +28,7 @@ petDao.prototype.obtainPet = function(areaId,uid,characterId,cb) {
 	petInfo.id = uuid.v1()
 	petInfo.level = 1
 	petInfo.exp = 0
+	petInfo.birthday = Date.now()
 	var self = this
 	var maxAmount = 0
 	var curAmount = 0
@@ -183,6 +184,3 @@ module.exports = {
 		ref : "redisDao"
 	}]
 }
-
-
-petDao.prototype.createPet(13001)
