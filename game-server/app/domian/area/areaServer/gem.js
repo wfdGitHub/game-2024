@@ -179,6 +179,11 @@ module.exports = function() {
 			cb(false,"等级不足不可镶嵌，需要转生等级 : "+gemCfg[samsara])
 			return
 		}
+		//判断插槽类型
+		if(gem_base[gInfo.gId]["slotType"] !== slot_config[eId]["slot_"+slot]){
+			cb(false,"插槽类型错误 "+gem_base[gInfo.gId]["slotType"]+"  "+slot_config[eId]["slot_"+slot])
+			return
+		}
 		var cInfo = {}
 		cInfo[gstr] = 1
 		self.consumeGems(uid,cInfo,function(flag,err) {
