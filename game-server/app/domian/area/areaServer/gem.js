@@ -2,7 +2,7 @@
 var gem_level = require("../../../../config/gameCfg/gem_level.json")
 var gem_config = require("../../../../config/gameCfg/gem_config.json")
 var gem_base = require("../../../../config/gameCfg/gem_base.json")
-var slot_config = require("../../../../config/gameCfg/slot_config.json")
+var gem_slot = require("../../../../config/gameCfg/gem_slot.json")
 var currencyId = gem_config.currencyId.value
 
 module.exports = function() {
@@ -155,7 +155,7 @@ module.exports = function() {
 	}
 	//镶嵌宝石
 	this.inlayGem = function(uid,eId,slot,gstr,cb) {
-		if(!slot_config[eId] || !slot_config[eId]["slot_"+slot] || typeof(gstr) != "string"){
+		if(!gem_slot[eId] || !gem_slot[eId]["slot_"+slot] || typeof(gstr) != "string"){
 			cb(false,"参数错误 eId : "+eId+"  slot : "+slot+ " gstr : "+gstr)
 			return
 		}
@@ -180,8 +180,8 @@ module.exports = function() {
 			return
 		}
 		//判断插槽类型
-		if(gem_base[gInfo.gId]["slotType"] !== slot_config[eId]["slot_"+slot]){
-			cb(false,"插槽类型错误 "+gem_base[gInfo.gId]["slotType"]+"  "+slot_config[eId]["slot_"+slot])
+		if(gem_base[gInfo.gId]["slotType"] !== gem_slot[eId]["slot_"+slot]){
+			cb(false,"插槽类型错误 "+gem_base[gInfo.gId]["slotType"]+"  "+gem_slot[eId]["slot_"+slot])
 			return
 		}
 		var cInfo = {}
