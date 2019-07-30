@@ -24,6 +24,7 @@ for(var i in equip_wash[0]){
 }
 var currencyId = equip_config.currencyId.value
 module.exports = function() {
+	var self = this
 	//获取装备池列表
 	this.getEquipList = function(uid,cb) {
 		this.redisDao.db.hgetall("area:area"+this.areaId+":player:"+uid+":equip",function(err,data) {
@@ -49,7 +50,6 @@ module.exports = function() {
 			}
 			return
 		}
-		var self = this
 		var estr = self.equipStr(eId,samsara,quality)
 		self.redisDao.db.hincrby("area:area"+self.areaId+":player:"+uid+":equip",estr,1,function(err,data) {
 			var notify = {
@@ -73,7 +73,6 @@ module.exports = function() {
 			}
 			return
 		}
-		var self = this
 		self.redisDao.db.hset("area:area"+self.areaId+":player:"+uid+":wearable",eInfo.wId,JSON.stringify(eInfo),function(err,data) {
 			var notify = {
 				"type" : "addWearable",
@@ -86,8 +85,7 @@ module.exports = function() {
 		})
 	}
 	//获得已穿戴装备
-	this.addDressed = function(uid,eInfo,cb) {
-		var self = this
+	this.dressedEquip = function(uid,eInfo,cb) {
 		self.getRoleArg(uid,"d_"+eInfo.eId,function(data) {
 			if(data){
 				//若已穿戴，将装备放回可穿戴装备池
@@ -102,8 +100,14 @@ module.exports = function() {
 	}
 	//删除装备
 	this.deleteEquip = function(uid,estr,value) {
-		var self = this
 		self.redisDao.db.hincrby("area:area"+self.areaId+":player:"+uid+":equip",estr,-value,function(err,curValue) {
+			var notify = {
+				"type" : "addEquip",
+				"estr" : estr,
+				"value" : -value,
+				"curValue" : curValue
+			}
+			self.sendToUser(uid,notify)
 			if(!err && curValue <= 0){
 				self.redisDao.db.hdel("area:area"+self.areaId+":player:"+uid+":equip",estr)
 			}
@@ -115,7 +119,6 @@ module.exports = function() {
 	}
 	//批量分解装备 elist : {eStr : 1}
 	this.resolveEquip = function(uid,elist,cb) {
-		var self = this
 		if(typeof(elist) != "object"){
 			cb(false,"elist not object")
 			return
@@ -163,7 +166,6 @@ module.exports = function() {
 			}
 			return
 		}
-		var self = this
 		//判断熔炼值是否足够
 		var needValue = parseInt(equip_base[eId]["sc"] *  equip_level[samsara]["sRate"])
 		if(!Number.isInteger(needValue) || needValue < 0){
@@ -191,7 +193,6 @@ module.exports = function() {
 	}
 	//转换成可穿戴装备
 	this.changeWearable = function(uid,eId,samsara,quality,cb) {
-		var self = this
 		if(!equip_base[eId] || !equip_level[samsara] || !equip_quality[quality]){
 			console.log("addEquip error"+eId,samsara,quality)
 			if(cb){
@@ -218,7 +219,6 @@ module.exports = function() {
 			cb(false,"wId "+wId)
 			return
 		}
-		var self = this
 		self.redisDao.db.hget("area:area"+self.areaId+":player:"+uid+":wearable",wId,function(err,data) {
 			if(err || !data){
 				cb(false,err)
@@ -241,7 +241,6 @@ module.exports = function() {
 	}
 	//穿戴装备
 	this.dressedEquip = function(uid,wId,cb) {
-		var self = this
 		self.redisDao.db.hget("area:area"+self.areaId+":player:"+uid+":wearable",wId,function(err,data) {
 			if(err || !data){
 				cb(false,"装备不存在")
@@ -259,12 +258,11 @@ module.exports = function() {
 				cb(false,"未到达穿戴等级")
 				return
 			}
-			self.addDressed(uid,eInfo,cb)
+			self.dressedEquip(uid,eInfo,cb)
 		})
 	}
 	//卸下装备
 	this.takeofEquip = function(uid,eId,cb) {
-		var self = this
 		self.getRoleArg(uid,"d_"+eId,function(data) {
 			if(!data){
 				cb(false,"未穿戴装备")
@@ -277,7 +275,6 @@ module.exports = function() {
 	}
 	//可穿戴装备洗练
 	this.wearableWash = function(uid,wId,locks,cb) {
-		var self = this
 		self.redisDao.db.hget("area:area"+self.areaId+":player:"+uid+":wearable",wId,function(err,data) {
 			if(err || !data){
 				cb(false,"装备不存在")
@@ -295,7 +292,6 @@ module.exports = function() {
 	}
 	//已穿戴装备洗练
 	this.dressedWash = function(uid,eId,locks,cb) {
-		var self = this
 		self.getCharacterArg(uid,10001,"d_"+eId,function(data) {
 			if(!data){
 				cb(false,"未穿戴装备")
@@ -370,7 +366,6 @@ module.exports = function() {
 	}
 	//装备强化
 	this.equipIntensify = function(uid,eId,cb) {
-		var self = this
 		if(!equip_base[eId]){
 			cb(false,"eId error "+eId)
 			return
@@ -428,8 +423,8 @@ module.exports = function() {
 		var list = str.split("-")
 		var info = {
 			eId : list[0],
-			samsara : Number(list[1]),
-			quality : Number(list[2])
+			samsara : parseInt(list[1]),
+			quality : parseInt(list[2])
 		}
 		if(!equip_base[info.eId] || !equip_level[info.samsara] || !equip_quality[info.quality]){
 			console.log("equipParse error"+info.eId,info.samsara,info.quality)
@@ -439,7 +434,6 @@ module.exports = function() {
 	}
 	//扣除装备
 	this.consumeEquips = function(uid,elist,cb) {
-		var self = this
 		var eArr = []
 		for(var i in elist){
 			eArr.push(i)
