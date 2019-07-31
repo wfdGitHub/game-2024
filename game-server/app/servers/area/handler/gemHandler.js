@@ -53,7 +53,16 @@ gemHandler.prototype.sellGem = function(msg, session, next) {
   })
 }
 //合成宝石
-
+gemHandler.prototype.compoundGem = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var gId = msg.gId
+  var level = msg.level
+  var glist = msg.glist
+  this.areaManager.areaMap[areaId].compoundGem(uid,gId,level,glist,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "gemHandler",

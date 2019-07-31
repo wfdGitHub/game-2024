@@ -219,5 +219,50 @@ module.exports = function() {
 		})
 	}
 	//合成宝石
-
+	this.compoundGem = function(uid,gId,level,glist,cb) {
+		if(!gem_base[gId] || !gem_level[level] || !gem_level[level][gId] || typeof(glist) !== "object"){
+			cb(false,"gemInfo error"+gId+"  "+level)
+			return false
+		}
+		var needValue = gem_level[level]["price"]
+		var curValue = 0
+		for(var i in glist){
+			var gInfo = self.gemParse(i)
+			if(!gInfo || !Number.isInteger(glist[i]) || gId !== gInfo.gId){
+				cb(false,i + " 参数错误")
+				return
+			}
+			curValue += gem_level[gInfo.level]["price"] * glist[i]
+		}
+		if(curValue > needValue){
+			cb(false,"消耗宝石价值不能超过所升级宝石 "+curValue+" / "+needValue)
+			return
+		}
+		if(curValue == needValue){
+			self.consumeGems(uid,glist,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+					return
+				}
+				self.addGem(uid,gId,level,1,cb)
+				cb(true)
+			})
+		}else{
+			self.getBagItem(uid,currencyId,function(value) {
+				if(value < (needValue - curValue)){
+					cb(false,"currencyId "+currencyId+" not enough "+value+" "+(needValue - curValue))
+					return
+				}
+				self.consumeGems(uid,glist,function(flag,err) {
+					if(!flag){
+						cb(false,err)
+						return
+					}
+					self.addItem(uid,currencyId,-(needValue - curValue))
+					self.addGem(uid,gId,level,1,cb)
+					cb(true)
+				})
+			})
+		}
+	}
 }

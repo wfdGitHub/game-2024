@@ -94,6 +94,12 @@
             console.log(data);
         });
       }
+      //合成宝石
+      var compoundGem = function(gId,level,glist) {
+        pomelo.request("area.gemHandler.compoundGem", {gId : gId,level : level,glist : glist}, function(data) {
+            console.log(data);
+        });
+      }
       //============装备================//
       //可穿戴装备洗练
       var wearableWash = function(wId,locks) {
