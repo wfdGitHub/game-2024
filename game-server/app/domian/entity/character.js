@@ -117,9 +117,6 @@ var character = function(otps) {
 	this.silenceAtk = this.b_arg.silenceAtk || 0				//沉默命中
 	this.silenceDef = this.b_arg.silenceDef || 0				//沉默抗性
 	//=========================================//
-    //增加普攻技能
-    var skill =  new attackSkill({skillId : 20001},this)
-    this.setDefaultSkill(skill)
     if(otps.skills){
         var self = this
         var skills = JSON.parse(otps.skills)
@@ -128,6 +125,9 @@ var character = function(otps) {
           self.addFightSkill(specialSkill)
         })
     }
+    //增加普攻技能
+    var skill =  new attackSkill({skillId : 20001},this)
+    this.setDefaultSkill(skill)
 }
 //计算加成效果
 character.prototype.addition = function(otps) {
