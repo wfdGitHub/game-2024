@@ -122,7 +122,7 @@ area.prototype.readyFight = function(uid) {
 		team = team.concat(this.players[uid].pets[fightPet])
 	}
 	this.fightInfos[uid] = {team : team,seededNum : Date.now()}
-	return team
+	return this.fightInfos[uid]
 }
 //获取玩家上阵配置(出战阵容)
 area.prototype.getFightInfo = function(uid) {

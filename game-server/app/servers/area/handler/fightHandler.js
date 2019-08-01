@@ -30,8 +30,9 @@ fightHandler.prototype.getCheckpointsInfo = function(msg, session, next) {
 fightHandler.prototype.readyFight = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
-  if(this.areaManager.areaMap[areaId].readyFight(uid)){
-    next(null,{flag : true})
+  var fightInfo = this.areaManager.areaMap[areaId].readyFight(uid)
+  if(fightInfo){
+    next(null,{flag : true,fightInfo : fightInfo})
   }else{
     next(null,{flag : false})
   }
