@@ -45,7 +45,8 @@ module.exports = function() {
 		    	cb(false,"userInfo error")
 		    	return
 		    }
-		    var atkTeam = self.getFightTeam(uid)
+		    var fightInfo = self.getFightInfo(uid)
+		    var atkTeam = fightInfo.team
 		    if(!atkTeam){
 		    	cb(false,"atkTeam error")
 		    	return
@@ -61,7 +62,7 @@ module.exports = function() {
 		    self.redisDao.db.hset("test:fight","defTeam",JSON.stringify(defTeam))
 		    self.redisDao.db.hset("test:fight","seededNum",otps.seededNum)
 		    self.redisDao.db.hset("test:fight","readList",JSON.stringify(otps.readList))
-		    var result = self.fightContorl.fighting(atkTeam,defTeam,otps.seededNum,otps.readList)
+		    var result = self.fightContorl.fighting(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
 		    if(result.verify === otps.verify){
 		    	self.checkpointsResult(uid,result,level)
 		    	if(result.result === "win"){

@@ -80,7 +80,9 @@ fighting.prototype.update = function() {
     		c : skill.character.nodeId,
     		s : skill.skillId
     	}
-    	this.recordList.push(record)
+    	if(skill.character.characterType != "mob"){
+    		this.recordList.push(record)
+    	}
     	if(!skill.character.died){
     		skill.useSkill()
     	}

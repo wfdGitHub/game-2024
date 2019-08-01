@@ -225,7 +225,6 @@
             console.log(data);
         });
       }
-      getAreaPlayers
       //获取聊天室列表
       var getChatRooms = function() {
         pomelo.request("chat.adminChat.getChatRooms", {}, function(data) {
@@ -237,6 +236,12 @@
         pomelo.request("chat.adminChat.getMembers", {roomName : roomName}, function(data) {
             console.log(data);
         });
+      }
+      //准备战斗
+      var readyFight = function() {
+        pomelo.request("area.fightHandler.readyFight",{}, function(data) {
+            console.log(data);
+        })
       }
       var challengeCheckpoints = function(seededNum,readList) {
         pomelo.request("area.fightHandler.challengeCheckpoints",{seededNum : seededNum,readList : readList}, function(data) {
