@@ -127,7 +127,7 @@ area.prototype.readyFight = function(uid) {
 //获取玩家上阵配置(出战阵容)
 area.prototype.getFightInfo = function(uid) {
 	if(this.fightInfos[uid]){
-		var team = this.fightInfos[uid]
+		var fightInfo = this.fightInfos[uid]
 		delete this.fightInfos[uid]
 		return fightInfo
 	}else{
