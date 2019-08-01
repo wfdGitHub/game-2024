@@ -13,7 +13,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 10,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 100,
     "atkSpeed": 2,
     "hitRate": 200
@@ -32,7 +32,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 10,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -50,7 +50,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 10,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -68,7 +68,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 10,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -86,7 +86,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 10,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -105,8 +105,8 @@
     "vitA": 1.3,
     "phyA": 10,
     "maxHP": 1000,
-    "atk": 30,
-    "atkSpeed": 3
+    "atk": 5,
+    "atkSpeed": 2
   },
   "11002": {
     "name": "莹娃娃",
@@ -123,8 +123,8 @@
     "vitA": 1.3,
     "phyA": 10,
     "maxHP": 1000,
-    "atk": 30,
-    "atkSpeed": 3
+    "atk": 5,
+    "atkSpeed": 2
   },
   "11003": {
     "name": "瑞兽",
@@ -141,8 +141,8 @@
     "vitA": 1.3,
     "phyA": 10,
     "maxHP": 1000,
-    "atk": 30,
-    "atkSpeed": 3
+    "atk": 5,
+    "atkSpeed": 2
   },
   "11004": {
     "name": "青狼",
@@ -159,8 +159,8 @@
     "vitA": 1.3,
     "phyA": 10,
     "maxHP": 1000,
-    "atk": 30,
-    "atkSpeed": 3
+    "atk": 5,
+    "atkSpeed": 2
   },
   "11005": {
     "name": "白虎",
@@ -177,8 +177,8 @@
     "vitA": 1.3,
     "phyA": 10,
     "maxHP": 1000,
-    "atk": 30,
-    "atkSpeed": 3
+    "atk": 5,
+    "atkSpeed": 2
   },
   "11006": {
     "name": "穷奇",
@@ -195,8 +195,8 @@
     "vitA": 1.3,
     "phyA": 10,
     "maxHP": 1000,
-    "atk": 30,
-    "atkSpeed": 3
+    "atk": 5,
+    "atkSpeed": 2
   },
   "11007": {
     "name": "饕餮",
@@ -213,8 +213,8 @@
     "vitA": 1.3,
     "phyA": 10,
     "maxHP": 1000,
-    "atk": 30,
-    "atkSpeed": 3
+    "atk": 5,
+    "atkSpeed": 2
   },
   "11008": {
     "name": "玲珑",
@@ -231,8 +231,8 @@
     "vitA": 1.3,
     "phyA": 10,
     "maxHP": 1000,
-    "atk": 30,
-    "atkSpeed": 3
+    "atk": 5,
+    "atkSpeed": 2
   },
   "11009": {
     "name": "地藏",
@@ -249,8 +249,8 @@
     "vitA": 1.3,
     "phyA": 10,
     "maxHP": 1000,
-    "atk": 30,
-    "atkSpeed": 3
+    "atk": 5,
+    "atkSpeed": 2
   },
   "11010": {
     "name": "杨戬",
@@ -267,8 +267,8 @@
     "vitA": 1.3,
     "phyA": 10,
     "maxHP": 1000,
-    "atk": 30,
-    "atkSpeed": 3
+    "atk": 5,
+    "atkSpeed": 2
   },
   "11011": {
     "name": "太乙",
@@ -285,8 +285,8 @@
     "vitA": 1.3,
     "phyA": 10,
     "maxHP": 1000,
-    "atk": 30,
-    "atkSpeed": 3
+    "atk": 5,
+    "atkSpeed": 2
   },
   "12001": {
     "name": "鱼怪",
@@ -303,8 +303,8 @@
     "vitA": 1,
     "phyA": 1.1,
     "maxHP": 200,
-    "atk": 10,
-    "atkSpeed": 1
+    "atk": 1,
+    "atkSpeed": 2
   },
   "12002": {
     "name": "虾兵",
@@ -321,8 +321,8 @@
     "vitA": 1,
     "phyA": 1.1,
     "maxHP": 200,
-    "atk": 10,
-    "atkSpeed": 1
+    "atk": 1,
+    "atkSpeed": 2
   },
   "12003": {
     "name": "蟹将",
@@ -339,8 +339,8 @@
     "vitA": 1,
     "phyA": 1.1,
     "maxHP": 200,
-    "atk": 10,
-    "atkSpeed": 1
+    "atk": 1,
+    "atkSpeed": 2
   },
   "12004": {
     "name": "蝴蝶女",
@@ -357,8 +357,8 @@
     "vitA": 1,
     "phyA": 1.1,
     "maxHP": 200,
-    "atk": 10,
-    "atkSpeed": 1
+    "atk": 1,
+    "atkSpeed": 2
   },
   "12005": {
     "name": "树怪",
@@ -375,8 +375,8 @@
     "vitA": 1,
     "phyA": 1.1,
     "maxHP": 200,
-    "atk": 10,
-    "atkSpeed": 1
+    "atk": 1,
+    "atkSpeed": 2
   },
   "12006": {
     "name": "小鬼头",
@@ -393,8 +393,8 @@
     "vitA": 1,
     "phyA": 1.1,
     "maxHP": 200,
-    "atk": 10,
-    "atkSpeed": 1
+    "atk": 1,
+    "atkSpeed": 2
   },
   "12007": {
     "name": "毒蝙蝠",
@@ -411,8 +411,8 @@
     "vitA": 1,
     "phyA": 1.1,
     "maxHP": 200,
-    "atk": 10,
-    "atkSpeed": 1
+    "atk": 1,
+    "atkSpeed": 2
   },
   "12008": {
     "name": "牛妖",
@@ -429,8 +429,8 @@
     "vitA": 1,
     "phyA": 1.1,
     "maxHP": 200,
-    "atk": 10,
-    "atkSpeed": 1
+    "atk": 1,
+    "atkSpeed": 2
   },
   "12009": {
     "name": "牛角鱼",
@@ -447,8 +447,8 @@
     "vitA": 1,
     "phyA": 1.1,
     "maxHP": 200,
-    "atk": 10,
-    "atkSpeed": 1
+    "atk": 1,
+    "atkSpeed": 2
   },
   "12010": {
     "name": "灯怪",
@@ -465,8 +465,8 @@
     "vitA": 1,
     "phyA": 1.1,
     "maxHP": 200,
-    "atk": 10,
-    "atkSpeed": 1
+    "atk": 1,
+    "atkSpeed": 2
   },
   "13001": {
     "name": "虾兵",
@@ -482,7 +482,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 1,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -500,7 +500,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 1,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -518,7 +518,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 1,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -536,7 +536,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 1,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -554,7 +554,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 1,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -572,7 +572,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 1,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -590,7 +590,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 1,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -608,7 +608,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 1,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -626,7 +626,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 1.1,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -644,7 +644,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 1.1,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -662,7 +662,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 1.2,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   },
@@ -680,7 +680,7 @@
     "agiA": 1,
     "vitA": 1,
     "phyA": 1.2,
-    "maxHP": 500,
+    "maxHP": 1500,
     "atk": 10,
     "atkSpeed": 2
   }
