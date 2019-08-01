@@ -136,7 +136,7 @@ module.exports = function() {
 				tmpPetInfo.agiAp += petCfg[characterId].vPhy
 				tmpPetInfo.vitAp += petCfg[characterId].vPhy
 				tmpPetInfo.phyAp += petCfg[characterId].vPhy
-				tmpPetInfo.growth += petCfg[characterId].vgrowth
+				tmpPetInfo.growth = Number((tmpPetInfo.growth + petCfg[characterId].vgrowth).toFixed(2))
 			}else{
 				tmpPetInfo.variation = 0
 			}
