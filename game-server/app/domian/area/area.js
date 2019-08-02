@@ -48,6 +48,7 @@ area.prototype.register = function(otps,cb) {
 					cb(false,playerInfo)
 					return
 				}
+				self.addItem(otps.uid,101,1000000)
 				self.addPlayerData(otps.uid,"onhookLastTime",Date.now())
 				cb(true,playerInfo)
 			})
