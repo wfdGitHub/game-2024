@@ -297,9 +297,21 @@ character.prototype.hit = function(attacker, damageInfo,source) {
   	console.log(this.fighting.curTime + " " + attacker.name + " 使用 "+source.name+" 攻击 "+this.name,"-"+damageInfo.damage," 剩余血量 : ",this.hp)
   	this.event.emit("hit",attacker, damageInfo,source)
 }
+//生命值增加
+character.prototype.recoverHp = function(value) {
+	if(this.died){
+		console.log("角色已死亡")
+		return
+	}
+	 this.hp += value
+	 if(this.hp > this.maxHP){
+	 	this.hp = this.maxHP
+	 }
+	 this.event.emit("recover",value,this.hp)
+}
 //生命值减少
-character.prototype.reduceHp = function(damageValue) {
-  this.hp -= damageValue;
+character.prototype.reduceHp = function(value) {
+  this.hp -= value;
   if (this.hp <= 0) {
   	this.hp = 0
     this.died = true
