@@ -58,9 +58,9 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.characterArr.forEach(function(character) {
 		for(var skillId in character.fightSkills){
 			if(character.fightSkills[skillId].defaultSkill){
-				character.fightSkills[skillId].updateCD(1000 + parseInt(self.seeded.random() * 3000))
+				character.fightSkills[skillId].updateCD(parseInt(self.seeded.random() * 3000))
 			}else{
-				character.fightSkills[skillId].updateCD()
+				character.fightSkills[skillId].updateCD(parseInt(self.seeded.random() * 3000) + character.fightSkills[skillId].skillCD * 1000)
 			}
 		}
 	})
