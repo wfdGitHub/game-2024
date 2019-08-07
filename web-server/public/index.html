@@ -97,6 +97,9 @@
       //合成宝石
       var compoundGem = function(gId,level,glist) {
         pomelo.request("area.gemHandler.compoundGem", {gId : gId,level : level,glist : glist}, function(data) {
+            console.log(data);
+        });
+      }
       //============邮件================//
       //邮件列表
       var getMailList = function() {
