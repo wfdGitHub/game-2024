@@ -66,16 +66,13 @@ normalHandler.prototype.buyShop = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
-//测试
-normalHandler.prototype.test = function(msg, session, next) {
+//激活伙伴
+normalHandler.prototype.activatePartner = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
-  var a = 0
-  while(true){
-    a = Math.random()
-  }
-  next(null,{flag : true})
+  var characterId = msg.characterId
 }
+
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "normalHandler",
