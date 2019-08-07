@@ -71,6 +71,9 @@ normalHandler.prototype.activatePartner = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
   var characterId = msg.characterId
+  this.areaManager.areaMap[areaId].activatePartner(uid,characterId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
 }
 
 module.exports = function(app) {

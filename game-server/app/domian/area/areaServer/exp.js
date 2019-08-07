@@ -10,9 +10,9 @@ for(var i in openCfg){
 }
 //经验相关
 module.exports = function() {
+	var self = this
 	//增加角色经验
 	this.addCharacterEXP = function(uid,characterId,value,cb) {
-		var self = this
 		this.incrbyCharacterInfo(uid,characterId,"exp",value,function(flag,curValue) {
 			if(flag){
 				self.checkCharacterUpgrade(uid,characterId)
@@ -23,7 +23,6 @@ module.exports = function() {
 	}
 	//增加宠物经验
 	this.addPetEXP = function(uid,id,value,cb) {
-		var self = this
 		this.incrbyPetInfo(uid,id,"exp",value,function(flag,curValue) {
 			if(flag){
 				self.checkPetUpgrade(uid,id)
@@ -44,7 +43,7 @@ module.exports = function() {
 			cb(false,"level error "+curLv)
 			return
 		}
-		var proLv = this.players[uid].characters[0].level
+		var proLv = this.players[uid].characters[self.heroId].level
 		var characterType = charactersCfg[characterId].characterType
 		if(characterType != "hero" && curLv >= proLv){
 			cb(false,"can't over hero level "+proLv)
@@ -57,7 +56,6 @@ module.exports = function() {
 			return
 		}
 		var consumeStr = samsaraCfg[samsara][characterType+"_pc"]
-		var self = this
 		self.consumeItems(uid,consumeStr,1,function(flag,err) {
 			if(!flag){
 				cb(flag,err)
@@ -90,7 +88,7 @@ module.exports = function() {
 			cb(false,"level error "+curLv)
 			return
 		}
-		var proLv = this.players[uid].characters[0].level
+		var proLv = this.players[uid].characters[self.heroId].level
 		var characterType = charactersCfg[characterInfo.characterId].characterType
 		if(characterType != "hero" && curLv >= proLv){
 			cb(false,"can't over hero level "+proLv)
@@ -103,7 +101,6 @@ module.exports = function() {
 			return
 		}
 		var consumeStr = samsaraCfg[samsara][characterType+"_pc"]
-		var self = this
 		self.consumeItems(uid,consumeStr,1,function(flag,err) {
 			if(!flag){
 				cb(flag,err)
@@ -141,7 +138,7 @@ module.exports = function() {
 		}
 		var curExp = Number(characterInfo.exp)
 		var exp = curExp
-		var proLv = this.players[uid].characters[0].level
+		var proLv = this.players[uid].characters[self.heroId].level
 		while(lv % 100 !== 0 && exp >= lvexpCfg[lv % 100][characterType] * expRate){
 			if(characterType != "hero" && lv >= proLv){
 				break
@@ -173,7 +170,7 @@ module.exports = function() {
 		}
 		var curExp = Number(characterInfo.exp)
 		var exp = curExp
-		var proLv = this.players[uid].characters[0].level
+		var proLv = this.players[uid].characters[self.heroId].level
 		while(lv % 100 !== 0 && exp >= lvexpCfg[lv % 100][characterType] * expRate && lv < proLv){
 			exp -= lvexpCfg[lv % 100][characterType] * expRate
 			lv += 1
@@ -186,7 +183,6 @@ module.exports = function() {
 	//主角升级
 	this.protagonistUpgrade = function(uid,oldLv,curLv) {
 		var count = curLv - oldLv
-		var self = this
 		for(var lv = oldLv + 1;lv <= curLv;lv++){
 			if(openMap[lv]){
 				openMap[lv].forEach(function(key) {

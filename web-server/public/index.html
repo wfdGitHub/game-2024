@@ -63,6 +63,13 @@
         console.log("onChat")
         console.log(data)
       })
+      //============伙伴================//
+      //激活伙伴
+      var activatePartner = function(characterId) {
+        pomelo.request("area.normalHandler.activatePartner", {characterId : characterId}, function(data) {
+            console.log(data);
+        });
+      }
       //============装备================//
       //可穿戴装备洗练
       var wearableWash = function(wId,locks) {

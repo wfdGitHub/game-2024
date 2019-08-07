@@ -14,6 +14,7 @@ var area = function(otps,app) {
 	this.onlineNum = 0
 	this.fightInfos = {}
 	this.fightContorl = fightContorlFun()
+	this.heroId = 10001
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
 		fun.call(this)
