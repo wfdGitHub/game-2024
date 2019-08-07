@@ -117,7 +117,10 @@ area.prototype.readyFight = function(uid) {
 	if(!this.players[uid]){
 		return false
 	}
-	var team = this.players[uid].characters.concat()
+	var team = []
+	for(var i in this.players[uid].characters){
+		team.push(this.players[uid].characters[i])
+	}
 	var fightPet = this.players[uid].fightPet
 	if(fightPet && this.players[uid].pets && this.players[uid].pets[fightPet]){
 		team = team.concat(this.players[uid].pets[fightPet])

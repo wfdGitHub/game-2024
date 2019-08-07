@@ -34,11 +34,11 @@ module.exports = function() {
 	}
 	//角色转生
 	this.characterSamsara = function(uid,characterId,cb) {
-		if(!this.players[uid] || !this.players[uid].characters[this.charactersMap[characterId]]){
+		if(!this.players[uid] || !this.players[uid].characters[characterId]){
 			cb(false,"characterId error "+characterId)
 			return
 		}
-		var characterInfo = this.players[uid].characters[this.charactersMap[characterId]]
+		var characterInfo = this.players[uid].characters[characterId]
 		var curLv = Number(characterInfo.level)
 		if(curLv % 100 !== 0){
 			cb(false,"level error "+curLv)
@@ -126,11 +126,11 @@ module.exports = function() {
 	}
 	//检查角色升级
 	this.checkCharacterUpgrade = function(uid,characterId) {
-		if(!this.players[uid] || !this.players[uid].characters[this.charactersMap[characterId]]){
+		if(!this.players[uid] || !this.players[uid].characters[characterId]){
 			cb(false,"characterId error "+characterId)
 			return
 		}
-		var characterInfo = this.players[uid].characters[this.charactersMap[characterId]]
+		var characterInfo = this.players[uid].characters[characterId]
 		var curLv = Number(characterInfo.level)
 		var lv = curLv
         var characterType = charactersCfg[characterId].characterType
@@ -198,18 +198,6 @@ module.exports = function() {
 	//功能开启
 	this.sysOpen = function(uid,key) {
 		switch(key){
-			case "partner1":
-				this.openPartner(uid,10002)
-			break
-			case "partner2":
-				this.openPartner(uid,10003)
-			break
-			case "partner3":
-				this.openPartner(uid,10004)
-			break
-			case "partner4":
-				this.openPartner(uid,10005)
-			break
 			case "addPetAmount":
 				this.addPetAmount(uid)
 			break

@@ -1,12 +1,5 @@
 var charactersCfg = require("../../../../config/gameCfg/characters.json")
 module.exports = function() {
-	this.charactersMap = {
-		10001 : 0,
-		10002 : 1,
-		10003 : 2,
-		10004 : 3,
-		10005 : 4
-	}
 	//查询主角属性
 	this.getRoleArg = function(uid,name,cb) {
 		this.redisDao.db.hget("area:area"+this.areaId+":player:"+uid+":characters:10001",name,function(err,data) {
@@ -29,22 +22,20 @@ module.exports = function() {
 	}
 	//增减角色属性 {uid,characterId,name,value}
 	this.incrbyCharacterInfo = function(uid,characterId,name,value,cb) {
-		var index = this.charactersMap[characterId]
 		var self = this
 		self.characterDao.incrbyCharacterInfo(this.areaId,uid,characterId,name,value,function(flag,data) {
 			if(flag){
-				if(self.players[uid] && self.players[uid].characters && self.players[uid].characters[index]){
-					if(!self.players[uid].characters[index][name]){
-						self.players[uid].characters[index][name] = 0
+				if(self.players[uid] && self.players[uid].characters && self.players[uid].characters[characterId]){
+					if(!self.players[uid].characters[characterId][name]){
+						self.players[uid].characters[characterId][name] = 0
 					}
-					self.players[uid].characters[index][name] += value
+					self.players[uid].characters[characterId][name] += value
 					var notify = {
 						"type" : "characterInfoChange",
 						"characterId" : characterId,
-						"index" : index,
 						"name" : name,
 						"value" : value,
-						"curValue" : self.players[uid].characters[index][name]
+						"curValue" : self.players[uid].characters[characterId][name]
 					}
 					self.sendToUser(uid,notify)
 				}
@@ -55,16 +46,14 @@ module.exports = function() {
 	}
 	//设置角色属性
 	this.changeCharacterInfo = function(uid,characterId,name,value,cb) {
-		var index = this.charactersMap[characterId]
 		var self = this
 		self.characterDao.changeCharacterInfo(this.areaId,uid,characterId,name,value,function(flag,data) {
 			if(flag){
-				if(self.players[uid] && self.players[uid].characters && self.players[uid].characters[index]){
-					self.players[uid].characters[index][name] = value
+				if(self.players[uid] && self.players[uid].characters && self.players[uid].characters[characterId]){
+					self.players[uid].characters[characterId][name] = value
 					var notify = {
 						"type" : "characterInfoChange",
 						"characterId" : characterId,
-						"index" : index,
 						"name" : name,
 						"curValue" : data
 					}
@@ -77,16 +66,14 @@ module.exports = function() {
 	}
 	//删除角色属性
 	this.delCharacterInfo = function(uid,characterId,name,cb) {
-		var index = this.charactersMap[characterId]
 		var self = this
 		self.characterDao.delCharacterInfo(this.areaId,uid,characterId,name,function(flag,data) {
 			if(flag){
-				if(self.players[uid] && self.players[uid].characters && self.players[uid].characters[index]){
-					delete self.players[uid].characters[index][name]
+				if(self.players[uid] && self.players[uid].characters && self.players[uid].characters[characterId]){
+					delete self.players[uid].characters[characterId][name]
 					var notify = {
 						"type" : "delCharacterInfo",
 						"characterId" : characterId,
-						"index" : index,
 						"name" : name
 					}
 					self.sendToUser(uid,notify)
@@ -99,7 +86,7 @@ module.exports = function() {
 	//增加角色
 	this.createCharacter = function(areaId,uid,characterId) {
 		var characterInfo = this.characterDao.createCharacter(areaId,uid,characterId)
-		this.players[uid].characters[this.charactersMap[characterInfo.characterId]] = characterInfo
+		this.players[uid].characters[characterId] = characterInfo
 		var notify = {
 			"type" : "createCharacter",
 			"characterInfo" : characterInfo
@@ -108,12 +95,8 @@ module.exports = function() {
 	}
 	//根据id获取角色信息
 	this.getCharacterById = function(uid,characterId) {
-		if(this.players[uid] && this.players[uid].characters){
-			for(var i = 0;i < this.players[uid].characters.length;i++){
-				if(this.players[uid].characters[i].characterId == characterId){
-					return this.players[uid].characters[i]
-				}
-			}
+		if(this.players[uid] && this.players[uid].characters && this.players[uid].characters[characterId]){
+			return this.players[uid].characters[characterId]
 		}
 		return false
 	}
