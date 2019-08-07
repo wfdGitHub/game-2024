@@ -12,6 +12,7 @@ var area = function(otps,app) {
 	this.offLinePlayers = {}
 	this.connectorMap = {}
 	this.onlineNum = 0
+	this.fightInfos = {}
 	this.fightContorl = fightContorlFun()
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
@@ -47,6 +48,7 @@ area.prototype.register = function(otps,cb) {
 					cb(false,playerInfo)
 					return
 				}
+				self.addItem(otps.uid,101,1000000)
 				self.addPlayerData(otps.uid,"onhookLastTime",Date.now())
 				cb(true,playerInfo)
 			})
@@ -111,8 +113,7 @@ area.prototype.getAreaServerInfo = function(){
 area.prototype.getAreaPlayers = function(){
 	return this.players
 }
-//获取玩家上阵配置(出战阵容)
-area.prototype.getFightTeam = function(uid) {
+area.prototype.readyFight = function(uid) {
 	if(!this.players[uid]){
 		return false
 	}
@@ -121,8 +122,18 @@ area.prototype.getFightTeam = function(uid) {
 	if(fightPet && this.players[uid].pets && this.players[uid].pets[fightPet]){
 		team = team.concat(this.players[uid].pets[fightPet])
 	}
-	console.log(team)
-	return team
+	this.fightInfos[uid] = {team : team,seededNum : Date.now()}
+	return this.fightInfos[uid]
+}
+//获取玩家上阵配置(出战阵容)
+area.prototype.getFightInfo = function(uid) {
+	if(this.fightInfos[uid]){
+		var fightInfo = this.fightInfos[uid]
+		delete this.fightInfos[uid]
+		return fightInfo
+	}else{
+		return false
+	}
 }
 module.exports = {
 	id : "area",
