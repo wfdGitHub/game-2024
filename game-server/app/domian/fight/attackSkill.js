@@ -28,8 +28,8 @@ var attackSkill = function(otps,character) {
 	this.state = false 							 //可用状态
 }
 //更新技能CD
-attackSkill.prototype.updateCD = function() {
-	this.coolDownTime = this.skillCD * 1000
+attackSkill.prototype.updateCD = function(time) {
+    this.coolDownTime = time || this.skillCD * 1000
 	this.state = false
 	this.character.event.emit("updateCD",this)
 }
