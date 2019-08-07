@@ -2,7 +2,7 @@
 var bearcat = require("bearcat")
 var fightContorlFun = require("../fight/fightContorl.js")
 var charactersCfg = require("../../../config/gameCfg/characters.json")
-var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet","character","equip","gem"]
+var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet","character","equip","gem","mail"]
 var area = function(otps,app) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName

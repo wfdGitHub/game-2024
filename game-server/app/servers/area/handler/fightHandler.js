@@ -26,6 +26,17 @@ fightHandler.prototype.getCheckpointsInfo = function(msg, session, next) {
     next(null,{flag : true,msg : data})
   })
 }
+//准备战斗 获取战斗属性
+fightHandler.prototype.readyFight = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var fightInfo = this.areaManager.areaMap[areaId].readyFight(uid)
+  if(fightInfo){
+    next(null,{flag : true,fightInfo : fightInfo})
+  }else{
+    next(null,{flag : false})
+  }
+}
 //挑战BOSS关卡
 fightHandler.prototype.challengeCheckpoints = function(msg, session, next) {
   var uid = session.get("uid")
