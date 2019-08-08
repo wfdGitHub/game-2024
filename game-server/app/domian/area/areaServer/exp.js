@@ -127,7 +127,6 @@ module.exports = function() {
 	//检查角色升级
 	this.checkCharacterUpgrade = function(uid,characterId) {
 		if(!this.players[uid] || !this.players[uid].characters[this.charactersMap[characterId]]){
-			cb(false,"characterId error "+characterId)
 			return
 		}
 		var characterInfo = this.players[uid].characters[this.charactersMap[characterId]]
