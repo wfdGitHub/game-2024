@@ -154,6 +154,10 @@ module.exports = function() {
 		for(var i in tmpPetInfo){
 			this.players[uid].pets[id][i] = tmpPetInfo[i]
 		}
+		if(!tmpPetInfo["passives"] && this.players[uid].pets[id]["passives"]){
+			delete this.players[uid].pets[id]["passives"]
+			this.redisDao.db.hdel("area:area"+this.areaId+":player:"+uid+":pets:"+id,"passives")
+		}
 		this.redisDao.db.hmset("area:area"+this.areaId+":player:"+uid+":pets:"+id,tmpPetInfo)
 		delete this.washTmp[id]
 		cb(true,this.players[uid].pets[id])
