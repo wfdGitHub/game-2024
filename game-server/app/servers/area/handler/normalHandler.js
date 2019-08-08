@@ -66,16 +66,6 @@ normalHandler.prototype.buyShop = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
-//激活伙伴
-normalHandler.prototype.activatePartner = function(msg, session, next) {
-  var uid = session.get("uid")
-  var areaId = session.get("areaId")
-  var characterId = msg.characterId
-  this.areaManager.areaMap[areaId].activatePartner(uid,characterId,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
-
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "normalHandler",
