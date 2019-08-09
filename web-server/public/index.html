@@ -66,7 +66,25 @@
       //============伙伴================//
       //激活伙伴
       var activatePartner = function(characterId) {
-        pomelo.request("area.normalHandler.activatePartner", {characterId : characterId}, function(data) {
+        pomelo.request("area.partnerHandler.activatePartner", {characterId : characterId}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取已获得转生被动技能列表
+      var getLearnPassiveList = function(characterId,samsara) {
+        pomelo.request("area.partnerHandler.getLearnPassiveList", {characterId : characterId,samsara : samsara}, function(data) {
+            console.log(data);
+        });
+      }
+      //重置转生技能
+      var resetLearnPassive = function(characterId,samsara) {
+        pomelo.request("area.partnerHandler.resetLearnPassive", {characterId : characterId,samsara : samsara}, function(data) {
+            console.log(data);
+        });
+      }
+      //学习转生被动技能
+      var learnPassive = function(characterId,samsara,index) {
+        pomelo.request("area.partnerHandler.learnPassive", {characterId : characterId,samsara : samsara,index : index}, function(data) {
             console.log(data);
         });
       }
