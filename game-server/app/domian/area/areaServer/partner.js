@@ -1,10 +1,41 @@
 var partner_cfg = require("../../../../config/gameCfg/partner_cfg.json")
 var partner_passive = require("../../../../config/gameCfg/partner_passive.json")
 var characters_cfg = require("../../../../config/gameCfg/characters.json")
+var partner_star = require("../../../../config/gameCfg/partner_star.json")
 //伙伴系统
 module.exports = function() {
 	var self = this
 	this.partnerTmpPassive = {}
+	//伙伴升星
+	this.partnerUpgradeStar = function(uid,characterId,cb) {
+		if(!characters_cfg[characterId] || characters_cfg[characterId].characterType !== "partner" || !self.players[uid] || !self.players[uid].characters[characterId]){
+			cb(false,"伙伴不存在" + characterId)
+			return
+		}
+		var characterInfo = self.players[uid].characters[characterId]
+		var curLv = Number(characterInfo.level)
+		var curSamsara = Math.floor(((curLv - 1) / 100))
+		var curStar = characterInfo["star"] || 0
+		if(!partner_star[curStar + 1]){
+			cb(false,"已升满级")
+			return
+		}
+		if(curSamsara < partner_star[curStar + 1]["samsara"]){
+			cb(false,"等级不足")
+			return
+		}
+		var str =  partner_star[curStar + 1]["pa"]
+		self.consumeItems(uid,str,1,function(flag,err) {
+			if(!flag){
+				cb(flag,err)
+				return
+			}
+			self.incrbyCharacterInfo(uid,characterId,"star",1,function(flag) {
+				if(cb)
+					cb(flag)
+			})
+		})
+	}
 	//激活伙伴
 	this.activatePartner = function(uid,characterId,cb) {
 		if(!partner_cfg[characterId] || !this.players[uid]){
@@ -15,10 +46,6 @@ module.exports = function() {
 			cb(false,"角色已存在" + characterId)
 			return
 		}
-		var characterInfo = self.players[uid].characters[characterId]
-		var curLv = Number(characterInfo.level)
-		var curSamsara = Math.floor(((curLv - 1) / 100))
-		
 		var str = partner_cfg[characterId]["activate"]
 		self.consumeItems(uid,str,1,function(flag,err) {
 			if(!flag){

@@ -3,6 +3,15 @@ var partnerHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 }
+//伙伴升星
+partnerHandler.prototype.partnerUpgradeStar = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var characterId = msg.characterId
+  this.areaManager.areaMap[areaId].partnerUpgradeStar(uid,characterId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //激活伙伴
 partnerHandler.prototype.activatePartner = function(msg, session, next) {
   var uid = session.get("uid")

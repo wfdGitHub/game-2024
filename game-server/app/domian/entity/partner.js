@@ -1,5 +1,6 @@
 var characterFun = require("./character.js")
 var advanceCfg = require("../../../config/gameCfg/advance.json")
+var partner_star = require("../../../config/gameCfg/partner_star.json")
 //伙伴
 var partner = function(otps) {
     console.log("new partner")
@@ -21,6 +22,10 @@ var partner = function(otps) {
     	}
     }
     otps.passives = JSON.stringify(passives)
+    //伙伴升星
+    if(otps.star){
+        characterFun.prototype.formula(otps,partner_star[otps.star]["pc"])
+    }
     characterFun.call(this,otps)
 }
 partner.prototype = characterFun.prototype

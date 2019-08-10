@@ -64,6 +64,12 @@
         console.log(data)
       })
       //============伙伴================//
+      //伙伴升星
+      var partnerUpgradeStar = function(characterId) {
+        pomelo.request("area.partnerHandler.partnerUpgradeStar", {characterId : characterId}, function(data) {
+            console.log(data);
+        });
+      }
       //激活伙伴
       var activatePartner = function(characterId) {
         pomelo.request("area.partnerHandler.activatePartner", {characterId : characterId}, function(data) {
