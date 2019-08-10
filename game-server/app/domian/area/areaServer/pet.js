@@ -1,4 +1,11 @@
 var petCfg = require("../../../../config/gameCfg/pet_cfg.json")
+var variation_passive = require("../../../../config/gameCfg/variation_passive.json")
+var vpList = {}
+var allWeight = 0
+for(var i in variation_passive){
+	allWeight += variation_passive[i].weight
+	vpList[i] = allWeight
+}
 //宠物系统
 module.exports = function() {
 	this.washTmp = {}
@@ -137,6 +144,24 @@ module.exports = function() {
 				tmpPetInfo.vitAp += petCfg[characterId].vPhy
 				tmpPetInfo.phyAp += petCfg[characterId].vPhy
 				tmpPetInfo.growth = Number((tmpPetInfo.growth + petCfg[characterId].vgrowth).toFixed(2))
+				//增加变异技能
+				var rand = Math.random() * allWeight
+				var passiveId = false
+				for(var i in vpList){
+					if(vpList[i] >= rand){
+						passiveId = Number(i)
+						break
+					}
+				}
+				if(passiveId){
+					if(tmpPetInfo.passives){
+						tmpPetInfo.passives = JSON.parse(tmpPetInfo.passives)
+						tmpPetInfo.passives.push(passiveId)
+						tmpPetInfo.passives = JSON.stringify(tmpPetInfo.passives)
+					}else{
+						tmpPetInfo.passives = JSON.stringify([passiveId])
+					}
+				}
 			}else{
 				tmpPetInfo.variation = 0
 			}

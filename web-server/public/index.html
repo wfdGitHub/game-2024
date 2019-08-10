@@ -336,10 +336,15 @@
             console.log(data);
         })
       }
+      var variationCount = 0
       //宠物洗练
       var washPet = function(id) {
         pomelo.request("area.petHandler.washPet",{id : id}, function(data) {
-            console.log(data);
+            if(data.data.variation){
+              variationCount++
+              console.log("变异 ",variationCount,data)
+              saveWashPet(id)
+            }
         })
       }
       //保存洗练效果
