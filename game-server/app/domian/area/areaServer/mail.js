@@ -4,7 +4,7 @@ module.exports = function() {
 	var self = this
 	//获取所有邮件
 	this.getMailList = function(uid,cb) {
-		this.redisDao.db.lrange("area:area"+this.areaId+":player:"+uid+":mail",0,100,function(err,list) {
+		this.redisDao.db.lrange("area:area"+this.areaId+":player:"+uid+":mail",-100,-1,function(err,list) {
 			if(!err && list){
 				cb(true,list)
 			}else{
