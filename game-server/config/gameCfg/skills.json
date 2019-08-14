@@ -6,7 +6,7 @@
     "mul": 1,
     "fixed": 0,
     "skillCD": 0,
-    "targetType": 1,
+    "targetType": "normal",
     "buffId": false
   },
   "20002": {
@@ -16,7 +16,7 @@
     "mul": 1,
     "fixed": 0,
     "skillCD": 0,
-    "targetType": 1,
+    "targetType": "normal",
     "buffId": false
   },
   "20003": {
@@ -26,8 +26,8 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 8,
-    "targetType": 1,
-    "buffId": 21004,
+    "targetType": "normal",
+    "buffId": "burn",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 3
@@ -39,7 +39,7 @@
     "mul": 1.5,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 1,
+    "targetType": "normal",
     "buffId": false
   },
   "20005": {
@@ -49,7 +49,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 8,
-    "targetType": 1,
+    "targetType": "normal",
     "buffId": "poison",
     "buffArg": 10000,
     "buffRate": 0.5,
@@ -62,7 +62,7 @@
     "mul": 1.5,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 1,
+    "targetType": "normal",
     "buffId": "burn",
     "buffArg": 10000,
     "buffRate": 0.5,
@@ -75,7 +75,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 8,
-    "targetType": 1,
+    "targetType": "normal",
     "buffId": "chaos",
     "buffArg": 0,
     "buffRate": 0.5,
@@ -88,7 +88,7 @@
     "mul": 1.5,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 4,
+    "targetType": "rand3",
     "buffId": false
   },
   "20009": {
@@ -98,7 +98,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 4,
+    "targetType": "rand3",
     "buffId": false
   },
   "20010": {
@@ -108,7 +108,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 20,
-    "targetType": 5,
+    "targetType": "all",
     "buffId": false
   },
   "20011": {
@@ -118,7 +118,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 8,
-    "targetType": 1,
+    "targetType": "normal",
     "buffId": false
   },
   "20012": {
@@ -128,7 +128,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 8,
-    "targetType": 1,
+    "targetType": "normal",
     "buffId": false
   },
   "20013": {
@@ -138,7 +138,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 8,
-    "targetType": 1,
+    "targetType": "normal",
     "buffId": false
   },
   "20014": {
@@ -148,7 +148,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 2,
+    "targetType": "minhp",
     "buffId": false
   },
   "20015": {
@@ -158,7 +158,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 2,
+    "targetType": "minhp",
     "buffId": "silence",
     "buffArg": 0,
     "buffRate": 0.5,
@@ -171,7 +171,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 4,
+    "targetType": "rand3",
     "buffId": false
   },
   "20017": {
@@ -181,7 +181,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 2,
+    "targetType": "minhp",
     "buffId": "chaos",
     "buffArg": 0,
     "buffRate": 0.5,
@@ -194,7 +194,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 4,
+    "targetType": "rand3",
     "buffId": false
   },
   "20019": {
@@ -204,7 +204,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 3,
+    "targetType": "maxhp",
     "buffId": "blackArt",
     "buffArg": 0,
     "buffRate": 0.5,
@@ -217,7 +217,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 3,
+    "targetType": "maxhp",
     "buffId": false
   },
   "20021": {
@@ -227,7 +227,7 @@
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 4,
+    "targetType": "rand3",
     "buffId": false
   },
   "20022": {
@@ -237,7 +237,7 @@
     "mul": 3,
     "fixed": 5000,
     "skillCD": 10,
-    "targetType": 5,
+    "targetType": "all",
     "buffId": false
   },
   "20023": {
@@ -247,7 +247,7 @@
     "mul": 2,
     "fixed": 5000,
     "skillCD": 30,
-    "targetType": 5,
+    "targetType": "all",
     "buffId": "frozen",
     "buffArg": 0,
     "buffRate": 0.5,
@@ -260,7 +260,7 @@
     "mul": 2,
     "fixed": 5000,
     "skillCD": 30,
-    "targetType": 5,
+    "targetType": "all",
     "buffId": "burn",
     "buffArg": 0,
     "buffRate": 0.5,
@@ -273,7 +273,7 @@
     "mul": 2,
     "fixed": 5000,
     "skillCD": 30,
-    "targetType": 5,
+    "targetType": "all",
     "buffId": "blackArt",
     "buffArg": 0,
     "buffRate": 0.5,
@@ -286,7 +286,7 @@
     "mul": 3,
     "fixed": 5000,
     "skillCD": 30,
-    "targetType": 5,
+    "targetType": "all",
     "buffId": false
   },
   "20027": {
@@ -296,7 +296,7 @@
     "mul": 2,
     "fixed": 5000,
     "skillCD": 30,
-    "targetType": 4,
+    "targetType": "rand3",
     "buffId": false
   },
   "30001": {
@@ -306,7 +306,7 @@
     "mul": 0.5,
     "fixed": 0,
     "skillCD": 2,
-    "targetType": 6,
+    "targetType": "rand1",
     "buffId": false
   },
   "30002": {
@@ -316,7 +316,7 @@
     "mul": 0.3,
     "fixed": 0,
     "skillCD": 2,
-    "targetType": 4,
+    "targetType": "rand3",
     "buffId": false
   },
   "30003": {
@@ -326,7 +326,7 @@
     "mul": 0.15,
     "fixed": 0,
     "skillCD": 2,
-    "targetType": 5,
+    "targetType": "all",
     "buffId": false
   },
   "30004": {
@@ -336,7 +336,7 @@
     "mul": 0,
     "fixed": 0,
     "skillCD": 2,
-    "targetType": 6,
+    "targetType": "rand1",
     "buffId": "recover",
     "buffArg": 5000,
     "duration": 3
@@ -348,7 +348,7 @@
     "mul": 0,
     "fixed": 0,
     "skillCD": 2,
-    "targetType": 4,
+    "targetType": "rand3",
     "buffId": "recover",
     "buffArg": 2000,
     "duration": 3
@@ -360,9 +360,57 @@
     "mul": 0,
     "fixed": 0,
     "skillCD": 2,
-    "targetType": 5,
+    "targetType": "all",
     "buffId": "recover",
     "buffArg": 1000,
     "duration": 3
+  },
+  "30010": {
+    "name": "单体免疫1次",
+    "des": "单体免疫1次",
+    "skillType": "recover",
+    "mul": 0,
+    "fixed": 0,
+    "skillCD": 5,
+    "targetType": "rand1",
+    "buffId": "immune",
+    "buffArg": 1,
+    "duration": 999
+  },
+  "30011": {
+    "name": "自身免疫5秒",
+    "des": "自身免疫5秒",
+    "skillType": "recover",
+    "mul": 0,
+    "fixed": 0,
+    "skillCD": 5,
+    "targetType": "self",
+    "buffId": "immune",
+    "buffArg": 999,
+    "duration": 5
+  },
+  "30012": {
+    "name": "群体10秒内免疫最多3次伤害",
+    "des": "群体10秒内免疫最多3次伤害",
+    "skillType": "recover",
+    "mul": 0,
+    "fixed": 0,
+    "skillCD": 5,
+    "targetType": "rand3",
+    "buffId": "immune",
+    "buffArg": 3,
+    "duration": 10
+  },
+  "30013": {
+    "name": "全体5秒内免疫",
+    "des": "全体5秒内免疫",
+    "skillType": "recover",
+    "mul": 0,
+    "fixed": 0,
+    "skillCD": 5,
+    "targetType": "all",
+    "buffId": "immune",
+    "buffArg": 999,
+    "duration": 5
   }
 }

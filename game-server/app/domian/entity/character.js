@@ -291,10 +291,15 @@ character.prototype.useSkill = function(skillId) {
 }
 //被攻击
 character.prototype.hit = function(attacker, damageInfo,source) {
-  	this.reduceHp(damageInfo.damage)
-  	if(damageInfo.double){
-  		console.log("连击!")
-  	}
+	//判断免疫
+	if(source.type == "skill" && this.buffs["immune"]){
+		console.log("触发免疫")
+		damageInfo.immune = true
+		damageInfo.damage = 0
+		this.buffs["immune"].consume()
+	}else{
+		this.reduceHp(damageInfo.damage)
+	}
   	console.log(this.fighting.curTime + " " + attacker.name + " 使用 "+source.name+" 攻击 "+this.name,"-"+damageInfo.damage," 剩余血量 : ",this.hp)
   	this.event.emit("hit",attacker, damageInfo,source)
 }

@@ -25,7 +25,7 @@ var attackSkill = function(otps,character) {
 		this.skillCD = this.character.atkSpeed
 	}
 	this.skillCD *= 1000
-	this.targetType = skillInfo.targetType || 1  //选取目标类型 1 默认目标 2 血量最少 3 血量最多 4 随机三个目标 5 全体 6 随机单体
+	this.targetType = skillInfo.targetType || "normal"  //选取目标类型 normal 默认目标 minhp 血量最少 maxhp 血量最多 rand3 随机三个目标 all 全体 rand1 随机单体 self 自身
 	this.coolDownTime = 0						 //剩余冷却时间
 	this.state = false 							 //可用状态
 }

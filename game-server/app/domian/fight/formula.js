@@ -58,21 +58,29 @@ formula.calDamage = function(attacker, target, skill) {
 //获取目标队列
 formula.getAttackTarget = function(attacker,team,skill) {
 	switch(skill.targetType){
-		case 1:
+		case "normal":
 			return formula.getTargetNormal(attacker,team)
 		break
-		case 2:
+		case "minhp":
 			return formula.getTargetMinHP(attacker,team)
 		break
-		case 3:
+		case "maxhp":
 			return formula.getTargetMaxHP(attacker,team)
 		break
-		case 4:
-			return formula.getTargetRandom(attacker,team,3)
-		case 5:
-			return formula.getAllTeam(attacker,team)
-		case 6:
+		case "rand1":
 			return formula.getTargetRandom(attacker,team,1)
+		case "rand2":
+			return formula.getTargetRandom(attacker,team,2)
+		case "rand3":
+			return formula.getTargetRandom(attacker,team,3)
+		case "rand4":
+			return formula.getTargetRandom(attacker,team,4)
+		case "rand5":
+			return formula.getTargetRandom(attacker,team,5)
+		case "all":
+			return formula.getAllTeam(attacker,team)
+		case "self":
+			return [attacker]
 		default:
 			return false
 		break

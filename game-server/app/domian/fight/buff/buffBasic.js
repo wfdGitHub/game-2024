@@ -25,6 +25,7 @@ buffBasic.prototype.clear = function() {
 	console.log("buffBasic clear")
 }
 buffBasic.prototype.destroy = function() {
+	this.target.removeBuff(this.buffId)
 	this.clear()
 }
 //update
@@ -33,7 +34,6 @@ buffBasic.prototype.update = function(dt) {
 	this.duration -= dt
 	if(this.duration <= 0){
 		this.destroy()
-		this.target.removeBuff(this.buffId)
 	}
 }
 buffBasic.prototype.updateLate = function() {

@@ -1,5 +1,5 @@
-var gainIds = {"recover" : true}
-var buffIds = ["frozen","dizzy","poison","burn","chaos","blackArt","silence","recover"]
+var gainIds = {"recover" : true,"immune":true}
+var buffIds = ["frozen","dizzy","poison","burn","chaos","blackArt","silence","recover","immune"]
 var buffList = {}
 for(var i = 0;i < buffIds.length;i++){
 	buffList[buffIds[i]] = require("./buff/"+buffIds[i]+".js")

@@ -1,10 +1,4 @@
 {
-  "21009": {
-    "name": "免疫",
-    "detail": "持续时间或一定次数内不会受到技能伤害",
-    "buffArg": 1,
-    "duration": 3
-  },
   "frozen": {
     "name": "冰冻",
     "detail": "冰冻敌方同时冰冻技能CD",
@@ -52,5 +46,11 @@
     "detail": "持续恢复生命值",
     "buffArg": 100,
     "duration": 3
+  },
+  "immune": {
+    "name": "免疫",
+    "detail": "持续时间或一定次数内不会受到技能伤害",
+    "buffArg": 1,
+    "duration": 1
   }
 }
