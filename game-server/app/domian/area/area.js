@@ -26,15 +26,15 @@ area.prototype.init = function() {
 }
 //update
 area.prototype.update = function() {
-	var curTime = Date.now()
-	for(var uid in this.offLinePlayers){
-		if(curTime > this.offLinePlayers[uid] + 60000){
-			console.log("离线过长，删除玩家 ",uid)
-			delete this.players[uid]
-			delete this.connectorMap[uid]
-			delete this.offLinePlayers[uid]
-		}
-	}
+	// var curTime = Date.now()
+	// for(var uid in this.offLinePlayers){
+	// 	if(curTime > this.offLinePlayers[uid] + 60000){
+	// 		console.log("离线过长，删除玩家 ",uid)
+	// 		delete this.players[uid]
+	// 		delete this.connectorMap[uid]
+	// 		delete this.offLinePlayers[uid]
+	// 	}
+	// }
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
@@ -58,7 +58,7 @@ area.prototype.register = function(otps,cb) {
 //玩家加入
 area.prototype.userLogin = function(uid,cid,cb) {
 	console.log("userLogin : ",uid)
-	if(this.connectorMap[uid] && this.players[uid] && this.connectorMap[uid]){
+	if(this.players[uid] && (!this.offLinePlayers[uid] || Date.now() < this.offLinePlayers[uid] + 60000)){
 		console.log("已缓存无需重新获取",uid)
 		this.connectorMap[uid] = cid
 		delete this.offLinePlayers[uid]
