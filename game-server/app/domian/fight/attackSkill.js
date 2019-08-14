@@ -15,25 +15,28 @@ var attackSkill = function(otps,character) {
     }
 	this.name = skillInfo.name					//技能名称
 	this.mul = skillInfo.mul || 1				//技能系数
-	this.fixed = skillInfo.fixed	|| 0		//固定伤害
+	this.fixed = skillInfo.fixed || 0			//固定伤害
 	this.skillCD = skillInfo.skillCD			//技能CD
+	this.skillType = skillInfo.skillType  		//技能类型 hurt 伤害技能 recover 恢复技能
 	this.defaultSkill = false					//普攻技能
 	if(skillInfo.skillCD){
 		this.skillCD = skillInfo.skillCD		//技能CD为0时设为攻速			
 	}else{
 		this.skillCD = this.character.atkSpeed
 	}
-	this.targetType = skillInfo.targetType || 1  //选取目标类型 1 默认目标 2 血量最少 3 血量最多 4 随机三个目标
+	this.skillCD *= 1000
+	this.targetType = skillInfo.targetType || 1  //选取目标类型 1 默认目标 2 血量最少 3 血量最多 4 随机三个目标 5 全体 6 随机单体
 	this.coolDownTime = 0						 //剩余冷却时间
 	this.state = false 							 //可用状态
 }
 //更新技能CD
 attackSkill.prototype.updateCD = function() {
-	this.coolDownTime = this.skillCD * 1000
+	this.coolDownTime = this.skillCD
 	this.state = false
 	this.character.event.emit("updateCD",this)
 }
-attackSkill.prototype.updateTime = function(dt) {
+//减少技能CD
+attackSkill.prototype.lessenCD = function(dt) {
 	if(!this.state){
 		this.coolDownTime -= dt
 		if(this.coolDownTime <= 0){
@@ -47,6 +50,10 @@ attackSkill.prototype.updateTime = function(dt) {
 		}
 		this.character.event.emit("skillUpdate",this)
 	}
+}
+//时间步进器
+attackSkill.prototype.updateTime = function(dt) {
+	this.lessenCD(dt)
 }
 //获取冷却时间
 attackSkill.prototype.getCoolDownTime = function() {
@@ -67,13 +74,23 @@ attackSkill.prototype.use = function() {
 	return true
 }
 attackSkill.prototype.useSkill = function() {
+	this.updateCD()
+	if(this.skillType == "hurt"){
+		this.useHurtSkill()
+	}else if(this.skillType == "recover"){
+		this.useRecoverSkill()
+	}else{
+		console.log(new Error("useSkill error  skillType "+this.skillType))
+	}
+}
+//伤害技能
+attackSkill.prototype.useHurtSkill = function() {
 	var result = {state: false}
 	var targets = formula.getAttackTarget(this.character,this.character.enemyTeam,this)
 	if(!targets){
 		console.log("targets error")
 		// this.character.event.emit("useSkill",this,result)
 	}else{
-		this.updateCD()
 		var self = this
 		result = {state: false,targets : targets};
 		this.character.event.emit("useSkill",this,result)
@@ -120,5 +137,16 @@ attackSkill.prototype.useSkill = function() {
             }
 		})
 	}
+}
+//恢复技能
+attackSkill.prototype.useRecoverSkill = function() {
+	var self = this
+	var targets = formula.getAttackTarget(self.character,self.character.myTeam,self)
+	result = {state: false,targets : targets};
+	self.character.event.emit("useSkill",self,result)
+	targets.forEach(function(target) {
+		var value = Math.round(self.mul * target.maxHP + self.fixed)
+		target.recoverHp(value)
+	})
 }
 module.exports = attackSkill

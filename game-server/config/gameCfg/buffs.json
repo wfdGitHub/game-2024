@@ -40,5 +40,17 @@
     "detail": "不能使用除普攻外的技能",
     "buffArg": 0,
     "duration": 3
+  },
+  "21008": {
+    "name": "恢复",
+    "detail": "持续恢复生命值",
+    "buffArg": 100,
+    "duration": 3
+  },
+  "21009": {
+    "name": "免疫",
+    "detail": "持续时间或一定次数内不会受到技能伤害",
+    "buffArg": 1,
+    "duration": 3
   }
 }

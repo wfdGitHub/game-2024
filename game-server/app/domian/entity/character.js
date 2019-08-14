@@ -262,7 +262,8 @@ character.prototype.getInfo = function() {
 	}
 	return info
 }
-character.prototype.setArg = function(enemyTeam,fighting) {
+character.prototype.setArg = function(myTeam,enemyTeam,fighting) {
+	this.myTeam = myTeam
 	this.enemyTeam = enemyTeam
 	this.fighting = fighting
 }
@@ -303,11 +304,14 @@ character.prototype.recoverHp = function(value) {
 		console.log("角色已死亡")
 		return
 	}
-	 this.hp += value
-	 if(this.hp > this.maxHP){
-	 	this.hp = this.maxHP
-	 }
-	 this.event.emit("recover",value,this.hp)
+	this.hp += value
+	var realRecover = value
+	if(this.hp > this.maxHP){
+		realRecover -= this.hp - this.maxHP
+		this.hp = this.maxHP
+	}
+	console.log("恢复生命值 ",value,realRecover,this.hp)
+	 this.event.emit("recover",value,realRecover,this.hp)
 }
 //生命值减少
 character.prototype.reduceHp = function(value) {

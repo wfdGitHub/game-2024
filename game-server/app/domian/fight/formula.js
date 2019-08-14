@@ -1,6 +1,7 @@
 var K = 1
 var A = 1
 var formula = function() {}
+//计算伤害
 formula.calDamage = function(attacker, target, skill) {
 	var damageInfo = {damage : 0,skill : skill}
 	//命中判断
@@ -54,6 +55,7 @@ formula.calDamage = function(attacker, target, skill) {
 	damageInfo.damage = Math.round(damage)
     return damageInfo
 };
+//获取目标队列
 formula.getAttackTarget = function(attacker,team,skill) {
 	switch(skill.targetType){
 		case 1:
@@ -69,6 +71,8 @@ formula.getAttackTarget = function(attacker,team,skill) {
 			return formula.getTargetRandom(attacker,team,3)
 		case 5:
 			return formula.getAllTeam(attacker,team)
+		case 6:
+			return formula.getTargetRandom(attacker,team,1)
 		default:
 			return false
 		break
