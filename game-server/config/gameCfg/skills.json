@@ -50,7 +50,7 @@
     "fixed": 500,
     "skillCD": 8,
     "targetType": 1,
-    "buffId": 21003,
+    "buffId": "poison",
     "buffArg": 10000,
     "buffRate": 0.5,
     "duration": 3
@@ -63,7 +63,7 @@
     "fixed": 500,
     "skillCD": 10,
     "targetType": 1,
-    "buffId": 21004,
+    "buffId": "burn",
     "buffArg": 10000,
     "buffRate": 0.5,
     "duration": 3
@@ -76,7 +76,7 @@
     "fixed": 500,
     "skillCD": 8,
     "targetType": 1,
-    "buffId": 21005,
+    "buffId": "chaos",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 3
@@ -159,7 +159,7 @@
     "fixed": 500,
     "skillCD": 10,
     "targetType": 2,
-    "buffId": 21007,
+    "buffId": "silence",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 3
@@ -182,7 +182,7 @@
     "fixed": 500,
     "skillCD": 10,
     "targetType": 2,
-    "buffId": 21005,
+    "buffId": "chaos",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 0
@@ -205,7 +205,7 @@
     "fixed": 500,
     "skillCD": 10,
     "targetType": 3,
-    "buffId": 21006,
+    "buffId": "blackArt",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 0
@@ -248,7 +248,7 @@
     "fixed": 5000,
     "skillCD": 30,
     "targetType": 5,
-    "buffId": 21001,
+    "buffId": "frozen",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 0
@@ -261,7 +261,7 @@
     "fixed": 5000,
     "skillCD": 30,
     "targetType": 5,
-    "buffId": 21004,
+    "buffId": "burn",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 0
@@ -274,7 +274,7 @@
     "fixed": 5000,
     "skillCD": 30,
     "targetType": 5,
-    "buffId": 21006,
+    "buffId": "blackArt",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 0
@@ -337,7 +337,7 @@
     "fixed": 0,
     "skillCD": 2,
     "targetType": 6,
-    "buffId": 21008,
+    "buffId": "recover",
     "buffArg": 5000,
     "duration": 3
   },
@@ -349,7 +349,7 @@
     "fixed": 0,
     "skillCD": 2,
     "targetType": 4,
-    "buffId": 21008,
+    "buffId": "recover",
     "buffArg": 2000,
     "duration": 3
   },
@@ -361,7 +361,7 @@
     "fixed": 0,
     "skillCD": 2,
     "targetType": 5,
-    "buffId": 21008,
+    "buffId": "recover",
     "buffArg": 1000,
     "duration": 3
   }

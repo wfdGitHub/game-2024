@@ -310,8 +310,10 @@ character.prototype.recoverHp = function(value) {
 		realRecover -= this.hp - this.maxHP
 		this.hp = this.maxHP
 	}
-	console.log("恢复生命值 ",value,realRecover,this.hp)
-	 this.event.emit("recover",value,realRecover,this.hp)
+	if(realRecover> 0){
+		console.log("恢复生命值 ",value,realRecover,this.hp)
+		this.event.emit("recover",value,realRecover,this.hp)
+	}
 }
 //生命值减少
 character.prototype.reduceHp = function(value) {

@@ -1,56 +1,56 @@
 {
-  "21001": {
+  "21009": {
+    "name": "免疫",
+    "detail": "持续时间或一定次数内不会受到技能伤害",
+    "buffArg": 1,
+    "duration": 3
+  },
+  "frozen": {
     "name": "冰冻",
     "detail": "冰冻敌方同时冰冻技能CD",
     "buffArg": 0,
     "duration": 3
   },
-  "21002": {
+  "dizzy": {
     "name": "眩晕",
     "detail": "被眩晕的角色无法攻击",
     "buffArg": 0,
     "duration": 3
   },
-  "21003": {
+  "poison": {
     "name": "中毒",
     "detail": "持续受到毒素伤害",
     "buffArg": 200,
     "duration": 3
   },
-  "21004": {
+  "burn": {
     "name": "燃烧",
     "detail": "持续受到燃烧伤害",
     "buffArg": 100,
     "duration": 3
   },
-  "21005": {
+  "chaos": {
     "name": "混乱",
     "detail": "不分敌我，随机选择目标",
     "buffArg": 0,
     "duration": 3
   },
-  "21006": {
+  "blackArt": {
     "name": "妖术",
     "detail": "变为小动物，无法攻击",
     "buffArg": 0,
     "duration": 3
   },
-  "21007": {
+  "silence": {
     "name": "沉默",
     "detail": "不能使用除普攻外的技能",
     "buffArg": 0,
     "duration": 3
   },
-  "21008": {
+  "recover": {
     "name": "恢复",
     "detail": "持续恢复生命值",
     "buffArg": 100,
-    "duration": 3
-  },
-  "21009": {
-    "name": "免疫",
-    "detail": "持续时间或一定次数内不会受到技能伤害",
-    "buffArg": 1,
     "duration": 3
   }
 }

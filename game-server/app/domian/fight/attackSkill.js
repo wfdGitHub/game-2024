@@ -14,7 +14,7 @@ var attackSkill = function(otps,character) {
         console.log(new Error("skillInfo not found "+otps.skillId))
     }
 	this.name = skillInfo.name					//技能名称
-	this.mul = skillInfo.mul || 1				//技能系数
+	this.mul = skillInfo.mul || 0				//技能系数
 	this.fixed = skillInfo.fixed || 0			//固定伤害
 	this.skillCD = skillInfo.skillCD			//技能CD
 	this.skillType = skillInfo.skillType  		//技能类型 hurt 伤害技能 recover 恢复技能
@@ -114,7 +114,6 @@ attackSkill.prototype.useHurtSkill = function() {
 			}
             //施加BUFF
             if(typeof(self.buffId) === "number"){
-            	//计算命中率
                 var buffotps = buffs[self.buffId]
                 buffotps.buffId = self.buffId
                 buffotps.buffArg = self.buffArg
@@ -142,11 +141,18 @@ attackSkill.prototype.useHurtSkill = function() {
 attackSkill.prototype.useRecoverSkill = function() {
 	var self = this
 	var targets = formula.getAttackTarget(self.character,self.character.myTeam,self)
-	result = {state: false,targets : targets};
+	var result = {state: false,targets : targets};
 	self.character.event.emit("useSkill",self,result)
 	targets.forEach(function(target) {
 		var value = Math.round(self.mul * target.maxHP + self.fixed)
 		target.recoverHp(value)
+		//施加BUFF
+        var buffotps = buffs[self.buffId]
+        buffotps.buffId = self.buffId
+        buffotps.buffArg = self.buffArg
+        buffotps.duration = self.duration
+        buffotps.buffRate = self.buffRate
+        target.addBuff(self.character,buffotps)
 	})
 }
 module.exports = attackSkill
