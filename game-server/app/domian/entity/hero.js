@@ -15,7 +15,6 @@ for(var i in gem_master){
     }
     gem_master_list[gem_master[i].level].push(gem_master[i])
 }
-console.log(gem_master_list)
 //主角
 var hero = function(otps) {
     console.log("new hero",otps)
