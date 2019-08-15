@@ -63,6 +63,37 @@
         console.log("onChat")
         console.log(data)
       })
+      //============伙伴================//
+      //伙伴升星
+      var partnerUpgradeStar = function(characterId) {
+        pomelo.request("area.partnerHandler.partnerUpgradeStar", {characterId : characterId}, function(data) {
+            console.log(data);
+        });
+      }
+      //激活伙伴
+      var activatePartner = function(characterId) {
+        pomelo.request("area.partnerHandler.activatePartner", {characterId : characterId}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取已获得转生被动技能列表
+      var getLearnPassiveList = function(characterId,samsara) {
+        pomelo.request("area.partnerHandler.getLearnPassiveList", {characterId : characterId,samsara : samsara}, function(data) {
+            console.log(data);
+        });
+      }
+      //重置转生技能
+      var resetLearnPassive = function(characterId,samsara) {
+        pomelo.request("area.partnerHandler.resetLearnPassive", {characterId : characterId,samsara : samsara}, function(data) {
+            console.log(data);
+        });
+      }
+      //学习转生被动技能
+      var learnPassive = function(characterId,samsara,index) {
+        pomelo.request("area.partnerHandler.learnPassive", {characterId : characterId,samsara : samsara,index : index}, function(data) {
+            console.log(data);
+        });
+      }
       //============装备================//
       //可穿戴装备洗练
       var wearableWash = function(wId,locks) {

@@ -25,14 +25,16 @@ characterDao.prototype.getCharacters = function(areaId,uid,cb) {
 			multiList.push(["hgetall","area:area"+areaId+":player:"+uid+":characters:"+characterId])
 		}
 		self.redisDao.multi(multiList,function(err,list) {
+			var obj = {}
 			for(var i = 0;i < list.length;i++){
 				for(var j in list[i]){
 					var tmp = Number(list[i][j])
 					if(tmp == list[i][j])
 						list[i][j] = tmp
 				}
+				obj[list[i]["characterId"]] = list[i]
 			}
-			cb(list)
+			cb(obj)
 		})
 	})
 }

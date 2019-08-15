@@ -14,6 +14,7 @@ var area = function(otps,app) {
 	this.onlineNum = 0
 	this.fightInfos = {}
 	this.fightContorl = fightContorlFun()
+	this.heroId = 10001
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
 		fun.call(this)
@@ -117,7 +118,10 @@ area.prototype.readyFight = function(uid) {
 	if(!this.players[uid]){
 		return false
 	}
-	var team = this.players[uid].characters.concat()
+	var team = []
+	for(var i in this.players[uid].characters){
+		team.push(this.players[uid].characters[i])
+	}
 	var fightPet = this.players[uid].fightPet
 	if(fightPet && this.players[uid].pets && this.players[uid].pets[fightPet]){
 		team = team.concat(this.players[uid].pets[fightPet])

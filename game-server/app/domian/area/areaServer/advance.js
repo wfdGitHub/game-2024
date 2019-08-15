@@ -4,10 +4,6 @@ var characters = require("../../../../config/gameCfg/characters.json")
 module.exports = function() {
 	//角色进阶
 	this.characterAdvanced = function(uid,characterId,cb) {
-		if(this.charactersMap[characterId] === undefined){
-			cb(false,"characterId error "+characterId)
-			return
-		}
 		var characterInfo = this.getCharacterById(uid,characterId)
 		if(!characterInfo){
 			cb(false,"characterInfo error")

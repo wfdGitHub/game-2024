@@ -3,6 +3,7 @@ var itemCfg = require("../../../../config/gameCfg/item.json")
 var charactersCfg = require("../../../../config/gameCfg/characters.json")
 var shopCfg = require("../../../../config/gameCfg/shop.json")
 module.exports = function() {
+	var self = this
 	this.playerBags = {}
 	//使用背包物品
 	this.useItem = function(otps,cb) {
@@ -16,7 +17,6 @@ module.exports = function() {
 			cb(false,"value error " + otps.value)
 			return
 		}
-		var self = this
 		self.getBagItem(otps.uid,otps.itemId,function(value) {
 			if(otps.value <= value){
 				self.useItemCB(otps,cb)
@@ -27,7 +27,6 @@ module.exports = function() {
 	}
 	//使用物品逻辑
 	this.useItemCB = function(otps,cb) {
-		var self = this
 		switch(itemCfg[otps.itemId].useType){
 			case "partnerExp":
 				//伙伴经验丹
@@ -40,7 +39,7 @@ module.exports = function() {
 					cb(false,"character lock : "+otps.characterId)
 					return
 				}
-				if(characterInfo.level >= this.players[otps.uid].characters[0].level){
+				if(characterInfo.level >= this.players[otps.uid].characters[self.heroId].level){
 					cb(false,"character level limit : "+otps.characterId)
 					return
 				}
@@ -55,7 +54,7 @@ module.exports = function() {
 					cb(false,"id error : "+otps.id)
 					return
 				}
-				if(petInfo.level >= this.players[otps.uid].characters[0].level){
+				if(petInfo.level >= this.players[otps.uid].characters[self.heroId].level){
 					cb(false,"character level limit : "+otps.id)
 					return
 				}
@@ -135,7 +134,6 @@ module.exports = function() {
 	}
 	//增加物品
 	this.addItem = function(uid,itemId,value,cb) {
-		var self = this
 		if(itemId == 100){
 			//主角经验
 			this.addCharacterEXP(uid,10001,value,cb)
@@ -178,7 +176,6 @@ module.exports = function() {
 	this.consumeItems = function(uid,str,rate,cb) {
 		var items = []
 		var values = []
-		var self = this
 		var strList = str.split("&")
 		if(!rate || parseFloat(rate) != rate || typeof(rate) != "number"){
 			rate = 1
@@ -208,7 +205,6 @@ module.exports = function() {
 	//解析物品奖励
 	this.addItemStr = function(uid,str,rate) {
 		var list = str.split("&")
-		var self = this
 		if(!rate || parseFloat(rate) != rate || typeof(rate) != "number"){
 			rate = 1
 		}
@@ -230,7 +226,6 @@ module.exports = function() {
 			cb(false,"shopId error "+shopId)
 			return
 		}
-		var self = this
 		self.consumeItems(uid,shopInfo.pc,count,function(flag,err) {
 			if(!flag){
 				cb(flag,err)
