@@ -4,12 +4,6 @@ var partner_star = require("../../../config/gameCfg/partner_star.json")
 //伙伴
 var partner = function(otps) {
     console.log("new partner")
-    if(otps.advance){
-    	if(advanceCfg[otps.advance] && advanceCfg[otps.advance]["partner_"+otps.characterId]){
-    		otps.skills = advanceCfg[otps.advance]["partner_"+otps.characterId]
-    		console.log("otps.skills",otps.skills)
-    	}
-    }
     //转生被动技能列表
     var passives = []
     if(otps.passives){
@@ -25,6 +19,10 @@ var partner = function(otps) {
     //伙伴升星
     if(otps.star){
         characterFun.prototype.formula(otps,partner_star[otps.star]["pc"])
+        if(partner_star[otps.star] && partner_star[otps.star]["partner_"+otps.characterId]){
+            otps.skills = partner_star[otps.star]["partner_"+otps.characterId]
+            console.log("otps.skills",otps.skills)
+        }
     }
     characterFun.call(this,otps)
 }
