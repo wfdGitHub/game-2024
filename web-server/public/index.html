@@ -94,6 +94,86 @@
             console.log(data);
         });
       }
+      //============宝石================//
+      //获取宝石列表
+      var getGemList = function() {
+        pomelo.request("area.gemHandler.getGemList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买宝石
+      var buyGem = function(gId,level,count) {
+        pomelo.request("area.gemHandler.buyGem", {gId : gId,level : level,count : count}, function(data) {
+            console.log(data);
+        });
+      }
+      //出售宝石
+      var sellGem = function(glist) {
+        pomelo.request("area.gemHandler.sellGem", {glist : glist}, function(data) {
+            console.log(data);
+        });
+      }
+      //镶嵌宝石
+      var inlayGem = function(eId,slot,gstr) {
+        pomelo.request("area.gemHandler.inlayGem", {eId : eId,slot : slot,gstr : gstr}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下宝石
+      var takeofGem = function(eId,slot) {
+        pomelo.request("area.gemHandler.takeofGem", {eId : eId,slot : slot}, function(data) {
+            console.log(data);
+        });
+      }
+      //合成宝石
+      var compoundGem = function(gId,level,glist) {
+        pomelo.request("area.gemHandler.compoundGem", {gId : gId,level : level,glist : glist}, function(data) {
+            console.log(data);
+        });
+      }
+      //============邮件================//
+      //邮件列表
+      var getMailList = function() {
+        pomelo.request("area.mailHandler.getMailList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //发送邮件
+      var sendMail = function(title,text,atts) {
+        pomelo.request("area.mailHandler.sendMail", {title : title,text : text,atts : atts}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取邮件附件
+      var gainMailAttachment = function(index,id) {
+        pomelo.request("area.mailHandler.gainMailAttachment", {index : index,id : id}, function(data) {
+            console.log(data);
+        });
+      }
+      //阅读邮件
+      var readMail = function(index,id) {
+        pomelo.request("area.mailHandler.readMail", {index : index,id : id}, function(data) {
+            console.log(data);
+        });
+      }
+      //删除邮件
+      var deleteMail = function(index,id) {
+        pomelo.request("area.mailHandler.deleteMail", {index : index,id : id}, function(data) {
+            console.log(data);
+        });
+      }
+      //一键领取
+      var gainAllMailAttachment = function() {
+        pomelo.request("area.mailHandler.gainAllMailAttachment", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //一键删除已读
+      var deleteAllReadMail = function() {
+        pomelo.request("area.mailHandler.deleteAllReadMail", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============装备================//
       //可穿戴装备洗练
       var wearableWash = function(wId,locks) {

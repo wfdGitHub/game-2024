@@ -101,6 +101,13 @@ module.exports = function() {
 	//删除装备
 	this.deleteEquip = function(uid,estr,value) {
 		self.redisDao.db.hincrby("area:area"+self.areaId+":player:"+uid+":equip",estr,-value,function(err,curValue) {
+			var notify = {
+				"type" : "addEquip",
+				"estr" : estr,
+				"value" : -value,
+				"curValue" : curValue
+			}
+			self.sendToUser(uid,notify)
 			if(!err && curValue <= 0){
 				self.redisDao.db.hdel("area:area"+self.areaId+":player:"+uid+":equip",estr)
 			}
@@ -245,7 +252,7 @@ module.exports = function() {
 				return
 			}
 			//不能超过人物等级
-			var curLv = self.players[uid].characters[self.heroId].level
+			var curLv = self.players[uid].characters[0].level
 			var samsara = Math.floor(((curLv - 1) / 100))
 			if(eInfo.samsara > samsara){
 				cb(false,"未到达穿戴等级")
@@ -363,11 +370,11 @@ module.exports = function() {
 			cb(false,"eId error "+eId)
 			return
 		}
-		if(!self.players[uid] || !self.players[uid].characters[self.heroId]){
+		if(!self.players[uid] || !self.players[uid].characters[0]){
 			cb(false,"system error")
 			return
 		}
-		var characterInfo = self.players[uid].characters[self.heroId]
+		var characterInfo = self.players[uid].characters[0]
 		var curLv = Number(characterInfo.level)
 		var samsara = Math.floor((curLv / 100))
 
@@ -416,8 +423,8 @@ module.exports = function() {
 		var list = str.split("-")
 		var info = {
 			eId : list[0],
-			samsara : Number(list[1]),
-			quality : Number(list[2])
+			samsara : parseInt(list[1]),
+			quality : parseInt(list[2])
 		}
 		if(!equip_base[info.eId] || !equip_level[info.samsara] || !equip_quality[info.quality]){
 			console.log("equipParse error"+info.eId,info.samsara,info.quality)

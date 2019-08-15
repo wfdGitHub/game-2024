@@ -4,6 +4,18 @@ var equip_quality = require("../../../config/gameCfg/equip_quality.json")
 var equip_level = require("../../../config/gameCfg/equip_level.json")
 var equip_intensify = require("../../../config/gameCfg/equip_intensify.json")
 var equip_intensify_master = require("../../../config/gameCfg/equip_intensify_master.json")
+var gem_level = require("../../../config/gameCfg/gem_level.json")
+var gem_base = require("../../../config/gameCfg/gem_base.json")
+var gem_master = require("../../../config/gameCfg/gem_master.json")
+var gem_master_list = {}
+for(var i in gem_master){
+    gem_master[i].id = i
+    if(!gem_master_list[gem_master[i].level]){
+        gem_master_list[gem_master[i].level] = []
+    }
+    gem_master_list[gem_master[i].level].push(gem_master[i])
+}
+console.log(gem_master_list)
 //主角
 var hero = function(otps) {
     console.log("new hero",otps)
@@ -58,8 +70,61 @@ var hero = function(otps) {
     		break
     	}
     }
+    var gemList = {}
+    var maxGem = 0
+    //宝石加成
+    for(var eId = 1;eId <= 10;eId++){
+        for(var slot = 1; slot <= 3;slot++){
+            if(otps["g_e"+eId+"_"+slot]){
+                var gInfo = gemAttribute(otps["g_e"+eId+"_"+slot])
+                if(gInfo){
+                    if(!gemList[gInfo.level])
+                        gemList[gInfo.level] = 0
+                    gemList[gInfo.level] += 1
+                    if(maxGem < gInfo.level){
+                        maxGem = gInfo.level
+                    }
+                    console.log("宝石加成",gInfo)
+                    if(!otps[gInfo["attribute"]]){
+                        otps[gInfo["attribute"]] = 0
+                    }
+                    otps[gInfo["attribute"]] += gInfo["value"]
+                }
+            }
+        }
+    }
+    var curGemCount = 0
+    //宝石大师
+    for(var i = maxGem;i > 0;i--){
+        if(gem_master_list[i]){
+            for(var j = gem_master_list[i].length - 1;j >= 0;j--){
+                if((gemList[i] + curGemCount) >= gem_master_list[i][j].count){
+                    this.gemMaster = gem_master_list[i][j].id
+                    characterFun.prototype.formula(otps,gem_master_list[i][j].pc,1)
+                    break
+                }
+            }
+        }
+        if(gemList[i])
+            curGemCount += gemList[i]
+    }
     characterFun.call(this,otps)
     console.log(this.getInfo())
+}
+//根据宝石字符串获取宝石信息
+var gemAttribute = function(str) {
+    var list = str.split("-")
+    var gId = list[0]
+    var level = parseInt(list[1])
+    if(!gem_base[gId] || !gem_level[level] || !gem_level[level][gId]){
+        return false
+    }
+    var gInfo = {
+        "attribute" : gem_base[gId]["attribute"],
+        "value" : gem_level[level][gId],
+        "level" : level
+    }
+    return gInfo
 }
 hero.prototype = characterFun.prototype
 module.exports = hero
