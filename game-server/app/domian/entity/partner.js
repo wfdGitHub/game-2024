@@ -18,7 +18,7 @@ var partner = function(otps) {
     otps.passives = JSON.stringify(passives)
     //伙伴升星
     if(otps.star){
-        characterFun.prototype.formula(otps,partner_star[otps.star]["pc"])
+        characterFun.prototype.formula(otps,partner_star[otps.star]["pa"])
         if(partner_star[otps.star] && partner_star[otps.star]["partner_"+otps.characterId]){
             otps.skills = partner_star[otps.star]["partner_"+otps.characterId]
             console.log("otps.skills",otps.skills)

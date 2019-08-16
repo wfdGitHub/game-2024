@@ -24,7 +24,7 @@ module.exports = function() {
 			cb(false,"等级不足")
 			return
 		}
-		var str =  partner_star[curStar + 1]["pa"]
+		var str =  partner_star[curStar + 1]["pc"]
 		self.consumeItems(uid,str,1,function(flag,err) {
 			if(!flag){
 				cb(flag,err)
