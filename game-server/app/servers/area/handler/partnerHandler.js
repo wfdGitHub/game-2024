@@ -26,8 +26,7 @@ partnerHandler.prototype.getLearnPassiveList = function(msg, session, next) {
   var uid = session.get("uid")
   var areaId = session.get("areaId")
   var characterId = msg.characterId
-  var samsara = msg.samsara
-  this.areaManager.areaMap[areaId].getLearnPassiveList(uid,characterId,samsara,function(flag,data) {
+  this.areaManager.areaMap[areaId].getLearnPassiveList(uid,characterId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

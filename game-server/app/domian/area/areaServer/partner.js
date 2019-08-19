@@ -57,9 +57,9 @@ module.exports = function() {
 		})
 	}
 	//获取已获得转生被动技能列表
-	this.getLearnPassiveList = function(uid,characterId,samsara,cb) {
-		if(!characters_cfg[characterId] || characters_cfg[characterId].characterType !== "partner" || !partner_passive[samsara]){
-			cb(false,"args error "+characterId+" "+samsara)
+	this.getLearnPassiveList = function(uid,characterId,cb) {
+		if(!characters_cfg[characterId] || characters_cfg[characterId].characterType !== "partner"){
+			cb(false,"args error "+characterId)
 			return
 		}
 		var characterInfo = self.players[uid].characters[characterId]
