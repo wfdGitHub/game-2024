@@ -19,6 +19,7 @@ var attackSkill = function(otps,character) {
 	this.skillCD = skillInfo.skillCD			//技能CD
 	this.skillType = skillInfo.skillType  		//技能类型 hurt 伤害技能 recover 恢复技能
 	this.defaultSkill = false					//普攻技能
+	this.angerSkill = skillInfo.anger || false	//怒气技能
 	if(skillInfo.skillCD){
 		this.skillCD = skillInfo.skillCD		//技能CD为0时设为攻速			
 	}else{
@@ -44,7 +45,7 @@ attackSkill.prototype.lessenCD = function(dt) {
 			this.state = true
 			this.character.event.emit("skillReady",this)
 			if(!this.defaultSkill && this.character.characterType == "mob"){
-				console.log("技能准备好",this.character.characterType)
+				console.log("技能准备好",this.name,this.character.characterType)
 				this.use()
 			}
 		}
@@ -69,12 +70,20 @@ attackSkill.prototype.use = function() {
 		this.character.event.emit("useSkillError",this)
 		return false
 	}
+	if(this.angerSkill){
+		this.character.resetAngerSkill()
+	}
 	this.state = false
 	this.character.fighting.skillList.push(this)
 	return true
 }
 attackSkill.prototype.useSkill = function() {
-	this.updateCD()
+	console.log("使用技能",this.name)
+	if(this.angerSkill){
+		this.character.resetAngerSkill()
+	}else{
+		this.updateCD()
+	}
 	if(this.skillType == "hurt"){
 		this.useHurtSkill()
 	}else if(this.skillType == "recover"){

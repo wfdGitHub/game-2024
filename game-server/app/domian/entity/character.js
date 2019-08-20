@@ -6,6 +6,10 @@ var talentCfg = require("../../../config/gameCfg/talent.json")
 var samsaraCfg = require("../../../config/gameCfg/samsara.json")
 var passiveCfg = require("../../../config/gameCfg/passive.json")
 var attackSkill = require("../fight/attackSkill.js")
+var angre_skillCD = 100000					//怒气技能cd
+var angre_injured = 100						//受伤恢复怒气值 * 受伤千分比
+var angre_attack = 30 						//攻击恢复怒气值 * 敌方受伤千分比
+var angre_kill = 20000						//击杀回复怒气值
 var character = function(otps) {
 	this.characterId = otps.characterId		//角色ID
 	this.name =otps.name					//名称
@@ -14,6 +18,7 @@ var character = function(otps) {
 	this.level = otps.level || 0			//等级
 	this.fightSkills = {} 					//主动技能列表
 	this.passives = []						//被动技能列表
+	this.angerSkills = {}					//怒气技能列表
 	this.globalSkills = []					//全局技能列表
     this.buffs = {}                        	//buff列表
     this.defaultSkill = false             	//默认攻击
@@ -165,7 +170,6 @@ character.prototype.addition = function(otps) {
 	    }
     }
     //被动技能
-    console.log(this.passives)
     for(var i = 0;i < this.passives.length;i++){
     	var passive = passiveCfg[this.passives[i]]
     	if(passive){
@@ -271,6 +275,28 @@ character.prototype.setArg = function(myTeam,enemyTeam,fighting) {
 character.prototype.addFightSkill = function(skill) {
 	if(skill){
 		this.fightSkills[skill.skillId] = skill
+		if(skill.angerSkill){
+			skill.skillCD = angre_skillCD
+			this.angerSkills[skill.skillId] = skill
+		}
+	}
+}
+//减少怒气技能CD
+character.prototype.lessenAngerCD = function(dt) {
+	for(var id in this.angerSkills){
+		this.angerSkills[id].lessenCD(dt)
+	}
+}
+//禁用全部怒气技能
+character.prototype.banAngerSkill = function() {
+	for(var id in this.angerSkills){
+		this.angerSkills[id].state = false
+	}
+}
+//重置全部怒气技能
+character.prototype.resetAngerSkill = function() {
+	for(var id in this.angerSkills){
+		this.angerSkills[id].updateCD()
 	}
 }
 //设置默认攻击技能
@@ -289,16 +315,24 @@ character.prototype.useSkill = function(skillId) {
 		new Error("技能不存在 : "+skillId)
 	}
 }
+//攻击
+character.prototype.harm = function(target,value) {
+	var angre_value = Math.round((value * 1000) / target.maxHP) * angre_attack
+	this.lessenAngerCD(angre_value)
+}
+//击杀
+character.prototype.kill = function(target) {
+	this.lessenAngerCD(angre_kill)
+}
 //被攻击
 character.prototype.hit = function(attacker, damageInfo,source) {
 	//判断免疫
 	if(source.type == "skill" && this.buffs["immune"]){
-		console.log("触发免疫")
 		damageInfo.immune = true
 		damageInfo.damage = 0
 		this.buffs["immune"].consume()
 	}else{
-		this.reduceHp(damageInfo.damage)
+		this.reduceHp(attacker,damageInfo.damage)
 	}
   	console.log(this.fighting.curTime + " " + attacker.name + " 使用 "+source.name+" 攻击 "+this.name,"-"+damageInfo.damage," 剩余血量 : ",this.hp)
   	this.event.emit("hit",attacker, damageInfo,source)
@@ -316,22 +350,24 @@ character.prototype.recoverHp = function(value) {
 		this.hp = this.maxHP
 	}
 	if(realRecover> 0){
-		console.log("恢复生命值 ",value,realRecover,this.hp)
 		this.event.emit("recover",value,realRecover,this.hp)
 	}
 }
 //生命值减少
-character.prototype.reduceHp = function(value) {
-  this.hp -= value;
-  if (this.hp <= 0) {
-  	this.hp = 0
-    this.died = true
-    this.afterDied(this.name + " is died");
-    //判断复活
-    if(this.reviveRate > this.fighting.seeded.random()){
-    	this.revive()
-    }
-  }
+character.prototype.reduceHp = function(attacker,value) {
+	attacker.harm(this,value)
+	this.hp -= value;
+	var angre_value = Math.round((value * 1000) / this.maxHP) * angre_injured
+	this.lessenAngerCD(angre_value)
+	if (this.hp <= 0) {
+		this.hp = 0
+		this.died = true
+		this.afterDied(attacker);
+		//判断复活
+		if(this.reviveRate > this.fighting.seeded.random()){
+			this.revive()
+		}
+	}
 }
 //复活
 character.prototype.revive = function() {
@@ -339,11 +375,12 @@ character.prototype.revive = function() {
 		this.hp = Math.round(this.maxHP * this.revivePower)
 		this.died = false
 		this.event.emit("revive",this.hp)
-		console.log("复活! 当前生命值 : ",this.hp)
 	}
 }
-character.prototype.afterDied = function() {
-	this.event.emit("died")
+character.prototype.afterDied = function(attacker) {
+	this.resetAngerSkill()
+	attacker.kill(this)
+	this.event.emit("died",attacker)
 }
 //获取总攻击值
 character.prototype.getTotalAttack = function() {
@@ -386,20 +423,17 @@ character.prototype.addBuff = function(attacker,otps) {
     var buffId = otps.buffId
     if(this.buffs[buffId]){
         this.buffs[buffId].overlay(attacker,otps)
-        console.log("刷新buff",this.buffs[buffId].name)
     }else{
         var buff = buffFactory.getBuff(attacker,this,otps)
         if(buff){
             buff.initialize()
             this.buffs[buffId] = buff
-            console.log("新buff",buff.name)
         }else{
             console.log("buff 不存在")
         }
     }
 }
 character.prototype.removeBuff = function(buffId) {
-    console.log("removeBuff ",buffId)
     if(this.buffs[buffId]){
         delete this.buffs[buffId]
     }

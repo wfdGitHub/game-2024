@@ -5,7 +5,7 @@ var immune = function(character,target,otps) {
 	this.count = 0
 	this.init = function() {
 		this.count = Number(otps.buffArg) || 1
-		console.log("immune init")
+		// console.log("immune init")
 	}
 	this.overlay = function(character,otps) {
 		this.character = character
@@ -20,7 +20,7 @@ var immune = function(character,target,otps) {
 		}
 	}
 	this.clear = function() {
-		console.log("immune clear")
+		// console.log("immune clear")
 	}
 }
 immune.prototype = buffBasic.prototype
