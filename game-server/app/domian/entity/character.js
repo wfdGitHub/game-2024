@@ -131,8 +131,10 @@ var character = function(otps) {
         })
     }
     //增加普攻技能
-    var skill =  new attackSkill({skillId : 20001},this)
-    this.setDefaultSkill(skill)
+    if(otps.defaultSkill){
+	    var skill =  new attackSkill({skillId : otps.defaultSkill},this)
+	    this.setDefaultSkill(skill)
+    }
 }
 //计算加成效果
 character.prototype.addition = function(otps) {
