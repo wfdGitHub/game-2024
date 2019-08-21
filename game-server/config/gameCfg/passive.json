@@ -141,7 +141,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.03,
-    "buffId": 21001,
+    "buffId": "frozen",
     "duration": 5
   },
   "30019": {
@@ -150,7 +150,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.03,
-    "buffId": 21002,
+    "buffId": "dizzy",
     "duration": 5
   },
   "30020": {
@@ -159,7 +159,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.03,
-    "buffId": 21003,
+    "buffId": "poison",
     "duration": 5,
     "power": 0.1
   },
@@ -169,7 +169,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.03,
-    "buffId": 21004,
+    "buffId": "burn",
     "duration": 5,
     "power": 0.1
   },
@@ -179,7 +179,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.03,
-    "buffId": 21005,
+    "buffId": "chaos",
     "duration": 5
   },
   "30023": {
@@ -188,7 +188,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.03,
-    "buffId": 21006,
+    "buffId": "blackArt",
     "duration": 5
   },
   "30024": {
@@ -197,7 +197,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.03,
-    "buffId": 21007,
+    "buffId": "silence",
     "duration": 5
   },
   "30025": {
@@ -342,7 +342,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.05,
-    "buffId": 21001,
+    "buffId": "frozen",
     "duration": 5
   },
   "30043": {
@@ -351,7 +351,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.05,
-    "buffId": 21002,
+    "buffId": "dizzy",
     "duration": 5
   },
   "30044": {
@@ -360,7 +360,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.05,
-    "buffId": 21003,
+    "buffId": "poison",
     "duration": 5,
     "power": 0.15
   },
@@ -370,7 +370,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.05,
-    "buffId": 21004,
+    "buffId": "burn",
     "duration": 5,
     "power": 0.15
   },
@@ -380,7 +380,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.05,
-    "buffId": 21005,
+    "buffId": "chaos",
     "duration": 5
   },
   "30047": {
@@ -389,7 +389,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.05,
-    "buffId": 21006,
+    "buffId": "blackArt",
     "duration": 5
   },
   "30048": {
@@ -398,7 +398,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.05,
-    "buffId": 21007,
+    "buffId": "silence",
     "duration": 5
   },
   "30049": {
@@ -543,7 +543,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.08,
-    "buffId": 21001,
+    "buffId": "frozen",
     "duration": 5
   },
   "30067": {
@@ -552,7 +552,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.08,
-    "buffId": 21002,
+    "buffId": "dizzy",
     "duration": 5
   },
   "30068": {
@@ -561,7 +561,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.08,
-    "buffId": 21003,
+    "buffId": "poison",
     "duration": 5,
     "power": 0.2
   },
@@ -571,7 +571,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.08,
-    "buffId": 21004,
+    "buffId": "burn",
     "duration": 5,
     "power": 0.2
   },
@@ -581,7 +581,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.08,
-    "buffId": 21005,
+    "buffId": "chaos",
     "duration": 5
   },
   "30071": {
@@ -590,7 +590,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.08,
-    "buffId": 21006,
+    "buffId": "blackArt",
     "duration": 5
   },
   "30072": {
@@ -599,7 +599,7 @@
     "type": "buff",
     "img": 0,
     "rate": 0.08,
-    "buffId": 21007,
+    "buffId": "silence",
     "duration": 5
   }
 }

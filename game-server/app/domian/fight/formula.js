@@ -1,44 +1,45 @@
 var K = 1
 var A = 1
 var formula = function() {}
+//计算伤害
 formula.calDamage = function(attacker, target, skill) {
 	var damageInfo = {damage : 0,skill : skill}
 	//命中判断
-	var hitRate = 	0.3 + 0.55 * (attacker.hitRate / (K * target.dodgeRate || 1))
+	var hitRate = 	0.3 + 0.55 * (attacker.getTotalAtt("hitRate") / (K * target.getTotalAtt("dodgeRate") || 1))
 	// console.log("hitRate",hitRate)
 	if(attacker.fighting.seeded.random()  > hitRate){
 		damageInfo.miss = true
 		return damageInfo
 	}
 	//暴击判断
-	var crit = 0.05 * ((attacker.crit) / (K * target.critDef || 1))
+	var crit = 0.05 * ((attacker.getTotalAtt("crit")) / (K * target.getTotalAtt("critDef") || 1))
 	// console.log("crit",crit)
 	if(attacker.fighting.seeded.random()  < crit){
 		damageInfo.crit = true
 	}
 	//格挡判断
-	var block = 0.1 *  (K * target.block / (attacker.wreck || 1))
+	var block = 0.1 *  (K * target.getTotalAtt("block") / (attacker.getTotalAtt("wreck") || 1))
 	// console.log("block",block)
 	if(attacker.fighting.seeded.random()  < block){
 		damageInfo.block = true
 	}
 	//伤害计算
-	var atk = attacker.getTotalAttack();
-	var def = target.getTotalDefence();
+	var atk = attacker.getTotalAtt("atk");
+	var def = target.getTotalAtt("def");
 	var basic = Math.round(atk*skill.mul + skill.fixed)
 	var damage = Math.pow(basic,2) / ((basic + (A * def)) || 1)
 	// console.log("basic : " + basic + " damage : "+damage,atk)
 	if(damageInfo.crit){
-		damage = Math.round(damage * (1.5 + attacker.slay / 1000))
+		damage = Math.round(damage * (1.5 + attacker.getTotalAtt("slay") / 1000))
 		// console.log("暴击 "+damage)
 	}
 	if(damageInfo.block){
-		damage = Math.round(damage * (1 - target.blockRate))
+		damage = Math.round(damage * (1 - target.getTotalAtt("blockRate")))
 		// console.log("格挡 "+damage)
 	}
 	//伤害加深
-	if(attacker.amp){
-		damage = Math.round(damage * (attacker.amp + 1))
+	if(attacker.getTotalAtt("amp")){
+		damage = Math.round(damage * (attacker.getTotalAtt("amp") + 1))
 	}
 	//最小伤害
 	if (damage <= 1) {
@@ -54,21 +55,32 @@ formula.calDamage = function(attacker, target, skill) {
 	damageInfo.damage = Math.round(damage)
     return damageInfo
 };
+//获取目标队列
 formula.getAttackTarget = function(attacker,team,skill) {
 	switch(skill.targetType){
-		case 1:
+		case "normal":
 			return formula.getTargetNormal(attacker,team)
 		break
-		case 2:
+		case "minhp":
 			return formula.getTargetMinHP(attacker,team)
 		break
-		case 3:
+		case "maxhp":
 			return formula.getTargetMaxHP(attacker,team)
 		break
-		case 4:
+		case "rand1":
+			return formula.getTargetRandom(attacker,team,1)
+		case "rand2":
+			return formula.getTargetRandom(attacker,team,2)
+		case "rand3":
 			return formula.getTargetRandom(attacker,team,3)
-		case 5:
+		case "rand4":
+			return formula.getTargetRandom(attacker,team,4)
+		case "rand5":
+			return formula.getTargetRandom(attacker,team,5)
+		case "all":
 			return formula.getAllTeam(attacker,team)
+		case "self":
+			return [attacker]
 		default:
 			return false
 		break

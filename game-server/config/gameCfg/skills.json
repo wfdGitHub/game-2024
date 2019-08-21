@@ -2,35 +2,32 @@
   "20001": {
     "name": "御剑诀",
     "des": "主角技能攻击",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 0,
     "skillCD": 0,
-    "targetType": 1,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "normal",
+    "buffId": false
   },
   "20002": {
     "name": "万剑诀",
     "des": "主角技能攻击",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 0,
     "skillCD": 0,
-    "targetType": 1,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "normal",
+    "buffId": false
   },
   "20003": {
     "name": "三昧真火",
     "des": "天神伙伴技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 8,
-    "targetType": 1,
-    "buffId": 21004,
+    "targetType": "normal",
+    "buffId": "burn",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 3
@@ -38,23 +35,22 @@
   "20004": {
     "name": "五雷诀",
     "des": "天神伙伴技能",
+    "skillType": "hurt",
     "mul": 1.5,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 1,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 3
+    "targetType": "normal",
+    "buffId": false
   },
   "20005": {
     "name": "天女散花",
     "des": "仙女伙伴技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 8,
-    "targetType": 1,
-    "buffId": 21003,
+    "targetType": "normal",
+    "buffId": "poison",
     "buffArg": 10000,
     "buffRate": 0.5,
     "duration": 3
@@ -62,11 +58,12 @@
   "20006": {
     "name": "漫天花雨",
     "des": "仙女伙伴技能",
+    "skillType": "hurt",
     "mul": 1.5,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 1,
-    "buffId": 21004,
+    "targetType": "normal",
+    "buffId": "burn",
     "buffArg": 10000,
     "buffRate": 0.5,
     "duration": 3
@@ -74,11 +71,12 @@
   "20007": {
     "name": "梵音萦绕",
     "des": "活佛伙伴技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 8,
-    "targetType": 1,
-    "buffId": 21005,
+    "targetType": "normal",
+    "buffId": "chaos",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 3
@@ -86,95 +84,82 @@
   "20008": {
     "name": "善恶定业",
     "des": "活佛伙伴技能",
+    "skillType": "hurt",
     "mul": 1.5,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 4,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "rand3",
+    "buffId": false
   },
   "20009": {
     "name": "袖里乾坤",
     "des": "地仙伙伴技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 4,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "rand3",
+    "buffId": false
   },
   "20010": {
     "name": "飘渺三式",
     "des": "地仙伙伴技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 20,
-    "targetType": 5,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 3
+    "targetType": "all",
+    "buffId": false
   },
   "20011": {
     "name": "飞斩",
     "des": "宠物普通攻击技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 8,
-    "targetType": 1,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "normal",
+    "buffId": false
   },
   "20012": {
     "name": "烈火",
     "des": "宠物普通攻击技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 8,
-    "targetType": 1,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "normal",
+    "buffId": false
   },
   "20013": {
     "name": "落雷",
     "des": "宠物普通攻击技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 8,
-    "targetType": 1,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "normal",
+    "buffId": false
   },
   "20014": {
     "name": "群魔乱舞",
     "des": "主动技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 2,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "minhp",
+    "buffId": false
   },
   "20015": {
     "name": "落英纷飞",
     "des": "主动技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 2,
-    "buffId": 21007,
+    "targetType": "minhp",
+    "buffId": "silence",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 3
@@ -182,23 +167,22 @@
   "20016": {
     "name": "泰山压顶",
     "des": "主动技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 4,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "rand3",
+    "buffId": false
   },
   "20017": {
     "name": "舍命一击",
     "des": "主动技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 2,
-    "buffId": 21005,
+    "targetType": "minhp",
+    "buffId": "chaos",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 0
@@ -206,23 +190,22 @@
   "20018": {
     "name": "雷霆万钧",
     "des": "主动技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 4,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "rand3",
+    "buffId": false
   },
   "20019": {
     "name": "夜舞倾城",
     "des": "主动技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 3,
-    "buffId": 21006,
+    "targetType": "maxhp",
+    "buffId": "blackArt",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 0
@@ -230,47 +213,42 @@
   "20020": {
     "name": "横扫千军",
     "des": "主动技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 3,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "maxhp",
+    "buffId": false
   },
   "20021": {
     "name": "地狱烈火",
     "des": "主动技能",
+    "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
     "skillCD": 10,
-    "targetType": 4,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "rand3",
+    "buffId": false
   },
   "20022": {
     "name": "剑荡八方",
     "des": "神器技能",
+    "skillType": "hurt",
     "mul": 3,
     "fixed": 5000,
     "skillCD": 10,
-    "targetType": 5,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "all",
+    "buffId": false
   },
   "20023": {
     "name": "冰封万里",
     "des": "神器技能",
+    "skillType": "hurt",
     "mul": 2,
     "fixed": 5000,
     "skillCD": 30,
-    "targetType": 5,
-    "buffId": 21001,
+    "targetType": "all",
+    "buffId": "frozen",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 0
@@ -278,11 +256,12 @@
   "20024": {
     "name": "怒火圣意",
     "des": "神器技能",
+    "skillType": "hurt",
     "mul": 2,
     "fixed": 5000,
     "skillCD": 30,
-    "targetType": 5,
-    "buffId": 21004,
+    "targetType": "all",
+    "buffId": "burn",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 0
@@ -290,11 +269,12 @@
   "20025": {
     "name": "幻舞剑殇",
     "des": "神器技能",
+    "skillType": "hurt",
     "mul": 2,
     "fixed": 5000,
     "skillCD": 30,
-    "targetType": 5,
-    "buffId": 21006,
+    "targetType": "all",
+    "buffId": "blackArt",
     "buffArg": 0,
     "buffRate": 0.5,
     "duration": 0
@@ -302,25 +282,137 @@
   "20026": {
     "name": "纵剑无敌",
     "des": "神器技能",
+    "skillType": "hurt",
     "mul": 3,
     "fixed": 5000,
     "skillCD": 30,
-    "targetType": 5,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "all",
+    "buffId": false
   },
   "20027": {
     "name": "剑荡八荒",
     "des": "主动技能",
+    "skillType": "hurt",
     "mul": 2,
     "fixed": 5000,
     "skillCD": 30,
-    "targetType": 4,
-    "buffId": false,
-    "buffArg": 0,
-    "buffRate": 0.5,
-    "duration": 0
+    "targetType": "rand3",
+    "buffId": false
+  },
+  "30001": {
+    "name": "单体回复",
+    "des": "单体回复大量生命值",
+    "skillType": "recover",
+    "mul": 0.5,
+    "fixed": 0,
+    "skillCD": 2,
+    "targetType": "rand1",
+    "buffId": false
+  },
+  "30002": {
+    "name": "群体回复",
+    "des": "群体回复部分生命值",
+    "skillType": "recover",
+    "mul": 0.3,
+    "fixed": 0,
+    "skillCD": 2,
+    "targetType": "rand3",
+    "buffId": false
+  },
+  "30003": {
+    "name": "全体回复",
+    "des": "全体回复少量生命值",
+    "skillType": "recover",
+    "mul": 0.15,
+    "fixed": 0,
+    "skillCD": 2,
+    "targetType": "all",
+    "buffId": false
+  },
+  "30004": {
+    "name": "持续单体回复",
+    "des": "持续单体回复",
+    "skillType": "recover",
+    "mul": 0,
+    "fixed": 0,
+    "skillCD": 2,
+    "targetType": "rand1",
+    "buffId": "recover",
+    "buffArg": 5000,
+    "duration": 3
+  },
+  "30005": {
+    "name": "持续群体回复",
+    "des": "持续群体回复",
+    "skillType": "recover",
+    "mul": 0,
+    "fixed": 0,
+    "skillCD": 2,
+    "targetType": "rand3",
+    "buffId": "recover",
+    "buffArg": 2000,
+    "duration": 3
+  },
+  "30006": {
+    "name": "持续全体回复",
+    "des": "持续全体回复",
+    "skillType": "recover",
+    "anger": true,
+    "mul": 0,
+    "fixed": 0,
+    "skillCD": 2,
+    "targetType": "all",
+    "buffId": "recover",
+    "buffArg": 1000,
+    "duration": 3
+  },
+  "30010": {
+    "name": "单体免疫1次",
+    "des": "单体免疫1次",
+    "skillType": "recover",
+    "mul": 0,
+    "fixed": 0,
+    "skillCD": 5,
+    "targetType": "rand1",
+    "buffId": "immune",
+    "buffArg": 1,
+    "duration": 999
+  },
+  "30011": {
+    "name": "自身免疫5秒",
+    "des": "自身免疫5秒",
+    "skillType": "recover",
+    "mul": 0,
+    "fixed": 0,
+    "skillCD": 5,
+    "targetType": "self",
+    "buffId": "immune",
+    "buffArg": 999,
+    "duration": 5
+  },
+  "30012": {
+    "name": "群体10秒内免疫最多3次伤害",
+    "des": "群体10秒内免疫最多3次伤害",
+    "skillType": "recover",
+    "mul": 0,
+    "fixed": 0,
+    "skillCD": 5,
+    "targetType": "rand3",
+    "buffId": "immune",
+    "buffArg": 3,
+    "duration": 10
+  },
+  "30013": {
+    "name": "全体5秒内免疫",
+    "des": "全体5秒内免疫",
+    "skillType": "recover",
+    "anger": true,
+    "mul": 0,
+    "fixed": 0,
+    "skillCD": 5,
+    "targetType": "all",
+    "buffId": "immune",
+    "buffArg": 999,
+    "duration": 5
   }
 }
