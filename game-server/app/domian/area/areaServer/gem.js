@@ -160,7 +160,7 @@ module.exports = function() {
 			return
 		}
 		//判断宝石槽是否开放
-		var characterInfo = self.players[uid].characters[0]
+		var characterInfo = self.players[uid].characters[self.heroId]
 		var curLv = Number(characterInfo.level)
 		var samsara = Math.floor((curLv / 100))
 		if(samsara < gem_config["slot_"+samsara]){

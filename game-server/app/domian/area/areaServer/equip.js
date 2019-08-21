@@ -252,7 +252,7 @@ module.exports = function() {
 				return
 			}
 			//不能超过人物等级
-			var curLv = self.players[uid].characters[0].level
+			var curLv = self.players[uid].characters[self.heroId].level
 			var samsara = Math.floor(((curLv - 1) / 100))
 			if(eInfo.samsara > samsara){
 				cb(false,"未到达穿戴等级")
@@ -370,11 +370,11 @@ module.exports = function() {
 			cb(false,"eId error "+eId)
 			return
 		}
-		if(!self.players[uid] || !self.players[uid].characters[0]){
+		if(!self.players[uid] || !self.players[uid].characters[self.heroId]){
 			cb(false,"system error")
 			return
 		}
-		var characterInfo = self.players[uid].characters[0]
+		var characterInfo = self.players[uid].characters[self.heroId]
 		var curLv = Number(characterInfo.level)
 		var samsara = Math.floor((curLv / 100))
 
