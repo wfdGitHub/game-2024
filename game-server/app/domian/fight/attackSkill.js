@@ -122,7 +122,7 @@ attackSkill.prototype.useHurtSkill = function() {
 				}
 			}
             //施加BUFF
-            if(typeof(self.buffId) === "number"){
+            if(self.buffId){
                 var buffotps = buffs[self.buffId]
                 buffotps.buffId = self.buffId
                 buffotps.buffArg = self.buffArg

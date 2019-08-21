@@ -1,5 +1,5 @@
-var gainIds = {"recover" : true,"immune":true}
-var buffIds = ["frozen","dizzy","poison","burn","chaos","blackArt","silence","recover","immune"]
+var mustIds = {"recover" : true,"immune":true,"gainAtt" : true,"lessAtt" : true}
+var buffIds = ["frozen","dizzy","poison","burn","chaos","blackArt","silence","recover","immune","gainAtt","lessAtt"]
 var buffList = {}
 for(var i = 0;i < buffIds.length;i++){
 	buffList[buffIds[i]] = require("./buff/"+buffIds[i]+".js")
@@ -23,10 +23,10 @@ buffFactory.checkBuffRate = function(attacker,target,otps) {
 	if(!buffList[buffId]){
 		return false
 	}
-	if(gainIds[buffId]){
+	if(mustIds[buffId]){
 		return true
 	}
-	tmpRate = attacker[buffId+"Atk"] - target[buffId+"Def"]
+	tmpRate = attacker.getTotalAtt(buffId+"Atk") - target.getTotalAtt(buffId+"Def")
 	buffRate = buffRate * (tmpRate + 1)
 	if(attacker.fighting.seeded.random() < buffRate){
 		return true

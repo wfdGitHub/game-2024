@@ -3,7 +3,7 @@ var buffBasic = require("./buffBasic.js")
 var burn = function(character,target,otps) {
 	buffBasic.call(this,character,target,otps)
 	this.interval = 500
-	this.burnList = []
+	this.burnList = {}
 	this.count = 0
 	this.all = 0
 	this.init = function() {

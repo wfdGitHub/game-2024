@@ -384,15 +384,28 @@ character.prototype.afterDied = function(attacker) {
 	attacker.kill(this)
 	this.event.emit("died",attacker)
 }
-//获取总攻击值
-character.prototype.getTotalAttack = function() {
-	return this.atk
+//获取总属性值
+character.prototype.getTotalAtt = function(name) {
+	if(this[name]){
+		var value = this[name]
+		if(this.buffs["gainAtt"]){
+			value += this.buffs["gainAtt"].getGainAtt(name)
+		}
+		if(this.buffs["lessAtt"]){
+			value -= this.buffs["lessAtt"].getlessAtt(name)
+		}
+		return value
+	}
+	else
+		return 0
 }
-//获取总防御值
-character.prototype.getTotalDefence = function() {
-	return this.def
+//获取基础属性值
+character.prototype.getBasicAtt = function(name) {
+	if(this[name])
+		return this[name]
+	else
+		return 0
 }
-
 character.prototype.update = function(stepper) {
 	for(var i in this.buffs){
 		this.buffs[i].update(stepper)

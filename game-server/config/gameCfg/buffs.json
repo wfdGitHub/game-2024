@@ -52,5 +52,17 @@
     "detail": "持续时间或一定次数内不会受到技能伤害",
     "buffArg": 1,
     "duration": 1
+  },
+  "gainAtt": {
+    "name": "增益",
+    "detail": "属性增益",
+    "buffArg": 0,
+    "duration": 1
+  },
+  "lessAtt": {
+    "name": "减益",
+    "detail": "属性减益",
+    "buffArg": 0,
+    "duration": 1
   }
 }
