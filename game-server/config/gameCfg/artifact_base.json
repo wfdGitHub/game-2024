@@ -1,0 +1,42 @@
+{
+  "artifac_101": {
+    "type": "atk",
+    "name": "神器1",
+    "des": "神器1",
+    "item": 101,
+    "activate": 100,
+    "skill": 20022
+  },
+  "artifac_102": {
+    "type": "atk",
+    "name": "神器2",
+    "des": "神器2",
+    "item": 101,
+    "activate": 101,
+    "skill": 20023
+  },
+  "artifac_103": {
+    "type": "atk",
+    "name": "神器3",
+    "des": "神器3",
+    "item": 101,
+    "activate": 102,
+    "skill": 20024
+  },
+  "artifac_104": {
+    "type": "def",
+    "name": "法宝1",
+    "des": "法宝1",
+    "item": 101,
+    "activate": 103,
+    "skill": 20025
+  },
+  "artifac_105": {
+    "type": "def",
+    "name": "法宝2",
+    "des": "法宝2",
+    "item": 101,
+    "activate": 104,
+    "skill": 20026
+  }
+}

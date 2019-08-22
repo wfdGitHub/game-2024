@@ -63,6 +63,37 @@
         console.log("onChat")
         console.log(data)
       })
+      //============神器================//
+      //神器激活
+      var artifactActivate = function(aId) {
+        pomelo.request("area.heroHandler.artifactActivate", {aId : aId}, function(data) {
+            console.log(data);
+        });
+      }
+      //神器进阶
+      var artifactAdvance = function(aId) {
+        pomelo.request("area.heroHandler.artifactAdvance", {aId : aId}, function(data) {
+            console.log(data);
+        });
+      }
+      //神器升星
+      var artifactStar = function(aId) {
+        pomelo.request("area.heroHandler.artifactStar", {aId : aId}, function(data) {
+            console.log(data);
+        });
+      }
+      //穿戴神器
+      var dressedArtifact = function(aId) {
+        pomelo.request("area.heroHandler.dressedArtifact", {aId : aId}, function(data) {
+            console.log(data);
+        });
+      }
+      //拆卸神器
+      var takeofArtifact = function(type) {
+        pomelo.request("area.heroHandler.takeofArtifact", {type : type}, function(data) {
+            console.log(data);
+        });
+      }
       //============伙伴================//
       //伙伴升星
       var partnerUpgradeStar = function(characterId) {

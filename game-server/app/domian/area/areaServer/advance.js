@@ -2,6 +2,7 @@
 var advanceCfg = require("../../../../config/gameCfg/advance.json")
 var characters = require("../../../../config/gameCfg/characters.json")
 module.exports = function() {
+	var self = this
 	//角色进阶
 	this.characterAdvanced = function(uid,characterId,cb) {
 		var characterInfo = this.getCharacterById(uid,characterId)
@@ -23,7 +24,6 @@ module.exports = function() {
 			return
 		}
 		var consumeStr = advanceCfg[curAdvance][characters[characterId].characterType+"_pc"]
-		var self = this
 		self.consumeItems(uid,consumeStr,1,function(flag,err) {
 			if(!flag){
 				cb(flag,err)
@@ -56,7 +56,6 @@ module.exports = function() {
 			return
 		}
 		var consumeStr = advanceCfg[curAdvance][characters[petInfo.characterId].characterType+"_pc"]
-		var self = this
 		self.consumeItems(uid,consumeStr,1,function(flag,err) {
 			if(!flag){
 				cb(flag,err)
