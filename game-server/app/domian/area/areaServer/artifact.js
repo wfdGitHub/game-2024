@@ -107,18 +107,18 @@ module.exports = function() {
 			return
 		}
 		var type = artifact_base[aId]["type"]
-		self.changeCharacterInfo(uid,self.heroId,"activate_"+type,aId,function(flag,data) {
+		self.changeCharacterInfo(uid,self.heroId,"artifact_"+type,aId,function(flag,data) {
 			cb(flag,data)
 		})
 	}
 	//卸下神器
 	this.takeofArtifact = function(uid,type,cb) {
 		var characterInfo = this.getCharacterById(uid,this.heroId)
-		if(!characterInfo["activate_"+type]){
+		if(!characterInfo["artifact_"+type]){
 			cb(false,"未穿戴")
 			return
 		}
-		self.delCharacterInfo(uid,self.heroId,"activate_"+type,function(flag,data) {
+		self.delCharacterInfo(uid,self.heroId,"artifact_"+type,function(flag,data) {
 			cb(flag,data)
 		})
 	}

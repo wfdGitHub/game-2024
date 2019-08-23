@@ -7,6 +7,9 @@ var equip_intensify_master = require("../../../config/gameCfg/equip_intensify_ma
 var gem_level = require("../../../config/gameCfg/gem_level.json")
 var gem_base = require("../../../config/gameCfg/gem_base.json")
 var gem_master = require("../../../config/gameCfg/gem_master.json")
+var artifact_base = require("../../../config/gameCfg/artifact_base.json")
+var artifac_star = require("../../../config/gameCfg/artifac_star.json")
+var artifac_advance = require("../../../config/gameCfg/artifac_advance.json")
 var gem_master_list = {}
 for(var i in gem_master){
     gem_master[i].id = i
@@ -106,6 +109,49 @@ var hero = function(otps) {
         }
         if(gemList[i])
             curGemCount += gemList[i]
+    }
+    //神器进阶加成
+    for(var aId in artifact_base){
+        if(otps[aId] && otps[aId+"_advance"]){
+            var pastr = artifac_advance[otps[aId+"_advance"]]["pa"]
+            console.log("神器进阶加成",aId,pastr)
+            characterFun.prototype.formula(otps,pastr,1)
+        }
+    }
+    //神器技能
+    if(otps["artifact_atk"] || otps["artifact_def"]){
+        var skills = []
+        if(otps["skills"]){
+            skills = JSON.parse(otps["skills"])
+        }
+        if(otps["artifact_atk"]){
+            var aId = otps["artifact_atk"]
+            var starLevel = otps[aId+"_star"]
+            var skillId = 0
+            if(starLevel){
+                skillId = artifac_star[starLevel][aId]
+            }else{
+                skillId = artifact_base[aId]["skill"]
+            }
+            if(skillId){
+                skills.push(skillId)
+            }
+        }
+        if(otps["artifact_def"]){
+            var aId = otps["artifact_def"]
+            var starLevel = otps[aId+"_star"]
+            var skillId = 0
+            if(starLevel){
+                skillId = artifac_star[starLevel][aId]
+            }else{
+                skillId = artifact_base[aId]["skill"]
+            }
+            if(skillId){
+                skills.push(skillId)
+            }
+        }
+        otps["skills"] = JSON.stringify(skills)
+        console.log("神器技能",otps["skills"])
     }
     characterFun.call(this,otps)
     console.log(this.getInfo())
