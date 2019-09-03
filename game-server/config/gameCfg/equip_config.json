@@ -22,5 +22,9 @@
   "wash_5": {
     "name": "橙色洗练权重",
     "value": 50
+  },
+  "compoundNum": {
+    "name": "合成所需数量",
+    "value": 5
   }
 }

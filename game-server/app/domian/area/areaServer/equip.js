@@ -191,6 +191,27 @@ module.exports = function() {
 			self.addEquip(uid,eId,samsara,quality,cb)
 		})
 	}
+	//合成装备
+	this.compoundEquip = function(uid,eId,samsara,quality,cb) {
+		if(!equip_base[eId] || !equip_level[samsara] || !equip_quality[quality + 1]){
+			console.log("compoundEquip error"+eId,samsara,quality)
+			if(cb){
+				cb(false,"can't find equip")
+			}
+			return
+		}
+		var elist = {}
+		var eStr = self.equipStr(eId,samsara,quality)
+		elist[eStr] = equip_config["compoundNum"]["value"]
+		self.consumeEquips(uid,elist,function(flag,err) {
+			if(!flag){
+				cb(false,err)
+				return
+			}
+			var newQuality = parseInt(quality+1)
+			self.addEquip(uid,eId,samsara,newQuality,cb)
+		})
+	}
 	//转换成可穿戴装备
 	this.changeWearable = function(uid,eId,samsara,quality,cb) {
 		if(!equip_base[eId] || !equip_level[samsara] || !equip_quality[quality]){

@@ -242,7 +242,7 @@
             console.log(data);
         });
       }
-      //获取装备池列表
+      //获取可穿戴装备列表
       var getWearableList = function() {
         pomelo.request("area.equipHandler.getWearableList", {}, function(data) {
             console.log(data);
@@ -251,6 +251,12 @@
       //获得装备池装备
       var addEquip = function(eId,samsara,quality) {
         pomelo.request("area.equipHandler.addEquip", {eId : eId,samsara : samsara,quality : quality}, function(data) {
+            console.log(data);
+        });
+      }
+      //合成装备
+      var compoundEquip = function(eId,samsara,quality) {
+        pomelo.request("area.equipHandler.compoundEquip", {eId : eId,samsara : samsara,quality : quality}, function(data) {
             console.log(data);
         });
       }

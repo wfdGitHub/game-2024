@@ -65,6 +65,17 @@ equipHandler.prototype.buyEquip = function(msg, session, next) {
     next(null,{flag : flag})
   })
 }
+//合成装备
+equipHandler.prototype.compoundEquip = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  var samsara = msg.samsara
+  var quality = msg.quality
+  this.areaManager.areaMap[areaId].compoundEquip(uid,eId,samsara,quality,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //转换可穿戴装备
 equipHandler.prototype.changeWearable = function(msg, session, next) {
   var uid = session.get("uid")
