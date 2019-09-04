@@ -215,7 +215,7 @@ module.exports = function() {
 				}
 			}
 			if(value > 0){
-				self.addItem(uid,currencyId,value)
+				self.addItem({uid : uid,itemId : currencyId,value : value})
 			}
 			cb(true,value)
 		})
@@ -241,7 +241,7 @@ module.exports = function() {
 				return
 			}
 			//扣除货币
-			self.addItem(uid,currencyId,-needValue)
+			self.addItem({uid : uid,itemId : currencyId,value : -needValue})
 			//计算品质
 			var rand = Math.random() * qualityAllRand
 			var quality = 0

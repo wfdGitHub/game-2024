@@ -52,7 +52,7 @@ normalHandler.prototype.addItem = function(msg, session, next) {
   var areaId = session.get("areaId")
   var itemId = msg.itemId
   var value = msg.value
-  this.areaManager.areaMap[areaId].addItem(uid,itemId,value,function(flag,data) {
+  this.areaManager.areaMap[areaId].addItem({uid : uid,itemId : itemId,value : value},function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

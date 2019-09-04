@@ -30,7 +30,7 @@ module.exports = function() {
 				return
 			}
 			//扣除货币
-			self.addItem(uid,currencyId,-needValue)
+			self.addItem({uid : uid,itemId : currencyId,value : -needValue})
 			//增加宝石
 			self.addGem(uid,gId,level,count,cb)
 		})
@@ -112,7 +112,7 @@ module.exports = function() {
 				}
 			}
 			if(value > 0){
-				self.addItem(uid,currencyId,value)
+				self.addItem({uid : uid,itemId : currencyId,value : value})
 			}
 			cb(true,value)
 		})
@@ -271,7 +271,7 @@ module.exports = function() {
 						cb(false,err)
 						return
 					}
-					self.addItem(uid,currencyId,-(needValue - curValue))
+					self.addItem({uid : uid,itemId : currencyId,value : -(needValue - curValue)})
 					self.addGem(uid,gId,level,1,cb)
 					cb(true)
 				})

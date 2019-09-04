@@ -46,7 +46,7 @@ module.exports = function() {
 				}
 				this.addCharacterEXP(otps.uid,otps.characterId,parseInt(otps.value * itemCfg[otps.itemId].arg) || 0)
 				otps.value = -otps.value
-				this.addItem(otps.uid,otps.itemId,otps.value,cb)
+				this.addItem(otps,cb)
 			break
 			case "petExp":
 				//宠物经验丹
@@ -61,7 +61,7 @@ module.exports = function() {
 				}
 				this.addPetEXP(otps.uid,otps.id,parseInt(otps.value * itemCfg[otps.itemId].arg) || 0)
 				otps.value = -otps.value
-				this.addItem(otps.uid,otps.itemId,otps.value,cb)
+				this.addItem(otps,cb)
 			break
 			case "petEgg":
 				//宠物蛋
@@ -84,7 +84,7 @@ module.exports = function() {
 				}
 				this.obtainPet(otps.uid,characterId,function(flag,petInfo) {
 					if(flag){
-						self.addItem(otps.uid,otps.itemId,-1)
+						self.addItem({uid : otps.uid,itemId : otps.itemId,value : -1})
 					}
 					cb(flag,petInfo)
 				})
@@ -134,7 +134,10 @@ module.exports = function() {
 		})
 	}
 	//增加物品
-	this.addItem = function(uid,itemId,value,cb) {
+	this.addItem = function(otps,cb) {
+		var uid = otps.uid
+		var itemId = otps.itemId
+		var value = otps.value
 		if(itemCfg[itemId]){
 			self.addItemCB(uid,itemId,value,function(flag,curValue) {
 				if(flag){
@@ -155,13 +158,13 @@ module.exports = function() {
 					self.addCharacterEXP(uid,10001,value,cb)
 				break
 				case "gold":
-					self.addItem(uid,101,value,cb)
+					self.addItem({uid : uid,itemId : 101,value : value},cb)
 				break
 				case "diamond":
-					self.addItem(uid,102,value,cb)
+					self.addItem({uid : uid,itemId : 102,value : value},cb)
 				break
 				case "spar":
-					self.addItem(uid,104,value,cb)
+					self.addItem({uid : uid,itemId : 104,value : value},cb)
 				break
 				case "e":
 					//指定装备
@@ -248,7 +251,7 @@ module.exports = function() {
 			}
 			//扣除道具
 			for(var i = 0;i < values.length;i++){
-				self.addItem(uid,items[i],-values[i])
+				self.addItem({uid : uid,itemId : items[i],value : -values[i]})
 			}
 			cb(true)
 		})
@@ -263,7 +266,7 @@ module.exports = function() {
 			var m_list = m_str.split(":")
 			var itemId = Number(m_list[0])
 			var value = Math.floor(Number(m_list[1]) * rate)
-			self.addItem(uid,itemId,value)
+			self.addItem({uid : uid,itemId : itemId,value : value})
 		})
 	}
 	//商城购买物品

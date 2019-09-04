@@ -15,7 +15,7 @@ adminArea.prototype.sendItem = function(msg, session, next) {
   var value = msg.value
   var target = msg.target
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].addItem(target,itemId,value,function(flag,data) {
+  this.areaManager.areaMap[areaId].addItem({uid : target,itemId : itemId,value : value},function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
