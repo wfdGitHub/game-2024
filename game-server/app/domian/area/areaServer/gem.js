@@ -36,13 +36,13 @@ module.exports = function() {
 		})
 	}
 	//获得一个当前转生等级随机宝石
-	this.addRandGem = function(uid,gId,cb) {
+	this.addRandGem = function(uid,gId,rate,cb) {
 		if(!gId){
 			gId = "g" + (Math.floor(Math.random() * 12) + 1)
 		}
 		var curLv = self.players[uid].characters[self.heroId].level
 		var samsara = Math.floor(((curLv - 1) / 100))
-		self.addGem(uid,gId,samsara + 1,1,cb)
+		self.addGem(uid,gId,samsara + 1,rate,cb)
 	}
 	//增加宝石
 	this.addGem = function(uid,gId,level,count,cb) {
@@ -60,7 +60,7 @@ module.exports = function() {
 			}
 			self.sendToUser(uid,notify)
 			if(cb){
-				cb(true)
+				cb(true,gstr)
 			}
 		})
 	}

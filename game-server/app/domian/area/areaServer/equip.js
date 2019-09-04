@@ -126,7 +126,7 @@ module.exports = function() {
 			}
 			self.sendToUser(uid,notify)
 			if(cb){
-				cb(true)
+				cb(true,estr)
 			}
 		})
 	}

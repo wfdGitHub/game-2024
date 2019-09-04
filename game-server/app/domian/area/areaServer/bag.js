@@ -138,7 +138,9 @@ module.exports = function() {
 		var uid = otps.uid
 		var itemId = otps.itemId
 		var value = otps.value
+		var rate = otps.rate || 1
 		if(itemCfg[itemId]){
+			value = Math.floor(Number(value) * rate) || 1
 			self.addItemCB(uid,itemId,value,function(flag,curValue) {
 				if(flag){
 					var notify = {
@@ -155,15 +157,19 @@ module.exports = function() {
 		}else if(special_item[itemId]){
 			switch(itemId){
 				case "exp":
+					value = Math.floor(Number(value) * rate) || 1
 					self.addCharacterEXP(uid,10001,value,cb)
 				break
 				case "gold":
+					value = Math.floor(Number(value) * rate) || 1
 					self.addItem({uid : uid,itemId : 101,value : value},cb)
 				break
 				case "diamond":
+					value = Math.floor(Number(value) * rate) || 1
 					self.addItem({uid : uid,itemId : 102,value : value},cb)
 				break
 				case "spar":
+					value = Math.floor(Number(value) * rate) || 1
 					self.addItem({uid : uid,itemId : 104,value : value},cb)
 				break
 				case "e":
@@ -172,38 +178,48 @@ module.exports = function() {
 					var part = list[0]
 					var samsara = list[1]
 					var quality = list[2]
-					self.addEquip(uid,"e"+part,samsara,quality,cb)
+					for(var i = 0;i < rate;i++){
+						self.addEquip(uid,"e"+part,samsara,quality,cb)
+					}
 				break
 				case "ec-0":
-					self.addRandEquip(uid,value,0,cb)
+					for(var i = 0;i < rate;i++)
+						self.addRandEquip(uid,value,0,cb)
 				break
 				case "ec-1":
-					self.addRandEquip(uid,value,1,cb)
+					for(var i = 0;i < rate;i++)
+						self.addRandEquip(uid,value,1,cb)
 				break
 				case "ec-2":
-					self.addRandEquip(uid,value,2,cb)
+					for(var i = 0;i < rate;i++)
+						self.addRandEquip(uid,value,2,cb)
 				break
 				case "ec-3":
-					self.addRandEquip(uid,value,3,cb)
+					for(var i = 0;i < rate;i++)
+						self.addRandEquip(uid,value,3,cb)
 				break
 				case "ec-4":
-					self.addRandEquip(uid,value,4,cb)
+					for(var i = 0;i < rate;i++)
+						self.addRandEquip(uid,value,4,cb)
 				break
 				case "ec-5":
-					self.addRandEquip(uid,value,5,cb)
+					for(var i = 0;i < rate;i++)
+						self.addRandEquip(uid,value,5,cb)
 				break
 				case "ev":
-					self.addEVEquip(uid,value,cb)
+					for(var i = 0;i < rate;i++)
+						self.addEVEquip(uid,value,cb)
 				break
 				case "g":
 					//指定宝石
 					var list = value.toString().split("-")
 					var gType = list[0]
 					var level = list[1]
-					var count = parseInt(list[2]) || 1
+					var count = Number(parseInt(list[2]) * rate) || 1
 					self.addGem(uid,"g"+gType,level,count,cb)
 				break
 				case "gc":
+					value = Math.floor(Number(value) * rate) || 1
 					self.addRandGem(uid,value,cb)
 				break
 			}
@@ -265,8 +281,8 @@ module.exports = function() {
 		list.forEach(function(m_str) {
 			var m_list = m_str.split(":")
 			var itemId = Number(m_list[0])
-			var value = Math.floor(Number(m_list[1]) * rate)
-			self.addItem({uid : uid,itemId : itemId,value : value})
+			var value = m_list[1]
+			self.addItem({uid : uid,itemId : itemId,value : value,rate ： rate})
 		})
 	}
 	//商城购买物品
