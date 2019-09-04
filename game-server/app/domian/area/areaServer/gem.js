@@ -35,8 +35,21 @@ module.exports = function() {
 			self.addGem(uid,gId,level,count,cb)
 		})
 	}
+	//获得一个当前转生等级随机宝石
+	this.addRandGem = function(uid,gId,cb) {
+		if(!gId){
+			gId = "g" + (Math.floor(Math.random() * 12) + 1)
+		}
+		var curLv = self.players[uid].characters[self.heroId].level
+		var samsara = Math.floor(((curLv - 1) / 100))
+		self.addGem(uid,gId,samsara + 1,1,cb)
+	}
 	//增加宝石
 	this.addGem = function(uid,gId,level,count,cb) {
+		if(!gem_base[gId] || !gem_level[level] || !gem_level[level][gId] || !Number.isInteger(count) || count < 1){
+			cb(false,"参数错误")
+			return
+		}
 		var gstr = self.gemStr(gId,level)
 		self.redisDao.db.hincrby("area:area"+self.areaId+":player:"+uid+":gem",gstr,count,function(err,data) {
 			var notify = {

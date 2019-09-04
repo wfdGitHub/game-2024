@@ -1,5 +1,6 @@
 //背包物品系统
 var itemCfg = require("../../../../config/gameCfg/item.json")
+var special_item = require("../../../../config/gameCfg/special_item.json")
 var charactersCfg = require("../../../../config/gameCfg/characters.json")
 var shopCfg = require("../../../../config/gameCfg/shop.json")
 module.exports = function() {
@@ -134,15 +135,7 @@ module.exports = function() {
 	}
 	//增加物品
 	this.addItem = function(uid,itemId,value,cb) {
-		if(itemId == 100){
-			//主角经验
-			this.addCharacterEXP(uid,10001,value,cb)
-		}else{
-			if(!itemCfg[itemId]){
-				if(cb)
-					cb(false,"item not exist")
-				return
-			}
+		if(itemCfg[itemId]){
 			self.addItemCB(uid,itemId,value,function(flag,curValue) {
 				if(flag){
 					var notify = {
@@ -156,6 +149,64 @@ module.exports = function() {
 				if(cb)
 					cb(flag,curValue)
 			})
+		}else if(special_item[itemId]){
+			switch(itemId){
+				case "exp":
+					self.addCharacterEXP(uid,10001,value,cb)
+				break
+				case "gold":
+					self.addItem(uid,101,value,cb)
+				break
+				case "diamond":
+					self.addItem(uid,102,value,cb)
+				break
+				case "spar":
+					self.addItem(uid,104,value,cb)
+				break
+				case "e":
+					//指定装备
+					var list = value.toString().split("-")
+					var part = list[0]
+					var samsara = list[1]
+					var quality = list[2]
+					self.addEquip(uid,"e"+part,samsara,quality,cb)
+				break
+				case "ec-0":
+					self.addRandEquip(uid,value,0,cb)
+				break
+				case "ec-1":
+					self.addRandEquip(uid,value,1,cb)
+				break
+				case "ec-2":
+					self.addRandEquip(uid,value,2,cb)
+				break
+				case "ec-3":
+					self.addRandEquip(uid,value,3,cb)
+				break
+				case "ec-4":
+					self.addRandEquip(uid,value,4,cb)
+				break
+				case "ec-5":
+					self.addRandEquip(uid,value,5,cb)
+				break
+				case "ev":
+					self.addEVEquip(uid,value,cb)
+				break
+				case "g":
+					//指定宝石
+					var list = value.toString().split("-")
+					var gType = list[0]
+					var level = list[1]
+					var count = parseInt(list[2]) || 1
+					self.addGem(uid,"g"+gType,level,count,cb)
+				break
+				case "gc":
+					self.addRandGem(uid,value,cb)
+				break
+			}
+		}else{
+			if(cb)
+				cb(false,"item not exist")
 		}
 	}
 	//增加物品回调

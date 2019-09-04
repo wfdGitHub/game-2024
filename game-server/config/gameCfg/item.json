@@ -1,17 +1,27 @@
 {
   "101": {
-    "name": "金币",
-    "des": "金币",
+    "name": "仙币",
+    "des": "仙币",
     "isBag": false
   },
   "102": {
-    "name": "钻石",
-    "des": "钻石",
+    "name": "仙钻",
+    "des": "仙钻",
     "isBag": false
   },
   "103": {
     "name": "熔炼值",
     "des": "熔炼值",
+    "isBag": false
+  },
+  "104": {
+    "name": "仙晶",
+    "des": "仙晶",
+    "isBag": false
+  },
+  "201": {
+    "name": "副本钥匙",
+    "des": "副本钥匙",
     "isBag": false
   },
   "1001": {

@@ -63,6 +63,7 @@ var hero = function(otps) {
     }
     //强化大师加成
     console.log("minIl : ",minIl)
+    this.equipMaster = minIl
     for(var i in equip_intensify_master){
     	if(minIl >= Number(i)){
     		var str = equip_intensify_master[i]["pc"]

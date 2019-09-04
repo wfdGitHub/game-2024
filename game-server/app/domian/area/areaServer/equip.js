@@ -6,6 +6,7 @@ var equip_intensify = require("../../../../config/gameCfg/equip_intensify.json")
 var equip_level = require("../../../../config/gameCfg/equip_level.json")
 var equip_quality = require("../../../../config/gameCfg/equip_quality.json")
 var equip_wash = require("../../../../config/gameCfg/equip_wash.json")
+var util = require("../../../../util/util.js")
 var quality_weight = []
 var qualityAllRand = 0
 for(var i in equip_quality){
@@ -21,6 +22,33 @@ for(var i = 1;i <= 5;i++){
 var washArr = []
 for(var i in equip_wash[0]){
 	washArr.push(i)
+}
+var equip_smelts = {}
+var equip_smelt_arr = {}
+var equip_smelt_map = {}
+for(let eId in equip_base){
+	for(let samsara in equip_level){
+		if(!equip_smelt_map[samsara]){
+			equip_smelt_map[samsara] = {}
+			equip_smelt_arr[samsara] = []
+		}
+		for(let quality in equip_quality){
+			let estr = eId+"-"+samsara+"-"+quality
+			let tmpValue = equip_base[eId]["sc"]
+			tmpValue *= equip_level[samsara]["sRate"]
+			tmpValue *= equip_quality[quality]["sRate"]
+			tmpValue = parseInt(tmpValue)
+			equip_smelts[estr] = tmpValue
+			if(!equip_smelt_map[samsara][tmpValue]){
+				equip_smelt_map[samsara][tmpValue] = []
+				equip_smelt_arr[samsara].push(tmpValue)
+			}
+			equip_smelt_map[samsara][tmpValue].push(estr)
+		}
+	}
+}
+for(var i in equip_smelt_arr){
+	equip_smelt_arr[i].sort(function(a,b) {return a-b})
 }
 var currencyId = equip_config.currencyId.value
 module.exports = function() {
@@ -40,6 +68,44 @@ module.exports = function() {
 				cb(data)
 			}
 		})
+	}
+	//根据熔炼值获取当前等级装备
+	this.addEVEquip = function(uid,value,cb) {
+		var curLv = self.players[uid].characters[self.heroId].level
+		var samsara = Math.floor(((curLv - 1) / 100))
+		if(!equip_smelt_arr[samsara] || !equip_smelt_map[samsara]){
+			if(cb){
+				cb(false,"addEVEquip error samsara "+samsara)
+			}
+			return
+		}
+		var targetValue = util.binarySearch(equip_smelt_arr[samsara],value)
+		if(!targetValue){
+			if(cb){
+				cb(false,"addEVEquip error targetValue "+targetValue)
+			}
+			return
+		}
+		var list = equip_smelt_map[samsara][targetValue]
+		if(!list){
+			if(cb){
+				cb(false,"addEVEquip error list "+list)
+			}
+			return
+		}
+		var index = Math.floor(Math.random() * list.length)
+		var eStr = equip_smelt_map[samsara][targetValue][index]
+		var eInfo = self.equipParse(eStr)
+		self.addEquip(uid,eInfo.eId,eInfo.samsara,eInfo.quality,cb)
+	}
+	//获得当前等级随机部位指定品质装备
+	this.addRandEquip = function(uid,eId,quality,cb) {
+		if(!eId){
+			eId = "e" + (Math.floor(Math.random() * 10) + 1)
+		}
+		var curLv = self.players[uid].characters[self.heroId].level
+		var samsara = Math.floor(((curLv - 1) / 100))
+		self.addEquip(uid,eId,samsara,quality,cb)
 	}
 	//获得装备池装备
 	this.addEquip = function(uid,eId,samsara,quality,cb) {
@@ -138,17 +204,14 @@ module.exports = function() {
 			}
 			var value = 0
 			//计算熔炼值
-			for(var i in elist){
-				var eInfo = self.equipParse(i)
-				var tmpValue = equip_base[eInfo.eId]["sd"]
-				tmpValue *= equip_level[eInfo.samsara]["sRate"]
-				tmpValue *= equip_quality[eInfo.quality]["sRate"]
+			for(var eStr in elist){
+				var tmpValue = equip_smelts[eStr]
 				tmpValue *= elist[i]
 				tmpValue = parseInt(tmpValue)
 				if(Number.isInteger(tmpValue)){
 					value += tmpValue
 				}else{
-					console.log("熔炼值计算错误  ",i,tmpValue)
+					console.log("熔炼值计算错误  ",eStr,tmpValue)
 				}
 			}
 			if(value > 0){
