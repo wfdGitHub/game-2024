@@ -175,34 +175,34 @@ module.exports = function() {
 				case "e":
 					//指定装备
 					var list = value.toString().split("-")
-					var part = list[0]
+					var eId = list[0]
 					var samsara = list[1]
 					var quality = list[2]
 					for(var i = 0;i < rate;i++){
-						self.addEquip(uid,"e"+part,samsara,quality,cb)
+						self.addEquip(uid,eId,samsara,quality,cb)
 					}
 				break
-				case "ec-0":
+				case "ec0":
 					for(var i = 0;i < rate;i++)
 						self.addRandEquip(uid,value,0,cb)
 				break
-				case "ec-1":
+				case "ec1":
 					for(var i = 0;i < rate;i++)
 						self.addRandEquip(uid,value,1,cb)
 				break
-				case "ec-2":
+				case "ec2":
 					for(var i = 0;i < rate;i++)
 						self.addRandEquip(uid,value,2,cb)
 				break
-				case "ec-3":
+				case "ec3":
 					for(var i = 0;i < rate;i++)
 						self.addRandEquip(uid,value,3,cb)
 				break
-				case "ec-4":
+				case "ec4":
 					for(var i = 0;i < rate;i++)
 						self.addRandEquip(uid,value,4,cb)
 				break
-				case "ec-5":
+				case "ec5":
 					for(var i = 0;i < rate;i++)
 						self.addRandEquip(uid,value,5,cb)
 				break
@@ -213,10 +213,10 @@ module.exports = function() {
 				case "g":
 					//指定宝石
 					var list = value.toString().split("-")
-					var gType = list[0]
+					var gId = list[0]
 					var level = list[1]
 					var count = Number(parseInt(list[2]) * rate) || 1
-					self.addGem(uid,"g"+gType,level,count,cb)
+					self.addGem(uid,gId,level,count,cb)
 				break
 				case "gc":
 					value = Math.floor(Number(value) * rate) || 1
