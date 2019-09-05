@@ -96,7 +96,7 @@ module.exports = function() {
 		var index = Math.floor(Math.random() * list.length)
 		var eStr = equip_smelt_map[samsara][targetValue][index]
 		var eInfo = self.equipParse(eStr)
-		self.addEquip(uid,eInfo.eId,eInfo.samsara,eInfo.quality,cb)
+		return self.addEquip(uid,eInfo.eId,eInfo.samsara,eInfo.quality,cb)
 	}
 	//获得当前等级随机部位指定品质装备
 	this.addRandEquip = function(uid,eId,quality,cb) {
@@ -105,7 +105,7 @@ module.exports = function() {
 		}
 		var curLv = self.players[uid].characters[self.heroId].level
 		var samsara = Math.floor(((curLv - 1) / 100))
-		self.addEquip(uid,eId,samsara,quality,cb)
+		return self.addEquip(uid,eId,samsara,quality,cb)
 	}
 	//获得装备池装备
 	this.addEquip = function(uid,eId,samsara,quality,cb) {
@@ -129,6 +129,7 @@ module.exports = function() {
 				cb(true,estr)
 			}
 		})
+		return {type : "equip",eId : eId,samsara : samsara,quality}
 	}
 	//获得可穿戴装备
 	this.addWearable = function(uid,eInfo,cb) {

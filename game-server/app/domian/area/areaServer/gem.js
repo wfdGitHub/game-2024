@@ -40,7 +40,7 @@ module.exports = function() {
 		var gId = "g" + (Math.floor(Math.random() * 12) + 1)
 		var curLv = self.players[uid].characters[self.heroId].level
 		var samsara = Math.floor(((curLv - 1) / 100))
-		self.addGem(uid,gId,samsara + 1,rate,cb)
+		return self.addGem(uid,gId,samsara + 1,rate,cb)
 	}
 	//增加宝石
 	this.addGem = function(uid,gId,level,count,cb) {
@@ -61,6 +61,7 @@ module.exports = function() {
 				cb(true,gstr)
 			}
 		})
+		return {type : "gem",gId : gId,level : level,count : count}
 	}
 	//宝石str
 	this.gemStr = function(gId,level) {
