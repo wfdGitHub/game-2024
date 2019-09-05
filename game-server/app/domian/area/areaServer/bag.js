@@ -217,6 +217,7 @@ module.exports = function() {
 				break
 			}
 		}else{
+			console.error("item not exist : "+itemId)
 			if(cb)
 				cb(false,"item not exist")
 		}
@@ -230,7 +231,7 @@ module.exports = function() {
 		if(itemCfg[itemId]){
 			this.addBagItem(uid,itemId,value,cb)
 		}else{
-			console.log("addItem error : "+itemId)
+			console.error("addItem error : "+itemId)
 			if(cb)
 				cb(false,"itemId error : "+itemId)
 		}
