@@ -63,6 +63,31 @@
         console.log("onChat")
         console.log(data)
       })
+      //============副本================//
+      //开启副本
+      var openFB = function(type) {
+        pomelo.request("area.fbHandler.openFB", {type : type}, function(data) {
+            console.log(data);
+        });
+      }
+      //退出副本
+      var quitFB = function(type) {
+        pomelo.request("area.fbHandler.quitFB", {type : type}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战副本BOSS
+      var challengeFBBoss = function(type) {
+        pomelo.request("area.fbHandler.challengeFBBoss", {type : type}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取副本信息
+      var getFBInfo = function() {
+        pomelo.request("area.fbHandler.getFBInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============神器================//
       //神器激活
       var artifactActivate = function(aId) {

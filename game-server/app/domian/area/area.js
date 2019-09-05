@@ -2,7 +2,8 @@
 var bearcat = require("bearcat")
 var fightContorlFun = require("../fight/fightContorl.js")
 var charactersCfg = require("../../../config/gameCfg/characters.json")
-var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet","character","equip","gem","mail","artifact"]
+var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet","character","equip","gem","mail","artifact","fb"]
+const oneDayTime = 86400000
 var area = function(otps,app) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName
@@ -24,6 +25,16 @@ var area = function(otps,app) {
 area.prototype.init = function() {
 	console.log("area init")
 	setInterval(this.update.bind(this),1000)
+	var self = this
+	var curTime = Date.now()
+	var tomorrowDate = new Date(curTime + oneDayTime)
+	tomorrowDate.setHours(0,0,0,0)
+	var tomorrowTime = tomorrowDate.getTime()
+	console.log("时间:",tomorrowTime - curTime)
+	setTimeout(function() {
+		self.dayTimer.call(self)
+		setInterval(self.dayTimer.bind(self),oneDayTime)
+	},tomorrowTime - curTime + 5000)
 }
 //update
 area.prototype.update = function() {
@@ -36,6 +47,10 @@ area.prototype.update = function() {
 	// 		delete this.offLinePlayers[uid]
 	// 	}
 	// }
+}
+//每日定时器
+area.prototype.dayTimer = function() {
+	console.log("每日刷新")
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
@@ -50,7 +65,7 @@ area.prototype.register = function(otps,cb) {
 					return
 				}
 				self.addItem({uid : otps.uid,itemId : 101,value : 1000000})
-				self.addPlayerData(otps.uid,"onhookLastTime",Date.now())
+				self.setPlayerData(otps.uid,"onhookLastTime",Date.now())
 				cb(true,playerInfo)
 			})
 		}
@@ -138,6 +153,16 @@ area.prototype.getFightInfo = function(uid) {
 	}else{
 		return false
 	}
+}
+//战斗记录
+area.prototype.recordFight = function(atkTeam,defTeam,seededNum,readList) {
+	var obj = {
+		atkTeam : JSON.stringify(atkTeam),
+		defTeam : JSON.stringify(defTeam),
+		seededNum : seededNum,
+		readList : JSON.stringify(readList)
+	}
+	 this.redisDao.db.hmset("test:fight",obj)
 }
 module.exports = {
 	id : "area",

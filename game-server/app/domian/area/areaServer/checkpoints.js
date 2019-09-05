@@ -58,10 +58,7 @@ module.exports = function() {
 		        defTeam.push({characterId,characterId,level : checkpointsCfg[level].mobLevel})
 		      })
 		    }
-		    self.redisDao.db.hset("test:fight","atkTeam",JSON.stringify(atkTeam))
-		    self.redisDao.db.hset("test:fight","defTeam",JSON.stringify(defTeam))
-		    self.redisDao.db.hset("test:fight","seededNum",otps.seededNum)
-		    self.redisDao.db.hset("test:fight","readList",JSON.stringify(otps.readList))
+		    self.recordFight(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
 		    var result = self.fightContorl.fighting(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
 		    if(result.verify === otps.verify){
 		    	self.checkpointsResult(uid,result,level)

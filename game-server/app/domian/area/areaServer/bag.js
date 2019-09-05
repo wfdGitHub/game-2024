@@ -141,6 +141,14 @@ module.exports = function() {
 		var rate = otps.rate || 1
 		if(itemCfg[itemId]){
 			value = Math.floor(Number(value) * rate) || 1
+			itemId = parseInt(itemId)
+			if(!itemId){
+				console.error("itemId error "+itemId)
+				if(cb){
+					cb(false,"itemId error "+itemId)
+				}
+				return
+			}
 			self.addItemCB(uid,itemId,value,function(flag,curValue) {
 				if(flag){
 					var notify = {
@@ -224,10 +232,6 @@ module.exports = function() {
 	}
 	//增加物品回调
 	this.addItemCB = function(uid,itemId,value,cb) {
-		if(typeof(itemId) !== "number"){
-			cb(false,"type error "+typeof(itemId))
-			return
-		}
 		if(itemCfg[itemId]){
 			this.addBagItem(uid,itemId,value,cb)
 		}else{
