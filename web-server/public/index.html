@@ -413,6 +413,12 @@
             console.log(data);
         })
       }
+      //增加物品str  测试功能
+      var addItemStr = function(str,rate) {
+        pomelo.request("area.normalHandler.addItemStr",{str : str,rate : rate}, function(data) {
+            console.log(data);
+        })
+      }
       //获取在线挂机奖励
       var getOnhookAward = function() {
         pomelo.request("area.normalHandler.getOnhookAward",{}, function(data) {
