@@ -17,7 +17,8 @@ module.exports = function() {
 		var mailInfo = {
 			title : title,
 			text : text,
-			id : uuid.v1()
+			id : uuid.v1(),
+			time : Date.now()
 		}
 		if(atts){
 			mailInfo.atts = atts
