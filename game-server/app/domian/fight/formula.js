@@ -6,20 +6,17 @@ formula.calDamage = function(attacker, target, skill) {
 	var damageInfo = {damage : 0,skill : skill}
 	//命中判断
 	var hitRate = 	0.3 + 0.55 * (attacker.getTotalAtt("hitRate") / (K * target.getTotalAtt("dodgeRate") || 1))
-	// console.log("hitRate",hitRate)
 	if(attacker.fighting.seeded.random()  > hitRate){
 		damageInfo.miss = true
 		return damageInfo
 	}
 	//暴击判断
 	var crit = 0.05 * ((attacker.getTotalAtt("crit")) / (K * target.getTotalAtt("critDef") || 1))
-	// console.log("crit",crit)
 	if(attacker.fighting.seeded.random()  < crit){
 		damageInfo.crit = true
 	}
 	//格挡判断
 	var block = 0.1 *  (K * target.getTotalAtt("block") / (attacker.getTotalAtt("wreck") || 1))
-	// console.log("block",block)
 	if(attacker.fighting.seeded.random()  < block){
 		damageInfo.block = true
 	}
@@ -28,14 +25,11 @@ formula.calDamage = function(attacker, target, skill) {
 	var def = target.getTotalAtt("def");
 	var basic = Math.round(atk*skill.mul + skill.fixed)
 	var damage = Math.pow(basic,2) / ((basic + (A * def)) || 1)
-	// console.log("basic : " + basic + " damage : "+damage,atk)
 	if(damageInfo.crit){
 		damage = Math.round(damage * (1.5 + attacker.getTotalAtt("slay") / 1000))
-		// console.log("暴击 "+damage)
 	}
 	if(damageInfo.block){
 		damage = Math.round(damage * (1 - target.getTotalAtt("blockRate")))
-		// console.log("格挡 "+damage)
 	}
 	//伤害加深
 	if(attacker.getTotalAtt("amp")){
@@ -106,7 +100,6 @@ formula.getTargetNormal = function(attacker,team) {
         })
         if(list.length > 0){
             target = list[parseInt(attacker.fighting.seeded.random() * list.length)]
-            console.log("混乱随机选择目标 : ",target.name)
         }
         return [target]
     }

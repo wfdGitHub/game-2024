@@ -4,8 +4,6 @@ var frozen = function(character,target,otps) {
 	buffBasic.call(this,character,target,otps)
 	this.init = function() {
 		this.target.frozen = true
-		console.log("frozen init")
-		console.log(this.duration)
 	}
 	this.overlay = function(character,otps) {
 		this.character = character
@@ -15,7 +13,6 @@ var frozen = function(character,target,otps) {
 	}
 	this.clear = function() {
 		this.target.frozen = false
-		console.log("frozen clear")
 	}
 }
 frozen.prototype = buffBasic.prototype

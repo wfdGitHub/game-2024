@@ -4,8 +4,6 @@ var chaos = function(character,target,otps) {
 	buffBasic.call(this,character,target,otps)
 	this.init = function() {
 		this.target.chaos = true
-		console.log("chaos init")
-		console.log(this.duration)
 	}
 	this.overlay = function(character,otps) {
 		this.character = character
@@ -15,7 +13,6 @@ var chaos = function(character,target,otps) {
 	}
 	this.clear = function() {
 		this.target.chaos = false
-		console.log("chaos clear")
 	}
 }
 chaos.prototype = buffBasic.prototype

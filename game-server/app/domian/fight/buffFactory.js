@@ -4,7 +4,6 @@ var buffList = {}
 for(var i = 0;i < buffIds.length;i++){
 	buffList[buffIds[i]] = require("./buff/"+buffIds[i]+".js")
 }
-console.log("buffList ",buffList)
 var buffFactory = function() {}
 //获取BUFF
 buffFactory.getBuff = function(attacker,target,otps) {

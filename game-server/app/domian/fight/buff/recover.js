@@ -7,11 +7,9 @@ var recover = function(character,target,otps) {
 	this.count = 0
 	this.all = 0
 	this.init = function() {
-		// console.log("recover init")
 		this.recoverList[this.count++] = {character : this.character,buffArg : this.buffArg,duration : this.duration}
 	}
 	this.overlay = function(character,otps) {
-		// console.log("recover overlay")
 		if(this.duration < otps.duration * 1000){
 			this.duration = otps.duration * 1000
 		}
@@ -41,7 +39,6 @@ var recover = function(character,target,otps) {
 		}
 	}
 	this.clear = function() {
-		// console.log("recover clear ",this.all)
 	}
 }
 recover.prototype = buffBasic.prototype

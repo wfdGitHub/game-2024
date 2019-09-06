@@ -73,7 +73,6 @@ fighting.prototype.update = function() {
 	//检测读取记录
 	if(this.readList.length && this.readList[0].t == this.curTime){
 		var record = this.readList.shift()
-		console.log(record)
 		this.characterArr[record.c].fightSkills[record.s].use()
 	}
     //检测使用技能

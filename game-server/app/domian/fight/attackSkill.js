@@ -11,7 +11,7 @@ var attackSkill = function(otps,character) {
     this.duration = skillInfo.duration
     this.buffRate = skillInfo.buffRate
     if(!skillInfo){
-        console.log(new Error("skillInfo not found "+otps.skillId))
+        console.error("skillInfo not found "+otps.skillId)
     }
 	this.name = skillInfo.name					//技能名称
 	this.mul = skillInfo.mul || 0				//技能系数
@@ -45,7 +45,6 @@ attackSkill.prototype.lessenCD = function(dt) {
 			this.state = true
 			this.character.event.emit("skillReady",this)
 			if(!this.defaultSkill && this.character.characterType == "mob"){
-				console.log("技能准备好",this.name,this.character.characterType)
 				this.use()
 			}
 		}
@@ -78,7 +77,6 @@ attackSkill.prototype.use = function() {
 	return true
 }
 attackSkill.prototype.useSkill = function() {
-	console.log("使用技能",this.name)
 	if(this.angerSkill){
 		this.character.resetAngerSkill()
 	}else{
@@ -89,7 +87,7 @@ attackSkill.prototype.useSkill = function() {
 	}else if(this.skillType == "recover"){
 		this.useRecoverSkill()
 	}else{
-		console.log(new Error("useSkill error  skillType "+this.skillType))
+		console.error("useSkill error  skillType "+this.skillType)
 	}
 }
 //伤害技能
@@ -97,7 +95,6 @@ attackSkill.prototype.useHurtSkill = function() {
 	var result = {state: false}
 	var targets = formula.getAttackTarget(this.character,this.character.enemyTeam,this)
 	if(!targets){
-		console.log("targets error")
 		// this.character.event.emit("useSkill",this,result)
 	}else{
 		var self = this
@@ -130,7 +127,6 @@ attackSkill.prototype.useHurtSkill = function() {
                 buffotps.buffRate = self.buffRate
                 target.addBuff(self.character,buffotps)
             }else if(!damageInfo.miss && self.character.passiveBuffs.length){
-            	// console.log(self.character.passiveBuffs)
             	for(var i = 0;i < self.character.passiveBuffs.length;i++){
             		var buffotps = buffs[self.character.passiveBuffs[i].buffId]
 	                buffotps.buffId = self.character.passiveBuffs[i].buffId

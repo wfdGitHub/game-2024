@@ -31,7 +31,7 @@ var gainAtt = function(character,target,otps) {
 		    }
 	      	this.atts[name][this.count++] = {value : value,duration : duration}
 	      }else{
-	      	console.log(new Error("addAtt error"+name+value))
+	      	console.error("addAtt error"+name+value)
 	      }
 		}
 	}
