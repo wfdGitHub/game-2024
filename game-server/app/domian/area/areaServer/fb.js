@@ -82,6 +82,11 @@ module.exports = function() {
 		    }
 		    var curLv = atkTeam[0].level
 		    var samsara = Math.floor(((curLv - 1) / 100))
+		    if(!fb_samsara[samsara]){
+		    	console.error("没有该转生等级的副本 "+samsara)
+		    	cb(false,"没有该转生等级的副本 "+samsara)
+		    	return
+		    }
 		    var defTeam = [{characterId : fb_base[type]["boss"+bossId],level : fb_samsara[samsara].bossLevel}]
 		    if(fb_base[type]["mobList"+bossId]){
 		      var monList = JSON.parse(fb_base[type]["mobList"+bossId])
@@ -107,6 +112,7 @@ module.exports = function() {
 			    		var awardList2 = self.addItemStr(uid,awardStr2,rate)
 			    		info.passAward = awardList1.concat(awardList2)
 		    		}else{
+		    			info.bossId = bossId + 1
 		    			self.incrbyObj(uid,"fb",type,1)
 		    		}
 		    		var awardStr = self.getAwards(JSON.parse(fb_base[type]["awardList"+bossId]),fb_samsara[samsara]["bossAwardNum"])
@@ -152,7 +158,6 @@ module.exports = function() {
 				}
 			}
 		}
-		console.log("str : ",str)
 		return str
 	}
 }
