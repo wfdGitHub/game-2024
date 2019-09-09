@@ -142,7 +142,6 @@ character.prototype.addition = function(otps) {
     if(otps.advance && advanceCfg[otps.advance]){
 	    var advanceStr = advanceCfg[otps.advance][this.characterType+"_pa"]
 	      	if(advanceStr){
-	        console.log("进阶加成",advanceStr)
 	        this.formula(otps,advanceStr)
 	    }
 		//天赋加成
@@ -151,7 +150,6 @@ character.prototype.addition = function(otps) {
 			for(var i = 1;i <= curLevel;i++){
 				if(talentCfg[innateCfg[this.characterId][i]]){
 					var str = talentCfg[innateCfg[this.characterId][i]].pa
-					console.log("天赋加成",str)
 					this.formula(otps,str)
 				}
 			}
@@ -167,7 +165,6 @@ character.prototype.addition = function(otps) {
 	    var samsara = Math.floor(((otps.level - 1) / 100))
 	    if(samsara && samsaraCfg[samsara] && samsaraCfg[samsara][this.characterType+"_pa"]){
 	    	var samsaraStr = samsaraCfg[samsara][this.characterType+"_pa"]
-	    	console.log("转生加成",samsaraStr)
 	    	this.formula(otps,samsaraStr)
 	    }
     }
@@ -336,13 +333,11 @@ character.prototype.hit = function(attacker, damageInfo,source) {
 	}else{
 		this.reduceHp(attacker,damageInfo.damage)
 	}
-  	console.log(this.fighting.curTime + " " + attacker.name + " 使用 "+source.name+" 攻击 "+this.name,"-"+damageInfo.damage," 剩余血量 : ",this.hp)
   	this.event.emit("hit",attacker, damageInfo,source)
 }
 //生命值增加
 character.prototype.recoverHp = function(value) {
 	if(this.died){
-		console.log("角色已死亡")
 		return
 	}
 	this.hp += value
@@ -444,7 +439,7 @@ character.prototype.addBuff = function(attacker,otps) {
             buff.initialize()
             this.buffs[buffId] = buff
         }else{
-            console.log("buff 不存在")
+            console.error("buff 不存在")
         }
     }
 }

@@ -30,13 +30,24 @@ module.exports = function() {
 				return
 			}
 			//扣除货币
-			self.addItem(uid,currencyId,-needValue)
+			self.addItem({uid : uid,itemId : currencyId,value : -needValue})
 			//增加宝石
 			self.addGem(uid,gId,level,count,cb)
 		})
 	}
+	//获得一个当前转生等级随机宝石
+	this.addRandGem = function(uid,rate,cb) {
+		var gId = "g" + (Math.floor(Math.random() * 12) + 1)
+		var curLv = self.players[uid].characters[self.heroId].level
+		var samsara = Math.floor(((curLv - 1) / 100))
+		return self.addGem(uid,gId,samsara + 1,rate,cb)
+	}
 	//增加宝石
 	this.addGem = function(uid,gId,level,count,cb) {
+		if(!gem_base[gId] || !gem_level[level] || !gem_level[level][gId] || !Number.isInteger(count) || count < 1){
+			cb(false,"参数错误")
+			return
+		}
 		var gstr = self.gemStr(gId,level)
 		self.redisDao.db.hincrby("area:area"+self.areaId+":player:"+uid+":gem",gstr,count,function(err,data) {
 			var notify = {
@@ -47,9 +58,10 @@ module.exports = function() {
 			}
 			self.sendToUser(uid,notify)
 			if(cb){
-				cb(true)
+				cb(true,gstr)
 			}
 		})
+		return {type : "gem",gId : gId,level : level,count : count}
 	}
 	//宝石str
 	this.gemStr = function(gId,level) {
@@ -99,7 +111,7 @@ module.exports = function() {
 				}
 			}
 			if(value > 0){
-				self.addItem(uid,currencyId,value)
+				self.addItem({uid : uid,itemId : currencyId,value : value})
 			}
 			cb(true,value)
 		})
@@ -258,7 +270,7 @@ module.exports = function() {
 						cb(false,err)
 						return
 					}
-					self.addItem(uid,currencyId,-(needValue - curValue))
+					self.addItem({uid : uid,itemId : currencyId,value : -(needValue - curValue)})
 					self.addGem(uid,gId,level,1,cb)
 					cb(true)
 				})

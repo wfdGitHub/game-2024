@@ -3,7 +3,6 @@ var advanceCfg = require("../../../config/gameCfg/advance.json")
 var partner_star = require("../../../config/gameCfg/partner_star.json")
 //伙伴
 var partner = function(otps) {
-    console.log("new partner")
     //转生被动技能列表
     var passives = []
     if(otps.passives){
@@ -21,7 +20,6 @@ var partner = function(otps) {
         characterFun.prototype.formula(otps,partner_star[otps.star]["pa"])
         if(partner_star[otps.star] && partner_star[otps.star]["partner_"+otps.characterId]){
             otps.skills = partner_star[otps.star]["partner_"+otps.characterId]
-            console.log("otps.skills",otps.skills)
         }
     }
     characterFun.call(this,otps)

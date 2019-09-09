@@ -27,7 +27,6 @@ var poison = function(character,target,otps) {
 			}
 			if(maxValue){
 				var damage = Math.floor(maxValue / (1000 / this.interval))
-				console.log("毒伤害 : ",damage)
 				this.all += damage
 				this.target.hit(character,{damage : damage},this)
 			}
@@ -40,7 +39,6 @@ var poison = function(character,target,otps) {
 		}
 	}
 	this.clear = function() {
-		console.log("poison clear ",this.all)
 	}
 }
 poison.prototype = buffBasic.prototype

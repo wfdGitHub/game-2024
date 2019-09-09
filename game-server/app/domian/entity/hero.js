@@ -20,7 +20,6 @@ for(var i in gem_master){
 }
 //主角
 var hero = function(otps) {
-    console.log("new hero",otps)
     //计算装备加成
 	for(var i = 1;i <= 10;i++){
 		if(otps["d_e"+i]){
@@ -28,7 +27,6 @@ var hero = function(otps) {
 			//装备基本加成
 			var str = equip_base[eInfo.eId]["attribute"]
 			var rate = equip_level[eInfo.samsara]["aRate"] * equip_quality[eInfo.quality]["aRate"]
-			console.log("装备基本加成",str,rate)
 			characterFun.prototype.formula(otps,str,rate)
 			//装备洗练加成
 			if(eInfo.wash){
@@ -36,7 +34,6 @@ var hero = function(otps) {
 				if(Array.isArray(washArr)){
 					for(var j = 0;j < washArr.length;j++){
 						var str = washArr[j]["pa"]
-						console.log("装备洗练加成",str)
 						characterFun.prototype.formula(otps,str)
 					}
 				}
@@ -55,18 +52,16 @@ var hero = function(otps) {
     		var isamsara = Math.round(curIL/10)
     		var str = equip_intensify[il]["e"+i]
     		var rate = equip_level[isamsara]["ipa"]
-			console.log("装备强化加成",str,rate)
 			characterFun.prototype.formula(otps,str,rate)
     	}else{
     		minIl = 0
     	}
     }
     //强化大师加成
-    console.log("minIl : ",minIl)
+    this.equipMaster = minIl
     for(var i in equip_intensify_master){
     	if(minIl >= Number(i)){
     		var str = equip_intensify_master[i]["pc"]
-			console.log("强化大师加成",str)
 			characterFun.prototype.formula(otps,str)
     	}else{
     		break
@@ -86,7 +81,6 @@ var hero = function(otps) {
                     if(maxGem < gInfo.level){
                         maxGem = gInfo.level
                     }
-                    console.log("宝石加成",gInfo)
                     if(!otps[gInfo["attribute"]]){
                         otps[gInfo["attribute"]] = 0
                     }
@@ -114,7 +108,6 @@ var hero = function(otps) {
     for(var aId in artifact_base){
         if(otps[aId] && otps[aId+"_advance"]){
             var pastr = artifac_advance[otps[aId+"_advance"]]["pa"]
-            console.log("神器进阶加成",aId,pastr)
             characterFun.prototype.formula(otps,pastr,1)
         }
     }
@@ -151,10 +144,8 @@ var hero = function(otps) {
             }
         }
         otps["skills"] = JSON.stringify(skills)
-        console.log("神器技能",otps["skills"])
     }
     characterFun.call(this,otps)
-    console.log(this.getInfo())
 }
 //根据宝石字符串获取宝石信息
 var gemAttribute = function(str) {

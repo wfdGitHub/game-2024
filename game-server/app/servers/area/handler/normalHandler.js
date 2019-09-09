@@ -52,9 +52,18 @@ normalHandler.prototype.addItem = function(msg, session, next) {
   var areaId = session.get("areaId")
   var itemId = msg.itemId
   var value = msg.value
-  this.areaManager.areaMap[areaId].addItem(uid,itemId,value,function(flag,data) {
+  this.areaManager.areaMap[areaId].addItem({uid : uid,itemId : itemId,value : value},function(flag,data) {
     next(null,{flag : flag,data : data})
   })
+}
+//增加物品str  测试功能
+normalHandler.prototype.addItemStr = function(msg, session, next) {
+  var uid = session.get("uid")
+  var areaId = session.get("areaId")
+  var str = msg.str
+  var rate = msg.rate
+  var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,rate)
+  next(null,{flag : true,awardList : awardList})
 }
 //购买商城物品
 normalHandler.prototype.buyShop = function(msg, session, next) {

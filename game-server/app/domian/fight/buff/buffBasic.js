@@ -9,7 +9,6 @@ var buffBasic = function(character,target,otps) {
 }
 //init
 buffBasic.prototype.init = function() {
-	console.log("buffBasic init")
 }
 buffBasic.prototype.initialize = function() {
 	this.init()
@@ -22,7 +21,6 @@ buffBasic.prototype.overlay = function(character,otps) {
 }
 //clear
 buffBasic.prototype.clear = function() {
-	console.log("buffBasic clear")
 }
 buffBasic.prototype.destroy = function() {
 	this.target.removeBuff(this.buffId)

@@ -1,5 +1,6 @@
 //背包物品系统
 var itemCfg = require("../../../../config/gameCfg/item.json")
+var special_item = require("../../../../config/gameCfg/special_item.json")
 var charactersCfg = require("../../../../config/gameCfg/characters.json")
 var shopCfg = require("../../../../config/gameCfg/shop.json")
 module.exports = function() {
@@ -45,7 +46,7 @@ module.exports = function() {
 				}
 				this.addCharacterEXP(otps.uid,otps.characterId,parseInt(otps.value * itemCfg[otps.itemId].arg) || 0)
 				otps.value = -otps.value
-				this.addItem(otps.uid,otps.itemId,otps.value,cb)
+				this.addItem(otps,cb)
 			break
 			case "petExp":
 				//宠物经验丹
@@ -60,7 +61,7 @@ module.exports = function() {
 				}
 				this.addPetEXP(otps.uid,otps.id,parseInt(otps.value * itemCfg[otps.itemId].arg) || 0)
 				otps.value = -otps.value
-				this.addItem(otps.uid,otps.itemId,otps.value,cb)
+				this.addItem(otps,cb)
 			break
 			case "petEgg":
 				//宠物蛋
@@ -83,7 +84,7 @@ module.exports = function() {
 				}
 				this.obtainPet(otps.uid,characterId,function(flag,petInfo) {
 					if(flag){
-						self.addItem(otps.uid,otps.itemId,-1)
+						self.addItem({uid : otps.uid,itemId : otps.itemId,value : -1})
 					}
 					cb(flag,petInfo)
 				})
@@ -133,14 +134,19 @@ module.exports = function() {
 		})
 	}
 	//增加物品
-	this.addItem = function(uid,itemId,value,cb) {
-		if(itemId == 100){
-			//主角经验
-			this.addCharacterEXP(uid,10001,value,cb)
-		}else{
-			if(!itemCfg[itemId]){
-				if(cb)
-					cb(false,"item not exist")
+	this.addItem = function(otps,cb) {
+		var uid = otps.uid
+		var itemId = otps.itemId
+		var value = otps.value
+		var rate = otps.rate || 1
+		if(itemCfg[itemId]){
+			value = Math.floor(Number(value) * rate) || 1
+			itemId = parseInt(itemId)
+			if(!itemId){
+				console.error("itemId error "+itemId)
+				if(cb){
+					cb(false,"itemId error "+itemId)
+				}
 				return
 			}
 			self.addItemCB(uid,itemId,value,function(flag,curValue) {
@@ -156,18 +162,80 @@ module.exports = function() {
 				if(cb)
 					cb(flag,curValue)
 			})
+			return {type : "item",itemId : itemId,value : value}
+		}else if(special_item[itemId]){
+			switch(itemId){
+				case "exp":
+					value = Math.floor(Number(value) * rate) || 1
+					self.addCharacterEXP(uid,10001,value,cb)
+					return {type : "exp",value : value}
+				break
+				case "gold":
+					value = Math.floor(Number(value) * rate) || 1
+					return self.addItem({uid : uid,itemId : 101,value : value},cb)
+				break
+				case "diamond":
+					value = Math.floor(Number(value) * rate) || 1
+					return self.addItem({uid : uid,itemId : 102,value : value},cb)
+				break
+				case "spar":
+					value = Math.floor(Number(value) * rate) || 1
+					return self.addItem({uid : uid,itemId : 104,value : value},cb)
+				break
+				case "e":
+					//指定装备
+					var list = value.toString().split("-")
+					var eId = list[0]
+					var samsara = list[1]
+					var quality = list[2]
+					return self.addEquip(uid,eId,samsara,quality,cb)
+				break
+				case "ec0":
+					return self.addRandEquip(uid,value,0,cb)
+				break
+				case "ec1":
+					return self.addRandEquip(uid,value,1,cb)
+				break
+				case "ec2":
+					return self.addRandEquip(uid,value,2,cb)
+				break
+				case "ec3":
+					return self.addRandEquip(uid,value,3,cb)
+				break
+				case "ec4":
+					return self.addRandEquip(uid,value,4,cb)
+				break
+				case "ec5":
+					return self.addRandEquip(uid,value,5,cb)
+				break
+				case "ev":
+					return self.addEVEquip(uid,value,cb)
+				break
+				case "g":
+					//指定宝石
+					var list = value.toString().split("-")
+					var gId = list[0]
+					var level = list[1]
+					var count = Number(parseInt(list[2]) * rate) || 1
+					return self.addGem(uid,gId,level,count,cb)
+				break
+				case "gc":
+					value = Math.floor(Number(value) * rate) || 1
+					return self.addRandGem(uid,value,cb)
+				break
+			}
+		}else{
+			console.error("item not exist : "+itemId)
+			if(cb)
+				cb(false,"item not exist")
 		}
 	}
 	//增加物品回调
 	this.addItemCB = function(uid,itemId,value,cb) {
-		if(typeof(itemId) !== "number"){
-			cb(false,"type error "+typeof(itemId))
-			return
-		}
 		if(itemCfg[itemId]){
 			this.addBagItem(uid,itemId,value,cb)
 		}else{
-			console.log("addItem error : "+itemId)
+			console.error("addItem error : "+itemId)
 			if(cb)
 				cb(false,"itemId error : "+itemId)
 		}
@@ -197,7 +265,7 @@ module.exports = function() {
 			}
 			//扣除道具
 			for(var i = 0;i < values.length;i++){
-				self.addItem(uid,items[i],-values[i])
+				self.addItem({uid : uid,itemId : items[i],value : -values[i]})
 			}
 			cb(true)
 		})
@@ -208,12 +276,15 @@ module.exports = function() {
 		if(!rate || parseFloat(rate) != rate || typeof(rate) != "number"){
 			rate = 1
 		}
+		var awardList = []
 		list.forEach(function(m_str) {
 			var m_list = m_str.split(":")
-			var itemId = Number(m_list[0])
-			var value = Math.floor(Number(m_list[1]) * rate)
-			self.addItem(uid,itemId,value)
+			var itemId = m_list[0]
+			var value = m_list[1]
+			awardList.push(self.addItem({uid : uid,itemId : itemId,value : value,rate : rate}))
 		})
+		console.log(awardList)
+		return awardList
 	}
 	//商城购买物品
 	this.buyShop = function(uid,shopId,count,cb) {

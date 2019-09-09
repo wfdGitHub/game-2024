@@ -4,4 +4,3 @@
 // otps.advance = 10
 // otps.breakthrough = 10
 // var hero = new entity(otps)
-// console.log(hero.getInfo())

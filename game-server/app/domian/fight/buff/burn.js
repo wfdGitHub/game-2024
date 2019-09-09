@@ -27,7 +27,6 @@ var burn = function(character,target,otps) {
 			}
 			if(maxValue){
 				var damage = Math.floor(maxValue / (1000 / this.interval))
-				console.log("燃烧伤害 : ",damage)
 				this.all += damage
 				this.target.hit(character,{damage : damage},this)
 			}
@@ -40,7 +39,6 @@ var burn = function(character,target,otps) {
 		}
 	}
 	this.clear = function() {
-		console.log("burn clear ",this.all)
 	}
 }
 burn.prototype = buffBasic.prototype
