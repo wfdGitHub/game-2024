@@ -130,7 +130,9 @@ module.exports = function() {
 	}
 	//获取副本数据
 	this.getFBInfo = function(uid,cb) {
+		var dayStr = (new Date).toLocaleDateString()
 		self.getObjAll(uid,"fb",function(data) {
+			data.dayStr = dayStr
 			cb(data)
 		})
 	}
