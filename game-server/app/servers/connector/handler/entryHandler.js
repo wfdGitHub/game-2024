@@ -35,9 +35,7 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
 	}
 	session.bind(uid)
 	session.set("nickname",userInfo.nickname)
-	session.push("nickname")
 	session.set("head",userInfo.head)
-	session.push("head")
 	session.on("closed",onUserLeave.bind(this))
 	console.log(session.uid + "  entrySuccess..")
   	next(null, {flag : true,msg : userInfo});
@@ -45,8 +43,10 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
 var onUserLeave = function(session) {
 	var uid = session.uid
 	console.log("onUserLeave : "+uid)
+	session.remove("nickname")
+	session.remove("head")
 	if(uid){
-		session.unbind()
+		session.unbind(uid)
 		var serverId = session.get("serverId")
 		if(serverId){
 			this.app.rpc.area.areaRemote.userLeave.toServer(serverId,uid,null)

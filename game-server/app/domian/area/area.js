@@ -44,6 +44,8 @@ area.prototype.update = function() {
 	for(var uid in this.offLinePlayers){
 		if(curTime > this.offLinePlayers[uid] + 30000){
 			delete this.offLinePlayers[uid]
+			delete self.players[uid]
+			delete self.connectorMap[uid]
 			this.onlineNum--
 		}
 	}
@@ -114,7 +116,6 @@ area.prototype.userLeave = function(uid) {
 	console.log("userLeave : ",uid)
 	if(this.players[uid]){
 		this.offLinePlayers[uid] = Date.now()
-		this.onlineNum--
 	}
 }
 //发送消息给玩家
