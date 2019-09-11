@@ -5,7 +5,7 @@ module.exports = function() {
 var Filter = function() {}
 
 Filter.prototype.before = function (msg, session, next) {
-	if(!session.get("uid") || !session.get("areaId")){
+	if(!session.uid || !session.get("areaId")){
 		next("未登录")
 	}else{
 		next();

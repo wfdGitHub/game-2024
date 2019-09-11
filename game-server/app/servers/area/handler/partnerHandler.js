@@ -5,7 +5,7 @@ var partnerHandler = function(app) {
 }
 //伙伴升星
 partnerHandler.prototype.partnerUpgradeStar = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var characterId = msg.characterId
   this.areaManager.areaMap[areaId].partnerUpgradeStar(uid,characterId,function(flag,data) {
@@ -14,7 +14,7 @@ partnerHandler.prototype.partnerUpgradeStar = function(msg, session, next) {
 }
 //激活伙伴
 partnerHandler.prototype.activatePartner = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var characterId = msg.characterId
   this.areaManager.areaMap[areaId].activatePartner(uid,characterId,function(flag,data) {
@@ -23,7 +23,7 @@ partnerHandler.prototype.activatePartner = function(msg, session, next) {
 }
 //获取已获得转生被动技能列表
 partnerHandler.prototype.getLearnPassiveList = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var characterId = msg.characterId
   this.areaManager.areaMap[areaId].getLearnPassiveList(uid,characterId,function(flag,data) {
@@ -32,7 +32,7 @@ partnerHandler.prototype.getLearnPassiveList = function(msg, session, next) {
 }
 //重置转生技能
 partnerHandler.prototype.resetLearnPassive = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var characterId = msg.characterId
   var samsara = msg.samsara
@@ -42,7 +42,7 @@ partnerHandler.prototype.resetLearnPassive = function(msg, session, next) {
 }
 //学习转生被动技能
 partnerHandler.prototype.learnPassive = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var characterId = msg.characterId
   var samsara = msg.samsara

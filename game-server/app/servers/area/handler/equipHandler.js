@@ -5,7 +5,7 @@ var equipHandler = function(app) {
 };
 //穿戴装备
 equipHandler.prototype.dressedEquip = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var wId = msg.wId
   this.areaManager.areaMap[areaId].dressedEquip(uid,wId,function(flag,data) {
@@ -14,7 +14,7 @@ equipHandler.prototype.dressedEquip = function(msg, session, next) {
 }
 //卸下装备
 equipHandler.prototype.takeofEquip = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
   this.areaManager.areaMap[areaId].takeofEquip(uid,eId,function(flag,data) {
@@ -23,7 +23,7 @@ equipHandler.prototype.takeofEquip = function(msg, session, next) {
 }
 //强化装备
 equipHandler.prototype.equipIntensify = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
   this.areaManager.areaMap[areaId].equipIntensify(uid,eId,function(flag,data) {
@@ -32,7 +32,7 @@ equipHandler.prototype.equipIntensify = function(msg, session, next) {
 }
 //获取装备池列表
 equipHandler.prototype.getEquipList = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].getEquipList(uid,function(data) {
     next(null,{flag : true,data : data || {}})
@@ -40,7 +40,7 @@ equipHandler.prototype.getEquipList = function(msg, session, next) {
 }
 //获取可穿戴列表
 equipHandler.prototype.getWearableList = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].getWearableList(uid,function(data) {
     next(null,{flag : true,data : data || {}})
@@ -48,7 +48,7 @@ equipHandler.prototype.getWearableList = function(msg, session, next) {
 }
 //批量分解装备
 equipHandler.prototype.resolveEquip = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var elist = msg.elist
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].resolveEquip(uid,elist,function(flag,msg) {
@@ -57,7 +57,7 @@ equipHandler.prototype.resolveEquip = function(msg, session, next) {
 }
 //兑换装备
 equipHandler.prototype.buyEquip = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
   var samsara = msg.samsara
@@ -67,7 +67,7 @@ equipHandler.prototype.buyEquip = function(msg, session, next) {
 }
 //合成装备
 equipHandler.prototype.compoundEquip = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
   var samsara = msg.samsara
@@ -78,7 +78,7 @@ equipHandler.prototype.compoundEquip = function(msg, session, next) {
 }
 //转换可穿戴装备
 equipHandler.prototype.changeWearable = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
   var samsara = msg.samsara
@@ -89,7 +89,7 @@ equipHandler.prototype.changeWearable = function(msg, session, next) {
 }
 //可穿戴转换回装备池
 equipHandler.prototype.changeEquip = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var wId = msg.wId
   this.areaManager.areaMap[areaId].changeEquip(uid,wId,function(flag,data) {
@@ -98,7 +98,7 @@ equipHandler.prototype.changeEquip = function(msg, session, next) {
 }
 //可穿戴装备洗练
 equipHandler.prototype.wearableWash = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var wId = msg.wId
   var locks = msg.locks
@@ -108,7 +108,7 @@ equipHandler.prototype.wearableWash = function(msg, session, next) {
 }
 //已穿戴装备洗练
 equipHandler.prototype.dressedWash = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
   var locks = msg.locks

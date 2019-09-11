@@ -6,7 +6,7 @@ var chatHandler = function(app) {
 //加入聊天室
 chatHandler.prototype.joinChatRoom = function(msg, session, next) {
 	console.log("joinChatRoom")
-	var uid = session.get("uid")
+	var uid = session.uid
 	var sid = session.frontendId
 	var roomName = msg.roomName
 	if(!roomName || typeof("roomName") !== "string" || roomName.length > 10){
@@ -20,7 +20,7 @@ chatHandler.prototype.joinChatRoom = function(msg, session, next) {
 }
 //离开聊天室
 chatHandler.prototype.leaveChatRoom = function(msg, session, next) {
-	var uid = session.get("uid")
+	var uid = session.uid
 	var sid = session.frontendId
 	var roomName = msg.roomName
 	if(!roomName || typeof("roomName") !== "string" || roomName.length > 10){
@@ -38,7 +38,7 @@ chatHandler.prototype.say = function(msg, session, next) {
 		next(null,{flag : false,err : "roomName error "+roomName})
 		return
 	}
-	var uid = session.get("uid")
+	var uid = session.uid
 	var nickname = session.get("nickname")
 	var head = session.get("head")
 	var talker = {

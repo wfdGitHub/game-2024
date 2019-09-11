@@ -5,7 +5,7 @@ var heroHandler = function(app) {
 };
 //神器激活
 heroHandler.prototype.artifactActivate = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var aId = msg.aId
   this.areaManager.areaMap[areaId].artifactActivate(uid,aId,function(flag,data) {
@@ -14,7 +14,7 @@ heroHandler.prototype.artifactActivate = function(msg, session, next) {
 }
 //神器进阶
 heroHandler.prototype.artifactAdvance = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var aId = msg.aId
   this.areaManager.areaMap[areaId].artifactAdvance(uid,aId,function(flag,data) {
@@ -23,7 +23,7 @@ heroHandler.prototype.artifactAdvance = function(msg, session, next) {
 }
 //神器升星
 heroHandler.prototype.artifactStar = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var aId = msg.aId
   this.areaManager.areaMap[areaId].artifactStar(uid,aId,function(flag,data) {
@@ -32,7 +32,7 @@ heroHandler.prototype.artifactStar = function(msg, session, next) {
 }
 //穿戴神器
 heroHandler.prototype.dressedArtifact = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var aId = msg.aId
   this.areaManager.areaMap[areaId].dressedArtifact(uid,aId,function(flag,data) {
@@ -41,7 +41,7 @@ heroHandler.prototype.dressedArtifact = function(msg, session, next) {
 }
 //卸下神器
 heroHandler.prototype.takeofArtifact = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var type = msg.type
   this.areaManager.areaMap[areaId].takeofArtifact(uid,type,function(flag,data) {

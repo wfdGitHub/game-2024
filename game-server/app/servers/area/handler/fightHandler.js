@@ -20,7 +20,7 @@ fightHandler.prototype.mockFight = function(msg, session, next) {
 }
 //获取BOSS关卡挑战信息
 fightHandler.prototype.getCheckpointsInfo = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].getCheckpointsInfo(uid,function(data) {
     next(null,{flag : true,msg : data})
@@ -28,7 +28,7 @@ fightHandler.prototype.getCheckpointsInfo = function(msg, session, next) {
 }
 //准备战斗 获取战斗属性
 fightHandler.prototype.readyFight = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var fightInfo = this.areaManager.areaMap[areaId].readyFight(uid)
   if(fightInfo){
@@ -39,7 +39,7 @@ fightHandler.prototype.readyFight = function(msg, session, next) {
 }
 //挑战BOSS关卡
 fightHandler.prototype.challengeCheckpoints = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var otps = {
     seededNum : msg.seededNum || Date.now(),

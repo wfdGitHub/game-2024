@@ -5,7 +5,7 @@ module.exports = function() {
 var Filter = function() {}
 
 Filter.prototype.before = function (msg, session, next) {
-	if(!session.get("uid")){
+	if(!session.uid){
 		next("未登录")
 	}else{
 		next();

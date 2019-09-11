@@ -5,7 +5,7 @@ var mailHandler = function(app) {
 }
 //获取所有邮件
 mailHandler.prototype.getMailList = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].getMailList(uid,function(flag,data) {
     next(null,{flag : flag,data : data})
@@ -13,7 +13,7 @@ mailHandler.prototype.getMailList = function(msg, session, next) {
 }
 //发送邮件
 mailHandler.prototype.sendMail = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var title = msg.title
   var text = msg.text
@@ -24,7 +24,7 @@ mailHandler.prototype.sendMail = function(msg, session, next) {
 }
 //领取邮件附件
 mailHandler.prototype.gainMailAttachment = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var index = msg.index
   var id = msg.id
@@ -34,7 +34,7 @@ mailHandler.prototype.gainMailAttachment = function(msg, session, next) {
 }
 //阅读邮件
 mailHandler.prototype.readMail = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var index = msg.index
   var id = msg.id
@@ -44,7 +44,7 @@ mailHandler.prototype.readMail = function(msg, session, next) {
 }
 //删除邮件
 mailHandler.prototype.deleteMail = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var index = msg.index
   var id = msg.id
@@ -54,7 +54,7 @@ mailHandler.prototype.deleteMail = function(msg, session, next) {
 }
 //一键领取
 mailHandler.prototype.gainAllMailAttachment = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].gainAllMailAttachment(uid,function(flag,data) {
     next(null,{flag : flag,data : data})
@@ -62,7 +62,7 @@ mailHandler.prototype.gainAllMailAttachment = function(msg, session, next) {
 }
 //一件删除已读
 mailHandler.prototype.deleteAllReadMail = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].deleteAllReadMail(uid,function(flag,data) {
     next(null,{flag : flag,data : data})
