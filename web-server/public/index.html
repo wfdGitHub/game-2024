@@ -63,6 +63,31 @@
         console.log("onChat")
         console.log(data)
       })
+      //============通天塔================//
+      //获取通天塔数据
+      var getTTTInfo = function() {
+        pomelo.request("area.tttHandler.getTTTInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战下一关BOSS
+      var challengeTTTBoss = function(readList,verify) {
+        pomelo.request("area.tttHandler.challengeTTTBoss", {readList : readList,verify : verify}, function(data) {
+            console.log(data);
+        });
+      }
+      //扫荡到最高等级
+      var TTTmopup = function() {
+        pomelo.request("area.tttHandler.TTTmopup", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取前期奖励
+      var getTTTAwards = function() {
+        pomelo.request("area.tttHandler.getTTTAwards", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============副本================//
       //开启副本
       var openFB = function(type) {
@@ -77,8 +102,8 @@
         });
       }
       //挑战副本BOSS
-      var challengeFBBoss = function(type) {
-        pomelo.request("area.fbHandler.challengeFBBoss", {type : type}, function(data) {
+      var challengeFBBoss = function(type,readList,verify) {
+        pomelo.request("area.fbHandler.challengeFBBoss", {type : type,readList : readList,verify : verify}, function(data) {
             console.log(data);
         });
       }

@@ -84,6 +84,7 @@ area.prototype.userLogin = function(uid,cid,cb) {
 area.prototype.dayFirstLogin = function(uid) {
 	console.log("玩家 "+uid+" 今日首次登录")
 	this.setObj(uid,"playerInfo","dayStr",this.dayStr)
+	this.TTTdayUpdate(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
@@ -142,10 +143,10 @@ area.prototype.getFightInfo = function(uid) {
 //战斗记录
 area.prototype.recordFight = function(atkTeam,defTeam,seededNum,readList) {
 	var obj = {
-		atkTeam : JSON.stringify(atkTeam),
-		defTeam : JSON.stringify(defTeam),
-		seededNum : seededNum,
-		readList : JSON.stringify(readList)
+		atkTeam : JSON.stringify(atkTeam) || "null",
+		defTeam : JSON.stringify(defTeam) || "null",
+		seededNum : seededNum || "null",
+		readList : JSON.stringify(readList) || "null"
 	}
 	 this.redisDao.db.hmset("test:fight",obj)
 }
