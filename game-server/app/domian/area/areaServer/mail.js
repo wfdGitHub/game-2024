@@ -2,9 +2,19 @@
 var uuid = require("uuid")
 module.exports = function() {
 	var self = this
-	//获取所有邮件
+	//获取最近一百封邮件
 	this.getMailList = function(uid,cb) {
 		this.redisDao.db.lrange("area:area"+this.areaId+":player:"+uid+":mail",-100,-1,function(err,list) {
+			if(!err && list){
+				cb(true,list)
+			}else{
+				cb(true,[])
+			}
+		})
+	}
+	//获取全部邮寄
+	this.getMailAll = function(uid,cb) {
+		this.redisDao.db.lrange("area:area"+this.areaId+":player:"+uid+":mail",0,-1,function(err,list) {
 			if(!err && list){
 				cb(true,list)
 			}else{
@@ -120,7 +130,7 @@ module.exports = function() {
 	}
 	//一键领取
 	this.gainAllMailAttachment = function(uid,cb) {
-		self.getMailList(uid,function(flag,list) {
+		self.getMailAll(uid,function(flag,list) {
 			var awardList = []
 			for(var i = 0;i < list.length;i++){
 				var mailInfo = JSON.parse(list[i])
@@ -134,7 +144,7 @@ module.exports = function() {
 	}
 	//一键删除已读
 	this.deleteAllReadMail = function(uid,cb) {
-		self.getMailList(uid,function(flag,list) {
+		self.getMailAll(uid,function(flag,list) {
 			var indexList = []
 			for(var i = 0;i < list.length;i++){
 				var mailInfo = JSON.parse(list[i])
