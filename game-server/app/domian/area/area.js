@@ -2,7 +2,7 @@
 var bearcat = require("bearcat")
 var fightContorlFun = require("../fight/fightContorl.js")
 var charactersCfg = require("../../../config/gameCfg/characters.json")
-var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet","character","equip","gem","mail","artifact","fb"]
+var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet","character","equip","gem","mail","artifact","fb","ttttower"]
 const oneDayTime = 86400000
 var area = function(otps,app) {
 	this.areaId = otps.areaId
@@ -16,6 +16,8 @@ var area = function(otps,app) {
 	this.fightInfos = {}
 	this.fightContorl = fightContorlFun()
 	this.heroId = 10001
+
+	this.dayStr = (new Date()).toDateString()
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
 		fun.call(this)
@@ -38,19 +40,18 @@ area.prototype.init = function() {
 }
 //update
 area.prototype.update = function() {
-	// var curTime = Date.now()
-	// for(var uid in this.offLinePlayers){
-	// 	if(curTime > this.offLinePlayers[uid] + 60000){
-	// 		console.log("离线过长，删除玩家 ",uid)
-	// 		delete this.players[uid]
-	// 		delete this.connectorMap[uid]
-	// 		delete this.offLinePlayers[uid]
-	// 	}
-	// }
+	var curTime = Date.now()
+	for(var uid in this.offLinePlayers){
+		if(curTime > this.offLinePlayers[uid] + 30000){
+			delete this.offLinePlayers[uid]
+			this.onlineNum--
+		}
+	}
 }
 //每日定时器
 area.prototype.dayTimer = function() {
 	console.log("每日刷新")
+	this.dayStr = (new Date()).toDateString()
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
@@ -74,7 +75,7 @@ area.prototype.register = function(otps,cb) {
 //玩家加入
 area.prototype.userLogin = function(uid,cid,cb) {
 	console.log("userLogin : ",uid)
-	if(this.players[uid] && (!this.offLinePlayers[uid] || Date.now() < this.offLinePlayers[uid] + 60000)){
+	if(this.players[uid] && this.offLinePlayers[uid]){
 		console.log("已缓存无需重新获取",uid)
 		this.connectorMap[uid] = cid
 		delete this.offLinePlayers[uid]
@@ -96,10 +97,17 @@ area.prototype.userLogin = function(uid,cid,cb) {
 						self.sendToUser(uid,notify)
 					}
 				})
+				if(playerInfo.dayStr != self.dayStr){
+					self.dayFirstLogin(uid)
+				}
 			}
 			cb(playerInfo)
 		})
 	}
+}
+area.prototype.dayFirstLogin = function(uid) {
+	console.log("玩家 "+uid+" 今日首次登录")
+	this.setObj(uid,"playerInfo","dayStr",this.dayStr)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
