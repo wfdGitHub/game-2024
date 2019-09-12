@@ -10,7 +10,6 @@ var area = function(otps,app) {
 	this.app = app
 	this.channelService = this.app.get('channelService')
 	this.players = {}
-	this.offLinePlayers = {}
 	this.connectorMap = {}
 	this.onlineNum = 0
 	this.fightInfos = {}
@@ -29,15 +28,6 @@ area.prototype.init = function() {
 }
 //update
 area.prototype.update = function() {
-	// var curTime = Date.now()
-	// for(var uid in this.offLinePlayers){
-	// 	if(curTime > this.offLinePlayers[uid] + 30000){
-	// 		delete this.offLinePlayers[uid]
-	// 		delete this.players[uid]
-	// 		delete this.connectorMap[uid]
-	// 		this.onlineNum--
-	// 	}
-	// }
 	var curDayStr = (new Date()).toDateString()
 	if(this.dayStr !== curDayStr){
 		this.dayUpdate(curDayStr)
@@ -69,17 +59,9 @@ area.prototype.register = function(otps,cb) {
 }
 //玩家加入
 area.prototype.userLogin = function(uid,cid,cb) {
-	// console.log("userLogin : ",uid)
-	// if(this.players[uid] && this.offLinePlayers[uid]){
-	// 	console.log("已缓存无需重新获取",uid)
-	// 	this.connectorMap[uid] = cid
-	// 	delete this.offLinePlayers[uid]
-	// 	cb(this.players[uid])
-	// }else{
 	var self = this
 	self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
 		if(playerInfo){
-			delete self.offLinePlayers[uid]
 			self.onlineNum++
 			self.players[uid] = playerInfo
 			self.connectorMap[uid] = cid
@@ -98,7 +80,6 @@ area.prototype.userLogin = function(uid,cid,cb) {
 		}
 		cb(playerInfo)
 	})
-	// }
 }
 area.prototype.dayFirstLogin = function(uid) {
 	console.log("玩家 "+uid+" 今日首次登录")
@@ -108,8 +89,9 @@ area.prototype.dayFirstLogin = function(uid) {
 area.prototype.userLeave = function(uid) {
 	console.log("userLeave : ",uid)
 	if(this.players[uid]){
-		this.offLinePlayers[uid] = Date.now()
-		self.onlineNum--
+		delete this.players[uid]
+		delete this.connectorMap[uid]
+		this.onlineNum--
 	}
 }
 //发送消息给玩家
