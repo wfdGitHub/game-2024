@@ -333,9 +333,15 @@
             console.log(data);
         });
       }
+      //获取随机名字
+      var getRandomName = function(sex) {
+        pomelo.request("connector.loginHandler.getRandomName", {sex : sex}, function(data) {
+            console.log(data);
+        });
+      }
       //注册角色
-      var register = function(areaId,name) {
-        pomelo.request("connector.loginHandler.register", {areaId : areaId,name : name}, function(data) {
+      var register = function(areaId,name,sex) {
+        pomelo.request("connector.loginHandler.register", {areaId : areaId,name : name,sex : sex}, function(data) {
             console.log(data);
         });
       }

@@ -1,7 +1,11 @@
+var boyNames = require("../../../../config/sysCfg/boy.json")
+var girlNames = require("../../../../config/sysCfg/girl.json")
 var bearcat = require("bearcat")
 var loginHandler = function(app) {
   this.app = app;
   this.areaDeploy = this.app.get('areaDeploy')
+  this.boyNameNum = boyNames.length
+  this.girlNameNum = girlNames.length
 }
 //获取服务器列表
 loginHandler.prototype.getAreaList = function(msg, session, next) {
@@ -77,6 +81,9 @@ loginHandler.prototype.register = function(msg, session, next) {
         next(null,{flag : false,err : "该名称已被使用"})
         return
     }
+    if(sex !== 1){
+    	sex = 2
+    }
 	var uid = session.get("uid")
 	var otps = {areaId : areaId,uid : uid,name : name,sex : sex}
     this.app.rpc.area.areaRemote.register.toServer(serverId,otps,function(flag,data) {
@@ -86,6 +93,21 @@ loginHandler.prototype.register = function(msg, session, next) {
 			next(null,{flag : false,err : data})
 		}
 	})
+}
+//获取随机姓名
+loginHandler.prototype.getRandomName = function(msg, session, next) {
+	var sex = msg.sex
+	var name = ""
+	if(sex == 1){
+		//男
+		var rand = Math.floor(this.boyNameNum * Math.random())
+		name = boyNames[rand]
+	}else if(sex == 2){
+		//女
+		var rand = Math.floor(this.girlNameNum * Math.random())
+		name = girlNames[rand]
+	}
+	next(null,{flag : true,name : name})
 }
 //登录游戏
 loginHandler.prototype.loginArea = function(msg, session, next) {
