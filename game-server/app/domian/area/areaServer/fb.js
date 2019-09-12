@@ -132,6 +132,9 @@ module.exports = function() {
 	this.getFBInfo = function(uid,cb) {
 		var dayStr = (new Date).toLocaleDateString()
 		self.getObjAll(uid,"fb",function(data) {
+			if(!data){
+				data = {}
+			}
 			data.dayStr = dayStr
 			cb(data)
 		})

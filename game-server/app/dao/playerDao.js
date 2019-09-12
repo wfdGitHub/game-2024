@@ -6,7 +6,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 	var playerInfo = {
 		uid : otps.uid,
 		name : otps.name,
-		sex : otps.sex === 1? 1 : 0
+		sex : otps.sex === 1? 1 : 2
 	}
 	var self = this
 	self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+otps.uid+":playerInfo",playerInfo,function(err,data) {
