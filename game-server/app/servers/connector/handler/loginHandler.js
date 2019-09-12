@@ -68,6 +68,15 @@ loginHandler.prototype.register = function(msg, session, next) {
         next(null,{flag : false,err : "服务器不存在"})
         return
     }
+    if(!Number.isInteger(areaId) || typeof(name) !== "string"){
+        next(null,{flag : false,err : "参数错误"})
+        return
+    }
+    name = name.replace(/\s*/g,"");
+    if(name.length < 2){
+        next(null,{flag : false,err : "该名称已被使用"})
+        return
+    }
 	var uid = session.get("uid")
 	var otps = {areaId : areaId,uid : uid,name : name,sex : sex}
     this.app.rpc.area.areaRemote.register.toServer(serverId,otps,function(flag,data) {

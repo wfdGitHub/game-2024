@@ -55,9 +55,9 @@ area.prototype.dayTimer = function() {
 //玩家注册
 area.prototype.register = function(otps,cb) {
 	var self = this
-	self.playerDao.getPlayerInfo(otps,function(playerInfo) {
-		if(playerInfo){
-			cb(false,"账号已存在")
+	self.playerDao.checkPlayerInfo(otps,function(flag,err) {
+		if(!flag){
+			cb(flag,err)
 		}else{
 			self.playerDao.createPlayer(otps,function(playerInfo) {
 				if(!playerInfo){
