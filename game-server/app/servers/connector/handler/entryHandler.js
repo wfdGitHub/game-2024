@@ -37,14 +37,12 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
 	session.set("nickname",userInfo.nickname)
 	session.set("head",userInfo.head)
 	session.on("closed",onUserLeave.bind(this))
-	console.log(session.uid + "  entrySuccess..")
+	console.log(uid + "  entrySuccess..")
   	next(null, {flag : true,msg : userInfo});
 }
 var onUserLeave = function(session) {
 	var uid = session.uid
 	console.log("onUserLeave : "+uid)
-	session.remove("nickname")
-	session.remove("head")
 	if(uid){
 		session.unbind(uid)
 		var serverId = session.get("serverId")

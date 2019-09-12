@@ -16,7 +16,6 @@ var area = function(otps,app) {
 	this.fightInfos = {}
 	this.fightContorl = fightContorlFun()
 	this.heroId = 10001
-
 	this.dayStr = (new Date()).toDateString()
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
@@ -27,33 +26,27 @@ var area = function(otps,app) {
 area.prototype.init = function() {
 	console.log("area init")
 	setInterval(this.update.bind(this),1000)
-	var self = this
-	var curTime = Date.now()
-	var tomorrowDate = new Date(curTime + oneDayTime)
-	tomorrowDate.setHours(0,0,0,0)
-	var tomorrowTime = tomorrowDate.getTime()
-	console.log("时间:",tomorrowTime - curTime)
-	setTimeout(function() {
-		self.dayTimer.call(self)
-		setInterval(self.dayTimer.bind(self),oneDayTime)
-	},tomorrowTime - curTime + 5000)
 }
 //update
 area.prototype.update = function() {
-	var curTime = Date.now()
-	for(var uid in this.offLinePlayers){
-		if(curTime > this.offLinePlayers[uid] + 30000){
-			delete this.offLinePlayers[uid]
-			delete self.players[uid]
-			delete self.connectorMap[uid]
-			this.onlineNum--
-		}
+	// var curTime = Date.now()
+	// for(var uid in this.offLinePlayers){
+	// 	if(curTime > this.offLinePlayers[uid] + 30000){
+	// 		delete this.offLinePlayers[uid]
+	// 		delete this.players[uid]
+	// 		delete this.connectorMap[uid]
+	// 		this.onlineNum--
+	// 	}
+	// }
+	var curDayStr = (new Date()).toDateString()
+	if(this.dayStr !== curDayStr){
+		this.dayUpdate(curDayStr)
 	}
 }
 //每日定时器
-area.prototype.dayTimer = function() {
+area.prototype.dayUpdate = function(curDayStr) {
 	console.log("每日刷新")
-	this.dayStr = (new Date()).toDateString()
+	this.dayStr = curDayStr
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
@@ -76,36 +69,36 @@ area.prototype.register = function(otps,cb) {
 }
 //玩家加入
 area.prototype.userLogin = function(uid,cid,cb) {
-	console.log("userLogin : ",uid)
-	if(this.players[uid] && this.offLinePlayers[uid]){
-		console.log("已缓存无需重新获取",uid)
-		this.connectorMap[uid] = cid
-		delete this.offLinePlayers[uid]
-		cb(this.players[uid])
-	}else{
-		var self = this
-		self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
-			if(playerInfo){
-				delete self.offLinePlayers[uid]
-				self.onlineNum++
-				self.players[uid] = playerInfo
-				self.connectorMap[uid] = cid
-				self.getOnhookAward(uid,1,function(flag,data) {
-					if(flag){
-						var notify = {
-							type : "offlineOnhookAward",
-							data : data
-						}
-						self.sendToUser(uid,notify)
+	// console.log("userLogin : ",uid)
+	// if(this.players[uid] && this.offLinePlayers[uid]){
+	// 	console.log("已缓存无需重新获取",uid)
+	// 	this.connectorMap[uid] = cid
+	// 	delete this.offLinePlayers[uid]
+	// 	cb(this.players[uid])
+	// }else{
+	var self = this
+	self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
+		if(playerInfo){
+			delete self.offLinePlayers[uid]
+			self.onlineNum++
+			self.players[uid] = playerInfo
+			self.connectorMap[uid] = cid
+			self.getOnhookAward(uid,1,function(flag,data) {
+				if(flag){
+					var notify = {
+						type : "offlineOnhookAward",
+						data : data
 					}
-				})
-				if(playerInfo.dayStr != self.dayStr){
-					self.dayFirstLogin(uid)
+					self.sendToUser(uid,notify)
 				}
+			})
+			if(playerInfo.dayStr != self.dayStr){
+				self.dayFirstLogin(uid)
 			}
-			cb(playerInfo)
-		})
-	}
+		}
+		cb(playerInfo)
+	})
+	// }
 }
 area.prototype.dayFirstLogin = function(uid) {
 	console.log("玩家 "+uid+" 今日首次登录")
@@ -116,6 +109,7 @@ area.prototype.userLeave = function(uid) {
 	console.log("userLeave : ",uid)
 	if(this.players[uid]){
 		this.offLinePlayers[uid] = Date.now()
+		self.onlineNum--
 	}
 }
 //发送消息给玩家
