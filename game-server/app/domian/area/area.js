@@ -2,7 +2,7 @@
 var bearcat = require("bearcat")
 var fightContorlFun = require("../fight/fightContorl.js")
 var charactersCfg = require("../../../config/gameCfg/characters.json")
-var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet","character","equip","gem","mail","artifact","fb"]
+var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet","character","equip","gem","mail","artifact","fb","ttttower"]
 const oneDayTime = 86400000
 var area = function(otps,app) {
 	this.areaId = otps.areaId
@@ -10,12 +10,12 @@ var area = function(otps,app) {
 	this.app = app
 	this.channelService = this.app.get('channelService')
 	this.players = {}
-	this.offLinePlayers = {}
 	this.connectorMap = {}
 	this.onlineNum = 0
 	this.fightInfos = {}
 	this.fightContorl = fightContorlFun()
 	this.heroId = 10001
+	this.dayStr = (new Date()).toDateString()
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
 		fun.call(this)
@@ -25,32 +25,18 @@ var area = function(otps,app) {
 area.prototype.init = function() {
 	console.log("area init")
 	setInterval(this.update.bind(this),1000)
-	var self = this
-	var curTime = Date.now()
-	var tomorrowDate = new Date(curTime + oneDayTime)
-	tomorrowDate.setHours(0,0,0,0)
-	var tomorrowTime = tomorrowDate.getTime()
-	console.log("时间:",tomorrowTime - curTime)
-	setTimeout(function() {
-		self.dayTimer.call(self)
-		setInterval(self.dayTimer.bind(self),oneDayTime)
-	},tomorrowTime - curTime + 5000)
 }
 //update
 area.prototype.update = function() {
-	// var curTime = Date.now()
-	// for(var uid in this.offLinePlayers){
-	// 	if(curTime > this.offLinePlayers[uid] + 60000){
-	// 		console.log("离线过长，删除玩家 ",uid)
-	// 		delete this.players[uid]
-	// 		delete this.connectorMap[uid]
-	// 		delete this.offLinePlayers[uid]
-	// 	}
-	// }
+	var curDayStr = (new Date()).toDateString()
+	if(this.dayStr !== curDayStr){
+		this.dayUpdate(curDayStr)
+	}
 }
 //每日定时器
-area.prototype.dayTimer = function() {
+area.prototype.dayUpdate = function(curDayStr) {
 	console.log("每日刷新")
+	this.dayStr = curDayStr
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
@@ -73,39 +59,39 @@ area.prototype.register = function(otps,cb) {
 }
 //玩家加入
 area.prototype.userLogin = function(uid,cid,cb) {
-	console.log("userLogin : ",uid)
-	if(this.players[uid] && (!this.offLinePlayers[uid] || Date.now() < this.offLinePlayers[uid] + 60000)){
-		console.log("已缓存无需重新获取",uid)
-		this.connectorMap[uid] = cid
-		delete this.offLinePlayers[uid]
-		cb(this.players[uid])
-	}else{
-		var self = this
-		self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
-			if(playerInfo){
-				delete self.offLinePlayers[uid]
-				self.onlineNum++
-				self.players[uid] = playerInfo
-				self.connectorMap[uid] = cid
-				self.getOnhookAward(uid,1,function(flag,data) {
-					if(flag){
-						var notify = {
-							type : "offlineOnhookAward",
-							data : data
-						}
-						self.sendToUser(uid,notify)
+	var self = this
+	self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
+		if(playerInfo){
+			self.onlineNum++
+			self.players[uid] = playerInfo
+			self.connectorMap[uid] = cid
+			self.getOnhookAward(uid,1,function(flag,data) {
+				if(flag){
+					var notify = {
+						type : "offlineOnhookAward",
+						data : data
 					}
-				})
+					self.sendToUser(uid,notify)
+				}
+			})
+			if(playerInfo.dayStr != self.dayStr){
+				self.dayFirstLogin(uid)
 			}
-			cb(playerInfo)
-		})
-	}
+		}
+		cb(playerInfo)
+	})
+}
+area.prototype.dayFirstLogin = function(uid) {
+	console.log("玩家 "+uid+" 今日首次登录")
+	this.setObj(uid,"playerInfo","dayStr",this.dayStr)
+	this.TTTdayUpdate(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
 	console.log("userLeave : ",uid)
 	if(this.players[uid]){
-		this.offLinePlayers[uid] = Date.now()
+		delete this.players[uid]
+		delete this.connectorMap[uid]
 		this.onlineNum--
 	}
 }
@@ -157,10 +143,10 @@ area.prototype.getFightInfo = function(uid) {
 //战斗记录
 area.prototype.recordFight = function(atkTeam,defTeam,seededNum,readList) {
 	var obj = {
-		atkTeam : JSON.stringify(atkTeam),
-		defTeam : JSON.stringify(defTeam),
-		seededNum : seededNum,
-		readList : JSON.stringify(readList)
+		atkTeam : JSON.stringify(atkTeam) || "null",
+		defTeam : JSON.stringify(defTeam) || "null",
+		seededNum : seededNum || "null",
+		readList : JSON.stringify(readList) || "null"
 	}
 	 this.redisDao.db.hmset("test:fight",obj)
 }

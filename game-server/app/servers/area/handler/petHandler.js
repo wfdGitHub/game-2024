@@ -5,7 +5,7 @@ var petHandler = function(app) {
 }
 //增加宠物栏
 petHandler.prototype.addPetAmount = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].addPetAmount(uid,function(flag,data) {
     next(null,{flag : flag,data : data})
@@ -13,7 +13,7 @@ petHandler.prototype.addPetAmount = function(msg, session, next) {
 }
 //玩家获得宠物
 petHandler.prototype.obtainPet = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var characterId = msg.characterId
   this.areaManager.areaMap[areaId].obtainPet(uid,characterId,function(flag,data) {
@@ -22,7 +22,7 @@ petHandler.prototype.obtainPet = function(msg, session, next) {
 }
 //移除宠物
 petHandler.prototype.removePet = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var id = msg.id
   this.areaManager.areaMap[areaId].removePet(uid,id,function(flag,data) {
@@ -31,7 +31,7 @@ petHandler.prototype.removePet = function(msg, session, next) {
 }
 //设置出战宠物
 petHandler.prototype.setFightPet = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var id = msg.id
   this.areaManager.areaMap[areaId].setFightPet(uid,id,function(flag,data) {
@@ -40,7 +40,7 @@ petHandler.prototype.setFightPet = function(msg, session, next) {
 }
 //宠物休息
 petHandler.prototype.petRest = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].petRest(uid,function(flag,data) {
     next(null,{flag : flag,data : data})
@@ -48,13 +48,13 @@ petHandler.prototype.petRest = function(msg, session, next) {
 }
 //获取玩家信息
 petHandler.prototype.getPlayerInfo = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   next(null,{flag : true,data : this.areaManager.areaMap[areaId].players[uid]})
 }
 //宠物转生
 petHandler.prototype.petSamsara = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var id = msg.id
   this.areaManager.areaMap[areaId].petSamsara(uid,id,function(flag,data) {
@@ -63,7 +63,7 @@ petHandler.prototype.petSamsara = function(msg, session, next) {
 }
 //宠物进阶
 petHandler.prototype.petAdvanced = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var id = msg.id
   this.areaManager.areaMap[areaId].petAdvanced(uid,id,function(flag,data) {
@@ -72,7 +72,7 @@ petHandler.prototype.petAdvanced = function(msg, session, next) {
 }
 //宠物洗练
 petHandler.prototype.washPet = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var id = msg.id
   this.areaManager.areaMap[areaId].washPet(uid,id,function(flag,data) {
@@ -81,7 +81,7 @@ petHandler.prototype.washPet = function(msg, session, next) {
 }
 //保存洗练属性
 petHandler.prototype.saveWashPet = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var id = msg.id
   this.areaManager.areaMap[areaId].saveWashPet(uid,id,function(flag,data) {
@@ -90,7 +90,7 @@ petHandler.prototype.saveWashPet = function(msg, session, next) {
 }
 //获取宠物图鉴
 petHandler.prototype.getPetArchive = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].getPetArchive(uid,function(data) {
     next(null,{flag : true,data : data})

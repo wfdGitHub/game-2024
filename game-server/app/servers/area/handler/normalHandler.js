@@ -5,7 +5,7 @@ var normalHandler = function(app) {
 };
 //获取背包
 normalHandler.prototype.getBagList = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].getBagList(uid,function(data) {
     next(null,{flag : true,data : data || {}})
@@ -13,7 +13,7 @@ normalHandler.prototype.getBagList = function(msg, session, next) {
 }
 //使用物品
 normalHandler.prototype.useItem = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   msg.uid = uid
   this.areaManager.areaMap[areaId].useItem(msg,function(flag,data) {
@@ -22,7 +22,7 @@ normalHandler.prototype.useItem = function(msg, session, next) {
 }
 //在线领取挂机奖励
 normalHandler.prototype.getOnhookAward = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].getOnhookAward(uid,1.2,function(flag,data) {
     next(null,{flag : flag,data : data})
@@ -30,7 +30,7 @@ normalHandler.prototype.getOnhookAward = function(msg, session, next) {
 }
 //角色进阶
 normalHandler.prototype.characterAdvanced = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var characterId = msg.characterId
   this.areaManager.areaMap[areaId].characterAdvanced(uid,characterId,function(flag,data) {
@@ -39,7 +39,7 @@ normalHandler.prototype.characterAdvanced = function(msg, session, next) {
 }
 //角色转生
 normalHandler.prototype.characterSamsara = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var characterId = msg.characterId
   this.areaManager.areaMap[areaId].characterSamsara(uid,characterId,function(flag,data) {
@@ -48,7 +48,7 @@ normalHandler.prototype.characterSamsara = function(msg, session, next) {
 }
 //增加物品  测试功能
 normalHandler.prototype.addItem = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var itemId = msg.itemId
   var value = msg.value
@@ -58,7 +58,7 @@ normalHandler.prototype.addItem = function(msg, session, next) {
 }
 //增加物品str  测试功能
 normalHandler.prototype.addItemStr = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var str = msg.str
   var rate = msg.rate
@@ -67,7 +67,7 @@ normalHandler.prototype.addItemStr = function(msg, session, next) {
 }
 //购买商城物品
 normalHandler.prototype.buyShop = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var shopId = msg.shopId
   var count = msg.count

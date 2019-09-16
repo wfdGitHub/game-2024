@@ -5,7 +5,7 @@ var gemHandler = function(app) {
 };
 //获取宝石列表
 gemHandler.prototype.getGemList = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].getGemList(uid,function(data) {
     next(null,{flag : true,data : data || {}})
@@ -13,7 +13,7 @@ gemHandler.prototype.getGemList = function(msg, session, next) {
 }
 //镶嵌宝石
 gemHandler.prototype.inlayGem = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
   var slot = msg.slot
@@ -24,7 +24,7 @@ gemHandler.prototype.inlayGem = function(msg, session, next) {
 }
 //卸下宝石
 gemHandler.prototype.takeofGem = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
   var slot = msg.slot
@@ -34,7 +34,7 @@ gemHandler.prototype.takeofGem = function(msg, session, next) {
 }
 //购买宝石
 gemHandler.prototype.buyGem = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var gId = msg.gId
   var level = msg.level
@@ -45,7 +45,7 @@ gemHandler.prototype.buyGem = function(msg, session, next) {
 }
 //出售宝石
 gemHandler.prototype.sellGem = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var glist = msg.glist
   this.areaManager.areaMap[areaId].sellGem(uid,glist,function(flag,data) {
@@ -54,7 +54,7 @@ gemHandler.prototype.sellGem = function(msg, session, next) {
 }
 //合成宝石
 gemHandler.prototype.compoundGem = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var gId = msg.gId
   var level = msg.level

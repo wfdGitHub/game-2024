@@ -6,7 +6,7 @@ var logHandler = function(app) {
 };
 //接收日志
 logHandler.prototype.addLogs = function(msg, session, next) {
-  var uid = session.get("uid")
+  var uid = session.uid
   var areaId = session.get("areaId")
   var info = {
     uid : uid,

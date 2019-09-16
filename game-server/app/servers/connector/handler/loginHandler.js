@@ -22,7 +22,7 @@ loginHandler.prototype.getAreaList = function(msg, session, next) {
 // 		next(null,{flag : false,err : "已登录游戏服务器"})
 // 		return
 // 	}
-// 	var uid = session.get("uid")
+// 	var uid = session.uid
 // 	if(!uid){
 // 		next(null,{flag : false,err : "玩家未登录"})
 // 		return
@@ -53,7 +53,7 @@ loginHandler.prototype.getPlayerInfo = function(msg, session, next) {
 		next(null,{flag : false,err : "areaId error"})
 		return
 	}
-	var uid = session.get("uid")
+	var uid = session.uid
 	this.playerDao.getPlayerInfo({areaId : areaId,uid : uid},function(playerInfo) {
 		next(null,{flag : true,msg : playerInfo})
 	})
@@ -84,7 +84,7 @@ loginHandler.prototype.register = function(msg, session, next) {
     if(sex !== 1){
     	sex = 2
     }
-	var uid = session.get("uid")
+	var uid = session.uid
 	var otps = {areaId : areaId,uid : uid,name : name,sex : sex}
     this.app.rpc.area.areaRemote.register.toServer(serverId,otps,function(flag,data) {
 		if(flag){
@@ -112,7 +112,7 @@ loginHandler.prototype.getRandomName = function(msg, session, next) {
 //登录游戏
 loginHandler.prototype.loginArea = function(msg, session, next) {
 	var areaId = msg.areaId
-	var uid = session.get("uid")
+	var uid = session.uid
 	if(session.get("areaId")){
 		next(null,{flag : false,err : "已登录"})
 		return
