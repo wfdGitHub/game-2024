@@ -63,6 +63,12 @@
         console.log("onChat")
         console.log(data)
       })
+      //开启宝箱
+      var getChestAward = function(chestId) {
+        pomelo.request("area.normalHandler.getChestAward", {chestId : chestId}, function(data) {
+            console.log(data);
+        });
+      }
       //============通天塔================//
       //获取通天塔数据
       var getTTTInfo = function() {

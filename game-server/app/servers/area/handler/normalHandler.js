@@ -65,6 +65,14 @@ normalHandler.prototype.addItemStr = function(msg, session, next) {
   var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,rate)
   next(null,{flag : true,awardList : awardList})
 }
+//开启宝箱  测试功能
+normalHandler.prototype.getChestAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var chestId = msg.chestId
+  var str = this.areaManager.areaMap[areaId].getChestAward(uid,chestId)
+  next(null,{flag : true,str : str})
+}
 //购买商城物品
 normalHandler.prototype.buyShop = function(msg, session, next) {
   var uid = session.uid

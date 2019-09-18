@@ -179,5 +179,17 @@
     "isBag": true,
     "useType": "petEgg",
     "arg": "13012:100"
+  },
+  "10001": {
+    "name": "木质宝箱",
+    "des": "木质宝箱",
+    "isBag": true,
+    "useType": "chest"
+  },
+  "10002": {
+    "name": "黄金宝箱",
+    "des": "黄金宝箱",
+    "isBag": true,
+    "useType": "chest"
   }
 }

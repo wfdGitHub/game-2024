@@ -3,6 +3,8 @@ var itemCfg = require("../../../../config/gameCfg/item.json")
 var special_item = require("../../../../config/gameCfg/special_item.json")
 var charactersCfg = require("../../../../config/gameCfg/characters.json")
 var shopCfg = require("../../../../config/gameCfg/shop.json")
+var chest_awards = require("../../../../config/gameCfg/chest_awards.json")
+var chest_cfg = require("../../../../config/gameCfg/chest_cfg.json")
 module.exports = function() {
 	var self = this
 	this.playerBags = {}
@@ -88,6 +90,11 @@ module.exports = function() {
 					}
 					cb(flag,petInfo)
 				})
+			break
+			case "chest":
+				//宝箱
+				var awards = this.getChestAward(otps.uid,otps.itemId)
+				cb(true,awards)
 			break
 			default:
 				console.log("itemId can't use "+otps.itemId)
@@ -305,5 +312,36 @@ module.exports = function() {
 			self.addItemStr(uid,shopInfo.pa,count)
 			cb(true,shopInfo.pa)
 		})
+	}
+	//奖励池获取奖励
+	this.getChestAward = function(uid,chestId) {
+		if(!chest_cfg[chestId] || !chest_cfg[chestId]["randAward"]){
+			return []
+		}
+		var awardMap = []
+		var keyMap = []
+		var chestStr = chest_cfg[chestId]["randAward"]
+		var list = chestStr.split("&")
+		var allValue = 0
+		list.forEach(function(m_str) {
+			var m_list = m_str.split(":")
+			var itemId = m_list[0]
+			allValue += parseInt(m_list[1])
+			awardMap.push(allValue)
+			keyMap.push(itemId)
+		})
+		var str = false
+		var rand = Math.random() * allValue
+		for(var i in awardMap){
+			if(rand < awardMap[i]){
+				str = chest_awards[keyMap[i]]["str"]
+				break
+			}
+		}
+		if(str){
+			return this.addItemStr(uid,str)
+		}else{
+			return []
+		}
 	}
 }
