@@ -66,11 +66,11 @@ normalHandler.prototype.addItemStr = function(msg, session, next) {
   next(null,{flag : true,awardList : awardList})
 }
 //开启宝箱  测试功能
-normalHandler.prototype.getChestAward = function(msg, session, next) {
+normalHandler.prototype.openChestAward = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   var chestId = msg.chestId
-  var str = this.areaManager.areaMap[areaId].getChestAward(uid,chestId)
+  var str = this.areaManager.areaMap[areaId].openChestAward(uid,chestId)
   next(null,{flag : true,str : str})
 }
 //购买商城物品

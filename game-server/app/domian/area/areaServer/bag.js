@@ -93,7 +93,7 @@ module.exports = function() {
 			break
 			case "chest":
 				//宝箱
-				var awards = this.getChestAward(otps.uid,otps.itemId)
+				var awards = this.openChestAward(otps.uid,otps.itemId)
 				cb(true,awards)
 			break
 			default:
@@ -314,7 +314,7 @@ module.exports = function() {
 		})
 	}
 	//奖励池获取奖励
-	this.getChestAward = function(uid,chestId) {
+	this.openChestAward = function(uid,chestId,rate) {
 		if(!chest_cfg[chestId] || !chest_cfg[chestId]["randAward"]){
 			return []
 		}
@@ -339,7 +339,7 @@ module.exports = function() {
 			}
 		}
 		if(str){
-			return this.addItemStr(uid,str)
+			return this.addItemStr(uid,str,rate)
 		}else{
 			return []
 		}

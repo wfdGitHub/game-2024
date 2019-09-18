@@ -1,4 +1,3 @@
-var fb_awards = require("../../../../config/gameCfg/fb_awards.json")
 var fb_base = require("../../../../config/gameCfg/fb_base.json")
 var fb_cfg = require("../../../../config/gameCfg/fb_cfg.json")
 var fb_samsara = require("../../../../config/gameCfg/fb_samsara.json")
@@ -106,18 +105,18 @@ module.exports = function() {
 		    			self.delObj(uid,"fb",type)
 		    			//通关奖励
 		    			var passAward
-			    		var awardStr1 = fb_base[type]["passAward"]
-			    		var awardList1 = self.addItemStr(uid,awardStr1,rate)
-			    		var awardStr2 = self.getAwards(JSON.parse(fb_base[type]["randAward"]),fb_samsara[samsara]["passAwardNum"])
-			    		var awardList2 = self.addItemStr(uid,awardStr2,rate)
+			    		var awardList1 = self.addItemStr(uid,fb_base[type]["passAward"],rate)
+			    		var awardList2 = self.openChestAward(uid,fb_base[type]["randAward"],rate)
 			    		info.passAward = awardList1.concat(awardList2)
 		    		}else{
 		    			info.bossId = bossId + 1
 		    			self.incrbyObj(uid,"fb",type,1)
 		    		}
-		    		var awardStr = self.getAwards(JSON.parse(fb_base[type]["awardList"+bossId]),fb_samsara[samsara]["bossAwardNum"])
-		    		var awardList = self.addItemStr(uid,awardStr,rate)
-		    		info.bossAward = awardList
+		    		var bossAwards = []
+		    		for(var i = 0;i < fb_samsara[samsara]["bossAwardNum"];i++){
+		    			bossAwards = bossAwards.concat(self.openChestAward(uid,fb_base[type]["awardList"+bossId],rate))
+		    		}
+		    		info.bossAward = bossAwards
 		    		cb(true,info)
 		    	}else{
 		    		cb(true,{result : result})
@@ -138,31 +137,5 @@ module.exports = function() {
 			data.dayStr = dayStr
 			cb(data)
 		})
-	}
-	//奖励池获取奖励
-	this.getAwards = function(awards,num) {
-		var allValue = 0
-		var list = {}
-		for(var i in awards){
-			if(fb_awards[awards[i]]){
-				list[i] = fb_awards[awards[i]]["weight"] + allValue
-				allValue += parseInt(fb_awards[awards[i]]["weight"]) || 0
-			}
-		}
-		var curValue = 0
-		var str = ""
-		for(var i = 0;i < num;i++){
-			var rand = Math.random() * allValue
-			for(var j in list){
-				if(rand < list[j]){
-					if(str)
-						str += "&" + fb_awards[awards[j]]["str"]
-					else
-						str = fb_awards[awards[j]]["str"]
-					break
-				}
-			}
-		}
-		return str
 	}
 }
