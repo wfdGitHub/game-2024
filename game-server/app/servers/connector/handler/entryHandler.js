@@ -48,6 +48,7 @@ var onUserLeave = function(session) {
 		var serverId = session.get("serverId")
 		if(serverId){
 			this.app.rpc.area.areaRemote.userLeave.toServer(serverId,uid,null)
+			this.app.rpc.cross.crossRemote.userLeave(null,uid,null)
 		}
 		this.app.rpc.chat.chatRemote.userLeave(null,uid,this.app.serverId,null)
 	}

@@ -10,6 +10,9 @@
     "admin":[
        {"id": "admin-server-1", "host": "127.0.0.1", "port": 3950,"ENABLE_NODE_LOG" : "YES"}
     ],
+    "cross":[
+      {"id": "cross-server-1", "host": "127.0.0.1", "port": 3960,"ENABLE_NODE_LOG" : "YES"}
+    ],
     "area":[
       {"id": "area-server-1", "host": "127.0.0.1", "port": 3250,"auto-restart": true,"ENABLE_NODE_LOG" : "YES"},
       {"id": "area-server-2", "host": "127.0.0.1", "port": 3251,"auto-restart": true,"ENABLE_NODE_LOG" : "YES"}

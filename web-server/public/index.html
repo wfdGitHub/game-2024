@@ -69,6 +69,18 @@
             console.log(data);
         });
       }
+      //============跨服相关================//
+      //连接跨服服务器
+      var loginCross = function() {
+        pomelo.request("area.normalHandler.loginCross", {}, function(data) {
+            console.log(data);
+        });
+      }
+      var test = function() {
+        pomelo.request("cross.crossHandler.test", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============通天塔================//
       //获取通天塔数据
       var getTTTInfo = function() {
@@ -484,11 +496,6 @@
       //获取在线挂机奖励
       var getOnhookAward = function() {
         pomelo.request("area.normalHandler.getOnhookAward",{}, function(data) {
-            console.log(data);
-        })
-      }
-      var test = function(items) {
-        pomelo.request("area.normalHandler.test",{items : items}, function(data) {
             console.log(data);
         })
       }

@@ -83,6 +83,18 @@ normalHandler.prototype.buyShop = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//连入跨服服务器
+normalHandler.prototype.loginCross = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].loginCross(uid,function(flag,data) {
+    if(flag){
+      session.set("cross",true)
+      session.push("cross")
+    }
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "normalHandler",

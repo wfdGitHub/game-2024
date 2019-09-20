@@ -3,6 +3,7 @@ var bearcat = require("bearcat")
 var contextPath = require.resolve('./context.json');
 var areaFilter = require('./util/filters/areaFilter.js');
 var chatFilter = require('./util/filters/chatFilter.js');
+var crossFilter = require('./util/filters/crossFilter.js');
 var app = pomelo.createApp();
 /**
  * Init app for client.
@@ -67,6 +68,9 @@ bearcat.start(function() {
   app.configure('production|development', 'chat', function() {
     app.before(chatFilter());
   });
+  app.configure('production|development', 'cross', function() {
+    app.before(crossFilter());
+  });
 	app.start(function() {
     app.configure('production|development', 'chat', function(){
       var chat = bearcat.getBean("chat")
@@ -77,6 +81,10 @@ bearcat.start(function() {
       var areaManager = bearcat.getBean("areaManager")
       areaManager.init(app)
       app.set("areaManager",areaManager)
+    });
+    app.configure('production|development', 'cross', function(){
+      var crossManager = bearcat.getBean("crossManager",app)
+      app.set("crossManager",crossManager)
     });
     app.configure('production|development', 'admin|connector', function(){
       var areaDeploy = bearcat.getBean("areaDeploy")

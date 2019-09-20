@@ -39,7 +39,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.dayStr = curDayStr
 }
 //玩家注册
-area.prototype.register = function(otps,cb) {
+area.prototype.register = function(kotps,cb) {
 	var self = this
 	self.playerDao.checkPlayerInfo(otps,function(flag,err) {
 		if(!flag){
@@ -62,7 +62,8 @@ area.prototype.userLogin = function(uid,cid,cb) {
 	var self = this
 	self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
 		if(playerInfo){
-			self.onlineNum++
+			if(!self.players[uid])
+				self.onlineNum++
 			self.players[uid] = playerInfo
 			self.connectorMap[uid] = cid
 			self.getOnhookAward(uid,1,function(flag,data) {
@@ -81,6 +82,7 @@ area.prototype.userLogin = function(uid,cid,cb) {
 		cb(playerInfo)
 	})
 }
+//玩家首次登录
 area.prototype.dayFirstLogin = function(uid) {
 	console.log("玩家 "+uid+" 今日首次登录")
 	this.setObj(uid,"playerInfo","dayStr",this.dayStr)
@@ -115,6 +117,7 @@ area.prototype.getAreaServerInfo = function(){
 area.prototype.getAreaPlayers = function(){
 	return this.players
 }
+//预备战斗
 area.prototype.readyFight = function(uid) {
 	if(!this.players[uid]){
 		return false
@@ -149,6 +152,16 @@ area.prototype.recordFight = function(atkTeam,defTeam,seededNum,readList) {
 		readList : JSON.stringify(readList) || "null"
 	}
 	 this.redisDao.db.hmset("test:fight",obj)
+}
+//连入跨服服务器
+area.prototype.loginCross = function(uid,cb) {
+	if(!this.players[uid]){
+		cb(false,"没有该玩家数据")
+		return
+	}
+    this.app.rpc.cross.crossRemote.userLogin(null,uid,this.areaId,this.connectorMap[uid],this.players[uid],function(flag,data) {
+		cb(flag,data)
+	})
 }
 module.exports = {
 	id : "area",
