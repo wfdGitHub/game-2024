@@ -45,7 +45,26 @@ areaRemote.prototype.consumeItems = function(uid,areaId,str,rate,cb) {
 		cb(false)
 	}
 }
-
+//物品奖励
+areaRemote.prototype.addItemStr = function(uid,areaId,str,rate,cb) {
+	console.log("addItemStr",uid,areaId,str,rate)
+	if(this.areaManager.areaMap[areaId]){
+		var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,rate)
+		cb(true,awardList)
+	}else{
+		cb(false)
+	}
+}
+//宝箱奖励
+areaRemote.prototype.openChestAward = function(uid,areaId,chestId,rate,cb) {
+	console.log("openChestAward",uid,areaId,chestId,rate)
+	if(this.areaManager.areaMap[areaId]){
+		var awardList = this.areaManager.areaMap[areaId].openChestAward(uid,chestId,rate)
+		cb(true,awardList)
+	}else{
+		cb(false)
+	}
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "areaRemote",

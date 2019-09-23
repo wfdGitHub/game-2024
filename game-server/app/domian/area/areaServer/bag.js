@@ -290,7 +290,6 @@ module.exports = function() {
 			var value = m_list[1]
 			awardList.push(self.addItem({uid : uid,itemId : itemId,value : value,rate : rate}))
 		})
-		console.log(awardList)
 		return awardList
 	}
 	//商城购买物品

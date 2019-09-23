@@ -76,18 +76,38 @@ module.exports = function() {
 	local.escortFinish = function(uid,samsara) {
 		var carInfo = local.userInfos[uid]["carInfo"]
 		if(carInfo){
-			//计算收益
-			console.log("uid "+uid+" 押镖完成",carInfo)
-			var baseAward = escort_samsara[samsara][carInfo.quality+"_base"]
-			var playAward = escort_samsara[samsara][carInfo.quality+"_play"]
-			var rate = (1 - carInfo.robCount * escort_cfg["loseRate"]["value"])
-			console.log(baseAward,playAward,rate)
 			//镖车刷新
 			local.userInfos[uid]["quality"] = "car0"
 			local.updateEscortCar(uid)
 			local.userInfos[uid]["carInfo"] = false
 			local.userInfos[uid]["escortNum"]++
-
+			//计算收益
+			var baseAward = escort_samsara[samsara][carInfo.quality+"_base"]
+			var playAward = escort_samsara[samsara][carInfo.quality+"_play"]
+			var rate = (1 - carInfo.robCount * escort_cfg["loseRate"]["value"])
+			var str = ""
+			var list = baseAward.split("&")
+			for(var i = 0;i < list.length;i++){
+				var m_list = list[i].split(":")
+				var itemId = m_list[0]
+				var value = parseInt(m_list[1] * rate)
+				if(i != 0){
+					str += "&"
+				}
+				str += itemId + ":" + value
+			}
+			str += "&"+playAward
+			console.log(str)
+			self.addItemStr(uid,str,1,function(flag,data) {
+				if(flag){
+					var notify = {
+						type : "escortFinish",
+						awardList : data,
+						carInfo : carInfo
+					}
+					self.sendToUser(uid,notify)
+				}
+			})
 		}else{
 			console.error("escortFinish error"+uid)
 		}

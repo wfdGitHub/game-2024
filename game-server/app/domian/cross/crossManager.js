@@ -2,6 +2,7 @@
 var crossServers = ["escort"]
 var crossManager = function(app) {
 	this.app = app
+	this.channelService = this.app.get("channelService")
 }
 //初始化
 crossManager.prototype.init = function() {
@@ -83,8 +84,26 @@ crossManager.prototype.consumeItems = function(uid,str,rate,cb) {
 	var serverId = this.players[uid]["serverId"]
 	this.app.rpc.area.areaRemote.consumeItems.toServer(serverId,uid,areaId,str,rate,cb)
 }
-//发放奖励
-
+//物品奖励
+crossManager.prototype.addItemStr = function(uid,str,rate,cb) {
+	if(!this.players[uid]){
+		cb(false)
+		return
+	}
+	var areaId = this.players[uid]["areaId"]
+	var serverId = this.players[uid]["serverId"]
+	this.app.rpc.area.areaRemote.addItemStr.toServer(serverId,uid,areaId,str,rate,cb)
+}
+//宝箱奖励
+crossManager.prototype.openChestAward = function(uid,chestId,rate,cb) {
+	if(!this.players[uid]){
+		cb(false)
+		return
+	}
+	var areaId = this.players[uid]["areaId"]
+	var serverId = this.players[uid]["serverId"]
+	this.app.rpc.area.areaRemote.openChestAward.toServer(serverId,uid,areaId,chestId,rate,cb)
+}
 module.exports = {
 	id : "crossManager",
 	func : crossManager,
