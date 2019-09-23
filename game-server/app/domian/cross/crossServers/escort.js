@@ -97,7 +97,6 @@ module.exports = function() {
 				str += itemId + ":" + value
 			}
 			str += "&"+playAward
-			console.log(str)
 			self.addItemStr(uid,str,1,function(flag,data) {
 				if(flag){
 					var notify = {
@@ -114,9 +113,17 @@ module.exports = function() {
 	}
 	//初始化玩家信息
 	local.userInit = function(uid) {
+		var team = self.userTeam(uid)
+		if(!team){
+			cb(false,"跨服数据未同步")
+			return
+		}
+		var curLv = team[0].level
+		var samsara = Math.floor(((curLv - 1) / 100))
 		var info = {
 			"escortNum" : 0,
 			"robNum" : 0,
+			"samsara" : samsara,
 			"quality" : "car0",
 			"carInfo" : false
 		}
@@ -124,21 +131,24 @@ module.exports = function() {
 		local.updateEscortCar(uid)
 		return local.userInfos[uid]
 	}
-	//获取我的押镖信息
+	//获取镖车信息
 	this.getEscortInfo = function(uid,cb) {
 		if(!this.state){
 			cb(false,"玩法未开启")
 			return
 		}
-		if(local.userInfos[uid]){
-			cb(true,local.userInfos[uid])
-		}else{
-			cb(true,local.userInit(uid))
+		var info = {
+			"escortInfo" : false
 		}
-	}
-	//获取镖车列表
-	this.getEscortCars = function() {
-
+		if(!local.userInfos[uid]){
+			local.userInit(uid)
+		}
+		var samsara = local.userInfos[uid]["samsara"]
+		var info = {
+			"escortInfo" : local.userInfos[uid],
+			"carList" : local.carMap[samsara].slice(-10)
+		}
+		cb(true,info)
 	}
 	//镖车刷新
 	this.updateEscortCar = function(uid,cb) {
@@ -208,8 +218,7 @@ module.exports = function() {
 			cb(false,"跨服数据未同步")
 			return
 		}
-		var curLv = team[0].level
-		var samsara = Math.floor(((curLv - 1) / 100))
+		var samsara = local.userInfos[uid]["samsara"]
 		if(!local.carMap[samsara]){
 			cb(false,"该等级未开放押镖")
 			return
@@ -228,6 +237,6 @@ module.exports = function() {
 	}
 	//劫镖
 	this.robEscort = function() {
-
+		
 	}
 }
