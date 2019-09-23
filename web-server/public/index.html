@@ -82,6 +82,12 @@
             console.log(data);
         });
       }
+      //开始押镖
+      var beginEscort = function() {
+        pomelo.request("cross.escortHandler.beginEscort", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============跨服相关================//
       //连接跨服服务器
       var loginCross = function() {

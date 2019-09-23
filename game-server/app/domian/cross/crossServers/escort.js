@@ -2,7 +2,7 @@
 const escort_base = require("../../../../config/gameCfg/escort_base.json")
 const escort_cfg = require("../../../../config/gameCfg/escort_cfg.json")
 const escort_samsara = require("../../../../config/gameCfg/escort_samsara.json")
-const runTime = 30000
+const runTime = 1000
 var carWeight = {}
 for(var i in escort_base){
 	if(escort_base[i]["u_weight"]){
@@ -24,13 +24,17 @@ module.exports = function() {
 	var local = {}
 	this.state = false		//活动状态  false  未开启  true  开启
 	local.userInfos = {}
-	local.carList = []
+	local.carMap = {}
+	for(var samsara in escort_samsara){
+		local.carMap[samsara] = []
+	}
+	this.curHours = 0
 	//刷新
 	this.escortUpdate = function(date) {
-		var hours = date.getHours() + (date.getMinutes() / 60)
+		this.curHours = date.getHours() + (date.getMinutes() / 60)
 		if(this.state){
 			//判断关闭
-			if(!((hours >= escort_cfg["openTime1"]["value"] && hours < escort_cfg["closeTime1"]["value"]) || (hours >= escort_cfg["openTime2"]["value"] && hours < escort_cfg["closeTime2"]["value"]))){
+			if(!((this.curHours >= escort_cfg["openTime1"]["value"] && this.curHours < escort_cfg["closeTime1"]["value"]) || (this.curHours >= escort_cfg["openTime2"]["value"] && this.curHours < escort_cfg["closeTime2"]["value"]))){
 				this.state = false
 				local.close()
 			}else{
@@ -38,7 +42,7 @@ module.exports = function() {
 			}
 		}else{
 			//判断开启
-			if((hours >= escort_cfg["openTime1"]["value"] && hours < escort_cfg["closeTime1"]["value"]) || (hours >= escort_cfg["openTime2"]["value"] && hours < escort_cfg["closeTime2"]["value"])){
+			if((this.curHours >= escort_cfg["openTime1"]["value"] && this.curHours < escort_cfg["closeTime1"]["value"]) || (this.curHours >= escort_cfg["openTime2"]["value"] && this.curHours < escort_cfg["closeTime2"]["value"])){
 				this.state = true
 				local.open()
 			}
@@ -56,25 +60,34 @@ module.exports = function() {
 	//刷新
 	local.update = function(date) {
 		var endTime = date.getTime() - runTime
-		var finishList = []
-		for(var i = 0;i < local.carList.length;i++){
-			if(local.carList[i]["time"] < endTime){
-				finishList = local.carList.splice(i,arr.length)
+		for(var samsara in local.carMap){
+			var finishList = []
+			for(var i = 0;i < local.carMap[samsara].length;i++){
+				if(local.carMap[samsara][i]["time"] < endTime){
+					finishList = local.carMap[samsara].splice(i,local.carMap[samsara].length)
+				}
 			}
-		}
-		for(var i = 0;i < finishList.length;i++){
-			local.escortFinish(finishList[i]["uid"])
+			for(var i = 0;i < finishList.length;i++){
+				local.escortFinish(finishList[i]["uid"],samsara)
+			}
 		}
 	}
 	//押镖完成
-	local.escortFinish = function(uid) {
+	local.escortFinish = function(uid,samsara) {
 		var carInfo = local.userInfos[uid]["carInfo"]
 		if(carInfo){
 			//计算收益
 			console.log("uid "+uid+" 押镖完成",carInfo)
+			var baseAward = escort_samsara[samsara][carInfo.quality+"_base"]
+			var playAward = escort_samsara[samsara][carInfo.quality+"_play"]
+			var rate = (1 - carInfo.robCount * escort_cfg["loseRate"]["value"])
+			console.log(baseAward,playAward,rate)
 			//镖车刷新
-			local.userInfos[uid]["quality"] = 0
+			local.userInfos[uid]["quality"] = "car0"
 			local.updateEscortCar(uid)
+			local.userInfos[uid]["carInfo"] = false
+			local.userInfos[uid]["escortNum"]++
+
 		}else{
 			console.error("escortFinish error"+uid)
 		}
@@ -162,21 +175,36 @@ module.exports = function() {
 			cb(false,"正在押镖中")
 			return
 		}
+		if(this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.017) || this.curHours >= (escort_cfg["closeTime2"]["value"] - 0.017)){
+			cb(false,"现在不能押镖")
+			return
+		}
+		if(local.userInfos[uid]["escortNum"] >= 2){
+			cb(false,"押镖次数已用完")
+			return
+		}
 		var team = this.userTeam(uid)
 		if(!team){
 			cb(false,"跨服数据未同步")
+			return
+		}
+		var curLv = team[0].level
+		var samsara = Math.floor(((curLv - 1) / 100))
+		if(!local.carMap[samsara]){
+			cb(false,"该等级未开放押镖")
 			return
 		}
 		var carInfo = {
 			"uid" : uid,
 			"user" : self.getSimpleUser(uid),
 			"time" : Date.now(),
-			"quality" : local.userInfos[uid]["quality"] || 0,
+			"quality" : local.userInfos[uid]["quality"],
 			"team" : team,
 			"robCount" : 0
 		}
 		local.userInfos[uid]["carInfo"] = carInfo
-		local.carList.push(carInfo)
+		local.carMap[samsara].push(carInfo)
+		cb(true,carInfo)
 	}
 	//劫镖
 	this.robEscort = function() {

@@ -21,7 +21,12 @@ escortHandler.prototype.updateEscortCar = function(msg, session, next) {
 	})
 }
 //开始押镖
-
+escortHandler.prototype.beginEscort = function(msg, session, next) {
+  var uid = session.uid
+  this.crossManager.beginEscort(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //劫镖
 module.exports = function(app) {
   return bearcat.getBean({
