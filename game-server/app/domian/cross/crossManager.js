@@ -18,9 +18,10 @@ crossManager.prototype.update = function() {
 	this.escortUpdate(date)
 }
 //玩家连入跨服服务器
-crossManager.prototype.userLogin = function(uid,areaId,cid,playerInfo,cb) {
+crossManager.prototype.userLogin = function(uid,areaId,serverId,cid,playerInfo,cb) {
 	var userInfo = {
 		areaId : areaId,
+		serverId : serverId,
 		cid : cid,
 		playerInfo : playerInfo
 	}
@@ -71,6 +72,16 @@ crossManager.prototype.sendToUser = function(uid,notify) {
 	      sid: this.players[uid]["cid"]
 	    }])
 	}
+}
+//消耗道具
+crossManager.prototype.consumeItems = function(uid,str,rate,cb) {
+	if(!this.players[uid]){
+		cb(false)
+		return
+	}
+	var areaId = this.players[uid]["areaId"]
+	var serverId = this.players[uid]["serverId"]
+	this.app.rpc.area.areaRemote.consumeItems.toServer(serverId,uid,areaId,str,rate,cb)
 }
 //发放奖励
 

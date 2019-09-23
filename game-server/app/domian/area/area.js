@@ -159,7 +159,7 @@ area.prototype.loginCross = function(uid,cb) {
 		cb(false,"没有该玩家数据")
 		return
 	}
-    this.app.rpc.cross.crossRemote.userLogin(null,uid,this.areaId,this.connectorMap[uid],this.players[uid],function(flag,data) {
+    this.app.rpc.cross.crossRemote.userLogin(null,uid,this.areaId,this.app.serverId,this.connectorMap[uid],this.players[uid],function(flag,data) {
 		cb(flag,data)
 	})
 }

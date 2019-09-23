@@ -69,6 +69,19 @@
             console.log(data);
         });
       }
+      //============运镖玩法================//
+      //获取我的押镖信息
+      var getEscortInfo = function() {
+        pomelo.request("cross.escortHandler.getEscortInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //刷新镖车
+      var updateEscortCar = function() {
+        pomelo.request("cross.escortHandler.updateEscortCar", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============跨服相关================//
       //连接跨服服务器
       var loginCross = function() {

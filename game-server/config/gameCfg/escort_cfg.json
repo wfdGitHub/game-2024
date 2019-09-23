@@ -1,0 +1,42 @@
+{
+  "openTime1": {
+    "des": "开启时间1",
+    "value": 11.5
+  },
+  "closeTime1": {
+    "des": "关闭时间1",
+    "value": 12
+  },
+  "openTime2": {
+    "des": "开启时间2",
+    "value": 20.5
+  },
+  "closeTime2": {
+    "des": "关闭时间2",
+    "value": 21
+  },
+  "playCount": {
+    "des": "运镖次数",
+    "value": 2
+  },
+  "loseCount": {
+    "des": "最大被劫次数",
+    "value": 3
+  },
+  "robCount": {
+    "des": "劫镖次数",
+    "value": 3
+  },
+  "refresh": {
+    "des": "刷新消耗",
+    "value": "101:100"
+  },
+  "robRate": {
+    "des": "劫镖获得比例",
+    "value": 0.3
+  },
+  "loseRate": {
+    "des": "被劫损失比例",
+    "value": 0.05
+  }
+}

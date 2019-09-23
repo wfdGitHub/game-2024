@@ -1,0 +1,21 @@
+{
+  "car0": {
+    "name": "绿色镖车",
+    "u_weight": "car0:100&car1:100&car2:20"
+  },
+  "car1": {
+    "name": "蓝色镖车",
+    "u_weight": "car1:100&car2:100&car3:50"
+  },
+  "car2": {
+    "name": "紫色镖车",
+    "u_weight": "car1:50&car2:100&car3:200"
+  },
+  "car3": {
+    "name": "橙色镖车",
+    "u_weight": "car2:50&car3:100&car4:200"
+  },
+  "car4": {
+    "name": "红色镖车"
+  }
+}

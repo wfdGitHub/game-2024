@@ -36,6 +36,15 @@ areaRemote.prototype.getAreaPlayers = function(areaId,cb) {
 		cb(false)
 	}
 }
+//消耗道具
+areaRemote.prototype.consumeItems = function(uid,areaId,str,rate,cb) {
+	console.log("consumeItems",uid,areaId,str,rate)
+	if(this.areaManager.areaMap[areaId]){
+		this.areaManager.areaMap[areaId].consumeItems(uid,str,rate,cb)
+	}else{
+		cb(false)
+	}
+}
 
 module.exports = function(app) {
 	return bearcat.getBean({

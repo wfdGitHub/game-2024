@@ -4,8 +4,8 @@ var crossRemote = function(app) {
 	this.crossManager = this.app.get("crossManager")
 }
 //玩家加入
-crossRemote.prototype.userLogin = function(uid,areaId,cid,playerInfo,cb) {
-	this.crossManager.userLogin(uid,areaId,cid,playerInfo,cb)
+crossRemote.prototype.userLogin = function(uid,areaId,serverId,cid,playerInfo,cb) {
+	this.crossManager.userLogin(uid,areaId,serverId,cid,playerInfo,cb)
 }
 
 //玩家离开
