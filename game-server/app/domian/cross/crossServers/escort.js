@@ -24,9 +24,13 @@ module.exports = function() {
 	var local = {}
 	this.state = false		//活动状态  false  未开启  true  开启
 	local.userInfos = {}
-	local.carMap = {}
+	local.carMap = {}			//镖车列表
+	local.subscribeUsers = {}	//消息订阅列表
+	local.subscribeMaps = {}	//映射表
+
 	for(var samsara in escort_samsara){
 		local.carMap[samsara] = []
+		local.subscribeUsers[samsara] = []
 	}
 	this.curHours = 0
 	//刷新
@@ -107,6 +111,11 @@ module.exports = function() {
 					self.sendToUser(uid,notify)
 				}
 			})
+			var notify = {
+				type : "escortFinish",
+				uid : uid
+			}
+			local.sendCarMessage(samsara,notify)
 		}else{
 			console.error("escortFinish error"+uid)
 		}
@@ -131,24 +140,52 @@ module.exports = function() {
 		local.updateEscortCar(uid)
 		return local.userInfos[uid]
 	}
-	//获取镖车信息
+	//获取我的镖车信息
 	this.getEscortInfo = function(uid,cb) {
 		if(!this.state){
 			cb(false,"玩法未开启")
 			return
 		}
-		var info = {
-			"escortInfo" : false
-		}
 		if(!local.userInfos[uid]){
-			local.userInit(uid)
+			local.userInit(uid)	
+		}
+		cb(true,local.userInfos[uid])
+	}
+	//获取并订阅镖车消息
+	this.subscribeCarMessage = function(uid,cb) {
+		if(!local.userInfos[uid]){
+			cb(false,"未参与玩法")
+			return
+		}
+		if(local.subscribeMaps[uid]){
+			cb(false,"消息已订阅")
+			return
 		}
 		var samsara = local.userInfos[uid]["samsara"]
-		var info = {
-			"escortInfo" : local.userInfos[uid],
-			"carList" : local.carMap[samsara].slice(-10)
+		var info = {uid : uid,sid : self.players[uid]["cid"]}
+		local.subscribeUsers[samsara].push(info)
+		local.subscribeMaps[uid] = info
+		var carList = local.carMap[samsara].slice(-10)
+		cb(true,carList)
+	}
+	//取消订阅
+	this.unSubscribeCarMessage = function(uid,cb) {
+		if(!local.userInfos[uid]){
+			if(cb)
+				cb(false,"未参与玩法")
+			return
 		}
-		cb(true,info)
+		var samsara = local.userInfos[uid]["samsara"]
+		var info = local.subscribeMaps[uid]
+		local.subscribeUsers[samsara].remove(info)
+		delete local.subscribeMaps[uid]
+		console.log(local.subscribeUsers[samsara])
+		if(cb)
+			cb(true)
+	}
+	//发送镖车消息给订阅玩家
+	local.sendCarMessage = function(samsara,notify) {
+		self.sendByTypeToUser("escort",local.subscribeUsers[samsara],notify)
 	}
 	//镖车刷新
 	this.updateEscortCar = function(uid,cb) {
@@ -233,6 +270,14 @@ module.exports = function() {
 		}
 		local.userInfos[uid]["carInfo"] = carInfo
 		local.carMap[samsara].push(carInfo)
+		var notify = {
+			type : "beginEscort",
+			uid : uid,
+			user : carInfo.user,
+			time : carInfo.time,
+			quality : carInfo.quality
+		}
+		local.sendCarMessage(samsara,notify)
 		cb(true,carInfo)
 	}
 	//劫镖

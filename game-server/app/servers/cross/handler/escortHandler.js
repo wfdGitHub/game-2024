@@ -28,6 +28,21 @@ escortHandler.prototype.beginEscort = function(msg, session, next) {
   })
 }
 //劫镖
+
+//订阅镖车信息
+escortHandler.prototype.subscribeCarMessage = function(msg, session, next) {
+  var uid = session.uid
+  this.crossManager.subscribeCarMessage(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//取消订阅
+escortHandler.prototype.unSubscribeCarMessage = function(msg, session, next) {
+  var uid = session.uid
+  this.crossManager.unSubscribeCarMessage(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "escortHandler",

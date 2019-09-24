@@ -37,6 +37,7 @@ crossManager.prototype.userLeave = function(uid) {
 		delete this.players[uid]
 		this.onlineNum--
 	}
+	this.unSubscribeCarMessage(uid)
 }
 //获取玩家简易信息
 crossManager.prototype.getSimpleUser = function(uid) {
@@ -67,12 +68,15 @@ crossManager.prototype.userTeam = function(uid) {
 }
 //发送消息给玩家
 crossManager.prototype.sendToUser = function(uid,notify) {
-	if(this.players[uid]){
-		this.channelService.pushMessageByUids('onMessage', notify, [{
+	console.log("sendToUser",uid,notify)
+	this.sendByTypeToUser("onMessage",[{
 	      uid: uid,
-	      sid: this.players[uid]["cid"]
-	    }])
-	}
+	      sid: this.players[uid]["cid"],notify
+	}],notify)
+}
+//发送指定路由的消息给玩家
+crossManager.prototype.sendByTypeToUser = function(type,uids,notify) {
+	this.channelService.pushMessageByUids(type, notify,uids)
 }
 //消耗道具
 crossManager.prototype.consumeItems = function(uid,str,rate,cb) {

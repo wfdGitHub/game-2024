@@ -4,6 +4,7 @@ var contextPath = require.resolve('./context.json');
 var areaFilter = require('./util/filters/areaFilter.js');
 var chatFilter = require('./util/filters/chatFilter.js');
 var crossFilter = require('./util/filters/crossFilter.js');
+var util = require('./util/util.js');
 var app = pomelo.createApp();
 /**
  * Init app for client.

@@ -1,8 +1,8 @@
 {
   "0": {
     "car0_base": "gold:100",
-    "car0_play": "escort_1",
-    "car0_rob": "escort_1",
+    "car0_play": "10001:1",
+    "car0_rob": "10001:1",
     "car1_base": "gold:200",
     "car1_play": "10001:1",
     "car1_rob": "10001:1",
@@ -18,8 +18,8 @@
   },
   "1": {
     "car0_base": "gold:101",
-    "car0_play": "escort_1",
-    "car0_rob": "escort_1",
+    "car0_play": "10001:1",
+    "car0_rob": "10001:1",
     "car1_base": "gold:201",
     "car1_play": "10001:1",
     "car1_rob": "10001:1",
@@ -35,8 +35,8 @@
   },
   "2": {
     "car0_base": "gold:102",
-    "car0_play": "escort_1",
-    "car0_rob": "escort_1",
+    "car0_play": "10001:1",
+    "car0_rob": "10001:1",
     "car1_base": "gold:202",
     "car1_play": "10001:1",
     "car1_rob": "10001:1",
@@ -52,8 +52,8 @@
   },
   "3": {
     "car0_base": "gold:103",
-    "car0_play": "escort_1",
-    "car0_rob": "escort_1",
+    "car0_play": "10001:1",
+    "car0_rob": "10001:1",
     "car1_base": "gold:203",
     "car1_play": "10001:1",
     "car1_rob": "10001:1",
@@ -69,8 +69,8 @@
   },
   "4": {
     "car0_base": "gold:104",
-    "car0_play": "escort_1",
-    "car0_rob": "escort_1",
+    "car0_play": "10001:1",
+    "car0_rob": "10001:1",
     "car1_base": "gold:204",
     "car1_play": "10001:1",
     "car1_rob": "10001:1",
@@ -86,8 +86,8 @@
   },
   "5": {
     "car0_base": "gold:105",
-    "car0_play": "escort_1",
-    "car0_rob": "escort_1",
+    "car0_play": "10001:1",
+    "car0_rob": "10001:1",
     "car1_base": "gold:205",
     "car1_play": "10001:1",
     "car1_rob": "10001:1",

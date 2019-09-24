@@ -59,6 +59,10 @@
         console.log("onMessage")
         console.log(data)
       })
+      pomelo.on("escort",function(data) {
+        console.log("escort")
+        console.log(data)
+      })
       pomelo.on("onChat",function(data) {
         console.log("onChat")
         console.log(data)
@@ -85,6 +89,18 @@
       //开始押镖
       var beginEscort = function() {
         pomelo.request("cross.escortHandler.beginEscort", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //订阅镖车信息
+      var subscribeCarMessage = function() {
+        pomelo.request("cross.escortHandler.subscribeCarMessage", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //取消订阅
+      var unSubscribeCarMessage = function() {
+        pomelo.request("cross.escortHandler.unSubscribeCarMessage", {}, function(data) {
             console.log(data);
         });
       }
@@ -604,24 +620,19 @@
     </script>
   </head>
   <body>
-    <div class="g-doc">
-      <div class="g-banner" style="border:none">
-        <div class="logo">
-          <div class="img"></div>
-        </div>
-      </div>
-      <div class="g-background">
-        <div class="g-content">
-          Welcome to Pomelo
-        </div>
-      </div>
-      <div class="g-link">
-        Home:
-        <a href="https://github.com/NetEase/pomelo">https://github.com/NetEase/pomelo</a>
-      </div>
-      <div class="g-button">
-        <input id="test" type="button" value="Test Game Server" onclick="show()"/>
-      </div>
+    <div class="g-button">
+      登录系统 : 
+      <input id="test" type="button" value="登录账号" onclick="entry(1003)"/>
+      <input id="test" type="button" value="注册角色" onclick="register(2,''+Date.now(),1)"/>
+      <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>
+      <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
+    </div>
+    <div class="g-button">
+      押镖玩法 : 
+      <input id="test" type="button" value="参与押镖" onclick="getEscortInfo()"/>
+      <input id="test" type="button" value="订阅镖车消息" onclick="subscribeCarMessage()"/>
+      <input id="test" type="button" value="开始押镖" onclick="beginEscort()"/>
+      <input id="test" type="button" value="更换镖车" onclick="updateEscortCar()"/>
     </div>
   </body>
 </html>

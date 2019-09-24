@@ -39,7 +39,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.dayStr = curDayStr
 }
 //玩家注册
-area.prototype.register = function(kotps,cb) {
+area.prototype.register = function(otps,cb) {
 	var self = this
 	self.playerDao.checkPlayerInfo(otps,function(flag,err) {
 		if(!flag){
