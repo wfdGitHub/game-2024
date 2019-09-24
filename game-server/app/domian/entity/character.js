@@ -333,6 +333,7 @@ character.prototype.hit = function(attacker, damageInfo,source) {
 	}else{
 		this.reduceHp(attacker,damageInfo.damage)
 	}
+	// console.log(this.fighting.curTime + " " + attacker.name + " 使用 "+source.name+" 攻击 "+this.name,"-"+damageInfo.damage," 剩余血量 : ",this.hp)
   	this.event.emit("hit",attacker, damageInfo,source)
 }
 //生命值增加

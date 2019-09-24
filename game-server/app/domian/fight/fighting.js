@@ -6,6 +6,7 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.defTeam = defTeam
 	this.stepper = otps.stepper
 	this.maxTime = otps.maxTime
+	this.auto = otps.auto || false
     this.nodeCount = 0
     this.characterArr = this.atkTeam.concat(this.defTeam)
 	var self = this
@@ -83,7 +84,7 @@ fighting.prototype.update = function() {
     		c : skill.character.nodeId,
     		s : skill.skillId
     	}
-    	if(skill.character.characterType != "mob"){
+    	if(this.auto || skill.character.characterType != "mob"){
     		this.recordList.push(record)
     	}
     	if(!skill.character.died){
