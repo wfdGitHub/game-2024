@@ -1,8 +1,10 @@
 //跨服服务器
+var fightContorlFun = require("../fight/fightContorl.js")
 var crossServers = ["escort"]
 var crossManager = function(app) {
 	this.app = app
 	this.channelService = this.app.get("channelService")
+	this.fightContorl = fightContorlFun()
 }
 //初始化
 crossManager.prototype.init = function() {
@@ -67,12 +69,11 @@ crossManager.prototype.userTeam = function(uid) {
 	return team
 }
 //发送消息给玩家
-crossManager.prototype.sendToUser = function(uid,notify) {
-	console.log("sendToUser",uid,notify)
-	this.sendByTypeToUser("onMessage",[{
+crossManager.prototype.sendToUser = function(type,uid,notify) {
+	this.channelService.pushMessageByUids(type, notify,[{
 	      uid: uid,
-	      sid: this.players[uid]["cid"],notify
-	}],notify)
+	      sid: this.players[uid]["cid"]
+	}])
 }
 //发送指定路由的消息给玩家
 crossManager.prototype.sendByTypeToUser = function(type,uids,notify) {

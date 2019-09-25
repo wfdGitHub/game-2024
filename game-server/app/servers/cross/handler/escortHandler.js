@@ -28,7 +28,13 @@ escortHandler.prototype.beginEscort = function(msg, session, next) {
   })
 }
 //劫镖
-
+escortHandler.prototype.robEscort = function(msg, session, next) {
+  var uid = session.uid
+  var target = msg.target
+  this.crossManager.robEscort(uid,target,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //订阅镖车信息
 escortHandler.prototype.subscribeCarMessage = function(msg, session, next) {
   var uid = session.uid

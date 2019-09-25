@@ -92,6 +92,12 @@
             console.log(data);
         });
       }
+      //劫镖
+      var robEscort = function(target) {
+        pomelo.request("cross.escortHandler.robEscort", {target : target}, function(data) {
+            console.log(data);
+        });
+      }
       //订阅镖车信息
       var subscribeCarMessage = function() {
         pomelo.request("cross.escortHandler.subscribeCarMessage", {}, function(data) {
@@ -631,6 +637,7 @@
       押镖玩法 : 
       <input id="test" type="button" value="参与押镖" onclick="getEscortInfo()"/>
       <input id="test" type="button" value="订阅镖车消息" onclick="subscribeCarMessage()"/>
+      <input id="test" type="button" value="取消订阅" onclick="unSubscribeCarMessage()"/>
       <input id="test" type="button" value="开始押镖" onclick="beginEscort()"/>
       <input id="test" type="button" value="更换镖车" onclick="updateEscortCar()"/>
     </div>

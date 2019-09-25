@@ -2,7 +2,8 @@
 const escort_base = require("../../../../config/gameCfg/escort_base.json")
 const escort_cfg = require("../../../../config/gameCfg/escort_cfg.json")
 const escort_samsara = require("../../../../config/gameCfg/escort_samsara.json")
-const runTime = 1000
+const runTime = 30000
+const messageName = "escort"
 var carWeight = {}
 for(var i in escort_base){
 	if(escort_base[i]["u_weight"]){
@@ -108,7 +109,7 @@ module.exports = function() {
 						awardList : data,
 						carInfo : carInfo
 					}
-					self.sendToUser(uid,notify)
+					self.sendToUser(messageName,uid,notify)
 				}
 			})
 			var notify = {
@@ -119,6 +120,49 @@ module.exports = function() {
 		}else{
 			console.error("escortFinish error"+uid)
 		}
+	}
+	//劫镖完成
+	local.robFinish = function(uid,target,result,carInfo,cb) {
+		//添加记录
+		var info = {type : "robbed",carInfo : carInfo,result : result}
+		local.userInfos[uid]["messageList"].push(info)
+		self.sendToUser(messageName,uid,info)
+		info = {type : "beenRobbed",carInfo : carInfo,result : result}
+		local.userInfos[target]["messageList"].push(info)
+		self.sendToUser(messageName,target,info)
+		//判断胜负
+		if(result.result == "win"){
+			local.robSuccess(uid,target,result,carInfo,cb)
+		}else{
+			cb(true,{"success" : false})
+		}
+	}
+	//劫镖成功收益
+	local.robSuccess = function(uid,target,result,carInfo,cb) {
+		carInfo.robCount++
+		var samsara = local.userInfos[uid]["samsara"]
+		var baseAward = escort_samsara[samsara][carInfo.quality+"_base"]
+		var robAward = escort_samsara[samsara][carInfo.quality+"_rob"]
+		var rate = escort_cfg["robRate"]["value"]
+		var str = ""
+		var list = baseAward.split("&")
+		for(var i = 0;i < list.length;i++){
+			var m_list = list[i].split(":")
+			var itemId = m_list[0]
+			var value = parseInt(m_list[1] * rate)
+			if(i != 0){
+				str += "&"
+			}
+			str += itemId + ":" + value
+		}
+		str += "&"+robAward
+		self.addItemStr(uid,str,1,function(flag,data) {
+			var info = {
+				"success" : true,
+				"awardList" : data
+			}
+			cb(flag,info)
+		})
 	}
 	//初始化玩家信息
 	local.userInit = function(uid) {
@@ -134,7 +178,8 @@ module.exports = function() {
 			"robNum" : 0,
 			"samsara" : samsara,
 			"quality" : "car0",
-			"carInfo" : false
+			"carInfo" : false,
+			"messageList" : []
 		}
 		local.userInfos[uid] = info
 		local.updateEscortCar(uid)
@@ -175,8 +220,13 @@ module.exports = function() {
 				cb(false,"未参与玩法")
 			return
 		}
-		var samsara = local.userInfos[uid]["samsara"]
 		var info = local.subscribeMaps[uid]
+		if(!info){
+			if(cb)
+				cb(false,"未订阅")
+			return
+		}
+		var samsara = local.userInfos[uid]["samsara"]
 		local.subscribeUsers[samsara].remove(info)
 		delete local.subscribeMaps[uid]
 		console.log(local.subscribeUsers[samsara])
@@ -185,7 +235,7 @@ module.exports = function() {
 	}
 	//发送镖车消息给订阅玩家
 	local.sendCarMessage = function(samsara,notify) {
-		self.sendByTypeToUser("escort",local.subscribeUsers[samsara],notify)
+		self.sendByTypeToUser(messageName,local.subscribeUsers[samsara],notify)
 	}
 	//镖车刷新
 	this.updateEscortCar = function(uid,cb) {
@@ -246,7 +296,7 @@ module.exports = function() {
 			cb(false,"现在不能押镖")
 			return
 		}
-		if(local.userInfos[uid]["escortNum"] >= 2){
+		if(local.userInfos[uid]["escortNum"] >= escort_cfg["playCount"]["value"]){
 			cb(false,"押镖次数已用完")
 			return
 		}
@@ -281,7 +331,36 @@ module.exports = function() {
 		cb(true,carInfo)
 	}
 	//劫镖
-	this.robEscort = function() {
-		
+	this.robEscort = function(uid,target,cb) {
+		if(!local.userInfos[uid]){
+			cb(false,"未参与玩法")
+			return
+		}
+		if(!local.userInfos[target] || !local.userInfos[target]["carInfo"]){
+			cb(false,"镖车不存在")
+			return
+		}
+		var carInfo = local.userInfos[target]["carInfo"]
+		if(uid == target){
+			cb(false,"不能抢劫自己的镖车")
+			return
+		}
+		if(local.userInfos[uid]["robNum"] >= escort_cfg["robCount"]["value"]){
+			cb(false,"劫镖次数已用完")
+			return
+		}
+		if(carInfo["robCount"] >= escort_cfg["loseCount"]["value"]){
+			cb(false,"该镖车已经被抢太多次了,给他留一点吧")
+			return
+		}
+		var atkTeam = this.userTeam(uid)
+		if(!atkTeam){
+			cb(false,"跨服数据未同步")
+			return
+		}
+		local.userInfos[uid]["robNum"]++
+		var defTeam = carInfo["team"]
+		var result = self.fightContorl.fighting(atkTeam,defTeam,Date.now(),null,true)
+		local.robFinish(uid,target,result,carInfo,cb)
 	}
 }
