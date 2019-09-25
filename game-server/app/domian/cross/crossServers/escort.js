@@ -139,7 +139,6 @@ module.exports = function() {
 	}
 	//劫镖成功收益
 	local.robSuccess = function(uid,target,result,carInfo,cb) {
-		carInfo.robCount++
 		var samsara = local.userInfos[uid]["samsara"]
 		var baseAward = escort_samsara[samsara][carInfo.quality+"_base"]
 		var robAward = escort_samsara[samsara][carInfo.quality+"_rob"]
@@ -163,6 +162,14 @@ module.exports = function() {
 			}
 			cb(flag,info)
 		})
+		carInfo.robCount++
+		var notify = {
+			type : "robSuccess",
+			uid : uid,
+			target : target,
+			robCount : carInfo.robCount
+		}
+		local.sendCarMessage(samsara,notify)
 	}
 	//初始化玩家信息
 	local.userInit = function(uid) {
