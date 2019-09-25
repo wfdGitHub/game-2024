@@ -11,7 +11,7 @@ formula.calDamage = function(attacker, target, skill) {
 		return damageInfo
 	}
 	//暴击判断
-	var crit = 0.05 * ((attacker.getTotalAtt("crit")) / (K * target.getTotalAtt("critDef") || 1))
+	var crit = 0.1 * ((attacker.getTotalAtt("crit")) / (K * target.getTotalAtt("critDef") || 1))
 	if(attacker.fighting.seeded.random()  < crit){
 		damageInfo.crit = true
 	}
@@ -29,7 +29,7 @@ formula.calDamage = function(attacker, target, skill) {
 		damage = Math.round(damage * (1.5 + attacker.getTotalAtt("slay") / 1000))
 	}
 	if(damageInfo.block){
-		damage = Math.round(damage * (1 - target.getTotalAtt("blockRate")))
+		damage = Math.round(damage * (1 - target.getTotalAtt("blockRate") - 0.25))
 	}
 	//伤害加深
 	if(attacker.getTotalAtt("amp")){
