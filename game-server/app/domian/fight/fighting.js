@@ -144,13 +144,17 @@ fighting.prototype.getResult = function() {
 		recordList : this.recordList,
 		seededNum : this.seededNum,
 		time : this.curTime,
-		characterArr : []
+		atkTeam : [],
+		defTeam : []
 	}
-	this.characterArr.forEach(function(character) {
-		info.characterArr.push(character.getSimpleInfo())
+	this.atkTeam.forEach(function(character) {
+		info.atkTeam.push(character.baseOtps)
+	})
+	this.defTeam.forEach(function(character) {
+		info.defTeam.push(character.baseOtps)
 	})
 	var verify = ""+info.result+info.recordList.length+info.seededNum+info.time
-	info.characterArr.forEach(function(character) {
+	this.characterArr.forEach(function(character) {
 		verify += character.name+character.hp+"/"+character.maxHP
 	})
 	info.verify = verify
