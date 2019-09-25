@@ -332,6 +332,10 @@ module.exports = function() {
 	}
 	//劫镖
 	this.robEscort = function(uid,target,cb) {
+		if(!this.state){
+			cb(false,"玩法未开启")
+			return
+		}
 		if(!local.userInfos[uid]){
 			cb(false,"未参与玩法")
 			return
