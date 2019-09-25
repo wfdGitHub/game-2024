@@ -12,10 +12,10 @@ fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo,seededNum,rea
 	var maxTime = 180000		//最大时间
 	var atkTeam = []
 	var defTeam = []
-	for(var i in atkTeamInfo){
+	for(var i = 0;i < atkTeamInfo.length;i++){
 		atkTeam.push(entityFun(atkTeamInfo[i]))
 	}
-	for(var i in defTeamInfo){
+	for(var i = 0;i < defTeamInfo.length;i++){
 		defTeam.push(entityFun(defTeamInfo[i]))
 	}
 	var fighting = new fightingFun(atkTeam,defTeam,{stepper : this.stepper,maxTime : this.maxTime,seededNum : seededNum,readList : readList,auto : auto})

@@ -123,7 +123,7 @@ area.prototype.readyFight = function(uid) {
 		return false
 	}
 	var team = []
-	for(var i in this.players[uid].characters){
+	for(var i = 0;i < this.players[uid].characters.length;i++){
 		team.push(this.players[uid].characters[i])
 	}
 	var fightPet = this.players[uid].fightPet
