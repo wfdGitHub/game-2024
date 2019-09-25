@@ -38,5 +38,9 @@
   "loseRate": {
     "des": "被劫损失比例",
     "value": 0.05
+  },
+  "runTime": {
+    "des": "押镖时间",
+    "value": 30000
   }
 }
