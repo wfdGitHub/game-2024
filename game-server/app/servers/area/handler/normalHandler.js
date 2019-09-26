@@ -24,7 +24,7 @@ normalHandler.prototype.useItem = function(msg, session, next) {
 normalHandler.prototype.getOnhookAward = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getOnhookAward(uid,1.2,function(flag,data) {
+  this.areaManager.areaMap[areaId].getOnhookAward(uid,1,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

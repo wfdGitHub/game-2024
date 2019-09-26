@@ -78,7 +78,7 @@ module.exports = function() {
 		var self = this
 		self.getPlayerData(uid,"onhookLastTime",function(onhookLastTime) {
 			var curTime = Date.now()
-			var tmpTime = Math.floor((curTime - onhookLastTime) / (60 * 1000))
+			var tmpTime = Math.floor((curTime - onhookLastTime) / 1000)
 			// console.log("tmpTime ",tmpTime)
 			if(tmpTime < 5){
 				cb(false,"time is too short "+tmpTime)
@@ -89,10 +89,10 @@ module.exports = function() {
 					cb(false,"level config error "+level)
 					return
 				}
-			  	self.incrbyPlayerData(uid,"onhookLastTime",tmpTime * 60 * 1000)
+			  	self.incrbyPlayerData(uid,"onhookLastTime",tmpTime * 1000)
 			  	var awardTime = tmpTime
-			  	if(awardTime > 1440){
-			  		awardTime = 1440
+			  	if(awardTime > 86400){
+			  		awardTime = 86400
 			  	}
 			  	var on_hook_award = checkpointsCfg[level].on_hook_award
 			  	// console.log("on_hook_award ",on_hook_award)
