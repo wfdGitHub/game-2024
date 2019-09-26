@@ -9,8 +9,10 @@ crossRemote.prototype.userLogin = function(uid,areaId,serverId,cid,playerInfo,cb
 }
 
 //玩家离开
-crossRemote.prototype.userLeave = function(uid) {
+crossRemote.prototype.userLeave = function(uid,cb) {
 	this.crossManager.userLeave(uid)
+	if(cb)
+		cb(true)
 }
 module.exports = function(app) {
 	return bearcat.getBean({

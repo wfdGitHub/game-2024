@@ -16,6 +16,7 @@ var area = function(otps,app) {
 	this.fightContorl = fightContorlFun()
 	this.heroId = 10001
 	this.dayStr = (new Date()).toDateString()
+	this.crossUids = {}
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
 		fun.call(this)
@@ -96,6 +97,9 @@ area.prototype.userLeave = function(uid) {
 		delete this.connectorMap[uid]
 		this.onlineNum--
 	}
+	if(this.crossUids[uid]){
+		this.app.rpc.cross.crossRemote.userLeave(null,this.crossUids[uid],null)
+	}
 }
 //发送消息给玩家
 area.prototype.sendToUser = function(uid,notify) {
@@ -154,12 +158,16 @@ area.prototype.recordFight = function(atkTeam,defTeam,seededNum,readList) {
 	 this.redisDao.db.hmset("test:fight",obj)
 }
 //连入跨服服务器
-area.prototype.loginCross = function(uid,cb) {
+area.prototype.loginCross = function(uid,crossUid,cb) {
 	if(!this.players[uid]){
 		cb(false,"没有该玩家数据")
 		return
 	}
-    this.app.rpc.cross.crossRemote.userLogin(null,uid,this.areaId,this.app.serverId,this.connectorMap[uid],this.players[uid],function(flag,data) {
+	var self = this
+    self.app.rpc.cross.crossRemote.userLogin(null,uid,self.areaId,self.app.serverId,self.connectorMap[uid],self.players[uid],function(flag,data) {
+    	if(flag){
+    		self.crossUids[uid] = crossUid
+    	}
 		cb(flag,data)
 	})
 }

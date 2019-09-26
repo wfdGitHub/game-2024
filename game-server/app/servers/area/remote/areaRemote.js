@@ -65,6 +65,14 @@ areaRemote.prototype.openChestAward = function(uid,areaId,chestId,rate,cb) {
 		cb(false)
 	}
 }
+//发送邮件
+areaRemote.prototype.sendMail = function(uid,areaId,title,text,atts,cb) {
+	if(this.areaManager.areaMap[areaId]){
+		this.areaManager.areaMap[areaId].sendMail(uid,title,text,atts,cb)
+	}else{
+		cb(false)
+	}
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "areaRemote",

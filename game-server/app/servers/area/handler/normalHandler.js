@@ -87,10 +87,11 @@ normalHandler.prototype.buyShop = function(msg, session, next) {
 normalHandler.prototype.loginCross = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].loginCross(uid,function(flag,data) {
+  var crossUid = areaId+"|"+uid+"|"+this.app.serverId
+  this.areaManager.areaMap[areaId].loginCross(uid,crossUid,function(flag,data) {
     if(flag){
-      session.set("cross",true)
-      session.push("cross")
+      session.set("crossUid",crossUid)
+      session.push("crossUid")
     }
     next(null,{flag : flag,data : data})
   })

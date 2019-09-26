@@ -73,19 +73,19 @@ module.exports = function() {
 				}
 			}
 			for(var i = 0;i < finishList.length;i++){
-				local.escortFinish(finishList[i]["uid"],samsara)
+				local.escortFinish(finishList[i]["crossUid"],samsara)
 			}
 		}
 	}
 	//押镖完成
-	local.escortFinish = function(uid,samsara) {
-		var carInfo = local.userInfos[uid]["carInfo"]
+	local.escortFinish = function(crossUid,samsara) {
+		var carInfo = local.userInfos[crossUid]["carInfo"]
 		if(carInfo){
 			//镖车刷新
-			local.userInfos[uid]["quality"] = "car0"
-			local.updateEscortCar(uid)
-			local.userInfos[uid]["carInfo"] = false
-			local.userInfos[uid]["escortNum"]++
+			local.userInfos[crossUid]["quality"] = "car0"
+			local.updateEscortCar(crossUid)
+			local.userInfos[crossUid]["carInfo"] = false
+			local.userInfos[crossUid]["escortNum"]++
 			//计算收益
 			var baseAward = escort_samsara[samsara][carInfo.quality+"_base"]
 			var playAward = escort_samsara[samsara][carInfo.quality+"_play"]
@@ -102,44 +102,46 @@ module.exports = function() {
 				str += itemId + ":" + value
 			}
 			str += "&"+playAward
-			self.addItemStr(uid,str,1,function(flag,data) {
+			var title = escort_cfg["passTitle"]["value"]
+			var text = escort_cfg["passText"]["value"]
+			self.sendAward(crossUid,title,text,str,function(flag,data) {
 				if(flag){
 					var notify = {
-						type : "escortFinish",
+						type : "myEscortFinish",
 						awardList : data,
 						carInfo : carInfo
 					}
-					self.sendToUser(messageName,uid,notify)
+					self.sendToUser(messageName,crossUid,notify)
 				}
 			})
 			var notify = {
 				type : "escortFinish",
-				uid : uid
+				crossUid : crossUid
 			}
 			local.sendCarMessage(samsara,notify)
 		}else{
-			console.error("escortFinish error"+uid)
+			console.error("escortFinish error"+crossUid)
 		}
 	}
 	//劫镖完成
-	local.robFinish = function(uid,target,result,carInfo,cb) {
+	local.robFinish = function(crossUid,target,result,carInfo,cb) {
 		//添加记录
 		var info = {type : "robbed",carInfo : carInfo,result : result}
-		local.userInfos[uid]["messageList"].push(info)
-		self.sendToUser(messageName,uid,info)
+		local.userInfos[crossUid]["messageList"].push(info)
+		self.sendToUser(messageName,crossUid,info)
 		info = {type : "beenRobbed",carInfo : carInfo,result : result}
 		local.userInfos[target]["messageList"].push(info)
 		self.sendToUser(messageName,target,info)
 		//判断胜负
 		if(result.result == "win"){
-			local.robSuccess(uid,target,result,carInfo,cb)
+			local.robSuccess(crossUid,target,result,carInfo,cb)
 		}else{
 			cb(true,{"success" : false})
 		}
 	}
 	//劫镖成功收益
-	local.robSuccess = function(uid,target,result,carInfo,cb) {
-		var samsara = local.userInfos[uid]["samsara"]
+	local.robSuccess = function(crossUid,target,result,carInfo,cb) {
+		var samsara = local.userInfos[crossUid]["samsara"]
 		var baseAward = escort_samsara[samsara][carInfo.quality+"_base"]
 		var robAward = escort_samsara[samsara][carInfo.quality+"_rob"]
 		var rate = escort_cfg["robRate"]["value"]
@@ -155,7 +157,9 @@ module.exports = function() {
 			str += itemId + ":" + value
 		}
 		str += "&"+robAward
-		self.addItemStr(uid,str,1,function(flag,data) {
+		var title = escort_cfg["robTitle"]["value"]
+		var text = escort_cfg["robText"]["value"]
+		self.sendAward(crossUid,title,text,str,function(flag,data) {
 			var info = {
 				"success" : true,
 				"awardList" : data
@@ -165,17 +169,16 @@ module.exports = function() {
 		carInfo.robCount++
 		var notify = {
 			type : "robSuccess",
-			uid : uid,
+			crossUid : crossUid,
 			target : target,
 			robCount : carInfo.robCount
 		}
 		local.sendCarMessage(samsara,notify)
 	}
 	//初始化玩家信息
-	local.userInit = function(uid) {
-		var team = self.userTeam(uid)
+	local.userInit = function(crossUid) {
+		var team = self.userTeam(crossUid)
 		if(!team){
-			cb(false,"跨服数据未同步")
 			return
 		}
 		var curLv = team[0].level
@@ -188,55 +191,54 @@ module.exports = function() {
 			"carInfo" : false,
 			"messageList" : []
 		}
-		local.userInfos[uid] = info
-		local.updateEscortCar(uid)
-		return local.userInfos[uid]
+		local.userInfos[crossUid] = info
+		local.updateEscortCar(crossUid)
+		return local.userInfos[crossUid]
 	}
 	//获取我的镖车信息
-	this.getEscortInfo = function(uid,cb) {
+	this.getEscortInfo = function(crossUid,cb) {
 		if(!this.state){
 			cb(false,"玩法未开启")
 			return
 		}
-		if(!local.userInfos[uid]){
-			local.userInit(uid)	
+		if(!local.userInfos[crossUid]){
+			local.userInit(crossUid)	
 		}
-		cb(true,local.userInfos[uid])
+		cb(true,local.userInfos[crossUid])
 	}
 	//获取并订阅镖车消息
-	this.subscribeCarMessage = function(uid,cb) {
-		if(!local.userInfos[uid]){
+	this.subscribeCarMessage = function(crossUid,cb) {
+		if(!local.userInfos[crossUid]){
 			cb(false,"未参与玩法")
 			return
 		}
-		if(local.subscribeMaps[uid]){
+		if(local.subscribeMaps[crossUid]){
 			cb(false,"消息已订阅")
 			return
 		}
-		var samsara = local.userInfos[uid]["samsara"]
-		var info = {uid : uid,sid : self.players[uid]["cid"]}
+		var samsara = local.userInfos[crossUid]["samsara"]
+		var info = {uid : self.players[crossUid]["uid"],sid : self.players[crossUid]["cid"]}
 		local.subscribeUsers[samsara].push(info)
-		local.subscribeMaps[uid] = info
+		local.subscribeMaps[crossUid] = info
 		var carList = local.carMap[samsara].slice(-10)
 		cb(true,carList)
 	}
 	//取消订阅
-	this.unSubscribeCarMessage = function(uid,cb) {
-		if(!local.userInfos[uid]){
+	this.unSubscribeCarMessage = function(crossUid,cb) {
+		if(!local.userInfos[crossUid]){
 			if(cb)
 				cb(false,"未参与玩法")
 			return
 		}
-		var info = local.subscribeMaps[uid]
+		var info = local.subscribeMaps[crossUid]
 		if(!info){
 			if(cb)
 				cb(false,"未订阅")
 			return
 		}
-		var samsara = local.userInfos[uid]["samsara"]
+		var samsara = local.userInfos[crossUid]["samsara"]
 		local.subscribeUsers[samsara].remove(info)
-		delete local.subscribeMaps[uid]
-		console.log(local.subscribeUsers[samsara])
+		delete local.subscribeMaps[crossUid]
 		if(cb)
 			cb(true)
 	}
@@ -245,91 +247,91 @@ module.exports = function() {
 		self.sendByTypeToUser(messageName,local.subscribeUsers[samsara],notify)
 	}
 	//镖车刷新
-	this.updateEscortCar = function(uid,cb) {
+	this.updateEscortCar = function(crossUid,cb) {
 		if(!this.state){
 			cb(false,"玩法未开启")
 			return
 		}
-		if(!local.userInfos[uid]){
+		if(!local.userInfos[crossUid]){
 			cb(false,"未参与玩法")
 			return
 		}
-		if(local.userInfos[uid]["carInfo"]){
+		if(local.userInfos[crossUid]["carInfo"]){
 			cb(false,"正在押镖中")
 			return
 		}
-		var quality = local.userInfos[uid]["quality"]
+		var quality = local.userInfos[crossUid]["quality"]
 		if(!carWeight[quality]){
 			cb(false,"镖车已不能刷新")
 			return
 		}
-		console.log(escort_cfg["refresh"]["value"])
-		this.consumeItems(uid,escort_cfg["refresh"]["value"],1,function(flag,err) {
+		this.consumeItems(crossUid,escort_cfg["refresh"]["value"],1,function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
-				cb(true,local.updateEscortCar(uid))
+				cb(true,local.updateEscortCar(crossUid))
 			}
 		})
 	}
 	//镖车刷新
-	local.updateEscortCar = function(uid) {
-		var quality = local.userInfos[uid]["quality"]
+	local.updateEscortCar = function(crossUid) {
+		var quality = local.userInfos[crossUid]["quality"]
 		var rand = Math.random() * carWeight[quality]["allRand"]
 		for(var i = 0;i < carWeight[quality]["weightList"].length;i++){
 			if(rand < carWeight[quality]["weightList"][i]["value"]){
 				quality = carWeight[quality]["weightList"][i]["name"]
-				local.userInfos[uid]["quality"] = quality
+				local.userInfos[crossUid]["quality"] = quality
 				break
 			}
 		}
 		return quality
 	}
 	//开始押镖
-	this.beginEscort = function(uid,cb) {
+	this.beginEscort = function(crossUid,cb) {
 		if(!this.state){
 			cb(false,"玩法未开启")
 			return
 		}
-		if(!local.userInfos[uid]){
+		if(!local.userInfos[crossUid]){
 			cb(false,"未参与玩法")
 			return
 		}
-		if(local.userInfos[uid]["carInfo"]){
+		if(local.userInfos[crossUid]["carInfo"]){
 			cb(false,"正在押镖中")
 			return
 		}
-		if(this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.017) || this.curHours >= (escort_cfg["closeTime2"]["value"] - 0.017)){
+		if((this.curHours < escort_cfg["closeTime1"]["value"] && this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.017))
+		 || (this.curHours < escort_cfg["closeTime2"]["value"] && this.curHours >= (escort_cfg["closeTime2"]["value"] - 0.017))){
 			cb(false,"现在不能押镖")
 			return
 		}
-		if(local.userInfos[uid]["escortNum"] >= escort_cfg["playCount"]["value"]){
+		if(local.userInfos[crossUid]["escortNum"] >= escort_cfg["playCount"]["value"]){
 			cb(false,"押镖次数已用完")
 			return
 		}
-		var team = this.userTeam(uid)
+		var team = this.userTeam(crossUid)
 		if(!team){
 			cb(false,"跨服数据未同步")
 			return
 		}
-		var samsara = local.userInfos[uid]["samsara"]
+		var samsara = local.userInfos[crossUid]["samsara"]
 		if(!local.carMap[samsara]){
 			cb(false,"该等级未开放押镖")
 			return
 		}
 		var carInfo = {
-			"uid" : uid,
-			"user" : self.getSimpleUser(uid),
+			"crossUid" : crossUid,
+			"user" : self.getSimpleUser(crossUid),
 			"time" : Date.now(),
-			"quality" : local.userInfos[uid]["quality"],
+			"quality" : local.userInfos[crossUid]["quality"],
 			"team" : team,
 			"robCount" : 0
 		}
-		local.userInfos[uid]["carInfo"] = carInfo
+		local.userInfos[crossUid]["carInfo"] = carInfo
 		local.carMap[samsara].push(carInfo)
 		var notify = {
 			type : "beginEscort",
-			uid : uid,
+			crossUid : crossUid,
 			user : carInfo.user,
 			time : carInfo.time,
 			quality : carInfo.quality
@@ -338,12 +340,12 @@ module.exports = function() {
 		cb(true,carInfo)
 	}
 	//劫镖
-	this.robEscort = function(uid,target,cb) {
+	this.robEscort = function(crossUid,target,cb) {
 		if(!this.state){
 			cb(false,"玩法未开启")
 			return
 		}
-		if(!local.userInfos[uid]){
+		if(!local.userInfos[crossUid]){
 			cb(false,"未参与玩法")
 			return
 		}
@@ -352,11 +354,11 @@ module.exports = function() {
 			return
 		}
 		var carInfo = local.userInfos[target]["carInfo"]
-		if(uid == target){
+		if(crossUid == target){
 			cb(false,"不能抢劫自己的镖车")
 			return
 		}
-		if(local.userInfos[uid]["robNum"] >= escort_cfg["robCount"]["value"]){
+		if(local.userInfos[crossUid]["robNum"] >= escort_cfg["robCount"]["value"]){
 			cb(false,"劫镖次数已用完")
 			return
 		}
@@ -364,14 +366,14 @@ module.exports = function() {
 			cb(false,"该镖车已经被抢太多次了,给他留一点吧")
 			return
 		}
-		var atkTeam = this.userTeam(uid)
+		var atkTeam = this.userTeam(crossUid)
 		if(!atkTeam){
 			cb(false,"跨服数据未同步")
 			return
 		}
-		local.userInfos[uid]["robNum"]++
+		local.userInfos[crossUid]["robNum"]++
 		var defTeam = carInfo["team"]
 		var result = self.fightContorl.fighting(atkTeam,defTeam,Date.now(),null,true)
-		local.robFinish(uid,target,result,carInfo,cb)
+		local.robFinish(crossUid,target,result,carInfo,cb)
 	}
 }

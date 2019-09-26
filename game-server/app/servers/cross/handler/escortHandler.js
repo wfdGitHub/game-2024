@@ -6,8 +6,8 @@ var escortHandler = function(app) {
 };
 //获取我的押镖信息
 escortHandler.prototype.getEscortInfo = function(msg, session, next) {
-  var uid = session.uid
-  this.crossManager.getEscortInfo(uid,function(flag,data) {
+  var crossUid = session.get("crossUid")
+  this.crossManager.getEscortInfo(crossUid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -15,37 +15,37 @@ escortHandler.prototype.getEscortInfo = function(msg, session, next) {
 
 //镖车刷新
 escortHandler.prototype.updateEscortCar = function(msg, session, next) {
-	var uid = session.uid
-	this.crossManager.updateEscortCar(uid,function(flag,data) {
+	var crossUid = session.get("crossUid")
+	this.crossManager.updateEscortCar(crossUid,function(flag,data) {
 		next(null,{flag : flag,data : data})
 	})
 }
 //开始押镖
 escortHandler.prototype.beginEscort = function(msg, session, next) {
-  var uid = session.uid
-  this.crossManager.beginEscort(uid,function(flag,data) {
+  var crossUid = session.get("crossUid")
+  this.crossManager.beginEscort(crossUid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
 //劫镖
 escortHandler.prototype.robEscort = function(msg, session, next) {
-  var uid = session.uid
+  var crossUid = session.get("crossUid")
   var target = msg.target
-  this.crossManager.robEscort(uid,target,function(flag,data) {
+  this.crossManager.robEscort(crossUid,target,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
 //订阅镖车信息
 escortHandler.prototype.subscribeCarMessage = function(msg, session, next) {
-  var uid = session.uid
-  this.crossManager.subscribeCarMessage(uid,function(flag,data) {
+  var crossUid = session.get("crossUid")
+  this.crossManager.subscribeCarMessage(crossUid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
 //取消订阅
 escortHandler.prototype.unSubscribeCarMessage = function(msg, session, next) {
-  var uid = session.uid
-  this.crossManager.unSubscribeCarMessage(uid,function(flag,data) {
+  var crossUid = session.get("crossUid")
+  this.crossManager.unSubscribeCarMessage(crossUid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
