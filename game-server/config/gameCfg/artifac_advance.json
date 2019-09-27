@@ -2,166 +2,199 @@
   "1": {
     "name": "凡1阶",
     "pc": "101:100",
-    "pa": "maxHP:100&atk:10&def:10"
+    "atk_pa": "maxHP:100&atk:10&def:10",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "2": {
     "name": "凡2阶",
     "pc": "101:101",
-    "pa": "maxHP:100&atk:10&def:11"
+    "atk_pa": "maxHP:100&atk:10&def:11",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "3": {
     "name": "凡3阶",
     "pc": "101:102",
-    "pa": "maxHP:100&atk:10&def:12"
+    "atk_pa": "maxHP:100&atk:10&def:12",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "4": {
     "name": "凡4阶",
     "pc": "101:103",
-    "pa": "maxHP:100&atk:10&def:13"
+    "atk_pa": "maxHP:100&atk:10&def:13",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "5": {
     "name": "凡5阶",
     "pc": "101:104",
-    "pa": "maxHP:100&atk:10&def:14"
+    "atk_pa": "maxHP:100&atk:10&def:14",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "6": {
     "name": "凡6阶",
     "pc": "101:105",
-    "pa": "maxHP:100&atk:10&def:15"
+    "atk_pa": "maxHP:100&atk:10&def:15",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "7": {
     "name": "凡7阶",
     "pc": "101:106",
-    "pa": "maxHP:100&atk:10&def:16"
+    "atk_pa": "maxHP:100&atk:10&def:16",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "8": {
     "name": "凡8阶",
     "pc": "101:107",
-    "pa": "maxHP:100&atk:10&def:17"
+    "atk_pa": "maxHP:100&atk:10&def:17",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "9": {
     "name": "凡9阶",
     "pc": "101:108",
-    "pa": "maxHP:100&atk:10&def:18"
+    "atk_pa": "maxHP:100&atk:10&def:18",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "10": {
     "name": "凡10阶",
     "pc": "101:109",
-    "pa": "maxHP:100&atk:10&def:19"
+    "atk_pa": "maxHP:100&atk:10&def:19",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "11": {
     "name": "突破",
     "pc": "101:110",
-    "pa": "maxHP:100&atk:10&def:20"
+    "atk_pa": "maxHP:100&atk:10&def:20",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "12": {
     "name": "普1阶",
     "pc": "101:111",
-    "pa": "maxHP:100&atk:10&def:21"
+    "atk_pa": "maxHP:100&atk:10&def:21",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "13": {
     "name": "普2阶",
     "pc": "101:112",
-    "pa": "maxHP:100&atk:10&def:22"
+    "atk_pa": "maxHP:100&atk:10&def:22",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "14": {
     "name": "普3阶",
     "pc": "101:113",
-    "pa": "maxHP:100&atk:10&def:23"
+    "atk_pa": "maxHP:100&atk:10&def:23",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "15": {
     "name": "普4阶",
     "pc": "101:114",
-    "pa": "maxHP:100&atk:10&def:24"
+    "atk_pa": "maxHP:100&atk:10&def:24",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "16": {
     "name": "普5阶",
     "pc": "101:115",
-    "pa": "maxHP:100&atk:10&def:25"
+    "atk_pa": "maxHP:100&atk:10&def:25",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "17": {
     "name": "普6阶",
     "pc": "101:116",
-    "pa": "maxHP:100&atk:10&def:26"
+    "atk_pa": "maxHP:100&atk:10&def:26",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "18": {
     "name": "普7阶",
     "pc": "101:117",
-    "pa": "maxHP:100&atk:10&def:27"
+    "atk_pa": "maxHP:100&atk:10&def:27",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "19": {
     "name": "普8阶",
     "pc": "101:118",
-    "pa": "maxHP:100&atk:10&def:28"
+    "atk_pa": "maxHP:100&atk:10&def:28",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "20": {
     "name": "普9阶",
     "pc": "101:119",
-    "pa": "maxHP:100&atk:10&def:29"
+    "atk_pa": "maxHP:100&atk:10&def:29",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "21": {
     "name": "普10阶",
     "pc": "101:120",
-    "pa": "maxHP:100&atk:10&def:30"
+    "atk_pa": "maxHP:100&atk:10&def:30",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "22": {
     "name": "突破",
     "pc": "101:121",
-    "pa": "maxHP:100&atk:10&def:31"
+    "atk_pa": "maxHP:100&atk:10&def:31",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "23": {
     "name": "灵1阶",
     "pc": "101:122",
-    "pa": "maxHP:100&atk:10&def:32"
+    "atk_pa": "maxHP:100&atk:10&def:32",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "24": {
     "name": "灵2阶",
     "pc": "101:123",
-    "pa": "maxHP:100&atk:10&def:33"
+    "atk_pa": "maxHP:100&atk:10&def:33",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "25": {
     "name": "灵3阶",
     "pc": "101:124",
-    "pa": "maxHP:100&atk:10&def:34"
+    "atk_pa": "maxHP:100&atk:10&def:34",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "26": {
     "name": "灵4阶",
     "pc": "101:125",
-    "pa": "maxHP:100&atk:10&def:35"
+    "atk_pa": "maxHP:100&atk:10&def:35",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "27": {
     "name": "灵5阶",
     "pc": "101:126",
-    "pa": "maxHP:100&atk:10&def:36"
+    "atk_pa": "maxHP:100&atk:10&def:36",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "28": {
     "name": "灵6阶",
     "pc": "101:127",
-    "pa": "maxHP:100&atk:10&def:37"
+    "atk_pa": "maxHP:100&atk:10&def:37",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "29": {
     "name": "灵7阶",
     "pc": "101:128",
-    "pa": "maxHP:100&atk:10&def:38"
+    "atk_pa": "maxHP:100&atk:10&def:38",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "30": {
     "name": "灵8阶",
     "pc": "101:129",
-    "pa": "maxHP:100&atk:10&def:39"
+    "atk_pa": "maxHP:100&atk:10&def:39",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "31": {
     "name": "灵9阶",
     "pc": "101:130",
-    "pa": "maxHP:100&atk:10&def:40"
+    "atk_pa": "maxHP:100&atk:10&def:40",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "32": {
     "name": "灵10阶",
     "pc": "101:131",
-    "pa": "maxHP:100&atk:10&def:41"
+    "atk_pa": "maxHP:100&atk:10&def:41",
+    "def_pa": "maxHP:100&atk:10&def:10"
   },
   "33": {
     "name": "突破",
     "pc": "101:132",
-    "pa": "maxHP:100&atk:10&def:42"
+    "atk_pa": "maxHP:100&atk:10&def:42",
+    "def_pa": "maxHP:100&atk:10&def:10"
   }
 }

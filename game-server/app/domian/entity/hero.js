@@ -107,7 +107,8 @@ var hero = function(otps) {
     //神器进阶加成
     for(var aId in artifact_base){
         if(otps[aId] && otps[aId+"_advance"]){
-            var pastr = artifac_advance[otps[aId+"_advance"]]["pa"]
+            var type = artifact_base[aId]["type"]
+            var pastr = artifac_advance[otps[aId+"_advance"]][type+"_pa"]
             characterFun.prototype.formula(otps,pastr,1)
         }
     }
