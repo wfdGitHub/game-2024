@@ -59,6 +59,10 @@
         console.log("onMessage")
         console.log(data)
       })
+      pomelo.on("escort",function(data) {
+        console.log("escort")
+        console.log(data)
+      })
       pomelo.on("onChat",function(data) {
         console.log("onChat")
         console.log(data)
@@ -66,6 +70,55 @@
       //开启宝箱
       var getChestAward = function(chestId) {
         pomelo.request("area.normalHandler.getChestAward", {chestId : chestId}, function(data) {
+            console.log(data);
+        });
+      }
+      //============运镖玩法================//
+      //获取我的押镖信息
+      var getEscortInfo = function() {
+        pomelo.request("cross.escortHandler.getEscortInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //刷新镖车
+      var updateEscortCar = function() {
+        pomelo.request("cross.escortHandler.updateEscortCar", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //开始押镖
+      var beginEscort = function() {
+        pomelo.request("cross.escortHandler.beginEscort", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //劫镖
+      var robEscort = function(target) {
+        pomelo.request("cross.escortHandler.robEscort", {target : target}, function(data) {
+            console.log(data);
+        });
+      }
+      //订阅镖车信息
+      var subscribeCarMessage = function() {
+        pomelo.request("cross.escortHandler.subscribeCarMessage", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //取消订阅
+      var unSubscribeCarMessage = function() {
+        pomelo.request("cross.escortHandler.unSubscribeCarMessage", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //============跨服相关================//
+      //连接跨服服务器
+      var loginCross = function() {
+        pomelo.request("area.normalHandler.loginCross", {}, function(data) {
+            console.log(data);
+        });
+      }
+      var test = function() {
+        pomelo.request("cross.crossHandler.test", {}, function(data) {
             console.log(data);
         });
       }
@@ -487,11 +540,6 @@
             console.log(data);
         })
       }
-      var test = function(items) {
-        pomelo.request("area.normalHandler.test",{items : items}, function(data) {
-            console.log(data);
-        })
-      }
       //角色进阶
       var characterAdvanced = function(characterId) {
         pomelo.request("area.normalHandler.characterAdvanced",{characterId : characterId}, function(data) {
@@ -578,24 +626,20 @@
     </script>
   </head>
   <body>
-    <div class="g-doc">
-      <div class="g-banner" style="border:none">
-        <div class="logo">
-          <div class="img"></div>
-        </div>
-      </div>
-      <div class="g-background">
-        <div class="g-content">
-          Welcome to Pomelo
-        </div>
-      </div>
-      <div class="g-link">
-        Home:
-        <a href="https://github.com/NetEase/pomelo">https://github.com/NetEase/pomelo</a>
-      </div>
-      <div class="g-button">
-        <input id="test" type="button" value="Test Game Server" onclick="show()"/>
-      </div>
+    <div class="g-button">
+      登录系统 : 
+      <input id="test" type="button" value="登录账号" onclick="entry(1003)"/>
+      <input id="test" type="button" value="注册角色" onclick="register(2,''+Date.now(),1)"/>
+      <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>
+      <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
+    </div>
+    <div class="g-button">
+      押镖玩法 : 
+      <input id="test" type="button" value="参与押镖" onclick="getEscortInfo()"/>
+      <input id="test" type="button" value="订阅镖车消息" onclick="subscribeCarMessage()"/>
+      <input id="test" type="button" value="取消订阅" onclick="unSubscribeCarMessage()"/>
+      <input id="test" type="button" value="开始押镖" onclick="beginEscort()"/>
+      <input id="test" type="button" value="更换镖车" onclick="updateEscortCar()"/>
     </div>
   </body>
 </html>

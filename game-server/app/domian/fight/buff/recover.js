@@ -3,7 +3,7 @@ var buffBasic = require("./buffBasic.js")
 var recover = function(character,target,otps) {
 	buffBasic.call(this,character,target,otps)
 	this.interval = 500
-	this.recoverList = []
+	this.recoverList = {}
 	this.count = 0
 	this.all = 0
 	this.init = function() {

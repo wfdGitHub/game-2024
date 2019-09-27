@@ -6,19 +6,19 @@ var fightContorl = function() {
 	this.stepper = 50 				//间隔
 }
 //获取战斗结果 atkTeam 攻方阵容 defTeam  守方阵容
-fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo,seededNum,readList) {
+fightContorl.prototype.fighting = function(atkTeamInfo,defTeamInfo,seededNum,readList,auto) {
 	var curTime = 0			//当前时间
 	var stepper = 50    	//单位时间
 	var maxTime = 180000		//最大时间
 	var atkTeam = []
 	var defTeam = []
-	for(var i in atkTeamInfo){
+	for(var i = 0;i < atkTeamInfo.length;i++){
 		atkTeam.push(entityFun(atkTeamInfo[i]))
 	}
-	for(var i in defTeamInfo){
+	for(var i = 0;i < defTeamInfo.length;i++){
 		defTeam.push(entityFun(defTeamInfo[i]))
 	}
-	var fighting = new fightingFun(atkTeam,defTeam,{stepper : this.stepper,maxTime : this.maxTime,seededNum : seededNum,readList : readList})
+	var fighting = new fightingFun(atkTeam,defTeam,{stepper : this.stepper,maxTime : this.maxTime,seededNum : seededNum,readList : readList,auto : auto})
 	var count = 0
 	while(!fighting.isOver() && count++ < this.maxCount){
 	 	fighting.update()

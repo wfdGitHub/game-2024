@@ -12,20 +12,23 @@ module.exports = function(otps) {
 	for(var i in charactersCfg[characterId]){
 		info[i] = charactersCfg[characterId][i]
 	}
+	var entity
 	switch(info.characterType){
 		case "hero":
-			return new heroFun(info)
+			entity = new heroFun(info)
 		break
 		case "partner":
-			return new partnerFun(info)
+			entity = new partnerFun(info)
 		break
 		case "mob":
-			return new mobFun(info)
+			entity = new mobFun(info)
 		break
 		case "pet":
-			return new petFun(info)
+			entity = new petFun(info)
 		break
 		default:
-			return new mobFun(info)
+			entity = mobFun(info)
 	}
+	entity.baseOtps = otps
+	return entity
 }

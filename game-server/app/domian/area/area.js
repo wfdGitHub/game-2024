@@ -16,6 +16,7 @@ var area = function(otps,app) {
 	this.fightContorl = fightContorlFun()
 	this.heroId = 10001
 	this.dayStr = (new Date()).toDateString()
+	this.crossUids = {}
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
 		fun.call(this)
@@ -62,7 +63,8 @@ area.prototype.userLogin = function(uid,cid,cb) {
 	var self = this
 	self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
 		if(playerInfo){
-			self.onlineNum++
+			if(!self.players[uid])
+				self.onlineNum++
 			self.players[uid] = playerInfo
 			self.connectorMap[uid] = cid
 			self.getOnhookAward(uid,1,function(flag,data) {
@@ -81,6 +83,7 @@ area.prototype.userLogin = function(uid,cid,cb) {
 		cb(playerInfo)
 	})
 }
+//玩家首次登录
 area.prototype.dayFirstLogin = function(uid) {
 	console.log("玩家 "+uid+" 今日首次登录")
 	this.setObj(uid,"playerInfo","dayStr",this.dayStr)
@@ -93,6 +96,9 @@ area.prototype.userLeave = function(uid) {
 		delete this.players[uid]
 		delete this.connectorMap[uid]
 		this.onlineNum--
+	}
+	if(this.crossUids[uid]){
+		this.app.rpc.cross.crossRemote.userLeave(null,this.crossUids[uid],null)
 	}
 }
 //发送消息给玩家
@@ -115,12 +121,13 @@ area.prototype.getAreaServerInfo = function(){
 area.prototype.getAreaPlayers = function(){
 	return this.players
 }
+//预备战斗
 area.prototype.readyFight = function(uid) {
 	if(!this.players[uid]){
 		return false
 	}
 	var team = []
-	for(var i in this.players[uid].characters){
+	for(var i = 0;i < this.players[uid].characters.length;i++){
 		team.push(this.players[uid].characters[i])
 	}
 	var fightPet = this.players[uid].fightPet
@@ -149,6 +156,20 @@ area.prototype.recordFight = function(atkTeam,defTeam,seededNum,readList) {
 		readList : JSON.stringify(readList) || "null"
 	}
 	 this.redisDao.db.hmset("test:fight",obj)
+}
+//连入跨服服务器
+area.prototype.loginCross = function(uid,crossUid,cb) {
+	if(!this.players[uid]){
+		cb(false,"没有该玩家数据")
+		return
+	}
+	var self = this
+    self.app.rpc.cross.crossRemote.userLogin(null,uid,self.areaId,self.app.serverId,self.connectorMap[uid],self.players[uid],function(flag,data) {
+    	if(flag){
+    		self.crossUids[uid] = crossUid
+    	}
+		cb(flag,data)
+	})
 }
 module.exports = {
 	id : "area",

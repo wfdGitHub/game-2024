@@ -6,6 +6,7 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.defTeam = defTeam
 	this.stepper = otps.stepper
 	this.maxTime = otps.maxTime
+	this.auto = otps.auto || false
     this.nodeCount = 0
     this.characterArr = this.atkTeam.concat(this.defTeam)
 	var self = this
@@ -19,7 +20,7 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.readList = otps.readList || []
 	this.seededNum = otps.seededNum || (new Date()).getTime()
     this.seeded = new seeded(this.seededNum)
-	for(var i in this.atkTeam){
+	for(var i = 0;i < this.atkTeam.length;i++){
 		this.atkTeam[i].setArg(this.atkTeam,this.defTeam,this)
 		if(this.atkTeam[i].globalSkills.length){
 			for(var j = 0;j < this.atkTeam[i].globalSkills.length;j++){
@@ -37,7 +38,7 @@ var fighting = function(atkTeam,defTeam,otps) {
 			}
 		}
 	}
-	for(var i in this.defTeam){
+	for(var i = 0;i < this.defTeam.length;i++){
 		this.defTeam[i].setArg(this.defTeam,this.atkTeam,this)
 		if(this.defTeam[i].globalSkills.length){
 			for(var j = 0;j < this.defTeam[i].globalSkills.length;j++){
@@ -83,7 +84,7 @@ fighting.prototype.update = function() {
     		c : skill.character.nodeId,
     		s : skill.skillId
     	}
-    	if(skill.character.characterType != "mob"){
+    	if(this.auto || skill.character.characterType != "mob"){
     		this.recordList.push(record)
     	}
     	if(!skill.character.died){
@@ -109,7 +110,7 @@ fighting.prototype.checkOver = function() {
 		return
 	}
 	var flag = true
-	for(var i in this.atkTeam){
+	for(var i = 0;i < this.atkTeam.length;i++){
 		if(!this.atkTeam[i].died){
 			flag = false
 			break
@@ -121,7 +122,7 @@ fighting.prototype.checkOver = function() {
 		return
 	}
 	flag = true
-	for(var i in this.defTeam){
+	for(var i = 0;i < this.defTeam.length;i++){
 		if(!this.defTeam[i].died){
 			flag = false
 			break
@@ -143,13 +144,17 @@ fighting.prototype.getResult = function() {
 		recordList : this.recordList,
 		seededNum : this.seededNum,
 		time : this.curTime,
-		characterArr : []
+		atkTeam : [],
+		defTeam : []
 	}
-	this.characterArr.forEach(function(character) {
-		info.characterArr.push(character.getSimpleInfo())
+	this.atkTeam.forEach(function(character) {
+		info.atkTeam.push(character.baseOtps)
+	})
+	this.defTeam.forEach(function(character) {
+		info.defTeam.push(character.baseOtps)
 	})
 	var verify = ""+info.result+info.recordList.length+info.seededNum+info.time
-	info.characterArr.forEach(function(character) {
+	this.characterArr.forEach(function(character) {
 		verify += character.name+character.hp+"/"+character.maxHP
 	})
 	info.verify = verify

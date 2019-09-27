@@ -44,7 +44,7 @@ attackSkill.prototype.lessenCD = function(dt) {
 			this.coolDownTime = 0
 			this.state = true
 			this.character.event.emit("skillReady",this)
-			if(!this.defaultSkill && this.character.characterType == "mob"){
+			if(!this.defaultSkill && (this.character.fighting.auto || this.character.characterType == "mob")){
 				this.use()
 			}
 		}

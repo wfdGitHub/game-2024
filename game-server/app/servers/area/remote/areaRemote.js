@@ -36,7 +36,43 @@ areaRemote.prototype.getAreaPlayers = function(areaId,cb) {
 		cb(false)
 	}
 }
-
+//消耗道具
+areaRemote.prototype.consumeItems = function(uid,areaId,str,rate,cb) {
+	console.log("consumeItems",uid,areaId,str,rate)
+	if(this.areaManager.areaMap[areaId]){
+		this.areaManager.areaMap[areaId].consumeItems(uid,str,rate,cb)
+	}else{
+		cb(false)
+	}
+}
+//物品奖励
+areaRemote.prototype.addItemStr = function(uid,areaId,str,rate,cb) {
+	console.log("addItemStr",uid,areaId,str,rate)
+	if(this.areaManager.areaMap[areaId]){
+		var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,rate)
+		cb(true,awardList)
+	}else{
+		cb(false)
+	}
+}
+//宝箱奖励
+areaRemote.prototype.openChestAward = function(uid,areaId,chestId,rate,cb) {
+	console.log("openChestAward",uid,areaId,chestId,rate)
+	if(this.areaManager.areaMap[areaId]){
+		var awardList = this.areaManager.areaMap[areaId].openChestAward(uid,chestId,rate)
+		cb(true,awardList)
+	}else{
+		cb(false)
+	}
+}
+//发送邮件
+areaRemote.prototype.sendMail = function(uid,areaId,title,text,atts,cb) {
+	if(this.areaManager.areaMap[areaId]){
+		this.areaManager.areaMap[areaId].sendMail(uid,title,text,atts,cb)
+	}else{
+		cb(false)
+	}
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "areaRemote",
