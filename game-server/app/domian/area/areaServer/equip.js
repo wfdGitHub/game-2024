@@ -438,7 +438,7 @@ module.exports = function() {
 					}
 					var endWashLv = baseWashLv + quality
 					var name = washArr[Math.floor(Math.random() * washArr.length)]
-					var value = equip_wash[eInfo.samsara][name] + Math.floor(Math.random() * (equip_wash[eInfo.samsara + 1][name] - equip_wash[eInfo.samsara][name]))
+					var value = equip_wash[endWashLv][name] + Math.floor(Math.random() * (equip_wash[endWashLv + 1][name] - equip_wash[endWashLv][name]))
 					var str = name+":"+value
 					newWash.push({pa : str,quality : quality})
 				}else{
