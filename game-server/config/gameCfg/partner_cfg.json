@@ -1,14 +1,22 @@
 {
   "10002": {
-    "activate": "101:100"
+    "activate": 100,
+    "item": 101
   },
   "10003": {
-    "activate": "101:100"
+    "activate": 100,
+    "item": 101
   },
   "10004": {
-    "activate": "101:100"
+    "activate": 100,
+    "item": 101
   },
   "10005": {
-    "activate": "101:100"
+    "activate": 100,
+    "item": 101
+  },
+  "10006": {
+    "activate": 100,
+    "item": 101
   }
 }

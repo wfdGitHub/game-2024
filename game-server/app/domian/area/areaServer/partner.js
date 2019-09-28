@@ -24,7 +24,10 @@ module.exports = function() {
 			cb(false,"等级不足")
 			return
 		}
-		var str =  partner_star[curStar + 1]["pc"]
+		var str = partner_cfg[characterId]["item"]+":"+partner_star[curStar + 1]["s_pc"]
+		if(partner_star[curStar + 1]["n_pc"]){
+			str += "&" + partner_star[curStar + 1]["n_pc"]
+		}
 		self.consumeItems(uid,str,1,function(flag,err) {
 			if(!flag){
 				cb(flag,err)
@@ -46,7 +49,7 @@ module.exports = function() {
 			cb(false,"角色已存在" + characterId)
 			return
 		}
-		var str = partner_cfg[characterId]["activate"]
+		var str = partner_cfg[characterId]["item"]+":"+partner_cfg[characterId]["activate"]
 		self.consumeItems(uid,str,1,function(flag,err) {
 			if(!flag){
 				cb(flag,err)
