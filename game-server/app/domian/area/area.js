@@ -127,7 +127,7 @@ area.prototype.readyFight = function(uid) {
 		return false
 	}
 	var team = []
-	for(var i = 0;i < this.players[uid].characters.length;i++){
+	for(var i in this.players[uid].characters){
 		team.push(this.players[uid].characters[i])
 	}
 	var fightPet = this.players[uid].fightPet
