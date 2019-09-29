@@ -22,6 +22,7 @@ var fighting = function(atkTeam,defTeam,otps) {
     this.seeded = new seeded(this.seededNum)
 	for(var i = 0;i < this.atkTeam.length;i++){
 		this.atkTeam[i].setArg(this.atkTeam,this.defTeam,this)
+		this.atkTeam[i].belong = "atkTeam"
 		if(this.atkTeam[i].globalSkills.length){
 			for(var j = 0;j < this.atkTeam[i].globalSkills.length;j++){
 					var tmpSkill = golbal_skill[this.atkTeam[i].globalSkills[j]]
@@ -40,6 +41,7 @@ var fighting = function(atkTeam,defTeam,otps) {
 	}
 	for(var i = 0;i < this.defTeam.length;i++){
 		this.defTeam[i].setArg(this.defTeam,this.atkTeam,this)
+		this.defTeam[i].belong = "defTeam"
 		if(this.defTeam[i].globalSkills.length){
 			for(var j = 0;j < this.defTeam[i].globalSkills.length;j++){
 					var tmpSkill = golbal_skill[this.defTeam[i].globalSkills[j]]
