@@ -31,8 +31,11 @@ var attackSkill = function(otps,character) {
 	this.state = false 							 //可用状态
 }
 //更新技能CD
-attackSkill.prototype.updateCD = function() {
+attackSkill.prototype.updateCD = function(dt) {
 	this.coolDownTime = this.skillCD
+	if(dt){
+		this.coolDownTime += parseInt(dt) || 0
+	}
 	this.state = false
 	this.character.event.emit("updateCD",this)
 }
