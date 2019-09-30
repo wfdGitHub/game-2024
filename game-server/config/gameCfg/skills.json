@@ -483,7 +483,7 @@
     "skillType": "hurt",
     "mul": 1,
     "fixed": 500,
-    "skillCD": 8,
+    "skillCD": 0,
     "targetType": "normal",
     "buffId": false
   },

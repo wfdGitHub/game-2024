@@ -499,7 +499,7 @@
     "spriteType": "mob1",
     "characterType": "pet",
     "des": "虾兵",
-    "defaultSkill": 20001,
+    "defaultSkill": 30001,
     "skills": "[20011]",
     "str": 10,
     "agi": 10,
