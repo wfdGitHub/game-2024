@@ -131,7 +131,7 @@ var character = function(otps) {
 	          var specialSkill =  new attackSkill({skillId : skillId},self)
 	          self.addFightSkill(specialSkill)
           }else{
-          	console.error("skillId not find")
+          	console.error("skillId not find:"+skillId)
           }
         })
     }
@@ -141,7 +141,7 @@ var character = function(otps) {
 		    var skill =  new attackSkill({skillId : otps.defaultSkill},this)
 		    this.setDefaultSkill(skill)
     	}else{
-        	console.error("defaultSkill not find")
+        	console.error("defaultSkill not find:"+otps.defaultSkill)
     	}
     }
 }
