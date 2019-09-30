@@ -3,6 +3,7 @@ var connectorManager = function() {}
 
 connectorManager.prototype.init = function(app) {
 	this.app = app
+	this.channelService = this.app.get('channelService')
 	this.app.event.on("remove_servers", this.removeServers.bind(this));
 }
 //服务器实体机器移除
@@ -15,6 +16,16 @@ connectorManager.prototype.removeServers = function(ids) {
 			}
 		})
 	})
+}
+connectorManager.prototype.sendByUid = function(uid,notify,cb) {
+	this.channelService.pushMessageByUids('onMessage', notify, [{
+      uid: uid,
+      sid: this.app.get('serverId')
+    }],function() {
+      if(cb){
+        cb() 
+      }
+    });
 }
 module.exports = {
 	id : "connectorManager",

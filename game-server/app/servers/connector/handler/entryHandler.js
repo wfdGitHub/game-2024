@@ -4,6 +4,7 @@ var entryHandler = function(app) {
   this.app = app;
   this.sessionService = this.app.get('sessionService')
   this.areaDeploy = this.app.get('areaDeploy')
+  this.connectorManager = this.app.get('connectorManager')
 };
 //登陆账号
 entryHandler.prototype.entryAccount = function(msg, session, next) {
@@ -28,7 +29,7 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
 	var uid = Number(userInfo.uid)
 	//检查重复登录
 	if( !! this.sessionService.getByUid(uid)) {
-		console.log("检测到重复登录",this.sessionService.getByUid(uid))
+		this.connectorManager.sendByUid(uid,{type : "kick"})
 		var uids = this.sessionService.getByUid(uid)
 		for(var i = 0;i < uids.length;i++){
 			this.sessionService.kickBySessionId(uids[i].id)
@@ -38,12 +39,12 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
 	session.set("nickname",userInfo.nickname)
 	session.set("head",userInfo.head)
 	session.on("closed",onUserLeave.bind(this))
-	console.log(uid + "  entrySuccess..")
+	console.log(uid + "  entrySuccess.."+ "  "+this.app.serverId)
   	next(null, {flag : true,msg : userInfo});
 }
 var onUserLeave = function(session) {
 	var uid = session.uid
-	console.log("onUserLeave : "+uid)
+	console.log("onUserLeave : "+uid + "  "+this.app.serverId)
 	if(uid){
 		session.unbind(uid)
 		var serverId = session.get("serverId")
