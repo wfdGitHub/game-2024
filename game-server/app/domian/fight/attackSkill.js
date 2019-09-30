@@ -161,12 +161,18 @@ attackSkill.prototype.useRecoverSkill = function() {
 		var value = Math.round(self.mul * target.maxHP + self.fixed)
 		target.recoverHp(value)
 		//施加BUFF
-        var buffotps = buffs[self.buffId]
-        buffotps.buffId = self.buffId
-        buffotps.buffArg = self.buffArg
-        buffotps.duration = self.duration
-        buffotps.buffRate = self.buffRate
-        target.addBuff(self.character,buffotps)
+		if(self.buffId){
+			var buffotps = buffs[self.buffId]
+			if(buffotps){
+		        buffotps.buffId = self.buffId
+		        buffotps.buffArg = self.buffArg
+		        buffotps.duration = self.duration
+		        buffotps.buffRate = self.buffRate
+		        target.addBuff(self.character,buffotps)
+			}else{
+				console.error("buffotps error buffId "+buffId)
+			}
+		}
 	})
 }
 module.exports = attackSkill
