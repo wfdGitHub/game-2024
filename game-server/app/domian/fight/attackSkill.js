@@ -6,10 +6,16 @@ var attackSkill = function(otps,character) {
     this.skillId = otps.skillId             //技能ID
     this.type = "skill"
     var skillInfo = skills[this.skillId]
-    this.buffId = skillInfo.buffId
-    this.buffArg = skillInfo.buffArg
-    this.duration = skillInfo.duration
-    this.buffRate = skillInfo.buffRate
+    if(skillInfo.buffId){
+    	if(buffs[skillInfo.buffId]){
+		    this.buffId = skillInfo.buffId
+		    this.buffArg = skillInfo.buffArg
+		    this.duration = skillInfo.duration
+		    this.buffRate = skillInfo.buffRate
+    	}else{
+    		console.error("buffId not find "+skillInfo.buffId)
+    	}
+    }
     if(!skillInfo){
         console.error("skillInfo not found "+otps.skillId)
     }

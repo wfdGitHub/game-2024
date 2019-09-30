@@ -6,6 +6,7 @@ var talentCfg = require("../../../config/gameCfg/talent.json")
 var samsaraCfg = require("../../../config/gameCfg/samsara.json")
 var passiveCfg = require("../../../config/gameCfg/passive.json")
 var attackSkill = require("../fight/attackSkill.js")
+var skillsCfg = require("../../../config/gameCfg/skills.json")
 var angre_skillCD = 100000					//怒气技能cd
 var angre_injured = 100						//受伤恢复怒气值 * 受伤千分比
 var angre_attack = 30 						//攻击恢复怒气值 * 敌方受伤千分比
@@ -126,14 +127,22 @@ var character = function(otps) {
         var self = this
         var skills = JSON.parse(otps.skills)
         skills.forEach(function(skillId) {
-          var specialSkill =  new attackSkill({skillId : skillId},self)
-          self.addFightSkill(specialSkill)
+          if(skillsCfg[skillId]){
+	          var specialSkill =  new attackSkill({skillId : skillId},self)
+	          self.addFightSkill(specialSkill)
+          }else{
+          	console.error("skillId not find")
+          }
         })
     }
     //增加普攻技能
     if(otps.defaultSkill){
-	    var skill =  new attackSkill({skillId : otps.defaultSkill},this)
-	    this.setDefaultSkill(skill)
+    	if(skillsCfg[otps.defaultSkill]){
+		    var skill =  new attackSkill({skillId : otps.defaultSkill},this)
+		    this.setDefaultSkill(skill)
+    	}else{
+        	console.error("defaultSkill not find")
+    	}
     }
 }
 //计算加成效果
