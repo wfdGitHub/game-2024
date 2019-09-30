@@ -482,7 +482,7 @@
     "des": "宠物普通攻击技能",
     "skillType": "hurt",
     "mul": 1,
-    "fixed": 500,
+    "fixed": 0,
     "skillCD": 0,
     "targetType": "normal",
     "buffId": false
