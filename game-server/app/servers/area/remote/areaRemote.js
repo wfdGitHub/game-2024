@@ -18,8 +18,8 @@ areaRemote.prototype.userLogin = function(uid,areaId,cid,cb) {
 }
 
 //玩家离开
-areaRemote.prototype.userLeave = function(uid,cb) {
-	this.areaManager.userLeave(uid)
+areaRemote.prototype.userLeave = function(uid,cid,cb) {
+	this.areaManager.userLeave(uid,cid)
 	cb()
 }
 //获取服务器信息

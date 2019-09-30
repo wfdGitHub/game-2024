@@ -11,6 +11,7 @@ var areaManager = function() {
 areaManager.prototype.init = function(app) {
 	console.log("init")
 	this.app = app
+	this.channelService = this.app.get('channelService')
 	var self = this
 	self.areaDao.getAreaServerMap(function(data) {
 		if(data){
@@ -45,21 +46,26 @@ areaManager.prototype.userLogin = function(uid,areaId,cid,cb) {
 		cb(false)
 		return
 	}
+	if(this.connectorMap[uid]){
+		this.app.rpc.connector.connectorRemote.kickUser.toServer(this.connectorMap[uid],uid,null)
+	}
+	self.connectorMap[uid] = cid
 	self.areaMap[areaId].userLogin(uid,cid,function(playerInfo) {
 		if(playerInfo){
-			self.connectorMap[uid] = cid
 			self.userMap[uid] = areaId
 		}
 		cb(playerInfo)
 	})
 }
 //玩家离开
-areaManager.prototype.userLeave = function(uid) {
-	var areaId = this.userMap[uid]
-	delete this.userMap[uid]
-	delete this.connectorMap[uid]
-	if(areaId && this.areaMap[areaId]){
-		this.areaMap[areaId].userLeave(uid)
+areaManager.prototype.userLeave = function(uid,cid) {
+	if(this.connectorMap[uid] == cid){
+		var areaId = this.userMap[uid]
+		delete this.userMap[uid]
+		delete this.connectorMap[uid]
+		if(areaId && this.areaMap[areaId]){
+			this.areaMap[areaId].userLeave(uid)
+		}
 	}
 }
 //服务器实体机器移除
@@ -82,6 +88,13 @@ areaManager.prototype.getAreaServerInfos = function() {
 		list[i] = this.areaMap[i].getAreaServerInfo()
 	}
 	return list
+}
+//发送消息给玩家
+areaManager.prototype.sendToUser = function(uid,notify) {
+	this.channelService.pushMessageByUids('onMessage', notify, [{
+      uid: uid,
+      sid: this.connectorMap[uid]
+    }])
 }
 module.exports = {
 	id : "areaManager",

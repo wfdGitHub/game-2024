@@ -29,8 +29,9 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
 	//检查重复登录
 	if( !! this.sessionService.getByUid(uid)) {
 		console.log("检测到重复登录",this.sessionService.getByUid(uid))
-		for(var i in this.sessionService.getByUid(uid)){
-			this.sessionService.kickBySessionId(this.sessionService.getByUid(uid)[i].id)
+		var uids = this.sessionService.getByUid(uid)
+		for(var i = 0;i < uids.length;i++){
+			this.sessionService.kickBySessionId(uids[i].id)
 		}
 	}
 	session.bind(uid)
@@ -47,7 +48,7 @@ var onUserLeave = function(session) {
 		session.unbind(uid)
 		var serverId = session.get("serverId")
 		if(serverId){
-			this.app.rpc.area.areaRemote.userLeave.toServer(serverId,uid,null)
+			this.app.rpc.area.areaRemote.userLeave.toServer(serverId,uid,this.app.serverId,null)
 		}
 		this.app.rpc.chat.chatRemote.userLeave(null,uid,this.app.serverId,null)
 	}
