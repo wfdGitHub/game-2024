@@ -1,200 +1,602 @@
 {
   "1": {
     "name": "凡1阶",
-    "pc": "101:100",
-    "atk_pa": "maxHP:100&atk:10&def:10",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:5",
+    "atk_pa": "atk:24&crit:4&wreck:4",
+    "def_pa": "def:24&critDef:4&block:4"
   },
   "2": {
     "name": "凡2阶",
-    "pc": "101:101",
-    "atk_pa": "maxHP:100&atk:10&def:11",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:5",
+    "atk_pa": "atk:36&crit:8&wreck:8",
+    "def_pa": "def:36&critDef:8&block:8"
   },
   "3": {
     "name": "凡3阶",
-    "pc": "101:102",
-    "atk_pa": "maxHP:100&atk:10&def:12",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:5",
+    "atk_pa": "atk:54&crit:14&wreck:14",
+    "def_pa": "def:54&critDef:14&block:14"
   },
   "4": {
     "name": "凡4阶",
-    "pc": "101:103",
-    "atk_pa": "maxHP:100&atk:10&def:13",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:5",
+    "atk_pa": "atk:78&crit:22&wreck:22",
+    "def_pa": "def:78&critDef:22&block:22"
   },
   "5": {
     "name": "凡5阶",
-    "pc": "101:104",
-    "atk_pa": "maxHP:100&atk:10&def:14",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:5",
+    "atk_pa": "atk:108&crit:32&wreck:32",
+    "def_pa": "def:108&critDef:32&block:32"
   },
   "6": {
     "name": "凡6阶",
-    "pc": "101:105",
-    "atk_pa": "maxHP:100&atk:10&def:15",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:5",
+    "atk_pa": "atk:144&crit:44&wreck:44",
+    "def_pa": "def:144&critDef:44&block:44"
   },
   "7": {
     "name": "凡7阶",
-    "pc": "101:106",
-    "atk_pa": "maxHP:100&atk:10&def:16",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:5",
+    "atk_pa": "atk:186&crit:58&wreck:58",
+    "def_pa": "def:186&critDef:58&block:58"
   },
   "8": {
     "name": "凡8阶",
-    "pc": "101:107",
-    "atk_pa": "maxHP:100&atk:10&def:17",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:5",
+    "atk_pa": "atk:234&crit:74&wreck:74",
+    "def_pa": "def:234&critDef:74&block:74"
   },
   "9": {
     "name": "凡9阶",
-    "pc": "101:108",
-    "atk_pa": "maxHP:100&atk:10&def:18",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:5",
+    "atk_pa": "atk:288&crit:92&wreck:92",
+    "def_pa": "def:288&critDef:92&block:92"
   },
   "10": {
     "name": "凡10阶",
-    "pc": "101:109",
-    "atk_pa": "maxHP:100&atk:10&def:19",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:5",
+    "atk_pa": "atk:348&crit:112&wreck:112",
+    "def_pa": "def:348&critDef:112&block:112"
   },
   "11": {
     "name": "突破",
-    "pc": "101:110",
-    "atk_pa": "maxHP:100&atk:10&def:20",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1003:10",
+    "atk_pa": "atk:414&crit:134&wreck:134",
+    "def_pa": "def:414&critDef:134&block:134"
   },
   "12": {
     "name": "普1阶",
-    "pc": "101:111",
-    "atk_pa": "maxHP:100&atk:10&def:21",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:10",
+    "atk_pa": "atk:486&crit:158&wreck:158",
+    "def_pa": "def:486&critDef:158&block:158"
   },
   "13": {
     "name": "普2阶",
-    "pc": "101:112",
-    "atk_pa": "maxHP:100&atk:10&def:22",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:10",
+    "atk_pa": "atk:564&crit:184&wreck:184",
+    "def_pa": "def:564&critDef:184&block:184"
   },
   "14": {
     "name": "普3阶",
-    "pc": "101:113",
-    "atk_pa": "maxHP:100&atk:10&def:23",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:10",
+    "atk_pa": "atk:648&crit:212&wreck:212",
+    "def_pa": "def:648&critDef:212&block:212"
   },
   "15": {
     "name": "普4阶",
-    "pc": "101:114",
-    "atk_pa": "maxHP:100&atk:10&def:24",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:10",
+    "atk_pa": "atk:738&crit:242&wreck:242",
+    "def_pa": "def:738&critDef:242&block:242"
   },
   "16": {
     "name": "普5阶",
-    "pc": "101:115",
-    "atk_pa": "maxHP:100&atk:10&def:25",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:10",
+    "atk_pa": "atk:834&crit:274&wreck:274",
+    "def_pa": "def:834&critDef:274&block:274"
   },
   "17": {
     "name": "普6阶",
-    "pc": "101:116",
-    "atk_pa": "maxHP:100&atk:10&def:26",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:10",
+    "atk_pa": "atk:936&crit:308&wreck:308",
+    "def_pa": "def:936&critDef:308&block:308"
   },
   "18": {
     "name": "普7阶",
-    "pc": "101:117",
-    "atk_pa": "maxHP:100&atk:10&def:27",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:10",
+    "atk_pa": "atk:1044&crit:344&wreck:344",
+    "def_pa": "def:1044&critDef:344&block:344"
   },
   "19": {
     "name": "普8阶",
-    "pc": "101:118",
-    "atk_pa": "maxHP:100&atk:10&def:28",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:10",
+    "atk_pa": "atk:1158&crit:382&wreck:382",
+    "def_pa": "def:1158&critDef:382&block:382"
   },
   "20": {
     "name": "普9阶",
-    "pc": "101:119",
-    "atk_pa": "maxHP:100&atk:10&def:29",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:10",
+    "atk_pa": "atk:1278&crit:422&wreck:422",
+    "def_pa": "def:1278&critDef:422&block:422"
   },
   "21": {
     "name": "普10阶",
-    "pc": "101:120",
-    "atk_pa": "maxHP:100&atk:10&def:30",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:10",
+    "atk_pa": "atk:1404&crit:464&wreck:464",
+    "def_pa": "def:1404&critDef:464&block:464"
   },
   "22": {
     "name": "突破",
-    "pc": "101:121",
-    "atk_pa": "maxHP:100&atk:10&def:31",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1003:20",
+    "atk_pa": "atk:1536&crit:508&wreck:508",
+    "def_pa": "def:1536&critDef:508&block:508"
   },
   "23": {
     "name": "灵1阶",
-    "pc": "101:122",
-    "atk_pa": "maxHP:100&atk:10&def:32",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:15",
+    "atk_pa": "atk:1674&crit:554&wreck:554",
+    "def_pa": "def:1674&critDef:554&block:554"
   },
   "24": {
     "name": "灵2阶",
-    "pc": "101:123",
-    "atk_pa": "maxHP:100&atk:10&def:33",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:15",
+    "atk_pa": "atk:1818&crit:602&wreck:602",
+    "def_pa": "def:1818&critDef:602&block:602"
   },
   "25": {
     "name": "灵3阶",
-    "pc": "101:124",
-    "atk_pa": "maxHP:100&atk:10&def:34",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:15",
+    "atk_pa": "atk:1968&crit:652&wreck:652",
+    "def_pa": "def:1968&critDef:652&block:652"
   },
   "26": {
     "name": "灵4阶",
-    "pc": "101:125",
-    "atk_pa": "maxHP:100&atk:10&def:35",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:15",
+    "atk_pa": "atk:2124&crit:704&wreck:704",
+    "def_pa": "def:2124&critDef:704&block:704"
   },
   "27": {
     "name": "灵5阶",
-    "pc": "101:126",
-    "atk_pa": "maxHP:100&atk:10&def:36",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:15",
+    "atk_pa": "atk:2286&crit:758&wreck:758",
+    "def_pa": "def:2286&critDef:758&block:758"
   },
   "28": {
     "name": "灵6阶",
-    "pc": "101:127",
-    "atk_pa": "maxHP:100&atk:10&def:37",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:15",
+    "atk_pa": "atk:2454&crit:814&wreck:814",
+    "def_pa": "def:2454&critDef:814&block:814"
   },
   "29": {
     "name": "灵7阶",
-    "pc": "101:128",
-    "atk_pa": "maxHP:100&atk:10&def:38",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:15",
+    "atk_pa": "atk:2628&crit:872&wreck:872",
+    "def_pa": "def:2628&critDef:872&block:872"
   },
   "30": {
     "name": "灵8阶",
-    "pc": "101:129",
-    "atk_pa": "maxHP:100&atk:10&def:39",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:15",
+    "atk_pa": "atk:2808&crit:932&wreck:932",
+    "def_pa": "def:2808&critDef:932&block:932"
   },
   "31": {
     "name": "灵9阶",
-    "pc": "101:130",
-    "atk_pa": "maxHP:100&atk:10&def:40",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:15",
+    "atk_pa": "atk:2994&crit:994&wreck:994",
+    "def_pa": "def:2994&critDef:994&block:994"
   },
   "32": {
     "name": "灵10阶",
-    "pc": "101:131",
-    "atk_pa": "maxHP:100&atk:10&def:41",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1002:15",
+    "atk_pa": "atk:3186&crit:1058&wreck:1058",
+    "def_pa": "def:3186&critDef:1058&block:1058"
   },
   "33": {
     "name": "突破",
-    "pc": "101:132",
-    "atk_pa": "maxHP:100&atk:10&def:42",
-    "def_pa": "maxHP:100&atk:10&def:10"
+    "pc": "1003:30",
+    "atk_pa": "atk:3384&crit:1124&wreck:1124",
+    "def_pa": "def:3384&critDef:1124&block:1124"
+  },
+  "34": {
+    "name": "黄1阶",
+    "pc": "1002:20",
+    "atk_pa": "atk:3588&crit:1192&wreck:1192",
+    "def_pa": "def:3588&critDef:1192&block:1192"
+  },
+  "35": {
+    "name": "黄2阶",
+    "pc": "1002:20",
+    "atk_pa": "atk:3798&crit:1262&wreck:1262",
+    "def_pa": "def:3798&critDef:1262&block:1262"
+  },
+  "36": {
+    "name": "黄3阶",
+    "pc": "1002:20",
+    "atk_pa": "atk:4014&crit:1334&wreck:1334",
+    "def_pa": "def:4014&critDef:1334&block:1334"
+  },
+  "37": {
+    "name": "黄4阶",
+    "pc": "1002:20",
+    "atk_pa": "atk:4236&crit:1408&wreck:1408",
+    "def_pa": "def:4236&critDef:1408&block:1408"
+  },
+  "38": {
+    "name": "黄5阶",
+    "pc": "1002:20",
+    "atk_pa": "atk:4464&crit:1484&wreck:1484",
+    "def_pa": "def:4464&critDef:1484&block:1484"
+  },
+  "39": {
+    "name": "黄6阶",
+    "pc": "1002:20",
+    "atk_pa": "atk:4698&crit:1562&wreck:1562",
+    "def_pa": "def:4698&critDef:1562&block:1562"
+  },
+  "40": {
+    "name": "黄7阶",
+    "pc": "1002:20",
+    "atk_pa": "atk:4938&crit:1642&wreck:1642",
+    "def_pa": "def:4938&critDef:1642&block:1642"
+  },
+  "41": {
+    "name": "黄8阶",
+    "pc": "1002:20",
+    "atk_pa": "atk:5184&crit:1724&wreck:1724",
+    "def_pa": "def:5184&critDef:1724&block:1724"
+  },
+  "42": {
+    "name": "黄9阶",
+    "pc": "1002:20",
+    "atk_pa": "atk:5436&crit:1808&wreck:1808",
+    "def_pa": "def:5436&critDef:1808&block:1808"
+  },
+  "43": {
+    "name": "黄10阶",
+    "pc": "1002:20",
+    "atk_pa": "atk:5694&crit:1894&wreck:1894",
+    "def_pa": "def:5694&critDef:1894&block:1894"
+  },
+  "44": {
+    "name": "突破",
+    "pc": "1003:50",
+    "atk_pa": "atk:5958&crit:1982&wreck:1982",
+    "def_pa": "def:5958&critDef:1982&block:1982"
+  },
+  "45": {
+    "name": "玄1阶",
+    "pc": "1002:25",
+    "atk_pa": "atk:6228&crit:2072&wreck:2072",
+    "def_pa": "def:6228&critDef:2072&block:2072"
+  },
+  "46": {
+    "name": "玄2阶",
+    "pc": "1002:25",
+    "atk_pa": "atk:6504&crit:2164&wreck:2164",
+    "def_pa": "def:6504&critDef:2164&block:2164"
+  },
+  "47": {
+    "name": "玄3阶",
+    "pc": "1002:25",
+    "atk_pa": "atk:6786&crit:2258&wreck:2258",
+    "def_pa": "def:6786&critDef:2258&block:2258"
+  },
+  "48": {
+    "name": "玄4阶",
+    "pc": "1002:25",
+    "atk_pa": "atk:7074&crit:2354&wreck:2354",
+    "def_pa": "def:7074&critDef:2354&block:2354"
+  },
+  "49": {
+    "name": "玄5阶",
+    "pc": "1002:25",
+    "atk_pa": "atk:7368&crit:2452&wreck:2452",
+    "def_pa": "def:7368&critDef:2452&block:2452"
+  },
+  "50": {
+    "name": "玄6阶",
+    "pc": "1002:25",
+    "atk_pa": "atk:7668&crit:2552&wreck:2552",
+    "def_pa": "def:7668&critDef:2552&block:2552"
+  },
+  "51": {
+    "name": "玄7阶",
+    "pc": "1002:25",
+    "atk_pa": "atk:7974&crit:2654&wreck:2654",
+    "def_pa": "def:7974&critDef:2654&block:2654"
+  },
+  "52": {
+    "name": "玄8阶",
+    "pc": "1002:25",
+    "atk_pa": "atk:8286&crit:2758&wreck:2758",
+    "def_pa": "def:8286&critDef:2758&block:2758"
+  },
+  "53": {
+    "name": "玄9阶",
+    "pc": "1002:25",
+    "atk_pa": "atk:8604&crit:2864&wreck:2864",
+    "def_pa": "def:8604&critDef:2864&block:2864"
+  },
+  "54": {
+    "name": "玄10阶",
+    "pc": "1002:25",
+    "atk_pa": "atk:8928&crit:2972&wreck:2972",
+    "def_pa": "def:8928&critDef:2972&block:2972"
+  },
+  "55": {
+    "name": "突破",
+    "pc": "1003:100",
+    "atk_pa": "atk:9258&crit:3082&wreck:3082",
+    "def_pa": "def:9258&critDef:3082&block:3082"
+  },
+  "56": {
+    "name": "地1阶",
+    "pc": "1002:30",
+    "atk_pa": "atk:9594&crit:3194&wreck:3194",
+    "def_pa": "def:9594&critDef:3194&block:3194"
+  },
+  "57": {
+    "name": "地2阶",
+    "pc": "1002:30",
+    "atk_pa": "atk:9936&crit:3308&wreck:3308",
+    "def_pa": "def:9936&critDef:3308&block:3308"
+  },
+  "58": {
+    "name": "地3阶",
+    "pc": "1002:30",
+    "atk_pa": "atk:10284&crit:3424&wreck:3424",
+    "def_pa": "def:10284&critDef:3424&block:3424"
+  },
+  "59": {
+    "name": "地4阶",
+    "pc": "1002:30",
+    "atk_pa": "atk:10638&crit:3542&wreck:3542",
+    "def_pa": "def:10638&critDef:3542&block:3542"
+  },
+  "60": {
+    "name": "地5阶",
+    "pc": "1002:30",
+    "atk_pa": "atk:10998&crit:3662&wreck:3662",
+    "def_pa": "def:10998&critDef:3662&block:3662"
+  },
+  "61": {
+    "name": "地6阶",
+    "pc": "1002:30",
+    "atk_pa": "atk:11364&crit:3784&wreck:3784",
+    "def_pa": "def:11364&critDef:3784&block:3784"
+  },
+  "62": {
+    "name": "地7阶",
+    "pc": "1002:30",
+    "atk_pa": "atk:11736&crit:3908&wreck:3908",
+    "def_pa": "def:11736&critDef:3908&block:3908"
+  },
+  "63": {
+    "name": "地8阶",
+    "pc": "1002:30",
+    "atk_pa": "atk:12114&crit:4034&wreck:4034",
+    "def_pa": "def:12114&critDef:4034&block:4034"
+  },
+  "64": {
+    "name": "地9阶",
+    "pc": "1002:30",
+    "atk_pa": "atk:12498&crit:4162&wreck:4162",
+    "def_pa": "def:12498&critDef:4162&block:4162"
+  },
+  "65": {
+    "name": "地10阶",
+    "pc": "1002:30",
+    "atk_pa": "atk:12888&crit:4292&wreck:4292",
+    "def_pa": "def:12888&critDef:4292&block:4292"
+  },
+  "66": {
+    "name": "突破",
+    "pc": "1003:200",
+    "atk_pa": "atk:13284&crit:4424&wreck:4424",
+    "def_pa": "def:13284&critDef:4424&block:4424"
+  },
+  "67": {
+    "name": "天1阶",
+    "pc": "1002:40",
+    "atk_pa": "atk:13686&crit:4558&wreck:4558",
+    "def_pa": "def:13686&critDef:4558&block:4558"
+  },
+  "68": {
+    "name": "天2阶",
+    "pc": "1002:40",
+    "atk_pa": "atk:14094&crit:4694&wreck:4694",
+    "def_pa": "def:14094&critDef:4694&block:4694"
+  },
+  "69": {
+    "name": "天3阶",
+    "pc": "1002:40",
+    "atk_pa": "atk:14508&crit:4832&wreck:4832",
+    "def_pa": "def:14508&critDef:4832&block:4832"
+  },
+  "70": {
+    "name": "天4阶",
+    "pc": "1002:40",
+    "atk_pa": "atk:14928&crit:4972&wreck:4972",
+    "def_pa": "def:14928&critDef:4972&block:4972"
+  },
+  "71": {
+    "name": "天5阶",
+    "pc": "1002:40",
+    "atk_pa": "atk:15354&crit:5114&wreck:5114",
+    "def_pa": "def:15354&critDef:5114&block:5114"
+  },
+  "72": {
+    "name": "天6阶",
+    "pc": "1002:40",
+    "atk_pa": "atk:15786&crit:5258&wreck:5258",
+    "def_pa": "def:15786&critDef:5258&block:5258"
+  },
+  "73": {
+    "name": "天7阶",
+    "pc": "1002:40",
+    "atk_pa": "atk:16224&crit:5404&wreck:5404",
+    "def_pa": "def:16224&critDef:5404&block:5404"
+  },
+  "74": {
+    "name": "天8阶",
+    "pc": "1002:40",
+    "atk_pa": "atk:16668&crit:5552&wreck:5552",
+    "def_pa": "def:16668&critDef:5552&block:5552"
+  },
+  "75": {
+    "name": "天9阶",
+    "pc": "1002:40",
+    "atk_pa": "atk:17118&crit:5702&wreck:5702",
+    "def_pa": "def:17118&critDef:5702&block:5702"
+  },
+  "76": {
+    "name": "天10阶",
+    "pc": "1002:40",
+    "atk_pa": "atk:17574&crit:5854&wreck:5854",
+    "def_pa": "def:17574&critDef:5854&block:5854"
+  },
+  "77": {
+    "name": "突破",
+    "pc": "1003:500",
+    "atk_pa": "atk:18036&crit:6008&wreck:6008",
+    "def_pa": "def:18036&critDef:6008&block:6008"
+  },
+  "78": {
+    "name": "宇1阶",
+    "pc": "1002:60",
+    "atk_pa": "atk:18504&crit:6164&wreck:6164",
+    "def_pa": "def:18504&critDef:6164&block:6164"
+  },
+  "79": {
+    "name": "宇2阶",
+    "pc": "1002:60",
+    "atk_pa": "atk:18978&crit:6322&wreck:6322",
+    "def_pa": "def:18978&critDef:6322&block:6322"
+  },
+  "80": {
+    "name": "宇3阶",
+    "pc": "1002:60",
+    "atk_pa": "atk:19458&crit:6482&wreck:6482",
+    "def_pa": "def:19458&critDef:6482&block:6482"
+  },
+  "81": {
+    "name": "宇4阶",
+    "pc": "1002:60",
+    "atk_pa": "atk:19944&crit:6644&wreck:6644",
+    "def_pa": "def:19944&critDef:6644&block:6644"
+  },
+  "82": {
+    "name": "宇5阶",
+    "pc": "1002:60",
+    "atk_pa": "atk:20436&crit:6808&wreck:6808",
+    "def_pa": "def:20436&critDef:6808&block:6808"
+  },
+  "83": {
+    "name": "宇6阶",
+    "pc": "1002:60",
+    "atk_pa": "atk:20934&crit:6974&wreck:6974",
+    "def_pa": "def:20934&critDef:6974&block:6974"
+  },
+  "84": {
+    "name": "宇7阶",
+    "pc": "1002:60",
+    "atk_pa": "atk:21438&crit:7142&wreck:7142",
+    "def_pa": "def:21438&critDef:7142&block:7142"
+  },
+  "85": {
+    "name": "宇8阶",
+    "pc": "1002:60",
+    "atk_pa": "atk:21948&crit:7312&wreck:7312",
+    "def_pa": "def:21948&critDef:7312&block:7312"
+  },
+  "86": {
+    "name": "宇9阶",
+    "pc": "1002:60",
+    "atk_pa": "atk:22464&crit:7484&wreck:7484",
+    "def_pa": "def:22464&critDef:7484&block:7484"
+  },
+  "87": {
+    "name": "宇10阶",
+    "pc": "1002:60",
+    "atk_pa": "atk:22986&crit:7658&wreck:7658",
+    "def_pa": "def:22986&critDef:7658&block:7658"
+  },
+  "88": {
+    "name": "突破",
+    "pc": "1003:1000",
+    "atk_pa": "atk:23514&crit:7834&wreck:7834",
+    "def_pa": "def:23514&critDef:7834&block:7834"
+  },
+  "89": {
+    "name": "宙1阶",
+    "pc": "1002:80",
+    "atk_pa": "atk:24048&crit:8012&wreck:8012",
+    "def_pa": "def:24048&critDef:8012&block:8012"
+  },
+  "90": {
+    "name": "宙2阶",
+    "pc": "1002:80",
+    "atk_pa": "atk:24588&crit:8192&wreck:8192",
+    "def_pa": "def:24588&critDef:8192&block:8192"
+  },
+  "91": {
+    "name": "宙3阶",
+    "pc": "1002:80",
+    "atk_pa": "atk:25134&crit:8374&wreck:8374",
+    "def_pa": "def:25134&critDef:8374&block:8374"
+  },
+  "92": {
+    "name": "宙4阶",
+    "pc": "1002:80",
+    "atk_pa": "atk:25686&crit:8558&wreck:8558",
+    "def_pa": "def:25686&critDef:8558&block:8558"
+  },
+  "93": {
+    "name": "宙5阶",
+    "pc": "1002:80",
+    "atk_pa": "atk:26244&crit:8744&wreck:8744",
+    "def_pa": "def:26244&critDef:8744&block:8744"
+  },
+  "94": {
+    "name": "宙6阶",
+    "pc": "1002:80",
+    "atk_pa": "atk:26808&crit:8932&wreck:8932",
+    "def_pa": "def:26808&critDef:8932&block:8932"
+  },
+  "95": {
+    "name": "宙7阶",
+    "pc": "1002:80",
+    "atk_pa": "atk:27378&crit:9122&wreck:9122",
+    "def_pa": "def:27378&critDef:9122&block:9122"
+  },
+  "96": {
+    "name": "宙8阶",
+    "pc": "1002:80",
+    "atk_pa": "atk:27954&crit:9314&wreck:9314",
+    "def_pa": "def:27954&critDef:9314&block:9314"
+  },
+  "97": {
+    "name": "宙9阶",
+    "pc": "1002:80",
+    "atk_pa": "atk:28536&crit:9508&wreck:9508",
+    "def_pa": "def:28536&critDef:9508&block:9508"
+  },
+  "98": {
+    "name": "宙10阶",
+    "pc": "1002:80",
+    "atk_pa": "atk:29124&crit:9704&wreck:9704",
+    "def_pa": "def:29124&critDef:9704&block:9704"
+  },
+  "99": {
+    "name": "突破",
+    "pc": "1003:1000",
+    "atk_pa": "atk:29718&crit:9902&wreck:9902",
+    "def_pa": "def:29718&critDef:9902&block:9902"
+  },
+  "100": {
+    "name": "洪1阶",
+    "pc": "1002:100",
+    "atk_pa": "atk:29718&crit:9902&wreck:9902",
+    "def_pa": "def:29718&critDef:9902&block:9902"
   }
 }

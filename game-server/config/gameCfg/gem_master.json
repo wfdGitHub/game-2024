@@ -3,234 +3,120 @@
     "name": "宝石大师1段",
     "level": 3,
     "count": 5,
-    "pc": "atk:1"
+    "pc": "atk:100"
   },
   "2": {
     "name": "宝石大师2段",
     "level": 3,
     "count": 8,
-    "pc": "atk:2"
+    "pc": "atk:200"
   },
   "3": {
     "name": "宝石大师3段",
     "level": 3,
     "count": 10,
-    "pc": "atk:3"
+    "pc": "atk:300"
   },
   "4": {
     "name": "宝石大师4段",
     "level": 4,
     "count": 5,
-    "pc": "atk:4"
+    "pc": "atk:400"
   },
   "5": {
     "name": "宝石大师5段",
     "level": 4,
     "count": 8,
-    "pc": "atk:5"
+    "pc": "atk:500"
   },
   "6": {
     "name": "宝石大师6段",
     "level": 4,
     "count": 10,
-    "pc": "atk:6"
+    "pc": "atk:600"
   },
   "7": {
     "name": "宝石大师7段",
     "level": 5,
     "count": 5,
-    "pc": "atk:7"
+    "pc": "atk:700"
   },
   "8": {
     "name": "宝石大师8段",
     "level": 5,
     "count": 8,
-    "pc": "atk:8"
+    "pc": "atk:800"
   },
   "9": {
     "name": "宝石大师9段",
     "level": 5,
     "count": 10,
-    "pc": "atk:9"
+    "pc": "atk:900"
   },
   "10": {
     "name": "宝石大师10段",
     "level": 6,
     "count": 5,
-    "pc": "atk:10"
+    "pc": "atk:1000"
   },
   "11": {
     "name": "宝石大师11段",
     "level": 6,
     "count": 8,
-    "pc": "atk:11"
+    "pc": "atk:1100"
   },
   "12": {
     "name": "宝石大师12段",
     "level": 6,
     "count": 10,
-    "pc": "atk:12"
+    "pc": "atk:1200"
   },
   "13": {
     "name": "宝石大师13段",
     "level": 7,
     "count": 5,
-    "pc": "atk:13"
+    "pc": "atk:1300"
   },
   "14": {
     "name": "宝石大师14段",
     "level": 7,
     "count": 8,
-    "pc": "atk:14"
+    "pc": "atk:1400"
   },
   "15": {
     "name": "宝石大师15段",
     "level": 7,
     "count": 10,
-    "pc": "atk:15"
+    "pc": "atk:1500"
   },
   "16": {
     "name": "宝石大师16段",
     "level": 8,
     "count": 8,
-    "pc": "atk:16"
+    "pc": "atk:1600"
   },
   "17": {
     "name": "宝石大师17段",
     "level": 8,
     "count": 15,
-    "pc": "atk:17"
+    "pc": "atk:1700"
   },
   "18": {
     "name": "宝石大师18段",
     "level": 8,
     "count": 20,
-    "pc": "atk:18"
+    "pc": "atk:1800"
   },
   "19": {
     "name": "宝石大师19段",
     "level": 9,
     "count": 8,
-    "pc": "atk:19"
+    "pc": "atk:1900"
   },
   "20": {
     "name": "宝石大师20段",
     "level": 9,
     "count": 15,
-    "pc": "atk:20"
-  },
-  "21": {
-    "name": "宝石大师21段",
-    "level": 9,
-    "count": 20,
-    "pc": "atk:21"
-  },
-  "22": {
-    "name": "宝石大师22段",
-    "level": 10,
-    "count": 8,
-    "pc": "atk:22"
-  },
-  "23": {
-    "name": "宝石大师23段",
-    "level": 10,
-    "count": 15,
-    "pc": "atk:23"
-  },
-  "24": {
-    "name": "宝石大师24段",
-    "level": 10,
-    "count": 20,
-    "pc": "atk:24"
-  },
-  "25": {
-    "name": "宝石大师25段",
-    "level": 11,
-    "count": 8,
-    "pc": "atk:25"
-  },
-  "26": {
-    "name": "宝石大师26段",
-    "level": 11,
-    "count": 15,
-    "pc": "atk:26"
-  },
-  "27": {
-    "name": "宝石大师27段",
-    "level": 11,
-    "count": 20,
-    "pc": "atk:27"
-  },
-  "28": {
-    "name": "宝石大师28段",
-    "level": 12,
-    "count": 10,
-    "pc": "atk:28"
-  },
-  "29": {
-    "name": "宝石大师29段",
-    "level": 12,
-    "count": 20,
-    "pc": "atk:29"
-  },
-  "30": {
-    "name": "宝石大师30段",
-    "level": 12,
-    "count": 30,
-    "pc": "atk:30"
-  },
-  "31": {
-    "name": "宝石大师31段",
-    "level": 13,
-    "count": 10,
-    "pc": "atk:31"
-  },
-  "32": {
-    "name": "宝石大师32段",
-    "level": 13,
-    "count": 20,
-    "pc": "atk:32"
-  },
-  "33": {
-    "name": "宝石大师33段",
-    "level": 13,
-    "count": 30,
-    "pc": "atk:33"
-  },
-  "34": {
-    "name": "宝石大师34段",
-    "level": 14,
-    "count": 10,
-    "pc": "atk:34"
-  },
-  "35": {
-    "name": "宝石大师35段",
-    "level": 14,
-    "count": 20,
-    "pc": "atk:35"
-  },
-  "36": {
-    "name": "宝石大师36段",
-    "level": 14,
-    "count": 30,
-    "pc": "atk:36"
-  },
-  "37": {
-    "name": "宝石大师37段",
-    "level": 15,
-    "count": 10,
-    "pc": "atk:37"
-  },
-  "38": {
-    "name": "宝石大师38段",
-    "level": 15,
-    "count": 20,
-    "pc": "atk:38"
-  },
-  "39": {
-    "name": "宝石大师39段",
-    "level": 15,
-    "count": 30,
-    "pc": "atk:39"
+    "pc": "atk:2000"
   }
 }

@@ -7,5 +7,8 @@
   },
   "fb_chest_1": {
     "randAward": "ec3:100&ec4:100&ec5:100"
+  },
+  "escort_1": {
+    "randAward": "ec3:100&ec4:100&ec5:100"
   }
 }
