@@ -15,7 +15,8 @@ logHandler.prototype.addLogs = function(msg, session, next) {
     source : msg.source,
     lineno : msg.lineno,
     colno : msg.colno,
-    stack : msg.stack
+    stack : msg.stack,
+    time : (new Date()).toLocaleString()
   }
   this.redisDao.db.rpush("client:logs",JSON.stringify(info))
   next(null)
