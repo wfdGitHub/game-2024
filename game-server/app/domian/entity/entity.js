@@ -10,7 +10,8 @@ module.exports = function(otps) {
 		return false
 	}
 	for(var i in charactersCfg[characterId]){
-		info[i] = charactersCfg[characterId][i]
+		if(!info[i])
+			info[i] = charactersCfg[characterId][i]
 	}
 	var entity
 	switch(info.characterType){
