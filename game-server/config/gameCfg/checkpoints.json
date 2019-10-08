@@ -6,7 +6,8 @@
     "mon_list": false,
     "mobLevel": false,
     "award": false,
-    "on_hook_award": "exp:1000"
+    "on_hook_award": "exp:1000",
+    "on_hook_sprite": false
   },
   "1": {
     "name": "第1关",
@@ -15,34 +16,38 @@
     "mon_list": false,
     "mobLevel": 0,
     "award": "exp:1200&102:10&103:120",
-    "on_hook_award": "exp:10000&105:1000"
+    "on_hook_award": "exp:10000&105:1000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "2": {
     "name": "第2关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 1,
     "mon_list": "[12001,12002]",
     "mobLevel": 1,
     "award": "exp:1300&102:15&103:130",
-    "on_hook_award": "exp:11000&106:1100"
+    "on_hook_award": "exp:11000&105:1100",
+    "on_hook_sprite": "[12001,12002]"
   },
   "3": {
     "name": "第3关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 1,
     "mon_list": "[12001,12002]",
     "mobLevel": 1,
     "award": "exp:1400&102:20&103:140",
-    "on_hook_award": "exp:12000&107:1200"
+    "on_hook_award": "exp:12000&105:1200",
+    "on_hook_sprite": "[12001,12002]"
   },
   "4": {
     "name": "第4关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 1,
     "mon_list": "[12001,12002]",
     "mobLevel": 1,
     "award": "exp:1500&102:25&103:150",
-    "on_hook_award": "exp:13000&108:1300"
+    "on_hook_award": "exp:13000&105:1300",
+    "on_hook_sprite": "[12001,12002]"
   },
   "5": {
     "name": "第5关",
@@ -51,43 +56,48 @@
     "mon_list": false,
     "mobLevel": 10,
     "award": "exp:1600&102:30&103:160",
-    "on_hook_award": "exp:14000&109:1400"
+    "on_hook_award": "exp:14000&105:1400",
+    "on_hook_sprite": "[12001,12002]"
   },
   "6": {
     "name": "第6关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 5,
     "mon_list": "[12001,12002]",
     "mobLevel": 15,
     "award": "exp:1700&102:35&103:170",
-    "on_hook_award": "exp:15000&110:1500"
+    "on_hook_award": "exp:15000&105:1500",
+    "on_hook_sprite": "[12001,12002]"
   },
   "7": {
     "name": "第7关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 5,
     "mon_list": "[12001,12002]",
     "mobLevel": 15,
     "award": "exp:1800&102:40&103:180",
-    "on_hook_award": "exp:16000&111:1600"
+    "on_hook_award": "exp:16000&105:1600",
+    "on_hook_sprite": "[12001,12002]"
   },
   "8": {
     "name": "第8关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 5,
     "mon_list": "[12001,12002]",
     "mobLevel": 20,
     "award": "exp:1900&102:45&103:190",
-    "on_hook_award": "exp:17000&112:1700"
+    "on_hook_award": "exp:17000&105:1700",
+    "on_hook_sprite": "[12001,12002]"
   },
   "9": {
     "name": "第9关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 5,
     "mon_list": "[12001,12002]",
     "mobLevel": 20,
     "award": "exp:2000&102:50&103:200",
-    "on_hook_award": "exp:18000&113:1800"
+    "on_hook_award": "exp:18000&105:1800",
+    "on_hook_sprite": "[12001,12002]"
   },
   "10": {
     "name": "第10关",
@@ -96,43 +106,48 @@
     "mon_list": false,
     "mobLevel": 30,
     "award": "exp:2100&102:55&103:210",
-    "on_hook_award": "exp:19000&114:1900"
+    "on_hook_award": "exp:19000&105:1900",
+    "on_hook_sprite": "[12001,12002]"
   },
   "11": {
     "name": "第11关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 10,
     "mon_list": "[12001,12002]",
     "mobLevel": 30,
     "award": "exp:2200&102:60&103:220",
-    "on_hook_award": "exp:20000&115:2000"
+    "on_hook_award": "exp:20000&105:2000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "12": {
     "name": "第12关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 10,
     "mon_list": "[12001,12002]",
     "mobLevel": 30,
     "award": "exp:2300&102:65&103:230",
-    "on_hook_award": "exp:21000&116:2100"
+    "on_hook_award": "exp:21000&105:2100",
+    "on_hook_sprite": "[12001,12002]"
   },
   "13": {
     "name": "第13关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 10,
     "mon_list": "[12001,12002]",
     "mobLevel": 30,
     "award": "exp:2400&102:70&103:240",
-    "on_hook_award": "exp:22000&117:2200"
+    "on_hook_award": "exp:22000&105:2200",
+    "on_hook_sprite": "[12001,12002]"
   },
   "14": {
     "name": "第14关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 10,
     "mon_list": "[12001,12002]",
     "mobLevel": 30,
     "award": "exp:2500&102:75&103:250",
-    "on_hook_award": "exp:23000&118:2300"
+    "on_hook_award": "exp:23000&105:2300",
+    "on_hook_sprite": "[12001,12002]"
   },
   "15": {
     "name": "第15关",
@@ -141,43 +156,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 40,
     "award": "exp:2600&102:80&103:260",
-    "on_hook_award": "exp:24000&119:2400"
+    "on_hook_award": "exp:24000&105:2400",
+    "on_hook_sprite": "[12001,12002]"
   },
   "16": {
     "name": "第16关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 15,
     "mon_list": "[12001,12002]",
     "mobLevel": 40,
     "award": "exp:2700&102:85&103:270",
-    "on_hook_award": "exp:25000&120:2500"
+    "on_hook_award": "exp:25000&105:2500",
+    "on_hook_sprite": "[12001,12002]"
   },
   "17": {
     "name": "第17关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 15,
     "mon_list": "[12001,12002]",
     "mobLevel": 40,
     "award": "exp:2800&102:90&103:280",
-    "on_hook_award": "exp:26000&121:2600"
+    "on_hook_award": "exp:26000&105:2600",
+    "on_hook_sprite": "[12001,12002]"
   },
   "18": {
     "name": "第18关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 15,
     "mon_list": "[12001,12002]",
     "mobLevel": 40,
     "award": "exp:2900&102:95&103:290",
-    "on_hook_award": "exp:27000&122:2700"
+    "on_hook_award": "exp:27000&105:2700",
+    "on_hook_sprite": "[12001,12002]"
   },
   "19": {
     "name": "第19关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 15,
     "mon_list": "[12001,12002]",
     "mobLevel": 40,
     "award": "exp:3000&102:100&103:300",
-    "on_hook_award": "exp:28000&123:2800"
+    "on_hook_award": "exp:28000&105:2800",
+    "on_hook_sprite": "[12001,12002]"
   },
   "20": {
     "name": "第20关",
@@ -186,43 +206,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 50,
     "award": "exp:5000&102:110&103:500",
-    "on_hook_award": "exp:30000&124:3000"
+    "on_hook_award": "exp:30000&105:3000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "21": {
     "name": "第21关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 30,
     "mon_list": "[12001,12002]",
     "mobLevel": 50,
     "award": "exp:5500&102:120&103:550",
-    "on_hook_award": "exp:31000&125:3100"
+    "on_hook_award": "exp:31000&105:3100",
+    "on_hook_sprite": "[12001,12002]"
   },
   "22": {
     "name": "第22关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 30,
     "mon_list": "[12001,12002]",
     "mobLevel": 50,
     "award": "exp:6000&102:130&103:600",
-    "on_hook_award": "exp:32000&126:3200"
+    "on_hook_award": "exp:32000&105:3200",
+    "on_hook_sprite": "[12001,12002]"
   },
   "23": {
     "name": "第23关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 30,
     "mon_list": "[12001,12002]",
     "mobLevel": 50,
     "award": "exp:6500&102:140&103:650",
-    "on_hook_award": "exp:33000&127:3300"
+    "on_hook_award": "exp:33000&105:3300",
+    "on_hook_sprite": "[12001,12002]"
   },
   "24": {
     "name": "第24关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 30,
     "mon_list": "[12001,12002]",
     "mobLevel": 50,
     "award": "exp:7000&102:150&103:700",
-    "on_hook_award": "exp:34000&128:3400"
+    "on_hook_award": "exp:34000&105:3400",
+    "on_hook_sprite": "[12001,12002]"
   },
   "25": {
     "name": "第25关",
@@ -231,43 +256,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 100,
     "award": "exp:7500&102:160&103:750",
-    "on_hook_award": "exp:35000&129:3500"
+    "on_hook_award": "exp:35000&105:3500",
+    "on_hook_sprite": "[12001,12002]"
   },
   "26": {
     "name": "第26关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 100,
     "mon_list": "[12001,12002]",
     "mobLevel": 110,
     "award": "exp:8000&102:170&103:800",
-    "on_hook_award": "exp:36000&130:3600"
+    "on_hook_award": "exp:36000&105:3600",
+    "on_hook_sprite": "[12001,12002]"
   },
   "27": {
     "name": "第27关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 100,
     "mon_list": "[12001,12002]",
     "mobLevel": 120,
     "award": "exp:8500&102:180&103:850",
-    "on_hook_award": "exp:37000&131:3700"
+    "on_hook_award": "exp:37000&105:3700",
+    "on_hook_sprite": "[12001,12002]"
   },
   "28": {
     "name": "第28关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 100,
     "mon_list": "[12001,12002]",
     "mobLevel": 130,
     "award": "exp:9000&102:190&103:900",
-    "on_hook_award": "exp:38000&132:3800"
+    "on_hook_award": "exp:38000&105:3800",
+    "on_hook_sprite": "[12001,12002]"
   },
   "29": {
     "name": "第29关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 100,
     "mon_list": "[12001,12002]",
     "mobLevel": 140,
     "award": "exp:9500&102:200&103:950",
-    "on_hook_award": "exp:39000&133:3900"
+    "on_hook_award": "exp:39000&105:3900",
+    "on_hook_sprite": "[12001,12002]"
   },
   "30": {
     "name": "第30关",
@@ -276,43 +306,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 150,
     "award": "exp:10000&102:210&103:1000",
-    "on_hook_award": "exp:40000&134:4000"
+    "on_hook_award": "exp:40000&105:4000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "31": {
     "name": "第31关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 150,
     "mon_list": "[12001,12002]",
     "mobLevel": 150,
     "award": "exp:15000&102:220&103:1500",
-    "on_hook_award": "exp:41000&135:4100"
+    "on_hook_award": "exp:41000&105:4100",
+    "on_hook_sprite": "[12001,12002]"
   },
   "32": {
     "name": "第32关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 150,
     "mon_list": "[12001,12002]",
     "mobLevel": 160,
     "award": "exp:20000&102:230&103:2000",
-    "on_hook_award": "exp:42000&136:4200"
+    "on_hook_award": "exp:42000&105:4200",
+    "on_hook_sprite": "[12001,12002]"
   },
   "33": {
     "name": "第33关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 150,
     "mon_list": "[12001,12002]",
     "mobLevel": 170,
     "award": "exp:25000&102:240&103:2500",
-    "on_hook_award": "exp:43000&137:4300"
+    "on_hook_award": "exp:43000&105:4300",
+    "on_hook_sprite": "[12001,12002]"
   },
   "34": {
     "name": "第34关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 150,
     "mon_list": "[12001,12002]",
     "mobLevel": 180,
     "award": "exp:30000&102:250&103:3000",
-    "on_hook_award": "exp:44000&138:4400"
+    "on_hook_award": "exp:44000&105:4400",
+    "on_hook_sprite": "[12001,12002]"
   },
   "35": {
     "name": "第35关",
@@ -321,43 +356,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 200,
     "award": "exp:35000&102:260&103:3500",
-    "on_hook_award": "exp:45000&139:4500"
+    "on_hook_award": "exp:45000&105:4500",
+    "on_hook_sprite": "[12001,12002]"
   },
   "36": {
     "name": "第36关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 200,
     "mon_list": "[12001,12002]",
     "mobLevel": 200,
     "award": "exp:40000&102:270&103:4000",
-    "on_hook_award": "exp:46000&140:4600"
+    "on_hook_award": "exp:46000&105:4600",
+    "on_hook_sprite": "[12001,12002]"
   },
   "37": {
     "name": "第37关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 200,
     "mon_list": "[12001,12002]",
     "mobLevel": 220,
     "award": "exp:45000&102:280&103:4500",
-    "on_hook_award": "exp:47000&141:4700"
+    "on_hook_award": "exp:47000&105:4700",
+    "on_hook_sprite": "[12001,12002]"
   },
   "38": {
     "name": "第38关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 200,
     "mon_list": "[12001,12002]",
     "mobLevel": 240,
     "award": "exp:50000&102:290&103:5000",
-    "on_hook_award": "exp:48000&142:4800"
+    "on_hook_award": "exp:48000&105:4800",
+    "on_hook_sprite": "[12001,12002]"
   },
   "39": {
     "name": "第39关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 200,
     "mon_list": "[12001,12002]",
     "mobLevel": 260,
     "award": "exp:55000&102:300&103:5500",
-    "on_hook_award": "exp:49000&143:4900"
+    "on_hook_award": "exp:49000&105:4900",
+    "on_hook_sprite": "[12001,12002]"
   },
   "40": {
     "name": "第40关",
@@ -366,43 +406,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 400,
     "award": "exp:60000&102:310&103:6000",
-    "on_hook_award": "exp:50000&144:5000"
+    "on_hook_award": "exp:50000&105:5000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "41": {
     "name": "第41关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 400,
     "mon_list": "[12001,12002]",
     "mobLevel": 260,
     "award": "exp:65000&102:320&103:6500",
-    "on_hook_award": "exp:60000&145:6000"
+    "on_hook_award": "exp:60000&105:6000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "42": {
     "name": "第42关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 400,
     "mon_list": "[12001,12002]",
     "mobLevel": 280,
     "award": "exp:70000&102:330&103:7000",
-    "on_hook_award": "exp:62000&146:6200"
+    "on_hook_award": "exp:62000&105:6200",
+    "on_hook_sprite": "[12001,12002]"
   },
   "43": {
     "name": "第43关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 400,
     "mon_list": "[12001,12002]",
     "mobLevel": 300,
     "award": "exp:75000&102:340&103:7500",
-    "on_hook_award": "exp:64000&147:6400"
+    "on_hook_award": "exp:64000&105:6400",
+    "on_hook_sprite": "[12001,12002]"
   },
   "44": {
     "name": "第44关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 400,
     "mon_list": "[12001,12002]",
     "mobLevel": 320,
     "award": "exp:80000&102:350&103:8000",
-    "on_hook_award": "exp:66000&148:6600"
+    "on_hook_award": "exp:66000&105:6600",
+    "on_hook_sprite": "[12001,12002]"
   },
   "45": {
     "name": "第45关",
@@ -411,43 +456,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 500,
     "award": "exp:85000&102:360&103:8500",
-    "on_hook_award": "exp:68000&149:6800"
+    "on_hook_award": "exp:68000&105:6800",
+    "on_hook_sprite": "[12001,12002]"
   },
   "46": {
     "name": "第46关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 500,
     "mon_list": "[12001,12002]",
     "mobLevel": 340,
     "award": "exp:90000&102:370&103:9000",
-    "on_hook_award": "exp:70000&150:7000"
+    "on_hook_award": "exp:70000&105:7000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "47": {
     "name": "第47关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 500,
     "mon_list": "[12001,12002]",
     "mobLevel": 400,
     "award": "exp:95000&102:380&103:9500",
-    "on_hook_award": "exp:72000&151:7200"
+    "on_hook_award": "exp:72000&105:7200",
+    "on_hook_sprite": "[12001,12002]"
   },
   "48": {
     "name": "第48关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 500,
     "mon_list": "[12001,12002]",
     "mobLevel": 400,
     "award": "exp:100000&102:390&103:10000",
-    "on_hook_award": "exp:74000&152:7400"
+    "on_hook_award": "exp:74000&105:7400",
+    "on_hook_sprite": "[12001,12002]"
   },
   "49": {
     "name": "第49关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 500,
     "mon_list": "[12001,12002]",
     "mobLevel": 400,
     "award": "exp:103000&102:400&103:10300",
-    "on_hook_award": "exp:76000&153:7600"
+    "on_hook_award": "exp:76000&105:7600",
+    "on_hook_sprite": "[12001,12002]"
   },
   "50": {
     "name": "第50关",
@@ -456,43 +506,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 600,
     "award": "exp:110000&102:410&103:11000",
-    "on_hook_award": "exp:78000&154:7800"
+    "on_hook_award": "exp:78000&105:7800",
+    "on_hook_sprite": "[12001,12002]"
   },
   "51": {
     "name": "第51关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 600,
     "mon_list": "[12001,12002]",
     "mobLevel": 420,
     "award": "exp:115000&102:420&103:11500",
-    "on_hook_award": "exp:80000&155:8000"
+    "on_hook_award": "exp:80000&105:8000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "52": {
     "name": "第52关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 600,
     "mon_list": "[12001,12002]",
     "mobLevel": 450,
     "award": "exp:120000&102:430&103:12000",
-    "on_hook_award": "exp:82000&156:8200"
+    "on_hook_award": "exp:82000&105:8200",
+    "on_hook_sprite": "[12001,12002]"
   },
   "53": {
     "name": "第53关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 600,
     "mon_list": "[12001,12002]",
     "mobLevel": 480,
     "award": "exp:125000&102:440&103:12500",
-    "on_hook_award": "exp:84000&157:8400"
+    "on_hook_award": "exp:84000&105:8400",
+    "on_hook_sprite": "[12001,12002]"
   },
   "54": {
     "name": "第54关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 600,
     "mon_list": "[12001,12002]",
     "mobLevel": 500,
     "award": "exp:130000&102:450&103:13000",
-    "on_hook_award": "exp:86000&158:8600"
+    "on_hook_award": "exp:86000&105:8600",
+    "on_hook_sprite": "[12001,12002]"
   },
   "55": {
     "name": "第55关",
@@ -501,43 +556,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 700,
     "award": "exp:135000&102:460&103:13500",
-    "on_hook_award": "exp:88000&159:8800"
+    "on_hook_award": "exp:88000&105:8800",
+    "on_hook_sprite": "[12001,12002]"
   },
   "56": {
     "name": "第56关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 700,
     "mon_list": "[12001,12002]",
     "mobLevel": 550,
     "award": "exp:140000&102:470&103:14000",
-    "on_hook_award": "exp:90000&160:9000"
+    "on_hook_award": "exp:90000&105:9000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "57": {
     "name": "第57关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 700,
     "mon_list": "[12001,12002]",
     "mobLevel": 600,
     "award": "exp:145000&102:480&103:14500",
-    "on_hook_award": "exp:92000&161:9200"
+    "on_hook_award": "exp:92000&105:9200",
+    "on_hook_sprite": "[12001,12002]"
   },
   "58": {
     "name": "第58关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 700,
     "mon_list": "[12001,12002]",
     "mobLevel": 650,
     "award": "exp:150000&102:490&103:15000",
-    "on_hook_award": "exp:94000&162:9400"
+    "on_hook_award": "exp:94000&105:9400",
+    "on_hook_sprite": "[12001,12002]"
   },
   "59": {
     "name": "第59关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 700,
     "mon_list": "[12001,12002]",
     "mobLevel": 700,
     "award": "exp:155000&102:500&103:15500",
-    "on_hook_award": "exp:96000&163:9600"
+    "on_hook_award": "exp:96000&105:9600",
+    "on_hook_sprite": "[12001,12002]"
   },
   "60": {
     "name": "第60关",
@@ -546,43 +606,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 800,
     "award": "exp:160000&102:600&103:16000",
-    "on_hook_award": "exp:100000&164:10000"
+    "on_hook_award": "exp:100000&105:10000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "61": {
     "name": "第61关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 800,
     "mon_list": "[12001,12002]",
     "mobLevel": 750,
     "award": "exp:165000&102:650&103:16500",
-    "on_hook_award": "exp:110000&165:11000"
+    "on_hook_award": "exp:110000&105:11000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "62": {
     "name": "第62关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 800,
     "mon_list": "[12001,12002]",
     "mobLevel": 800,
     "award": "exp:170000&102:700&103:17000",
-    "on_hook_award": "exp:120000&166:12000"
+    "on_hook_award": "exp:120000&105:12000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "63": {
     "name": "第63关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 800,
     "mon_list": "[12001,12002]",
     "mobLevel": 850,
     "award": "exp:175000&102:750&103:17500",
-    "on_hook_award": "exp:130000&167:13000"
+    "on_hook_award": "exp:130000&105:13000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "64": {
     "name": "第64关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 800,
     "mon_list": "[12001,12002]",
     "mobLevel": 900,
     "award": "exp:180000&102:800&103:18000",
-    "on_hook_award": "exp:140000&168:14000"
+    "on_hook_award": "exp:140000&105:14000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "65": {
     "name": "第65关",
@@ -591,43 +656,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 900,
     "award": "exp:185000&102:850&103:18500",
-    "on_hook_award": "exp:150000&169:15000"
+    "on_hook_award": "exp:150000&105:15000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "66": {
     "name": "第66关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 900,
     "mon_list": "[12001,12002]",
     "mobLevel": 950,
     "award": "exp:190000&102:900&103:19000",
-    "on_hook_award": "exp:160000&170:16000"
+    "on_hook_award": "exp:160000&105:16000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "67": {
     "name": "第67关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 900,
     "mon_list": "[12001,12002]",
     "mobLevel": 1000,
     "award": "exp:195000&102:950&103:19500",
-    "on_hook_award": "exp:170000&171:17000"
+    "on_hook_award": "exp:170000&105:17000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "68": {
     "name": "第68关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 900,
     "mon_list": "[12001,12002]",
     "mobLevel": 1050,
     "award": "exp:200000&102:1000&103:20000",
-    "on_hook_award": "exp:180000&172:18000"
+    "on_hook_award": "exp:180000&105:18000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "69": {
     "name": "第69关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 900,
     "mon_list": "[12001,12002]",
     "mobLevel": 1100,
     "award": "exp:205000&102:1000&103:20500",
-    "on_hook_award": "exp:190000&173:19000"
+    "on_hook_award": "exp:190000&105:19000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "70": {
     "name": "第70关",
@@ -636,43 +706,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 1000,
     "award": "exp:210000&102:1000&103:21000",
-    "on_hook_award": "exp:200000&174:20000"
+    "on_hook_award": "exp:200000&105:20000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "71": {
     "name": "第71关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 1000,
     "mon_list": "[12001,12002]",
     "mobLevel": 1150,
     "award": "exp:215000&102:1000&103:21500",
-    "on_hook_award": "exp:210000&175:21000"
+    "on_hook_award": "exp:210000&105:21000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "72": {
     "name": "第72关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 1000,
     "mon_list": "[12001,12002]",
     "mobLevel": 1200,
     "award": "exp:220000&102:1000&103:22000",
-    "on_hook_award": "exp:220000&176:22000"
+    "on_hook_award": "exp:220000&105:22000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "73": {
     "name": "第73关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 1000,
     "mon_list": "[12001,12002]",
     "mobLevel": 1250,
     "award": "exp:225000&102:1000&103:22500",
-    "on_hook_award": "exp:230000&177:23000"
+    "on_hook_award": "exp:230000&105:23000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "74": {
     "name": "第74关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 1000,
     "mon_list": "[12001,12002]",
     "mobLevel": 1300,
     "award": "exp:230000&102:1000&103:23000",
-    "on_hook_award": "exp:240000&178:24000"
+    "on_hook_award": "exp:240000&105:24000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "75": {
     "name": "第75关",
@@ -681,43 +756,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 1500,
     "award": "exp:235000&102:1000&103:23500",
-    "on_hook_award": "exp:250000&179:25000"
+    "on_hook_award": "exp:250000&105:25000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "76": {
     "name": "第76关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 1500,
     "mon_list": "[12001,12002]",
     "mobLevel": 1350,
     "award": "exp:240000&102:1000&103:24000",
-    "on_hook_award": "exp:260000&180:26000"
+    "on_hook_award": "exp:260000&105:26000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "77": {
     "name": "第77关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 1500,
     "mon_list": "[12001,12002]",
     "mobLevel": 1400,
     "award": "exp:245000&102:1000&103:24500",
-    "on_hook_award": "exp:270000&181:27000"
+    "on_hook_award": "exp:270000&105:27000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "78": {
     "name": "第78关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 1500,
     "mon_list": "[12001,12002]",
     "mobLevel": 1450,
     "award": "exp:250000&102:1000&103:25000",
-    "on_hook_award": "exp:280000&182:28000"
+    "on_hook_award": "exp:280000&105:28000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "79": {
     "name": "第79关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 1500,
     "mon_list": "[12001,12002]",
     "mobLevel": 1500,
     "award": "exp:255000&102:1000&103:25500",
-    "on_hook_award": "exp:290000&183:29000"
+    "on_hook_award": "exp:290000&105:29000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "80": {
     "name": "第80关",
@@ -726,43 +806,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 2000,
     "award": "exp:260000&102:1000&103:26000",
-    "on_hook_award": "exp:300000&184:30000"
+    "on_hook_award": "exp:300000&105:30000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "81": {
     "name": "第81关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 2000,
     "mon_list": "[12001,12002]",
     "mobLevel": 1550,
     "award": "exp:265000&102:1000&103:26500",
-    "on_hook_award": "exp:310000&185:31000"
+    "on_hook_award": "exp:310000&105:31000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "82": {
     "name": "第82关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 2000,
     "mon_list": "[12001,12002]",
     "mobLevel": 1600,
     "award": "exp:270000&102:1000&103:27000",
-    "on_hook_award": "exp:320000&186:32000"
+    "on_hook_award": "exp:320000&105:32000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "83": {
     "name": "第83关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 2000,
     "mon_list": "[12001,12002]",
     "mobLevel": 1650,
     "award": "exp:275000&102:1000&103:27500",
-    "on_hook_award": "exp:330000&187:33000"
+    "on_hook_award": "exp:330000&105:33000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "84": {
     "name": "第84关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 2000,
     "mon_list": "[12001,12002]",
     "mobLevel": 1700,
     "award": "exp:280000&102:1000&103:28000",
-    "on_hook_award": "exp:340000&188:34000"
+    "on_hook_award": "exp:340000&105:34000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "85": {
     "name": "第85关",
@@ -771,43 +856,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 1000,
     "award": "exp:285000&102:1000&103:28500",
-    "on_hook_award": "exp:350000&189:35000"
+    "on_hook_award": "exp:350000&105:35000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "86": {
     "name": "第86关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 2500,
     "mon_list": "[12001,12002]",
     "mobLevel": 1750,
     "award": "exp:290000&102:1000&103:29000",
-    "on_hook_award": "exp:360000&190:36000"
+    "on_hook_award": "exp:360000&105:36000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "87": {
     "name": "第87关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 2500,
     "mon_list": "[12001,12002]",
     "mobLevel": 1800,
     "award": "exp:295000&102:1000&103:29500",
-    "on_hook_award": "exp:370000&191:37000"
+    "on_hook_award": "exp:370000&105:37000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "88": {
     "name": "第88关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 2500,
     "mon_list": "[12001,12002]",
     "mobLevel": 1850,
     "award": "exp:300000&102:1000&103:30000",
-    "on_hook_award": "exp:380000&192:38000"
+    "on_hook_award": "exp:380000&105:38000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "89": {
     "name": "第89关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 2500,
     "mon_list": "[12001,12002]",
     "mobLevel": 1900,
     "award": "exp:305000&102:1000&103:30500",
-    "on_hook_award": "exp:390000&193:39000"
+    "on_hook_award": "exp:390000&105:39000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "90": {
     "name": "第90关",
@@ -816,43 +906,48 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 1200,
     "award": "exp:310000&102:1000&103:31000",
-    "on_hook_award": "exp:400000&194:40000"
+    "on_hook_award": "exp:400000&105:40000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "91": {
     "name": "第91关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 3000,
     "mon_list": "[12001,12002]",
     "mobLevel": 1950,
     "award": "exp:315000&102:1000&103:31500",
-    "on_hook_award": "exp:410000&195:41000"
+    "on_hook_award": "exp:410000&105:41000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "92": {
     "name": "第92关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 3000,
     "mon_list": "[12001,12002]",
     "mobLevel": 2000,
     "award": "exp:320000&102:1000&103:32000",
-    "on_hook_award": "exp:420000&196:42000"
+    "on_hook_award": "exp:420000&105:42000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "93": {
     "name": "第93关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 3000,
     "mon_list": "[12001,12002]",
     "mobLevel": 2100,
     "award": "exp:325000&102:1000&103:32500",
-    "on_hook_award": "exp:430000&197:43000"
+    "on_hook_award": "exp:430000&105:43000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "94": {
     "name": "第94关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 3000,
     "mon_list": "[12001,12002]",
     "mobLevel": 2200,
     "award": "exp:330000&102:1000&103:33000",
-    "on_hook_award": "exp:440000&198:44000"
+    "on_hook_award": "exp:440000&105:44000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "95": {
     "name": "第95关",
@@ -861,51 +956,57 @@
     "mon_list": "[12001,12002]",
     "mobLevel": 1500,
     "award": "exp:335000&102:1000&103:33500",
-    "on_hook_award": "exp:450000&199:45000"
+    "on_hook_award": "exp:450000&105:45000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "96": {
     "name": "第96关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 4000,
     "mon_list": "[12001,12002]",
     "mobLevel": 2300,
     "award": "exp:340000&102:1000&103:34000",
-    "on_hook_award": "exp:460000&200:46000"
+    "on_hook_award": "exp:460000&105:46000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "97": {
     "name": "第97关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 4000,
     "mon_list": "[12001,12002]",
     "mobLevel": 2400,
     "award": "exp:345000&102:1000&103:34500",
-    "on_hook_award": "exp:470000&201:47000"
+    "on_hook_award": "exp:470000&105:47000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "98": {
     "name": "第98关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 4000,
     "mon_list": "[12001,12002]",
     "mobLevel": 2500,
     "award": "exp:350000&102:1000&103:35000",
-    "on_hook_award": "exp:480000&202:48000"
+    "on_hook_award": "exp:480000&105:48000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "99": {
     "name": "第99关",
-    "bossId": false,
-    "bossLevel": 0,
+    "bossId": 11001,
+    "bossLevel": 4000,
     "mon_list": "[12001,12002]",
     "mobLevel": 3000,
     "award": "exp:355000&102:1000&103:35500",
-    "on_hook_award": "exp:490000&203:49000"
+    "on_hook_award": "exp:490000&105:49000",
+    "on_hook_sprite": "[12001,12002]"
   },
   "100": {
     "name": "第100关",
     "bossId": 11001,
     "bossLevel": 5000,
     "mon_list": "[12001,12002]",
-    "mobLevel": 500,
+    "mobLevel": 5000,
     "award": "exp:360000&102:1000&103:36000",
-    "on_hook_award": "exp:500000&204:50000"
+    "on_hook_award": "exp:500000&105:50000",
+    "on_hook_sprite": "[12001,12002]"
   }
 }
