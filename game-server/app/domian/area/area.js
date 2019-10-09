@@ -2,7 +2,7 @@
 var bearcat = require("bearcat")
 var fightContorlFun = require("../fight/fightContorl.js")
 var charactersCfg = require("../../../config/gameCfg/characters.json")
-var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet","character","equip","gem","mail","artifact","fb","ttttower"]
+var areaServers = ["arena","exp","partner","bag","dao","checkpoints","advance","pet","character","equip","gem","mail","artifact","fb","ttttower"]
 const oneDayTime = 86400000
 var area = function(otps,app) {
 	this.areaId = otps.areaId
@@ -51,8 +51,11 @@ area.prototype.register = function(otps,cb) {
 					cb(false,playerInfo)
 					return
 				}
-				self.addItem({uid : otps.uid,itemId : 101,value : 1000000})
+				self.initArenaRank(otps.uid,otps.name,otps.sex)
 				self.setPlayerData(otps.uid,"onhookLastTime",Date.now())
+				//TODO test
+				self.addItem({uid : otps.uid,itemId : 101,value : 1000000})
+
 				cb(true,playerInfo)
 			})
 		}

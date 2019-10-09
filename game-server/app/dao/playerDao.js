@@ -1,8 +1,7 @@
 var bearcat = require("bearcat")
 var playerDao = function() {}
-//账号DB
+//创建角色
 playerDao.prototype.createPlayer = function(otps,cb) {
-	//注册
 	var playerInfo = {
 		uid : otps.uid,
 		name : otps.name,

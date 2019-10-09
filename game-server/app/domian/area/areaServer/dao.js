@@ -11,6 +11,14 @@ module.exports = function() {
 			}
 		})
 	}
+	//批量设置角色hash数据
+	this.setHMObj = function(uid,objName,obj,cb) {
+		this.redisDao.db.hmset("area:area"+this.areaId+":player:"+uid+":"+objName,obj,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
 	//设置角色hash自定义数据
 	this.setObj = function(uid,objName,key,value,cb) {
 		this.redisDao.db.hset("area:area"+this.areaId+":player:"+uid+":"+objName,key,value,function(err,data) {
