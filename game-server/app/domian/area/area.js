@@ -140,6 +140,25 @@ area.prototype.readyFight = function(uid) {
 	this.fightInfos[uid] = {team : team,seededNum : Date.now()}
 	return this.fightInfos[uid]
 }
+//获取玩家防御阵容配置(被攻击阵容)
+area.prototype.getDefendTeam = function(uid,cb) {
+	var self = this
+	self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
+		if(playerInfo){
+			var team = []
+			for(var i in playerInfo.characters){
+				team.push(playerInfo.characters[i])
+			}
+			var fightPet = playerInfo.fightPet
+			if(fightPet && playerInfo.pets && playerInfo.pets[fightPet]){
+				team = team.concat(playerInfo.pets[fightPet])
+			}
+			cb(team)
+		}else{
+			cb(false)
+		}
+	})
+}
 //获取玩家上阵配置(出战阵容)
 area.prototype.getFightInfo = function(uid) {
 	if(this.fightInfos[uid]){

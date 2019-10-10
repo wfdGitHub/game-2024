@@ -46,11 +46,12 @@ module.exports = function() {
 			console.log(err,"rank : ",rank)
 			var info = {
 				rank : rank,
-				count : dayCount,
+				count : 0,
 				highestRank : rank,
+				winStreak : 0
 			}
 			self.setHMObj(uid,mainName,info)
-			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,1,JSON.stringify({uid : uid,sex : sex,name : name}))
+			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,JSON.stringify({uid : uid,sex : sex,name : name}))
 		})
 	}
 	//获取竞技场排行榜
@@ -66,5 +67,54 @@ module.exports = function() {
 			console.log("list",list)
 			local.getTargetsInfo(list,cb)
 		})
+	}
+	//获取我的竞技场数据
+	this.getMyArenaInfo = function(uid,cb) {
+		this.getObjAll(uid,mainName,function(data) {
+			cb(true,data)
+		})
+	}
+	//挑战目标
+	this.challengeArena = function(uid,targetStr,targetRank,cb) {
+		if(!Number.isInteger(targetRank)|| targetRank <= 0){
+			cb(false,"challengeArena targetRank error "+targetRank)
+			return
+		}
+	    var fightInfo = self.getFightInfo(uid)
+	    if(!fightInfo || !fightInfo.team || !fightInfo.seededNum){
+			cb(false,"atkTeam error")
+			return
+	    }
+	    var atkTeam = fightInfo.team
+	    var seededNum = fightInfo.seededNum
+		self.getObj(uid,mainName,"count",function(err,count) {
+			if(count >= dayCount){
+				cb(false,"挑战次数已满")
+				return
+			}
+			local.getTargetsInfo([targetRank],function(flag,data) {
+				if(!data[0] || data[0] !== targetStr){
+					cb(false,"竞技场排名已发生改变")
+					return
+				}
+				var targetInfo = JSON.parse(data[0])
+				var targetUid = targetInfo.uid
+				self.incrbyObj(uid,mainName,"count",1,function(newCount) {
+					if(newCount > dayCount){
+						cb(false,"挑战次数已满")
+						return
+					}
+					self.getDefendTeam(targetUid,function(defTeam) {
+						if(!defTeam){
+							cb(false,"敌方阵容错误")
+							return
+						}
+						console.log(atkTeam,defTeam,seededNum)
+						cb(true)
+					})
+				})
+			})
+		})
+
 	}
 }
