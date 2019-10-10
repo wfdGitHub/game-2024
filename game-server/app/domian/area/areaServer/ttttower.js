@@ -36,8 +36,13 @@ module.exports = function() {
 			cb(false,"未到开放等级")
 			return
 		}
+		var samsara = Math.floor(((curLv - 1) / 100))
 		self.getObj(uid,main_name,"curL",function(level) {
 			level = (parseInt(level) || 0)  + 1
+			if(level > samsara * 100 + 99){
+				cb(false,"未开放当前等级")
+				return
+			}
 			var fightInfo = self.getFightInfo(uid)
 		    var atkTeam = fightInfo.team
 		    if(!atkTeam){
@@ -50,7 +55,7 @@ module.exports = function() {
 		    	cb(false,"curL or curS error "+curL+" "+curS)
 		    	return
 		    }
-		    var defTeam = [{characterId : ttttower_level[curL]["bossId"],level : level}]
+		    var defTeam = [{characterId : ttttower_level[curL]["bossId"],level : level,"attStr" : ttttower_samsara[curS]["attStr"]}]
 		    self.recordFight(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
 		    var result = self.fightContorl.fighting(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
 		    if(result.verify === otps.verify || true){

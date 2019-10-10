@@ -5,26 +5,32 @@
   },
   "1": {
     "rate": 2,
+    "attStr": "atk:1",
     "samaraAward": "103:10000&gold:10000"
   },
   "2": {
     "rate": 3,
+    "attStr": "atk:2",
     "samaraAward": "103:10000&gold:10000"
   },
   "3": {
     "rate": 4,
+    "attStr": "atk:3",
     "samaraAward": "103:10000&gold:10000"
   },
   "4": {
     "rate": 5,
+    "attStr": "atk:4",
     "samaraAward": "103:10000&gold:10000"
   },
   "5": {
     "rate": 6,
+    "attStr": "atk:5",
     "samaraAward": "103:10000&gold:10000"
   },
   "6": {
     "rate": 7,
+    "attStr": "atk:6",
     "samaraAward": "103:10000&gold:10000"
   }
 }
