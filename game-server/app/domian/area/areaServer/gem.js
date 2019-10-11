@@ -35,12 +35,17 @@ module.exports = function() {
 			self.addGem(uid,gId,level,count,cb)
 		})
 	}
-	//获得一个当前转生等级随机宝石
-	this.addRandGem = function(uid,rate,cb) {
+	//获得当前转生等级随机宝石
+	this.addRandGem = function(uid,count,cb) {
 		var gId = "g" + (Math.floor(Math.random() * 12) + 1)
 		var curLv = self.players[uid].characters[self.heroId].level
 		var samsara = Math.floor(((curLv - 1) / 100))
-		return self.addGem(uid,gId,samsara + 1,rate,cb)
+		return self.addGem(uid,gId,samsara + 1,count,cb)
+	}
+	//获得一个指定转生等级随机宝石
+	this.addGsGem = function(uid,samsara,cb) {
+		var gId = "g" + (Math.floor(Math.random() * 12) + 1)
+		return self.addGem(uid,gId,samsara,1,cb)
 	}
 	//增加宝石
 	this.addGem = function(uid,gId,level,count,cb) {

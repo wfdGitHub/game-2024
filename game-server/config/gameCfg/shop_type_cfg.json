@@ -1,0 +1,22 @@
+{
+  "gold": {
+    "name": "仙币商店",
+    "weight": 100
+  },
+  "partner": {
+    "name": "伙伴商店",
+    "weight": 99
+  },
+  "pet": {
+    "name": "宠物商店",
+    "weight": 98
+  },
+  "artifact_atk": {
+    "name": "神器商店",
+    "weight": 97
+  },
+  "artifact_def": {
+    "name": "法宝商店",
+    "weight": 96
+  }
+}

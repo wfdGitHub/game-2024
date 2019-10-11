@@ -227,8 +227,13 @@ module.exports = function() {
 					return self.addGem(uid,gId,level,count,cb)
 				break
 				case "gc":
+					//当前转生等级+1随机宝石
 					value = Math.floor(Number(value) * rate) || 1
 					return self.addRandGem(uid,value,cb)
+				break
+				case "gs":
+					//指定转生等级随机宝石
+					self.addGsGem(uid,value,cb)
 				break
 			}
 		}else{
