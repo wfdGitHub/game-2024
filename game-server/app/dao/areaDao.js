@@ -11,12 +11,12 @@ areaDao.prototype.createArea = function(otps,cb) {
 	self.redisDao.db.incrby("area:lastid",1,function(err,data) {
 		if(!err && data){
 			areaInfo.areaId = data
-			areaInfo.lastRank = 2001
+			areaInfo.lastRank = 4001
 			self.redisDao.db.hmset("area:area"+areaInfo.areaId+":areaInfo",areaInfo)
 			self.redisDao.db.rpush("area:list",JSON.stringify(areaInfo))
 			//初始机器人
 			var robots = {}
-			for(var i = 1;i <= 2001;i++){
+			for(var i = 1;i <= 4001;i++){
 				var info = {
 					"uid" : i,
 					"sex" : Math.random() > 0.5 ? 1 : 2

@@ -81,11 +81,32 @@
         });
       }
       //获取目标列表
-      var getTargetList = function() {
+      var getTargetList = function(cb) {
         pomelo.request("area.arenaHandler.getTargetList", {}, function(data) {
             console.log(data);
+            if(cb)
+              cb(data)
         });
       }
+      //获取我的竞技场数据
+      var getMyArenaInfo = function(cb) {
+        pomelo.request("area.arenaHandler.getMyArenaInfo", {}, function(data) {
+            console.log(data);
+            if(cb)
+              cb(data)
+        });
+      }
+      //挑战目标
+      var challengeArena = function() {
+        getTargetList(function(data) {
+          var targetRank = data.data.rankList[0]
+          var targetStr = data.data.userList[0]
+          pomelo.request("area.arenaHandler.challengeArena", {targetStr : targetStr,targetRank : targetRank}, function(data) {
+              console.log(data);
+          });
+        })
+      }
+
       //============运镖玩法================//
       //获取我的押镖信息
       var getEscortInfo = function() {
@@ -645,12 +666,14 @@
       <input id="test" type="button" value="注册角色" onclick="register(2,''+Date.now(),1)"/>
       <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
+      <input id="test" type="button" value="战斗准备" onclick="readyFight()"/>
     </div>
     <div class="g-button">
       竞技场 : 
       <input id="test" type="button" value="获取排行榜" onclick="getRankList()"/>
       <input id="test" type="button" value="获取目标列表" onclick="getTargetList()"/>
-      
+      <input id="test" type="button" value="获取我的竞技场数据" onclick="getMyArenaInfo()"/>
+      <input id="test" type="button" value="挑战目标" onclick="challengeArena()"/>
     </div>
     <div class="g-button">
       押镖玩法 : 
