@@ -112,6 +112,15 @@ area.prototype.sendToUser = function(uid,notify) {
       sid: this.connectorMap[uid]
     }])
 }
+//发送给服务器内全部玩家
+area.prototype.sendAllUser = function(notify) {
+	for(var uid in this.connectorMap){
+		this.channelService.pushMessageByUids('onMessage', notify, [{
+	      uid: uid,
+	      sid: this.connectorMap[uid]
+	    }])
+	}
+}
 //获取服务器信息
 area.prototype.getAreaServerInfo = function(){
 	var info = {

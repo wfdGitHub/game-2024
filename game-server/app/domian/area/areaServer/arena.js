@@ -8,10 +8,11 @@ var correctDenominator = arena_cfg["correctDenominator"]["value"]		//宽度值
 var addOneLv = arena_cfg["addOneLv"]["value"]							//排名在此以内使用当前排名+1
 var dayCount = arena_cfg["dayCount"]["value"]							//每日挑战次数
 var awardTime = arena_cfg["awardTime"]["value"]							//奖励发放时间
-var buyConsume = arena_cfg["buyConsume"]["value"]							//胜利奖励
+var buyConsume = arena_cfg["buyConsume"]["value"]						//胜利奖励
 var winAward = arena_cfg["win"]["value"]								//失败奖励
 var loseAward = arena_cfg["lose"]["value"]								//购买次数消耗
 var rankUp = arena_cfg["rankUp"]["value"] 								//排名提示奖励物品ID
+var sysChatLv = 10														//系统广播通知排名临界值
 var rankList = []
 for(var i in arena_rank){
 	rankList.push(parseInt(i))
@@ -250,6 +251,36 @@ module.exports = function() {
 				self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,targetRank,data[0])
 			if(targetUid > 10000)
 				self.setObj(targetUid,mainName,"rank",rank)
+			if(targetRank <= sysChatLv){
+				var userInfo = JSON.parse(data[0])
+				var userName = ""
+				if(userInfo && userInfo.name){
+					userName = userInfo.name
+				}
+				if(!data[1]){
+					self.redisDao.db.hget("area:area"+self.areaId+":robots",targetUid,function(err,targetInfo) {
+						var targetInfo = JSON.parse(targetInfo)
+						var targetName = ""
+						if(targetInfo && targetInfo.name){
+							targetName = targetInfo.name
+						}
+						var notify = {
+							type : "sysChat",
+							text : userName+"玩家击败了"+targetName+" 玩家,取代了"+targetName+"竞技场的位置,当前排名"+rank
+						}
+						self.sendAllUser(notify)
+					})
+				}else{
+					var targetInfo = JSON.parse(data[1])
+					var targetName = ""
+					targetName = targetInfo.name
+					var notify = {
+						type : "sysChat",
+						text : userName+"玩家击败了"+targetName+" 玩家,取代了"+targetName+"竞技场的位置,当前排名"+rank
+					}
+					self.sendAllUser(notify)
+				}
+			}
 			if(cb){
 				cb()
 			}
