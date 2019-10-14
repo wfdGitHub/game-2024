@@ -8,7 +8,7 @@ module.exports = function() {
 	const TTTInfo = {
 		"curL" : 0,	//当前等级
 		"maxL" : 0,	//最高等级
-		"samaraAward" : -1	//今日奖励领取记录
+		"passAward" : 0	//通关奖励领取记录
 	}
 	//玩家首次登陆刷新
 	this.TTTdayUpdate = function(uid) {
@@ -17,7 +17,7 @@ module.exports = function() {
 			var curL = Math.round(Math.floor(info.maxL / 100) * 100)
 			var curS = Math.floor(info.maxL / 100) - 1
 			self.setObj(uid,main_name,"curL",curL)
-			self.setObj(uid,main_name,"samaraAward",curS)
+			self.setObj(uid,main_name,"passAward",0)
 		})
 	}
 	//获取通天塔数据
@@ -58,8 +58,8 @@ module.exports = function() {
 		    var defTeam = [{characterId : ttttower_level[curL]["bossId"],level : level,"attStr" : ttttower_samsara[curS]["attStr"]}]
 		    self.recordFight(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
 		    var result = self.fightContorl.fighting(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
-		    if(result.verify === otps.verify || true){
-		    	if(result.result === "win" || true){
+		    if(result.verify === otps.verify){
+		    	if(result.result === "win"){
 		    		var rate = ttttower_samsara[curS]["rate"]
 		    		var info = {
 		    			result : result
@@ -112,13 +112,24 @@ module.exports = function() {
 			}
 		})
 	}
-	//领取前期奖励
+	//领取通关奖励
 	this.getTTTAwards = function(uid,cb) {
-		self.getObj(uid,main_name,"samaraAward",function(samara) {
-			samara = parseInt(samara)
-			if(ttttower_samsara[samara]){
-				self.setObj(uid,main_name,"samaraAward",-1,function() {
-					var awards = self.addItemStr(uid,ttttower_samsara[samara]["samaraAward"])
+		self.getObjAll(uid,main_name,function(data) {
+			var passAward = parseInt(data.passAward)
+			var curL = parseInt(data.curL)
+			var maxL = parseInt(data.maxL)
+			if(passAward){
+				cb(false,"已领取")
+				return
+			}
+			if(curL % 100 != 99){
+				cb(false,"未通关")
+				return
+			}
+			var samsara = Math.floor(curL / 100)
+			if(ttttower_samsara[samsara]){
+				self.setObj(uid,main_name,"passAward",1,function() {
+					var awards = self.addItemStr(uid,ttttower_samsara[passAward]["passAward"])
 					cb(true,awards)
 				})
 			}else{
