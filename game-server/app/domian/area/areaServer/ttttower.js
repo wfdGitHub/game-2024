@@ -70,6 +70,15 @@ module.exports = function() {
 		    			maxL = parseInt(maxL) || 0
 		    			if(level > maxL){
 		    				self.setObj(uid,main_name,"maxL",level)
+		    				if(level % 100 == 99){
+		    					//首通广播
+		    					var name = self.players[uid]["name"]
+								var notify = {
+									type : "sysChat",
+									text : "玩家"+name+"首次通关通天塔第"+(level+1)+"关"
+								}
+								self.sendAllUser(notify)
+		    				}
 		    			}
 		    		})
 		    		cb(true,info)
