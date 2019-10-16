@@ -1,7 +1,7 @@
 {
   "openTime1": {
     "des": "开启时间1",
-    "value": 0
+    "value": 11.5
   },
   "closeTime1": {
     "des": "关闭时间1",
@@ -9,11 +9,11 @@
   },
   "openTime2": {
     "des": "开启时间2",
-    "value": 12
+    "value": 20.5
   },
   "closeTime2": {
     "des": "关闭时间2",
-    "value": 24
+    "value": 21
   },
   "playCount": {
     "des": "运镖次数",
@@ -29,7 +29,7 @@
   },
   "refresh": {
     "des": "刷新消耗",
-    "value": "101:100"
+    "value": "gold:100"
   },
   "robRate": {
     "des": "劫镖获得比例",
@@ -38,25 +38,5 @@
   "loseRate": {
     "des": "被劫损失比例",
     "value": 0.05
-  },
-  "runTime": {
-    "des": "押镖时间",
-    "value": 3000
-  },
-  "passTitle": {
-    "des": "押镖奖励邮件标题",
-    "value": "押镖奖励"
-  },
-  "passText": {
-    "des": "押镖奖励邮件文本",
-    "value": "这是您的押镖奖励"
-  },
-  "robTitle": {
-    "des": "劫镖奖励邮件标题",
-    "value": "劫镖奖励"
-  },
-  "robText": {
-    "des": "劫镖奖励邮件文本",
-    "value": "这是您的劫镖奖励"
   }
 }

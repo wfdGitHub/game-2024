@@ -1,56 +1,62 @@
 {
   "0": {
-    "bossLevel": 0,
-    "mobLevel": 0,
+    "bossLevel": 30,
+    "mobLevel": 30,
     "bossAwardNum": 1,
     "passAwardNum": 2,
     "partner_power": 1,
     "pet_power": 1,
-    "equip_power": 1
+    "equip_power": 1,
+    "gem_power": 1
   },
   "1": {
-    "bossLevel": 101,
+    "bossLevel": 50,
     "mobLevel": 101,
     "bossAwardNum": 1,
     "passAwardNum": 2,
     "partner_power": 2,
     "pet_power": 2,
-    "equip_power": 2
+    "equip_power": 2,
+    "gem_power": 2
   },
   "2": {
-    "bossLevel": 201,
+    "bossLevel": 100,
     "mobLevel": 201,
     "bossAwardNum": 1,
     "passAwardNum": 2,
     "partner_power": 3,
     "pet_power": 3,
-    "equip_power": 3
+    "equip_power": 3,
+    "gem_power": 3
   },
   "3": {
-    "bossLevel": 301,
+    "bossLevel": 200,
     "mobLevel": 301,
     "bossAwardNum": 1,
     "passAwardNum": 2,
     "partner_power": 4,
     "pet_power": 4,
-    "equip_power": 4
+    "equip_power": 4,
+    "gem_power": 4
   },
   "4": {
-    "bossLevel": 401,
+    "bossLevel": 300,
     "mobLevel": 401,
     "bossAwardNum": 1,
     "passAwardNum": 2,
     "partner_power": 5,
     "pet_power": 5,
-    "equip_power": 5
+    "equip_power": 5,
+    "gem_power": 5
   },
   "5": {
-    "bossLevel": 501,
+    "bossLevel": 400,
     "mobLevel": 501,
     "bossAwardNum": 1,
     "passAwardNum": 2,
     "partner_power": 6,
     "pet_power": 6,
-    "equip_power": 6
+    "equip_power": 6,
+    "gem_power": 6
   }
 }
