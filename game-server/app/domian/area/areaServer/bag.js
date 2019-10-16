@@ -317,8 +317,24 @@ module.exports = function() {
 			cb(true,shopInfo.pa)
 		})
 	}
+	//解析奖励池str
+	this.openChestStr = function(uid,str) {
+		if(!str || typeof(str) != "string"){
+			return []
+		}
+		var awardList = []
+		var list = str.split("&")
+		list.forEach(function(m_str) {
+			var m_list = m_str.split(":")
+			var chestId = m_list[0]
+			var value = parseInt(m_list[1]) || 1
+			for(var i = 0;i < value;i++)
+				awardList.push(self.openChestAward(uid,chestId))
+		})
+		return awardList
+	}
 	//奖励池获取奖励
-	this.openChestAward = function(uid,chestId,rate) {
+	this.openChestAward = function(uid,chestId) {
 		if(!chest_cfg[chestId] || !chest_cfg[chestId]["randAward"]){
 			return []
 		}
@@ -343,7 +359,7 @@ module.exports = function() {
 			}
 		}
 		if(str){
-			return this.addItemStr(uid,str,rate)
+			return this.addItemStr(uid,str)
 		}else{
 			return []
 		}

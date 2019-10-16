@@ -73,6 +73,12 @@
             console.log(data);
         });
       }
+      //开启宝箱str
+      var openChestStr = function(str) {
+        pomelo.request("area.normalHandler.openChestStr", {str : str}, function(data) {
+            console.log(data);
+        });
+      }
       //============竞技场玩法==============//
       //获取排行榜
       var getRankList = function() {
