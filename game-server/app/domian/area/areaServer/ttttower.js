@@ -12,10 +12,13 @@ module.exports = function() {
 	}
 	//玩家首次登陆刷新
 	this.TTTdayUpdate = function(uid) {
+		var curLv = self.players[uid].characters[self.heroId].level
+		var samsara = Math.floor(((curLv - 1) / 100))
 		self.getTTTInfo(uid,function(info) {
 			info.maxL = parseInt(info.maxL)
-			var curL = Math.round(Math.floor(info.maxL / 100) * 100)
-			var curS = Math.floor(info.maxL / 100) - 1
+			var curL = samsara * 100
+			if(info.maxL < curL)
+				self.setObj(uid,main_name,"maxL",curL)
 			self.setObj(uid,main_name,"curL",curL)
 			self.setObj(uid,main_name,"passAward",0)
 		})
@@ -38,11 +41,11 @@ module.exports = function() {
 		}
 		var samsara = Math.floor(((curLv - 1) / 100))
 		self.getObj(uid,main_name,"curL",function(level) {
-			level = (parseInt(level) || 0)  + 1
-			if(level > samsara * 100 + 99){
-				cb(false,"未开放当前等级")
+			if(level % 100 == 99){
+				cb(false,"已通关")
 				return
 			}
+			level = (parseInt(level) || 0)  + 1
 			var fightInfo = self.getFightInfo(uid)
 		    var atkTeam = fightInfo.team
 		    if(!atkTeam){
