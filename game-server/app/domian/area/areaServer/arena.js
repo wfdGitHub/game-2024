@@ -8,9 +8,9 @@ var correctDenominator = arena_cfg["correctDenominator"]["value"]		//宽度值
 var addOneLv = arena_cfg["addOneLv"]["value"]							//排名在此以内使用当前排名+1
 var dayCount = arena_cfg["dayCount"]["value"]							//每日挑战次数
 var awardTime = arena_cfg["awardTime"]["value"]							//奖励发放时间
-var winAward = arena_cfg["buyConsume"]["value"]							//胜利奖励
-var loseAward = arena_cfg["win"]["value"]								//失败奖励
-var buyConsume = arena_cfg["lose"]["value"]								//购买次数消耗
+var buyConsume = arena_cfg["buyConsume"]["value"]							//胜利奖励
+var winAward = arena_cfg["win"]["value"]								//失败奖励
+var loseAward = arena_cfg["lose"]["value"]								//购买次数消耗
 var rankUp = arena_cfg["rankUp"]["value"] 								//排名提示奖励物品ID
 var rankList = []
 for(var i in arena_rank){
@@ -74,8 +74,7 @@ module.exports = function() {
 				rank : rank,
 				count : 0,						//今日挑战次数
 				buyCount : 0,					//今日购买挑战次数
-				highestRank : rank,				//最高排名
-				winStreak : 0
+				highestRank : rank				//最高排名
 			}
 			self.setHMObj(uid,mainName,info)
 			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,JSON.stringify({uid : uid,sex : sex,name : name}))
@@ -120,20 +119,22 @@ module.exports = function() {
 			var targetInfo = JSON.parse(data.userList[0])
 			var targetUid = targetInfo.uid
 		    if(local.locks[targetUid]){
-		    	self.incrbyObj(uid,mainName,"count",-1)
 		    	cb(false,"该玩家正在被挑战")
 		    	return
 		    }
 			local.locks[targetUid] = true
 			local.locks[uid] = true
-			self.incrbyObj(uid,mainName,"count",1,function(newCount) {
-				if(newCount > dayCount && false){
-					self.incrbyObj(uid,mainName,"count",-1)
+			self.getObjAll(uid,mainName,function(arenaInfo) {
+				console.log(arenaInfo)
+				arenaInfo.count = parseInt(arenaInfo.count)
+				arenaInfo.buyCount = parseInt(arenaInfo.buyCount)
+				if(arenaInfo.count >= dayCount + arenaInfo.buyCount){
 					delete local.locks[targetUid]
 					delete local.locks[uid]
 					cb(false,"挑战次数已满")
 					return
 				}
+				self.incrbyObj(uid,mainName,"count",1)
 				if(targetUid < 10000){
 					//机器人队伍
 					var range = util.binarySearch(rankList,targetRank)
@@ -164,6 +165,40 @@ module.exports = function() {
 			})
 		})
 	}
+	//竞技场每日刷新
+	this.arenadayUpdate = function(uid) {
+		console.log("arenadayUpdate",uid)
+		var info = {
+			count : 0,						//今日挑战次数
+			buyCount : 0					//今日购买挑战次数
+		}
+		self.setHMObj(uid,mainName,info)
+		//发放竞技场奖励
+		self.getObj(uid,mainName,"rank",function(rank) {
+			rank = parseInt(rank)
+			var range = util.binarySearch(rankList,rank)
+			if(arena_rank[range] && arena_rank[range]["dayAward"]){
+				var title = "竞技场排名奖励"
+				var text = "恭喜您在竞技场排名第"+rank+"名,这是您的排名奖励"
+				self.sendMail(uid,title,text,arena_rank[range]["dayAward"])
+			}
+		})
+	}
+	//购买挑战次数
+	this.buyArenaCount = function(uid,cb) {
+		self.getObj(uid,mainName,"buyCount",function (count) {
+			count = parseInt(count) || 0
+			self.consumeItems(uid,buyConsume,count+1,function(flag,err) {
+				if(!flag){
+					cb(flag,err)
+					return
+				}
+				self.incrbyObj(uid,mainName,"buyCount",1,function(newCount) {
+					cb(true,newCount)
+				})
+			})
+		})
+	}
 	//挑战结算
 	local.challengeArena = function(uid,targetUid,targetRank,targetStr,atkTeam,defTeam,seededNum,cb) {
 		var info = {}
@@ -173,6 +208,7 @@ module.exports = function() {
 		if(result.result == "win"){
 			self.getObjAll(uid,mainName,function(data) {
 				//交换排名
+				data.rank = parseInt(data.rank)
 				info.rank = data.rank
 				if(data.rank > targetRank){
 					local.swopRank(uid,data.rank,targetUid,targetRank,function() {

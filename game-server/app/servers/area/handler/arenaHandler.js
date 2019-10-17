@@ -38,6 +38,15 @@ arenaHandler.prototype.challengeArena = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//购买挑战次数
+arenaHandler.prototype.buyArenaCount = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].buyArenaCount(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "arenaHandler",

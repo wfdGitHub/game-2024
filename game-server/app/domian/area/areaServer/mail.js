@@ -41,9 +41,11 @@ module.exports = function() {
 					"mailInfo" : mailInfo
 				}
 				self.sendToUser(uid,notify)
-				cb(true,data)
+				if(cb)
+					cb(true,data)
 			}else{
-				cb(false,err)
+				if(cb)
+					cb(false,err)
 			}
 		})
 	}

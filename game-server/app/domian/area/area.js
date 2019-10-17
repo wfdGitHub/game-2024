@@ -91,6 +91,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	console.log("玩家 "+uid+" 今日首次登录")
 	this.setObj(uid,"playerInfo","dayStr",this.dayStr)
 	this.TTTdayUpdate(uid)
+	this.arenadayUpdate(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
