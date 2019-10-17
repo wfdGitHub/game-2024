@@ -95,8 +95,8 @@ module.exports = function() {
 		    }
 		    self.recordFight(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
 		    var result = self.fightContorl.fighting(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
-		    if(result.verify === otps.verify || true){
-		    	if(result.result === "win" || true){
+		    if(result.verify === otps.verify){
+		    	if(result.result === "win"){
 		    		var rate = fb_samsara[samsara][type+"_power"]
 		    		var info = {
 		    			result : result
