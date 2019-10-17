@@ -354,7 +354,12 @@ module.exports = function() {
 		var rand = Math.random() * allValue
 		for(var i in awardMap){
 			if(rand < awardMap[i]){
-				str = chest_awards[keyMap[i]]["str"]
+				if(!chest_awards[keyMap[i]]){
+					console.error(chestId+"宝箱奖励未找到"+keyMap[i])
+					return [{"err" : chestId+"宝箱奖励未找到"+keyMap[i]}]
+				}else{
+					str = chest_awards[keyMap[i]]["str"]
+				}
 				break
 			}
 		}
