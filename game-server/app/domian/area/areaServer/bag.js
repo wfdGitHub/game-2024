@@ -303,7 +303,7 @@ module.exports = function() {
 			cb(false,"item not exist or cfg error")
 			return
 		}
-		if(!Number.isInteger(count)){
+		if(!Number.isInteger(count) || count <= 0){
 			cb(false,"count error "+count)
 			return
 		}
@@ -318,7 +318,7 @@ module.exports = function() {
 	}
 	//商城购买物品
 	this.buyShop = function(uid,shopId,count,cb) {
-		if(parseInt(shopId) != shopId || parseInt(count) != count){
+		if(parseInt(shopId) != shopId || !Number.isInteger(count) || count <= 0){
 			cb(false,"args type error")
 			return
 		}
