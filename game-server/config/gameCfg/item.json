@@ -2,7 +2,9 @@
   "101": {
     "name": "仙币",
     "des": "仙币",
-    "isBag": false
+    "isBag": false,
+    "buy": "102:10",
+    "buyNum": 10000
   },
   "102": {
     "name": "仙钻",
@@ -12,436 +14,578 @@
   "103": {
     "name": "熔炼值",
     "des": "熔炼值",
-    "isBag": false
+    "isBag": false,
+    "buy": "102:10",
+    "buyNum": 10000
   },
   "104": {
     "name": "仙晶",
     "des": "仙晶",
-    "isBag": false
+    "isBag": false,
+    "buy": "102:10",
+    "buyNum": 10000
   },
   "105": {
     "name": "灵气",
     "des": "用于人物系统的消耗",
-    "isBag": false
+    "isBag": false,
+    "buy": "102:10",
+    "buyNum": 10000
   },
   "201": {
     "name": "副本钥匙",
     "des": "副本钥匙",
-    "isBag": false
+    "isBag": false,
+    "buy": "102:50",
+    "buyNum": 1
   },
   "1001": {
     "name": "角色转生丹",
     "des": "用于角色转生",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "1002": {
     "name": "凤凰石",
     "des": "用于神兵护身进阶",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "1003": {
     "name": "青龙石",
     "des": "用于神兵护身突破",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "1101": {
     "name": "装备强化石",
     "des": "能够用于强化装备",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "1102": {
     "name": "装备洗练石",
     "des": "用于洗练装备",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "2001": {
     "name": "宠物经验丹",
     "des": "增加宠物1000经验值",
     "isBag": true,
     "useType": "petExp",
-    "arg": 1000
+    "arg": 1000,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "2002": {
     "name": "宠物进阶石",
     "des": "用于宠物进阶",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "2003": {
     "name": "宠物突破石",
     "des": "用于宠物突破",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "2004": {
     "name": "宠物洗练石",
     "des": "用于宠物洗练",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "3001": {
     "name": "伙伴经验丹",
     "des": "增加伙伴1000经验值",
     "isBag": true,
     "useType": "partnerExp",
-    "arg": 1000
+    "arg": 1000,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "3002": {
     "name": "伙伴进阶石",
     "des": "用于伙伴进阶",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "3003": {
     "name": "伙伴突破石",
     "des": "用于伙伴突破",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "3004": {
     "name": "伙伴灵魂碎片宝箱",
     "des": "随机开出伙伴灵魂碎片",
     "isBag": true,
     "useType": "chest",
-    "arg": "chest_partner_3"
+    "arg": "chest_partner_3",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "3101": {
     "name": "秦雨墨灵魂碎片",
     "des": "用于激活伙伴秦雨墨",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "3102": {
     "name": "张君烈灵魂碎片",
     "des": "用于激活伙伴张君烈",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "3103": {
     "name": "陆玲珑灵魂碎片",
     "des": "用于激活伙伴陆玲珑",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "3104": {
     "name": "项天问灵魂碎片",
     "des": "用于激活伙伴项天问",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4001": {
     "name": "普通宠物匣",
     "des": "可以开出低级的宠物",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12101:100&12102:100&12103:100&12104:100&12105:100&12106:100"
+    "arg": "12101:100&12102:100&12103:100&12104:100&12105:100&12106:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4002": {
     "name": "高级宠物匣",
     "des": "可以开出高级的宠物",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12201:100&12202:100&12203:100&12204:100&12205:100&12206:100&12207:100&12208:100"
+    "arg": "12201:100&12202:100&12203:100&12204:100&12205:100&12206:100&12207:100&12208:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4003": {
     "name": "珍兽宠物匣",
     "des": "可以开出稀有的宠物",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12301:100&12302:100&12303:100&12304:100&12305:100&12306:100"
+    "arg": "12301:100&12302:100&12303:100&12304:100&12305:100&12306:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4004": {
     "name": "神兽宠物匣",
     "des": "可以开出神兽的宠物",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "123401:100&12402:100&12403:100&12404:100"
+    "arg": "123401:100&12402:100&12403:100&12404:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4101": {
     "name": "小僵尸宠物匣",
     "des": "打开可获得宠物小僵尸",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12101:100"
+    "arg": "12101:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4102": {
     "name": "花妖宠物匣",
     "des": "打开可获得宠物花妖",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12102:100"
+    "arg": "12102:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4103": {
     "name": "天兵宠物匣",
     "des": "打开可获得宠物天兵",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12103:100"
+    "arg": "12103:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4104": {
     "name": "天将宠物匣",
     "des": "打开可获得宠物天将",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12104:100"
+    "arg": "12104:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4105": {
     "name": "黑熊精宠物匣",
     "des": "打开可获得宠物黑熊精",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12105:100"
+    "arg": "12105:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4106": {
     "name": "小悟空宠物匣",
     "des": "打开可获得宠物小悟空",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12106:100"
+    "arg": "12106:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4107": {
     "name": "三叉鱼人宠物匣",
     "des": "打开可获得宠物三叉鱼人",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12201:100"
+    "arg": "12201:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4108": {
     "name": "鱼人宠物匣",
     "des": "打开可获得宠物鱼人",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12202:100"
+    "arg": "12202:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4109": {
     "name": "骷髅使者宠物匣",
     "des": "打开可获得宠物骷髅使者",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12203:100"
+    "arg": "12203:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4110": {
     "name": "地狱使者宠物匣",
     "des": "打开可获得宠物地狱使者",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12204:100"
+    "arg": "12204:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4111": {
     "name": "幽灵宠物匣",
     "des": "打开可获得宠物幽灵",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12205:100"
+    "arg": "12205:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4112": {
     "name": "五彩鸟宠物匣",
     "des": "打开可获得宠物五彩鸟",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12206:100"
+    "arg": "12206:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4113": {
     "name": "神鸟宠物匣",
     "des": "打开可获得宠物神鸟",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12207:100"
+    "arg": "12207:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4114": {
     "name": "火麒麟宠物匣",
     "des": "打开可获得宠物火麒麟",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12208:100"
+    "arg": "12208:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4115": {
     "name": "精灵宠物匣",
     "des": "打开可获得宠物精灵",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12301:100"
+    "arg": "12301:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4116": {
     "name": "邪狮宠物匣",
     "des": "打开可获得宠物邪狮",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12302:100"
+    "arg": "12302:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4117": {
     "name": "龙龟宠物匣",
     "des": "打开可获得宠物龙龟",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12303:100"
+    "arg": "12303:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4118": {
     "name": "熊猫阿宝宠物匣",
     "des": "打开可获得宠物熊猫阿宝",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12304:100"
+    "arg": "12304:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4119": {
     "name": "玉兔宠物匣",
     "des": "打开可获得宠物玉兔",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12305:100"
+    "arg": "12305:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4120": {
     "name": "雪虎宠物匣",
     "des": "打开可获得宠物雪虎",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12306:100"
+    "arg": "12306:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4121": {
     "name": "女娲宠物匣",
     "des": "打开可获得宠物女娲",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12401:100"
+    "arg": "12401:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4122": {
     "name": "灵火女娲宠物匣",
     "des": "打开可获得宠物灵火女娲",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12402:100"
+    "arg": "12402:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4123": {
     "name": "穷奇宠物匣",
     "des": "打开可获得宠物穷奇",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12403:100"
+    "arg": "12403:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "4124": {
     "name": "麒麟宠物匣",
     "des": "打开可获得宠物麒麟",
     "isBag": true,
     "useType": "petEgg",
-    "arg": "12404:100"
+    "arg": "12404:100",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "5101": {
     "name": "倚天剑碎片",
     "des": "用于激活神兵倚天剑",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "5102": {
     "name": "青霜剑碎片",
     "des": "用于激活神兵青霜剑",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "5103": {
     "name": "龙渊剑碎片",
     "des": "用于激活神兵龙渊剑",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "5104": {
     "name": "白虹剑碎片",
     "des": "用于激活神兵白虹剑",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "5105": {
     "name": "赤霄剑碎片",
     "des": "用于激活神兵赤霄剑",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "5106": {
     "name": "轩辕剑碎片",
     "des": "用于激活神兵轩辕剑",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "6101": {
     "name": "照妖镜碎片",
     "des": "用于激活护身照妖镜",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "6102": {
     "name": "乾坤袋碎片",
     "des": "用于激活护身乾坤袋",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "6103": {
     "name": "净水瓶碎片",
     "des": "用于激活护身净水瓶",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "6104": {
     "name": "琉璃瓶碎片",
     "des": "用于激活护身琉璃瓶",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "6105": {
     "name": "玲珑塔碎片",
     "des": "用于激活护身玲珑塔",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "6106": {
     "name": "番天印碎片",
     "des": "用于激活护身番天印",
-    "isBag": true
+    "isBag": true,
+    "buy": "102:10",
+    "buyNum": 1
   },
   "10001": {
     "name": "木质宝箱",
     "des": "木质宝箱",
     "isBag": true,
-    "useType": "chest"
+    "useType": "chest",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "10002": {
     "name": "黄金宝箱",
     "des": "黄金宝箱",
     "isBag": true,
-    "useType": "chest"
+    "useType": "chest",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "10003": {
     "name": "随机伙伴灵魂碎片",
     "des": "打开可获得随机伙伴灵魂碎片",
     "isBag": true,
     "useType": "chest",
-    "arg": "chest_partner_1"
+    "arg": "chest_partner_1",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "10004": {
     "name": "随机伙伴材料",
     "des": "打开获得随机伙伴材料",
     "isBag": true,
     "useType": "chest",
-    "arg": "chest_partneritem"
+    "arg": "chest_partneritem",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "10005": {
     "name": "随机宠物材料",
     "des": "打开获得随机宠物材料",
     "isBag": true,
     "useType": "chest",
-    "arg": "chest_petitem"
+    "arg": "chest_petitem",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "10006": {
     "name": "随机装备材料",
     "des": "打开获得随机装备材料",
     "isBag": true,
     "useType": "chest",
-    "arg": "chest_zbitem"
+    "arg": "chest_zbitem",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "10007": {
     "name": "随机获得装备",
     "des": "打开获得随机装备",
     "isBag": true,
     "useType": "chest",
-    "arg": "fb_chest_1"
+    "arg": "fb_chest_1",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "10008": {
     "name": "随机开出1级宝石",
     "des": "打开可以获得随机1级宝石",
     "isBag": true,
     "useType": "chest",
-    "arg": "chest_gs1"
+    "arg": "chest_gs1",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "10009": {
     "name": "随机开出2级宝石",
     "des": "打开可以获得随机2级宝石",
     "isBag": true,
     "useType": "chest",
-    "arg": "chest_gs2"
+    "arg": "chest_gs2",
+    "buy": "102:10",
+    "buyNum": 1
   },
   "10010": {
     "name": "随机开出3级宝石",
     "des": "打开可以获得随机3级宝石",
     "isBag": true,
     "useType": "chest",
-    "arg": "chest_gs3"
+    "arg": "chest_gs3",
+    "buy": "102:10",
+    "buyNum": 1
   }
 }

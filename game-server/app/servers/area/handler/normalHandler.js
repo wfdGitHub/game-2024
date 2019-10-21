@@ -83,6 +83,16 @@ normalHandler.prototype.buyShop = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//直接购买物品
+normalHandler.prototype.buyItem = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var itemId = msg.itemId
+  var count = msg.count
+  this.areaManager.areaMap[areaId].buyItem(uid,itemId,count,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //连入跨服服务器
 normalHandler.prototype.loginCross = function(msg, session, next) {
   var uid = session.uid

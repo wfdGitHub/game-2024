@@ -297,6 +297,25 @@ module.exports = function() {
 		})
 		return awardList
 	}
+	//直接购买物品
+	this.buyItem = function(uid,itemId,count,cb) {
+		if(!itemCfg[itemId] || !itemCfg[itemId]["buy"] || !Number.isInteger(itemCfg[itemId]["buyNum"])){
+			cb(false,"item not exist or cfg error")
+			return
+		}
+		if(!Number.isInteger(count)){
+			cb(false,"count error "+count)
+			return
+		}
+		self.consumeItems(uid,itemCfg[itemId]["buy"],count,function(flag,err) {
+			if(!flag){
+				cb(flag,err)
+				return
+			}
+			var info = self.addItem({uid : uid,itemId : itemId,value : itemCfg[itemId]["buyNum"],rate : count})
+			cb(true,info)
+		})
+	}
 	//商城购买物品
 	this.buyShop = function(uid,shopId,count,cb) {
 		if(parseInt(shopId) != shopId || parseInt(count) != count){

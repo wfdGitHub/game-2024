@@ -668,6 +668,12 @@
             console.log(data);
         })
       }
+      //直接购买物品
+      var buyItem = function(itemId,count) {
+        pomelo.request("area.normalHandler.buyItem",{itemId : itemId,count : count}, function(data) {
+            console.log(data);
+        })
+      }
     </script>
   </head>
   <body>
