@@ -133,7 +133,7 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 	        session.push("areaId")
 	        session.set("serverId",serverId)
 	        session.push("serverId")
-			session.set("nickname",playerInfo.nickname)
+			session.set("nickname",playerInfo.name)
 			session.push("nickname")
 	        next(null,{flag : true,msg : playerInfo})
 		}else{
