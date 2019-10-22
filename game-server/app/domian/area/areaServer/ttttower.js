@@ -139,7 +139,7 @@ module.exports = function() {
 				return
 			}
 			var samsara = Math.floor(curL / 100)
-			if(ttttower_samsara[samsara]){
+			if(ttttower_samsara[samsara] && ttttower_samsara[passAward]["passAward"]){
 				self.setObj(uid,main_name,"passAward",1,function() {
 					var awards = self.addItemStr(uid,ttttower_samsara[passAward]["passAward"])
 					cb(true,awards)
