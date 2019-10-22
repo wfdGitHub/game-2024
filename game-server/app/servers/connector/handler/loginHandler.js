@@ -127,11 +127,14 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
         return
     }
     this.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,this.app.serverId,function(playerInfo) {
+    	console.log("playerInfo",playerInfo)
 		if(playerInfo){
 	        session.set("areaId",areaId)
 	        session.push("areaId")
 	        session.set("serverId",serverId)
 	        session.push("serverId")
+			session.set("nickname",playerInfo.nickname)
+			session.push("nickname")
 	        next(null,{flag : true,msg : playerInfo})
 		}else{
 			next(null,{flag : false,msg : "未注册角色"})

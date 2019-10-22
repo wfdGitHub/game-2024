@@ -36,10 +36,6 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
 		}
 	}
 	session.bind(uid)
-	session.set("nickname",userInfo.nickname)
-	session.push("nickname")
-	session.set("head",userInfo.head)
-	session.push("head")
 	session.on("closed",onUserLeave.bind(this))
 	console.log(uid + "  entrySuccess.."+ "  "+this.app.serverId)
   	next(null, {flag : true,msg : userInfo});
