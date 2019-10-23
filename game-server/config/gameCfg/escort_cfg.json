@@ -1,7 +1,7 @@
 {
   "openTime1": {
     "des": "开启时间1",
-    "value": 11.5
+    "value": 0
   },
   "closeTime1": {
     "des": "关闭时间1",
@@ -9,11 +9,11 @@
   },
   "openTime2": {
     "des": "开启时间2",
-    "value": 20.5
+    "value": 12.1
   },
   "closeTime2": {
     "des": "关闭时间2",
-    "value": 21
+    "value": 24
   },
   "playCount": {
     "des": "运镖次数",
