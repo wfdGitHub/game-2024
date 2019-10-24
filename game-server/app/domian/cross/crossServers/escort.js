@@ -112,6 +112,7 @@ module.exports = function() {
 						carInfo : carInfo
 					}
 					self.sendToUser(messageName,crossUid,notify)
+					local.userInfos[crossUid]["messageList"].push(notify)
 				}
 			})
 			var notify = {
