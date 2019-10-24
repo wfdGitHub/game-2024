@@ -66,14 +66,14 @@ module.exports = function() {
 	local.update = function(date) {
 		var endTime = date.getTime() - runTime
 		for(var samsara in local.carMap){
-			var finishList = []
-			for(var i = 0;i < local.carMap[samsara].length;i++){
-				if(local.carMap[samsara][i]["time"] < endTime){
-					finishList = local.carMap[samsara].splice(i,local.carMap[samsara].length)
+			var count = 0
+			while(local.carMap[samsara].length > 0 && local.carMap[samsara][0]["time"] > endTime){
+				count++
+				var carInfo = local.carMap[samsara].shift()
+				local.escortFinish(carInfo["crossUid"],samsara)
+				if(count > 100){
+					break
 				}
-			}
-			for(var i = 0;i < finishList.length;i++){
-				local.escortFinish(finishList[i]["crossUid"],samsara)
 			}
 		}
 	}
