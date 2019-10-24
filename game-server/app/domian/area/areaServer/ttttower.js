@@ -26,7 +26,7 @@ module.exports = function() {
 			for(var i in obj){
 				obj[i] = parseInt(obj[i])
 			}
-			cb(Object.assign({}.TTTInfo,obj))
+			cb(Object.assign({},TTTInfo,obj))
 		})
 	}
 	//挑战BOSS
