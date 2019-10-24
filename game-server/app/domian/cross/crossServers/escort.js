@@ -67,7 +67,7 @@ module.exports = function() {
 		var endTime = date.getTime() - runTime
 		for(var samsara in local.carMap){
 			var count = 0
-			while(local.carMap[samsara].length > 0 && local.carMap[samsara][0]["time"] > endTime){
+			while(local.carMap[samsara].length > 0 && local.carMap[samsara][0]["time"] <= endTime){
 				count++
 				var carInfo = local.carMap[samsara].shift()
 				local.escortFinish(carInfo["crossUid"],samsara)
