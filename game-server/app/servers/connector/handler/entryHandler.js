@@ -40,6 +40,7 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
 	session.set("head",userInfo.head)
 	session.on("closed",onUserLeave.bind(this))
 	console.log(uid + "  entrySuccess.."+ "  "+this.app.serverId)
+	userInfo.time = Date.now()
   	next(null, {flag : true,msg : userInfo});
 }
 var onUserLeave = function(session) {
