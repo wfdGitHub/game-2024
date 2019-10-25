@@ -95,8 +95,8 @@ module.exports = function() {
 		    }
 		    self.recordFight(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
 		    var result = self.fightContorl.fighting(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
-		    if(result.verify === otps.verify || true){
-		    	if(result.result === "win" || true){
+		    if(result.verify === otps.verify){
+		    	if(result.result === "win"){
 		    		var rate = fb_samsara[samsara][type+"_power"]
 		    		var info = {
 		    			result : result
@@ -106,7 +106,7 @@ module.exports = function() {
 		    			//通关奖励
 		    			var passAward
 			    		var awardList1 = self.addItemStr(uid,fb_base[type]["passAward"],rate)
-			    		var awardList2 = self.openChestAward(uid,fb_base[type]["randAward"],rate)
+			    		var awardList2 = self.openChestStr(uid,fb_base[type]["randAward"])
 			    		info.passAward = awardList1.concat(awardList2)
 		    		}else{
 		    			info.bossId = bossId + 1
@@ -114,7 +114,7 @@ module.exports = function() {
 		    		}
 		    		var bossAwards = []
 		    		for(var i = 0;i < fb_samsara[samsara]["bossAwardNum"];i++){
-		    			bossAwards = bossAwards.concat(self.openChestAward(uid,fb_base[type]["awardList"+bossId],rate))
+		    			bossAwards = bossAwards.concat(self.openChestStr(uid,fb_base[type]["awardList"+bossId]))
 		    		}
 		    		info.bossAward = bossAwards
 		    		cb(true,info)

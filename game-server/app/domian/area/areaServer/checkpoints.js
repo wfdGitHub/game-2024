@@ -51,7 +51,10 @@ module.exports = function() {
 		    	cb(false,"atkTeam error")
 		    	return
 		    }
-		    var defTeam = [{characterId : checkpointsCfg[level].bossId,level : checkpointsCfg[level].bossLevel}]
+		    var defTeam = []
+		    if(checkpointsCfg[level].bossId){
+		    	defTeam.push({characterId : checkpointsCfg[level].bossId,level : checkpointsCfg[level].bossLevel})
+		    }
 		    if(checkpointsCfg[level].mon_list){
 		      var monList = JSON.parse(checkpointsCfg[level].mon_list)
 		      monList.forEach(function(characterId) {

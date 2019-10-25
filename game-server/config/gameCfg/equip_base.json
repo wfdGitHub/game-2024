@@ -2,61 +2,61 @@
   "e1": {
     "name": "武器",
     "attribute": "atk:100",
-    "sd": 10,
-    "sc": 200
+    "sd": 14,
+    "sc": 20
   },
   "e2": {
     "name": "头盔",
     "attribute": "def:50&critDef:20",
-    "sd": 8,
-    "sc": 160
+    "sd": 7,
+    "sc": 10
   },
   "e3": {
     "name": "护肩",
     "attribute": "def:30&maxHP:400",
-    "sd": 8,
-    "sc": 160
+    "sd": 7,
+    "sc": 10
   },
   "e4": {
     "name": "胸甲",
     "attribute": "def:70&critDef:10",
-    "sd": 5,
-    "sc": 100
+    "sd": 11,
+    "sc": 16
   },
   "e5": {
     "name": "腰带",
     "attribute": "maxHP:800",
-    "sd": 5,
-    "sc": 100
+    "sd": 11,
+    "sc": 16
   },
   "e6": {
     "name": "项链",
     "attribute": "atk:60&crit:10",
-    "sd": 5,
-    "sc": 100
+    "sd": 8,
+    "sc": 12
   },
   "e7": {
     "name": "护腿",
     "attribute": "def:20&maxHP:600",
-    "sd": 3,
-    "sc": 60
+    "sd": 7,
+    "sc": 10
   },
   "e8": {
     "name": "手套",
     "attribute": "atk:20&hitRate:60",
-    "sd": 3,
-    "sc": 60
+    "sd": 7,
+    "sc": 10
   },
   "e9": {
     "name": "鞋子",
     "attribute": "dodgeRate:40",
-    "sd": 3,
-    "sc": 60
+    "sd": 8,
+    "sc": 12
   },
   "e10": {
     "name": "戒指",
     "attribute": "atk:40&crit:20",
-    "sd": 3,
-    "sc": 60
+    "sd": 8,
+    "sc": 12
   }
 }

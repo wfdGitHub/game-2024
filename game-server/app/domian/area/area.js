@@ -2,7 +2,7 @@
 var bearcat = require("bearcat")
 var fightContorlFun = require("../fight/fightContorl.js")
 var charactersCfg = require("../../../config/gameCfg/characters.json")
-var areaServers = ["exp","partner","bag","dao","checkpoints","advance","pet","character","equip","gem","mail","artifact","fb","ttttower"]
+var areaServers = ["arena","exp","partner","bag","dao","checkpoints","advance","pet","character","equip","gem","mail","artifact","fb","ttttower"]
 const oneDayTime = 86400000
 var area = function(otps,app) {
 	this.areaId = otps.areaId
@@ -51,8 +51,11 @@ area.prototype.register = function(otps,cb) {
 					cb(false,playerInfo)
 					return
 				}
-				self.addItem({uid : otps.uid,itemId : 101,value : 1000000})
+				self.initArenaRank(otps.uid,otps.name,otps.sex)
 				self.setPlayerData(otps.uid,"onhookLastTime",Date.now())
+				//TODO test
+				self.addItem({uid : otps.uid,itemId : 101,value : 1000000})
+
 				cb(true,playerInfo)
 			})
 		}
@@ -88,6 +91,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	console.log("玩家 "+uid+" 今日首次登录")
 	this.setObj(uid,"playerInfo","dayStr",this.dayStr)
 	this.TTTdayUpdate(uid)
+	this.arenadayUpdate(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
@@ -107,6 +111,15 @@ area.prototype.sendToUser = function(uid,notify) {
       uid: uid,
       sid: this.connectorMap[uid]
     }])
+}
+//发送给服务器内全部玩家
+area.prototype.sendAllUser = function(notify) {
+	for(var uid in this.connectorMap){
+		this.channelService.pushMessageByUids('onMessage', notify, [{
+	      uid: uid,
+	      sid: this.connectorMap[uid]
+	    }])
+	}
 }
 //获取服务器信息
 area.prototype.getAreaServerInfo = function(){
@@ -136,6 +149,25 @@ area.prototype.readyFight = function(uid) {
 	}
 	this.fightInfos[uid] = {team : team,seededNum : Date.now()}
 	return this.fightInfos[uid]
+}
+//获取玩家防御阵容配置(被攻击阵容)
+area.prototype.getDefendTeam = function(uid,cb) {
+	var self = this
+	self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
+		if(playerInfo){
+			var team = []
+			for(var i in playerInfo.characters){
+				team.push(playerInfo.characters[i])
+			}
+			var fightPet = playerInfo.fightPet
+			if(fightPet && playerInfo.pets && playerInfo.pets[fightPet]){
+				team = team.concat(playerInfo.pets[fightPet])
+			}
+			cb(team)
+		}else{
+			cb(false)
+		}
+	})
 }
 //获取玩家上阵配置(出战阵容)
 area.prototype.getFightInfo = function(uid) {

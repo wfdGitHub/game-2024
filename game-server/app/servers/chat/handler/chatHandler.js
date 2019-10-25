@@ -40,11 +40,9 @@ chatHandler.prototype.say = function(msg, session, next) {
 	}
 	var uid = session.uid
 	var nickname = session.get("nickname")
-	var head = session.get("head")
 	var talker = {
 		uid : uid,
-		nickname : nickname,
-		head : head
+		nickname : nickname
 	}
 	var text = msg.text
 	this.chat.say(talker,roomName,text)
