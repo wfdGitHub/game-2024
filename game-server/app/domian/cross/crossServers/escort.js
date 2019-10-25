@@ -110,7 +110,8 @@ module.exports = function() {
 						type : "myEscortFinish",
 						awardList : data,
 						nextQuality : nextQuality,
-						carInfo : carInfo
+						carInfo : carInfo,
+						time : Date.now()
 					}
 					self.sendToUser(messageName,crossUid,notify)
 					local.userInfos[crossUid]["messageList"].push(notify)
@@ -130,10 +131,10 @@ module.exports = function() {
 		//添加记录
 		var atkUser = self.getSimpleUser(crossUid)
 		var defUser = self.getSimpleUser(target)
-		var info = {type : "robbed",carInfo : carInfo,result : result,atkUser : atkUser,defUser : defUser}
+		var info = {type : "robbed",carInfo : carInfo,result : result,atkUser : atkUser,defUser : defUser,time : Date.now()}
 		local.userInfos[crossUid]["messageList"].push(info)
 		self.sendToUser(messageName,crossUid,info)
-		info = {type : "beenRobbed",carInfo : carInfo,result : result,atkUser : atkUser,defUser : defUser}
+		info = {type : "beenRobbed",carInfo : carInfo,result : result,atkUser : atkUser,defUser : defUser,time : Date.now()}
 		local.userInfos[target]["messageList"].push(info)
 		self.sendToUser(messageName,target,info)
 		//判断胜负
