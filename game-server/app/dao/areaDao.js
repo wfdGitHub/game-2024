@@ -1,7 +1,9 @@
+var boyCfg = require("../../config/sysCfg/boy.json")
+var girlCfg = require("../../config/sysCfg/girl.json")
 var areaDao = function() {}
-
 //创建新服务器
 areaDao.prototype.createArea = function(otps,cb) {
+	console.log("开启新服务器")
 	var areaInfo = {
 		areaName : otps.areaName
 	}
@@ -9,10 +11,30 @@ areaDao.prototype.createArea = function(otps,cb) {
 	self.redisDao.db.incrby("area:lastid",1,function(err,data) {
 		if(!err && data){
 			areaInfo.areaId = data
+			areaInfo.lastRank = 4001
 			self.redisDao.db.hmset("area:area"+areaInfo.areaId+":areaInfo",areaInfo)
-			//保存数组
 			self.redisDao.db.rpush("area:list",JSON.stringify(areaInfo))
-			cb(areaInfo)
+			//初始机器人
+			var robots = {}
+			for(var i = 1;i <= 4001;i++){
+				var info = {
+					"uid" : i,
+					"sex" : Math.random() > 0.5 ? 1 : 2
+				}
+				if(info["sex"] == 1){
+					info["name"] = boyCfg[Math.floor(Math.random() * boyCfg.length)]
+				}else{
+					info["name"] = girlCfg[Math.floor(Math.random() * girlCfg.length)]
+				}
+				robots[i] = JSON.stringify(info)
+			}
+			self.redisDao.db.hmset("area:area"+areaInfo.areaId+":robots",robots,function(err) {
+				console.log("机器人数据初始化完成")
+				if(err){
+					console.error(err)
+				}
+				cb(areaInfo)
+			})
 		}else{
 			cb(false)
 		}

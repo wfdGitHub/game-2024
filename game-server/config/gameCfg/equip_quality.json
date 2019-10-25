@@ -9,35 +9,35 @@
   "1": {
     "name": "绿",
     "aRate": 1.2,
-    "sRate": 2,
+    "sRate": 5,
     "weight": 0,
     "wash": 0
   },
   "2": {
     "name": "蓝",
     "aRate": 1.4,
-    "sRate": 3,
+    "sRate": 25,
     "weight": 0,
     "wash": 0
   },
   "3": {
     "name": "紫",
     "aRate": 1.6,
-    "sRate": 4,
+    "sRate": 100,
     "weight": 200,
     "wash": 3
   },
   "4": {
     "name": "橙",
     "aRate": 1.8,
-    "sRate": 5,
+    "sRate": 400,
     "weight": 10,
     "wash": 4
   },
   "5": {
     "name": "红",
     "aRate": 2.2,
-    "sRate": 6,
+    "sRate": 1600,
     "weight": 1,
     "wash": 5
   }

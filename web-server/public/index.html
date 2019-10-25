@@ -19,7 +19,7 @@
     <script type="text/javascript">
       var pomelo = window.pomelo;
       var host = "120.79.102.54";
-      // host = "127.0.0.1"
+      host = "127.0.0.1"
       var queryEntry = function(callback) {
         var route = 'gate.gateHandler.queryClientEntry';
         pomelo.init({
@@ -70,6 +70,51 @@
       //开启宝箱
       var getChestAward = function(chestId) {
         pomelo.request("area.normalHandler.getChestAward", {chestId : chestId}, function(data) {
+            console.log(data);
+        });
+      }
+      //开启宝箱str
+      var openChestStr = function(str) {
+        pomelo.request("area.normalHandler.openChestStr", {str : str}, function(data) {
+            console.log(data);
+        });
+      }
+      //============竞技场玩法==============//
+      //获取排行榜
+      var getRankList = function() {
+        pomelo.request("area.arenaHandler.getRankList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取目标列表
+      var getTargetList = function(cb) {
+        pomelo.request("area.arenaHandler.getTargetList", {}, function(data) {
+            console.log(data);
+            if(cb)
+              cb(data)
+        });
+      }
+      //获取我的竞技场数据
+      var getMyArenaInfo = function(cb) {
+        pomelo.request("area.arenaHandler.getMyArenaInfo", {}, function(data) {
+            console.log(data);
+            if(cb)
+              cb(data)
+        });
+      }
+      //挑战目标
+      var challengeArena = function() {
+        getTargetList(function(data) {
+          var targetRank = data.data.rankList[0]
+          var targetStr = data.data.userList[0]
+          pomelo.request("area.arenaHandler.challengeArena", {targetStr : targetStr,targetRank : targetRank}, function(data) {
+              console.log(data);
+          });
+        })
+      }
+      //购买挑战次数
+      var buyArenaCount = function() {
+        pomelo.request("area.arenaHandler.buyArenaCount", {}, function(data) {
             console.log(data);
         });
       }
@@ -141,7 +186,7 @@
             console.log(data);
         });
       }
-      //领取前期奖励
+      //领取通关
       var getTTTAwards = function() {
         pomelo.request("area.tttHandler.getTTTAwards", {}, function(data) {
             console.log(data);
@@ -623,6 +668,12 @@
             console.log(data);
         })
       }
+      //直接购买物品
+      var buyItem = function(itemId,count) {
+        pomelo.request("area.normalHandler.buyItem",{itemId : itemId,count : count}, function(data) {
+            console.log(data);
+        })
+      }
     </script>
   </head>
   <body>
@@ -632,6 +683,15 @@
       <input id="test" type="button" value="注册角色" onclick="register(2,''+Date.now(),1)"/>
       <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
+      <input id="test" type="button" value="战斗准备" onclick="readyFight()"/>
+    </div>
+    <div class="g-button">
+      竞技场 : 
+      <input id="test" type="button" value="获取排行榜" onclick="getRankList()"/>
+      <input id="test" type="button" value="获取目标列表" onclick="getTargetList()"/>
+      <input id="test" type="button" value="获取我的竞技场数据" onclick="getMyArenaInfo()"/>
+      <input id="test" type="button" value="挑战目标" onclick="challengeArena()"/>
+      <input id="test" type="button" value="购买挑战次数" onclick="buyArenaCount()"/>
     </div>
     <div class="g-button">
       押镖玩法 : 
@@ -645,6 +705,5 @@
       服务器相关 : 
       <input id="test" type="button" value="开启新服务器" onclick="openArea()"/>
     </div>
-    
   </body>
 </html>

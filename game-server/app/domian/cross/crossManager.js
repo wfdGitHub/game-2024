@@ -122,7 +122,7 @@ crossManager.prototype.sendAward = function(crossUid,title,text,str,cb) {
 	}
 }
 //宝箱奖励
-crossManager.prototype.openChestAward = function(crossUid,chestId,rate,cb) {
+crossManager.prototype.openChestStr = function(crossUid,chestId,rate,cb) {
 	if(!this.players[crossUid]){
 		cb(false)
 		return
@@ -130,7 +130,7 @@ crossManager.prototype.openChestAward = function(crossUid,chestId,rate,cb) {
 	var areaId = this.players[crossUid]["areaId"]
 	var serverId = this.players[crossUid]["serverId"]
 	var uid = this.players[crossUid]["uid"]
-	this.app.rpc.area.areaRemote.openChestAward.toServer(serverId,uid,areaId,chestId,rate,cb)
+	this.app.rpc.area.areaRemote.openChestStr.toServer(serverId,uid,areaId,chestId,rate,cb)
 }
 module.exports = {
 	id : "crossManager",

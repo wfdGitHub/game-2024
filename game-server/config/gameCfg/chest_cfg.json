@@ -10,5 +10,47 @@
   },
   "escort_1": {
     "randAward": "ec3:100&ec4:100&ec5:100"
+  },
+  "chest_partner_1": {
+    "randAward": "partner2_1:100&partner3_1:100&partner4_1:100&partner5_1:100"
+  },
+  "chest_partner_2": {
+    "randAward": "partner2_5:100&partner3_5:100&partner4_5:100&partner5_5:100"
+  },
+  "chest_partner_3": {
+    "randAward": "partner2_10:100&partner3_10:100&partner4_10:100&partner5_10:100"
+  },
+  "chest_pet_1_1": {
+    "randAward": "pet_1_1:100"
+  },
+  "chest_pet_2_1": {
+    "randAward": "pet_2_1:100"
+  },
+  "chest_pet_3_1": {
+    "randAward": "pet_3_1:100"
+  },
+  "chest_gs1": {
+    "randAward": "gs:1:100"
+  },
+  "chest_gs2": {
+    "randAward": "gs:2:100"
+  },
+  "chest_gs3": {
+    "randAward": "gs:3:100"
+  },
+  "chest_gs4": {
+    "randAward": "gs:4:100"
+  },
+  "chest_gs5": {
+    "randAward": "gs:5:100"
+  },
+  "chest_partneritem": {
+    "randAward": "item3001_5:100&item3001_10:100&item3001_15:100&item3002_1:100&item3002_2:100&item3002_3:100&item3002_4:100&item3002_5:100"
+  },
+  "chest_petitem": {
+    "randAward": "item2001_5:100&item2001_10:100&item2001_15:100&item2002_1:100&item2002_2:100&item2002_3:100&item2002_4:100&item2002_5:100"
+  },
+  "chest_zbitem": {
+    "randAward": "item1101_3:100&item1101_5:100&item1101_10:100&item1102_3:100&item1102_5:100&item1102_10:100"
   }
 }

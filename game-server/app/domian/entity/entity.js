@@ -28,7 +28,7 @@ module.exports = function(otps) {
 			entity = new petFun(info)
 		break
 		default:
-			entity = mobFun(info)
+			entity = new mobFun(info)
 	}
 	entity.baseOtps = otps
 	return entity

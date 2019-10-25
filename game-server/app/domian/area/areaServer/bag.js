@@ -227,8 +227,13 @@ module.exports = function() {
 					return self.addGem(uid,gId,level,count,cb)
 				break
 				case "gc":
+					//当前转生等级+1随机宝石
 					value = Math.floor(Number(value) * rate) || 1
 					return self.addRandGem(uid,value,cb)
+				break
+				case "gs":
+					//指定转生等级随机宝石
+					self.addGsGem(uid,value,cb)
 				break
 			}
 		}else{
@@ -292,9 +297,28 @@ module.exports = function() {
 		})
 		return awardList
 	}
+	//直接购买物品
+	this.buyItem = function(uid,itemId,count,cb) {
+		if(!itemCfg[itemId] || !itemCfg[itemId]["buy"] || !Number.isInteger(itemCfg[itemId]["buyNum"])){
+			cb(false,"item not exist or cfg error")
+			return
+		}
+		if(!Number.isInteger(count) || count <= 0){
+			cb(false,"count error "+count)
+			return
+		}
+		self.consumeItems(uid,itemCfg[itemId]["buy"],count,function(flag,err) {
+			if(!flag){
+				cb(flag,err)
+				return
+			}
+			var info = self.addItem({uid : uid,itemId : itemId,value : itemCfg[itemId]["buyNum"],rate : count})
+			cb(true,info)
+		})
+	}
 	//商城购买物品
 	this.buyShop = function(uid,shopId,count,cb) {
-		if(parseInt(shopId) != shopId || parseInt(count) != count){
+		if(parseInt(shopId) != shopId || !Number.isInteger(count) || count <= 0){
 			cb(false,"args type error")
 			return
 		}
@@ -312,8 +336,24 @@ module.exports = function() {
 			cb(true,shopInfo.pa)
 		})
 	}
+	//解析奖励池str
+	this.openChestStr = function(uid,str) {
+		if(!str || typeof(str) != "string"){
+			return []
+		}
+		var awardList = []
+		var list = str.split("&")
+		list.forEach(function(m_str) {
+			var m_list = m_str.split(":")
+			var chestId = m_list[0]
+			var value = parseInt(m_list[1]) || 1
+			for(var i = 0;i < value;i++)
+				awardList.concat(self.openChestAward(uid,chestId))
+		})
+		return awardList
+	}
 	//奖励池获取奖励
-	this.openChestAward = function(uid,chestId,rate) {
+	this.openChestAward = function(uid,chestId) {
 		if(!chest_cfg[chestId] || !chest_cfg[chestId]["randAward"]){
 			return []
 		}
@@ -333,12 +373,17 @@ module.exports = function() {
 		var rand = Math.random() * allValue
 		for(var i in awardMap){
 			if(rand < awardMap[i]){
-				str = chest_awards[keyMap[i]]["str"]
+				if(!chest_awards[keyMap[i]]){
+					console.error(chestId+"宝箱奖励未找到"+keyMap[i])
+					return [{"err" : chestId+"宝箱奖励未找到"+keyMap[i]}]
+				}else{
+					str = chest_awards[keyMap[i]]["str"]
+				}
 				break
 			}
 		}
 		if(str){
-			return this.addItemStr(uid,str,rate)
+			return this.addItemStr(uid,str)
 		}else{
 			return []
 		}

@@ -66,11 +66,11 @@ normalHandler.prototype.addItemStr = function(msg, session, next) {
   next(null,{flag : true,awardList : awardList})
 }
 //开启宝箱  测试功能
-normalHandler.prototype.openChestAward = function(msg, session, next) {
+normalHandler.prototype.openChestStr = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var chestId = msg.chestId
-  var str = this.areaManager.areaMap[areaId].openChestAward(uid,chestId)
+  var str = msg.str
+  var str = this.areaManager.areaMap[areaId].openChestStr(uid,str)
   next(null,{flag : true,str : str})
 }
 //购买商城物品
@@ -80,6 +80,16 @@ normalHandler.prototype.buyShop = function(msg, session, next) {
   var shopId = msg.shopId
   var count = msg.count
   this.areaManager.areaMap[areaId].buyShop(uid,shopId,count,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//直接购买物品
+normalHandler.prototype.buyItem = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var itemId = msg.itemId
+  var count = msg.count
+  this.areaManager.areaMap[areaId].buyItem(uid,itemId,count,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

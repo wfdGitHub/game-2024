@@ -9,7 +9,7 @@
   },
   "openTime2": {
     "des": "开启时间2",
-    "value": 12
+    "value": 12.1
   },
   "closeTime2": {
     "des": "关闭时间2",
@@ -17,7 +17,7 @@
   },
   "playCount": {
     "des": "运镖次数",
-    "value": 99
+    "value": 2
   },
   "loseCount": {
     "des": "最大被劫次数",
@@ -41,7 +41,7 @@
   },
   "runTime": {
     "des": "押镖时间",
-    "value": 90000
+    "value": 30000
   },
   "passTitle": {
     "des": "押镖奖励邮件标题",

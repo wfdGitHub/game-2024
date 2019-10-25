@@ -8,16 +8,19 @@ module.exports = function() {
 	const TTTInfo = {
 		"curL" : 0,	//当前等级
 		"maxL" : 0,	//最高等级
-		"samaraAward" : -1	//今日奖励领取记录
+		"passAward" : 0	//通关奖励领取记录
 	}
 	//玩家首次登陆刷新
 	this.TTTdayUpdate = function(uid) {
+		var curLv = self.players[uid].characters[self.heroId].level
+		var samsara = Math.floor(((curLv - 1) / 100))
 		self.getTTTInfo(uid,function(info) {
 			info.maxL = parseInt(info.maxL)
-			var curL = Math.round(Math.floor(info.maxL / 100) * 100)
-			var curS = Math.floor(info.maxL / 100) - 1
+			var curL = samsara * 100
+			if(info.maxL < curL)
+				self.setObj(uid,main_name,"maxL",curL)
 			self.setObj(uid,main_name,"curL",curL)
-			self.setObj(uid,main_name,"samaraAward",curS)
+			self.setObj(uid,main_name,"passAward",0)
 		})
 	}
 	//获取通天塔数据
@@ -36,7 +39,12 @@ module.exports = function() {
 			cb(false,"未到开放等级")
 			return
 		}
+		var samsara = Math.floor(((curLv - 1) / 100))
 		self.getObj(uid,main_name,"curL",function(level) {
+			if(level % 100 == 99){
+				cb(false,"已通关")
+				return
+			}
 			level = (parseInt(level) || 0)  + 1
 			var fightInfo = self.getFightInfo(uid)
 		    var atkTeam = fightInfo.team
@@ -50,11 +58,11 @@ module.exports = function() {
 		    	cb(false,"curL or curS error "+curL+" "+curS)
 		    	return
 		    }
-		    var defTeam = [{characterId : ttttower_level[curL]["bossId"],level : level}]
+		    var defTeam = [{characterId : ttttower_level[curL]["bossId"],level : level,"attStr" : ttttower_samsara[curS]["attStr"]}]
 		    self.recordFight(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
 		    var result = self.fightContorl.fighting(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
-		    if(result.verify === otps.verify || true){
-		    	if(result.result === "win" || true){
+		    if(result.verify === otps.verify){
+		    	if(result.result === "win"){
 		    		var rate = ttttower_samsara[curS]["rate"]
 		    		var info = {
 		    			result : result
@@ -65,6 +73,15 @@ module.exports = function() {
 		    			maxL = parseInt(maxL) || 0
 		    			if(level > maxL){
 		    				self.setObj(uid,main_name,"maxL",level)
+		    				if(level % 100 == 99){
+		    					//首通广播
+		    					var name = self.players[uid]["name"]
+								var notify = {
+									type : "sysChat",
+									text : "玩家"+name+"首次通关通天塔第"+(level+1)+"关"
+								}
+								self.sendAllUser(notify)
+		    				}
 		    			}
 		    		})
 		    		cb(true,info)
@@ -107,13 +124,24 @@ module.exports = function() {
 			}
 		})
 	}
-	//领取前期奖励
+	//领取通关奖励
 	this.getTTTAwards = function(uid,cb) {
-		self.getObj(uid,main_name,"samaraAward",function(samara) {
-			samara = parseInt(samara)
-			if(ttttower_samsara[samara]){
-				self.setObj(uid,main_name,"samaraAward",-1,function() {
-					var awards = self.addItemStr(uid,ttttower_samsara[samara]["samaraAward"])
+		self.getObjAll(uid,main_name,function(data) {
+			var passAward = parseInt(data.passAward)
+			var curL = parseInt(data.curL)
+			var maxL = parseInt(data.maxL)
+			if(passAward){
+				cb(false,"已领取")
+				return
+			}
+			if(curL % 100 != 99){
+				cb(false,"未通关")
+				return
+			}
+			var samsara = Math.floor(curL / 100)
+			if(ttttower_samsara[samsara] && ttttower_samsara[passAward]["passAward"]){
+				self.setObj(uid,main_name,"passAward",1,function() {
+					var awards = self.addItemStr(uid,ttttower_samsara[passAward]["passAward"])
 					cb(true,awards)
 				})
 			}else{
