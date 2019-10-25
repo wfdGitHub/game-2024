@@ -127,10 +127,12 @@ module.exports = function() {
 	//劫镖完成
 	local.robFinish = function(crossUid,target,result,carInfo,cb) {
 		//添加记录
-		var info = {type : "robbed",carInfo : carInfo,result : result}
+		var atkUser = self.getSimpleUser(crossUid)
+		var defUser = self.getSimpleUser(target)
+		var info = {type : "robbed",carInfo : carInfo,result : result,atkUser : atkUser,defUser : defUser}
 		local.userInfos[crossUid]["messageList"].push(info)
 		self.sendToUser(messageName,crossUid,info)
-		info = {type : "beenRobbed",carInfo : carInfo,result : result}
+		info = {type : "beenRobbed",carInfo : carInfo,result : result,atkUser : atkUser,defUser : defUser}
 		local.userInfos[target]["messageList"].push(info)
 		self.sendToUser(messageName,target,info)
 		//判断胜负
