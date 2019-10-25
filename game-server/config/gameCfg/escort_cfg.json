@@ -17,7 +17,7 @@
   },
   "playCount": {
     "des": "运镖次数",
-    "value": 2
+    "value": 99
   },
   "loseCount": {
     "des": "最大被劫次数",
@@ -41,7 +41,7 @@
   },
   "runTime": {
     "des": "押镖时间",
-    "value": 30000
+    "value": 90000
   },
   "passTitle": {
     "des": "押镖奖励邮件标题",
