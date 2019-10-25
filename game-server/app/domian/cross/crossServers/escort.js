@@ -83,7 +83,7 @@ module.exports = function() {
 		if(carInfo){
 			//镖车刷新
 			local.userInfos[crossUid]["quality"] = "car0"
-			local.updateEscortCar(crossUid)
+			var nextQuality = local.updateEscortCar(crossUid)
 			local.userInfos[crossUid]["carInfo"] = false
 			local.userInfos[crossUid]["escortNum"]++
 			//计算收益
@@ -117,6 +117,7 @@ module.exports = function() {
 			})
 			var notify = {
 				type : "escortFinish",
+				nextQuality : nextQuality,
 				crossUid : crossUid
 			}
 			local.sendCarMessage(samsara,notify)
