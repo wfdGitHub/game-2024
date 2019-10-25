@@ -109,6 +109,7 @@ module.exports = function() {
 					var notify = {
 						type : "myEscortFinish",
 						awardList : data,
+						nextQuality : nextQuality,
 						carInfo : carInfo
 					}
 					self.sendToUser(messageName,crossUid,notify)
@@ -117,7 +118,6 @@ module.exports = function() {
 			})
 			var notify = {
 				type : "escortFinish",
-				nextQuality : nextQuality,
 				crossUid : crossUid
 			}
 			local.sendCarMessage(samsara,notify)
