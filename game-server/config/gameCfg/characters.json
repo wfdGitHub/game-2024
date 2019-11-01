@@ -20,8 +20,8 @@
     "atkSpeed": 1.6
   },
   "10002": {
-    "name": "秦雨墨",
-    "spriteType": "hero2",
+    "name": "花儿",
+    "spriteType": "hero_huaer",
     "characterType": "partner",
     "des": "慈航仙门首席弟子，仙门被魔族攻破后被主角所救，在最终一战为救主角牺牲",
     "defaultSkill": 10001,
@@ -40,7 +40,7 @@
   },
   "10003": {
     "name": "张君烈",
-    "spriteType": "hero3",
+    "spriteType": "hero_zhangjunlie",
     "characterType": "partner",
     "des": "破军仙门首席弟子，仙门被魔族攻破后被主角所救，在最终一战为救主角牺牲",
     "defaultSkill": 10001,
@@ -60,7 +60,7 @@
   },
   "10004": {
     "name": "陆玲珑",
-    "spriteType": "hero4",
+    "spriteType": "hero_lulinglong",
     "characterType": "partner",
     "des": "临语仙门首席弟子，仙门被魔族攻破后被主角所救，在最终一战为救主角牺牲",
     "defaultSkill": 10001,
@@ -79,7 +79,7 @@
   },
   "10005": {
     "name": "项天问",
-    "spriteType": "hero5",
+    "spriteType": "hero_xiangtianwen",
     "characterType": "partner",
     "des": "盛世仙门首席弟子，仙门被魔族攻破后被主角所救，在最终一战为救主角牺牲",
     "defaultSkill": 10001,
@@ -96,218 +96,9 @@
     "atk": 50,
     "atkSpeed": 1.7
   },
-  "10006": {
-    "name": "落晨",
-    "spriteType": "hero6",
-    "characterType": "partner",
-    "des": "落晨",
-    "defaultSkill": 10001,
-    "skills": "[20501]",
-    "str": 60,
-    "agi": 50,
-    "vit": 30,
-    "phy": 30,
-    "strA": 2,
-    "agiA": 2,
-    "vitA": 1.6,
-    "phyA": 1.6,
-    "maxHP": 500,
-    "atk": 50,
-    "atkSpeed": 1.7
-  },
-  "10007": {
-    "name": "陈御风",
-    "spriteType": "hero7",
-    "characterType": "partner",
-    "des": "陈御风",
-    "defaultSkill": 10001,
-    "skills": "[20501]",
-    "str": 60,
-    "agi": 50,
-    "vit": 30,
-    "phy": 30,
-    "strA": 2,
-    "agiA": 2,
-    "vitA": 1.6,
-    "phyA": 1.6,
-    "maxHP": 500,
-    "atk": 50,
-    "atkSpeed": 1.7
-  },
-  "10008": {
-    "name": "花儿",
-    "spriteType": "hero8",
-    "characterType": "partner",
-    "des": "花儿",
-    "defaultSkill": 10001,
-    "skills": "[20501]",
-    "str": 60,
-    "agi": 50,
-    "vit": 30,
-    "phy": 30,
-    "strA": 2,
-    "agiA": 2,
-    "vitA": 1.6,
-    "phyA": 1.6,
-    "maxHP": 500,
-    "atk": 50,
-    "atkSpeed": 1.7
-  },
-  "10009": {
-    "name": "林若海",
-    "spriteType": "hero9",
-    "characterType": "partner",
-    "des": "林若海",
-    "defaultSkill": 10001,
-    "skills": "[20501]",
-    "str": 60,
-    "agi": 50,
-    "vit": 30,
-    "phy": 30,
-    "strA": 2,
-    "agiA": 2,
-    "vitA": 1.6,
-    "phyA": 1.6,
-    "maxHP": 500,
-    "atk": 50,
-    "atkSpeed": 1.7
-  },
-  "10010": {
-    "name": "龙女",
-    "spriteType": "hero10",
-    "characterType": "partner",
-    "des": "龙女",
-    "defaultSkill": 10001,
-    "skills": "[20501]",
-    "str": 60,
-    "agi": 50,
-    "vit": 30,
-    "phy": 30,
-    "strA": 2,
-    "agiA": 2,
-    "vitA": 1.6,
-    "phyA": 1.6,
-    "maxHP": 500,
-    "atk": 50,
-    "atkSpeed": 1.7
-  },
-  "10011": {
-    "name": "苏缘尘",
-    "spriteType": "hero11",
-    "characterType": "partner",
-    "des": "苏缘尘",
-    "defaultSkill": 10001,
-    "skills": "[20501]",
-    "str": 60,
-    "agi": 50,
-    "vit": 30,
-    "phy": 30,
-    "strA": 2,
-    "agiA": 2,
-    "vitA": 1.6,
-    "phyA": 1.6,
-    "maxHP": 500,
-    "atk": 50,
-    "atkSpeed": 1.7
-  },
-  "10012": {
-    "name": "李雪琪",
-    "spriteType": "hero12",
-    "characterType": "partner",
-    "des": "李雪琪",
-    "defaultSkill": 10001,
-    "skills": "[20501]",
-    "str": 60,
-    "agi": 50,
-    "vit": 30,
-    "phy": 30,
-    "strA": 2,
-    "agiA": 2,
-    "vitA": 1.6,
-    "phyA": 1.6,
-    "maxHP": 500,
-    "atk": 50,
-    "atkSpeed": 1.7
-  },
-  "10013": {
-    "name": "苏缘尘",
-    "spriteType": "hero13",
-    "characterType": "partner",
-    "des": "苏缘尘",
-    "defaultSkill": 10001,
-    "skills": "[20501]",
-    "str": 60,
-    "agi": 50,
-    "vit": 30,
-    "phy": 30,
-    "strA": 2,
-    "agiA": 2,
-    "vitA": 1.6,
-    "phyA": 1.6,
-    "maxHP": 500,
-    "atk": 50,
-    "atkSpeed": 1.7
-  },
-  "10014": {
-    "name": "逍遥子",
-    "spriteType": "hero14",
-    "characterType": "partner",
-    "des": "逍遥子",
-    "defaultSkill": 10001,
-    "skills": "[20501]",
-    "str": 60,
-    "agi": 50,
-    "vit": 30,
-    "phy": 30,
-    "strA": 2,
-    "agiA": 2,
-    "vitA": 1.6,
-    "phyA": 1.6,
-    "maxHP": 500,
-    "atk": 50,
-    "atkSpeed": 1.7
-  },
-  "10015": {
-    "name": "小白龙",
-    "spriteType": "hero15",
-    "characterType": "partner",
-    "des": "小白龙",
-    "defaultSkill": 10001,
-    "skills": "[20501]",
-    "str": 60,
-    "agi": 50,
-    "vit": 30,
-    "phy": 30,
-    "strA": 2,
-    "agiA": 2,
-    "vitA": 1.6,
-    "phyA": 1.6,
-    "maxHP": 500,
-    "atk": 50,
-    "atkSpeed": 1.7
-  },
-  "10016": {
-    "name": "羽殇",
-    "spriteType": "hero16",
-    "characterType": "partner",
-    "des": "羽殇",
-    "defaultSkill": 10001,
-    "skills": "[20501]",
-    "str": 60,
-    "agi": 50,
-    "vit": 30,
-    "phy": 30,
-    "strA": 2,
-    "agiA": 2,
-    "vitA": 1.6,
-    "phyA": 1.6,
-    "maxHP": 500,
-    "atk": 50,
-    "atkSpeed": 1.7
-  },
   "12101": {
     "name": "小僵尸",
-    "spriteType": "pet1",
+    "spriteType": "pet_xiaojiangshi",
     "characterType": "pet",
     "des": "小僵尸",
     "defaultSkill": 30001,
@@ -327,7 +118,7 @@
   },
   "12102": {
     "name": "花妖",
-    "spriteType": "pet2",
+    "spriteType": "pet_huayao",
     "characterType": "pet",
     "des": "花妖",
     "defaultSkill": 30001,
@@ -347,7 +138,7 @@
   },
   "12103": {
     "name": "天兵",
-    "spriteType": "pet3",
+    "spriteType": "pet_tianbing",
     "characterType": "pet",
     "des": "天兵",
     "defaultSkill": 30001,
@@ -367,7 +158,7 @@
   },
   "12104": {
     "name": "天将",
-    "spriteType": "pet4",
+    "spriteType": "pet_tianjiang",
     "characterType": "pet",
     "des": "天将",
     "defaultSkill": 30001,
@@ -387,7 +178,7 @@
   },
   "12105": {
     "name": "黑熊精",
-    "spriteType": "pet5",
+    "spriteType": "pet_heixiongjing",
     "characterType": "pet",
     "des": "黑熊精",
     "defaultSkill": 30001,
@@ -407,7 +198,7 @@
   },
   "12106": {
     "name": "小悟空",
-    "spriteType": "pet6",
+    "spriteType": "pet_xiaowukong",
     "characterType": "pet",
     "des": "小悟空",
     "defaultSkill": 30001,
@@ -427,7 +218,7 @@
   },
   "12201": {
     "name": "三叉鱼人",
-    "spriteType": "pet7",
+    "spriteType": "pet_sanchayuren",
     "characterType": "pet",
     "des": "三叉鱼人",
     "defaultSkill": 30001,
@@ -447,7 +238,7 @@
   },
   "12202": {
     "name": "鱼人",
-    "spriteType": "pet8",
+    "spriteType": "pet_yuren",
     "characterType": "pet",
     "des": "鱼人",
     "defaultSkill": 30001,
@@ -467,7 +258,7 @@
   },
   "12203": {
     "name": "骷髅使者",
-    "spriteType": "pet9",
+    "spriteType": "pet_kuloushizhe",
     "characterType": "pet",
     "des": "骷髅使者",
     "defaultSkill": 30001,
@@ -487,7 +278,7 @@
   },
   "12204": {
     "name": "地狱使者",
-    "spriteType": "pet10",
+    "spriteType": "pet_diyushizhe",
     "characterType": "pet",
     "des": "地狱使者",
     "defaultSkill": 30001,
@@ -507,7 +298,7 @@
   },
   "12205": {
     "name": "幽灵",
-    "spriteType": "pet11",
+    "spriteType": "pet_youling",
     "characterType": "pet",
     "des": "幽灵",
     "defaultSkill": 30001,
@@ -527,7 +318,7 @@
   },
   "12206": {
     "name": "五彩鸟",
-    "spriteType": "pet12",
+    "spriteType": "pet_wucainiao",
     "characterType": "pet",
     "des": "五彩鸟",
     "defaultSkill": 30001,
@@ -547,7 +338,7 @@
   },
   "12207": {
     "name": "神鸟",
-    "spriteType": "pet13",
+    "spriteType": "pet_shenniao",
     "characterType": "pet",
     "des": "神鸟",
     "defaultSkill": 30001,
@@ -567,7 +358,7 @@
   },
   "12208": {
     "name": "火麒麟",
-    "spriteType": "pet14",
+    "spriteType": "pet_huoqilin",
     "characterType": "pet",
     "des": "火麒麟",
     "defaultSkill": 30001,
@@ -587,7 +378,7 @@
   },
   "12301": {
     "name": "精灵",
-    "spriteType": "pet15",
+    "spriteType": "pet_jingling",
     "characterType": "pet",
     "des": "精灵",
     "defaultSkill": 30001,
@@ -607,7 +398,7 @@
   },
   "12302": {
     "name": "邪狮",
-    "spriteType": "pet16",
+    "spriteType": "pet_xieshi",
     "characterType": "pet",
     "des": "邪狮",
     "defaultSkill": 30001,
@@ -627,7 +418,7 @@
   },
   "12303": {
     "name": "龙龟",
-    "spriteType": "pet17",
+    "spriteType": "pet_longgui",
     "characterType": "pet",
     "des": "龙龟",
     "defaultSkill": 30001,
@@ -647,7 +438,7 @@
   },
   "12304": {
     "name": "熊猫阿宝",
-    "spriteType": "pet18",
+    "spriteType": "pet_xiongmaoabao",
     "characterType": "pet",
     "des": "熊猫阿宝",
     "defaultSkill": 30001,
@@ -667,7 +458,7 @@
   },
   "12305": {
     "name": "玉兔",
-    "spriteType": "pet19",
+    "spriteType": "pet_yutu",
     "characterType": "pet",
     "des": "玉兔",
     "defaultSkill": 30001,
@@ -687,7 +478,7 @@
   },
   "12306": {
     "name": "雪虎",
-    "spriteType": "pet20",
+    "spriteType": "pet_xuehu",
     "characterType": "pet",
     "des": "雪虎",
     "defaultSkill": 30001,
@@ -707,7 +498,7 @@
   },
   "12401": {
     "name": "女娲",
-    "spriteType": "pet21",
+    "spriteType": "pet_nvwa",
     "characterType": "pet",
     "des": "女娲",
     "defaultSkill": 30001,
@@ -727,7 +518,7 @@
   },
   "12402": {
     "name": "灵火女娲",
-    "spriteType": "pet22",
+    "spriteType": "pet_linghuonvwa",
     "characterType": "pet",
     "des": "灵火女娲",
     "defaultSkill": 30001,
@@ -747,7 +538,7 @@
   },
   "12403": {
     "name": "穷奇",
-    "spriteType": "pet23",
+    "spriteType": "pet_qilin",
     "characterType": "pet",
     "des": "穷奇",
     "defaultSkill": 30001,
@@ -767,7 +558,7 @@
   },
   "12404": {
     "name": "麒麟",
-    "spriteType": "pet24",
+    "spriteType": "pet_qilin",
     "characterType": "pet",
     "des": "麒麟",
     "defaultSkill": 30001,
@@ -787,6 +578,7 @@
   },
   "13001": {
     "name": "天兵",
+    "spriteType": "pet_tianbing",
     "characterType": "mob",
     "des": "1-20关小怪",
     "defaultSkill": 61001,
@@ -806,6 +598,7 @@
   },
   "13002": {
     "name": "狼人",
+    "spriteType": "mob_langren",
     "characterType": "mob",
     "des": "1-20关小怪",
     "defaultSkill": 61001,
@@ -825,6 +618,7 @@
   },
   "13003": {
     "name": "天将",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "1-20关小怪",
     "defaultSkill": 61001,
@@ -844,6 +638,7 @@
   },
   "13004": {
     "name": "三叉鱼人",
+    "spriteType": "pet_sanchayuren",
     "characterType": "mob",
     "des": "1-20关小怪",
     "defaultSkill": 61001,
@@ -863,6 +658,7 @@
   },
   "13005": {
     "name": "黑熊精",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "1-20关小怪",
     "defaultSkill": 61001,
@@ -882,6 +678,7 @@
   },
   "13006": {
     "name": "幽灵",
+    "spriteType": "pet_youling",
     "characterType": "mob",
     "des": "21-40关小怪",
     "defaultSkill": 61001,
@@ -901,6 +698,7 @@
   },
   "13007": {
     "name": "骷髅使者",
+    "spriteType": "pet_kuloushizhe",
     "characterType": "mob",
     "des": "21-40关小怪",
     "defaultSkill": 61001,
@@ -920,6 +718,7 @@
   },
   "13008": {
     "name": "地狱使者",
+    "spriteType": "pet_diyushizhe",
     "characterType": "mob",
     "des": "21-40关小怪",
     "defaultSkill": 61001,
@@ -939,6 +738,7 @@
   },
   "13009": {
     "name": "小僵尸",
+    "spriteType": "pet_jiangshi",
     "characterType": "mob",
     "des": "21-40关小怪",
     "defaultSkill": 61001,
@@ -958,6 +758,7 @@
   },
   "13010": {
     "name": "花妖",
+    "spriteType": "pet_huayao",
     "characterType": "mob",
     "des": "21-40关小怪",
     "defaultSkill": 61001,
@@ -977,6 +778,7 @@
   },
   "13011": {
     "name": "魔翼",
+    "spriteType": "mob_moyi",
     "characterType": "mob",
     "des": "41-60关小怪",
     "defaultSkill": 61001,
@@ -996,6 +798,7 @@
   },
   "13012": {
     "name": "魔女",
+    "spriteType": "mob_monv",
     "characterType": "mob",
     "des": "41-60关小怪",
     "defaultSkill": 61001,
@@ -1015,6 +818,7 @@
   },
   "13013": {
     "name": "狐妖",
+    "spriteType": "mob_huyao",
     "characterType": "mob",
     "des": "41-60关小怪",
     "defaultSkill": 61001,
@@ -1034,6 +838,7 @@
   },
   "13014": {
     "name": "魔翼",
+    "spriteType": "mob_moyi",
     "characterType": "mob",
     "des": "41-60关小怪",
     "defaultSkill": 61001,
@@ -1052,7 +857,8 @@
     "atkSpeed": 5
   },
   "13015": {
-    "name": "猕猴",
+    "name": "妖猴",
+    "spriteType": "mob_yaohou",
     "characterType": "mob",
     "des": "41-60关小怪",
     "defaultSkill": 61001,
@@ -1072,6 +878,7 @@
   },
   "13016": {
     "name": "三叉鱼人",
+    "spriteType": "pet_sanchayuren",
     "characterType": "mob",
     "des": "61-80关小怪",
     "defaultSkill": 61001,
@@ -1091,6 +898,7 @@
   },
   "13017": {
     "name": "幽灵",
+    "spriteType": "pet_youling",
     "characterType": "mob",
     "des": "61-80关小怪",
     "defaultSkill": 61001,
@@ -1110,6 +918,7 @@
   },
   "13018": {
     "name": "黑熊精",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "61-80关小怪",
     "defaultSkill": 61001,
@@ -1129,6 +938,7 @@
   },
   "13019": {
     "name": "地狱使者",
+    "spriteType": "pet_diyushizhe",
     "characterType": "mob",
     "des": "61-80关小怪",
     "defaultSkill": 61001,
@@ -1148,6 +958,7 @@
   },
   "13020": {
     "name": "狼人",
+    "spriteType": "mob_langren",
     "characterType": "mob",
     "des": "61-80关小怪",
     "defaultSkill": 61001,
@@ -1167,6 +978,7 @@
   },
   "13021": {
     "name": "牛妖",
+    "spriteType": "mob_niuyao",
     "characterType": "mob",
     "des": "81-100关小怪",
     "defaultSkill": 61001,
@@ -1186,6 +998,7 @@
   },
   "13022": {
     "name": "蝎子精",
+    "spriteType": "mob_xiezijing",
     "characterType": "mob",
     "des": "81-100关小怪",
     "defaultSkill": 61001,
@@ -1205,6 +1018,7 @@
   },
   "13023": {
     "name": "鱼人",
+    "spriteType": "pet_yuren",
     "characterType": "mob",
     "des": "81-100关小怪",
     "defaultSkill": 61001,
@@ -1224,6 +1038,7 @@
   },
   "13024": {
     "name": "邪狮",
+    "spriteType": "pet_xieshi",
     "characterType": "mob",
     "des": "81-100关小怪",
     "defaultSkill": 61001,
@@ -1243,6 +1058,7 @@
   },
   "13025": {
     "name": "妖狐",
+    "spriteType": "mob_huyao",
     "characterType": "mob",
     "des": "81-100关小怪",
     "defaultSkill": 61001,
@@ -1262,6 +1078,7 @@
   },
   "13026": {
     "name": "远古巨魔",
+    "spriteType": "mob_yuangujumo",
     "characterType": "mob",
     "des": "81-100关小怪",
     "defaultSkill": 61001,
@@ -1281,6 +1098,7 @@
   },
   "13101": {
     "name": "魔翼",
+    "spriteType": "mob_moyi",
     "characterType": "mob",
     "des": "1关BOSS",
     "defaultSkill": 61001,
@@ -1300,6 +1118,7 @@
   },
   "13102": {
     "name": "黑熊精",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "5关BOSS",
     "defaultSkill": 61001,
@@ -1319,6 +1138,7 @@
   },
   "13103": {
     "name": "骷髅使者",
+    "spriteType": "pet_kuloushizhe",
     "characterType": "mob",
     "des": "10关BOSS",
     "defaultSkill": 61001,
@@ -1338,6 +1158,7 @@
   },
   "13104": {
     "name": "地狱使者",
+    "spriteType": "pet_diyushizhe",
     "characterType": "mob",
     "des": "15关BOSS",
     "defaultSkill": 61001,
@@ -1357,6 +1178,7 @@
   },
   "13105": {
     "name": "魔翼",
+    "spriteType": "mob_moyi",
     "characterType": "mob",
     "des": "20关BOSS",
     "defaultSkill": 61001,
@@ -1376,6 +1198,7 @@
   },
   "13106": {
     "name": "魔女",
+    "spriteType": "mob_monv",
     "characterType": "mob",
     "des": "25关BOSS",
     "defaultSkill": 61001,
@@ -1395,6 +1218,7 @@
   },
   "13107": {
     "name": "狐妖",
+    "spriteType": "mob_huyao",
     "characterType": "mob",
     "des": "30关BOSS",
     "defaultSkill": 61001,
@@ -1413,7 +1237,8 @@
     "atkSpeed": 3
   },
   "13108": {
-    "name": "猕猴",
+    "name": "妖猴",
+    "spriteType": "mob_yaohou",
     "characterType": "mob",
     "des": "35关BOSS",
     "defaultSkill": 61001,
@@ -1433,6 +1258,7 @@
   },
   "13109": {
     "name": "魔女",
+    "spriteType": "mob_monv",
     "characterType": "mob",
     "des": "40关BOSS",
     "defaultSkill": 61001,
@@ -1452,6 +1278,7 @@
   },
   "13110": {
     "name": "魔王",
+    "spriteType": "mob_mowang",
     "characterType": "mob",
     "des": "45关BOSS",
     "defaultSkill": 61001,
@@ -1471,6 +1298,7 @@
   },
   "13111": {
     "name": "骷髅使者",
+    "spriteType": "pet_kuloushizhe",
     "characterType": "mob",
     "des": "50关BOSS",
     "defaultSkill": 61001,
@@ -1490,6 +1318,7 @@
   },
   "13112": {
     "name": "地狱使者",
+    "spriteType": "pet_diyushizhe",
     "characterType": "mob",
     "des": "55关BOSS",
     "defaultSkill": 61001,
@@ -1509,6 +1338,7 @@
   },
   "13113": {
     "name": "魔王",
+    "spriteType": "mob_mowang",
     "characterType": "mob",
     "des": "60关BOSS",
     "defaultSkill": 61001,
@@ -1528,6 +1358,7 @@
   },
   "13114": {
     "name": "邪狮",
+    "spriteType": "pet_xieshi",
     "characterType": "mob",
     "des": "65关BOSS",
     "defaultSkill": 61001,
@@ -1547,6 +1378,7 @@
   },
   "13115": {
     "name": "龙龟",
+    "spriteType": "pet_longgui",
     "characterType": "mob",
     "des": "70关BOSS",
     "defaultSkill": 61001,
@@ -1566,6 +1398,7 @@
   },
   "13116": {
     "name": "雪虎",
+    "spriteType": "pet_xuehu",
     "characterType": "mob",
     "des": "75关BOSS",
     "defaultSkill": 61001,
@@ -1585,6 +1418,7 @@
   },
   "13117": {
     "name": "邪狮",
+    "spriteType": "pet_xieshi",
     "characterType": "mob",
     "des": "80关BOSS",
     "defaultSkill": 61001,
@@ -1604,6 +1438,7 @@
   },
   "13118": {
     "name": "魔化天神",
+    "spriteType": "mob_mohuatianshen",
     "characterType": "mob",
     "des": "85关BOSS",
     "defaultSkill": 61001,
@@ -1623,6 +1458,7 @@
   },
   "13119": {
     "name": "魔王",
+    "spriteType": "mob_mowang",
     "characterType": "mob",
     "des": "90关BOSS",
     "defaultSkill": 61001,
@@ -1641,7 +1477,8 @@
     "atkSpeed": 3
   },
   "13120": {
-    "name": "猕猴",
+    "name": "妖猴",
+    "spriteType": "mob_yaohou",
     "characterType": "mob",
     "des": "95关BOSS",
     "defaultSkill": 61001,
@@ -1661,6 +1498,7 @@
   },
   "13121": {
     "name": "魔化天神",
+    "spriteType": "mob_mohuatianshen",
     "characterType": "mob",
     "des": "100关BOSS",
     "defaultSkill": 61001,
@@ -1680,6 +1518,7 @@
   },
   "14101": {
     "name": "天兵",
+    "spriteType": "pet_tianbing",
     "characterType": "mob",
     "des": "通天塔1层怪物",
     "defaultSkill": 62001,
@@ -1698,6 +1537,7 @@
   },
   "14102": {
     "name": "天兵",
+    "spriteType": "pet_tianbing",
     "characterType": "mob",
     "des": "通天塔2层怪物",
     "defaultSkill": 62001,
@@ -1716,6 +1556,7 @@
   },
   "14103": {
     "name": "天兵",
+    "spriteType": "pet_tianbing",
     "characterType": "mob",
     "des": "通天塔3层怪物",
     "defaultSkill": 62001,
@@ -1734,6 +1575,7 @@
   },
   "14104": {
     "name": "天兵",
+    "spriteType": "pet_tianbing",
     "characterType": "mob",
     "des": "通天塔4层怪物",
     "defaultSkill": 62001,
@@ -1752,6 +1594,7 @@
   },
   "14105": {
     "name": "天兵",
+    "spriteType": "pet_tianbing",
     "characterType": "mob",
     "des": "通天塔5层怪物",
     "defaultSkill": 62001,
@@ -1770,6 +1613,7 @@
   },
   "14106": {
     "name": "天兵",
+    "spriteType": "pet_tianbing",
     "characterType": "mob",
     "des": "通天塔6层怪物",
     "defaultSkill": 62001,
@@ -1788,6 +1632,7 @@
   },
   "14107": {
     "name": "天兵",
+    "spriteType": "pet_tianbing",
     "characterType": "mob",
     "des": "通天塔7层怪物",
     "defaultSkill": 62001,
@@ -1806,6 +1651,7 @@
   },
   "14108": {
     "name": "天兵",
+    "spriteType": "pet_tianbing",
     "characterType": "mob",
     "des": "通天塔8层怪物",
     "defaultSkill": 62001,
@@ -1824,6 +1670,7 @@
   },
   "14109": {
     "name": "天兵",
+    "spriteType": "pet_tianbing",
     "characterType": "mob",
     "des": "通天塔9层怪物",
     "defaultSkill": 62001,
@@ -1842,6 +1689,7 @@
   },
   "14201": {
     "name": "小白龙",
+    "spriteType": "hero_xiaobailong",
     "characterType": "mob",
     "des": "通天塔10层BOSS",
     "defaultSkill": 62001,
@@ -1860,6 +1708,7 @@
   },
   "14202": {
     "name": "花妖",
+    "spriteType": "pet_huayao",
     "characterType": "mob",
     "des": "通天塔11层怪物",
     "defaultSkill": 62001,
@@ -1878,6 +1727,7 @@
   },
   "14203": {
     "name": "花妖",
+    "spriteType": "pet_huayao",
     "characterType": "mob",
     "des": "通天塔12层怪物",
     "defaultSkill": 62001,
@@ -1896,6 +1746,7 @@
   },
   "14204": {
     "name": "花妖",
+    "spriteType": "pet_huayao",
     "characterType": "mob",
     "des": "通天塔13层怪物",
     "defaultSkill": 62001,
@@ -1914,6 +1765,7 @@
   },
   "14205": {
     "name": "花妖",
+    "spriteType": "pet_huayao",
     "characterType": "mob",
     "des": "通天塔14层怪物",
     "defaultSkill": 62001,
@@ -1932,6 +1784,7 @@
   },
   "14206": {
     "name": "花妖",
+    "spriteType": "pet_huayao",
     "characterType": "mob",
     "des": "通天塔15层怪物",
     "defaultSkill": 62001,
@@ -1950,6 +1803,7 @@
   },
   "14207": {
     "name": "花妖",
+    "spriteType": "pet_huayao",
     "characterType": "mob",
     "des": "通天塔16层怪物",
     "defaultSkill": 62001,
@@ -1968,6 +1822,7 @@
   },
   "14208": {
     "name": "花妖",
+    "spriteType": "pet_huayao",
     "characterType": "mob",
     "des": "通天塔17层怪物",
     "defaultSkill": 62001,
@@ -1986,6 +1841,7 @@
   },
   "14209": {
     "name": "花妖",
+    "spriteType": "pet_huayao",
     "characterType": "mob",
     "des": "通天塔18层怪物",
     "defaultSkill": 62001,
@@ -2004,6 +1860,7 @@
   },
   "14210": {
     "name": "花妖",
+    "spriteType": "pet_huayao",
     "characterType": "mob",
     "des": "通天塔19层怪物",
     "defaultSkill": 62001,
@@ -2022,6 +1879,7 @@
   },
   "14301": {
     "name": "芙蓉仙子",
+    "spriteType": "hero_furongxianzi",
     "characterType": "mob",
     "des": "通天塔20层BOSS",
     "defaultSkill": 62001,
@@ -2040,6 +1898,7 @@
   },
   "14302": {
     "name": "天将",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "通天塔21层怪物",
     "defaultSkill": 62001,
@@ -2058,6 +1917,7 @@
   },
   "14303": {
     "name": "天将",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "通天塔22层怪物",
     "defaultSkill": 62001,
@@ -2076,6 +1936,7 @@
   },
   "14304": {
     "name": "天将",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "通天塔23层怪物",
     "defaultSkill": 62001,
@@ -2094,6 +1955,7 @@
   },
   "14305": {
     "name": "天将",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "通天塔24层怪物",
     "defaultSkill": 62001,
@@ -2112,6 +1974,7 @@
   },
   "14306": {
     "name": "天将",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "通天塔25层怪物",
     "defaultSkill": 62001,
@@ -2130,6 +1993,7 @@
   },
   "14307": {
     "name": "天将",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "通天塔26层怪物",
     "defaultSkill": 62001,
@@ -2148,6 +2012,7 @@
   },
   "14308": {
     "name": "天将",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "通天塔27层怪物",
     "defaultSkill": 62001,
@@ -2166,6 +2031,7 @@
   },
   "14309": {
     "name": "天将",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "通天塔28层怪物",
     "defaultSkill": 62001,
@@ -2184,6 +2050,7 @@
   },
   "14310": {
     "name": "天将",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "通天塔29层怪物",
     "defaultSkill": 62001,
@@ -2202,6 +2069,7 @@
   },
   "14401": {
     "name": "游苍龙",
+    "spriteType": "hero_youcanglong",
     "characterType": "mob",
     "des": "通天塔30层BOSS",
     "defaultSkill": 62001,
@@ -2220,6 +2088,7 @@
   },
   "14402": {
     "name": "仙女",
+    "spriteType": "hero_lixueqi",
     "characterType": "mob",
     "des": "通天塔31层怪物",
     "defaultSkill": 62001,
@@ -2238,6 +2107,7 @@
   },
   "14403": {
     "name": "仙女",
+    "spriteType": "hero_lixueqi",
     "characterType": "mob",
     "des": "通天塔32层怪物",
     "defaultSkill": 62001,
@@ -2256,6 +2126,7 @@
   },
   "14404": {
     "name": "仙女",
+    "spriteType": "hero_lixueqi",
     "characterType": "mob",
     "des": "通天塔33层怪物",
     "defaultSkill": 62001,
@@ -2274,6 +2145,7 @@
   },
   "14405": {
     "name": "仙女",
+    "spriteType": "hero_lixueqi",
     "characterType": "mob",
     "des": "通天塔34层怪物",
     "defaultSkill": 62001,
@@ -2292,6 +2164,7 @@
   },
   "14406": {
     "name": "仙女",
+    "spriteType": "hero_lixueqi",
     "characterType": "mob",
     "des": "通天塔35层怪物",
     "defaultSkill": 62001,
@@ -2310,6 +2183,7 @@
   },
   "14407": {
     "name": "仙女",
+    "spriteType": "hero_lixueqi",
     "characterType": "mob",
     "des": "通天塔36层怪物",
     "defaultSkill": 62001,
@@ -2328,6 +2202,7 @@
   },
   "14408": {
     "name": "仙女",
+    "spriteType": "hero_lixueqi",
     "characterType": "mob",
     "des": "通天塔37层怪物",
     "defaultSkill": 62001,
@@ -2346,6 +2221,7 @@
   },
   "14409": {
     "name": "仙女",
+    "spriteType": "hero_lixueqi",
     "characterType": "mob",
     "des": "通天塔38层怪物",
     "defaultSkill": 62001,
@@ -2364,6 +2240,7 @@
   },
   "14410": {
     "name": "仙女",
+    "spriteType": "hero_lixueqi",
     "characterType": "mob",
     "des": "通天塔39层怪物",
     "defaultSkill": 62001,
@@ -2382,6 +2259,7 @@
   },
   "14501": {
     "name": "月宫仙子",
+    "spriteType": "hero_yuegongxianzi",
     "characterType": "mob",
     "des": "通天塔50层BOSS",
     "defaultSkill": 62001,
@@ -2400,6 +2278,7 @@
   },
   "14502": {
     "name": "芙蓉仙子",
+    "spriteType": "hero_furongxianzi",
     "characterType": "mob",
     "des": "通天塔51层怪物",
     "defaultSkill": 62001,
@@ -2418,6 +2297,7 @@
   },
   "14503": {
     "name": "芙蓉仙子",
+    "spriteType": "hero_furongxianzi",
     "characterType": "mob",
     "des": "通天塔52层怪物",
     "defaultSkill": 62001,
@@ -2436,6 +2316,7 @@
   },
   "14504": {
     "name": "芙蓉仙子",
+    "spriteType": "hero_furongxianzi",
     "characterType": "mob",
     "des": "通天塔53层怪物",
     "defaultSkill": 62001,
@@ -2454,6 +2335,7 @@
   },
   "14505": {
     "name": "芙蓉仙子",
+    "spriteType": "hero_furongxianzi",
     "characterType": "mob",
     "des": "通天塔54层怪物",
     "defaultSkill": 62001,
@@ -2472,6 +2354,7 @@
   },
   "14506": {
     "name": "芙蓉仙子",
+    "spriteType": "hero_furongxianzi",
     "characterType": "mob",
     "des": "通天塔55层怪物",
     "defaultSkill": 62001,
@@ -2490,6 +2373,7 @@
   },
   "14507": {
     "name": "芙蓉仙子",
+    "spriteType": "hero_furongxianzi",
     "characterType": "mob",
     "des": "通天塔56层怪物",
     "defaultSkill": 62001,
@@ -2508,6 +2392,7 @@
   },
   "14508": {
     "name": "芙蓉仙子",
+    "spriteType": "hero_furongxianzi",
     "characterType": "mob",
     "des": "通天塔57层怪物",
     "defaultSkill": 62001,
@@ -2526,6 +2411,7 @@
   },
   "14509": {
     "name": "芙蓉仙子",
+    "spriteType": "hero_furongxianzi",
     "characterType": "mob",
     "des": "通天塔58层怪物",
     "defaultSkill": 62001,
@@ -2544,6 +2430,7 @@
   },
   "14510": {
     "name": "芙蓉仙子",
+    "spriteType": "hero_furongxianzi",
     "characterType": "mob",
     "des": "通天塔59层怪物",
     "defaultSkill": 62001,
@@ -2562,6 +2449,7 @@
   },
   "14601": {
     "name": "龙女",
+    "spriteType": "hero_longnv",
     "characterType": "mob",
     "des": "通天塔60层BOSS",
     "defaultSkill": 62001,
@@ -2580,6 +2468,7 @@
   },
   "14602": {
     "name": "风伯",
+    "spriteType": "hero_chenyufeng",
     "characterType": "mob",
     "des": "通天塔61层怪物",
     "defaultSkill": 62001,
@@ -2598,6 +2487,7 @@
   },
   "14603": {
     "name": "风伯",
+    "spriteType": "hero_chenyufeng",
     "characterType": "mob",
     "des": "通天塔62层怪物",
     "defaultSkill": 62001,
@@ -2616,6 +2506,7 @@
   },
   "14604": {
     "name": "风伯",
+    "spriteType": "hero_chenyufeng",
     "characterType": "mob",
     "des": "通天塔63层怪物",
     "defaultSkill": 62001,
@@ -2634,6 +2525,7 @@
   },
   "14605": {
     "name": "风伯",
+    "spriteType": "hero_chenyufeng",
     "characterType": "mob",
     "des": "通天塔64层怪物",
     "defaultSkill": 62001,
@@ -2652,6 +2544,7 @@
   },
   "14606": {
     "name": "风伯",
+    "spriteType": "hero_chenyufeng",
     "characterType": "mob",
     "des": "通天塔65层怪物",
     "defaultSkill": 62001,
@@ -2670,6 +2563,7 @@
   },
   "14607": {
     "name": "风伯",
+    "spriteType": "hero_chenyufeng",
     "characterType": "mob",
     "des": "通天塔66层怪物",
     "defaultSkill": 62001,
@@ -2688,6 +2582,7 @@
   },
   "14608": {
     "name": "风伯",
+    "spriteType": "hero_chenyufeng",
     "characterType": "mob",
     "des": "通天塔67层怪物",
     "defaultSkill": 62001,
@@ -2706,6 +2601,7 @@
   },
   "14609": {
     "name": "风伯",
+    "spriteType": "hero_chenyufeng",
     "characterType": "mob",
     "des": "通天塔68层怪物",
     "defaultSkill": 62001,
@@ -2724,6 +2620,7 @@
   },
   "14610": {
     "name": "风伯",
+    "spriteType": "hero_chenyufeng",
     "characterType": "mob",
     "des": "通天塔69层怪物",
     "defaultSkill": 62001,
@@ -2742,6 +2639,7 @@
   },
   "14701": {
     "name": "佛子",
+    "spriteType": "hero_fozi",
     "characterType": "mob",
     "des": "通天塔70层BOSS",
     "defaultSkill": 62001,
@@ -2760,6 +2658,7 @@
   },
   "14702": {
     "name": "游苍龙",
+    "spriteType": "hero_youcanglong",
     "characterType": "mob",
     "des": "通天塔71层怪物",
     "defaultSkill": 62001,
@@ -2778,6 +2677,7 @@
   },
   "14703": {
     "name": "游苍龙",
+    "spriteType": "hero_youcanglong",
     "characterType": "mob",
     "des": "通天塔72层怪物",
     "defaultSkill": 62001,
@@ -2796,6 +2696,7 @@
   },
   "14704": {
     "name": "游苍龙",
+    "spriteType": "hero_youcanglong",
     "characterType": "mob",
     "des": "通天塔73层怪物",
     "defaultSkill": 62001,
@@ -2814,6 +2715,7 @@
   },
   "14705": {
     "name": "游苍龙",
+    "spriteType": "hero_youcanglong",
     "characterType": "mob",
     "des": "通天塔74层怪物",
     "defaultSkill": 62001,
@@ -2832,6 +2734,7 @@
   },
   "14706": {
     "name": "游苍龙",
+    "spriteType": "hero_youcanglong",
     "characterType": "mob",
     "des": "通天塔75层怪物",
     "defaultSkill": 62001,
@@ -2850,6 +2753,7 @@
   },
   "14707": {
     "name": "游苍龙",
+    "spriteType": "hero_youcanglong",
     "characterType": "mob",
     "des": "通天塔76层怪物",
     "defaultSkill": 62001,
@@ -2868,6 +2772,7 @@
   },
   "14708": {
     "name": "游苍龙",
+    "spriteType": "hero_youcanglong",
     "characterType": "mob",
     "des": "通天塔77层怪物",
     "defaultSkill": 62001,
@@ -2886,6 +2791,7 @@
   },
   "14709": {
     "name": "游苍龙",
+    "spriteType": "hero_youcanglong",
     "characterType": "mob",
     "des": "通天塔78层怪物",
     "defaultSkill": 62001,
@@ -2904,6 +2810,7 @@
   },
   "14710": {
     "name": "游苍龙",
+    "spriteType": "hero_youcanglong",
     "characterType": "mob",
     "des": "通天塔79层怪物",
     "defaultSkill": 62001,
@@ -2922,6 +2829,7 @@
   },
   "14801": {
     "name": "龙王",
+    "spriteType": "hero_longwang",
     "characterType": "mob",
     "des": "通天塔80层BOSS",
     "defaultSkill": 62001,
@@ -2940,6 +2848,7 @@
   },
   "14802": {
     "name": "李天王",
+    "spriteType": "hero_litianwang",
     "characterType": "mob",
     "des": "通天塔81层怪物",
     "defaultSkill": 62001,
@@ -2958,6 +2867,7 @@
   },
   "14803": {
     "name": "李天王",
+    "spriteType": "hero_litianwang",
     "characterType": "mob",
     "des": "通天塔82层怪物",
     "defaultSkill": 62001,
@@ -2976,6 +2886,7 @@
   },
   "14804": {
     "name": "李天王",
+    "spriteType": "hero_litianwang",
     "characterType": "mob",
     "des": "通天塔83层怪物",
     "defaultSkill": 62001,
@@ -2994,6 +2905,7 @@
   },
   "14805": {
     "name": "李天王",
+    "spriteType": "hero_litianwang",
     "characterType": "mob",
     "des": "通天塔84层怪物",
     "defaultSkill": 62001,
@@ -3012,6 +2924,7 @@
   },
   "14806": {
     "name": "李天王",
+    "spriteType": "hero_litianwang",
     "characterType": "mob",
     "des": "通天塔85层怪物",
     "defaultSkill": 62001,
@@ -3030,6 +2943,7 @@
   },
   "14807": {
     "name": "李天王",
+    "spriteType": "hero_litianwang",
     "characterType": "mob",
     "des": "通天塔86层怪物",
     "defaultSkill": 62001,
@@ -3048,6 +2962,7 @@
   },
   "14808": {
     "name": "李天王",
+    "spriteType": "hero_litianwang",
     "characterType": "mob",
     "des": "通天塔87层怪物",
     "defaultSkill": 62001,
@@ -3066,6 +2981,7 @@
   },
   "14809": {
     "name": "李天王",
+    "spriteType": "hero_litianwang",
     "characterType": "mob",
     "des": "通天塔88层怪物",
     "defaultSkill": 62001,
@@ -3084,6 +3000,7 @@
   },
   "14810": {
     "name": "李天王",
+    "spriteType": "hero_litianwang",
     "characterType": "mob",
     "des": "通天塔89层怪物",
     "defaultSkill": 62001,
@@ -3102,6 +3019,7 @@
   },
   "14901": {
     "name": "张仙狂",
+    "spriteType": "hero_zhangxiankuang",
     "characterType": "mob",
     "des": "通天塔90层BOSS",
     "defaultSkill": 62001,
@@ -3120,6 +3038,7 @@
   },
   "14902": {
     "name": "月宫仙子",
+    "spriteType": "hero_yuegongxianzi",
     "characterType": "mob",
     "des": "通天塔91层怪物",
     "defaultSkill": 62001,
@@ -3138,6 +3057,7 @@
   },
   "14903": {
     "name": "月宫仙子",
+    "spriteType": "hero_yuegongxianzi",
     "characterType": "mob",
     "des": "通天塔92层怪物",
     "defaultSkill": 62001,
@@ -3156,6 +3076,7 @@
   },
   "14904": {
     "name": "月宫仙子",
+    "spriteType": "hero_yuegongxianzi",
     "characterType": "mob",
     "des": "通天塔93层怪物",
     "defaultSkill": 62001,
@@ -3174,6 +3095,7 @@
   },
   "14905": {
     "name": "月宫仙子",
+    "spriteType": "hero_yuegongxianzi",
     "characterType": "mob",
     "des": "通天塔94层怪物",
     "defaultSkill": 62001,
@@ -3192,6 +3114,7 @@
   },
   "14906": {
     "name": "月宫仙子",
+    "spriteType": "hero_yuegongxianzi",
     "characterType": "mob",
     "des": "通天塔95层怪物",
     "defaultSkill": 62001,
@@ -3210,6 +3133,7 @@
   },
   "14907": {
     "name": "月宫仙子",
+    "spriteType": "hero_yuegongxianzi",
     "characterType": "mob",
     "des": "通天塔96层怪物",
     "defaultSkill": 62001,
@@ -3228,6 +3152,7 @@
   },
   "14908": {
     "name": "月宫仙子",
+    "spriteType": "hero_yuegongxianzi",
     "characterType": "mob",
     "des": "通天塔97层怪物",
     "defaultSkill": 62001,
@@ -3246,6 +3171,7 @@
   },
   "14909": {
     "name": "月宫仙子",
+    "spriteType": "hero_yuegongxianzi",
     "characterType": "mob",
     "des": "通天塔98层怪物",
     "defaultSkill": 62001,
@@ -3264,6 +3190,7 @@
   },
   "14910": {
     "name": "月宫仙子",
+    "spriteType": "hero_yuegongxianzi",
     "characterType": "mob",
     "des": "通天塔99层怪物",
     "defaultSkill": 62001,
@@ -3282,6 +3209,7 @@
   },
   "14911": {
     "name": "张天仙",
+    "spriteType": "hero_zhangtianxian",
     "characterType": "mob",
     "des": "通天塔100层BOSS",
     "defaultSkill": 62001,
@@ -3300,6 +3228,7 @@
   },
   "15001": {
     "name": "天兵",
+    "spriteType": "pet_tianbing",
     "characterType": "mob",
     "des": "副本通用小怪",
     "defaultSkill": 62001,
@@ -3318,6 +3247,7 @@
   },
   "15002": {
     "name": "天将",
+    "spriteType": "pet_tianjiang",
     "characterType": "mob",
     "des": "副本通用小怪",
     "defaultSkill": 62001,
@@ -3336,6 +3266,7 @@
   },
   "15003": {
     "name": "白虎",
+    "spriteType": "mob_baihu",
     "characterType": "mob",
     "des": "副本通用小怪",
     "defaultSkill": 62001,
@@ -3354,6 +3285,7 @@
   },
   "15101": {
     "name": "张君烈",
+    "spriteType": "hero_zhangjunlie",
     "characterType": "mob",
     "des": "伙伴副本第1个BOSS",
     "defaultSkill": 10001,
@@ -3372,6 +3304,7 @@
   },
   "15102": {
     "name": "陆玲珑",
+    "spriteType": "hero_lulinglong",
     "characterType": "mob",
     "des": "伙伴副本第2个BOSS",
     "defaultSkill": 10001,
@@ -3390,6 +3323,7 @@
   },
   "15103": {
     "name": "项天问",
+    "spriteType": "hero_xiangtianwen",
     "characterType": "mob",
     "des": "伙伴副本第3个BOSS",
     "defaultSkill": 10001,
@@ -3408,6 +3342,7 @@
   },
   "15201": {
     "name": "芙蓉仙子",
+    "spriteType": "hero_furongxianzi",
     "characterType": "mob",
     "des": "装备副本第1个BOSS",
     "defaultSkill": 62001,
@@ -3426,6 +3361,7 @@
   },
   "15202": {
     "name": "月宫仙子",
+    "spriteType": "hero_yuegongxianzi",
     "characterType": "mob",
     "des": "装备副本第2个BOSS",
     "defaultSkill": 62001,
@@ -3444,6 +3380,7 @@
   },
   "15203": {
     "name": "仙女",
+    "spriteType": "hero_lixueqi",
     "characterType": "mob",
     "des": "装备副本第3个BOSS",
     "defaultSkill": 62001,
@@ -3462,6 +3399,7 @@
   },
   "15301": {
     "name": "龙龟",
+    "spriteType": "pet_longgui",
     "characterType": "mob",
     "des": "宠物副本第1个BOSS",
     "defaultSkill": 61001,
@@ -3480,6 +3418,7 @@
   },
   "15302": {
     "name": "雪虎",
+    "spriteType": "pet_xuehu",
     "characterType": "mob",
     "des": "宠物副本第2个BOSS",
     "defaultSkill": 61001,
@@ -3498,6 +3437,7 @@
   },
   "15303": {
     "name": "麒麟",
+    "spriteType": "pet_qilin",
     "characterType": "mob",
     "des": "宠物副本第3个BOSS",
     "defaultSkill": 61001,
@@ -3516,6 +3456,7 @@
   },
   "15401": {
     "name": "小白龙",
+    "spriteType": "hero_xiaobailong",
     "characterType": "mob",
     "des": "宝石副本第1个BOSS",
     "defaultSkill": 62001,
@@ -3534,6 +3475,7 @@
   },
   "15402": {
     "name": "游苍龙",
+    "spriteType": "hero_youcanglong",
     "characterType": "mob",
     "des": "宝石副本第2个BOSS",
     "defaultSkill": 62001,
@@ -3552,6 +3494,7 @@
   },
   "15403": {
     "name": "李天王",
+    "spriteType": "hero_litianwang",
     "characterType": "mob",
     "des": "宝石副本第3个BOSS",
     "defaultSkill": 62001,
