@@ -305,8 +305,8 @@ module.exports = function() {
 			cb(false,"正在押镖中")
 			return
 		}
-		if((this.curHours < escort_cfg["closeTime1"]["value"] && this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.017))
-		 || (this.curHours < escort_cfg["closeTime2"]["value"] && this.curHours >= (escort_cfg["closeTime2"]["value"] - 0.017))){
+		if((this.curHours < escort_cfg["closeTime1"]["value"] && this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.17))
+		 || (this.curHours < escort_cfg["closeTime2"]["value"] && this.curHours >= (escort_cfg["closeTime2"]["value"] - 0.17))){
 			cb(false,"现在不能押镖")
 			return
 		}
