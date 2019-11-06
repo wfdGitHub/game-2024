@@ -558,5 +558,75 @@
     "type": "pet",
     "tags": "tags_hot",
     "quality": 2
+  },
+  "30001": {
+    "name": "宠物经验丹",
+    "dec": "增加宠物1000经验值",
+    "pc": "101:100",
+    "pa": "2001:1",
+    "icon": 10004,
+    "type": "arena",
+    "tags": "tags_time",
+    "quality": 0
+  },
+  "30002": {
+    "name": "宠物进阶石",
+    "dec": "用于宠物进阶",
+    "pc": "106:100",
+    "pa": "2002:1",
+    "icon": 10005,
+    "type": "arena",
+    "tags": "tags_time",
+    "quality": 0
+  },
+  "30003": {
+    "name": "宠物突破石",
+    "dec": "用于宠物突破",
+    "pc": "106:100",
+    "pa": "2003:1",
+    "icon": 10006,
+    "type": "arena",
+    "tags": "tags_time",
+    "quality": 1
+  },
+  "30004": {
+    "name": "宠物洗练石",
+    "dec": "用于宠物洗练",
+    "pc": "106:100",
+    "pa": "2004:1",
+    "icon": 10007,
+    "type": "arena",
+    "tags": "tags_time",
+    "quality": 1
+  },
+  "30005": {
+    "name": "伙伴经验丹",
+    "dec": "增加伙伴1000经验值",
+    "pc": "106:100",
+    "pa": "3001:1",
+    "icon": 10008,
+    "type": "arena",
+    "tags": "tags_time",
+    "quality": 2
+  },
+  "30006": {
+    "name": "伙伴进阶石",
+    "dec": "用于伙伴进阶",
+    "pc": "106:100",
+    "pa": "3002:1",
+    "icon": 10009,
+    "type": "arena",
+    "tags": "tags_time",
+    "quality": 2
+  },
+  "30007": {
+    "name": "伙伴突破石",
+    "dec": "用于伙伴突破",
+    "pc": "106:100",
+    "pa": "3003:1",
+    "icon": 10010,
+    "type": "arena",
+    "tags": "tags_time",
+    "quality": 4
   }
 }

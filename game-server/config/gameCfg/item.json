@@ -9,7 +9,9 @@
   "102": {
     "name": "仙钻",
     "des": "仙钻",
-    "isBag": false
+    "isBag": false,
+    "buy": "104:1",
+    "buyNum": 1
   },
   "103": {
     "name": "熔炼值",
@@ -21,9 +23,7 @@
   "104": {
     "name": "仙晶",
     "des": "仙晶",
-    "isBag": false,
-    "buy": "102:10",
-    "buyNum": 10000
+    "isBag": false
   },
   "105": {
     "name": "灵气",
@@ -31,6 +31,11 @@
     "isBag": false,
     "buy": "102:10",
     "buyNum": 10000
+  },
+  "106": {
+    "name": "声望",
+    "des": "竞技场产出货币",
+    "isBag": false
   },
   "201": {
     "name": "副本钥匙",
