@@ -2,6 +2,7 @@
 var main_name = "conquer"
 module.exports = function() {
 	var self = this
+	var local = {}
 	const conquerInfo = {
 		"curL" : 0,					//当前关卡等级
 		"level" : 0,				//难度等级
@@ -60,13 +61,39 @@ module.exports = function() {
 		})
 	}
 	//挑战关卡
-	this.conquerChallenge = function(uid,grade,cb) {
+	this.conquerChallenge = function(uid,grade,otps,cb) {
 		self.getConquerInfo(uid,function(userInfo) {
+			var level = userInfo.level
+			var curL = userInfo.curL
+			var atkTeam = userInfo.team
 			var defTeam = []
-			
+			var seededNum = userInfo.seededNum
+			var result = self.fightContorl.fighting(atkTeam,defTeam,seededNum,otps.readList)
+			if(result.verify === otps.verify){
+				var info = {}
+				if(result.result === "win"){
+					//胜利
+					info.state = 2
+					//宝箱奖励
+
+					//能力加成
+
+				}else{
+					//失败
+					info.state = 3
+					cb(true)
+				}
+				self.setHMObj(uid,main_name,info)
+				cb(true,info)
+			}else{
+		    	console.error(otps.verify,result.verify)
+		    	cb(false,"verify fail")
+		    }
 		})
-		//win
-		//lose
+	}
+	//生成属性加成列表
+	local.createAttList = function(index,cb) {
+		
 	}
 	//选择属性加成
 	this.conquerChooseAtt = function(uid,index,cb) {

@@ -27,6 +27,14 @@ module.exports = function() {
 			}
 		})
 	}
+	//批量设置角色hash自定义数据
+	this.setHMObj = function(uid,objName,obj,cb) {
+		this.redisDao.db.hmset("area:area"+this.areaId+":player:"+uid+":"+objName,obj,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
 	//删除角色hash自定义数据
 	this.delObj = function(uid,objName,key,cb) {
 		this.redisDao.db.hdel("area:area"+this.areaId+":player:"+uid+":"+objName,key,function(err,data) {
@@ -70,5 +78,4 @@ module.exports = function() {
 	this.getPlayerDataAll = function(uid,cb) {
 		self.getObjAll(uid,"playerData",cb)
 	}
-
 }

@@ -96,7 +96,7 @@ var character = function(otps) {
 	this.atk = Math.floor(this.b_arg.atk + this.str * 2.2) || 0	//攻击力
 	this.def = Math.floor(this.b_arg.def + this.vit * 1.8) || 0	//防御力
 	this.maxHP = Math.floor(this.b_arg.maxHP + this.phy * 20) || 0	//最大血量
-	this.hp = this.maxHP
+	this.hp = this.b_arg.hp || this.maxHP
 	//三级属性
 	this.atkSpeed = this.b_arg.atkSpeed || 1  					//攻速 每几秒攻击一次
 	this.crit = this.b_arg.crit || 0								//暴击
