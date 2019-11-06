@@ -1,0 +1,103 @@
+{
+  "10001": {
+    "name": "排名奖励1",
+    "rank": 5000,
+    "maxBuy": 5,
+    "pc": "101:100",
+    "pa": "2001:1",
+    "icon": 10004,
+    "tags": "tags_time",
+    "quality": 0
+  },
+  "10002": {
+    "name": "排名奖励2",
+    "rank": 3500,
+    "maxBuy": 4,
+    "pc": "101:100",
+    "pa": "2002:1",
+    "icon": 10005,
+    "tags": "tags_time",
+    "quality": 0
+  },
+  "10003": {
+    "name": "排名奖励3",
+    "rank": 3000,
+    "maxBuy": 3,
+    "pc": "101:100",
+    "pa": "2003:1",
+    "icon": 10006,
+    "tags": "tags_time",
+    "quality": 1
+  },
+  "10004": {
+    "name": "排名奖励4",
+    "rank": 2500,
+    "maxBuy": 2,
+    "pc": "101:100",
+    "pa": "2004:1",
+    "icon": 10007,
+    "tags": "tags_time",
+    "quality": 1
+  },
+  "10005": {
+    "name": "排名奖励5",
+    "rank": 2000,
+    "maxBuy": 1,
+    "pc": "101:100",
+    "pa": "3001:1",
+    "icon": 10008,
+    "tags": "tags_time",
+    "quality": 2
+  },
+  "10006": {
+    "name": "排名奖励6",
+    "rank": 1500,
+    "maxBuy": 1,
+    "pc": "101:100",
+    "pa": "3002:1",
+    "icon": 10009,
+    "tags": "tags_time",
+    "quality": 2
+  },
+  "10007": {
+    "name": "排名奖励7",
+    "rank": 1000,
+    "maxBuy": 1,
+    "pc": "101:100",
+    "pa": "3003:1",
+    "icon": 10010,
+    "tags": "tags_time",
+    "quality": 4
+  },
+  "10008": {
+    "name": "排名奖励8",
+    "rank": 500,
+    "maxBuy": 1,
+    "pc": "101:100",
+    "pa": "4001:1",
+    "icon": 10011,
+    "tags": "tags_hot",
+    "quality": 1
+  },
+  "10009": {
+    "name": "排名奖励9",
+    "rank": 100,
+    "maxBuy": 1,
+    "pc": "101:100",
+    "pa": "4002:1",
+    "icon": 10012,
+    "tags": "tags_hot",
+    "quality": 1
+  },
+  "10010": {
+    "name": "排名奖励10",
+    "rank": 10,
+    "maxBuy": 1,
+    "pc": "101:100",
+    "pa": "4003:1",
+    "icon": 10013,
+    "tags": "tags_hot",
+    "quality": 2
+  },
+  "undefined": {}
+}

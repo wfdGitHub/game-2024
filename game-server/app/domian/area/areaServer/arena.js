@@ -1,6 +1,7 @@
 //竞技场
 var arena_cfg = require("../../../../config/gameCfg/arena_cfg.json")
 var arena_rank = require("../../../../config/gameCfg/arena_rank.json")
+var arena_shop = require("../../../../config/gameCfg/arena_shop.json")
 var util = require("../../../../util/util.js")
 var mainName = "arena"
 var correctNumerator = arena_cfg["correctNumerator"]["value"]			//修正值
@@ -80,6 +81,39 @@ module.exports = function() {
 			}
 			self.setHMObj(uid,mainName,info)
 			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,JSON.stringify({uid : uid,sex : sex,name : name}))
+		})
+	}
+	//购买竞技场奖励商城物品
+	this.buyArenaShop = function(uid,shopId,count,cb) {
+		if(parseInt(shopId) != shopId || !Number.isInteger(count) || count <= 0){
+			cb(false,"args type error")
+			return
+		}
+		var shopInfo = arena_shop[shopId]
+		if(!shopInfo){
+			cb(false,"shopId error "+shopId)
+			return
+		}
+		self.getHMObj(uid,mainName,["highestRank",shopId+"_buy"],function(list) {
+			var rank = parseInt(list[0])
+			var buyNum = parseInt(list[1]) || 0
+			if(buyNum + count > shopInfo.maxBuy){
+				cb(false,"购买超出上限")
+				return
+			}
+			if(rank > shopInfo.rank){
+				cb(false,"排名未达到")
+				return
+			}
+			self.consumeItems(uid,shopInfo.pc,count,function(flag,err) {
+				if(!flag){
+					cb(flag,err)
+					return
+				}
+				self.addItemStr(uid,shopInfo.pa,count)
+				self.incrbyObj(uid,mainName,shopId+"_buy",count)
+				cb(true,shopInfo.pa)
+			})
 		})
 	}
 	//获取竞技场排行榜

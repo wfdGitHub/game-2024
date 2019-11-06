@@ -124,6 +124,12 @@
             console.log(data);
         });
       }
+      //购买竞技场奖励商城物品
+      var buyArenaShop = function(shopId,count) {
+        pomelo.request("area.arenaHandler.buyArenaShop", {shopId : shopId,count : count}, function(data) {
+            console.log(data);
+        });
+      }
       //============运镖玩法================//
       //获取我的押镖信息
       var getEscortInfo = function() {

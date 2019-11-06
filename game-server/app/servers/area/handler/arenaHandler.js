@@ -54,6 +54,16 @@ arenaHandler.prototype.getRerord = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//购买竞技场奖励商城物品
+arenaHandler.prototype.buyArenaShop = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var shopId = msg.shopId
+  var count = msg.count
+  this.areaManager.areaMap[areaId].buyArenaShop(uid,shopId,count,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "arenaHandler",
