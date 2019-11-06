@@ -15,9 +15,9 @@
     "name": "每日挑战次数",
     "value": 5
   },
-  "awardTime": {
-    "name": "奖励发放时间",
-    "value": 21
+  "buyCount": {
+    "name": "每日最大购买挑战次数",
+    "value": 5
   },
   "buyConsume": {
     "name": "购买挑战次数消耗",

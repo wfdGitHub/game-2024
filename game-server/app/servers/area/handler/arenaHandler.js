@@ -46,7 +46,14 @@ arenaHandler.prototype.buyArenaCount = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
-
+//获取挑战记录
+arenaHandler.prototype.getRerord = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getRerord(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "arenaHandler",

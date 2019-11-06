@@ -25,13 +25,12 @@ adminHanlder.prototype.openArea = function(msg, session, next) {
 }
 //获取服务器信息
 adminHanlder.prototype.getAreaServerInfos = function(msg, session, next) {
-	var list = {}
 	var count = 0
 	var servrList = this.app.getServersByType('area')
 	for(var i = 0;i < servrList.length;i++){
 	    this.app.rpc.area.areaRemote.getAreaServerInfos.toServer(servrList[i].id,function(infos) {
 	    	count++
-	    	list = Object.assign(list,infos)
+	    	var list = Object.assign({},infos)
 	    	if(count == servrList.length){
 	    		next(null,{flag : true,list : list})
 	    	}

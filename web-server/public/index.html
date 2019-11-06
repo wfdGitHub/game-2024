@@ -102,6 +102,12 @@
               cb(data)
         });
       }
+      //获取挑战记录
+      var getRerord = function() {
+        pomelo.request("area.arenaHandler.getRerord", {}, function(data) {
+            console.log(data);
+        });
+      }
       //挑战目标
       var challengeArena = function() {
         getTargetList(function(data) {
@@ -679,7 +685,7 @@
   <body>
     <div class="g-button">
       登录系统 : 
-      <input id="test" type="button" value="登录账号" onclick="entry(1003)"/>
+      <input id="test" type="button" value="登录账号" onclick="entry(Date.now())"/>
       <input id="test" type="button" value="注册角色" onclick="register(2,''+Date.now(),1)"/>
       <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
@@ -692,6 +698,7 @@
       <input id="test" type="button" value="获取我的竞技场数据" onclick="getMyArenaInfo()"/>
       <input id="test" type="button" value="挑战目标" onclick="challengeArena()"/>
       <input id="test" type="button" value="购买挑战次数" onclick="buyArenaCount()"/>
+      <input id="test" type="button" value="获取挑战记录" onclick="getRerord()"/>
     </div>
     <div class="g-button">
       押镖玩法 : 

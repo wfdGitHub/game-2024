@@ -203,6 +203,16 @@ area.prototype.loginCross = function(uid,crossUid,cb) {
 		cb(flag,data)
 	})
 }
+area.prototype.getSimpleUser = function(uid) {
+	if(!this.players[uid]){
+		return false
+	}
+	var info = {
+		name : this.players[uid]["name"],
+		sex : this.players[uid]["sex"]
+	}
+	return info
+}
 module.exports = {
 	id : "area",
 	func : area,
