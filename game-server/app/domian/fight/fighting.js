@@ -155,9 +155,9 @@ fighting.prototype.getResult = function() {
 	this.defTeam.forEach(function(character) {
 		info.defTeam.push(character.baseOtps)
 	})
-	var verify = ""+info.result+info.recordList.length+info.seededNum+info.time
+	var verify = ""+info.result+"length"+info.recordList.length+"seededNum"+info.seededNum+"time"+info.time+"character"
 	this.characterArr.forEach(function(character) {
-		verify += character.name+character.hp+"/"+character.maxHP
+		verify += "/"+character.characterId+character.hp+"/"+character.maxHP
 	})
 	info.verify = verify
 	return info
