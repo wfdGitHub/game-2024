@@ -34,7 +34,8 @@ petDao.prototype.obtainPet = function(areaId,uid,characterId,cb) {
 	var curAmount = 0
 	self.redisDao.db.hget("area:area"+areaId+":player:"+uid+":playerInfo","petAmount",function(err,data) {
 		if(err || !data){
-			cb(false,"amount error "+data)
+			if(cb)
+				cb(false,"amount error "+data)
 			return
 		}
 		maxAmount = parseInt(data)
@@ -43,13 +44,15 @@ petDao.prototype.obtainPet = function(areaId,uid,characterId,cb) {
 				curAmount = parseInt(data)
 			}
 			if(curAmount >= maxAmount){
-				cb(false,"amount over maxAmount"+curAmount+" "+maxAmount)
+				if(cb)
+					cb(false,"amount over maxAmount"+curAmount+" "+maxAmount)
 				return
 			}
 			self.redisDao.db.hset("area:area"+areaId+":player:"+uid+":petMap",petInfo.id,Date.now())
 			self.redisDao.db.hmset("area:area"+areaId+":player:"+uid+":pets:"+petInfo.id,petInfo)
 			self.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":petArchive",characterId,1)
-			cb(true,petInfo)
+			if(cb)
+				cb(true,petInfo)
 		})
 	})
 }

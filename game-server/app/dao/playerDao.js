@@ -6,6 +6,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		uid : otps.uid,
 		name : otps.name,
 		sex : otps.sex === 1? 1 : 2,
+		petAmount : 1,
 		dayStr : (new Date).toLocaleDateString()
 	}
 	var self = this
@@ -14,6 +15,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 			playerInfo.characters = []
 			playerInfo.characters.push(self.characterDao.createCharacter(otps.areaId,otps.uid,10001))
 			self.redisDao.db.hset("area:area"+otps.areaId+":nameMap",otps.name,otps.uid)
+			self.petDao.obtainPet(otps.areaId,otps.uid,12101)
 			cb(playerInfo)
 		}else{
 			cb(false)
