@@ -1941,7 +1941,6 @@
     "des": "怪物的普通攻击",
     "skillType": "hurt",
     "mul": 1,
-    "fixed": 500,
     "targetType": "rand1"
   },
   "61002": {
@@ -1955,7 +1954,7 @@
   "61003": {
     "name": "魔族降临",
     "des": "降低敌人攻击力50%",
-    "skillType": "recover",
+    "skillType": "hurt",
     "skillCD": 21.6,
     "targetType": "all",
     "buffId": "lessAtt",
@@ -2233,7 +2232,7 @@
   "63402": {
     "name": "魅惑失心",
     "des": "邪狮技能，降低敌人攻击力100%",
-    "skillType": "recover",
+    "skillType": "hurt",
     "skillCD": 24.6,
     "targetType": "all",
     "buffId": "lessAtt",
