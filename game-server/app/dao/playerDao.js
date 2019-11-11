@@ -15,7 +15,6 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 			playerInfo.characters = []
 			playerInfo.characters.push(self.characterDao.createCharacter(otps.areaId,otps.uid,10001))
 			self.redisDao.db.hset("area:area"+otps.areaId+":nameMap",otps.name,otps.uid)
-			self.petDao.obtainPet(otps.areaId,otps.uid,12101)
 			cb(playerInfo)
 		}else{
 			cb(false)

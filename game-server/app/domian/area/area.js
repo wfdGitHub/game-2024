@@ -55,7 +55,10 @@ area.prototype.register = function(otps,cb) {
 				self.setPlayerData(otps.uid,"onhookLastTime",Date.now())
 				//TODO test
 				self.addItem({uid : otps.uid,itemId : 101,value : 1000000})
-
+				self.petDao.obtainPet(otps.areaId,otps.uid,12101)
+				for(var i = 1;i <= 10;i++){
+					self.addEquip(otps.uid,"e"+i,0,1)
+				}
 				cb(true,playerInfo)
 			})
 		}
