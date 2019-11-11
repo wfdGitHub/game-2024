@@ -12,7 +12,7 @@
     "name": "第1关",
     "bossId": 13101,
     "bossLevel": 1,
-    "mon_list": false,
+    "mon_list": "[13001,13003,13002,13002]",
     "mobLevel": 0,
     "award": "exp:1200&102:10&103:120",
     "on_hook_award": "exp:10000&105:1000"
