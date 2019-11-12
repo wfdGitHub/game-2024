@@ -106,6 +106,14 @@ normalHandler.prototype.loginCross = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//同步指引进度
+normalHandler.prototype.syncGuide = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var guideInfo = msg.guideInfo
+  this.areaManager.areaMap[areaId].playerDao.setPlayerInfo({areaId : areaId,uid : uid,key : "guideInfo",value : guideInfo})
+  next()
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "normalHandler",

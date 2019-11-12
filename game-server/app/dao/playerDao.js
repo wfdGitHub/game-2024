@@ -43,6 +43,19 @@ playerDao.prototype.getPlayerInfo = function(otps,cb) {
 		}
 	})
 }
+//设置角色数据
+playerDao.prototype.setPlayerInfo = function(otps,cb) {
+	var self = this
+	self.redisDao.db.hset("area:area"+otps.areaId+":player:"+otps.uid+":playerInfo",otps.key,otps.value,function(err) {
+		if(!err){
+			if(cb)
+				cb(true)
+		}else{
+			if(cb)
+				cb(false,err)
+		}
+	})
+}
 //检查账号是否可创建
 playerDao.prototype.checkPlayerInfo = function(otps,cb) {
 	var multiList = []
