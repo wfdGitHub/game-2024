@@ -42,15 +42,29 @@ accountDao.prototype.getAccountInfo = function(otps,cb) {
 	})
 }
 //获取账号属性
-accountDao.prototype.getAccountData = function(otps,cb) {
+accountDao.prototype.getAccountInfoByUid = function(otps,cb) {
 	var uid = otps.uid
 	var name = otps.name
-	var self = this
-	self.redisDao.db.hget("acc:user"+uid,name,function(err,data) {
+	this.redisDao.db.hget("acc:user"+uid,name,function(err,data) {
 		if(err || !data){
 			cb(false)
 		}else{
 			cb(true,data)
+		}
+	})
+}
+//设置账号属性
+accountDao.prototype.setAccountDataByUid = function(otps,cb) {
+	var uid = otps.uid
+	var name = otps.name
+	var value = otps.value
+	this.redisDao.db.hset("acc:user"+uid,name,value,function(err,data) {
+		if(err || !data){
+			if(cb)
+				cb(false)
+		}else{
+			if(cb)
+				cb(true,data)
 		}
 	})
 }

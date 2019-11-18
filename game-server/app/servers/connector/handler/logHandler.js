@@ -2,7 +2,6 @@ var bearcat = require("bearcat")
 //日志模块
 var logHandler = function(app) {
   this.app = app;
-	this.areaManager = this.app.get("areaManager")
 };
 //接收日志
 logHandler.prototype.addLogs = function(msg, session, next) {

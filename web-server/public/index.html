@@ -67,6 +67,12 @@
         console.log("onChat")
         console.log(data)
       })
+      //绑定身份证
+      var bindIdentity = function(idcard,name) {
+        pomelo.request("connector.identityHandler.bindIdentity", {idcard : idcard,name : name}, function(data) {
+            console.log(data);
+        });
+      }
       //开启宝箱
       var getChestAward = function(chestId) {
         pomelo.request("area.normalHandler.getChestAward", {chestId : chestId}, function(data) {
