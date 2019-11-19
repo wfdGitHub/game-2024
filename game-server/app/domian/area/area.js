@@ -51,13 +51,13 @@ area.prototype.register = function(otps,cb) {
 					cb(false,playerInfo)
 					return
 				}
-				self.initArenaRank(otps.uid,otps.name,otps.sex)
-				self.setPlayerData(otps.uid,"onhookLastTime",Date.now())
+				self.initArenaRank(playerInfo.uid,otps.name,otps.sex)
+				self.setPlayerData(playerInfo.uid,"onhookLastTime",Date.now())
 				//TODO test
-				self.addItem({uid : otps.uid,itemId : 101,value : 1000000})
-				self.petDao.obtainPet(otps.areaId,otps.uid,12101)
+				self.addItem({uid : playerInfo.uid,itemId : 101,value : 1000000})
+				self.petDao.obtainPet(otps.areaId,playerInfo.uid,12101)
 				for(var i = 1;i <= 10;i++){
-					self.addEquip(otps.uid,"e"+i,0,1)
+					self.addEquip(playerInfo.uid,"e"+i,0,1)
 				}
 				cb(true,playerInfo)
 			})

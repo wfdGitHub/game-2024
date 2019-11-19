@@ -3,21 +3,46 @@ var playerDao = function() {}
 //创建角色
 playerDao.prototype.createPlayer = function(otps,cb) {
 	var playerInfo = {
-		uid : otps.uid,
+		accId : otps.accId,
 		name : otps.name,
 		sex : otps.sex === 1? 1 : 2,
 		petAmount : 1,
 		dayStr : (new Date).toLocaleDateString()
 	}
 	var self = this
-	self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+otps.uid+":playerInfo",playerInfo,function(err,data) {
-		if(!err){
-			playerInfo.characters = []
-			playerInfo.characters.push(self.characterDao.createCharacter(otps.areaId,otps.uid,10001))
-			self.redisDao.db.hset("area:area"+otps.areaId+":nameMap",otps.name,otps.uid)
-			cb(playerInfo)
-		}else{
+	self.redisDao.db.incrby("user:lastid",1,function(err,uid) {
+		uid = parseInt(uid)
+		playerInfo.uid = uid
+		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":playerMap",uid,otps.areaId)
+		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":areaMap",otps.areaId,uid)
+		self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+uid+":playerInfo",playerInfo,function(err,data) {
+			if(!err){
+				playerInfo.characters = []
+				playerInfo.characters.push(self.characterDao.createCharacter(otps.areaId,uid,10001))
+				self.redisDao.db.hset("area:area"+otps.areaId+":nameMap",otps.name,uid)
+				cb(playerInfo)
+			}else{
+				cb(false)
+			}
+		})
+	})
+}
+//获取角色列表
+playerDao.prototype.getPlayerList = function(otps,cb) {
+	var accId = otps.accId
+	this.redisDao.db.hgetall("acc:user:"+accId+":areaMap",function(err,list) {
+		cb(true,list || {})
+	})
+}
+//获取所在服务器角色UID
+playerDao.prototype.getUidByAreaId = function(otps,cb) {
+	var accId = otps.accId
+	var areaId = otps.areaId
+	this.redisDao.db.hget("acc:user:"+accId+":areaMap",areaId,function(err,uid) {
+		if(err || !uid){
 			cb(false)
+		}else{
+			cb(true,uid)
 		}
 	})
 }
@@ -59,7 +84,7 @@ playerDao.prototype.setPlayerInfo = function(otps,cb) {
 //检查账号是否可创建
 playerDao.prototype.checkPlayerInfo = function(otps,cb) {
 	var multiList = []
-	multiList.push(["exists","area:area"+otps.areaId+":player:"+otps.uid+":playerInfo"])
+	multiList.push(["hexists","acc:user:"+otps.accId+":areaMap",otps.areaId])
 	multiList.push(["hexists","area:area"+otps.areaId+":nameMap",otps.name])
 	this.redisDao.multi(multiList,function(err,list) {
 		if(list[0] !== 0){

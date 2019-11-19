@@ -469,14 +469,15 @@
             console.log(data);
         });
       }
-      //获取该服务器角色信息
-      var getPlayerInfo = function(areaId) {
-        pomelo.request("connector.loginHandler.getPlayerInfo", {areaId : areaId}, function(data) {
+      //
+      var getPlayerList = function(accId) {
+        pomelo.request("connector.loginHandler.getPlayerList", {accId : accId}, function(data) {
             console.log(data);
         });
       }
-      var getPlayerInfo2 = function() {
-        pomelo.request("area.petHandler.getPlayerInfo", {}, function(data) {
+      //获取该服务器角色信息
+      var getPlayerInfo = function(areaId) {
+        pomelo.request("connector.loginHandler.getPlayerInfo", {areaId : areaId}, function(data) {
             console.log(data);
         });
       }

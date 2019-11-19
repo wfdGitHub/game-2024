@@ -8,11 +8,11 @@ var identityHandler = function(app) {
 };
 var local = {}
 identityHandler.prototype.bindIdentity = function(msg, session, next) {
-	var uid = session.uid
+	var accId = session.get("accId")
 	var idcard = msg.idcard
 	var name = msg.name
-	if(!uid){
-		next(null,{flag : false,err : "未登录"})
+	if(!accId){
+		next(null,{flag : false,err : "未登录账号"})
 		return
 	}
 	var idcardReg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
@@ -25,7 +25,7 @@ identityHandler.prototype.bindIdentity = function(msg, session, next) {
 		return
 	}
 	var self = this
-	self.accountDao.getAccountInfoByUid({uid : uid,name : "idcard"},function(flag,data) {
+	self.accountDao.getAccountData({accId : accId,name : "idcard"},function(flag,data) {
 		console.log(flag,data)
 		if(flag || data){
 			next(null,{flag : false,err : "已绑定身份证"})
@@ -33,7 +33,7 @@ identityHandler.prototype.bindIdentity = function(msg, session, next) {
 		}
 		local.checkIdentity(idcard,name,function(flag,data) {
 			if(flag && data){
-				self.accountDao.setAccountDataByUid({uid : uid,name : "idcard",value : JSON.stringify(data)})
+				self.accountDao.setAccountData({accId : accId,name : "idcard",value : JSON.stringify(data)})
 			}
 			next(null,{flag : flag,data : data})
 		})

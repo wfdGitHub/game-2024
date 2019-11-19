@@ -11,12 +11,12 @@ accountDao.prototype.createAccount = function(otps,cb) {
 		nickname : otps.nickname || 0
 	}
 	var self = this
-	self.redisDao.db.incrby("acc:lastid",1,function(err,data) {
-		if(!err && data){
-			userInfo.uid = data
-			self.redisDao.db.hmset("acc:user"+userInfo.uid,userInfo)
+	self.redisDao.db.incrby("acc:lastid",1,function(err,accId) {
+		if(!err && accId){
+			userInfo.accId = accId
+			self.redisDao.db.hmset("acc:user:"+userInfo.accId+":base",userInfo)
 			//建立映射
-			self.redisDao.db.hset("acc:uidMap:unionid",userInfo.unionid,userInfo.uid)
+			self.redisDao.db.hset("acc:accMap:unionid",userInfo.unionid,userInfo.accId)
 			cb(true,userInfo)
 		}else{
 			cb(false,"createAccount error")
@@ -27,25 +27,25 @@ accountDao.prototype.createAccount = function(otps,cb) {
 accountDao.prototype.getAccountInfo = function(otps,cb) {
 	var unionid = otps.unionid
 	var self = this
-	self.redisDao.db.hget("acc:uidMap:unionid",unionid,function(err,data) {
-		if(err || !data){
+	self.redisDao.db.hget("acc:accMap:unionid",unionid,function(err,accId) {
+		if(err || !accId){
 			cb(false)
 		}else{
-			self.redisDao.db.hgetall("acc:user"+data,function(err,data) {
-				if(err || !data){
+			self.redisDao.db.hgetall("acc:user:"+accId+":base",function(err,userInfo) {
+				if(err || !userInfo){
 					cb(false)
 				}else{
-					cb(true,data)
+					cb(true,userInfo)
 				}
 			})
 		}
 	})
 }
 //获取账号属性
-accountDao.prototype.getAccountInfoByUid = function(otps,cb) {
-	var uid = otps.uid
+accountDao.prototype.getAccountData = function(otps,cb) {
+	var accId = otps.accId
 	var name = otps.name
-	this.redisDao.db.hget("acc:user"+uid,name,function(err,data) {
+	this.redisDao.db.hget("acc:user:"+accId+":base",name,function(err,data) {
 		if(err || !data){
 			cb(false)
 		}else{
@@ -54,11 +54,11 @@ accountDao.prototype.getAccountInfoByUid = function(otps,cb) {
 	})
 }
 //设置账号属性
-accountDao.prototype.setAccountDataByUid = function(otps,cb) {
-	var uid = otps.uid
+accountDao.prototype.setAccountData = function(otps,cb) {
+	var accId = otps.accId
 	var name = otps.name
 	var value = otps.value
-	this.redisDao.db.hset("acc:user"+uid,name,value,function(err,data) {
+	this.redisDao.db.hset("acc:user:"+accId+":base",name,value,function(err,data) {
 		if(err || !data){
 			if(cb)
 				cb(false)

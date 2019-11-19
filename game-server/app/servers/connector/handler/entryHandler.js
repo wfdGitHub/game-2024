@@ -26,19 +26,19 @@ entryHandler.prototype.entryAccount = function(msg, session, next) {
 }
 //登录成功
 entryHandler.entrySuccess = function(session,userInfo,next) {
-	var uid = Number(userInfo.uid)
-	//检查重复登录
-	if( !! this.sessionService.getByUid(uid)) {
-		this.connectorManager.sendByUid(uid,{type : "kick"})
-		var uids = this.sessionService.getByUid(uid)
-		for(var i = 0;i < uids.length;i++){
-			this.sessionService.kickBySessionId(uids[i].id)
-		}
-	}
-	session.bind(uid)
-	session.on("closed",onUserLeave.bind(this))
-	console.log(uid + "  entrySuccess.."+ "  "+this.app.serverId)
-	userInfo.time = Date.now()
+	var accId = Number(userInfo.accId)
+	// //检查重复登录
+	// if( !! this.sessionService.getByUid(uid)) {
+	// 	this.connectorManager.sendByUid(uid,{type : "kick"})
+	// 	var uids = this.sessionService.getByUid(uid)
+	// 	for(var i = 0;i < uids.length;i++){
+	// 		this.sessionService.kickBySessionId(uids[i].id)
+	// 	}
+	// }
+    session.set("accId",accId)
+    session.push("accId")
+	// session.on("closed",onUserLeave.bind(this))
+	console.log(accId + "  entrySuccess.."+ "  "+this.app.serverId)
   	next(null, {flag : true,msg : userInfo});
 }
 var onUserLeave = function(session) {

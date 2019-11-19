@@ -46,7 +46,7 @@ areaManager.prototype.userLogin = function(uid,areaId,cid,cb) {
 		cb(false)
 		return
 	}
-	if(this.connectorMap[uid]){
+	if(this.connectorMap[uid] && this.connectorMap[uid] != cid){
 		this.app.rpc.connector.connectorRemote.kickUser.toServer(this.connectorMap[uid],uid,null)
 	}
 	self.areaMap[areaId].userLogin(uid,cid,function(playerInfo) {

@@ -5,9 +5,11 @@ var logHandler = function(app) {
 };
 //接收日志
 logHandler.prototype.addLogs = function(msg, session, next) {
+  var accId = session.get("accId")
   var uid = session.uid
   var areaId = session.get("areaId")
   var info = {
+    accId : accId,
     uid : uid,
     areaId : areaId,
     message : msg.message,

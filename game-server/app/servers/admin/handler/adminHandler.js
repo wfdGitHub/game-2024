@@ -5,8 +5,8 @@ var adminHanlder = function(app) {
 }
 //激活管理员模式
 adminHanlder.prototype.activatePrivileges = function(msg, session, next) {
-	var uid = session.uid
-	this.accountDao.getAccountData({uid : uid,name : "limit"},function(flag,limit) {
+	var accId = session.get("accId")
+	this.accountDao.getAccountData({accId : accId,name : "limit"},function(flag,limit) {
 		limit = parseInt(limit)
 		if(limit >= 10){
 			session.set("limit",limit)
