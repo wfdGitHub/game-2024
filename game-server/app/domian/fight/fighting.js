@@ -157,7 +157,7 @@ fighting.prototype.getResult = function() {
 	})
 	var verify = {
 		result : info.result,
-		listLen : info.recordList.length,
+		recordList : info.recordList,
 		seededNum : info.seededNum,
 		time : info.time,
 		character : {}
