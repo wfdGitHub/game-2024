@@ -72,7 +72,7 @@ module.exports = function() {
 		    	}
 		    }else{
 		    	console.log(otps.verify,result.verify)
-		    	cb(false,"verify fail")
+		    	cb(false,result.verify)
 		    }
 		})
 	}
