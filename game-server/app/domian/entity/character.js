@@ -370,7 +370,7 @@ character.prototype.reduceHp = function(attacker,value) {
 		this.died = true
 		this.afterDied(attacker);
 		//判断复活
-		if(this.reviveRate > this.fighting.seeded.random()){
+		if(this.reviveRate > this.fighting.seeded.random("判断复活")){
 			this.revive()
 		}
 	}

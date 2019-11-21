@@ -61,37 +61,46 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.characterArr.forEach(function(character) {
 		for(var skillId in character.fightSkills){
 			if(character.fightSkills[skillId].defaultSkill){
-				character.fightSkills[skillId].updateCD(parseInt(self.seeded.random() * 1000))
+				character.fightSkills[skillId].updateCD(parseInt(self.seeded.random("普攻延时") * 1000))
 			}else{
-				character.fightSkills[skillId].updateCD(parseInt(self.seeded.random() * 1000))
+				character.fightSkills[skillId].updateCD(parseInt(self.seeded.random("技能延时") * 1000))
 			}
 		}
 	})
 }
 //时间推进
 fighting.prototype.update = function() {
-	if(this.over){
+	if(this.over)
 		return
-	}
 	//检测读取记录
-	if(this.readList.length && this.readList[0].t == this.curTime){
-		var record = this.readList.shift()
-		this.characterArr[record.c].fightSkills[record.s].use()
+	for(var i = 0;i < this.readList.length;i++){
+		if(this.readList[i].t <= this.curTime){
+			let record = this.readList[i]
+			this.characterArr[record.c].fightSkills[record.s].use()
+		}else{
+			this.readList = this.readList.slice(i,this.readList.length)
+			break
+		}
 	}
     //检测使用技能
     if(this.skillList.length){
-    	var skill = this.skillList.shift()
-    	var record = {
-    		t : this.curTime,
-    		c : skill.character.nodeId,
-    		s : skill.skillId
+    	this.skillList.sort(function(a,b) {
+    		return a.character.nodeId > b.character.nodeId || (a.character.nodeId == b.character.nodeId && a.skillId > b.skillId) ? -1 : 1
+    	})
+    	for(var i = 0;i < this.skillList.length;i++){
+	    	if(!this.skillList[i].character.died){
+		        if(this.auto || this.skillList[i].character.characterType != "mob"){
+			    	var record = {
+			    		t : this.curTime,
+			    		c : this.skillList[i].character.nodeId,
+			    		s : this.skillList[i].skillId
+			    	}	        	
+		    		this.recordList.push(record)
+		    	}
+	    		this.skillList[i].useSkill()
+	    	}
     	}
-    	if(this.auto || skill.character.characterType != "mob"){
-    		this.recordList.push(record)
-    	}
-    	if(!skill.character.died){
-    		skill.useSkill()
-    	}
+    	this.skillList = []
     }else{
 		this.curTime += this.stepper
 	    var self = this

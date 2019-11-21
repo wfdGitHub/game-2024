@@ -86,6 +86,7 @@ attackSkill.prototype.use = function() {
 	return true
 }
 attackSkill.prototype.useSkill = function() {
+	// console.log(this.character.fighting.curTime + " " + this.character.name + " 使用 "+this.name)
 	if(this.angerSkill){
 		this.character.resetAngerSkill()
 	}else{
@@ -111,7 +112,7 @@ attackSkill.prototype.useHurtSkill = function() {
 		this.character.event.emit("useSkill",this,result)
 		var doubleFlag = false
 		//判断连击
-		if(self.character.doubleHitRate && self.character.doubleHitRate < self.character.fighting.seeded.random()){
+		if(self.character.doubleHitRate && self.character.doubleHitRate < self.character.fighting.seeded.random("判断连击")){
 			doubleFlag = true
 		}
 		targets.forEach(function(target) {

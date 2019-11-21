@@ -6,18 +6,18 @@ formula.calDamage = function(attacker, target, skill) {
 	var damageInfo = {damage : 0,skill : skill}
 	//命中判断
 	var hitRate = 	0.3 + 0.55 * (attacker.getTotalAtt("hitRate") / (K * target.getTotalAtt("dodgeRate") || 1))
-	if(attacker.fighting.seeded.random()  > hitRate){
+	if(attacker.fighting.seeded.random("命中判断")  > hitRate){
 		damageInfo.miss = true
 		return damageInfo
 	}
 	//暴击判断
 	var crit = 0.1 * ((attacker.getTotalAtt("crit")) / (K * target.getTotalAtt("critDef") || 1))
-	if(attacker.fighting.seeded.random()  < crit){
+	if(attacker.fighting.seeded.random("暴击判断")  < crit){
 		damageInfo.crit = true
 	}
 	//格挡判断
 	var block = 0.1 *  (K * target.getTotalAtt("block") / (attacker.getTotalAtt("wreck") || 1))
-	if(attacker.fighting.seeded.random()  < block){
+	if(attacker.fighting.seeded.random("格挡判断")  < block){
 		damageInfo.block = true
 	}
 	//伤害计算
@@ -99,7 +99,7 @@ formula.getTargetNormal = function(attacker,team) {
             }
         })
         if(list.length > 0){
-            target = list[parseInt(attacker.fighting.seeded.random() * list.length)]
+            target = list[parseInt(attacker.fighting.seeded.random("混乱选择目标") * list.length)]
         }
         return [target]
     }
@@ -117,7 +117,7 @@ formula.getTargetNormal = function(attacker,team) {
 		allRand += rand
 		arr.push(rand)
 	}
-	var rand = attacker.fighting.seeded.random() * allRand
+	var rand = attacker.fighting.seeded.random("选择目标") * allRand
 	var curRand = 0
 	for(var i = 0;i < arr.length;i++){
 		if(rand > curRand && rand <= arr[i] + curRand){

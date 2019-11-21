@@ -27,7 +27,7 @@ buffFactory.checkBuffRate = function(attacker,target,otps) {
 	}
 	tmpRate = attacker.getTotalAtt(buffId+"Atk") - target.getTotalAtt(buffId+"Def")
 	buffRate = buffRate * (tmpRate + 1)
-	if(attacker.fighting.seeded.random() < buffRate){
+	if(attacker.fighting.seeded.random("判断BUFF命中率") < buffRate){
 		return true
 	}else{
 		return false
