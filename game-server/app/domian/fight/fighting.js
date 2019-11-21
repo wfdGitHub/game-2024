@@ -155,11 +155,17 @@ fighting.prototype.getResult = function() {
 	this.defTeam.forEach(function(character) {
 		info.defTeam.push(character.baseOtps)
 	})
-	var verify = ""+info.result+"length"+info.recordList.length+"seededNum"+info.seededNum+"time"+info.time+"character"
+	var verify = {
+		result : info.result,
+		listLen : info.recordList.length,
+		seededNum : info.seededNum,
+		time : info.time,
+		character : {}
+	}
 	this.characterArr.forEach(function(character) {
-		verify += "/"+character.characterId+character.hp+"/"+character.maxHP
+		verify.character[character.characterId] = character.getInfo()
 	})
-	info.verify = verify
+	info.verify = JSON.stringify(verify)
 	return info
 }
 module.exports = fighting
