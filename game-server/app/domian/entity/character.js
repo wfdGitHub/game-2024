@@ -241,7 +241,6 @@ character.prototype.getSimpleInfo = function() {
 character.prototype.getInfo = function() {
 	var info = {
 		level : this.level,
-		name : this.name,
 		str : this.str,
 		agi : this.agi,
 		vit : this.vit,
