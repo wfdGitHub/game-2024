@@ -123,7 +123,7 @@ module.exports = function() {
 		    	}
 		    }else{
 		    	console.error(otps.verify,result.verify)
-		    	cb(false,"verify fail")
+		    	cb(false,result.verify)
 		    }
 		})
 	}

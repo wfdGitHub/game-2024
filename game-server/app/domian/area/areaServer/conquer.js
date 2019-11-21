@@ -87,7 +87,7 @@ module.exports = function() {
 				cb(true,info)
 			}else{
 		    	console.error(otps.verify,result.verify)
-		    	cb(false,"verify fail")
+		    	cb(false,result.verify)
 		    }
 		})
 	}
