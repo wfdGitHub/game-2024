@@ -1,6 +1,6 @@
 var seeded = require("./seeded.js")
 var golbal_skill = require("../../../config/gameCfg/golbal_skill.json")
-var actionCD = 800
+var actionCD = 1000
 var fighting = function(atkTeam,defTeam,otps) {
 	var self = this
 	this.curTime = 0
