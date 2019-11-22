@@ -1,6 +1,8 @@
 var seeded = require("./seeded.js")
 var golbal_skill = require("../../../config/gameCfg/golbal_skill.json")
+var actionCD = 800
 var fighting = function(atkTeam,defTeam,otps) {
+	var self = this
 	this.curTime = 0
 	this.atkTeam = atkTeam
 	this.defTeam = defTeam
@@ -9,7 +11,8 @@ var fighting = function(atkTeam,defTeam,otps) {
 	this.auto = otps.auto || false
     this.nodeCount = 0
     this.characterArr = this.atkTeam.concat(this.defTeam)
-	var self = this
+    this.actionList = []
+    this.actionTime = 0
 	this.characterArr.forEach(function(character) {
 		character.nodeId = self.nodeCount++
 	})
@@ -59,13 +62,7 @@ var fighting = function(atkTeam,defTeam,otps) {
 		}
 	}
 	this.characterArr.forEach(function(character) {
-		for(var skillId in character.fightSkills){
-			if(character.fightSkills[skillId].defaultSkill){
-				character.fightSkills[skillId].updateCD(parseInt(self.seeded.random("普攻延时") * 1000))
-			}else{
-				character.fightSkills[skillId].updateCD(parseInt(self.seeded.random("技能延时") * 1000))
-			}
-		}
+        self.actionList.push(character)
 	})
 }
 //时间推进
@@ -102,14 +99,20 @@ fighting.prototype.update = function() {
     	}
     	this.skillList = []
     }else{
-		this.curTime += this.stepper
-	    var self = this
+	    this.curTime += this.stepper
+	    this.actionTime += this.stepper
+	    if(this.actionTime >= actionCD){
+	        var character = this.actionList.shift()
+	        character.useDefaultSkill()
+	        this.actionList.push(character)
+	        this.actionTime = 0
+	    }
 	    //更新
-	    this.characterArr.forEach(function(character,index) {
-	        if(!character.died){
-	        	character.update(self.stepper)
+	    for(var i = 0;i < this.characterArr.length;i++){
+	        if(!this.characterArr[i].died){
+	            this.characterArr[i].update(this.stepper)
 	        }
-	    })
+        }
     }
 	this.checkOver()
 }

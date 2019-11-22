@@ -286,6 +286,7 @@ character.prototype.addFightSkill = function(skill) {
 			skill.skillCD = angre_skillCD
 			this.angerSkills[skill.skillId] = skill
 		}
+		skill.updateCD()
 	}
 }
 //减少怒气技能CD
@@ -310,7 +311,7 @@ character.prototype.resetAngerSkill = function() {
 character.prototype.setDefaultSkill = function(skill) {
     if(skill){
     	skill.defaultSkill = true
-    	this.fightSkills[skill.skillId] = skill
+    	// this.fightSkills[skill.skillId] = skill
         this.defaultSkill = skill
     }
 }
@@ -419,12 +420,13 @@ character.prototype.update = function(stepper) {
 			this.fightSkills[skillId].updateTime(stepper)
 		}
 	}
-	//判断普攻
-	if(!this.dizzy && !this.frozen && !this.blackArt){
-		if(this.defaultSkill && this.defaultSkill.state){
-			this.defaultSkill.useSkill()
-		}
-	}
+}
+//使用默认技能
+character.prototype.useDefaultSkill = function() {
+    if(!this.dizzy && !this.frozen && !this.blackArt){
+        if(this.defaultSkill){
+            this.defaultSkill.useSkill()
+        }
 }
 //是否不可使用技能
 character.prototype.banUse = function() {
