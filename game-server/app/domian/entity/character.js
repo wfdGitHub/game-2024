@@ -427,6 +427,7 @@ character.prototype.useDefaultSkill = function() {
         if(this.defaultSkill){
             this.defaultSkill.useSkill()
         }
+    }
 }
 //是否不可使用技能
 character.prototype.banUse = function() {
