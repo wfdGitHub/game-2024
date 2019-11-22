@@ -108,8 +108,7 @@ attackSkill.prototype.useHurtSkill = function() {
 		// this.character.event.emit("useSkill",this,result)
 	}else{
 		var self = this
-		result = {state: false,targets : targets};
-		this.character.event.emit("useSkill",this,result)
+		result = {state: false,targets : []};
 		var doubleFlag = false
 		//判断连击
 		if(self.character.doubleHitRate && self.character.doubleHitRate < self.character.fighting.seeded.random("判断连击")){
@@ -149,7 +148,9 @@ attackSkill.prototype.useHurtSkill = function() {
 	                target.addBuff(self.character,buffotps)
             	}
             }
+            result.targets.push({character : target,damageInfo : damageInfo})
 		})
+		this.character.event.emit("useSkill",this,result)
 	}
 }
 //恢复技能
