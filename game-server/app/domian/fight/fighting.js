@@ -98,20 +98,19 @@ fighting.prototype.update = function() {
 	    	}
     	}
     	this.skillList = []
-    }else{
-	    this.curTime += this.stepper
-	    this.actionTime += this.stepper
-	    if(this.actionTime >= actionCD){
-	        var character = this.actionList.shift()
-	        character.useDefaultSkill()
-	        this.actionList.push(character)
-	        this.actionTime = 0
-	    }
-	    //更新
-	    for(var i = 0;i < this.characterArr.length;i++){
-	        if(!this.characterArr[i].died){
-	            this.characterArr[i].update(this.stepper)
-	        }
+    }
+    this.curTime += this.stepper
+    this.actionTime += this.stepper
+    if(this.actionTime >= actionCD){
+        var character = this.actionList.shift()
+        character.useDefaultSkill()
+        this.actionList.push(character)
+        this.actionTime = 0
+    }
+    //更新
+    for(var i = 0;i < this.characterArr.length;i++){
+        if(!this.characterArr[i].died){
+            this.characterArr[i].update(this.stepper)
         }
     }
 	this.checkOver()
