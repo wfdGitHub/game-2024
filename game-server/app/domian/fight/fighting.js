@@ -101,12 +101,10 @@ fighting.prototype.update = function() {
     }
     this.curTime += this.stepper
     this.actionTime += this.stepper
-    if(this.actionTime >= actionCD){
-        var character = this.actionList.shift()
-        character.useDefaultSkill()
-        this.actionList.push(character)
-        this.actionTime = 0
-    }
+	if(this.actionTime >= actionCD){
+		this.nextAction()
+		this.actionTime = 0
+	}
     //更新
     for(var i = 0;i < this.characterArr.length;i++){
         if(!this.characterArr[i].died){
@@ -114,6 +112,16 @@ fighting.prototype.update = function() {
         }
     }
 	this.checkOver()
+}
+//下一单位进行普通攻击
+fighting.prototype.nextAction = function() {
+	var character = this.actionList.shift()
+	if(!character.died){
+		this.actionList.push(character)
+		character.useDefaultSkill()
+	}else if(this.actionList.length){
+		this.nextAction()
+	}
 }
 //结束标识
 fighting.prototype.checkOver = function() {
