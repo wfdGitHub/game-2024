@@ -24,7 +24,7 @@ var model = function(otps) {
 	this.dodgeRate = otps["dodgeRate"] || 0		//闪避率
 	this.amplify = otps["amplify"] || 0			//伤害加深
 	this.reduction = otps["reduction"] || 0		//伤害减免
-	this.healRate = otps["healRate"] || 0		//治疗几率
+	this.healRate = otps["healRate"] || 0		//治疗暴击几率
 	this.healAdd = otps["healAdd"] || 0			//被治疗加成
 	this.maxAnger = 4							//最大怒气值
 	this.curAnger = otps["curAnger"] || 0		//当前怒气值
@@ -54,6 +54,7 @@ model.prototype.onHit = function(attacker,info,source) {
 }
 //受到治疗
 model.prototype.onHeal = function(attacker,info,source) {
+	info.value = Math.floor(info.value * (1 + this.healAdd / 10000))
 	info.realValue = this.addHP(info.value)
 	return info
 }

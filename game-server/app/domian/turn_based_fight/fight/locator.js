@@ -44,6 +44,30 @@ model.prototype.getTargets = function(character,skill) {
 		case "enemy_minHP":
 			//敌方生命最少单位
 			return	this.getEnemyMinHP(character)
+		case "team_1":
+			//己方随机1个目标
+			return	this.getTeamRandom(character,1)
+		case "team_2":
+			//己方随机2个目标
+			return	this.getTeamRandom(character,2)
+		case "team_3":
+			//己方随机3个目标
+			return	this.getTeamRandom(character,3)
+		case "team_4":
+			//己方随机4个目标
+			return	this.getTeamRandom(character,4)
+		case "team_5":
+			//己方随机5个目标
+			return	this.getTeamRandom(character,5)
+		case "team_all":
+			//己方全体
+			return	this.getTeamAll(character)
+		case "team_horizontal_front":
+			//己方前排
+			return	this.getTeamHorizontalFront(character)
+		case "team_horizontal_front":
+			//己方后排
+			return	this.getTeamHorizontalBack(character)
 		default :
 			console.error("targetType error ",skill.targetType)
 			return []
@@ -225,5 +249,72 @@ model.prototype.getEnemyMinHP = function(character) {
         return [character.enemy[minIndex]]
     }
 }
-
+//敌方随机N个单位
+model.prototype.getTeamRandom = function(character,count) {
+    var list = []
+    character.team.forEach(function(target,index) {
+        if(!target.died){
+        	list.push(index)
+        }
+    })
+    if(list.length === 0){
+        return list
+    }else{
+    	for(var i = 0;i < list.length;i++){
+    		var index = Math.floor(this.seededNum.random("排序") * list.length)
+    		var tmp = list[i]
+    		list[i] = list[index]
+    		list[index] = tmp
+    	}
+    	var tmpTeam = []
+    	for(var i = 0; i < count && i < list.length;i++){
+    		tmpTeam.push(character.team[list[i]])
+    	}
+        return tmpTeam
+    }
+}
+//己方前排
+model.prototype.getTeamHorizontalFront = function(character) {
+	var list = []
+	for(var i = 0;i < 3;i++){
+        if(!character.team[i].died){
+        	list.push(character.team[i])
+        }
+	}
+	if(!list.length){
+		for(var i = 3;i < 6;i++){
+	        if(!character.team[i].died){
+	        	list.push(character.team[i])
+	        }
+		}
+	}
+	return list
+}
+//己方后排
+model.prototype.getTeamHorizontalBack = function(character) {
+	var list = []
+	for(var i = 3;i < 6;i++){
+        if(!character.team[i].died){
+        	list.push(character.team[i])
+        }
+	}
+	if(!list.length){
+		for(var i = 0;i < 3;i++){
+	        if(!character.team[i].died){
+	        	list.push(character.team[i])
+	        }
+		}
+	}
+	return list
+}
+//己方全体
+model.prototype.getTeamAll = function(character) {
+    var list = []
+    character.team.forEach(function(target,index) {
+        if(!target.died){
+        	list.push(target)
+        }
+    })
+    return list
+}
 module.exports = model

@@ -1,4 +1,5 @@
 var attackSkill = require("./attackSkill.js")
+var healSkill = require("./healSkill.js")
 var model = function() {}
 model.init = function(locator,formula) {
 	this.locator = locator
@@ -10,7 +11,7 @@ model.createSkill = function(otps,character) {
 		case "attack":
 			return new attackSkill(otps,character)
 		case "heal":
-			return false
+			return new healSkill(otps,character)
 		default:
 			return false
 	}
@@ -20,15 +21,16 @@ model.useSkill = function(skill) {
 	switch(skill.type){
 		case "attack":
 			this.useAttackSkill(skill)
+		break
 		case "heal":
-			return false
+			this.useHealSkill(skill)
+		break
 		default:
 			return false
 	}
 }
 //伤害技能
 model.useAttackSkill = function(skill) {
-	//获取目标
 	var targets = this.locator.getTargets(skill.character,skill)
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died){
@@ -56,6 +58,21 @@ model.useAttackSkill = function(skill) {
 }
 //恢复技能
 model.useHealSkill = function(skill) {
-
+	var targets = this.locator.getTargets(skill.character,skill)
+	for(var i = 0;i < targets.length;i++){
+		if(skill.character.died){
+			break
+		}
+		let target = targets[i]
+		let info = this.formula.calHeal(skill.character, target, skill)
+		info = target.onHeal(skill.character,info,skill)
+		var str = skill.character.camp+skill.character.index+"使用"+skill.name+"治疗"+target.camp+target.index
+		str += "  恢复"+ info.value+"点血量"
+		if(info.crit){
+			str +="(暴击)"
+		}
+		str += "   剩余"+target.hp+"/"+target.maxHP
+		console.log(str)
+	}
 }
 module.exports = model
