@@ -1,0 +1,27 @@
+var fightingFun = require("./fight/fighting.js")
+var character = require("./entity/character.js")
+
+var atkTeam = []
+for(var i = 0;i < 1;i++){
+	let info = {
+		"maxHP" : Math.ceil(Math.random() * 1000),
+		"atk" : Math.ceil(Math.random() * 300),
+		"phyDef" : Math.ceil(Math.random() * 50),
+		"magDef" : Math.ceil(Math.random() * 1000),
+		"defaultSkill" : {type : "atk",name : "普攻",damageType : "phy"}
+	}
+	atkTeam.push(new character(info))
+}
+var defTeam = []
+for(var i = 0;i < 1;i++){
+	let info = {
+		"maxHP" : Math.ceil(Math.random() * 1000),
+		"atk" : Math.ceil(Math.random() * 300),
+		"phyDef" : Math.ceil(Math.random() * 50),
+		"magDef" : Math.ceil(Math.random() * 1000),
+		"defaultSkill" : {type : "heal",name : "治疗",healType : "mag"}
+	}
+	defTeam.push(new character(info))
+}
+var fighting = new fightingFun(atkTeam,defTeam,{seededNum : 1000})
+fighting.nextRound()
