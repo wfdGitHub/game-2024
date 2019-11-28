@@ -30,6 +30,8 @@ var model = function(otps) {
 	this.curAnger = otps["curAnger"] || 0		//当前怒气值
 	//=========状态=======//
 	this.died = false			//死亡状态
+	if(!this.maxHP || !this.hp)
+		this.died = true
 	//=========技能=======//
 	if(otps.defaultSkill)
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
@@ -81,7 +83,7 @@ model.prototype.addHP = function(value) {
 //扣除血量
 model.prototype.lessHP = function(value) {
 	var realValue = value
-	if((this.hp - value) < 0){
+	if((this.hp - value) <= 0){
 		realValue = this.hp
 		this.onDie()
 	}else{

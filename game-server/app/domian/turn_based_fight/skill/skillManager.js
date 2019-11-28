@@ -7,7 +7,7 @@ model.init = function(locator,formula) {
 //创建技能
 model.createSkill = function(otps,character) {
 	switch(otps.type){
-		case "atk":
+		case "attack":
 			return new attackSkill(otps,character)
 		case "heal":
 			return false
@@ -17,12 +17,23 @@ model.createSkill = function(otps,character) {
 }
 //使用技能
 model.useSkill = function(skill) {
+	switch(skill.type){
+		case "attack":
+			this.useAttackSkill(skill)
+		case "heal":
+			return false
+		default:
+			return false
+	}
+}
+//伤害技能
+model.useAttackSkill = function(skill) {
 	//获取目标
 	var targets = this.locator.getTargets(skill.character,skill)
-	if(!targets){
-		console.log(111)
-	}
 	for(var i = 0;i < targets.length;i++){
+		if(skill.character.died){
+			break
+		}
 		let target = targets[i]
 		//判断命中率
 		let info = this.formula.calDamage(skill.character, target, skill)
@@ -43,5 +54,8 @@ model.useSkill = function(skill) {
 		console.log(str)
 	}
 }
-// model.prototype.use
+//恢复技能
+model.useHealSkill = function(skill) {
+
+}
 module.exports = model

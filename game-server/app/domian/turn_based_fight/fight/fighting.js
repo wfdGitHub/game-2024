@@ -5,6 +5,7 @@ var formula = require("./formula.js")
 var skillManager = require("../skill/skillManager.js")
 var character = require("../entity/character.js")
 var maxRound = 20				//最大回合
+var teamLength = 6				//阵容人数
 var model = function(atkTeam,defTeam,otps) {
 	this.load(atkTeam,defTeam,otps)
 	this.seededNum = otps.seededNum || (new Date()).getTime()
@@ -31,18 +32,18 @@ var model = function(atkTeam,defTeam,otps) {
 //初始配置
 model.prototype.load = function(atkTeam,defTeam,otps) {
 	this.allCharacter = []
-	for(var i = 0;i < atkTeam.length;i++){
+	for(var i = 0;i < teamLength;i++){
 		if(!atkTeam[i])
-			atkTeam[i] = new character()
+			atkTeam[i] = new character({})
 		this.allCharacter.push(atkTeam[i])
 		atkTeam[i].camp = "atk"
 		atkTeam[i].index = i
 		atkTeam[i].team = atkTeam
 		atkTeam[i].enemy = defTeam
 	}
-	for(var i = 0;i < defTeam.length;i++){
+	for(var i = 0;i < teamLength;i++){
 		if(!defTeam[i])
-			defTeam[i] = new character()
+			defTeam[i] = new character({})
 		this.allCharacter.push(defTeam[i])
 		defTeam[i].camp = "def"
 		defTeam[i].index = i

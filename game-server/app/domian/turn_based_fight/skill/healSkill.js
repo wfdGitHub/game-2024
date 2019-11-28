@@ -1,6 +1,6 @@
 //主动治疗技能
 var model = function(otps,character) {
-	this.type = "healSkill"
+	this.type = "heal"
 	this.character = character
 	this.skillId = otps.skillId						//技能ID
 	this.name = otps.name							//技能名称
