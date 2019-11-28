@@ -157,7 +157,7 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
     var self = this
     self.playerDao.getUidByAreaId({accId : accId,areaId : areaId},function(flag,uid) {
     	if(!flag){
-    		cb(false,"未注册角色")
+    		next(null,{flag : false,err : "未注册角色"})
     		return
     	}
 		//检查重复登录
@@ -179,23 +179,27 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 		        session.push("serverId")
 				session.set("nickname",playerInfo.name)
 				session.push("nickname")
+				session.set("beginTime",Date.now())
+				session.push("beginTime")
 		        next(null,{flag : true,msg : playerInfo})
 			}else{
 				next(null,{flag : false,msg : "未注册角色"})
 			}
 		})
     })
-
 }
-var onUserLeave = function(session,a,b,c) {
+var onUserLeave = function(session) {
 	var uid = session.uid
-	console.log("onUserLeave : "+uid + "  "+this.app.serverId,a,b,c)
+	console.log("onUserLeave : "+uid + "  "+this.app.serverId)
 	if(uid){
 		session.unbind(uid)
+		var accId = session.get("accId")
+		var beginTime = session.get("beginTime")
 		var serverId = session.get("serverId")
-		if(serverId){
+		if(accId)
+			this.accountDao.updatePlaytime({accId : accId,beginTime : beginTime})
+		if(serverId)
 			this.app.rpc.area.areaRemote.userLeave.toServer(serverId,uid,this.app.serverId,null)
-		}
 		this.app.rpc.chat.chatRemote.userLeave(null,uid,this.app.serverId,null)
 	}
 }
@@ -210,6 +214,9 @@ module.exports = function(app) {
 	props : [{
 		name : "playerDao",
 		ref : "playerDao"
-	}]
+	},{
+      name : "accountDao",
+      ref : "accountDao"
+    }]
   })
 };

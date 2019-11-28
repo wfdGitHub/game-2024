@@ -29,7 +29,7 @@ module.exports = function() {
 				cb(false,"已进入副本")
 				return
 			}
-			var dayStr = (new Date).toLocaleDateString()
+			var dayStr = (new Date()).toLocaleDateString()
 			//判断是否今日首次
 			self.getObj(uid,"fb",type+":lastDay",function(data) {
 				if(dayStr != data){
@@ -129,7 +129,7 @@ module.exports = function() {
 	}
 	//获取副本数据
 	this.getFBInfo = function(uid,cb) {
-		var dayStr = (new Date).toLocaleDateString()
+		var dayStr = (new Date()).toLocaleDateString()
 		self.getObjAll(uid,"fb",function(data) {
 			if(!data){
 				data = {}

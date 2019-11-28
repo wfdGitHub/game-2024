@@ -8,7 +8,10 @@ accountDao.prototype.createAccount = function(otps,cb) {
 	var userInfo = {
 		unionid : otps.unionid,
 		head : otps.head || 0,
-		nickname : otps.nickname || 0
+		nickname : otps.nickname || 0,
+		playTime : 0,
+		dayTime : 0,
+		dayStr : (new Date()).toLocaleDateString()
 	}
 	var self = this
 	self.redisDao.db.incrby("acc:lastid",1,function(err,accId) {
@@ -23,6 +26,23 @@ accountDao.prototype.createAccount = function(otps,cb) {
 		}
 	})
 }
+accountDao.prototype.updatePlaytime = function(otps) {
+	var accId = otps.accId
+	var beginTime = otps.beginTime
+	var beginStr = (new Date(beginTime)).toLocaleDateString()
+	var endTime = Date.now()
+	var endStr = (new Date(endTime)).toLocaleDateString()
+	var playTime = endTime - beginTime
+	this.incrbyAccountData({accId : otps.accId,name : "playTime",value : playTime})
+	if(beginStr == endStr){
+		//不跨天累计时间
+		this.incrbyAccountData({accId : otps.accId,name : "dayTime",value : playTime})
+	}else{
+		//跨天只取今日时间
+		playTime = endTime - new Date(endStr).getTime()
+		this.setAccountData({accId : otps.accId,name : "dayTime",value : playTime})
+	}
+}
 //获取账号信息
 accountDao.prototype.getAccountInfo = function(otps,cb) {
 	var unionid = otps.unionid
@@ -35,6 +55,12 @@ accountDao.prototype.getAccountInfo = function(otps,cb) {
 				if(err || !userInfo){
 					cb(false)
 				}else{
+					var curDayStr = (new Date()).toDateString()
+					if(userInfo.dayStr !== curDayStr){
+						userInfo.dayStr = curDayStr
+						userInfo.dayTime = 0
+						self.redisDao.db.hmset("acc:user:"+userInfo.accId+":base",{"dayStr" : curDayStr,"dayTime" : 0})
+					}
 					cb(true,userInfo)
 				}
 			})
@@ -59,6 +85,21 @@ accountDao.prototype.setAccountData = function(otps,cb) {
 	var name = otps.name
 	var value = otps.value
 	this.redisDao.db.hset("acc:user:"+accId+":base",name,value,function(err,data) {
+		if(err || !data){
+			if(cb)
+				cb(false)
+		}else{
+			if(cb)
+				cb(true,data)
+		}
+	})
+}
+//设置账号属性
+accountDao.prototype.incrbyAccountData = function(otps,cb) {
+	var accId = otps.accId
+	var name = otps.name
+	var value = otps.value
+	this.redisDao.db.hincrby("acc:user:"+accId+":base",name,value,function(err,data) {
 		if(err || !data){
 			if(cb)
 				cb(false)

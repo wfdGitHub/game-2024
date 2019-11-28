@@ -7,7 +7,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		name : otps.name,
 		sex : otps.sex === 1? 1 : 2,
 		petAmount : 1,
-		dayStr : (new Date).toLocaleDateString()
+		dayStr : (new Date()).toLocaleDateString()
 	}
 	var self = this
 	self.redisDao.db.incrby("user:lastid",1,function(err,uid) {
