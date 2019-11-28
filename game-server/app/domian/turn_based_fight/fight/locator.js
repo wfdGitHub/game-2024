@@ -65,9 +65,24 @@ model.prototype.getTargets = function(character,skill) {
 		case "team_horizontal_front":
 			//己方前排
 			return	this.getTeamHorizontalFront(character)
-		case "team_horizontal_front":
+		case "team_horizontal_back":
 			//己方后排
 			return	this.getTeamHorizontalBack(character)
+		case "team_minHp_1":
+			//获取友方生命值最少的1个单位
+			return this.getTeamRandomMinHp(character,1)
+		case "team_minHp_2":
+			//获取友方生命值最少的2个单位
+			return this.getTeamRandomMinHp(character,2)
+		case "team_minHp_3":
+			//获取友方生命值最少的3个单位
+			return this.getTeamRandomMinHp(character,3)
+		case "team_minHp_4":
+			//获取友方生命值最少的4个单位
+			return this.getTeamRandomMinHp(character,4)
+		case "team_minHp_5":
+			//获取友方生命值最少的5个单位
+			return this.getTeamRandomMinHp(character,5)
 		default :
 			console.error("targetType error ",skill.targetType)
 			return []
@@ -249,7 +264,7 @@ model.prototype.getEnemyMinHP = function(character) {
         return [character.enemy[minIndex]]
     }
 }
-//敌方随机N个单位
+//己方随机N个单位
 model.prototype.getTeamRandom = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
@@ -316,5 +331,18 @@ model.prototype.getTeamAll = function(character) {
         }
     })
     return list
+}
+//己方生命最少的n个单位
+model.prototype.getTeamRandomMinHp = function(character,count) {
+    var list = []
+    character.team.forEach(function(target,index) {
+        if(!target.died){
+        	list.push(target)
+        }
+    })
+    list.sort(function(a,b) {
+    	return a.hp > b.hp ? 1 : -1
+    })
+    return list.slice(0,count)
 }
 module.exports = model
