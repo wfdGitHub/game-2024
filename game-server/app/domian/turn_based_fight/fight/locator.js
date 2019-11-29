@@ -3,8 +3,8 @@ var model = function(seededNum) {
 	this.seededNum = seededNum
 }
 //获取目标
-model.prototype.getTargets = function(character,skill) {
-	switch(skill.targetType){
+model.prototype.getTargets = function(character,targetType) {
+	switch(targetType){
 		case "enemy_normal":
 			//默认敌人前排单体
 			return this.getTargetNormal(character)
@@ -83,8 +83,11 @@ model.prototype.getTargets = function(character,skill) {
 		case "team_minHp_5":
 			//获取友方生命值最少的5个单位
 			return this.getTeamRandomMinHp(character,5)
+		case "team_self":
+			//选择自己
+			return [character]
 		default :
-			console.error("targetType error ",skill.targetType)
+			console.error("targetType error ",targetType)
 			return []
 	}
 }

@@ -1,4 +1,5 @@
 var skillManager = require("../skill/skillManager.js")
+var fightRecord = require("../fight/fightRecord.js")
 var model = function(otps) {
 	//=========身份===========//
 	this.name = otps.name		//角色名称
@@ -46,12 +47,28 @@ model.prototype.onHit = function(attacker,info,source) {
 		info.realValue = 0
 		return info
 	}
-	info.realValue = this.lessHP(info.value)
-	info.curValue = this.hp
-	if(this.died){
-		info.kill = true
-		attacker.kill(this)
+	var str = attacker.camp+attacker.index+"使用\033[36m"+source.name+"\033[0m攻击"+this.camp+this.index
+	if(info.miss){
+		str += "  被闪避"
+		info.realValue = 0
+	}else{
+		info.realValue = this.lessHP(info.value)
+		info.curValue = this.hp
+		str += "  \033[36m造成"+ info.realValue+"点伤害"
+		if(info.crit){
+			str +="(暴击)"
+		}
+		str += "   剩余"+this.hp+"/"+this.maxHP
+		if(info.kill){
+			str += "  击杀目标!"
+		}
+		str += "\033[0m"
+		if(this.died){
+			info.kill = true
+			attacker.kill(this)
+		}
 	}
+	console.log(str)
 	return info
 }
 //受到治疗
@@ -59,6 +76,13 @@ model.prototype.onHeal = function(attacker,info,source) {
 	info.value = Math.floor(info.value * (1 + this.healAdd / 10000))
 	info.realValue = this.addHP(info.value)
 	info.curValue = this.hp
+	var str = attacker.camp+attacker.index+"使用\033[32m"+source.name+"\033[0m"+"治疗"+this.camp+this.index
+	str += " \033[32m 恢复"+ info.realValue+"点血量 "
+	if(info.crit){
+		str +="(暴击)"
+	}
+	str += "   剩余"+this.hp+"/"+this.maxHP+"\033[0m"
+	console.log(str)
 	return info
 }
 //角色死亡
@@ -105,6 +129,8 @@ model.prototype.addAnger = function(value) {
 		this.curAnger += value
 	}
 	// console.log(this.name + "addAnger" , value,realValue,"curAnger : ",this.curAnger+"/"+this.maxAnger)
+	if(realValue)
+		fightRecord.push({type : "addAnger",realValue : realValue,curAnger : this.curAnger,id : this.id})
 	return realValue
 }
 //减少怒气
@@ -115,6 +141,8 @@ model.prototype.lessAnger = function(value) {
 	}else{
 		this.curAnger -= value
 	}
+	if(realValue)
+		fightRecord.push({type : "lessAnger",realValue : realValue,curAnger : this.curAnger,id : this.id})
 	return realValue
 }
 //获取属性

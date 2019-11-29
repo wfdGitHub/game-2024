@@ -1,10 +1,12 @@
 var attackSkill = require("./attackSkill.js")
 var healSkill = require("./healSkill.js")
+var fightRecord = require("../fight/fightRecord.js")
 var model = function() {}
 model.init = function(locator,formula) {
 	this.locator = locator
 	this.formula = formula
 }
+var defaultHeal = {}
 //创建技能
 model.createSkill = function(otps,character) {
 	switch(otps.type){
@@ -31,8 +33,9 @@ model.useSkill = function(skill) {
 }
 //伤害技能
 model.useAttackSkill = function(skill) {
-	var recordInfo = {type : "attack",targets : []}
-	var targets = this.locator.getTargets(skill.character,skill)
+	var recordInfo = {type : "attack",targets : [],skillId : skill.skillId}
+	var targets = this.locator.getTargets(skill.character,skill.targetType)
+	var allDamage = 0
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died){
 			break
@@ -40,46 +43,53 @@ model.useAttackSkill = function(skill) {
 		let target = targets[i]
 		//判断命中率
 		let info = this.formula.calDamage(skill.character, target, skill)
-		var str = skill.character.camp+skill.character.index+"使用\033[36m"+skill.name+"\033[0m攻击"+target.camp+target.index
-		if(!info.miss){
-			info = target.onHit(skill.character,info,skill)
-			str += "  \033[36m造成"+ info.value+"点伤害"
-			if(info.crit){
-				str +="(暴击)"
-			}
-			str += "   剩余"+target.hp+"/"+target.maxHP
-			if(info.kill){
-				str += "  击杀目标!"
-			}
-			str += "\033[0m"
-		}else{
-			str += "  被闪避"
-		}
-		console.log(str)
+		info = target.onHit(skill.character,info,skill)
+		allDamage += info.realValue
 		recordInfo.targets.push({id : target.id,info : info})
 	}
-	return recordInfo
+	//判断自身怒气恢复
+	if(skill.anger_s)
+		skill.character.addAnger(skill.anger_s)
+	//判断全队怒气恢复
+	if(skill.anger_a)
+		for(var i = 0;i < skill.character.team.length;i++)
+			if(!skill.character.team[i].died)
+				skill.character.team[i].addAnger(skill.anger_a)
+	//伤害值转生命判断
+	if(allDamage && skill.turn_rate && skill.turn_tg && !skill.character.died){
+		recordInfo.next = {type : "heal",targets : []}
+		let healValue = Math.round(allDamage * skill.turn_rate) || 1
+		targets = this.locator.getTargets(skill.character,skill.turn_tg)
+		for(var i = 0;i < targets.length;i++){
+			let target = targets[i]
+			let info = this.formula.calHeal(skill.character,target,healValue)
+			info = target.onHeal(skill.character,info,skill)
+			recordInfo.next.targets.push({id : target.id,info : info})
+		}
+	}
+	fightRecord.push(recordInfo)
 }
 //恢复技能
 model.useHealSkill = function(skill) {
 	var recordInfo = {type : "heal",targets : []}
-	var targets = this.locator.getTargets(skill.character,skill)
+	var targets = this.locator.getTargets(skill.character,skill.targetType)
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died){
 			break
 		}
 		let target = targets[i]
-		let info = this.formula.calHeal(skill.character, target, skill)
-		info = target.onHeal(skill.character,info,skill)
-		var str = skill.character.camp+skill.character.index+"使用\033[32m"+skill.name+"\033[0m攻击"+"治疗"+target.camp+target.index
-		str += " \033[32m 恢复"+ info.value+"点血量 "
-		if(info.crit){
-			str +="(暴击)"
+		let value = 0
+		if(skill.healType == "atk"){
+			value = Math.round(skill.character.getTotalAtt("atk") * skill.mul)
+		}else if(healType == "hp"){
+			value = Math.round(target.getTotalAtt("maxHP") * skill.mul)
+		}else{
+			console.error("healType error "+healType)
 		}
-		str += "   剩余"+target.hp+"/"+target.maxHP+"\033[0m"
-		console.log(str)
+		let info = this.formula.calHeal(skill.character,target,value)
+		info = target.onHeal(skill.character,info,skill)
 		recordInfo.targets.push({id : target.id,info : info})
 	}
-	return recordInfo
+	fightRecord.push(recordInfo)
 }
 module.exports = model

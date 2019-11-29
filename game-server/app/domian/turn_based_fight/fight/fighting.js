@@ -4,11 +4,11 @@ var locator = require("./locator.js")
 var formula = require("./formula.js")
 var skillManager = require("../skill/skillManager.js")
 var character = require("../entity/character.js")
+var fightRecord = require("./fightRecord.js")
 var maxRound = 20				//最大回合
 var teamLength = 6				//阵容人数
 var model = function(atkTeam,defTeam,otps) {
-	this.recordList = []				//战斗记录
-	this.recordInfo = {}
+    fightRecord.init()
 	this.load(atkTeam,defTeam,otps)
 	this.seededNum = otps.seededNum || (new Date()).getTime()
     this.seeded = new seeded(this.seededNum)
@@ -33,7 +33,7 @@ var model = function(atkTeam,defTeam,otps) {
 }
 //初始配置
 model.prototype.load = function(atkTeam,defTeam,otps) {
-	var info = {type : "begin",atkTeam : [],defTeam : []}
+	var info = {type : "fightBegin",atkTeam : [],defTeam : []}
 	var id = 0
 	for(var i = 0;i < teamLength;i++){
 		if(!atkTeam[i])
@@ -55,7 +55,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		defTeam[i].id = id++
 		info.defTeam.push(defTeam[i].getInfo())
 	}
-	this.recordList.push(info)
+	fightRecord.push(info)
 }
 //开始新轮次
 model.prototype.nextRound = function() {
@@ -69,7 +69,7 @@ model.prototype.nextRound = function() {
 	this.allTeam[0].index = 0
 	this.allTeam[1].index = 0
 	this.teamIndex = 0
-	this.recordList.push({type : "nextRound",round : this.round})
+	fightRecord.push({type : "nextRound",round : this.round})
 	this.run()
 }
 //轮到下一个角色行动
@@ -101,8 +101,7 @@ model.prototype.run = function() {
 }
 //回合前结算
 model.prototype.before = function() {
-	this.recordInfo = {type : "characterAction"}
-	this.recordInfo.before = null
+	fightRecord.push({type : "characterAction",id : this.character.id})
 	this.action()
 }
 //开始行动释放技能
@@ -115,17 +114,14 @@ model.prototype.action = function() {
 		skill = this.character.defaultSkill
 		this.character.addAnger(2)
 	}
-	if(skill){
-		this.recordInfo.action = skillManager.useSkill(skill)
-	}
+	if(skill)
+		skillManager.useSkill(skill)
 	this.after()
 }
 //行动后结算
 model.prototype.after = function() {
 	//检测战斗是否结束
 	this.character = false
-	this.recordInfo.after = null
-	this.recordList.push(this.recordInfo)
 	var flag = true
 	for(var i = 0;i < this.atkTeam.length;i++){
 		if(!this.atkTeam[i].died){
@@ -154,7 +150,7 @@ model.prototype.after = function() {
 model.prototype.fightOver = function() {
 	console.log("战斗结束")
 	this.isFight = false
-	this.recordList.push({type : "fightOver"})
-	console.log(this.recordList)
+	fightRecord.push({type : "fightOver"})
+	console.log(fightRecord.list)
 }
 module.exports = model

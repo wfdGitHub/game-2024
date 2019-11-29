@@ -29,20 +29,13 @@ formula.prototype.calDamage = function(attacker, target, skill) {
     return info
 }
 //治疗计算
-formula.prototype.calHeal = function(attacker,target,skill) {
+formula.prototype.calHeal = function(character,target,value){//attacker,target,skill) {
 	var info = {type : "heal",value : 0}
 	//暴击判断
-	var crit = attacker.getTotalAtt("healRate")
-	if(this.seeded.random("治疗暴击判断") * 10000  < crit){
+	if(this.seeded.random("治疗暴击判断") * 10000  < character.getTotalAtt("healRate")){
 		info.crit = true
 	}
-	if(skill.healType == "atk"){
-		info.value = Math.round(attacker.getTotalAtt("atk") * skill.mul * (1 + target.getTotalAtt("healAdd")))
-	}else if(skill.healType == "hp"){
-		info.value = Math.round(target.getTotalAtt("maxHP") * skill.mul * (1 + target.getTotalAtt("healAdd")))
-	}else{
-		console.error("healType error "+skill.healType)
-	}
+	info.value = Math.round(value * (1 + target.getTotalAtt("healAdd")))
 	if(info.crit){
 		info.value = Math.round(info.value * 1.5)
 	}
