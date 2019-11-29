@@ -3,7 +3,7 @@ var formula = function(seeded) {
 }
 //伤害计算
 formula.prototype.calDamage = function(attacker, target, skill) {
-	var info = {value : 0,skill : skill}
+	var info = {type : "damage",value : 0}
 	//命中判断
 	var hitRate = 8500 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
 	if(this.seeded.random("闪避判断") * 10000  > hitRate){
@@ -30,7 +30,7 @@ formula.prototype.calDamage = function(attacker, target, skill) {
 }
 //治疗计算
 formula.prototype.calHeal = function(attacker,target,skill) {
-	var info = {value : 0,skill : skill}
+	var info = {type : "heal",value : 0}
 	//暴击判断
 	var crit = attacker.getTotalAtt("healRate")
 	if(this.seeded.random("治疗暴击判断") * 10000  < crit){

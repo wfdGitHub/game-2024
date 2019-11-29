@@ -2,6 +2,7 @@ var skillManager = require("../skill/skillManager.js")
 var model = function(otps) {
 	//=========身份===========//
 	this.name = otps.name		//角色名称
+	this.id = otps.id 			//角色ID
 	this.nation = 0				//国家
 	this.isPlayer = true		//玩家或NPC
 	this.definition = 0			//角色定位   healer 治疗者
@@ -46,6 +47,7 @@ model.prototype.onHit = function(attacker,info,source) {
 		return info
 	}
 	info.realValue = this.lessHP(info.value)
+	info.curValue = this.hp
 	if(this.died){
 		info.kill = true
 		attacker.kill(this)
@@ -56,6 +58,7 @@ model.prototype.onHit = function(attacker,info,source) {
 model.prototype.onHeal = function(attacker,info,source) {
 	info.value = Math.floor(info.value * (1 + this.healAdd / 10000))
 	info.realValue = this.addHP(info.value)
+	info.curValue = this.hp
 	return info
 }
 //角色死亡
@@ -117,5 +120,34 @@ model.prototype.lessAnger = function(value) {
 //获取属性
 model.prototype.getTotalAtt = function(name) {
 	return this[name] || 0
+}
+//获取信息
+model.prototype.getInfo = function() {
+	var info = {}
+	info.id = this.id
+	info.name = this.name
+	info.nation = this.nation
+	info.isPlayer = this.isPlayer
+	info.definition = this.definition
+	info.index = this.index
+	info.level = this.level
+	info.maxHP = this.maxHP
+	info.hp = this.hp
+	info.atk = this.atk
+	info.phyDef = this.phyDef
+	info.magDef = this.magDef
+	info.crit = this.crit
+	info.critDef = this.critDef
+	info.slay = this.slay
+	info.slayDef = this.slayDef
+	info.hitRate = this.hitRate
+	info.dodgeRate = this.dodgeRate
+	info.amplify = this.amplify
+	info.reduction = this.reduction
+	info.healRate = this.healRate
+	info.healAdd = this.healAdd
+	info.maxAnger = this.maxAnger
+	info.curAnger = this.curAnger
+	return info
 }
 module.exports = model

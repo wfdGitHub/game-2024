@@ -7,6 +7,8 @@ var character = require("../entity/character.js")
 var maxRound = 20				//最大回合
 var teamLength = 6				//阵容人数
 var model = function(atkTeam,defTeam,otps) {
+	this.recordList = []				//战斗记录
+	this.recordInfo = {}
 	this.load(atkTeam,defTeam,otps)
 	this.seededNum = otps.seededNum || (new Date()).getTime()
     this.seeded = new seeded(this.seededNum)
@@ -31,25 +33,29 @@ var model = function(atkTeam,defTeam,otps) {
 }
 //初始配置
 model.prototype.load = function(atkTeam,defTeam,otps) {
-	this.allCharacter = []
+	var info = {type : "begin",atkTeam : [],defTeam : []}
+	var id = 0
 	for(var i = 0;i < teamLength;i++){
 		if(!atkTeam[i])
 			atkTeam[i] = new character({})
-		this.allCharacter.push(atkTeam[i])
 		atkTeam[i].camp = "atk"
 		atkTeam[i].index = i
 		atkTeam[i].team = atkTeam
 		atkTeam[i].enemy = defTeam
+		atkTeam[i].id = id++
+		info.atkTeam.push(atkTeam[i].getInfo())
 	}
 	for(var i = 0;i < teamLength;i++){
 		if(!defTeam[i])
 			defTeam[i] = new character({})
-		this.allCharacter.push(defTeam[i])
 		defTeam[i].camp = "def"
 		defTeam[i].index = i
 		defTeam[i].team = defTeam
 		defTeam[i].enemy = atkTeam
+		defTeam[i].id = id++
+		info.defTeam.push(defTeam[i].getInfo())
 	}
+	this.recordList.push(info)
 }
 //开始新轮次
 model.prototype.nextRound = function() {
@@ -63,6 +69,7 @@ model.prototype.nextRound = function() {
 	this.allTeam[0].index = 0
 	this.allTeam[1].index = 0
 	this.teamIndex = 0
+	this.recordList.push({type : "nextRound",round : this.round})
 	this.run()
 }
 //轮到下一个角色行动
@@ -94,7 +101,8 @@ model.prototype.run = function() {
 }
 //回合前结算
 model.prototype.before = function() {
-
+	this.recordInfo = {type : "characterAction"}
+	this.recordInfo.before = null
 	this.action()
 }
 //开始行动释放技能
@@ -108,42 +116,16 @@ model.prototype.action = function() {
 		this.character.addAnger(2)
 	}
 	if(skill){
-		skillManager.useSkill(skill)
+		this.recordInfo.action = skillManager.useSkill(skill)
 	}
 	this.after()
-}
-//使用技能
-model.prototype.useSkill = function(skill) {
-	//获取目标
-	var targets = this.locator.getTargets(this.character,skill)
-	if(!targets){
-		console.log(111)
-	}
-	for(var i = 0;i < targets.length;i++){
-		let target = targets[i]
-		//判断命中率
-		let info = this.formula.calDamage(this.character, target, skill)
-		var str = this.character.camp+this.character.index+"使用"+skill.name+"攻击"+target.camp+target.index
-		if(!info.miss){
-			info = target.onHit(this.character,info,skill)
-			str += "  造成"+ info.value+"点伤害"
-			if(info.crit){
-				str +="(暴击)"
-			}
-			str += "   剩余"+target.hp+"/"+target.maxHP
-			if(info.kill){
-				str += "  击杀目标!"
-			}
-		}else{
-			str += "  被闪避"
-		}
-		console.log(str)
-	}
 }
 //行动后结算
 model.prototype.after = function() {
 	//检测战斗是否结束
 	this.character = false
+	this.recordInfo.after = null
+	this.recordList.push(this.recordInfo)
 	var flag = true
 	for(var i = 0;i < this.atkTeam.length;i++){
 		if(!this.atkTeam[i].died){
@@ -172,5 +154,7 @@ model.prototype.after = function() {
 model.prototype.fightOver = function() {
 	console.log("战斗结束")
 	this.isFight = false
+	this.recordList.push({type : "fightOver"})
+	console.log(this.recordList)
 }
 module.exports = model
