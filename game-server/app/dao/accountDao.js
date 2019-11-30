@@ -11,7 +11,7 @@ accountDao.prototype.createAccount = function(otps,cb) {
 		nickname : otps.nickname || 0,
 		playTime : 0,
 		dayTime : 0,
-		dayStr : (new Date()).toLocaleDateString()
+		dayStr : (new Date()).toDateString()
 	}
 	var self = this
 	self.redisDao.db.incrby("acc:lastid",1,function(err,accId) {
@@ -29,9 +29,9 @@ accountDao.prototype.createAccount = function(otps,cb) {
 accountDao.prototype.updatePlaytime = function(otps) {
 	var accId = otps.accId
 	var beginTime = otps.beginTime
-	var beginStr = (new Date(beginTime)).toLocaleDateString()
+	var beginStr = (new Date(beginTime)).toDateString()
 	var endTime = Date.now()
-	var endStr = (new Date(endTime)).toLocaleDateString()
+	var endStr = (new Date(endTime)).toDateString()
 	var playTime = endTime - beginTime
 	this.incrbyAccountData({accId : otps.accId,name : "playTime",value : playTime})
 	if(beginStr == endStr){
@@ -41,6 +41,7 @@ accountDao.prototype.updatePlaytime = function(otps) {
 		//跨天只取今日时间
 		playTime = endTime - new Date(endStr).getTime()
 		this.setAccountData({accId : otps.accId,name : "dayTime",value : playTime})
+		this.setAccountData({accId : otps.accId,name : "dayStr",value : endStr})
 	}
 }
 //获取账号信息
