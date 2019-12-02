@@ -14,7 +14,7 @@ var model = function(atkTeam,defTeam,otps) {
     this.seeded = new seeded(this.seededNum)
     this.locator = new locator(this.seeded)
     this.formula = new formula(this.seeded)
-    skillManager.init(this.locator,this.formula)
+    skillManager.init(this.locator,this.formula,this.seeded)
 	this.isFight = true				//战斗中标识
 	this.round = 0					//当前回合
 	this.maxRound = maxRound		//最大回合
@@ -43,7 +43,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		atkTeam[i].team = atkTeam
 		atkTeam[i].enemy = defTeam
 		atkTeam[i].id = id++
-		info.atkTeam.push(atkTeam[i].getInfo())
+		info.atkTeam.push(atkTeam[i].getSimpleInfo())
 	}
 	for(var i = 0;i < teamLength;i++){
 		if(!defTeam[i])
@@ -53,7 +53,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		defTeam[i].team = defTeam
 		defTeam[i].enemy = atkTeam
 		defTeam[i].id = id++
-		info.defTeam.push(defTeam[i].getInfo())
+		info.defTeam.push(defTeam[i].getSimpleInfo())
 	}
 	fightRecord.push(info)
 }
@@ -107,21 +107,32 @@ model.prototype.before = function() {
 //开始行动释放技能
 model.prototype.action = function() {
 	var skill = false
-	if(this.character.angerSkill && this.character.curAnger == this.character.maxAnger){
-		skill = this.character.angerSkill
-		this.character.lessAnger(this.character.maxAnger)
-	}else{
-		skill = this.character.defaultSkill
-		this.character.addAnger(2)
+	if(!this.character.dizzy){
+		if(this.character.angerSkill && this.character.curAnger == this.character.maxAnger){
+			if(!this.character.silence){
+				skill = this.character.angerSkill
+				this.character.lessAnger(this.character.maxAnger)
+			}
+		}else{
+			if(!this.character.disarm){
+				skill = this.character.defaultSkill
+				this.character.addAnger(2)
+			}
+		}
+		if(skill)
+			skillManager.useSkill(skill)
 	}
-	if(skill)
-		skillManager.useSkill(skill)
 	this.after()
 }
 //行动后结算
 model.prototype.after = function() {
+	this.character.after()
 	//检测战斗是否结束
 	this.character = false
+	if(!this.checkOver())
+		this.run()
+}
+model.prototype.checkOver = function() {
 	var flag = true
 	for(var i = 0;i < this.atkTeam.length;i++){
 		if(!this.atkTeam[i].died){
@@ -131,7 +142,7 @@ model.prototype.after = function() {
 	}
 	if(flag){
 		this.fightOver()
-		return
+		return true
 	}
 	flag = true
 	for(var i = 0;i < this.defTeam.length;i++){
@@ -142,15 +153,15 @@ model.prototype.after = function() {
 	}
 	if(flag){
 		this.fightOver()
-		return
+		return true
 	}
-	this.run()
+	return false
 }
 //战斗结束
 model.prototype.fightOver = function() {
 	console.log("战斗结束")
 	this.isFight = false
 	fightRecord.push({type : "fightOver"})
-	console.log(fightRecord.list)
+	fightRecord.explain()
 }
 module.exports = model

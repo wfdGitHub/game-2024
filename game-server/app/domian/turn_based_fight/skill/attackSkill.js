@@ -11,5 +11,13 @@ var model = function(otps,character) {
 	this.anger_a = otps.anger_a || 0					//全队怒气恢复值
 	this.turn_rate = otps.turn_rate || 0				//伤害转生命值比例
 	this.turn_tg = otps.turn_tg || 0					//伤害转生命值目标类型
+	this.add_d_s = otps.add_d_s							//追加一次普通攻击(默认技能)
+	this.thr_anger = otps.thr_anger						//若攻击目标大于三人则增加两点怒气
+	this.buffId = otps.buffId							//附加buffId
+	this.buffArg = otps.buffArg							//buff参数
+	this.duration = otps.duration						//buff持续回合数
+	this.buffRate = otps.buffRate						//buff概率
+	this.premise = otps.premise							//先决条件
+	this.effect = otps.effect							//效果
 }
 module.exports = model

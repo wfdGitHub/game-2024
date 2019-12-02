@@ -437,16 +437,16 @@ character.prototype.banUse = function() {
         return false
     }
 }
-character.prototype.addBuff = function(attacker,otps) {
+character.prototype.addBuff = function(zz,otps) {
 	//判断是否命中
-	if(!buffFactory.checkBuffRate(attacker,this,otps)){
+	if(!buffFactory.checkBuffRate(zz,this,otps)){
 		return
 	}
     var buffId = otps.buffId
     if(this.buffs[buffId]){
-        this.buffs[buffId].overlay(attacker,otps)
+        this.buffs[buffId].overlay(zz,otps)
     }else{
-        var buff = buffFactory.getBuff(attacker,this,otps)
+        var buff = buffFactory.getBuff(zz,this,otps)
         if(buff){
             buff.initialize()
             this.buffs[buffId] = buff

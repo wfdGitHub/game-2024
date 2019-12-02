@@ -34,55 +34,59 @@ var model = function(otps) {
 	this.died = false			//死亡状态
 	if(!this.maxHP || !this.hp)
 		this.died = true
+	this.buffs = []					//buff列表
+	this.dizzy = false				//眩晕
+	this.silence = false			//沉默
+	this.disarm = false				//麻痹
+	this.forbidden = false			//禁疗
+	this.poison = false				//中毒
+	this.burn = false				//燃烧
 	//=========技能=======//
 	if(otps.defaultSkill)
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
 	if(otps.angerSkill)
 		this.angerSkill = skillManager.createSkill(otps.angerSkill,this)		//怒气技能
 }
+//行动结束刷新
+model.prototype.after = function() {
+	//buff刷新
+	for(var i in this.buffs){
+		this.buffs[i].update()
+	}
+}
 //受到伤害
 model.prototype.onHit = function(attacker,info,source) {
+	info.id = this.id
 	if(this.died){
 		console.error("不能攻击已死亡的角色",this.name)
 		info.realValue = 0
 		return info
 	}
-	var str = attacker.camp+attacker.index+"使用\033[36m"+source.name+"\033[0m攻击"+this.camp+this.index
 	if(info.miss){
-		str += "  被闪避"
 		info.realValue = 0
 	}else{
 		info.realValue = this.lessHP(info.value)
 		info.curValue = this.hp
-		str += "  \033[36m造成"+ info.realValue+"点伤害"
-		if(info.crit){
-			str +="(暴击)"
-		}
-		str += "   剩余"+this.hp+"/"+this.maxHP
-		if(info.kill){
-			str += "  击杀目标!"
-		}
-		str += "\033[0m"
+		info.maxHP = this.maxHP
 		if(this.died){
 			info.kill = true
 			attacker.kill(this)
 		}
 	}
-	console.log(str)
 	return info
 }
 //受到治疗
 model.prototype.onHeal = function(attacker,info,source) {
-	info.value = Math.floor(info.value * (1 + this.healAdd / 10000))
-	info.realValue = this.addHP(info.value)
-	info.curValue = this.hp
-	var str = attacker.camp+attacker.index+"使用\033[32m"+source.name+"\033[0m"+"治疗"+this.camp+this.index
-	str += " \033[32m 恢复"+ info.realValue+"点血量 "
-	if(info.crit){
-		str +="(暴击)"
+	info.id = this.id
+	if(this.forbidden){
+		info.value = 0
+		info.realValue = 0
+	}else{
+		info.value = Math.floor(info.value * (1 + this.healAdd / 10000))
+		info.realValue = this.addHP(info.value)
 	}
-	str += "   剩余"+this.hp+"/"+this.maxHP+"\033[0m"
-	console.log(str)
+	info.curValue = this.hp
+	info.maxHP = this.maxHP
 	return info
 }
 //角色死亡
@@ -128,9 +132,9 @@ model.prototype.addAnger = function(value) {
 	}else{
 		this.curAnger += value
 	}
-	// console.log(this.name + "addAnger" , value,realValue,"curAnger : ",this.curAnger+"/"+this.maxAnger)
+	// console.log(this.name + " addAnger" , value,realValue,"curAnger : ",this.curAnger+"/"+this.maxAnger)
 	if(realValue)
-		fightRecord.push({type : "addAnger",realValue : realValue,curAnger : this.curAnger,id : this.id})
+		fightRecord.push({type : "addAnger",realValue : realValue,curAnger : this.curAnger,maxAnger : this.maxAnger,id : this.id})
 	return realValue
 }
 //减少怒气
@@ -142,7 +146,7 @@ model.prototype.lessAnger = function(value) {
 		this.curAnger -= value
 	}
 	if(realValue)
-		fightRecord.push({type : "lessAnger",realValue : realValue,curAnger : this.curAnger,id : this.id})
+		fightRecord.push({type : "lessAnger",realValue : realValue,curAnger : this.curAnger,maxAnger : this.maxAnger,id : this.id})
 	return realValue
 }
 //获取属性
@@ -177,5 +181,21 @@ model.prototype.getInfo = function() {
 	info.maxAnger = this.maxAnger
 	info.curAnger = this.curAnger
 	return info
+}
+model.prototype.getSimpleInfo = function() {
+	var info = {}
+	info.id = this.id
+	info.name = this.name
+	info.hp = this.hp
+	info.atk = this.atk
+	return info
+}
+model.prototype.addBuff = function(releaser,buff) {
+	this.buffs[buff.buffId] = buff
+}
+model.prototype.removeBuff = function(buffId) {
+    if(this.buffs[buffId]){
+        delete this.buffs[buffId]
+    }
 }
 module.exports = model
