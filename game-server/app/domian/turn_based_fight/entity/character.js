@@ -57,6 +57,7 @@ model.prototype.after = function() {
 //受到伤害
 model.prototype.onHit = function(attacker,info,source) {
 	info.id = this.id
+	info.value = Math.floor(info.value) || 1
 	if(this.died){
 		console.error("不能攻击已死亡的角色",this.name)
 		info.realValue = 0
@@ -78,6 +79,7 @@ model.prototype.onHit = function(attacker,info,source) {
 //受到治疗
 model.prototype.onHeal = function(attacker,info,source) {
 	info.id = this.id
+	info.value = Math.floor(info.value) || 1
 	if(this.forbidden){
 		info.value = 0
 		info.realValue = 0

@@ -14,6 +14,8 @@ var buffBasic = function(releaser,character,otps) {
 buffBasic.prototype.clear = function() {
 	console.log("buff清除"+this.name)
 }
+buffBasic.prototype.refresh = function() {
+}
 buffBasic.prototype.destroy = function() {
 	fightRecord.push({type : "destroyBuff",character : this.character.id,buffId : this.buffId,name : this.name})
 	this.character.removeBuff(this.buffId)
@@ -21,6 +23,7 @@ buffBasic.prototype.destroy = function() {
 }
 //update
 buffBasic.prototype.update = function(dt) {
+	this.refresh()
 	this.duration -= 1
 	if(this.duration <= 0){
 		this.destroy()

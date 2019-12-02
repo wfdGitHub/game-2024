@@ -1,4 +1,4 @@
-var buffIds = ["disarm","dizzy","forbidden","silence"]
+var buffIds = ["disarm","dizzy","forbidden","silence","burn","poison"]
 var buffList = {}
 var fightRecord = require("../fight/fightRecord.js")
 for(var i = 0;i < buffIds.length;i++){

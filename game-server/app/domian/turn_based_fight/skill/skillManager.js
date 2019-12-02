@@ -35,7 +35,7 @@ model.useSkill = function(skill) {
 }
 //伤害技能
 model.useAttackSkill = function(skill) {
-	var recordInfo = {id : skill.character.id,type : "attack",targets : [],skillId : skill.skillId,name : skill.name}
+	var recordInfo = {type : "attack",id : skill.character.id,targets : [],skillId : skill.skillId,name : skill.name}
 	var targets = this.locator.getTargets(skill.character,skill.targetType)
 	if(!targets.length){
 		fightRecord.push(recordInfo)

@@ -25,6 +25,24 @@ var model = function() {
 				case "lessAnger":
 					// console.log("角色"+info.id+"减少"+info.realValue+"点怒气("+info.curAnger+"/"+info.maxAnger+")")
 				break
+				case "burnDamage":
+					//燃烧伤害
+					var str = "角色"+info.id+"受到燃烧伤害"+info.realValue
+					str += "\t剩余"+info.curValue+"/"+info.maxHP
+					if(info.kill){
+						str += "\t角色已死亡"
+					}
+					console.log(str)
+				break
+				case "poisonDamage":
+					//中毒伤害
+					var str = "角色"+info.id+"受到中毒伤害"+info.realValue
+					str += "\t剩余"+info.curValue+"/"+info.maxHP
+					if(info.kill){
+						str += "\t角色已死亡"
+					}
+					console.log(str)
+				break
 				case "attack":
 					var str = "\033[36m角色"+info.id+"使用"+info.name+"\033[0m"
 					for(var i = 0;i < info.targets.length;i++){
