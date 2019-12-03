@@ -6,8 +6,11 @@ var model = function() {
 	this.push = function(info) {
 		this.list.push(info)
 	}
+	this.getList = function() {
+		return this.list.concat([])
+	}
 	this.explain = function() {
-		var recordList = this.list.concat([])
+		var recordList = this.getList()
 		var beginInfo = recordList.shift()
 		console.log("战斗开始\n攻方阵容",JSON.stringify(beginInfo.atkTeam),"\n守方阵容",JSON.stringify(beginInfo.defTeam))
 		while(recordList.length){
@@ -20,10 +23,10 @@ var model = function() {
 					console.log("\033[36m角色"+info.id+"开始行动"+"\033[0m")
 				break
 				case "addAnger":
-					// console.log("角色"+info.id+"增加"+info.realValue+"点怒气("+info.curAnger+"/"+info.maxAnger+")")
+					// console.log("角色"+info.id+"增加"+info.realValue+"点怒气("+info.curAnger+"/"+info.needAnger+")")
 				break
 				case "lessAnger":
-					// console.log("角色"+info.id+"减少"+info.realValue+"点怒气("+info.curAnger+"/"+info.maxAnger+")")
+					// console.log("角色"+info.id+"减少"+info.realValue+"点怒气("+info.curAnger+"/"+info.needAnger+")")
 				break
 				case "burnDamage":
 					//燃烧伤害

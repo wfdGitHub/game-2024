@@ -3,7 +3,7 @@ var fightRecord = require("../../fight/fightRecord.js")
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var burn = new buffBasic(releaser,character,otps)
-	console.log("角色"+burn.character.id+"被燃烧!!!!!!")
+	// console.log("角色"+burn.character.id+"被燃烧!!!!!!")
 	burn.name = "燃烧"
 	burn.damage = Math.floor(burn.buffArg * releaser.getTotalAtt("atk"))
 	burn.refresh = function() {
@@ -12,7 +12,7 @@ var model = function(releaser,character,otps) {
 		fightRecord.push(info)
 	}
 	burn.clear = function() {
-		console.log(burn.character.id+"燃烧结束")
+		// console.log(burn.character.id+"燃烧结束")
 	}
 	return burn
 }

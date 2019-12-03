@@ -112,6 +112,12 @@ model.useHealSkill = function(skill) {
 		let info = this.formula.calHeal(skill.character,target,value)
 		info = target.onHeal(skill.character,info,skill)
 		recordInfo.targets.push(info)
+		//判断buff
+		if(skill.buffId){
+			if(this.seeded.random("判断BUFF命中率") < skill.buffRate){
+				buffManager.createBuff(skill.character,target,{buffId : skill.buffId,buffArg : skill.buffArg,duration : skill.duration})
+			}
+		}
 	}
 	//判断自身怒气恢复
 	if(skill.anger_s)

@@ -65,7 +65,7 @@ model.prototype.nextRound = function() {
 		return
 	}
 	this.round++
-	console.log("第 "+this.round+" 轮开始")
+	// console.log("第 "+this.round+" 轮开始")
 	this.allTeam[0].index = 0
 	this.allTeam[1].index = 0
 	this.teamIndex = 0
@@ -108,10 +108,10 @@ model.prototype.before = function() {
 model.prototype.action = function() {
 	var skill = false
 	if(!this.character.dizzy){
-		if(this.character.angerSkill && this.character.curAnger == this.character.maxAnger){
+		if(this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
 			if(!this.character.silence){
 				skill = this.character.angerSkill
-				this.character.lessAnger(this.character.maxAnger)
+				this.character.lessAnger(this.character.needAnger)
 			}
 		}else{
 			if(!this.character.disarm){
@@ -159,7 +159,7 @@ model.prototype.checkOver = function() {
 }
 //战斗结束
 model.prototype.fightOver = function() {
-	console.log("战斗结束")
+	// console.log("战斗结束")
 	this.isFight = false
 	fightRecord.push({type : "fightOver"})
 	fightRecord.explain()

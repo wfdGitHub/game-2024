@@ -4,9 +4,8 @@ var model = function(otps) {
 	//=========身份===========//
 	this.name = otps.name		//角色名称
 	this.id = otps.id 			//角色ID
-	this.nation = 0				//国家
-	this.isPlayer = true		//玩家或NPC
-	this.definition = 0			//角色定位   healer 治疗者
+	this.realm = 0				//国家
+	this.career = 0				//角色职业   healer 治疗者
 	this.index = 0				//所在位置
 	this.camp = ""				//攻方或守方
 	this.team = []				//所在阵容
@@ -28,7 +27,7 @@ var model = function(otps) {
 	this.reduction = otps["reduction"] || 0		//伤害减免
 	this.healRate = otps["healRate"] || 0		//治疗暴击几率
 	this.healAdd = otps["healAdd"] || 0			//被治疗加成
-	this.maxAnger = 4							//最大怒气值
+	this.needAnger = 4							//技能所需怒气值
 	this.curAnger = otps["curAnger"] || 0		//当前怒气值
 	//=========状态=======//
 	this.died = false			//死亡状态
@@ -128,15 +127,7 @@ model.prototype.lessHP = function(value) {
 //恢复怒气
 model.prototype.addAnger = function(value) {
 	var realValue = value
-	if((this.curAnger + value) > this.maxAnger){
-		realValue = this.maxAnger - this.curAnger
-		this.curAnger = this.maxAnger
-	}else{
-		this.curAnger += value
-	}
-	// console.log(this.name + " addAnger" , value,realValue,"curAnger : ",this.curAnger+"/"+this.maxAnger)
-	if(realValue)
-		fightRecord.push({type : "addAnger",realValue : realValue,curAnger : this.curAnger,maxAnger : this.maxAnger,id : this.id})
+	fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id})
 	return realValue
 }
 //减少怒气
@@ -148,7 +139,7 @@ model.prototype.lessAnger = function(value) {
 		this.curAnger -= value
 	}
 	if(realValue)
-		fightRecord.push({type : "lessAnger",realValue : realValue,curAnger : this.curAnger,maxAnger : this.maxAnger,id : this.id})
+		fightRecord.push({type : "lessAnger",realValue : realValue,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id})
 	return realValue
 }
 //获取属性
@@ -161,7 +152,6 @@ model.prototype.getInfo = function() {
 	info.id = this.id
 	info.name = this.name
 	info.nation = this.nation
-	info.isPlayer = this.isPlayer
 	info.definition = this.definition
 	info.index = this.index
 	info.level = this.level
@@ -180,7 +170,7 @@ model.prototype.getInfo = function() {
 	info.reduction = this.reduction
 	info.healRate = this.healRate
 	info.healAdd = this.healAdd
-	info.maxAnger = this.maxAnger
+	info.needAnger = this.needAnger
 	info.curAnger = this.curAnger
 	return info
 }
@@ -189,7 +179,6 @@ model.prototype.getSimpleInfo = function() {
 	info.id = this.id
 	info.name = this.name
 	info.hp = this.hp
-	info.atk = this.atk
 	return info
 }
 model.prototype.addBuff = function(releaser,buff) {
