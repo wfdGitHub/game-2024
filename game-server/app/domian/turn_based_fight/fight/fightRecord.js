@@ -30,7 +30,7 @@ var model = function() {
 				break
 				case "burnDamage":
 					//燃烧伤害
-					var str = "角色"+info.id+"受到燃烧伤害"+info.realValue
+					var str = "角色"+info.id+"受到燃烧伤害"+info.value
 					str += "\t剩余"+info.curValue+"/"+info.maxHP
 					if(info.kill){
 						str += "\t角色已死亡"
@@ -39,7 +39,7 @@ var model = function() {
 				break
 				case "poisonDamage":
 					//中毒伤害
-					var str = "角色"+info.id+"受到中毒伤害"+info.realValue
+					var str = "角色"+info.id+"受到中毒伤害"+info.value
 					str += "\t剩余"+info.curValue+"/"+info.maxHP
 					if(info.kill){
 						str += "\t角色已死亡"
@@ -53,7 +53,7 @@ var model = function() {
 						if(info.targets[i].miss){
 							str += "被闪避"
 						}else{
-							str += "造成"+ info.targets[i].realValue+"点伤害"
+							str += "造成"+ info.targets[i].value+"点伤害"
 							if(info.targets[i].crit){
 								str +="(暴击)"
 							}

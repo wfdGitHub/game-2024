@@ -43,8 +43,10 @@ var model = function(otps) {
 	//=========技能=======//
 	if(otps.defaultSkill)
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
-	if(otps.angerSkill)
+	if(otps.angerSkill){
 		this.angerSkill = skillManager.createSkill(otps.angerSkill,this)		//怒气技能
+		this.angerSkill.isAnger = true
+	}
 }
 //行动开始前刷新
 model.prototype.before = function() {

@@ -2,7 +2,7 @@ var formula = function(seeded) {
 	this.seeded = seeded
 }
 //伤害计算
-formula.prototype.calDamage = function(attacker, target, skill) {
+formula.prototype.calDamage = function(attacker, target, skill,lessAmp) {
 	var info = {type : "damage",value : 0}
 	//命中判断
 	var hitRate = 8500 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
@@ -19,6 +19,9 @@ formula.prototype.calDamage = function(attacker, target, skill) {
 	var atk = attacker.getTotalAtt("atk")
 	var def = target.getTotalAtt(skill.damageType+"Def")
 	info.value = Math.round((atk - def) * skill.mul * (1 + (attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction")) * 0.0001))
+	if(lessAmp){
+		info.value = Math.round(info.value * (1+lessAmp))
+	}
 	if(info.crit){
 		info.value = Math.round(info.value * (1.5 + attacker.getTotalAtt("slay") - target.getTotalAtt("slayDef")))
 	}

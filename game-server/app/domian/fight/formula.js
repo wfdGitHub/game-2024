@@ -2,7 +2,7 @@ var K = 1
 var A = 1
 var formula = function() {}
 //计算伤害
-formula.calDamage = function(attacker, target, skill) {
+formula.calDamage = function(attacker, target, skill,amp) {
 	var damageInfo = {damage : 0,skill : skill}
 	//命中判断
 	var hitRate = 	0.3 + 0.55 * (attacker.getTotalAtt("hitRate") / (K * target.getTotalAtt("dodgeRate") || 1))
@@ -32,8 +32,10 @@ formula.calDamage = function(attacker, target, skill) {
 		damage = Math.round(damage * (1 - target.getTotalAtt("blockRate") - 0.25))
 	}
 	//伤害加深
-	if(attacker.getTotalAtt("amp")){
-		damage = Math.round(damage * (attacker.getTotalAtt("amp") + 1))
+	if(amp || attacker.getTotalAtt("amp")){
+		if(!amp)
+			amp = 0
+		damage = Math.round(damage * (attacker.getTotalAtt("amp") + amp + 1))
 	}
 	//最小伤害
 	if (damage <= 1) {

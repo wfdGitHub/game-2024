@@ -41,14 +41,23 @@ model.useAttackSkill = function(skill) {
 		fightRecord.push(recordInfo)
 		return
 	}
+	var lessAmp = 0
+	//判断技能目标减少
+	if(skill.lessAmp && targets.length){
+		var lessNum = this.locator.getTargetsNum(skill.targetType) - targets.length
+		if(lessNum > 0){
+			lessAmp = skill.lessAmp * lessNum
+		}
+	}
 	var allDamage = 0
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died){
 			break
 		}
 		let target = targets[i]
-		//判断命中率
-		let info = this.formula.calDamage(skill.character, target, skill)
+
+		//计算伤害
+		let info = this.formula.calDamage(skill.character, target, skill,lessAmp)
 		info = target.onHit(skill.character,info,skill)
 		allDamage += info.realValue
 		recordInfo.targets.push(info)
@@ -86,8 +95,8 @@ model.useAttackSkill = function(skill) {
 		}
 	}
 	fightRecord.push(recordInfo)
-	//追加普通攻击判断
-	if(skill.add_d_s){
+	//追加普通攻击判断(仅怒气技能生效)
+	if(skill.isAnger && skill.add_d_s){
 		console.log("追加普通攻击")
 		this.useSkill(skill.character.defaultSkill)
 	}

@@ -91,7 +91,94 @@ model.prototype.getTargets = function(character,targetType) {
 			return []
 	}
 }
-
+//获取目标类型对应目标数量
+model.prototype.getTargetsNum = function(targetType) {
+	switch(targetType){
+		case "enemy_normal":
+			//默认敌人前排单体
+			return 1
+		case "enemy_normal_back":
+			//默认敌方后排单体
+			return 1
+		case "enemy_1":
+			//敌方随机单体
+			return 1
+		case "enemy_2":
+			//敌方2个随机单体
+			return 2
+		case "enemy_3":
+			//敌方3个随机单体
+			return 3
+		case "enemy_4":
+			//敌方4个随机单体
+			return 4
+		case "enemy_5":
+			//敌方5个随机单体
+			return 5
+		case "enemy_vertical":
+			//敌方纵排
+			return 2
+		case "enemy_horizontal_front":
+			//敌方前排
+			return 3
+		case "enemy_horizontal_back":
+			//敌方后排
+			return 3
+		case "enemy_all":
+			//敌方全体
+			return	6
+		case "enemy_adjoin":
+			//敌方相邻目标
+			return	4
+		case "enemy_minHP":
+			//敌方生命最少单位
+			return	1
+		case "team_1":
+			//己方随机1个目标
+			return	1
+		case "team_2":
+			//己方随机2个目标
+			return	2
+		case "team_3":
+			//己方随机3个目标
+			return	3
+		case "team_4":
+			//己方随机4个目标
+			return	4
+		case "team_5":
+			//己方随机5个目标
+			return	5
+		case "team_all":
+			//己方全体
+			return	6
+		case "team_horizontal_front":
+			//己方前排
+			return	3
+		case "team_horizontal_back":
+			//己方后排
+			return	3
+		case "team_minHp_1":
+			//获取友方生命值最少的1个单位
+			return 1
+		case "team_minHp_2":
+			//获取友方生命值最少的2个单位
+			return 2
+		case "team_minHp_3":
+			//获取友方生命值最少的3个单位
+			return 3
+		case "team_minHp_4":
+			//获取友方生命值最少的4个单位
+			return 4
+		case "team_minHp_5":
+			//获取友方生命值最少的5个单位
+			return 5
+		case "team_self":
+			//选择自己
+			return 1
+		default :
+			return 1
+	}
+}
 //默认单个目标
 model.prototype.getTargetNormal = function(character) {
 	var index = character.index
