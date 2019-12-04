@@ -156,7 +156,6 @@ model.prototype.getTotalAtt = function(name) {
 	var value = this[name] || 0
 	if(this.buffs[name]){
 		value += this.buffs[name].getValue()
-		console.log("存在属性BUFF",value)
 	}
 	return value
 }

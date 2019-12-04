@@ -1,4 +1,4 @@
-var buffIds = ["disarm","dizzy","forbidden","silence","burn","poison","amplify"]
+var buffIds = ["disarm","dizzy","forbidden","silence","burn","poison","amplify","reduction"]
 var buffList = {}
 var fightRecord = require("../fight/fightRecord.js")
 for(var i = 0;i < buffIds.length;i++){
@@ -9,6 +9,10 @@ var buffFactory = function() {}
 buffFactory.createBuff = function(releaser,character,otps) {
 	var buffId = otps.buffId
 	if(buffList[buffId]){
+		//当回合对自身释放的BUFF回合数+1
+		if(releaser == character){
+			otps.duration += 1
+		}
 		var buff
 		if(character.buffs[buffId]){
 			buff = character.buffs[buffId]
