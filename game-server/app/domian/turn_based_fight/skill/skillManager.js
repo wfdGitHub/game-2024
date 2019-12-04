@@ -50,12 +50,12 @@ model.useAttackSkill = function(skill) {
 		}
 	}
 	var allDamage = 0
+	var kill_amp = 0
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died){
 			break
 		}
 		let target = targets[i]
-
 		//计算伤害
 		let info = this.formula.calDamage(skill.character, target, skill,lessAmp)
 		info = target.onHit(skill.character,info,skill)
@@ -67,6 +67,12 @@ model.useAttackSkill = function(skill) {
 				buffManager.createBuff(skill.character,target,{buffId : skill.buffId,buffArg : skill.buffArg,duration : skill.duration})
 			}
 		}
+		if(info.kill && skill.kill_amp){
+			kill_amp += skill.kill_amp
+		}
+	}
+	if(kill_amp){
+		skill.character.amplify += skill.kill_amp
 	}
 	//判断自身怒气恢复
 	if(skill.anger_s)

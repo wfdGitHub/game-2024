@@ -19,6 +19,7 @@ var model = function(otps,character) {
 	this.duration = otps.duration						//buff持续回合数
 	this.buffRate = otps.buffRate						//buff概率
 	this.lessAmp = otps.lessAmp 						//目标每减少一个伤害加成比例
+	this.kill_amp = otps.kill_amp						//每击杀一个目标提升伤害
 	this.premise = otps.premise							//先决条件
 	this.effect = otps.effect							//效果
 }

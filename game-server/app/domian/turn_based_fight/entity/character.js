@@ -153,7 +153,8 @@ model.prototype.lessAnger = function(value) {
 }
 //获取属性
 model.prototype.getTotalAtt = function(name) {
-	return this[name] || 0
+	var value = this[name] || 0
+	return value
 }
 //获取信息
 model.prototype.getInfo = function() {
