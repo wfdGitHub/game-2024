@@ -78,6 +78,10 @@ model.useAttackSkill = function(skill) {
 		if(info.kill && skill.kill_amp){
 			kill_amp += skill.kill_amp
 		}
+		//判断怒气降低
+		if(skill.less_anger){
+			target.lessAnger(skill.less_anger)
+		}
 	}
 	if(kill_amp){
 		skill.character.amplify += skill.kill_amp

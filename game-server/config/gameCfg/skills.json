@@ -450,7 +450,11 @@
     "des": "对敌方纵排造成212%物理伤害，并增加自身5%伤害，持续7回合，效果可叠加",
     "damageType": "phy",
     "targetType": "enemy_vertical",
-    "mul": 2.12
+    "mul": 2.12,
+    "buffId": "amplify",
+    "buff_tg": "team_self",
+    "buffArg": 0.05,
+    "duration": 7
   },
   "2040401": {
     "name": "武圣",
@@ -483,7 +487,11 @@
     "des": "对敌方纵排造成212%物理伤害，并增加自身10%伤害，持续7回合，效果可叠加",
     "damageType": "phy",
     "targetType": "enemy_vertical",
-    "mul": 2.12
+    "mul": 2.12,
+    "buffId": "amplify",
+    "buff_tg": "team_self",
+    "buffArg": 0.1,
+    "duration": 7
   },
   "2050201": {
     "name": "卧龙",
@@ -532,7 +540,11 @@
     "des": "对敌方前排造成155%物理伤害，并给己方前排武将附加1个护盾，使他们受到的直接伤害减少20%，持续1回合",
     "damageType": "phy",
     "targetType": "enemy_horizontal_front",
-    "mul": 1.55
+    "mul": 1.55,
+    "buffId": "reduction",
+    "buff_tg": "team_horizontal_front",
+    "buffArg": 0.2,
+    "duration": 1
   },
   "2050501": {
     "name": "穿杨",
@@ -1223,7 +1235,11 @@
     "des": "对敌方单体造成350%的物理伤害，并给自身附加1个减伤盾，受到的直接伤害减少30%，持续1回合",
     "damageType": "phy",
     "targetType": "enemy_normal",
-    "mul": 3.5
+    "mul": 3.5,
+    "buffId": "reduction",
+    "buff_tg": "team_self",
+    "buffArg": 0.3,
+    "duration": 1
   },
   "4050501": {
     "name": "觊玺",
@@ -1330,7 +1346,8 @@
     "des": "对敌方后排单体造成350%的物理伤害，并降低目标1点怒气",
     "damageType": "phy",
     "targetType": "enemy_normal_back",
-    "mul": 3.5
+    "mul": 3.5,
+    "less_anger": 1
   },
   "4051101": {
     "name": "落雷",
