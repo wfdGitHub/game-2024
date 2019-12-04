@@ -144,7 +144,8 @@
     "des": "对敌方全体造成97%法术伤害，技能目标每减少1个，伤害增加15%",
     "damageType": "mag",
     "targetType": "enemy_all",
-    "mul": 0.97
+    "mul": 0.97,
+    "lessAmp": 0.15
   },
   "1050201": {
     "name": "霸道",
@@ -1106,7 +1107,8 @@
     "des": "对敌方前排造成172%的物理伤害，技能目标每减少1个，技能伤害增加10%",
     "damageType": "phy",
     "targetType": "enemy_horizontal_front",
-    "mul": 1.72
+    "mul": 1.72,
+    "lessAmp": 0.1
   },
   "4040201": {
     "name": "烈将",
