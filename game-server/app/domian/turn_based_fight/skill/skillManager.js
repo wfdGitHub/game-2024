@@ -49,7 +49,11 @@ model.useSkill = function(skill) {
 }
 //伤害技能
 model.useAttackSkill = function(skill) {
-	var recordInfo = {type : "attack",id : skill.character.id,targets : [],skillId : skill.skillId,name : skill.name}
+	var recordInfo = skill.getInfo()
+	recordInfo.targets = []
+	if(this.locator.getTargetsNum() == 1){
+		recordInfo.group = true
+	}
 	var targets = this.locator.getTargets(skill.character,skill.targetType)
 	if(!targets.length){
 		fightRecord.push(recordInfo)
@@ -122,7 +126,11 @@ model.useAttackSkill = function(skill) {
 }
 //恢复技能
 model.useHealSkill = function(skill) {
-	var recordInfo = {id : skill.character.id,type : "heal",targets : [],skillId : skill.skillId,name : skill.name}
+	var recordInfo = skill.getInfo()
+	recordInfo.targets = []
+	if(this.locator.getTargetsNum() == 1){
+		recordInfo.group = true
+	}
 	var targets = this.locator.getTargets(skill.character,skill.targetType)
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died){

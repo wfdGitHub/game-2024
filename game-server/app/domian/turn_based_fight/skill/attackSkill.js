@@ -25,4 +25,14 @@ var model = function(otps,character) {
 	this.premise = otps.premise							//先决条件
 	this.effect = otps.effect							//效果
 }
+model.prototype.getInfo = function() {
+	var info = {
+		type : this.type,
+		id : this.character.id,
+		skillId : this.skillId,
+		name : this.name
+	}
+	return info
+}
+
 module.exports = model

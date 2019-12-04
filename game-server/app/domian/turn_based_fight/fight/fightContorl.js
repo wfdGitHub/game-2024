@@ -24,7 +24,7 @@ model.getCharacterInfo = function(id) {
 			console.error("技能不存在",info.id,info.defaultSkill)
 			info.defaultSkill = false
 		}else{
-			info.defaultSkill = Object.assign({},skillsCfg[info.defaultSkill])
+			info.defaultSkill = Object.assign({skillId : info.defaultSkill},skillsCfg[info.defaultSkill])
 		}
 	}
 	if(info.angerSkill){
@@ -32,7 +32,7 @@ model.getCharacterInfo = function(id) {
 			console.error("技能不存在",info.id,info.angerSkill)
 			info.angerSkill = false
 		}else{
-			info.angerSkill = Object.assign({},skillsCfg[info.angerSkill])
+			info.angerSkill = Object.assign({skillId : info.angerSkill},skillsCfg[info.angerSkill])
 		}
 	}
 	return new character(info)
