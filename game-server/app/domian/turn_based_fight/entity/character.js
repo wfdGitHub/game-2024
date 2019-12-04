@@ -46,12 +46,19 @@ var model = function(otps) {
 	if(otps.angerSkill)
 		this.angerSkill = skillManager.createSkill(otps.angerSkill,this)		//怒气技能
 }
-//行动结束刷新
+//行动开始前刷新
+model.prototype.before = function() {
+	//伤害BUFF刷新
+	for(var i in this.buffs)
+		if(this.buffs[i].type == "dot")
+			this.buffs[i].update()
+}
+//行动结束后刷新
 model.prototype.after = function() {
-	//buff刷新
-	for(var i in this.buffs){
-		this.buffs[i].update()
-	}
+	//状态BUFF刷新
+	for(var i in this.buffs)
+		if(this.buffs[i].type != "dot")
+			this.buffs[i].update()
 }
 //受到伤害
 model.prototype.onHit = function(attacker,info,source) {
@@ -126,9 +133,9 @@ model.prototype.lessHP = function(value) {
 }
 //恢复怒气
 model.prototype.addAnger = function(value) {
-	var realValue = value
+	this.curAnger += value
 	fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id})
-	return realValue
+	return value
 }
 //减少怒气
 model.prototype.lessAnger = function(value) {

@@ -102,12 +102,13 @@ model.prototype.run = function() {
 //回合前结算
 model.prototype.before = function() {
 	fightRecord.push({type : "characterAction",id : this.character.id})
+	this.character.before()
 	this.action()
 }
 //开始行动释放技能
 model.prototype.action = function() {
 	var skill = false
-	if(!this.character.dizzy){
+	if(!this.character.died && !this.character.dizzy){
 		if(this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
 			if(!this.character.silence){
 				skill = this.character.angerSkill

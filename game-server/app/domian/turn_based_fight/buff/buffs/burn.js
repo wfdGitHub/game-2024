@@ -4,6 +4,7 @@ var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var burn = new buffBasic(releaser,character,otps)
 	// console.log("角色"+burn.character.id+"被燃烧!!!!!!")
+	burn.type = "dot"
 	burn.name = "燃烧"
 	burn.damage = Math.floor(burn.buffArg * releaser.getTotalAtt("atk"))
 	burn.refresh = function() {

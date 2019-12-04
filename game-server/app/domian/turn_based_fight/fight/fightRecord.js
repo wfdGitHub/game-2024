@@ -23,10 +23,10 @@ var model = function() {
 					console.log("\033[36m角色"+info.id+"开始行动"+"\033[0m")
 				break
 				case "addAnger":
-					// console.log("角色"+info.id+"增加"+info.realValue+"点怒气("+info.curAnger+"/"+info.needAnger+")")
+					console.log("角色"+info.id+"增加"+info.realValue+"点怒气("+info.curAnger+"/"+info.needAnger+")")
 				break
 				case "lessAnger":
-					// console.log("角色"+info.id+"减少"+info.realValue+"点怒气("+info.curAnger+"/"+info.needAnger+")")
+					console.log("角色"+info.id+"减少"+info.realValue+"点怒气("+info.curAnger+"/"+info.needAnger+")")
 				break
 				case "burnDamage":
 					//燃烧伤害
