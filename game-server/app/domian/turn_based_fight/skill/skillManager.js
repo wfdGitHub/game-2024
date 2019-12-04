@@ -22,15 +22,29 @@ model.createSkill = function(otps,character) {
 }
 //使用技能
 model.useSkill = function(skill) {
+	var targets = []
 	switch(skill.type){
 		case "attack":
-			return this.useAttackSkill(skill)
+			targets = this.useAttackSkill(skill)
 		break
 		case "heal":
-			return this.useHealSkill(skill)
+			targets = this.useHealSkill(skill)
 		break
 		default:
-			return false
+			targets = []
+	}
+	//判断buff
+	if(skill.buffId){
+		targets = this.locator.getBuffTargets(skill.character,skill.buff_tg,targets)
+		for(var i = 0;i < targets.length;i++){
+			if(skill.character.died){
+				break
+			}
+			let target = targets[i]
+			if(this.seeded.random("判断BUFF命中率") < skill.buffRate){
+				buffManager.createBuff(skill.character,target,{buffId : skill.buffId,buffArg : skill.buffArg,duration : skill.duration})
+			}
+		}
 	}
 }
 //伤害技能
@@ -61,12 +75,6 @@ model.useAttackSkill = function(skill) {
 		info = target.onHit(skill.character,info,skill)
 		allDamage += info.realValue
 		recordInfo.targets.push(info)
-		//判断buff
-		if(skill.buffId){
-			if(this.seeded.random("判断BUFF命中率") < skill.buffRate){
-				buffManager.createBuff(skill.character,target,{buffId : skill.buffId,buffArg : skill.buffArg,duration : skill.duration})
-			}
-		}
 		if(info.kill && skill.kill_amp){
 			kill_amp += skill.kill_amp
 		}
@@ -106,6 +114,7 @@ model.useAttackSkill = function(skill) {
 		console.log("追加普通攻击")
 		this.useSkill(skill.character.defaultSkill)
 	}
+	return targets
 }
 //恢复技能
 model.useHealSkill = function(skill) {
@@ -127,12 +136,6 @@ model.useHealSkill = function(skill) {
 		let info = this.formula.calHeal(skill.character,target,value)
 		info = target.onHeal(skill.character,info,skill)
 		recordInfo.targets.push(info)
-		//判断buff
-		if(skill.buffId){
-			if(this.seeded.random("判断BUFF命中率") < skill.buffRate){
-				buffManager.createBuff(skill.character,target,{buffId : skill.buffId,buffArg : skill.buffArg,duration : skill.duration})
-			}
-		}
 	}
 	//判断自身怒气恢复
 	if(skill.anger_s)
@@ -143,6 +146,7 @@ model.useHealSkill = function(skill) {
 			if(!skill.character.team[i].died)
 				skill.character.team[i].addAnger(skill.anger_a)
 	fightRecord.push(recordInfo)
+	return targets
 }
 //技能效果特殊先决条件
 model.checkPremise = function(premise) {

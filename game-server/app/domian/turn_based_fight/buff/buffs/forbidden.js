@@ -1,14 +1,14 @@
 //禁疗
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
-	var forbidden = new buffBasic(releaser,character,otps)
-	// console.log("角色"+forbidden.character.id+"被禁疗!!!!!!")
-	forbidden.name = "禁疗"
-	forbidden.character.forbidden = true
-	forbidden.clear = function() {
-		// console.log(forbidden.character.id+"禁疗结束")
-		forbidden.character.forbidden = false
+	var buff = new buffBasic(releaser,character,otps)
+	// console.log("角色"+buff.character.id+"被禁疗!!!!!!")
+	buff.name = "禁疗"
+	buff.character.forbidden = true
+	buff.clear = function() {
+		// console.log(buff.character.id+"禁疗结束")
+		buff.character.forbidden = false
 	}
-	return forbidden
+	return buff
 }
 module.exports = model

@@ -91,6 +91,37 @@ model.prototype.getTargets = function(character,targetType) {
 			return []
 	}
 }
+//获取BUFF目标
+model.prototype.getBuffTargets = function(character,targetType,targets) {
+	switch(targetType){
+		case "skill_targets":
+			//技能目标
+			return targets
+		case "team_self":
+			return [character]
+		case "team_all":
+			//己方全体
+			return	this.getTeamAll(character)
+		case "team_horizontal_front":
+			//己方前排
+			return	this.getTeamHorizontalFront(character)
+		case "team_horizontal_back":
+			//己方后排
+			return	this.getTeamHorizontalBack(character)
+		case "enemy_horizontal_front":
+			//敌方前排
+			return this.getEnemyHorizontalFront(character)
+		case "enemy_horizontal_back":
+			//敌方后排
+			return this.getEnemyHorizontalBack(character)
+		case "enemy_all":
+			//敌方全体
+			return	this.getEnemyAll(character)
+		default :
+			console.error("BuffTarget  error ",targetType)
+			return []
+	}
+}
 //获取目标类型对应目标数量
 model.prototype.getTargetsNum = function(targetType) {
 	switch(targetType){

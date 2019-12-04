@@ -2,19 +2,19 @@
 var fightRecord = require("../../fight/fightRecord.js")
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
-	var poison = new buffBasic(releaser,character,otps)
-	// console.log("角色"+poison.character.id+"被中毒!!!!!!")
-	poison.type = "dot"
-	poison.name = "中毒"
-	poison.damage = Math.floor(poison.buffArg * releaser.getTotalAtt("atk"))
-	poison.refresh = function() {
-		let info = {type : "poisonDamage",value : poison.damage ,id : poison.character.id}
-		info = poison.character.onHit(poison.releaser,info)
+	var buff = new buffBasic(releaser,character,otps)
+	// console.log("角色"+buff.character.id+"被中毒!!!!!!")
+	buff.type = "dot"
+	buff.name = "中毒"
+	buff.damage = Math.floor(buff.buffArg * releaser.getTotalAtt("atk"))
+	buff.refresh = function() {
+		let info = {type : "poisonDamage",value : buff.damage ,id : buff.character.id}
+		info = buff.character.onHit(buff.releaser,info)
 		fightRecord.push(info)
 	}
-	poison.clear = function() {
-		// console.log(poison.character.id+"中毒结束")
+	buff.clear = function() {
+		// console.log(buff.character.id+"中毒结束")
 	}
-	return poison
+	return buff
 }
 module.exports = model

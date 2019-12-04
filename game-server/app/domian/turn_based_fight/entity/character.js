@@ -33,7 +33,7 @@ var model = function(otps) {
 	this.died = false			//死亡状态
 	if(!this.maxHP || !this.hp)
 		this.died = true
-	this.buffs = []					//buff列表
+	this.buffs = {}					//buff列表
 	this.dizzy = false				//眩晕
 	this.silence = false			//沉默
 	this.disarm = false				//麻痹
@@ -154,6 +154,10 @@ model.prototype.lessAnger = function(value) {
 //获取属性
 model.prototype.getTotalAtt = function(name) {
 	var value = this[name] || 0
+	if(this.buffs[name]){
+		value += this.buffs[name].getValue()
+		console.log("存在属性BUFF",value)
+	}
 	return value
 }
 //获取信息
@@ -192,7 +196,11 @@ model.prototype.getSimpleInfo = function() {
 	return info
 }
 model.prototype.addBuff = function(releaser,buff) {
-	this.buffs[buff.buffId] = buff
+	if(this.buffs[buff.buffId]){
+		this.buffs[buff.buffId].overlay(releaser,buff)
+	}else{
+		this.buffs[buff.buffId] = buff
+	}
 }
 model.prototype.removeBuff = function(buffId) {
     if(this.buffs[buffId]){

@@ -3,7 +3,11 @@ var atkTeam = [404030,404030,404030,404030,404030,404030]
 var defTeam = [404030,404030,404030,404030,404030,404030]
 for(var i = 0;i < 6;i++){
 	atkTeam[i] = fightContorl.getCharacterInfo(atkTeam[i])
-	// atkTeam[i].angerSkill.kill_amp = 2
+	atkTeam[i].angerSkill.buffId = "amplify"
+	atkTeam[i].angerSkill.buff_tg = "enemy_all"
+	atkTeam[i].angerSkill.buffArg = 0.1
+	atkTeam[i].angerSkill.duration = 1
+	atkTeam[i].angerSkill.buffRate = 1
 	defTeam[i] = fightContorl.getCharacterInfo(defTeam[i])
 	// defTeam[i].angerSkill.kill_amp = 2
 }

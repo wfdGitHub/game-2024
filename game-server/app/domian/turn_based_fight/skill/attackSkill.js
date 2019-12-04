@@ -15,6 +15,7 @@ var model = function(otps,character) {
 	this.add_d_s = otps.add_d_s							//追加一次普通攻击(默认技能)
 	this.thr_anger = otps.thr_anger						//若攻击目标大于三人则增加两点怒气
 	this.buffId = otps.buffId							//附加buffId
+	this.buff_tg = otps.buff_tg || "skill_targets"		//BUFF目标
 	this.buffArg = otps.buffArg							//buff参数
 	this.duration = otps.duration						//buff持续回合数
 	this.buffRate = otps.buffRate						//buff概率
