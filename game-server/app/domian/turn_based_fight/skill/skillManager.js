@@ -73,6 +73,15 @@ model.useSkill = function(skill) {
 		for(var i = 0;i < skill.character.team.length;i++)
 			if(!skill.character.team[i].died)
 				skill.character.team[i].addAnger(skill.anger_a,skill.skillId)
+	//判断怒气降低
+	if(skill.less_anger){
+		for(var i = 0;i < targets.length;i++){
+			if(skill.character.died){
+				break
+			}
+			target.lessAnger(skill.less_anger,skill.skillId)
+		}
+	}
 }
 //伤害技能
 model.useAttackSkill = function(skill) {
@@ -108,10 +117,6 @@ model.useAttackSkill = function(skill) {
 		recordInfo.targets.push(info)
 		if(info.kill && skill.kill_amp){
 			kill_amp += skill.kill_amp
-		}
-		//判断怒气降低
-		if(skill.less_anger){
-			target.lessAnger(skill.less_anger,skill.skillId)
 		}
 	}
 	if(kill_amp){
