@@ -33,14 +33,27 @@ model.useSkill = function(skill) {
 		default:
 			targets = []
 	}
+	//判断燃烧状态附加BUFF
+	if(skill.burnBuffChange){
+		for(var i = 0;i < targets.length;i++){
+			if(skill.character.died || !targets[i].buffs["burn"]){
+				break
+			}
+			var burnBuffInfo = JSON.parse(skill.burnBuffChange)
+			let target = targets[i]
+			if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
+				buffManager.createBuff(skill.character,target,{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			}
+		}
+	}
 	//判断buff
 	if(skill.buffId){
-		targets = this.locator.getBuffTargets(skill.character,skill.buff_tg,targets)
-		for(var i = 0;i < targets.length;i++){
+		var buffTargets = this.locator.getBuffTargets(skill.character,skill.buff_tg,targets)
+		for(var i = 0;i < buffTargets.length;i++){
 			if(skill.character.died){
 				break
 			}
-			let target = targets[i]
+			let target = buffTargets[i]
 			if(this.seeded.random("判断BUFF命中率") < skill.buffRate){
 				buffManager.createBuff(skill.character,target,{buffId : skill.buffId,buffArg : skill.buffArg,duration : skill.duration})
 			}

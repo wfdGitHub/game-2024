@@ -23,8 +23,8 @@ var model = function(otps,character) {
 	this.lessAmp = otps.lessAmp 						//目标每减少一个伤害加成比例
 	this.kill_amp = otps.kill_amp						//每击杀一个目标提升伤害
 	this.self_heal = otps.self_heal 					//自身生命值恢复比例
-	this.premise = otps.premise							//先决条件
-	this.effect = otps.effect							//效果
+	this.burnAttChange = otps.burnAttChange				//灼烧状态属性修改
+	this.burnBuffChange = otps.burnBuffChange			//灼烧状态附加BUFF
 }
 model.prototype.getInfo = function() {
 	var info = {

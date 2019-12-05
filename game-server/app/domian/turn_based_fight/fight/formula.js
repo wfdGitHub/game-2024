@@ -4,21 +4,28 @@ var formula = function(seeded) {
 //伤害计算
 formula.prototype.calDamage = function(attacker, target, skill,lessAmp) {
 	var info = {type : "damage",value : 0}
+	var tmpAmplify = 0
+	var tmpCrit = 0
+	if(target.buffs["burn"] && skill.burnAttChange){
+		var attInfo = JSON.parse(skill.burnAttChange)
+		tmpAmplify += attInfo["tmpAmplify"] || 0
+		tmpCrit += attInfo["crit"] || 0
+	}
 	//命中判断
-	var hitRate = 8500 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
+	var hitRate = 10000 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
 	if(this.seeded.random("闪避判断") * 10000  > hitRate){
 		info.miss = true
 		return info
 	}
 	//暴击判断
-	var crit = 1000 + attacker.getTotalAtt("crit") - target.getTotalAtt("critDef")
+	var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit
 	if(this.seeded.random("暴击判断") * 10000  < crit){
 		info.crit = true
 	}
 	//伤害计算
 	var atk = attacker.getTotalAtt("atk")
 	var def = target.getTotalAtt(skill.damageType+"Def")
-	info.value = Math.round((atk - def) * skill.mul * (1 + (attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction"))))
+	info.value = Math.round((atk - def) * skill.mul * (1 + (attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction") + tmpAmplify)))
 	if(lessAmp){
 		info.value = Math.round(info.value * (1+lessAmp))
 	}

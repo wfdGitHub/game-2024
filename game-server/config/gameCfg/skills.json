@@ -820,7 +820,8 @@
     "des": "对敌方随机3人造成155%法术伤害，如果目标处于灼烧状态，有20%概率附加麻痹，持续1回合\\n<font color='#827c76'>【麻痹】：携带该状态的武将无法进行普通攻击，可以释放技能</font>",
     "damageType": "mag",
     "targetType": "enemy_3",
-    "mul": 1.55
+    "mul": 1.55,
+    "burnBuffChange": "{\"buffId\":\"disarm\",\"buffRate\":0.2,\"duration\":1}"
   },
   "3050101": {
     "name": "承志",
@@ -836,7 +837,8 @@
     "des": "对敌方后排造成155%物理伤害，如果目标处于灼烧状态，造成的伤害额外增加60%",
     "damageType": "phy",
     "targetType": "enemy_horizontal_back",
-    "mul": 1.55
+    "mul": 1.55,
+    "burnAttChange": "{tmpAmplify:0.6}"
   },
   "3050201": {
     "name": "英略",
@@ -903,7 +905,8 @@
     "des": "对敌方前排造成155%法术伤害，如果目标处于灼烧状态，有40%概率附加麻痹，持续1回合\\n<font color='#827c76'>【麻痹】：携带该状态的武将无法进行普通攻击，可以释放技能</font>",
     "damageType": "mag",
     "targetType": "enemy_horizontal_front",
-    "mul": 1.55
+    "mul": 1.55,
+    "burnBuffChange": "{\"buffId\":\"disarm\",\"buffRate\":0.4,\"duration\":1}"
   },
   "3050601": {
     "name": "笃义",
@@ -919,7 +922,8 @@
     "des": "对敌方全体造成92%的物理伤害，如果目标处于灼烧状态，有30%概率附加眩晕，持续1回合\\n<font color='#827c76'>【眩晕】：携带该状态的武将无法行动</font>",
     "damageType": "phy",
     "targetType": "enemy_all",
-    "mul": 0.92
+    "mul": 0.92,
+    "burnBuffChange": "{\"buffId\":\"dizzy\",\"buffRate\":0.3,\"duration\":1}"
   },
   "3050701": {
     "name": "帝相",
@@ -992,7 +996,8 @@
     "des": "对敌方前排造成155%法术伤害，如果目标处于灼烧状态，造成的伤害增加50%",
     "damageType": "mag",
     "targetType": "enemy_horizontal_front",
-    "mul": 1.55
+    "mul": 1.55,
+    "burnAttChange": "{tmpAmplify:0.5}"
   },
   "3051101": {
     "name": "智变",
@@ -1008,7 +1013,8 @@
     "des": "对敌方单体造成315%的法术伤害，如果目标处于灼烧状态，本次攻击的暴击几率额外增加50%",
     "damageType": "mag",
     "targetType": "enemy_normal",
-    "mul": 3.15
+    "mul": 3.15,
+    "burnAttChange": "{crit:5000}"
   },
   "3051201": {
     "name": "缔盟",
@@ -1024,7 +1030,8 @@
     "des": "对敌方纵排造成212%的法术伤害，如果目标处于灼烧状态，有60%的概率附加晕眩，持续1回合\\n<font color='#827c76'>【眩晕】：携带该状态的武将无法行动</font>",
     "damageType": "mag",
     "targetType": "enemy_vertical",
-    "mul": 2.12
+    "mul": 2.12,
+    "burnBuffChange": "{\"buffId\":\"dizzy\",\"buffRate\":0.6,\"duration\":1}"
   },
   "4010101": {
     "name": "火球",
