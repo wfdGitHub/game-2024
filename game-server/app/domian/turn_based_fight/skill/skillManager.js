@@ -85,7 +85,7 @@ model.useSkill = function(skill) {
 model.useAttackSkill = function(skill) {
 	var recordInfo = skill.getInfo()
 	recordInfo.targets = []
-	if(this.locator.getTargetsNum() == 1){
+	if(this.locator.getTargetsNum(skill.targetType) > 1){
 		recordInfo.group = true
 	}
 	var targets = this.locator.getTargets(skill.character,skill.targetType)
@@ -150,7 +150,7 @@ model.useAttackSkill = function(skill) {
 model.useHealSkill = function(skill) {
 	var recordInfo = skill.getInfo()
 	recordInfo.targets = []
-	if(this.locator.getTargetsNum() == 1){
+	if(this.locator.getTargetsNum(skill.targetType) > 1){
 		recordInfo.group = true
 	}
 	var targets = this.locator.getTargets(skill.character,skill.targetType)
