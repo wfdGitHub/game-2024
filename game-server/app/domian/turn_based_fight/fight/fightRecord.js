@@ -17,7 +17,7 @@ var model = function() {
 			let info = recordList.shift()
 			switch(info.type){
 				case "nextRound":
-					console.log("\033[35m第"+info.round+"轮开始\033[0m")
+					console.log("\n\033[35m第"+info.round+"轮开始\033[0m\n")
 				break
 				case "characterAction":
 					console.log("\033[36m角色"+info.id+"开始行动"+"\033[0m")
@@ -79,6 +79,12 @@ var model = function() {
 					}
 					console.log(str)
 				break
+				case "self_heal":
+					//自身生命值恢复
+					var str = "\033[36m角色"+info.id+"自身生命值恢复\033[0m"+info.value
+					str += "\t剩余"+info.curValue+"/"+info.maxHP+"\033[0m"
+					console.log(str)
+				break
 				case "createBuff":
 					console.log("角色"+info.releaser+"对角色"+info.character+"施放 "+info.name)
 				break
@@ -89,7 +95,7 @@ var model = function() {
 					console.log("战斗结束")
 				break
 				default:
-					console.error("类型未定义 : ",info.type)
+					console.log("类型未定义 : ",info.type)
 			}
 		}
 	}

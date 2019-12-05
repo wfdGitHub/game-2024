@@ -886,7 +886,8 @@
     "des": "对敌方单体造成315%的物理伤害，并回复自身生命上限30%的生命",
     "damageType": "phy",
     "targetType": "enemy_normal",
-    "mul": 3.15
+    "mul": 3.15,
+    "self_heal": 0.3
   },
   "3050501": {
     "name": "秋水",

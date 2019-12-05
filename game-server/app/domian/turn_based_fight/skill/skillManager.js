@@ -46,6 +46,12 @@ model.useSkill = function(skill) {
 			}
 		}
 	}
+	//判断自身生命值恢复
+	if(skill.self_heal){
+		var recordInfo =  skill.character.onHeal(skill.character,{type : "heal",value : skill.character.maxHP * skill.self_heal},skill)
+		recordInfo.type = "self_heal"
+		fightRecord.push(recordInfo)
+	}
 }
 //伤害技能
 model.useAttackSkill = function(skill) {

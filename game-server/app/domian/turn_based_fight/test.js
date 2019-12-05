@@ -1,6 +1,6 @@
 var fightContorl = require("./fight/fightContorl.js")
-var atkTeam = [404030,404030,404030,404030,404030,404030]
-var defTeam = [404030,404030,404030,404030,404030,404030]
+var atkTeam = [305040,305040,305040,305040,305040,305040]
+var defTeam = [305040,305040,305040,305040,305040,305040]
 for(var i = 0;i < 6;i++){
 	atkTeam[i] = fightContorl.getCharacterInfo(atkTeam[i])
 	// atkTeam[i].angerSkill.buffId = "reduction"
@@ -8,7 +8,6 @@ for(var i = 0;i < 6;i++){
 	// atkTeam[i].angerSkill.buffArg = 0.5
 	// atkTeam[i].angerSkill.duration = 1
 	// atkTeam[i].angerSkill.buffRate = 1
-	atkTeam[i].defaultSkill.less_anger = 3
 	defTeam[i] = fightContorl.getCharacterInfo(defTeam[i])
 	// defTeam[i].angerSkill.kill_amp = 2
 }
