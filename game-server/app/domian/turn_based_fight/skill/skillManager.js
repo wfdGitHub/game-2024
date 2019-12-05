@@ -65,6 +65,14 @@ model.useSkill = function(skill) {
 		recordInfo.type = "self_heal"
 		fightRecord.push(recordInfo)
 	}
+	//判断自身怒气恢复
+	if(skill.anger_s)
+		skill.character.addAnger(skill.anger_s,skill.skillId)
+	//判断全队怒气恢复
+	if(skill.anger_a)
+		for(var i = 0;i < skill.character.team.length;i++)
+			if(!skill.character.team[i].died)
+				skill.character.team[i].addAnger(skill.anger_a,skill.skillId)
 }
 //伤害技能
 model.useAttackSkill = function(skill) {
@@ -103,24 +111,16 @@ model.useAttackSkill = function(skill) {
 		}
 		//判断怒气降低
 		if(skill.less_anger){
-			target.lessAnger(skill.less_anger)
+			target.lessAnger(skill.less_anger,skill.skillId)
 		}
 	}
 	if(kill_amp){
 		skill.character.amplify += skill.kill_amp
 	}
-	//判断自身怒气恢复
-	if(skill.anger_s)
-		skill.character.addAnger(skill.anger_s)
-	//判断全队怒气恢复
-	if(skill.anger_a)
-		for(var i = 0;i < skill.character.team.length;i++)
-			if(!skill.character.team[i].died)
-				skill.character.team[i].addAnger(skill.anger_a)
 	//判断攻击目标大于三人则增加两点怒气
 	if(skill.thr_anger){
 		if(targets.length >= 3){
-			skill.character.addAnger(2)
+			skill.character.addAnger(2,skill.skillId)
 		}
 	}
 	//伤害值转生命判断
@@ -168,14 +168,6 @@ model.useHealSkill = function(skill) {
 		info = target.onHeal(skill.character,info,skill)
 		recordInfo.targets.push(info)
 	}
-	//判断自身怒气恢复
-	if(skill.anger_s)
-		skill.character.addAnger(skill.anger_s)
-	//判断全队怒气恢复
-	if(skill.anger_a)
-		for(var i = 0;i < skill.character.team.length;i++)
-			if(!skill.character.team[i].died)
-				skill.character.team[i].addAnger(skill.anger_a)
 	fightRecord.push(recordInfo)
 	return targets
 }
