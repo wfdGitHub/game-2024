@@ -1248,7 +1248,8 @@
     "buffId": "reduction",
     "buff_tg": "team_self",
     "buffArg": 0.3,
-    "duration": 1
+    "duration": 1,
+    "buffRate": 1
   },
   "4050501": {
     "name": "觊玺",
