@@ -839,7 +839,7 @@
     "damageType": "phy",
     "targetType": "enemy_horizontal_back",
     "mul": 1.55,
-    "burnAttChange": "{tmpAmplify:0.6}"
+    "burnAttChange": "{\"tmpAmplify\":0.6}"
   },
   "3050201": {
     "name": "英略",
@@ -998,7 +998,7 @@
     "damageType": "mag",
     "targetType": "enemy_horizontal_front",
     "mul": 1.55,
-    "burnAttChange": "{tmpAmplify:0.5}"
+    "burnAttChange": "{\"tmpAmplify\":0.5}"
   },
   "3051101": {
     "name": "智变",
@@ -1015,7 +1015,7 @@
     "damageType": "mag",
     "targetType": "enemy_normal",
     "mul": 3.15,
-    "burnAttChange": "{crit:5000}"
+    "burnAttChange": "{\"crit\":5000}"
   },
   "3051201": {
     "name": "缔盟",
