@@ -6,8 +6,8 @@ formula.prototype.calDamage = function(attacker, target, skill,lessAmp) {
 	var info = {type : "damage",value : 0}
 	var tmpAmplify = 0
 	var tmpCrit = 0
-	if(target.buffs["burn"] && skill.burnAttChange){
-		var attInfo = JSON.parse(skill.burnAttChange)
+	if(target.buffs["burn"] && skill.burn_att_change){
+		var attInfo = JSON.parse(skill.burn_att_change)
 		tmpAmplify += attInfo["tmpAmplify"] || 0
 		tmpCrit += attInfo["crit"] || 0
 	}

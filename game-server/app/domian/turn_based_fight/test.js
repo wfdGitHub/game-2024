@@ -1,6 +1,6 @@
 var fightContorl = require("./fight/fightContorl.js")
-var atkTeam = [304030,304040,304030,304040,304030,304030]
-var defTeam = [305040,305040,305040,305040,305040,305040]
+var atkTeam = [405040,405040,405040,405040,405040,405040]
+var defTeam = [405040,405040,405040,405040,405040,405040]
 for(var i = 0;i < 6;i++){
 	atkTeam[i] = fightContorl.getCharacterInfo(atkTeam[i])
 	// atkTeam[i].angerSkill.buff_tg = "team_all"

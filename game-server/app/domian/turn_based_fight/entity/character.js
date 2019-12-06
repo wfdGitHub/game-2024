@@ -29,6 +29,67 @@ var model = function(otps) {
 	this.healAdd = otps["healAdd"] || 0			//被治疗加成
 	this.needAnger = 4							//技能所需怒气值
 	this.curAnger = otps["curAnger"] || 0		//当前怒气值
+	//=========属性加成=======//
+	this.self_adds = {}							//自身百分比加成属性
+	this.team_adds = {}							//全队百分比加成属性
+	//=========特殊属性=======//
+	this.buffRate								//buff概率   若技能存在buff  以此代替buff本身概率
+	this.buffArg								//buff参数   若技能存在buff  以此代替buff本身参数
+	this.buffDuration							//buff持续时间   若技能存在buff  以此代替buff本身持续时间
+
+
+	this.kill_anger = 0							//直接伤害击杀目标回复怒气
+	this.kill_amp = 0							//直接伤害每击杀一个目标提升伤害
+	this.kill_crit = 0							//直接伤害每击杀一个目标提升暴击
+	this.kill_add_d_s = false					//直接伤害击杀目标后追加普通攻击
+	this.kill_heal = 0							//直接伤害击杀目标后，恢复自身生命值上限
+	this.kill_must_crit = false					//直接伤害击杀目标后，下回合攻击必定暴击
+
+	this.anger_attack_amp = 0					//技能伤害加成
+	this.anger_heal_amp = 0						//治疗量加成
+	this.free_anger = 0							//释放技能不消耗怒气值概率
+	this.attack_turn_rate = 0					//技能伤害转化成生命值百分比
+	this.attack_turn_tg = 0						//技能伤害转化的生命值作用目标
+	this.hit_turn_rate = 0						//受到直接伤害转化成生命值百分比
+	this.hit_turn_tg = 0						//受到直接伤害转化的生命值作用目标
+	this.add_d_s = false						//释放技能后追加普通攻击
+	this.add_d_s_crit = false					//追加普攻必定暴击
+	this.action_anger = 0						//行动后回复自身怒气
+	this.low_hp_amp = 0							//战斗中自身生命每降低10%，伤害加成比例
+	this.low_hp_crit = 0						//战斗中自身生命每降低10%，暴击加成比例
+	this.enemy_died_amp = 0						//敌方每阵亡一人，伤害加成比例
+	this.lessAmp = 0							//目标每减少一个伤害加成比例
+	this.resurgence_team = false				//复活本方第1位阵亡的武将，并恢复其50%的生命，每场战斗只可触发1次
+
+	this.skill_later_buff = false				//释放技能后附加buff
+	this.skill_anger_s = 0						//释放技能后恢复自身怒气
+	this.skill_anger_a = 0						//释放技能后恢复全体队友怒气
+	this.skill_later_skill = false				//释放技能后后追加技能
+	this.skill_less_anger = 0					//释放技能后降低目标怒气
+	this.skill_anger_back = 0					//释放技能后回复己方后排怒气
+	this.skill_anger_first = 0					//释放技能后，回复当前本方阵容站位最靠前的武将怒气
+
+	this.burn_hit_reduction = 0					//被灼烧状态敌人直接伤害减免
+	this.burn_turn_heal = 0						//释放技能时，如果目标处于灼烧状态，技能直接伤害的百分比转化为生命治疗自己
+	this.burn_att_change = false				//灼烧状态属性修改
+	this.burn_buff_change = false				//灼烧状态附加BUFF
+
+	this.hit_rebound = 0						//受到直接伤害反弹比例
+	this.hit_buff = false						//受到伤害给攻击者附加BUFF
+	this.hit_less_anger = 0						//受到普通攻击后，降低攻击自己的武将怒气
+
+	this.first_crit = false						//首回合必定暴击
+	this.first_amp = 0							//首回合伤害加成
+	this.first_buff = false						//战斗附加BUFF
+
+	this.normal_later_buff = false				//普攻后附加BUFF
+	this.normal_later_sRate = 0					//普攻后追加技能概率
+	this.normal_add_anger = 0					//普攻后恢复自身怒气
+	this.normal_less_anger = 0					//普攻后降低目标怒气
+	this.normal_attack_amp = 0					//普攻伤害加成
+
+	this.died_use_anger = false					//死亡时释放一次技能
+
 	//=========状态=======//
 	this.died = false			//死亡状态
 	if(!this.maxHP || !this.hp)
@@ -48,18 +109,22 @@ var model = function(otps) {
 		this.angerSkill.isAnger = true
 	}
 }
+//计算升阶天赋加成
+model.prototype.calTalent = function() {
+
+}
 //行动开始前刷新
 model.prototype.before = function() {
 	//伤害BUFF刷新
 	for(var i in this.buffs)
-		if(this.buffs[i].type == "dot")
+		if(this.buffs[i].damageType == "dot")
 			this.buffs[i].update()
 }
 //行动结束后刷新
 model.prototype.after = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
-		if(this.buffs[i].type != "dot")
+		if(this.buffs[i].damageType != "dot")
 			this.buffs[i].update()
 }
 //受到伤害
@@ -107,7 +172,8 @@ model.prototype.onDie = function() {
 }
 //击杀目标
 model.prototype.kill = function(target) {
-	// console.log(this.name+"击杀"+target.name)
+	console.log(this.name+"击杀"+target.name)
+
 }
 
 //恢复血量

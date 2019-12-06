@@ -34,12 +34,12 @@ model.useSkill = function(skill) {
 			targets = []
 	}
 	//判断燃烧状态附加BUFF
-	if(skill.burnBuffChange){
+	if(skill.burn_buff_change){
 		for(var i = 0;i < targets.length;i++){
 			if(targets[i].died ||!targets[i].buffs["burn"]){
 				break
 			}
-			var burnBuffInfo = JSON.parse(skill.burnBuffChange)
+			var burnBuffInfo = JSON.parse(skill.burn_buff_change)
 			if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
 				buffManager.createBuff(skill.character,targets[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 			}
@@ -64,20 +64,20 @@ model.useSkill = function(skill) {
 		fightRecord.push(recordInfo)
 	}
 	//判断自身怒气恢复
-	if(skill.anger_s)
-		skill.character.addAnger(skill.anger_s,skill.skillId)
+	if(skill.skill_anger_s)
+		skill.character.addAnger(skill.skill_anger_s,skill.skillId)
 	//判断全队怒气恢复
-	if(skill.anger_a)
+	if(skill.skill_anger_a)
 		for(var i = 0;i < skill.character.team.length;i++)
 			if(!skill.character.team[i].died)
-				skill.character.team[i].addAnger(skill.anger_a,skill.skillId)
+				skill.character.team[i].addAnger(skill.skill_anger_a,skill.skillId)
 	//判断怒气降低
-	if(skill.less_anger){
+	if(skill.skill_less_anger){
 		for(var i = 0;i < targets.length;i++){
 			if(targets[i].died){
 				break
 			}
-			targets[i].lessAnger(skill.less_anger,skill.skillId)
+			targets[i].lessAnger(skill.skill_less_anger,skill.skillId)
 		}
 	}
 }

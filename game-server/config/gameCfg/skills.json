@@ -1225,7 +1225,7 @@
   },
   "4050302": {
     "name": "救济苍生",
-    "type": "attack",
+    "type": "heal",
     "des": "为己方全体治疗90%攻击的生命",
     "targetType": "team_all",
     "mul": 0.9
