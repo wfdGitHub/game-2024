@@ -109,11 +109,9 @@ model.prototype.before = function() {
 model.prototype.action = function() {
 	var skill = false
 	if(!this.character.died && !this.character.dizzy){
-		if(this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
-			if(!this.character.silence){
-				skill = this.character.angerSkill
-				this.character.lessAnger(this.character.needAnger)
-			}
+		if(!this.character.silence && this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
+			skill = this.character.angerSkill
+			this.character.lessAnger(this.character.needAnger)
 		}else{
 			if(!this.character.disarm){
 				skill = this.character.defaultSkill
