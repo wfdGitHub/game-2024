@@ -10,23 +10,25 @@ var model = function(otps) {
 	this.camp = ""				//攻方或守方
 	this.team = []				//所在阵容
 	this.enemy = []				//敌对阵容
-	//=========基础属性=======//
 	this.level = otps["level"] || 0				//等级
-	this.maxHP = otps["maxHP"] || 0				//最大生命值
-	this.hp = this.maxHP						//当前生命值
-	this.atk = otps["atk"] || 0					//攻击力
-	this.phyDef = otps["phyDef"] || 0			//物理防御力
-	this.magDef = otps["magDef"] || 0			//法术防御力
-	this.crit = otps["crit"] || 0				//暴击几率
-	this.critDef = otps["critDef"] || 0			//抗暴几率
-	this.slay = otps["slay"] || 0				//爆伤加成
-	this.slayDef = otps["slayDef"] || 0			//爆伤减免
-	this.hitRate = otps["hitRate"] || 0			//命中率
-	this.dodgeRate = otps["dodgeRate"] || 0		//闪避率
-	this.amplify = otps["amplify"] || 0			//伤害加深
-	this.reduction = otps["reduction"] || 0		//伤害减免
-	this.healRate = otps["healRate"] || 0		//治疗暴击几率
-	this.healAdd = otps["healAdd"] || 0			//被治疗加成
+	//=========基础属性=======//
+	this.attInfo = {}
+	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
+	this.attInfo.atk = otps["atk"] || 0					//攻击力
+	this.attInfo.phyDef = otps["phyDef"] || 0			//物理防御力
+	this.attInfo.magDef = otps["magDef"] || 0			//法术防御力
+	this.attInfo.crit = otps["crit"] || 0				//暴击几率
+	this.attInfo.critDef = otps["critDef"] || 0			//抗暴几率
+	this.attInfo.slay = otps["slay"] || 0				//爆伤加成
+	this.attInfo.slayDef = otps["slayDef"] || 0			//爆伤减免
+	this.attInfo.hitRate = otps["hitRate"] || 0			//命中率
+	this.attInfo.dodgeRate = otps["dodgeRate"] || 0		//闪避率
+	this.attInfo.amplify = otps["amplify"] || 0			//伤害加深
+	this.attInfo.reduction = otps["reduction"] || 0		//伤害减免
+	this.attInfo.healRate = otps["healRate"] || 0		//治疗暴击几率
+	this.attInfo.healAdd = otps["healAdd"] || 0			//被治疗加成
+
+	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
 	this.needAnger = 4							//技能所需怒气值
 	this.curAnger = otps["curAnger"] || 0		//当前怒气值
 	//=========属性加成=======//
@@ -91,9 +93,7 @@ var model = function(otps) {
 	this.died_use_anger = false					//死亡时释放一次技能
 
 	//=========状态=======//
-	this.died = false			//死亡状态
-	if(!this.maxHP || !this.hp)
-		this.died = true
+	this.died = this.attInfo.maxHP && this.attInfo.hp ? false : true 	//死亡状态
 	this.buffs = {}					//buff列表
 	this.dizzy = false				//眩晕
 	this.silence = false			//沉默
@@ -101,6 +101,8 @@ var model = function(otps) {
 	this.forbidden = false			//禁疗
 	this.poison = false				//中毒
 	this.burn = false				//燃烧
+	//=========加成=======//
+	this.calTalent(otps)
 	//=========技能=======//
 	if(otps.defaultSkill)
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
@@ -109,9 +111,41 @@ var model = function(otps) {
 		this.angerSkill.isAnger = true
 	}
 }
+//百分比属性加成
+model.prototype.calAttAdd = function(team_adds) {
+	var info = Object.assign({},this.self_adds)
+	for(var i in team_adds){
+		if(!info[i]){
+			info[i] = team_adds[i]
+		}else{
+			info[i] += team_adds[i]
+		}
+	}
+	for(var i in info){
+		this.attInfo[i] += this.attInfo[i] * info[i]
+	}
+	this.attInfo.hp = this.attInfo.maxHP
+}
 //计算升阶天赋加成
-model.prototype.calTalent = function() {
-
+model.prototype.calTalent = function(otps) {
+	if(otps.self_adds){
+		for(var i in otps.self_adds){
+			if(!this.self_adds[i]){
+				this.self_adds[i] = otps.self_adds[i]
+			}else{
+				this.self_adds[i] += otps.self_adds[i]
+			}
+		}
+	}
+	if(otps.team_adds){
+		for(var i in otps.team_adds){
+			if(!this.team_adds[i]){
+				this.team_adds[i] = otps.team_adds[i]
+			}else{
+				this.team_adds[i] += otps.team_adds[i]
+			}
+		}
+	}
 }
 //行动开始前刷新
 model.prototype.before = function() {
@@ -140,8 +174,8 @@ model.prototype.onHit = function(attacker,info,source) {
 		info.realValue = 0
 	}else{
 		info.realValue = this.lessHP(info.value)
-		info.curValue = this.hp
-		info.maxHP = this.maxHP
+		info.curValue = this.attInfo.hp
+		info.maxHP = this.attInfo.maxHP
 		if(this.died){
 			info.kill = true
 			attacker.kill(this)
@@ -160,42 +194,42 @@ model.prototype.onHeal = function(attacker,info,source) {
 		info.value = Math.floor(info.value * (1 + this.healAdd / 10000))
 		info.realValue = this.addHP(info.value)
 	}
-	info.curValue = this.hp
-	info.maxHP = this.maxHP
+	info.curValue = this.attInfo.hp
+	info.maxHP = this.attInfo.maxHP
 	return info
 }
 //角色死亡
 model.prototype.onDie = function() {
 	// console.log(this.name+"死亡")
-	this.hp = 0
+	this.attInfo.hp = 0
 	this.died = true
 }
 //击杀目标
 model.prototype.kill = function(target) {
-	console.log(this.name+"击杀"+target.name)
+	// console.log(this.name+"击杀"+target.name)
 
 }
 
 //恢复血量
 model.prototype.addHP = function(value) {
 	var realValue = value
-	if((this.hp + value) > this.maxHP){
-		realValue = this.maxHP - this.hp
-		this.hp = this.maxHP
+	if((this.attInfo.hp + value) > this.attInfo.maxHP){
+		realValue = this.attInfo.maxHP - this.attInfo.hp
+		this.attInfo.hp = this.attInfo.maxHP
 	}else{
-		this.hp += value
+		this.attInfo.hp += value
 	}
-	// console.log(this.name + "addHP" , value,realValue,"curHP : ",this.hp+"/"+this.maxHP)
+	// console.log(this.name + "addHP" , value,realValue,"curHP : ",this.attInfo.hp+"/"+this.attInfo.maxHP)
 	return realValue
 }
 //扣除血量
 model.prototype.lessHP = function(value) {
 	var realValue = value
-	if((this.hp - value) <= 0){
-		realValue = this.hp
+	if((this.attInfo.hp - value) <= 0){
+		realValue = this.attInfo.hp
 		this.onDie()
 	}else{
-		this.hp -= value
+		this.attInfo.hp -= value
 	}
 	return realValue
 }
@@ -219,7 +253,7 @@ model.prototype.lessAnger = function(value,skillId) {
 }
 //获取属性
 model.prototype.getTotalAtt = function(name) {
-	var value = this[name] || 0
+	var value = this.attInfo[name] || 0
 	if(this.buffs[name]){
 		value += this.buffs[name].getValue()
 	}
@@ -234,21 +268,21 @@ model.prototype.getInfo = function() {
 	info.definition = this.definition
 	info.index = this.index
 	info.level = this.level
-	info.maxHP = this.maxHP
-	info.hp = this.hp
-	info.atk = this.atk
-	info.phyDef = this.phyDef
-	info.magDef = this.magDef
-	info.crit = this.crit
-	info.critDef = this.critDef
-	info.slay = this.slay
-	info.slayDef = this.slayDef
-	info.hitRate = this.hitRate
-	info.dodgeRate = this.dodgeRate
-	info.amplify = this.amplify
-	info.reduction = this.reduction
-	info.healRate = this.healRate
-	info.healAdd = this.healAdd
+	info.maxHP = this.attInfo.maxHP
+	info.hp = this.attInfo.hp
+	info.atk = this.attInfo.atk
+	info.phyDef = this.attInfo.phyDef
+	info.magDef = this.attInfo.mthis.attInfoagDef
+	info.crit = this.attInfo.crit
+	info.critDef = this.attInfo.critDef
+	info.slay = this.attInfo.slay
+	info.slayDef = this.attInfo.slayDef
+	info.hitRate = this.attInfo.hitRate
+	info.dodgeRate = this.attInfo.dodgeRate
+	info.amplify = this.attInfo.amplify
+	info.reduction = this.attInfo.reduction
+	info.healRate = this.attInfo.healRate
+	info.healAdd = this.attInfo.healAdd
 	info.needAnger = this.needAnger
 	info.curAnger = this.curAnger
 	return info
@@ -257,7 +291,8 @@ model.prototype.getSimpleInfo = function() {
 	var info = {}
 	info.id = this.id
 	info.name = this.name
-	info.hp = this.hp
+	info.atk = this.attInfo.atk
+	info.hp = this.attInfo.hp
 	return info
 }
 model.prototype.addBuff = function(releaser,buff) {

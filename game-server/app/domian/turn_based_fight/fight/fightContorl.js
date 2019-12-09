@@ -14,11 +14,12 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 	return fightRecord.getList()
 }
 //获取角色数据
-model.getCharacterInfo = function(id) {
+model.getCharacterInfo = function(info) {
+	let id = info.id
 	if(!charactersCfg[id]){
 		return false
 	}
-	var info = Object.assign({},charactersCfg[id])
+	Object.assign(info,charactersCfg[id])
 	if(info.defaultSkill){
 		if(!skillsCfg[info.defaultSkill]){
 			console.error("技能不存在",info.id,info.defaultSkill)

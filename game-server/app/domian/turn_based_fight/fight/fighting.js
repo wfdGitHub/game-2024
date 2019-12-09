@@ -35,6 +35,7 @@ var model = function(atkTeam,defTeam,otps) {
 model.prototype.load = function(atkTeam,defTeam,otps) {
 	var info = {type : "fightBegin",atkTeam : [],defTeam : []}
 	var id = 0
+	var atkTeamAdds = {}
 	for(var i = 0;i < teamLength;i++){
 		if(!atkTeam[i])
 			atkTeam[i] = new character({})
@@ -43,8 +44,17 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		atkTeam[i].team = atkTeam
 		atkTeam[i].enemy = defTeam
 		atkTeam[i].id = id++
-		info.atkTeam.push(atkTeam[i].getSimpleInfo())
+		if(atkTeam[i].team_adds){
+			for(var j in atkTeam[i].team_adds){
+				if(!atkTeamAdds[j]){
+					atkTeamAdds[j] = atkTeam[i].team_adds[j]
+				}else{
+					atkTeamAdds[j] += atkTeam[i].team_adds[j]
+				}
+			}
+		}
 	}
+	var defTeamAdds = {}
 	for(var i = 0;i < teamLength;i++){
 		if(!defTeam[i])
 			defTeam[i] = new character({})
@@ -53,6 +63,22 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		defTeam[i].team = defTeam
 		defTeam[i].enemy = atkTeam
 		defTeam[i].id = id++
+		if(defTeam[i].team_adds){
+			for(var j in defTeam[i].team_adds){
+				if(!defTeamAdds[j]){
+					defTeamAdds[j] = defTeam[i].team_adds[j]
+				}else{
+					defTeamAdds[j] += defTeam[i].team_adds[j]
+				}
+			}
+		}
+	}
+	// console.log("atkTeamAdds",atkTeamAdds,"defTeamAdds",defTeamAdds)
+	//属性加成
+	for(var i = 0;i < teamLength;i++){
+		atkTeam[i].calAttAdd(atkTeamAdds)
+		info.atkTeam.push(atkTeam[i].getSimpleInfo())
+		defTeam[i].calAttAdd(defTeamAdds)
 		info.defTeam.push(defTeam[i].getSimpleInfo())
 	}
 	fightRecord.push(info)
