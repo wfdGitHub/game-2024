@@ -83,6 +83,9 @@ model.prototype.getTargets = function(character,targetType) {
 		case "team_minHp_5":
 			//获取友方生命值最少的5个单位
 			return this.getTeamRandomMinHp(character,5)
+		case "team_min_index":
+			//己方阵容站位最靠前的单位
+			return this.getTeamMinIndex(character)
 		case "team_self":
 			//选择自己
 			return [character]
@@ -465,5 +468,14 @@ model.prototype.getTeamRandomMinHp = function(character,count) {
     	return a.hp > b.hp ? 1 : -1
     })
     return list.slice(0,count)
+}
+//己方阵容站位最靠前的单位
+model.prototype.getTeamMinIndex = function(character) {
+	for(var i = 0;i < character.team.length;i++){
+		if(!character.team[i].died){
+			return [character.team[i]]
+		}
+	}
+    return []
 }
 module.exports = model

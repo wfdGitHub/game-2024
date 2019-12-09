@@ -71,13 +71,45 @@ model.useSkill = function(skill) {
 		for(var i = 0;i < skill.character.team.length;i++)
 			if(!skill.character.team[i].died)
 				skill.character.team[i].addAnger(skill.skill_anger_a,skill.skillId)
-	//判断怒气降低
 	if(skill.skill_less_anger){
 		for(var i = 0;i < targets.length;i++){
 			if(targets[i].died){
 				break
 			}
 			targets[i].lessAnger(skill.skill_less_anger,skill.skillId)
+		}
+	}
+	if(skill.isAnger){
+		//释放技能后恢复自身怒气
+		if(skill.character.skill_anger_s)
+			skill.character.addAnger(skill.character.skill_anger_s,skill.skillId)
+		//释放技能后恢复全体队友怒气
+		if(skill.character.skill_anger_a)
+			for(var i = 0;i < skill.character.team.length;i++)
+				if(!skill.character.team[i].died)
+					skill.character.team[i].addAnger(skill.character.skill_anger_a,skill.skillId)
+		//释放技能后回复当前本方阵容站位最靠前的武将怒气
+		if(skill.character.skill_anger_first){
+			let tmpTargets = this.locator.getTargets(skill.character,"team_min_index")
+			for(var i = 0;i < tmpTargets.length;i++){
+				tmpTargets[i].addAnger(skill.character.skill_anger_first,skill.skillId)
+			}
+		}
+		//释放技能后恢复己方后排怒气
+		if(skill.character.skill_anger_back){
+			let tmpTargets = this.locator.getTargets(skill.character,"team_horizontal_back")
+			for(var i = 0;i < tmpTargets.length;i++){
+				tmpTargets[i].addAnger(skill.character.skill_anger_back,skill.skillId)
+			}
+		}
+		//释放技能后降低敌人怒气
+		if(skill.character.skill_less_anger){
+			for(var i = 0;i < targets.length;i++){
+				if(targets[i].died){
+					break
+				}
+				targets[i].lessAnger(skill.character.skill_less_anger,skill.skillId)
+			}
 		}
 	}
 }
@@ -136,17 +168,31 @@ model.useAttackSkill = function(skill) {
 		}
 	}
 	//伤害值转生命判断
-	if(allDamage && skill.turn_rate && skill.turn_tg && !skill.character.died){
-		let recordInfo = {type : "other_heal",targets : []}
-		let healValue = Math.round(allDamage * skill.turn_rate) || 1
-		targets = this.locator.getTargets(skill.character,skill.turn_tg)
-		for(var i = 0;i < targets.length;i++){
-			let target = targets[i]
-			let info = this.formula.calHeal(skill.character,target,healValue)
-			info = target.onHeal(skill.character,info,skill)
-			recordInfo.targets.push(info)
+	if(allDamage){
+		if(skill.turn_rate && skill.turn_tg && !skill.character.died){
+			let recordInfo = {type : "other_heal",targets : []}
+			let healValue = Math.round(allDamage * skill.turn_rate) || 1
+			targets = this.locator.getTargets(skill.character,skill.turn_tg)
+			for(var i = 0;i < targets.length;i++){
+				let target = targets[i]
+				let info = this.formula.calHeal(skill.character,target,healValue)
+				info = target.onHeal(skill.character,info,skill)
+				recordInfo.targets.push(info)
+			}
+			fightRecord.push(recordInfo)
 		}
-		fightRecord.push(recordInfo)
+		if(skill.isAnger && skill.character.skill_turn_rate && skill.character.skill_turn_tg && !skill.character.died){
+			let recordInfo = {type : "other_heal",targets : []}
+			let healValue = Math.round(allDamage * skill.character.skill_turn_rate) || 1
+			targets = this.locator.getTargets(skill.character,skill.character.skill_turn_tg)
+			for(var i = 0;i < targets.length;i++){
+				let target = targets[i]
+				let info = this.formula.calHeal(skill.character,target,healValue)
+				info = target.onHeal(skill.character,info,skill)
+				recordInfo.targets.push(info)
+			}
+			fightRecord.push(recordInfo)
+		}
 	}
 	//判断攻击目标大于三人则增加两点怒气
 	if(skill.thr_anger){
@@ -155,7 +201,7 @@ model.useAttackSkill = function(skill) {
 		}
 	}
 	//追加普通攻击判断(仅怒气技能生效)
-	if((skill.isAnger && skill.add_d_s) || (kill_num && skill.character.kill_add_d_s)){
+	if((skill.isAnger && (skill.add_d_s || skill.character.skill_add_d_s)) || (kill_num && skill.character.kill_add_d_s)){
 		this.useSkill(skill.character.defaultSkill)
 	}
 	return targets
@@ -175,7 +221,8 @@ model.useHealSkill = function(skill) {
 		let target = targets[i]
 		let value = 0
 		if(skill.healType == "atk"){
-			value = Math.round(skill.character.getTotalAtt("atk") * skill.mul)
+			value = skill.character.getTotalAtt("atk") * skill.mul
+			value = Math.round(value * (1 + skill.character.skill_heal_amp))
 		}else if(healType == "hp"){
 			value = Math.round(target.getTotalAtt("maxHP") * skill.mul)
 		}else{

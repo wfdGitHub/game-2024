@@ -137,7 +137,12 @@ model.prototype.action = function() {
 	if(!this.character.died && !this.character.dizzy){
 		if(!this.character.silence && this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
 			skill = this.character.angerSkill
-			this.character.lessAnger(this.character.needAnger)
+			if(this.character.skill_free){
+				if(this.seeded.random("不消耗怒气判断") > this.character.skill_free)
+					this.character.lessAnger(this.character.needAnger)
+			}
+			else
+				this.character.lessAnger(this.character.needAnger)
 		}else{
 			if(!this.character.disarm){
 				skill = this.character.defaultSkill
