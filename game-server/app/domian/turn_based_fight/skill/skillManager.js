@@ -59,7 +59,7 @@ model.useSkill = function(skill) {
 	}
 	//判断自身生命值恢复
 	if(skill.self_heal){
-		var recordInfo =  skill.character.onHeal(skill.character,{type : "heal",value : skill.character.maxHP * skill.self_heal},skill)
+		var recordInfo =  skill.character.onHeal(skill.character,{type : "heal",value : skill.character.getTotalAtt("maxHP") * skill.self_heal},skill)
 		recordInfo.type = "self_heal"
 		fightRecord.push(recordInfo)
 	}
@@ -102,7 +102,7 @@ model.useAttackSkill = function(skill) {
 		}
 	}
 	var allDamage = 0
-	var kill_amp = 0
+	var kill_num = 0
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died){
 			break
@@ -113,12 +113,40 @@ model.useAttackSkill = function(skill) {
 		info = target.onHit(skill.character,info,skill)
 		allDamage += info.realValue
 		recordInfo.targets.push(info)
-		if(info.kill && skill.kill_amp){
-			kill_amp += skill.kill_amp
+		if(info.kill){
+			kill_num++
 		}
 	}
-	if(kill_amp){
-		skill.character.amplify += skill.kill_amp
+	fightRecord.push(recordInfo)
+	skill.character.must_crit = false
+	if(kill_num){
+		if(skill.kill_amp || skill.character.kill_amp)
+			skill.character.addAtt("amplify",(skill.kill_amp + skill.character.kill_amp) * kill_num)
+		if(skill.character.kill_anger)
+			skill.character.addAnger(skill.character.kill_anger * kill_num,skill.skillId)
+		if(skill.character.kill_crit)
+			skill.character.addAtt("crit",skill.character.kill_crit * kill_num)
+		if(skill.character.kill_heal){
+			let recordInfo = {type : "other_heal",targets : []}
+			recordInfo.targets.push(skill.character.onHeal(skill.character,{value : skill.character.getTotalAtt("maxHP") * skill.character.kill_heal * kill_num},skill))
+			fightRecord.push(recordInfo)
+		}
+		if(skill.character.kill_must_crit){
+			skill.character.must_crit = true
+		}
+	}
+	//伤害值转生命判断
+	if(allDamage && skill.turn_rate && skill.turn_tg && !skill.character.died){
+		let recordInfo = {type : "other_heal",targets : []}
+		let healValue = Math.round(allDamage * skill.turn_rate) || 1
+		targets = this.locator.getTargets(skill.character,skill.turn_tg)
+		for(var i = 0;i < targets.length;i++){
+			let target = targets[i]
+			let info = this.formula.calHeal(skill.character,target,healValue)
+			info = target.onHeal(skill.character,info,skill)
+			recordInfo.targets.push(info)
+		}
+		fightRecord.push(recordInfo)
 	}
 	//判断攻击目标大于三人则增加两点怒气
 	if(skill.thr_anger){
@@ -126,22 +154,8 @@ model.useAttackSkill = function(skill) {
 			skill.character.addAnger(2,skill.skillId)
 		}
 	}
-	//伤害值转生命判断
-	if(allDamage && skill.turn_rate && skill.turn_tg && !skill.character.died){
-		recordInfo.next = {type : "heal",targets : []}
-		let healValue = Math.round(allDamage * skill.turn_rate) || 1
-		targets = this.locator.getTargets(skill.character,skill.turn_tg)
-		for(var i = 0;i < targets.length;i++){
-			let target = targets[i]
-			let info = this.formula.calHeal(skill.character,target,healValue)
-			info = target.onHeal(skill.character,info,skill)
-			recordInfo.next.targets.push(info)
-		}
-	}
-	fightRecord.push(recordInfo)
 	//追加普通攻击判断(仅怒气技能生效)
-	if(skill.isAnger && skill.add_d_s){
-		console.log("追加普通攻击")
+	if((skill.isAnger && skill.add_d_s) || (kill_num && skill.character.kill_add_d_s)){
 		this.useSkill(skill.character.defaultSkill)
 	}
 	return targets

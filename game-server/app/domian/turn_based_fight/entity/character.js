@@ -39,13 +39,14 @@ var model = function(otps) {
 	this.buffArg								//buff参数   若技能存在buff  以此代替buff本身参数
 	this.buffDuration							//buff持续时间   若技能存在buff  以此代替buff本身持续时间
 
+	this.must_crit = false						//下回合攻击必定暴击
 
-	this.kill_anger = 0							//直接伤害击杀目标回复怒气
-	this.kill_amp = 0							//直接伤害每击杀一个目标提升伤害
-	this.kill_crit = 0							//直接伤害每击杀一个目标提升暴击
-	this.kill_add_d_s = false					//直接伤害击杀目标后追加普通攻击
-	this.kill_heal = 0							//直接伤害击杀目标后，恢复自身生命值上限
-	this.kill_must_crit = false					//直接伤害击杀目标后，下回合攻击必定暴击
+	this.kill_anger = otps.kill_anger || 0		//直接伤害击杀目标回复怒气
+	this.kill_amp = otps.kill_amp || 0			//直接伤害每击杀一个目标提升伤害
+	this.kill_crit = otps.kill_crit || 0		//直接伤害每击杀一个目标提升暴击
+	this.kill_add_d_s = otps.kill_add_d_s		//直接伤害击杀目标后追加普通攻击
+	this.kill_heal = otps.kill_heal || 0		//直接伤害击杀目标后，恢复自身生命值上限
+	this.kill_must_crit = otps.kill_must_crit	//直接伤害击杀目标后，下回合攻击必定暴击
 
 	this.anger_attack_amp = 0					//技能伤害加成
 	this.anger_heal_amp = 0						//治疗量加成
@@ -147,6 +148,7 @@ model.prototype.calTalent = function(otps) {
 		}
 	}
 }
+
 //行动开始前刷新
 model.prototype.before = function() {
 	//伤害BUFF刷新
@@ -191,12 +193,19 @@ model.prototype.onHeal = function(attacker,info,source) {
 		info.value = 0
 		info.realValue = 0
 	}else{
-		info.value = Math.floor(info.value * (1 + this.healAdd / 10000))
+		info.value = Math.floor(info.value * (1 + this.attInfo.healAdd / 10000))
 		info.realValue = this.addHP(info.value)
 	}
 	info.curValue = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
 	return info
+}
+//永久增加属性
+model.prototype.addAtt = function(name,value) {
+	if(this.attInfo[name] != undefined){
+		this.attInfo[name] += value
+		fightRecord.push({type : "addAtt",name : name,value : value,id : this.id})
+	}
 }
 //角色死亡
 model.prototype.onDie = function() {
@@ -209,7 +218,6 @@ model.prototype.kill = function(target) {
 	// console.log(this.name+"击杀"+target.name)
 
 }
-
 //恢复血量
 model.prototype.addHP = function(value) {
 	var realValue = value

@@ -19,7 +19,7 @@ formula.prototype.calDamage = function(attacker, target, skill,lessAmp) {
 	}
 	//暴击判断
 	var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit
-	if(this.seeded.random("暴击判断") * 10000  < crit){
+	if(attacker.must_crit || this.seeded.random("暴击判断") * 10000  < crit){
 		info.crit = true
 	}
 	//伤害计算

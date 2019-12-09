@@ -70,7 +70,19 @@ var model = function() {
 				case "heal":
 					var str = "\033[36m角色"+info.id+"使用"+info.name+"\033[0m"
 					for(var i = 0;i < info.targets.length;i++){
-						str += "\n  \033[32m恢复角色"+info.targets[i].id+" "+info.targets[i].realValue+" 点血量"
+						str += "\n  \033[32m恢复角色"+info.targets[i].id+" "+info.targets[i].value+" 点血量"
+						if(info.targets[i].crit){
+							str +="(暴击)"
+						}
+						str += "\t剩余"+info.targets[i].curValue+"/"+info.targets[i].maxHP+"\033[0m"
+						str += "\033[0m"
+					}
+					console.log(str)
+				break
+				case "other_heal":
+					var str = ""
+					for(var i = 0;i < info.targets.length;i++){
+						str += "\n  \033[32m恢复角色"+info.targets[i].id+" "+info.targets[i].value+" 点血量"
 						if(info.targets[i].crit){
 							str +="(暴击)"
 						}
@@ -91,6 +103,8 @@ var model = function() {
 				case "destroyBuff":
 					console.log("角色"+info.character+"的 "+info.name+"已消失")
 				break
+				case "addAtt":
+					console.log("角色"+info.id+"获得增益 "+info.name+" : "+info.value)
 				case "fightOver":
 					console.log("战斗结束")
 				break
