@@ -101,6 +101,10 @@ var model = function() {
 					str += "\t剩余"+info.curValue+"/"+info.maxHP+"\033[0m"
 					console.log(str)
 				break
+				case "resurgence":
+					var str = "\033[32m角色"+info.id+"复活\t当前生命值"+info.curValue+"/"+info.maxHP+"\033[0m"
+					console.log(str)
+				break
 				case "createBuff":
 					console.log("角色"+info.releaser+"对角色"+info.character+"施放 "+info.name)
 				break

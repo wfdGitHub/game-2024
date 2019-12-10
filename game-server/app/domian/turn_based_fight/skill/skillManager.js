@@ -3,7 +3,8 @@ var healSkill = require("./healSkill.js")
 var fightRecord = require("../fight/fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
 var model = function() {}
-model.init = function(locator,formula,seeded) {
+model.init = function(fighting,locator,formula,seeded) {
+	this.fighting = fighting
 	this.locator = locator
 	this.formula = formula
 	this.seeded = seeded
@@ -39,7 +40,7 @@ model.useSkill = function(skill) {
 			if(targets[i].died ||!targets[i].buffs["burn"]){
 				break
 			}
-			var burnBuffInfo = skill.burn_buff_change
+			var burnBuffInfo = Object.assign({},skill.burn_buff_change,skill.character.burn_buff_change)
 			if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
 				buffManager.createBuff(skill.character,targets[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 			}
@@ -162,13 +163,24 @@ model.useAttackSkill = function(skill) {
 		fightRecord.push(recordInfo)
 		return
 	}
-	var lessAmp = 0
+	var addAmp = 0
 	//判断技能目标减少
-	if(skill.lessAmp && targets.length){
+	if(targets.length && (skill.addAmp || skill.character.skill_less_amp)){
 		var lessNum = this.locator.getTargetsNum(skill.targetType) - targets.length
 		if(lessNum > 0){
-			lessAmp = skill.lessAmp * lessNum
+			addAmp += (skill.addAmp + skill.character.skill_less_amp) * lessNum
 		}
+	}
+	//判断敌方阵亡伤害加成
+	if(skill.character.enemy_died_amp){
+		let dieNum = 0
+		for(var i = 0;i < skill.character.enemy.length;i++){
+			if(!skill.character.enemy[i].isNaN && skill.character.enemy[i].died){
+				dieNum++
+			}
+		}
+		if(dieNum)
+			addAmp += dieNum * skill.character.enemy_died_amp
 	}
 	var allDamage = 0
 	var kill_num = 0
@@ -178,7 +190,7 @@ model.useAttackSkill = function(skill) {
 		}
 		let target = targets[i]
 		//计算伤害
-		let info = this.formula.calDamage(skill.character, target, skill,lessAmp)
+		let info = this.formula.calDamage(skill.character, target, skill,addAmp)
 		info = target.onHit(skill.character,info,skill)
 		allDamage += info.realValue
 		recordInfo.targets.push(info)
@@ -187,7 +199,6 @@ model.useAttackSkill = function(skill) {
 		}
 	}
 	fightRecord.push(recordInfo)
-	skill.character.must_crit = false
 	if(kill_num){
 		if(skill.kill_amp || skill.character.kill_amp)
 			skill.character.addAtt("amplify",(skill.kill_amp + skill.character.kill_amp) * kill_num)
@@ -196,12 +207,12 @@ model.useAttackSkill = function(skill) {
 		if(skill.character.kill_crit)
 			skill.character.addAtt("crit",skill.character.kill_crit * kill_num)
 		if(skill.character.kill_heal){
-			let recordInfo = {type : "other_heal",targets : []}
-			recordInfo.targets.push(skill.character.onHeal(skill.character,{value : skill.character.getTotalAtt("maxHP") * skill.character.kill_heal * kill_num},skill))
-			fightRecord.push(recordInfo)
+			let tmpRecord = {type : "other_heal",targets : []}
+			tmpRecord.targets.push(skill.character.onHeal(skill.character,{value : skill.character.getTotalAtt("maxHP") * skill.character.kill_heal * kill_num},skill))
+			fightRecord.push(tmpRecord)
 		}
 		if(skill.character.kill_must_crit){
-			skill.character.must_crit = true
+			skill.character.next_must_crit = true
 		}
 	}
 	//伤害值转生命判断
@@ -229,6 +240,22 @@ model.useAttackSkill = function(skill) {
 				tmpRecord.targets.push(info)
 			}
 			fightRecord.push(tmpRecord)
+		}
+		if(!skill.isAnger && skill.character.normal_burn_turn_heal){
+			let flag = false
+			for(var i = 0;i < targets.length;i++){
+				if(targets[i].buffs["burn"]){
+					flag = true
+					break
+				}
+			}
+			if(flag){
+				let tmpRecord = {type : "other_heal",targets : []}
+				let info = this.formula.calHeal(skill.character,skill.character,skill.character.normal_burn_turn_heal * allDamage)
+				info = skill.character.onHeal(skill.character,info,skill)
+				tmpRecord.targets.push(info)
+				fightRecord.push(tmpRecord)
+			}
 		}
 	}
 	//受伤判断
@@ -274,7 +301,13 @@ model.useAttackSkill = function(skill) {
 	}
 	//追加普通攻击判断(仅怒气技能生效)
 	if((skill.isAnger && (skill.add_d_s || skill.character.skill_add_d_s)) || (kill_num && skill.character.kill_add_d_s)){
-		this.useSkill(skill.character.defaultSkill)
+		if(skill.character.add_d_s_crit){
+			skill.character.must_crit = true
+			this.useSkill(skill.character.defaultSkill)
+			skill.character.must_crit = false
+		}else{
+			this.useSkill(skill.character.defaultSkill)
+		}
 	}
 	return targets
 }

@@ -15,10 +15,10 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 }
 //获取角色数据
 model.getCharacterInfo = function(info) {
-	let id = info.id
-	if(!charactersCfg[id]){
+	if(!info || !charactersCfg[info.id]){
 		return false
 	}
+	let id = info.id
 	Object.assign(info,charactersCfg[id])
 	if(info.defaultSkill){
 		if(!skillsCfg[info.defaultSkill]){

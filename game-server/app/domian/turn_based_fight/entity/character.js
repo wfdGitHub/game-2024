@@ -8,9 +8,11 @@ var model = function(otps) {
 	this.career = 0				//角色职业   healer 治疗者
 	this.index = 0				//所在位置
 	this.camp = ""				//攻方或守方
+	this.isNaN = false			//是否空位置
 	this.team = []				//所在阵容
 	this.enemy = []				//敌对阵容
 	this.level = otps["level"] || 0				//等级
+	this.teamInfo = {}
 	//=========基础属性=======//
 	this.attInfo = {}
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
@@ -39,7 +41,8 @@ var model = function(otps) {
 	this.buffArg								//buff参数   若技能存在buff  以此代替buff本身参数
 	this.buffDuration							//buff持续时间   若技能存在buff  以此代替buff本身持续时间
 
-	this.must_crit = false						//下回合攻击必定暴击
+	this.must_crit = false						//攻击必定暴击
+	this.next_must_crit = false					//下回合攻击暴击
 
 	this.kill_anger = otps.kill_anger || 0		//直接伤害击杀目标回复怒气
 	this.kill_amp = otps.kill_amp || 0			//直接伤害每击杀一个目标提升伤害
@@ -59,6 +62,7 @@ var model = function(otps) {
 	this.skill_anger_back = otps.skill_anger_back || 0		//释放技能后回复己方后排怒气
 	this.skill_anger_first = otps.skill_anger_first || 0	//释放技能后，回复当前本方阵容站位最靠前的武将怒气
 	this.skill_less_anger = otps.skill_less_anger || 0		//释放技能后降低目标怒气
+	this.skill_less_amp = otps.skill_less_amp || 0			//技能目标每减少一个伤害加成比例
 	if(otps.skill_later_skill){
 		this.skill_later_skill = JSON.parse(otps.skill_later_skill)	//释放技能后后追加技能
 	}
@@ -73,34 +77,30 @@ var model = function(otps) {
 	if(otps.hit_buff){
 		this.hit_buff = JSON.parse(otps.hit_buff)	//受到伤害给攻击者附加BUFF
 	}
-
-
 	this.normal_add_anger = otps.normal_add_anger || 0			//普攻后恢复自身怒气
 	this.normal_less_anger = otps.normal_less_anger || 0		//普攻后降低目标怒气
 	this.normal_attack_amp = otps.normal_attack_amp || 0		//普攻伤害加成
+	this.normal_burn_turn_heal = otps.normal_burn_turn_heal || 0//普攻时，如果目标处于灼烧状态，技能直接伤害的百分比转化为生命治疗自己
 	if(otps.normal_later_buff){
 		this.normal_later_buff = JSON.parse(otps.normal_later_buff)	//普攻后附加BUFF
 	}
-
 	this.add_d_s_crit = otps.add_d_s_crit					//追加普攻必定暴击
-	this.action_anger = otps.action_anger					//行动后回复自身怒气
-	this.low_hp_amp = otps.low_hp_amp || 0					//战斗中自身生命每降低10%，伤害加成比例
-	this.low_hp_crit = otps.low_hp_crit || 0				//战斗中自身生命每降低10%，暴击加成比例
+	this.action_anger = otps.action_anger || 0				//行动后回复自身怒气
+	this.low_hp_amp = otps.low_hp_amp || 0					//战斗中自身生命每降低10%，伤害加成
+	this.low_hp_crit = otps.low_hp_crit || 0				//战斗中自身生命每降低10%，暴击加成
 	this.enemy_died_amp = otps.enemy_died_amp || 0			//敌方每阵亡一人，伤害加成比例
-	this.lessAmp = otps.lessAmp || 0						//目标每减少一个伤害加成比例
-	this.resurgence_team = otps.resurgence_team				//复活本方第1位阵亡的武将，并恢复其50%的生命，每场战斗只可触发1次
 
-	this.burn_hit_reduction = 0					//被灼烧状态敌人直接伤害减免
-	this.burn_turn_heal = 0						//释放技能时，如果目标处于灼烧状态，技能直接伤害的百分比转化为生命治疗自己
-	this.burn_att_change = false				//灼烧状态属性修改
-	this.burn_buff_change = false				//灼烧状态附加BUFF
+	this.resurgence_team = otps.resurgence_team || 0		//复活本方第1位阵亡的武将，并恢复其50%的生命，每场战斗只可触发1次
+	this.burn_hit_reduction = otps.burn_hit_reduction || 0	//被灼烧状态敌人攻击伤害减免
 
-
-	this.first_crit = false						//首回合必定暴击
-	this.first_amp = 0							//首回合伤害加成
-	this.first_buff = false						//战斗附加BUFF
-
-
+	if(otps.burn_att_change)
+		this.burn_att_change = JSON.parse(otps.burn_att_change)			//灼烧状态属性修改
+	if(otps.burn_buff_change)
+		this.burn_buff_change = JSON.parse(otps.burn_buff_change)		//灼烧状态附加BUFF修改
+	//todo
+	this.first_crit = otps.first_crit			//首回合必定暴击
+	this.first_amp = otps.first_amp || 0		//首回合伤害加成
+	this.first_buff = false						//首回合附加BUFF
 	this.died_use_anger = false					//死亡时释放一次技能
 
 	//=========状态=======//
@@ -222,11 +222,20 @@ model.prototype.onDie = function() {
 	// console.log(this.name+"死亡")
 	this.attInfo.hp = 0
 	this.died = true
+	if(this.teamInfo.resurgence_team){
+		this.resurgence(this.teamInfo.resurgence_team)
+		delete this.teamInfo.resurgence_team
+	}
 }
 //击杀目标
 model.prototype.kill = function(target) {
-	// console.log(this.name+"击杀"+target.name)
-
+    console.log(this.name+"击杀"+target.name)
+}
+//复活
+model.prototype.resurgence = function(rate) {
+	this.attInfo.hp = Math.floor(rate * this.attInfo.maxHP) || 1
+	this.died = false
+	fightRecord.push({type : "resurgence",curValue : this.attInfo.hp,maxHP : this.attInfo.maxHP,id : this.id})
 }
 //恢复血量
 model.prototype.addHP = function(value) {

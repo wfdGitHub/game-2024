@@ -78,7 +78,7 @@
     "damageType": "phy",
     "targetType": "enemy_horizontal_front",
     "mul": 1.63,
-    "anger_s": 1
+    "skill_anger_s": 1
   },
   "1040201": {
     "name": "箭袭",
@@ -162,7 +162,7 @@
     "damageType": "phy",
     "targetType": "enemy_horizontal_front",
     "mul": 1.63,
-    "anger_a": 1
+    "skill_anger_a": 1
   },
   "1050301": {
     "name": "止啼",
@@ -179,7 +179,7 @@
     "damageType": "phy",
     "targetType": "enemy_horizontal_back",
     "mul": 1.63,
-    "anger_s": 1
+    "skill_anger_s": 1
   },
   "1050401": {
     "name": "巧变",
@@ -196,7 +196,7 @@
     "damageType": "mag",
     "targetType": "enemy_normal_back",
     "mul": 3.33,
-    "anger_s": 1
+    "skill_anger_s": 1
   },
   "1050501": {
     "name": "留香",
@@ -283,7 +283,7 @@
     "damageType": "phy",
     "targetType": "enemy_vertical",
     "mul": 2.23,
-    "anger_s": 1
+    "skill_anger_s": 1
   },
   "1051001": {
     "name": "虎袭",
@@ -471,7 +471,7 @@
     "damageType": "phy",
     "targetType": "enemy_normal",
     "mul": 3.15,
-    "anger_s": 1
+    "skill_anger_s": 1
   },
   "2050101": {
     "name": "龙胆",
@@ -562,7 +562,7 @@
     "damageType": "mag",
     "targetType": "enemy_vertical",
     "mul": 2.12,
-    "anger_s": 1
+    "skill_anger_s": 1
   },
   "2050601": {
     "name": "巧匠",
@@ -597,7 +597,7 @@
     "damageType": "phy",
     "targetType": "enemy_normal",
     "mul": 3.15,
-    "anger_s": 1
+    "skill_anger_s": 1
   },
   "2050801": {
     "name": "勇绝",
@@ -822,7 +822,7 @@
     "damageType": "mag",
     "targetType": "enemy_3",
     "mul": 1.55,
-    "burnBuffChange": "{\"buffId\":\"disarm\",\"buffRate\":0.2,\"duration\":1}"
+    "burn_buff_change": "{\"buffId\":\"disarm\",\"buffRate\":0.2,\"duration\":1}"
   },
   "3050101": {
     "name": "承志",
@@ -839,7 +839,7 @@
     "damageType": "phy",
     "targetType": "enemy_horizontal_back",
     "mul": 1.55,
-    "burnAttChange": "{\"tmpAmplify\":0.6}"
+    "burn_att_change": "{\"tmpAmplify\":0.6}"
   },
   "3050201": {
     "name": "英略",
@@ -859,7 +859,7 @@
     "buffId": "burn",
     "buffArg": 0.2,
     "duration": 2,
-    "buffRate": 0.4
+    "buffRate": 1
   },
   "3050301": {
     "name": "盛莲",
@@ -907,7 +907,7 @@
     "damageType": "mag",
     "targetType": "enemy_horizontal_front",
     "mul": 1.55,
-    "burnBuffChange": "{\"buffId\":\"disarm\",\"buffRate\":0.4,\"duration\":1}"
+    "burn_buff_change": "{\"buffId\":\"disarm\",\"buffRate\":1,\"duration\":1}"
   },
   "3050601": {
     "name": "笃义",
@@ -924,7 +924,7 @@
     "damageType": "phy",
     "targetType": "enemy_all",
     "mul": 0.92,
-    "burnBuffChange": "{\"buffId\":\"dizzy\",\"buffRate\":0.3,\"duration\":1}"
+    "burn_buff_change": "{\"buffId\":\"dizzy\",\"buffRate\":0.3,\"duration\":1}"
   },
   "3050701": {
     "name": "帝相",
@@ -998,7 +998,7 @@
     "damageType": "mag",
     "targetType": "enemy_horizontal_front",
     "mul": 1.55,
-    "burnAttChange": "{\"tmpAmplify\":0.5}"
+    "burn_att_change": "{\"tmpAmplify\":0.5}"
   },
   "3051101": {
     "name": "智变",
@@ -1015,7 +1015,7 @@
     "damageType": "mag",
     "targetType": "enemy_normal",
     "mul": 3.15,
-    "burnAttChange": "{\"crit\":5000}"
+    "burn_att_change": "{\"crit\":5000}"
   },
   "3051201": {
     "name": "缔盟",
@@ -1032,7 +1032,7 @@
     "damageType": "mag",
     "targetType": "enemy_vertical",
     "mul": 2.12,
-    "burnBuffChange": "{\"buffId\":\"dizzy\",\"buffRate\":0.6,\"duration\":1}"
+    "burn_buff_change": "{\"buffId\":\"dizzy\",\"buffRate\":0.6,\"duration\":1}"
   },
   "4010101": {
     "name": "火球",
@@ -1197,7 +1197,7 @@
     "damageType": "mag",
     "targetType": "enemy_horizontal_front",
     "mul": 1.72,
-    "anger_s": 2
+    "skill_anger_s": 2
   },
   "4050201": {
     "name": "无双",
@@ -1266,7 +1266,7 @@
     "damageType": "phy",
     "targetType": "enemy_normal",
     "mul": 3.15,
-    "anger_s": 1
+    "skill_anger_s": 1
   },
   "4050601": {
     "name": "倾城",
@@ -1357,7 +1357,7 @@
     "damageType": "phy",
     "targetType": "enemy_normal_back",
     "mul": 3.5,
-    "less_anger": 1
+    "skill_less_anger": 1
   },
   "4051101": {
     "name": "落雷",

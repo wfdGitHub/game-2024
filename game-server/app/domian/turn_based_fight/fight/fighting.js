@@ -9,12 +9,14 @@ var maxRound = 20				//最大回合
 var teamLength = 6				//阵容人数
 var model = function(atkTeam,defTeam,otps) {
     fightRecord.init()
+    this.atkTeamInfo = {}
+    this.defTeamInfo = {}
 	this.load(atkTeam,defTeam,otps)
 	this.seededNum = otps.seededNum || (new Date()).getTime()
     this.seeded = new seeded(this.seededNum)
     this.locator = new locator(this.seeded)
     this.formula = new formula(this.seeded)
-    skillManager.init(this.locator,this.formula,this.seeded)
+    skillManager.init(this,this.locator,this.formula,this.seeded)
 	this.isFight = true				//战斗中标识
 	this.round = 0					//当前回合
 	this.maxRound = maxRound		//最大回合
@@ -37,8 +39,12 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	var id = 0
 	var atkTeamAdds = {}
 	for(var i = 0;i < teamLength;i++){
-		if(!atkTeam[i])
+		if(!atkTeam[i]){
 			atkTeam[i] = new character({})
+			atkTeam[i].isNaN = true
+		}
+		if(atkTeam[i].resurgence_team)
+			this.atkTeamInfo["resurgence_team"] = atkTeam[i].resurgence_team
 		atkTeam[i].camp = "atk"
 		atkTeam[i].index = i
 		atkTeam[i].team = atkTeam
@@ -56,8 +62,12 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	}
 	var defTeamAdds = {}
 	for(var i = 0;i < teamLength;i++){
-		if(!defTeam[i])
+		if(!defTeam[i]){
 			defTeam[i] = new character({})
+			defTeam[i].isNaN = true
+		}
+		if(defTeam[i].resurgence_team)
+			this.defTeamInfo["resurgence_team"] = defTeam[i].resurgence_team
 		defTeam[i].camp = "def"
 		defTeam[i].index = i
 		defTeam[i].team = defTeam
@@ -77,8 +87,10 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	//属性加成
 	for(var i = 0;i < teamLength;i++){
 		atkTeam[i].calAttAdd(atkTeamAdds)
+		atkTeam[i].teamInfo = this.atkTeamInfo
 		info.atkTeam.push(atkTeam[i].getSimpleInfo())
 		defTeam[i].calAttAdd(defTeamAdds)
+		defTeam[i].teamInfo = this.defTeamInfo
 		info.defTeam.push(defTeam[i].getSimpleInfo())
 	}
 	fightRecord.push(info)
@@ -157,6 +169,14 @@ model.prototype.action = function() {
 //行动后结算
 model.prototype.after = function() {
 	this.character.after()
+	if(this.character.next_must_crit)
+		this.must_crit = true
+	else
+		this.must_crit = false
+	this.character.next_must_crit = false
+	if(this.character.action_anger)
+		this.character.addAnger(this.character.action_anger)
+
 	//检测战斗是否结束
 	this.character = false
 	if(!this.checkOver())
