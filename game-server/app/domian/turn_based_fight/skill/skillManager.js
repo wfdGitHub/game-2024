@@ -79,7 +79,7 @@ model.useSkill = function(skill) {
 			targets[i].lessAnger(skill.skill_less_anger,skill.skillId)
 		}
 	}
-	if(skill.isAnger){
+	if(skill.isAnger && !skill.character.died){
 		//释放技能后恢复自身怒气
 		if(skill.character.skill_anger_s)
 			skill.character.addAnger(skill.character.skill_anger_s,skill.skillId)
@@ -186,28 +186,63 @@ model.useAttackSkill = function(skill) {
 	//伤害值转生命判断
 	if(allDamage){
 		if(skill.turn_rate && skill.turn_tg && !skill.character.died){
-			let recordInfo = {type : "other_heal",targets : []}
+			let tmpRecord = {type : "other_heal",targets : []}
 			let healValue = Math.round(allDamage * skill.turn_rate) || 1
-			targets = this.locator.getTargets(skill.character,skill.turn_tg)
-			for(var i = 0;i < targets.length;i++){
-				let target = targets[i]
+			let tmptargets = this.locator.getTargets(skill.character,skill.turn_tg)
+			for(var i = 0;i < tmptargets.length;i++){
+				let target = tmptargets[i]
 				let info = this.formula.calHeal(skill.character,target,healValue)
 				info = target.onHeal(skill.character,info,skill)
-				recordInfo.targets.push(info)
+				tmpRecord.targets.push(info)
 			}
-			fightRecord.push(recordInfo)
+			fightRecord.push(tmpRecord)
 		}
 		if(skill.isAnger && skill.character.skill_turn_rate && skill.character.skill_turn_tg && !skill.character.died){
-			let recordInfo = {type : "other_heal",targets : []}
+			let tmpRecord = {type : "other_heal",targets : []}
 			let healValue = Math.round(allDamage * skill.character.skill_turn_rate) || 1
-			targets = this.locator.getTargets(skill.character,skill.character.skill_turn_tg)
-			for(var i = 0;i < targets.length;i++){
-				let target = targets[i]
+			let tmptargets = this.locator.getTargets(skill.character,skill.character.skill_turn_tg)
+			for(var i = 0;i < tmptargets.length;i++){
+				let target = tmptargets[i]
 				let info = this.formula.calHeal(skill.character,target,healValue)
 				info = target.onHeal(skill.character,info,skill)
-				recordInfo.targets.push(info)
+				tmpRecord.targets.push(info)
 			}
-			fightRecord.push(recordInfo)
+			fightRecord.push(tmpRecord)
+		}
+	}
+	//受伤判断
+	for(var i = 0;i < recordInfo.targets.length;i++){
+		if(!targets[i].died){
+			//受到直接伤害转化成生命
+			if(targets[i].hit_turn_rate && targets[i].hit_turn_tg && recordInfo.targets[i].realValue){
+				let tmpRecord = {type : "other_heal",targets : []}
+				let healValue = Math.round(recordInfo.targets[i].realValue * targets[i].hit_turn_rate) || 1
+				let tmptargets = this.locator.getTargets(targets[i],targets[i].hit_turn_tg)
+				for(var i = 0;i < tmptargets.length;i++){
+					let target = tmptargets[i]
+					let info = this.formula.calHeal(skill.character,target,healValue)
+					info = target.onHeal(targets[i],info)
+					tmpRecord.targets.push(info)
+				}
+				fightRecord.push(tmpRecord)
+			}
+			//降低攻击者怒气
+			if(targets[i].hit_less_anger){
+				skill.character.lessAnger(targets[i].hit_less_anger)
+			}
+			//收到伤害附加BUFF
+			if(targets[i].hit_buff){
+				var burnBuffInfo = targets[i].hit_buff
+				if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
+					buffManager.createBuff(targets[i],skill.character,{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+				}
+			}
+			//收到直接伤害反弹
+			if(targets[i].hit_rebound){
+				let tmpRecord = {type : "other_damage",value : targets[i].hit_rebound * recordInfo.targets[i].realValue}
+				tmpRecord = skill.character.onHit(targets[i],tmpRecord)
+				fightRecord.push(tmpRecord)
+			}
 		}
 	}
 	//判断攻击目标大于三人则增加两点怒气

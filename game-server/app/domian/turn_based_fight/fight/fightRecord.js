@@ -91,6 +91,10 @@ var model = function() {
 					}
 					console.log(str)
 				break
+				case "other_damage":
+					var str = "\033[31m角色"+info.id+"受到"+info.value+"点伤害\t剩余"+info.curValue+"/"+info.maxHP+"\033[0m"
+					console.log(str)
+				break
 				case "self_heal":
 					//自身生命值恢复
 					var str = "\033[36m角色"+info.id+"自身生命值恢复\033[0m"+info.value

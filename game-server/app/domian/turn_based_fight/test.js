@@ -1,9 +1,9 @@
 var fightContorl = require("./fight/fightContorl.js")
 var atkTeam = [{id : 405040},{id : 405040},{id : 405040},{id : 405040},{id : 405040},{id : 405040}]
-var defTeam = [{id : 105050},{id : 105050},{id : 105050},{id : 105050},{id : 105050},{id : 105050}]
+var defTeam = [{id : 405040},{id : 405040},{id : 405040},{id : 405040},{id : 405040},{id : 405040}]
 for(var i = 0;i < 6;i++){
 	// atkTeam[i].self_adds = {atk : 1}
-	atkTeam[i].skill_later_buff = JSON.stringify({buffId : "burn",buffArg : 0.2,duration : 1,buffRate : 1})
+	atkTeam[i].hit_buff = JSON.stringify({buffId : "burn",buffArg : 0.2,duration : 1,buffRate : 1})
 	atkTeam[i] = fightContorl.getCharacterInfo(atkTeam[i])
 	// atkTeam[i].angerSkill.buffArg = 0.5
 	// atkTeam[i].angerSkill.duration = 1

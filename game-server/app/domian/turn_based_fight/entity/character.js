@@ -66,8 +66,14 @@ var model = function(otps) {
 		this.skill_later_buff = JSON.parse(otps.skill_later_buff)	//释放技能后附加buff
 	}
 
-	this.hit_turn_rate = otps.hit_turn_rate || 0			//受到直接伤害转化成生命值百分比
-	this.hit_turn_tg = otps.hit_turn_tg || 0				//受到直接伤害转化的生命值作用目标
+	this.hit_turn_rate = otps.hit_turn_rate || 0	//受到直接伤害转化成生命值百分比
+	this.hit_turn_tg = otps.hit_turn_tg || 0		//受到直接伤害转化的生命值作用目标
+	this.hit_rebound = otps.hit_rebound || 0		//受到直接伤害反弹比例
+	this.hit_less_anger = otps.hit_less_anger || 0	//受到普通攻击后，降低攻击自己的武将怒气
+	if(otps.hit_buff){
+		this.hit_buff = JSON.parse(otps.hit_buff)	//受到伤害给攻击者附加BUFF
+	}
+	
 	this.add_d_s_crit = otps.add_d_s_crit					//追加普攻必定暴击
 	this.action_anger = otps.action_anger					//行动后回复自身怒气
 	this.low_hp_amp = otps.low_hp_amp || 0					//战斗中自身生命每降低10%，伤害加成比例
@@ -81,9 +87,7 @@ var model = function(otps) {
 	this.burn_att_change = false				//灼烧状态属性修改
 	this.burn_buff_change = false				//灼烧状态附加BUFF
 
-	this.hit_rebound = 0						//受到直接伤害反弹比例
-	this.hit_buff = false						//受到伤害给攻击者附加BUFF
-	this.hit_less_anger = 0						//受到普通攻击后，降低攻击自己的武将怒气
+
 
 	this.first_crit = false						//首回合必定暴击
 	this.first_amp = 0							//首回合伤害加成
@@ -247,12 +251,14 @@ model.prototype.lessHP = function(value) {
 }
 //恢复怒气
 model.prototype.addAnger = function(value,skillId) {
+	value = Math.floor(value) || 1
 	this.curAnger += value
 	fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,skillId : skillId})
 	return value
 }
 //减少怒气
 model.prototype.lessAnger = function(value,skillId) {
+	value = Math.floor(value) || 1
 	var realValue = value
 	if((this.curAnger - value) < 0){
 		realValue = this.curAnger
