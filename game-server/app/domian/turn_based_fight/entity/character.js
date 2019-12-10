@@ -59,9 +59,12 @@ var model = function(otps) {
 	this.skill_anger_back = otps.skill_anger_back || 0		//释放技能后回复己方后排怒气
 	this.skill_anger_first = otps.skill_anger_first || 0	//释放技能后，回复当前本方阵容站位最靠前的武将怒气
 	this.skill_less_anger = otps.skill_less_anger || 0		//释放技能后降低目标怒气
-	//todo
-	this.skill_later_skill = otps.skill_later_skill			//释放技能后后追加技能
-	this.skill_later_buff = otps.skill_later_buff			//释放技能后附加buff
+	if(otps.skill_later_skill){
+		this.skill_later_skill = JSON.parse(otps.skill_later_skill)	//释放技能后后追加技能
+	}
+	if(otps.skill_later_buff){
+		this.skill_later_buff = JSON.parse(otps.skill_later_buff)	//释放技能后附加buff
+	}
 
 	this.hit_turn_rate = otps.hit_turn_rate || 0			//受到直接伤害转化成生命值百分比
 	this.hit_turn_tg = otps.hit_turn_tg || 0				//受到直接伤害转化的生命值作用目标

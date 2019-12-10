@@ -39,7 +39,7 @@ model.useSkill = function(skill) {
 			if(targets[i].died ||!targets[i].buffs["burn"]){
 				break
 			}
-			var burnBuffInfo = JSON.parse(skill.burn_buff_change)
+			var burnBuffInfo = skill.burn_buff_change
 			if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
 				buffManager.createBuff(skill.character,targets[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 			}
@@ -109,6 +109,22 @@ model.useSkill = function(skill) {
 					break
 				}
 				targets[i].lessAnger(skill.character.skill_less_anger,skill.skillId)
+			}
+		}
+		//释放技能后追加技能
+		if(skill.character.skill_later_skill && this.seeded.random("判断追加技能") < skill.character.skill_later_skill.rate){
+			let tmpSkill = this.createSkill(skill.character.skill_later_skill,skill.character)
+			this.useSkill(tmpSkill)
+		}
+		//释放技能后追加BUFF
+		if(skill.character.skill_later_buff){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died){
+					var burnBuffInfo = skill.character.skill_later_buff
+					if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
+						buffManager.createBuff(skill.character,targets[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+					}
+				}
 			}
 		}
 	}
@@ -234,19 +250,5 @@ model.useHealSkill = function(skill) {
 	}
 	fightRecord.push(recordInfo)
 	return targets
-}
-//技能效果特殊先决条件
-model.checkPremise = function(premise) {
-	switch(premise){
-		case "target3":
-
-		break
-		default:
-			return false
-	}
-}
-//技能效果触发
-model.doEffect = function(effect) {
-	// body...
 }
 module.exports = model
