@@ -25,7 +25,11 @@ formula.prototype.calDamage = function(attacker, target, skill,lessAmp) {
 	//伤害计算
 	var atk = attacker.getTotalAtt("atk")
 	var def = target.getTotalAtt(skill.damageType+"Def")
-	var mul = 1 + attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction") + tmpAmplify + attacker.skill_attack_amp
+	var mul = 1 + attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction") + tmpAmplify
+	if(skill.isAnger)
+	 	mul += 	attacker.skill_attack_amp
+	else
+		mul +=	attacker.normal_attack_amp
 	info.value = Math.round((atk - def) * skill.mul * mul)
 	if(lessAmp){
 		info.value = Math.round(info.value * (1+lessAmp))

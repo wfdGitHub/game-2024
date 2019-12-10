@@ -82,24 +82,24 @@ model.useSkill = function(skill) {
 	if(skill.isAnger && !skill.character.died){
 		//释放技能后恢复自身怒气
 		if(skill.character.skill_anger_s)
-			skill.character.addAnger(skill.character.skill_anger_s,skill.skillId)
+			skill.character.addAnger(skill.character.skill_anger_s)
 		//释放技能后恢复全体队友怒气
 		if(skill.character.skill_anger_a)
 			for(var i = 0;i < skill.character.team.length;i++)
 				if(!skill.character.team[i].died)
-					skill.character.team[i].addAnger(skill.character.skill_anger_a,skill.skillId)
+					skill.character.team[i].addAnger(skill.character.skill_anger_a)
 		//释放技能后回复当前本方阵容站位最靠前的武将怒气
 		if(skill.character.skill_anger_first){
 			let tmpTargets = this.locator.getTargets(skill.character,"team_min_index")
 			for(var i = 0;i < tmpTargets.length;i++){
-				tmpTargets[i].addAnger(skill.character.skill_anger_first,skill.skillId)
+				tmpTargets[i].addAnger(skill.character.skill_anger_first)
 			}
 		}
 		//释放技能后恢复己方后排怒气
 		if(skill.character.skill_anger_back){
 			let tmpTargets = this.locator.getTargets(skill.character,"team_horizontal_back")
 			for(var i = 0;i < tmpTargets.length;i++){
-				tmpTargets[i].addAnger(skill.character.skill_anger_back,skill.skillId)
+				tmpTargets[i].addAnger(skill.character.skill_anger_back)
 			}
 		}
 		//释放技能后降低敌人怒气
@@ -108,7 +108,7 @@ model.useSkill = function(skill) {
 				if(targets[i].died){
 					break
 				}
-				targets[i].lessAnger(skill.character.skill_less_anger,skill.skillId)
+				targets[i].lessAnger(skill.character.skill_less_anger)
 			}
 		}
 		//释放技能后追加技能
@@ -121,6 +121,27 @@ model.useSkill = function(skill) {
 			for(var i = 0;i < targets.length;i++){
 				if(!targets[i].died){
 					var burnBuffInfo = skill.character.skill_later_buff
+					if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
+						buffManager.createBuff(skill.character,targets[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+					}
+				}
+			}
+		}
+	}else if(!skill.character.died){
+		//普攻后恢复自身怒气
+		if(skill.character.normal_add_anger)
+			skill.character.addAnger(skill.character.normal_add_anger)
+		//普攻后降低目标怒气
+		if(skill.character.normal_less_anger){
+			for(var i = 0;i < targets.length;i++){
+				targets[i].lessAnger(skill.character.normal_less_anger)
+			}
+		}
+		//普攻后追加BUFF
+		if(skill.character.normal_later_buff){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died){
+					var burnBuffInfo = skill.character.normal_later_buff
 					if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
 						buffManager.createBuff(skill.character,targets[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 					}

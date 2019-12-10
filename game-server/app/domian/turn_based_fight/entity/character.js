@@ -73,7 +73,15 @@ var model = function(otps) {
 	if(otps.hit_buff){
 		this.hit_buff = JSON.parse(otps.hit_buff)	//受到伤害给攻击者附加BUFF
 	}
-	
+
+
+	this.normal_add_anger = otps.normal_add_anger || 0			//普攻后恢复自身怒气
+	this.normal_less_anger = otps.normal_less_anger || 0		//普攻后降低目标怒气
+	this.normal_attack_amp = otps.normal_attack_amp || 0		//普攻伤害加成
+	if(otps.normal_later_buff){
+		this.normal_later_buff = JSON.parse(otps.normal_later_buff)	//普攻后附加BUFF
+	}
+
 	this.add_d_s_crit = otps.add_d_s_crit					//追加普攻必定暴击
 	this.action_anger = otps.action_anger					//行动后回复自身怒气
 	this.low_hp_amp = otps.low_hp_amp || 0					//战斗中自身生命每降低10%，伤害加成比例
@@ -88,16 +96,10 @@ var model = function(otps) {
 	this.burn_buff_change = false				//灼烧状态附加BUFF
 
 
-
 	this.first_crit = false						//首回合必定暴击
 	this.first_amp = 0							//首回合伤害加成
 	this.first_buff = false						//战斗附加BUFF
 
-	this.normal_later_buff = false				//普攻后附加BUFF
-	this.normal_later_sRate = 0					//普攻后追加技能概率
-	this.normal_add_anger = 0					//普攻后恢复自身怒气
-	this.normal_less_anger = 0					//普攻后降低目标怒气
-	this.normal_attack_amp = 0					//普攻伤害加成
 
 	this.died_use_anger = false					//死亡时释放一次技能
 
