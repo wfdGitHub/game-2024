@@ -30,8 +30,12 @@ var model = function() {
 				break
 				case "burnDamage":
 					//燃烧伤害
-					var str = "角色"+info.id+"受到燃烧伤害"+info.value
-					str += "\t剩余"+info.curValue+"/"+info.maxHP
+					var str = "角色"+info.id+"受到燃烧伤害"
+					if(info.invincible){
+						str += "\t免疫"
+					}else{
+						str += info.value+"\t剩余"+info.curValue+"/"+info.maxHP
+					}
 					if(info.kill){
 						str += "\t角色已死亡"
 					}
@@ -39,11 +43,21 @@ var model = function() {
 				break
 				case "poisonDamage":
 					//中毒伤害
-					var str = "角色"+info.id+"受到中毒伤害"+info.value
-					str += "\t剩余"+info.curValue+"/"+info.maxHP
+					var str = "角色"+info.id+"受到中毒伤害"
+					if(info.invincible){
+						str += "\t免疫"
+					}else{
+						str += info.value+"\t剩余"+info.curValue+"/"+info.maxHP
+					}
 					if(info.kill){
 						str += "\t角色已死亡"
 					}
+					console.log(str)
+				break
+				case "recoverHeal":
+					//生命值恢复
+					var str = "角色"+info.id+"恢复"+info.value+"点生命值"
+					str += "\t剩余"+info.curValue+"/"+info.maxHP
 					console.log(str)
 				break
 				case "attack":
@@ -52,6 +66,8 @@ var model = function() {
 						str += "\n  \033[31m攻击角色"+info.targets[i].id+"\t"
 						if(info.targets[i].miss){
 							str += "被闪避"
+						}else if(info.targets[i].invincible){
+							str += "免疫"
 						}else{
 							str += "造成"+ info.targets[i].value+"点伤害"
 							if(info.targets[i].crit){

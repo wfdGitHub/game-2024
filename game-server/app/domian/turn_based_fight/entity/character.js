@@ -99,8 +99,10 @@ var model = function(otps) {
 		this.burn_buff_change = JSON.parse(otps.burn_buff_change)		//灼烧状态附加BUFF修改
 	//todo
 	this.first_crit = otps.first_crit			//首回合必定暴击
-	this.first_amp = otps.first_amp || 0		//首回合伤害加成
-	this.first_buff = false						//首回合附加BUFF
+	if(this.first_crit)
+		this.must_crit = true
+	if(otps.first_buff)
+		this.first_buff = JSON.parse(otps.first_buff)		//首回合附加BUFF
 	this.died_use_anger = false					//死亡时释放一次技能
 
 	//=========状态=======//
@@ -179,6 +181,11 @@ model.prototype.onHit = function(attacker,info,source) {
 	info.value = Math.floor(info.value) || 1
 	if(this.died){
 		console.error("不能攻击已死亡的角色",this.name)
+		info.realValue = 0
+		return info
+	}
+	if(this.buffs["invincibleSuper"] || this.buffs["invincible"]){
+		info.invincible = true
 		info.realValue = 0
 		return info
 	}

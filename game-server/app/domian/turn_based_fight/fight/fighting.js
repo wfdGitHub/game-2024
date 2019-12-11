@@ -5,6 +5,7 @@ var formula = require("./formula.js")
 var skillManager = require("../skill/skillManager.js")
 var character = require("../entity/character.js")
 var fightRecord = require("./fightRecord.js")
+var buffManager = require("../buff/buffManager.js")
 var maxRound = 20				//最大回合
 var teamLength = 6				//阵容人数
 var model = function(atkTeam,defTeam,otps) {
@@ -88,6 +89,12 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	for(var i = 0;i < teamLength;i++){
 		atkTeam[i].calAttAdd(atkTeamAdds)
 		atkTeam[i].teamInfo = this.atkTeamInfo
+		if(atkTeam[i].first_buff){
+			var burnBuffInfo = atkTeam[i].first_buff
+			if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
+				buffManager.createBuff(skill.character,targets[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			}
+		}
 		info.atkTeam.push(atkTeam[i].getSimpleInfo())
 		defTeam[i].calAttAdd(defTeamAdds)
 		defTeam[i].teamInfo = this.defTeamInfo
@@ -170,9 +177,9 @@ model.prototype.action = function() {
 model.prototype.after = function() {
 	this.character.after()
 	if(this.character.next_must_crit)
-		this.must_crit = true
+		this.character.must_crit = true
 	else
-		this.must_crit = false
+		this.character.must_crit = false
 	this.character.next_must_crit = false
 	if(this.character.action_anger)
 		this.character.addAnger(this.character.action_anger)
