@@ -115,7 +115,25 @@ var model = function(otps) {
 	this.poison = false				//中毒
 	this.burn = false				//燃烧
 	//=========加成=======//
-	this.calTalent(otps)
+	this.self_adds = otps.self_adds
+	// if(otps.self_adds){
+	// 	for(var i in otps.self_adds){
+	// 		if(!this.self_adds[i]){
+	// 			this.self_adds[i] = otps.self_adds[i]
+	// 		}else{
+	// 			this.self_adds[i] += otps.self_adds[i]
+	// 		}
+	// 	}
+	// }
+	if(otps.team_adds){
+		for(var i in otps.team_adds){
+			if(!this.team_adds[i]){
+				this.team_adds[i] = otps.team_adds[i]
+			}else{
+				this.team_adds[i] += otps.team_adds[i]
+			}
+		}
+	}
 	//=========技能=======//
 	if(otps.defaultSkill)
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
@@ -138,27 +156,6 @@ model.prototype.calAttAdd = function(team_adds) {
 		this.attInfo[i] += this.attInfo[i] * info[i]
 	}
 	this.attInfo.hp = this.attInfo.maxHP
-}
-//计算升阶天赋加成
-model.prototype.calTalent = function(otps) {
-	if(otps.self_adds){
-		for(var i in otps.self_adds){
-			if(!this.self_adds[i]){
-				this.self_adds[i] = otps.self_adds[i]
-			}else{
-				this.self_adds[i] += otps.self_adds[i]
-			}
-		}
-	}
-	if(otps.team_adds){
-		for(var i in otps.team_adds){
-			if(!this.team_adds[i]){
-				this.team_adds[i] = otps.team_adds[i]
-			}else{
-				this.team_adds[i] += otps.team_adds[i]
-			}
-		}
-	}
 }
 
 //行动开始前刷新
