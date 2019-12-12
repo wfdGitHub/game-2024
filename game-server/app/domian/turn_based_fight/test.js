@@ -3,9 +3,10 @@ var atkTeam = [{id : 305020},{id : 305020},{id : 305020},{id : 305020},{id : 305
 var defTeam = [{id : 104030},{id : 104030},{id : 104030},{id : 104030},{id : 104030},{id : 104030}]
 for(var i = 0;i < 6;i++){
 	// atkTeam[i].self_adds = {atk : 1}
-	atkTeam[i].normal_later_buff = JSON.stringify({buffId : "invincibleSuper",buffArg : 0.2,duration : 10,buffRate : 1})
+	// atkTeam[i].normal_later_buff = JSON.stringify({buffId : "invincibleSuper",buffArg : 0.2,duration : 10,buffRate : 1})
 	// atkTeam[i].skill_later_skill = JSON.stringify({type : "attack",mul : 1,damageType: "phy",targetType: "enemy_1",rate : 1})
-	atkTeam[i].first_crit = true
+	// atkTeam[i].resurgence_team = 0.1
+	// atkTeam[i].died_use_skill = true
 	atkTeam[i] = fightContorl.getCharacterInfo(atkTeam[i])
 
 	// atkTeam[i].angerSkill.buffArg = 0.5

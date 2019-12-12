@@ -36,6 +36,7 @@ model.getCharacterInfo = function(info) {
 			info.angerSkill = Object.assign({skillId : info.angerSkill},skillsCfg[info.angerSkill])
 		}
 	}
+	//
 	return new character(info)
 }
 module.exports = model

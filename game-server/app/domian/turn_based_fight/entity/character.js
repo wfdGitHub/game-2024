@@ -12,6 +12,8 @@ var model = function(otps) {
 	this.team = []				//所在阵容
 	this.enemy = []				//敌对阵容
 	this.level = otps["level"] || 0				//等级
+	this.star = otps["star"] || 0				//星级
+	this.advanced = otps["advanced"] || 0			//阶级
 	this.teamInfo = {}
 	//=========基础属性=======//
 	this.attInfo = {}
@@ -33,9 +35,6 @@ var model = function(otps) {
 	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
 	this.needAnger = 4							//技能所需怒气值
 	this.curAnger = otps["curAnger"] || 0		//当前怒气值
-	//=========属性加成=======//
-	this.self_adds = {}							//自身百分比加成属性
-	this.team_adds = {}							//全队百分比加成属性
 	//=========特殊属性=======//
 	this.buffRate								//buff概率   若技能存在buff  以此代替buff本身概率
 	this.buffArg								//buff参数   若技能存在buff  以此代替buff本身参数
@@ -103,7 +102,7 @@ var model = function(otps) {
 		this.must_crit = true
 	if(otps.first_buff)
 		this.first_buff = JSON.parse(otps.first_buff)		//首回合附加BUFF
-	this.died_use_anger = false					//死亡时释放一次技能
+	this.died_use_skill = otps.died_use_skill				//死亡时释放一次技能
 
 	//=========状态=======//
 	this.died = this.attInfo.maxHP && this.attInfo.hp ? false : true 	//死亡状态
@@ -114,32 +113,38 @@ var model = function(otps) {
 	this.forbidden = false			//禁疗
 	this.poison = false				//中毒
 	this.burn = false				//燃烧
-	//=========加成=======//
-	this.self_adds = otps.self_adds
-	// if(otps.self_adds){
-	// 	for(var i in otps.self_adds){
-	// 		if(!this.self_adds[i]){
-	// 			this.self_adds[i] = otps.self_adds[i]
-	// 		}else{
-	// 			this.self_adds[i] += otps.self_adds[i]
-	// 		}
-	// 	}
-	// }
-	if(otps.team_adds){
-		for(var i in otps.team_adds){
-			if(!this.team_adds[i]){
-				this.team_adds[i] = otps.team_adds[i]
-			}else{
-				this.team_adds[i] += otps.team_adds[i]
-			}
-		}
-	}
+	//=========属性加成=======//
+	this.self_adds = {}							//自身百分比加成属性
+	this.team_adds = {}							//全队百分比加成属性
+	if(otps.self_atk_add)
+		this.self_adds["atk"] = otps.self_atk_add
+	if(otps.self_maxHP_add)
+		this.self_adds["maxHP"] = otps.self_maxHP_add
+	if(otps.self_amplify_add)
+		this.self_adds["amplify"] = otps.self_amplify_add
+	if(otps.self_reduction_add)
+		this.self_adds["reduction"] = otps.self_reduction_add
+	if(otps.team_atk_add)
+		this.team_adds["atk"] = otps.team_atk_add
+	if(otps.team_maxHP_add)
+		this.team_adds["maxHP"] = otps.team_maxHP_add
+	if(otps.team_amplify_add)
+		this.team_adds["amplify"] = otps.team_amplify_add
+	if(otps.team_reduction_add)
+		this.team_adds["reduction"] = otps.team_reduction_add
 	//=========技能=======//
-	if(otps.defaultSkill)
+	if(otps.defaultSkill){
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
+	}
 	if(otps.angerSkill){
 		this.angerSkill = skillManager.createSkill(otps.angerSkill,this)		//怒气技能
 		this.angerSkill.isAnger = true
+		if(this.buffRate)
+			this.angerSkill.buffRate = this.buffRate
+		if(this.buffArg)
+			this.angerSkill.buffArg = this.buffArg
+		if(this.buffDuration)
+			this.angerSkill.buffDuration = this.buffDuration
 	}
 }
 //百分比属性加成
@@ -226,10 +231,6 @@ model.prototype.onDie = function() {
 	// console.log(this.name+"死亡")
 	this.attInfo.hp = 0
 	this.died = true
-	if(this.teamInfo.resurgence_team){
-		this.resurgence(this.teamInfo.resurgence_team)
-		delete this.teamInfo.resurgence_team
-	}
 }
 //击杀目标
 model.prototype.kill = function(target) {
