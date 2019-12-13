@@ -1,5 +1,5 @@
 var skillsCfg = require("../../../../config/gameCfg/skills.json")
-var heros = require("../../../../config/gameCfg/heros.json")
+var herosCfg = require("../../../../config/gameCfg/heros.json")
 var advanced_base = require("../../../../config/gameCfg/advanced_base.json")
 var advanced_talent = require("../../../../config/gameCfg/advanced_talent.json")
 var talent_list = require("../../../../config/gameCfg/talent_list.json")
@@ -18,11 +18,11 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 }
 //获取角色数据
 model.getCharacterInfo = function(info) {
-	if(!info || !heros[info.id]){
+	if(!info || !herosCfg[info.id]){
 		return false
 	}
 	let id = info.id
-	Object.assign(info,heros[id])
+	Object.assign(info,herosCfg[id])
 	if(info.defaultSkill){
 		if(!skillsCfg[info.defaultSkill]){
 			console.error("技能不存在",info.id,info.defaultSkill)
@@ -40,10 +40,10 @@ model.getCharacterInfo = function(info) {
 		}
 	}
 	//进阶计算
-	if(info.advanced){
+	if(info.ad){
 		if(advanced_talent[info.id]){
 			var advancedInfo = {}
-			for(var i = 1;i <= info.advanced;i++){
+			for(var i = 1;i <= info.ad;i++){
 				var talentId = advanced_talent[info.id]["talent_"+i]
 				if(talentId){
 					if(talent_list[talentId]){
@@ -59,8 +59,8 @@ model.getCharacterInfo = function(info) {
 			}
 			model.mergeData(info,advancedInfo)
 		}
-		if(advanced_base[info.advanced] && advanced_base[info.advanced]["att"])
-				var strs = advanced_base[info.advanced]["att"].split("&")
+		if(advanced_base[info.ad] && advanced_base[info.ad]["att"])
+				var strs = advanced_base[info.ad]["att"].split("&")
 				var advancedInfo = {}
 				strs.forEach(function(m_str) {
 					var m_list = m_str.split(":")
