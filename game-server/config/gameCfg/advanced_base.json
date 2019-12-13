@@ -1,0 +1,45 @@
+{
+  "0": {
+    "level": 30
+  },
+  "1": {
+    "att": "atk:100&phyDef:100&magDef:100",
+    "level": 40
+  },
+  "2": {
+    "att": "atk:200&phyDef:200&magDef:200",
+    "level": 50
+  },
+  "3": {
+    "att": "atk:300&phyDef:300&magDef:300",
+    "level": 60
+  },
+  "4": {
+    "att": "atk:400&phyDef:400&magDef:400",
+    "level": 80
+  },
+  "5": {
+    "att": "atk:500&phyDef:500&magDef:500",
+    "level": 100
+  },
+  "6": {
+    "att": "atk:600&phyDef:600&magDef:600",
+    "level": 145
+  },
+  "7": {
+    "att": "atk:700&phyDef:700&magDef:700",
+    "level": 165
+  },
+  "8": {
+    "att": "atk:800&phyDef:800&magDef:800",
+    "level": 185
+  },
+  "9": {
+    "att": "atk:900&phyDef:900&magDef:900",
+    "level": 205
+  },
+  "10": {
+    "att": "atk:1000&phyDef:1000&magDef:1000",
+    "level": 255
+  }
+}

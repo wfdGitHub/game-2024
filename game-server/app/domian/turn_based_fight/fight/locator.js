@@ -69,20 +69,40 @@ model.prototype.getTargets = function(character,targetType) {
 			//己方后排
 			return	this.getTeamHorizontalBack(character)
 		case "team_minHp_1":
-			//获取友方生命值最少的1个单位
+			//获取己方生命值最少的1个单位
 			return this.getTeamRandomMinHp(character,1)
 		case "team_minHp_2":
-			//获取友方生命值最少的2个单位
+			//获取己方生命值最少的2个单位
 			return this.getTeamRandomMinHp(character,2)
 		case "team_minHp_3":
-			//获取友方生命值最少的3个单位
+			//获取己方生命值最少的3个单位
 			return this.getTeamRandomMinHp(character,3)
 		case "team_minHp_4":
-			//获取友方生命值最少的4个单位
+			//获取己方生命值最少的4个单位
 			return this.getTeamRandomMinHp(character,4)
 		case "team_minHp_5":
-			//获取友方生命值最少的5个单位
+			//获取己方生命值最少的5个单位
 			return this.getTeamRandomMinHp(character,5)
+		case "friend_minHp_1":
+			//获取友方生命值最少的1个单位
+			return this.getFriendRandomMinHp(character,1)
+		break
+		case "friend_minHp_2":
+			//获取友方生命值最少的1个单位
+			return this.getFriendRandomMinHp(character,2)
+		break
+		case "friend_minHp_3":
+			//获取友方生命值最少的1个单位
+			return this.getFriendRandomMinHp(character,3)
+		break
+		case "friend_minHp_4":
+			//获取友方生命值最少的1个单位
+			return this.getFriendRandomMinHp(character,4)
+		break
+		case "friend_minHp_5":
+			//获取友方生命值最少的1个单位
+			return this.getFriendRandomMinHp(character,5)
+		break
 		case "team_min_index":
 			//己方阵容站位最靠前的单位
 			return this.getTeamMinIndex(character)
@@ -117,6 +137,26 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 		case "enemy_horizontal_back":
 			//敌方后排
 			return this.getEnemyHorizontalBack(character)
+		case "friend_minHp_1":
+			//获取友方生命值最少的1个单位
+			return this.getFriendRandomMinHp(character,1)
+		break
+		case "friend_minHp_2":
+			//获取友方生命值最少的1个单位
+			return this.getFriendRandomMinHp(character,2)
+		break
+		case "friend_minHp_3":
+			//获取友方生命值最少的1个单位
+			return this.getFriendRandomMinHp(character,3)
+		break
+		case "friend_minHp_4":
+			//获取友方生命值最少的1个单位
+			return this.getFriendRandomMinHp(character,4)
+		break
+		case "friend_minHp_5":
+			//获取友方生命值最少的1个单位
+			return this.getFriendRandomMinHp(character,5)
+		break
 		case "enemy_all":
 			//敌方全体
 			return	this.getEnemyAll(character)
@@ -461,6 +501,19 @@ model.prototype.getTeamRandomMinHp = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
         if(!target.died){
+        	list.push(target)
+        }
+    })
+    list.sort(function(a,b) {
+    	return a.hp > b.hp ? 1 : -1
+    })
+    return list.slice(0,count)
+}
+//友方(除自己)生命最少的n个单位
+model.prototype.getFriendRandomMinHp = function(character,count) {
+    var list = []
+    character.team.forEach(function(target,index) {
+        if(!target.died && target != self){
         	list.push(target)
         }
     })

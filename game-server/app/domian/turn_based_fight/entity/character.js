@@ -120,10 +120,6 @@ var model = function(otps) {
 		this.self_adds["atk"] = otps.self_atk_add
 	if(otps.self_maxHP_add)
 		this.self_adds["maxHP"] = otps.self_maxHP_add
-	if(otps.self_amplify_add)
-		this.self_adds["amplify"] = otps.self_amplify_add
-	if(otps.self_reduction_add)
-		this.self_adds["reduction"] = otps.self_reduction_add
 	if(otps.team_atk_add)
 		this.team_adds["atk"] = otps.team_atk_add
 	if(otps.team_maxHP_add)
@@ -132,6 +128,23 @@ var model = function(otps) {
 		this.team_adds["amplify"] = otps.team_amplify_add
 	if(otps.team_reduction_add)
 		this.team_adds["reduction"] = otps.team_reduction_add
+	if(otps.team_hitRate_add)
+		this.team_adds["hitRate"] = otps.team_hitRate_add
+	if(otps.team_dodgeRate_add)
+		this.team_adds["dodgeRate"] = otps.team_dodgeRate_add
+	if(otps.team_phyDef_add)
+		this.team_adds["phyDef"] = otps.team_phyDef_add
+	if(otps.team_magDef_add)
+		this.team_adds["magDef"] = otps.team_magDef_add
+	if(otps.team_slay_add)
+		this.team_adds["slay"] = otps.team_slay_add
+	if(otps.team_slayDef_add)
+		this.team_adds["slayDef"] = otps.team_slayDef_add	
+	if(otps.team_crit_add)
+		this.team_adds["crit"] = otps.team_crit_add
+	if(otps.team_critDef_add)
+		this.team_adds["critDef"] = otps.team_critDef_add	
+	
 	//=========技能=======//
 	if(otps.defaultSkill){
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
@@ -158,7 +171,10 @@ model.prototype.calAttAdd = function(team_adds) {
 		}
 	}
 	for(var i in info){
-		this.attInfo[i] += this.attInfo[i] * info[i]
+		if(i == "atk" || i == "maxHP" || i == "phyDef" || i == "magDef")
+			this.attInfo[i] += this.attInfo[i] * info[i]
+		else
+			this.attInfo[i] += info[i]
 	}
 	this.attInfo.hp = this.attInfo.maxHP
 }
@@ -234,7 +250,7 @@ model.prototype.onDie = function() {
 }
 //击杀目标
 model.prototype.kill = function(target) {
-    console.log(this.name+"击杀"+target.name)
+    // console.log(this.name+"击杀"+target.name)
 }
 //复活
 model.prototype.resurgence = function(rate) {

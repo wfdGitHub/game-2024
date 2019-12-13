@@ -1,5 +1,5 @@
 var fightContorl = require("./fight/fightContorl.js")
-var atkTeam = [{id : 305020},{id : 305020},{id : 305020},{id : 305020},{id : 305050},{id : 305050}]
+var atkTeam = [{id : 104010,advanced : 1},{id : 104010},{id : 104010},{id : 104010},{id : 305050},{id : 305050}]
 var defTeam = [{id : 104030},{id : 104030},{id : 104030},{id : 104030},{id : 104030},{id : 104030}]
 for(var i = 0;i < 6;i++){
 	// atkTeam[i].self_adds = {atk : 1}

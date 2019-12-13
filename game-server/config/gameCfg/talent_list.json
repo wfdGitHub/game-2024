@@ -1,0 +1,728 @@
+{
+  "1001": {
+    "des": "行动后回复自身1点怒气",
+    "key1": "action_anger",
+    "value1": 1
+  },
+  "1002": {
+    "des": "行动后回复自身2点怒气",
+    "key1": "action_anger",
+    "value1": 2
+  },
+  "1003": {
+    "des": "追加的普通攻击必定暴击（追加的普通攻击不会回复怒气）",
+    "key1": "add_d_s_crit",
+    "value1": true
+  },
+  "1004": {
+    "des": "攻击+150",
+    "key1": "atk",
+    "value1": 150
+  },
+  "1005": {
+    "des": "攻击+150，生命+1500",
+    "key1": "atk",
+    "value1": 150,
+    "key2": "maxHP",
+    "value2": 1500
+  },
+  "1006": {
+    "des": "攻击+300",
+    "key1": "atk",
+    "value1": 300
+  },
+  "1007": {
+    "des": "攻击+300，生命+3000",
+    "key1": "atk",
+    "value1": 300,
+    "key2": "maxHP",
+    "value2": 3000
+  },
+  "1008": {
+    "des": "释放技能后，给己方前排附加1个减伤盾，减免直接伤害的百分比由20%提升至32%",
+    "key1": "buffArg",
+    "value1": 0.32
+  },
+  "1009": {
+    "des": "每回合中毒伤害，由自身攻击伤害的80%提升至125%",
+    "key1": "buffArg",
+    "value1": 1.25
+  },
+  "1010": {
+    "des": "每回合中毒伤害，由自身攻击伤害的100%提升至160%",
+    "key1": "buffArg",
+    "value1": 1.6
+  },
+  "1011": {
+    "des": "释放技能后，给己方前排武将附加减伤盾，持续时间增加至2回合",
+    "key1": "buffDuration",
+    "value1": 2
+  },
+  "1012": {
+    "des": "释放技能沉默目标的概率提升至65%",
+    "key1": "buffRate",
+    "value1": 0.65
+  },
+  "1013": {
+    "des": "释放技能眩晕目标的概率提升至65%",
+    "key1": "buffRate",
+    "value1": 0.65
+  },
+  "1014": {
+    "des": "技能攻击使目标灼烧的概率提升至65%",
+    "key1": "buffRate",
+    "value1": 0.65
+  },
+  "1015": {
+    "des": "释放技能附加眩晕的概率提升至70%",
+    "key1": "buffRate",
+    "value1": 0.7
+  },
+  "1016": {
+    "des": "技能攻击使目标灼烧的概率提升至96%",
+    "key1": "buffRate",
+    "value1": 0.96
+  },
+  "1017": {
+    "des": "技能对灼烧目标造成的伤害额外增加50%",
+    "key1": "burn_att_change",
+    "value1": "{\"amplify\":0.5}"
+  },
+  "1018": {
+    "des": "普通攻击对灼烧目标造成的伤害额外增加80%",
+    "key1": "burn_att_change",
+    "value1": "{\"amplify\":0.8}"
+  },
+  "1019": {
+    "des": "释放技能时，对灼烧目标的暴击几率额外增加50%",
+    "key1": "burn_att_change",
+    "value1": "{\"crit\":0.5}"
+  },
+  "1020": {
+    "des": "释放技能时，如果目标处于灼烧状态，附加晕眩的概率提升至50%",
+    "key1": "burn_buff_change",
+    "value1": "{\"buffRate\":0.5}"
+  },
+  "1021": {
+    "des": "受到灼烧状态敌人攻击时，受到的直接伤害降低40%",
+    "key1": "burn_hit_reduction",
+    "value1": 0.4
+  },
+  "1022": {
+    "des": "暴击几率+3%",
+    "key1": "crit",
+    "value1": 0.03
+  },
+  "1023": {
+    "des": "暴击几率+4%",
+    "key1": "crit",
+    "value1": 0.04
+  },
+  "1024": {
+    "des": "暴击几率+5%",
+    "key1": "crit",
+    "value1": 0.05
+  },
+  "1025": {
+    "des": "暴击几率+6%",
+    "key1": "crit",
+    "value1": 0.06
+  },
+  "1026": {
+    "des": "暴击几率+8%",
+    "key1": "crit",
+    "value1": 0.08
+  },
+  "1027": {
+    "des": "暴击几率+10%",
+    "key1": "crit",
+    "value1": 0.1
+  },
+  "1028": {
+    "des": "抗暴几率+6%",
+    "key1": "critDef",
+    "value1": 0.06
+  },
+  "1029": {
+    "des": "抗暴几率+8%",
+    "key1": "critDef",
+    "value1": 0.08
+  },
+  "1030": {
+    "des": "暴伤减免+8%",
+    "key1": "critDef",
+    "value1": 0.08
+  },
+  "1031": {
+    "des": "抗暴几率+10%",
+    "key1": "critDef",
+    "value1": 0.1
+  },
+  "1032": {
+    "des": "抗暴几率+12%",
+    "key1": "critDef",
+    "value1": 0.12
+  },
+  "1033": {
+    "des": "初始怒气+2",
+    "key1": "curAnger",
+    "value1": 2
+  },
+  "1034": {
+    "des": "死亡时释放1次技能",
+    "key1": "died_use_skill",
+    "value1": true
+  },
+  "1035": {
+    "des": "闪避几率+3%",
+    "key1": "dodgeRate",
+    "value1": 0.03
+  },
+  "1036": {
+    "des": "闪避几率+4%",
+    "key1": "dodgeRate",
+    "value1": 0.04
+  },
+  "1037": {
+    "des": "闪避几率+5%",
+    "key1": "dodgeRate",
+    "value1": 0.05
+  },
+  "1038": {
+    "des": "闪避几率+6%",
+    "key1": "dodgeRate",
+    "value1": 0.06
+  },
+  "1039": {
+    "des": "闪避几率+8%",
+    "key1": "dodgeRate",
+    "value1": 0.08
+  },
+  "1040": {
+    "des": "闪避几率+10%",
+    "key1": "dodgeRate",
+    "value1": 0.1
+  },
+  "1041": {
+    "des": "敌方每阵亡1人，自身伤害增加15%",
+    "key1": "enemy_died_amp",
+    "value1": 0.15
+  },
+  "1042": {
+    "des": "战斗第1回合造成的伤害增加50%",
+    "key1": "first_buff",
+    "value1": "{\"buffId\":\"amplify\",\"buffArg\":0.5,duration\":1}"
+  },
+  "1043": {
+    "des": "战斗第1回合无敌，免疫所有伤害和控制效果（无敌效果不会被清除）",
+    "key1": "first_buff",
+    "value1": "{\"buffId\":\"invincibleSuper\",duration\":1}"
+  },
+  "1044": {
+    "des": "战斗第1回合造成的伤害必定暴击",
+    "key1": "first_crit",
+    "value1": true
+  },
+  "1045": {
+    "des": "战斗第1回合攻击必定暴击",
+    "key1": "first_crit",
+    "value1": true
+  },
+  "1046": {
+    "des": "被治疗量+10%",
+    "key1": "healAdd",
+    "value1": 0.1
+  },
+  "1047": {
+    "des": "受到的治疗量+50%",
+    "key1": "healAdd",
+    "value1": 0.5
+  },
+  "1048": {
+    "des": "受到攻击时有35%的概率给攻击者附加灼烧状态，持续2回合",
+    "key1": "hit_buff",
+    "value1": "{\"buffId\":\"burn\",\"buffArg\":0.2,duration\":2,\"buffRate\":0.35}"
+  },
+  "1049": {
+    "des": "受到普通攻击时，有50%的概率给攻击自己的武将附加中毒效果，每回合对目标造成自身攻击伤害160%的中毒伤害，持续2回合",
+    "key1": "hit_buff",
+    "value1": "{\"buffId\":\"poison\",\"buffArg\":1.6,duration\":2,\"buffRate\":0.5}"
+  },
+  "1050": {
+    "des": "受到普通攻击后，降低攻击自己的武将1点怒气",
+    "key1": "hit_less_anger",
+    "value1": 1
+  },
+  "1051": {
+    "des": "受到普通攻击后，降低攻击自己的武将2点怒气",
+    "key1": "hit_less_anger",
+    "value1": 2
+  },
+  "1052": {
+    "des": "受到技能或普攻直接伤害的50%反弹给攻击者",
+    "key1": "hit_rebound",
+    "value1": 0.5
+  },
+  "1053": {
+    "des": "受到技能或普攻直接伤害的80%反弹给攻击者",
+    "key1": "hit_rebound",
+    "value1": 0.8
+  },
+  "1054": {
+    "des": "受到直接伤害的12%转化为生命，治疗己方全体目标",
+    "key1": "hit_turn_rate",
+    "value1": 0.12,
+    "key2": "hit_turn_tg",
+    "value2": "team_all"
+  },
+  "1055": {
+    "des": "受到直接伤害的16%转化为生命治疗己方生命最少的3个目标",
+    "key1": "hit_turn_rate",
+    "value1": 0.16,
+    "key2": "hit_turn_tg",
+    "value2": "team_minHp_3"
+  },
+  "1056": {
+    "des": "受到直接伤害的24%转化为生命治疗己方生命最少的3个目标",
+    "key1": "hit_turn_rate",
+    "value1": 0.24,
+    "key2": "hit_turn_tg",
+    "value2": "team_minHp_3"
+  },
+  "1057": {
+    "des": "命中几率+3%",
+    "key1": "hitRate",
+    "value1": 0.03
+  },
+  "1058": {
+    "des": "命中几率+4%",
+    "key1": "hitRate",
+    "value1": 0.04
+  },
+  "1059": {
+    "des": "命中几率+5%",
+    "key1": "hitRate",
+    "value1": 0.05
+  },
+  "1060": {
+    "des": "命中几率+6%",
+    "key1": "hitRate",
+    "value1": 0.06
+  },
+  "1061": {
+    "des": "命中几率+8%",
+    "key1": "hitRate",
+    "value1": 0.08
+  },
+  "1062": {
+    "des": "命中几率+10%",
+    "key1": "hitRate",
+    "value1": 0.1
+  },
+  "1063": {
+    "des": "命中几率+12%",
+    "key1": "hitRate",
+    "value1": 0.12
+  },
+  "1064": {
+    "des": "直接伤害击杀目标后追加1次普通攻击（追加的普通攻击不会回复怒气）",
+    "key1": "kill_add_d_s",
+    "value1": true
+  },
+  "1065": {
+    "des": "直接伤害每次击杀目标，自身伤害增加16%，可叠加，持续至战斗结束",
+    "key1": "kill_amp",
+    "value1": 0.16
+  },
+  "1066": {
+    "des": "直接伤害击杀目标后回复自身1点怒气",
+    "key1": "kill_anger",
+    "value1": 1
+  },
+  "1067": {
+    "des": "直接伤害击杀目标回复自身1点怒气",
+    "key1": "kill_anger",
+    "value1": 1
+  },
+  "1068": {
+    "des": "直接伤害击杀目标回复2点怒气",
+    "key1": "kill_anger",
+    "value1": 2
+  },
+  "1069": {
+    "des": "直接伤害每击杀1个目标，自身暴击概率增加20%，可叠加，持续至战斗结束",
+    "key1": "kill_crit",
+    "value1": 0.2
+  },
+  "1070": {
+    "des": "直接伤害击杀目标后，回复自身生命上限的30%的生命",
+    "key1": "kill_heal",
+    "value1": 0.3
+  },
+  "1071": {
+    "des": "直接伤害击杀目标后，下回合攻击必定暴击",
+    "key1": "kill_must_crit",
+    "value1": true
+  },
+  "1072": {
+    "des": "战斗中自身生命每降低10%，造成的伤害增加5%",
+    "key1": "low_hp_amp",
+    "value1": 0.05
+  },
+  "1073": {
+    "des": "战斗中自身生命每降低10%，暴击几率增加5%",
+    "key1": "low_hp_crit",
+    "value1": 0.05
+  },
+  "1074": {
+    "des": "释放普通攻击后回复自身1点怒气",
+    "key1": "normal_add_anger",
+    "value1": 1
+  },
+  "1075": {
+    "des": "普通攻击后额外回复1点怒气",
+    "key1": "normal_add_anger",
+    "value1": 1
+  },
+  "1076": {
+    "des": "普通攻击造成的伤害增加50%",
+    "key1": "normal_attack_amp",
+    "value1": 0.5
+  },
+  "1077": {
+    "des": "释放技能时，如果目标处于灼烧状态，技能直接伤害的50%转化为生命，治疗自己",
+    "key1": "normal_burn_turn_heal",
+    "value1": 0.5
+  },
+  "1078": {
+    "des": "普通攻击时，如果目标处于灼烧状态，直接伤害的80%转化为生命，治疗自己",
+    "key1": "normal_burn_turn_heal",
+    "value1": 0.8
+  },
+  "1079": {
+    "des": "普通攻击后自身伤害增加10%，持续7回合，效果可叠加",
+    "key1": "normal_later_buff",
+    "value1": "{\"buffId\":\"amplify\",\"buffArg\":0.1,duration\":7,\"buffRate\":1}"
+  },
+  "1080": {
+    "des": "普通攻击有40%概率给目标附加灼烧状态，持续2回合",
+    "key1": "normal_later_buff",
+    "value1": "{\"buffId\":\"burn\",\"buffArg\":0.2,duration\":2,\"buffRate\":0.4}"
+  },
+  "1081": {
+    "des": "普通攻击有80%概率给目标附加灼烧状态，持续2回合",
+    "key1": "normal_later_buff",
+    "value1": "{\"buffId\":\"burn\",\"buffArg\":0.2,duration\":2,\"buffRate\":0.8}"
+  },
+  "1082": {
+    "des": "释放普通攻击后，给目标附加1个持续治疗效果，每回合回复大乔最大攻击32%的生命，持续2回合",
+    "key1": "normal_later_buff",
+    "value1": "{\"buffId\":\"recover\",\"buffArg\":0.32,duration\":2,\"buffRate\":1}"
+  },
+  "1083": {
+    "des": "释放普通攻击降低目标1点怒气",
+    "key1": "normal_less_anger",
+    "value1": 1
+  },
+  "1084": {
+    "des": "普通攻击后降低目标1点怒气",
+    "key1": "normal_less_anger",
+    "value1": 1
+  },
+  "1085": {
+    "des": "伤害减免+8%",
+    "key1": "reduction",
+    "value1": 0.08
+  },
+  "1086": {
+    "des": "伤害减免+10%",
+    "key1": "reduction",
+    "value1": 0.1
+  },
+  "1087": {
+    "des": "伤害减免+12%",
+    "key1": "reduction",
+    "value1": 0.12
+  },
+  "1088": {
+    "des": "复活本方第1位阵亡的武将，并恢复其50%的生命，每场战斗只可触发1次",
+    "key1": "resurgence_team",
+    "value1": 0.5
+  },
+  "1089": {
+    "des": "攻击加成+4%",
+    "key1": "self_atk_add",
+    "value1": 0.04
+  },
+  "1090": {
+    "des": "攻击加成+8%",
+    "key1": "self_atk_add",
+    "value1": 0.08
+  },
+  "1091": {
+    "des": "攻击加成+10%",
+    "key1": "self_atk_add",
+    "value1": 0.1
+  },
+  "1092": {
+    "des": "攻击加成+12%",
+    "key1": "self_atk_add",
+    "value1": 0.12
+  },
+  "1093": {
+    "des": "攻击加成+16%",
+    "key1": "self_atk_add",
+    "value1": 0.16
+  },
+  "1094": {
+    "des": "攻击加成+20%",
+    "key1": "self_atk_add",
+    "value1": 0.2
+  },
+  "1095": {
+    "des": "生命加成8%",
+    "key1": "self_maxHP_add",
+    "value1": 0.08
+  },
+  "1096": {
+    "des": "生命加成+8%",
+    "key1": "self_maxHP_add",
+    "value1": 0.08
+  },
+  "1097": {
+    "des": "生命加成+12%",
+    "key1": "self_maxHP_add",
+    "value1": 0.12
+  },
+  "1098": {
+    "des": "生命加成+15%",
+    "key1": "self_maxHP_add",
+    "value1": 0.15
+  },
+  "1099": {
+    "des": "生命加成+16%",
+    "key1": "self_maxHP_add",
+    "value1": 0.16
+  },
+  "1100": {
+    "des": "自身生命增加30%",
+    "key1": "self_maxHP_add",
+    "value1": 0.3
+  },
+  "1101": {
+    "des": "释放技能后追加1次普通攻击（追加的普通攻击不会回复怒气）",
+    "key1": "skill_add_d_s",
+    "value1": 1
+  },
+  "1102": {
+    "des": "释放技能后回复全体队友1点怒气",
+    "key1": "skill_anger_a",
+    "value1": 1
+  },
+  "1103": {
+    "des": "释放技能后，回复己方后排1点怒气",
+    "key1": "skill_anger_back",
+    "value1": 1
+  },
+  "1104": {
+    "des": "释放技能后，回复当前本方阵容站位最靠前的武将4点怒气",
+    "key1": "skill_anger_first",
+    "value1": 4
+  },
+  "1105": {
+    "des": "释放技能后回复自身1点怒气",
+    "key1": "skill_anger_s",
+    "value1": 1
+  },
+  "1106": {
+    "des": "释放技能回复自身1点怒气",
+    "key1": "skill_anger_s",
+    "value1": 1
+  },
+  "1107": {
+    "des": "释放技能后回复自身2点怒气",
+    "key1": "skill_anger_s",
+    "value1": 2
+  },
+  "1108": {
+    "des": "技能造成的伤害增加25%",
+    "key1": "skill_attack_amp",
+    "value1": 0.25
+  },
+  "1109": {
+    "des": "技能伤害+30%",
+    "key1": "skill_attack_amp",
+    "value1": 0.3
+  },
+  "1110": {
+    "des": "释放技能不消耗怒气的几率提升至64%",
+    "key1": "skill_free",
+    "value1": 0.24
+  },
+  "1111": {
+    "des": "释放技能有30%的几率不消耗怒气",
+    "key1": "skill_free",
+    "value1": 0.3
+  },
+  "1112": {
+    "des": "释放技能有30%的概率不消耗怒气",
+    "key1": "skill_free",
+    "value1": 0.3
+  },
+  "1113": {
+    "des": "释放技能有40%几率不消耗怒气",
+    "key1": "skill_free",
+    "value1": 0.4
+  },
+  "1114": {
+    "des": "技能造成的治疗量增加25%",
+    "key1": "skill_heal_amp",
+    "value1": 0.25
+  },
+  "1115": {
+    "des": "释放技能有45%概率附加眩晕效果，持续1回合",
+    "key1": "skill_later_buff",
+    "value1": "{\"buffId\":\"dizzy\",duration\":1,\"buffRate\":0.45}"
+  },
+  "1116": {
+    "des": "释放技能有80%概率附加晕眩，持续1回合",
+    "key1": "skill_later_buff",
+    "value1": "{\"buffId\":\"dizzy\",duration\":1,\"buffRate\":0.8}"
+  },
+  "1117": {
+    "des": "释放技能后，给除自己外己方生命最少的武将附加无敌盾，持续2回合（若场上只剩张郃，不会释放无敌护盾）",
+    "key1": "skill_later_buff",
+    "value1": "{\"buffId\":\"invincible\",\"duration\":2,\"buff_tg\":\"team_minHp_2\",\"buffRate\":1}"
+  },
+  "1118": {
+    "des": "释放技能后，给目标附加1个持续治疗效果，每回合回复大乔最大攻击20%的生命，持续2回合",
+    "key1": "skill_later_buff",
+    "value1": "{\"buffId\":\"recover\",\"buffArg\":0.2,duration\":2,\"buffRate\":1}"
+  },
+  "1119": {
+    "des": "释放技能后有40%概率追加1次技能，对敌方后排造成86%法术伤害",
+    "key1": "skill_later_skill",
+    "value1": "{\"type\" : \"attack\",\"mul\" : 0.86,\"damageType\": \"mag\",\"targetType\": \"enemy_horizontal_back\",\"rate\" : 0.4}"
+  },
+  "1120": {
+    "des": "技能目标每减少1个，技能伤害增加15%",
+    "key1": "skill_less_amp",
+    "value1": 0.15
+  },
+  "1121": {
+    "des": "释放技能后降低目标1点怒气",
+    "key1": "skill_less_anger",
+    "value1": 1
+  },
+  "1122": {
+    "des": "释放普通攻击后降低目标1点怒气",
+    "key1": "normal_less_anger",
+    "value1": 1
+  },
+  "1123": {
+    "des": "释放技能后降低目标2点怒气",
+    "key1": "skill_less_anger",
+    "value1": 2
+  },
+  "1124": {
+    "des": "技能直接伤害的40%转化为生命，治疗己方生命最少的队友",
+    "key1": "skill_turn_rate",
+    "value1": 0.4,
+    "key2": "skill_turn_tg",
+    "value2": "team_minHp_1"
+  },
+  "1125": {
+    "des": "技能直接伤害的50%转化为生命，治疗己方生命最少的队友",
+    "key1": "skill_turn_rate",
+    "value1": 0.5,
+    "key2": "skill_turn_tg",
+    "value2": "team_minHp_1"
+  },
+  "1126": {
+    "des": "全体上阵武将伤害加成+5%",
+    "key1": "team_amplify_add",
+    "value1": 0.05
+  },
+  "1127": {
+    "des": "全体上阵武将造成的伤害增加20%",
+    "key1": "team_amplify_add",
+    "value1": 0.2
+  },
+  "1128": {
+    "des": "全体上阵武将攻击加成+8%",
+    "key1": "team_atk_add",
+    "value1": 0.08
+  },
+  "1129": {
+    "des": "全体上阵武将攻击加成+9%",
+    "key1": "team_atk_add",
+    "value1": 0.09
+  },
+  "1130": {
+    "des": "全体上阵武将攻击增加20%",
+    "key1": "team_atk_add",
+    "value1": 0.2
+  },
+  "1131": {
+    "des": "全体上阵武将暴击几率增加20%",
+    "key1": "team_crit_add",
+    "value1": 0.2
+  },
+  "1132": {
+    "des": "全体上阵武将抗暴几率+5%",
+    "key1": "team_critDef_add",
+    "value1": 0.05
+  },
+  "1133": {
+    "des": "全体上阵武将闪避几率+5%",
+    "key1": "team_dodgeRate_add",
+    "value1": 0.05
+  },
+  "1134": {
+    "des": "全体上阵武将命中几率+5%",
+    "key1": "team_hitRate_add",
+    "value1": 0.05
+  },
+  "1135": {
+    "des": "全体上阵武将命中几率+6%",
+    "key1": "team_hitRate_add",
+    "value1": 0.06
+  },
+  "1136": {
+    "des": "全体上阵武将生命加成+8%",
+    "key1": "team_maxHP_add",
+    "value1": 0.08
+  },
+  "1137": {
+    "des": "全体上阵武将生命增加20%",
+    "key1": "team_maxHP_add",
+    "value1": 0.2
+  },
+  "1138": {
+    "des": "全体上阵武将防御加成+8%",
+    "key1": "team_phyDef_add",
+    "value1": 0.08,
+    "key2": "team_magDef_add",
+    "value2": 0.08
+  },
+  "1139": {
+    "des": "全体上阵武将伤害减免+5%",
+    "key1": "team_reduction_add",
+    "value1": 0.05
+  },
+  "1140": {
+    "des": "全体上阵武将伤害减免+6%",
+    "key1": "team_reduction_add",
+    "value1": 0.06
+  },
+  "1141": {
+    "des": "全体上阵武将伤害减免增加20%",
+    "key1": "team_reduction_add",
+    "value1": 0.2
+  },
+  "1142": {
+    "des": "全体上阵武将暴伤减免+5%",
+    "key1": "team_slayDef_add",
+    "value1": 0.05
+  }
+}
