@@ -28,46 +28,172 @@
     "talent_5": 1033
   },
   "104030": {
-    "name": "少年曹操"
+    "name": "少年曹操",
+    "talent_1": 1004,
+    "talent_2": 1035,
+    "talent_3": 1005,
+    "talent_4": 1058,
+    "talent_5": 1033
   },
   "104040": {
-    "name": "少女甄姬"
+    "name": "少女甄姬",
+    "talent_1": 1004,
+    "talent_2": 1035,
+    "talent_3": 1005,
+    "talent_4": 1090,
+    "talent_5": 1033
   },
   "105010": {
-    "name": "司马懿"
+    "name": "司马懿",
+    "talent_1": 1006,
+    "talent_2": 1061,
+    "talent_3": 1007,
+    "talent_4": 1027,
+    "talent_5": 1033,
+    "talent_6": 1068,
+    "talent_7": 1135,
+    "talent_8": 1094,
+    "talent_9": 1109,
+    "talent_10": 1002
   },
   "105020": {
-    "name": "曹操"
+    "name": "曹操",
+    "talent_1": 1006,
+    "talent_2": 1039,
+    "talent_3": 1007,
+    "talent_4": 1098,
+    "talent_5": 1033,
+    "talent_6": 1113,
+    "talent_7": 1140,
+    "talent_8": 1032,
+    "talent_9": 1124,
+    "talent_10": 1110
   },
   "105030": {
-    "name": "张辽"
+    "name": "张辽",
+    "talent_1": 1006,
+    "talent_2": 1090,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1108,
+    "talent_7": 1128,
+    "talent_8": 1062,
+    "talent_9": 1101,
+    "talent_10": 1065
   },
   "105040": {
-    "name": "张郃"
+    "name": "张郃",
+    "talent_1": 1006,
+    "talent_2": 1028,
+    "talent_3": 1007,
+    "talent_4": 1039,
+    "talent_5": 1033,
+    "talent_6": 1117,
+    "talent_7": 1136,
+    "talent_8": 1086,
+    "talent_9": 1130,
+    "talent_10": 1102
   },
   "105050": {
-    "name": "荀彧"
+    "name": "荀彧",
+    "talent_1": 1006,
+    "talent_2": 1095,
+    "talent_3": 1007,
+    "talent_4": 1092,
+    "talent_5": 1033,
+    "talent_6": 1055,
+    "talent_7": 1136,
+    "talent_8": 1027,
+    "talent_9": 1105,
+    "talent_10": 1056
   },
   "105060": {
-    "name": "夏侯惇"
+    "name": "夏侯惇",
+    "talent_1": 1006,
+    "talent_2": 1096,
+    "talent_3": 1007,
+    "talent_4": 1061,
+    "talent_5": 1033,
+    "talent_6": 1052,
+    "talent_7": 1136,
+    "talent_8": 1046,
+    "talent_9": 1100,
+    "talent_10": 1053
   },
   "105070": {
-    "name": "郭嘉"
+    "name": "郭嘉",
+    "talent_1": 1006,
+    "talent_2": 1038,
+    "talent_3": 1007,
+    "talent_4": 1061,
+    "talent_5": 1033,
+    "talent_6": 1105,
+    "talent_7": 1139,
+    "talent_8": 1031,
+    "talent_9": 1012,
+    "talent_10": 1111
   },
   "105080": {
-    "name": "曹仁"
+    "name": "曹仁",
+    "talent_1": 1006,
+    "talent_2": 1060,
+    "talent_3": 1007,
+    "talent_4": 1039,
+    "talent_5": 1033,
+    "talent_6": 1105,
+    "talent_7": 1134,
+    "talent_8": 1086,
+    "talent_9": 1121,
+    "talent_10": 1013
   },
   "105090": {
-    "name": "典韦"
+    "name": "典韦",
+    "talent_1": 1006,
+    "talent_2": 1060,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1044,
+    "talent_7": 1134,
+    "talent_8": 1093,
+    "talent_9": 1069
   },
   "105100": {
-    "name": "许褚"
+    "name": "许褚",
+    "talent_1": 1006,
+    "talent_2": 1090,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1003,
+    "talent_7": 1128,
+    "talent_8": 1062,
+    "talent_9": 1064
   },
   "105110": {
-    "name": "曹丕"
+    "name": "曹丕",
+    "talent_1": 1006,
+    "talent_2": 1025,
+    "talent_3": 1007,
+    "talent_4": 1061,
+    "talent_5": 1033,
+    "talent_6": 1042,
+    "talent_7": 1126,
+    "talent_8": 1027,
+    "talent_9": 1070
   },
   "105120": {
-    "name": "甄姬"
+    "name": "甄姬",
+    "talent_1": 1006,
+    "talent_2": 1038,
+    "talent_3": 1007,
+    "talent_4": 1097,
+    "talent_5": 1033,
+    "talent_6": 1102,
+    "talent_7": 1139,
+    "talent_8": 1031,
+    "talent_9": 1105
   },
   "201010": {
     "name": "周仓"
@@ -82,52 +208,188 @@
     "name": "关平"
   },
   "204010": {
-    "name": "孟获"
+    "name": "孟获",
+    "talent_1": 1004,
+    "talent_2": 1022,
+    "talent_3": 1005,
+    "talent_4": 1058,
+    "talent_5": 1033
   },
   "204020": {
-    "name": "祝融"
+    "name": "祝融",
+    "talent_1": 1004,
+    "talent_2": 1057,
+    "talent_3": 1005,
+    "talent_4": 1037,
+    "talent_5": 1033
   },
   "204030": {
-    "name": "少年赵云"
+    "name": "少年赵云",
+    "talent_1": 1004,
+    "talent_2": 1022,
+    "talent_3": 1005,
+    "talent_4": 1058,
+    "talent_5": 1033
   },
   "204040": {
-    "name": "少年关羽"
+    "name": "少年关羽",
+    "talent_1": 1004,
+    "talent_2": 1057,
+    "talent_3": 1005,
+    "talent_4": 1037,
+    "talent_5": 1033
   },
   "205010": {
-    "name": "赵云"
+    "name": "赵云",
+    "talent_1": 1006,
+    "talent_2": 1091,
+    "talent_3": 1007,
+    "talent_4": 1027,
+    "talent_5": 1033,
+    "talent_6": 1079,
+    "talent_7": 1129,
+    "talent_8": 1063,
+    "talent_9": 1107,
+    "talent_10": 1101
   },
   "205020": {
-    "name": "诸葛亮"
+    "name": "诸葛亮",
+    "talent_1": 1006,
+    "talent_2": 1061,
+    "talent_3": 1007,
+    "talent_4": 1040,
+    "talent_5": 1033,
+    "talent_6": 1107,
+    "talent_7": 1135,
+    "talent_8": 1087,
+    "talent_9": 1015,
+    "talent_10": 1119
   },
   "205030": {
-    "name": "刘备"
+    "name": "刘备",
+    "talent_1": 1006,
+    "talent_2": 1096,
+    "talent_3": 1007,
+    "talent_4": 1029,
+    "talent_5": 1033,
+    "talent_6": 1054,
+    "talent_7": 1138,
+    "talent_8": 1099,
+    "talent_9": 1074,
+    "talent_10": 1114
   },
   "205040": {
-    "name": "马超"
+    "name": "马超",
+    "talent_1": 1006,
+    "talent_2": 1038,
+    "talent_3": 1007,
+    "talent_4": 1085,
+    "talent_5": 1033,
+    "talent_6": 1011,
+    "talent_7": 1142,
+    "talent_8": 1031,
+    "talent_9": 1100,
+    "talent_10": 1008
   },
   "205050": {
-    "name": "黄忠"
+    "name": "黄忠",
+    "talent_1": 1006,
+    "talent_2": 1028,
+    "talent_3": 1007,
+    "talent_4": 1039,
+    "talent_5": 1033,
+    "talent_6": 1130,
+    "talent_7": 1132,
+    "talent_8": 1086,
+    "talent_9": 1103,
+    "talent_10": 1127
   },
   "205060": {
-    "name": "黄月英"
+    "name": "黄月英",
+    "talent_1": 1006,
+    "talent_2": 1038,
+    "talent_3": 1007,
+    "talent_4": 1097,
+    "talent_5": 1033,
+    "talent_6": 1141,
+    "talent_7": 1139,
+    "talent_8": 1031,
+    "talent_9": 1125,
+    "talent_10": 1137
   },
   "205070": {
-    "name": "关羽"
+    "name": "关羽",
+    "talent_1": 1006,
+    "talent_2": 1060,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1045,
+    "talent_7": 1134,
+    "talent_8": 1093,
+    "talent_9": 1108,
+    "talent_10": 1071
   },
   "205080": {
-    "name": "张飞"
+    "name": "张飞",
+    "talent_1": 1006,
+    "talent_2": 1090,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1072,
+    "talent_7": 1128,
+    "talent_8": 1062,
+    "talent_9": 1073,
+    "talent_10": 1066
   },
   "205090": {
-    "name": "马岱"
+    "name": "马岱",
+    "talent_1": 1006,
+    "talent_2": 1060,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1101,
+    "talent_7": 1134,
+    "talent_8": 1093,
+    "talent_9": 1076
   },
   "205100": {
-    "name": "姜维"
+    "name": "姜维",
+    "talent_1": 1006,
+    "talent_2": 1025,
+    "talent_3": 1007,
+    "talent_4": 1061,
+    "talent_5": 1033,
+    "talent_6": 1108,
+    "talent_7": 1126,
+    "talent_8": 1027,
+    "talent_9": 1042
   },
   "205110": {
-    "name": "魏延"
+    "name": "魏延",
+    "talent_1": 1006,
+    "talent_2": 1060,
+    "talent_3": 1007,
+    "talent_4": 1039,
+    "talent_5": 1033,
+    "talent_6": 1074,
+    "talent_7": 1134,
+    "talent_8": 1086,
+    "talent_9": 1121
   },
   "205120": {
-    "name": "庞统"
+    "name": "庞统",
+    "talent_1": 1006,
+    "talent_2": 1038,
+    "talent_3": 1007,
+    "talent_4": 1061,
+    "talent_5": 1033,
+    "talent_6": 1122,
+    "talent_7": 1139,
+    "talent_8": 1031,
+    "talent_9": 1121
   },
   "301010": {
     "name": "朱恒"
@@ -142,52 +404,188 @@
     "name": "周泰"
   },
   "304010": {
-    "name": "凌统"
+    "name": "凌统",
+    "talent_1": 1004,
+    "talent_2": 1057,
+    "talent_3": 1005,
+    "talent_4": 1036,
+    "talent_5": 1033
   },
   "304020": {
-    "name": "步练师"
+    "name": "步练师",
+    "talent_1": 1004,
+    "talent_2": 1089,
+    "talent_3": 1005,
+    "talent_4": 1024,
+    "talent_5": 1033
   },
   "304030": {
-    "name": "少年周瑜"
+    "name": "少年周瑜",
+    "talent_1": 1004,
+    "talent_2": 1057,
+    "talent_3": 1005,
+    "talent_4": 1036,
+    "talent_5": 1033
   },
   "304040": {
-    "name": "少女小乔"
+    "name": "少女小乔",
+    "talent_1": 1004,
+    "talent_2": 1089,
+    "talent_3": 1005,
+    "talent_4": 1024,
+    "talent_5": 1033
   },
   "305010": {
-    "name": "孙策"
+    "name": "孙策",
+    "talent_1": 1006,
+    "talent_2": 1091,
+    "talent_3": 1007,
+    "talent_4": 1027,
+    "talent_5": 1033,
+    "talent_6": 1101,
+    "talent_7": 1129,
+    "talent_8": 1063,
+    "talent_9": 1041,
+    "talent_10": 1001
   },
   "305020": {
-    "name": "周瑜"
+    "name": "周瑜",
+    "talent_1": 1006,
+    "talent_2": 1061,
+    "talent_3": 1007,
+    "talent_4": 1027,
+    "talent_5": 1033,
+    "talent_6": 1014,
+    "talent_7": 1135,
+    "talent_8": 1094,
+    "talent_9": 1080,
+    "talent_10": 1107
   },
   "305030": {
-    "name": "大乔"
+    "name": "大乔",
+    "talent_1": 1006,
+    "talent_2": 1028,
+    "talent_3": 1007,
+    "talent_4": 1030,
+    "talent_5": 1033,
+    "talent_6": 1118,
+    "talent_7": 1136,
+    "talent_8": 1040,
+    "talent_9": 1082,
+    "talent_10": 1112
   },
   "305040": {
-    "name": "孙坚"
+    "name": "孙坚",
+    "talent_1": 1006,
+    "talent_2": 1038,
+    "talent_3": 1007,
+    "talent_4": 1097,
+    "talent_5": 1033,
+    "talent_6": 1021,
+    "talent_7": 1138,
+    "talent_8": 1031,
+    "talent_9": 1043,
+    "talent_10": 1077
   },
   "305050": {
-    "name": "小乔"
+    "name": "小乔",
+    "talent_1": 1006,
+    "talent_2": 1028,
+    "talent_3": 1007,
+    "talent_4": 1039,
+    "talent_5": 1033,
+    "talent_6": 1130,
+    "talent_7": 1138,
+    "talent_8": 1086,
+    "talent_9": 1102,
+    "talent_10": 1131
   },
   "305060": {
-    "name": "太史慈"
+    "name": "太史慈",
+    "talent_1": 1006,
+    "talent_2": 1060,
+    "talent_3": 1007,
+    "talent_4": 1039,
+    "talent_5": 1033,
+    "talent_6": 1020,
+    "talent_7": 1134,
+    "talent_8": 1086,
+    "talent_9": 1034,
+    "talent_10": 1078
   },
   "305070": {
-    "name": "孙权"
+    "name": "孙权",
+    "talent_1": 1006,
+    "talent_2": 1090,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1017,
+    "talent_7": 1128,
+    "talent_8": 1062,
+    "talent_9": 1067,
+    "talent_10": 1019
   },
   "305080": {
-    "name": "孙尚香"
+    "name": "孙尚香",
+    "talent_1": 1006,
+    "talent_2": 1060,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1106,
+    "talent_7": 1134,
+    "talent_8": 1093,
+    "talent_9": 1048,
+    "talent_10": 1081
   },
   "305090": {
-    "name": "吕蒙"
+    "name": "吕蒙",
+    "talent_1": 1006,
+    "talent_2": 1060,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1016,
+    "talent_7": 1134,
+    "talent_8": 1093,
+    "talent_9": 1081
   },
   "305100": {
-    "name": "甘宁"
+    "name": "甘宁",
+    "talent_1": 1006,
+    "talent_2": 1090,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1018,
+    "talent_7": 1128,
+    "talent_8": 1062,
+    "talent_9": 1105
   },
   "305110": {
-    "name": "陆逊"
+    "name": "陆逊",
+    "talent_1": 1006,
+    "talent_2": 1025,
+    "talent_3": 1007,
+    "talent_4": 1061,
+    "talent_5": 1033,
+    "talent_6": 1017,
+    "talent_7": 1126,
+    "talent_8": 1027,
+    "talent_9": 1105
   },
   "305120": {
-    "name": "鲁肃"
+    "name": "鲁肃",
+    "talent_1": 1006,
+    "talent_2": 1038,
+    "talent_3": 1007,
+    "talent_4": 1061,
+    "talent_5": 1033,
+    "talent_6": 1083,
+    "talent_7": 1139,
+    "talent_8": 1031,
+    "talent_9": 1105
   },
   "401010": {
     "name": "陶谦"
@@ -205,51 +603,187 @@
     "name": "何进"
   },
   "404010": {
-    "name": "文丑"
+    "name": "文丑",
+    "talent_1": 1004,
+    "talent_2": 1089,
+    "talent_3": 1005,
+    "talent_4": 1023,
+    "talent_5": 1033
   },
   "404020": {
-    "name": "颜良"
+    "name": "颜良",
+    "talent_1": 1004,
+    "talent_2": 1022,
+    "talent_3": 1005,
+    "talent_4": 1059,
+    "talent_5": 1033
   },
   "404030": {
-    "name": "少年吕布"
+    "name": "少年吕布",
+    "talent_1": 1004,
+    "talent_2": 1089,
+    "talent_3": 1005,
+    "talent_4": 1023,
+    "talent_5": 1033
   },
   "404040": {
-    "name": "少女貂蝉"
+    "name": "少女貂蝉",
+    "talent_1": 1004,
+    "talent_2": 1022,
+    "talent_3": 1005,
+    "talent_4": 1059,
+    "talent_5": 1033
   },
   "405010": {
-    "name": "左慈"
+    "name": "左慈",
+    "talent_1": 1006,
+    "talent_2": 1039,
+    "talent_3": 1007,
+    "talent_4": 1062,
+    "talent_5": 1033,
+    "talent_6": 1115,
+    "talent_7": 1140,
+    "talent_8": 1032,
+    "talent_9": 1122,
+    "talent_10": 1121
   },
   "405020": {
-    "name": "吕布"
+    "name": "吕布",
+    "talent_1": 1006,
+    "talent_2": 1091,
+    "talent_3": 1007,
+    "talent_4": 1027,
+    "talent_5": 1033,
+    "talent_6": 1120,
+    "talent_7": 1129,
+    "talent_8": 1063,
+    "talent_9": 1121,
+    "talent_10": 1101
   },
   "405030": {
-    "name": "华佗"
+    "name": "华佗",
+    "talent_1": 1006,
+    "talent_2": 1090,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1114,
+    "talent_7": 1133,
+    "talent_8": 1099,
+    "talent_9": 1034,
+    "talent_10": 1088
   },
   "405040": {
-    "name": "董卓"
+    "name": "董卓",
+    "talent_1": 1006,
+    "talent_2": 1028,
+    "talent_3": 1007,
+    "talent_4": 1085,
+    "talent_5": 1033,
+    "talent_6": 1050,
+    "talent_7": 1136,
+    "talent_8": 1099,
+    "talent_9": 1047,
+    "talent_10": 1051
   },
   "405050": {
-    "name": "袁术"
+    "name": "袁术",
+    "talent_1": 1006,
+    "talent_2": 1038,
+    "talent_3": 1007,
+    "talent_4": 1097,
+    "talent_5": 1033,
+    "talent_6": 1121,
+    "talent_7": 1139,
+    "talent_8": 1031,
+    "talent_9": 1102,
+    "talent_10": 1123
   },
   "405060": {
-    "name": "貂蝉"
+    "name": "貂蝉",
+    "talent_1": 1006,
+    "talent_2": 1038,
+    "talent_3": 1007,
+    "talent_4": 1097,
+    "talent_5": 1033,
+    "talent_6": 1084,
+    "talent_7": 1139,
+    "talent_8": 1031,
+    "talent_9": 1130,
+    "talent_10": 1104
   },
   "405070": {
-    "name": "袁绍"
+    "name": "袁绍",
+    "talent_1": 1006,
+    "talent_2": 1060,
+    "talent_3": 1007,
+    "talent_4": 1039,
+    "talent_5": 1033,
+    "talent_6": 1106,
+    "talent_7": 1134,
+    "talent_8": 1086,
+    "talent_9": 1108,
+    "talent_10": 1121
   },
   "405080": {
-    "name": "华雄"
+    "name": "华雄",
+    "talent_1": 1006,
+    "talent_2": 1060,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1010,
+    "talent_7": 1134,
+    "talent_8": 1093,
+    "talent_9": 1049,
+    "talent_10": 1121
   },
   "405090": {
-    "name": "贾诩"
+    "name": "贾诩",
+    "talent_1": 1006,
+    "talent_2": 1025,
+    "talent_3": 1007,
+    "talent_4": 1061,
+    "talent_5": 1033,
+    "talent_6": 1003,
+    "talent_7": 1126,
+    "talent_8": 1027,
+    "talent_9": 1121
   },
   "405100": {
-    "name": "公孙瓒"
+    "name": "公孙瓒",
+    "talent_1": 1006,
+    "talent_2": 1060,
+    "talent_3": 1007,
+    "talent_4": 1039,
+    "talent_5": 1033,
+    "talent_6": 1116,
+    "talent_7": 1134,
+    "talent_8": 1086,
+    "talent_9": 1123
   },
   "405110": {
-    "name": "张角"
+    "name": "张角",
+    "talent_1": 1006,
+    "talent_2": 1038,
+    "talent_3": 1007,
+    "talent_4": 1061,
+    "talent_5": 1033,
+    "talent_6": 1084,
+    "talent_7": 1139,
+    "talent_8": 1031,
+    "talent_9": 1075
   },
   "405120": {
-    "name": "于吉"
+    "name": "于吉",
+    "talent_1": 1006,
+    "talent_2": 1090,
+    "talent_3": 1007,
+    "talent_4": 1026,
+    "talent_5": 1033,
+    "talent_6": 1105,
+    "talent_7": 1128,
+    "talent_8": 1062,
+    "talent_9": 1009
   }
 }
