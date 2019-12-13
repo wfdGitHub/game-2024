@@ -6,7 +6,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		accId : otps.accId,
 		name : otps.name,
 		sex : otps.sex === 1? 1 : 2,
-		petAmount : 1,
+		level : 1,
 		dayStr : (new Date()).toDateString()
 	}
 	var self = this
@@ -17,8 +17,6 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":areaMap",otps.areaId,uid)
 		self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+uid+":playerInfo",playerInfo,function(err,data) {
 			if(!err){
-				playerInfo.characters = []
-				playerInfo.characters.push(self.characterDao.createCharacter(otps.areaId,uid,10001))
 				self.redisDao.db.hset("area:area"+otps.areaId+":nameMap",otps.name,uid)
 				cb(playerInfo)
 			}else{
@@ -58,13 +56,7 @@ playerDao.prototype.getPlayerInfo = function(otps,cb) {
 				if(tmp == playerInfo[i])
 					playerInfo[i] = tmp
 			}
-			self.characterDao.getCharacters(otps.areaId,otps.uid,function(characters) {
-				playerInfo.characters = characters
-				self.petDao.getPets(otps.areaId,otps.uid,function(pets) {
-					playerInfo.pets = pets
-					cb(playerInfo)
-				})
-			})
+			cb(playerInfo)
 		}
 	})
 }
@@ -102,11 +94,5 @@ module.exports = {
 	props : [{
 		name : "redisDao",
 		ref : "redisDao"
-	},{
-		name : "characterDao",
-		ref : "characterDao"
-	},{
-		name : "petDao",
-		ref : "petDao"
 	}]
 }

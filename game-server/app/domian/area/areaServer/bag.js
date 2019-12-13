@@ -31,71 +31,6 @@ module.exports = function() {
 	//使用物品逻辑
 	this.useItemCB = function(otps,cb) {
 		switch(itemCfg[otps.itemId].useType){
-			case "partnerExp":
-				//伙伴经验丹
-				if(!charactersCfg[otps.characterId] || charactersCfg[otps.characterId].characterType != "partner"){
-					cb(false,"characterId error : "+otps.characterId)
-					return
-				}
-				var characterInfo = this.getCharacterById(otps.uid,otps.characterId)
-				if(!this.players[otps.uid] || !characterInfo){
-					cb(false,"character lock : "+otps.characterId)
-					return
-				}
-				if(characterInfo.level >= this.players[otps.uid].characters[self.heroId].level){
-					cb(false,"character level limit : "+otps.characterId)
-					return
-				}
-				this.addCharacterEXP(otps.uid,otps.characterId,parseInt(otps.value * itemCfg[otps.itemId].arg) || 0)
-				otps.value = -otps.value
-				this.addItem(otps,cb)
-			break
-			case "petExp":
-				//宠物经验丹
-				var petInfo = this.getPetById(otps.uid,otps.id)
-				if(!petInfo){
-					cb(false,"id error : "+otps.id)
-					return
-				}
-				if(petInfo.level >= this.players[otps.uid].characters[self.heroId].level){
-					cb(false,"character level limit : "+otps.id)
-					return
-				}
-				this.addPetEXP(otps.uid,otps.id,parseInt(otps.value * itemCfg[otps.itemId].arg) || 0)
-				otps.value = -otps.value
-				this.addItem(otps,cb)
-			break
-			case "petEgg":
-				//宠物蛋
-				var arg = itemCfg[otps.itemId].arg
-				var strs = arg.split("&")
-				var list = []
-				var allNumber = 0
-				strs.forEach(function(m_str) {
-					var m_list = m_str.split(":")
-					allNumber += Number(m_list[1])
-					list.push({petId : Number(m_list[0]),rand : allNumber})
-				})
-				var rand = Math.random() * allNumber
-				var characterId = list[0].petId
-				for(var i = 0;i < list.length;i++){
-					if(rand < list[i].rand){
-						characterId = list[i].petId
-						break
-					}
-				}
-				this.obtainPet(otps.uid,characterId,function(flag,petInfo) {
-					if(flag){
-						self.addItem({uid : otps.uid,itemId : otps.itemId,value : -1})
-					}
-					cb(flag,petInfo)
-				})
-			break
-			case "chest":
-				//宝箱
-				var awards = this.openChestAward(otps.uid,otps.itemId)
-				cb(true,awards)
-			break
 			default:
 				console.log("itemId can't use "+otps.itemId)
 				cb(false,"itemId can't use "+otps.itemId)
@@ -172,11 +107,6 @@ module.exports = function() {
 			return {type : "item",itemId : itemId,value : value}
 		}else if(special_item[itemId]){
 			switch(itemId){
-				case "exp":
-					value = Math.floor(Number(value) * rate) || 1
-					self.addCharacterEXP(uid,10001,value,cb)
-					return {type : "exp",value : value}
-				break
 				case "gold":
 					value = Math.floor(Number(value) * rate) || 1
 					return self.addItem({uid : uid,itemId : 101,value : value},cb)
@@ -188,52 +118,6 @@ module.exports = function() {
 				case "spar":
 					value = Math.floor(Number(value) * rate) || 1
 					return self.addItem({uid : uid,itemId : 104,value : value},cb)
-				break
-				case "e":
-					//指定装备
-					var list = value.toString().split("-")
-					var eId = list[0]
-					var samsara = list[1]
-					var quality = list[2]
-					return self.addEquip(uid,eId,samsara,quality,cb)
-				break
-				case "ec0":
-					return self.addRandEquip(uid,value,0,cb)
-				break
-				case "ec1":
-					return self.addRandEquip(uid,value,1,cb)
-				break
-				case "ec2":
-					return self.addRandEquip(uid,value,2,cb)
-				break
-				case "ec3":
-					return self.addRandEquip(uid,value,3,cb)
-				break
-				case "ec4":
-					return self.addRandEquip(uid,value,4,cb)
-				break
-				case "ec5":
-					return self.addRandEquip(uid,value,5,cb)
-				break
-				case "ev":
-					return self.addEVEquip(uid,value,cb)
-				break
-				case "g":
-					//指定宝石
-					var list = value.toString().split("-")
-					var gId = list[0]
-					var level = list[1]
-					var count = Number(parseInt(list[2]) * rate) || 1
-					return self.addGem(uid,gId,level,count,cb)
-				break
-				case "gc":
-					//当前转生等级+1随机宝石
-					value = Math.floor(Number(value) * rate) || 1
-					return self.addRandGem(uid,value,cb)
-				break
-				case "gs":
-					//指定转生等级随机宝石
-					self.addGsGem(uid,value,cb)
 				break
 			}
 		}else{

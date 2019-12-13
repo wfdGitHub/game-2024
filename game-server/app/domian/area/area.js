@@ -55,10 +55,6 @@ area.prototype.register = function(otps,cb) {
 				self.setPlayerData(playerInfo.uid,"onhookLastTime",Date.now())
 				//TODO test
 				self.addItem({uid : playerInfo.uid,itemId : 101,value : 1000000})
-				self.petDao.obtainPet(otps.areaId,playerInfo.uid,12101)
-				for(var i = 1;i <= 10;i++){
-					self.addEquip(playerInfo.uid,"e"+i,0,1)
-				}
 				cb(true,playerInfo)
 			})
 		}
@@ -236,11 +232,5 @@ module.exports = {
 	},{
 		name : "playerDao",
 		ref : "playerDao"
-	},{
-		name : "characterDao",
-		ref : "characterDao"
-	},{
-		name : "petDao",
-		ref : "petDao"
 	}]
 }

@@ -16,7 +16,7 @@ module.exports = function() {
 			return
 		}
 		//判断等级
-		var curLv = self.players[uid].characters[self.heroId].level
+		var curLv = self.players[uid].level
 		if(curLv < fb_base[type]["openLevel"]){
 			console.error("openLevel "+curLv+" / "+fb_base[type]["openLevel"])
 			cb(false,"等级不足")

@@ -1,5 +1,5 @@
 var skillsCfg = require("../../../../config/gameCfg/skills.json")
-var charactersCfg = require("../../../../config/gameCfg/characters.json")
+var heros = require("../../../../config/gameCfg/heros.json")
 var advanced_base = require("../../../../config/gameCfg/advanced_base.json")
 var advanced_talent = require("../../../../config/gameCfg/advanced_talent.json")
 var talent_list = require("../../../../config/gameCfg/talent_list.json")
@@ -18,11 +18,11 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 }
 //获取角色数据
 model.getCharacterInfo = function(info) {
-	if(!info || !charactersCfg[info.id]){
+	if(!info || !heros[info.id]){
 		return false
 	}
 	let id = info.id
-	Object.assign(info,charactersCfg[id])
+	Object.assign(info,heros[id])
 	if(info.defaultSkill){
 		if(!skillsCfg[info.defaultSkill]){
 			console.error("技能不存在",info.id,info.defaultSkill)

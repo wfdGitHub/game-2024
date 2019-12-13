@@ -12,7 +12,7 @@ module.exports = function() {
 	}
 	//玩家首次登陆刷新
 	this.TTTdayUpdate = function(uid) {
-		var curLv = self.players[uid].characters[self.heroId].level
+		var curLv = self.players[uid].level
 		var samsara = Math.floor(((curLv - 1) / 100))
 		self.getTTTInfo(uid,function(info) {
 			info.maxL = parseInt(info.maxL)
@@ -34,7 +34,7 @@ module.exports = function() {
 	}
 	//挑战BOSS
 	this.challengeTTTBoss = function(uid,otps,cb) {
-		var curLv = self.players[uid].characters[self.heroId].level
+		var curLv = self.players[uid].level
 		if(curLv < ttttower_cfg["open"]["value"]){
 			cb(false,"未到开放等级")
 			return

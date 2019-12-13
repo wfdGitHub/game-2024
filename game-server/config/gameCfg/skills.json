@@ -839,7 +839,7 @@
     "damageType": "phy",
     "targetType": "enemy_horizontal_back",
     "mul": 1.55,
-    "burn_att_change": "{\"tmpAmplify\":0.6}"
+    "burn_att_change": "{\"amplify\":0.6}"
   },
   "3050201": {
     "name": "英略",
@@ -859,7 +859,7 @@
     "buffId": "burn",
     "buffArg": 0.2,
     "duration": 2,
-    "buffRate": 1
+    "buffRate": 0.4
   },
   "3050301": {
     "name": "盛莲",
@@ -907,7 +907,7 @@
     "damageType": "mag",
     "targetType": "enemy_horizontal_front",
     "mul": 1.55,
-    "burn_buff_change": "{\"buffId\":\"disarm\",\"buffRate\":1,\"duration\":1}"
+    "burn_buff_change": "{\"buffId\":\"disarm\",\"buffRate\":0.4,\"duration\":1}"
   },
   "3050601": {
     "name": "笃义",
@@ -998,7 +998,7 @@
     "damageType": "mag",
     "targetType": "enemy_horizontal_front",
     "mul": 1.55,
-    "burn_att_change": "{\"tmpAmplify\":0.5}"
+    "burn_att_change": "{\"amplify\":0.5}"
   },
   "3051101": {
     "name": "智变",
@@ -1015,7 +1015,7 @@
     "damageType": "mag",
     "targetType": "enemy_normal",
     "mul": 3.15,
-    "burn_att_change": "{\"crit\":5000}"
+    "burn_att_change": "{\"crit\":0.5}"
   },
   "3051201": {
     "name": "缔盟",
