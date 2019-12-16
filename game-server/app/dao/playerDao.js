@@ -7,6 +7,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		name : otps.name,
 		sex : otps.sex === 1? 1 : 2,
 		level : 1,
+		heroAmount : 200,
 		dayStr : (new Date()).toDateString()
 	}
 	var self = this
@@ -18,6 +19,9 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+uid+":playerInfo",playerInfo,function(err,data) {
 			if(!err){
 				self.redisDao.db.hset("area:area"+otps.areaId+":nameMap",otps.name,uid)
+				self.heroDao.gainHero(otps.areaId,uid,{id : 304040},function(flag,heroInfo) {
+					self.heroDao.setFightTeam(otps.areaId,uid,[heroInfo.hId,null,null,null,null,null])
+				})
 				cb(playerInfo)
 			}else{
 				cb(false)
@@ -94,5 +98,8 @@ module.exports = {
 	props : [{
 		name : "redisDao",
 		ref : "redisDao"
+	},{
+		name : "heroDao",
+		ref : "heroDao"
 	}]
 }

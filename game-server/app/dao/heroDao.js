@@ -25,7 +25,8 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	let lv = otps.lv || 1
 	if(!herosCfg[id]){
 		console.log("id error by herosCfg",id)
-		cb(false,"id error by herosCfg",id)
+		if(cb)
+			cb(false,"id error by herosCfg",id)
 		return
 	}
 	var self = this
@@ -46,7 +47,8 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 			self.redisDao.db.hmset("area:area"+areaId+":player:"+uid+":heros:"+hId,heroInfo)
 			self.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":heroArchive",id,1)
 			heroInfo.hId = hId
-			cb(true,heroInfo)
+			if(cb)
+				cb(true,heroInfo)
 		})
 	})
 }
@@ -116,10 +118,14 @@ heroDao.prototype.getHeroArchive = function(areaId,uid,cb) {
 //设置出场阵容
 heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 	this.redisDao.db.hset("area:area"+areaId+":player:"+uid,"fightTeam",JSON.stringify(hIds),function(err,data) {
-		if(err)
-			cb(false,err)
-		else
-			cb(true)
+		if(err){
+			if(cb)
+				cb(false,err)
+		}
+		else{
+			if(cb)
+				cb(true)
+		}
 	})
 }
 //获取出场阵容
