@@ -13,10 +13,6 @@ fightHandler.prototype.mockFight = function(msg, session, next) {
     var atkTeam = fightInfo.team
     var defTeam = atkTeam
     var seededNum = fightInfo.seededNum
-    for(var i = 0;i < 6;i++){
-      atkTeam[i] = this.areaManager.fightContorl.getCharacterInfo(atkTeam[i])
-      defTeam[i] = this.areaManager.fightContorl.getCharacterInfo(defTeam[i])
-    }
     var result = this.areaManager.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
     next(null,{flag : true,result : result})
   }else{

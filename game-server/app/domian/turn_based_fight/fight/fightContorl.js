@@ -10,9 +10,21 @@ var character = require("../entity/character.js")
 var model = function() {
 	this.fighting = false
 }
-//开始战斗
-model.beginFight = function(atkTeam,defTeam,otps) {
+//自定义战斗配置
+model.libertyFight = function(atkTeam,defTeam,otps) {
 	var fighting = new fightingFun(atkTeam,defTeam,otps)
+	fighting.nextRound()
+	return fightRecord.getList()
+}
+//根据配置表生成战斗配置
+model.beginFight = function(atkTeam,defTeam,otps) {
+	var atkTeamList = []
+	var defTeamList = []
+    for(var i = 0;i < 6;i++){
+      atkTeamList[i] = this.getCharacterInfo(atkTeam[i])
+      defTeamList[i] = this.getCharacterInfo(defTeam[i])
+    }
+	var fighting = new fightingFun(atkTeamList,defTeamList,otps)
 	fighting.nextRound()
 	return fightRecord.getList()
 }
