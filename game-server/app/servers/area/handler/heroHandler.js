@@ -81,10 +81,12 @@ heroHandler.prototype.setFightTeam = function(msg, session, next) {
     next(null,{flag : false,data : "数组长度错误"})
     return
   }
+  var heroNum = 0
   //判断重复
   for(var i = 0;i < hIds.length;i++){
     if(hIds[i] == null)
       continue
+    heroNum++
     for(var j = i + 1;j < hIds.length;j++){
       if(hIds[j] == null)
         continue
@@ -93,6 +95,10 @@ heroHandler.prototype.setFightTeam = function(msg, session, next) {
         return
       }
     }
+  }
+  if(heroNum == 0){
+    next(null,{flag : false,data : "至少要有一个上阵英雄"})
+    return
   }
   this.heroDao.setFightTeam(areaId,uid,hIds,function(flag,data) {
     next(null,{flag : flag,data : data})
