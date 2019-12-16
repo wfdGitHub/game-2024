@@ -67,6 +67,50 @@
         console.log("onChat")
         console.log(data)
       })
+      //============英雄相关==============//
+      //增加英雄背包栏
+      var addHeroAmount = function() {
+        pomelo.request("area.heroHandler.addHeroAmount", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取英雄背包栏数量
+      var getHeroAmount = function() {
+        pomelo.request("area.heroHandler.getHeroAmount", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获得英雄
+      var gainHero = function(id,ad,lv) {
+        pomelo.request("area.heroHandler.gainHero", {id : id,ad : ad,lv : lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //删除英雄
+      var removeHero = function(hId) {
+        pomelo.request("area.heroHandler.removeHero", {hId : hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //修改英雄属性
+      var incrbyHeroInfo = function(hId,name,value) {
+        pomelo.request("area.heroHandler.incrbyHeroInfo", {hId : hId,name : name,value : value}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取英雄列表
+      var getHeros = function() {
+        pomelo.request("area.heroHandler.getHeros", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取英雄图鉴
+      var getHeroArchive = function() {
+        pomelo.request("area.heroHandler.getHeroArchive", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //=================================//
       //绑定身份证
       var bindIdentity = function(idcard,name) {
         pomelo.request("connector.identityHandler.bindIdentity", {idcard : idcard,name : name}, function(data) {
@@ -703,6 +747,16 @@
       <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
       <input id="test" type="button" value="战斗准备" onclick="readyFight()"/>
+    </div>
+    <div class="g-button">
+      英雄 : 
+      <input id="test" type="button" value="增加英雄背包栏" onclick="addHeroAmount()"/>
+      <input id="test" type="button" value="背包栏数量" onclick="getHeroAmount()"/>
+      <input id="test" type="button" value="获得英雄" onclick="gainHero()"/>
+      <input id="test" type="button" value="删除英雄" onclick="removeHero()"/>
+      <input id="test" type="button" value="修改英雄属性" onclick="incrbyHeroInfo()"/>
+      <input id="test" type="button" value="获取英雄列表" onclick="getHeros()"/>
+      <input id="test" type="button" value="获取英雄图鉴" onclick="getHeroArchive()"/>
     </div>
     <div class="g-button">
       竞技场 : 

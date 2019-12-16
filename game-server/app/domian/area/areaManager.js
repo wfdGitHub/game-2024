@@ -1,5 +1,5 @@
 var bearcat = require("bearcat")
-var fightContorlFun = require("../fight/fightContorl.js")
+var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
 var areaManager = function() {
 	this.name = "areaManager"
 	this.areaMap = {}

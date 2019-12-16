@@ -1,7 +1,6 @@
 //背包物品系统
 var itemCfg = require("../../../../config/gameCfg/item.json")
 var special_item = require("../../../../config/gameCfg/special_item.json")
-var charactersCfg = require("../../../../config/gameCfg/characters.json")
 var shopCfg = require("../../../../config/gameCfg/shop.json")
 var chest_awards = require("../../../../config/gameCfg/chest_awards.json")
 var chest_cfg = require("../../../../config/gameCfg/chest_cfg.json")

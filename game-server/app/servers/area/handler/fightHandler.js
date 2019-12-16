@@ -1,6 +1,5 @@
 var bearcat = require("bearcat")
 var checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
-var charactersCfg = require("../../../../config/gameCfg/characters.json")
 var fightHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")

@@ -1,5 +1,5 @@
 //跨服服务器
-var fightContorlFun = require("../fight/fightContorl.js")
+var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
 var crossServers = ["escort"]
 var crossManager = function(app) {
 	this.app = app
