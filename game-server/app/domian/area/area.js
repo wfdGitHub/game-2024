@@ -1,7 +1,7 @@
 //服务器
 var bearcat = require("bearcat")
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
-var areaServers = ["arena","bag","dao","checkpoints","mail","fb","ttttower","hero"]
+var areaServers = ["arena","bag","dao","checkpoints","mail","fb","ttttower"]
 const oneDayTime = 86400000
 var area = function(otps,app) {
 	this.areaId = otps.areaId
@@ -12,7 +12,7 @@ var area = function(otps,app) {
 	this.connectorMap = {}
 	this.onlineNum = 0
 	this.fightInfos = {}
-	this.fightContorl = fightContorlFun()
+	this.fightContorl = fightContorlFun
 	this.heroId = 10001
 	this.dayStr = (new Date()).toDateString()
 	this.crossUids = {}
@@ -135,20 +135,16 @@ area.prototype.getAreaPlayers = function(){
 	return this.players
 }
 //预备战斗
-area.prototype.readyFight = function(uid) {
-	if(!this.players[uid]){
-		return false
-	}
-	var team = []
-	for(var i in this.players[uid].characters){
-		team.push(this.players[uid].characters[i])
-	}
-	var fightPet = this.players[uid].fightPet
-	if(fightPet && this.players[uid].pets && this.players[uid].pets[fightPet]){
-		team = team.concat(this.players[uid].pets[fightPet])
-	}
-	this.fightInfos[uid] = {team : team,seededNum : Date.now()}
-	return this.fightInfos[uid]
+area.prototype.readyFight = function(uid,cb) {
+	var self = this
+	self.heroDao.getFightTeam(self.areaId,uid,function(flag,data) {
+		if(flag){
+			self.fightInfos[uid] = {team : data,seededNum : Date.now()}
+			cb(flag,self.fightInfos[uid])
+		}else{
+			cb(flag,data)
+		}
+	})
 }
 //获取玩家防御阵容配置(被攻击阵容)
 area.prototype.getDefendTeam = function(uid,cb) {
@@ -231,5 +227,8 @@ module.exports = {
 	},{
 		name : "playerDao",
 		ref : "playerDao"
+	},{
+		name : "heroDao",
+		ref : "heroDao"
 	}]
 }

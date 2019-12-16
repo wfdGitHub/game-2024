@@ -68,6 +68,11 @@
         console.log(data)
       })
       //============英雄相关==============//
+      var mockFight = function() {
+        pomelo.request("area.fightHandler.mockFight", {}, function(data) {
+            console.log(data);
+        });
+      }
       //增加英雄背包栏
       var addHeroAmount = function() {
         pomelo.request("area.heroHandler.addHeroAmount", {}, function(data) {
@@ -107,6 +112,18 @@
       //获取英雄图鉴
       var getHeroArchive = function() {
         pomelo.request("area.heroHandler.getHeroArchive", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置出场阵容
+      var setFightTeam = function(hIds) {
+        pomelo.request("area.heroHandler.setFightTeam", {hIds : hIds}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取出场阵容
+      var getFightTeam = function() {
+        pomelo.request("area.heroHandler.getFightTeam", {}, function(data) {
             console.log(data);
         });
       }

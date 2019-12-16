@@ -113,6 +113,50 @@ heroDao.prototype.getHeroArchive = function(areaId,uid,cb) {
 		}
 	})
 }
+//设置出场阵容
+heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
+	this.redisDao.db.hset("area:area"+areaId+":player:"+uid,"fightTeam",JSON.stringify(hIds),function(err,data) {
+		if(err)
+			cb(false,err)
+		else
+			cb(true)
+	})
+}
+//获取出场阵容
+heroDao.prototype.getFightTeam = function(areaId,uid,cb) {
+	var self = this
+	self.redisDao.db.hget("area:area"+areaId+":player:"+uid,"fightTeam",function(err,data) {
+		if(err || !data){
+			cb(false,"未设置阵容")
+			return
+		}
+		var fightTeam = JSON.parse(data)
+		var multiList = []
+		var hIds = []
+		for(var i = 0;i < fightTeam.length;i++){
+			if(fightTeam[i]){
+				hIds.push(fightTeam[i])
+				multiList.push(["hgetall","area:area"+areaId+":player:"+uid+":heros:"+fightTeam[i]])
+			}
+		}
+		self.redisDao.multi(multiList,function(err,list) {
+			var hash = {}
+			for(var i = 0;i < list.length;i++){
+				for(var j in list[i]){
+					var tmp = Number(list[i][j])
+					if(tmp == list[i][j])
+						list[i][j] = tmp
+				}
+				list[i].hId = hIds[i]
+				hash[list[i].hId] = list[i]
+			}
+			for(var i = 0;i < fightTeam.length;i++){
+				fightTeam[i] = hash[fightTeam[i]]
+			}
+			cb(true,fightTeam)
+		})
+	})
+}
 module.exports = {
 	id : "heroDao",
 	func : heroDao,

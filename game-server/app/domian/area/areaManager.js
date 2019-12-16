@@ -5,7 +5,7 @@ var areaManager = function() {
 	this.areaMap = {}
 	this.userMap = {}
 	this.connectorMap = {}
-	this.fightContorl = fightContorlFun()
+	this.fightContorl = fightContorlFun
 }
 //初始化
 areaManager.prototype.init = function(app) {

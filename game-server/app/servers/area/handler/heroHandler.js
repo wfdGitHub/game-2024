@@ -67,6 +67,45 @@ heroHandler.prototype.getHeroArchive = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//设置出场阵容
+heroHandler.prototype.setFightTeam = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hIds = msg.hIds
+  //参数判断
+  if(!hIds instanceof Array){
+    next(null,{flag : false,data : "必须传数组"})
+    return
+  }
+  if(hIds.length != 6){
+    next(null,{flag : false,data : "数组长度错误"})
+    return
+  }
+  //判断重复
+  for(var i = 0;i < hIds.length;i++){
+    if(hIds[i] == null)
+      continue
+    for(var j = i + 1;j < hIds.length;j++){
+      if(hIds[j] == null)
+        continue
+      if(hIds[i] == hIds[j]){
+        next(null,{flag : false,data : "不能有重复的hId"})
+        return
+      }
+    }
+  }
+  this.heroDao.setFightTeam(areaId,uid,hIds,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//获取出场阵容
+heroHandler.prototype.getFightTeam = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.heroDao.getFightTeam(areaId,uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "heroHandler",

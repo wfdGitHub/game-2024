@@ -4,7 +4,7 @@ var crossServers = ["escort"]
 var crossManager = function(app) {
 	this.app = app
 	this.channelService = this.app.get("channelService")
-	this.fightContorl = fightContorlFun()
+	this.fightContorl = fightContorlFun
 }
 //初始化
 crossManager.prototype.init = function() {
