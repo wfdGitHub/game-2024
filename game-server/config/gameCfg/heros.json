@@ -1,7 +1,7 @@
 {
   "101010": {
     "name": "曹休",
-    "star": 1,
+    "min_star": 1,
     "max_star": 1,
     "realm": 1,
     "career": 1,
@@ -15,7 +15,7 @@
   },
   "102010": {
     "name": "辛宪英",
-    "star": 2,
+    "min_star": 2,
     "max_star": 2,
     "realm": 1,
     "career": 1,
@@ -29,7 +29,7 @@
   },
   "103010": {
     "name": "程昱",
-    "star": 3,
+    "min_star": 3,
     "max_star": 3,
     "realm": 1,
     "career": 1,
@@ -43,7 +43,7 @@
   },
   "103020": {
     "name": "庞德",
-    "star": 3,
+    "min_star": 3,
     "max_star": 3,
     "realm": 1,
     "career": 1,
@@ -57,7 +57,7 @@
   },
   "104010": {
     "name": "乐进",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 1,
     "career": 1,
@@ -71,7 +71,7 @@
   },
   "104020": {
     "name": "夏侯渊",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 1,
     "career": 4,
@@ -85,7 +85,7 @@
   },
   "104030": {
     "name": "少年曹操",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 1,
     "career": 4,
@@ -99,7 +99,7 @@
   },
   "104040": {
     "name": "少女甄姬",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 1,
     "career": 4,
@@ -113,7 +113,7 @@
   },
   "105010": {
     "name": "司马懿",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 1,
     "career": 1,
@@ -132,7 +132,7 @@
   },
   "105020": {
     "name": "曹操",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 1,
     "career": 4,
@@ -151,7 +151,7 @@
   },
   "105030": {
     "name": "张辽",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 1,
     "career": 1,
@@ -169,7 +169,7 @@
   },
   "105040": {
     "name": "张郃",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 1,
     "career": 4,
@@ -188,7 +188,7 @@
   },
   "105050": {
     "name": "荀彧",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 1,
     "career": 4,
@@ -207,7 +207,7 @@
   },
   "105060": {
     "name": "夏侯惇",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 1,
     "career": 3,
@@ -225,7 +225,7 @@
   },
   "105070": {
     "name": "郭嘉",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 1,
     "career": 2,
@@ -243,7 +243,7 @@
   },
   "105080": {
     "name": "曹仁",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 1,
     "career": 2,
@@ -261,7 +261,7 @@
   },
   "105090": {
     "name": "典韦",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 1,
     "career": 1,
@@ -276,7 +276,7 @@
   },
   "105100": {
     "name": "许褚",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 1,
     "career": 1,
@@ -291,7 +291,7 @@
   },
   "105110": {
     "name": "曹丕",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 1,
     "career": 1,
@@ -306,7 +306,7 @@
   },
   "105120": {
     "name": "甄姬",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 1,
     "career": 4,
@@ -321,7 +321,7 @@
   },
   "201010": {
     "name": "周仓",
-    "star": 1,
+    "min_star": 1,
     "max_star": 1,
     "realm": 2,
     "career": 1,
@@ -335,7 +335,7 @@
   },
   "202010": {
     "name": "马良",
-    "star": 2,
+    "min_star": 2,
     "max_star": 2,
     "realm": 2,
     "career": 1,
@@ -349,7 +349,7 @@
   },
   "203010": {
     "name": "张苞",
-    "star": 3,
+    "min_star": 3,
     "max_star": 3,
     "realm": 2,
     "career": 1,
@@ -363,7 +363,7 @@
   },
   "203020": {
     "name": "关平",
-    "star": 3,
+    "min_star": 3,
     "max_star": 3,
     "realm": 2,
     "career": 1,
@@ -377,7 +377,7 @@
   },
   "204010": {
     "name": "孟获",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 2,
     "career": 1,
@@ -391,7 +391,7 @@
   },
   "204020": {
     "name": "祝融",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 2,
     "career": 2,
@@ -405,7 +405,7 @@
   },
   "204030": {
     "name": "少年赵云",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 2,
     "career": 1,
@@ -419,7 +419,7 @@
   },
   "204040": {
     "name": "少年关羽",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 2,
     "career": 1,
@@ -433,7 +433,7 @@
   },
   "205010": {
     "name": "赵云",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 2,
     "career": 1,
@@ -452,7 +452,7 @@
   },
   "205020": {
     "name": "诸葛亮",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 2,
     "career": 2,
@@ -471,7 +471,7 @@
   },
   "205030": {
     "name": "刘备",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 2,
     "career": 4,
@@ -490,7 +490,7 @@
   },
   "205040": {
     "name": "马超",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 2,
     "career": 3,
@@ -508,7 +508,7 @@
   },
   "205050": {
     "name": "黄忠",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 2,
     "career": 4,
@@ -527,7 +527,7 @@
   },
   "205060": {
     "name": "黄月英",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 2,
     "career": 4,
@@ -546,7 +546,7 @@
   },
   "205070": {
     "name": "关羽",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 2,
     "career": 1,
@@ -565,7 +565,7 @@
   },
   "205080": {
     "name": "张飞",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 2,
     "career": 1,
@@ -583,7 +583,7 @@
   },
   "205090": {
     "name": "马岱",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 2,
     "career": 1,
@@ -598,7 +598,7 @@
   },
   "205100": {
     "name": "姜维",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 2,
     "career": 1,
@@ -613,7 +613,7 @@
   },
   "205110": {
     "name": "魏延",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 2,
     "career": 2,
@@ -628,7 +628,7 @@
   },
   "205120": {
     "name": "庞统",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 2,
     "career": 2,
@@ -643,7 +643,7 @@
   },
   "301010": {
     "name": "朱恒",
-    "star": 1,
+    "min_star": 1,
     "max_star": 1,
     "realm": 3,
     "career": 1,
@@ -657,7 +657,7 @@
   },
   "302010": {
     "name": "凌操",
-    "star": 2,
+    "min_star": 2,
     "max_star": 2,
     "realm": 3,
     "career": 1,
@@ -671,7 +671,7 @@
   },
   "303010": {
     "name": "黄盖",
-    "star": 3,
+    "min_star": 3,
     "max_star": 3,
     "realm": 3,
     "career": 1,
@@ -685,7 +685,7 @@
   },
   "303020": {
     "name": "周泰",
-    "star": 3,
+    "min_star": 3,
     "max_star": 3,
     "realm": 3,
     "career": 1,
@@ -699,7 +699,7 @@
   },
   "304010": {
     "name": "凌统",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 3,
     "career": 4,
@@ -713,7 +713,7 @@
   },
   "304020": {
     "name": "步练师",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 3,
     "career": 1,
@@ -727,7 +727,7 @@
   },
   "304030": {
     "name": "少年周瑜",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 3,
     "career": 4,
@@ -741,7 +741,7 @@
   },
   "304040": {
     "name": "少女小乔",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 3,
     "career": 4,
@@ -755,7 +755,7 @@
   },
   "305010": {
     "name": "孙策",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 3,
     "career": 1,
@@ -774,7 +774,7 @@
   },
   "305020": {
     "name": "周瑜",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 3,
     "career": 4,
@@ -792,7 +792,7 @@
   },
   "305030": {
     "name": "大乔",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 3,
     "career": 4,
@@ -811,7 +811,7 @@
   },
   "305040": {
     "name": "孙坚",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 3,
     "career": 3,
@@ -830,7 +830,7 @@
   },
   "305050": {
     "name": "小乔",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 3,
     "career": 4,
@@ -849,7 +849,7 @@
   },
   "305060": {
     "name": "太史慈",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 3,
     "career": 2,
@@ -867,7 +867,7 @@
   },
   "305070": {
     "name": "孙权",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 3,
     "career": 1,
@@ -885,7 +885,7 @@
   },
   "305080": {
     "name": "孙尚香",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 3,
     "career": 4,
@@ -903,7 +903,7 @@
   },
   "305090": {
     "name": "吕蒙",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 3,
     "career": 4,
@@ -918,7 +918,7 @@
   },
   "305100": {
     "name": "甘宁",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 3,
     "career": 1,
@@ -933,7 +933,7 @@
   },
   "305110": {
     "name": "陆逊",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 3,
     "career": 1,
@@ -948,7 +948,7 @@
   },
   "305120": {
     "name": "鲁肃",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 3,
     "career": 2,
@@ -963,7 +963,7 @@
   },
   "401010": {
     "name": "陶谦",
-    "star": 1,
+    "min_star": 1,
     "max_star": 1,
     "realm": 4,
     "career": 1,
@@ -977,7 +977,7 @@
   },
   "401020": {
     "name": "弓箭小兵",
-    "star": 1,
+    "min_star": 1,
     "max_star": 1,
     "realm": 4,
     "career": 1,
@@ -991,7 +991,7 @@
   },
   "402010": {
     "name": "陈登",
-    "star": 2,
+    "min_star": 2,
     "max_star": 2,
     "realm": 4,
     "career": 1,
@@ -1005,7 +1005,7 @@
   },
   "403010": {
     "name": "张梁",
-    "star": 3,
+    "min_star": 3,
     "max_star": 3,
     "realm": 4,
     "career": 1,
@@ -1019,7 +1019,7 @@
   },
   "403020": {
     "name": "何进",
-    "star": 3,
+    "min_star": 3,
     "max_star": 3,
     "realm": 4,
     "career": 1,
@@ -1033,7 +1033,7 @@
   },
   "404010": {
     "name": "文丑",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 4,
     "career": 1,
@@ -1047,7 +1047,7 @@
   },
   "404020": {
     "name": "颜良",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 4,
     "career": 1,
@@ -1061,7 +1061,7 @@
   },
   "404030": {
     "name": "少年吕布",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 4,
     "career": 1,
@@ -1075,7 +1075,7 @@
   },
   "404040": {
     "name": "少女貂蝉",
-    "star": 4,
+    "min_star": 4,
     "max_star": 5,
     "realm": 4,
     "career": 4,
@@ -1089,7 +1089,7 @@
   },
   "405010": {
     "name": "左慈",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 4,
     "career": 2,
@@ -1108,7 +1108,7 @@
   },
   "405020": {
     "name": "吕布",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 4,
     "career": 1,
@@ -1127,7 +1127,7 @@
   },
   "405030": {
     "name": "华佗",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 4,
     "career": 4,
@@ -1146,7 +1146,7 @@
   },
   "405040": {
     "name": "董卓",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 4,
     "career": 3,
@@ -1164,7 +1164,7 @@
   },
   "405050": {
     "name": "袁术",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 4,
     "career": 4,
@@ -1183,7 +1183,7 @@
   },
   "405060": {
     "name": "貂蝉",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 4,
     "career": 4,
@@ -1201,7 +1201,7 @@
   },
   "405070": {
     "name": "袁绍",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 4,
     "career": 2,
@@ -1219,7 +1219,7 @@
   },
   "405080": {
     "name": "华雄",
-    "star": 5,
+    "min_star": 5,
     "max_star": 10,
     "realm": 4,
     "career": 1,
@@ -1238,7 +1238,7 @@
   },
   "405090": {
     "name": "贾诩",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 4,
     "career": 1,
@@ -1253,7 +1253,7 @@
   },
   "405100": {
     "name": "公孙瓒",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 4,
     "career": 2,
@@ -1268,7 +1268,7 @@
   },
   "405110": {
     "name": "张角",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 4,
     "career": 2,
@@ -1283,7 +1283,7 @@
   },
   "405120": {
     "name": "于吉",
-    "star": 5,
+    "min_star": 5,
     "max_star": 9,
     "realm": 4,
     "career": 1,

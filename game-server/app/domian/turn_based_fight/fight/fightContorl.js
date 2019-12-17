@@ -1,6 +1,7 @@
 var skillsCfg = require("../../../../config/gameCfg/skills.json")
 var herosCfg = require("../../../../config/gameCfg/heros.json")
 var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
+var star_base = require("../../../../config/gameCfg/star_base.json")
 var advanced_base = require("../../../../config/gameCfg/advanced_base.json")
 var advanced_talent = require("../../../../config/gameCfg/advanced_talent.json")
 var talent_list = require("../../../../config/gameCfg/talent_list.json")
@@ -62,12 +63,45 @@ model.getCharacterInfo = function(info) {
 		}
 		model.mergeData(info,lvInfo)
 	}
+	//升星计算
+	if(info.star){
+		if(advanced_talent[info.id]){
+			let starInfo = {}
+			for(let i = 6;i <= info.star;i++){
+				let talentId = advanced_talent[info.id]["talent_"+i]
+				if(talentId){
+					if(talent_list[talentId]){
+						let tmpTalent = {}
+						tmpTalent[talent_list[talentId].key1] = talent_list[talentId].value1
+						if(talent_list[talentId].key2)
+							tmpTalent[talent_list[talentId].key2] = talent_list[talentId].value2
+						model.mergeData(starInfo,tmpTalent)
+					}else{
+						console.error("talentId error",talentId)
+					}
+				}
+			}
+			// console.log("starInfo",starInfo)
+			model.mergeData(info,starInfo)
+		}
+		if(star_base[info.star] && star_base[info.star]["att"]){
+			let strs = star_base[info.star]["att"].split("&")
+			let starInfo = {}
+			strs.forEach(function(m_str) {
+				let m_list = m_str.split(":")
+				starInfo[m_list[0]] = Number(m_list[1])
+			})
+			model.mergeData(info,starInfo)
+		}
+	}
 	//进阶计算
 	if(info.ad){
 		if(advanced_talent[info.id]){
-			var advancedInfo = {}
-			for(var i = 1;i <= info.ad;i++){
-				var talentId = advanced_talent[info.id]["talent_"+i]
+			let advancedInfo = {}
+			for(let i = 1;i <= info.ad;i++){
+				if(i > 5)
+					break
+				let talentId = advanced_talent[info.id]["talent_"+i]
 				if(talentId){
 					if(talent_list[talentId]){
 						let tmpTalent = {}
@@ -80,16 +114,18 @@ model.getCharacterInfo = function(info) {
 					}
 				}
 			}
+			// console.log("advancedInfo",advancedInfo)
 			model.mergeData(info,advancedInfo)
 		}
-		if(advanced_base[info.ad] && advanced_base[info.ad]["att"])
-				var strs = advanced_base[info.ad]["att"].split("&")
-				var advancedInfo = {}
-				strs.forEach(function(m_str) {
-					var m_list = m_str.split(":")
-					advancedInfo[m_list[0]] = Number(m_list[1])
-				})
-				model.mergeData(info,advancedInfo)
+		if(advanced_base[info.ad] && advanced_base[info.ad]["att"]){
+			let strs = advanced_base[info.ad]["att"].split("&")
+			let advancedInfo = {}
+			strs.forEach(function(m_str) {
+				let m_list = m_str.split(":")
+				advancedInfo[m_list[0]] = Number(m_list[1])
+			})
+			model.mergeData(info,advancedInfo)
+		}
 	}
 	return new character(info)
 }

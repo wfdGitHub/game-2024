@@ -21,14 +21,15 @@ heroDao.prototype.getHeroAmount = function(areaId,uid,cb) {
 //获得英雄
 heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	let id = otps.id
-	let ad = otps.ad || 0
-	let lv = otps.lv || 1
 	if(!herosCfg[id]){
 		console.log("id error by herosCfg",id)
 		if(cb)
 			cb(false,"id error by herosCfg",id)
 		return
 	}
+	let ad = otps.ad || 0
+	let lv = otps.lv || 1
+	let star = otps.star || herosCfg[id].min_star
 	var self = this
 	self.getHeroAmount(areaId,uid,function(flag,maxAmount) {
 		maxAmount = Number(maxAmount)
@@ -42,7 +43,7 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 				return
 			}
 			var hId = uuid.v1()
-			var heroInfo = {id : id,ad : ad,lv : lv,exp : 0}
+			var heroInfo = {id : id,ad : ad,lv : lv,star : star}
 			self.redisDao.db.hset("area:area"+areaId+":player:"+uid+":heroMap",hId,Date.now())
 			self.redisDao.db.hmset("area:area"+areaId+":player:"+uid+":heros:"+hId,heroInfo)
 			self.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":heroArchive",id,1)
