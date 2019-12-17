@@ -12,20 +12,20 @@
   "3": {
     "stage_limit": 3,
     "lev_limit": 60,
-    "pr": "1000050:10&101:500&hero_soul:10"
+    "pr": "1000050:10&101:500&203:10"
   },
   "4": {
     "stage_limit": 4,
     "lev_limit": 80,
     "pc_hero": "{self,2},{realm_rand,4,5},{realm_rand,3,4}",
-    "pr": "1000050:25&101:1000&hero_soul:25"
+    "pr": "1000050:25&101:1000&203:25"
   },
   "5": {
     "att": "maxHP:2000&atk:150&phyDef:50&magDef:50",
     "stage_limit": 5,
     "lev_limit": 100,
     "pc_hero": "{self,1},{realm_point,5,1},{realm_rand,5,3}",
-    "pr": "1000050:250&101:5000&hero_soul:250"
+    "pr": "1000050:250&101:5000&203:250"
   },
   "6": {
     "att": "maxHP:2200&atk:330&phyDef:110&magDef:110",
@@ -33,7 +33,7 @@
     "lev_limit": 145,
     "pc": "1000050:1000",
     "pc_hero": "{realm_rand,5,4}",
-    "pr": "1000050:1250&101:10000&hero_soul:1250"
+    "pr": "1000050:1250&101:10000&203:1250"
   },
   "7": {
     "att": "maxHP:3400&atk:510&phyDef:170&magDef:170",
@@ -41,7 +41,7 @@
     "lev_limit": 165,
     "pc": "1000050:2000",
     "pc_hero": "{realm_rand,5,3},{realm_rand,6,1}",
-    "pr": "1000050:2500&101:20000&hero_soul:2500"
+    "pr": "1000050:2500&101:20000&203:2500"
   },
   "8": {
     "att": "maxHP:4600&atk:690&phyDef:230&magDef:230",
@@ -49,7 +49,7 @@
     "lev_limit": 185,
     "pc": "1000050:4000",
     "pc_hero": "{self,1},{realm_rand,5,2},{realm_rand,6,1}",
-    "pr": "1000050:5000&101:40000&hero_soul:5000"
+    "pr": "1000050:5000&101:40000&203:5000"
   },
   "9": {
     "att": "maxHP:5800&atk:870&phyDef:290&magDef:290",
@@ -57,12 +57,12 @@
     "lev_limit": 205,
     "pc": "1000050:10000",
     "pc_hero": "{self,2},{realm_rand,6,1},{rand,9,1}",
-    "pr": "1000050:10000&101:80000&hero_soul:10000"
+    "pr": "1000050:10000&101:80000&203:10000"
   },
   "10": {
     "att": "maxHP:7000&atk:1050&phyDef:350&magDef:350",
     "stage_limit": 6,
     "lev_limit": 255,
-    "pr": "1000050:20000&101:160000&hero_soul:20000"
+    "pr": "1000050:20000&101:160000&203:20000"
   }
 }

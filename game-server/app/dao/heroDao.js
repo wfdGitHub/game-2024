@@ -1,6 +1,10 @@
 //英雄DB
 var uuid = require("uuid")
 var herosCfg = require("../../config/gameCfg/heros.json")
+var lv_cfg = require("../../config/gameCfg/lv_cfg.json")
+var star_base = require("../../config/gameCfg/star_base.json")
+var advanced_base = require("../../config/gameCfg/advanced_base.json")
+var bearcat = require("bearcat")
 var heroDao = function() {}
 //增加英雄背包栏
 heroDao.prototype.addHeroAmount = function(areaId,uid,cb) {
@@ -56,17 +60,44 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 //删除英雄
 heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 	var self = this
-	self.redisDao.db.hdel("area:area"+areaId+":player:"+uid+":heroMap",hId,function(err,data) {
-		if(err || !data){
-			console.error("removeHero ",err,data)
-			if(cb)
-				cb(false)
+	self.getHeroOne(areaId,uid,hId,function(flag,heroInfo) {
+		if(!flag){
+			cb(false,"英雄不存在")
 			return
 		}
-		self.redisDao.db.del("area:area"+areaId+":player:"+uid+":heros:"+hId)
-		if(cb)
-			cb(true)
+		self.redisDao.db.hdel("area:area"+areaId+":player:"+uid+":heroMap",hId,function(err,data) {
+			if(err || !data){
+				console.error("removeHero ",err,data)
+				if(cb)
+					cb(false)
+				return
+			}
+			self.redisDao.db.del("area:area"+areaId+":player:"+uid+":heros:"+hId)
+			self.heroPr(areaId,uid,[heroInfo],function(flag,awardList) {
+				if(cb)
+					cb(true,awardList)
+			})
+		})
 	})
+}
+heroDao.prototype.heroPr = function(areaId,uid,heros,cb) {
+	var strList = []
+	for(let i = 0;i < heros.length;i++){
+		let lv = heros[i].lv
+		let ad = heros[i].ad
+		let star = heros[i].star
+		if(lv_cfg[lv] && lv_cfg[lv].pr)
+			strList.push(lv_cfg[lv].pr)
+		if(advanced_base[ad] && advanced_base[ad].pr)
+			strList.push(advanced_base[ad].pr)
+		if(star_base[star] && star_base[star].pr)
+			strList.push(star_base[star].pr)
+	}
+	var areaManager = bearcat.getBean("areaManager")
+	var str = areaManager.areaMap[areaId].mergepcstr(strList)
+	var awardList = areaManager.areaMap[areaId].addItemStr(uid,str)
+	if(cb)
+		cb(true,awardList)
 }
 //修改英雄属性
 heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {

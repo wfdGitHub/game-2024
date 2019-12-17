@@ -119,6 +119,28 @@ module.exports = function() {
 				cb(false,"itemId error : "+itemId)
 		}
 	}
+	//合并奖励str
+	this.mergepcstr = function(strList) {
+		var pcInfo = {}
+		for(let i = 0;i < strList.length;i++){
+		    let pc = strList[i].split("&")
+		    pc.forEach(function(m_str) {
+		        let m_list = m_str.split(":")
+		        let itemId = Number(m_list[0])
+		        let value = Number(m_list[1])
+		        if(!pcInfo[itemId]){
+		          pcInfo[itemId] = 0
+		        }
+		        pcInfo[itemId] += value
+		    })
+		}
+	    var pcStr = ""
+	    for(var i in pcInfo){
+	      pcStr += i+":"+pcInfo[i]+"&"
+	    }
+	    pcStr = pcStr.slice(0,pcStr.length-1)
+		return pcStr
+	}
 	//扣除道具
 	this.consumeItems = function(uid,str,rate,cb) {
 		var items = []

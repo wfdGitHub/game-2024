@@ -66,25 +66,11 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
       next(null,{flag : false,err : "等级限制"})
       return
     }
-    var pcInfo = {}
+    var strList = []
     for(var i = heroInfo.lv;i < aimLv;i++){
-      let str = lv_cfg[i].pc
-      pc = str.split("&")
-      pc.forEach(function(m_str) {
-        var m_list = m_str.split(":")
-        var itemId = Number(m_list[0])
-        var value = Number(m_list[1])
-        if(!pcInfo[itemId]){
-          pcInfo[itemId] = 0
-        }
-        pcInfo[itemId] += value
-      })
+      strList.push(lv_cfg[i].pc)
     }
-    var pcStr = ""
-    for(var i in pcInfo){
-      pcStr += i+":"+pcInfo[i]+"&"
-    }
-    pcStr = pcStr.slice(0,pcStr.length-1)
+    var pcStr = self.areaManager.areaMap[areaId].mergepcstr(strList)
     self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,function(flag,err) {
       if(!flag){
         next(null,{flag : false,err : err})
