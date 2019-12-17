@@ -1,5 +1,8 @@
 var bearcat = require("bearcat")
-
+var heros = require("../../../../config/gameCfg/heros.json")
+var advanced_base = require("../../../../config/gameCfg/advanced_base.json")
+var star_base = require("../../../../config/gameCfg/star_base.json")
+var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 var heroHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
@@ -39,6 +42,99 @@ heroHandler.prototype.removeHero = function(msg, session, next) {
   this.heroDao.removeHero(areaId,uid,hId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
+}
+//英雄升级 升阶与星级取最低等级限制
+heroHandler.prototype.upgradeLevel = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var aimLv = msg.aimLv
+  if(!Number.isInteger(aimLv) || !lv_cfg[aimLv]){
+    next(null,{flag : false,err : "aimLv error "+aimLv})
+    return
+  }
+  var self = this
+  self.heroDao.getHeroOne(areaId,uid,hId,function(flag,heroInfo) {
+    if(!flag){
+      next(null,{flag : false,err : "英雄不存在"})
+      return
+    }
+    let star_limit = star_base[heroInfo.star].lev_limit || 0
+    let ad_limit = advanced_base[heroInfo.ad].lev_limit || 0
+    let lev_limit = star_limit < ad_limit ? star_limit : ad_limit
+    if(aimLv <= heroInfo.lv || aimLv > lev_limit){
+      next(null,{flag : false,err : "等级限制"})
+      return
+    }
+    var pcInfo = {}
+    for(var i = heroInfo.lv;i < aimLv;i++){
+      let str = lv_cfg[i].pc
+      pc = str.split("&")
+      pc.forEach(function(m_str) {
+        var m_list = m_str.split(":")
+        var itemId = Number(m_list[0])
+        var value = Number(m_list[1])
+        if(!pcInfo[itemId]){
+          pcInfo[itemId] = 0
+        }
+        pcInfo[itemId] += value
+      })
+    }
+    var pcStr = ""
+    for(var i in pcInfo){
+      pcStr += i+":"+pcInfo[i]+"&"
+    }
+    pcStr = pcStr.slice(0,pcStr.length-1)
+    self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,function(flag,err) {
+      if(!flag){
+        next(null,{flag : false,err : err})
+        return
+      }
+      self.heroDao.incrbyHeroInfo(areaId,uid,hId,"lv",aimLv - heroInfo.lv,function(flag,data) {
+        next(null,{flag : flag,data : data})
+      })
+    })
+  })
+}
+//英雄升阶  受星级与等级限制
+heroHandler.prototype.upgraAdvance = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var self = this
+  self.heroDao.getHeroOne(areaId,uid,hId,function(flag,heroInfo) {
+    if(!flag){
+      next(null,{flag : false,err : "英雄不存在"})
+      return
+    }
+    var aimAd = heroInfo.ad + 1
+    if(!advanced_base[aimAd]){
+      next(null,{flag : false,err : "没有下一阶"})
+      return
+    }
+    if(heroInfo.lv != advanced_base[heroInfo.ad].lev_limit){
+      next(null,{flag : false,err : "等级限制"})
+      return
+    }
+    if(aimAd > star_base[heroInfo.star].stage_limit){
+      next(null,{flag : false,err : "星级限制"})
+      return
+    }
+    var pcStr = advanced_base[heroInfo.ad].pc
+    self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,function(flag,err) {
+      if(!flag){
+        next(null,{flag : false,err : err})
+        return
+      }
+      self.heroDao.incrbyHeroInfo(areaId,uid,hId,"ad",1,function(flag,data) {
+        next(null,{flag : flag,data : data})
+      })
+    })
+  })
+}
+//英雄升星
+heroHandler.prototype.upgradeStar = function() {
+
 }
 //修改英雄属性
 heroHandler.prototype.incrbyHeroInfo = function(msg, session, next) {

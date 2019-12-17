@@ -106,6 +106,21 @@ heroDao.prototype.getHeros = function(areaId,uid,cb) {
 		})
 	})
 }
+//获取单个英雄
+heroDao.prototype.getHeroOne = function(areaId,uid,hId,cb) {
+	this.redisDao.db.hgetall("area:area"+areaId+":player:"+uid+":heros:"+hId,function(err,data) {
+		if(err || !data){
+			cb(false,err)
+		}else{
+			for(var j in data){
+				var tmp = Number(data[j])
+				if(tmp == data[j])
+					data[j] = tmp
+			}
+			cb(true,data)
+		}
+	})
+}
 //获取英雄图鉴
 heroDao.prototype.getHeroArchive = function(areaId,uid,cb) {
 	this.redisDao.db.hgetall("area:area"+areaId+":player:"+uid+":heroArchive",function(err,data) {

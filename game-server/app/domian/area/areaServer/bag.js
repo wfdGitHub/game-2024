@@ -1,6 +1,5 @@
 //背包物品系统
 var itemCfg = require("../../../../config/gameCfg/item.json")
-var special_item = require("../../../../config/gameCfg/special_item.json")
 var shopCfg = require("../../../../config/gameCfg/shop.json")
 var chest_awards = require("../../../../config/gameCfg/chest_awards.json")
 var chest_cfg = require("../../../../config/gameCfg/chest_cfg.json")
@@ -104,29 +103,6 @@ module.exports = function() {
 					cb(flag,curValue)
 			})
 			return {type : "item",itemId : itemId,value : value}
-		}else if(special_item[itemId]){
-			switch(itemId){
-				case "role_exp":
-					value = Math.floor(Number(value) * rate) || 1
-					return self.addItem({uid : uid,itemId : 101,value : value},cb)
-				break
-				case "hero_exp":
-					value = Math.floor(Number(value) * rate) || 1
-					return self.addItem({uid : uid,itemId : 102,value : value},cb)
-				break
-				case "coin":
-					value = Math.floor(Number(value) * rate) || 1
-					return self.addItem({uid : uid,itemId : 201,value : value},cb)
-				break
-				case "gold":
-					value = Math.floor(Number(value) * rate) || 1
-					return self.addItem({uid : uid,itemId : 202,value : value},cb)
-				break
-				case "hero_soul":
-					value = Math.floor(Number(value) * rate) || 1
-					return self.addItem({uid : uid,itemId : 203,value : value},cb)
-				break
-			}
 		}else{
 			console.error("item not exist : "+itemId)
 			if(cb)
