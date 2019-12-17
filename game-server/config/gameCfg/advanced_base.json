@@ -1,45 +1,43 @@
 {
   "0": {
-    "level": 30
+    "stage_limit": 30,
+    "pc": "coin:10000&1000050:50",
+    "pr": false
   },
   "1": {
-    "att": "atk:100&phyDef:100&magDef:100",
-    "level": 40
+    "att": "maxHP:2000&atk:300&phyDef:100&magDef:100",
+    "stage_limit": 40,
+    "pc": "coin:20000&1000050:100",
+    "pr": "coin:10000&1000050:50"
   },
   "2": {
-    "att": "atk:200&phyDef:200&magDef:200",
-    "level": 50
+    "att": "maxHP:5000&atk:750&phyDef:250&magDef:250",
+    "stage_limit": 50,
+    "pc": "coin:40000&1000050:200",
+    "pr": "coin:30000&1000050:150"
   },
   "3": {
-    "att": "atk:300&phyDef:300&magDef:300",
-    "level": 60
+    "att": "maxHP:9400&atk:1410&phyDef:470&magDef:470",
+    "stage_limit": 60,
+    "pc": "coin:100000&1000050:500",
+    "pr": "coin:70000&1000050:350"
   },
   "4": {
-    "att": "atk:400&phyDef:400&magDef:400",
-    "level": 80
+    "att": "maxHP:15600&atk:2340&phyDef:780&magDef:780",
+    "stage_limit": 80,
+    "pc": "coin:200000&1000050:1000",
+    "pr": "coin:170000&1000050:850"
   },
   "5": {
-    "att": "atk:500&phyDef:500&magDef:500",
-    "level": 100
+    "att": "maxHP:25100&atk:3770&phyDef:1260&magDef:1260",
+    "stage_limit": 100,
+    "pc": "coin:500000&1000050:2000",
+    "pr": "coin:370000&1000050:1850"
   },
   "6": {
-    "att": "atk:600&phyDef:600&magDef:600",
-    "level": 145
-  },
-  "7": {
-    "att": "atk:700&phyDef:700&magDef:700",
-    "level": 165
-  },
-  "8": {
-    "att": "atk:800&phyDef:800&magDef:800",
-    "level": 185
-  },
-  "9": {
-    "att": "atk:900&phyDef:900&magDef:900",
-    "level": 205
-  },
-  "10": {
-    "att": "atk:1000&phyDef:1000&magDef:1000",
-    "level": 255
+    "att": "maxHP:39200&atk:5880&phyDef:1970&magDef:1970",
+    "stage_limit": 255,
+    "pc": false,
+    "pr": "coin:870000&1000050:3850"
   }
 }

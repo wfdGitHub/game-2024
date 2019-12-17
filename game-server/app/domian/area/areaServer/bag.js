@@ -122,6 +122,10 @@ module.exports = function() {
 					value = Math.floor(Number(value) * rate) || 1
 					return self.addItem({uid : uid,itemId : 202,value : value},cb)
 				break
+				case "hero_soul":
+					value = Math.floor(Number(value) * rate) || 1
+					return self.addItem({uid : uid,itemId : 203,value : value},cb)
+				break
 			}
 		}else{
 			console.error("item not exist : "+itemId)

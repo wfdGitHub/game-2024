@@ -5,6 +5,9 @@
   "hero_exp": {
     "name": "英雄经验"
   },
+  "hero_soul": {
+    "name": "将魂"
+  },
   "coin": {
     "name": "铜币"
   },
