@@ -149,17 +149,9 @@ area.prototype.readyFight = function(uid,cb) {
 //获取玩家防御阵容配置(被攻击阵容)
 area.prototype.getDefendTeam = function(uid,cb) {
 	var self = this
-	self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
-		if(playerInfo){
-			var team = []
-			for(var i in playerInfo.characters){
-				team.push(playerInfo.characters[i])
-			}
-			var fightPet = playerInfo.fightPet
-			if(fightPet && playerInfo.pets && playerInfo.pets[fightPet]){
-				team = team.concat(playerInfo.pets[fightPet])
-			}
-			cb(team)
+	self.heroDao.getFightTeam(self.areaId,uid,function(flag,data) {
+		if(flag){
+			cb(self.fightInfos[uid])
 		}else{
 			cb(false)
 		}

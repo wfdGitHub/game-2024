@@ -1,5 +1,6 @@
 var skillsCfg = require("../../../../config/gameCfg/skills.json")
 var herosCfg = require("../../../../config/gameCfg/heros.json")
+var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 var advanced_base = require("../../../../config/gameCfg/advanced_base.json")
 var advanced_talent = require("../../../../config/gameCfg/advanced_talent.json")
 var talent_list = require("../../../../config/gameCfg/talent_list.json")
@@ -50,6 +51,16 @@ model.getCharacterInfo = function(info) {
 		}else{
 			info.angerSkill = Object.assign({skillId : info.angerSkill},skillsCfg[info.angerSkill])
 		}
+	}
+	//等级计算
+	if(info.lv && lv_cfg[info.lv]){
+		var lvInfo = {
+		    "maxHP": lv_cfg[info.lv].manHP,
+		    "atk": lv_cfg[info.lv].atk,
+		    "phyDef": lv_cfg[info.lv].phyDef,
+		    "magDef": lv_cfg[info.lv].magDef,
+		}
+		model.mergeData(info,lvInfo)
 	}
 	//进阶计算
 	if(info.ad){

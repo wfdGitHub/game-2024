@@ -106,17 +106,21 @@ module.exports = function() {
 			return {type : "item",itemId : itemId,value : value}
 		}else if(special_item[itemId]){
 			switch(itemId){
-				case "gold":
+				case "role_exp":
 					value = Math.floor(Number(value) * rate) || 1
 					return self.addItem({uid : uid,itemId : 101,value : value},cb)
 				break
-				case "diamond":
+				case "hero_exp":
 					value = Math.floor(Number(value) * rate) || 1
 					return self.addItem({uid : uid,itemId : 102,value : value},cb)
 				break
-				case "spar":
+				case "coin":
 					value = Math.floor(Number(value) * rate) || 1
-					return self.addItem({uid : uid,itemId : 104,value : value},cb)
+					return self.addItem({uid : uid,itemId : 201,value : value},cb)
+				break
+				case "gold":
+					value = Math.floor(Number(value) * rate) || 1
+					return self.addItem({uid : uid,itemId : 202,value : value},cb)
 				break
 			}
 		}else{

@@ -1,6 +1,6 @@
-// var fightContorl = require("./fight/fightContorl.js")
-// var atkTeam = [{id : 104010,ad : 1},{id : 104010},{id : 104010},{id : 104010},{id : 305050},{id : 305050}]
-// var defTeam = [{id : 104030},{id : 104030},{id : 104030},{id : 104030},{id : 104030},{id : 104030}]
+var fightContorl = require("./fight/fightContorl.js")
+var atkTeam = [{id : 104010,ad : 1,lv:100},{id : 104010},{id : 104010},{id : 104010},{id : 305050},{id : 305050}]
+var defTeam = [{id : 104030},{id : 104030},{id : 104030},{id : 104030},{id : 104030},{id : 104030}]
 // for(var i = 0;i < 6;i++){
 // 	// atkTeam[i].self_adds = {atk : 1}
 // 	// atkTeam[i].normal_later_buff = JSON.stringify({buffId : "invincibleSuper",buffArg : 0.2,duration : 10,buffRate : 1})
@@ -17,4 +17,4 @@
 // 	defTeam[i] = fightContorl.getCharacterInfo(defTeam[i])
 // 	// defTeam[i].angerSkill.kill_amp = 2
 // }
-// var list = fightContorl.beginFight(atkTeam,defTeam,{})
+var list = fightContorl.beginFight(atkTeam,defTeam,{})
