@@ -280,10 +280,10 @@ model.useAttackSkill = function(skill) {
 				let tmpRecord = {type : "other_heal",targets : []}
 				let healValue = Math.round(recordInfo.targets[i].realValue * targets[i].hit_turn_rate) || 1
 				let tmptargets = this.locator.getTargets(targets[i],targets[i].hit_turn_tg)
-				for(var i = 0;i < tmptargets.length;i++){
-					let target = tmptargets[i]
+				for(var j = 0;j < tmptargets.length;j++){
+					let target = tmptargets[j]
 					let info = this.formula.calHeal(skill.character,target,healValue)
-					info = target.onHeal(targets[i],info)
+					info = target.onHeal(targets[j],info)
 					tmpRecord.targets.push(info)
 				}
 				fightRecord.push(tmpRecord)
