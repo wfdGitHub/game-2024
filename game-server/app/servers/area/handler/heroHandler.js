@@ -39,8 +39,15 @@ heroHandler.prototype.removeHero = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   var hId = msg.hId
-  this.heroDao.removeHero(areaId,uid,hId,function(flag,data) {
-    next(null,{flag : flag,data : data})
+  var self = this
+  self.heroDao.removeHero(areaId,uid,hId,function(flag,data) {
+    if(flag){
+      self.heroDao.heroPr(areaId,uid,[data],function(flag,awardList) {
+        next(null,{flag : true,awardList : awardList})
+      })
+    }else{
+      next(null,{flag : false,err : data})
+    }
   })
 }
 //英雄升级 升阶与星级取最低等级限制
@@ -118,9 +125,116 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
     })
   })
 }
-//英雄升星
-heroHandler.prototype.upgradeStar = function() {
-
+//英雄升星   有最大星级限制
+heroHandler.prototype.upgradeStar = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var target = msg.target
+  var hIds = msg.hIds
+  if(!hIds instanceof Array){
+    next(null,{flag : false,data : "必须传数组"})
+    return
+  }
+  hIds.push(target)
+  var hIdmap = {}
+  for(var i = 0;i < hIds.length;i++){
+    if(typeof(hIds[i]) != "string" || !hIds[i]){
+      next(null,{flag : false,data : "英雄hId必须是string"})
+      return
+    }
+    if(hIdmap[hIds[i]]){
+      next(null,{flag : false,data : "英雄hId不能重复"})
+      return
+    }
+    hIdmap[hIds[i]] = true
+  }
+  var self = this
+  self.heroDao.getHeroList(areaId,uid,hIds,function(flag,data) {
+    if(data){
+      let targetHero = data.pop()
+      hIds.pop()
+      let star = targetHero.star
+      let pc_hero = star_base[star].pc_hero
+      if(!targetHero){
+        next(null,{flag : false,data : "目标武将不存在"})
+        return
+      }
+      if(targetHero.star == heros[targetHero.id].max_star){
+        next(null,{flag : false,data : "已达到最大星级"})
+        return
+      }
+      //材料武将检测
+      if(pc_hero){
+        pc_hero = JSON.parse(pc_hero)
+        if(pc_hero.length !== data.length){
+          next(null,{flag : false,data : "材料武将数量错误"})
+          return
+        }
+        for(var i = 0;i < pc_hero.length;i++){
+          if(!data[i] || !heros[targetHero.id]){
+            next(null,{flag : false,data : "材料武将不存在"+hIds[i]})
+            return
+          }
+          switch(pc_hero[i][0]){
+            case "self":
+              if(!(data[i].id == targetHero.id && data[i].star == heros[targetHero.id].min_star)){
+                next(null,{flag : false,data : pc_hero[i][0]+"材料错误 index:"+i+" id:"+data[i].id+" star:"+data[i].star})
+                return
+              }
+            break
+            case "realm_point":
+              if(!(data[i].id == heros[targetHero.id].point_hero && data[i].star == heros[data[i].id].min_star)){
+                next(null,{flag : false,data : pc_hero[i][0]+"材料错误 index:"+i+" id:"+data[i].id+" star:"+data[i].star})
+                return
+              }
+            break
+            case "realm_rand":
+              if(!(heros[data[i].id].realm == heros[targetHero.id].realm && data[i].star == pc_hero[i][1])){
+                next(null,{flag : false,data : pc_hero[i][0]+"材料错误 index:"+i+" id:"+data[i].id+" star:"+data[i].star})
+                return
+              }
+            break
+            case "rand":
+              if(!(data[i].star == pc_hero[i][1])){
+                next(null,{flag : false,data : pc_hero[i][0]+"材料错误 index:"+i+" id:"+data[i].id+" star:"+data[i].star})
+                return
+              }
+            break
+          }
+        }
+        let pcStr = star_base[star].pc
+        if(pcStr){
+          self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,function(flag,err) {
+            if(!flag){
+              next(null,{flag : false,err : err})
+              return
+            }
+            self.heroDao.removeHeroList(areaId,uid,hIds,function(flag,err) {
+                if(err)
+                  console.error(err)
+                self.heroDao.heroPrlvadnad(areaId,uid,data,function(flag,awardList) {
+                  self.heroDao.incrbyHeroInfo(areaId,uid,target,"star",1,function(flag,star) {
+                    next(null,{flag : flag,awardList : awardList,star : star})
+                  })
+                })
+            })
+          })
+        }else{
+            self.heroDao.removeHeroList(areaId,uid,hIds,function(flag,err) {
+                if(err)
+                  console.error(err)
+                self.heroDao.heroPrlvadnad(areaId,uid,data,function(flag,awardList) {
+                  self.heroDao.incrbyHeroInfo(areaId,uid,target,"star",1,function(flag,star) {
+                    next(null,{flag : flag,awardList : awardList,star : star})
+                  })
+                })
+            })
+        }
+      }
+    }else{
+      next(null,{flag : false,data : "材料武将错误"})
+    }
+  })
 }
 //修改英雄属性
 heroHandler.prototype.incrbyHeroInfo = function(msg, session, next) {

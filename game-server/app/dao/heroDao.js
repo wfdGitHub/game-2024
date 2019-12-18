@@ -57,6 +57,21 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 		})
 	})
 }
+//批量删除英雄
+heroDao.prototype.removeHeroList = function(areaId,uid,hIds,cb) {
+	var multiList = []
+	for(var i = 0;i < hIds.length;i++){
+		multiList.push(["hdel","area:area"+areaId+":player:"+uid+":heroMap",hIds[i]])
+		multiList.push(["del","area:area"+areaId+":player:"+uid+":heros:"+hIds[i]])
+	}
+	this.redisDao.multi(multiList,function(err) {
+		if(err){
+			cb(false,err)
+			return
+		}
+		cb(true)
+	})
+}
 //删除英雄
 heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 	var self = this
@@ -73,14 +88,12 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 				return
 			}
 			self.redisDao.db.del("area:area"+areaId+":player:"+uid+":heros:"+hId)
-			self.heroPr(areaId,uid,[heroInfo],function(flag,awardList) {
-				if(cb)
-					cb(true,awardList)
-			})
+			cb(true,heroInfo)
 		})
 	})
 }
-heroDao.prototype.heroPr = function(areaId,uid,heros,cb) {
+//分解返还资源   返还升级  升阶  升星
+heroDao.prototype.heroPrAll = function(areaId,uid,heros,cb) {
 	var strList = []
 	for(let i = 0;i < heros.length;i++){
 		let lv = heros[i].lv
@@ -98,6 +111,28 @@ heroDao.prototype.heroPr = function(areaId,uid,heros,cb) {
 	var awardList = areaManager.areaMap[areaId].addItemStr(uid,str)
 	if(cb)
 		cb(true,awardList)
+}
+//材料返还资源  返还升级  升阶
+heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
+	var strList = []
+	for(let i = 0;i < heros.length;i++){
+		let lv = heros[i].lv
+		let ad = heros[i].ad
+		if(lv_cfg[lv] && lv_cfg[lv].pr)
+			strList.push(lv_cfg[lv].pr)
+		if(advanced_base[ad] && advanced_base[ad].pr)
+			strList.push(advanced_base[ad].pr)
+	}
+	if(strList.length){
+		var areaManager = bearcat.getBean("areaManager")
+		var str = areaManager.areaMap[areaId].mergepcstr(strList)
+		var awardList = areaManager.areaMap[areaId].addItemStr(uid,str)
+		if(cb)
+			cb(true,awardList)
+	}else{
+		if(cb)
+			cb(true,[])
+	}
 }
 //修改英雄属性
 heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
@@ -150,6 +185,27 @@ heroDao.prototype.getHeroOne = function(areaId,uid,hId,cb) {
 			}
 			cb(true,data)
 		}
+	})
+}
+//获取指定英雄列表
+heroDao.prototype.getHeroList = function(areaId,uid,hIds,cb) {
+	var multiList = []
+	for(var i = 0;i < hIds.length;i++){
+		multiList.push(["hgetall","area:area"+areaId+":player:"+uid+":heros:"+hIds[i]])
+	}
+	this.redisDao.multi(multiList,function(err,list) {
+		if(err){
+			cb(false,err)
+			return
+		}
+		for(var i = 0;i < list.length;i++){
+			for(var j in list[i]){
+				var tmp = Number(list[i][j])
+				if(tmp == list[i][j])
+					list[i][j] = tmp
+			}
+		}
+		cb(true,list)
 	})
 }
 //获取英雄图鉴

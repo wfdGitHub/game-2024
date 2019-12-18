@@ -85,6 +85,12 @@
             console.log(data);
         });
       }
+      //英雄升星
+      var upgradeStar = function(target,hIds) {
+        pomelo.request("area.heroHandler.upgradeStar", {target : target,hIds : hIds}, function(data) {
+            console.log(data);
+        });
+      }
       //增加英雄背包栏
       var addHeroAmount = function() {
         pomelo.request("area.heroHandler.addHeroAmount", {}, function(data) {
