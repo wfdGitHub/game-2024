@@ -175,7 +175,7 @@ model.useAttackSkill = function(skill) {
 	var targets = this.locator.getTargets(skill.character,skill.targetType)
 	if(!targets.length){
 		fightRecord.push(recordInfo)
-		return
+		return []
 	}
 	var addAmp = 0
 	//判断技能目标减少
