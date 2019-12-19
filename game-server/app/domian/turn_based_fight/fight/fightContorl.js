@@ -35,6 +35,7 @@ model.getCharacterInfo = function(info) {
 	if(!info || !herosCfg[info.id]){
 		return false
 	}
+	info = Object.assign({},info)
 	let id = info.id
 	Object.assign(info,herosCfg[id])
 	if(info.defaultSkill){
