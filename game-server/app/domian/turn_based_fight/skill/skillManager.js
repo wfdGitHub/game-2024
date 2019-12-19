@@ -114,7 +114,8 @@ model.useSkill = function(skill) {
 		}
 		//释放技能后追加技能
 		if(skill.character.skill_later_skill && this.seeded.random("判断追加技能") < skill.character.skill_later_skill.rate){
-			let tmpSkill = this.createSkill(skill.character.skill_later_skill,skill.character)
+			let tmpSkillInfo = Object.assign({skillId : skill.skillId},skill.character.skill_later_skill)
+			let tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
 			this.useSkill(tmpSkill)
 		}
 		//释放技能后追加BUFF
