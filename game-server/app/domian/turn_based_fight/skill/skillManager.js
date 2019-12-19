@@ -119,11 +119,12 @@ model.useSkill = function(skill) {
 		}
 		//释放技能后追加BUFF
 		if(skill.character.skill_later_buff){
-			for(var i = 0;i < targets.length;i++){
-				if(!targets[i].died){
+			let buffTargets = this.locator.getBuffTargets(skill.character,skill.character.skill_later_buff.buff_tg,targets)
+			for(var i = 0;i < buffTargets.length;i++){
+				if(!buffTargets[i].died){
 					var burnBuffInfo = skill.character.skill_later_buff
 					if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
-						buffManager.createBuff(skill.character,targets[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+						buffManager.createBuff(skill.character,buffTargets[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 					}
 				}
 			}

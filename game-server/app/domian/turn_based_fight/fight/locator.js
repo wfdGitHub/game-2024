@@ -513,7 +513,7 @@ model.prototype.getTeamRandomMinHp = function(character,count) {
 model.prototype.getFriendRandomMinHp = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(!target.died && target != self){
+        if(!target.died && target != character){
         	list.push(target)
         }
     })
