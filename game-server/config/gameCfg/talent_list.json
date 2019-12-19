@@ -211,12 +211,12 @@
   "1042": {
     "des": "战斗第1回合造成的伤害增加50%",
     "key1": "first_buff",
-    "value1": "{\"buffId\":\"amplify\",\"buffArg\":0.5,\"duration\":1}"
+    "value1": "{\"buffId\":\"amplify\",\"buffArg\":0.5,\"duration\":1,\"buff_tg\":\"team_self\"}"
   },
   "1043": {
     "des": "战斗第1回合无敌，免疫所有伤害和控制效果（无敌效果不会被清除）",
     "key1": "first_buff",
-    "value1": "{\"buffId\":\"invincibleSuper\",\"duration\":1}"
+    "value1": "{\"buffId\":\"invincibleSuper\",\"duration\":1,\"buff_tg\":\"team_self\"}"
   },
   "1044": {
     "des": "战斗第1回合造成的伤害必定暴击",
@@ -402,7 +402,7 @@
   "1079": {
     "des": "普通攻击后自身伤害增加10%，持续7回合，效果可叠加",
     "key1": "normal_later_buff",
-    "value1": "{\"buffId\":\"amplify\",\"buffArg\":0.1,\"duration\":7,\"buffRate\":1}"
+    "value1": "{\"buffId\":\"amplify\",\"buffArg\":0.1,\"duration\":7,\"buffRate\":1,\"buff_tg\":\"team_self\"}"
   },
   "1080": {
     "des": "普通攻击有40%概率给目标附加灼烧状态，持续2回合",

@@ -454,7 +454,8 @@
     "buffId": "amplify",
     "buff_tg": "team_self",
     "buffArg": 0.05,
-    "duration": 7
+    "duration": 7,
+    "buffRate": 1
   },
   "2040401": {
     "name": "武圣",
@@ -491,7 +492,8 @@
     "buffId": "amplify",
     "buff_tg": "team_self",
     "buffArg": 0.1,
-    "duration": 7
+    "duration": 7,
+    "buffRate": 1
   },
   "2050201": {
     "name": "卧龙",
