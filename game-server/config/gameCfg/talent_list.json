@@ -211,12 +211,12 @@
   "1042": {
     "des": "战斗第1回合造成的伤害增加50%",
     "key1": "first_buff",
-    "value1": "{\"buffId\":\"amplify\",\"buffArg\":0.5,duration\":1}"
+    "value1": "{\"buffId\":\"amplify\",\"buffArg\":0.5,\"duration\":1}"
   },
   "1043": {
     "des": "战斗第1回合无敌，免疫所有伤害和控制效果（无敌效果不会被清除）",
     "key1": "first_buff",
-    "value1": "{\"buffId\":\"invincibleSuper\",duration\":1}"
+    "value1": "{\"buffId\":\"invincibleSuper\",\"duration\":1}"
   },
   "1044": {
     "des": "战斗第1回合造成的伤害必定暴击",
@@ -241,12 +241,12 @@
   "1048": {
     "des": "受到攻击时有35%的概率给攻击者附加灼烧状态，持续2回合",
     "key1": "hit_buff",
-    "value1": "{\"buffId\":\"burn\",\"buffArg\":0.2,duration\":2,\"buffRate\":0.35}"
+    "value1": "{\"buffId\":\"burn\",\"buffArg\":0.2,\"duration\":2,\"buffRate\":0.35}"
   },
   "1049": {
     "des": "受到普通攻击时，有50%的概率给攻击自己的武将附加中毒效果，每回合对目标造成自身攻击伤害160%的中毒伤害，持续2回合",
     "key1": "hit_buff",
-    "value1": "{\"buffId\":\"poison\",\"buffArg\":1.6,duration\":2,\"buffRate\":0.5}"
+    "value1": "{\"buffId\":\"poison\",\"buffArg\":1.6,\"duration\":2,\"buffRate\":0.5}"
   },
   "1050": {
     "des": "受到普通攻击后，降低攻击自己的武将1点怒气",
@@ -402,22 +402,22 @@
   "1079": {
     "des": "普通攻击后自身伤害增加10%，持续7回合，效果可叠加",
     "key1": "normal_later_buff",
-    "value1": "{\"buffId\":\"amplify\",\"buffArg\":0.1,duration\":7,\"buffRate\":1}"
+    "value1": "{\"buffId\":\"amplify\",\"buffArg\":0.1,\"duration\":7,\"buffRate\":1}"
   },
   "1080": {
     "des": "普通攻击有40%概率给目标附加灼烧状态，持续2回合",
     "key1": "normal_later_buff",
-    "value1": "{\"buffId\":\"burn\",\"buffArg\":0.2,duration\":2,\"buffRate\":0.4}"
+    "value1": "{\"buffId\":\"burn\",\"buffArg\":0.2,\"duration\":2,\"buffRate\":0.4}"
   },
   "1081": {
     "des": "普通攻击有80%概率给目标附加灼烧状态，持续2回合",
     "key1": "normal_later_buff",
-    "value1": "{\"buffId\":\"burn\",\"buffArg\":0.2,duration\":2,\"buffRate\":0.8}"
+    "value1": "{\"buffId\":\"burn\",\"buffArg\":0.2,\"duration\":2,\"buffRate\":0.8}"
   },
   "1082": {
     "des": "释放普通攻击后，给目标附加1个持续治疗效果，每回合回复大乔最大攻击32%的生命，持续2回合",
     "key1": "normal_later_buff",
-    "value1": "{\"buffId\":\"recover\",\"buffArg\":0.32,duration\":2,\"buffRate\":1}"
+    "value1": "{\"buffId\":\"recover\",\"buffArg\":0.32,\"duration\":2,\"buffRate\":1}"
   },
   "1083": {
     "des": "释放普通攻击降低目标1点怒气",
@@ -582,12 +582,12 @@
   "1115": {
     "des": "释放技能有45%概率附加眩晕效果，持续1回合",
     "key1": "skill_later_buff",
-    "value1": "{\"buffId\":\"dizzy\",duration\":1,\"buffRate\":0.45}"
+    "value1": "{\"buffId\":\"dizzy\",\"duration\":1,\"buffRate\":0.45}"
   },
   "1116": {
     "des": "释放技能有80%概率附加晕眩，持续1回合",
     "key1": "skill_later_buff",
-    "value1": "{\"buffId\":\"dizzy\",duration\":1,\"buffRate\":0.8}"
+    "value1": "{\"buffId\":\"dizzy\",\"duration\":1,\"buffRate\":0.8}"
   },
   "1117": {
     "des": "释放技能后，给除自己外己方生命最少的武将附加无敌盾，持续2回合（若场上只剩张郃，不会释放无敌护盾）",
@@ -597,7 +597,7 @@
   "1118": {
     "des": "释放技能后，给目标附加1个持续治疗效果，每回合回复大乔最大攻击20%的生命，持续2回合",
     "key1": "skill_later_buff",
-    "value1": "{\"buffId\":\"recover\",\"buffArg\":0.2,duration\":2,\"buffRate\":1}"
+    "value1": "{\"buffId\":\"recover\",\"buffArg\":0.2,\"duration\":2,\"buffRate\":1}"
   },
   "1119": {
     "des": "释放技能后有40%概率追加1次技能，对敌方后排造成86%法术伤害",
