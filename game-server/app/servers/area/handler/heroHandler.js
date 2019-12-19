@@ -182,6 +182,10 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
             next(null,{flag : false,data : "材料武将不存在"+hIds[i]})
             return
           }
+          if(heros[targetHero.id].combat){
+            next(null,{flag : false,data : "材料武将已出战"+hIds[i]})
+            return
+          }
           switch(pc_hero[i][0]){
             case "self":
               if(!(data[i].id == targetHero.id && data[i].star == heros[targetHero.id].min_star)){

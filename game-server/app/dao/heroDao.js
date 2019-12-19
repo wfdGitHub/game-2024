@@ -71,6 +71,10 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 			cb(false,"英雄不存在")
 			return
 		}
+		if(heroInfo.combat){
+			cb(false,"英雄已出战")
+			return
+		}
 		self.redisDao.db.hdel("area:area"+areaId+":player:"+uid+":heroMap",hId,function(err,data) {
 			if(err || !data){
 				console.error("removeHero ",err,data)
@@ -128,6 +132,15 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 //修改英雄属性
 heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 	this.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":heros:"+hId,name,value,function(err,data) {
+		if(err)
+			console.log(err)
+		if(cb)
+			cb(true,data)
+	})
+}
+//删除英雄属性
+heroDao.prototype.delHeroInfo = function(areaId,uid,hId,name,cb) {
+	this.redisDao.db.hdel("area:area"+areaId+":player:"+uid+":heros:"+hId,name,function(err,data) {
 		if(err)
 			console.log(err)
 		if(cb)
@@ -211,15 +224,41 @@ heroDao.prototype.getHeroArchive = function(areaId,uid,cb) {
 }
 //设置出场阵容
 heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
-	this.redisDao.db.hset("area:area"+areaId+":player:"+uid,"fightTeam",JSON.stringify(hIds),function(err,data) {
-		if(err){
-			if(cb)
-				cb(false,err)
+	var self = this
+	self.getHeroList(areaId,uid,hIds,function(flag,heroList) {
+		if(!flag || !heroList){
+			cb(false,"阵容错误")
+			return
 		}
-		else{
-			if(cb)
-				cb(true)
+		for(var i = 0;i < heroList.length;i++){
+			if(hIds[i] && !heroList[i]){
+				cb(false,"武将不存在"+hIds[i])
+				return
+			}
 		}
+		self.getFightTeam(areaId,uid,function(flag,team) {
+			if(flag && team){
+				for(var i = 0;i < team.length;i++){
+					if(team[i])
+						self.delHeroInfo(areaId,uid,team[i].hId,"combat")
+				}
+			}
+			self.redisDao.db.hset("area:area"+areaId+":player:"+uid,"fightTeam",JSON.stringify(hIds),function(err,data) {
+				if(err){
+					if(cb)
+						cb(false,err)
+				}
+				else{
+					for(var i = 0;i < heroList.length;i++){
+						if(hIds[i]){
+							self.incrbyHeroInfo(areaId,uid,hIds[i],"combat",1)
+						}
+					}
+					if(cb)
+						cb(true)
+				}
+			})
+		})
 	})
 }
 //获取出场阵容
