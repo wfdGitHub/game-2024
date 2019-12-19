@@ -114,7 +114,7 @@ model.useSkill = function(skill) {
 		}
 		//释放技能后追加技能
 		if(skill.character.skill_later_skill && this.seeded.random("判断追加技能") < skill.character.skill_later_skill.rate){
-			let tmpSkillInfo = Object.assign({skillId : skill.skillId},skill.character.skill_later_skill)
+			let tmpSkillInfo = Object.assign({skillId : skill.skillId,name : skill.name},skill.character.skill_later_skill)
 			let tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
 			this.useSkill(tmpSkill)
 		}
