@@ -30,8 +30,15 @@ heroHandler.prototype.gainHero = function(msg, session, next) {
   var id = msg.id
   var ad = msg.ad
   var lv = msg.lv
-  this.heroDao.gainHero(areaId,uid,{id : id,ad : ad,lv : lv},function(flag,data) {
-    next(null,{flag : flag,data : data})
+  var self = this
+  self.heroDao.getHeroAmount(areaId,uid,function(flag,info) {
+      if(info.cur >= info.max){
+        next(null,{flag : false,data : "武将背包已满"})
+        return
+      }
+      self.heroDao.gainHero(areaId,uid,{id : id,ad : ad,lv : lv},function(flag,data) {
+        next(null,{flag : flag,data : data})
+      })
   })
 }
 //删除英雄
@@ -42,7 +49,7 @@ heroHandler.prototype.removeHero = function(msg, session, next) {
   var self = this
   self.heroDao.removeHero(areaId,uid,hId,function(flag,data) {
     if(flag){
-      self.heroDao.heroPr(areaId,uid,[data],function(flag,awardList) {
+      self.heroDao.heroPrAll(areaId,uid,[data],function(flag,awardList) {
         next(null,{flag : true,awardList : awardList})
       })
     }else{

@@ -1,6 +1,17 @@
 // var fightContorl = require("./fight/fightContorl.js")
-// var atkTeam = [{id : 105020,ad : 6,lv:100},{id : 104010},{id : 104010},{id : 104010},{id : 305050},{id : 305050}]
-// var defTeam = [{id : 104030},{id : 104030},{id : 104030},{id : 104030},{id : 104030},{id : 104030}]
+// var atkTeam = [{id: "404020", stage: 0, star: 4, ad: 0},
+// {id: "105120", stage: 0, star: 5, ad: 0},
+// {id: "204020", stage: 0, star: 4, ad: 0},
+// {id: "405090", stage: 0, star: 5, ad: 0},
+// {id: "205090", stage: 0, star: 5, ad: 0},
+// {id: "205020", stage: 0, star: 5, ad: 0}]
+// var defTeam = [{id: "105030", stage: 0, star: 5, ad: 0},
+// {id: "401020", stage: 0, star: 1, ad: 0},
+// {id: "105090", stage: 0, star: 5, ad: 0},
+// {id: "302010", stage: 0, star: 2, ad: 0},
+// {id: "305100", stage: 0, star: 5, ad: 0},
+// {id: "105010", stage: 0, star: 5, ad: 0}]
+
 // // for(var i = 0;i < 6;i++){
 // // 	// atkTeam[i].self_adds = {atk : 1}
 // // 	// atkTeam[i].normal_later_buff = JSON.stringify({buffId : "invincibleSuper",buffArg : 0.2,duration : 10,buffRate : 1})

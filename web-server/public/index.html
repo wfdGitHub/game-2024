@@ -73,6 +73,12 @@
             console.log(data);
         });
       }
+      //征募英雄
+      var recruitHero = function(type,count) {
+        pomelo.request("area.recruitHandler.recruitHero", {type : type,count : count}, function(data) {
+            console.log(data);
+        });
+      }
       //英雄升级
       var upgradeLevel = function(hId,aimLv) {
         pomelo.request("area.heroHandler.upgradeLevel", {hId : hId,aimLv : aimLv}, function(data) {

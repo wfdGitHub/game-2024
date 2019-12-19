@@ -221,6 +221,6 @@ model.prototype.fightOver = function() {
 	// console.log("战斗结束")
 	this.isFight = false
 	fightRecord.push({type : "fightOver"})
-	fightRecord.explain()
+	// fightRecord.explain()
 }
 module.exports = model

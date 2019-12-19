@@ -15,11 +15,14 @@ heroDao.prototype.addHeroAmount = function(areaId,uid,cb) {
 }
 //获取英雄背包栏数量
 heroDao.prototype.getHeroAmount = function(areaId,uid,cb) {
-	this.redisDao.db.hget("area:area"+areaId+":player:"+uid+":playerInfo","heroAmount",function(err,data) {
-		if(err || !data)
-			cb(true,0)
-		else
-			cb(true,Number(data))
+	var multiList = []
+	multiList.push(["hget","area:area"+areaId+":player:"+uid+":playerInfo","heroAmount"])
+	multiList.push(["hlen","area:area"+areaId+":player:"+uid+":heroMap"])
+	this.redisDao.multi(multiList,function(err,list) {
+		if(err){
+			console.error("getHeroAmount",err)
+		}
+		cb(true,{max : Number(list[0]) || 0,cur : Number(list[1]) || 0})
 	})
 }
 //获得英雄
@@ -34,28 +37,16 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	let ad = otps.ad || 0
 	let lv = otps.lv || 1
 	let star = otps.star || herosCfg[id].min_star
-	var self = this
-	self.getHeroAmount(areaId,uid,function(flag,maxAmount) {
-		maxAmount = Number(maxAmount)
-		self.redisDao.db.hlen("area:area"+areaId+":player:"+uid+":heroMap",function(err,curAmount) {
-			if(!err && curAmount){
-				curAmount = Number(curAmount)
-			}
-			if(curAmount >= maxAmount){
-				if(cb)
-					cb(false,"amount over maxAmount"+curAmount+" "+maxAmount)
-				return
-			}
-			var hId = uuid.v1()
-			var heroInfo = {id : id,ad : ad,lv : lv,star : star}
-			self.redisDao.db.hset("area:area"+areaId+":player:"+uid+":heroMap",hId,Date.now())
-			self.redisDao.db.hmset("area:area"+areaId+":player:"+uid+":heros:"+hId,heroInfo)
-			self.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":heroArchive",id,1)
-			heroInfo.hId = hId
-			if(cb)
-				cb(true,heroInfo)
-		})
-	})
+	var hId = uuid.v1()
+	var heroInfo = {id : id,ad : ad,lv : lv,star : star}
+	this.redisDao.db.hset("area:area"+areaId+":player:"+uid+":heroMap",hId,Date.now())
+	this.redisDao.db.hmset("area:area"+areaId+":player:"+uid+":heros:"+hId,heroInfo)
+	this.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":heroArchive",id,1)
+	heroInfo.hId = hId
+	if(cb)
+		cb(true,heroInfo)
+	heroInfo.hId = hId
+	return heroInfo
 }
 //批量删除英雄
 heroDao.prototype.removeHeroList = function(areaId,uid,hIds,cb) {
