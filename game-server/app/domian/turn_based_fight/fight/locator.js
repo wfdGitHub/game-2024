@@ -161,8 +161,7 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 			//敌方全体
 			return	this.getEnemyAll(character)
 		default :
-			console.error("BuffTarget  error ",targetType)
-			return []
+			return targets
 	}
 }
 //获取目标类型对应目标数量

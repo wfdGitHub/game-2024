@@ -592,7 +592,7 @@
   "1117": {
     "des": "释放技能后，给除自己外己方生命最少的武将附加无敌盾，持续2回合（若场上只剩张郃，不会释放无敌护盾）",
     "key1": "skill_later_buff",
-    "value1": "{\"buffId\":\"invincible\",\"duration\":2,\"buff_tg\":\"team_minHp_2\",\"buffRate\":1}"
+    "value1": "{\"buffId\":\"invincible\",\"duration\":2,\"buff_tg\":\"friend_minHp_1\",\"buffRate\":1}"
   },
   "1118": {
     "des": "释放技能后，给目标附加1个持续治疗效果，每回合回复大乔最大攻击20%的生命，持续2回合",
