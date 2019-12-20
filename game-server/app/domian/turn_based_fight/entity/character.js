@@ -11,8 +11,8 @@ var model = function(otps) {
 	this.isNaN = false			//是否空位置
 	this.team = []				//所在阵容
 	this.enemy = []				//敌对阵容
-	this.level = otps["level"] || 0		//等级
-	this.star = otps["star"] || 0		//星级
+	this.level = otps["level"] || 1		//等级
+	this.star = otps["star"] || 1		//星级
 	this.ad = otps["ad"] || 0			//阶级
 	this.teamInfo = {}
 	//=========基础属性=======//
