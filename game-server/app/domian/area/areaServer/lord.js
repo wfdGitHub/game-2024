@@ -13,18 +13,18 @@ module.exports = function() {
 				"curExp" : Number(value)
 			}
 			self.sendToUser(uid,notify)
-			self.checkLordUpgrade(uid)
+			self.checkLordUpgrade(uid,Number(exp))
+		})
+	}
+	//获取主公等级
+	this.getLordLv = function(uid,cb) {
+		self.redisDao.db.hget("area:area"+self.areaId+":player:"+uid+":playerInfo","level",function(err,level) {
+			cb(Number(level)||1)
 		})
 	}
 	//主公升级检查
-	this.checkLordUpgrade = function(uid) {
-		self.redisDao.db.hmget("area:area"+self.areaId+":player:"+uid+":playerInfo",["level","exp"],function(err,playerInfo) {
-			if(err || !playerInfo){
-				console.error(err)
-				return
-			}
-			let level = Number(playerInfo[0])
-			let exp = Number(playerInfo[1])
+	this.checkLordUpgrade = function(uid,exp) {
+		self.getLordLv(uid,function(level) {
 			let upLv = 0
 			let needExp = 0
 			let count = 0

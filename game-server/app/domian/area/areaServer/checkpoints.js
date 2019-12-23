@@ -31,10 +31,6 @@ module.exports = function() {
 		var self = this
 		async.waterfall([
 			function(next) {
-				//todo 判断主角等级
-				next()
-			},
-			function(next) {
 				//获取当前关卡
 				self.getCheckpointsInfo(uid,function(curLevel) {
 					level = curLevel + 1
@@ -43,6 +39,17 @@ module.exports = function() {
 					else
 						next()
 				})
+			},
+			function(next) {
+				//todo 判断主角等级
+				self.getLordLv(uid,function(lv) {
+					if(lv < checkpointsCfg[level].lev_limit){
+						next("等级限制")
+					}else{
+						next()
+					}
+				})
+				
 			},
 			function(next) {
 				let fightInfo = self.getFightInfo(uid)
