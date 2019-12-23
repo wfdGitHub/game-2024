@@ -194,7 +194,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
               }
             break
             case "realm_point":
-              if(!(data[i].id == heros[targetHero.id].point_hero && data[i].star == heros[data[i].id].min_star)){
+              if(!(data[i].id == heros[targetHero.id].point_hero && data[i].star == 5)){
                 next(null,{flag : false,data : pc_hero[i][0]+"材料错误 index:"+i+" id:"+data[i].id+" star:"+data[i].star})
                 return
               }

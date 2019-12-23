@@ -39,12 +39,7 @@ fightHandler.prototype.readyFight = function(msg, session, next) {
 fightHandler.prototype.challengeCheckpoints = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var otps = {
-    seededNum : msg.seededNum || Date.now(),
-    readList : msg.readList || [],
-    verify : msg.verify
-  }
-  this.areaManager.areaMap[areaId].challengeCheckpoints(uid,otps,function(flag,result) {
+  this.areaManager.areaMap[areaId].challengeCheckpoints(uid,function(flag,result) {
     next(null,{flag : flag,result : result})
   })
 }

@@ -1,4 +1,5 @@
 var checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
+var async = require("async")
 module.exports = function() {
 	//获取BOSS挑战信息
 	this.getCheckpointsInfo = function(uid,cb) {
@@ -11,69 +12,61 @@ module.exports = function() {
 		})
 	}
 	//挑战BOSS成功
-	this.checkpointsSuccess = function(uid,level,cb) {
+	this.checkpointsSuccess = function(uid,level) {
 		console.log("checkpointsSuccess")
 		this.incrbyPlayerData(uid,"boss",1)
 		var awardStr = checkpointsCfg[level].award
 		if(awardStr){
-			this.addItemStr(uid,awardStr)
+			return this.addItemStr(uid,awardStr)
 		}
+		return []
 	}
 	//挑战BOSS失败
 	this.checkpointsFail = function(uid,level,cb) {
 		console.log("checkpointsFail")
 	}
-	//挑战BOSS结果
-	this.checkpointsResult = function(uid,result,level,cb) {
-		if(result.result == "win"){
-			this.checkpointsSuccess(uid,level,cb)
-		}else{
-			this.checkpointsFail(uid,level,cb)
-		}
-	}
 	//开始挑战关卡
-	this.challengeCheckpoints = function(uid,otps,cb) {
+	this.challengeCheckpoints = function(uid,cb) {
+		var level = 0
 		var self = this
-		self.getCheckpointsInfo(uid,function(level) {
-			level += 1
-		    if(!checkpointsCfg[level]){
-		    	console.log("challengeCheckpoints level error : ",level)
-		      	cb(false)
-		      	return
-		    }
-		    if(!self.players[uid]){
-		    	cb(false,"userInfo error")
-		    	return
-		    }
-		    var fightInfo = self.getFightInfo(uid)
-		    var atkTeam = fightInfo.team
-		    if(!atkTeam){
-		    	cb(false,"atkTeam error")
-		    	return
-		    }
-		    var defTeam = []
-		    if(checkpointsCfg[level].bossId){
-		    	defTeam.push({characterId : checkpointsCfg[level].bossId,level : checkpointsCfg[level].bossLevel})
-		    }
-		    if(checkpointsCfg[level].mon_list){
-		      var monList = JSON.parse(checkpointsCfg[level].mon_list)
-		      monList.forEach(function(characterId) {
-		        defTeam.push({characterId,characterId,level : checkpointsCfg[level].mobLevel})
-		      })
-		    }
-		    self.recordFight(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
-		    var result = self.fightContorl.fighting(atkTeam,defTeam,fightInfo.seededNum,otps.readList)
-		    if(result.verify === otps.verify){
-		    	self.checkpointsResult(uid,result,level)
-		    	if(result.result === "win"){
-		    		cb(true,{award : checkpointsCfg[level].award})
-		    	}else{
-		    		cb(true)
-		    	}
-		    }else{
-		    	console.log(otps.verify,result.verify)
-		    	cb(false,result.verify)
-		    }
+		async.waterfall([
+			function(next) {
+				//todo 判断主角等级
+				next()
+			},
+			function(next) {
+				//获取当前关卡
+				self.getCheckpointsInfo(uid,function(curLevel) {
+					level = curLevel + 1
+					if(!checkpointsCfg[level])
+						next("checkpointsCfg error "+level)
+					else
+						next()
+				})
+			},
+			function(next) {
+				let fightInfo = self.getFightInfo(uid)
+				if(!fightInfo){
+					next("未准备")
+					return
+				}
+			    let atkTeam = fightInfo.team
+			    let seededNum = fightInfo.seededNum
+			    let defTeam = []
+			    let mon_list = JSON.parse(checkpointsCfg[level].mon_list)
+			    for(let i = 0;i < 6;i++){
+			    	defTeam.push({id : mon_list[i],lv : checkpointsCfg[level].mobLevel,ad : checkpointsCfg[level].mobAd,star : checkpointsCfg[level].star})
+			    }
+			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+			    if(winFlag){
+			    	var awardList = self.checkpointsSuccess(uid,level)
+			    	cb(true,{atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,awardList:awardList})
+			    }else{
+			    	cb(false,self.fightContorl.getFightRecord())
+			    }
+			}
+		],function(err) {
+			cb(false,err)
 		})
 	}
 	//获取挂机奖励
@@ -94,8 +87,8 @@ module.exports = function() {
 				}
 			  	self.incrbyPlayerData(uid,"onhookLastTime",tmpTime * 1000)
 			  	var awardTime = tmpTime
-			  	if(awardTime > 86400){
-			  		awardTime = 86400
+			  	if(awardTime > 43200){
+			  		awardTime = 43200
 			  	}
 			  	var on_hook_award = checkpointsCfg[level].on_hook_award
 			  	// console.log("on_hook_award ",on_hook_award)

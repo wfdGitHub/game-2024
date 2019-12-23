@@ -108,7 +108,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 model.prototype.nextRound = function() {
 	if(this.round >= this.maxRound){
 		//达到最大轮次，战斗结束
-		this.fightOver()
+		this.fightOver(false)
 		return
 	}
 	this.round++
@@ -200,7 +200,7 @@ model.prototype.checkOver = function() {
 		}
 	}
 	if(flag){
-		this.fightOver()
+		this.fightOver(false)
 		return true
 	}
 	flag = true
@@ -211,16 +211,16 @@ model.prototype.checkOver = function() {
 		}
 	}
 	if(flag){
-		this.fightOver()
+		this.fightOver(true)
 		return true
 	}
 	return false
 }
 //战斗结束
-model.prototype.fightOver = function() {
+model.prototype.fightOver = function(winFlag) {
 	// console.log("战斗结束")
 	this.isFight = false
-	fightRecord.push({type : "fightOver"})
+	fightRecord.push({type : "fightOver",winFlag : winFlag})
 	// fightRecord.explain()
 }
 module.exports = model

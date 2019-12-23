@@ -68,17 +68,6 @@ area.prototype.userLogin = function(uid,cid,cb) {
 				self.onlineNum++
 			self.players[uid] = playerInfo
 			self.connectorMap[uid] = cid
-			self.getOnhookAward(uid,1,function(flag,awardTime) {
-				if(flag){
-					if(awardTime >= 1800){
-						var notify = {
-							type : "offlineOnhookAward",
-							data : awardTime
-						}
-						self.sendToUser(uid,notify)
-					}
-				}
-			})
 			if(playerInfo.dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
 			}

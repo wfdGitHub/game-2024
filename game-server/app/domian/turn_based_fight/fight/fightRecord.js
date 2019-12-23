@@ -9,6 +9,9 @@ var model = function() {
 	this.getList = function() {
 		return this.list.concat([])
 	}
+	this.isWin = function() {
+		return this.list[this.list.length - 1]["winFlag"]
+	}
 	this.explain = function() {
 		var recordList = this.getList()
 		var beginInfo = recordList.shift()

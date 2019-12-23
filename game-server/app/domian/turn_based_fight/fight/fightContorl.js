@@ -28,6 +28,9 @@ model.beginFight = function(atkTeam,defTeam,otps) {
     }
 	var fighting = new fightingFun(atkTeamList,defTeamList,otps)
 	fighting.nextRound()
+	return fightRecord.isWin()
+}
+model.getFightRecord = function() {
 	return fightRecord.getList()
 }
 //获取角色数据
