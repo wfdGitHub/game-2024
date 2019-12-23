@@ -161,7 +161,6 @@ module.exports = function() {
 			local.locks[targetUid] = true
 			local.locks[uid] = true
 			self.getObjAll(uid,mainName,function(arenaInfo) {
-				console.log(arenaInfo)
 				arenaInfo.count = parseInt(arenaInfo.count)
 				arenaInfo.buyCount = parseInt(arenaInfo.buyCount)
 				if(arenaInfo.count >= dayCount + arenaInfo.buyCount){
@@ -181,10 +180,7 @@ module.exports = function() {
 						delete local.locks[uid]
 						return
 					}
-					var defTeam = []
-					for(var i = 0;i < arena_rank[range]["team"+rand].length;i++){
-						defTeam.push({characterId : arena_rank[range]["team"+rand][i],level : arena_rank[range]["level"]})
-					}
+					var defTeam = arena_rank[range]["team"+rand].concat()
 					local.challengeArena(uid,targetUid,targetRank,targetStr,targetInfo,atkTeam,defTeam,seededNum,cb)
 				}else{
 					//玩家队伍
@@ -203,7 +199,6 @@ module.exports = function() {
 	}
 	//竞技场每日刷新
 	this.arenadayUpdate = function(uid) {
-		console.log("arenadayUpdate",uid)
 		var info = {
 			count : 0,						//今日挑战次数
 			buyCount : 0					//今日购买挑战次数
@@ -242,10 +237,10 @@ module.exports = function() {
 	//挑战结算
 	local.challengeArena = function(uid,targetUid,targetRank,targetStr,targetInfo,atkTeam,defTeam,seededNum,cb) {
 		var info = {}
-		var result = self.fightContorl.fighting(atkTeam,defTeam,seededNum,null,true)
+		var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 		info.targetStr = targetStr
-		info.result = result
-		if(result.result == "win"){
+		info.winFlag = winFlag
+		if(true || winFlag == "win"){
 			self.getObjAll(uid,mainName,function(data) {
 				//交换排名
 				data.rank = parseInt(data.rank)
@@ -272,15 +267,15 @@ module.exports = function() {
 					self.setObj(uid,mainName,"highestRank",data.rank)
 				}
 				//记录
-				local.addRecord(uid,"atk",result,targetInfo,data.rank)
-				local.addRecord(targetUid,"def",result,targetInfo,targetRank)
+				local.addRecord(uid,"atk",winFlag,targetInfo,data.rank)
+				local.addRecord(targetUid,"def",winFlag,targetInfo,targetRank)
 				cb(true,info)
 			})
 		}else{
 			//失败奖励
 			self.addItemStr(uid,loseAward,1)
-			local.addRecord(uid,"atk",result,targetInfo)
-			local.addRecord(targetUid,"def",result,targetInfo)
+			local.addRecord(uid,"atk",winFlag,targetInfo)
+			local.addRecord(targetUid,"def",winFlag,targetInfo)
 			delete local.locks[uid]
 			delete local.locks[targetUid]
 			cb(true,info)
@@ -297,14 +292,13 @@ module.exports = function() {
 		})
 	}
 	//添加记录
-	local.addRecord = function(uid,type,result,targetInfo,rank) {
+	local.addRecord = function(uid,type,winFlag,targetInfo,rank) {
 		var atkUser = self.getSimpleUser(uid)
-		var info = {type : type,result : result,atkUser : atkUser,defUser : targetInfo,time : Date.now()}
+		var info = {type : type,winFlag : winFlag,atkUser : atkUser,defUser : targetInfo,time : Date.now()}
 		if(rank){
 			info.rank = rank
 		}
 		self.redisDao.db.rpush("area:area"+self.areaId+":player:"+uid+":arenaRecord",JSON.stringify(info),function(err,num) {
-			console.log("addRecord ",err,num)
 			if(num > maxRecordNum){
 				self.redisDao.db.ltrim("area:area"+self.areaId+":player:"+uid+":arenaRecord",-maxRecordNum,-1)
 			}

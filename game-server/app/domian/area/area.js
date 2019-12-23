@@ -140,7 +140,7 @@ area.prototype.getDefendTeam = function(uid,cb) {
 	var self = this
 	self.heroDao.getFightTeam(self.areaId,uid,function(flag,data) {
 		if(flag){
-			cb(self.fightInfos[uid])
+			cb(data)
 		}else{
 			cb(false)
 		}
