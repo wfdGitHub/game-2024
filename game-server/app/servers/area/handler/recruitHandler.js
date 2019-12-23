@@ -40,9 +40,9 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
           weights[i] += allWeight
           allWeight = Number(weights[i])
         }
-        let rand = Math.random() * allWeight
         var heroInfos = []
         for(let num = 0;num < count;num++){
+          let rand = Math.random() * allWeight
           for(let i in weights){
             if(rand < weights[i]){
               let heroList = JSON.parse(recruit_list[i].heroList)
