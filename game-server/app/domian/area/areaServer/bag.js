@@ -111,7 +111,10 @@ module.exports = function() {
 	}
 	//增加物品回调
 	this.addItemCB = function(uid,itemId,value,cb) {
-		if(itemCfg[itemId]){
+		if(itemId == 100){
+			this.addLordExp(uid,value)
+		}
+		else if(itemCfg[itemId]){
 			this.addBagItem(uid,itemId,value,cb)
 		}else{
 			console.error("addItem error : "+itemId)

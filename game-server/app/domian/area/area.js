@@ -1,7 +1,7 @@
 //服务器
 var bearcat = require("bearcat")
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
-var areaServers = ["arena","bag","dao","checkpoints","mail","fb","ttttower"]
+var areaServers = ["arena","bag","dao","checkpoints","mail","fb","ttttower","lord"]
 const oneDayTime = 86400000
 var area = function(otps,app) {
 	this.areaId = otps.areaId
