@@ -4,6 +4,14 @@ var herosCfg = require("../../config/gameCfg/heros.json")
 var lv_cfg = require("../../config/gameCfg/lv_cfg.json")
 var star_base = require("../../config/gameCfg/star_base.json")
 var advanced_base = require("../../config/gameCfg/advanced_base.json")
+var recruit_base = require("../../config/gameCfg/recruit_base.json")
+var recruit_list = require("../../config/gameCfg/recruit_list.json")
+for(let i in recruit_base){
+	recruit_base[i]["weights"] = JSON.parse(recruit_base[i]["weights"])
+}
+for(let i in recruit_list){
+	recruit_list[i].heroList = JSON.parse(recruit_list[i].heroList)
+}
 var bearcat = require("bearcat")
 var heroDao = function() {}
 //增加英雄背包栏
@@ -24,6 +32,29 @@ heroDao.prototype.getHeroAmount = function(areaId,uid,cb) {
 		}
 		cb(true,{max : Number(list[0]) || 0,cur : Number(list[1]) || 0})
 	})
+}
+//英雄池获得英雄
+heroDao.prototype.randHero = function(areaId,uid,type,count) {
+	let weights = recruit_base[type]["weights"]
+	let allWeight = 0
+    for(let i in weights){
+      weights[i] += allWeight
+      allWeight = Number(weights[i])
+    }
+    var heroInfos = []
+    for(let num = 0;num < count;num++){
+      let rand = Math.random() * allWeight
+      for(let i in weights){
+        if(rand < weights[i]){
+          let heroList = recruit_list[i].heroList
+          let heroId = heroList[Math.floor(heroList.length * Math.random())]
+          let heroInfo = this.gainHero(areaId,uid,{id : heroId})
+          heroInfos.push(heroInfo)
+          break
+        }
+      }
+    }
+  	return heroInfos
 }
 //获得英雄
 heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {

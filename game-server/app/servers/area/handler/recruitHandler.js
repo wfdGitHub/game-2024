@@ -21,8 +21,11 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
     return
   }
   var self = this
-  var paStr = recruit_base[type].pa
   var pcStr = recruit_base[type].pc
+  if(!pcStr){
+    next(null,{flag:false,err:"pcStr error"+pcStr})
+    return
+  }
   self.heroDao.getHeroAmount(areaId,uid,function(flag,info) {
       if(info.cur + count > info.max){
         next(null,{flag : false,data : "武将背包已满"})
@@ -33,28 +36,10 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
           next(null,{flag : false,err : err})
           return
         }
-        //招募英雄
-        let weights = JSON.parse(recruit_base[type]["weights"])
-        let allWeight = 0
-        for(let i in weights){
-          weights[i] += allWeight
-          allWeight = Number(weights[i])
-        }
-        var heroInfos = []
-        for(let num = 0;num < count;num++){
-          let rand = Math.random() * allWeight
-          for(let i in weights){
-            if(rand < weights[i]){
-              let heroList = JSON.parse(recruit_list[i].heroList)
-              let heroId = heroList[Math.floor(heroList.length * Math.random())]
-              let heroInfo = self.heroDao.gainHero(areaId,uid,{id : heroId})
-              heroInfos.push(heroInfo)
-              break
-            }
-          }
-        }
+        let paStr = recruit_base[type].pa
         if(paStr)
           self.areaManager.areaMap[areaId].addItemStr(uid,paStr,count)
+        var heroInfos = self.heroDao.randHero(self.areaId,uid,type,count)
         next(null,{flag : true,heroInfos : heroInfos})
       })
   })

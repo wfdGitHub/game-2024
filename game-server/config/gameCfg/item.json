@@ -32,17 +32,26 @@
     "des": "抽卡积分"
   },
   "103010": {
-    "name": "程昱",
+    "name": "程昱碎片",
+    "des": "程昱碎片",
     "useType": "heroChip",
     "arg": 103010
   },
   "103020": {
-    "name": "庞德",
+    "name": "庞德碎片",
+    "des": "庞德碎片",
     "useType": "heroChip",
     "arg": 103020
   },
+  "104000": {
+    "name": "英雄碎片",
+    "des": "英雄碎片",
+    "useType": "randChip",
+    "arg": "randChip_1_1"
+  },
   "104010": {
-    "name": "乐进",
+    "name": "乐进碎片",
+    "des": "乐进碎片",
     "useType": "heroChip",
     "arg": 104010
   },
@@ -63,6 +72,12 @@
     "des": "少女甄姬碎片",
     "useType": "heroChip",
     "arg": 104040
+  },
+  "105000": {
+    "name": "英雄碎片",
+    "des": "英雄碎片",
+    "useType": "randChip",
+    "arg": "randChip_1_2"
   },
   "105010": {
     "name": "司马懿碎片",
@@ -148,6 +163,12 @@
     "useType": "heroChip",
     "arg": 203020
   },
+  "204000": {
+    "name": "英雄碎片",
+    "des": "英雄碎片",
+    "useType": "randChip",
+    "arg": "randChip_2_1"
+  },
   "204010": {
     "name": "孟获碎片",
     "des": "孟获碎片",
@@ -171,6 +192,12 @@
     "des": "少年关羽碎片",
     "useType": "heroChip",
     "arg": 204040
+  },
+  "205000": {
+    "name": "英雄碎片",
+    "des": "英雄碎片",
+    "useType": "randChip",
+    "arg": "randChip_2_2"
   },
   "205010": {
     "name": "赵云碎片",
@@ -256,6 +283,12 @@
     "useType": "heroChip",
     "arg": 303020
   },
+  "304000": {
+    "name": "英雄碎片",
+    "des": "英雄碎片",
+    "useType": "randChip",
+    "arg": "randChip_3_1"
+  },
   "304010": {
     "name": "凌统碎片",
     "des": "凌统碎片",
@@ -279,6 +312,12 @@
     "des": "少女小乔碎片",
     "useType": "heroChip",
     "arg": 304040
+  },
+  "305000": {
+    "name": "英雄碎片",
+    "des": "英雄碎片",
+    "useType": "randChip",
+    "arg": "randChip_3_2"
   },
   "305010": {
     "name": "孙策碎片",
@@ -364,6 +403,12 @@
     "useType": "heroChip",
     "arg": 403020
   },
+  "404000": {
+    "name": "英雄碎片",
+    "des": "英雄碎片",
+    "useType": "randChip",
+    "arg": "randChip_4_1"
+  },
   "404010": {
     "name": "文丑碎片",
     "des": "文丑碎片",
@@ -387,6 +432,12 @@
     "des": "少女貂蝉碎片",
     "useType": "heroChip",
     "arg": 404040
+  },
+  "405000": {
+    "name": "英雄碎片",
+    "des": "英雄碎片",
+    "useType": "randChip",
+    "arg": "randChip_4_2"
   },
   "405010": {
     "name": "左慈碎片",
@@ -459,6 +510,18 @@
     "des": "于吉碎片",
     "useType": "heroChip",
     "arg": 405120
+  },
+  "504000": {
+    "name": "英雄碎片",
+    "des": "英雄碎片",
+    "useType": "randChip",
+    "arg": "randChip_5_1"
+  },
+  "505000": {
+    "name": "英雄碎片",
+    "des": "英雄碎片",
+    "useType": "randChip",
+    "arg": "randChip_5_2"
   },
   "1000010": {
     "name": "副本钥匙",

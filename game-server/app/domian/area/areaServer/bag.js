@@ -22,8 +22,7 @@ module.exports = function() {
 		switch(itemCfg[otps.itemId].useType){
 			case "heroChip":
 				var heroId = itemCfg[otps.itemId].arg
-				var star = heros[heroId].min_star
-				var needValue = star * 10
+				var needValue = 30
 				self.consumeItems(uid,otps.itemId+":"+needValue,value,function(flag,err) {
 					if(!flag){
 						cb(false,err)
@@ -33,6 +32,18 @@ module.exports = function() {
 							heroList.push(self.heroDao.gainHero(self.areaId,uid,{id : heroId}))
 						}
 						cb(true,heroList)
+					}
+				})
+			break
+			case "randChip":
+				var needValue = 30
+				self.consumeItems(uid,otps.itemId+":"+needValue,value,function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						var type = itemCfg[otps.itemId].arg
+				        var heroInfos = self.heroDao.randHero(self.areaId,uid,type,value)
+				        cb(true,heroInfos)
 					}
 				})
 			break
