@@ -284,8 +284,8 @@
         });
       }
       //扫荡到最高等级
-      var TTTmopup = function() {
-        pomelo.request("area.tttHandler.TTTmopup", {}, function(data) {
+      var TTTmopup = function(level) {
+        pomelo.request("area.tttHandler.TTTmopup", {level : level}, function(data) {
             console.log(data);
         });
       }

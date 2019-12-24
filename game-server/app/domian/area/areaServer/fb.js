@@ -110,9 +110,9 @@ module.exports = function() {
 			   	var seededNum = fightInfo.seededNum
 			   	var defTeam = fb_base[type]["boss"+bossId]
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    if(true){
+			    if(winFlag){
 		    		var info = {
-		    			winFlag : winFlag
+		    			winFlag : winFlag,
 		    			bossId : bossId
 		    		}
 		    		if(bossId >= 3){

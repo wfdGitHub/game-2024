@@ -15,23 +15,16 @@ tttHandler.prototype.getTTTInfo = function(msg, session, next) {
 tttHandler.prototype.challengeTTTBoss = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].challengeTTTBoss(uid,msg,function(flag,msg) {
+  this.areaManager.areaMap[areaId].challengeTTTBoss(uid,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }
-//扫荡到最高等级
+//扫荡
 tttHandler.prototype.TTTmopup = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].TTTmopup(uid,function(flag,msg) {
-    next(null,{flag : flag,msg : msg})
-  })
-}
-//领取前期奖励
-tttHandler.prototype.getTTTAwards = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getTTTAwards(uid,function(flag,msg) {
+  var level = msg.level
+  this.areaManager.areaMap[areaId].TTTmopup(uid,level,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

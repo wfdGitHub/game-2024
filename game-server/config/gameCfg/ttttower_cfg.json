@@ -1,7 +1,11 @@
 {
+  "freeCount": {
+    "name": "免费扫荡次数",
+    "value": 2
+  },
   "mopup": {
     "name": "扫荡消耗",
-    "value": "101:1000"
+    "value": "1000020:1"
   },
   "open": {
     "name": "开启等级",
