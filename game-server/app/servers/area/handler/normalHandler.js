@@ -15,8 +15,7 @@ normalHandler.prototype.getBagList = function(msg, session, next) {
 normalHandler.prototype.useItem = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  msg.uid = uid
-  this.areaManager.areaMap[areaId].useItem(msg,function(flag,data) {
+  this.areaManager.areaMap[areaId].useItem(uid,msg,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

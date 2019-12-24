@@ -31,6 +31,435 @@
     "name": "抽卡积分",
     "des": "抽卡积分"
   },
+  "103010": {
+    "name": "程昱",
+    "useType": "heroChip",
+    "arg": 103010
+  },
+  "103020": {
+    "name": "庞德",
+    "useType": "heroChip",
+    "arg": 103020
+  },
+  "104010": {
+    "name": "乐进",
+    "useType": "heroChip",
+    "arg": 104010
+  },
+  "104020": {
+    "name": "夏侯渊碎片",
+    "des": "夏侯渊碎片",
+    "useType": "heroChip",
+    "arg": 104020
+  },
+  "104030": {
+    "name": "少年曹操碎片",
+    "des": "少年曹操碎片",
+    "useType": "heroChip",
+    "arg": 104030
+  },
+  "104040": {
+    "name": "少女甄姬碎片",
+    "des": "少女甄姬碎片",
+    "useType": "heroChip",
+    "arg": 104040
+  },
+  "105010": {
+    "name": "司马懿碎片",
+    "des": "司马懿碎片",
+    "useType": "heroChip",
+    "arg": 105010
+  },
+  "105020": {
+    "name": "曹操碎片",
+    "des": "曹操碎片",
+    "useType": "heroChip",
+    "arg": 105020
+  },
+  "105030": {
+    "name": "张辽碎片",
+    "des": "张辽碎片",
+    "useType": "heroChip",
+    "arg": 105030
+  },
+  "105040": {
+    "name": "张郃碎片",
+    "des": "张郃碎片",
+    "useType": "heroChip",
+    "arg": 105040
+  },
+  "105050": {
+    "name": "荀彧碎片",
+    "des": "荀彧碎片",
+    "useType": "heroChip",
+    "arg": 105050
+  },
+  "105060": {
+    "name": "夏侯惇碎片",
+    "des": "夏侯惇碎片",
+    "useType": "heroChip",
+    "arg": 105060
+  },
+  "105070": {
+    "name": "郭嘉碎片",
+    "des": "郭嘉碎片",
+    "useType": "heroChip",
+    "arg": 105070
+  },
+  "105080": {
+    "name": "曹仁碎片",
+    "des": "曹仁碎片",
+    "useType": "heroChip",
+    "arg": 105080
+  },
+  "105090": {
+    "name": "典韦碎片",
+    "des": "典韦碎片",
+    "useType": "heroChip",
+    "arg": 105090
+  },
+  "105100": {
+    "name": "许褚碎片",
+    "des": "许褚碎片",
+    "useType": "heroChip",
+    "arg": 105100
+  },
+  "105110": {
+    "name": "曹丕碎片",
+    "des": "曹丕碎片",
+    "useType": "heroChip",
+    "arg": 105110
+  },
+  "105120": {
+    "name": "甄姬碎片",
+    "des": "甄姬碎片",
+    "useType": "heroChip",
+    "arg": 105120
+  },
+  "203010": {
+    "name": "张苞碎片",
+    "des": "张苞碎片",
+    "useType": "heroChip",
+    "arg": 203010
+  },
+  "203020": {
+    "name": "关平碎片",
+    "des": "关平碎片",
+    "useType": "heroChip",
+    "arg": 203020
+  },
+  "204010": {
+    "name": "孟获碎片",
+    "des": "孟获碎片",
+    "useType": "heroChip",
+    "arg": 204010
+  },
+  "204020": {
+    "name": "祝融碎片",
+    "des": "祝融碎片",
+    "useType": "heroChip",
+    "arg": 204020
+  },
+  "204030": {
+    "name": "少年赵云碎片",
+    "des": "少年赵云碎片",
+    "useType": "heroChip",
+    "arg": 204030
+  },
+  "204040": {
+    "name": "少年关羽碎片",
+    "des": "少年关羽碎片",
+    "useType": "heroChip",
+    "arg": 204040
+  },
+  "205010": {
+    "name": "赵云碎片",
+    "des": "赵云碎片",
+    "useType": "heroChip",
+    "arg": 205010
+  },
+  "205020": {
+    "name": "诸葛亮碎片",
+    "des": "诸葛亮碎片",
+    "useType": "heroChip",
+    "arg": 205020
+  },
+  "205030": {
+    "name": "刘备碎片",
+    "des": "刘备碎片",
+    "useType": "heroChip",
+    "arg": 205030
+  },
+  "205040": {
+    "name": "马超碎片",
+    "des": "马超碎片",
+    "useType": "heroChip",
+    "arg": 205040
+  },
+  "205050": {
+    "name": "黄忠碎片",
+    "des": "黄忠碎片",
+    "useType": "heroChip",
+    "arg": 205050
+  },
+  "205060": {
+    "name": "黄月英碎片",
+    "des": "黄月英碎片",
+    "useType": "heroChip",
+    "arg": 205060
+  },
+  "205070": {
+    "name": "关羽碎片",
+    "des": "关羽碎片",
+    "useType": "heroChip",
+    "arg": 205070
+  },
+  "205080": {
+    "name": "张飞碎片",
+    "des": "张飞碎片",
+    "useType": "heroChip",
+    "arg": 205080
+  },
+  "205090": {
+    "name": "马岱碎片",
+    "des": "马岱碎片",
+    "useType": "heroChip",
+    "arg": 205090
+  },
+  "205100": {
+    "name": "姜维碎片",
+    "des": "姜维碎片",
+    "useType": "heroChip",
+    "arg": 205100
+  },
+  "205110": {
+    "name": "魏延碎片",
+    "des": "魏延碎片",
+    "useType": "heroChip",
+    "arg": 205110
+  },
+  "205120": {
+    "name": "庞统碎片",
+    "des": "庞统碎片",
+    "useType": "heroChip",
+    "arg": 205120
+  },
+  "303010": {
+    "name": "黄盖碎片",
+    "des": "黄盖碎片",
+    "useType": "heroChip",
+    "arg": 303010
+  },
+  "303020": {
+    "name": "周泰碎片",
+    "des": "周泰碎片",
+    "useType": "heroChip",
+    "arg": 303020
+  },
+  "304010": {
+    "name": "凌统碎片",
+    "des": "凌统碎片",
+    "useType": "heroChip",
+    "arg": 304010
+  },
+  "304020": {
+    "name": "步练师碎片",
+    "des": "步练师碎片",
+    "useType": "heroChip",
+    "arg": 304020
+  },
+  "304030": {
+    "name": "少年周瑜碎片",
+    "des": "少年周瑜碎片",
+    "useType": "heroChip",
+    "arg": 304030
+  },
+  "304040": {
+    "name": "少女小乔碎片",
+    "des": "少女小乔碎片",
+    "useType": "heroChip",
+    "arg": 304040
+  },
+  "305010": {
+    "name": "孙策碎片",
+    "des": "孙策碎片",
+    "useType": "heroChip",
+    "arg": 305010
+  },
+  "305020": {
+    "name": "周瑜碎片",
+    "des": "周瑜碎片",
+    "useType": "heroChip",
+    "arg": 305020
+  },
+  "305030": {
+    "name": "大乔碎片",
+    "des": "大乔碎片",
+    "useType": "heroChip",
+    "arg": 305030
+  },
+  "305040": {
+    "name": "孙坚碎片",
+    "des": "孙坚碎片",
+    "useType": "heroChip",
+    "arg": 305040
+  },
+  "305050": {
+    "name": "小乔碎片",
+    "des": "小乔碎片",
+    "useType": "heroChip",
+    "arg": 305050
+  },
+  "305060": {
+    "name": "太史慈碎片",
+    "des": "太史慈碎片",
+    "useType": "heroChip",
+    "arg": 305060
+  },
+  "305070": {
+    "name": "孙权碎片",
+    "des": "孙权碎片",
+    "useType": "heroChip",
+    "arg": 305070
+  },
+  "305080": {
+    "name": "孙尚香碎片",
+    "des": "孙尚香碎片",
+    "useType": "heroChip",
+    "arg": 305080
+  },
+  "305090": {
+    "name": "吕蒙碎片",
+    "des": "吕蒙碎片",
+    "useType": "heroChip",
+    "arg": 305090
+  },
+  "305100": {
+    "name": "甘宁碎片",
+    "des": "甘宁碎片",
+    "useType": "heroChip",
+    "arg": 305100
+  },
+  "305110": {
+    "name": "陆逊碎片",
+    "des": "陆逊碎片",
+    "useType": "heroChip",
+    "arg": 305110
+  },
+  "305120": {
+    "name": "鲁肃碎片",
+    "des": "鲁肃碎片",
+    "useType": "heroChip",
+    "arg": 305120
+  },
+  "403010": {
+    "name": "张梁碎片",
+    "des": "张梁碎片",
+    "useType": "heroChip",
+    "arg": 403010
+  },
+  "403020": {
+    "name": "何进碎片",
+    "des": "何进碎片",
+    "useType": "heroChip",
+    "arg": 403020
+  },
+  "404010": {
+    "name": "文丑碎片",
+    "des": "文丑碎片",
+    "useType": "heroChip",
+    "arg": 404010
+  },
+  "404020": {
+    "name": "颜良碎片",
+    "des": "颜良碎片",
+    "useType": "heroChip",
+    "arg": 404020
+  },
+  "404030": {
+    "name": "少年吕布碎片",
+    "des": "少年吕布碎片",
+    "useType": "heroChip",
+    "arg": 404030
+  },
+  "404040": {
+    "name": "少女貂蝉碎片",
+    "des": "少女貂蝉碎片",
+    "useType": "heroChip",
+    "arg": 404040
+  },
+  "405010": {
+    "name": "左慈碎片",
+    "des": "左慈碎片",
+    "useType": "heroChip",
+    "arg": 405010
+  },
+  "405020": {
+    "name": "吕布碎片",
+    "des": "吕布碎片",
+    "useType": "heroChip",
+    "arg": 405020
+  },
+  "405030": {
+    "name": "华佗碎片",
+    "des": "华佗碎片",
+    "useType": "heroChip",
+    "arg": 405030
+  },
+  "405040": {
+    "name": "董卓碎片",
+    "des": "董卓碎片",
+    "useType": "heroChip",
+    "arg": 405040
+  },
+  "405050": {
+    "name": "袁术碎片",
+    "des": "袁术碎片",
+    "useType": "heroChip",
+    "arg": 405050
+  },
+  "405060": {
+    "name": "貂蝉碎片",
+    "des": "貂蝉碎片",
+    "useType": "heroChip",
+    "arg": 405060
+  },
+  "405070": {
+    "name": "袁绍碎片",
+    "des": "袁绍碎片",
+    "useType": "heroChip",
+    "arg": 405070
+  },
+  "405080": {
+    "name": "华雄碎片",
+    "des": "华雄碎片",
+    "useType": "heroChip",
+    "arg": 405080
+  },
+  "405090": {
+    "name": "贾诩碎片",
+    "des": "贾诩碎片",
+    "useType": "heroChip",
+    "arg": 405090
+  },
+  "405100": {
+    "name": "公孙瓒碎片",
+    "des": "公孙瓒碎片",
+    "useType": "heroChip",
+    "arg": 405100
+  },
+  "405110": {
+    "name": "张角碎片",
+    "des": "张角碎片",
+    "useType": "heroChip",
+    "arg": 405110
+  },
+  "405120": {
+    "name": "于吉碎片",
+    "des": "于吉碎片",
+    "useType": "heroChip",
+    "arg": 405120
+  },
   "1000010": {
     "name": "副本钥匙",
     "des": "副本钥匙",

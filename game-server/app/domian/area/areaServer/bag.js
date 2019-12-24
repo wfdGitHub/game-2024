@@ -3,35 +3,41 @@ var itemCfg = require("../../../../config/gameCfg/item.json")
 var shopCfg = require("../../../../config/gameCfg/shop.json")
 var chest_awards = require("../../../../config/gameCfg/chest_awards.json")
 var chest_cfg = require("../../../../config/gameCfg/chest_cfg.json")
+var heros = require("../../../../config/gameCfg/heros.json")
+var async = require("async")
 module.exports = function() {
 	var self = this
 	this.playerBags = {}
 	//使用背包物品
-	this.useItem = function(otps,cb) {
+	this.useItem = function(uid,otps,cb) {
 		if(!itemCfg[otps.itemId] || !itemCfg[otps.itemId].useType){
 			cb(false,"item not exist or can't use")
 			return
 		}
-		//判断物品数量是否足够
-		otps.value = parseInt(otps.value)
-		if(typeof(otps.value) !== "number" || otps.value <= 0){
+		if(!Number.isInteger(otps.value) || otps.value <= 0){
 			cb(false,"value error " + otps.value)
 			return
 		}
-		self.getBagItem(otps.uid,otps.itemId,function(value) {
-			if(otps.value <= value){
-				self.useItemCB(otps,cb)
-			}else{
-				cb(false,"item not enough "+value)
-			}
-		})
-	}
-	//使用物品逻辑
-	this.useItemCB = function(otps,cb) {
+		var value = Number(otps.value)
 		switch(itemCfg[otps.itemId].useType){
+			case "heroChip":
+				var heroId = itemCfg[otps.itemId].arg
+				var star = heros[heroId].min_star
+				var needValue = star * 10
+				self.consumeItems(uid,otps.itemId+":"+needValue,value,function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						var heroList = []
+						for(var i = 0;i < value;i++){
+							heroList.push(self.heroDao.gainHero(self.areaId,uid,{id : heroId}))
+						}
+						cb(true,heroList)
+					}
+				})
+			break
 			default:
-				console.log("itemId can't use "+otps.itemId)
-				cb(false,"itemId can't use "+otps.itemId)
+				cb(false,"类型错误"+itemCfg[otps.itemId].useType)
 		}
 	}
 	//增加背包物品
