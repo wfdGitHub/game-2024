@@ -113,6 +113,7 @@ module.exports = function() {
 	this.addItemCB = function(uid,itemId,value,cb) {
 		if(itemId == 100){
 			this.addLordExp(uid,value)
+			cb(true)
 		}
 		else if(itemCfg[itemId]){
 			this.addBagItem(uid,itemId,value,cb)

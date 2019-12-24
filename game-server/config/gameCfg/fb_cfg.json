@@ -1,10 +1,6 @@
 {
   "currencyId": {
     "name": "副本消耗道具",
-    "value": 201
-  },
-  "free_count": {
-    "name": "每日免费次数",
-    "value": 1
+    "value": 1000010
   }
 }

@@ -25,7 +25,7 @@ fbHandler.prototype.quitFB = function(msg, session, next) {
 fbHandler.prototype.challengeFBBoss = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].challengeFBBoss(uid,msg.type,msg,function(flag,msg) {
+  this.areaManager.areaMap[areaId].challengeFBBoss(uid,msg.type,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

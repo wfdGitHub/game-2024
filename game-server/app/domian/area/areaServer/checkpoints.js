@@ -41,7 +41,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//todo 判断主角等级
+				//判断主角等级
 				self.getLordLv(uid,function(lv) {
 					if(lv < checkpointsCfg[level].lev_limit){
 						next("等级限制")
@@ -49,7 +49,6 @@ module.exports = function() {
 						next()
 					}
 				})
-				
 			},
 			function(next) {
 				let fightInfo = self.getFightInfo(uid)
@@ -67,9 +66,9 @@ module.exports = function() {
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			    if(winFlag){
 			    	var awardList = self.checkpointsSuccess(uid,level)
-			    	cb(true,{atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,awardList:awardList})
+			    	cb(true,{winFlag : winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,awardList:awardList})
 			    }else{
-			    	cb(false,self.fightContorl.getFightRecord())
+			    	cb(false,{winFlag : winFlag,list : self.fightContorl.getFightRecord()})
 			    }
 			}
 		],function(err) {
