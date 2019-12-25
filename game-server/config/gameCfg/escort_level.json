@@ -1,5 +1,6 @@
 {
   "0": {
+    "lev_limit": 30,
     "car0_base": "gold:100",
     "car0_play": "10001:1",
     "car0_rob": "10001:1",
@@ -17,6 +18,7 @@
     "car4_rob": "10001:1"
   },
   "1": {
+    "lev_limit": 60,
     "car0_base": "gold:101",
     "car0_play": "10001:1",
     "car0_rob": "10001:1",
@@ -34,6 +36,7 @@
     "car4_rob": "10001:1"
   },
   "2": {
+    "lev_limit": 80,
     "car0_base": "gold:102",
     "car0_play": "10001:1",
     "car0_rob": "10001:1",
@@ -51,6 +54,7 @@
     "car4_rob": "10001:1"
   },
   "3": {
+    "lev_limit": 100,
     "car0_base": "gold:103",
     "car0_play": "10001:1",
     "car0_rob": "10001:1",
@@ -68,6 +72,7 @@
     "car4_rob": "10001:1"
   },
   "4": {
+    "lev_limit": 120,
     "car0_base": "gold:104",
     "car0_play": "10001:1",
     "car0_rob": "10001:1",
@@ -85,6 +90,7 @@
     "car4_rob": "10001:1"
   },
   "5": {
+    "lev_limit": 200,
     "car0_base": "gold:105",
     "car0_play": "10001:1",
     "car0_rob": "10001:1",

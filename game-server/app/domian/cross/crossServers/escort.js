@@ -1,7 +1,7 @@
 //跨服押镖玩法
 const escort_base = require("../../../../config/gameCfg/escort_base.json")
 const escort_cfg = require("../../../../config/gameCfg/escort_cfg.json")
-const escort_samsara = require("../../../../config/gameCfg/escort_samsara.json")
+const escort_level = require("../../../../config/gameCfg/escort_level.json")
 const runTime = escort_cfg["runTime"]["value"]
 const messageName = "escort"
 var carWeight = {}
@@ -29,9 +29,9 @@ module.exports = function() {
 	local.subscribeUsers = {}	//消息订阅列表
 	local.subscribeMaps = {}	//映射表
 
-	for(var samsara in escort_samsara){
-		local.carMap[samsara] = []
-		local.subscribeUsers[samsara] = []
+	for(var level in escort_level){
+		local.carMap[level] = []
+		local.subscribeUsers[level] = []
 	}
 	this.curHours = 0
 	//刷新
@@ -65,12 +65,12 @@ module.exports = function() {
 	//刷新
 	local.update = function(date) {
 		var endTime = date.getTime() - runTime
-		for(var samsara in local.carMap){
+		for(var level in local.carMap){
 			var count = 0
-			while(local.carMap[samsara].length > 0 && local.carMap[samsara][0]["time"] <= endTime){
+			while(local.carMap[level].length > 0 && local.carMap[level][0]["time"] <= endTime){
 				count++
-				var carInfo = local.carMap[samsara].shift()
-				local.escortFinish(carInfo["crossUid"],samsara)
+				var carInfo = local.carMap[level].shift()
+				local.escortFinish(carInfo["crossUid"],level)
 				if(count > 100){
 					break
 				}
@@ -78,7 +78,7 @@ module.exports = function() {
 		}
 	}
 	//押镖完成
-	local.escortFinish = function(crossUid,samsara) {
+	local.escortFinish = function(crossUid,level) {
 		var carInfo = local.userInfos[crossUid]["carInfo"]
 		if(carInfo){
 			//镖车刷新
@@ -87,8 +87,8 @@ module.exports = function() {
 			local.userInfos[crossUid]["carInfo"] = false
 			local.userInfos[crossUid]["escortNum"]++
 			//计算收益
-			var baseAward = escort_samsara[samsara][carInfo.quality+"_base"]
-			var playAward = escort_samsara[samsara][carInfo.quality+"_play"]
+			var baseAward = escort_level[level][carInfo.quality+"_base"]
+			var playAward = escort_level[level][carInfo.quality+"_play"]
 			var rate = (1 - carInfo.robCount * escort_cfg["loseRate"]["value"])
 			var str = ""
 			var list = baseAward.split("&")
@@ -121,7 +121,7 @@ module.exports = function() {
 				type : "escortFinish",
 				crossUid : crossUid
 			}
-			local.sendCarMessage(samsara,notify)
+			local.sendCarMessage(level,notify)
 		}else{
 			console.error("escortFinish error"+crossUid)
 		}
@@ -146,9 +146,9 @@ module.exports = function() {
 	}
 	//劫镖成功收益
 	local.robSuccess = function(crossUid,target,result,carInfo,cb) {
-		var samsara = local.userInfos[crossUid]["samsara"]
-		var baseAward = escort_samsara[samsara][carInfo.quality+"_base"]
-		var robAward = escort_samsara[samsara][carInfo.quality+"_rob"]
+		var level = local.userInfos[crossUid]["level"]
+		var baseAward = escort_level[level][carInfo.quality+"_base"]
+		var robAward = escort_level[level][carInfo.quality+"_rob"]
 		var rate = escort_cfg["robRate"]["value"]
 		var str = ""
 		var list = baseAward.split("&")
@@ -178,7 +178,7 @@ module.exports = function() {
 			target : target,
 			robCount : carInfo.robCount
 		}
-		local.sendCarMessage(samsara,notify)
+		local.sendCarMessage(level,notify)
 	}
 	//初始化玩家信息
 	local.userInit = function(crossUid) {
@@ -186,12 +186,19 @@ module.exports = function() {
 		if(!team){
 			return
 		}
-		var curLv = team[0].level
-		var samsara = Math.floor(((curLv - 1) / 100))
+		var curLv = self.players[crossUid]["playerInfo"]["level"]
+		var level = 0
+		console.log("curLv",curLv)
+		for(var i in escort_level){
+			if(curLv <= escort_level[i]["lev_limit"]){
+				level = Number(i)
+				break
+			}
+		}
 		var info = {
 			"escortNum" : 0,
 			"robNum" : 0,
-			"samsara" : samsara,
+			"level" : level,
 			"quality" : "car0",
 			"carInfo" : false,
 			"messageList" : []
@@ -221,11 +228,11 @@ module.exports = function() {
 			cb(false,"消息已订阅")
 			return
 		}
-		var samsara = local.userInfos[crossUid]["samsara"]
+		var level = local.userInfos[crossUid]["level"]
 		var info = {uid : self.players[crossUid]["uid"],sid : self.players[crossUid]["cid"]}
-		local.subscribeUsers[samsara].push(info)
+		local.subscribeUsers[level].push(info)
 		local.subscribeMaps[crossUid] = info
-		var carList = local.carMap[samsara].slice(-10)
+		var carList = local.carMap[level].slice(-10)
 		cb(true,carList)
 	}
 	//取消订阅
@@ -241,15 +248,15 @@ module.exports = function() {
 				cb(false,"未订阅")
 			return
 		}
-		var samsara = local.userInfos[crossUid]["samsara"]
-		local.subscribeUsers[samsara].remove(info)
+		var level = local.userInfos[crossUid]["level"]
+		local.subscribeUsers[level].remove(info)
 		delete local.subscribeMaps[crossUid]
 		if(cb)
 			cb(true)
 	}
 	//发送镖车消息给订阅玩家
-	local.sendCarMessage = function(samsara,notify) {
-		self.sendByTypeToUser(messageName,local.subscribeUsers[samsara],notify)
+	local.sendCarMessage = function(level,notify) {
+		self.sendByTypeToUser(messageName,local.subscribeUsers[level],notify)
 	}
 	//镖车刷新
 	this.updateEscortCar = function(crossUid,cb) {
@@ -319,8 +326,8 @@ module.exports = function() {
 			cb(false,"跨服数据未同步")
 			return
 		}
-		var samsara = local.userInfos[crossUid]["samsara"]
-		if(!local.carMap[samsara]){
+		var level = local.userInfos[crossUid]["level"]
+		if(!local.carMap[level]){
 			cb(false,"该等级未开放押镖")
 			return
 		}
@@ -333,7 +340,7 @@ module.exports = function() {
 			"robCount" : 0
 		}
 		local.userInfos[crossUid]["carInfo"] = carInfo
-		local.carMap[samsara].push(carInfo)
+		local.carMap[level].push(carInfo)
 		var notify = {
 			type : "beginEscort",
 			crossUid : crossUid,
@@ -341,7 +348,7 @@ module.exports = function() {
 			time : carInfo.time,
 			quality : carInfo.quality
 		}
-		local.sendCarMessage(samsara,notify)
+		local.sendCarMessage(level,notify)
 		cb(true,carInfo)
 	}
 	//劫镖

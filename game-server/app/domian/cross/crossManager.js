@@ -22,18 +22,26 @@ crossManager.prototype.update = function() {
 }
 //玩家连入跨服服务器
 crossManager.prototype.userLogin = function(uid,areaId,serverId,cid,playerInfo,cb) {
-	var userInfo = {
-		uid : uid,
-		areaId : areaId,
-		serverId : serverId,
-		cid : cid,
-		playerInfo : playerInfo
-	}
-	var crossUid = areaId+"|"+uid+"|"+serverId
-	if(!this.players[crossUid])
-		this.onlineNum++
-	this.players[crossUid] = userInfo
-	cb(true)
+	var self = this
+	self.heroDao.getFightTeam(areaId,uid,function(flag,fightTeam) {
+		if(flag){
+			var userInfo = {
+				uid : uid,
+				areaId : areaId,
+				serverId : serverId,
+				cid : cid,
+				playerInfo : playerInfo,
+				fightTeam : fightTeam
+			}
+			var crossUid = areaId+"|"+uid+"|"+serverId
+			if(!self.players[crossUid])
+				self.onlineNum++
+			self.players[crossUid] = userInfo
+			cb(true)
+		}else{
+			cb(false,"获取玩家战斗阵容失败")
+		}
+	})
 }
 //玩家离线
 crossManager.prototype.userLeave = function(crossUid) {
@@ -60,15 +68,7 @@ crossManager.prototype.userTeam = function(crossUid) {
 	if(!this.players[crossUid]){
 		return false
 	}
-	var team = []
-	for(var i in this.players[crossUid]["playerInfo"].characters){
-		team.push(this.players[crossUid]["playerInfo"].characters[i])
-	}
-	var fightPet = this.players[crossUid]["playerInfo"].fightPet
-	if(fightPet && this.players[crossUid]["playerInfo"].pets && this.players[crossUid]["playerInfo"].pets[fightPet]){
-		team = team.concat(this.players[crossUid]["playerInfo"].pets[fightPet])
-	}
-	return team
+	return this.players[crossUid]["fightTeam"]
 }
 //发送消息给玩家
 crossManager.prototype.sendToUser = function(type,crossUid,notify) {
@@ -140,5 +140,12 @@ module.exports = {
 	args : [{
 		name : "app",
 		type : "Object"
+	}],
+	props : [{
+		name : "playerDao",
+		ref : "playerDao"
+	},{
+		name : "heroDao",
+		ref : "heroDao"
 	}]
 }
