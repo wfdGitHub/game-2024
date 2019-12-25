@@ -64,7 +64,7 @@ module.exports = function() {
 			    	defTeam.push({id : mon_list[i],lv : checkpointsCfg[level].mobLevel,ad : checkpointsCfg[level].mobAd,star : checkpointsCfg[level].star})
 			    }
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    if(verify !== JSON.parse(self.fightContorl.getFightRecord()[0])){
+			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
 			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getFightRecord()})
 			    	return
 			    }
