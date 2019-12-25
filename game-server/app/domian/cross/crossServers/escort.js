@@ -127,25 +127,26 @@ module.exports = function() {
 		}
 	}
 	//劫镖完成
-	local.robFinish = function(crossUid,target,result,carInfo,cb) {
+	local.robFinish = function(crossUid,target,winFlag,carInfo,cb) {
 		//添加记录
 		var atkUser = self.getSimpleUser(crossUid)
 		var defUser = self.getSimpleUser(target)
-		var info = {type : "robbed",carInfo : carInfo,result : result,atkUser : atkUser,defUser : defUser,time : Date.now()}
+		var fightRecord = self.fightContorl.getFightRecord()
+		var info = {type : "robbed",carInfo : carInfo,winFlag : winFlag,fightRecord : fightRecord,atkUser : atkUser,defUser : defUser,time : Date.now()}
 		local.userInfos[crossUid]["messageList"].push(info)
 		self.sendToUser(messageName,crossUid,info)
-		info = {type : "beenRobbed",carInfo : carInfo,result : result,atkUser : atkUser,defUser : defUser,time : Date.now()}
+		info = {type : "beenRobbed",carInfo : carInfo,winFlag : winFlag,fightRecord : fightRecord,atkUser : atkUser,defUser : defUser,time : Date.now()}
 		local.userInfos[target]["messageList"].push(info)
 		self.sendToUser(messageName,target,info)
 		//判断胜负
-		if(result.result == "win"){
-			local.robSuccess(crossUid,target,result,carInfo,cb)
+		if(winFlag){
+			local.robSuccess(crossUid,target,winFlag,carInfo,cb)
 		}else{
 			cb(true,{"success" : false})
 		}
 	}
 	//劫镖成功收益
-	local.robSuccess = function(crossUid,target,result,carInfo,cb) {
+	local.robSuccess = function(crossUid,target,winFlag,carInfo,cb) {
 		var level = local.userInfos[crossUid]["level"]
 		var baseAward = escort_level[level][carInfo.quality+"_base"]
 		var robAward = escort_level[level][carInfo.quality+"_rob"]
@@ -385,7 +386,7 @@ module.exports = function() {
 		}
 		local.userInfos[crossUid]["robNum"]++
 		var defTeam = carInfo["team"]
-		var result = self.fightContorl.fighting(atkTeam,defTeam,Date.now(),null,true)
-		local.robFinish(crossUid,target,result,carInfo,cb)
+		var winFlag = self.fightContorl.fighting(atkTeam,defTeam,Date.now(),null,true)
+		local.robFinish(crossUid,target,winFlag,carInfo,cb)
 	}
 }
