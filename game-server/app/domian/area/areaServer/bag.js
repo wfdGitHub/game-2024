@@ -258,7 +258,7 @@ module.exports = function() {
 			var chestId = m_list[0]
 			var value = parseInt(m_list[1]) || 1
 			for(var i = 0;i < value;i++)
-				awardList.concat(self.openChestAward(uid,chestId))
+				awardList = awardList.concat(self.openChestAward(uid,chestId))
 		})
 		return awardList
 	}
