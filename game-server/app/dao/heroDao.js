@@ -6,8 +6,13 @@ var star_base = require("../../config/gameCfg/star_base.json")
 var advanced_base = require("../../config/gameCfg/advanced_base.json")
 var recruit_base = require("../../config/gameCfg/recruit_base.json")
 var recruit_list = require("../../config/gameCfg/recruit_list.json")
+var allWeight = 0
 for(let i in recruit_base){
 	recruit_base[i]["weights"] = JSON.parse(recruit_base[i]["weights"])
+	for(let j in recruit_base[i]["weights"]){
+	  recruit_base[i]["weights"][j] += allWeight
+	  allWeight = Number(recruit_base[i]["weights"][j])
+	}
 }
 for(let i in recruit_list){
 	recruit_list[i].heroList = JSON.parse(recruit_list[i].heroList)
@@ -36,11 +41,6 @@ heroDao.prototype.getHeroAmount = function(areaId,uid,cb) {
 //英雄池获得英雄
 heroDao.prototype.randHero = function(areaId,uid,type,count) {
 	let weights = recruit_base[type]["weights"]
-	let allWeight = 0
-    for(let i in weights){
-      weights[i] += allWeight
-      allWeight = Number(weights[i])
-    }
     var heroInfos = []
     for(let num = 0;num < count;num++){
       let rand = Math.random() * allWeight
