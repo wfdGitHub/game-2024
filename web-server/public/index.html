@@ -683,6 +683,12 @@
             console.log(data);
         })
       }
+      //快速挂机奖励
+      var getQuickOnhookAward = function() {
+        pomelo.request("area.normalHandler.getQuickOnhookAward",{}, function(data) {
+            console.log(data);
+        })
+      }
       //获取在线挂机奖励
       var getOnhookAward = function() {
         pomelo.request("area.normalHandler.getOnhookAward",{}, function(data) {
@@ -788,6 +794,7 @@
       <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
       <input id="test" type="button" value="战斗准备" onclick="readyFight()"/>
+      <input id="test" type="button" value="快速挂机" onclick="getQuickOnhookAward()"/>
     </div>
     <div class="g-button">
       英雄 : 

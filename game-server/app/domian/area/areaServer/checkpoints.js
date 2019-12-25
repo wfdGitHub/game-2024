@@ -100,9 +100,61 @@ module.exports = function() {
 			  	// console.log("on_hook_award ",on_hook_award)
 			  	var rate = (awardTime * power) / 60 
 			  	// console.log("rate ",rate,"awardTime ",awardTime)
-			  	self.addItemStr(uid,on_hook_award,rate)
-			  	cb(true,{allTime : tmpTime,awardTime : awardTime})
+			  	var awardList = self.addItemStr(uid,on_hook_award,rate)
+			  	cb(true,{allTime : tmpTime,awardTime : awardTime,awardList : awardList})
 			})
+		})
+	}
+	//快速挂机奖励
+	this.getQuickOnhookAward = function(uid,cb) {
+		var level = 0
+		var count = 0
+		var self = this
+		async.waterfall([
+			function(next) {
+				//获取今日快速挂机次数
+				self.getPlayerData(uid,"quick",function(curCount) {
+					count  = Number(curCount) || 0
+					if(count < 4)
+						next()
+					else
+						next("快速挂机次数已满")
+				})
+			},
+			function(next) {
+				//获取挂机等级
+				self.getCheckpointsInfo(uid,function(curLevel) {
+					level = curLevel
+					if(checkpointsCfg[level])
+						next()
+					else
+						next("level config error "+level)
+				})
+			},
+			function(next) {
+				//消耗元宝
+				var needGold = count * 50
+				if(needGold > 200)
+					needGold = 200
+				if(needGold){
+					self.consumeItems(uid,"202:"+needGold,1,function(flag,err) {
+						if(flag)
+							next()
+						else
+							next(err)
+					})
+				}else{
+					next()
+				}
+			},
+			function(next) {
+				self.incrbyPlayerData(uid,"quick",1)
+			  	var on_hook_award = checkpointsCfg[level].on_hook_award
+			  	var awardList = self.addItemStr(uid,on_hook_award,120)
+			  	cb(true,{awardList : awardList})
+			}
+		],function(err) {
+			cb(false,err)
 		})
 	}
 }

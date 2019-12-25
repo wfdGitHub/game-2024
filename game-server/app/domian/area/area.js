@@ -79,6 +79,7 @@ area.prototype.userLogin = function(uid,cid,cb) {
 area.prototype.dayFirstLogin = function(uid) {
 	console.log("玩家 "+uid+" 今日首次登录")
 	this.setObj(uid,"playerInfo","dayStr",this.dayStr)
+	this.setPlayerData(uid,"quick",0)
 	this.TTTdayUpdate(uid)
 	this.arenadayUpdate(uid)
 }

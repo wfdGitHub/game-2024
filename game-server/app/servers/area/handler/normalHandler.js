@@ -27,6 +27,14 @@ normalHandler.prototype.getOnhookAward = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//快速挂机奖励
+normalHandler.prototype.getQuickOnhookAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getQuickOnhookAward(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //角色进阶
 normalHandler.prototype.characterAdvanced = function(msg, session, next) {
   var uid = session.uid
