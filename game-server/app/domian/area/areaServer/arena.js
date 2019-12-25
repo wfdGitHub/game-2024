@@ -240,7 +240,7 @@ module.exports = function() {
 		var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 		info.targetStr = targetStr
 		info.winFlag = winFlag
-		if(true || winFlag == "win"){
+		if(winFlag == "win"){
 			self.getObjAll(uid,mainName,function(data) {
 				//交换排名
 				data.rank = parseInt(data.rank)
