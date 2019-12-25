@@ -19,6 +19,14 @@ normalHandler.prototype.useItem = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//获取playerData
+normalHandler.prototype.getPlayerData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getPlayerDataAll(uid,function(data) {
+    next(null,{flag : true,data : data})
+  })
+}
 //在线领取挂机奖励
 normalHandler.prototype.getOnhookAward = function(msg, session, next) {
   var uid = session.uid
