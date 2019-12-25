@@ -89,7 +89,7 @@ module.exports = function() {
 		})
 	}
 	//挑战副本BOSS
-	this.challengeFBBoss = function(uid,type,cb) {
+	this.challengeFBBoss = function(uid,type,verify,cb) {
 		async.waterfall([
 			function(next) {
 				//获取副本数据
@@ -110,6 +110,10 @@ module.exports = function() {
 			   	var seededNum = fightInfo.seededNum
 			   	var defTeam = fb_base[type]["boss"+bossId]
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+			    if(verify !== JSON.parse(self.fightContorl.getFightRecord()[0])){
+			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getFightRecord()})
+			    	return
+			    }
 			    if(winFlag){
 		    		var info = {
 		    			winFlag : winFlag,

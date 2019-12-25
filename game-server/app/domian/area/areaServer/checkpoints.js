@@ -26,7 +26,7 @@ module.exports = function() {
 		console.log("checkpointsFail")
 	}
 	//开始挑战关卡
-	this.challengeCheckpoints = function(uid,cb) {
+	this.challengeCheckpoints = function(uid,verify,cb) {
 		var level = 0
 		var self = this
 		async.waterfall([
@@ -64,6 +64,10 @@ module.exports = function() {
 			    	defTeam.push({id : mon_list[i],lv : checkpointsCfg[level].mobLevel,ad : checkpointsCfg[level].mobAd,star : checkpointsCfg[level].star})
 			    }
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+			    if(verify !== JSON.parse(self.fightContorl.getFightRecord()[0])){
+			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getFightRecord()})
+			    	return
+			    }
 			    if(winFlag){
 			    	var awardList = self.checkpointsSuccess(uid,level)
 			    	cb(true,{winFlag : winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,awardList:awardList})

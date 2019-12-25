@@ -12,8 +12,8 @@ var model = function(atkTeam,defTeam,otps) {
     fightRecord.init()
     this.atkTeamInfo = {}
     this.defTeamInfo = {}
-	this.load(atkTeam,defTeam,otps)
 	this.seededNum = otps.seededNum || (new Date()).getTime()
+	this.load(atkTeam,defTeam,otps)
     this.seeded = new seeded(this.seededNum)
     this.locator = new locator(this.seeded)
     this.formula = new formula(this.seeded)
@@ -36,7 +36,7 @@ var model = function(atkTeam,defTeam,otps) {
 }
 //初始配置
 model.prototype.load = function(atkTeam,defTeam,otps) {
-	var info = {type : "fightBegin",atkTeam : [],defTeam : []}
+	var info = {type : "fightBegin",atkTeam : [],defTeam : [],seededNum : this.seededNum}
 	var id = 0
 	var atkTeamAdds = {}
 	for(var i = 0;i < teamLength;i++){

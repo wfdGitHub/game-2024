@@ -26,7 +26,7 @@ module.exports = function() {
 		})
 	}
 	//挑战下一关BOSS
-	this.challengeTTTBoss = function(uid,cb) {
+	this.challengeTTTBoss = function(uid,verify,cb) {
 		var level = 0
 		async.waterfall([
 			function(next) {
@@ -60,6 +60,10 @@ module.exports = function() {
 			   	var seededNum = fightInfo.seededNum
 			   	var defTeam = ttttower_level[level]["defTeam"]
 			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+			    if(verify !== JSON.parse(self.fightContorl.getFightRecord()[0])){
+			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getFightRecord()})
+			    	return
+			    }
 			   	if(true || winFlag){
 			   		self.incrbyObj(uid,main_name,"level",1)
 					var awardList = self.addItemStr(uid,ttttower_level[level]["awards"])
