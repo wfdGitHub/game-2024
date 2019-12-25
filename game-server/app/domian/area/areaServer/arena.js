@@ -240,7 +240,9 @@ module.exports = function() {
 		var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 		info.targetStr = targetStr
 		info.winFlag = winFlag
-		if(winFlag == "win"){
+		var fightInfo = {atkTeam : atkTeam,defTeam : defTeam,seededNum : seededNum}
+		info.fightInfo = fightInfo
+		if(winFlag){
 			self.getObjAll(uid,mainName,function(data) {
 				//交换排名
 				data.rank = parseInt(data.rank)
@@ -267,15 +269,15 @@ module.exports = function() {
 					self.setObj(uid,mainName,"highestRank",data.rank)
 				}
 				//记录
-				local.addRecord(uid,"atk",winFlag,targetInfo,data.rank)
-				local.addRecord(targetUid,"def",winFlag,targetInfo,targetRank)
+				local.addRecord(uid,"atk",winFlag,targetInfo,fightInfo,data.rank)
+				local.addRecord(targetUid,"def",winFlag,targetInfo,fightInfo,targetRank)
 				cb(true,info)
 			})
 		}else{
 			//失败奖励
 			self.addItemStr(uid,loseAward,1)
-			local.addRecord(uid,"atk",winFlag,targetInfo)
-			local.addRecord(targetUid,"def",winFlag,targetInfo)
+			local.addRecord(uid,"atk",winFlag,targetInfo,fightInfo)
+			local.addRecord(targetUid,"def",winFlag,targetInfo,fightInfo)
 			delete local.locks[uid]
 			delete local.locks[targetUid]
 			cb(true,info)
@@ -292,9 +294,9 @@ module.exports = function() {
 		})
 	}
 	//添加记录
-	local.addRecord = function(uid,type,winFlag,targetInfo,rank) {
+	local.addRecord = function(uid,type,winFlag,targetInfo,fightInfo,rank) {
 		var atkUser = self.getSimpleUser(uid)
-		var info = {type : type,winFlag : winFlag,atkUser : atkUser,defUser : targetInfo,time : Date.now()}
+		var info = {type : type,winFlag : winFlag,atkUser : atkUser,defUser : targetInfo,fightInfo : fightInfo,time : Date.now()}
 		if(rank){
 			info.rank = rank
 		}
