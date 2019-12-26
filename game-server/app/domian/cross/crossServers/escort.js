@@ -134,7 +134,7 @@ module.exports = function() {
 		var info = {type : "robbed",carInfo : carInfo,winFlag : winFlag,atkTeam : atkTeam,defTeam : defTeam,seededNum : seededNum,atkUser : atkUser,defUser : defUser,time : Date.now()}
 		local.userInfos[crossUid]["messageList"].push(info)
 		self.sendToUser(messageName,crossUid,info)
-		info = {type : "beenRobbed",carInfo : carInfo,winFlag : winFlag,atkTeam : atkTeam,defTeam : defTeam,seededNum : seededNum,fightRecord : fightRecord,atkUser : atkUser,defUser : defUser,time : Date.now()}
+		info = {type : "beenRobbed",carInfo : carInfo,winFlag : winFlag,atkTeam : atkTeam,defTeam : defTeam,seededNum : seededNum,atkUser : atkUser,defUser : defUser,time : Date.now()}
 		local.userInfos[target]["messageList"].push(info)
 		self.sendToUser(messageName,target,info)
 		//判断胜负
