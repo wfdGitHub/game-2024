@@ -41,20 +41,29 @@ heroHandler.prototype.gainHero = function(msg, session, next) {
       })
   })
 }
-//删除英雄
-heroHandler.prototype.removeHero = function(msg, session, next) {
+//分解英雄
+heroHandler.prototype.removeHeros = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var hId = msg.hId
+  var hIds = msg.hIds
   var self = this
-  self.heroDao.removeHero(areaId,uid,hId,function(flag,data) {
-    if(flag){
-      self.heroDao.heroPrAll(areaId,uid,[data],function(flag,awardList) {
-        next(null,{flag : true,awardList : awardList})
-      })
-    }else{
-      next(null,{flag : false,err : data})
+  self.heroDao.getHeroList(areaId,uid,hIds,function(flag,heros) {
+    console.log("heros",heros)
+    for(var i in heros){
+      if(!heros[i]){
+        next(null,{flag : false,err : "武将不存在"+i})
+        return
+      }
     }
+    self.heroDao.removeHeroList(areaId,uid,hIds,function(flag,err) {
+      if(flag){
+        self.heroDao.heroPrAll(areaId,uid,heros,function(flag,awardList) {
+          next(null,{flag : true,awardList : awardList})
+        })
+      }else{
+        next(null,{flag : false})
+      }
+    })
   })
 }
 //英雄升级 升阶与星级取最低等级限制

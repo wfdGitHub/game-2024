@@ -121,8 +121,8 @@
         });
       }
       //删除英雄
-      var removeHero = function(hId) {
-        pomelo.request("area.heroHandler.removeHero", {hId : hId}, function(data) {
+      var removeHeros = function(hIds) {
+        pomelo.request("area.heroHandler.removeHeros", {hIds : hIds}, function(data) {
             console.log(data);
         });
       }
