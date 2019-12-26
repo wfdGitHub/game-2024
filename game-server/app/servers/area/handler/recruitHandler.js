@@ -39,7 +39,7 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
         let paStr = recruit_base[type].pa
         if(paStr)
           self.areaManager.areaMap[areaId].addItemStr(uid,paStr,count)
-        var heroInfos = self.heroDao.randHero(self.areaId,uid,type,count)
+        var heroInfos = self.heroDao.randHero(areaId,uid,type,count)
         next(null,{flag : true,heroInfos : heroInfos})
       })
   })
