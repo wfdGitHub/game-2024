@@ -386,7 +386,7 @@ module.exports = function() {
 		}
 		local.userInfos[crossUid]["robNum"]++
 		var defTeam = carInfo["team"]
-		var winFlag = self.fightContorl.fighting(atkTeam,defTeam,Date.now(),null,true)
+		var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : Date.now()})
 		local.robFinish(crossUid,target,winFlag,carInfo,cb)
 	}
 }
