@@ -33,7 +33,7 @@ module.exports = function() {
 				//判断主角等级
 				self.getLordLv(uid,function(lv) {
 					if(lv < ttttower_cfg["open"]["value"]){
-						console.error("openLevel "+lv+" / "+fb_base[type]["openLevel"])
+						console.error("openLevel "+lv+" / "+ttttower_cfg["open"]["value"])
 						next("等级不足")
 					}else{
 						next()

@@ -24,7 +24,7 @@ module.exports = function() {
 			function(next) {
 				//判断主角等级
 				self.getLordLv(uid,function(lv) {
-					if(lv < fb_base[type]["openLevel"]){
+					if(lv < fb_base[type]["openLevel"] || lv < fb_cfg["open"]["value"]){
 						console.error("openLevel "+lv+" / "+fb_base[type]["openLevel"])
 						next("等级不足")
 					}else{
