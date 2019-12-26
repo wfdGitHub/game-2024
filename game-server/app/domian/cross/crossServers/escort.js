@@ -127,15 +127,14 @@ module.exports = function() {
 		}
 	}
 	//劫镖完成
-	local.robFinish = function(crossUid,target,winFlag,carInfo,cb) {
+	local.robFinish = function(crossUid,target,winFlag,carInfo,atkTeam,defTeam,seededNum,cb) {
 		//添加记录
 		var atkUser = self.getSimpleUser(crossUid)
 		var defUser = self.getSimpleUser(target)
-		var fightRecord = self.fightContorl.getFightRecord()
-		var info = {type : "robbed",carInfo : carInfo,winFlag : winFlag,fightRecord : fightRecord,atkUser : atkUser,defUser : defUser,time : Date.now()}
+		var info = {type : "robbed",carInfo : carInfo,winFlag : winFlag,atkTeam : atkTeam,defTeam : defTeam,seededNum : seededNum,atkUser : atkUser,defUser : defUser,time : Date.now()}
 		local.userInfos[crossUid]["messageList"].push(info)
 		self.sendToUser(messageName,crossUid,info)
-		info = {type : "beenRobbed",carInfo : carInfo,winFlag : winFlag,fightRecord : fightRecord,atkUser : atkUser,defUser : defUser,time : Date.now()}
+		info = {type : "beenRobbed",carInfo : carInfo,winFlag : winFlag,atkTeam : atkTeam,defTeam : defTeam,seededNum : seededNum,fightRecord : fightRecord,atkUser : atkUser,defUser : defUser,time : Date.now()}
 		local.userInfos[target]["messageList"].push(info)
 		self.sendToUser(messageName,target,info)
 		//判断胜负
@@ -386,7 +385,8 @@ module.exports = function() {
 		}
 		local.userInfos[crossUid]["robNum"]++
 		var defTeam = carInfo["team"]
-		var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : Date.now()})
-		local.robFinish(crossUid,target,winFlag,carInfo,cb)
+		let seededNum = Date.now()
+		var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+		local.robFinish(crossUid,target,winFlag,carInfo,atkTeam,defTeam,seededNum,cb)
 	}
 }
