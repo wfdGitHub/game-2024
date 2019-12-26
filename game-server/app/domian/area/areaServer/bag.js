@@ -193,7 +193,7 @@ module.exports = function() {
 		})
 	}
 	//解析物品奖励
-	this.addItemStr = function(uid,str,rate) {
+	this.addItemStr = function(uid,str,rate,cb) {
 		var list = str.split("&")
 		if(!rate || parseFloat(rate) != rate || typeof(rate) != "number"){
 			rate = 1
@@ -205,6 +205,8 @@ module.exports = function() {
 			var value = m_list[1]
 			awardList.push(self.addItem({uid : uid,itemId : itemId,value : value,rate : rate}))
 		})
+		if(cb)
+			cb(true,awardList)
 		return awardList
 	}
 	//直接购买物品
