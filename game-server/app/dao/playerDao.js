@@ -20,8 +20,8 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+uid+":playerInfo",playerInfo,function(err,data) {
 			if(!err){
 				self.redisDao.db.hset("area:area"+otps.areaId+":nameMap",otps.name,uid)
-				self.heroDao.gainHero(otps.areaId,uid,{id : 304040},function(flag,heroInfo) {
-					self.heroDao.setFightTeam(otps.areaId,uid,[heroInfo.hId,null,null,null,null,null])
+				self.heroDao.gainHero(otps.areaId,uid,{id : 205110},function(flag,heroInfo) {
+					self.heroDao.setFightTeam(otps.areaId,uid,[null,heroInfo.hId,null,null,null,null])
 				})
 				cb(playerInfo)
 			}else{
