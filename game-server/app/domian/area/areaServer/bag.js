@@ -230,7 +230,7 @@ module.exports = function() {
 	}
 	//商城购买物品
 	this.buyShop = function(uid,shopId,count,cb) {
-		if(parseInt(shopId) != shopId || !Number.isInteger(count) || count <= 0){
+		if(!shopId || !Number.isInteger(count) || count <= 0){
 			cb(false,"args type error")
 			return
 		}
