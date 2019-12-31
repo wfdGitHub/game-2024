@@ -87,7 +87,7 @@ module.exports = function() {
 				//通天塔数据
 				self.getTTTInfo(uid,function(info) {
 					maxLv = info.level
-					if(level >= maxLv){
+					if(level > maxLv){
 						next("只能扫荡已通关")
 						return
 					}
