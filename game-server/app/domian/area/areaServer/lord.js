@@ -13,7 +13,7 @@ module.exports = function() {
 				"curExp" : Number(value)
 			}
 			self.sendToUser(uid,notify)
-			self.checkLordUpgrade(uid,Number(exp))
+			self.checkLordUpgrade(uid,Number(value))
 		})
 	}
 	//获取主公等级
