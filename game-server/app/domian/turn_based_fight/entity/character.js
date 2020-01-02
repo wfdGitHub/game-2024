@@ -337,6 +337,25 @@ model.prototype.getInfo = function() {
 	info.curAnger = this.curAnger
 	return info
 }
+//获取战斗力  comat effectiveness
+model.prototype.getCE = function() {
+	var ce = 0
+	ce += this.attInfo.atk
+	ce += this.attInfo.maxHP / 6
+	ce += this.attInfo.phyDef / 3
+	ce += this.attInfo.magDef / 3
+	ce += this.attInfo.crit * 10000
+	ce += this.attInfo.critDef * 10000
+	ce += this.attInfo.slayDef * 10000
+	ce += this.attInfo.hitRate * 10000
+	ce += this.attInfo.dodgeRate * 10000
+	ce += this.attInfo.amplify * 10000
+	ce += this.attInfo.reduction * 10000
+	ce += this.attInfo.healRate * 10000
+	ce += this.attInfo.healAdd * 10000
+	ce = Math.floor(ce)
+	return ce
+}
 model.prototype.getSimpleInfo = function() {
 	var info = {}
 	info.id = this.id
