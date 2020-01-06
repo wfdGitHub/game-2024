@@ -34,7 +34,7 @@ var model = function(otps) {
 
 	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
 	this.needAnger = 4							//技能所需怒气值
-	this.curAnger = otps["curAnger"] || 0		//当前怒气值
+	this.curAnger = (otps["curAnger"] || 0) + 2	//当前怒气值
 	//=========特殊属性=======//
 	this.buffRate								//buff概率   若技能存在buff  以此代替buff本身概率
 	this.buffArg								//buff参数   若技能存在buff  以此代替buff本身参数
@@ -362,6 +362,8 @@ model.prototype.getSimpleInfo = function() {
 	info.name = this.name
 	info.atk = this.attInfo.atk
 	info.hp = this.attInfo.hp
+	info.curAnger = this.curAnger
+	info.needAnger = this.needAnger
 	return info
 }
 model.prototype.addBuff = function(releaser,buff) {
