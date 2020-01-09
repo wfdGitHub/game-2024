@@ -48,7 +48,6 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
   var hIds = msg.hIds
   var self = this
   self.heroDao.getHeroList(areaId,uid,hIds,function(flag,heros) {
-    console.log("heros",heros)
     for(var i in heros){
       if(!heros[i]){
         next(null,{flag : false,err : "武将不存在"+i})

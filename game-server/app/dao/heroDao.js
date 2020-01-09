@@ -6,6 +6,8 @@ var star_base = require("../../config/gameCfg/star_base.json")
 var advanced_base = require("../../config/gameCfg/advanced_base.json")
 var recruit_base = require("../../config/gameCfg/recruit_base.json")
 var recruit_list = require("../../config/gameCfg/recruit_list.json")
+var equip_base = require("../../config/gameCfg/equip_base.json")
+var equip_level = require("../../config/gameCfg/equip_level.json")
 for(let i in recruit_base){
 	recruit_base[i]["weights"] = JSON.parse(recruit_base[i]["weights"])
 	recruit_base[i].allWeight = 0
@@ -132,6 +134,12 @@ heroDao.prototype.heroPrAll = function(areaId,uid,heros,cb) {
 			strList.push(advanced_base[ad].pr)
 		if(star_base[star] && star_base[star].pr)
 			strList.push(star_base[star].pr)
+		for(var part = 1;part <= 4;part++){
+			if(heros[i]["equip_"+part]){
+				var oldeId = equip_level[heros[i]["equip_"+part]]["part_"+part]
+				strList.push(oldeId+":"+1)
+			}
+		}
 	}
 	var areaManager = bearcat.getBean("areaManager")
 	var str = areaManager.areaMap[areaId].mergepcstr(strList)
