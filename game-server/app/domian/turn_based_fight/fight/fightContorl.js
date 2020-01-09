@@ -5,6 +5,8 @@ var star_base = require("../../../../config/gameCfg/star_base.json")
 var advanced_base = require("../../../../config/gameCfg/advanced_base.json")
 var advanced_talent = require("../../../../config/gameCfg/advanced_talent.json")
 var talent_list = require("../../../../config/gameCfg/talent_list.json")
+var equip_base = require("../../../../config/gameCfg/equip_base.json")
+var equip_level = require("../../../../config/gameCfg/equip_level.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -66,6 +68,20 @@ model.getCharacterInfo = function(info) {
 		    "magDef": lv_cfg[info.lv].magDef,
 		}
 		model.mergeData(info,lvInfo)
+	}
+	//装备计算
+	for(var part = 1;part <= 4;part++){
+		if(info["part_"+part]){
+			let oldeId = equip_level[info["part_"+part]]["part_"+part]
+			let strs = equip_base[oldeId]["pa"].split("&")
+			let equipInfo = {}
+			strs.forEach(function(m_str) {
+				let m_list = m_str.split(":")
+				equipInfo[m_list[0]] = Number(m_list[1])
+			})
+			model.mergeData(info,equipInfo)
+			model.mergeData(info,equipInfo)
+		}
 	}
 	//升星计算
 	if(info.star){
