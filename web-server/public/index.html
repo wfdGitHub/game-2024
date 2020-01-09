@@ -72,6 +72,31 @@
             console.log(data);
         });
       }
+      //============装备相关==============//
+      //穿戴装备
+      var wearEquip = function(eId,hId) {
+        pomelo.request("area.equipHandler.wearEquip", {eId : eId,hId : hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下装备
+      var unwearEquip = function(part,hId) {
+        pomelo.request("area.equipHandler.unwearEquip", {part : part,hId : hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //穿戴装备
+      var sellEquip = function(eId,count) {
+        pomelo.request("area.equipHandler.sellEquip", {eId : eId,count : count}, function(data) {
+            console.log(data);
+        });
+      }
+      //合成装备
+      var compoundEquip = function(eId,count) {
+        pomelo.request("area.equipHandler.compoundEquip", {eId : eId,count : count}, function(data) {
+            console.log(data);
+        });
+      }
       //============英雄相关==============//
       var mockFight = function() {
         pomelo.request("area.fightHandler.mockFight", {}, function(data) {
@@ -464,85 +489,6 @@
       //一键删除已读
       var deleteAllReadMail = function() {
         pomelo.request("area.mailHandler.deleteAllReadMail", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //============装备================//
-      //可穿戴装备洗练
-      var wearableWash = function(wId,locks) {
-        pomelo.request("area.equipHandler.wearableWash", {wId : wId,locks : locks}, function(data) {
-            console.log(data);
-        });
-      }
-      //已穿戴装备洗练
-      var dressedWash = function(eId,locks) {
-        pomelo.request("area.equipHandler.dressedWash", {eId : eId,locks : locks}, function(data) {
-            console.log(data);
-        });
-      }
-      //穿戴装备
-      var dressedEquip = function(wId) {
-        pomelo.request("area.equipHandler.dressedEquip", {wId : wId}, function(data) {
-            console.log(data);
-        });
-      }
-      //卸下装备
-      var takeofEquip = function(eId) {
-        pomelo.request("area.equipHandler.takeofEquip", {eId : eId}, function(data) {
-            console.log(data);
-        });
-      }
-      //强化装备
-      var equipIntensify = function(eId) {
-        pomelo.request("area.equipHandler.equipIntensify", {eId : eId}, function(data) {
-            console.log(data);
-        });
-      }
-      //获取装备池列表
-      var getEquipList = function() {
-        pomelo.request("area.equipHandler.getEquipList", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //获取可穿戴装备列表
-      var getWearableList = function() {
-        pomelo.request("area.equipHandler.getWearableList", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //获得装备池装备
-      var addEquip = function(eId,samsara,quality) {
-        pomelo.request("area.equipHandler.addEquip", {eId : eId,samsara : samsara,quality : quality}, function(data) {
-            console.log(data);
-        });
-      }
-      //合成装备
-      var compoundEquip = function(eId,samsara,quality) {
-        pomelo.request("area.equipHandler.compoundEquip", {eId : eId,samsara : samsara,quality : quality}, function(data) {
-            console.log(data);
-        });
-      }
-      //批量分解装备
-      var resolveEquip = function(elist) {
-        pomelo.request("area.equipHandler.resolveEquip", {elist}, function(data) {
-            console.log(data);
-        });
-      }
-      //兑换装备
-      var buyEquip = function(eId,samsara) {
-        pomelo.request("area.equipHandler.buyEquip", {eId : eId,samsara : samsara}, function(data) {
-            console.log(data);
-        });
-      }
-      //转换可穿戴装备
-      var changeWearable = function(eId,samsara,quality) {
-        pomelo.request("area.equipHandler.changeWearable", {eId : eId,samsara : samsara,quality : quality}, function(data) {
-            console.log(data);
-        });
-      }
-      //可穿戴转换回装备池
-      var changeEquip = function(wId) {
-        pomelo.request("area.equipHandler.changeEquip", {wId : wId}, function(data) {
             console.log(data);
         });
       }

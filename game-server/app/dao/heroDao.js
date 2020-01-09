@@ -170,6 +170,15 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 			cb(true,data)
 	})
 }
+//设置英雄属性
+heroDao.prototype.setHeroInfo = function(areaId,uid,hId,name,value,cb) {
+	this.redisDao.db.hset("area:area"+areaId+":player:"+uid+":heros:"+hId,name,value,function(err,data) {
+		if(err)
+			console.log(err)
+		if(cb)
+			cb(true,data)
+	})
+}
 //删除英雄属性
 heroDao.prototype.delHeroInfo = function(areaId,uid,hId,name,cb) {
 	this.redisDao.db.hdel("area:area"+areaId+":player:"+uid+":heros:"+hId,name,function(err,data) {
