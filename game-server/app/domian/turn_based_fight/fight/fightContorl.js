@@ -71,8 +71,8 @@ model.getCharacterInfo = function(info) {
 	}
 	//装备计算
 	for(var part = 1;part <= 4;part++){
-		if(info["part_"+part] && equip_level[info["part_"+part]]){
-			let oldeId = equip_level[info["part_"+part]]["part_"+part]
+		if(info["equip_"+part] && equip_level[info["equip_"+part]]){
+			let oldeId = equip_level[info["equip_"+part]]["part_"+part]
 			let strs = equip_base[oldeId]["pa"].split("&")
 			let equipInfo = {}
 			strs.forEach(function(m_str) {
