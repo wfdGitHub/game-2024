@@ -80,7 +80,6 @@ model.getCharacterInfo = function(info) {
 				equipInfo[m_list[0]] = Number(m_list[1])
 			})
 			model.mergeData(info,equipInfo)
-			model.mergeData(info,equipInfo)
 		}
 	}
 	//升星计算
