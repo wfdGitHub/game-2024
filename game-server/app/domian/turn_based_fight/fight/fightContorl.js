@@ -148,6 +148,31 @@ model.getCharacterInfo = function(info) {
 	}
 	return new character(info)
 }
+//获取团队显示数据
+model.getTeamShowData = function(team) {
+	var atkTeam = team.concat([])
+	var atkTeamAdds = {}
+	for(var i = 0;i < team.length;i++){
+		if(atkTeam[i]){
+			atkTeam[i] = this.getCharacterInfo(atkTeam[i])
+			if(atkTeam[i].team_adds){
+				for(var j in atkTeam[i].team_adds){
+					if(!atkTeamAdds[j]){
+						atkTeamAdds[j] = atkTeam[i].team_adds[j]
+					}else{
+						atkTeamAdds[j] += atkTeam[i].team_adds[j]
+					}
+				}
+			}
+		}
+	}
+	for(var i = 0;i < team.length;i++){
+		if(atkTeam[i]){
+			atkTeam[i].calAttAdd(atkTeamAdds)
+		}
+	}
+	return atkTeam
+}
 //数据合并
 model.mergeData = function(info1,info2) {
 	for(var i in info2){

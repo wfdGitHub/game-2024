@@ -116,6 +116,7 @@ var model = function(otps) {
 	//=========属性加成=======//
 	this.self_adds = {}							//自身百分比加成属性
 	this.team_adds = {}							//全队百分比加成属性
+	this.show_adds = {}							//总百分比加成
 	if(otps.self_atk_add)
 		this.self_adds["atk"] = otps.self_atk_add
 	if(otps.self_maxHP_add)
@@ -144,7 +145,6 @@ var model = function(otps) {
 		this.team_adds["crit"] = otps.team_crit_add
 	if(otps.team_critDef_add)
 		this.team_adds["critDef"] = otps.team_critDef_add	
-	
 	//=========技能=======//
 	if(otps.defaultSkill){
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
@@ -162,19 +162,19 @@ var model = function(otps) {
 }
 //百分比属性加成
 model.prototype.calAttAdd = function(team_adds) {
-	var info = Object.assign({},this.self_adds)
+	this.show_adds = Object.assign({},this.self_adds)
 	for(var i in team_adds){
-		if(!info[i]){
-			info[i] = team_adds[i]
+		if(!this.show_adds[i]){
+			this.show_adds[i] = team_adds[i]
 		}else{
-			info[i] += team_adds[i]
+			this.show_adds[i] += team_adds[i]
 		}
 	}
-	for(var i in info){
+	for(var i in this.show_adds){
 		if(i == "atk" || i == "maxHP" || i == "phyDef" || i == "magDef")
-			this.attInfo[i] += this.attInfo[i] * info[i]
+			this.attInfo[i] += this.attInfo[i] * this.show_adds[i]
 		else
-			this.attInfo[i] += info[i]
+			this.attInfo[i] += this.show_adds[i]
 	}
 	this.attInfo.hp = this.attInfo.maxHP
 }

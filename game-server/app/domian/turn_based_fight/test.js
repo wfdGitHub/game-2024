@@ -1,5 +1,5 @@
 var fightContorl = require("./fight/fightContorl.js")
-var atkTeam = [{id:105050},{id:105050},{id:105050}]
+var atkTeam = [{id:105050,"equip_1" : 1,"self_atk_add" : 0.1},{id:105050},{id:105050}]
 var defTeam = [{id:105050},{id:105050},{id:105050}]
 
 // // for(var i = 0;i < 6;i++){
@@ -18,4 +18,7 @@ var defTeam = [{id:105050},{id:105050},{id:105050}]
 // // 	defTeam[i] = fightContorl.getCharacterInfo(defTeam[i])
 // // 	// defTeam[i].angerSkill.kill_amp = 2
 // // }
-var list = fightContorl.beginFight(atkTeam,defTeam,{})
+// var list = fightContorl.beginFight(atkTeam,defTeam,{})
+// console.log(fightContorl.getFightRecord()[0])
+console.log(fightContorl.getTeamShowData([{id:105050,"equip_1" : 1},{id:105050,"equip_1" : 1,"team_atk_add" : 0.1}])[0].getSimpleInfo())
+console.log(fightContorl.getTeamShowData([{id:105050,"equip_1" : 1,"team_atk_add" : 0.1}])[0].getSimpleInfo())
