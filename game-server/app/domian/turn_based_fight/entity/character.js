@@ -172,7 +172,7 @@ model.prototype.calAttAdd = function(team_adds) {
 	}
 	for(var i in this.show_adds){
 		if(i == "atk" || i == "maxHP" || i == "phyDef" || i == "magDef")
-			this.attInfo[i] += this.attInfo[i] * this.show_adds[i]
+			this.attInfo[i] += Math.ceil(this.attInfo[i] * this.show_adds[i])
 		else
 			this.attInfo[i] += this.show_adds[i]
 	}

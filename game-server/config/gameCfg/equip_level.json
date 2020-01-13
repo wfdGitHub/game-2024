@@ -39,66 +39,110 @@
     "part_1": 5007010,
     "part_2": 5007020,
     "part_3": 5007030,
-    "part_4": 5007040
+    "part_4": 5007040,
+    "suitName": "袞银雪羽套",
+    "suit_2": "self_atk_add:0.02",
+    "suit_3": "self_maxHP_add:0.03",
+    "suit_4": "self_atk_add:0.01"
   },
   "8": {
     "part_1": 5008010,
     "part_2": 5008020,
     "part_3": 5008030,
-    "part_4": 5008040
+    "part_4": 5008040,
+    "suitName": "浑阳苍甲套",
+    "suit_2": "self_atk_add:0.04",
+    "suit_3": "self_maxHP_add:0.05",
+    "suit_4": "self_atk_add:0.02"
   },
   "9": {
     "part_1": 5009010,
     "part_2": 5009020,
     "part_3": 5009030,
-    "part_4": 5009040
+    "part_4": 5009040,
+    "suitName": "紫金踏云套",
+    "suit_2": "self_atk_add:0.05",
+    "suit_3": "self_maxHP_add:0.07",
+    "suit_4": "self_atk_add:0.04"
   },
   "10": {
     "part_1": 5010010,
     "part_2": 5010020,
     "part_3": 5010030,
-    "part_4": 5010040
+    "part_4": 5010040,
+    "suitName": "紫龙烟罗套",
+    "suit_2": "self_atk_add:0.07",
+    "suit_3": "self_maxHP_add:0.09",
+    "suit_4": "self_atk_add:0.04"
   },
   "11": {
     "part_1": 5011010,
     "part_2": 5011020,
     "part_3": 5011030,
-    "part_4": 5011040
+    "part_4": 5011040,
+    "suitName": "九天逐月套",
+    "suit_2": "self_atk_add:0.08",
+    "suit_3": "self_maxHP_add:0.11",
+    "suit_4": "self_atk_add:0.05"
   },
   "12": {
     "part_1": 5012010,
     "part_2": 5012020,
     "part_3": 5012030,
-    "part_4": 5012040
+    "part_4": 5012040,
+    "suitName": "青玉追风套",
+    "suit_2": "self_atk_add:0.10",
+    "suit_3": "self_maxHP_add:0.13",
+    "suit_4": "self_atk_add:0.05"
   },
   "13": {
     "part_1": 5013010,
     "part_2": 5013020,
     "part_3": 5013030,
-    "part_4": 5013040
+    "part_4": 5013040,
+    "suitName": "百战步云套",
+    "suit_2": "self_atk_add:0.11",
+    "suit_3": "self_maxHP_add:0.15",
+    "suit_4": "self_atk_add:0.06"
   },
   "14": {
     "part_1": 5014010,
     "part_2": 5014020,
     "part_3": 5014030,
-    "part_4": 5014040
+    "part_4": 5014040,
+    "suitName": "幽冥火云套",
+    "suit_2": "self_atk_add:0.12",
+    "suit_3": "self_maxHP_add:0.17",
+    "suit_4": "self_atk_add:0.07"
   },
   "15": {
     "part_1": 5015010,
     "part_2": 5015020,
     "part_3": 5015030,
-    "part_4": 5015040
+    "part_4": 5015040,
+    "suitName": "远古四圣套",
+    "suit_2": "self_atk_add:0.14",
+    "suit_3": "self_maxHP_add:0.19",
+    "suit_4": "self_atk_add:0.07"
   },
   "16": {
     "part_1": 5016010,
     "part_2": 5016020,
     "part_3": 5016030,
-    "part_4": 5016040
+    "part_4": 5016040,
+    "suitName": "山海四凶套",
+    "suit_2": "self_atk_add:0.15",
+    "suit_3": "self_maxHP_add:0.20",
+    "suit_4": "self_atk_add:0.08"
   },
   "17": {
     "part_1": 5017010,
     "part_2": 5017020,
     "part_3": 5017030,
-    "part_4": 5017040
+    "part_4": 5017040,
+    "suitName": "混元八卦套",
+    "suit_2": "self_atk_add:0.16",
+    "suit_3": "self_maxHP_add:0.21",
+    "suit_4": "self_atk_add:0.08"
   }
 }

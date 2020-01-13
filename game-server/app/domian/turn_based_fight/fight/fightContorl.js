@@ -70,9 +70,14 @@ model.getCharacterInfo = function(info) {
 		model.mergeData(info,lvInfo)
 	}
 	//装备计算
+	var equip_suit = {}
 	for(var part = 1;part <= 4;part++){
-		if(info["equip_"+part] && equip_level[info["equip_"+part]]){
-			let oldeId = equip_level[info["equip_"+part]]["part_"+part]
+		let elv = info["equip_"+part]
+		if(elv && equip_level[elv]){
+			if(!equip_suit[elv])
+				equip_suit[elv] = 0
+			equip_suit[elv]++
+			let oldeId = equip_level[elv]["part_"+part]
 			let strs = equip_base[oldeId]["pa"].split("&")
 			let equipInfo = {}
 			strs.forEach(function(m_str) {
@@ -80,6 +85,17 @@ model.getCharacterInfo = function(info) {
 				equipInfo[m_list[0]] = Number(m_list[1])
 			})
 			model.mergeData(info,equipInfo)
+		}
+	}
+	//套装加成
+	for(let elv in equip_suit){
+		for(let suitlv = 2;suitlv <= equip_suit[elv];suitlv++){
+			if(equip_level[elv]["suit_"+suitlv]){
+				let m_list = equip_level[elv]["suit_"+suitlv].split(":") 
+				let suitInfo = {}
+				suitInfo[m_list[0]] = Number(m_list[1])
+				model.mergeData(info,suitInfo)
+			}
 		}
 	}
 	//升星计算
@@ -162,7 +178,7 @@ model.getTeamShowData = function(team) {
 model.mergeData = function(info1,info2) {
 	for(var i in info2){
 		if(info1[i]){
-			if(Number.isInteger(info1[i]) && Number.isInteger(info2[i])){
+			if(Number.isFinite(info1[i]) && Number.isFinite(info2[i])){
 				info1[i] += info2[i]
 			}else{
 				info1[i] = info2[i]
