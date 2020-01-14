@@ -3,18 +3,24 @@
     "name": "铜币副本",
     "free_count": 2,
     "buy_count": 2,
-    "buy_pc": "202:20"
+    "buy_pc": "202:50"
   },
   "hero": {
     "name": "英雄副本",
     "free_count": 2,
     "buy_count": 2,
-    "buy_pc": "202:20"
+    "buy_pc": "202:50"
   },
   "exp": {
     "name": "经验副本",
     "free_count": 2,
     "buy_count": 2,
-    "buy_pc": "202:20"
+    "buy_pc": "202:50"
+  },
+  "equip": {
+    "name": "装备副本",
+    "free_count": 2,
+    "buy_count": 2,
+    "buy_pc": "202:50"
   }
 }
