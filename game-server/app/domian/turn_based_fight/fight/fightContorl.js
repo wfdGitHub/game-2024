@@ -174,6 +174,21 @@ model.getTeamShowData = function(team) {
 	var fighting = new fightingFun(atkTeam,defTeam,{})
 	return fighting.atkTeam
 }
+model.getTeamCE = function(team) {
+	var atkTeam = team.concat([])
+	for(var i = 0;i < atkTeam.length;i++){
+		atkTeam[i] = this.getCharacterInfo(atkTeam[i])
+	}
+	var defTeam = []
+	var fighting = new fightingFun(atkTeam,defTeam,{})
+   	var allCE = 0
+   	for(var i = 0;i < fighting.atkTeam.length;i++){
+   		if(fighting.atkTeam[i]){
+   			allCE += fighting.atkTeam[i].getCE()
+   		}
+   	}
+	return allCE
+}
 //数据合并
 model.mergeData = function(info1,info2) {
 	for(var i in info2){

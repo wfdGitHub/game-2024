@@ -1,0 +1,20 @@
+{
+  "coin": {
+    "name": "铜币副本",
+    "free_count": 2,
+    "buy_count": 2,
+    "buy_pc": "202:20"
+  },
+  "hero": {
+    "name": "英雄副本",
+    "free_count": 2,
+    "buy_count": 2,
+    "buy_pc": "202:20"
+  },
+  "exp": {
+    "name": "经验副本",
+    "free_count": 2,
+    "buy_count": 2,
+    "buy_pc": "202:20"
+  }
+}

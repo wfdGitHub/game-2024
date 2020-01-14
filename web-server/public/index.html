@@ -350,6 +350,18 @@
             console.log(data);
         });
       }
+      //获取日常副本数据
+      var getDailyfbInfo = function() {
+        pomelo.request("area.fbHandler.getDailyfbInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战日常副本
+      var challengeDailyfb = function(fbId,verify) {
+        pomelo.request("area.fbHandler.challengeDailyfb", {fbId : fbId,verify : verify}, function(data) {
+            console.log(data);
+        });
+      }
       //============神器================//
       //神器激活
       var artifactActivate = function(aId) {
@@ -740,7 +752,7 @@
   <body>
     <div class="g-button">
       登录系统 : 
-      <input id="test" type="button" value="登录账号" onclick="entry(10001)"/>
+      <input id="test" type="button" value="登录账号" onclick="entry(10002)"/>
       <input id="test" type="button" value="注册角色" onclick="register(2,''+Date.now(),1)"/>
       <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>

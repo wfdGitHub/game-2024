@@ -37,6 +37,24 @@ fbHandler.prototype.getFBInfo = function(msg, session, next) {
     next(null,{flag : true,msg : msg})
   })
 }
+//获取日常副本数据
+fbHandler.prototype.getDailyfbInfo = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getDailyfbInfo(uid,function(msg) {
+    next(null,{flag : true,msg : msg})
+  })
+}
+//挑战日常副本
+fbHandler.prototype.challengeDailyfb = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var fbId = msg.fbId
+  var verify = msg.verify
+  this.areaManager.areaMap[areaId].challengeDailyfb(uid,fbId,verify,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "fbHandler",

@@ -12,7 +12,7 @@ module.exports = function() {
 		"level" : 0,	//最高等级
 		"mopup" : 0		//扫荡次数
 	}
-	//玩家首次登陆刷新
+	//玩家每日刷新
 	this.TTTdayUpdate = function(uid) {
 		self.setObj(uid,main_name,"mopup",0)
 	}
@@ -20,7 +20,7 @@ module.exports = function() {
 	this.getTTTInfo = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(obj) {
 			for(var i in obj){
-				obj[i] = parseInt(obj[i])
+				obj[i] = Number(obj[i])
 			}
 			cb(Object.assign({},TTTInfo,obj))
 		})
@@ -64,7 +64,7 @@ module.exports = function() {
 			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getFightRecord()})
 			    	return
 			    }
-			   	if(true || winFlag){
+			   	if(winFlag){
 			   		self.incrbyObj(uid,main_name,"level",1)
 					var awardList = self.addItemStr(uid,ttttower_level[level]["awards"])
 					cb(true,awardList)
