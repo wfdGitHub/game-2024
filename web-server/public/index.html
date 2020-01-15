@@ -72,6 +72,19 @@
             console.log(data);
         });
       }
+      //============任务相关==============//
+      //获取关卡任务数据
+      var getCTaskInfo = function() {
+        pomelo.request("area.taskHandler.getCTaskInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取关卡任务奖励
+      var getCTaskAward = function(taskId) {
+        pomelo.request("area.taskHandler.getCTaskAward", {taskId : taskId}, function(data) {
+            console.log(data);
+        });
+      }
       //============装备相关==============//
       //穿戴装备
       var wearEquip = function(eId,hId) {

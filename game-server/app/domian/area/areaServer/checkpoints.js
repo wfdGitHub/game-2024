@@ -1,6 +1,8 @@
 var checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
+var checkpoints_task = require("../../../../config/gameCfg/checkpoints_task.json")
 var async = require("async")
 module.exports = function() {
+	var self = this
 	//获取BOSS挑战信息
 	this.getCheckpointsInfo = function(uid,cb) {
 		this.getPlayerData(uid,"boss",function(data) {
@@ -28,7 +30,6 @@ module.exports = function() {
 	//开始挑战关卡
 	this.challengeCheckpoints = function(uid,verify,cb) {
 		var level = 0
-		var self = this
 		async.waterfall([
 			function(next) {
 				//获取当前关卡
@@ -81,7 +82,6 @@ module.exports = function() {
 	}
 	//获取挂机奖励
 	this.getOnhookAward = function(uid,power,cb) {
-		var self = this
 		self.getPlayerData(uid,"onhookLastTime",function(onhookLastTime) {
 			var curTime = Date.now()
 			var tmpTime = Math.floor((curTime - onhookLastTime) / 1000)
@@ -113,7 +113,6 @@ module.exports = function() {
 	this.getQuickOnhookAward = function(uid,cb) {
 		var level = 0
 		var count = 0
-		var self = this
 		async.waterfall([
 			function(next) {
 				//获取今日快速挂机次数
@@ -158,6 +157,44 @@ module.exports = function() {
 			  	cb(true,{awardList : awardList})
 			}
 		],function(err) {
+			cb(false,err)
+		})
+	}
+	//获取关卡任务数据
+	this.getCTaskInfo = function(uid,cb) {
+		self.getObjAll(uid,"ctask",function(data) {
+			if(!data)
+				cb(true,{})
+			else
+				cb(true,data)
+		})
+	}
+	//获取关卡任务奖励
+	this.getCTaskAward = function(uid,taskId,cb) {
+		var lv = 0
+		async.waterfall([function(next) {
+			//获取当前关卡
+			self.getCheckpointsInfo(uid,function(data) {
+				lv = data
+				if(!checkpoints_task[taskId] || checkpoints_task[taskId]["lv"] > lv)
+					next("未完成领取条件")
+				else
+					next()
+			})
+		},function(next) {
+			self.getObj(uid,"ctask",taskId,function(data) {
+				if(data){
+					next("奖励已领取")
+				}else{
+					self.setObj(uid,"ctask",taskId,1)
+					next()
+				}
+			})
+		},function(next) {
+			let award = checkpoints_task[taskId]["award"]
+			var awardList = self.addItemStr(uid,award)
+			cb(true,{awardList : awardList})
+		}],function(err) {
 			cb(false,err)
 		})
 	}
