@@ -315,9 +315,11 @@ model.useAttackSkill = function(skill) {
 			}
 			//收到直接伤害反弹
 			if(targets[i].hit_rebound){
-				let tmpRecord = {type : "other_damage",value : targets[i].hit_rebound * recordInfo.targets[i].realValue}
+				let hit_rebound_value = targets[i].hit_rebound + targets[i].hit_rebound_add
+				let tmpRecord = {type : "other_damage",value : hit_rebound_value * recordInfo.targets[i].realValue}
 				tmpRecord = skill.character.onHit(targets[i],tmpRecord)
 				fightRecord.push(tmpRecord)
+				console.log("伤害反弹")
 			}
 		}
 	}
@@ -347,6 +349,12 @@ model.useHealSkill = function(skill) {
 		recordInfo.group = true
 	}
 	var targets = this.locator.getTargets(skill.character,skill.targetType)
+	let rate = 1
+	if(skill.character.skill_heal_amp && skill.isAnger)
+		rate += skill.character.skill_heal_amp
+	else if(skill.character.normal_heal_amp && !skill.isAnger){
+		rate += skill.character.normal_heal_amp
+	}
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died){
 			break
@@ -354,10 +362,9 @@ model.useHealSkill = function(skill) {
 		let target = targets[i]
 		let value = 0
 		if(skill.healType == "atk"){
-			value = skill.character.getTotalAtt("atk") * skill.mul
-			value = Math.round(value * (1 + skill.character.skill_heal_amp))
+			value = Math.round(skill.character.getTotalAtt("atk") * skill.mul * rate)
 		}else if(healType == "hp"){
-			value = Math.round(target.getTotalAtt("maxHP") * skill.mul)
+			value = Math.round(target.getTotalAtt("maxHP") * skill.mul * rate)
 		}else{
 			console.error("healType error "+healType)
 		}

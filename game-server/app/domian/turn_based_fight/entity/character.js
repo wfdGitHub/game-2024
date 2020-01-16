@@ -74,10 +74,12 @@ var model = function(otps) {
 	this.hit_turn_rate = otps.hit_turn_rate || 0	//受到直接伤害转化成生命值百分比
 	this.hit_turn_tg = otps.hit_turn_tg || 0		//受到直接伤害转化的生命值作用目标
 	this.hit_rebound = otps.hit_rebound || 0		//受到直接伤害反弹比例
+	this.hit_rebound_add = otps.hit_rebound_add || 0 //反弹增加比例
 	this.hit_less_anger = otps.hit_less_anger || 0	//受到普通攻击后，降低攻击自己的武将怒气
 	if(otps.hit_buff){
 		this.hit_buff = JSON.parse(otps.hit_buff)	//受到伤害给攻击者附加BUFF
 	}
+	this.normal_heal_amp = otps.normal_heal_amp || 0			//普攻治疗量加成
 	this.normal_add_anger = otps.normal_add_anger || 0			//普攻后恢复自身怒气
 	this.normal_less_anger = otps.normal_less_anger || 0		//普攻后降低目标怒气
 	this.normal_attack_amp = otps.normal_attack_amp || 0		//普攻伤害加成
@@ -196,7 +198,7 @@ model.prototype.calAttAdd = function(team_adds) {
 			break
 			default:
 				this.attInfo[i] += this.show_adds[i]
-	}
+		}
 	}
 	this.attInfo.hp = this.attInfo.maxHP
 }
