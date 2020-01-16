@@ -40,6 +40,8 @@ var model = function(otps) {
 	this.buffArg								//buff参数   若技能存在buff  以此代替buff本身参数
 	this.buffDuration							//buff持续时间   若技能存在buff  以此代替buff本身持续时间
 
+	this.less_skill_buffRate = otps.less_skill_buffRate || 0 //技能最高提升buff概率(目标越多效果越低)
+	this.less_normal_buffRate = otps.less_normal_buffRate || 0 //普攻最高提升buff概率(目标越多效果越低)
 	this.must_crit = false						//攻击必定暴击
 	this.next_must_crit = false					//下回合攻击暴击
 
@@ -144,7 +146,21 @@ var model = function(otps) {
 	if(otps.team_crit_add)
 		this.team_adds["crit"] = otps.team_crit_add
 	if(otps.team_critDef_add)
-		this.team_adds["critDef"] = otps.team_critDef_add	
+		this.team_adds["critDef"] = otps.team_critDef_add
+	//=======属性加成======//
+	if(this.lv > 100){
+		var lvdif = this.lv - 100
+		if(otps.atk_grow)
+			this.attInfo.atk += Math.ceil(otps.atk_grow * lvdif) || 0
+		if(otps.maxHP_grow){
+			this.attInfo.maxHP += Math.ceil(otps.maxHP_grow * lvdif) || 0
+			this.attInfo.hp = this.attInfo.maxHP
+		}
+		if(otps.phyDef_grow)
+			this.attInfo.phyDef += Math.ceil(otps.phyDef_grow * lvdif) || 0
+		if(otps.magDef_grow)
+			this.attInfo.magDef += Math.ceil(otps.magDef_grow * lvdif) || 0
+	}
 	//=========技能=======//
 	if(otps.defaultSkill){
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
@@ -171,10 +187,16 @@ model.prototype.calAttAdd = function(team_adds) {
 		}
 	}
 	for(var i in this.show_adds){
-		if(i == "atk" || i == "maxHP" || i == "phyDef" || i == "magDef")
-			this.attInfo[i] += Math.ceil(this.attInfo[i] * this.show_adds[i])
-		else
-			this.attInfo[i] += this.show_adds[i]
+		switch(i){
+			case "atk":
+			case "maxHP":
+			case "phyDef":
+			case "magDef":
+				this.attInfo[i] += Math.ceil(this.attInfo[i] * this.show_adds[i])
+			break
+			default:
+				this.attInfo[i] += this.show_adds[i]
+	}
 	}
 	this.attInfo.hp = this.attInfo.maxHP
 }

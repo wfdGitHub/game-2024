@@ -40,20 +40,26 @@ model.useSkill = function(skill) {
 			if(targets[i].died ||!targets[i].buffs["burn"]){
 				break
 			}
-			var burnBuffInfo = Object.assign({},skill.burn_buff_change,skill.character.burn_buff_change)
-			if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
-				buffManager.createBuff(skill.character,targets[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			var buffInfo = Object.assign({},skill.burn_buff_change,skill.character.burn_buff_change)
+			if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+				buffManager.createBuff(skill.character,targets[i],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 			}
 		}
 	}
 	//判断buff
 	if(skill.buffId){
 		var buffTargets = this.locator.getBuffTargets(skill.character,skill.buff_tg,targets)
+		let buffRate = skill.buffRate
+		//判断技能目标减少
+		if(skill.character.less_skill_buffRate){
+			let allLenth = this.locator.getTargetsNum(skill.targetType)
+			buffRate += ((allLenth - targets.length + 1) / allLenth) * skill.character.less_skill_buffRate
+		}
 		for(var i = 0;i < buffTargets.length;i++){
 			if(buffTargets[i].died){
 				break
 			}
-			if(this.seeded.random("判断BUFF命中率") < skill.buffRate){
+			if(this.seeded.random("判断BUFF命中率") < buffRate){
 				buffManager.createBuff(skill.character,buffTargets[i],{buffId : skill.buffId,buffArg : skill.buffArg,duration : skill.duration})
 			}
 		}
@@ -123,9 +129,9 @@ model.useSkill = function(skill) {
 			let buffTargets = this.locator.getBuffTargets(skill.character,skill.character.skill_later_buff.buff_tg,targets)
 			for(var i = 0;i < buffTargets.length;i++){
 				if(!buffTargets[i].died){
-					var burnBuffInfo = skill.character.skill_later_buff
-					if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
-						buffManager.createBuff(skill.character,buffTargets[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+					var buffInfo = skill.character.skill_later_buff
+					if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+						buffManager.createBuff(skill.character,buffTargets[i],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 					}
 				}
 			}
@@ -142,11 +148,17 @@ model.useSkill = function(skill) {
 		}
 		//普攻后追加BUFF
 		if(skill.character.normal_later_buff){
+			let buffInfo = skill.character.normal_later_buff
+			let buffRate = buffInfo.buffRate
+			//判断技能目标减少
+			if(skill.character.less_normal_buffRate){
+				let allLenth = this.locator.getTargetsNum(skill.targetType)
+				buffRate += ((allLenth - targets.length + 1) / allLenth) * skill.character.less_normal_buffRate
+			}
 			for(var i = 0;i < targets.length;i++){
 				if(!targets[i].died){
-					var burnBuffInfo = skill.character.normal_later_buff
-					if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
-						buffManager.createBuff(skill.character,targets[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+					if(this.seeded.random("判断BUFF命中率") < buffRate){
+						buffManager.createBuff(skill.character,targets[i],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 					}
 				}
 			}
@@ -296,9 +308,9 @@ model.useAttackSkill = function(skill) {
 			}
 			//收到伤害附加BUFF
 			if(targets[i].hit_buff){
-				var burnBuffInfo = targets[i].hit_buff
-				if(this.seeded.random("判断BUFF命中率") < burnBuffInfo.buffRate){
-					buffManager.createBuff(targets[i],skill.character,{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+				var buffInfo = targets[i].hit_buff
+				if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+					buffManager.createBuff(targets[i],skill.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 				}
 			}
 			//收到直接伤害反弹
