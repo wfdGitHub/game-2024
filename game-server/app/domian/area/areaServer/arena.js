@@ -128,6 +128,30 @@ module.exports = function() {
 			local.getTargetsInfo(list,cb)
 		})
 	}
+	//获取竞技场阵容
+	this.getAreaTeamByUid = function(targetUid,targetRank,cb) {
+		if(targetUid < 10000){
+			//机器人队伍
+			var range = util.binarySearch(rankList,targetRank)
+			var rand = Math.floor(Math.random() * 3 + 1)
+			if(!arena_rank[range] || !arena_rank[range]["team"+rand]){
+				cb(false,"机器人配置错误")
+				return
+			}
+			var defTeam = arena_rank[range]["team"+rand].concat()
+			cb(true,defTeam)
+		}else{
+			//玩家队伍
+			self.getDefendTeam(targetUid,function(defTeam) {
+				if(!defTeam){
+					cb(false,"敌方阵容错误")
+					return
+				}else{
+					cb(true,defTeam)
+				}
+			})
+		}
+	}
 	//获取我的竞技场数据
 	this.getMyArenaInfo = function(uid,cb) {
 		this.getObjAll(uid,mainName,function(data) {

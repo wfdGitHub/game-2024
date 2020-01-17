@@ -20,6 +20,16 @@ arenaHandler.prototype.getTargetList = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//获取目标阵容
+arenaHandler.prototype.getAreaTeamByUid = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var targetUid = msg.targetUid
+  var targetRank = msg.targetRank
+  this.areaManager.areaMap[areaId].getAreaTeamByUid(targetUid,targetRank,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //获取我的竞技场数据
 arenaHandler.prototype.getMyArenaInfo = function(msg, session, next) {
   var uid = session.uid

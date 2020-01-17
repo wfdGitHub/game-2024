@@ -228,6 +228,12 @@
               cb(data)
         });
       }
+      //获取目标阵容
+      var getAreaTeamByUid = function(targetUid,targetRank) {
+        pomelo.request("area.arenaHandler.getAreaTeamByUid", {targetUid : targetUid,targetRank : targetRank}, function(data) {
+            console.log(data);
+        });
+      }
       //获取我的竞技场数据
       var getMyArenaInfo = function(cb) {
         pomelo.request("area.arenaHandler.getMyArenaInfo", {}, function(data) {
