@@ -62,7 +62,18 @@ module.exports = function() {
 			    let defTeam = []
 			    let mon_list = JSON.parse(checkpointsCfg[level].mon_list)
 			    for(let i = 0;i < 6;i++){
-			    	defTeam.push({id : mon_list[i],lv : checkpointsCfg[level].mobLevel,ad : checkpointsCfg[level].mobAd,star : checkpointsCfg[level].star})
+			    	if(mon_list[i]){
+				    	let enemy = {id : mon_list[i],lv : checkpointsCfg[level].mobLevel,ad : checkpointsCfg[level].mobAd,star : checkpointsCfg[level].star}
+				    	if(checkpointsCfg[level].equip){
+				    		enemy["equip_1"] = checkpointsCfg[level].equip
+				    		enemy["equip_2"] = checkpointsCfg[level].equip
+				    		enemy["equip_3"] = checkpointsCfg[level].equip
+				    		enemy["equip_4"] = checkpointsCfg[level].equip
+				    	}
+				    	defTeam.push(enemy)
+			    	}else{
+			    		defTeam.push(0)
+			    	}
 			    }
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
