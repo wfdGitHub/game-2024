@@ -247,7 +247,7 @@ model.useAttackSkill = function(skill) {
 	if(allDamage){
 		if(skill.turn_rate && skill.turn_tg && !skill.character.died){
 			let tmpRecord = {type : "other_heal",targets : []}
-			let healValue = Math.round(allDamage * skill.turn_rate) || 1
+			let healValue = Math.round(allDamage * (skill.turn_rate + skill.character.skill_turn_rate)) || 1
 			let tmptargets = this.locator.getTargets(skill.character,skill.turn_tg)
 			for(var i = 0;i < tmptargets.length;i++){
 				let target = tmptargets[i]
@@ -256,8 +256,7 @@ model.useAttackSkill = function(skill) {
 				tmpRecord.targets.push(info)
 			}
 			fightRecord.push(tmpRecord)
-		}
-		if(skill.isAnger && skill.character.skill_turn_rate && skill.character.skill_turn_tg && !skill.character.died){
+		}else if(skill.isAnger && skill.character.skill_turn_rate && skill.character.skill_turn_tg && !skill.character.died){
 			let tmpRecord = {type : "other_heal",targets : []}
 			let healValue = Math.round(allDamage * skill.character.skill_turn_rate) || 1
 			let tmptargets = this.locator.getTargets(skill.character,skill.character.skill_turn_tg)
