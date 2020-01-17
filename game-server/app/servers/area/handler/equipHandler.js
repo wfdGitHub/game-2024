@@ -127,8 +127,8 @@ equipHandler.prototype.compoundEquip = function(msg, session, next) {
     return
   }
   var self = this
-  var pc = "201:"+count*equip_base[eId]["compound_pc"]+"&"+eId+":"+count
-  self.areaManager.areaMap[areaId].consumeItems(uid,pc,3,function(flag,err) {
+  var pc = "201:"+count*equip_base[eId]["compound_pc"]+"&"+eId+":"+count*3
+  self.areaManager.areaMap[areaId].consumeItems(uid,pc,1,function(flag,err) {
     if(!flag){
       next(null,{flag : false,err : err})
       return
