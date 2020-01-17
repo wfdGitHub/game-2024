@@ -14,7 +14,7 @@ var winAward = arena_cfg["win"]["value"]								//失败奖励
 var loseAward = arena_cfg["lose"]["value"]								//购买次数消耗
 var rankUp = arena_cfg["rankUp"]["value"] 								//排名提示奖励物品ID
 var sysChatLv = 10														//系统广播通知排名临界值
-var maxRecordNum = 3													//最大记录条数
+var maxRecordNum = 10													//最大记录条数
 var rankList = []
 for(var i in arena_rank){
 	rankList.push(parseInt(i))
@@ -295,6 +295,9 @@ module.exports = function() {
 	}
 	//添加记录
 	local.addRecord = function(uid,type,winFlag,targetInfo,fightInfo,rank) {
+		if(uid < 10000){
+			return
+		}
 		var atkUser = self.getSimpleUser(uid)
 		var info = {type : type,winFlag : winFlag,atkUser : atkUser,defUser : targetInfo,fightInfo : fightInfo,time : Date.now()}
 		if(rank){
