@@ -11,9 +11,9 @@ connectorRemote.prototype.updateArea = function(areaInfo,serverId,cb) {
 	cb()
 }
 connectorRemote.prototype.kickUser = function(uid,cb) {
-	if( !! this.sessionService.getByUid(uid)) {
-		this.connectorManager.sendByUid(uid,{type : "kick"})
-		var uids = this.sessionService.getByUid(uid)
+	this.connectorManager.sendByUid(uid,{type : "kick"})
+	var uids = this.sessionService.getByUid(uid)
+	if(uids) {
 		for(var i = 0;i < uids.length;i++){
 			this.sessionService.kickBySessionId(uids[i].id)
 		}
