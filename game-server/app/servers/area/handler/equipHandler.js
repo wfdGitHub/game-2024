@@ -102,6 +102,7 @@ equipHandler.prototype.sellEquip = function(msg, session, next) {
     next(null,{flag : false,err : "count error "+count})
     return
   }
+  var self = this
   self.areaManager.areaMap[areaId].consumeItems(uid,eId+":"+count,1,function(flag,err) {
     if(!flag){
       next(null,{flag : false,err : err})
