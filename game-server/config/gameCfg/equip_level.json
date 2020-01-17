@@ -3,146 +3,163 @@
     "part_1": 5001010,
     "part_2": 5001020,
     "part_3": 5001030,
-    "part_4": 5001040
+    "part_4": 5001040,
+    "show_ce": 120
   },
   "2": {
     "part_1": 5002010,
     "part_2": 5002020,
     "part_3": 5002030,
-    "part_4": 5002040
+    "part_4": 5002040,
+    "show_ce": 150
   },
   "3": {
     "part_1": 5003010,
     "part_2": 5003020,
     "part_3": 5003030,
-    "part_4": 5003040
+    "part_4": 5003040,
+    "show_ce": 180
   },
   "4": {
     "part_1": 5004010,
     "part_2": 5004020,
     "part_3": 5004030,
-    "part_4": 5004040
+    "part_4": 5004040,
+    "show_ce": 270
   },
   "5": {
     "part_1": 5005010,
     "part_2": 5005020,
     "part_3": 5005030,
-    "part_4": 5005040
+    "part_4": 5005040,
+    "show_ce": 360
   },
   "6": {
     "part_1": 5006010,
     "part_2": 5006020,
     "part_3": 5006030,
-    "part_4": 5006040
+    "part_4": 5006040,
+    "show_ce": 450
   },
   "7": {
     "part_1": 5007010,
     "part_2": 5007020,
     "part_3": 5007030,
     "part_4": 5007040,
-    "suitName": "袞银雪羽套",
+    "suitName": "落神圣剑套",
     "suit_2": "self_atk_add:0.02",
     "suit_3": "self_maxHP_add:0.03",
-    "suit_4": "self_atk_add:0.01"
+    "suit_4": "self_atk_add:0.01",
+    "show_ce": 630
   },
   "8": {
     "part_1": 5008010,
     "part_2": 5008020,
     "part_3": 5008030,
     "part_4": 5008040,
-    "suitName": "浑阳苍甲套",
+    "suitName": "苍月风云套",
     "suit_2": "self_atk_add:0.04",
     "suit_3": "self_maxHP_add:0.05",
-    "suit_4": "self_atk_add:0.02"
+    "suit_4": "self_atk_add:0.02",
+    "show_ce": 840
   },
   "9": {
     "part_1": 5009010,
     "part_2": 5009020,
     "part_3": 5009030,
     "part_4": 5009040,
-    "suitName": "紫金踏云套",
+    "suitName": "老君亲制套",
     "suit_2": "self_atk_add:0.05",
     "suit_3": "self_maxHP_add:0.07",
-    "suit_4": "self_atk_add:0.04"
+    "suit_4": "self_atk_add:0.04",
+    "show_ce": 1140
   },
   "10": {
     "part_1": 5010010,
     "part_2": 5010020,
     "part_3": 5010030,
     "part_4": 5010040,
-    "suitName": "紫龙烟罗套",
+    "suitName": "破晓梦见套",
     "suit_2": "self_atk_add:0.07",
     "suit_3": "self_maxHP_add:0.09",
-    "suit_4": "self_atk_add:0.04"
+    "suit_4": "self_atk_add:0.04",
+    "show_ce": 1500
   },
   "11": {
     "part_1": 5011010,
     "part_2": 5011020,
     "part_3": 5011030,
     "part_4": 5011040,
-    "suitName": "九天逐月套",
+    "suitName": "征战四方套",
     "suit_2": "self_atk_add:0.08",
     "suit_3": "self_maxHP_add:0.11",
-    "suit_4": "self_atk_add:0.05"
+    "suit_4": "self_atk_add:0.05",
+    "show_ce": 2040
   },
   "12": {
     "part_1": 5012010,
     "part_2": 5012020,
     "part_3": 5012030,
     "part_4": 5012040,
-    "suitName": "青玉追风套",
+    "suitName": "轩辕身穿套",
     "suit_2": "self_atk_add:0.10",
     "suit_3": "self_maxHP_add:0.13",
-    "suit_4": "self_atk_add:0.05"
+    "suit_4": "self_atk_add:0.05",
+    "show_ce": 2730
   },
   "13": {
     "part_1": 5013010,
     "part_2": 5013020,
     "part_3": 5013030,
     "part_4": 5013040,
-    "suitName": "百战步云套",
+    "suitName": "战神之势套",
     "suit_2": "self_atk_add:0.11",
     "suit_3": "self_maxHP_add:0.15",
-    "suit_4": "self_atk_add:0.06"
+    "suit_4": "self_atk_add:0.06",
+    "show_ce": 3690
   },
   "14": {
     "part_1": 5014010,
     "part_2": 5014020,
     "part_3": 5014030,
     "part_4": 5014040,
-    "suitName": "幽冥火云套",
+    "suitName": "逐鹿战胜套",
     "suit_2": "self_atk_add:0.12",
     "suit_3": "self_maxHP_add:0.17",
-    "suit_4": "self_atk_add:0.07"
+    "suit_4": "self_atk_add:0.07",
+    "show_ce": 4950
   },
   "15": {
     "part_1": 5015010,
     "part_2": 5015020,
     "part_3": 5015030,
     "part_4": 5015040,
-    "suitName": "远古四圣套",
+    "suitName": "盘古开天套",
     "suit_2": "self_atk_add:0.14",
     "suit_3": "self_maxHP_add:0.19",
-    "suit_4": "self_atk_add:0.07"
+    "suit_4": "self_atk_add:0.07",
+    "show_ce": 6630
   },
   "16": {
     "part_1": 5016010,
     "part_2": 5016020,
     "part_3": 5016030,
     "part_4": 5016040,
-    "suitName": "山海四凶套",
+    "suitName": "诛神四件套",
     "suit_2": "self_atk_add:0.15",
     "suit_3": "self_maxHP_add:0.20",
-    "suit_4": "self_atk_add:0.08"
+    "suit_4": "self_atk_add:0.08",
+    "show_ce": 8940
   },
   "17": {
     "part_1": 5017010,
     "part_2": 5017020,
     "part_3": 5017030,
     "part_4": 5017040,
-    "suitName": "混元八卦套",
+    "suitName": "创世传说套",
     "suit_2": "self_atk_add:0.16",
     "suit_3": "self_maxHP_add:0.21",
-    "suit_4": "self_atk_add:0.08"
+    "suit_4": "self_atk_add:0.08",
+    "show_ce": 12000
   }
 }
