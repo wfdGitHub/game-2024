@@ -1,1144 +1,1001 @@
 {
   "100": {
     "name": "主角经验",
-    "des": "主角经验，用于升级主角等级",
-    "quality": 3
+    "des": "主角经验，用于升级主角等级"
   },
   "101": {
     "name": "英雄经验",
-    "des": "英雄经验，可用于升级英雄等级",
-    "quality": 3
+    "des": "英雄经验，可用于升级英雄等级"
   },
   "201": {
     "name": "铜币",
-    "des": "铜币",
-    "quality": 3
+    "des": "铜币"
   },
   "202": {
     "name": "元宝",
-    "des": "元宝",
-    "quality": 4
+    "des": "元宝"
   },
   "203": {
     "name": "英魂",
-    "des": "分解英雄获得英魂，英魂可在英魂商店中兑换商品",
-    "quality": 3
+    "des": "分解英雄获得英魂，英魂可在英魂商店中兑换商品"
   },
   "204": {
     "name": "游历值",
-    "des": "游历值",
-    "quality": 3
+    "des": "游历值"
   },
   "205": {
     "name": "声望",
-    "des": "挑战竞技场可获得，用于竞技场商店兑换商品",
-    "quality": 3
+    "des": "挑战竞技场可获得，用于竞技场商店兑换商品"
   },
   "301": {
     "name": "英雄积分",
-    "des": "英雄积分，用于积分招募",
-    "quality": 3
+    "des": "英雄积分，用于积分招募"
   },
   "103010": {
     "name": "巨灵神英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 103010,
-    "quality": 4
+    "arg": 103010
   },
   "103020": {
     "name": "龙子英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 103020,
-    "quality": 4
+    "arg": 103020
   },
   "104000": {
     "name": "4星英魂*神",
     "des": "30个英魂可合成神族4星英雄",
     "isBag": true,
     "useType": "randChip",
-    "arg": "randChip_1_1",
-    "quality": 3
+    "arg": "randChip_1_1"
   },
   "104010": {
     "name": "神天兵英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 104010,
-    "quality": 4
+    "arg": 104010
   },
   "104020": {
     "name": "巡游天兵英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 104020,
-    "quality": 4
+    "arg": 104020
   },
   "104030": {
     "name": "巡游天将英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 104030,
-    "quality": 4
+    "arg": 104030
   },
   "104040": {
     "name": "仙女英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 104040,
-    "quality": 4
+    "arg": 104040
   },
   "105000": {
     "name": "5星英魂*神",
     "des": "30个英魂可合成神族5星英雄",
     "isBag": true,
     "useType": "randChip",
-    "arg": "randChip_1_2",
-    "quality": 4
+    "arg": "randChip_1_2"
   },
   "105010": {
     "name": "太上老君英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 105010,
-    "quality": 4
+    "arg": 105010
   },
   "105020": {
     "name": "元始天尊英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 105020,
-    "quality": 4
+    "arg": 105020
   },
   "105030": {
     "name": "雷公英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 105030,
-    "quality": 4
+    "arg": 105030
   },
   "105040": {
     "name": "混元天尊英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 105040,
-    "quality": 4
+    "arg": 105040
   },
   "105050": {
     "name": "神子英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 105050,
-    "quality": 4
+    "arg": 105050
   },
   "105060": {
     "name": "火婴英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 105060,
-    "quality": 4
+    "arg": 105060
   },
   "105070": {
     "name": "九天神女英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 105070,
-    "quality": 4
+    "arg": 105070
   },
   "105080": {
     "name": "道德天君英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 105080,
-    "quality": 4
+    "arg": 105080
   },
   "105090": {
     "name": "落霞神女英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 105090,
-    "quality": 4
+    "arg": 105090
   },
   "105100": {
     "name": "天帝英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 105100,
-    "quality": 4
+    "arg": 105100
   },
   "105110": {
     "name": "龙王英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 105110,
-    "quality": 4
+    "arg": 105110
   },
   "105120": {
     "name": "龙女英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 105120,
-    "quality": 4
+    "arg": 105120
   },
   "203010": {
     "name": "伶伦英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 203010,
-    "quality": 4
+    "arg": 203010
   },
   "203020": {
     "name": "风后英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 203020,
-    "quality": 4
+    "arg": 203020
   },
   "204000": {
     "name": "4星英魂*人",
     "des": "30个英魂可合成人族4星英雄",
     "isBag": true,
     "useType": "randChip",
-    "arg": "randChip_2_1",
-    "quality": 3
+    "arg": "randChip_2_1"
   },
   "204010": {
     "name": "幻舞英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 204010,
-    "quality": 4
+    "arg": 204010
   },
   "204020": {
     "name": "暗夜英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 204020,
-    "quality": 4
+    "arg": 204020
   },
   "204030": {
     "name": "碧合英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 204030,
-    "quality": 4
+    "arg": 204030
   },
   "204040": {
     "name": "朱离英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 204040,
-    "quality": 4
+    "arg": 204040
   },
   "205000": {
     "name": "5星英魂*人",
     "des": "30个英魂可合成人族5星英雄",
     "isBag": true,
     "useType": "randChip",
-    "arg": "randChip_2_2",
-    "quality": 4
+    "arg": "randChip_2_2"
   },
   "205010": {
     "name": "剑芒英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 205010,
-    "quality": 4
+    "arg": 205010
   },
   "205020": {
     "name": "帝师英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 205020,
-    "quality": 4
+    "arg": 205020
   },
   "205030": {
     "name": "神农英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 205030,
-    "quality": 4
+    "arg": 205030
   },
   "205040": {
     "name": "大禹英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 205040,
-    "quality": 4
+    "arg": 205040
   },
   "205050": {
     "name": "祝融英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 205050,
-    "quality": 4
+    "arg": 205050
   },
   "205060": {
     "name": "女英英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 205060,
-    "quality": 4
+    "arg": 205060
   },
   "205070": {
     "name": "轩辕英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 205070,
-    "quality": 4
+    "arg": 205070
   },
   "205080": {
     "name": "慕容龙城英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 205080,
-    "quality": 4
+    "arg": 205080
   },
   "205090": {
     "name": "大鸿英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 205090,
-    "quality": 4
+    "arg": 205090
   },
   "205100": {
     "name": "仓颉英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 205100,
-    "quality": 4
+    "arg": 205100
   },
   "205110": {
     "name": "后羿英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 205110,
-    "quality": 4
+    "arg": 205110
   },
   "205120": {
     "name": "力牧英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 205120,
-    "quality": 4
+    "arg": 205120
   },
   "303010": {
     "name": "勾魂英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 303010,
-    "quality": 4
+    "arg": 303010
   },
   "303020": {
     "name": "夺魄英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 303020,
-    "quality": 4
+    "arg": 303020
   },
   "304000": {
     "name": "4星英魂*魔",
     "des": "30个英魂可合成魔族4星英雄",
     "isBag": true,
     "useType": "randChip",
-    "arg": "randChip_3_1",
-    "quality": 3
+    "arg": "randChip_3_1"
   },
   "304010": {
     "name": "角魔英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 304010,
-    "quality": 4
+    "arg": 304010
   },
   "304020": {
     "name": "幽魂英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 304020,
-    "quality": 4
+    "arg": 304020
   },
   "304030": {
     "name": "英招英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 304030,
-    "quality": 4
+    "arg": 304030
   },
   "304040": {
     "name": "狐妖英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 304040,
-    "quality": 4
+    "arg": 304040
   },
   "305000": {
     "name": "5星英魂*魔",
     "des": "30个英魂可合成魔族5星英雄",
     "isBag": true,
     "useType": "randChip",
-    "arg": "randChip_3_2",
-    "quality": 4
+    "arg": "randChip_3_2"
   },
   "305010": {
     "name": "蚩尤英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 305010,
-    "quality": 4
+    "arg": 305010
   },
   "305020": {
     "name": "牛魔英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 305020,
-    "quality": 4
+    "arg": 305020
   },
   "305030": {
     "name": "魔君英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 305030,
-    "quality": 4
+    "arg": 305030
   },
   "305040": {
     "name": "魔王英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 305040,
-    "quality": 4
+    "arg": 305040
   },
   "305050": {
     "name": "炎魔英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 305050,
-    "quality": 4
+    "arg": 305050
   },
   "305060": {
     "name": "夸父英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 305060,
-    "quality": 4
+    "arg": 305060
   },
   "305070": {
     "name": "旱魃英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 305070,
-    "quality": 4
+    "arg": 305070
   },
   "305080": {
     "name": "魔猴英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 305080,
-    "quality": 4
+    "arg": 305080
   },
   "305090": {
     "name": "魔鸟人英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 305090,
-    "quality": 4
+    "arg": 305090
   },
   "305100": {
     "name": "远古巨魔英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 305100,
-    "quality": 4
+    "arg": 305100
   },
   "305110": {
     "name": "魔子英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 305110,
-    "quality": 4
+    "arg": 305110
   },
   "305120": {
     "name": "魔兔英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 305120,
-    "quality": 4
+    "arg": 305120
   },
   "403010": {
     "name": "雪虎英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 403010,
-    "quality": 4
+    "arg": 403010
   },
   "403020": {
     "name": "阿宝英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 403020,
-    "quality": 4
+    "arg": 403020
   },
   "404000": {
     "name": "4星英魂*妖",
     "des": "30个英魂可合成妖族4星英雄",
     "isBag": true,
     "useType": "randChip",
-    "arg": "randChip_4_1",
-    "quality": 3
+    "arg": "randChip_4_1"
   },
   "404010": {
     "name": "阿国英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 404010,
-    "quality": 4
+    "arg": 404010
   },
   "404020": {
     "name": "猴妖英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 404020,
-    "quality": 4
+    "arg": 404020
   },
   "404030": {
     "name": "幼年穷奇英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 404030,
-    "quality": 4
+    "arg": 404030
   },
   "404040": {
     "name": "幼年麒麟英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 404040,
-    "quality": 4
+    "arg": 404040
   },
   "405000": {
     "name": "5星英魂*妖",
     "des": "30个英魂可合成妖族5星英雄",
     "isBag": true,
     "useType": "randChip",
-    "arg": "randChip_4_2",
-    "quality": 4
+    "arg": "randChip_4_2"
   },
   "405010": {
     "name": "白虎英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 405010,
-    "quality": 4
+    "arg": 405010
   },
   "405020": {
     "name": "黄龙英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 405020,
-    "quality": 4
+    "arg": 405020
   },
   "405030": {
     "name": "龙龟英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 405030,
-    "quality": 4
+    "arg": 405030
   },
   "405040": {
     "name": "穷奇英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 405040,
-    "quality": 4
+    "arg": 405040
   },
   "405050": {
     "name": "仙鹤英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 405050,
-    "quality": 4
+    "arg": 405050
   },
   "405060": {
     "name": "白泽英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 405060,
-    "quality": 4
+    "arg": 405060
   },
   "405070": {
     "name": "饕餮英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 405070,
-    "quality": 4
+    "arg": 405070
   },
   "405080": {
     "name": "青龙英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 405080,
-    "quality": 4
+    "arg": 405080
   },
   "405090": {
     "name": "瑞兽英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 405090,
-    "quality": 4
+    "arg": 405090
   },
   "405100": {
     "name": "神鸟英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 405100,
-    "quality": 4
+    "arg": 405100
   },
   "405110": {
     "name": "年兽英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 405110,
-    "quality": 4
+    "arg": 405110
   },
   "405120": {
     "name": "翼虎英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "useType": "heroChip",
-    "arg": 405120,
-    "quality": 4
+    "arg": 405120
   },
   "504000": {
     "name": "4星英魂",
     "des": "30个英魂可合成4星英雄",
     "isBag": true,
     "useType": "randChip",
-    "arg": "randChip_5_1",
-    "quality": 3
+    "arg": "randChip_5_1"
   },
   "505000": {
     "name": "5星英魂",
     "des": "30个英魂可合成5星英雄",
     "isBag": true,
     "useType": "randChip",
-    "arg": "randChip_5_2",
-    "quality": 4
+    "arg": "randChip_5_2"
   },
   "1000010": {
     "name": "副本钥匙",
     "des": "副本钥匙，用于开启副本",
-    "isBag": true,
-    "quality": 3
+    "isBag": true
   },
   "1000020": {
     "name": "扫荡券",
     "des": "扫荡券，用于扫荡已经通关过的通天塔",
-    "isBag": true,
-    "quality": 2
+    "isBag": true
   },
   "1000050": {
     "name": "魂石",
     "des": "英雄灵气聚集而成，能够使英雄突破到更高的水平",
-    "isBag": true,
-    "quality": 2
+    "isBag": true
   },
   "1000070": {
     "name": "圣灵石",
     "des": "有天地灵气自然孕育而成拥有极强的灵气，能拥有吸引英雄",
-    "isBag": true,
-    "quality": 2
+    "isBag": true
   },
   "1000080": {
     "name": "女娲石",
     "des": "女娲补天所用之灵石，散发出的光芒能够吸引3星以上的英雄",
     "isBag": true,
-    "quality": 3,
     "buy": "202:300",
     "buyNum": 1
   },
   "1000120": {
     "name": "盘古石",
     "des": "混沌之灵石，盘古开天后散落，除了灵气外还有神识，能够引领指定种族4星以上的英雄",
+    "isBag": true
+  },
+  "1001001": {
+    "name": "绿色装备宝箱",
+    "des": "可开出绿色装备",
     "isBag": true,
-    "quality": 4
+    "useType": "chest",
+    "arg": "equip_chest_1"
+  },
+  "1001002": {
+    "name": "蓝色装备宝箱",
+    "des": "可开出蓝色装备",
+    "isBag": true,
+    "useType": "chest",
+    "arg": "equip_chest_2"
+  },
+  "1001003": {
+    "name": "紫色装备宝箱",
+    "des": "可开出紫色装备",
+    "isBag": true,
+    "useType": "chest",
+    "arg": "equip_chest_3"
   },
   "5001010": {
-    "name": "木剑",
-    "des": "桃木制成的剑，可以用来给小孩当玩具",
-    "isBag": true,
-    "quality": 1
+    "name": "短剑",
+    "des": "普通的短剑，没有什么特别之处",
+    "isBag": true
   },
   "5001020": {
-    "name": "布衣",
-    "des": "粗布缝制而成的上衣，可以简单的蔽体御寒",
-    "isBag": true,
-    "quality": 1
+    "name": "麻衣",
+    "des": "麻布制成的衣服，穿在身上特别不舒服",
+    "isBag": true
   },
   "5001030": {
-    "name": "布袴",
-    "des": "粗布缝制而成的下装，可以简单的蔽体御寒",
-    "isBag": true,
-    "quality": 1
+    "name": "绳腰",
+    "des": "用绳子做成的腰带，勉强能系上",
+    "isBag": true
   },
   "5001040": {
     "name": "草鞋",
-    "des": "稻草编织而成，轻便、防滑又廉价",
-    "isBag": true,
-    "quality": 1
+    "des": "麻绳编制的草鞋，穿上后很磨脚",
+    "isBag": true
   },
   "5002010": {
-    "name": "锈剑",
-    "des": "锈迹斑驳的剑，看起来没有什么用",
-    "isBag": true,
-    "quality": 1
+    "name": "阔剑",
+    "des": "普通商店出售的剑，不够锋利经常被砍断",
+    "isBag": true
   },
   "5002020": {
-    "name": "皮甲",
-    "des": "大块兽皮用皮条缝制在一起，具有一定的防护能力",
-    "isBag": true,
-    "quality": 1
+    "name": "布衣",
+    "des": "粗布制成的衣服，勉强能穿",
+    "isBag": true
   },
   "5002030": {
-    "name": "皮袴",
-    "des": "大块兽皮用皮条缝制在一起，具有一定的防护能力",
-    "isBag": true,
-    "quality": 1
+    "name": "布腰",
+    "des": "粗布捆成一团，能够系上但是不美观",
+    "isBag": true
   },
   "5002040": {
-    "name": "荷履",
-    "des": "缎面所织成的青荷色的布鞋，穿着简约而舒适",
-    "isBag": true,
-    "quality": 1
+    "name": "布鞋",
+    "des": "粗布剪成鞋子的样子，没有鞋底",
+    "isBag": true
   },
   "5003010": {
-    "name": "青铜剑",
-    "des": "以青铜铸成成的剑，勉强算是称手",
-    "isBag": true,
-    "quality": 2
+    "name": "君子剑",
+    "des": "铸剑大师专门为君子们量身定做的剑",
+    "isBag": true
   },
   "5003020": {
-    "name": "连环甲",
-    "des": "铁环互相套扣缀合成衣状，形如网锁，柔软而轻便",
-    "isBag": true,
-    "quality": 2
+    "name": "蓝染衣",
+    "des": "采用蓝色晶石与布料一起制成，特别贴身",
+    "isBag": true
   },
   "5003030": {
-    "name": "环腿甲",
-    "des": "铁环互相套扣缀合成护腿，形如网锁，柔软而轻便",
-    "isBag": true,
-    "quality": 2
+    "name": "鬼面腰",
+    "des": "鬼面制作大师根据制作面具的工艺打造鬼面腰带",
+    "isBag": true
   },
   "5003040": {
-    "name": "羊皮靴",
-    "des": "羊皮缝制的长靴，柔软而耐磨损",
-    "isBag": true,
-    "quality": 2
+    "name": "轻羽鞋",
+    "des": "采用蓝色晶石和羽毛制成，特别轻便好用",
+    "isBag": true
   },
   "5004010": {
-    "name": "凡铁剑",
-    "des": "凡铁铸成的剑，开锋之后较为锋利",
-    "isBag": true,
-    "quality": 2
+    "name": "圣人剑",
+    "des": "铸剑圣人花其一生的时间打造而成，非常锋利",
+    "isBag": true
   },
   "5004020": {
-    "name": "精钢甲",
-    "des": "精钢烧制的盔甲，重而结实，可以有效的降低伤害",
-    "isBag": true,
-    "quality": 2
+    "name": "鳞风甲",
+    "des": "用鳞片手动敲打而成，有较强的防御能力",
+    "isBag": true
   },
   "5004030": {
-    "name": "钢腿甲",
-    "des": "精钢烧制的护腿，重而结实，可以有效的降低伤害",
-    "isBag": true,
-    "quality": 2
+    "name": "盛世腰",
+    "des": "人皇为盛世而打造的腰带，有较强的观赏性",
+    "isBag": true
   },
   "5004040": {
-    "name": "白云靴",
-    "des": "麻布缝制而成的长靴，靴面素白，如白云浮空",
-    "isBag": true,
-    "quality": 2
+    "name": "翔空覆",
+    "des": "羽人族的独家制作工艺，穿上可翔空而行",
+    "isBag": true
   },
   "5005010": {
-    "name": "精钢剑",
-    "des": "由精钢所铸成，称得上是一把好剑",
-    "isBag": true,
-    "quality": 3
+    "name": "天工剑",
+    "des": "巧夺天工自然而成，经过千百年的自然打磨最终成剑",
+    "isBag": true
   },
   "5005020": {
-    "name": "龙鳞铠",
-    "des": "龙鳞嵌合而成的铠甲，非常坚硬，能抵御大部分伤害",
-    "isBag": true,
-    "quality": 3
+    "name": "紫纹铠",
+    "des": "用紫晶石与天外玄铁制成，闪耀着紫色的光芒",
+    "isBag": true
   },
   "5005030": {
-    "name": "鳞腿甲",
-    "des": "龙鳞嵌合而成的护腿，非常坚硬，能抵御大部分伤害",
-    "isBag": true,
-    "quality": 3
+    "name": "紫耀腰",
+    "des": "用紫晶石与天外玄铁制成，闪耀着紫色的光芒",
+    "isBag": true
   },
   "5005040": {
-    "name": "翘金靴",
-    "des": "皮制的马靴，鞋尖微微上翘并裹有金箔，彰显地位尊贵",
-    "isBag": true,
-    "quality": 3
+    "name": "祥云履",
+    "des": "制作大师看到天上云获得灵感，花费大量的时间制成",
+    "isBag": true
   },
   "5006010": {
-    "name": "衮银细剑",
-    "des": "以衮银铸成的细剑，有削铁如泥之能",
-    "isBag": true,
-    "quality": 3
+    "name": "降龙之剑",
+    "des": "人族与妖族大战时，此剑曾刺杀过蛟龙，散发出凶兽的光芒",
+    "isBag": true
   },
   "5006020": {
-    "name": "流云战袍",
-    "des": "选用素锦织成战袍，上绣流云纹，着身行走，若有轻云相附",
-    "isBag": true,
-    "quality": 3
+    "name": "巨兽战铠",
+    "des": "制铠大师用远古巨兽的遗骸加上自身精血制成，制成之日万兽崇拜",
+    "isBag": true
   },
   "5006030": {
-    "name": "流云下装",
-    "des": "选用素锦织成下装，上绣流云纹，着身行走，若有轻云相附",
-    "isBag": true,
-    "quality": 3
+    "name": "流云束腰",
+    "des": "用轻纱与蚕丝制成，穿戴上后如同流云缠身身姿飘渺",
+    "isBag": true
   },
   "5006040": {
-    "name": "翔龙军靴",
-    "des": "用虎皮制成的军靴，靴上绣有龙纹，靴身轻巧，奔行有翔天之感",
-    "isBag": true,
-    "quality": 3
+    "name": "渡步云靴",
+    "des": "神族制作工艺，穿上走起来犹如漫步云中",
+    "isBag": true
   },
   "5007010": {
-    "name": "翠玉长剑",
-    "des": "以翠玉制成的长剑，温润而无暇，有静心宁神的功效",
-    "isBag": true,
-    "quality": 3
+    "name": "落神圣剑",
+    "des": "落神圣殿的铸剑大师打造，剑气凌然，传说制成当天剑气冲天万神不语",
+    "isBag": true
   },
   "5007020": {
-    "name": "袞银牙铠",
-    "des": "秘银混入象牙粉铸成铠甲，有如白玉般温润，日光之下会有流光浮于表面",
-    "isBag": true,
-    "quality": 3
+    "name": "战神胜铠",
+    "des": "蚩尤身陨后将其战甲熔炼重新炼制而成，还散发淡淡的战神气势",
+    "isBag": true
   },
   "5007030": {
-    "name": "袞银腿甲",
-    "des": "秘银混入象牙粉铸成护腿，有如白玉般温润，日光之下会有流光浮于表面",
-    "isBag": true,
-    "quality": 3
+    "name": "魔惧腰带",
+    "des": "由魔王刑天的铠甲改造而成，带有一丝魔王神魂，散发出强大的魔王气息",
+    "isBag": true
   },
   "5007040": {
-    "name": "雪羽云履",
-    "des": "取北方冰雪异鸟之羽编织，柔软轻薄，着后脚步轻快，无费余力",
-    "isBag": true,
-    "quality": 3
+    "name": "追风轻覆",
+    "des": "选用天地灵气结合天外灵石制成，传说穿上后可追风赶月",
+    "isBag": true
   },
   "5008010": {
-    "name": "君子宝剑",
-    "des": "圆头钝边的未开锋宝剑，细长而轻薄，名人雅士都喜欢配上一把",
-    "isBag": true,
-    "quality": 4
+    "name": "风云巨剑",
+    "des": "铸剑巨擘花费一生心血打造而成，因能呼风唤雨二闻名",
+    "isBag": true
   },
   "5008020": {
-    "name": "浑阳精铠",
-    "des": "精铁淬火，以阳炙数日，铸为铠，自有炎阳之气，宵小无近",
-    "isBag": true,
-    "quality": 4
+    "name": "苍月铠甲",
+    "des": "取玄天陨石在月光下吸收精华，通过万次淬炼而成，散发古老的苍月气息而得名",
+    "isBag": true
   },
   "5008030": {
-    "name": "浑阳腿甲",
-    "des": "精铁淬火，以阳炙数日，铸为护腿，自有炎阳之气，宵小无近",
-    "isBag": true,
-    "quality": 4
+    "name": "沧澜腰带",
+    "des": "取沧海之滨千年晶石，经万次锤炼而成，穿上后可任意穿梭四海",
+    "isBag": true
   },
   "5008040": {
-    "name": "苍甲战靴",
-    "des": "取苍龟的甲胄附于战靴之上，厚重而沉稳，有整军定阵之能",
-    "isBag": true,
-    "quality": 4
+    "name": "翔龙战靴",
+    "des": "模仿龙族飞升之势打造的战靴，穿上后可踏空起飞",
+    "isBag": true
   },
   "5009010": {
-    "name": "碎玉巨剑",
-    "des": "以十二方玉融成巨剑，持有者挥舞如挥毫，受击的一方却会犹有千斤重压",
-    "isBag": true,
-    "quality": 4
+    "name": "七星宝剑",
+    "des": "太上老君取七星之精华打造而成，闪耀着七星的光芒",
+    "isBag": true
   },
   "5009020": {
-    "name": "紫金战衣",
-    "des": "以天然紫金铸成，妖冶而华丽，于暮色时会散出雾气，雾气分彼此，敌人不可视",
-    "isBag": true,
-    "quality": 4
+    "name": "流云战袍",
+    "des": "此物来自太上老君炼制，以流云虚无缥缈而得名，据说可迷幻敌人攻击不到自身",
+    "isBag": true
   },
   "5009030": {
-    "name": "紫金腿甲",
-    "des": "以天然紫金铸成，妖冶而华丽，于暮色时会散出雾气，雾气分彼此，敌人不可视",
-    "isBag": true,
-    "quality": 4
+    "name": "混元腰带",
+    "des": "太上老君用混元石，以神火锻后，手动捶打而成，散发一丝混元气息",
+    "isBag": true
   },
   "5009040": {
     "name": "踏云轻靴",
-    "des": "云锦编织成的短靴，跑动时有祥云绕足，轻快似燕",
-    "isBag": true,
-    "quality": 4
+    "des": "此物出自太上老君之手，据说当时只是随手打造，便可一步腾云",
+    "isBag": true
   },
   "5010010": {
-    "name": "紫金含光剑",
-    "des": "以紫金铸成的宝剑，剑身含光，日光之下不可见，攻敌时往往能出其不意而致胜",
-    "isBag": true,
-    "quality": 4
+    "name": "破晓·天鸣剑",
+    "des": "此剑有灵，剑成之时天地共鸣，故来得名，可剑出谁手却成了迷",
+    "isBag": true
   },
   "5010020": {
-    "name": "紫龙吞邪铠",
-    "des": "由龙息所化的紫色鳞片嵌连而成的铠甲，还残留着龙威，危急时会化作紫龙吞没一切奸邪",
-    "isBag": true,
-    "quality": 4
+    "name": "破晓·铭纹甲",
+    "des": "神农取多种灵石混合打造而成，以纹路清晰得名，被攻击时纹路会泛光护主",
+    "isBag": true
   },
   "5010030": {
-    "name": "紫龙吞邪腿",
-    "des": "由龙息所化的紫色鳞片嵌连而成的护腿，还残留着龙威，危急时会化作紫龙吞没一切奸邪",
-    "isBag": true,
-    "quality": 4
+    "name": "破晓·梦月腰",
+    "des": "月宫仙子秘制而成，相传佩戴后可梦见月宫仙子",
+    "isBag": true
   },
   "5010040": {
-    "name": "烟罗浮云靴",
-    "des": "雨过天青的软烟罗织成，穿上便会化为一团浮云裹足，可日行万里",
-    "isBag": true,
-    "quality": 4
+    "name": "破晓·追云靴",
+    "des": "夸父秘制而成，传说穿上次靴可追日",
+    "isBag": true
   },
   "5011010": {
-    "name": "清水霜寒剑",
-    "des": "取极寒之地的清水与寒霜铸成，挥舞时会有寒气从剑身渗出，攻敌时能使敌人动作变缓",
-    "isBag": true,
-    "quality": 4
+    "name": "征战·赤霄剑",
+    "des": "取麒麟精血铸成的神剑，剑动则麒惊，剑停则麟亡",
+    "isBag": true
   },
   "5011020": {
-    "name": "九天流云铠",
-    "des": "取九天之流云铸入铠中，铠身遇刚则刚，逢柔便柔，世间无一物可损其丝毫",
-    "isBag": true,
-    "quality": 4
+    "name": "征战·吞天铠",
+    "des": "取饕餮精血铸成的铠甲，可吞噬天下一切",
+    "isBag": true
   },
   "5011030": {
-    "name": "九天流云腿",
-    "des": "取九天之流云铸入护腿中，铠身遇刚则刚，逢柔便柔，世间无一物可损其丝毫",
-    "isBag": true,
-    "quality": 4
+    "name": "征战·辟邪腰",
+    "des": "取貔貅精血铸成的腰带，可趋吉避凶",
+    "isBag": true
   },
   "5011040": {
-    "name": "追星逐月履",
-    "des": "因鞋面上的星月纹饰而得名，着者脚步轻盈，能跃起数尺之高",
-    "isBag": true,
-    "quality": 4
+    "name": "征战·逐月履",
+    "des": "取鲲鹏精血铸成的鞋子，可一日万里",
+    "isBag": true
   },
   "5012010": {
-    "name": "七星龙渊剑",
-    "des": "相传为欧冶子与干将所铸，铸剑池水以七星环列，铸成后俯视剑身有如登高山而望渊，缥缈深邃若有巨龙盤卧，是名七星龙渊",
-    "isBag": true,
-    "quality": 5
+    "name": "轩辕·帝王剑",
+    "des": "轩辕帝随身佩剑，剑身一面刻日月星辰，一面刻山川草木，得此剑者，可安天下",
+    "isBag": true
   },
   "5012020": {
-    "name": "青玉磐龙甲",
-    "des": "青玉铸成的盔甲，上雕有磐龙的纹样，隐约可见有真龙藏于玉下游动",
-    "isBag": true,
-    "quality": 5
+    "name": "轩辕·帝王凯",
+    "des": "轩辕帝身穿之铠甲，铠甲以四圣之一青龙孕育而成，散发淡淡的龙威",
+    "isBag": true
   },
   "5012030": {
-    "name": "青玉磐龙腿",
-    "des": "青玉铸成的护腿，上雕有磐龙的纹样，隐约可见有真龙藏于玉下游动",
-    "isBag": true,
-    "quality": 5
+    "name": "轩辕·帝王腰",
+    "des": "轩辕帝身穿之腰带，铠甲以四圣之一青龙孕育而成，散发淡淡的龙威",
+    "isBag": true
   },
   "5012040": {
-    "name": "万里追风履",
-    "des": "玄色绫罗织成的锦履，外表看上去并不显眼，但是有御风之能，可以追风而行",
-    "isBag": true,
-    "quality": 5
+    "name": "轩辕·帝王履",
+    "des": "轩辕帝身穿之腰带，铠甲以四圣之一青龙孕育而成，散发淡淡的龙威",
+    "isBag": true
   },
   "5013010": {
-    "name": "惊世鸣鸿剑",
-    "des": "剑长三尺，由轩辕剑炼制余下原料自发成型，剑意霸道，易反噬持剑者，黄帝欲毁之，不料此剑却化为红色云雀消失云际",
-    "isBag": true,
-    "quality": 5
+    "name": "战神·诛天枪",
+    "des": "蚩尤身陨后以其骨血制成，枪成之日诛神寂灭，故得名",
+    "isBag": true
   },
   "5013020": {
-    "name": "百战逆鳞铠",
-    "des": "取龙之逆鳞铸成的铠甲，凡铁无法在上面留下印痕，曾随将百战，百战皆胜，故而有提振士气之效",
-    "isBag": true,
-    "quality": 5
+    "name": "战神·奥义铠",
+    "des": "帝师以窥天之秘术打造而成，此铠甲泛出神秘的光芒",
+    "isBag": true
   },
   "5013030": {
-    "name": "百战逆鳞腿",
-    "des": "取龙之逆鳞铸成的护腿，凡铁无法在上面留下印痕，曾随将百战，百战皆胜，故而有提振士气之效",
-    "isBag": true,
-    "quality": 5
+    "name": "战神·圣耀腰",
+    "des": "圣人以一生所识注入器灵孕育而成，形成之日高光四起，照耀整个星空",
+    "isBag": true
   },
   "5013040": {
-    "name": "九州步云履",
-    "des": "聚九州之绫罗绸缎织成，履成之日九州震荡，可七步踏入云霄当中，不见其影",
-    "isBag": true,
-    "quality": 5
+    "name": "战神·追风履",
+    "des": "羽组观自身翅膀所得灵感，以独有的追风晶石加上神秘符文制作而成，穿上此写可追着风跑",
+    "isBag": true
   },
   "5014010": {
-    "name": "炎阳赤霄剑",
-    "des": "取麒麟精血铸成的神剑，剑动则麒惊，剑停则麟亡，挥舞时自生无数炎阳既可护体也可攻敌，有焚尽八荒之威",
-    "isBag": true,
-    "quality": 5
+    "name": "逐鹿·胜意枪",
+    "des": "轩辕帝制，以逐鹿之战中的战魂滋养神石，再以火神之火炼制数年，枪成之时胜意震响九州，轩辕帝唤名胜意枪",
+    "isBag": true
   },
   "5014020": {
-    "name": "幽冥龙骨甲",
-    "des": "以龙骨制成，成甲后一直浸于忘川当中，常有幽魂环绕，作九冥之音，可退敌于千里之外",
-    "isBag": true,
-    "quality": 5
+    "name": "逐鹿·战胜铠",
+    "des": "轩辕帝制，以逐鹿之战中的战魂滋养神石，再以火神之火炼制数年，铠成之时战胜声响荡九州，轩辕帝唤名战胜铠",
+    "isBag": true
   },
   "5014030": {
-    "name": "幽冥龙骨腿",
-    "des": "以龙骨制成，成腿后一直浸于忘川当中，常有幽魂环绕，作九冥之音，可退敌于千里之外",
-    "isBag": true,
-    "quality": 5
+    "name": "逐鹿·高歌腰",
+    "des": "轩辕帝制，以逐鹿之战中将士精血滋养神石，再以火神之火炼制数年，腰带有万军共鸣，轩辕帝唤名高歌腰",
+    "isBag": true
   },
   "5014040": {
-    "name": "凤翔火云靴",
-    "des": "织成之日自生双翅的神奇长靴，行动之时，双翅扇动，可翔于天际，采火云为衣",
-    "isBag": true,
-    "quality": 5
+    "name": "逐鹿·凯旋靴",
+    "des": "轩辕帝制，以逐鹿之战中将士战意滋养神石，再以火神之火炼制数年，靴有万军之魂，轩辕帝唤名凯旋靴",
+    "isBag": true
   },
   "5015010": {
-    "name": "青龙·破天剑",
-    "des": "融四神之一的青龙为灵，铸成长剑，剑出则龙吟，龙吟则电随，蕴含雷霆极意，可撕破天穹",
-    "isBag": true,
-    "quality": 5
+    "name": "盘古·开天斧",
+    "des": "盘古秘制，无比锋利，此斧可开天辟地",
+    "isBag": true
   },
   "5015020": {
-    "name": "玄武·擎天甲",
-    "des": "融四神之一的玄武为灵，铸成甲胄，甲身附有腾蛇玄龟，腾蛇攻敌，可吞一切，玄龟御守，可挡万物",
-    "isBag": true,
-    "quality": 5
+    "name": "盘古·御天甲",
+    "des": "盘古开天后用天地初石所制成，穿上此衣与天地相当",
+    "isBag": true
   },
   "5015030": {
-    "name": "朱雀·御天腿",
-    "des": "融四神之一的朱雀为灵，织为护腿，护腿燃有朱雀之焰，不死不灭，只要有一息尚在，都可复完好之身",
-    "isBag": true,
-    "quality": 5
+    "name": "盘古·擎天腰",
+    "des": "盘古到地后，身体自然孕育形成，形成之时擎天姿态轰动天地",
+    "isBag": true
   },
   "5015040": {
-    "name": "白虎·踏天靴",
-    "des": "融四神之一的白虎为灵，织为长靴，靴形似虎，可踏天而行，可动山河，可惊四海，亦可荡九州",
-    "isBag": true,
-    "quality": 5
+    "name": "盘古·登天靴",
+    "des": "盘古到地后，身体自然孕育形成，形成之时登天一步，因此得名",
+    "isBag": true
   },
   "5016010": {
-    "name": "穷奇·七杀剑",
-    "des": "取四凶之一的穷奇为灵，锻成长剑，剑起，则分影三千，横扫四方，剑落，则血溅七步，浮尸百里",
-    "isBag": true,
-    "quality": 5
+    "name": "诛神·屠龙刀",
+    "des": "取龙族精血打造而成，开刀犹如万龙奔腾，气势宏大神仙都怕",
+    "isBag": true
   },
   "5016020": {
-    "name": "饕餮·破军铠",
-    "des": "取四凶之一的饕餮为灵，锻成精铠，铠有两能，一能可噬天地，二能可破万军",
-    "isBag": true,
-    "quality": 5
+    "name": "诛神·破军铠",
+    "des": "取饕餮兽为灵，锻成精铠，铠有两能，一能可噬天地，二能可破万军",
+    "isBag": true
   },
   "5016030": {
-    "name": "梼杌·贪狼腿",
-    "des": "取四凶之一的梼杌为灵，铸成护腿，腿有傲骨，易噬主而食，非常人能御之",
-    "isBag": true,
-    "quality": 5
+    "name": "诛神·贪狼腰",
+    "des": "取梼杌兽为灵，铸成护腿，腿有傲骨，易噬主而食，非常人能御之",
+    "isBag": true
   },
   "5016040": {
-    "name": "混沌·紫微履",
-    "des": "取四凶之一的混沌为灵，编为鞋履，履可通紫微，有趋吉避凶，明过往，通未来之能",
-    "isBag": true,
-    "quality": 5
+    "name": "诛神·紫微履",
+    "des": "取混沌兽为灵，编为鞋履，履可通紫微，有趋吉避凶，明过往，通未来之能",
+    "isBag": true
   },
   "5017010": {
-    "name": "乾坤·轩辕剑",
-    "des": "传说中的神兵，由首山之铜所铸，剑身一面刻日月星辰，一面刻山川草木，剑柄一面书农耕畜养之术，一面书四海一统之策，得此剑者，可安天下",
-    "isBag": true,
-    "quality": 5
+    "name": "创世·混沌刀",
+    "des": "由混沌之石孕育而成的刀，拥有无穷变化，传说此刀无人能用",
+    "isBag": true
   },
   "5017020": {
-    "name": "艮兑·圣皇衣",
-    "des": "传说中的战衣，为洛阳之龙脉所凝，铠上自成帝皇之气，鬼魅妖邪莫敢近也，唯贤者能着，着之立升九五，护子嗣后代万载千秋",
-    "isBag": true,
-    "quality": 5
+    "name": "创世·女娲袍",
+    "des": "女娲补天时穿的战袍，拥有极大的先天灵气，传说此衣能抵御任何攻击",
+    "isBag": true
   },
   "5017030": {
-    "name": "坎离·紫霞腿",
-    "des": "传说中的护腿，采天边的紫霞之气所编，能识善恶，辨忠奸，使奇谋诡计不通，九宫八卦不应，亦有延年益寿，健体精魄之效",
-    "isBag": true,
-    "quality": 5
+    "name": "创世·盘古腰",
+    "des": "盘古开天时的腰带，拥有一丝盘古的神魂，传说此腰带能毁天灭地",
+    "isBag": true
   },
   "5017040": {
-    "name": "震巽·望仙靴",
-    "des": "传说中的靴履，内蕴九天之仙气，能缩地成尺，步跨万里，亦可登青云之上，聆鸿钧之言",
-    "isBag": true,
-    "quality": 5
+    "name": "创世·凌霄履",
+    "des": "原始天尊创道时的鞋子，拥有强大的神韵，传说此履可一步创道",
+    "isBag": true
   }
 }

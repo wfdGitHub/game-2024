@@ -1,92 +1,93 @@
 {
   "10001": {
-    "name": "进阶丹",
+    "name": "魂石",
     "rank": 4000,
     "maxBuy": 9999,
     "pc": "205:5",
     "pa": "1000050:1",
     "icon": 10004,
     "tags": "tags_time",
-    "quality": 0
+    "quality": 3
   },
   "10002": {
-    "name": "十年杜康",
-    "rank": 3000,
+    "name": "圣灵石",
+    "rank": 4000,
     "maxBuy": 1000,
     "pc": "205:100",
     "pa": "1000070:1",
     "icon": 10005,
     "tags": "tags_time",
-    "quality": 0
+    "quality": 4
   },
   "10003": {
-    "name": "百年杜康",
-    "rank": 2000,
+    "name": "女娲石",
+    "rank": 3000,
     "maxBuy": 1000,
     "pc": "205:1000",
     "pa": "1000080:1",
     "icon": 10006,
     "tags": "tags_time",
-    "quality": 1
+    "quality": 5
   },
   "10004": {
-    "name": "进阶丹*10",
+    "name": "魂石",
     "rank": 2500,
-    "maxBuy": 100,
+    "maxBuy": 1000,
     "pc": "205:50",
     "pa": "1000050:10",
     "icon": 10007,
     "tags": "tags_time",
-    "quality": 1
+    "quality": 3
   },
   "10005": {
-    "name": "十年杜康*10",
+    "name": "圣灵石",
     "rank": 2000,
-    "maxBuy": 100,
+    "maxBuy": 1000,
     "pc": "205:1000",
     "pa": "1000070:10",
     "icon": 10008,
     "tags": "tags_time",
-    "quality": 2
+    "quality": 4
   },
   "10006": {
-    "name": "百年杜康*10",
+    "name": "女娲石",
     "rank": 1500,
-    "maxBuy": 100,
+    "maxBuy": 1000,
     "pc": "205:10000",
     "pa": "1000080:10",
     "icon": 10009,
     "tags": "tags_time",
-    "quality": 2
+    "quality": 5
   },
   "10007": {
-    "name": "进阶丹*100",
+    "name": "魂石",
     "rank": 1000,
-    "maxBuy": 10,
+    "maxBuy": 100,
     "pc": "205:500",
     "pa": "1000050:100",
     "icon": 10010,
     "tags": "tags_time",
-    "quality": 4
+    "quality": 3
   },
   "10008": {
-    "name": "十年杜康*100",
+    "name": "圣灵石",
     "rank": 500,
-    "maxBuy": 10,
+    "maxBuy": 100,
     "pc": "205:10000",
     "pa": "1000070:100",
     "icon": 10011,
     "tags": "tags_hot",
-    "quality": 1
+    "quality": 4
   },
   "10009": {
-    "name": "百年杜康*100",
+    "name": "女娲石",
     "rank": 100,
-    "maxBuy": 10,
+    "maxBuy": 100,
     "pc": "205:100000",
     "pa": "1000080:100",
     "icon": 10012,
     "tags": "tags_hot",
-    "quality": 1
-  }
+    "quality": 5
+  },
+  "undefined": {}
 }
