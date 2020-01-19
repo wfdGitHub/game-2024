@@ -47,6 +47,21 @@ module.exports = function() {
 					}
 				})
 			break
+			case "chest":
+				//宝箱
+				self.consumeItems(uid,otps.itemId+":"+value,1,function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						var awardList = []
+						var chestId = itemCfg[otps.itemId].arg
+						for(var i = 0;i < value;i++){
+							awardList = awardList.concat(self.openChestAward(uid,chestId))
+						}
+						cb(true,awardList)
+					}
+				})
+			break
 			default:
 				cb(false,"类型错误"+itemCfg[otps.itemId].useType)
 		}
