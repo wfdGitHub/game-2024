@@ -354,6 +354,10 @@ model.useHealSkill = function(skill) {
 	else if(skill.character.normal_heal_amp && !skill.isAnger){
 		rate += skill.character.normal_heal_amp
 	}
+	var min_hp_friend = null
+	if(skill.isAnger && skill.character.heal_min_hp_rate){
+		min_hp_friend = this.locator.getTargets(skill.character,"team_minHp_1")[0]
+	}
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died){
 			break
@@ -366,6 +370,9 @@ model.useHealSkill = function(skill) {
 			value = Math.round(target.getTotalAtt("maxHP") * skill.mul * rate)
 		}else{
 			console.error("healType error "+healType)
+		}
+		if(min_hp_friend && min_hp_friend == target){
+			value = Math.round(value * (skill.character.heal_min_hp_rate + 1))
 		}
 		let info = this.formula.calHeal(skill.character,target,value)
 		info = target.onHeal(skill.character,info,skill)

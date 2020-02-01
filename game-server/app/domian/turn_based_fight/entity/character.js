@@ -39,11 +39,15 @@ var model = function(otps) {
 	this.buffRate								//buff概率   若技能存在buff  以此代替buff本身概率
 	this.buffArg								//buff参数   若技能存在buff  以此代替buff本身参数
 	this.buffDuration							//buff持续时间   若技能存在buff  以此代替buff本身持续时间
+	this.burn_duration = otps.burn_duration || 0 //灼烧持续时间增长
+	this.poison_duration = otps.poison_duration || 0 //中毒持续时间增长
 
 	this.less_skill_buffRate = otps.less_skill_buffRate || 0 //技能最高提升buff概率(目标越多效果越低)
 	this.less_normal_buffRate = otps.less_normal_buffRate || 0 //普攻最高提升buff概率(目标越多效果越低)
 	this.must_crit = false						//攻击必定暴击
 	this.next_must_crit = false					//下回合攻击暴击
+
+	this.heal_min_hp_rate = otps.heal_min_hp_rate || 0 	//对己方血量最少武将治疗加成
 
 	this.kill_anger = otps.kill_anger || 0		//直接伤害击杀目标回复怒气
 	this.kill_amp = otps.kill_amp || 0			//直接伤害每击杀一个目标提升伤害
