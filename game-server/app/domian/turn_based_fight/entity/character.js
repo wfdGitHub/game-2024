@@ -44,6 +44,8 @@ var model = function(otps) {
 
 	this.less_skill_buffRate = otps.less_skill_buffRate || 0 //技能最高提升buff概率(目标越多效果越低)
 	this.less_normal_buffRate = otps.less_normal_buffRate || 0 //普攻最高提升buff概率(目标越多效果越低)
+	this.less_buff_arg = otps.less_buff_arg || 0	//提升buff效果(目标越多效果越低)
+
 	this.must_crit = false						//攻击必定暴击
 	this.next_must_crit = false					//下回合攻击暴击
 

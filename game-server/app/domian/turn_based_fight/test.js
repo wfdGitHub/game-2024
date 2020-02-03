@@ -1,6 +1,6 @@
 var fightContorl = require("./fight/fightContorl.js")
-var atkTeam = [{id:304010,"burn_duration":1}]
-var defTeam = [{id:105050},{id:105050},{id:105050}]
+var atkTeam = [{id:405080,"less_buff_arg":0.6}]
+var defTeam = [{id:405080},{id:405080},{id:405080}]
 
 // // for(var i = 0;i < 6;i++){
 // // 	// atkTeam[i].self_adds = {atk : 1}

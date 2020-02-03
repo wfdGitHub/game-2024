@@ -50,17 +50,23 @@ model.useSkill = function(skill) {
 	if(skill.buffId){
 		var buffTargets = this.locator.getBuffTargets(skill.character,skill.buff_tg,targets)
 		let buffRate = skill.buffRate
+		let buffArg = skill.buffArg
 		//判断技能目标减少
 		if(skill.character.less_skill_buffRate){
 			let allLenth = this.locator.getTargetsNum(skill.targetType)
 			buffRate += ((allLenth - targets.length + 1) / allLenth) * skill.character.less_skill_buffRate
+		}
+		if(skill.character.less_buff_arg){
+			let allLenth = this.locator.getTargetsNum(skill.targetType)
+			buffArg = buffArg * (1 + ((allLenth - targets.length + 1) / allLenth) * skill.character.less_buff_arg)
+			console.log("buffArg",buffArg)
 		}
 		for(var i = 0;i < buffTargets.length;i++){
 			if(buffTargets[i].died){
 				break
 			}
 			if(this.seeded.random("判断BUFF命中率") < buffRate){
-				buffManager.createBuff(skill.character,buffTargets[i],{buffId : skill.buffId,buffArg : skill.buffArg,duration : skill.duration})
+				buffManager.createBuff(skill.character,buffTargets[i],{buffId : skill.buffId,buffArg : buffArg,duration : skill.duration})
 			}
 		}
 	}
