@@ -43,13 +43,14 @@ module.exports = function() {
 			},
 			function(next) {
 				//判断主角等级
-				self.getLordLv(uid,function(lv) {
-					if(lv < checkpointsCfg[level].lev_limit){
-						next("等级限制")
-					}else{
-						next()
-					}
-				})
+				// self.getLordLv(uid,function(lv) {
+				// 	if(lv < checkpointsCfg[level].lev_limit){
+				// 		next("等级限制")
+				// 	}else{
+				// 		next()
+				// 	}
+				// })
+				next()
 			},
 			function(next) {
 				let fightInfo = self.getFightInfo(uid)
