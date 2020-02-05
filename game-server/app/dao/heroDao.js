@@ -292,7 +292,7 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 						self.delHeroInfo(areaId,uid,team[i].hId,"combat")
 				}
 			}
-			self.redisDao.db.hset("area:area"+areaId+":player:"+uid,"fightTeam",JSON.stringify(hIds),function(err,data) {
+			self.redisDao.db.set("area:area"+areaId+":player:"+uid+"fightTeam",JSON.stringify(hIds),function(err,data) {
 				if(err){
 					if(cb)
 						cb(false,err)
@@ -313,7 +313,7 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 //获取出场阵容
 heroDao.prototype.getFightTeam = function(areaId,uid,cb) {
 	var self = this
-	self.redisDao.db.hget("area:area"+areaId+":player:"+uid,"fightTeam",function(err,data) {
+	self.redisDao.db.get("area:area"+areaId+":player:"+uid+"fightTeam",function(err,data) {
 		if(err || !data){
 			cb(false,"未设置阵容")
 			return

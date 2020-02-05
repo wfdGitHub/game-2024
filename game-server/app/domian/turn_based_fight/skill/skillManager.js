@@ -170,6 +170,11 @@ model.useSkill = function(skill) {
 			}
 		}
 	}
+	if(targets.length == 1){
+		//判断单体目标
+		if(skill.character.single_less_anger)
+			targets[0].lessAnger(skill.character.single_less_anger,skill.skillId)
+	}
 	//判断死亡
 	for(var i = 0;i < targets.length;i++){
 		if(targets[i].died){

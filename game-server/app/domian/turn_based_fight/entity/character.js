@@ -99,6 +99,8 @@ var model = function(otps) {
 	this.low_hp_crit = otps.low_hp_crit || 0				//战斗中自身生命每降低10%，暴击加成
 	this.enemy_died_amp = otps.enemy_died_amp || 0			//敌方每阵亡一人，伤害加成比例
 
+	this.single_less_anger = otps.single_less_anger || 0 	//攻击单体目标额外降低怒气
+
 	this.resurgence_team = otps.resurgence_team || 0		//复活本方第1位阵亡的武将，并恢复其50%的生命，每场战斗只可触发1次
 	this.burn_hit_reduction = otps.burn_hit_reduction || 0	//被灼烧状态敌人攻击伤害减免
 
@@ -324,6 +326,7 @@ model.prototype.lessAnger = function(value,skillId) {
 	var realValue = value
 	if((this.curAnger - value) < 0){
 		realValue = this.curAnger
+		this.curAnger = 0
 	}else{
 		this.curAnger -= value
 	}
