@@ -22,12 +22,16 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
 		return info
 	}
 	//暴击判断
-	var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit
-	if(attacker.low_hp_crit){
-		crit += Math.floor((attacker.attInfo.maxHP-attacker.attInfo.hp)/attacker.attInfo.maxHP * 10) * attacker.low_hp_crit
-	}
-	if(attacker.must_crit || this.seeded.random("暴击判断") < crit){
+	if(!skill.isAnger && attacker.normal_crit){
 		info.crit = true
+	}else{
+		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit
+		if(attacker.low_hp_crit){
+			crit += Math.floor((attacker.attInfo.maxHP-attacker.attInfo.hp)/attacker.attInfo.maxHP * 10) * attacker.low_hp_crit
+		}
+		if(attacker.must_crit || this.seeded.random("暴击判断") < crit){
+			info.crit = true
+		}
 	}
 	//伤害计算
 	var atk = attacker.getTotalAtt("atk")
@@ -57,11 +61,15 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
     return info
 }
 //治疗计算
-formula.prototype.calHeal = function(character,target,value){//attacker,target,skill) {
+formula.prototype.calHeal = function(character,target,value,skill){
 	var info = {type : "heal",value : 0}
 	//暴击判断
-	if(this.seeded.random("治疗暴击判断") < character.getTotalAtt("healRate")){
+	if(!skill.isAnger && character.normal_crit){
 		info.crit = true
+	}else{
+		if(this.seeded.random("治疗暴击判断") < character.getTotalAtt("healRate")){
+			info.crit = true
+		}
 	}
 	info.value = Math.round(value * (1 + target.getTotalAtt("healAdd")))
 	if(info.crit){

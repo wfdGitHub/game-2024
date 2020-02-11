@@ -262,7 +262,7 @@ model.useAttackSkill = function(skill) {
 			let tmptargets = this.locator.getTargets(skill.character,skill.turn_tg)
 			for(var i = 0;i < tmptargets.length;i++){
 				let target = tmptargets[i]
-				let info = this.formula.calHeal(skill.character,target,healValue)
+				let info = this.formula.calHeal(skill.character,target,healValue,skill)
 				info = target.onHeal(skill.character,info,skill)
 				tmpRecord.targets.push(info)
 			}
@@ -273,7 +273,7 @@ model.useAttackSkill = function(skill) {
 			let tmptargets = this.locator.getTargets(skill.character,skill.character.skill_turn_tg)
 			for(var i = 0;i < tmptargets.length;i++){
 				let target = tmptargets[i]
-				let info = this.formula.calHeal(skill.character,target,healValue)
+				let info = this.formula.calHeal(skill.character,target,healValue,skill)
 				info = target.onHeal(skill.character,info,skill)
 				tmpRecord.targets.push(info)
 			}
@@ -289,7 +289,7 @@ model.useAttackSkill = function(skill) {
 			}
 			if(flag){
 				let tmpRecord = {type : "other_heal",targets : []}
-				let info = this.formula.calHeal(skill.character,skill.character,skill.character.normal_burn_turn_heal * allDamage)
+				let info = this.formula.calHeal(skill.character,skill.character,skill.character.normal_burn_turn_heal * allDamage,skill)
 				info = skill.character.onHeal(skill.character,info,skill)
 				tmpRecord.targets.push(info)
 				fightRecord.push(tmpRecord)
@@ -306,7 +306,7 @@ model.useAttackSkill = function(skill) {
 				let tmptargets = this.locator.getTargets(targets[i],targets[i].hit_turn_tg)
 				for(var j = 0;j < tmptargets.length;j++){
 					let target = tmptargets[j]
-					let info = this.formula.calHeal(skill.character,target,healValue)
+					let info = this.formula.calHeal(skill.character,target,healValue,skill)
 					info = target.onHeal(targets[j],info)
 					tmpRecord.targets.push(info)
 				}
@@ -385,7 +385,7 @@ model.useHealSkill = function(skill) {
 		if(min_hp_friend && min_hp_friend == target){
 			value = Math.round(value * (skill.character.heal_min_hp_rate + 1))
 		}
-		let info = this.formula.calHeal(skill.character,target,value)
+		let info = this.formula.calHeal(skill.character,target,value,skill)
 		info = target.onHeal(skill.character,info,skill)
 		recordInfo.targets.push(info)
 	}

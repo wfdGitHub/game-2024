@@ -41,6 +41,7 @@ var model = function(otps) {
 	this.buffDuration							//buff持续时间   若技能存在buff  以此代替buff本身持续时间
 	this.burn_duration = otps.burn_duration || 0 //灼烧持续时间增长
 	this.poison_duration = otps.poison_duration || 0 //中毒持续时间增长
+	this.poison_change_hp = otps.poison_change_hp || 0 //造成的中毒伤害转化为血量治疗自己。
 
 	this.less_skill_buffRate = otps.less_skill_buffRate || 0 //技能最高提升buff概率(目标越多效果越低)
 	this.less_normal_buffRate = otps.less_normal_buffRate || 0 //普攻最高提升buff概率(目标越多效果越低)
@@ -85,6 +86,8 @@ var model = function(otps) {
 	if(otps.hit_buff){
 		this.hit_buff = JSON.parse(otps.hit_buff)	//受到伤害给攻击者附加BUFF
 	}
+
+	this.normal_crit = otps.normal_crit || false 				//普攻必定暴击(含治疗)	
 	this.normal_heal_amp = otps.normal_heal_amp || 0			//普攻治疗量加成
 	this.normal_add_anger = otps.normal_add_anger || 0			//普攻后恢复自身怒气
 	this.normal_less_anger = otps.normal_less_anger || 0		//普攻后降低目标怒气
@@ -250,6 +253,7 @@ model.prototype.onHit = function(attacker,info,source) {
 			attacker.kill(this)
 		}
 	}
+	// console.log(attacker.name + " 攻击 "+ this.name, info.value,"curHP : ",this.attInfo.hp+"/"+this.attInfo.maxHP)
 	return info
 }
 //受到治疗
@@ -299,7 +303,7 @@ model.prototype.addHP = function(value) {
 	}else{
 		this.attInfo.hp += value
 	}
-	// console.log(this.name + "addHP" , value,realValue,"curHP : ",this.attInfo.hp+"/"+this.attInfo.maxHP)
+	// console.log(this.name + "被治疗" , value,realValue,"curHP : ",this.attInfo.hp+"/"+this.attInfo.maxHP)
 	return realValue
 }
 //扣除血量

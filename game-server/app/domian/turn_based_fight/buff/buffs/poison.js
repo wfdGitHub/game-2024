@@ -14,6 +14,12 @@ var model = function(releaser,character,otps) {
 		let info = {type : "poisonDamage",value : buff.damage ,id : buff.character.id}
 		info = buff.character.onHit(buff.releaser,info)
 		fightRecord.push(info)
+		if(releaser.poison_change_hp){
+			let value = Math.ceil(info.realValue * releaser.poison_change_hp)
+			info = {type : "other_heal",targets : []}
+			info.targets.push(releaser.onHeal(releaser,{value : value},buff))
+			fightRecord.push(info)
+		}
 	}
 	buff.clear = function() {
 		// console.log(buff.character.id+"中毒结束")

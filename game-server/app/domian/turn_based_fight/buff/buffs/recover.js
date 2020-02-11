@@ -9,7 +9,7 @@ var model = function(releaser,character,otps) {
 	buff.value = Math.floor(buff.buffArg * releaser.getTotalAtt("atk"))
 	buff.refresh = function() {
 		let info = {type : "recoverHeal",value : buff.value ,id : buff.character.id}
-		info = buff.character.onHeal(buff.releaser,info)
+		info = buff.character.onHeal(buff.releaser,info,buff)
 		fightRecord.push(info)
 	}
 	buff.clear = function() {
