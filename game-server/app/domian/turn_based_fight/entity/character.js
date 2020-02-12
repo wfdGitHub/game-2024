@@ -61,6 +61,8 @@ var model = function(otps) {
 	this.kill_add_d_s = otps.kill_add_d_s		//直接伤害击杀目标后追加普通攻击
 	this.kill_heal = otps.kill_heal || 0		//直接伤害击杀目标后，恢复自身生命值上限
 	this.kill_must_crit = otps.kill_must_crit	//直接伤害击杀目标后，下回合攻击必定暴击
+	this.kill_rob_anger = otps.kill_rob_anger 	//技能直接击杀敌方目标时，获得目标剩余的所有怒气
+
 
 	this.skill_free = otps.skill_free || 0					//释放技能不消耗怒气值概率
 	this.skill_attack_amp = otps.skill_attack_amp || 0		//技能伤害加成

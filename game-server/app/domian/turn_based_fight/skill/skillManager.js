@@ -224,6 +224,7 @@ model.useAttackSkill = function(skill) {
 	}
 	var allDamage = 0
 	var kill_num = 0
+	var dead_anger = 0
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died){
 			break
@@ -236,6 +237,7 @@ model.useAttackSkill = function(skill) {
 		recordInfo.targets.push(info)
 		if(info.kill){
 			kill_num++
+			dead_anger += target.curAnger
 		}
 	}
 	fightRecord.push(recordInfo)
@@ -251,9 +253,10 @@ model.useAttackSkill = function(skill) {
 			tmpRecord.targets.push(skill.character.onHeal(skill.character,{value : skill.character.getTotalAtt("maxHP") * skill.character.kill_heal * kill_num},skill))
 			fightRecord.push(tmpRecord)
 		}
-		if(skill.character.kill_must_crit){
+		if(skill.character.kill_must_crit)
 			skill.character.next_must_crit = true
-		}
+		if(skill.character.kill_rob_anger)
+			skill.character.addAnger(dead_anger,skill.skillId)
 	}
 	//伤害值转生命判断
 	if(allDamage){
