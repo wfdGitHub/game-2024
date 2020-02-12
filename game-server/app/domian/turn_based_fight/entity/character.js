@@ -75,6 +75,7 @@ var model = function(otps) {
 	this.skill_anger_back = otps.skill_anger_back || 0		//释放技能后回复己方后排怒气
 	this.skill_anger_first = otps.skill_anger_first || 0	//释放技能后，回复当前本方阵容站位最靠前的武将怒气
 	this.skill_less_anger = otps.skill_less_anger || 0		//释放技能后降低目标怒气
+	this.skill_burn_turn_heal = otps.skill_burn_turn_heal || 0//如果目标处于灼烧状态，技能直接伤害的百分比转化为生命治疗自己
 	this.skill_less_amp = otps.skill_less_amp || 0			//技能目标每减少一个伤害加成比例
 	if(otps.skill_later_skill){
 		this.skill_later_skill = JSON.parse(otps.skill_later_skill)	//释放技能后后追加技能
@@ -97,7 +98,7 @@ var model = function(otps) {
 	this.normal_add_anger = otps.normal_add_anger || 0			//普攻后恢复自身怒气
 	this.normal_less_anger = otps.normal_less_anger || 0		//普攻后降低目标怒气
 	this.normal_attack_amp = otps.normal_attack_amp || 0		//普攻伤害加成
-	this.normal_burn_turn_heal = otps.normal_burn_turn_heal || 0//普攻时，如果目标处于灼烧状态，技能直接伤害的百分比转化为生命治疗自己
+	this.normal_burn_turn_heal = otps.normal_burn_turn_heal || 0//如果目标处于灼烧状态，普攻直接伤害的百分比转化为生命治疗自己
 	if(otps.normal_later_buff){
 		this.normal_later_buff = JSON.parse(otps.normal_later_buff)	//普攻后附加BUFF
 	}
@@ -116,6 +117,7 @@ var model = function(otps) {
 		this.burn_att_change = JSON.parse(otps.burn_att_change)			//灼烧状态属性修改
 	if(otps.burn_buff_change)
 		this.burn_buff_change = JSON.parse(otps.burn_buff_change)		//灼烧状态附加BUFF修改
+	this.poison_add_forbidden = otps.poison_add_forbidden //中毒buff附加禁疗
 	//todo
 	this.first_crit = otps.first_crit			//首回合必定暴击
 	if(this.first_crit)

@@ -225,6 +225,7 @@ model.useAttackSkill = function(skill) {
 	var allDamage = 0
 	var kill_num = 0
 	var dead_anger = 0
+	var burnDamage = 0
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died){
 			break
@@ -234,6 +235,8 @@ model.useAttackSkill = function(skill) {
 		let info = this.formula.calDamage(skill.character, target, skill,addAmp)
 		info = target.onHit(skill.character,info,skill)
 		allDamage += info.realValue
+		if(targets[i].buffs["burn"])
+			burnDamage += info.realValue
 		recordInfo.targets.push(info)
 		if(info.kill){
 			kill_num++
@@ -283,17 +286,17 @@ model.useAttackSkill = function(skill) {
 			}
 			fightRecord.push(tmpRecord)
 		}
-		if(!skill.isAnger && skill.character.normal_burn_turn_heal){
-			let flag = false
-			for(var i = 0;i < targets.length;i++){
-				if(targets[i].buffs["burn"]){
-					flag = true
-					break
-				}
-			}
-			if(flag){
+		if(burnDamage){
+			if(!skill.isAnger && skill.character.normal_burn_turn_heal){
 				let tmpRecord = {type : "other_heal",targets : []}
-				let info = this.formula.calHeal(skill.character,skill.character,skill.character.normal_burn_turn_heal * allDamage,skill)
+				let info = this.formula.calHeal(skill.character,skill.character,skill.character.normal_burn_turn_heal * burnDamage,skill)
+				info = skill.character.onHeal(skill.character,info,skill)
+				tmpRecord.targets.push(info)
+				fightRecord.push(tmpRecord)
+			}
+			if(skill.isAnger && skill.character.skill_burn_turn_heal){
+				let tmpRecord = {type : "other_heal",targets : []}
+				let info = this.formula.calHeal(skill.character,skill.character,skill.character.skill_burn_turn_heal * burnDamage,skill)
 				info = skill.character.onHeal(skill.character,info,skill)
 				tmpRecord.targets.push(info)
 				fightRecord.push(tmpRecord)
