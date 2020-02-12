@@ -8,6 +8,7 @@ model.init = function(fighting,locator,formula,seeded) {
 	this.locator = locator
 	this.formula = formula
 	this.seeded = seeded
+	buffManager.init(this.seeded)
 }
 var defaultHeal = {}
 //创建技能
