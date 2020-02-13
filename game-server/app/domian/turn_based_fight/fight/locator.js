@@ -416,7 +416,7 @@ model.prototype.getEnemyMinHP = function(character) {
     var minIndex = -1
     character.enemy.forEach(function(target,index) {
         if(!target.died){
-            if(minIndex === -1 || target.hp < character.enemy[minIndex].hp){
+            if(minIndex === -1 || target.attInfo.hp < character.enemy[minIndex].attInfo.hp){
                 minIndex = index
             }
         }
@@ -504,7 +504,7 @@ model.prototype.getTeamRandomMinHp = function(character,count) {
         }
     })
     list.sort(function(a,b) {
-    	return a.hp > b.hp ? 1 : -1
+    	return a.attInfo.hp > b.attInfo.hp ? 1 : -1
     })
     return list.slice(0,count)
 }
@@ -517,7 +517,7 @@ model.prototype.getFriendRandomMinHp = function(character,count) {
         }
     })
     list.sort(function(a,b) {
-    	return a.hp > b.hp ? 1 : -1
+    	return a.attInfo.hp > b.attInfo.hp ? 1 : -1
     })
     return list.slice(0,count)
 }

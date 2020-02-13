@@ -54,6 +54,7 @@ var model = function(otps) {
 	this.next_must_crit = false					//下回合攻击暴击
 
 	this.heal_min_hp_rate = otps.heal_min_hp_rate || 0 	//对己方血量最少武将治疗加成
+	this.heal_min_hp3_rate = otps.heal_min_hp3_rate || 0 	//对己方血量最少3个武将治疗加成
 
 	this.kill_anger = otps.kill_anger || 0		//直接伤害击杀目标回复怒气
 	this.kill_amp = otps.kill_amp || 0			//直接伤害每击杀一个目标提升伤害

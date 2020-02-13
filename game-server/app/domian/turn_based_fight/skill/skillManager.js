@@ -373,8 +373,17 @@ model.useHealSkill = function(skill) {
 		rate += skill.character.normal_heal_amp
 	}
 	var min_hp_friend = null
-	if(skill.isAnger && skill.character.heal_min_hp_rate){
-		min_hp_friend = this.locator.getTargets(skill.character,"team_minHp_1")[0]
+	var min_hp3_list = null
+	if(skill.isAnger){
+		if(skill.character.heal_min_hp_rate)
+			min_hp_friend = this.locator.getTargets(skill.character,"team_minHp_1")[0]
+		if(skill.character.heal_min_hp3_rate){
+			min_hp3_list = {}
+			let tmpList = this.locator.getTargets(skill.character,"team_minHp_3")
+			for(var i = 0;i < tmpList.length;i++){
+				min_hp3_list[tmpList[i].id] = true
+			}
+		}
 	}
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died){
@@ -389,9 +398,10 @@ model.useHealSkill = function(skill) {
 		}else{
 			console.error("healType error "+healType)
 		}
-		if(min_hp_friend && min_hp_friend == target){
+		if(min_hp_friend && min_hp_friend == target)
 			value = Math.round(value * (skill.character.heal_min_hp_rate + 1))
-		}
+		if(min_hp3_list && min_hp3_list[target.id])
+			value = Math.round(value * (skill.character.heal_min_hp3_rate + 1))
 		let info = this.formula.calHeal(skill.character,target,value,skill)
 		info = target.onHeal(skill.character,info,skill)
 		recordInfo.targets.push(info)
