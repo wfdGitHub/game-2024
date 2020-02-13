@@ -50,6 +50,8 @@ var model = function(otps) {
 	this.control_buff_lowrate = otps.control_buff_lowrate || 0 //被控制概率降低（麻痹、沉默、眩晕）
 	this.damage_buff_lowArg = otps.damage_buff_lowArg || 0 //降低受到的灼烧、中毒伤害
 
+	this.enemy_vertical_anger = otps.enemy_vertical_anger || 0	//攻击纵排目标时降低敌人怒气
+
 	this.must_crit = false						//攻击必定暴击
 	this.next_must_crit = false					//下回合攻击暴击
 

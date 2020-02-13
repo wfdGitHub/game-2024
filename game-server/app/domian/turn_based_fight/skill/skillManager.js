@@ -93,6 +93,15 @@ model.useSkill = function(skill) {
 			targets[i].lessAnger(skill.skill_less_anger,skill.skillId)
 		}
 	}
+	//攻击纵排目标时降低怒气
+	if(skill.character.enemy_vertical_anger && skill.targetType == "enemy_vertical"){
+		for(var i = 0;i < targets.length;i++){
+			if(targets[i].died){
+				break
+			}
+			targets[i].lessAnger(skill.character.enemy_vertical_anger)
+		}
+	}
 	if(skill.isAnger && !skill.character.died){
 		//释放技能后恢复自身怒气
 		if(skill.character.skill_anger_s)
