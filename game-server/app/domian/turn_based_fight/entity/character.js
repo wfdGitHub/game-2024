@@ -118,7 +118,8 @@ var model = function(otps) {
 	if(otps.burn_buff_change)
 		this.burn_buff_change = JSON.parse(otps.burn_buff_change)		//灼烧状态附加BUFF修改
 	this.poison_add_forbidden = otps.poison_add_forbidden //中毒buff附加禁疗
-	//todo
+
+	this.first_nocontrol = otps.first_nocontrol //首回合免疫眩晕、沉默、麻痹效果
 	this.first_crit = otps.first_crit			//首回合必定暴击
 	if(this.first_crit)
 		this.must_crit = true

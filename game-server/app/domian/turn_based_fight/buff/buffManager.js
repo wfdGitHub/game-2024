@@ -14,16 +14,19 @@ for(var i = 0;i < buffIds.length;i++){
 	buffList[buffIds[i]] = require("./buffs/"+buffIds[i]+".js")
 }
 var buffFactory = function() {}
-buffFactory.init = function(seeded) {
+buffFactory.init = function(seeded,fighting) {
 	this.seeded = seeded
+	this.fighting = fighting
 }
 //创建BUFF
 buffFactory.createBuff = function(releaser,character,otps) {
 	var buffId = otps.buffId
 	//判断控制buff抗性
-	if(controlBuff[buffId] && character.control_buff_lowrate && this.seeded.random("控制buff抗性") < character.control_buff_lowrate){
-		console.log("控制buff概率降低生效")
-		return
+	if(controlBuff[buffId]){
+		if(character.control_buff_lowrate && this.seeded.random("控制buff抗性") < character.control_buff_lowrate)
+			return
+		if(character.first_nocontrol && this.fighting.round == 1)
+			return
 	}
 	//判断伤害buff伤害降低
 	if(damageBuff[buffId] && character.damage_buff_lowArg){
