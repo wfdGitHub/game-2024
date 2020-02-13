@@ -391,17 +391,18 @@ model.useHealSkill = function(skill) {
 		}
 		let target = targets[i]
 		let value = 0
+		let mul = skill.mul
+		if(min_hp3_list && min_hp3_list[target.id])
+			mul += skill.character.heal_min_hp3_rate
 		if(skill.healType == "atk"){
-			value = Math.round(skill.character.getTotalAtt("atk") * skill.mul * rate)
+			value = Math.round(skill.character.getTotalAtt("atk") * mul * rate)
 		}else if(healType == "hp"){
-			value = Math.round(target.getTotalAtt("maxHP") * skill.mul * rate)
+			value = Math.round(target.getTotalAtt("maxHP") * mul * rate)
 		}else{
 			console.error("healType error "+healType)
 		}
 		if(min_hp_friend && min_hp_friend == target)
 			value = Math.round(value * (skill.character.heal_min_hp_rate + 1))
-		if(min_hp3_list && min_hp3_list[target.id])
-			value = Math.round(value * (skill.character.heal_min_hp3_rate + 1))
 		let info = this.formula.calHeal(skill.character,target,value,skill)
 		info = target.onHeal(skill.character,info,skill)
 		recordInfo.targets.push(info)
