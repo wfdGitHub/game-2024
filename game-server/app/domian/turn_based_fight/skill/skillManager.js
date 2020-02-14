@@ -267,8 +267,14 @@ model.useAttackSkill = function(skill) {
 		}
 		if(skill.character.kill_must_crit)
 			skill.character.next_must_crit = true
-		if(skill.character.kill_rob_anger)
+		if(skill.character.kill_rob_anger && skill.isAnger)
 			skill.character.addAnger(dead_anger,skill.skillId)
+		//击杀后追加技能
+		if(skill.character.kill_later_skill && this.seeded.random("判断追加技能") < skill.character.kill_later_skill.rate){
+			let tmpSkillInfo = Object.assign({skillId : skill.skillId,name : skill.name},skill.character.kill_later_skill)
+			let tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
+			this.useSkill(tmpSkill)
+		}
 	}
 	//伤害值转生命判断
 	if(allDamage){
