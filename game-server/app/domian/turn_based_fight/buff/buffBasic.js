@@ -11,7 +11,7 @@ var buffBasic = function(releaser,character,otps) {
 }
 //clear
 buffBasic.prototype.clear = function() {
-	console.log("buff清除"+this.name)
+	// console.log("buff清除"+this.name)
 }
 buffBasic.prototype.refresh = function() {
 }

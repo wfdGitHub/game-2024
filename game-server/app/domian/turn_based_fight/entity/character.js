@@ -122,6 +122,7 @@ var model = function(otps) {
 		this.burn_att_change = JSON.parse(otps.burn_att_change)			//灼烧状态属性修改
 	if(otps.burn_buff_change)
 		this.burn_buff_change = JSON.parse(otps.burn_buff_change)		//灼烧状态附加BUFF修改
+	this.burn_not_invincible = otps.burn_not_invincible   //被灼烧的武将无法获得无敌和无敌吸血盾效果
 	this.poison_add_forbidden = otps.poison_add_forbidden //中毒buff附加禁疗
 
 	this.first_nocontrol = otps.first_nocontrol //首回合免疫眩晕、沉默、麻痹效果

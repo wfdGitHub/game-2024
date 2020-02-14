@@ -28,6 +28,8 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		if(character.first_nocontrol && this.fighting.round == 1)
 			return
 	}
+	if(buffId == "invincible" && character.buffs["burn"] && character.buffs["burn"].releaser.burn_not_invincible)
+		return
 	//判断伤害buff伤害降低
 	if(damageBuff[buffId] && character.damage_buff_lowArg){
 		otps.buffArg = otps.buffArg * (1 - character.damage_buff_lowArg)
