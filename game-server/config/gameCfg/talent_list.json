@@ -150,7 +150,7 @@
   },
   "1030": {
     "des": "暴伤减免+8%",
-    "key1": "critDef",
+    "key1": "slayDef",
     "value1": 0.08
   },
   "1031": {
@@ -391,7 +391,7 @@
   },
   "1077": {
     "des": "释放技能时，如果目标处于灼烧状态，技能直接伤害的50%转化为生命，治疗自己",
-    "key1": "normal_burn_turn_heal",
+    "key1": "skill_burn_turn_heal",
     "value1": 0.5
   },
   "1078": {
@@ -724,5 +724,299 @@
     "des": "全体上阵武将暴伤减免+5%",
     "key1": "team_slayDef_add",
     "value1": 0.05
+  },
+  "2001": {
+    "des": "暴击伤害+5%",
+    "key1": "slay",
+    "value1": 0.05
+  },
+  "2002": {
+    "des": "攻击+300（武将100级后每升1级攻击额外+9）",
+    "key1": "atk",
+    "value1": 300,
+    "key2": "atk_grow",
+    "value2": 9
+  },
+  "2003": {
+    "des": "生命+2000（武将100级后每升1级生命额外+60）",
+    "key1": "maxHP",
+    "value1": 2000,
+    "key2": "maxHP_grow",
+    "value2": 60
+  },
+  "2004": {
+    "des": "物理防御+200（武将100级后每升1级额外+6）",
+    "key1": "phyDef",
+    "value1": 200,
+    "key2": "phyDef_grow",
+    "value2": 6
+  },
+  "2005": {
+    "des": "法术防御+200（武将100级后每升1级额外+6）",
+    "key1": "magDef",
+    "value1": 200,
+    "key2": "magDef_grow",
+    "value2": 6
+  },
+  "2006": {
+    "des": "攻击+900（武将100级后每升1级攻击额外+27）",
+    "key1": "atk",
+    "value1": 900,
+    "key2": "atk_grow",
+    "value2": 27
+  },
+  "2007": {
+    "des": "生命+6000(武将100级后每升1级生命额外+180)",
+    "key1": "maxHP",
+    "value1": 6000,
+    "key2": "maxHP_grow",
+    "value2": 180
+  },
+  "2008": {
+    "des": "物理防御+600（武将100级后每升1级额外+18）",
+    "key1": "phyDef",
+    "value1": 600,
+    "key2": "phyDef_grow",
+    "value2": 18
+  },
+  "2009": {
+    "des": "法术防御+600（武将100级后每升1级额外+18）",
+    "key1": "magDef",
+    "value1": 600,
+    "key2": "magDef_grow",
+    "value2": 18
+  },
+  "2010": {
+    "des": "抗暴概率+8%",
+    "key1": "critDef",
+    "value1": 0.08
+  },
+  "2011": {
+    "des": "暴击概率+8%",
+    "key1": "crit",
+    "value1": 0.08
+  },
+  "2012": {
+    "des": "伤害+5%",
+    "key1": "amplify",
+    "value1": 0.05
+  },
+  "2013": {
+    "des": "伤害减免+5%",
+    "key1": "reduction",
+    "value1": 0.05
+  },
+  "2014": {
+    "des": "攻击目标越少，沉默概率提升越高，最多对1个目标提高72%的沉默概率。（只对当前有沉默效果的武将生效）",
+    "key1": "less_skill_buffRate",
+    "value1": 0.72
+  },
+  "2015": {
+    "des": "攻击目标越少，眩晕概率提升越高，最多提高48%的眩晕概率。（只对当前有眩晕效果的武将生效）",
+    "key1": "less_skill_buffRate",
+    "value1": 0.48
+  },
+  "2016": {
+    "des": "攻击目标越少，麻痹概率提升越高，最多对1个目标提高72%的麻痹概率。（只对当前有麻痹效果的武将生效）",
+    "key1": "less_skill_buffRate",
+    "value1": 0.72
+  },
+  "2017": {
+    "des": "攻击目标越少，灼烧概率提升越高，最多可对1个目标提高60%的灼烧概率",
+    "key1": "less_skill_buffRate",
+    "value1": 0.6,
+    "key2": "less_normal_buffRate",
+    "value2": 0.6
+  },
+  "2018": {
+    "des": "攻击目标越少，灼烧概率提升越高，最多可对1个目标提高96%的灼烧概率",
+    "key1": "less_skill_buffRate",
+    "value1": 0.96,
+    "key2": "less_normal_buffRate",
+    "value2": 0.96
+  },
+  "2019": {
+    "des": "攻击目标越少，中毒概率提升越高，最多可对1个目标提高60%的中毒概率",
+    "key1": "less_skill_buffRate",
+    "value1": 0.6
+  },
+  "2020": {
+    "des": "攻击目标越少，中毒伤害提升越高，最多可对1个目标提高60%的中毒伤害",
+    "key1": "less_buff_arg",
+    "value1": 0.6
+  },
+  "2021": {
+    "des": "保护目标越少，减少效果越高，最高可以减少36%的直接伤害。（只对当前有减伤护盾的武将生效）",
+    "key1": "less_buff_arg",
+    "value1": 0.6
+  },
+  "2022": {
+    "des": "反伤增加30%（只对当前有反伤效果的武将生效）",
+    "key1": "hit_rebound_add",
+    "value1": 0.3
+  },
+  "2023": {
+    "des": "伤害+12%",
+    "key1": "amplify",
+    "value1": 0.12
+  },
+  "2024": {
+    "des": "击杀目标回复自身1点怒气。",
+    "key1": "kill_anger",
+    "value1": 1
+  },
+  "2025": {
+    "des": "技能直接伤害转化为血量治疗当前血量最少的武将的比例提升18%。（只对当前有技能转治疗的辅助武将生效）",
+    "key1": "skill_turn_rate",
+    "value1": 0.18
+  },
+  "2026": {
+    "des": "治疗武将释放技能时，对己方血量最少武将造成治疗效果额外提升55%",
+    "key1": "heal_min_hp_rate",
+    "value1": 0.55
+  },
+  "2027": {
+    "des": "抗暴概率+20%",
+    "key1": "critDef",
+    "value1": 0.2
+  },
+  "2028": {
+    "des": "初始怒气增加1点",
+    "key1": "curAnger",
+    "value1": 1
+  },
+  "2029": {
+    "des": "中毒状态延长1回合",
+    "key1": "poison_duration",
+    "value1": 1
+  },
+  "2030": {
+    "des": "灼烧状态额外延长1回合",
+    "key1": "burn_duration",
+    "value1": 1
+  },
+  "2031": {
+    "des": "伤害+18%",
+    "key1": "amplify",
+    "value1": 0.18
+  },
+  "2032": {
+    "des": "暴击伤害+12%",
+    "key1": "slay",
+    "value1": 0.12
+  },
+  "2033": {
+    "des": "暴击概率+20%",
+    "key1": "crit",
+    "value1": 0.2
+  },
+  "2034": {
+    "des": "伤害减免+12%",
+    "key1": "reduction",
+    "value1": 0.12
+  },
+  "2035": {
+    "des": "技能的治疗效果提升25%，同时为技能目标附加1个免伤盾，受到直接伤害降低12%，持续1回合。",
+    "key1": "skill_heal_amp",
+    "value1": 0.25,
+    "key2": "skill_later_buff",
+    "value2": "{\"buffId\":\"reduction\",\"duration\":1,\"buffRate\":1,\"buffArg\":0.12}"
+  },
+  "2036": {
+    "des": "攻击单体目标时额外降低目标1点怒气。",
+    "key1": "single_less_anger",
+    "value1": 1
+  },
+  "2037": {
+    "des": "普通攻击必定暴击。（包括治疗武将）",
+    "key1": "normal_crit",
+    "value1": true
+  },
+  "2038": {
+    "des": "造成的中毒伤害的10%转化为血量治疗自己。",
+    "key1": "poison_change_hp",
+    "value1": 0.1
+  },
+  "2039": {
+    "des": "受到控制效果（麻痹、沉默、眩晕）概率降低35%",
+    "key1": "control_buff_lowrate",
+    "value1": 0.35
+  },
+  "2040": {
+    "des": "受到灼烧、中毒伤害时，该伤害降低35%",
+    "key1": "damage_buff_lowArg",
+    "value1": 0.35
+  },
+  "2041": {
+    "des": "技能直接击杀敌方目标时，获得目标剩余的所有怒气（输出武将佩戴）",
+    "key1": "kill_rob_anger",
+    "value1": true
+  },
+  "2042": {
+    "des": "释放技能造成的中毒附加封治疗效果，中毒状态的武将无法受到治疗",
+    "key1": "poison_add_forbidden",
+    "value1": true
+  },
+  "2043": {
+    "des": "技能直接伤害的18%转化为血量，治疗自己",
+    "key1": "skill_turn_rate",
+    "value1": 0.18,
+    "key2": "skill_turn_tg",
+    "value2": "team_self"
+  },
+  "2044": {
+    "des": "首回合免疫眩晕、沉默、麻痹效果",
+    "key1": "first_nocontrol",
+    "value1": true
+  },
+  "2045": {
+    "des": "治疗武将释放技能时，对己方血量最少的3个武将治疗效果额外提升治疗武将攻击的32%",
+    "key1": "heal_min_hp3_rate",
+    "value1": 0.32
+  },
+  "2046": {
+    "des": "攻击纵排目标时，额外降低目标1点怒气。（只对当前有纵排减怒效果的武将生效）",
+    "key1": "enemy_vertical_anger",
+    "value1": 1
+  },
+  "2047": {
+    "des": "单体输出武将直接伤害击杀目标后，追加1次技能，对敌方单体造成175%物理伤害。（追加的技能不消耗怒气，不触发任何特性）",
+    "key1": "kill_later_skill",
+    "value1": "{\"type\":\"attack\",\"mul\":1.75,\"damageType\":\"phy\",\"targetType\":\"enemy_1\",\"rate\":1}"
+  },
+  "2048": {
+    "des": "被灼烧的武将无法获得无敌和无敌吸血盾效果",
+    "key1": "burn_not_invincible",
+    "value1": true
+  },
+  "2049": {
+    "des": "攻击目标越少，清除敌方武将无敌状态的概率越高，最多对1个目标提高100%的清除无敌概率",
+    "key1": "less_clear_invincible",
+    "value1": 1
+  },
+  "2050": {
+    "des": "单体输出武将的所有攻击优先攻击敌方当前血量最低的武将",
+    "key1": "target_minHP",
+    "value1": true
+  },
+  "2051": {
+    "des": "武将怒气小于7点时，不会释放技能；释放技能消耗当前所有怒气，超过4点怒气部分，每额外消耗1点怒气，技能伤害增加15%",
+    "key1": "needAnger",
+    "value1": 7
+  },
+  "2052": {
+    "des": "初始怒气增加2点",
+    "key1": "curAnger",
+    "value1": 2
+  },
+  "2053": {
+    "des": "暴击伤害+20%",
+    "key1": "slay",
+    "value1": 0.2
+  },
+  "2054": {
+    "des": "暴伤减免+20%",
+    "key1": "slayDef",
+    "value1": 0.2
   }
 }
