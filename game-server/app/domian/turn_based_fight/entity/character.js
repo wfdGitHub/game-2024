@@ -33,7 +33,7 @@ var model = function(otps) {
 	this.attInfo.healAdd = otps["healAdd"] || 0			//被治疗加成
 
 	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
-	this.needAnger = 4							//技能所需怒气值
+	this.needAnger = otps["needAnger"] || 4				//技能所需怒气值
 	this.curAnger = (otps["curAnger"] || 0) + 2	//当前怒气值
 	//=========特殊属性=======//
 	this.buffRate								//buff概率   若技能存在buff  以此代替buff本身概率
@@ -46,11 +46,13 @@ var model = function(otps) {
 	this.less_skill_buffRate = otps.less_skill_buffRate || 0 //技能最高提升buff概率(目标越多效果越低)
 	this.less_normal_buffRate = otps.less_normal_buffRate || 0 //普攻最高提升buff概率(目标越多效果越低)
 	this.less_buff_arg = otps.less_buff_arg || 0	//提升buff效果(目标越多效果越低)
+	this.less_clear_invincible = otps.less_clear_invincible || 0 //清除敌方武将无敌概率（目标越多效果越低）
 
 	this.control_buff_lowrate = otps.control_buff_lowrate || 0 //被控制概率降低（麻痹、沉默、眩晕）
 	this.damage_buff_lowArg = otps.damage_buff_lowArg || 0 //降低受到的灼烧、中毒伤害
 
 	this.enemy_vertical_anger = otps.enemy_vertical_anger || 0	//攻击纵排目标时降低敌人怒气
+
 
 	this.must_crit = false						//攻击必定暴击
 	this.next_must_crit = false					//下回合攻击暴击
@@ -201,6 +203,11 @@ var model = function(otps) {
 			this.angerSkill.buffArg = this.buffArg
 		if(this.buffDuration)
 			this.angerSkill.buffDuration = this.buffDuration
+	}
+	this.target_minHP = otps.target_minHP		//单体输出武将的所有攻击优先攻击敌方当前血量最低的武将
+	if(this.target_minHP){
+		this.defaultSkill.targetType = "enemy_minHP"
+		this.angerSkill.targetType = "enemy_minHP"
 	}
 }
 //百分比属性加成

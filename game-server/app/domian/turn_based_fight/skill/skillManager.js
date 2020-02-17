@@ -213,11 +213,23 @@ model.useAttackSkill = function(skill) {
 		return []
 	}
 	var addAmp = 0
+	//判断怒气增加伤害
+	if(skill.character.needAnger > 4){
+		addAmp += (skill.character.needAnger - 4) * 0.15
+	}
 	//判断技能目标减少
-	if(targets.length && (skill.addAmp || skill.character.skill_less_amp)){
-		var lessNum = this.locator.getTargetsNum(skill.targetType) - targets.length
-		if(lessNum > 0){
-			addAmp += (skill.addAmp + skill.character.skill_less_amp) * lessNum
+	var lessNum = this.locator.getTargetsNum(skill.targetType) - targets.length
+	if(lessNum && skill.character.skill_less_amp)
+		addAmp += skill.character.skill_less_amp * lessNum
+	if(skill.character.less_clear_invincible){
+		let allLenth = this.locator.getTargetsNum(skill.targetType)
+		let buffRate = ((allLenth - targets.length + 1) / allLenth) * skill.character.less_clear_invincible
+		for(var i = 0;i < targets.length;i++){
+			if(!targets[i].died && targets[i].buffs["invincible"]){
+				if(this.seeded.random("清除无敌盾") < buffRate){
+					targets[i].buffs["invincible"].destroy()
+				}
+			}
 		}
 	}
 	//判断敌方阵亡伤害加成

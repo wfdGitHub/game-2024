@@ -9,7 +9,6 @@ var model = function(releaser,character,otps) {
 	buff.damage = Math.floor(buff.buffArg * releaser.getTotalAtt("atk"))
 	if(releaser.burn_duration)
 		buff.duration += releaser.burn_duration
-	console.log("buff.duration",buff.duration)
 	buff.refresh = function() {
 		let info = {type : "burnDamage",value : buff.damage ,id : buff.character.id}
 		info = buff.character.onHit(buff.releaser,info)
