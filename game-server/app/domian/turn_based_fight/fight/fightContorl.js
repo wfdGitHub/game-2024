@@ -7,6 +7,7 @@ var advanced_talent = require("../../../../config/gameCfg/advanced_talent.json")
 var talent_list = require("../../../../config/gameCfg/talent_list.json")
 var equip_base = require("../../../../config/gameCfg/equip_base.json")
 var equip_level = require("../../../../config/gameCfg/equip_level.json")
+var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -160,6 +161,23 @@ model.getCharacterInfo = function(info) {
 				advancedInfo[m_list[0]] = Number(m_list[1])
 			})
 			model.mergeData(info,advancedInfo)
+		}
+	}
+	//锦囊计算
+	for(var i = 1;i <= 10;i++){
+		if(info["acepack_"+i]){
+			let talentId = ace_pack[info["acepack_"+i]]["pa"]
+			if(talentId){
+				if(talent_list[talentId]){
+					let tmpTalent = {}
+					tmpTalent[talent_list[talentId].key1] = talent_list[talentId].value1
+					if(talent_list[talentId].key2)
+						tmpTalent[talent_list[talentId].key2] = talent_list[talentId].value2
+					model.mergeData(info,tmpTalent)
+				}else{
+					console.error("talentId error",talentId)
+				}
+			}
 		}
 	}
 	return new character(info)
