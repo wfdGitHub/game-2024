@@ -73,7 +73,7 @@
         });
       }
       //============锦囊相关==============//
-      //穿戴锦囊
+      //穿戴锦囊   aId为锦囊ID   pos为锦囊格子位置   1 - 10
       var wearAcepack = function(aId,hId,pos) {
         pomelo.request("area.acepackHandler.wearAcepack", {aId : aId,hId : hId,pos : pos}, function(data) {
             console.log(data);
@@ -91,7 +91,7 @@
             console.log(data);
         });
       }
-      //合成锦囊
+      //合成锦囊  list为材料锦囊   格式为{aId1 : 1,aId2 : 2}类似    总数量为3
       var compoundAcepack = function(aId,list) {
         pomelo.request("area.acepackHandler.compoundAcepack", {aId : aId,list : list}, function(data) {
             console.log(data);
