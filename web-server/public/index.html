@@ -72,6 +72,31 @@
             console.log(data);
         });
       }
+      //============锦囊相关==============//
+      //穿戴锦囊
+      var wearAcepack = function(aId,hId,pos) {
+        pomelo.request("area.acepackHandler.wearAcepack", {aId : aId,hId : hId,pos : pos}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下锦囊
+      var unwearAcepack = function(pos,hId) {
+        pomelo.request("area.acepackHandler.unwearAcepack", {pos : pos,hId : hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //出售锦囊
+      var sellAcepack = function(aId,count) {
+        pomelo.request("area.acepackHandler.sellAcepack", {aId : aId,count : count}, function(data) {
+            console.log(data);
+        });
+      }
+      //合成锦囊
+      var compoundAcepack = function(aId,list) {
+        pomelo.request("area.acepackHandler.compoundAcepack", {aId : aId,list : list}, function(data) {
+            console.log(data);
+        });
+      }
       //============任务相关==============//
       //获取关卡任务数据
       var getCTaskInfo = function() {
@@ -98,7 +123,7 @@
             console.log(data);
         });
       }
-      //穿戴装备
+      //出售装备
       var sellEquip = function(eId,count) {
         pomelo.request("area.equipHandler.sellEquip", {eId : eId,count : count}, function(data) {
             console.log(data);
