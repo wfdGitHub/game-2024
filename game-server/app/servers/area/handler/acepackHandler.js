@@ -2,6 +2,18 @@ var bearcat = require("bearcat")
 var async = require("async")
 var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var ace_pack_base = require("../../../../config/gameCfg/ace_pack_base.json")
+var limits = {}
+for(var i in ace_pack){
+  if(ace_pack[i].limits){
+    limits[i] = {}
+    let tmpLimits = JSON.parse(ace_pack[i].limits)
+    for(var j = 0;j < tmpLimits.length;j++)
+      limits[i][tmpLimits[j]] = true
+  }else{
+    limits[i] = false
+  }
+}
+console.log(limits)
 var acepackHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
@@ -47,6 +59,10 @@ acepackHandler.prototype.wearAcepack = function(msg, session, next) {
         }
         if(heroInfo.star < 6){
           cb("英雄星级不够")
+          return
+        }
+        if(limits[aId] && !limits[aId][heroInfo.id]){
+          cb("该英雄不能装备这件锦囊")
           return
         }
         cb(null,heroInfo)
