@@ -13,7 +13,6 @@ for(var i in ace_pack){
     limits[i] = false
   }
 }
-console.log(limits)
 var acepackHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
