@@ -19,6 +19,11 @@ adminHanlder.prototype.activatePrivileges = function(msg, session, next) {
 }
 //创建新服务器
 adminHanlder.prototype.openArea = function(msg, session, next) {
+	var limit = session.get("limit")
+	if(!limit || limit < 10){
+		next(null,{flag : false})
+		return
+	}
 	console.log("openArea")
 	this.areaDeploy.openArea({areaName : "服务器"})
 	next(null)
@@ -39,6 +44,11 @@ adminHanlder.prototype.getAreaServerInfos = function(msg, session, next) {
 }
 //获取服务器内玩家信息
 adminHanlder.prototype.getAreaPlayers = function(msg, session, next) {
+	var limit = session.get("limit")
+	if(!limit || limit < 10){
+		next(null,{flag : false})
+		return
+	}
 	var areaId = msg.areaId
 	var serverId = this.areaDeploy.getServer(areaId)
     if(!serverId){
