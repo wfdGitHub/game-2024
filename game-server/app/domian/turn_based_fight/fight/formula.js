@@ -6,13 +6,27 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
 	var info = {type : "damage",value : 0}
 	var tmpAmplify = 0
 	var tmpCrit = 0
-	if(target.buffs["burn"] && (skill.burn_att_change || skill.character.burn_att_change)){
-		var attInfo = Object.assign({},skill.burn_att_change)
-		tmpAmplify += attInfo["amplify"] || 0
-		tmpCrit += attInfo["crit"] || 0
-		if(skill.isAnger && skill.character.burn_att_change){
-			tmpAmplify += skill.character.burn_att_change["amplify"] || 0
-			tmpCrit += skill.character.burn_att_change["crit"] || 0
+	if(target.buffs["burn"]){
+		if(skill.isAnger){
+			if(skill.burn_att_change_skill || skill.character.burn_att_change_skill){
+				var attInfo = Object.assign({},skill.burn_att_change_skill)
+				tmpAmplify += attInfo["amplify"] || 0
+				tmpCrit += attInfo["crit"] || 0
+				if(skill.isAnger && skill.character.burn_att_change_skill){
+					tmpAmplify += skill.character.burn_att_change_skill["amplify"] || 0
+					tmpCrit += skill.character.burn_att_change_skill["crit"] || 0
+				}
+			}
+		}else{
+			if(skill.burn_att_change_normal || skill.character.burn_att_change_normal){
+				var attInfo = Object.assign({},skill.burn_att_change_normal)
+				tmpAmplify += attInfo["amplify"] || 0
+				tmpCrit += attInfo["crit"] || 0
+				if(skill.isAnger && skill.character.burn_att_change_normal){
+					tmpAmplify += skill.character.burn_att_change_normal["amplify"] || 0
+					tmpCrit += skill.character.burn_att_change_normal["crit"] || 0
+				}
+			}
 		}
 	}
 	//命中判断
