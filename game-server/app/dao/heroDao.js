@@ -125,27 +125,17 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 heroDao.prototype.heroPrAll = function(areaId,uid,heros,cb) {
 	var strList = []
 	for(let i = 0;i < heros.length;i++){
-		let lv = heros[i].lv
-		let ad = heros[i].ad
 		let star = heros[i].star
-		if(lv_cfg[lv] && lv_cfg[lv].pr)
-			strList.push(lv_cfg[lv].pr)
-		if(advanced_base[ad] && advanced_base[ad].pr)
-			strList.push(advanced_base[ad].pr)
 		if(star_base[star] && star_base[star].pr)
 			strList.push(star_base[star].pr)
-		for(var part = 1;part <= 4;part++){
-			if(heros[i]["equip_"+part]){
-				var oldeId = equip_level[heros[i]["equip_"+part]]["part_"+part]
-				strList.push(oldeId+":"+1)
-			}
-		}
 	}
 	var areaManager = bearcat.getBean("areaManager")
 	var str = areaManager.areaMap[areaId].mergepcstr(strList)
 	var awardList = areaManager.areaMap[areaId].addItemStr(uid,str)
+	this.heroPrlvadnad(areaId,uid,heros,function(flag,awardList2) {
 	if(cb)
-		cb(true,awardList)
+		cb(true,awardList2.concat(awardList))
+	})
 }
 //材料返还资源  返还升级  升阶
 heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
@@ -157,6 +147,16 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 			strList.push(lv_cfg[lv].pr)
 		if(advanced_base[ad] && advanced_base[ad].pr)
 			strList.push(advanced_base[ad].pr)
+		for(var part = 1;part <= 4;part++){
+			if(heros[i]["equip_"+part]){
+				var oldeId = equip_level[heros[i]["equip_"+part]]["part_"+part]
+				strList.push(oldeId+":"+1)
+			}
+		}
+		for(var j = 0;j <= 10;j++){
+			if(heros[i]["acepack_"+j])
+				strList.push(heros[i]["acepack_"+j]+":1")
+		}
 	}
 	if(strList.length){
 		var areaManager = bearcat.getBean("areaManager")
