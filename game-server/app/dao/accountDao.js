@@ -9,6 +9,7 @@ accountDao.prototype.createAccount = function(otps,cb) {
 		unionid : otps.unionid,
 		head : otps.head || 0,
 		nickname : otps.nickname || 0,
+		limit : 10,
 		playTime : 0,
 		dayTime : 0,
 		dayStr : (new Date()).toDateString()

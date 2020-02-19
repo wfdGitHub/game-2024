@@ -627,6 +627,24 @@
             console.log(data);
         })
       }
+      //改变英雄星级
+      var changeStar = function(hId,value) {
+        pomelo.request("area.adminArea.changeStar", {hId : hId,value : value}, function(data) {
+            console.log(data);
+        })
+      }
+      //改变英雄阶级
+      var changeAdvance = function(hId,value) {
+        pomelo.request("area.adminArea.changeAdvance", {hId : hId,value : value}, function(data) {
+            console.log(data);
+        })
+      }
+      //改变英雄等级
+      var changeLevel = function(hId,value) {
+        pomelo.request("area.adminArea.changeLevel", {hId : hId,value : value}, function(data) {
+            console.log(data);
+        })
+      }
       var openArea = function() {
         pomelo.request("admin.adminHandler.openArea", {}, function(data) {
             console.log(data);
