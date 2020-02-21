@@ -88,9 +88,6 @@ model.useSkill = function(skill) {
 		recordInfo.type = "self_heal"
 		fightRecord.push(recordInfo)
 	}
-	//判断自身怒气恢复
-	if(skill.skill_anger_s)
-		skill.character.addAnger(skill.skill_anger_s,skill.skillId)
 	//判断全队怒气恢复
 	if(skill.skill_anger_a)
 		for(var i = 0;i < skill.character.team.length;i++)
@@ -116,7 +113,7 @@ model.useSkill = function(skill) {
 	if(skill.isAnger && !skill.character.died){
 		//释放技能后恢复自身怒气
 		if(skill.character.skill_anger_s)
-			skill.character.addAnger(skill.character.skill_anger_s)
+			skill.character.addAnger(skill.character.skill_anger_s,skill.skillId)
 		//释放技能后恢复全体队友怒气
 		if(skill.character.skill_anger_a)
 			for(var i = 0;i < skill.character.team.length;i++)
