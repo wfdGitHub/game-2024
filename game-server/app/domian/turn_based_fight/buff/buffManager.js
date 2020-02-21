@@ -48,8 +48,10 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		}
 		fightRecord.push({type : "createBuff",releaser : releaser.id,character : character.id,buffId : buffId,name : buff.name})
 		character.addBuff(releaser,buff)
-		if(buffId == "poison" && releaser.poison_add_forbidden)
+		if(buffId == "poison" && releaser.poison_add_forbidden){
+			otps.duration = buff.duration
 			this.createBuff(releaser,character,Object.assign({},otps,{buffId : "forbidden"}))
+		}
 	}else{
 		console.error("buffId 不存在",buffId)
 		return false
