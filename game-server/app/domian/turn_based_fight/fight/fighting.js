@@ -89,20 +89,23 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	for(var i = 0;i < teamLength;i++){
 		atkTeam[i].calAttAdd(atkTeamAdds)
 		atkTeam[i].teamInfo = this.atkTeamInfo
+		info.atkTeam.push(atkTeam[i].getSimpleInfo())
+		defTeam[i].calAttAdd(defTeamAdds)
+		defTeam[i].teamInfo = this.defTeamInfo
+		info.defTeam.push(defTeam[i].getSimpleInfo())
+	}
+	fightRecord.push(info)
+	//初始buff
+	for(var i = 0;i < teamLength;i++){
 		if(atkTeam[i].first_buff){
 			var burnBuffInfo = atkTeam[i].first_buff
 			buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 		}
-		info.atkTeam.push(atkTeam[i].getSimpleInfo())
-		defTeam[i].calAttAdd(defTeamAdds)
-		defTeam[i].teamInfo = this.defTeamInfo
 		if(defTeam[i].first_buff){
 			var burnBuffInfo = defTeam[i].first_buff
 			buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 		}
-		info.defTeam.push(defTeam[i].getSimpleInfo())
 	}
-	fightRecord.push(info)
 }
 //开始新轮次
 model.prototype.nextRound = function() {
