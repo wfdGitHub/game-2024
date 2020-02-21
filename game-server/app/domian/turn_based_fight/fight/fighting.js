@@ -91,14 +91,14 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		atkTeam[i].teamInfo = this.atkTeamInfo
 		if(atkTeam[i].first_buff){
 			var burnBuffInfo = atkTeam[i].first_buff
-			buffManager.createBuff(null,atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 		}
 		info.atkTeam.push(atkTeam[i].getSimpleInfo())
 		defTeam[i].calAttAdd(defTeamAdds)
 		defTeam[i].teamInfo = this.defTeamInfo
 		if(defTeam[i].first_buff){
 			var burnBuffInfo = defTeam[i].first_buff
-			buffManager.createBuff(null,defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 		}
 		info.defTeam.push(defTeam[i].getSimpleInfo())
 	}
