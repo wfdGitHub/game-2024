@@ -285,7 +285,7 @@
   "1056": {
     "des": "受到直接伤害的24%转化为生命治疗己方生命最少的3个目标",
     "key1": "hit_turn_rate",
-    "value1": 0.24,
+    "value1": 0.08,
     "key2": "hit_turn_tg",
     "value2": "team_minHp_3"
   },
