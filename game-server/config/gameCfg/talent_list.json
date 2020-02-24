@@ -85,22 +85,22 @@
   },
   "1017": {
     "des": "技能对灼烧目标造成的伤害额外增加50%",
-    "key1": "burn_att_change",
+    "key1": "burn_att_change_skill",
     "value1": "{\"amplify\":0.5}"
   },
   "1018": {
     "des": "普通攻击对灼烧目标造成的伤害额外增加80%",
-    "key1": "burn_att_change",
+    "key1": "burn_att_change_normal",
     "value1": "{\"amplify\":0.8}"
   },
   "1019": {
     "des": "释放技能时，对灼烧目标的暴击几率额外增加50%",
-    "key1": "burn_att_change",
+    "key1": "burn_att_change_skill",
     "value1": "{\"crit\":0.5}"
   },
   "1020": {
     "des": "释放技能时，如果目标处于灼烧状态，附加晕眩的概率提升至50%",
-    "key1": "burn_buff_change",
+    "key1": "burn_buff_change_skill",
     "value1": "{\"buffRate\":0.5}"
   },
   "1021": {
@@ -512,7 +512,7 @@
   "1101": {
     "des": "释放技能后追加1次普通攻击（追加的普通攻击不会回复怒气）",
     "key1": "skill_add_d_s",
-    "value1": 1
+    "value1": true
   },
   "1102": {
     "des": "释放技能后回复全体队友1点怒气",
@@ -602,7 +602,7 @@
   "1119": {
     "des": "释放技能后有40%概率追加1次技能，对敌方后排造成86%法术伤害",
     "key1": "skill_later_skill",
-    "value1": "{\"type\" : \"attack\",\"mul\" : 0.86,\"damageType\": \"mag\",\"targetType\": \"enemy_horizontal_back\",\"rate\" : 0.4}"
+    "value1": "{\"type\":\"attack\",\"mul\":0.86,\"damageType\":\"mag\",\"targetType\":\"enemy_horizontal_back\",\"rate\":0.4}"
   },
   "1120": {
     "des": "技能目标每减少1个，技能伤害增加15%",
@@ -1018,5 +1018,199 @@
     "des": "暴伤减免+20%",
     "key1": "slayDef",
     "value1": 0.2
+  },
+  "3001": {
+    "des": "释放技能有40%几率追加1次技能，对全体造成41%法术伤害",
+    "key1": "skill_later_skill",
+    "value1": "{\"type\":\"attack\",\"mul\":0.41,\"damageType\":\"mag\",\"targetType\":\"enemy_all,\"rate\":0.4}"
+  },
+  "3002": {
+    "des": "全体上阵武将暴击几率+30%",
+    "key1": "team_crit_add",
+    "value1": 0.3
+  },
+  "3003": {
+    "des": "行动后回复自身1点怒气",
+    "key1": "action_anger",
+    "value1": 1
+  },
+  "3004": {
+    "des": "全体上阵武将暴击几率+20%",
+    "key1": "team_crit_add",
+    "value1": 0.2
+  },
+  "3005": {
+    "des": "技能造成的治疗量+25%",
+    "key1": "skill_heal_amp",
+    "value1": 0.25
+  },
+  "3006": {
+    "des": "受到普通攻击直接伤害时，回复自身1点怒气",
+    "key1": "hit_anger_s",
+    "value1": 1
+  },
+  "3007": {
+    "des": "释放技能后，额外回复自身1点怒气",
+    "key1": "skill_anger_s",
+    "value1": 1
+  },
+  "3008": {
+    "des": "直接伤害导致死亡时100%眩晕击杀自己的敌方武将",
+    "key1": "died_later_buff",
+    "value1": "{\"buffId\":\"dizzy\",\"duration\":2,\"buffRate\":1}"
+  },
+  "3009": {
+    "des": "技能造成的伤害增加25%",
+    "key1": "skill_attack_amp",
+    "value1": 0.25
+  },
+  "3010": {
+    "des": "直接伤害击杀目标后，回复自身1点怒气",
+    "key1": "kill_anger",
+    "value1": 1
+  },
+  "3011": {
+    "des": "技能目标每减少1个，技能伤害增加10%",
+    "key1": "skill_less_amp",
+    "value1": 0.1
+  },
+  "3012": {
+    "des": "技能直接伤害的50%转化为生命，治疗己方生命最低的队友",
+    "key1": "skill_burn_turn_heal",
+    "value1": 0.5
+  },
+  "3013": {
+    "des": "直接伤害击杀目标后，追加1次普通攻击（追加的普通攻击不会回复怒气）",
+    "key1": "kill_add_d_s",
+    "value1": true
+  },
+  "3014": {
+    "des": "释放技能后，降低目标1点怒气",
+    "key1": "skill_less_anger",
+    "value1": 1
+  },
+  "3015": {
+    "des": "受到直接伤害的18%转化为生命，治疗己方全体目标",
+    "key1": "hit_turn_rate",
+    "value1": 0.18,
+    "key2": "hit_turn_tg",
+    "value2": "team_all"
+  },
+  "3016": {
+    "des": "受到的治疗量增加50%",
+    "key1": "healAdd",
+    "value1": 0.5
+  },
+  "3017": {
+    "des": "释放技能后，回复全体队友1点怒气",
+    "key1": "skill_anger_a",
+    "value1": 1
+  },
+  "3018": {
+    "des": "自身生命降低10%，伤害增加5%",
+    "key1": "low_hp_amp",
+    "value1": 0.05
+  },
+  "3019": {
+    "des": "行动后自身伤害增加8%",
+    "key1": "action_buff",
+    "value1": "{\"buffId\":\"amplify\",\"duration\":99,\"buffArg\":0.08,\"buffRate\":1}"
+  },
+  "3020": {
+    "des": "释放技能附带眩晕的概率增加至65%",
+    "key1": "buffRate",
+    "value1": 0.65
+  },
+  "3021": {
+    "des": "攻击时，对灼烧目标的暴击几率额外增加80%",
+    "key1": "burn_att_change_skill",
+    "value1": "{\"crit\":0.8}",
+    "key2": "burn_att_change_normal",
+    "value2": "{\"crit\":0.8}"
+  },
+  "3022": {
+    "des": "受到普通攻击时，有80%概率使攻击者灼烧，持续2回合",
+    "key1": "hit_buff",
+    "value1": "{\"buffId\":\"burn\",\"buffArg\":0.2,\"duration\":2,\"buffRate\":0.8}"
+  },
+  "3023": {
+    "des": "释放技能时，为队友附加的持续治疗效果增加至大乔攻击的32%",
+    "key1": "skill_later_buff",
+    "value1": "{\"buffId\":\"recover\",\"buffArg\":0.32,\"duration\":2,\"buffRate\":1}"
+  },
+  "3024": {
+    "des": "受到灼烧状态敌人攻击时，受到的直接伤害额外再降低25%",
+    "key1": "burn_hit_reduction",
+    "value1": 0.25
+  },
+  "3025": {
+    "des": "释放技能后，给血量最少的2名队友附加无敌吸血盾，持续1回合",
+    "key1": "skill_later_buff",
+    "value1": "{\"buffId\":\"invincibleSuck\",\"duration\":1,\"buff_tg\":\"friend_minHp_2\",\"buffRate\":1}"
+  },
+  "3026": {
+    "des": "释放技能时，如果目标处于灼烧状态，附加眩晕的概率提升至80%",
+    "key1": "burn_buff_change_skill",
+    "value1": "{\"buffRate\":0.8}"
+  },
+  "3027": {
+    "des": "普通攻击对灼烧目标造成的伤害额外增加80%",
+    "key1": "burn_att_change_normal",
+    "value1": "{\"amplify\":0.8}"
+  },
+  "3028": {
+    "des": "释放技能附加灼烧状态的概率增加至96%",
+    "key1": "buffRate",
+    "value1": 0.96
+  },
+  "3029": {
+    "des": "受到普通攻击时，有50%概率使攻击者灼烧，持续2回合",
+    "key1": "hit_buff",
+    "value1": "{\"buffId\":\"burn\",\"buffArg\":0.2,\"duration\":2,\"buffRate\":0.5}"
+  },
+  "3030": {
+    "des": "直接伤害击杀灼烧目标后，回复自身50%生命",
+    "key1": "kill_burn_heal",
+    "value1": 0.5
+  },
+  "3031": {
+    "des": "释放技能后，追加1次普通攻击（追加的普通攻击不会回复怒气）",
+    "key1": "skill_add_d_s",
+    "value1": true
+  },
+  "3032": {
+    "des": "释放普通攻击后额外降低目标1点怒气",
+    "key1": "normal_less_anger",
+    "value1": 1
+  },
+  "3033": {
+    "des": "释放技能附带眩晕的概率增加至70%",
+    "key1": "buffRate",
+    "value1": 0.7
+  },
+  "3034": {
+    "des": "直接伤害击杀目标后回复自身2点怒气",
+    "key1": "kill_anger",
+    "value1": 2
+  },
+  "3035": {
+    "des": "目标血量每减少10%，对其造成的的治疗量增加5%",
+    "key1": "low_hp_heal",
+    "value1": 0.05
+  },
+  "3036": {
+    "des": "减伤盾减少受到直接伤害的百分比增加至50%",
+    "key1": "buffArg",
+    "value1": 0.5
+  },
+  "3037": {
+    "des": "释放技能附加麻痹效果的概率增加至50%",
+    "key1": "buffRate",
+    "value1": 0.5
+  },
+  "3038": {
+    "des": "释放技能附加中毒效果的概率增加至96%",
+    "key1": "buffRate",
+    "value1": 0.96
   }
 }
