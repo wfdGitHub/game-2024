@@ -88,19 +88,19 @@ model.prototype.getTargets = function(character,targetType) {
 			return this.getFriendRandomMinHp(character,1)
 		break
 		case "friend_minHp_2":
-			//获取友方生命值最少的1个单位
+			//获取友方生命值最少的2个单位
 			return this.getFriendRandomMinHp(character,2)
 		break
 		case "friend_minHp_3":
-			//获取友方生命值最少的1个单位
+			//获取友方生命值最少的3个单位
 			return this.getFriendRandomMinHp(character,3)
 		break
 		case "friend_minHp_4":
-			//获取友方生命值最少的1个单位
+			//获取友方生命值最少的4个单位
 			return this.getFriendRandomMinHp(character,4)
 		break
 		case "friend_minHp_5":
-			//获取友方生命值最少的1个单位
+			//获取友方生命值最少的5个单位
 			return this.getFriendRandomMinHp(character,5)
 		break
 		case "team_min_index":
@@ -142,19 +142,19 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 			return this.getFriendRandomMinHp(character,1)
 		break
 		case "friend_minHp_2":
-			//获取友方生命值最少的1个单位
+			//获取友方生命值最少的2个单位
 			return this.getFriendRandomMinHp(character,2)
 		break
 		case "friend_minHp_3":
-			//获取友方生命值最少的1个单位
+			//获取友方生命值最少的3个单位
 			return this.getFriendRandomMinHp(character,3)
 		break
 		case "friend_minHp_4":
-			//获取友方生命值最少的1个单位
+			//获取友方生命值最少的4个单位
 			return this.getFriendRandomMinHp(character,4)
 		break
 		case "friend_minHp_5":
-			//获取友方生命值最少的1个单位
+			//获取友方生命值最少的5个单位
 			return this.getFriendRandomMinHp(character,5)
 		break
 		case "enemy_all":

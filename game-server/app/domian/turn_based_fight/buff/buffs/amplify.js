@@ -12,6 +12,7 @@ var model = function(releaser,character,otps) {
 	}
 	buff.refresh = function() {
 		for(var i in list){
+			list[i].duration--
 			if(list[i].duration <= 0){
 				delete list[i]
 			}
@@ -19,14 +20,17 @@ var model = function(releaser,character,otps) {
 	}
 	buff.overlay = function(releaser,otps) {
 		this.releaser = releaser
-		this.duration = otps.duration
+		if(otps.duration > this.duration)
+			this.duration = otps.duration
 		list[id++] = {duration : otps.duration,value : otps.buffArg}
+		console.log("overlay",id)
 	}
 	buff.getValue = function() {
 		var value = 0
 		for(var i in list){
 			value += list[i].value
 		}
+		console.log("value ",value)
 		return value
 	}
 	return buff

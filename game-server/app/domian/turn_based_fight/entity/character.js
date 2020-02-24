@@ -67,6 +67,7 @@ var model = function(otps) {
 	this.kill_heal = otps.kill_heal || 0		//直接伤害击杀目标后，恢复自身生命值上限
 	this.kill_must_crit = otps.kill_must_crit	//直接伤害击杀目标后，下回合攻击必定暴击
 	this.kill_rob_anger = otps.kill_rob_anger 	//技能直接击杀敌方目标时，获得目标剩余的所有怒气
+	this.kill_burn_heal = otps.kill_burn_heal || 0 //直接伤害击杀灼烧目标后，回复自身生命值百分比
 	if(otps.kill_later_skill){
 		this.kill_later_skill = JSON.parse(otps.kill_later_skill)	//直接伤害击杀后追加技能
 	}
@@ -96,6 +97,7 @@ var model = function(otps) {
 	this.hit_rebound = otps.hit_rebound || 0		//受到直接伤害反弹比例
 	this.hit_rebound_add = otps.hit_rebound_add || 0 //反弹增加比例
 	this.hit_less_anger = otps.hit_less_anger || 0	//受到普通攻击后，降低攻击自己的武将怒气
+	this.hit_anger_s = otps.hit_anger_s || 0 		//收到普通攻击后，回复自己的怒气
 	if(otps.hit_buff){
 		this.hit_buff = JSON.parse(otps.hit_buff)	//受到伤害给攻击者附加BUFF
 	}
@@ -110,9 +112,15 @@ var model = function(otps) {
 		this.normal_later_buff = JSON.parse(otps.normal_later_buff)	//普攻后附加BUFF
 	}
 	this.add_d_s_crit = otps.add_d_s_crit					//追加普攻必定暴击
+
 	this.action_anger = otps.action_anger || 0				//行动后回复自身怒气
+	if(otps.action_buff){
+		this.action_buff = JSON.parse(otps.action_buff)		//行动后追加buff
+	}
+
 	this.low_hp_amp = otps.low_hp_amp || 0					//战斗中自身生命每降低10%，伤害加成
 	this.low_hp_crit = otps.low_hp_crit || 0				//战斗中自身生命每降低10%，暴击加成
+	this.low_hp_heal = otps.low_hp_heal || 0				//目标血量每减少10%，对其造成的的治疗量加成
 	this.enemy_died_amp = otps.enemy_died_amp || 0			//敌方每阵亡一人，伤害加成比例
 
 	this.single_less_anger = otps.single_less_anger || 0 	//攻击单体目标额外降低怒气
@@ -138,6 +146,8 @@ var model = function(otps) {
 	if(otps.first_buff)
 		this.first_buff = JSON.parse(otps.first_buff)		//首回合附加BUFF
 	this.died_use_skill = otps.died_use_skill				//死亡时释放一次技能
+	if(otps.died_later_buff)
+		this.died_later_buff = JSON.parse(otps.died_later_buff)	//直接伤害死亡时对击杀者释放buff
 
 	//=========状态=======//
 	this.died = this.attInfo.maxHP && this.attInfo.hp ? false : true 	//死亡状态
@@ -262,9 +272,19 @@ model.prototype.onHit = function(attacker,info,source) {
 		info.realValue = 0
 		return info
 	}
+	//免疫
 	if(this.buffs["invincibleSuper"] || this.buffs["invincible"]){
 		info.invincible = true
 		info.realValue = 0
+		return info
+	}
+	//无敌吸血盾
+	if(this.buffs["invincibleSuck"]){
+		let healInfo = this.onHeal(attacker,info,source)
+		info.value = -info.value
+		info.realValue = -healInfo.realValue
+		info.curValue = this.attInfo.hp
+		info.maxHP = this.attInfo.maxHP
 		return info
 	}
 	if(info.miss){

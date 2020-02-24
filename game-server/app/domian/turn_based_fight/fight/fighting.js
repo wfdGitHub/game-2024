@@ -186,9 +186,6 @@ model.prototype.after = function() {
 	else
 		this.character.must_crit = false
 	this.character.next_must_crit = false
-	if(this.character.action_anger)
-		this.character.addAnger(this.character.action_anger)
-
 	//检测战斗是否结束
 	this.character = false
 	if(!this.checkOver())

@@ -139,7 +139,7 @@ model.useSkill = function(skill) {
 				if(targets[i].died){
 					break
 				}
-				targets[i].lessAnger(skill.character.skill_less_anger)
+				targets[i].lessAnger(skill.character.skill_less_anger,skill.skillId)
 			}
 		}
 		//释放技能后追加技能
@@ -163,11 +163,11 @@ model.useSkill = function(skill) {
 	}else if(!skill.character.died){
 		//普攻后恢复自身怒气
 		if(skill.character.normal_add_anger)
-			skill.character.addAnger(skill.character.normal_add_anger)
+			skill.character.addAnger(skill.character.normal_add_anger,skill.skillId)
 		//普攻后降低目标怒气
 		if(skill.character.normal_less_anger){
 			for(var i = 0;i < targets.length;i++){
-				targets[i].lessAnger(skill.character.normal_less_anger)
+				targets[i].lessAnger(skill.character.normal_less_anger,skill.skillId)
 			}
 		}
 		//普攻后追加BUFF
@@ -204,6 +204,26 @@ model.useSkill = function(skill) {
 			//死亡释放技能判断
 			if(targets[i].died_use_skill){
 				this.useSkill(targets[i].angerSkill)
+			}
+			//直接伤害死亡时对击杀者释放buff
+			if(targets[i].died_later_buff){
+				if(!skill.character.died){
+					var buffInfo = targets[i].died_later_buff
+					if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+						buffManager.createBuff(targets[i],skill.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+					}
+				}
+			}
+		}
+	}
+	//行动后
+	if(skill.character.action_anger)
+		skill.character.addAnger(skill.character.action_anger)
+	if(skill.character.action_buff){
+		if(!skill.character.died){
+			var buffInfo = skill.character.action_buff
+			if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+				buffManager.createBuff(skill.character,skill.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 			}
 		}
 	}
@@ -253,6 +273,7 @@ model.useAttackSkill = function(skill) {
 	}
 	var allDamage = 0
 	var kill_num = 0
+	var kill_burn_num = 0
 	var dead_anger = 0
 	var burnDamage = 0
 	for(var i = 0;i < targets.length;i++){
@@ -263,13 +284,16 @@ model.useAttackSkill = function(skill) {
 		//计算伤害
 		let info = this.formula.calDamage(skill.character, target, skill,addAmp)
 		info = target.onHit(skill.character,info,skill)
-		allDamage += info.realValue
+		if(info.realValue > 0)
+			allDamage += info.realValue
 		if(targets[i].buffs["burn"])
 			burnDamage += info.realValue
 		recordInfo.targets.push(info)
 		if(info.kill){
 			kill_num++
 			dead_anger += target.curAnger
+			if(targets[i].buffs["burn"])
+				kill_burn_num++
 		}
 	}
 	fightRecord.push(recordInfo)
@@ -295,9 +319,17 @@ model.useAttackSkill = function(skill) {
 			let tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
 			this.useSkill(tmpSkill)
 		}
+		//直接伤害击杀灼烧目标后，回复自身生命值百分比
+		if(skill.character.kill_burn_heal && kill_burn_num){
+			let tmpRecord = {type : "other_heal",targets : []}
+			let value = Math.floor(skill.character.kill_burn_heal * skill.character.attInfo.maxHP)
+			let info = skill.character.onHeal(skill.character,{value : value},skill)
+			tmpRecord.targets.push(info)
+			fightRecord.push(tmpRecord)
+		}
 	}
 	//伤害值转生命判断
-	if(allDamage){
+	if(allDamage > 0){
 		if(skill.turn_rate && skill.turn_tg && !skill.character.died){
 			let tmpRecord = {type : "other_heal",targets : []}
 			let healValue = Math.round(allDamage * (skill.turn_rate + skill.character.skill_turn_rate)) || 1
@@ -342,7 +374,7 @@ model.useAttackSkill = function(skill) {
 	for(var i = 0;i < recordInfo.targets.length;i++){
 		if(!targets[i].died){
 			//受到直接伤害转化成生命
-			if(targets[i].hit_turn_rate && targets[i].hit_turn_tg && recordInfo.targets[i].realValue){
+			if(targets[i].hit_turn_rate && targets[i].hit_turn_tg && recordInfo.targets[i].realValue > 0){
 				let tmpRecord = {type : "other_heal",targets : []}
 				let healValue = Math.round(recordInfo.targets[i].realValue * targets[i].hit_turn_rate) || 1
 				let tmptargets = this.locator.getTargets(targets[i],targets[i].hit_turn_tg)
@@ -354,10 +386,18 @@ model.useAttackSkill = function(skill) {
 				}
 				fightRecord.push(tmpRecord)
 			}
-			//降低攻击者怒气
-			if(targets[i].hit_less_anger){
-				skill.character.lessAnger(targets[i].hit_less_anger)
+			//普通攻击
+			if(!skill.isAnger){
+				//降低攻击者怒气
+				if(targets[i].hit_less_anger){
+					skill.character.lessAnger(targets[i].hit_less_anger,skill.skillId)
+				}
+				//回复自己怒气
+				if(targets[i].hit_anger_s){
+					targets[i].addAnger(targets[i].hit_anger_s,skill.skillId)
+				}
 			}
+
 			//收到伤害附加BUFF
 			if(targets[i].hit_buff){
 				var buffInfo = targets[i].hit_buff
@@ -366,7 +406,7 @@ model.useAttackSkill = function(skill) {
 				}
 			}
 			//收到直接伤害反弹
-			if(targets[i].hit_rebound){
+			if(targets[i].hit_rebound && recordInfo.targets[i].realValue > 0){
 				let hit_rebound_value = targets[i].hit_rebound + targets[i].hit_rebound_add
 				let tmpRecord = {type : "other_damage",value : hit_rebound_value * recordInfo.targets[i].realValue}
 				tmpRecord = skill.character.onHit(targets[i],tmpRecord)

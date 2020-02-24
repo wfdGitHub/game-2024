@@ -89,6 +89,9 @@ formula.prototype.calHeal = function(character,target,value,skill){
 	if(info.crit){
 		info.value = Math.round(info.value * 1.5)
 	}
+	//目标血量每减少10%，对其造成的的治疗量加成
+	if(character.low_hp_heal)
+		info.value = Math.round(info.value * (1 + Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * character.low_hp_heal))
 	//最小治疗
 	if (info.value <= 1) {
 		info.value = 1

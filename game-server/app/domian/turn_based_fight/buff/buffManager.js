@@ -1,4 +1,4 @@
-let buffIds = ["disarm","dizzy","forbidden","silence","burn","poison","amplify","reduction","recover","invincibleSuper","invincible"]
+let buffIds = ["invincibleSuck","disarm","dizzy","forbidden","silence","burn","poison","amplify","reduction","recover","invincibleSuper","invincible"]
 let controlBuff = {
 	"disarm" : true,
 	"dizzy" : true,
@@ -28,7 +28,7 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		if(character.first_nocontrol && this.fighting.round == 1)
 			return
 	}
-	if(buffId == "invincible" && character.buffs["burn"] && character.buffs["burn"].releaser.burn_not_invincible)
+	if((buffId == "invincible" || buffId == "invincibleSuck") && character.buffs["burn"] && character.buffs["burn"].releaser.burn_not_invincible)
 		return
 	//判断伤害buff伤害降低
 	if(damageBuff[buffId] && character.damage_buff_lowArg){
@@ -45,9 +45,9 @@ buffFactory.createBuff = function(releaser,character,otps) {
 			buff.overlay(releaser,otps)
 		}else{
 			buff = new buffList[buffId](releaser,character,otps)
+			character.addBuff(releaser,buff)
 		}
 		fightRecord.push({type : "createBuff",releaser : releaser.id,character : character.id,buffId : buffId,name : buff.name})
-		character.addBuff(releaser,buff)
 		if(buffId == "poison" && releaser.poison_add_forbidden){
 			otps.duration = buff.duration
 			this.createBuff(releaser,character,Object.assign({},otps,{buffId : "forbidden"}))
