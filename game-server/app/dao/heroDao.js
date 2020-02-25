@@ -8,6 +8,8 @@ var recruit_base = require("../../config/gameCfg/recruit_base.json")
 var recruit_list = require("../../config/gameCfg/recruit_list.json")
 var equip_base = require("../../config/gameCfg/equip_base.json")
 var equip_level = require("../../config/gameCfg/equip_level.json")
+var artifact_level = require("../../config/gameCfg/artifact_level.json")
+var artifact_talent = require("../../config/gameCfg/artifact_talent.json")
 for(let i in recruit_base){
 	recruit_base[i]["weights"] = JSON.parse(recruit_base[i]["weights"])
 	recruit_base[i].allWeight = 0
@@ -121,7 +123,7 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 		})
 	})
 }
-//分解返还资源   返还升级  升阶  升星
+//分解返还资源   返还全部
 heroDao.prototype.heroPrAll = function(areaId,uid,heros,cb) {
 	var strList = []
 	for(let i = 0;i < heros.length;i++){
@@ -137,12 +139,13 @@ heroDao.prototype.heroPrAll = function(areaId,uid,heros,cb) {
 		cb(true,awardList2.concat(awardList))
 	})
 }
-//材料返还资源  返还升级  升阶
+//材料返还资源  返还除升星外(升级  升阶 装备 锦囊 神兵)
 heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 	var strList = []
 	for(let i = 0;i < heros.length;i++){
 		let lv = heros[i].lv
 		let ad = heros[i].ad
+		let artifact = heros[i].artifact
 		if(lv_cfg[lv] && lv_cfg[lv].pr)
 			strList.push(lv_cfg[lv].pr)
 		if(advanced_base[ad] && advanced_base[ad].pr)
@@ -156,6 +159,9 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 		for(var j = 0;j <= 10;j++){
 			if(heros[i]["acepack_"+j])
 				strList.push(heros[i]["acepack_"+j]+":1")
+		}
+		if(artifact !== undefined && artifact_level[artifact]){
+			strList.push(artifact_level[artifact]["pr"])
 		}
 	}
 	if(strList.length){

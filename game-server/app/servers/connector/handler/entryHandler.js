@@ -37,6 +37,8 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
 	// }
     session.set("accId",accId)
     session.push("accId")
+	session.set("limit",userInfo.limit)
+	session.push("limit")
 	// session.on("closed",onUserLeave.bind(this))
 	console.log(accId + "  entrySuccess.."+ "  "+this.app.serverId)
   	next(null, {flag : true,msg : userInfo});

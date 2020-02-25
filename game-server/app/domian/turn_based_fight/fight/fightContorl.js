@@ -8,6 +8,8 @@ var talent_list = require("../../../../config/gameCfg/talent_list.json")
 var equip_base = require("../../../../config/gameCfg/equip_base.json")
 var equip_level = require("../../../../config/gameCfg/equip_level.json")
 var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
+var artifact_level = require("../../../../config/gameCfg/artifact_level.json")
+var artifact_talent = require("../../../../config/gameCfg/artifact_talent.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -62,7 +64,7 @@ model.getCharacterInfo = function(info) {
 	}
 	//等级计算
 	if(info.lv && lv_cfg[info.lv]){
-		var lvInfo = {
+		let lvInfo = {
 		    "maxHP": lv_cfg[info.lv].manHP,
 		    "atk": lv_cfg[info.lv].atk,
 		    "phyDef": lv_cfg[info.lv].phyDef,
@@ -71,8 +73,8 @@ model.getCharacterInfo = function(info) {
 		model.mergeData(info,lvInfo)
 	}
 	//装备计算
-	var equip_suit = {}
-	for(var part = 1;part <= 4;part++){
+	let equip_suit = {}
+	for(let part = 1;part <= 4;part++){
 		let elv = info["equip_"+part]
 		if(elv && equip_level[elv]){
 			if(!equip_suit[elv])
@@ -104,18 +106,9 @@ model.getCharacterInfo = function(info) {
 		if(advanced_talent[info.id]){
 			let starInfo = {}
 			for(let i = 6;i <= info.star;i++){
+				model.mergeTalent(starInfo,talentId)
 				let talentId = advanced_talent[info.id]["talent_"+i]
-				if(talentId){
-					if(talent_list[talentId]){
-						let tmpTalent = {}
-						tmpTalent[talent_list[talentId].key1] = talent_list[talentId].value1
-						if(talent_list[talentId].key2)
-							tmpTalent[talent_list[talentId].key2] = talent_list[talentId].value2
-						model.mergeData(starInfo,tmpTalent)
-					}else{
-						console.error("talentId error",talentId)
-					}
-				}
+				model.mergeTalent(starInfo,talentId)
 			}
 			// console.log("starInfo",starInfo)
 			model.mergeData(info,starInfo)
@@ -138,17 +131,7 @@ model.getCharacterInfo = function(info) {
 				if(i > 5)
 					break
 				let talentId = advanced_talent[info.id]["talent_"+i]
-				if(talentId){
-					if(talent_list[talentId]){
-						let tmpTalent = {}
-						tmpTalent[talent_list[talentId].key1] = talent_list[talentId].value1
-						if(talent_list[talentId].key2)
-							tmpTalent[talent_list[talentId].key2] = talent_list[talentId].value2
-						model.mergeData(advancedInfo,tmpTalent)
-					}else{
-						console.error("talentId error",talentId)
-					}
-				}
+				model.mergeTalent(advancedInfo,talentId)
 			}
 			// console.log("advancedInfo",advancedInfo)
 			model.mergeData(info,advancedInfo)
@@ -164,20 +147,31 @@ model.getCharacterInfo = function(info) {
 		}
 	}
 	//锦囊计算
-	for(var i = 1;i <= 10;i++){
+	for(let i = 1;i <= 10;i++){
 		if(info["acepack_"+i]){
 			let talentId = ace_pack[info["acepack_"+i]]["pa"]
-			if(talentId){
-				if(talent_list[talentId]){
-					let tmpTalent = {}
-					tmpTalent[talent_list[talentId].key1] = talent_list[talentId].value1
-					if(talent_list[talentId].key2)
-						tmpTalent[talent_list[talentId].key2] = talent_list[talentId].value2
-					model.mergeData(info,tmpTalent)
-				}else{
-					console.error("talentId error",talentId)
-				}
+			model.mergeTalent(info,talentId)
+		}
+	}
+	//神器计算
+	if(info["artifact"] !== undefined){
+		let artifact = info["artifact"]
+		let lvInfo = {
+		    "maxHP": artifact_level[artifact].maxHP,
+		    "atk": artifact_level[artifact].atk,
+		    "phyDef": artifact_level[artifact].phyDef,
+		    "magDef": artifact_level[artifact].magDef,
+		}
+		model.mergeData(info,lvInfo)
+		for(let i = 0;i <= artifact;i++){
+			if(artifact_level[i].talent){
+				let talentId = artifact_level[i].talent
+				model.mergeTalent(info,talentId)
 			}
+		}
+		if(artifact >= 25){
+			let talentId = artifact_talent[info.id].talent
+			model.mergeTalent(info,talentId)
 		}
 	}
 	return new character(info)
@@ -206,6 +200,18 @@ model.getTeamCE = function(team) {
    		}
    	}
 	return allCE
+}
+//新增天赋
+model.mergeTalent = function(info,talentId) {
+	if(talent_list[talentId]){
+		let tmpTalent = {}
+		tmpTalent[talent_list[talentId].key1] = talent_list[talentId].value1
+		if(talent_list[talentId].key2)
+			tmpTalent[talent_list[talentId].key2] = talent_list[talentId].value2
+		model.mergeData(info,tmpTalent)
+	}else{
+		console.error("talentId error",talentId)
+	}
 }
 //数据合并
 model.mergeData = function(info1,info2) {

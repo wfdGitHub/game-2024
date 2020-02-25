@@ -72,6 +72,25 @@
             console.log(data);
         });
       }
+      //============神器相关==============//
+      //穿戴神器
+      var wearArtifact = function(hId) {
+        pomelo.request("area.artifactHandler.wearArtifact", {hId : hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //神器升级
+      var upgradeArtifact = function(hId) {
+        pomelo.request("area.artifactHandler.upgradeArtifact", {hId : hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //出售神器
+      var sellArtifact = function(aId,count) {
+        pomelo.request("area.artifactHandler.sellArtifact", {aId : aId,count : count}, function(data) {
+            console.log(data);
+        });
+      }
       //============锦囊相关==============//
       //穿戴锦囊   aId为锦囊ID   pos为锦囊格子位置   1 - 10
       var wearAcepack = function(aId,hId,pos) {

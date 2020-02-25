@@ -181,8 +181,6 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 				session.push("nickname")
 				session.set("beginTime",Date.now())
 				session.push("beginTime")
-				session.set("limit",playerInfo.limit)
-				session.push("limit")
 		        next(null,{flag : true,msg : playerInfo})
 			}else{
 				next(null,{flag : false,msg : "未注册角色"})
