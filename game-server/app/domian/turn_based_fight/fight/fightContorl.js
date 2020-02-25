@@ -106,7 +106,6 @@ model.getCharacterInfo = function(info) {
 		if(advanced_talent[info.id]){
 			let starInfo = {}
 			for(let i = 6;i <= info.star;i++){
-				model.mergeTalent(starInfo,talentId)
 				let talentId = advanced_talent[info.id]["talent_"+i]
 				model.mergeTalent(starInfo,talentId)
 			}
