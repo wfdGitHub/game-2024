@@ -1022,7 +1022,7 @@
   "3001": {
     "des": "释放技能有40%几率追加1次技能，对全体造成41%法术伤害",
     "key1": "skill_later_skill",
-    "value1": "{\"type\":\"attack\",\"mul\":0.41,\"damageType\":\"mag\",\"targetType\":\"enemy_all,\"rate\":0.4}"
+    "value1": "{\"type\":\"attack\",\"mul\":0.41,\"damageType\":\"mag\",\"targetType\":\"enemy_all\",\"rate\":0.4}"
   },
   "3002": {
     "des": "全体上阵武将暴击几率+30%",
