@@ -130,8 +130,8 @@ model.prototype.run = function() {
 	}
 	if(this.allTeam[0].index == this.allTeam[0].team.length && this.allTeam[1].index == this.allTeam[1].team.length){
 		for(var i = 0;i < 6;i++){
-			if(this.allTeam[i])
-				this.allTeam[i].after()
+			if(this.atkTeam[i])
+				this.atkTeam[i].after()
 			if(this.defTeam[i])
 				this.defTeam[i].after()
 		}
