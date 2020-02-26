@@ -131,9 +131,9 @@ model.prototype.run = function() {
 	if(this.allTeam[0].index == this.allTeam[0].team.length && this.allTeam[1].index == this.allTeam[1].team.length){
 		for(var i = 0;i < 6;i++){
 			if(this.atkTeam[i])
-				this.atkTeam[i].after()
+				this.atkTeam[i].roundOver()
 			if(this.defTeam[i])
-				this.defTeam[i].after()
+				this.defTeam[i].roundOver()
 		}
 		this.nextRound()
 		return
@@ -186,6 +186,7 @@ model.prototype.action = function() {
 }
 //行动后结算
 model.prototype.after = function() {
+	this.character.after()
 	if(this.character.next_must_crit)
 		this.character.must_crit = true
 	else

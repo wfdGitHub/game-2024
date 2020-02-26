@@ -260,7 +260,14 @@ model.prototype.before = function() {
 model.prototype.after = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
-		if(this.buffs[i].damageType != "dot")
+		if(this.buffs[i].damageType == "control")
+			this.buffs[i].update()
+}
+//回合结束后刷新
+model.prototype.roundOver = function() {
+	//状态BUFF刷新
+	for(var i in this.buffs)
+		if(!this.buffs[i].damageType)
 			this.buffs[i].update()
 }
 //受到伤害
