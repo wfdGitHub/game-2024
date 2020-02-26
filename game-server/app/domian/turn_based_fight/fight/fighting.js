@@ -182,10 +182,10 @@ model.prototype.action = function() {
 		if(skill)
 			skillManager.useSkill(skill)
 	}
+	this.after()
 }
 //行动后结算
 model.prototype.after = function() {
-	this.character.after()
 	if(this.character.next_must_crit)
 		this.character.must_crit = true
 	else
