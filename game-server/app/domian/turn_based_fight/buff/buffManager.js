@@ -35,10 +35,6 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		otps.buffArg = otps.buffArg * (1 - character.damage_buff_lowArg)
 	}
 	if(buffList[buffId]){
-		//当回合对自身释放的BUFF回合数+1
-		if(releaser == character){
-			otps.duration += 1
-		}
 		var buff
 		if(character.buffs[buffId]){
 			buff = character.buffs[buffId]
