@@ -1,0 +1,57 @@
+{
+  "login": {
+    "name": "登录"
+  },
+  "recruit": {
+    "name": "英雄祭坛征募"
+  },
+  "general": {
+    "name": "将军府征募"
+  },
+  "arena": {
+    "name": "竞技场挑战"
+  },
+  "quick": {
+    "name": "快速作战"
+  },
+  "ttt": {
+    "name": "挑战/扫荡通天塔"
+  },
+  "fb": {
+    "name": "参与副本"
+  },
+  "loadLv": {
+    "name": "主角等级"
+  },
+  "totalCe": {
+    "name": "总战力"
+  },
+  "heroLv": {
+    "name": "英雄等级"
+  },
+  "equip": {
+    "name": "获得装备",
+    "des": "参数代表装备品质等级"
+  },
+  "hero": {
+    "name": "获取武将",
+    "des": "参数代表英雄星级"
+  },
+  "resolve": {
+    "name": "分解武将"
+  },
+  "rank": {
+    "name": "竞技场排名",
+    "des": "所需排名"
+  },
+  "artifactLv": {
+    "name": "神兵等级"
+  },
+  "ace": {
+    "name": "获得锦囊",
+    "des": "参数代表锦囊品质等级"
+  },
+  "tttLv": {
+    "name": "通天塔等级"
+  }
+}

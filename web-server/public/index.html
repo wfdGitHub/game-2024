@@ -72,6 +72,25 @@
             console.log(data);
         });
       }
+      //============任务相关==============//
+      //获取任务列表
+      var getTaskList = function() {
+        pomelo.request("area.taskHandler.getTaskList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取任务奖励
+      var finishTask = function(taskId) {
+        pomelo.request("area.taskHandler.finishTask", {taskId : taskId}, function(data) {
+            console.log(data);
+        });
+      }
+      //更新任务进度
+      var taskUpdate = function(type) {
+        pomelo.request("area.taskHandler.taskUpdate", {type : type}, function(data) {
+            console.log(data);
+        });
+      }
       //============神器相关==============//
       //穿戴神器
       var wearArtifact = function(hId) {

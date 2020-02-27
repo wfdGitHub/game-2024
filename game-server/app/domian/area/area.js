@@ -1,7 +1,7 @@
 //服务器
 var bearcat = require("bearcat")
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
-var areaServers = ["arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb"]
+var areaServers = ["arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
 const oneDayTime = 86400000
 var area = function(otps,app) {
 	this.areaId = otps.areaId
@@ -50,6 +50,7 @@ area.prototype.register = function(otps,cb) {
 					cb(false,playerInfo)
 					return
 				}
+				self.taskInit(playerInfo.uid)
 				self.initArenaRank(playerInfo.uid,otps.name,otps.sex)
 				self.setPlayerData(playerInfo.uid,"onhookLastTime",Date.now())
 				//TODO test
@@ -70,6 +71,7 @@ area.prototype.userLogin = function(uid,cid,cb) {
 			self.connectorMap[uid] = cid
 			if(playerInfo.dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
+				self.dayTaskRefresh(uid)
 			}
 		}
 		cb(playerInfo)
@@ -91,6 +93,7 @@ area.prototype.userLeave = function(uid) {
 		delete this.players[uid]
 		delete this.connectorMap[uid]
 		this.onlineNum--
+		this.taskUnload(uid)
 	}
 	if(this.crossUids[uid]){
 		this.app.rpc.cross.crossRemote.userLeave(null,this.crossUids[uid],null)

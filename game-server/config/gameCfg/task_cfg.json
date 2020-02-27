@@ -1,0 +1,335 @@
+{
+  "100001": {
+    "title": "登录",
+    "refresh": "day",
+    "type": "login",
+    "value": 1,
+    "award": "201:100"
+  },
+  "100002": {
+    "title": "英雄祭坛",
+    "refresh": "day",
+    "type": "recruit",
+    "value": 3,
+    "award": "201:101"
+  },
+  "100003": {
+    "title": "将军府征募",
+    "refresh": "day",
+    "type": "general",
+    "value": 1,
+    "award": "201:102"
+  },
+  "100004": {
+    "title": "竞技场挑战",
+    "refresh": "day",
+    "type": "arena",
+    "value": 3,
+    "award": "201:103"
+  },
+  "100005": {
+    "title": "快速作战",
+    "refresh": "day",
+    "type": "quick",
+    "value": 2,
+    "award": "201:104"
+  },
+  "100006": {
+    "title": "挑战/扫荡通天塔",
+    "refresh": "day",
+    "type": "ttt",
+    "value": 1,
+    "award": "201:105"
+  },
+  "100007": {
+    "title": "参与副本",
+    "refresh": "day",
+    "type": "fb",
+    "value": 1,
+    "award": "201:106"
+  },
+  "200101": {
+    "title": "主角等级1",
+    "refresh": "always",
+    "type": "loadLv",
+    "first": true,
+    "value": 10,
+    "next": 200102,
+    "award": "201:107"
+  },
+  "200102": {
+    "title": "主角等级2",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 15,
+    "next": 200103,
+    "award": "201:108"
+  },
+  "200103": {
+    "title": "主角等级3",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 20,
+    "next": 200104,
+    "award": "201:109"
+  },
+  "200104": {
+    "title": "主角等级4",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 25,
+    "next": 200105,
+    "award": "201:110"
+  },
+  "200105": {
+    "title": "主角等级5",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 30,
+    "next": 200106,
+    "award": "201:111"
+  },
+  "200106": {
+    "title": "主角等级6",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 35,
+    "next": 200107,
+    "award": "201:112"
+  },
+  "200107": {
+    "title": "主角等级7",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 40,
+    "award": "201:113"
+  },
+  "200201": {
+    "title": "总战力1",
+    "refresh": "always",
+    "type": "totalCe",
+    "first": true,
+    "value": 10000,
+    "next": 200202,
+    "award": "201:114"
+  },
+  "200202": {
+    "title": "总战力2",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 20000,
+    "next": 200203,
+    "award": "201:115"
+  },
+  "200203": {
+    "title": "总战力3",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 50000,
+    "next": 200204,
+    "award": "201:116"
+  },
+  "200204": {
+    "title": "总战力4",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 100000,
+    "award": "201:117"
+  },
+  "200301": {
+    "title": "英雄等级1",
+    "refresh": "always",
+    "type": "heroLv",
+    "first": true,
+    "value": 10,
+    "next": 200302,
+    "award": "201:118"
+  },
+  "200302": {
+    "title": "英雄等级2",
+    "refresh": "always",
+    "type": "heroLv",
+    "value": 30,
+    "next": 200303,
+    "award": "201:119"
+  },
+  "200303": {
+    "title": "英雄等级3",
+    "refresh": "always",
+    "type": "heroLv",
+    "value": 50,
+    "next": 200304,
+    "award": "201:120"
+  },
+  "200304": {
+    "title": "英雄等级4",
+    "refresh": "always",
+    "type": "heroLv",
+    "value": 80,
+    "next": 200305,
+    "award": "201:121"
+  },
+  "200305": {
+    "title": "英雄等级5",
+    "refresh": "always",
+    "type": "heroLv",
+    "value": 100,
+    "award": "201:122"
+  },
+  "200401": {
+    "title": "获得装备1",
+    "refresh": "always",
+    "type": "equip",
+    "first": true,
+    "arg": 1,
+    "value": 3,
+    "next": 200402,
+    "award": "201:123"
+  },
+  "200402": {
+    "title": "获得装备2",
+    "refresh": "always",
+    "type": "equip",
+    "arg": 1,
+    "value": 6,
+    "next": 200403,
+    "award": "201:124"
+  },
+  "200403": {
+    "title": "获得装备3",
+    "refresh": "always",
+    "type": "equip",
+    "arg": 2,
+    "value": 3,
+    "next": 200404,
+    "award": "201:125"
+  },
+  "200404": {
+    "title": "获得装备4",
+    "refresh": "always",
+    "type": "equip",
+    "arg": 2,
+    "value": 6,
+    "award": "201:126"
+  },
+  "200501": {
+    "title": "获取武将1",
+    "refresh": "always",
+    "type": "hero",
+    "first": 1,
+    "arg": 5,
+    "value": 2,
+    "next": 200502,
+    "award": "201:127"
+  },
+  "200502": {
+    "title": "获取武将2",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 6,
+    "value": 2,
+    "next": 200503,
+    "award": "201:128"
+  },
+  "200503": {
+    "title": "获取武将3",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 7,
+    "value": 2,
+    "next": 200504,
+    "award": "201:129"
+  },
+  "200504": {
+    "title": "获取武将4",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 8,
+    "value": 2,
+    "next": 200505,
+    "award": "201:130"
+  },
+  "200505": {
+    "title": "获取武将5",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 9,
+    "value": 1,
+    "award": "201:131"
+  },
+  "200601": {
+    "title": "分解武将1",
+    "refresh": "always",
+    "type": "resolve",
+    "first": true,
+    "value": 1,
+    "next": 200602,
+    "award": "201:132"
+  },
+  "200602": {
+    "title": "分解武将2",
+    "refresh": "always",
+    "type": "resolve",
+    "value": 2,
+    "award": "201:133"
+  },
+  "200701": {
+    "title": "竞技场排名1",
+    "refresh": "always",
+    "type": "rank",
+    "first": true,
+    "arg": 4000,
+    "value": 1,
+    "next": 200702,
+    "award": "201:134"
+  },
+  "200702": {
+    "title": "竞技场排名2",
+    "refresh": "always",
+    "type": "rank",
+    "arg": 2000,
+    "value": 1,
+    "award": "201:135"
+  },
+  "200801": {
+    "title": "神兵等级1",
+    "refresh": "always",
+    "type": "artifactLv",
+    "value": 10,
+    "award": "201:136"
+  },
+  "200901": {
+    "title": "获得锦囊1",
+    "refresh": "always",
+    "type": "ace",
+    "first": true,
+    "arg": 3,
+    "value": 3,
+    "next": 200902,
+    "award": "201:137"
+  },
+  "200902": {
+    "title": "获得锦囊2",
+    "refresh": "always",
+    "type": "ace",
+    "arg": 4,
+    "value": 1,
+    "award": "201:138"
+  },
+  "201001": {
+    "title": "通天塔等级1",
+    "refresh": "always",
+    "type": "tttLv",
+    "first": true,
+    "value": 10,
+    "next": 201002,
+    "award": "201:139"
+  },
+  "201002": {
+    "title": "通天塔等级2",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 15,
+    "award": "201:140"
+  }
+}
