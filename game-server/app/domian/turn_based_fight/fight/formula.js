@@ -50,16 +50,18 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
 	//伤害计算
 	var atk = attacker.getTotalAtt("atk")
 	var def = target.getTotalAtt(skill.damageType+"Def")
-	var mul = 1 + attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction") + tmpAmplify
+	var mul = 1 + attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction")
+	if(tmpAmplify)
+		mul *= 1 + tmpAmplify
 	if(skill.isAnger)
-	 	mul += 	attacker.skill_attack_amp
+	 	mul *= 1 + attacker.skill_attack_amp
 	else
-		mul +=	attacker.normal_attack_amp
+		mul *=1 + attacker.normal_attack_amp
 	if(attacker.low_hp_amp)
-		mul += Math.floor((attacker.attInfo.maxHP-attacker.attInfo.hp)/attacker.attInfo.maxHP * 10) * attacker.low_hp_amp
+		mul *= 1 + Math.floor((attacker.attInfo.maxHP-attacker.attInfo.hp)/attacker.attInfo.maxHP * 10) * attacker.low_hp_amp
 	if(target.burn_hit_reduction){
 		if(attacker.buffs["burn"])
-			mul -= target.burn_hit_reduction
+			mul *= 1 - target.burn_hit_reduction
 	}
 	info.value = Math.round((atk - def) * skill.mul * mul)
 	if(addAmp){
