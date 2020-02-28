@@ -118,7 +118,7 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
     function(heroInfo,cb) {
       heroInfo["artifact"] += 1
       self.heroDao.incrbyHeroInfo(areaId,uid,hId,"artifact",1)
-      self.taskUpdate(uid,"artifactLv",1,heroInfo["artifact"])
+      self.areaManager.areaMap[areaId].taskUpdate(uid,"artifactLv",1,heroInfo["artifact"])
       next(null,{flag : true,heroInfo : heroInfo})
     }
   ],function(err) {

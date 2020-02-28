@@ -99,7 +99,7 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
         return
       }
       self.heroDao.incrbyHeroInfo(areaId,uid,hId,"lv",aimLv - heroInfo.lv,function(flag,data) {
-        self.taskUpdate(uid,"heroLv",1,aimLv)
+        self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,aimLv)
         next(null,{flag : flag,data : data})
       })
     })
