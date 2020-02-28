@@ -1,7 +1,7 @@
 //服务器
 var bearcat = require("bearcat")
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
-var areaServers = ["arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
+var areaServers = ["combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
 const oneDayTime = 86400000
 var area = function(otps,app) {
 	this.areaId = otps.areaId
@@ -69,6 +69,7 @@ area.prototype.userLogin = function(uid,cid,cb) {
 				self.onlineNum++
 			self.players[uid] = playerInfo
 			self.connectorMap[uid] = cid
+			self.CELoad(uid)
 			if(playerInfo.dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
 				self.dayTaskRefresh(uid)
@@ -94,6 +95,7 @@ area.prototype.userLeave = function(uid) {
 		delete this.connectorMap[uid]
 		this.onlineNum--
 		this.taskUnload(uid)
+		this.CEUnload(uid)
 	}
 	if(this.crossUids[uid]){
 		this.app.rpc.cross.crossRemote.userLeave(null,this.crossUids[uid],null)
@@ -130,15 +132,13 @@ area.prototype.getAreaPlayers = function(){
 }
 //预备战斗
 area.prototype.readyFight = function(uid,cb) {
-	var self = this
-	self.heroDao.getFightTeam(self.areaId,uid,function(flag,data) {
-		if(flag){
-			self.fightInfos[uid] = {team : data,seededNum : Date.now()}
-			cb(flag,self.fightInfos[uid])
-		}else{
-			cb(flag,data)
-		}
-	})
+	let team = this.getUserTeam(uid)
+	if(team){
+		this.fightInfos[uid] = {team : team,seededNum : Date.now()}
+		cb(true,this.fightInfos[uid])
+	}else{
+		cb(false,"无战斗数据")
+	}
 }
 //获取玩家防御阵容配置(被攻击阵容)
 area.prototype.getDefendTeam = function(uid,cb) {

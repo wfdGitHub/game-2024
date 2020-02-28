@@ -80,8 +80,7 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	this.redisDao.db.hmset("area:area"+areaId+":player:"+uid+":heros:"+hId,heroInfo)
 	this.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":heroArchive",id,1)
 	heroInfo.hId = hId
-	var areaManager = bearcat.getBean("areaManager")
-	areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
+	this.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
 	if(cb)
 		cb(true,heroInfo)
 	heroInfo.hId = hId
@@ -134,10 +133,9 @@ heroDao.prototype.heroPrAll = function(areaId,uid,heros,cb) {
 		if(star_base[star] && star_base[star].pr)
 			strList.push(star_base[star].pr)
 	}
-	var areaManager = bearcat.getBean("areaManager")
-	var str = areaManager.areaMap[areaId].mergepcstr(strList)
-	var awardList = areaManager.areaMap[areaId].addItemStr(uid,str)
-	areaManager.areaMap[areaId].taskUpdate(uid,"resolve",heros.length)
+	var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
+	var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str)
+	this.areaManager.areaMap[areaId].taskUpdate(uid,"resolve",heros.length)
 	this.heroPrlvadnad(areaId,uid,heros,function(flag,awardList2) {
 	if(cb)
 		cb(true,awardList2.concat(awardList))
@@ -169,9 +167,8 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 		}
 	}
 	if(strList.length){
-		var areaManager = bearcat.getBean("areaManager")
-		var str = areaManager.areaMap[areaId].mergepcstr(strList)
-		var awardList = areaManager.areaMap[areaId].addItemStr(uid,str)
+		var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
+		var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str)
 		if(cb)
 			cb(true,awardList)
 	}else{
@@ -181,27 +178,36 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 }
 //修改英雄属性
 heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
+	var self = this
 	this.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":heros:"+hId,name,value,function(err,data) {
 		if(err)
 			console.log(err)
+		else
+			self.areaManager.areaMap[areaId].incrbyCEInfo(uid,hId,name,value)
 		if(cb)
 			cb(true,data)
 	})
 }
 //设置英雄属性
 heroDao.prototype.setHeroInfo = function(areaId,uid,hId,name,value,cb) {
+	var self = this
 	this.redisDao.db.hset("area:area"+areaId+":player:"+uid+":heros:"+hId,name,value,function(err,data) {
 		if(err)
 			console.log(err)
+		else
+			self.areaManager.areaMap[areaId].setCEInfo(uid,hId,name,value)
 		if(cb)
 			cb(true,data)
 	})
 }
 //删除英雄属性
 heroDao.prototype.delHeroInfo = function(areaId,uid,hId,name,cb) {
+	var self = this
 	this.redisDao.db.hdel("area:area"+areaId+":player:"+uid+":heros:"+hId,name,function(err,data) {
 		if(err)
 			console.log(err)
+		else
+			self.areaManager.areaMap[areaId].delCEInfo(uid,hId,name)
 		if(cb)
 			cb(true,data)
 	})
@@ -313,6 +319,7 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 							self.incrbyHeroInfo(areaId,uid,hIds[i],"combat",1)
 						}
 					}
+					self.areaManager.areaMap[areaId].CELoad(uid)
 					if(cb)
 						cb(true)
 				}
@@ -361,5 +368,8 @@ module.exports = {
 	props : [{
 		name : "redisDao",
 		ref : "redisDao"
+	},{
+		name : "areaManager",
+		ref : "areaManager"
 	}]
 }

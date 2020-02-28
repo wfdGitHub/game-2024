@@ -112,8 +112,13 @@ module.exports = function() {
 			for(let i = 0;i < userTaskMaps[uid][type].length;i++){
 				let taskId = userTaskMaps[uid][type][i]
 				if(!arg || arg >= task_cfg[taskId].arg){
-					userTaskLists[uid][taskId] += value
-					self.incrbyObj(uid,main_name,taskId,value)
+					if(type == "totalCe"){
+						userTaskLists[uid][taskId] = value
+						self.setObj(uid,main_name,taskId,value)
+					}else{
+						userTaskLists[uid][taskId] += value
+						self.incrbyObj(uid,main_name,taskId,value)
+					}
 					var notify = {
 						"type" : "taskUpdate",
 						"taskId" : taskId,
