@@ -16,6 +16,7 @@ module.exports = function() {
 					if(data[i])
 						userTeamMaps[uid][data[i].hId] = i
 				}
+				self.updateCE(uid)
 				usersCes[uid] = self.fightContorl.getTeamCE(data)
 			}
 			if(cb)
@@ -58,7 +59,7 @@ module.exports = function() {
 			let oldCE = usersCes[uid]
 			let newCE = self.fightContorl.getTeamCE(userTeams[uid])
 			usersCes[uid] = newCE
-			if(oldCE != newCE){
+			if(!oldCE || oldCE != newCE){
 				let notify = {
 					type : "updateCE",
 					oldCE : oldCE,
