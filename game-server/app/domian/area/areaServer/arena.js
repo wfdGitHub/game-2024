@@ -276,6 +276,7 @@ module.exports = function() {
 						delete local.locks[uid]
 						delete local.locks[targetUid]
 					})
+					self.taskUpdate(uid,"rank",1,targetRank)
 					var tmpRank = data.rank
 					data.rank = targetRank
 					targetRank = tmpRank
@@ -306,6 +307,7 @@ module.exports = function() {
 			delete local.locks[targetUid]
 			cb(true,info)
 		}
+		self.taskUpdate(uid,"arena",1)
 	}
 	//获取挑战记录
 	this.getRerord = function(uid,cb) {

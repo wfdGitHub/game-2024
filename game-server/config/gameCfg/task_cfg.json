@@ -3,7 +3,7 @@
     "title": "登录",
     "refresh": "day",
     "type": "login",
-    "value": 1,
+    "value": 0,
     "award": "201:100"
   },
   "100002": {
@@ -278,7 +278,7 @@
     "refresh": "always",
     "type": "rank",
     "first": true,
-    "arg": 4000,
+    "arg": 6000,
     "value": 1,
     "next": 200702,
     "award": "201:134"
@@ -287,7 +287,7 @@
     "title": "竞技场排名2",
     "refresh": "always",
     "type": "rank",
-    "arg": 2000,
+    "arg": 8000,
     "value": 1,
     "award": "201:135"
   },
@@ -295,7 +295,8 @@
     "title": "神兵等级1",
     "refresh": "always",
     "type": "artifactLv",
-    "value": 10,
+    "arg": 10,
+    "value": 1,
     "award": "201:136"
   },
   "200901": {
@@ -321,7 +322,8 @@
     "refresh": "always",
     "type": "tttLv",
     "first": true,
-    "value": 10,
+    "arg": 10,
+    "value": 1,
     "next": 201002,
     "award": "201:139"
   },
@@ -329,7 +331,8 @@
     "title": "通天塔等级2",
     "refresh": "always",
     "type": "tttLv",
-    "value": 15,
+    "arg": 15,
+    "value": 1,
     "award": "201:140"
   }
 }

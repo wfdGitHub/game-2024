@@ -48,6 +48,7 @@ module.exports = function() {
 					"curExp" : exp
 				}
 				self.sendToUser(uid,notify)
+				self.taskUpdate(uid,"loadLv",upLv)
 			}
 		})
 	}

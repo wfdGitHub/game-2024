@@ -166,6 +166,7 @@ module.exports = function() {
 				self.incrbyPlayerData(uid,"quick",1)
 			  	var on_hook_award = checkpointsCfg[level].on_hook_award
 			  	var awardList = self.addItemStr(uid,on_hook_award,120)
+			  	self.taskUpdate(uid,"quick",1)
 			  	cb(true,{awardList : awardList})
 			}
 		],function(err) {

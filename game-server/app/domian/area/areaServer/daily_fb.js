@@ -112,6 +112,7 @@ module.exports = function() {
 			function(next) {
 				//通关并获取奖励
 				self.setObj(uid,main_name,type+"_lv",daily_fb_base[fbId]["lv"])
+				self.taskUpdate(uid,"fb",1)
 				let award = daily_fb_base[fbId]["award"]
 				var awardList = self.addItemStr(uid,award)
 				cb(true,awardList)

@@ -22,7 +22,8 @@ for(let i in recruit_list){
 	recruit_list[i].heroList = JSON.parse(recruit_list[i].heroList)
 }
 var bearcat = require("bearcat")
-var heroDao = function() {}
+var heroDao = function() {
+}
 //增加英雄背包栏
 heroDao.prototype.addHeroAmount = function(areaId,uid,cb) {
 	this.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":playerInfo","heroAmount",1,function(err,data) {
@@ -79,6 +80,8 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	this.redisDao.db.hmset("area:area"+areaId+":player:"+uid+":heros:"+hId,heroInfo)
 	this.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":heroArchive",id,1)
 	heroInfo.hId = hId
+	var areaManager = bearcat.getBean("areaManager")
+	areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
 	if(cb)
 		cb(true,heroInfo)
 	heroInfo.hId = hId
@@ -134,6 +137,7 @@ heroDao.prototype.heroPrAll = function(areaId,uid,heros,cb) {
 	var areaManager = bearcat.getBean("areaManager")
 	var str = areaManager.areaMap[areaId].mergepcstr(strList)
 	var awardList = areaManager.areaMap[areaId].addItemStr(uid,str)
+	areaManager.areaMap[areaId].taskUpdate(uid,"resolve",heros.length)
 	this.heroPrlvadnad(areaId,uid,heros,function(flag,awardList2) {
 	if(cb)
 		cb(true,awardList2.concat(awardList))

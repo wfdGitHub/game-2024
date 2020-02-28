@@ -103,19 +103,21 @@ module.exports = function() {
 		}
 	}
 	//任务进度更新
-	this.taskUpdate = function(uid,type,value) {
+	this.taskUpdate = function(uid,type,value,arg) {
 		value = Number(value)
 		if(userTaskMaps[uid] && userTaskMaps[uid][type]){
 			for(let i = 0;i < userTaskMaps[uid][type].length;i++){
 				let taskId = userTaskMaps[uid][type][i]
-				userTaskLists[uid][taskId] += value
-				self.incrbyObj(uid,main_name,taskId,value)
-				var notify = {
-					"type" : "taskUpdate",
-					"taskId" : taskId,
-					"value" : userTaskLists[uid][taskId]
+				if(!arg || arg >= task_cfg[taskId].arg){
+					userTaskLists[uid][taskId] += value
+					self.incrbyObj(uid,main_name,taskId,value)
+					var notify = {
+						"type" : "taskUpdate",
+						"taskId" : taskId,
+						"value" : userTaskLists[uid][taskId]
+					}
+					self.sendToUser(uid,notify)
 				}
-				self.sendToUser(uid,notify)
 			}
 		}
 	}

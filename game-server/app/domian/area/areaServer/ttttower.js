@@ -64,12 +64,14 @@ module.exports = function() {
 			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getFightRecord()})
 			    	return
 			    }
+			    self.taskUpdate(uid,"ttt",1)
 			   	if(winFlag){
 			   		self.incrbyObj(uid,main_name,"level",1)
+			   		self.taskUpdate(uid,"tttLv",1,level)
 					var awardList = self.addItemStr(uid,ttttower_level[level]["awards"])
 					cb(true,awardList)
 			   	}else{
-			   		cb(false,self.fightContorl.getFightRecord())
+			   		cb(false)
 			   	}
 			}
 		],function(err) {
@@ -108,6 +110,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//扫荡奖励
+				self.taskUpdate(uid,"ttt",1)
 				var awardList = self.addItemStr(uid,ttttower_level[level]["mopupAward"])
 				cb(true,awardList)
 			}
