@@ -41,8 +41,6 @@ module.exports = function() {
 			return
 		}
 		self.delObj(uid,main_name,taskId)
-		if(userTaskLists[uid][taskId])
-			delete userTaskLists[uid][taskId]
 		if(userTaskMaps[uid]){
 			let type = task_cfg[taskId].type
 			if(userTaskMaps[uid][type])
@@ -55,12 +53,13 @@ module.exports = function() {
 		}
 		if(task_cfg[taskId].next){
 			let next = task_cfg[taskId].next
-			console.log(task_cfg[next].type,task_type[task_cfg[next].type].inherit,userTaskLists[uid][taskId])
+			info.value = 0
 			if(task_type[task_cfg[next].type].inherit)
 				info.value = userTaskLists[uid][taskId]
 			this.gainTask(uid,task_cfg[taskId].next,info.value)
 			info.next = next
 		}
+		delete userTaskLists[uid][taskId]
 		cb(true,info)
 	}
 	//加载角色任务数据
