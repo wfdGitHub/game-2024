@@ -32,7 +32,7 @@ module.exports = function() {
 	}
 	//完成任务领取奖励
 	this.finishTask = function(uid,taskId,cb) {
-		if(!userTaskLists[uid] || !userTaskLists[uid][taskId]){
+		if(!userTaskLists[uid] || userTaskLists[uid][taskId] == undefined){
 			cb(false,"任务不存在")
 			return
 		}
