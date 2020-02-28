@@ -31,8 +31,7 @@
   },
   "heroLv": {
     "name": "英雄等级",
-    "des": "参数代表英雄等级",
-    "inherit": true
+    "des": "参数代表英雄等级"
   },
   "equip": {
     "name": "获得装备",

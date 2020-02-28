@@ -55,6 +55,7 @@ module.exports = function() {
 		}
 		if(task_cfg[taskId].next){
 			let next = task_cfg[taskId].next
+			console.log(task_cfg[next].type,task_type[task_cfg[next].type].inherit,userTaskLists[uid][taskId])
 			if(task_type[task_cfg[next].type].inherit)
 				info.value = userTaskLists[uid][taskId]
 			this.gainTask(uid,task_cfg[taskId].next,info.value)
