@@ -54,8 +54,11 @@ module.exports = function() {
 			awardList : awardList
 		}
 		if(task_cfg[taskId].next){
-			this.gainTask(uid,task_cfg[taskId].next)
-			info.next = task_cfg[taskId].next
+			let next = task_cfg[taskId].next
+			if(task_type[next].type].inherit)
+				info.value = value
+			this.gainTask(uid,task_cfg[taskId].next,info.value)
+			info.next = next
 		}
 		cb(true,info)
 	}

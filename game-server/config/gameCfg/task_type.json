@@ -18,17 +18,20 @@
     "name": "挑战/扫荡通天塔"
   },
   "fb": {
-    "name": "参与日常副本"
+    "name": "参与日常副本",
+    "inherit": true
   },
   "loadLv": {
     "name": "主角等级"
   },
   "totalCe": {
-    "name": "总战力"
+    "name": "总战力",
+    "inherit": true
   },
   "heroLv": {
     "name": "英雄等级",
-    "des": "参数代表英雄等级"
+    "des": "参数代表英雄等级",
+    "inherit": true
   },
   "equip": {
     "name": "获得装备",
@@ -47,7 +50,8 @@
   },
   "artifactLv": {
     "name": "神兵等级",
-    "des": "参数代表神兵等级"
+    "des": "参数代表神兵等级",
+    "inherit": true
   },
   "ace": {
     "name": "获得锦囊",
@@ -55,6 +59,6 @@
   },
   "tttLv": {
     "name": "通天塔等级",
-    "des": "参数代表通天塔等级"
+    "inherit": true
   }
 }

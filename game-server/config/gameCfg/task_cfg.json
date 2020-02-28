@@ -141,7 +141,8 @@
     "refresh": "always",
     "type": "heroLv",
     "first": true,
-    "value": 10,
+    "arg": 10,
+    "value": 1,
     "next": 200302,
     "award": "201:118"
   },
@@ -149,7 +150,8 @@
     "title": "英雄等级2",
     "refresh": "always",
     "type": "heroLv",
-    "value": 30,
+    "arg": 30,
+    "value": 1,
     "next": 200303,
     "award": "201:119"
   },
@@ -157,7 +159,8 @@
     "title": "英雄等级3",
     "refresh": "always",
     "type": "heroLv",
-    "value": 50,
+    "arg": 50,
+    "value": 1,
     "next": 200304,
     "award": "201:120"
   },
@@ -165,7 +168,8 @@
     "title": "英雄等级4",
     "refresh": "always",
     "type": "heroLv",
-    "value": 80,
+    "arg": 80,
+    "value": 1,
     "next": 200305,
     "award": "201:121"
   },
@@ -173,7 +177,8 @@
     "title": "英雄等级5",
     "refresh": "always",
     "type": "heroLv",
-    "value": 100,
+    "arg": 100,
+    "value": 1,
     "award": "201:122"
   },
   "200401": {
@@ -322,8 +327,7 @@
     "refresh": "always",
     "type": "tttLv",
     "first": true,
-    "arg": 10,
-    "value": 1,
+    "value": 10,
     "next": 201002,
     "award": "201:139"
   },
@@ -331,8 +335,7 @@
     "title": "通天塔等级2",
     "refresh": "always",
     "type": "tttLv",
-    "arg": 15,
-    "value": 1,
+    "value": 15,
     "award": "201:140"
   }
 }
