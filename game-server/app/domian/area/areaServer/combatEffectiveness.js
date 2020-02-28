@@ -31,7 +31,7 @@ module.exports = function() {
 	}
 	//修改英雄属性
 	this.incrbyCEInfo = function(uid,hId,name,value) {
-		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId]){
+		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId] !== undefined){
 			let index = userTeamMaps[uid][hId]
 			userTeams[uid][index][name] += value
 			this.updateCE(uid)
@@ -39,7 +39,7 @@ module.exports = function() {
 	}
 	//设置英雄属性
 	this.setCEInfo = function(uid,hId,name,value) {
-		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId]){
+		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId] !== undefined){
 			let index = userTeamMaps[uid][hId]
 			userTeams[uid][index][name] = value
 			this.updateCE(uid)
@@ -47,7 +47,7 @@ module.exports = function() {
 	}
 	//删除英雄属性
 	this.delCEInfo = function(uid,hId,name) {
-		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId]){
+		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId] !== undefined){
 			let index = userTeamMaps[uid][hId]
 			delete userTeams[uid][index][name]
 			this.updateCE(uid)
