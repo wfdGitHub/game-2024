@@ -69,13 +69,19 @@ area.prototype.userLogin = function(uid,cid,cb) {
 				self.onlineNum++
 			self.players[uid] = playerInfo
 			self.connectorMap[uid] = cid
-			self.CELoad(uid)
 			if(playerInfo.dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
 				self.dayTaskRefresh(uid)
 			}
+			self.CELoad(uid,function(flag) {
+				if(flag){
+					playerInfo.CE = self.getCE(uid)
+					cb(playerInfo)
+				}else{
+					cb(false)
+				}
+			})
 		}
-		cb(playerInfo)
 	})
 }
 //玩家首次登录

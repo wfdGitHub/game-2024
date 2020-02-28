@@ -7,7 +7,7 @@ module.exports = function() {
 	var usersCes = {}
 	var userTeamMaps = {}
 	//加载角色阵容数据
-	this.CELoad = function(uid) {
+	this.CELoad = function(uid,cb) {
 		self.heroDao.getFightTeam(self.areaId,uid,function(flag,data) {
 			if(flag && data){
 				userTeams[uid] = data
@@ -18,6 +18,8 @@ module.exports = function() {
 				}
 				usersCes[uid] = self.fightContorl.getTeamCE(data)
 			}
+			if(cb)
+				cb(flag)
 		})
 	}
 	//移除角色阵容数据
