@@ -22,7 +22,8 @@
     "inherit": true
   },
   "loadLv": {
-    "name": "主角等级"
+    "name": "主角等级",
+    "inherit": true
   },
   "totalCe": {
     "name": "总战力",
