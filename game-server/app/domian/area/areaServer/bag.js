@@ -158,8 +158,6 @@ module.exports = function() {
 					self.taskUpdate(uid,"ace",value,ace_pack[itemId].quality)
 				break
 			}
-			if(itemCfg[itemId].type == "equip")
-				
 			this.addBagItem(uid,itemId,value,cb)
 		}else{
 			console.error("addItem error : "+itemId)
