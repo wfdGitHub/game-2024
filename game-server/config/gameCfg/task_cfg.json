@@ -5,7 +5,8 @@
     "type": "login",
     "value": 0,
     "award": "201:100",
-    "liveness": 10
+    "liveness": 10,
+    "exp": 1000
   },
   "100002": {
     "title": "英雄祭坛",
@@ -13,7 +14,8 @@
     "type": "recruit",
     "value": 3,
     "award": "201:101",
-    "liveness": 10
+    "liveness": 10,
+    "exp": 1000
   },
   "100003": {
     "title": "将军府征募",
@@ -21,7 +23,8 @@
     "type": "general",
     "value": 1,
     "award": "201:102",
-    "liveness": 10
+    "liveness": 10,
+    "exp": 1000
   },
   "100004": {
     "title": "竞技场挑战",
@@ -29,7 +32,8 @@
     "type": "arena",
     "value": 3,
     "award": "201:103",
-    "liveness": 10
+    "liveness": 10,
+    "exp": 1000
   },
   "100005": {
     "title": "快速作战",
@@ -37,7 +41,8 @@
     "type": "quick",
     "value": 2,
     "award": "201:104",
-    "liveness": 10
+    "liveness": 10,
+    "exp": 1000
   },
   "100006": {
     "title": "挑战/扫荡通天塔",
@@ -45,7 +50,8 @@
     "type": "ttt",
     "value": 1,
     "award": "201:105",
-    "liveness": 10
+    "liveness": 10,
+    "exp": 1000
   },
   "100007": {
     "title": "参与副本",
@@ -53,7 +59,8 @@
     "type": "fb",
     "value": 1,
     "award": "201:106",
-    "liveness": 10
+    "liveness": 10,
+    "exp": 1000
   },
   "200101": {
     "title": "主角等级1",
@@ -62,7 +69,9 @@
     "first": true,
     "value": 10,
     "next": 200102,
-    "award": "201:107"
+    "inherit": true,
+    "award": "201:107",
+    "exp": 1000
   },
   "200102": {
     "title": "主角等级2",
@@ -70,7 +79,9 @@
     "type": "loadLv",
     "value": 15,
     "next": 200103,
-    "award": "201:108"
+    "inherit": true,
+    "award": "201:108",
+    "exp": 1000
   },
   "200103": {
     "title": "主角等级3",
@@ -78,7 +89,9 @@
     "type": "loadLv",
     "value": 20,
     "next": 200104,
-    "award": "201:109"
+    "inherit": true,
+    "award": "201:109",
+    "exp": 1000
   },
   "200104": {
     "title": "主角等级4",
@@ -86,7 +99,9 @@
     "type": "loadLv",
     "value": 25,
     "next": 200105,
-    "award": "201:110"
+    "inherit": true,
+    "award": "201:110",
+    "exp": 1000
   },
   "200105": {
     "title": "主角等级5",
@@ -94,7 +109,9 @@
     "type": "loadLv",
     "value": 30,
     "next": 200106,
-    "award": "201:111"
+    "inherit": true,
+    "award": "201:111",
+    "exp": 1000
   },
   "200106": {
     "title": "主角等级6",
@@ -102,14 +119,17 @@
     "type": "loadLv",
     "value": 35,
     "next": 200107,
-    "award": "201:112"
+    "inherit": true,
+    "award": "201:112",
+    "exp": 1000
   },
   "200107": {
     "title": "主角等级7",
     "refresh": "always",
     "type": "loadLv",
     "value": 40,
-    "award": "201:113"
+    "award": "201:113",
+    "exp": 1000
   },
   "200201": {
     "title": "总战力1",
@@ -118,7 +138,9 @@
     "first": true,
     "value": 10000,
     "next": 200202,
-    "award": "201:114"
+    "inherit": true,
+    "award": "201:114",
+    "exp": 1000
   },
   "200202": {
     "title": "总战力2",
@@ -126,7 +148,9 @@
     "type": "totalCe",
     "value": 20000,
     "next": 200203,
-    "award": "201:115"
+    "inherit": true,
+    "award": "201:115",
+    "exp": 1000
   },
   "200203": {
     "title": "总战力3",
@@ -134,14 +158,17 @@
     "type": "totalCe",
     "value": 50000,
     "next": 200204,
-    "award": "201:116"
+    "inherit": true,
+    "award": "201:116",
+    "exp": 1000
   },
   "200204": {
     "title": "总战力4",
     "refresh": "always",
     "type": "totalCe",
     "value": 100000,
-    "award": "201:117"
+    "award": "201:117",
+    "exp": 1000
   },
   "200301": {
     "title": "英雄等级1",
@@ -151,7 +178,8 @@
     "arg": 10,
     "value": 1,
     "next": 200302,
-    "award": "201:118"
+    "award": "201:118",
+    "exp": 1000
   },
   "200302": {
     "title": "英雄等级2",
@@ -160,7 +188,8 @@
     "arg": 30,
     "value": 1,
     "next": 200303,
-    "award": "201:119"
+    "award": "201:119",
+    "exp": 1000
   },
   "200303": {
     "title": "英雄等级3",
@@ -169,7 +198,8 @@
     "arg": 50,
     "value": 1,
     "next": 200304,
-    "award": "201:120"
+    "award": "201:120",
+    "exp": 1000
   },
   "200304": {
     "title": "英雄等级4",
@@ -178,7 +208,8 @@
     "arg": 80,
     "value": 1,
     "next": 200305,
-    "award": "201:121"
+    "award": "201:121",
+    "exp": 1000
   },
   "200305": {
     "title": "英雄等级5",
@@ -186,7 +217,8 @@
     "type": "heroLv",
     "arg": 100,
     "value": 1,
-    "award": "201:122"
+    "award": "201:122",
+    "exp": 1000
   },
   "200401": {
     "title": "获得装备1",
@@ -196,7 +228,8 @@
     "arg": 1,
     "value": 3,
     "next": 200402,
-    "award": "201:123"
+    "award": "201:123",
+    "exp": 1000
   },
   "200402": {
     "title": "获得装备2",
@@ -205,7 +238,8 @@
     "arg": 1,
     "value": 6,
     "next": 200403,
-    "award": "201:124"
+    "award": "201:124",
+    "exp": 1000
   },
   "200403": {
     "title": "获得装备3",
@@ -214,7 +248,8 @@
     "arg": 2,
     "value": 3,
     "next": 200404,
-    "award": "201:125"
+    "award": "201:125",
+    "exp": 1000
   },
   "200404": {
     "title": "获得装备4",
@@ -222,7 +257,8 @@
     "type": "equip",
     "arg": 2,
     "value": 6,
-    "award": "201:126"
+    "award": "201:126",
+    "exp": 1000
   },
   "200501": {
     "title": "获取武将1",
@@ -232,7 +268,8 @@
     "arg": 5,
     "value": 2,
     "next": 200502,
-    "award": "201:127"
+    "award": "201:127",
+    "exp": 1000
   },
   "200502": {
     "title": "获取武将2",
@@ -241,7 +278,8 @@
     "arg": 6,
     "value": 2,
     "next": 200503,
-    "award": "201:128"
+    "award": "201:128",
+    "exp": 1000
   },
   "200503": {
     "title": "获取武将3",
@@ -250,7 +288,8 @@
     "arg": 7,
     "value": 2,
     "next": 200504,
-    "award": "201:129"
+    "award": "201:129",
+    "exp": 1000
   },
   "200504": {
     "title": "获取武将4",
@@ -259,7 +298,8 @@
     "arg": 8,
     "value": 2,
     "next": 200505,
-    "award": "201:130"
+    "award": "201:130",
+    "exp": 1000
   },
   "200505": {
     "title": "获取武将5",
@@ -267,7 +307,8 @@
     "type": "hero",
     "arg": 9,
     "value": 1,
-    "award": "201:131"
+    "award": "201:131",
+    "exp": 1000
   },
   "200601": {
     "title": "分解武将1",
@@ -276,14 +317,16 @@
     "first": true,
     "value": 1,
     "next": 200602,
-    "award": "201:132"
+    "award": "201:132",
+    "exp": 1000
   },
   "200602": {
     "title": "分解武将2",
     "refresh": "always",
     "type": "resolve",
     "value": 2,
-    "award": "201:133"
+    "award": "201:133",
+    "exp": 1000
   },
   "200701": {
     "title": "竞技场排名1",
@@ -293,7 +336,8 @@
     "arg": 6000,
     "value": 1,
     "next": 200702,
-    "award": "201:134"
+    "award": "201:134",
+    "exp": 1000
   },
   "200702": {
     "title": "竞技场排名2",
@@ -301,7 +345,8 @@
     "type": "rank",
     "arg": 8000,
     "value": 1,
-    "award": "201:135"
+    "award": "201:135",
+    "exp": 1000
   },
   "200801": {
     "title": "神兵等级1",
@@ -309,7 +354,8 @@
     "type": "artifactLv",
     "arg": 10,
     "value": 1,
-    "award": "201:136"
+    "award": "201:136",
+    "exp": 1000
   },
   "200901": {
     "title": "获得锦囊1",
@@ -319,7 +365,8 @@
     "arg": 3,
     "value": 3,
     "next": 200902,
-    "award": "201:137"
+    "award": "201:137",
+    "exp": 1000
   },
   "200902": {
     "title": "获得锦囊2",
@@ -327,7 +374,8 @@
     "type": "ace",
     "arg": 4,
     "value": 1,
-    "award": "201:138"
+    "award": "201:138",
+    "exp": 1000
   },
   "201001": {
     "title": "通天塔等级1",
@@ -336,13 +384,65 @@
     "first": true,
     "value": 10,
     "next": 201002,
-    "award": "201:139"
+    "inherit": true,
+    "award": "201:139",
+    "exp": 1000
   },
   "201002": {
     "title": "通天塔等级2",
     "refresh": "always",
     "type": "tttLv",
     "value": 15,
-    "award": "201:140"
+    "award": "201:140",
+    "exp": 1000
+  },
+  "301001": {
+    "title": "竞技场连胜3场",
+    "refresh": "week",
+    "type": "arena_streak",
+    "arg": 3,
+    "value": 1,
+    "award": "201:141",
+    "exp": 1000
+  },
+  "301002": {
+    "title": "合成30件装备",
+    "refresh": "week",
+    "type": "equip_compound",
+    "value": 30,
+    "award": "201:142",
+    "exp": 1000
+  },
+  "301003": {
+    "title": "竞技场获胜10场",
+    "refresh": "week",
+    "type": "arena_win",
+    "value": 10,
+    "award": "201:143",
+    "exp": 1000
+  },
+  "401001": {
+    "title": "消耗100万铜钱",
+    "refresh": "month",
+    "type": "use_coin",
+    "value": 1000000,
+    "award": "201:144",
+    "exp": 1000
+  },
+  "401002": {
+    "title": "消耗3000元宝",
+    "refresh": "month",
+    "type": "use_gold",
+    "value": 3000,
+    "award": "201:145",
+    "exp": 1000
+  },
+  "401003": {
+    "title": "获得100活跃度",
+    "refresh": "month",
+    "type": "liveness",
+    "value": 100,
+    "award": "201:146",
+    "exp": 1000
   }
 }

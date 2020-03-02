@@ -11,6 +11,13 @@
   "arena": {
     "name": "竞技场挑战"
   },
+  "arena_win": {
+    "name": "竞技场获胜"
+  },
+  "arena_streak": {
+    "name": "竞技场连胜",
+    "des": "参数代表连胜次数"
+  },
   "quick": {
     "name": "快速作战"
   },
@@ -18,16 +25,16 @@
     "name": "挑战/扫荡通天塔"
   },
   "fb": {
-    "name": "参与日常副本",
-    "inherit": true
+    "name": "参与日常副本"
+  },
+  "fb_coin": {
+    "name": "参与铜钱副本"
   },
   "loadLv": {
-    "name": "主角等级",
-    "inherit": true
+    "name": "主角等级"
   },
   "totalCe": {
-    "name": "总战力",
-    "inherit": true
+    "name": "总战力"
   },
   "heroLv": {
     "name": "英雄等级",
@@ -36,6 +43,9 @@
   "equip": {
     "name": "获得装备",
     "des": "参数代表装备品质等级"
+  },
+  "equip_compound": {
+    "name": "合成装备"
   },
   "hero": {
     "name": "获取武将",
@@ -50,15 +60,22 @@
   },
   "artifactLv": {
     "name": "神兵等级",
-    "des": "参数代表神兵等级",
-    "inherit": true
+    "des": "参数代表神兵等级"
   },
   "ace": {
     "name": "获得锦囊",
     "des": "参数代表锦囊品质等级"
   },
   "tttLv": {
-    "name": "通天塔等级",
-    "inherit": true
+    "name": "通天塔等级"
+  },
+  "use_coin": {
+    "name": "消耗铜钱"
+  },
+  "use_gold": {
+    "name": "消耗元宝"
+  },
+  "liveness": {
+    "name": "获得活跃度"
   }
 }
