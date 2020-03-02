@@ -44,6 +44,23 @@ taskHandler.prototype.taskUpdate = function(msg, session, next) {
     this.areaManager.areaMap[areaId].taskUpdate(uid,type,1)
     next()
 }
+//获取活跃度数据
+taskHandler.prototype.getLivenessData = function(msg, session, next) {
+    var uid = session.uid
+    var areaId = session.get("areaId")
+    this.areaManager.areaMap[areaId].getLivenessData(uid,function(flag,data) {
+      next(null,{flag : flag,data : data})
+    })
+}
+//领取活跃度奖励
+taskHandler.prototype.gainLivenessAward = function(msg, session, next) {
+    var uid = session.uid
+    var areaId = session.get("areaId")
+    var index = msg.index
+    this.areaManager.areaMap[areaId].gainLivenessAward(uid,index,function(flag,data) {
+      next(null,{flag : flag,data : data})
+    })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "taskHandler",

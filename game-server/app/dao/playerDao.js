@@ -9,7 +9,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		exp : 0,
 		level : 1,
 		heroAmount : 200,
-		dayStr : (new Date()).toDateString()
+		dayStr : 0
 	}
 	var self = this
 	self.redisDao.db.incrby("user:lastid",1,function(err,uid) {

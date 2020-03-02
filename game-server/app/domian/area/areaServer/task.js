@@ -1,8 +1,10 @@
 //任务系统
 var task_cfg = require("../../../../config/gameCfg/task_cfg.json")
 var task_type = require("../../../../config/gameCfg/task_type.json")
+var liveness_cfg = require("../../../../config/gameCfg/liveness.json")
 var async = require("async")
 var main_name = "task"
+var liveness_name = "liveness"
 module.exports = function() {
 	var self = this
 	var userTaskLists = {}			//玩家任务列表
@@ -51,6 +53,9 @@ module.exports = function() {
 		let info = {
 			awardList : awardList
 		}
+		if(task_cfg[taskId].liveness){
+			self.incrbyObj(uid,liveness_name,"value",task_cfg[taskId].liveness)
+		}
 		if(task_cfg[taskId].next){
 			let next = task_cfg[taskId].next
 			info.value = 0
@@ -90,20 +95,21 @@ module.exports = function() {
 	}
 	//每日任务刷新
 	this.dayTaskRefresh = function(uid) {
-		for(var taskId in task_cfg){
+		for(let taskId in task_cfg){
 			if(task_cfg[taskId].refresh == "day")
 				this.gainTask(uid,taskId,0)
 		}
+		let info = {
+			value : 0
+		}
+		for(let i in liveness_cfg){
+			info["index_"+i] = 1
+		}
+		self.setHMObj(uid,liveness_name,info)
 	}
 	//获取任务列表
 	this.getTaskList = function(uid,cb) {
-		if(userTaskLists[uid]){
-			cb(true,userTaskLists[uid])
-		}else{
-			this.taskLoad(uid,function() {
-				cb(true,userTaskLists[uid])
-			})
-		}
+		cb(true,userTaskLists[uid])
 	}
 	//任务进度更新
 	this.taskUpdate = function(uid,type,value,arg) {
@@ -128,5 +134,32 @@ module.exports = function() {
 				}
 			}
 		}
+	}
+	//获取活跃度数据
+	this.getLivenessData = function(uid,cb) {
+		self.getObjAll(uid,liveness_name,function(data) {
+			for(var i in data){
+				data[i] = Number(data[i])
+			}
+			cb(true,data)
+		})
+	}
+	//领取活跃度奖励
+	this.gainLivenessAward = function(uid,index,cb) {
+		if(!liveness_cfg[index]){
+			cb(false,"宝箱不存在")
+			return
+		}
+		self.getObjAll(uid,liveness_name,function(data) {
+			if(data["index_"+index] != 1){
+				cb(false,"已领取")
+			}else if(data["value"] < liveness_cfg[index]["value"]){
+				cb(false,"活跃度不足")
+			}else{
+				self.setObj(uid,liveness_name,"index_"+index,0)
+				let awardList = self.addItemStr(uid,liveness_cfg[index]["award"])
+				cb(true,{awardList : awardList})
+			}
+		})
 	}
 }

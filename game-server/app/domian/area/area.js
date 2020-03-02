@@ -71,15 +71,16 @@ area.prototype.userLogin = function(uid,cid,cb) {
 			self.connectorMap[uid] = cid
 			if(playerInfo.dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
-				self.dayTaskRefresh(uid)
 			}
-			self.CELoad(uid,function(flag) {
-				if(flag){
-					playerInfo.CE = self.getCE(uid)
-					cb(playerInfo)
-				}else{
-					cb(false)
-				}
+			self.taskLoad(uid,function() {
+				self.CELoad(uid,function(flag) {
+					if(flag){
+						playerInfo.CE = self.getCE(uid)
+						cb(playerInfo)
+					}else{
+						cb(false)
+					}
+				})
 			})
 		}
 	})
@@ -92,6 +93,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.TTTdayUpdate(uid)
 	this.arenadayUpdate(uid)
 	this.dailyfbUpdate(uid)
+	this.dayTaskRefresh(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {

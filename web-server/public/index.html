@@ -91,6 +91,18 @@
             console.log(data);
         });
       }
+      //获取活跃度数据
+      var getLivenessData = function() {
+        pomelo.request("area.taskHandler.getLivenessData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取活跃度奖励
+      var gainLivenessAward = function(index) {
+        pomelo.request("area.taskHandler.gainLivenessAward", {index : index}, function(data) {
+            console.log(data);
+        });
+      }      
       //============神器相关==============//
       //穿戴神器
       var wearArtifact = function(hId) {
