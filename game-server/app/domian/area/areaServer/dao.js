@@ -51,6 +51,14 @@ module.exports = function() {
 			}
 		})
 	}
+	//删除全部数据
+	this.delObjAll = function(uid,objName,cb) {
+		this.redisDao.db.del("area:area"+this.areaId+":player:"+uid+":"+objName,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
 	//角色hash自定义数据自增
 	this.incrbyObj = function(uid,objName,key,value,cb) {
 		this.redisDao.db.hincrby("area:area"+this.areaId+":player:"+uid+":"+objName,key,value,function(err,data) {

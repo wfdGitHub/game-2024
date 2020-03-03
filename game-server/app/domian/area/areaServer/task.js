@@ -2,9 +2,12 @@
 var task_cfg = require("../../../../config/gameCfg/task_cfg.json")
 var task_type = require("../../../../config/gameCfg/task_type.json")
 var liveness_cfg = require("../../../../config/gameCfg/liveness.json")
+var war_horn = require("../../../../config/gameCfg/war_horn.json")
+var util = require("../../../../util/util.js")
 var async = require("async")
 var main_name = "task"
 var liveness_name = "liveness"
+var war_name = "war_horn"
 module.exports = function() {
 	var self = this
 	var userTaskLists = {}			//玩家任务列表
@@ -12,7 +15,7 @@ module.exports = function() {
 	//角色创建后领取初始任务
 	this.taskInit = function(uid) {
 		for(var taskId in task_cfg){
-			if(task_cfg[taskId].refresh == "day" || task_cfg[taskId].first)
+			if(task_cfg[taskId].first)
 				this.gainTask(uid,taskId,0)
 		}
 	}
@@ -53,10 +56,15 @@ module.exports = function() {
 		let info = {
 			awardList : awardList
 		}
+		if(task_cfg[taskId].exp){
+			info.exp = task_cfg[taskId].exp
+			self.incrbyObj(uid,war_name,"exp",task_cfg[taskId].exp)
+		}
 		if(task_cfg[taskId].liveness){
+			info.liveness = task_cfg[taskId].liveness
 			self.incrbyObj(uid,liveness_name,"value",task_cfg[taskId].liveness)
 		}
-		if(task_cfg[taskId].next){
+		if(task_cfg[taskId].type == "always" && task_cfg[taskId].next){
 			let next = task_cfg[taskId].next
 			info.value = 0
 			if(task_cfg[taskId].inherit)
@@ -106,6 +114,33 @@ module.exports = function() {
 			info["index_"+i] = 1
 		}
 		self.setHMObj(uid,liveness_name,info)
+		self.getObj(uid,main_name,"week",function(week) {
+			let curWeek = util.getWeek()
+			if(week != curWeek){
+				self.setObj(uid,main_name,"week",curWeek)
+				for(let taskId in task_cfg){
+					if(task_cfg[taskId].refresh == "week")
+						self.gainTask(uid,taskId,0)
+				}
+			}
+		})
+		self.getObj(uid,main_name,"month",function(month) {
+			let curMonth = util.getMonth()
+			if(month != curMonth){
+				self.setObj(uid,main_name,"month",curMonth)
+				for(let taskId in task_cfg){
+					if(task_cfg[taskId].refresh == "month")
+						self.gainTask(uid,taskId,0)
+				}
+			}
+			self.delObjAll(uid,war_name,function() {
+				let info = {
+					exp : 0,
+					high : 0
+				}
+				self.setHMObj(uid,war_name,info)
+			})
+		})
 	}
 	//获取任务列表
 	this.getTaskList = function(uid,cb) {
@@ -160,6 +195,79 @@ module.exports = function() {
 				let awardList = self.addItemStr(uid,liveness_cfg[index]["award"])
 				cb(true,{awardList : awardList})
 			}
+		})
+	}
+	//获取战令数据
+	this.getWarHornData = function(uid,cb) {
+		self.getObjAll(uid,war_name,function(data) {
+			for(var i in data){
+				data[i] = Number(data[i])
+			}
+			cb(true,data)
+		})
+	}
+	//进阶战令
+	this.advanceWarHorn = function(uid,cb) {
+		self.getObj(uid,war_name,"high",function(data) {
+			if(data == 1){
+				cb(false,"已进阶")
+				return
+			}
+			self.setObj(uid,war_name,"high",1)
+			cb(true)
+		})
+	}
+	//购买等级
+	this.buyWarHornLv = function(uid,count,cb) {
+		if(!Number.isInteger(count) ||	count <= 0){
+			cb(false,"count error "+count)
+			return
+		}
+		self.getObj(uid,war_name,"exp",function(value) {
+			value = Number(value)
+			if(count * 1000 + value >= 51000){
+				cb(false,"不能超出上限"+value)
+				return
+			}
+			var needStr = "202:"+(count * 600)
+			self.consumeItems(uid,needStr,1,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					self.incrbyObj(uid,war_name,"exp",count * 1000,function(data) {
+						cb(true,data)
+					})
+				}
+			})
+		})
+	}
+	//领取战令奖励
+	this.gainWarHornAward = function(uid,lv,type,cb) {
+		let curMonth = (new Date()).getMonth()
+		if(!Number.isInteger(lv) || !war_horn[curMonth][type+"_"+lv]){
+			cb(false,"等级不存在")
+			return
+		}
+		if(type !== "base" && type !== "high"){
+			cb(false,"type error "+type)
+			return
+		}
+		self.getWarHornData(uid,function(flag,data) {
+			if(data.exp < lv * 1000){
+				cb(false,"经验不足 "+data.exp)
+				return
+			}
+			if(data[type+"_"+lv]){
+				cb(false,"已领取 ")
+				return
+			}
+			if(type === "high" && data.high !== 1){
+				cb(false,"战令未进阶")
+				return
+			}
+			let awardList = self.addItemStr(uid,war_horn[curMonth][type+"_"+lv])
+			self.setObj(uid,war_name,type+"_"+lv,1)
+			cb(true,{awardList : awardList})
 		})
 	}
 }

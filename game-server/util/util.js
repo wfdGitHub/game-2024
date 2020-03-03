@@ -19,6 +19,20 @@ util.prototype.binarySearch = function(arr,target){
     }
     return arr[right];
 }
+util.prototype.getWeek = function(){
+    let d1 = new Date();
+    let d2 = new Date();
+    d2.setMonth(0);
+    d2.setDate(1);
+    let rq = d1 - d2;
+    let days = Math.ceil(rq / (24 * 60 * 60 * 1000));
+    let num = Math.ceil(days / 7);
+    return d1.getFullYear() + ":" + num;
+}
+util.prototype.getMonth = function(){
+    let d1 = new Date();
+    return d1.getFullYear() + ":" + d1.getMonth();
+}
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;

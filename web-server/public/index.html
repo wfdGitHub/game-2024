@@ -102,7 +102,31 @@
         pomelo.request("area.taskHandler.gainLivenessAward", {index : index}, function(data) {
             console.log(data);
         });
-      }      
+      }
+      //获取战令数据
+      var getWarHornData = function() {
+        pomelo.request("area.taskHandler.getWarHornData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买等级
+      var advanceWarHorn = function() {
+        pomelo.request("area.taskHandler.advanceWarHorn", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买等级
+      var buyWarHornLv = function(count) {
+        pomelo.request("area.taskHandler.buyWarHornLv", {count : count}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取战令奖励
+      var gainWarHornAward = function(lv,type) {
+        pomelo.request("area.taskHandler.gainWarHornAward", {lv : lv,type : type}, function(data) {
+            console.log(data);
+        });
+      }
       //============神器相关==============//
       //穿戴神器
       var wearArtifact = function(hId) {

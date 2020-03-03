@@ -61,6 +61,41 @@ taskHandler.prototype.gainLivenessAward = function(msg, session, next) {
       next(null,{flag : flag,data : data})
     })
 }
+//获取战令数据
+taskHandler.prototype.getWarHornData = function(msg, session, next) {
+    var uid = session.uid
+    var areaId = session.get("areaId")
+    this.areaManager.areaMap[areaId].getWarHornData(uid,function(flag,data) {
+      next(null,{flag : flag,data : data})
+    })
+}
+//进阶战令
+taskHandler.prototype.advanceWarHorn = function(msg, session, next) {
+    var uid = session.uid
+    var areaId = session.get("areaId")
+    this.areaManager.areaMap[areaId].advanceWarHorn(uid,function(flag,data) {
+      next(null,{flag : flag,data : data})
+    })
+}
+//购买等级
+taskHandler.prototype.buyWarHornLv = function(msg, session, next) {
+    var uid = session.uid
+    var areaId = session.get("areaId")
+    var count = msg.count
+    this.areaManager.areaMap[areaId].buyWarHornLv(uid,count,function(flag,data) {
+      next(null,{flag : flag,data : data})
+    })
+}
+//领取战令奖励
+taskHandler.prototype.gainWarHornAward = function(msg, session, next) {
+    var uid = session.uid
+    var areaId = session.get("areaId")
+    var lv = msg.lv
+    var type = msg.type
+    this.areaManager.areaMap[areaId].gainWarHornAward(uid,lv,type,function(flag,data) {
+      next(null,{flag : flag,data : data})
+    })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "taskHandler",
