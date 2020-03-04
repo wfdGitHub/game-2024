@@ -9,6 +9,8 @@
     "name": "英雄经验",
     "des": "英雄经验，可用于升级英雄等级",
     "type": "currency",
+    "gold": 0.001,
+    "coin": 5,
     "quality": 1
   },
   "201": {
@@ -64,6 +66,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 103010,
+    "buyNum": 30,
     "quality": 2
   },
   "103020": {
@@ -73,6 +76,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 103020,
+    "buyNum": 30,
     "quality": 2
   },
   "104000": {
@@ -82,6 +86,9 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_1_1",
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "104010": {
@@ -91,6 +98,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 104010,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "104020": {
@@ -100,6 +110,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 104020,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "104030": {
@@ -109,6 +122,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 104030,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "104040": {
@@ -118,6 +134,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 104040,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "105000": {
@@ -127,6 +146,7 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_1_2",
+    "buyNum": 30,
     "quality": 4
   },
   "105010": {
@@ -136,6 +156,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105010,
+    "buyNum": 30,
     "quality": 4
   },
   "105020": {
@@ -145,6 +166,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105020,
+    "buyNum": 30,
     "quality": 4
   },
   "105030": {
@@ -154,6 +176,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105030,
+    "buyNum": 30,
     "quality": 4
   },
   "105040": {
@@ -163,6 +186,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105040,
+    "buyNum": 30,
     "quality": 4
   },
   "105050": {
@@ -172,6 +196,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105050,
+    "buyNum": 30,
     "quality": 4
   },
   "105060": {
@@ -181,6 +206,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105060,
+    "buyNum": 30,
     "quality": 4
   },
   "105070": {
@@ -190,6 +216,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105070,
+    "buyNum": 30,
     "quality": 4
   },
   "105080": {
@@ -199,6 +226,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105080,
+    "buyNum": 30,
     "quality": 4
   },
   "105090": {
@@ -208,6 +236,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105090,
+    "buyNum": 30,
     "quality": 4
   },
   "105100": {
@@ -217,6 +246,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105100,
+    "buyNum": 30,
     "quality": 4
   },
   "105110": {
@@ -226,6 +256,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105110,
+    "buyNum": 30,
     "quality": 4
   },
   "105120": {
@@ -235,6 +266,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105120,
+    "buyNum": 30,
     "quality": 4
   },
   "203010": {
@@ -244,6 +276,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 203010,
+    "buyNum": 30,
     "quality": 2
   },
   "203020": {
@@ -253,6 +286,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 203020,
+    "buyNum": 30,
     "quality": 2
   },
   "204000": {
@@ -262,6 +296,9 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_2_1",
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "204010": {
@@ -271,6 +308,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 204010,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "204020": {
@@ -280,6 +320,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 204020,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "204030": {
@@ -289,6 +332,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 204030,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "204040": {
@@ -298,6 +344,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 204040,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "205000": {
@@ -307,6 +356,7 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_2_2",
+    "buyNum": 30,
     "quality": 4
   },
   "205010": {
@@ -316,6 +366,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205010,
+    "buyNum": 30,
     "quality": 4
   },
   "205020": {
@@ -325,6 +376,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205020,
+    "buyNum": 30,
     "quality": 4
   },
   "205030": {
@@ -334,6 +386,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205030,
+    "buyNum": 30,
     "quality": 4
   },
   "205040": {
@@ -343,6 +396,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205040,
+    "buyNum": 30,
     "quality": 4
   },
   "205050": {
@@ -352,6 +406,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205050,
+    "buyNum": 30,
     "quality": 4
   },
   "205060": {
@@ -361,6 +416,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205060,
+    "buyNum": 30,
     "quality": 4
   },
   "205070": {
@@ -370,6 +426,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205070,
+    "buyNum": 30,
     "quality": 4
   },
   "205080": {
@@ -379,6 +436,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205080,
+    "buyNum": 30,
     "quality": 4
   },
   "205090": {
@@ -388,6 +446,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205090,
+    "buyNum": 30,
     "quality": 4
   },
   "205100": {
@@ -397,6 +456,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205100,
+    "buyNum": 30,
     "quality": 4
   },
   "205110": {
@@ -406,6 +466,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205110,
+    "buyNum": 30,
     "quality": 4
   },
   "205120": {
@@ -415,6 +476,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205120,
+    "buyNum": 30,
     "quality": 4
   },
   "303010": {
@@ -424,6 +486,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 303010,
+    "buyNum": 30,
     "quality": 2
   },
   "303020": {
@@ -433,6 +496,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 303020,
+    "buyNum": 30,
     "quality": 2
   },
   "304000": {
@@ -442,6 +506,9 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_3_1",
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "304010": {
@@ -451,6 +518,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 304010,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "304020": {
@@ -460,6 +530,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 304020,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "304030": {
@@ -469,6 +542,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 304030,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "304040": {
@@ -478,6 +554,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 304040,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "305000": {
@@ -487,6 +566,7 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_3_2",
+    "buyNum": 30,
     "quality": 4
   },
   "305010": {
@@ -496,6 +576,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305010,
+    "buyNum": 30,
     "quality": 4
   },
   "305020": {
@@ -505,6 +586,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305020,
+    "buyNum": 30,
     "quality": 4
   },
   "305030": {
@@ -514,6 +596,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305030,
+    "buyNum": 30,
     "quality": 4
   },
   "305040": {
@@ -523,6 +606,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305040,
+    "buyNum": 30,
     "quality": 4
   },
   "305050": {
@@ -532,6 +616,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305050,
+    "buyNum": 30,
     "quality": 4
   },
   "305060": {
@@ -541,6 +626,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305060,
+    "buyNum": 30,
     "quality": 4
   },
   "305070": {
@@ -550,6 +636,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305070,
+    "buyNum": 30,
     "quality": 4
   },
   "305080": {
@@ -559,6 +646,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305080,
+    "buyNum": 30,
     "quality": 4
   },
   "305090": {
@@ -568,6 +656,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305090,
+    "buyNum": 30,
     "quality": 4
   },
   "305100": {
@@ -577,6 +666,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305100,
+    "buyNum": 30,
     "quality": 4
   },
   "305110": {
@@ -586,6 +676,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305110,
+    "buyNum": 30,
     "quality": 4
   },
   "305120": {
@@ -595,6 +686,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305120,
+    "buyNum": 30,
     "quality": 4
   },
   "403010": {
@@ -604,6 +696,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 403010,
+    "buyNum": 30,
     "quality": 2
   },
   "403020": {
@@ -613,6 +706,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 403020,
+    "buyNum": 30,
     "quality": 2
   },
   "404000": {
@@ -622,6 +716,9 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_4_1",
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "404010": {
@@ -631,6 +728,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 404010,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "404020": {
@@ -640,6 +740,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 404020,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "404030": {
@@ -649,6 +752,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 404030,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "404040": {
@@ -658,6 +764,9 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 404040,
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "405000": {
@@ -667,6 +776,7 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_4_2",
+    "buyNum": 30,
     "quality": 4
   },
   "405010": {
@@ -676,6 +786,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405010,
+    "buyNum": 30,
     "quality": 4
   },
   "405020": {
@@ -685,6 +796,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405020,
+    "buyNum": 30,
     "quality": 4
   },
   "405030": {
@@ -694,6 +806,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405030,
+    "buyNum": 30,
     "quality": 4
   },
   "405040": {
@@ -703,6 +816,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405040,
+    "buyNum": 30,
     "quality": 4
   },
   "405050": {
@@ -712,6 +826,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405050,
+    "buyNum": 30,
     "quality": 4
   },
   "405060": {
@@ -721,6 +836,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405060,
+    "buyNum": 30,
     "quality": 4
   },
   "405070": {
@@ -730,6 +846,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405070,
+    "buyNum": 30,
     "quality": 4
   },
   "405080": {
@@ -739,6 +856,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405080,
+    "buyNum": 30,
     "quality": 4
   },
   "405090": {
@@ -748,6 +866,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405090,
+    "buyNum": 30,
     "quality": 4
   },
   "405100": {
@@ -757,6 +876,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405100,
+    "buyNum": 30,
     "quality": 4
   },
   "405110": {
@@ -766,6 +886,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405110,
+    "buyNum": 30,
     "quality": 4
   },
   "405120": {
@@ -775,6 +896,7 @@
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405120,
+    "buyNum": 30,
     "quality": 4
   },
   "504000": {
@@ -784,6 +906,9 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_5_1",
+    "gold": 600,
+    "coin": 3000000,
+    "buyNum": 30,
     "quality": 3
   },
   "505000": {
@@ -793,6 +918,7 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_5_2",
+    "buyNum": 30,
     "quality": 4
   },
   "1000020": {
@@ -814,6 +940,8 @@
     "des": "有天地灵气自然孕育而成拥有极强的灵气，能拥有吸引英雄",
     "isBag": true,
     "type": "item",
+    "coin": 20000,
+    "buyNum": 1,
     "quality": 2
   },
   "1000080": {
@@ -821,21 +949,26 @@
     "des": "女娲补天所用之灵石，散发出的光芒能够吸引3星以上的英雄",
     "isBag": true,
     "type": "item",
-    "buy": "202:300",
+    "gold": 250,
     "buyNum": 1,
     "quality": 3
   },
   "1000120": {
     "name": "盘古石",
-    "des": "混沌之灵石，盘古开天后散落，除了灵气外还有神识，能够引领指定种族4星以上的英雄",
+    "des": "混沌之灵石，盘古开天后散落，除了灵气外还有神识，能够引领指定种族4-5星英雄",
     "isBag": true,
     "type": "item",
+    "gold": 2500,
+    "buyNum": 1,
     "quality": 4
   },
   "1000150": {
     "name": "万能法宝",
     "des": "女娲用造人剩余泥土捏造而成，可完美契合任何类型法宝，可用于法宝升级",
-    "type": "art"
+    "type": "art",
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "1001001": {
     "name": "绿色装备宝箱",
@@ -869,6 +1002,8 @@
     "des": "普通的短剑，没有什么特别之处",
     "isBag": true,
     "type": "equip",
+    "coin": 250,
+    "buyNum": 1,
     "quality": 1
   },
   "5001020": {
@@ -876,6 +1011,8 @@
     "des": "麻布制成的衣服，穿在身上特别不舒服",
     "isBag": true,
     "type": "equip",
+    "coin": 250,
+    "buyNum": 1,
     "quality": 1
   },
   "5001030": {
@@ -883,6 +1020,8 @@
     "des": "用绳子做成的腰带，勉强能系上",
     "isBag": true,
     "type": "equip",
+    "coin": 250,
+    "buyNum": 1,
     "quality": 1
   },
   "5001040": {
@@ -890,6 +1029,8 @@
     "des": "麻绳编制的草鞋，穿上后很磨脚",
     "isBag": true,
     "type": "equip",
+    "coin": 250,
+    "buyNum": 1,
     "quality": 1
   },
   "5002010": {
@@ -897,6 +1038,8 @@
     "des": "普通商店出售的剑，不够锋利经常被砍断",
     "isBag": true,
     "type": "equip",
+    "coin": 500,
+    "buyNum": 1,
     "quality": 1
   },
   "5002020": {
@@ -904,6 +1047,8 @@
     "des": "粗布制成的衣服，勉强能穿",
     "isBag": true,
     "type": "equip",
+    "coin": 500,
+    "buyNum": 1,
     "quality": 1
   },
   "5002030": {
@@ -911,6 +1056,8 @@
     "des": "粗布捆成一团，能够系上但是不美观",
     "isBag": true,
     "type": "equip",
+    "coin": 500,
+    "buyNum": 1,
     "quality": 1
   },
   "5002040": {
@@ -918,6 +1065,8 @@
     "des": "粗布剪成鞋子的样子，没有鞋底",
     "isBag": true,
     "type": "equip",
+    "coin": 500,
+    "buyNum": 1,
     "quality": 1
   },
   "5003010": {
@@ -925,6 +1074,8 @@
     "des": "铸剑大师专门为君子们量身定做的剑",
     "isBag": true,
     "type": "equip",
+    "coin": 1000,
+    "buyNum": 1,
     "quality": 2
   },
   "5003020": {
@@ -932,6 +1083,8 @@
     "des": "采用蓝色晶石与布料一起制成，特别贴身",
     "isBag": true,
     "type": "equip",
+    "coin": 1000,
+    "buyNum": 1,
     "quality": 2
   },
   "5003030": {
@@ -939,6 +1092,8 @@
     "des": "鬼面制作大师根据制作面具的工艺打造鬼面腰带",
     "isBag": true,
     "type": "equip",
+    "coin": 1000,
+    "buyNum": 1,
     "quality": 2
   },
   "5003040": {
@@ -946,6 +1101,8 @@
     "des": "采用蓝色晶石和羽毛制成，特别轻便好用",
     "isBag": true,
     "type": "equip",
+    "coin": 1000,
+    "buyNum": 1,
     "quality": 2
   },
   "5004010": {
@@ -953,6 +1110,8 @@
     "des": "铸剑圣人花其一生的时间打造而成，非常锋利",
     "isBag": true,
     "type": "equip",
+    "coin": 2000,
+    "buyNum": 1,
     "quality": 2
   },
   "5004020": {
@@ -960,6 +1119,8 @@
     "des": "用鳞片手动敲打而成，有较强的防御能力",
     "isBag": true,
     "type": "equip",
+    "coin": 2000,
+    "buyNum": 1,
     "quality": 2
   },
   "5004030": {
@@ -967,6 +1128,8 @@
     "des": "人皇为盛世而打造的腰带，有较强的观赏性",
     "isBag": true,
     "type": "equip",
+    "coin": 2000,
+    "buyNum": 1,
     "quality": 2
   },
   "5004040": {
@@ -974,6 +1137,8 @@
     "des": "羽人族的独家制作工艺，穿上可翔空而行",
     "isBag": true,
     "type": "equip",
+    "coin": 2000,
+    "buyNum": 1,
     "quality": 2
   },
   "5005010": {
@@ -981,6 +1146,8 @@
     "des": "巧夺天工自然而成，经过千百年的自然打磨最终成剑",
     "isBag": true,
     "type": "equip",
+    "coin": 4500,
+    "buyNum": 1,
     "quality": 3
   },
   "5005020": {
@@ -988,6 +1155,8 @@
     "des": "用紫晶石与天外玄铁制成，闪耀着紫色的光芒",
     "isBag": true,
     "type": "equip",
+    "coin": 4500,
+    "buyNum": 1,
     "quality": 3
   },
   "5005030": {
@@ -995,6 +1164,8 @@
     "des": "用紫晶石与天外玄铁制成，闪耀着紫色的光芒",
     "isBag": true,
     "type": "equip",
+    "coin": 4500,
+    "buyNum": 1,
     "quality": 3
   },
   "5005040": {
@@ -1002,6 +1173,8 @@
     "des": "制作大师看到天上云获得灵感，花费大量的时间制成",
     "isBag": true,
     "type": "equip",
+    "coin": 4500,
+    "buyNum": 1,
     "quality": 3
   },
   "5006010": {
@@ -1009,6 +1182,8 @@
     "des": "人族与妖族大战时，此剑曾刺杀过蛟龙，散发出凶兽的光芒",
     "isBag": true,
     "type": "equip",
+    "coin": 7500,
+    "buyNum": 1,
     "quality": 3
   },
   "5006020": {
@@ -1016,6 +1191,8 @@
     "des": "制铠大师用远古巨兽的遗骸加上自身精血制成，制成之日万兽崇拜",
     "isBag": true,
     "type": "equip",
+    "coin": 7500,
+    "buyNum": 1,
     "quality": 3
   },
   "5006030": {
@@ -1023,6 +1200,8 @@
     "des": "用轻纱与蚕丝制成，穿戴上后如同流云缠身身姿飘渺",
     "isBag": true,
     "type": "equip",
+    "coin": 7500,
+    "buyNum": 1,
     "quality": 3
   },
   "5006040": {
@@ -1030,6 +1209,8 @@
     "des": "神族制作工艺，穿上走起来犹如漫步云中",
     "isBag": true,
     "type": "equip",
+    "coin": 7500,
+    "buyNum": 1,
     "quality": 3
   },
   "5007010": {
@@ -1037,6 +1218,8 @@
     "des": "落神圣殿的铸剑大师打造，剑气凌然，传说制成当天剑气冲天万神不语",
     "isBag": true,
     "type": "equip",
+    "coin": 12500,
+    "buyNum": 1,
     "quality": 3
   },
   "5007020": {
@@ -1044,6 +1227,8 @@
     "des": "蚩尤身陨后将其战甲熔炼重新炼制而成，还散发淡淡的战神气势",
     "isBag": true,
     "type": "equip",
+    "coin": 12500,
+    "buyNum": 1,
     "quality": 3
   },
   "5007030": {
@@ -1051,6 +1236,8 @@
     "des": "由魔王刑天的铠甲改造而成，带有一丝魔王神魂，散发出强大的魔王气息",
     "isBag": true,
     "type": "equip",
+    "coin": 12500,
+    "buyNum": 1,
     "quality": 3
   },
   "5007040": {
@@ -1058,6 +1245,8 @@
     "des": "选用天地灵气结合天外灵石制成，传说穿上后可追风赶月",
     "isBag": true,
     "type": "equip",
+    "coin": 12500,
+    "buyNum": 1,
     "quality": 3
   },
   "5008010": {
@@ -1065,6 +1254,8 @@
     "des": "铸剑巨擘花费一生心血打造而成，因能呼风唤雨二闻名",
     "isBag": true,
     "type": "equip",
+    "coin": 21500,
+    "buyNum": 1,
     "quality": 4
   },
   "5008020": {
@@ -1072,6 +1263,8 @@
     "des": "取玄天陨石在月光下吸收精华，通过万次淬炼而成，散发古老的苍月气息而得名",
     "isBag": true,
     "type": "equip",
+    "coin": 21500,
+    "buyNum": 1,
     "quality": 4
   },
   "5008030": {
@@ -1079,6 +1272,8 @@
     "des": "取沧海之滨千年晶石，经万次锤炼而成，穿上后可任意穿梭四海",
     "isBag": true,
     "type": "equip",
+    "coin": 21500,
+    "buyNum": 1,
     "quality": 4
   },
   "5008040": {
@@ -1086,6 +1281,8 @@
     "des": "模仿龙族飞升之势打造的战靴，穿上后可踏空起飞",
     "isBag": true,
     "type": "equip",
+    "coin": 21500,
+    "buyNum": 1,
     "quality": 4
   },
   "5009010": {
@@ -1093,6 +1290,8 @@
     "des": "太上老君取七星之精华打造而成，闪耀着七星的光芒",
     "isBag": true,
     "type": "equip",
+    "coin": 36500,
+    "buyNum": 1,
     "quality": 4
   },
   "5009020": {
@@ -1100,6 +1299,8 @@
     "des": "此物来自太上老君炼制，以流云虚无缥缈而得名，据说可迷幻敌人攻击不到自身",
     "isBag": true,
     "type": "equip",
+    "coin": 36500,
+    "buyNum": 1,
     "quality": 4
   },
   "5009030": {
@@ -1107,6 +1308,8 @@
     "des": "太上老君用混元石，以神火锻后，手动捶打而成，散发一丝混元气息",
     "isBag": true,
     "type": "equip",
+    "coin": 36500,
+    "buyNum": 1,
     "quality": 4
   },
   "5009040": {
@@ -1114,6 +1317,8 @@
     "des": "此物出自太上老君之手，据说当时只是随手打造，便可一步腾云",
     "isBag": true,
     "type": "equip",
+    "coin": 36500,
+    "buyNum": 1,
     "quality": 4
   },
   "5010010": {
@@ -1121,6 +1326,8 @@
     "des": "此剑有灵，剑成之时天地共鸣，故来得名，可剑出谁手却成了迷",
     "isBag": true,
     "type": "equip",
+    "coin": 62500,
+    "buyNum": 1,
     "quality": 4
   },
   "5010020": {
@@ -1128,6 +1335,8 @@
     "des": "神农取多种灵石混合打造而成，以纹路清晰得名，被攻击时纹路会泛光护主",
     "isBag": true,
     "type": "equip",
+    "coin": 62500,
+    "buyNum": 1,
     "quality": 4
   },
   "5010030": {
@@ -1135,6 +1344,8 @@
     "des": "月宫仙子秘制而成，相传佩戴后可梦见月宫仙子",
     "isBag": true,
     "type": "equip",
+    "coin": 62500,
+    "buyNum": 1,
     "quality": 4
   },
   "5010040": {
@@ -1142,6 +1353,8 @@
     "des": "夸父秘制而成，传说穿上次靴可追日",
     "isBag": true,
     "type": "equip",
+    "coin": 62500,
+    "buyNum": 1,
     "quality": 4
   },
   "5011010": {
@@ -1149,6 +1362,8 @@
     "des": "取麒麟精血铸成的神剑，剑动则麒惊，剑停则麟亡",
     "isBag": true,
     "type": "equip",
+    "coin": 105000,
+    "buyNum": 1,
     "quality": 4
   },
   "5011020": {
@@ -1156,6 +1371,8 @@
     "des": "取饕餮精血铸成的铠甲，可吞噬天下一切",
     "isBag": true,
     "type": "equip",
+    "coin": 105000,
+    "buyNum": 1,
     "quality": 4
   },
   "5011030": {
@@ -1163,6 +1380,8 @@
     "des": "取貔貅精血铸成的腰带，可趋吉避凶",
     "isBag": true,
     "type": "equip",
+    "coin": 105000,
+    "buyNum": 1,
     "quality": 4
   },
   "5011040": {
@@ -1170,6 +1389,8 @@
     "des": "取鲲鹏精血铸成的鞋子，可一日万里",
     "isBag": true,
     "type": "equip",
+    "coin": 105000,
+    "buyNum": 1,
     "quality": 4
   },
   "5012010": {
@@ -1177,6 +1398,8 @@
     "des": "轩辕帝随身佩剑，剑身一面刻日月星辰，一面刻山川草木，得此剑者，可安天下",
     "isBag": true,
     "type": "equip",
+    "coin": 175000,
+    "buyNum": 1,
     "quality": 5
   },
   "5012020": {
@@ -1184,6 +1407,8 @@
     "des": "轩辕帝身穿之铠甲，铠甲以四圣之一青龙孕育而成，散发淡淡的龙威",
     "isBag": true,
     "type": "equip",
+    "coin": 175000,
+    "buyNum": 1,
     "quality": 5
   },
   "5012030": {
@@ -1191,6 +1416,8 @@
     "des": "轩辕帝身穿之腰带，铠甲以四圣之一青龙孕育而成，散发淡淡的龙威",
     "isBag": true,
     "type": "equip",
+    "coin": 175000,
+    "buyNum": 1,
     "quality": 5
   },
   "5012040": {
@@ -1198,6 +1425,8 @@
     "des": "轩辕帝身穿之腰带，铠甲以四圣之一青龙孕育而成，散发淡淡的龙威",
     "isBag": true,
     "type": "equip",
+    "coin": 175000,
+    "buyNum": 1,
     "quality": 5
   },
   "5013010": {
@@ -1205,6 +1434,8 @@
     "des": "蚩尤身陨后以其骨血制成，枪成之日诛神寂灭，故得名",
     "isBag": true,
     "type": "equip",
+    "coin": 290000,
+    "buyNum": 1,
     "quality": 5
   },
   "5013020": {
@@ -1212,6 +1443,8 @@
     "des": "帝师以窥天之秘术打造而成，此铠甲泛出神秘的光芒",
     "isBag": true,
     "type": "equip",
+    "coin": 290000,
+    "buyNum": 1,
     "quality": 5
   },
   "5013030": {
@@ -1219,6 +1452,8 @@
     "des": "圣人以一生所识注入器灵孕育而成，形成之日高光四起，照耀整个星空",
     "isBag": true,
     "type": "equip",
+    "coin": 290000,
+    "buyNum": 1,
     "quality": 5
   },
   "5013040": {
@@ -1226,6 +1461,8 @@
     "des": "羽组观自身翅膀所得灵感，以独有的追风晶石加上神秘符文制作而成，穿上此写可追着风跑",
     "isBag": true,
     "type": "equip",
+    "coin": 290000,
+    "buyNum": 1,
     "quality": 5
   },
   "5014010": {
@@ -1233,6 +1470,8 @@
     "des": "轩辕帝制，以逐鹿之战中的战魂滋养神石，再以火神之火炼制数年，枪成之时胜意震响九州，轩辕帝唤名胜意枪",
     "isBag": true,
     "type": "equip",
+    "coin": 490000,
+    "buyNum": 1,
     "quality": 5
   },
   "5014020": {
@@ -1240,6 +1479,8 @@
     "des": "轩辕帝制，以逐鹿之战中的战魂滋养神石，再以火神之火炼制数年，铠成之时战胜声响荡九州，轩辕帝唤名战胜铠",
     "isBag": true,
     "type": "equip",
+    "coin": 490000,
+    "buyNum": 1,
     "quality": 5
   },
   "5014030": {
@@ -1247,6 +1488,8 @@
     "des": "轩辕帝制，以逐鹿之战中将士精血滋养神石，再以火神之火炼制数年，腰带有万军共鸣，轩辕帝唤名高歌腰",
     "isBag": true,
     "type": "equip",
+    "coin": 490000,
+    "buyNum": 1,
     "quality": 5
   },
   "5014040": {
@@ -1254,6 +1497,8 @@
     "des": "轩辕帝制，以逐鹿之战中将士战意滋养神石，再以火神之火炼制数年，靴有万军之魂，轩辕帝唤名凯旋靴",
     "isBag": true,
     "type": "equip",
+    "coin": 490000,
+    "buyNum": 1,
     "quality": 5
   },
   "5015010": {
@@ -1261,6 +1506,8 @@
     "des": "盘古秘制，无比锋利，此斧可开天辟地",
     "isBag": true,
     "type": "equip",
+    "coin": 800000,
+    "buyNum": 1,
     "quality": 5
   },
   "5015020": {
@@ -1268,6 +1515,8 @@
     "des": "盘古开天后用天地初石所制成，穿上此衣与天地相当",
     "isBag": true,
     "type": "equip",
+    "coin": 800000,
+    "buyNum": 1,
     "quality": 5
   },
   "5015030": {
@@ -1275,6 +1524,8 @@
     "des": "盘古到地后，身体自然孕育形成，形成之时擎天姿态轰动天地",
     "isBag": true,
     "type": "equip",
+    "coin": 800000,
+    "buyNum": 1,
     "quality": 5
   },
   "5015040": {
@@ -1282,6 +1533,8 @@
     "des": "盘古到地后，身体自然孕育形成，形成之时登天一步，因此得名",
     "isBag": true,
     "type": "equip",
+    "coin": 800000,
+    "buyNum": 1,
     "quality": 5
   },
   "5016010": {
@@ -1289,6 +1542,8 @@
     "des": "取龙族精血打造而成，开刀犹如万龙奔腾，气势宏大神仙都怕",
     "isBag": true,
     "type": "equip",
+    "coin": 1400000,
+    "buyNum": 1,
     "quality": 5
   },
   "5016020": {
@@ -1296,6 +1551,8 @@
     "des": "取饕餮兽为灵，锻成精铠，铠有两能，一能可噬天地，二能可破万军",
     "isBag": true,
     "type": "equip",
+    "coin": 1400000,
+    "buyNum": 1,
     "quality": 5
   },
   "5016030": {
@@ -1303,6 +1560,8 @@
     "des": "取梼杌兽为灵，铸成护腿，腿有傲骨，易噬主而食，非常人能御之",
     "isBag": true,
     "type": "equip",
+    "coin": 1400000,
+    "buyNum": 1,
     "quality": 5
   },
   "5016040": {
@@ -1310,6 +1569,8 @@
     "des": "取混沌兽为灵，编为鞋履，履可通紫微，有趋吉避凶，明过往，通未来之能",
     "isBag": true,
     "type": "equip",
+    "coin": 1400000,
+    "buyNum": 1,
     "quality": 5
   },
   "5017010": {
@@ -1317,6 +1578,8 @@
     "des": "由混沌之石孕育而成的刀，拥有无穷变化，传说此刀无人能用",
     "isBag": true,
     "type": "equip",
+    "coin": 2400000,
+    "buyNum": 1,
     "quality": 5
   },
   "5017020": {
@@ -1324,6 +1587,8 @@
     "des": "女娲补天时穿的战袍，拥有极大的先天灵气，传说此衣能抵御任何攻击",
     "isBag": true,
     "type": "equip",
+    "coin": 2400000,
+    "buyNum": 1,
     "quality": 5
   },
   "5017030": {
@@ -1331,6 +1596,8 @@
     "des": "盘古开天时的腰带，拥有一丝盘古的神魂，传说此腰带能毁天灭地",
     "isBag": true,
     "type": "equip",
+    "coin": 2400000,
+    "buyNum": 1,
     "quality": 5
   },
   "5017040": {
@@ -1338,305 +1605,454 @@
     "des": "原始天尊创道时的鞋子，拥有强大的神韵，传说此履可一步创道",
     "isBag": true,
     "type": "equip",
+    "coin": 2400000,
+    "buyNum": 1,
     "quality": 5
   },
   "9030010": {
     "name": "真君圣元神",
     "des": "暴击伤害+5%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 800,
+    "other": "206:800",
+    "buyNum": 1
   },
   "9030020": {
     "name": "仙女元神",
     "des": "攻击+300（武将100级后每升1级攻击额外+9）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 800,
+    "other": "206:800",
+    "buyNum": 1
   },
   "9030030": {
     "name": "暗影元神",
     "des": "生命+2000（武将100级后每升1级生命额外+60）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 800,
+    "other": "206:800",
+    "buyNum": 1
   },
   "9030040": {
     "name": "朱离元神",
     "des": "物理防御+200（武将100级后每升1级额外+6）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 800,
+    "other": "206:800",
+    "buyNum": 1
   },
   "9030041": {
     "name": "璧合元神",
     "des": "法术防御+200（武将100级后每升1级额外+6）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 800,
+    "other": "206:800",
+    "buyNum": 1
   },
   "9030050": {
     "name": "黑熊精元神",
     "des": "抗暴概率+8%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 800,
+    "other": "206:800",
+    "buyNum": 1
   },
   "9030060": {
     "name": "幽月兔元神",
     "des": "暴击概率+8%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 800,
+    "other": "206:800",
+    "buyNum": 1
   },
   "9030070": {
     "name": "孙小圣元神",
     "des": "伤害+5%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 800,
+    "other": "206:800",
+    "buyNum": 1
   },
   "9030080": {
     "name": "幼年饕餮元神",
     "des": "伤害减免+5%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 800,
+    "other": "206:800",
+    "buyNum": 1
   },
   "9040010": {
     "name": "红孩儿元神",
     "des": "攻击目标越少，沉默概率提升越高，最多对1个目标提高72%的沉默概率。（只对当前有沉默效果的武将生效）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040020": {
     "name": "广成子元神",
     "des": "反伤增加30%（只对当前有反伤效果的武将生效）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040030": {
     "name": "九天玄女元神",
     "des": "伤害+12%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040040": {
     "name": "东华太一元神",
     "des": "击杀目标回复自身1点怒气。",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040050": {
     "name": "善财仙子元神",
     "des": "技能直接伤害转化为血量治疗当前血量最少的武将的比例提升18%。（只对当前有技能转治疗的辅助武将生效）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040060": {
     "name": "神农元神",
     "des": "治疗武将释放技能时，对己方血量最少武将造成治疗效果额外提升55%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040070": {
     "name": "瑶姬元神",
     "des": "抗暴概率+20%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040080": {
     "name": "轩辕帝元神",
     "des": "初始怒气增加1点",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040090": {
     "name": "降魔祖师元神",
     "des": "攻击+900（武将100级后每升1级攻击额外+27）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040100": {
     "name": "大禹元神",
     "des": "保护目标越少，减少效果越高，最高可以减少36%的直接伤害。（只对当前有减伤护盾的武将生效）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040110": {
     "name": "苏妲己元神",
     "des": "生命+6000(武将100级后每升1级生命额外+180)",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040120": {
     "name": "颛顼元神",
     "des": "攻击目标越少，眩晕概率提升越高，最多提高48%的眩晕概率。（只对当前有眩晕效果的武将生效）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040130": {
     "name": "后卿元神",
     "des": "攻击目标越少，麻痹概率提升越高，最多对1个目标提高72%的麻痹概率。（只对当前有麻痹效果的武将生效）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040140": {
     "name": "云霄元神",
     "des": "技能的治疗效果提升25%，同时为技能目标附加1个免伤盾，受到直接伤害降低12%，持续1回合。",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040150": {
     "name": "牛魔元神",
     "des": "物理防御+600（武将100级后每升1级额外+18）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040151": {
     "name": "古魔元神",
     "des": "法术防御+600（武将100级后每升1级额外+18）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040160": {
     "name": "狐妖元神",
     "des": "暴击伤害+12%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040170": {
     "name": "诸怀元神",
     "des": "攻击目标越少，灼烧概率提升越高，最多可对1个目标提高60%的灼烧概率",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040180": {
     "name": "白泽元神",
     "des": "造成的中毒伤害的10%转化为血量治疗自己。",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040190": {
     "name": "应龙元神",
     "des": "受到控制效果（麻痹、沉默、眩晕）概率降低35%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040200": {
     "name": "饕餮元神",
     "des": "伤害减免+12%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040210": {
     "name": "烛龙元神",
     "des": "攻击目标越少，中毒概率提升越高，最多可对1个目标提高60%的中毒概率",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040220": {
     "name": "火麒麟元神",
     "des": "攻击单体目标时额外降低目标1点怒气。",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040230": {
     "name": "龙龟元神",
     "des": "攻击目标越少，中毒伤害提升越高，最多可对1个目标提高60%的中毒伤害",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9040240": {
     "name": "幼鲲元神",
     "des": "暴击概率+20%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 3000,
+    "other": "206:3000",
+    "buyNum": 1
   },
   "9050010": {
     "name": "神·太上老君元神",
     "des": "武将怒气小于7点时，不会释放技能；释放技能消耗当前所有怒气，超过4点怒气部分，每额外消耗1点怒气，技能伤害增加15%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050020": {
     "name": "神·女娲元神",
     "des": "治疗武将释放技能时，对己方血量最少的3个武将治疗效果额外提升治疗武将攻击的32%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050030": {
     "name": "神·混元天尊元神",
     "des": "攻击目标越少，清除敌方武将无敌状态的概率越高，最多对1个目标提高100%的清除无敌概率",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050040": {
     "name": "神·九天玄女元神",
     "des": "攻击纵排目标时，额外降低目标1点怒气。（只对当前有纵排减怒效果的武将生效）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050050": {
     "name": "神·剑灵元神",
     "des": "普通攻击必定暴击。（包括治疗武将）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050060": {
     "name": "神·光辉之甲元神",
     "des": "暴伤减免+20%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050070": {
     "name": "神·玄冥元神",
     "des": "灼烧状态额外延长1回合",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050080": {
     "name": "神·魔猴元神",
     "des": "攻击目标越少，灼烧概率提升越高，最多可对1个目标提高96%的灼烧概率",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050090": {
     "name": "神·瑶姬元神",
     "des": "首回合免疫眩晕、沉默、麻痹效果",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050100": {
     "name": "神·诸怀元神",
     "des": "被灼烧的武将无法获得无敌和无敌吸血盾效果",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050110": {
     "name": "神·烛龙元神",
     "des": "释放技能造成的中毒附加封治疗效果，中毒状态的武将无法受到治疗",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050120": {
     "name": "神·白泽元神",
     "des": "技能直接伤害的18%转化为血量，治疗自己",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050130": {
     "name": "神·龙龟元神",
     "des": "中毒状态延长1回合",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050160": {
     "name": "神·弱点击破元神",
     "des": "单体输出武将的所有攻击优先攻击敌方当前血量最低的武将",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9050170": {
     "name": "神·横扫千军元神",
     "des": "单体输出武将直接伤害击杀目标后，追加1次技能，对敌方单体造成175%物理伤害。（追加的技能不消耗怒气，不触发任何特性）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "gold": 10000,
+    "other": "206:10000",
+    "buyNum": 1
   },
   "9060010": {
     "name": "绝杀无双元神",
-    "des": "暴击伤害+20%",
+    "des": "暴击伤害+30%",
     "isBag": true,
     "type": "ace"
   },
@@ -1669,335 +2085,479 @@
     "des": "【+25激活】释放技能有40%几率追加1次技能，对全体造成41%法术伤害",
     "isBag": true,
     "type": "art",
-    "arg": 105010
+    "arg": 105010,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11105020": {
     "name": "混元珠(混元天尊法宝)",
     "des": "【+25激活】全体上阵武将暴击几率+30%",
     "isBag": true,
     "type": "art",
-    "arg": 105020
+    "arg": 105020,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11105030": {
     "name": "引雷锤(雷公法宝)",
     "des": "【+25激活】行动后回复自身1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 105030
+    "arg": 105030,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11105040": {
     "name": "风火轮(哪吒法宝)",
     "des": "【+25激活】全体上阵武将暴击几率+20%",
     "isBag": true,
     "type": "art",
-    "arg": 105040
+    "arg": 105040,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11105050": {
     "name": "补天石(女娲法宝)",
     "des": "【+25激活】技能造成的治疗量+25%",
     "isBag": true,
     "type": "art",
-    "arg": 105050
+    "arg": 105050,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11105060": {
     "name": "清灵引(广成子法宝)",
     "des": "【+25激活】受到普通攻击直接伤害时，回复自身1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 105060
+    "arg": 105060,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11105070": {
     "name": "缚神绫(红孩儿法宝)",
     "des": "【+25激活】释放技能后，额外回复自身1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 105070
+    "arg": 105070,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11105080": {
     "name": "乾坤圈(九天玄女法宝)",
     "des": "【+25激活】直接伤害导致死亡时100%眩晕击杀自己的敌方武将",
     "isBag": true,
     "type": "art",
-    "arg": 105080
+    "arg": 105080,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11105090": {
     "name": "避水珠(东海龙王法宝)",
     "des": "【+25激活】技能造成的伤害增加25%",
     "isBag": true,
     "type": "art",
-    "arg": 105090
+    "arg": 105090,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11105100": {
     "name": "开天剑(东华太一法宝)",
     "des": "【+25激活】直接伤害击杀目标后，回复自身1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 105100
+    "arg": 105100,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11105110": {
     "name": "寒月绫(嫦娥法宝)",
     "des": "【+25激活】技能目标每减少1个，技能伤害增加10%",
     "isBag": true,
     "type": "art",
-    "arg": 105110
+    "arg": 105110,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11105120": {
     "name": "钱坤袋(善财仙子法宝)",
     "des": "【+25激活】技能直接伤害的50%转化为生命，治疗己方生命最低的队友",
     "isBag": true,
     "type": "art",
-    "arg": 105120
+    "arg": 105120,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11205010": {
     "name": "七星剑(剑灵法宝)",
     "des": "【+25激活】直接伤害击杀目标后，追加1次普通攻击（追加的普通攻击不会回复怒气）",
     "isBag": true,
     "type": "art",
-    "arg": 205010
+    "arg": 205010,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11205020": {
     "name": "姜子牙(诛仙剑法宝)",
     "des": "【+25激活】释放技能后，降低目标1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 205020
+    "arg": 205020,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11205030": {
     "name": "神农(神农仗法宝)",
     "des": "【+25激活】受到直接伤害的18%转化为生命，治疗己方全体目标",
     "isBag": true,
     "type": "art",
-    "arg": 205030
+    "arg": 205030,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11205040": {
     "name": "大禹(帝之剑法宝)",
     "des": "【+25激活】受到的治疗量增加50%",
     "isBag": true,
     "type": "art",
-    "arg": 205040
+    "arg": 205040,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11205050": {
     "name": "紫隐娟(苏妲己法宝)",
     "des": "【+25激活】全体上阵武将暴击几率增加20%",
     "isBag": true,
     "type": "art",
-    "arg": 205050
+    "arg": 205050,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11205060": {
     "name": "瑶姬(天羽扇法宝)",
     "des": "【+25激活】释放技能后，回复全体队友1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 205060
+    "arg": 205060,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11205070": {
     "name": "轩辕帝(轩辕剑法宝)",
     "des": "【+25激活】直接伤害击杀目标后，回复自身1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 205070
+    "arg": 205070,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11205080": {
     "name": "降魔祖师(蓝晶剑法宝)",
     "des": "【+25激活】自身生命每降低10%，伤害增加5%",
     "isBag": true,
     "type": "art",
-    "arg": 205080
+    "arg": 205080,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11205090": {
     "name": "真武大帝(昆仑刀法宝)",
     "des": "【+25激活】直接伤害击杀目标后，追加1次普通攻击（追加的普通攻击不会回复怒气）",
     "isBag": true,
     "type": "art",
-    "arg": 205090
+    "arg": 205090,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11205100": {
     "name": "后羿(落日弓法宝)",
     "des": "【+25激活】行动后自身伤害增加8%",
     "isBag": true,
     "type": "art",
-    "arg": 205100
+    "arg": 205100,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11205110": {
     "name": "颛顼(紫耀枪法宝)",
     "des": "【+25激活】释放技能附带眩晕的概率增加至65%",
     "isBag": true,
     "type": "art",
-    "arg": 205110
+    "arg": 205110,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11205120": {
     "name": "云中子(游龙剑法宝)",
     "des": "【+25激活】释放技能后，额外回复自身1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 205120
+    "arg": 205120,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11305010": {
     "name": "蚩尤刀(蚩尤法宝)",
     "des": "【+25激活】攻击时，对灼烧目标的暴击几率额外增加80%",
     "isBag": true,
     "type": "art",
-    "arg": 305010
+    "arg": 305010,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11305020": {
     "name": "玄冥(枯魔刀法宝)",
     "des": "【+25激活】受到普通攻击时，有80%概率使攻击者灼烧，持续2回合",
     "isBag": true,
     "type": "art",
-    "arg": 305020
+    "arg": 305020,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11305030": {
     "name": "乾坤石(云霄法宝)",
     "des": "【+25激活】释放技能时，为队友附加的持续治疗效果增加至大乔攻击的32%",
     "isBag": true,
     "type": "art",
-    "arg": 305030
+    "arg": 305030,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11305040": {
     "name": "幽冥石(幽魂法宝)",
     "des": "【+25激活】受到灼烧状态敌人攻击时，受到的直接伤害额外再降低25%",
     "isBag": true,
     "type": "art",
-    "arg": 305040
+    "arg": 305040,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11305050": {
     "name": "幻灵爪(后卿法宝)",
     "des": "【+25激活】释放技能后，给血量最少的2名队友附加无敌吸血盾，持续1回合",
     "isBag": true,
     "type": "art",
-    "arg": 305050
+    "arg": 305050,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11305060": {
     "name": "搬山斧(魔猴法宝)",
     "des": "【+25激活】释放技能时，如果目标处于灼烧状态，附加眩晕的概率提升至80%",
     "isBag": true,
     "type": "art",
-    "arg": 305060
+    "arg": 305060,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11305070": {
     "name": "立天杵(雷鸟法宝)",
     "des": "【+25激活】普通攻击对灼烧目标造成的伤害额外增加80%",
     "isBag": true,
     "type": "art",
-    "arg": 305070
+    "arg": 305070,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11305080": {
     "name": "三叉戟(诸怀法宝)",
     "des": "【+25激活】释放技能附加灼烧状态的概率增加至96%",
     "isBag": true,
     "type": "art",
-    "arg": 305080
+    "arg": 305080,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11305090": {
     "name": "开天斧(狂妄法宝)",
     "des": "【+25激活】受到普通攻击时，有50%概率使攻击者灼烧，持续2回合",
     "isBag": true,
     "type": "art",
-    "arg": 305090
+    "arg": 305090,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11305100": {
     "name": "浑天刃(古魔法宝)",
     "des": "【+25激活】直接伤害击杀灼烧目标后，回复自身50%生命",
     "isBag": true,
     "type": "art",
-    "arg": 305100
+    "arg": 305100,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11305110": {
     "name": "妖狐灵(狐妖法宝)",
     "des": "【+25激活】释放技能后，追加1次普通攻击（追加的普通攻击不会回复怒气）",
     "isBag": true,
     "type": "art",
-    "arg": 305110
+    "arg": 305110,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11305120": {
     "name": "三叉刃(牛魔法宝)",
     "des": "【+25激活】释放普通攻击后额外降低目标1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 305120
+    "arg": 305120,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11405010": {
     "name": "瑞祥云(瑞兽法宝)",
     "des": "【+25激活】释放技能附带眩晕的概率增加至70%",
     "isBag": true,
     "type": "art",
-    "arg": 405010
+    "arg": 405010,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11405020": {
     "name": "闪电纹(穷奇法宝)",
     "des": "【+25激活】直接伤害击杀目标后回复自身2点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 405020
+    "arg": 405020,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11405030": {
     "name": "神兽丹(白泽法宝)",
     "des": "【+25激活】目标血量每减少10%，对其造成的的治疗量增加5%",
     "isBag": true,
     "type": "art",
-    "arg": 405030
+    "arg": 405030,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11405040": {
     "name": "凶兽角(饕餮法宝)",
     "des": "【+25激活】减伤盾减少受到直接伤害的百分比增加至50%",
     "isBag": true,
     "type": "art",
-    "arg": 405040
+    "arg": 405040,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11405050": {
     "name": "仙雾羽(仙鹤法宝)",
     "des": "【+25激活】释放技能后，额外回复自身1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 405050
+    "arg": 405050,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11405060": {
     "name": "应龙珠(应龙法宝)",
     "des": "【+25激活】技能直接伤害的50%转化为生命，治疗己方生命最低的队友",
     "isBag": true,
     "type": "art",
-    "arg": 405060
+    "arg": 405060,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11405070": {
     "name": "凤凰羽(凤凰法宝)",
     "des": "【+25激活】释放技能附加麻痹效果的概率增加至50%",
     "isBag": true,
     "type": "art",
-    "arg": 405070
+    "arg": 405070,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11405080": {
     "name": "烛龙珠(烛龙法宝)",
     "des": "【+25激活】释放技能附加中毒效果的概率增加至96%",
     "isBag": true,
     "type": "art",
-    "arg": 405080
+    "arg": 405080,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11405090": {
     "name": "北冥灵(幼鲲法宝)",
     "des": "【+25激活】直接伤害击杀目标后，回复自身1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 405090
+    "arg": 405090,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11405100": {
     "name": "火云丹(火麒麟法宝)",
     "des": "【+25激活】释放技能后，额外回复自身1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 405100
+    "arg": 405100,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11405110": {
     "name": "白虎纹(白虎法宝)",
     "des": "【+25激活】释放技能后，降低目标1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 405110
+    "arg": 405110,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   },
   "11405120": {
     "name": "龙龟甲(龙龟法宝)",
     "des": "【+25激活】释放技能后，降低目标1点怒气",
     "isBag": true,
     "type": "art",
-    "arg": 405120
+    "arg": 405120,
+    "gold": 500,
+    "other": "207:500",
+    "buyNum": 1
   }
 }
