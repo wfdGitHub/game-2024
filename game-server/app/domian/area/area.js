@@ -1,7 +1,7 @@
 //服务器
 var bearcat = require("bearcat")
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
-var areaServers = ["combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
+var areaServers = ["bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
 const oneDayTime = 86400000
 var area = function(otps,app) {
 	this.areaId = otps.areaId
@@ -94,6 +94,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.arenadayUpdate(uid)
 	this.dailyfbUpdate(uid)
 	this.dayTaskRefresh(uid)
+	this.bazaarDayRefresh(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {

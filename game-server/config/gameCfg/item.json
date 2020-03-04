@@ -934,6 +934,9 @@
     "des": "英雄灵气聚集而成，能够使英雄突破到更高的水平",
     "isBag": true,
     "type": "item",
+    "gold": 1,
+    "coin": 5000,
+    "buyNum": 1,
     "quality": 2
   },
   "1000070": {

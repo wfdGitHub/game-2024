@@ -72,6 +72,19 @@
             console.log(data);
         });
       }
+      //============集市相关==============//
+      //获取集市数据
+      var getBazaarData = function() {
+        pomelo.request("area.bazaarHandler.getBazaarData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //集市刷新
+      var bazaarRefresh = function(type) {
+        pomelo.request("area.bazaarHandler.bazaarRefresh", {type : type}, function(data) {
+            console.log(data);
+        });
+      }
       //============任务相关==============//
       //获取任务列表
       var getTaskList = function() {
