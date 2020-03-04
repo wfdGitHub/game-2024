@@ -968,7 +968,8 @@
     "des": "女娲用造人剩余泥土捏造而成，可完美契合任何类型法宝，可用于法宝升级",
     "type": "art",
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "1001001": {
@@ -1616,7 +1617,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 800,
-    "other": "206:800",
+    "other_currency": 206,
+    "other_value": 800,
     "buyNum": 1
   },
   "9030020": {
@@ -1625,7 +1627,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 800,
-    "other": "206:800",
+    "other_currency": 206,
+    "other_value": 800,
     "buyNum": 1
   },
   "9030030": {
@@ -1634,7 +1637,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 800,
-    "other": "206:800",
+    "other_currency": 206,
+    "other_value": 800,
     "buyNum": 1
   },
   "9030040": {
@@ -1643,7 +1647,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 800,
-    "other": "206:800",
+    "other_currency": 206,
+    "other_value": 800,
     "buyNum": 1
   },
   "9030041": {
@@ -1652,7 +1657,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 800,
-    "other": "206:800",
+    "other_currency": 206,
+    "other_value": 800,
     "buyNum": 1
   },
   "9030050": {
@@ -1661,7 +1667,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 800,
-    "other": "206:800",
+    "other_currency": 206,
+    "other_value": 800,
     "buyNum": 1
   },
   "9030060": {
@@ -1670,7 +1677,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 800,
-    "other": "206:800",
+    "other_currency": 206,
+    "other_value": 800,
     "buyNum": 1
   },
   "9030070": {
@@ -1679,7 +1687,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 800,
-    "other": "206:800",
+    "other_currency": 206,
+    "other_value": 800,
     "buyNum": 1
   },
   "9030080": {
@@ -1688,7 +1697,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 800,
-    "other": "206:800",
+    "other_currency": 206,
+    "other_value": 800,
     "buyNum": 1
   },
   "9040010": {
@@ -1697,7 +1707,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040020": {
@@ -1706,7 +1717,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040030": {
@@ -1715,7 +1727,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040040": {
@@ -1724,7 +1737,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040050": {
@@ -1733,7 +1747,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040060": {
@@ -1742,7 +1757,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040070": {
@@ -1751,7 +1767,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040080": {
@@ -1760,7 +1777,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040090": {
@@ -1769,7 +1787,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040100": {
@@ -1778,7 +1797,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040110": {
@@ -1787,7 +1807,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040120": {
@@ -1796,7 +1817,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040130": {
@@ -1805,7 +1827,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040140": {
@@ -1814,7 +1837,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040150": {
@@ -1823,7 +1847,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040151": {
@@ -1832,7 +1857,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040160": {
@@ -1841,7 +1867,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040170": {
@@ -1850,7 +1877,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040180": {
@@ -1859,7 +1887,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040190": {
@@ -1868,7 +1897,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040200": {
@@ -1877,7 +1907,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040210": {
@@ -1886,7 +1917,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040220": {
@@ -1895,7 +1927,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040230": {
@@ -1904,7 +1937,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9040240": {
@@ -1913,7 +1947,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 3000,
-    "other": "206:3000",
+    "other_currency": 206,
+    "other_value": 3000,
     "buyNum": 1
   },
   "9050010": {
@@ -1922,7 +1957,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050020": {
@@ -1931,7 +1967,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050030": {
@@ -1940,7 +1977,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050040": {
@@ -1949,7 +1987,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050050": {
@@ -1958,7 +1997,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050060": {
@@ -1967,7 +2007,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050070": {
@@ -1976,7 +2017,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050080": {
@@ -1985,7 +2027,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050090": {
@@ -1994,7 +2037,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050100": {
@@ -2003,7 +2047,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050110": {
@@ -2012,7 +2057,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050120": {
@@ -2021,7 +2067,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050130": {
@@ -2030,7 +2077,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050160": {
@@ -2039,7 +2087,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9050170": {
@@ -2048,7 +2097,8 @@
     "isBag": true,
     "type": "ace",
     "gold": 10000,
-    "other": "206:10000",
+    "other_currency": 206,
+    "other_value": 10000,
     "buyNum": 1
   },
   "9060010": {
@@ -2088,7 +2138,8 @@
     "type": "art",
     "arg": 105010,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11105020": {
@@ -2098,7 +2149,8 @@
     "type": "art",
     "arg": 105020,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11105030": {
@@ -2108,7 +2160,8 @@
     "type": "art",
     "arg": 105030,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11105040": {
@@ -2118,7 +2171,8 @@
     "type": "art",
     "arg": 105040,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11105050": {
@@ -2128,7 +2182,8 @@
     "type": "art",
     "arg": 105050,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11105060": {
@@ -2138,7 +2193,8 @@
     "type": "art",
     "arg": 105060,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11105070": {
@@ -2148,7 +2204,8 @@
     "type": "art",
     "arg": 105070,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11105080": {
@@ -2158,7 +2215,8 @@
     "type": "art",
     "arg": 105080,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11105090": {
@@ -2168,7 +2226,8 @@
     "type": "art",
     "arg": 105090,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11105100": {
@@ -2178,7 +2237,8 @@
     "type": "art",
     "arg": 105100,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11105110": {
@@ -2188,7 +2248,8 @@
     "type": "art",
     "arg": 105110,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11105120": {
@@ -2198,7 +2259,8 @@
     "type": "art",
     "arg": 105120,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11205010": {
@@ -2208,7 +2270,8 @@
     "type": "art",
     "arg": 205010,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11205020": {
@@ -2218,7 +2281,8 @@
     "type": "art",
     "arg": 205020,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11205030": {
@@ -2228,7 +2292,8 @@
     "type": "art",
     "arg": 205030,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11205040": {
@@ -2238,7 +2303,8 @@
     "type": "art",
     "arg": 205040,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11205050": {
@@ -2248,7 +2314,8 @@
     "type": "art",
     "arg": 205050,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11205060": {
@@ -2258,7 +2325,8 @@
     "type": "art",
     "arg": 205060,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11205070": {
@@ -2268,7 +2336,8 @@
     "type": "art",
     "arg": 205070,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11205080": {
@@ -2278,7 +2347,8 @@
     "type": "art",
     "arg": 205080,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11205090": {
@@ -2288,7 +2358,8 @@
     "type": "art",
     "arg": 205090,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11205100": {
@@ -2298,7 +2369,8 @@
     "type": "art",
     "arg": 205100,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11205110": {
@@ -2308,7 +2380,8 @@
     "type": "art",
     "arg": 205110,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11205120": {
@@ -2318,7 +2391,8 @@
     "type": "art",
     "arg": 205120,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11305010": {
@@ -2328,7 +2402,8 @@
     "type": "art",
     "arg": 305010,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11305020": {
@@ -2338,7 +2413,8 @@
     "type": "art",
     "arg": 305020,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11305030": {
@@ -2348,7 +2424,8 @@
     "type": "art",
     "arg": 305030,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11305040": {
@@ -2358,7 +2435,8 @@
     "type": "art",
     "arg": 305040,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11305050": {
@@ -2368,7 +2446,8 @@
     "type": "art",
     "arg": 305050,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11305060": {
@@ -2378,7 +2457,8 @@
     "type": "art",
     "arg": 305060,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11305070": {
@@ -2388,7 +2468,8 @@
     "type": "art",
     "arg": 305070,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11305080": {
@@ -2398,7 +2479,8 @@
     "type": "art",
     "arg": 305080,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11305090": {
@@ -2408,7 +2490,8 @@
     "type": "art",
     "arg": 305090,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11305100": {
@@ -2418,7 +2501,8 @@
     "type": "art",
     "arg": 305100,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11305110": {
@@ -2428,7 +2512,8 @@
     "type": "art",
     "arg": 305110,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11305120": {
@@ -2438,7 +2523,8 @@
     "type": "art",
     "arg": 305120,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11405010": {
@@ -2448,7 +2534,8 @@
     "type": "art",
     "arg": 405010,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11405020": {
@@ -2458,7 +2545,8 @@
     "type": "art",
     "arg": 405020,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11405030": {
@@ -2468,7 +2556,8 @@
     "type": "art",
     "arg": 405030,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11405040": {
@@ -2478,7 +2567,8 @@
     "type": "art",
     "arg": 405040,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11405050": {
@@ -2488,7 +2578,8 @@
     "type": "art",
     "arg": 405050,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11405060": {
@@ -2498,7 +2589,8 @@
     "type": "art",
     "arg": 405060,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11405070": {
@@ -2508,7 +2600,8 @@
     "type": "art",
     "arg": 405070,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11405080": {
@@ -2518,7 +2611,8 @@
     "type": "art",
     "arg": 405080,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11405090": {
@@ -2528,7 +2622,8 @@
     "type": "art",
     "arg": 405090,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11405100": {
@@ -2538,7 +2633,8 @@
     "type": "art",
     "arg": 405100,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11405110": {
@@ -2548,7 +2644,8 @@
     "type": "art",
     "arg": 405110,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   },
   "11405120": {
@@ -2558,7 +2655,8 @@
     "type": "art",
     "arg": 405120,
     "gold": 500,
-    "other": "207:500",
+    "other_currency": 207,
+    "other_value": 500,
     "buyNum": 1
   }
 }
