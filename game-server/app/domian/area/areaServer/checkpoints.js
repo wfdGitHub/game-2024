@@ -42,15 +42,13 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//判断主角等级
-				// self.getLordLv(uid,function(lv) {
-				// 	if(lv < checkpointsCfg[level].lev_limit){
-				// 		next("等级限制")
-				// 	}else{
-				// 		next()
-				// 	}
-				// })
-				next()
+				// 判断主角等级
+				let lv = self.getLordLv(uid)
+				if(lv < checkpointsCfg[level].lev_limit){
+					next("等级限制")
+				}else{
+					next()
+				}
 			},
 			function(next) {
 				let fightInfo = self.getFightInfo(uid)

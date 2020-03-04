@@ -72,6 +72,7 @@ area.prototype.userLogin = function(uid,cid,cb) {
 			if(playerInfo.dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
 			}
+			self.lordLoad(uid)
 			self.taskLoad(uid,function() {
 				self.CELoad(uid,function(flag) {
 					if(flag){
@@ -105,6 +106,7 @@ area.prototype.userLeave = function(uid) {
 		this.onlineNum--
 		this.taskUnload(uid)
 		this.CEUnload(uid)
+		this.lordUnload(uid)
 	}
 	if(this.crossUids[uid]){
 		this.app.rpc.cross.crossRemote.userLeave(null,this.crossUids[uid],null)

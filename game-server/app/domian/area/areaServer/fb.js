@@ -23,14 +23,13 @@ module.exports = function() {
 		async.waterfall([
 			function(next) {
 				//判断主角等级
-				self.getLordLv(uid,function(lv) {
-					if(lv < fb_base[type]["openLevel"] || lv < fb_cfg["open"]["value"]){
-						console.error("openLevel "+lv+" / "+fb_base[type]["openLevel"])
-						next("等级不足")
-					}else{
-						next()
-					}
-				})
+				let lv = self.getLordLv(uid)
+				if(lv < fb_base[type]["openLevel"] || lv < fb_cfg["open"]["value"]){
+					console.error("openLevel "+lv+" / "+fb_base[type]["openLevel"])
+					next("等级不足")
+				}else{
+					next()
+				}
 			},
 			function(next) {
 				//判断是否已进入副本

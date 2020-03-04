@@ -43,12 +43,11 @@ acepackHandler.prototype.wearAcepack = function(msg, session, next) {
       })
     },
     function(cb) {
-      self.areaManager.areaMap[areaId].getLordLv(uid,function(lordLv) {
-        if(lordLv < ace_pack_base["pos_"+pos]["role_lv"])
+      let lv = self.areaManager.areaMap[areaId].getLordLv(uid)
+        if(lv < ace_pack_base["pos_"+pos]["role_lv"])
           cb("主公等级不够，未开放该锦囊格")
         else
           cb()
-      })
     },
     function(cb) {
       self.heroDao.getHeroOne(areaId,uid,hId,function(flag,heroInfo) {
