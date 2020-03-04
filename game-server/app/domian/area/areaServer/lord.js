@@ -5,12 +5,13 @@ module.exports = function() {
 	var self = this
 	var userLords = {}
 	//加载主公数据
-	this.lordLoad = function(uid) {
+	this.lordLoad = function(uid,cb) {
 		self.getHMObj(uid,main_name,["level","exp"],function(list) {
 			userLords[uid] = {
 				"level" : Number(list[0]),
 				"exp" : Number(list[1])
 			}
+			cb()
 		})
 	}
 	//移除主公数据

@@ -5,9 +5,10 @@ module.exports = function() {
 	var self = this
 	var userCheckpoints = {}
 	//加载角色关卡数据
-	this.checkpointsLoad = function(uid) {
+	this.checkpointsLoad = function(uid,cb) {
 		this.getPlayerData(uid,"boss",function(data) {
 			userCheckpoints[uid] = Number(data) || 0
+			cb()
 		})
 	}
 	//移除主公关卡数据

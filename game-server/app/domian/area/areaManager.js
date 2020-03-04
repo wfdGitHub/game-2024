@@ -49,12 +49,12 @@ areaManager.prototype.userLogin = function(uid,areaId,cid,cb) {
 	if(this.connectorMap[uid] && this.connectorMap[uid] != cid){
 		this.app.rpc.connector.connectorRemote.kickUser.toServer(this.connectorMap[uid],uid,null)
 	}
-	self.areaMap[areaId].userLogin(uid,cid,function(playerInfo) {
-		if(playerInfo){
+	self.areaMap[areaId].userLogin(uid,cid,function(flag,playerInfo) {
+		if(flag){
 			self.connectorMap[uid] = cid
 			self.userMap[uid] = areaId
 		}
-		cb(playerInfo)
+		cb(flag,playerInfo)
 	})
 }
 //玩家离开

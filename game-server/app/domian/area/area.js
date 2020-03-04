@@ -1,6 +1,7 @@
 //服务器
 var bearcat = require("bearcat")
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
+var async = require("async")
 var areaServers = ["bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
 const oneDayTime = 86400000
 var area = function(otps,app) {
@@ -63,8 +64,38 @@ area.prototype.register = function(otps,cb) {
 //玩家加入
 area.prototype.userLogin = function(uid,cid,cb) {
 	var self = this
-	self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(playerInfo) {
-		if(playerInfo){
+	var playerInfo = {}
+	async.waterfall([
+		function(next) {
+			self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(info) {
+				if(info){
+					playerInfo = info
+					next()
+				}else{
+					next("未注册角色")
+				}
+			})
+		},
+		function(next) {
+			self.lordLoad(uid,next)
+		},
+		function(next) {
+			self.checkpointsLoad(uid,next)
+		},
+		function(next) {
+			self.taskLoad(uid,next)
+		},
+		function(next) {
+			self.CELoad(uid,function(flag) {
+				if(flag){
+					playerInfo.CE = self.getCE(uid)
+					next()
+				}else{
+					cb(false,"获取战力出错")
+				}
+			})
+		},
+		function() {
 			if(!self.players[uid])
 				self.onlineNum++
 			self.players[uid] = playerInfo
@@ -72,19 +103,10 @@ area.prototype.userLogin = function(uid,cid,cb) {
 			if(playerInfo.dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
 			}
-			self.lordLoad(uid)
-			self.checkpointsLoad(uid)
-			self.taskLoad(uid,function() {
-				self.CELoad(uid,function(flag) {
-					if(flag){
-						playerInfo.CE = self.getCE(uid)
-						cb(playerInfo)
-					}else{
-						cb(false)
-					}
-				})
-			})
+			cb(true,playerInfo)
 		}
+	],function(err) {
+		cb(false,err)
 	})
 }
 //玩家首次登录

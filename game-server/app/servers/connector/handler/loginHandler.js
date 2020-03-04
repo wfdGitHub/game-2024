@@ -170,9 +170,9 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 		}
     	session.bind(uid)
     	session.on("closed",onUserLeave.bind(self))
-	    self.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,self.app.serverId,function(playerInfo) {
+	    self.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,self.app.serverId,function(flag,playerInfo) {
 	    	console.log("playerInfo",playerInfo)
-			if(playerInfo){
+			if(flag){
 		        session.set("areaId",areaId)
 		        session.push("areaId")
 		        session.set("serverId",serverId)
@@ -181,9 +181,9 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 				session.push("nickname")
 				session.set("beginTime",Date.now())
 				session.push("beginTime")
-		        next(null,{flag : true,msg : playerInfo})
+		        next(null,{flag : flag,msg : playerInfo})
 			}else{
-				next(null,{flag : false,msg : "未注册角色"})
+				next(null,{flag : flag,msg : playerInfo})
 			}
 		})
     })
