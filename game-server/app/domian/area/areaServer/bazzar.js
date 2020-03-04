@@ -113,10 +113,10 @@ module.exports = function() {
 				goods.discount = bazaar_goods[type][i]["discount"]
 				switch(bazaar_goods[type][i].currency){
 					case "coin":
-						goods.price = "201:"+bazaar_goods[type][i]["value"]*item_cfg[goods.itemId]["coin"]
+						goods.price = "201:"+Math.round(bazaar_goods[type][i]["value"]*item_cfg[goods.itemId]["coin"] * goods.discount)
 					break
 					case "gold":
-						goods.price = "202:"+bazaar_goods[type][i]["value"]*item_cfg[goods.itemId]["gold"]
+						goods.price = "202:"+Math.round(bazaar_goods[type][i]["value"]*item_cfg[goods.itemId]["gold"] * goods.discount)
 					break
 					case "other":
 						goods.price = item_cfg[goods.itemId]["other_currency"]+":"+Math.round(bazaar_goods[type][i]["value"]*item_cfg[goods.itemId]["other_value"]*goods.discount)
