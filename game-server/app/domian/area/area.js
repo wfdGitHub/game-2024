@@ -73,6 +73,7 @@ area.prototype.userLogin = function(uid,cid,cb) {
 				self.dayFirstLogin(uid)
 			}
 			self.lordLoad(uid)
+			self.checkpointsLoad(uid)
 			self.taskLoad(uid,function() {
 				self.CELoad(uid,function(flag) {
 					if(flag){
@@ -107,6 +108,7 @@ area.prototype.userLeave = function(uid) {
 		this.taskUnload(uid)
 		this.CEUnload(uid)
 		this.lordUnload(uid)
+		this.checkpointsUnload(uid)
 	}
 	if(this.crossUids[uid]){
 		this.app.rpc.cross.crossRemote.userLeave(null,this.crossUids[uid],null)

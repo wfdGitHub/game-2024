@@ -3,20 +3,26 @@ var checkpoints_task = require("../../../../config/gameCfg/checkpoints_task.json
 var async = require("async")
 module.exports = function() {
 	var self = this
-	//获取BOSS挑战信息
-	this.getCheckpointsInfo = function(uid,cb) {
+	var userCheckpoints = {}
+	//加载角色关卡数据
+	this.checkpointsLoad = function(uid) {
 		this.getPlayerData(uid,"boss",function(data) {
-			data = Number(data)
-			if(!data){
-				data = 0
-			}
-			cb(data)
+			userCheckpoints[uid] = Number(data) || 0
 		})
+	}
+	//移除主公关卡数据
+	this.checkpointsUnload = function(uid) {
+		delete userCheckpoints[uid]
+	}
+	//获取BOSS挑战信息
+	this.getCheckpointsInfo = function(uid) {
+		return userCheckpoints[uid]
 	}
 	//挑战BOSS成功
 	this.checkpointsSuccess = function(uid,level) {
 		console.log("checkpointsSuccess")
 		this.incrbyPlayerData(uid,"boss",1)
+		userCheckpoints[uid]++
 		var awardStr = checkpointsCfg[level].award
 		if(awardStr){
 			return this.addItemStr(uid,awardStr)
@@ -33,13 +39,11 @@ module.exports = function() {
 		async.waterfall([
 			function(next) {
 				//获取当前关卡
-				self.getCheckpointsInfo(uid,function(curLevel) {
-					level = curLevel + 1
-					if(!checkpointsCfg[level])
-						next("checkpointsCfg error "+level)
-					else
-						next()
-				})
+				level = self.getCheckpointsInfo(uid) + 1
+				if(!checkpointsCfg[level])
+					next("checkpointsCfg error "+level)
+				else
+					next()
 			},
 			function(next) {
 				// 判断主角等级
@@ -100,23 +104,22 @@ module.exports = function() {
 				cb(false,"time is too short "+tmpTime)
 			  	return
 			}
-			self.getCheckpointsInfo(uid,function(level) {
-				if(!checkpointsCfg[level]){
-					cb(false,"level config error "+level)
-					return
-				}
-			  	self.incrbyPlayerData(uid,"onhookLastTime",tmpTime * 1000)
-			  	var awardTime = tmpTime
-			  	if(awardTime > 43200){
-			  		awardTime = 43200
-			  	}
-			  	var on_hook_award = checkpointsCfg[level].on_hook_award
-			  	// console.log("on_hook_award ",on_hook_award)
-			  	var rate = (awardTime * power) / 60 
-			  	// console.log("rate ",rate,"awardTime ",awardTime)
-			  	var awardList = self.addItemStr(uid,on_hook_award,rate)
-			  	cb(true,{allTime : tmpTime,awardTime : awardTime,awardList : awardList})
-			})
+			let level = self.getCheckpointsInfo(uid)
+			if(!checkpointsCfg[level]){
+				cb(false,"level config error "+level)
+				return
+			}
+		  	self.incrbyPlayerData(uid,"onhookLastTime",tmpTime * 1000)
+		  	var awardTime = tmpTime
+		  	if(awardTime > 43200){
+		  		awardTime = 43200
+		  	}
+		  	var on_hook_award = checkpointsCfg[level].on_hook_award
+		  	// console.log("on_hook_award ",on_hook_award)
+		  	var rate = (awardTime * power) / 60 
+		  	// console.log("rate ",rate,"awardTime ",awardTime)
+		  	var awardList = self.addItemStr(uid,on_hook_award,rate)
+		  	cb(true,{allTime : tmpTime,awardTime : awardTime,awardList : awardList})
 		})
 	}
 	//快速挂机奖励
@@ -136,13 +139,11 @@ module.exports = function() {
 			},
 			function(next) {
 				//获取挂机等级
-				self.getCheckpointsInfo(uid,function(curLevel) {
-					level = curLevel
-					if(checkpointsCfg[level])
-						next()
-					else
-						next("level config error "+level)
-				})
+				level = self.getCheckpointsInfo(uid)
+				if(checkpointsCfg[level])
+					next()
+				else
+					next("level config error "+level)
 			},
 			function(next) {
 				//消耗元宝
@@ -185,13 +186,11 @@ module.exports = function() {
 		var lv = 0
 		async.waterfall([function(next) {
 			//获取当前关卡
-			self.getCheckpointsInfo(uid,function(data) {
-				lv = data
-				if(!checkpoints_task[taskId] || checkpoints_task[taskId]["lv"] > lv)
-					next("未完成领取条件")
-				else
-					next()
-			})
+			lv = self.getCheckpointsInfo(uid)
+			if(!checkpoints_task[taskId] || checkpoints_task[taskId]["lv"] > lv)
+				next("未完成领取条件")
+			else
+				next()
 		},function(next) {
 			self.getObj(uid,"ctask",taskId,function(data) {
 				if(data){
