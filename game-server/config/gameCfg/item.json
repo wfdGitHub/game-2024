@@ -9,8 +9,9 @@
     "name": "英雄经验",
     "des": "英雄经验，可用于升级英雄等级",
     "type": "currency",
-    "gold": 0.001,
-    "coin": 5,
+    "gold": 10,
+    "coin": 50000,
+    "buyNum": 10000,
     "quality": 1
   },
   "201": {
