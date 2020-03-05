@@ -20,6 +20,18 @@ bazaarHandler.prototype.bazaarRefresh = function(msg, session, next) {
   var data = this.areaManager.areaMap[areaId].bazaarRefresh(uid,type)
   next(null,{flag : true,data : data})
 }
+//购买物品
+bazaarHandler.prototype.buyBazzarGoods = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var type = msg.type
+  var index = msg.index
+  this.areaManager.areaMap[areaId].buyBazzarGoods(uid,type,index,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+  
+}
+
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "bazaarHandler",

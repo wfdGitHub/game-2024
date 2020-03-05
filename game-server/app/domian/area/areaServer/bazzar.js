@@ -60,7 +60,7 @@ module.exports = function() {
 		}
 		let info = {}
 		for(let i = 1;i <= 6;i++){
-			info[type+":"+i] = JSON.stringify(self.getBazaarGoods(uid,type))
+			info[type+"_"+i] = JSON.stringify(self.getBazaarGoods(uid,type))
 		}
 		self.setHMObj(uid,main_name,info)
 		return info
@@ -72,7 +72,38 @@ module.exports = function() {
 		})
 	}
 	//购买物品
-
+	this.buyBazzarGoods = function(uid,type,index,cb) {
+		if(!bazaar_goods[type]){
+			cb(false,"type error "+type)
+			return
+		}
+		if(!Number.isInteger(index) || index < 1  || index > 6){
+			cb(false,"index error "+index)
+			return
+		}
+		self.getObj(uid,main_name,type+"_"+index,function(data) {
+			if(!data){
+				cb(false,data)
+				return
+			}
+			let goods = JSON.parse(data)
+			console.log(goods)
+			if(goods.sellOut){
+				cb(false,"已购买")
+				return
+			}
+			self.consumeItems(uid,goods.price,1,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					goods.sellOut = 1
+					self.setObj(uid,main_name,type+"_"+index,JSON.stringify(goods))
+					let awardList = self.addItemStr(uid,goods.itemId+":"+goods.value,1)
+					cb(true,awardList)
+				}
+			})
+		})
+	}
 	//获得商品
 	this.getBazaarGoods = function(uid,type) {
 		let allWeight = allWeights[type]
@@ -126,6 +157,9 @@ module.exports = function() {
 			}
 		}
 	}
+	//免费刷新
+
+	//付费刷新
 }
 
 

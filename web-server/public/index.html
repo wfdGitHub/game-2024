@@ -85,6 +85,12 @@
             console.log(data);
         });
       }
+      //购买物品
+      var buyBazzarGoods = function(type,index) {
+        pomelo.request("area.bazaarHandler.buyBazzarGoods", {type : type,index : index}, function(data) {
+            console.log(data);
+        });
+      }
       //============任务相关==============//
       //获取任务列表
       var getTaskList = function() {
