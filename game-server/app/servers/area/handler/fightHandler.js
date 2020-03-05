@@ -23,9 +23,8 @@ fightHandler.prototype.mockFight = function(msg, session, next) {
 fightHandler.prototype.getCheckpointsInfo = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getCheckpointsInfo(uid,function(data) {
-    next(null,{flag : true,msg : data})
-  })
+  let info = this.areaManager.areaMap[areaId].getCheckpointsInfo(uid)
+  next(null,{flag : true,msg : info})
 }
 //准备战斗 获取战斗属性
 fightHandler.prototype.readyFight = function(msg, session, next) {
