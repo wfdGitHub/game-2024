@@ -181,6 +181,8 @@ model.prototype.action = function() {
 		}
 		if(skill)
 			skillManager.useSkill(skill)
+		else
+			fightRecord.push({type : "freeze",id : this.character.id})
 	}
 	this.after()
 }
