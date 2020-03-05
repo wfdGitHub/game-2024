@@ -12,14 +12,6 @@ bazaarHandler.prototype.getBazaarData = function(msg, session, next) {
     next(null,{flag : true,data : data})
   })
 }
-//刷新集市
-bazaarHandler.prototype.bazaarRefresh = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var type = msg.type
-  var data = this.areaManager.areaMap[areaId].bazaarRefresh(uid,type)
-  next(null,{flag : true,data : data})
-}
 //购买物品
 bazaarHandler.prototype.buyBazzarGoods = function(msg, session, next) {
   var uid = session.uid
@@ -29,7 +21,24 @@ bazaarHandler.prototype.buyBazzarGoods = function(msg, session, next) {
   this.areaManager.areaMap[areaId].buyBazzarGoods(uid,type,index,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
-  
+}
+//免费刷新
+bazaarHandler.prototype.bazaarRefreshFree = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var type = msg.type
+  this.areaManager.areaMap[areaId].bazaarRefreshFree(uid,type,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//付费刷新
+bazaarHandler.prototype.bazaarRefreshBuy = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var type = msg.type
+  this.areaManager.areaMap[areaId].bazaarRefreshBuy(uid,type,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
 }
 
 module.exports = function(app) {

@@ -11,7 +11,9 @@ var allWeights = {}
 var equipForCheck= {}
 var ace_qualitys = {}
 var art_list = []
+var maxTimes = {}
 for(let type in bazaar_cfg){
+	maxTimes[type] = bazaar_cfg[type]["free_count"]*bazaar_cfg[type]["time"]
 	allWeights[type] = 0
 	bazaar_goods[type] = JSON.parse(bazaar_cfg[type]["goods"])
 	for(let i = 0;i < bazaar_goods[type].length;i++){
@@ -37,7 +39,6 @@ for(let i in item_cfg){
 	if(item_cfg[i].type == "art")
 		art_list.push(i)
 }
-console.log("allWeights",allWeights)
 //集市
 var local = {}
 
@@ -47,10 +48,8 @@ module.exports = function() {
 	this.bazaarDayRefresh = function(uid) {
 		let info = {}
 		for(let type in bazaar_cfg){
-			info.free_count = bazaar_cfg[type]["free_count"]
-			info.time = 0
-			info.cur_count = 0
 			this.bazaarRefresh(uid,type)
+			self.setObj(uid,main_name,type+"_buy_count",0)
 		}
 	}
 	//集市刷新
@@ -87,7 +86,6 @@ module.exports = function() {
 				return
 			}
 			let goods = JSON.parse(data)
-			console.log(goods)
 			if(goods.sellOut){
 				cb(false,"已购买")
 				return
@@ -158,8 +156,53 @@ module.exports = function() {
 		}
 	}
 	//免费刷新
-
+	this.bazaarRefreshFree = function(uid,type,cb) {
+		if(!bazaar_goods[type]){
+			cb(false)
+			return
+		}
+		self.getObj(uid,main_name,type+"_refresh_time",function(data) {
+			let time = Number(data) || 0
+			let nowTime = Date.now()
+			let dt = nowTime - time
+			if(dt < bazaar_cfg[type]["time"]){
+				cb(false,"刷新CD")
+				return
+			}else{
+				if(dt > maxTimes[type]){
+					dt = maxTimes[type]
+				}
+				dt -= bazaar_cfg[type]["time"]
+				time = nowTime - dt
+				self.setObj(uid,main_name,type+"_refresh_time",time)
+				let info = self.bazaarRefresh(uid,type)
+				cb(true,info)
+			}
+		})
+	}
 	//付费刷新
+	this.bazaarRefreshBuy = function(uid,type,cb) {
+		if(!bazaar_goods[type]){
+			cb(false)
+			return
+		}
+		self.getObj(uid,main_name,type+"_buy_count",function(value) {
+			value = Number(value)
+			if(value >= bazaar_cfg[type]["max"]){
+				cb(false,"刷新次数达到上限")
+				return
+			}
+			self.consumeItems(uid,bazaar_cfg[type]["consume"],1,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					self.incrbyObj(uid,main_name,type+"_buy_count",1)
+					let info = self.bazaarRefresh(uid,type)
+					cb(true,info)
+				}
+			})
+		})
+	}
 }
 
 

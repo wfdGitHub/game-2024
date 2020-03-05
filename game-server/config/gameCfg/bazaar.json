@@ -2,7 +2,7 @@
   "bazaar_1": {
     "name": "神秘集市",
     "free_count": 5,
-    "time": 60,
+    "time": 3600000,
     "consume": "202:20",
     "max": 100,
     "goods": "[{\"type\":\"heroChip\",\"quality\":4,\"value\":1,\"weight\":1000,\"currency\":\"coin\",\"discount\":0.6},{\"type\":\"heroChip\",\"quality\":4,\"value\":1,\"weight\":1000,\"currency\":\"gold\",\"discount\":1},{\"type\":\"item\",\"itemId\":1000050,\"value\":100,\"weight\":100,\"currency\":\"coin\",\"discount\":0.2},{\"type\":\"item\",\"itemId\":1000050,\"value\":1000,\"weight\":20,\"currency\":\"gold\",\"discount\":0.5},{\"type\":\"item\",\"itemId\":1000050,\"value\":100,\"weight\":100,\"currency\":\"gold\",\"discount\":1},{\"type\":\"item\",\"itemId\":1000050,\"value\":300,\"weight\":50,\"currency\":\"gold\",\"discount\":0.7},{\"type\":\"item\",\"itemId\":1000070,\"value\":1,\"weight\":100,\"currency\":\"coin\",\"discount\":1},{\"type\":\"item\",\"itemId\":1000080,\"value\":1,\"weight\":100,\"currency\":\"gold\",\"discount\":0.6},{\"type\":\"item\",\"itemId\":1000120,\"value\":1,\"weight\":100,\"currency\":\"gold\",\"discount\":0.2},{\"type\":\"item\",\"itemId\":101,\"value\":10,\"weight\":200,\"currency\":\"coin\",\"discount\":1},{\"type\":\"item\",\"itemId\":101,\"value\":5,\"weight\":100,\"currency\":\"gold\",\"discount\":1},{\"type\":\"item\",\"itemId\":101,\"value\":10,\"weight\":100,\"currency\":\"gold\",\"discount\":1},{\"type\":\"equip\",\"value\":1,\"weight\":2000,\"currency\":\"coin\",\"discount\":1}]"
@@ -10,7 +10,7 @@
   "bazaar_2": {
     "name": "法宝集市",
     "free_count": 10,
-    "time": 60,
+    "time": 3600000,
     "consume": "207:10",
     "max": 10,
     "goods": "[{\"type\":\"item\",\"itemId\":1000150,\"value\":1,\"weight\":200,\"currency\":\"gold\",\"discount\":1},{\"type\":\"item\",\"itemId\":1000150,\"value\":1,\"weight\":200,\"currency\":\"gold\",\"discount\":0.8},{\"type\":\"item\",\"itemId\":1000150,\"value\":1,\"weight\":100,\"currency\":\"other\",\"discount\":1},{\"type\":\"item\",\"itemId\":1000150,\"value\":1,\"weight\":100,\"currency\":\"other\",\"discount\":0.8},{\"type\":\"art\",\"value\":1,\"weight\":3000,\"currency\":\"gold\",\"discount\":1},{\"type\":\"art\",\"value\":1,\"weight\":3000,\"currency\":\"gold\",\"discount\":0.8},{\"type\":\"art\",\"value\":1,\"weight\":1500,\"currency\":\"other\",\"discount\":1}]"
@@ -18,7 +18,7 @@
   "bazaar_3": {
     "name": "元神集市",
     "free_count": 3,
-    "time": 480,
+    "time": 28800000,
     "consume": "206:100",
     "max": 10,
     "goods": "[{\"type\":\"ace\",\"quality\":1,\"value\":1,\"weight\":3000,\"currency\":\"other\",\"discount\":1},{\"type\":\"ace\",\"quality\":1,\"value\":1,\"weight\":1000,\"currency\":\"gold\",\"discount\":1},{\"type\":\"ace\",\"quality\":1,\"value\":1,\"weight\":500,\"currency\":\"gold\",\"discount\":0.8},{\"type\":\"ace\",\"quality\":2,\"value\":1,\"weight\":100,\"currency\":\"other\",\"discount\":1},{\"type\":\"ace\",\"quality\":2,\"value\":1,\"weight\":40,\"currency\":\"gold\",\"discount\":1},{\"type\":\"ace\",\"quality\":2,\"value\":1,\"weight\":20,\"currency\":\"gold\",\"discount\":0.8},{\"type\":\"ace\",\"quality\":3,\"value\":1,\"weight\":10,\"currency\":\"other\",\"discount\":1},{\"type\":\"ace\",\"quality\":3,\"value\":1,\"weight\":4,\"currency\":\"gold\",\"discount\":1},{\"type\":\"ace\",\"quality\":3,\"value\":1,\"weight\":2,\"currency\":\"gold\",\"discount\":0.8}]"

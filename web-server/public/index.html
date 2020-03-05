@@ -79,9 +79,15 @@
             console.log(data);
         });
       }
-      //集市刷新
-      var bazaarRefresh = function(type) {
-        pomelo.request("area.bazaarHandler.bazaarRefresh", {type : type}, function(data) {
+      //免费刷新
+      var bazaarRefreshFree = function(type) {
+        pomelo.request("area.bazaarHandler.bazaarRefreshFree", {type : type}, function(data) {
+            console.log(data);
+        });
+      }
+      //付费刷新
+      var bazaarRefreshBuy = function(type) {
+        pomelo.request("area.bazaarHandler.bazaarRefreshBuy", {type : type}, function(data) {
             console.log(data);
         });
       }
