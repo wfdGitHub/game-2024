@@ -134,6 +134,7 @@ equipHandler.prototype.compoundEquip = function(msg, session, next) {
       next(null,{flag : false,err : err})
       return
     }
+    self.areaManager.areaMap[areaId].taskUpdate(uid,"equip_compound",count)
     self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : equip_base[eId]["next"],value : count},function(flag,data) {
       next(null,{flag : true,eId : equip_base[eId]["next"],value : data})
     })

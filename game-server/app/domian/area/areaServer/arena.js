@@ -285,6 +285,8 @@ module.exports = function() {
 					delete local.locks[targetUid]
 				}
 				//获胜奖励
+				self.taskUpdate(uid,"arena_win",1)
+				self.taskUpdate(uid,"arena_streak",1)
 				info.winAward =  self.addItemStr(uid,winAward,1)
 				//排名提升奖励
 				if(data.rank < data.highestRank){
@@ -300,6 +302,7 @@ module.exports = function() {
 			})
 		}else{
 			//失败奖励
+			self.taskProgressClear(uid,"arena_streak")
 			self.addItemStr(uid,loseAward,1)
 			local.addRecord(uid,"atk",winFlag,targetInfo,fightInfo)
 			local.addRecord(targetUid,"def",winFlag,targetInfo,fightInfo)

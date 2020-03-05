@@ -212,6 +212,14 @@ module.exports = function() {
 			}
 			//扣除道具
 			for(var i = 0;i < values.length;i++){
+				switch(items[i]){
+					case "201":
+						self.taskUpdate(uid,"use_coin",values[i])
+					break
+					case "202":
+						self.taskUpdate(uid,"use_gold",values[i])
+					break
+				}
 				self.addItem({uid : uid,itemId : items[i],value : -values[i]})
 			}
 			cb(true)

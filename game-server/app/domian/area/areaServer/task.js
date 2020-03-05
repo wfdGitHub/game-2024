@@ -63,6 +63,7 @@ module.exports = function() {
 		if(task_cfg[taskId].liveness){
 			info.liveness = task_cfg[taskId].liveness
 			self.incrbyObj(uid,liveness_name,"value",task_cfg[taskId].liveness)
+			self.taskUpdate(uid,"liveness",task_cfg[taskId].liveness)
 		}
 		if(task_cfg[taskId].type == "always" && task_cfg[taskId].next){
 			let next = task_cfg[taskId].next
@@ -167,6 +168,21 @@ module.exports = function() {
 					}
 					self.sendToUser(uid,notify)
 				}
+			}
+		}
+	}
+	//任务进度清空
+	this.taskProgressClear = function(uid,type) {
+		if(userTaskMaps[uid] && userTaskMaps[uid][type]){
+			for(let i = 0;i < userTaskMaps[uid][type].length;i++){
+				let taskId = userTaskMaps[uid][type][i]
+				userTaskLists[uid][taskId] = 0
+				var notify = {
+					"type" : "taskUpdate",
+					"taskId" : taskId,
+					"value" : userTaskLists[uid][taskId]
+				}
+				self.sendToUser(uid,notify)
 			}
 		}
 	}
