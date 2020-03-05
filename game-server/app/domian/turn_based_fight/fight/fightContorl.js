@@ -169,8 +169,10 @@ model.getCharacterInfo = function(info) {
 			}
 		}
 		if(artifact >= 25){
-			let talentId = artifact_talent[info.id].talent
-			model.mergeTalent(info,talentId)
+			if(artifact_talent[info.id]){
+				let talentId = artifact_talent[info.id].talent
+				model.mergeTalent(info,talentId)
+			}
 		}
 	}
 	return new character(info)
