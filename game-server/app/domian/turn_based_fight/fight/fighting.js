@@ -179,11 +179,11 @@ model.prototype.action = function() {
 				this.character.addAnger(2)
 			}
 		}
-		if(skill)
-			skillManager.useSkill(skill)
-		else
-			fightRecord.push({type : "freeze",id : this.character.id})
 	}
+	if(skill)
+		skillManager.useSkill(skill)
+	else
+		fightRecord.push({type : "freeze",id : this.character.id})
 	this.after()
 }
 //行动后结算

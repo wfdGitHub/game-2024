@@ -47,12 +47,20 @@
   "206": {
     "name": "元神值",
     "des": "英雄元神孕育而成，可用于在元神商店购买元神",
-    "type": "currency"
+    "type": "currency",
+    "quality": 1
   },
   "207": {
     "name": "法宝值",
     "des": "天地灵气聚集而成，可用于在法宝商店购买法宝",
-    "type": "currency"
+    "type": "currency",
+    "quality": 1
+  },
+  "208": {
+    "name": "玉璧",
+    "des": "玉璧",
+    "type": "currency",
+    "quality": 1
   },
   "301": {
     "name": "英雄积分",
@@ -61,28 +69,28 @@
     "quality": 1
   },
   "103010": {
-    "name": "巨灵神英魂",
+    "name": "火婴英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 103010,
     "buyNum": 30,
-    "quality": 2
+    "quality": 3
   },
   "103020": {
-    "name": "龙子英魂",
+    "name": "洛河守卫英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 103020,
     "buyNum": 30,
-    "quality": 2
+    "quality": 3
   },
   "104000": {
-    "name": "4星英魂*神",
-    "des": "30个英魂可合成神族4星英雄",
+    "name": "4星英魂*仙",
+    "des": "30个英魂可合成仙族4星英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "randChip",
@@ -90,7 +98,7 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "104010": {
     "name": "神天兵英魂",
@@ -102,10 +110,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "104020": {
-    "name": "巡游天兵英魂",
+    "name": "千里眼英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -114,10 +122,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "104030": {
-    "name": "巡游天将英魂",
+    "name": "顺风耳英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -126,10 +134,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "104040": {
-    "name": "仙女英魂",
+    "name": "嫦娥英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -138,17 +146,17 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "105000": {
-    "name": "5星英魂*神",
-    "des": "30个英魂可合成神族5星英雄",
+    "name": "5星英魂*仙",
+    "des": "30个英魂可合成仙族5星英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_1_2",
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "105010": {
     "name": "太上老君英魂",
@@ -158,17 +166,17 @@
     "useType": "heroChip",
     "arg": 105010,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "105020": {
-    "name": "元始天尊英魂",
+    "name": "混元天尊英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105020,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "105030": {
     "name": "雷公英魂",
@@ -178,117 +186,117 @@
     "useType": "heroChip",
     "arg": 105030,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "105040": {
-    "name": "混元天尊英魂",
+    "name": "哪吒英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105040,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "105050": {
-    "name": "神子英魂",
+    "name": "女娲英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105050,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "105060": {
-    "name": "火婴英魂",
+    "name": "太乙真人英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105060,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "105070": {
-    "name": "九天神女英魂",
+    "name": "南极仙翁英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105070,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "105080": {
-    "name": "道德天君英魂",
+    "name": "九天玄女英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105080,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "105090": {
-    "name": "落霞神女英魂",
+    "name": "东海龙王英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105090,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "105100": {
-    "name": "天帝英魂",
+    "name": "东华太一英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105100,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "105110": {
-    "name": "龙王英魂",
+    "name": "碧落神女英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105110,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "105120": {
-    "name": "龙女英魂",
+    "name": "灵符女娲英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 105120,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "203010": {
-    "name": "伶伦英魂",
+    "name": "剑侍英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 203010,
     "buyNum": 30,
-    "quality": 2
+    "quality": 3
   },
   "203020": {
-    "name": "风后英魂",
+    "name": "刺客英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 203020,
     "buyNum": 30,
-    "quality": 2
+    "quality": 3
   },
   "204000": {
     "name": "4星英魂*人",
@@ -300,10 +308,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "204010": {
-    "name": "幻舞英魂",
+    "name": "刀客英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -312,10 +320,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "204020": {
-    "name": "暗夜英魂",
+    "name": "隐士英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -324,10 +332,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "204030": {
-    "name": "碧合英魂",
+    "name": "文人英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -336,10 +344,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "204040": {
-    "name": "朱离英魂",
+    "name": "墨客英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -348,7 +356,7 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "205000": {
     "name": "5星英魂*人",
@@ -358,27 +366,27 @@
     "useType": "randChip",
     "arg": "randChip_2_2",
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "205010": {
-    "name": "剑芒英魂",
+    "name": "剑灵英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205010,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "205020": {
-    "name": "帝师英魂",
+    "name": "姜子牙英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205020,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "205030": {
     "name": "神农英魂",
@@ -388,7 +396,7 @@
     "useType": "heroChip",
     "arg": 205030,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "205040": {
     "name": "大禹英魂",
@@ -398,111 +406,111 @@
     "useType": "heroChip",
     "arg": 205040,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "205050": {
-    "name": "祝融英魂",
+    "name": "苏妲己英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205050,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "205060": {
-    "name": "女英英魂",
+    "name": "瑶姬英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205060,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "205070": {
-    "name": "轩辕英魂",
+    "name": "轩辕帝英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205070,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "205080": {
-    "name": "慕容龙城英魂",
+    "name": "降魔祖师英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205080,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "205090": {
-    "name": "大鸿英魂",
+    "name": "伏羲英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205090,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "205100": {
-    "name": "仓颉英魂",
+    "name": "后羿英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205100,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "205110": {
-    "name": "后羿英魂",
+    "name": "鬼谷子英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205110,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "205120": {
-    "name": "力牧英魂",
+    "name": "云中子英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 205120,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "303010": {
-    "name": "勾魂英魂",
+    "name": "幽兔英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 303010,
     "buyNum": 30,
-    "quality": 2
+    "quality": 3
   },
   "303020": {
-    "name": "夺魄英魂",
+    "name": "魔兔英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 303020,
     "buyNum": 30,
-    "quality": 2
+    "quality": 3
   },
   "304000": {
-    "name": "4星英魂*魔",
-    "des": "30个英魂可合成魔族4星英雄",
+    "name": "4星英魂*巫",
+    "des": "30个英魂可合成巫族4星英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "randChip",
@@ -510,10 +518,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "304010": {
-    "name": "角魔英魂",
+    "name": "孟婆英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -522,10 +530,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "304020": {
-    "name": "幽魂英魂",
+    "name": "黑无常英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -534,10 +542,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "304030": {
-    "name": "英招英魂",
+    "name": "黑熊精英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -546,10 +554,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "304040": {
-    "name": "狐妖英魂",
+    "name": "白无常英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -558,17 +566,17 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "305000": {
-    "name": "5星英魂*魔",
-    "des": "30个英魂可合成魔族5星英雄",
+    "name": "5星英魂*巫",
+    "des": "30个英魂可合成巫族5星英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_3_2",
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "305010": {
     "name": "蚩尤英魂",
@@ -578,141 +586,141 @@
     "useType": "heroChip",
     "arg": 305010,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "305020": {
-    "name": "牛魔英魂",
+    "name": "祝融英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305020,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "305030": {
-    "name": "魔君英魂",
+    "name": "风伯英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305030,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "305040": {
-    "name": "魔王英魂",
+    "name": "鬼将英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305040,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "305050": {
-    "name": "炎魔英魂",
+    "name": "后卿英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305050,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "305060": {
-    "name": "夸父英魂",
+    "name": "通臂猿猴英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305060,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "305070": {
-    "name": "旱魃英魂",
+    "name": "雨师英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305070,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "305080": {
-    "name": "魔猴英魂",
+    "name": "牛魔王英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305080,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "305090": {
-    "name": "魔鸟人英魂",
+    "name": "刑天英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305090,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "305100": {
-    "name": "远古巨魔英魂",
+    "name": "共工英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305100,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "305110": {
-    "name": "魔子英魂",
+    "name": "九尾狐英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305110,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "305120": {
-    "name": "魔兔英魂",
+    "name": "银灵子英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 305120,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "403010": {
-    "name": "雪虎英魂",
+    "name": "熊猫英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 403010,
     "buyNum": 30,
-    "quality": 2
+    "quality": 3
   },
   "403020": {
-    "name": "阿宝英魂",
+    "name": "雪狼英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 403020,
     "buyNum": 30,
-    "quality": 2
+    "quality": 3
   },
   "404000": {
-    "name": "4星英魂*妖",
-    "des": "30个英魂可合成妖族4星英雄",
+    "name": "4星英魂*兽",
+    "des": "30个英魂可合成兽族4星英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "randChip",
@@ -720,10 +728,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "404010": {
-    "name": "阿国英魂",
+    "name": "幼年白虎英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -732,10 +740,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "404020": {
-    "name": "猴妖英魂",
+    "name": "孙小圣英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -744,10 +752,10 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "404030": {
-    "name": "幼年穷奇英魂",
+    "name": "幼年饕餮英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -756,7 +764,7 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "404040": {
     "name": "幼年麒麟英魂",
@@ -768,57 +776,57 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "405000": {
-    "name": "5星英魂*妖",
-    "des": "30个英魂可合成妖族5星英雄",
+    "name": "5星英魂*兽",
+    "des": "30个英魂可合成兽族5星英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_4_2",
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "405010": {
-    "name": "白虎英魂",
+    "name": "瑞兽英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405010,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "405020": {
-    "name": "黄龙英魂",
+    "name": "穷奇英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405020,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "405030": {
-    "name": "龙龟英魂",
+    "name": "白泽英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405030,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "405040": {
-    "name": "穷奇英魂",
+    "name": "饕餮英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405040,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "405050": {
     "name": "仙鹤英魂",
@@ -828,77 +836,77 @@
     "useType": "heroChip",
     "arg": 405050,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "405060": {
-    "name": "白泽英魂",
+    "name": "应龙英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405060,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "405070": {
-    "name": "饕餮英魂",
+    "name": "凤凰英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405070,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "405080": {
-    "name": "青龙英魂",
+    "name": "烛龙英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405080,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "405090": {
-    "name": "瑞兽英魂",
+    "name": "幼鲲英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405090,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "405100": {
-    "name": "神鸟英魂",
+    "name": "麒麟英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405100,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "405110": {
-    "name": "年兽英魂",
+    "name": "白虎英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405110,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "405120": {
-    "name": "翼虎英魂",
+    "name": "龙龟英魂",
     "des": "集齐30个英魂即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
     "useType": "heroChip",
     "arg": 405120,
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "504000": {
     "name": "4星英魂",
@@ -910,7 +918,7 @@
     "gold": 600,
     "coin": 3000000,
     "buyNum": 30,
-    "quality": 3
+    "quality": 4
   },
   "505000": {
     "name": "5星英魂",
@@ -920,14 +928,14 @@
     "useType": "randChip",
     "arg": "randChip_5_2",
     "buyNum": 30,
-    "quality": 4
+    "quality": 5
   },
   "1000020": {
     "name": "扫荡券",
     "des": "扫荡券，用于扫荡已经通关过的通天塔",
     "isBag": true,
     "type": "item",
-    "quality": 3
+    "quality": 4
   },
   "1000050": {
     "name": "突破丹",
@@ -937,7 +945,7 @@
     "gold": 1,
     "coin": 5000,
     "buyNum": 1,
-    "quality": 2
+    "quality": 5
   },
   "1000070": {
     "name": "圣灵石",
@@ -946,7 +954,7 @@
     "type": "item",
     "coin": 20000,
     "buyNum": 1,
-    "quality": 2
+    "quality": 4
   },
   "1000080": {
     "name": "女娲石",
@@ -955,7 +963,7 @@
     "type": "item",
     "gold": 250,
     "buyNum": 1,
-    "quality": 3
+    "quality": 5
   },
   "1000120": {
     "name": "盘古石",
@@ -964,7 +972,7 @@
     "type": "item",
     "gold": 2500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "1000150": {
     "name": "万能法宝",
@@ -973,7 +981,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "1001001": {
     "name": "绿色装备宝箱",
@@ -982,7 +991,7 @@
     "type": "item",
     "useType": "chest",
     "arg": "equip_chest_1",
-    "quality": 1
+    "quality": 2
   },
   "1001002": {
     "name": "蓝色装备宝箱",
@@ -991,7 +1000,7 @@
     "type": "item",
     "useType": "chest",
     "arg": "equip_chest_2",
-    "quality": 2
+    "quality": 3
   },
   "1001003": {
     "name": "紫色装备宝箱",
@@ -1000,7 +1009,7 @@
     "type": "item",
     "useType": "chest",
     "arg": "equip_chest_3",
-    "quality": 3
+    "quality": 4
   },
   "5001010": {
     "name": "短剑",
@@ -1009,7 +1018,7 @@
     "type": "equip",
     "coin": 250,
     "buyNum": 1,
-    "quality": 1
+    "quality": 2
   },
   "5001020": {
     "name": "麻衣",
@@ -1018,7 +1027,7 @@
     "type": "equip",
     "coin": 250,
     "buyNum": 1,
-    "quality": 1
+    "quality": 2
   },
   "5001030": {
     "name": "绳腰",
@@ -1027,7 +1036,7 @@
     "type": "equip",
     "coin": 250,
     "buyNum": 1,
-    "quality": 1
+    "quality": 2
   },
   "5001040": {
     "name": "草鞋",
@@ -1036,7 +1045,7 @@
     "type": "equip",
     "coin": 250,
     "buyNum": 1,
-    "quality": 1
+    "quality": 2
   },
   "5002010": {
     "name": "阔剑",
@@ -1045,7 +1054,7 @@
     "type": "equip",
     "coin": 500,
     "buyNum": 1,
-    "quality": 1
+    "quality": 2
   },
   "5002020": {
     "name": "布衣",
@@ -1054,7 +1063,7 @@
     "type": "equip",
     "coin": 500,
     "buyNum": 1,
-    "quality": 1
+    "quality": 2
   },
   "5002030": {
     "name": "布腰",
@@ -1063,7 +1072,7 @@
     "type": "equip",
     "coin": 500,
     "buyNum": 1,
-    "quality": 1
+    "quality": 2
   },
   "5002040": {
     "name": "布鞋",
@@ -1072,7 +1081,7 @@
     "type": "equip",
     "coin": 500,
     "buyNum": 1,
-    "quality": 1
+    "quality": 2
   },
   "5003010": {
     "name": "君子剑",
@@ -1081,7 +1090,7 @@
     "type": "equip",
     "coin": 1000,
     "buyNum": 1,
-    "quality": 2
+    "quality": 3
   },
   "5003020": {
     "name": "蓝染衣",
@@ -1090,7 +1099,7 @@
     "type": "equip",
     "coin": 1000,
     "buyNum": 1,
-    "quality": 2
+    "quality": 3
   },
   "5003030": {
     "name": "鬼面腰",
@@ -1099,7 +1108,7 @@
     "type": "equip",
     "coin": 1000,
     "buyNum": 1,
-    "quality": 2
+    "quality": 3
   },
   "5003040": {
     "name": "轻羽鞋",
@@ -1108,7 +1117,7 @@
     "type": "equip",
     "coin": 1000,
     "buyNum": 1,
-    "quality": 2
+    "quality": 3
   },
   "5004010": {
     "name": "圣人剑",
@@ -1117,7 +1126,7 @@
     "type": "equip",
     "coin": 2000,
     "buyNum": 1,
-    "quality": 2
+    "quality": 3
   },
   "5004020": {
     "name": "鳞风甲",
@@ -1126,7 +1135,7 @@
     "type": "equip",
     "coin": 2000,
     "buyNum": 1,
-    "quality": 2
+    "quality": 3
   },
   "5004030": {
     "name": "盛世腰",
@@ -1135,7 +1144,7 @@
     "type": "equip",
     "coin": 2000,
     "buyNum": 1,
-    "quality": 2
+    "quality": 3
   },
   "5004040": {
     "name": "翔空覆",
@@ -1144,7 +1153,7 @@
     "type": "equip",
     "coin": 2000,
     "buyNum": 1,
-    "quality": 2
+    "quality": 3
   },
   "5005010": {
     "name": "天工剑",
@@ -1153,7 +1162,7 @@
     "type": "equip",
     "coin": 4500,
     "buyNum": 1,
-    "quality": 3
+    "quality": 4
   },
   "5005020": {
     "name": "紫纹铠",
@@ -1162,7 +1171,7 @@
     "type": "equip",
     "coin": 4500,
     "buyNum": 1,
-    "quality": 3
+    "quality": 4
   },
   "5005030": {
     "name": "紫耀腰",
@@ -1171,7 +1180,7 @@
     "type": "equip",
     "coin": 4500,
     "buyNum": 1,
-    "quality": 3
+    "quality": 4
   },
   "5005040": {
     "name": "祥云履",
@@ -1180,7 +1189,7 @@
     "type": "equip",
     "coin": 4500,
     "buyNum": 1,
-    "quality": 3
+    "quality": 4
   },
   "5006010": {
     "name": "降龙之剑",
@@ -1189,7 +1198,7 @@
     "type": "equip",
     "coin": 7500,
     "buyNum": 1,
-    "quality": 3
+    "quality": 4
   },
   "5006020": {
     "name": "巨兽战铠",
@@ -1198,7 +1207,7 @@
     "type": "equip",
     "coin": 7500,
     "buyNum": 1,
-    "quality": 3
+    "quality": 4
   },
   "5006030": {
     "name": "流云束腰",
@@ -1207,7 +1216,7 @@
     "type": "equip",
     "coin": 7500,
     "buyNum": 1,
-    "quality": 3
+    "quality": 4
   },
   "5006040": {
     "name": "渡步云靴",
@@ -1216,7 +1225,7 @@
     "type": "equip",
     "coin": 7500,
     "buyNum": 1,
-    "quality": 3
+    "quality": 4
   },
   "5007010": {
     "name": "落神圣剑",
@@ -1225,7 +1234,7 @@
     "type": "equip",
     "coin": 12500,
     "buyNum": 1,
-    "quality": 3
+    "quality": 4
   },
   "5007020": {
     "name": "战神胜铠",
@@ -1234,7 +1243,7 @@
     "type": "equip",
     "coin": 12500,
     "buyNum": 1,
-    "quality": 3
+    "quality": 4
   },
   "5007030": {
     "name": "魔惧腰带",
@@ -1243,7 +1252,7 @@
     "type": "equip",
     "coin": 12500,
     "buyNum": 1,
-    "quality": 3
+    "quality": 4
   },
   "5007040": {
     "name": "追风轻覆",
@@ -1252,7 +1261,7 @@
     "type": "equip",
     "coin": 12500,
     "buyNum": 1,
-    "quality": 3
+    "quality": 4
   },
   "5008010": {
     "name": "风云巨剑",
@@ -1261,7 +1270,7 @@
     "type": "equip",
     "coin": 21500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5008020": {
     "name": "苍月铠甲",
@@ -1270,7 +1279,7 @@
     "type": "equip",
     "coin": 21500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5008030": {
     "name": "沧澜腰带",
@@ -1279,7 +1288,7 @@
     "type": "equip",
     "coin": 21500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5008040": {
     "name": "翔龙战靴",
@@ -1288,7 +1297,7 @@
     "type": "equip",
     "coin": 21500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5009010": {
     "name": "七星宝剑",
@@ -1297,7 +1306,7 @@
     "type": "equip",
     "coin": 36500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5009020": {
     "name": "流云战袍",
@@ -1306,7 +1315,7 @@
     "type": "equip",
     "coin": 36500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5009030": {
     "name": "混元腰带",
@@ -1315,7 +1324,7 @@
     "type": "equip",
     "coin": 36500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5009040": {
     "name": "踏云轻靴",
@@ -1324,7 +1333,7 @@
     "type": "equip",
     "coin": 36500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5010010": {
     "name": "破晓·天鸣剑",
@@ -1333,7 +1342,7 @@
     "type": "equip",
     "coin": 62500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5010020": {
     "name": "破晓·铭纹甲",
@@ -1342,7 +1351,7 @@
     "type": "equip",
     "coin": 62500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5010030": {
     "name": "破晓·梦月腰",
@@ -1351,7 +1360,7 @@
     "type": "equip",
     "coin": 62500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5010040": {
     "name": "破晓·追云靴",
@@ -1360,7 +1369,7 @@
     "type": "equip",
     "coin": 62500,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5011010": {
     "name": "征战·赤霄剑",
@@ -1369,7 +1378,7 @@
     "type": "equip",
     "coin": 105000,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5011020": {
     "name": "征战·吞天铠",
@@ -1378,7 +1387,7 @@
     "type": "equip",
     "coin": 105000,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5011030": {
     "name": "征战·辟邪腰",
@@ -1387,7 +1396,7 @@
     "type": "equip",
     "coin": 105000,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5011040": {
     "name": "征战·逐月履",
@@ -1396,7 +1405,7 @@
     "type": "equip",
     "coin": 105000,
     "buyNum": 1,
-    "quality": 4
+    "quality": 5
   },
   "5012010": {
     "name": "轩辕·帝王剑",
@@ -1405,7 +1414,7 @@
     "type": "equip",
     "coin": 175000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5012020": {
     "name": "轩辕·帝王凯",
@@ -1414,7 +1423,7 @@
     "type": "equip",
     "coin": 175000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5012030": {
     "name": "轩辕·帝王腰",
@@ -1423,7 +1432,7 @@
     "type": "equip",
     "coin": 175000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5012040": {
     "name": "轩辕·帝王履",
@@ -1432,7 +1441,7 @@
     "type": "equip",
     "coin": 175000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5013010": {
     "name": "战神·诛天枪",
@@ -1441,7 +1450,7 @@
     "type": "equip",
     "coin": 290000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5013020": {
     "name": "战神·奥义铠",
@@ -1450,7 +1459,7 @@
     "type": "equip",
     "coin": 290000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5013030": {
     "name": "战神·圣耀腰",
@@ -1459,7 +1468,7 @@
     "type": "equip",
     "coin": 290000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5013040": {
     "name": "战神·追风履",
@@ -1468,7 +1477,7 @@
     "type": "equip",
     "coin": 290000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5014010": {
     "name": "逐鹿·胜意枪",
@@ -1477,7 +1486,7 @@
     "type": "equip",
     "coin": 490000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5014020": {
     "name": "逐鹿·战胜铠",
@@ -1486,7 +1495,7 @@
     "type": "equip",
     "coin": 490000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5014030": {
     "name": "逐鹿·高歌腰",
@@ -1495,7 +1504,7 @@
     "type": "equip",
     "coin": 490000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5014040": {
     "name": "逐鹿·凯旋靴",
@@ -1504,7 +1513,7 @@
     "type": "equip",
     "coin": 490000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5015010": {
     "name": "盘古·开天斧",
@@ -1513,7 +1522,7 @@
     "type": "equip",
     "coin": 800000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5015020": {
     "name": "盘古·御天甲",
@@ -1522,7 +1531,7 @@
     "type": "equip",
     "coin": 800000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5015030": {
     "name": "盘古·擎天腰",
@@ -1531,7 +1540,7 @@
     "type": "equip",
     "coin": 800000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5015040": {
     "name": "盘古·登天靴",
@@ -1540,7 +1549,7 @@
     "type": "equip",
     "coin": 800000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5016010": {
     "name": "诛神·屠龙刀",
@@ -1549,7 +1558,7 @@
     "type": "equip",
     "coin": 1400000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5016020": {
     "name": "诛神·破军铠",
@@ -1558,7 +1567,7 @@
     "type": "equip",
     "coin": 1400000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5016030": {
     "name": "诛神·贪狼腰",
@@ -1567,7 +1576,7 @@
     "type": "equip",
     "coin": 1400000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5016040": {
     "name": "诛神·紫微履",
@@ -1576,7 +1585,7 @@
     "type": "equip",
     "coin": 1400000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5017010": {
     "name": "创世·混沌刀",
@@ -1585,7 +1594,7 @@
     "type": "equip",
     "coin": 2400000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5017020": {
     "name": "创世·女娲袍",
@@ -1594,7 +1603,7 @@
     "type": "equip",
     "coin": 2400000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5017030": {
     "name": "创世·盘古腰",
@@ -1603,7 +1612,7 @@
     "type": "equip",
     "coin": 2400000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "5017040": {
     "name": "创世·凌霄履",
@@ -1612,7 +1621,7 @@
     "type": "equip",
     "coin": 2400000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 6
   },
   "9030010": {
     "name": "真君圣元神",
@@ -1622,7 +1631,8 @@
     "gold": 800,
     "other_currency": 206,
     "other_value": 800,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 4
   },
   "9030020": {
     "name": "仙女元神",
@@ -1632,7 +1642,8 @@
     "gold": 800,
     "other_currency": 206,
     "other_value": 800,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 4
   },
   "9030030": {
     "name": "暗影元神",
@@ -1642,7 +1653,8 @@
     "gold": 800,
     "other_currency": 206,
     "other_value": 800,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 4
   },
   "9030040": {
     "name": "朱离元神",
@@ -1652,7 +1664,8 @@
     "gold": 800,
     "other_currency": 206,
     "other_value": 800,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 4
   },
   "9030041": {
     "name": "璧合元神",
@@ -1662,7 +1675,8 @@
     "gold": 800,
     "other_currency": 206,
     "other_value": 800,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 4
   },
   "9030050": {
     "name": "黑熊精元神",
@@ -1672,7 +1686,8 @@
     "gold": 800,
     "other_currency": 206,
     "other_value": 800,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 4
   },
   "9030060": {
     "name": "幽月兔元神",
@@ -1682,7 +1697,8 @@
     "gold": 800,
     "other_currency": 206,
     "other_value": 800,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 4
   },
   "9030070": {
     "name": "孙小圣元神",
@@ -1692,7 +1708,8 @@
     "gold": 800,
     "other_currency": 206,
     "other_value": 800,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 4
   },
   "9030080": {
     "name": "幼年饕餮元神",
@@ -1702,7 +1719,8 @@
     "gold": 800,
     "other_currency": 206,
     "other_value": 800,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 4
   },
   "9040010": {
     "name": "红孩儿元神",
@@ -1712,7 +1730,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040020": {
     "name": "广成子元神",
@@ -1722,7 +1741,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040030": {
     "name": "九天玄女元神",
@@ -1732,7 +1752,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040040": {
     "name": "东华太一元神",
@@ -1742,7 +1763,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040050": {
     "name": "善财仙子元神",
@@ -1752,7 +1774,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040060": {
     "name": "神农元神",
@@ -1762,7 +1785,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040070": {
     "name": "瑶姬元神",
@@ -1772,7 +1796,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040080": {
     "name": "轩辕帝元神",
@@ -1782,7 +1807,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040090": {
     "name": "降魔祖师元神",
@@ -1792,7 +1818,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040100": {
     "name": "大禹元神",
@@ -1802,7 +1829,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040110": {
     "name": "苏妲己元神",
@@ -1812,7 +1840,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040120": {
     "name": "颛顼元神",
@@ -1822,7 +1851,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040130": {
     "name": "后卿元神",
@@ -1832,7 +1862,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040140": {
     "name": "云霄元神",
@@ -1842,7 +1873,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040150": {
     "name": "牛魔元神",
@@ -1852,7 +1884,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040151": {
     "name": "古魔元神",
@@ -1862,7 +1895,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040160": {
     "name": "狐妖元神",
@@ -1872,7 +1906,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040170": {
     "name": "诸怀元神",
@@ -1882,7 +1917,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040180": {
     "name": "白泽元神",
@@ -1892,7 +1928,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040190": {
     "name": "应龙元神",
@@ -1902,7 +1939,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040200": {
     "name": "饕餮元神",
@@ -1912,7 +1950,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040210": {
     "name": "烛龙元神",
@@ -1922,7 +1961,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040220": {
     "name": "火麒麟元神",
@@ -1932,7 +1972,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040230": {
     "name": "龙龟元神",
@@ -1942,7 +1983,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9040240": {
     "name": "幼鲲元神",
@@ -1952,7 +1994,8 @@
     "gold": 3000,
     "other_currency": 206,
     "other_value": 3000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "9050010": {
     "name": "神·太上老君元神",
@@ -1962,7 +2005,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050020": {
     "name": "神·女娲元神",
@@ -1972,7 +2016,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050030": {
     "name": "神·混元天尊元神",
@@ -1982,7 +2027,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050040": {
     "name": "神·九天玄女元神",
@@ -1992,7 +2038,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050050": {
     "name": "神·剑灵元神",
@@ -2002,7 +2049,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050060": {
     "name": "神·光辉之甲元神",
@@ -2012,7 +2060,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050070": {
     "name": "神·玄冥元神",
@@ -2022,7 +2071,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050080": {
     "name": "神·魔猴元神",
@@ -2032,7 +2082,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050090": {
     "name": "神·瑶姬元神",
@@ -2042,7 +2093,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050100": {
     "name": "神·诸怀元神",
@@ -2052,7 +2104,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050110": {
     "name": "神·烛龙元神",
@@ -2062,7 +2115,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050120": {
     "name": "神·白泽元神",
@@ -2072,7 +2126,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050130": {
     "name": "神·龙龟元神",
@@ -2082,7 +2137,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050160": {
     "name": "神·弱点击破元神",
@@ -2092,7 +2148,8 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9050170": {
     "name": "神·横扫千军元神",
@@ -2102,37 +2159,43 @@
     "gold": 10000,
     "other_currency": 206,
     "other_value": 10000,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 6
   },
   "9060010": {
     "name": "绝杀无双元神",
     "des": "暴击伤害+30%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "quality": 7
   },
   "9060020": {
     "name": "饕餮吞天元神",
     "des": "技能直接击杀敌方目标时，获得目标剩余的所有怒气（输出武将佩戴）",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "quality": 7
   },
   "9060030": {
     "name": "毁灭之光元神",
     "des": "伤害+18%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "quality": 7
   },
   "9060040": {
     "name": "金钟护体元神",
     "des": "受到灼烧、中毒伤害时，该伤害降低35%",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "quality": 7
   },
   "9060050": {
     "name": "盘古开天元神",
     "des": "初始怒气增加2点",
     "isBag": true,
-    "type": "ace"
+    "type": "ace",
+    "quality": 7
   },
   "11105010": {
     "name": "太极拂(太上老君法宝)",
@@ -2143,7 +2206,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11105020": {
     "name": "混元珠(混元天尊法宝)",
@@ -2154,7 +2218,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11105030": {
     "name": "引雷锤(雷公法宝)",
@@ -2165,7 +2230,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11105040": {
     "name": "风火轮(哪吒法宝)",
@@ -2176,7 +2242,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11105050": {
     "name": "补天石(女娲法宝)",
@@ -2187,7 +2254,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11105060": {
     "name": "清灵引(广成子法宝)",
@@ -2198,7 +2266,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11105070": {
     "name": "缚神绫(红孩儿法宝)",
@@ -2209,7 +2278,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11105080": {
     "name": "乾坤圈(九天玄女法宝)",
@@ -2220,7 +2290,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11105090": {
     "name": "避水珠(东海龙王法宝)",
@@ -2231,7 +2302,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11105100": {
     "name": "开天剑(东华太一法宝)",
@@ -2242,7 +2314,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11105110": {
     "name": "寒月绫(嫦娥法宝)",
@@ -2253,7 +2326,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11105120": {
     "name": "钱坤袋(善财仙子法宝)",
@@ -2264,7 +2338,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11205010": {
     "name": "七星剑(剑灵法宝)",
@@ -2275,7 +2350,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11205020": {
     "name": "姜子牙(诛仙剑法宝)",
@@ -2286,7 +2362,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11205030": {
     "name": "神农(神农仗法宝)",
@@ -2297,7 +2374,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11205040": {
     "name": "大禹(帝之剑法宝)",
@@ -2308,7 +2386,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11205050": {
     "name": "紫隐娟(苏妲己法宝)",
@@ -2319,7 +2398,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11205060": {
     "name": "瑶姬(天羽扇法宝)",
@@ -2330,7 +2410,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11205070": {
     "name": "轩辕帝(轩辕剑法宝)",
@@ -2341,7 +2422,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11205080": {
     "name": "降魔祖师(蓝晶剑法宝)",
@@ -2352,7 +2434,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11205090": {
     "name": "真武大帝(昆仑刀法宝)",
@@ -2363,7 +2446,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11205100": {
     "name": "后羿(落日弓法宝)",
@@ -2374,7 +2458,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11205110": {
     "name": "颛顼(紫耀枪法宝)",
@@ -2385,7 +2470,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11205120": {
     "name": "云中子(游龙剑法宝)",
@@ -2396,7 +2482,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11305010": {
     "name": "蚩尤刀(蚩尤法宝)",
@@ -2407,7 +2494,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11305020": {
     "name": "玄冥(枯魔刀法宝)",
@@ -2418,7 +2506,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11305030": {
     "name": "乾坤石(云霄法宝)",
@@ -2429,7 +2518,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11305040": {
     "name": "幽冥石(幽魂法宝)",
@@ -2440,7 +2530,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11305050": {
     "name": "幻灵爪(后卿法宝)",
@@ -2451,7 +2542,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11305060": {
     "name": "搬山斧(魔猴法宝)",
@@ -2462,7 +2554,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11305070": {
     "name": "立天杵(雷鸟法宝)",
@@ -2473,7 +2566,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11305080": {
     "name": "三叉戟(诸怀法宝)",
@@ -2484,7 +2578,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11305090": {
     "name": "开天斧(狂妄法宝)",
@@ -2495,7 +2590,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11305100": {
     "name": "浑天刃(古魔法宝)",
@@ -2506,7 +2602,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11305110": {
     "name": "妖狐灵(狐妖法宝)",
@@ -2517,7 +2614,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11305120": {
     "name": "三叉刃(牛魔法宝)",
@@ -2528,7 +2626,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11405010": {
     "name": "瑞祥云(瑞兽法宝)",
@@ -2539,7 +2638,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11405020": {
     "name": "闪电纹(穷奇法宝)",
@@ -2550,7 +2650,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11405030": {
     "name": "神兽丹(白泽法宝)",
@@ -2561,7 +2662,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11405040": {
     "name": "凶兽角(饕餮法宝)",
@@ -2572,7 +2674,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11405050": {
     "name": "仙雾羽(仙鹤法宝)",
@@ -2583,7 +2686,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11405060": {
     "name": "应龙珠(应龙法宝)",
@@ -2594,7 +2698,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11405070": {
     "name": "凤凰羽(凤凰法宝)",
@@ -2605,7 +2710,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11405080": {
     "name": "烛龙珠(烛龙法宝)",
@@ -2616,7 +2722,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11405090": {
     "name": "北冥灵(幼鲲法宝)",
@@ -2627,7 +2734,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11405100": {
     "name": "火云丹(火麒麟法宝)",
@@ -2638,7 +2746,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11405110": {
     "name": "白虎纹(白虎法宝)",
@@ -2649,7 +2758,8 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   },
   "11405120": {
     "name": "龙龟甲(龙龟法宝)",
@@ -2660,6 +2770,7 @@
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
-    "buyNum": 1
+    "buyNum": 1,
+    "quality": 5
   }
 }

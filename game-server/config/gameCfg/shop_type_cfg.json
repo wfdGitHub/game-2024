@@ -1,10 +1,18 @@
 {
-  "coin": {
-    "name": "物品商店",
+  "item": {
+    "name": "道具商城",
     "weight": 100
+  },
+  "arena": {
+    "name": "竞技商城",
+    "weight": 101
+  },
+  "general": {
+    "name": "召唤商城",
+    "weight": 102
   },
   "hero": {
     "name": "英雄商店",
-    "weight": 101
+    "weight": 103
   }
 }
