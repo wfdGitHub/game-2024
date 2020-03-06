@@ -261,6 +261,10 @@ module.exports = function() {
 			cb(true,info)
 		})
 	}
+	//商城每日刷新
+	this.shopRefresh = function(uid) {
+		self.delObjAll(uid,"shop")
+	}
 	//商城购买物品
 	this.buyShop = function(uid,shopId,count,cb) {
 		if(!shopId || !Number.isInteger(count) || count <= 0){
@@ -272,13 +276,41 @@ module.exports = function() {
 			cb(false,"shopId error "+shopId)
 			return
 		}
-		self.consumeItems(uid,shopInfo.pc,count,function(flag,err) {
-			if(!flag){
-				cb(flag,err)
-				return
+		async.waterfall([
+			function(next) {
+				if(shopCfg[shopId]["day_count"]){
+					self.getObj(uid,"shop",shopId,function(value) {
+						value = Number(value) || 0
+						if(shopCfg[shopId]["day_count"] >= count + value){
+							next()
+						}else{
+							next("购买次数到达上限")
+						}
+					})
+				}else{
+					next()
+				}
+			},
+			function(next) {
+				self.consumeItems(uid,shopInfo.pc,count,function(flag,err) {
+					if(!flag){
+						cb(flag,err)
+						return
+					}
+					if(shopCfg[shopId]["day_count"])
+						self.incrbyObj(uid,"shop",shopId,count)
+					self.addItemStr(uid,shopInfo.pa,count)
+					cb(true,shopInfo.pa)
+				})
 			}
-			self.addItemStr(uid,shopInfo.pa,count)
-			cb(true,shopInfo.pa)
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//获得商城数据
+	this.getShopData = function(uid,cb) {
+		self.getObjAll(uid,"shop",function(data) {
+			cb(true,data)
 		})
 	}
 	//解析奖励池str

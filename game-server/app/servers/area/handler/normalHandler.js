@@ -88,6 +88,14 @@ normalHandler.prototype.openChestStr = function(msg, session, next) {
   var str = this.areaManager.areaMap[areaId].openChestStr(uid,str)
   next(null,{flag : true,str : str})
 }
+//获取商城数据
+normalHandler.prototype.getShopData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getShopData(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //购买商城物品
 normalHandler.prototype.buyShop = function(msg, session, next) {
   var uid = session.uid

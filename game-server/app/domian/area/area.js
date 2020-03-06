@@ -119,6 +119,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.dailyfbUpdate(uid)
 	this.dayTaskRefresh(uid)
 	this.bazaarDayRefresh(uid)
+	this.shopRefresh(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
