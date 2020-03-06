@@ -4,8 +4,8 @@ var model = function(otps) {
 	//=========身份===========//
 	this.name = otps.name		//角色名称
 	this.id = otps.id 			//角色ID
-	this.realm = 0				//国家
-	this.career = 0				//角色职业   healer 治疗者
+	this.realm = otps.realm		//国家
+	this.career = otps.career	//角色职业   healer 治疗者
 	this.index = 0				//所在位置
 	this.camp = ""				//攻方或守方
 	this.isNaN = false			//是否空位置

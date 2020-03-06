@@ -31,9 +31,41 @@ model.beginFight = function(atkTeam,defTeam,otps) {
       atkTeamList[i] = this.getCharacterInfo(atkTeam[i])
       defTeamList[i] = this.getCharacterInfo(defTeam[i])
     }
+    otps.atkRaceType = this.getRaceType(atkTeamList)
+    otps.defRaceType = this.getRaceType(defTeamList)
 	var fighting = new fightingFun(atkTeamList,defTeamList,otps)
 	fighting.nextRound()
 	return fightRecord.isWin()
+}
+//获取种族加成类型
+model.getRaceType = function(team) {
+	let raceList = {"1" : 0,"2" : 0, "3" : 0, "4" : 0}
+	let maxNum = 0
+	for(let i = 0;i < team.length;i++){
+		if(team[i]){
+			raceList[team[i].realm]++
+			if(raceList[team[i].realm] > maxNum){
+				maxNum = raceList[team[i].realm]
+			}
+		}
+	}
+	if(maxNum >= 4){
+		return maxNum
+	}
+	let list = [0,0,0,0,0,0,0]
+	for(let i in raceList){
+		list[raceList[i]]++
+	}
+	if(list[3] >= 2){
+		return 3
+	}
+	if(maxNum >= 3){
+		return 2
+	}
+	if(list[2] >= 3){
+		return 1
+	}
+	return 0
 }
 model.getFightRecord = function() {
 	return fightRecord.getList()
