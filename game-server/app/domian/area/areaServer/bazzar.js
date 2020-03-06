@@ -176,6 +176,7 @@ module.exports = function() {
 				time = nowTime - dt
 				self.setObj(uid,main_name,type+"_refresh_time",time)
 				let info = self.bazaarRefresh(uid,type)
+				info.time = time
 				cb(true,info)
 			}
 		})
