@@ -69,10 +69,10 @@ acepackHandler.prototype.wearAcepack = function(msg, session, next) {
     function(heroInfo,cb) {
       //卸下原锦囊
       if(heroInfo["acepack_"+pos]){
-        self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : heroInfo["acepack_"+pos],value : 1})
+        self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : heroInfo["acepack_"+pos],value : 1})
       }
       //扣除锦囊
-      self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : aId,value : -1})
+      self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : aId,value : -1})
       //穿戴锦囊
       heroInfo["acepack_"+pos] = aId
       self.heroDao.setHeroInfo(areaId,uid,hId,"acepack_"+pos,aId)
@@ -103,7 +103,7 @@ acepackHandler.prototype.unwearAcepack = function(msg, session, next) {
       //卸下原装备
       if(heroInfo["acepack_"+pos]){
         var aId = heroInfo["acepack_"+pos]
-        self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : aId,value : 1})
+        self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : aId,value : 1})
         self.heroDao.delHeroInfo(areaId,uid,hId,"acepack_"+pos)
         delete heroInfo["acepack_"+pos]
         next(null,{flag : true,heroInfo : heroInfo,aId : aId})
@@ -170,7 +170,7 @@ acepackHandler.prototype.compoundAcepack = function(msg, session, next) {
       next(null,{flag : false,err : err})
       return
     }
-    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : aId,value : 1},function(flag,data) {
+    self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : aId,value : 1},function(flag,data) {
       next(null,{flag : true,aId : aId,value : 1})
     })
   })

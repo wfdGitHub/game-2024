@@ -41,10 +41,10 @@ equipHandler.prototype.wearEquip = function(msg, session, next) {
       //卸下原装备
       if(heroInfo["equip_"+part]){
         var oldeId = equip_level[heroInfo["equip_"+part]]["part_"+part]
-        self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : oldeId,value : 1})
+        self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : oldeId,value : 1})
       }
       //扣除装备
-      self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : eId,value : -1})
+      self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : eId,value : -1})
       //穿戴装备
       var lv = equip_base[eId]["lv"]
       heroInfo["equip_"+part] = lv
@@ -76,7 +76,7 @@ equipHandler.prototype.unwearEquip = function(msg, session, next) {
       //卸下原装备
       if(heroInfo["equip_"+part]){
         var oldeId = equip_level[heroInfo["equip_"+part]]["part_"+part]
-        self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : oldeId,value : 1})
+        self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : oldeId,value : 1})
         self.heroDao.delHeroInfo(areaId,uid,hId,"equip_"+part)
         delete heroInfo["equip_"+part]
         next(null,{flag : true,heroInfo : heroInfo,eId : heroInfo["equip_"+part]})
@@ -135,7 +135,7 @@ equipHandler.prototype.compoundEquip = function(msg, session, next) {
       return
     }
     self.areaManager.areaMap[areaId].taskUpdate(uid,"equip_compound",count)
-    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : equip_base[eId]["next"],value : count},function(flag,data) {
+    self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : equip_base[eId]["next"],value : count},function(flag,data) {
       next(null,{flag : true,eId : equip_base[eId]["next"],value : data})
     })
   })

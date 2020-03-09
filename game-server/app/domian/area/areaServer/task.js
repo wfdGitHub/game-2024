@@ -117,6 +117,7 @@ module.exports = function() {
 		self.setHMObj(uid,liveness_name,info)
 		self.getObj(uid,main_name,"week",function(week) {
 			let curWeek = util.getWeek()
+			console.log("week",week,curWeek)
 			if(week != curWeek){
 				self.setObj(uid,main_name,"week",curWeek)
 				for(let taskId in task_cfg){
@@ -127,6 +128,7 @@ module.exports = function() {
 		})
 		self.getObj(uid,main_name,"month",function(month) {
 			let curMonth = util.getMonth()
+			console.log("month",month,curMonth)
 			if(month != curMonth){
 				self.setObj(uid,main_name,"month",curMonth)
 				for(let taskId in task_cfg){

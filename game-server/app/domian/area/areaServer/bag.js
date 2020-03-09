@@ -107,8 +107,8 @@ module.exports = function() {
 			cb(list)
 		})
 	}
-	//增加物品
-	this.addItem = function(otps,cb) {
+	//物品改变，不属于获得
+	this.changeItem = function(otps,cb) {
 		var uid = otps.uid
 		var itemId = otps.itemId
 		var value = otps.value
@@ -142,6 +142,53 @@ module.exports = function() {
 			if(cb)
 				cb(false,"item not exist")
 		}
+		return {type : "item",itemId : itemId,value : value}
+	}
+	//获得物品
+	this.addItem = function(otps,cb) {
+		var uid = otps.uid
+		var itemId = otps.itemId
+		var value = otps.value
+		var rate = otps.rate || 1
+		if(itemCfg[itemId]){
+			value = Math.floor(Number(value) * rate) || 1
+			itemId = parseInt(itemId)
+			if(!itemId){
+				console.error("itemId error "+itemId)
+				if(cb){
+					cb(false,"itemId error "+itemId)
+				}
+				return
+			}
+			self.addItemCB(uid,itemId,value,function(flag,curValue) {
+				if(flag){
+					if(value > 0){
+						switch(itemCfg[itemId].type){
+							case "equip":
+								self.taskUpdate(uid,"equip",value,equip_base[itemId].lv)
+							break
+							case "ace":
+								self.taskUpdate(uid,"ace",value,ace_pack[itemId].quality)
+							break
+						}
+					}
+					var notify = {
+						"type" : "addItem",
+						"itemId" : itemId,
+						"value" : value,
+						"curValue" : curValue
+					}
+					self.sendToUser(uid,notify)
+				}
+				if(cb)
+					cb(flag,curValue)
+			})
+			return {type : "item",itemId : itemId,value : value}
+		}else{
+			console.error("item not exist : "+itemId)
+			if(cb)
+				cb(false,"item not exist")
+		}
 	}
 	//增加物品回调
 	this.addItemCB = function(uid,itemId,value,cb) {
@@ -150,14 +197,6 @@ module.exports = function() {
 			cb(true)
 		}
 		else if(itemCfg[itemId]){
-			switch(itemCfg[itemId].type){
-				case "equip":
-					self.taskUpdate(uid,"equip",value,equip_base[itemId].lv)
-				break
-				case "ace":
-					self.taskUpdate(uid,"ace",value,ace_pack[itemId].quality)
-				break
-			}
 			this.addBagItem(uid,itemId,value,cb)
 		}else{
 			console.error("addItem error : "+itemId)
