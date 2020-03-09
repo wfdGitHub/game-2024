@@ -119,6 +119,7 @@ module.exports = function() {
 		  	// console.log("on_hook_award ",on_hook_award)
 		  	var rate = (awardTime * power) / 60 
 		  	// console.log("rate ",rate,"awardTime ",awardTime)
+		  	self.taskUpdate(uid,"on_hook",1)
 		  	var awardList = self.addItemStr(uid,on_hook_award,rate)
 		  	cb(true,{allTime : tmpTime,awardTime : awardTime,awardList : awardList})
 		})
