@@ -339,7 +339,7 @@ module.exports = function() {
 					if(shopCfg[shopId]["day_count"])
 						self.incrbyObj(uid,"shop",shopId,count)
 					if(shopCfg[shopId]["type"])
-						self.taskUpdate(uid,"shop_buy",1)
+						self.taskUpdate(uid,"shop_buy",count)
 					self.addItemStr(uid,shopInfo.pa,count)
 					cb(true,shopInfo.pa)
 				})
