@@ -171,18 +171,20 @@ module.exports = function() {
 			}
 		}
 	}
-	//任务进度清空
+	//任务进度未完成则清空
 	this.taskProgressClear = function(uid,type) {
 		if(userTaskMaps[uid] && userTaskMaps[uid][type]){
 			for(let i = 0;i < userTaskMaps[uid][type].length;i++){
 				let taskId = userTaskMaps[uid][type][i]
-				userTaskLists[uid][taskId] = 0
-				var notify = {
-					"type" : "taskUpdate",
-					"taskId" : taskId,
-					"value" : userTaskLists[uid][taskId]
+				if(userTaskLists[uid][taskId] < task_cfg[taskId].value){
+					userTaskLists[uid][taskId] = 0
+					var notify = {
+						"type" : "taskUpdate",
+						"taskId" : taskId,
+						"value" : userTaskLists[uid][taskId]
+					}
+					self.sendToUser(uid,notify)
 				}
-				self.sendToUser(uid,notify)
 			}
 		}
 	}
