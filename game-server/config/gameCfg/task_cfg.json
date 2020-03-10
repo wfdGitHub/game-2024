@@ -1,456 +1,2173 @@
 {
   "100001": {
-    "title": "登录",
+    "title": "日常登陆1次",
     "refresh": "day",
     "type": "login",
-    "value": 2,
-    "award": "201:100",
+    "value": 1,
+    "award": "202:20",
     "liveness": 10,
-    "exp": 1000
+    "exp": 30
   },
   "100002": {
-    "title": "英雄祭坛",
+    "title": "快速作战3次",
     "refresh": "day",
-    "type": "recruit",
+    "type": "quick",
     "value": 3,
-    "award": "201:101",
+    "award": "1000070:1",
     "liveness": 10,
-    "exp": 1000
+    "exp": 30
   },
   "100003": {
-    "title": "将军府征募",
-    "refresh": "day",
-    "type": "general",
-    "value": 1,
-    "award": "201:102",
-    "liveness": 10,
-    "exp": 1000
-  },
-  "100004": {
-    "title": "竞技场挑战",
+    "title": "参与竞技场3次",
     "refresh": "day",
     "type": "arena",
     "value": 3,
-    "award": "201:103",
+    "award": "202:30",
     "liveness": 10,
-    "exp": 1000
+    "exp": 30
   },
-  "100005": {
-    "title": "快速作战",
-    "refresh": "day",
-    "type": "quick",
-    "value": 2,
-    "award": "201:104",
-    "liveness": 10,
-    "exp": 1000
-  },
-  "100006": {
-    "title": "挑战/扫荡通天塔",
-    "refresh": "day",
-    "type": "ttt",
-    "value": 1,
-    "award": "201:105",
-    "liveness": 10,
-    "exp": 1000
-  },
-  "100007": {
-    "title": "参与副本",
+  "100004": {
+    "title": "挑战副本3次",
     "refresh": "day",
     "type": "fb",
-    "value": 1,
-    "award": "201:106",
+    "value": 3,
+    "award": "1000070:1",
     "liveness": 10,
-    "exp": 1000
+    "exp": 30
+  },
+  "100005": {
+    "title": "挑战或扫荡通天塔3次",
+    "refresh": "day",
+    "type": "ttt",
+    "value": 3,
+    "award": "1000050:20",
+    "liveness": 10,
+    "exp": 30
+  },
+  "100006": {
+    "title": "英雄祭坛招募3次",
+    "refresh": "day",
+    "type": "recruit",
+    "value": 3,
+    "award": "101:30000",
+    "liveness": 10,
+    "exp": 30
+  },
+  "100007": {
+    "title": "消耗100元宝",
+    "refresh": "day",
+    "type": "use_gold",
+    "value": 100,
+    "award": "1000070:1",
+    "liveness": 10,
+    "exp": 30
+  },
+  "100008": {
+    "title": "消耗50000铜币",
+    "refresh": "day",
+    "type": "use_coin",
+    "value": 50000,
+    "award": "1000050:20",
+    "liveness": 10,
+    "exp": 30
+  },
+  "100009": {
+    "title": "分解任意武将1个",
+    "refresh": "day",
+    "type": "resolve",
+    "value": 1,
+    "award": "203:50",
+    "liveness": 10,
+    "exp": 30
+  },
+  "100010": {
+    "title": "合成任意装备1件",
+    "refresh": "day",
+    "type": "equip_compound",
+    "value": 1,
+    "award": "1000020:2",
+    "liveness": 10,
+    "exp": 30
+  },
+  "100011": {
+    "title": "获得任意装备3件",
+    "refresh": "day",
+    "type": "equip",
+    "value": 3,
+    "award": "1000050:20",
+    "liveness": 10,
+    "exp": 30
+  },
+  "100012": {
+    "title": "竞技场胜利3次",
+    "refresh": "day",
+    "type": "arena_win",
+    "value": 3,
+    "award": "205:50",
+    "liveness": 10,
+    "exp": 30
+  },
+  "100013": {
+    "title": "获得3个英雄",
+    "refresh": "day",
+    "type": "hero",
+    "arg": 1,
+    "value": 3,
+    "award": "101:10000",
+    "liveness": 10,
+    "exp": 30
+  },
+  "100014": {
+    "title": "领取挂机奖励2次",
+    "refresh": "day",
+    "type": "on_hook",
+    "value": 2,
+    "award": "504000:1",
+    "liveness": 10,
+    "exp": 30
+  },
+  "100015": {
+    "title": "杂货铺购买商品1次",
+    "refresh": "day",
+    "type": "shop_buy",
+    "value": 1,
+    "award": "505000:1",
+    "liveness": 10,
+    "exp": 30
   },
   "200101": {
-    "title": "主角等级1",
+    "title": "角色等级5级",
     "refresh": "always",
     "type": "loadLv",
     "first": true,
+    "value": 5,
+    "inherit": true,
+    "award": "202:50"
+  },
+  "200102": {
+    "title": "角色等级10级",
+    "refresh": "always",
+    "type": "loadLv",
     "value": 10,
     "next": 200102,
     "inherit": true,
-    "award": "201:107",
-    "exp": 1000
+    "award": "202:100"
   },
-  "200102": {
-    "title": "主角等级2",
+  "200103": {
+    "title": "角色等级15级",
     "refresh": "always",
     "type": "loadLv",
     "value": 15,
     "next": 200103,
     "inherit": true,
-    "award": "201:108",
-    "exp": 1000
+    "award": "202:150"
   },
-  "200103": {
-    "title": "主角等级3",
+  "200104": {
+    "title": "角色等级20级",
     "refresh": "always",
     "type": "loadLv",
     "value": 20,
     "next": 200104,
     "inherit": true,
-    "award": "201:109",
-    "exp": 1000
-  },
-  "200104": {
-    "title": "主角等级4",
-    "refresh": "always",
-    "type": "loadLv",
-    "value": 25,
-    "next": 200105,
-    "inherit": true,
-    "award": "201:110",
-    "exp": 1000
+    "award": "202:150"
   },
   "200105": {
-    "title": "主角等级5",
+    "title": "角色等级30级",
     "refresh": "always",
     "type": "loadLv",
     "value": 30,
-    "next": 200106,
+    "next": 200105,
     "inherit": true,
-    "award": "201:111",
-    "exp": 1000
+    "award": "202:200"
   },
   "200106": {
-    "title": "主角等级6",
-    "refresh": "always",
-    "type": "loadLv",
-    "value": 35,
-    "next": 200107,
-    "inherit": true,
-    "award": "201:112",
-    "exp": 1000
-  },
-  "200107": {
-    "title": "主角等级7",
+    "title": "角色等级40级",
     "refresh": "always",
     "type": "loadLv",
     "value": 40,
-    "award": "201:113",
-    "exp": 1000
+    "next": 200106,
+    "inherit": true,
+    "award": "202:300"
+  },
+  "200107": {
+    "title": "角色等级50级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 50,
+    "next": 200107,
+    "inherit": true,
+    "award": "202:400"
+  },
+  "200108": {
+    "title": "角色等级60级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 60,
+    "next": 200108,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200109": {
+    "title": "角色等级70级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 70,
+    "next": 200109,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200110": {
+    "title": "角色等级80级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 80,
+    "next": 200110,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200111": {
+    "title": "角色等级90级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 90,
+    "next": 200111,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200112": {
+    "title": "角色等级100级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 100,
+    "next": 200112,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200113": {
+    "title": "角色等级110级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 110,
+    "next": 200113,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200114": {
+    "title": "角色等级120级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 120,
+    "next": 200114,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200115": {
+    "title": "角色等级130级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 130,
+    "next": 200115,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200116": {
+    "title": "角色等级140级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 140,
+    "next": 200116,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200117": {
+    "title": "角色等级150级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 150,
+    "next": 200117,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200118": {
+    "title": "角色等级160级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 160,
+    "next": 200118,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200119": {
+    "title": "角色等级170级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 170,
+    "next": 200119,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200120": {
+    "title": "角色等级180级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 180,
+    "next": 200120,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200121": {
+    "title": "角色等级190级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 190,
+    "next": 200121,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "200122": {
+    "title": "角色等级200级",
+    "refresh": "always",
+    "type": "loadLv",
+    "value": 200,
+    "next": 200122,
+    "inherit": true,
+    "award": "202:500"
   },
   "200201": {
-    "title": "总战力1",
+    "title": "总战斗力到达1万",
     "refresh": "always",
     "type": "totalCe",
     "first": true,
     "value": 10000,
-    "next": 200202,
     "inherit": true,
-    "award": "201:114",
-    "exp": 1000
+    "award": "202:10&201:10000"
   },
   "200202": {
-    "title": "总战力2",
-    "refresh": "always",
-    "type": "totalCe",
-    "value": 20000,
-    "next": 200203,
-    "inherit": true,
-    "award": "201:115",
-    "exp": 1000
-  },
-  "200203": {
-    "title": "总战力3",
+    "title": "总战斗力到达5万",
     "refresh": "always",
     "type": "totalCe",
     "value": 50000,
-    "next": 200204,
+    "next": 200202,
     "inherit": true,
-    "award": "201:116",
-    "exp": 1000
+    "award": "202:50&201:50000"
   },
-  "200204": {
-    "title": "总战力4",
+  "200203": {
+    "title": "总战斗力到达10万",
     "refresh": "always",
     "type": "totalCe",
     "value": 100000,
-    "award": "201:117",
-    "exp": 1000
+    "next": 200203,
+    "inherit": true,
+    "award": "202:100&201:100000"
+  },
+  "200204": {
+    "title": "总战斗力到达15万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 150000,
+    "next": 200204,
+    "inherit": true,
+    "award": "202:150&201:150000"
+  },
+  "200205": {
+    "title": "总战斗力到达20万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 200000,
+    "next": 200205,
+    "inherit": true,
+    "award": "202:200&201:200000"
+  },
+  "200206": {
+    "title": "总战斗力到达30万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 300000,
+    "next": 200206,
+    "inherit": true,
+    "award": "202:250&201:250000"
+  },
+  "200207": {
+    "title": "总战斗力到达40万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 400000,
+    "next": 200207,
+    "inherit": true,
+    "award": "202:300&201:300000"
+  },
+  "200208": {
+    "title": "总战斗力到达50万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 500000,
+    "next": 200208,
+    "inherit": true,
+    "award": "202:350&201:350000"
+  },
+  "200209": {
+    "title": "总战斗力到达80万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 800000,
+    "next": 200209,
+    "inherit": true,
+    "award": "202:400&201:400000"
+  },
+  "200210": {
+    "title": "总战斗力到达100万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 1000000,
+    "next": 200210,
+    "inherit": true,
+    "award": "202:450&201:450000"
+  },
+  "200211": {
+    "title": "总战斗力到达120万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 1200000,
+    "next": 200211,
+    "inherit": true,
+    "award": "202:500&201:500000"
+  },
+  "200212": {
+    "title": "总战斗力到达140万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 1400000,
+    "next": 200212,
+    "inherit": true,
+    "award": "202:550&201:550000"
+  },
+  "200213": {
+    "title": "总战斗力到达160万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 1600000,
+    "next": 200213,
+    "inherit": true,
+    "award": "202:600&201:600000"
+  },
+  "200214": {
+    "title": "总战斗力到达180万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 1800000,
+    "next": 200214,
+    "inherit": true,
+    "award": "202:650&201:650000"
+  },
+  "200215": {
+    "title": "总战斗力到达200万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 2000000,
+    "next": 200215,
+    "inherit": true,
+    "award": "202:700&201:700000"
+  },
+  "200216": {
+    "title": "总战斗力到达250万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 2500000,
+    "next": 200216,
+    "inherit": true,
+    "award": "202:750&201:750000"
+  },
+  "200217": {
+    "title": "总战斗力到达300万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 3000000,
+    "next": 200217,
+    "inherit": true,
+    "award": "202:800&201:800000"
+  },
+  "200218": {
+    "title": "总战斗力到达400万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 4000000,
+    "next": 200218,
+    "inherit": true,
+    "award": "202:850&201:850000"
+  },
+  "200219": {
+    "title": "总战斗力到达500万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 5000000,
+    "next": 200219,
+    "inherit": true,
+    "award": "202:900&201:900000"
+  },
+  "200220": {
+    "title": "总战斗力到达600万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 6000000,
+    "next": 200220,
+    "inherit": true,
+    "award": "202:1000&201:1000000"
+  },
+  "200221": {
+    "title": "总战斗力到达700万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 7000000,
+    "next": 200221,
+    "inherit": true,
+    "award": "202:1100&201:1100000"
+  },
+  "200222": {
+    "title": "总战斗力到达800万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 8000000,
+    "next": 200222,
+    "inherit": true,
+    "award": "202:1200&201:1200000"
+  },
+  "200223": {
+    "title": "总战斗力到达900万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 9000000,
+    "next": 200223,
+    "inherit": true,
+    "award": "202:1300&201:1300000"
+  },
+  "200224": {
+    "title": "总战斗力到达1000万",
+    "refresh": "always",
+    "type": "totalCe",
+    "value": 10000000,
+    "next": 200224,
+    "inherit": true,
+    "award": "202:1500&201:1500000"
   },
   "200301": {
-    "title": "英雄等级1",
+    "title": "竞技场累计挑战10次",
     "refresh": "always",
-    "type": "heroLv",
+    "type": "arena",
     "first": true,
-    "arg": 10,
-    "value": 1,
-    "next": 200302,
-    "award": "201:118",
-    "exp": 1000
+    "value": 10,
+    "inherit": true,
+    "award": "101:5000"
   },
   "200302": {
-    "title": "英雄等级2",
+    "title": "竞技场累计挑战20次",
     "refresh": "always",
-    "type": "heroLv",
-    "arg": 30,
-    "value": 1,
-    "next": 200303,
-    "award": "201:119",
-    "exp": 1000
+    "type": "arena",
+    "value": 20,
+    "next": 200302,
+    "inherit": true,
+    "award": "101:10000"
   },
   "200303": {
-    "title": "英雄等级3",
+    "title": "竞技场累计挑战30次",
     "refresh": "always",
-    "type": "heroLv",
-    "arg": 50,
-    "value": 1,
-    "next": 200304,
-    "award": "201:120",
-    "exp": 1000
+    "type": "arena",
+    "value": 30,
+    "next": 200303,
+    "inherit": true,
+    "award": "101:15000"
   },
   "200304": {
-    "title": "英雄等级4",
+    "title": "竞技场累计挑战40次",
     "refresh": "always",
-    "type": "heroLv",
-    "arg": 80,
-    "value": 1,
-    "next": 200305,
-    "award": "201:121",
-    "exp": 1000
+    "type": "arena",
+    "value": 40,
+    "next": 200304,
+    "inherit": true,
+    "award": "101:20000"
   },
   "200305": {
-    "title": "英雄等级5",
+    "title": "竞技场累计挑战50次",
     "refresh": "always",
-    "type": "heroLv",
-    "arg": 100,
-    "value": 1,
-    "award": "201:122",
-    "exp": 1000
+    "type": "arena",
+    "value": 50,
+    "next": 200305,
+    "inherit": true,
+    "award": "101:25000"
+  },
+  "200306": {
+    "title": "竞技场累计挑战60次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 60,
+    "next": 200306,
+    "inherit": true,
+    "award": "101:30000"
+  },
+  "200307": {
+    "title": "竞技场累计挑战70次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 70,
+    "next": 200307,
+    "inherit": true,
+    "award": "101:35000"
+  },
+  "200308": {
+    "title": "竞技场累计挑战80次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 80,
+    "next": 200308,
+    "inherit": true,
+    "award": "101:40000"
+  },
+  "200309": {
+    "title": "竞技场累计挑战90次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 90,
+    "next": 200309,
+    "inherit": true,
+    "award": "101:45000"
+  },
+  "200310": {
+    "title": "竞技场累计挑战100次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 100,
+    "next": 200310,
+    "inherit": true,
+    "award": "101:50000"
+  },
+  "200311": {
+    "title": "竞技场累计挑战150次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 150,
+    "next": 200311,
+    "inherit": true,
+    "award": "101:60000"
+  },
+  "200312": {
+    "title": "竞技场累计挑战200次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 200,
+    "next": 200312,
+    "inherit": true,
+    "award": "101:70000"
+  },
+  "200313": {
+    "title": "竞技场累计挑战250次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 250,
+    "next": 200313,
+    "inherit": true,
+    "award": "101:80000"
+  },
+  "200314": {
+    "title": "竞技场累计挑战300次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 300,
+    "next": 200314,
+    "inherit": true,
+    "award": "101:90000"
+  },
+  "200315": {
+    "title": "竞技场累计挑战350次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 350,
+    "next": 200315,
+    "inherit": true,
+    "award": "101:100000"
+  },
+  "200316": {
+    "title": "竞技场累计挑战400次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 400,
+    "next": 200316,
+    "inherit": true,
+    "award": "101:110000"
+  },
+  "200317": {
+    "title": "竞技场累计挑战450次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 450,
+    "next": 200317,
+    "inherit": true,
+    "award": "101:120000"
+  },
+  "200318": {
+    "title": "竞技场累计挑战500次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 500,
+    "next": 200318,
+    "inherit": true,
+    "award": "101:130000"
+  },
+  "200319": {
+    "title": "竞技场累计挑战600次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 600,
+    "next": 200319,
+    "inherit": true,
+    "award": "101:150000"
+  },
+  "200320": {
+    "title": "竞技场累计挑战700次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 700,
+    "next": 200320,
+    "inherit": true,
+    "award": "101:200000"
+  },
+  "200321": {
+    "title": "竞技场累计挑战800次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 800,
+    "next": 200321,
+    "inherit": true,
+    "award": "101:250000"
+  },
+  "200322": {
+    "title": "竞技场累计挑战900次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 900,
+    "next": 200322,
+    "inherit": true,
+    "award": "101:300000"
+  },
+  "200323": {
+    "title": "竞技场累计挑战1000次",
+    "refresh": "always",
+    "type": "arena",
+    "value": 1000,
+    "next": 200323,
+    "inherit": true,
+    "award": "101:350000"
   },
   "200401": {
-    "title": "获得装备1",
+    "title": "竞技场排名达到1000名",
     "refresh": "always",
-    "type": "equip",
+    "type": "rank",
     "first": true,
-    "arg": 1,
-    "value": 3,
-    "next": 200402,
-    "award": "201:123",
-    "exp": 1000
+    "arg": 9000,
+    "award": "202:50&203:50"
   },
   "200402": {
-    "title": "获得装备2",
+    "title": "竞技场排名达到500名",
     "refresh": "always",
-    "type": "equip",
-    "arg": 1,
-    "value": 6,
-    "next": 200403,
-    "award": "201:124",
-    "exp": 1000
+    "type": "rank",
+    "arg": 9500,
+    "next": 200402,
+    "award": "202:100&203:100"
   },
   "200403": {
-    "title": "获得装备3",
+    "title": "竞技场排名达到400名",
     "refresh": "always",
-    "type": "equip",
-    "arg": 2,
-    "value": 3,
-    "next": 200404,
-    "award": "201:125",
-    "exp": 1000
+    "type": "rank",
+    "arg": 9600,
+    "next": 200403,
+    "award": "202:150&203:150"
   },
   "200404": {
-    "title": "获得装备4",
+    "title": "竞技场排名达到300名",
     "refresh": "always",
-    "type": "equip",
-    "arg": 2,
-    "value": 6,
-    "award": "201:126",
-    "exp": 1000
+    "type": "rank",
+    "arg": 9700,
+    "next": 200404,
+    "award": "202:200&203:200"
+  },
+  "200405": {
+    "title": "竞技场排名达到200名",
+    "refresh": "always",
+    "type": "rank",
+    "arg": 9800,
+    "next": 200405,
+    "award": "202:250&203:250"
+  },
+  "200406": {
+    "title": "竞技场排名达到100名",
+    "refresh": "always",
+    "type": "rank",
+    "arg": 9900,
+    "next": 200406,
+    "award": "202:300&203:300"
+  },
+  "200407": {
+    "title": "竞技场排名达到50名",
+    "refresh": "always",
+    "type": "rank",
+    "arg": 9950,
+    "next": 200407,
+    "award": "202:350&203:350"
+  },
+  "200408": {
+    "title": "竞技场排名达到30名",
+    "refresh": "always",
+    "type": "rank",
+    "arg": 9970,
+    "next": 200408,
+    "award": "202:400&203:400"
+  },
+  "200409": {
+    "title": "竞技场排名达到20名",
+    "refresh": "always",
+    "type": "rank",
+    "arg": 9980,
+    "next": 200409,
+    "award": "202:450&203:450"
+  },
+  "200410": {
+    "title": "竞技场排名达到10名",
+    "refresh": "always",
+    "type": "rank",
+    "arg": 9990,
+    "next": 200410,
+    "award": "202:500&203:500"
+  },
+  "200411": {
+    "title": "竞技场排名达到5名",
+    "refresh": "always",
+    "type": "rank",
+    "arg": 9995,
+    "next": 200411,
+    "award": "202:550&203:550"
+  },
+  "200412": {
+    "title": "竞技场排名达到3名",
+    "refresh": "always",
+    "type": "rank",
+    "arg": 9997,
+    "next": 200412,
+    "award": "202:600&203:60"
+  },
+  "200413": {
+    "title": "竞技场排名达到2名",
+    "refresh": "always",
+    "type": "rank",
+    "arg": 9998,
+    "next": 200413,
+    "award": "202:650&203:650"
+  },
+  "200414": {
+    "title": "竞技场排名达到1名",
+    "refresh": "always",
+    "type": "rank",
+    "arg": 9999,
+    "next": 200414,
+    "award": "202:700&203:700"
   },
   "200501": {
-    "title": "获取武将1",
+    "title": "获得1个5星英雄",
     "refresh": "always",
     "type": "hero",
-    "first": 1,
+    "first": true,
     "arg": 5,
-    "value": 2,
-    "next": 200502,
-    "award": "201:127",
-    "exp": 1000
+    "value": 1,
+    "award": "5010010:1&5010020:1"
   },
   "200502": {
-    "title": "获取武将2",
+    "title": "获得1个6星英雄",
     "refresh": "always",
     "type": "hero",
     "arg": 6,
-    "value": 2,
-    "next": 200503,
-    "award": "201:128",
-    "exp": 1000
+    "value": 1,
+    "award": "5011010:1&5011020:1"
   },
   "200503": {
-    "title": "获取武将3",
+    "title": "获得1个7星英雄",
     "refresh": "always",
     "type": "hero",
     "arg": 7,
-    "value": 2,
-    "next": 200504,
-    "award": "201:129",
-    "exp": 1000
+    "value": 1,
+    "award": "5012010:1&5012020:1"
   },
   "200504": {
-    "title": "获取武将4",
+    "title": "获得1个8星英雄",
     "refresh": "always",
     "type": "hero",
     "arg": 8,
-    "value": 2,
-    "next": 200505,
-    "award": "201:130",
-    "exp": 1000
+    "value": 1,
+    "award": "5013010:1&5013020:1"
   },
   "200505": {
-    "title": "获取武将5",
+    "title": "获得1个9星英雄",
     "refresh": "always",
     "type": "hero",
     "arg": 9,
     "value": 1,
-    "award": "201:131",
-    "exp": 1000
+    "award": "5014010:1&5014020:1"
+  },
+  "200506": {
+    "title": "获得1个10星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 10,
+    "value": 1,
+    "award": "5015010:1&5015020:1"
   },
   "200601": {
-    "title": "分解武将1",
+    "title": "获得10个4星英雄",
     "refresh": "always",
-    "type": "resolve",
+    "type": "hero",
     "first": true,
-    "value": 1,
-    "next": 200602,
-    "award": "201:132",
-    "exp": 1000
+    "arg": 4,
+    "value": 10,
+    "inherit": true,
+    "award": "101:10000&201:50000"
   },
   "200602": {
-    "title": "分解武将2",
+    "title": "获得50个4星英雄",
     "refresh": "always",
-    "type": "resolve",
-    "value": 2,
-    "award": "201:133",
-    "exp": 1000
+    "type": "hero",
+    "arg": 4,
+    "value": 50,
+    "next": 200602,
+    "inherit": true,
+    "award": "101:20000&201:100000"
+  },
+  "200603": {
+    "title": "获得100个4星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 4,
+    "value": 100,
+    "next": 200603,
+    "inherit": true,
+    "award": "101:30000&201:150000"
+  },
+  "200604": {
+    "title": "获得200个4星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 4,
+    "value": 200,
+    "next": 200604,
+    "inherit": true,
+    "award": "101:40000&201:200000"
+  },
+  "200605": {
+    "title": "获得300个4星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 4,
+    "value": 300,
+    "next": 200605,
+    "inherit": true,
+    "award": "101:50000&201:250000"
+  },
+  "200606": {
+    "title": "获得400个4星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 4,
+    "value": 400,
+    "next": 200606,
+    "inherit": true,
+    "award": "101:60000&201:300000"
+  },
+  "200607": {
+    "title": "获得500个4星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 4,
+    "value": 500,
+    "next": 200607,
+    "inherit": true,
+    "award": "101:70000&201:350000"
+  },
+  "200608": {
+    "title": "获得600个4星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 4,
+    "value": 600,
+    "next": 200608,
+    "inherit": true,
+    "award": "101:80000&201:400000"
+  },
+  "200609": {
+    "title": "获得700个4星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 4,
+    "value": 700,
+    "next": 200609,
+    "inherit": true,
+    "award": "101:90000&201:450000"
+  },
+  "200610": {
+    "title": "获得800个4星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 4,
+    "value": 800,
+    "next": 200610,
+    "inherit": true,
+    "award": "101:100000&201:500000"
+  },
+  "200611": {
+    "title": "获得900个4星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 4,
+    "value": 900,
+    "next": 200611,
+    "inherit": true,
+    "award": "101:120000&201:600000"
+  },
+  "200612": {
+    "title": "获得1000个4星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 4,
+    "value": 1000,
+    "next": 200612,
+    "inherit": true,
+    "award": "101:150000&201:1000000"
   },
   "200701": {
-    "title": "竞技场排名1",
+    "title": "获得5个5星英雄",
     "refresh": "always",
-    "type": "rank",
+    "type": "hero",
     "first": true,
-    "arg": 6000,
-    "value": 1,
-    "next": 200702,
-    "award": "201:134",
-    "exp": 1000
+    "arg": 5,
+    "value": 5,
+    "inherit": true,
+    "award": "1000080:1"
   },
   "200702": {
-    "title": "竞技场排名2",
+    "title": "获得10个5星英雄",
     "refresh": "always",
-    "type": "rank",
-    "arg": 8000,
-    "value": 1,
-    "award": "201:135",
-    "exp": 1000
+    "type": "hero",
+    "arg": 5,
+    "value": 15,
+    "next": 200702,
+    "inherit": true,
+    "award": "1000080:5"
+  },
+  "200703": {
+    "title": "获得15个5星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 5,
+    "value": 15,
+    "next": 200703,
+    "inherit": true,
+    "award": "1000080:10"
+  },
+  "200704": {
+    "title": "获得20个5星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 5,
+    "value": 20,
+    "next": 200704,
+    "inherit": true,
+    "award": "1000080:15"
+  },
+  "200705": {
+    "title": "获得30个5星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 5,
+    "value": 30,
+    "next": 200705,
+    "inherit": true,
+    "award": "1000080:20"
+  },
+  "200706": {
+    "title": "获得40个5星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 5,
+    "value": 40,
+    "next": 200706,
+    "inherit": true,
+    "award": "1000080:25"
+  },
+  "200707": {
+    "title": "获得50个5星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 5,
+    "value": 50,
+    "next": 200707,
+    "inherit": true,
+    "award": "1000080:30"
+  },
+  "200708": {
+    "title": "获得80个5星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 5,
+    "value": 80,
+    "next": 200708,
+    "inherit": true,
+    "award": "1000080:35"
+  },
+  "200709": {
+    "title": "获得100个5星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 5,
+    "value": 100,
+    "next": 200709,
+    "inherit": true,
+    "award": "1000080:40"
+  },
+  "200710": {
+    "title": "获得150个5星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 5,
+    "value": 150,
+    "next": 200710,
+    "inherit": true,
+    "award": "1000080:45"
+  },
+  "200711": {
+    "title": "获得200个5星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 5,
+    "value": 200,
+    "next": 200711,
+    "inherit": true,
+    "award": "1000080:50"
+  },
+  "200712": {
+    "title": "获得300个5星英雄",
+    "refresh": "always",
+    "type": "hero",
+    "arg": 5,
+    "value": 300,
+    "next": 200712,
+    "inherit": true,
+    "award": "1000080:60"
   },
   "200801": {
-    "title": "神兵等级1",
+    "title": "通天塔到达10层",
+    "refresh": "always",
+    "type": "tttLv",
+    "first": true,
+    "value": 10,
+    "award": "1000050:10&504000:5"
+  },
+  "200802": {
+    "title": "通天塔到达20层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 20,
+    "next": 200802,
+    "inherit": true,
+    "award": "1000050:20&504000:5"
+  },
+  "200803": {
+    "title": "通天塔到达30层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 30,
+    "next": 200803,
+    "inherit": true,
+    "award": "1000050:30&504000:5"
+  },
+  "200804": {
+    "title": "通天塔到达40层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 40,
+    "next": 200804,
+    "inherit": true,
+    "award": "1000050:40&504000:5"
+  },
+  "200805": {
+    "title": "通天塔到达50层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 50,
+    "next": 200805,
+    "inherit": true,
+    "award": "1000050:50&504000:5"
+  },
+  "200806": {
+    "title": "通天塔到达60层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 60,
+    "next": 200806,
+    "inherit": true,
+    "award": "1000050:60&504000:5"
+  },
+  "200807": {
+    "title": "通天塔到达70层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 70,
+    "next": 200807,
+    "inherit": true,
+    "award": "1000050:70&504000:5"
+  },
+  "200808": {
+    "title": "通天塔到达80层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 80,
+    "next": 200808,
+    "inherit": true,
+    "award": "1000050:80&504000:5"
+  },
+  "200809": {
+    "title": "通天塔到达90层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 90,
+    "next": 200809,
+    "inherit": true,
+    "award": "1000050:90&504000:5"
+  },
+  "200810": {
+    "title": "通天塔到达100层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 100,
+    "next": 200810,
+    "inherit": true,
+    "award": "1000050:100&505000:5"
+  },
+  "200811": {
+    "title": "通天塔到达110层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 110,
+    "next": 200811,
+    "inherit": true,
+    "award": "1000050:110&505000:5"
+  },
+  "200812": {
+    "title": "通天塔到达120层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 120,
+    "next": 200812,
+    "inherit": true,
+    "award": "1000050:120&505000:5"
+  },
+  "200813": {
+    "title": "通天塔到达130层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 130,
+    "next": 200813,
+    "inherit": true,
+    "award": "1000050:130&505000:5"
+  },
+  "200814": {
+    "title": "通天塔到达140层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 140,
+    "next": 200814,
+    "inherit": true,
+    "award": "1000050:140&505000:5"
+  },
+  "200815": {
+    "title": "通天塔到达150层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 150,
+    "next": 200815,
+    "inherit": true,
+    "award": "1000050:150&505000:5"
+  },
+  "200816": {
+    "title": "通天塔到达160层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 160,
+    "next": 200816,
+    "inherit": true,
+    "award": "1000050:160&505000:5"
+  },
+  "200817": {
+    "title": "通天塔到达170层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 170,
+    "next": 200817,
+    "inherit": true,
+    "award": "1000050:170&505000:5"
+  },
+  "200818": {
+    "title": "通天塔到达180层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 180,
+    "next": 200818,
+    "inherit": true,
+    "award": "1000050:180&505000:5"
+  },
+  "200819": {
+    "title": "通天塔到达190层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 190,
+    "next": 200819,
+    "inherit": true,
+    "award": "1000050:190&505000:5"
+  },
+  "200820": {
+    "title": "通天塔到达200层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 200,
+    "next": 200820,
+    "inherit": true,
+    "award": "1000050:200&505000:5"
+  },
+  "200821": {
+    "title": "通天塔到达210层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 210,
+    "next": 200821,
+    "inherit": true,
+    "award": "1000050:210&505000:5"
+  },
+  "200822": {
+    "title": "通天塔到达220层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 220,
+    "next": 200822,
+    "inherit": true,
+    "award": "1000050:220&505000:5"
+  },
+  "200823": {
+    "title": "通天塔到达230层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 230,
+    "next": 200823,
+    "inherit": true,
+    "award": "1000050:230&505000:5"
+  },
+  "200824": {
+    "title": "通天塔到达240层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 240,
+    "next": 200824,
+    "inherit": true,
+    "award": "1000050:240&505000:5"
+  },
+  "200825": {
+    "title": "通天塔到达250层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 250,
+    "next": 200825,
+    "inherit": true,
+    "award": "1000050:250&505000:5"
+  },
+  "200826": {
+    "title": "通天塔到达260层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 260,
+    "next": 200826,
+    "inherit": true,
+    "award": "1000050:260&505000:5"
+  },
+  "200827": {
+    "title": "通天塔到达270层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 270,
+    "next": 200827,
+    "inherit": true,
+    "award": "1000050:270&505000:5"
+  },
+  "200828": {
+    "title": "通天塔到达280层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 280,
+    "next": 200828,
+    "inherit": true,
+    "award": "1000050:280&505000:5"
+  },
+  "200829": {
+    "title": "通天塔到达290层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 290,
+    "next": 200829,
+    "inherit": true,
+    "award": "1000050:290&505000:5"
+  },
+  "200830": {
+    "title": "通天塔到达300层",
+    "refresh": "always",
+    "type": "tttLv",
+    "value": 300,
+    "next": 200830,
+    "inherit": true,
+    "award": "1000050:300&505000:5"
+  },
+  "200901": {
+    "title": "英雄祭坛招募10次",
+    "refresh": "always",
+    "type": "recruit",
+    "first": true,
+    "value": 10,
+    "award": "201:10000&505000:5"
+  },
+  "200902": {
+    "title": "英雄祭坛招募50次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 50,
+    "next": 200902,
+    "award": "201:50000&505000:5"
+  },
+  "200903": {
+    "title": "英雄祭坛招募80次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 80,
+    "next": 200903,
+    "award": "201:80000&505000:5"
+  },
+  "200904": {
+    "title": "英雄祭坛招募110次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 110,
+    "next": 200904,
+    "award": "201:110000&505000:5"
+  },
+  "200905": {
+    "title": "英雄祭坛招募140次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 140,
+    "next": 200905,
+    "award": "201:140000&505000:5"
+  },
+  "200906": {
+    "title": "英雄祭坛招募170次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 170,
+    "next": 200906,
+    "award": "201:170000&505000:5"
+  },
+  "200907": {
+    "title": "英雄祭坛招募200次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 200,
+    "next": 200907,
+    "award": "201:200000&505000:5"
+  },
+  "200908": {
+    "title": "英雄祭坛招募230次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 230,
+    "next": 200908,
+    "award": "201:230000&505000:5"
+  },
+  "200909": {
+    "title": "英雄祭坛招募260次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 260,
+    "next": 200909,
+    "award": "201:260000&505000:5"
+  },
+  "200910": {
+    "title": "英雄祭坛招募290次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 290,
+    "next": 200910,
+    "award": "201:290000&505000:5"
+  },
+  "200911": {
+    "title": "英雄祭坛招募320次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 320,
+    "next": 200911,
+    "award": "201:300000&505000:5"
+  },
+  "200912": {
+    "title": "英雄祭坛招募350次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 350,
+    "next": 200912,
+    "award": "201:350000&505000:5"
+  },
+  "200913": {
+    "title": "英雄祭坛招募380次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 380,
+    "next": 200913,
+    "award": "201:380000&505000:5"
+  },
+  "200914": {
+    "title": "英雄祭坛招募410次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 410,
+    "next": 200914,
+    "award": "201:410000&505000:5"
+  },
+  "200915": {
+    "title": "英雄祭坛招募440次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 440,
+    "next": 200915,
+    "award": "201:440000&505000:5"
+  },
+  "200916": {
+    "title": "英雄祭坛招募470次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 470,
+    "next": 200916,
+    "award": "201:470000&505000:5"
+  },
+  "200917": {
+    "title": "英雄祭坛招募500次",
+    "refresh": "always",
+    "type": "recruit",
+    "value": 500,
+    "next": 200917,
+    "award": "201:500000&505000:5"
+  },
+  "201001": {
+    "title": "将军府累计征募5次",
+    "refresh": "always",
+    "type": "general",
+    "first": true,
+    "value": 5,
+    "inherit": true,
+    "award": "1000160:10&203:100"
+  },
+  "201002": {
+    "title": "将军府累计征募10次",
+    "refresh": "always",
+    "type": "general",
+    "value": 10,
+    "next": 201002,
+    "inherit": true,
+    "award": "1000160:10&203:150"
+  },
+  "201003": {
+    "title": "将军府累计征募20次",
+    "refresh": "always",
+    "type": "general",
+    "value": 20,
+    "next": 201003,
+    "inherit": true,
+    "award": "1000160:10&203:200"
+  },
+  "201004": {
+    "title": "将军府累计征募40次",
+    "refresh": "always",
+    "type": "general",
+    "value": 40,
+    "next": 201004,
+    "inherit": true,
+    "award": "1000160:10&203:250"
+  },
+  "201005": {
+    "title": "将军府累计征募80次",
+    "refresh": "always",
+    "type": "general",
+    "value": 80,
+    "next": 201005,
+    "inherit": true,
+    "award": "1000160:10&203:300"
+  },
+  "201006": {
+    "title": "将军府累计征募100次",
+    "refresh": "always",
+    "type": "general",
+    "value": 100,
+    "next": 201006,
+    "inherit": true,
+    "award": "1000160:10&203:350"
+  },
+  "201007": {
+    "title": "将军府累计征募120次",
+    "refresh": "always",
+    "type": "general",
+    "value": 120,
+    "next": 201007,
+    "inherit": true,
+    "award": "1000160:10&203:400"
+  },
+  "201008": {
+    "title": "将军府累计征募140次",
+    "refresh": "always",
+    "type": "general",
+    "value": 140,
+    "next": 201008,
+    "inherit": true,
+    "award": "1000160:10&203:450"
+  },
+  "201009": {
+    "title": "将军府累计征募160次",
+    "refresh": "always",
+    "type": "general",
+    "value": 160,
+    "next": 201009,
+    "inherit": true,
+    "award": "1000160:10&203:500"
+  },
+  "201010": {
+    "title": "将军府累计征募180次",
+    "refresh": "always",
+    "type": "general",
+    "value": 180,
+    "next": 201010,
+    "inherit": true,
+    "award": "1000160:10&203:550"
+  },
+  "201011": {
+    "title": "将军府累计征募200次",
+    "refresh": "always",
+    "type": "general",
+    "value": 200,
+    "next": 201011,
+    "inherit": true,
+    "award": "1000160:10&203:600"
+  },
+  "201012": {
+    "title": "将军府累计征募250次",
+    "refresh": "always",
+    "type": "general",
+    "value": 250,
+    "next": 201012,
+    "inherit": true,
+    "award": "1000160:10&203:650"
+  },
+  "201013": {
+    "title": "将军府累计征募300次",
+    "refresh": "always",
+    "type": "general",
+    "value": 300,
+    "next": 201013,
+    "inherit": true,
+    "award": "1000160:10&203:700"
+  },
+  "201014": {
+    "title": "将军府累计征募350次",
+    "refresh": "always",
+    "type": "general",
+    "value": 350,
+    "next": 201014,
+    "inherit": true,
+    "award": "1000160:10&203:750"
+  },
+  "201015": {
+    "title": "将军府累计征募400次",
+    "refresh": "always",
+    "type": "general",
+    "value": 400,
+    "next": 201015,
+    "inherit": true,
+    "award": "1000160:10&203:800"
+  },
+  "201016": {
+    "title": "将军府累计征募450次",
+    "refresh": "always",
+    "type": "general",
+    "value": 450,
+    "next": 201016,
+    "inherit": true,
+    "award": "1000160:10&203:850"
+  },
+  "201017": {
+    "title": "将军府累计征募500次",
+    "refresh": "always",
+    "type": "general",
+    "value": 500,
+    "next": 201017,
+    "inherit": true,
+    "award": "1000160:10&203:900"
+  },
+  "201018": {
+    "title": "将军府累计征募600次",
+    "refresh": "always",
+    "type": "general",
+    "value": 600,
+    "next": 201018,
+    "inherit": true,
+    "award": "1000160:10&203:950"
+  },
+  "201019": {
+    "title": "将军府累计征募700次",
+    "refresh": "always",
+    "type": "general",
+    "value": 700,
+    "next": 201019,
+    "inherit": true,
+    "award": "1000160:10&203:1000"
+  },
+  "201020": {
+    "title": "将军府累计征募800次",
+    "refresh": "always",
+    "type": "general",
+    "value": 800,
+    "next": 201020,
+    "inherit": true,
+    "award": "1000160:10&203:1050"
+  },
+  "201021": {
+    "title": "将军府累计征募900次",
+    "refresh": "always",
+    "type": "general",
+    "value": 900,
+    "next": 201021,
+    "inherit": true,
+    "award": "1000160:10&203:1100"
+  },
+  "201022": {
+    "title": "将军府累计征募1000次",
+    "refresh": "always",
+    "type": "general",
+    "value": 1000,
+    "next": 201022,
+    "inherit": true,
+    "award": "1000160:10&203:2000"
+  },
+  "201101": {
+    "title": "法宝强化等级到达5级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "first": true,
+    "arg": 5,
+    "value": 1,
+    "inherit": true,
+    "award": "202:50&1000050:50"
+  },
+  "201102": {
+    "title": "法宝强化等级到达10级",
     "refresh": "always",
     "type": "artifactLv",
     "arg": 10,
     "value": 1,
-    "award": "201:136",
-    "exp": 1000
-  },
-  "200901": {
-    "title": "获得锦囊1",
-    "refresh": "always",
-    "type": "ace",
-    "first": true,
-    "arg": 3,
-    "value": 3,
-    "next": 200902,
-    "award": "201:137",
-    "exp": 1000
-  },
-  "200902": {
-    "title": "获得锦囊2",
-    "refresh": "always",
-    "type": "ace",
-    "arg": 4,
-    "value": 1,
-    "award": "201:138",
-    "exp": 1000
-  },
-  "201001": {
-    "title": "通天塔等级1",
-    "refresh": "always",
-    "type": "tttLv",
-    "first": true,
-    "value": 10,
-    "next": 201002,
+    "next": 201102,
     "inherit": true,
-    "award": "201:139",
-    "exp": 1000
+    "award": "202:100&1000050:100"
   },
-  "201002": {
-    "title": "通天塔等级2",
+  "201103": {
+    "title": "法宝强化等级到达15级",
     "refresh": "always",
-    "type": "tttLv",
-    "value": 15,
-    "award": "201:140",
-    "exp": 1000
-  },
-  "301001": {
-    "title": "竞技场连胜3场",
-    "refresh": "week",
-    "type": "arena_streak",
-    "arg": 3,
+    "type": "artifactLv",
+    "arg": 15,
     "value": 1,
-    "award": "201:141",
-    "exp": 1000
+    "next": 201103,
+    "inherit": true,
+    "award": "202:150&1000050:150"
   },
-  "301002": {
-    "title": "合成30件装备",
-    "refresh": "week",
-    "type": "equip_compound",
-    "value": 30,
-    "award": "201:142",
-    "exp": 1000
+  "201104": {
+    "title": "法宝强化等级到达20级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "arg": 20,
+    "value": 1,
+    "next": 201104,
+    "inherit": true,
+    "award": "202:200&1000050:200"
   },
-  "301003": {
-    "title": "竞技场获胜10场",
-    "refresh": "week",
-    "type": "arena_win",
-    "value": 10,
-    "award": "201:143",
-    "exp": 1000
+  "201105": {
+    "title": "法宝强化等级到达25级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "arg": 25,
+    "value": 1,
+    "next": 201105,
+    "inherit": true,
+    "award": "202:250&1000050:250"
   },
-  "301004": {
-    "title": "登录7次",
-    "refresh": "week",
-    "type": "login",
-    "value": 7,
-    "award": "201:100",
-    "exp": 1000
+  "201106": {
+    "title": "法宝强化等级到达30级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "arg": 30,
+    "value": 1,
+    "next": 201106,
+    "inherit": true,
+    "award": "202:300&1000050:300"
   },
-  "401001": {
-    "title": "消耗100万铜钱",
-    "refresh": "month",
+  "201107": {
+    "title": "法宝强化等级到达35级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "arg": 35,
+    "value": 1,
+    "next": 201107,
+    "inherit": true,
+    "award": "202:350&1000050:350"
+  },
+  "201108": {
+    "title": "法宝强化等级到达40级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "arg": 40,
+    "value": 1,
+    "next": 201108,
+    "inherit": true,
+    "award": "202:400&1000050:400"
+  },
+  "201109": {
+    "title": "法宝强化等级到达45级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "arg": 45,
+    "value": 1,
+    "next": 201109,
+    "inherit": true,
+    "award": "202:450&1000050:450"
+  },
+  "201110": {
+    "title": "法宝强化等级到达50级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "arg": 50,
+    "value": 1,
+    "next": 201110,
+    "inherit": true,
+    "award": "202:500&1000050:500"
+  },
+  "201111": {
+    "title": "法宝强化等级到达55级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "arg": 55,
+    "value": 1,
+    "next": 201111,
+    "inherit": true,
+    "award": "202:550&1000050:550"
+  },
+  "201112": {
+    "title": "法宝强化等级到达60级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "arg": 60,
+    "value": 1,
+    "next": 201112,
+    "inherit": true,
+    "award": "202:600&1000050:600"
+  },
+  "201113": {
+    "title": "法宝强化等级到达65级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "arg": 65,
+    "value": 1,
+    "next": 201113,
+    "inherit": true,
+    "award": "202:650&1000050:650"
+  },
+  "201114": {
+    "title": "法宝强化等级到达70级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "arg": 70,
+    "value": 1,
+    "next": 201114,
+    "inherit": true,
+    "award": "202:700&1000050:700"
+  },
+  "201115": {
+    "title": "法宝强化等级到达75级",
+    "refresh": "always",
+    "type": "artifactLv",
+    "arg": 75,
+    "value": 1,
+    "next": 201115,
+    "inherit": true,
+    "award": "202:750&1000050:750"
+  },
+  "201201": {
+    "title": "累计消耗金币到达50万",
+    "refresh": "always",
+    "type": "use_coin",
+    "first": true,
+    "value": 500000,
+    "inherit": true,
+    "award": "1000070:5"
+  },
+  "201202": {
+    "title": "累计消耗金币到达100万",
+    "refresh": "always",
     "type": "use_coin",
     "value": 1000000,
-    "award": "201:144",
-    "exp": 1000
+    "next": 201202,
+    "inherit": true,
+    "award": "1000070:10"
   },
-  "401002": {
-    "title": "消耗3000元宝",
-    "refresh": "month",
-    "type": "use_gold",
-    "value": 3000,
-    "award": "201:145",
-    "exp": 1000
+  "201203": {
+    "title": "累计消耗金币到达300万",
+    "refresh": "always",
+    "type": "use_coin",
+    "value": 3000000,
+    "next": 201203,
+    "inherit": true,
+    "award": "1000070:15"
   },
-  "401003": {
-    "title": "获得100活跃度",
-    "refresh": "month",
+  "201204": {
+    "title": "累计消耗金币到达500万",
+    "refresh": "always",
+    "type": "use_coin",
+    "value": 5000000,
+    "next": 201204,
+    "inherit": true,
+    "award": "1000070:20"
+  },
+  "201205": {
+    "title": "累计消耗金币到达800万",
+    "refresh": "always",
+    "type": "use_coin",
+    "value": 8000000,
+    "next": 201205,
+    "inherit": true,
+    "award": "1000070:25"
+  },
+  "201206": {
+    "title": "累计消耗金币到达1000万",
+    "refresh": "always",
+    "type": "use_coin",
+    "value": 10000000,
+    "next": 201206,
+    "inherit": true,
+    "award": "1000070:30"
+  },
+  "201207": {
+    "title": "累计消耗金币到达2000万",
+    "refresh": "always",
+    "type": "use_coin",
+    "value": 20000000,
+    "next": 201207,
+    "inherit": true,
+    "award": "1000070:35"
+  },
+  "201208": {
+    "title": "累计消耗金币到达5000万",
+    "refresh": "always",
+    "type": "use_coin",
+    "value": 50000000,
+    "next": 201208,
+    "inherit": true,
+    "award": "1000070:40"
+  },
+  "201209": {
+    "title": "累计消耗金币到达8000万",
+    "refresh": "always",
+    "type": "use_coin",
+    "value": 80000000,
+    "next": 201209,
+    "inherit": true,
+    "award": "1000070:45"
+  },
+  "201210": {
+    "title": "累计消耗金币到达9000万",
+    "refresh": "always",
+    "type": "use_coin",
+    "value": 90000000,
+    "next": 201210,
+    "inherit": true,
+    "award": "1000070:50"
+  },
+  "201211": {
+    "title": "累计消耗金币到达1亿",
+    "refresh": "always",
+    "type": "use_coin",
+    "value": 100000000,
+    "next": 201211,
+    "inherit": true,
+    "award": "1000070:55"
+  },
+  "201212": {
+    "title": "累计消耗金币到达3亿",
+    "refresh": "always",
+    "type": "use_coin",
+    "value": 300000000,
+    "next": 201212,
+    "inherit": true,
+    "award": "1000070:60"
+  },
+  "201213": {
+    "title": "累计消耗金币到达5亿",
+    "refresh": "always",
+    "type": "use_coin",
+    "value": 500000000,
+    "next": 201213,
+    "inherit": true,
+    "award": "1000070:65"
+  },
+  "201214": {
+    "title": "累计消耗金币到达10亿",
+    "refresh": "always",
+    "type": "use_coin",
+    "value": 1000000000,
+    "next": 201214,
+    "inherit": true,
+    "award": "1000070:70"
+  },
+  "300101": {
+    "title": "【每周】连续登陆",
+    "des": "连续登陆7天",
+    "refresh": "week",
+    "type": "login",
+    "arg": 1,
+    "value": 7,
+    "exp": 500
+  },
+  "300102": {
+    "title": "【每周】活跃达人",
+    "des": "累计获得600点活跃度",
+    "refresh": "week",
     "type": "liveness",
+    "value": 600,
+    "exp": 500
+  },
+  "300103": {
+    "title": "【每周】挥金如土",
+    "des": "消耗铜币1000万",
+    "refresh": "week",
+    "type": "use_coin",
+    "value": 10000000,
+    "exp": 500
+  },
+  "300104": {
+    "title": "【每周】英雄相助",
+    "des": "获得3个5星英雄",
+    "refresh": "week",
+    "type": "heroLv",
+    "arg": 3,
+    "value": 5,
+    "exp": 500
+  },
+  "300105": {
+    "title": "【每周】竞技称王",
+    "des": "在竞技场中累计胜利30次",
+    "refresh": "week",
+    "type": "arena_win",
+    "arg": 1,
+    "value": 30,
+    "exp": 500
+  },
+  "300106": {
+    "title": "【每周】快速作战",
+    "des": "快速作战15次",
+    "refresh": "week",
+    "type": "quick",
+    "value": 15,
+    "exp": 500
+  },
+  "400101": {
+    "title": "【每月】十星相助",
+    "des": "获得1个10星英雄",
+    "refresh": "month",
+    "type": "heroLv",
+    "arg": 1,
+    "value": 10,
+    "exp": 2000
+  },
+  "400102": {
+    "title": "【每月】战无不胜",
+    "des": "在竞技场中累计胜利200次",
+    "refresh": "month",
+    "type": "arena_win",
+    "arg": 1,
+    "value": 300,
+    "exp": 2000
+  },
+  "400103": {
+    "title": "【每月】英雄祭坛",
+    "des": "英雄祭坛招募100次",
+    "refresh": "month",
+    "type": "recruit",
     "value": 100,
-    "award": "201:146",
-    "exp": 1000
+    "exp": 2000
+  },
+  "400104": {
+    "title": "【每月】英雄分解",
+    "des": "分解英雄200位",
+    "refresh": "month",
+    "type": "resolve",
+    "value": 100,
+    "exp": 2000
+  },
+  "400105": {
+    "title": "【每月】获得英雄",
+    "des": "获得英雄100位",
+    "refresh": "month",
+    "type": "heroLv",
+    "value": 100,
+    "exp": 2000
+  },
+  "400106": {
+    "title": "【每月】装备在手",
+    "des": "获得装备200件",
+    "refresh": "month",
+    "type": "equip",
+    "value": 200,
+    "exp": 2000
+  },
+  "400107": {
+    "title": "【每月】打造装备",
+    "des": "合成装备120件",
+    "refresh": "month",
+    "type": "equip_compound",
+    "value": 120,
+    "exp": 2000
+  },
+  "400108": {
+    "title": "【每月】橙色法宝",
+    "des": "获得3件橙色法宝",
+    "refresh": "month",
+    "type": "ace",
+    "arg": 4,
+    "value": 3,
+    "exp": 2000
+  },
+  "400109": {
+    "title": "【每月】通天作战",
+    "des": "挑战或扫荡通天塔100次",
+    "refresh": "month",
+    "type": "ttt",
+    "value": 100,
+    "exp": 2000
+  },
+  "400110": {
+    "title": "【每月】副本作战",
+    "des": "挑战副本100次",
+    "refresh": "month",
+    "type": "fb",
+    "value": 100,
+    "exp": 2000
   }
 }

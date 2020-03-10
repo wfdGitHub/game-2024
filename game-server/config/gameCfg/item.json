@@ -58,7 +58,7 @@
   },
   "208": {
     "name": "玉璧",
-    "des": "玉璧",
+    "des": "用于兑换英雄",
     "type": "currency",
     "quality": 5
   },
@@ -984,6 +984,11 @@
     "buyNum": 1,
     "quality": 5
   },
+  "1000160": {
+    "name": "刷新券",
+    "des": "用于刷新游历任务",
+    "quality": 4
+  },
   "1001001": {
     "name": "绿色装备宝箱",
     "des": "可开出绿色装备",
@@ -1010,6 +1015,42 @@
     "useType": "chest",
     "arg": "equip_chest_3",
     "quality": 4
+  },
+  "1001004": {
+    "name": "红色元神匣",
+    "des": "可开出红色元神",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "item_chest_2",
+    "quality": 5
+  },
+  "1001005": {
+    "name": "橙色装备宝箱",
+    "des": "可开出橙色装备",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "equip_chest_4",
+    "quality": 5
+  },
+  "1001006": {
+    "name": "橙色元神匣",
+    "des": "可开出橙色元神",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "item_chest_1",
+    "quality": 5
+  },
+  "1001007": {
+    "name": "红色装备宝箱",
+    "des": "可开出红色装备",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "equip_chest_5",
+    "quality": 6
   },
   "5001010": {
     "name": "短剑",
