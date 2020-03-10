@@ -35,6 +35,8 @@ var model = function(otps) {
 	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
 	this.needAnger = otps["needAnger"] || 4				//技能所需怒气值
 	this.curAnger = (otps["curAnger"] || 0) + 2	//当前怒气值
+	this.totalDamage = 0						//累计伤害
+	this.totalHeal = 0							//累计治疗
 	//=========特殊属性=======//
 	this.buffRate								//buff概率   若技能存在buff  以此代替buff本身概率
 	this.buffArg								//buff参数   若技能存在buff  以此代替buff本身参数
@@ -287,7 +289,7 @@ model.prototype.onHit = function(attacker,info,source) {
 	}
 	//无敌吸血盾
 	if(this.buffs["invincibleSuck"]){
-		let healInfo = this.onHeal(attacker,info,source)
+		let healInfo = this.onHeal(this.buffs["invincibleSuck"].releaser,info,source)
 		info.value = -info.value
 		info.realValue = -healInfo.realValue
 		info.curValue = this.attInfo.hp
@@ -300,6 +302,8 @@ model.prototype.onHit = function(attacker,info,source) {
 		info.realValue = this.lessHP(info.value)
 		info.curValue = this.attInfo.hp
 		info.maxHP = this.attInfo.maxHP
+		if(attacker && info.realValue > 0)
+			attacker.totalDamage += info.realValue
 		if(this.died){
 			info.kill = true
 			attacker.kill(this)
@@ -309,7 +313,7 @@ model.prototype.onHit = function(attacker,info,source) {
 	return info
 }
 //受到治疗
-model.prototype.onHeal = function(attacker,info,source) {
+model.prototype.onHeal = function(releaser,info,source) {
 	info.id = this.id
 	info.value = Math.floor(info.value) || 1
 	if(this.forbidden){
@@ -319,6 +323,8 @@ model.prototype.onHeal = function(attacker,info,source) {
 		info.value = Math.floor(info.value * (1 + this.attInfo.healAdd / 10000))
 		info.realValue = this.addHP(info.value)
 	}
+	if(releaser && info.realValue > 0)
+		releaser.totalHeal += info.realValue
 	info.curValue = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
 	return info
@@ -454,6 +460,8 @@ model.prototype.getSimpleInfo = function() {
 	info.hp = this.attInfo.hp
 	info.curAnger = this.curAnger
 	info.needAnger = this.needAnger
+	info.totalDamage = this.totalDamage
+	info.totalHeal = this.totalHeal
 	return info
 }
 model.prototype.addBuff = function(releaser,buff) {

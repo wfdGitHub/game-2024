@@ -247,7 +247,15 @@ model.prototype.checkOver = function() {
 model.prototype.fightOver = function(winFlag) {
 	// console.log("战斗结束")
 	this.isFight = false
-	fightRecord.push({type : "fightOver",winFlag : winFlag})
+	let info = {type : "fightOver",winFlag : winFlag,atkTeam:[],defTeam:[]}
+
+	for(var i = 0;i < teamLength;i++){
+		if(!this.atkTeam[i].isNaN)
+			info.atkTeam.push(this.atkTeam[i].getSimpleInfo())
+		if(!this.defTeam[i].isNaN)
+			info.defTeam.push(this.defTeam[i].getSimpleInfo())
+	}
+	fightRecord.push(info)
 	// fightRecord.explain()
 }
 module.exports = model
