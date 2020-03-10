@@ -216,7 +216,7 @@ model.getTeamShowData = function(team) {
 		atkTeam[i] = this.getCharacterInfo(atkTeam[i])
 	}
 	var defTeam = []
-	var fighting = new fightingFun(atkTeam,defTeam,{})
+	var fighting = new fightingFun(atkTeam,defTeam,{atkRaceType : this.getRaceType(atkTeam)})
 	return fighting.atkTeam
 }
 model.getTeamCE = function(team) {

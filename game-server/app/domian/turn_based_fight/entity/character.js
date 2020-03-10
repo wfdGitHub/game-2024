@@ -449,6 +449,7 @@ model.prototype.getSimpleInfo = function() {
 	var info = {}
 	info.id = this.id
 	info.name = this.name
+	info.realm = this.realm
 	info.atk = this.attInfo.atk
 	info.hp = this.attInfo.hp
 	info.curAnger = this.curAnger
