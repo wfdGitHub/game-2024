@@ -77,7 +77,7 @@ model.getCharacterInfo = function(info) {
 	}
 	info = Object.assign({},info)
 	let id = info.id
-	Object.assign(info,herosCfg[id])
+	model.mergeData(info,herosCfg[id])
 	if(info.defaultSkill){
 		if(!skillsCfg[info.defaultSkill]){
 			console.error("技能不存在",info.id,info.defaultSkill)

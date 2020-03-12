@@ -20,7 +20,7 @@ var model = function(atkTeam,defTeam,otps) {
     skillManager.init(this,this.locator,this.formula,this.seeded)
 	this.isFight = true				//战斗中标识
 	this.round = 0					//当前回合
-	this.maxRound = maxRound		//最大回合
+	this.maxRound = otps.maxRound || maxRound		//最大回合
 	this.atkTeam = atkTeam			//攻方阵容  长度为6的角色数组  位置无人则为NULL
 	this.defTeam = defTeam			//守方阵容
 	this.allTeam = 					//双方阵容
