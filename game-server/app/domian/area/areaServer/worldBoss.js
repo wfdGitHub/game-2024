@@ -21,30 +21,31 @@ module.exports = function() {
 	//检测时间BOSS玩法开启
 	this.worldBossCheck = function() {
 		let curMilliseconds = util.getDayMilliseconds()
-		let time = 0
+		let tmpTime = 0
 		bossIndex = (new Date()).getDay() * 2
 		if(curMilliseconds < world_boss_cfg["openTime1"]["value"]){
 			//设定时间至第一场开启
 			round = 1
-			time = world_boss_cfg["openTime1"]["value"] - curMilliseconds
+			tmpTime = world_boss_cfg["openTime1"]["value"] - curMilliseconds
 		}else if(curMilliseconds < world_boss_cfg["openTime2"]["value"]){
 			//设定时间至第二场开启
 			round = 2
 			bossIndex += 1
-			time = world_boss_cfg["openTime2"]["value"] - curMilliseconds
+			tmpTime = world_boss_cfg["openTime2"]["value"] - curMilliseconds
 		}else{
 			//设定至第二天第一场
 			round = 1
 			bossIndex += 2
-			time = 86400000 - curMilliseconds + world_boss_cfg["openTime1"]["value"]
+			tmpTime = 86400000 - curMilliseconds + world_boss_cfg["openTime1"]["value"]
 		}
 		bossIndex = bossIndex % 15
 		bossId = world_boss_base[bossIndex]["bossId"]
 		bossTeam = [0,0,0,0,bossId,0]
-		time = 10000
-		console.log("开启时间:",time)
+		tmpTime = 10000
+		time = Date.now() + tmpTime
+		console.log("开启时间:",tmpTime)
 		clearTimeout(timer)
-		timer = setTimeout(this.worldBossChallengeStage.bind(this),time)
+		timer = setTimeout(this.worldBossChallengeStage.bind(this),tmpTime)
 	}
 	//世界BOSS玩法开启  开始挑战
 	this.worldBossChallengeStage= function() {
