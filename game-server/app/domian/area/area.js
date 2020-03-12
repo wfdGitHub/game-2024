@@ -2,8 +2,14 @@
 var bearcat = require("bearcat")
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
 var async = require("async")
-var areaServers = ["bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
+const standard_dl = require("../../../config/gameCfg/standard_dl.json")
+const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
+const areaServers = ["worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
 const oneDayTime = 86400000
+var standard_ce = {}
+for(var i in standard_ce_cfg){
+	standard_ce[i] = JSON.parse(standard_ce_cfg[i]["base"])
+}
 var area = function(otps,app) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName
@@ -25,6 +31,7 @@ var area = function(otps,app) {
 //服务器初始化
 area.prototype.init = function() {
 	console.log("area init")
+	this.worldBossCheck()
 	setInterval(this.update.bind(this),1000)
 }
 //update
@@ -52,7 +59,7 @@ area.prototype.register = function(otps,cb) {
 					return
 				}
 				self.taskInit(playerInfo.uid)
-				self.initArenaRank(playerInfo.uid,otps.name,otps.sex)
+				self.initArenaRank(playerInfo.uid,otps.name)
 				self.setPlayerData(playerInfo.uid,"onhookLastTime",Date.now())
 				//TODO test
 				self.addItem({uid : playerInfo.uid,itemId : 101,value : 1000000})
@@ -226,10 +233,30 @@ area.prototype.getSimpleUser = function(uid) {
 		return false
 	}
 	var info = {
-		name : this.players[uid]["name"],
-		sex : this.players[uid]["sex"]
+		uid : uid,
+		name : this.players[uid]["name"]
 	}
 	return info
+}
+//基准战力阵容
+area.prototype.standardTeam = function(uid,team,dl) {
+	let lv = this.getLordLv(uid)
+	let standardInfo = standard_ce[lv]
+	let dlInfo = standard_dl[dl]
+	let info = Object.assign({},standardInfo)
+	if(dlInfo.lv){
+		info.lv += dlInfo.lv
+		delete dlInfo.lv
+	}
+	info = Object.assign(info,dlInfo)
+	console.log(lv,standardInfo,dlInfo,info)
+	for(var i = 0;i < team.length;i++){
+		if(team[i]){
+			team[i] = Object.assign({id : team[i]},info)
+		}
+	}
+	console.log("team",team)
+	return team
 }
 module.exports = {
 	id : "area",

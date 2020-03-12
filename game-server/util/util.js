@@ -36,6 +36,11 @@ util.prototype.getMonth = function(){
     let d1 = new Date();
     return d1.getFullYear() + "-" + d1.getMonth();
 }
+//获取今天为止的毫秒数
+util.prototype.getDayMilliseconds = function() {
+    var date = new Date()
+    return ((date.getHours() * 60 + date.getMinutes()) * 60 + date.getSeconds()) * 1000 + date.getMilliseconds()
+}
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;

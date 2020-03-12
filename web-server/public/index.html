@@ -72,6 +72,31 @@
             console.log(data);
         });
       }
+      //============世界BOSS==============//
+      //获取世界BOSS数据
+      var getWorldBossData = function() {
+        pomelo.request("area.worldBossHandler.getWorldBossData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战世界BOSS
+      var challengeWorldBoss = function() {
+        pomelo.request("area.worldBossHandler.challengeWorldBoss", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取排行榜
+      var getWorldBossRank = function() {
+        pomelo.request("area.worldBossHandler.getWorldBossRank", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //抢夺玩家
+      var robWorldBossPlayer = function(targetUid) {
+        pomelo.request("area.worldBossHandler.robWorldBossPlayer", {targetUid : targetUid}, function(data) {
+            console.log(data);
+        });
+      }
       //============集市相关==============//
       //获取集市数据
       var getBazaarData = function() {
@@ -920,6 +945,7 @@
     <div class="g-button">
       登录系统 : 
       <input id="test" type="button" value="登录账号" onclick="entry(10002)"/>
+      <input id="test" type="button" value="游客账号" onclick="entry(Date.now())"/>
       <input id="test" type="button" value="注册角色" onclick="register(2,''+Date.now(),1)"/>
       <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>

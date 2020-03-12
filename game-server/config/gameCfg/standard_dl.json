@@ -1,0 +1,29 @@
+{
+  "1": {
+    "amplify": -0.2,
+    "ce_add": 0.8
+  },
+  "2": {
+    "ce_add": 1
+  },
+  "3": {
+    "lv": 1,
+    "self_maxHP_add": 0.2,
+    "amplify": 0.2,
+    "ce_add": 1.25
+  },
+  "4": {
+    "lv": 2,
+    "self_maxHP_add": 0.4,
+    "amplify": 0.3,
+    "reduction": 0.1,
+    "ce_add": 1.5
+  },
+  "5": {
+    "lv": 3,
+    "self_maxHP_add": 1,
+    "amplify": 0.5,
+    "reduction": 0.2,
+    "ce_add": 1.75
+  }
+}

@@ -71,7 +71,7 @@ module.exports = function() {
 		})
 	}
 	//初始化玩家排名
-	this.initArenaRank = function(uid,name,sex) {
+	this.initArenaRank = function(uid,name) {
 		self.redisDao.db.hincrby("area:area"+self.areaId+":areaInfo","lastRank",1,function(err,rank) {
 			var info = {
 				rank : rank,
@@ -80,7 +80,7 @@ module.exports = function() {
 				highestRank : rank				//最高排名
 			}
 			self.setHMObj(uid,mainName,info)
-			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,JSON.stringify({uid : uid,sex : sex,name : name}))
+			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,JSON.stringify({uid : uid,name : name}))
 		})
 	}
 	//购买竞技场奖励商城物品

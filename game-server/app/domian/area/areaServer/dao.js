@@ -94,4 +94,38 @@ module.exports = function() {
 	this.getPlayerDataAll = function(uid,cb) {
 		self.getObjAll(uid,"playerData",cb)
 	}
+	//增加有序列表数据
+	this.addZset = function(zname,key,score,cb) {
+		console.log("addZset",zname,key,score)
+		this.redisDao.db.zadd("area:area"+this.areaId+":zset:"+zname,score,key,function(err,data) {
+			console.log(err,data)
+			if(cb){
+				cb(data)
+			}
+		})
+	}
+	//删除有序列表
+	this.delZset = function(zname,cb) {
+		this.redisDao.db.del("area:area"+this.areaId+":zset:"+zname,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
+	//获取有序列表不带分数
+	this.zrange = function(zname,begin,end,cb) {
+		this.redisDao.db.zrange("area:area"+this.areaId+":zset:"+zname,begin,end,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
+	//获取有序列表带分数
+	this.zrangewithscore = function(zname,begin,end,cb) {
+		this.redisDao.db.zrange("area:area"+this.areaId+":zset:"+zname,begin,end,"WITHSCORES",function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
 }

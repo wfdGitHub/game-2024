@@ -1,0 +1,46 @@
+{
+  "challengeCount": {
+    "name": "挑战次数",
+    "value": 3
+  },
+  "robCount": {
+    "name": "抢夺次数",
+    "value": 3
+  },
+  "lossCount": {
+    "name": "被抢次数",
+    "value": 3
+  },
+  "fightRound": {
+    "name": "战斗回合",
+    "value": 5
+  },
+  "openTime1": {
+    "name": "第一场开启时间",
+    "value": 36000000
+  },
+  "openTime2": {
+    "name": "第二场开启时间",
+    "value": 64800000
+  },
+  "challengeTime": {
+    "name": "挑战时长",
+    "value": 20000
+  },
+  "robTime": {
+    "name": "竞技时长",
+    "value": 20000
+  },
+  "score": {
+    "name": "伤害转化积分比例",
+    "value": 0.01
+  },
+  "coin": {
+    "name": "挑战奖励铜币比例",
+    "value": 0.01
+  },
+  "coin_max": {
+    "name": "铜币转换上限",
+    "value": 100000
+  }
+}

@@ -145,7 +145,7 @@ acepackHandler.prototype.compoundAcepack = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   var aId = Number(msg.aId)
-  if(!aId || !ace_pack[aId] || ace_pack[aId]["quality"] != 4){
+  if(!aId || !ace_pack[aId] || ace_pack[aId]["quality"] != 7){
     next(null,{flag : false,err : "aId error "+aId})
     return
   }
@@ -153,7 +153,7 @@ acepackHandler.prototype.compoundAcepack = function(msg, session, next) {
   var pc = "201:1000000"
   var num = 0
   for(var i in msg.list){
-    if(!ace_pack[i] || ace_pack[i]["quality"] != 3 || !Number.isInteger(msg.list[i]) || msg.list[i] < 1){
+    if(!ace_pack[i] || ace_pack[i]["quality"] != 6 || !Number.isInteger(msg.list[i]) || msg.list[i] < 1){
       next(null,{flag : false,err : "list error "+msg.list})
       return
     }
