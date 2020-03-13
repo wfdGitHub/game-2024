@@ -23,14 +23,12 @@ var model = function(releaser,character,otps) {
 		if(otps.duration > this.duration)
 			this.duration = otps.duration
 		list[id++] = {duration : otps.duration,value : otps.buffArg}
-		console.log("overlay",id)
 	}
 	buff.getValue = function() {
 		var value = 0
 		for(var i in list){
 			value += list[i].value
 		}
-		console.log("value ",value)
 		return value
 	}
 	return buff
