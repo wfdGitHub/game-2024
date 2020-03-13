@@ -86,7 +86,6 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			}
 		}
 	}
-	console.log("atkTeamAdds",atkTeamAdds,"defTeamAdds",defTeamAdds)
 	//属性加成
 	for(var i = 0;i < teamLength;i++){
 		atkTeam[i].calAttAdd(atkTeamAdds)
