@@ -209,6 +209,7 @@ module.exports = function() {
 		    let seededNum = Date.now()
 		    let winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			let info = {
+				type : "robWorldBoss",
 				winFlag : winFlag,
 				time : seededNum,
 				atk : userInfos[uid],
