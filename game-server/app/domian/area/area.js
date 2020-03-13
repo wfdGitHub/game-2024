@@ -249,13 +249,11 @@ area.prototype.standardTeam = function(uid,team,dl) {
 		delete dlInfo.lv
 	}
 	info = Object.assign(info,dlInfo)
-	console.log(lv,standardInfo,dlInfo,info)
 	for(var i = 0;i < team.length;i++){
 		if(team[i]){
 			team[i] = Object.assign({id : team[i]},info)
 		}
 	}
-	console.log("team",team)
 	return team
 }
 module.exports = {
