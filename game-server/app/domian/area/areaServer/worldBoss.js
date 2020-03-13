@@ -41,7 +41,7 @@ module.exports = function() {
 		bossIndex = bossIndex % 15
 		bossId = world_boss_base[bossIndex]["bossId"]
 		bossTeam = [0,0,0,0,bossId,0]
-		tmpTime = 10000
+		// tmpTime = 10000
 		time = Date.now() + tmpTime
 		console.log("开启时间:",tmpTime)
 		clearTimeout(timer)

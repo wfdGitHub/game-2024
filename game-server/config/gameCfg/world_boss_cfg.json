@@ -25,11 +25,11 @@
   },
   "challengeTime": {
     "name": "挑战时长",
-    "value": 20000
+    "value": 3600000
   },
   "robTime": {
     "name": "竞技时长",
-    "value": 20000
+    "value": 3600000
   },
   "score": {
     "name": "伤害转化积分比例",
