@@ -13,7 +13,6 @@ var model = function(atkTeam,defTeam,otps) {
     this.atkTeamInfo = {}
     this.defTeamInfo = {}
 	this.seededNum = otps.seededNum || (new Date()).getTime()
-	this.load(atkTeam,defTeam,otps)
     this.seeded = new seeded(this.seededNum)
     this.locator = new locator(this.seeded)
     this.formula = new formula(this.seeded)
@@ -33,6 +32,7 @@ var model = function(atkTeam,defTeam,otps) {
 	}]
 	this.teamIndex = 0				//当前行动阵容
 	this.character = false 			//当前行动角色
+	this.load(atkTeam,defTeam,otps)
 }
 //初始配置
 model.prototype.load = function(atkTeam,defTeam,otps) {
