@@ -212,6 +212,9 @@ module.exports = function() {
 				type : "robWorldBoss",
 				winFlag : winFlag,
 				time : seededNum,
+				atkTeam : atkTeam,
+				defTeam : defTeam,
+				seededNum : seededNum,
 				atk : userInfos[uid],
 				def : userInfos[targetUid]
 			}
