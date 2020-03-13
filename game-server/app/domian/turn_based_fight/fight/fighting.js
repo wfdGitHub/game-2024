@@ -38,8 +38,8 @@ var model = function(atkTeam,defTeam,otps) {
 model.prototype.load = function(atkTeam,defTeam,otps) {
 	var info = {type : "fightBegin",atkTeam : [],defTeam : [],seededNum : this.seededNum}
 	var id = 0
-	var atkTeamAdds = this.raceAdd(otps.atkRaceType)
-	var defTeamAdds = this.raceAdd(otps.defRaceType)
+	var atkTeamAdds = Object.assign({},otps.atkTeamAdds)
+	var defTeamAdds = Object.assign({},otps.defTeamAdds)
 	for(var i = 0;i < teamLength;i++){
 		if(!atkTeam[i]){
 			atkTeam[i] = new character({})
@@ -86,7 +86,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			}
 		}
 	}
-	// console.log("atkTeamAdds",atkTeamAdds,"defTeamAdds",defTeamAdds)
+	console.log("atkTeamAdds",atkTeamAdds,"defTeamAdds",defTeamAdds)
 	//属性加成
 	for(var i = 0;i < teamLength;i++){
 		atkTeam[i].calAttAdd(atkTeamAdds)
@@ -107,25 +107,6 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			var burnBuffInfo = defTeam[i].first_buff
 			buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 		}
-	}
-}
-//种族加成
-model.prototype.raceAdd = function(raceType) {
-	switch(raceType){
-		case 1:
-		return {"atk" : 0.06,"maxHP" : 0.09}
-		case 2:
-		return {"atk" : 0.08,"maxHP" : 0.12}
-		case 3:
-		return {"atk" : 0.1,"maxHP" : 0.15}
-		case 4:
-		return {"atk" : 0.12,"maxHP" : 0.18}
-		case 5:
-		return {"atk" : 0.14,"maxHP" : 0.21,"reduction" : 0.05}
-		case 6:
-		return {"atk" : 0.2,"maxHP" : 0.3,"reduction" : 0.1}
-		default:
-		return {}
 	}
 }
 //开始新轮次

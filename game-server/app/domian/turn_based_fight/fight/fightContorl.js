@@ -31,8 +31,10 @@ model.beginFight = function(atkTeam,defTeam,otps) {
       atkTeamList[i] = this.getCharacterInfo(atkTeam[i])
       defTeamList[i] = this.getCharacterInfo(defTeam[i])
     }
-    otps.atkRaceType = this.getRaceType(atkTeamList)
-    otps.defRaceType = this.getRaceType(defTeamList)
+    otps.atkTeamAdds = Object.assign({},otps.atkTeamAdds)
+    otps.defTeamAdds = Object.assign({},otps.defTeamAdds)
+    model.mergeData(otps.atkTeamAdds,this.raceAdd(this.getRaceType(atkTeamList)))
+    model.mergeData(otps.defTeamAdds,this.raceAdd(this.getRaceType(defTeamList)))
 	var fighting = new fightingFun(atkTeamList,defTeamList,otps)
 	fighting.nextRound()
 	return fightRecord.isWin()
@@ -66,6 +68,25 @@ model.getRaceType = function(team) {
 		return 1
 	}
 	return 0
+}
+//种族加成
+model.raceAdd = function(raceType) {
+	switch(raceType){
+		case 1:
+		return {"atk" : 0.06,"maxHP" : 0.09}
+		case 2:
+		return {"atk" : 0.08,"maxHP" : 0.12}
+		case 3:
+		return {"atk" : 0.1,"maxHP" : 0.15}
+		case 4:
+		return {"atk" : 0.12,"maxHP" : 0.18}
+		case 5:
+		return {"atk" : 0.14,"maxHP" : 0.21,"reduction" : 0.05}
+		case 6:
+		return {"atk" : 0.2,"maxHP" : 0.3,"reduction" : 0.1}
+		default:
+		return {}
+	}
 }
 model.getFightRecord = function() {
 	return fightRecord.getList()
