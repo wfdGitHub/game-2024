@@ -7,7 +7,7 @@
     "compound_pc": 1056,
     "sell_prize": 250,
     "lv": 1,
-    "quality": 1,
+    "quality": 2,
     "star": 1,
     "next": 5002010
   },
@@ -19,7 +19,7 @@
     "compound_pc": 1056,
     "sell_prize": 250,
     "lv": 1,
-    "quality": 1,
+    "quality": 2,
     "star": 1,
     "next": 5002020
   },
@@ -31,7 +31,7 @@
     "compound_pc": 1056,
     "sell_prize": 250,
     "lv": 1,
-    "quality": 1,
+    "quality": 2,
     "star": 1,
     "next": 5002030
   },
@@ -43,7 +43,7 @@
     "compound_pc": 1056,
     "sell_prize": 250,
     "lv": 1,
-    "quality": 1,
+    "quality": 2,
     "star": 1,
     "next": 5002040
   },
@@ -55,7 +55,7 @@
     "compound_pc": 2323,
     "sell_prize": 500,
     "lv": 2,
-    "quality": 1,
+    "quality": 2,
     "star": 2,
     "next": 5003010
   },
@@ -67,7 +67,7 @@
     "compound_pc": 2323,
     "sell_prize": 500,
     "lv": 2,
-    "quality": 1,
+    "quality": 2,
     "star": 2,
     "next": 5003020
   },
@@ -79,7 +79,7 @@
     "compound_pc": 2323,
     "sell_prize": 500,
     "lv": 2,
-    "quality": 1,
+    "quality": 2,
     "star": 2,
     "next": 5003030
   },
@@ -91,7 +91,7 @@
     "compound_pc": 2323,
     "sell_prize": 500,
     "lv": 2,
-    "quality": 1,
+    "quality": 2,
     "star": 2,
     "next": 5003040
   },
@@ -103,7 +103,7 @@
     "compound_pc": 4994,
     "sell_prize": 1000,
     "lv": 3,
-    "quality": 2,
+    "quality": 3,
     "star": 1,
     "next": 5004010
   },
@@ -115,7 +115,7 @@
     "compound_pc": 4994,
     "sell_prize": 1000,
     "lv": 3,
-    "quality": 2,
+    "quality": 3,
     "star": 1,
     "next": 5004020
   },
@@ -127,7 +127,7 @@
     "compound_pc": 4994,
     "sell_prize": 1000,
     "lv": 3,
-    "quality": 2,
+    "quality": 3,
     "star": 1,
     "next": 5004030
   },
@@ -139,7 +139,7 @@
     "compound_pc": 4994,
     "sell_prize": 1000,
     "lv": 3,
-    "quality": 2,
+    "quality": 3,
     "star": 1,
     "next": 5004040
   },
@@ -151,7 +151,7 @@
     "compound_pc": 10487,
     "sell_prize": 2000,
     "lv": 4,
-    "quality": 2,
+    "quality": 3,
     "star": 2,
     "next": 5005010
   },
@@ -163,7 +163,7 @@
     "compound_pc": 10487,
     "sell_prize": 2000,
     "lv": 4,
-    "quality": 2,
+    "quality": 3,
     "star": 2,
     "next": 5005020
   },
@@ -175,7 +175,7 @@
     "compound_pc": 10487,
     "sell_prize": 2000,
     "lv": 4,
-    "quality": 2,
+    "quality": 3,
     "star": 2,
     "next": 5005030
   },
@@ -187,7 +187,7 @@
     "compound_pc": 10487,
     "sell_prize": 2000,
     "lv": 4,
-    "quality": 2,
+    "quality": 3,
     "star": 2,
     "next": 5005040
   },
@@ -199,7 +199,7 @@
     "compound_pc": 21498,
     "sell_prize": 4500,
     "lv": 5,
-    "quality": 3,
+    "quality": 4,
     "star": 1,
     "next": 5006010
   },
@@ -211,7 +211,7 @@
     "compound_pc": 21498,
     "sell_prize": 4500,
     "lv": 5,
-    "quality": 3,
+    "quality": 4,
     "star": 1,
     "next": 5006020
   },
@@ -223,7 +223,7 @@
     "compound_pc": 21498,
     "sell_prize": 4500,
     "lv": 5,
-    "quality": 3,
+    "quality": 4,
     "star": 1,
     "next": 5006030
   },
@@ -235,7 +235,7 @@
     "compound_pc": 21498,
     "sell_prize": 4500,
     "lv": 5,
-    "quality": 3,
+    "quality": 4,
     "star": 1,
     "next": 5006040
   },
@@ -247,7 +247,7 @@
     "compound_pc": 42996,
     "sell_prize": 7500,
     "lv": 6,
-    "quality": 3,
+    "quality": 4,
     "star": 2,
     "next": 5007010
   },
@@ -259,7 +259,7 @@
     "compound_pc": 42996,
     "sell_prize": 7500,
     "lv": 6,
-    "quality": 3,
+    "quality": 4,
     "star": 2,
     "next": 5007020
   },
@@ -271,7 +271,7 @@
     "compound_pc": 42996,
     "sell_prize": 7500,
     "lv": 6,
-    "quality": 3,
+    "quality": 4,
     "star": 2,
     "next": 5007030
   },
@@ -283,7 +283,7 @@
     "compound_pc": 42996,
     "sell_prize": 7500,
     "lv": 6,
-    "quality": 3,
+    "quality": 4,
     "star": 2,
     "next": 5007040
   },
@@ -295,7 +295,7 @@
     "compound_pc": 83842,
     "sell_prize": 12500,
     "lv": 7,
-    "quality": 3,
+    "quality": 4,
     "star": 3,
     "next": 5008010
   },
@@ -307,7 +307,7 @@
     "compound_pc": 83842,
     "sell_prize": 12500,
     "lv": 7,
-    "quality": 3,
+    "quality": 4,
     "star": 3,
     "next": 5008020
   },
@@ -319,7 +319,7 @@
     "compound_pc": 83842,
     "sell_prize": 12500,
     "lv": 7,
-    "quality": 3,
+    "quality": 4,
     "star": 3,
     "next": 5008030
   },
@@ -331,7 +331,7 @@
     "compound_pc": 83842,
     "sell_prize": 12500,
     "lv": 7,
-    "quality": 3,
+    "quality": 4,
     "star": 3,
     "next": 5008040
   },
@@ -343,7 +343,7 @@
     "compound_pc": 155107,
     "sell_prize": 21500,
     "lv": 8,
-    "quality": 4,
+    "quality": 5,
     "star": 1,
     "next": 5009010
   },
@@ -355,7 +355,7 @@
     "compound_pc": 155107,
     "sell_prize": 21500,
     "lv": 8,
-    "quality": 4,
+    "quality": 5,
     "star": 1,
     "next": 5009020
   },
@@ -367,7 +367,7 @@
     "compound_pc": 155107,
     "sell_prize": 21500,
     "lv": 8,
-    "quality": 4,
+    "quality": 5,
     "star": 1,
     "next": 5009030
   },
@@ -379,7 +379,7 @@
     "compound_pc": 155107,
     "sell_prize": 21500,
     "lv": 8,
-    "quality": 4,
+    "quality": 5,
     "star": 1,
     "next": 5009040
   },
@@ -391,7 +391,7 @@
     "compound_pc": 286947,
     "sell_prize": 36500,
     "lv": 9,
-    "quality": 4,
+    "quality": 5,
     "star": 2,
     "next": 5010010
   },
@@ -403,7 +403,7 @@
     "compound_pc": 286947,
     "sell_prize": 36500,
     "lv": 9,
-    "quality": 4,
+    "quality": 5,
     "star": 2,
     "next": 5010020
   },
@@ -415,7 +415,7 @@
     "compound_pc": 286947,
     "sell_prize": 36500,
     "lv": 9,
-    "quality": 4,
+    "quality": 5,
     "star": 2,
     "next": 5010030
   },
@@ -427,7 +427,7 @@
     "compound_pc": 286947,
     "sell_prize": 36500,
     "lv": 9,
-    "quality": 4,
+    "quality": 5,
     "star": 2,
     "next": 5010040
   },
@@ -439,7 +439,7 @@
     "compound_pc": 487809,
     "sell_prize": 62500,
     "lv": 10,
-    "quality": 4,
+    "quality": 5,
     "star": 3,
     "next": 5011010
   },
@@ -451,7 +451,7 @@
     "compound_pc": 487809,
     "sell_prize": 62500,
     "lv": 10,
-    "quality": 4,
+    "quality": 5,
     "star": 3,
     "next": 5011020
   },
@@ -463,7 +463,7 @@
     "compound_pc": 487809,
     "sell_prize": 62500,
     "lv": 10,
-    "quality": 4,
+    "quality": 5,
     "star": 3,
     "next": 5011030
   },
@@ -475,7 +475,7 @@
     "compound_pc": 487809,
     "sell_prize": 62500,
     "lv": 10,
-    "quality": 4,
+    "quality": 5,
     "star": 3,
     "next": 5011040
   },
@@ -487,7 +487,7 @@
     "compound_pc": 780494,
     "sell_prize": 105000,
     "lv": 11,
-    "quality": 4,
+    "quality": 5,
     "star": 4,
     "next": 5012010
   },
@@ -499,7 +499,7 @@
     "compound_pc": 780494,
     "sell_prize": 105000,
     "lv": 11,
-    "quality": 4,
+    "quality": 5,
     "star": 4,
     "next": 5012020
   },
@@ -511,7 +511,7 @@
     "compound_pc": 780494,
     "sell_prize": 105000,
     "lv": 11,
-    "quality": 4,
+    "quality": 5,
     "star": 4,
     "next": 5012030
   },
@@ -523,7 +523,7 @@
     "compound_pc": 780494,
     "sell_prize": 105000,
     "lv": 11,
-    "quality": 4,
+    "quality": 5,
     "star": 4,
     "next": 5012040
   },
@@ -535,7 +535,7 @@
     "compound_pc": 1170741,
     "sell_prize": 175000,
     "lv": 12,
-    "quality": 5,
+    "quality": 6,
     "star": 1,
     "next": 5013010
   },
@@ -547,7 +547,7 @@
     "compound_pc": 1170741,
     "sell_prize": 175000,
     "lv": 12,
-    "quality": 5,
+    "quality": 6,
     "star": 1,
     "next": 5013020
   },
@@ -559,7 +559,7 @@
     "compound_pc": 1170741,
     "sell_prize": 175000,
     "lv": 12,
-    "quality": 5,
+    "quality": 6,
     "star": 1,
     "next": 5013030
   },
@@ -571,7 +571,7 @@
     "compound_pc": 1170741,
     "sell_prize": 175000,
     "lv": 12,
-    "quality": 5,
+    "quality": 6,
     "star": 1,
     "next": 5013040
   },
@@ -583,7 +583,7 @@
     "compound_pc": 1639037,
     "sell_prize": 290000,
     "lv": 13,
-    "quality": 5,
+    "quality": 6,
     "star": 2,
     "next": 5014010
   },
@@ -595,7 +595,7 @@
     "compound_pc": 1639037,
     "sell_prize": 290000,
     "lv": 13,
-    "quality": 5,
+    "quality": 6,
     "star": 2,
     "next": 5014020
   },
@@ -607,7 +607,7 @@
     "compound_pc": 1639037,
     "sell_prize": 290000,
     "lv": 13,
-    "quality": 5,
+    "quality": 6,
     "star": 2,
     "next": 5014030
   },
@@ -619,7 +619,7 @@
     "compound_pc": 1639037,
     "sell_prize": 290000,
     "lv": 13,
-    "quality": 5,
+    "quality": 6,
     "star": 2,
     "next": 5014040
   },
@@ -631,7 +631,7 @@
     "compound_pc": 2294651,
     "sell_prize": 490000,
     "lv": 14,
-    "quality": 5,
+    "quality": 6,
     "star": 3,
     "next": 5015010
   },
@@ -643,7 +643,7 @@
     "compound_pc": 2294651,
     "sell_prize": 490000,
     "lv": 14,
-    "quality": 5,
+    "quality": 6,
     "star": 3,
     "next": 5015020
   },
@@ -655,7 +655,7 @@
     "compound_pc": 2294651,
     "sell_prize": 490000,
     "lv": 14,
-    "quality": 5,
+    "quality": 6,
     "star": 3,
     "next": 5015030
   },
@@ -667,7 +667,7 @@
     "compound_pc": 2294651,
     "sell_prize": 490000,
     "lv": 14,
-    "quality": 5,
+    "quality": 6,
     "star": 3,
     "next": 5015040
   },
@@ -679,7 +679,7 @@
     "compound_pc": 2753581,
     "sell_prize": 800000,
     "lv": 15,
-    "quality": 5,
+    "quality": 6,
     "star": 4,
     "next": 5016010
   },
@@ -691,7 +691,7 @@
     "compound_pc": 2753581,
     "sell_prize": 800000,
     "lv": 15,
-    "quality": 5,
+    "quality": 6,
     "star": 4,
     "next": 5016020
   },
@@ -703,7 +703,7 @@
     "compound_pc": 2753581,
     "sell_prize": 800000,
     "lv": 15,
-    "quality": 5,
+    "quality": 6,
     "star": 4,
     "next": 5016030
   },
@@ -715,7 +715,7 @@
     "compound_pc": 2753581,
     "sell_prize": 800000,
     "lv": 15,
-    "quality": 5,
+    "quality": 6,
     "star": 4,
     "next": 5016040
   },
@@ -727,7 +727,7 @@
     "compound_pc": 3166618,
     "sell_prize": 1400000,
     "lv": 16,
-    "quality": 5,
+    "quality": 6,
     "star": 5,
     "next": 5017010
   },
@@ -739,7 +739,7 @@
     "compound_pc": 3166618,
     "sell_prize": 1400000,
     "lv": 16,
-    "quality": 5,
+    "quality": 6,
     "star": 5,
     "next": 5017020
   },
@@ -751,7 +751,7 @@
     "compound_pc": 3166618,
     "sell_prize": 1400000,
     "lv": 16,
-    "quality": 5,
+    "quality": 6,
     "star": 5,
     "next": 5017030
   },
@@ -763,7 +763,7 @@
     "compound_pc": 3166618,
     "sell_prize": 1400000,
     "lv": 16,
-    "quality": 5,
+    "quality": 6,
     "star": 5,
     "next": 5017040
   },
@@ -774,7 +774,7 @@
     "pa": "atk:12000",
     "sell_prize": 2400000,
     "lv": 17,
-    "quality": 5,
+    "quality": 6,
     "star": 6
   },
   "5017020": {
@@ -784,7 +784,7 @@
     "pa": "phyDef:4000",
     "sell_prize": 2400000,
     "lv": 17,
-    "quality": 5,
+    "quality": 6,
     "star": 6
   },
   "5017030": {
@@ -794,7 +794,7 @@
     "pa": "magDef:4000",
     "sell_prize": 2400000,
     "lv": 17,
-    "quality": 5,
+    "quality": 6,
     "star": 6
   },
   "5017040": {
@@ -804,7 +804,7 @@
     "pa": "maxHP:80000",
     "sell_prize": 2400000,
     "lv": 17,
-    "quality": 5,
+    "quality": 6,
     "star": 6
   }
 }
