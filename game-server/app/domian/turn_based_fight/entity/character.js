@@ -245,6 +245,9 @@ model.prototype.calAttAdd = function(team_adds) {
 			case "magDef":
 				this.attInfo[i] += Math.ceil(this.attInfo[i] * this.show_adds[i])
 			break
+			case "curAnger":
+				this.curAnger += this.show_adds[i]
+			break
 			default:
 				this.attInfo[i] += this.show_adds[i]
 		}

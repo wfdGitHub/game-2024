@@ -96,9 +96,7 @@ module.exports = function() {
 	}
 	//增加有序列表数据
 	this.addZset = function(zname,key,score,cb) {
-		console.log("addZset",zname,key,score)
 		this.redisDao.db.zadd("area:area"+this.areaId+":zset:"+zname,score,key,function(err,data) {
-			console.log(err,data)
 			if(cb){
 				cb(data)
 			}
