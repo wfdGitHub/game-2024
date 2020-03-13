@@ -36,7 +36,7 @@ var model = function(atkTeam,defTeam,otps) {
 }
 //初始配置
 model.prototype.load = function(atkTeam,defTeam,otps) {
-	var info = {type : "fightBegin",atkTeam : [],defTeam : [],seededNum : this.seededNum}
+	var info = {type : "fightBegin",atkTeam : [],defTeam : [],seededNum : this.seededNum,maxRound : this.maxRound}
 	var id = 0
 	var atkTeamAdds = Object.assign({},otps.atkTeamAdds)
 	var defTeamAdds = Object.assign({},otps.defTeamAdds)
