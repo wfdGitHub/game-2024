@@ -148,7 +148,7 @@ module.exports = function() {
 		defTeam = this.standardTeam(uid,defTeam,5)
 		defTeam[4].maxHP = 999999999
 		let fightRound = world_boss_cfg["fightRound"]["value"]
-		let fightOtps = {seededNum : seededNum,fightRound:fightRound}
+		let fightOtps = {seededNum : seededNum,maxRound:fightRound}
 	    self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
 	    let info = {
 	    	atkTeam : atkTeam,
