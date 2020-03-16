@@ -33,7 +33,7 @@ heroHandler.prototype.gainHero = function(msg, session, next) {
   var self = this
   self.heroDao.getHeroAmount(areaId,uid,function(flag,info) {
       if(info.cur >= info.max){
-        next(null,{flag : false,data : "武将背包已满"})
+        next(null,{flag : false,data : "英雄背包已满"})
         return
       }
       self.heroDao.gainHero(areaId,uid,{id : id,ad : ad,lv : lv},function(flag,data) {
@@ -50,7 +50,11 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
   self.heroDao.getHeroList(areaId,uid,hIds,function(flag,heros) {
     for(var i in heros){
       if(!heros[i]){
-        next(null,{flag : false,err : "武将不存在"+i})
+        next(null,{flag : false,err : "英雄不存在"+i})
+        return
+      }
+      if(heros[i].combat){
+        next(null,{flag : false,err : "英雄已出战"+i})
         return
       }
     }
@@ -172,27 +176,27 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
       let star = targetHero.star
       let pc_hero = star_base[star].pc_hero
       if(!targetHero){
-        next(null,{flag : false,data : "目标武将不存在"})
+        next(null,{flag : false,data : "目标英雄不存在"})
         return
       }
       if(targetHero.star == heros[targetHero.id].max_star){
         next(null,{flag : false,data : "已达到最大星级"})
         return
       }
-      //材料武将检测
+      //材料英雄检测
       if(pc_hero){
         pc_hero = JSON.parse(pc_hero)
         if(pc_hero.length !== data.length){
-          next(null,{flag : false,data : "材料武将数量错误"})
+          next(null,{flag : false,data : "材料英雄数量错误"})
           return
         }
         for(var i = 0;i < pc_hero.length;i++){
           if(!data[i] || !heros[targetHero.id]){
-            next(null,{flag : false,data : "材料武将不存在"+hIds[i]})
+            next(null,{flag : false,data : "材料英雄不存在"+hIds[i]})
             return
           }
           if(heros[targetHero.id].combat){
-            next(null,{flag : false,data : "材料武将已出战"+hIds[i]})
+            next(null,{flag : false,data : "材料英雄已出战"+hIds[i]})
             return
           }
           switch(pc_hero[i][0]){
@@ -252,7 +256,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
         }
       }
     }else{
-      next(null,{flag : false,data : "材料武将错误"})
+      next(null,{flag : false,data : "材料英雄错误"})
     }
   })
 }
