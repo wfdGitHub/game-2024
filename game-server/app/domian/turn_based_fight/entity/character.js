@@ -4,6 +4,7 @@ var model = function(otps) {
 	//=========身份===========//
 	this.name = otps.name		//角色名称
 	this.id = otps.id 			//角色ID
+	this.heroId = otps.heroId
 	this.realm = otps.realm		//国家
 	this.career = otps.career	//角色职业   healer 治疗者
 	this.index = 0				//所在位置
@@ -465,6 +466,7 @@ model.prototype.getSimpleInfo = function() {
 	info.needAnger = this.needAnger
 	info.totalDamage = this.totalDamage
 	info.totalHeal = this.totalHeal
+	info.heroId = this.heroId
 	return info
 }
 model.prototype.addBuff = function(releaser,buff) {
