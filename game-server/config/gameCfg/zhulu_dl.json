@@ -1,242 +1,242 @@
 {
   "1": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.05,
+    "amplify": 0.02,
+    "reduction": 0.02,
+    "critDef": 0.01,
+    "hitRate": 0.01,
+    "dodgeRate": 0.01
   },
   "2": {
     "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "amplify": 0.04,
+    "reduction": 0.04,
+    "critDef": 0.02,
+    "hitRate": 0.02,
+    "dodgeRate": 0.02
   },
   "3": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.15,
+    "amplify": 0.06,
+    "reduction": 0.06,
+    "critDef": 0.03,
+    "hitRate": 0.03,
+    "dodgeRate": 0.03
   },
   "4": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.2,
+    "amplify": 0.08,
+    "reduction": 0.08,
+    "critDef": 0.04,
+    "hitRate": 0.04,
+    "dodgeRate": 0.04
   },
   "5": {
-    "self_maxHP_add": 0.1,
+    "self_maxHP_add": 0.25,
     "amplify": 0.1,
     "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "critDef": 0.05,
+    "hitRate": 0.05,
+    "dodgeRate": 0.05
   },
   "6": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.3,
+    "amplify": 0.12,
+    "reduction": 0.12,
+    "critDef": 0.06,
+    "hitRate": 0.06,
+    "dodgeRate": 0.06
   },
   "7": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.35,
+    "amplify": 0.14,
+    "reduction": 0.14,
+    "critDef": 0.07,
+    "hitRate": 0.07,
+    "dodgeRate": 0.07
   },
   "8": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.4,
+    "amplify": 0.16,
+    "reduction": 0.16,
+    "critDef": 0.08,
+    "hitRate": 0.08,
+    "dodgeRate": 0.08
   },
   "9": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.45,
+    "amplify": 0.18,
+    "reduction": 0.18,
+    "critDef": 0.09,
+    "hitRate": 0.09,
+    "dodgeRate": 0.09
   },
   "10": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
+    "self_maxHP_add": 0.5,
+    "amplify": 0.2,
+    "reduction": 0.2,
     "critDef": 0.1,
     "hitRate": 0.1,
     "dodgeRate": 0.1
   },
   "11": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.55,
+    "amplify": 0.22,
+    "reduction": 0.22,
+    "critDef": 0.11,
+    "hitRate": 0.11,
+    "dodgeRate": 0.11
   },
   "12": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.6,
+    "amplify": 0.24,
+    "reduction": 0.24,
+    "critDef": 0.12,
+    "hitRate": 0.12,
+    "dodgeRate": 0.12
   },
   "13": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.65,
+    "amplify": 0.26,
+    "reduction": 0.26,
+    "critDef": 0.13,
+    "hitRate": 0.13,
+    "dodgeRate": 0.13
   },
   "14": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.7,
+    "amplify": 0.28,
+    "reduction": 0.28,
+    "critDef": 0.14,
+    "hitRate": 0.14,
+    "dodgeRate": 0.14
   },
   "15": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.75,
+    "amplify": 0.3,
+    "reduction": 0.3,
+    "critDef": 0.15,
+    "hitRate": 0.15,
+    "dodgeRate": 0.15
   },
   "16": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.8,
+    "amplify": 0.32,
+    "reduction": 0.32,
+    "critDef": 0.16,
+    "hitRate": 0.16,
+    "dodgeRate": 0.16
   },
   "17": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.85,
+    "amplify": 0.34,
+    "reduction": 0.34,
+    "critDef": 0.17,
+    "hitRate": 0.17,
+    "dodgeRate": 0.17
   },
   "18": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.9,
+    "amplify": 0.36,
+    "reduction": 0.36,
+    "critDef": 0.18,
+    "hitRate": 0.18,
+    "dodgeRate": 0.18
   },
   "19": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 0.95,
+    "amplify": 0.38,
+    "reduction": 0.38,
+    "critDef": 0.19,
+    "hitRate": 0.19,
+    "dodgeRate": 0.19
   },
   "20": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 1,
+    "amplify": 0.4,
+    "reduction": 0.4,
+    "critDef": 0.2,
+    "hitRate": 0.2,
+    "dodgeRate": 0.2
   },
   "21": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 1.05,
+    "amplify": 0.42,
+    "reduction": 0.42,
+    "critDef": 0.21,
+    "hitRate": 0.21,
+    "dodgeRate": 0.21
   },
   "22": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 1.1,
+    "amplify": 0.44,
+    "reduction": 0.44,
+    "critDef": 0.22,
+    "hitRate": 0.22,
+    "dodgeRate": 0.22
   },
   "23": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 1.15,
+    "amplify": 0.46,
+    "reduction": 0.46,
+    "critDef": 0.23,
+    "hitRate": 0.23,
+    "dodgeRate": 0.23
   },
   "24": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 1.2,
+    "amplify": 0.48,
+    "reduction": 0.48,
+    "critDef": 0.24,
+    "hitRate": 0.24,
+    "dodgeRate": 0.24
   },
   "25": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 1.25,
+    "amplify": 0.5,
+    "reduction": 0.5,
+    "critDef": 0.25,
+    "hitRate": 0.25,
+    "dodgeRate": 0.25
   },
   "26": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 1.3,
+    "amplify": 0.52,
+    "reduction": 0.52,
+    "critDef": 0.26,
+    "hitRate": 0.26,
+    "dodgeRate": 0.26
   },
   "27": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 1.35,
+    "amplify": 0.54,
+    "reduction": 0.54,
+    "critDef": 0.27,
+    "hitRate": 0.27,
+    "dodgeRate": 0.27
   },
   "28": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 1.4,
+    "amplify": 0.56,
+    "reduction": 0.56,
+    "critDef": 0.28,
+    "hitRate": 0.28,
+    "dodgeRate": 0.28
   },
   "29": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 1.45,
+    "amplify": 0.58,
+    "reduction": 0.58,
+    "critDef": 0.29,
+    "hitRate": 0.29,
+    "dodgeRate": 0.29
   },
   "30": {
-    "self_maxHP_add": 0.1,
-    "amplify": 0.1,
-    "reduction": 0.1,
-    "critDef": 0.1,
-    "hitRate": 0.1,
-    "dodgeRate": 0.1
+    "self_maxHP_add": 1.5,
+    "amplify": 0.6,
+    "reduction": 0.6,
+    "critDef": 0.3,
+    "hitRate": 0.3,
+    "dodgeRate": 0.3
   }
 }

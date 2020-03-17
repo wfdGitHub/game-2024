@@ -234,8 +234,12 @@ model.prototype.fightOver = function(winFlag) {
 	for(var i = 0;i < teamLength;i++){
 		if(!this.atkTeam[i].isNaN)
 			info.atkTeam.push(this.atkTeam[i].getSimpleInfo())
+		else 
+			info.atkTeam.push(null)
 		if(!this.defTeam[i].isNaN)
 			info.defTeam.push(this.defTeam[i].getSimpleInfo())
+		else
+			info.defTeam.push(null)
 	}
 	fightRecord.push(info)
 	// fightRecord.explain()

@@ -28,12 +28,33 @@ for(var i in zhulu_shop){
 	shopAllWeight += shopWeights[i].weight
 	shopWeights[i].weight = shopAllWeight
 }
+var spoils_qualitys = {}
+for(var i in zhulu_spoils){
+	if(!spoils_qualitys[zhulu_spoils[i]["quality"]]){
+		spoils_qualitys[zhulu_spoils[i]["quality"]] = []
+	}
+	spoils_qualitys[zhulu_spoils[i]["quality"]].push(zhulu_spoils[i])
+}
+console.log("spoils_qualitys",spoils_qualitys)
+var keysType = {
+	dayStr : "string",
+	curGrid : "num",
+	curChoose : "num",
+	surplus_healths :"obj",
+	zhuluTeam : "obj",
+	grids :"obj",
+	gridList :"obj",
+	spoils : "obj",
+	spoils_list : "obj",
+	chooseList :"obj"
+}
 var gridCounts = [1,2,3,2,3,2,3,2,3,2,1,2,3,2,3,2,3,2,3,2,1,2,3,2,3,2,3,2,3,2,1]
 // console.log(shopWeights,shopAllWeight)
 //逐鹿之战
 module.exports = function() {
 	var self = this
 	var userDatas = {}
+	var userSeededNums = {}
 	var local = {}
 	//加载逐鹿之战数据
 	this.zhuluLoad = function(uid,next) {
@@ -41,16 +62,16 @@ module.exports = function() {
 			if(!data || self.dayStr != data.dayStr){
 				data = {
 					dayStr : (new Date()).toDateString(),
-					hierarchy : 0,
 					curGrid : 0,
 					curChoose : -1,
 					surplus_healths : {},
 					zhuluTeam : [],
 					grids : {},
+					gridList : {},
 					spoils : [],
+					spoils_list : [],
 					chooseList : {}
 				}
-				console.log(data)
 				let fightTeam = self.getUserTeam(uid)
 				for(let i = 0;i < fightTeam.length;i++){
 					if(fightTeam[i] && fightTeam[i].hId)
@@ -63,34 +84,28 @@ module.exports = function() {
 					data.grids[i] = []
 					for(let j = 0;j < gridCounts[i];j++){
 						data.grids[i].push(local.createGrid(uid,i))
-						console.log(data.grids[i][j])
 					}
 				}
 				userDatas[uid] = data
-				let info = {
-					dayStr : data["dayStr"],
-					hierarchy : data["hierarchy"],
-					curGrid : data["curGrid"],
-					curChoose : data["curChoose"]
+				let info = {}
+				for(let i in data){
+					if(keysType[i] == "obj")
+						info[i] = JSON.stringify(data[i])
+					else
+						info[i] = data[i]
 				}
-				info["surplus_healths"] = JSON.stringify(data["surplus_healths"])
-				info["zhuluTeam"] = JSON.stringify(data["zhuluTeam"])
-				info["grids"] = JSON.stringify(data["grids"])
-				info["spoils"] = JSON.stringify(data["spoils"])
-				info["chooseList"] = JSON.stringify(data["chooseList"])
 				self.setHMObj(uid,main_name,info)
 			}else{
-				data["surplus_healths"] = JSON.parse(data["surplus_healths"])
-				data["zhuluTeam"] = JSON.parse(data["zhuluTeam"])
-				data["grids"] = JSON.parse(data["grids"])
-				data["spoils"] = JSON.parse(data["spoils"])
-				data["chooseList"] = JSON.parse(data["chooseList"])
-				data["hierarchy"] = Number(data["hierarchy"])
-				data["curGrid"] = Number(data["curGrid"])
-				data["curChoose"] = Number(data["curChoose"])
+				for(let i in data){
+					if(keysType[i] == "obj")
+						data[i] = JSON.parse(data[i])
+					else if(keysType[i] == "num")
+						data[i] = Number(data[i])
+					else
+						data[i] = data[i]
+				}
 			}
 			userDatas[uid] = data
-			console.log("userDatas[uid]",userDatas[uid])
 		})
 		next()
 	}
@@ -108,7 +123,7 @@ module.exports = function() {
 			//boss
 			let info = {type:"boss"}
 			var team = boss_team[Math.floor(Math.random() * boss_team.length)].concat()
-			team = self.standardTeam(uid,team,3)
+			team = self.standardTeam(uid,team,zhulu_cfg["boss_dl"]["value"])
 			var dladd = zhulu_dl[grid]
 			for(let i = 0;i <= team.length;i++){
 				if(team[i]){
@@ -121,12 +136,13 @@ module.exports = function() {
 			let rand = Math.random() * allWeight
 			for(let type in weights){
 				if(rand < weights[type]){
+					type = "normal"
 					let info = {type:type}
 					switch(type){
 						case "normal":
 							//普通怪
 							var team = normal_team[Math.floor(Math.random() * normal_team.length)].concat()
-							team = self.standardTeam(uid,team,3)
+							team = self.standardTeam(uid,team,zhulu_cfg["normal_dl"]["value"])
 							var dladd = zhulu_dl[grid]
 							for(let i = 0;i <= team.length;i++){
 								if(team[i]){
@@ -138,9 +154,8 @@ module.exports = function() {
 						case "elite":
 							//精英怪
 							var team = elite_team[Math.floor(Math.random() * elite_team.length)].concat()
-							team = self.standardTeam(uid,team,3)
+							team = self.standardTeam(uid,team,zhulu_cfg["elite_dl"]["value"])
 							var dladd = zhulu_dl[grid]
-							dladd.self_maxHP_add += zhulu_cfg["elite_hp"]["value"]
 							for(let i = 0;i <= team.length;i++){
 								if(team[i]){
 									self.fightContorl.mergeData(team[i],dladd)
@@ -178,13 +193,45 @@ module.exports = function() {
 		}
 		return list
 	}
-	//获得战利品
-	local.createSpoils = function() {
+	//生成战利品
+	local.createSpoils = function(uid,type) {
+		var spoils_list = []
+		switch(type){
+			case "boss":
+				for(let i = 0;i < 3;i++){
+					var spoils = Object.assign({},spoils_qualitys[5][Math.floor(Math.random() * spoils_qualitys[5].length)])
+					spoils_list.push(spoils)
+				}
+			break
+			case "elite":
+				for(let i = 0;i < 3;i++){
+					var spoils
+					if(Math.random() < 0.7)
+						spoils = Object.assign({},spoils_qualitys[3][Math.floor(Math.random() * spoils_qualitys[3].length)])
+					else
+						spoils = Object.assign({},spoils_qualitys[4][Math.floor(Math.random() * spoils_qualitys[4].length)])
+					spoils_list.push(spoils)
+				}
+			break
+			case "normal":
+				for(let i = 0;i < 3;i++){
+					var spoils = Object.assign({},spoils_qualitys[3][Math.floor(Math.random() * spoils_qualitys[3].length)])
+					spoils_list.push(spoils)
+				}
+			break
+		}
+		return spoils_list
 	}
 	//选择格子
 	this.chooseGrid = function(uid,choose,cb) {
 		if(userDatas[uid].curChoose !== -1){
-			cb(false,"已选择格子")
+			cb(false,"curChoose != -1")
+			return
+		}
+		let oldGrid = userDatas[uid]["gridList"][userDatas[uid]["curGrid"]]
+
+		if(!(oldGrid !== undefined && oldGrid % 10 != 0 && (choose != oldGrid && choose != oldGrid + 1))){
+			cb(false,"必须选择连续的路径")
 			return
 		}
 		let grid = userDatas[uid]["curGrid"] + 1
@@ -192,37 +239,122 @@ module.exports = function() {
 			cb(false,"choose error "+choose)
 			return
 		}
-		userDatas[uid].curChoose = choose
-		self.setObj(uid,main_name,"curChoose",choose)
+		userDatas[uid]["gridList"][userDatas[uid]["curGrid"]] = choose
+		local.changeData(uid,"curChoose",choose)
+		local.changeData(uid,"gridList",userDatas[uid]["gridList"])
 		cb(true)
+	}
+	local.spoilsLoad = function(atkTeam,spoils) {
+		return atkTeam
+	}
+	//获取逐鹿战斗数据
+	this.getZhuluFightData = function(uid,cb) {
+		userSeededNums[uid] = Date.now()
+		self.heroDao.getZhuluTeam(self.areaId,uid,function(flag,atkTeam) {
+			if(!flag){
+				cb(flag,atkTeam)
+			}else{
+				let grid = userDatas[uid]["curGrid"] + 1
+				atkTeam = local.spoilsLoad(atkTeam,userDatas[uid]["spoils"])
+		    	for(let i = 0;i<atkTeam.length;i++){
+		    		if(atkTeam[i] && userDatas[uid]["surplus_healths"][atkTeam[i].hId] !== undefined)
+		    			atkTeam[i].surplus_health = userDatas[uid]["surplus_healths"][atkTeam[i].hId]
+		    	}
+			    cb(true,{atkTeam : atkTeam,seededNum : userSeededNums[uid]})
+			}
+		})
 	}
 	//执行操作
 	this.executeGrid = function(uid,arg,cb) {
-		if(userDatas[uid].curChoose == -1){
-			cb(false,"未选择格子")
+		if(userDatas[uid].curChoose < 0){
+			cb(false,"curChoose != -1")
 			return
 		}
 		let grid = userDatas[uid]["curGrid"] + 1
 		let choose = userDatas[uid].curChoose
-		console.log("grid",grid,choose,userDatas[uid]["grids"][grid][choose].type)
-		switch(userDatas[uid]["grids"][grid][choose].type){
+		let type = userDatas[uid]["grids"][grid][choose].type
+		switch(type){
 			case "boss":
 			case "elite":
 			case "normal":
+				if(!userSeededNums[uid]){
+					cb(false,"未获取随机种子")
+					return
+				}
 				self.heroDao.getZhuluTeam(self.areaId,uid,function(flag,atkTeam) {
 					if(!flag){
 						cb(flag,atkTeam)
 					}else{
 						var defTeam = userDatas[uid]["grids"][grid][choose].team
-						var seededNum = Date.now()
+						var seededNum = userSeededNums[uid]
+						delete userSeededNums[uid]
+				    	for(var i = 0;i<atkTeam.length;i++){
+				    		if(atkTeam[i] && userDatas[uid]["surplus_healths"][atkTeam[i].hId] !== undefined)
+				    			atkTeam[i].surplus_health = userDatas[uid]["surplus_healths"][atkTeam[i].hId]
+				    	}
 					    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-					    // if(arg !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-					    // 	cb(false,{"text":"战斗验证错误","fightRecord":self.fightContorl.getFightRecord()})
-					    // 	return
-					    // }
-					    cb(true,winFlag)
+				    	let list = self.fightContorl.getFightRecord()
+				    	let overInfo = list[list.length - 1]
+				    	for(var i = 0;i<atkTeam.length;i++){
+				    		if(atkTeam[i] && overInfo.atkTeam[i]){
+				    			userDatas[uid]["surplus_healths"][atkTeam[i].hId] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
+				    			if(userDatas[uid]["surplus_healths"][atkTeam[i].hId] >= 1){
+				    				delete userDatas[uid]["surplus_healths"][atkTeam[i].hId]
+				    			}
+				    		}
+				    	}
+				    	local.changeData(uid,"surplus_healths",userDatas[uid]["surplus_healths"])
+				    	var info = {
+				    		winFlag : winFlag,
+				    		surplus_healths : userDatas[uid]["surplus_healths"]
+				    	}
+					    if(winFlag){
+				    		info.spoils_list = local.createSpoils(uid,type)
+				    		info.curChoose = -2
+					    	local.changeData(uid,"spoils_list",info.spoils_list)
+				    		local.changeData(uid,"curChoose",info.curChoose)
+					    }
+					    cb(true,info)
 					}
 				})
+			break
+			case "heal":
+				//恢复
+				for(var i = 0;i < userDatas[uid].zhuluTeam.length;i++){
+					if(userDatas[uid].zhuluTeam[i]){
+						if(userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]] !== undefined){
+							userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]] += 0.5
+							if(userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]] >= 1){
+								delete userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]]
+							}
+						}
+					}
+				}
+				local.changeData(uid,"surplus_healths",userDatas[uid]["surplus_healths"])
+				local.nextGrid(uid)
+				cb(true,{surplus_healths : userDatas[uid]["surplus_healths"],curChoose : userDatas[uid]["curChoose"],curGrid : userDatas[uid]["curGrid"]})
+			break
+			case "resurgence":
+				//复活
+				var minHeal = 1
+				var minHid = 0
+				for(var i in userDatas[uid]["surplus_healths"]){
+					if(!minHid || userDatas[uid]["surplus_healths"][i] < minHeal){
+						minHid = i
+						minHeal = userDatas[uid]["surplus_healths"][i]
+					}
+				}
+				if(minHid){
+					delete userDatas[uid]["surplus_healths"][minHid]
+					local.changeData(uid,"surplus_healths",userDatas[uid]["surplus_healths"])
+				}
+				local.nextGrid(uid)
+				cb(true,{minHid : minHid,curChoose : userDatas[uid]["curChoose"],curGrid : userDatas[uid]["curGrid"]})
+			break
+			case "shop":
+				//商城
+				local.nextGrid(uid)
+				cb(true,{curChoose : userDatas[uid]["curChoose"],curGrid : userDatas[uid]["curGrid"]})
 			break
 			default:
 				cb(false)
@@ -230,18 +362,62 @@ module.exports = function() {
 	}
 	//放弃格子
 	this.giveupGrid = function(uid,cb) {
+		if(userDatas[uid].curChoose !== -1){
+			cb(false,"curChoose != -1")
+			return
+		}
+		let grid = userDatas[uid]["curGrid"] + 1
+		let choose = userDatas[uid].curChoose
+		switch(userDatas[uid]["grids"][grid][choose].type){
+			case "heal":
+			case "resurgence":
+			case "shop":
+				local.nextGrid(uid)
+				cb(true,{curChoose : userDatas[uid]["curChoose"],curGrid : userDatas[uid]["curGrid"]})
+			break
+			default:
+				cb(false)
+		}
 		
 	}
 	//改变逐鹿上阵阵容
 	this.setZhuluTeam = function(uid,hIds,cb) {
-		
+		this.heroDao.setZhuluTeam(self.areaId,uid,hIds,function(flag,data) {
+			if(flag){
+				local.changeData(uid,"zhuluTeam",hIds)
+			}
+			cb(flag,data)
+		})
 	}
 	//选择战利品
 	this.chooseSpoils = function(uid,index,cb) {
-		
+		if(userDatas[uid]["curChoose"] != -2){
+			cb(false,"不在战利品阶段")
+			return
+		}
+		if(userDatas[uid]["spoils_list"] && userDatas[uid]["spoils_list"][index]){
+			var spoils = userDatas[uid]["spoils_list"][index]
+			userDatas[uid]["spoils"].push(spoils)
+			local.changeData(uid,"spoils",userDatas[uid]["spoils"])
+			local.changeData(uid,"spoils_list",[])
+			local.nextGrid(uid)
+			cb(true,{curChoose : userDatas[uid]["curChoose"],curGrid : userDatas[uid]["curGrid"],spoils : spoils})
+		}else{	
+			cb(false,"index error")
+		}
 	}
 	//进入下一个格子
 	local.nextGrid = function(uid) {
-		
+		local.changeData(uid,"curChoose",-1)
+		local.changeData(uid,"curGrid",userDatas[uid]["curGrid"]+1)
+	}
+	//改变数据
+	local.changeData = function(uid,key,value) {
+		if(userDatas[uid]){
+			userDatas[uid][key] = value
+		}
+		if(keysType[key] == "obj")
+			value = JSON.stringify(value)
+		self.setObj(uid,main_name,key,value)
 	}
 }

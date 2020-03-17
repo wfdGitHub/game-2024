@@ -19,9 +19,17 @@
     "name": "商城权重",
     "value": 100
   },
-  "elite_hp": {
-    "name": "精英怪生命加成",
-    "value": 0.3
+  "normal_dl": {
+    "name": "普通怪难度等级",
+    "value": 2
+  },
+  "elite_dl": {
+    "name": "精英怪难度等级",
+    "value": 3
+  },
+  "boss_dl": {
+    "name": "BOSS怪难度等级",
+    "value": 4
   },
   "box1": {
     "name": "第一层宝箱",
