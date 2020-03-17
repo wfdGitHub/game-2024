@@ -362,6 +362,81 @@ heroDao.prototype.getFightTeam = function(areaId,uid,cb) {
 		})
 	})
 }
+//设置逐鹿之战出场阵容
+heroDao.prototype.setZhuluTeam = function(areaId,uid,hIds,cb) {
+	var self = this
+	self.getHeroList(areaId,uid,hIds,function(flag,heroList) {
+		if(!flag || !heroList){
+			cb(false,"阵容错误")
+			return
+		}
+		for(var i = 0;i < heroList.length;i++){
+			if(hIds[i] && !heroList[i]){
+				cb(false,"武将不存在"+hIds[i])
+				return
+			}
+		}
+		self.getZhuluTeam(areaId,uid,function(flag,team) {
+			if(flag && team){
+				for(var i = 0;i < team.length;i++){
+					if(team[i])
+						self.delHeroInfo(areaId,uid,team[i].hId,"zhuluCombat")
+				}
+			}
+			self.redisDao.db.set("area:area"+areaId+":player:"+uid+":zhuluTeam",JSON.stringify(hIds),function(err,data) {
+				if(err){
+					if(cb)
+						cb(false,err)
+				}
+				else{
+					for(var i = 0;i < heroList.length;i++){
+						if(hIds[i]){
+							self.incrbyHeroInfo(areaId,uid,hIds[i],"zhuluCombat",1)
+						}
+					}
+					self.areaManager.areaMap[areaId].CELoad(uid)
+					if(cb)
+						cb(true)
+				}
+			})
+		})
+	})
+}
+//获取逐鹿出场阵容
+heroDao.prototype.getZhuluTeam = function(areaId,uid,cb) {
+	var self = this
+	self.redisDao.db.get("area:area"+areaId+":player:"+uid+":zhuluTeam",function(err,data) {
+		if(err || !data){
+			cb(false,"未设置阵容")
+			return
+		}
+		var zhuluTeam = JSON.parse(data)
+		var multiList = []
+		var hIds = []
+		for(var i = 0;i < zhuluTeam.length;i++){
+			if(zhuluTeam[i]){
+				hIds.push(zhuluTeam[i])
+				multiList.push(["hgetall","area:area"+areaId+":player:"+uid+":heros:"+zhuluTeam[i]])
+			}
+		}
+		self.redisDao.multi(multiList,function(err,list) {
+			var hash = {}
+			for(var i = 0;i < list.length;i++){
+				for(var j in list[i]){
+					var tmp = Number(list[i][j])
+					if(tmp == list[i][j])
+						list[i][j] = tmp
+				}
+				list[i].hId = hIds[i]
+				hash[list[i].hId] = list[i]
+			}
+			for(var i = 0;i < zhuluTeam.length;i++){
+				zhuluTeam[i] = hash[zhuluTeam[i]]
+			}
+			cb(true,zhuluTeam)
+		})
+	})
+}
 module.exports = {
 	id : "heroDao",
 	func : heroDao,

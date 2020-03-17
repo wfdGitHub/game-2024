@@ -1,0 +1,401 @@
+{
+  "1001": {
+    "name": "生命值增加10%",
+    "des": "生命值增加10%",
+    "quality": 3,
+    "spoils_type": "maxHP",
+    "value": 0.1,
+    "type": "all"
+  },
+  "1002": {
+    "name": "伤害增加10%",
+    "des": "伤害增加10%",
+    "quality": 3,
+    "spoils_type": "amplify",
+    "value": 0.1,
+    "type": "all"
+  },
+  "1003": {
+    "name": "伤害减免8%",
+    "des": "伤害减免8%",
+    "quality": 3,
+    "spoils_type": "reduction",
+    "value": 0.08,
+    "type": "all"
+  },
+  "1004": {
+    "name": "暴击几率5%",
+    "des": "暴击几率5%",
+    "quality": 3,
+    "spoils_type": "crit",
+    "value": 0.05,
+    "type": "all"
+  },
+  "1005": {
+    "name": "抗暴几率8%",
+    "des": "抗暴几率8%",
+    "quality": 3,
+    "spoils_type": "critDef",
+    "value": 0.08,
+    "type": "all"
+  },
+  "1006": {
+    "name": "爆伤加成15%",
+    "des": "爆伤加成15%",
+    "quality": 3,
+    "spoils_type": "slay",
+    "value": 0.15,
+    "type": "all"
+  },
+  "1007": {
+    "name": "爆伤减免10%",
+    "des": "爆伤减免10%",
+    "quality": 3,
+    "spoils_type": "slayDef",
+    "value": 0.1,
+    "type": "all"
+  },
+  "1008": {
+    "name": "命中几率10%",
+    "des": "命中几率10%",
+    "quality": 3,
+    "spoils_type": "hitRate",
+    "value": 0.1,
+    "type": "all"
+  },
+  "1009": {
+    "name": "闪避几率8%",
+    "des": "闪避几率8%",
+    "quality": 3,
+    "spoils_type": "dodgeRate",
+    "value": 0.08,
+    "type": "all"
+  },
+  "1010": {
+    "name": "治疗暴击8%",
+    "des": "治疗暴击8%",
+    "quality": 3,
+    "spoils_type": "healRate",
+    "value": 0.08,
+    "type": "all"
+  },
+  "1011": {
+    "name": "恢复加成10%",
+    "des": "恢复加成10%",
+    "quality": 3,
+    "spoils_type": "healAdd",
+    "value": 0.1,
+    "type": "all"
+  },
+  "1012": {
+    "name": "前排英雄伤害减免12%",
+    "des": "前排英雄伤害减免12%",
+    "quality": 3,
+    "spoils_type": "reduction",
+    "value": 0.12,
+    "type": "front"
+  },
+  "1013": {
+    "name": "前排英雄闪避几率10%",
+    "des": "前排英雄闪避几率10%",
+    "quality": 3,
+    "spoils_type": "dodgeRate",
+    "value": 0.1,
+    "type": "front"
+  },
+  "1014": {
+    "name": "前排英雄爆伤减免15%",
+    "des": "前排英雄爆伤减免15%",
+    "quality": 3,
+    "spoils_type": "slayDef",
+    "value": 0.15,
+    "type": "front"
+  },
+  "1015": {
+    "name": "前排英雄恢复加成15%",
+    "des": "前排英雄恢复加成15%",
+    "quality": 3,
+    "spoils_type": "healAdd",
+    "value": 0.15,
+    "type": "front"
+  },
+  "1016": {
+    "name": "前排英雄抗暴几率10%",
+    "des": "前排英雄抗暴几率10%",
+    "quality": 3,
+    "spoils_type": "critDef",
+    "value": 0.1,
+    "type": "front"
+  },
+  "1017": {
+    "name": "后排英雄伤害增加15%",
+    "des": "后排英雄伤害增加15%",
+    "quality": 3,
+    "spoils_type": "amplify",
+    "value": 0.15,
+    "type": "back"
+  },
+  "1018": {
+    "name": "后排英雄暴击几率8%",
+    "des": "后排英雄暴击几率8%",
+    "quality": 3,
+    "spoils_type": "crit",
+    "value": 0.08,
+    "type": "back"
+  },
+  "1019": {
+    "name": "后排英雄命中几率15%",
+    "des": "后排英雄命中几率15%",
+    "quality": 3,
+    "spoils_type": "hitRate",
+    "value": 0.15,
+    "type": "back"
+  },
+  "1020": {
+    "name": "后排英雄爆伤加成20%",
+    "des": "后排英雄爆伤加成20%",
+    "quality": 3,
+    "spoils_type": "slay",
+    "value": 0.2,
+    "type": "back"
+  },
+  "2001": {
+    "name": "输出与控制英雄伤害20%",
+    "des": "输出与控制英雄伤害20%",
+    "quality": 4,
+    "spoils_type": "amplify",
+    "value": 0.2
+  },
+  "2002": {
+    "name": "输出与控制英雄暴击几率10%",
+    "des": "输出与控制英雄暴击几率10%",
+    "quality": 4,
+    "spoils_type": "crit",
+    "value": 0.1
+  },
+  "2003": {
+    "name": "输出与控制英雄爆伤30%",
+    "des": "输出与控制英雄爆伤30%",
+    "quality": 4,
+    "spoils_type": "slay",
+    "value": 0.3
+  },
+  "2004": {
+    "name": "输出与控制英雄命中几率20%",
+    "des": "输出与控制英雄命中几率20%",
+    "quality": 4,
+    "spoils_type": "hitRate",
+    "value": 0.2
+  },
+  "2005": {
+    "name": "治疗暴击15%",
+    "des": "治疗暴击15%",
+    "quality": 4,
+    "spoils_type": "healRate",
+    "value": 0.15
+  },
+  "2006": {
+    "name": "肉盾英雄伤害减免18%",
+    "des": "肉盾英雄伤害减免18%",
+    "quality": 4,
+    "value": 0.18
+  },
+  "2007": {
+    "name": "肉盾英雄抗暴几率15%",
+    "des": "肉盾英雄抗暴几率15%",
+    "quality": 4,
+    "value": 0.15
+  },
+  "2008": {
+    "name": "肉盾英雄恢复加成20%",
+    "des": "肉盾英雄恢复加成20%",
+    "quality": 4,
+    "value": 0.2
+  },
+  "2009": {
+    "name": "肉盾英雄闪避几率15%",
+    "des": "肉盾英雄闪避几率15%",
+    "quality": 4,
+    "value": 0.15
+  },
+  "2010": {
+    "name": "肉盾英雄爆伤减免20%",
+    "des": "肉盾英雄爆伤减免20%",
+    "quality": 4,
+    "value": 0.2
+  },
+  "2011": {
+    "name": "肉盾英雄生命值增加20%",
+    "des": "肉盾英雄生命值增加20%",
+    "quality": 4,
+    "value": 0.2
+  },
+  "2012": {
+    "name": "初始怒气增加1点",
+    "des": "初始怒气增加1点",
+    "quality": 4,
+    "value": 1
+  },
+  "2013": {
+    "name": "人族英雄生命值30%",
+    "des": "人族英雄生命值30%",
+    "quality": 4,
+    "value": 0.3
+  },
+  "2014": {
+    "name": "人族英雄初始怒气增加2点",
+    "des": "人族英雄初始怒气增加2点",
+    "quality": 4,
+    "value": 2
+  },
+  "2015": {
+    "name": "人族英雄伤害减免20%",
+    "des": "人族英雄伤害减免20%",
+    "quality": 4,
+    "value": 0.2
+  },
+  "2016": {
+    "name": "人族英雄伤害增加20%",
+    "des": "人族英雄伤害增加20%",
+    "quality": 4,
+    "value": 0.2
+  },
+  "2017": {
+    "name": "仙族英雄生命值30%",
+    "des": "仙族英雄生命值30%",
+    "quality": 4,
+    "value": 0.3
+  },
+  "2018": {
+    "name": "仙族英雄初始怒气增加2点",
+    "des": "仙族英雄初始怒气增加2点",
+    "quality": 4,
+    "value": 2
+  },
+  "2019": {
+    "name": "仙族英雄伤害减免20%",
+    "des": "仙族英雄伤害减免20%",
+    "quality": 4,
+    "value": 0.2
+  },
+  "2020": {
+    "name": "仙族英雄伤害增加20%",
+    "des": "仙族英雄伤害增加20%",
+    "quality": 4,
+    "value": 0.2
+  },
+  "2021": {
+    "name": "巫族英雄生命值30%",
+    "des": "巫族英雄生命值30%",
+    "quality": 4,
+    "value": 0.3
+  },
+  "2022": {
+    "name": "巫族英雄初始怒气增加2点",
+    "des": "巫族英雄初始怒气增加2点",
+    "quality": 4,
+    "value": 2
+  },
+  "2023": {
+    "name": "巫族英雄伤害减免20%",
+    "des": "巫族英雄伤害减免20%",
+    "quality": 4,
+    "value": 0.2
+  },
+  "2024": {
+    "name": "巫族英雄伤害增加20%",
+    "des": "巫族英雄伤害增加20%",
+    "quality": 4,
+    "value": 0.2
+  },
+  "2025": {
+    "name": "兽族英雄生命值30%",
+    "des": "兽族英雄生命值30%",
+    "quality": 4,
+    "value": 0.3
+  },
+  "2026": {
+    "name": "兽族英雄初始怒气增加2点",
+    "des": "兽族英雄初始怒气增加2点",
+    "quality": 4,
+    "value": 2
+  },
+  "2027": {
+    "name": "兽族英雄伤害减免20%",
+    "des": "兽族英雄伤害减免20%",
+    "quality": 4,
+    "value": 0.2
+  },
+  "2028": {
+    "name": "兽族英雄伤害增加20%",
+    "des": "兽族英雄伤害增加20%",
+    "quality": 4,
+    "value": 0.2
+  },
+  "3001": {
+    "name": "初始怒气增加2点",
+    "des": "初始怒气增加2点",
+    "quality": 5,
+    "value": 2
+  },
+  "3002": {
+    "name": "生命值50%",
+    "des": "生命值50%",
+    "quality": 5,
+    "value": 0.5
+  },
+  "3003": {
+    "name": "伤害30%",
+    "des": "伤害30%",
+    "quality": 5,
+    "value": 0.3
+  },
+  "3004": {
+    "name": "暴击几率25%",
+    "des": "暴击几率25%",
+    "quality": 5,
+    "value": 0.25
+  },
+  "3005": {
+    "name": "闪避25%",
+    "des": "闪避25%",
+    "quality": 5,
+    "value": 0.25
+  },
+  "3006": {
+    "name": "爆伤50%",
+    "des": "爆伤50%",
+    "quality": 5,
+    "value": 0.5
+  },
+  "3007": {
+    "name": "伤害减免30%",
+    "des": "伤害减免30%",
+    "quality": 5,
+    "value": 0.3
+  },
+  "3008": {
+    "name": "人族英雄生命值增加100%",
+    "des": "人族英雄生命值增加100%",
+    "quality": 5,
+    "value": 1
+  },
+  "3009": {
+    "name": "仙族英雄初始怒气增加4点",
+    "des": "仙族英雄初始怒气增加4点",
+    "quality": 5,
+    "value": 4
+  },
+  "3010": {
+    "name": "兽族英雄伤害增加40%",
+    "des": "兽族英雄伤害增加40%",
+    "quality": 5,
+    "value": 0.4
+  },
+  "3011": {
+    "name": "巫族英雄暴击几率40%",
+    "des": "巫族英雄暴击几率40%",
+    "quality": 5,
+    "value": 0.4
+  }
+}

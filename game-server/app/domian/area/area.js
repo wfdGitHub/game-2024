@@ -4,7 +4,7 @@ var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
 var async = require("async")
 const standard_dl = require("../../../config/gameCfg/standard_dl.json")
 const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
-const areaServers = ["worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
+const areaServers = ["zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
 const oneDayTime = 86400000
 var standard_ce = {}
 for(var i in standard_ce_cfg){
@@ -102,6 +102,9 @@ area.prototype.userLogin = function(uid,cid,cb) {
 				}
 			})
 		},
+		function(next) {
+			self.zhuluLoad(uid,next)
+		},
 		function() {
 			if(!self.players[uid])
 				self.onlineNum++
@@ -139,6 +142,7 @@ area.prototype.userLeave = function(uid) {
 		this.CEUnload(uid)
 		this.lordUnload(uid)
 		this.checkpointsUnload(uid)
+		this.zhuluUnload(uid)
 	}
 	if(this.crossUids[uid]){
 		this.app.rpc.cross.crossRemote.userLeave(null,this.crossUids[uid],null)

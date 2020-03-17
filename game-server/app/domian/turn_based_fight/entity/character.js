@@ -34,6 +34,8 @@ var model = function(otps) {
 	this.attInfo.healAdd = otps["healAdd"] || 0			//被治疗加成
 
 	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
+	this.surplus_health = otps.surplus_health			//剩余生命值比例
+
 	this.needAnger = otps["needAnger"] || 4				//技能所需怒气值
 	this.curAnger = (otps["curAnger"] || 0) + 2	//当前怒气值
 	this.totalDamage = 0						//累计伤害
@@ -253,6 +255,11 @@ model.prototype.calAttAdd = function(team_adds) {
 		}
 	}
 	this.attInfo.hp = this.attInfo.maxHP
+	if(this.surplus_health === 0){
+		this.attInfo.hp = 0
+		this.died = true
+	}else if(this.surplus_health)
+		this.attInfo.hp = Math.ceil(this.attInfo.hp * this.surplus_health)
 }
 
 //行动开始前刷新
@@ -464,6 +471,7 @@ model.prototype.getSimpleInfo = function() {
 	info.name = this.name
 	info.realm = this.realm
 	info.atk = this.attInfo.atk
+	info.maxHP = this.attInfo.maxHP
 	info.hp = this.attInfo.hp
 	info.curAnger = this.curAnger
 	info.needAnger = this.needAnger

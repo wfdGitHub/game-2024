@@ -72,6 +72,25 @@
             console.log(data);
         });
       }
+      //============逐鹿之战==============//
+      //获取逐鹿之战数据
+      var getZhuluData = function() {
+        pomelo.request("area.zhuluHandler.getZhuluData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //选择格子
+      var chooseGrid = function(choose) {
+        pomelo.request("area.zhuluHandler.chooseGrid", {choose:choose}, function(data) {
+            console.log(data);
+        });
+      }
+      //执行格子
+      var executeGrid = function(arg) {
+        pomelo.request("area.zhuluHandler.executeGrid", {arg:arg}, function(data) {
+            console.log(data);
+        });
+      }      
       //============世界BOSS==============//
       //获取世界BOSS数据
       var getWorldBossData = function() {
