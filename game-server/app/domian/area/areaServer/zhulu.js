@@ -341,7 +341,7 @@ module.exports = function() {
 	//执行操作
 	this.executeGrid = function(uid,arg,cb) {
 		if(userDatas[uid].curChoose < 0){
-			cb(false,"curChoose != -1")
+			cb(false,"curChoose error "+userDatas[uid].curChoose)
 			return
 		}
 		let grid = userDatas[uid]["curGrid"] + 1
