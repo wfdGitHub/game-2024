@@ -109,6 +109,12 @@
             console.log(data);
         });
       }
+      //开启宝箱
+      var openZhuluBox = function() {
+        pomelo.request("area.zhuluHandler.openZhuluBox", {}, function(data) {
+            console.log(data);
+        });
+      }
       //设置逐鹿出场阵容
       var setZhuluTeam = function(hIds) {
         pomelo.request("area.zhuluHandler.setZhuluTeam", {hIds:hIds}, function(data) {

@@ -93,6 +93,15 @@ zhuluHandler.prototype.chooseSpoils = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//开启宝箱
+zhuluHandler.prototype.openZhuluBox = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].openZhuluBox(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "zhuluHandler",

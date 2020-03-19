@@ -462,6 +462,23 @@ module.exports = function() {
 				cb(false)
 		}
 	}
+	//开启宝箱
+	this.openZhuluBox = function(uid,cb) {
+		if(userDatas[uid]["curChoose"] != -3){
+			cb(false,"不在宝箱阶段")
+			return
+		}
+		var bossLv = Math.ceil(userDatas[uid]["curGrid"] / 10)
+		var boxId = "box"+bossLv
+		var awardList = self.addItemStr(uid,zhulu_cfg[boxId]["value"])
+		var lv = self.getLordLv(uid)
+		var coinCount = lv * 200 * (1 + bossLv)
+		var expCount = lv * 120 * (1 + bossLv)
+		var str = "201:"+coinCount+"&101:"+expCount
+		awardList = awardList.concat(self.addItemStr(uid,str))
+		local.changeData(uid,"curChoose",-1)
+		cb(true,{curChoose : userDatas[uid]["curChoose"],curGrid : userDatas[uid]["curGrid"],awardList : awardList})
+	}
 	//改变逐鹿上阵阵容
 	this.setZhuluTeam = function(uid,hIds,cb) {
 		this.heroDao.setZhuluTeam(self.areaId,uid,hIds,function(flag,data) {
@@ -490,9 +507,13 @@ module.exports = function() {
 	}
 	//进入下一个格子
 	local.nextGrid = function(uid) {
-		local.changeData(uid,"curChoose",-1)
 		local.changeData(uid,"curGrid",userDatas[uid]["curGrid"]+1)
 		local.changeData(uid,"sellOutList",{})
+		if(userDatas[uid]["curGrid"]%10 == 0){
+			local.changeData(uid,"curChoose",-3)
+		}else{
+			local.changeData(uid,"curChoose",-1)
+		}
 	}
 	//改变数据
 	local.changeData = function(uid,key,value) {
