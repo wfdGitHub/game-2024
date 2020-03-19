@@ -388,7 +388,7 @@ module.exports = function() {
 			    		}
 			    	}
 			    	info.defTeam = userDatas[uid]["grids"][grid][choose].team
-			    	local.changeData(uid,"grids",userDatas[uid]["grids"][grid])
+			    	local.changeData(uid,"grids",userDatas[uid]["grids"])
 			    }
 			    cb(true,info)
 			break
