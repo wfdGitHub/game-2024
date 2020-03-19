@@ -14,5 +14,9 @@
   "hero": {
     "name": "英雄商店",
     "weight": 103
+  },
+  "zhulu": {
+    "name": "逐鹿商城",
+    "weight": 104
   }
 }

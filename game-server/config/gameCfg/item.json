@@ -62,6 +62,12 @@
     "type": "currency",
     "quality": 5
   },
+  "209": {
+    "name": "战功",
+    "des": "用于兑换逐鹿之战商店道具",
+    "type": "currency",
+    "quality": 5
+  },
   "301": {
     "name": "英雄积分",
     "des": "英雄积分，用于积分招募",
@@ -987,7 +993,15 @@
   "1000160": {
     "name": "刷新券",
     "des": "用于刷新游历任务",
+    "isBag": true,
+    "type": "item",
     "quality": 4
+  },
+  "1000170": {
+    "name": "挑战券",
+    "des": "用于跨服竞技场挑战",
+    "isBag": true,
+    "type": "item"
   },
   "1001001": {
     "name": "绿色装备宝箱",

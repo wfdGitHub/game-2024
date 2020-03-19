@@ -1,6 +1,6 @@
 {
   "1001": {
-    "name": "生命值增加10%",
+    "name": "初级生命加成",
     "des": "生命值增加10%",
     "quality": 3,
     "spoils_type": "maxHP",
@@ -8,7 +8,7 @@
     "type": "all"
   },
   "1002": {
-    "name": "伤害增加10%",
+    "name": "初级伤害加成",
     "des": "伤害增加10%",
     "quality": 3,
     "spoils_type": "amplify",
@@ -16,7 +16,7 @@
     "type": "all"
   },
   "1003": {
-    "name": "伤害减免8%",
+    "name": "初级伤害减免",
     "des": "伤害减免8%",
     "quality": 3,
     "spoils_type": "reduction",
@@ -24,7 +24,7 @@
     "type": "all"
   },
   "1004": {
-    "name": "暴击几率5%",
+    "name": "初级暴击加成",
     "des": "暴击几率5%",
     "quality": 3,
     "spoils_type": "crit",
@@ -32,7 +32,7 @@
     "type": "all"
   },
   "1005": {
-    "name": "抗暴几率8%",
+    "name": "初级抗暴加成",
     "des": "抗暴几率8%",
     "quality": 3,
     "spoils_type": "critDef",
@@ -40,7 +40,7 @@
     "type": "all"
   },
   "1006": {
-    "name": "爆伤加成15%",
+    "name": "初级爆伤加成",
     "des": "爆伤加成15%",
     "quality": 3,
     "spoils_type": "slay",
@@ -48,7 +48,7 @@
     "type": "all"
   },
   "1007": {
-    "name": "爆伤减免10%",
+    "name": "初级爆伤减免",
     "des": "爆伤减免10%",
     "quality": 3,
     "spoils_type": "slayDef",
@@ -56,7 +56,7 @@
     "type": "all"
   },
   "1008": {
-    "name": "命中几率10%",
+    "name": "初级命中加成",
     "des": "命中几率10%",
     "quality": 3,
     "spoils_type": "hitRate",
@@ -64,7 +64,7 @@
     "type": "all"
   },
   "1009": {
-    "name": "闪避几率8%",
+    "name": "初级闪避加成",
     "des": "闪避几率8%",
     "quality": 3,
     "spoils_type": "dodgeRate",
@@ -72,7 +72,7 @@
     "type": "all"
   },
   "1010": {
-    "name": "治疗暴击8%",
+    "name": "初级治疗暴击",
     "des": "治疗暴击8%",
     "quality": 3,
     "spoils_type": "healRate",
@@ -80,7 +80,7 @@
     "type": "all"
   },
   "1011": {
-    "name": "恢复加成10%",
+    "name": "初级恢复加成",
     "des": "恢复加成10%",
     "quality": 3,
     "spoils_type": "healAdd",
@@ -88,7 +88,7 @@
     "type": "all"
   },
   "1012": {
-    "name": "前排英雄伤害减免12%",
+    "name": "初级前排伤害减免",
     "des": "前排英雄伤害减免12%",
     "quality": 3,
     "spoils_type": "reduction",
@@ -96,7 +96,7 @@
     "type": "front"
   },
   "1013": {
-    "name": "前排英雄闪避几率10%",
+    "name": "初级前排闪避加成",
     "des": "前排英雄闪避几率10%",
     "quality": 3,
     "spoils_type": "dodgeRate",
@@ -104,7 +104,7 @@
     "type": "front"
   },
   "1014": {
-    "name": "前排英雄爆伤减免15%",
+    "name": "初级前排爆伤减免",
     "des": "前排英雄爆伤减免15%",
     "quality": 3,
     "spoils_type": "slayDef",
@@ -112,7 +112,7 @@
     "type": "front"
   },
   "1015": {
-    "name": "前排英雄恢复加成15%",
+    "name": "初级前排恢复加成",
     "des": "前排英雄恢复加成15%",
     "quality": 3,
     "spoils_type": "healAdd",
@@ -120,7 +120,7 @@
     "type": "front"
   },
   "1016": {
-    "name": "前排英雄抗暴几率10%",
+    "name": "初级前排抗暴加成",
     "des": "前排英雄抗暴几率10%",
     "quality": 3,
     "spoils_type": "critDef",
@@ -128,7 +128,7 @@
     "type": "front"
   },
   "1017": {
-    "name": "后排英雄伤害增加15%",
+    "name": "初级后排伤害加成",
     "des": "后排英雄伤害增加15%",
     "quality": 3,
     "spoils_type": "amplify",
@@ -136,7 +136,7 @@
     "type": "back"
   },
   "1018": {
-    "name": "后排英雄暴击几率8%",
+    "name": "初级后排暴击加成",
     "des": "后排英雄暴击几率8%",
     "quality": 3,
     "spoils_type": "crit",
@@ -144,7 +144,7 @@
     "type": "back"
   },
   "1019": {
-    "name": "后排英雄命中几率15%",
+    "name": "初级后排命中加成",
     "des": "后排英雄命中几率15%",
     "quality": 3,
     "spoils_type": "hitRate",
@@ -152,7 +152,7 @@
     "type": "back"
   },
   "1020": {
-    "name": "后排英雄爆伤加成20%",
+    "name": "初级后排爆伤加成",
     "des": "后排英雄爆伤加成20%",
     "quality": 3,
     "spoils_type": "slay",
@@ -160,7 +160,7 @@
     "type": "back"
   },
   "2001": {
-    "name": "输出与控制英雄伤害20%",
+    "name": "战力无双",
     "des": "输出与控制英雄伤害20%",
     "quality": 4,
     "spoils_type": "amplify",
@@ -168,7 +168,7 @@
     "type": "carry"
   },
   "2002": {
-    "name": "输出与控制英雄暴击几率10%",
+    "name": "燃爆全场",
     "des": "输出与控制英雄暴击几率10%",
     "quality": 4,
     "spoils_type": "crit",
@@ -176,7 +176,7 @@
     "type": "carry"
   },
   "2003": {
-    "name": "输出与控制英雄爆伤30%",
+    "name": "弱点击破",
     "des": "输出与控制英雄爆伤30%",
     "quality": 4,
     "spoils_type": "slay",
@@ -184,7 +184,7 @@
     "type": "carry"
   },
   "2004": {
-    "name": "输出与控制英雄命中几率20%",
+    "name": "百步穿杨",
     "des": "输出与控制英雄命中几率20%",
     "quality": 4,
     "spoils_type": "hitRate",
@@ -192,7 +192,7 @@
     "type": "carry"
   },
   "2005": {
-    "name": "治疗暴击15%",
+    "name": "普度众生",
     "des": "治疗暴击15%",
     "quality": 4,
     "spoils_type": "healRate",
@@ -200,7 +200,7 @@
     "type": "all"
   },
   "2006": {
-    "name": "肉盾英雄伤害减免18%",
+    "name": "固若金汤",
     "des": "肉盾英雄伤害减免18%",
     "quality": 4,
     "spoils_type": "reduction",
@@ -208,7 +208,7 @@
     "type": "tank"
   },
   "2007": {
-    "name": "肉盾英雄抗暴几率15%",
+    "name": "坚韧不拔",
     "des": "肉盾英雄抗暴几率15%",
     "quality": 4,
     "spoils_type": "critDef",
@@ -216,7 +216,7 @@
     "type": "tank"
   },
   "2008": {
-    "name": "肉盾英雄恢复加成20%",
+    "name": "沐浴春风",
     "des": "肉盾英雄恢复加成20%",
     "quality": 4,
     "spoils_type": "healAdd",
@@ -224,7 +224,7 @@
     "type": "tank"
   },
   "2009": {
-    "name": "肉盾英雄闪避几率15%",
+    "name": "疾风骤雨",
     "des": "肉盾英雄闪避几率15%",
     "quality": 4,
     "spoils_type": "dodgeRate",
@@ -232,7 +232,7 @@
     "type": "tank"
   },
   "2010": {
-    "name": "肉盾英雄爆伤减免20%",
+    "name": "无伤大雅",
     "des": "肉盾英雄爆伤减免20%",
     "quality": 4,
     "spoils_type": "slay",
@@ -240,7 +240,7 @@
     "type": "tank"
   },
   "2011": {
-    "name": "肉盾英雄生命值增加20%",
+    "name": "皮糙肉厚",
     "des": "肉盾英雄生命值增加20%",
     "quality": 4,
     "spoils_type": "maxHP",
@@ -248,7 +248,7 @@
     "type": "tank"
   },
   "2012": {
-    "name": "初始怒气增加1点",
+    "name": "怒火燃烧",
     "des": "初始怒气增加1点",
     "quality": 4,
     "spoils_type": "curAnger",
@@ -256,7 +256,7 @@
     "type": "all"
   },
   "2013": {
-    "name": "人族英雄生命值30%",
+    "name": "神农百草",
     "des": "人族英雄生命值30%",
     "quality": 4,
     "spoils_type": "maxHP",
@@ -264,7 +264,7 @@
     "type": "human"
   },
   "2014": {
-    "name": "人族英雄初始怒气增加2点",
+    "name": "轩辕怒火",
     "des": "人族英雄初始怒气增加2点",
     "quality": 4,
     "spoils_type": "curAnger",
@@ -272,7 +272,7 @@
     "type": "human"
   },
   "2015": {
-    "name": "人族英雄伤害减免20%",
+    "name": "大禹治水",
     "des": "人族英雄伤害减免20%",
     "quality": 4,
     "spoils_type": "reduction",
@@ -280,7 +280,7 @@
     "type": "human"
   },
   "2016": {
-    "name": "人族英雄伤害增加20%",
+    "name": "剑荡九州",
     "des": "人族英雄伤害增加20%",
     "quality": 4,
     "spoils_type": "amplify",
@@ -288,7 +288,7 @@
     "type": "human"
   },
   "2017": {
-    "name": "仙族英雄生命值30%",
+    "name": "女娲补天",
     "des": "仙族英雄生命值30%",
     "quality": 4,
     "spoils_type": "maxHP",
@@ -296,7 +296,7 @@
     "type": "celestial"
   },
   "2018": {
-    "name": "仙族英雄初始怒气增加2点",
+    "name": "原始真气",
     "des": "仙族英雄初始怒气增加2点",
     "quality": 4,
     "spoils_type": "curAnger",
@@ -304,7 +304,7 @@
     "type": "celestial"
   },
   "2019": {
-    "name": "仙族英雄伤害减免20%",
+    "name": "东皇钟落",
     "des": "仙族英雄伤害减免20%",
     "quality": 4,
     "spoils_type": "reduction",
@@ -312,7 +312,7 @@
     "type": "celestial"
   },
   "2020": {
-    "name": "仙族英雄伤害增加20%",
+    "name": "诛仙剑阵",
     "des": "仙族英雄伤害增加20%",
     "quality": 4,
     "spoils_type": "amplify",
@@ -320,7 +320,7 @@
     "type": "celestial"
   },
   "2021": {
-    "name": "巫族英雄生命值30%",
+    "name": "炼狱火莲",
     "des": "巫族英雄生命值30%",
     "quality": 4,
     "spoils_type": "maxHP",
@@ -328,7 +328,7 @@
     "type": "wizard"
   },
   "2022": {
-    "name": "巫族英雄初始怒气增加2点",
+    "name": "巫妖之怒",
     "des": "巫族英雄初始怒气增加2点",
     "quality": 4,
     "spoils_type": "curAnger",
@@ -336,7 +336,7 @@
     "type": "wizard"
   },
   "2023": {
-    "name": "巫族英雄伤害减免20%",
+    "name": "不死刑天",
     "des": "巫族英雄伤害减免20%",
     "quality": 4,
     "spoils_type": "reduction",
@@ -344,7 +344,7 @@
     "type": "wizard"
   },
   "2024": {
-    "name": "巫族英雄伤害增加20%",
+    "name": "魔王蚩尤",
     "des": "巫族英雄伤害增加20%",
     "quality": 4,
     "spoils_type": "amplify",
@@ -352,7 +352,7 @@
     "type": "wizard"
   },
   "2025": {
-    "name": "兽族英雄生命值30%",
+    "name": "白泽降临",
     "des": "兽族英雄生命值30%",
     "quality": 4,
     "spoils_type": "maxHP",
@@ -360,7 +360,7 @@
     "type": "orc"
   },
   "2026": {
-    "name": "兽族英雄初始怒气增加2点",
+    "name": "圣兽怒意",
     "des": "兽族英雄初始怒气增加2点",
     "quality": 4,
     "spoils_type": "curAnger",
@@ -368,7 +368,7 @@
     "type": "orc"
   },
   "2027": {
-    "name": "兽族英雄伤害减免20%",
+    "name": "玄武护体",
     "des": "兽族英雄伤害减免20%",
     "quality": 4,
     "spoils_type": "reduction",
@@ -376,7 +376,7 @@
     "type": "orc"
   },
   "2028": {
-    "name": "兽族英雄伤害增加20%",
+    "name": "白虎冲天",
     "des": "兽族英雄伤害增加20%",
     "quality": 4,
     "spoils_type": "amplify",
@@ -384,7 +384,7 @@
     "type": "orc"
   },
   "3001": {
-    "name": "初始怒气增加2点",
+    "name": "王者降临",
     "des": "初始怒气增加2点",
     "quality": 5,
     "spoils_type": "curAnger",
@@ -392,7 +392,7 @@
     "type": "all"
   },
   "3002": {
-    "name": "生命值50%",
+    "name": "王母蟠桃",
     "des": "生命值50%",
     "quality": 5,
     "spoils_type": "maxHP",
@@ -400,7 +400,7 @@
     "type": "all"
   },
   "3003": {
-    "name": "伤害30%",
+    "name": "盘古开天",
     "des": "伤害30%",
     "quality": 5,
     "spoils_type": "amplify",
@@ -408,7 +408,7 @@
     "type": "all"
   },
   "3004": {
-    "name": "暴击几率25%",
+    "name": "伏羲挂画",
     "des": "暴击几率25%",
     "quality": 5,
     "spoils_type": "crit",
@@ -416,7 +416,7 @@
     "type": "all"
   },
   "3005": {
-    "name": "闪避25%",
+    "name": "夸父逐日",
     "des": "闪避25%",
     "quality": 5,
     "spoils_type": "dodgeRate",
@@ -424,7 +424,7 @@
     "type": "all"
   },
   "3006": {
-    "name": "爆伤50%",
+    "name": "后羿射日",
     "des": "爆伤50%",
     "quality": 5,
     "spoils_type": "slay",
@@ -432,7 +432,7 @@
     "type": "all"
   },
   "3007": {
-    "name": "伤害减免30%",
+    "name": "昊天神塔",
     "des": "伤害减免30%",
     "quality": 5,
     "spoils_type": "reduction",
@@ -440,7 +440,7 @@
     "type": "all"
   },
   "3008": {
-    "name": "人族英雄生命值增加100%",
+    "name": "女娲造人",
     "des": "人族英雄生命值增加100%",
     "quality": 5,
     "spoils_type": "maxHP",
@@ -448,7 +448,7 @@
     "type": "human"
   },
   "3009": {
-    "name": "仙族英雄初始怒气增加4点",
+    "name": "气化三清",
     "des": "仙族英雄初始怒气增加4点",
     "quality": 5,
     "spoils_type": "curAnger",
@@ -456,7 +456,7 @@
     "type": "celestial"
   },
   "3010": {
-    "name": "兽族英雄伤害增加40%",
+    "name": "野兽之力",
     "des": "兽族英雄伤害增加40%",
     "quality": 5,
     "spoils_type": "amplify",
@@ -464,7 +464,7 @@
     "type": "orc"
   },
   "3011": {
-    "name": "巫族英雄暴击几率40%",
+    "name": "冥王爆杀",
     "des": "巫族英雄暴击几率40%",
     "quality": 5,
     "spoils_type": "crit",
