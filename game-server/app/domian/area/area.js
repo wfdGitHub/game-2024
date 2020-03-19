@@ -3,6 +3,7 @@ var bearcat = require("bearcat")
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
 var async = require("async")
 const standard_dl = require("../../../config/gameCfg/standard_dl.json")
+const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
 const areaServers = ["zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
 const oneDayTime = 86400000
@@ -257,6 +258,8 @@ area.prototype.standardTeam = function(uid,team,dl) {
 		if(team[i]){
 			team[i] = Object.assign({id : team[i]},info)
 		}
+		if(team[i].star < heros[team[i]["id"]]["min_star"])
+			team[i].star = heros[team[i]["id"]]["min_star"]
 	}
 	return team
 }

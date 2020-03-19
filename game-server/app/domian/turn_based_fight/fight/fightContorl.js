@@ -160,7 +160,8 @@ model.getCharacterInfo = function(info) {
 			let starInfo = {}
 			for(let i = 6;i <= info.star;i++){
 				let talentId = advanced_talent[info.id]["talent_"+i]
-				model.mergeTalent(starInfo,talentId)
+				if(talentId)
+					model.mergeTalent(starInfo,talentId)
 			}
 			// console.log("starInfo",starInfo)
 			model.mergeData(info,starInfo)
@@ -183,7 +184,8 @@ model.getCharacterInfo = function(info) {
 				if(i > 5)
 					break
 				let talentId = advanced_talent[info.id]["talent_"+i]
-				model.mergeTalent(advancedInfo,talentId)
+				if(talentId)
+					model.mergeTalent(advancedInfo,talentId)
 			}
 			// console.log("advancedInfo",advancedInfo)
 			model.mergeData(info,advancedInfo)
