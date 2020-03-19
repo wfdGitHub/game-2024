@@ -257,9 +257,9 @@ area.prototype.standardTeam = function(uid,team,dl) {
 	for(var i = 0;i < team.length;i++){
 		if(team[i]){
 			team[i] = Object.assign({id : team[i]},info)
+			if(team[i].star < heros[team[i]["id"]]["min_star"])
+				team[i].star = heros[team[i]["id"]]["min_star"]
 		}
-		if(team[i].star < heros[team[i]["id"]]["min_star"])
-			team[i].star = heros[team[i]["id"]]["min_star"]
 	}
 	return team
 }
