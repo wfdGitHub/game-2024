@@ -381,6 +381,14 @@ module.exports = function() {
 			    	local.changeData(uid,"spoils_list",info.spoils_list)
 		    		local.changeData(uid,"curChoose",info.curChoose)
 		    		info.awardList = self.addItemStr(uid,zhulu_award[grid]["award"])
+			    }else{
+			    	for(var i = 0;i<defTeam.length;i++){
+			    		if(defTeam[i] && overInfo.defTeam[i]){
+			    			userDatas[uid]["grids"][grid][choose].team[i].surplus_health = overInfo.defTeam[i].hp/overInfo.defTeam[i].maxHP
+			    		}
+			    	}
+			    	info.defTeam = userDatas[uid]["grids"][grid][choose].team
+			    	local.changeData(uid,"grids",userDatas[uid]["grids"][grid])
 			    }
 			    cb(true,info)
 			break
