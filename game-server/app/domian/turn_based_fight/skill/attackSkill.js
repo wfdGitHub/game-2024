@@ -11,6 +11,12 @@ var model = function(otps,character) {
 	this.skill_anger_s = otps.skill_anger_s || 0		//自身怒气恢复值
 	this.skill_anger_a = otps.skill_anger_a || 0		//全队怒气恢复值
 	this.skill_less_anger = otps.skill_less_anger || 0	//降低目标怒气值
+	if(character.skill_anger_s)
+		this.skill_anger_s += character.skill_anger_s
+	if(character.skill_anger_a)
+		this.skill_anger_a += character.skill_anger_a
+	if(character.skill_less_anger)
+		this.skill_less_anger += character.skill_less_anger
 	this.turn_rate = otps.turn_rate || 0				//伤害转生命值比例
 	this.turn_tg = otps.turn_tg || 0					//伤害转生命值目标类型
 	this.add_d_s = otps.add_d_s							//追加一次普通攻击(默认技能)

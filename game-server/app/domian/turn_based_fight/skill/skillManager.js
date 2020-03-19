@@ -88,19 +88,7 @@ model.useSkill = function(skill) {
 		recordInfo.type = "self_heal"
 		fightRecord.push(recordInfo)
 	}
-	//判断全队怒气恢复
-	if(skill.skill_anger_a)
-		for(var i = 0;i < skill.character.team.length;i++)
-			if(!skill.character.team[i].died)
-				skill.character.team[i].addAnger(skill.skill_anger_a,skill.skillId)
-	if(skill.skill_less_anger){
-		for(var i = 0;i < targets.length;i++){
-			if(targets[i].died){
-				break
-			}
-			targets[i].lessAnger(skill.skill_less_anger,skill.skillId)
-		}
-	}
+
 	//攻击纵排目标时降低怒气
 	if(skill.character.enemy_vertical_anger && skill.targetType == "enemy_vertical"){
 		for(var i = 0;i < targets.length;i++){
@@ -112,13 +100,13 @@ model.useSkill = function(skill) {
 	}
 	if(skill.isAnger && !skill.character.died){
 		//释放技能后恢复自身怒气
-		if(skill.character.skill_anger_s)
+		if(skill.skill_anger_s)
 			skill.character.addAnger(skill.character.skill_anger_s,skill.skillId)
 		//释放技能后恢复全体队友怒气
-		if(skill.character.skill_anger_a)
+		if(skill.skill_anger_a)
 			for(var i = 0;i < skill.character.team.length;i++)
 				if(!skill.character.team[i].died)
-					skill.character.team[i].addAnger(skill.character.skill_anger_a)
+					skill.character.team[i].addAnger(skill.skill_anger_a)
 		//释放技能后回复当前本方阵容站位最靠前的武将怒气
 		if(skill.character.skill_anger_first){
 			let tmpTargets = this.locator.getTargets(skill.character,"team_min_index")
@@ -126,20 +114,20 @@ model.useSkill = function(skill) {
 				tmpTargets[i].addAnger(skill.character.skill_anger_first)
 			}
 		}
+		//释放技能后降低敌方怒气
+		if(skill.skill_less_anger){
+			for(var i = 0;i < targets.length;i++){
+				if(targets[i].died){
+					break
+				}
+				targets[i].lessAnger(skill.skill_less_anger,skill.skillId)
+			}
+		}
 		//释放技能后恢复己方后排怒气
 		if(skill.character.skill_anger_back){
 			let tmpTargets = this.locator.getTargets(skill.character,"team_horizontal_back")
 			for(var i = 0;i < tmpTargets.length;i++){
 				tmpTargets[i].addAnger(skill.character.skill_anger_back)
-			}
-		}
-		//释放技能后降低敌人怒气
-		if(skill.character.skill_less_anger){
-			for(var i = 0;i < targets.length;i++){
-				if(targets[i].died){
-					break
-				}
-				targets[i].lessAnger(skill.character.skill_less_anger,skill.skillId)
 			}
 		}
 		//释放技能后追加技能
