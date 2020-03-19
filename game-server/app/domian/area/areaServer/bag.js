@@ -171,6 +171,14 @@ module.exports = function() {
 								self.taskUpdate(uid,"ace",value,ace_pack[itemId].quality)
 							break
 						}
+						switch(itemId){
+							case 204:
+								if(curValue > 20000){
+									curValue = 20000
+									self.redisDao.db.hset("area:area"+self.areaId+":player:"+uid+":bag",itemId,curValue)
+								}
+							break
+						}
 					}
 					var notify = {
 						"type" : "addItem",

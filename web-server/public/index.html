@@ -72,6 +72,37 @@
             console.log(data);
         });
       }
+      //============游历任务==============//
+      //获取游历任务数据
+      var getTourData = function() {
+        pomelo.request("area.tourHandler.getTourData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //刷新游历任务
+      var refreshTour = function() {
+        pomelo.request("area.tourHandler.refreshTour", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //进行游历任务
+      var runTour = function(index,hIds) {
+        pomelo.request("area.tourHandler.runTour", {index:index,hIds:hIds}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取游历任务奖励
+      var gainTourAward = function(id) {
+        pomelo.request("area.tourHandler.gainTourAward", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //加速完成游历任务
+      var speedUpTour = function(id) {
+        pomelo.request("area.tourHandler.speedUpTour", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
       //============逐鹿之战==============//
       //获取逐鹿之战数据
       var getZhuluData = function() {
