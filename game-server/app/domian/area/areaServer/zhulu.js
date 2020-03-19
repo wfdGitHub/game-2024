@@ -2,11 +2,12 @@ const zhulu_cfg = require("../../../../config/gameCfg/zhulu_cfg.json")
 const zhulu_dl = require("../../../../config/gameCfg/zhulu_dl.json")
 const zhulu_shop = require("../../../../config/gameCfg/zhulu_shop.json")
 const zhulu_spoils = require("../../../../config/gameCfg/zhulu_spoils.json")
+const zhulu_award = require("../../../../config/gameCfg/zhulu_award.json")
+const heros = require("../../../../config/gameCfg/heros.json")
 var util = require("../../../../util/util.js")
 var main_name = "zhulu"
 var allWeight = 0
 var normal_team = JSON.parse(zhulu_cfg["normal_team"]["value"])
-console.log(normal_team)
 var elite_team = JSON.parse(zhulu_cfg["elite_team"]["value"])
 var boss_team = JSON.parse(zhulu_cfg["boss_team"]["value"])
 var weights = {
@@ -20,7 +21,6 @@ for(let type in weights){
 	weights[type] = zhulu_cfg[type]["value"] + allWeight
 	allWeight = weights[type]
 }
-// console.log(weights,allWeight)
 var shopAllWeight = 0
 var shopWeights = {}
 for(var i in zhulu_shop){
@@ -35,7 +35,6 @@ for(var i in zhulu_spoils){
 	}
 	spoils_qualitys[zhulu_spoils[i]["quality"]].push(zhulu_spoils[i])
 }
-console.log("spoils_qualitys",spoils_qualitys)
 var keysType = {
 	dayStr : "string",
 	curGrid : "num",
@@ -46,15 +45,15 @@ var keysType = {
 	gridList :"obj",
 	spoils : "obj",
 	spoils_list : "obj",
-	chooseList :"obj"
+	chooseList :"obj",
+	sellOutList : "obj"
 }
 var gridCounts = [1,2,3,2,3,2,3,2,3,2,1,2,3,2,3,2,3,2,3,2,1,2,3,2,3,2,3,2,3,2,1]
-// console.log(shopWeights,shopAllWeight)
 //逐鹿之战
 module.exports = function() {
 	var self = this
 	var userDatas = {}
-	var userSeededNums = {}
+	var userFightDatas = {}
 	var local = {}
 	//加载逐鹿之战数据
 	this.zhuluLoad = function(uid,next) {
@@ -70,7 +69,8 @@ module.exports = function() {
 					gridList : {},
 					spoils : [],
 					spoils_list : [],
-					chooseList : {}
+					chooseList : {},
+					sellOutList : {}
 				}
 				let fightTeam = self.getUserTeam(uid)
 				for(let i = 0;i < fightTeam.length;i++){
@@ -136,7 +136,6 @@ module.exports = function() {
 			let rand = Math.random() * allWeight
 			for(let type in weights){
 				if(rand < weights[type]){
-					type = "normal"
 					let info = {type:type}
 					switch(type){
 						case "normal":
@@ -182,7 +181,7 @@ module.exports = function() {
 	//生成商城数据
 	local.createShop = function() {
 		var list = []
-		for(let i = 0;i < 3;i++){
+		for(let i = 0;i < 4;i++){
 			let rand = Math.random() * shopAllWeight
 			for(let j in shopWeights){
 				if(rand < shopWeights[j].weight){
@@ -228,12 +227,15 @@ module.exports = function() {
 			cb(false,"curChoose != -1")
 			return
 		}
-		let oldGrid = userDatas[uid]["gridList"][userDatas[uid]["curGrid"]]
-
-		if(!(oldGrid !== undefined && oldGrid % 10 != 0 && (choose != oldGrid && choose != oldGrid + 1))){
-			cb(false,"必须选择连续的路径")
-			return
-		}
+		// let oldGrid = userDatas[uid]["gridList"][userDatas[uid]["curGrid"] - 1]
+		// if(oldGrid !== undefined){
+		// 	let offset = userDatas[uid]["grids"][userDatas[uid]["curGrid"]].length == 2 ? -0.5 : 0.5
+		// 	console.log(choose,offset,oldGrid,Math.abs(choose + offset - oldGrid))
+		// 	if(userDatas[uid]["curGrid"] % 10 != 0 && Math.abs(choose + offset - oldGrid) > 1){
+		// 		cb(false,"必须选择连续的路径")
+		// 		return
+		// 	}
+		// }
 		let grid = userDatas[uid]["curGrid"] + 1
 		if(!Number.isInteger(choose) || !userDatas[uid]["grids"][grid] || !userDatas[uid]["grids"][grid][choose]){
 			cb(false,"choose error "+choose)
@@ -245,22 +247,94 @@ module.exports = function() {
 		cb(true)
 	}
 	local.spoilsLoad = function(atkTeam,spoils) {
+		for(let i = 0;i <spoils.length;i++){
+			let targetList = []
+			switch(spoils[i].type){
+				case "all":
+					targetList = [0,1,2,3,4,5]
+				break
+				case "front":
+					targetList = [0,1,2]
+				break
+				case "back":
+					targetList = [3,4,5]
+				break
+				case "carry":
+					for(let k = 0;k < atkTeam.length;k++){
+						if(atkTeam[k] && (heros[atkTeam[k].id]["career"] == 1 || heros[atkTeam[k].id]["career"] == 2)){
+							targetList.push(k)
+						}
+					}
+				break
+				case "support":
+					for(let k = 0;k < atkTeam.length;k++){
+						if(atkTeam[k] && heros[atkTeam[k].id]["career"] == 4){
+							targetList.push(k)
+						}
+					}
+				break
+				case "tank":
+					for(let k = 0;k < atkTeam.length;k++){
+						if(atkTeam[k] && heros[atkTeam[k].id]["career"] == 3){
+							targetList.push(k)
+						}
+					}
+				break
+				case "human":
+					for(let k = 0;k < atkTeam.length;k++){
+						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 2){
+							targetList.push(k)
+						}
+					}
+				break
+				case "celestial":
+					for(let k = 0;k < atkTeam.length;k++){
+						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 1){
+							targetList.push(k)
+						}
+					}
+				break
+				case "wizard":
+					for(let k = 0;k < atkTeam.length;k++){
+						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 3){
+							targetList.push(k)
+						}
+					}
+				break
+				case "orc":
+					for(let k = 0;k < atkTeam.length;k++){
+						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 4){
+							targetList.push(k)
+						}
+					}
+				break
+			}
+			for(let j = 0;j < targetList.length;j++){
+				if(atkTeam[targetList[j]]){
+					if(!atkTeam[targetList[j]][spoils[i].spoils_type])
+						atkTeam[targetList[j]][spoils[i].spoils_type] = spoils[i].value
+					else
+						atkTeam[targetList[j]][spoils[i].spoils_type] += spoils[i].value
+				}
+			}
+		}
 		return atkTeam
 	}
 	//获取逐鹿战斗数据
 	this.getZhuluFightData = function(uid,cb) {
-		userSeededNums[uid] = Date.now()
 		self.heroDao.getZhuluTeam(self.areaId,uid,function(flag,atkTeam) {
 			if(!flag){
 				cb(flag,atkTeam)
 			}else{
+				userFightDatas[uid] = {}
 				let grid = userDatas[uid]["curGrid"] + 1
 				atkTeam = local.spoilsLoad(atkTeam,userDatas[uid]["spoils"])
 		    	for(let i = 0;i<atkTeam.length;i++){
 		    		if(atkTeam[i] && userDatas[uid]["surplus_healths"][atkTeam[i].hId] !== undefined)
 		    			atkTeam[i].surplus_health = userDatas[uid]["surplus_healths"][atkTeam[i].hId]
 		    	}
-			    cb(true,{atkTeam : atkTeam,seededNum : userSeededNums[uid]})
+		    	userFightDatas[uid] = {seededNum : Date.now(),atkTeam : atkTeam}
+			    cb(true,userFightDatas[uid])
 			}
 		})
 	}
@@ -277,46 +351,38 @@ module.exports = function() {
 			case "boss":
 			case "elite":
 			case "normal":
-				if(!userSeededNums[uid]){
-					cb(false,"未获取随机种子")
+				if(!userFightDatas[uid]){
+					cb(false,"未获取战斗数据")
 					return
 				}
-				self.heroDao.getZhuluTeam(self.areaId,uid,function(flag,atkTeam) {
-					if(!flag){
-						cb(flag,atkTeam)
-					}else{
-						var defTeam = userDatas[uid]["grids"][grid][choose].team
-						var seededNum = userSeededNums[uid]
-						delete userSeededNums[uid]
-				    	for(var i = 0;i<atkTeam.length;i++){
-				    		if(atkTeam[i] && userDatas[uid]["surplus_healths"][atkTeam[i].hId] !== undefined)
-				    			atkTeam[i].surplus_health = userDatas[uid]["surplus_healths"][atkTeam[i].hId]
-				    	}
-					    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-				    	let list = self.fightContorl.getFightRecord()
-				    	let overInfo = list[list.length - 1]
-				    	for(var i = 0;i<atkTeam.length;i++){
-				    		if(atkTeam[i] && overInfo.atkTeam[i]){
-				    			userDatas[uid]["surplus_healths"][atkTeam[i].hId] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
-				    			if(userDatas[uid]["surplus_healths"][atkTeam[i].hId] >= 1){
-				    				delete userDatas[uid]["surplus_healths"][atkTeam[i].hId]
-				    			}
-				    		}
-				    	}
-				    	local.changeData(uid,"surplus_healths",userDatas[uid]["surplus_healths"])
-				    	var info = {
-				    		winFlag : winFlag,
-				    		surplus_healths : userDatas[uid]["surplus_healths"]
-				    	}
-					    if(winFlag){
-				    		info.spoils_list = local.createSpoils(uid,type)
-				    		info.curChoose = -2
-					    	local.changeData(uid,"spoils_list",info.spoils_list)
-				    		local.changeData(uid,"curChoose",info.curChoose)
-					    }
-					    cb(true,info)
-					}
-				})
+				var atkTeam = userFightDatas[uid].atkTeam
+				var seededNum = userFightDatas[uid].seededNum
+				var defTeam = userDatas[uid]["grids"][grid][choose].team
+				delete userFightDatas[uid]
+			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+		    	var list = self.fightContorl.getFightRecord()
+		    	let overInfo = list[list.length - 1]
+		    	for(var i = 0;i<atkTeam.length;i++){
+		    		if(atkTeam[i] && overInfo.atkTeam[i]){
+		    			userDatas[uid]["surplus_healths"][atkTeam[i].hId] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
+		    			if(userDatas[uid]["surplus_healths"][atkTeam[i].hId] >= 1){
+		    				delete userDatas[uid]["surplus_healths"][atkTeam[i].hId]
+		    			}
+		    		}
+		    	}
+		    	local.changeData(uid,"surplus_healths",userDatas[uid]["surplus_healths"])
+		    	var info = {
+		    		winFlag : winFlag,
+		    		surplus_healths : userDatas[uid]["surplus_healths"]
+		    	}
+			    if(winFlag){
+		    		info.spoils_list = local.createSpoils(uid,type)
+		    		info.curChoose = -2
+			    	local.changeData(uid,"spoils_list",info.spoils_list)
+		    		local.changeData(uid,"curChoose",info.curChoose)
+		    		info.awardList = self.addItemStr(uid,zhulu_award[grid]["award"])
+			    }
+			    cb(true,info)
 			break
 			case "heal":
 				//恢复
@@ -353,8 +419,25 @@ module.exports = function() {
 			break
 			case "shop":
 				//商城
-				local.nextGrid(uid)
-				cb(true,{curChoose : userDatas[uid]["curChoose"],curGrid : userDatas[uid]["curGrid"]})
+				var list = userDatas[uid]["grids"][grid][choose].list
+				if(!Number.isInteger(arg) || !list[arg]){
+					cb(false,"arg error"+arg)
+					return
+				}
+				if(userDatas[uid]["sellOutList"][arg]){
+					cb(false,"已售罄")
+					return
+				}
+				self.consumeItems(uid,list[arg]["price"],1,function(flag,err) {
+					if(!flag){
+						cb(flag,err)
+						return
+					}
+					userDatas[uid]["sellOutList"][arg] = 1
+					local.changeData(uid,"sellOutList",userDatas[uid]["sellOutList"])
+					var awardList = self.addItemStr(uid,list[arg]["goods"])
+					cb(true,awardList)
+				})
 			break
 			default:
 				cb(false)
@@ -362,8 +445,8 @@ module.exports = function() {
 	}
 	//放弃格子
 	this.giveupGrid = function(uid,cb) {
-		if(userDatas[uid].curChoose !== -1){
-			cb(false,"curChoose != -1")
+		if(userDatas[uid].curChoose < 0){
+			cb(false,"curChoose error ")
 			return
 		}
 		let grid = userDatas[uid]["curGrid"] + 1
@@ -378,7 +461,6 @@ module.exports = function() {
 			default:
 				cb(false)
 		}
-		
 	}
 	//改变逐鹿上阵阵容
 	this.setZhuluTeam = function(uid,hIds,cb) {
@@ -410,6 +492,7 @@ module.exports = function() {
 	local.nextGrid = function(uid) {
 		local.changeData(uid,"curChoose",-1)
 		local.changeData(uid,"curGrid",userDatas[uid]["curGrid"]+1)
+		local.changeData(uid,"sellOutList",{})
 	}
 	//改变数据
 	local.changeData = function(uid,key,value) {

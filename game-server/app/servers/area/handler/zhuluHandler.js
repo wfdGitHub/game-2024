@@ -38,6 +38,15 @@ zhuluHandler.prototype.executeGrid = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//放弃格子
+zhuluHandler.prototype.giveupGrid = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].giveupGrid(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+
 //设置出场阵容
 zhuluHandler.prototype.setZhuluTeam = function(msg, session, next) {
   var uid = session.uid

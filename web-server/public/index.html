@@ -97,6 +97,12 @@
             console.log(data);
         });
       }
+      //放弃格子
+      var giveupGrid = function() {
+        pomelo.request("area.zhuluHandler.giveupGrid", {}, function(data) {
+            console.log(data);
+        });
+      }
       //选择战利品
       var chooseSpoils = function(index) {
         pomelo.request("area.zhuluHandler.chooseSpoils", {index:index}, function(data) {
@@ -1028,6 +1034,7 @@
       <input id="test" type="button" value="选择格子2" onclick="chooseGrid(2)"/>
       <input id="test" type="button" value="逐鹿战斗数据" onclick="getZhuluFightData()"/>
       <input id="test" type="button" value="执行格子" onclick="executeGrid()"/>
+      <input id="test" type="button" value="放弃格子" onclick="giveupGrid()"/>
       <input id="test" type="button" value="选择战利品" onclick="chooseSpoils(1)"/>
     </div>
   </body>
