@@ -9,15 +9,15 @@
   },
   "heal": {
     "name": "回血建筑权重",
-    "value": 100
+    "value": 30
   },
   "resurgence": {
     "name": "复活建筑权重",
-    "value": 100
+    "value": 10
   },
   "shop": {
     "name": "商城权重",
-    "value": 100
+    "value": 30
   },
   "normal_dl": {
     "name": "普通怪难度等级",
