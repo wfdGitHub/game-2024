@@ -27,11 +27,32 @@ module.exports = function() {
 			cb(true,obj || {})
 		})
 	}
-	//刷新游历任务
-	this.refreshTour = function(uid,cb) {
-		let list = local.createTour()
-		self.setHMObj(uid,main_name,list)
-		cb(true,list)
+	//元宝刷新
+	this.refreshTourByGold = function(uid,cb) {
+		self.consumeItems(uid,"202:30",1,function(flag,err) {
+			if(flag){
+				let list = local.createTour()
+				self.setHMObj(uid,main_name,list)
+				cb(true,list)
+			}
+			else{
+				cb(flag,err)
+			}
+		})
+
+	}
+	//刷新券刷新
+	this.refreshTourByItem = function(uid,cb) {
+		self.consumeItems(uid,"1000160:1",1,function(flag,err) {
+			if(flag){
+				let list = local.createTour()
+				self.setHMObj(uid,main_name,list)
+				cb(true,list)
+			}
+			else{
+				cb(flag,err)
+			}
+		})
 	}
 	//进行游历任务
 	this.runTour = function(uid,index,hIds,cb) {

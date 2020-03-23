@@ -13,11 +13,19 @@ tourHandler.prototype.getTourData = function(msg, session, next) {
 	    next(null,{flag : flag,data : data})
     })
 }
-//刷新游历任务
-tourHandler.prototype.refreshTour = function(msg, session, next) {
+//元宝刷新游历任务
+tourHandler.prototype.refreshTourByGold = function(msg, session, next) {
     var uid = session.uid
     var areaId = session.get("areaId")
-    this.areaManager.areaMap[areaId].refreshTour(uid,function(flag,data) {
+    this.areaManager.areaMap[areaId].refreshTourByGold(uid,function(flag,data) {
+      next(null,{flag : flag,data : data})
+    })
+}
+//刷新券刷新游历任务
+tourHandler.prototype.refreshTourByItem = function(msg, session, next) {
+    var uid = session.uid
+    var areaId = session.get("areaId")
+    this.areaManager.areaMap[areaId].refreshTourByItem(uid,function(flag,data) {
 	    next(null,{flag : flag,data : data})
     })
 }

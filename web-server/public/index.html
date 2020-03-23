@@ -79,9 +79,15 @@
             console.log(data);
         });
       }
-      //刷新游历任务
-      var refreshTour = function() {
-        pomelo.request("area.tourHandler.refreshTour", {}, function(data) {
+      //元宝刷新游历任务
+      var refreshTourByGold = function() {
+        pomelo.request("area.tourHandler.refreshTourByGold", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //刷新券刷新游历任务
+      var refreshTourByItem = function() {
+        pomelo.request("area.tourHandler.refreshTourByItem", {}, function(data) {
             console.log(data);
         });
       }
