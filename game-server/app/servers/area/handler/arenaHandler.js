@@ -42,9 +42,9 @@ arenaHandler.prototype.getMyArenaInfo = function(msg, session, next) {
 arenaHandler.prototype.challengeArena = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var targetStr = msg.targetStr
+  var targetName = msg.targetName
   var targetRank = msg.targetRank
-  this.areaManager.areaMap[areaId].challengeArena(uid,targetStr,targetRank,function(flag,data) {
+  this.areaManager.areaMap[areaId].challengeArena(uid,targetName,targetRank,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

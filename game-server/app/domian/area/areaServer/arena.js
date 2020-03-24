@@ -36,9 +36,9 @@ module.exports = function() {
 	//匹配规则  计算目标列表
 	local.calRankTargets = function(rank) {
 		var list = []
-		//5名以内 显示除自己以外的玩家
-		if(rank <= 5){
-			for(var i = 1;i <= 5;i++){
+		//4名以内 显示除自己以外的玩家
+		if(rank <= 4){
+			for(var i = 1;i <= 4;i++){
 				if(i != rank){
 					list.push(i)
 				}
@@ -49,7 +49,7 @@ module.exports = function() {
 		if(rank > addOneLv){
 			lenght = Math.ceil((rank + correctNumerator) / correctDenominator)
 		}
-		for(var i = 1;i <= 4;i++){
+		for(var i = 1;i <= 3;i++){
 			var tail =  rank - (lenght * (i - 1)) - 1
 			var head = rank - (lenght * i)
 			var rand = Math.floor(head + Math.random() * (tail - head))
@@ -59,14 +59,13 @@ module.exports = function() {
 		return list
 	}
 	local.getTargetsInfo = function(list,cb) {
-		self.redisDao.db.hmget("area:area"+self.areaId+":"+mainName,list,function(err,userList) {
-			self.redisDao.db.hmget("area:area"+self.areaId+":robots",list,function(err,robotList) {
-				for(var i = 0;i < userList.length;i++){
-					if(!userList[i]){
-						userList[i] = robotList[i]
-					}
-				}
-				cb(true,{rankList : list,userList : userList})
+		self.redisDao.db.hmget("area:area"+self.areaId+":"+mainName,list,function(err,uids) {
+			for(var i = 0;i < uids.length;i++){
+				if(!uids[i])
+					uids[i] = list[i]
+			}
+			self.getPlayerInfoByUids(uids,function(userInfos) {
+				cb(true,{rankList : list,userInfos : userInfos})
 			})
 		})
 	}
@@ -80,7 +79,7 @@ module.exports = function() {
 				highestRank : rank				//最高排名
 			}
 			self.setHMObj(uid,mainName,info)
-			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,JSON.stringify({uid : uid,name : name}))
+			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,uid)
 		})
 	}
 	//购买竞技场奖励商城物品
@@ -159,7 +158,7 @@ module.exports = function() {
 		})
 	}
 	//挑战目标
-	this.challengeArena = function(uid,targetStr,targetRank,cb) {
+	this.challengeArena = function(uid,targetName,targetRank,cb) {
 		if(!Number.isInteger(targetRank)|| targetRank <= 0){
 			cb(false,"challengeArena targetRank error "+targetRank)
 			return
@@ -172,11 +171,11 @@ module.exports = function() {
 	    var atkTeam = fightInfo.team
 	    var seededNum = fightInfo.seededNum
 		local.getTargetsInfo([targetRank],function(flag,data) {
-			if(!data || !data.userList || !data.userList[0] || data.userList[0] !== targetStr){
+			if(!data || !data.userInfos || !data.userInfos[0] || data.userInfos[0]["name"] !== targetName){
 				cb(false,"竞技场排名已发生改变")
 				return
 			}
-			var targetInfo = JSON.parse(data.userList[0])
+			var targetInfo = data.userInfos[0]
 			var targetUid = targetInfo.uid
 		    if(local.locks[targetUid]){
 		    	cb(false,"该玩家正在被挑战")
@@ -205,7 +204,7 @@ module.exports = function() {
 						return
 					}
 					var defTeam = arena_rank[range]["team"+rand].concat()
-					local.challengeArena(uid,targetUid,targetRank,targetStr,targetInfo,atkTeam,defTeam,seededNum,cb)
+					local.challengeArena(uid,targetUid,targetRank,targetInfo,atkTeam,defTeam,seededNum,cb)
 				}else{
 					//玩家队伍
 					self.getDefendTeam(targetUid,function(defTeam) {
@@ -215,7 +214,7 @@ module.exports = function() {
 							delete local.locks[uid]
 							return
 						}
-						local.challengeArena(uid,targetUid,targetRank,targetStr,targetInfo,atkTeam,defTeam,seededNum,cb)
+						local.challengeArena(uid,targetUid,targetRank,targetInfo,atkTeam,defTeam,seededNum,cb)
 					})
 				}
 			})
@@ -261,14 +260,13 @@ module.exports = function() {
 		})
 	}
 	//挑战结算
-	local.challengeArena = function(uid,targetUid,targetRank,targetStr,targetInfo,atkTeam,defTeam,seededNum,cb) {
+	local.challengeArena = function(uid,targetUid,targetRank,targetInfo,atkTeam,defTeam,seededNum,cb) {
 		var info = {}
 		var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-		info.targetStr = targetStr
 		info.winFlag = winFlag
 		var fightInfo = {atkTeam : atkTeam,defTeam : defTeam,seededNum : seededNum}
 		info.fightInfo = fightInfo
-		if(winFlag){
+		if(winFlag || true){
 			self.getObjAll(uid,mainName,function(data) {
 				//交换排名
 				data.rank = parseInt(data.rank)
@@ -342,49 +340,33 @@ module.exports = function() {
 	}
 	//交换排名
 	local.swopRank = function(uid,rank,targetUid,targetRank,cb) {
-		self.redisDao.db.hmget("area:area"+self.areaId+":"+mainName,[rank,targetRank],function(err,data) {
-			if(data[1])
-				self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,data[1])
-			if(uid > 10000)
-				self.setObj(uid,mainName,"rank",targetRank)
-			if(data[0])
-				self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,targetRank,data[0])
-			if(targetUid > 10000)
+			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,targetRank,uid)
+			self.setObj(uid,mainName,"rank",targetRank)
+			if(targetUid > 10000){
+				self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,targetUid)
 				self.setObj(targetUid,mainName,"rank",rank)
-			if(targetRank <= sysChatLv){
-				var userInfo = JSON.parse(data[0])
-				var userName = ""
-				if(userInfo && userInfo.name){
-					userName = userInfo.name
-				}
-				if(!data[1]){
-					self.redisDao.db.hget("area:area"+self.areaId+":robots",targetUid,function(err,targetInfo) {
-						var targetInfo = JSON.parse(targetInfo)
-						var targetName = ""
-						if(targetInfo && targetInfo.name){
-							targetName = targetInfo.name
-						}
-						var notify = {
-							type : "sysChat",
-							text : userName+"玩家击败了"+targetName+" 玩家,取代了"+targetName+"竞技场的位置,当前排名"+rank
-						}
-						self.sendAllUser(notify)
-					})
-				}else{
-					var targetInfo = JSON.parse(data[1])
-					var targetName = ""
-					targetName = targetInfo.name
+			}else{
+				self.redisDao.db.hdel("area:area"+self.areaId+":"+mainName,rank)
+			}
+			if(targetRank <= sysChatLv || true){
+				self.getPlayerInfoByUids([uid,targetUid],function(userInfos) {
+					var userName = userInfos[0].name
+					var targetName
+					if(targetUid < 10000){
+						targetName = self.robots[targetUid]["name"]
+					}else{
+						targetName = userInfos[1].name
+					}
 					var notify = {
 						type : "sysChat",
-						text : userName+"玩家击败了"+targetName+" 玩家,取代了"+targetName+"竞技场的位置,当前排名"+rank
+						text : userName+"玩家击败了"+targetName+" 玩家,取代了"+targetName+"竞技场的位置,当前排名"+targetRank
 					}
 					self.sendAllUser(notify)
-				}
+				})
 			}
 			if(cb){
 				cb()
 			}
-		})
 	}
 	//计算排名提升奖励
 	local.calRankUpAward = function(rank,targetRank) {

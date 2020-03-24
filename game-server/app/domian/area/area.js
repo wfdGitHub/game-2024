@@ -32,6 +32,13 @@ var area = function(otps,app) {
 //服务器初始化
 area.prototype.init = function() {
 	console.log("area init")
+	var self = this
+	this.redisDao.db.hgetall("area:area"+this.areaId+":robots",function(err,robots) {
+		self.robots = {}
+		for(let i in robots){
+			self.robots[i] = JSON.parse(robots[i])
+		}
+	})
 	this.worldBossCheck()
 	setInterval(this.update.bind(this),1000)
 }
@@ -262,6 +269,28 @@ area.prototype.standardTeam = function(uid,team,dl) {
 		}
 	}
 	return team
+}
+//批量获取玩家基本数据
+area.prototype.getPlayerInfoByUids = function(uids,cb) {
+	var multiList = []
+	for(var i = 0;i < uids.length;i++){
+		multiList.push(["hget","area:area"+this.areaId+":player:"+uids[i]+":playerInfo","name"])
+		multiList.push(["hget","area:area"+this.areaId+":player:"+uids[i]+":playerInfo","head"])
+	}
+	var self = this
+	self.redisDao.multi(multiList,function(err,list) {
+		var userInfos = []
+		for(var i = 0;i < uids.length;i++){
+			let info = {uid : uids[i]}
+			info["name"] = list.shift()
+			info["head"] = list.shift()
+			if(uids[i] < 10000){
+				info = self.robots[uids[i]]
+			}
+			userInfos.push(info)
+		}
+		cb(userInfos)
+	})
 }
 module.exports = {
 	id : "area",

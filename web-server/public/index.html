@@ -486,9 +486,10 @@
       //挑战目标
       var challengeArena = function() {
         getTargetList(function(data) {
+          console.log(data)
           var targetRank = data.data.rankList[0]
-          var targetStr = data.data.userList[0]
-          pomelo.request("area.arenaHandler.challengeArena", {targetStr : targetStr,targetRank : targetRank}, function(data) {
+          var targetName = data.data.userInfos[0]["name"]
+          pomelo.request("area.arenaHandler.challengeArena", {targetName : targetName,targetRank : targetRank}, function(data) {
               console.log(data);
           });
         })

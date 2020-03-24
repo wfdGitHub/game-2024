@@ -5,7 +5,6 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 	var playerInfo = {
 		accId : otps.accId,
 		name : otps.name,
-		sex : otps.sex === 1? 1 : 2,
 		exp : 0,
 		level : 1,
 		heroAmount : 200,

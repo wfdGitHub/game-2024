@@ -18,10 +18,9 @@ areaDao.prototype.createArea = function(otps,cb) {
 			var robots = {}
 			for(var i = 1;i <= 4001;i++){
 				var info = {
-					"uid" : i,
-					"sex" : Math.random() > 0.5 ? 1 : 2
+					"uid" : i
 				}
-				if(info["sex"] == 1){
+				if(Math.random() > 0.5){
 					info["name"] = boyCfg[Math.floor(Math.random() * boyCfg.length)]
 				}else{
 					info["name"] = girlCfg[Math.floor(Math.random() * girlCfg.length)]

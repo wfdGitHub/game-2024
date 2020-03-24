@@ -58,7 +58,6 @@ crossManager.prototype.getSimpleUser = function(crossUid) {
 	}
 	var info = {
 		name : this.players[crossUid]["playerInfo"]["name"],
-		sex : this.players[crossUid]["playerInfo"]["sex"],
 		areaId : this.players[crossUid]["playerInfo"]["areaId"]
 	}
 	return info
