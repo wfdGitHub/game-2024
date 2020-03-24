@@ -159,7 +159,8 @@ module.exports = function() {
     	let overInfo = list[list.length - 1]
     	let allDamage = 0
     	for(var i = 0;i < overInfo.atkTeam.length;i++)
-    		allDamage += overInfo.atkTeam[i].totalDamage
+    		if(overInfo.atkTeam[i])
+    			allDamage += overInfo.atkTeam[i].totalDamage
     	info.allDamage = allDamage
     	let score = Math.ceil(allDamage*world_boss_cfg["score"]["value"])
     	let coin = Math.ceil(allDamage*world_boss_cfg["coin"]["value"])
@@ -175,8 +176,7 @@ module.exports = function() {
     	if(!userScores[uid])
     		userScores[uid] = 0
     	userScores[uid] += score
-    	let str = JSON.stringify(userInfos[uid])
-    	this.addZset("worldBoss",str,userScores[uid])
+    	this.addZset("worldBoss",uid,userScores[uid])
 	}
 	//抢夺玩家
 	this.robWorldBossPlayer = function(uid,targetUid,cb) {
@@ -239,8 +239,10 @@ module.exports = function() {
 	}
 	//获取排行榜
 	this.getWorldBossRank = function(cb) {
-		this.zrangewithscore("worldBoss",-100,-1,function(list) {
-			cb(true,list)
+		self.zrangewithscore("worldBoss",-100,-1,function(uids) {
+			self.getPlayerInfoByUids(uids,function(userInfos) {
+				cb(true,userInfos)
+			})
 		})
 	}
 }
