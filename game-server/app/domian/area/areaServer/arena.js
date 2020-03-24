@@ -267,7 +267,7 @@ module.exports = function() {
 		var fightInfo = {atkTeam : atkTeam,defTeam : defTeam,seededNum : seededNum}
 		info.fightInfo = fightInfo
 		info.targetInfo = targetInfo
-		if(winFlag || true){
+		if(winFlag){
 			self.getObjAll(uid,mainName,function(data) {
 				//交换排名
 				data.rank = parseInt(data.rank)
@@ -349,7 +349,7 @@ module.exports = function() {
 			}else{
 				self.redisDao.db.hdel("area:area"+self.areaId+":"+mainName,rank)
 			}
-			if(targetRank <= sysChatLv || true){
+			if(targetRank <= sysChatLv){
 				self.getPlayerInfoByUids([uid,targetUid],function(userInfos) {
 					var userName = userInfos[0].name
 					var targetName
