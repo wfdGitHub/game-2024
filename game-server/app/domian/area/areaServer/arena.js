@@ -266,6 +266,7 @@ module.exports = function() {
 		info.winFlag = winFlag
 		var fightInfo = {atkTeam : atkTeam,defTeam : defTeam,seededNum : seededNum}
 		info.fightInfo = fightInfo
+		info.targetInfo = targetInfo
 		if(winFlag || true){
 			self.getObjAll(uid,mainName,function(data) {
 				//交换排名
