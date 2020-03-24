@@ -274,18 +274,21 @@ area.prototype.standardTeam = function(uid,team,dl) {
 area.prototype.getPlayerInfoByUids = function(uids,cb) {
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
-		multiList.push(["hget","area:area"+this.areaId+":player:"+uids[i]+":playerInfo","name"])
-		multiList.push(["hget","area:area"+this.areaId+":player:"+uids[i]+":playerInfo","head"])
+		multiList.push(["hmget","area:area"+this.areaId+":player:"+uids[i]+":playerInfo",["name","head"]])
 	}
 	var self = this
 	self.redisDao.multi(multiList,function(err,list) {
 		var userInfos = []
 		for(var i = 0;i < uids.length;i++){
-			let info = {uid : uids[i]}
-			info["name"] = list.shift()
-			info["head"] = list.shift()
+			let info = {}
 			if(uids[i] < 10000){
 				info = self.robots[uids[i]]
+			}else{
+				info = {
+					uid : uids[i],
+					name : list[i][0],
+					head : list[i][1]
+				}
 			}
 			userInfos.push(info)
 		}
