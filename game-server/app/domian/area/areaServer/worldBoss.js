@@ -239,9 +239,15 @@ module.exports = function() {
 	}
 	//获取排行榜
 	this.getWorldBossRank = function(cb) {
-		self.zrangewithscore("worldBoss",-100,-1,function(uids) {
+		self.zrangewithscore("worldBoss",-100,-1,function(list) {
+			var uids = []
+			var scores = []
+			for(var i = 0;i < list.length;i += 2){
+				uids.push(list[i])
+				scores.push(list[i+1])
+			}
 			self.getPlayerInfoByUids(uids,function(userInfos) {
-				cb(true,userInfos)
+				cb(true,{userInfos:userInfos,scores:scores})
 			})
 		})
 	}
