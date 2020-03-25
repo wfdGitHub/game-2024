@@ -129,8 +129,8 @@ module.exports = function() {
 						}
 						let index = Math.floor(Math.random() * list.length / 2)
 						let strList = list[index*2].split(".")
-						targetSid = 2//Number(strList[0])
-						targetUid = 100101201//Number(strList[1])
+						targetSid = Number(strList[0])
+						targetUid = Number(strList[1])
 						targetScore = Number(list[index*2 + 1])
 						atkTeam = self.userTeam(crossUid)
 						if(targetUid < 10000){
