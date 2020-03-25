@@ -79,6 +79,24 @@
             console.log(data);
         });
       }
+      //获取跨服段位赛数据
+      var getGradingData = function() {
+        pomelo.request("cross.gradingHandler.getGradingData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //使用挑战券
+      var useGradingItem = function() {
+        pomelo.request("cross.gradingHandler.useGradingItem", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取段位奖励
+      var gainGradingAward = function(glv) {
+        pomelo.request("cross.gradingHandler.gainGradingAward", {glv : glv}, function(data) {
+            console.log(data);
+        });
+      }
       //============游历任务==============//
       //获取游历任务数据
       var getTourData = function() {
