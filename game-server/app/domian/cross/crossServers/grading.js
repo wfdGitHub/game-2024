@@ -75,7 +75,6 @@ module.exports = function() {
 	}
 	//新赛季开始
 	this.newGrading = function(newRankList) {
-		console.log("newRankList",newRankList)
 		console.log("新赛季开始")
 		self.redisDao.db.hset("cross:grading","month",util.getMonth())
 		self.redisDao.db.hincrby("cross:grading","seasonId",1)
@@ -88,7 +87,6 @@ module.exports = function() {
 			}
 			if(newRankList)
 				rankList = rankList.concat(newRankList)
-			console.log("rankList",rankList)
 			self.redisDao.db.zadd(rankList)
 		})
 	}
