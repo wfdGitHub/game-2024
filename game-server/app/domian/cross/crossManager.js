@@ -1,6 +1,6 @@
 //跨服服务器
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
-var crossServers = ["escort"]
+var crossServers = ["grading","escort"]
 var crossManager = function(app) {
 	this.app = app
 	this.channelService = this.app.get("channelService")
@@ -10,15 +10,26 @@ var crossManager = function(app) {
 crossManager.prototype.init = function() {
 	this.onlineNum = 0
 	this.players = {}
+	this.dayStr = ""
 	for(var i = 0;i < crossServers.length;i++){
 		var fun = require("./crossServers/"+crossServers[i]+".js")
 		fun.call(this)
 	}
 	setInterval(this.update.bind(this),1000)
 }
+//每日定时器
+crossManager.prototype.dayUpdate = function(curDayStr) {
+	console.log("跨服服务器每日刷新")
+	this.dayStr = curDayStr
+	this.gradingDayUpdate()
+}
 crossManager.prototype.update = function() {
 	var date = new Date()
 	this.escortUpdate(date)
+	var curDayStr = (new Date()).toDateString()
+	if(this.dayStr !== curDayStr){
+		this.dayUpdate(curDayStr)
+	}
 }
 //玩家连入跨服服务器
 crossManager.prototype.userLogin = function(uid,areaId,serverId,cid,playerInfo,cb) {
@@ -68,6 +79,16 @@ crossManager.prototype.userTeam = function(crossUid) {
 		return false
 	}
 	return this.players[crossUid]["fightTeam"]
+}
+//获取玩家防御阵容配置(被攻击阵容)
+crossManager.prototype.getDefendTeam = function(areaId,uid,cb) {
+	this.heroDao.getFightTeam(areaId,uid,function(flag,data) {
+		if(flag){
+			cb(data)
+		}else{
+			cb(false)
+		}
+	})
 }
 //发送消息给玩家
 crossManager.prototype.sendToUser = function(type,crossUid,notify) {
@@ -131,6 +152,17 @@ crossManager.prototype.openChestStr = function(crossUid,chestId,rate,cb) {
 	var uid = this.players[crossUid]["uid"]
 	this.app.rpc.area.areaRemote.openChestStr.toServer(serverId,uid,areaId,chestId,rate,cb)
 }
+//获取玩家基本数据
+crossManager.prototype.getPlayerInfoByUid = function(areaId,uid,cb) {
+	this.redisDao.db.hmget("area:area"+areaId+":player:"+uid+":playerInfo",["name","head"],function(err,data) {
+		let info = {
+			uid :uid,
+			name : data[0],
+			head : data[1]
+		}
+		cb(info)
+	})
+}
 module.exports = {
 	id : "crossManager",
 	func : crossManager,
@@ -146,5 +178,8 @@ module.exports = {
 	},{
 		name : "heroDao",
 		ref : "heroDao"
+	},{
+		name : "redisDao",
+		ref : "redisDao"
 	}]
 }

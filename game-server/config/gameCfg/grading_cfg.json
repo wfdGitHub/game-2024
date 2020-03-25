@@ -1,0 +1,42 @@
+{
+  "free_count": {
+    "name": "每日免费次数",
+    "value": 3
+  },
+  "item": {
+    "name": "挑战券",
+    "value": 201
+  },
+  "win_score": {
+    "name": "胜利积分",
+    "value": 30
+  },
+  "lose_score": {
+    "name": "失败积分",
+    "value": -15
+  },
+  "award_1": {
+    "name": "赛季第1名奖励",
+    "value": "201:200"
+  },
+  "award_2": {
+    "name": "赛季第2名奖励",
+    "value": "201:201"
+  },
+  "award_3": {
+    "name": "赛季第3名奖励",
+    "value": "201:202"
+  },
+  "award_4": {
+    "name": "赛季第4名奖励",
+    "value": "201:203"
+  },
+  "award_5": {
+    "name": "赛季第5名奖励",
+    "value": "201:204"
+  },
+  "award_6": {
+    "name": "赛季第6名奖励",
+    "value": "201:205"
+  }
+}

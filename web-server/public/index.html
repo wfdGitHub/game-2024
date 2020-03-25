@@ -72,6 +72,13 @@
             console.log(data);
         });
       }
+      //============跨服段位赛============//
+      //匹配战斗
+      var matchGrading = function() {
+        pomelo.request("cross.gradingHandler.matchGrading", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============游历任务==============//
       //获取游历任务数据
       var getTourData = function() {

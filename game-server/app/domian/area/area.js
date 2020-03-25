@@ -22,7 +22,7 @@ var area = function(otps,app) {
 	this.fightInfos = {}
 	this.fightContorl = fightContorlFun
 	this.heroId = 10001
-	this.dayStr = (new Date()).toDateString()
+	this.dayStr = ""
 	this.crossUids = {}
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
@@ -51,7 +51,7 @@ area.prototype.update = function() {
 }
 //每日定时器
 area.prototype.dayUpdate = function(curDayStr) {
-	console.log("每日刷新")
+	console.log("服务器每日刷新")
 	this.dayStr = curDayStr
 }
 //玩家注册
