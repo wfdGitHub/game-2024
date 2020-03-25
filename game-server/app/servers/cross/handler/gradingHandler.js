@@ -33,6 +33,14 @@ gradingHandler.prototype.gainGradingAward = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//获取赛季荣誉榜
+gradingHandler.prototype.getGradingHonor = function(msg, session, next) {
+  var crossUid = session.get("crossUid")
+  var seasonId = msg.seasonId
+  this.crossManager.getGradingHonor(seasonId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "gradingHandler",

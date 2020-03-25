@@ -97,6 +97,12 @@
             console.log(data);
         });
       }
+      //获取赛季荣誉榜
+      var getGradingHonor = function(seasonId) {
+        pomelo.request("cross.gradingHandler.getGradingHonor", {seasonId : seasonId}, function(data) {
+            console.log(data);
+        });
+      }
       //============游历任务==============//
       //获取游历任务数据
       var getTourData = function() {

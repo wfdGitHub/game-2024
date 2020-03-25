@@ -1,5 +1,7 @@
 //跨服服务器
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
+var boyCfg = require("../../../config/sysCfg/boy.json")
+var uuid = require("uuid")
 var crossServers = ["grading","escort"]
 var crossManager = function(app) {
 	this.app = app
@@ -133,6 +135,20 @@ crossManager.prototype.sendMail = function(crossUid,title,text,atts,cb) {
 	var serverId = list[2]
 	this.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,cb)
 }
+//直接发放邮件
+crossManager.prototype.sendMailByUid = function(areaId,uid,title,text,atts,cb) {
+	var mailInfo = {
+		title : title,
+		text : text,
+		id : uuid.v1(),
+		time : Date.now()
+	}
+	if(atts){
+		mailInfo.atts = atts
+	}
+	mailInfo = JSON.stringify(mailInfo)
+	this.redisDao.db.rpush("area:area"+areaId+":player:"+uid+":mail",mailInfo)
+}
 //发放奖励,若玩家不在线则发邮件
 crossManager.prototype.sendAward = function(crossUid,title,text,str,cb) {
 	if(this.players[crossUid]){
@@ -161,6 +177,35 @@ crossManager.prototype.getPlayerInfoByUid = function(areaId,uid,cb) {
 			head : data[1]
 		}
 		cb(info)
+	})
+}
+//批量获取玩家基本数据
+crossManager.prototype.getPlayerInfoByUids = function(areaIds,uids,cb) {
+	var multiList = []
+	for(var i = 0;i < uids.length;i++){
+		multiList.push(["hmget","area:area"+areaIds[i]+":player:"+uids[i]+":playerInfo",["name","head"]])
+	}
+	var self = this
+	self.redisDao.multi(multiList,function(err,list) {
+		var userInfos = []
+		for(var i = 0;i < uids.length;i++){
+			let info = {}
+			if(uids[i] < 10000){
+				info = {
+					uid : uids[i],
+					name : boyCfg[Math.floor(Math.random() * boyCfg.length)],
+					head : ""
+				}
+			}else{
+				info = {
+					uid : uids[i],
+					name : list[i][0],
+					head : list[i][1]
+				}
+			}
+			userInfos.push(info)
+		}
+		cb(userInfos)
 	})
 }
 module.exports = {
