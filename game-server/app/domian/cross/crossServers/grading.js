@@ -171,13 +171,13 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				self.redisDao.db.zrevrank(["cross:grading:rank",key],function(err,rank) {
+				self.redisDao.db.zrank(["cross:grading:rank",key],function(err,rank) {
 					if(rank === null){
 						rank = 0
 					}
 					let begin = rank > 5 ? rank - 5 : 0
 					let end = rank + 5
-					self.redisDao.db.zrevrange(["cross:grading:rank",begin,end,"WITHSCORES"],function(err,list) {
+					self.redisDao.db.zrange(["cross:grading:rank",begin,end,"WITHSCORES"],function(err,list) {
 						for(let i = 0;i < list.length;i++){
 							if(list[i] == key){
 								list.splice(i,2)
