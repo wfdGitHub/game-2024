@@ -1,7 +1,7 @@
 {
   "0": {
     "name": "青铜士卒I",
-    "socre": 0,
+    "score": 0,
     "grading_award": "201:100",
     "season_award": "201:122",
     "challenge_award": "201:144",
@@ -9,7 +9,7 @@
   },
   "1": {
     "name": "白银散骑I",
-    "socre": 100,
+    "score": 100,
     "grading_award": "201:101",
     "season_award": "201:123",
     "challenge_award": "201:145",
@@ -17,7 +17,7 @@
   },
   "2": {
     "name": "白银散骑II",
-    "socre": 200,
+    "score": 200,
     "grading_award": "201:102",
     "season_award": "201:124",
     "challenge_award": "201:146",
@@ -25,7 +25,7 @@
   },
   "3": {
     "name": "黄金战将I",
-    "socre": 300,
+    "score": 300,
     "grading_award": "201:103",
     "season_award": "201:125",
     "challenge_award": "201:147",
@@ -33,7 +33,7 @@
   },
   "4": {
     "name": "黄金战将II",
-    "socre": 400,
+    "score": 400,
     "grading_award": "201:104",
     "season_award": "201:126",
     "challenge_award": "201:148",
@@ -41,7 +41,7 @@
   },
   "5": {
     "name": "黄金战将III",
-    "socre": 500,
+    "score": 500,
     "grading_award": "201:105",
     "season_award": "201:127",
     "challenge_award": "201:149",
@@ -49,7 +49,7 @@
   },
   "6": {
     "name": "铂金先锋I",
-    "socre": 600,
+    "score": 600,
     "grading_award": "201:106",
     "season_award": "201:128",
     "challenge_award": "201:150",
@@ -57,7 +57,7 @@
   },
   "7": {
     "name": "铂金先锋II",
-    "socre": 700,
+    "score": 700,
     "grading_award": "201:107",
     "season_award": "201:129",
     "challenge_award": "201:151",
@@ -65,7 +65,7 @@
   },
   "8": {
     "name": "铂金先锋III",
-    "socre": 800,
+    "score": 800,
     "grading_award": "201:108",
     "season_award": "201:130",
     "challenge_award": "201:152",
@@ -73,7 +73,7 @@
   },
   "9": {
     "name": "翡翠领军I",
-    "socre": 900,
+    "score": 900,
     "grading_award": "201:109",
     "season_award": "201:131",
     "challenge_award": "201:153",
@@ -81,7 +81,7 @@
   },
   "10": {
     "name": "翡翠领军II",
-    "socre": 1000,
+    "score": 1000,
     "grading_award": "201:110",
     "season_award": "201:132",
     "challenge_award": "201:154",
@@ -89,7 +89,7 @@
   },
   "11": {
     "name": "翡翠领军III",
-    "socre": 1100,
+    "score": 1100,
     "grading_award": "201:111",
     "season_award": "201:133",
     "challenge_award": "201:155",
@@ -97,7 +97,7 @@
   },
   "12": {
     "name": "翡翠领军IV",
-    "socre": 1200,
+    "score": 1200,
     "grading_award": "201:112",
     "season_award": "201:134",
     "challenge_award": "201:156",
@@ -105,7 +105,7 @@
   },
   "13": {
     "name": "荣耀卫将I",
-    "socre": 1300,
+    "score": 1300,
     "grading_award": "201:113",
     "season_award": "201:135",
     "challenge_award": "201:157",
@@ -113,7 +113,7 @@
   },
   "14": {
     "name": "荣耀卫将II",
-    "socre": 1400,
+    "score": 1400,
     "grading_award": "201:114",
     "season_award": "201:136",
     "challenge_award": "201:158",
@@ -121,7 +121,7 @@
   },
   "15": {
     "name": "荣耀卫将III",
-    "socre": 1500,
+    "score": 1500,
     "grading_award": "201:115",
     "season_award": "201:137",
     "challenge_award": "201:159",
@@ -129,7 +129,7 @@
   },
   "16": {
     "name": "荣耀卫将IV",
-    "socre": 1600,
+    "score": 1600,
     "grading_award": "201:116",
     "season_award": "201:138",
     "challenge_award": "201:160",
@@ -137,7 +137,7 @@
   },
   "17": {
     "name": "荣耀卫将V",
-    "socre": 1700,
+    "score": 1700,
     "grading_award": "201:117",
     "season_award": "201:139",
     "challenge_award": "201:161",
@@ -145,7 +145,7 @@
   },
   "18": {
     "name": "王者大将I",
-    "socre": 1800,
+    "score": 1800,
     "grading_award": "201:118",
     "season_award": "201:140",
     "challenge_award": "201:162",
@@ -153,7 +153,7 @@
   },
   "19": {
     "name": "王者大将II",
-    "socre": 1900,
+    "score": 1900,
     "grading_award": "201:119",
     "season_award": "201:141",
     "challenge_award": "201:163",
@@ -161,7 +161,7 @@
   },
   "20": {
     "name": "王者大将II",
-    "socre": 2000,
+    "score": 2000,
     "grading_award": "201:120",
     "season_award": "201:142",
     "challenge_award": "201:164",
@@ -169,7 +169,7 @@
   },
   "21": {
     "name": "王者大将IV",
-    "socre": 2100,
+    "score": 2100,
     "grading_award": "201:121",
     "season_award": "201:143",
     "challenge_award": "201:165",
@@ -177,7 +177,7 @@
   },
   "22": {
     "name": "王者大将V",
-    "socre": 2200,
+    "score": 2200,
     "grading_award": "201:122",
     "season_award": "201:144",
     "challenge_award": "201:166",

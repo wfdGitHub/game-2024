@@ -9,7 +9,7 @@ for(var i in grading_robot){
 }
 var grading_lv_list = []
 for(var i in grading_lv){
-	grading_lv_list.push(grading_lv[i]["socre"])
+	grading_lv_list.push(grading_lv[i]["score"])
 }
 //跨服段位赛
 module.exports = function() {
@@ -43,7 +43,7 @@ module.exports = function() {
 						if(uid > 10000){
 							glv = util.binarySearchIndex(grading_lv_list,score)
 							if(grading_lv[glv]["next_id"])
-								newRankList.push(grading_lv[grading_lv[glv]["next_id"]]["socre"],list[i])
+								newRankList.push(grading_lv[grading_lv[glv]["next_id"]]["score"],list[i])
 							self.sendMailByUid(sid,uid,"第"+curSeasonId+"赛季段位奖励","恭喜您在本赛季晋升到【"+grading_lv[glv]["name"]+"】段位，祝您新的赛季愈战愈勇!",grading_lv[glv]["season_award"])
 						}
 					}
