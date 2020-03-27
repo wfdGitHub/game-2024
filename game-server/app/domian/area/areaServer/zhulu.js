@@ -72,14 +72,14 @@ module.exports = function() {
 					chooseList : {},
 					sellOutList : {}
 				}
-				let fightTeam = self.getUserTeam(uid)
-				for(let i = 0;i < fightTeam.length;i++){
-					if(fightTeam[i] && fightTeam[i].hId)
-						data.zhuluTeam.push(fightTeam[i].hId)
-					else
-						data.zhuluTeam.push(null)
-				}
-				self.heroDao.setZhuluTeam(self.areaId,uid,data.zhuluTeam)
+				// let fightTeam = self.getUserTeam(uid)
+				// for(let i = 0;i < fightTeam.length;i++){
+				// 	if(fightTeam[i] && fightTeam[i].hId)
+				// 		data.zhuluTeam.push(fightTeam[i].hId)
+				// 	else
+				// 		data.zhuluTeam.push(null)
+				// }
+				// self.heroDao.setZhuluTeam(self.areaId,uid,data.zhuluTeam)
 				for(let i = 1;i < gridCounts.length;i++){
 					data.grids[i] = []
 					for(let j = 0;j < gridCounts[i];j++){
