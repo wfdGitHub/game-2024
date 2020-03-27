@@ -23,7 +23,7 @@ module.exports = function() {
 				curSeasonId = 1
 				self.newGrading()
 			}else if(data["month"] != (new Date()).toDateString()){//util.getMonth()){
-				curSeasonId = data.seasonId
+				curSeasonId = Number(data.seasonId)
 				self.settleGrading()
 			}
 		})
@@ -79,6 +79,7 @@ module.exports = function() {
 		console.log("新赛季开始")
 		self.redisDao.db.hset("cross:grading","month",util.getMonth())
 		self.redisDao.db.hincrby("cross:grading","seasonId",1)
+		curSeasonId++
 		self.redisDao.db.del("cross:grading:rank")
 		self.redisDao.db.del("cross:grading:award")
 		self.redisDao.db.get("area:lastid",function(err,lastid) {

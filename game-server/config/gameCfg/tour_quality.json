@@ -1,6 +1,6 @@
 {
   "1": {
-    "weight": 100,
+    "weight": 250,
     "need_star": 1,
     "time": 7200000,
     "speedUp": 20,
@@ -8,7 +8,7 @@
     "heroNum": 2
   },
   "2": {
-    "weight": 100,
+    "weight": 180,
     "need_star": 2,
     "time": 14400000,
     "speedUp": 30,
@@ -16,7 +16,7 @@
     "heroNum": 2
   },
   "3": {
-    "weight": 100,
+    "weight": 120,
     "need_star": 3,
     "time": 21600000,
     "speedUp": 40,
@@ -24,7 +24,7 @@
     "heroNum": 3
   },
   "4": {
-    "weight": 100,
+    "weight": 30,
     "need_star": 4,
     "time": 28800000,
     "speedUp": 60,
@@ -32,7 +32,7 @@
     "heroNum": 3
   },
   "5": {
-    "weight": 100,
+    "weight": 10,
     "need_star": 5,
     "time": 43200000,
     "speedUp": 60,
@@ -40,7 +40,7 @@
     "heroNum": 4
   },
   "6": {
-    "weight": 100,
+    "weight": 3,
     "need_star": 6,
     "time": 57600000,
     "speedUp": 60,
