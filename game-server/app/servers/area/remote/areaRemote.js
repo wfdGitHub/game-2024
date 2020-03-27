@@ -47,7 +47,6 @@ areaRemote.prototype.consumeItems = function(uid,areaId,str,rate,cb) {
 }
 //物品奖励
 areaRemote.prototype.addItemStr = function(uid,areaId,str,rate,cb) {
-	console.log("addItemStr",uid,areaId,str,rate)
 	if(this.areaManager.areaMap[areaId]){
 		var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,rate)
 		cb(true,awardList)
