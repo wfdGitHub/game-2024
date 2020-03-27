@@ -12,11 +12,15 @@
     "weight": 102
   },
   "hero": {
-    "name": "英雄商店",
+    "name": "英雄商城",
     "weight": 103
   },
   "zhulu": {
     "name": "逐鹿商城",
     "weight": 104
+  },
+  "kuafu": {
+    "name": "跨服商城",
+    "weight": 105
   }
 }
