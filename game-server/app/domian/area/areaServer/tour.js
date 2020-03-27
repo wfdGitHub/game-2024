@@ -23,8 +23,14 @@ module.exports = function() {
 	var local = {}
 	//获取游历数据
 	this.getTourData = function(uid,cb) {
-		self.getObjAll(uid,main_name,function(obj) {
-			cb(true,obj || {})
+		self.getObjAll(uid,main_name,function(data) {
+			if(!data){
+				let list = local.createTour()
+				self.setHMObj(uid,main_name,list)
+				cb(true,list)
+			}else{
+				cb(true,data)
+			}
 		})
 	}
 	//元宝刷新
