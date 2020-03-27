@@ -57,7 +57,7 @@ module.exports = function() {
 						uids.push(uid)
 						if(uid > 10000){
 							glv = util.binarySearchIndex(grading_lv_list,score)
-							self.sendMailByUid(sid,uid,"第"+curSeasonId+"赛季封神榜奖励","亲爱的玩家，恭喜您一路过关斩将，大展神通，登上第"+curSeasonId+"赛季封神榜之位。您的雕塑已进入封神台，供天下万民敬仰！",grading_cfg["award_"+(i+1)]["value"])
+							self.sendMailByUid(sid,uid,"第"+curSeasonId+"赛季封神台奖励","亲爱的玩家，恭喜您历经磨难，通过考验，立命封神！您已进入第"+curSeasonId+"赛季封神台，以供天下万民敬仰！",grading_cfg["award_"+(i+1)]["value"])
 						}
 					}
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
