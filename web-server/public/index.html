@@ -72,6 +72,12 @@
             console.log(data);
         });
       }
+      //设置头像
+      var changeHead = function(id) {
+        pomelo.request("area.normalHandler.changeHead", {id : id}, function(data) {
+            console.log(data);
+        });
+      }
       //============跨服段位赛============//
       //匹配战斗
       var matchGrading = function() {

@@ -61,6 +61,14 @@ normalHandler.prototype.characterSamsara = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//设置头像
+normalHandler.prototype.changeHead = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].changeHead(uid,msg.id,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //增加物品  测试功能
 normalHandler.prototype.addItem = function(msg, session, next) {
   var uid = session.uid

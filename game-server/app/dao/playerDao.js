@@ -1,10 +1,12 @@
 var bearcat = require("bearcat")
 var playerDao = function() {}
+var beginHero = 205110
 //创建角色
 playerDao.prototype.createPlayer = function(otps,cb) {
 	var playerInfo = {
 		accId : otps.accId,
 		name : otps.name,
+		head : beginHero,
 		exp : 0,
 		level : 1,
 		heroAmount : 200,
@@ -19,7 +21,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+uid+":playerInfo",playerInfo,function(err,data) {
 			if(!err){
 				self.redisDao.db.hset("area:area"+otps.areaId+":nameMap",otps.name,uid)
-				self.heroDao.gainHero(otps.areaId,uid,{id : 205110},function(flag,heroInfo) {
+				self.heroDao.gainHero(otps.areaId,uid,{id : beginHero},function(flag,heroInfo) {
 					self.heroDao.setFightTeam(otps.areaId,uid,[null,heroInfo.hId,null,null,null,null])
 				})
 				cb(playerInfo)

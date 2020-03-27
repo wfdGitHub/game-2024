@@ -18,6 +18,18 @@ module.exports = function() {
 	this.lordUnload = function(uid) {
 		delete userLords[uid]
 	}
+	//改变头像
+	this.changeHead = function(uid,id,cb) {
+		self.redisDao.db.hget("area:area"+self.areaId+":player:"+uid+":heroArchive",id,function(err,data) {
+			if(err || !data){
+				cb(false,"未获得该英雄")
+			}else{
+				self.redisDao.db.hset("area:area"+self.areaId+":player:"+uid+":playerInfo","head",id,function(flag,data) {
+					cb(true)
+				})
+			}
+		})
+	}
 	//主公获得经验值
 	this.addLordExp = function(uid,exp) {
 		self.redisDao.db.hincrby("area:area"+self.areaId+":player:"+uid+":playerInfo","exp",exp,function(err,value) {
