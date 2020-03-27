@@ -44,7 +44,7 @@ module.exports = function() {
 							glv = util.binarySearchIndex(grading_lv_list,score)
 							if(grading_lv[glv]["next_id"])
 								newRankList.push(grading_lv[grading_lv[glv]["next_id"]]["socre"],list[i])
-							self.sendMailByUid(sid,uid,"赛季段位奖励","恭喜您在本赛季晋升到【"+grading_lv[glv]["name"]+"】段位，祝您新的赛季愈战愈勇!",grading_lv[glv]["season_award"])
+							self.sendMailByUid(sid,uid,"第"+curSeasonId+"赛季段位奖励","恭喜您在本赛季晋升到【"+grading_lv[glv]["name"]+"】段位，祝您新的赛季愈战愈勇!",grading_lv[glv]["season_award"])
 						}
 					}
 					let areaIds = []
@@ -57,7 +57,7 @@ module.exports = function() {
 						uids.push(uid)
 						if(uid > 10000){
 							glv = util.binarySearchIndex(grading_lv_list,score)
-							self.sendMailByUid(sid,uid,"第"+curSeasonId+"赛季封神台奖励","亲爱的玩家，恭喜您历经磨难，通过考验，立命封神！您已进入第"+curSeasonId+"赛季封神台，以供天下万民敬仰！",grading_cfg["award_"+(i+1)]["value"])
+							self.sendMailByUid(sid,uid,"第"+curSeasonId+"赛季封神台奖励","亲爱的玩家，恭喜您历经磨难，通过考验，立命封神！您已进入第"+curSeasonId+"赛季封神台，供天下万民敬仰！",grading_cfg["award_"+(i+1)]["value"])
 						}
 					}
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
