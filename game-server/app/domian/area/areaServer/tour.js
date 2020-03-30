@@ -45,7 +45,6 @@ module.exports = function() {
 				cb(flag,err)
 			}
 		})
-
 	}
 	//刷新券刷新
 	this.refreshTourByItem = function(uid,cb) {

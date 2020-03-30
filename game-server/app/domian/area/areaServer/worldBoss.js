@@ -95,7 +95,6 @@ module.exports = function() {
 		let curbossIndex = bossIndex
 		this.zrange("worldBoss",0,-1,function(list) {
 			for(var i = 0;i < list.length;i++){
-				let info = JSON.parse(list[i])
 				let title = "世界BOSS奖励"
 				let rank = list.length - i
 				let text = "恭喜您在世界BOSS挑战中获得第"+rank+"名"
@@ -107,7 +106,7 @@ module.exports = function() {
 				}else{
 					awardId = "rank_"+rank
 				}
-				self.sendMail(info.uid,title,text,world_boss_base[curbossIndex][awardId])
+				self.sendMail(list[i],title,text,world_boss_base[curbossIndex][awardId])
 			}
 		})
 		this.worldBossCheck()

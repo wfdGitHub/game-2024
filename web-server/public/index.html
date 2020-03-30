@@ -72,6 +72,22 @@
             console.log(data);
         });
       }
+      //============开服计划============//
+      var setOpenPlan = function(areaName,time) {
+        pomelo.request("admin.adminHandler.setOpenPlan", {areaName : areaName,time : time}, function(data) {
+            console.log(data);
+        });
+      }
+      var delOpenPlan = function(areaName) {
+        pomelo.request("admin.adminHandler.delOpenPlan", {areaName : areaName}, function(data) {
+            console.log(data);
+        });
+      }
+      var getOpenPlan = function() {
+        pomelo.request("admin.adminHandler.getOpenPlan", {}, function(data) {
+            console.log(data);
+        });
+      }
       //设置头像
       var changeHead = function(id) {
         pomelo.request("area.normalHandler.changeHead", {id : id}, function(data) {

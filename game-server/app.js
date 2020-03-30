@@ -97,6 +97,10 @@ bearcat.start(function() {
         connectorManager.init(app)
         app.set("connectorManager",connectorManager)
     });
+    app.configure('production|development', 'admin', function(){
+        var serverManager = bearcat.getBean("serverManager",app)
+        app.set("serverManager",serverManager)
+    });
     console.log(app.serverId + " is ready")
   })
 })

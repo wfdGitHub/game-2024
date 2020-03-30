@@ -1,10 +1,11 @@
 var bearcat = require("bearcat")
-var adminHanlder = function(app) {
+var adminHandler = function(app) {
 	this.app = app
 	this.areaDeploy = this.app.get("areaDeploy")
+	this.serverManager = this.app.get("serverManager")
 }
 //激活管理员模式
-adminHanlder.prototype.activatePrivileges = function(msg, session, next) {
+adminHandler.prototype.activatePrivileges = function(msg, session, next) {
 	var accId = session.get("accId")
 	this.accountDao.getAccountData({accId : accId,name : "limit"},function(flag,limit) {
 		limit = parseInt(limit)
@@ -18,7 +19,7 @@ adminHanlder.prototype.activatePrivileges = function(msg, session, next) {
 	})
 }
 //创建新服务器
-adminHanlder.prototype.openArea = function(msg, session, next) {
+adminHandler.prototype.openArea = function(msg, session, next) {
 	var limit = session.get("limit")
 	if(!limit || limit < 10){
 		next(null,{flag : false})
@@ -29,7 +30,7 @@ adminHanlder.prototype.openArea = function(msg, session, next) {
 	next(null)
 }
 //获取服务器信息
-adminHanlder.prototype.getAreaServerInfos = function(msg, session, next) {
+adminHandler.prototype.getAreaServerInfos = function(msg, session, next) {
 	var count = 0
 	var servrList = this.app.getServersByType('area')
 	for(var i = 0;i < servrList.length;i++){
@@ -43,7 +44,7 @@ adminHanlder.prototype.getAreaServerInfos = function(msg, session, next) {
 	}
 }
 //获取服务器内玩家信息
-adminHanlder.prototype.getAreaPlayers = function(msg, session, next) {
+adminHandler.prototype.getAreaPlayers = function(msg, session, next) {
 	var limit = session.get("limit")
 	if(!limit || limit < 10){
 		next(null,{flag : false})
@@ -59,10 +60,43 @@ adminHanlder.prototype.getAreaPlayers = function(msg, session, next) {
     	next(null,{flag : true,list : list})
 	})
 }
+//添加开服计划
+adminHandler.prototype.setOpenPlan = function(msg, session, next) {
+	let limit = session.get("limit")
+	if(!limit || limit < 10){
+		next(null,{flag : false})
+		return
+	}
+	this.serverManager.setOpenPlan(msg.areaName,msg.time,function(flag,data) {
+		next(null,{flag : flag,data : data})
+	})
+}
+//删除开服计划
+adminHandler.prototype.delOpenPlan = function(msg, session, next) {
+	let limit = session.get("limit")
+	if(!limit || limit < 10){
+		next(null,{flag : false})
+		return
+	}
+	this.serverManager.delOpenPlan(msg.areaName,function(flag,data) {
+		next(null,{flag : flag,data : data})
+	})
+}
+//获取开服计划表
+adminHandler.prototype.getOpenPlan = function(msg, session, next) {
+	let limit = session.get("limit")
+	if(!limit || limit < 10){
+		next(null,{flag : false})
+		return
+	}
+	this.serverManager.getOpenPlan(function(flag,data) {
+		next(null,{flag : flag,data : data})
+	})
+}
 module.exports = function(app) {
 	return bearcat.getBean({
-		id : "adminHanlder",
-		func : adminHanlder,
+		id : "adminHandler",
+		func : adminHandler,
 		args : [{
 			name : "app",
 			value : app
