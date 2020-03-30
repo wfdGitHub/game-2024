@@ -45,6 +45,8 @@ module.exports = function() {
 			}
 			return list
 		}
+		if(rank > 4000)
+			rank = 4000
 		var lenght = 1
 		if(rank > addOneLv){
 			lenght = Math.ceil((rank + correctNumerator) / correctDenominator)
