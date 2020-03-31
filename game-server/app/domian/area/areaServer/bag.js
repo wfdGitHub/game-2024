@@ -253,7 +253,6 @@ module.exports = function() {
 			for(var i = 0;i < values.length;i++){
 				switch(items[i]){
 					case 201:
-					console.log("使用铜币",values[i])
 						self.taskUpdate(uid,"use_coin",values[i])
 					break
 					case 202:
