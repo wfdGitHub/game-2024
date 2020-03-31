@@ -24,6 +24,7 @@ var area = function(otps,app) {
 	this.heroId = 10001
 	this.dayStr = ""
 	this.crossUids = {}
+	this.timer = 0
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
 		fun.call(this)
@@ -31,7 +32,7 @@ var area = function(otps,app) {
 }
 //服务器初始化
 area.prototype.init = function() {
-	console.log("area init")
+	console.log("area init",this.areaId)
 	var self = this
 	this.redisDao.db.hgetall("area:area"+this.areaId+":robots",function(err,robots) {
 		self.robots = {}
@@ -40,7 +41,14 @@ area.prototype.init = function() {
 		}
 	})
 	this.worldBossCheck()
-	setInterval(this.update.bind(this),1000)
+	this.timer = setInterval(this.update.bind(this),1000)
+}
+//服务器关闭
+area.prototype.destory = function() {
+	console.log("area destory",this.areaId)
+	clearInterval(this.timer)
+	this.worldBossDestory()
+	this.removeAllUser()
 }
 //update
 area.prototype.update = function() {
@@ -170,6 +178,12 @@ area.prototype.sendAllUser = function(notify) {
 	      uid: uid,
 	      sid: this.connectorMap[uid]
 	    }])
+	}
+}
+//移除服务器所有玩家
+area.prototype.removeAllUser = function(){
+	for(var uid in this.connectorMap){
+		this.app.rpc.connector.connectorRemote.kickUser.toServer(this.connectorMap[uid],uid,null)
 	}
 }
 //获取服务器信息

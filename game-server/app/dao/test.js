@@ -7,10 +7,7 @@
 // var RDS_OPTS = {auth_pass : RDS_PWD}
 // var client = redis.createClient(RDS_PORT,RDS_HOST,RDS_OPTS)
 // client.on("ready",function(res) {
-// 	client.zrange(["cross:grading:rank",0,10,"WITHSCORES"],function(err,data) {
-// 		if(data === null){
-// 			console.log(true)
-// 		}
+// 	client.zrange(["cross:grading:rank",0,5,"WITHSCORES"],function(err,data) {
 // 		console.log(err,data)
 // 	})
 // })

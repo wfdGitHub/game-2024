@@ -47,6 +47,10 @@ module.exports = function() {
 		clearTimeout(timer)
 		timer = setTimeout(this.worldBossChallengeStage.bind(this),tmpTime)
 	}
+	//模块销毁
+	this.worldBossDestory = function() {
+		clearTimeout(timer)
+	}
 	//世界BOSS玩法开启  开始挑战
 	this.worldBossChallengeStage= function() {
 		console.log("世界BOSS玩法开启 开始挑战")

@@ -29,6 +29,30 @@ adminHandler.prototype.openArea = function(msg, session, next) {
 	this.areaDeploy.openArea({areaName : "服务器"})
 	next(null)
 }
+//暂停服务器
+adminHandler.prototype.pauseArea = function(msg, session, next) {
+	var limit = session.get("limit")
+	if(!limit || limit < 10){
+		next(null,{flag : false})
+		return
+	}
+	console.log("pauseArea")
+	this.areaDeploy.pauseArea(msg.areaId,function(flag,data) {
+		next(null,{flag:flag,data:data})
+	})
+}
+//恢复服务器
+adminHandler.prototype.resumeArea = function(msg, session, next) {
+	var limit = session.get("limit")
+	if(!limit || limit < 10){
+		next(null,{flag : false})
+		return
+	}
+	console.log("resumeArea")
+	this.areaDeploy.resumeArea(msg.areaId,function(flag,data) {
+		next(null,{flag:flag,data:data})
+	})
+}
 //获取服务器信息
 adminHandler.prototype.getAreaServerInfos = function(msg, session, next) {
 	var count = 0
@@ -67,7 +91,7 @@ adminHandler.prototype.setOpenPlan = function(msg, session, next) {
 		next(null,{flag : false})
 		return
 	}
-	this.serverManager.setOpenPlan(msg.areaName,msg.time,function(flag,data) {
+	this.serverManager.setOpenPlan(msg.time,function(flag,data) {
 		next(null,{flag : flag,data : data})
 	})
 }
@@ -78,7 +102,7 @@ adminHandler.prototype.delOpenPlan = function(msg, session, next) {
 		next(null,{flag : false})
 		return
 	}
-	this.serverManager.delOpenPlan(msg.areaName,function(flag,data) {
+	this.serverManager.delOpenPlan(msg.time,function(flag,data) {
 		next(null,{flag : flag,data : data})
 	})
 }
@@ -90,6 +114,39 @@ adminHandler.prototype.getOpenPlan = function(msg, session, next) {
 		return
 	}
 	this.serverManager.getOpenPlan(function(flag,data) {
+		next(null,{flag : flag,data : data})
+	})
+}
+//添加合服计划
+adminHandler.prototype.setMergePlan = function(msg, session, next) {
+	let limit = session.get("limit")
+	if(!limit || limit < 10){
+		next(null,{flag : false})
+		return
+	}
+	this.serverManager.setMergePlan(msg.areaList,msg.time,function(flag,data) {
+		next(null,{flag : flag,data : data})
+	})
+}
+//删除合服计划
+adminHandler.prototype.delMergePlan = function(msg, session, next) {
+	let limit = session.get("limit")
+	if(!limit || limit < 10){
+		next(null,{flag : false})
+		return
+	}
+	this.serverManager.delMergePlan(msg.time,function(flag,data) {
+		next(null,{flag : flag,data : data})
+	})
+}
+//获取合服计划表
+adminHandler.prototype.getMergePlan = function(msg, session, next) {
+	let limit = session.get("limit")
+	if(!limit || limit < 10){
+		next(null,{flag : false})
+		return
+	}
+	this.serverManager.getMergePlan(function(flag,data) {
 		next(null,{flag : flag,data : data})
 	})
 }

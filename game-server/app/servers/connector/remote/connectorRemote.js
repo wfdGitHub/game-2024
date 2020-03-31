@@ -6,9 +6,16 @@ var connectorRemote = function(app) {
 	this.connectorManager = this.app.get('connectorManager')
 }
 //更新
-connectorRemote.prototype.updateArea = function(areaInfo,serverId,cb) {
-	this.areaDeploy.updateArea(areaInfo,serverId)
-	cb()
+connectorRemote.prototype.updateArea = function(areaId,serverId,cb) {
+	this.areaDeploy.updateArea(areaId,serverId)
+	if(cb)
+		cb()
+}
+//更新
+connectorRemote.prototype.removeArea = function(areaId,cb) {
+	this.areaDeploy.removeArea(areaId)
+	if(cb)
+		cb()
 }
 connectorRemote.prototype.kickUser = function(uid,cb) {
 	this.connectorManager.sendByUid(uid,{type : "kick"})

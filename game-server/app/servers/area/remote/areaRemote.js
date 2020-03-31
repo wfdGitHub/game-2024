@@ -8,6 +8,11 @@ areaRemote.prototype.loadArea = function(areaId,cb) {
 	this.areaManager.loadArea(areaId)
 	cb()
 }
+//关闭服务器
+areaRemote.prototype.removeArea = function(areaId,cb) {
+	this.areaManager.removeArea(areaId)
+	cb()
+}
 //注册账号
 areaRemote.prototype.register = function(otps,cb) {
 	this.areaManager.areaMap[otps.areaId].register(otps,cb)

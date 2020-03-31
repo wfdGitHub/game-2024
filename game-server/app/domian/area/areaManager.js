@@ -35,8 +35,11 @@ areaManager.prototype.loadArea = function(areaId) {
 	})
 }
 //关闭游戏服务器
-areaManager.prototype.closeArea = function() {
-
+areaManager.prototype.removeArea = function(areaId) {
+	if(this.areaMap[areaId]){
+		this.areaMap[areaId].destory()
+		delete this.areaMap[areaId]
+	}
 }
 //玩家登录游戏服
 areaManager.prototype.userLogin = function(uid,areaId,cid,cb) {

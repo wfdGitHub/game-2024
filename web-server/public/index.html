@@ -73,24 +73,74 @@
         });
       }
       //============开服计划============//
-      var setOpenPlan = function(areaName,time) {
-        pomelo.request("admin.adminHandler.setOpenPlan", {areaName : areaName,time : time}, function(data) {
+      //暂停服务器
+      var pauseArea = function(areaId) {
+        pomelo.request("admin.adminHandler.pauseArea", {areaId : areaId}, function(data) {
             console.log(data);
         });
       }
-      var delOpenPlan = function(areaName) {
-        pomelo.request("admin.adminHandler.delOpenPlan", {areaName : areaName}, function(data) {
+      //恢复服务器
+      var resumeArea = function(areaId) {
+        pomelo.request("admin.adminHandler.resumeArea", {areaId : areaId}, function(data) {
             console.log(data);
         });
       }
+      //设置开服计划
+      var setOpenPlan = function(time) {
+        pomelo.request("admin.adminHandler.setOpenPlan", {time : time}, function(data) {
+            console.log(data);
+        });
+      }
+      //删除开服计划
+      var delOpenPlan = function(time) {
+        pomelo.request("admin.adminHandler.delOpenPlan", {time : time}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取开服计划
       var getOpenPlan = function() {
         pomelo.request("admin.adminHandler.getOpenPlan", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置合服计划
+      var setMergePlan = function(areaList,time) {
+        pomelo.request("admin.adminHandler.setMergePlan", {areaList : areaList,time : time}, function(data) {
+            console.log(data);
+        });
+      }
+      //删除合服计划
+      var delMergePlan = function(time) {
+        pomelo.request("admin.adminHandler.delMergePlan", {time : time}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取合服计划
+      var getMergePlan = function() {
+        pomelo.request("admin.adminHandler.getMergePlan", {}, function(data) {
             console.log(data);
         });
       }
       //设置头像
       var changeHead = function(id) {
         pomelo.request("area.normalHandler.changeHead", {id : id}, function(data) {
+            console.log(data);
+        });
+      }
+      var openArea = function() {
+        pomelo.request("admin.adminHandler.openArea", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取服务器信息
+      var getAreaServerInfos = function() {
+        pomelo.request("admin.adminHandler.getAreaServerInfos", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取服务器成员
+      var getAreaPlayers = function(areaId) {
+        pomelo.request("admin.adminHandler.getAreaPlayers", {areaId : areaId}, function(data) {
             console.log(data);
         });
       }
@@ -908,23 +958,6 @@
         pomelo.request("area.adminArea.changeLevel", {hId : hId,value : value}, function(data) {
             console.log(data);
         })
-      }
-      var openArea = function() {
-        pomelo.request("admin.adminHandler.openArea", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //获取服务器信息
-      var getAreaServerInfos = function() {
-        pomelo.request("admin.adminHandler.getAreaServerInfos", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //获取服务器成员
-      var getAreaPlayers = function(areaId) {
-        pomelo.request("admin.adminHandler.getAreaPlayers", {areaId : areaId}, function(data) {
-            console.log(data);
-        });
       }
       //获取聊天室列表
       var getChatRooms = function() {

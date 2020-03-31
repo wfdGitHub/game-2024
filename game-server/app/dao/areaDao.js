@@ -13,7 +13,7 @@ areaDao.prototype.createArea = function(otps,cb) {
 			areaInfo.areaId = data
 			areaInfo.lastRank = 4001
 			self.redisDao.db.hmset("area:area"+areaInfo.areaId+":areaInfo",areaInfo)
-			self.redisDao.db.rpush("area:list",JSON.stringify(areaInfo))
+			self.redisDao.db.rpush("area:list",areaInfo.areaId)
 			//初始机器人
 			var robots = {}
 			for(var i = 1;i <= 4001;i++){
