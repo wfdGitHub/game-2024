@@ -135,14 +135,14 @@ module.exports = function() {
 					if(task_cfg[taskId].refresh == "month")
 						self.gainTask(uid,taskId,0)
 				}
+				self.delObjAll(uid,war_name,function() {
+					let info = {
+						exp : 0,
+						high : 0
+					}
+					self.setHMObj(uid,war_name,info)
+				})
 			}
-			self.delObjAll(uid,war_name,function() {
-				let info = {
-					exp : 0,
-					high : 0
-				}
-				self.setHMObj(uid,war_name,info)
-			})
 		})
 	}
 	//获取任务列表
