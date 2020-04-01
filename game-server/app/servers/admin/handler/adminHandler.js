@@ -26,7 +26,7 @@ adminHandler.prototype.openArea = function(msg, session, next) {
 		return
 	}
 	console.log("openArea")
-	this.areaDeploy.openArea({areaName : "服务器"})
+	this.areaDeploy.openArea(function() {})
 	next(null)
 }
 //暂停服务器

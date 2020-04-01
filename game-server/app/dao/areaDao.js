@@ -2,11 +2,9 @@ var boyCfg = require("../../config/sysCfg/boy.json")
 var girlCfg = require("../../config/sysCfg/girl.json")
 var areaDao = function() {}
 //创建新服务器
-areaDao.prototype.createArea = function(otps,cb) {
+areaDao.prototype.createArea = function(cb) {
 	console.log("开启新服务器")
-	var areaInfo = {
-		areaName : otps.areaName
-	}
+	var areaInfo = {}
 	var self = this
 	self.redisDao.db.incrby("area:lastid",1,function(err,data) {
 		if(!err && data){
@@ -32,12 +30,22 @@ areaDao.prototype.createArea = function(otps,cb) {
 				if(err){
 					console.error(err)
 				}
-				cb(areaInfo)
+				cb(areaInfo.areaId)
 			})
 		}else{
 			cb(false)
 		}
 	})
+}
+//删除服务器
+areaDao.prototype.destoryArea = function(areaId) {
+	console.log("关闭服务器",areaId)
+	this.redisDao.db.del("area:area"+areaId+":areaInfo")
+	this.redisDao.db.lrem("area:list",0,areaId)
+	this.redisDao.db.del("area:area"+areaId+":robots")
+	this.redisDao.db.del("area:area"+areaId+":arena")
+	this.redisDao.db.del("area:area"+areaId+":nameMap")
+	this.redisDao.db.hdel("area:serverMap",areaId)
 }
 //获取服务器最后ID
 areaDao.prototype.getAreaLastId = function(cb) {
@@ -66,6 +74,7 @@ areaDao.prototype.getAreaServerMap = function(cb) {
 //设置游戏服对应服务器
 areaDao.prototype.setAreaServer = function(areaId,serverId) {
 	this.redisDao.db.hset("area:serverMap",areaId,serverId)
+	this.redisDao.db.hset("area:finalServerMap",areaId,areaId)
 }
 
 module.exports = {

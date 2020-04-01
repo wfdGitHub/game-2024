@@ -17,6 +17,11 @@ connectorRemote.prototype.removeArea = function(areaId,cb) {
 	if(cb)
 		cb()
 }
+connectorRemote.prototype.changeFinalServerMap = function(areaId,finalId,cb) {
+	this.areaDeploy.changeFinalServerMap(areaId,finalId)
+	if(cb)
+		cb()
+}
 connectorRemote.prototype.kickUser = function(uid,cb) {
 	this.connectorManager.sendByUid(uid,{type : "kick"})
 	var uids = this.sessionService.getByUid(uid)

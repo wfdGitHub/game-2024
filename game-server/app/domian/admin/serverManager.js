@@ -26,6 +26,7 @@ serverManager.prototype.update = function() {
 	for(var time in this.openPlans){
 		if(curTime > Number(time)){
 			delete this.openPlans[time]
+			this.redisDao.db.hdel("serverManager:openPlans",time)
 			this.areaDeploy.openArea()
 			return
 		}
@@ -34,10 +35,11 @@ serverManager.prototype.update = function() {
 		if(curTime > Number(time)){
 			var areaList = this.mergePlans[time]
 			for(var i = 0;i < areaList.length;i++){
-				this.areaDeploy.pauseArea(areaList[i])
 				delete this.areaLock[areaList[i]]
 			}
 			delete this.mergePlans[time]
+			this.redisDao.db.hdel("serverManager:mergePlans",time)
+			this.areaDeploy.mergeArea(areaList)
 			return
 		}
 	}
