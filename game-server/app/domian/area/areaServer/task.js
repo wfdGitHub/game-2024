@@ -32,6 +32,8 @@ module.exports = function() {
 			let type = task_cfg[taskId].type
 			if(!userTaskMaps[uid][type])
 				userTaskMaps[uid][type] = []
+			else
+				userTaskMaps[uid][type].remove(taskId)
 			userTaskMaps[uid][type].push(taskId)
 		}
 	}
@@ -118,29 +120,32 @@ module.exports = function() {
 		self.getObj(uid,main_name,"week",function(week) {
 			let curWeek = util.getWeek()
 			if(week != curWeek){
+				// console.log("跨周任务更新",week,curWeek)
 				self.setObj(uid,main_name,"week",curWeek)
 				for(let taskId in task_cfg){
 					if(task_cfg[taskId].refresh == "week")
 						self.gainTask(uid,taskId,0)
 				}
 			}
-		})
-		self.getObj(uid,main_name,"month",function(month) {
-			let curMonth = util.getMonth()
-			if(month != curMonth){
-				self.setObj(uid,main_name,"month",curMonth)
-				for(let taskId in task_cfg){
-					if(task_cfg[taskId].refresh == "month")
-						self.gainTask(uid,taskId,0)
-				}
-				self.delObjAll(uid,war_name,function() {
-					let info = {
-						exp : 0,
-						high : 0
+			self.getObj(uid,main_name,"month",function(month) {
+				let curMonth = util.getMonth()
+				if(month != curMonth){
+					// console.log("跨月任务更新",month,curMonth)
+					self.setObj(uid,main_name,"month",curMonth)
+					for(let taskId in task_cfg){
+						if(task_cfg[taskId].refresh == "month")
+							self.gainTask(uid,taskId,0)
 					}
-					self.setHMObj(uid,war_name,info)
-				})
-			}
+					self.delObjAll(uid,war_name,function() {
+						let info = {
+							exp : 0,
+							high : 0
+						}
+						self.setHMObj(uid,war_name,info)
+					})
+				}
+			})
+			self.taskUpdate(uid,"login",1)
 		})
 	}
 	//获取任务列表

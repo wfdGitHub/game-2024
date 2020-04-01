@@ -19,19 +19,22 @@ util.prototype.binarySearch = function(arr,target){
     }
     return arr[right];
 }
+//获取本周周一的时间
 util.prototype.getWeek = function(){
-    let d1 = new Date();
-    let d2 = new Date();
-    d2.setMonth(0);
-    d2.setDate(1);
-    let rq = d1 - d2;
-    let days = Math.ceil(rq / (24 * 60 * 60 * 1000));
-    let num = Math.ceil(days / 7);
-    return d1.getFullYear() + ":" + num;
+    var nowTemp = new Date();//当前时间
+    var oneDayLong = 24*60*60*1000 ;//一天的毫秒数
+    var c_time = nowTemp.getTime() ;//当前时间的毫秒时间
+    var c_day = nowTemp.getDay()||7;//当前时间的星期几
+    var m_time = c_time - (c_day-1)*oneDayLong;//当前周一的毫秒时间
+    var monday = new Date(m_time);//设置周一时间对象
+    var m_year = monday.getFullYear();
+    var m_month = monday.getMonth()+1;
+    var m_date = monday.getDate();
+    return m_year+'-'+m_month+'-'+m_date
 }
 util.prototype.getMonth = function(){
     let d1 = new Date();
-    return d1.getFullYear() + ":" + d1.getMonth();
+    return d1.getFullYear() + "-" + d1.getMonth();
 }
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {

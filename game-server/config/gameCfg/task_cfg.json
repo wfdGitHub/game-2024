@@ -3,7 +3,7 @@
     "title": "登录",
     "refresh": "day",
     "type": "login",
-    "value": 0,
+    "value": 2,
     "award": "201:100",
     "liveness": 10,
     "exp": 1000
@@ -419,6 +419,14 @@
     "type": "arena_win",
     "value": 10,
     "award": "201:143",
+    "exp": 1000
+  },
+  "301004": {
+    "title": "登录7次",
+    "refresh": "week",
+    "type": "login",
+    "value": 7,
+    "award": "201:100",
     "exp": 1000
   },
   "401001": {
