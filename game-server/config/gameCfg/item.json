@@ -3,7 +3,7 @@
     "name": "主角经验",
     "des": "主角经验，用于升级主角等级",
     "type": "currency",
-    "quality": 1
+    "quality": 5
   },
   "101": {
     "name": "英雄经验",
@@ -12,61 +12,61 @@
     "gold": 10,
     "coin": 50000,
     "buyNum": 10000,
-    "quality": 1
+    "quality": 5
   },
   "201": {
     "name": "铜币",
     "des": "铜币",
     "type": "currency",
-    "quality": 1
+    "quality": 4
   },
   "202": {
     "name": "元宝",
     "des": "元宝",
     "type": "currency",
-    "quality": 4
+    "quality": 5
   },
   "203": {
     "name": "英魂",
     "des": "分解英雄获得英魂，英魂可在英魂商店中兑换商品",
     "type": "currency",
-    "quality": 3
+    "quality": 5
   },
   "204": {
     "name": "游历值",
     "des": "游历值",
     "type": "currency",
-    "quality": 1
+    "quality": 5
   },
   "205": {
     "name": "声望",
     "des": "挑战竞技场可获得，用于竞技场商店兑换商品",
     "type": "currency",
-    "quality": 1
+    "quality": 5
   },
   "206": {
     "name": "元神值",
     "des": "英雄元神孕育而成，可用于在元神商店购买元神",
     "type": "currency",
-    "quality": 1
+    "quality": 5
   },
   "207": {
     "name": "法宝值",
     "des": "天地灵气聚集而成，可用于在法宝商店购买法宝",
     "type": "currency",
-    "quality": 1
+    "quality": 5
   },
   "208": {
     "name": "玉璧",
     "des": "玉璧",
     "type": "currency",
-    "quality": 1
+    "quality": 5
   },
   "301": {
     "name": "英雄积分",
     "des": "英雄积分，用于积分招募",
     "type": "currency",
-    "quality": 1
+    "quality": 5
   },
   "103010": {
     "name": "火婴英魂",
