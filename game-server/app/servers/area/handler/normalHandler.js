@@ -132,9 +132,10 @@ normalHandler.prototype.loginCross = function(msg, session, next) {
   this.areaManager.areaMap[areaId].loginCross(uid,crossUid,function(flag,data) {
     if(flag){
       session.set("crossUid",crossUid)
-      session.push("crossUid")
+      session.push("crossUid",function() {
+        next(null,{flag : flag,data : data})
+      })
     }
-    next(null,{flag : flag,data : data})
   })
 }
 //同步指引进度
