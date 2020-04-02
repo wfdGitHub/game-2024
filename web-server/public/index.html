@@ -73,6 +73,12 @@
         });
       }
       //============开服计划============//
+      //获取服务器列表
+      var getServerList = function() {
+        pomelo.request("admin.adminHandler.getServerList", {}, function(data) {
+            console.log(data);
+        });
+      }
       //暂停服务器
       var pauseArea = function(areaId) {
         pomelo.request("admin.adminHandler.pauseArea", {areaId : areaId}, function(data) {

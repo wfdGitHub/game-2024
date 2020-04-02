@@ -150,6 +150,15 @@ adminHandler.prototype.getMergePlan = function(msg, session, next) {
 		next(null,{flag : flag,data : data})
 	})
 }
+//获取服务器列表
+adminHandler.prototype.getServerList = function(msg, session, next) {
+	let limit = session.get("limit")
+	if(!limit || limit < 10){
+		next(null,{flag : false})
+		return
+	}
+	next(null,{flag : true,data : this.areaDeploy.getServerList()})
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "adminHandler",

@@ -103,7 +103,7 @@ serverManager.prototype.delOpenPlan = function(time,cb) {
 }
 //获取开服计划表
 serverManager.prototype.getOpenPlan = function(cb) {
-	cb(true,this.openPlans)
+	cb(true,{openPlans : this.openPlans,areaLock : this.areaLock})
 }
 module.exports = {
 	id : "serverManager",
