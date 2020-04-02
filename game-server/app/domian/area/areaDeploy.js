@@ -157,6 +157,10 @@ areaDeploy.prototype.changeFinalServerMap = function(areaId,finalId) {
 		}
 	}
 }
+//获取最终服务器
+areaDeploy.prototype.getFinalServer = function(areaId) {
+	return this.finalServerMap[areaId]
+}
 module.exports = {
 	id : "areaDeploy",
 	func : areaDeploy,

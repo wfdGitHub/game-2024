@@ -79,7 +79,7 @@ module.exports = function() {
 				// 	else
 				// 		data.zhuluTeam.push(null)
 				// }
-				// self.heroDao.setZhuluTeam(self.areaId,uid,data.zhuluTeam)
+				// self.heroDao.setZhuluTeam(self.oriIds[uid],uid,data.zhuluTeam)
 				for(let i = 1;i < gridCounts.length;i++){
 					data.grids[i] = []
 					for(let j = 0;j < gridCounts[i];j++){
@@ -322,7 +322,7 @@ module.exports = function() {
 	}
 	//获取逐鹿战斗数据
 	this.getZhuluFightData = function(uid,cb) {
-		self.heroDao.getZhuluTeam(self.areaId,uid,function(flag,atkTeam) {
+		self.heroDao.getZhuluTeam(self.oriIds[uid],uid,function(flag,atkTeam) {
 			if(!flag){
 				cb(flag,atkTeam)
 			}else{
@@ -489,7 +489,7 @@ module.exports = function() {
 	}
 	//改变逐鹿上阵阵容
 	this.setZhuluTeam = function(uid,hIds,cb) {
-		this.heroDao.setZhuluTeam(self.areaId,uid,hIds,function(flag,data) {
+		this.heroDao.setZhuluTeam(self.oriIds[uid],uid,hIds,function(flag,data) {
 			if(flag){
 				local.changeData(uid,"zhuluTeam",hIds)
 			}

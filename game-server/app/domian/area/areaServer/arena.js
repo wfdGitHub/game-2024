@@ -72,7 +72,7 @@ module.exports = function() {
 		})
 	}
 	//初始化玩家排名
-	this.initArenaRank = function(uid,name) {
+	this.initArenaRank = function(uid) {
 		self.redisDao.db.hincrby("area:area"+self.areaId+":areaInfo","lastRank",1,function(err,rank) {
 			var info = {
 				rank : rank,
@@ -317,7 +317,7 @@ module.exports = function() {
 	}
 	//获取挑战记录
 	this.getRerord = function(uid,cb) {
-		self.redisDao.db.lrange("area:area"+self.areaId+":player:"+uid+":arenaRecord",0,-1,function(err,list) {
+		self.redisDao.db.lrange("area:area"+self.oriIds[uid]+":player:"+uid+":arenaRecord",0,-1,function(err,list) {
 			if(err || !list){
 				cb(true,[])
 			}else{
@@ -335,9 +335,9 @@ module.exports = function() {
 		if(rank){
 			info.rank = rank
 		}
-		self.redisDao.db.rpush("area:area"+self.areaId+":player:"+uid+":arenaRecord",JSON.stringify(info),function(err,num) {
+		self.redisDao.db.rpush("area:area"+self.oriIds[uid]+":player:"+uid+":arenaRecord",JSON.stringify(info),function(err,num) {
 			if(num > maxRecordNum){
-				self.redisDao.db.ltrim("area:area"+self.areaId+":player:"+uid+":arenaRecord",-maxRecordNum,-1)
+				self.redisDao.db.ltrim("area:area"+self.oriIds[uid]+":player:"+uid+":arenaRecord",-maxRecordNum,-1)
 			}
 		})
 	}

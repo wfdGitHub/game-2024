@@ -135,7 +135,7 @@ loginHandler.prototype.getRandomName = function(msg, session, next) {
 }
 //登录游戏
 loginHandler.prototype.loginArea = function(msg, session, next) {
-	var areaId = msg.areaId
+	var oriId = msg.areaId
 	var accId = session.get("accId")
 	if(!accId){
 		next(null,{flag : false,err : "未登录账号"})
@@ -145,17 +145,18 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 		next(null,{flag : false,err : "已登录服务器"})
 		return
 	}
-	if(!areaId){
-		next(null,{flag : false,err : "areaId error"})
+	if(!oriId){
+		next(null,{flag : false,err : "oriId error"})
 		return
 	}
+    var areaId = this.areaDeploy.getFinalServer(oriId)
     var serverId = this.areaDeploy.getServer(areaId)
-    if(!serverId){
+    if(!areaId || !serverId){
         next(null,{flag : false,err : "服务器不存在"})
         return
     }
     var self = this
-    self.playerDao.getUidByAreaId({accId : accId,areaId : areaId},function(flag,uid) {
+    self.playerDao.getUidByAreaId({accId : accId,areaId : oriId},function(flag,uid) {
     	if(!flag){
     		next(null,{flag : false,err : "未注册角色"})
     		return
@@ -170,11 +171,13 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 		}
     	session.bind(uid)
     	session.on("closed",onUserLeave.bind(self))
-	    self.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,self.app.serverId,function(flag,playerInfo) {
+	    self.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,oriId,self.app.serverId,function(flag,playerInfo) {
 	    	console.log("playerInfo",playerInfo)
 			if(flag){
 		        session.set("areaId",areaId)
 		        session.push("areaId")
+		        session.set("oriId",oriId)
+		        session.push("oriId")
 		        session.set("serverId",serverId)
 		        session.push("serverId")
 				session.set("nickname",playerInfo.name)

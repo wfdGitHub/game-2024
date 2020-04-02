@@ -18,6 +18,7 @@ var area = function(otps,app) {
 	this.channelService = this.app.get('channelService')
 	this.players = {}
 	this.connectorMap = {}
+	this.oriIds = {}
 	this.onlineNum = 0
 	this.fightInfos = {}
 	this.fightContorl = fightContorlFun
@@ -75,7 +76,7 @@ area.prototype.register = function(otps,cb) {
 					return
 				}
 				self.taskInit(playerInfo.uid)
-				self.initArenaRank(playerInfo.uid,otps.name)
+				self.initArenaRank(playerInfo.uid)
 				self.setPlayerData(playerInfo.uid,"onhookLastTime",Date.now())
 				//TODO test
 				self.addItem({uid : playerInfo.uid,itemId : 101,value : 1000000})
@@ -85,12 +86,14 @@ area.prototype.register = function(otps,cb) {
 	})
 }
 //玩家加入
-area.prototype.userLogin = function(uid,cid,cb) {
+area.prototype.userLogin = function(uid,oriId,cid,cb) {
+	console.log("userLogin",uid,oriId,cid)
 	var self = this
 	var playerInfo = {}
+	self.oriIds[uid] = oriId
 	async.waterfall([
 		function(next) {
-			self.playerDao.getPlayerInfo({areaId : self.areaId,uid : uid},function(info) {
+			self.playerDao.getPlayerInfo({areaId : oriId,uid : uid},function(info) {
 				if(info){
 					playerInfo = info
 					next()
@@ -126,12 +129,14 @@ area.prototype.userLogin = function(uid,cid,cb) {
 				self.onlineNum++
 			self.players[uid] = playerInfo
 			self.connectorMap[uid] = cid
+			playerInfo.areaId = self.areaId
 			if(playerInfo.dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
 			}
 			cb(true,playerInfo)
 		}
 	],function(err) {
+		delete self.oriIds[uid]
 		cb(false,err)
 	})
 }
@@ -153,6 +158,7 @@ area.prototype.userLeave = function(uid) {
 	if(this.players[uid]){
 		delete this.players[uid]
 		delete this.connectorMap[uid]
+		delete this.oriIds[uid]
 		this.onlineNum--
 		this.taskUnload(uid)
 		this.CEUnload(uid)
@@ -247,7 +253,7 @@ area.prototype.loginCross = function(uid,crossUid,cb) {
 		return
 	}
 	var self = this
-    self.app.rpc.cross.crossRemote.userLogin(null,uid,self.areaId,self.app.serverId,self.connectorMap[uid],self.players[uid],function(flag,data) {
+    self.app.rpc.cross.crossRemote.userLogin(null,uid,self.areaId,self.oriIds[uid],self.app.serverId,self.connectorMap[uid],self.players[uid],function(flag,data) {
     	if(flag){
     		self.crossUids[uid] = crossUid
     	}

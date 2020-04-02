@@ -20,11 +20,11 @@ module.exports = function() {
 	}
 	//改变头像
 	this.changeHead = function(uid,id,cb) {
-		self.redisDao.db.hget("area:area"+self.areaId+":player:"+uid+":heroArchive",id,function(err,data) {
+		self.redisDao.db.hget("area:area"+self.oriIds[uid]+":player:"+uid+":heroArchive",id,function(err,data) {
 			if(err || !data){
 				cb(false,"未获得该英雄")
 			}else{
-				self.redisDao.db.hset("area:area"+self.areaId+":player:"+uid+":playerInfo","head",id,function(flag,data) {
+				self.redisDao.db.hset("area:area"+self.oriIds[uid]+":player:"+uid+":playerInfo","head",id,function(flag,data) {
 					cb(true)
 				})
 			}
@@ -32,7 +32,7 @@ module.exports = function() {
 	}
 	//主公获得经验值
 	this.addLordExp = function(uid,exp) {
-		self.redisDao.db.hincrby("area:area"+self.areaId+":player:"+uid+":playerInfo","exp",exp,function(err,value) {
+		self.redisDao.db.hincrby("area:area"+self.oriIds[uid]+":player:"+uid+":playerInfo","exp",exp,function(err,value) {
 			if(err)
 				console.error(err)
 			var notify = {
@@ -64,8 +64,8 @@ module.exports = function() {
 			upLv += 1
 		}
 		if(upLv){
-			self.redisDao.db.hincrby("area:area"+self.areaId+":player:"+uid+":playerInfo","level",upLv)
-			self.redisDao.db.hincrby("area:area"+self.areaId+":player:"+uid+":playerInfo","exp",-needExp)
+			self.redisDao.db.hincrby("area:area"+self.oriIds[uid]+":player:"+uid+":playerInfo","level",upLv)
+			self.redisDao.db.hincrby("area:area"+self.oriIds[uid]+":player:"+uid+":playerInfo","exp",-needExp)
 			self.addItem({uid : uid,itemId : 202,value : gold})
 			let notify = {
 				"type" : "lordUpgrade",

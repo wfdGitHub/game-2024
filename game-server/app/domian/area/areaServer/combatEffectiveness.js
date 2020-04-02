@@ -8,7 +8,7 @@ module.exports = function() {
 	var userTeamMaps = {}
 	//加载角色阵容数据
 	this.CELoad = function(uid,cb) {
-		self.heroDao.getFightTeam(self.areaId,uid,function(flag,data) {
+		self.heroDao.getFightTeam(self.oriIds[uid],uid,function(flag,data) {
 			if(flag && data){
 				userTeams[uid] = data
 				userTeamMaps[uid] = {}

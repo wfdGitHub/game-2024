@@ -2,7 +2,7 @@ module.exports = function() {
 	var self = this
 	//获取角色hash自定义数据
 	this.getObj = function(uid,objName,key,cb) {
-		this.redisDao.db.hget("area:area"+this.areaId+":player:"+uid+":"+objName,key,function(err,data) {
+		this.redisDao.db.hget("area:area"+this.oriIds[uid]+":player:"+uid+":"+objName,key,function(err,data) {
 			if(err){
 				console.log(err)
 				cb(false)
@@ -13,7 +13,7 @@ module.exports = function() {
 	}
 	//批量获取角色hash数据
 	this.getHMObj = function(uid,objName,arr,cb) {
-		this.redisDao.db.hmget("area:area"+this.areaId+":player:"+uid+":"+objName,arr,function(err,data) {
+		this.redisDao.db.hmget("area:area"+this.oriIds[uid]+":player:"+uid+":"+objName,arr,function(err,data) {
 			if(cb){
 				cb(data)
 			}
@@ -21,7 +21,7 @@ module.exports = function() {
 	}
 	//设置角色hash自定义数据
 	this.setObj = function(uid,objName,key,value,cb) {
-		this.redisDao.db.hset("area:area"+this.areaId+":player:"+uid+":"+objName,key,value,function(err,data) {
+		this.redisDao.db.hset("area:area"+this.oriIds[uid]+":player:"+uid+":"+objName,key,value,function(err,data) {
 			if(cb){
 				cb(data)
 			}
@@ -29,7 +29,7 @@ module.exports = function() {
 	}
 	//批量设置角色hash数据
 	this.setHMObj = function(uid,objName,obj,cb) {
-		this.redisDao.db.hmset("area:area"+this.areaId+":player:"+uid+":"+objName,obj,function(err,data) {
+		this.redisDao.db.hmset("area:area"+this.oriIds[uid]+":player:"+uid+":"+objName,obj,function(err,data) {
 			if(cb){
 				cb(data)
 			}
@@ -37,7 +37,7 @@ module.exports = function() {
 	}
 	//删除角色hash自定义数据
 	this.delObj = function(uid,objName,key,cb) {
-		this.redisDao.db.hdel("area:area"+this.areaId+":player:"+uid+":"+objName,key,function(err,data) {
+		this.redisDao.db.hdel("area:area"+this.oriIds[uid]+":player:"+uid+":"+objName,key,function(err,data) {
 			if(cb){
 				cb(data)
 			}
@@ -45,7 +45,7 @@ module.exports = function() {
 	}
 	//删除全部数据
 	this.delObjAll = function(uid,objName,cb) {
-		this.redisDao.db.del("area:area"+this.areaId+":player:"+uid+":"+objName,function(err,data) {
+		this.redisDao.db.del("area:area"+this.oriIds[uid]+":player:"+uid+":"+objName,function(err,data) {
 			if(cb){
 				cb(data)
 			}
@@ -53,7 +53,7 @@ module.exports = function() {
 	}
 	//角色hash自定义数据自增
 	this.incrbyObj = function(uid,objName,key,value,cb) {
-		this.redisDao.db.hincrby("area:area"+this.areaId+":player:"+uid+":"+objName,key,value,function(err,data) {
+		this.redisDao.db.hincrby("area:area"+this.oriIds[uid]+":player:"+uid+":"+objName,key,value,function(err,data) {
 			if(cb){
 				cb(data)
 			}
@@ -61,7 +61,7 @@ module.exports = function() {
 	}
 	//获取角色hash自定义数据整个对象
 	this.getObjAll = function(uid,objName,cb) {
-		this.redisDao.db.hgetall("area:area"+this.areaId+":player:"+uid+":"+objName,function(err,data) {
+		this.redisDao.db.hgetall("area:area"+this.oriIds[uid]+":player:"+uid+":"+objName,function(err,data) {
 			if(err){
 				console.log(err)
 				cb(false)

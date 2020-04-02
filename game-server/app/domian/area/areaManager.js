@@ -42,17 +42,17 @@ areaManager.prototype.removeArea = function(areaId) {
 	}
 }
 //玩家登录游戏服
-areaManager.prototype.userLogin = function(uid,areaId,cid,cb) {
+areaManager.prototype.userLogin = function(uid,areaId,oriId,cid,cb) {
 	var self = this
 	if(!self.areaMap[areaId]){
-		console.log(self.areaMap,areaId)
+		console.log("areaId error ",areaId)
 		cb(false)
 		return
 	}
 	if(this.connectorMap[uid] && this.connectorMap[uid] != cid){
 		this.app.rpc.connector.connectorRemote.kickUser.toServer(this.connectorMap[uid],uid,null)
 	}
-	self.areaMap[areaId].userLogin(uid,cid,function(flag,playerInfo) {
+	self.areaMap[areaId].userLogin(uid,oriId,cid,function(flag,playerInfo) {
 		if(flag){
 			self.connectorMap[uid] = cid
 			self.userMap[uid] = areaId

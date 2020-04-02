@@ -18,8 +18,8 @@ areaRemote.prototype.register = function(otps,cb) {
 	this.areaManager.areaMap[otps.areaId].register(otps,cb)
 }
 //玩家加入
-areaRemote.prototype.userLogin = function(uid,areaId,cid,cb) {
-	this.areaManager.userLogin(uid,areaId,cid,cb)
+areaRemote.prototype.userLogin = function(uid,areaId,oriId,cid,cb) {
+	this.areaManager.userLogin(uid,areaId,oriId,cid,cb)
 }
 
 //玩家离开

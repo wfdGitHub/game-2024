@@ -31,7 +31,7 @@ module.exports = function() {
 					}else{
 						var heroList = []
 						for(var i = 0;i < value;i++){
-							heroList.push(self.heroDao.gainHero(self.areaId,uid,{id : heroId}))
+							heroList.push(self.heroDao.gainHero(self.oriIds[uid],uid,{id : heroId}))
 						}
 						cb(true,heroList)
 					}
@@ -44,7 +44,7 @@ module.exports = function() {
 						cb(false,err)
 					}else{
 						var type = itemCfg[otps.itemId].arg
-				        var heroInfos = self.heroDao.randHero(self.areaId,uid,type,value)
+				        var heroInfos = self.heroDao.randHero(self.oriIds[uid],uid,type,value)
 				        cb(true,heroInfos)
 					}
 				})
@@ -70,7 +70,7 @@ module.exports = function() {
 	}
 	//增加背包物品
 	this.addBagItem = function(uid,itemId,value,cb) {
-		this.redisDao.db.hincrby("area:area"+this.areaId+":player:"+uid+":bag",itemId,value,function(err,data) {
+		this.redisDao.db.hincrby("area:area"+this.oriIds[uid]+":player:"+uid+":bag",itemId,value,function(err,data) {
 			if(cb){
 				data = Number(data) || 0
 				cb(true,data)
@@ -79,7 +79,7 @@ module.exports = function() {
 	}
 	//获取背包物品数量
 	this.getBagItem = function(uid,itemId,cb) {
-		this.redisDao.db.hget("area:area"+this.areaId+":player:"+uid+":bag",itemId,function(err,data) {
+		this.redisDao.db.hget("area:area"+this.oriIds[uid]+":player:"+uid+":bag",itemId,function(err,data) {
 			if(cb){
 				data = Number(data) || 0
 				cb(data)
@@ -88,7 +88,7 @@ module.exports = function() {
 	}
 	//获取背包
 	this.getBagList = function(uid,cb) {
-		this.redisDao.db.hgetall("area:area"+this.areaId+":player:"+uid+":bag",function(err,data) {
+		this.redisDao.db.hgetall("area:area"+this.oriIds[uid]+":player:"+uid+":bag",function(err,data) {
 			if(cb){
 				cb(data)
 			}
@@ -98,7 +98,7 @@ module.exports = function() {
 	this.getBagItemList = function(uid,items,cb) {
 		var multiList = []
 		for(var i = 0;i < items.length;i++){
-			multiList.push(["hget","area:area"+this.areaId+":player:"+uid+":bag",items[i]])
+			multiList.push(["hget","area:area"+this.oriIds[uid]+":player:"+uid+":bag",items[i]])
 		}
 		this.redisDao.multi(multiList,function(err,list) {
 			for(var i = 0;i < list.length;i++){
@@ -175,7 +175,7 @@ module.exports = function() {
 							case 204:
 								if(curValue > 20000){
 									curValue = 20000
-									self.redisDao.db.hset("area:area"+self.areaId+":player:"+uid+":bag",itemId,curValue)
+									self.redisDao.db.hset("area:area"+self.oriIds[uid]+":player:"+uid+":bag",itemId,curValue)
 								}
 							break
 						}

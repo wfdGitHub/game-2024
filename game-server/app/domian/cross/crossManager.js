@@ -12,6 +12,7 @@ var crossManager = function(app) {
 crossManager.prototype.init = function() {
 	this.onlineNum = 0
 	this.players = {}
+	this.oriIds = {}
 	this.dayStr = ""
 	for(var i = 0;i < crossServers.length;i++){
 		var fun = require("./crossServers/"+crossServers[i]+".js")
@@ -34,22 +35,24 @@ crossManager.prototype.update = function() {
 	}
 }
 //玩家连入跨服服务器
-crossManager.prototype.userLogin = function(uid,areaId,serverId,cid,playerInfo,cb) {
+crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,playerInfo,cb) {
 	var self = this
-	self.heroDao.getFightTeam(areaId,uid,function(flag,fightTeam) {
+	self.heroDao.getFightTeam(oriId,uid,function(flag,fightTeam) {
 		if(flag){
 			var userInfo = {
 				uid : uid,
 				areaId : areaId,
+				oriId : oriId,
 				serverId : serverId,
 				cid : cid,
 				playerInfo : playerInfo,
 				fightTeam : fightTeam
 			}
-			var crossUid = areaId+"|"+uid+"|"+serverId
+			var crossUid = oriId+"|"+uid+"|"+serverId
 			if(!self.players[crossUid])
 				self.onlineNum++
 			self.players[crossUid] = userInfo
+			self.oriIds[crossUid] = oriId
 			cb(true)
 		}else{
 			cb(false,"获取玩家战斗阵容失败")
@@ -60,6 +63,7 @@ crossManager.prototype.userLogin = function(uid,areaId,serverId,cid,playerInfo,c
 crossManager.prototype.userLeave = function(crossUid) {
 	if(this.players[crossUid]){
 		delete this.players[crossUid]
+		delete this.oriIds[crossUid]
 		this.onlineNum--
 	}
 	this.unSubscribeCarMessage(crossUid)
@@ -71,7 +75,8 @@ crossManager.prototype.getSimpleUser = function(crossUid) {
 	}
 	var info = {
 		name : this.players[crossUid]["playerInfo"]["name"],
-		areaId : this.players[crossUid]["playerInfo"]["areaId"]
+		areaId : this.players[crossUid]["playerInfo"]["areaId"],
+		oriId : this.oriIds[crossUid]
 	}
 	return info
 }
@@ -200,7 +205,8 @@ crossManager.prototype.getPlayerInfoByUids = function(areaIds,uids,cb) {
 				info = {
 					uid : uids[i],
 					name : list[i][0],
-					head : list[i][1]
+					head : list[i][1],
+					areaId : areaIds[i]
 				}
 			}
 			userInfos.push(info)
