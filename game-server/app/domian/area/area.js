@@ -75,11 +75,12 @@ area.prototype.register = function(otps,cb) {
 					cb(false,playerInfo)
 					return
 				}
+				self.oriIds[playerInfo.uid] = otps.oriId
 				self.taskInit(playerInfo.uid)
-				self.initArenaRank(playerInfo.uid)
 				self.setPlayerData(playerInfo.uid,"onhookLastTime",Date.now())
 				//TODO test
 				self.addItem({uid : playerInfo.uid,itemId : 101,value : 1000000})
+				delete self.oriIds[playerInfo.uid]
 				cb(true,playerInfo)
 			})
 		}

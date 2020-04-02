@@ -44,7 +44,6 @@ areaDao.prototype.destoryArea = function(areaId) {
 	this.redisDao.db.lrem("area:list",0,areaId)
 	this.redisDao.db.del("area:area"+areaId+":robots")
 	this.redisDao.db.del("area:area"+areaId+":arena")
-	this.redisDao.db.del("area:area"+areaId+":nameMap")
 	this.redisDao.db.hdel("area:serverMap",areaId)
 }
 //获取服务器最后ID

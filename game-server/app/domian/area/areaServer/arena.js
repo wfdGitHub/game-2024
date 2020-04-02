@@ -72,9 +72,10 @@ module.exports = function() {
 		})
 	}
 	//初始化玩家排名
-	this.initArenaRank = function(uid) {
+	this.initArenaRank = function(uid,cb) {
 		self.redisDao.db.hincrby("area:area"+self.areaId+":areaInfo","lastRank",1,function(err,rank) {
 			var info = {
+				areaId : self.areaId,
 				rank : rank,
 				count : 0,						//今日挑战次数
 				buyCount : 0,					//今日购买挑战次数
@@ -82,6 +83,9 @@ module.exports = function() {
 			}
 			self.setHMObj(uid,mainName,info)
 			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,uid)
+			if(cb){
+				cb(true,info)
+			}
 		})
 	}
 	//购买竞技场奖励商城物品
@@ -156,7 +160,12 @@ module.exports = function() {
 	//获取我的竞技场数据
 	this.getMyArenaInfo = function(uid,cb) {
 		this.getObjAll(uid,mainName,function(data) {
-			cb(true,data)
+			console.log("getMyArenaInfo",data)
+			if(!data || data.areaId != self.areaId){
+				self.initArenaRank(uid,cb)
+			}else{
+				cb(true,data)
+			}
 		})
 	}
 	//挑战目标
@@ -224,20 +233,22 @@ module.exports = function() {
 	}
 	//竞技场每日刷新
 	this.arenadayUpdate = function(uid) {
-		var info = {
-			count : 0,						//今日挑战次数
-			buyCount : 0					//今日购买挑战次数
-		}
-		self.setHMObj(uid,mainName,info)
 		//发放竞技场奖励
 		self.getObj(uid,mainName,"rank",function(rank) {
-			rank = parseInt(rank)
-			if(rank <= 4000){
-				var range = util.binarySearch(rankList,rank)
-				if(arena_rank[range] && arena_rank[range]["dayAward"]){
-					var title = "竞技场排名奖励"
-					var text = "恭喜您在竞技场排名第"+rank+"名,这是您的排名奖励"
-					self.sendMail(uid,title,text,arena_rank[range]["dayAward"])
+			if(rank != null){
+				var info = {
+					count : 0,						//今日挑战次数
+					buyCount : 0					//今日购买挑战次数
+				}
+				self.setHMObj(uid,mainName,info)
+				rank = parseInt(rank)
+				if(rank <= 4000){
+					var range = util.binarySearch(rankList,rank)
+					if(arena_rank[range] && arena_rank[range]["dayAward"]){
+						var title = "竞技场排名奖励"
+						var text = "恭喜您在竞技场排名第"+rank+"名,这是您的排名奖励"
+						self.sendMail(uid,title,text,arena_rank[range]["dayAward"])
+					}
 				}
 			}
 		})

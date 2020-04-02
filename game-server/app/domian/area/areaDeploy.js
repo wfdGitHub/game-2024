@@ -46,16 +46,33 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 	var self = this
 	self.openArea(function(areaId) {
 		if(areaId){
-			for(var i = 0;i < areaList.length;i++){
+			for(let i = 0;i < areaList.length;i++){
 				self.areaDao.destoryArea(areaList[i])
 				self.pauseArea(areaList[i])
-				for(var j in self.finalServerMap){
+				for(let j in self.finalServerMap){
 					if(self.finalServerMap[j] == areaList[i]){
 						self.redisDao.db.hset("area:finalServerMap",j,areaId)
+						self.mergeAreaName(j)
 					}
 				}
 				self.changeFinalServerMap(areaList[i],areaId)
 				self.app.rpc.connector.connectorRemote.changeFinalServerMap.toServer("*",areaList[i],areaId,null)
+			}
+		}
+	})
+}
+//合并名称
+areaDeploy.prototype.mergeAreaName = function(oriId) {
+	var self = this
+	self.redisDao.db.hgetall("area:area"+oriId+":nameMap",function(err,data) {
+		if(data){
+			var sname = "s"+oriId+"."
+			for(var i in data){
+				var uid = data[i]
+				var name = sname+i.replace(sname,"")
+				self.redisDao.db.hdel("area:area"+oriId+":nameMap",i)
+				self.redisDao.db.hset("area:area"+oriId+":nameMap",name,uid)
+				self.redisDao.db.hset("area:area"+oriId+":player:"+uid+":playerInfo","name",name)
 			}
 		}
 	})

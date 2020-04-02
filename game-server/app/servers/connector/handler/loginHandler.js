@@ -84,19 +84,19 @@ loginHandler.prototype.getPlayerInfo = function(msg, session, next) {
 }
 //创建角色
 loginHandler.prototype.register = function(msg, session, next) {
-	var areaId = msg.areaId
+	var oriId = msg.areaId
 	var name = msg.name
 	var sex = msg.sex
-	if(!areaId){
-		next(null,{flag : false,err : "areaId error"})
+	if(!oriId){
+		next(null,{flag : false,err : "oriId error"})
 		return
 	}
-    var serverId = this.areaDeploy.getServer(areaId)
+    var serverId = this.areaDeploy.getServer(oriId)
     if(!serverId){
         next(null,{flag : false,err : "服务器不存在"})
         return
     }
-    if(!Number.isInteger(areaId) || typeof(name) !== "string"){
+    if(!Number.isInteger(oriId) || typeof(name) !== "string"){
         next(null,{flag : false,err : "参数错误"})
         return
     }
@@ -108,8 +108,9 @@ loginHandler.prototype.register = function(msg, session, next) {
     if(sex !== 1){
     	sex = 2
     }
+    var areaId = this.areaDeploy.getFinalServer(oriId)
 	var accId = session.get("accId")
-	var otps = {areaId : areaId,accId : accId,name : name,sex : sex}
+	var otps = {areaId : areaId,oriId : oriId,accId : accId,name : name,sex : sex}
     this.app.rpc.area.areaRemote.register.toServer(serverId,otps,function(flag,data) {
 		if(flag){
 	        next(null,{flag : true,msg : data})
