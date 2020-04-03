@@ -41,6 +41,11 @@ area.prototype.init = function() {
 			self.robots[i] = JSON.parse(robots[i])
 		}
 	})
+	this.redisDao.db.hgetall("area:area"+this.areaId+":oriIds",function(err,oriIds) {
+		for(let i in oriIds){
+			self.oriIds[i] = Number(oriIds[i])
+		}
+	})
 	this.worldBossCheck()
 	this.timer = setInterval(this.update.bind(this),1000)
 }
@@ -76,11 +81,11 @@ area.prototype.register = function(otps,cb) {
 					return
 				}
 				self.oriIds[playerInfo.uid] = otps.oriId
+				self.redisDao.db.hset("area:area"+self.areaId+":oriIds",playerInfo.uid,otps.oriId)
 				self.taskInit(playerInfo.uid)
 				self.setPlayerData(playerInfo.uid,"onhookLastTime",Date.now())
 				//TODO test
 				self.addItem({uid : playerInfo.uid,itemId : 101,value : 1000000})
-				delete self.oriIds[playerInfo.uid]
 				cb(true,playerInfo)
 			})
 		}
@@ -91,7 +96,6 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 	console.log("userLogin",uid,oriId,cid)
 	var self = this
 	var playerInfo = {}
-	self.oriIds[uid] = oriId
 	async.waterfall([
 		function(next) {
 			self.playerDao.getPlayerInfo({areaId : oriId,uid : uid},function(info) {
@@ -137,7 +141,6 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 			cb(true,playerInfo)
 		}
 	],function(err) {
-		delete self.oriIds[uid]
 		cb(false,err)
 	})
 }
@@ -159,7 +162,6 @@ area.prototype.userLeave = function(uid) {
 	if(this.players[uid]){
 		delete this.players[uid]
 		delete this.connectorMap[uid]
-		delete this.oriIds[uid]
 		this.onlineNum--
 		this.taskUnload(uid)
 		this.CEUnload(uid)
@@ -293,11 +295,11 @@ area.prototype.standardTeam = function(uid,team,dl) {
 }
 //批量获取玩家基本数据
 area.prototype.getPlayerInfoByUids = function(uids,cb) {
+	var self = this
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
-		multiList.push(["hmget","area:area"+this.areaId+":player:"+uids[i]+":playerInfo",["name","head"]])
+		multiList.push(["hmget","area:area"+self.oriIds[uids[i]]+":player:"+uids[i]+":playerInfo",["name","head"]])
 	}
-	var self = this
 	self.redisDao.multi(multiList,function(err,list) {
 		var userInfos = []
 		for(var i = 0;i < uids.length;i++){

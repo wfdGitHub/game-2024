@@ -52,7 +52,7 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 				for(let j in self.finalServerMap){
 					if(self.finalServerMap[j] == areaList[i]){
 						self.redisDao.db.hset("area:finalServerMap",j,areaId)
-						self.mergeAreaName(j)
+						self.mergeAreaName(j,areaId)
 					}
 				}
 				self.changeFinalServerMap(areaList[i],areaId)
@@ -62,7 +62,7 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 	})
 }
 //合并名称
-areaDeploy.prototype.mergeAreaName = function(oriId) {
+areaDeploy.prototype.mergeAreaName = function(oriId,areaId) {
 	var self = this
 	self.redisDao.db.hgetall("area:area"+oriId+":nameMap",function(err,data) {
 		if(data){
@@ -73,6 +73,9 @@ areaDeploy.prototype.mergeAreaName = function(oriId) {
 				self.redisDao.db.hdel("area:area"+oriId+":nameMap",i)
 				self.redisDao.db.hset("area:area"+oriId+":nameMap",name,uid)
 				self.redisDao.db.hset("area:area"+oriId+":player:"+uid+":playerInfo","name",name)
+				self.redisDao.db.hset("area:area"+oriId+":player:"+uid+":playerInfo","name",name)
+				self.redisDao.db.del("area:area"+oriId+":oriIds")
+				self.redisDao.db.hset("area:area"+areaId+":oriIds",uid,oriId)
 			}
 		}
 	})
