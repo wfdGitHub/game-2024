@@ -27,10 +27,11 @@ adminArea.prototype.changeStar = function(msg, session, next) {
     return
   }
   var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var hId = msg.hId
   var value = Number(msg.value) || 0
   var uid = msg.uid || session.uid
-  this.heroDao.incrbyHeroInfo(areaId,uid,hId,"star",value,function(flag,data) {
+  this.heroDao.incrbyHeroInfo(oriId,uid,hId,"star",value,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -42,10 +43,11 @@ adminArea.prototype.changeAdvance = function(msg, session, next) {
     return
   }
   var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var hId = msg.hId
   var value = Number(msg.value) || 0
   var uid = msg.uid || session.uid
-  this.heroDao.incrbyHeroInfo(areaId,uid,hId,"ad",value,function(flag,data) {
+  this.heroDao.incrbyHeroInfo(oriId,uid,hId,"ad",value,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -57,10 +59,11 @@ adminArea.prototype.changeLevel = function(msg, session, next) {
     return
   }
   var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var hId = msg.hId
   var value = Number(msg.value) || 0
   var uid = msg.uid || session.uid
-  this.heroDao.incrbyHeroInfo(areaId,uid,hId,"lv",value,function(flag,data) {
+  this.heroDao.incrbyHeroInfo(oriId,uid,hId,"lv",value,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

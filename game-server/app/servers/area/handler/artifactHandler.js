@@ -12,12 +12,13 @@ var artifactHandler = function(app) {
 artifactHandler.prototype.wearArtifact = function(msg, session, next) {
   let uid = session.uid
   let areaId = session.get("areaId")
+  let oriId = session.get("oriId")
   let hId = msg.hId
   let aId = 0
   let self = this
   async.waterfall([
     function(cb) {
-      self.heroDao.getHeroOne(areaId,uid,hId,function(flag,heroInfo) {
+      self.heroDao.getHeroOne(oriId,uid,hId,function(flag,heroInfo) {
         if(!flag){
           cb("英雄不存在")
           return
@@ -51,7 +52,7 @@ artifactHandler.prototype.wearArtifact = function(msg, session, next) {
       self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : aId,value : -1})
       //穿戴神器
       heroInfo["artifact"] = 0
-      self.heroDao.setHeroInfo(areaId,uid,hId,"artifact",0)
+      self.heroDao.setHeroInfo(oriId,uid,hId,"artifact",0)
       next(null,{flag : true,heroInfo : heroInfo})
     }
   ],function(err) {
@@ -62,11 +63,12 @@ artifactHandler.prototype.wearArtifact = function(msg, session, next) {
 artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
   let uid = session.uid
   let areaId = session.get("areaId")
+  let oriId = session.get("oriId")
   let hId = msg.hId
   let self = this
   async.waterfall([
     function(cb) {
-      self.heroDao.getHeroOne(areaId,uid,hId,function(flag,heroInfo) {
+      self.heroDao.getHeroOne(oriId,uid,hId,function(flag,heroInfo) {
         if(!flag){
           cb("英雄不存在")
           return
@@ -117,7 +119,7 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
     },
     function(heroInfo,cb) {
       heroInfo["artifact"] += 1
-      self.heroDao.incrbyHeroInfo(areaId,uid,hId,"artifact",1)
+      self.heroDao.incrbyHeroInfo(oriId,uid,hId,"artifact",1)
       self.areaManager.areaMap[areaId].taskUpdate(uid,"artifactLv",1,heroInfo["artifact"])
       next(null,{flag : true,heroInfo : heroInfo})
     }

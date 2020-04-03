@@ -21,6 +21,7 @@ var acepackHandler = function(app) {
 acepackHandler.prototype.wearAcepack = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var aId = Number(msg.aId)
   var hId = msg.hId
   var pos = msg.pos
@@ -50,7 +51,7 @@ acepackHandler.prototype.wearAcepack = function(msg, session, next) {
           cb()
     },
     function(cb) {
-      self.heroDao.getHeroOne(areaId,uid,hId,function(flag,heroInfo) {
+      self.heroDao.getHeroOne(oriId,uid,hId,function(flag,heroInfo) {
         if(!flag){
           cb("英雄不存在")
           return
@@ -75,7 +76,7 @@ acepackHandler.prototype.wearAcepack = function(msg, session, next) {
       self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : aId,value : -1})
       //穿戴锦囊
       heroInfo["acepack_"+pos] = aId
-      self.heroDao.setHeroInfo(areaId,uid,hId,"acepack_"+pos,aId)
+      self.heroDao.setHeroInfo(oriId,uid,hId,"acepack_"+pos,aId)
       next(null,{flag : true,heroInfo : heroInfo})
     }
   ],function(err) {

@@ -10,6 +10,7 @@ var recruitHandler = function(app) {
 recruitHandler.prototype.recruitHero = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var type = msg.type
   var count = msg.count
   if(!recruit_base[type]){
@@ -26,7 +27,7 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
     next(null,{flag:false,err:"pcStr error"+pcStr})
     return
   }
-  self.heroDao.getHeroAmount(areaId,uid,function(flag,info) {
+  self.heroDao.getHeroAmount(oriId,uid,function(flag,info) {
       if(info.cur + count > info.max){
         next(null,{flag : false,data : "武将背包已满"})
         return
@@ -39,7 +40,7 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
         let paStr = recruit_base[type].pa
         if(paStr)
           self.areaManager.areaMap[areaId].addItemStr(uid,paStr,count)
-        var heroInfos = self.heroDao.randHero(areaId,uid,type,count)
+        var heroInfos = self.heroDao.randHero(oriId,uid,type,count)
         if(type == "normal" || type == "great"){
           self.areaManager.areaMap[areaId].taskUpdate(uid,"recruit",count)
         }else if(type == "camp_1" || type == "camp_2" || type == "camp_3" || type == "camp_4"){

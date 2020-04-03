@@ -10,33 +10,33 @@ var heroHandler = function(app) {
 //增加英雄背包栏
 heroHandler.prototype.addHeroAmount = function(msg, session, next) {
   var uid = session.uid
-  var areaId = session.get("areaId")
-  this.heroDao.addHeroAmount(areaId,uid,function(flag,data) {
+  var oriId = session.get("oriId")
+  this.heroDao.addHeroAmount(oriId,uid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
 //获取英雄背包栏数量
 heroHandler.prototype.getHeroAmount = function(msg, session, next) {
   var uid = session.uid
-  var areaId = session.get("areaId")
-  this.heroDao.getHeroAmount(areaId,uid,function(flag,data) {
+  var oriId = session.get("oriId")
+  this.heroDao.getHeroAmount(oriId,uid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
 //获得英雄
 heroHandler.prototype.gainHero = function(msg, session, next) {
   var uid = session.uid
-  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var id = msg.id
   var ad = msg.ad
   var lv = msg.lv
   var self = this
-  self.heroDao.getHeroAmount(areaId,uid,function(flag,info) {
+  self.heroDao.getHeroAmount(oriId,uid,function(flag,info) {
       if(info.cur >= info.max){
         next(null,{flag : false,data : "英雄背包已满"})
         return
       }
-      self.heroDao.gainHero(areaId,uid,{id : id,ad : ad,lv : lv},function(flag,data) {
+      self.heroDao.gainHero(oriId,uid,{id : id,ad : ad,lv : lv},function(flag,data) {
         next(null,{flag : flag,data : data})
       })
   })
@@ -44,10 +44,10 @@ heroHandler.prototype.gainHero = function(msg, session, next) {
 //分解英雄
 heroHandler.prototype.removeHeros = function(msg, session, next) {
   var uid = session.uid
-  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var hIds = msg.hIds
   var self = this
-  self.heroDao.getHeroList(areaId,uid,hIds,function(flag,heros) {
+  self.heroDao.getHeroList(oriId,uid,hIds,function(flag,heros) {
     for(var i in heros){
       if(!heros[i]){
         next(null,{flag : false,err : "英雄不存在"+i})
@@ -58,9 +58,9 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
         return
       }
     }
-    self.heroDao.removeHeroList(areaId,uid,hIds,function(flag,err) {
+    self.heroDao.removeHeroList(oriId,uid,hIds,function(flag,err) {
       if(flag){
-        self.heroDao.heroPrAll(areaId,uid,heros,function(flag,awardList) {
+        self.heroDao.heroPrAll(oriId,uid,heros,function(flag,awardList) {
           next(null,{flag : true,awardList : awardList})
         })
       }else{
@@ -73,6 +73,7 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
 heroHandler.prototype.upgradeLevel = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var hId = msg.hId
   var aimLv = msg.aimLv
   if(!Number.isInteger(aimLv) || !lv_cfg[aimLv]){
@@ -80,7 +81,7 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
     return
   }
   var self = this
-  self.heroDao.getHeroOne(areaId,uid,hId,function(flag,heroInfo) {
+  self.heroDao.getHeroOne(oriId,uid,hId,function(flag,heroInfo) {
     if(!flag){
       next(null,{flag : false,err : "英雄不存在"})
       return
@@ -102,7 +103,7 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
         next(null,{flag : false,err : err})
         return
       }
-      self.heroDao.incrbyHeroInfo(areaId,uid,hId,"lv",aimLv - heroInfo.lv,function(flag,data) {
+      self.heroDao.incrbyHeroInfo(oriId,uid,hId,"lv",aimLv - heroInfo.lv,function(flag,data) {
         self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,aimLv)
         next(null,{flag : flag,data : data})
       })
@@ -113,9 +114,10 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
 heroHandler.prototype.upgraAdvance = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var hId = msg.hId
   var self = this
-  self.heroDao.getHeroOne(areaId,uid,hId,function(flag,heroInfo) {
+  self.heroDao.getHeroOne(oriId,uid,hId,function(flag,heroInfo) {
     if(!flag){
       next(null,{flag : false,err : "英雄不存在"})
       return
@@ -139,7 +141,7 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
         next(null,{flag : false,err : err})
         return
       }
-      self.heroDao.incrbyHeroInfo(areaId,uid,hId,"ad",1,function(flag,data) {
+      self.heroDao.incrbyHeroInfo(oriId,uid,hId,"ad",1,function(flag,data) {
         next(null,{flag : flag,data : data})
       })
     })
@@ -149,6 +151,7 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
 heroHandler.prototype.upgradeStar = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var target = msg.target
   var hIds = msg.hIds
   if(!hIds instanceof Array){
@@ -169,7 +172,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
     hIdmap[hIds[i]] = true
   }
   var self = this
-  self.heroDao.getHeroList(areaId,uid,hIds,function(flag,data) {
+  self.heroDao.getHeroList(oriId,uid,hIds,function(flag,data) {
     if(data){
       let targetHero = data.pop()
       hIds.pop()
@@ -233,22 +236,22 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
               next(null,{flag : false,err : err})
               return
             }
-            self.heroDao.removeHeroList(areaId,uid,hIds,function(flag,err) {
+            self.heroDao.removeHeroList(oriId,uid,hIds,function(flag,err) {
                 if(err)
                   console.error(err)
-                self.heroDao.heroPrlvadnad(areaId,uid,data,function(flag,awardList) {
-                  self.heroDao.incrbyHeroInfo(areaId,uid,target,"star",1,function(flag,star) {
+                self.heroDao.heroPrlvadnad(oriId,uid,data,function(flag,awardList) {
+                  self.heroDao.incrbyHeroInfo(oriId,uid,target,"star",1,function(flag,star) {
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
                 })
             })
           })
         }else{
-            self.heroDao.removeHeroList(areaId,uid,hIds,function(flag,err) {
+            self.heroDao.removeHeroList(oriId,uid,hIds,function(flag,err) {
                 if(err)
                   console.error(err)
-                self.heroDao.heroPrlvadnad(areaId,uid,data,function(flag,awardList) {
-                  self.heroDao.incrbyHeroInfo(areaId,uid,target,"star",1,function(flag,star) {
+                self.heroDao.heroPrlvadnad(oriId,uid,data,function(flag,awardList) {
+                  self.heroDao.incrbyHeroInfo(oriId,uid,target,"star",1,function(flag,star) {
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
                 })
@@ -263,34 +266,34 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
 //修改英雄属性
 heroHandler.prototype.incrbyHeroInfo = function(msg, session, next) {
   var uid = session.uid
-  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var hId = msg.hId
   var name = msg.name
   var value = msg.value
-  this.heroDao.incrbyHeroInfo(areaId,uid,hId,name,value,function(flag,data) {
+  this.heroDao.incrbyHeroInfo(oriId,uid,hId,name,value,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
 //获取英雄列表
 heroHandler.prototype.getHeros = function(msg, session, next) {
   var uid = session.uid
-  var areaId = session.get("areaId")
-  this.heroDao.getHeros(areaId,uid,function(flag,data) {
+  var oriId = session.get("oriId")
+  this.heroDao.getHeros(oriId,uid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
 //获取英雄图鉴
 heroHandler.prototype.getHeroArchive = function(msg, session, next) {
   var uid = session.uid
-  var areaId = session.get("areaId")
-  this.heroDao.getHeroArchive(areaId,uid,function(flag,data) {
+  var oriId = session.get("oriId")
+  this.heroDao.getHeroArchive(oriId,uid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
 //设置出场阵容
 heroHandler.prototype.setFightTeam = function(msg, session, next) {
   var uid = session.uid
-  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var hIds = msg.hIds
   //参数判断
   if(!hIds instanceof Array){
@@ -320,15 +323,15 @@ heroHandler.prototype.setFightTeam = function(msg, session, next) {
     next(null,{flag : false,data : "至少要有一个上阵英雄"})
     return
   }
-  this.heroDao.setFightTeam(areaId,uid,hIds,function(flag,data) {
+  this.heroDao.setFightTeam(oriId,uid,hIds,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
 //获取出场阵容
 heroHandler.prototype.getFightTeam = function(msg, session, next) {
   var uid = session.uid
-  var areaId = session.get("areaId")
-  this.heroDao.getFightTeam(areaId,uid,function(flag,data) {
+  var oriId = session.get("oriId")
+  this.heroDao.getFightTeam(oriId,uid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

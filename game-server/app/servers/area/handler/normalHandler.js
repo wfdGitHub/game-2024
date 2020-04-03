@@ -141,9 +141,9 @@ normalHandler.prototype.loginCross = function(msg, session, next) {
 //同步指引进度
 normalHandler.prototype.syncGuide = function(msg, session, next) {
   var uid = session.uid
-  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var guideInfo = msg.guideInfo
-  this.areaManager.areaMap[areaId].playerDao.setPlayerInfo({areaId : areaId,uid : uid,key : "guideInfo",value : guideInfo})
+  this.playerDao.setPlayerInfo({areaId : oriId,uid : uid,key : "guideInfo",value : guideInfo})
   next()
 }
 module.exports = function(app) {
@@ -153,6 +153,10 @@ module.exports = function(app) {
   	args : [{
   		name : "app",
   		value : app
-  	}]
+  	}],
+    props : [{
+      name : "playerDao",
+      ref : "playerDao"
+    }]
   })
 };
