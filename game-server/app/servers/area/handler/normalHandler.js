@@ -67,7 +67,14 @@ normalHandler.prototype.changeHead = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].changeHead(uid,msg.id,function(flag,data) {
-    next(null,{flag : flag,data : data})
+    if(flag){
+        session.set("head",msg.id)
+        session.push("head",function() {
+          next(null,{flag : true,data : data})
+        })
+      }else{
+        next(null,{flag : false,data : data})
+      }
   })
 }
 //增加物品  测试功能
@@ -183,7 +190,10 @@ normalHandler.prototype.changeName = function(msg, session, next) {
         self.redisDao.db.hdel("area:area"+oriId+":nameMap",data)
         self.redisDao.db.hset("area:area"+oriId+":nameMap",name,uid)
         self.playerDao.setPlayerInfo({uid : uid,key : "name",value : name})
-        next(null,{flag:true})
+        session.set("name",name)
+        session.push("name",function() {
+          next(null,{flag:true})
+        })
       })
     }
   ],function(err) {

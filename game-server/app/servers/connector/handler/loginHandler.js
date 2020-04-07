@@ -181,8 +181,10 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 		        session.push("oriId")
 		        session.set("serverId",serverId)
 		        session.push("serverId")
-				session.set("nickname",playerInfo.name)
-				session.push("nickname")
+				session.set("name",playerInfo.name)
+				session.push("name")
+				session.set("head",playerInfo.head)
+				session.push("head")
 				session.set("beginTime",Date.now())
 				session.push("beginTime")
 				playerInfo.areaId = areaId
