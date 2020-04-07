@@ -141,10 +141,24 @@ normalHandler.prototype.loginCross = function(msg, session, next) {
 //同步指引进度
 normalHandler.prototype.syncGuide = function(msg, session, next) {
   var uid = session.uid
-  var oriId = session.get("oriId")
   var guideInfo = msg.guideInfo
-  this.playerDao.setPlayerInfo({areaId : oriId,uid : uid,key : "guideInfo",value : guideInfo})
+  this.playerDao.setPlayerInfo({uid : uid,key : "guideInfo",value : guideInfo})
   next()
+}
+//玩家改名
+normalHandler.prototype.changeName = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var name = msg.name
+  var self = this
+  self.areaManager.areaMap[areaId].consumeItems(uid,"1000500:1",1,function(flag,err) {
+    if(!flag){
+      next(null,{flag : flag,err : err})
+    }else{
+      self.playerDao.setPlayerInfo({uid : uid,key : "name",value : name})
+      next(null,{flag : flag})
+    }
+  })
 }
 module.exports = function(app) {
   return bearcat.getBean({

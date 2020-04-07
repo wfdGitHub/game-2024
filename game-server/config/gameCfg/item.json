@@ -1007,6 +1007,15 @@
     "isBag": true,
     "type": "item"
   },
+  "1000500": {
+    "name": "改名卡",
+    "des": "可以修改主角名字",
+    "isBag": true,
+    "type": "item",
+    "gold": 500,
+    "buyNum": 1,
+    "quality": 5
+  },
   "1001001": {
     "name": "绿色装备宝箱",
     "des": "可开出绿色装备",

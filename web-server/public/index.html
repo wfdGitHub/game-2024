@@ -72,6 +72,12 @@
             console.log(data);
         });
       }
+      //改名
+      var changeName = function(name) {
+        pomelo.request("area.normalHandler.changeName", {name : name}, function(data) {
+            console.log(data);
+        });
+      }
       //============开服计划============//
       //获取服务器列表
       var getServerList = function() {
