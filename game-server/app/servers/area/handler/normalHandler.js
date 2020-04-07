@@ -180,6 +180,7 @@ normalHandler.prototype.changeName = function(msg, session, next) {
     },
     function() {
       self.playerDao.setPlayerInfo({uid : uid,key : "name",value : name})
+      next(null,{flag:true})
     }
   ],function(err) {
     next(null,{flag : false,err : err})
