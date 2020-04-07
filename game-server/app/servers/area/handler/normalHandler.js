@@ -179,8 +179,12 @@ normalHandler.prototype.changeName = function(msg, session, next) {
       })
     },
     function() {
-      self.playerDao.setPlayerInfo({uid : uid,key : "name",value : name})
-      next(null,{flag:true})
+      self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
+        self.redisDao.db.hdel("area:area"+oriId+":nameMap",data)
+        self.redisDao.db.hset("area:area"+oriId+":nameMap",name,uid)
+        self.playerDao.setPlayerInfo({uid : uid,key : "name",value : name})
+        next(null,{flag:true})
+      })
     }
   ],function(err) {
     next(null,{flag : false,err : err})
