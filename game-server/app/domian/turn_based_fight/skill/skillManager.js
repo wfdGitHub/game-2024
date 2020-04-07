@@ -235,8 +235,12 @@ model.useAttackSkill = function(skill) {
 	}
 	//判断技能目标减少
 	var lessNum = this.locator.getTargetsNum(skill.targetType) - targets.length
-	if(lessNum && skill.character.skill_less_amp)
-		addAmp += skill.character.skill_less_amp * lessNum
+	if(lessNum && skill.isAnger){
+		if(skill.character.skill_less_amp)
+			addAmp += skill.character.skill_less_amp * lessNum
+		if(skill.lessAmp)
+			addAmp += skill.lessAmp * lessNum
+	}
 	if(skill.character.less_clear_invincible){
 		let allLenth = this.locator.getTargetsNum(skill.targetType)
 		let buffRate = ((allLenth - targets.length + 1) / allLenth) * skill.character.less_clear_invincible

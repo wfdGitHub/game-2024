@@ -1,8 +1,8 @@
 var fightContorl = require("./fight/fightContorl.js")
 var fightRecord = require("./fight/fightRecord.js")
-var atkTeam = [{id:105040}]
-var defTeam = [{id:105040}]
-var list = fightContorl.beginFight(atkTeam,defTeam,{})
+var atkTeam = [{id:105010}]
+var defTeam = [{id:101010}]
+// var list = fightContorl.beginFight(atkTeam,defTeam,{})
 // fightRecord.explain()
 // console.log(fightContorl.getFightRecord())
 // console.log(fightContorl.getTeamShowData(atkTeam)[0].getSimpleInfo())
