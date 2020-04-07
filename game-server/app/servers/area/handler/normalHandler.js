@@ -1,4 +1,5 @@
 var bearcat = require("bearcat")
+var async = require("async")
 var normalHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
@@ -149,15 +150,39 @@ normalHandler.prototype.syncGuide = function(msg, session, next) {
 normalHandler.prototype.changeName = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
   var name = msg.name
   var self = this
-  self.areaManager.areaMap[areaId].consumeItems(uid,"1000500:1",1,function(flag,err) {
-    if(!flag){
-      next(null,{flag : flag,err : err})
-    }else{
+  async.waterfall([
+    function(cb) {
+      self.redisDao.db.hexists("area:area"+oriId+":nameMap",name,function(err,data) {
+        if(data){
+          cb("名称已存在")
+        }else{
+          cb()
+        }
+      })
+    },
+    function(cb) {
+      self.areaManager.areaMap[areaId].consumeItems(uid,"1000500:1",1,function(flag,err) {
+        if(flag){
+          cb()
+        }else{
+          self.areaManager.areaMap[areaId].consumeItems(uid,"202:500",1,function(flag,err) {
+            if(flag){
+              cb()
+            }else{
+              cb("元宝不足")
+            }
+          })
+        }
+      })
+    },
+    function() {
       self.playerDao.setPlayerInfo({uid : uid,key : "name",value : name})
-      next(null,{flag : flag})
     }
+  ],function(err) {
+    next(null,{flag : false,err : err})
   })
 }
 module.exports = function(app) {
@@ -171,6 +196,9 @@ module.exports = function(app) {
     props : [{
       name : "playerDao",
       ref : "playerDao"
+    },{
+      name : "redisDao",
+      ref : "redisDao"
     }]
   })
 };

@@ -102,7 +102,7 @@ loginHandler.prototype.register = function(msg, session, next) {
     }
     name = name.replace(/\s*/g,"");
     if(name.length < 2){
-        next(null,{flag : false,err : "该名称已被使用"})
+        next(null,{flag : false,err : "名称过短"})
         return
     }
     if(sex !== 1){
