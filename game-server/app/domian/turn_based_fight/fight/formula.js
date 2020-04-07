@@ -12,7 +12,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
 				var attInfo = Object.assign({},skill.burn_att_change_skill)
 				tmpAmplify += attInfo["amplify"] || 0
 				tmpCrit += attInfo["crit"] || 0
-				if(skill.isAnger && skill.character.burn_att_change_skill){
+				if(skill.character.burn_att_change_skill){
 					tmpAmplify += skill.character.burn_att_change_skill["amplify"] || 0
 					tmpCrit += skill.character.burn_att_change_skill["crit"] || 0
 				}
@@ -22,7 +22,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
 				var attInfo = Object.assign({},skill.burn_att_change_normal)
 				tmpAmplify += attInfo["amplify"] || 0
 				tmpCrit += attInfo["crit"] || 0
-				if(skill.isAnger && skill.character.burn_att_change_normal){
+				if(skill.character.burn_att_change_normal){
 					tmpAmplify += skill.character.burn_att_change_normal["amplify"] || 0
 					tmpCrit += skill.character.burn_att_change_normal["crit"] || 0
 				}

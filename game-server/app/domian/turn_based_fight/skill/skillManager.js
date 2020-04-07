@@ -36,25 +36,28 @@ model.useSkill = function(skill) {
 			targets = []
 	}
 	//技能判断燃烧状态附加BUFF
-	if(skill.isAnger && skill.burn_buff_change_skill){
-		for(var i = 0;i < targets.length;i++){
-			if(targets[i].died ||!targets[i].buffs["burn"]){
-				break
-			}
-			var buffInfo = Object.assign({},skill.burn_buff_change_skill,skill.character.burn_buff_change_skill)
-			if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
-				buffManager.createBuff(skill.character,targets[i],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+	if(skill.isAnger){
+		if(skill.burn_buff_change_skill){
+			for(var i = 0;i < targets.length;i++){
+				if(targets[i].died ||!targets[i].buffs["burn"]){
+					break
+				}
+				var buffInfo = Object.assign({},skill.burn_buff_change_skill,skill.character.burn_buff_change_skill)
+				if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+					buffManager.createBuff(skill.character,targets[i],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+				}
 			}
 		}
-	}
-	if(!skill.isAnger && skill.burn_buff_change_normal){
-		for(var i = 0;i < targets.length;i++){
-			if(targets[i].died ||!targets[i].buffs["burn"]){
-				break
-			}
-			var buffInfo = Object.assign({},skill.burn_buff_change_normal,skill.character.burn_buff_change_normal)
-			if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
-				buffManager.createBuff(skill.character,targets[i],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+	}else{
+		if(skill.burn_buff_change_normal){
+			for(var i = 0;i < targets.length;i++){
+				if(targets[i].died ||!targets[i].buffs["burn"]){
+					break
+				}
+				var buffInfo = Object.assign({},skill.burn_buff_change_normal,skill.character.burn_buff_change_normal)
+				if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+					buffManager.createBuff(skill.character,targets[i],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+				}
 			}
 		}
 	}
