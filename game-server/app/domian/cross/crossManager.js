@@ -37,7 +37,7 @@ crossManager.prototype.update = function() {
 //玩家连入跨服服务器
 crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,playerInfo,cb) {
 	var self = this
-	self.heroDao.getFightTeam(oriId,uid,function(flag,fightTeam) {
+	self.heroDao.getFightTeam(uid,function(flag,fightTeam) {
 		if(flag){
 			var userInfo = {
 				uid : uid,
@@ -89,7 +89,7 @@ crossManager.prototype.userTeam = function(crossUid) {
 }
 //获取玩家防御阵容配置(被攻击阵容)
 crossManager.prototype.getDefendTeam = function(areaId,uid,cb) {
-	this.heroDao.getFightTeam(areaId,uid,function(flag,data) {
+	this.heroDao.getFightTeam(uid,function(flag,data) {
 		if(flag){
 			cb(data)
 		}else{
@@ -152,7 +152,7 @@ crossManager.prototype.sendMailByUid = function(areaId,uid,title,text,atts,cb) {
 		mailInfo.atts = atts
 	}
 	mailInfo = JSON.stringify(mailInfo)
-	this.redisDao.db.rpush("area:area"+areaId+":player:"+uid+":mail",mailInfo)
+	this.redisDao.db.rpush("player:user:"+uid+":mail",mailInfo)
 }
 //发放奖励,若玩家不在线则发邮件
 crossManager.prototype.sendAward = function(crossUid,title,text,str,cb) {
@@ -175,7 +175,7 @@ crossManager.prototype.openChestStr = function(crossUid,chestId,rate,cb) {
 }
 //获取玩家基本数据
 crossManager.prototype.getPlayerInfoByUid = function(areaId,uid,cb) {
-	this.redisDao.db.hmget("area:area"+areaId+":player:"+uid+":playerInfo",["name","head"],function(err,data) {
+	this.redisDao.db.hmget("player:user:"+uid+":playerInfo",["name","head"],function(err,data) {
 		let info = {
 			uid :uid,
 			name : data[0],
@@ -188,7 +188,7 @@ crossManager.prototype.getPlayerInfoByUid = function(areaId,uid,cb) {
 crossManager.prototype.getPlayerInfoByUids = function(areaIds,uids,cb) {
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
-		multiList.push(["hmget","area:area"+areaIds[i]+":player:"+uids[i]+":playerInfo",["name","head"]])
+		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head"]])
 	}
 	var self = this
 	self.redisDao.multi(multiList,function(err,list) {

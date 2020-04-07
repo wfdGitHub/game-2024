@@ -4,7 +4,7 @@ module.exports = function() {
 	var self = this
 	//获取最近一百封邮件
 	this.getMailList = function(uid,cb) {
-		this.redisDao.db.lrange("area:area"+this.oriIds[uid]+":player:"+uid+":mail",-100,-1,function(err,list) {
+		this.redisDao.db.lrange("player:user:"+uid+":mail",-100,-1,function(err,list) {
 			if(!err && list){
 				cb(true,list)
 			}else{
@@ -14,7 +14,7 @@ module.exports = function() {
 	}
 	//获取全部邮寄
 	this.getMailAll = function(uid,cb) {
-		this.redisDao.db.lrange("area:area"+this.oriIds[uid]+":player:"+uid+":mail",0,-1,function(err,list) {
+		this.redisDao.db.lrange("player:user:"+uid+":mail",0,-1,function(err,list) {
 			if(!err && list){
 				cb(true,list)
 			}else{
@@ -34,7 +34,7 @@ module.exports = function() {
 			mailInfo.atts = atts
 		}
 		mailInfo = JSON.stringify(mailInfo)
-		this.redisDao.db.rpush("area:area"+this.oriIds[uid]+":player:"+uid+":mail",mailInfo,function(err,data) {
+		this.redisDao.db.rpush("player:user:"+uid+":mail",mailInfo,function(err,data) {
 			if(!err){
 				var notify = {
 					"type" : "newMail",
@@ -51,7 +51,7 @@ module.exports = function() {
 	}
 	//领取邮件附件
 	this.gainMailAttachment = function(uid,index,id,cb) {
-		self.redisDao.db.lindex("area:area"+self.oriIds[uid]+":player:"+uid+":mail",index,function(err,data) {
+		self.redisDao.db.lindex("player:user:"+uid+":mail",index,function(err,data) {
 			if(err || !data){
 				if(cb)
 					cb(false,err)
@@ -70,7 +70,7 @@ module.exports = function() {
 			}
 			mailInfo.receive = true
 			mailInfo.read = true
-			self.redisDao.db.lset("area:area"+self.oriIds[uid]+":player:"+uid+":mail",index,JSON.stringify(mailInfo),function(err,data) {
+			self.redisDao.db.lset("player:user:"+uid+":mail",index,JSON.stringify(mailInfo),function(err,data) {
 				if(!err){
 					var atts = mailInfo.atts
 					self.addItemStr(uid,atts)
@@ -85,7 +85,7 @@ module.exports = function() {
 	}
 	//阅读邮件
 	this.readMail = function(uid,index,id,cb) {
-		self.redisDao.db.lindex("area:area"+self.oriIds[uid]+":player:"+uid+":mail",index,function(err,data) {
+		self.redisDao.db.lindex("player:user:"+uid+":mail",index,function(err,data) {
 			if(err || !data){
 				cb(false,err)
 				return
@@ -96,7 +96,7 @@ module.exports = function() {
 				return
 			}
 			mailInfo.read = true
-			self.redisDao.db.lset("area:area"+self.oriIds[uid]+":player:"+uid+":mail",index,JSON.stringify(mailInfo),function(err,data) {
+			self.redisDao.db.lset("player:user:"+uid+":mail",index,JSON.stringify(mailInfo),function(err,data) {
 				if(!err){
 					cb(true)
 				}else{
@@ -107,7 +107,7 @@ module.exports = function() {
 	}
 	//删除邮件
 	this.deleteMail = function(uid,index,id,cb) {
-		self.redisDao.db.lindex("area:area"+self.oriIds[uid]+":player:"+uid+":mail",index,function(err,data) {
+		self.redisDao.db.lindex("player:user:"+uid+":mail",index,function(err,data) {
 			if(err || !data){
 				if(cb)
 					cb(false,err)
@@ -119,7 +119,7 @@ module.exports = function() {
 					cb(false,"id error "+mailInfo.id)
 				return
 			}
-			self.redisDao.db.lrem("area:area"+self.oriIds[uid]+":player:"+uid+":mail",0,data,function(err,data) {
+			self.redisDao.db.lrem("player:user:"+uid+":mail",0,data,function(err,data) {
 				if(err){
 					if(cb)
 						cb(false,err)

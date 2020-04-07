@@ -41,11 +41,6 @@ area.prototype.init = function() {
 			self.robots[i] = JSON.parse(robots[i])
 		}
 	})
-	this.redisDao.db.hgetall("area:area"+this.areaId+":oriIds",function(err,oriIds) {
-		for(let i in oriIds){
-			self.oriIds[i] = Number(oriIds[i])
-		}
-	})
 	this.worldBossCheck()
 	this.timer = setInterval(this.update.bind(this),1000)
 }
@@ -80,8 +75,6 @@ area.prototype.register = function(otps,cb) {
 					cb(false,playerInfo)
 					return
 				}
-				self.oriIds[playerInfo.uid] = otps.oriId
-				self.redisDao.db.hset("area:area"+self.areaId+":oriIds",playerInfo.uid,otps.oriId)
 				self.taskInit(playerInfo.uid)
 				self.setPlayerData(playerInfo.uid,"onhookLastTime",Date.now())
 				//TODO test
@@ -134,6 +127,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 				self.onlineNum++
 			self.players[uid] = playerInfo
 			self.connectorMap[uid] = cid
+			self.oriIds[uid] = oriId
 			playerInfo.areaId = self.areaId
 			if(playerInfo.dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
@@ -162,6 +156,7 @@ area.prototype.userLeave = function(uid) {
 	if(this.players[uid]){
 		delete this.players[uid]
 		delete this.connectorMap[uid]
+		delete this.oriIds[uid]
 		this.onlineNum--
 		this.taskUnload(uid)
 		this.CEUnload(uid)
@@ -221,7 +216,7 @@ area.prototype.readyFight = function(uid,cb) {
 //获取玩家防御阵容配置(被攻击阵容)
 area.prototype.getDefendTeam = function(uid,cb) {
 	var self = this
-	self.heroDao.getFightTeam(self.areaId,uid,function(flag,data) {
+	self.heroDao.getFightTeam(uid,function(flag,data) {
 		if(flag){
 			cb(data)
 		}else{
@@ -298,7 +293,7 @@ area.prototype.getPlayerInfoByUids = function(uids,cb) {
 	var self = this
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
-		multiList.push(["hmget","area:area"+self.oriIds[uids[i]]+":player:"+uids[i]+":playerInfo",["name","head"]])
+		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head"]])
 	}
 	self.redisDao.multi(multiList,function(err,list) {
 		var userInfos = []

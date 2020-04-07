@@ -18,7 +18,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		playerInfo.uid = uid
 		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":playerMap",uid,otps.areaId)
 		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":areaMap",otps.areaId,uid)
-		self.redisDao.db.hmset("area:area"+otps.areaId+":player:"+uid+":playerInfo",playerInfo,function(err,data) {
+		self.redisDao.db.hmset("player:user:"+uid+":playerInfo",playerInfo,function(err,data) {
 			if(!err){
 				self.redisDao.db.hset("area:area"+otps.areaId+":nameMap",otps.name,uid)
 				self.heroDao.gainHero(otps.areaId,uid,{id : beginHero},function(flag,heroInfo) {
@@ -53,7 +53,7 @@ playerDao.prototype.getUidByAreaId = function(otps,cb) {
 //获取角色信息
 playerDao.prototype.getPlayerInfo = function(otps,cb) {
 	var self = this
-	self.redisDao.db.hgetall("area:area"+otps.areaId+":player:"+otps.uid+":playerInfo",function(err,playerInfo) {
+	self.redisDao.db.hgetall("player:user:"+otps.uid+":playerInfo",function(err,playerInfo) {
 		if(err || !playerInfo){
 			cb(false)
 		}else{
@@ -69,7 +69,7 @@ playerDao.prototype.getPlayerInfo = function(otps,cb) {
 //设置角色数据
 playerDao.prototype.setPlayerInfo = function(otps,cb) {
 	var self = this
-	self.redisDao.db.hset("area:area"+otps.areaId+":player:"+otps.uid+":playerInfo",otps.key,otps.value,function(err) {
+	self.redisDao.db.hset("player:user:"+otps.uid+":playerInfo",otps.key,otps.value,function(err) {
 		if(!err){
 			if(cb)
 				cb(true)

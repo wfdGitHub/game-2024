@@ -26,7 +26,7 @@ var heroDao = function() {
 }
 //增加英雄背包栏
 heroDao.prototype.addHeroAmount = function(areaId,uid,cb) {
-	this.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":playerInfo","heroAmount",1,function(err,data) {
+	this.redisDao.db.hincrby("player:user:"+uid+":playerInfo","heroAmount",1,function(err,data) {
 		if(cb)
 			cb(true,data)
 	})
@@ -34,8 +34,8 @@ heroDao.prototype.addHeroAmount = function(areaId,uid,cb) {
 //获取英雄背包栏数量
 heroDao.prototype.getHeroAmount = function(areaId,uid,cb) {
 	var multiList = []
-	multiList.push(["hget","area:area"+areaId+":player:"+uid+":playerInfo","heroAmount"])
-	multiList.push(["hlen","area:area"+areaId+":player:"+uid+":heroMap"])
+	multiList.push(["hget","player:user:"+uid+":playerInfo","heroAmount"])
+	multiList.push(["hlen","player:user:"+uid+":heroMap"])
 	this.redisDao.multi(multiList,function(err,list) {
 		if(err){
 			console.error("getHeroAmount",err)
@@ -76,9 +76,9 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	let star = otps.star || herosCfg[id].min_star
 	var hId = uuid.v1()
 	var heroInfo = {id : id,ad : ad,lv : lv,star : star}
-	this.redisDao.db.hset("area:area"+areaId+":player:"+uid+":heroMap",hId,Date.now())
-	this.redisDao.db.hmset("area:area"+areaId+":player:"+uid+":heros:"+hId,heroInfo)
-	this.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":heroArchive",id,1)
+	this.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
+	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
+	this.redisDao.db.hincrby("player:user:"+uid+":heroArchive",id,1)
 	heroInfo.hId = hId
 	this.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
 	if(cb)
@@ -90,8 +90,8 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 heroDao.prototype.removeHeroList = function(areaId,uid,hIds,cb) {
 	var multiList = []
 	for(var i = 0;i < hIds.length;i++){
-		multiList.push(["hdel","area:area"+areaId+":player:"+uid+":heroMap",hIds[i]])
-		multiList.push(["del","area:area"+areaId+":player:"+uid+":heros:"+hIds[i]])
+		multiList.push(["hdel","player:user:"+uid+":heroMap",hIds[i]])
+		multiList.push(["del","player:user:"+uid+":heros:"+hIds[i]])
 	}
 	this.redisDao.multi(multiList,function(err) {
 		if(err){
@@ -113,14 +113,14 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 			cb(false,"英雄已出战")
 			return
 		}
-		self.redisDao.db.hdel("area:area"+areaId+":player:"+uid+":heroMap",hId,function(err,data) {
+		self.redisDao.db.hdel("player:user:"+uid+":heroMap",hId,function(err,data) {
 			if(err || !data){
 				console.error("removeHero ",err,data)
 				if(cb)
 					cb(false)
 				return
 			}
-			self.redisDao.db.del("area:area"+areaId+":player:"+uid+":heros:"+hId)
+			self.redisDao.db.del("player:user:"+uid+":heros:"+hId)
 			cb(true,heroInfo)
 		})
 	})
@@ -179,7 +179,7 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 //修改英雄属性
 heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 	var self = this
-	this.redisDao.db.hincrby("area:area"+areaId+":player:"+uid+":heros:"+hId,name,value,function(err,data) {
+	this.redisDao.db.hincrby("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {
 		if(err)
 			console.log(err)
 		else
@@ -191,7 +191,7 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 //设置英雄属性
 heroDao.prototype.setHeroInfo = function(areaId,uid,hId,name,value,cb) {
 	var self = this
-	this.redisDao.db.hset("area:area"+areaId+":player:"+uid+":heros:"+hId,name,value,function(err,data) {
+	this.redisDao.db.hset("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {
 		if(err)
 			console.log(err)
 		else
@@ -203,7 +203,7 @@ heroDao.prototype.setHeroInfo = function(areaId,uid,hId,name,value,cb) {
 //删除英雄属性
 heroDao.prototype.delHeroInfo = function(areaId,uid,hId,name,cb) {
 	var self = this
-	this.redisDao.db.hdel("area:area"+areaId+":player:"+uid+":heros:"+hId,name,function(err,data) {
+	this.redisDao.db.hdel("player:user:"+uid+":heros:"+hId,name,function(err,data) {
 		if(err)
 			console.log(err)
 		else
@@ -215,7 +215,7 @@ heroDao.prototype.delHeroInfo = function(areaId,uid,hId,name,cb) {
 //获取英雄列表
 heroDao.prototype.getHeros = function(areaId,uid,cb) {
 	var self = this
-	self.redisDao.db.hgetall("area:area"+areaId+":player:"+uid+":heroMap",function(err,data) {
+	self.redisDao.db.hgetall("player:user:"+uid+":heroMap",function(err,data) {
 		if(err || !data){
 			cb(true,{})
 			return
@@ -224,7 +224,7 @@ heroDao.prototype.getHeros = function(areaId,uid,cb) {
 		var hIds = []
 		for(var hId in data){
 			hIds.push(hId)
-			multiList.push(["hgetall","area:area"+areaId+":player:"+uid+":heros:"+hId])
+			multiList.push(["hgetall","player:user:"+uid+":heros:"+hId])
 		}
 		self.redisDao.multi(multiList,function(err,list) {
 			var hash = {}
@@ -243,7 +243,7 @@ heroDao.prototype.getHeros = function(areaId,uid,cb) {
 }
 //获取单个英雄
 heroDao.prototype.getHeroOne = function(areaId,uid,hId,cb) {
-	this.redisDao.db.hgetall("area:area"+areaId+":player:"+uid+":heros:"+hId,function(err,data) {
+	this.redisDao.db.hgetall("player:user:"+uid+":heros:"+hId,function(err,data) {
 		if(err || !data){
 			cb(false,err)
 		}else{
@@ -260,7 +260,7 @@ heroDao.prototype.getHeroOne = function(areaId,uid,hId,cb) {
 heroDao.prototype.getHeroList = function(areaId,uid,hIds,cb) {
 	var multiList = []
 	for(var i = 0;i < hIds.length;i++){
-		multiList.push(["hgetall","area:area"+areaId+":player:"+uid+":heros:"+hIds[i]])
+		multiList.push(["hgetall","player:user:"+uid+":heros:"+hIds[i]])
 	}
 	this.redisDao.multi(multiList,function(err,list) {
 		if(err){
@@ -279,7 +279,7 @@ heroDao.prototype.getHeroList = function(areaId,uid,hIds,cb) {
 }
 //获取英雄图鉴
 heroDao.prototype.getHeroArchive = function(areaId,uid,cb) {
-	this.redisDao.db.hgetall("area:area"+areaId+":player:"+uid+":heroArchive",function(err,data) {
+	this.redisDao.db.hgetall("player:user:"+uid+":heroArchive",function(err,data) {
 		if(err || !data){
 			cb(true,{})
 		}else{
@@ -301,14 +301,14 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 				return
 			}
 		}
-		self.getFightTeam(areaId,uid,function(flag,team) {
+		self.getFightTeam(uid,function(flag,team) {
 			if(flag && team){
 				for(var i = 0;i < team.length;i++){
 					if(team[i])
 						self.delHeroInfo(areaId,uid,team[i].hId,"combat")
 				}
 			}
-			self.redisDao.db.set("area:area"+areaId+":player:"+uid+":fightTeam",JSON.stringify(hIds),function(err,data) {
+			self.redisDao.db.set("player:user:"+uid+":fightTeam",JSON.stringify(hIds),function(err,data) {
 				if(err){
 					if(cb)
 						cb(false,err)
@@ -328,9 +328,9 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 	})
 }
 //获取出场阵容
-heroDao.prototype.getFightTeam = function(areaId,uid,cb) {
+heroDao.prototype.getFightTeam = function(uid,cb) {
 	var self = this
-	self.redisDao.db.get("area:area"+areaId+":player:"+uid+":fightTeam",function(err,data) {
+	self.redisDao.db.get("player:user:"+uid+":fightTeam",function(err,data) {
 		if(err || !data){
 			cb(false,"未设置阵容")
 			return
@@ -341,7 +341,7 @@ heroDao.prototype.getFightTeam = function(areaId,uid,cb) {
 		for(var i = 0;i < fightTeam.length;i++){
 			if(fightTeam[i]){
 				hIds.push(fightTeam[i])
-				multiList.push(["hgetall","area:area"+areaId+":player:"+uid+":heros:"+fightTeam[i]])
+				multiList.push(["hgetall","player:user:"+uid+":heros:"+fightTeam[i]])
 			}
 		}
 		self.redisDao.multi(multiList,function(err,list) {
@@ -376,14 +376,14 @@ heroDao.prototype.setZhuluTeam = function(areaId,uid,hIds,cb) {
 				return
 			}
 		}
-		self.getZhuluTeam(areaId,uid,function(flag,team) {
+		self.getZhuluTeam(uid,function(flag,team) {
 			if(flag && team){
 				for(var i = 0;i < team.length;i++){
 					if(team[i])
 						self.delHeroInfo(areaId,uid,team[i].hId,"zhuluCombat")
 				}
 			}
-			self.redisDao.db.set("area:area"+areaId+":player:"+uid+":zhuluTeam",JSON.stringify(hIds),function(err,data) {
+			self.redisDao.db.set("player:user:"+uid+":zhuluTeam",JSON.stringify(hIds),function(err,data) {
 				if(err){
 					if(cb)
 						cb(false,err)
@@ -403,9 +403,9 @@ heroDao.prototype.setZhuluTeam = function(areaId,uid,hIds,cb) {
 	})
 }
 //获取逐鹿出场阵容
-heroDao.prototype.getZhuluTeam = function(areaId,uid,cb) {
+heroDao.prototype.getZhuluTeam = function(uid,cb) {
 	var self = this
-	self.redisDao.db.get("area:area"+areaId+":player:"+uid+":zhuluTeam",function(err,data) {
+	self.redisDao.db.get("player:user:"+uid+":zhuluTeam",function(err,data) {
 		if(err || !data){
 			cb(false,"未设置阵容")
 			return
@@ -416,7 +416,7 @@ heroDao.prototype.getZhuluTeam = function(areaId,uid,cb) {
 		for(var i = 0;i < zhuluTeam.length;i++){
 			if(zhuluTeam[i]){
 				hIds.push(zhuluTeam[i])
-				multiList.push(["hgetall","area:area"+areaId+":player:"+uid+":heros:"+zhuluTeam[i]])
+				multiList.push(["hgetall","player:user:"+uid+":heros:"+zhuluTeam[i]])
 			}
 		}
 		self.redisDao.multi(multiList,function(err,list) {

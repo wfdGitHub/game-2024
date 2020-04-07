@@ -330,8 +330,7 @@ heroHandler.prototype.setFightTeam = function(msg, session, next) {
 //获取出场阵容
 heroHandler.prototype.getFightTeam = function(msg, session, next) {
   var uid = session.uid
-  var oriId = session.get("oriId")
-  this.heroDao.getFightTeam(oriId,uid,function(flag,data) {
+  this.heroDao.getFightTeam(uid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

@@ -72,10 +72,7 @@ areaDeploy.prototype.mergeAreaName = function(oriId,areaId) {
 				var name = sname+i.replace(sname,"")
 				self.redisDao.db.hdel("area:area"+oriId+":nameMap",i)
 				self.redisDao.db.hset("area:area"+oriId+":nameMap",name,uid)
-				self.redisDao.db.hset("area:area"+oriId+":player:"+uid+":playerInfo","name",name)
-				self.redisDao.db.hset("area:area"+oriId+":player:"+uid+":playerInfo","name",name)
-				self.redisDao.db.del("area:area"+oriId+":oriIds")
-				self.redisDao.db.hset("area:area"+areaId+":oriIds",uid,oriId)
+				self.redisDao.db.hset("player:user:"+uid+":playerInfo","name",name)
 			}
 		}
 	})

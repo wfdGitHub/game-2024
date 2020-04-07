@@ -81,7 +81,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//条件判断
-				self.heroDao.getHeroList(self.oriIds[uid],uid,hIds,function(flag,list) {
+				self.heroDao.getHeroList(self.areaId,uid,hIds,function(flag,list) {
 					if(!flag){
 						cb(flag,list)
 					}else{
