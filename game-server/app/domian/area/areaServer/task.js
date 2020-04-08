@@ -54,7 +54,9 @@ module.exports = function() {
 				userTaskMaps[uid][type].remove(taskId)
 		}
 		let award = task_cfg[taskId].award
-		let awardList = this.addItemStr(uid,award)
+		let awardList = []
+		if(award)
+			awardList = this.addItemStr(uid,award)
 		let info = {
 			awardList : awardList
 		}
