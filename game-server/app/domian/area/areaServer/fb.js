@@ -1,5 +1,4 @@
 var fb_base = require("../../../../config/gameCfg/fb_base.json")
-var fb_cfg = require("../../../../config/gameCfg/fb_cfg.json")
 var async = require("async")
 var currencyId = fb_cfg["currencyId"]["value"]
 var cstr = currencyId+":1"
@@ -24,7 +23,7 @@ module.exports = function() {
 			function(next) {
 				//判断主角等级
 				let lv = self.getLordLv(uid)
-				if(lv < fb_base[type]["openLevel"] || lv < fb_cfg["open"]["value"]){
+				if(lv < fb_base[type]["openLevel"]){
 					console.error("openLevel "+lv+" / "+fb_base[type]["openLevel"])
 					next("等级不足")
 				}else{
@@ -43,27 +42,6 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//扣除道具
-				var dayStr = (new Date()).toDateString()
-				//判断是否今日首次
-				self.getObj(uid,"fb","lastDay",function(data) {
-					if(dayStr != data){
-						//首次进入
-						self.setObj(uid,"fb","lastDay",dayStr)
-						next()
-					}else{
-						//非首次 扣除道具
-						self.consumeItems(uid,cstr,1,function(flag,err) {
-							if(!flag){
-								cb(false,err)
-								return
-							}
-							next()
-						})
-					}
-				})
-			},
-			function(next) {
 				//进入副本
 				self.joinFB(uid,type,cb)
 			}
@@ -75,17 +53,6 @@ module.exports = function() {
 	this.joinFB = function(uid,type,cb) {
 		self.setObj(uid,"fb",type,1)
 		cb(true)
-	}
-	//退出副本
-	this.quitFB = function(uid,type,cb) {
-		self.getObj(uid,"fb",type,function(data) {
-			if(!data){
-				cb(false,"未进入副本")
-			}else{
-				self.delObj(uid,"fb",type)
-				cb(true)
-			}
-		})
 	}
 	//挑战副本BOSS
 	this.challengeFBBoss = function(uid,type,verify,cb) {
@@ -119,7 +86,6 @@ module.exports = function() {
 		    			bossId : bossId
 		    		}
 		    		if(bossId >= 3){
-		    			self.delObj(uid,"fb",type)
 		    			//通关奖励
 			    		var awardList1 = self.addItemStr(uid,fb_base[type]["passAward"])
 			    		var awardList2 = self.openChestStr(uid,fb_base[type]["randAward"])

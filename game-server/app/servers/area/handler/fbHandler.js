@@ -12,15 +12,6 @@ fbHandler.prototype.openFB = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
-//退出副本
-fbHandler.prototype.quitFB = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var type = msg.type
-  this.areaManager.areaMap[areaId].quitFB(uid,type,function(flag,msg) {
-    next(null,{flag : flag,msg : msg})
-  })
-}
 //挑战副本BOSS
 fbHandler.prototype.challengeFBBoss = function(msg, session, next) {
   var uid = session.uid
