@@ -86,12 +86,10 @@ module.exports = function() {
 		    		self.incrbyObj(uid,"fb",type,1)
 		    		if(bossId >= 3){
 		    			//通关奖励
-			    		var awardList1 = self.addItemStr(uid,fb_base[type]["passAward"])
-			    		var awardList2 = self.openChestStr(uid,fb_base[type]["randAward"])
-			    		info.passAward = awardList1.concat(awardList2)
+			    		info.passAward = self.addItemStr(uid,fb_base[type]["passAward"])
 		    		}
 		    		var bossAwards = []
-		    		bossAwards = bossAwards.concat(self.openChestStr(uid,fb_base[type]["awardList"+bossId]))
+		    		bossAwards = bossAwards.concat(self.addItemStr(uid,fb_base[type]["awardList"+bossId]))
 		    		info.bossAward = bossAwards
 		    		cb(true,info)
 			    }else{
