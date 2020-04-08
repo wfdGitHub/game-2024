@@ -1,7 +1,5 @@
 var fb_base = require("../../../../config/gameCfg/fb_base.json")
 var async = require("async")
-var currencyId = fb_cfg["currencyId"]["value"]
-var cstr = currencyId+":1"
 for(var type in fb_base){
 	for(var i = 1;i <= 3;i++){
 		fb_base[type]["boss"+i] = JSON.parse(fb_base[type]["boss"+i])
