@@ -257,6 +257,10 @@ model.getTeamCE = function(team) {
 					allCE += ace_pack[team[i]["acepack_"+j]]["ce"]
 				}
 			}
+			for(let j = 1;j <= 4;j++){
+				if(team[i]["equip_"+j])
+        			allCE += equip_base[equip_level[team[i]["equip_"+j]]["part_"+j]]["ce"]
+			}
 		}
 	}
 	return allCE
