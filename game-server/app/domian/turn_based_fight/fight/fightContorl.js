@@ -243,18 +243,22 @@ model.getTeamShowData = function(team) {
 	return fighting.atkTeam
 }
 model.getTeamCE = function(team) {
-	var atkTeam = team.concat([])
-	for(var i = 0;i < atkTeam.length;i++){
-		atkTeam[i] = this.getCharacterInfo(atkTeam[i])
+	let allCE = 0
+	for(let i = 0;i < team.length;i++){
+		if(team[i]){
+			allCE += lv_cfg[team[i]["lv"] || 1]["ce"]
+			allCE += advanced_base[team[i]["ad"] || 0]["ce"]
+			allCE += star_base[team[i]["star"] || 1]["ce"]
+			allCE += star_base[team[i]["star"] || 1]["ce"]
+			if(team[i]["artifact"] !== undefined)
+				allCE += artifact_level[team[i]["artifact"]]["ce"]
+			for(let j = 1;j <= 10;j++){
+				if(team[i]["acepack_"+j]){
+					allCE += ace_pack[team[i]["acepack_"+j]]["ce"]
+				}
+			}
+		}
 	}
-	var defTeam = []
-	var fighting = new fightingFun(atkTeam,defTeam,{})
-   	var allCE = 0
-   	for(var i = 0;i < fighting.atkTeam.length;i++){
-   		if(fighting.atkTeam[i]){
-   			allCE += fighting.atkTeam[i].getCE()
-   		}
-   	}
 	return allCE
 }
 //新增天赋
