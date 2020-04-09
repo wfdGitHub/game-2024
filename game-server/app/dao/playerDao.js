@@ -1,6 +1,6 @@
 var bearcat = require("bearcat")
 var playerDao = function() {}
-var beginHero = 205110
+var beginHero = 104010
 //创建角色
 playerDao.prototype.createPlayer = function(otps,cb) {
 	var playerInfo = {
