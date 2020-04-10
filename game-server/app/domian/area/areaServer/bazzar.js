@@ -123,6 +123,8 @@ module.exports = function() {
 					case "equip":
 						let lv = self.getCheckpointsInfo(uid) || 1
 						let equipLv = checkpoints[lv]["equip"]
+						if(!equipLv)
+							equipLv = 1
 						let part = Math.floor(Math.random() * 4) + 1
 						goods.itemId = equip_level[equipLv]["part_"+part]
 					break
