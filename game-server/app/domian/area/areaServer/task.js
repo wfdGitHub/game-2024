@@ -8,15 +8,28 @@ var async = require("async")
 var main_name = "task"
 var liveness_name = "liveness"
 var war_name = "war_horn"
+var first_task = {}
+var day_task = {}
+var week_task = {}
+var month_task = {}
+for(var taskId in task_cfg){
+	if(task_cfg[taskId].first)
+		first_task[taskId] = task_cfg[taskId]
+	if(task_cfg[taskId].refresh == "day")
+		day_task[taskId] = task_cfg[taskId]
+	if(task_cfg[taskId].refresh == "week")
+		week_task[taskId] = task_cfg[taskId]
+	if(task_cfg[taskId].refresh == "month")
+		month_task[taskId] = task_cfg[taskId]
+}
 module.exports = function() {
 	var self = this
 	var userTaskLists = {}			//玩家任务列表
 	var userTaskMaps = {}			//玩家任务类型映射表
 	//角色创建后领取初始任务
 	this.taskInit = function(uid) {
-		for(var taskId in task_cfg){
-			if(task_cfg[taskId].first)
-				this.gainTask(uid,taskId,0)
+		for(var taskId in first_task){
+			this.gainTask(uid,taskId,0)
 		}
 	}
 	//领取任务
@@ -108,9 +121,8 @@ module.exports = function() {
 	}
 	//每日任务刷新
 	this.dayTaskRefresh = function(uid) {
-		for(let taskId in task_cfg){
-			if(task_cfg[taskId].refresh == "day")
-				this.gainTask(uid,taskId,0)
+		for(let taskId in day_task){
+			this.gainTask(uid,taskId,0)
 		}
 		let info = {
 			value : 0
@@ -124,9 +136,8 @@ module.exports = function() {
 			if(week != curWeek){
 				// console.log("跨周任务更新",week,curWeek)
 				self.setObj(uid,main_name,"week",curWeek)
-				for(let taskId in task_cfg){
-					if(task_cfg[taskId].refresh == "week")
-						self.gainTask(uid,taskId,0)
+				for(let taskId in week_task){
+					self.gainTask(uid,taskId,0)
 				}
 			}
 			self.getObj(uid,main_name,"month",function(month) {
@@ -134,9 +145,8 @@ module.exports = function() {
 				if(month != curMonth){
 					// console.log("跨月任务更新",month,curMonth)
 					self.setObj(uid,main_name,"month",curMonth)
-					for(let taskId in task_cfg){
-						if(task_cfg[taskId].refresh == "month")
-							self.gainTask(uid,taskId,0)
+					for(let taskId in month_task){
+						self.gainTask(uid,taskId,0)
 					}
 					self.delObjAll(uid,war_name,function() {
 						let info = {

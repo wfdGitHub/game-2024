@@ -249,7 +249,6 @@ model.getTeamCE = function(team) {
 			allCE += lv_cfg[team[i]["lv"] || 1]["ce"]
 			allCE += advanced_base[team[i]["ad"] || 0]["ce"]
 			allCE += star_base[team[i]["star"] || 1]["ce"]
-			allCE += star_base[team[i]["star"] || 1]["ce"]
 			if(team[i]["artifact"] !== undefined)
 				allCE += artifact_level[team[i]["artifact"]]["ce"]
 			for(let j = 1;j <= 10;j++){
