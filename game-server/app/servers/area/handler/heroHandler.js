@@ -241,6 +241,9 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                   console.error(err)
                 self.heroDao.heroPrlvadnad(oriId,uid,data,function(flag,awardList) {
                   self.heroDao.incrbyHeroInfo(oriId,uid,target,"star",1,function(flag,star) {
+                    if(flag){
+                      self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
+                    }
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
                 })

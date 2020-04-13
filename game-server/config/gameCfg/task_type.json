@@ -37,7 +37,8 @@
   },
   "heroLv": {
     "name": "英雄等级",
-    "des": "参数代表英雄等级"
+    "des": "参数代表英雄等级",
+    "equal": true
   },
   "equip": {
     "name": "获得装备",
@@ -48,7 +49,8 @@
   },
   "hero": {
     "name": "获取武将",
-    "des": "参数代表英雄星级"
+    "des": "参数代表英雄星级",
+    "equal": true
   },
   "resolve": {
     "name": "分解武将"
@@ -59,11 +61,13 @@
   },
   "artifactLv": {
     "name": "神兵等级",
-    "des": "参数代表神兵等级"
+    "des": "参数代表神兵等级",
+    "equal": true
   },
   "ace": {
     "name": "获得锦囊",
-    "des": "参数代表锦囊品质等级"
+    "des": "参数代表锦囊品质等级",
+    "equal": true
   },
   "tttLv": {
     "name": "通天塔等级"
