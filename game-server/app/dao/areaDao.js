@@ -10,6 +10,7 @@ areaDao.prototype.createArea = function(cb) {
 		if(!err && data){
 			areaInfo.areaId = data
 			areaInfo.lastRank = 4001
+			areaInfo.openTime = Date.now()
 			self.redisDao.db.hmset("area:area"+areaInfo.areaId+":areaInfo",areaInfo)
 			self.redisDao.db.rpush("area:list",areaInfo.areaId)
 			//初始机器人

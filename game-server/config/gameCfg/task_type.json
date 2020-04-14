@@ -3,7 +3,18 @@
     "name": "登录"
   },
   "recruit": {
-    "name": "英雄祭坛征募"
+    "name": "英雄祭祀"
+  },
+  "recruit_low": {
+    "name": "普通祭祀"
+  },
+  "recruit_higt": {
+    "name": "高级祭祀"
+  },
+  "checkpoints": {
+    "name": "关卡等级",
+    "des": "参数代表关卡等级",
+    "equal": true
   },
   "general": {
     "name": "将军府征募"
@@ -25,6 +36,14 @@
   },
   "fb": {
     "name": "参与日常副本"
+  },
+  "fb_hard": {
+    "name": "副本难度",
+    "des": "参数代表副本难度等级"
+  },
+  "tour": {
+    "name": "三界任务",
+    "des": "参数代表三界任务品质"
   },
   "fb_coin": {
     "name": "参与铜钱副本"
@@ -59,14 +78,17 @@
     "name": "竞技场排名",
     "des": "10000-所需排名"
   },
+  "artifact_gain": {
+    "name": "获得法宝"
+  },
   "artifactLv": {
-    "name": "神兵等级",
-    "des": "参数代表神兵等级",
+    "name": "法宝等级",
+    "des": "参数代表法宝等级",
     "equal": true
   },
   "ace": {
-    "name": "获得锦囊",
-    "des": "参数代表锦囊品质等级",
+    "name": "获得元神",
+    "des": "参数代表元神品质等级",
     "equal": true
   },
   "tttLv": {
@@ -86,5 +108,24 @@
   },
   "shop_buy": {
     "name": "购买杂货铺物品"
+  },
+  "bazzar_buy": {
+    "name": "集市购买"
+  },
+  "bazzar_refresh": {
+    "name": "集市刷新"
+  },
+  "zhulu_monster": {
+    "name": "逐鹿之战击杀"
+  },
+  "zhulu_pass": {
+    "name": "逐鹿之战通关"
+  },
+  "world_boss_play": {
+    "name": "世界boss参与"
+  },
+  "world_boss_damage": {
+    "name": "世界boss单场伤害",
+    "des": "参数代表伤害值"
   }
 }

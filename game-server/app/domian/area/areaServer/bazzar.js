@@ -97,6 +97,7 @@ module.exports = function() {
 					goods.sellOut = 1
 					self.setObj(uid,main_name,type+"_"+index,JSON.stringify(goods))
 					let awardList = self.addItemStr(uid,goods.itemId+":"+goods.value,1)
+					self.taskUpdate(uid,"bazzar_buy",1)
 					cb(true,awardList)
 				}
 			})
@@ -177,6 +178,7 @@ module.exports = function() {
 				dt -= bazaar_cfg[type]["time"]
 				time = nowTime - dt
 				self.setObj(uid,main_name,type+"_refresh_time",time)
+				self.taskUpdate(uid,"bazzar_refresh",1)
 				let info = self.bazaarRefresh(uid,type)
 				info.time = time
 				cb(true,info)
@@ -199,6 +201,7 @@ module.exports = function() {
 				if(!flag){
 					cb(false,err)
 				}else{
+					self.taskUpdate(uid,"bazzar_refresh",1)
 					self.incrbyObj(uid,main_name,type+"_buy_count",1)
 					let info = self.bazaarRefresh(uid,type)
 					cb(true,info)

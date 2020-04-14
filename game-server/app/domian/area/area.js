@@ -5,8 +5,9 @@ var async = require("async")
 const standard_dl = require("../../../config/gameCfg/standard_dl.json")
 const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
-const areaServers = ["tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
+const areaServers = ["weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
 const oneDayTime = 86400000
+var util = require("../../../util/util.js")
 var standard_ce = {}
 for(var i in standard_ce_cfg){
 	standard_ce[i] = JSON.parse(standard_ce_cfg[i]["base"])
@@ -14,6 +15,8 @@ for(var i in standard_ce_cfg){
 var area = function(otps,app) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName
+	this.openTime = Number(otps.openTime)
+	this.areaDay = util.getTimeDifference(this.openTime,Date.now())
 	this.app = app
 	this.channelService = this.app.get('channelService')
 	this.players = {}
@@ -62,6 +65,8 @@ area.prototype.update = function() {
 area.prototype.dayUpdate = function(curDayStr) {
 	console.log("服务器每日刷新")
 	this.dayStr = curDayStr
+	this.areaDay = util.getTimeDifference(this.openTime,Date.now())
+	console.log("this.areaDay",this.areaDay)
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
@@ -129,6 +134,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 			self.connectorMap[uid] = cid
 			self.oriIds[uid] = oriId
 			playerInfo.areaId = self.areaId
+			playerInfo.areaDay = self.areaDay
 			if(playerInfo.dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
 			}

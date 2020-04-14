@@ -40,11 +40,22 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
         let paStr = recruit_base[type].pa
         if(paStr)
           self.areaManager.areaMap[areaId].addItemStr(uid,paStr,count)
-        var heroInfos = self.heroDao.randHero(oriId,uid,type,count)
-        if(type == "normal" || type == "great"){
-          self.areaManager.areaMap[areaId].taskUpdate(uid,"recruit",count)
-        }else if(type == "camp_1" || type == "camp_2" || type == "camp_3" || type == "camp_4"){
-          self.areaManager.areaMap[areaId].taskUpdate(uid,"general",count)
+        let heroInfos = self.heroDao.randHero(oriId,uid,type,count)
+        switch(type){
+          case "normal":
+            self.areaManager.areaMap[areaId].taskUpdate(uid,"recruit_normal",count)
+            self.areaManager.areaMap[areaId].taskUpdate(uid,"recruit",count)
+          break
+          case "great":
+            self.areaManager.areaMap[areaId].taskUpdate(uid,"recruit_great",count)
+            self.areaManager.areaMap[areaId].taskUpdate(uid,"recruit",count)
+          break
+          case "camp_1":
+          case "camp_2":
+          case "camp_3":
+          case "camp_4":
+            self.areaManager.areaMap[areaId].taskUpdate(uid,"general",count)
+          break
         }
         next(null,{flag : true,heroInfos : heroInfos})
       })

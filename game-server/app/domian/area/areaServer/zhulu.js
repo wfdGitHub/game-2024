@@ -381,6 +381,7 @@ module.exports = function() {
 			    	local.changeData(uid,"spoils_list",info.spoils_list)
 		    		local.changeData(uid,"curChoose",info.curChoose)
 		    		info.awardList = self.addItemStr(uid,zhulu_award[grid]["award"])
+		    		self.taskUpdate(uid,"zhulu_monster",1)
 			    }else{
 			    	for(var i = 0;i<defTeam.length;i++){
 			    		if(defTeam[i] && overInfo.defTeam[i]){
@@ -477,6 +478,10 @@ module.exports = function() {
 			return
 		}
 		var bossLv = Math.ceil(userDatas[uid]["curGrid"] / 10)
+		if(bossLv == 3){
+			//通关
+			self.taskUpdate(uid,"zhulu_pass",1)
+		}
 		var boxId = "box"+bossLv
 		var awardList = self.addItemStr(uid,zhulu_cfg[boxId]["value"])
 		var lv = self.getLordLv(uid)

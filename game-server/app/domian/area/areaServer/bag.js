@@ -170,6 +170,9 @@ module.exports = function() {
 							case "ace":
 								self.taskUpdate(uid,"ace",value,ace_pack[itemId].quality)
 							break
+							case "art":
+								self.taskUpdate(uid,"artifact_gain",value)
+							break
 						}
 						switch(itemId){
 							case 204:

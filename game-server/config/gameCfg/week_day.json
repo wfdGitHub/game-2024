@@ -1,0 +1,65 @@
+{
+  "1": {
+    "day_award": "201:100",
+    "lv_limit": 10,
+    "lv_award": "201:100",
+    "rmb": 1,
+    "rmb_award": "201:100",
+    "goods1": 1001,
+    "goods2": 1002
+  },
+  "2": {
+    "day_award": "201:101",
+    "lv_limit": 25,
+    "lv_award": "201:101",
+    "rmb": 2,
+    "rmb_award": "201:101",
+    "goods1": 1002,
+    "goods2": 1003
+  },
+  "3": {
+    "day_award": "201:102",
+    "lv_limit": 30,
+    "lv_award": "201:102",
+    "rmb": 3,
+    "rmb_award": "201:102",
+    "goods1": 1003,
+    "goods2": 1004
+  },
+  "4": {
+    "day_award": "201:103",
+    "lv_limit": 40,
+    "lv_award": "201:103",
+    "rmb": 4,
+    "rmb_award": "201:103",
+    "goods1": 1004,
+    "goods2": 1005
+  },
+  "5": {
+    "day_award": "201:104",
+    "lv_limit": 45,
+    "lv_award": "201:104",
+    "rmb": 5,
+    "rmb_award": "201:104",
+    "goods1": 1005,
+    "goods2": 1006
+  },
+  "6": {
+    "day_award": "201:105",
+    "lv_limit": 50,
+    "lv_award": "201:105",
+    "rmb": 6,
+    "rmb_award": "201:105",
+    "goods1": 1006,
+    "goods2": 1007
+  },
+  "7": {
+    "day_award": "201:106",
+    "lv_limit": 60,
+    "lv_award": "201:106",
+    "rmb": 7,
+    "rmb_award": "201:106",
+    "goods1": 1007,
+    "goods2": 1008
+  }
+}

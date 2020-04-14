@@ -3,6 +3,7 @@ var task_cfg = require("../../../../config/gameCfg/task_cfg.json")
 var task_type = require("../../../../config/gameCfg/task_type.json")
 var liveness_cfg = require("../../../../config/gameCfg/liveness.json")
 var war_horn = require("../../../../config/gameCfg/war_horn.json")
+var week_target = require("../../../../config/gameCfg/week_target.json")
 var util = require("../../../../util/util.js")
 var async = require("async")
 var main_name = "task"
@@ -12,6 +13,7 @@ var first_task = {}
 var day_task = {}
 var week_task = {}
 var month_task = {}
+var week_target_task = {}
 for(var taskId in task_cfg){
 	if(task_cfg[taskId].first)
 		first_task[taskId] = task_cfg[taskId]
@@ -21,6 +23,18 @@ for(var taskId in task_cfg){
 		week_task[taskId] = task_cfg[taskId]
 	if(task_cfg[taskId].refresh == "month")
 		month_task[taskId] = task_cfg[taskId]
+	if(task_cfg[taskId].refresh == "week_target")
+		week_target_task[taskId] = task_cfg[taskId]
+}
+for(let i in week_target){
+	let task_list = JSON.parse(week_target[i]["task_list"])
+	for(let j = 0;j < task_list.length;j++){
+		if(task_cfg[task_list[j]]){
+			week_target_task[task_list[j]] = Number(i)
+		}else{
+			console.error("七日目标任务不存在",task_list[j])
+		}
+	}
 }
 module.exports = function() {
 	var self = this
@@ -29,6 +43,9 @@ module.exports = function() {
 	//角色创建后领取初始任务
 	this.taskInit = function(uid) {
 		for(var taskId in first_task){
+			this.gainTask(uid,taskId,0)
+		}
+		for(var taskId in week_target_task){
 			this.gainTask(uid,taskId,0)
 		}
 	}
@@ -60,7 +77,11 @@ module.exports = function() {
 			cb(false,"任务未完成")
 			return
 		}
-		self.delObj(uid,main_name,taskId)
+		if(week_target_task[taskId] && this.areaDay < week_target_task[taskId]){
+			cb(false,"该任务需要服务器开启时间达到才可完成 "+this.areaDay+"/"+week_target_task[taskId])
+			return
+		}
+		
 		if(userTaskMaps[uid]){
 			let type = task_cfg[taskId].type
 			if(userTaskMaps[uid][type])
@@ -90,6 +111,7 @@ module.exports = function() {
 			this.gainTask(uid,task_cfg[taskId].next,info.value)
 			info.next = next
 		}
+		self.delObj(uid,main_name,taskId)
 		delete userTaskLists[uid][taskId]
 		cb(true,info)
 	}
@@ -99,6 +121,10 @@ module.exports = function() {
 			var taskList = {}
 			var taskMap = {}
 			for(var taskId in data){
+				if(self.areaDay > 8 && week_target_task[taskId]){
+					self.delObj(uid,main_name,taskId)
+					delete userTaskLists[uid][taskId]
+				}
 				if(task_cfg[taskId]){
 					let value = Number(data[taskId])
 					let type = task_cfg[taskId].type

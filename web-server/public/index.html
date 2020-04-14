@@ -67,6 +67,39 @@
         console.log("onChat")
         console.log(data)
       })
+      //============七日目标============//
+      //获取七日目标数据
+      var getWeekTargetData = function() {
+        pomelo.request("area.weekTargetHandler.getWeekTargetData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取每日礼包
+      var gainDayAward = function(day) {
+        pomelo.request("area.weekTargetHandler.gainDayAward", {day : day}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取等级礼包
+      var gainLvAward = function(day) {
+        pomelo.request("area.weekTargetHandler.gainLvAward", {day : day}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取充值礼包
+      var gainRmbAward = function(day) {
+        pomelo.request("area.weekTargetHandler.gainRmbAward", {day : day}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买限购礼包
+      var buyWeekTargetGoods = function(day,index) {
+        pomelo.request("area.weekTargetHandler.buyWeekTargetGoods", {day : day,index : index}, function(data) {
+            console.log(data);
+        });
+      }
+     
+
       var getPlayerData = function() {
         pomelo.request("area.normalHandler.getPlayerData", {}, function(data) {
             console.log(data);

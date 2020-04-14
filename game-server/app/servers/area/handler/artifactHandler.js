@@ -1,4 +1,4 @@
-//神器系统
+//法宝系统
 var bearcat = require("bearcat")
 var async = require("async")
 var artifact_level = require("../../../../config/gameCfg/artifact_level.json")
@@ -8,7 +8,7 @@ var artifactHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
-//穿戴神器
+//穿戴法宝
 artifactHandler.prototype.wearArtifact = function(msg, session, next) {
   let uid = session.uid
   let areaId = session.get("areaId")
@@ -28,12 +28,12 @@ artifactHandler.prototype.wearArtifact = function(msg, session, next) {
           return
         }
         if(!artifact_talent[heroInfo.id]){
-          cb("该英雄没有神器")
+          cb("该英雄没有法宝")
           return
         }
         aId = artifact_talent[heroInfo.id]["artifact"]
         if(heroInfo.artifact != undefined){
-          cb("已穿戴神器")
+          cb("已穿戴法宝")
           return
         }
         cb(null,heroInfo)
@@ -42,15 +42,15 @@ artifactHandler.prototype.wearArtifact = function(msg, session, next) {
     function(heroInfo,cb) {
       self.areaManager.areaMap[areaId].getBagItem(uid,aId,function(value) {
         if(value < 1)
-          cb("没有该英雄专属神器:"+aId)
+          cb("没有该英雄专属法宝:"+aId)
         else
           cb(null,heroInfo)
       })
     },
     function(heroInfo,cb) {
-      //扣除神器
+      //扣除法宝
       self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : aId,value : -1})
-      //穿戴神器
+      //穿戴法宝
       heroInfo["artifact"] = 0
       self.heroDao.setHeroInfo(oriId,uid,hId,"artifact",0)
       next(null,{flag : true,heroInfo : heroInfo})
@@ -59,7 +59,7 @@ artifactHandler.prototype.wearArtifact = function(msg, session, next) {
     next(null,{flag : false,err : err})
   })
 }
-//神器升级
+//法宝升级
 artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
   let uid = session.uid
   let areaId = session.get("areaId")
@@ -78,7 +78,7 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
           return
         }
         if(heroInfo.artifact === undefined){
-          cb("未穿戴神器")
+          cb("未穿戴法宝")
           return
         }
         cb(null,heroInfo)
@@ -127,7 +127,7 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
     next(null,{flag : false,err : err})
   })
 }
-//出售神器
+//出售法宝
 artifactHandler.prototype.sellArtifact = function(msg, session, next) {
   let uid = session.uid
   let areaId = session.get("areaId")

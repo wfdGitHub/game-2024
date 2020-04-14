@@ -139,6 +139,7 @@ module.exports = function() {
 		if(!userCounts[uid]){
 			userCounts[uid] = 0
 			userInfos[uid] = this.getSimpleUser(uid)
+			self.taskUpdate(uid,"world_boss_play",1)
 		}
 		if(userCounts[uid] >= world_boss_cfg["challengeCount"]["value"]){
 			cb(false,"挑战次数已达上限")
@@ -165,6 +166,7 @@ module.exports = function() {
     		if(overInfo.atkTeam[i])
     			allDamage += overInfo.atkTeam[i].totalDamage
     	info.allDamage = allDamage
+    	self.taskUpdate(uid,"world_boss_damage",1,allDamage)
     	let score = Math.ceil(allDamage*world_boss_cfg["score"]["value"])
     	let coin = Math.ceil(allDamage*world_boss_cfg["coin"]["value"])
     	if(coin > world_boss_cfg["coin_max"]["value"])

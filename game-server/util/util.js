@@ -61,6 +61,15 @@ util.prototype.getDayMilliseconds = function() {
     var date = new Date()
     return ((date.getHours() * 60 + date.getMinutes()) * 60 + date.getSeconds()) * 1000 + date.getMilliseconds()
 }
+//获取两个时间戳相差自然日
+util.prototype.getTimeDifference = function(time1,time2){
+    var date1 = new Date(time1)
+    var date2 = new Date(time2)
+    date1.setHours(0,0,0,0)
+    date2.setHours(0,0,0,0)
+    var day = parseInt((date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24)) + 1
+    return day;
+}
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;

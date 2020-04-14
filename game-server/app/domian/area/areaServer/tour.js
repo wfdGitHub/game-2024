@@ -154,6 +154,7 @@ module.exports = function() {
 				for(var i = 0;i < hIds.length;i++){
 					self.setObj(uid,main_name,"free_"+hIds[i],1)
 				}
+				self.taskUpdate(uid,"tour",1,quality)
 				cb(true,{taskInfo:taskInfo,id:id})
 			}
 		],function(err) {

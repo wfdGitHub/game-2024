@@ -7,6 +7,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		accId : otps.accId,
 		name : otps.name,
 		head : beginHero,
+		rmb : 1000,
 		exp : 0,
 		level : 1,
 		heroAmount : 200,

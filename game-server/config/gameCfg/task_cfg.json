@@ -139,10 +139,10 @@
     "title": "角色等级5级",
     "refresh": "always",
     "type": "loadLv",
-    "first": true,
     "value": 5,
     "inherit": true,
-    "award": "202:50"
+    "award": "202:50",
+    "first": true
   },
   "200102": {
     "title": "角色等级10级",
@@ -337,10 +337,10 @@
     "title": "总战斗力到达1万",
     "refresh": "always",
     "type": "totalCe",
-    "first": true,
     "value": 10000,
     "inherit": true,
-    "award": "202:10&201:10000"
+    "award": "202:10&201:10000",
+    "first": true
   },
   "200202": {
     "title": "总战斗力到达5万",
@@ -553,10 +553,10 @@
     "title": "竞技场累计挑战10次",
     "refresh": "always",
     "type": "arena",
-    "first": true,
     "value": 10,
     "inherit": true,
-    "award": "101:5000"
+    "award": "101:5000",
+    "first": true
   },
   "200302": {
     "title": "竞技场累计挑战20次",
@@ -760,9 +760,9 @@
     "title": "竞技场排名达到1000名",
     "refresh": "always",
     "type": "rank",
-    "first": true,
     "arg": 9000,
-    "award": "202:50&203:50"
+    "award": "202:50&203:50",
+    "first": true
   },
   "200402": {
     "title": "竞技场排名达到500名",
@@ -872,10 +872,10 @@
     "title": "获得1个5星英雄",
     "refresh": "always",
     "type": "hero",
-    "first": true,
     "arg": 5,
     "value": 1,
-    "award": "5010010:1&5010020:1"
+    "award": "5010010:1&5010020:1",
+    "first": true
   },
   "200502": {
     "title": "获得1个6星英雄",
@@ -921,11 +921,11 @@
     "title": "获得10个4星英雄",
     "refresh": "always",
     "type": "hero",
-    "first": true,
     "arg": 4,
     "value": 10,
     "inherit": true,
-    "award": "101:10000&201:50000"
+    "award": "101:10000&201:50000",
+    "first": true
   },
   "200602": {
     "title": "获得50个4星英雄",
@@ -1041,11 +1041,11 @@
     "title": "获得5个5星英雄",
     "refresh": "always",
     "type": "hero",
-    "first": true,
     "arg": 5,
     "value": 5,
     "inherit": true,
-    "award": "1000080:1"
+    "award": "1000080:1",
+    "first": true
   },
   "200702": {
     "title": "获得10个5星英雄",
@@ -1161,9 +1161,9 @@
     "title": "通天塔到达10层",
     "refresh": "always",
     "type": "tttLv",
-    "first": true,
     "value": 10,
-    "award": "1000050:10&504000:5"
+    "award": "1000050:10&504000:5",
+    "first": true
   },
   "200802": {
     "title": "通天塔到达20层",
@@ -1430,9 +1430,9 @@
     "title": "英雄祭坛招募10次",
     "refresh": "always",
     "type": "recruit",
-    "first": true,
     "value": 10,
-    "award": "201:10000&505000:5"
+    "award": "201:10000&505000:5",
+    "first": true
   },
   "200902": {
     "title": "英雄祭坛招募50次",
@@ -1566,10 +1566,10 @@
     "title": "将军府累计征募5次",
     "refresh": "always",
     "type": "general",
-    "first": true,
     "value": 5,
     "inherit": true,
-    "award": "1000160:10&203:100"
+    "award": "1000160:10&203:100",
+    "first": true
   },
   "201002": {
     "title": "将军府累计征募10次",
@@ -1764,11 +1764,11 @@
     "title": "法宝强化等级到达5级",
     "refresh": "always",
     "type": "artifactLv",
-    "first": true,
     "arg": 5,
     "value": 1,
     "inherit": true,
-    "award": "202:50&1000050:50"
+    "award": "202:50&1000050:50",
+    "first": true
   },
   "201102": {
     "title": "法宝强化等级到达10级",
@@ -1914,10 +1914,10 @@
     "title": "累计消耗金币到达50万",
     "refresh": "always",
     "type": "use_coin",
-    "first": true,
     "value": 500000,
     "inherit": true,
-    "award": "1000070:5"
+    "award": "1000070:5",
+    "first": true
   },
   "201202": {
     "title": "累计消耗金币到达100万",
@@ -2038,7 +2038,6 @@
   },
   "300101": {
     "title": "【每周】连续登陆",
-    "des": "连续登陆7天",
     "refresh": "week",
     "type": "login",
     "arg": 1,
@@ -2047,7 +2046,6 @@
   },
   "300102": {
     "title": "【每周】活跃达人",
-    "des": "累计获得600点活跃度",
     "refresh": "week",
     "type": "liveness",
     "value": 600,
@@ -2055,7 +2053,6 @@
   },
   "300103": {
     "title": "【每周】挥金如土",
-    "des": "消耗铜币1000万",
     "refresh": "week",
     "type": "use_coin",
     "value": 10000000,
@@ -2063,7 +2060,6 @@
   },
   "300104": {
     "title": "【每周】英雄相助",
-    "des": "获得3个5星英雄",
     "refresh": "week",
     "type": "heroLv",
     "arg": 3,
@@ -2072,7 +2068,6 @@
   },
   "300105": {
     "title": "【每周】竞技称王",
-    "des": "在竞技场中累计胜利30次",
     "refresh": "week",
     "type": "arena_win",
     "arg": 1,
@@ -2081,7 +2076,6 @@
   },
   "300106": {
     "title": "【每周】快速作战",
-    "des": "快速作战15次",
     "refresh": "week",
     "type": "quick",
     "value": 15,
@@ -2089,7 +2083,6 @@
   },
   "400101": {
     "title": "【每月】十星相助",
-    "des": "获得1个10星英雄",
     "refresh": "month",
     "type": "heroLv",
     "arg": 1,
@@ -2098,7 +2091,6 @@
   },
   "400102": {
     "title": "【每月】战无不胜",
-    "des": "在竞技场中累计胜利200次",
     "refresh": "month",
     "type": "arena_win",
     "arg": 1,
@@ -2107,7 +2099,6 @@
   },
   "400103": {
     "title": "【每月】英雄祭坛",
-    "des": "英雄祭坛招募100次",
     "refresh": "month",
     "type": "recruit",
     "value": 100,
@@ -2115,7 +2106,6 @@
   },
   "400104": {
     "title": "【每月】英雄分解",
-    "des": "分解英雄200位",
     "refresh": "month",
     "type": "resolve",
     "value": 100,
@@ -2123,7 +2113,6 @@
   },
   "400105": {
     "title": "【每月】获得英雄",
-    "des": "获得英雄100位",
     "refresh": "month",
     "type": "heroLv",
     "value": 100,
@@ -2131,7 +2120,6 @@
   },
   "400106": {
     "title": "【每月】装备在手",
-    "des": "获得装备200件",
     "refresh": "month",
     "type": "equip",
     "value": 200,
@@ -2139,7 +2127,6 @@
   },
   "400107": {
     "title": "【每月】打造装备",
-    "des": "合成装备120件",
     "refresh": "month",
     "type": "equip_compound",
     "value": 120,
@@ -2147,7 +2134,6 @@
   },
   "400108": {
     "title": "【每月】橙色法宝",
-    "des": "获得3件橙色法宝",
     "refresh": "month",
     "type": "ace",
     "arg": 4,
@@ -2156,7 +2142,6 @@
   },
   "400109": {
     "title": "【每月】通天作战",
-    "des": "挑战或扫荡通天塔100次",
     "refresh": "month",
     "type": "ttt",
     "value": 100,
@@ -2164,10 +2149,217 @@
   },
   "400110": {
     "title": "【每月】副本作战",
-    "des": "挑战副本100次",
     "refresh": "month",
     "type": "fb",
     "value": 100,
     "exp": 2000
+  },
+  "500101": {
+    "title": "普通祭祀10次",
+    "refresh": "week_target",
+    "type": "recruit_low",
+    "value": 10,
+    "award": "201:100"
+  },
+  "500102": {
+    "title": "高级祭祀3次",
+    "refresh": "week_target",
+    "type": "recruit_higt",
+    "value": 3,
+    "award": "201:101"
+  },
+  "500201": {
+    "title": "通关第10关",
+    "refresh": "week_target",
+    "type": "checkpoints",
+    "arg": 10,
+    "value": 1,
+    "award": "201:102"
+  },
+  "500202": {
+    "title": "通关第20关",
+    "refresh": "week_target",
+    "type": "checkpoints",
+    "arg": 20,
+    "value": 1,
+    "award": "201:103"
+  },
+  "500301": {
+    "title": "4星英雄数量*3",
+    "refresh": "week_target",
+    "type": "hero",
+    "arg": 4,
+    "value": 3,
+    "award": "201:104"
+  },
+  "500302": {
+    "title": "五星英雄数量*3",
+    "refresh": "week_target",
+    "type": "hero",
+    "arg": 5,
+    "value": 3,
+    "award": "201:105"
+  },
+  "500401": {
+    "title": "挑战副本：10次",
+    "refresh": "week_target",
+    "type": "fb",
+    "value": 10,
+    "award": "201:106"
+  },
+  "500402": {
+    "title": "挑战困难难度",
+    "refresh": "week_target",
+    "type": "fb_hard",
+    "arg": 2,
+    "value": 1,
+    "award": "201:107"
+  },
+  "500501": {
+    "title": "完成三界任务：5次",
+    "refresh": "week_target",
+    "type": "tour",
+    "arg": 1,
+    "value": 5,
+    "award": "201:108"
+  },
+  "500502": {
+    "title": "橙色以上三界任务*1",
+    "refresh": "week_target",
+    "type": "tour",
+    "arg": 5,
+    "value": 1,
+    "award": "201:109"
+  },
+  "500601": {
+    "title": "集市购买3次",
+    "refresh": "week_target",
+    "type": "bazzar_buy",
+    "value": 3,
+    "award": "201:110"
+  },
+  "500602": {
+    "title": "集市刷新3次",
+    "refresh": "week_target",
+    "type": "bazzar_refresh",
+    "value": 3,
+    "award": "201:111"
+  },
+  "500701": {
+    "title": "逐鹿之战击杀3个怪物",
+    "refresh": "week_target",
+    "type": "zhulu_monster",
+    "value": 3,
+    "award": "201:112"
+  },
+  "500702": {
+    "title": "逐鹿之战累计通关2次",
+    "refresh": "week_target",
+    "type": "zhulu_pass",
+    "value": 2,
+    "award": "201:113"
+  },
+  "500801": {
+    "title": "通天塔：10层",
+    "refresh": "week_target",
+    "type": "tttLv",
+    "value": 10,
+    "award": "201:114"
+  },
+  "500802": {
+    "title": "通天挑战次数：10次",
+    "refresh": "week_target",
+    "type": "ttt",
+    "value": 10,
+    "award": "201:115"
+  },
+  "500901": {
+    "title": "领取挂机收益2次",
+    "refresh": "week_target",
+    "type": "on_hook",
+    "value": 2,
+    "award": "201:116"
+  },
+  "500902": {
+    "title": "快速作战3次",
+    "refresh": "week_target",
+    "type": "quick",
+    "value": 3,
+    "award": "201:117"
+  },
+  "501001": {
+    "title": "参与世界BOSS：2次",
+    "refresh": "week_target",
+    "type": "world_boss_play",
+    "value": 2,
+    "award": "201:118"
+  },
+  "501002": {
+    "title": "世界BOSS单次伤害10万",
+    "refresh": "week_target",
+    "type": "world_boss_damage",
+    "arg": 100000,
+    "value": 1,
+    "award": "201:119"
+  },
+  "501101": {
+    "title": "获得3个法宝",
+    "refresh": "week_target",
+    "type": "artifact_gain",
+    "value": 3,
+    "award": "201:120"
+  },
+  "501102": {
+    "title": "获得3个10级法宝",
+    "refresh": "week_target",
+    "type": "artifactLv",
+    "arg": 10,
+    "value": 3,
+    "award": "201:121"
+  },
+  "501201": {
+    "title": "获得3个紫色元神",
+    "refresh": "week_target",
+    "type": "ace",
+    "arg": 4,
+    "value": 3,
+    "award": "201:122"
+  },
+  "501202": {
+    "title": "获得3个橙色元神",
+    "refresh": "week_target",
+    "type": "ace",
+    "arg": 5,
+    "value": 3,
+    "award": "201:123"
+  },
+  "501301": {
+    "title": "竞技场前300名",
+    "refresh": "week_target",
+    "type": "rank",
+    "arg": 9700,
+    "value": 1,
+    "award": "201:124"
+  },
+  "501302": {
+    "title": "竞技场挑战：3次",
+    "refresh": "week_target",
+    "type": "arena",
+    "value": 3,
+    "award": "201:125"
+  },
+  "501401": {
+    "title": "战斗力：50万",
+    "refresh": "week_target",
+    "type": "totalCe",
+    "value": 500000,
+    "award": "201:126"
+  },
+  "501402": {
+    "title": "战斗力：200万",
+    "refresh": "week_target",
+    "type": "totalCe",
+    "value": 2000000,
+    "award": "201:127"
   }
 }
