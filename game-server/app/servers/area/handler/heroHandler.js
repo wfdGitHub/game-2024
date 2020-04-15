@@ -54,7 +54,7 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
         return
       }
       if(heros[i].combat || heros[i].zhuluCombat){
-        next(null,{flag : false,err : "英雄已出战"+i})
+        next(null,{flag : false,err : "英雄已出战"+i+","+hIds[i]+",combat:"+heros[i].combat+",zhuluCombat:"+heros[i].zhuluCombat})
         return
       }
     }
