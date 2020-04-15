@@ -100,8 +100,8 @@
     "rpc-log" : "ERROR",
     "forward-log": "ERROR",
     "rpc-debug" : "ERROR",
-    "pomelo" : "ERROR",
-    "pomelo-rpc" : "ERROR"
+    "pomelo" : "DEBUG",
+    "pomelo-rpc" : "DEBUG"
   },
 
   "replaceConsole": true,
