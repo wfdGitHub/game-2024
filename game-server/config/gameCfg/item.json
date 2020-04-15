@@ -1077,7 +1077,16 @@
     "type": "item",
     "useType": "chest",
     "arg": "equip_chest_5",
-    "quality": 6
+    "quality": 5
+  },
+  "1001008": {
+    "name": "橙色套装装备箱",
+    "des": "可开出一套橙色1星装备",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "equip_chest_6",
+    "quality": 5
   },
   "1002001": {
     "name": "金宝箱(麒麟)",

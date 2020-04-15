@@ -1,72 +1,72 @@
 {
   "1": {
-    "login_award": "201:100",
-    "day_award": "201:100",
+    "login_award": "202:500",
+    "day_award": "201:10000",
     "lv_limit": 10,
-    "lv_award": "201:100",
+    "lv_award": "202:100",
     "rmb": 1,
-    "rmb_award": "201:100",
+    "rmb_award": "504000:30",
     "goods1": 1001,
     "goods2": 1002
   },
   "2": {
-    "login_award": "201:101",
-    "day_award": "201:101",
+    "login_award": "405030:30",
+    "day_award": "101:10000",
     "lv_limit": 25,
-    "lv_award": "201:101",
-    "rmb": 2,
-    "rmb_award": "201:101",
-    "goods1": 1002,
-    "goods2": 1003
-  },
-  "3": {
-    "login_award": "201:102",
-    "day_award": "201:102",
-    "lv_limit": 30,
-    "lv_award": "201:102",
-    "rmb": 3,
-    "rmb_award": "201:102",
+    "lv_award": "1000050:100",
+    "rmb": 10000,
+    "rmb_award": "405030:30",
     "goods1": 1003,
     "goods2": 1004
   },
-  "4": {
-    "login_award": "201:103",
-    "day_award": "201:103",
-    "lv_limit": 40,
-    "lv_award": "201:103",
-    "rmb": 4,
-    "rmb_award": "201:103",
-    "goods1": 1004,
-    "goods2": 1005
-  },
-  "5": {
-    "login_award": "201:104",
-    "day_award": "201:104",
-    "lv_limit": 45,
-    "lv_award": "201:104",
-    "rmb": 5,
-    "rmb_award": "201:104",
+  "3": {
+    "login_award": "1000080:10",
+    "day_award": "202:100",
+    "lv_limit": 30,
+    "lv_award": "1000070:10",
+    "rmb": 20000,
+    "rmb_award": "1000080:10",
     "goods1": 1005,
     "goods2": 1006
   },
-  "6": {
-    "login_award": "201:105",
-    "day_award": "201:105",
-    "lv_limit": 50,
-    "lv_award": "201:105",
-    "rmb": 6,
-    "rmb_award": "201:105",
-    "goods1": 1006,
-    "goods2": 1007
-  },
-  "7": {
-    "login_award": "201:106",
-    "day_award": "201:106",
-    "lv_limit": 60,
-    "lv_award": "201:106",
-    "rmb": 7,
-    "rmb_award": "201:106",
+  "4": {
+    "login_award": "1001008:1",
+    "day_award": "204:10000",
+    "lv_limit": 40,
+    "lv_award": "1000020:10",
+    "rmb": 30000,
+    "rmb_award": "1000120:5",
     "goods1": 1007,
     "goods2": 1008
+  },
+  "5": {
+    "login_award": "1001006:1",
+    "day_award": "205:300",
+    "lv_limit": 45,
+    "lv_award": "1000160:10",
+    "rmb": 40000,
+    "rmb_award": "1001006:1",
+    "goods1": 1009,
+    "goods2": 1010
+  },
+  "6": {
+    "login_award": "1000120:1",
+    "day_award": "206:1000",
+    "lv_limit": 50,
+    "lv_award": "202:200",
+    "rmb": 50000,
+    "rmb_award": "1000150:10",
+    "goods1": 1011,
+    "goods2": 1012
+  },
+  "7": {
+    "login_award": "205020:30",
+    "day_award": "207:1000",
+    "lv_limit": 60,
+    "lv_award": "202:500",
+    "rmb": 80000,
+    "rmb_award": "205020:30",
+    "goods1": 1013,
+    "goods2": 1014
   }
 }

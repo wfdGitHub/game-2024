@@ -5,10 +5,10 @@
   "recruit": {
     "name": "英雄祭祀"
   },
-  "recruit_low": {
+  "recruit_normal": {
     "name": "普通祭祀"
   },
-  "recruit_higt": {
+  "recruit_great": {
     "name": "高级祭祀"
   },
   "checkpoints": {
@@ -38,7 +38,7 @@
     "name": "参与日常副本"
   },
   "fb_hard": {
-    "name": "副本难度",
+    "name": "日常副本难度",
     "des": "参数代表副本难度等级"
   },
   "tour": {
