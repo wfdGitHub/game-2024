@@ -30,7 +30,7 @@ for(let i in week_target){
 	let task_list = JSON.parse(week_target[i]["task_list"])
 	for(let j = 0;j < task_list.length;j++){
 		if(task_cfg[task_list[j]]){
-			week_target_task[task_list[j]] = Number(i)
+			week_target_task[task_list[j]] = week_target[i]["day"]
 		}else{
 			console.error("七日目标任务不存在",task_list[j])
 		}
