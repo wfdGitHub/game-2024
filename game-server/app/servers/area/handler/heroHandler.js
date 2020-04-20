@@ -247,13 +247,13 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                       self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
                     }
                     if(star == 10){
-                      let notify = {
+                      var notify = {
                         type : "sysChat",
                         text : "恭喜"+name+"合成出10星"+heroName+"英雄，实力暴涨名誉三界"
                       }
                       self.sendAllUser(notify)
                     }else if(star > 5){
-                      let notify = {
+                      var notify = {
                         type : "sysChat",
                         text : "恭喜"+name+"合成出"+star+"星"+heroName+"英雄，实力大涨名动八荒"
                       }
@@ -271,13 +271,13 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                 self.heroDao.heroPrlvadnad(oriId,uid,data,function(flag,awardList) {
                   self.heroDao.incrbyHeroInfo(oriId,uid,target,"star",1,function(flag,star) {
                     if(star == 10){
-                      let notify = {
+                      var notify = {
                         type : "sysChat",
                         text : "恭喜"+name+"合成出10星"+heroName+"英雄，实力暴涨名誉三界"
                       }
                       self.sendAllUser(notify)
                     }else if(star > 5){
-                      let notify = {
+                      var notify = {
                         type : "sysChat",
                         text : "恭喜"+name+"合成出"+star+"星"+heroName+"英雄，实力大涨名动八荒"
                       }
