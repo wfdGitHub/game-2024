@@ -275,13 +275,13 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                         type : "sysChat",
                         text : "恭喜"+name+"合成出10星"+heroName+"英雄，实力暴涨名誉三界"
                       }
-                      self.sendAllUser(notify)
+                      self.areaManager.areaMap[areaId].sendAllUser(notify)
                     }else if(star > 5){
                       var notify = {
                         type : "sysChat",
                         text : "恭喜"+name+"合成出"+star+"星"+heroName+"英雄，实力大涨名动八荒"
                       }
-                      self.sendAllUser(notify)
+                      self.areaManager.areaMap[areaId].sendAllUser(notify)
                     }
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })

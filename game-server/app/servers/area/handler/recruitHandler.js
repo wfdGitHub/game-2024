@@ -66,7 +66,7 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
               type : "sysChat",
               text : "恭喜玩家"+name+"在"+typeName+"中获得五星英雄"+heros[heroInfos[i]["id"]]["name"]+"【我也要招募】"
             }
-            self.sendAllUser(notify)
+            self.areaManager.areaMap[areaId].sendAllUser(notify)
         }
         next(null,{flag : true,heroInfos : heroInfos})
       })
