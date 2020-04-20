@@ -61,12 +61,13 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
         let typeName = recruit_base[type]["name"]
         let name = session.get("name")
         for(let i = 0;i < heroInfos.length;i++){
-          if(heroInfos[i].star >= 5)
+          if(heroInfos[i].star >= 5){
             var notify = {
               type : "sysChat",
               text : "恭喜玩家"+name+"在"+typeName+"中获得五星英雄"+heros[heroInfos[i]["id"]]["name"]+"【我也要招募】"
             }
             self.areaManager.areaMap[areaId].sendAllUser(notify)
+          }
         }
         next(null,{flag : true,heroInfos : heroInfos})
       })
