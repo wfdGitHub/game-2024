@@ -25,28 +25,40 @@ module.exports = function() {
 			case "heroChip":
 				var heroId = itemCfg[otps.itemId].arg
 				var needValue = 30
-				self.consumeItems(uid,otps.itemId+":"+needValue,value,function(flag,err) {
-					if(!flag){
-						cb(false,err)
-					}else{
-						var heroList = []
-						for(var i = 0;i < value;i++){
-							heroList.push(self.heroDao.gainHero(self.areaId,uid,{id : heroId}))
+				self.heroDao.getHeroAmount(self.areaId,uid,function(flag,info) {
+				  	if(info.cur >= info.max){
+				    	next(null,{flag : false,data : "英雄背包已满"})
+				    	return
+				  	}
+					self.consumeItems(uid,otps.itemId+":"+needValue,value,function(flag,err) {
+						if(!flag){
+							cb(false,err)
+						}else{
+							var heroList = []
+							for(var i = 0;i < value;i++){
+								heroList.push(self.heroDao.gainHero(self.areaId,uid,{id : heroId}))
+							}
+							cb(true,heroList)
 						}
-						cb(true,heroList)
-					}
+					})
 				})
 			break
 			case "randChip":
 				var needValue = 30
-				self.consumeItems(uid,otps.itemId+":"+needValue,value,function(flag,err) {
-					if(!flag){
-						cb(false,err)
-					}else{
-						var type = itemCfg[otps.itemId].arg
-				        var heroInfos = self.heroDao.randHero(self.areaId,uid,type,value)
-				        cb(true,heroInfos)
-					}
+				self.heroDao.getHeroAmount(self.areaId,uid,function(flag,info) {
+				  	if(info.cur >= info.max){
+				    	next(null,{flag : false,data : "英雄背包已满"})
+				    	return
+				  	}
+					self.consumeItems(uid,otps.itemId+":"+needValue,value,function(flag,err) {
+						if(!flag){
+							cb(false,err)
+						}else{
+							var type = itemCfg[otps.itemId].arg
+					        var heroInfos = self.heroDao.randHero(self.areaId,uid,type,value)
+					        cb(true,heroInfos)
+						}
+					})
 				})
 			break
 			case "chest":

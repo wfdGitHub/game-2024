@@ -149,11 +149,11 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
 }
 //英雄升星   有最大星级限制
 heroHandler.prototype.upgradeStar = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var oriId = session.get("oriId")
-  var target = msg.target
-  var hIds = msg.hIds
+  let uid = session.uid
+  let areaId = session.get("areaId")
+  let oriId = session.get("oriId")
+  let target = msg.target
+  let hIds = msg.hIds
   if(!hIds instanceof Array){
     next(null,{flag : false,data : "必须传数组"})
     return
@@ -230,6 +230,8 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
           }
         }
         let pcStr = star_base[star].pc
+        let name = session.get("name")
+        let heroName = heros[targetHero.id]["name"]
         if(pcStr){
           self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,function(flag,err) {
             if(!flag){
@@ -244,6 +246,19 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                     if(flag){
                       self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
                     }
+                    if(star == 10){
+                      let notify = {
+                        type : "sysChat",
+                        text : "恭喜"+name+"合成出10星"+heroName+"英雄，实力暴涨名誉三界"
+                      }
+                      self.sendAllUser(notify)
+                    }else if(star > 5){
+                      let notify = {
+                        type : "sysChat",
+                        text : "恭喜"+name+"合成出"+star+"星"+heroName+"英雄，实力大涨名动八荒"
+                      }
+                      self.sendAllUser(notify)
+                    }
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
                 })
@@ -255,6 +270,19 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                   console.error(err)
                 self.heroDao.heroPrlvadnad(oriId,uid,data,function(flag,awardList) {
                   self.heroDao.incrbyHeroInfo(oriId,uid,target,"star",1,function(flag,star) {
+                    if(star == 10){
+                      let notify = {
+                        type : "sysChat",
+                        text : "恭喜"+name+"合成出10星"+heroName+"英雄，实力暴涨名誉三界"
+                      }
+                      self.sendAllUser(notify)
+                    }else if(star > 5){
+                      let notify = {
+                        type : "sysChat",
+                        text : "恭喜"+name+"合成出"+star+"星"+heroName+"英雄，实力大涨名动八荒"
+                      }
+                      self.sendAllUser(notify)
+                    }
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
                 })

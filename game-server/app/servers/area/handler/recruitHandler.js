@@ -2,6 +2,7 @@ var bearcat = require("bearcat")
 var heros = require("../../../../config/gameCfg/heros.json")
 var recruit_base = require("../../../../config/gameCfg/recruit_base.json")
 var recruit_list = require("../../../../config/gameCfg/recruit_list.json")
+var heros = require("../../../../config/gameCfg/heros.json")
 var recruitHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
@@ -56,6 +57,16 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
           case "camp_4":
             self.areaManager.areaMap[areaId].taskUpdate(uid,"general",count)
           break
+        }
+        let typeName = recruit_base[type]["name"]
+        let name = session.get("name")
+        for(let i = 0;i < heroInfos.length;i++){
+          if(heroInfos[i].star >= 5)
+            let notify = {
+              type : "sysChat",
+              text : "恭喜玩家"+name+"在"+typeName+"中获得五星英雄"+heros[heroInfos[i]["id"]]["name"]+"【我也要招募】"
+            }
+            self.sendAllUser(notify)
         }
         next(null,{flag : true,heroInfos : heroInfos})
       })

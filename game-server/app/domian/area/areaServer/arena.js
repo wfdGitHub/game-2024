@@ -373,7 +373,7 @@ module.exports = function() {
 					}
 					var notify = {
 						type : "sysChat",
-						text : userName+"玩家击败了"+targetName+" 玩家,取代了"+targetName+"竞技场的位置,当前排名"+targetRank
+						text : userName+"在竞技场中打败"+targetName+"获得"+"targetRank"+"名，无敌是多么寂寞！"
 					}
 					self.sendAllUser(notify)
 				})
