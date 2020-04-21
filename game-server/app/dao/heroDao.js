@@ -26,7 +26,7 @@ var heroDao = function() {
 }
 //增加英雄背包栏
 heroDao.prototype.addHeroAmount = function(areaId,uid,cb) {
-	this.redisDao.db.hincrby("player:user:"+uid+":playerInfo","heroAmount",1,function(err,data) {
+	this.redisDao.db.hincrby("player:user:"+uid+":playerInfo","heroAmount",20,function(err,data) {
 		if(cb)
 			cb(true,data)
 	})
