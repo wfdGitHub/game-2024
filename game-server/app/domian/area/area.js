@@ -136,7 +136,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 area.prototype.dayFirstLogin = function(uid) {
 	console.log("玩家 "+uid+" 今日首次登录")
 	this.chageLordData(uid,"dayStr",this.dayStr)
-	this.chageLordData(uid,rmb_day,0)
+	this.chageLordData(uid,"rmb_day",0)
 	this.setPlayerData(uid,"quick",0)
 	this.TTTdayUpdate(uid)
 	this.arenadayUpdate(uid)
