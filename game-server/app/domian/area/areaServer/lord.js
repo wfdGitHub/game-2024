@@ -6,7 +6,7 @@ module.exports = function() {
 	var self = this
 	//加载主公数据
 	this.lordLoad = function(uid,cb) {
-		self.playerDao.getPlayerInfo({areaId : oriId,uid : uid},function(info) {
+		self.playerDao.getPlayerInfo({uid : uid},function(info) {
 			if(info){
 				info["vip"] = Number(info)
 				for(var i = 0;i < numberAtt.length;i++)
