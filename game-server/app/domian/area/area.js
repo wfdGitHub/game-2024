@@ -121,7 +121,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 			self.oriIds[uid] = oriId
 			self.players[uid]["areaId"] = self.areaId
 			self.players[uid]["areaDay"] = self.areaDay
-			self.players[uid]["userDay"] = util.getTimeDifference(playerInfo.createTime,Date.now())
+			self.players[uid]["userDay"] = util.getTimeDifference(self.players[uid].createTime,Date.now())
 			if(true || self.players[uid].dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
 			}
