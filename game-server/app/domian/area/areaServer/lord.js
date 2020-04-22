@@ -1,22 +1,41 @@
 //主公相关
 var lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 var main_name = "playerInfo"
+var numberAtt = ["accId","createTime","rmb","vip","rmb_day","exp","level","heroAmount"]
 module.exports = function() {
 	var self = this
-	var userLords = {}
 	//加载主公数据
 	this.lordLoad = function(uid,cb) {
-		self.getHMObj(uid,main_name,["level","exp"],function(list) {
-			userLords[uid] = {
-				"level" : Number(list[0]),
-				"exp" : Number(list[1])
+		self.playerDao.getPlayerInfo({areaId : oriId,uid : uid},function(info) {
+			if(info){
+				info["vip"] = Number(info)
+				for(var i = 0;i < numberAtt.length;i++)
+					info[numberAtt[i]] = Number(info[numberAtt[i]])
+				if(!self.players[uid])
+					self.onlineNum++
+				self.players[uid] = info
+			}else{
+				cb(false)
 			}
-			cb()
 		})
 	}
 	//移除主公数据
 	this.lordUnload = function(uid) {
-		delete userLords[uid]
+		delete self.players[uid]
+	}
+	//改变数据
+	this.chageLordData = function(uid,key,value) {
+		if(self.players[uid]){
+			self.players[uid][key] = value
+		}
+		self.redisDao.db.hset("player:user:"+uid+":playerInfo",key,value)
+	}
+	//增加数据
+	this.incrbyLordData = function(uid,key,value) {
+		if(self.players[uid]){
+			self.players[uid][key] += value
+		}
+		self.redisDao.db.hincrby("player:user:"+uid+":playerInfo",key,value)
 	}
 	//改变头像
 	this.changeHead = function(uid,id,cb) {
@@ -40,18 +59,18 @@ module.exports = function() {
 				"exp" : exp,
 				"curExp" : Number(value)
 			}
-			userLords[uid]["exp"] = notify.curExp
+			self.players[uid]["exp"] = notify.curExp
 			self.sendToUser(uid,notify)
 			self.checkLordUpgrade(uid,Number(value))
 		})
 	}
 	//获取主公等级
 	this.getLordLv = function(uid) {
-		return userLords[uid]["level"]
+		return self.players[uid]["level"]
 	}
 	//主公升级检查
 	this.checkLordUpgrade = function(uid,exp) {
-		level = userLords[uid]["level"]
+		level = self.players[uid]["level"]
 		let upLv = 0
 		let needExp = 0
 		let count = 0
@@ -74,8 +93,8 @@ module.exports = function() {
 				"gold" : gold,
 				"curExp" : exp
 			}
-			userLords[uid]["exp"] = exp
-			userLords[uid]["level"] += upLv
+			self.players[uid]["exp"] = exp
+			self.players[uid]["level"] += upLv
 			self.sendToUser(uid,notify)
 			self.taskUpdate(uid,"loadLv",upLv)
 		}

@@ -38,10 +38,8 @@ module.exports = function() {
 			cb(false,"参数错误")
 			return
 		}
-		self.playerDao.setPlayerInfo({uid:uid,key:"rmb_day",value:rmb})
-		self.playerDao.setPlayerInfo({uid:uid,key:"rmb",value:rmb})
-		self.players[uid].rmb_day += rmb
-		self.players[uid].rmb += rmb
+		this.incrbyLordData(uid,"rmb_day",rmb)
+		this.incrbyLordData(uid,"rmb",rmb)
 		cb(true,{rmb_day : self.players[uid].rmb_day,rmb : self.players[uid].rmb})
 	}
 	//获得活动数据

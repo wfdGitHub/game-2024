@@ -128,14 +128,11 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 			self.zhuluLoad(uid,next)
 		},
 		function() {
-			if(!self.players[uid])
-				self.onlineNum++
 			self.connectorMap[uid] = cid
 			self.oriIds[uid] = oriId
 			playerInfo.areaId = self.areaId
 			playerInfo.areaDay = self.areaDay
 			playerInfo.userDay = util.getTimeDifference(playerInfo.createTime,Date.now())
-			self.players[uid] = playerInfo
 			if(true || playerInfo.dayStr != self.dayStr){
 				playerInfo.rmb_day = 0
 				self.playerDao.setPlayerInfo({uid:uid,key:"rmb_day",value:0})
@@ -164,7 +161,6 @@ area.prototype.dayFirstLogin = function(uid) {
 area.prototype.userLeave = function(uid) {
 	console.log("userLeave : ",uid)
 	if(this.players[uid]){
-		delete this.players[uid]
 		delete this.connectorMap[uid]
 		delete this.oriIds[uid]
 		this.onlineNum--
