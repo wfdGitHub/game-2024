@@ -93,18 +93,7 @@ area.prototype.register = function(otps,cb) {
 area.prototype.userLogin = function(uid,oriId,cid,cb) {
 	console.log("userLogin",uid,oriId,cid)
 	var self = this
-	var playerInfo = {}
 	async.waterfall([
-		function(next) {
-			self.playerDao.getPlayerInfo({areaId : oriId,uid : uid},function(info) {
-				if(info){
-					playerInfo = info
-					next()
-				}else{
-					next("未注册角色")
-				}
-			})
-		},
 		function(next) {
 			self.lordLoad(uid,next)
 		},
@@ -117,7 +106,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 		function(next) {
 			self.CELoad(uid,function(flag) {
 				if(flag){
-					playerInfo.CE = self.getCE(uid)
+					self.players[uid]["CE"] = self.getCE(uid)
 					next()
 				}else{
 					cb(false,"获取战力出错")
@@ -130,24 +119,24 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 		function() {
 			self.connectorMap[uid] = cid
 			self.oriIds[uid] = oriId
-			playerInfo.areaId = self.areaId
-			playerInfo.areaDay = self.areaDay
-			playerInfo.userDay = util.getTimeDifference(playerInfo.createTime,Date.now())
-			if(true || playerInfo.dayStr != self.dayStr){
-				playerInfo.rmb_day = 0
-				self.playerDao.setPlayerInfo({uid:uid,key:"rmb_day",value:0})
+			self.players[uid]["areaId"] = self.areaId
+			self.players[uid]["areaDay"] = self.areaDay
+			self.players[uid]["userDay"] = util.getTimeDifference(playerInfo.createTime,Date.now())
+			if(true || self.players[uid].dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
 			}
-			cb(true,playerInfo)
+			cb(true,self.players[uid])
 		}
 	],function(err) {
+		delete self.players[uid]
 		cb(false,err)
 	})
 }
 //玩家当天首次登录
 area.prototype.dayFirstLogin = function(uid) {
 	console.log("玩家 "+uid+" 今日首次登录")
-	this.setObj(uid,"playerInfo","dayStr",this.dayStr)
+	this.chageLordData(uid,"dayStr",this.dayStr)
+	this.chageLordData(uid,rmb_day,0)
 	this.setPlayerData(uid,"quick",0)
 	this.TTTdayUpdate(uid)
 	this.arenadayUpdate(uid)
