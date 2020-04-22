@@ -14,6 +14,7 @@ module.exports = function() {
 				if(!self.players[uid])
 					self.onlineNum++
 				self.players[uid] = info
+				cb()
 			}else{
 				cb("未注册")
 			}
