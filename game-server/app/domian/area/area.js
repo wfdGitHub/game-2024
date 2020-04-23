@@ -130,11 +130,12 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 		function() {
 			if(!self.players[uid])
 				self.onlineNum++
-			self.players[uid] = playerInfo
 			self.connectorMap[uid] = cid
 			self.oriIds[uid] = oriId
 			playerInfo.areaId = self.areaId
 			playerInfo.areaDay = self.areaDay
+			playerInfo.userDay = util.getTimeDifference(playerInfo.createTime,Date.now())
+			self.players[uid] = playerInfo
 			if(playerInfo.dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
 			}

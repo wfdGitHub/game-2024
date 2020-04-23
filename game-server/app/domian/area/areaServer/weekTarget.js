@@ -1,6 +1,7 @@
 //七日目标
 var week_goods = require("../../../../config/gameCfg/week_goods.json")
 var week_day = require("../../../../config/gameCfg/week_day.json")
+var week_box = require("../../../../config/gameCfg/week_box.json")
 var async = require("async")
 var main_name = "week_target"
 module.exports = function() {
@@ -8,8 +9,15 @@ module.exports = function() {
 	//获取七日目标数据
 	this.getWeekTargetData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(obj) {
+			if(!obj)
+				obj = {}
 			for(var i in obj){
 				obj[i] = Number(obj[i])
+			}
+			if((!obj["finish"]) && self.players[uid].userDay > 8){
+				self.clearWeekTarget(uid)
+				obj["finish"] = 1
+				self.setObj(uid,main_name,"finish",1)
 			}
 			cb(true,obj)
 		})
@@ -20,8 +28,8 @@ module.exports = function() {
 			cb(false,"每日礼包不存在")
 			return
 		}
-		if(day > self.areaDay){
-			cb(false,"不可领取 "+self.areaDay+"/"+day)
+		if(day > self.players[uid].userDay){
+			cb(false,"不可领取 "+self.players[uid].userDay+"/"+day)
 			return
 		}
 		self.getObj(uid,main_name,"day_award"+day,function(data) {
@@ -40,8 +48,8 @@ module.exports = function() {
 			cb(false,"等级礼包不存在")
 			return
 		}
-		if(day > self.areaDay){
-			cb(false,"不可领取 "+self.areaDay+"/"+day)
+		if(day > self.players[uid].userDay){
+			cb(false,"不可领取 "+self.players[uid].userDay+"/"+day)
 			return
 		}
 		if(self.getLordLv(uid) < week_day[day]["lv_limit"]){
@@ -64,8 +72,8 @@ module.exports = function() {
 			cb(false,"等级礼包不存在")
 			return
 		}
-		if(day > self.areaDay){
-			cb(false,"不可领取 "+self.areaDay+"/"+day)
+		if(day > self.players[uid].userDay){
+			cb(false,"不可领取 "+self.players[uid].userDay+"/"+day)
 			return
 		}
 		self.getObj(uid,"playerInfo","rmb",function(rmb) {
@@ -95,8 +103,8 @@ module.exports = function() {
 			cb(false,"配置错误"+goodsId)
 			return
 		}
-		if(day > self.areaDay){
-			cb(false,"不可购买 "+self.areaDay+"/"+day)
+		if(day > self.players[uid].userDay){
+			cb(false,"不可购买 "+self.players[uid].userDay+"/"+day)
 			return
 		}
 		self.getObj(uid,main_name,"goods:"+day+":"+index,function(data) {
@@ -112,6 +120,29 @@ module.exports = function() {
 				}else{
 					cb(false,err)
 				}
+			})
+		})
+	}
+	//领取七日目标宝箱
+	this.gainWeekTargetBox = function(uid,boxId,cb) {
+		if(!week_box[boxId]){
+			cb(false,"宝箱不存在")
+			return
+		}
+		self.getObj(uid,main_name,"taskCount",function(data) {
+			data = Number(data) || 0
+			if(data < week_box[boxId]["value"]){
+				cb(false,"未达成目标")
+				return
+			}
+			self.getObj(uid,main_name,"box"+boxId,function(data) {
+				if(data){
+					cb(false,"已领取")
+					return
+				}
+				self.incrbyObj(uid,main_name,"box"+boxId,1)
+				let awardList = self.addItemStr(uid,week_box[boxId]["award"])
+				cb(true,awardList)
 			})
 		})
 	}

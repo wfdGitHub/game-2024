@@ -77,15 +77,9 @@ module.exports = function() {
 			cb(false,"任务未完成")
 			return
 		}
-		if(week_target_task[taskId] && this.areaDay < week_target_task[taskId]){
-			cb(false,"该任务需要服务器开启时间达到才可完成 "+this.areaDay+"/"+week_target_task[taskId])
+		if(week_target_task[taskId] && this.players[uid].userDay < week_target_task[taskId]){
+			cb(false,"该任务需要服务器开启时间达到才可完成 "+this.players[uid].userDay+"/"+week_target_task[taskId])
 			return
-		}
-		
-		if(userTaskMaps[uid]){
-			let type = task_cfg[taskId].type
-			if(userTaskMaps[uid][type])
-				userTaskMaps[uid][type].remove(taskId)
 		}
 		let award = task_cfg[taskId].award
 		let awardList = []
@@ -111,6 +105,14 @@ module.exports = function() {
 			this.gainTask(uid,task_cfg[taskId].next,info.value)
 			info.next = next
 		}
+		if(week_target_task[taskId]){
+			self.incrbyObj(uid,"week_target","taskCount",1)
+		}
+		if(userTaskMaps[uid]){
+			let type = task_cfg[taskId].type
+			if(userTaskMaps[uid][type])
+				userTaskMaps[uid][type].remove(taskId)
+		}
 		self.delObj(uid,main_name,taskId)
 		delete userTaskLists[uid][taskId]
 		cb(true,info)
@@ -121,10 +123,6 @@ module.exports = function() {
 			var taskList = {}
 			var taskMap = {}
 			for(var taskId in data){
-				if(self.areaDay > 8 && week_target_task[taskId]){
-					self.delObj(uid,main_name,taskId)
-					delete userTaskLists[uid][taskId]
-				}
 				if(task_cfg[taskId]){
 					let value = Number(data[taskId])
 					let type = task_cfg[taskId].type
@@ -330,5 +328,19 @@ module.exports = function() {
 			self.setObj(uid,war_name,type+"_"+lv,1)
 			cb(true,{awardList : awardList})
 		})
+	}
+	//清除七日任务
+	this.clearWeekTarget = function(uid) {
+		for(var taskId in userTaskLists[uid]){
+			if(week_target_task[taskId]){
+				if(userTaskMaps[uid]){
+					let type = task_cfg[taskId].type
+					if(userTaskMaps[uid][type])
+						userTaskMaps[uid][type].remove(taskId)
+				}
+				self.delObj(uid,main_name,taskId)
+				delete userTaskLists[uid][taskId]
+			}
+		}
 	}
 }

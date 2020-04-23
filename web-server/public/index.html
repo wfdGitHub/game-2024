@@ -98,7 +98,12 @@
             console.log(data);
         });
       }
-     
+      //领取七日任务宝箱
+      var gainWeekTargetBox = function(boxId) {
+        pomelo.request("area.weekTargetHandler.gainWeekTargetBox", {boxId : boxId}, function(data) {
+            console.log(data);
+        });
+      }
 
       var getPlayerData = function() {
         pomelo.request("area.normalHandler.getPlayerData", {}, function(data) {
