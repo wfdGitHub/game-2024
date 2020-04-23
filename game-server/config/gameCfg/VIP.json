@@ -1,4 +1,17 @@
 {
+  "0": {
+    "rmb": 0,
+    "quick": 0,
+    "onhookAward": 0,
+    "onhookTime": 0,
+    "arena": 0,
+    "fb": 0,
+    "ttt": 0,
+    "heroAmount": 0,
+    "bazaar_1": 0,
+    "bazaar_2": 0,
+    "bazaar_3": 0
+  },
   "1": {
     "rmb": 600,
     "free_award": "201:100",
