@@ -123,7 +123,7 @@ module.exports = function() {
 	}
 	//领取vip免费礼包
 	this.gainVipAward = function(uid,vip,cb) {
-		if(!VIP[vip]){
+		if(!vip || !VIP[vip]){
 			cb(false,"vip等级不存在")
 			return
 		}
@@ -143,7 +143,7 @@ module.exports = function() {
 	}
 	//购买vip付费礼包
 	this.buyVipAward = function(uid,vip,cb) {
-		if(!VIP[vip]){
+		if(!vip || !VIP[vip]){
 			cb(false,"vip等级不存在")
 			return
 		}
