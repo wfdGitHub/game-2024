@@ -37,6 +37,7 @@ module.exports = function() {
 		var lv = 0
 		var free = 0
 		var buy = 0
+		var isFight = false
 		if(!daily_fb_type[type]){
 			cb(false,"副本类型错误"+type)
 			return
@@ -61,6 +62,7 @@ module.exports = function() {
 					next()
 				}else{
 					//挑战
+					isFight = true
 				    var fightInfo = self.getFightInfo(uid)
 				    if(!fightInfo){
 				    	next("未准备")
@@ -111,7 +113,8 @@ module.exports = function() {
 			},
 			function(next) {
 				//通关并获取奖励
-				self.setObj(uid,main_name,type+"_lv",daily_fb_base[fbId]["lv"])
+				if(isFight)
+					self.setObj(uid,main_name,type+"_lv",daily_fb_base[fbId]["lv"])
 				self.taskUpdate(uid,"fb",1)
 				self.taskUpdate(uid,"fb_hard",1,daily_fb_base[fbId]["lv"])
 				let award = daily_fb_base[fbId]["award"]
