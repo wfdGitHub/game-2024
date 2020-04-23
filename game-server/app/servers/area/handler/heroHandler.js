@@ -245,19 +245,19 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                   self.heroDao.incrbyHeroInfo(oriId,uid,target,"star",1,function(flag,star) {
                     if(flag){
                       self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
-                    }
-                    if(star == 10){
-                      var notify = {
-                        type : "sysChat",
-                        text : "恭喜"+name+"合成出10星"+heroName+"英雄，实力暴涨名誉三界"
+                      if(star == 10){
+                        var notify = {
+                          type : "sysChat",
+                          text : "恭喜"+name+"合成出10星"+heroName+"英雄，实力暴涨名誉三界"
+                        }
+                        self.areaManager.areaMap[areaId].sendAllUser(notify)
+                      }else if(star > 5){
+                        var notify = {
+                          type : "sysChat",
+                          text : "恭喜"+name+"合成出"+star+"星"+heroName+"英雄，实力大涨名动八荒"
+                        }
+                        self.areaManager.areaMap[areaId].sendAllUser(notify)
                       }
-                      self.areaManager.areaMap[areaId].sendAllUser(notify)
-                    }else if(star > 5){
-                      var notify = {
-                        type : "sysChat",
-                        text : "恭喜"+name+"合成出"+star+"星"+heroName+"英雄，实力大涨名动八荒"
-                      }
-                      self.areaManager.areaMap[areaId].sendAllUser(notify)
                     }
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
@@ -270,18 +270,21 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                   console.error(err)
                 self.heroDao.heroPrlvadnad(oriId,uid,data,function(flag,awardList) {
                   self.heroDao.incrbyHeroInfo(oriId,uid,target,"star",1,function(flag,star) {
-                    if(star == 10){
-                      var notify = {
-                        type : "sysChat",
-                        text : "恭喜"+name+"合成出10星"+heroName+"英雄，实力暴涨名誉三界"
+                    if(flag){
+                      self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
+                      if(star == 10){
+                        var notify = {
+                          type : "sysChat",
+                          text : "恭喜"+name+"合成出10星"+heroName+"英雄，实力暴涨名誉三界"
+                        }
+                        self.areaManager.areaMap[areaId].sendAllUser(notify)
+                      }else if(star > 5){
+                        var notify = {
+                          type : "sysChat",
+                          text : "恭喜"+name+"合成出"+star+"星"+heroName+"英雄，实力大涨名动八荒"
+                        }
+                        self.areaManager.areaMap[areaId].sendAllUser(notify)
                       }
-                      self.areaManager.areaMap[areaId].sendAllUser(notify)
-                    }else if(star > 5){
-                      var notify = {
-                        type : "sysChat",
-                        text : "恭喜"+name+"合成出"+star+"星"+heroName+"英雄，实力大涨名动八荒"
-                      }
-                      self.areaManager.areaMap[areaId].sendAllUser(notify)
                     }
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
