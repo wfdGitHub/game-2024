@@ -4,6 +4,7 @@ const heros = require("../../../../config/gameCfg/heros.json")
 const checkpoints = require("../../../../config/gameCfg/checkpoints.json")
 const equip_level = require("../../../../config/gameCfg/equip_level.json")
 const ace_pack = require("../../../../config/gameCfg/ace_pack.json")
+const VIP = require("../../../../config/gameCfg/VIP.json")
 const async = require("async")
 const main_name = "bazaar"
 var bazaar_goods = {}
@@ -193,7 +194,8 @@ module.exports = function() {
 		}
 		self.getObj(uid,main_name,type+"_buy_count",function(value) {
 			value = Number(value)
-			if(value >= bazaar_cfg[type]["max"]){
+			var maxCount = bazaar_cfg[type]["max"] + VIP[self.players[uid]["vip"]][type] || 0
+			if(value >= maxCount){
 				cb(false,"刷新次数达到上限")
 				return
 			}

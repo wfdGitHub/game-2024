@@ -1,5 +1,6 @@
 var checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
 var checkpoints_task = require("../../../../config/gameCfg/checkpoints_task.json")
+const VIP = require("../../../../config/gameCfg/VIP.json")
 var async = require("async")
 module.exports = function() {
 	var self = this
@@ -113,12 +114,13 @@ module.exports = function() {
 			}
 		  	self.incrbyPlayerData(uid,"onhookLastTime",tmpTime * 1000)
 		  	var awardTime = tmpTime
-		  	if(awardTime > 43200){
-		  		awardTime = 43200
+		  	var maxTime = 43200 + VIP[self.players[uid]["vip"]]["onhookTime"]
+		  	if(awardTime > maxTime){
+		  		awardTime = maxTime
 		  	}
 		  	var on_hook_award = checkpointsCfg[level].on_hook_award
 		  	// console.log("on_hook_award ",on_hook_award)
-		  	var rate = (awardTime * power) / 60 
+		  	var rate = (awardTime * (1+VIP[self.players[uid]["vip"]]["onhookAward"])) / 60 
 		  	// console.log("rate ",rate,"awardTime ",awardTime)
 		  	self.taskUpdate(uid,"on_hook",1)
 		  	var awardList = self.addItemStr(uid,on_hook_award,rate)
@@ -134,7 +136,7 @@ module.exports = function() {
 				//获取今日快速挂机次数
 				self.getPlayerData(uid,"quick",function(curCount) {
 					count  = Number(curCount) || 0
-					if(count < 4)
+					if(count < 4 + VIP[self.players[uid]["vip"]]["quick"])
 						next()
 					else
 						next("快速挂机次数已满")

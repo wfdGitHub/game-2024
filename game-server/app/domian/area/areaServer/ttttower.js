@@ -1,6 +1,7 @@
 //通天塔模块
-var ttttower_level = require("../../../../config/gameCfg/ttttower_level.json")
-var ttttower_cfg = require("../../../../config/gameCfg/ttttower_cfg.json")
+const ttttower_level = require("../../../../config/gameCfg/ttttower_level.json")
+const ttttower_cfg = require("../../../../config/gameCfg/ttttower_cfg.json")
+const VIP = require("../../../../config/gameCfg/VIP.json")
 var async = require("async")
 var main_name = "ttt"
 for(var i in ttttower_level){
@@ -92,7 +93,7 @@ module.exports = function() {
 						next("只能扫荡已通关")
 						return
 					}
-					if(info.mopup >= ttttower_cfg["freeCount"]["value"]){
+					if(info.mopup >= ttttower_cfg["freeCount"]["value"] + VIP[self.players[uid]["vip"]]["ttt"]){
 						//消耗扫荡券
 						self.consumeItems(uid,ttttower_cfg["mopup"]["value"],1,function(flag,err) {
 							if(flag)

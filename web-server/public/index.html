@@ -68,9 +68,21 @@
         console.log(data)
       })
       //==============活动==============//
+      //领取VIP免费礼包
+      var gainVipAward = function(vip) {
+        pomelo.request("area.activityHandler.gainVipAward", {vip:vip}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买VIP付费礼包
+      var buyVipAward = function(vip) {
+        pomelo.request("area.activityHandler.buyVipAward", {vip:vip}, function(data) {
+            console.log(data);
+        });
+      }
       //获得活动数据
-      var getActivityData = function() {
-        pomelo.request("area.activityHandler.getActivityData", {}, function(data) {
+      var buyVipAward = function(vip) {
+        pomelo.request("area.activityHandler.buyVipAward", {vip:vip}, function(data) {
             console.log(data);
         });
       }

@@ -46,6 +46,24 @@ activityHandler.prototype.test_recharge = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//领取VIP免费礼包
+activityHandler.prototype.gainVipAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var vip = msg.vip
+  this.areaManager.areaMap[areaId].gainVipAward(uid,vip,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//购买VIP付费礼包
+activityHandler.prototype.buyVipAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var vip = msg.vip
+  this.areaManager.areaMap[areaId].buyVipAward(uid,vip,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "activityHandler",

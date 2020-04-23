@@ -8,7 +8,6 @@ module.exports = function() {
 	this.lordLoad = function(uid,cb) {
 		self.playerDao.getPlayerInfo({uid : uid},function(info) {
 			if(info){
-				info["vip"] = Number(info)
 				for(var i = 0;i < numberAtt.length;i++)
 					info[numberAtt[i]] = Number(info[numberAtt[i]])
 				if(!self.players[uid])

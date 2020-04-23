@@ -1,6 +1,7 @@
 const sign_in_day = require("../../../../config/gameCfg/sign_in_day.json")
 const sign_in_cfg = require("../../../../config/gameCfg/sign_in_cfg.json")
 const online_time = require("../../../../config/gameCfg/online_time.json")
+const VIP = require("../../../../config/gameCfg/VIP.json")
 var main_name = "activity"
 module.exports = function() {
 	var self = this
@@ -40,6 +41,7 @@ module.exports = function() {
 		}
 		this.incrbyLordData(uid,"rmb_day",rmb)
 		this.incrbyLordData(uid,"rmb",rmb)
+		this.checkVipLv(uid)
 		cb(true,{rmb_day : self.players[uid].rmb_day,rmb : self.players[uid].rmb})
 	}
 	//获得活动数据
@@ -101,6 +103,68 @@ module.exports = function() {
 			self.incrbyObj(uid,main_name,"onlineIndex",1)
 			let awardList = self.addItemStr(uid,online_time[data]["award"])
 			cb(true,awardList)
+		})
+	}
+	//检查vip等级
+	this.checkVipLv = function(uid) {
+		if(VIP[self.players[uid].vip+1]){
+			if(self.players[uid].rmb >= VIP[self.players[uid].vip+1]["rmb"]){
+				this.incrbyLordData(uid,"vip",1)
+				this.incrbyLordData(uid,"heroAmount",VIP[self.players[uid]["vip"]]["heroAmount"])
+				var notify = {
+					type : "vip",
+					curLv : self.players[uid].vip,
+					rmb : self.players[uid].rmb
+				}
+				this.sendToUser(uid,notify)
+				this.checkVipLv(uid)
+			}
+		}
+	}
+	//领取vip免费礼包
+	this.gainVipAward = function(uid,vip,cb) {
+		if(!VIP[vip]){
+			cb(false,"vip等级不存在")
+			return
+		}
+		if(self.players[uid].vip < vip){
+			cb(false,"vip等级不足 "+self.players[uid].vip+"/"+vip)
+			return
+		}
+		self.getObj(uid,main_name,"vip_free"+vip,function(data) {
+			if(data){
+				cb(false,"已领取")
+				return
+			}
+			self.incrbyObj(uid,main_name,"vip_free"+vip,1)
+			var awardList = self.addItemStr(uid,VIP[vip]["free_award"])
+			cb(true,awardList)
+		})
+	}
+	//购买vip付费礼包
+	this.buyVipAward = function(uid,vip,cb) {
+		if(!VIP[vip]){
+			cb(false,"vip等级不存在")
+			return
+		}
+		if(self.players[uid].vip < vip){
+			cb(false,"vip等级不足 "+self.players[uid].vip+"/"+vip)
+			return
+		}
+		self.getObj(uid,main_name,"vip_buy"+vip,function(data) {
+			if(data){
+				cb(false,"已领取")
+				return
+			}
+			self.consumeItems(uid,VIP[vip]["buy_pc"],1,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					self.incrbyObj(uid,main_name,"vip_buy"+vip,1)
+					var awardList = self.addItemStr(uid,VIP[vip]["buy_pa"])
+					cb(true,awardList)
+				}
+			})
 		})
 	}
 }

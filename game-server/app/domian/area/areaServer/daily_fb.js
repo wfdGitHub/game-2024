@@ -1,6 +1,7 @@
 //日常副本
-var daily_fb_base = require("../../../../config/gameCfg/daily_fb_base.json")
-var daily_fb_type = require("../../../../config/gameCfg/daily_fb_type.json")
+const daily_fb_base = require("../../../../config/gameCfg/daily_fb_base.json")
+const daily_fb_type = require("../../../../config/gameCfg/daily_fb_type.json")
+const VIP = require("../../../../config/gameCfg/VIP.json")
 var async = require("async")
 var main_name = "dailyfb"
 module.exports = function() {
@@ -97,7 +98,7 @@ module.exports = function() {
 					next()
 				}else{
 					//购买次数
-					if(buy < daily_fb_type[type]["free_count"]){
+					if(buy < daily_fb_type[type]["free_count"] + VIP[self.players[uid]["vip"]]["fb"]){
 						self.consumeItems(uid,daily_fb_type[type]["buy_pc"],buy+1,function(flag,err) {
 							if(flag){
 								self.incrbyObj(uid,main_name,type+"_buy",1)

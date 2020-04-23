@@ -1,7 +1,8 @@
 //竞技场
-var arena_cfg = require("../../../../config/gameCfg/arena_cfg.json")
-var arena_rank = require("../../../../config/gameCfg/arena_rank.json")
-var arena_shop = require("../../../../config/gameCfg/arena_shop.json")
+const arena_cfg = require("../../../../config/gameCfg/arena_cfg.json")
+const arena_rank = require("../../../../config/gameCfg/arena_rank.json")
+const arena_shop = require("../../../../config/gameCfg/arena_shop.json")
+const VIP = require("../../../../config/gameCfg/VIP.json")
 var util = require("../../../../util/util.js")
 var mainName = "arena"
 var correctNumerator = arena_cfg["correctNumerator"]["value"]			//修正值
@@ -257,7 +258,7 @@ module.exports = function() {
 	this.buyArenaCount = function(uid,cb) {
 		self.getObj(uid,mainName,"buyCount",function (count) {
 			count = parseInt(count) || 0
-			if(count >= buyCount){
+			if(count >= buyCount + VIP[self.players[uid]["vip"]]["arena"]){
 				cb(false,"购买次数已达上限")
 				return
 			}
