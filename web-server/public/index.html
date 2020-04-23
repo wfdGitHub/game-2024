@@ -74,6 +74,12 @@
             console.log(data);
         });
       }
+      //领取七天登陆礼包
+      var gainLoginAward = function(day) {
+        pomelo.request("area.weekTargetHandler.gainLoginAward", {day : day}, function(data) {
+            console.log(data);
+        });
+      }
       //领取每日礼包
       var gainDayAward = function(day) {
         pomelo.request("area.weekTargetHandler.gainDayAward", {day : day}, function(data) {

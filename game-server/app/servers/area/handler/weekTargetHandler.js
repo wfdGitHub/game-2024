@@ -13,6 +13,15 @@ weekTargetHandler.prototype.getWeekTargetData = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//领取七天登陆礼包
+weekTargetHandler.prototype.gainLoginAward = function(msg, session, next) {
+  let uid = session.uid
+  let areaId = session.get("areaId")
+  let day = msg.day
+  this.areaManager.areaMap[areaId].gainLoginAward(uid,day,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //领取每日礼包
 weekTargetHandler.prototype.gainDayAward = function(msg, session, next) {
   let uid = session.uid

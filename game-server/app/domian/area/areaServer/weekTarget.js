@@ -22,6 +22,26 @@ module.exports = function() {
 			cb(true,obj)
 		})
 	}
+	//领取七天登陆礼包
+	this.gainLoginAward = function(uid,day,cb) {
+		if(!week_day[day] || !week_day[day]["login_award"]){
+			cb(false,"每日礼包不存在")
+			return
+		}
+		if(day > self.players[uid].userDay){
+			cb(false,"不可领取 "+self.players[uid].userDay+"/"+day)
+			return
+		}
+		self.getObj(uid,main_name,"login_award"+day,function(data) {
+			if(data){
+				cb(false,"已领取")
+				return
+			}
+			self.incrbyObj(uid,main_name,"login_award"+day,1)
+			let awardList = self.addItemStr(uid,week_day[day]["login_award"])
+			cb(true,awardList)
+		})
+	}
 	//领取每日礼包
 	this.gainDayAward = function(uid,day,cb) {
 		if(!week_day[day] || !week_day[day]["day_award"]){

@@ -1,5 +1,6 @@
 {
   "1": {
+    "login_award": "201:100",
     "day_award": "201:100",
     "lv_limit": 10,
     "lv_award": "201:100",
@@ -9,6 +10,7 @@
     "goods2": 1002
   },
   "2": {
+    "login_award": "201:101",
     "day_award": "201:101",
     "lv_limit": 25,
     "lv_award": "201:101",
@@ -18,6 +20,7 @@
     "goods2": 1003
   },
   "3": {
+    "login_award": "201:102",
     "day_award": "201:102",
     "lv_limit": 30,
     "lv_award": "201:102",
@@ -27,6 +30,7 @@
     "goods2": 1004
   },
   "4": {
+    "login_award": "201:103",
     "day_award": "201:103",
     "lv_limit": 40,
     "lv_award": "201:103",
@@ -36,6 +40,7 @@
     "goods2": 1005
   },
   "5": {
+    "login_award": "201:104",
     "day_award": "201:104",
     "lv_limit": 45,
     "lv_award": "201:104",
@@ -45,6 +50,7 @@
     "goods2": 1006
   },
   "6": {
+    "login_award": "201:105",
     "day_award": "201:105",
     "lv_limit": 50,
     "lv_award": "201:105",
@@ -54,6 +60,7 @@
     "goods2": 1007
   },
   "7": {
+    "login_award": "201:106",
     "day_award": "201:106",
     "lv_limit": 60,
     "lv_award": "201:106",
