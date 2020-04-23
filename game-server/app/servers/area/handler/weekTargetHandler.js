@@ -50,6 +50,15 @@ weekTargetHandler.prototype.buyWeekTargetGoods = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//购买限购礼包
+weekTargetHandler.prototype.gainWeekTargetBox = function(msg, session, next) {
+  let uid = session.uid
+  let areaId = session.get("areaId")
+  let boxId = msg.boxId
+  this.areaManager.areaMap[areaId].gainWeekTargetBox(uid,boxId,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "weekTargetHandler",
