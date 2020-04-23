@@ -104,7 +104,6 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
         return
       }
       self.heroDao.incrbyHeroInfo(oriId,uid,hId,"lv",aimLv - heroInfo.lv,function(flag,data) {
-        self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,aimLv)
         next(null,{flag : flag,data : data})
       })
     })
@@ -244,7 +243,6 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                 self.heroDao.heroPrlvadnad(oriId,uid,data,function(flag,awardList) {
                   self.heroDao.incrbyHeroInfo(oriId,uid,target,"star",1,function(flag,star) {
                     if(flag){
-                      self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
                       if(star == 10){
                         var notify = {
                           type : "sysChat",
@@ -271,7 +269,6 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                 self.heroDao.heroPrlvadnad(oriId,uid,data,function(flag,awardList) {
                   self.heroDao.incrbyHeroInfo(oriId,uid,target,"star",1,function(flag,star) {
                     if(flag){
-                      self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
                       if(star == 10){
                         var notify = {
                           type : "sysChat",

@@ -182,8 +182,17 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 	this.redisDao.db.hincrby("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {
 		if(err)
 			console.log(err)
-		else
+		else{
+			switch(name){
+				case "star":
+					self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
+				break
+				case "lv":
+					self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
+				break
+			}
 			self.areaManager.areaMap[areaId].incrbyCEInfo(uid,hId,name,value)
+		}
 		if(cb)
 			cb(true,data)
 	})
