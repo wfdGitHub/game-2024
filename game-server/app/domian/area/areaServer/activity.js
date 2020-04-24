@@ -290,7 +290,7 @@ module.exports = function() {
 			}else{
 				setTimeout(function() {
 					self.setObj(uid,main_name,"highCard",1)
-					self.incrbyLordData(uid,"vip",1)
+					self.chageLordData(uid,"highCard",1)
 					self.recharge(uid,12800)
 					var awardLsit = self.addItemStr(uid,activity_cfg["high_card_award"]["value"])
 					var notify = {

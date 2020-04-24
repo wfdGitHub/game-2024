@@ -194,7 +194,6 @@ module.exports = function() {
 		}
 		self.getObj(uid,main_name,type+"_buy_count",function(value) {
 			value = Number(value)
-			console.log("111 ",bazaar_cfg[type]["max"] + VIP[self.players[uid]["vip"]][type] || 0,VIP[self.players[uid]["vip"]][type],VIP[self.players[uid]["vip"]][type]||0)
 			var maxCount = bazaar_cfg[type]["max"] + VIP[self.players[uid]["vip"]][type] || 0
 			if(value >= maxCount){
 				cb(false,"刷新次数达到上限")

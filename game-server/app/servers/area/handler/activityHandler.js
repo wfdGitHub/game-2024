@@ -73,6 +73,14 @@ activityHandler.prototype.gainActivityLvAward = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//激活等级基金
+activityHandler.prototype.activateLvFund = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].activateLvFund(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //领取战力奖励
 activityHandler.prototype.gainActivityCeAward = function(msg, session, next) {
   var uid = session.uid

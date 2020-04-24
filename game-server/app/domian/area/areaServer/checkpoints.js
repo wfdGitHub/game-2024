@@ -1,6 +1,7 @@
-var checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
-var checkpoints_task = require("../../../../config/gameCfg/checkpoints_task.json")
+const checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
+const checkpoints_task = require("../../../../config/gameCfg/checkpoints_task.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
+const activity_cfg = require("../../../../config/gameCfg/activity_cfg.json")
 var async = require("async")
 module.exports = function() {
 	var self = this
@@ -120,7 +121,10 @@ module.exports = function() {
 		  	}
 		  	var on_hook_award = checkpointsCfg[level].on_hook_award
 		  	// console.log("on_hook_award ",on_hook_award)
-		  	var rate = (awardTime * (1+VIP[self.players[uid]["vip"]]["onhookAward"])) / 60 
+		  	var rate = (1+VIP[self.players[uid]["vip"]]["onhookAward"])
+		  	if(self.players[uid]["highCard"])
+		  		rate += activity_cfg["high_card_onhook"]["value"]
+		  	rate = (awardTime * rate) / 60 
 		  	// console.log("rate ",rate,"awardTime ",awardTime)
 		  	self.taskUpdate(uid,"on_hook",1)
 		  	var awardList = self.addItemStr(uid,on_hook_award,rate)
@@ -131,12 +135,15 @@ module.exports = function() {
 	this.getQuickOnhookAward = function(uid,cb) {
 		var level = 0
 		var count = 0
+		var maxCount = 4 + VIP[self.players[uid]["vip"]]["quick"]
+		if(self.players[uid]["highCard"])
+			maxCount += activity_cfg["high_card_quik"]["value"]
 		async.waterfall([
 			function(next) {
 				//获取今日快速挂机次数
 				self.getPlayerData(uid,"quick",function(curCount) {
 					count  = Number(curCount) || 0
-					if(count < 4 + VIP[self.players[uid]["vip"]]["quick"])
+					if(count < maxCount)
 						next()
 					else
 						next("快速挂机次数已满")
@@ -169,7 +176,11 @@ module.exports = function() {
 			function(next) {
 				self.incrbyPlayerData(uid,"quick",1)
 			  	var on_hook_award = checkpointsCfg[level].on_hook_award
-			  	var awardList = self.addItemStr(uid,on_hook_award,120)
+			  	var rate = (1+VIP[self.players[uid]["vip"]]["onhookAward"])
+			  	if(self.players[uid]["highCard"])
+			  		rate += activity_cfg["high_card_onhook"]["value"]
+			  	rate = 120 * rate
+			  	var awardList = self.addItemStr(uid,on_hook_award,rate)
 			  	self.taskUpdate(uid,"quick",1)
 			  	cb(true,{awardList : awardList})
 			}

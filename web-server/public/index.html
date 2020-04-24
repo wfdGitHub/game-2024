@@ -73,6 +73,12 @@
             console.log(data);
         });
       }
+      //激活等级基金
+      var activateLvFund = function() {
+        pomelo.request("area.activityHandler.activateLvFund", {}, function(data) {
+            console.log(data);
+        });
+      }
       //领取等级奖励
       var gainActivityLvAward = function(index) {
         pomelo.request("area.activityHandler.gainActivityLvAward", {index:index}, function(data) {
