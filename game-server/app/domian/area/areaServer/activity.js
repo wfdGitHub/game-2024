@@ -17,7 +17,6 @@ module.exports = function() {
 		"onlineIndex" : 0,
 		"normalCard" : 0,
 		"normalRmb" : 0,
-		"highCard" : 0,
 		"normalAward" : 0,
 		"highAward" : 0
 	}
@@ -44,11 +43,6 @@ module.exports = function() {
 					data["normalCard"] = 0
 					data["normalRmb"] = 0
 				}
-			}
-			if(data["highCard"]){
-				data["highCard"]++
-				if(data["highCard"] > 30)
-					data["highCard"] = 0
 			}
 			data["normalAward"] = 0
 			data["highAward"] = 0
@@ -210,7 +204,25 @@ module.exports = function() {
 			})
 		})
 	}
-	//领取等级奖励
+	//激活等级基金
+	this.activateLvFund = function(uid,cb) {
+		self.getObj(uid,main_name,"lv_fund",function(data) {
+			if(data){
+				cb(false,"已激活基金")
+			}else{
+				setTimeout(function() {
+					self.setObj(uid,main_name,"lv_fund",1)
+					self.recharge(uid,6800)
+					var notify = {
+						type : "activateLvFund"
+					}
+					self.sendToUser(uid,notify)
+				},3000)
+				cb(true)
+			}
+		})
+	}
+	//领取等级基金奖励
 	this.gainActivityLvAward = function(uid,index,cb) {
 		if(!index || !activity_lv[index]){
 			cb(false,"index error"+index)
@@ -220,8 +232,12 @@ module.exports = function() {
 			cb(false,"等级不足 "+self.players[uid].level+"/"+activity_lv[index]["lv"])
 			return
 		}
-		self.getObj(uid,main_name,"lv_award"+index,function(data) {
-			if(data){
+		self.getHMObj(uid,main_name,["lv_fund","lv_award"+index],function(data) {
+			if(!data[0]){
+				cb(false,"未激活等级基金")
+				return
+			}
+			if(data[1]){
 				cb(false,"已领取")
 				return
 			}
@@ -269,14 +285,17 @@ module.exports = function() {
 	//激活专属月卡
 	this.activateHighCard = function(uid,cb) {
 		self.getObj(uid,main_name,"highCard",function(data) {
-			if(data != "0"){
+			if(data){
 				cb(false,"已激活专属月卡")
 			}else{
 				setTimeout(function() {
 					self.setObj(uid,main_name,"highCard",1)
-					self.recharge(uid,9800)
+					self.incrbyLordData(uid,"vip",1)
+					self.recharge(uid,12800)
+					var awardLsit = self.addItemStr(uid,activity_cfg["high_card_award"]["value"])
 					var notify = {
-						type : "activateHighCard"
+						type : "activateHighCard",
+						awardLsit : awardLsit
 					}
 					self.sendToUser(uid,notify)
 				},3000)
@@ -287,7 +306,7 @@ module.exports = function() {
 	//领取专属月卡
 	this.gainHighCardAward = function(uid,cb) {
 		self.getHMObj(uid,main_name,["highCard","highAward"],function(data) {
-			if(data[0] == "0"){
+			if(!data[0]){
 				cb(false,"未激活专属月卡")
 				return
 			}
