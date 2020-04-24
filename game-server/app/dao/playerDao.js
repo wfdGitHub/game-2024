@@ -8,7 +8,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		name : otps.name,
 		head : beginHero,
 		createTime : Date.now(),
-		rmb : 1000,
+		rmb : 0,
 		vip : 0,
 		rmb_day : 0,
 		exp : 0,

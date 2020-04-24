@@ -71,7 +71,7 @@ module.exports = function() {
 				    }
 				    //todo 判断战力
 				   	var atkTeam = fightInfo.team
-				   	var allCE = self.fightContorl.getTeamCE(atkTeam)
+				   	var allCE = self.getCE(uid)
 				   	if(allCE < daily_fb_base[fbId]["ce"]){
 				   		next("战力不足")
 				   		return

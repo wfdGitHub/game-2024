@@ -64,6 +64,49 @@ activityHandler.prototype.buyVipAward = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//领取等级奖励
+activityHandler.prototype.gainActivityLvAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  this.areaManager.areaMap[areaId].gainActivityLvAward(uid,index,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//领取战力奖励
+activityHandler.prototype.gainActivityCeAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  this.areaManager.areaMap[areaId].gainActivityCeAward(uid,index,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//领取普通月卡
+activityHandler.prototype.gainNormalCardAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].gainNormalCardAward(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//激活专属月卡
+activityHandler.prototype.activateHighCard = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].activateHighCard(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//领取专属月卡
+activityHandler.prototype.gainHighCardAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].gainHighCardAward(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+this.gainHighCardAward
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "activityHandler",

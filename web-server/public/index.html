@@ -68,6 +68,41 @@
         console.log(data)
       })
       //==============活动==============//
+      var getActivityData = function() {
+        pomelo.request("area.activityHandler.getActivityData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取等级奖励
+      var gainActivityLvAward = function(index) {
+        pomelo.request("area.activityHandler.gainActivityLvAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取战力奖励
+      var gainActivityCeAward = function(index) {
+        pomelo.request("area.activityHandler.gainActivityCeAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取普通月卡
+      var gainNormalCardAward = function() {
+        pomelo.request("area.activityHandler.gainNormalCardAward", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //激活专属月卡
+      var activateHighCard = function() {
+        pomelo.request("area.activityHandler.activateHighCard", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取专属月卡
+      var gainHighCardAward = function() {
+        pomelo.request("area.activityHandler.gainHighCardAward", {}, function(data) {
+            console.log(data);
+        });
+      }
       //领取VIP免费礼包
       var gainVipAward = function(vip) {
         pomelo.request("area.activityHandler.gainVipAward", {vip:vip}, function(data) {
@@ -1216,7 +1251,7 @@
   <body>
     <div class="g-button">
       登录系统 : 
-      <input id="test" type="button" value="登录账号" onclick="entry(100002)"/>
+      <input id="test" type="button" value="登录账号" onclick="entry(10005)"/>
       <input id="test" type="button" value="游客账号" onclick="entry(Date.now())"/>
       <input id="test" type="button" value="注册角色" onclick="register(2,''+Date.now(),1)"/>
       <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>
