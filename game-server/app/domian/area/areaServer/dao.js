@@ -28,7 +28,7 @@ module.exports = function() {
 		})
 	}
 	//批量设置角色hash数据
-	this.setHMObj = function(uid,objName,obj,cb) {''
+	this.setHMObj = function(uid,objName,obj,cb) {
 		this.redisDao.db.hmset("player:user:"+uid+":"+objName,obj,function(err,data) {
 			if(cb){
 				cb(data)

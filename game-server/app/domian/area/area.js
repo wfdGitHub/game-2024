@@ -5,7 +5,7 @@ var async = require("async")
 const standard_dl = require("../../../config/gameCfg/standard_dl.json")
 const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
-const areaServers = ["weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
+const areaServers = ["activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
@@ -136,7 +136,9 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 			playerInfo.areaDay = self.areaDay
 			playerInfo.userDay = util.getTimeDifference(playerInfo.createTime,Date.now())
 			self.players[uid] = playerInfo
-			if(playerInfo.dayStr != self.dayStr){
+			if(true || playerInfo.dayStr != self.dayStr){
+				playerInfo.rmb_day = 0
+				self.playerDao.setPlayerInfo({uid:uid,key:"rmb_day",value:0})
 				self.dayFirstLogin(uid)
 			}
 			cb(true,playerInfo)
@@ -145,7 +147,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 		cb(false,err)
 	})
 }
-//玩家首次登录
+//玩家当天首次登录
 area.prototype.dayFirstLogin = function(uid) {
 	console.log("玩家 "+uid+" 今日首次登录")
 	this.setObj(uid,"playerInfo","dayStr",this.dayStr)
@@ -156,6 +158,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.dayTaskRefresh(uid)
 	this.bazaarDayRefresh(uid)
 	this.shopRefresh(uid)
+	this.activityUpdate(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
