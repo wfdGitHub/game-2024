@@ -94,15 +94,20 @@ CDKeyDao.prototype.getCDTypeList = function(dataNum,cb) {
 	})
 }
 //生成礼包码
-CDKeyDao.prototype.createCDKey = function(type,num,count,expires,cb) {
+CDKeyDao.prototype.createCDKey = function(key,type,num,count,expires,cb) {
 	var self = this
 	var curTime = Date.now()
 	var list = []
 	var cdkeyList = []
-	for(let i = 0;i < num;i++){
-		var cdkey = stringRandom(18)
-		list.push([cdkey,type,curTime,expires,count])
-		cdkeyList.push(cdkey)
+	if(key && typeof(key) === "string"){
+		list.push([key,type,curTime,expires,count])
+		cdkeyList.push(key)
+	}else{
+		for(let i = 0;i < num;i++){
+			var cdkey = stringRandom(18)
+			list.push([cdkey,type,curTime,expires,count])
+			cdkeyList.push(cdkey)
+		}
 	}
 	var sql = "INSERT INTO CDKey(cdkey,type,c_time,expires,maxCount) VALUES ?"
 	self.db.query(sql,[list], function(err, res) {

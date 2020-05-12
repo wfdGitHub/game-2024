@@ -60,11 +60,12 @@ cdkeyHandler.prototype.createCDKey = function(msg, session, next) {
 	var num = msg.num
 	var count = msg.count
 	var expires = msg.expires
+	var key = msg.key
 	if(typeof(type) != "string" || typeof(num) != "number" || typeof(count) != "number" || typeof(expires) != "number"){
 		next(null,{"err":"参数错误"})
 		return
 	}
-	this.CDKeyDao.createCDKey(type,num,count,expires,function(flag,data) {
+	this.CDKeyDao.createCDKey(key,type,num,count,expires,function(flag,data) {
 		next(null,{flag:flag,data:data})
 	})
 }
