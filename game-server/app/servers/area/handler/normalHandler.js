@@ -4,6 +4,26 @@ var normalHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+//激活礼包码
+normalHandler.prototype.verifyCDKey = function(msg, session, next) {
+  var self = this
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var name = session.get("name")
+  var key = msg.key
+  if(typeof(key) != "string"){
+    next(null,{"err":"参数错误"})
+    return
+  }
+  self.CDKeyDao.verifyCDKey(key,uid,areaId,name,function(flag,str) {
+    if(!flag){
+      next(null,{flag:false,data:str})
+    }else{
+      var awardList = self.areaManager.areaMap[areaId].addItemStr(uid,str)
+      next(null,{flag : true,awardList : awardList})
+    }
+  })
+}
 //获取背包
 normalHandler.prototype.getBagList = function(msg, session, next) {
   var uid = session.uid
@@ -214,6 +234,9 @@ module.exports = function(app) {
     },{
       name : "redisDao",
       ref : "redisDao"
+    },{
+      name : "CDKeyDao",
+      ref : "CDKeyDao"
     }]
   })
 };

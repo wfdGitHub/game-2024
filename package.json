@@ -5,8 +5,11 @@
     "dependencies": {
         "bearcat": "^0.4.29",
         "express": "^4.16.4",
+        "generic-pool": "^3.7.1",
+        "mysql": "^2.18.1",
         "pomelo": "2.2.5",
         "redis": "^2.8.0",
+        "string-random": "^0.1.3",
         "uuid": "^3.3.2"
     }
 }

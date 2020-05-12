@@ -67,6 +67,55 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============礼包码============//
+      //创建礼包码类型
+      var createCDType = function(type,award,des) {
+        pomelo.request("admin.cdkeyHandler.createCDType", {type:type,award:award,des:des}, function(data) {
+            console.log(data);
+        });
+      }
+      //禁用礼包码类型
+      var pauseCDType = function(type) {
+        pomelo.request("admin.cdkeyHandler.pauseCDType", {type:type}, function(data) {
+            console.log(data);
+        });
+      }
+      //恢复礼包码类型
+      var resumeCDType = function(type) {
+        pomelo.request("admin.cdkeyHandler.resumeCDType", {type:type}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取礼包码类型表总页数
+      var getCDTypePage = function() {
+        pomelo.request("admin.cdkeyHandler.getCDTypePage", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取礼包码类型表一页数据
+      var getCDTypeList = function(dataNum) {
+        pomelo.request("admin.cdkeyHandler.getCDTypeList", {dataNum:dataNum}, function(data) {
+            console.log(data);
+        });
+      }
+      //生成礼包码
+      var createCDKey = function(type,num,count,expires) {
+        pomelo.request("admin.cdkeyHandler.createCDKey", {type:type,num:num,count:count,expires:expires}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取礼包码数据
+      var getCDKeyInfo = function(key) {
+        pomelo.request("admin.cdkeyHandler.getCDKeyInfo", {key:key}, function(data) {
+            console.log(data);
+        });
+      }
+      //激活礼包码
+      var verifyCDKey = function(key) {
+        pomelo.request("area.normalHandler.verifyCDKey", {key:key}, function(data) {
+            console.log(data);
+        });
+      }
       //==============活动==============//
       var getActivityData = function() {
         pomelo.request("area.activityHandler.getActivityData", {}, function(data) {
