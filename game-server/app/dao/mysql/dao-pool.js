@@ -9,7 +9,7 @@ var createMysqlPool = function () {
             return new Promise(function (resolve, reject) {  
   
                 var client = mysql.createConnection({  
-					host: "120.79.102.54",
+					host: "47.107.48.79",
 					user: "zhulu",
 					password: "ERt6Mcsmbpx24S2j",
 					database: "zhulu" ,
