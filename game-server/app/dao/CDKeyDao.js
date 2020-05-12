@@ -137,7 +137,7 @@ CDKeyDao.prototype.verifyCDKey = function(key,uid,area,name,cb) {
 				if(err){
 					cb(false,err)
 				}else if(value){
-					cb(false,"该类型礼包码已使用")
+					cb(false,"该类型礼包码已经激活过了")
 				}else{
 					var sql = "select * from CDType where type = ?"
 					self.db.query(sql,[data.type], function(err, res) {
