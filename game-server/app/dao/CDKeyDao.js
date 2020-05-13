@@ -95,6 +95,7 @@ CDKeyDao.prototype.getCDTypeList = function(dataNum,cb) {
 }
 //生成礼包码
 CDKeyDao.prototype.createCDKey = function(key,type,num,expires,cb) {
+	console.time("createCDKey")
 	var self = this
 	var curTime = Date.now()
 	var list = []
@@ -118,6 +119,7 @@ CDKeyDao.prototype.createCDKey = function(key,type,num,expires,cb) {
 			sql = 'update CDType SET total=total+? where type = ?'
 			self.db.query(sql,[num,type],function(){})
 			cb(true,cdkeyList)
+			console.timeEnd("createCDKey")
 		}
 	})
 }
