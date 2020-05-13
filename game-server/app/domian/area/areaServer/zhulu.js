@@ -397,7 +397,7 @@ module.exports = function() {
 				//恢复
 				for(var i = 0;i < userDatas[uid].zhuluTeam.length;i++){
 					if(userDatas[uid].zhuluTeam[i]){
-						if(userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]] !== undefined){
+						if(userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]]){
 							userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]] += 0.5
 							if(userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]] >= 1){
 								delete userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]]
