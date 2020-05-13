@@ -1,6 +1,6 @@
 const stringRandom = require('string-random');
 var mysql = require("./mysql/mysql.js")
-var pageNum = 20
+var pageNum = 11
 var CDKeyDao = function() {}
 CDKeyDao.prototype.init  = function() {
 	this.db = mysql.init()
