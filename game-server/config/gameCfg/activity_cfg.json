@@ -20,15 +20,19 @@
     "value": "202:200"
   },
   "high_card_onhook": {
-    "name": "挂机收益",
+    "name": "专属月卡挂机收益加成",
     "value": 0.1
   },
   "high_card_quik": {
-    "name": "快速挂机次数",
+    "name": "专属月卡快速挂机次数",
     "value": 3
   },
   "high_card_time": {
-    "name": "最长挂机时长",
+    "name": "专属月卡最长挂机时长",
     "value": 4
+  },
+  "first_recharge": {
+    "name": "首冲礼包",
+    "value": "202:100"
   }
 }

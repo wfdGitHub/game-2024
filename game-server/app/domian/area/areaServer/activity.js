@@ -4,6 +4,8 @@ const online_time = require("../../../../config/gameCfg/online_time.json")
 const activity_lv = require("../../../../config/gameCfg/activity_lv.json")
 const activity_cfg = require("../../../../config/gameCfg/activity_cfg.json")
 const activity_ce = require("../../../../config/gameCfg/activity_ce.json")
+const recharge = require("../../../../config/gameCfg/recharge.json")
+const recharge_total = require("../../../../config/gameCfg/recharge_total.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 var main_name = "activity"
 module.exports = function() {
@@ -49,20 +51,93 @@ module.exports = function() {
 			self.setHMObj(uid,main_name,data)
 		})
 	}
-	//模拟充值
-	this.test_recharge = function(uid,rmb,cb) {
-		if(!Number.isInteger(rmb)){
+	//领取首充礼包
+	this.gainFirstRechargeAward = function(uid,cb) {
+		if(!self.players[uid]["rmb"]){
+			cb(false,"未充值")
+		}else{
+			self.getObj(uid,main_name,"first_award",function(data) {
+				if(data){
+					cb(false,"已领取")
+				}else{
+					self.setObj(uid,main_name,"first_award",1)
+					var awardList = self.addItemStr(uid,activity_cfg["first_recharge"]["value"])
+					cb(true,awardList)
+				}
+			})
+		}
+	}
+	//领取累充奖励
+	this.gainRechargeTotalAward = function(uid,index,cb) {
+		if(!recharge_total[index]){
 			cb(false,"参数错误")
 			return
 		}
-		setTimeout(this.recharge.bind(this,uid,rmb),3000)
+		if(!self.players[uid]["rmb"] || self.players[uid]["rmb"] < recharge_total[index].rmb){
+			cb(false,"充值额度不足")
+			return
+		}
+		self.getObj(uid,main_name,"total_award_"+index,function(data) {
+			if(data){
+				cb(false,"已领取")
+			}else{
+				self.setObj(uid,main_name,"total_award_"+index,1)
+				var awardList = self.addItemStr(uid,recharge_total[index].award)
+				cb(true,awardList)
+			}
+		})
+	}
+	//领取单充奖励
+	this.gainRechargeOnceAward = function(uid,index,cb) {
+		if(!recharge[index]){
+			cb(false,"参数错误")
+			return
+		}
+		self.getHMObj(uid,main_name,["recharge_"+index,"once_award_"+index],function(data) {
+			if(!data[0]){
+				cb(false,"未充值该档位")
+			}else if(data[1]){
+				cb(false,"已领取")
+			}else{
+				self.setObj(uid,main_name,"once_award_"+index,1)
+				var awardList = self.addItemStr(uid,recharge[index].once_award)
+				cb(true,awardList)
+			}
+		})
+	}
+	//申请充值
+	this.apply_recharge = function(uid,index,cb) {
+		if(!recharge[index]){
+			cb(false,"参数错误")
+			return
+		}
+		setTimeout(this.recharge.bind(this,uid,index),3000)
 		cb(true)
 	}
 	//充值
-	this.recharge = function(uid,rmb) {
-		this.incrbyLordData(uid,"rmb_day",rmb)
-		this.incrbyLordData(uid,"rmb",rmb)
-		this.incrbyObj(uid,main_name,"normalRmb",rmb,function(data) {
+	this.recharge = function(uid,index) {
+		self.addUserRMB(uid,recharge[index].rmb)
+		self.incrbyObj(uid,main_name,"recharge_"+index,1,function(data) {
+			var gold = recharge[index].gold
+			var rate = 0
+			if(data == 1)
+				rate = recharge[index].first_rate
+			else
+				rate = recharge[index].normal_rate
+			var award = self.addItem({uid:uid,itemId:202,value:gold,rate:rate})
+			var notify = {
+				type : "recharge",
+				index : index,
+				award : award
+			}
+			self.sendToUser(uid,notify)
+		})
+	}
+	//增加rmb余额
+	this.addUserRMB = function(uid,rmb) {
+		self.incrbyLordData(uid,"rmb_day",rmb)
+		self.incrbyLordData(uid,"rmb",rmb)
+		self.incrbyObj(uid,main_name,"normalRmb",rmb,function(data) {
 			data = Number(data)
 			if((data - rmb) < activity_cfg["normal_card_rmb"]["value"] && data >= activity_cfg["normal_card_rmb"]["value"]){
 				self.setObj(uid,main_name,"normalCard",1)
@@ -72,14 +147,14 @@ module.exports = function() {
 				}
 				self.sendToUser(uid,notify)
 			}
+			var notify = {
+				type : "addUserRMB",
+				rmb_day : self.players[uid].rmb_day,
+				rmb : self.players[uid].rmb
+			}
+			self.sendToUser(uid,notify)
 		})
-		this.checkVipLv(uid)
-		var notify = {
-			type : "recharge",
-			rmb_day : self.players[uid].rmb_day,
-			rmb : self.players[uid].rmb
-		}
-		self.sendToUser(uid,notify)
+		self.checkVipLv(uid)
 	}
 	//获得活动数据
 	this.getActivityData = function(uid,cb) {
@@ -212,7 +287,7 @@ module.exports = function() {
 			}else{
 				setTimeout(function() {
 					self.setObj(uid,main_name,"lv_fund",1)
-					self.recharge(uid,6800)
+					self.addUserRMB(uid,6800)
 					var notify = {
 						type : "activateLvFund"
 					}
@@ -291,11 +366,11 @@ module.exports = function() {
 				setTimeout(function() {
 					self.setObj(uid,main_name,"highCard",1)
 					self.chageLordData(uid,"highCard",1)
-					self.recharge(uid,12800)
-					var awardLsit = self.addItemStr(uid,activity_cfg["high_card_award"]["value"])
+					self.addUserRMB(uid,12800)
+					var awardList = self.addItemStr(uid,activity_cfg["high_card_award"]["value"])
 					var notify = {
 						type : "activateHighCard",
-						awardLsit : awardLsit
+						awardList : awardList
 					}
 					self.sendToUser(uid,notify)
 				},3000)

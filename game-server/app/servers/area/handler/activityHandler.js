@@ -4,6 +4,32 @@ var activityHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 }
+//领取首充礼包
+activityHandler.prototype.gainFirstRechargeAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].gainFirstRechargeAward(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//领取累充奖励
+activityHandler.prototype.gainRechargeTotalAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  this.areaManager.areaMap[areaId].gainRechargeTotalAward(uid,index,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//领取单充奖励
+activityHandler.prototype.gainRechargeOnceAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  this.areaManager.areaMap[areaId].gainRechargeOnceAward(uid,index,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //获得活动数据
 activityHandler.prototype.getActivityData = function(msg, session, next) {
   var uid = session.uid
@@ -38,11 +64,11 @@ activityHandler.prototype.gainOnlineTimeAward = function(msg, session, next) {
   })
 }
 //模拟充值
-activityHandler.prototype.test_recharge = function(msg, session, next) {
+activityHandler.prototype.apply_recharge = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var rmb = msg.rmb
-  this.areaManager.areaMap[areaId].test_recharge(uid,rmb,function(flag,msg) {
+  var index = msg.index
+  this.areaManager.areaMap[areaId].apply_recharge(uid,index,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

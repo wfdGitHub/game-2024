@@ -1,0 +1,72 @@
+{
+  "1": {
+    "rmb": 600,
+    "gold": 60,
+    "first_rate": 3,
+    "normal_rate": 1,
+    "once_award": "201:100"
+  },
+  "2": {
+    "rmb": 3000,
+    "gold": 300,
+    "first_rate": 3,
+    "normal_rate": 1,
+    "once_award": "201:101"
+  },
+  "3": {
+    "rmb": 9800,
+    "gold": 980,
+    "first_rate": 3,
+    "normal_rate": 1,
+    "once_award": "201:102"
+  },
+  "4": {
+    "rmb": 19800,
+    "gold": 1980,
+    "first_rate": 3,
+    "normal_rate": 1,
+    "once_award": "201:103"
+  },
+  "5": {
+    "rmb": 32800,
+    "gold": 3280,
+    "first_rate": 3,
+    "normal_rate": 1,
+    "once_award": "201:104"
+  },
+  "6": {
+    "rmb": 64800,
+    "gold": 6480,
+    "first_rate": 3,
+    "normal_rate": 1,
+    "once_award": "201:105"
+  },
+  "7": {
+    "rmb": 129600,
+    "gold": 12960,
+    "first_rate": 3,
+    "normal_rate": 1,
+    "once_award": "201:106"
+  },
+  "8": {
+    "rmb": 259200,
+    "gold": 25920,
+    "first_rate": 3,
+    "normal_rate": 1,
+    "once_award": "201:107"
+  },
+  "9": {
+    "rmb": 498800,
+    "gold": 49880,
+    "first_rate": 3,
+    "normal_rate": 2,
+    "once_award": "201:108"
+  },
+  "10": {
+    "rmb": 998800,
+    "gold": 99880,
+    "first_rate": 3,
+    "normal_rate": 2,
+    "once_award": "201:109"
+  }
+}

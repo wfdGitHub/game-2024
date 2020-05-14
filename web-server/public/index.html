@@ -117,6 +117,25 @@
         });
       }
       //==============活动==============//
+      //领取首充礼包
+      var gainFirstRechargeAward = function() {
+        pomelo.request("area.activityHandler.gainFirstRechargeAward", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取累充奖励
+      var gainRechargeTotalAward = function(index) {
+        pomelo.request("area.activityHandler.gainRechargeTotalAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取单充奖励
+      var gainRechargeOnceAward = function(index) {
+        pomelo.request("area.activityHandler.gainRechargeOnceAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取活动数据
       var getActivityData = function() {
         pomelo.request("area.activityHandler.getActivityData", {}, function(data) {
             console.log(data);
@@ -195,8 +214,8 @@
         });
       }
       //模拟充值
-      var test_recharge = function(rmb) {
-        pomelo.request("area.activityHandler.test_recharge", {rmb : rmb}, function(data) {
+      var apply_recharge = function(index) {
+        pomelo.request("area.activityHandler.apply_recharge", {index : index}, function(data) {
             console.log(data);
         });
       }
