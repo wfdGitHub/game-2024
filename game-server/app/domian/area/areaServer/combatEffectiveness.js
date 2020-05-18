@@ -1,5 +1,6 @@
 //战力
 var async = require("async")
+const area_rank = require("../../../../config/gameCfg/area_rank.json")
 var main_name = "CE"
 module.exports = function() {
 	var self = this
@@ -17,7 +18,6 @@ module.exports = function() {
 						userTeamMaps[uid][data[i].hId] = i
 				}
 				self.updateCE(uid)
-				usersCes[uid] = self.fightContorl.getTeamCE(data)
 			}
 			if(cb)
 				cb(flag)
@@ -65,8 +65,9 @@ module.exports = function() {
 					oldCE : oldCE,
 					newCE : newCE
 				}
-				this.sendToUser(uid,notify)
+				self.sendToUser(uid,notify)
 				self.taskUpdate(uid,"totalCe",newCE)
+				self.updateAreaRank(uid,newCE)
 			}
 		}
 	}

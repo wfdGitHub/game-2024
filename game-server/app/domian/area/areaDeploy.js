@@ -46,6 +46,7 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 	var self = this
 	self.openArea(function(areaId) {
 		if(areaId){
+			self.redisDao.db.hset("area:area"+areaId+":areaInfo","oldArea",1)
 			for(let i = 0;i < areaList.length;i++){
 				self.areaDao.destoryArea(areaList[i])
 				self.pauseArea(areaList[i])

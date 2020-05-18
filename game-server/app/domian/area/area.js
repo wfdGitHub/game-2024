@@ -15,6 +15,7 @@ for(var i in standard_ce_cfg){
 var area = function(otps,app) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName
+	this.newArea = otps.oldArea?false:true
 	this.openTime = Number(otps.openTime)
 	this.areaDay = util.getTimeDifference(this.openTime,Date.now())
 	this.app = app

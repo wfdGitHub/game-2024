@@ -34,5 +34,13 @@
   "first_recharge": {
     "name": "首冲礼包",
     "value": "202:100"
+  },
+  "area_rank_time": {
+    "name": "冲榜活动截止时间",
+    "value": 417600000
+  },
+  "area_rank_extra": {
+    "name": "额外奖励战力要求",
+    "value": 1000000
   }
 }

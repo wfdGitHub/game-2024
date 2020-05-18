@@ -117,6 +117,18 @@
         });
       }
       //==============活动==============//
+      //获取冲榜活动排行榜
+      var getAreaRank = function() {
+        pomelo.request("area.activityHandler.getAreaRank", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取冲榜奖励
+      var gainAreaRankAward = function() {
+        pomelo.request("area.activityHandler.gainAreaRankAward", {}, function(data) {
+            console.log(data);
+        });
+      }
       //领取首充礼包
       var gainFirstRechargeAward = function() {
         pomelo.request("area.activityHandler.gainFirstRechargeAward", {}, function(data) {

@@ -52,6 +52,12 @@ util.prototype.getWeek = function(){
     var m_date = monday.getDate();
     return m_year+'-'+m_month+'-'+m_date
 }
+//获取当天零点时间
+util.prototype.getZeroTime = function(time){
+    var nowTemp = new Date(time);//当前时间
+    nowTemp.setHours(0,0,0,0)
+    return nowTemp.getTime()
+}
 util.prototype.getMonth = function(){
     let d1 = new Date();
     return d1.getFullYear() + "-" + d1.getMonth();

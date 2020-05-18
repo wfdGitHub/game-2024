@@ -8,7 +8,7 @@ accountDao.prototype.createAccount = function(otps,cb) {
 	var userInfo = {
 		unionid : otps.unionid,
 		head : otps.head || 0,
-		limit : 0,
+		limit : 10,
 		playTime : 0,
 		dayTime : 0,
 		dayStr : (new Date()).toDateString()

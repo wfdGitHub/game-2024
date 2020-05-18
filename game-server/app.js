@@ -57,6 +57,9 @@ bearcat.start(function() {
         app.route('area', areaRoute);
       });
       app.configure('production|development', 'area', function() {
+        var areaDeploy = bearcat.getBean("areaDeploy")
+        areaDeploy.init(app)
+        app.set("areaDeploy",areaDeploy)
         var areaManager = bearcat.getBean("areaManager")
         areaManager.init(app)
         app.set("areaManager",areaManager)
@@ -72,15 +75,20 @@ bearcat.start(function() {
         chat.init(app)
         app.set("chat",chat)
       });
-      app.configure('production|development', 'admin|connector|area', function(){
+      app.configure('production|development', 'admin', function(){
         var areaDeploy = bearcat.getBean("areaDeploy")
         areaDeploy.init(app)
         app.set("areaDeploy",areaDeploy)
+        var serverManager = bearcat.getBean("serverManager",app)
+        app.set("serverManager",serverManager)
       });
       app.configure('production|development', 'connector', function(){
-          var connectorManager = bearcat.getBean("connectorManager")
-          connectorManager.init(app)
-          app.set("connectorManager",connectorManager)
+        var areaDeploy = bearcat.getBean("areaDeploy")
+        areaDeploy.init(app)
+        app.set("areaDeploy",areaDeploy)
+        var connectorManager = bearcat.getBean("connectorManager")
+        connectorManager.init(app)
+        app.set("connectorManager",connectorManager)
       });
       console.log(app.serverId + " is ready")
     })

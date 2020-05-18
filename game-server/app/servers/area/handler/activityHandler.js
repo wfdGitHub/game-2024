@@ -140,7 +140,22 @@ activityHandler.prototype.gainHighCardAward = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
-this.gainHighCardAward
+//获取冲榜活动排行榜
+activityHandler.prototype.getAreaRank = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getAreaRank(function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//领取冲榜奖励
+activityHandler.prototype.gainAreaRankAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].gainAreaRankAward(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "activityHandler",
