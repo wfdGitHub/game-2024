@@ -429,6 +429,7 @@ module.exports = function() {
 				if(data){
 					cb(false,"已领取")
 				}else{
+					self.setObj(uid,main_name,"area_rank",1)
 					self.redisDao.db.zrevrank("area:area"+self.areaId+":zset:areaRank",uid,function(err,rank) {
 						console.log(err,rank,uid)
 						if(rank != null){
@@ -445,7 +446,6 @@ module.exports = function() {
 								award += "&"+area_rank[rank]["extra"]
 							}
 							self.sendMail(uid,"冲榜活动奖励",text,award)
-							self.setObj(uid,main_name,"area_rank",1)
 							cb(true)
 						}else{
 							cb(false,"未参与冲榜"+rank)
