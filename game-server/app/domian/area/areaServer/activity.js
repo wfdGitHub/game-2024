@@ -417,8 +417,17 @@ module.exports = function() {
 				area_rank_deadline : area_rank_deadline,
 			}
 			self.zrangewithscore("areaRank",-20,-1,function(list) {
-				info.list = list
-				cb(true,info)
+				var uids = []
+				var scores = []
+				for(var i = 0;i < list.length;i += 2){
+					uids.push(list[i])
+					scores.push(list[i+1])
+				}
+				self.getPlayerInfoByUids(uids,function(userInfos) {
+					info.userInfos = userInfos
+					info.scores = scores
+					cb(true,info)
+				})
 			})
 		}
 	}
