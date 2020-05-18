@@ -409,13 +409,13 @@ module.exports = function() {
 	}
 	//获取冲榜活动排行榜
 	this.getAreaRank = function(cb) {
-		var info = {
-			state : self.newArea,
-			area_rank_deadline : area_rank_deadline,
-		}
-		if(!info.state){
-			cb(true,info)
+		if(!self.newArea){
+			cb(true,{state : false})
 		}else{
+			var info = {
+				state : true,
+				area_rank_deadline : area_rank_deadline,
+			}
 			self.zrangewithscore("areaRank",-20,-1,function(list) {
 				info.list = list
 				cb(true,info)
