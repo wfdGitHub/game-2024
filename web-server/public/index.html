@@ -117,6 +117,12 @@
         });
       }
       //==============活动==============//
+      //领取消耗活动奖励
+      var gainConsumeTotalAward = function(index) {
+        pomelo.request("area.activityHandler.gainConsumeTotalAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
       //获取冲榜活动排行榜
       var getAreaRank = function() {
         pomelo.request("area.activityHandler.getAreaRank", {}, function(data) {

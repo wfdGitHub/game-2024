@@ -156,6 +156,16 @@ activityHandler.prototype.gainAreaRankAward = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//领取消耗活动奖励
+activityHandler.prototype.gainConsumeTotalAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  this.areaManager.areaMap[areaId].gainConsumeTotalAward(uid,index,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "activityHandler",

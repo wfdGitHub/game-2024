@@ -186,14 +186,18 @@ module.exports = function() {
 								self.taskUpdate(uid,"artifact_gain",value)
 							break
 						}
-						switch(itemId){
-							case 204:
-								if(curValue > 20000){
-									curValue = 20000
-									self.redisDao.db.hset("player:user:"+uid+":bag",itemId,curValue)
-								}
-							break
-						}
+					}
+					switch(itemId){
+						case 204:
+							if(curValue > 20000){
+								curValue = 20000
+								self.redisDao.db.hset("player:user:"+uid+":bag",itemId,curValue)
+							}
+						break
+						case 202:
+							if(value < 0)
+								self.incrbyPlayerData(uid,"gold_consume",Math.abs(value))
+						break
 					}
 					var notify = {
 						"type" : "addItem",

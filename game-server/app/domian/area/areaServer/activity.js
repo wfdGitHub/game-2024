@@ -8,6 +8,7 @@ const recharge = require("../../../../config/gameCfg/recharge.json")
 const recharge_total = require("../../../../config/gameCfg/recharge_total.json")
 const area_rank = require("../../../../config/gameCfg/area_rank.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
+const consumeTotal = require("../../../../config/gameCfg/consumeTotal.json")
 var util = require("../../../../util/util.js")
 var main_name = "activity"
 module.exports = function() {
@@ -108,57 +109,6 @@ module.exports = function() {
 			}
 		})
 	}
-	//申请充值
-	this.apply_recharge = function(uid,index,cb) {
-		if(!recharge[index]){
-			cb(false,"参数错误")
-			return
-		}
-		setTimeout(this.recharge.bind(this,uid,index),3000)
-		cb(true)
-	}
-	//充值
-	this.recharge = function(uid,index) {
-		self.addUserRMB(uid,recharge[index].rmb)
-		self.incrbyObj(uid,main_name,"recharge_"+index,1,function(data) {
-			var gold = recharge[index].gold
-			var rate = 0
-			if(data == 1)
-				rate = recharge[index].first_rate
-			else
-				rate = recharge[index].normal_rate
-			var award = self.addItem({uid:uid,itemId:202,value:gold,rate:rate})
-			var notify = {
-				type : "recharge",
-				index : index,
-				award : award
-			}
-			self.sendToUser(uid,notify)
-		})
-	}
-	//增加rmb余额
-	this.addUserRMB = function(uid,rmb) {
-		self.incrbyLordData(uid,"rmb_day",rmb)
-		self.incrbyLordData(uid,"rmb",rmb)
-		self.incrbyObj(uid,main_name,"normalRmb",rmb,function(data) {
-			data = Number(data)
-			if((data - rmb) < activity_cfg["normal_card_rmb"]["value"] && data >= activity_cfg["normal_card_rmb"]["value"]){
-				self.setObj(uid,main_name,"normalCard",1)
-				var notify = {
-					type : "activateNormalCard",
-					normalRmb : data
-				}
-				self.sendToUser(uid,notify)
-			}
-			var notify = {
-				type : "addUserRMB",
-				rmb_day : self.players[uid].rmb_day,
-				rmb : self.players[uid].rmb
-			}
-			self.sendToUser(uid,notify)
-		})
-		self.checkVipLv(uid)
-	}
 	//获得活动数据
 	this.getActivityData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(data) {
@@ -256,50 +206,6 @@ module.exports = function() {
 			cb(true,awardList)
 		})
 	}
-	//购买vip付费礼包
-	this.buyVipAward = function(uid,vip,cb) {
-		if(!vip || !VIP[vip]){
-			cb(false,"vip等级不存在")
-			return
-		}
-		if(self.players[uid].vip < vip){
-			cb(false,"vip等级不足 "+self.players[uid].vip+"/"+vip)
-			return
-		}
-		self.getObj(uid,main_name,"vip_buy"+vip,function(data) {
-			if(data){
-				cb(false,"已领取")
-				return
-			}
-			self.consumeItems(uid,VIP[vip]["buy_pc"],1,function(flag,err) {
-				if(!flag){
-					cb(false,err)
-				}else{
-					self.incrbyObj(uid,main_name,"vip_buy"+vip,1)
-					var awardList = self.addItemStr(uid,VIP[vip]["buy_pa"])
-					cb(true,awardList)
-				}
-			})
-		})
-	}
-	//激活等级基金
-	this.activateLvFund = function(uid,cb) {
-		self.getObj(uid,main_name,"lv_fund",function(data) {
-			if(data){
-				cb(false,"已激活基金")
-			}else{
-				setTimeout(function() {
-					self.setObj(uid,main_name,"lv_fund",1)
-					self.addUserRMB(uid,6800)
-					var notify = {
-						type : "activateLvFund"
-					}
-					self.sendToUser(uid,notify)
-				},3000)
-				cb(true)
-			}
-		})
-	}
 	//领取等级基金奖励
 	this.gainActivityLvAward = function(uid,index,cb) {
 		if(!index || !activity_lv[index]){
@@ -358,27 +264,6 @@ module.exports = function() {
 			self.incrbyObj(uid,main_name,"normalAward",1)
 			var awardList = self.addItemStr(uid,activity_cfg["normal_card_day"]["value"])
 			cb(true,awardList)
-		})
-	}
-	//激活专属月卡
-	this.activateHighCard = function(uid,cb) {
-		self.getObj(uid,main_name,"highCard",function(data) {
-			if(data){
-				cb(false,"已激活专属月卡")
-			}else{
-				setTimeout(function() {
-					self.setObj(uid,main_name,"highCard",1)
-					self.chageLordData(uid,"highCard",1)
-					self.addUserRMB(uid,12800)
-					var awardList = self.addItemStr(uid,activity_cfg["high_card_award"]["value"])
-					var notify = {
-						type : "activateHighCard",
-						awardList : awardList
-					}
-					self.sendToUser(uid,notify)
-				},3000)
-				cb(true)
-			}
 		})
 	}
 	//领取专属月卡
@@ -465,5 +350,28 @@ module.exports = function() {
 		}else{
 			cb(false,"未到领取时间")
 		}
+	}
+	//领取消耗活动奖励
+	this.gainConsumeTotalAward = function(uid,index,cb) {
+		if(!consumeTotal[index]){
+			cb(false,"档位不存在")
+			return
+		}
+		self.getObj(uid,main_name,"consumeTotal_"+index,function(data) {
+			if(data){
+				cb(false,"已领取")
+			}else{
+				self.getPlayerData(uid,"gold_consume",function(data) {
+					data = Number(data)
+					if(data && data >= consumeTotal[index]["need_gold"]){
+						self.incrbyObj(uid,main_name,"consumeTotal_"+index,1)
+						var awardList = self.addItemStr(uid,consumeTotal[index]["award"])
+						cb(true,awardList)
+					}else{
+						cb(false,"条件未达成"+data+"/"+consumeTotal[index]["need_gold"])
+					}
+				})
+			}
+		})
 	}
 }
