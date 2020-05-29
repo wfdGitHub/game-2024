@@ -642,7 +642,7 @@
             console.log(data);
         });
       }
-      //============任务相关==============//
+      //============关卡任务相关==============//
       //获取关卡任务数据
       var getCTaskInfo = function() {
         pomelo.request("area.taskHandler.getCTaskInfo", {}, function(data) {
@@ -1206,6 +1206,12 @@
       //准备战斗
       var readyFight = function() {
         pomelo.request("area.fightHandler.readyFight",{}, function(data) {
+            console.log(data);
+        })
+      }
+      //领取章节宝箱
+      var gainChapterAwardBox = function(chapterId) {
+        pomelo.request("area.fightHandler.gainChapterAwardBox",{chapterId : chapterId}, function(data) {
             console.log(data);
         })
       }

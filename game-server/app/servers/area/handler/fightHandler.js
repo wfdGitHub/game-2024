@@ -43,6 +43,16 @@ fightHandler.prototype.challengeCheckpoints = function(msg, session, next) {
     next(null,{flag : flag,result : result})
   })
 }
+//领取章节宝箱
+fightHandler.prototype.gainChapterAwardBox = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var chapterId = msg.chapterId
+  this.areaManager.areaMap[areaId].gainChapterAwardBox(uid,chapterId,function(flag,result) {
+    next(null,{flag : flag,result : result})
+  })
+}
+
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "fightHandler",

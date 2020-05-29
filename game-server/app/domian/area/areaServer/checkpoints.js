@@ -2,6 +2,7 @@ const checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
 const checkpoints_task = require("../../../../config/gameCfg/checkpoints_task.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 const activity_cfg = require("../../../../config/gameCfg/activity_cfg.json")
+const chapter = require("../../../../config/gameCfg/chapter.json")
 var async = require("async")
 module.exports = function() {
 	var self = this
@@ -17,7 +18,7 @@ module.exports = function() {
 	this.checkpointsUnload = function(uid) {
 		delete userCheckpoints[uid]
 	}
-	//获取BOSS挑战信息
+	//获取当前关卡
 	this.getCheckpointsInfo = function(uid) {
 		return userCheckpoints[uid]
 	}
@@ -222,6 +223,27 @@ module.exports = function() {
 			cb(true,{awardList : awardList})
 		}],function(err) {
 			cb(false,err)
+		})
+	}
+	//领取章节宝箱
+	this.gainChapterAwardBox = function(uid,chapterId,cb) {
+		if(!chapter[chapterId]){
+			cb(false,"章节不存在")
+			return
+		}
+		var level = self.getCheckpointsInfo(uid)
+		if(level < chapter[chapterId]["level"]){
+			cb(false,"未完成领取条件")
+			return
+		}
+		self.getPlayerData(uid,"chapterBox_"+chapterId,function(data) {
+			if(data){
+				cb(false,"已领取")
+				return
+			}
+			self.incrbyPlayerData(uid,"chapterBox_"+chapterId,1)
+	    	var awardList = self.addItemStr(uid,chapter[chapterId]["awardBox"])
+	    	cb(true,awardList)
 		})
 	}
 }
