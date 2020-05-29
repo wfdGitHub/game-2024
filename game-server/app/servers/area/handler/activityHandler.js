@@ -4,6 +4,15 @@ var activityHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 }
+//购买每日礼包
+activityHandler.prototype.buyAwardBagday = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  this.areaManager.areaMap[areaId].buyAwardBagday(uid,index,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //领取首充礼包
 activityHandler.prototype.gainFirstRechargeAward = function(msg, session, next) {
   var uid = session.uid

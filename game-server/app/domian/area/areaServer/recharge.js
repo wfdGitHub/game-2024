@@ -120,6 +120,19 @@ module.exports = function() {
 	}
 	//购买每日礼包
 	this.buyAwardBagday = function(uid,index,cb) {
-		
+		if(!index || !awardBag_day[index]){
+			cb(false,"礼包不存在")
+			return
+		}
+		self.getObj(uid,main_name,"bagDay_"+index,function(data) {
+			if(data > 0){
+				cb(false,"已购买")
+				return
+			}
+			self.addUserRMB(uid,awardBag_day[index].rmb)
+			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
+			var awardList = self.addItemStr(uid,awardBag_day[index].award)
+			cb(true,awardList)
+		})
 	}
 }

@@ -9,6 +9,7 @@ const recharge_total = require("../../../../config/gameCfg/recharge_total.json")
 const area_rank = require("../../../../config/gameCfg/area_rank.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 const consumeTotal = require("../../../../config/gameCfg/consumeTotal.json")
+const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
 var util = require("../../../../util/util.js")
 var main_name = "activity"
 module.exports = function() {
@@ -30,7 +31,7 @@ module.exports = function() {
 	this.activityUpdate = function(uid) {
 		self.getObjAll(uid,main_name,function(data) {
 			data = Object.assign({},baseInfo,data)
-			for(let i in data)
+			for(var i in data)
 				data[i] = Number(data[i])
 			if(data["signCount"]){
 				data["signDay"]++
@@ -52,6 +53,9 @@ module.exports = function() {
 			}
 			data["normalAward"] = 0
 			data["highAward"] = 0
+			for(var i in awardBag_day){
+				data["bagDay_"+i] = 0
+			}
 			self.setHMObj(uid,main_name,data)
 		})
 	}
