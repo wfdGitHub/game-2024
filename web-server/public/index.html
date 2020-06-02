@@ -67,6 +67,37 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============奖励邮件==========//
+      //设置全服邮件
+      var setAreaMail = function(areaList,title,text,atts,time) {
+        pomelo.request("admin.adminHandler.setAreaMail", {areaList:areaList,title:title,text:text,atts:atts,time:time}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取全服邮件
+      var getAreaMailList = function(areaId) {
+        pomelo.request("admin.adminHandler.getAreaMailList", {areaId:areaId}, function(data) {
+            console.log(data);
+        });
+      }
+      //删除全服邮件
+      var deleteAreaMailList = function(areaId,id) {
+        pomelo.request("admin.adminHandler.deleteAreaMailList", {areaId:areaId,id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //查询玩家信息
+      var getPlayerInfo = function(areaId,uid) {
+        pomelo.request("admin.adminHandler.getPlayerInfo", {areaId:areaId,id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //发送个人邮件
+      var adminSendMail = function(areaId,uid,title,text,atts) {
+        pomelo.request("admin.adminHandler.adminSendMail", {areaId:areaId,uid:uid,title:title,text:text,atts:atts}, function(data) {
+            console.log(data);
+        });
+      }      
       //==============礼包码============//
       //创建礼包码类型
       var createCDType = function(type,award,des) {

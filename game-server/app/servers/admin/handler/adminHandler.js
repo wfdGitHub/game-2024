@@ -90,6 +90,92 @@ adminHandler.prototype.getMergePlan = function(msg, session, next) {
 adminHandler.prototype.getServerList = function(msg, session, next) {
 	next(null,{flag : true,data : this.areaDeploy.getServerList()})
 }
+//设置全服邮件
+adminHandler.prototype.setAreaMail = function(msg, session, next) {
+	var areaList = msg.areaList
+	var title = msg.title
+	var text = msg.text
+	var atts = msg.atts
+	var time = msg.time
+	if(!areaList || typeof(title) != "string" || typeof(text) != "string" || typeof(atts) != "string" || !Number.isInteger(time)){
+		next(null,{flag : false,err : "参数错误"})
+		return
+	}
+	var serverIds = []
+	for(var i = 0;i < areaList.length;i++){
+		var serverId = this.areaDeploy.getServer(areaList[i])
+	    if(!serverId){
+	        next(null,{flag : false,err : "服务器不存在"+areaList[i]})
+	        return
+	    }
+	    serverIds.push(serverId)
+	}
+	for(var i = 0;i < serverIds.length;i++){
+	    this.app.rpc.area.areaRemote.setAreaMail.toServer(serverIds[i],areaList[i],title,text,atts,time,function(flag,data) {})
+	}
+	next(null,{flag : true})
+}
+//获取全服邮件
+adminHandler.prototype.getAreaMailList = function(msg, session, next) {
+	var areaId = msg.areaId
+	var serverId = this.areaDeploy.getServer(areaId)
+    if(!serverId){
+        next(null,{flag : false,err : "服务器不存在"})
+        return
+    }
+    this.app.rpc.area.areaRemote.getAreaMailList.toServer(serverId,areaId,function(flag,list) {
+    	next(null,{flag : true,list : list})
+	})
+}
+//删除全服邮件
+adminHandler.prototype.deleteAreaMailList = function(msg, session, next) {
+	var areaId = msg.areaId
+	var id = msg.id
+	var serverId = this.areaDeploy.getServer(areaId)
+    if(!serverId){
+        next(null,{flag : false,err : "服务器不存在"})
+        return
+    }
+    this.app.rpc.area.areaRemote.deleteAreaMailList.toServer(serverId,areaId,id,function(flag,list) {
+    	next(null,{flag : true,list : list})
+	})
+}
+//查询玩家信息
+adminHandler.prototype.getPlayerInfo = function(msg, session, next) {
+	var areaId = msg.areaId
+	var uid = msg.uid
+	if(!accId){
+		next(null,{flag : false,err : "未登录账号"})
+		return
+	}
+	if(!areaId){
+		next(null,{flag : false,err : "areaId error"})
+		return
+	}
+	this.playerDao.getPlayerInfo({areaId : areaId,uid : uid},function(playerInfo) {
+		if(playerInfo){
+			next(null,{flag : true,msg : playerInfo})
+		}else{
+			next(null,{flag : false})
+		}
+	})
+}
+//发送个人邮件
+adminHandler.prototype.adminSendMail = function(msg, session, next) {
+	var areaId = msg.areaId
+	var uid = msg.uid
+	var title = msg.title
+	var text = msg.text
+	var atts = msg.atts
+	var serverId = this.areaDeploy.getServer(areaId)
+    if(!serverId){
+        next(null,{flag : false,err : "服务器不存在"})
+        return
+    }
+    this.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,function(flag,list) {
+    	next(null,{flag : true,list : list})
+	})
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "adminHandler",
@@ -101,6 +187,9 @@ module.exports = function(app) {
 		props : [{
 			name : "accountDao",
 			ref : "accountDao"
+		},{
+			name : "playerDao",
+			ref : "playerDao"
 		}]
 	})
 }

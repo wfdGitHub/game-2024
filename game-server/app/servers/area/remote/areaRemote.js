@@ -77,6 +77,30 @@ areaRemote.prototype.sendMail = function(uid,areaId,title,text,atts,cb) {
 		cb(false)
 	}
 }
+//设置全服邮件
+areaRemote.prototype.setAreaMail = function(areaId,title,text,atts,time,cb) {
+	if(this.areaManager.areaMap[areaId]){
+		this.areaManager.areaMap[areaId].setAreaMail(title,text,atts,time,cb)
+	}else{
+		cb(false)
+	}
+}
+//获取全服邮件
+areaRemote.prototype.getAreaMailList = function(areaId,cb) {
+	if(this.areaManager.areaMap[areaId]){
+		this.areaManager.areaMap[areaId].getAreaMailList(cb)
+	}else{
+		cb(false)
+	}
+}
+//删除全服邮件
+areaRemote.prototype.deleteAreaMailList = function(areaId,id,cb) {
+	if(this.areaManager.areaMap[areaId]){
+		this.areaManager.areaMap[areaId].deleteAreaMailList(id,cb)
+	}else{
+		cb(false)
+	}
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "areaRemote",

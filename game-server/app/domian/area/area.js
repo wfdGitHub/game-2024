@@ -46,6 +46,7 @@ area.prototype.init = function() {
 		}
 	})
 	this.worldBossCheck()
+	this.initAreaMail()
 	this.timer = setInterval(this.update.bind(this),1000)
 }
 //服务器关闭
@@ -115,6 +116,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 			})
 		},
 		function(next) {
+			self.checkAreaMailAll(uid)
 			self.zhuluLoad(uid,next)
 		},
 		function() {
