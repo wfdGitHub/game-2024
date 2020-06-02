@@ -235,8 +235,9 @@ model.useAttackSkill = function(skill) {
 	}
 	var addAmp = 0
 	//判断怒气增加伤害
-	if(skill.character.needAnger > 4){
-		addAmp += (skill.character.needAnger - 4) * 0.15
+	if(skill.character.allAnger && skill.angerAmp){
+		addAmp += skill.angerAmp
+		delete skill.angerAmp
 	}
 	//判断技能目标减少
 	var lessNum = this.locator.getTargetsNum(skill.targetType) - targets.length

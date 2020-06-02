@@ -172,8 +172,12 @@ model.prototype.action = function() {
 				if(this.seeded.random("不消耗怒气判断") > this.character.skill_free)
 					this.character.lessAnger(this.character.needAnger)
 			}
-			else
+			else if(this.character.allAnger){
+				skill.angerAmp = (this.character.curAnger - 4) * 0.15
+				this.character.lessAnger(this.character.curAnger)
+			}else{
 				this.character.lessAnger(this.character.needAnger)
+			}
 		}else{
 			if(!this.character.disarm){
 				skill = this.character.defaultSkill

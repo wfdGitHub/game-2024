@@ -38,6 +38,7 @@ var model = function(otps) {
 
 	this.needAnger = otps["needAnger"] || 4				//技能所需怒气值
 	this.curAnger = (otps["curAnger"] || 0) + 2	//当前怒气值
+	this.allAnger = otps["allAnger"] || false   //技能消耗所有怒气
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
 	//=========特殊属性=======//
