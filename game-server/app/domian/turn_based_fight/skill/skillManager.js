@@ -103,8 +103,10 @@ model.useSkill = function(skill) {
 	}
 	if(skill.isAnger && !skill.character.died){
 		//释放技能后恢复自身怒气
-		if(skill.skill_anger_s)
-			skill.character.addAnger(skill.character.skill_anger_s,skill.skillId)
+		if(skill.skill_anger_s || skill.character.skill_anger_s){
+			var skill_anger_s = (skill.skill_anger_s || 0) + (skill.character.skill_anger_s || 0)
+			skill.character.addAnger(skill_anger_s,skill.skillId)
+		}
 		//释放技能后恢复全体队友怒气
 		if(skill.skill_anger_a)
 			for(var i = 0;i < skill.character.team.length;i++)
