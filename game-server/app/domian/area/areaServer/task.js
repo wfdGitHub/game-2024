@@ -265,17 +265,6 @@ module.exports = function() {
 			cb(true,data)
 		})
 	}
-	//进阶战令
-	this.advanceWarHorn = function(uid,cb) {
-		self.getObj(uid,war_name,"high",function(data) {
-			if(data == 1){
-				cb(false,"已进阶")
-				return
-			}
-			self.setObj(uid,war_name,"high",1)
-			cb(true)
-		})
-	}
 	//购买等级
 	this.buyWarHornLv = function(uid,count,cb) {
 		if(!Number.isInteger(count) ||	count <= 0){
