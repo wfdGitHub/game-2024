@@ -3,6 +3,7 @@ const recharge_total = require("../../../../config/gameCfg/recharge_total.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 const activity_cfg = require("../../../../config/gameCfg/activity_cfg.json")
 const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
+var war_horn = require("../../../../config/gameCfg/war_horn.json")
 var main_name = "activity"
 module.exports = function() {
 	var self = this
@@ -133,6 +134,22 @@ module.exports = function() {
 			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
 			var awardList = self.addItemStr(uid,awardBag_day[index].award)
 			cb(true,awardList)
+		})
+	}
+	//进阶战令
+	this.advanceWarHorn = function(uid,cb) {
+		let curMonth = (new Date()).getMonth()
+		self.getObj(uid,"war_horn","high",function(data) {
+			if(data == 1){
+				cb(false,"已进阶")
+				return
+			}
+			self.addUserRMB(uid,12800)
+			self.setObj(uid,"war_horn","high",1)
+			self.incrbyObj(uid,"war_horn","exp",war_horn[curMonth]["exp"],function(exp) {
+				var awardList = self.addItemStr(uid,war_horn[curMonth]["award"])
+				cb(true,{awardList:awardList,exp:exp})
+			})
 		})
 	}
 }
