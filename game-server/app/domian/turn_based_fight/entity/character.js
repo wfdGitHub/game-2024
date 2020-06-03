@@ -388,14 +388,14 @@ model.prototype.lessHP = function(value) {
 	return realValue
 }
 //恢复怒气
-model.prototype.addAnger = function(value,skillId) {
+model.prototype.addAnger = function(value,hide) {
 	value = Math.floor(value) || 1
 	this.curAnger += value
-	fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,skillId : skillId})
+	fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,hide : hide})
 	return value
 }
 //减少怒气
-model.prototype.lessAnger = function(value,skillId) {
+model.prototype.lessAnger = function(value,hide) {
 	value = Math.floor(value) || 1
 	var realValue = value
 	if((this.curAnger - value) < 0){
@@ -405,7 +405,7 @@ model.prototype.lessAnger = function(value,skillId) {
 		this.curAnger -= value
 	}
 	if(realValue)
-		fightRecord.push({type : "lessAnger",realValue : realValue,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,skillId : skillId})
+		fightRecord.push({type : "lessAnger",realValue : realValue,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,hide : hide})
 	return realValue
 }
 //获取属性

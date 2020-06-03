@@ -177,12 +177,12 @@ model.prototype.action = function() {
 				value = 0
 			}
 			if(value){
-				this.character.lessAnger(value)
+				this.character.lessAnger(value,value>4?false:true)
 			}
 		}else{
 			if(!this.character.disarm){
 				skill = this.character.defaultSkill
-				this.character.addAnger(2)
+				this.character.addAnger(2,true)
 			}
 		}
 	}
