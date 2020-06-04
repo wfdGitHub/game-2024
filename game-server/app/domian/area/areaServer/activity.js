@@ -305,7 +305,7 @@ module.exports = function() {
 				state : true,
 				area_rank_deadline : area_rank_deadline,
 			}
-			self.zrangewithscore("areaRank",-20,-1,function(list) {
+			self.zrangewithscore("areaRank",-10,-1,function(list) {
 				var uids = []
 				var scores = []
 				for(var i = 0;i < list.length;i += 2){
