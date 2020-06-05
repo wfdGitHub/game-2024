@@ -118,10 +118,10 @@
     "exp": 30
   },
   "100014": {
-    "title": "领取挂机奖励2次",
+    "title": "领取挂机奖励3次",
     "refresh": "day",
     "type": "on_hook",
-    "value": 2,
+    "value": 3,
     "award": "504000:1",
     "liveness": 10,
     "exp": 30
@@ -2045,6 +2045,515 @@
     "next": 201214,
     "inherit": true,
     "award": "1000070:70"
+  },
+  "201301": {
+    "title": "英雄升级5级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 5,
+    "value": 1,
+    "inherit": true,
+    "award": "202:5"
+  },
+  "201302": {
+    "title": "英雄升级10级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 10,
+    "value": 1,
+    "next": 201302,
+    "inherit": true,
+    "award": "202:10"
+  },
+  "201303": {
+    "title": "英雄升级15级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 15,
+    "value": 1,
+    "next": 201303,
+    "inherit": true,
+    "award": "202:15"
+  },
+  "201304": {
+    "title": "英雄升级20级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 20,
+    "value": 1,
+    "next": 201304,
+    "inherit": true,
+    "award": "202:20"
+  },
+  "201305": {
+    "title": "英雄升级25级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 25,
+    "value": 1,
+    "next": 201305,
+    "inherit": true,
+    "award": "202:25"
+  },
+  "201306": {
+    "title": "英雄升级30级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 30,
+    "value": 1,
+    "next": 201306,
+    "inherit": true,
+    "award": "202:30"
+  },
+  "201307": {
+    "title": "英雄升级35级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 35,
+    "value": 1,
+    "next": 201307,
+    "inherit": true,
+    "award": "202:35"
+  },
+  "201308": {
+    "title": "英雄升级40级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 40,
+    "value": 1,
+    "next": 201308,
+    "inherit": true,
+    "award": "202:40"
+  },
+  "201309": {
+    "title": "英雄升级45级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 45,
+    "value": 1,
+    "next": 201309,
+    "inherit": true,
+    "award": "202:45"
+  },
+  "201310": {
+    "title": "英雄升级50级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 50,
+    "value": 1,
+    "next": 201310,
+    "inherit": true,
+    "award": "202:50"
+  },
+  "201311": {
+    "title": "英雄升级55级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 55,
+    "value": 1,
+    "next": 201311,
+    "inherit": true,
+    "award": "202:55"
+  },
+  "201312": {
+    "title": "英雄升级60级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 60,
+    "value": 1,
+    "next": 201312,
+    "inherit": true,
+    "award": "202:60"
+  },
+  "201313": {
+    "title": "英雄升级65级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 65,
+    "value": 1,
+    "next": 201313,
+    "inherit": true,
+    "award": "202:65"
+  },
+  "201314": {
+    "title": "英雄升级70级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 70,
+    "value": 1,
+    "next": 201314,
+    "inherit": true,
+    "award": "202:70"
+  },
+  "201315": {
+    "title": "英雄升级75级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 75,
+    "value": 1,
+    "next": 201315,
+    "inherit": true,
+    "award": "202:75"
+  },
+  "201316": {
+    "title": "英雄升级80级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 80,
+    "value": 1,
+    "next": 201316,
+    "inherit": true,
+    "award": "202:80"
+  },
+  "201317": {
+    "title": "英雄升级85级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 85,
+    "value": 1,
+    "next": 201317,
+    "inherit": true,
+    "award": "202:85"
+  },
+  "201318": {
+    "title": "英雄升级90级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 90,
+    "value": 1,
+    "next": 201318,
+    "inherit": true,
+    "award": "202:90"
+  },
+  "201319": {
+    "title": "英雄升级95级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 95,
+    "value": 1,
+    "next": 201319,
+    "inherit": true,
+    "award": "202:95"
+  },
+  "201320": {
+    "title": "英雄升级100级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 100,
+    "value": 1,
+    "next": 201320,
+    "inherit": true,
+    "award": "202:100"
+  },
+  "201321": {
+    "title": "英雄升级105级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 105,
+    "value": 1,
+    "next": 201321,
+    "inherit": true,
+    "award": "202:105"
+  },
+  "201322": {
+    "title": "英雄升级110级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 110,
+    "value": 1,
+    "next": 201322,
+    "inherit": true,
+    "award": "202:110"
+  },
+  "201323": {
+    "title": "英雄升级115级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 115,
+    "value": 1,
+    "next": 201323,
+    "inherit": true,
+    "award": "202:115"
+  },
+  "201324": {
+    "title": "英雄升级120级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 120,
+    "value": 1,
+    "next": 201324,
+    "inherit": true,
+    "award": "202:120"
+  },
+  "201325": {
+    "title": "英雄升级125级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 125,
+    "value": 1,
+    "next": 201325,
+    "inherit": true,
+    "award": "202:125"
+  },
+  "201326": {
+    "title": "英雄升级130级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 130,
+    "value": 1,
+    "next": 201326,
+    "inherit": true,
+    "award": "202:130"
+  },
+  "201327": {
+    "title": "英雄升级135级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 135,
+    "value": 1,
+    "next": 201327,
+    "inherit": true,
+    "award": "202:135"
+  },
+  "201328": {
+    "title": "英雄升级140级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 140,
+    "value": 1,
+    "next": 201328,
+    "inherit": true,
+    "award": "202:140"
+  },
+  "201329": {
+    "title": "英雄升级145级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 145,
+    "value": 1,
+    "next": 201329,
+    "inherit": true,
+    "award": "202:145"
+  },
+  "201330": {
+    "title": "英雄升级150级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 150,
+    "value": 1,
+    "next": 201330,
+    "inherit": true,
+    "award": "202:150"
+  },
+  "201331": {
+    "title": "英雄升级155级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 155,
+    "value": 1,
+    "next": 201331,
+    "inherit": true,
+    "award": "202:155"
+  },
+  "201332": {
+    "title": "英雄升级160级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 160,
+    "value": 1,
+    "next": 201332,
+    "inherit": true,
+    "award": "202:160"
+  },
+  "201333": {
+    "title": "英雄升级165级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 165,
+    "value": 1,
+    "next": 201333,
+    "inherit": true,
+    "award": "202:165"
+  },
+  "201334": {
+    "title": "英雄升级170级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 170,
+    "value": 1,
+    "next": 201334,
+    "inherit": true,
+    "award": "202:170"
+  },
+  "201335": {
+    "title": "英雄升级175级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 175,
+    "value": 1,
+    "next": 201335,
+    "inherit": true,
+    "award": "202:175"
+  },
+  "201336": {
+    "title": "英雄升级180级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 180,
+    "value": 1,
+    "next": 201336,
+    "inherit": true,
+    "award": "202:180"
+  },
+  "201337": {
+    "title": "英雄升级185级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 185,
+    "value": 1,
+    "next": 201337,
+    "inherit": true,
+    "award": "202:185"
+  },
+  "201338": {
+    "title": "英雄升级190级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 190,
+    "value": 1,
+    "next": 201338,
+    "inherit": true,
+    "award": "202:190"
+  },
+  "201339": {
+    "title": "英雄升级195级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 195,
+    "value": 1,
+    "next": 201339,
+    "inherit": true,
+    "award": "202:195"
+  },
+  "201340": {
+    "title": "英雄升级200级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 200,
+    "value": 1,
+    "next": 201340,
+    "inherit": true,
+    "award": "202:200"
+  },
+  "201341": {
+    "title": "英雄升级205级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 205,
+    "value": 1,
+    "next": 201341,
+    "inherit": true,
+    "award": "202:205"
+  },
+  "201342": {
+    "title": "英雄升级210级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 210,
+    "value": 1,
+    "next": 201342,
+    "inherit": true,
+    "award": "202:210"
+  },
+  "201343": {
+    "title": "英雄升级215级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 215,
+    "value": 1,
+    "next": 201343,
+    "inherit": true,
+    "award": "202:215"
+  },
+  "201344": {
+    "title": "英雄升级220级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 220,
+    "value": 1,
+    "next": 201344,
+    "inherit": true,
+    "award": "202:220"
+  },
+  "201345": {
+    "title": "英雄升级225级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 225,
+    "value": 1,
+    "next": 201345,
+    "inherit": true,
+    "award": "202:225"
+  },
+  "201346": {
+    "title": "英雄升级230级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 230,
+    "value": 1,
+    "next": 201346,
+    "inherit": true,
+    "award": "202:230"
+  },
+  "201347": {
+    "title": "英雄升级235级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 235,
+    "value": 1,
+    "next": 201347,
+    "inherit": true,
+    "award": "202:235"
+  },
+  "201348": {
+    "title": "英雄升级240级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 240,
+    "value": 1,
+    "next": 201348,
+    "inherit": true,
+    "award": "202:240"
+  },
+  "201349": {
+    "title": "英雄升级245级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 245,
+    "value": 1,
+    "next": 201349,
+    "inherit": true,
+    "award": "202:245"
+  },
+  "201350": {
+    "title": "英雄升级250级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 250,
+    "value": 1,
+    "next": 201350,
+    "inherit": true,
+    "award": "202:250"
+  },
+  "201351": {
+    "title": "英雄升级255级",
+    "refresh": "always",
+    "type": "heroLv",
+    "arg": 255,
+    "value": 1,
+    "next": 201351,
+    "inherit": true,
+    "award": "202:255"
   },
   "300101": {
     "title": "【每周】连续登陆",

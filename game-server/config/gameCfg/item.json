@@ -219,7 +219,7 @@
     "quality": 5
   },
   "105060": {
-    "name": "太乙真人碎片",
+    "name": "托塔天王碎片",
     "des": "集齐30个碎片即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -229,7 +229,7 @@
     "quality": 5
   },
   "105070": {
-    "name": "南极仙翁碎片",
+    "name": "五行天尊碎片",
     "des": "集齐30个碎片即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -279,7 +279,7 @@
     "quality": 5
   },
   "105120": {
-    "name": "灵符女娲碎片",
+    "name": "仙乐碎片",
     "des": "集齐30个碎片即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -345,7 +345,7 @@
     "quality": 4
   },
   "204030": {
-    "name": "文人碎片",
+    "name": "书生碎片",
     "des": "集齐30个碎片即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -429,7 +429,7 @@
     "quality": 5
   },
   "205060": {
-    "name": "瑶姬碎片",
+    "name": "杜康碎片",
     "des": "集齐30个碎片即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -459,7 +459,7 @@
     "quality": 5
   },
   "205090": {
-    "name": "伏羲碎片",
+    "name": "舞华碎片",
     "des": "集齐30个碎片即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -629,7 +629,7 @@
     "quality": 5
   },
   "305050": {
-    "name": "后卿碎片",
+    "name": "金翅大鹏碎片",
     "des": "集齐30个碎片即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -659,7 +659,7 @@
     "quality": 5
   },
   "305080": {
-    "name": "牛魔王碎片",
+    "name": "白象碎片",
     "des": "集齐30个碎片即可召唤该英雄",
     "isBag": true,
     "type": "heroChip",
@@ -1080,13 +1080,37 @@
     "quality": 5
   },
   "1001008": {
-    "name": "橙色套装装备箱",
+    "name": "橙色套装箱",
     "des": "可开出一套橙色1星装备",
     "isBag": true,
     "type": "item",
     "useType": "chest",
     "arg": "equip_chest_6",
     "quality": 5
+  },
+  "1001009": {
+    "name": "紫色套装箱",
+    "des": "可开出一套紫色1星装备",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "equip_chest_8"
+  },
+  "1001010": {
+    "name": "蓝色套装箱",
+    "des": "可开出一套蓝色1星装备",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "equip_chest_9"
+  },
+  "1001011": {
+    "name": "红色套装箱",
+    "des": "可开出一套红色1星装备",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "equip_chest_10"
   },
   "1002001": {
     "name": "金宝箱(麒麟)",
@@ -1447,6 +1471,62 @@
     "type": "item",
     "useType": "chest",
     "arg": "sjBOOS_15_chest_3"
+  },
+  "1003001": {
+    "name": "初级秘宝箱",
+    "des": "可随机获得以下一件道具",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "sgmb_ys_1_chest_1"
+  },
+  "1003002": {
+    "name": "中级秘宝箱",
+    "des": "可随机获得以下一件道具",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "sgmb_ys_2_chest_2"
+  },
+  "1003003": {
+    "name": "高级秘宝箱",
+    "des": "可随机获得以下一件道具",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "sgmb_ys_3_chest_3"
+  },
+  "1003004": {
+    "name": "初级掉落箱",
+    "des": "可随机获得以下一件道具",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "sgmb_js_1_chest_1"
+  },
+  "1003005": {
+    "name": "中级掉落箱",
+    "des": "可随机获得以下一件道具",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "sgmb_js_2_chest_2"
+  },
+  "1003006": {
+    "name": "高级掉落箱",
+    "des": "可随机获得以下一件道具",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "sgmb_js_3_chest_3"
+  },
+  "1004001": {
+    "name": "活跃度宝箱",
+    "des": "可随机获得以下一件道具",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "hyd_chest_1"
   },
   "5001010": {
     "name": "短剑",

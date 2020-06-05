@@ -221,7 +221,7 @@
     "mul": 1.75
   },
   "1050601": {
-    "name": "气化",
+    "name": "镇压",
     "type": "attack",
     "des": "对敌方单体造成95%物理伤害",
     "damageType": "phy",
@@ -229,7 +229,7 @@
     "mul": 0.95
   },
   "1050602": {
-    "name": "莲化真身",
+    "name": "镇压妖魔",
     "effects": "1050602-sxrs",
     "type": "attack",
     "des": "对敌方纵排造成223%的物理伤害，技能伤害的30%转化为自己的生命",
@@ -240,7 +240,7 @@
     "turn_tg": "team_self"
   },
   "1050701": {
-    "name": "极剑",
+    "name": "无为",
     "type": "attack",
     "des": "对敌方单体造成95%法术伤害",
     "damageType": "mag",
@@ -248,7 +248,7 @@
     "mul": 0.95
   },
   "1050702": {
-    "name": "仙凡剑势",
+    "name": "仙凡之势",
     "type": "attack",
     "des": "对敌方前排造成163%法术伤害，有40%概率沉默目标，持续1回合\\n<font color='#827c76'>【沉默】：携带该状态的武将无法使用技能，只能进行普通攻击</font>",
     "damageType": "mag",
@@ -330,7 +330,7 @@
     "thr_anger": true
   },
   "1051201": {
-    "name": "拂尘",
+    "name": "剑意",
     "type": "attack",
     "des": "对敌方单体造成95%的法术伤害",
     "damageType": "mag",
@@ -506,7 +506,7 @@
     "buffRate": 1
   },
   "2050201": {
-    "name": "剑去",
+    "name": "鞭击",
     "type": "attack",
     "des": "对敌方后排造成44%法术伤害",
     "damageType": "mag",
@@ -577,7 +577,7 @@
     "skill_anger_s": 1
   },
   "2050601": {
-    "name": "扇影",
+    "name": "豪饮",
     "type": "attack",
     "des": "对敌方后排单体造成90%的法术伤害",
     "damageType": "mag",
@@ -585,7 +585,7 @@
     "mul": 0.9
   },
   "2050602": {
-    "name": "天玄斗转",
+    "name": "一醉方休",
     "type": "attack",
     "des": "对敌方后排单体造成315%的法术伤害，技能伤害的30%转化为生命，治疗己方生命最少的队友",
     "damageType": "mag",
@@ -612,7 +612,7 @@
     "skill_anger_s": 1
   },
   "2050801": {
-    "name": "剑气",
+    "name": "燎原",
     "type": "attack",
     "des": "对敌方单体造成90%的物理伤害",
     "damageType": "phy",
@@ -620,7 +620,7 @@
     "mul": 0.9
   },
   "2050802": {
-    "name": "天外飞仙",
+    "name": "降魔圣意",
     "type": "attack",
     "des": "对敌方前排造成155%物理伤害，并追加1次普通攻击。（追加的普通攻击不会回复怒气）",
     "damageType": "phy",
@@ -629,7 +629,7 @@
     "add_d_s": true
   },
   "2050901": {
-    "name": "滔天",
+    "name": "穿刺",
     "type": "attack",
     "des": "对敌方单体造成90%的物理伤害",
     "damageType": "phy",
@@ -642,8 +642,7 @@
     "des": "对敌方前排造成155%物理伤害，并回复自身1点怒气",
     "damageType": "phy",
     "targetType": "enemy_horizontal_front",
-    "mul": 1.55,
-    "skill_anger_s": 1
+    "mul": 1.55
   },
   "2051001": {
     "name": "箭雨",
@@ -682,7 +681,7 @@
     "buffRate": 0.4
   },
   "2051201": {
-    "name": "挥伞",
+    "name": "剑来",
     "type": "attack",
     "des": "对敌方后排单体造成90%的法术伤害",
     "damageType": "mag",
@@ -690,7 +689,7 @@
     "mul": 0.9
   },
   "2051202": {
-    "name": "开伞落痕",
+    "name": "剑势虹击",
     "type": "attack",
     "des": "对敌方后排单体造成315%的法术伤害，有80%概率附加眩晕，持续1回合\\n<font color='#827c76'>【眩晕】：携带该状态的武将无法行动</font>",
     "damageType": "mag",
@@ -837,7 +836,7 @@
     "damageType": "mag",
     "targetType": "enemy_3",
     "mul": 1.55,
-    "burn_buff_change_skill": "{\"buffId\":\"disarm\",\"buffRate\":0.2,\"duration\":1}"
+    "burn_buff_change": "{\"buffId\":\"disarm\",\"buffRate\":0.2,\"duration\":1}"
   },
   "3050101": {
     "name": "开天",
@@ -854,7 +853,7 @@
     "damageType": "phy",
     "targetType": "enemy_horizontal_back",
     "mul": 1.55,
-    "burn_att_change_skill": "{\"amplify\":0.6}"
+    "burn_att_change": "{\"amplify\":0.6}"
   },
   "3050201": {
     "name": "燃烬",
@@ -908,7 +907,7 @@
     "self_heal": 0.3
   },
   "3050501": {
-    "name": "迷魂",
+    "name": "奔雷",
     "type": "attack",
     "des": "对敌方单体造成90%的法术伤害",
     "damageType": "mag",
@@ -916,13 +915,13 @@
     "mul": 0.9
   },
   "3050502": {
-    "name": "震慑生灵",
+    "name": "雷霆法则",
     "type": "attack",
     "des": "对敌方前排造成155%法术伤害，如果目标处于灼烧状态，有40%概率附加麻痹，持续1回合\\n<font color='#827c76'>【麻痹】：携带该状态的武将无法进行普通攻击，可以释放技能</font>",
     "damageType": "mag",
     "targetType": "enemy_horizontal_front",
     "mul": 1.55,
-    "burn_buff_change_skill": "{\"buffId\":\"disarm\",\"buffRate\":0.4,\"duration\":1}"
+    "burn_buff_change": "{\"buffId\":\"disarm\",\"buffRate\":0.4,\"duration\":1}"
   },
   "3050601": {
     "name": "开山",
@@ -939,7 +938,7 @@
     "damageType": "phy",
     "targetType": "enemy_all",
     "mul": 0.92,
-    "burn_buff_change_skill": "{\"buffId\":\"dizzy\",\"buffRate\":0.3,\"duration\":1}"
+    "burn_buff_change": "{\"buffId\":\"dizzy\",\"buffRate\":0.3,\"duration\":1}"
   },
   "3050701": {
     "name": "布雨",
@@ -1013,7 +1012,7 @@
     "damageType": "mag",
     "targetType": "enemy_horizontal_front",
     "mul": 1.55,
-    "burn_att_change_skill": "{\"amplify\":0.5}"
+    "burn_att_change": "{\"amplify\":0.5}"
   },
   "3051101": {
     "name": "迷惑",
@@ -1030,7 +1029,7 @@
     "damageType": "mag",
     "targetType": "enemy_normal",
     "mul": 3.15,
-    "burn_att_change_skill": "{\"crit\":0.5}"
+    "burn_att_change": "{\"crit\":0.5}"
   },
   "3051201": {
     "name": "夺命",
@@ -1047,7 +1046,7 @@
     "damageType": "mag",
     "targetType": "enemy_vertical",
     "mul": 2.12,
-    "burn_buff_change_skill": "{\"buffId\":\"dizzy\",\"buffRate\":0.6,\"duration\":1}"
+    "burn_buff_change": "{\"buffId\":\"dizzy\",\"buffRate\":0.6,\"duration\":1}"
   },
   "4010101": {
     "name": "突击",

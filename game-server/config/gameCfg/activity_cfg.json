@@ -1,7 +1,7 @@
 {
   "grow_lof": {
     "name": "成长基金激活花费",
-    "value": "202:1000"
+    "value": 6800
   },
   "normal_card_rmb": {
     "name": "普通月卡激活累计充值",
@@ -9,31 +9,35 @@
   },
   "normal_card_day": {
     "name": "普通月卡每日奖励",
-    "value": "202:120"
+    "value": "202:100"
+  },
+  "high_card_lof": {
+    "name": "至尊特权激活花费",
+    "value": 12800
   },
   "high_card_award": {
-    "name": "专属月卡激活奖励",
-    "value": "202:300"
+    "name": "至尊特权激活奖励",
+    "value": "202:12800"
   },
   "high_card_day": {
-    "name": "专属月卡每日奖励",
+    "name": "至尊特权每日奖励",
     "value": "202:200"
   },
   "high_card_onhook": {
-    "name": "专属月卡挂机收益加成",
+    "name": "至尊特权挂机收益加成",
     "value": 0.1
   },
   "high_card_quik": {
-    "name": "专属月卡快速挂机次数",
+    "name": "至尊特权快速挂机次数",
     "value": 3
   },
   "high_card_time": {
-    "name": "专属月卡最长挂机时长",
+    "name": "至尊特权最长挂机时长",
     "value": 4
   },
   "first_recharge": {
     "name": "首冲礼包",
-    "value": "202:100"
+    "value": "305010:30&1000080:5&201:300000&1000050:1000"
   },
   "area_rank_time": {
     "name": "冲榜活动截止时间",
