@@ -33,7 +33,7 @@ for(var i in zhulu_spoils){
 	if(!spoils_qualitys[zhulu_spoils[i]["quality"]]){
 		spoils_qualitys[zhulu_spoils[i]["quality"]] = []
 	}
-	spoils_qualitys[zhulu_spoils[i]["quality"]].push(zhulu_spoils[i])
+	spoils_qualitys[zhulu_spoils[i]["quality"]].push(Object.assign({id:i},zhulu_spoils[i]))
 }
 var keysType = {
 	dayStr : "string",
@@ -198,29 +198,23 @@ module.exports = function() {
 		switch(type){
 			case "boss":
 				for(let i = 0;i < 3;i++){
-					var id = Math.floor(Math.random() * spoils_qualitys[5].length)
-					var spoils = Object.assign({id:id},spoils_qualitys[5][id])
+					var spoils = Object.assign({},spoils_qualitys[5][Math.floor(Math.random() * spoils_qualitys[5].length)])
 					spoils_list.push(spoils)
 				}
 			break
 			case "elite":
 				for(let i = 0;i < 3;i++){
 					var spoils
-					if(Math.random() < 0.7){
-						var id = Math.floor(Math.random() * spoils_qualitys[3].length)
-						spoils = Object.assign({id:id},spoils_qualitys[3][id])
-					}
-					else{
-						var id = Math.floor(Math.random() * spoils_qualitys[4].length)
-						spoils = Object.assign({id:id},spoils_qualitys[4][id])
-					}
+					if(Math.random() < 0.7)
+						spoils = Object.assign({},spoils_qualitys[3][Math.floor(Math.random() * spoils_qualitys[3].length)])
+					else
+						spoils = Object.assign({},spoils_qualitys[4][Math.floor(Math.random() * spoils_qualitys[4].length)])
 					spoils_list.push(spoils)
 				}
 			break
 			case "normal":
 				for(let i = 0;i < 3;i++){
-					var id = Math.floor(Math.random() * spoils_qualitys[3].length)
-					var spoils = Object.assign({id:id},spoils_qualitys[3][id])
+					var spoils = Object.assign({},spoils_qualitys[3][Math.floor(Math.random() * spoils_qualitys[3].length)])
 					spoils_list.push(spoils)
 				}
 			break
