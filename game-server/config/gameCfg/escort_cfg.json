@@ -1,19 +1,19 @@
 {
   "openTime1": {
     "des": "开启时间1",
-    "value": 1
+    "value": 12.5
   },
   "closeTime1": {
     "des": "关闭时间1",
-    "value": 12
+    "value": 13
   },
   "openTime2": {
     "des": "开启时间2",
-    "value": 12.1
+    "value": 17
   },
   "closeTime2": {
     "des": "关闭时间2",
-    "value": 24
+    "value": 20
   },
   "playCount": {
     "des": "运镖次数",
@@ -29,7 +29,7 @@
   },
   "refresh": {
     "des": "刷新消耗",
-    "value": "101:100"
+    "value": "202:20"
   },
   "robRate": {
     "des": "劫镖获得比例",
