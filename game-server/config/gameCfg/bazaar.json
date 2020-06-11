@@ -11,7 +11,7 @@
     "name": "法宝集市",
     "free_count": 10,
     "time": 3600000,
-    "consume": "207:10",
+    "consume": "207:100",
     "max": 10,
     "goods": "[{\"type\":\"item\",\"itemId\":1000150,\"value\":1,\"weight\":200,\"currency\":\"gold\",\"discount\":1},{\"type\":\"item\",\"itemId\":1000150,\"value\":1,\"weight\":200,\"currency\":\"gold\",\"discount\":0.8},{\"type\":\"item\",\"itemId\":1000150,\"value\":1,\"weight\":100,\"currency\":\"other\",\"discount\":1},{\"type\":\"item\",\"itemId\":1000150,\"value\":1,\"weight\":100,\"currency\":\"other\",\"discount\":0.8},{\"type\":\"art\",\"value\":1,\"weight\":3000,\"currency\":\"gold\",\"discount\":1},{\"type\":\"art\",\"value\":1,\"weight\":3000,\"currency\":\"gold\",\"discount\":0.8},{\"type\":\"art\",\"value\":1,\"weight\":1500,\"currency\":\"other\",\"discount\":1}]"
   },
