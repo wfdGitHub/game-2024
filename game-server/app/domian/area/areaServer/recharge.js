@@ -42,7 +42,7 @@ module.exports = function() {
 				cb(false,"已激活基金")
 			}else{
 				self.setObj(uid,main_name,"lv_fund",1)
-				self.addUserRMB(uid,6800)
+				self.addUserRMB(uid,activity_cfg["grow_lof"]["value"])
 				var notify = {
 					type : "activateLvFund"
 				}
@@ -100,15 +100,15 @@ module.exports = function() {
 			})
 		})
 	}
-	//激活专属月卡
+	//激活至尊特权
 	this.activateHighCard = function(uid,cb) {
 		self.getObj(uid,main_name,"highCard",function(data) {
 			if(data){
-				cb(false,"已激活专属月卡")
+				cb(false,"已激活至尊特权")
 			}else{
 				self.setObj(uid,main_name,"highCard",1)
 				self.chageLordData(uid,"highCard",1)
-				self.addUserRMB(uid,12800)
+				self.addUserRMB(uid,activity_cfg["high_card_lof"]["value"])
 				var awardList = self.addItemStr(uid,activity_cfg["high_card_award"]["value"])
 				var notify = {
 					type : "activateHighCard",
