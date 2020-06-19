@@ -1,5 +1,6 @@
 //任务系统
 var task_cfg = require("../../../../config/gameCfg/task_cfg.json")
+var main_task = require("../../../../config/gameCfg/main_task.json")
 var task_type = require("../../../../config/gameCfg/task_type.json")
 var liveness_cfg = require("../../../../config/gameCfg/liveness.json")
 var war_horn = require("../../../../config/gameCfg/war_horn.json")
@@ -26,15 +27,21 @@ for(var taskId in task_cfg){
 	if(task_cfg[taskId].refresh == "week_target")
 		week_target_task[taskId] = task_cfg[taskId]
 }
-for(let i in week_target){
-	let task_list = JSON.parse(week_target[i]["task_list"])
-	for(let j = 0;j < task_list.length;j++){
+for(var i in week_target){
+	var task_list = JSON.parse(week_target[i]["task_list"])
+	for(var j = 0;j < task_list.length;j++){
 		if(task_cfg[task_list[j]]){
 			week_target_task[task_list[j]] = week_target[i]["day"]
 		}else{
 			console.error("七日目标任务不存在",task_list[j])
 		}
 	}
+}
+for(var i in main_task){
+	main_task[i].refresh = "main"
+	if(task_cfg[i])
+		console.error("taskId 重复",i)
+	task_cfg[i] = main_task[i]
 }
 module.exports = function() {
 	var self = this
@@ -48,6 +55,7 @@ module.exports = function() {
 		for(var taskId in week_target_task){
 			this.gainTask(uid,taskId,0)
 		}
+		this.gainTask(uid,taskId,900001)
 	}
 	//领取任务
 	this.gainTask = function(uid,taskId,value) {
@@ -110,7 +118,7 @@ module.exports = function() {
 			self.incrbyObj(uid,liveness_name,"value",task_cfg[taskId].liveness)
 			self.taskUpdate(uid,"liveness",task_cfg[taskId].liveness)
 		}
-		if(task_cfg[taskId].type == "always" && task_cfg[taskId].next){
+		if(task_cfg[taskId].next){
 			let next = task_cfg[taskId].next
 			info.value = 0
 			if(task_cfg[taskId].inherit)

@@ -13,8 +13,7 @@
   },
   "checkpoints": {
     "name": "关卡等级",
-    "des": "参数代表关卡等级",
-    "equal": true
+    "des": "参数代表关卡等级"
   },
   "general": {
     "name": "将军府征募"
@@ -127,5 +126,9 @@
   "world_boss_damage": {
     "name": "世界boss单场伤害",
     "des": "参数代表伤害值"
+  },
+  "wear_equip": {
+    "name": "穿戴装备",
+    "des": "参数代表装备等级"
   }
 }
