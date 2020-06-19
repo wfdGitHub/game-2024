@@ -3,30 +3,30 @@
     "name": "铜币副本",
     "free_count": 2,
     "buy_count": 3,
-    "buy_pc": "202:50"
+    "buy_pc": "202:100"
   },
   "hero": {
     "name": "英雄副本",
     "free_count": 2,
     "buy_count": 3,
-    "buy_pc": "202:50"
+    "buy_pc": "202:100"
   },
   "ace": {
     "name": "元神副本",
     "free_count": 2,
     "buy_count": 3,
-    "buy_pc": "202:50"
+    "buy_pc": "202:100"
   },
   "art": {
     "name": "法宝副本",
     "free_count": 2,
     "buy_count": 3,
-    "buy_pc": "202:50"
+    "buy_pc": "202:100"
   },
   "equip": {
     "name": "装备副本",
     "free_count": 2,
     "buy_count": 3,
-    "buy_pc": "202:50"
+    "buy_pc": "202:100"
   }
 }

@@ -13,7 +13,7 @@
   },
   "dayCount": {
     "name": "每日挑战次数",
-    "value": 3
+    "value": 5
   },
   "buyCount": {
     "name": "每日最大购买挑战次数",
@@ -21,7 +21,7 @@
   },
   "buyConsume": {
     "name": "购买挑战次数消耗",
-    "value": "202:10"
+    "value": "202:30"
   },
   "win": {
     "name": "挑战胜利奖励",
@@ -37,6 +37,6 @@
   },
   "open": {
     "name": "开启等级",
-    "value": 17
+    "value": 8
   }
 }

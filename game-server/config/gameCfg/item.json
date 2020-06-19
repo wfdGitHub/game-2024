@@ -22,7 +22,7 @@
   },
   "202": {
     "name": "元宝",
-    "des": "稀有货币，可充值获得，游戏中有少量产出",
+    "des": "稀有货币，可用于购买商城物品",
     "type": "currency",
     "quality": 5
   },
@@ -165,6 +165,7 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_1_2",
+    "gold": 4500,
     "buyNum": 30,
     "quality": 5
   },
@@ -375,6 +376,7 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_2_2",
+    "gold": 4500,
     "buyNum": 30,
     "quality": 5
   },
@@ -585,6 +587,7 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_3_2",
+    "gold": 4500,
     "buyNum": 30,
     "quality": 5
   },
@@ -795,6 +798,7 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_4_2",
+    "gold": 4500,
     "buyNum": 30,
     "quality": 5
   },
@@ -937,6 +941,7 @@
     "type": "heroChip",
     "useType": "randChip",
     "arg": "randChip_5_2",
+    "gold": 4500,
     "buyNum": 30,
     "quality": 5
   },
