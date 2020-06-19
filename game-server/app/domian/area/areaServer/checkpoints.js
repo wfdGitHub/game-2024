@@ -20,7 +20,7 @@ module.exports = function() {
 	}
 	//获取当前关卡
 	this.getCheckpointsInfo = function(uid) {
-		return userCheckpoints[uid]
+		return userCheckpoints[uid] || 0
 	}
 	//挑战BOSS成功
 	this.checkpointsSuccess = function(uid,level) {

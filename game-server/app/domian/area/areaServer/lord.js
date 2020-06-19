@@ -66,7 +66,9 @@ module.exports = function() {
 	}
 	//获取主公等级
 	this.getLordLv = function(uid) {
-		return self.players[uid]["level"]
+		if(self.players[uid])
+			return self.players[uid]["level"]
+		else return 1
 	}
 	//主公升级检查
 	this.checkLordUpgrade = function(uid,exp) {

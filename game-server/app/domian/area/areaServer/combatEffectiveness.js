@@ -73,7 +73,7 @@ module.exports = function() {
 	}
 	//获取战力
 	this.getCE = function(uid) {
-		return usersCes[uid]
+		return usersCes[uid] || 1
 	}
 	//获取阵容
 	this.getUserTeam = function(uid) {
