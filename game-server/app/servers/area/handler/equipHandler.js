@@ -50,6 +50,7 @@ equipHandler.prototype.wearEquip = function(msg, session, next) {
       var lv = equip_base[eId]["lv"]
       heroInfo["equip_"+part] = lv
       self.heroDao.setHeroInfo(oriId,uid,hId,"equip_"+part,lv)
+      self.areaManager.areaMap[areaId].taskUpdate(uid,"wear_equip",1,lv)
       next(null,{flag : true,heroInfo : heroInfo})
     }
   ],function(err) {

@@ -55,6 +55,18 @@ module.exports = function() {
 			console.error("任务不存在:"+taskId)
 			return
 		}
+		var type = task_cfg[taskId]["type"]
+		switch(type){
+			case "loadLv":
+				value = this.getLordLv(uid)
+			break
+			case "checkpoints":
+				value = this.getCheckpointsInfo(uid)
+			break
+			case "totalCe":
+				value = this.getCE(uid)
+			break
+		}
 		self.setObj(uid,main_name,taskId,value || 0)
 		if(userTaskLists[uid])
 			userTaskLists[uid][taskId] = value || 0
@@ -66,6 +78,7 @@ module.exports = function() {
 				userTaskMaps[uid][type].remove(taskId)
 			userTaskMaps[uid][type].push(taskId)
 		}
+		return value
 	}
 	//完成任务领取奖励
 	this.finishTask = function(uid,taskId,cb) {
