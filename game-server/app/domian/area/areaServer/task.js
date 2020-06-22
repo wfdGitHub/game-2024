@@ -69,7 +69,7 @@ module.exports = function() {
 				value = this.getLordLv(uid)
 			break
 			case "checkpoints":
-				value = this.getCheckpointsInfo(uid)
+				value = this.getCheckpointsInfo(uid) >= task_cfg[taskId]["value"] ? 1 : 0
 			break
 			case "totalCe":
 				value = this.getCE(uid)
