@@ -299,6 +299,7 @@ area.prototype.getPlayerInfoByUids = function(uids,cb) {
 			let info = {}
 			if(uids[i] < 10000){
 				info = self.robots[uids[i]]
+				info.head = 504010
 			}else{
 				info = {
 					uid : uids[i],
