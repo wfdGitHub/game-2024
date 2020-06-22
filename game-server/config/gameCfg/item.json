@@ -992,7 +992,8 @@
   "1000150": {
     "name": "万能法宝",
     "des": "女娲用造人剩余泥土捏造而成，可完美契合任何类型法宝，可用于法宝升级",
-    "type": "art",
+    "isBag": true,
+    "type": "item",
     "gold": 500,
     "other_currency": 207,
     "other_value": 500,
@@ -1018,6 +1019,7 @@
     "isBag": true,
     "type": "item",
     "gold": 500,
+    "buyNum": 1,
     "quality": 5
   },
   "1000190": {
@@ -1026,6 +1028,7 @@
     "isBag": true,
     "type": "item",
     "gold": 20000,
+    "buyNum": 1,
     "quality": 6
   },
   "1000500": {
