@@ -74,7 +74,7 @@ module.exports = function() {
 			case "totalCe":
 				value = this.getCE(uid)
 			break
-			case "passFb"
+			case "passFb":
 				value = this.checkPassFB(uid) ? 1 : 0
 			break
 		}
