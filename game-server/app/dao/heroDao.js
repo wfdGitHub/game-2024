@@ -332,7 +332,7 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 						}
 					}
 					self.areaManager.areaMap[areaId].CELoad(uid)
-					self.taskUpdate(uid,"battleNum",1,self.areaManager.areaMap[areaId].getTeamNum(uid))
+					self.areaManager.areaMap[areaId].taskUpdate(uid,"battleNum",1,self.areaManager.areaMap[areaId].getTeamNum(uid))
 					if(cb)
 						cb(true)
 				}
