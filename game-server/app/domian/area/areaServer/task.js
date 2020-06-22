@@ -74,6 +74,9 @@ module.exports = function() {
 			case "totalCe":
 				value = this.getCE(uid)
 			break
+			case "passFb"
+				value = this.checkPassFB(uid) ? 1 : 0
+			break
 		}
 		self.setObj(uid,main_name,taskId,value || 0)
 		if(userTaskLists[uid])
@@ -123,7 +126,7 @@ module.exports = function() {
 			info.value = 0
 			if(task_cfg[taskId].inherit)
 				info.value = userTaskLists[uid][taskId]
-			this.gainTask(uid,task_cfg[taskId].next,info.value)
+			info.value = this.gainTask(uid,task_cfg[taskId].next,info.value)
 			info.next = next
 		}
 		if(week_target_task[taskId]){

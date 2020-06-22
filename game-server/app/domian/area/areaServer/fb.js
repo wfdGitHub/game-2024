@@ -9,6 +9,23 @@ for(var type in fb_base){
 var uuid = require("uuid")
 module.exports = function() {
 	var self = this
+	var userfbs = {}
+	//加载副本数据
+	this.fbLoad = function(uid,cb) {
+		self.getObjAll(uid,"fb",function(data) {
+			if(!data){
+				data = {}
+			}
+			for(var i in data){
+				data[i] = Number(data[i])
+			}
+			userfbs[uid] = data
+		})
+	}
+	//移除副本数据
+	this.fbUnload = function(uid) {
+		delete userfbs[uid]
+	}
 	//开启副本
 	this.openFB = function(uid,type,cb) {
 		//参数判断
@@ -30,14 +47,12 @@ module.exports = function() {
 			},
 			function(next) {
 				//判断是否已进入副本
-				self.getObj(uid,"fb",type,function(bossId) {
-					if(bossId){
-						console.error("已进入副本 "+bossId)
-						next("已进入副本")
-						return
-					}
-					next()
-				})
+				if(userfbs[uid] && userfbs[uid][type]){
+					console.error("已进入副本 "+bossId)
+					next("已进入副本")
+					return
+				}
+				next()
 			},
 			function(next) {
 				//进入副本
@@ -50,6 +65,7 @@ module.exports = function() {
 	//加入副本
 	this.joinFB = function(uid,type,cb) {
 		self.setObj(uid,"fb",type,1)
+		userfbs[uid][type] = 1
 		cb(true)
 	}
 	//挑战副本BOSS
@@ -57,12 +73,10 @@ module.exports = function() {
 		async.waterfall([
 			function(next) {
 				//获取副本数据
-				self.getObj(uid,"fb",type,function(bossId) {
-					if(!bossId)
-						next("未进入副本")
-					else
-						next(null,Number(bossId))
-				})
+				if(!userfbs[uid] || !userfbs[uid][type])
+					next("未进入副本")
+				else
+					next(null,userfbs[uid][type])
 			},
 			function(bossId,next) {
 			    var fightInfo = self.getFightInfo(uid)
@@ -84,9 +98,11 @@ module.exports = function() {
 		    			bossId : bossId
 		    		}
 		    		self.incrbyObj(uid,"fb",type,1)
+		    		userfbs[uid][type]++
 		    		if(bossId >= 3){
 		    			//通关奖励
 			    		info.passAward = self.addItemStr(uid,fb_base[type]["passAward"])
+			    		self.taskUpdate(uid,"passFb",1,type)
 		    		}
 		    		var bossAwards = []
 		    		bossAwards = bossAwards.concat(self.addItemStr(uid,fb_base[type]["awardList"+bossId]))
@@ -102,13 +118,13 @@ module.exports = function() {
 	}
 	//获取副本数据
 	this.getFBInfo = function(uid,cb) {
-		var dayStr = (new Date()).toDateString()
-		self.getObjAll(uid,"fb",function(data) {
-			if(!data){
-				data = {}
-			}
-			data.dayStr = dayStr
-			cb(data)
-		})
+		cb(userfbs[uid])
+	}
+	//判断是否通关副本
+	this.checkPassFB = function(uid,type) {
+		if(!userfbs[uid] || !userfbs[uid][type] || userfbs[uid][type] <= 3)
+			return false
+		else 
+			return true
 	}
 }

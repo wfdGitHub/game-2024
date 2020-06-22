@@ -118,6 +118,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 		function(next) {
 			self.checkAreaMailAll(uid)
 			self.zhuluLoad(uid,next)
+			self.fbLoad(uid)
 		},
 		function() {
 			self.connectorMap[uid] = cid
@@ -161,6 +162,7 @@ area.prototype.userLeave = function(uid) {
 		this.lordUnload(uid)
 		this.checkpointsUnload(uid)
 		this.zhuluUnload(uid)
+		this.fbUnload(uid)
 	}
 	if(this.crossUids[uid]){
 		this.app.rpc.cross.crossRemote.userLeave(null,this.crossUids[uid],null)
