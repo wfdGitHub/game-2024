@@ -69,13 +69,16 @@ module.exports = function() {
 				value = this.getLordLv(uid)
 			break
 			case "checkpoints":
-				value = this.getCheckpointsInfo(uid) >= task_cfg[taskId]["value"] ? 1 : 0
+				value = this.getCheckpointsInfo(uid) >= task_cfg[taskId]["arg"] ? 1 : 0
 			break
 			case "totalCe":
 				value = this.getCE(uid)
 			break
 			case "passFb":
 				value = this.checkPassFB(uid) ? 1 : 0
+			break
+			case "battleNum":
+				value = this.getTeamNum(uid) >= task_cfg[taskId]["arg"] ? 1 : 0
 			break
 		}
 		self.setObj(uid,main_name,taskId,value || 0)
@@ -123,10 +126,10 @@ module.exports = function() {
 		}
 		if(task_cfg[taskId].next){
 			let next = task_cfg[taskId].next
-			info.value = 0
+			var value = 0
 			if(task_cfg[taskId].inherit)
-				info.value = userTaskLists[uid][taskId]
-			info.value = this.gainTask(uid,task_cfg[taskId].next,info.value)
+				value = userTaskLists[uid][taskId]
+			info.value = this.gainTask(uid,task_cfg[taskId].next,value)
 			info.next = next
 		}
 		if(week_target_task[taskId]){

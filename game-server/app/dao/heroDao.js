@@ -190,6 +190,9 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 				case "lv":
 					self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
 				break
+				case "ad":
+					self.areaManager.areaMap[areaId].taskUpdate(uid,"heroAd",1,data)
+				break
 			}
 			self.areaManager.areaMap[areaId].incrbyCEInfo(uid,hId,name,value)
 		}
@@ -329,6 +332,7 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 						}
 					}
 					self.areaManager.areaMap[areaId].CELoad(uid)
+					self.taskUpdate(uid,"battleNum",1,self.getTeamNum(uid))
 					if(cb)
 						cb(true)
 				}

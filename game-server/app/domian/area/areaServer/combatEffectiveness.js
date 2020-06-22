@@ -79,4 +79,12 @@ module.exports = function() {
 	this.getUserTeam = function(uid) {
 		return userTeams[uid]
 	}
+	//获取上阵英雄数量
+	this.getTeamNum = function(uid) {
+		var count = 0
+		if(userTeamMaps[uid])
+			for(var i in userTeamMaps[uid])
+				count++
+		return count
+	}
 }
