@@ -53,9 +53,19 @@
   "totalCe": {
     "name": "总战力"
   },
+  "hero": {
+    "name": "获取武将",
+    "des": "参数代表英雄星级",
+    "equal": true
+  },
   "heroLv": {
     "name": "英雄等级",
     "des": "参数代表英雄等级",
+    "equal": true
+  },
+  "heroAd": {
+    "name": "英雄阶级",
+    "des": "参数代表英雄阶级",
     "equal": true
   },
   "equip": {
@@ -64,11 +74,6 @@
   },
   "equip_compound": {
     "name": "合成装备"
-  },
-  "hero": {
-    "name": "获取武将",
-    "des": "参数代表英雄星级",
-    "equal": true
   },
   "resolve": {
     "name": "分解武将"
@@ -130,5 +135,14 @@
   "wear_equip": {
     "name": "穿戴装备",
     "des": "参数代表装备等级"
+  },
+  "passFb": {
+    "name": "通关剧情副本",
+    "des": "参数代表副本id",
+    "equal": true
+  },
+  "battleNum": {
+    "name": "上阵英雄",
+    "des": "参数代表上阵英雄数量"
   }
 }
