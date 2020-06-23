@@ -82,6 +82,10 @@ module.exports = function() {
 	this.getPlayerData = function(uid,key,cb) {
 		self.getObj(uid,"playerData",key,cb)
 	}
+	//删除数据
+	this.delPlayerData = function(uid,key,cb) {
+		self.delObj(uid,"playerData",key,cb)
+	}
 	//获取全部用户数据
 	this.getPlayerDataAll = function(uid,cb) {
 		self.getObjAll(uid,"playerData",cb)

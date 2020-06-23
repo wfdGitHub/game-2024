@@ -62,6 +62,19 @@ heroDao.prototype.randHero = function(areaId,uid,type,count) {
     }
   	return heroInfos
 }
+//英雄池获得英雄id
+heroDao.prototype.randHeroId = function(type) {
+	let allWeight = recruit_base[type]["allWeight"]
+	let weights = recruit_base[type]["weights"]
+	let rand = Math.random() * allWeight
+	for(let i in weights){
+		if(rand < weights[i]){
+		  let heroList = recruit_list[i].heroList
+		  let heroId = heroList[Math.floor(heroList.length * Math.random())]
+		  return heroId
+		}
+	}
+}
 //获得英雄
 heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	let id = otps.id
@@ -204,12 +217,16 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 heroDao.prototype.setHeroInfo = function(areaId,uid,hId,name,value,cb) {
 	var self = this
 	this.redisDao.db.hset("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {
-		if(err)
+		if(err){
 			console.log(err)
-		else
+			if(cb)
+				cb(false,err)
+		}
+		else{
 			self.areaManager.areaMap[areaId].setCEInfo(uid,hId,name,value)
-		if(cb)
-			cb(true,data)
+			if(cb)
+				cb(true,data)
+		}
 	})
 }
 //删除英雄属性

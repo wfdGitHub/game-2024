@@ -717,6 +717,30 @@
             console.log(data);
         });
       }
+      //直升六星
+      var upgradeStarSimple = function(hId) {
+        pomelo.request("area.heroHandler.upgradeStarSimple", {hId : hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //英雄重置
+      var replaceHero = function(hId) {
+        pomelo.request("area.heroHandler.replaceHero", {hId : hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //保存重置
+      var saveReplace = function() {
+        pomelo.request("area.heroHandler.saveReplace", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //取消重置
+      var cancelReplace = function() {
+        pomelo.request("area.heroHandler.cancelReplace", {}, function(data) {
+            console.log(data);
+        });
+      }
       //征募英雄
       var recruitHero = function(type,count) {
         pomelo.request("area.recruitHandler.recruitHero", {type : type,count : count}, function(data) {

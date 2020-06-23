@@ -47,20 +47,20 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
   var oriId = session.get("oriId")
   var hIds = msg.hIds
   var self = this
-  self.heroDao.getHeroList(oriId,uid,hIds,function(flag,heros) {
-    for(var i in heros){
-      if(!heros[i]){
+  self.heroDao.getHeroList(oriId,uid,hIds,function(flag,herolist) {
+    for(var i in herolist){
+      if(!herolist[i]){
         next(null,{flag : false,err : "英雄不存在"+i})
         return
       }
-      if(heros[i].combat || heros[i].zhuluCombat){
-        next(null,{flag : false,err : "英雄已出战"+i+","+hIds[i]+",combat:"+heros[i].combat+",zhuluCombat:"+heros[i].zhuluCombat})
+      if(herolist[i].combat || herolist[i].zhuluCombat){
+        next(null,{flag : false,err : "英雄已出战"+i+","+hIds[i]+",combat:"+herolist[i].combat+",zhuluCombat:"+herolist[i].zhuluCombat})
         return
       }
     }
     self.heroDao.removeHeroList(oriId,uid,hIds,function(flag,err) {
       if(flag){
-        self.heroDao.heroPrAll(oriId,uid,heros,function(flag,awardList) {
+        self.heroDao.heroPrAll(oriId,uid,herolist,function(flag,awardList) {
           next(null,{flag : true,awardList : awardList})
         })
       }else{
@@ -272,13 +272,13 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                       if(star == 10){
                         var notify = {
                           type : "sysChat",
-                          text : "恭喜"+name+"合成出10星"+heroName+"英雄，实力暴涨名誉三界"
+                          text : "恭喜"+name+"合成出10星英雄"+heroName+",实力暴涨名誉三界"
                         }
                         self.areaManager.areaMap[areaId].sendAllUser(notify)
                       }else if(star > 5){
                         var notify = {
                           type : "sysChat",
-                          text : "恭喜"+name+"合成出"+star+"星"+heroName+"英雄，实力大涨名动八荒"
+                          text : "恭喜"+name+"合成出"+star+"星英雄"+heroName+",实力大涨名动八荒"
                         }
                         self.areaManager.areaMap[areaId].sendAllUser(notify)
                       }
@@ -293,6 +293,116 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
       next(null,{flag : false,data : "材料英雄错误"})
     }
   })
+}
+//直升六星
+heroHandler.prototype.upgradeStarSimple = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
+  var hId = msg.hId
+  var self = this
+  self.heroDao.getHeroOne(oriId,uid,hId,function(flag,heroInfo) {
+    if(!flag){
+      next(null,{flag : false,err : "英雄不存在"})
+      return
+    }
+    if(heroInfo.star == heros[heroInfo.id].max_star){
+      next(null,{flag : false,data : "已达到最大星级"})
+      return
+    }
+    if(heroInfo.star !== 5){
+      next(null,{flag : false,data : "必须为五星英雄"})
+      return
+    }
+    var pcStr = "1000190:1"
+    self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,function(flag,err) {
+      if(!flag){
+        next(null,{flag : false,err : err})
+        return
+      }
+      self.heroDao.incrbyHeroInfo(oriId,uid,hId,"star",1,function(flag,star) {
+        if(flag){
+            var name = session.get("name")
+            var heroName = heros[heroInfo.id]["name"]
+            var notify = {
+              type : "sysChat",
+              text : "恭喜"+name+"合成出6星英雄"+heroName+",实力大涨名动八荒"
+            }
+            self.areaManager.areaMap[areaId].sendAllUser(notify)
+        }
+        next(null,{flag : flag,star : star})
+      })
+    })
+  })
+}
+//英雄重置
+heroHandler.prototype.replaceHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
+  var hId = msg.hId
+  var self = this
+  self.areaManager.areaMap[areaId].getPlayerData(uid,"replaceHero",function(data) {
+    if(data){
+      next(null,{flag : false,err : "请先保存或取消当前重置"})
+      return
+    }
+    self.heroDao.getHeroOne(oriId,uid,hId,function(flag,heroInfo) {
+      if(!flag){
+        next(null,{flag : false,err : "英雄不存在"})
+        return
+      }
+      if(heroInfo.star !== 5){
+        next(null,{flag : false,data : "必须为五星英雄"})
+        return
+      }
+      var pcStr = "1000180:1"
+      self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,function(flag,err) {
+        if(!flag){
+          next(null,{flag : false,err : err})
+          return
+        }
+        let heroId = self.heroDao.randHeroId("randChip_"+heros[heroInfo.id].realm+"_2")
+        self.areaManager.areaMap[areaId].setPlayerData(uid,"replaceHero",hId)
+        self.areaManager.areaMap[areaId].setPlayerData(uid,"replacePick",heroId)
+        next(null,{flag : flag,replaceHero : hId,replacePick:heroId})
+      })
+    })
+  })
+}
+//保存重置
+heroHandler.prototype.saveReplace = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
+  var self = this
+  self.areaManager.areaMap[areaId].getPlayerData(uid,"replaceHero",function(hId) {
+    if(!hId){
+        next(null,{flag : false,data : "数据不存在"+hId})
+        return
+    }
+    self.areaManager.areaMap[areaId].getPlayerData(uid,"replacePick",function(heroId) {
+      if(!heroId){
+          next(null,{flag : false,data : "数据不存在"+heroId})
+          return
+      }
+      self.heroDao.setHeroInfo(oriId,uid,hId,"id",heroId,function(flag,data) {
+        if(flag){
+          self.areaManager.areaMap[areaId].delPlayerData(uid,"replaceHero")
+          self.areaManager.areaMap[areaId].delPlayerData(uid,"replacePick")
+        }
+        next(null,{flag : flag,hId:hId,heroId:heroId})
+      })
+    })
+  })
+}
+//取消重置
+heroHandler.prototype.cancelReplace = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].delPlayerData(uid,"replaceHero")
+  this.areaManager.areaMap[areaId].delPlayerData(uid,"replacePick")
+  next(null,{flag : true})
 }
 //修改英雄属性
 heroHandler.prototype.incrbyHeroInfo = function(msg, session, next) {
