@@ -55,7 +55,7 @@ module.exports = function() {
 		for(var taskId in week_target_task){
 			this.gainTask(uid,taskId,0)
 		}
-		this.gainTask(uid,taskId,900001)
+		this.gainTask(uid,900001,0)
 	}
 	//领取任务
 	this.gainTask = function(uid,taskId,value) {
