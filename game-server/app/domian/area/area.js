@@ -93,7 +93,6 @@ area.prototype.register = function(otps,cb) {
 }
 //玩家加入
 area.prototype.userLogin = function(uid,oriId,cid,cb) {
-	console.log("userLogin",uid,oriId,cid)
 	var self = this
 	async.waterfall([
 		function(next) {
@@ -138,7 +137,6 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 }
 //玩家当天首次登录
 area.prototype.dayFirstLogin = function(uid) {
-	console.log("玩家 "+uid+" 今日首次登录")
 	this.chageLordData(uid,"dayStr",this.dayStr)
 	this.chageLordData(uid,"rmb_day",0)
 	this.setPlayerData(uid,"quick",0)
@@ -152,7 +150,6 @@ area.prototype.dayFirstLogin = function(uid) {
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
-	console.log("userLeave : ",uid)
 	if(this.players[uid]){
 		delete this.connectorMap[uid]
 		delete this.oriIds[uid]

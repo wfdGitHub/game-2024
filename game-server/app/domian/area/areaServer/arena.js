@@ -161,7 +161,6 @@ module.exports = function() {
 	//获取我的竞技场数据
 	this.getMyArenaInfo = function(uid,cb) {
 		this.getObjAll(uid,mainName,function(data) {
-			console.log("getMyArenaInfo",data)
 			if(!data || data.areaId != self.areaId){
 				self.initArenaRank(uid,cb)
 			}else{

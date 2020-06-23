@@ -23,7 +23,7 @@ chat.prototype.say = function(talker,roomName,text,cb) {
 
 //玩家加入聊天室
 chat.prototype.joinChatRoom = function(uid,sid,roomName,cb) {
-	console.log("joinChatRoom",uid,sid,roomName)
+	// console.log("joinChatRoom",uid,sid,roomName)
 	if(this.userMap[uid] && this.userMap[uid][roomName]){
 		cb(false,"已加入聊天室")
 		return
@@ -41,7 +41,7 @@ chat.prototype.joinChatRoom = function(uid,sid,roomName,cb) {
 }
 //玩家离开聊天室
 chat.prototype.leaveChatRoom = function(uid,sid,roomName,cb) {
-	console.log("退出聊天室",roomName)
+	// console.log("退出聊天室",roomName)
 	if(this.userMap[uid] && this.userMap[uid][roomName] && this.rooms[roomName]){
 		this.rooms[roomName].leave(uid,sid)
 		delete this.userMap[uid][roomName]

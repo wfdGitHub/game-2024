@@ -173,7 +173,6 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
     	session.bind(uid)
     	session.on("closed",onUserLeave.bind(self))
 	    self.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,oriId,self.app.serverId,function(flag,playerInfo) {
-	    	console.log("playerInfo",playerInfo)
 			if(flag){
 		        session.set("areaId",areaId)
 		        session.push("areaId")
@@ -197,7 +196,6 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 }
 var onUserLeave = function(session) {
 	var uid = session.uid
-	console.log("onUserLeave : "+uid + "  "+this.app.serverId)
 	if(uid){
 		session.unbind(uid)
 		var accId = session.get("accId")

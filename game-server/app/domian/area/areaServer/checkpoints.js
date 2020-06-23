@@ -24,7 +24,6 @@ module.exports = function() {
 	}
 	//挑战BOSS成功
 	this.checkpointsSuccess = function(uid,level) {
-		console.log("checkpointsSuccess")
 		this.incrbyPlayerData(uid,"boss",1)
 		userCheckpoints[uid]++
 		var awardStr = checkpointsCfg[level].award
@@ -35,7 +34,6 @@ module.exports = function() {
 	}
 	//挑战BOSS失败
 	this.checkpointsFail = function(uid,level,cb) {
-		console.log("checkpointsFail")
 	}
 	//开始挑战关卡
 	this.challengeCheckpoints = function(uid,verify,cb) {

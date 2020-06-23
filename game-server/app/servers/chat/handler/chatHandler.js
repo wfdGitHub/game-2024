@@ -5,7 +5,6 @@ var chatHandler = function(app) {
 }
 //加入聊天室
 chatHandler.prototype.joinChatRoom = function(msg, session, next) {
-	console.log("joinChatRoom")
 	var uid = session.uid
 	var sid = session.frontendId
 	var roomName = msg.roomName

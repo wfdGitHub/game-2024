@@ -75,7 +75,6 @@ CDKeyDao.prototype.getCDTypePage = function(cb) {
 			return
 		}
 		res =JSON.parse( JSON.stringify(res))
-		console.log(res)
 		cb(true,[res[0]["count(*)"],pageNum])
 	})
 }
@@ -125,7 +124,6 @@ CDKeyDao.prototype.createCDKey = function(key,type,num,expires,cb) {
 }
 //验证礼包码
 CDKeyDao.prototype.verifyCDKey = function(key,uid,area,name,cb) {
-	console.log(key,uid,area,name)
 	var self = this
 	self.getCDKeyInfo(key,function(flag,data) {
 		if(!flag){

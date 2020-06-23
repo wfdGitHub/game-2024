@@ -40,12 +40,10 @@ entryHandler.entrySuccess = function(session,userInfo,next) {
 	session.set("limit",userInfo.limit)
 	session.push("limit")
 	// session.on("closed",onUserLeave.bind(this))
-	console.log(accId + "  entrySuccess.."+ "  "+this.app.serverId)
   	next(null, {flag : true,msg : userInfo});
 }
 var onUserLeave = function(session) {
 	var uid = session.uid
-	console.log("onUserLeave : "+uid + "  "+this.app.serverId)
 	if(uid){
 		session.unbind(uid)
 		var serverId = session.get("serverId")

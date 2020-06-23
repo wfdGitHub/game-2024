@@ -26,7 +26,6 @@ identityHandler.prototype.bindIdentity = function(msg, session, next) {
 	}
 	var self = this
 	self.accountDao.getAccountData({accId : accId,name : "idcard"},function(flag,data) {
-		console.log(flag,data)
 		if(flag || data){
 			next(null,{flag : false,err : "已绑定身份证"})
 			return
@@ -62,7 +61,6 @@ local.checkIdentity = function(idcard,name,cb) {
 	  });
 	  res.on('end', function(){
 	  	var data = JSON.parse(_data)
-	     console.log("\n--->>\nresult:",data)
 	     if(data && data.code == "0" && data.message == "成功"){
 	     	cb(true,data.result)
 	     }else{

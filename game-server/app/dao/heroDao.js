@@ -79,7 +79,7 @@ heroDao.prototype.randHeroId = function(type) {
 heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	let id = otps.id
 	if(!herosCfg[id]){
-		console.log("id error by herosCfg",id)
+		console.error("id error by herosCfg",id)
 		if(cb)
 			cb(false,"id error by herosCfg",id)
 		return
@@ -194,7 +194,7 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 	var self = this
 	this.redisDao.db.hincrby("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {
 		if(err)
-			console.log(err)
+			console.error(err)
 		else{
 			switch(name){
 				case "star":
@@ -218,7 +218,7 @@ heroDao.prototype.setHeroInfo = function(areaId,uid,hId,name,value,cb) {
 	var self = this
 	this.redisDao.db.hset("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {
 		if(err){
-			console.log(err)
+			console.error(err)
 			if(cb)
 				cb(false,err)
 		}
@@ -234,7 +234,7 @@ heroDao.prototype.delHeroInfo = function(areaId,uid,hId,name,cb) {
 	var self = this
 	this.redisDao.db.hdel("player:user:"+uid+":heros:"+hId,name,function(err,data) {
 		if(err)
-			console.log(err)
+			console.error(err)
 		else
 			self.areaManager.areaMap[areaId].delCEInfo(uid,hId,name)
 		if(cb)

@@ -43,7 +43,6 @@ areaRemote.prototype.getAreaPlayers = function(areaId,cb) {
 }
 //消耗道具
 areaRemote.prototype.consumeItems = function(uid,areaId,str,rate,cb) {
-	console.log("consumeItems",uid,areaId,str,rate)
 	if(this.areaManager.areaMap[areaId]){
 		this.areaManager.areaMap[areaId].consumeItems(uid,str,rate,cb)
 	}else{
@@ -61,7 +60,6 @@ areaRemote.prototype.addItemStr = function(uid,areaId,str,rate,cb) {
 }
 //宝箱奖励
 areaRemote.prototype.openChestAward = function(uid,areaId,chestId,rate,cb) {
-	console.log("openChestAward",uid,areaId,chestId,rate)
 	if(this.areaManager.areaMap[areaId]){
 		var awardList = this.areaManager.areaMap[areaId].openChestAward(uid,chestId,rate)
 		cb(true,awardList)

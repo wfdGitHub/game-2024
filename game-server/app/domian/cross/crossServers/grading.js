@@ -19,7 +19,6 @@ module.exports = function() {
 	this.gradingDayUpdate = function() {
 		self.redisDao.db.del("cross:grading:count")
 		self.redisDao.db.hgetall("cross:grading",function(err,data) {
-			console.log(data)
 			if(!data){
 				curSeasonId = 1
 				self.newGrading()

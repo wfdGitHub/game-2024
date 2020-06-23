@@ -42,7 +42,6 @@ module.exports = function() {
 		bossId = world_boss_base[bossIndex]["bossId"]
 		bossTeam = [0,0,0,0,bossId,0]
 		time = Date.now() + tmpTime
-		console.log("开启时间:",time)
 		clearTimeout(timer)
 		timer = setTimeout(this.worldBossChallengeStage.bind(this),tmpTime)
 	}
@@ -52,7 +51,6 @@ module.exports = function() {
 	}
 	//世界BOSS玩法开启  开始挑战
 	this.worldBossChallengeStage= function() {
-		console.log("世界BOSS玩法开启 开始挑战")
 		this.delZset("worldBoss")
 		state = 1
 		time = Date.now() + world_boss_cfg["challengeTime"]["value"]
@@ -73,7 +71,6 @@ module.exports = function() {
 	}
 	//进入抢夺阶段
 	this.worldBossRobStage = function() {
-		console.log("世界BOSS玩法 进入抢夺阶段")
 		state = 2
 		time = Date.now() + world_boss_cfg["robTime"]["value"]
 		let notify = {

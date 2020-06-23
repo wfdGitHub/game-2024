@@ -288,11 +288,11 @@ module.exports = function() {
 	}
 	//更新冲榜活动排行榜
 	this.updateAreaRank = function(uid,ce) {
-		console.log("updateAreaRank",uid,ce)
+		// console.log("updateAreaRank",uid,ce)
 		if(self.newArea && Date.now() < area_rank_deadline){
 			self.addZset("areaRank",uid,ce)
 		}else{
-			console.log("冲榜活动关闭")
+			// console.log("冲榜活动关闭")
 			self.updateAreaRank = function(){}
 		}
 	}
@@ -329,7 +329,6 @@ module.exports = function() {
 				}else{
 					self.setObj(uid,main_name,"area_rank",1)
 					self.redisDao.db.zrevrank("area:area"+self.areaId+":zset:areaRank",uid,function(err,rank) {
-						console.log(err,rank,uid)
 						if(rank != null){
 							rank = Number(rank) + 1
 							var text = "亲爱的玩家您好，恭喜您在7日冲榜活动中获得"+rank+"名，获得丰厚奖励，祝您游戏愉快！"
