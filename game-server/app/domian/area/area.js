@@ -86,6 +86,7 @@ area.prototype.register = function(otps,cb) {
 				self.setPlayerData(playerInfo.uid,"onhookLastTime",Date.now())
 				//TODO test
 				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",1000500,1)
+				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",202,100)
 				cb(true,playerInfo)
 			})
 		}
