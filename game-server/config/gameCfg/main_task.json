@@ -11,11 +11,11 @@
   "900002": {
     "title": "获得英雄",
     "type": "hero",
-    "arg": 3,
+    "arg": 4,
     "value": 1,
     "next": 900003,
     "award": "1000050:10",
-    "guide": "guide_yingxiong"
+    "guide": "guide_zhaomu"
   },
   "900003": {
     "title": "上阵2个英雄",
@@ -36,185 +36,185 @@
     "guide": "guide_sj_gk"
   },
   "900005": {
-    "title": "人物到达6级",
-    "type": "loadLv",
-    "value": 6,
+    "title": "快速作战1次",
+    "type": "quick",
+    "value": 1,
     "next": 900006,
-    "award": "202:10",
+    "award": "202:20",
     "guide": "guide_sj_gk"
   },
   "900006": {
+    "title": "人物到达6级",
+    "type": "loadLv",
+    "value": 6,
+    "next": 900007,
+    "award": "202:10",
+    "guide": "guide_sj_gk"
+  },
+  "900007": {
     "title": "完成1次三界任务",
     "type": "tour",
     "arg": 1,
     "value": 1,
-    "next": 900007,
+    "next": 900008,
     "award": "1000050:10",
     "guide": "guide_sanjie"
   },
-  "900007": {
+  "900008": {
     "title": "领取1次挂机奖励",
     "type": "on_hook",
     "value": 1,
-    "next": 900008,
+    "next": 900009,
     "award": "1000050:10",
     "guide": "guide_sj_gk"
   },
-  "900008": {
+  "900009": {
     "title": "上阵3个英雄",
     "type": "battleNum",
     "arg": 3,
     "value": 1,
-    "next": 900009,
+    "next": 900010,
     "award": "1000050:10",
     "guide": "guide_yingxiong"
   },
-  "900009": {
+  "900010": {
     "title": "完成2次日常副本",
     "type": "fb",
     "value": 2,
-    "next": 900010,
+    "next": 900011,
     "award": "1000050:10",
     "guide": "guide_richangfuben"
   },
-  "900010": {
+  "900011": {
     "title": "通关莽山国15",
     "type": "checkpoints",
     "arg": 15,
     "value": 1,
-    "next": 900011,
+    "next": 900012,
     "award": "201:5000",
     "guide": "guide_sj_gk"
   },
-  "900011": {
+  "900012": {
     "title": "活跃度到达30",
     "type": "liveness",
     "value": 30,
-    "next": 900012,
+    "next": 900013,
     "award": "1000070:10",
     "guide": "guide_richangrenwu"
   },
-  "900012": {
+  "900013": {
     "title": "普通祭祀10次",
     "type": "recruit_normal",
     "value": 10,
-    "next": 900013,
+    "next": 900014,
     "award": "1000050:10",
     "guide": "guide_zhaomu"
   },
-  "900013": {
+  "900014": {
     "title": "竞技场战斗1次",
     "type": "arena",
     "value": 1,
-    "next": 900014,
+    "next": 900015,
     "award": "201:5000",
     "guide": "guide_jingjichang"
   },
-  "900014": {
+  "900015": {
     "title": "战斗力到达1万",
     "type": "totalCe",
     "value": 10000,
-    "next": 900015,
+    "next": 900016,
     "award": "202:10",
     "guide": "guide_sj_gk"
   },
-  "900015": {
+  "900016": {
     "title": "通关莽山国20",
     "type": "checkpoints",
     "arg": 20,
     "value": 1,
-    "next": 900016,
+    "next": 900017,
     "award": "201:8000",
     "guide": "guide_sj_gk"
   },
-  "900016": {
+  "900017": {
     "title": "合成1次装备",
     "type": "equip_compound",
     "value": 1,
-    "next": 900017,
+    "next": 900018,
     "award": "201:8000",
     "guide": "guide_tiejiangpu"
   },
-  "900017": {
+  "900018": {
     "title": "人物到达12级",
     "type": "loadLv",
     "value": 12,
-    "next": 900018,
-    "award": "202:20",
-    "guide": "guide_sj_gk"
-  },
-  "900018": {
-    "title": "战斗力到达3万",
-    "type": "totalCe",
-    "value": 30000,
     "next": 900019,
     "award": "202:20",
     "guide": "guide_sj_gk"
   },
   "900019": {
+    "title": "战斗力到达3万",
+    "type": "totalCe",
+    "value": 30000,
+    "next": 900020,
+    "award": "202:20",
+    "guide": "guide_sj_gk"
+  },
+  "900020": {
     "title": "通过通天塔3层",
     "type": "tttLv",
     "value": 3,
-    "next": 900020,
+    "next": 900021,
     "award": "1000050:15",
     "guide": "guide_tongtianta"
   },
-  "900020": {
+  "900021": {
     "title": "高级祭祀1次",
     "type": "recruit_great",
     "value": 1,
-    "next": 900021,
+    "next": 900022,
     "award": "505000:5",
     "guide": "guide_zhaomu"
   },
-  "900021": {
+  "900022": {
     "title": "战斗力到达6万",
     "type": "totalCe",
     "value": 60000,
-    "next": 900022,
+    "next": 900023,
     "award": "202:30",
     "guide": "guide_sj_gk"
   },
-  "900022": {
+  "900023": {
     "title": "通关刑天氏族30",
     "type": "checkpoints",
     "arg": 30,
     "value": 1,
-    "next": 900023,
-    "award": "201:8000",
-    "guide": "guide_sj_gk"
-  },
-  "900023": {
-    "title": "人物到达16级",
-    "type": "loadLv",
-    "value": 16,
     "next": 900024,
-    "award": "202:20",
+    "award": "201:8000",
     "guide": "guide_sj_gk"
   },
   "900024": {
+    "title": "人物到达16级",
+    "type": "loadLv",
+    "value": 16,
+    "next": 900025,
+    "award": "202:20",
+    "guide": "guide_sj_gk"
+  },
+  "900025": {
     "title": "分解1个英雄",
     "type": "resolve",
     "value": 1,
-    "next": 900025,
+    "next": 900026,
     "award": "201:8000",
     "guide": "guide_yingxiong"
   },
-  "900025": {
+  "900026": {
     "title": "通关三皇五帝35",
     "type": "checkpoints",
     "arg": 35,
     "value": 1,
-    "next": 900026,
-    "award": "201:8000",
-    "guide": "guide_sj_gk"
-  },
-  "900026": {
-    "title": "快速作战1次",
-    "type": "quick",
-    "value": 1,
     "next": 900027,
-    "award": "202:20",
+    "award": "201:8000",
     "guide": "guide_sj_gk"
   },
   "900027": {
@@ -275,175 +275,175 @@
     "guide": "guide_juqing"
   },
   "900034": {
+    "title": "参与1次逐鹿之战",
+    "type": "zhulu_monster",
+    "value": 1,
+    "next": 900035,
+    "award": "1000050:50",
+    "guide": "guide_zhulu"
+  },
+  "900035": {
     "title": "获得1个五星英雄",
     "type": "hero",
     "arg": 5,
     "value": 1,
-    "next": 900035,
+    "next": 900036,
     "award": "202:100",
-    "guide": "guide_yingxiong"
+    "guide": "guide_zhaomu"
   },
-  "900035": {
+  "900036": {
     "title": "战斗力到达15万",
     "type": "totalCe",
     "value": 150000,
-    "next": 900036,
-    "award": "201:10000",
-    "guide": "guide_sj_gk"
-  },
-  "900036": {
-    "title": "通关兵主蚩尤50",
-    "type": "checkpoints",
-    "arg": 50,
-    "value": 1,
     "next": 900037,
     "award": "201:10000",
     "guide": "guide_sj_gk"
   },
   "900037": {
-    "title": "战斗力到达20万",
-    "type": "totalCe",
-    "value": 200000,
+    "title": "通关兵主蚩尤50",
+    "type": "checkpoints",
+    "arg": 50,
+    "value": 1,
     "next": 900038,
     "award": "201:10000",
     "guide": "guide_sj_gk"
   },
   "900038": {
-    "title": "通关山神褚健60",
-    "type": "checkpoints",
-    "arg": 60,
-    "value": 1,
+    "title": "战斗力到达20万",
+    "type": "totalCe",
+    "value": 200000,
     "next": 900039,
     "award": "201:10000",
     "guide": "guide_sj_gk"
   },
   "900039": {
+    "title": "通关山神褚健60",
+    "type": "checkpoints",
+    "arg": 60,
+    "value": 1,
+    "next": 900040,
+    "award": "201:10000",
+    "guide": "guide_sj_gk"
+  },
+  "900040": {
     "title": "通过通天塔30层",
     "type": "tttLv",
     "arg": 30,
     "value": 1,
-    "next": 900040,
+    "next": 900041,
     "award": "1000050:30",
     "guide": "guide_tongtianta"
   },
-  "900040": {
+  "900041": {
     "title": "战斗力到达25万",
     "type": "totalCe",
     "value": 250000,
-    "next": 900041,
+    "next": 900042,
     "award": "202:100",
     "guide": "guide_sj_gk"
   },
-  "900041": {
+  "900042": {
     "title": "通关轩辕之始70",
     "type": "checkpoints",
     "arg": 70,
     "value": 1,
-    "next": 900042,
+    "next": 900043,
     "award": "201:10000",
     "guide": "guide_sj_gk"
   },
-  "900042": {
+  "900043": {
     "title": "佩戴4件紫色装备",
     "type": "wear_equip",
     "arg": 5,
     "value": 4,
-    "next": 900043,
+    "next": 900044,
     "award": "201:10000",
     "guide": "guide_yingxiong"
   },
-  "900043": {
+  "900044": {
     "title": "通过通天塔40层",
     "type": "tttLv",
     "arg": 40,
     "value": 1,
-    "next": 900044,
+    "next": 900045,
     "award": "1000050:40",
     "guide": "guide_tongtianta"
   },
-  "900044": {
+  "900045": {
     "title": "人物到达25级",
     "type": "loadLv",
     "value": 25,
-    "next": 900045,
+    "next": 900046,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900045": {
+  "900046": {
     "title": "通关轩辕之始80",
     "type": "checkpoints",
     "arg": 80,
     "value": 1,
-    "next": 900046,
+    "next": 900047,
     "award": "201:10000",
     "guide": "guide_sj_gk"
   },
-  "900046": {
+  "900047": {
     "title": "高级祭祀3次",
     "type": "recruit_great",
     "value": 3,
-    "next": 900047,
+    "next": 900048,
     "award": "1000120:1",
     "guide": "guide_sj_gk"
   },
-  "900047": {
+  "900048": {
     "title": "通关惨遭被俘90",
     "type": "checkpoints",
     "arg": 90,
     "value": 1,
-    "next": 900048,
+    "next": 900049,
     "award": "201:10000",
     "guide": "guide_sj_gk"
   },
-  "900048": {
+  "900049": {
     "title": "人物到达30级",
     "type": "loadLv",
     "value": 30,
-    "next": 900049,
+    "next": 900050,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900049": {
+  "900050": {
     "title": "通关太白白天100",
     "type": "checkpoints",
     "arg": 100,
     "value": 1,
-    "next": 900050,
+    "next": 900051,
     "award": "201:10000",
     "guide": "guide_sj_gk"
   },
-  "900050": {
+  "900051": {
     "title": "人物到达33级",
     "type": "loadLv",
     "value": 33,
-    "next": 900051,
+    "next": 900052,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900051": {
+  "900052": {
     "title": "获得2个5星英雄",
     "type": "hero",
     "arg": 5,
     "value": 2,
-    "next": 900052,
+    "next": 900053,
     "award": "1000120:1",
     "guide": "guide_zhaomu"
   },
-  "900052": {
+  "900053": {
     "title": "人物到达35级",
     "type": "loadLv",
     "value": 35,
-    "next": 900053,
+    "next": 900054,
     "award": "202:50",
     "guide": "guide_sj_gk"
-  },
-  "900053": {
-    "title": "参与1次逐鹿之战",
-    "type": "zhulu_monster",
-    "value": 1,
-    "next": 900054,
-    "award": "1000050:50",
-    "guide": "guide_zhulu"
   },
   "900054": {
     "title": "人物到达40级",
