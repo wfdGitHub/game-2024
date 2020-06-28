@@ -4,69 +4,76 @@
     "day_award": "201:10000",
     "lv_limit": 10,
     "lv_award": "202:100",
-    "rmb": 1,
+    "rmb": 100,
     "rmb_award": "504000:30",
     "goods1": 1001,
-    "goods2": 1002
+    "goods2": 1002,
+    "awardTitle": "海量元宝"
   },
   "2": {
     "login_award": "405030:30",
     "day_award": "101:10000",
     "lv_limit": 25,
     "lv_award": "1000050:100",
-    "rmb": 100,
+    "rmb": 10000,
     "rmb_award": "405030:30",
     "goods1": 1003,
-    "goods2": 1004
+    "goods2": 1004,
+    "awardTitle": "强力治疗"
   },
   "3": {
     "login_award": "1000080:10",
     "day_award": "202:100",
     "lv_limit": 30,
     "lv_award": "1000070:10",
-    "rmb": 200,
+    "rmb": 20000,
     "rmb_award": "1000080:10",
     "goods1": 1005,
-    "goods2": 1006
+    "goods2": 1006,
+    "awardTitle": "十连抽"
   },
   "4": {
     "login_award": "1001008:1",
     "day_award": "204:10000",
     "lv_limit": 40,
     "lv_award": "1000020:10",
-    "rmb": 300,
+    "rmb": 30000,
     "rmb_award": "1000120:5",
     "goods1": 1007,
-    "goods2": 1008
+    "goods2": 1008,
+    "awardTitle": "史诗装备"
   },
   "5": {
     "login_award": "1001006:1",
     "day_award": "205:300",
     "lv_limit": 45,
     "lv_award": "1000160:10",
-    "rmb": 400,
+    "rmb": 50000,
     "rmb_award": "1001006:1",
     "goods1": 1009,
-    "goods2": 1010
+    "goods2": 1010,
+    "awardTitle": "橙色元神"
   },
   "6": {
     "login_award": "1000120:1",
     "day_award": "206:1000",
     "lv_limit": 50,
     "lv_award": "202:200",
-    "rmb": 500,
+    "rmb": 80000,
     "rmb_award": "1000150:10",
     "goods1": 1011,
-    "goods2": 1012
+    "goods2": 1012,
+    "awardTitle": "限定召唤"
   },
   "7": {
     "login_award": "205020:30",
     "day_award": "207:1000",
     "lv_limit": 60,
     "lv_award": "202:500",
-    "rmb": 800,
+    "rmb": 100000,
     "rmb_award": "205020:30",
     "goods1": 1013,
-    "goods2": 1014
+    "goods2": 1014,
+    "awardTitle": "超强群控"
   }
 }

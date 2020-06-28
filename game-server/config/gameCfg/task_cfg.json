@@ -27,7 +27,7 @@
     "exp": 30
   },
   "100004": {
-    "title": "挑战副本3次",
+    "title": "挑战日常副本3次",
     "refresh": "day",
     "type": "fb",
     "value": 3,
@@ -45,7 +45,7 @@
     "exp": 30
   },
   "100006": {
-    "title": "英雄祭坛招募3次",
+    "title": "女娲池召唤3次",
     "refresh": "day",
     "type": "recruit",
     "value": 3,
@@ -108,10 +108,9 @@
     "exp": 30
   },
   "100013": {
-    "title": "获得3个英雄",
+    "title": "宝物商店刷新3次",
     "refresh": "day",
-    "type": "hero",
-    "arg": 1,
+    "type": "bazzar_refresh",
     "value": 3,
     "award": "101:10000",
     "liveness": 10,
@@ -150,6 +149,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 5,
+    "next": 200102,
     "inherit": true,
     "award": "202:50",
     "first": true
@@ -159,7 +159,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 10,
-    "next": 200102,
+    "next": 200103,
     "inherit": true,
     "award": "202:100"
   },
@@ -168,7 +168,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 15,
-    "next": 200103,
+    "next": 200104,
     "inherit": true,
     "award": "202:150"
   },
@@ -177,7 +177,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 20,
-    "next": 200104,
+    "next": 200105,
     "inherit": true,
     "award": "202:150"
   },
@@ -186,7 +186,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 30,
-    "next": 200105,
+    "next": 200106,
     "inherit": true,
     "award": "202:200"
   },
@@ -195,7 +195,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 40,
-    "next": 200106,
+    "next": 200107,
     "inherit": true,
     "award": "202:300"
   },
@@ -204,7 +204,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 50,
-    "next": 200107,
+    "next": 200108,
     "inherit": true,
     "award": "202:400"
   },
@@ -213,7 +213,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 60,
-    "next": 200108,
+    "next": 200109,
     "inherit": true,
     "award": "202:500"
   },
@@ -222,7 +222,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 70,
-    "next": 200109,
+    "next": 200110,
     "inherit": true,
     "award": "202:500"
   },
@@ -231,7 +231,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 80,
-    "next": 200110,
+    "next": 200111,
     "inherit": true,
     "award": "202:500"
   },
@@ -240,7 +240,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 90,
-    "next": 200111,
+    "next": 200112,
     "inherit": true,
     "award": "202:500"
   },
@@ -249,7 +249,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 100,
-    "next": 200112,
+    "next": 200113,
     "inherit": true,
     "award": "202:500"
   },
@@ -258,7 +258,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 110,
-    "next": 200113,
+    "next": 200114,
     "inherit": true,
     "award": "202:500"
   },
@@ -267,7 +267,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 120,
-    "next": 200114,
+    "next": 200115,
     "inherit": true,
     "award": "202:500"
   },
@@ -276,7 +276,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 130,
-    "next": 200115,
+    "next": 200116,
     "inherit": true,
     "award": "202:500"
   },
@@ -285,7 +285,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 140,
-    "next": 200116,
+    "next": 200117,
     "inherit": true,
     "award": "202:500"
   },
@@ -294,7 +294,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 150,
-    "next": 200117,
+    "next": 200118,
     "inherit": true,
     "award": "202:500"
   },
@@ -303,7 +303,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 160,
-    "next": 200118,
+    "next": 200119,
     "inherit": true,
     "award": "202:500"
   },
@@ -312,7 +312,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 170,
-    "next": 200119,
+    "next": 200120,
     "inherit": true,
     "award": "202:500"
   },
@@ -321,7 +321,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 180,
-    "next": 200120,
+    "next": 200121,
     "inherit": true,
     "award": "202:500"
   },
@@ -330,7 +330,7 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 190,
-    "next": 200121,
+    "next": 200122,
     "inherit": true,
     "award": "202:500"
   },
@@ -339,7 +339,6 @@
     "refresh": "always",
     "type": "loadLv",
     "value": 200,
-    "next": 200122,
     "inherit": true,
     "award": "202:500"
   },
@@ -348,6 +347,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 10000,
+    "next": 200202,
     "inherit": true,
     "award": "202:10&201:10000",
     "first": true
@@ -357,7 +357,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 50000,
-    "next": 200202,
+    "next": 200203,
     "inherit": true,
     "award": "202:50&201:50000"
   },
@@ -366,7 +366,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 100000,
-    "next": 200203,
+    "next": 200204,
     "inherit": true,
     "award": "202:100&201:100000"
   },
@@ -375,7 +375,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 150000,
-    "next": 200204,
+    "next": 200205,
     "inherit": true,
     "award": "202:150&201:150000"
   },
@@ -384,7 +384,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 200000,
-    "next": 200205,
+    "next": 200206,
     "inherit": true,
     "award": "202:200&201:200000"
   },
@@ -393,7 +393,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 300000,
-    "next": 200206,
+    "next": 200207,
     "inherit": true,
     "award": "202:250&201:250000"
   },
@@ -402,7 +402,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 400000,
-    "next": 200207,
+    "next": 200208,
     "inherit": true,
     "award": "202:300&201:300000"
   },
@@ -411,7 +411,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 500000,
-    "next": 200208,
+    "next": 200209,
     "inherit": true,
     "award": "202:350&201:350000"
   },
@@ -420,7 +420,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 800000,
-    "next": 200209,
+    "next": 200210,
     "inherit": true,
     "award": "202:400&201:400000"
   },
@@ -429,7 +429,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 1000000,
-    "next": 200210,
+    "next": 200211,
     "inherit": true,
     "award": "202:450&201:450000"
   },
@@ -438,7 +438,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 1200000,
-    "next": 200211,
+    "next": 200212,
     "inherit": true,
     "award": "202:500&201:500000"
   },
@@ -447,7 +447,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 1400000,
-    "next": 200212,
+    "next": 200213,
     "inherit": true,
     "award": "202:550&201:550000"
   },
@@ -456,7 +456,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 1600000,
-    "next": 200213,
+    "next": 200214,
     "inherit": true,
     "award": "202:600&201:600000"
   },
@@ -465,7 +465,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 1800000,
-    "next": 200214,
+    "next": 200215,
     "inherit": true,
     "award": "202:650&201:650000"
   },
@@ -474,7 +474,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 2000000,
-    "next": 200215,
+    "next": 200216,
     "inherit": true,
     "award": "202:700&201:700000"
   },
@@ -483,7 +483,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 2500000,
-    "next": 200216,
+    "next": 200217,
     "inherit": true,
     "award": "202:750&201:750000"
   },
@@ -492,7 +492,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 3000000,
-    "next": 200217,
+    "next": 200218,
     "inherit": true,
     "award": "202:800&201:800000"
   },
@@ -501,7 +501,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 4000000,
-    "next": 200218,
+    "next": 200219,
     "inherit": true,
     "award": "202:850&201:850000"
   },
@@ -510,7 +510,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 5000000,
-    "next": 200219,
+    "next": 200220,
     "inherit": true,
     "award": "202:900&201:900000"
   },
@@ -519,7 +519,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 6000000,
-    "next": 200220,
+    "next": 200221,
     "inherit": true,
     "award": "202:1000&201:1000000"
   },
@@ -528,7 +528,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 7000000,
-    "next": 200221,
+    "next": 200222,
     "inherit": true,
     "award": "202:1100&201:1100000"
   },
@@ -537,7 +537,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 8000000,
-    "next": 200222,
+    "next": 200223,
     "inherit": true,
     "award": "202:1200&201:1200000"
   },
@@ -546,7 +546,7 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 9000000,
-    "next": 200223,
+    "next": 200224,
     "inherit": true,
     "award": "202:1300&201:1300000"
   },
@@ -555,7 +555,6 @@
     "refresh": "always",
     "type": "totalCe",
     "value": 10000000,
-    "next": 200224,
     "inherit": true,
     "award": "202:1500&201:1500000"
   },
@@ -564,6 +563,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 10,
+    "next": 200302,
     "inherit": true,
     "award": "101:5000",
     "first": true
@@ -573,7 +573,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 20,
-    "next": 200302,
+    "next": 200303,
     "inherit": true,
     "award": "101:10000"
   },
@@ -582,7 +582,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 30,
-    "next": 200303,
+    "next": 200304,
     "inherit": true,
     "award": "101:15000"
   },
@@ -591,7 +591,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 40,
-    "next": 200304,
+    "next": 200305,
     "inherit": true,
     "award": "101:20000"
   },
@@ -600,7 +600,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 50,
-    "next": 200305,
+    "next": 200306,
     "inherit": true,
     "award": "101:25000"
   },
@@ -609,7 +609,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 60,
-    "next": 200306,
+    "next": 200307,
     "inherit": true,
     "award": "101:30000"
   },
@@ -618,7 +618,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 70,
-    "next": 200307,
+    "next": 200308,
     "inherit": true,
     "award": "101:35000"
   },
@@ -627,7 +627,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 80,
-    "next": 200308,
+    "next": 200309,
     "inherit": true,
     "award": "101:40000"
   },
@@ -636,7 +636,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 90,
-    "next": 200309,
+    "next": 200310,
     "inherit": true,
     "award": "101:45000"
   },
@@ -645,7 +645,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 100,
-    "next": 200310,
+    "next": 200311,
     "inherit": true,
     "award": "101:50000"
   },
@@ -654,7 +654,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 150,
-    "next": 200311,
+    "next": 200312,
     "inherit": true,
     "award": "101:60000"
   },
@@ -663,7 +663,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 200,
-    "next": 200312,
+    "next": 200313,
     "inherit": true,
     "award": "101:70000"
   },
@@ -672,7 +672,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 250,
-    "next": 200313,
+    "next": 200314,
     "inherit": true,
     "award": "101:80000"
   },
@@ -681,7 +681,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 300,
-    "next": 200314,
+    "next": 200315,
     "inherit": true,
     "award": "101:90000"
   },
@@ -690,7 +690,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 350,
-    "next": 200315,
+    "next": 200316,
     "inherit": true,
     "award": "101:100000"
   },
@@ -699,7 +699,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 400,
-    "next": 200316,
+    "next": 200317,
     "inherit": true,
     "award": "101:110000"
   },
@@ -708,7 +708,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 450,
-    "next": 200317,
+    "next": 200318,
     "inherit": true,
     "award": "101:120000"
   },
@@ -717,7 +717,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 500,
-    "next": 200318,
+    "next": 200319,
     "inherit": true,
     "award": "101:130000"
   },
@@ -726,7 +726,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 600,
-    "next": 200319,
+    "next": 200320,
     "inherit": true,
     "award": "101:150000"
   },
@@ -735,7 +735,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 700,
-    "next": 200320,
+    "next": 200321,
     "inherit": true,
     "award": "101:200000"
   },
@@ -744,7 +744,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 800,
-    "next": 200321,
+    "next": 200322,
     "inherit": true,
     "award": "101:250000"
   },
@@ -753,7 +753,7 @@
     "refresh": "always",
     "type": "arena",
     "value": 900,
-    "next": 200322,
+    "next": 200323,
     "inherit": true,
     "award": "101:300000"
   },
@@ -762,7 +762,6 @@
     "refresh": "always",
     "type": "arena",
     "value": 1000,
-    "next": 200323,
     "inherit": true,
     "award": "101:350000"
   },
@@ -771,6 +770,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9000,
+    "next": 200402,
     "award": "202:50&203:50",
     "first": true
   },
@@ -779,7 +779,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9500,
-    "next": 200402,
+    "next": 200403,
     "award": "202:100&203:100"
   },
   "200403": {
@@ -787,7 +787,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9600,
-    "next": 200403,
+    "next": 200404,
     "award": "202:150&203:150"
   },
   "200404": {
@@ -795,7 +795,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9700,
-    "next": 200404,
+    "next": 200405,
     "award": "202:200&203:200"
   },
   "200405": {
@@ -803,7 +803,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9800,
-    "next": 200405,
+    "next": 200406,
     "award": "202:250&203:250"
   },
   "200406": {
@@ -811,7 +811,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9900,
-    "next": 200406,
+    "next": 200407,
     "award": "202:300&203:300"
   },
   "200407": {
@@ -819,7 +819,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9950,
-    "next": 200407,
+    "next": 200408,
     "award": "202:350&203:350"
   },
   "200408": {
@@ -827,7 +827,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9970,
-    "next": 200408,
+    "next": 200409,
     "award": "202:400&203:400"
   },
   "200409": {
@@ -835,7 +835,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9980,
-    "next": 200409,
+    "next": 200410,
     "award": "202:450&203:450"
   },
   "200410": {
@@ -843,7 +843,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9990,
-    "next": 200410,
+    "next": 200411,
     "award": "202:500&203:500"
   },
   "200411": {
@@ -851,7 +851,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9995,
-    "next": 200411,
+    "next": 200412,
     "award": "202:550&203:550"
   },
   "200412": {
@@ -859,7 +859,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9997,
-    "next": 200412,
+    "next": 200413,
     "award": "202:600&203:60"
   },
   "200413": {
@@ -867,7 +867,7 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9998,
-    "next": 200413,
+    "next": 200414,
     "award": "202:650&203:650"
   },
   "200414": {
@@ -875,7 +875,6 @@
     "refresh": "always",
     "type": "rank",
     "arg": 9999,
-    "next": 200414,
     "award": "202:700&203:700"
   },
   "200501": {
@@ -884,6 +883,7 @@
     "type": "hero",
     "arg": 5,
     "value": 1,
+    "next": 200502,
     "award": "5006010:1&5006020:1",
     "first": true
   },
@@ -893,6 +893,7 @@
     "type": "hero",
     "arg": 6,
     "value": 1,
+    "next": 200503,
     "award": "5007010:1&5007020:1"
   },
   "200503": {
@@ -901,6 +902,7 @@
     "type": "hero",
     "arg": 7,
     "value": 1,
+    "next": 200504,
     "award": "5008010:1&5008020:1"
   },
   "200504": {
@@ -909,6 +911,7 @@
     "type": "hero",
     "arg": 8,
     "value": 1,
+    "next": 200505,
     "award": "5009010:1&5009020:1"
   },
   "200505": {
@@ -917,6 +920,7 @@
     "type": "hero",
     "arg": 9,
     "value": 1,
+    "next": 200506,
     "award": "5010010:1&5010020:1"
   },
   "200506": {
@@ -933,6 +937,7 @@
     "type": "hero",
     "arg": 4,
     "value": 10,
+    "next": 200602,
     "inherit": true,
     "award": "101:10000&201:50000",
     "first": true
@@ -943,7 +948,7 @@
     "type": "hero",
     "arg": 4,
     "value": 50,
-    "next": 200602,
+    "next": 200603,
     "inherit": true,
     "award": "101:20000&201:100000"
   },
@@ -953,7 +958,7 @@
     "type": "hero",
     "arg": 4,
     "value": 100,
-    "next": 200603,
+    "next": 200604,
     "inherit": true,
     "award": "101:30000&201:150000"
   },
@@ -963,7 +968,7 @@
     "type": "hero",
     "arg": 4,
     "value": 200,
-    "next": 200604,
+    "next": 200605,
     "inherit": true,
     "award": "101:40000&201:200000"
   },
@@ -973,7 +978,7 @@
     "type": "hero",
     "arg": 4,
     "value": 300,
-    "next": 200605,
+    "next": 200606,
     "inherit": true,
     "award": "101:50000&201:250000"
   },
@@ -983,7 +988,7 @@
     "type": "hero",
     "arg": 4,
     "value": 400,
-    "next": 200606,
+    "next": 200607,
     "inherit": true,
     "award": "101:60000&201:300000"
   },
@@ -993,7 +998,7 @@
     "type": "hero",
     "arg": 4,
     "value": 500,
-    "next": 200607,
+    "next": 200608,
     "inherit": true,
     "award": "101:70000&201:350000"
   },
@@ -1003,7 +1008,7 @@
     "type": "hero",
     "arg": 4,
     "value": 600,
-    "next": 200608,
+    "next": 200609,
     "inherit": true,
     "award": "101:80000&201:400000"
   },
@@ -1013,7 +1018,7 @@
     "type": "hero",
     "arg": 4,
     "value": 700,
-    "next": 200609,
+    "next": 200610,
     "inherit": true,
     "award": "101:90000&201:450000"
   },
@@ -1023,7 +1028,7 @@
     "type": "hero",
     "arg": 4,
     "value": 800,
-    "next": 200610,
+    "next": 200611,
     "inherit": true,
     "award": "101:100000&201:500000"
   },
@@ -1033,7 +1038,7 @@
     "type": "hero",
     "arg": 4,
     "value": 900,
-    "next": 200611,
+    "next": 200612,
     "inherit": true,
     "award": "101:120000&201:600000"
   },
@@ -1043,7 +1048,6 @@
     "type": "hero",
     "arg": 4,
     "value": 1000,
-    "next": 200612,
     "inherit": true,
     "award": "101:150000&201:1000000"
   },
@@ -1053,6 +1057,7 @@
     "type": "hero",
     "arg": 5,
     "value": 5,
+    "next": 200702,
     "inherit": true,
     "award": "1000080:1",
     "first": true
@@ -1063,7 +1068,7 @@
     "type": "hero",
     "arg": 5,
     "value": 15,
-    "next": 200702,
+    "next": 200703,
     "inherit": true,
     "award": "1000080:5"
   },
@@ -1073,7 +1078,7 @@
     "type": "hero",
     "arg": 5,
     "value": 15,
-    "next": 200703,
+    "next": 200704,
     "inherit": true,
     "award": "1000080:10"
   },
@@ -1083,7 +1088,7 @@
     "type": "hero",
     "arg": 5,
     "value": 20,
-    "next": 200704,
+    "next": 200705,
     "inherit": true,
     "award": "1000080:15"
   },
@@ -1093,7 +1098,7 @@
     "type": "hero",
     "arg": 5,
     "value": 30,
-    "next": 200705,
+    "next": 200706,
     "inherit": true,
     "award": "1000080:20"
   },
@@ -1103,7 +1108,7 @@
     "type": "hero",
     "arg": 5,
     "value": 40,
-    "next": 200706,
+    "next": 200707,
     "inherit": true,
     "award": "1000080:25"
   },
@@ -1113,7 +1118,7 @@
     "type": "hero",
     "arg": 5,
     "value": 50,
-    "next": 200707,
+    "next": 200708,
     "inherit": true,
     "award": "1000080:30"
   },
@@ -1123,7 +1128,7 @@
     "type": "hero",
     "arg": 5,
     "value": 80,
-    "next": 200708,
+    "next": 200709,
     "inherit": true,
     "award": "1000080:35"
   },
@@ -1133,7 +1138,7 @@
     "type": "hero",
     "arg": 5,
     "value": 100,
-    "next": 200709,
+    "next": 200710,
     "inherit": true,
     "award": "1000080:40"
   },
@@ -1143,7 +1148,7 @@
     "type": "hero",
     "arg": 5,
     "value": 150,
-    "next": 200710,
+    "next": 200711,
     "inherit": true,
     "award": "1000080:45"
   },
@@ -1153,7 +1158,7 @@
     "type": "hero",
     "arg": 5,
     "value": 200,
-    "next": 200711,
+    "next": 200712,
     "inherit": true,
     "award": "1000080:50"
   },
@@ -1163,7 +1168,6 @@
     "type": "hero",
     "arg": 5,
     "value": 300,
-    "next": 200712,
     "inherit": true,
     "award": "1000080:60"
   },
@@ -1172,6 +1176,8 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 10,
+    "next": 200802,
+    "inherit": true,
     "award": "1000050:10&504000:5",
     "first": true
   },
@@ -1180,7 +1186,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 20,
-    "next": 200802,
+    "next": 200803,
     "inherit": true,
     "award": "1000050:20&504000:5"
   },
@@ -1189,7 +1195,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 30,
-    "next": 200803,
+    "next": 200804,
     "inherit": true,
     "award": "1000050:30&504000:5"
   },
@@ -1198,7 +1204,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 40,
-    "next": 200804,
+    "next": 200805,
     "inherit": true,
     "award": "1000050:40&504000:5"
   },
@@ -1207,7 +1213,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 50,
-    "next": 200805,
+    "next": 200806,
     "inherit": true,
     "award": "1000050:50&504000:5"
   },
@@ -1216,7 +1222,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 60,
-    "next": 200806,
+    "next": 200807,
     "inherit": true,
     "award": "1000050:60&504000:5"
   },
@@ -1225,7 +1231,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 70,
-    "next": 200807,
+    "next": 200808,
     "inherit": true,
     "award": "1000050:70&504000:5"
   },
@@ -1234,7 +1240,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 80,
-    "next": 200808,
+    "next": 200809,
     "inherit": true,
     "award": "1000050:80&504000:5"
   },
@@ -1243,7 +1249,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 90,
-    "next": 200809,
+    "next": 200810,
     "inherit": true,
     "award": "1000050:90&504000:5"
   },
@@ -1252,7 +1258,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 100,
-    "next": 200810,
+    "next": 200811,
     "inherit": true,
     "award": "1000050:100&505000:5"
   },
@@ -1261,7 +1267,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 110,
-    "next": 200811,
+    "next": 200812,
     "inherit": true,
     "award": "1000050:110&505000:5"
   },
@@ -1270,7 +1276,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 120,
-    "next": 200812,
+    "next": 200813,
     "inherit": true,
     "award": "1000050:120&505000:5"
   },
@@ -1279,7 +1285,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 130,
-    "next": 200813,
+    "next": 200814,
     "inherit": true,
     "award": "1000050:130&505000:5"
   },
@@ -1288,7 +1294,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 140,
-    "next": 200814,
+    "next": 200815,
     "inherit": true,
     "award": "1000050:140&505000:5"
   },
@@ -1297,7 +1303,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 150,
-    "next": 200815,
+    "next": 200816,
     "inherit": true,
     "award": "1000050:150&505000:5"
   },
@@ -1306,7 +1312,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 160,
-    "next": 200816,
+    "next": 200817,
     "inherit": true,
     "award": "1000050:160&505000:5"
   },
@@ -1315,7 +1321,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 170,
-    "next": 200817,
+    "next": 200818,
     "inherit": true,
     "award": "1000050:170&505000:5"
   },
@@ -1324,7 +1330,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 180,
-    "next": 200818,
+    "next": 200819,
     "inherit": true,
     "award": "1000050:180&505000:5"
   },
@@ -1333,7 +1339,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 190,
-    "next": 200819,
+    "next": 200820,
     "inherit": true,
     "award": "1000050:190&505000:5"
   },
@@ -1342,7 +1348,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 200,
-    "next": 200820,
+    "next": 200821,
     "inherit": true,
     "award": "1000050:200&505000:5"
   },
@@ -1351,7 +1357,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 210,
-    "next": 200821,
+    "next": 200822,
     "inherit": true,
     "award": "1000050:210&505000:5"
   },
@@ -1360,7 +1366,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 220,
-    "next": 200822,
+    "next": 200823,
     "inherit": true,
     "award": "1000050:220&505000:5"
   },
@@ -1369,7 +1375,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 230,
-    "next": 200823,
+    "next": 200824,
     "inherit": true,
     "award": "1000050:230&505000:5"
   },
@@ -1378,7 +1384,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 240,
-    "next": 200824,
+    "next": 200825,
     "inherit": true,
     "award": "1000050:240&505000:5"
   },
@@ -1387,7 +1393,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 250,
-    "next": 200825,
+    "next": 200826,
     "inherit": true,
     "award": "1000050:250&505000:5"
   },
@@ -1396,7 +1402,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 260,
-    "next": 200826,
+    "next": 200827,
     "inherit": true,
     "award": "1000050:260&505000:5"
   },
@@ -1405,7 +1411,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 270,
-    "next": 200827,
+    "next": 200828,
     "inherit": true,
     "award": "1000050:270&505000:5"
   },
@@ -1414,7 +1420,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 280,
-    "next": 200828,
+    "next": 200829,
     "inherit": true,
     "award": "1000050:280&505000:5"
   },
@@ -1423,7 +1429,7 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 290,
-    "next": 200829,
+    "next": 200830,
     "inherit": true,
     "award": "1000050:290&505000:5"
   },
@@ -1432,341 +1438,357 @@
     "refresh": "always",
     "type": "tttLv",
     "value": 300,
-    "next": 200830,
     "inherit": true,
     "award": "1000050:300&505000:5"
   },
   "200901": {
-    "title": "英雄祭坛招募10次",
+    "title": "女娲池召唤10次",
     "refresh": "always",
     "type": "recruit",
     "value": 10,
+    "next": 200902,
+    "inherit": true,
     "award": "201:10000&505000:5",
     "first": true
   },
   "200902": {
-    "title": "英雄祭坛招募50次",
+    "title": "女娲池召唤50次",
     "refresh": "always",
     "type": "recruit",
     "value": 50,
-    "next": 200902,
+    "next": 200903,
+    "inherit": true,
     "award": "201:50000&505000:5"
   },
   "200903": {
-    "title": "英雄祭坛招募80次",
+    "title": "女娲池召唤80次",
     "refresh": "always",
     "type": "recruit",
     "value": 80,
-    "next": 200903,
+    "next": 200904,
+    "inherit": true,
     "award": "201:80000&505000:5"
   },
   "200904": {
-    "title": "英雄祭坛招募110次",
+    "title": "女娲池召唤110次",
     "refresh": "always",
     "type": "recruit",
     "value": 110,
-    "next": 200904,
+    "next": 200905,
+    "inherit": true,
     "award": "201:110000&505000:5"
   },
   "200905": {
-    "title": "英雄祭坛招募140次",
+    "title": "女娲池召唤140次",
     "refresh": "always",
     "type": "recruit",
     "value": 140,
-    "next": 200905,
+    "next": 200906,
+    "inherit": true,
     "award": "201:140000&505000:5"
   },
   "200906": {
-    "title": "英雄祭坛招募170次",
+    "title": "女娲池召唤170次",
     "refresh": "always",
     "type": "recruit",
     "value": 170,
-    "next": 200906,
+    "next": 200907,
+    "inherit": true,
     "award": "201:170000&505000:5"
   },
   "200907": {
-    "title": "英雄祭坛招募200次",
+    "title": "女娲池召唤200次",
     "refresh": "always",
     "type": "recruit",
     "value": 200,
-    "next": 200907,
+    "next": 200908,
+    "inherit": true,
     "award": "201:200000&505000:5"
   },
   "200908": {
-    "title": "英雄祭坛招募230次",
+    "title": "女娲池召唤230次",
     "refresh": "always",
     "type": "recruit",
     "value": 230,
-    "next": 200908,
+    "next": 200909,
+    "inherit": true,
     "award": "201:230000&505000:5"
   },
   "200909": {
-    "title": "英雄祭坛招募260次",
+    "title": "女娲池召唤260次",
     "refresh": "always",
     "type": "recruit",
     "value": 260,
-    "next": 200909,
+    "next": 200910,
+    "inherit": true,
     "award": "201:260000&505000:5"
   },
   "200910": {
-    "title": "英雄祭坛招募290次",
+    "title": "女娲池召唤290次",
     "refresh": "always",
     "type": "recruit",
     "value": 290,
-    "next": 200910,
+    "next": 200911,
+    "inherit": true,
     "award": "201:290000&505000:5"
   },
   "200911": {
-    "title": "英雄祭坛招募320次",
+    "title": "女娲池召唤320次",
     "refresh": "always",
     "type": "recruit",
     "value": 320,
-    "next": 200911,
+    "next": 200912,
+    "inherit": true,
     "award": "201:300000&505000:5"
   },
   "200912": {
-    "title": "英雄祭坛招募350次",
+    "title": "女娲池召唤350次",
     "refresh": "always",
     "type": "recruit",
     "value": 350,
-    "next": 200912,
+    "next": 200913,
+    "inherit": true,
     "award": "201:350000&505000:5"
   },
   "200913": {
-    "title": "英雄祭坛招募380次",
+    "title": "女娲池召唤380次",
     "refresh": "always",
     "type": "recruit",
     "value": 380,
-    "next": 200913,
+    "next": 200914,
+    "inherit": true,
     "award": "201:380000&505000:5"
   },
   "200914": {
-    "title": "英雄祭坛招募410次",
+    "title": "女娲池召唤410次",
     "refresh": "always",
     "type": "recruit",
     "value": 410,
-    "next": 200914,
+    "next": 200915,
+    "inherit": true,
     "award": "201:410000&505000:5"
   },
   "200915": {
-    "title": "英雄祭坛招募440次",
+    "title": "女娲池召唤440次",
     "refresh": "always",
     "type": "recruit",
     "value": 440,
-    "next": 200915,
+    "next": 200916,
+    "inherit": true,
     "award": "201:440000&505000:5"
   },
   "200916": {
-    "title": "英雄祭坛招募470次",
+    "title": "女娲池召唤470次",
     "refresh": "always",
     "type": "recruit",
     "value": 470,
-    "next": 200916,
+    "next": 200917,
+    "inherit": true,
     "award": "201:470000&505000:5"
   },
   "200917": {
-    "title": "英雄祭坛招募500次",
+    "title": "女娲池召唤500次",
     "refresh": "always",
     "type": "recruit",
     "value": 500,
-    "next": 200917,
+    "inherit": true,
     "award": "201:500000&505000:5"
   },
   "201001": {
-    "title": "将军府累计征募5次",
+    "title": "英雄殿累计召唤5次",
     "refresh": "always",
     "type": "general",
     "value": 5,
+    "next": 201002,
     "inherit": true,
     "award": "1000160:10&203:100",
     "first": true
   },
   "201002": {
-    "title": "将军府累计征募10次",
+    "title": "英雄殿累计召唤10次",
     "refresh": "always",
     "type": "general",
     "value": 10,
-    "next": 201002,
+    "next": 201003,
     "inherit": true,
     "award": "1000160:10&203:150"
   },
   "201003": {
-    "title": "将军府累计征募20次",
+    "title": "英雄殿累计召唤20次",
     "refresh": "always",
     "type": "general",
     "value": 20,
-    "next": 201003,
+    "next": 201004,
     "inherit": true,
     "award": "1000160:10&203:200"
   },
   "201004": {
-    "title": "将军府累计征募40次",
+    "title": "英雄殿累计召唤40次",
     "refresh": "always",
     "type": "general",
     "value": 40,
-    "next": 201004,
+    "next": 201005,
     "inherit": true,
     "award": "1000160:10&203:250"
   },
   "201005": {
-    "title": "将军府累计征募80次",
+    "title": "英雄殿累计召唤80次",
     "refresh": "always",
     "type": "general",
     "value": 80,
-    "next": 201005,
+    "next": 201006,
     "inherit": true,
     "award": "1000160:10&203:300"
   },
   "201006": {
-    "title": "将军府累计征募100次",
+    "title": "英雄殿累计召唤100次",
     "refresh": "always",
     "type": "general",
     "value": 100,
-    "next": 201006,
+    "next": 201007,
     "inherit": true,
     "award": "1000160:10&203:350"
   },
   "201007": {
-    "title": "将军府累计征募120次",
+    "title": "英雄殿累计召唤120次",
     "refresh": "always",
     "type": "general",
     "value": 120,
-    "next": 201007,
+    "next": 201008,
     "inherit": true,
     "award": "1000160:10&203:400"
   },
   "201008": {
-    "title": "将军府累计征募140次",
+    "title": "英雄殿累计召唤140次",
     "refresh": "always",
     "type": "general",
     "value": 140,
-    "next": 201008,
+    "next": 201009,
     "inherit": true,
     "award": "1000160:10&203:450"
   },
   "201009": {
-    "title": "将军府累计征募160次",
+    "title": "英雄殿累计召唤160次",
     "refresh": "always",
     "type": "general",
     "value": 160,
-    "next": 201009,
+    "next": 201010,
     "inherit": true,
     "award": "1000160:10&203:500"
   },
   "201010": {
-    "title": "将军府累计征募180次",
+    "title": "英雄殿累计召唤180次",
     "refresh": "always",
     "type": "general",
     "value": 180,
-    "next": 201010,
+    "next": 201011,
     "inherit": true,
     "award": "1000160:10&203:550"
   },
   "201011": {
-    "title": "将军府累计征募200次",
+    "title": "英雄殿累计召唤200次",
     "refresh": "always",
     "type": "general",
     "value": 200,
-    "next": 201011,
+    "next": 201012,
     "inherit": true,
     "award": "1000160:10&203:600"
   },
   "201012": {
-    "title": "将军府累计征募250次",
+    "title": "英雄殿累计召唤250次",
     "refresh": "always",
     "type": "general",
     "value": 250,
-    "next": 201012,
+    "next": 201013,
     "inherit": true,
     "award": "1000160:10&203:650"
   },
   "201013": {
-    "title": "将军府累计征募300次",
+    "title": "英雄殿累计召唤300次",
     "refresh": "always",
     "type": "general",
     "value": 300,
-    "next": 201013,
+    "next": 201014,
     "inherit": true,
     "award": "1000160:10&203:700"
   },
   "201014": {
-    "title": "将军府累计征募350次",
+    "title": "英雄殿累计召唤350次",
     "refresh": "always",
     "type": "general",
     "value": 350,
-    "next": 201014,
+    "next": 201015,
     "inherit": true,
     "award": "1000160:10&203:750"
   },
   "201015": {
-    "title": "将军府累计征募400次",
+    "title": "英雄殿累计召唤400次",
     "refresh": "always",
     "type": "general",
     "value": 400,
-    "next": 201015,
+    "next": 201016,
     "inherit": true,
     "award": "1000160:10&203:800"
   },
   "201016": {
-    "title": "将军府累计征募450次",
+    "title": "英雄殿累计召唤450次",
     "refresh": "always",
     "type": "general",
     "value": 450,
-    "next": 201016,
+    "next": 201017,
     "inherit": true,
     "award": "1000160:10&203:850"
   },
   "201017": {
-    "title": "将军府累计征募500次",
+    "title": "英雄殿累计召唤500次",
     "refresh": "always",
     "type": "general",
     "value": 500,
-    "next": 201017,
+    "next": 201018,
     "inherit": true,
     "award": "1000160:10&203:900"
   },
   "201018": {
-    "title": "将军府累计征募600次",
+    "title": "英雄殿累计召唤600次",
     "refresh": "always",
     "type": "general",
     "value": 600,
-    "next": 201018,
+    "next": 201019,
     "inherit": true,
     "award": "1000160:10&203:950"
   },
   "201019": {
-    "title": "将军府累计征募700次",
+    "title": "英雄殿累计召唤700次",
     "refresh": "always",
     "type": "general",
     "value": 700,
-    "next": 201019,
+    "next": 201020,
     "inherit": true,
     "award": "1000160:10&203:1000"
   },
   "201020": {
-    "title": "将军府累计征募800次",
+    "title": "英雄殿累计召唤800次",
     "refresh": "always",
     "type": "general",
     "value": 800,
-    "next": 201020,
+    "next": 201021,
     "inherit": true,
     "award": "1000160:10&203:1050"
   },
   "201021": {
-    "title": "将军府累计征募900次",
+    "title": "英雄殿累计召唤900次",
     "refresh": "always",
     "type": "general",
     "value": 900,
-    "next": 201021,
+    "next": 201022,
     "inherit": true,
     "award": "1000160:10&203:1100"
   },
   "201022": {
-    "title": "将军府累计征募1000次",
+    "title": "英雄殿累计召唤1000次",
     "refresh": "always",
     "type": "general",
     "value": 1000,
-    "next": 201022,
     "inherit": true,
     "award": "1000160:10&203:2000"
   },
@@ -1776,6 +1798,7 @@
     "type": "artifactLv",
     "arg": 5,
     "value": 1,
+    "next": 201102,
     "inherit": true,
     "award": "202:50&1000050:50",
     "first": true
@@ -1786,7 +1809,7 @@
     "type": "artifactLv",
     "arg": 10,
     "value": 1,
-    "next": 201102,
+    "next": 201103,
     "inherit": true,
     "award": "202:100&1000050:100"
   },
@@ -1796,7 +1819,7 @@
     "type": "artifactLv",
     "arg": 15,
     "value": 1,
-    "next": 201103,
+    "next": 201104,
     "inherit": true,
     "award": "202:150&1000050:150"
   },
@@ -1806,7 +1829,7 @@
     "type": "artifactLv",
     "arg": 20,
     "value": 1,
-    "next": 201104,
+    "next": 201105,
     "inherit": true,
     "award": "202:200&1000050:200"
   },
@@ -1816,7 +1839,7 @@
     "type": "artifactLv",
     "arg": 25,
     "value": 1,
-    "next": 201105,
+    "next": 201106,
     "inherit": true,
     "award": "202:250&1000050:250"
   },
@@ -1826,7 +1849,7 @@
     "type": "artifactLv",
     "arg": 30,
     "value": 1,
-    "next": 201106,
+    "next": 201107,
     "inherit": true,
     "award": "202:300&1000050:300"
   },
@@ -1836,7 +1859,7 @@
     "type": "artifactLv",
     "arg": 35,
     "value": 1,
-    "next": 201107,
+    "next": 201108,
     "inherit": true,
     "award": "202:350&1000050:350"
   },
@@ -1846,7 +1869,7 @@
     "type": "artifactLv",
     "arg": 40,
     "value": 1,
-    "next": 201108,
+    "next": 201109,
     "inherit": true,
     "award": "202:400&1000050:400"
   },
@@ -1856,7 +1879,7 @@
     "type": "artifactLv",
     "arg": 45,
     "value": 1,
-    "next": 201109,
+    "next": 201110,
     "inherit": true,
     "award": "202:450&1000050:450"
   },
@@ -1866,7 +1889,7 @@
     "type": "artifactLv",
     "arg": 50,
     "value": 1,
-    "next": 201110,
+    "next": 201111,
     "inherit": true,
     "award": "202:500&1000050:500"
   },
@@ -1876,7 +1899,7 @@
     "type": "artifactLv",
     "arg": 55,
     "value": 1,
-    "next": 201111,
+    "next": 201112,
     "inherit": true,
     "award": "202:550&1000050:550"
   },
@@ -1886,7 +1909,7 @@
     "type": "artifactLv",
     "arg": 60,
     "value": 1,
-    "next": 201112,
+    "next": 201113,
     "inherit": true,
     "award": "202:600&1000050:600"
   },
@@ -1896,7 +1919,7 @@
     "type": "artifactLv",
     "arg": 65,
     "value": 1,
-    "next": 201113,
+    "next": 201114,
     "inherit": true,
     "award": "202:650&1000050:650"
   },
@@ -1906,7 +1929,7 @@
     "type": "artifactLv",
     "arg": 70,
     "value": 1,
-    "next": 201114,
+    "next": 201115,
     "inherit": true,
     "award": "202:700&1000050:700"
   },
@@ -1916,7 +1939,6 @@
     "type": "artifactLv",
     "arg": 75,
     "value": 1,
-    "next": 201115,
     "inherit": true,
     "award": "202:750&1000050:750"
   },
@@ -1925,6 +1947,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 500000,
+    "next": 201202,
     "inherit": true,
     "award": "1000070:5",
     "first": true
@@ -1934,7 +1957,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 1000000,
-    "next": 201202,
+    "next": 201203,
     "inherit": true,
     "award": "1000070:10"
   },
@@ -1943,7 +1966,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 3000000,
-    "next": 201203,
+    "next": 201204,
     "inherit": true,
     "award": "1000070:15"
   },
@@ -1952,7 +1975,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 5000000,
-    "next": 201204,
+    "next": 201205,
     "inherit": true,
     "award": "1000070:20"
   },
@@ -1961,7 +1984,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 8000000,
-    "next": 201205,
+    "next": 201206,
     "inherit": true,
     "award": "1000070:25"
   },
@@ -1970,7 +1993,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 10000000,
-    "next": 201206,
+    "next": 201207,
     "inherit": true,
     "award": "1000070:30"
   },
@@ -1979,7 +2002,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 20000000,
-    "next": 201207,
+    "next": 201208,
     "inherit": true,
     "award": "1000070:35"
   },
@@ -1988,7 +2011,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 50000000,
-    "next": 201208,
+    "next": 201209,
     "inherit": true,
     "award": "1000070:40"
   },
@@ -1997,7 +2020,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 80000000,
-    "next": 201209,
+    "next": 201210,
     "inherit": true,
     "award": "1000070:45"
   },
@@ -2006,7 +2029,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 90000000,
-    "next": 201210,
+    "next": 201211,
     "inherit": true,
     "award": "1000070:50"
   },
@@ -2015,7 +2038,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 100000000,
-    "next": 201211,
+    "next": 201212,
     "inherit": true,
     "award": "1000070:55"
   },
@@ -2024,7 +2047,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 300000000,
-    "next": 201212,
+    "next": 201213,
     "inherit": true,
     "award": "1000070:60"
   },
@@ -2033,7 +2056,7 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 500000000,
-    "next": 201213,
+    "next": 201214,
     "inherit": true,
     "award": "1000070:65"
   },
@@ -2042,7 +2065,6 @@
     "refresh": "always",
     "type": "use_coin",
     "value": 1000000000,
-    "next": 201214,
     "inherit": true,
     "award": "1000070:70"
   },
@@ -2052,8 +2074,10 @@
     "type": "heroLv",
     "arg": 5,
     "value": 1,
+    "next": 201302,
     "inherit": true,
-    "award": "202:5"
+    "award": "202:5",
+    "first": true
   },
   "201302": {
     "title": "英雄升级10级",
@@ -2061,7 +2085,7 @@
     "type": "heroLv",
     "arg": 10,
     "value": 1,
-    "next": 201302,
+    "next": 201303,
     "inherit": true,
     "award": "202:10"
   },
@@ -2071,7 +2095,7 @@
     "type": "heroLv",
     "arg": 15,
     "value": 1,
-    "next": 201303,
+    "next": 201304,
     "inherit": true,
     "award": "202:15"
   },
@@ -2081,7 +2105,7 @@
     "type": "heroLv",
     "arg": 20,
     "value": 1,
-    "next": 201304,
+    "next": 201305,
     "inherit": true,
     "award": "202:20"
   },
@@ -2091,7 +2115,7 @@
     "type": "heroLv",
     "arg": 25,
     "value": 1,
-    "next": 201305,
+    "next": 201306,
     "inherit": true,
     "award": "202:25"
   },
@@ -2101,7 +2125,7 @@
     "type": "heroLv",
     "arg": 30,
     "value": 1,
-    "next": 201306,
+    "next": 201307,
     "inherit": true,
     "award": "202:30"
   },
@@ -2111,7 +2135,7 @@
     "type": "heroLv",
     "arg": 35,
     "value": 1,
-    "next": 201307,
+    "next": 201308,
     "inherit": true,
     "award": "202:35"
   },
@@ -2121,7 +2145,7 @@
     "type": "heroLv",
     "arg": 40,
     "value": 1,
-    "next": 201308,
+    "next": 201309,
     "inherit": true,
     "award": "202:40"
   },
@@ -2131,7 +2155,7 @@
     "type": "heroLv",
     "arg": 45,
     "value": 1,
-    "next": 201309,
+    "next": 201310,
     "inherit": true,
     "award": "202:45"
   },
@@ -2141,7 +2165,7 @@
     "type": "heroLv",
     "arg": 50,
     "value": 1,
-    "next": 201310,
+    "next": 201311,
     "inherit": true,
     "award": "202:50"
   },
@@ -2151,7 +2175,7 @@
     "type": "heroLv",
     "arg": 55,
     "value": 1,
-    "next": 201311,
+    "next": 201312,
     "inherit": true,
     "award": "202:55"
   },
@@ -2161,7 +2185,7 @@
     "type": "heroLv",
     "arg": 60,
     "value": 1,
-    "next": 201312,
+    "next": 201313,
     "inherit": true,
     "award": "202:60"
   },
@@ -2171,7 +2195,7 @@
     "type": "heroLv",
     "arg": 65,
     "value": 1,
-    "next": 201313,
+    "next": 201314,
     "inherit": true,
     "award": "202:65"
   },
@@ -2181,7 +2205,7 @@
     "type": "heroLv",
     "arg": 70,
     "value": 1,
-    "next": 201314,
+    "next": 201315,
     "inherit": true,
     "award": "202:70"
   },
@@ -2191,7 +2215,7 @@
     "type": "heroLv",
     "arg": 75,
     "value": 1,
-    "next": 201315,
+    "next": 201316,
     "inherit": true,
     "award": "202:75"
   },
@@ -2201,7 +2225,7 @@
     "type": "heroLv",
     "arg": 80,
     "value": 1,
-    "next": 201316,
+    "next": 201317,
     "inherit": true,
     "award": "202:80"
   },
@@ -2211,7 +2235,7 @@
     "type": "heroLv",
     "arg": 85,
     "value": 1,
-    "next": 201317,
+    "next": 201318,
     "inherit": true,
     "award": "202:85"
   },
@@ -2221,7 +2245,7 @@
     "type": "heroLv",
     "arg": 90,
     "value": 1,
-    "next": 201318,
+    "next": 201319,
     "inherit": true,
     "award": "202:90"
   },
@@ -2231,7 +2255,7 @@
     "type": "heroLv",
     "arg": 95,
     "value": 1,
-    "next": 201319,
+    "next": 201320,
     "inherit": true,
     "award": "202:95"
   },
@@ -2241,7 +2265,7 @@
     "type": "heroLv",
     "arg": 100,
     "value": 1,
-    "next": 201320,
+    "next": 201321,
     "inherit": true,
     "award": "202:100"
   },
@@ -2251,7 +2275,7 @@
     "type": "heroLv",
     "arg": 105,
     "value": 1,
-    "next": 201321,
+    "next": 201322,
     "inherit": true,
     "award": "202:105"
   },
@@ -2261,7 +2285,7 @@
     "type": "heroLv",
     "arg": 110,
     "value": 1,
-    "next": 201322,
+    "next": 201323,
     "inherit": true,
     "award": "202:110"
   },
@@ -2271,7 +2295,7 @@
     "type": "heroLv",
     "arg": 115,
     "value": 1,
-    "next": 201323,
+    "next": 201324,
     "inherit": true,
     "award": "202:115"
   },
@@ -2281,7 +2305,7 @@
     "type": "heroLv",
     "arg": 120,
     "value": 1,
-    "next": 201324,
+    "next": 201325,
     "inherit": true,
     "award": "202:120"
   },
@@ -2291,7 +2315,7 @@
     "type": "heroLv",
     "arg": 125,
     "value": 1,
-    "next": 201325,
+    "next": 201326,
     "inherit": true,
     "award": "202:125"
   },
@@ -2301,7 +2325,7 @@
     "type": "heroLv",
     "arg": 130,
     "value": 1,
-    "next": 201326,
+    "next": 201327,
     "inherit": true,
     "award": "202:130"
   },
@@ -2311,7 +2335,7 @@
     "type": "heroLv",
     "arg": 135,
     "value": 1,
-    "next": 201327,
+    "next": 201328,
     "inherit": true,
     "award": "202:135"
   },
@@ -2321,7 +2345,7 @@
     "type": "heroLv",
     "arg": 140,
     "value": 1,
-    "next": 201328,
+    "next": 201329,
     "inherit": true,
     "award": "202:140"
   },
@@ -2331,7 +2355,7 @@
     "type": "heroLv",
     "arg": 145,
     "value": 1,
-    "next": 201329,
+    "next": 201330,
     "inherit": true,
     "award": "202:145"
   },
@@ -2341,7 +2365,7 @@
     "type": "heroLv",
     "arg": 150,
     "value": 1,
-    "next": 201330,
+    "next": 201331,
     "inherit": true,
     "award": "202:150"
   },
@@ -2351,7 +2375,7 @@
     "type": "heroLv",
     "arg": 155,
     "value": 1,
-    "next": 201331,
+    "next": 201332,
     "inherit": true,
     "award": "202:155"
   },
@@ -2361,7 +2385,7 @@
     "type": "heroLv",
     "arg": 160,
     "value": 1,
-    "next": 201332,
+    "next": 201333,
     "inherit": true,
     "award": "202:160"
   },
@@ -2371,7 +2395,7 @@
     "type": "heroLv",
     "arg": 165,
     "value": 1,
-    "next": 201333,
+    "next": 201334,
     "inherit": true,
     "award": "202:165"
   },
@@ -2381,7 +2405,7 @@
     "type": "heroLv",
     "arg": 170,
     "value": 1,
-    "next": 201334,
+    "next": 201335,
     "inherit": true,
     "award": "202:170"
   },
@@ -2391,7 +2415,7 @@
     "type": "heroLv",
     "arg": 175,
     "value": 1,
-    "next": 201335,
+    "next": 201336,
     "inherit": true,
     "award": "202:175"
   },
@@ -2401,7 +2425,7 @@
     "type": "heroLv",
     "arg": 180,
     "value": 1,
-    "next": 201336,
+    "next": 201337,
     "inherit": true,
     "award": "202:180"
   },
@@ -2411,7 +2435,7 @@
     "type": "heroLv",
     "arg": 185,
     "value": 1,
-    "next": 201337,
+    "next": 201338,
     "inherit": true,
     "award": "202:185"
   },
@@ -2421,7 +2445,7 @@
     "type": "heroLv",
     "arg": 190,
     "value": 1,
-    "next": 201338,
+    "next": 201339,
     "inherit": true,
     "award": "202:190"
   },
@@ -2431,7 +2455,7 @@
     "type": "heroLv",
     "arg": 195,
     "value": 1,
-    "next": 201339,
+    "next": 201340,
     "inherit": true,
     "award": "202:195"
   },
@@ -2441,7 +2465,7 @@
     "type": "heroLv",
     "arg": 200,
     "value": 1,
-    "next": 201340,
+    "next": 201341,
     "inherit": true,
     "award": "202:200"
   },
@@ -2451,7 +2475,7 @@
     "type": "heroLv",
     "arg": 205,
     "value": 1,
-    "next": 201341,
+    "next": 201342,
     "inherit": true,
     "award": "202:205"
   },
@@ -2461,7 +2485,7 @@
     "type": "heroLv",
     "arg": 210,
     "value": 1,
-    "next": 201342,
+    "next": 201343,
     "inherit": true,
     "award": "202:210"
   },
@@ -2471,7 +2495,7 @@
     "type": "heroLv",
     "arg": 215,
     "value": 1,
-    "next": 201343,
+    "next": 201344,
     "inherit": true,
     "award": "202:215"
   },
@@ -2481,7 +2505,7 @@
     "type": "heroLv",
     "arg": 220,
     "value": 1,
-    "next": 201344,
+    "next": 201345,
     "inherit": true,
     "award": "202:220"
   },
@@ -2491,7 +2515,7 @@
     "type": "heroLv",
     "arg": 225,
     "value": 1,
-    "next": 201345,
+    "next": 201346,
     "inherit": true,
     "award": "202:225"
   },
@@ -2501,7 +2525,7 @@
     "type": "heroLv",
     "arg": 230,
     "value": 1,
-    "next": 201346,
+    "next": 201347,
     "inherit": true,
     "award": "202:230"
   },
@@ -2511,7 +2535,7 @@
     "type": "heroLv",
     "arg": 235,
     "value": 1,
-    "next": 201347,
+    "next": 201348,
     "inherit": true,
     "award": "202:235"
   },
@@ -2521,7 +2545,7 @@
     "type": "heroLv",
     "arg": 240,
     "value": 1,
-    "next": 201348,
+    "next": 201349,
     "inherit": true,
     "award": "202:240"
   },
@@ -2531,7 +2555,7 @@
     "type": "heroLv",
     "arg": 245,
     "value": 1,
-    "next": 201349,
+    "next": 201350,
     "inherit": true,
     "award": "202:245"
   },
@@ -2541,7 +2565,7 @@
     "type": "heroLv",
     "arg": 250,
     "value": 1,
-    "next": 201350,
+    "next": 201351,
     "inherit": true,
     "award": "202:250"
   },
@@ -2551,7 +2575,6 @@
     "type": "heroLv",
     "arg": 255,
     "value": 1,
-    "next": 201351,
     "inherit": true,
     "award": "202:255"
   },
@@ -2648,7 +2671,7 @@
     "desc": "竞技场胜300次"
   },
   "400103": {
-    "title": "【每月】英雄祭坛",
+    "title": "【每月】女娲池",
     "refresh": "month",
     "type": "recruit",
     "value": 100,
@@ -3069,63 +3092,63 @@
     "award": "201:250000&1000080:5"
   },
   "500601": {
-    "title": "集市购买3次",
+    "title": "宝物商店购买3次",
     "refresh": "week_target",
     "type": "bazzar_buy",
     "value": 3,
     "award": "504000:5&202:10"
   },
   "500602": {
-    "title": "集市购买10次",
+    "title": "宝物商店购买10次",
     "refresh": "week_target",
     "type": "bazzar_buy",
     "value": 10,
     "award": "504000:5&202:20"
   },
   "500603": {
-    "title": "集市购买20次",
+    "title": "宝物商店购买20次",
     "refresh": "week_target",
     "type": "bazzar_buy",
     "value": 20,
     "award": "504000:5&202:30"
   },
   "500604": {
-    "title": "集市购买50次",
+    "title": "宝物商店购买50次",
     "refresh": "week_target",
     "type": "bazzar_buy",
     "value": 50,
     "award": "504000:5&202:100"
   },
   "500605": {
-    "title": "集市刷新3次",
+    "title": "宝物商店刷新3次",
     "refresh": "week_target",
     "type": "bazzar_refresh",
     "value": 3,
     "award": "201:3000&101:3000"
   },
   "500606": {
-    "title": "集市刷新10次",
+    "title": "宝物商店刷新10次",
     "refresh": "week_target",
     "type": "bazzar_refresh",
     "value": 10,
     "award": "201:10000&101:10000"
   },
   "500607": {
-    "title": "集市刷新20次",
+    "title": "宝物商店刷新20次",
     "refresh": "week_target",
     "type": "bazzar_refresh",
     "value": 20,
     "award": "201:20000&101:20000"
   },
   "500608": {
-    "title": "集市刷新50次",
+    "title": "宝物商店刷新50次",
     "refresh": "week_target",
     "type": "bazzar_refresh",
     "value": 50,
     "award": "201:50000&101:50000"
   },
   "500609": {
-    "title": "集市刷新100次",
+    "title": "宝物商店刷新100次",
     "refresh": "week_target",
     "type": "bazzar_refresh",
     "value": 100,

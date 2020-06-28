@@ -96,8 +96,8 @@ module.exports = function() {
 			cb(false,"不可领取 "+self.players[uid].userDay+"/"+day)
 			return
 		}
-		self.getObj(uid,"playerInfo","rmb",function(rmb) {
-			if(rmb < week_day[day]["rmb"]){
+		self.getObj(uid,"playerInfo","rmb_day",function(rmb) {
+			if(!rmb || rmb <= 0){
 				cb(false,"条件不足")
 				return
 			}
