@@ -86,32 +86,32 @@ module.exports = function() {
 			cb(true,awardList)
 		})
 	}
-	//领取充值礼包
-	this.gainRmbAward = function(uid,day,cb) {
-		if(!week_day[day] || !week_day[day]["rmb_award"]){
-			cb(false,"等级礼包不存在")
-			return
-		}
-		if(day > self.players[uid].userDay){
-			cb(false,"不可领取 "+self.players[uid].userDay+"/"+day)
-			return
-		}
-		self.getObj(uid,"playerInfo","rmb_day",function(rmb) {
-			if(!rmb || rmb <= 0){
-				cb(false,"条件不足")
-				return
-			}
-			self.getObj(uid,main_name,"rmb_award"+day,function(data) {
-				if(data){
-					cb(false,"已领取")
-					return
-				}
-				self.incrbyObj(uid,main_name,"rmb_award"+day,1)
-				let awardList = self.addItemStr(uid,week_day[day]["rmb_award"])
-				cb(true,awardList)
-			})
-		})
-	}
+	// //领取充值礼包
+	// this.gainRmbAward = function(uid,day,cb) {
+	// 	if(!week_day[day] || !week_day[day]["rmb_award"]){
+	// 		cb(false,"等级礼包不存在")
+	// 		return
+	// 	}
+	// 	if(day > self.players[uid].userDay){
+	// 		cb(false,"不可领取 "+self.players[uid].userDay+"/"+day)
+	// 		return
+	// 	}
+	// 	self.getObj(uid,"playerInfo","rmb_day",function(rmb) {
+	// 		if(!rmb || rmb <= 0){
+	// 			cb(false,"条件不足")
+	// 			return
+	// 		}
+	// 		self.getObj(uid,main_name,"rmb_award"+day,function(data) {
+	// 			if(data){
+	// 				cb(false,"已领取")
+	// 				return
+	// 			}
+	// 			self.incrbyObj(uid,main_name,"rmb_award"+day,1)
+	// 			let awardList = self.addItemStr(uid,week_day[day]["rmb_award"])
+	// 			cb(true,awardList)
+	// 		})
+	// 	})
+	// }
 	//购买限购礼包
 	this.buyWeekTargetGoods = function(uid,day,index,cb) {
 		if(!week_day[day] || !week_day[day]["goods"+index]){
