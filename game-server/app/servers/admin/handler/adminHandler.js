@@ -176,6 +176,12 @@ adminHandler.prototype.adminSendMail = function(msg, session, next) {
     	next(null,{flag : true,list : list})
 	})
 }
+//设置公告
+adminHandler.prototype.setNotify = function(msg,session,next) {
+	var notify = msg.notify
+	this.redisDao.db.set("game:notify",notify)
+	next(null,{flag : true})
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "adminHandler",
@@ -185,6 +191,9 @@ module.exports = function(app) {
 			value : app
 		}],
 		props : [{
+			name : "redisDao",
+			ref : "redisDao"
+		},{
 			name : "accountDao",
 			ref : "accountDao"
 		},{

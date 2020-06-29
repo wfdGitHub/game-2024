@@ -97,7 +97,13 @@
         pomelo.request("admin.adminHandler.adminSendMail", {areaId:areaId,uid:uid,title:title,text:text,atts:atts}, function(data) {
             console.log(data);
         });
-      }      
+      }
+      //设置公告
+      var setNotify = function(notify) {
+        pomelo.request("admin.adminHandler.setNotify", {notify:notify}, function(data) {
+            console.log(data);
+        });
+      }
       //==============礼包码============//
       //创建礼包码类型
       var createCDType = function(type,award,des) {
