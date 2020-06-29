@@ -86,7 +86,9 @@ module.exports = function() {
 		self.redisDao.db.get("area:lastid",function(err,lastid) {
 			var rankList = ["cross:grading:rank"]
 			for(var i in grading_robot){
-				rankList.push(grading_robot[i].score,(Math.floor(Math.random()*lastid) + 1)+"|"+i)
+				for(var j = 0;j < 10;j++){
+					rankList.push(Math.floor(grading_robot[i].score * (1 + j * 0.1)),(Math.floor(Math.random()*lastid) + 1)+"|"+i+"|"+j)
+				}
 			}
 			if(newRankList)
 				rankList = rankList.concat(newRankList)
@@ -176,7 +178,7 @@ module.exports = function() {
 					if(rank === null){
 						rank = 0
 					}
-					let begin = rank > 5 ? rank - 5 : 0
+					let begin = rank + 1
 					let end = rank + 5
 					self.redisDao.db.zrange(["cross:grading:rank",begin,end,"WITHSCORES"],function(err,list) {
 						for(let i = 0;i < list.length;i++){
