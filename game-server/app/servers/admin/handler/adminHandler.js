@@ -142,17 +142,12 @@ adminHandler.prototype.deleteAreaMailList = function(msg, session, next) {
 }
 //查询玩家信息
 adminHandler.prototype.getPlayerInfo = function(msg, session, next) {
-	var areaId = msg.areaId
 	var uid = msg.uid
 	if(!accId){
 		next(null,{flag : false,err : "未登录账号"})
 		return
 	}
-	if(!areaId){
-		next(null,{flag : false,err : "areaId error"})
-		return
-	}
-	this.playerDao.getPlayerInfo({areaId : areaId,uid : uid},function(playerInfo) {
+	this.playerDao.getPlayerInfo({uid : uid},function(playerInfo) {
 		if(playerInfo){
 			next(null,{flag : true,msg : playerInfo})
 		}else{
