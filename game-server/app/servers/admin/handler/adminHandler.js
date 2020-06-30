@@ -153,18 +153,25 @@ adminHandler.prototype.getPlayerInfo = function(msg, session, next) {
 }
 //发送个人邮件
 adminHandler.prototype.adminSendMail = function(msg, session, next) {
-	var areaId = msg.areaId
 	var uid = msg.uid
 	var title = msg.title
 	var text = msg.text
 	var atts = msg.atts
-	var serverId = this.areaDeploy.getServer(areaId)
-    if(!serverId){
-        next(null,{flag : false,err : "服务器不存在"})
-        return
-    }
-    this.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,function(flag,list) {
-    	next(null,{flag : true,list : list})
+	var self = this
+	self.playerDao.getPlayerAreaId(uid,function(flag,data) {
+		if(!flag){
+			next(null,{flag : false,err : data})
+			return
+		}
+		var areaId = data
+		var serverId = self.areaDeploy.getServer(areaId)
+	    if(!serverId){
+	        next(null,{flag : false,err : "服务器不存在"})
+	        return
+	    }
+	    self.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,function(flag,list) {
+	    	next(null,{flag : true,list : list})
+		})
 	})
 }
 //设置公告
