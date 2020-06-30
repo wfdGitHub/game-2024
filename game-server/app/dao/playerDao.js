@@ -5,6 +5,7 @@ var beginHero = 204010
 playerDao.prototype.createPlayer = function(otps,cb) {
 	var playerInfo = {
 		accId : otps.accId,
+		areaId : otps.areaId,
 		name : otps.name,
 		head : beginHero,
 		createTime : Date.now(),
@@ -73,17 +74,11 @@ playerDao.prototype.getPlayerInfo = function(otps,cb) {
 //获取角色所在服务器
 playerDao.prototype.getPlayerAreaId = function(uid,cb) {
 	var self = this
-	self.redisDao.db.hget("player:user:"+uid+":playerInfo","accId",function(err,accId) {
-		if(err || !accId){
+	self.redisDao.db.hget("player:user:"+uid+":playerInfo","areaId",function(err,areaId) {
+		if(err || !areaId){
 			cb(false,err)
 		}else{
-			self.redisDao.db.hget("acc:user:"+accId+":playerMap",uid,function(err,areaId) {
-				if(err || !areaId){
-					cb(false,err)
-				}else{
-					cb(true,Number(areaId))
-				}
-			})
+			cb(true,Number(areaId))
 		}
 	})
 }
