@@ -16,7 +16,6 @@ db.on("ready",function(res) {
 	})
 })
 server.all('*', function (req, res, next) {
-	console.log("entry all")
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   res.header('Access-Control-Allow-Methods', '*');
@@ -28,11 +27,9 @@ console.log("Web server has started.\nPlease log on http://127.0.0.1:3001/index.
 server.use(express.json());
 server.use(express.urlencoded({extended:true}));
 server.get("/notify",function(req,res) {
-	console.log("entry notify")
 	res.send(notify)
 })
 server.get("/updateNotify",function(req,res) {
-	console.log("entry updateNotify")
 	db.get("game:notify",function(err,data) {
 		if(!err && data)
 			notify = data
