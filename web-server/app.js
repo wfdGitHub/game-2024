@@ -7,6 +7,7 @@ var RDS_HOST = daoConfig.redis.host
 var RDS_PWD = daoConfig.redis.pwd
 var RDS_OPTS = {auth_pass : RDS_PWD}
 var db = redis.createClient(RDS_PORT,RDS_HOST,RDS_OPTS)
+var notify = ""
 db.on("ready",function(res) {
 	db.get("game:notify",function(err,data) {
 		if(!err && data)
@@ -14,8 +15,6 @@ db.on("ready",function(res) {
 		console.log("web redis ready")
 	})
 })
-var notify = ""
-
 server.use(express.static(__dirname + '/public'));
 console.log("Web server has started.\nPlease log on http://127.0.0.1:3001/index.html");
 server.use(express.json());
