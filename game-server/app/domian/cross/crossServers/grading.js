@@ -24,7 +24,7 @@ module.exports = function() {
 				self.newGrading()
 			}else{
 				curSeasonId = Number(data.seasonId)
-				if(data["month"] != util.getMonth())
+				if(true || data["month"] != util.getMonth())
 					self.settleGrading()
 			}
 		})
@@ -35,7 +35,9 @@ module.exports = function() {
 		async.waterfall([
 			function(next) {
 				self.redisDao.db.zrevrange(["cross:grading:rank",0,-1,"WITHSCORES"],function(err,list) {
-					let strList,sid,uid,score,glv
+					var strList,sid,uid,score,glv
+					var areaIds = []
+					var uids = []
 					for(var i = 0;i < list.length;i+=2){
 						strList = list[i].split("|")
 						sid = Number(strList[0])
@@ -46,19 +48,11 @@ module.exports = function() {
 							if(grading_lv[glv]["next_id"])
 								newRankList.push(grading_lv[grading_lv[glv]["next_id"]]["score"],list[i])
 							self.sendMailByUid(sid,uid,"第"+curSeasonId+"赛季段位奖励","恭喜您在本赛季晋升到【"+grading_lv[glv]["name"]+"】段位，祝您新的赛季愈战愈勇!",grading_lv[glv]["season_award"])
-						}
-					}
-					let areaIds = []
-					let uids = []
-					for(var i = 0;i < 6;i++){
-						strList = list[i*2].split("|")
-						sid = Number(strList[0])
-						uid = Number(strList[1])
-						areaIds.push(sid)
-						uids.push(uid)
-						if(uid > 10000){
-							glv = util.binarySearchIndex(grading_lv_list,score)
-							self.sendMailByUid(sid,uid,"第"+curSeasonId+"赛季封神台奖励","亲爱的玩家，恭喜您历经磨难，通过考验，立命封神！您已进入第"+curSeasonId+"赛季封神台，供天下万民敬仰！",grading_cfg["award_"+(i+1)]["value"])
+							if(uids.length < 6){
+								areaIds.push(sid)
+								uids.push(uid)
+								self.sendMailByUid(sid,uid,"第"+curSeasonId+"赛季封神台奖励","亲爱的玩家，恭喜您历经磨难，通过考验，立命封神！您已进入第"+curSeasonId+"赛季封神台，供天下万民敬仰！",grading_cfg["award_"+uids.length]["value"])
+							}
 						}
 					}
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
