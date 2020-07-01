@@ -167,7 +167,6 @@ module.exports = function() {
 			for(var id in data){
 				self.areaMailList[id] = JSON.parse(data[id])
 			}
-			console.log(self.areaMailList)
 		})
 	}
 	//全服邮件每日更新
