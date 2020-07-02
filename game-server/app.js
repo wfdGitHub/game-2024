@@ -24,7 +24,7 @@ bearcat.start(function() {
       app.set('connectorConfig',
         {
           connector : pomelo.connectors.hybridconnector,
-          heartbeat : 10,
+          heartbeat : 3,
           disconnectOnTimeout : false,
           useDict : true,
           useProtobuf : true
