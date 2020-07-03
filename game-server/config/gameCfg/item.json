@@ -3,7 +3,7 @@
     "name": "主角经验",
     "des": "主角经验，用于升级主角等级",
     "type": "currency",
-    "quality": 5
+    "quality": 4
   },
   "101": {
     "name": "英雄经验",
@@ -12,7 +12,7 @@
     "gold": 10,
     "coin": 50000,
     "buyNum": 10000,
-    "quality": 5
+    "quality": 4
   },
   "201": {
     "name": "铜币",
@@ -36,13 +36,13 @@
     "name": "威望",
     "des": "威望可在三界悬赏中完成任务",
     "type": "currency",
-    "quality": 5
+    "quality": 4
   },
   "205": {
     "name": "声望",
     "des": "挑战竞技场可获得，用于竞技场商店兑换商品",
     "type": "currency",
-    "quality": 5
+    "quality": 4
   },
   "206": {
     "name": "元神值",
@@ -66,11 +66,12 @@
     "name": "战功",
     "des": "战功逐鹿之战玩法中获得，用于兑换逐鹿之战商店道具",
     "type": "currency",
-    "quality": 5
+    "quality": 4
   },
   "210": {
     "name": "荣誉",
-    "des": "跨服竞技场中可获得，可用于跨服竞技商店兑换商品"
+    "des": "跨服竞技场中可获得，可用于跨服竞技商店兑换商品",
+    "quality": 4
   },
   "301": {
     "name": "英雄积分",
@@ -950,17 +951,17 @@
     "des": "扫荡券，用于扫荡已经通关过的通天塔",
     "isBag": true,
     "type": "item",
-    "quality": 4
+    "quality": 3
   },
   "1000050": {
-    "name": "突破丹",
+    "name": "进阶丹",
     "des": "英雄灵气聚集而成，能够使英雄突破到更高的水平",
     "isBag": true,
     "type": "item",
     "gold": 1,
     "coin": 5000,
     "buyNum": 1,
-    "quality": 5
+    "quality": 3
   },
   "1000070": {
     "name": "圣灵石",
@@ -1005,20 +1006,21 @@
     "des": "用于刷新游历任务",
     "isBag": true,
     "type": "item",
-    "quality": 4
+    "quality": 3
   },
   "1000170": {
     "name": "挑战券",
     "des": "用于跨服竞技场挑战",
     "isBag": true,
-    "type": "item"
+    "type": "item",
+    "quality": 3
   },
   "1000180": {
     "name": "转化丹",
     "des": "太上老君用天财地宝材料炼制而成，能够将五星英雄转化成同阵营的五星英雄",
     "isBag": true,
     "type": "item",
-    "gold": 500,
+    "gold": 1000,
     "buyNum": 1,
     "quality": 5
   },
@@ -1038,11 +1040,11 @@
     "type": "item",
     "gold": 500,
     "buyNum": 1,
-    "quality": 5
+    "quality": 4
   },
   "1001001": {
     "name": "绿色装备箱",
-    "des": "可开出绿色装备",
+    "des": "打开可获得1件<color#1ab500>绿色/color>品质装备",
     "isBag": true,
     "type": "item",
     "useType": "chest",
@@ -1051,7 +1053,7 @@
   },
   "1001002": {
     "name": "蓝色装备箱",
-    "des": "可开出蓝色装备",
+    "des": "打开可获得1件<color#0096ff>蓝色/color>品质装备",
     "isBag": true,
     "type": "item",
     "useType": "chest",
@@ -1060,7 +1062,7 @@
   },
   "1001003": {
     "name": "紫色装备箱",
-    "des": "可开出紫色装备",
+    "des": "打开可获得1件<color#d83cff>紫色/color>品质装备",
     "isBag": true,
     "type": "item",
     "useType": "chest",
@@ -1069,7 +1071,7 @@
   },
   "1001004": {
     "name": "红色元神匣",
-    "des": "可开出红色元神",
+    "des": "打开可获得1个<color#ff2f2f>红色/color>品质元神",
     "isBag": true,
     "type": "item",
     "useType": "chest",
@@ -1078,7 +1080,7 @@
   },
   "1001005": {
     "name": "橙色装备箱",
-    "des": "可开出橙色装备",
+    "des": "打开可获得1件<color#FFF841>橙色/color>品质装备",
     "isBag": true,
     "type": "item",
     "useType": "chest",
@@ -1087,7 +1089,7 @@
   },
   "1001006": {
     "name": "橙色元神匣",
-    "des": "可开出橙色元神",
+    "des": "打开可获得1个<color#FFF841>橙色/color>品质元神",
     "isBag": true,
     "type": "item",
     "useType": "chest",
@@ -1095,17 +1097,17 @@
     "quality": 5
   },
   "1001007": {
-    "name": "红色装备宝箱",
-    "des": "可开出红色装备",
+    "name": "红色装备箱",
+    "des": "打开可获得1件<color#ff2f2f>红色/color>品质装备",
     "isBag": true,
     "type": "item",
     "useType": "chest",
     "arg": "equip_chest_5",
-    "quality": 5
+    "quality": 6
   },
   "1001008": {
     "name": "橙色套装宝箱",
-    "des": "可开出一套橙色1星装备",
+    "des": "打开可获得\\n<color#FFF841>风云巨剑*1\\n苍月铠甲*1\\n沧澜腰带*1\\n翔龙战靴*1/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
@@ -1114,443 +1116,498 @@
   },
   "1001009": {
     "name": "紫色套装宝箱",
-    "des": "可开出一套紫色1星装备",
+    "des": "打开可获得\\n<color#d83cff>天工剑*1\\n紫纹铠*1\\n紫耀腰*1\\n祥云履*1/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "equip_chest_8"
+    "arg": "equip_chest_8",
+    "quality": 4
   },
   "1001010": {
     "name": "蓝色套装宝箱",
-    "des": "可开出一套蓝色1星装备",
+    "des": "打开可获得\\n<color#0096ff>君子剑*1\\n蓝染衣*1\\n鬼面腰*1\\n轻羽鞋*1/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "equip_chest_9"
+    "arg": "equip_chest_9",
+    "quality": 3
   },
   "1001011": {
     "name": "红色套装宝箱",
-    "des": "可开出一套红色1星装备",
+    "des": "打开可获得\\n<color#ff2f2f>轩辕·帝王剑*1\\n轩辕·帝王凯*1\\n轩辕·帝王腰*1\\n轩辕·帝王履*1/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "equip_chest_10"
+    "arg": "equip_chest_10",
+    "quality": 6
   },
   "1002001": {
-    "name": "红宝箱(麒麟)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(麒麟)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>麒麟英雄碎片*30\\n兽族5星碎片*12\\n兽族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_1_chest_1"
+    "arg": "sjBOOS_1_chest_1",
+    "quality": 5
   },
   "1002002": {
-    "name": "橙宝箱(麒麟)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(麒麟)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>麒麟英雄碎片*30\\n兽族5星碎片*10\\n兽族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_1_chest_2"
+    "arg": "sjBOOS_1_chest_2",
+    "quality": 4
   },
   "1002003": {
-    "name": "紫宝箱(麒麟)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(麒麟)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>麒麟英雄碎片*30\\n兽族5星碎片*8\\n兽族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_1_chest_3"
+    "arg": "sjBOOS_1_chest_3",
+    "quality": 3
   },
   "1002004": {
-    "name": "红宝箱(刑天)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(刑天)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>刑天英雄碎片*30\\n巫族5星碎片*12\\n巫族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_2_chest_1"
+    "arg": "sjBOOS_2_chest_1",
+    "quality": 5
   },
   "1002005": {
-    "name": "橙宝箱(刑天)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(刑天)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>刑天英雄碎片*30\\n巫族5星碎片*10\\n巫族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_2_chest_2"
+    "arg": "sjBOOS_2_chest_2",
+    "quality": 4
   },
   "1002006": {
-    "name": "紫宝箱(刑天)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(刑天)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>刑天英雄碎片*30\\n巫族5星碎片*8\\n巫族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_2_chest_3"
+    "arg": "sjBOOS_2_chest_3",
+    "quality": 3
   },
   "1002007": {
-    "name": "红宝箱(混元天尊)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(混元天尊)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>混元天尊英雄碎片*30\\n仙族5星碎片*12\\n仙族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_3_chest_1"
+    "arg": "sjBOOS_3_chest_1",
+    "quality": 5
   },
   "1002008": {
-    "name": "橙宝箱(混元天尊)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(混元天尊)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>混元天尊英雄碎片*30\\n仙族5星碎片*10\\n仙族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_3_chest_2"
+    "arg": "sjBOOS_3_chest_2",
+    "quality": 4
   },
   "1002009": {
-    "name": "紫宝箱(混元天尊)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(混元天尊)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>混元天尊英雄碎片*30\\n仙族5星碎片*8\\n仙族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_3_chest_3"
+    "arg": "sjBOOS_3_chest_3",
+    "quality": 3
   },
   "1002010": {
-    "name": "红宝箱(鬼谷子)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(鬼谷子)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>鬼谷子英雄碎片*30\\n人族5星碎片*12\\n人族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_4_chest_1"
+    "arg": "sjBOOS_4_chest_1",
+    "quality": 5
   },
   "1002011": {
-    "name": "橙宝箱(鬼谷子)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(鬼谷子)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>鬼谷子英雄碎片*30\\n人族5星碎片*10\\n人族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_4_chest_2"
+    "arg": "sjBOOS_4_chest_2",
+    "quality": 4
   },
   "1002012": {
-    "name": "紫宝箱(鬼谷子)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(鬼谷子)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>鬼谷子英雄碎片*30\\n人族5星碎片*8\\n人族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_4_chest_3"
+    "arg": "sjBOOS_4_chest_3",
+    "quality": 3
   },
   "1002013": {
-    "name": "红宝箱(鬼将)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(鬼将)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>鬼将英雄碎片*30\\n巫族5星碎片*12\\n巫族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_5_chest_1"
+    "arg": "sjBOOS_5_chest_1",
+    "quality": 5
   },
   "1002014": {
-    "name": "橙宝箱(鬼将)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(鬼将)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>鬼将英雄碎片*30\\n巫族5星碎片*10\\n巫族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_5_chest_2"
+    "arg": "sjBOOS_5_chest_2",
+    "quality": 4
   },
   "1002015": {
-    "name": "紫宝箱(鬼将)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(鬼将)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>鬼将英雄碎片*30\\n巫族5星碎片*8\\n巫族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_5_chest_3"
+    "arg": "sjBOOS_5_chest_3",
+    "quality": 3
   },
   "1002016": {
-    "name": "红宝箱(烛龙)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(烛龙)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>烛龙英雄碎片*30\\n兽族5星碎片*12\\n兽族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_6_chest_1"
+    "arg": "sjBOOS_6_chest_1",
+    "quality": 5
   },
   "1002017": {
-    "name": "橙宝箱(烛龙)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(烛龙)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>烛龙英雄碎片*30\\n兽族5星碎片*10\\n兽族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_6_chest_2"
+    "arg": "sjBOOS_6_chest_2",
+    "quality": 4
   },
   "1002018": {
-    "name": "紫宝箱(烛龙)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(烛龙)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>烛龙英雄碎片*30\\n兽族5星碎片*8\\n兽族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_6_chest_3"
+    "arg": "sjBOOS_6_chest_3",
+    "quality": 3
   },
   "1002019": {
-    "name": "红宝箱(瑶姬)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(杜康)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>杜康英雄碎片*30\\n人族5星碎片*12\\n人族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_7_chest_1"
+    "arg": "sjBOOS_7_chest_1",
+    "quality": 5
   },
   "1002020": {
-    "name": "橙宝箱(瑶姬)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(杜康)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>杜康英雄碎片*30\\n人族5星碎片*10\\n人族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_7_chest_2"
+    "arg": "sjBOOS_7_chest_2",
+    "quality": 4
   },
   "1002021": {
-    "name": "紫宝箱(瑶姬)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(杜康)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>杜康英雄碎片*30\\n人族5星碎片*8\\n人族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_7_chest_3"
+    "arg": "sjBOOS_7_chest_3",
+    "quality": 3
   },
   "1002022": {
-    "name": "红宝箱(通臂猿猴)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(通臂猿猴)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>通臂猿猴英雄碎片*30\\n巫族5星碎片*12\\n巫族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_8_chest_1"
+    "arg": "sjBOOS_8_chest_1",
+    "quality": 5
   },
   "1002023": {
-    "name": "橙宝箱(通臂猿猴)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(通臂猿猴)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>通臂猿猴英雄碎片*30\\n巫族5星碎片*10\\n巫族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_8_chest_2"
+    "arg": "sjBOOS_8_chest_2",
+    "quality": 4
   },
   "1002024": {
-    "name": "紫宝箱(通臂猿猴)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(通臂猿猴)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>通臂猿猴英雄碎片*30\\n巫族5星碎片*8\\n巫族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_8_chest_3"
+    "arg": "sjBOOS_8_chest_3",
+    "quality": 3
   },
   "1002025": {
-    "name": "红宝箱(应龙)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(应龙)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>应龙英雄碎片*30\\n兽族5星碎片*12\\n兽族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_9_chest_1"
+    "arg": "sjBOOS_9_chest_1",
+    "quality": 5
   },
   "1002026": {
-    "name": "橙宝箱(应龙)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(应龙)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>应龙英雄碎片*30\\n兽族5星碎片*10\\n兽族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_9_chest_2"
+    "arg": "sjBOOS_9_chest_2",
+    "quality": 4
   },
   "1002027": {
-    "name": "紫宝箱(应龙)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(应龙)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>应龙英雄碎片*30\\n兽族5星碎片*8\\n兽族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_9_chest_3"
+    "arg": "sjBOOS_9_chest_3",
+    "quality": 3
   },
   "1002028": {
-    "name": "红宝箱(雷公)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(雷公)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>雷公英雄碎片*30\\n仙族5星碎片*12\\n仙族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_10_chest_1"
+    "arg": "sjBOOS_10_chest_1",
+    "quality": 5
   },
   "1002029": {
-    "name": "橙宝箱(雷公)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(雷公)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>雷公英雄碎片*30\\n仙族5星碎片*10\\n仙族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_10_chest_2"
+    "arg": "sjBOOS_10_chest_2",
+    "quality": 4
   },
   "1002030": {
-    "name": "紫宝箱(雷公)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(雷公)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>雷公英雄碎片*30\\n仙族5星碎片*8\\n仙族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_10_chest_3"
+    "arg": "sjBOOS_10_chest_3",
+    "quality": 3
   },
   "1002031": {
-    "name": "红宝箱(雨师)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(雨师)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>雨师英雄碎片*30\\n巫族5星碎片*12\\n巫族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_11_chest_1"
+    "arg": "sjBOOS_11_chest_1",
+    "quality": 5
   },
   "1002032": {
-    "name": "橙宝箱(雨师)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(雨师)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>雨师英雄碎片*30\\n巫族5星碎片*10\\n巫族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_11_chest_2"
+    "arg": "sjBOOS_11_chest_2",
+    "quality": 4
   },
   "1002033": {
-    "name": "紫宝箱(雨师)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(雨师)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>雨师英雄碎片*30\\n巫族5星碎片*8\\n巫族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_11_chest_3"
+    "arg": "sjBOOS_11_chest_3",
+    "quality": 3
   },
   "1002034": {
-    "name": "红宝箱(苏妲己)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(苏妲己)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>苏妲己英雄碎片*30\\n人族5星碎片*12\\n人族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_12_chest_1"
+    "arg": "sjBOOS_12_chest_1",
+    "quality": 5
   },
   "1002035": {
-    "name": "橙宝箱(苏妲己)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(苏妲己)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>苏妲己英雄碎片*30\\n人族5星碎片*10\\n人族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_12_chest_2"
+    "arg": "sjBOOS_12_chest_2",
+    "quality": 4
   },
   "1002036": {
-    "name": "紫宝箱(苏妲己)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(苏妲己)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>苏妲己英雄碎片*30\\n人族5星碎片*8\\n人族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_12_chest_3"
+    "arg": "sjBOOS_12_chest_3",
+    "quality": 3
   },
   "1002037": {
-    "name": "红宝箱(女娲)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(女娲)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>女娲英雄碎片*30\\n仙族5星碎片*12\\n仙族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_13_chest_1"
+    "arg": "sjBOOS_13_chest_1",
+    "quality": 5
   },
   "1002038": {
-    "name": "橙宝箱(女娲)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(女娲)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>女娲英雄碎片*30\\n仙族5星碎片*10\\n仙族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_13_chest_2"
+    "arg": "sjBOOS_13_chest_2",
+    "quality": 4
   },
   "1002039": {
-    "name": "紫宝箱(女娲)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(女娲)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>女娲英雄碎片*30\\n仙族5星碎片*8\\n仙族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_13_chest_3"
+    "arg": "sjBOOS_13_chest_3",
+    "quality": 3
   },
   "1002040": {
-    "name": "红宝箱(云中子)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(云中子)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>云中子英雄碎片*30\\n人族5星碎片*12\\n人族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_14_chest_1"
+    "arg": "sjBOOS_14_chest_1",
+    "quality": 5
   },
   "1002041": {
-    "name": "橙宝箱(云中子)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(云中子)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>云中子英雄碎片*30\\n人族5星碎片*10\\n人族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_14_chest_2"
+    "arg": "sjBOOS_14_chest_2",
+    "quality": 4
   },
   "1002042": {
-    "name": "紫宝箱(云中子)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(云中子)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>云中子英雄碎片*30\\n人族5星碎片*8\\n人族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_14_chest_3"
+    "arg": "sjBOOS_14_chest_3",
+    "quality": 3
   },
   "1002043": {
-    "name": "红宝箱(落霞神女)",
-    "des": "有概率开出稀有品质物品",
+    "name": "金宝箱(落霞神女)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>落霞神女英雄碎片*30\\n仙族5星碎片*12\\n仙族5星碎片*10/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_15_chest_1"
+    "arg": "sjBOOS_15_chest_1",
+    "quality": 5
   },
   "1002044": {
-    "name": "橙宝箱(落霞神女)",
-    "des": "有概率开出稀有品质物品",
+    "name": "银宝箱(落霞神女)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>落霞神女英雄碎片*30\\n仙族5星碎片*10\\n仙族5星碎片*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_15_chest_2"
+    "arg": "sjBOOS_15_chest_2",
+    "quality": 4
   },
   "1002045": {
-    "name": "紫宝箱(落霞神女)",
-    "des": "有概率开出稀有品质物品",
+    "name": "铜宝箱(落霞神女)",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>落霞神女英雄碎片*30\\n仙族5星碎片*8\\n仙族5星碎片*6/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sjBOOS_15_chest_3"
+    "arg": "sjBOOS_15_chest_3",
+    "quality": 3
   },
   "1003001": {
     "name": "初级秘宝箱",
-    "des": "有概率开出稀有品质物品",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>元宝*100/color>\\n<color#d83cff>圣灵石*1/color>\\n<color#d83cff>圣灵石*3/color>\\n<color#0096ff>扫荡券*2/color>\\n<color#0096ff>刷新券*2/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sgmb_ys_1_chest_1"
+    "arg": "sgmb_ys_1_chest_1",
+    "quality": 3
   },
   "1003002": {
     "name": "中级秘宝箱",
-    "des": "有概率开出稀有品质物品",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>元宝*200/color>\\n<color#d83cff>圣灵石*3/color>\\n<color#FFF841>女娲石*1/color>\\n<color#0096ff>扫荡券*4/color>\\n<color#0096ff>刷新券*4/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sgmb_ys_2_chest_2"
+    "arg": "sgmb_ys_2_chest_2",
+    "quality": 4
   },
   "1003003": {
     "name": "高级秘宝箱",
-    "des": "有概率开出稀有品质物品",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>元宝*300/color>\\n<color#FFF841>女娲石*3/color>\\n<color#FFF841>盘古石*1/color>\\n<color#0096ff>扫荡券*8/color>\\n<color#0096ff>刷新券*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sgmb_ys_3_chest_3"
+    "arg": "sgmb_ys_3_chest_3",
+    "quality": 5
   },
   "1003004": {
     "name": "初级掉落箱",
-    "des": "有概率开出稀有品质物品",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>元宝*50/color>\\n<color#d83cff>英雄经验*1万/color>\\n<color#d83cff>圣灵石*1/color>\\n<color#0096ff>扫荡券*2/color>\\n<color#0096ff>刷新券*2/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sgmb_js_1_chest_1"
+    "arg": "sgmb_js_1_chest_1",
+    "quality": 3
   },
   "1003005": {
     "name": "中级掉落箱",
-    "des": "有概率开出稀有品质物品",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>元宝*100/color>\\n<color#d83cff>英雄经验*3万/color>\\n<color#d83cff>圣灵石*3/color>\\n<color#0096ff>扫荡券*4/color>\\n<color#0096ff>刷新券*4/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sgmb_js_2_chest_2"
+    "arg": "sgmb_js_2_chest_2",
+    "quality": 4
   },
   "1003006": {
     "name": "高级掉落箱",
-    "des": "有概率开出稀有品质物品",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>元宝*200/color>\\n<color#d83cff>英雄经验*5万/color>\\n<color#FFF841>女娲石*1/color>\\n<color#0096ff>扫荡券*8/color>\\n<color#0096ff>刷新券*8/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "sgmb_js_3_chest_3"
+    "arg": "sgmb_js_3_chest_3",
+    "quality": 5
   },
   "1004001": {
     "name": "活跃度宝箱",
-    "des": "有概率开出稀有品质物品",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>盘古石*1/color>\\n<color#FFF841>女娲石*1/color>\\n<color#FFF841>五星随机碎片*1/color>\\n<color#d83cff>圣灵石*5/color>\\n<color#d83cff>圣灵石*1/color>\\n<color#d83cff>四星随机碎片*1/color>\\n<color#d83cff>铜币*1万/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "hyd_chest_1"
+    "arg": "hyd_chest_1",
+    "quality": 4
   },
   "1005001": {
     "name": "冲榜第1名礼包",
@@ -1646,15 +1703,17 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "cb_chest_12"
+    "arg": "cb_chest_12",
+    "quality": 5
   },
   "1006001": {
     "name": "每日充值礼包",
-    "des": "有概率开出：装备、英雄经验、铜币、圣灵石、女娲石、盘古石、橙色元神等稀有物品",
+    "des": "打开可随机获得以下1件物品\\n<color#FFF841>盘古石*1\\n妲己元神*1\\n五星随机碎片*5/color>\\n<color#d83cff>四星随机碎片*10\\n圣灵石*5\\n英雄经验*1万\\n天工剑*1\\n紫纹铠*1\\n紫耀腰*1\\n祥云履*1/color>",
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "lb_chest_1"
+    "arg": "lb_chest_1",
+    "quality": 4
   },
   "1006002": {
     "name": "6元礼包",
@@ -2714,7 +2773,7 @@
     "quality": 6
   },
   "9050060": {
-    "name": "神·光辉之甲元神",
+    "name": "神·九尾狐元神",
     "des": "暴伤减免+20%",
     "isBag": true,
     "type": "ace",
@@ -2802,7 +2861,7 @@
     "quality": 6
   },
   "9050160": {
-    "name": "神·弱点击破元神",
+    "name": "神·宝莲神灯元神",
     "des": "单体输出武将的所有攻击优先攻击敌方当前血量最低的武将",
     "isBag": true,
     "type": "ace",
@@ -2813,7 +2872,7 @@
     "quality": 6
   },
   "9050170": {
-    "name": "神·横扫千军元神",
+    "name": "神·灵魂仙灯元神",
     "des": "单体输出武将直接伤害击杀目标后，追加1次技能，对敌方单体造成175%物理伤害。（追加的技能不消耗怒气，不触发任何特性）",
     "isBag": true,
     "type": "ace",
@@ -2831,7 +2890,7 @@
     "quality": 7
   },
   "9060020": {
-    "name": "饕餮吞天元神",
+    "name": "吞噬葫芦元神",
     "des": "技能直接击杀敌方目标时，获得目标剩余的所有怒气（输出武将佩戴）",
     "isBag": true,
     "type": "ace",
@@ -2852,7 +2911,7 @@
     "quality": 7
   },
   "9060050": {
-    "name": "盘古开天元神",
+    "name": "昊天神炉元神",
     "des": "初始怒气增加2点",
     "isBag": true,
     "type": "ace",

@@ -93,6 +93,7 @@
     "title": "获得任意装备3件",
     "refresh": "day",
     "type": "equip",
+    "arg": 1,
     "value": 3,
     "award": "1000050:20",
     "liveness": 10,
