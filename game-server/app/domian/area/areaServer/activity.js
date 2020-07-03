@@ -59,6 +59,32 @@ module.exports = function() {
 			self.setHMObj(uid,main_name,data)
 		})
 	}
+	//购买vip礼包
+	this.buyVipAward = function(uid,vip,cb) {
+		if(!vip || !VIP[vip]){
+			cb(false,"vip等级不存在")
+			return
+		}
+		if(self.players[uid].vip < vip){
+			cb(false,"vip等级不足 "+self.players[uid].vip+"/"+vip)
+			return
+		}
+		self.getObj(uid,main_name,"vip_buy"+vip,function(data) {
+			if(data){
+				cb(false,"已领取")
+				return
+			}
+			self.consumeItems(uid,VIP[vip]["buy_pc"],1,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					self.incrbyObj(uid,main_name,"vip_buy"+vip,1)
+					var awardList = self.addItemStr(uid,VIP[vip]["buy_pa"])
+					cb(true,awardList)
+				}
+			})
+		})
+	}
 	//领取首充礼包
 	this.gainFirstRechargeAward = function(uid,cb) {
 		if(!self.players[uid]["rmb"]){

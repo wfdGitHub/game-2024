@@ -9,12 +9,13 @@ module.exports = function() {
 	var self = this
 	//申请充值
 	this.apply_recharge = function(uid,index,cb) {
-		if(!recharge[index]){
-			cb(false,"参数错误")
-			return
-		}
-		this.recharge(uid,index)
-		cb(true)
+		cb(false,"未开启")
+		// if(!recharge[index]){
+		// 	cb(false,"参数错误")
+		// 	return
+		// }
+		// this.recharge(uid,index)
+		// cb(true)
 	}
 	//充值
 	this.recharge = function(uid,index) {
@@ -73,32 +74,6 @@ module.exports = function() {
 			self.sendToUser(uid,notify)
 		})
 		self.checkVipLv(uid)
-	}
-	//购买vip付费礼包
-	this.buyVipAward = function(uid,vip,cb) {
-		if(!vip || !VIP[vip]){
-			cb(false,"vip等级不存在")
-			return
-		}
-		if(self.players[uid].vip < vip){
-			cb(false,"vip等级不足 "+self.players[uid].vip+"/"+vip)
-			return
-		}
-		self.getObj(uid,main_name,"vip_buy"+vip,function(data) {
-			if(data){
-				cb(false,"已领取")
-				return
-			}
-			self.consumeItems(uid,VIP[vip]["buy_pc"],1,function(flag,err) {
-				if(!flag){
-					cb(false,err)
-				}else{
-					self.incrbyObj(uid,main_name,"vip_buy"+vip,1)
-					var awardList = self.addItemStr(uid,VIP[vip]["buy_pa"])
-					cb(true,awardList)
-				}
-			})
-		})
 	}
 	//激活至尊特权
 	this.activateHighCard = function(uid,cb) {
