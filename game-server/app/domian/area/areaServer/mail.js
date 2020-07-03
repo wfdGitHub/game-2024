@@ -224,7 +224,7 @@ module.exports = function() {
 			for(var i = 0;i < ids.length;i++){
 				if(!list || !list[i]){
 					self.setObj(uid,"areaMail",ids[i],1)
-					self.sendMail(uid,self.areaMailList[id].title,self.areaMailList[id].text,self.areaMailList[id].atts)
+					self.sendMail(uid,self.areaMailList[ids[i]].title,self.areaMailList[ids[i]].text,self.areaMailList[ids[i]].atts)
 				}
 			}
 		})
