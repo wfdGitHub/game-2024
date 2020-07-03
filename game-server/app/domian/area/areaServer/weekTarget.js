@@ -14,7 +14,7 @@ module.exports = function() {
 			for(var i in obj){
 				obj[i] = Number(obj[i])
 			}
-			if((!obj["finish"]) && self.players[uid].userDay > 8){
+			if((!obj["finish"]) && self.players[uid] && self.players[uid].userDay > 8){
 				self.clearWeekTarget(uid)
 				obj["finish"] = 1
 				self.setObj(uid,main_name,"finish",1)
