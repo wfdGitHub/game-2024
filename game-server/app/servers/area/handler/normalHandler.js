@@ -101,12 +101,16 @@ normalHandler.prototype.changeHead = function(msg, session, next) {
 normalHandler.prototype.addItem = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
+  var limit = session.get("limit")
   var itemId = msg.itemId
   var value = msg.value
-  this.areaManager.areaMap[areaId].addItem({uid : uid,itemId : itemId,value : value},function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-  // next(null,{flag : false})
+  if(limit >= 10){
+    this.areaManager.areaMap[areaId].addItem({uid : uid,itemId : itemId,value : value},function(flag,data) {
+      next(null,{flag : flag,data : data})
+    })
+  }else{
+    next(null,{flag : false})
+  }
 }
 //增加物品str  测试功能
 normalHandler.prototype.addItemStr = function(msg, session, next) {
