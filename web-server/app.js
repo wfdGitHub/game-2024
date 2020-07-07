@@ -17,13 +17,11 @@ db.on("ready",function(res) {
 })
 server.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
   res.header('Access-Control-Allow-Methods', '*');
-  res.header('Content-Type', 'application/json;charset=utf-8');
   next();
 });
 server.use(express.static(__dirname + '/public'));
-console.log("Web server has started.\nPlease log on http://127.0.0.1:3001/index.html");
+// console.log("Web server has started.\nPlease log on http://127.0.0.1:3001/index.html");
 server.use(express.json());
 server.use(express.urlencoded({extended:true}));
 server.get("/notify",function(req,res) {

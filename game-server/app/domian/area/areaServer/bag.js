@@ -76,6 +76,17 @@ module.exports = function() {
 					}
 				})
 			break
+			case "box":
+				//宝盒
+				self.consumeItems(uid,otps.itemId+":"+value,1,function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						var awardList = self.addItemStr(uid,itemCfg[otps.itemId].arg,value)
+						cb(true,awardList)
+					}
+				})
+			break
 			default:
 				cb(false,"类型错误"+itemCfg[otps.itemId].useType)
 		}

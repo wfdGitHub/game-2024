@@ -1110,8 +1110,8 @@
     "des": "打开可获得\\n<color#FFF841>风云巨剑*1\\n苍月铠甲*1\\n沧澜腰带*1\\n翔龙战靴*1/color>",
     "isBag": true,
     "type": "item",
-    "useType": "chest",
-    "arg": "equip_chest_6",
+    "useType": "box",
+    "arg": "5008010:1&5008020:1&5008030:1&5008040:1",
     "quality": 5
   },
   "1001009": {
@@ -1119,8 +1119,8 @@
     "des": "打开可获得\\n<color#d83cff>天工剑*1\\n紫纹铠*1\\n紫耀腰*1\\n祥云履*1/color>",
     "isBag": true,
     "type": "item",
-    "useType": "chest",
-    "arg": "equip_chest_8",
+    "useType": "box",
+    "arg": "5005010:1&5005020:1&5005030:1&5005040:1",
     "quality": 4
   },
   "1001010": {
@@ -1128,8 +1128,8 @@
     "des": "打开可获得\\n<color#0096ff>君子剑*1\\n蓝染衣*1\\n鬼面腰*1\\n轻羽鞋*1/color>",
     "isBag": true,
     "type": "item",
-    "useType": "chest",
-    "arg": "equip_chest_9",
+    "useType": "box",
+    "arg": "5003010:1&5003020:1&5003030:1&5003040:1",
     "quality": 3
   },
   "1001011": {
@@ -1137,8 +1137,8 @@
     "des": "打开可获得\\n<color#ff2f2f>轩辕·帝王剑*1\\n轩辕·帝王凯*1\\n轩辕·帝王腰*1\\n轩辕·帝王履*1/color>",
     "isBag": true,
     "type": "item",
-    "useType": "chest",
-    "arg": "equip_chest_10",
+    "useType": "box",
+    "arg": "5012010:1&5012020:1&5012030:1&5012040:1",
     "quality": 6
   },
   "1002001": {
