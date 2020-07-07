@@ -99,7 +99,7 @@ module.exports = function() {
 				}else{
 					//购买次数
 					if(buy < daily_fb_type[type]["buy_count"] + VIP[self.players[uid]["vip"]]["fb"]){
-						self.consumeItems(uid,daily_fb_type[type]["buy_pc"],buy+1,function(flag,err) {
+						self.consumeItems(uid,daily_fb_type[type]["buy_pc"],1,function(flag,err) {
 							if(flag){
 								self.incrbyObj(uid,main_name,type+"_buy",1)
 								next()
