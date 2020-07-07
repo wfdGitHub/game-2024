@@ -292,7 +292,7 @@ module.exports = function() {
 			cb(true,data)
 		})
 	}
-	//购买等级
+	//购买战令等级
 	this.buyWarHornLv = function(uid,count,cb) {
 		if(!Number.isInteger(count) ||	count <= 0){
 			cb(false,"count error "+count)
@@ -300,7 +300,7 @@ module.exports = function() {
 		}
 		self.getObj(uid,war_name,"exp",function(value) {
 			value = Number(value)
-			if(count * 1000 + value >= 50000){
+			if(count * 1000 + value >= 51000){
 				cb(false,"不能超出上限"+value)
 				return
 			}
