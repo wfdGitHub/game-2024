@@ -24,7 +24,7 @@ module.exports = function() {
 				self.newGrading()
 			}else{
 				curSeasonId = Number(data.seasonId)
-				if(true || data["month"] != util.getMonth())
+				if(data["month"] != util.getMonth())
 					self.settleGrading()
 			}
 		})
