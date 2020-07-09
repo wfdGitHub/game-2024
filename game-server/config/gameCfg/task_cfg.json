@@ -5,8 +5,7 @@
     "type": "login",
     "value": 1,
     "award": "202:20",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100002": {
     "title": "快速作战3次",
@@ -14,8 +13,7 @@
     "type": "quick",
     "value": 3,
     "award": "1000070:1",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100003": {
     "title": "参与竞技场3次",
@@ -23,8 +21,7 @@
     "type": "arena",
     "value": 3,
     "award": "202:30",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100004": {
     "title": "挑战日常副本3次",
@@ -32,8 +29,7 @@
     "type": "fb",
     "value": 3,
     "award": "1000070:1",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100005": {
     "title": "挑战或扫荡通天塔3次",
@@ -41,8 +37,7 @@
     "type": "ttt",
     "value": 3,
     "award": "1000050:20",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100006": {
     "title": "女娲池召唤3次",
@@ -50,8 +45,7 @@
     "type": "recruit",
     "value": 3,
     "award": "101:30000",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100007": {
     "title": "消耗100元宝",
@@ -59,8 +53,7 @@
     "type": "use_gold",
     "value": 100,
     "award": "505000:1",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100008": {
     "title": "消耗50000铜币",
@@ -68,8 +61,7 @@
     "type": "use_coin",
     "value": 50000,
     "award": "1000050:20",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100009": {
     "title": "分解任意武将1个",
@@ -77,8 +69,7 @@
     "type": "resolve",
     "value": 1,
     "award": "203:50",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100010": {
     "title": "合成任意装备1件",
@@ -86,8 +77,7 @@
     "type": "equip_compound",
     "value": 1,
     "award": "1000020:2",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100011": {
     "title": "获得任意装备3件",
@@ -96,8 +86,7 @@
     "arg": 1,
     "value": 3,
     "award": "1000050:20",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100012": {
     "title": "竞技场胜利3次",
@@ -105,8 +94,7 @@
     "type": "arena_win",
     "value": 3,
     "award": "205:50",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100013": {
     "title": "宝物商店刷新3次",
@@ -114,8 +102,7 @@
     "type": "bazzar_refresh",
     "value": 3,
     "award": "101:10000",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100014": {
     "title": "领取挂机奖励3次",
@@ -123,8 +110,7 @@
     "type": "on_hook",
     "value": 3,
     "award": "504000:1",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100015": {
     "title": "杂货铺购买商品1次",
@@ -132,8 +118,7 @@
     "type": "shop_buy",
     "value": 1,
     "award": "1000070:1",
-    "liveness": 10,
-    "exp": 30
+    "liveness": 10
   },
   "100016": {
     "title": "完成3次三界任务",
@@ -142,8 +127,124 @@
     "arg": 1,
     "value": 3,
     "award": "201:20000",
-    "liveness": 10,
+    "liveness": 10
+  },
+  "100017": {
+    "title": "日常登陆1次",
+    "refresh": "day",
+    "type": "login",
+    "value": 1,
     "exp": 30
+  },
+  "100018": {
+    "title": "快速作战3次",
+    "refresh": "day",
+    "type": "quick",
+    "value": 3,
+    "exp": 30
+  },
+  "100019": {
+    "title": "参与竞技场3次",
+    "refresh": "day",
+    "type": "arena",
+    "value": 3,
+    "exp": 30
+  },
+  "100020": {
+    "title": "领取1次挂机奖励",
+    "type": "on_hook",
+    "value": 1,
+    "exp": 30
+  },
+  "100021": {
+    "title": "挑战日常副本3次",
+    "refresh": "day",
+    "type": "fb",
+    "value": 3,
+    "exp": 30
+  },
+  "100022": {
+    "title": "挑战或扫荡通天塔3次",
+    "refresh": "day",
+    "type": "ttt",
+    "value": 3,
+    "exp": 30
+  },
+  "100023": {
+    "title": "女娲池召唤3次",
+    "refresh": "day",
+    "type": "recruit",
+    "value": 3,
+    "exp": 30
+  },
+  "100024": {
+    "title": "消耗500元宝",
+    "refresh": "day",
+    "type": "use_gold",
+    "value": 500,
+    "exp": 30
+  },
+  "100025": {
+    "title": "消耗50000铜币",
+    "refresh": "day",
+    "type": "use_coin",
+    "value": 50000,
+    "exp": 30
+  },
+  "100026": {
+    "title": "活跃度到达100",
+    "refresh": "day",
+    "type": "liveness",
+    "value": 100,
+    "exp": 30
+  },
+  "100027": {
+    "title": "获得任意装备3件",
+    "refresh": "day",
+    "type": "equip",
+    "value": 3,
+    "exp": 30
+  },
+  "100028": {
+    "title": "竞技场胜利3次",
+    "refresh": "day",
+    "type": "arena_win",
+    "value": 3,
+    "exp": 30
+  },
+  "100029": {
+    "title": "宝物商店刷新3次",
+    "refresh": "day",
+    "type": "bazzar_refresh",
+    "value": 3,
+    "exp": 30
+  },
+  "100030": {
+    "title": "领取挂机奖励3次",
+    "refresh": "day",
+    "type": "on_hook",
+    "value": 3,
+    "exp": 30
+  },
+  "100031": {
+    "title": "杂货铺购买商品1次",
+    "refresh": "day",
+    "type": "shop_buy",
+    "value": 1,
+    "exp": 30
+  },
+  "100032": {
+    "title": "完成3次三界任务",
+    "refresh": "day",
+    "type": "tour",
+    "value": 3,
+    "exp": 30
+  },
+  "100033": {
+    "title": "在逐鹿之战玩法中击杀怪物",
+    "refresh": "day",
+    "type": "zhulu_monster",
+    "value": 1
   },
   "200101": {
     "title": "角色等级5级",
@@ -2746,63 +2847,63 @@
     "desc": "完成红色三界任务3次"
   },
   "500101": {
-    "title": "普通祭祀10次",
+    "title": "普通召唤10次",
     "refresh": "week_target",
     "type": "recruit_normal",
     "value": 10,
     "award": "504000:3&1000050:10"
   },
   "500102": {
-    "title": "普通祭祀30次",
+    "title": "普通召唤30次",
     "refresh": "week_target",
     "type": "recruit_normal",
     "value": 30,
     "award": "504000:6&1000050:30"
   },
   "500103": {
-    "title": "普通祭祀50次",
+    "title": "普通召唤50次",
     "refresh": "week_target",
     "type": "recruit_normal",
     "value": 50,
     "award": "504000:9&1000050:50"
   },
   "500104": {
-    "title": "高级祭祀3次",
+    "title": "高级召唤3次",
     "refresh": "week_target",
     "type": "recruit_great",
     "value": 3,
     "award": "505000:1&1000050:100"
   },
   "500105": {
-    "title": "高级祭祀10次",
+    "title": "高级召唤10次",
     "refresh": "week_target",
     "type": "recruit_great",
     "value": 10,
     "award": "505000:3&1000050:200"
   },
   "500106": {
-    "title": "高级祭祀20次",
+    "title": "高级召唤20次",
     "refresh": "week_target",
     "type": "recruit_great",
     "value": 20,
     "award": "505000:6&1000050:300"
   },
   "500107": {
-    "title": "高级祭祀30次",
+    "title": "高级召唤30次",
     "refresh": "week_target",
     "type": "recruit_great",
     "value": 30,
     "award": "505000:9&1000050:400"
   },
   "500108": {
-    "title": "高级祭祀40次",
+    "title": "高级召唤40次",
     "refresh": "week_target",
     "type": "recruit_great",
     "value": 40,
     "award": "505000:12&1000050:500"
   },
   "500109": {
-    "title": "高级祭祀60次",
+    "title": "高级召唤60次",
     "refresh": "week_target",
     "type": "recruit_great",
     "value": 60,
@@ -2817,66 +2918,66 @@
     "award": "202:10&201:10000"
   },
   "500202": {
+    "title": "通关第15关",
+    "refresh": "week_target",
+    "type": "checkpoints",
+    "arg": 15,
+    "value": 1,
+    "award": "202:20&201:20000"
+  },
+  "500203": {
     "title": "通关第20关",
     "refresh": "week_target",
     "type": "checkpoints",
     "arg": 20,
     "value": 1,
-    "award": "202:20&201:20000"
+    "award": "202:40&201:40000"
   },
-  "500203": {
+  "500204": {
+    "title": "通关第25关",
+    "refresh": "week_target",
+    "type": "checkpoints",
+    "arg": 25,
+    "value": 1,
+    "award": "202:60&201:60000"
+  },
+  "500205": {
+    "title": "通关第30关",
+    "refresh": "week_target",
+    "type": "checkpoints",
+    "arg": 30,
+    "value": 1,
+    "award": "202:80&201:80000"
+  },
+  "500206": {
+    "title": "通关第35关",
+    "refresh": "week_target",
+    "type": "checkpoints",
+    "arg": 35,
+    "value": 1,
+    "award": "202:100&201:100000"
+  },
+  "500207": {
     "title": "通关第40关",
     "refresh": "week_target",
     "type": "checkpoints",
     "arg": 40,
     "value": 1,
-    "award": "202:40&201:40000"
-  },
-  "500204": {
-    "title": "通关第60关",
-    "refresh": "week_target",
-    "type": "checkpoints",
-    "arg": 60,
-    "value": 1,
-    "award": "202:60&201:60000"
-  },
-  "500205": {
-    "title": "通关第80关",
-    "refresh": "week_target",
-    "type": "checkpoints",
-    "arg": 80,
-    "value": 1,
-    "award": "202:80&201:80000"
-  },
-  "500206": {
-    "title": "通关第100关",
-    "refresh": "week_target",
-    "type": "checkpoints",
-    "arg": 100,
-    "value": 1,
-    "award": "202:100&201:100000"
-  },
-  "500207": {
-    "title": "通关第120关",
-    "refresh": "week_target",
-    "type": "checkpoints",
-    "arg": 120,
-    "value": 1,
     "award": "202:120&201:120000"
   },
   "500208": {
-    "title": "通关第140关",
+    "title": "通关第45关",
     "refresh": "week_target",
     "type": "checkpoints",
-    "arg": 140,
+    "arg": 45,
     "value": 1,
     "award": "202:140&201:140000"
   },
   "500209": {
-    "title": "通关第150关",
+    "title": "通关第50关",
     "refresh": "week_target",
     "type": "checkpoints",
-    "arg": 150,
+    "arg": 50,
     "value": 1,
     "award": "202:150&201:150000"
   },
@@ -2905,51 +3006,51 @@
     "award": "1000050:100&1000160:4"
   },
   "500304": {
+    "title": "获得20个四星英雄",
+    "refresh": "week_target",
+    "type": "hero",
+    "arg": 4,
+    "value": 20,
+    "award": "1000050:200&1000160:8"
+  },
+  "500305": {
     "title": "获得1个五星英雄",
     "refresh": "week_target",
     "type": "hero",
     "arg": 5,
     "value": 1,
-    "award": "1000050:200&1000160:8"
+    "award": "1000050:400&1000160:16"
   },
-  "500305": {
+  "500306": {
+    "title": "获得2个五星英雄",
+    "refresh": "week_target",
+    "type": "hero",
+    "arg": 5,
+    "value": 2,
+    "award": "1000050:600&1000160:24"
+  },
+  "500307": {
     "title": "获得3个五星英雄",
     "refresh": "week_target",
     "type": "hero",
     "arg": 5,
-    "value": 3,
-    "award": "1000050:400&1000160:16"
+    "value": 4,
+    "award": "1000050:800&1000160:30"
   },
-  "500306": {
-    "title": "获得6个五星英雄",
+  "500308": {
+    "title": "获得4个五星英雄",
     "refresh": "week_target",
     "type": "hero",
     "arg": 5,
-    "value": 6,
-    "award": "1000050:600&1000160:24"
+    "value": 4,
+    "award": "1000050:1000&1000160:36"
   },
-  "500307": {
+  "500309": {
     "title": "获得1个六星英雄",
     "refresh": "week_target",
     "type": "hero",
     "arg": 6,
     "value": 1,
-    "award": "1000050:800&1000160:30"
-  },
-  "500308": {
-    "title": "获得3个六星英雄",
-    "refresh": "week_target",
-    "type": "hero",
-    "arg": 6,
-    "value": 3,
-    "award": "1000050:1000&1000160:36"
-  },
-  "500309": {
-    "title": "获得6个六星英雄",
-    "refresh": "week_target",
-    "type": "hero",
-    "arg": 6,
-    "value": 6,
     "award": "1000050:1500&1000160:40"
   },
   "500401": {
@@ -2981,42 +3082,42 @@
     "award": "201:50000&101:50000"
   },
   "500405": {
+    "title": "挑战简单难度的日常副本",
+    "refresh": "week_target",
+    "type": "fb_hard",
+    "arg": 1,
+    "value": 1,
+    "award": "202:100&1000070:5"
+  },
+  "500406": {
+    "title": "挑战普通难度的日常副本",
+    "refresh": "week_target",
+    "type": "fb_hard",
+    "arg": 2,
+    "value": 1,
+    "award": "202:200&1000070:10"
+  },
+  "500407": {
     "title": "挑战精英难度的日常副本",
     "refresh": "week_target",
     "type": "fb_hard",
     "arg": 3,
     "value": 1,
-    "award": "202:100&1000070:5"
+    "award": "202:300&1000070:15"
   },
-  "500406": {
+  "500408": {
     "title": "挑战困难难度的日常副本",
     "refresh": "week_target",
     "type": "fb_hard",
     "arg": 4,
     "value": 1,
-    "award": "202:200&1000070:10"
+    "award": "202:500&1000080:5"
   },
-  "500407": {
+  "500409": {
     "title": "挑战噩梦难度的日常副本",
     "refresh": "week_target",
     "type": "fb_hard",
     "arg": 5,
-    "value": 1,
-    "award": "202:300&1000070:15"
-  },
-  "500408": {
-    "title": "挑战地狱难度的日常副本",
-    "refresh": "week_target",
-    "type": "fb_hard",
-    "arg": 6,
-    "value": 1,
-    "award": "202:500&1000080:5"
-  },
-  "500409": {
-    "title": "挑战传说1难度的日常副本",
-    "refresh": "week_target",
-    "type": "fb_hard",
-    "arg": 7,
     "value": 1,
     "award": "202:1000&1000080:15"
   },
@@ -3045,11 +3146,11 @@
     "award": "1001002:1&1000070:5"
   },
   "500504": {
-    "title": "完成40次三界任务",
+    "title": "完成30次三界任务",
     "refresh": "week_target",
     "type": "tour",
     "arg": 1,
-    "value": 40,
+    "value": 30,
     "award": "1001002:5&1000070:15"
   },
   "500505": {
@@ -3114,10 +3215,10 @@
     "award": "504000:5&202:30"
   },
   "500604": {
-    "title": "宝物商店购买50次",
+    "title": "宝物商店购买30次",
     "refresh": "week_target",
     "type": "bazzar_buy",
-    "value": 50,
+    "value": 30,
     "award": "504000:5&202:100"
   },
   "500605": {
@@ -3135,24 +3236,24 @@
     "award": "201:10000&101:10000"
   },
   "500607": {
+    "title": "宝物商店刷新15次",
+    "refresh": "week_target",
+    "type": "bazzar_refresh",
+    "value": 15,
+    "award": "201:20000&101:20000"
+  },
+  "500608": {
     "title": "宝物商店刷新20次",
     "refresh": "week_target",
     "type": "bazzar_refresh",
     "value": 20,
-    "award": "201:20000&101:20000"
-  },
-  "500608": {
-    "title": "宝物商店刷新50次",
-    "refresh": "week_target",
-    "type": "bazzar_refresh",
-    "value": 50,
     "award": "201:50000&101:50000"
   },
   "500609": {
-    "title": "宝物商店刷新100次",
+    "title": "宝物商店刷新30次",
     "refresh": "week_target",
     "type": "bazzar_refresh",
-    "value": 100,
+    "value": 30,
     "award": "201:100000&101:100000"
   },
   "500701": {
@@ -3170,24 +3271,24 @@
     "award": "504000:6&201:10000"
   },
   "500703": {
+    "title": "逐鹿之战击杀20个怪物",
+    "refresh": "week_target",
+    "type": "zhulu_monster",
+    "value": 20,
+    "award": "504000:9&201:30000"
+  },
+  "500704": {
     "title": "逐鹿之战击杀30个怪物",
     "refresh": "week_target",
     "type": "zhulu_monster",
     "value": 30,
-    "award": "504000:9&201:30000"
+    "award": "504000:12&201:40000"
   },
-  "500704": {
+  "500705": {
     "title": "逐鹿之战击杀40个怪物",
     "refresh": "week_target",
     "type": "zhulu_monster",
     "value": 40,
-    "award": "504000:12&201:40000"
-  },
-  "500705": {
-    "title": "逐鹿之战击杀60个怪物",
-    "refresh": "week_target",
-    "type": "zhulu_monster",
-    "value": 60,
     "award": "504000:15&201:60000"
   },
   "500706": {
@@ -3233,24 +3334,24 @@
     "award": "1001002:1&1000050:20"
   },
   "500803": {
+    "title": "通天塔：30层",
+    "refresh": "week_target",
+    "type": "tttLv",
+    "value": 30,
+    "award": "1001003:1&1000050:40"
+  },
+  "500804": {
     "title": "通天塔：40层",
     "refresh": "week_target",
     "type": "tttLv",
     "value": 40,
-    "award": "1001003:1&1000050:40"
-  },
-  "500804": {
-    "title": "通天塔：60层",
-    "refresh": "week_target",
-    "type": "tttLv",
-    "value": 60,
     "award": "1001005:1&1000050:60"
   },
   "500805": {
-    "title": "通天塔：80层",
+    "title": "通天塔：50层",
     "refresh": "week_target",
     "type": "tttLv",
-    "value": 80,
+    "value": 50,
     "award": "1001007:1&1000050:80"
   },
   "500806": {
@@ -3261,24 +3362,24 @@
     "award": "1000070:1&1000160:1"
   },
   "500807": {
+    "title": "通天挑战次数：20次",
+    "refresh": "week_target",
+    "type": "ttt",
+    "value": 20,
+    "award": "1000070:3&1000160:3"
+  },
+  "500808": {
     "title": "通天挑战次数：30次",
     "refresh": "week_target",
     "type": "ttt",
     "value": 30,
-    "award": "1000070:3&1000160:3"
+    "award": "1000070:5&1000160:5"
   },
-  "500808": {
+  "500809": {
     "title": "通天挑战次数：50次",
     "refresh": "week_target",
     "type": "ttt",
     "value": 50,
-    "award": "1000070:5&1000160:5"
-  },
-  "500809": {
-    "title": "通天挑战次数：100次",
-    "refresh": "week_target",
-    "type": "ttt",
-    "value": 100,
     "award": "1000070:10&1000160:10"
   },
   "500901": {
@@ -3381,34 +3482,34 @@
     "award": "201:100000&1000080:1"
   },
   "501006": {
+    "title": "世界BOSS单次伤害20万",
+    "refresh": "week_target",
+    "type": "world_boss_damage",
+    "arg": 200000,
+    "value": 1,
+    "award": "201:300000&1000080:1"
+  },
+  "501007": {
     "title": "世界BOSS单次伤害30万",
     "refresh": "week_target",
     "type": "world_boss_damage",
     "arg": 300000,
     "value": 1,
-    "award": "201:300000&1000080:1"
-  },
-  "501007": {
-    "title": "世界BOSS单次伤害60万",
-    "refresh": "week_target",
-    "type": "world_boss_damage",
-    "arg": 600000,
-    "value": 1,
     "award": "201:600000&1000080:1"
   },
   "501008": {
-    "title": "世界BOSS单次伤害90万",
+    "title": "世界BOSS单次伤害40万",
     "refresh": "week_target",
     "type": "world_boss_damage",
-    "arg": 900000,
+    "arg": 400000,
     "value": 1,
     "award": "201:900000&1000080:1"
   },
   "501009": {
-    "title": "世界BOSS单次伤害120万",
+    "title": "世界BOSS单次伤害50万",
     "refresh": "week_target",
     "type": "world_boss_damage",
-    "arg": 1200000,
+    "arg": 500000,
     "value": 1,
     "award": "201:1200000&1000080:1"
   },
@@ -3434,83 +3535,83 @@
     "award": "1001003:1&201:15000"
   },
   "501104": {
+    "title": "获得1个5级法宝",
+    "refresh": "week_target",
+    "type": "artifactLv",
+    "arg": 5,
+    "value": 1,
+    "award": "1001005:1&202:100"
+  },
+  "501105": {
+    "title": "获得1个8级法宝",
+    "refresh": "week_target",
+    "type": "artifactLv",
+    "arg": 8,
+    "value": 1,
+    "award": "1001005:1&202:150"
+  },
+  "501106": {
     "title": "获得1个10级法宝",
     "refresh": "week_target",
     "type": "artifactLv",
     "arg": 10,
     "value": 1,
-    "award": "1001005:1&202:100"
-  },
-  "501105": {
-    "title": "获得3个10级法宝",
-    "refresh": "week_target",
-    "type": "artifactLv",
-    "arg": 10,
-    "value": 3,
-    "award": "1001005:1&202:150"
-  },
-  "501106": {
-    "title": "获得6个10级法宝",
-    "refresh": "week_target",
-    "type": "artifactLv",
-    "arg": 10,
-    "value": 6,
     "award": "1001005:1&202:200"
   },
   "501107": {
+    "title": "获得1个12级法宝",
+    "refresh": "week_target",
+    "type": "artifactLv",
+    "arg": 12,
+    "value": 1,
+    "award": "1001007:1&101:10000"
+  },
+  "501108": {
+    "title": "获得1个15级法宝",
+    "refresh": "week_target",
+    "type": "artifactLv",
+    "arg": 15,
+    "value": 1,
+    "award": "1001007:1&101:30000"
+  },
+  "501109": {
     "title": "获得1个25级法宝",
     "refresh": "week_target",
     "type": "artifactLv",
     "arg": 25,
     "value": 1,
-    "award": "1001007:1&101:10000"
-  },
-  "501108": {
-    "title": "获得3个25级法宝",
-    "refresh": "week_target",
-    "type": "artifactLv",
-    "arg": 25,
-    "value": 3,
-    "award": "1001007:1&101:30000"
-  },
-  "501109": {
-    "title": "获得6个25级法宝",
-    "refresh": "week_target",
-    "type": "artifactLv",
-    "arg": 25,
-    "value": 6,
     "award": "1001007:1&101:60000"
   },
   "501201": {
-    "title": "获得3个紫色元神",
+    "title": "获得1个紫色元神",
     "refresh": "week_target",
     "type": "ace",
     "arg": 4,
-    "value": 3,
+    "value": 1,
     "award": "504000:3&1000020:3"
   },
   "501202": {
+    "title": "获得2个紫色元神",
+    "refresh": "week_target",
+    "type": "ace",
+    "arg": 4,
+    "value": 2,
+    "award": "504000:6&1000020:6"
+  },
+  "501203": {
+    "title": "获得4个紫色元神",
+    "refresh": "week_target",
+    "type": "ace",
+    "arg": 4,
+    "value": 4,
+    "award": "504000:9&1000020:9"
+  },
+  "501204": {
     "title": "获得6个紫色元神",
     "refresh": "week_target",
     "type": "ace",
     "arg": 4,
     "value": 6,
-    "award": "504000:6&1000020:6"
-  },
-  "501203": {
-    "title": "获得9个紫色元神",
-    "refresh": "week_target",
-    "type": "ace",
-    "arg": 4,
-    "value": 9,
-    "award": "504000:9&1000020:9"
-  },
-  "501204": {
-    "title": "获得12个紫色元神",
-    "refresh": "week_target",
-    "type": "ace",
-    "arg": 4,
-    "value": 12,
     "award": "504000:12&1000020:12"
   },
   "501205": {
@@ -3522,35 +3623,35 @@
     "award": "505000:1&1000070:1"
   },
   "501206": {
+    "title": "获得2个橙色元神",
+    "refresh": "week_target",
+    "type": "ace",
+    "arg": 5,
+    "value": 2,
+    "award": "505000:3&1000070:3"
+  },
+  "501207": {
     "title": "获得3个橙色元神",
     "refresh": "week_target",
     "type": "ace",
     "arg": 5,
     "value": 3,
-    "award": "505000:3&1000070:3"
-  },
-  "501207": {
-    "title": "获得6个橙色元神",
-    "refresh": "week_target",
-    "type": "ace",
-    "arg": 5,
-    "value": 6,
     "award": "505000:6&1000070:6"
   },
   "501208": {
-    "title": "获得9个橙色元神",
-    "refresh": "week_target",
-    "type": "ace",
-    "arg": 5,
-    "value": 9,
-    "award": "505000:9&1000070:9"
-  },
-  "501209": {
     "title": "获得1个红色元神",
     "refresh": "week_target",
     "type": "ace",
     "arg": 6,
     "value": 1,
+    "award": "505000:9&1000070:9"
+  },
+  "501209": {
+    "title": "获得2个红色元神",
+    "refresh": "week_target",
+    "type": "ace",
+    "arg": 6,
+    "value": 2,
     "award": "505000:30&1000080:1"
   },
   "501301": {
@@ -3602,24 +3703,24 @@
     "award": "1001006:1&1000150:1"
   },
   "501307": {
-    "title": "竞技场挑战：30次",
+    "title": "竞技场挑战：20次",
     "refresh": "week_target",
     "type": "arena",
-    "value": 30,
+    "value": 20,
     "award": "1000080:1&206:300"
   },
   "501308": {
-    "title": "竞技场挑战：50次",
+    "title": "竞技场挑战：40次",
     "refresh": "week_target",
     "type": "arena",
-    "value": 50,
+    "value": 40,
     "award": "1000080:3&206:500"
   },
   "501309": {
-    "title": "竞技场挑战：100次",
+    "title": "竞技场挑战：60次",
     "refresh": "week_target",
     "type": "arena",
-    "value": 100,
+    "value": 60,
     "award": "1000080:3&206:1000"
   },
   "501401": {
@@ -3630,59 +3731,59 @@
     "award": "505000:5&1000150:1"
   },
   "501402": {
+    "title": "战斗力：20万",
+    "refresh": "week_target",
+    "type": "totalCe",
+    "value": 200000,
+    "award": "505000:6&1000150:2"
+  },
+  "501403": {
     "title": "战斗力：30万",
     "refresh": "week_target",
     "type": "totalCe",
     "value": 300000,
-    "award": "505000:6&1000150:2"
+    "award": "505000:7&1000150:3"
   },
-  "501403": {
+  "501404": {
+    "title": "战斗力：40万",
+    "refresh": "week_target",
+    "type": "totalCe",
+    "value": 400000,
+    "award": "505000:8&1000150:4"
+  },
+  "501405": {
+    "title": "战斗力：50万",
+    "refresh": "week_target",
+    "type": "totalCe",
+    "value": 500000,
+    "award": "505000:9&1000150:5"
+  },
+  "501406": {
     "title": "战斗力：60万",
     "refresh": "week_target",
     "type": "totalCe",
     "value": 600000,
-    "award": "505000:7&1000150:3"
-  },
-  "501404": {
-    "title": "战斗力：90万",
-    "refresh": "week_target",
-    "type": "totalCe",
-    "value": 900000,
-    "award": "505000:8&1000150:4"
-  },
-  "501405": {
-    "title": "战斗力：120万",
-    "refresh": "week_target",
-    "type": "totalCe",
-    "value": 1200000,
-    "award": "505000:9&1000150:5"
-  },
-  "501406": {
-    "title": "战斗力：150万",
-    "refresh": "week_target",
-    "type": "totalCe",
-    "value": 1500000,
     "award": "1001006:1&1000120:1"
   },
   "501407": {
-    "title": "战斗力：180万",
+    "title": "战斗力：70万",
     "refresh": "week_target",
     "type": "totalCe",
-    "value": 1800000,
+    "value": 700000,
     "award": "1001006:1&1000120:2"
   },
   "501408": {
-    "title": "战斗力：210万",
+    "title": "战斗力：80万",
     "refresh": "week_target",
     "type": "totalCe",
-    "value": 2100000,
+    "value": 800000,
     "award": "1001006:1&1000120:3"
   },
   "501409": {
-    "title": "战斗力：240万",
+    "title": "战斗力：100万",
     "refresh": "week_target",
     "type": "totalCe",
-    "value": 2400000,
+    "value": 1000000,
     "award": "1001004:1&1000120:4"
   }
 }

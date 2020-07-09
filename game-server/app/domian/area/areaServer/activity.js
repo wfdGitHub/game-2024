@@ -53,6 +53,7 @@ module.exports = function() {
 			}
 			data["normalAward"] = 0
 			data["highAward"] = 0
+			data["vip_day_award"] = 0
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
 			}
@@ -226,12 +227,12 @@ module.exports = function() {
 			cb(false,"vip等级不足 "+self.players[uid].vip+"/"+vip)
 			return
 		}
-		self.getObj(uid,main_name,"vip_free"+vip,function(data) {
-			if(data){
+		self.getObj(uid,main_name,"vip_day_award",function(data) {
+			if(data != 0){
 				cb(false,"已领取")
 				return
 			}
-			self.incrbyObj(uid,main_name,"vip_free"+vip,1)
+			self.incrbyObj(uid,main_name,"vip_day_award",1)
 			var awardList = self.addItemStr(uid,VIP[vip]["free_award"])
 			cb(true,awardList)
 		})
