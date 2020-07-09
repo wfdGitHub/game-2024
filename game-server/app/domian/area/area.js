@@ -5,7 +5,7 @@ var async = require("async")
 const standard_dl = require("../../../config/gameCfg/standard_dl.json")
 const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
@@ -117,8 +117,8 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 		},
 		function(next) {
 			self.checkAreaMailAll(uid)
-			self.zhuluLoad(uid,next)
 			self.fbLoad(uid)
+			self.zhuluLoad(uid,next)
 		},
 		function() {
 			self.connectorMap[uid] = cid
@@ -148,6 +148,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.bazaarDayRefresh(uid)
 	this.shopRefresh(uid)
 	this.activityUpdate(uid)
+	this.STDayRefresh(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {

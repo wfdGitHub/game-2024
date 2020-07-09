@@ -981,6 +981,22 @@
     "buyNum": 1,
     "quality": 5
   },
+  "1000090": {
+    "name": "普通寻宝",
+    "isBag": true,
+    "type": "item",
+    "gold": 50,
+    "buyNum": 1,
+    "quality": 4
+  },
+  "1000100": {
+    "name": "高级寻宝",
+    "isBag": true,
+    "type": "item",
+    "gold": 1000,
+    "buyNum": 1,
+    "quality": 5
+  },
   "1000120": {
     "name": "盘古石",
     "des": "混沌之灵石，盘古开天后散落，除了灵气外还有神识，能够引领指定种族4-5星英雄",

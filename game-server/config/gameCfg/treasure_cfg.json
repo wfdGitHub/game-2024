@@ -1,0 +1,138 @@
+{
+  "normal_luck": {
+    "name": "普通寻宝幸运值",
+    "value": 45
+  },
+  "normal_refresh": {
+    "name": "普通寻宝刷新消耗",
+    "value": "202:30"
+  },
+  "high_luck": {
+    "name": "高级寻宝幸运值",
+    "value": 45
+  },
+  "high_refresh": {
+    "name": "高级寻宝刷新消耗",
+    "value": "202:30"
+  },
+  "normal_grid_0": {
+    "name": "普通寻宝格子1",
+    "value": "[1001,1002]",
+    "arg": true
+  },
+  "normal_grid_1": {
+    "name": "普通寻宝格子2",
+    "value": "[1001,1002]"
+  },
+  "normal_grid_2": {
+    "name": "普通寻宝格子3",
+    "value": "[1001,1002]",
+    "arg": true
+  },
+  "normal_grid_3": {
+    "name": "普通寻宝格子4",
+    "value": "[1001,1002]"
+  },
+  "normal_grid_4": {
+    "name": "普通寻宝格子5",
+    "value": "[1005,1006]",
+    "arg": true
+  },
+  "normal_grid_5": {
+    "name": "普通寻宝格子6",
+    "value": "[1001,1002]"
+  },
+  "normal_grid_6": {
+    "name": "普通寻宝格子7",
+    "value": "[1001,1002]"
+  },
+  "normal_grid_7": {
+    "name": "普通寻宝格子8",
+    "value": "[1007,1008]"
+  },
+  "high_grid_0": {
+    "name": "高级寻宝格子1",
+    "value": "[1001,1002]",
+    "arg": true
+  },
+  "high_grid_1": {
+    "name": "高级寻宝格子2",
+    "value": "[1001,1002]"
+  },
+  "high_grid_2": {
+    "name": "高级寻宝格子3",
+    "value": "[1001,1002]",
+    "arg": true
+  },
+  "high_grid_3": {
+    "name": "高级寻宝格子4",
+    "value": "[1001,1002]"
+  },
+  "high_grid_4": {
+    "name": "高级寻宝格子5",
+    "value": "[1007,1008]",
+    "arg": true
+  },
+  "high_grid_5": {
+    "name": "高级寻宝格子6",
+    "value": "[1001,1002]"
+  },
+  "high_grid_6": {
+    "name": "高级寻宝格子7",
+    "value": "[1001,1002]"
+  },
+  "high_grid_7": {
+    "name": "高级寻宝格子8",
+    "value": "[1007,1008]"
+  },
+  "normal_luck_1": {
+    "name": "普通寻宝积分奖励",
+    "value": "201:100",
+    "arg": 100
+  },
+  "normal_luck_2": {
+    "name": "普通寻宝积分奖励",
+    "value": "201:101",
+    "arg": 300
+  },
+  "normal_luck_3": {
+    "name": "普通寻宝积分奖励",
+    "value": "201:102",
+    "arg": 500
+  },
+  "normal_luck_4": {
+    "name": "普通寻宝积分奖励",
+    "value": "201:103",
+    "arg": 700
+  },
+  "normal_luck_5": {
+    "name": "普通寻宝积分奖励",
+    "value": "201:104",
+    "arg": 1000
+  },
+  "high_luck_1": {
+    "name": "高级寻宝积分奖励",
+    "value": "202:100",
+    "arg": 100
+  },
+  "high_luck_2": {
+    "name": "高级寻宝积分奖励",
+    "value": "202:101",
+    "arg": 300
+  },
+  "high_luck_3": {
+    "name": "高级寻宝积分奖励",
+    "value": "202:102",
+    "arg": 500
+  },
+  "high_luck_4": {
+    "name": "高级寻宝积分奖励",
+    "value": "202:103",
+    "arg": 700
+  },
+  "high_luck_5": {
+    "name": "高级寻宝积分奖励",
+    "value": "202:104",
+    "arg": 1000
+  }
+}

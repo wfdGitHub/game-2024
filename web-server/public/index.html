@@ -67,6 +67,73 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============寻宝==========//
+      //获取寻宝数据
+      var getSTData = function() {
+        pomelo.request("area.stHandler.getSTData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //普通寻宝单次
+      var normalSTSeek = function() {
+        pomelo.request("area.stHandler.normalSTSeek", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //普通寻宝十五次
+      var normalSTMultiple = function() {
+        pomelo.request("area.stHandler.normalSTMultiple", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //免费刷新普通寻宝
+      var normalSTFreeRefresh = function() {
+        pomelo.request("area.stHandler.normalSTFreeRefresh", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //付费刷新普通寻宝
+      var normalSTBuyRefresh = function() {
+        pomelo.request("area.stHandler.normalSTBuyRefresh", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取普通寻宝幸运宝箱
+      var gainSTNormalBox = function(boxId) {
+        pomelo.request("area.stHandler.gainSTNormalBox", {boxId:boxId}, function(data) {
+            console.log(data);
+        });
+      }
+      //高级寻宝单次
+      var highSTSeek = function() {
+        pomelo.request("area.stHandler.highSTSeek", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //高级寻宝十五次
+      var highSTMultiple = function() {
+        pomelo.request("area.stHandler.highSTMultiple", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //免费刷新高级寻宝
+      var highSTFreeRefresh = function() {
+        pomelo.request("area.stHandler.highSTFreeRefresh", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //付费刷新高级寻宝
+      var highSTBuyRefresh = function() {
+        pomelo.request("area.stHandler.highSTBuyRefresh", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取高级寻宝幸运宝箱
+      var gainSTHighBox = function(boxId) {
+        pomelo.request("area.stHandler.gainSTHighBox", {boxId:boxId}, function(data) {
+            console.log(data);
+        });
+      }
       //==============奖励邮件==========//
       //设置全服邮件
       var setAreaMail = function(areaList,title,text,atts,time) {
@@ -1465,6 +1532,18 @@
       <input id="test" type="button" value="执行格子" onclick="executeGrid()"/>
       <input id="test" type="button" value="放弃格子" onclick="giveupGrid()"/>
       <input id="test" type="button" value="选择战利品" onclick="chooseSpoils(1)"/>
+    </div>
+    <div class="g-button">
+      寻宝 : 
+      <input id="test" type="button" value="获取寻宝数据" onclick="getSTData()"/>
+      <input id="test" type="button" value="普通寻宝" onclick="normalSTSeek()"/>
+      <input id="test" type="button" value="普通寻宝十五次" onclick="normalSTMultiple()"/>
+      <input id="test" type="button" value="免费刷新普通寻宝" onclick="normalSTFreeRefresh()"/>
+      <input id="test" type="button" value="付费刷新普通寻宝" onclick="normalSTBuyRefresh()"/>
+      <input id="test" type="button" value="高级寻宝" onclick="highSTSeek()"/>
+      <input id="test" type="button" value="高级寻宝十次" onclick="highSTMultiple()"/>
+      <input id="test" type="button" value="免费刷新高级寻宝" onclick="highSTFreeRefresh()"/>
+      <input id="test" type="button" value="付费刷新高级寻宝" onclick="highSTBuyRefresh()"/>
     </div>
   </body>
 </html>

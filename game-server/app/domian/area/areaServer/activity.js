@@ -358,8 +358,8 @@ module.exports = function() {
 						if(rank != null){
 							rank = Number(rank) + 1
 							var text = "亲爱的玩家您好，恭喜您在7日冲榜活动中获得"+rank+"名，获得丰厚奖励，祝您游戏愉快！"
-							if(rank >= 21){
-								rank = 21
+							if(rank >= 11){
+								rank = 11
 								text = "亲爱的玩家您好，恭喜您在7日冲榜活动中获得参与奖励，祝您游戏愉快！"
 							}
 							var ce = self.getCE(uid)
