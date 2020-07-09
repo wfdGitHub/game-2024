@@ -218,15 +218,8 @@ module.exports = function() {
 		}
 	}
 	//领取vip免费礼包
-	this.gainVipAward = function(uid,vip,cb) {
-		if(!vip || !VIP[vip]){
-			cb(false,"vip等级不存在")
-			return
-		}
-		if(self.players[uid].vip < vip){
-			cb(false,"vip等级不足 "+self.players[uid].vip+"/"+vip)
-			return
-		}
+	this.gainVipAward = function(uid,cb) {
+		var vip = self.players[uid].vip
 		self.getObj(uid,main_name,"vip_day_award",function(data) {
 			if(data != 0){
 				cb(false,"已领取")

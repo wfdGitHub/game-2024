@@ -85,8 +85,7 @@ activityHandler.prototype.apply_recharge = function(msg, session, next) {
 activityHandler.prototype.gainVipAward = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var vip = msg.vip
-  this.areaManager.areaMap[areaId].gainVipAward(uid,vip,function(flag,msg) {
+  this.areaManager.areaMap[areaId].gainVipAward(uid,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }
