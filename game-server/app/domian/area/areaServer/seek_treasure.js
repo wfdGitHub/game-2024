@@ -21,6 +21,8 @@ for(var i = 0;i < 8;i++){
 module.exports = function() {
 	var self = this
 	var local = {}
+	var highRecord = []
+	var normalRecord = []
 	//寻宝每日刷新
 	this.STDayRefresh = function(uid) {
 		self.setObj(uid,main_name,"normal_free",0)
@@ -34,8 +36,25 @@ module.exports = function() {
 			cb(true,data)
 		})
 	}
+	//获得寻宝记录
+	this.getSTRecord = function(cb) {
+		cb(true,{highRecord:highRecord,normalRecord:normalRecord})
+	}
+	//保存寻宝记录
+	local.saveSTRecord = function(name,type,award) {
+		if(type == "high"){
+			highRecord.push({name : name,award:award})
+			if(highRecord.length > 10)
+				highRecord.shift()
+		}else if(type == "normal"){
+			normalRecord.push({name : name,award:award})
+			if(normalRecord.length > 10)
+				normalRecord.shift()
+		}
+	}
 	//普通寻宝单次
 	this.normalSTSeek = function(uid,cb) {
+		var name = self.players[uid]["name"]
 		self.getObj(uid,main_name,"normal_grid",function(data) {
 			if(!data){
 				cb(false)
@@ -50,6 +69,7 @@ module.exports = function() {
 						var index = local.getTreasure(data)
 						if(index != -1 && data[index] && treasure_cfg["normal_grid_"+index]){
 							if(treasure_cfg["normal_grid_"+index].arg){
+								local.saveSTRecord(name,"normal",treasure_awards[data[index]["id"]]["award"])
 								data[index].finish = true
 								self.setObj(uid,main_name,"normal_grid",JSON.stringify(data))
 							}
@@ -67,6 +87,7 @@ module.exports = function() {
 	}
 	//普通寻宝十五次
 	this.normalSTMultiple = function(uid,cb) {
+		var name = self.players[uid]["name"]
 		self.getObj(uid,main_name,"normal_grid",function(oriData) {
 			if(!oriData){
 				cb(false)
@@ -83,6 +104,7 @@ module.exports = function() {
 							var index = local.getTreasure(data)
 							if(index != -1 && data[index] && treasure_cfg["normal_grid_"+index]){
 								if(treasure_cfg["normal_grid_"+index].arg){
+									local.saveSTRecord(name,"normal",treasure_awards[data[index]["id"]]["award"])
 									data[index].finish = true
 								}
 								awardList = awardList.concat(self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"]))	
@@ -162,6 +184,7 @@ module.exports = function() {
 	}
 	//高级寻宝单次
 	this.highSTSeek = function(uid,cb) {
+		var name = self.players[uid]["name"]
 		self.getObj(uid,main_name,"high_grid",function(data) {
 			if(!data){
 				cb(false)
@@ -176,6 +199,7 @@ module.exports = function() {
 						var index = local.getTreasure(data)
 						if(index != -1 && data[index] && treasure_cfg["high_grid_"+index]){
 							if(treasure_cfg["high_grid_"+index].arg){
+								local.saveSTRecord(name,"high",treasure_awards[data[index]["id"]]["award"])
 								data[index].finish = true
 								self.setObj(uid,main_name,"high_grid",JSON.stringify(data))
 							}
@@ -193,6 +217,7 @@ module.exports = function() {
 	}
 	//高级寻宝十次
 	this.highSTMultiple = function(uid,cb) {
+		var name = self.players[uid]["name"]
 		self.getObj(uid,main_name,"high_grid",function(oriData) {
 			if(!oriData){
 				cb(false)
@@ -209,6 +234,7 @@ module.exports = function() {
 							var index = local.getTreasure(data)
 							if(index != -1 && data[index] && treasure_cfg["high_grid_"+index]){
 								if(treasure_cfg["high_grid_"+index].arg){
+									local.saveSTRecord(name,"high",treasure_awards[data[index]["id"]]["award"])
 									data[index].finish = true
 								}
 								awardList = awardList.concat(self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"]))	

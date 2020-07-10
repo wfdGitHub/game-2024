@@ -74,6 +74,12 @@
             console.log(data);
         });
       }
+      //获取寻宝记录
+      var getSTRecord = function() {
+        pomelo.request("area.stHandler.getSTRecord", {}, function(data) {
+            console.log(data);
+        });
+      }
       //普通寻宝单次
       var normalSTSeek = function() {
         pomelo.request("area.stHandler.normalSTSeek", {}, function(data) {

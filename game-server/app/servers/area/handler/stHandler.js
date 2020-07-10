@@ -12,6 +12,14 @@ stHandler.prototype.getSTData = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//获取寻宝记录
+stHandler.prototype.getSTRecord = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getSTRecord(function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //普通寻宝单次
 stHandler.prototype.normalSTSeek = function(msg, session, next) {
   var uid = session.uid
