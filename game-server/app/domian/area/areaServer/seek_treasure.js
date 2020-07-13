@@ -27,12 +27,23 @@ module.exports = function() {
 	this.STDayRefresh = function(uid) {
 		self.setObj(uid,main_name,"normal_free",0)
 		self.setObj(uid,main_name,"high_free",0)
-		local.normalSTRefresh(uid)
-		local.highSTRefresh(uid)
 	}
 	//获得寻宝数据
 	this.getSTData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(data) {
+			if(!data.normal_grid || !data.high_grid){
+				data.normal_grid = JSON.stringify(local.normalSTRefresh(uid))
+				data.high_grid = JSON.stringify(local.highSTRefresh(uid))
+			}else{
+				var normal_grid = JSON.parse(data.normal_grid)
+				var high_grid = JSON.parse(data.high_grid)
+				for(var i = 0;i < 8;i++){
+					if(!normal_grid[i] || !treasure_awards[normal_grid[i]["id"]] || !high_grid[i] || !treasure_awards[high_grid[i]["id"]]){
+						data.normal_grid = JSON.stringify(local.normalSTRefresh(uid))
+						data.high_grid = JSON.stringify(local.highSTRefresh(uid))
+					}
+				}
+			}
 			cb(true,data)
 		})
 	}
