@@ -1747,6 +1747,22 @@
     "useType": "chest",
     "arg": "lb_chest_12"
   },
+  "1007001": {
+    "name": "幸运寻宝礼包",
+    "des": "寻宝幸运礼包",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "xylb_chest_1"
+  },
+  "1007002": {
+    "name": "高级寻宝礼包",
+    "des": "寻宝高级礼包",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "gjlb_chest_1"
+  },
   "5001010": {
     "name": "短剑",
     "des": "普通的短剑，没有什么特别之处",

@@ -244,7 +244,8 @@
     "title": "在逐鹿之战玩法中击杀怪物",
     "refresh": "day",
     "type": "zhulu_monster",
-    "value": 1
+    "value": 1,
+    "exp": 30
   },
   "200101": {
     "title": "角色等级5级",
@@ -3271,53 +3272,53 @@
     "award": "504000:6&201:10000"
   },
   "500703": {
+    "title": "逐鹿之战击杀15个怪物",
+    "refresh": "week_target",
+    "type": "zhulu_monster",
+    "value": 15,
+    "award": "504000:9&201:30000"
+  },
+  "500704": {
     "title": "逐鹿之战击杀20个怪物",
     "refresh": "week_target",
     "type": "zhulu_monster",
     "value": 20,
-    "award": "504000:9&201:30000"
+    "award": "504000:12&201:40000"
   },
-  "500704": {
+  "500705": {
     "title": "逐鹿之战击杀30个怪物",
     "refresh": "week_target",
     "type": "zhulu_monster",
     "value": 30,
-    "award": "504000:12&201:40000"
+    "award": "504000:15&201:60000"
   },
-  "500705": {
+  "500706": {
     "title": "逐鹿之战击杀40个怪物",
     "refresh": "week_target",
     "type": "zhulu_monster",
     "value": 40,
-    "award": "504000:15&201:60000"
+    "award": "504000:30&201:100000"
   },
-  "500706": {
+  "500707": {
+    "title": "逐鹿之战累计通关1次",
+    "refresh": "week_target",
+    "type": "zhulu_pass",
+    "value": 1,
+    "award": "202:100&201:30000"
+  },
+  "500708": {
     "title": "逐鹿之战累计通关2次",
     "refresh": "week_target",
     "type": "zhulu_pass",
     "value": 2,
-    "award": "202:100&201:20000"
+    "award": "202:200&201:40000"
   },
-  "500707": {
+  "500709": {
     "title": "逐鹿之战累计通关3次",
     "refresh": "week_target",
     "type": "zhulu_pass",
     "value": 3,
-    "award": "202:150&201:30000"
-  },
-  "500708": {
-    "title": "逐鹿之战累计通关4次",
-    "refresh": "week_target",
-    "type": "zhulu_pass",
-    "value": 4,
-    "award": "202:200&201:40000"
-  },
-  "500709": {
-    "title": "逐鹿之战累计通关5次",
-    "refresh": "week_target",
-    "type": "zhulu_pass",
-    "value": 5,
-    "award": "202:250&201:50000"
+    "award": "202:300&201:50000"
   },
   "500801": {
     "title": "通天塔：10层",
@@ -3575,10 +3576,10 @@
     "award": "1001007:1&101:30000"
   },
   "501109": {
-    "title": "获得1个25级法宝",
+    "title": "获得1个20级法宝",
     "refresh": "week_target",
     "type": "artifactLv",
-    "arg": 25,
+    "arg": 20,
     "value": 1,
     "award": "1001007:1&101:60000"
   },
@@ -3639,88 +3640,88 @@
     "award": "505000:6&1000070:6"
   },
   "501208": {
+    "title": "获得4个橙色元神",
+    "refresh": "week_target",
+    "type": "ace",
+    "arg": 5,
+    "value": 4,
+    "award": "505000:9&1000070:9"
+  },
+  "501209": {
     "title": "获得1个红色元神",
     "refresh": "week_target",
     "type": "ace",
     "arg": 6,
     "value": 1,
-    "award": "505000:9&1000070:9"
-  },
-  "501209": {
-    "title": "获得2个红色元神",
-    "refresh": "week_target",
-    "type": "ace",
-    "arg": 6,
-    "value": 2,
     "award": "505000:30&1000080:1"
   },
   "501301": {
+    "title": "竞技场前3000名",
+    "refresh": "week_target",
+    "type": "rank",
+    "arg": 7000,
+    "value": 1,
+    "award": "1000150:1&1000050:100"
+  },
+  "501302": {
+    "title": "竞技场前2000名",
+    "refresh": "week_target",
+    "type": "rank",
+    "arg": 8000,
+    "value": 1,
+    "award": "1000150:1&1000050:150"
+  },
+  "501303": {
+    "title": "竞技场前1000名",
+    "refresh": "week_target",
+    "type": "rank",
+    "arg": 9000,
+    "value": 1,
+    "award": "1000150:1&1000050:200"
+  },
+  "501304": {
+    "title": "竞技场前800名",
+    "refresh": "week_target",
+    "type": "rank",
+    "arg": 9200,
+    "value": 1,
+    "award": "1000150:1&1000050:250"
+  },
+  "501305": {
     "title": "竞技场前500名",
     "refresh": "week_target",
     "type": "rank",
     "arg": 9500,
     "value": 1,
-    "award": "1000150:1&1000050:100"
+    "award": "1000150:1&1000050:300"
   },
-  "501302": {
+  "501306": {
     "title": "竞技场前300名",
     "refresh": "week_target",
     "type": "rank",
     "arg": 9700,
     "value": 1,
-    "award": "1000150:1&1000050:150"
-  },
-  "501303": {
-    "title": "竞技场前100名",
-    "refresh": "week_target",
-    "type": "rank",
-    "arg": 9900,
-    "value": 1,
-    "award": "1000150:1&1000050:200"
-  },
-  "501304": {
-    "title": "竞技场前50名",
-    "refresh": "week_target",
-    "type": "rank",
-    "arg": 9950,
-    "value": 1,
-    "award": "1000150:1&1000050:250"
-  },
-  "501305": {
-    "title": "竞技场前30名",
-    "refresh": "week_target",
-    "type": "rank",
-    "arg": 9970,
-    "value": 1,
-    "award": "1000150:1&1000050:300"
-  },
-  "501306": {
-    "title": "竞技场前10名",
-    "refresh": "week_target",
-    "type": "rank",
-    "arg": 9990,
-    "value": 1,
     "award": "1001006:1&1000150:1"
   },
   "501307": {
+    "title": "竞技场挑战：10次",
+    "refresh": "week_target",
+    "type": "arena",
+    "value": 10,
+    "award": "1000080:1&206:300"
+  },
+  "501308": {
+    "title": "竞技场挑战：15次",
+    "refresh": "week_target",
+    "type": "arena",
+    "value": 15,
+    "award": "1000080:3&206:500"
+  },
+  "501309": {
     "title": "竞技场挑战：20次",
     "refresh": "week_target",
     "type": "arena",
     "value": 20,
-    "award": "1000080:1&206:300"
-  },
-  "501308": {
-    "title": "竞技场挑战：40次",
-    "refresh": "week_target",
-    "type": "arena",
-    "value": 40,
-    "award": "1000080:3&206:500"
-  },
-  "501309": {
-    "title": "竞技场挑战：60次",
-    "refresh": "week_target",
-    "type": "arena",
-    "value": 60,
     "award": "1000080:3&206:1000"
   },
   "501401": {
