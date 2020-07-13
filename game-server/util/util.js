@@ -52,6 +52,17 @@ util.prototype.getWeek = function(){
     var m_date = monday.getDate();
     return m_year+'-'+m_month+'-'+m_date
 }
+//获取今年第几周
+util.prototype.getWeekNum = function() {
+    let d1 = new Date();
+    let d2 = new Date();
+    d2.setMonth(0);
+    d2.setDate(1);
+    let rq = d1 - d2;
+    let days = Math.ceil(rq / (24 * 60 * 60 * 1000));
+    let num = Math.ceil(days / 7);
+    return num+1;
+}
 //获取当天零点时间
 util.prototype.getZeroTime = function(time){
     var nowTemp = new Date(time);//当前时间

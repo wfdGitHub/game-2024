@@ -67,6 +67,31 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============元神抽奖==========//
+      //获取元神抽奖数据
+      var getaceLottoData = function() {
+        pomelo.request("area.aceLottoHandler.getaceLottoData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //免费元神抽奖
+      var aceLottoFree = function() {
+        pomelo.request("area.aceLottoHandler.aceLottoFree", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //单次元神抽奖
+      var aceLottoOnce = function() {
+        pomelo.request("area.aceLottoHandler.aceLottoOnce", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //十连元神抽奖
+      var aceLottoMultiple = function() {
+        pomelo.request("area.aceLottoHandler.aceLottoMultiple", {}, function(data) {
+            console.log(data);
+        });
+      }
       //==============寻宝==========//
       //获取寻宝数据
       var getSTData = function() {
@@ -1550,6 +1575,13 @@
       <input id="test" type="button" value="高级寻宝十次" onclick="highSTMultiple()"/>
       <input id="test" type="button" value="免费刷新高级寻宝" onclick="highSTFreeRefresh()"/>
       <input id="test" type="button" value="付费刷新高级寻宝" onclick="highSTBuyRefresh()"/>
+    </div>
+    <div class="g-button">
+      元神抽奖 : 
+      <input id="test" type="button" value="元神抽奖数据" onclick="getaceLottoData()"/>
+      <input id="test" type="button" value="免费元神抽奖" onclick="aceLottoFree()"/>
+      <input id="test" type="button" value="单次元神抽奖" onclick="aceLottoOnce()"/>
+      <input id="test" type="button" value="十连元神抽奖" onclick="aceLottoMultiple()"/>
     </div>
   </body>
 </html>
