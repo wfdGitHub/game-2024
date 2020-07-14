@@ -108,6 +108,7 @@ module.exports = function() {
 					if(!flag){
 						cb(false,err)
 					}else{
+						var id = false
 						var score = treasure_cfg["normal_luck"]["value"]*15
 						self.incrbyObj(uid,main_name,"normal_score",score)
 						var awardList = []
@@ -118,13 +119,15 @@ module.exports = function() {
 									local.saveSTRecord(name,"normal",treasure_awards[data[index]["id"]]["award"])
 									data[index].finish = true
 								}
-								awardList = awardList.concat(self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"]))	
+								if(i == 0)
+									id = data[index]["id"]
+								awardList = awardList.concat(self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"]))
 							}
 						}
 						var dataStr = JSON.stringify(data)
 						if(dataStr != oriData)
 							self.setObj(uid,main_name,"normal_grid",dataStr)
-						cb(true,{awardList:awardList,data:data,score:score})
+						cb(true,{awardList:awardList,data:data,score:score,id:id})
 					}
 				})
 			}
@@ -238,6 +241,7 @@ module.exports = function() {
 					if(!flag){
 						cb(false,err)
 					}else{
+						var id = false
 						var score = treasure_cfg["high_luck"]["value"]*10
 						self.incrbyObj(uid,main_name,"high_score",score)
 						var awardList = []
@@ -248,13 +252,15 @@ module.exports = function() {
 									local.saveSTRecord(name,"high",treasure_awards[data[index]["id"]]["award"])
 									data[index].finish = true
 								}
+								if(i == 0)
+									id = data[index]["id"]
 								awardList = awardList.concat(self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"]))	
 							}
 						}
 						var dataStr = JSON.stringify(data)
 						if(dataStr != oriData)
 							self.setObj(uid,main_name,"high_grid",dataStr)
-						cb(true,{awardList:awardList,data:data,score:score})
+						cb(true,{awardList:awardList,data:data,score:score,id:id})
 					}
 				})
 			}
