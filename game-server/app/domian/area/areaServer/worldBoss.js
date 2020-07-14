@@ -43,7 +43,7 @@ module.exports = function() {
 		bossTeam = [0,0,0,0,bossId,0]
 		time = Date.now() + tmpTime
 		clearTimeout(timer)
-		timer = setTimeout(this.worldBossChallengeStage.bind(this),tmpTime)
+		timer = setTimeout(this.worldBossChallengeStage.bind(this),1)
 	}
 	//模块销毁
 	this.worldBossDestory = function() {
