@@ -104,6 +104,12 @@ module.exports = function() {
 							case "redAce":
 								awardList = awardList.concat(local.aceRed(uid))
 							break
+							case "orangeAce":
+								awardList = awardList.concat(local.aceOrange(uid))
+							break
+							case "purpleAce":
+								awardList = awardList.concat(local.acePurple(uid))
+							break
 							default:
 								awardList = awardList.concat(self.addItemStr(uid,award))
 						}
@@ -128,6 +134,11 @@ module.exports = function() {
 	//固定橙色元神
 	local.aceOrange = function(uid) {
 		var award = ace_qualitys[5][Math.floor(Math.random() * ace_qualitys[5].length)]
+		return self.addItemStr(uid,award+":1")
+	}
+	//固定紫色元神
+	local.acePurple = function(uid) {
+		var award = ace_qualitys[4][Math.floor(Math.random() * ace_qualitys[4].length)]
 		return self.addItemStr(uid,award+":1")
 	}
 }
