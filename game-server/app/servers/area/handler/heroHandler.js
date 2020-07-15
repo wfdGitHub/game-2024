@@ -257,6 +257,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                         self.areaManager.areaMap[areaId].sendAllUser(notify)
                       }
                     }
+                    self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,targetHero.id,star)
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
                 })
@@ -283,6 +284,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                         self.areaManager.areaMap[areaId].sendAllUser(notify)
                       }
                     }
+                    self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,targetHero.id,star)
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
                 })
@@ -329,6 +331,7 @@ heroHandler.prototype.upgradeStarSimple = function(msg, session, next) {
               text : "恭喜"+name+"合成出6星英雄"+heroName+",实力大涨名动八荒"
             }
             self.areaManager.areaMap[areaId].sendAllUser(notify)
+            self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,heroInfo.id,star)
         }
         next(null,{flag : flag,star : star})
       })

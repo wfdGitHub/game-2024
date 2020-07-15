@@ -99,6 +99,7 @@ module.exports = function() {
 			self.players[uid]["level"] += upLv
 			self.sendToUser(uid,notify)
 			self.taskUpdate(uid,"loadLv",upLv)
+			self.checkLimitGiftLv(uid,level,level+upLv)
 		}
 	}
 }

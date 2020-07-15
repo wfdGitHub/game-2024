@@ -67,6 +67,19 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============限时礼包==========//
+      //获取限时礼包数据
+      var getLimitGiftData = function() {
+        pomelo.request("area.activityHandler.getLimitGiftData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买限时礼包
+      var buyLimitGift = function(id) {
+        pomelo.request("area.activityHandler.buyLimitGift", {id,id}, function(data) {
+            console.log(data);
+        });
+      }
       //==============元神抽奖==========//
       //获取元神抽奖数据
       var getaceLottoData = function() {

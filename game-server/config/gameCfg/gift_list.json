@@ -1,0 +1,227 @@
+{
+  "1001": {
+    "name": "特惠礼包",
+    "type": "lv",
+    "arg": 10,
+    "award": "201:10000",
+    "price": 100,
+    "discount": 200,
+    "time": 86400000
+  },
+  "1002": {
+    "name": "特惠礼包",
+    "type": "lv",
+    "arg": 20,
+    "award": "201:10001",
+    "price": 200,
+    "discount": 300,
+    "time": 86400000
+  },
+  "1003": {
+    "name": "特惠礼包",
+    "type": "lv",
+    "arg": 30,
+    "award": "201:10002",
+    "price": 300,
+    "discount": 400,
+    "time": 86400000
+  },
+  "1004": {
+    "name": "特惠礼包",
+    "type": "lv",
+    "arg": 45,
+    "award": "201:10003",
+    "price": 400,
+    "discount": 500,
+    "time": 86400000
+  },
+  "1005": {
+    "name": "特惠礼包",
+    "type": "lv",
+    "arg": 50,
+    "award": "201:10004",
+    "price": 500,
+    "discount": 600,
+    "time": 86400000
+  },
+  "1006": {
+    "name": "特惠礼包",
+    "type": "lv",
+    "arg": 100,
+    "award": "201:10005",
+    "price": 600,
+    "discount": 700,
+    "time": 86400000
+  },
+  "1007": {
+    "name": "特惠礼包",
+    "type": "lv",
+    "arg": 200,
+    "award": "201:10006",
+    "price": 700,
+    "discount": 800,
+    "time": 86400000
+  },
+  "1008": {
+    "name": "特惠礼包",
+    "type": "star",
+    "arg": 5,
+    "award": "201:10007",
+    "price": 800,
+    "discount": 900,
+    "time": 14400000
+  },
+  "1009": {
+    "name": "特惠礼包",
+    "type": "star",
+    "arg": 6,
+    "award": "201:10008",
+    "price": 900,
+    "discount": 1000,
+    "time": 14400000
+  },
+  "1010": {
+    "name": "特惠礼包",
+    "type": "star",
+    "arg": 7,
+    "award": "201:10009",
+    "price": 1000,
+    "discount": 1100,
+    "time": 14400000
+  },
+  "1011": {
+    "name": "特惠礼包",
+    "type": "star",
+    "arg": 8,
+    "award": "201:10010",
+    "price": 1100,
+    "discount": 1200,
+    "time": 14400000
+  },
+  "1012": {
+    "name": "特惠礼包",
+    "type": "star",
+    "arg": 9,
+    "award": "201:10011",
+    "price": 1200,
+    "discount": 1300,
+    "time": 14400000
+  },
+  "1013": {
+    "name": "特惠礼包",
+    "type": "star",
+    "arg": 10,
+    "award": "201:10012",
+    "price": 1300,
+    "discount": 1400,
+    "time": 14400000
+  },
+  "1014": {
+    "name": "特惠礼包",
+    "type": "hero",
+    "arg": 405010,
+    "award": "201:10013",
+    "price": 1400,
+    "discount": 1500,
+    "time": 14400000
+  },
+  "1015": {
+    "name": "特惠礼包",
+    "type": "hero",
+    "arg": 405020,
+    "award": "201:10014",
+    "price": 1500,
+    "discount": 1600,
+    "time": 14400000
+  },
+  "1016": {
+    "name": "特惠礼包",
+    "type": "hero",
+    "arg": 405030,
+    "award": "201:10015",
+    "price": 1600,
+    "discount": 1700,
+    "time": 14400000
+  },
+  "1017": {
+    "name": "特惠礼包",
+    "type": "hero",
+    "arg": 405040,
+    "award": "201:10016",
+    "price": 1700,
+    "discount": 1800,
+    "time": 14400000
+  },
+  "1018": {
+    "name": "特惠礼包",
+    "type": "hero",
+    "arg": 405050,
+    "award": "201:10017",
+    "price": 1800,
+    "discount": 1900,
+    "time": 14400000
+  },
+  "1019": {
+    "name": "特惠礼包",
+    "type": "hero",
+    "arg": 405060,
+    "award": "201:10018",
+    "price": 1900,
+    "discount": 2000,
+    "time": 14400000
+  },
+  "1020": {
+    "name": "特惠礼包",
+    "type": "hero",
+    "arg": 405070,
+    "award": "201:10019",
+    "price": 2000,
+    "discount": 2100,
+    "time": 14400000
+  },
+  "1021": {
+    "name": "特惠礼包",
+    "type": "hero",
+    "arg": 405080,
+    "award": "201:10020",
+    "price": 2100,
+    "discount": 2200,
+    "time": 14400000
+  },
+  "1022": {
+    "name": "特惠礼包",
+    "type": "hero",
+    "arg": 405090,
+    "award": "201:10021",
+    "price": 2200,
+    "discount": 2300,
+    "time": 14400000
+  },
+  "1023": {
+    "name": "特惠礼包",
+    "type": "hero",
+    "arg": 405100,
+    "award": "201:10022",
+    "price": 2300,
+    "discount": 2400,
+    "time": 14400000
+  },
+  "1024": {
+    "name": "特惠礼包",
+    "type": "hero",
+    "arg": 405110,
+    "award": "201:10023",
+    "price": 2400,
+    "discount": 2500,
+    "time": 14400000
+  },
+  "1025": {
+    "name": "特惠礼包",
+    "type": "hero",
+    "arg": 405120,
+    "award": "201:10024",
+    "price": 2500,
+    "discount": 2600,
+    "time": 14400000
+  }
+}

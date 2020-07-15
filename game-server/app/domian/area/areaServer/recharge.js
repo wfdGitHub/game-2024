@@ -3,8 +3,9 @@ const recharge_total = require("../../../../config/gameCfg/recharge_total.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 const activity_cfg = require("../../../../config/gameCfg/activity_cfg.json")
 const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
-var war_horn = require("../../../../config/gameCfg/war_horn.json")
-var main_name = "activity"
+const war_horn = require("../../../../config/gameCfg/war_horn.json")
+const gift_list = require("../../../../config/gameCfg/gift_list.json")
+const main_name = "activity"
 module.exports = function() {
 	var self = this
 	//申请充值
@@ -125,6 +126,24 @@ module.exports = function() {
 				var awardList = self.addItemStr(uid,war_horn[curMonth]["award"])
 				cb(true,{awardList:awardList,exp:exp})
 			})
+		})
+	}
+	//购买限时礼包
+	this.buyLimitGift = function(uid,id,cb) {
+		if(!gift_list[id]){
+			cb(false,"限时礼包错误")
+			return
+		}
+		self.getObj(uid,"limit_gift",id,function(data) {
+			if(data){
+				self.addUserRMB(uid,gift_list[id]["price"])
+				var awardList = self.addItemStr(uid,gift_list[id]["award"])
+				self.delObj(uid,"limit_gift",id)
+				cb(true,{awardList:awardList})
+			}else{
+				cb(false,"限时礼包不存在或已过期")
+				return
+			}
 		})
 	}
 }

@@ -4,6 +4,23 @@ var activityHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 }
+//获取限时礼包数据
+activityHandler.prototype.getLimitGiftData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getLimitGiftData(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//购买限时礼包
+activityHandler.prototype.buyLimitGift = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  this.areaManager.areaMap[areaId].buyLimitGift(uid,id,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //购买每日礼包
 activityHandler.prototype.buyAwardBagday = function(msg, session, next) {
   var uid = session.uid
