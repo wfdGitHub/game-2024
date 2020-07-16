@@ -71,6 +71,7 @@
   "210": {
     "name": "荣誉",
     "des": "跨服竞技场中可获得，可用于跨服竞技商店兑换商品",
+    "type": "currency",
     "quality": 4
   },
   "301": {
@@ -100,7 +101,7 @@
     "quality": 3
   },
   "104000": {
-    "name": "4星碎片*仙",
+    "name": "4星仙族碎片",
     "des": "30个碎片可合成仙族4星英雄",
     "isBag": true,
     "type": "heroChip",
@@ -160,7 +161,7 @@
     "quality": 4
   },
   "105000": {
-    "name": "5星碎片*仙",
+    "name": "5星仙族碎片",
     "des": "30个碎片可合成仙族5星英雄",
     "isBag": true,
     "type": "heroChip",
@@ -311,7 +312,7 @@
     "quality": 3
   },
   "204000": {
-    "name": "4星碎片*人",
+    "name": "4星人族碎片",
     "des": "30个碎片可合成人族4星英雄",
     "isBag": true,
     "type": "heroChip",
@@ -371,7 +372,7 @@
     "quality": 4
   },
   "205000": {
-    "name": "5星碎片*人",
+    "name": "5星人族碎片",
     "des": "30个碎片可合成人族5星英雄",
     "isBag": true,
     "type": "heroChip",
@@ -522,7 +523,7 @@
     "quality": 3
   },
   "304000": {
-    "name": "4星碎片*巫",
+    "name": "4星巫族碎片",
     "des": "30个碎片可合成巫族4星英雄",
     "isBag": true,
     "type": "heroChip",
@@ -582,7 +583,7 @@
     "quality": 4
   },
   "305000": {
-    "name": "5星碎片*巫",
+    "name": "5星巫族碎片",
     "des": "30个碎片可合成巫族5星英雄",
     "isBag": true,
     "type": "heroChip",
@@ -733,7 +734,7 @@
     "quality": 3
   },
   "404000": {
-    "name": "4星碎片*兽",
+    "name": "4星兽族碎片",
     "des": "30个碎片可合成兽族4星英雄",
     "isBag": true,
     "type": "heroChip",
@@ -793,7 +794,7 @@
     "quality": 4
   },
   "405000": {
-    "name": "5星碎片*兽",
+    "name": "5星兽族碎片",
     "des": "30个碎片可合成兽族5星英雄",
     "isBag": true,
     "type": "heroChip",
@@ -982,7 +983,8 @@
     "quality": 5
   },
   "1000090": {
-    "name": "普通寻宝",
+    "name": "普通寻宝图",
+    "des": "记有普通宝藏地点的藏宝图，可以在寻宝中进行一次幸运寻宝",
     "isBag": true,
     "type": "item",
     "gold": 50,
@@ -990,7 +992,8 @@
     "quality": 4
   },
   "1000100": {
-    "name": "高级寻宝",
+    "name": "高级寻宝图",
+    "des": "记有珍贵宝藏地点的藏宝图，可以在寻宝中进行一次高级寻宝",
     "isBag": true,
     "type": "item",
     "gold": 1000,
@@ -1762,6 +1765,86 @@
     "type": "item",
     "useType": "chest",
     "arg": "gjlb_chest_1"
+  },
+  "1008001": {
+    "name": "英雄经验包(小)",
+    "des": "打开可获得60000英雄经验",
+    "isBag": true,
+    "type": "item",
+    "useType": "box",
+    "arg": "101:60000"
+  },
+  "1008002": {
+    "name": "英雄经验包(中)",
+    "des": "打开可获得80000英雄经验",
+    "isBag": true,
+    "type": "item",
+    "useType": "box",
+    "arg": "101:80000"
+  },
+  "1008003": {
+    "name": "英雄经验包(大)",
+    "des": "打开可获得100000英雄经验",
+    "isBag": true,
+    "type": "item",
+    "useType": "box",
+    "arg": "101:100000"
+  },
+  "1008004": {
+    "name": "铜币礼包(小)",
+    "des": "打开可获得300000铜币",
+    "isBag": true,
+    "type": "item",
+    "useType": "box",
+    "arg": "201:300000"
+  },
+  "1008005": {
+    "name": "铜币礼包(中)",
+    "des": "打开可获得400000铜币",
+    "isBag": true,
+    "type": "item",
+    "useType": "box",
+    "arg": "201:400000"
+  },
+  "1008006": {
+    "name": "铜币礼包(大)",
+    "des": "打开可获得500000铜币",
+    "isBag": true,
+    "type": "item",
+    "useType": "box",
+    "arg": "201:500000"
+  },
+  "1008007": {
+    "name": "寻宝达人福袋",
+    "des": "幸运福袋，开启可获得以下物品中的一个",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "yscj_chest_1"
+  },
+  "1008008": {
+    "name": "铜钱福袋",
+    "des": "幸运福袋，开启可获得以下物品中的一个",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "yscj_chest_2"
+  },
+  "1008009": {
+    "name": "元神值福袋",
+    "des": "幸运福袋，开启可获得以下物品中的一个",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "yscj_chest_3"
+  },
+  "1008010": {
+    "name": "王者福袋",
+    "des": "幸运福袋，开启可获得以下物品中的一个",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "yscj_chest_4"
   },
   "5001010": {
     "name": "短剑",

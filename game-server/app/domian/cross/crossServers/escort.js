@@ -188,7 +188,6 @@ module.exports = function() {
 		}
 		var curLv = self.players[crossUid]["playerInfo"]["level"]
 		var level = 0
-		console.log("curLv",curLv)
 		for(var i in escort_level){
 			if(curLv <= escort_level[i]["lev_limit"]){
 				level = Number(i)

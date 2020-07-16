@@ -1,142 +1,122 @@
 {
   "1": {
-    "award": "9030010:1",
-    "weight": 200
+    "award": "topic",
+    "weight": 50
   },
   "2": {
-    "award": "9030020:1",
-    "weight": 200
+    "award": "redAce",
+    "weight": 50
   },
   "3": {
-    "award": "9030030:1",
-    "weight": 200
+    "award": "orangeAce",
+    "weight": 400
   },
   "4": {
-    "award": "9030040:1",
-    "weight": 200
+    "award": "purpleAce",
+    "weight": 1000
   },
   "5": {
-    "award": "9030041:1",
-    "weight": 200
+    "award": "5006010:1",
+    "weight": 210
   },
   "6": {
-    "award": "9030050:1",
-    "weight": 200
+    "award": "5006020:1",
+    "weight": 210
   },
   "7": {
-    "award": "9030060:1",
-    "weight": 200
+    "award": "5006030:1",
+    "weight": 210
   },
   "8": {
-    "award": "9030070:1",
-    "weight": 200
+    "award": "5006040:1",
+    "weight": 210
   },
   "9": {
-    "award": "9030080:1",
-    "weight": 200
+    "award": "5007010:1",
+    "weight": 120
   },
   "10": {
-    "award": "9040010:1",
-    "weight": 20
+    "award": "5007020:1",
+    "weight": 120
   },
   "11": {
-    "award": "9040020:1",
-    "weight": 20
+    "award": "5007030:1",
+    "weight": 120
   },
   "12": {
-    "award": "9040030:1",
-    "weight": 20
+    "award": "5007040:1",
+    "weight": 120
   },
   "13": {
-    "award": "9040040:1",
-    "weight": 20
+    "award": "5008010:1",
+    "weight": 42
   },
   "14": {
-    "award": "9040050:1",
-    "weight": 20
+    "award": "5008020:1",
+    "weight": 42
   },
   "15": {
-    "award": "9040060:1",
-    "weight": 20
+    "award": "5008030:1",
+    "weight": 42
   },
   "16": {
-    "award": "9040070:1",
-    "weight": 20
+    "award": "5008040:1",
+    "weight": 42
   },
   "17": {
-    "award": "9040080:1",
-    "weight": 20
+    "award": "1008001:1",
+    "weight": 940
   },
   "18": {
-    "award": "9040090:1",
-    "weight": 20
+    "award": "1008002:1",
+    "weight": 850
   },
   "19": {
-    "award": "9040100:1",
-    "weight": 20
+    "award": "1008003:1",
+    "weight": 680
   },
   "20": {
-    "award": "9040110:1",
-    "weight": 20
+    "award": "1008004:1",
+    "weight": 940
   },
   "21": {
-    "award": "9040120:1",
-    "weight": 20
+    "award": "1008005:1",
+    "weight": 850
   },
   "22": {
-    "award": "9040130:1",
-    "weight": 20
+    "award": "1008006:1",
+    "weight": 680
   },
   "23": {
-    "award": "9040140:1",
-    "weight": 20
+    "award": "1008007:1",
+    "weight": 340
   },
   "24": {
-    "award": "9040150:1",
-    "weight": 20
+    "award": "1008008:1",
+    "weight": 680
   },
   "25": {
-    "award": "9040151:1",
-    "weight": 20
+    "award": "1008009:1",
+    "weight": 510
   },
   "26": {
-    "award": "9040160:1",
-    "weight": 20
+    "award": "1008010:1",
+    "weight": 340
   },
   "27": {
-    "award": "9040170:1",
-    "weight": 20
+    "award": "1000090:1",
+    "weight": 120
   },
   "28": {
-    "award": "9040180:1",
-    "weight": 20
+    "award": "1000100:1",
+    "weight": 40
   },
   "29": {
-    "award": "9040190:1",
-    "weight": 20
+    "award": "1000180:1",
+    "weight": 30
   },
   "30": {
-    "award": "9040200:1",
-    "weight": 20
-  },
-  "31": {
-    "award": "9040210:1",
-    "weight": 20
-  },
-  "32": {
-    "award": "9040220:1",
-    "weight": 20
-  },
-  "33": {
-    "award": "9040230:1",
-    "weight": 20
-  },
-  "34": {
-    "award": "9040240:1",
-    "weight": 20
-  },
-  "35": {
-    "award": "201:10000",
-    "weight": 1000
+    "award": "1000190:1",
+    "weight": 12
   }
 }

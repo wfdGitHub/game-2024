@@ -151,7 +151,7 @@
     "type": "recruit_normal",
     "value": 10,
     "next": 900019,
-    "award": "1000050:10",
+    "award": "1000090:10",
     "guide": "guide_zhaomu"
   },
   "900019": {
@@ -176,7 +176,7 @@
     "arg": 20,
     "value": 1,
     "next": 900022,
-    "award": "201:8000",
+    "award": "1000100:1",
     "guide": "guide_sj_gk"
   },
   "900022": {
@@ -274,7 +274,7 @@
     "type": "bazzar_buy",
     "value": 3,
     "next": 900034,
-    "award": "1000070:10",
+    "award": "1000090:10",
     "guide": "guide_shangdian"
   },
   "900034": {
@@ -316,7 +316,7 @@
     "arg": "fb1",
     "value": 1,
     "next": 900039,
-    "award": "1000080:1",
+    "award": "1000100:1",
     "guide": "guide_juqing"
   },
   "900039": {
