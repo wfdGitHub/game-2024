@@ -44,7 +44,7 @@ module.exports = function() {
 			   	var seededNum = fightInfo.seededNum
 			   	var defTeam = area_challenge[self.areaDay]["team"+bossId]
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    if(true || winFlag){
+			    if(winFlag){
 		    		var info = {
 		    			winFlag : winFlag,
 		    			bossId : bossId
