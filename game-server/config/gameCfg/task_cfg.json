@@ -152,6 +152,7 @@
   },
   "100020": {
     "title": "领取1次挂机奖励",
+    "refresh": "day",
     "type": "on_hook",
     "value": 1,
     "exp": 30
