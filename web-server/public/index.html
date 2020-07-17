@@ -67,6 +67,19 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============新服挑战==========//
+      //获取新服挑战数据
+      var getAreaChallengeData = function() {
+        pomelo.request("area.activityHandler.getAreaChallengeData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战新服BOSS
+      var areaChallenge = function() {
+        pomelo.request("area.activityHandler.areaChallenge", {}, function(data) {
+            console.log(data);
+        });
+      }
       //==============限时礼包==========//
       //获取限时礼包数据
       var getLimitGiftData = function() {

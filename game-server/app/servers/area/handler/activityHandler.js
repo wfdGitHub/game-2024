@@ -4,6 +4,22 @@ var activityHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 }
+//获取新服BOSS数据
+activityHandler.prototype.getAreaChallengeData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getAreaChallengeData(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//挑战新服BOSS
+activityHandler.prototype.areaChallenge = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].areaChallenge(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //获取限时礼包数据
 activityHandler.prototype.getLimitGiftData = function(msg, session, next) {
   var uid = session.uid
