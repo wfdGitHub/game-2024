@@ -4,6 +4,24 @@ var activityHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 }
+//领取充值天数礼包
+activityHandler.prototype.gainRPayDaysAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  this.areaManager.areaMap[areaId].gainRPayDaysAward(uid,id,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//领取每日首充礼包
+activityHandler.prototype.gainRechargeDayAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  this.areaManager.areaMap[areaId].gainRechargeDayAward(uid,id,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //获取新服BOSS数据
 activityHandler.prototype.getAreaChallengeData = function(msg, session, next) {
   var uid = session.uid

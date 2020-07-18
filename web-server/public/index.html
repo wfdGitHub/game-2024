@@ -67,6 +67,18 @@
         console.log("onChat")
         console.log(data)
       })
+      //充值天数礼包
+      var gainRPayDaysAward = function(id) {
+        pomelo.request("area.activityHandler.gainRPayDaysAward", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //每日首充礼包
+      var gainRechargeDayAward = function(id) {
+        pomelo.request("area.activityHandler.gainRechargeDayAward", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
       //==============新服挑战==========//
       //获取新服挑战数据
       var getAreaChallengeData = function() {

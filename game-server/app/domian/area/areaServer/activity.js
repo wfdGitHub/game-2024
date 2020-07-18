@@ -10,6 +10,7 @@ const area_rank = require("../../../../config/gameCfg/area_rank.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 const consumeTotal = require("../../../../config/gameCfg/consumeTotal.json")
 const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
+const pay_days = require("../../../../config/gameCfg/pay_days.json")
 var util = require("../../../../util/util.js")
 const main_name = "activity"
 module.exports = function() {
@@ -21,11 +22,12 @@ module.exports = function() {
 		"boxDay" : 0,
 		"box1" : 0,
 		"box2" : 0,
-		"onlineIndex" : 0,
 		"normalCard" : 0,
 		"normalRmb" : 0,
 		"normalAward" : 0,
-		"highAward" : 0
+		"highAward" : 0,
+		"recharge_day_1" : 0,
+		"recharge_day_2" : 0
 	}
 	//获得活动数据
 	this.getActivityData = function(uid,cb) {
@@ -62,10 +64,58 @@ module.exports = function() {
 			data["normalAward"] = 0
 			data["highAward"] = 0
 			data["vip_day_award"] = 0
+			data["recharge_day_1"] = 0
+			data["recharge_day_2"] = 0
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
 			}
 			self.setHMObj(uid,main_name,data)
+		})
+	}
+	//领取充值天数礼包
+	this.gainRPayDaysAward = function(uid,id,cb) {
+		if(!pay_days[id]){
+			cb(false,"礼包不存在")
+			return
+		}
+		self.getHMObj(uid,main_name,["pay_days","pay_days_"+id],function(list) {
+			var days = Number(list[0]) || 0
+			if(list[1]){
+				cb(false,"已领取")
+			}else if(days < pay_days[id]["day"]){
+				cb(false,"条件未达成")
+			}else{
+				self.setObj(uid,main_name,"pay_days_"+id,1)
+				var awardList = self.addItemStr(uid,pay_days[id]["award"])
+				cb(true,awardList)
+			}
+		})
+	}
+	//领取每日首充奖励
+	this.gainRechargeDayAward = function(uid,id,cb) {
+		var rmb_day = self.players[uid].rmb_day
+		if(id == 1){
+			if(rmb_day < 1800){
+				cb(false,"条件未达成")
+				return
+			}
+		}else if(id == 2){
+			if(rmb_day < 6800){
+				cb(false,"条件未达成")
+				return
+			}
+		}else{
+			cb(false,"id 错误")
+			return
+		}
+		self.getObj(uid,main_name,"recharge_day_"+id,function(data) {
+			if(data == 0){
+				self.incrbyObj(uid,main_name,"recharge_day_"+id,1)
+				var awardList = self.addItemStr(uid,activity_cfg["recharge_day_"+id]["value"])
+				cb(true,awardList)
+			}else{
+				cb(false,"已领取")
+			}
 		})
 	}
 	//购买vip礼包

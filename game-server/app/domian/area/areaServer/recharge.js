@@ -55,6 +55,10 @@ module.exports = function() {
 	}
 	//增加rmb余额
 	this.addUserRMB = function(uid,rmb) {
+		if(rmb <= 0)
+			return
+		if(!self.players[uid].rmb_day)
+			self.incrbyObj(uid,main_name,"pay_days",1)
 		self.incrbyLordData(uid,"rmb_day",rmb)
 		self.incrbyLordData(uid,"rmb",rmb)
 		self.incrbyObj(uid,main_name,"normalRmb",rmb,function(data) {

@@ -46,5 +46,13 @@
   "area_rank_extra": {
     "name": "额外奖励战力要求",
     "value": 1000000
+  },
+  "recharge_day_1": {
+    "name": "每日首充18元",
+    "value": "201:100"
+  },
+  "recharge_day_2": {
+    "name": "每日首充68元",
+    "value": "201:101"
   }
 }
