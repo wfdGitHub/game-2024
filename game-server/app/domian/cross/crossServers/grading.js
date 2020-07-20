@@ -91,6 +91,7 @@ module.exports = function() {
 	}
 	//获取跨服段位赛数据
 	this.getGradingData = function(crossUid,cb) {
+		console.log("getGradingData",crossUid,self.players)
 		let uid = self.players[crossUid]["uid"]
 		let sid = self.players[crossUid]["areaId"]
 		let key = sid+"|"+uid
