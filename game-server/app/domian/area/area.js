@@ -245,17 +245,17 @@ area.prototype.recordFight = function(atkTeam,defTeam,seededNum,readList) {
 	 this.redisDao.db.hmset("test:fight",obj)
 }
 //连入跨服服务器
-area.prototype.loginCross = function(uid,crossUid,cb) {
+area.prototype.loginCross = function(uid,cb) {
 	if(!this.players[uid]){
 		cb(false,"没有该玩家数据")
 		return
 	}
 	var self = this
-    self.app.rpc.cross.crossRemote.userLogin(null,uid,self.areaId,self.oriIds[uid],self.app.serverId,self.connectorMap[uid],self.players[uid],function(flag,data) {
+    self.app.rpc.cross.crossRemote.userLogin(null,uid,self.areaId,self.oriIds[uid],self.app.serverId,self.connectorMap[uid],self.players[uid],function(flag,crossUid) {
     	if(flag){
     		self.crossUids[uid] = crossUid
     	}
-		cb(flag,data)
+		cb(flag,crossUid)
 	})
 }
 area.prototype.getSimpleUser = function(uid) {

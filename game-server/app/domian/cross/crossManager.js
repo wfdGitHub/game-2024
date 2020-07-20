@@ -53,7 +53,7 @@ crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,player
 				self.onlineNum++
 			self.players[crossUid] = userInfo
 			self.oriIds[crossUid] = oriId
-			cb(true)
+			cb(true,crossUid)
 		}else{
 			cb(false,"获取玩家战斗阵容失败")
 		}
