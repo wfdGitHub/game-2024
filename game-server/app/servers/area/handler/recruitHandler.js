@@ -10,7 +10,6 @@ var recruitHandler = function(app) {
 recruitHandler.prototype.recruitHero = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var oriId = session.get("oriId")
   var type = msg.type
   var count = msg.count
   if(!recruit_base[type]){
@@ -40,7 +39,7 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
         let paStr = recruit_base[type].pa
         if(paStr)
           self.areaManager.areaMap[areaId].addItemStr(uid,paStr,count)
-        let heroInfos = self.heroDao.randHero(oriId,uid,type,count)
+        let heroInfos = self.heroDao.randHero(areaId,uid,type,count)
         switch(type){
           case "normal":
             self.areaManager.areaMap[areaId].taskUpdate(uid,"recruit_normal",count)
@@ -84,7 +83,6 @@ recruitHandler.prototype.getTopicRecruitData = function(msg, session, next) {
 recruitHandler.prototype.topicRecruitOnce = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var oriId = session.get("oriId")
   var self = this
   self.heroDao.getHeroAmount(uid,function(flag,info) {
       if(info.cur + 1 > info.max){
@@ -100,7 +98,6 @@ recruitHandler.prototype.topicRecruitOnce = function(msg, session, next) {
 recruitHandler.prototype.topicRecruitMultiple = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var oriId = session.get("oriId")
   var self = this
   self.heroDao.getHeroAmount(uid,function(flag,info) {
       if(info.cur + 10 > info.max){
@@ -116,7 +113,6 @@ recruitHandler.prototype.topicRecruitMultiple = function(msg, session, next) {
 recruitHandler.prototype.gainTopicRecruitBoxAward = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var oriId = session.get("oriId")
   var index = msg.index
   this.areaManager.areaMap[areaId].gainTopicRecruitBoxAward(uid,index,function(flag,data) {
     next(null,{flag : true,data : data})
