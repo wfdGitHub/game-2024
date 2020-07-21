@@ -51,7 +51,7 @@ acepackHandler.prototype.wearAcepack = function(msg, session, next) {
           cb()
     },
     function(cb) {
-      self.heroDao.getHeroOne(oriId,uid,hId,function(flag,heroInfo) {
+      self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
         if(!flag){
           cb("英雄不存在")
           return
@@ -92,7 +92,7 @@ acepackHandler.prototype.unwearAcepack = function(msg, session, next) {
   var self = this
   async.waterfall([
     function(cb) {
-      self.heroDao.getHeroOne(areaId,uid,hId,function(flag,heroInfo) {
+      self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
         if(!flag){
           cb("英雄不存在")
           return

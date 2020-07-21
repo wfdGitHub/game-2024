@@ -26,7 +26,7 @@ module.exports = function() {
 			case "heroChip":
 				var heroId = itemCfg[otps.itemId].arg
 				var needValue = 30
-				self.heroDao.getHeroAmount(self.areaId,uid,function(flag,info) {
+				self.heroDao.getHeroAmount(uid,function(flag,info) {
 				  	if(info.cur >= info.max){
 				    	next(null,{flag : false,data : "英雄背包已满"})
 				    	return
@@ -46,7 +46,7 @@ module.exports = function() {
 			break
 			case "randChip":
 				var needValue = 30
-				self.heroDao.getHeroAmount(self.areaId,uid,function(flag,info) {
+				self.heroDao.getHeroAmount(uid,function(flag,info) {
 				  	if(info.cur >= info.max){
 				    	next(null,{flag : false,data : "英雄背包已满"})
 				    	return

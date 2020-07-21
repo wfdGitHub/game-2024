@@ -27,7 +27,7 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
     next(null,{flag:false,err:"pcStr error"+pcStr})
     return
   }
-  self.heroDao.getHeroAmount(oriId,uid,function(flag,info) {
+  self.heroDao.getHeroAmount(uid,function(flag,info) {
       if(info.cur + count > info.max){
         next(null,{flag : false,data : "武将背包已满"})
         return
@@ -86,7 +86,7 @@ recruitHandler.prototype.topicRecruitOnce = function(msg, session, next) {
   var areaId = session.get("areaId")
   var oriId = session.get("oriId")
   var self = this
-  self.heroDao.getHeroAmount(oriId,uid,function(flag,info) {
+  self.heroDao.getHeroAmount(uid,function(flag,info) {
       if(info.cur + 1 > info.max){
         next(null,{flag : false,data : "武将背包已满"})
         return
@@ -102,7 +102,7 @@ recruitHandler.prototype.topicRecruitMultiple = function(msg, session, next) {
   var areaId = session.get("areaId")
   var oriId = session.get("oriId")
   var self = this
-  self.heroDao.getHeroAmount(oriId,uid,function(flag,info) {
+  self.heroDao.getHeroAmount(uid,function(flag,info) {
       if(info.cur + 10 > info.max){
         next(null,{flag : false,data : "武将背包已满"})
         return

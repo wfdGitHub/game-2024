@@ -30,7 +30,7 @@ equipHandler.prototype.wearEquip = function(msg, session, next) {
       })
     },
     function(cb) {
-      self.heroDao.getHeroOne(oriId,uid,hId,function(flag,heroInfo) {
+      self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
         if(!flag){
           cb("英雄不存在")
           return
@@ -67,7 +67,7 @@ equipHandler.prototype.unwearEquip = function(msg, session, next) {
   let self = this
   async.waterfall([
     function(cb) {
-      self.heroDao.getHeroOne(oriId,uid,hId,function(flag,heroInfo) {
+      self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
         if(!flag){
           cb("英雄不存在")
           return
@@ -80,7 +80,7 @@ equipHandler.prototype.unwearEquip = function(msg, session, next) {
       if(heroInfo["equip_"+part]){
         var oldeId = equip_level[heroInfo["equip_"+part]]["part_"+part]
         self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : oldeId,value : 1})
-        self.heroDao.delHeroInfo(oriId,uid,hId,"equip_"+part)
+        self.heroDao.delHeroInfo(areaId,uid,hId,"equip_"+part)
         delete heroInfo["equip_"+part]
         next(null,{flag : true,heroInfo : heroInfo,eId : heroInfo["equip_"+part]})
       }else{
