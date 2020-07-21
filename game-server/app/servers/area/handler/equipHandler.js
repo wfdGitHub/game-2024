@@ -11,7 +11,6 @@ var equipHandler = function(app) {
 equipHandler.prototype.wearEquip = function(msg, session, next) {
   let uid = session.uid
   let areaId = session.get("areaId")
-  let oriId = session.get("oriId")
   let eId = Number(msg.eId)
   let hId = msg.hId
   if(!eId || !equip_base[eId]){
@@ -49,7 +48,7 @@ equipHandler.prototype.wearEquip = function(msg, session, next) {
       //穿戴装备
       var lv = equip_base[eId]["lv"]
       heroInfo["equip_"+part] = lv
-      self.heroDao.setHeroInfo(oriId,uid,hId,"equip_"+part,lv)
+      self.heroDao.setHeroInfo(areaId,uid,hId,"equip_"+part,lv)
       self.areaManager.areaMap[areaId].taskUpdate(uid,"wear_equip",1,lv)
       next(null,{flag : true,heroInfo : heroInfo})
     }
@@ -61,7 +60,6 @@ equipHandler.prototype.wearEquip = function(msg, session, next) {
 equipHandler.prototype.unwearEquip = function(msg, session, next) {
   let uid = session.uid
   let areaId = session.get("areaId")
-  let oriId = session.get("oriId")
   let hId = msg.hId
   let part = msg.part
   let self = this
