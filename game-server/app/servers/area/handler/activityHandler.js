@@ -14,6 +14,15 @@ activityHandler.prototype.apply_recharge = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//申请支付测试接口
+activityHandler.prototype.test_recharge = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var pay_id = msg.pay_id
+  this.areaManager.areaMap[areaId].finish_recharge(uid,pay_id,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //领取充值天数礼包
 activityHandler.prototype.gainRPayDaysAward = function(msg, session, next) {
   var uid = session.uid
