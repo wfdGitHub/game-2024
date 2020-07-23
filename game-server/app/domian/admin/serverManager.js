@@ -1,5 +1,6 @@
 var express = require('express');
 var xmlparser = require('express-xml-bodyparser')
+var parseString = require('xml2js-parser').parseString;
 var util = require("../../../util/util.js")
 var Md5_Key = "1nekpw6jubvk0i7p5kyunbynzytdyauz"
 var Callback_Key = "60537083930788734761866603056922"
@@ -39,8 +40,9 @@ serverManager.prototype.init = function() {
 		}
 		var xmlStr = local.decode(data.nt_data,Callback_Key)
 		console.log(xmlStr)
-		var info = util.xmlStrToJsonObj(xmlStr)
-		console.log(info)
+		parseString(xmlStr,function(err,info) {
+			console.log(info)
+		});
         res.send("FAILD")
 	})
 	server.listen(80);

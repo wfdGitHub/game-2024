@@ -103,47 +103,6 @@ util.prototype.randomString = function(len){
 util.prototype.md5 = function(str) {
     return md5(str)
 }
-
-util.prototype.xmlStrToJsonObj = function(xmlStr) {
-    var xmlObj = this.xmlStrToXmlObj(xmlStr);
-    var jsonObj = {};
-    if (xmlObj.childNodes.length > 0) {
-        jsonObj = this.xmlObjToJsonObj(xmlObj.childNodes);
-    }
-    return jsonObj;
-}
- 
-util.prototype.xmlStrToXmlObj = function(xmlStr) {
-    var xmlObj = {};
-    if (document.all) {
-        var xmlDom = new ActiveXObject("Microsoft.XMLDOM");
-        xmlDom.loadXML(xmlStr);
-        xmlObj = xmlDom;
-    } else {
-        xmlObj = new DOMParser().parseFromString(xmlStr, "text/xml");
-    }
-    return xmlObj;
-}
-
-util.prototype.xmlObjToJsonObj = function(xmlNodes) {
-    var obj = {};
-    if (xmlNodes.length == 0) {
-        obj = '';
-    } else {
-        for (var i = 0; i < xmlNodes.length; i++) {
-            var node = xmlNodes[i];
-            if (typeof node.tagName == "undefined" || node.nodeName == "#text") {
-                obj = node.nodeValue;
-            } else {
-                var key = node.tagName;
-                var value = this.xmlObjToJsonObj(node.childNodes)
-                obj[key] = value;
-            }
-        }
-
-    }
-    return obj;
-}
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;
