@@ -41,7 +41,7 @@ serverManager.prototype.init = function() {
 		var xmlStr = local.decode(data.nt_data,Callback_Key)
 		console.log(xmlStr)
 		parseString(xmlStr,function(err,info) {
-			console.log(info)
+			console.log(JSON.stringify(info))
 		});
         res.send("FAILD")
 	})
