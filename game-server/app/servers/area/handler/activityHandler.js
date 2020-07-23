@@ -4,6 +4,16 @@ var activityHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 }
+//申请支付
+activityHandler.prototype.apply_recharge = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var unionid = session.get("unionid")
+  var pay_id = msg.pay_id
+  this.areaManager.areaMap[areaId].apply_recharge(uid,unionid,pay_id,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //领取充值天数礼包
 activityHandler.prototype.gainRPayDaysAward = function(msg, session, next) {
   var uid = session.uid
@@ -46,24 +56,24 @@ activityHandler.prototype.getLimitGiftData = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
-//购买限时礼包
-activityHandler.prototype.buyLimitGift = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var id = msg.id
-  this.areaManager.areaMap[areaId].buyLimitGift(uid,id,function(flag,msg) {
-    next(null,{flag : flag,msg : msg})
-  })
-}
+// //购买限时礼包
+// activityHandler.prototype.buyLimitGift = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var id = msg.id
+//   this.areaManager.areaMap[areaId].buyLimitGift(uid,id,function(flag,msg) {
+//     next(null,{flag : flag,msg : msg})
+//   })
+// }
 //购买每日礼包
-activityHandler.prototype.buyAwardBagday = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var index = msg.index
-  this.areaManager.areaMap[areaId].buyAwardBagday(uid,index,function(flag,msg) {
-    next(null,{flag : flag,msg : msg})
-  })
-}
+// activityHandler.prototype.buyAwardBagday = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var index = msg.index
+//   this.areaManager.areaMap[areaId].buyAwardBagday(uid,index,function(flag,msg) {
+//     next(null,{flag : flag,msg : msg})
+//   })
+// }
 //获取每周礼包与每月礼包购买记录
 activityHandler.prototype.getWeekAndMonthRecord = function(msg, session, next) {
   var uid = session.uid
@@ -72,24 +82,24 @@ activityHandler.prototype.getWeekAndMonthRecord = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
-//购买每周礼包
-activityHandler.prototype.buyAwardBagWeek = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var index = msg.index
-  this.areaManager.areaMap[areaId].buyAwardBagWeek(uid,index,function(flag,msg) {
-    next(null,{flag : flag,msg : msg})
-  })
-}
+// //购买每周礼包
+// activityHandler.prototype.buyAwardBagWeek = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var index = msg.index
+//   this.areaManager.areaMap[areaId].buyAwardBagWeek(uid,index,function(flag,msg) {
+//     next(null,{flag : flag,msg : msg})
+//   })
+// }
 //购买每月礼包
-activityHandler.prototype.buyAwardBagMonth = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var index = msg.index
-  this.areaManager.areaMap[areaId].buyAwardBagMonth(uid,index,function(flag,msg) {
-    next(null,{flag : flag,msg : msg})
-  })
-}
+// activityHandler.prototype.buyAwardBagMonth = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var index = msg.index
+//   this.areaManager.areaMap[areaId].buyAwardBagMonth(uid,index,function(flag,msg) {
+//     next(null,{flag : flag,msg : msg})
+//   })
+// }
 //领取首充礼包
 activityHandler.prototype.gainFirstRechargeAward = function(msg, session, next) {
   var uid = session.uid
@@ -149,16 +159,6 @@ activityHandler.prototype.gainOnlineTimeAward = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
-//模拟充值
-activityHandler.prototype.apply_recharge = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var unionid = session.get("unionid")
-  var pay_id = msg.pay_id
-  this.areaManager.areaMap[areaId].apply_recharge(uid,unionid,pay_id,function(flag,msg) {
-    next(null,{flag : flag,msg : msg})
-  })
-}
 //领取VIP免费礼包
 activityHandler.prototype.gainVipAward = function(msg, session, next) {
   var uid = session.uid
@@ -189,14 +189,14 @@ activityHandler.prototype.gainActivityLvAward = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
-//激活等级基金
-activityHandler.prototype.activateLvFund = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].activateLvFund(uid,function(flag,msg) {
-    next(null,{flag : flag,msg : msg})
-  })
-}
+// //激活等级基金
+// activityHandler.prototype.activateLvFund = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   this.areaManager.areaMap[areaId].activateLvFund(uid,function(flag,msg) {
+//     next(null,{flag : flag,msg : msg})
+//   })
+// }
 //领取战力奖励
 activityHandler.prototype.gainActivityCeAward = function(msg, session, next) {
   var uid = session.uid
@@ -214,14 +214,14 @@ activityHandler.prototype.gainNormalCardAward = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
-//激活专属月卡
-activityHandler.prototype.activateHighCard = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].activateHighCard(uid,function(flag,msg) {
-    next(null,{flag : flag,msg : msg})
-  })
-}
+// //激活专属月卡
+// activityHandler.prototype.activateHighCard = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   this.areaManager.areaMap[areaId].activateHighCard(uid,function(flag,msg) {
+//     next(null,{flag : flag,msg : msg})
+//   })
+// }
 //领取专属月卡
 activityHandler.prototype.gainHighCardAward = function(msg, session, next) {
   var uid = session.uid

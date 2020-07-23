@@ -70,13 +70,13 @@ taskHandler.prototype.getWarHornData = function(msg, session, next) {
     })
 }
 //进阶战令
-taskHandler.prototype.advanceWarHorn = function(msg, session, next) {
-    var uid = session.uid
-    var areaId = session.get("areaId")
-    this.areaManager.areaMap[areaId].advanceWarHorn(uid,function(flag,data) {
-      next(null,{flag : flag,data : data})
-    })
-}
+// taskHandler.prototype.advanceWarHorn = function(msg, session, next) {
+//     var uid = session.uid
+//     var areaId = session.get("areaId")
+//     this.areaManager.areaMap[areaId].advanceWarHorn(uid,function(flag,data) {
+//       next(null,{flag : flag,data : data})
+//     })
+// }
 //购买等级
 taskHandler.prototype.buyWarHornLv = function(msg, session, next) {
     var uid = session.uid
