@@ -48,6 +48,36 @@
           },function() {
             pomelo.request("connector.entryHandler.entryAccount",{unionid : unionid}, function(data) {
                 console.log(data);
+                if(data.flag){
+                  pomelo.request("connector.entryHandler.tokenLogin",{unionid : data.unionid,token:data.token}, function(data) {
+                      console.log(data);
+                  });
+                }else{
+                  //todo  登陆失败
+                }
+            });
+          });
+        })
+      }
+      var quickEntryAccount = function() {
+        queryEntry(function(host,port) {
+          pomelo.init({
+            host: host,
+            port: port,
+            log: true
+          },function() {
+            var token = "1"
+            var uid = "1"
+            var channel_code = "1"
+            pomelo.request("connector.entryHandler.quickEntry",{token : token,uid:uid,channel_code:channel_code}, function(data) {
+                console.log(data);
+                if(data.flag){
+                  pomelo.request("connector.entryHandler.tokenLogin",{unionid : data.unionid,token:data.token}, function(data) {
+                      console.log(data);
+                  });
+                }else{
+                  //todo  登陆失败
+                }
             });
           });
         })
@@ -453,9 +483,9 @@
             console.log(data);
         });
       }
-      //模拟充值
-      var apply_recharge = function(index) {
-        pomelo.request("area.activityHandler.apply_recharge", {index : index}, function(data) {
+      //申请充值
+      var apply_recharge = function(pay_id) {
+        pomelo.request("area.activityHandler.apply_recharge", {pay_id : pay_id}, function(data) {
             console.log(data);
         });
       }
@@ -1597,6 +1627,7 @@
       登录系统 : 
       <input id="test" type="button" value="登录账号" onclick="entry(10016)"/>
       <input id="test" type="button" value="游客账号" onclick="entry(Date.now())"/>
+      <input id="test" type="button" value="渠道账号" onclick="quickEntryAccount()"/>
       <input id="test" type="button" value="注册角色" onclick="register(2,''+Date.now(),1)"/>
       <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>

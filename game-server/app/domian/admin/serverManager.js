@@ -1,3 +1,4 @@
+var express = require('express');
 var serverManager = function(app) {
 	this.app = app
 	this.areaDeploy = this.app.get("areaDeploy")
@@ -19,6 +20,17 @@ serverManager.prototype.init = function() {
 		}
 	})
 	setInterval(self.update.bind(self),1000)
+	var server = express()
+	server.all('*', function (req, res, next) {
+	  res.header('Access-Control-Allow-Origin', '*');
+	  res.header('Access-Control-Allow-Methods', '*');
+	  next();
+	});
+	server.post("/pay_order",function(req,res) {
+		console.log(req.body)
+		res.send("SUCCESS")
+	})
+	server.listen(80);
 }
 //update
 serverManager.prototype.update = function() {

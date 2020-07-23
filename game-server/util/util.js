@@ -1,4 +1,5 @@
 var util = function() {}
+var md5 = require('md5-node');
 util.prototype.binarySearch = function(arr,target){
     //var value = 0;
     var left = 0;
@@ -86,6 +87,21 @@ util.prototype.getTimeDifference = function(time1,time2){
     date2.setHours(0,0,0,0)
     var day = parseInt((date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24)) + 1
     return day;
+}
+//生成随机token
+util.prototype.randomString = function(len){
+　　len = len || 32;
+　　var $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+　　var maxPos = $chars.length;
+　　var pwd = '';
+　　for (i = 0; i < len; i++) {
+        //0~32的整数
+        pwd += $chars.charAt(Math.floor(Math.random() * (maxPos+1)));
+　　}
+　　return pwd;
+}
+util.prototype.md5 = function(str) {
+    return md5(str)
 }
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {

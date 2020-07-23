@@ -337,5 +337,8 @@ module.exports = {
 	},{
 		name : "heroDao",
 		ref : "heroDao"
+	},{
+		name : "payDao",
+		ref : "payDao"
 	}]
 }

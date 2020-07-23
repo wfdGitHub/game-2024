@@ -7,18 +7,28 @@ const war_horn = require("../../../../config/gameCfg/war_horn.json")
 const gift_list = require("../../../../config/gameCfg/gift_list.json")
 const gift_week = require("../../../../config/gameCfg/gift_week.json")
 const gift_month = require("../../../../config/gameCfg/gift_month.json")
+const pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
+const uuid = require("uuid")
 const main_name = "activity"
 module.exports = function() {
 	var self = this
 	//申请充值
-	this.apply_recharge = function(uid,index,cb) {
-		cb(false,"未开启")
-		// if(!recharge[index]){
-		// 	cb(false,"参数错误")
-		// 	return
-		// }
-		// this.recharge(uid,index)
-		// cb(true)
+	this.apply_recharge = function(uid,unionid,pay_id,cb) {
+		if(!pay_cfg[pay_id]){
+			cb(false,"pay_id error")
+			return
+		}
+		var info = {
+			pay_id : pay_id,
+			userName : this.players[uid]["name"],
+			unionid : unionid,
+			accId : this.players[uid]["accId"],
+			uid : uid,
+			areaId : self.areaId
+		}
+		self.payDao.createGameOrder(info,function(flag,data) {
+			cb(flag,data)
+		})
 	}
 	//充值
 	this.recharge = function(uid,index) {

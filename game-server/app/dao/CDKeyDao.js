@@ -167,7 +167,6 @@ CDKeyDao.prototype.verifyCDKey = function(key,uid,area,name,cb) {
 			})
 		}
 	})
-
 }
 //获取礼包码数据
 CDKeyDao.prototype.getCDKeyInfo = function(key,cb) {

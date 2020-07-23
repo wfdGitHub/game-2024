@@ -3,6 +3,15 @@ var areaRemote = function(app) {
 	this.app = app
 	this.areaManager = this.app.get("areaManager")
 }
+//充值回调
+areaRemote.prototype.pay_order = function(areaId,data,cb) {
+
+	if(this.areaManager.areaMap[areaId]){
+		this.areaManager.areaMap[areaId].pay_order(id,cb)
+	}else{
+		cb(false)
+	}
+}
 //创建新服务器
 areaRemote.prototype.loadArea = function(areaId,cb) {
 	this.areaManager.loadArea(areaId)
@@ -106,6 +115,10 @@ module.exports = function(app) {
 		args : [{
 			name : "app",
 			value : app
+		}],
+		props : [{
+			name : "playerDao",
+			ref : "playerDao"
 		}]
 	})
 }
