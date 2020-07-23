@@ -66,14 +66,15 @@ serverManager.prototype.pay_order = function(data,cb) {
 			extras_params : message["extras_params"]? message["extras_params"][0] : 0,
 		}
 		self.payDao.finishGameOrder(info,function(flag,err,data) {
-			if(err){
-				cb(false,err)
-			}else if(flag){
+			if(flag){
 				//发货
 				var serverId = self.areaDeploy.getServer(data.areaId)
 			    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,data.areaId,data.uid,data.pay_id,function(){})
-				cb(true)
 			}
+			if(err)
+				cb(false,err)
+			else
+				cb(true)
 		})
 	});
 }
