@@ -21,11 +21,11 @@ serverManager.prototype.init = function() {
 	})
 	setInterval(self.update.bind(self),1000)
 	var server = express()
-	server.all('*', function (req, res, next) {
-	  res.header('Access-Control-Allow-Origin', '*');
-	  res.header('Access-Control-Allow-Methods', '*');
-	  next();
-	});
+	// server.all('*', function (req, res, next) {
+	//   res.header('Access-Control-Allow-Origin', '*');
+	//   res.header('Access-Control-Allow-Methods', '*');
+	//   next();
+	// });
 	server.post("/pay_order",function(req,res) {
 		console.log("pay_order",req.body)
 		res.send("faild")
