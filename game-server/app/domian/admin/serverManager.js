@@ -1,7 +1,5 @@
 var express = require('express');
-var bodyParser = require('body-parser');
-var xml2json=require('xml2json');
-app.listen(3000);
+var xmlparser = require('express-xml-bodyparser');
 var serverManager = function(app) {
 	this.app = app
 	this.areaDeploy = this.app.get("areaDeploy")
@@ -24,26 +22,12 @@ serverManager.prototype.init = function() {
 	})
 	setInterval(self.update.bind(self),1000)
 	var server = express()
-	// server.all('*', function (req, res, next) {
-	//   res.header('Access-Control-Allow-Origin', '*');
-	//   res.header('Access-Control-Allow-Methods', '*');
-	//   next();
-	// });
-	server.use(bodyParser.urlencoded({
-	  extended: true
-	}));
+	server.use(express.json());
+	server.use(express.urlencoded());
+	server.use(xmlparser());
 	server.post("/pay_order",function(req,res) {
-	  req.rawBody = '';//添加接收变量
-	  var json={};
-	  req.setEncoding('utf8');
-	  req.on('data', function(chunk) { 
-	    req.rawBody += chunk;
-	  });
-	  req.on('end', function() {
-		json=xml2json.toJson(req.rawBody);
-		console.log(json)
-		res.send("SUCCESS");
-	  }); 
+		console.log(req.body)
+        res.send("SUCCESS")
 	})
 	server.listen(80);
 }
