@@ -34,7 +34,7 @@ serverManager.prototype.init = function() {
 		var data = req.body
 		self.pay_order(data,function(flag,err) {
 			if(!flag)
-				res.send(err)
+				res.send("SUCCESS")
 			else
 				res.send("SUCCESS")
 		})
