@@ -48,6 +48,7 @@ serverManager.prototype.pay_order = function(data,cb) {
 		cb(false,"签名验证失败")
 		return
 	}
+	var self = this
 	var xmlStr = local.decode(data.nt_data,Callback_Key)
 	parseString(xmlStr,function(err,result) {
 		var message = result.quicksdk_message.message[0]

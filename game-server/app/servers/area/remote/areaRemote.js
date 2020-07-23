@@ -7,8 +7,8 @@ var areaRemote = function(app) {
 //充值回调
 areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,cb) {
 	var self = this
-	if(this.areaManager.areaMap[areaId]){
-		this.areaManager.areaMap[areaId].finish_recharge(uid,pay_id,function(flag,err) {
+	if(self.areaManager.areaMap[areaId]){
+		self.areaManager.areaMap[areaId].finish_recharge(uid,pay_id,function(flag,err) {
 			if(!flag){
 				console.error("finish_recharge "+err)
 				var info = {
@@ -18,7 +18,7 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,cb) {
 					pay_id : pay_id,
 					time : (new Date()).toLocaleDateString()
 				}
-				this.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))
+				self.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))
 			}
 		})
 	}else{
@@ -31,7 +31,7 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,cb) {
 			pay_id : pay_id,
 			time : (new Date()).toLocaleDateString()
 		}
-		this.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))
+		self.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))
 	}
 	cb()
 }
