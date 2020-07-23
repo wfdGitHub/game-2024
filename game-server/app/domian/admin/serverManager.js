@@ -40,8 +40,22 @@ serverManager.prototype.init = function() {
 		}
 		var xmlStr = local.decode(data.nt_data,Callback_Key)
 		console.log(xmlStr)
-		parseString(xmlStr,function(err,info) {
-			console.log(JSON.stringify(info))
+		parseString(xmlStr,function(err,result) {
+			var message = result.quicksdk_message.message[0]
+			var info = {
+				is_test : message["is_test"][0],
+				channel : message["channel"][0],
+				channel_name : message["channel_name"][0],
+				channel_uid : message["channel_uid"][0],
+				channel_order : message["channel_order"][0],
+				game_order : message["game_order"][0],
+				order_no : message["order_no"][0],
+				pay_time : message["pay_time"][0],
+				amount : message["amount"][0],
+				status : message["status"][0],
+				extras_params : message["extras_params"][0]
+			}
+			console.log(info)
 		});
         res.send("FAILD")
 	})
