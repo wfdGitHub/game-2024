@@ -36,7 +36,7 @@ serverManager.prototype.init = function() {
 			if(!flag)
 				res.send(err)
 			else
-				res.send("SUCEESS")
+				res.send("SUCCESS")
 		})
 	})
 	server.listen(80);
