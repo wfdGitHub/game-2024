@@ -53,17 +53,17 @@ serverManager.prototype.pay_order = function(data,cb) {
 	parseString(xmlStr,function(err,result) {
 		var message = result.quicksdk_message.message[0]
 		var info = {
-			is_test : message["is_test"]? message["is_test"][0] || 0,
-			channel : message["channel"]? message["channel"][0] || 0,
-			channel_name : message["channel_name"]? message["channel_name"][0] || 0,
-			channel_uid : message["channel_uid"]? message["channel_uid"][0] || 0,
-			channel_order : message["channel_order"]? message["channel_order"][0] || 0,
-			game_order : message["game_order"]? message["game_order"][0] || 0,
-			order_no : message["order_no"]? message["order_no"][0] || 0,
-			pay_time : message["pay_time"]? message["pay_time"][0] || 0,
-			amount : message["amount"]? message["amount"][0] || 0,
-			status : message["status"]? message["status"][0] || 0,
-			extras_params : message["extras_params"]? message["extras_params"][0] || 0,
+			is_test : message["is_test"]? message["is_test"][0] : 0,
+			channel : message["channel"]? message["channel"][0] : 0,
+			channel_name : message["channel_name"]? message["channel_name"][0] : 0,
+			channel_uid : message["channel_uid"]? message["channel_uid"][0] : 0,
+			channel_order : message["channel_order"]? message["channel_order"][0] : 0,
+			game_order : message["game_order"]? message["game_order"][0] : 0,
+			order_no : message["order_no"]? message["order_no"][0] : 0,
+			pay_time : message["pay_time"]? message["pay_time"][0] : 0,
+			amount : message["amount"]? message["amount"][0] : 0,
+			status : message["status"]? message["status"][0] : 0,
+			extras_params : message["extras_params"]? message["extras_params"][0] : 0,
 		}
 		self.payDao.finishGameOrder(info,function(flag,err,data) {
 			if(flag){
