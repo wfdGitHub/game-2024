@@ -37,7 +37,9 @@ serverManager.prototype.init = function() {
 		}else{
 			console.log("签名验证失败")
 		}
-		console.log(local.decode(data.nt_data,Callback_Key))
+		var xmlStr = local.decode(data.nt_data,Callback_Key)
+		console.log(xmlStr)
+		util.xml2json(xmlStr)
         res.send("FAILD")
 	})
 	server.listen(80);

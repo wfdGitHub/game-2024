@@ -103,6 +103,45 @@ util.prototype.randomString = function(len){
 util.prototype.md5 = function(str) {
     return md5(str)
 }
+util.prototype.xml2json = function(xmlstr) {
+    var obj = {};
+    var isnull = true;
+    try {
+        var xmldoc = $.parseXML(xmlstr);
+        xmldoc = xmldoc.documentElement;
+        // do attributes
+        if (xmldoc.attributes.length > 0) {
+            isnull = false;
+            for (var j = 0; j < xmldoc.attributes.length; j++) {
+                var attribute = xmldoc.attributes.item(j);
+                obj[attribute.nodeName] = attribute.nodeValue;
+            }
+        }
+        // do children
+        if (xmldoc.hasChildNodes()) {
+            isnull = false;
+            for (var i = 0; i < xmldoc.childNodes.length; i++) {
+                var item = xmldoc.childNodes.item(i);
+                if (item.nodeType == 3) { // text
+                    obj["text"] = item.nodeValue;
+                }
+                else {
+                    var nodeName = item.nodeName;
+                    if (typeof (obj[nodeName]) == "undefined") {
+                        obj[nodeName] = [];
+                    }
+                    obj[nodeName].push(this.xml2json(item.xml));
+                }
+            }
+        }
+        if (isnull)
+            obj["text"] = "";
+    }
+    catch (ex) {
+        obj["text"] = xmlstr;
+    }
+    return obj;
+}
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;
