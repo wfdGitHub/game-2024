@@ -65,7 +65,7 @@ serverManager.prototype.pay_order = function(data,cb) {
 			status : message["status"][0],
 			extras_params : message["extras_params"][0]
 		}
-		self.finishGameOrder(info,function(flag,err,data) {
+		self.payDao.finishGameOrder(info,function(flag,err,data) {
 			if(true || flag){
 				//发货
 				var serverId = self.areaDeploy.getServer(data.areaId)
