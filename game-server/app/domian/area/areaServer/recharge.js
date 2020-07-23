@@ -69,9 +69,10 @@ module.exports = function() {
 	this.addUserRMB = function(uid,rmb) {
 		if(rmb <= 0)
 			return
-		if(!self.players[uid].rmb_day)
-			self.incrbyObj(uid,main_name,"pay_days",1)
-		self.incrbyLordData(uid,"rmb_day",rmb)
+		self.incrbyLordData(uid,"rmb_day",rmb,function(data) {
+			if(data == rmb)
+				self.incrbyObj(uid,main_name,"pay_days",1)
+		})
 		self.incrbyLordData(uid,"rmb",rmb)
 		self.incrbyObj(uid,main_name,"normalRmb",rmb,function(data) {
 			data = Number(data)
@@ -83,12 +84,14 @@ module.exports = function() {
 				}
 				self.sendToUser(uid,notify)
 			}
-			var notify = {
-				type : "addUserRMB",
-				rmb_day : self.players[uid].rmb_day,
-				rmb : self.players[uid].rmb
+			if(self.players[uid]){
+				var notify = {
+					type : "addUserRMB",
+					rmb_day : self.players[uid].rmb_day,
+					rmb : self.players[uid].rmb
+				}
+				self.sendToUser(uid,notify)
 			}
-			self.sendToUser(uid,notify)
 		})
 		self.checkVipLv(uid)
 	}

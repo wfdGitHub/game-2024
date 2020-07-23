@@ -258,12 +258,14 @@ module.exports = function() {
 			if(self.players[uid].rmb >= VIP[self.players[uid].vip+1]["rmb"]){
 				this.incrbyLordData(uid,"vip",1)
 				this.incrbyLordData(uid,"heroAmount",VIP[self.players[uid]["vip"]]["heroAmount"])
-				var notify = {
-					type : "vip",
-					curLv : self.players[uid].vip,
-					rmb : self.players[uid].rmb
+				if(self.players[uid]){
+					var notify = {
+						type : "vip",
+						curLv : self.players[uid].vip,
+						rmb : self.players[uid].rmb
+					}
+					this.sendToUser(uid,notify)
 				}
-				this.sendToUser(uid,notify)
 				this.checkVipLv(uid)
 			}
 		}

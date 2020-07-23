@@ -31,11 +31,14 @@ module.exports = function() {
 		self.redisDao.db.hset("player:user:"+uid+":playerInfo",key,value)
 	}
 	//增加数据
-	this.incrbyLordData = function(uid,key,value) {
+	this.incrbyLordData = function(uid,key,value,cb) {
 		if(self.players[uid]){
 			self.players[uid][key] += value
 		}
-		self.redisDao.db.hincrby("player:user:"+uid+":playerInfo",key,value)
+		self.redisDao.db.hincrby("player:user:"+uid+":playerInfo",key,value,function(err,data) {
+			if(!err && cb)
+				cb(data)
+		})
 	}
 	//改变头像
 	this.changeHead = function(uid,id,cb) {

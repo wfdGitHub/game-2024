@@ -1,5 +1,9 @@
 var express = require('express');
-var xmlparser = require('express-xml-bodyparser');
+var xmlparser = require('express-xml-bodyparser')
+var util = require("../../../util/util.js")
+var Md5_Key = "1nekpw6jubvk0i7p5kyunbynzytdyauz"
+var Callback_Key = "60537083930788734761866603056922"
+var local = {}
 var serverManager = function(app) {
 	this.app = app
 	this.areaDeploy = this.app.get("areaDeploy")
@@ -7,7 +11,6 @@ var serverManager = function(app) {
 	this.mergePlans = {}
 	this.areaLock = {}
 }
-//
 serverManager.prototype.init = function() {
 	var self = this
 	self.redisDao.db.hgetall("serverManager:openPlans",function(err,data) {
@@ -27,7 +30,15 @@ serverManager.prototype.init = function() {
 	server.use(xmlparser());
 	server.post("/pay_order",function(req,res) {
 		console.log(req.body)
-        res.send("SUCCESS")
+		var data = req.body
+		var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
+		if(v_sign == data.md5Sign){
+			console.log("签名验证成功")
+		}else{
+			console.log("签名验证失败")
+		}
+		console.log(local.decode(data.nt_data,Callback_Key))
+        res.send("FAILD")
 	})
 	server.listen(80);
 }
@@ -115,6 +126,45 @@ serverManager.prototype.delOpenPlan = function(time,cb) {
 //获取开服计划表
 serverManager.prototype.getOpenPlan = function(cb) {
 	cb(true,{openPlans : this.openPlans,areaLock : this.areaLock})
+}
+local.decode = function(str,key){
+	if(str.length <= 0){
+		return '';
+	}
+	var list = new Array();
+	var resultMatch = str.match(/\d+/g);
+	for(var i= 0;i<resultMatch.length;i++){
+		list.push(resultMatch[i]);
+	}
+	if(list.length <= 0){
+		return '';
+	}
+	var keysByte = local.stringToBytes(key);
+	var dataByte = new Array();
+	for(var i = 0 ; i < list.length ; i++){
+		dataByte[i] = parseInt(list[i]) - (0xff & parseInt(keysByte[i % keysByte.length]));
+	}
+	if(dataByte.length <= 0){
+		return '';
+	}
+	var parseStr = local.bytesToString(dataByte);
+	return parseStr;
+}
+local.stringToBytes = function(str) {  
+	var ch, st, re = [];  
+  	for (var i = 0; i < str.length; i++ ) {  
+    	ch = str.charCodeAt(i);
+    	st = []; 
+    	do {  
+      		st.push( ch & 0xFF );
+      		ch = ch >> 8;
+    	}while ( ch );  
+    	re = re.concat( st.reverse() );  
+	}  
+  	return re;  
+} 
+local.bytesToString = function(array) {
+  return String.fromCharCode.apply(String, array);
 }
 module.exports = {
 	id : "serverManager",
