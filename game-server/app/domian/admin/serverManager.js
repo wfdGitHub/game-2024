@@ -39,7 +39,7 @@ serverManager.prototype.init = function() {
 		}
 		var xmlStr = local.decode(data.nt_data,Callback_Key)
 		console.log(xmlStr)
-		var info = util.xml2json(xmlStr)
+		var info = util.xmlStrToJsonObj(xmlStr)
 		console.log(info)
         res.send("FAILD")
 	})
