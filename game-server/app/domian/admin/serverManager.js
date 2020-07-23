@@ -27,7 +27,7 @@ serverManager.prototype.init = function() {
 	  next();
 	});
 	server.post("/pay_order",function(req,res) {
-		console.log(req.body)
+		console.log("pay_order",req,req.body)
 		res.send("SUCCESS")
 	})
 	server.listen(80);
