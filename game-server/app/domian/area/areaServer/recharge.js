@@ -30,8 +30,41 @@ module.exports = function() {
 			cb(flag,data)
 		})
 	}
+	//充值成功
+	this.finish_recharge = function(uid,pay_id,cb) {
+		if(!pay_cfg[pay_id]){
+			cb(false,"pay_id error")
+			return
+		}
+		switch(pay_cfg[pay_id]["type"]){
+			case "lv_fund":
+				this.activateLvFund(uid,cb)
+			break
+			case "highCard":
+				this.activateHighCard(uid,cb)
+			break
+			case "warHorn":
+				this.advanceWarHorn(uid,cb)
+			break
+			case "recharge":
+				this.recharge(uid,pay_cfg[pay_id]["arg"],cb)
+			break
+			case "box_day":
+				this.buyAwardBagday(uid,pay_cfg[pay_id]["arg"],cb)
+			break
+			case "box_week":
+				this.buyAwardBagWeek(uid,pay_cfg[pay_id]["arg"],cb)
+			break
+			case "box_month":
+				this.buyAwardBagMonth(uid,pay_cfg[pay_id]["arg"],cb)
+			break
+			case "limit_gift":
+				this.buyLimitGift(uid,pay_cfg[pay_id]["arg"],cb)
+			break
+		}
+	}
 	//充值
-	this.recharge = function(uid,index) {
+	this.recharge = function(uid,index,cb) {
 		self.addUserRMB(uid,recharge[index].rmb)
 		self.incrbyObj(uid,main_name,"recharge_"+index,1,function(data) {
 			var gold = recharge[index].gold
@@ -47,6 +80,7 @@ module.exports = function() {
 				award : award
 			}
 			self.sendToUser(uid,notify)
+			cb(true)
 		})
 	}
 	//激活等级基金

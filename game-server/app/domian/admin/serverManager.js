@@ -32,34 +32,49 @@ serverManager.prototype.init = function() {
 	server.post("/pay_order",function(req,res) {
 		console.log(req.body)
 		var data = req.body
-		var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
-		if(v_sign == data.md5Sign){
-			console.log("签名验证成功")
-		}else{
-			console.log("签名验证失败")
-		}
-		var xmlStr = local.decode(data.nt_data,Callback_Key)
-		console.log(xmlStr)
-		parseString(xmlStr,function(err,result) {
-			var message = result.quicksdk_message.message[0]
-			var info = {
-				is_test : message["is_test"][0],
-				channel : message["channel"][0],
-				channel_name : message["channel_name"][0],
-				channel_uid : message["channel_uid"][0],
-				channel_order : message["channel_order"][0],
-				game_order : message["game_order"][0],
-				order_no : message["order_no"][0],
-				pay_time : message["pay_time"][0],
-				amount : message["amount"][0],
-				status : message["status"][0],
-				extras_params : message["extras_params"][0]
-			}
-			console.log(info)
-		});
-        res.send("FAILD")
+		self.pay_order(data,function(flag,err) {
+			if(!flag)
+				res.send(err)
+			else
+				res.send("SUCEESS")
+		})
 	})
 	server.listen(80);
+}
+serverManager.prototype.pay_order = function(data,cb) {
+	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
+	if(v_sign != data.md5Sign){
+		console.error("签名验证失败")
+		cb(false,"签名验证失败")
+		return
+	}
+	var xmlStr = local.decode(data.nt_data,Callback_Key)
+	parseString(xmlStr,function(err,result) {
+		var message = result.quicksdk_message.message[0]
+		var info = {
+			is_test : message["is_test"][0],
+			channel : message["channel"][0],
+			channel_name : message["channel_name"][0],
+			channel_uid : message["channel_uid"][0],
+			channel_order : message["channel_order"][0],
+			game_order : message["game_order"][0],
+			order_no : message["order_no"][0],
+			pay_time : message["pay_time"][0],
+			amount : message["amount"][0],
+			status : message["status"][0],
+			extras_params : message["extras_params"][0]
+		}
+		self.finishGameOrder(info,function(flag,err,data) {
+			if(true || flag){
+				//发货
+				var serverId = self.areaDeploy.getServer(data.areaId)
+			    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,data.areaId,data.uid,data.pay_id,function(){})
+				cb(false)
+			}else{
+				cb(false,err)
+			}
+		})
+	});
 }
 //update
 serverManager.prototype.update = function() {
@@ -197,5 +212,8 @@ module.exports = {
 	props : [{
 		name : "redisDao",
 		ref : "redisDao"
+	},{
+		name : "payDao",
+		ref : "payDao"
 	}]
 }

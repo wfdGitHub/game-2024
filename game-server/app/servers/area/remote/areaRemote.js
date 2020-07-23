@@ -1,16 +1,39 @@
 var bearcat = require("bearcat")
+var uuid = require("uuid")
 var areaRemote = function(app) {
 	this.app = app
 	this.areaManager = this.app.get("areaManager")
 }
 //充值回调
-areaRemote.prototype.pay_order = function(areaId,data,cb) {
-
+areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,cb) {
+	var self = this
 	if(this.areaManager.areaMap[areaId]){
-		this.areaManager.areaMap[areaId].pay_order(id,cb)
+		this.areaManager.areaMap[areaId].finish_recharge(uid,pay_id,function(flag,err) {
+			if(!flag){
+				console.error("finish_recharge "+err)
+				var info = {
+					err : err,
+					areaId : areaId,
+					uid : uid,
+					pay_id : pay_id,
+					time : (new Date()).toLocaleDateString()
+				}
+				this.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))
+			}
+		})
 	}else{
-		cb(false)
+		console.error("finish_recharge "+err)
+		var info = {
+			err : "服务器不存在",
+			uid : uid,
+			areaId : areaId,
+			pay_id : pay_id,
+			pay_id : pay_id,
+			time : (new Date()).toLocaleDateString()
+		}
+		this.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))
 	}
+	cb()
 }
 //创建新服务器
 areaRemote.prototype.loadArea = function(areaId,cb) {
