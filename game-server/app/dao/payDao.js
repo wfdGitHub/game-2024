@@ -46,7 +46,7 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 		}else{
 			if(data.status == 0){
 				self.faildOrder("订单已完成",otps,data)
-				cb(false,"订单已完成",data)
+				cb(false,null,data)
 			}else if(Number(otps.amount) * 100 != data.amount){
 				self.faildOrder("充值金额不对应",otps,data)
 				cb(false,"充值金额不对应",data)
@@ -59,7 +59,7 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 				}else{
 					sql = 'update game_order SET pay_time=?,status=0,order_no=?,channel_code=?,channel_uid=? where game_order = ?'
 					self.db.query(sql,[Date.now(),otps.order_no,otps.channel,otps.channel_uid,otps.game_order],function(){})
-					cb(true,"充值成功",data)
+					cb(true,null,data)
 				}
 			}
 		}
