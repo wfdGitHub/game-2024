@@ -51,7 +51,7 @@ heroDao.prototype.randHero = function(areaId,uid,type,count) {
     var luckNum = 0
     for(let num = 0;num < count;num++){
       let rand = Math.random() * allWeight
-      if(num == 9 && luckNum == 0){
+      if(num == 9 && luckNum == 0 && type == "great"){
       	var heroId = this.randHeroId("randChip_5_1")
 		var heroInfo = this.gainHero(areaId,uid,{id : heroId})
 		heroInfos.push(heroInfo)
