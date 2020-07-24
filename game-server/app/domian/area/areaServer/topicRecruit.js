@@ -114,10 +114,15 @@ module.exports = function() {
 		var weights = recruit_base["topic"]["weights"]
 	    var heroInfos = []
 	    num = Number(num) || 0
+	    var luckNum = 0
 	    for(var i = 0;i < count;i++){
 	      num++
 	      if(num == 150){
 			var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : curTopicHero})
+			heroInfos.push(heroInfo)
+	      }else if(i == 9 && luckNum == 0){
+	      	var heroId = self.heroDao.randHeroId("randChip_5_1")
+			var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId})
 			heroInfos.push(heroInfo)
 	      }else{
 		      var rand = Math.random() * allWeight
@@ -136,6 +141,8 @@ module.exports = function() {
 		        }
 		      }
 	      }
+	      if(heroInfos[i].star >= 4)
+	      	luckNum++
 	    }
 	    self.incrbyObj(uid,main_name,"count",count)
 	  	return heroInfos
