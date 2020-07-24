@@ -48,16 +48,25 @@ heroDao.prototype.randHero = function(areaId,uid,type,count) {
 	let allWeight = recruit_base[type]["allWeight"]
 	let weights = recruit_base[type]["weights"]
     var heroInfos = []
+    var luckNum = 0
     for(let num = 0;num < count;num++){
       let rand = Math.random() * allWeight
-      for(let i in weights){
-        if(rand < weights[i]){
-          let heroList = recruit_list[i].heroList
-          let heroId = heroList[Math.floor(heroList.length * Math.random())]
-          let heroInfo = this.gainHero(areaId,uid,{id : heroId})
-          heroInfos.push(heroInfo)
-          break
-        }
+      if(num == 9 && luckNum == 0){
+      	var heroId = this.randHeroId("randChip_5_1")
+		var heroInfo = this.gainHero(reaId,uid,{id : heroId})
+		heroInfos.push(heroInfo)
+      }else{
+	      for(let i in weights){
+	        if(rand < weights[i]){
+	          let heroList = recruit_list[i].heroList
+	          let heroId = heroList[Math.floor(heroList.length * Math.random())]
+	          let heroInfo = this.gainHero(areaId,uid,{id : heroId})
+	          heroInfos.push(heroInfo)
+	          if(heroInfo.star >= 4)
+	          	luckNum++
+	          break
+	        }
+	      }
       }
     }
   	return heroInfos
