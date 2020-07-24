@@ -265,7 +265,7 @@
     "value": 10,
     "next": 200103,
     "inherit": true,
-    "award": "202:50"
+    "award": "202:60"
   },
   "200103": {
     "title": "角色等级15级",
@@ -274,7 +274,7 @@
     "value": 15,
     "next": 200104,
     "inherit": true,
-    "award": "202:100"
+    "award": "202:70"
   },
   "200104": {
     "title": "角色等级20级",
@@ -283,7 +283,7 @@
     "value": 20,
     "next": 200105,
     "inherit": true,
-    "award": "202:100"
+    "award": "202:80"
   },
   "200105": {
     "title": "角色等级30级",
@@ -292,7 +292,7 @@
     "value": 30,
     "next": 200106,
     "inherit": true,
-    "award": "202:150"
+    "award": "202:90"
   },
   "200106": {
     "title": "角色等级40级",
@@ -301,7 +301,7 @@
     "value": 40,
     "next": 200107,
     "inherit": true,
-    "award": "202:150"
+    "award": "202:100"
   },
   "200107": {
     "title": "角色等级50级",
@@ -310,7 +310,7 @@
     "value": 50,
     "next": 200108,
     "inherit": true,
-    "award": "202:200"
+    "award": "202:110"
   },
   "200108": {
     "title": "角色等级60级",
@@ -319,7 +319,7 @@
     "value": 60,
     "next": 200109,
     "inherit": true,
-    "award": "202:200"
+    "award": "202:120"
   },
   "200109": {
     "title": "角色等级70级",
@@ -328,7 +328,7 @@
     "value": 70,
     "next": 200110,
     "inherit": true,
-    "award": "202:250"
+    "award": "202:130"
   },
   "200110": {
     "title": "角色等级80级",
@@ -337,7 +337,7 @@
     "value": 80,
     "next": 200111,
     "inherit": true,
-    "award": "202:250"
+    "award": "202:140"
   },
   "200111": {
     "title": "角色等级90级",
@@ -346,7 +346,7 @@
     "value": 90,
     "next": 200112,
     "inherit": true,
-    "award": "202:300"
+    "award": "202:150"
   },
   "200112": {
     "title": "角色等级100级",
@@ -355,7 +355,7 @@
     "value": 100,
     "next": 200113,
     "inherit": true,
-    "award": "202:300"
+    "award": "202:160"
   },
   "200113": {
     "title": "角色等级110级",
@@ -364,7 +364,7 @@
     "value": 110,
     "next": 200114,
     "inherit": true,
-    "award": "202:350"
+    "award": "202:170"
   },
   "200114": {
     "title": "角色等级120级",
@@ -373,7 +373,7 @@
     "value": 120,
     "next": 200115,
     "inherit": true,
-    "award": "202:350"
+    "award": "202:180"
   },
   "200115": {
     "title": "角色等级130级",
@@ -382,7 +382,7 @@
     "value": 130,
     "next": 200116,
     "inherit": true,
-    "award": "202:400"
+    "award": "202:190"
   },
   "200116": {
     "title": "角色等级140级",
@@ -391,7 +391,7 @@
     "value": 140,
     "next": 200117,
     "inherit": true,
-    "award": "202:400"
+    "award": "202:200"
   },
   "200117": {
     "title": "角色等级150级",
@@ -400,7 +400,7 @@
     "value": 150,
     "next": 200118,
     "inherit": true,
-    "award": "202:450"
+    "award": "202:250"
   },
   "200118": {
     "title": "角色等级160级",
@@ -409,7 +409,7 @@
     "value": 160,
     "next": 200119,
     "inherit": true,
-    "award": "202:450"
+    "award": "202:300"
   },
   "200119": {
     "title": "角色等级170级",
@@ -418,7 +418,7 @@
     "value": 170,
     "next": 200120,
     "inherit": true,
-    "award": "202:500"
+    "award": "202:350"
   },
   "200120": {
     "title": "角色等级180级",
@@ -427,7 +427,7 @@
     "value": 180,
     "next": 200121,
     "inherit": true,
-    "award": "202:500"
+    "award": "202:400"
   },
   "200121": {
     "title": "角色等级190级",
@@ -436,7 +436,7 @@
     "value": 190,
     "next": 200122,
     "inherit": true,
-    "award": "202:500"
+    "award": "202:450"
   },
   "200122": {
     "title": "角色等级200级",
@@ -2849,67 +2849,67 @@
     "desc": "完成红色三界任务3次"
   },
   "500101": {
-    "title": "普通召唤5次",
-    "refresh": "week_target",
-    "type": "recruit_normal",
-    "value": 5,
-    "award": "504000:3&1000050:10"
-  },
-  "500102": {
     "title": "普通召唤10次",
     "refresh": "week_target",
     "type": "recruit_normal",
     "value": 10,
+    "award": "504000:3&1000050:10"
+  },
+  "500102": {
+    "title": "普通召唤20次",
+    "refresh": "week_target",
+    "type": "recruit_normal",
+    "value": 20,
     "award": "504000:6&1000050:30"
   },
   "500103": {
-    "title": "普通召唤15次",
+    "title": "普通召唤30次",
     "refresh": "week_target",
     "type": "recruit_normal",
-    "value": 15,
+    "value": 30,
     "award": "504000:9&1000050:50"
   },
   "500104": {
-    "title": "高级召唤3次",
-    "refresh": "week_target",
-    "type": "recruit_great",
-    "value": 3,
-    "award": "505000:1&1000050:100"
-  },
-  "500105": {
     "title": "高级召唤5次",
     "refresh": "week_target",
     "type": "recruit_great",
     "value": 5,
-    "award": "505000:3&1000050:200"
+    "award": "505000:1&1000050:100"
   },
-  "500106": {
+  "500105": {
     "title": "高级召唤10次",
     "refresh": "week_target",
     "type": "recruit_great",
     "value": 10,
-    "award": "505000:6&1000050:300"
+    "award": "505000:3&1000050:200"
   },
-  "500107": {
-    "title": "高级召唤15次",
-    "refresh": "week_target",
-    "type": "recruit_great",
-    "value": 15,
-    "award": "505000:9&1000050:400"
-  },
-  "500108": {
+  "500106": {
     "title": "高级召唤20次",
     "refresh": "week_target",
     "type": "recruit_great",
     "value": 20,
-    "award": "505000:12&1000050:500"
+    "award": "505000:5&1000050:300"
   },
-  "500109": {
+  "500107": {
     "title": "高级召唤30次",
     "refresh": "week_target",
     "type": "recruit_great",
     "value": 30,
-    "award": "505000:15&1000050:700"
+    "award": "505000:7&1000050:400"
+  },
+  "500108": {
+    "title": "高级召唤40次",
+    "refresh": "week_target",
+    "type": "recruit_great",
+    "value": 40,
+    "award": "505000:9&1000050:500"
+  },
+  "500109": {
+    "title": "高级召唤50次",
+    "refresh": "week_target",
+    "type": "recruit_great",
+    "value": 50,
+    "award": "505000:12&1000050:700"
   },
   "500201": {
     "title": "通关第10关",
@@ -2981,7 +2981,7 @@
     "type": "checkpoints",
     "arg": 50,
     "value": 1,
-    "award": "202:150&201:150000"
+    "award": "202:160&201:160000"
   },
   "500301": {
     "title": "获得3个四星英雄",
@@ -3056,28 +3056,28 @@
     "award": "1000050:1500&1000120:1"
   },
   "500401": {
-    "title": "挑战副本：5次",
+    "title": "挑战副本:5次",
     "refresh": "week_target",
     "type": "fb",
     "value": 5,
     "award": "201:10000&101:10000"
   },
   "500402": {
-    "title": "挑战副本：10次",
+    "title": "挑战副本:10次",
     "refresh": "week_target",
     "type": "fb",
     "value": 10,
     "award": "201:10000&101:20000"
   },
   "500403": {
-    "title": "挑战副本：15次",
+    "title": "挑战副本:15次",
     "refresh": "week_target",
     "type": "fb",
     "value": 15,
     "award": "201:30000&101:30000"
   },
   "500404": {
-    "title": "挑战副本：20次",
+    "title": "挑战副本:20次",
     "refresh": "week_target",
     "type": "fb",
     "value": 20,
@@ -3097,7 +3097,7 @@
     "type": "fb_hard",
     "arg": 2,
     "value": 1,
-    "award": "202:200&1000070:10"
+    "award": "202:200&1000090:5"
   },
   "500407": {
     "title": "挑战精英难度的日常副本",
@@ -3105,7 +3105,7 @@
     "type": "fb_hard",
     "arg": 3,
     "value": 1,
-    "award": "202:300&1000090:10"
+    "award": "202:300&1000080:5"
   },
   "500408": {
     "title": "挑战困难难度的日常副本",
@@ -3169,7 +3169,7 @@
     "type": "tour",
     "arg": 5,
     "value": 2,
-    "award": "201:100000&1000080:5"
+    "award": "201:100000&1000090:2"
   },
   "500507": {
     "title": "完成3次橙色以上三界任务",
@@ -3177,7 +3177,7 @@
     "type": "tour",
     "arg": 5,
     "value": 3,
-    "award": "201:150000&1000080:5"
+    "award": "201:150000&1000090:3"
   },
   "500508": {
     "title": "完成5次橙色以上三界任务",
@@ -3185,7 +3185,7 @@
     "type": "tour",
     "arg": 5,
     "value": 5,
-    "award": "201:200000&1000080:5"
+    "award": "201:200000&1000090:5"
   },
   "500509": {
     "title": "完成1次红色以上三界任务",
@@ -3730,102 +3730,702 @@
     "refresh": "week_target",
     "type": "totalCe",
     "value": 100000,
-    "award": "505000:5&1000150:1"
+    "award": "1000090:5&1000150:1"
   },
   "501402": {
     "title": "战斗力：20万",
     "refresh": "week_target",
     "type": "totalCe",
     "value": 200000,
-    "award": "505000:6&1000150:2"
+    "award": "1000090:6&1000150:2"
   },
   "501403": {
     "title": "战斗力：30万",
     "refresh": "week_target",
     "type": "totalCe",
     "value": 300000,
-    "award": "505000:7&1000150:3"
+    "award": "1000090:7&1000150:3"
   },
   "501404": {
     "title": "战斗力：40万",
     "refresh": "week_target",
     "type": "totalCe",
     "value": 400000,
-    "award": "505000:8&1000150:4"
+    "award": "1000090:8&1000150:4"
   },
   "501405": {
     "title": "战斗力：50万",
     "refresh": "week_target",
     "type": "totalCe",
     "value": 500000,
-    "award": "505000:9&1000150:5"
+    "award": "1000090:9&1000150:5"
   },
   "501406": {
     "title": "战斗力：60万",
     "refresh": "week_target",
     "type": "totalCe",
     "value": 600000,
-    "award": "1001006:1&1000120:1"
+    "award": "1000090:10&1000120:1"
   },
   "501407": {
     "title": "战斗力：70万",
     "refresh": "week_target",
     "type": "totalCe",
     "value": 700000,
-    "award": "1001006:1&1000120:2"
+    "award": "1000100:3&1000120:2"
   },
   "501408": {
     "title": "战斗力：80万",
     "refresh": "week_target",
     "type": "totalCe",
     "value": 800000,
-    "award": "1001006:1&1000120:3"
+    "award": "1000100:5&1000120:3"
   },
   "501409": {
     "title": "战斗力：100万",
     "refresh": "week_target",
     "type": "totalCe",
     "value": 1000000,
-    "award": "1001004:1&1000120:4"
+    "award": "1000100:10&1000120:4"
   },
   "601001": {
-    "title": "瑞兽升到6星",
+    "title": "托塔天王升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 105060,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601002": {
+    "title": "托塔天王升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 105060,
+    "value": 1,
+    "award": "1009001:1&1000090:10&1000170:5"
+  },
+  "601003": {
+    "title": "托塔天王升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 105060,
+    "value": 1,
+    "award": "1009001:1&1000050:1000&1000170:5"
+  },
+  "601004": {
+    "title": "托塔天王升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 105060,
+    "value": 1,
+    "award": "11105060:1&202:5000000&101:5000000"
+  },
+  "601005": {
+    "title": "托塔天王升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 105060,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601006": {
+    "title": "杜康升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 205060,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601007": {
+    "title": "杜康升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 205060,
+    "value": 1,
+    "award": "1009002:1&1000090:10&1000170:5"
+  },
+  "601008": {
+    "title": "杜康升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 205060,
+    "value": 1,
+    "award": "1009002:1&1000050:1000&1000170:5"
+  },
+  "601009": {
+    "title": "杜康升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 205060,
+    "value": 1,
+    "award": "11205060:1&202:5000000&101:5000000"
+  },
+  "601010": {
+    "title": "杜康升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 205060,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601011": {
+    "title": "鬼将升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 305040,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601012": {
+    "title": "鬼将升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 305040,
+    "value": 1,
+    "award": "1009003:1&1000090:10&1000170:5"
+  },
+  "601013": {
+    "title": "鬼将升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 305040,
+    "value": 1,
+    "award": "1009003:1&1000050:1000&1000170:5"
+  },
+  "601014": {
+    "title": "鬼将升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 305040,
+    "value": 1,
+    "award": "11305040:1&202:5000000&101:5000000"
+  },
+  "601015": {
+    "title": "鬼将升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 305040,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601016": {
+    "title": "应龙升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 405060,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601017": {
+    "title": "应龙升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 405060,
+    "value": 1,
+    "award": "1009004:1&1000090:10&1000170:5"
+  },
+  "601018": {
+    "title": "应龙升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 405060,
+    "value": 1,
+    "award": "1009004:1&1000050:1000&1000170:5"
+  },
+  "601019": {
+    "title": "应龙升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 405060,
+    "value": 1,
+    "award": "15105060:1&202:5000000&101:5000000"
+  },
+  "601020": {
+    "title": "应龙升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 405060,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601021": {
+    "title": "混元天尊升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 105020,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601022": {
+    "title": "混元天尊升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 105020,
+    "value": 1,
+    "award": "1009001:1&1000090:10&1000170:5"
+  },
+  "601023": {
+    "title": "混元天尊升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 105020,
+    "value": 1,
+    "award": "1009001:1&1000050:1000&1000170:5"
+  },
+  "601024": {
+    "title": "混元天尊升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 105020,
+    "value": 1,
+    "award": "11105020:1&202:5000000&101:5000000"
+  },
+  "601025": {
+    "title": "混元天尊升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 105020,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601026": {
+    "title": "姜子牙升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 205020,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601027": {
+    "title": "姜子牙升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 205020,
+    "value": 1,
+    "award": "1009002:1&1000090:10&1000170:5"
+  },
+  "601028": {
+    "title": "姜子牙升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 205020,
+    "value": 1,
+    "award": "1009002:1&1000050:1000&1000170:5"
+  },
+  "601029": {
+    "title": "姜子牙升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 205020,
+    "value": 1,
+    "award": "11205020:1&202:5000000&101:5000000"
+  },
+  "601030": {
+    "title": "姜子牙升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 205020,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601031": {
+    "title": "祝融升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 305020,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601032": {
+    "title": "祝融升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 305020,
+    "value": 1,
+    "award": "1009003:1&1000090:10&1000170:5"
+  },
+  "601033": {
+    "title": "祝融升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 305020,
+    "value": 1,
+    "award": "1009003:1&1000050:1000&1000170:5"
+  },
+  "601034": {
+    "title": "祝融升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 305020,
+    "value": 1,
+    "award": "11305020:1&202:5000000&101:5000000"
+  },
+  "601035": {
+    "title": "祝融升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 305020,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601036": {
+    "title": "穷奇升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 405020,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601037": {
+    "title": "穷奇升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 405020,
+    "value": 1,
+    "award": "1009004:1&1000090:10&1000170:5"
+  },
+  "601038": {
+    "title": "穷奇升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 405020,
+    "value": 1,
+    "award": "1009004:1&1000050:1000&1000170:5"
+  },
+  "601039": {
+    "title": "穷奇升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 405020,
+    "value": 1,
+    "award": "15105020:1&202:5000000&101:5000000"
+  },
+  "601040": {
+    "title": "穷奇升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 405020,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601041": {
+    "title": "雷公升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 105030,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601042": {
+    "title": "雷公升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 105030,
+    "value": 1,
+    "award": "1009001:1&1000090:10&1000170:5"
+  },
+  "601043": {
+    "title": "雷公升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 105030,
+    "value": 1,
+    "award": "1009001:1&1000050:1000&1000170:5"
+  },
+  "601044": {
+    "title": "雷公升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 105030,
+    "value": 1,
+    "award": "11105030:1&202:5000000&101:5000000"
+  },
+  "601045": {
+    "title": "雷公升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 105030,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601046": {
+    "title": "剑灵升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 205010,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601047": {
+    "title": "剑灵升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 205010,
+    "value": 1,
+    "award": "1009002:1&1000090:10&1000170:5"
+  },
+  "601048": {
+    "title": "剑灵升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 205010,
+    "value": 1,
+    "award": "1009002:1&1000050:1000&1000170:5"
+  },
+  "601049": {
+    "title": "剑灵升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 205010,
+    "value": 1,
+    "award": "11205010:1&202:5000000&101:5000000"
+  },
+  "601050": {
+    "title": "剑灵升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 205010,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601051": {
+    "title": "白象升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 305020,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601052": {
+    "title": "白象升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 305080,
+    "value": 1,
+    "award": "1009003:1&1000090:10&1000170:5"
+  },
+  "601053": {
+    "title": "白象升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 305080,
+    "value": 1,
+    "award": "1009003:1&1000050:1000&1000170:5"
+  },
+  "601054": {
+    "title": "白象升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 305080,
+    "value": 1,
+    "award": "11305080:1&202:5000000&101:5000000"
+  },
+  "601055": {
+    "title": "白象升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 305080,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601056": {
+    "title": "穷奇升到6星",
     "refresh": "topic",
     "type": "heroStar_6",
     "arg": 405010,
     "value": 1,
-    "award": "201:10000"
+    "award": "1008008:1&1008010:1&1008009:1"
   },
-  "601002": {
-    "title": "瑞兽升到7星",
+  "601057": {
+    "title": "穷奇升到7星",
     "refresh": "topic",
     "type": "heroStar_7",
     "arg": 405010,
     "value": 1,
-    "award": "201:10001"
+    "award": "1009004:1&1000090:10&1000170:5"
   },
-  "601003": {
-    "title": "瑞兽升到8星",
+  "601058": {
+    "title": "穷奇升到8星",
     "refresh": "topic",
     "type": "heroStar_8",
     "arg": 405010,
     "value": 1,
-    "award": "201:10002"
+    "award": "1009004:1&1000050:1000&1000170:5"
   },
-  "601004": {
-    "title": "瑞兽升到9星",
+  "601059": {
+    "title": "穷奇升到9星",
     "refresh": "topic",
     "type": "heroStar_9",
     "arg": 405010,
     "value": 1,
-    "award": "201:10003"
+    "award": "15105010:1&202:5000000&101:5000000"
   },
-  "601005": {
-    "title": "瑞兽升到10星",
+  "601060": {
+    "title": "穷奇升到10星",
     "refresh": "topic",
     "type": "heroStar_10",
     "arg": 405010,
     "value": 1,
-    "award": "201:10004"
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601061": {
+    "title": "五行天尊升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 105070,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601062": {
+    "title": "五行天尊升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 105070,
+    "value": 1,
+    "award": "1009001:1&1000090:10&1000170:5"
+  },
+  "601063": {
+    "title": "五行天尊升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 105070,
+    "value": 1,
+    "award": "1009001:1&1000050:1000&1000170:5"
+  },
+  "601064": {
+    "title": "五行天尊升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 105070,
+    "value": 1,
+    "award": "11105070:1&202:5000000&101:5000000"
+  },
+  "601065": {
+    "title": "五行天尊升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 105070,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601066": {
+    "title": "轩辕帝升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 205070,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601067": {
+    "title": "轩辕帝升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 205070,
+    "value": 1,
+    "award": "1009002:1&1000090:10&1000170:5"
+  },
+  "601068": {
+    "title": "轩辕帝升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 205070,
+    "value": 1,
+    "award": "1009002:1&1000050:1000&1000170:5"
+  },
+  "601069": {
+    "title": "轩辕帝升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 205070,
+    "value": 1,
+    "award": "11205070:1&202:5000000&101:5000000"
+  },
+  "601070": {
+    "title": "轩辕帝升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 205070,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601071": {
+    "title": "雨师升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 305070,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601072": {
+    "title": "雨师升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 305070,
+    "value": 1,
+    "award": "1009003:1&1000090:10&1000170:5"
+  },
+  "601073": {
+    "title": "雨师升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 305070,
+    "value": 1,
+    "award": "1009003:1&1000050:1000&1000170:5"
+  },
+  "601074": {
+    "title": "雨师升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 305070,
+    "value": 1,
+    "award": "11305070:1&202:5000000&101:5000000"
+  },
+  "601075": {
+    "title": "雨师升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 305070,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
+  },
+  "601076": {
+    "title": "凤凰升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 405070,
+    "value": 1,
+    "award": "1008008:1&1008010:1&1008009:1"
+  },
+  "601077": {
+    "title": "凤凰升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 405070,
+    "value": 1,
+    "award": "1009004:1&1000090:10&1000170:5"
+  },
+  "601078": {
+    "title": "凤凰升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 405070,
+    "value": 1,
+    "award": "1009004:1&1000050:1000&1000170:5"
+  },
+  "601079": {
+    "title": "凤凰升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 405070,
+    "value": 1,
+    "award": "15105070:1&202:5000000&101:5000000"
+  },
+  "601080": {
+    "title": "凤凰升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 405070,
+    "value": 1,
+    "award": "1001011:1&1000100:10&1000170:10"
   }
 }

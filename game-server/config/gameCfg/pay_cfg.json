@@ -1,575 +1,551 @@
 {
   "1001": {
     "type": "lv_fund",
-    "name": "等级基金",
+    "name": "等级基金-168元",
     "rmb": 168
   },
   "1002": {
     "type": "highCard",
-    "name": "至尊特权",
+    "name": "至尊特权-128元",
     "rmb": 128
   },
   "1003": {
     "type": "warHorn",
-    "name": "高级战令",
+    "name": "高级战令-128元",
     "rmb": 128
   },
   "2001": {
     "type": "recharge",
-    "name": "充值1",
+    "name": "直充6元",
     "arg": 1,
     "rmb": 6
   },
   "2002": {
     "type": "recharge",
-    "name": "充值2",
+    "name": "直充30元",
     "arg": 2,
     "rmb": 30
   },
   "2003": {
     "type": "recharge",
-    "name": "充值3",
+    "name": "直充98元",
     "arg": 3,
     "rmb": 98
   },
   "2004": {
     "type": "recharge",
-    "name": "充值4",
+    "name": "直充198元",
     "arg": 4,
     "rmb": 198
   },
   "2005": {
     "type": "recharge",
-    "name": "充值5",
+    "name": "直充328元",
     "arg": 5,
     "rmb": 328
   },
   "2006": {
     "type": "recharge",
-    "name": "充值6",
+    "name": "直充648元",
     "arg": 6,
     "rmb": 648
   },
   "2007": {
     "type": "recharge",
-    "name": "充值7",
+    "name": "直充1296元",
     "arg": 7,
     "rmb": 1296
   },
   "2008": {
     "type": "recharge",
-    "name": "充值8",
+    "name": "直充2592元",
     "arg": 8,
     "rmb": 2592
   },
   "2009": {
     "type": "recharge",
-    "name": "充值9",
+    "name": "直充4988元",
     "arg": 9,
     "rmb": 4988
   },
   "3001": {
     "type": "box_day",
-    "name": "每日礼包1",
+    "name": "每日礼包(周)-1元",
     "arg": 1,
     "rmb": 1
   },
   "3002": {
     "type": "box_day",
-    "name": "每日礼包2",
+    "name": "尊贵礼包(周)-6元",
     "arg": 2,
     "rmb": 6
   },
   "3003": {
     "type": "box_day",
-    "name": "每日礼包3",
+    "name": "超值礼包(周)-12元",
     "arg": 3,
     "rmb": 12
   },
   "4001": {
     "type": "box_week",
-    "name": "每周礼包1",
+    "name": "材料礼包(周)-30元",
     "arg": 1001,
-    "rmb": 3
+    "rmb": 30
   },
   "4002": {
     "type": "box_week",
-    "name": "每周礼包2",
+    "name": "寻宝礼包(周)-30元",
     "arg": 1002,
-    "rmb": 6.8
+    "rmb": 30
   },
   "4003": {
     "type": "box_week",
-    "name": "每周礼包3",
+    "name": "召唤礼包(周)-68元",
     "arg": 1003,
-    "rmb": 9.8
+    "rmb": 68
   },
   "4004": {
     "type": "box_week",
-    "name": "每周礼包4",
+    "name": "元神礼包(周)-68元",
     "arg": 1004,
-    "rmb": 12.8
+    "rmb": 68
   },
   "4005": {
     "type": "box_week",
-    "name": "每周礼包5",
+    "name": "高级寻宝礼包(周)-98元",
     "arg": 1005,
-    "rmb": 19.8
+    "rmb": 98
   },
   "4006": {
     "type": "box_week",
-    "name": "每周礼包6",
+    "name": "指定召唤礼包(周)-98元",
     "arg": 1006,
-    "rmb": 32.8
+    "rmb": 98
   },
   "4007": {
     "type": "box_week",
-    "name": "每周礼包7",
+    "name": "超级召唤礼包(周)-128元",
     "arg": 1007,
-    "rmb": 32.8
-  },
-  "4008": {
-    "type": "box_week",
-    "name": "每周礼包8",
-    "arg": 1008,
-    "rmb": 44.8
-  },
-  "4009": {
-    "type": "box_week",
-    "name": "每周礼包9",
-    "arg": 1009,
-    "rmb": 64.8
-  },
-  "4010": {
-    "type": "box_week",
-    "name": "每周礼包10",
-    "arg": 1010,
-    "rmb": 64.8
+    "rmb": 128
   },
   "5001": {
     "type": "box_month",
-    "name": "每月礼包1",
+    "name": "培养礼包(月)-30元",
     "arg": 1001,
-    "rmb": 3
+    "rmb": 30
   },
   "5002": {
     "type": "box_month",
-    "name": "每月礼包2",
+    "name": "召唤礼包(月)-68元",
     "arg": 1002,
-    "rmb": 6.8
+    "rmb": 68
   },
   "5003": {
     "type": "box_month",
-    "name": "每月礼包3",
+    "name": "寻宝礼包(月)-98元",
     "arg": 1003,
-    "rmb": 9.8
+    "rmb": 98
   },
   "5004": {
     "type": "box_month",
-    "name": "每月礼包4",
+    "name": "召唤礼包2(月)-128元",
     "arg": 1004,
-    "rmb": 12.8
+    "rmb": 128
   },
   "5005": {
     "type": "box_month",
-    "name": "每月礼包5",
+    "name": "寻宝礼包2(月)-198元",
     "arg": 1005,
-    "rmb": 19.8
+    "rmb": 198
   },
   "5006": {
     "type": "box_month",
-    "name": "每月礼包6",
+    "name": "限定召唤礼包(月)-328元",
     "arg": 1006,
-    "rmb": 32.8
+    "rmb": 328
   },
   "5007": {
     "type": "box_month",
-    "name": "每月礼包7",
+    "name": "元神礼包(月)-648元",
     "arg": 1007,
-    "rmb": 44.8
+    "rmb": 648
   },
   "5008": {
     "type": "box_month",
-    "name": "每月礼包8",
+    "name": "神装礼包(月)-648元",
     "arg": 1008,
-    "rmb": 64.8
+    "rmb": 648
   },
   "5009": {
     "type": "box_month",
-    "name": "每月礼包9",
+    "name": "直升六星礼包(月)-648元",
     "arg": 1009,
-    "rmb": 64.8
-  },
-  "5010": {
-    "type": "box_month",
-    "name": "每月礼包10",
-    "arg": 1010,
-    "rmb": 64.8
+    "rmb": 648
   },
   "6001": {
     "type": "limit_gift",
     "name": "10级超值礼包",
     "arg": 1001,
-    "rmb": 0.1
+    "rmb": 1
   },
   "6002": {
     "type": "limit_gift",
     "name": "20级超值礼包",
     "arg": 1002,
-    "rmb": 0.6
+    "rmb": 6
   },
   "6003": {
     "type": "limit_gift",
     "name": "30级超值礼包",
     "arg": 1003,
-    "rmb": 1.2
+    "rmb": 12
   },
   "6004": {
     "type": "limit_gift",
     "name": "40级超值礼包",
     "arg": 1004,
-    "rmb": 3
+    "rmb": 30
   },
   "6005": {
     "type": "limit_gift",
     "name": "50级超值礼包",
     "arg": 1005,
-    "rmb": 6.8
+    "rmb": 68
   },
   "6006": {
     "type": "limit_gift",
     "name": "60级超值礼包",
     "arg": 1006,
-    "rmb": 9.8
+    "rmb": 98
   },
   "6007": {
     "type": "limit_gift",
     "name": "70级超值礼包",
     "arg": 1007,
-    "rmb": 12.8
+    "rmb": 128
   },
   "6008": {
     "type": "limit_gift",
     "name": "80级超值礼包",
     "arg": 1008,
-    "rmb": 19.8
+    "rmb": 198
   },
   "6009": {
     "type": "limit_gift",
     "name": "五星培养礼包",
     "arg": 2001,
-    "rmb": 3
+    "rmb": 30
   },
   "6101": {
     "type": "limit_gift",
     "name": "七星培养礼包",
     "arg": 2002,
-    "rmb": 6.8
+    "rmb": 68
   },
   "6102": {
     "type": "limit_gift",
     "name": "八星培养礼包",
     "arg": 2003,
-    "rmb": 9.8
+    "rmb": 98
   },
   "6103": {
     "type": "limit_gift",
     "name": "九星培养礼包",
     "arg": 2004,
-    "rmb": 12.8
+    "rmb": 128
   },
   "6104": {
     "type": "limit_gift",
     "name": "十星培养礼包",
     "arg": 2005,
-    "rmb": 19.8
+    "rmb": 198
   },
   "6201": {
     "type": "limit_gift",
     "name": "太上老君法宝礼包",
     "arg": 3001,
-    "rmb": 3
+    "rmb": 30
   },
   "6202": {
     "type": "limit_gift",
     "name": "混元天尊法宝礼包",
     "arg": 3002,
-    "rmb": 3
+    "rmb": 30
   },
   "6203": {
     "type": "limit_gift",
     "name": "雷公法宝礼包",
     "arg": 3003,
-    "rmb": 3
+    "rmb": 30
   },
   "6204": {
     "type": "limit_gift",
     "name": "哪吒法宝礼包",
     "arg": 3004,
-    "rmb": 3
+    "rmb": 30
   },
   "6205": {
     "type": "limit_gift",
     "name": "女娲法宝礼包",
     "arg": 3005,
-    "rmb": 3
+    "rmb": 30
   },
   "6206": {
     "type": "limit_gift",
     "name": "托塔天王法宝礼包",
     "arg": 3006,
-    "rmb": 3
+    "rmb": 30
   },
   "6207": {
     "type": "limit_gift",
     "name": "五行天尊法宝礼包",
     "arg": 3007,
-    "rmb": 3
+    "rmb": 30
   },
   "6208": {
     "type": "limit_gift",
     "name": "九天玄女法宝礼包",
     "arg": 3008,
-    "rmb": 3
+    "rmb": 30
   },
   "6209": {
     "type": "limit_gift",
     "name": "东海龙王法宝礼包",
     "arg": 3009,
-    "rmb": 3
+    "rmb": 30
   },
   "6210": {
     "type": "limit_gift",
     "name": "东华太一法宝礼包",
     "arg": 3010,
-    "rmb": 3
+    "rmb": 30
   },
   "6211": {
     "type": "limit_gift",
     "name": "碧落神女法宝礼包",
     "arg": 3011,
-    "rmb": 3
+    "rmb": 30
   },
   "6212": {
     "type": "limit_gift",
     "name": "仙乐法宝礼包",
     "arg": 3012,
-    "rmb": 3
+    "rmb": 30
   },
   "6213": {
     "type": "limit_gift",
     "name": "剑灵法宝礼包",
     "arg": 3013,
-    "rmb": 3
+    "rmb": 30
   },
   "6214": {
     "type": "limit_gift",
     "name": "姜子牙法宝礼包",
     "arg": 3014,
-    "rmb": 3
+    "rmb": 30
   },
   "6215": {
     "type": "limit_gift",
     "name": "神农法宝礼包",
     "arg": 3015,
-    "rmb": 3
+    "rmb": 30
   },
   "6216": {
     "type": "limit_gift",
     "name": "大禹法宝礼包",
     "arg": 3016,
-    "rmb": 3
+    "rmb": 30
   },
   "6217": {
     "type": "limit_gift",
     "name": "妲己法宝礼包",
     "arg": 3017,
-    "rmb": 3
+    "rmb": 30
   },
   "6218": {
     "type": "limit_gift",
     "name": "杜康法宝礼包",
     "arg": 3018,
-    "rmb": 3
+    "rmb": 30
   },
   "6219": {
     "type": "limit_gift",
     "name": "轩辕帝法宝礼包",
     "arg": 3019,
-    "rmb": 3
+    "rmb": 30
   },
   "6220": {
     "type": "limit_gift",
     "name": "降魔祖师法宝礼包",
     "arg": 3020,
-    "rmb": 3
+    "rmb": 30
   },
   "6221": {
     "type": "limit_gift",
     "name": "舞华法宝礼包",
     "arg": 3021,
-    "rmb": 3
+    "rmb": 30
   },
   "6222": {
     "type": "limit_gift",
     "name": "后羿法宝礼包",
     "arg": 3022,
-    "rmb": 3
+    "rmb": 30
   },
   "6223": {
     "type": "limit_gift",
     "name": "鬼谷子法宝礼包",
     "arg": 3023,
-    "rmb": 3
+    "rmb": 30
   },
   "6224": {
     "type": "limit_gift",
     "name": "云中子法宝礼包",
     "arg": 3024,
-    "rmb": 3
+    "rmb": 30
   },
   "6225": {
     "type": "limit_gift",
     "name": "蚩尤法宝礼包",
     "arg": 3025,
-    "rmb": 3
+    "rmb": 30
   },
   "6226": {
     "type": "limit_gift",
     "name": "祝融法宝礼包",
     "arg": 3026,
-    "rmb": 3
+    "rmb": 30
   },
   "6227": {
     "type": "limit_gift",
     "name": "风伯法宝礼包",
     "arg": 3027,
-    "rmb": 3
+    "rmb": 30
   },
   "6228": {
     "type": "limit_gift",
     "name": "鬼将法宝礼包",
     "arg": 3028,
-    "rmb": 3
+    "rmb": 30
   },
   "6229": {
     "type": "limit_gift",
     "name": "金翅大鹏法宝礼包",
     "arg": 3029,
-    "rmb": 3
+    "rmb": 30
   },
   "6230": {
     "type": "limit_gift",
     "name": "通臂猿猴法宝礼包",
     "arg": 3030,
-    "rmb": 3
+    "rmb": 30
   },
   "6231": {
     "type": "limit_gift",
     "name": "雨师法宝礼包",
     "arg": 3031,
-    "rmb": 3
+    "rmb": 30
   },
   "6232": {
     "type": "limit_gift",
     "name": "白象法宝礼包",
     "arg": 3032,
-    "rmb": 3
+    "rmb": 30
   },
   "6233": {
     "type": "limit_gift",
     "name": "刑天法宝礼包",
     "arg": 3033,
-    "rmb": 3
+    "rmb": 30
   },
   "6234": {
     "type": "limit_gift",
     "name": "共工法宝礼包",
     "arg": 3034,
-    "rmb": 3
+    "rmb": 30
   },
   "6235": {
     "type": "limit_gift",
     "name": "九尾狐法宝礼包",
     "arg": 3035,
-    "rmb": 3
+    "rmb": 30
   },
   "6236": {
     "type": "limit_gift",
     "name": "银灵子法宝礼包",
     "arg": 3036,
-    "rmb": 3
+    "rmb": 30
   },
   "6237": {
     "type": "limit_gift",
     "name": "瑞兽法宝礼包",
     "arg": 3037,
-    "rmb": 3
+    "rmb": 30
   },
   "6238": {
     "type": "limit_gift",
     "name": "穷奇法宝礼包",
     "arg": 3038,
-    "rmb": 3
+    "rmb": 30
   },
   "6239": {
     "type": "limit_gift",
     "name": "白泽法宝礼包",
     "arg": 3039,
-    "rmb": 3
+    "rmb": 30
   },
   "6240": {
     "type": "limit_gift",
     "name": "饕餮法宝礼包",
     "arg": 3040,
-    "rmb": 3
+    "rmb": 30
   },
   "6241": {
     "type": "limit_gift",
     "name": "仙鹤法宝礼包",
     "arg": 3041,
-    "rmb": 3
+    "rmb": 30
   },
   "6242": {
     "type": "limit_gift",
     "name": "应龙法宝礼包",
     "arg": 3042,
-    "rmb": 3
+    "rmb": 30
   },
   "6243": {
     "type": "limit_gift",
     "name": "凤凰法宝礼包",
     "arg": 3043,
-    "rmb": 3
+    "rmb": 30
   },
   "6244": {
     "type": "limit_gift",
     "name": "烛龙法宝礼包",
     "arg": 3044,
-    "rmb": 3
+    "rmb": 30
   },
   "6245": {
     "type": "limit_gift",
     "name": "幼鲲法宝礼包",
     "arg": 3045,
-    "rmb": 3
+    "rmb": 30
   },
   "6246": {
     "type": "limit_gift",
     "name": "麒麟法宝礼包",
     "arg": 3046,
-    "rmb": 3
+    "rmb": 30
   },
   "6247": {
     "type": "limit_gift",
     "name": "白虎法宝礼包",
     "arg": 3047,
-    "rmb": 3
+    "rmb": 30
   },
   "6248": {
     "type": "limit_gift",
     "name": "龙龟法宝礼包",
     "arg": 3048,
-    "rmb": 3
+    "rmb": 30
   }
 }

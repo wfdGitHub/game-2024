@@ -33,8 +33,8 @@
     "quality": 5
   },
   "204": {
-    "name": "威望",
-    "des": "威望可在三界悬赏中完成任务",
+    "name": "游历值",
+    "des": "游历值可在三界任务中完成任务",
     "type": "currency",
     "quality": 4
   },
@@ -75,8 +75,8 @@
     "quality": 4
   },
   "301": {
-    "name": "英雄积分",
-    "des": "通关招募获得积分，可用于积分抽奖，必定得五星英雄",
+    "name": "召唤积分",
+    "des": "通关召唤获得积分，可用于积分抽奖，必定得五星英雄",
     "type": "currency",
     "quality": 5
   },
@@ -955,7 +955,7 @@
     "quality": 3
   },
   "1000050": {
-    "name": "进阶丹",
+    "name": "进阶石",
     "des": "英雄灵气聚集而成，能够使英雄突破到更高的水平",
     "isBag": true,
     "type": "item",
@@ -965,7 +965,7 @@
     "quality": 3
   },
   "1000070": {
-    "name": "圣灵石",
+    "name": "普通召唤符",
     "des": "有天地灵气自然孕育而成拥有极强的灵气，能拥有吸引英雄",
     "isBag": true,
     "type": "item",
@@ -974,8 +974,8 @@
     "quality": 4
   },
   "1000080": {
-    "name": "女娲石",
-    "des": "女娲补天所用之灵石，散发出的光芒能够吸引3星以上的英雄",
+    "name": "高级召唤符",
+    "des": "有天地灵气自然孕育而成拥有极强的灵气，能拥有吸引英雄",
     "isBag": true,
     "type": "item",
     "gold": 250,
@@ -983,7 +983,7 @@
     "quality": 5
   },
   "1000090": {
-    "name": "普通寻宝图",
+    "name": "幸运寻宝图",
     "des": "记有普通宝藏地点的藏宝图，可以在寻宝中进行一次幸运寻宝",
     "isBag": true,
     "type": "item",
@@ -1001,8 +1001,8 @@
     "quality": 5
   },
   "1000120": {
-    "name": "盘古石",
-    "des": "混沌之灵石，盘古开天后散落，除了灵气外还有神识，能够引领指定种族4-5星英雄",
+    "name": "英雄传记",
+    "des": "记载着英雄事迹的神书，能够召唤指定种族4-5星英雄",
     "isBag": true,
     "type": "item",
     "gold": 2500,
@@ -1011,7 +1011,7 @@
   },
   "1000150": {
     "name": "万能法宝",
-    "des": "女娲用造人剩余泥土捏造而成，可完美契合任何类型法宝，可用于法宝升级",
+    "des": "能够召唤出任何法宝",
     "isBag": true,
     "type": "item",
     "gold": 500,
@@ -1021,21 +1021,21 @@
     "quality": 5
   },
   "1000160": {
-    "name": "刷新券",
-    "des": "用于刷新游历任务",
+    "name": "刷新卡",
+    "des": "用于刷新三界任务",
     "isBag": true,
     "type": "item",
-    "quality": 3
+    "quality": 4
   },
   "1000170": {
-    "name": "挑战券",
+    "name": "挑战卡",
     "des": "用于跨服竞技场挑战",
     "isBag": true,
     "type": "item",
     "quality": 3
   },
   "1000180": {
-    "name": "转化丹",
+    "name": "转换丹",
     "des": "太上老君用天财地宝材料炼制而成，能够将五星英雄转化成同阵营的五星英雄",
     "isBag": true,
     "type": "item",
@@ -1044,7 +1044,7 @@
     "quality": 5
   },
   "1000190": {
-    "name": "渡厄丹",
+    "name": "英雄令",
     "des": "伏羲用先天灵宝炼制而成，能够将五星英雄升级为六星",
     "isBag": true,
     "type": "item",
@@ -1634,7 +1634,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "cb_chest_1"
+    "arg": "cb_chest_1",
+    "quality": 5
   },
   "1005002": {
     "name": "冲榜第2名礼包",
@@ -1642,7 +1643,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "cb_chest_2"
+    "arg": "cb_chest_2",
+    "quality": 5
   },
   "1005003": {
     "name": "冲榜第3名礼包",
@@ -1650,7 +1652,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "cb_chest_3"
+    "arg": "cb_chest_3",
+    "quality": 5
   },
   "1005004": {
     "name": "冲榜第4名礼包",
@@ -1658,7 +1661,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "cb_chest_4"
+    "arg": "cb_chest_4",
+    "quality": 5
   },
   "1005005": {
     "name": "冲榜第5名礼包",
@@ -1666,7 +1670,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "cb_chest_5"
+    "arg": "cb_chest_5",
+    "quality": 5
   },
   "1005006": {
     "name": "冲榜第6名礼包",
@@ -1674,7 +1679,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "cb_chest_6"
+    "arg": "cb_chest_6",
+    "quality": 5
   },
   "1005007": {
     "name": "冲榜第7名礼包",
@@ -1682,7 +1688,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "cb_chest_7"
+    "arg": "cb_chest_7",
+    "quality": 5
   },
   "1005008": {
     "name": "冲榜第8名礼包",
@@ -1690,7 +1697,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "cb_chest_8"
+    "arg": "cb_chest_8",
+    "quality": 5
   },
   "1005009": {
     "name": "冲榜第9名礼包",
@@ -1698,7 +1706,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "cb_chest_9"
+    "arg": "cb_chest_9",
+    "quality": 5
   },
   "1005010": {
     "name": "冲榜第10名礼包",
@@ -1706,7 +1715,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "cb_chest_10"
+    "arg": "cb_chest_10",
+    "quality": 5
   },
   "1005011": {
     "name": "冲榜未上榜礼包",
@@ -1714,7 +1724,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "cb_chest_11"
+    "arg": "cb_chest_11",
+    "quality": 5
   },
   "1005012": {
     "name": "冲榜额外奖励礼包",
@@ -1740,7 +1751,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "lb_chest_6"
+    "arg": "lb_chest_6",
+    "quality": 4
   },
   "1006003": {
     "name": "12元礼包",
@@ -1748,7 +1760,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "lb_chest_12"
+    "arg": "lb_chest_12",
+    "quality": 4
   },
   "1007001": {
     "name": "幸运寻宝礼包",
@@ -1756,7 +1769,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "xylb_chest_1"
+    "arg": "xylb_chest_1",
+    "quality": 4
   },
   "1007002": {
     "name": "高级寻宝礼包",
@@ -1764,7 +1778,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "gjlb_chest_1"
+    "arg": "gjlb_chest_1",
+    "quality": 5
   },
   "1008001": {
     "name": "英雄经验包(小)",
@@ -1772,7 +1787,8 @@
     "isBag": true,
     "type": "item",
     "useType": "box",
-    "arg": "101:60000"
+    "arg": "101:60000",
+    "quality": 2
   },
   "1008002": {
     "name": "英雄经验包(中)",
@@ -1780,7 +1796,8 @@
     "isBag": true,
     "type": "item",
     "useType": "box",
-    "arg": "101:80000"
+    "arg": "101:80000",
+    "quality": 3
   },
   "1008003": {
     "name": "英雄经验包(大)",
@@ -1788,7 +1805,8 @@
     "isBag": true,
     "type": "item",
     "useType": "box",
-    "arg": "101:100000"
+    "arg": "101:100000",
+    "quality": 4
   },
   "1008004": {
     "name": "铜币礼包(小)",
@@ -1796,7 +1814,8 @@
     "isBag": true,
     "type": "item",
     "useType": "box",
-    "arg": "201:300000"
+    "arg": "201:300000",
+    "quality": 2
   },
   "1008005": {
     "name": "铜币礼包(中)",
@@ -1804,7 +1823,8 @@
     "isBag": true,
     "type": "item",
     "useType": "box",
-    "arg": "201:400000"
+    "arg": "201:400000",
+    "quality": 3
   },
   "1008006": {
     "name": "铜币礼包(大)",
@@ -1812,7 +1832,8 @@
     "isBag": true,
     "type": "item",
     "useType": "box",
-    "arg": "201:500000"
+    "arg": "201:500000",
+    "quality": 4
   },
   "1008007": {
     "name": "寻宝达人福袋",
@@ -1820,7 +1841,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "yscj_chest_1"
+    "arg": "yscj_chest_1",
+    "quality": 4
   },
   "1008008": {
     "name": "铜钱福袋",
@@ -1828,7 +1850,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "yscj_chest_2"
+    "arg": "yscj_chest_2",
+    "quality": 4
   },
   "1008009": {
     "name": "元神值福袋",
@@ -1836,7 +1859,8 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "yscj_chest_3"
+    "arg": "yscj_chest_3",
+    "quality": 4
   },
   "1008010": {
     "name": "王者福袋",
@@ -1844,7 +1868,44 @@
     "isBag": true,
     "type": "item",
     "useType": "chest",
-    "arg": "yscj_chest_4"
+    "arg": "yscj_chest_4",
+    "quality": 5
+  },
+  "1009001": {
+    "name": "仙族法宝宝箱",
+    "des": "打开可获得仙族英雄法宝1件",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "xzfb_chest_1",
+    "quality": 5
+  },
+  "1009002": {
+    "name": "人族法宝宝箱",
+    "des": "打开可获得人族英雄法宝1件",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "rzfb_chest_1",
+    "quality": 5
+  },
+  "1009003": {
+    "name": "巫族法宝宝箱",
+    "des": "打开可获得巫族英雄法宝1件",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "wzfb_chest_1",
+    "quality": 5
+  },
+  "1009004": {
+    "name": "兽族法宝宝箱",
+    "des": "打开可获得兽族英雄法宝1件",
+    "isBag": true,
+    "type": "item",
+    "useType": "chest",
+    "arg": "szfb_chest_1",
+    "quality": 5
   },
   "5001010": {
     "name": "短剑",
