@@ -3,6 +3,10 @@
     "name": "成长基金激活花费",
     "value": 16800
   },
+  "war_horn": {
+    "name": "战令激活花费",
+    "value": 12800
+  },
   "normal_card_rmb": {
     "name": "普通月卡激活累计充值",
     "value": 3000

@@ -220,7 +220,7 @@ module.exports = function() {
 				cb(false,"已进阶")
 				return
 			}
-			self.addUserRMB(uid,12800)
+			self.addUserRMB(uid,activity_cfg["war_horn"]["value"])
 			self.setObj(uid,"war_horn","high",1)
 			self.incrbyObj(uid,"war_horn","exp",war_horn[curMonth]["exp"],function(exp) {
 				var awardList = self.addItemStr(uid,war_horn[curMonth]["award"])
