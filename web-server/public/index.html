@@ -489,6 +489,12 @@
             console.log(data);
         });
       }
+      //测试充值
+      var test_recharge = function(pay_id) {
+        pomelo.request("area.activityHandler.test_recharge", {pay_id : pay_id}, function(data) {
+            console.log(data);
+        });
+      }
       //============七日目标============//
       //获取七日目标数据
       var getWeekTargetData = function() {

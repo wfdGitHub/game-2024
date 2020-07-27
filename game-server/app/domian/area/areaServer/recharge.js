@@ -32,36 +32,43 @@ module.exports = function() {
 	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,cb) {
-		if(!pay_cfg[pay_id]){
-			cb(false,"pay_id error")
-			return
+		var call_back = function(uid,flag,data) {
+			if(flag){
+				var notify = {
+					type : "finish_recharge",
+					pay_id : pay_id,
+					data : data
+				}
+				self.sendToUser(uid,notify)
+			}
 		}
 		switch(pay_cfg[pay_id]["type"]){
 			case "lv_fund":
-				this.activateLvFund(uid,cb)
+				this.activateLvFund(uid,call_back.bind(this,uid))
 			break
 			case "highCard":
-				this.activateHighCard(uid,cb)
+				this.activateHighCard(uid,call_back.bind(this,uid))
 			break
 			case "warHorn":
-				this.advanceWarHorn(uid,cb)
+				this.advanceWarHorn(uid,call_back.bind(this,uid))
 			break
 			case "recharge":
-				this.recharge(uid,pay_cfg[pay_id]["arg"],cb)
+				this.recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "box_day":
-				this.buyAwardBagday(uid,pay_cfg[pay_id]["arg"],cb)
+				this.buyAwardBagday(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "box_week":
-				this.buyAwardBagWeek(uid,pay_cfg[pay_id]["arg"],cb)
+				this.buyAwardBagWeek(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "box_month":
-				this.buyAwardBagMonth(uid,pay_cfg[pay_id]["arg"],cb)
+				this.buyAwardBagMonth(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "limit_gift":
-				this.buyLimitGift(uid,pay_cfg[pay_id]["arg"],cb)
+				this.buyLimitGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 		}
+		cb(true)
 	}
 	//充值
 	this.recharge = function(uid,index,cb) {
@@ -74,13 +81,7 @@ module.exports = function() {
 			else
 				rate = recharge[index].normal_rate
 			var award = self.addItem({uid:uid,itemId:202,value:gold,rate:rate})
-			var notify = {
-				type : "recharge",
-				index : index,
-				award : award
-			}
-			self.sendToUser(uid,notify)
-			cb(true)
+			cb(true,[award])
 		})
 	}
 	//激活等级基金
@@ -91,10 +92,6 @@ module.exports = function() {
 			}else{
 				self.setObj(uid,main_name,"lv_fund",1)
 				self.addUserRMB(uid,activity_cfg["grow_lof"]["value"])
-				var notify = {
-					type : "activateLvFund"
-				}
-				self.sendToUser(uid,notify)
 				cb(true)
 			}
 		})
@@ -139,12 +136,7 @@ module.exports = function() {
 				self.chageLordData(uid,"highCard",1)
 				self.addUserRMB(uid,activity_cfg["high_card_lof"]["value"])
 				var awardList = self.addItemStr(uid,activity_cfg["high_card_award"]["value"])
-				var notify = {
-					type : "activateHighCard",
-					awardList : awardList
-				}
-				self.sendToUser(uid,notify)
-				cb(true)
+				cb(true,awardList)
 			}
 		})
 	}
