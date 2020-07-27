@@ -81,7 +81,7 @@ module.exports = function() {
 			else
 				rate = recharge[index].normal_rate
 			var award = self.addItem({uid:uid,itemId:202,value:gold,rate:rate})
-			cb(true,[award])
+			cb(true,{{awardList:[award]})
 		})
 	}
 	//激活等级基金
@@ -136,7 +136,7 @@ module.exports = function() {
 				self.chageLordData(uid,"highCard",1)
 				self.addUserRMB(uid,activity_cfg["high_card_lof"]["value"])
 				var awardList = self.addItemStr(uid,activity_cfg["high_card_award"]["value"])
-				cb(true,awardList)
+				cb(true,{awardList:awardList})
 			}
 		})
 	}
@@ -154,7 +154,7 @@ module.exports = function() {
 			self.addUserRMB(uid,awardBag_day[index].rmb)
 			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
 			var awardList = self.addItemStr(uid,awardBag_day[index].award)
-			cb(true,awardList)
+			cb(true,{awardList:awardList})
 		})
 	}
 	//获取每周礼包与每月礼包购买数据
@@ -183,7 +183,7 @@ module.exports = function() {
 			self.addUserRMB(uid,gift_week[index].rmb)
 			self.incrbyObj(uid,"week_shop",index,1)
 			var awardList = self.addItemStr(uid,gift_week[index].award)
-			cb(true,awardList)
+			cb(true,{awardList:awardList})
 		})
 	}
 	//购买每月礼包
@@ -201,7 +201,7 @@ module.exports = function() {
 			self.addUserRMB(uid,gift_month[index].rmb)
 			self.incrbyObj(uid,"month_shop",index,1)
 			var awardList = self.addItemStr(uid,gift_month[index].award)
-			cb(true,awardList)
+			cb(true,{awardList:awardList})
 		})
 	}
 	//进阶战令
