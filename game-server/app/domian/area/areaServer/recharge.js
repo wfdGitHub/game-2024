@@ -81,7 +81,7 @@ module.exports = function() {
 			else
 				rate = recharge[index].normal_rate
 			var award = self.addItem({uid:uid,itemId:202,value:gold,rate:rate})
-			cb(true,{{awardList:[award]})
+			cb(true,{awardList:[award]})
 		})
 	}
 	//激活等级基金
