@@ -37,10 +37,11 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 	console.log("finishGameOrder",finishGameOrder)
 	var self = this
 	var sql = "select * from game_order where game_order = ?"
-	self.db.query(sql,[otps.game_order], function(err, res) {
+	self.db.query(sql,[otps.otps], function(err, res) {
 		try{
 			res =JSON.parse( JSON.stringify(res))
 		}catch(err){
+			console.err(res)
 			self.faildOrder("订单获取错误",otps)
 		}
 		var data = res[0]
