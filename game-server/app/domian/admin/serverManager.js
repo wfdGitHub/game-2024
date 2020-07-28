@@ -67,8 +67,9 @@ serverManager.prototype.pay_order = function(data,cb) {
 		self.payDao.finishGameOrder(info,function(flag,err,data) {
 			if(flag){
 				//发货
-				var serverId = self.areaDeploy.getServer(data.areaId)
-			    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,data.areaId,data.uid,data.pay_id,function(){})
+				var areaId = self.areaDeploy.getFinalServer(data.areaId)
+				var serverId = self.areaDeploy.getServer(areaId)
+			    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
 			}
 			if(err)
 				cb(false,err)
