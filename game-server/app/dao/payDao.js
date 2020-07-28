@@ -40,34 +40,34 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 	self.db.query(sql,[otps.otps], function(err, res) {
 		try{
 			res =JSON.parse( JSON.stringify(res))
-		}catch(err){
-			console.err(res)
-			self.faildOrder("订单获取错误",otps)
-		}
-		var data = res[0]
-		if(err || !data){
-			console.error("订单不存在",err)
-			self.faildOrder("订单不存在",otps)
-			cb(false,"finishGameOrder game_order err")
-		}else{
-			if(data.status == 0){
-				self.faildOrder("订单已完成",otps,data)
-				cb(false,null,data)
-			}else if(Number(otps.amount) != data.amount){
-				self.faildOrder("充值金额不对应",otps,data)
-				cb(false,"充值金额不对应",data)
+			var data = res[0]
+			if(err || !data){
+				console.error("订单不存在",err)
+				self.faildOrder("订单不存在",otps)
+				cb(false,"finishGameOrder game_order err")
 			}else{
-				if(otps.status != 0){
-					//支付失败
-					sql = 'update game_order SET status=? where game_order = ?'
-					self.db.query(sql,[otps.status,otps.game_order],function(){})
-					cb(false,"充值失败")
+				if(data.status == 0){
+					self.faildOrder("订单已完成",otps,data)
+					cb(false,null,data)
+				}else if(Number(otps.amount) != data.amount){
+					self.faildOrder("充值金额不对应",otps,data)
+					cb(false,"充值金额不对应",data)
 				}else{
-					sql = 'update game_order SET pay_time=?,status=0,order_no=?,channel_code=?,channel_uid=? where game_order = ?'
-					self.db.query(sql,[Date.now(),otps.order_no,otps.channel,otps.channel_uid,otps.game_order],function(){})
-					cb(true,null,data)
+					if(otps.status != 0){
+						//支付失败
+						sql = 'update game_order SET status=? where game_order = ?'
+						self.db.query(sql,[otps.status,otps.game_order],function(){})
+						cb(false,"充值失败")
+					}else{
+						sql = 'update game_order SET pay_time=?,status=0,order_no=?,channel_code=?,channel_uid=? where game_order = ?'
+						self.db.query(sql,[Date.now(),otps.order_no,otps.channel,otps.channel_uid,otps.game_order],function(){})
+						cb(true,null,data)
+					}
 				}
 			}
+		}catch(err){
+			console.err(res)
+			self.faildOrder("订单处理错误",otps)
 		}
 	})
 }
