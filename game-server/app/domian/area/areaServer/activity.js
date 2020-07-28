@@ -254,6 +254,9 @@ module.exports = function() {
 	}
 	//检查vip等级
 	this.checkVipLv = function(uid) {
+		if(!self.players[uid]){
+			return
+		}
 		if(VIP[self.players[uid].vip+1]){
 			if(self.players[uid].rmb >= VIP[self.players[uid].vip+1]["rmb"]){
 				this.incrbyLordData(uid,"vip",1)

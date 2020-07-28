@@ -13,6 +13,7 @@ module.exports = function() {
 				if(!self.players[uid])
 					self.onlineNum++
 				self.players[uid] = info
+				self.checkVipLv(uid)
 				cb()
 			}else{
 				cb("未注册")
