@@ -30,7 +30,6 @@ serverManager.prototype.init = function() {
 	server.use(express.urlencoded());
 	server.use(xmlparser());
 	server.post("/pay_order",function(req,res) {
-		console.log(req.body)
 		var data = req.body
 		self.pay_order(data,function(flag,err) {
 			if(!flag)

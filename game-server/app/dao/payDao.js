@@ -34,7 +34,6 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 }
 //完成充值订单
 payDao.prototype.finishGameOrder = function(otps,cb) {
-	console.log("finishGameOrder",otps)
 	var self = this
 	var sql = "select * from game_order where game_order = ?"
 	self.db.query(sql,[otps.game_order], function(err, res) {
