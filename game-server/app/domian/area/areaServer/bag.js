@@ -209,7 +209,7 @@ module.exports = function() {
 						case 202:
 							if(value < 0)
 								self.incrbyPlayerData(uid,"gold_consume",Math.abs(value))
-							self.cacheDao.saveCache({areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue})
+							self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue})
 						break
 					}
 					var notify = {

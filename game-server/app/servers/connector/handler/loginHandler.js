@@ -187,7 +187,7 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 				session.set("beginTime",Date.now())
 				session.push("beginTime")
 				playerInfo.areaId = areaId
-				self.cacheDao.saveCache(playerInfo)
+				self.cacheDao.saveCache(Object.assign({"messagetype":"login"},playerInfo))
 		        next(null,{flag : flag,msg : playerInfo})
 			}else{
 				next(null,{flag : flag,msg : playerInfo})
