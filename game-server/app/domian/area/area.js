@@ -340,5 +340,8 @@ module.exports = {
 	},{
 		name : "payDao",
 		ref : "payDao"
+	},{
+		name : "cacheDao",
+		ref : "cacheDao"
 	}]
 }

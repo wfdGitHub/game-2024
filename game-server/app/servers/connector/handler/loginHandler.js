@@ -187,6 +187,7 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 				session.set("beginTime",Date.now())
 				session.push("beginTime")
 				playerInfo.areaId = areaId
+				self.cacheDao.saveCache(playerInfo)
 		        next(null,{flag : flag,msg : playerInfo})
 			}else{
 				next(null,{flag : flag,msg : playerInfo})
@@ -222,6 +223,9 @@ module.exports = function(app) {
 	},{
       name : "accountDao",
       ref : "accountDao"
+    },{
+      name : "cacheDao",
+      ref : "cacheDao"
     }]
   })
 };

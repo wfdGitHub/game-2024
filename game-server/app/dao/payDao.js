@@ -64,6 +64,10 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 				}else{
 					sql = 'update game_order SET pay_time=?,status=0,order_no=?,channel_code=?,channel_uid=? where game_order = ?'
 					self.db.query(sql,[Date.now(),otps.order_no,otps.channel,otps.channel_uid,otps.game_order],function(){})
+					otps.uid = data.uid
+					otps.pay_id = data.pay_id
+					otps.areaId = data.areaId
+					self.cacheDao.saveCache(otps)
 					cb(true,null,data)
 				}
 			}
@@ -86,6 +90,9 @@ module.exports = {
 	props : [{
 		name : "redisDao",
 		ref : "redisDao"
+	},{
+		name : "cacheDao",
+		ref : "cacheDao"
 	}]
 }
 
