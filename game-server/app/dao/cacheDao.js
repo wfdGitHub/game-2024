@@ -4,6 +4,7 @@ var RDS_PORT = daoConfig.cache.port
 var RDS_HOST = daoConfig.cache.host
 var RDS_PWD = daoConfig.cache.pwd
 var RDS_OPTS = {auth_pass : RDS_PWD}
+var publish = "mangtu"
 var cacheDao = function() {
 	this.db = false
 }
@@ -16,6 +17,7 @@ cacheDao.prototype.init = function(cb) {
 	})
 }
 cacheDao.prototype.saveCache = function(info) {
+	info.publish = publish
 	this.db.rpush("message",JSON.stringify(info))
 }
 module.exports = {
