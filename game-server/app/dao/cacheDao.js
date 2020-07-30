@@ -13,12 +13,13 @@ cacheDao.prototype.init = function(cb) {
 	this.db = redis.createClient(RDS_PORT,RDS_HOST,RDS_OPTS)
 	var self = this
 	self.db.on("ready",function(res) {
-		cb()
+		self.db.select("15",function(err) {
+		})
 	})
+	cb()
 }
 cacheDao.prototype.saveCache = function(info) {
-	info.publish = publish
-	this.db.rpush("message",JSON.stringify(info))
+	this.db.rpush("message_"+publish,JSON.stringify(info))
 }
 module.exports = {
 	id : "cacheDao",
