@@ -97,6 +97,43 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============山海秘境==========//
+      //获取关卡数据
+      var getMysteriousData = function() {
+        pomelo.request("area.mysteriousHandler.getMysteriousData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战关卡
+      var challengeMysterious = function(lv,verify) {
+        pomelo.request("area.mysteriousHandler.challengeMysterious", {lv:lv,verify:verify}, function(data) {
+            console.log(data);
+        });
+      }
+      //扫荡关卡
+      var mopupMysterious = function(lv) {
+        pomelo.request("area.mysteriousHandler.mopupMysterious", {lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买次数
+      var buyMysteriousCount = function() {
+        pomelo.request("area.mysteriousHandler.buyMysteriousCount", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取章节宝箱
+      var gaintMysteriousBox = function(chapter,index) {
+        pomelo.request("area.mysteriousHandler.gaintMysteriousBox", {chapter:chapter,index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取排行榜
+      var getMysteriousRank = function() {
+        pomelo.request("area.mysteriousHandler.getMysteriousRank", {}, function(data) {
+            console.log(data);
+        });
+      }
       //==============主题招募==========//
       //获取主题招募数据
       var getTopicRecruitData = function() {
@@ -1700,6 +1737,12 @@
       <input id="test" type="button" value="免费元神抽奖" onclick="aceLottoFree()"/>
       <input id="test" type="button" value="单次元神抽奖" onclick="aceLottoOnce()"/>
       <input id="test" type="button" value="十连元神抽奖" onclick="aceLottoMultiple()"/>
+    </div>
+    <div class="g-button">
+      山海秘境 : 
+      <input id="test" type="button" value="山海秘境数据" onclick="getMysteriousData()"/>
+      <input id="test" type="button" value="购买次数" onclick="buyMysteriousCount()"/>
+      <input id="test" type="button" value="排行榜" onclick="getMysteriousRank()"/>
     </div>
   </body>
 </html>

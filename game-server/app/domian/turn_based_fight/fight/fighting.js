@@ -234,8 +234,7 @@ model.prototype.checkOver = function() {
 model.prototype.fightOver = function(winFlag) {
 	// console.log("战斗结束")
 	this.isFight = false
-	let info = {type : "fightOver",winFlag : winFlag,atkTeam:[],defTeam:[]}
-
+	let info = {type : "fightOver",winFlag : winFlag,atkTeam:[],defTeam:[],round : this.round}
 	for(var i = 0;i < teamLength;i++){
 		if(!this.atkTeam[i].isNaN)
 			info.atkTeam.push(this.atkTeam[i].getSimpleInfo())

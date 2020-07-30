@@ -11,6 +11,7 @@
     "arena": 0,
     "fb": 0,
     "ttt": 0,
+    "mysterious": 0,
     "heroAmount": 0,
     "bazaar_1": 0,
     "bazaar_2": 0,
@@ -25,6 +26,7 @@
     "discount": 0.3,
     "quick": 1,
     "onhookAward": 0.05,
+    "mysterious": 1,
     "heroAmount": 0
   },
   "2": {
@@ -38,6 +40,7 @@
     "onhookAward": 0.1,
     "onhookTime": 1,
     "arena": 5,
+    "mysterious": 2,
     "heroAmount": 10
   },
   "3": {
@@ -52,6 +55,7 @@
     "onhookTime": 1,
     "arena": 5,
     "fb": 1,
+    "mysterious": 3,
     "heroAmount": 20
   },
   "4": {
@@ -67,6 +71,7 @@
     "arena": 6,
     "fb": 1,
     "ttt": 1,
+    "mysterious": 4,
     "heroAmount": 30,
     "bazaar_1": 30
   },
@@ -83,6 +88,7 @@
     "arena": 6,
     "fb": 1,
     "ttt": 1,
+    "mysterious": 5,
     "heroAmount": 40,
     "bazaar_1": 30,
     "bazaar_2": 20
@@ -100,6 +106,7 @@
     "arena": 7,
     "fb": 1,
     "ttt": 1,
+    "mysterious": 6,
     "heroAmount": 50,
     "bazaar_1": 40,
     "bazaar_2": 20,
@@ -118,6 +125,7 @@
     "arena": 7,
     "fb": 2,
     "ttt": 2,
+    "mysterious": 7,
     "heroAmount": 60,
     "bazaar_1": 40,
     "bazaar_2": 40,
@@ -136,6 +144,7 @@
     "arena": 8,
     "fb": 2,
     "ttt": 2,
+    "mysterious": 8,
     "heroAmount": 70,
     "bazaar_1": 50,
     "bazaar_2": 40,
@@ -154,6 +163,7 @@
     "arena": 8,
     "fb": 2,
     "ttt": 2,
+    "mysterious": 9,
     "heroAmount": 80,
     "bazaar_1": 50,
     "bazaar_2": 60,
@@ -172,6 +182,7 @@
     "arena": 9,
     "fb": 2,
     "ttt": 3,
+    "mysterious": 10,
     "heroAmount": 90,
     "bazaar_1": 60,
     "bazaar_2": 60,
@@ -190,6 +201,7 @@
     "arena": 9,
     "fb": 3,
     "ttt": 3,
+    "mysterious": 11,
     "heroAmount": 100,
     "bazaar_1": 60,
     "bazaar_2": 80,
@@ -208,6 +220,7 @@
     "arena": 10,
     "fb": 3,
     "ttt": 3,
+    "mysterious": 12,
     "heroAmount": 120,
     "bazaar_1": 70,
     "bazaar_2": 80,
@@ -226,6 +239,7 @@
     "arena": 10,
     "fb": 3,
     "ttt": 4,
+    "mysterious": 13,
     "heroAmount": 140,
     "bazaar_1": 70,
     "bazaar_2": 100,
