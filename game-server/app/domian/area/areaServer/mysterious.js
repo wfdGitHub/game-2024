@@ -163,18 +163,18 @@ module.exports = function() {
 		var buyCount = VIP[self.players[uid]["vip"]]["mysterious"]
 		self.getObj(uid,main_name,"buy",function(buy) {
 			buy = Number(buy) || 0
-			if(buy >= buyCount + mysterious_cfg["buy_count"]["value"]){
-				cb(false,"已达到购买限制")
-			}else{
+			// if(buy >= buyCount + mysterious_cfg["buy_count"]["value"]){
+			// 	cb(false,"已达到购买限制")
+			// }else{
 				self.consumeItems(uid,mysterious_cfg["buy_pc"]["value"],1,function(flag,err) {
 					if(flag){
 						self.incrbyObj(uid,main_name,"buy",1)
 						cb(true,buy+1)
 					}else{
-						cb(false,"购买次数不足")
+						cb(false,"元宝不足")
 					}
 				})
-			}
+			// }
 		})
 	}
 	//领取章节宝箱
