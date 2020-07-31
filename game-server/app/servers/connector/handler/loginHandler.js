@@ -96,7 +96,7 @@ loginHandler.prototype.register = function(msg, session, next) {
         next(null,{flag : false,err : "服务器不存在"})
         return
     }
-    if(!Number.isInteger(oriId) || typeof(name) !== "string"){
+    if(oriId != Number(oriId) || typeof(name) !== "string"){
         next(null,{flag : false,err : "参数错误"})
         return
     }
