@@ -68,6 +68,7 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 					otps.pay_id = data.pay_id
 					otps.areaId = data.areaId
 					otps.messagetype = "finishGameOrder"
+					otps.goodsName = pay_cfg[data.pay_id]["name"]
 					self.cacheDao.saveCache(otps)
 					cb(true,null,data)
 				}
