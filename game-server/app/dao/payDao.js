@@ -21,7 +21,8 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 		create_time : Date.now(),
 		status : 2,
 		areaId : otps.areaId,
-		extras_params : otps.extras_params || ""
+		extras_params : otps.extras_params || "",
+		heroLv : 1
 	}
 	this.db.query(sql,info, function(err, res) {
 		if (err) {

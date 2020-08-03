@@ -211,6 +211,8 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 				break
 				case "lv":
 					self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
+					if(self.areaManager.areaMap[areaId].players[uid] && self.areaManager.areaMap[areaId].players[uid]["heroLv"] < data)
+						self.areaManager.areaMap[areaId].chageLordData(uid,"heroLv",data)
 				break
 				case "ad":
 					self.areaManager.areaMap[areaId].taskUpdate(uid,"heroAd",1,data)

@@ -1,7 +1,7 @@
 //主公相关
 var lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 var main_name = "playerInfo"
-var numberAtt = ["accId","createTime","rmb","vip","rmb_day","exp","level","heroAmount"]
+var numberAtt = ["accId","createTime","rmb","vip","rmb_day","exp","level","heroAmount","heroLv"]
 module.exports = function() {
 	var self = this
 	//加载主公数据
@@ -9,7 +9,7 @@ module.exports = function() {
 		self.playerDao.getPlayerInfo({uid : uid},function(info) {
 			if(info){
 				for(var i = 0;i < numberAtt.length;i++)
-					info[numberAtt[i]] = Number(info[numberAtt[i]])
+					info[numberAtt[i]] = Number(info[numberAtt[i]]) || 0
 				if(!self.players[uid])
 					self.onlineNum++
 				self.players[uid] = info
@@ -73,6 +73,12 @@ module.exports = function() {
 		if(self.players[uid])
 			return self.players[uid]["level"]
 		else return 1
+	}
+	//获取最大英雄等级
+	this.getLordAtt = function(uid,key) {
+		if(self.players[uid])
+			return self.players[uid][key]
+		else return 0
 	}
 	//主公升级检查
 	this.checkLordUpgrade = function(uid,exp) {

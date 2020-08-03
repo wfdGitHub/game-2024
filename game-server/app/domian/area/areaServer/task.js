@@ -83,6 +83,9 @@ module.exports = function() {
 			case "battleNum":
 				value = this.getTeamNum(uid) >= task_cfg[taskId]["arg"] ? 1 : 0
 			break
+			case "heroLv":
+				value = this.getLordAtt(uid,"heroLv") >= task_cfg[taskId]["arg"] ? 1 : 0
+			break
 		}
 		self.setObj(uid,main_name,taskId,value || 0)
 		if(userTaskLists[uid])
