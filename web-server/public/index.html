@@ -67,6 +67,33 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============主题招募==========//
+      //获取主题招募数据
+      var getTopicRecruitData = function() {
+        pomelo.request("area.recruitHandler.getTopicRecruitData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //主题招募一次
+      var topicRecruitOnce = function() {
+        pomelo.request("area.recruitHandler.topicRecruitOnce", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //主题招募十次
+      var topicRecruitMultiple = function() {
+        pomelo.request("area.recruitHandler.topicRecruitMultiple", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取主题招募奖励
+      var gainTopicRecruitBoxAward = function(index) {
+        pomelo.request("area.recruitHandler.gainTopicRecruitBoxAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+
+
       //充值天数礼包
       var gainRPayDaysAward = function(id) {
         pomelo.request("area.activityHandler.gainRPayDaysAward", {id:id}, function(data) {
@@ -1570,7 +1597,7 @@
   <body>
     <div class="g-button">
       登录系统 : 
-      <input id="test" type="button" value="登录账号" onclick="entry(10005)"/>
+      <input id="test" type="button" value="登录账号" onclick="entry(10015)"/>
       <input id="test" type="button" value="游客账号" onclick="entry(Date.now())"/>
       <input id="test" type="button" value="注册角色" onclick="register(2,''+Date.now(),1)"/>
       <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>

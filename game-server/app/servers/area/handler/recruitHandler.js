@@ -2,7 +2,6 @@ var bearcat = require("bearcat")
 var heros = require("../../../../config/gameCfg/heros.json")
 var recruit_base = require("../../../../config/gameCfg/recruit_base.json")
 var recruit_list = require("../../../../config/gameCfg/recruit_list.json")
-var heros = require("../../../../config/gameCfg/heros.json")
 var recruitHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
@@ -71,6 +70,56 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
         }
         next(null,{flag : true,heroInfos : heroInfos})
       })
+  })
+}
+//获取主题招募数据
+recruitHandler.prototype.getTopicRecruitData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getTopicRecruitData(uid,function(flag,data) {
+    next(null,{flag : true,data : data})
+  })
+}
+//主题招募一次
+recruitHandler.prototype.topicRecruitOnce = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
+  var self = this
+  self.heroDao.getHeroAmount(oriId,uid,function(flag,info) {
+      if(info.cur + 1 > info.max){
+        next(null,{flag : false,data : "武将背包已满"})
+        return
+      }
+      self.areaManager.areaMap[areaId].topicRecruitOnce(uid,function(flag,heroInfos) {
+        next(null,{flag : true,heroInfos : heroInfos})
+      })
+  })
+}
+//主题招募十次
+recruitHandler.prototype.topicRecruitMultiple = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
+  var self = this
+  self.heroDao.getHeroAmount(oriId,uid,function(flag,info) {
+      if(info.cur + 10 > info.max){
+        next(null,{flag : false,data : "武将背包已满"})
+        return
+      }
+      self.areaManager.areaMap[areaId].topicRecruitMultiple(uid,function(flag,heroInfos) {
+        next(null,{flag : true,heroInfos : heroInfos})
+      })
+  })
+}
+//领取主题招募奖励
+recruitHandler.prototype.gainTopicRecruitBoxAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
+  var index = msg.index
+  this.areaManager.areaMap[areaId].gainTopicRecruitBoxAward(uid,index,function(flag,data) {
+    next(null,{flag : true,data : data})
   })
 }
 module.exports = function(app) {
