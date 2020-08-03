@@ -15,6 +15,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		exp : 0,
 		level : 1,
 		heroAmount : 100,
+		heroLv : 1,
 		dayStr : 0
 	}
 	var self = this
