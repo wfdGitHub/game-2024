@@ -296,6 +296,24 @@
             console.log(data);
         });
       }
+      //获取每周礼包与每月礼包购买记录
+      var getWeekAndMonthRecord = function() {
+        pomelo.request("area.activityHandler.getWeekAndMonthRecord", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买每周礼包
+      var buyAwardBagWeek = function(index) {
+        pomelo.request("area.activityHandler.buyAwardBagWeek", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买每月礼包
+      var buyAwardBagMonth = function(index) {
+        pomelo.request("area.activityHandler.buyAwardBagMonth", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
       //领取消耗活动奖励
       var gainConsumeTotalAward = function(index) {
         pomelo.request("area.activityHandler.gainConsumeTotalAward", {index:index}, function(data) {

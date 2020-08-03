@@ -5,6 +5,8 @@ const activity_cfg = require("../../../../config/gameCfg/activity_cfg.json")
 const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
 const war_horn = require("../../../../config/gameCfg/war_horn.json")
 const gift_list = require("../../../../config/gameCfg/gift_list.json")
+const gift_week = require("../../../../config/gameCfg/gift_week.json")
+const gift_month = require("../../../../config/gameCfg/gift_month.json")
 const main_name = "activity"
 module.exports = function() {
 	var self = this
@@ -113,6 +115,53 @@ module.exports = function() {
 			self.addUserRMB(uid,awardBag_day[index].rmb)
 			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
 			var awardList = self.addItemStr(uid,awardBag_day[index].award)
+			cb(true,awardList)
+		})
+	}
+	//获取每周礼包与每月礼包购买数据
+	this.getWeekAndMonthRecord = function(uid,cb) {
+		var info = {}
+		self.getObjAll(uid,"week_shop",function(data) {
+			info.week_shop = data || {}
+			self.getObjAll(uid,"month_shop",function(data) {
+				info.month_shop = data || {}
+				cb(true,info)
+			})
+		})
+	}
+	//购买每周礼包
+	this.buyAwardBagWeek = function(uid,index,cb) {
+		if(!index || !gift_week[index]){
+			cb(false,"礼包不存在")
+			return
+		}
+		self.getObj(uid,"week_shop",index,function(data) {
+			data = Number(data) || 0
+			if(data >= gift_week[index]["limit"]){
+				cb(false,"已限购")
+				return
+			}
+			self.addUserRMB(uid,gift_week[index].rmb)
+			self.incrbyObj(uid,"week_shop",index,1)
+			var awardList = self.addItemStr(uid,gift_week[index].award)
+			cb(true,awardList)
+		})
+	}
+	//购买每月礼包
+	this.buyAwardBagMonth = function(uid,index,cb) {
+		if(!index || !gift_month[index]){
+			cb(false,"礼包不存在")
+			return
+		}
+		self.getObj(uid,"month_shop",index,function(data) {
+			data = Number(data) || 0
+			if(data >= gift_month[index]["limit"]){
+				cb(false,"已限购")
+				return
+			}
+			self.addUserRMB(uid,gift_month[index].rmb)
+			self.incrbyObj(uid,"month_shop",index,1)
+			var awardList = self.addItemStr(uid,gift_month[index].award)
 			cb(true,awardList)
 		})
 	}

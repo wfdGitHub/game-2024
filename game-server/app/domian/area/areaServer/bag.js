@@ -6,6 +6,7 @@ var chest_cfg = require("../../../../config/gameCfg/chest_cfg.json")
 var equip_base = require("../../../../config/gameCfg/equip_base.json")
 var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var heros = require("../../../../config/gameCfg/heros.json")
+var util = require("../../../../util/util.js")
 var async = require("async")
 module.exports = function() {
 	var self = this
@@ -341,6 +342,22 @@ module.exports = function() {
 	//商城每日刷新
 	this.shopRefresh = function(uid) {
 		self.delObjAll(uid,"shop")
+		self.getPlayerData(uid,"week_record",function(data) {
+			var week_record = util.getWeek()
+			if(data != week_record){
+				console.log("跨周刷新",data,week_record)
+				self.setPlayerData(uid,"week_record",week_record)
+				self.delObjAll(uid,"week_shop")
+			}
+		})
+		self.getPlayerData(uid,"month_record",function(data) {
+			var month_record = util.getMonth()
+			if(data != month_record){
+				console.log("跨月刷新",data,month_record)
+				self.setPlayerData(uid,"month_record",month_record)
+				self.delObjAll(uid,"month_shop")
+			}
+		})
 	}
 	//商城购买物品
 	this.buyShop = function(uid,shopId,count,cb) {

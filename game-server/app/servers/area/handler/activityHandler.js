@@ -64,6 +64,32 @@ activityHandler.prototype.buyAwardBagday = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//获取每周礼包与每月礼包购买记录
+activityHandler.prototype.getWeekAndMonthRecord = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getWeekAndMonthRecord(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//购买每周礼包
+activityHandler.prototype.buyAwardBagWeek = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  this.areaManager.areaMap[areaId].buyAwardBagWeek(uid,index,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//购买每月礼包
+activityHandler.prototype.buyAwardBagMonth = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  this.areaManager.areaMap[areaId].buyAwardBagMonth(uid,index,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //领取首充礼包
 activityHandler.prototype.gainFirstRechargeAward = function(msg, session, next) {
   var uid = session.uid
