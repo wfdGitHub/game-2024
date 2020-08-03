@@ -56,11 +56,9 @@ util.prototype.getWeek = function(){
 //获取今年第几周
 util.prototype.getWeekNum = function() {
     let d1 = new Date();
-    let d2 = new Date();
-    d2.setMonth(0);
-    d2.setDate(1);
+    let d2 = new Date(345600000);
     let rq = d1 - d2;
-    let days = Math.ceil(rq / (24 * 60 * 60 * 1000));
+    let days = Math.ceil(rq / (86400000));
     let num = Math.ceil(days / 7);
     return num+1;
 }
