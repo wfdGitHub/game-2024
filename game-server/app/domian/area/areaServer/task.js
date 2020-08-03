@@ -221,20 +221,22 @@ module.exports = function() {
 		if(userTaskMaps[uid] && userTaskMaps[uid][type]){
 			for(let i = 0;i < userTaskMaps[uid][type].length;i++){
 				let taskId = userTaskMaps[uid][type][i]
-				if(!arg || (task_type[type].equal && arg == task_cfg[taskId].arg) || (!task_type[type].equal && arg >= task_cfg[taskId].arg)){
-					if(type == "totalCe"){
-						userTaskLists[uid][taskId] = value
-						self.setObj(uid,main_name,taskId,value)
-					}else{
-						userTaskLists[uid][taskId] += value
-						self.incrbyObj(uid,main_name,taskId,value)
+				if(userTaskLists[uid][taskId] < task_cfg[taskId]["value"]){
+					if(!arg || (task_type[type].equal && arg == task_cfg[taskId].arg) || (!task_type[type].equal && arg >= task_cfg[taskId].arg)){
+						if(type == "totalCe"){
+							userTaskLists[uid][taskId] = value
+							self.setObj(uid,main_name,taskId,value)
+						}else{
+							userTaskLists[uid][taskId] += value
+							self.incrbyObj(uid,main_name,taskId,value)
+						}
+						var notify = {
+							"type" : "taskUpdate",
+							"taskId" : taskId,
+							"value" : userTaskLists[uid][taskId]
+						}
+						self.sendToUser(uid,notify)
 					}
-					var notify = {
-						"type" : "taskUpdate",
-						"taskId" : taskId,
-						"value" : userTaskLists[uid][taskId]
-					}
-					self.sendToUser(uid,notify)
 				}
 			}
 		}
