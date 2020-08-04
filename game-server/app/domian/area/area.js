@@ -26,7 +26,6 @@ var area = function(otps,app) {
 	this.onlineNum = 0
 	this.fightInfos = {}
 	this.fightContorl = fightContorlFun
-	this.heroId = 10001
 	this.dayStr = ""
 	this.crossUids = {}
 	this.timer = 0
