@@ -31,7 +31,7 @@ bearcat.start(function() {
         });
     })
     app.configure('production|development', 'area', function() {
-      app.before(areaFilter());
+      app.filter(areaFilter());
       app.filter(pomelo.filters.serial());
     });
     app.configure('production|development', 'chat', function() {
