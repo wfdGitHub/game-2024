@@ -135,7 +135,8 @@ module.exports = function() {
 		  	// console.log("rate ",rate,"awardTime ",awardTime)
 		  	self.taskUpdate(uid,"on_hook",1)
 		  	var awardList = self.addItemStr(uid,on_hook_award,rate)
-		  	var awardStr = self.gainOnhookItem(level,awardTime/60)
+		  	if(awardStr)
+		  		var awardStr = self.gainOnhookItem(level,awardTime/60)
 		  	awardList = awardList.concat(self.addItemStr(uid,awardStr))
 		  	cb(true,{allTime : tmpTime,awardTime : awardTime,awardList : awardList})
 		})
@@ -191,7 +192,8 @@ module.exports = function() {
 			  	rate = 120 * rate
 			  	var awardList = self.addItemStr(uid,on_hook_award,rate)
 			  	var awardStr = self.gainOnhookItem(level,120)
-			  	awardList = awardList.concat(self.addItemStr(uid,awardStr))
+			  	if(awardStr)
+			  		awardList = awardList.concat(self.addItemStr(uid,awardStr))
 			  	self.taskUpdate(uid,"quick",1)
 			  	cb(true,{awardList : awardList})
 			}
