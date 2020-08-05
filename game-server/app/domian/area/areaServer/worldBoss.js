@@ -145,7 +145,7 @@ module.exports = function() {
 		userCounts[uid]++
 	    let seededNum = Date.now()
 	    let defTeam = bossTeam.concat([])
-		defTeam = this.standardTeam(uid,defTeam,5)
+		defTeam = this.standardTeam(uid,defTeam,"worldBoss")
 		defTeam[4].maxHP = 999999999
 		let fightRound = world_boss_cfg["fightRound"]["value"]
 		let fightOtps = {seededNum : seededNum,maxRound:fightRound}

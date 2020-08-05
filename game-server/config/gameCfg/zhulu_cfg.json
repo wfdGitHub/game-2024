@@ -19,18 +19,6 @@
     "name": "商城权重",
     "value": 30
   },
-  "normal_dl": {
-    "name": "普通怪难度等级",
-    "value": 2
-  },
-  "elite_dl": {
-    "name": "精英怪难度等级",
-    "value": 3
-  },
-  "boss_dl": {
-    "name": "BOSS怪难度等级",
-    "value": 4
-  },
   "box1": {
     "name": "第一层宝箱",
     "value": "209:1000"
