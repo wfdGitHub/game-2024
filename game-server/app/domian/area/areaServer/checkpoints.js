@@ -1,10 +1,18 @@
 const checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
 const checkpoints_task = require("../../../../config/gameCfg/checkpoints_task.json")
+const equip_base = require("../../../../config/gameCfg/equip_base.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 const activity_cfg = require("../../../../config/gameCfg/activity_cfg.json")
 const chapter = require("../../../../config/gameCfg/chapter.json")
 var async = require("async")
 module.exports = function() {
+	var equip_list = {}
+	for(var i in equip_base){
+		if(!equip_list[equip_base[i]["lv"]]){
+			equip_list[equip_base[i]["lv"]] = []
+		}
+		equip_list[equip_base[i]["lv"]].push(i)
+	}
 	var self = this
 	var userCheckpoints = {}
 	//加载角色关卡数据
@@ -127,6 +135,8 @@ module.exports = function() {
 		  	// console.log("rate ",rate,"awardTime ",awardTime)
 		  	self.taskUpdate(uid,"on_hook",1)
 		  	var awardList = self.addItemStr(uid,on_hook_award,rate)
+		  	var awardStr = self.gainOnhookItem(level,awardTime/60)
+		  	awardList = awardList.concat(self.addItemStr(uid,awardStr))
 		  	cb(true,{allTime : tmpTime,awardTime : awardTime,awardList : awardList})
 		})
 	}
@@ -180,12 +190,44 @@ module.exports = function() {
 			  		rate += activity_cfg["high_card_onhook"]["value"]
 			  	rate = 120 * rate
 			  	var awardList = self.addItemStr(uid,on_hook_award,rate)
+			  	var awardStr = self.gainOnhookItem(level,120)
+			  	awardList = awardList.concat(self.addItemStr(uid,awardStr))
 			  	self.taskUpdate(uid,"quick",1)
 			  	cb(true,{awardList : awardList})
 			}
 		],function(err) {
 			cb(false,err)
 		})
+	}
+	//获取挂机道具
+	this.gainOnhookItem = function(level,time) {
+		var equipLv = checkpointsCfg[level]["equip"] || 0
+		equipLv -= 2
+		if(equipLv <= 1)
+			equipLv = 1
+		var count = Math.floor(time / 60)
+		if(time % 60 / 60 > Math.random())
+			count++
+		if(count > 10)
+			count = 10
+		var list = []
+		while(count > 0){
+			if((count > 4) || (count > 3 && list.length == 0)){
+				list.push(1)
+				count -= 3
+			}else{
+				list.push(0)
+				count -= 1
+			}
+		}
+		var awardStr = ""
+		for(var i = 0;i < list.length;i++){
+			var lv = equipLv + list[i]
+			if(i != 0)
+				awardStr += "&"
+			awardStr += equip_list[lv][Math.floor(equip_list[lv].length * Math.random())] + ":1"
+		}
+		return awardStr
 	}
 	//获取关卡任务数据
 	this.getCTaskInfo = function(uid,cb) {
