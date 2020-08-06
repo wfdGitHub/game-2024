@@ -25,7 +25,7 @@ bearcat.start(function() {
         {
           connector : pomelo.connectors.hybridconnector,
           heartbeat : 30,
-          disconnectOnTimeout : false,
+          disconnectOnTimeout : true,
           useDict : true,
           useProtobuf : true
         });

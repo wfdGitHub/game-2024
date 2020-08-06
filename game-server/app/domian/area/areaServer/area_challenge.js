@@ -1,7 +1,7 @@
 //挑战山海
 const area_challenge = require("../../../../config/gameCfg/area_challenge.json")
 const main_name = "area_challenge"
-for(var i = 1;i <= 3;i++)
+for(var i in area_challenge)
 	for(var j = 1;j <= 3;j++)
 		area_challenge[i]["team"+j] = JSON.parse(area_challenge[i]["team"+j])
 module.exports = function() {
