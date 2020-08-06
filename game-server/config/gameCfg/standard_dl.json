@@ -21,5 +21,10 @@
     "amplify": 0.3,
     "reduction": 0.2,
     "ce_add": 1.75
+  },
+  "invade": {
+    "self_maxHP_add": 0.2,
+    "amplify": -0.2,
+    "ce_add": 1
   }
 }

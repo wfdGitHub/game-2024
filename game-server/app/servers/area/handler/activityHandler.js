@@ -23,6 +23,14 @@ activityHandler.prototype.test_recharge = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//挑战魔物入侵
+activityHandler.prototype.challengeInvade = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].challengeInvade(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //领取充值天数礼包
 activityHandler.prototype.gainRPayDaysAward = function(msg, session, next) {
   var uid = session.uid

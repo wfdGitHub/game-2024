@@ -79,7 +79,7 @@ module.exports = function() {
 			    // }
 			    var info = {}
 			    info.winFlag = winFlag
-			    if(true || winFlag){
+			    if(winFlag){
 			    	var record = self.fightContorl.getFightRecord()
 			    	var overInfo = record[record.length - 1]
 			    	var starState = [1,0,0]

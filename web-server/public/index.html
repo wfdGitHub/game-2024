@@ -97,6 +97,12 @@
         console.log("onChat")
         console.log(data)
       })
+      //挑战魔物入侵
+      var challengeInvade = function() {
+        pomelo.request("area.activityHandler.challengeInvade", {}, function(data) {
+            console.log(data);
+        });
+      }
       //==============山海秘境==========//
       //获取关卡数据
       var getMysteriousData = function() {

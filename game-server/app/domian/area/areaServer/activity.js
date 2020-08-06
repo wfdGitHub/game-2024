@@ -11,6 +11,8 @@ const VIP = require("../../../../config/gameCfg/VIP.json")
 const consumeTotal = require("../../../../config/gameCfg/consumeTotal.json")
 const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
 const pay_days = require("../../../../config/gameCfg/pay_days.json")
+const invade = require("../../../../config/gameCfg/invade.json")
+const invade_team = JSON.parse(invade["mon_team"]["value"])
 var util = require("../../../../util/util.js")
 const main_name = "activity"
 module.exports = function() {
@@ -27,7 +29,8 @@ module.exports = function() {
 		"normalAward" : 0,
 		"highAward" : 0,
 		"recharge_day_1" : 0,
-		"recharge_day_2" : 0
+		"recharge_day_2" : 0,
+		"invade" : 0
 	}
 	//获得活动数据
 	this.getActivityData = function(uid,cb) {
@@ -35,6 +38,50 @@ module.exports = function() {
 			for(let i in data)
 				data[i] = Number(data[i])
 			cb(true,data)
+		})
+	}
+	//挑战魔物入侵
+	this.challengeInvade = function(uid,cb) {
+		var curTime = util.getDayMilliseconds()
+		if(curTime < invade["beginTime"]["value"] || curTime > invade["endTime"]["value"]){
+			cb(false,"未到开放时间")
+			return
+		}
+		self.getObj(uid,main_name,"invade",function(count) {
+			count = Number(count) || 0
+			if(count >= invade["count"]["value"]){
+				cb(false,"挑战次数已满")
+			}else{
+				var defTeam = invade_team[Math.floor(Math.random() * invade_team.length)].concat()
+				defTeam = self.standardTeam(uid,defTeam,"invade")
+				var lv = self.getLordLv(uid)
+				var atkTeam = self.getUserTeam(uid)
+				var seededNum = Date.now()
+			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+			    var record = self.fightContorl.getFightRecord()
+			    var info = {
+			    	atkTeam : atkTeam,
+			    	defTeam : defTeam,
+			    	seededNum : seededNum,
+			    	winFlag : winFlag
+			    }
+			    if(winFlag){
+			    	self.incrbyObj(uid,main_name,"invade",1)
+			    	var rate = invade["base_rate"]["value"] + lv * invade["lv_rate"]["value"]
+			    	var awardList = self.addItemStr(uid,invade["base_award"]["value"],rate)
+			    	var record = self.fightContorl.getFightRecord()
+			    	var overInfo = record[record.length - 1]
+			    	var round = overInfo.round
+			    	if(round > 5)
+			    		round = 5
+			    	awardList = awardList.concat(self.openChestStr(uid,invade["round_"+round]["value"]))
+			    	info.awardList = awardList
+			    	info.count = ++count
+			    	cb(true,info)
+			    }else{
+			    	cb(true,info)
+			    }
+			}
 		})
 	}
 	//活动数据更新
@@ -66,6 +113,7 @@ module.exports = function() {
 			data["vip_day_award"] = 0
 			data["recharge_day_1"] = 0
 			data["recharge_day_2"] = 0
+			data["invade"] = 0
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
 			}
