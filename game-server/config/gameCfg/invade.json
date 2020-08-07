@@ -5,7 +5,7 @@
   },
   "base_award": {
     "name": "基础奖励",
-    "value": "201:100&202:100"
+    "value": "101:1000&201:1000"
   },
   "base_rate": {
     "name": "奖励基数",
@@ -13,27 +13,27 @@
   },
   "lv_rate": {
     "name": "等级基数",
-    "value": 1
+    "value": 10
   },
   "round_1": {
     "name": "第1回合奖励",
-    "value": "cb_chest_1"
+    "value": "mwrq_chest_1"
   },
   "round_2": {
     "name": "第2回合奖励",
-    "value": "cb_chest_2"
+    "value": "mwrq_chest_2"
   },
   "round_3": {
     "name": "第3回合奖励",
-    "value": "cb_chest_3"
+    "value": "mwrq_chest_3"
   },
   "round_4": {
     "name": "第4回合奖励",
-    "value": "cb_chest_4"
+    "value": "mwrq_chest_4"
   },
   "round_5": {
     "name": "第5回合奖励",
-    "value": "cb_chest_5"
+    "value": "mwrq_chest_5"
   },
   "beginTime": {
     "name": "开始时间",
@@ -46,5 +46,9 @@
   "count": {
     "name": "挑战次数",
     "value": 20
+  },
+  "show": {
+    "name": "展示物品",
+    "value": "[202,1000080,1000090,504000,505000]"
   }
 }

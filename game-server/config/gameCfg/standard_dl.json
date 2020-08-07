@@ -24,7 +24,7 @@
   },
   "invade": {
     "self_maxHP_add": 0.2,
-    "amplify": -0.2,
+    "amplify": -0.3,
     "ce_add": 1
   }
 }

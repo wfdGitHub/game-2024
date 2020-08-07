@@ -31,16 +31,6 @@ module.exports = function() {
 		var level = 0
 		async.waterfall([
 			function(next) {
-				//判断主角等级
-				let lv = self.getLordLv(uid)
-				if(lv < ttttower_cfg["open"]["value"]){
-					console.error("openLevel "+lv+" / "+ttttower_cfg["open"]["value"])
-					next("等级不足")
-				}else{
-					next()
-				}
-			},
-			function(next) {
 				//获取通天塔数据
 				self.getTTTInfo(uid,function(info) {
 					level = info.level + 1
