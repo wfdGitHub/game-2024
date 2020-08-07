@@ -30,13 +30,13 @@ var model = function(otps,character) {
 	this.kill_amp = otps.kill_amp || 0					//每击杀一个目标提升伤害
 	this.self_heal = otps.self_heal || 0 				//自身生命值恢复比例
 	if(otps.burn_att_change_skill)
-		this.burn_att_change_skill = JSON.parse(otps.burn_att_change_skill)			//灼烧状态属性修改
+		this.burn_att_change_skill = JSON.parse(otps.burn_att_change_skill)			//技能时 灼烧状态属性修改
 	if(otps.burn_buff_change_skill)
-		this.burn_buff_change_skill = JSON.parse(otps.burn_buff_change_skill)		//灼烧状态附加BUFF修改
+		this.burn_buff_change_skill = JSON.parse(otps.burn_buff_change_skill)		//技能时 灼烧状态附加BUFF修改
 	if(otps.burn_att_change_normal)
-		this.burn_att_change_normal = JSON.parse(otps.burn_att_change_normal)			//灼烧状态属性修改
+		this.burn_att_change_normal = JSON.parse(otps.burn_att_change_normal)		//普攻时 灼烧状态属性修改
 	if(otps.burn_buff_change_normal)
-		this.burn_buff_change_normal = JSON.parse(otps.burn_buff_change_normal)		//灼烧状态附加BUFF修改
+		this.burn_buff_change_normal = JSON.parse(otps.burn_buff_change_normal)		//普攻时 灼烧状态附加BUFF修改
 }
 model.prototype.getInfo = function() {
 	var info = {
