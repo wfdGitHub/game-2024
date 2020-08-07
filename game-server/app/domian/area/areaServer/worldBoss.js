@@ -14,7 +14,6 @@ module.exports = function() {
 	var state = 0
 	var time = 0
 	var timer = 0
-	var round = 0
 	var bossIndex = 0
 	var bossId = 0
 	var bossTeam = []
@@ -22,20 +21,13 @@ module.exports = function() {
 	this.worldBossCheck = function() {
 		let curMilliseconds = util.getDayMilliseconds()
 		let tmpTime = 0
-		bossIndex = (new Date()).getDay() * 2
+		bossIndex = (new Date()).getDay()
 		if(curMilliseconds < world_boss_cfg["openTime1"]["value"]){
 			//设定时间至第一场开启
-			round = 1
 			tmpTime = world_boss_cfg["openTime1"]["value"] - curMilliseconds
-		}else if(curMilliseconds < world_boss_cfg["openTime2"]["value"]){
-			//设定时间至第二场开启
-			round = 2
-			bossIndex += 1
-			tmpTime = world_boss_cfg["openTime2"]["value"] - curMilliseconds
 		}else{
 			//设定至第二天第一场
-			round = 1
-			bossIndex += 2
+			bossIndex += 1
 			tmpTime = 86400000 - curMilliseconds + world_boss_cfg["openTime1"]["value"]
 		}
 		bossIndex = bossIndex % 15
@@ -43,7 +35,7 @@ module.exports = function() {
 		bossTeam = [0,0,0,0,bossId,0]
 		time = Date.now() + tmpTime
 		clearTimeout(timer)
-		timer = setTimeout(this.worldBossChallengeStage.bind(this),1)
+		timer = setTimeout(this.worldBossChallengeStage.bind(this),time)
 	}
 	//模块销毁
 	this.worldBossDestory = function() {
