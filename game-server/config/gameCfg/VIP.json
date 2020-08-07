@@ -5,6 +5,7 @@
     "buy_pc": "202:18",
     "buy_pa": "201:300000&101:200000&1000090:5",
     "old_price": "202:238",
+    "discount": 0.1,
     "quick": 0,
     "onhookAward": 0,
     "onhookTime": 0,
@@ -26,8 +27,15 @@
     "discount": 0.3,
     "quick": 1,
     "onhookAward": 0.05,
+    "onhookTime": 0,
+    "arena": 0,
+    "fb": 0,
+    "ttt": 0,
     "mysterious": 1,
-    "heroAmount": 0
+    "heroAmount": 0,
+    "bazaar_1": 0,
+    "bazaar_2": 0,
+    "bazaar_3": 0
   },
   "2": {
     "rmb": 3000,
@@ -40,8 +48,13 @@
     "onhookAward": 0.1,
     "onhookTime": 1,
     "arena": 5,
+    "fb": 0,
+    "ttt": 0,
     "mysterious": 2,
-    "heroAmount": 10
+    "heroAmount": 10,
+    "bazaar_1": 0,
+    "bazaar_2": 0,
+    "bazaar_3": 0
   },
   "3": {
     "rmb": 10000,
@@ -55,8 +68,12 @@
     "onhookTime": 1,
     "arena": 5,
     "fb": 1,
+    "ttt": 0,
     "mysterious": 3,
-    "heroAmount": 20
+    "heroAmount": 20,
+    "bazaar_1": 0,
+    "bazaar_2": 0,
+    "bazaar_3": 0
   },
   "4": {
     "rmb": 20000,
@@ -73,7 +90,9 @@
     "ttt": 1,
     "mysterious": 4,
     "heroAmount": 30,
-    "bazaar_1": 30
+    "bazaar_1": 30,
+    "bazaar_2": 0,
+    "bazaar_3": 0
   },
   "5": {
     "rmb": 50000,
@@ -91,7 +110,8 @@
     "mysterious": 5,
     "heroAmount": 40,
     "bazaar_1": 30,
-    "bazaar_2": 20
+    "bazaar_2": 20,
+    "bazaar_3": 0
   },
   "6": {
     "rmb": 100000,
