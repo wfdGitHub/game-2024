@@ -1,5 +1,12 @@
 var boyCfg = require("../../config/sysCfg/boy.json")
 var girlCfg = require("../../config/sysCfg/girl.json")
+var heros = require("../../config/gameCfg/heros.json")
+var heroList = []
+for(var i in heros){
+	if(heros[i]["min_star"] >= 5){
+		heroList.push(i)
+	}
+}
 var areaDao = function() {}
 //创建新服务器
 areaDao.prototype.createArea = function(cb) {
@@ -24,6 +31,7 @@ areaDao.prototype.createArea = function(cb) {
 				}else{
 					info["name"] = girlCfg[Math.floor(Math.random() * girlCfg.length)]
 				}
+				info["head"] = heroList[Math.floor(Math.random() * heroList.length)]
 				robots[i] = JSON.stringify(info)
 			}
 			self.redisDao.db.hmset("area:area"+areaInfo.areaId+":robots",robots,function(err) {
