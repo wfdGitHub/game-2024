@@ -105,6 +105,7 @@ module.exports = function() {
 			    	if(star == 0){
 			    		//首通
 			    		info.awardList = self.addItemStr(uid,mysterious_realm[lv]["pass_award"])
+						self.chageLordData(uid,"maxSS",lv)
 			    	}else{
 			    		//次通
 			    		info.awardList = self.addItemStr(uid,mysterious_realm[lv]["mopup_award"])
@@ -121,6 +122,8 @@ module.exports = function() {
 			    		self.setObj(uid,main_name,"max",lv)
 			    	}
 			    	self.incrbyObj(uid,main_name,"count",1)
+			    	self.taskUpdate(uid,"ss_pass",1,lv)
+			    	self.taskUpdate(uid,"ss_play",1)
 			    }
 			    cb(true,info)
 			}
@@ -147,6 +150,7 @@ module.exports = function() {
 					if(star == 3){
 						self.incrbyObj(uid,main_name,"count",1)
 						var awardList = self.addItemStr(uid,mysterious_realm[lv]["mopup_award"])
+						self.taskUpdate(uid,"ss_play",1)
 						cb(true,awardList)
 					}else{
 						next("未满星")

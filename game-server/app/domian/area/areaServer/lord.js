@@ -1,7 +1,7 @@
 //主公相关
 var lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 var main_name = "playerInfo"
-var numberAtt = ["accId","createTime","rmb","vip","rmb_day","exp","level","heroAmount","heroLv"]
+var numberAtt = ["accId","createTime","rmb","vip","rmb_day","exp","level","heroAmount","heroLv","maxSS"]
 module.exports = function() {
 	var self = this
 	//加载主公数据
