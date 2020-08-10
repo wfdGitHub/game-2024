@@ -182,20 +182,21 @@
     "guide": "guide_sj_gk"
   },
   "900022": {
+    "title": "竞技场排名4000以内",
+    "type": "rank",
+    "arg": 6000,
+    "value": 1,
+    "next": 900023,
+    "award": "201:10000",
+    "guide": "guide_jingjichang"
+  },
+  "900023": {
     "title": "高级召唤1次",
     "type": "recruit_great",
     "value": 1,
-    "next": 900023,
+    "next": 900024,
     "award": "505000:5",
     "guide": "guide_zhaomu"
-  },
-  "900023": {
-    "title": "领取1次挂机奖励",
-    "type": "on_hook",
-    "value": 1,
-    "next": 900024,
-    "award": "1000050:10",
-    "guide": "guide_gjjl"
   },
   "900024": {
     "title": "完成1次三界任务",
@@ -207,105 +208,105 @@
     "guide": "guide_sanjie"
   },
   "900025": {
-    "title": "上阵4个英雄",
-    "type": "battleNum",
-    "arg": 4,
-    "value": 1,
-    "next": 900026,
-    "award": "1000070:10",
-    "guide": "guide_yxsz"
-  },
-  "900026": {
     "title": "普通召唤10次",
     "type": "recruit_normal",
     "value": 10,
-    "next": 900027,
+    "next": 900026,
     "award": "504000:5",
     "guide": "guide_zhaomu"
   },
-  "900027": {
+  "900026": {
     "title": "通天塔挑战3次",
     "type": "tttLv",
     "value": 3,
-    "next": 900028,
+    "next": 900027,
     "award": "1000080:1",
     "guide": "guide_tongtianta"
   },
-  "900028": {
+  "900027": {
     "title": "战斗力到达10万",
     "type": "totalCe",
     "value": 100000,
-    "next": 900029,
+    "next": 900028,
     "award": "202:100",
     "guide": "guide_yingxiong"
   },
-  "900029": {
+  "900028": {
     "title": "合成1次装备",
     "type": "equip_compound",
     "value": 1,
-    "next": 900030,
+    "next": 900029,
     "award": "201:8000",
     "guide": "guide_tiejiangpu"
   },
-  "900030": {
+  "900029": {
     "title": "通关刑天氏族30",
     "type": "checkpoints",
     "arg": 30,
     "value": 1,
-    "next": 900031,
+    "next": 900030,
     "award": "201:8000",
     "guide": "guide_sj_gk"
   },
-  "900031": {
+  "900030": {
     "title": "分解1个英雄",
     "type": "resolve",
     "value": 1,
-    "next": 900032,
+    "next": 900031,
     "award": "201:8000",
     "guide": "guide_yxfenjie"
   },
-  "900032": {
+  "900031": {
     "title": "通过通天塔10层",
     "type": "tttLv",
     "arg": 10,
     "value": 1,
-    "next": 900033,
+    "next": 900032,
     "award": "101:10000",
     "guide": "guide_tongtianta"
   },
-  "900033": {
+  "900032": {
     "title": "通关三皇五帝35",
     "type": "checkpoints",
     "arg": 35,
     "value": 1,
-    "next": 900034,
+    "next": 900033,
     "award": "201:8000",
     "guide": "guide_sj_gk"
   },
-  "900034": {
+  "900033": {
     "title": "宝物商店刷新1次",
     "type": "bazzar_refresh",
     "value": 1,
-    "next": 900035,
+    "next": 900034,
     "award": "1000050:20",
     "guide": "guide_shangdian"
   },
-  "900035": {
-    "title": "宝物商店购买3次",
+  "900034": {
+    "title": "宝物商店购买1次",
     "type": "bazzar_buy",
-    "value": 3,
-    "next": 900036,
+    "value": 1,
+    "next": 900035,
     "award": "1000090:10",
     "guide": "guide_shangdian"
   },
-  "900036": {
+  "900035": {
     "title": "佩戴4件蓝色装备",
     "type": "wear_equip",
     "arg": 3,
     "value": 4,
-    "next": 900037,
+    "next": 900036,
     "award": "201:10000",
     "guide": "guide_yingxiong"
+  },
+  "900036": {
+    "title": "竞技场排名3500以内",
+    "type": "rank",
+    "arg": 6500,
+    "value": 1,
+    "next": 900037,
+    "award": "201:10000",
+    "guide": "guide_jingjichang"
   },
   "900037": {
     "title": "人物到达20级",
@@ -316,9 +317,8 @@
     "guide": "guide_sj_gk"
   },
   "900038": {
-    "title": "通关龙汉大劫副本",
-    "type": "passFb",
-    "arg": "fb1",
+    "title": "参与一次山海经",
+    "type": "ss_play",
     "value": 1,
     "next": 900039,
     "award": "1000100:1",
@@ -379,9 +379,9 @@
     "guide": "guide_sj_gk"
   },
   "900045": {
-    "title": "竞技场排名4000以内",
+    "title": "竞技场排名3000以内",
     "type": "rank",
-    "arg": 6000,
+    "arg": 7000,
     "value": 1,
     "next": 900046,
     "award": "201:10000",
@@ -397,90 +397,90 @@
     "guide": "guide_sj_gk"
   },
   "900047": {
-    "title": "竞技场排名3000以内",
-    "type": "rank",
-    "arg": 7000,
-    "value": 1,
-    "next": 900048,
-    "award": "201:10000",
-    "guide": "guide_jingjichang"
-  },
-  "900048": {
     "title": "参与1次逐鹿之战",
     "type": "zhulu_monster",
     "value": 1,
-    "next": 900049,
+    "next": 900048,
     "award": "1000050:50",
     "guide": "guide_zhulu"
   },
-  "900049": {
+  "900048": {
     "title": "获得1个五星英雄",
     "type": "hero",
     "arg": 5,
     "value": 1,
-    "next": 900050,
+    "next": 900049,
     "award": "202:100",
     "guide": "guide_zhaomu"
   },
-  "900050": {
+  "900049": {
     "title": "战斗力到达20万",
     "type": "totalCe",
     "value": 200000,
-    "next": 900051,
+    "next": 900050,
     "award": "201:10000",
     "guide": "guide_yingxiong"
   },
-  "900051": {
+  "900050": {
     "title": "通过通天塔30层",
     "type": "tttLv",
     "arg": 30,
     "value": 1,
-    "next": 900052,
+    "next": 900051,
     "award": "1000050:30",
     "guide": "guide_tongtianta"
   },
-  "900052": {
+  "900051": {
     "title": "战斗力到达25万",
     "type": "totalCe",
     "value": 250000,
-    "next": 900053,
+    "next": 900052,
     "award": "202:100",
     "guide": "guide_yingxiong"
   },
-  "900053": {
+  "900052": {
     "title": "通关轩辕之始70",
     "type": "checkpoints",
     "arg": 70,
     "value": 1,
-    "next": 900054,
+    "next": 900053,
     "award": "201:10000",
     "guide": "guide_sj_gk"
   },
-  "900054": {
+  "900053": {
     "title": "佩戴4件紫色装备",
     "type": "wear_equip",
     "arg": 5,
     "value": 4,
-    "next": 900055,
+    "next": 900054,
     "award": "201:10000",
     "guide": "guide_yingxiong"
   },
-  "900055": {
+  "900054": {
     "title": "通过通天塔40层",
     "type": "tttLv",
     "arg": 40,
     "value": 1,
-    "next": 900056,
+    "next": 900055,
     "award": "1000050:40",
     "guide": "guide_tongtianta"
   },
-  "900056": {
+  "900055": {
     "title": "人物到达25级",
     "type": "loadLv",
     "value": 25,
-    "next": 900057,
+    "next": 900056,
     "award": "202:50",
     "guide": "guide_sj_gk"
+  },
+  "900056": {
+    "title": "竞技场排名2500以内",
+    "type": "rank",
+    "arg": 7500,
+    "value": 1,
+    "next": 900057,
+    "award": "201:10000",
+    "guide": "guide_jingjichang"
   },
   "900057": {
     "title": "通关轩辕之始80",
@@ -492,9 +492,9 @@
     "guide": "guide_sj_gk"
   },
   "900058": {
-    "title": "高级召唤3次",
+    "title": "高级召唤1次",
     "type": "recruit_great",
-    "value": 3,
+    "value": 1,
     "next": 900059,
     "award": "1000120:1",
     "guide": "guide_zhaomu"
@@ -517,269 +517,269 @@
     "guide": "guide_sj_gk"
   },
   "900061": {
+    "title": "完成山海经第1章",
+    "type": "ss_pass",
+    "arg": 10,
+    "value": 1,
+    "next": 900062,
+    "award": "202:50",
+    "guide": "guide_juqing"
+  },
+  "900062": {
     "title": "通关太白白天100",
     "type": "checkpoints",
     "arg": 100,
     "value": 1,
-    "next": 900062,
+    "next": 900063,
     "award": "201:10000",
     "guide": "guide_sj_gk"
   },
-  "900062": {
+  "900063": {
     "title": "人物到达33级",
     "type": "loadLv",
     "value": 33,
-    "next": 900063,
+    "next": 900064,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900063": {
+  "900064": {
     "title": "获得2个5星英雄",
     "type": "hero",
     "arg": 5,
     "value": 2,
-    "next": 900064,
+    "next": 900065,
     "award": "1000120:1",
     "guide": "guide_zhaomu"
   },
-  "900064": {
+  "900065": {
     "title": "人物到达35级",
     "type": "loadLv",
     "value": 35,
-    "next": 900065,
+    "next": 900066,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900065": {
+  "900066": {
     "title": "通过通天塔40层",
     "type": "tttLv",
     "arg": 50,
     "value": 1,
-    "next": 900066,
+    "next": 900067,
     "award": "1000050:50",
     "guide": "guide_tongtianta"
   },
-  "900066": {
+  "900067": {
     "title": "高级召唤5次",
     "type": "recruit_great",
     "value": 5,
-    "next": 900067,
+    "next": 900068,
     "award": "1000100:1",
     "guide": "guide_zhaomu"
   },
-  "900067": {
+  "900068": {
     "title": "获得1个6星英雄",
     "type": "hero",
     "arg": 6,
     "value": 1,
-    "next": 900068,
+    "next": 900069,
     "award": "1001006:1",
     "guide": "guide_zhaomu"
   },
-  "900068": {
+  "900069": {
     "title": "人物到达40级",
     "type": "loadLv",
     "value": 40,
-    "next": 900069,
+    "next": 900070,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900069": {
-    "title": "通关巫妖大战副本",
-    "type": "passFb",
-    "arg": "fb2",
+  "900070": {
+    "title": "完成山海经第2章",
+    "type": "ss_pass",
+    "arg": 20,
     "value": 1,
-    "next": 900070,
+    "next": 900071,
     "award": "202:50",
     "guide": "guide_juqing"
   },
-  "900070": {
+  "900071": {
     "title": "通关紫气东来130",
     "type": "checkpoints",
     "arg": 130,
     "value": 1,
-    "next": 900071,
+    "next": 900072,
     "award": "201:20000",
     "guide": "guide_sj_gk"
   },
-  "900071": {
+  "900072": {
     "title": "人物到达42级",
     "type": "loadLv",
     "value": 42,
-    "next": 900072,
+    "next": 900073,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900072": {
+  "900073": {
     "title": "通关不死国民135",
     "type": "checkpoints",
     "arg": 135,
     "value": 1,
-    "next": 900073,
+    "next": 900074,
     "award": "201:20000",
     "guide": "guide_sj_gk"
   },
-  "900073": {
+  "900074": {
     "title": "人物到达44级",
     "type": "loadLv",
     "value": 44,
-    "next": 900074,
+    "next": 900075,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900074": {
+  "900075": {
     "title": "通关不死国民140",
     "type": "checkpoints",
     "arg": 140,
     "value": 1,
-    "next": 900075,
+    "next": 900076,
     "award": "201:20000",
     "guide": "guide_sj_gk"
   },
-  "900075": {
+  "900076": {
     "title": "人物到达46级",
     "type": "loadLv",
     "value": 46,
-    "next": 900076,
+    "next": 900077,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900076": {
+  "900077": {
     "title": "通关赤眼猪妖148",
     "type": "checkpoints",
     "arg": 148,
     "value": 1,
-    "next": 900077,
+    "next": 900078,
     "award": "201:20000",
     "guide": "guide_sj_gk"
   },
-  "900077": {
+  "900078": {
     "title": "人物到达48级",
     "type": "loadLv",
     "value": 48,
-    "next": 900078,
+    "next": 900079,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900078": {
+  "900079": {
     "title": "通关竹中沃野154",
     "type": "checkpoints",
     "arg": 154,
     "value": 1,
-    "next": 900079,
+    "next": 900080,
     "award": "201:20000",
     "guide": "guide_sj_gk"
   },
-  "900079": {
+  "900080": {
     "title": "人物到达50级",
     "type": "loadLv",
     "value": 50,
-    "next": 900080,
+    "next": 900081,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900080": {
+  "900081": {
     "title": "通关竹中沃野160",
     "type": "checkpoints",
     "arg": 160,
     "value": 1,
-    "next": 900081,
+    "next": 900082,
     "award": "201:20000",
     "guide": "guide_sj_gk"
   },
-  "900081": {
+  "900082": {
     "title": "人物到达52级",
     "type": "loadLv",
     "value": 52,
-    "next": 900082,
+    "next": 900083,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900082": {
+  "900083": {
     "title": "通关沃野村人166",
     "type": "checkpoints",
     "arg": 166,
     "value": 1,
-    "next": 900083,
+    "next": 900084,
     "award": "201:20000",
     "guide": "guide_sj_gk"
   },
-  "900083": {
+  "900084": {
     "title": "人物到达54级",
     "type": "loadLv",
     "value": 54,
-    "next": 900084,
+    "next": 900085,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900084": {
+  "900085": {
     "title": "通关神灵已死172",
     "type": "checkpoints",
     "arg": 172,
     "value": 1,
-    "next": 900085,
+    "next": 900086,
     "award": "201:20000",
     "guide": "guide_sj_gk"
   },
-  "900085": {
+  "900086": {
     "title": "人物到达56级",
     "type": "loadLv",
     "value": 56,
-    "next": 900086,
+    "next": 900087,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900086": {
+  "900087": {
     "title": "获得1个橙色元神",
     "type": "ace",
     "arg": 4,
     "value": 1,
-    "next": 900087,
+    "next": 900088,
     "award": "201:20000",
     "guide": "guide_sj_gk"
   },
-  "900087": {
+  "900088": {
     "title": "通关神灵已死178",
     "type": "checkpoints",
     "arg": 178,
     "value": 1,
-    "next": 900088,
+    "next": 900089,
     "award": "202:50",
     "guide": "guide_sj_gk"
   },
-  "900088": {
+  "900089": {
     "title": "人物到达58级",
     "type": "loadLv",
     "value": 58,
-    "next": 900089,
+    "next": 900090,
     "award": "201:20000",
     "guide": "guide_sj_gk"
   },
-  "900089": {
+  "900090": {
     "title": "通关无肠国184",
     "type": "checkpoints",
     "arg": 184,
     "value": 1,
-    "next": 900090,
-    "award": "202:50",
-    "guide": "guide_sj_gk"
-  },
-  "900090": {
-    "title": "人物到达60级",
-    "type": "loadLv",
-    "value": 60,
     "next": 900091,
-    "award": "201:20000",
+    "award": "202:50",
     "guide": "guide_sj_gk"
   },
   "900091": {
-    "title": "通关涿鹿之战副本",
-    "type": "passFb",
-    "arg": "fb3",
-    "value": 1,
+    "title": "人物到达60级",
+    "type": "loadLv",
+    "value": 60,
     "next": 900092,
-    "award": "202:50",
-    "guide": "guide_juqing"
+    "award": "201:20000",
+    "guide": "guide_sj_gk"
   },
   "900092": {
     "title": "通关无肠国190",
@@ -1068,1678 +1068,1669 @@
     "guide": "guide_sj_gk"
   },
   "900124": {
-    "title": "通关刑天争帝副本",
-    "type": "passFb",
-    "arg": "fb4",
-    "value": 1,
-    "next": 900125,
-    "award": "202:100",
-    "guide": "guide_juqing"
-  },
-  "900125": {
     "title": "通关御气延灵250",
     "type": "checkpoints",
     "arg": 250,
+    "value": 1,
+    "next": 900125,
+    "award": "201:30000",
+    "guide": "guide_sj_gk"
+  },
+  "900125": {
+    "title": "通关武德三年252",
+    "type": "checkpoints",
+    "arg": 252,
     "value": 1,
     "next": 900126,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900126": {
-    "title": "通关武德三年252",
+    "title": "通关武德三年254",
     "type": "checkpoints",
-    "arg": 252,
+    "arg": 254,
     "value": 1,
     "next": 900127,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900127": {
-    "title": "通关武德三年254",
+    "title": "通关武德三年256",
     "type": "checkpoints",
-    "arg": 254,
+    "arg": 256,
     "value": 1,
     "next": 900128,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900128": {
-    "title": "通关武德三年256",
+    "title": "通关武德三年258",
     "type": "checkpoints",
-    "arg": 256,
+    "arg": 258,
     "value": 1,
     "next": 900129,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900129": {
-    "title": "通关武德三年258",
+    "title": "通关武德三年260",
     "type": "checkpoints",
-    "arg": 258,
+    "arg": 260,
     "value": 1,
     "next": 900130,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900130": {
-    "title": "通关武德三年260",
+    "title": "通关百年兕鼠262",
     "type": "checkpoints",
-    "arg": 260,
+    "arg": 262,
     "value": 1,
     "next": 900131,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900131": {
-    "title": "通关百年兕鼠262",
+    "title": "通关百年兕鼠264",
     "type": "checkpoints",
-    "arg": 262,
+    "arg": 264,
     "value": 1,
     "next": 900132,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900132": {
-    "title": "通关百年兕鼠264",
+    "title": "通关百年兕鼠266",
     "type": "checkpoints",
-    "arg": 264,
+    "arg": 266,
     "value": 1,
     "next": 900133,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900133": {
-    "title": "通关百年兕鼠266",
+    "title": "通关百年兕鼠268",
     "type": "checkpoints",
-    "arg": 266,
+    "arg": 268,
     "value": 1,
     "next": 900134,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900134": {
-    "title": "通关百年兕鼠268",
+    "title": "通关百年兕鼠270",
     "type": "checkpoints",
-    "arg": 268,
+    "arg": 270,
     "value": 1,
     "next": 900135,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900135": {
-    "title": "通关百年兕鼠270",
+    "title": "通关神兵通灵272",
     "type": "checkpoints",
-    "arg": 270,
+    "arg": 272,
     "value": 1,
     "next": 900136,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900136": {
-    "title": "通关神兵通灵272",
+    "title": "通关神兵通灵274",
     "type": "checkpoints",
-    "arg": 272,
+    "arg": 274,
     "value": 1,
     "next": 900137,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900137": {
-    "title": "通关神兵通灵274",
+    "title": "通关神兵通灵276",
     "type": "checkpoints",
-    "arg": 274,
+    "arg": 276,
     "value": 1,
     "next": 900138,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900138": {
-    "title": "通关神兵通灵276",
+    "title": "通关神兵通灵278",
     "type": "checkpoints",
-    "arg": 276,
+    "arg": 278,
     "value": 1,
     "next": 900139,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900139": {
-    "title": "通关神兵通灵278",
+    "title": "通关神兵通灵280",
     "type": "checkpoints",
-    "arg": 278,
+    "arg": 280,
     "value": 1,
     "next": 900140,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900140": {
-    "title": "通关神兵通灵280",
-    "type": "checkpoints",
-    "arg": 280,
-    "value": 1,
-    "next": 900141,
-    "award": "201:30000",
-    "guide": "guide_sj_gk"
-  },
-  "900141": {
     "title": "人物到达90级",
     "type": "loadLv",
     "value": 90,
-    "next": 900142,
+    "next": 900141,
     "award": "202:100",
     "guide": "guide_sj_gk"
   },
-  "900142": {
+  "900141": {
     "title": "通关湖中孤岛282",
     "type": "checkpoints",
     "arg": 282,
+    "value": 1,
+    "next": 900142,
+    "award": "201:30000",
+    "guide": "guide_sj_gk"
+  },
+  "900142": {
+    "title": "通关湖中孤岛284",
+    "type": "checkpoints",
+    "arg": 284,
     "value": 1,
     "next": 900143,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900143": {
-    "title": "通关湖中孤岛284",
+    "title": "通关湖中孤岛286",
     "type": "checkpoints",
-    "arg": 284,
+    "arg": 286,
     "value": 1,
     "next": 900144,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900144": {
-    "title": "通关湖中孤岛286",
+    "title": "通关湖中孤岛288",
     "type": "checkpoints",
-    "arg": 286,
+    "arg": 288,
     "value": 1,
     "next": 900145,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900145": {
-    "title": "通关湖中孤岛288",
+    "title": "通关湖中孤岛290",
     "type": "checkpoints",
-    "arg": 288,
+    "arg": 290,
     "value": 1,
     "next": 900146,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900146": {
-    "title": "通关湖中孤岛290",
+    "title": "通关五国混战292",
     "type": "checkpoints",
-    "arg": 290,
+    "arg": 292,
     "value": 1,
     "next": 900147,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900147": {
-    "title": "通关五国混战292",
+    "title": "通关五国混战294",
     "type": "checkpoints",
-    "arg": 292,
+    "arg": 294,
     "value": 1,
     "next": 900148,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900148": {
-    "title": "通关五国混战294",
+    "title": "通关五国混战296",
     "type": "checkpoints",
-    "arg": 294,
+    "arg": 296,
     "value": 1,
     "next": 900149,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900149": {
-    "title": "通关五国混战296",
+    "title": "通关五国混战298",
     "type": "checkpoints",
-    "arg": 296,
+    "arg": 298,
     "value": 1,
     "next": 900150,
     "award": "201:30000",
     "guide": "guide_sj_gk"
   },
   "900150": {
-    "title": "通关五国混战298",
-    "type": "checkpoints",
-    "arg": 298,
-    "value": 1,
-    "next": 900151,
-    "award": "201:30000",
-    "guide": "guide_sj_gk"
-  },
-  "900151": {
     "title": "通关五国混战300",
     "type": "checkpoints",
     "arg": 300,
+    "value": 1,
+    "next": 900151,
+    "award": "201:50000",
+    "guide": "guide_sj_gk"
+  },
+  "900151": {
+    "title": "通关怨之木灵302",
+    "type": "checkpoints",
+    "arg": 302,
     "value": 1,
     "next": 900152,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900152": {
-    "title": "通关怨之木灵302",
+    "title": "通关怨之木灵304",
     "type": "checkpoints",
-    "arg": 302,
+    "arg": 304,
     "value": 1,
     "next": 900153,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900153": {
-    "title": "通关怨之木灵304",
+    "title": "通关怨之木灵306",
     "type": "checkpoints",
-    "arg": 304,
+    "arg": 306,
     "value": 1,
     "next": 900154,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900154": {
-    "title": "通关怨之木灵306",
+    "title": "通关怨之木灵308",
     "type": "checkpoints",
-    "arg": 306,
+    "arg": 308,
     "value": 1,
     "next": 900155,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900155": {
-    "title": "通关怨之木灵308",
+    "title": "通关怨之木灵310",
     "type": "checkpoints",
-    "arg": 308,
+    "arg": 310,
     "value": 1,
     "next": 900156,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900156": {
-    "title": "通关怨之木灵310",
-    "type": "checkpoints",
-    "arg": 310,
-    "value": 1,
-    "next": 900157,
-    "award": "201:50000",
-    "guide": "guide_sj_gk"
-  },
-  "900157": {
     "title": "人物到达100级",
     "type": "loadLv",
     "value": 100,
-    "next": 900158,
+    "next": 900157,
     "award": "202:100",
     "guide": "guide_sj_gk"
   },
-  "900158": {
+  "900157": {
     "title": "通关涂之国312",
     "type": "checkpoints",
     "arg": 312,
+    "value": 1,
+    "next": 900158,
+    "award": "201:50000",
+    "guide": "guide_sj_gk"
+  },
+  "900158": {
+    "title": "通关涂之国314",
+    "type": "checkpoints",
+    "arg": 314,
     "value": 1,
     "next": 900159,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900159": {
-    "title": "通关涂之国314",
+    "title": "通关涂之国316",
     "type": "checkpoints",
-    "arg": 314,
+    "arg": 316,
     "value": 1,
     "next": 900160,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900160": {
-    "title": "通关涂之国316",
+    "title": "通关涂之国318",
     "type": "checkpoints",
-    "arg": 316,
+    "arg": 318,
     "value": 1,
     "next": 900161,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900161": {
-    "title": "通关涂之国318",
+    "title": "通关涂之国320",
     "type": "checkpoints",
-    "arg": 318,
+    "arg": 320,
     "value": 1,
     "next": 900162,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900162": {
-    "title": "通关涂之国320",
+    "title": "通关巫咸国322",
     "type": "checkpoints",
-    "arg": 320,
+    "arg": 322,
     "value": 1,
     "next": 900163,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900163": {
-    "title": "通关巫咸国322",
+    "title": "通关巫咸国324",
     "type": "checkpoints",
-    "arg": 322,
+    "arg": 324,
     "value": 1,
     "next": 900164,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900164": {
-    "title": "通关巫咸国324",
+    "title": "通关巫咸国326",
     "type": "checkpoints",
-    "arg": 324,
+    "arg": 326,
     "value": 1,
     "next": 900165,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900165": {
-    "title": "通关巫咸国326",
+    "title": "通关巫咸国328",
     "type": "checkpoints",
-    "arg": 326,
+    "arg": 328,
     "value": 1,
     "next": 900166,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900166": {
-    "title": "通关巫咸国328",
+    "title": "通关巫咸国330",
     "type": "checkpoints",
-    "arg": 328,
+    "arg": 330,
     "value": 1,
     "next": 900167,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900167": {
-    "title": "通关巫咸国330",
+    "title": "通关肃慎国332",
     "type": "checkpoints",
-    "arg": 330,
+    "arg": 332,
     "value": 1,
     "next": 900168,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900168": {
-    "title": "通关肃慎国332",
+    "title": "通关肃慎国334",
     "type": "checkpoints",
-    "arg": 332,
+    "arg": 334,
     "value": 1,
     "next": 900169,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900169": {
-    "title": "通关肃慎国334",
+    "title": "通关肃慎国336",
     "type": "checkpoints",
-    "arg": 334,
+    "arg": 336,
     "value": 1,
     "next": 900170,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900170": {
-    "title": "通关肃慎国336",
+    "title": "通关肃慎国338",
     "type": "checkpoints",
-    "arg": 336,
+    "arg": 338,
     "value": 1,
     "next": 900171,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900171": {
-    "title": "通关肃慎国338",
+    "title": "通关肃慎国340",
     "type": "checkpoints",
-    "arg": 338,
+    "arg": 340,
     "value": 1,
     "next": 900172,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900172": {
-    "title": "通关肃慎国340",
-    "type": "checkpoints",
-    "arg": 340,
-    "value": 1,
-    "next": 900173,
-    "award": "201:50000",
-    "guide": "guide_sj_gk"
-  },
-  "900173": {
     "title": "人物到达110级",
     "type": "loadLv",
     "value": 110,
-    "next": 900174,
+    "next": 900173,
     "award": "202:110",
     "guide": "guide_sj_gk"
   },
-  "900174": {
+  "900173": {
     "title": "通关人参地精342",
     "type": "checkpoints",
     "arg": 342,
+    "value": 1,
+    "next": 900174,
+    "award": "201:50000",
+    "guide": "guide_sj_gk"
+  },
+  "900174": {
+    "title": "通关人参地精344",
+    "type": "checkpoints",
+    "arg": 344,
     "value": 1,
     "next": 900175,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900175": {
-    "title": "通关人参地精344",
+    "title": "通关人参地精346",
     "type": "checkpoints",
-    "arg": 344,
+    "arg": 346,
     "value": 1,
     "next": 900176,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900176": {
-    "title": "通关人参地精346",
+    "title": "通关人参地精348",
     "type": "checkpoints",
-    "arg": 346,
+    "arg": 348,
     "value": 1,
     "next": 900177,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900177": {
-    "title": "通关人参地精348",
+    "title": "通关人参地精350",
     "type": "checkpoints",
-    "arg": 348,
+    "arg": 350,
     "value": 1,
     "next": 900178,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900178": {
-    "title": "通关人参地精350",
+    "title": "通关正蓝灵气352",
     "type": "checkpoints",
-    "arg": 350,
+    "arg": 352,
     "value": 1,
     "next": 900179,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900179": {
-    "title": "通关正蓝灵气352",
+    "title": "通关正蓝灵气354",
     "type": "checkpoints",
-    "arg": 352,
+    "arg": 354,
     "value": 1,
     "next": 900180,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900180": {
-    "title": "通关正蓝灵气354",
+    "title": "通关正蓝灵气356",
     "type": "checkpoints",
-    "arg": 354,
+    "arg": 356,
     "value": 1,
     "next": 900181,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900181": {
-    "title": "通关正蓝灵气356",
+    "title": "通关正蓝灵气358",
     "type": "checkpoints",
-    "arg": 356,
+    "arg": 358,
     "value": 1,
     "next": 900182,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900182": {
-    "title": "通关正蓝灵气358",
+    "title": "通关正蓝灵气360",
     "type": "checkpoints",
-    "arg": 358,
+    "arg": 360,
     "value": 1,
     "next": 900183,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900183": {
-    "title": "通关正蓝灵气360",
+    "title": "通关一刀断江362",
     "type": "checkpoints",
-    "arg": 360,
+    "arg": 362,
     "value": 1,
     "next": 900184,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900184": {
-    "title": "通关一刀断江362",
+    "title": "通关一刀断江364",
     "type": "checkpoints",
-    "arg": 362,
+    "arg": 364,
     "value": 1,
     "next": 900185,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900185": {
-    "title": "通关一刀断江364",
+    "title": "通关一刀断江366",
     "type": "checkpoints",
-    "arg": 364,
+    "arg": 366,
     "value": 1,
     "next": 900186,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900186": {
-    "title": "通关一刀断江366",
+    "title": "通关一刀断江368",
     "type": "checkpoints",
-    "arg": 366,
+    "arg": 368,
     "value": 1,
     "next": 900187,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900187": {
-    "title": "通关一刀断江368",
+    "title": "通关一刀断江370",
     "type": "checkpoints",
-    "arg": 368,
+    "arg": 370,
     "value": 1,
     "next": 900188,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900188": {
-    "title": "通关一刀断江370",
-    "type": "checkpoints",
-    "arg": 370,
-    "value": 1,
-    "next": 900189,
-    "award": "201:50000",
-    "guide": "guide_sj_gk"
-  },
-  "900189": {
     "title": "人物到达120级",
     "type": "loadLv",
     "value": 120,
-    "next": 900190,
+    "next": 900189,
     "award": "202:120",
     "guide": "guide_sj_gk"
   },
-  "900190": {
+  "900189": {
     "title": "通关噬尸寒鼠372",
     "type": "checkpoints",
     "arg": 372,
+    "value": 1,
+    "next": 900190,
+    "award": "201:50000",
+    "guide": "guide_sj_gk"
+  },
+  "900190": {
+    "title": "通关噬尸寒鼠374",
+    "type": "checkpoints",
+    "arg": 374,
     "value": 1,
     "next": 900191,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900191": {
-    "title": "通关噬尸寒鼠374",
+    "title": "通关噬尸寒鼠376",
     "type": "checkpoints",
-    "arg": 374,
+    "arg": 376,
     "value": 1,
     "next": 900192,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900192": {
-    "title": "通关噬尸寒鼠376",
+    "title": "通关噬尸寒鼠378",
     "type": "checkpoints",
-    "arg": 376,
+    "arg": 378,
     "value": 1,
     "next": 900193,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900193": {
-    "title": "通关噬尸寒鼠378",
+    "title": "通关噬尸寒鼠380",
     "type": "checkpoints",
-    "arg": 378,
+    "arg": 380,
     "value": 1,
     "next": 900194,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900194": {
-    "title": "通关噬尸寒鼠380",
+    "title": "通关青龙之海382",
     "type": "checkpoints",
-    "arg": 380,
+    "arg": 382,
     "value": 1,
     "next": 900195,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900195": {
-    "title": "通关青龙之海382",
+    "title": "通关青龙之海384",
     "type": "checkpoints",
-    "arg": 382,
+    "arg": 384,
     "value": 1,
     "next": 900196,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900196": {
-    "title": "通关青龙之海384",
+    "title": "通关青龙之海386",
     "type": "checkpoints",
-    "arg": 384,
+    "arg": 386,
     "value": 1,
     "next": 900197,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900197": {
-    "title": "通关青龙之海386",
+    "title": "通关青龙之海388",
     "type": "checkpoints",
-    "arg": 386,
+    "arg": 388,
     "value": 1,
     "next": 900198,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900198": {
-    "title": "通关青龙之海388",
+    "title": "通关青龙之海390",
     "type": "checkpoints",
-    "arg": 388,
+    "arg": 390,
     "value": 1,
     "next": 900199,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900199": {
-    "title": "通关青龙之海390",
+    "title": "通关苏醒392",
     "type": "checkpoints",
-    "arg": 390,
+    "arg": 392,
     "value": 1,
     "next": 900200,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900200": {
-    "title": "通关苏醒392",
+    "title": "通关苏醒394",
     "type": "checkpoints",
-    "arg": 392,
+    "arg": 394,
     "value": 1,
     "next": 900201,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900201": {
-    "title": "通关苏醒394",
+    "title": "通关苏醒396",
     "type": "checkpoints",
-    "arg": 394,
+    "arg": 396,
     "value": 1,
     "next": 900202,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900202": {
-    "title": "通关苏醒396",
+    "title": "通关苏醒398",
     "type": "checkpoints",
-    "arg": 396,
+    "arg": 398,
     "value": 1,
     "next": 900203,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900203": {
-    "title": "通关苏醒398",
-    "type": "checkpoints",
-    "arg": 398,
-    "value": 1,
-    "next": 900204,
-    "award": "201:50000",
-    "guide": "guide_sj_gk"
-  },
-  "900204": {
     "title": "人物到达130级",
     "type": "loadLv",
     "value": 130,
-    "next": 900205,
+    "next": 900204,
     "award": "202:130",
     "guide": "guide_sj_gk"
   },
-  "900205": {
+  "900204": {
     "title": "通关苏醒400",
     "type": "checkpoints",
     "arg": 400,
+    "value": 1,
+    "next": 900205,
+    "award": "201:50000",
+    "guide": "guide_sj_gk"
+  },
+  "900205": {
+    "title": "通关幽灵船402",
+    "type": "checkpoints",
+    "arg": 402,
     "value": 1,
     "next": 900206,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900206": {
-    "title": "通关幽灵船402",
+    "title": "通关幽灵船404",
     "type": "checkpoints",
-    "arg": 402,
+    "arg": 404,
     "value": 1,
     "next": 900207,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900207": {
-    "title": "通关幽灵船404",
+    "title": "通关幽灵船406",
     "type": "checkpoints",
-    "arg": 404,
+    "arg": 406,
     "value": 1,
     "next": 900208,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900208": {
-    "title": "通关幽灵船406",
+    "title": "通关幽灵船408",
     "type": "checkpoints",
-    "arg": 406,
+    "arg": 408,
     "value": 1,
     "next": 900209,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900209": {
-    "title": "通关幽灵船408",
+    "title": "通关幽灵船410",
     "type": "checkpoints",
-    "arg": 408,
+    "arg": 410,
     "value": 1,
     "next": 900210,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900210": {
-    "title": "通关幽灵船410",
+    "title": "通关海难412",
     "type": "checkpoints",
-    "arg": 410,
+    "arg": 412,
     "value": 1,
     "next": 900211,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900211": {
-    "title": "通关海难412",
+    "title": "通关海难414",
     "type": "checkpoints",
-    "arg": 412,
+    "arg": 414,
     "value": 1,
     "next": 900212,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900212": {
-    "title": "通关海难414",
+    "title": "通关海难416",
     "type": "checkpoints",
-    "arg": 414,
+    "arg": 416,
     "value": 1,
     "next": 900213,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900213": {
-    "title": "通关海难416",
+    "title": "通关海难418",
     "type": "checkpoints",
-    "arg": 416,
+    "arg": 418,
     "value": 1,
     "next": 900214,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900214": {
-    "title": "通关海难418",
+    "title": "通关海难420",
     "type": "checkpoints",
-    "arg": 418,
+    "arg": 420,
     "value": 1,
     "next": 900215,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900215": {
-    "title": "通关海难420",
+    "title": "通关蓝球422",
     "type": "checkpoints",
-    "arg": 420,
+    "arg": 422,
     "value": 1,
     "next": 900216,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900216": {
-    "title": "通关蓝球422",
+    "title": "通关蓝球424",
     "type": "checkpoints",
-    "arg": 422,
+    "arg": 424,
     "value": 1,
     "next": 900217,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900217": {
-    "title": "通关蓝球424",
+    "title": "通关蓝球426",
     "type": "checkpoints",
-    "arg": 424,
+    "arg": 426,
     "value": 1,
     "next": 900218,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900218": {
-    "title": "通关蓝球426",
+    "title": "通关蓝球428",
     "type": "checkpoints",
-    "arg": 426,
+    "arg": 428,
     "value": 1,
     "next": 900219,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900219": {
-    "title": "通关蓝球428",
-    "type": "checkpoints",
-    "arg": 428,
-    "value": 1,
-    "next": 900220,
-    "award": "201:50000",
-    "guide": "guide_sj_gk"
-  },
-  "900220": {
     "title": "人物到达140级",
     "type": "loadLv",
     "value": 140,
-    "next": 900221,
+    "next": 900220,
     "award": "202:140",
     "guide": "guide_sj_gk"
   },
-  "900221": {
+  "900220": {
     "title": "通关蓝球430",
     "type": "checkpoints",
     "arg": 430,
+    "value": 1,
+    "next": 900221,
+    "award": "201:50000",
+    "guide": "guide_sj_gk"
+  },
+  "900221": {
+    "title": "通关女丑初现432",
+    "type": "checkpoints",
+    "arg": 432,
     "value": 1,
     "next": 900222,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900222": {
-    "title": "通关女丑初现432",
+    "title": "通关女丑初现434",
     "type": "checkpoints",
-    "arg": 432,
+    "arg": 434,
     "value": 1,
     "next": 900223,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900223": {
-    "title": "通关女丑初现434",
+    "title": "通关女丑初现436",
     "type": "checkpoints",
-    "arg": 434,
+    "arg": 436,
     "value": 1,
     "next": 900224,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900224": {
-    "title": "通关女丑初现436",
+    "title": "通关女丑初现438",
     "type": "checkpoints",
-    "arg": 436,
+    "arg": 438,
     "value": 1,
     "next": 900225,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900225": {
-    "title": "通关女丑初现438",
+    "title": "通关女丑初现440",
     "type": "checkpoints",
-    "arg": 438,
+    "arg": 440,
     "value": 1,
     "next": 900226,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900226": {
-    "title": "通关女丑初现440",
+    "title": "通关古墓442",
     "type": "checkpoints",
-    "arg": 440,
+    "arg": 442,
     "value": 1,
     "next": 900227,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900227": {
-    "title": "通关古墓442",
+    "title": "通关古墓444",
     "type": "checkpoints",
-    "arg": 442,
+    "arg": 444,
     "value": 1,
     "next": 900228,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900228": {
-    "title": "通关古墓444",
+    "title": "通关古墓446",
     "type": "checkpoints",
-    "arg": 444,
+    "arg": 446,
     "value": 1,
     "next": 900229,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900229": {
-    "title": "通关古墓446",
+    "title": "通关古墓448",
     "type": "checkpoints",
-    "arg": 446,
+    "arg": 448,
     "value": 1,
     "next": 900230,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900230": {
-    "title": "通关古墓448",
+    "title": "通关古墓450",
     "type": "checkpoints",
-    "arg": 448,
+    "arg": 450,
     "value": 1,
     "next": 900231,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900231": {
-    "title": "通关古墓450",
+    "title": "通关封印452",
     "type": "checkpoints",
-    "arg": 450,
+    "arg": 452,
     "value": 1,
     "next": 900232,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900232": {
-    "title": "通关封印452",
+    "title": "通关封印454",
     "type": "checkpoints",
-    "arg": 452,
+    "arg": 454,
     "value": 1,
     "next": 900233,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900233": {
-    "title": "通关封印454",
+    "title": "通关封印456",
     "type": "checkpoints",
-    "arg": 454,
+    "arg": 456,
     "value": 1,
     "next": 900234,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900234": {
-    "title": "通关封印456",
+    "title": "通关封印458",
     "type": "checkpoints",
-    "arg": 456,
+    "arg": 458,
     "value": 1,
     "next": 900235,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900235": {
-    "title": "通关封印458",
-    "type": "checkpoints",
-    "arg": 458,
-    "value": 1,
-    "next": 900236,
-    "award": "201:50000",
-    "guide": "guide_sj_gk"
-  },
-  "900236": {
     "title": "人物到达150级",
     "type": "loadLv",
     "value": 150,
-    "next": 900237,
+    "next": 900236,
     "award": "202:150",
     "guide": "guide_sj_gk"
   },
-  "900237": {
+  "900236": {
     "title": "通关封印460",
     "type": "checkpoints",
     "arg": 460,
+    "value": 1,
+    "next": 900237,
+    "award": "201:50000",
+    "guide": "guide_sj_gk"
+  },
+  "900237": {
+    "title": "通关盗洞462",
+    "type": "checkpoints",
+    "arg": 462,
     "value": 1,
     "next": 900238,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900238": {
-    "title": "通关盗洞462",
+    "title": "通关盗洞464",
     "type": "checkpoints",
-    "arg": 462,
+    "arg": 464,
     "value": 1,
     "next": 900239,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900239": {
-    "title": "通关盗洞464",
+    "title": "通关盗洞466",
     "type": "checkpoints",
-    "arg": 464,
+    "arg": 466,
     "value": 1,
     "next": 900240,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900240": {
-    "title": "通关盗洞466",
+    "title": "通关盗洞468",
     "type": "checkpoints",
-    "arg": 466,
+    "arg": 468,
     "value": 1,
     "next": 900241,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900241": {
-    "title": "通关盗洞468",
+    "title": "通关盗洞470",
     "type": "checkpoints",
-    "arg": 468,
+    "arg": 470,
     "value": 1,
     "next": 900242,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900242": {
-    "title": "通关盗洞470",
+    "title": "通关道术472",
     "type": "checkpoints",
-    "arg": 470,
+    "arg": 472,
     "value": 1,
     "next": 900243,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900243": {
-    "title": "通关道术472",
+    "title": "通关道术474",
     "type": "checkpoints",
-    "arg": 472,
+    "arg": 474,
     "value": 1,
     "next": 900244,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900244": {
-    "title": "通关道术474",
+    "title": "通关道术476",
     "type": "checkpoints",
-    "arg": 474,
+    "arg": 476,
     "value": 1,
     "next": 900245,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900245": {
-    "title": "通关道术476",
+    "title": "通关道术478",
     "type": "checkpoints",
-    "arg": 476,
+    "arg": 478,
     "value": 1,
     "next": 900246,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900246": {
-    "title": "通关道术478",
+    "title": "通关道术480",
     "type": "checkpoints",
-    "arg": 478,
+    "arg": 480,
     "value": 1,
     "next": 900247,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900247": {
-    "title": "通关道术480",
+    "title": "通关尸怪482",
     "type": "checkpoints",
-    "arg": 480,
+    "arg": 482,
     "value": 1,
     "next": 900248,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900248": {
-    "title": "通关尸怪482",
+    "title": "通关尸怪484",
     "type": "checkpoints",
-    "arg": 482,
+    "arg": 484,
     "value": 1,
     "next": 900249,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900249": {
-    "title": "通关尸怪484",
+    "title": "通关尸怪486",
     "type": "checkpoints",
-    "arg": 484,
+    "arg": 486,
     "value": 1,
     "next": 900250,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900250": {
-    "title": "通关尸怪486",
+    "title": "通关尸怪488",
     "type": "checkpoints",
-    "arg": 486,
+    "arg": 488,
     "value": 1,
     "next": 900251,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900251": {
-    "title": "通关尸怪488",
-    "type": "checkpoints",
-    "arg": 488,
-    "value": 1,
-    "next": 900252,
-    "award": "201:50000",
-    "guide": "guide_sj_gk"
-  },
-  "900252": {
     "title": "人物到达160级",
     "type": "loadLv",
     "value": 160,
-    "next": 900253,
+    "next": 900252,
     "award": "202:160",
     "guide": "guide_sj_gk"
   },
-  "900253": {
+  "900252": {
     "title": "通关尸怪490",
     "type": "checkpoints",
     "arg": 490,
+    "value": 1,
+    "next": 900253,
+    "award": "201:50000",
+    "guide": "guide_sj_gk"
+  },
+  "900253": {
+    "title": "通关刀锋诀492",
+    "type": "checkpoints",
+    "arg": 492,
     "value": 1,
     "next": 900254,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900254": {
-    "title": "通关刀锋诀492",
+    "title": "通关刀锋诀494",
     "type": "checkpoints",
-    "arg": 492,
+    "arg": 494,
     "value": 1,
     "next": 900255,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900255": {
-    "title": "通关刀锋诀494",
+    "title": "通关刀锋诀496",
     "type": "checkpoints",
-    "arg": 494,
+    "arg": 496,
     "value": 1,
     "next": 900256,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900256": {
-    "title": "通关刀锋诀496",
+    "title": "通关刀锋诀498",
     "type": "checkpoints",
-    "arg": 496,
+    "arg": 498,
     "value": 1,
     "next": 900257,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900257": {
-    "title": "通关刀锋诀498",
+    "title": "通关刀锋诀500",
     "type": "checkpoints",
-    "arg": 498,
+    "arg": 500,
     "value": 1,
     "next": 900258,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900258": {
-    "title": "通关刀锋诀500",
+    "title": "通关矮灵体502",
     "type": "checkpoints",
-    "arg": 500,
+    "arg": 502,
     "value": 1,
     "next": 900259,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900259": {
-    "title": "通关矮灵体502",
+    "title": "通关矮灵体504",
     "type": "checkpoints",
-    "arg": 502,
+    "arg": 504,
     "value": 1,
     "next": 900260,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900260": {
-    "title": "通关矮灵体504",
+    "title": "通关矮灵体506",
     "type": "checkpoints",
-    "arg": 504,
+    "arg": 506,
     "value": 1,
     "next": 900261,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900261": {
-    "title": "通关矮灵体506",
+    "title": "通关矮灵体508",
     "type": "checkpoints",
-    "arg": 506,
+    "arg": 508,
     "value": 1,
     "next": 900262,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900262": {
-    "title": "通关矮灵体508",
+    "title": "通关矮灵体510",
     "type": "checkpoints",
-    "arg": 508,
+    "arg": 510,
     "value": 1,
     "next": 900263,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900263": {
-    "title": "通关矮灵体510",
+    "title": "通关昆仑掌512",
     "type": "checkpoints",
-    "arg": 510,
+    "arg": 512,
     "value": 1,
     "next": 900264,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900264": {
-    "title": "通关昆仑掌512",
+    "title": "通关昆仑掌514",
     "type": "checkpoints",
-    "arg": 512,
+    "arg": 514,
     "value": 1,
     "next": 900265,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900265": {
-    "title": "通关昆仑掌514",
+    "title": "通关昆仑掌516",
     "type": "checkpoints",
-    "arg": 514,
+    "arg": 516,
     "value": 1,
     "next": 900266,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900266": {
-    "title": "通关昆仑掌516",
+    "title": "通关昆仑掌518",
     "type": "checkpoints",
-    "arg": 516,
+    "arg": 518,
     "value": 1,
     "next": 900267,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900267": {
-    "title": "通关昆仑掌518",
-    "type": "checkpoints",
-    "arg": 518,
-    "value": 1,
-    "next": 900268,
-    "award": "201:50000",
-    "guide": "guide_sj_gk"
-  },
-  "900268": {
     "title": "人物到达170级",
     "type": "loadLv",
     "value": 170,
-    "next": 900269,
+    "next": 900268,
     "award": "202:170",
     "guide": "guide_sj_gk"
   },
-  "900269": {
+  "900268": {
     "title": "通关昆仑掌520",
     "type": "checkpoints",
     "arg": 520,
+    "value": 1,
+    "next": 900269,
+    "award": "201:50000",
+    "guide": "guide_sj_gk"
+  },
+  "900269": {
+    "title": "通关修炼灵根522",
+    "type": "checkpoints",
+    "arg": 522,
     "value": 1,
     "next": 900270,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900270": {
-    "title": "通关修炼灵根522",
+    "title": "通关修炼灵根524",
     "type": "checkpoints",
-    "arg": 522,
+    "arg": 524,
     "value": 1,
     "next": 900271,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900271": {
-    "title": "通关修炼灵根524",
+    "title": "通关修炼灵根526",
     "type": "checkpoints",
-    "arg": 524,
+    "arg": 526,
     "value": 1,
     "next": 900272,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900272": {
-    "title": "通关修炼灵根526",
+    "title": "通关修炼灵根528",
     "type": "checkpoints",
-    "arg": 526,
+    "arg": 528,
     "value": 1,
     "next": 900273,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900273": {
-    "title": "通关修炼灵根528",
+    "title": "通关修炼灵根530",
     "type": "checkpoints",
-    "arg": 528,
+    "arg": 530,
     "value": 1,
     "next": 900274,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900274": {
-    "title": "通关修炼灵根530",
+    "title": "通关巨怪侵袭532",
     "type": "checkpoints",
-    "arg": 530,
+    "arg": 532,
     "value": 1,
     "next": 900275,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900275": {
-    "title": "通关巨怪侵袭532",
+    "title": "通关巨怪侵袭534",
     "type": "checkpoints",
-    "arg": 532,
+    "arg": 534,
     "value": 1,
     "next": 900276,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900276": {
-    "title": "通关巨怪侵袭534",
+    "title": "通关巨怪侵袭536",
     "type": "checkpoints",
-    "arg": 534,
+    "arg": 536,
     "value": 1,
     "next": 900277,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900277": {
-    "title": "通关巨怪侵袭536",
+    "title": "通关巨怪侵袭538",
     "type": "checkpoints",
-    "arg": 536,
+    "arg": 538,
     "value": 1,
     "next": 900278,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900278": {
-    "title": "通关巨怪侵袭538",
+    "title": "通关巨怪侵袭540",
     "type": "checkpoints",
-    "arg": 538,
+    "arg": 540,
     "value": 1,
     "next": 900279,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900279": {
-    "title": "通关巨怪侵袭540",
+    "title": "通关幽暗迷途542",
     "type": "checkpoints",
-    "arg": 540,
+    "arg": 542,
     "value": 1,
     "next": 900280,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900280": {
-    "title": "通关幽暗迷途542",
+    "title": "通关幽暗迷途544",
     "type": "checkpoints",
-    "arg": 542,
+    "arg": 544,
     "value": 1,
     "next": 900281,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900281": {
-    "title": "通关幽暗迷途544",
+    "title": "通关幽暗迷途546",
     "type": "checkpoints",
-    "arg": 544,
+    "arg": 546,
     "value": 1,
     "next": 900282,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900282": {
-    "title": "通关幽暗迷途546",
+    "title": "通关幽暗迷途548",
     "type": "checkpoints",
-    "arg": 546,
+    "arg": 548,
     "value": 1,
     "next": 900283,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900283": {
-    "title": "通关幽暗迷途548",
-    "type": "checkpoints",
-    "arg": 548,
-    "value": 1,
-    "next": 900284,
-    "award": "201:50000",
-    "guide": "guide_sj_gk"
-  },
-  "900284": {
     "title": "人物到达180级",
     "type": "loadLv",
     "value": 180,
-    "next": 900285,
+    "next": 900284,
     "award": "202:180",
     "guide": "guide_sj_gk"
   },
-  "900285": {
+  "900284": {
     "title": "通关幽暗迷途550",
     "type": "checkpoints",
     "arg": 550,
+    "value": 1,
+    "next": 900285,
+    "award": "201:50000",
+    "guide": "guide_sj_gk"
+  },
+  "900285": {
+    "title": "通关宝物陷阱552",
+    "type": "checkpoints",
+    "arg": 552,
     "value": 1,
     "next": 900286,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900286": {
-    "title": "通关宝物陷阱552",
+    "title": "通关宝物陷阱554",
     "type": "checkpoints",
-    "arg": 552,
+    "arg": 554,
     "value": 1,
     "next": 900287,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900287": {
-    "title": "通关宝物陷阱554",
+    "title": "通关宝物陷阱556",
     "type": "checkpoints",
-    "arg": 554,
+    "arg": 556,
     "value": 1,
     "next": 900288,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900288": {
-    "title": "通关宝物陷阱556",
+    "title": "通关宝物陷阱558",
     "type": "checkpoints",
-    "arg": 556,
+    "arg": 558,
     "value": 1,
     "next": 900289,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900289": {
-    "title": "通关宝物陷阱558",
+    "title": "通关宝物陷阱560",
     "type": "checkpoints",
-    "arg": 558,
+    "arg": 560,
     "value": 1,
     "next": 900290,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900290": {
-    "title": "通关宝物陷阱560",
+    "title": "通关宿命对决562",
     "type": "checkpoints",
-    "arg": 560,
+    "arg": 562,
     "value": 1,
     "next": 900291,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900291": {
-    "title": "通关宿命对决562",
+    "title": "通关宿命对决564",
     "type": "checkpoints",
-    "arg": 562,
+    "arg": 564,
     "value": 1,
     "next": 900292,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900292": {
-    "title": "通关宿命对决564",
+    "title": "通关宿命对决566",
     "type": "checkpoints",
-    "arg": 564,
+    "arg": 566,
     "value": 1,
     "next": 900293,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900293": {
-    "title": "通关宿命对决566",
+    "title": "通关宿命对决568",
     "type": "checkpoints",
-    "arg": 566,
+    "arg": 568,
     "value": 1,
     "next": 900294,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900294": {
-    "title": "通关宿命对决568",
+    "title": "通关宿命对决570",
     "type": "checkpoints",
-    "arg": 568,
+    "arg": 570,
     "value": 1,
     "next": 900295,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900295": {
-    "title": "通关宿命对决570",
+    "title": "通关突显真相572",
     "type": "checkpoints",
-    "arg": 570,
+    "arg": 572,
     "value": 1,
     "next": 900296,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900296": {
-    "title": "通关突显真相572",
+    "title": "通关突显真相574",
     "type": "checkpoints",
-    "arg": 572,
+    "arg": 574,
     "value": 1,
     "next": 900297,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900297": {
-    "title": "通关突显真相574",
+    "title": "通关突显真相576",
     "type": "checkpoints",
-    "arg": 574,
+    "arg": 576,
     "value": 1,
     "next": 900298,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900298": {
-    "title": "通关突显真相576",
+    "title": "通关突显真相578",
     "type": "checkpoints",
-    "arg": 576,
+    "arg": 578,
     "value": 1,
     "next": 900299,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900299": {
-    "title": "通关突显真相578",
-    "type": "checkpoints",
-    "arg": 578,
-    "value": 1,
-    "next": 900300,
-    "award": "201:50000",
-    "guide": "guide_sj_gk"
-  },
-  "900300": {
     "title": "人物到达190级",
     "type": "loadLv",
     "value": 190,
-    "next": 900301,
+    "next": 900300,
     "award": "202:190",
     "guide": "guide_sj_gk"
   },
-  "900301": {
+  "900300": {
     "title": "通关突显真相580",
     "type": "checkpoints",
     "arg": 580,
+    "value": 1,
+    "next": 900301,
+    "award": "201:50000",
+    "guide": "guide_sj_gk"
+  },
+  "900301": {
+    "title": "通关渤海国582",
+    "type": "checkpoints",
+    "arg": 582,
     "value": 1,
     "next": 900302,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900302": {
-    "title": "通关渤海国582",
+    "title": "通关渤海国584",
     "type": "checkpoints",
-    "arg": 582,
+    "arg": 584,
     "value": 1,
     "next": 900303,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900303": {
-    "title": "通关渤海国584",
+    "title": "通关渤海国586",
     "type": "checkpoints",
-    "arg": 584,
+    "arg": 586,
     "value": 1,
     "next": 900304,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900304": {
-    "title": "通关渤海国586",
+    "title": "通关渤海国588",
     "type": "checkpoints",
-    "arg": 586,
+    "arg": 588,
     "value": 1,
     "next": 900305,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900305": {
-    "title": "通关渤海国588",
+    "title": "通关渤海国590",
     "type": "checkpoints",
-    "arg": 588,
+    "arg": 590,
     "value": 1,
     "next": 900306,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900306": {
-    "title": "通关渤海国590",
+    "title": "通关钢甲神雷592",
     "type": "checkpoints",
-    "arg": 590,
+    "arg": 592,
     "value": 1,
     "next": 900307,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900307": {
-    "title": "通关钢甲神雷592",
+    "title": "通关钢甲神雷594",
     "type": "checkpoints",
-    "arg": 592,
+    "arg": 594,
     "value": 1,
     "next": 900308,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900308": {
-    "title": "通关钢甲神雷594",
+    "title": "通关钢甲神雷596",
     "type": "checkpoints",
-    "arg": 594,
+    "arg": 596,
     "value": 1,
     "next": 900309,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900309": {
-    "title": "通关钢甲神雷596",
+    "title": "通关钢甲神雷598",
     "type": "checkpoints",
-    "arg": 596,
+    "arg": 598,
     "value": 1,
     "next": 900310,
     "award": "201:50000",
     "guide": "guide_sj_gk"
   },
   "900310": {
-    "title": "通关钢甲神雷598",
-    "type": "checkpoints",
-    "arg": 598,
-    "value": 1,
-    "next": 900311,
-    "award": "201:50000",
-    "guide": "guide_sj_gk"
-  },
-  "900311": {
     "title": "通关钢甲神雷600",
     "type": "checkpoints",
     "arg": 600,

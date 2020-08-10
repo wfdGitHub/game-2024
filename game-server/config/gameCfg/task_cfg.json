@@ -130,121 +130,136 @@
     "liveness": 10
   },
   "100017": {
+    "title": "参与1次山海经",
+    "refresh": "day",
+    "type": "ss_play",
+    "value": 1,
+    "award": "1000090:1",
+    "liveness": 10
+  },
+  "100018": {
     "title": "日常登陆1次",
     "refresh": "day",
     "type": "login",
     "value": 1,
     "exp": 30
   },
-  "100018": {
+  "100019": {
     "title": "快速作战3次",
     "refresh": "day",
     "type": "quick",
     "value": 3,
     "exp": 30
   },
-  "100019": {
+  "100020": {
     "title": "参与竞技场3次",
     "refresh": "day",
     "type": "arena",
     "value": 3,
     "exp": 30
   },
-  "100020": {
+  "100021": {
     "title": "领取1次挂机奖励",
     "refresh": "day",
     "type": "on_hook",
     "value": 1,
     "exp": 30
   },
-  "100021": {
+  "100022": {
     "title": "挑战日常副本3次",
     "refresh": "day",
     "type": "fb",
     "value": 3,
     "exp": 30
   },
-  "100022": {
+  "100023": {
     "title": "挑战或扫荡通天塔3次",
     "refresh": "day",
     "type": "ttt",
     "value": 3,
     "exp": 30
   },
-  "100023": {
+  "100024": {
     "title": "女娲池召唤3次",
     "refresh": "day",
     "type": "recruit",
     "value": 3,
     "exp": 30
   },
-  "100024": {
+  "100025": {
     "title": "消耗500元宝",
     "refresh": "day",
     "type": "use_gold",
     "value": 500,
     "exp": 30
   },
-  "100025": {
+  "100026": {
     "title": "消耗50000铜币",
     "refresh": "day",
     "type": "use_coin",
     "value": 50000,
     "exp": 30
   },
-  "100026": {
+  "100027": {
     "title": "活跃度到达100",
     "refresh": "day",
     "type": "liveness",
     "value": 100,
     "exp": 30
   },
-  "100027": {
+  "100028": {
     "title": "获得任意装备3件",
     "refresh": "day",
     "type": "equip",
     "value": 3,
     "exp": 30
   },
-  "100028": {
+  "100029": {
     "title": "竞技场胜利3次",
     "refresh": "day",
     "type": "arena_win",
     "value": 3,
     "exp": 30
   },
-  "100029": {
+  "100030": {
     "title": "宝物商店刷新3次",
     "refresh": "day",
     "type": "bazzar_refresh",
     "value": 3,
     "exp": 30
   },
-  "100030": {
+  "100031": {
     "title": "领取挂机奖励3次",
     "refresh": "day",
     "type": "on_hook",
     "value": 3,
     "exp": 30
   },
-  "100031": {
+  "100032": {
     "title": "杂货铺购买商品1次",
     "refresh": "day",
     "type": "shop_buy",
     "value": 1,
     "exp": 30
   },
-  "100032": {
+  "100033": {
     "title": "完成3次三界任务",
     "refresh": "day",
     "type": "tour",
     "value": 3,
     "exp": 30
   },
-  "100033": {
+  "100034": {
     "title": "在逐鹿之战玩法中击杀怪物",
     "refresh": "day",
     "type": "zhulu_monster",
+    "value": 1,
+    "exp": 30
+  },
+  "100035": {
+    "title": "参与1次山海经",
+    "refresh": "day",
+    "type": "ss_play",
     "value": 1,
     "exp": 30
   },
@@ -2681,6 +2696,252 @@
     "value": 1,
     "inherit": true,
     "award": "202:255"
+  },
+  "201352": {
+    "title": "参与1次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 1,
+    "next": 201353,
+    "inherit": true,
+    "award": "201:10000",
+    "first": true
+  },
+  "201353": {
+    "title": "参与10次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 10,
+    "next": 201354,
+    "inherit": true,
+    "award": "201:20000"
+  },
+  "201354": {
+    "title": "参与30次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 30,
+    "next": 201355,
+    "inherit": true,
+    "award": "201:30000"
+  },
+  "201355": {
+    "title": "参与50次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 50,
+    "next": 201356,
+    "inherit": true,
+    "award": "201:40000"
+  },
+  "201356": {
+    "title": "参与100次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 100,
+    "next": 201357,
+    "inherit": true,
+    "award": "201:50000"
+  },
+  "201357": {
+    "title": "参与200次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 200,
+    "next": 201358,
+    "inherit": true,
+    "award": "201:60000"
+  },
+  "201358": {
+    "title": "参与300次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 300,
+    "next": 201359,
+    "inherit": true,
+    "award": "201:70000"
+  },
+  "201359": {
+    "title": "参与400次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 400,
+    "next": 201360,
+    "inherit": true,
+    "award": "201:80000"
+  },
+  "201360": {
+    "title": "参与500次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 500,
+    "next": 201361,
+    "inherit": true,
+    "award": "201:90000"
+  },
+  "201361": {
+    "title": "参与600次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 600,
+    "next": 201362,
+    "inherit": true,
+    "award": "201:100000"
+  },
+  "201362": {
+    "title": "参与700次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 700,
+    "next": 201363,
+    "inherit": true,
+    "award": "201:110000"
+  },
+  "201363": {
+    "title": "参与800次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 800,
+    "next": 201364,
+    "inherit": true,
+    "award": "201:120000"
+  },
+  "201364": {
+    "title": "参与900次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 900,
+    "next": 201365,
+    "inherit": true,
+    "award": "201:130000"
+  },
+  "201365": {
+    "title": "参与1000次山海经",
+    "refresh": "always",
+    "type": "ss_play",
+    "value": 1000,
+    "inherit": true,
+    "award": "201:140000"
+  },
+  "201366": {
+    "title": "通关山海经第1章",
+    "refresh": "always",
+    "type": "ss_play",
+    "arg": 10,
+    "value": 1,
+    "next": 201367,
+    "inherit": true,
+    "award": "202:100"
+  },
+  "201367": {
+    "title": "通关山海经第2章",
+    "refresh": "always",
+    "type": "ss_play",
+    "arg": 20,
+    "value": 1,
+    "next": 201368,
+    "inherit": true,
+    "award": "202:150",
+    "first": true
+  },
+  "201368": {
+    "title": "通关山海经第3章",
+    "refresh": "always",
+    "type": "ss_play",
+    "arg": 30,
+    "value": 1,
+    "next": 201369,
+    "inherit": true,
+    "award": "202:200"
+  },
+  "201369": {
+    "title": "通关山海经第4章",
+    "refresh": "always",
+    "type": "ss_play",
+    "arg": 40,
+    "value": 1,
+    "next": 201370,
+    "inherit": true,
+    "award": "202:250"
+  },
+  "201370": {
+    "title": "通关山海经第5章",
+    "refresh": "always",
+    "type": "ss_play",
+    "arg": 50,
+    "value": 1,
+    "next": 201371,
+    "inherit": true,
+    "award": "202:300"
+  },
+  "201371": {
+    "title": "通关山海经第6章",
+    "refresh": "always",
+    "type": "ss_play",
+    "arg": 60,
+    "value": 1,
+    "next": 201372,
+    "inherit": true,
+    "award": "202:350"
+  },
+  "201372": {
+    "title": "通关山海经第7章",
+    "refresh": "always",
+    "type": "ss_play",
+    "arg": 70,
+    "value": 1,
+    "next": 201373,
+    "inherit": true,
+    "award": "202:400"
+  },
+  "201373": {
+    "title": "通关山海经第8章",
+    "refresh": "always",
+    "type": "ss_play",
+    "arg": 80,
+    "value": 1,
+    "next": 201374,
+    "inherit": true,
+    "award": "202:450"
+  },
+  "201374": {
+    "title": "通关山海经第9章",
+    "refresh": "always",
+    "type": "ss_play",
+    "arg": 90,
+    "value": 1,
+    "next": 201375,
+    "inherit": true,
+    "award": "202:500"
+  },
+  "201375": {
+    "title": "通关山海经第10章",
+    "refresh": "always",
+    "type": "ss_play",
+    "arg": 100,
+    "value": 1,
+    "next": 201376,
+    "inherit": true,
+    "award": "202:550"
+  },
+  "201376": {
+    "title": "通关山海经第11章",
+    "refresh": "always",
+    "type": "ss_play",
+    "arg": 110,
+    "value": 1,
+    "next": 201377,
+    "inherit": true,
+    "award": "202:600"
+  },
+  "201377": {
+    "title": "通关山海经第11章",
+    "refresh": "always",
+    "type": "ss_play",
+    "arg": 120,
+    "value": 1,
+    "inherit": true,
+    "award": "202:700"
   },
   "300101": {
     "title": "【每周】连续登陆",
