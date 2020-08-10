@@ -256,6 +256,8 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                         }
                         self.areaManager.areaMap[areaId].sendAllUser(notify)
                       }
+                      if(star >= 5)
+                        self.areaManager.areaMap[areaId].taskUpdate(uid,"heroStar_"+star,1,targetHero.id)
                     }
                     self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,targetHero.id,star)
                     next(null,{flag : flag,awardList : awardList,star : star})
@@ -283,6 +285,8 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                         }
                         self.areaManager.areaMap[areaId].sendAllUser(notify)
                       }
+                      if(star >= 5)
+                        self.areaManager.areaMap[areaId].taskUpdate(uid,"heroStar_"+star,1,targetHero.id)
                     }
                     self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,targetHero.id,star)
                     next(null,{flag : flag,awardList : awardList,star : star})
@@ -332,6 +336,7 @@ heroHandler.prototype.upgradeStarSimple = function(msg, session, next) {
             }
             self.areaManager.areaMap[areaId].sendAllUser(notify)
             self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,heroInfo.id,star)
+            self.areaManager.areaMap[areaId].taskUpdate(uid,"heroStar_6",1,heroInfo.id)
         }
         next(null,{flag : flag,star : star})
       })

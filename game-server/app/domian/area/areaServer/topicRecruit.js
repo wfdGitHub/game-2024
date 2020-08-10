@@ -8,24 +8,27 @@ const util = require("../../../../util/util.js")
 const main_name = "topic_recruit"
 var topicList = []
 for(var i in recruit_topic_hero)
-	topicList.push(recruit_topic_hero[i]["topic"])
+	topicList.push({id:i,heroId:recruit_topic_hero[i]["topic"]})
 module.exports = function() {
 	var self = this
+	var curTopic = 0
 	var curTopicHero = 0
 	var local = {}
 	//每日更新
 	this.topicRecruitDayUpdate = function() {
 		var week = util.getWeekNum()
-		curTopicHero = topicList[week % topicList.length]
+		var curIndex = week % topicList.length
+		curTopic = topicList[curIndex].id
+		curTopicHero = topicList[curIndex].heroId
 	}
-	//获取主题招募数据
-	this.getTopicRecruitData = function(uid,cb) {
+	this.TopicRecruitdayUpdate = function(uid) {
 		self.getObjAll(uid,main_name,function(data) {
 			var week_record = util.getWeek()
 			if(!data){
+				local.resetTopicRecruitTask(uid)
 				self.setObj(uid,main_name,"week_record",week_record)
-				cb(true,{count : 0,curTopicHero : curTopicHero})
 			}else if(data.week_record != week_record){
+				local.resetTopicRecruitTask(uid)
 				self.delObj(uid,main_name,"count")
 				self.delObj(uid,main_name,"box_1")
 				self.delObj(uid,main_name,"box_2")
@@ -33,14 +36,18 @@ module.exports = function() {
 				self.delObj(uid,main_name,"box_4")
 				self.delObj(uid,main_name,"box_5")
 				self.setObj(uid,main_name,"week_record",week_record)
-				cb(true,{count : 0,curTopicHero : curTopicHero})
-			}else{
-				if(!data.count)
-					data.count = 0
-				delete data.week_record
-				data.curTopicHero = curTopicHero
-				cb(true,data)
 			}
+		})
+	}
+	//获取主题招募数据
+	this.getTopicRecruitData = function(uid,cb) {
+		self.getObjAll(uid,main_name,function(data) {
+			if(!data)
+				data = {}
+			delete data.week_record
+			data.count = Number(data.count) || 0
+			data.curTopic = curTopic
+			cb(true,data)
 		})
 	}
 	//主题招募一次
@@ -80,7 +87,10 @@ module.exports = function() {
 				var count = Number(list[0])
 				if(count >= recruit_topic_cfg["box_"+index]["key"]){
 					self.setObj(uid,main_name,"box_"+index,1)
-					var awardList = self.addItemStr(uid,recruit_topic_cfg["box_"+index]["value"])
+					var awardStr = recruit_topic_cfg["box_"+index]["value"]
+					if(awardStr == "topic")
+						awardStr = curTopicHero+":30"
+					var awardList = self.addItemStr(uid,awardStr)
 					cb(true,awardList)
 				}else{
 					cb(false,"条件不满足")
@@ -89,6 +99,14 @@ module.exports = function() {
 
 		})
 	}
+	//重置主题任务
+	local.resetTopicRecruitTask = function(uid) {
+		self.clearTopicRecruitTask(uid)
+		for(var i = 1;i <= 5;i++){
+			self.gainTask(uid,recruit_topic_hero[curTopic]["task_"+i])
+		}
+	}
+	//主题招募
 	local.recruit = function(uid,count) {
 		var allWeight = recruit_base["topic"]["allWeight"]
 		var weights = recruit_base["topic"]["weights"]

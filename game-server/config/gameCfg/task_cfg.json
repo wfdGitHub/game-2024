@@ -3787,5 +3787,45 @@
     "type": "totalCe",
     "value": 1000000,
     "award": "1001004:1&1000120:4"
+  },
+  "601001": {
+    "title": "瑞兽升到6星",
+    "refresh": "topic",
+    "type": "heroStar_6",
+    "arg": 405010,
+    "value": 1,
+    "award": "201:10000"
+  },
+  "601002": {
+    "title": "瑞兽升到7星",
+    "refresh": "topic",
+    "type": "heroStar_7",
+    "arg": 405010,
+    "value": 1,
+    "award": "201:10001"
+  },
+  "601003": {
+    "title": "瑞兽升到8星",
+    "refresh": "topic",
+    "type": "heroStar_8",
+    "arg": 405010,
+    "value": 1,
+    "award": "201:10002"
+  },
+  "601004": {
+    "title": "瑞兽升到9星",
+    "refresh": "topic",
+    "type": "heroStar_9",
+    "arg": 405010,
+    "value": 1,
+    "award": "201:10003"
+  },
+  "601005": {
+    "title": "瑞兽升到10星",
+    "refresh": "topic",
+    "type": "heroStar_10",
+    "arg": 405010,
+    "value": 1,
+    "award": "201:10004"
   }
 }

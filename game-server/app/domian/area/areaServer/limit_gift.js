@@ -46,7 +46,7 @@ module.exports = function() {
 	}
 	//升星检查限时礼包
 	this.checkLimitGiftStar = function(uid,heroId,star) {
-		if(star == 6){
+		if(star == 6 && gift_hero[heroId]){
 			self.getObj(uid,second_name,"hero_"+heroId,function(data) {
 				if(!data){
 					self.setObj(uid,second_name,"hero_"+heroId,1)
@@ -54,12 +54,14 @@ module.exports = function() {
 				}
 			})
 		}
-		self.getObj(uid,second_name,"star_"+star,function(data) {
-			if(!data){
-				self.setObj(uid,second_name,"star_"+star,1)
-				local.createLimitGift(uid,gift_star[star]["id"])
-			}
-		})
+		if(gift_star[star]){
+			self.getObj(uid,second_name,"star_"+star,function(data) {
+				if(!data){
+					self.setObj(uid,second_name,"star_"+star,1)
+					local.createLimitGift(uid,gift_star[star]["id"])
+				}
+			})
+		}
 	}
 	//生成限时礼包
 	local.createLimitGift = function(uid,id) {

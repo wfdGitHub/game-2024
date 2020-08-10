@@ -68,6 +68,36 @@
     "des": "参数代表英雄阶级",
     "equal": true
   },
+  "heroStar_5": {
+    "name": "英雄升到5星",
+    "des": "参数代表英雄ID",
+    "equal": true
+  },
+  "heroStar_6": {
+    "name": "英雄升到6星",
+    "des": "参数代表英雄ID",
+    "equal": true
+  },
+  "heroStar_7": {
+    "name": "英雄升到7星",
+    "des": "参数代表英雄ID",
+    "equal": true
+  },
+  "heroStar_8": {
+    "name": "英雄升到8星",
+    "des": "参数代表英雄ID",
+    "equal": true
+  },
+  "heroStar_9": {
+    "name": "英雄升到9星",
+    "des": "参数代表英雄ID",
+    "equal": true
+  },
+  "heroStar_10": {
+    "name": "英雄升到10星",
+    "des": "参数代表英雄ID",
+    "equal": true
+  },
   "equip": {
     "name": "获得装备",
     "des": "参数代表装备品质等级"

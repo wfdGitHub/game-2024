@@ -15,6 +15,7 @@ var day_task = {}
 var week_task = {}
 var month_task = {}
 var week_target_task = {}
+var topic_recruit_task = {}
 for(var taskId in task_cfg){
 	if(task_cfg[taskId].first)
 		first_task[taskId] = task_cfg[taskId]
@@ -26,6 +27,8 @@ for(var taskId in task_cfg){
 		month_task[taskId] = task_cfg[taskId]
 	if(task_cfg[taskId].refresh == "week_target")
 		week_target_task[taskId] = task_cfg[taskId]
+	if(task_cfg[taskId].refresh == "topic")
+		topic_recruit_task[taskId] = task_cfg[taskId]
 }
 for(var i in week_target){
 	var task_list = JSON.parse(week_target[i]["task_list"])
@@ -351,6 +354,20 @@ module.exports = function() {
 	this.clearWeekTarget = function(uid) {
 		for(var taskId in userTaskLists[uid]){
 			if(week_target_task[taskId]){
+				if(userTaskMaps[uid]){
+					let type = task_cfg[taskId].type
+					if(userTaskMaps[uid][type])
+						userTaskMaps[uid][type].remove(taskId)
+				}
+				self.delObj(uid,main_name,taskId)
+				delete userTaskLists[uid][taskId]
+			}
+		}
+	}
+	//清除主题招募任务
+	this.clearTopicRecruitTask = function(uid) {
+		for(var taskId in userTaskLists[uid]){
+			if(topic_recruit_task[taskId]){
 				if(userTaskMaps[uid]){
 					let type = task_cfg[taskId].type
 					if(userTaskMaps[uid][type])
