@@ -56,9 +56,10 @@ module.exports = function() {
 			if(!flag){
 				cb(false,err)
 			}else{
-				self.incrbyObj(uid,main_name,"count",1)
-				var heroInfos = local.recruit(uid,1)
-				cb(true,heroInfos)
+				self.getObj(uid,main_name,"count",function(num) {
+					var heroInfos = local.recruit(uid,num,1)
+					cb(true,heroInfos)
+				})
 			}
 		})
 	}
@@ -68,9 +69,10 @@ module.exports = function() {
 			if(!flag){
 				cb(false,err)
 			}else{
-				self.incrbyObj(uid,main_name,"count",10)
-				var heroInfos = local.recruit(uid,10)
-				cb(true,heroInfos)
+				self.getObj(uid,main_name,"count",function(num) {
+					var heroInfos = local.recruit(uid,num,10)
+					cb(true,heroInfos)
+				})
 			}
 		})
 	}
@@ -107,27 +109,35 @@ module.exports = function() {
 		}
 	}
 	//主题招募
-	local.recruit = function(uid,count) {
+	local.recruit = function(uid,num,count) {
 		var allWeight = recruit_base["topic"]["allWeight"]
 		var weights = recruit_base["topic"]["weights"]
 	    var heroInfos = []
-	    for(var num = 0;num < count;num++){
-	      var rand = Math.random() * allWeight
-	      for(var type in weights){
-	        if(rand < weights[type]){
-	        	if(type == "topic"){
-					var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : curTopicHero})
-					heroInfos.push(heroInfo)
-	        	}else{
-					var heroList = recruit_list[type].heroList
-					var heroId = heroList[Math.floor(heroList.length * Math.random())]
-					var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId})
-					heroInfos.push(heroInfo)
-	        	}
-	        	break
-	        }
+	    num = Number(num) || 0
+	    for(var i = 0;i < count;i++){
+	      num++
+	      if(num == 150){
+			var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : curTopicHero})
+			heroInfos.push(heroInfo)
+	      }else{
+		      var rand = Math.random() * allWeight
+		      for(var type in weights){
+		        if(rand < weights[type]){
+		        	if(type == "topic"){
+						var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : curTopicHero})
+						heroInfos.push(heroInfo)
+		        	}else{
+						var heroList = recruit_list[type].heroList
+						var heroId = heroList[Math.floor(heroList.length * Math.random())]
+						var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId})
+						heroInfos.push(heroInfo)
+		        	}
+		        	break
+		        }
+		      }
 	      }
 	    }
+	    self.incrbyObj(uid,main_name,"count",count)
 	  	return heroInfos
 	}
 }
