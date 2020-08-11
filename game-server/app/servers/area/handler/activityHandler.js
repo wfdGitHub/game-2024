@@ -189,10 +189,6 @@ activityHandler.prototype.buyVipAward = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   var vip = msg.vip
-  if(vip < 1){
-    next(null,{flag : false,msg : "vip error"})
-    return
-  }
   this.areaManager.areaMap[areaId].buyVipAward(uid,vip,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
