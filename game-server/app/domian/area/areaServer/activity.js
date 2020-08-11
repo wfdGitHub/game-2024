@@ -168,7 +168,7 @@ module.exports = function() {
 	}
 	//购买vip礼包
 	this.buyVipAward = function(uid,vip,cb) {
-		if(!vip || !VIP[vip]){
+		if(!VIP[vip]){
 			cb(false,"vip等级不存在")
 			return
 		}
