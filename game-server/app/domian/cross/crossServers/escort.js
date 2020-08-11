@@ -39,7 +39,7 @@ module.exports = function() {
 		this.curHours = date.getHours() + (date.getMinutes() / 60)
 		if(this.state){
 			//判断关闭
-			if(this.curHours >= escort_cfg["openTime1"]["value"]){
+			if(this.curHours >= escort_cfg["closeTime1"]["value"]){
 				this.state = false
 				local.close()
 			}else{
