@@ -29,6 +29,7 @@ NND.query = function (sql, args, cb) {
         client.query(sql, args, function(error, results, fields) {
             if(error){
                 _pool.destroy(client);  
+                console.error(error)
                 cb(error, results);  
             }
             else{  
@@ -37,7 +38,8 @@ NND.query = function (sql, args, cb) {
             }
         });
       })
-      .catch(function(err) {
+      .catch(function(error) {
+        console.error(error)
         _pool.release(client);  
         cb(error)
       });
