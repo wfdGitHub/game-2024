@@ -103,9 +103,8 @@ model.useSkill = function(skill) {
 	}
 	if(skill.isAnger && !skill.character.died){
 		//释放技能后恢复自身怒气
-		if(skill.skill_anger_s || skill.character.skill_anger_s){
-			var skill_anger_s = (skill.skill_anger_s || 0) + (skill.character.skill_anger_s || 0)
-			skill.character.addAnger(skill_anger_s,skill.skillId)
+		if(skill.skill_anger_s){
+			skill.character.addAnger(skill.skill_anger_s,skill.skillId)
 		}
 		//释放技能后恢复全体队友怒气
 		if(skill.skill_anger_a)
@@ -275,7 +274,7 @@ model.useAttackSkill = function(skill) {
 	var dead_anger = 0
 	var burnDamage = 0
 	for(var i = 0;i < targets.length;i++){
-		if(skill.character.died){
+		if(skill.character.died && !skill.character.died_use_skill){
 			break
 		}
 		let target = targets[i]
@@ -394,8 +393,14 @@ model.useAttackSkill = function(skill) {
 				if(targets[i].hit_anger_s){
 					targets[i].addAnger(targets[i].hit_anger_s,skill.skillId)
 				}
+				//受到普攻附加BUFF
+				if(targets[i].hit_normal_buff){
+					var buffInfo = targets[i].hit_normal_buff
+					if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+						buffManager.createBuff(targets[i],skill.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+					}
+				}
 			}
-
 			//收到伤害附加BUFF
 			if(targets[i].hit_buff){
 				var buffInfo = targets[i].hit_buff
@@ -459,7 +464,7 @@ model.useHealSkill = function(skill) {
 		}
 	}
 	for(var i = 0;i < targets.length;i++){
-		if(skill.character.died){
+		if(skill.character.died && !skill.character.died_use_skill){
 			break
 		}
 		let target = targets[i]

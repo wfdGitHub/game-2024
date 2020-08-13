@@ -134,10 +134,10 @@ var model = function() {
 					console.log("角色"+info.id+"获得增益 "+info.name+" : "+info.value)
 				case "fightOver":
 					console.log("战斗结束")
-					for(var i = 0;i < info.atkTeam.length;i++)
-						console.log(info.atkTeam[i])
-					for(var i = 0;i < info.defTeam.length;i++)
-						console.log(info.defTeam[i])
+					// for(var i = 0;i < info.atkTeam.length;i++)
+					// 	console.log(info.atkTeam[i])
+					// for(var i = 0;i < info.defTeam.length;i++)
+					// 	console.log(info.defTeam[i])
 				break
 				default:
 					console.log("类型未定义 : ",info.type)

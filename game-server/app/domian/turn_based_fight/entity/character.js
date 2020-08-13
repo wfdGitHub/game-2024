@@ -42,9 +42,9 @@ var model = function(otps) {
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
 	//=========特殊属性=======//
-	this.buffRate								//buff概率   若技能存在buff  以此代替buff本身概率
-	this.buffArg								//buff参数   若技能存在buff  以此代替buff本身参数
-	this.buffDuration							//buff持续时间   若技能存在buff  以此代替buff本身持续时间
+	this.buffRate = otps.buffRate || 0			//buff概率   若技能存在buff  以此代替buff本身概率
+	this.buffArg = otps.buffArg || 0			//buff参数   若技能存在buff  以此代替buff本身参数
+	this.buffDuration = otps.buffDuration || 0	//buff持续时间   若技能存在buff  以此代替buff本身持续时间
 	this.burn_duration = otps.burn_duration || 0 //灼烧持续时间增长
 	this.poison_duration = otps.poison_duration || 0 //中毒持续时间增长
 	this.poison_change_hp = otps.poison_change_hp || 0 //造成的中毒伤害转化为血量治疗自己。
@@ -107,7 +107,9 @@ var model = function(otps) {
 	if(otps.hit_buff){
 		this.hit_buff = JSON.parse(otps.hit_buff)	//受到伤害给攻击者附加BUFF
 	}
-
+	if(otps.hit_normal_buff){
+		this.hit_normal_buff = JSON.parse(otps.hit_normal_buff)	//受到伤害给攻击者附加BUFF
+	}
 	this.normal_crit = otps.normal_crit || false 				//普攻必定暴击(含治疗)	
 	this.normal_heal_amp = otps.normal_heal_amp || 0			//普攻治疗量加成
 	this.normal_add_anger = otps.normal_add_anger || 0			//普攻后恢复自身怒气
@@ -222,7 +224,7 @@ var model = function(otps) {
 		if(this.buffArg)
 			this.angerSkill.buffArg = this.buffArg
 		if(this.buffDuration)
-			this.angerSkill.buffDuration = this.buffDuration
+			this.angerSkill.duration = this.buffDuration
 	}
 	this.target_minHP = otps.target_minHP		//单体输出武将的所有攻击优先攻击敌方当前血量最低的武将
 	if(this.target_minHP){

@@ -216,7 +216,9 @@
   "1043": {
     "des": "战斗第1回合无敌，免疫所有伤害和控制效果（无敌效果不会被清除）",
     "key1": "first_buff",
-    "value1": "{\"buffId\":\"invincibleSuper\",\"duration\":1,\"buff_tg\":\"team_self\"}"
+    "value1": "{\"buffId\":\"invincibleSuper\",\"duration\":1,\"buff_tg\":\"team_self\"}",
+    "key2": "first_nocontrol",
+    "value2": true
   },
   "1044": {
     "des": "战斗第1回合造成的伤害必定暴击",
@@ -245,7 +247,7 @@
   },
   "1049": {
     "des": "受到普通攻击时，有50%的概率给攻击自己的武将附加中毒效果，每回合对目标造成自身攻击伤害160%的中毒伤害，持续2回合",
-    "key1": "hit_buff",
+    "key1": "hit_normal_buff",
     "value1": "{\"buffId\":\"poison\",\"buffArg\":1.6,\"duration\":2,\"buffRate\":0.5}"
   },
   "1050": {

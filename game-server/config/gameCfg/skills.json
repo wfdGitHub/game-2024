@@ -642,7 +642,8 @@
     "des": "对敌方前排造成155%物理伤害，并回复自身1点怒气",
     "damageType": "phy",
     "targetType": "enemy_horizontal_front",
-    "mul": 1.55
+    "mul": 1.55,
+    "skill_anger_s": 1
   },
   "2051001": {
     "name": "箭雨",
