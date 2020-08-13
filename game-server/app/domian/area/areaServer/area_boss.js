@@ -197,7 +197,7 @@ module.exports = function() {
 			cb(false,"未达成条件")
 			return
 		}
-		self.redisDao.db.hget("area:area"+self.areaId+":"+main_name,"box1_"+uid,function(err,data) {
+		self.redisDao.db.hget("area:area"+self.areaId+":"+main_name,"box"+index+"_"+uid,function(err,data) {
 			if(data){
 				cb(false,"已领取")
 			}else{
