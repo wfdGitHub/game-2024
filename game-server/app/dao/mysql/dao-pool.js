@@ -23,7 +23,6 @@ var createMysqlPool = function () {
                     if (error) {  
                         console.log('sql connect error');  
                     }  
-                    console.log("数据库连接成功")
                     resolve(client)  
                 });  
   
@@ -38,10 +37,11 @@ var createMysqlPool = function () {
             })  
         }  
     }
-    var opts = {  
-        max: 20, // maximum size of the pool  
+    var opts = {
+        max: 10, // maximum size of the pool  
         min: 2, // minimum size of the pool  
-        idleTimeoutMillis: 30000,  
+        idleTimeoutMillis: 600000,
+        evictionRunIntervalMillis : 60000,
         // 如果 设置为 true 的话，就是使用 console.log 打印入职，当然你可以传递一个 function 最为作为日志记录handler  
         log: true
     }
