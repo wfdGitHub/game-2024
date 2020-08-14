@@ -4,6 +4,7 @@ var contextPath = require.resolve('./context.json');
 var areaFilter = require('./util/filters/areaFilter.js');
 var chatFilter = require('./util/filters/chatFilter.js');
 var crossFilter = require('./util/filters/crossFilter.js');
+var adminFilter = require('./util/filters/adminFilter.js')
 var util = require('./util/util.js');
 var app = pomelo.createApp();
 /**
@@ -13,92 +14,86 @@ app.set('name', 'onlineGame');
 // app configuration
 bearcat.createApp([contextPath],{ BEARCAT_HOT: "off"})
 bearcat.start(function() {
-  app.configure('production|development',function() {
-    //消息串行化
-    app.filter(pomelo.filters.serial());
-    //检测到node.js中事件循环的请求等待队列过长，超过一个阀值时，就会触发toobusy
-    app.before(pomelo.filters.toobusy());
-    //处理超时进行警告，默认三秒
-    app.filter(pomelo.filters.timeout());
-    // app.set('serverConfig', { 
-    //   "reloadHandlers": true,
-    //   "reloadRemotes": true
-    // });
-  })
-  app.configure('production|development', 'connector', function(){
-    app.set('connectorConfig',
-      {
-        connector : pomelo.connectors.hybridconnector,
-        heartbeat : 5,
-        disconnectOnTimeout : true,
-        useDict : true,
-        useProtobuf : true
+    app.configure('production|development','connector|gate',function() {
+      //消息串行化
+      app.filter(pomelo.filters.serial());
+      //检测到node.js中事件循环的请求等待队列过长，超过一个阀值时，就会触发toobusy
+      app.before(pomelo.filters.toobusy());
+      //处理超时进行警告，默认三秒
+      app.filter(pomelo.filters.timeout());
+      app.set('connectorConfig',
+        {
+          connector : pomelo.connectors.hybridconnector,
+          heartbeat : 30,
+          disconnectOnTimeout : true,
+          useDict : true,
+          useProtobuf : true
+        });
+    })
+    app.configure('production|development', 'area', function() {
+      app.filter(areaFilter());
+      app.filter(pomelo.filters.serial());
+    });
+    app.configure('production|development', 'chat', function() {
+      app.before(chatFilter());
+      app.filter(pomelo.filters.serial());
+    });
+    app.configure('production|development', 'cross', function() {
+      app.before(crossFilter());
+    });
+    app.configure('production|development', 'admin', function() {
+      app.before(adminFilter());
+    });
+    app.start(function() {
+      app.configure('production|development', function() {
+        //后端服务器分配路由
+        var areaRoute = function(session, msg, app, cb) {
+          //获取用户游戏服务器ID
+          var serverId = session.get("serverId")
+          if(!serverId){
+            cb("未登录游戏服务器")
+            return
+          }
+          cb(null, serverId);
+        };
+        app.route('area', areaRoute);
       });
-  });
-  app.configure('production|development', 'gate', function(){
-    app.set('connectorConfig',
-      {
-        connector : pomelo.connectors.hybridconnector,
-        heartbeat : 5,
-        disconnectOnTimeout: true,
-        useDict : true,
-        useProtobuf : true,
-        // ssl: {
-        //   type: 'wss',
-        //   key: fs.readFileSync('./keys/server.key'),
-        //   cert: fs.readFileSync('./keys/server.crt'),
-        // }
+      app.configure('production|development', 'area', function() {
+        var areaDeploy = bearcat.getBean("areaDeploy")
+        areaDeploy.init(app)
+        app.set("areaDeploy",areaDeploy)
+        var areaManager = bearcat.getBean("areaManager")
+        areaManager.init(app)
+        app.set("areaManager",areaManager)
       });
-  });
-  //后端服务器分配路由
-  var areaRoute = function(session, msg, app, cb) {
-    //获取用户游戏服务器ID
-    var serverId = session.get("serverId")
-    if(!serverId){
-      cb("未登录游戏服务器")
-      return
-    }
-    cb(null, serverId);
-  };
-  app.configure('production|development', function() {
-    app.route('area', areaRoute);
-  });
-  app.configure('production|development', 'area', function() {
-    app.before(areaFilter());
-  });
-  app.configure('production|development', 'chat', function() {
-    app.before(chatFilter());
-  });
-  app.configure('production|development', 'cross', function() {
-    app.before(crossFilter());
-  });
-	app.start(function() {
-    app.configure('production|development', 'chat', function(){
-      var chat = bearcat.getBean("chat")
-      chat.init(app)
-      app.set("chat",chat)
-    });
-    app.configure('production|development', 'area', function(){
-      var areaManager = bearcat.getBean("areaManager")
-      areaManager.init(app)
-      app.set("areaManager",areaManager)
-    });
-    app.configure('production|development', 'cross', function(){
-      var crossManager = bearcat.getBean("crossManager",app)
-      app.set("crossManager",crossManager)
-    });
-    app.configure('production|development', 'admin|connector', function(){
-      var areaDeploy = bearcat.getBean("areaDeploy")
-      areaDeploy.init(app)
-      app.set("areaDeploy",areaDeploy)
-    });
-    app.configure('production|development', 'connector', function(){
+      app.configure('production|development', 'chat', function() {
+      });
+      app.configure('production|development', 'cross', function() {
+        var crossManager = bearcat.getBean("crossManager",app)
+        app.set("crossManager",crossManager)
+      });
+      app.configure('production|development', 'chat', function(){
+        var chat = bearcat.getBean("chat")
+        chat.init(app)
+        app.set("chat",chat)
+      });
+      app.configure('production|development', 'admin', function(){
+        var areaDeploy = bearcat.getBean("areaDeploy")
+        areaDeploy.init(app)
+        app.set("areaDeploy",areaDeploy)
+        var serverManager = bearcat.getBean("serverManager",app)
+        app.set("serverManager",serverManager)
+      });
+      app.configure('production|development', 'connector', function(){
+        var areaDeploy = bearcat.getBean("areaDeploy")
+        areaDeploy.init(app)
+        app.set("areaDeploy",areaDeploy)
         var connectorManager = bearcat.getBean("connectorManager")
         connectorManager.init(app)
         app.set("connectorManager",connectorManager)
-    });
-    console.log(app.serverId + " is ready")
-  })
+      });
+      console.log(app.serverId + " is ready")
+    })
 })
 process.on('uncaughtException', function (err) {
   console.error(' !!! Caught exception: ' + err.stack);

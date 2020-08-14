@@ -3,6 +3,7 @@ var areaDeploy = function() {
 	this.name = "areaDeploy"
 	this.areaList = []
 	this.serverMap = {}
+	this.finalServerMap = {}
 }
 //初始化
 areaDeploy.prototype.init = function(app) {
@@ -11,33 +12,108 @@ areaDeploy.prototype.init = function(app) {
 	self.areaDao.getAreaList(function(data) {
 		if(data){
 			for(var i = 0;i < data.length;i++){
-				self.areaList.push(JSON.parse(data[i]))
+				self.areaList.push(Number(data[i]))
 			}
 		}
 	})
-	self.areaDao.getAreaServerMap(function(data) {
-		if(data){
+	self.redisDao.db.hgetall("area:serverMap",function(err,data) {
+		if(data)
 			self.serverMap = data
-		}
+	})
+	self.redisDao.db.hgetall("area:finalServerMap",function(err,data) {
+		if(data)
+			self.finalServerMap = data
 	})
 }
 //开启游戏新服务器
-areaDeploy.prototype.openArea = function(otps) {
+areaDeploy.prototype.openArea = function(cb) {
 	var self = this
-	self.areaDao.createArea(otps,function(areaInfo) {
-		if(areaInfo){
-			var serverId = self.deploy(areaInfo)
+	self.areaDao.createArea(function(areaId) {
+		if(areaId){
+			var serverId = self.deploy(areaId)
 			//通知所有的connector，更新服务器配置
-			self.app.rpc.connector.connectorRemote.updateArea.toServer("*",areaInfo,serverId,null)
+			self.app.rpc.connector.connectorRemote.updateArea.toServer("*",areaId,serverId,null)
 			//通知area服务器加载
-			self.app.rpc.area.areaRemote.loadArea.toServer(serverId,areaInfo.areaId,null)
+			self.app.rpc.area.areaRemote.loadArea.toServer(serverId,areaId,null)
+			if(cb)
+				cb(areaId)
 		}
 	})
 }
-//关闭游戏服务器
-areaDeploy.prototype.closeArea = function() {
-
+//合服
+areaDeploy.prototype.mergeArea = function(areaList) {
+	console.log("areaList",areaList)
+	var self = this
+	self.openArea(function(areaId) {
+		if(areaId){
+			self.redisDao.db.hset("area:area"+areaId+":areaInfo","oldArea",1)
+			for(let i = 0;i < areaList.length;i++){
+				self.areaDao.destoryArea(areaList[i])
+				self.pauseArea(areaList[i])
+				for(let j in self.finalServerMap){
+					if(self.finalServerMap[j] == areaList[i]){
+						self.redisDao.db.hset("area:finalServerMap",j,areaId)
+						self.mergeAreaName(j,areaId)
+					}
+				}
+				self.changeFinalServerMap(areaList[i],areaId)
+				self.app.rpc.connector.connectorRemote.changeFinalServerMap.toServer("*",areaList[i],areaId,null)
+			}
+		}
+	})
 }
+//合并名称
+areaDeploy.prototype.mergeAreaName = function(oriId,areaId) {
+	var self = this
+	self.redisDao.db.hgetall("area:area"+oriId+":nameMap",function(err,data) {
+		if(data){
+			var sname = "s"+oriId+"."
+			for(var i in data){
+				var uid = data[i]
+				var name = sname+i.replace(sname,"")
+				self.redisDao.db.hdel("area:area"+oriId+":nameMap",i)
+				self.redisDao.db.hset("area:area"+oriId+":nameMap",name,uid)
+				self.redisDao.db.hset("player:user:"+uid+":bag",1000500,1)
+				self.redisDao.db.hset("player:user:"+uid+":playerInfo","name",name)
+			}
+		}
+	})
+}
+//暂停游戏服务器
+areaDeploy.prototype.pauseArea = function(areaId,cb) {
+	if(!this.serverMap[areaId]){
+		cb(false,"服务器不存在")
+		return
+	}
+	//通知所有的connector，更新服务器配置
+	this.app.rpc.connector.connectorRemote.removeArea.toServer("*",areaId,null)
+	//通知area服务器加载
+	this.app.rpc.area.areaRemote.removeArea.toServer(this.serverMap[areaId],areaId,null)
+	this.removeArea(areaId)
+	if(cb)
+		cb(true)
+}
+//恢复游戏服务器
+areaDeploy.prototype.resumeArea = function(areaId,cb) {
+	if(this.serverMap[areaId]){
+		cb(false,"服务器已存在")
+		return
+	}
+	var self = this
+	self.redisDao.db.hget("area:serverMap",areaId,function(err,serverId) {
+		if(serverId){
+			//通知所有的connector，更新服务器配置
+			self.app.rpc.connector.connectorRemote.updateArea.toServer("*",areaId,serverId,null)
+			//通知area服务器加载
+			self.app.rpc.area.areaRemote.loadArea.toServer(serverId,areaId,null)
+			self.updateArea(areaId,serverId)
+			cb(true)
+		}else{
+			cb(false)
+		}
+	})
+}
+
 //获取游戏服对应服务器映射表
 areaDeploy.prototype.getServerMap = function() {
 	return this.serverMap
@@ -51,7 +127,7 @@ areaDeploy.prototype.getServerList = function() {
 	return this.areaList.concat()
 }
 //为新建的游戏服分配服务器
-areaDeploy.prototype.deploy = function(areaInfo) {
+areaDeploy.prototype.deploy = function(areaId) {
 	var areaServers = this.app.getServersByType('area');
 	if(!areaServers){
 		return false
@@ -60,8 +136,8 @@ areaDeploy.prototype.deploy = function(areaInfo) {
 	for(var i = 0;i < areaServers.length;i++){
 		areaServersMap[areaServers[i].id] = 0
 	}
-	for(var areaId in this.serverMap){
-		areaServersMap[this.serverMap[areaId]]++
+	for(var i in this.serverMap){
+		areaServersMap[this.serverMap[i]]++
 	}
 	// console.log("areaServersMap",areaServersMap)
 	var serverId = false
@@ -73,14 +149,36 @@ areaDeploy.prototype.deploy = function(areaInfo) {
 	// console.log("serverId ",serverId)
 	if(serverId === false)
 		return false
-	this.areaDao.setAreaServer(areaInfo.areaId,serverId)
-	this.updateArea(areaInfo,serverId)
+	this.areaDao.setAreaServer(areaId,serverId)
+	this.updateArea(areaId,serverId)
 	return serverId
 }
 //同步更新游戏服务器
-areaDeploy.prototype.updateArea = function(areaInfo,serverId) {
-	this.serverMap[areaInfo.areaId] = serverId
-	this.areaList.push(areaInfo)
+areaDeploy.prototype.updateArea = function(areaId,serverId) {
+	areaId = Number(areaId)
+	this.serverMap[areaId] = serverId
+	this.finalServerMap[areaId] = areaId
+	this.areaList.push(areaId)
+}
+//关闭游戏服务器
+areaDeploy.prototype.removeArea = function(areaId) {
+	areaId = Number(areaId)
+	console.log("removeArea",areaId)
+	delete this.serverMap[areaId]
+	this.areaList.remove(areaId)
+	console.log(this.serverMap,this.areaList)
+}
+//改变最终服务器指向
+areaDeploy.prototype.changeFinalServerMap = function(areaId,finalId) {
+	for(var i in this.finalServerMap){
+		if(this.finalServerMap[i] == areaId){
+			this.finalServerMap[i] = finalId
+		}
+	}
+}
+//获取最终服务器
+areaDeploy.prototype.getFinalServer = function(areaId) {
+	return this.finalServerMap[areaId]
 }
 module.exports = {
 	id : "areaDeploy",

@@ -1,31 +1,37 @@
 var boyCfg = require("../../config/sysCfg/boy.json")
 var girlCfg = require("../../config/sysCfg/girl.json")
+var heros = require("../../config/gameCfg/heros.json")
+var heroList = []
+for(var i in heros){
+	if(heros[i]["min_star"] >= 5){
+		heroList.push(i)
+	}
+}
 var areaDao = function() {}
 //创建新服务器
-areaDao.prototype.createArea = function(otps,cb) {
+areaDao.prototype.createArea = function(cb) {
 	console.log("开启新服务器")
-	var areaInfo = {
-		areaName : otps.areaName
-	}
+	var areaInfo = {}
 	var self = this
 	self.redisDao.db.incrby("area:lastid",1,function(err,data) {
 		if(!err && data){
 			areaInfo.areaId = data
 			areaInfo.lastRank = 4001
+			areaInfo.openTime = Date.now()
 			self.redisDao.db.hmset("area:area"+areaInfo.areaId+":areaInfo",areaInfo)
-			self.redisDao.db.rpush("area:list",JSON.stringify(areaInfo))
+			self.redisDao.db.rpush("area:list",areaInfo.areaId)
 			//初始机器人
 			var robots = {}
 			for(var i = 1;i <= 4001;i++){
 				var info = {
-					"uid" : i,
-					"sex" : Math.random() > 0.5 ? 1 : 2
+					"uid" : i
 				}
-				if(info["sex"] == 1){
+				if(Math.random() > 0.5){
 					info["name"] = boyCfg[Math.floor(Math.random() * boyCfg.length)]
 				}else{
 					info["name"] = girlCfg[Math.floor(Math.random() * girlCfg.length)]
 				}
+				info["head"] = heroList[Math.floor(Math.random() * heroList.length)]
 				robots[i] = JSON.stringify(info)
 			}
 			self.redisDao.db.hmset("area:area"+areaInfo.areaId+":robots",robots,function(err) {
@@ -33,12 +39,21 @@ areaDao.prototype.createArea = function(otps,cb) {
 				if(err){
 					console.error(err)
 				}
-				cb(areaInfo)
+				cb(areaInfo.areaId)
 			})
 		}else{
 			cb(false)
 		}
 	})
+}
+//删除服务器
+areaDao.prototype.destoryArea = function(areaId) {
+	console.log("关闭服务器",areaId)
+	this.redisDao.db.del("area:area"+areaId+":areaInfo")
+	this.redisDao.db.lrem("area:list",0,areaId)
+	this.redisDao.db.del("area:area"+areaId+":robots")
+	this.redisDao.db.del("area:area"+areaId+":arena")
+	this.redisDao.db.hdel("area:serverMap",areaId)
 }
 //获取服务器最后ID
 areaDao.prototype.getAreaLastId = function(cb) {
@@ -67,6 +82,7 @@ areaDao.prototype.getAreaServerMap = function(cb) {
 //设置游戏服对应服务器
 areaDao.prototype.setAreaServer = function(areaId,serverId) {
 	this.redisDao.db.hset("area:serverMap",areaId,serverId)
+	this.redisDao.db.hset("area:finalServerMap",areaId,areaId)
 }
 
 module.exports = {

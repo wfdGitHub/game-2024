@@ -1,7 +1,8 @@
 //竞技场
-var arena_cfg = require("../../../../config/gameCfg/arena_cfg.json")
-var arena_rank = require("../../../../config/gameCfg/arena_rank.json")
-var arena_shop = require("../../../../config/gameCfg/arena_shop.json")
+const arena_cfg = require("../../../../config/gameCfg/arena_cfg.json")
+const arena_rank = require("../../../../config/gameCfg/arena_rank.json")
+const arena_shop = require("../../../../config/gameCfg/arena_shop.json")
+const VIP = require("../../../../config/gameCfg/VIP.json")
 var util = require("../../../../util/util.js")
 var mainName = "arena"
 var correctNumerator = arena_cfg["correctNumerator"]["value"]			//修正值
@@ -14,7 +15,7 @@ var winAward = arena_cfg["win"]["value"]								//失败奖励
 var loseAward = arena_cfg["lose"]["value"]								//购买次数消耗
 var rankUp = arena_cfg["rankUp"]["value"] 								//排名提示奖励物品ID
 var sysChatLv = 10														//系统广播通知排名临界值
-var maxRecordNum = 3													//最大记录条数
+var maxRecordNum = 10													//最大记录条数
 var rankList = []
 for(var i in arena_rank){
 	rankList.push(parseInt(i))
@@ -36,20 +37,22 @@ module.exports = function() {
 	//匹配规则  计算目标列表
 	local.calRankTargets = function(rank) {
 		var list = []
-		//5名以内 显示除自己以外的玩家
-		if(rank <= 5){
-			for(var i = 1;i <= 5;i++){
+		//4名以内 显示除自己以外的玩家
+		if(rank <= 4){
+			for(var i = 1;i <= 4;i++){
 				if(i != rank){
 					list.push(i)
 				}
 			}
 			return list
 		}
+		if(rank > 4000)
+			rank = 4000
 		var lenght = 1
 		if(rank > addOneLv){
 			lenght = Math.ceil((rank + correctNumerator) / correctDenominator)
 		}
-		for(var i = 1;i <= 4;i++){
+		for(var i = 1;i <= 3;i++){
 			var tail =  rank - (lenght * (i - 1)) - 1
 			var head = rank - (lenght * i)
 			var rand = Math.floor(head + Math.random() * (tail - head))
@@ -59,28 +62,31 @@ module.exports = function() {
 		return list
 	}
 	local.getTargetsInfo = function(list,cb) {
-		self.redisDao.db.hmget("area:area"+self.areaId+":"+mainName,list,function(err,userList) {
-			self.redisDao.db.hmget("area:area"+self.areaId+":robots",list,function(err,robotList) {
-				for(var i = 0;i < userList.length;i++){
-					if(!userList[i]){
-						userList[i] = robotList[i]
-					}
-				}
-				cb(true,{rankList : list,userList : userList})
+		self.redisDao.db.hmget("area:area"+self.areaId+":"+mainName,list,function(err,uids) {
+			for(var i = 0;i < uids.length;i++){
+				if(!uids[i])
+					uids[i] = list[i]
+			}
+			self.getPlayerInfoByUids(uids,function(userInfos) {
+				cb(true,{rankList : list,userInfos : userInfos})
 			})
 		})
 	}
 	//初始化玩家排名
-	this.initArenaRank = function(uid,name,sex) {
+	this.initArenaRank = function(uid,cb) {
 		self.redisDao.db.hincrby("area:area"+self.areaId+":areaInfo","lastRank",1,function(err,rank) {
 			var info = {
+				areaId : self.areaId,
 				rank : rank,
 				count : 0,						//今日挑战次数
 				buyCount : 0,					//今日购买挑战次数
 				highestRank : rank				//最高排名
 			}
 			self.setHMObj(uid,mainName,info)
-			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,JSON.stringify({uid : uid,sex : sex,name : name}))
+			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,uid)
+			if(cb){
+				cb(true,info)
+			}
 		})
 	}
 	//购买竞技场奖励商城物品
@@ -128,14 +134,42 @@ module.exports = function() {
 			local.getTargetsInfo(list,cb)
 		})
 	}
+	//获取竞技场阵容
+	this.getAreaTeamByUid = function(targetUid,targetRank,cb) {
+		if(targetUid < 10000){
+			//机器人队伍
+			var range = util.binarySearch(rankList,targetRank)
+			var rand = Math.floor(Math.random() * 3 + 1)
+			if(!arena_rank[range] || !arena_rank[range]["team"+rand]){
+				cb(false,"机器人配置错误")
+				return
+			}
+			var defTeam = arena_rank[range]["team"+rand].concat()
+			cb(true,defTeam)
+		}else{
+			//玩家队伍
+			self.getDefendTeam(targetUid,function(defTeam) {
+				if(!defTeam){
+					cb(false,"敌方阵容错误")
+					return
+				}else{
+					cb(true,defTeam)
+				}
+			})
+		}
+	}
 	//获取我的竞技场数据
 	this.getMyArenaInfo = function(uid,cb) {
 		this.getObjAll(uid,mainName,function(data) {
-			cb(true,data)
+			if(!data || data.areaId != self.areaId){
+				self.initArenaRank(uid,cb)
+			}else{
+				cb(true,data)
+			}
 		})
 	}
 	//挑战目标
-	this.challengeArena = function(uid,targetStr,targetRank,cb) {
+	this.challengeArena = function(uid,targetName,targetRank,cb) {
 		if(!Number.isInteger(targetRank)|| targetRank <= 0){
 			cb(false,"challengeArena targetRank error "+targetRank)
 			return
@@ -148,11 +182,11 @@ module.exports = function() {
 	    var atkTeam = fightInfo.team
 	    var seededNum = fightInfo.seededNum
 		local.getTargetsInfo([targetRank],function(flag,data) {
-			if(!data || !data.userList || !data.userList[0] || data.userList[0] !== targetStr){
+			if(!data || !data.userInfos || !data.userInfos[0] || data.userInfos[0]["name"] !== targetName){
 				cb(false,"竞技场排名已发生改变")
 				return
 			}
-			var targetInfo = JSON.parse(data.userList[0])
+			var targetInfo = data.userInfos[0]
 			var targetUid = targetInfo.uid
 		    if(local.locks[targetUid]){
 		    	cb(false,"该玩家正在被挑战")
@@ -161,7 +195,6 @@ module.exports = function() {
 			local.locks[targetUid] = true
 			local.locks[uid] = true
 			self.getObjAll(uid,mainName,function(arenaInfo) {
-				console.log(arenaInfo)
 				arenaInfo.count = parseInt(arenaInfo.count)
 				arenaInfo.buyCount = parseInt(arenaInfo.buyCount)
 				if(arenaInfo.count >= dayCount + arenaInfo.buyCount){
@@ -181,11 +214,8 @@ module.exports = function() {
 						delete local.locks[uid]
 						return
 					}
-					var defTeam = []
-					for(var i = 0;i < arena_rank[range]["team"+rand].length;i++){
-						defTeam.push({characterId : arena_rank[range]["team"+rand][i],level : arena_rank[range]["level"]})
-					}
-					local.challengeArena(uid,targetUid,targetRank,targetStr,targetInfo,atkTeam,defTeam,seededNum,cb)
+					var defTeam = arena_rank[range]["team"+rand].concat()
+					local.challengeArena(uid,targetUid,targetRank,targetInfo,atkTeam,defTeam,seededNum,cb)
 				}else{
 					//玩家队伍
 					self.getDefendTeam(targetUid,function(defTeam) {
@@ -195,7 +225,7 @@ module.exports = function() {
 							delete local.locks[uid]
 							return
 						}
-						local.challengeArena(uid,targetUid,targetRank,targetStr,targetInfo,atkTeam,defTeam,seededNum,cb)
+						local.challengeArena(uid,targetUid,targetRank,targetInfo,atkTeam,defTeam,seededNum,cb)
 					})
 				}
 			})
@@ -203,20 +233,23 @@ module.exports = function() {
 	}
 	//竞技场每日刷新
 	this.arenadayUpdate = function(uid) {
-		console.log("arenadayUpdate",uid)
-		var info = {
-			count : 0,						//今日挑战次数
-			buyCount : 0					//今日购买挑战次数
-		}
-		self.setHMObj(uid,mainName,info)
 		//发放竞技场奖励
 		self.getObj(uid,mainName,"rank",function(rank) {
-			rank = parseInt(rank)
-			var range = util.binarySearch(rankList,rank)
-			if(arena_rank[range] && arena_rank[range]["dayAward"]){
-				var title = "竞技场排名奖励"
-				var text = "恭喜您在竞技场排名第"+rank+"名,这是您的排名奖励"
-				self.sendMail(uid,title,text,arena_rank[range]["dayAward"])
+			if(rank != null){
+				var info = {
+					count : 0,						//今日挑战次数
+					buyCount : 0					//今日购买挑战次数
+				}
+				self.setHMObj(uid,mainName,info)
+				rank = parseInt(rank)
+				if(rank <= 4000){
+					var range = util.binarySearch(rankList,rank)
+					if(arena_rank[range] && arena_rank[range]["dayAward"]){
+						var title = "竞技场排名奖励"
+						var text = "恭喜您在竞技场排名第"+rank+"名,这是您的排名奖励"
+						self.sendMail(uid,title,text,arena_rank[range]["dayAward"])
+					}
+				}
 			}
 		})
 	}
@@ -224,7 +257,7 @@ module.exports = function() {
 	this.buyArenaCount = function(uid,cb) {
 		self.getObj(uid,mainName,"buyCount",function (count) {
 			count = parseInt(count) || 0
-			if(count >= buyCount){
+			if(count >= buyCount + VIP[self.players[uid]["vip"]]["arena"]){
 				cb(false,"购买次数已达上限")
 				return
 			}
@@ -240,12 +273,14 @@ module.exports = function() {
 		})
 	}
 	//挑战结算
-	local.challengeArena = function(uid,targetUid,targetRank,targetStr,targetInfo,atkTeam,defTeam,seededNum,cb) {
+	local.challengeArena = function(uid,targetUid,targetRank,targetInfo,atkTeam,defTeam,seededNum,cb) {
 		var info = {}
-		var result = self.fightContorl.fighting(atkTeam,defTeam,seededNum,null,true)
-		info.targetStr = targetStr
-		info.result = result
-		if(result.result == "win"){
+		var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+		info.winFlag = winFlag
+		var fightInfo = {atkTeam : atkTeam,defTeam : defTeam,seededNum : seededNum}
+		info.fightInfo = fightInfo
+		info.targetInfo = targetInfo
+		if(winFlag){
 			self.getObjAll(uid,mainName,function(data) {
 				//交换排名
 				data.rank = parseInt(data.rank)
@@ -255,6 +290,7 @@ module.exports = function() {
 						delete local.locks[uid]
 						delete local.locks[targetUid]
 					})
+					self.taskUpdate(uid,"rank",1,targetRank)
 					var tmpRank = data.rank
 					data.rank = targetRank
 					targetRank = tmpRank
@@ -263,6 +299,8 @@ module.exports = function() {
 					delete local.locks[targetUid]
 				}
 				//获胜奖励
+				self.taskUpdate(uid,"arena_win",1)
+				self.taskUpdate(uid,"arena_streak",1)
 				info.winAward =  self.addItemStr(uid,winAward,1)
 				//排名提升奖励
 				if(data.rank < data.highestRank){
@@ -272,23 +310,25 @@ module.exports = function() {
 					self.setObj(uid,mainName,"highestRank",data.rank)
 				}
 				//记录
-				local.addRecord(uid,"atk",result,targetInfo,data.rank)
-				local.addRecord(targetUid,"def",result,targetInfo,targetRank)
+				local.addRecord(uid,"atk",winFlag,targetInfo,fightInfo,data.rank)
+				local.addRecord(targetUid,"def",winFlag,targetInfo,fightInfo,targetRank)
 				cb(true,info)
 			})
 		}else{
 			//失败奖励
+			self.taskProgressClear(uid,"arena_streak")
 			self.addItemStr(uid,loseAward,1)
-			local.addRecord(uid,"atk",result,targetInfo)
-			local.addRecord(targetUid,"def",result,targetInfo)
+			local.addRecord(uid,"atk",winFlag,targetInfo,fightInfo)
+			local.addRecord(targetUid,"def",winFlag,targetInfo,fightInfo)
 			delete local.locks[uid]
 			delete local.locks[targetUid]
 			cb(true,info)
 		}
+		self.taskUpdate(uid,"arena",1)
 	}
 	//获取挑战记录
 	this.getRerord = function(uid,cb) {
-		self.redisDao.db.lrange("area:area"+self.areaId+":player:"+uid+":arenaRecord",0,-1,function(err,list) {
+		self.redisDao.db.lrange("player:user:"+uid+":arenaRecord",0,-1,function(err,list) {
 			if(err || !list){
 				cb(true,[])
 			}else{
@@ -297,64 +337,50 @@ module.exports = function() {
 		})
 	}
 	//添加记录
-	local.addRecord = function(uid,type,result,targetInfo,rank) {
+	local.addRecord = function(uid,type,winFlag,targetInfo,fightInfo,rank) {
+		if(uid < 10000){
+			return
+		}
 		var atkUser = self.getSimpleUser(uid)
-		var info = {type : type,result : result,atkUser : atkUser,defUser : targetInfo,time : Date.now()}
+		var info = {type : type,winFlag : winFlag,atkUser : atkUser,defUser : targetInfo,fightInfo : fightInfo,time : Date.now()}
 		if(rank){
 			info.rank = rank
 		}
-		self.redisDao.db.rpush("area:area"+self.areaId+":player:"+uid+":arenaRecord",JSON.stringify(info),function(err,num) {
-			console.log("addRecord ",err,num)
+		self.redisDao.db.rpush("player:user:"+uid+":arenaRecord",JSON.stringify(info),function(err,num) {
 			if(num > maxRecordNum){
-				self.redisDao.db.ltrim("area:area"+self.areaId+":player:"+uid+":arenaRecord",-maxRecordNum,-1)
+				self.redisDao.db.ltrim("player:user:"+uid+":arenaRecord",-maxRecordNum,-1)
 			}
 		})
 	}
 	//交换排名
 	local.swopRank = function(uid,rank,targetUid,targetRank,cb) {
-		self.redisDao.db.hmget("area:area"+self.areaId+":"+mainName,[rank,targetRank],function(err,data) {
-			if(data[1])
-				self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,data[1])
-			if(uid > 10000)
-				self.setObj(uid,mainName,"rank",targetRank)
-			if(data[0])
-				self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,targetRank,data[0])
-			if(targetUid > 10000)
+			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,targetRank,uid)
+			self.setObj(uid,mainName,"rank",targetRank)
+			if(targetUid > 10000){
+				self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,targetUid)
 				self.setObj(targetUid,mainName,"rank",rank)
+			}else{
+				self.redisDao.db.hdel("area:area"+self.areaId+":"+mainName,rank)
+			}
 			if(targetRank <= sysChatLv){
-				var userInfo = JSON.parse(data[0])
-				var userName = ""
-				if(userInfo && userInfo.name){
-					userName = userInfo.name
-				}
-				if(!data[1]){
-					self.redisDao.db.hget("area:area"+self.areaId+":robots",targetUid,function(err,targetInfo) {
-						var targetInfo = JSON.parse(targetInfo)
-						var targetName = ""
-						if(targetInfo && targetInfo.name){
-							targetName = targetInfo.name
-						}
-						var notify = {
-							type : "sysChat",
-							text : userName+"玩家击败了"+targetName+" 玩家,取代了"+targetName+"竞技场的位置,当前排名"+rank
-						}
-						self.sendAllUser(notify)
-					})
-				}else{
-					var targetInfo = JSON.parse(data[1])
-					var targetName = ""
-					targetName = targetInfo.name
+				self.getPlayerInfoByUids([uid,targetUid],function(userInfos) {
+					var userName = userInfos[0].name
+					var targetName
+					if(targetUid < 10000){
+						targetName = self.robots[targetUid]["name"]
+					}else{
+						targetName = userInfos[1].name
+					}
 					var notify = {
 						type : "sysChat",
-						text : userName+"玩家击败了"+targetName+" 玩家,取代了"+targetName+"竞技场的位置,当前排名"+rank
+						text : userName+"在竞技场中打败"+targetName+"获得"+"targetRank"+"名，无敌是多么寂寞！"
 					}
 					self.sendAllUser(notify)
-				}
+				})
 			}
 			if(cb){
 				cb()
 			}
-		})
 	}
 	//计算排名提升奖励
 	local.calRankUpAward = function(rank,targetRank) {

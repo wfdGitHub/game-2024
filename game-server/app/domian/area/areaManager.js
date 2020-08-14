@@ -1,11 +1,11 @@
 var bearcat = require("bearcat")
-var fightContorlFun = require("../fight/fightContorl.js")
+var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
 var areaManager = function() {
 	this.name = "areaManager"
 	this.areaMap = {}
 	this.userMap = {}
 	this.connectorMap = {}
-	this.fightContorl = fightContorlFun()
+	this.fightContorl = fightContorlFun
 }
 //初始化
 areaManager.prototype.init = function(app) {
@@ -35,26 +35,29 @@ areaManager.prototype.loadArea = function(areaId) {
 	})
 }
 //关闭游戏服务器
-areaManager.prototype.closeArea = function() {
-
+areaManager.prototype.removeArea = function(areaId) {
+	if(this.areaMap[areaId]){
+		this.areaMap[areaId].destory()
+		delete this.areaMap[areaId]
+	}
 }
 //玩家登录游戏服
-areaManager.prototype.userLogin = function(uid,areaId,cid,cb) {
+areaManager.prototype.userLogin = function(uid,areaId,oriId,cid,cb) {
 	var self = this
 	if(!self.areaMap[areaId]){
-		console.log(self.areaMap,areaId)
+		console.log("areaId error ",areaId)
 		cb(false)
 		return
 	}
-	if(this.connectorMap[uid]){
+	if(this.connectorMap[uid] && this.connectorMap[uid] != cid){
 		this.app.rpc.connector.connectorRemote.kickUser.toServer(this.connectorMap[uid],uid,null)
 	}
-	self.areaMap[areaId].userLogin(uid,cid,function(playerInfo) {
-		if(playerInfo){
+	self.areaMap[areaId].userLogin(uid,oriId,cid,function(flag,playerInfo) {
+		if(flag){
 			self.connectorMap[uid] = cid
 			self.userMap[uid] = areaId
 		}
-		cb(playerInfo)
+		cb(flag,playerInfo)
 	})
 }
 //玩家离开

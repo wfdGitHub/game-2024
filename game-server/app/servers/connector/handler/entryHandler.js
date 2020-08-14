@@ -1,5 +1,7 @@
 var bearcat = require("bearcat")
-
+var http = require('http')
+var product_code = "77325156230776556847847055027094"
+var util = require("../../../../util/util.js")
 var entryHandler = function(app) {
   this.app = app;
   this.sessionService = this.app.get('sessionService')
@@ -9,41 +11,86 @@ var entryHandler = function(app) {
 //登陆账号
 entryHandler.prototype.entryAccount = function(msg, session, next) {
 	var unionid = msg.unionid
+	var loginToken = util.randomString(8)
+	this.redisDao.db.hset("loginToken",unionid,loginToken)
+	next(null,{flag:true,unionid:unionid,token:loginToken})
+}
+//quickSDK登陆
+entryHandler.prototype.quickEntry = function(msg, session, next) {
+	var token = msg.token
+	var uid = msg.uid
+	var channel_code = msg.channel_code
 	var self = this
-	self.accountDao.getAccountInfo(msg,function(flag,userInfo) {
-		if(!flag || !userInfo){
-			self.accountDao.createAccount(msg,function(flag,data) {
-				if(!flag || !data){
-					next(null,{flag : false,msg : data})
-					return
-				}
-				entryHandler.entrySuccess.call(self,session,data,next)
-			})
-		}else{
-			entryHandler.entrySuccess.call(self,session,userInfo,next)
-		}
+	var url = "http://checkuser.sdk.quicksdk.net/v2/checkUserInfo?token="+token+"&product_code="+product_code+"&uid="+uid+"&channel_code="+channel_code
+	http.get(url,function(res){
+	  	var responseText=[];
+	  	var size = 0;
+	  		res.on("data",function(chunk) {
+	    	responseText.push(chunk);
+	    	size+=chunk.length;
+	  	})
+	  	res.on("end",function() {
+	    	responseText = Buffer.concat(responseText,size);
+	    	var data = JSON.parse(responseText)
+	    	console.log("data",data)
+	    	if(data == 1){
+	    		var unionid = channel_code+"_"+uid
+	    		var loginToken = util.randomString(8)
+	    		self.redisDao.db.hset("loginToken",unionid,loginToken)
+	    		next(null,{flag:true,unionid:unionid,token:loginToken})
+	    	}else{
+	    		next(null,{flag:false,err:"渠道账号验证错误"})
+	    	}
+	  	})
+		res.on("error", err => {
+			console.log(err.message);
+			next(null,{flag:false,err:err})
+		});
 	})
 }
+//token登陆
+entryHandler.prototype.tokenLogin = function(msg, session, next) {
+  var unionid = msg.unionid
+  var token = msg.token
+  if(!unionid || !token){
+    next(null,{flag : false,err : "参数错误"})
+    return
+  }
+  var self = this
+  self.redisDao.db.hget("loginToken",unionid,function(err,data) {
+  	if(err || !data || data != token){
+  		next(null,{flag : false,err : "token 验证失败"})
+  	}else{
+		self.accountDao.getAccountInfo(msg,function(flag,userInfo) {
+			if(!flag || !userInfo){
+				self.accountDao.createAccount(msg,function(flag,data) {
+					if(!flag || !data){
+						next(null,{flag : false,msg : data})
+						return
+					}
+					entryHandler.entrySuccess.call(self,session,data,unionid,next)
+				})
+			}else{
+				entryHandler.entrySuccess.call(self,session,userInfo,unionid,next)
+			}
+		})
+  	}
+  })
+}
 //登录成功
-entryHandler.entrySuccess = function(session,userInfo,next) {
-	var uid = Number(userInfo.uid)
-	//检查重复登录
-	if( !! this.sessionService.getByUid(uid)) {
-		this.connectorManager.sendByUid(uid,{type : "kick"})
-		var uids = this.sessionService.getByUid(uid)
-		for(var i = 0;i < uids.length;i++){
-			this.sessionService.kickBySessionId(uids[i].id)
-		}
-	}
-	session.bind(uid)
-	session.on("closed",onUserLeave.bind(this))
-	console.log(uid + "  entrySuccess.."+ "  "+this.app.serverId)
-	userInfo.time = Date.now()
+entryHandler.entrySuccess = function(session,userInfo,unionid,next) {
+	var accId = Number(userInfo.accId)
+    session.set("accId",accId)
+    session.push("accId")
+	session.set("limit",userInfo.limit)
+	session.push("limit")
+    session.set("unionid",unionid)
+    session.push("unionid")
+	// session.on("closed",onUserLeave.bind(this))
   	next(null, {flag : true,msg : userInfo});
 }
 var onUserLeave = function(session) {
 	var uid = session.uid
-	console.log("onUserLeave : "+uid + "  "+this.app.serverId)
 	if(uid){
 		session.unbind(uid)
 		var serverId = session.get("serverId")
@@ -65,6 +112,9 @@ module.exports = function(app) {
   	props : [{
   		name : "accountDao",
   		ref : "accountDao"
+  	},{
+  		name : "redisDao",
+  		ref : "redisDao"
   	}]
   })
 };

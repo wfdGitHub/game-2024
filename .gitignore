@@ -1,4 +1,6 @@
 node_modules/
 game-server/logs/
 package-lock.json
+.vscode/settings.json
+.vscode/launch.json
 game-server/config/gameCfg/

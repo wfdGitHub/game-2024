@@ -4,6 +4,8 @@ var bearcat = require("bearcat")
 var loginHandler = function(app) {
   this.app = app;
   this.areaDeploy = this.app.get('areaDeploy')
+  this.sessionService = this.app.get('sessionService')
+  this.connectorManager = this.app.get('connectorManager')
   this.boyNameNum = boyNames.length
   this.girlNameNum = girlNames.length
 }
@@ -46,46 +48,69 @@ loginHandler.prototype.getLocationAreaId = function(msg, session, next) {
 		next(null,{flag : false})
 	}
 }
+//获取角色列表
+loginHandler.prototype.getPlayerList = function(msg, session, next) {
+	var accId = session.get("accId")
+	if(!accId){
+		next(null,{flag : false,err : "未登录账号"})
+		return
+	}
+	this.playerDao.getPlayerList({accId : accId},function(flag,list) {
+		next(null,{flag : flag,list : list})
+	})
+}
 //获取角色数据
 loginHandler.prototype.getPlayerInfo = function(msg, session, next) {
+	var accId = session.get("accId")
 	var areaId = msg.areaId
+	if(!accId){
+		next(null,{flag : false,err : "未登录账号"})
+		return
+	}
 	if(!areaId){
 		next(null,{flag : false,err : "areaId error"})
 		return
 	}
-	var uid = session.uid
-	this.playerDao.getPlayerInfo({areaId : areaId,uid : uid},function(playerInfo) {
-		next(null,{flag : true,msg : playerInfo})
+	var self = this
+	self.playerDao.getUidByAreaId({accId : accId,areaId : areaId},function(flag,uid) {
+		self.playerDao.getPlayerInfo({areaId : areaId,uid : uid},function(playerInfo) {
+			if(playerInfo){
+				next(null,{flag : true,msg : playerInfo})
+			}else{
+				next(null,{flag : false})
+			}
+		})
 	})
 }
 //创建角色
 loginHandler.prototype.register = function(msg, session, next) {
-	var areaId = msg.areaId
+	var oriId = msg.areaId
 	var name = msg.name
 	var sex = msg.sex
-	if(!areaId){
-		next(null,{flag : false,err : "areaId error"})
+	if(!oriId){
+		next(null,{flag : false,err : "oriId error"})
 		return
 	}
-    var serverId = this.areaDeploy.getServer(areaId)
+    var serverId = this.areaDeploy.getServer(oriId)
     if(!serverId){
         next(null,{flag : false,err : "服务器不存在"})
         return
     }
-    if(!Number.isInteger(areaId) || typeof(name) !== "string"){
+    if(oriId != Number(oriId) || typeof(name) !== "string"){
         next(null,{flag : false,err : "参数错误"})
         return
     }
     name = name.replace(/\s*/g,"");
     if(name.length < 2){
-        next(null,{flag : false,err : "该名称已被使用"})
+        next(null,{flag : false,err : "名称过短"})
         return
     }
     if(sex !== 1){
     	sex = 2
     }
-	var uid = session.uid
-	var otps = {areaId : areaId,uid : uid,name : name,sex : sex}
+    var areaId = this.areaDeploy.getFinalServer(oriId)
+	var accId = session.get("accId")
+	var otps = {areaId : areaId,oriId : oriId,accId : accId,name : name,sex : sex}
     this.app.rpc.area.areaRemote.register.toServer(serverId,otps,function(flag,data) {
 		if(flag){
 	        next(null,{flag : true,msg : data})
@@ -111,35 +136,78 @@ loginHandler.prototype.getRandomName = function(msg, session, next) {
 }
 //登录游戏
 loginHandler.prototype.loginArea = function(msg, session, next) {
-	var areaId = msg.areaId
-	var uid = session.uid
+	var oriId = msg.areaId
+	var accId = session.get("accId")
+	if(!accId){
+		next(null,{flag : false,err : "未登录账号"})
+		return
+	}
 	if(session.get("areaId")){
-		next(null,{flag : false,err : "已登录"})
+		next(null,{flag : false,err : "已登录服务器"})
 		return
 	}
-	if(!areaId){
-		next(null,{flag : false,err : "areaId error"})
+	if(!oriId){
+		next(null,{flag : false,err : "oriId error"})
 		return
 	}
+    var areaId = this.areaDeploy.getFinalServer(oriId)
     var serverId = this.areaDeploy.getServer(areaId)
-    if(!serverId){
+    if(!areaId || !serverId){
         next(null,{flag : false,err : "服务器不存在"})
         return
     }
-    this.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,this.app.serverId,function(playerInfo) {
-    	console.log("playerInfo",playerInfo)
-		if(playerInfo){
-	        session.set("areaId",areaId)
-	        session.push("areaId")
-	        session.set("serverId",serverId)
-	        session.push("serverId")
-			session.set("nickname",playerInfo.name)
-			session.push("nickname")
-	        next(null,{flag : true,msg : playerInfo})
-		}else{
-			next(null,{flag : false,msg : "未注册角色"})
+    var self = this
+    self.playerDao.getUidByAreaId({accId : accId,areaId : oriId},function(flag,uid) {
+    	if(!flag){
+    		next(null,{flag : false,err : "未注册角色"})
+    		return
+    	}
+		//检查重复登录
+		if( !! self.sessionService.getByUid(uid)) {
+			self.connectorManager.sendByUid(uid,{type : "kick"})
+			var uids = self.sessionService.getByUid(uid)
+			for(var i = 0;i < uids.length;i++){
+				self.sessionService.kickBySessionId(uids[i].id)
+			}
 		}
-	})
+    	session.bind(uid)
+    	session.on("closed",onUserLeave.bind(self))
+	    self.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,oriId,self.app.serverId,function(flag,playerInfo) {
+			if(flag){
+		        session.set("areaId",areaId)
+		        session.push("areaId")
+		        session.set("oriId",oriId)
+		        session.push("oriId")
+		        session.set("serverId",serverId)
+		        session.push("serverId")
+				session.set("name",playerInfo.name)
+				session.push("name")
+				session.set("head",playerInfo.head)
+				session.push("head")
+				session.set("beginTime",Date.now())
+				session.push("beginTime")
+				playerInfo.areaId = areaId
+				self.cacheDao.saveCache(Object.assign({"messagetype":"login"},playerInfo))
+		        next(null,{flag : flag,msg : playerInfo})
+			}else{
+				next(null,{flag : flag,msg : playerInfo})
+			}
+		})
+    })
+}
+var onUserLeave = function(session) {
+	var uid = session.uid
+	if(uid){
+		session.unbind(uid)
+		var accId = session.get("accId")
+		var beginTime = session.get("beginTime")
+		var serverId = session.get("serverId")
+		if(accId)
+			this.accountDao.updatePlaytime({accId : accId,beginTime : beginTime})
+		if(serverId)
+			this.app.rpc.area.areaRemote.userLeave.toServer(serverId,uid,this.app.serverId,null)
+		this.app.rpc.chat.chatRemote.userLeave(null,uid,this.app.serverId,null)
+	}
 }
 module.exports = function(app) {
   return bearcat.getBean({
@@ -152,6 +220,12 @@ module.exports = function(app) {
 	props : [{
 		name : "playerDao",
 		ref : "playerDao"
-	}]
+	},{
+      name : "accountDao",
+      ref : "accountDao"
+    },{
+      name : "cacheDao",
+      ref : "cacheDao"
+    }]
   })
 };
