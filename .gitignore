@@ -1,3 +1,4 @@
 node_modules/
 game-server/logs/
 package-lock.json
+game-server/config/gameCfg/
