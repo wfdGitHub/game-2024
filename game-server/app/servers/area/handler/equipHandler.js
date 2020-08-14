@@ -109,7 +109,7 @@ equipHandler.prototype.sellEquip = function(msg, session, next) {
       next(null,{flag : false,err : err})
       return
     }
-    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : 201,value : equip_base[eId]["sell_prize"] * count},function(flag,data) {
+    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : 201,value : Math.round(equip_base[eId]["sell_prize"] * count / 60)},function(flag,data) {
       next(null,{flag : true,value : data})
     })
   })
