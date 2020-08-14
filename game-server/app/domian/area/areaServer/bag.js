@@ -232,16 +232,23 @@ module.exports = function() {
 	}
 	//增加物品回调
 	this.addItemCB = function(uid,itemId,value,cb) {
-		if(itemId == 100){
-			this.addLordExp(uid,value)
-			cb(true)
-		}
-		else if(itemCfg[itemId]){
-			this.addBagItem(uid,itemId,value,cb)
-		}else{
-			console.error("addItem error : "+itemId)
-			if(cb)
-				cb(false,"itemId error : "+itemId)
+		switch(itemId){
+			case 100:
+				this.addLordExp(uid,value)
+				cb(true)
+			break
+			case 109:
+				this.addUserRMB(uid,value)
+				cb(true)
+			break
+			default:
+				if(itemCfg[itemId]){
+					this.addBagItem(uid,itemId,value,cb)
+				}else{
+					console.error("addItem error : "+itemId)
+					if(cb)
+						cb(false,"itemId error : "+itemId)
+				}
 		}
 	}
 	//合并奖励str

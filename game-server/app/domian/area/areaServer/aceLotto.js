@@ -2,6 +2,7 @@
 const ace_lotto_cfg = require("../../../../config/gameCfg/ace_lotto_cfg.json")
 const ace_lotto_topic = require("../../../../config/gameCfg/ace_lotto_topic.json")
 const ace_pack = require("../../../../config/gameCfg/ace_pack.json")
+const defalut = require("../../../../config/gameCfg/defalut.json")
 var util = require("../../../../util/util.js")
 const main_name = "ace_lotto" 
 var topicList = []
@@ -52,7 +53,7 @@ module.exports = function() {
 	}
 	//单次元神抽奖
 	this.aceLottoOnce = function(uid,cb) {
-		self.consumeItems(uid,"202:220",1,function(flag,err) {
+		self.consumeItems(uid,defalut["ace_lotto_10"]["value"],1,function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
@@ -66,7 +67,7 @@ module.exports = function() {
 	}
 	//十连元神抽奖
 	this.aceLottoMultiple = function(uid,cb) {
-		self.consumeItems(uid,"202:2000",1,function(flag,err) {
+		self.consumeItems(uid,defalut["ace_lotto_10"]["value"],1,function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
