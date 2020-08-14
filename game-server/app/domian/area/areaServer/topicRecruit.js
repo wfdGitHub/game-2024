@@ -4,7 +4,7 @@ const recruit_base = require("../../../../config/gameCfg/recruit_base.json")
 const recruit_list = require("../../../../config/gameCfg/recruit_list.json")
 const recruit_topic_cfg = require("../../../../config/gameCfg/recruit_topic_cfg.json")
 const recruit_topic_hero = require("../../../../config/gameCfg/recruit_topic_hero.json")
-const default = require("../../../../config/gameCfg/default.json")
+const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const util = require("../../../../util/util.js")
 const main_name = "topic_recruit"
 var topicList = []
@@ -53,7 +53,7 @@ module.exports = function() {
 	}
 	//主题招募一次
 	this.topicRecruitOnce = function(uid,cb) {
-		self.consumeItems(uid,default["topic_lotto_1"]["value"],1,function(flag,err) {
+		self.consumeItems(uid,default_cfg["topic_lotto_1"]["value"],1,function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
@@ -66,7 +66,7 @@ module.exports = function() {
 	}
 	//主题招募十次
 	this.topicRecruitMultiple = function(uid,cb) {
-		self.consumeItems(uid,default["topic_lotto_10"]["value"],1,function(flag,err) {
+		self.consumeItems(uid,default_cfg["topic_lotto_10"]["value"],1,function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
