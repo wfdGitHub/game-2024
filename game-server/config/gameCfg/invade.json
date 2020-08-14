@@ -5,11 +5,11 @@
   },
   "base_award": {
     "name": "基础奖励",
-    "value": "101:1000&201:1000"
+    "value": "101:100&201:100"
   },
   "base_rate": {
     "name": "奖励基数",
-    "value": 100
+    "value": 10
   },
   "lv_rate": {
     "name": "等级基数",
