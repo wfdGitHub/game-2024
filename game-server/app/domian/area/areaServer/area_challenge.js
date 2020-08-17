@@ -59,7 +59,7 @@ module.exports = function() {
 			    	return
 			    }
 			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-			    	cb(false,"战斗验证错误")
+			    	cb(false,self.fightContorl.getFightRecord())
 			    	return
 			    }
 			   	var atkTeam = fightInfo.team
