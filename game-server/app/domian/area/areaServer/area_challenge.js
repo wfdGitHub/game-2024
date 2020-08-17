@@ -18,12 +18,12 @@ module.exports = function() {
 				data[i] = Number(data[i])
 			data = Object.assign({},baseInfo,data)
 			if(!data.time){
-				data.time = Date.now()
+				data.time = Date.now() + 172800000
 				self.setObj(uid,main_name,"time",data.time)
-			}else if(data.time + 172800000 < Date.now()){
+			}else if(data.time < Date.now()){
 				//挑战时间到
 				data.cur_chapter++
-				data.time = Date.now()
+				data.time = Date.now() + 172800000
 				data.bossId = 0
 				self.setObj(uid,main_name,"cur_chapter",data.cur_chapter)
 				self.setObj(uid,main_name,"time",data.time)
@@ -65,7 +65,7 @@ module.exports = function() {
 		    		if(bossId >= 3){
 		    			cur_chapter++
 		    			bossId = 0
-		    			time -= 172800000
+		    			time += 172800000
 		    			self.setObj(uid,main_name,"cur_chapter",cur_chapter)
 		    			self.setObj(uid,main_name,"time",time)
 		    		}
