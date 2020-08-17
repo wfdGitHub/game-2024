@@ -65,14 +65,14 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 //合并名称
 areaDeploy.prototype.mergeAreaName = function(oriId,areaId) {
 	var self = this
-	self.redisDao.db.hgetall("area:area"+oriId+":nameMap",function(err,data) {
+	self.redisDao.db.hgetall("game:nameMap",function(err,data) {
 		if(data){
 			var sname = "s"+oriId+"."
 			for(var i in data){
 				var uid = data[i]
 				var name = sname+i.replace(sname,"")
-				self.redisDao.db.hdel("area:area"+oriId+":nameMap",i)
-				self.redisDao.db.hset("area:area"+oriId+":nameMap",name,uid)
+				self.redisDao.db.hdel("game:nameMap",i)
+				self.redisDao.db.hset("game:nameMap",name,uid)
 				self.redisDao.db.hset("player:user:"+uid+":bag",1000500,1)
 				self.redisDao.db.hset("player:user:"+uid+":playerInfo","name",name)
 			}

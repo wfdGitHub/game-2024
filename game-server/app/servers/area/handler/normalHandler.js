@@ -188,9 +188,13 @@ normalHandler.prototype.changeName = function(msg, session, next) {
   var oriId = session.get("oriId")
   var name = msg.name
   var self = this
+  if(name.indexOf(".") != -1){
+    cb(false,"不能包含特殊字符")
+    return
+  }
   async.waterfall([
     function(cb) {
-      self.redisDao.db.hexists("area:area"+oriId+":nameMap",name,function(err,data) {
+      self.redisDao.db.hexists("game:nameMap",name,function(err,data) {
         if(data){
           cb("名称已存在")
         }else{
@@ -215,8 +219,8 @@ normalHandler.prototype.changeName = function(msg, session, next) {
     },
     function() {
       self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
-        self.redisDao.db.hdel("area:area"+oriId+":nameMap",data)
-        self.redisDao.db.hset("area:area"+oriId+":nameMap",name,uid)
+        self.redisDao.db.hdel("game:nameMap",data)
+        self.redisDao.db.hset("game:nameMap",name,uid)
         self.playerDao.setPlayerInfo({uid : uid,key : "name",value : name})
         session.set("name",name)
         session.push("name",function() {

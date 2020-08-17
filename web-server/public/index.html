@@ -1523,6 +1523,12 @@
             console.log(data);
         });
       }
+      //模糊查找玩家信息
+      var nameMatching = function(name,cursor) {
+        pomelo.request("admin.adminHandler.nameMatching", {name:name,cursor:cursor}, function(data) {
+            console.log(data);
+        });
+      }
       //冻结角色
       var freezeUid = function(uid,value) {
         pomelo.request("admin.adminHandler.freezeUid", {uid:uid,value:value}, function(data) {

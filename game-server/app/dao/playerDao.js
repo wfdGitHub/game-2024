@@ -28,7 +28,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":areaMap",otps.areaId,uid)
 		self.redisDao.db.hmset("player:user:"+uid+":playerInfo",playerInfo,function(err,data) {
 			if(!err){
-				self.redisDao.db.hset("area:area"+otps.areaId+":nameMap",otps.name,uid)
+				self.redisDao.db.hset("game:nameMap",otps.name,uid)
 				self.heroDao.gainHero(otps.areaId,uid,{id : beginHero},function(flag,heroInfo) {
 					self.heroDao.setFightTeam(otps.areaId,uid,[null,heroInfo.hId,null,null,null,null])
 				})
@@ -102,7 +102,7 @@ playerDao.prototype.setPlayerInfo = function(otps,cb) {
 playerDao.prototype.checkPlayerInfo = function(otps,cb) {
 	var multiList = []
 	multiList.push(["hexists","acc:user:"+otps.accId+":areaMap",otps.areaId])
-	multiList.push(["hexists","area:area"+otps.areaId+":nameMap",otps.name])
+	multiList.push(["hexists","game:nameMap",otps.name])
 	this.redisDao.multi(multiList,function(err,list) {
 		if(list[0] !== 0){
 			cb(false,"已注册账号")

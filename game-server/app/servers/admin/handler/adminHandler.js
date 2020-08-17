@@ -151,6 +151,30 @@ adminHandler.prototype.getPlayerInfo = function(msg, session, next) {
 		}
 	})
 }
+//模糊查找玩家信息
+adminHandler.prototype.nameMatching = function(msg, session, next) {
+	var name = msg.name
+	var cursor = msg.cursor
+	if(!cursor)
+		cursor = 0
+	this.hscan(name,cursor,function(flag,data) {
+		next(null,{flag : flag,msg : data})
+	})
+}
+adminHandler.prototype.hscan = function(name,cursor,cb) {
+	var self = this
+	self.redisDao.db.hscan('game:nameMap',cursor,"MATCH","*"+name+"*","count",500,function(err,data) {
+		if(err){
+			cb(false,err)
+		}else if(data[1].length){
+			cb(true,data)
+		}else if(data[0] == 0){
+			cb(false,"没有更多的数据了")
+		}else{
+			self.hscan(name,data[0],cb)
+		}
+	})
+}
 //冻结解封角色
 adminHandler.prototype.freezeUid = function(msg, session, next) {
 	var uid = msg.uid
