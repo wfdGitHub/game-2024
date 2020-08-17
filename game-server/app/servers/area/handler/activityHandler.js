@@ -61,7 +61,7 @@ activityHandler.prototype.getAreaChallengeData = function(msg, session, next) {
 activityHandler.prototype.areaChallenge = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].areaChallenge(uid,function(flag,msg) {
+  this.areaManager.areaMap[areaId].areaChallenge(uid,msg.verify,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

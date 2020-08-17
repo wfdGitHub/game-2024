@@ -177,16 +177,16 @@
             console.log(data);
         });
       }
-      //==============新服挑战==========//
-      //获取新服挑战数据
+      //==============挑战山海==========//
+      //获取挑战山海数据数据
       var getAreaChallengeData = function() {
         pomelo.request("area.activityHandler.getAreaChallengeData", {}, function(data) {
             console.log(data);
         });
       }
-      //挑战新服BOSS
-      var areaChallenge = function() {
-        pomelo.request("area.activityHandler.areaChallenge", {}, function(data) {
+      //挑战山海BOSS
+      var areaChallenge = function(verify) {
+        pomelo.request("area.activityHandler.areaChallenge", {verify:verify}, function(data) {
             console.log(data);
         });
       }

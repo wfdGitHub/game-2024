@@ -1,3 +1,4 @@
+//挑战山海
 const area_challenge = require("../../../../config/gameCfg/area_challenge.json")
 const main_name = "area_challenge"
 for(var i = 1;i <= 3;i++)
@@ -6,51 +7,73 @@ for(var i = 1;i <= 3;i++)
 module.exports = function() {
 	var self = this
 	const baseInfo = {
-		"day_1" : 0,
-		"day_2" : 0,
-		"day_3" : 0
+		"bossId" : 0,
+		"cur_chapter" : 1,
+		"time" : 0
 	}
-	//获取新服挑战数据
+	//获取挑战山海数据
 	this.getAreaChallengeData = function(uid,cb) {
-		if(self.areaDay > 3){
-			cb(false,"活动已结束")
-			return
-		}
 		self.getObjAll(uid,main_name,function(data) {
-			for(let i in data)
+			for(var i in data)
 				data[i] = Number(data[i])
 			data = Object.assign({},baseInfo,data)
+			if(!data.time){
+				data.time = Date.now()
+				self.setObj(uid,main_name,"time",data.time)
+			}else if(data.time + 172800000 < Date.now()){
+				//挑战时间到
+				data.cur_chapter++
+				data.time = Date.now()
+				data.bossId = 0
+				self.setObj(uid,main_name,"cur_chapter",data.cur_chapter)
+				self.setObj(uid,main_name,"time",data.time)
+				self.setObj(uid,main_name,"bossId",data.bossId)
+			}
 			cb(true,data)
 		})
 	}
-	//挑战新服BOSS
-	this.areaChallenge = function(uid,cb) {
-		if(self.areaDay > 3){
-			cb(false,"活动已结束")
-			return
-		}
-		self.getObj(uid,main_name,"day_"+self.areaDay,function(data) {
-			var bossId = Number(data) || 0
+	//挑战山海BOSS
+	this.areaChallenge = function(uid,verify,cb) {
+		self.getObjAll(uid,main_name,function(data) {
+			for(var i in data)
+				data[i] = Number(data[i])
+			var bossId = Number(data["bossId"]) || 0
 			bossId++
-			if(!area_challenge[self.areaDay]["team"+bossId]){
-				cb(false,"今日已全部挑战")
+			var cur_chapter = data["cur_chapter"] || 1
+			var time = data["time"]
+			if(!area_challenge[cur_chapter]){
+				cb(false,"已通关")
+			}else if(!area_challenge[cur_chapter]["team"+bossId]){
+				cb(false,"boss错误")
 			}else{
 			    var fightInfo = self.getFightInfo(uid)
 			    if(!fightInfo){
 			    	cb(false,"未准备")
 			    	return
 			    }
+			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
+			    	next("战斗验证错误")
+			    	return
+			    }
 			   	var atkTeam = fightInfo.team
 			   	var seededNum = fightInfo.seededNum
-			   	var defTeam = area_challenge[self.areaDay]["team"+bossId]
+			   	var defTeam = area_challenge[cur_chapter]["team"+bossId]
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			    if(winFlag){
-		    		var info = {
-		    			winFlag : winFlag,
-		    			bossId : bossId
+		    		var info = {}
+		    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId])
+		    		if(bossId >= 3){
+		    			cur_chapter++
+		    			bossId = 0
+		    			time -= 172800000
+		    			self.setObj(uid,main_name,"cur_chapter",cur_chapter)
+		    			self.setObj(uid,main_name,"time",time)
 		    		}
-		    		self.incrbyObj(uid,main_name,"day_"+self.areaDay,1)
-		    		info.awardList = self.addItemStr(uid,area_challenge[self.areaDay]["award"+bossId])
+		    		self.setObj(uid,main_name,"bossId",bossId)
+	    			info.winFlag = winFlag
+	    			info.bossId = bossId
+	    			info.cur_chapter = cur_chapter
+	    			info.time = time
 		    		cb(true,info)
 			    }else{
 			    	cb(false,self.fightContorl.getFightRecord())
