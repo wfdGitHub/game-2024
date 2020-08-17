@@ -58,14 +58,14 @@ module.exports = function() {
 			    	cb(false,"未准备")
 			    	return
 			    }
-			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-			    	cb(false,self.fightContorl.getFightRecord())
-			    	return
-			    }
 			   	var atkTeam = fightInfo.team
 			   	var seededNum = fightInfo.seededNum
 			   	var defTeam = area_challenge[cur_chapter]["team"+bossId]
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
+			    	cb(false,self.fightContorl.getFightRecord())
+			    	return
+			    }
 			    if(winFlag){
 		    		var info = {}
 		    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId])
