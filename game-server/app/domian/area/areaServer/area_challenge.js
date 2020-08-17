@@ -17,17 +17,24 @@ module.exports = function() {
 			for(var i in data)
 				data[i] = Number(data[i])
 			data = Object.assign({},baseInfo,data)
+			data.cur_chapter = data["cur_chapter"] || 1
 			if(!data.time){
 				data.time = Date.now() + 172800000
 				self.setObj(uid,main_name,"time",data.time)
-			}else if(data.time < Date.now() && data.cur_chapter < 8){
+			}else{
 				//挑战时间到
-				data.cur_chapter++
-				data.time = Date.now() + 172800000
-				data.bossId = 0
-				self.setObj(uid,main_name,"cur_chapter",data.cur_chapter)
-				self.setObj(uid,main_name,"time",data.time)
-				self.setObj(uid,main_name,"bossId",data.bossId)
+				var flag = false
+				while(data.time < Date.now() && data.cur_chapter < 8){
+					flag = true
+					data.cur_chapter++
+					data.time += 172800000
+				}
+				if(flag){
+					data.bossId = 0
+					self.setObj(uid,main_name,"cur_chapter",data.cur_chapter)
+					self.setObj(uid,main_name,"time",data.time)
+					self.setObj(uid,main_name,"bossId",data.bossId)
+				}
 			}
 			cb(true,data)
 		})
