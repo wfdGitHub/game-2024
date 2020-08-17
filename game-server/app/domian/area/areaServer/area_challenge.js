@@ -20,7 +20,7 @@ module.exports = function() {
 			if(!data.time){
 				data.time = Date.now() + 172800000
 				self.setObj(uid,main_name,"time",data.time)
-			}else if(data.time < Date.now()){
+			}else if(data.time < Date.now() && data.cur_chapter < 8){
 				//挑战时间到
 				data.cur_chapter++
 				data.time = Date.now() + 172800000
