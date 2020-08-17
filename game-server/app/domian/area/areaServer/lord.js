@@ -7,7 +7,12 @@ module.exports = function() {
 	//加载主公数据
 	this.lordLoad = function(uid,cb) {
 		self.playerDao.getPlayerInfo({uid : uid},function(info) {
-			if(info){
+			if(!info){
+				cb("未注册")
+			}else if(info.freeze && info.freeze != 0){
+				cb("角色已被冻结")
+			}else{
+				
 				for(var i = 0;i < numberAtt.length;i++)
 					info[numberAtt[i]] = Number(info[numberAtt[i]]) || 0
 				if(!self.players[uid])
@@ -15,8 +20,6 @@ module.exports = function() {
 				self.players[uid] = info
 				self.checkVipLv(uid)
 				cb()
-			}else{
-				cb("未注册")
 			}
 		})
 	}

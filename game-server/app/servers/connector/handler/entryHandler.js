@@ -70,6 +70,8 @@ entryHandler.prototype.tokenLogin = function(msg, session, next) {
 					}
 					entryHandler.entrySuccess.call(self,session,data,unionid,next)
 				})
+			}else if(userInfo.freeze && userInfo.freeze != 0){
+				next(null,{flag : false,msg : "账号已被冻结"})
 			}else{
 				entryHandler.entrySuccess.call(self,session,userInfo,unionid,next)
 			}

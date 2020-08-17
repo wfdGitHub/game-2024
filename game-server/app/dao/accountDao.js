@@ -11,6 +11,7 @@ accountDao.prototype.createAccount = function(otps,cb) {
 		limit : 0,
 		playTime : 0,
 		dayTime : 0,
+		freeze : 0,
 		dayStr : (new Date()).toDateString()
 	}
 	var self = this

@@ -1523,6 +1523,18 @@
             console.log(data);
         });
       }
+      //冻结角色
+      var freezeUid = function(uid,value) {
+        pomelo.request("admin.adminHandler.freezeUid", {uid:uid,value:value}, function(data) {
+            console.log(data);
+        });
+      }
+      //冻结账号
+      var freezeAcc = function(uid,value) {
+        pomelo.request("admin.adminHandler.freezeAcc", {uid:uid,value:value}, function(data) {
+            console.log(data);
+        });
+      }
       //发放物品
       var sendItem = function(target,itemId,value) {
         pomelo.request("area.adminArea.sendItem", {target : target,itemId : itemId,value : value}, function(data) {

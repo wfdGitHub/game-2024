@@ -151,6 +151,55 @@ adminHandler.prototype.getPlayerInfo = function(msg, session, next) {
 		}
 	})
 }
+//冻结解封角色
+adminHandler.prototype.freezeUid = function(msg, session, next) {
+	var uid = msg.uid
+	var value = msg.value
+	var self = this
+	self.playerDao.getPlayerInfo({uid : uid},function(playerInfo) {
+		if(playerInfo){
+			self.playerDao.setPlayerInfo({uid : uid,key:"freeze",value:value},function(flag,err) {
+				next(null,{flag : flag,err : err})
+			})
+			if(value != 0){
+				self.kickUser(uid)
+			}
+		}else{
+			next(null,{flag : false,err:"角色不存在"})
+		}
+	})
+}
+//冻结解封账号
+adminHandler.prototype.freezeAcc = function(msg, session, next) {
+	var uid = msg.uid
+	var value = msg.value
+	var self = this
+	self.playerDao.getPlayerInfo({uid : uid},function(playerInfo) {
+		if(playerInfo){
+			self.accountDao.setAccountData({accId : playerInfo.accId,name:"freeze",value:value},function(flag,err) {
+				next(null,{flag : flag,err : err})
+			})
+			if(value != 0){
+				self.kickUser(uid)
+			}
+		}else{
+			next(null,{flag : false,err:"账号不存在"})
+		}
+	})
+}
+//踢出玩家
+adminHandler.prototype.kickUser = function(uid) {
+	var self = this
+	self.playerDao.getPlayerAreaId(uid,function(flag,data) {
+		if(flag){
+			var areaId = self.areaDeploy.getFinalServer(data)
+			var serverId = self.areaDeploy.getServer(areaId)
+			if(serverId){
+				self.app.rpc.area.areaRemote.kickUser.toServer(serverId,uid,null)
+			}
+		}
+	})
+}
 //发送个人邮件
 adminHandler.prototype.adminSendMail = function(msg, session, next) {
 	var uid = msg.uid

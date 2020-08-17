@@ -53,11 +53,18 @@ areaRemote.prototype.register = function(otps,cb) {
 areaRemote.prototype.userLogin = function(uid,areaId,oriId,cid,cb) {
 	this.areaManager.userLogin(uid,areaId,oriId,cid,cb)
 }
-
 //玩家离开
 areaRemote.prototype.userLeave = function(uid,cid,cb) {
 	this.areaManager.userLeave(uid,cid)
 	cb()
+}
+//踢出玩家
+areaRemote.prototype.kickUser = function(uid,cb) {
+	if(this.areaManager.connectorMap[uid]){
+		this.app.rpc.connector.connectorRemote.kickUser.toServer(this.areaManager.connectorMap[uid],uid,null)
+	}
+	if(cb)
+		cb()
 }
 //获取服务器信息
 areaRemote.prototype.getAreaServerInfos = function(cb) {

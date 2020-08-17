@@ -17,7 +17,8 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		heroAmount : 100,
 		heroLv : 1,
 		maxSS : 0,
-		dayStr : 0
+		dayStr : 0,
+		freeze : 0
 	}
 	var self = this
 	self.redisDao.db.incrby("user:lastid",1,function(err,uid) {
