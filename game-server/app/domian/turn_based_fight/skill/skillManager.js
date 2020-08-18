@@ -250,9 +250,12 @@ model.useAttackSkill = function(skill) {
 		let allLenth = this.locator.getTargetsNum(skill.targetType)
 		let buffRate = ((allLenth - targets.length + 1) / allLenth) * skill.character.less_clear_invincible
 		for(var i = 0;i < targets.length;i++){
-			if(!targets[i].died && targets[i].buffs["invincible"]){
+			if(!targets[i].died && (targets[i].buffs["invincible"] || targets[i].buffs["invincibleSuck"])){
 				if(this.seeded.random("清除无敌盾") < buffRate){
-					targets[i].buffs["invincible"].destroy()
+					if(targets[i].buffs["invincible"])
+						targets[i].buffs["invincible"].destroy()
+					if(targets[i].buffs["invincibleSuck"])
+						targets[i].buffs["invincibleSuck"].destroy()
 				}
 			}
 		}
