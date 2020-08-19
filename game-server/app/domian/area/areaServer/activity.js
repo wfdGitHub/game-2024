@@ -13,7 +13,12 @@ const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
 const pay_days = require("../../../../config/gameCfg/pay_days.json")
 const invade = require("../../../../config/gameCfg/invade.json")
 const invade_team = JSON.parse(invade["mon_team"]["value"])
+const area_boss_base = require("../../../../config/gameCfg/area_boss_base.json")
 var util = require("../../../../util/util.js")
+var maxBoss = 0
+for(var i in area_boss_base){
+	maxBoss++
+}
 const main_name = "activity"
 module.exports = function() {
 	var self = this
@@ -116,6 +121,14 @@ module.exports = function() {
 			data["invade"] = 0
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
+			}
+			if(self.newArea && !data["area_rank"] && Date.now() > area_rank_deadline){
+				data["area_rank"] = 1
+				self.gainAreaRankAward(uid)
+			}
+			if(self.newArea && !data["boss_rank"] && self.areaDay > maxBoss + 1){
+				data["boss_rank"] = 1
+				self.gainAreaBossRankAward(uid)
 			}
 			self.setHMObj(uid,main_name,data)
 		})
@@ -445,38 +458,24 @@ module.exports = function() {
 		}
 	}
 	//领取冲榜奖励
-	this.gainAreaRankAward = function(uid,cb) {
-		if(self.newArea && Date.now() > area_rank_deadline){
-			self.getObj(uid,main_name,"area_rank",function(data) {
-				if(data){
-					cb(false,"已领取")
-				}else{
-					self.setObj(uid,main_name,"area_rank",1)
-					self.redisDao.db.zrevrank("area:area"+self.areaId+":zset:areaRank",uid,function(err,rank) {
-						if(rank != null){
-							rank = Number(rank) + 1
-							var text = "亲爱的玩家您好，恭喜您在7日冲榜活动中获得"+rank+"名，获得丰厚奖励，祝您游戏愉快！"
-							if(rank >= 11){
-								rank = 11
-								text = "亲爱的玩家您好，恭喜您在7日冲榜活动中获得参与奖励，祝您游戏愉快！"
-							}
-							var ce = self.getCE(uid)
-							var award = ""
-							award = area_rank[rank]["award"]
-							if(ce > activity_cfg["area_rank_extra"]["value"] && area_rank[rank]["extra"]){
-								award += "&"+area_rank[rank]["extra"]
-							}
-							self.sendMail(uid,"冲榜活动奖励",text,award)
-							cb(true)
-						}else{
-							cb(false,"未参与冲榜"+rank)
-						}
-					})
+	this.gainAreaRankAward = function(uid) {
+		self.redisDao.db.zrevrank("area:area"+self.areaId+":zset:areaRank",uid,function(err,rank) {
+			if(rank != null){
+				rank = Number(rank) + 1
+				var text = "亲爱的玩家您好，恭喜您在7日冲榜活动中获得"+rank+"名，获得丰厚奖励，祝您游戏愉快！"
+				if(rank >= 11){
+					rank = 11
+					text = "亲爱的玩家您好，恭喜您在7日冲榜活动中获得参与奖励，祝您游戏愉快！"
 				}
-			})
-		}else{
-			cb(false,"未到领取时间")
-		}
+				var ce = self.getCE(uid)
+				var award = ""
+				award = area_rank[rank]["award"]
+				if(ce > activity_cfg["area_rank_extra"]["value"] && area_rank[rank]["extra"]){
+					award += "&"+area_rank[rank]["extra"]
+				}
+				self.sendMail(uid,"冲榜活动奖励",text,award)
+			}
+		})
 	}
 	//领取消耗活动奖励
 	this.gainConsumeTotalAward = function(uid,index,cb) {

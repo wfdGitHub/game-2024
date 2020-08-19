@@ -788,6 +788,43 @@
             console.log(data);
         });
       }
+      //============全服BOSS==============//
+      //获取全服BOSS数据
+      var getAreaBossData = function() {
+        pomelo.request("area.worldBossHandler.getAreaBossData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战全服BOSS
+      var challengeAreaBoss = function() {
+        pomelo.request("area.worldBossHandler.challengeAreaBoss", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买全服BOSS挑战次数
+      var buyAreaBossCount = function() {
+        pomelo.request("area.worldBossHandler.buyAreaBossCount", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买全服BOSS伤害增加
+      var buyAreaBossUp = function() {
+        pomelo.request("area.worldBossHandler.buyAreaBossUp", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取全服BOSS宝箱奖励
+      var gainAreaBossBox = function(index) {
+        pomelo.request("area.worldBossHandler.gainAreaBossBox", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取排行榜
+      var getAreaBossRank = function() {
+        pomelo.request("area.worldBossHandler.getAreaBossRank", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============世界BOSS==============//
       //获取世界BOSS数据
       var getWorldBossData = function() {
@@ -1677,8 +1714,8 @@
       <input id="test" type="button" value="登录账号" onclick="entry(10016)"/>
       <input id="test" type="button" value="游客账号" onclick="entry(Date.now())"/>
       <input id="test" type="button" value="渠道账号" onclick="quickEntryAccount()"/>
-      <input id="test" type="button" value="注册角色" onclick="register(2,''+Date.now(),1)"/>
-      <input id="test" type="button" value="登录服务器" onclick="loginArea(2)"/>
+      <input id="test" type="button" value="注册角色" onclick="register(1,''+Date.now(),1)"/>
+      <input id="test" type="button" value="登录服务器" onclick="loginArea(1)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
       <input id="test" type="button" value="战斗准备" onclick="readyFight()"/>
       <input id="test" type="button" value="快速挂机" onclick="getQuickOnhookAward()"/>
@@ -1749,6 +1786,14 @@
       <input id="test" type="button" value="山海秘境数据" onclick="getMysteriousData()"/>
       <input id="test" type="button" value="购买次数" onclick="buyMysteriousCount()"/>
       <input id="test" type="button" value="排行榜" onclick="getMysteriousRank()"/>
+    </div>
+    <div class="g-button">
+      全服BOSS : 
+      <input id="test" type="button" value="全服BOSS数据" onclick="getAreaBossData()"/>
+      <input id="test" type="button" value="挑战BOSS" onclick="challengeAreaBoss()"/>
+      <input id="test" type="button" value="购买次数" onclick="buyAreaBossCount()"/>
+      <input id="test" type="button" value="购买增强" onclick="buyAreaBossUp()"/>
+      <input id="test" type="button" value="获取排行榜" onclick="getAreaBossRank()"/>
     </div>
   </body>
 </html>

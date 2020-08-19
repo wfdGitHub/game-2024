@@ -98,6 +98,14 @@ module.exports = function() {
 			}
 		})
 	}
+	//增长有序列表数据
+	this.incrbyZset = function(zname,key,score,cb) {
+		this.redisDao.db.zincrby("area:area"+this.areaId+":zset:"+zname,score,key,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
 	//删除有序列表
 	this.delZset = function(zname,cb) {
 		this.redisDao.db.del("area:area"+this.areaId+":zset:"+zname,function(err,data) {

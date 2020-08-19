@@ -251,14 +251,6 @@ activityHandler.prototype.getAreaRank = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
-//领取冲榜奖励
-activityHandler.prototype.gainAreaRankAward = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].gainAreaRankAward(uid,function(flag,msg) {
-    next(null,{flag : flag,msg : msg})
-  })
-}
 //领取消耗活动奖励
 activityHandler.prototype.gainConsumeTotalAward = function(msg, session, next) {
   var uid = session.uid
