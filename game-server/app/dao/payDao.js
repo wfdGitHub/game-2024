@@ -4,7 +4,7 @@ const uuid = require("uuid")
 var mysql = require("./mysql/mysql.js")
 var payDao = function() {}
 payDao.prototype.init  = function() {
-	this.db = mysql.init()
+	this.db = this.mysqlDao.db
 }
 //创建充值订单
 payDao.prototype.createGameOrder = function(otps,cb) {
@@ -96,6 +96,9 @@ module.exports = {
 	},{
 		name : "cacheDao",
 		ref : "cacheDao"
+	},{
+		name : "mysqlDao",
+		ref : "mysqlDao"
 	}]
 }
 

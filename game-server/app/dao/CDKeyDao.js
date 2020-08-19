@@ -3,7 +3,7 @@ var mysql = require("./mysql/mysql.js")
 var pageNum = 11
 var CDKeyDao = function() {}
 CDKeyDao.prototype.init  = function() {
-	this.db = mysql.init()
+	this.db = this.mysqlDao.db
 }
 //创建礼包码类型
 CDKeyDao.prototype.createCDType = function(type,award,des,cb) {
@@ -190,6 +190,9 @@ module.exports = {
 	props : [{
 		name : "redisDao",
 		ref : "redisDao"
+	},{
+		name : "mysqlDao",
+		ref : "mysqlDao"
 	}]
 }
 

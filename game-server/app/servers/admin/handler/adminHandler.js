@@ -253,6 +253,23 @@ adminHandler.prototype.setNotify = function(msg,session,next) {
 	this.redisDao.db.set("game:notify",notify)
 	next(null,{flag : true})
 }
+//获取聊天记录总页数
+adminHandler.prototype.getChatRecordPage = function(msg,session,next) {
+	this.mysqlDao.getChatRecordPage(function(flag,data) {
+		next(null,{flag:flag,data:data})
+	})
+}
+//获取聊天记录一页数据
+adminHandler.prototype.getChatRecordList = function(msg,session,next) {
+	var dataNum = msg.dataNum
+	if(typeof(dataNum) != "number"){
+		next(null,{"err":"参数错误"})
+		return
+	}
+	this.mysqlDao.getChatRecordList(dataNum,function(flag,data) {
+		next(null,{flag:flag,data:data})
+	})
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "adminHandler",
@@ -270,6 +287,9 @@ module.exports = function(app) {
 		},{
 			name : "playerDao",
 			ref : "playerDao"
+		},{
+			name : "mysqlDao",
+			ref : "mysqlDao"
 		}]
 	})
 }

@@ -47,6 +47,7 @@ chatHandler.prototype.say = function(msg, session, next) {
 	}
 	var text = msg.text
 	this.chat.say(talker,roomName,text)
+	this.mysqlDao.addChatRecord(uid,name,text,roomName)
 	next(null)
 }
 module.exports = function(app) {
@@ -56,6 +57,10 @@ module.exports = function(app) {
 		args : [{
 			name : "app",
 			value : app
+		}],
+		props : [{
+			name : "mysqlDao",
+			ref : "mysqlDao"
 		}]
 	})
 }
