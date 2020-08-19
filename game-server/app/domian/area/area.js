@@ -26,7 +26,7 @@ var area = function(otps,app) {
 	this.onlineNum = 0
 	this.fightInfos = {}
 	this.fightContorl = fightContorlFun
-	this.dayStr = ""
+	this.dayStr = (new Date()).toDateString()
 	this.crossUids = {}
 	this.timer = 0
 	for(var i = 0;i < areaServers.length;i++){
@@ -128,7 +128,6 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 			self.players[uid]["areaId"] = self.areaId
 			self.players[uid]["areaDay"] = self.areaDay
 			self.players[uid]["userDay"] = util.getTimeDifference(self.players[uid].createTime,Date.now())
-			console.log("dayStr",self.players[uid].dayStr,self.dayStr)
 			if(self.players[uid].dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
 			}
@@ -141,7 +140,6 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 }
 //玩家当天首次登录
 area.prototype.dayFirstLogin = function(uid) {
-	console.log("dayFirstLogin",uid)
 	this.chageLordData(uid,"dayStr",this.dayStr)
 	this.chageLordData(uid,"rmb_day",0)
 	this.setPlayerData(uid,"quick",0)
