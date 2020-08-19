@@ -31,11 +31,12 @@ model.beginFight = function(atkTeam,defTeam,otps) {
       atkTeamList[i] = this.getCharacterInfo(atkTeam[i])
       defTeamList[i] = this.getCharacterInfo(defTeam[i])
     }
-    var atkTeamAdds = Object.assign({},otps.atkTeamAdds)
-    var defTeamAdds = Object.assign({},otps.defTeamAdds)
-    model.mergeData(atkTeamAdds,this.raceAdd(this.getRaceType(atkTeamList)))
-    model.mergeData(defTeamAdds,this.raceAdd(this.getRaceType(defTeamList)))
-	var fighting = new fightingFun(atkTeamList,defTeamList,otps)
+    var myotps = Object.assign({},otps)
+    myotps.atkTeamAdds = Object.assign({},myotps.atkTeamAdds)
+    myotps.defTeamAdds = Object.assign({},myotps.defTeamAdds)
+    model.mergeData(myotps.atkTeamAdds,this.raceAdd(this.getRaceType(atkTeamList)))
+    model.mergeData(myotps.defTeamAdds,this.raceAdd(this.getRaceType(defTeamList)))
+	var fighting = new fightingFun(atkTeamList,defTeamList,myotps)
 	fighting.nextRound()
 	return fightRecord.isWin()
 }
