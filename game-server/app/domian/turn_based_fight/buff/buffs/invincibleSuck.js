@@ -2,6 +2,7 @@
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
+	buff.refreshType = "before"
 	buff.name = "无敌吸血盾"
 	buff.overlay = function(releaser,otps) {
 		buff.releaser = releaser

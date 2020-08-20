@@ -269,21 +269,21 @@ model.prototype.calAttAdd = function(team_adds) {
 model.prototype.before = function() {
 	//伤害BUFF刷新
 	for(var i in this.buffs)
-		if(this.buffs[i].damageType == "dot")
+		if(this.buffs[i].refreshType == "before")
 			this.buffs[i].update()
 }
 //行动结束后刷新
 model.prototype.after = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
-		if(this.buffs[i].damageType == "control")
+		if(this.buffs[i].refreshType == "after")
 			this.buffs[i].update()
 }
 //回合结束后刷新
 model.prototype.roundOver = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
-		if(!this.buffs[i].damageType)
+		if(!this.buffs[i].refreshType == "roundOver")
 			this.buffs[i].update()
 }
 //受到伤害
