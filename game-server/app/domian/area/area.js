@@ -29,6 +29,7 @@ var area = function(otps,app) {
 	this.dayStr = (new Date()).toDateString()
 	this.crossUids = {}
 	this.timer = 0
+	this.runTime = 0
 	for(var i = 0;i < areaServers.length;i++){
 		var fun = require("./areaServer/"+areaServers[i]+".js")
 		fun.call(this)
@@ -58,6 +59,7 @@ area.prototype.destory = function() {
 }
 //update
 area.prototype.update = function() {
+	this.runTime += 1000
 	var curDayStr = (new Date()).toDateString()
 	if(this.dayStr !== curDayStr){
 		this.dayUpdate(curDayStr)
@@ -74,6 +76,10 @@ area.prototype.dayUpdate = function(curDayStr) {
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
+	if(this.runTime < 10000){
+		cb(false,"服务器正忙，请稍后重试")
+		return
+	}
 	var self = this
 	self.playerDao.checkPlayerInfo(otps,function(flag,err) {
 		if(!flag){
@@ -96,6 +102,10 @@ area.prototype.register = function(otps,cb) {
 }
 //玩家加入
 area.prototype.userLogin = function(uid,oriId,cid,cb) {
+	if(this.runTime < 10000){
+		cb(false,"服务器正忙，请稍后重试")
+		return
+	}
 	var self = this
 	async.waterfall([
 		function(next) {
