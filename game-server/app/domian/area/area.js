@@ -46,6 +46,7 @@ area.prototype.init = function() {
 	})
 	this.worldBossCheck()
 	this.initAreaMail()
+	this.dayUpdate()
 	this.timer = setInterval(this.update.bind(this),1000)
 }
 //服务器关闭
@@ -64,13 +65,12 @@ area.prototype.update = function() {
 }
 //每日定时器
 area.prototype.dayUpdate = function(curDayStr) {
-	console.log("服务器每日刷新")
+	// console.log("服务器每日刷新")
 	this.dayStr = curDayStr
 	this.areaDay = util.getTimeDifference(this.openTime,Date.now())
 	this.aceLottoDayUpdate()
 	this.topicRecruitDayUpdate()
 	this.areaBossDayUpdate()
-	console.log("this.areaDay",this.areaDay)
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
@@ -151,7 +151,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.shopRefresh(uid)
 	this.activityUpdate(uid)
 	this.STDayRefresh(uid)
-	this.TopicRecruitdayUpdate(uid)
+	this.TopicRecruitRefresh(uid)
 	this.mysteriousDayUpdate(uid)
 }
 //玩家退出

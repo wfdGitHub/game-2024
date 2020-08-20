@@ -22,7 +22,7 @@ module.exports = function() {
 		curTopic = topicList[curIndex].id
 		curTopicHero = topicList[curIndex].heroId
 	}
-	this.TopicRecruitdayUpdate = function(uid) {
+	this.TopicRecruitRefresh = function(uid) {
 		self.getObjAll(uid,main_name,function(data) {
 			var week_record = util.getWeek()
 			if(!data){
