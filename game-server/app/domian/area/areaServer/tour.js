@@ -2,6 +2,7 @@
 const tour_quality = require("../../../../config/gameCfg/tour_quality.json")
 const tour_task = require("../../../../config/gameCfg/tour_task.json")
 const heros = require("../../../../config/gameCfg/heros.json")
+const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const uuid = require("uuid")
 const async = require("async")
 var tour_quality_list = {}
@@ -35,7 +36,7 @@ module.exports = function() {
 	}
 	//元宝刷新
 	this.refreshTourByGold = function(uid,cb) {
-		self.consumeItems(uid,"202:30",1,function(flag,err) {
+		self.consumeItems(uid,default_cfg["tour_refresh"]["value"],1,function(flag,err) {
 			if(flag){
 				let list = local.createTour()
 				self.setHMObj(uid,main_name,list)
