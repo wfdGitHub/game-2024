@@ -124,6 +124,16 @@ module.exports = function() {
 				self.sendToUser(uid,notify)
 			}
 		})
+		this.addUserVIPExp(uid,rmb)
+	}
+	//增加VIP经验
+	this.addUserVIPExp = function(uid,exp) {
+		self.incrbyLordData(uid,"vip_exp",exp)
+		var notify = {
+			type : "addUserVIPExp",
+			vip_exp : self.players[uid].vip_exp
+		}
+		self.sendToUser(uid,notify)
 		self.checkVipLv(uid)
 	}
 	//激活至尊特权

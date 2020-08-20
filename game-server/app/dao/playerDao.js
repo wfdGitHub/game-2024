@@ -11,6 +11,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		createTime : Date.now(),
 		rmb : 0,
 		vip : 0,
+		vip_exp: 0,
 		rmb_day : 0,
 		exp : 0,
 		level : 1,

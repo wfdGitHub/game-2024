@@ -319,14 +319,14 @@ module.exports = function() {
 			return
 		}
 		if(VIP[self.players[uid].vip+1]){
-			if(self.players[uid].rmb >= VIP[self.players[uid].vip+1]["rmb"]){
+			if(self.players[uid].vip_exp >= VIP[self.players[uid].vip+1]["rmb"]){
 				this.incrbyLordData(uid,"vip",1)
 				this.incrbyLordData(uid,"heroAmount",VIP[self.players[uid]["vip"]]["heroAmount"])
 				if(self.players[uid]){
 					var notify = {
 						type : "vip",
 						curLv : self.players[uid].vip,
-						rmb : self.players[uid].rmb
+						vip_exp : self.players[uid].vip_exp
 					}
 					this.sendToUser(uid,notify)
 				}
