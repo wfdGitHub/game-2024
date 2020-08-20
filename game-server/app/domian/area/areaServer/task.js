@@ -5,6 +5,7 @@ var task_type = require("../../../../config/gameCfg/task_type.json")
 var liveness_cfg = require("../../../../config/gameCfg/liveness.json")
 var war_horn = require("../../../../config/gameCfg/war_horn.json")
 var week_target = require("../../../../config/gameCfg/week_target.json")
+var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var util = require("../../../../util/util.js")
 var async = require("async")
 var main_name = "task"
@@ -315,8 +316,7 @@ module.exports = function() {
 				cb(false,"不能超出上限"+value)
 				return
 			}
-			var needStr = "202:"+(count * 600)
-			self.consumeItems(uid,needStr,1,function(flag,err) {
+			self.consumeItems(uid,default_cfg["horn_lv"]["value"],count,function(flag,err) {
 				if(!flag){
 					cb(false,err)
 				}else{

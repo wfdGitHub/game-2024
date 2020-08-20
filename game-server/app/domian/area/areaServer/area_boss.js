@@ -87,7 +87,6 @@ module.exports = function() {
 			if(err){
 				cb(false,err)
 			}else{
-				console.log("hmget",err,list)
 				var play = Number(list[0]) || 0
 				var buy = Number(list[1]) || 0
 				var up = Number(list[2]) || 0

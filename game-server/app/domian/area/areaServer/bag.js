@@ -353,7 +353,7 @@ module.exports = function() {
 		self.getPlayerData(uid,"week_record",function(data) {
 			var week_record = util.getWeek()
 			if(data != week_record){
-				console.log("跨周刷新",data,week_record)
+				// console.log("跨周刷新",data,week_record)
 				self.setPlayerData(uid,"week_record",week_record)
 				self.delObjAll(uid,"week_shop")
 			}
@@ -361,7 +361,7 @@ module.exports = function() {
 		self.getPlayerData(uid,"month_record",function(data) {
 			var month_record = util.getMonth()
 			if(data != month_record){
-				console.log("跨月刷新",data,month_record)
+				// console.log("跨月刷新",data,month_record)
 				self.setPlayerData(uid,"month_record",month_record)
 				self.delObjAll(uid,"month_shop")
 			}
