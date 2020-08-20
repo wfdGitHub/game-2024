@@ -51,6 +51,7 @@ module.exports = function() {
 			   	var defTeam = ttttower_level[level]["defTeam"]
 			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
+			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]))
 			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getFightRecord()})
 			    	return
 			    }

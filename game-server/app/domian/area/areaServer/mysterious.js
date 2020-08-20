@@ -74,6 +74,7 @@ module.exports = function() {
 			   	var defTeam = mysterious_realm[lv]["team"]
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
+			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]))
 			    	next("战斗验证错误")
 			    	return
 			    }
