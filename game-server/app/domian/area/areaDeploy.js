@@ -163,10 +163,10 @@ areaDeploy.prototype.updateArea = function(areaId,serverId) {
 //关闭游戏服务器
 areaDeploy.prototype.removeArea = function(areaId) {
 	areaId = Number(areaId)
-	console.log("removeArea",areaId)
+	// console.log("removeArea",areaId)
 	delete this.serverMap[areaId]
 	this.areaList.remove(areaId)
-	console.log(this.serverMap,this.areaList)
+	// console.log(this.serverMap,this.areaList)
 }
 //改变最终服务器指向
 areaDeploy.prototype.changeFinalServerMap = function(areaId,finalId) {
