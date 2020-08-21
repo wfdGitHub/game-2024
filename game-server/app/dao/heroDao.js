@@ -468,8 +468,10 @@ heroDao.prototype.getZhuluTeam = function(uid,cb) {
 					if(tmp == list[i][j])
 						list[i][j] = tmp
 				}
-				list[i].hId = hIds[i]
-				hash[list[i].hId] = list[i]
+				if(list[i]){
+					list[i].hId = hIds[i]
+					hash[list[i].hId] = list[i]
+				}
 			}
 			for(var i = 0;i < zhuluTeam.length;i++){
 				zhuluTeam[i] = hash[zhuluTeam[i]]
