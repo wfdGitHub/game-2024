@@ -30,6 +30,7 @@ adminHandler.prototype.getAreaServerInfos = function(msg, session, next) {
 	var servrList = this.app.getServersByType('area')
 	for(var i = 0;i < servrList.length;i++){
 	    this.app.rpc.area.areaRemote.getAreaServerInfos.toServer(servrList[i].id,function(infos) {
+	    	console.log("getAreaServerInfos",count,infos)
 	    	count++
 	    	var list = Object.assign({},infos)
 	    	if(count == servrList.length){
