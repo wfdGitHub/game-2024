@@ -14,7 +14,7 @@ Filter.prototype.before = function (msg, session, next) {
 }
 Filter.prototype.after = function (err, msg, session, resp, next) {
 	var dt = Date.now() - session.handlerTime
-	if(dt > 100){
+	if(dt > 200){
 		console.error("handlerTime over ",dt,msg)
 	}
 	next(err);
