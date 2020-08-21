@@ -28,6 +28,7 @@ adminHandler.prototype.resumeArea = function(msg, session, next) {
 adminHandler.prototype.getAreaServerInfos = function(msg, session, next) {
 	var count = 0
 	var servrList = this.app.getServersByType('area')
+	console.log("servrList",servrList)
 	for(var i = 0;i < servrList.length;i++){
 	    this.app.rpc.area.areaRemote.getAreaServerInfos.toServer(servrList[i].id,function(infos) {
 	    	console.log("getAreaServerInfos",count,infos)
