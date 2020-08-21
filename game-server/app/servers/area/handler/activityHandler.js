@@ -16,6 +16,8 @@ activityHandler.prototype.apply_recharge = function(msg, session, next) {
 }
 //申请支付测试接口
 activityHandler.prototype.test_recharge = function(msg, session, next) {
+  next(null,{flag : false})
+  return
   var uid = session.uid
   var areaId = session.get("areaId")
   var pay_id = msg.pay_id
