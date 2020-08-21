@@ -9,10 +9,12 @@ var heroHandler = function(app) {
 };
 //增加英雄背包栏
 heroHandler.prototype.addHeroAmount = function(msg, session, next) {
-  var uid = session.uid
-  this.heroDao.addHeroAmount(uid,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
+  next(null,{flag : false})
+  return
+  // var uid = session.uid
+  // this.heroDao.addHeroAmount(uid,function(flag,data) {
+  //   next(null,{flag : flag,data : data})
+  // })
 }
 //获取英雄背包栏数量
 heroHandler.prototype.getHeroAmount = function(msg, session, next) {
