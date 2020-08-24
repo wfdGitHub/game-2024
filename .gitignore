@@ -4,3 +4,4 @@ package-lock.json
 .vscode/settings.json
 .vscode/launch.json
 game-server/config/gameCfg/
+game-server/config/
