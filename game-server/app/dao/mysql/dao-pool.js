@@ -1,5 +1,6 @@
 var _poolModule = require('generic-pool');  
 var mysql = require('mysql');  
+var mysqlConfig = require("../../../config/gameCfg/mysqlConfig.json")
 /* 
  * Create mysql connection pool. 
  */  
@@ -9,11 +10,11 @@ var createMysqlPool = function () {
             return new Promise(function (resolve, reject) {  
   
                 var client = mysql.createConnection({  
-					host: "47.107.48.79",
-					user: "zhulu",
-					password: "ERt6Mcsmbpx24S2j",
-					database: "zhulu" ,
-                    port: "3306",
+					host: mysqlConfig.host,
+					user: mysqlConfig.user,
+					password: mysqlConfig.password,
+					database: mysqlConfig.database,
+                    port: mysqlConfig.port,
                     useConnectionPooling: true
                 });  
                 client.on('error', function () {  
