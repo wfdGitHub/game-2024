@@ -34,6 +34,9 @@ serverManager.prototype.init = function() {
 		case "quick":
 			self.pay_order = self.quick_order
 		break
+		case "jianwan":
+			self.pay_order = self.jianwan_order
+		break
 		default:
 			console.error("sdktype error")
 	}
@@ -90,6 +93,7 @@ serverManager.prototype.quick_order = function(data,cb) {
 	});
 }
 serverManager.prototype.jianwan_order = function(data,cb) {
+	console.log("jianwan_order",data,data.nt_data_json)
 	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
 	if(v_sign != data.md5Sign){
 		console.error("签名验证失败")
@@ -97,7 +101,6 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 		return
 	}
 	var self = this
-	console.log("jianwan_order",data,data.nt_data_json)
 	// var info = {
 	// 	is_test : message["is_test"]? message["is_test"][0] : 0,
 	// 	channel : message["channel"]? message["channel"][0] : 0,
