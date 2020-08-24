@@ -40,6 +40,7 @@ serverManager.prototype.init = function() {
 	}
 	server.post(sdkConfig[sdktype]["pay_callback"],function(req,res) {
 		var data = req.body
+		console.log("pay_callback",data)
 		self.pay_order(data,function(flag,err) {
 			if(!flag)
 				res.send(err)
@@ -50,6 +51,7 @@ serverManager.prototype.init = function() {
 	server.listen(80);
 }
 serverManager.prototype.quick_order = function(data,cb) {
+	console.log("quick_order")
 	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
 	if(v_sign != data.md5Sign){
 		console.error("签名验证失败")
@@ -74,6 +76,7 @@ serverManager.prototype.quick_order = function(data,cb) {
 			extras_params : message["extras_params"]? message["extras_params"][0] : 0,
 		}
 		self.payDao.finishGameOrder(info,function(flag,err,data) {
+			console.log(flag,err,data)
 			if(flag){
 				//发货
 				var areaId = self.areaDeploy.getFinalServer(data.areaId)
