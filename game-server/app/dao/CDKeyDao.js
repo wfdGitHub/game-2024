@@ -152,7 +152,7 @@ CDKeyDao.prototype.verifyCDKey = function(key,uid,area,name,cb) {
 								cb(false,"该礼包码已失效")
 								return
 							}
-							if(res[0].once != 0 && state){
+							if(res[0].once == 1 && state){
 								cb(false,"该类型礼包码已经激活过了")
 								return
 							}
