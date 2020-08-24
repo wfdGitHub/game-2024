@@ -30,7 +30,7 @@ serverManager.prototype.init = function() {
 	server.use(express.json());
 	server.use(express.urlencoded());
 	server.use(xmlparser());
-	switch(sdktype){
+	switch(sdkConfig.sdk_type){
 		case "quick":
 			self.pay_order = self.quick_order
 		break
