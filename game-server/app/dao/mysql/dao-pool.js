@@ -1,6 +1,6 @@
 var _poolModule = require('generic-pool');  
 var mysql = require('mysql');  
-var mysqlConfig = require("../../../config/gameCfg/mysqlConfig.json")
+var mysqlConfig = require("../../../config/sysCfg/mysqlConfig.json")
 /* 
  * Create mysql connection pool. 
  */  
