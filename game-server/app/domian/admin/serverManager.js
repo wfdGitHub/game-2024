@@ -1,9 +1,11 @@
 var express = require('express');
 var xmlparser = require('express-xml-bodyparser')
 var parseString = require('xml2js').parseString;
+var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var util = require("../../../util/util.js")
-var Md5_Key = "swo3zz65dqcrgf5ekr2kikzupfh4rvnk"
-var Callback_Key = "01851010527568025678042665632763"
+var sdktype = "quick"
+var Md5_Key = sdkConfig[sdktype]["Md5_Key"]
+var Callback_Key = sdkConfig[sdktype]["Callback_Key"]
 var local = {}
 var serverManager = function(app) {
 	this.app = app
@@ -29,7 +31,14 @@ serverManager.prototype.init = function() {
 	server.use(express.json());
 	server.use(express.urlencoded());
 	server.use(xmlparser());
-	server.post("/pay_order",function(req,res) {
+	switch(sdktype){
+		case "quick":
+			self.pay_order = self.quick_order
+		break
+		default:
+			console.error("sdktype error")
+	}
+	server.post(sdkConfig[sdktype]["pay_callback"],function(req,res) {
 		var data = req.body
 		self.pay_order(data,function(flag,err) {
 			if(!flag)
@@ -40,7 +49,7 @@ serverManager.prototype.init = function() {
 	})
 	server.listen(80);
 }
-serverManager.prototype.pay_order = function(data,cb) {
+serverManager.prototype.quick_order = function(data,cb) {
 	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
 	if(v_sign != data.md5Sign){
 		console.error("签名验证失败")
@@ -77,6 +86,41 @@ serverManager.prototype.pay_order = function(data,cb) {
 				cb(true)
 		})
 	});
+}
+serverManager.prototype.jianwan_order = function(data,cb) {
+	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
+	if(v_sign != data.md5Sign){
+		console.error("签名验证失败")
+		cb(false,"签名验证失败")
+		return
+	}
+	var self = this
+	console.log("jianwan_order",data,data.nt_data_json)
+	// var info = {
+	// 	is_test : message["is_test"]? message["is_test"][0] : 0,
+	// 	channel : message["channel"]? message["channel"][0] : 0,
+	// 	channel_name : message["channel_name"]? message["channel_name"][0] : 0,
+	// 	channel_uid : message["channel_uid"]? message["channel_uid"][0] : 0,
+	// 	channel_order : message["channel_order"]? message["channel_order"][0] : 0,
+	// 	game_order : message["game_order"]? message["game_order"][0] : 0,
+	// 	order_no : message["order_no"]? message["order_no"][0] : 0,
+	// 	pay_time : message["pay_time"]? message["pay_time"][0] : 0,
+	// 	amount : message["amount"]? message["amount"][0] : 0,
+	// 	status : message["status"]? message["status"][0] : 0,
+	// 	extras_params : message["extras_params"]? message["extras_params"][0] : 0,
+	// }
+	// self.payDao.finishGameOrder(info,function(flag,err,data) {
+	// 	if(flag){
+	// 		//发货
+	// 		var areaId = self.areaDeploy.getFinalServer(data.areaId)
+	// 		var serverId = self.areaDeploy.getServer(areaId)
+	// 	    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
+	// 	}
+	// 	if(err)
+	// 		cb(false,err)
+	// 	else
+	// 		cb(true)
+	// })
 }
 //update
 serverManager.prototype.update = function() {

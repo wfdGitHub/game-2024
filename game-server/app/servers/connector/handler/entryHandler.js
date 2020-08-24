@@ -1,6 +1,8 @@
 var bearcat = require("bearcat")
 var http = require('http')
-var product_code = "12573540530640168406040556652364"
+var sdkConfig = require("../../../../config/sysCfg/sdkConfig.json")
+var sdktype = "quick"
+var product_code = sdkConfig[sdktype].product_code
 var util = require("../../../../util/util.js")
 var entryHandler = function(app) {
   this.app = app;
@@ -10,7 +12,7 @@ var entryHandler = function(app) {
 };
 //登陆账号
 entryHandler.prototype.entryAccount = function(msg, session, next) {
-	var unionid = msg.unionid
+	var unionid = "visitor_"+msg.unionid
 	var loginToken = util.randomString(8)
 	this.redisDao.db.hset("loginToken",unionid,loginToken)
 	next(null,{flag:true,unionid:unionid,token:loginToken})
@@ -21,7 +23,7 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	var uid = msg.uid
 	var channel_code = msg.channel_code
 	var self = this
-	var url = "http://checkuser.sdk.quicksdk.net/v2/checkUserInfo?token="+token+"&product_code="+product_code+"&uid="+uid+"&channel_code="+channel_code
+	var url = sdkConfig[sdktype]["CheckUserInfo"]+"?token="+token+"&product_code="+product_code+"&uid="+uid+"&channel_code="+channel_code
 	http.get(url,function(res){
 	  	var responseText=[];
 	  	var size = 0;
