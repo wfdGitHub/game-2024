@@ -3,9 +3,8 @@ var xmlparser = require('express-xml-bodyparser')
 var parseString = require('xml2js').parseString;
 var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var util = require("../../../util/util.js")
-var sdktype = "quick"
-var Md5_Key = sdkConfig[sdktype]["Md5_Key"]
-var Callback_Key = sdkConfig[sdktype]["Callback_Key"]
+var Md5_Key = sdkConfig["Md5_Key"]
+var Callback_Key = sdkConfig["Callback_Key"]
 var local = {}
 var serverManager = function(app) {
 	this.app = app
@@ -38,7 +37,7 @@ serverManager.prototype.init = function() {
 		default:
 			console.error("sdktype error")
 	}
-	server.post(sdkConfig[sdktype]["pay_callback"],function(req,res) {
+	server.post(sdkConfig["pay_callback"],function(req,res) {
 		var data = req.body
 		console.log("pay_callback",data)
 		self.pay_order(data,function(flag,err) {

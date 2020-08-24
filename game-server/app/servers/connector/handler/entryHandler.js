@@ -1,8 +1,7 @@
 var bearcat = require("bearcat")
 var http = require('http')
 var sdkConfig = require("../../../../config/sysCfg/sdkConfig.json")
-var sdktype = "quick"
-var product_code = sdkConfig[sdktype].product_code
+var product_code = sdkConfig.product_code
 var util = require("../../../../util/util.js")
 var entryHandler = function(app) {
   this.app = app;
@@ -23,7 +22,7 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	var uid = msg.uid
 	var channel_code = msg.channel_code
 	var self = this
-	var url = sdkConfig[sdktype]["CheckUserInfo"]+"?token="+token+"&product_code="+product_code+"&uid="+uid+"&channel_code="+channel_code
+	var url = sdkConfig["CheckUserInfo"]+"?token="+token+"&product_code="+product_code+"&uid="+uid+"&channel_code="+channel_code
 	http.get(url,function(res){
 	  	var responseText=[];
 	  	var size = 0;
