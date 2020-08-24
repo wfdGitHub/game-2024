@@ -6,7 +6,7 @@ CDKeyDao.prototype.init  = function() {
 	this.db = this.mysqlDao.db
 }
 //创建礼包码类型
-CDKeyDao.prototype.createCDType = function(type,award,des,cb) {
+CDKeyDao.prototype.createCDType = function(type,award,des,once,cb) {
 	var self = this
 	var sql = "select * from CDType where type = ?"
 	var args = [type];
@@ -25,6 +25,7 @@ CDKeyDao.prototype.createCDType = function(type,award,des,cb) {
 				award : award,
 				valid : 1,
 				c_time : Date.now(),
+				once : once || 0,
 				des : des
 			}
 			self.db.query(sql,info, function(err, res) {
@@ -138,11 +139,9 @@ CDKeyDao.prototype.verifyCDKey = function(key,uid,area,name,cb) {
 				cb(false,"该礼包码已失效")
 				return
 			}
-			self.redisDao.db.hget("player:user:"+uid+":cdkey",data.type,function(err,value) {
+			self.redisDao.db.hget("player:user:"+uid+":cdkey",data.type,function(err,state) {
 				if(err){
 					cb(false,err)
-				}else if(value){
-					cb(false,"该类型礼包码已经激活过了")
 				}else{
 					var sql = "select * from CDType where type = ?"
 					self.db.query(sql,[data.type], function(err, res) {
@@ -151,6 +150,10 @@ CDKeyDao.prototype.verifyCDKey = function(key,uid,area,name,cb) {
 						}else{
 							if(res[0].valid == 0){
 								cb(false,"该礼包码已失效")
+								return
+							}
+							if(res[0].once != 0 && state){
+								cb(false,"该类型礼包码已经激活过了")
 								return
 							}
 							sql = 'update CDKey SET count=count+?,uid=?,area=?,name=?,u_time=? where cdkey = ?'

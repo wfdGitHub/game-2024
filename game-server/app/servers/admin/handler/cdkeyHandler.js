@@ -7,11 +7,12 @@ cdkeyHandler.prototype.createCDType = function(msg, session, next) {
 	var type = msg.type
 	var award = msg.award
 	var des = msg.des
+	var once = msg.once
 	if(typeof(type) != "string" || typeof(award) != "string"){
 		next(null,{"err":"参数错误"})
 		return
 	}
-	this.CDKeyDao.createCDType(type,award,des,function(flag,data) {
+	this.CDKeyDao.createCDType(type,award,des,once,function(flag,data) {
 		next(null,{flag:flag,data:data})
 	})
 }
