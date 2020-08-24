@@ -42,6 +42,10 @@ module.exports = function() {
 				self.sendToUser(uid,notify)
 			}
 		}
+		if(!pay_cfg[pay_id]){
+			cb(false)
+			return
+		}
 		switch(pay_cfg[pay_id]["type"]){
 			case "lv_fund":
 				this.activateLvFund(uid,call_back.bind(this,uid))
@@ -129,12 +133,14 @@ module.exports = function() {
 	//增加VIP经验
 	this.addUserVIPExp = function(uid,exp) {
 		self.incrbyLordData(uid,"vip_exp",exp)
-		var notify = {
-			type : "addUserVIPExp",
-			vip_exp : self.players[uid].vip_exp
+		if(self.players[uid]){
+			var notify = {
+				type : "addUserVIPExp",
+				vip_exp : self.players[uid].vip_exp
+			}
+			self.sendToUser(uid,notify)
+			self.checkVipLv(uid)
 		}
-		self.sendToUser(uid,notify)
-		self.checkVipLv(uid)
 	}
 	//激活至尊特权
 	this.activateHighCard = function(uid,cb) {

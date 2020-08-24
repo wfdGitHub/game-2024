@@ -338,6 +338,12 @@
             console.log(data);
         });
       }
+      //直接充值
+      var rechargeToUser = function(uid,pay_id) {
+        pomelo.request("admin.adminHandler.rechargeToUser", {uid:uid,pay_id:pay_id}, function(data) {
+            console.log(data);
+        });
+      }
       //==============礼包码============//
       //创建礼包码类型
       var createCDType = function(type,award,des) {

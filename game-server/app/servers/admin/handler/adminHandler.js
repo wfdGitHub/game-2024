@@ -271,6 +271,27 @@ adminHandler.prototype.getChatRecordList = function(msg,session,next) {
 		next(null,{flag:flag,data:data})
 	})
 }
+//直接充值
+adminHandler.prototype.rechargeToUser = function(msg,session,next) {
+	var uid = msg.uid
+	var pay_id = msg.pay_id
+	var self = this
+	self.playerDao.getPlayerAreaId(uid,function(flag,data) {
+		if(flag){
+			var areaId = self.areaDeploy.getFinalServer(data)
+			var serverId = self.areaDeploy.getServer(areaId)
+			if(serverId){
+				self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,function(flag,data) {
+					next(null,{flag:flag,data:data})
+				})
+			}else{
+				next(null,{"err":"参数错误"})
+			}
+		}else{
+			next(null,{"err":"参数错误"})
+		}
+	})
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "adminHandler",

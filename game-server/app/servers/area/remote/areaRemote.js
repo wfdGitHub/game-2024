@@ -19,6 +19,9 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,cb) {
 					time : (new Date()).toLocaleDateString()
 				}
 				self.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))
+				cb(false,err)
+			}else{
+				cb(true)
 			}
 		})
 	}else{
@@ -32,8 +35,8 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,cb) {
 			time : (new Date()).toLocaleDateString()
 		}
 		self.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))
+		cb(false,"服务器不存在")
 	}
-	cb()
 }
 //创建新服务器
 areaRemote.prototype.loadArea = function(areaId,cb) {
