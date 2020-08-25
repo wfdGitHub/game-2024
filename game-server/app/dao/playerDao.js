@@ -108,9 +108,10 @@ playerDao.prototype.checkPlayerInfo = function(otps,cb) {
 		if(list[0] !== 0){
 			cb(false,"已注册账号")
 		}else if(list[1] !== 0){
-			cb(false,"名字已存在")
+			otps.name = otps.name + (Math.floor(Math.random() * 90000) + 10000)
+			cb(true,otps.name)
 		}else{
-			cb(true)
+			cb(true,otps.name)
 		}
 	})
 }
