@@ -100,17 +100,17 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 	var self = this
 	data.nt_data_json = JSON.parse(data.nt_data_json)
 	var info = {
-		is_test : data.nt_data_json["is_test"] : 0,
-		channel : data.nt_data_json["channel"] : 0,
-		channel_name : data.nt_data_json["channel_name"] : 0,
-		channel_uid : data.nt_data_json["channel_uid"] : 0,
-		channel_order : data.nt_data_json["channel_order"] : 0,
-		game_order : data.nt_data_json["game_order"] : 0,
-		order_no : data.nt_data_json["order_no"] : 0,
-		pay_time : data.nt_data_json["pay_time"] : 0,
-		amount : data.nt_data_json["amount"] : 0,
-		status : data.nt_data_json["status"] : 0,
-		extras_params : data.nt_data_json["extras_params"] : 0,
+		is_test : data.nt_data_json["is_test"] || 0,
+		channel : data.nt_data_json["channel"] || 0,
+		channel_name : data.nt_data_json["channel_name"] || 0,
+		channel_uid : data.nt_data_json["channel_uid"] || 0,
+		channel_order : data.nt_data_json["channel_order"] || 0,
+		game_order : data.nt_data_json["game_order"] || 0,
+		order_no : data.nt_data_json["order_no"] || 0,
+		pay_time : data.nt_data_json["pay_time"] || 0,
+		amount : data.nt_data_json["amount"] || 0,
+		status : data.nt_data_json["status"] || 0,
+		extras_params : data.nt_data_json["extras_params"] || 0
 	}
 	self.payDao.finishGameOrder(info,function(flag,err,data) {
 		if(flag){
