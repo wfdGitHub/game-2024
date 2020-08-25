@@ -112,7 +112,7 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 		status : data.nt_data_json["status"] || 0,
 		extras_params : data.nt_data_json["extras_params"] || 0
 	}
-	self.payDao.finishGameOrder(info,function(flag,err,data) {
+	self.payDao.finishGameOrderJianwan(info,function(flag,err,data) {
 		if(flag){
 			//发货
 			var areaId = self.areaDeploy.getFinalServer(data.areaId)
