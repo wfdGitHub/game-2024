@@ -33,7 +33,6 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	  	res.on("end",function() {
 	    	responseText = Buffer.concat(responseText,size);
 	    	var data = JSON.parse(responseText)
-	    	console.log("data",data)
 	    	if(data == 1){
 	    		var unionid = channel_code+"_"+uid
 	    		var loginToken = util.randomString(8)
