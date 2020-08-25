@@ -90,7 +90,6 @@ serverManager.prototype.quick_order = function(data,cb) {
 	});
 }
 serverManager.prototype.jianwan_order = function(data,cb) {
-	console.log("jianwan_order",data,data.nt_data_json)
 	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
 	if(v_sign != data.md5Sign){
 		console.error("签名验证失败")
