@@ -32,11 +32,9 @@ bearcat.start(function() {
     })
     app.configure('production|development', 'area', function() {
       app.filter(areaFilter());
-      app.filter(pomelo.filters.serial());
     });
     app.configure('production|development', 'chat', function() {
       app.before(chatFilter());
-      app.filter(pomelo.filters.serial());
     });
     app.configure('production|development', 'cross', function() {
       app.before(crossFilter());
