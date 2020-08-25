@@ -98,31 +98,31 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 		return
 	}
 	var self = this
-	// var info = {
-	// 	is_test : message["is_test"]? message["is_test"][0] : 0,
-	// 	channel : message["channel"]? message["channel"][0] : 0,
-	// 	channel_name : message["channel_name"]? message["channel_name"][0] : 0,
-	// 	channel_uid : message["channel_uid"]? message["channel_uid"][0] : 0,
-	// 	channel_order : message["channel_order"]? message["channel_order"][0] : 0,
-	// 	game_order : message["game_order"]? message["game_order"][0] : 0,
-	// 	order_no : message["order_no"]? message["order_no"][0] : 0,
-	// 	pay_time : message["pay_time"]? message["pay_time"][0] : 0,
-	// 	amount : message["amount"]? message["amount"][0] : 0,
-	// 	status : message["status"]? message["status"][0] : 0,
-	// 	extras_params : message["extras_params"]? message["extras_params"][0] : 0,
-	// }
-	// self.payDao.finishGameOrder(info,function(flag,err,data) {
-	// 	if(flag){
-	// 		//发货
-	// 		var areaId = self.areaDeploy.getFinalServer(data.areaId)
-	// 		var serverId = self.areaDeploy.getServer(areaId)
-	// 	    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
-	// 	}
-	// 	if(err)
-	// 		cb(false,err)
-	// 	else
-	// 		cb(true)
-	// })
+	var info = {
+		is_test : data.nt_data_json["is_test"] : 0,
+		channel : data.nt_data_json["channel"] : 0,
+		channel_name : data.nt_data_json["channel_name"] : 0,
+		channel_uid : data.nt_data_json["channel_uid"] : 0,
+		channel_order : data.nt_data_json["channel_order"] : 0,
+		game_order : data.nt_data_json["game_order"] : 0,
+		order_no : data.nt_data_json["order_no"] : 0,
+		pay_time : data.nt_data_json["pay_time"] : 0,
+		amount : data.nt_data_json["amount"] : 0,
+		status : data.nt_data_json["status"] : 0,
+		extras_params : data.nt_data_json["extras_params"] : 0,
+	}
+	self.payDao.finishGameOrder(info,function(flag,err,data) {
+		if(flag){
+			//发货
+			var areaId = self.areaDeploy.getFinalServer(data.areaId)
+			var serverId = self.areaDeploy.getServer(areaId)
+		    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
+		}
+		if(err)
+			cb(false,err)
+		else
+			cb(true)
+	})
 }
 //update
 serverManager.prototype.update = function() {
