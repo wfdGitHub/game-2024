@@ -9,6 +9,7 @@ payDao.prototype.init  = function() {
 //创建充值订单
 payDao.prototype.createGameOrder = function(otps,cb) {
 	sql = 'insert into game_order SET ?'
+	console.log("uuid",uuid.v1())
 	var info = {
 		game_order : uuid.v1(),
 		pay_id : otps.pay_id,
