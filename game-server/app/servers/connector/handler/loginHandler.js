@@ -121,13 +121,12 @@ loginHandler.prototype.register = function(msg, session, next) {
 }
 //获取随机姓名
 loginHandler.prototype.getRandomName = function(msg, session, next) {
-	var sex = msg.sex
 	var name = ""
-	if(sex == 1){
+	if(Math.random() > 0.5){
 		//男
 		var rand = Math.floor(this.boyNameNum * Math.random())
 		name = boyNames[rand]
-	}else if(sex == 2){
+	}else{
 		//女
 		var rand = Math.floor(this.girlNameNum * Math.random())
 		name = girlNames[rand]
