@@ -98,6 +98,7 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 		return
 	}
 	var self = this
+	data.nt_data_json = JSON.parse(data.nt_data_json)
 	var info = {
 		is_test : data.nt_data_json["is_test"] : 0,
 		channel : data.nt_data_json["channel"] : 0,
