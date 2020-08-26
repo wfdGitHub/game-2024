@@ -74,6 +74,18 @@ module.exports = function() {
 		}
 		cb(true)
 	}
+	//真实充值
+	this.real_recharge = function(uid,value,cb) {
+		self.incrbyLordData(uid,"real_rmb",value)
+		self.incrbyLordData(uid,"real_day",value)
+		var notify = {
+			type : "real_recharge",
+			real_rmb : self.players[uid].real_rmb,
+			real_day : self.players[uid].real_day
+		}
+		self.sendToUser(uid,notify)
+		cb(true)
+	}
 	//充值
 	this.recharge = function(uid,index,cb) {
 		self.addUserRMB(uid,recharge[index].rmb)
