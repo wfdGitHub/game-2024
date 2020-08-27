@@ -230,23 +230,28 @@ module.exports = function() {
 		})
 	}
 	//领取首充礼包
-	this.gainFirstRechargeAward = function(uid,cb) {
+	this.gainFirstRechargeAward = function(uid,index,cb) {
+		if(!activity_cfg["first_recharge_"+index]){
+			cb(false,"参数错误")
+			return
+		}
+		if(!self.players[uid].userDay <= index){
+			cb(false,"未到领取时间")
+			return
+		}
 		if(!self.players[uid]["real_rmb"]){
 			cb(false,"未充值")
-		}else{
-			self.getObj(uid,main_name,"first_award",function(data) {
-				data = Number(data) || 0
-				if(data && data >= 3){
-					cb(false,"已领取")
-				}else if(self.players[uid].userDay >= data){
-					cb(false,"未到领取时间")
-				}else{
-					self.incrbyObj(uid,main_name,"first_award",1)
-					var awardList = self.addItemStr(uid,activity_cfg["first_recharge_"+data]["value"])
-					cb(true,awardList)
-				}
-			})
+			return
 		}
+		self.getObj(uid,main_name,"first_award_"+index,function(data) {
+			if(data){
+				cb(false,"已领取")
+			}else{
+				self.incrbyObj(uid,main_name,"first_award_"+index,1)
+				var awardList = self.addItemStr(uid,activity_cfg["first_recharge_"+index]["value"])
+				cb(true,awardList)
+			}
+		})
 	}
 	//领取累充奖励
 	this.gainRechargeTotalAward = function(uid,index,cb) {
