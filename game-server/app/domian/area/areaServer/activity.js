@@ -235,7 +235,7 @@ module.exports = function() {
 			cb(false,"参数错误")
 			return
 		}
-		if(!self.players[uid].userDay <= index){
+		if(self.players[uid].userDay - 1 < index){
 			cb(false,"未到领取时间")
 			return
 		}
