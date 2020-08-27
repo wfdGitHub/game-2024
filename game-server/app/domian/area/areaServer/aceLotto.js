@@ -53,7 +53,7 @@ module.exports = function() {
 	}
 	//单次元神抽奖
 	this.aceLottoOnce = function(uid,cb) {
-		self.consumeItems(uid,default_cfg["ace_lotto_10"]["value"],1,function(flag,err) {
+		self.consumeItems(uid,default_cfg["ace_lotto_1"]["value"],1,function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
