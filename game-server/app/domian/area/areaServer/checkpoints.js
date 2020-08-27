@@ -99,7 +99,7 @@ module.exports = function() {
 			    	cb(true,{winFlag : winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,awardList:awardList})
 			    	self.taskUpdate(uid,"checkpoints",1,level)
 			    }else{
-			    	cb(false,{winFlag : winFlag,list : self.fightContorl.getFightRecord()})
+			    	cb(false,{winFlag : winFlag})
 			    }
 			}
 		],function(err) {

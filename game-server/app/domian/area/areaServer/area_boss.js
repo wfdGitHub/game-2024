@@ -196,7 +196,7 @@ module.exports = function() {
 			cb(false,"宝箱不存在")
 			return
 		}
-		if(area_data.less_hp < area_boss_base[i]["less_"+index]){
+		if(area_data.less_hp < area_boss_base[area_data.bossIndex]["less_"+index]){
 			cb(false,"未达成条件")
 			return
 		}
