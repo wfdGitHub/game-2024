@@ -5,11 +5,11 @@ const main_name = "area_boss"
 var maxBoss = 0
 for(var i in area_boss_base){
 	area_boss_base[i]["team"] = JSON.parse(area_boss_base[i]["team"])
-	area_boss_base[i]["less_1"] = Math.ceil(area_boss_base[i]["hp"] * 0.8)
-	area_boss_base[i]["less_2"] = Math.ceil(area_boss_base[i]["hp"] * 0.6)
-	area_boss_base[i]["less_3"] = Math.ceil(area_boss_base[i]["hp"] * 0.4)
-	area_boss_base[i]["less_4"] = Math.ceil(area_boss_base[i]["hp"] * 0.2)
-	area_boss_base[i]["less_5"] = 0
+	area_boss_base[i]["less_1"] = Math.ceil(area_boss_base[i]["hp"] * 0.2)
+	area_boss_base[i]["less_2"] = Math.ceil(area_boss_base[i]["hp"] * 0.4)
+	area_boss_base[i]["less_3"] = Math.ceil(area_boss_base[i]["hp"] * 0.6)
+	area_boss_base[i]["less_4"] = Math.ceil(area_boss_base[i]["hp"] * 0.8)
+	area_boss_base[i]["less_5"] = area_boss_base[i]["hp"]
 	maxBoss++
 }
 //全服BOSS
@@ -192,7 +192,11 @@ module.exports = function() {
 			cb(false,"已结束")
 			return
 		}
-		if(area_data.less_hp < area_boss_base[i]["less_1"]){
+		if(!area_boss_base[area_data.bossIndex]["box"+index]){
+			cb(false,"宝箱不存在")
+			return
+		}
+		if(area_data.less_hp < area_boss_base[i]["less_"+index]){
 			cb(false,"未达成条件")
 			return
 		}
