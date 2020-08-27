@@ -77,7 +77,10 @@ module.exports = function() {
 	//真实充值
 	this.real_recharge = function(uid,value,cb) {
 		self.incrbyLordData(uid,"real_rmb",value)
-		self.incrbyLordData(uid,"real_day",value)
+		self.incrbyLordData(uid,"real_day",value,function(data) {
+			if(data == rmb)
+				self.incrbyObj(uid,main_name,"pay_days",1)
+		})
 		self.incrbyLordData(uid,"real_week",value)
 		var notify = {
 			type : "real_recharge",
@@ -119,10 +122,7 @@ module.exports = function() {
 	this.addUserRMB = function(uid,rmb) {
 		if(rmb <= 0)
 			return
-		self.incrbyLordData(uid,"rmb_day",rmb,function(data) {
-			if(data == rmb)
-				self.incrbyObj(uid,main_name,"pay_days",1)
-		})
+		self.incrbyLordData(uid,"rmb_day",rmb)
 		self.incrbyLordData(uid,"rmb",rmb)
 		self.incrbyLordData(uid,"week_rmb",rmb)
 		self.incrbyObj(uid,main_name,"normalRmb",rmb,function(data) {
