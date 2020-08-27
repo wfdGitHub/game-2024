@@ -121,7 +121,7 @@ module.exports = function() {
 		if(rmb <= 0)
 			return
 		self.incrbyLordData(uid,"rmb_day",rmb,function(data) {
-			if(data == value)
+			if(data == rmb)
 				self.incrbyObj(uid,main_name,"pay_days",1)
 		})
 		self.incrbyLordData(uid,"rmb",rmb)
