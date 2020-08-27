@@ -78,7 +78,7 @@ module.exports = function() {
 	this.real_recharge = function(uid,value,cb) {
 		self.incrbyLordData(uid,"real_rmb",value)
 		self.incrbyLordData(uid,"real_day",value,function(data) {
-			if(data == rmb)
+			if(data == value)
 				self.incrbyObj(uid,main_name,"pay_days",1)
 		})
 		self.incrbyLordData(uid,"real_week",value)
