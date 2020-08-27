@@ -146,7 +146,6 @@ module.exports = function() {
 			if(!activity_cfg["recharge_week_"+i]){
 				break
 			}else{
-				console.log("delObj","recharge_week_"+i)
 				self.delObj(uid,main_name,"recharge_week_"+i)
 			}
 		}
