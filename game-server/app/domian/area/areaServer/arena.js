@@ -290,7 +290,7 @@ module.exports = function() {
 						delete local.locks[uid]
 						delete local.locks[targetUid]
 					})
-					self.taskUpdate(uid,"rank",1,targetRank)
+					self.taskUpdate(uid,"rank",1,10000 - targetRank)
 					var tmpRank = data.rank
 					data.rank = targetRank
 					targetRank = tmpRank

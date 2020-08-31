@@ -8,7 +8,6 @@ for(var i in sprint_rank){
 	rankCount++
 	rank_type_day[sprint_rank[i]["rank_type"]] = rankCount
 }
-console.log("rank_type_day",rank_type_day)
 module.exports = function() {
 	var self = this
 	var timer = 0
