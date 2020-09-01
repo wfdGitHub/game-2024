@@ -16,7 +16,7 @@ bearcat.createApp([contextPath],{ BEARCAT_HOT: "off"})
 bearcat.start(function() {
     app.configure('production|development','connector|gate',function() {
       //消息串行化
-      app.filter(pomelo.filters.serial());
+      // app.filter(pomelo.filters.serial());
       //检测到node.js中事件循环的请求等待队列过长，超过一个阀值时，就会触发toobusy
       app.before(pomelo.filters.toobusy());
       //处理超时进行警告，默认三秒
