@@ -343,7 +343,7 @@ area.prototype.verifyFaild = function(uid,verify1,verify2) {
 	console.log("verifyFaild",uid)
 	console.log(verify1)
 	console.log(verify2)
-	self.redisDao.db.rpush("verify_faild",JSON.stringify({uid:uid,client:verify1,server:verify2}))
+	this.redisDao.db.rpush("verify_faild",JSON.stringify({uid:uid,client:verify1,server:verify2}))
 }
 module.exports = {
 	id : "area",
