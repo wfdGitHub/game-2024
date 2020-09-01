@@ -36,29 +36,32 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
           next(null,{flag : false,err : err})
           return
         }
-        let paStr = recruit_base[type].pa
+        var paStr = recruit_base[type].pa
         if(paStr)
           self.areaManager.areaMap[areaId].addItemStr(uid,paStr,count)
-        let heroInfos = self.heroDao.randHero(areaId,uid,type,count)
+        var heroInfos
         switch(type){
           case "normal":
             self.areaManager.areaMap[areaId].taskUpdate(uid,"recruit_normal",count)
             self.areaManager.areaMap[areaId].taskUpdate(uid,"recruit",count)
+            heroInfos = self.heroDao.randHero(areaId,uid,type,count)
           break
           case "great":
             self.areaManager.areaMap[areaId].taskUpdate(uid,"recruit_great",count)
             self.areaManager.areaMap[areaId].taskUpdate(uid,"recruit",count)
+            heroInfos = self.heroDao.randHeroLuck(areaId,uid,type,count)
           break
           case "camp_1":
           case "camp_2":
           case "camp_3":
           case "camp_4":
+            heroInfos = self.heroDao.randHero(areaId,uid,type,count)
             self.areaManager.areaMap[areaId].taskUpdate(uid,"general",count)
           break
         }
-        let typeName = recruit_base[type]["name"]
-        let name = session.get("name")
-        for(let i = 0;i < heroInfos.length;i++){
+        var typeName = recruit_base[type]["name"]
+        var name = session.get("name")
+        for(var i = 0;i < heroInfos.length;i++){
           if(heroInfos[i].star >= 5){
             var notify = {
               type : "sysChat",
