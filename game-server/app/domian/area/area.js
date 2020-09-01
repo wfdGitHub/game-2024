@@ -69,6 +69,7 @@ area.prototype.update = function() {
 area.prototype.dayUpdate = function(curDayStr) {
 	// console.log("服务器每日刷新")
 	this.dayStr = curDayStr
+	this.weekStr = util.getWeek()
 	this.areaDay = util.getTimeDifference(this.openTime,Date.now())
 	this.aceLottoDayUpdate()
 	this.topicRecruitDayUpdate()
@@ -142,6 +143,9 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 			if(self.players[uid].dayStr != self.dayStr){
 				self.dayFirstLogin(uid)
 			}
+			if(self.players[uid].weekStr != self.weekStr){
+				self.weekFirstLogin(uid)
+			}
 			cb(true,self.players[uid])
 		}
 	],function(err) {
@@ -165,6 +169,12 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.STDayRefresh(uid)
 	this.TopicRecruitRefresh(uid)
 	this.mysteriousDayUpdate(uid)
+}
+//玩家每周首次登陆
+area.prototype.weekFirstLogin = function(uid) {
+	this.chageLordData(uid,"weekStr",this.weekStr)
+	this.chageLordData(uid,"week_rmb",0)
+	this.chageLordData(uid,"real_week",0)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {

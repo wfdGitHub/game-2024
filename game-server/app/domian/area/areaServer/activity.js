@@ -133,6 +133,10 @@ module.exports = function() {
 			self.setHMObj(uid,main_name,data)
 		})
 	}
+	//活动数据每周刷新
+	this.activityWeekUpdate = function(uid) {
+		self.setHMObj(uid,main_name,data)
+	}
 	//领取充值天数礼包
 	this.gainRPayDaysAward = function(uid,id,cb) {
 		if(!pay_days[id]){
@@ -154,25 +158,33 @@ module.exports = function() {
 	}
 	//领取每日首充奖励
 	this.gainRechargeDayAward = function(uid,id,cb) {
-		var rmb_day = self.players[uid].rmb_day
-		if(id == 1){
-			if(rmb_day < 1800){
-				cb(false,"条件未达成")
-				return
-			}
-		}else if(id == 2){
-			if(rmb_day < 6800){
-				cb(false,"条件未达成")
-				return
-			}
-		}else{
-			cb(false,"id 错误")
+		var real_rmb = self.players[uid].real_rmb
+		if(!activity_cfg["recharge_day_rmb_"+id] || real_rmb < activity_cfg["recharge_day_rmb_"+id]){
+			cb(false,"条件未达成")
 			return
 		}
 		self.getObj(uid,main_name,"recharge_day_"+id,function(data) {
 			if(data == 0){
 				self.incrbyObj(uid,main_name,"recharge_day_"+id,1)
 				var awardList = self.addItemStr(uid,activity_cfg["recharge_day_"+id]["value"])
+				cb(true,awardList)
+			}else{
+				cb(false,"已领取")
+			}
+		})
+	}
+
+	//领取每周累充奖励
+	this.gainRechargeWeekAward = function(uid,id,cb) {
+		var real_week = self.players[uid].real_week
+		if(!activity_cfg["recharge_week_rmb_"+id] || real_week < activity_cfg["recharge_week_rmb_"+id]){
+			cb(false,"条件未达成")
+			return
+		}
+		self.getObj(uid,main_name,"recharge_week_rmb_"+id,function(data) {
+			if(data == 0){
+				self.incrbyObj(uid,main_name,"recharge_week_rmb_"+id,1)
+				var awardList = self.addItemStr(uid,activity_cfg["recharge_week_rmb_"+id]["value"])
 				cb(true,awardList)
 			}else{
 				cb(false,"已领取")
@@ -207,15 +219,18 @@ module.exports = function() {
 	}
 	//领取首充礼包
 	this.gainFirstRechargeAward = function(uid,cb) {
-		if(!self.players[uid]["rmb"]){
+		if(!self.players[uid]["real_rmb"]){
 			cb(false,"未充值")
 		}else{
 			self.getObj(uid,main_name,"first_award",function(data) {
-				if(data){
+				data = Number(data) || 0
+				if(data && data >= 3){
 					cb(false,"已领取")
+				}else if(self.players[uid].userDay >= data){
+					cb(false,"未到领取时间")
 				}else{
-					self.setObj(uid,main_name,"first_award",1)
-					var awardList = self.addItemStr(uid,activity_cfg["first_recharge"]["value"])
+					self.incrbyObj(uid,main_name,"first_award",1)
+					var awardList = self.addItemStr(uid,activity_cfg["first_recharge_"+data]["value"])
 					cb(true,awardList)
 				}
 			})

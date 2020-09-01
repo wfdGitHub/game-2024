@@ -177,6 +177,12 @@
             console.log(data);
         });
       }
+      //领取每周累充奖励
+      var gainRechargeWeekAward = function(id) {
+        pomelo.request("area.activityHandler.gainRechargeWeekAward", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
       //==============挑战山海==========//
       //获取挑战山海数据数据
       var getAreaChallengeData = function() {

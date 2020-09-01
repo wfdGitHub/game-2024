@@ -417,7 +417,6 @@ model.useAttackSkill = function(skill) {
 				let tmpRecord = {type : "other_damage",value : hit_rebound_value * recordInfo.targets[i].realValue}
 				tmpRecord = skill.character.onHit(targets[i],tmpRecord)
 				fightRecord.push(tmpRecord)
-				console.log("伤害反弹")
 			}
 		}
 	}

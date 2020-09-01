@@ -11,16 +11,19 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		createTime : Date.now(),
 		real_rmb : 0,
 		real_day : 0, 
+		real_week : 0,
 		rmb : 0,
+		rmb_day : 0,
+		week_rmb : 0,
 		vip : 0,
 		vip_exp: 0,
-		rmb_day : 0,
 		exp : 0,
 		level : 1,
 		heroAmount : 100,
 		heroLv : 1,
 		maxSS : 0,
 		dayStr : 0,
+		weekStr : 0,
 		freeze : 0
 	}
 	var self = this

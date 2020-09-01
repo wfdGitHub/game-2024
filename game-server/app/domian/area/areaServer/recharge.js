@@ -78,10 +78,12 @@ module.exports = function() {
 	this.real_recharge = function(uid,value,cb) {
 		self.incrbyLordData(uid,"real_rmb",value)
 		self.incrbyLordData(uid,"real_day",value)
+		self.incrbyLordData(uid,"real_week",value)
 		var notify = {
 			type : "real_recharge",
 			real_rmb : self.players[uid].real_rmb,
-			real_day : self.players[uid].real_day
+			real_day : self.players[uid].real_day,
+			real_week : self.players[uid].real_week
 		}
 		self.sendToUser(uid,notify)
 		cb(true)
@@ -121,6 +123,7 @@ module.exports = function() {
 				self.incrbyObj(uid,main_name,"pay_days",1)
 		})
 		self.incrbyLordData(uid,"rmb",rmb)
+		self.incrbyLordData(uid,"week_rmb",rmb)
 		self.incrbyObj(uid,main_name,"normalRmb",rmb,function(data) {
 			data = Number(data)
 			if((data - rmb) < activity_cfg["normal_card_rmb"]["value"] && data >= activity_cfg["normal_card_rmb"]["value"]){
@@ -135,7 +138,8 @@ module.exports = function() {
 				var notify = {
 					type : "addUserRMB",
 					rmb_day : self.players[uid].rmb_day,
-					rmb : self.players[uid].rmb
+					rmb : self.players[uid].rmb,
+					week_rmb : self.players[uid].week_rmb
 				}
 				self.sendToUser(uid,notify)
 			}

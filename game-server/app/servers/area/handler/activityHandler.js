@@ -16,8 +16,8 @@ activityHandler.prototype.apply_recharge = function(msg, session, next) {
 }
 //申请支付测试接口
 activityHandler.prototype.test_recharge = function(msg, session, next) {
-  next(null,{flag : false})
-  return
+  // next(null,{flag : false})
+  // return
   var uid = session.uid
   var areaId = session.get("areaId")
   var pay_id = msg.pay_id
@@ -48,6 +48,15 @@ activityHandler.prototype.gainRechargeDayAward = function(msg, session, next) {
   var areaId = session.get("areaId")
   var id = msg.id
   this.areaManager.areaMap[areaId].gainRechargeDayAward(uid,id,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//领取每周累充奖励
+activityHandler.prototype.gainRechargeWeekAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  this.areaManager.areaMap[areaId].gainRechargeWeekAward(uid,id,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }
