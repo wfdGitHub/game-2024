@@ -5,6 +5,10 @@ var async = require("async")
 const standard_dl = require("../../../config/gameCfg/standard_dl.json")
 const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
+const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
+const login_mail_title = default_cfg["login_mail_title"]["value"]
+const login_mail_text = default_cfg["login_mail_text"]["value"]
+const login_mail_atts = default_cfg["login_mail_atts"]["value"]
 const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
@@ -94,6 +98,8 @@ area.prototype.register = function(otps,cb) {
 				}
 				self.taskInit(playerInfo.uid)
 				self.setPlayerData(playerInfo.uid,"onhookLastTime",Date.now())
+                if(login_mail_title)
+                    self.sendMail(playerInfo.uid,login_mail_title,login_mail_text,login_mail_atts)
 				//TODO test
 				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",1000500,1)
 				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",202,100)
