@@ -36,8 +36,7 @@ module.exports = function() {
 						area_data.less_hp = 0
 					}
 					//发放排行榜奖励
-					if(self.areaDay <= maxBoss + 1){
-						console.log("发放排行榜奖励")
+					if(area_data.bossIndex != -1 && self.areaDay <= maxBoss + 1){
 						var curId = self.areaDay - 1
 						self.zrangewithscore(main_name,0,-1,function(list) {
 							var rank = 0
