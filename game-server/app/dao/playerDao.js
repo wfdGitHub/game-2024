@@ -31,6 +31,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 	self.redisDao.db.incrby("user:lastid",1,function(err,uid) {
 		uid = parseInt(uid)
 		playerInfo.uid = uid
+		playerInfo.CE = 0
 		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":playerMap",uid,otps.areaId)
 		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":areaMap",otps.areaId,uid)
 		self.redisDao.db.hmset("player:user:"+uid+":playerInfo",playerInfo,function(err,data) {
