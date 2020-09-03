@@ -126,10 +126,6 @@ module.exports = function() {
 				data["area_rank"] = 1
 				self.gainAreaRankAward(uid)
 			}
-			if(self.newArea && !data["boss_rank"] && self.areaDay > maxBoss + 1){
-				data["boss_rank"] = 1
-				self.gainAreaBossRankAward(uid)
-			}
 			for(var i = 1;i < 10;i++){
 				if(!activity_cfg["recharge_week_"+i]){
 					break

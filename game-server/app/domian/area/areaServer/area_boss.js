@@ -21,20 +21,40 @@ module.exports = function() {
 	}
 	//全服BOSS每日更新
 	this.areaBossDayUpdate = function() {
-		if(self.newArea && self.areaDay > 1 && self.areaDay <= maxBoss + 1){
+		if(self.newArea){
 			self.redisDao.db.hmget("area:area"+self.areaId+":"+main_name,["bossIndex","less_hp"],function(err,list) {
 				area_data.bossIndex = Number(list[0]) || 0
 				area_data.less_hp = Number(list[1]) || 0
 				if(!area_data.bossIndex || area_data.bossIndex < self.areaDay){
-					self.redisDao.db.del("area:area"+self.areaId+":"+main_name)
-					area_data.bossIndex = self.areaDay
-					area_data.less_hp = 0
-					self.redisDao.db.hmset("area:area"+self.areaId+":"+main_name,area_data)
+					if(area_boss_base[self.areaDay]){
+						self.redisDao.db.del("area:area"+self.areaId+":"+main_name)
+						area_data.bossIndex = self.areaDay
+						area_data.less_hp = 0
+						self.redisDao.db.hmset("area:area"+self.areaId+":"+main_name,area_data)
+					}else{
+						area_data.bossIndex = -1
+						area_data.less_hp = 0
+					}
+					//发放排行榜奖励
+					if(self.areaDay <= maxBoss + 1){
+						console.log("发放排行榜奖励")
+						var curId = self.areaDay - 1
+						self.zrangewithscore(main_name,0,-1,function(list) {
+							var rank = 0
+							for(var i = 0;i < list.length;i += 2){
+								rank++
+								var text = "亲爱的玩家您好，恭喜您在全服BOSS活动中获得"+rank+"名，获得排名奖励，祝您游戏愉快！"
+								if(rank >= 11){
+									rank = 11
+									text = "亲爱的玩家您好，恭喜您在全服BOSS活动中获得参与奖励，祝您游戏愉快！"
+								}
+								self.sendMail(list[i],"全服BOSS活动奖励",text,area_boss_base[curId]["rank_"+rank])
+							}
+							self.delZset(main_name)
+						})
+					}
 				}
 			})
-		}else{
-			area_data.bossIndex = -1
-			area_data.less_hp = 0
 		}
 	}
 	//获取全服BOSS数据
