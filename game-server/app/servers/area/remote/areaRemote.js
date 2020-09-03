@@ -38,6 +38,11 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,cb) {
 		cb(false,"服务器不存在")
 	}
 }
+//真实充值
+areaRemote.prototype.real_recharge = function(areaId,uid,value,cb) {
+	this.areaManager.areaMap[areaId].real_recharge(uid,value)
+	cb()
+}
 //创建新服务器
 areaRemote.prototype.loadArea = function(areaId,cb) {
 	this.areaManager.loadArea(areaId)

@@ -238,7 +238,7 @@ module.exports = function() {
 				cb(true)
 			break
 			case 109:
-				this.addUserVIPExp(uid,value)
+				this.addUserRMB(uid,value)
 				cb(true)
 			break
 			default:

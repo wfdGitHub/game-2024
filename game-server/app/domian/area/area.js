@@ -9,7 +9,7 @@ const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
@@ -43,6 +43,7 @@ var area = function(otps,app) {
 area.prototype.init = function() {
 	console.log("area init",this.areaId)
 	var self = this
+	this.dayUpdate()
 	this.redisDao.db.hgetall("area:area"+this.areaId+":robots",function(err,robots) {
 		self.robots = {}
 		for(let i in robots){
@@ -51,7 +52,7 @@ area.prototype.init = function() {
 	})
 	this.worldBossCheck()
 	this.initAreaMail()
-	this.dayUpdate()
+	this.initSprintRank()
 	this.timer = setInterval(this.update.bind(this),1000)
 }
 //服务器关闭
@@ -78,6 +79,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.aceLottoDayUpdate()
 	this.topicRecruitDayUpdate()
 	this.areaBossDayUpdate()
+	this.shareDayUpdate()
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
@@ -181,6 +183,7 @@ area.prototype.weekFirstLogin = function(uid) {
 	this.chageLordData(uid,"weekStr",this.weekStr)
 	this.chageLordData(uid,"week_rmb",0)
 	this.chageLordData(uid,"real_week",0)
+	this.activityWeekUpdate(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
@@ -349,7 +352,7 @@ area.prototype.verifyFaild = function(uid,verify1,verify2) {
 	console.log("verifyFaild",uid)
 	console.log(verify1)
 	console.log(verify2)
-	self.redisDao.db.rpush("verify_faild",JSON.stringify({uid:uid,client:verify1,server:verify2}))
+	this.redisDao.db.rpush("verify_faild",JSON.stringify({uid:uid,client:verify1,server:verify2}))
 }
 module.exports = {
 	id : "area",

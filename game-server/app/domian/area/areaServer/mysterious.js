@@ -1,4 +1,4 @@
-//山海秘境
+//山海经
 const mysterious_realm = require("../../../../config/gameCfg/mysterious_realm.json")
 const mysterious_chapter = require("../../../../config/gameCfg/mysterious_chapter.json")
 const mysterious_cfg = require("../../../../config/gameCfg/mysterious_cfg.json")
@@ -118,6 +118,7 @@ module.exports = function() {
 			    			self.addZset("mysteriousRank",uid,allStar)
 			    		})
 			    		self.setObj(uid,main_name,"lv_"+lv,curStar)
+			    		self.updateSprintRank("seas_rank",uid,info.addStar)
 			    	}
 			    	if(lv > max){
 			    		self.setObj(uid,main_name,"max",lv)

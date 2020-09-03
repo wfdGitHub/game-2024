@@ -5,11 +5,11 @@ const main_name = "area_boss"
 var maxBoss = 0
 for(var i in area_boss_base){
 	area_boss_base[i]["team"] = JSON.parse(area_boss_base[i]["team"])
-	area_boss_base[i]["less_1"] = Math.ceil(area_boss_base[i]["hp"] * 0.8)
-	area_boss_base[i]["less_2"] = Math.ceil(area_boss_base[i]["hp"] * 0.6)
-	area_boss_base[i]["less_3"] = Math.ceil(area_boss_base[i]["hp"] * 0.4)
-	area_boss_base[i]["less_4"] = Math.ceil(area_boss_base[i]["hp"] * 0.2)
-	area_boss_base[i]["less_5"] = 0
+	area_boss_base[i]["less_1"] = Math.ceil(area_boss_base[i]["hp"] * 0.2)
+	area_boss_base[i]["less_2"] = Math.ceil(area_boss_base[i]["hp"] * 0.4)
+	area_boss_base[i]["less_3"] = Math.ceil(area_boss_base[i]["hp"] * 0.6)
+	area_boss_base[i]["less_4"] = Math.ceil(area_boss_base[i]["hp"] * 0.8)
+	area_boss_base[i]["less_5"] = area_boss_base[i]["hp"]
 	maxBoss++
 }
 //全服BOSS
@@ -21,20 +21,39 @@ module.exports = function() {
 	}
 	//全服BOSS每日更新
 	this.areaBossDayUpdate = function() {
-		if(self.newArea && self.areaDay > 1 && self.areaDay <= maxBoss + 1){
+		if(self.newArea){
 			self.redisDao.db.hmget("area:area"+self.areaId+":"+main_name,["bossIndex","less_hp"],function(err,list) {
 				area_data.bossIndex = Number(list[0]) || 0
 				area_data.less_hp = Number(list[1]) || 0
 				if(!area_data.bossIndex || area_data.bossIndex < self.areaDay){
-					self.redisDao.db.del("area:area"+self.areaId+":"+main_name)
-					area_data.bossIndex = self.areaDay
-					area_data.less_hp = 0
-					self.redisDao.db.hmset("area:area"+self.areaId+":"+main_name,area_data)
+					if(area_boss_base[self.areaDay]){
+						self.redisDao.db.del("area:area"+self.areaId+":"+main_name)
+						area_data.bossIndex = self.areaDay
+						area_data.less_hp = 0
+						self.redisDao.db.hmset("area:area"+self.areaId+":"+main_name,area_data)
+					}else{
+						area_data.bossIndex = -1
+						area_data.less_hp = 0
+					}
+					//发放排行榜奖励
+					if(area_data.bossIndex != -1 && self.areaDay <= maxBoss + 1){
+						var curId = self.areaDay - 1
+						self.zrangewithscore(main_name,0,-1,function(list) {
+							var rank = 0
+							for(var i = list.length - 2;i >= 0;i -= 2){
+								rank++
+								var text = "亲爱的玩家您好，恭喜您在全服BOSS活动中获得"+rank+"名，获得排名奖励，祝您游戏愉快！"
+								if(rank >= 11){
+									rank = 11
+									text = "亲爱的玩家您好，恭喜您在全服BOSS活动中获得参与奖励，祝您游戏愉快！"
+								}
+								self.sendMail(list[i],"全服BOSS活动奖励",text,area_boss_base[curId]["rank_"+rank])
+							}
+							self.delZset(main_name)
+						})
+					}
 				}
 			})
-		}else{
-			area_data.bossIndex = -1
-			area_data.less_hp = 0
 		}
 	}
 	//获取全服BOSS数据
@@ -192,7 +211,11 @@ module.exports = function() {
 			cb(false,"已结束")
 			return
 		}
-		if(area_data.less_hp < area_boss_base[i]["less_1"]){
+		if(!area_boss_base[area_data.bossIndex]["box"+index]){
+			cb(false,"宝箱不存在")
+			return
+		}
+		if(area_data.less_hp < area_boss_base[area_data.bossIndex]["less_"+index]){
 			cb(false,"未达成条件")
 			return
 		}

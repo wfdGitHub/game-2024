@@ -86,11 +86,13 @@ module.exports = function() {
 			real_week : self.players[uid].real_week
 		}
 		self.sendToUser(uid,notify)
-		cb(true)
+		if(cb)
+			cb(true)
 	}
 	//充值
 	this.recharge = function(uid,index,cb) {
 		self.addUserRMB(uid,recharge[index].rmb)
+		self.real_recharge(uid,recharge[index].rmb)
 		self.incrbyObj(uid,main_name,"recharge_"+index,1,function(data) {
 			var gold = recharge[index].gold
 			var rate = 0

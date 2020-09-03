@@ -42,10 +42,11 @@ serverManager.prototype.init = function() {
 	}
 	server.post(sdkConfig["pay_callback"],function(req,res) {
 		var data = req.body
+		console.log("pay_callback",data)
 		self.pay_order(data,function(flag,err) {
-			if(!flag)
-				res.send(err)
-			else
+			// if(!flag)
+			// 	res.send(err)
+			// else
 				res.send("SUCCESS")
 		})
 	})
@@ -117,7 +118,7 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 			var areaId = self.areaDeploy.getFinalServer(data.areaId)
 			var serverId = self.areaDeploy.getServer(areaId)
 		    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
-		    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,data.uid,Math.floor(Number(info.amount) * 100),function(){})
+		    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,data.uid,Math.floor(Number(info.amount) * 100),function(){})
 		}
 		if(err)
 			cb(false,err)

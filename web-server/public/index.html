@@ -97,6 +97,18 @@
         console.log("onChat")
         console.log(data)
       })
+      //保存分享数据
+      var saveShareData = function(data) {
+        pomelo.request("area.shareHandler.saveShareData", {data:data}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取分享数据
+      var getShareData = function(shareId) {
+        pomelo.request("area.shareHandler.getShareData", {shareId:shareId}, function(data) {
+            console.log(data);
+        });
+      }
       //挑战魔物入侵
       var challengeInvade = function() {
         pomelo.request("area.activityHandler.challengeInvade", {}, function(data) {

@@ -24,12 +24,14 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		maxSS : 0,
 		dayStr : 0,
 		weekStr : 0,
+		r_luck : Math.floor(Math.random() * 3) + 10,
 		freeze : 0
 	}
 	var self = this
 	self.redisDao.db.incrby("user:lastid",1,function(err,uid) {
 		uid = parseInt(uid)
 		playerInfo.uid = uid
+		playerInfo.CE = 0
 		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":playerMap",uid,otps.areaId)
 		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":areaMap",otps.areaId,uid)
 		self.redisDao.db.hmset("player:user:"+uid+":playerInfo",playerInfo,function(err,data) {

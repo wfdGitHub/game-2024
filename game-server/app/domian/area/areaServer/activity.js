@@ -6,7 +6,6 @@ const activity_cfg = require("../../../../config/gameCfg/activity_cfg.json")
 const activity_ce = require("../../../../config/gameCfg/activity_ce.json")
 const recharge = require("../../../../config/gameCfg/recharge.json")
 const recharge_total = require("../../../../config/gameCfg/recharge_total.json")
-const area_rank = require("../../../../config/gameCfg/area_rank.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 const consumeTotal = require("../../../../config/gameCfg/consumeTotal.json")
 const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
@@ -22,7 +21,6 @@ for(var i in area_boss_base){
 const main_name = "activity"
 module.exports = function() {
 	var self = this
-	var area_rank_deadline = util.getZeroTime(self.openTime) + activity_cfg["area_rank_time"]["value"]
 	const baseInfo = {
 		"signDay" : 1,
 		"signCount" : 0,
@@ -122,20 +120,25 @@ module.exports = function() {
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
 			}
-			if(self.newArea && !data["area_rank"] && Date.now() > area_rank_deadline){
-				data["area_rank"] = 1
-				self.gainAreaRankAward(uid)
-			}
-			if(self.newArea && !data["boss_rank"] && self.areaDay > maxBoss + 1){
-				data["boss_rank"] = 1
-				self.gainAreaBossRankAward(uid)
+			for(var i = 1;i < 10;i++){
+				if(!activity_cfg["recharge_week_"+i]){
+					break
+				}else{
+					delete data["recharge_week_"+i]
+				}
 			}
 			self.setHMObj(uid,main_name,data)
 		})
 	}
 	//活动数据每周刷新
 	this.activityWeekUpdate = function(uid) {
-		self.setHMObj(uid,main_name,data)
+		for(var i = 1;i < 10;i++){
+			if(!activity_cfg["recharge_week_"+i]){
+				break
+			}else{
+				self.delObj(uid,main_name,"recharge_week_"+i)
+			}
+		}
 	}
 	//领取充值天数礼包
 	this.gainRPayDaysAward = function(uid,id,cb) {
@@ -158,8 +161,8 @@ module.exports = function() {
 	}
 	//领取每日首充奖励
 	this.gainRechargeDayAward = function(uid,id,cb) {
-		var real_rmb = self.players[uid].real_rmb
-		if(!activity_cfg["recharge_day_rmb_"+id] || real_rmb < activity_cfg["recharge_day_rmb_"+id]){
+		var rmb_day = self.players[uid].rmb_day
+		if(!activity_cfg["recharge_day_rmb_"+id] || rmb_day < activity_cfg["recharge_day_rmb_"+id]){
 			cb(false,"条件未达成")
 			return
 		}
@@ -173,18 +176,17 @@ module.exports = function() {
 			}
 		})
 	}
-
 	//领取每周累充奖励
 	this.gainRechargeWeekAward = function(uid,id,cb) {
-		var real_week = self.players[uid].real_week
-		if(!activity_cfg["recharge_week_rmb_"+id] || real_week < activity_cfg["recharge_week_rmb_"+id]){
+		var week_rmb = self.players[uid].week_rmb
+		if(!activity_cfg["recharge_week_rmb_"+id] || week_rmb < activity_cfg["recharge_week_rmb_"+id]["value"]){
 			cb(false,"条件未达成")
 			return
 		}
-		self.getObj(uid,main_name,"recharge_week_rmb_"+id,function(data) {
-			if(data == 0){
-				self.incrbyObj(uid,main_name,"recharge_week_rmb_"+id,1)
-				var awardList = self.addItemStr(uid,activity_cfg["recharge_week_rmb_"+id]["value"])
+		self.getObj(uid,main_name,"recharge_week_"+id,function(data) {
+			if(!data){
+				self.incrbyObj(uid,main_name,"recharge_week_"+id,1)
+				var awardList = self.addItemStr(uid,activity_cfg["recharge_week_"+id]["value"])
 				cb(true,awardList)
 			}else{
 				cb(false,"已领取")
@@ -218,23 +220,28 @@ module.exports = function() {
 		})
 	}
 	//领取首充礼包
-	this.gainFirstRechargeAward = function(uid,cb) {
+	this.gainFirstRechargeAward = function(uid,index,cb) {
+		if(!activity_cfg["first_recharge_"+index]){
+			cb(false,"参数错误")
+			return
+		}
+		if(self.players[uid].userDay - 1 < index){
+			cb(false,"未到领取时间")
+			return
+		}
 		if(!self.players[uid]["real_rmb"]){
 			cb(false,"未充值")
-		}else{
-			self.getObj(uid,main_name,"first_award",function(data) {
-				data = Number(data) || 0
-				if(data && data >= 3){
-					cb(false,"已领取")
-				}else if(self.players[uid].userDay >= data){
-					cb(false,"未到领取时间")
-				}else{
-					self.incrbyObj(uid,main_name,"first_award",1)
-					var awardList = self.addItemStr(uid,activity_cfg["first_recharge_"+data]["value"])
-					cb(true,awardList)
-				}
-			})
+			return
 		}
+		self.getObj(uid,main_name,"first_award_"+index,function(data) {
+			if(data){
+				cb(false,"已领取")
+			}else{
+				self.incrbyObj(uid,main_name,"first_award_"+index,1)
+				var awardList = self.addItemStr(uid,activity_cfg["first_recharge_"+index]["value"])
+				cb(true,awardList)
+			}
+		})
 	}
 	//领取累充奖励
 	this.gainRechargeTotalAward = function(uid,index,cb) {
@@ -436,60 +443,6 @@ module.exports = function() {
 			self.incrbyObj(uid,main_name,"highAward",1)
 			var awardList = self.addItemStr(uid,activity_cfg["high_card_day"]["value"])
 			cb(true,awardList)
-		})
-	}
-	//更新冲榜活动排行榜
-	this.updateAreaRank = function(uid,ce) {
-		// console.log("updateAreaRank",uid,ce)
-		if(self.newArea && Date.now() < area_rank_deadline){
-			self.addZset("areaRank",uid,ce)
-		}else{
-			// console.log("冲榜活动关闭")
-			self.updateAreaRank = function(){}
-		}
-	}
-	//获取冲榜活动排行榜
-	this.getAreaRank = function(cb) {
-		if(!self.newArea){
-			cb(true,{state : false})
-		}else{
-			var info = {
-				state : true,
-				area_rank_deadline : area_rank_deadline,
-			}
-			self.zrangewithscore("areaRank",-10,-1,function(list) {
-				var uids = []
-				var scores = []
-				for(var i = 0;i < list.length;i += 2){
-					uids.push(list[i])
-					scores.push(list[i+1])
-				}
-				self.getPlayerInfoByUids(uids,function(userInfos) {
-					info.userInfos = userInfos
-					info.scores = scores
-					cb(true,info)
-				})
-			})
-		}
-	}
-	//领取冲榜奖励
-	this.gainAreaRankAward = function(uid) {
-		self.redisDao.db.zrevrank("area:area"+self.areaId+":zset:areaRank",uid,function(err,rank) {
-			if(rank != null){
-				rank = Number(rank) + 1
-				var text = "亲爱的玩家您好，恭喜您在7日冲榜活动中获得"+rank+"名，获得丰厚奖励，祝您游戏愉快！"
-				if(rank >= 11){
-					rank = 11
-					text = "亲爱的玩家您好，恭喜您在7日冲榜活动中获得参与奖励，祝您游戏愉快！"
-				}
-				var ce = self.getCE(uid)
-				var award = ""
-				award = area_rank[rank]["award"]
-				if(ce > activity_cfg["area_rank_extra"]["value"] && area_rank[rank]["extra"]){
-					award += "&"+area_rank[rank]["extra"]
-				}
-				self.sendMail(uid,"冲榜活动奖励",text,award)
-			}
 		})
 	}
 	//领取消耗活动奖励

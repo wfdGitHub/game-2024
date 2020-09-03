@@ -48,27 +48,48 @@ heroDao.prototype.randHero = function(areaId,uid,type,count) {
 	let allWeight = recruit_base[type]["allWeight"]
 	let weights = recruit_base[type]["weights"]
     var heroInfos = []
-    var luckNum = 0
     for(let num = 0;num < count;num++){
-      let rand = Math.random() * allWeight
-      if(num == 9 && luckNum == 0 && type == "great"){
-      	var heroId = this.randHeroId("randChip_5_1")
-		var heroInfo = this.gainHero(areaId,uid,{id : heroId})
-		heroInfos.push(heroInfo)
-      }else{
-	      for(let i in weights){
-	        if(rand < weights[i]){
-	          let heroList = recruit_list[i].heroList
-	          let heroId = heroList[Math.floor(heroList.length * Math.random())]
-	          let heroInfo = this.gainHero(areaId,uid,{id : heroId})
-	          heroInfos.push(heroInfo)
-	          if(heroInfo.star >= 4)
-	          	luckNum++
-	          break
-	        }
-	      }
+  	  var rand = Math.random() * allWeight
+      for(var i in weights){
+        if(rand < weights[i]){
+          var heroList = recruit_list[i].heroList
+          var heroId = heroList[Math.floor(heroList.length * Math.random())]
+          var heroInfo = this.gainHero(areaId,uid,{id : heroId})
+          heroInfos.push(heroInfo)
+          break
+        }
       }
     }
+  	return heroInfos
+}
+//英雄池获得英雄
+heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
+	var allWeight = recruit_base[type]["allWeight"]
+	var weights = recruit_base[type]["weights"]
+    var heroInfos = []
+    var r_luck = this.areaManager.areaMap[areaId].players[uid]["r_luck"]
+    for(var num = 0;num < count;num++){
+    	if(r_luck >= 19){
+	      	var heroId = this.randHeroId("randChip_5_2")
+			var heroInfo = this.gainHero(areaId,uid,{id : heroId})
+			heroInfos.push(heroInfo)
+    		r_luck = 0
+    	}else{
+			var rand = Math.random() * allWeight
+			for(var i in weights){
+				if(rand < weights[i]){
+					var heroList = recruit_list[i].heroList
+					var heroId = heroList[Math.floor(heroList.length * Math.random())]
+					var heroInfo = this.gainHero(areaId,uid,{id : heroId})
+					heroInfos.push(heroInfo)
+					if(heroInfo.star < 5)
+						r_luck++
+					break
+				}
+			}
+    	}
+    }
+    this.areaManager.areaMap[areaId].chageLordData(uid,"r_luck",r_luck)
   	return heroInfos
 }
 //英雄池获得英雄id

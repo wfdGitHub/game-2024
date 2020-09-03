@@ -16,8 +16,8 @@ activityHandler.prototype.apply_recharge = function(msg, session, next) {
 }
 //申请支付测试接口
 activityHandler.prototype.test_recharge = function(msg, session, next) {
-  // next(null,{flag : false})
-  // return
+  next(null,{flag : false})
+  return
   var uid = session.uid
   var areaId = session.get("areaId")
   var pay_id = msg.pay_id
@@ -131,8 +131,9 @@ activityHandler.prototype.getWeekAndMonthRecord = function(msg, session, next) {
 //领取首充礼包
 activityHandler.prototype.gainFirstRechargeAward = function(msg, session, next) {
   var uid = session.uid
+  var index = msg.index
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].gainFirstRechargeAward(uid,function(flag,msg) {
+  this.areaManager.areaMap[areaId].gainFirstRechargeAward(uid,index,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }
@@ -258,7 +259,7 @@ activityHandler.prototype.gainHighCardAward = function(msg, session, next) {
 activityHandler.prototype.getAreaRank = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getAreaRank(function(flag,msg) {
+  this.areaManager.areaMap[areaId].getSprintRank(function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

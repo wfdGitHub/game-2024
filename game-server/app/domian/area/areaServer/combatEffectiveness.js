@@ -67,7 +67,7 @@ module.exports = function() {
 				}
 				self.sendToUser(uid,notify)
 				self.taskUpdate(uid,"totalCe",newCE)
-				self.updateAreaRank(uid,newCE)
+				self.updateSprintRank("seas_rank",uid,newCE - oldCE)
 			}
 		}
 	}
