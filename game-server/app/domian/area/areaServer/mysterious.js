@@ -115,10 +115,9 @@ module.exports = function() {
 			    		info.addStar = curStar - star
 			    		self.incrbyObj(uid,main_name,"chapter_"+mysterious_realm[lv]["chapter"],info.addStar)
 			    		self.incrbyObj(uid,main_name,"allStar",info.addStar,function(allStar) {
-			    			self.addZset("mysteriousRank",uid,allStar)
+			    			self.addZset("seas_rank",uid,allStar)
 			    		})
 			    		self.setObj(uid,main_name,"lv_"+lv,curStar)
-			    		self.updateSprintRank("seas_rank",uid,info.addStar)
 			    	}
 			    	if(lv > max){
 			    		self.setObj(uid,main_name,"max",lv)
@@ -206,7 +205,7 @@ module.exports = function() {
 	}
 	//获取排行榜
 	this.getMysteriousRank = function(uid,cb) {
-		self.zrangewithscore("mysteriousRank",-10,-1,function(list) {
+		self.zrangewithscore("seas_rank",-10,-1,function(list) {
 			var uids = []
 			var scores = []
 			for(var i = 0;i < list.length;i += 2){

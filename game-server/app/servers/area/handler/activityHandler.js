@@ -263,6 +263,24 @@ activityHandler.prototype.getAreaRank = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//获取已结算排行榜
+activityHandler.prototype.getSprintSettleRank = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var rankType = msg.rankType
+  this.areaManager.areaMap[areaId].getSprintSettleRank(rankType,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//获取总排行榜
+activityHandler.prototype.getTotalRank = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var rankType = msg.rankType
+  this.areaManager.areaMap[areaId].getTotalRank(rankType,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //领取消耗活动奖励
 activityHandler.prototype.gainConsumeTotalAward = function(msg, session, next) {
   var uid = session.uid

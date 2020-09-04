@@ -42,8 +42,10 @@ module.exports = function() {
 	this.settleSprintRank = function() {
 		clearTimeout(timer)
 		if(sprint_rank[curRankIndex]){
-			self.zrangewithscore(sprint_rank[curRankIndex]["rank_type"],0,-1,function(list) {
+			var rankType = sprint_rank[curRankIndex]["rank_type"]
+			self.zrangewithscore(rankType,0,-1,function(list) {
 				var rank = 0
+				var saveDate = []
 				for(var i = list.length - 2;i >= 0;i -= 2){
 					rank++
 					var score = Math.floor(list[i+1])
@@ -51,6 +53,8 @@ module.exports = function() {
 					if(rank >= 11){
 						rank = 11
 						text = "亲爱的玩家您好，恭喜您在"+sprint_rank[curRankIndex]["name"]+"活动中获得参与奖励，祝您游戏愉快！"
+					}else{
+						self.incrbyZset(rankType+"_settle",list[i],score)
 					}
 	                var award = ""
 	                award = sprint_rank[curRankIndex]["rank_"+rank]
@@ -112,9 +116,57 @@ module.exports = function() {
 			return
 		}
 	}
+	//获取已结算排行榜
+	this.getSprintSettleRank = function(rankType,cb) {
+		if(rank_type_day[rankType]){
+			self.zrangewithscore(rankType+"_settle",-10,-1,function(list) {
+				var uids = []
+				var scores = []
+				for(var i = 0;i < list.length;i += 2){
+					uids.push(list[i])
+					scores.push(list[i+1])
+				}
+				self.getPlayerInfoByUids(uids,function(userInfos) {
+					var info = {}
+					info.userInfos = userInfos
+					info.scores = scores
+					info.curRankIndex = curRankIndex
+					info.time = curTime
+					cb(true,info)
+				})
+			})
+		}else{
+			cb(false,"结算排行榜不存在")
+			return
+		}
+	}
+	//获取指定排行榜
+	this.getTotalRank = function(rankType,cb) {
+		if(rank_type_day[rankType]){
+			self.zrangewithscore(rankType,-10,-1,function(list) {
+				var uids = []
+				var scores = []
+				for(var i = 0;i < list.length;i += 2){
+					uids.push(list[i])
+					scores.push(list[i+1])
+				}
+				self.getPlayerInfoByUids(uids,function(userInfos) {
+					var info = {}
+					info.userInfos = userInfos
+					info.scores = scores
+					info.curRankIndex = curRankIndex
+					info.time = curTime
+					cb(true,info)
+				})
+			})
+		}else{
+			cb(false,"排行榜不存在")
+			return
+		}
+	}
 	//更新排行榜
 	this.updateSprintRank = function(type,uid,value) {
-		if(curRankIndex != -1 && rank_type_day[type] >= rank_type_day[sprint_rank[curRankIndex]["rank_type"]]){
+		if(rank_type_day[type]){
 			self.incrbyZset(type,uid,value)
 		}
 	}

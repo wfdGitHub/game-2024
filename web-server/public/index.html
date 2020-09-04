@@ -460,9 +460,15 @@
             console.log(data);
         });
       }
-      //领取冲榜奖励
-      var gainAreaRankAward = function() {
-        pomelo.request("area.activityHandler.gainAreaRankAward", {}, function(data) {
+      //获取已结算排行榜
+      var getSprintSettleRank = function(rankType) {
+        pomelo.request("area.activityHandler.getSprintSettleRank", {rankType:rankType}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取总排行榜
+      var getTotalRank = function(rankType) {
+        pomelo.request("area.activityHandler.getTotalRank", {rankType:rankType}, function(data) {
             console.log(data);
         });
       }
