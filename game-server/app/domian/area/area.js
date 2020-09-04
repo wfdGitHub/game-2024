@@ -5,7 +5,7 @@ var async = require("async")
 const standard_dl = require("../../../config/gameCfg/standard_dl.json")
 const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
@@ -75,6 +75,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.aceLottoDayUpdate()
 	this.topicRecruitDayUpdate()
 	this.areaBossDayUpdate()
+	this.shareDayUpdate()
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
