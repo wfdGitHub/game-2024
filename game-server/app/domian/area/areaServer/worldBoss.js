@@ -160,9 +160,10 @@ module.exports = function() {
     	if(coin > world_boss_cfg["coin_max"]["value"])
     		coin = world_boss_cfg["coin_max"]["value"]
     	info.score = score
-    	this.scoreChange(uid,score)
+    	self.scoreChange(uid,score)
     	info.curScore = userScores[uid]
     	info.award =  self.addItemStr(uid,"201:"+coin)
+    	info.award = info.award.concat(self.openChestAward(uid,world_boss_cfg["chest"]["value"]))
     	cb(true,info)
 	}
 	this.scoreChange = function(uid,score) {
