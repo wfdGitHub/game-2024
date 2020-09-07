@@ -22,6 +22,10 @@ cacheDao.prototype.saveCache = function(info) {
 	info.time = Date.now()
 	this.db.rpush("message_"+publish,JSON.stringify(info))
 }
+cacheDao.prototype.saveChat = function(info) {
+	info.time = Date.now()
+	this.db.rpush("message_"+publish+"_chat",JSON.stringify(info))
+}
 module.exports = {
 	id : "cacheDao",
 	func : cacheDao,
