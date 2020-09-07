@@ -79,13 +79,15 @@ module.exports = function() {
 		self.incrbyLordData(uid,"real_rmb",value)
 		self.incrbyLordData(uid,"real_day",value)
 		self.incrbyLordData(uid,"real_week",value)
-		var notify = {
-			type : "real_recharge",
-			real_rmb : self.players[uid].real_rmb,
-			real_day : self.players[uid].real_day,
-			real_week : self.players[uid].real_week
+		if(self.players[uid]){
+			var notify = {
+				type : "real_recharge",
+				real_rmb : self.players[uid].real_rmb,
+				real_day : self.players[uid].real_day,
+				real_week : self.players[uid].real_week
+			}
+			self.sendToUser(uid,notify)
 		}
-		self.sendToUser(uid,notify)
 		if(cb)
 			cb(true)
 	}
