@@ -68,7 +68,8 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 	var weights = recruit_base[type]["weights"]
     var heroInfos = []
     var r_luck = this.areaManager.areaMap[areaId].players[uid]["r_luck"]
-    var luckNum = 0
+    var star4_num = 0
+    var star5_num = 5
     for(var num = 0;num < count;num++){
     	if(r_luck >= 29){
     		console.log("触发保底",r_luck)
@@ -76,11 +77,13 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 			var heroInfo = this.gainHero(areaId,uid,{id : heroId})
 			heroInfos.push(heroInfo)
     		r_luck = 0
-    		luckNum++
-    	}else if(num == 9 && luckNum == 0){
+    		star4_num++
+    		star5_num++
+    	}else if(num == 9 && star4_num == 0){
 	      	var heroId = this.randHeroId("randChip_5_1")
 			var heroInfo = this.gainHero(areaId,uid,{id : heroId})
-			luckNum++
+			r_luck++
+			star4_num++
 			heroInfos.push(heroInfo)
     	}else{
 			var rand = Math.random() * allWeight
@@ -89,14 +92,19 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 				if(rand < weights[i]){
 					var heroList = recruit_list[i].heroList
 					var heroId = heroList[Math.floor(heroList.length * Math.random())]
+					if(star5_num >= 2 && herosCfg[heroId].star >= 5){
+						heroId = this.randHeroId("randChip_5_1")
+					}
 					var heroInfo = this.gainHero(areaId,uid,{id : heroId})
 					heroInfos.push(heroInfo)
 					if(heroInfo.star < 5)
 						r_luck++
-					if(heroInfo.star >= 4)
-						luckNum++
-					if(heroInfo.star >= 5)
+					if(heroInfo.star == 4)
+						star4_num++
+					if(heroInfo.star == 5){
+						star5_num++
 						r_luck = 0
+					}
 					break
 				}
 			}
