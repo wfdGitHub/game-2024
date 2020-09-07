@@ -85,6 +85,7 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 	var self = this
 	var sql = "select * from game_order where game_order = ?"
+	otps.game_order = otps.extras_params
 	self.db.query(sql,[otps.extras_params], function(err, res) {
 		if(err || !res){
 			console.error(err)
