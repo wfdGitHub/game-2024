@@ -331,7 +331,7 @@ module.exports = function() {
 		var uid = arguments[0]
 		var str = arguments[1]
 		var rate = arguments[2]
-		var cb
+		var cb = false
 		var reason = ""
 		if(arguments.length == 4){
 			cb = arguments[3]
@@ -355,7 +355,7 @@ module.exports = function() {
 			var value = m_list[1]
 			awardList.push(self.addItem({uid : uid,itemId : itemId,value : value,rate : rate,reason : reason}))
 		})
-		if(cb)
+		if(cb && typeof(cb) == "function")
 			cb(true,awardList)
 		return awardList
 	}
