@@ -29,6 +29,8 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 			// console.error('createCDType! ' + err.stack);
 			cb(false,err)
 		}else{
+			info.messagetype = "createGameOrder"
+			self.cacheDao.saveCache(info)
 			cb(true,info)
 		}
 	})

@@ -4,7 +4,7 @@ var RDS_PORT = daoConfig.cache.port
 var RDS_HOST = daoConfig.cache.host
 var RDS_PWD = daoConfig.cache.pwd
 var RDS_OPTS = {auth_pass : RDS_PWD}
-var publish = "mangtu"
+var publish = "jianwan"
 var cacheDao = function() {
 	this.db = false
 }
