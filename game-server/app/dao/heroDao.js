@@ -69,7 +69,7 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
     var heroInfos = []
     var r_luck = this.areaManager.areaMap[areaId].players[uid]["r_luck"]
     var star4_num = 0
-    var star5_num = 5
+    var star5_num = 0
     for(var num = 0;num < count;num++){
     	if(r_luck >= 29){
     		console.log("触发保底",r_luck)
@@ -79,7 +79,7 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
     		r_luck = 0
     		star4_num++
     		star5_num++
-    	}else if(num == 9 && star4_num == 0){
+    	}else if(num == 9 && (star4_num + star5_num) == 0){
 	      	var heroId = this.randHeroId("randChip_5_1")
 			var heroInfo = this.gainHero(areaId,uid,{id : heroId})
 			r_luck++
@@ -92,7 +92,7 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 				if(rand < weights[i]){
 					var heroList = recruit_list[i].heroList
 					var heroId = heroList[Math.floor(heroList.length * Math.random())]
-					if(star5_num >= 2 && herosCfg[heroId].star >= 5){
+					if(star5_num >= 2 && herosCfg[heroId].min_star >= 5){
 						heroId = this.randHeroId("randChip_5_1")
 					}
 					var heroInfo = this.gainHero(areaId,uid,{id : heroId})
