@@ -67,7 +67,7 @@ module.exports = function() {
 				}
 				self.sendToUser(uid,notify)
 				self.taskUpdate(uid,"totalCe",newCE)
-				self.updateSprintRank("ce_rank",uid,newCE - oldCE)
+				self.addZset("ce_rank",uid,newCE)
 			}
 		}
 	}
