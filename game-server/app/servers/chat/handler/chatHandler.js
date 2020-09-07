@@ -47,7 +47,8 @@ chatHandler.prototype.say = function(msg, session, next) {
 	}
 	var text = msg.text
 	this.chat.say(talker,roomName,text)
-	this.mysqlDao.addChatRecord(uid,name,text,roomName)
+	this.cacheDao.saveCache({messagetype:"chat",uid:uid,nickname:name,text:text,roomName:roomName})
+	// this.mysqlDao.addChatRecord(uid,name,text,roomName)
 	next(null)
 }
 module.exports = function(app) {
@@ -61,6 +62,9 @@ module.exports = function(app) {
 		props : [{
 			name : "mysqlDao",
 			ref : "mysqlDao"
+		},{
+			name : "cacheDao",
+			ref : "cacheDao"
 		}]
 	})
 }
