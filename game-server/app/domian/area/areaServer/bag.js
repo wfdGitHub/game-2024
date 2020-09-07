@@ -331,10 +331,14 @@ module.exports = function() {
 		var uid = arguments[0]
 		var str = arguments[1]
 		var rate = arguments[2]
-		var cb = arguments[arguments.length-1]
+		var cb
 		var reason = ""
-		if(arguments.length == 5)
+		if(arguments.length == 4){
+			cb = arguments[3]
+		}else if(arguments.length == 5){
 			reason = arguments[3]
+			cb = arguments[4]
+		}
 		if(typeof(rate) != "number"){
 			console.error("addItemStr arg error",uid,str,rate,reason)
 			rate = 1
