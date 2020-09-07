@@ -71,7 +71,6 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
     var luckNum = 0
     for(var num = 0;num < count;num++){
     	if(r_luck >= 29){
-    		console.log("触发保底",r_luck)
 	      	var heroId = this.randHeroId("randChip_5_2")
 			var heroInfo = this.gainHero(areaId,uid,{id : heroId})
 			heroInfos.push(heroInfo)
@@ -84,7 +83,6 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 			heroInfos.push(heroInfo)
     	}else{
 			var rand = Math.random() * allWeight
-			console.log("rand",rand,allWeight)
 			for(var i in weights){
 				if(rand < weights[i]){
 					var heroList = recruit_list[i].heroList
@@ -95,11 +93,12 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 						r_luck++
 					if(heroInfo.star >= 4)
 						luckNum++
+					if(heroInfo.star >= 5)
+						r_luck = 0
 					break
 				}
 			}
     	}
-    	console.log("r_luck",r_luck)
     }
     this.areaManager.areaMap[areaId].chageLordData(uid,"r_luck",r_luck)
   	return heroInfos
