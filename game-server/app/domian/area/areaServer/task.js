@@ -121,7 +121,7 @@ module.exports = function() {
 		let award = task_cfg[taskId].award
 		let awardList = []
 		if(award)
-			awardList = this.addItemStr(uid,award)
+			awardList = this.addItemStr(uid,award,1,"任务奖励"+taskId)
 		let info = {
 			awardList : awardList
 		}
@@ -290,7 +290,7 @@ module.exports = function() {
 				cb(false,"活跃度不足")
 			}else{
 				self.setObj(uid,liveness_name,"index_"+index,0)
-				let awardList = self.addItemStr(uid,liveness_cfg[index]["award"])
+				let awardList = self.addItemStr(uid,liveness_cfg[index]["award"],1,"活跃度宝箱"+index)
 				cb(true,{awardList : awardList})
 			}
 		})
@@ -351,7 +351,7 @@ module.exports = function() {
 				cb(false,"战令未进阶")
 				return
 			}
-			let awardList = self.addItemStr(uid,war_horn[curMonth][type+"_"+lv])
+			let awardList = self.addItemStr(uid,war_horn[curMonth][type+"_"+lv],1,"战令奖励"+lv)
 			self.setObj(uid,war_name,type+"_"+lv,1)
 			cb(true,{awardList : awardList})
 		})

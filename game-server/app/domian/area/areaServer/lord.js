@@ -101,7 +101,7 @@ module.exports = function() {
 		if(upLv){
 			self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","level",upLv)
 			self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","exp",-needExp)
-			self.addItem({uid : uid,itemId : 202,value : gold})
+			self.addItem({uid : uid,itemId : 202,value : gold,reason : "等级提升奖励"})
 			let notify = {
 				"type" : "lordUpgrade",
 				"oldLv" : level,

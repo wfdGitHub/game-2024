@@ -99,7 +99,7 @@ module.exports = function() {
 				rate = recharge[index].first_rate
 			else
 				rate = recharge[index].normal_rate
-			var award = self.addItem({uid:uid,itemId:202,value:gold,rate:rate})
+			var award = self.addItem({uid:uid,itemId:202,value:gold,rate:rate,reason:"充值"})
 			cb(true,{awardList:[award]})
 		})
 	}
@@ -168,7 +168,7 @@ module.exports = function() {
 				self.setObj(uid,main_name,"highCard",1)
 				self.chageLordData(uid,"highCard",1)
 				self.addUserRMB(uid,activity_cfg["high_card_lof"]["value"])
-				var awardList = self.addItemStr(uid,activity_cfg["high_card_award"]["value"])
+				var awardList = self.addItemStr(uid,activity_cfg["high_card_award"]["value"],1,"激活至尊特权")
 				cb(true,{awardList:awardList})
 			}
 		})
@@ -186,7 +186,7 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,awardBag_day[index].rmb)
 			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
-			var awardList = self.addItemStr(uid,awardBag_day[index].award)
+			var awardList = self.addItemStr(uid,awardBag_day[index].award,1,"购买买日礼包"+index)
 			cb(true,{awardList:awardList})
 		})
 	}
@@ -215,7 +215,7 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,gift_week[index].rmb)
 			self.incrbyObj(uid,"week_shop",index,1)
-			var awardList = self.addItemStr(uid,gift_week[index].award)
+			var awardList = self.addItemStr(uid,gift_week[index].award,1,"购买每周礼包"+index)
 			cb(true,{awardList:awardList})
 		})
 	}
@@ -233,7 +233,7 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,gift_month[index].rmb)
 			self.incrbyObj(uid,"month_shop",index,1)
-			var awardList = self.addItemStr(uid,gift_month[index].award)
+			var awardList = self.addItemStr(uid,gift_month[index].award,1,"购买每月礼包"+index)
 			cb(true,{awardList:awardList})
 		})
 	}
@@ -248,7 +248,7 @@ module.exports = function() {
 			self.addUserRMB(uid,activity_cfg["war_horn"]["value"])
 			self.setObj(uid,"war_horn","high",1)
 			self.incrbyObj(uid,"war_horn","exp",war_horn[curMonth]["exp"],function(exp) {
-				var awardList = self.addItemStr(uid,war_horn[curMonth]["award"])
+				var awardList = self.addItemStr(uid,war_horn[curMonth]["award"],1,"激活战令")
 				cb(true,{awardList:awardList,exp:exp})
 			})
 		})
@@ -262,7 +262,7 @@ module.exports = function() {
 		self.getObj(uid,"limit_gift",id,function(data) {
 			if(data){
 				self.addUserRMB(uid,gift_list[id]["price"])
-				var awardList = self.addItemStr(uid,gift_list[id]["award"])
+				var awardList = self.addItemStr(uid,gift_list[id]["award"],1,"购买限时礼包"+id)
 				self.delObj(uid,"limit_gift",id)
 				cb(true,{awardList:awardList})
 			}else{

@@ -111,12 +111,12 @@ module.exports = function() {
 				cb(false,"排名未达到")
 				return
 			}
-			self.consumeItems(uid,shopInfo.pc,count,function(flag,err) {
+			self.consumeItems(uid,shopInfo.pc,count,"竞技场商城"+shopId,function(flag,err) {
 				if(!flag){
 					cb(flag,err)
 					return
 				}
-				self.addItemStr(uid,shopInfo.pa,count)
+				self.addItemStr(uid,shopInfo.pa,count,1,"竞技场商城"+shopId)
 				self.incrbyObj(uid,mainName,shopId+"_buy",count)
 				cb(true,shopInfo.pa)
 			})
@@ -266,7 +266,7 @@ module.exports = function() {
 					cb(flag,err)
 					return
 				}
-				self.incrbyObj(uid,mainName,"buyCount",1,function(newCount) {
+				self.incrbyObj(uid,mainName,"buyCount",1,"竞技场挑战次数",function(newCount) {
 					cb(true,newCount)
 				})
 			})
@@ -301,12 +301,12 @@ module.exports = function() {
 				//获胜奖励
 				self.taskUpdate(uid,"arena_win",1)
 				self.taskUpdate(uid,"arena_streak",1)
-				info.winAward =  self.addItemStr(uid,winAward,1)
+				info.winAward =  self.addItemStr(uid,winAward,1,"竞技场获胜")
 				//排名提升奖励
 				if(data.rank < data.highestRank){
 					var value = local.calRankUpAward(data.highestRank,data.rank)
 					info.newRank = data.rank
-					info.upAward = self.addItem({uid : uid,itemId : rankUp,value : value})
+					info.upAward = self.addItem({uid : uid,itemId : rankUp,value : value,reason : "排名提升奖励"})
 					self.setObj(uid,mainName,"highestRank",data.rank)
 				}
 				//记录
@@ -317,7 +317,7 @@ module.exports = function() {
 		}else{
 			//失败奖励
 			self.taskProgressClear(uid,"arena_streak")
-			self.addItemStr(uid,loseAward,1)
+			self.addItemStr(uid,loseAward,1,"竞技场失败")
 			local.addRecord(uid,"atk",winFlag,targetInfo,fightInfo)
 			local.addRecord(targetUid,"def",winFlag,targetInfo,fightInfo)
 			delete local.locks[uid]

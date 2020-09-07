@@ -8,6 +8,7 @@ var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var heros = require("../../../../config/gameCfg/heros.json")
 var util = require("../../../../util/util.js")
 var async = require("async")
+var itemChangeMap = {"201":1,"202":1}
 module.exports = function() {
 	var self = this
 	this.playerBags = {}
@@ -31,7 +32,7 @@ module.exports = function() {
 				    	next(null,{flag : false,data : "英雄背包已满"})
 				    	return
 				  	}
-					self.consumeItems(uid,otps.itemId+":"+needValue,value,function(flag,err) {
+					self.consumeItems(uid,otps.itemId+":"+needValue,value,"合成英雄",function(flag,err) {
 						if(!flag){
 							cb(false,err)
 						}else{
@@ -51,7 +52,7 @@ module.exports = function() {
 				    	next(null,{flag : false,data : "英雄背包已满"})
 				    	return
 				  	}
-					self.consumeItems(uid,otps.itemId+":"+needValue,value,function(flag,err) {
+					self.consumeItems(uid,otps.itemId+":"+needValue,value,"合成英雄",function(flag,err) {
 						if(!flag){
 							cb(false,err)
 						}else{
@@ -64,7 +65,7 @@ module.exports = function() {
 			break
 			case "chest":
 				//宝箱
-				self.consumeItems(uid,otps.itemId+":"+value,1,function(flag,err) {
+				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝箱"+otps.itemId,function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
@@ -79,11 +80,11 @@ module.exports = function() {
 			break
 			case "box":
 				//宝盒
-				self.consumeItems(uid,otps.itemId+":"+value,1,function(flag,err) {
+				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝盒"+otps.itemId,function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
-						var awardList = self.addItemStr(uid,itemCfg[otps.itemId].arg,value)
+						var awardList = self.addItemStr(uid,itemCfg[otps.itemId].arg,value,"开启宝盒"+otps.itemId)
 						cb(true,awardList)
 					}
 				})
@@ -174,6 +175,7 @@ module.exports = function() {
 		var itemId = otps.itemId
 		var value = otps.value
 		var rate = otps.rate || 1
+		var reason = otps.reason
 		if(itemCfg[itemId]){
 			value = Math.floor(Number(value) * rate) || 1
 			itemId = parseInt(itemId)
@@ -209,9 +211,10 @@ module.exports = function() {
 						case 202:
 							if(value < 0)
 								self.incrbyPlayerData(uid,"gold_consume",Math.abs(value))
-							self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue})
 						break
 					}
+					// if(itemChangeMap[itemId])
+						self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue,reason:otps.reason})
 					var notify = {
 						"type" : "addItem",
 						"itemId" : itemId,
@@ -274,7 +277,17 @@ module.exports = function() {
 		return pcStr
 	}
 	//扣除道具
-	this.consumeItems = function(uid,str,rate,cb) {
+	//uid,str,rate,cb
+	//uid,str,rate,reason,cb
+	this.consumeItems = function() {
+		var uid = arguments[0]
+		var str = arguments[1]
+		var rate = arguments[2]
+		var cb = arguments[arguments.length-1]
+		var reason = ""
+		if(arguments.length == 5)
+			reason = arguments[3]
+		console.log("consumeItems",uid,str,rate,reason)
 		var items = []
 		var values = []
 		var strList = str.split("&")
@@ -306,13 +319,27 @@ module.exports = function() {
 						self.taskUpdate(uid,"use_gold",values[i])
 					break
 				}
-				self.addItem({uid : uid,itemId : items[i],value : -values[i]})
+				self.addItem({uid : uid,itemId : items[i],value : -values[i],reason : reason})
 			}
 			cb(true)
 		})
 	}
 	//解析物品奖励
-	this.addItemStr = function(uid,str,rate,cb) {
+	//uid,str,rate,cb
+	//uid,str,rate,reason,cb
+	this.addItemStr = function() {
+		var uid = arguments[0]
+		var str = arguments[1]
+		var rate = arguments[2]
+		var cb = arguments[arguments.length-1]
+		var reason = ""
+		if(arguments.length == 5)
+			reason = arguments[3]
+		if(typeof(rate) != "number"){
+			console.error("addItemStr arg error",uid,str,rate,reason)
+			rate = 1
+		}
+		console.log("addItemStr",uid,str,rate,reason)
 		var list = str.split("&")
 		if(!rate || parseFloat(rate) != rate || typeof(rate) != "number"){
 			rate = 1
@@ -322,7 +349,7 @@ module.exports = function() {
 			var m_list = m_str.split(":")
 			var itemId = m_list[0]
 			var value = m_list[1]
-			awardList.push(self.addItem({uid : uid,itemId : itemId,value : value,rate : rate}))
+			awardList.push(self.addItem({uid : uid,itemId : itemId,value : value,rate : rate,reason : reason}))
 		})
 		if(cb)
 			cb(true,awardList)
@@ -338,12 +365,12 @@ module.exports = function() {
 			cb(false,"count error "+count)
 			return
 		}
-		self.consumeItems(uid,itemCfg[itemId]["buy"],count,function(flag,err) {
+		self.consumeItems(uid,itemCfg[itemId]["buy"],count,"直接购买"+itemId,function(flag,err) {
 			if(!flag){
 				cb(flag,err)
 				return
 			}
-			var info = self.addItem({uid : uid,itemId : itemId,value : itemCfg[itemId]["buyNum"],rate : count})
+			var info = self.addItem({uid : uid,itemId : itemId,value : itemCfg[itemId]["buyNum"],rate : count,reason:"直接购买"+itemId})
 			cb(true,info)
 		})
 	}
@@ -394,7 +421,7 @@ module.exports = function() {
 				}
 			},
 			function(next) {
-				self.consumeItems(uid,shopInfo.pc,count,function(flag,err) {
+				self.consumeItems(uid,shopInfo.pc,count,"商城购买"+shopId,function(flag,err) {
 					if(!flag){
 						cb(flag,err)
 						return
@@ -403,7 +430,7 @@ module.exports = function() {
 						self.incrbyObj(uid,"shop",shopId,count)
 					if(shopCfg[shopId]["type"])
 						self.taskUpdate(uid,"shop_buy",count)
-					self.addItemStr(uid,shopInfo.pa,count)
+					self.addItemStr(uid,shopInfo.pa,count,"商城购买"+shopId)
 					cb(true,shopInfo.pa)
 				})
 			}
@@ -464,7 +491,7 @@ module.exports = function() {
 			}
 		}
 		if(str){
-			return this.addItemStr(uid,str)
+			return this.addItemStr(uid,str,1,"奖励池"+chestId)
 		}else{
 			return []
 		}

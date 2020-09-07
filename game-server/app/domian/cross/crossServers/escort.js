@@ -104,7 +104,7 @@ module.exports = function() {
 			str += "&"+playAward
 			var title = escort_cfg["passTitle"]["value"]
 			var text = escort_cfg["passText"]["value"]
-			self.sendAward(crossUid,title,text,str,function(flag,data) {
+			self.sendAward(crossUid,title,text,str,"押镖奖励",function(flag,data) {
 				if(flag){
 					var notify = {
 						type : "myEscortFinish",
@@ -164,7 +164,7 @@ module.exports = function() {
 		str += "&"+robAward
 		var title = escort_cfg["robTitle"]["value"]
 		var text = escort_cfg["robText"]["value"]
-		self.sendAward(crossUid,title,text,str,function(flag,data) {
+		self.sendAward(crossUid,title,text,str,"劫镖奖励",function(flag,data) {
 			var info = {
 				"success" : true,
 				"awardList" : data
@@ -276,7 +276,7 @@ module.exports = function() {
 			cb(false,"镖车已不能刷新")
 			return
 		}
-		this.consumeItems(crossUid,escort_cfg["refresh"]["value"],1,function(flag,err) {
+		this.consumeItems(crossUid,escort_cfg["refresh"]["value"],1,"刷新镖车",function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{

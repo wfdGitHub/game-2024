@@ -31,14 +31,14 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
         next(null,{flag : false,data : "武将背包已满"})
         return
       }
-      self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,count,function(flag,err) {
+      self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,count,"召唤英雄",function(flag,err) {
         if(!flag){
           next(null,{flag : false,err : err})
           return
         }
         var paStr = recruit_base[type].pa
         if(paStr)
-          self.areaManager.areaMap[areaId].addItemStr(uid,paStr,count)
+          self.areaManager.areaMap[areaId].addItemStr(uid,paStr,count,"召唤英雄")
         var heroInfos
         switch(type){
           case "normal":

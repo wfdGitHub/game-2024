@@ -177,7 +177,7 @@ heroDao.prototype.heroPrAll = function(areaId,uid,heros,cb) {
 			strList.push(star_base[star].pr)
 	}
 	var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
-	var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str)
+	var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"分解英雄")
 	this.areaManager.areaMap[areaId].taskUpdate(uid,"resolve",heros.length)
 	this.heroPrlvadnad(areaId,uid,heros,function(flag,awardList2) {
 	if(cb)
@@ -211,7 +211,7 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 	}
 	if(strList.length){
 		var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
-		var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str)
+		var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"升星材料返还")
 		if(cb)
 			cb(true,awardList)
 	}else{

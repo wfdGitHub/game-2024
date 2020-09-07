@@ -38,7 +38,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"login_award"+day,1)
-			let awardList = self.addItemStr(uid,week_day[day]["login_award"])
+			let awardList = self.addItemStr(uid,week_day[day]["login_award"],1,"七天登录"+day)
 			cb(true,awardList)
 		})
 	}
@@ -58,7 +58,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"day_award"+day,1)
-			let awardList = self.addItemStr(uid,week_day[day]["day_award"])
+			let awardList = self.addItemStr(uid,week_day[day]["day_award"],1,"七日目标登录礼包"+day)
 			cb(true,awardList)
 		})
 	}
@@ -82,7 +82,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"lv_award"+day,1)
-			let awardList = self.addItemStr(uid,week_day[day]["lv_award"])
+			let awardList = self.addItemStr(uid,week_day[day]["lv_award"],1,"七日目标等级礼包"+day)
 			cb(true,awardList)
 		})
 	}
@@ -132,10 +132,10 @@ module.exports = function() {
 				cb(false,"已购买")
 				return
 			}
-			self.consumeItems(uid,week_goods[goodsId].pc,1,function(flag,err) {
+			self.consumeItems(uid,week_goods[goodsId].pc,1,"七日目标限时礼包_"+day+"_"+index,function(flag,err) {
 				if(flag){
 					self.incrbyObj(uid,main_name,"goods:"+day+":"+index,1)
-					let awardList = self.addItemStr(uid,week_goods[goodsId].pa)
+					let awardList = self.addItemStr(uid,week_goods[goodsId].pa,1,"七日目标限购礼包_"+day+"_"+index)
 					cb(true,awardList)
 				}else{
 					cb(false,err)
@@ -161,7 +161,7 @@ module.exports = function() {
 					return
 				}
 				self.incrbyObj(uid,main_name,"box"+boxId,1)
-				let awardList = self.addItemStr(uid,week_box[boxId]["award"])
+				let awardList = self.addItemStr(uid,week_box[boxId]["award"],1,"七日目标宝箱"+boxId)
 				cb(true,awardList)
 			})
 		})

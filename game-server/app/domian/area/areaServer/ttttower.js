@@ -60,7 +60,7 @@ module.exports = function() {
 			   		self.incrbyObj(uid,main_name,"level",1)
 			   		self.taskUpdate(uid,"tttLv",1)
 			   		self.updateSprintRank("ttt_rank",uid,1)
-					var awardList = self.addItemStr(uid,ttttower_level[level]["awards"])
+					var awardList = self.addItemStr(uid,ttttower_level[level]["awards"],1,"通天塔"+level)
 					cb(true,awardList)
 			   	}else{
 			   		cb(false)
@@ -87,7 +87,7 @@ module.exports = function() {
 					}
 					if(info.mopup >= ttttower_cfg["freeCount"]["value"] + VIP[self.players[uid]["vip"]]["ttt"]){
 						//消耗扫荡券
-						self.consumeItems(uid,ttttower_cfg["mopup"]["value"],1,function(flag,err) {
+						self.consumeItems(uid,ttttower_cfg["mopup"]["value"],1,"通天塔扫荡",function(flag,err) {
 							if(flag)
 								next()
 							else
@@ -103,7 +103,7 @@ module.exports = function() {
 			function(next) {
 				//扫荡奖励
 				self.taskUpdate(uid,"ttt",1)
-				var awardList = self.addItemStr(uid,ttttower_level[level]["mopupAward"])
+				var awardList = self.addItemStr(uid,ttttower_level[level]["mopupAward"],1,"通天塔扫荡"+level)
 				cb(true,awardList)
 			}
 		],function(err) {

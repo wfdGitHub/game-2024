@@ -74,7 +74,7 @@ module.exports = function() {
 			self.redisDao.db.lset("player:user:"+uid+":mail",index,JSON.stringify(mailInfo),function(err,data) {
 				if(!err){
 					var atts = mailInfo.atts
-					self.addItemStr(uid,atts)
+					self.addItemStr(uid,atts,1,"邮件:"+mailInfo.title)
 					if(cb)
 						cb(true,atts)
 				}else{

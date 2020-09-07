@@ -380,7 +380,7 @@ module.exports = function() {
 		    		info.curChoose = -2
 			    	local.changeData(uid,"spoils_list",info.spoils_list)
 		    		local.changeData(uid,"curChoose",info.curChoose)
-		    		info.awardList = self.addItemStr(uid,zhulu_award[grid]["award"])
+		    		info.awardList = self.addItemStr(uid,zhulu_award[grid]["award"],1,"逐鹿战斗")
 		    		self.taskUpdate(uid,"zhulu_monster",1)
 			    }else{
 			    	for(var i = 0;i<defTeam.length;i++){
@@ -437,14 +437,14 @@ module.exports = function() {
 					cb(false,"已售罄")
 					return
 				}
-				self.consumeItems(uid,list[arg]["price"],1,function(flag,err) {
+				self.consumeItems(uid,list[arg]["price"],1,"逐鹿商城",function(flag,err) {
 					if(!flag){
 						cb(flag,err)
 						return
 					}
 					userDatas[uid]["sellOutList"][arg] = 1
 					local.changeData(uid,"sellOutList",userDatas[uid]["sellOutList"])
-					var awardList = self.addItemStr(uid,list[arg]["goods"])
+					var awardList = self.addItemStr(uid,list[arg]["goods"],1,"逐鹿商城")
 					cb(true,awardList)
 				})
 			break
@@ -483,12 +483,12 @@ module.exports = function() {
 			self.taskUpdate(uid,"zhulu_pass",1)
 		}
 		var boxId = "box"+bossLv
-		var awardList = self.addItemStr(uid,zhulu_cfg[boxId]["value"])
+		var awardList = self.addItemStr(uid,zhulu_cfg[boxId]["value"],1,"逐鹿宝箱")
 		var lv = self.getLordLv(uid)
 		var coinCount = lv * 200 * (1 + bossLv)
 		var expCount = lv * 120 * (1 + bossLv)
 		var str = "201:"+coinCount+"&101:"+expCount
-		awardList = awardList.concat(self.addItemStr(uid,str))
+		awardList = awardList.concat(self.addItemStr(uid,str,1,"逐鹿宝箱"))
 		local.changeData(uid,"curChoose",-1)
 		cb(true,{curChoose : userDatas[uid]["curChoose"],curGrid : userDatas[uid]["curGrid"],awardList : awardList})
 	}

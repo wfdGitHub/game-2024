@@ -97,9 +97,9 @@ areaRemote.prototype.consumeItems = function(uid,areaId,str,rate,cb) {
 	}
 }
 //物品奖励
-areaRemote.prototype.addItemStr = function(uid,areaId,str,rate,cb) {
+areaRemote.prototype.addItemStr = function(uid,areaId,str,rate,reason,cb) {
 	if(this.areaManager.areaMap[areaId]){
-		var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,rate)
+		var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,rate,reason)
 		cb(true,awardList)
 	}else{
 		cb(false)

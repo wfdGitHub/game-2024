@@ -48,7 +48,7 @@ artifactHandler.prototype.wearArtifact = function(msg, session, next) {
     },
     function(heroInfo,cb) {
       //扣除法宝
-      self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : aId,value : -1})
+      self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : aId,value : -1,reason : "穿戴法宝"})
       //穿戴法宝
       heroInfo["artifact"] = 0
       self.heroDao.setHeroInfo(areaId,uid,hId,"artifact",0)
@@ -106,7 +106,7 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
           else
             str += "&1000150:"+needNum
         }
-        self.areaManager.areaMap[areaId].consumeItems(uid,str,1,function(flag,err) {
+        self.areaManager.areaMap[areaId].consumeItems(uid,str,1,"法宝升级",function(flag,err) {
           if(!flag){
             next(null,{flag : false,err : err})
             return
@@ -140,12 +140,12 @@ artifactHandler.prototype.sellArtifact = function(msg, session, next) {
     return
   }
   let self = this
-  self.areaManager.areaMap[areaId].consumeItems(uid,aId+":"+count,1,function(flag,err) {
+  self.areaManager.areaMap[areaId].consumeItems(uid,aId+":"+count,1,"出售法宝",function(flag,err) {
     if(!flag){
       next(null,{flag : false,err : err})
       return
     }
-    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : 207,value : 400 * count},function(flag,data) {
+    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : 207,value : 400 * count,reason : "出售法宝"},function(flag,data) {
       next(null,{flag : true,value : data})
     })
   })

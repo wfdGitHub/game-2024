@@ -36,7 +36,7 @@ module.exports = function() {
 		userCheckpoints[uid]++
 		var awardStr = checkpointsCfg[level].award
 		if(awardStr){
-			return this.addItemStr(uid,awardStr)
+			return this.addItemStr(uid,awardStr,1,"挑战关卡"+level)
 		}
 		return []
 	}
@@ -136,10 +136,10 @@ module.exports = function() {
 		  	rate = (awardTime * rate) / 60 
 		  	// console.log("rate ",rate,"awardTime ",awardTime)
 		  	self.taskUpdate(uid,"on_hook",1)
-		  	var awardList = self.addItemStr(uid,on_hook_award,rate)
+		  	var awardList = self.addItemStr(uid,on_hook_award,rate,"挂机奖励")
 		  	var awardStr = self.gainOnhookItem(level,awardTime/60)
 		  	if(awardStr)
-		  		awardList = awardList.concat(self.addItemStr(uid,awardStr))
+		  		awardList = awardList.concat(self.addItemStr(uid,awardStr,1,"挂机道具"))
 		  	cb(true,{allTime : tmpTime,awardTime : awardTime,awardList : awardList})
 		})
 	}
@@ -175,7 +175,7 @@ module.exports = function() {
 				if(needGold > 200)
 					needGold = 200
 				if(needGold){
-					self.consumeItems(uid,"202:"+needGold,1,function(flag,err) {
+					self.consumeItems(uid,"202:"+needGold,1,"快速挂机",function(flag,err) {
 						if(flag)
 							next()
 						else
@@ -192,10 +192,10 @@ module.exports = function() {
 			  	if(self.players[uid]["highCard"])
 			  		rate += activity_cfg["high_card_onhook"]["value"]
 			  	rate = 120 * rate
-			  	var awardList = self.addItemStr(uid,on_hook_award,rate)
+			  	var awardList = self.addItemStr(uid,on_hook_award,rate,"快速挂机奖励")
 			  	var awardStr = self.gainOnhookItem(level,120)
 			  	if(awardStr)
-			  		awardList = awardList.concat(self.addItemStr(uid,awardStr))
+			  		awardList = awardList.concat(self.addItemStr(uid,awardStr,1,"快速挂机道具"))
 			  	self.taskUpdate(uid,"quick",1)
 			  	cb(true,{awardList : awardList})
 			}
@@ -212,11 +212,14 @@ module.exports = function() {
 		var count = Math.floor(time / 60)
 		if(time % 60 / 60 > Math.random())
 			count++
-		if(count > 10)
-			count = 10
+		if(count > 20)
+			count = 20
 		var list = []
 		while(count > 0){
-			if((count > 4) || (count > 3 && list.length == 0)){
+			if(count >= 7){
+				list.push(2)
+				count -= 7
+			}else if(count >= 3){
 				list.push(1)
 				count -= 3
 			}else{
@@ -263,7 +266,7 @@ module.exports = function() {
 			})
 		},function(next) {
 			let award = checkpoints_task[taskId]["award"]
-			var awardList = self.addItemStr(uid,award)
+			var awardList = self.addItemStr(uid,award,1,"关卡任务奖励"+taskId)
 			cb(true,{awardList : awardList})
 		}],function(err) {
 			cb(false,err)
@@ -286,7 +289,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyPlayerData(uid,"chapterBox_"+chapterId,1)
-	    	var awardList = self.addItemStr(uid,chapter[chapterId]["awardBox"])
+	    	var awardList = self.addItemStr(uid,chapter[chapterId]["awardBox"],1,"章节宝箱"+chapterId)
 	    	cb(true,awardList)
 		})
 	}

@@ -140,7 +140,7 @@ module.exports = function() {
 		let uid = self.players[crossUid]["uid"]
 		let sid = self.players[crossUid]["areaId"]
 		let key = sid+"|"+uid
-		this.consumeItems(crossUid,grading_cfg["item"]["value"]+":"+1,1,function(flag,err) {
+		this.consumeItems(crossUid,grading_cfg["item"]["value"]+":"+1,1,"使用挑战券",function(flag,err) {
 			if(flag){
 				self.redisDao.db.hincrby("cross:grading:count",key,-1,function(err,value) {
 					cb(true,value)
@@ -236,7 +236,7 @@ module.exports = function() {
 			},
 			function(next) {
 				glv = util.binarySearchIndex(grading_lv_list,curScore)
-				let awardList = self.addItemStr(crossUid,grading_lv[glv]["challenge_award"],1)
+				let awardList = self.addItemStr(crossUid,grading_lv[glv]["challenge_award"],1,"跨服匹配")
 				let info = {
 					winFlag : winFlag,
 					atkTeam : atkTeam,
@@ -276,7 +276,7 @@ module.exports = function() {
 				return
 			}
 			self.redisDao.db.hset("cross:grading:award",key+"_"+glv,1)
-			let awardList = self.addItemStr(crossUid,grading_lv[glv]["grading_award"],1)
+			let awardList = self.addItemStr(crossUid,grading_lv[glv]["grading_award"],1,"段位奖励"+glv)
 			cb(true,awardList)
 		})
 	}

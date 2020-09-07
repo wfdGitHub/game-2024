@@ -104,12 +104,12 @@ equipHandler.prototype.sellEquip = function(msg, session, next) {
     return
   }
   var self = this
-  self.areaManager.areaMap[areaId].consumeItems(uid,eId+":"+count,1,function(flag,err) {
+  self.areaManager.areaMap[areaId].consumeItems(uid,eId+":"+count,1,"出售装备",function(flag,err) {
     if(!flag){
       next(null,{flag : false,err : err})
       return
     }
-    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : 201,value : Math.round(equip_base[eId]["sell_prize"] * count)},function(flag,data) {
+    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : 201,value : Math.round(equip_base[eId]["sell_prize"] * count),reason : "出售装备"},function(flag,data) {
       next(null,{flag : true,value : data})
     })
   })
@@ -130,7 +130,7 @@ equipHandler.prototype.compoundEquip = function(msg, session, next) {
   }
   var self = this
   var pc = "201:"+count*equip_base[eId]["compound_pc"]+"&"+eId+":"+count*3
-  self.areaManager.areaMap[areaId].consumeItems(uid,pc,1,function(flag,err) {
+  self.areaManager.areaMap[areaId].consumeItems(uid,pc,1,"合成装备",function(flag,err) {
     if(!flag){
       next(null,{flag : false,err : err})
       return

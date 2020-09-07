@@ -53,7 +53,7 @@ module.exports = function() {
 	}
 	//主题招募一次
 	this.topicRecruitOnce = function(uid,cb) {
-		self.consumeItems(uid,default_cfg["topic_lotto_1"]["value"],1,function(flag,err) {
+		self.consumeItems(uid,default_cfg["topic_lotto_1"]["value"],1,"主题召唤",function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
@@ -66,7 +66,7 @@ module.exports = function() {
 	}
 	//主题招募十次
 	this.topicRecruitMultiple = function(uid,cb) {
-		self.consumeItems(uid,default_cfg["topic_lotto_10"]["value"],1,function(flag,err) {
+		self.consumeItems(uid,default_cfg["topic_lotto_10"]["value"],1,"主题召唤",function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
@@ -93,7 +93,7 @@ module.exports = function() {
 					var awardStr = recruit_topic_cfg["box_"+index]["value"]
 					if(awardStr == "topic")
 						awardStr = curTopicHero+":30"
-					var awardList = self.addItemStr(uid,awardStr)
+					var awardList = self.addItemStr(uid,awardStr,1,"主题招募")
 					cb(true,awardList)
 				}else{
 					cb(false,"条件不满足")

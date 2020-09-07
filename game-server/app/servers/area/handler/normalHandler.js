@@ -19,7 +19,7 @@ normalHandler.prototype.verifyCDKey = function(msg, session, next) {
     if(!flag){
       next(null,{flag:false,data:str})
     }else{
-      var awardList = self.areaManager.areaMap[areaId].addItemStr(uid,str)
+      var awardList = self.areaManager.areaMap[areaId].addItemStr(uid,str,1,"礼包码")
       next(null,{flag : true,awardList : awardList})
     }
   })
@@ -73,15 +73,6 @@ normalHandler.prototype.characterAdvanced = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
-//角色转生
-normalHandler.prototype.characterSamsara = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var characterId = msg.characterId
-  this.areaManager.areaMap[areaId].characterSamsara(uid,characterId,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
 //设置头像
 normalHandler.prototype.changeHead = function(msg, session, next) {
   var uid = session.uid
@@ -99,28 +90,30 @@ normalHandler.prototype.changeHead = function(msg, session, next) {
 }
 //增加物品  测试功能
 normalHandler.prototype.addItem = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var limit = session.get("limit")
-  var itemId = msg.itemId
-  var value = msg.value
-  if(limit >= 10){
-    this.areaManager.areaMap[areaId].addItem({uid : uid,itemId : itemId,value : value},function(flag,data) {
-      next(null,{flag : flag,data : data})
-    })
-  }else{
-    next(null,{flag : false})
-  }
+  next(null,{flag : false})
+  return
+  // var uid = session.uid
+  // var areaId = session.get("areaId")
+  // var limit = session.get("limit")
+  // var itemId = msg.itemId
+  // var value = msg.value
+  // if(limit >= 10){
+  //   this.areaManager.areaMap[areaId].addItem({uid : uid,itemId : itemId,value : value,reason : "测试功能"},function(flag,data) {
+  //     next(null,{flag : flag,data : data})
+  //   })
+  // }else{
+  //   next(null,{flag : false})
+  // }
 }
 //增加物品str  测试功能
 normalHandler.prototype.addItemStr = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var str = msg.str
-  var rate = msg.rate
-  var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,rate)
-  next(null,{flag : true,awardList : awardList})
-  // next(null,{flag : false})
+  // var uid = session.uid
+  // var areaId = session.get("areaId")
+  // var str = msg.str
+  // var rate = msg.rate
+  // var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,rate,"测试功能")
+  // next(null,{flag : true,awardList : awardList})
+  next(null,{flag : false})
 }
 //开启宝箱  测试功能
 normalHandler.prototype.openChestStr = function(msg, session, next) {
@@ -203,11 +196,11 @@ normalHandler.prototype.changeName = function(msg, session, next) {
       })
     },
     function(cb) {
-      self.areaManager.areaMap[areaId].consumeItems(uid,"1000500:1",1,function(flag,err) {
+      self.areaManager.areaMap[areaId].consumeItems(uid,"1000500:1",1,"玩家改名",function(flag,err) {
         if(flag){
           cb()
         }else{
-          self.areaManager.areaMap[areaId].consumeItems(uid,"202:500",1,function(flag,err) {
+          self.areaManager.areaMap[areaId].consumeItems(uid,"202:500",1,"玩家改名",function(flag,err) {
             if(flag){
               cb()
             }else{

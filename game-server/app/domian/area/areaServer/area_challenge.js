@@ -68,7 +68,7 @@ module.exports = function() {
 			    }
 			    if(winFlag){
 		    		var info = {}
-		    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId])
+		    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId],1,"挑战山海")
 		    		if(bossId >= 3){
 		    			cur_chapter++
 		    			bossId = 0

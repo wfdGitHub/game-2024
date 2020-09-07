@@ -105,11 +105,11 @@ module.exports = function() {
 			    	info.starState = starState
 			    	if(star == 0){
 			    		//首通
-			    		info.awardList = self.addItemStr(uid,mysterious_realm[lv]["pass_award"])
+			    		info.awardList = self.addItemStr(uid,mysterious_realm[lv]["pass_award"],1,"山海经首通"+lv)
 						self.chageLordData(uid,"maxSS",lv)
 			    	}else{
 			    		//次通
-			    		info.awardList = self.addItemStr(uid,mysterious_realm[lv]["mopup_award"])
+			    		info.awardList = self.addItemStr(uid,mysterious_realm[lv]["mopup_award"],1,"山海经通关"+lv)
 			    	}
 			    	if(curStar > star){
 			    		info.addStar = curStar - star
@@ -171,7 +171,7 @@ module.exports = function() {
 			if(buy >= buyCount + mysterious_cfg["buy_count"]["value"]){
 				cb(false,"已达到购买限制")
 			}else{
-				self.consumeItems(uid,mysterious_cfg["buy_pc"]["value"],1,function(flag,err) {
+				self.consumeItems(uid,mysterious_cfg["buy_pc"]["value"],1,"山海经次数",function(flag,err) {
 					if(flag){
 						self.incrbyObj(uid,main_name,"buy",1)
 						cb(true,buy+1)
@@ -194,7 +194,7 @@ module.exports = function() {
 			}else{
 				var star = Number(list[0]) || 0
 				if(star >= index * 10){
-					var awardList = self.addItemStr(uid,mysterious_chapter[chapter]["star_"+index])
+					var awardList = self.addItemStr(uid,mysterious_chapter[chapter]["star_"+index],1,"山海经章节宝箱_"+chapter+"_"+index)
 					self.setObj(uid,main_name,"chapter_"+chapter+"_"+index,1)
 					cb(true,awardList)
 				}else{

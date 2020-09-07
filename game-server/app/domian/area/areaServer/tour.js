@@ -36,7 +36,7 @@ module.exports = function() {
 	}
 	//元宝刷新
 	this.refreshTourByGold = function(uid,cb) {
-		self.consumeItems(uid,default_cfg["tour_refresh"]["value"],1,function(flag,err) {
+		self.consumeItems(uid,default_cfg["tour_refresh"]["value"],1,"游历刷新",function(flag,err) {
 			if(flag){
 				let list = local.createTour()
 				self.setHMObj(uid,main_name,list)
@@ -49,7 +49,7 @@ module.exports = function() {
 	}
 	//刷新券刷新
 	this.refreshTourByItem = function(uid,cb) {
-		self.consumeItems(uid,"1000160:1",1,function(flag,err) {
+		self.consumeItems(uid,"1000160:1",1,"游历刷新",function(flag,err) {
 			if(flag){
 				let list = local.createTour()
 				self.setHMObj(uid,main_name,list)
@@ -135,7 +135,7 @@ module.exports = function() {
 			function(next) {
 				//消耗游历值
 				let str = "204:"+tour_quality[quality]["tour"]
-				self.consumeItems(uid,str,1,function(flag,err) {
+				self.consumeItems(uid,str,1,"游历任务",function(flag,err) {
 					if(flag)
 						next()
 					else
@@ -178,7 +178,7 @@ module.exports = function() {
 				self.delObj(uid,main_name,"free_"+taskInfo.hIds[i])
 			}
 			self.delObj(uid,main_name,"run_"+id)
-			var awardList = self.addItemStr(uid,tour_task[taskInfo.taskId]["award"])
+			var awardList = self.addItemStr(uid,tour_task[taskInfo.taskId]["award"],1,"游历奖励")
 			cb(true,awardList)
 		})
 	}
@@ -195,13 +195,13 @@ module.exports = function() {
 				return
 			}
 			let str = "202:"+tour_quality[tour_task[taskInfo.taskId]["quality"]]["speedUp"]
-			self.consumeItems(uid,str,1,function(flag,err) {
+			self.consumeItems(uid,str,1,"游历加速",function(flag,err) {
 				if(flag){
 					for(var i = 0;i < taskInfo.hIds.length;i++){
 						self.delObj(uid,main_name,"free_"+taskInfo.hIds[i])
 					}
 					self.delObj(uid,main_name,"run_"+id)
-					var awardList = self.addItemStr(uid,tour_task[taskInfo.taskId]["award"])
+					var awardList = self.addItemStr(uid,tour_task[taskInfo.taskId]["award"],1,"游历奖励")
 					cb(true,awardList)
 				}
 				else{

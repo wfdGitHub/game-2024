@@ -97,7 +97,7 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
       strList.push(lv_cfg[i].pc)
     }
     var pcStr = self.areaManager.areaMap[areaId].mergepcstr(strList)
-    self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,function(flag,err) {
+    self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,"英雄升级",function(flag,err) {
       if(!flag){
         next(null,{flag : false,err : err})
         return
@@ -133,7 +133,7 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
       return
     }
     var pcStr = advanced_base[heroInfo.ad].pc
-    self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,function(flag,err) {
+    self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,"英雄升阶",function(flag,err) {
       if(!flag){
         next(null,{flag : false,err : err})
         return
@@ -229,7 +229,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
         let name = session.get("name")
         let heroName = heros[targetHero.id]["name"]
         if(pcStr){
-          self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,function(flag,err) {
+          self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,"英雄升星",function(flag,err) {
             if(!flag){
               next(null,{flag : false,err : err})
               return
@@ -317,7 +317,7 @@ heroHandler.prototype.upgradeStarSimple = function(msg, session, next) {
       return
     }
     var pcStr = "1000190:1"
-    self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,function(flag,err) {
+    self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,"直升六星",function(flag,err) {
       if(!flag){
         next(null,{flag : false,err : err})
         return
@@ -360,7 +360,7 @@ heroHandler.prototype.replaceHero = function(msg, session, next) {
         return
       }
       var pcStr = "1000180:1"
-      self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,function(flag,err) {
+      self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,"英雄重置",function(flag,err) {
         if(!flag){
           next(null,{flag : false,err : err})
           return

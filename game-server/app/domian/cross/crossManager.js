@@ -122,7 +122,7 @@ crossManager.prototype.consumeItems = function(crossUid,str,rate,cb) {
 	this.app.rpc.area.areaRemote.consumeItems.toServer(serverId,uid,areaId,str,rate,cb)
 }
 //物品奖励
-crossManager.prototype.addItemStr = function(crossUid,str,rate,cb) {
+crossManager.prototype.addItemStr = function(crossUid,str,rate,reason,cb) {
 	if(!this.players[crossUid]){
 		cb(false)
 		return
@@ -130,7 +130,7 @@ crossManager.prototype.addItemStr = function(crossUid,str,rate,cb) {
 	var areaId = this.players[crossUid]["areaId"]
 	var serverId = this.players[crossUid]["serverId"]
 	var uid = this.players[crossUid]["uid"]
-	this.app.rpc.area.areaRemote.addItemStr.toServer(serverId,uid,areaId,str,rate,cb)
+	this.app.rpc.area.areaRemote.addItemStr.toServer(serverId,uid,areaId,str,rate,reason,cb)
 }
 //发放邮件
 crossManager.prototype.sendMail = function(crossUid,title,text,atts,cb) {
@@ -155,9 +155,9 @@ crossManager.prototype.sendMailByUid = function(areaId,uid,title,text,atts,cb) {
 	this.redisDao.db.rpush("player:user:"+uid+":mail",mailInfo)
 }
 //发放奖励,若玩家不在线则发邮件
-crossManager.prototype.sendAward = function(crossUid,title,text,str,cb) {
+crossManager.prototype.sendAward = function(crossUid,title,text,str,reason,cb) {
 	if(this.players[crossUid]){
-		this.addItemStr(crossUid,str,1,cb)
+		this.addItemStr(crossUid,str,1,reason,cb)
 	}else{
 		this.sendMail(crossUid,title,text,str,cb)
 	}

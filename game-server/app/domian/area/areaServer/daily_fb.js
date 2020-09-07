@@ -100,7 +100,7 @@ module.exports = function() {
 				}else{
 					//购买次数
 					if(buy < daily_fb_type[type]["buy_count"] + VIP[self.players[uid]["vip"]]["fb"]){
-						self.consumeItems(uid,daily_fb_type[type]["buy_pc"],1,function(flag,err) {
+						self.consumeItems(uid,daily_fb_type[type]["buy_pc"],1,"日常副本",function(flag,err) {
 							if(flag){
 								self.incrbyObj(uid,main_name,type+"_buy",1)
 								next()
@@ -120,7 +120,7 @@ module.exports = function() {
 				self.taskUpdate(uid,"fb",1)
 				self.taskUpdate(uid,"fb_hard",1,daily_fb_base[fbId]["lv"])
 				let award = daily_fb_base[fbId]["award"]
-				var awardList = self.addItemStr(uid,award)
+				var awardList = self.addItemStr(uid,award,1,"日常副本"+fbId)
 				cb(true,awardList)
 			}
 		],function(err) {

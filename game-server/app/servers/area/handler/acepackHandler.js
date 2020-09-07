@@ -130,12 +130,12 @@ acepackHandler.prototype.sellAcepack = function(msg, session, next) {
     return
   }
   var self = this
-  self.areaManager.areaMap[areaId].consumeItems(uid,aId+":"+count,1,function(flag,err) {
+  self.areaManager.areaMap[areaId].consumeItems(uid,aId+":"+count,1,"出售锦囊",function(flag,err) {
     if(!flag){
       next(null,{flag : false,err : err})
       return
     }
-    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : 206,value : ace_pack[aId]["strategy"] * count},function(flag,data) {
+    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : 206,value : ace_pack[aId]["strategy"] * count,reason : "出售锦囊"},function(flag,data) {
       next(null,{flag : true,value : data})
     })
   })
@@ -165,7 +165,7 @@ acepackHandler.prototype.compoundAcepack = function(msg, session, next) {
       return
   }
   var self = this
-  self.areaManager.areaMap[areaId].consumeItems(uid,pc,1,function(flag,err) {
+  self.areaManager.areaMap[areaId].consumeItems(uid,pc,1,"合成锦囊",function(flag,err) {
     if(!flag){
       next(null,{flag : false,err : err})
       return

@@ -71,7 +71,7 @@ module.exports = function() {
 			    if(winFlag){
 			    	self.incrbyObj(uid,main_name,"invade",1)
 			    	var rate = invade["base_rate"]["value"] + lv * invade["lv_rate"]["value"]
-			    	var awardList = self.addItemStr(uid,invade["base_award"]["value"],rate)
+			    	var awardList = self.addItemStr(uid,invade["base_award"]["value"],rate,"魔物入侵")
 			    	var record = self.fightContorl.getFightRecord()
 			    	var overInfo = record[record.length - 1]
 			    	var round = overInfo.round
@@ -154,7 +154,7 @@ module.exports = function() {
 				cb(false,"条件未达成")
 			}else{
 				self.setObj(uid,main_name,"pay_days_"+id,1)
-				var awardList = self.addItemStr(uid,pay_days[id]["award"])
+				var awardList = self.addItemStr(uid,pay_days[id]["award"],1,"充值天数礼包"+id)
 				cb(true,awardList)
 			}
 		})
@@ -169,7 +169,7 @@ module.exports = function() {
 		self.getObj(uid,main_name,"recharge_day_"+id,function(data) {
 			if(data == 0){
 				self.incrbyObj(uid,main_name,"recharge_day_"+id,1)
-				var awardList = self.addItemStr(uid,activity_cfg["recharge_day_"+id]["value"])
+				var awardList = self.addItemStr(uid,activity_cfg["recharge_day_"+id]["value"],1,"每日首充"+id)
 				cb(true,awardList)
 			}else{
 				cb(false,"已领取")
@@ -186,7 +186,7 @@ module.exports = function() {
 		self.getObj(uid,main_name,"recharge_week_"+id,function(data) {
 			if(!data){
 				self.incrbyObj(uid,main_name,"recharge_week_"+id,1)
-				var awardList = self.addItemStr(uid,activity_cfg["recharge_week_"+id]["value"])
+				var awardList = self.addItemStr(uid,activity_cfg["recharge_week_"+id]["value"],1,"每周累充"+id)
 				cb(true,awardList)
 			}else{
 				cb(false,"已领取")
@@ -208,12 +208,12 @@ module.exports = function() {
 				cb(false,"已领取")
 				return
 			}
-			self.consumeItems(uid,VIP[vip]["buy_pc"],1,function(flag,err) {
+			self.consumeItems(uid,VIP[vip]["buy_pc"],1,"购买vip礼包"+vip,function(flag,err) {
 				if(!flag){
 					cb(false,err)
 				}else{
 					self.incrbyObj(uid,main_name,"vip_buy"+vip,1)
-					var awardList = self.addItemStr(uid,VIP[vip]["buy_pa"])
+					var awardList = self.addItemStr(uid,VIP[vip]["buy_pa"],1,"VIP礼包"+vip)
 					cb(true,awardList)
 				}
 			})
@@ -238,7 +238,7 @@ module.exports = function() {
 				cb(false,"已领取")
 			}else{
 				self.incrbyObj(uid,main_name,"first_award_"+index,1)
-				var awardList = self.addItemStr(uid,activity_cfg["first_recharge_"+index]["value"])
+				var awardList = self.addItemStr(uid,activity_cfg["first_recharge_"+index]["value"],1,"首充礼包"+index)
 				cb(true,awardList)
 			}
 		})
@@ -258,7 +258,7 @@ module.exports = function() {
 				cb(false,"已领取")
 			}else{
 				self.setObj(uid,main_name,"total_award_"+index,1)
-				var awardList = self.addItemStr(uid,recharge_total[index].award)
+				var awardList = self.addItemStr(uid,recharge_total[index].award,1,"累充奖励")
 				cb(true,awardList)
 			}
 		})
@@ -276,7 +276,7 @@ module.exports = function() {
 				cb(false,"已领取")
 			}else{
 				self.setObj(uid,main_name,"once_award_"+index,1)
-				var awardList = self.addItemStr(uid,recharge[index].once_award)
+				var awardList = self.addItemStr(uid,recharge[index].once_award,1,"单充奖励"+index)
 				cb(true,awardList)
 			}
 		})
@@ -296,7 +296,7 @@ module.exports = function() {
 			if(data[0] == "0")
 				self.incrbyObj(uid,main_name,"boxDay",1)
 			self.incrbyObj(uid,main_name,"signCount",1)
-			let awardList = self.addItemStr(uid,sign_in_day[data[1]]["award"])
+			let awardList = self.addItemStr(uid,sign_in_day[data[1]]["award"],1,"签到")
 			cb(true,awardList)
 		})
 	}
@@ -318,7 +318,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"box"+index,1)
-			let awardList = self.addItemStr(uid,sign_in_cfg[index]["award"])
+			let awardList = self.addItemStr(uid,sign_in_cfg[index]["award"],1,"签到宝箱"+index)
 			cb(true,awardList)
 		})
 	}
@@ -331,7 +331,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"onlineIndex",1)
-			let awardList = self.addItemStr(uid,online_time[data]["award"])
+			let awardList = self.addItemStr(uid,online_time[data]["award"],1,"在线奖励"+data)
 			cb(true,awardList)
 		})
 	}
@@ -365,7 +365,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"vip_day_award",1)
-			var awardList = self.addItemStr(uid,VIP[vip]["free_award"])
+			var awardList = self.addItemStr(uid,VIP[vip]["free_award"],1,"VIP每日礼包")
 			cb(true,awardList)
 		})
 	}
@@ -389,7 +389,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"lv_award"+index,1)
-			var awardList = self.addItemStr(uid,activity_lv[index]["award"])
+			var awardList = self.addItemStr(uid,activity_lv[index]["award"],1,"等级基金"+index)
 			cb(true,awardList)
 		})
 	}
@@ -409,7 +409,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"ce_award"+index,1)
-			var awardList = self.addItemStr(uid,activity_ce[index]["award"])
+			var awardList = self.addItemStr(uid,activity_ce[index]["award"],1,"战力奖励"+index)
 			cb(true,awardList)
 		})
 	}
@@ -425,7 +425,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"normalAward",1)
-			var awardList = self.addItemStr(uid,activity_cfg["normal_card_day"]["value"])
+			var awardList = self.addItemStr(uid,activity_cfg["normal_card_day"]["value"],1,"普通月卡每日")
 			cb(true,awardList)
 		})
 	}
@@ -441,7 +441,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"highAward",1)
-			var awardList = self.addItemStr(uid,activity_cfg["high_card_day"]["value"])
+			var awardList = self.addItemStr(uid,activity_cfg["high_card_day"]["value"],1,"至尊特权每日")
 			cb(true,awardList)
 		})
 	}
@@ -459,7 +459,7 @@ module.exports = function() {
 					data = Number(data)
 					if(data && data >= consumeTotal[index]["need_gold"]){
 						self.incrbyObj(uid,main_name,"consumeTotal_"+index,1)
-						var awardList = self.addItemStr(uid,consumeTotal[index]["award"])
+						var awardList = self.addItemStr(uid,consumeTotal[index]["award"],1,"消耗元宝活动"+index)
 						cb(true,awardList)
 					}else{
 						cb(false,"条件未达成"+data+"/"+consumeTotal[index]["need_gold"])

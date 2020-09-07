@@ -150,7 +150,7 @@ module.exports = function() {
 		    		coin = area_boss_cfg["coin_max"]["value"]
 		    	info.score = score
 		    	self.incrbyZset(main_name,uid,score)
-		    	info.awardList = self.addItemStr(uid,"201:"+coin)
+		    	info.awardList = self.addItemStr(uid,"201:"+coin,1,"全服BOSS挑战")
 		    	info.awardList = info.awardList.concat(self.openChestAward(uid,area_boss_cfg["chest"]["value"]))
 			    cb(true,info)
 			}
@@ -167,7 +167,7 @@ module.exports = function() {
 			if(buy >= area_boss_cfg["buy_count"]["value"]){
 				cb(false,"购买次数限制")
 			}else{
-				self.consumeItems(uid,area_boss_cfg["buy_pc"]["value"],1,function(flag,err) {
+				self.consumeItems(uid,area_boss_cfg["buy_pc"]["value"],1,"全服BOSS次数",function(flag,err) {
 					if(flag){
 						self.redisDao.db.hincrby("area:area"+self.areaId+":"+main_name,"buy_"+uid,1)
 						cb(true,buy+1)
@@ -194,7 +194,7 @@ module.exports = function() {
 					cb(false,"购买上限")
 					return
 				}
-				self.consumeItems(uid,area_boss_cfg["up_"+up]["value"],1,function(flag,err) {
+				self.consumeItems(uid,area_boss_cfg["up_"+up]["value"],1,"全服BOSS加成",function(flag,err) {
 					if(flag){
 						self.redisDao.db.hincrby("area:area"+self.areaId+":"+main_name,"up_"+uid,1)
 						cb(true,up)
@@ -224,7 +224,7 @@ module.exports = function() {
 				cb(false,"已领取")
 			}else{
 				self.redisDao.db.hset("area:area"+self.areaId+":"+main_name,"box"+index+"_"+uid,1)
-				var awardList = self.addItemStr(uid,area_boss_base[area_data.bossIndex]["box"+index])
+				var awardList = self.addItemStr(uid,area_boss_base[area_data.bossIndex]["box"+index],1,"全服BOSS宝箱_"+area_data.bossIndex+"_"+index)
 				cb(true,awardList)
 			}
 		})

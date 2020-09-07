@@ -71,7 +71,7 @@ module.exports = function() {
 				cb(false)
 			}else{
 				data = JSON.parse(data)
-				self.consumeItems(uid,"1000090:1",1,function(flag,err) {
+				self.consumeItems(uid,"1000090:1",1,"普通寻宝",function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
@@ -84,7 +84,7 @@ module.exports = function() {
 								data[index].finish = true
 								self.setObj(uid,main_name,"normal_grid",JSON.stringify(data))
 							}
-							var awardList = self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"],1)
+							var awardList = self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"],1,"普通寻宝")
 							cb(true,{awardList:awardList,data:data,index : index,score:score})
 						}else{
 							console.error("奖励找不到"+curWeight+"/"+allWeight+"  "+index)
@@ -104,7 +104,7 @@ module.exports = function() {
 				cb(false)
 			}else{
 				data = JSON.parse(oriData)
-				self.consumeItems(uid,"1000090:12",1,function(flag,err) {
+				self.consumeItems(uid,"1000090:12",1,"普通寻宝",function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
@@ -121,7 +121,7 @@ module.exports = function() {
 								}
 								if(i == 0)
 									id = data[index]["id"]
-								awardList = awardList.concat(self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"]))
+								awardList = awardList.concat(self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"],1,"普通寻宝"))
 							}
 						}
 						var dataStr = JSON.stringify(data)
@@ -148,7 +148,7 @@ module.exports = function() {
 	}
 	//付费刷新普通寻宝
 	this.normalSTBuyRefresh = function(uid,cb) {
-		self.consumeItems(uid,treasure_cfg["normal_refresh"]["value"],1,function(flag,err) {
+		self.consumeItems(uid,treasure_cfg["normal_refresh"]["value"],1,"普通寻宝刷新",function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
@@ -177,7 +177,7 @@ module.exports = function() {
 			var score = Number(list[0]) || 0
 			if(score >= treasure_cfg["normal_luck_"+boxId].arg && !list[boxId]){
 				var info = {}
-				info.awardList = self.addItemStr(uid,treasure_cfg["normal_luck_"+boxId]["value"],1)
+				info.awardList = self.addItemStr(uid,treasure_cfg["normal_luck_"+boxId]["value"],1,"普通寻宝幸运宝箱"+boxId)
 				list[boxId] = 1
 				if(list[1] && list[2] && list[3] && list[4] && list[5]){
 					info.refresh = true
@@ -206,7 +206,7 @@ module.exports = function() {
 				var score = treasure_cfg["high_luck"]["value"]
 				self.incrbyObj(uid,main_name,"high_score",score)
 				data = JSON.parse(data)
-				self.consumeItems(uid,"1000100:1",1,function(flag,err) {
+				self.consumeItems(uid,"1000100:1",1,"高级寻宝",function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
@@ -217,7 +217,7 @@ module.exports = function() {
 								data[index].finish = true
 								self.setObj(uid,main_name,"high_grid",JSON.stringify(data))
 							}
-							var awardList = self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"],1)
+							var awardList = self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"],1,"高级寻宝")
 							cb(true,{awardList:awardList,data:data,index : index,score:score})
 						}else{
 							console.error("奖励找不到"+curWeight+"/"+allWeight+"  "+index)
@@ -237,7 +237,7 @@ module.exports = function() {
 				cb(false)
 			}else{
 				data = JSON.parse(oriData)
-				self.consumeItems(uid,"1000100:10",1,function(flag,err) {
+				self.consumeItems(uid,"1000100:10",1,"高级寻宝",function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
@@ -254,7 +254,7 @@ module.exports = function() {
 								}
 								if(i == 0)
 									id = data[index]["id"]
-								awardList = awardList.concat(self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"]))	
+								awardList = awardList.concat(self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"],1,"高级寻宝"))	
 							}
 						}
 						var dataStr = JSON.stringify(data)
@@ -281,7 +281,7 @@ module.exports = function() {
 	}
 	//付费刷新高级寻宝
 	this.highSTBuyRefresh = function(uid,cb) {
-		self.consumeItems(uid,treasure_cfg["high_refresh"]["value"],1,function(flag,err) {
+		self.consumeItems(uid,treasure_cfg["high_refresh"]["value"],1,"高级寻宝刷新",function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
@@ -310,7 +310,7 @@ module.exports = function() {
 			var score = Number(list[0]) || 0
 			if(score >= treasure_cfg["high_luck_"+boxId].arg && !list[boxId]){
 				var info = {}
-				info.awardList = self.addItemStr(uid,treasure_cfg["high_luck_"+boxId]["value"],1)
+				info.awardList = self.addItemStr(uid,treasure_cfg["high_luck_"+boxId]["value"],1,"高级寻宝幸运宝箱"+boxId)
 				list[boxId] = 1
 				if(list[1] && list[2] && list[3] && list[4] && list[5]){
 					info.refresh = true

@@ -91,13 +91,13 @@ module.exports = function() {
 				cb(false,"已购买")
 				return
 			}
-			self.consumeItems(uid,goods.price,1,function(flag,err) {
+			self.consumeItems(uid,goods.price,1,"神秘商店"+type,function(flag,err) {
 				if(!flag){
 					cb(false,err)
 				}else{
 					goods.sellOut = 1
 					self.setObj(uid,main_name,type+"_"+index,JSON.stringify(goods))
-					let awardList = self.addItemStr(uid,goods.itemId+":"+goods.value,1)
+					let awardList = self.addItemStr(uid,goods.itemId+":"+goods.value,1,"神秘商店"+type)
 					self.taskUpdate(uid,"bazzar_buy",1)
 					cb(true,awardList)
 				}
@@ -199,7 +199,7 @@ module.exports = function() {
 				cb(false,"刷新次数达到上限")
 				return
 			}
-			self.consumeItems(uid,bazaar_cfg[type]["consume"],1,function(flag,err) {
+			self.consumeItems(uid,bazaar_cfg[type]["consume"],1,"神秘商店刷新",function(flag,err) {
 				if(!flag){
 					cb(false,err)
 				}else{
