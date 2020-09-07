@@ -58,6 +58,9 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
             heroInfos = self.heroDao.randHero(areaId,uid,type,count)
             self.areaManager.areaMap[areaId].taskUpdate(uid,"general",count)
           break
+          case "cardScore":
+            heroInfos = self.heroDao.randHero(areaId,uid,type,count)
+          break
         }
         var typeName = recruit_base[type]["name"]
         var name = session.get("name")
