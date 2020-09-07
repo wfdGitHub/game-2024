@@ -68,12 +68,17 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 	var weights = recruit_base[type]["weights"]
     var heroInfos = []
     var r_luck = this.areaManager.areaMap[areaId].players[uid]["r_luck"]
+    var luckNum = 0
     for(var num = 0;num < count;num++){
-    	if(r_luck >= 19){
+    	if(r_luck >= 29){
 	      	var heroId = this.randHeroId("randChip_5_2")
 			var heroInfo = this.gainHero(areaId,uid,{id : heroId})
 			heroInfos.push(heroInfo)
     		r_luck = 0
+    	}else if(num == 9 && luckNum == 0){
+	      	var heroId = this.randHeroId("randChip_5_1")
+			var heroInfo = this.gainHero(areaId,uid,{id : heroId})
+			heroInfos.push(heroInfo)
     	}else{
 			var rand = Math.random() * allWeight
 			for(var i in weights){
@@ -84,6 +89,8 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 					heroInfos.push(heroInfo)
 					if(heroInfo.star < 5)
 						r_luck++
+					if(heroInfo.star >= 4)
+						luckNum++
 					break
 				}
 			}
