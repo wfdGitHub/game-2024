@@ -1,4 +1,5 @@
 var bearcat = require("bearcat")
+var pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
 var adminHandler = function(app) {
 	this.app = app
 	this.areaDeploy = this.app.get("areaDeploy")
@@ -275,12 +276,17 @@ adminHandler.prototype.getChatRecordList = function(msg,session,next) {
 adminHandler.prototype.rechargeToUser = function(msg,session,next) {
 	var uid = msg.uid
 	var pay_id = msg.pay_id
+	if(!pay_cfg[pay_id]){
+		next(null,{"err":"pay_id error "+pay_id})
+		return
+	}
 	var self = this
 	self.playerDao.getPlayerAreaId(uid,function(flag,data) {
 		if(flag){
 			var areaId = self.areaDeploy.getFinalServer(data)
 			var serverId = self.areaDeploy.getServer(areaId)
 			if(serverId){
+				self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(pay_cfg[pay_id]["rmb"]) * 100),function(){})
 				self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,function(flag,data) {
 					next(null,{flag:flag,data:data})
 				})
