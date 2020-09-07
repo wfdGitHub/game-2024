@@ -334,7 +334,10 @@ module.exports = function() {
 		var cb = false
 		var reason = ""
 		if(arguments.length == 4){
-			cb = arguments[3]
+			if(typeof(arguments[3]) == "function")
+				cb = arguments[3]
+			else
+				reason = arguments[3]
 		}else if(arguments.length == 5){
 			reason = arguments[3]
 			cb = arguments[4]
