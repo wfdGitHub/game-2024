@@ -287,7 +287,6 @@ module.exports = function() {
 		var reason = ""
 		if(arguments.length == 5)
 			reason = arguments[3]
-		console.log("consumeItems",uid,str,rate,reason)
 		var items = []
 		var values = []
 		var strList = str.split("&")
