@@ -161,18 +161,18 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
     		next(null,{flag : false,err : "未注册角色"})
     		return
     	}
-		//检查重复登录
-		if( !! self.sessionService.getByUid(uid)) {
-			self.connectorManager.sendByUid(uid,{type : "kick"})
-			var uids = self.sessionService.getByUid(uid)
-			for(var i = 0;i < uids.length;i++){
-				self.sessionService.kickBySessionId(uids[i].id)
-			}
-		}
-    	session.bind(uid)
-    	session.on("closed",onUserLeave.bind(self))
 	    self.app.rpc.area.areaRemote.userLogin.toServer(serverId,uid,areaId,oriId,self.app.serverId,function(flag,playerInfo) {
 			if(flag){
+				//检查重复登录
+				if( !! self.sessionService.getByUid(uid)) {
+					self.connectorManager.sendByUid(uid,{type : "kick"})
+					var uids = self.sessionService.getByUid(uid)
+					for(var i = 0;i < uids.length;i++){
+						self.sessionService.kickBySessionId(uids[i].id)
+					}
+				}
+    			session.bind(uid)
+    			session.on("closed",onUserLeave.bind(self))
 		        session.set("areaId",areaId)
 		        session.push("areaId")
 		        session.set("oriId",oriId)
