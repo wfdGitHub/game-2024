@@ -48,7 +48,7 @@ chatHandler.prototype.say = function(msg, session, next) {
 	var text = msg.text
 	this.chat.say(talker,roomName,text)
 	this.cacheDao.saveChat({messagetype:"chat",uid:uid,nickname:name,text:text,roomName:roomName})
-	// this.mysqlDao.addChatRecord(uid,name,text,roomName)
+	this.mysqlDao.addChatRecord(uid,name,text,roomName)
 	next(null)
 }
 module.exports = function(app) {
