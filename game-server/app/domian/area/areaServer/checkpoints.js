@@ -133,8 +133,8 @@ module.exports = function() {
 		  	var rate = (1+VIP[self.players[uid]["vip"]]["onhookAward"])
 		  	if(self.players[uid]["highCard"])
 		  		rate += activity_cfg["high_card_onhook"]["value"]
-		  	rate = (awardTime * rate) / 60 
 		  	console.log("rate ",rate,"awardTime ",awardTime)
+		  	rate = (awardTime * rate) / 60 
 		  	self.taskUpdate(uid,"on_hook",1)
 		  	var awardList = self.addItemStr(uid,on_hook_award,rate,"挂机奖励")
 		  	var awardStr = self.gainOnhookItem(level,awardTime/60)
