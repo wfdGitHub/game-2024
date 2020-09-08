@@ -124,7 +124,7 @@ module.exports = function() {
 			}
 		  	self.incrbyPlayerData(uid,"onhookLastTime",tmpTime * 1000)
 		  	var awardTime = tmpTime
-		  	var maxTime = 43200 + VIP[self.players[uid]["vip"]]["onhookTime"]
+		  	var maxTime = 43200 + (VIP[self.players[uid]["vip"]]["onhookTime"] + activity_cfg["high_card_time"]["value"]) * 60 * 60
 		  	if(awardTime > maxTime){
 		  		awardTime = maxTime
 		  	}

@@ -342,10 +342,6 @@ module.exports = function() {
 			reason = arguments[3]
 			cb = arguments[4]
 		}
-		if(typeof(rate) != "number"){
-			console.error("addItemStr arg error",uid,str,rate,reason)
-			rate = 1
-		}
 		console.log("addItemStr",uid,str,rate,reason)
 		var list = str.split("&")
 		if(!rate || parseFloat(rate) != rate || typeof(rate) != "number"){
