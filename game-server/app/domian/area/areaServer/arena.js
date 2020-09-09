@@ -261,12 +261,12 @@ module.exports = function() {
 				cb(false,"购买次数已达上限")
 				return
 			}
-			self.consumeItems(uid,buyConsume,1,function(flag,err) {
+			self.consumeItems(uid,buyConsume,1,"竞技场次数",function(flag,err) {
 				if(!flag){
 					cb(flag,err)
 					return
 				}
-				self.incrbyObj(uid,mainName,"buyCount",1,"竞技场挑战次数",function(newCount) {
+				self.incrbyObj(uid,mainName,"buyCount",1,function(newCount) {
 					cb(true,newCount)
 				})
 			})
