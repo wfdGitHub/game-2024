@@ -229,17 +229,17 @@ module.exports = function() {
 	this.taskUpdate = function(uid,type,value,arg) {
 		value = Number(value)
 		if(userTaskMaps[uid] && userTaskMaps[uid][type]){
-			for(let i = 0;i < userTaskMaps[uid][type].length;i++){
-				let taskId = userTaskMaps[uid][type][i]
-				if(userTaskLists[uid][taskId] < task_cfg[taskId]["value"]){
-					if(!arg || (task_type[type].equal && arg == task_cfg[taskId].arg) || (!task_type[type].equal && arg >= task_cfg[taskId].arg)){
-						if(type == "totalCe"){
-							userTaskLists[uid][taskId] = value
-							self.setObj(uid,main_name,taskId,value)
-						}else{
-							userTaskLists[uid][taskId] += value
-							self.incrbyObj(uid,main_name,taskId,value)
-						}
+			for(var i = 0;i < userTaskMaps[uid][type].length;i++){
+				var taskId = userTaskMaps[uid][type][i]
+				if(!arg || (task_type[type].equal && arg == task_cfg[taskId].arg) || (!task_type[type].equal && arg >= task_cfg[taskId].arg)){
+					if(type == "totalCe"){
+						userTaskLists[uid][taskId] = value
+						self.setObj(uid,main_name,taskId,value)
+					}else{
+						userTaskLists[uid][taskId] += value
+						self.incrbyObj(uid,main_name,taskId,value)
+					}
+					if(userTaskLists[uid][taskId] <= task_cfg[taskId]["value"]){
 						var notify = {
 							"type" : "taskUpdate",
 							"taskId" : taskId,
