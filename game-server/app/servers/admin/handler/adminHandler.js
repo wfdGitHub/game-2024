@@ -228,7 +228,7 @@ adminHandler.prototype.kickUser = function(uid) {
 }
 //发送个人邮件
 adminHandler.prototype.adminSendMail = function(msg, session, next) {
-	var adimAccId = session.get("accId")
+	var adminAccId = session.get("accId")
 	var uid = msg.uid
 	var title = msg.title
 	var text = msg.text
@@ -246,7 +246,7 @@ adminHandler.prototype.adminSendMail = function(msg, session, next) {
 	        return
 	    }
 	    self.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,function(flag,list) {
-	    	self.cacheDao.saveCache({"messagetype":"adminSendMail",adimAccId:adimAccId,uid:uid,areaId:areaId,title:title,text:text,atts:atts})
+	    	self.cacheDao.saveCache({"messagetype":"adminSendMail",adminAccId:adminAccId,uid:uid,areaId:areaId,title:title,text:text,atts:atts})
 	    	next(null,{flag : true,list : list})
 		})
 	})
