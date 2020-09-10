@@ -245,6 +245,7 @@ adminHandler.prototype.adminSendMail = function(msg, session, next) {
 	        return
 	    }
 	    self.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,function(flag,list) {
+	    	self.cacheDao.saveCache({"messagetype":"adminSendMail",uid:uid,areaId:areaId,title:title,text:text,atts:atts})
 	    	next(null,{flag : true,list : list})
 		})
 	})
@@ -309,6 +310,9 @@ module.exports = function(app) {
 		props : [{
 			name : "redisDao",
 			ref : "redisDao"
+		},{
+			name : "cacheDao",
+			ref : "cacheDao"
 		},{
 			name : "accountDao",
 			ref : "accountDao"

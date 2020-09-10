@@ -99,6 +99,7 @@ module.exports = function() {
 			    	cb(true,{winFlag : winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,awardList:awardList})
 			    	self.taskUpdate(uid,"checkpoints",1,level)
 			    	self.updateSprintRank("checkpoint_rank",uid,1)
+			    	self.cacheDao.saveCache({"messagetype":"checkpoints",uid:uid,level:level})
 			    }else{
 			    	cb(false,{winFlag : winFlag})
 			    }
