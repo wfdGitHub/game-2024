@@ -62,7 +62,7 @@ playerDao.prototype.getUidByAreaId = function(otps,cb) {
 		if(err || !uid){
 			cb(false)
 		}else{
-			cb(true,uid)
+			cb(true,Number(uid))
 		}
 	})
 }
