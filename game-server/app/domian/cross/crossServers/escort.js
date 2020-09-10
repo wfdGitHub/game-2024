@@ -311,6 +311,10 @@ module.exports = function() {
 			cb(false,"正在押镖中")
 			return
 		}
+		if((this.curHours < escort_cfg["closeTime1"]["value"] && this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.17))){
+			cb(false,"现在不能押镖")
+			return
+		}
 		if(local.userInfos[crossUid]["escortNum"] >= escort_cfg["playCount"]["value"]){
 			cb(false,"押镖次数已用完")
 			return
