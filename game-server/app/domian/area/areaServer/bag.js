@@ -283,10 +283,17 @@ module.exports = function() {
 		var uid = arguments[0]
 		var str = arguments[1]
 		var rate = arguments[2]
-		var cb = arguments[arguments.length-1]
+		var cb = false
 		var reason = ""
-		if(arguments.length == 5)
+		if(arguments.length == 4){
+			if(typeof(arguments[3]) == "function")
+				cb = arguments[3]
+			else
+				reason = arguments[3]
+		}else if(arguments.length == 5){
 			reason = arguments[3]
+			cb = arguments[4]
+		}
 		var items = []
 		var values = []
 		var strList = str.split("&")

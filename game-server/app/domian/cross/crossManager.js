@@ -111,7 +111,7 @@ crossManager.prototype.sendByTypeToUser = function(type,uids,notify) {
 	this.channelService.pushMessageByUids(type, notify,uids)
 }
 //消耗道具
-crossManager.prototype.consumeItems = function(crossUid,str,rate,cb) {
+crossManager.prototype.consumeItems = function(crossUid,str,rate,reason,cb) {
 	if(!this.players[crossUid]){
 		cb(false)
 		return
@@ -119,7 +119,7 @@ crossManager.prototype.consumeItems = function(crossUid,str,rate,cb) {
 	var areaId = this.players[crossUid]["areaId"]
 	var serverId = this.players[crossUid]["serverId"]
 	var uid = this.players[crossUid]["uid"]
-	this.app.rpc.area.areaRemote.consumeItems.toServer(serverId,uid,areaId,str,rate,cb)
+	this.app.rpc.area.areaRemote.consumeItems.toServer(serverId,uid,areaId,str,rate,reason,cb)
 }
 //物品奖励
 crossManager.prototype.addItemStr = function(crossUid,str,rate,reason,cb) {

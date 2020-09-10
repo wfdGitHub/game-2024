@@ -89,9 +89,9 @@ areaRemote.prototype.getAreaPlayers = function(areaId,cb) {
 	}
 }
 //消耗道具
-areaRemote.prototype.consumeItems = function(uid,areaId,str,rate,cb) {
+areaRemote.prototype.consumeItems = function(uid,areaId,str,rate,reason,cb) {
 	if(this.areaManager.areaMap[areaId]){
-		this.areaManager.areaMap[areaId].consumeItems(uid,str,rate,cb)
+		this.areaManager.areaMap[areaId].consumeItems(uid,str,rate,reason,cb)
 	}else{
 		cb(false)
 	}
