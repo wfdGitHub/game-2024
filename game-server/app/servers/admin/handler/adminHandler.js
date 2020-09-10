@@ -228,7 +228,7 @@ adminHandler.prototype.kickUser = function(uid) {
 }
 //发送个人邮件
 adminHandler.prototype.adminSendMail = function(msg, session, next) {
-	var adimUid = session.uid
+	var adimAccId = session.get("accId")
 	var uid = msg.uid
 	var title = msg.title
 	var text = msg.text
