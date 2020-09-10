@@ -19,9 +19,7 @@ var maxRecordNum = 10													//最大记录条数
 var rankList = []
 for(var i in arena_rank){
 	rankList.push(parseInt(i))
-	for(var j = 1;j <= 3;j++){
-		arena_rank[i]["team"+j] = JSON.parse(arena_rank[i]["team"+j])
-	}
+	arena_rank[i]["team"] = JSON.parse(arena_rank[i]["team"])
 }
 rankList.sort(function(a,b) {
 	return a-b
@@ -139,12 +137,11 @@ module.exports = function() {
 		if(targetUid < 10000){
 			//机器人队伍
 			var range = util.binarySearch(rankList,targetRank)
-			var rand = Math.floor(Math.random() * 3 + 1)
-			if(!arena_rank[range] || !arena_rank[range]["team"+rand]){
+			if(!arena_rank[range] || !arena_rank[range]["team"]){
 				cb(false,"机器人配置错误")
 				return
 			}
-			var defTeam = arena_rank[range]["team"+rand].concat()
+			var defTeam = arena_rank[range]["team"].concat()
 			cb(true,defTeam)
 		}else{
 			//玩家队伍
@@ -207,14 +204,13 @@ module.exports = function() {
 				if(targetUid < 10000){
 					//机器人队伍
 					var range = util.binarySearch(rankList,targetRank)
-					var rand = Math.floor(Math.random() * 3 + 1)
-					if(!arena_rank[range] || !arena_rank[range]["team"+rand]){
+					if(!arena_rank[range] || !arena_rank[range]["team"]){
 						cb(false,"机器人配置错误")
 						delete local.locks[targetUid]
 						delete local.locks[uid]
 						return
 					}
-					var defTeam = arena_rank[range]["team"+rand].concat()
+					var defTeam = arena_rank[range]["team"].concat()
 					local.challengeArena(uid,targetUid,targetRank,targetInfo,atkTeam,defTeam,seededNum,cb)
 				}else{
 					//玩家队伍
