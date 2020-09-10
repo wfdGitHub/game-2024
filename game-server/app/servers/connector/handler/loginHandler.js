@@ -167,8 +167,10 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 				if( !! self.sessionService.getByUid(uid)) {
 					self.connectorManager.sendByUid(uid,{type : "kick"})
 					var uids = self.sessionService.getByUid(uid)
-					for(var i = 0;i < uids.length;i++){
-						self.sessionService.kickBySessionId(uids[i].id)
+					if(uids){
+						for(var i = 0;i < uids.length;i++){
+							self.sessionService.kickBySessionId(uids[i].id)
+						}
 					}
 				}
     			session.bind(uid)
