@@ -42,7 +42,6 @@ serverManager.prototype.init = function() {
 	}
 	server.post(sdkConfig["pay_callback"],function(req,res) {
 		var data = req.body
-		console.log("pay_callback",data)
 		self.pay_order(data,function(flag,err) {
 			// if(!flag)
 			// 	res.send(err)

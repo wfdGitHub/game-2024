@@ -10,7 +10,6 @@ payDao.prototype.init  = function() {
 payDao.prototype.createGameOrder = function(otps,cb) {
 	var self = this
 	sql = 'insert into game_order SET ?'
-	console.log("uuid",uuid.v1())
 	var info = {
 		game_order : uuid.v1(),
 		pay_id : otps.pay_id,
