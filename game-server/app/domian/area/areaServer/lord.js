@@ -114,6 +114,7 @@ module.exports = function() {
 			self.sendToUser(uid,notify)
 			self.taskUpdate(uid,"loadLv",upLv)
 			self.checkLimitGiftLv(uid,level,level+upLv)
+			self.cacheDao.saveCache({"messagetype":"lordUpgrade",uid:uid,level:level+upLv})
 		}
 	}
 }
