@@ -276,6 +276,7 @@ model.useAttackSkill = function(skill) {
 	var kill_burn_num = 0
 	var dead_anger = 0
 	var burnDamage = 0
+	var died_targets = []
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died && !skill.character.died_use_skill){
 			break
@@ -289,6 +290,7 @@ model.useAttackSkill = function(skill) {
 		if(targets[i].buffs["burn"])
 			burnDamage += info.realValue
 		recordInfo.targets.push(info)
+		died_targets.push(target)
 		if(info.kill){
 			kill_num++
 			dead_anger += target.curAnger
@@ -326,6 +328,18 @@ model.useAttackSkill = function(skill) {
 			let info = skill.character.onHeal(skill.character,{value : value},skill)
 			tmpRecord.targets.push(info)
 			fightRecord.push(tmpRecord)
+		}
+		//直接伤害击杀目标后，概率清除己方武将身上该目标死亡前释放的所有异常效果（灼烧、中毒、眩晕、沉默、麻痹
+		if(skill.character.kill_clear_buff){
+			for(var i = 0;i < died_targets.length;i++){
+				if(skill.character.kill_clear_buff && this.seeded.random("击杀清除BUFF") < skill.character.kill_clear_buff){
+				    skill.character.team.forEach(function(team_target,index) {
+				        if(!team_target.died){
+				        	team_target.clearReleaserBuff(died_targets[i])
+				        }
+				    })
+				}
+			}
 		}
 	}
 	//伤害值转生命判断

@@ -41,6 +41,8 @@ var model = function(otps) {
 	this.allAnger = otps["allAnger"] || false   //技能消耗所有怒气
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
+	//=========宝石效果=======//
+	this.kill_clear_buff = otps.kill_clear_buff || 0 //直接伤害击杀目标后，概率清除己方武将身上该目标死亡前释放的所有异常效果（灼烧、中毒、眩晕、沉默、麻痹）
 	//=========特殊属性=======//
 	this.buffRate = otps.buffRate || 0			//buff概率   若技能存在buff  以此代替buff本身概率
 	this.buffArg = otps.buffArg || 0			//buff参数   若技能存在buff  以此代替buff本身参数
@@ -285,6 +287,12 @@ model.prototype.roundOver = function() {
 	for(var i in this.buffs)
 		if(!this.buffs[i].refreshType == "roundOver")
 			this.buffs[i].update()
+}
+//清除指定角色buff
+model.prototype.clearReleaserBuff = function(releaser) {
+	for(var i in this.buffs)
+		if(this.buffs[i].debuff &&this.buffs[i].releaser == releaser)
+			this.buffs[i].destroy()
 }
 //受到伤害
 model.prototype.onHit = function(attacker,info,source) {

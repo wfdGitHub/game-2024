@@ -3,6 +3,7 @@ var fightRecord = require("../../fight/fightRecord.js")
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
+	buff.debuff = true
 	// console.log("角色"+buff.character.id+"被中毒!!!!!!")
 	buff.refreshType = "before"
 	buff.name = "中毒"
