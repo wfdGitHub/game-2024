@@ -37,6 +37,11 @@ chatHandler.prototype.say = function(msg, session, next) {
 		next(null,{flag : false,err : "roomName error "+roomName})
 		return
 	}
+	if(session.get("real_rmb") < 10000){
+		console.error("say real_rmb error "+session.uid+"  "+session.get("real_rmb"))
+		next(null,{flag : false})
+		return
+	}
 	var uid = session.uid
 	var name = session.get("name")
 	var head = session.get("head")

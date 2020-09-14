@@ -22,6 +22,21 @@ connectorRemote.prototype.changeFinalServerMap = function(areaId,finalId,cb) {
 	if(cb)
 		cb()
 }
+//同步充值数据
+connectorRemote.prototype.syncRealrmb = function(uid,value,cb) {
+	console.log("syncRealrmb",uid,value)
+	var uids = this.sessionService.getByUid(uid)
+	if(uids) {
+		for(var i = 0;i < uids.length;i++){
+			if(uids[i]){
+				uids[i].set("real_rmb",uids[i].get("real_rmb") + value)
+			}
+		}
+	}
+	if(cb){
+		cb()
+	}
+}
 connectorRemote.prototype.kickUser = function(uid,cb) {
 	this.connectorManager.sendByUid(uid,{type : "kick"})
 	var uids = this.sessionService.getByUid(uid)
