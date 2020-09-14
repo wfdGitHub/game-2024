@@ -39,7 +39,7 @@ chatHandler.prototype.say = function(msg, session, next) {
 	}
 	var uid = session.uid
 	var text = msg.text
-	if(text.indexOf("分享战报fightId") != 0 && text.indexOf("分享阵容teamId") != 0 && session.get("real_rmb") < 10000){
+	if(text.indexOf("分享战报fightId") != 0 && text.indexOf("分享阵容teamId") != 0 && session.get("real_rmb") < 3000){
 		console.error("say real_rmb error "+session.uid+"  "+session.get("real_rmb"))
 		next(null,{flag : false})
 		return
