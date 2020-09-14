@@ -84,6 +84,8 @@ entryHandler.entrySuccess = function(session,userInfo,unionid,next) {
   	next(null, {flag : true,msg : userInfo});
 }
 var onUserLeave = function(session) {
+	if(this.connectorManager.runTime < 10000)
+		return
 	var uid = session.uid
 	if(uid){
 		session.unbind(uid)

@@ -84,6 +84,10 @@ loginHandler.prototype.getPlayerInfo = function(msg, session, next) {
 }
 //创建角色
 loginHandler.prototype.register = function(msg, session, next) {
+	if(this.connectorManager.runTime < 10000){
+        next(null,{flag : false,err : "服务器准备中"})
+		return
+	}
 	var oriId = msg.areaId
 	var name = msg.name
 	var sex = msg.sex
@@ -135,6 +139,10 @@ loginHandler.prototype.getRandomName = function(msg, session, next) {
 }
 //登录游戏
 loginHandler.prototype.loginArea = function(msg, session, next) {
+	if(this.connectorManager.runTime < 10000){
+        next(null,{flag : false,err : "服务器准备中"})
+		return
+	}
 	var oriId = msg.areaId
 	var accId = session.get("accId")
 	if(!accId){
@@ -199,6 +207,8 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
     })
 }
 var onUserLeave = function(session) {
+	if(this.connectorManager.runTime < 10000)
+		return
 	var uid = session.uid
 	if(uid){
 		session.unbind(uid)

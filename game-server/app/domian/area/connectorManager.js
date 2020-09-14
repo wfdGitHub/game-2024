@@ -1,10 +1,14 @@
 var bearcat = require("bearcat")
 var connectorManager = function() {}
-
 connectorManager.prototype.init = function(app) {
 	this.app = app
 	this.channelService = this.app.get('channelService')
 	this.app.event.on("remove_servers", this.removeServers.bind(this));
+	this.timer = setInterval(this.update.bind(this),5000)
+}
+//定时器
+connectorManager.prototype.update = function() {
+	this.runTime += 5000
 }
 //服务器实体机器移除
 connectorManager.prototype.removeServers = function(ids) {
