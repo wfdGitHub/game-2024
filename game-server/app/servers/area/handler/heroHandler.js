@@ -1,6 +1,7 @@
 var bearcat = require("bearcat")
 var heros = require("../../../../config/gameCfg/heros.json")
 var advanced_base = require("../../../../config/gameCfg/advanced_base.json")
+var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var star_base = require("../../../../config/gameCfg/star_base.json")
 var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 var heroHandler = function(app) {
@@ -56,13 +57,16 @@ heroHandler.prototype.resetHero = function(msg, session, next) {
       next(null,{flag : false,err : "当前状态不能重置"})
       return
     }
-    self.heroDao.heroReset(areaId,uid,heroInfo,function(flag,awardList) {
-      if(flag){
+    self.areaManager.areaMap[areaId].consumeItems(uid,default_cfg["hero_reset"]["value"],1,"英雄重生",function(flag,err) {
+      if(!flag){
+        next(null,{flag : false,err : err})
+        return
+      }
+      self.heroDao.heroReset(areaId,uid,heroInfo,function(flag,awardList) {
           self.heroDao.setHeroInfo(areaId,uid,hId,"lv",1)
           self.heroDao.setHeroInfo(areaId,uid,hId,"ad",0)
-        next(null,{flag : true,awardList : awardList,lv:1,ad:0})
-      }
-        next(null,{flag : false,err : "sysError"})
+          next(null,{flag : true,awardList : awardList,lv:1,ad:0})
+      })
     })
   })
 }
