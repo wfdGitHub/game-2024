@@ -41,6 +41,31 @@ heroHandler.prototype.gainHero = function(msg, session, next) {
       })
   })
 }
+//英雄重生
+heroHandler.prototype.resetHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var self = this
+  self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+    if(!flag){
+      next(null,{flag : false,err : "英雄不存在"})
+      return
+    }
+    if(heroInfo.lv == 1 && heroInfo.ad == 0){
+      next(null,{flag : false,err : "当前状态不能重置"})
+      return
+    }
+    self.heroDao.heroReset(areaId,uid,heroInfo,function(flag,awardList) {
+      if(flag){
+          self.heroDao.setHeroInfo(areaId,uid,hId,"lv",1)
+          self.heroDao.setHeroInfo(areaId,uid,hId,"ad",0)
+        next(null,{flag : true,awardList : awardList,lv:1,ad:0})
+      }
+        next(null,{flag : false,err : "sysError"})
+    })
+  })
+}
 //分解英雄
 heroHandler.prototype.removeHeros = function(msg, session, next) {
   var uid = session.uid
@@ -104,7 +129,7 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
       }
       self.heroDao.incrbyHeroInfo(areaId,uid,hId,"lv",aimLv - heroInfo.lv,function(flag,data) {
         next(null,{flag : flag,data : data})
-      })
+      })  
     })
   })
 }
@@ -408,14 +433,15 @@ heroHandler.prototype.cancelReplace = function(msg, session, next) {
 }
 //修改英雄属性
 heroHandler.prototype.incrbyHeroInfo = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var hId = msg.hId
-  var name = msg.name
-  var value = msg.value
-  this.heroDao.incrbyHeroInfo(areaId,uid,hId,name,value,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
+  next(null,{flag : false})
+  // var uid = session.uid
+  // var areaId = session.get("areaId")
+  // var hId = msg.hId
+  // var name = msg.name
+  // var value = msg.value
+  // this.heroDao.incrbyHeroInfo(areaId,uid,hId,name,value,function(flag,data) {
+  //   next(null,{flag : flag,data : data})
+  // })
 }
 //获取英雄列表
 heroHandler.prototype.getHeros = function(msg, session, next) {

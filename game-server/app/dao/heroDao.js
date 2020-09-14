@@ -187,6 +187,20 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 		})
 	})
 }
+//重生返还资源  返回升级升阶
+heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
+	var lv = heroInfo.lv
+	var ad = heroInfo.ad
+	var strList = []
+	if(lv_cfg[lv] && lv_cfg[lv].pr)
+		strList.push(lv_cfg[lv].pr)
+	if(advanced_base[ad] && advanced_base[ad].pr)
+		strList.push(advanced_base[ad].pr)
+	var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
+	var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"重生返还")
+	if(cb)
+		cb(true,awardList)
+}
 //分解返还资源   返还全部
 heroDao.prototype.heroPrAll = function(areaId,uid,heros,cb) {
 	var strList = []
@@ -230,7 +244,7 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 	}
 	if(strList.length){
 		var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
-		var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"升星材料返还")
+		var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"材料返还")
 		if(cb)
 			cb(true,awardList)
 	}else{

@@ -1066,7 +1066,13 @@
             console.log(data);
         });
       }
-      //英雄重置
+      //英雄重生
+      var resetHero = function(hId) {
+        pomelo.request("area.heroHandler.resetHero", {hId : hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //英雄转化
       var replaceHero = function(hId) {
         pomelo.request("area.heroHandler.replaceHero", {hId : hId}, function(data) {
             console.log(data);
