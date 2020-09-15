@@ -1,5 +1,6 @@
 var skillManager = require("../skill/skillManager.js")
 var fightRecord = require("../fight/fightRecord.js")
+var buffManager = require("../buff/buffManager.js")
 var model = function(otps) {
 	//=========身份===========//
 	this.name = otps.name		//角色名称
@@ -45,6 +46,8 @@ var model = function(otps) {
 	this.kill_clear_buff = otps.kill_clear_buff || 0 //直接伤害击杀目标后，概率清除己方武将身上该目标死亡前释放的所有异常效果（灼烧、中毒、眩晕、沉默、麻痹）
 	this.control_amp = otps.control_amp || 0 //攻击正在被控制（眩晕、沉默、麻痹）的目标时，增加伤害比例
 	this.reduction_over = otps.reduction_over || 0 //受到武将直接伤害时，如果该伤害超过自身生命上限的40%，减免此次伤害的比例
+	if(otps.died_buff_s)
+		this.died_buff_s = JSON.parse(otps.died_buff_s) || false //死亡时，有40%概率使血量最少的己方目标获得一个无敌护盾，持续1回合
 	//=========特殊属性=======//
 	this.buffRate = otps.buffRate || 0			//buff概率   若技能存在buff  以此代替buff本身概率
 	this.buffArg = otps.buffArg || 0			//buff参数   若技能存在buff  以此代替buff本身参数
@@ -236,6 +239,9 @@ var model = function(otps) {
 		this.angerSkill.targetType = "enemy_minHP"
 	}
 }
+model.prototype.init = function(fighting) {
+	this.fighting = fighting
+}
 //百分比属性加成
 model.prototype.calAttAdd = function(team_adds) {
 	this.show_adds = Object.assign({},this.self_adds)
@@ -365,6 +371,15 @@ model.prototype.onDie = function() {
 	// console.log(this.name+"死亡")
 	this.attInfo.hp = 0
 	this.died = true
+	//死亡buff判断
+	if(this.died_buff_s){
+		var buffTargets = this.fighting.locator.getBuffTargets(this,this.died_buff_s.buff_tg)
+		for(var i = 0;i < buffTargets.length;i++){
+			if(this.fighting.seeded.random("判断BUFF命中率") < this.died_buff_s.buffRate){
+				buffManager.createBuff(this,buffTargets[i],{buffId : this.died_buff_s.buffId,buffArg : this.died_buff_s.buffArg,duration : this.died_buff_s.duration})
+			}
+		}
+	}
 }
 //击杀目标
 model.prototype.kill = function(target) {

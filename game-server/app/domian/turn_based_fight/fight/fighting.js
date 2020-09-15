@@ -45,6 +45,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			atkTeam[i] = new character({})
 			atkTeam[i].isNaN = true
 		}
+		atkTeam[i].init(this)
 		if(atkTeam[i].resurgence_team)
 			this.atkTeamInfo["resurgence_team"] = atkTeam[i].resurgence_team
 		atkTeam[i].camp = "atk"
@@ -68,6 +69,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			defTeam[i] = new character({})
 			defTeam[i].isNaN = true
 		}
+		defTeam[i].init(this)
 		if(defTeam[i].resurgence_team)
 			this.defTeamInfo["resurgence_team"] = defTeam[i].resurgence_team
 		defTeam[i].camp = "def"

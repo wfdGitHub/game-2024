@@ -119,7 +119,7 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 	switch(targetType){
 		case "skill_targets":
 			//技能目标
-			return targets
+			return targets || []
 		case "team_self":
 			return [character]
 		case "team_all":
@@ -161,7 +161,7 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 			//敌方全体
 			return	this.getEnemyAll(character)
 		default :
-			return targets
+			return targets || []
 	}
 }
 //获取目标类型对应目标数量
