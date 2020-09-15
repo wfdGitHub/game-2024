@@ -75,6 +75,11 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
 	if(info.crit){
 		info.value = Math.round(info.value * (1.5 + attacker.getTotalAtt("slay") - target.getTotalAtt("slayDef")))
 	}
+	if(target.reduction_over){
+		if(info.value >= target.attInfo.maxHP * 0.4){
+			info.value = Math.floor(info.value * (1-target.reduction_over))
+		}
+	}
 	//最小伤害
 	if (info.value <= 1) {
 		info.value = 1
