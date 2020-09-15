@@ -164,17 +164,18 @@ model.useSkill = function(skill) {
 		}
 		//普攻后追加BUFF
 		if(skill.character.normal_later_buff){
-			let buffInfo = skill.character.normal_later_buff
-			let buffRate = buffInfo.buffRate
+			var buffInfo = skill.character.normal_later_buff
+			var buffRate = buffInfo.buffRate
 			//判断技能目标减少
 			if(skill.character.less_normal_buffRate){
-				let allLenth = this.locator.getTargetsNum(skill.targetType)
+				var allLenth = this.locator.getTargetsNum(skill.targetType)
 				buffRate += ((allLenth - targets.length + 1) / allLenth) * skill.character.less_normal_buffRate
 			}
-			for(var i = 0;i < targets.length;i++){
-				if(!targets[i].died){
+			var buffTargets = this.locator.getBuffTargets(skill.character,buffInfo.buff_tg,targets)
+			for(var i = 0;i < buffTargets.length;i++){
+				if(!buffTargets[i].died){
 					if(this.seeded.random("判断BUFF命中率") < buffRate){
-						buffManager.createBuff(skill.character,targets[i],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+						buffManager.createBuff(skill.character,buffTargets[i],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 					}
 				}
 			}

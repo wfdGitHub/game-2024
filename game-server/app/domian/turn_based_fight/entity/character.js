@@ -50,6 +50,12 @@ var model = function(otps) {
 		this.died_buff_s = JSON.parse(otps.died_buff_s) || false //死亡时释放BUFF
 	if(otps.action_buff_s)
 		this.action_buff_s = JSON.parse(otps.action_buff_s) || false //行动后对自身释放BUFF
+	this.record_anger_rate = otps.record_anger_rate || 0 //释放技能后，概率获得本次技能消耗的50%的怒气，最多不超过4点
+	this.round_anger_rate = otps.round_anger_rate || 0 //整体回合结束时，如果自身怒气低于4点，将怒气回复至4点的概率
+	this.action_anger_s = otps.action_anger_s || 0 //自身行动后，回复自身1点怒气概率
+	this.before_clear_debuff = otps.before_clear_debuff || 0 //自身回合开始前，移除自身所有的异常效果（灼烧、中毒、眩晕、沉默、麻痹、禁疗）的概率
+	this.oneblood_rate = otps.oneblood_rate || 0 //受到致命伤害时保留一滴血概率
+	this.target_anger_amp = otps.target_anger_amp || 0 //敌人超过4点怒气的部分，每点怒气提供伤害加成
 	//=========特殊属性=======//
 	this.buffRate = otps.buffRate || 0			//buff概率   若技能存在buff  以此代替buff本身概率
 	this.buffArg = otps.buffArg || 0			//buff参数   若技能存在buff  以此代替buff本身参数
@@ -64,6 +70,7 @@ var model = function(otps) {
 	this.less_clear_invincible = otps.less_clear_invincible || 0 //清除敌方武将无敌概率（目标越多效果越低）
 
 	this.control_buff_lowrate = otps.control_buff_lowrate || 0 //被控制概率降低（麻痹、沉默、眩晕）
+	this.damage_buff_lowrate = otps.damage_buff_lowrate || 0 //降低受到的灼烧、中毒概率
 	this.damage_buff_lowArg = otps.damage_buff_lowArg || 0 //降低受到的灼烧、中毒伤害
 
 	this.enemy_vertical_anger = otps.enemy_vertical_anger || 0	//攻击纵排目标时降低敌人怒气
@@ -279,6 +286,11 @@ model.prototype.calAttAdd = function(team_adds) {
 
 //行动开始前刷新
 model.prototype.before = function() {
+	if(this.before_clear_debuff && this.fighting.seeded.random("判断BUFF命中率") < this.before_clear_debuff){
+		for(var i in this.buffs)
+			if(this.buffs[i].debuff)
+				this.buffs[i].destroy()
+	}
 	//伤害BUFF刷新
 	for(var i in this.buffs)
 		if(this.buffs[i].refreshType == "before")
@@ -412,8 +424,13 @@ model.prototype.addHP = function(value) {
 model.prototype.lessHP = function(value) {
 	var realValue = value
 	if((this.attInfo.hp - value) <= 0){
-		realValue = this.attInfo.hp
-		this.onDie()
+		if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
+			this.attInfo.hp = 1
+			realValue = this.attInfo.hp - 1
+		}else{
+			realValue = this.attInfo.hp
+			this.onDie()
+		}
 	}else{
 		this.attInfo.hp -= value
 	}

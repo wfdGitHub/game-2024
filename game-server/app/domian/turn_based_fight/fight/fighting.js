@@ -125,6 +125,20 @@ model.prototype.nextRound = function() {
 	fightRecord.push({type : "nextRound",round : this.round})
 	this.run()
 }
+//整体回合结束
+model.prototype.endRound = function() {
+	for(var i = 0;i < 6;i++){
+		if(this.atkTeam[i].round_anger_rate && this.atkTeam[i].curAnger < 4){
+			if(this.seeded.random("回合结束怒气") < this.atkTeam[i].round_anger_rate)
+			this.atkTeam[i].addAnger(4 - this.atkTeam[i].curAnger)
+		}
+		if(this.defTeam[i].round_anger_rate && this.defTeam[i].curAnger < 4){
+			if(this.seeded.random("回合结束怒气") < this.defTeam[i].round_anger_rate)
+			this.defTeam[i].addAnger(4 - this.defTeam[i].curAnger)
+		}
+	}
+	this.nextRound()
+}
 //轮到下一个角色行动
 model.prototype.run = function() {
 	if(!this.isFight){
@@ -138,7 +152,7 @@ model.prototype.run = function() {
 			if(this.defTeam[i])
 				this.defTeam[i].roundOver()
 		}
-		this.nextRound()
+		this.endRound()
 		return
 	}
 	while(this.allTeam[this.teamIndex].index < 6){
@@ -167,19 +181,20 @@ model.prototype.before = function() {
 //开始行动释放技能
 model.prototype.action = function() {
 	var skill = false
+	var needValue = 0
 	if(!this.character.died && !this.character.dizzy){
 		if(!this.character.silence && this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
 			skill = this.character.angerSkill
-			var value = this.character.needAnger
+			needValue = this.character.needAnger
 			if(this.character.allAnger){
 				skill.angerAmp = (this.character.curAnger - 4) * 0.15
-				value = this.character.curAnger
+				needValue = this.character.curAnger
 			}
 			if(this.character.skill_free && this.seeded.random("不消耗怒气判断") > this.character.skill_free){
-				value = 0
+				needValue = 0
 			}
-			if(value){
-				this.character.lessAnger(value,value>4?false:true)
+			if(needValue){
+				this.character.lessAnger(needValue,needValue>4?false:true)
 			}
 		}else{
 			if(!this.character.disarm){
@@ -209,9 +224,18 @@ model.prototype.action = function() {
 				}
 			}
 		}
+		if(this.character.record_anger_rate && this.seeded.random("判断BUFF命中率") < this.character.record_anger_rate){
+			needValue = Math.floor(needValue/2)
+			if(needValue)
+				this.character.addAnger(needValue)
+		}
+		if(this.character.action_anger_s && this.seeded.random("行动后怒气") < this.character.action_anger_s){
+			this.character.addAnger(1)
+		}
 	}
-	else
+	else{
 		fightRecord.push({type : "freeze",id : this.character.id})
+	}
 	this.after()
 }
 //行动后结算

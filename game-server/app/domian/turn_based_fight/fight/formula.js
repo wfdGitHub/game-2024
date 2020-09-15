@@ -29,6 +29,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
 			}
 		}
 	}
+	if(attacker.target_anger_amp && target.curAnger > 4){
+		tmpAmplify += attacker.target_anger_amp * (target.curAnger - 4)
+	}
 	if(attacker.control_amp && (target.buffs["disarm"] || target.buffs["dizzy"] || target.buffs["silence"])){
 		tmpAmplify += attacker.control_amp
 	}

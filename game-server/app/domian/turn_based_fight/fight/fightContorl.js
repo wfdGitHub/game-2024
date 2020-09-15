@@ -10,6 +10,7 @@ var equip_level = require("../../../../config/gameCfg/equip_level.json")
 var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var artifact_level = require("../../../../config/gameCfg/artifact_level.json")
 var artifact_talent = require("../../../../config/gameCfg/artifact_talent.json")
+var stone_base = require("../../../../config/gameCfg/stone_base.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -231,6 +232,14 @@ model.getCharacterInfo = function(info) {
 			}
 		}
 	}
+	//属性宝石计算
+	var stoneInfo = {}
+	for(var i = 1;i <= 4;i++){
+		if(info["s_"+i] && stone_base[info["s_"+i]]){
+			stoneInfo[stone_base[info["s_"+i]]["type"]] = stone_base[info["s_"+i]]["att"]
+		}
+	}
+	model.mergeData(info,stoneInfo)
 	return new character(info)
 }
 //获取团队显示数据
