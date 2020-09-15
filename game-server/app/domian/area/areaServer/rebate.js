@@ -25,7 +25,7 @@ module.exports = function() {
 				}
 			}
 			if(rebate_gold[index]){
-				self.sendMail(uid,rebate_gold[index]["mail_title"],rebate_gold[index]["mail_text"],Math.floor(rebate_gold[index]["award"] * real_day))
+				self.sendMail(uid,rebate_gold[index]["mail_title"],rebate_gold[index]["mail_text"],"202:"+Math.floor(rebate_gold[index]["award"] * real_day))
 			}
 		}
 	}
