@@ -29,6 +29,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
 			}
 		}
 	}
+	if(attacker.control_amp && (target.buffs["disarm"] || target.buffs["dizzy"] || target.buffs["silence"])){
+		tmpAmplify += attacker.control_amp
+	}
 	//命中判断
 	var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
 	if(this.seeded.random("闪避判断") > hitRate){
