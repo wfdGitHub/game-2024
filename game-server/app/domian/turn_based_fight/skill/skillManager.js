@@ -208,17 +208,6 @@ model.useSkill = function(skill) {
 			}
 		}
 	}
-	//行动后
-	if(skill.character.action_anger)
-		skill.character.addAnger(skill.character.action_anger)
-	if(skill.character.action_buff){
-		if(!skill.character.died){
-			var buffInfo = skill.character.action_buff
-			if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
-				buffManager.createBuff(skill.character,skill.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
-			}
-		}
-	}
 }
 //伤害技能
 model.useAttackSkill = function(skill) {

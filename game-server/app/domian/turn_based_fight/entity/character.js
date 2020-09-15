@@ -47,7 +47,9 @@ var model = function(otps) {
 	this.control_amp = otps.control_amp || 0 //攻击正在被控制（眩晕、沉默、麻痹）的目标时，增加伤害比例
 	this.reduction_over = otps.reduction_over || 0 //受到武将直接伤害时，如果该伤害超过自身生命上限的40%，减免此次伤害的比例
 	if(otps.died_buff_s)
-		this.died_buff_s = JSON.parse(otps.died_buff_s) || false //死亡时，有40%概率使血量最少的己方目标获得一个无敌护盾，持续1回合
+		this.died_buff_s = JSON.parse(otps.died_buff_s) || false //死亡时释放BUFF
+	if(otps.action_buff_s)
+		this.action_buff_s = JSON.parse(otps.action_buff_s) || false //行动后对自身释放BUFF
 	//=========特殊属性=======//
 	this.buffRate = otps.buffRate || 0			//buff概率   若技能存在buff  以此代替buff本身概率
 	this.buffArg = otps.buffArg || 0			//buff参数   若技能存在buff  以此代替buff本身参数
@@ -329,6 +331,9 @@ model.prototype.onHit = function(attacker,info,source) {
 	if(info.miss){
 		info.realValue = 0
 	}else{
+		if(this.buffs["shield"]){
+			info.value = this.buffs["shield"].offset(info.value)
+		}
 		info.realValue = this.lessHP(info.value)
 		info.curValue = this.attInfo.hp
 		info.maxHP = this.attInfo.maxHP

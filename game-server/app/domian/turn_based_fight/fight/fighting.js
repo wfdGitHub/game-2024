@@ -188,8 +188,28 @@ model.prototype.action = function() {
 			}
 		}
 	}
-	if(skill)
+	if(skill){
 		skillManager.useSkill(skill)
+		//行动后
+		if(this.character.action_anger)
+			this.character.addAnger(this.character.action_anger)
+		if(this.character.action_buff){
+			if(!this.character.died){
+				var buffInfo = this.character.action_buff
+				if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+					buffManager.createBuff(this.character,this.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+				}
+			}
+		}
+		if(this.character.action_buff_s){
+			if(!this.character.died){
+				var buffInfo = this.character.action_buff_s
+				if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+					buffManager.createBuff(this.character,this.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+				}
+			}
+		}
+	}
 	else
 		fightRecord.push({type : "freeze",id : this.character.id})
 	this.after()
