@@ -243,7 +243,7 @@ model.getCharacterInfo = function(info) {
 	model.mergeData(info,stonebaseInfo)
 	//技能宝石计算
 	var stoneskillInfo = {}
-	for(var i = 5;i <= 6;i++){
+	for(var i = 5;i <= 8;i++){
 		if(info["s"+i] && stone_skill[info["s"+i]]){
 			stoneskillInfo[stone_skill[info["s"+i]]["key"]] = stone_skill[info["s"+i]]["arg"]
 		}
@@ -283,7 +283,7 @@ model.getTeamCE = function(team) {
 				if(team[i]["s"+j] && stone_base[team[i]["s"+j]])
         			allCE += stone_base[team[i]["s"+j]]["ce"]
 			}
-			for(var j = 5;j <= 6;j++){
+			for(var j = 5;j <= 8;j++){
 				if(team[i]["s"+j] && stone_skill[team[i]["s"+j]])
         			allCE += stone_skill[team[i]["s"+j]]["ce"]
 			}
