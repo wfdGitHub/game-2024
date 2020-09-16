@@ -11,12 +11,7 @@ var loginHandler = function(app) {
 }
 //获取服务器列表
 loginHandler.prototype.getAreaList = function(msg, session, next) {
-	var index = msg.index
-	if(index){
-		next(null,{flag : true,areaList : this.areaDeploy.areaList.slice(index-10,index),index : index-10})
-	}else{
-		next(null,{flag : true,areaList : this.areaDeploy.areaList.slice(-10),index : -10})
-	}
+	next(null,{flag : true,areaList : this.areaDeploy.areaList})
 }
 //选择服务器
 // loginHandler.prototype.chooseArea = function(msg, session, next) {
