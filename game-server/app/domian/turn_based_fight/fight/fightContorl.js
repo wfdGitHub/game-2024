@@ -11,6 +11,7 @@ var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var artifact_level = require("../../../../config/gameCfg/artifact_level.json")
 var artifact_talent = require("../../../../config/gameCfg/artifact_talent.json")
 var stone_base = require("../../../../config/gameCfg/stone_base.json")
+var stone_skill = require("../../../../config/gameCfg/stone_skill.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -233,13 +234,21 @@ model.getCharacterInfo = function(info) {
 		}
 	}
 	//属性宝石计算
-	var stoneInfo = {}
+	var stonebaseInfo = {}
 	for(var i = 1;i <= 4;i++){
-		if(info["s_"+i] && stone_base[info["s_"+i]]){
-			stoneInfo[stone_base[info["s_"+i]]["type"]] = stone_base[info["s_"+i]]["att"]
+		if(info["s"+i] && stone_base[info["s"+i]]){
+			stonebaseInfo[stone_base[info["s"+i]]["key"]] = stone_base[info["s"+i]]["arg"]
 		}
 	}
-	model.mergeData(info,stoneInfo)
+	model.mergeData(info,stonebaseInfo)
+	//技能宝石计算
+	var stoneskillInfo = {}
+	for(var i = 5;i <= 6;i++){
+		if(info["s"+i] && stone_skill[info["s"+i]]){
+			stoneskillInfo[stone_skill[info["s"+i]]["key"]] = stone_skill[info["s"+i]]["arg"]
+		}
+	}
+	model.mergeData(info,stoneskillInfo)
 	return new character(info)
 }
 //获取团队显示数据
@@ -253,22 +262,30 @@ model.getTeamShowData = function(team) {
 	return fighting.atkTeam
 }
 model.getTeamCE = function(team) {
-	let allCE = 0
-	for(let i = 0;i < team.length;i++){
+	var allCE = 0
+	for(var i = 0;i < team.length;i++){
 		if(team[i]){
 			allCE += lv_cfg[team[i]["lv"] || 1]["ce"]
 			allCE += advanced_base[team[i]["ad"] || 0]["ce"]
 			allCE += star_base[team[i]["star"] || 1]["ce"]
 			if(team[i]["artifact"] !== undefined)
 				allCE += artifact_level[team[i]["artifact"]]["ce"]
-			for(let j = 1;j <= 10;j++){
+			for(var j = 1;j <= 10;j++){
 				if(team[i]["acepack_"+j]){
 					allCE += ace_pack[team[i]["acepack_"+j]]["ce"]
 				}
 			}
-			for(let j = 1;j <= 4;j++){
+			for(var j = 1;j <= 4;j++){
 				if(team[i]["equip_"+j])
         			allCE += equip_base[equip_level[team[i]["equip_"+j]]["part_"+j]]["ce"]
+			}
+			for(var j = 1;j <= 4;j++){
+				if(team[i]["s"+j] && stone_base[team[i]["s"+j]])
+        			allCE += stone_base[team[i]["s"+j]]["ce"]
+			}
+			for(var j = 5;j <= 6;j++){
+				if(team[i]["s"+j] && stone_skill[team[i]["s"+j]])
+        			allCE += stone_skill[team[i]["s"+j]]["ce"]
 			}
 		}
 	}

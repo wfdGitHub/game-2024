@@ -48,6 +48,8 @@ var model = function(otps) {
 	this.reduction_over = otps.reduction_over || 0 //受到武将直接伤害时，如果该伤害超过自身生命上限的40%，减免此次伤害的比例
 	if(otps.died_buff_s)
 		this.died_buff_s = JSON.parse(otps.died_buff_s) || false //死亡时释放BUFF
+	if(otps.before_buff_s)
+		this.before_buff_s = JSON.parse(otps.before_buff_s) || false //战斗前对自身释放BUFF
 	if(otps.action_buff_s)
 		this.action_buff_s = JSON.parse(otps.action_buff_s) || false //行动后对自身释放BUFF
 	this.record_anger_rate = otps.record_anger_rate || 0 //释放技能后，概率获得本次技能消耗的50%的怒气，最多不超过4点

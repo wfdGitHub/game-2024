@@ -108,6 +108,14 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			var burnBuffInfo = defTeam[i].first_buff
 			buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 		}
+		if(atkTeam[i].before_buff_s){
+			var burnBuffInfo = atkTeam[i].before_buff_s
+			buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+		}
+		if(defTeam[i].before_buff_s){
+			var burnBuffInfo = defTeam[i].before_buff_s
+			buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+		}
 	}
 }
 //开始新轮次
