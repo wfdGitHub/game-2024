@@ -323,7 +323,6 @@ model.prototype.onHit = function(attacker,info,source) {
 	info.id = this.id
 	info.value = Math.floor(info.value) || 1
 	if(this.died){
-		console.error("不能攻击已死亡的角色",this.name)
 		info.realValue = 0
 		return info
 	}
