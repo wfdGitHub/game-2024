@@ -97,6 +97,24 @@
         console.log("onChat")
         console.log(data)
       })
+      //穿戴宝石
+      var wearStone = function(hId,itemId,pos) {
+        pomelo.request("area.stoneHandler.wearStone", {itemId:itemId,hId:hId,pos:pos}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下宝石
+      var unwearStone = function(hId,pos) {
+        pomelo.request("area.stoneHandler.unwearStone", {hId:hId,pos:pos}, function(data) {
+            console.log(data);
+        });
+      }
+      //升级宝石
+      var upStone = function(hId,items,pos) {
+        pomelo.request("area.stoneHandler.upStone", {items:items,hId:hId,pos:pos}, function(data) {
+            console.log(data);
+        });
+      }
       //保存分享数据
       var saveShareData = function(data) {
         pomelo.request("area.shareHandler.saveShareData", {data:data}, function(data) {

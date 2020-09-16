@@ -45,6 +45,13 @@ module.exports = function() {
 			this.updateCE(uid)
 		}
 	}
+	//设置英雄属性不更新战力
+	this.setCEInfoNormal = function(uid,hId,name,value) {
+		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId] !== undefined){
+			let index = userTeamMaps[uid][hId]
+			userTeams[uid][index][name] = value
+		}
+	}
 	//删除英雄属性
 	this.delCEInfo = function(uid,hId,name) {
 		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId] !== undefined){

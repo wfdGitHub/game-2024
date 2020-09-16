@@ -233,6 +233,8 @@ module.exports = function() {
 				var taskId = userTaskMaps[uid][type][i]
 				if(!arg || (task_type[type].equal && arg == task_cfg[taskId].arg) || (!task_type[type].equal && arg >= task_cfg[taskId].arg)){
 					if(type == "totalCe"){
+						if(value <= userTaskLists[uid][taskId])
+							continue
 						userTaskLists[uid][taskId] = value
 						self.setObj(uid,main_name,taskId,value)
 					}else{
