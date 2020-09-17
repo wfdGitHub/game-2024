@@ -97,6 +97,18 @@
         console.log("onChat")
         console.log(data)
       })
+      //挑战阵营塔
+      var challengeRealmBoss = function(realm,heros) {
+        pomelo.request("area.tttHandler.challengeRealmBoss", {realm:realm,heros:heros,seededNum:Date.now()}, function(data) {
+            console.log(data);
+        });
+      }
+      //扫荡阵营塔
+      var realmMopup = function(realm) {
+        pomelo.request("area.tttHandler.realmMopup", {realm:realm}, function(data) {
+            console.log(data);
+        });
+      }
       //获取矿坑数据
       var getPitData = function() {
         pomelo.request("area.stoneHandler.getPitData", {}, function(data) {

@@ -74,6 +74,7 @@ area.prototype.update = function() {
 area.prototype.dayUpdate = function(curDayStr) {
 	// console.log("服务器每日刷新")
 	this.dayStr = curDayStr
+	this.weekDay = (new Date).getDay()
 	this.weekStr = util.getWeek()
 	this.areaDay = util.getTimeDifference(this.openTime,Date.now())
 	this.aceLottoDayUpdate()

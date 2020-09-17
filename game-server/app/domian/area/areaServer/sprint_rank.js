@@ -142,27 +142,20 @@ module.exports = function() {
 	}
 	//获取指定排行榜
 	this.getTotalRank = function(rankType,cb) {
-		if(rank_type_day[rankType]){
-			self.zrangewithscore(rankType,-10,-1,function(list) {
-				var uids = []
-				var scores = []
-				for(var i = 0;i < list.length;i += 2){
-					uids.push(list[i])
-					scores.push(list[i+1])
-				}
-				self.getPlayerInfoByUids(uids,function(userInfos) {
-					var info = {}
-					info.userInfos = userInfos
-					info.scores = scores
-					info.curRankIndex = curRankIndex
-					info.time = curTime
-					cb(true,info)
-				})
+		self.zrangewithscore(rankType,-10,-1,function(list) {
+			var uids = []
+			var scores = []
+			for(var i = 0;i < list.length;i += 2){
+				uids.push(list[i])
+				scores.push(list[i+1])
+			}
+			self.getPlayerInfoByUids(uids,function(userInfos) {
+				var info = {}
+				info.userInfos = userInfos
+				info.scores = scores
+				cb(true,info)
 			})
-		}else{
-			cb(false,"排行榜不存在")
-			return
-		}
+		})
 	}
 	//更新排行榜
 	this.updateSprintRank = function(type,uid,value) {

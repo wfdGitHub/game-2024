@@ -28,6 +28,34 @@ tttHandler.prototype.TTTmopup = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//挑战阵营塔
+tttHandler.prototype.challengeRealmBoss = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var realm = msg.realm
+  var heros = msg.heros
+  var seededNum = msg.seededNum
+  if(!Number.isInteger(seededNum)){
+    next(null,{flag : false,msg : "seededNum error"})
+    return
+  }
+  if(!Array.isArray(heros) || heros.length != 6){
+    next(null,{flag : false,msg : "heros error"})
+    return
+  }
+  this.areaManager.areaMap[areaId].challengeRealmBoss(uid,realm,heros,seededNum,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//扫荡阵营塔
+tttHandler.prototype.realmMopup = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var realm = msg.realm
+  this.areaManager.areaMap[areaId].realmMopup(uid,realm,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "tttHandler",
