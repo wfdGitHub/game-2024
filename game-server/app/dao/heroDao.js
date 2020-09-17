@@ -10,6 +10,15 @@ var equip_base = require("../../config/gameCfg/equip_base.json")
 var equip_level = require("../../config/gameCfg/equip_level.json")
 var artifact_level = require("../../config/gameCfg/artifact_level.json")
 var artifact_talent = require("../../config/gameCfg/artifact_talent.json")
+var stone_base = require("../../config/gameCfg/stone_base.json")
+var stone_skill = require("../../config/gameCfg/stone_skill.json")
+var stone_cfg = require("../../config/gameCfg/stone_cfg.json")
+var baseStone = {
+	"1" : 400010100,
+	"2" : 400020100,
+	"3" : 400030100,
+	"4" : 400040100
+}
 for(let i in recruit_base){
 	recruit_base[i]["weights"] = JSON.parse(recruit_base[i]["weights"])
 	recruit_base[i].allWeight = 0
@@ -217,7 +226,7 @@ heroDao.prototype.heroPrAll = function(areaId,uid,heros,cb) {
 		cb(true,awardList2.concat(awardList))
 	})
 }
-//材料返还资源  返还除升星外(升级  升阶 装备 锦囊 神兵)
+//材料返还资源  返还除升星外(升级  升阶 装备 锦囊 神兵 宝石)
 heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 	var strList = []
 	for(let i = 0;i < heros.length;i++){
@@ -240,6 +249,17 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 		}
 		if(artifact !== undefined && artifact_level[artifact]){
 			strList.push(artifact_level[artifact]["pr"])
+		}
+		for(var j = 1;j <= 8;j++){
+			var key = "s"+j
+			if(heros[i][key]){
+				//拆卸宝石
+				strList.push(heros[i][key]+":1")
+				if(heros[i][key+"v"] && stone_base[heros[i][key]]){
+					var num = Math.floor(heros[i][key+"v"] / stone_base[baseStone[j]]["value"])
+					strList.push(baseStone[j]+":"+num)
+				}
+			}
 		}
 	}
 	if(strList.length){

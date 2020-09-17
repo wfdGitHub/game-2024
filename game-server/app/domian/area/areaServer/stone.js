@@ -113,7 +113,6 @@ module.exports = function() {
 				//拆卸宝石
 				self.addItem({uid:uid,itemId:heroInfo[key],value:1,reason:"卸下宝石"})
 				if(heroInfo[key+"v"] && stone_base[heroInfo[key]]){
-					console.log("heroInfo",heroInfo[key+"v"],stone_base[baseStone[pos]]["value"])
 					var num = Math.floor(heroInfo[key+"v"] / stone_base[baseStone[pos]]["value"])
 					self.addItem({uid:uid,itemId:baseStone[pos],value:num,reason:"卸下宝石"})
 					self.heroDao.setHeroInfo(self.areaId,uid,hId,key+"v",0)

@@ -24,8 +24,13 @@ heroHandler.prototype.getHeroAmount = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
-//获得英雄
+//获得英雄  测试功能
 heroHandler.prototype.gainHero = function(msg, session, next) {
+  var limit = session.get("limit")
+  if(limit < 10){
+    next(null,{flag : false})
+    return
+  }
   var uid = session.uid
   var areaId = session.get("areaId")
   var id = msg.id
