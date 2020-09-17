@@ -305,12 +305,6 @@ model.useAttackSkill = function(skill) {
 			skill.character.next_must_crit = true
 		if(skill.character.kill_rob_anger && skill.isAnger)
 			skill.character.addAnger(dead_anger,skill.skillId)
-		//击杀后追加技能
-		if(skill.character.kill_later_skill && this.seeded.random("判断追加技能") < skill.character.kill_later_skill.rate){
-			let tmpSkillInfo = Object.assign({skillId : skill.skillId,name : skill.name},skill.character.kill_later_skill)
-			let tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
-			this.useSkill(tmpSkill)
-		}
 		//直接伤害击杀灼烧目标后，回复自身生命值百分比
 		if(skill.character.kill_burn_heal && kill_burn_num){
 			let tmpRecord = {type : "other_heal",targets : []}
@@ -330,6 +324,12 @@ model.useAttackSkill = function(skill) {
 				    })
 				}
 			}
+		}
+		//击杀后追加技能
+		if(skill.character.kill_later_skill && this.seeded.random("判断追加技能") < skill.character.kill_later_skill.rate){
+			let tmpSkillInfo = Object.assign({skillId : skill.skillId,name : skill.name},skill.character.kill_later_skill)
+			let tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
+			this.useSkill(tmpSkill)
 		}
 	}
 	//伤害值转生命判断

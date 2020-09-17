@@ -32,6 +32,7 @@ var model = function(atkTeam,defTeam,otps) {
 	}]
 	this.teamIndex = 0				//当前行动阵容
 	this.character = false 			//当前行动角色
+	this.diedList = []				//死亡列表
 	this.load(atkTeam,defTeam,otps)
 }
 //初始配置
@@ -234,8 +235,9 @@ model.prototype.action = function() {
 		}
 		if(this.character.record_anger_rate && this.seeded.random("判断BUFF命中率") < this.character.record_anger_rate){
 			needValue = Math.floor(needValue/2)
-			if(needValue)
-				this.character.addAnger(needValue)
+			if(needValue){
+				this.character.addAnger(Math.min(needValue,4))
+			}
 		}
 		if(this.character.action_anger_s && this.seeded.random("行动后怒气") < this.character.action_anger_s){
 			this.character.addAnger(1)
@@ -256,6 +258,17 @@ model.prototype.after = function() {
 	this.character.next_must_crit = false
 	//检测战斗是否结束
 	this.character = false
+	for(var i = 0;i < this.diedList.length;i++){
+		if(this.diedList[i]["died_buff_s"]){
+			var buffTargets = this.locator.getBuffTargets(this.diedList[i],this.diedList[i].died_buff_s.buff_tg)
+			for(var i = 0;i < buffTargets.length;i++){
+				if(this.seeded.random("判断BUFF命中率") < this.diedList[i].died_buff_s.buffRate){
+					buffManager.createBuff(this.diedList[i],buffTargets[i],{buffId : this.diedList[i].died_buff_s.buffId,buffArg : this.diedList[i].died_buff_s.buffArg,duration : this.diedList[i].died_buff_s.duration})
+				}
+			}
+		}
+	}
+	this.diedList = []
 	if(!this.checkOver())
 		this.run()
 }

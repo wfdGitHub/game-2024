@@ -389,15 +389,7 @@ model.prototype.onDie = function() {
 	// console.log(this.name+"死亡")
 	this.attInfo.hp = 0
 	this.died = true
-	//死亡buff判断
-	if(this.died_buff_s){
-		var buffTargets = this.fighting.locator.getBuffTargets(this,this.died_buff_s.buff_tg)
-		for(var i = 0;i < buffTargets.length;i++){
-			if(this.fighting.seeded.random("判断BUFF命中率") < this.died_buff_s.buffRate){
-				buffManager.createBuff(this,buffTargets[i],{buffId : this.died_buff_s.buffId,buffArg : this.died_buff_s.buffArg,duration : this.died_buff_s.duration})
-			}
-		}
-	}
+	this.fighting.diedList.push(this)
 }
 //击杀目标
 model.prototype.kill = function(target) {
