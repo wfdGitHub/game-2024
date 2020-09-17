@@ -126,7 +126,7 @@ module.exports = function() {
 		})
 	}
 	//挑战阵营塔
-	this.challengeRealmBoss = function(uid,realm,heros,seededNum,cb) {
+	this.challengeRealmBoss = function(uid,realm,heros,seededNum,verify,cb) {
 		if(!realm_day[self.weekDay][realm]){
 			cb(false,"今日未开放该阵营")
 			return
@@ -171,11 +171,11 @@ module.exports = function() {
 			function(atkTeam,next) {
 			   	var defTeam = ttttower_realm[level]["defTeam"]
 			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    // if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-			    // 	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]))
-			    // 	next({"text":"战斗验证错误"})
-			    // 	return
-			    // }
+			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
+			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]))
+			    	next({"text":"战斗验证错误"})
+			    	return
+			    }
 			   	if(winFlag){
 			   		self.incrbyObj(uid,main_name,"realm_level_"+realm,1)
 			   		self.incrbyObj(uid,main_name,"realm_count_"+realm,1)

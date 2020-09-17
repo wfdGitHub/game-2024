@@ -35,6 +35,7 @@ tttHandler.prototype.challengeRealmBoss = function(msg, session, next) {
   var realm = msg.realm
   var heros = msg.heros
   var seededNum = msg.seededNum
+  var verify = msg.verify
   if(!Number.isInteger(seededNum)){
     next(null,{flag : false,msg : "seededNum error"})
     return
@@ -43,7 +44,7 @@ tttHandler.prototype.challengeRealmBoss = function(msg, session, next) {
     next(null,{flag : false,msg : "heros error"})
     return
   }
-  this.areaManager.areaMap[areaId].challengeRealmBoss(uid,realm,heros,seededNum,function(flag,msg) {
+  this.areaManager.areaMap[areaId].challengeRealmBoss(uid,realm,heros,seededNum,verify,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }
