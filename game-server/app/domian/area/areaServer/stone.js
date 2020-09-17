@@ -192,6 +192,7 @@ module.exports = function() {
 		}
 		var allValue = 0
 		var str = ""
+		var key = "s"+pos
 		for(var i in items){
 			if(!stone_skill[i] || !Number.isInteger(items[i])){
 				cb(false,"item error "+i)
