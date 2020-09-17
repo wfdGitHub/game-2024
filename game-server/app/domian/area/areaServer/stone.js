@@ -2,12 +2,20 @@
 var stone_base = require("../../../../config/gameCfg/stone_base.json")
 var stone_skill = require("../../../../config/gameCfg/stone_skill.json")
 var stone_cfg = require("../../../../config/gameCfg/stone_cfg.json")
+var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var baseStone = {
 	"1" : 400010100,
 	"2" : 400020100,
 	"3" : 400030100,
 	"4" : 400040100
 }
+var pickaxes = {
+	"1" : "1000501:1",
+	"2" : "1000502:1",
+	"3" : "1000503:1",
+	"4" : "1000504:1"
+}
+const main_name = "pit"
 module.exports = function() {
 	var self = this
 	//穿戴宝石
@@ -214,6 +222,99 @@ module.exports = function() {
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,key,itemId)
 				cb(true,{itemId : itemId})
 			}
+		})
+	}
+	//获取矿坑数据
+	this.getPitData = function(uid,cb) {
+		self.getObjAll(uid,main_name,function(obj) {
+			cb(true,obj || {})
+		})
+	}
+	//挖矿
+	this.usePickaxe = function(uid,pos,pId,cb) {
+		if(!Number.isInteger(pos) || pos <= 0 || pos > 5){
+			cb(false,"pos error "+pos)
+			return
+		}
+		if(!pickaxes[pId]){
+			cb(false,"pId error "+pId)
+			return
+		}
+		if(pos > 3 && !self.players[uid]["highCard"]){
+			cb(false,"未开启至尊特权")
+			return
+		}
+		self.getObj(uid,main_name,"award_"+pos,function(data) {
+			if(data){
+				cb(false,"正在挖矿 ",data)
+				return
+			}
+			self.consumeItems(uid,pickaxes[pId],1,"挖矿",function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					var awardList = self.openChestStrNoItem("pickaxe_"+pId)
+					var info = {}
+					info["award_"+pos] = awardList[0]
+					info["time_"+pos] = Date.now() + default_cfg["pickaxe_time_"+pId]["value"]
+					self.setHMObj(uid,main_name,info)
+					cb(true,info)
+				}
+			})
+		})
+	}
+	//加速
+	this.speedPit = function(uid,pos,cb) {
+		if(!Number.isInteger(pos) || pos <= 0 || pos > 5){
+			cb(false,"pos error "+pos)
+			return
+		}
+		self.getHMObj(uid,main_name,["award_"+pos,"time_"+pos],function(list) {
+			var award = list[0]
+			var time = Number(list[1])
+			if(!award || !time){
+				cb(false,award +" "+time)
+				return
+			}
+			if(Date.now() > time){
+				cb(false,"无需加速")
+				return
+			}
+			var needStr = "202:"+default_cfg["pickaxe_expedite"]["value"] * Math.ceil((time - Date.now()) / 3600000)
+			self.consumeItems(uid,needStr,1,"挖矿加速",function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					var awardList = self.addItemStr(uid,award,1,"挖矿")
+					self.delObj(uid,main_name,"award_"+pos)
+					self.delObj(uid,main_name,"time_"+pos)
+					cb(true,awardList)
+				}
+			})
+
+		})
+	}
+	//获取挖矿收益
+	this.gainPitAward = function(uid,pos,cb) {
+		if(!Number.isInteger(pos) || pos <= 0 || pos > 5){
+			cb(false,"pos error "+pos)
+			return
+		}
+		self.getHMObj(uid,main_name,["award_"+pos,"time_"+pos],function(list) {
+			var award = list[0]
+			var time = Number(list[1])
+			if(!award || !time){
+				cb(false,award +" "+time)
+				return
+			}
+			if(Date.now() < time){
+				cb(false,"时间未到")
+				return
+			}
+			var awardList = self.addItemStr(uid,award,1,"挖矿")
+			self.delObj(uid,main_name,"award_"+pos)
+			self.delObj(uid,main_name,"time_"+pos)
+			cb(true,awardList)
 		})
 	}
 }

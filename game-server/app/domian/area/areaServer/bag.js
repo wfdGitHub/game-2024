@@ -505,4 +505,52 @@ module.exports = function() {
 			return []
 		}
 	}
+	//解析奖励池str
+	this.openChestStrNoItem = function(str) {
+		if(!str || typeof(str) != "string"){
+			return []
+		}
+		var awardList = []
+		var list = str.split("&")
+		list.forEach(function(m_str) {
+			var m_list = m_str.split(":")
+			var chestId = m_list[0]
+			var value = parseInt(m_list[1]) || 1
+			for(var i = 0;i < value;i++)
+				awardList = awardList.concat(self.openChestAwardNoItem(chestId))
+		})
+		return awardList
+	}
+	//奖励池获取奖励
+	this.openChestAwardNoItem = function(chestId) {
+		if(!chest_cfg[chestId] || !chest_cfg[chestId]["randAward"]){
+			return []
+		}
+		var awardMap = []
+		var keyMap = []
+		var chestStr = chest_cfg[chestId]["randAward"]
+		var list = chestStr.split("&")
+		var allValue = 0
+		list.forEach(function(m_str) {
+			var m_list = m_str.split(":")
+			var itemId = m_list[0]
+			allValue += parseInt(m_list[1])
+			awardMap.push(allValue)
+			keyMap.push(itemId)
+		})
+		var str = false
+		var rand = Math.random() * allValue
+		for(var i in awardMap){
+			if(rand < awardMap[i]){
+				if(!chest_awards[keyMap[i]]){
+					console.error(chestId+"宝箱奖励未找到"+keyMap[i])
+					return [{"err" : chestId+"宝箱奖励未找到"+keyMap[i]}]
+				}else{
+					str = chest_awards[keyMap[i]]["str"]
+				}
+				break
+			}
+		}
+		return str
+	}
 }

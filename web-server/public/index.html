@@ -97,6 +97,31 @@
         console.log("onChat")
         console.log(data)
       })
+      //获取矿坑数据
+      var getPitData = function() {
+        pomelo.request("area.stoneHandler.getPitData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挖矿
+      var usePickaxe = function(pos,pId) {
+        pomelo.request("area.stoneHandler.usePickaxe", {pos:pos,pId:pId}, function(data) {
+            console.log(data);
+        });
+      }
+      //加速
+      var speedPit = function(pos) {
+        pomelo.request("area.stoneHandler.speedPit", {pos:pos}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取挖矿收益
+      var gainPitAward = function(pos) {
+        pomelo.request("area.stoneHandler.gainPitAward", {pos:pos}, function(data) {
+            console.log(data);
+        });
+      }
+
       //穿戴宝石
       var wearStone = function(hId,itemId,pos) {
         pomelo.request("area.stoneHandler.wearStone", {itemId:itemId,hId:hId,pos:pos}, function(data) {

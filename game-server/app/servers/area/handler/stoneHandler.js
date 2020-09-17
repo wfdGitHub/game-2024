@@ -51,6 +51,42 @@ stoneHandler.prototype.upStone = function(msg,session,next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//获取矿坑数据
+stoneHandler.prototype.getPitData = function(msg,session,next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getPitData(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//挖矿
+stoneHandler.prototype.usePickaxe = function(msg,session,next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var pos = msg.pos
+  var pId = msg.pId
+  this.areaManager.areaMap[areaId].usePickaxe(uid,pos,pId,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//加速
+stoneHandler.prototype.speedPit = function(msg,session,next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var pos = msg.pos
+  this.areaManager.areaMap[areaId].speedPit(uid,pos,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//获取挖矿收益
+stoneHandler.prototype.gainPitAward = function(msg,session,next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var pos = msg.pos
+  this.areaManager.areaMap[areaId].gainPitAward(uid,pos,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "stoneHandler",
