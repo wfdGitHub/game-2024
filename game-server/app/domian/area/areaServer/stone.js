@@ -231,7 +231,7 @@ module.exports = function() {
 	}
 	//挖矿
 	this.usePickaxe = function(uid,pos,pId,cb) {
-		if(!Number.isInteger(pos) || pos <= 0 || pos > 5){
+		if(!Number.isInteger(pos) || pos <= 0 || pos > 6){
 			cb(false,"pos error "+pos)
 			return
 		}
@@ -239,7 +239,7 @@ module.exports = function() {
 			cb(false,"pId error "+pId)
 			return
 		}
-		if(pos > 3 && !self.players[uid]["highCard"]){
+		if(pos > 4 && !self.players[uid]["highCard"]){
 			cb(false,"未开启至尊特权")
 			return
 		}
@@ -264,7 +264,7 @@ module.exports = function() {
 	}
 	//加速
 	this.speedPit = function(uid,pos,cb) {
-		if(!Number.isInteger(pos) || pos <= 0 || pos > 5){
+		if(!Number.isInteger(pos) || pos <= 0 || pos > 6){
 			cb(false,"pos error "+pos)
 			return
 		}
@@ -295,7 +295,7 @@ module.exports = function() {
 	}
 	//获取挖矿收益
 	this.gainPitAward = function(uid,pos,cb) {
-		if(!Number.isInteger(pos) || pos <= 0 || pos > 5){
+		if(!Number.isInteger(pos) || pos <= 0 || pos > 6){
 			cb(false,"pos error "+pos)
 			return
 		}
