@@ -173,8 +173,7 @@ module.exports = function() {
 			}
 		}
 		if(!stone_base[itemId]["up_value"] && allValue > 0){
-			cb(false,"经验超出")
-			return
+			allValue = 0
 		}
 		self.consumeItems(uid,str,1,"升级宝石",function(flag,err) {
 			if(!flag){
