@@ -194,15 +194,17 @@ module.exports = function() {
 		var str = ""
 		var key = "s"+pos
 		for(var i in items){
-			if(!stone_skill[i] || !Number.isInteger(items[i])){
-				cb(false,"item error "+i)
-				return
+			if(items[i] > 0){
+				if(!stone_skill[i] || !Number.isInteger(items[i])){
+					cb(false,"item error "+i)
+					return
+				}
+				if(stone_skill[i]["type"] == stone_skill[itemId]["type"])
+					allValue += stone_skill[i]["value"] * items[i] * 2
+				else
+					allValue += stone_skill[i]["value"] * items[i]
+				str += i+":"+items[i]+"&"
 			}
-			if(stone_skill[i]["type"] == stone_skill[itemId]["type"])
-				allValue += stone_skill[i]["value"] * items[i] * 2
-			else
-				allValue += stone_skill[i]["value"] * items[i]
-			str += i+":"+items[i]+"&"
 		}
 		str = str.substr(0, str.length - 1)
 		if(stone_skill[itemId]["up_value"] != allValue){
