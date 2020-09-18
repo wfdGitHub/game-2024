@@ -215,6 +215,8 @@ module.exports = function() {
 		if(count > 20)
 			count = 20
 		var list = []
+		var pickaxe1 = Math.min(count,8)
+		var pickaxe2 = Math.floor(pickaxe1 * (Math.random() * 0.3 + 0.3))
 		while(count > 0){
 			if(count >= 7){
 				list.push(2)
@@ -228,9 +230,16 @@ module.exports = function() {
 			}
 		}
 		var awardStr = ""
+		if(pickaxe1)
+			awardStr = "1000501:"+pickaxe1
+		if(pickaxe2){
+			if(awardStr)
+				awardStr += "&"
+			awardStr += "1000502:"+pickaxe2
+		}
 		for(var i = 0;i < list.length;i++){
 			var lv = equipLv + list[i]
-			if(i != 0)
+			if(awardStr)
 				awardStr += "&"
 			awardStr += equip_list[lv][Math.floor(equip_list[lv].length * Math.random())] + ":1"
 		}
