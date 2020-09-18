@@ -5,6 +5,7 @@ var areaDeploy = function() {
 	this.serverMap = {}
 	this.finalServerMap = {}
 }
+var rankTypes = ["ce_rank","checkpoint_rank","lv_rank","seas_rank","ttt_rank","ttt_realm_1","ttt_realm_2","ttt_realm_3","ttt_realm_4"]
 //初始化
 areaDeploy.prototype.init = function(app) {
 	this.app = app
@@ -58,9 +59,23 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 				}
 				self.changeFinalServerMap(areaList[i],areaId)
 				self.app.rpc.connector.connectorRemote.changeFinalServerMap.toServer("*",areaList[i],areaId,null)
+				self.mergeRank(areaList[i],areaId)
 			}
 		}
 	})
+}
+//排行榜合并
+areaDeploy.prototype.mergeRank = function(oriId,areaId) {
+	var self = this
+	for(let i = 0;i < rankTypes.length;i++){
+		self.redisDao.db.zrange("area:area"+oriId+":zset:"+rankTypes[i],0,-1,"WITHSCORES",function(err,data) {
+			if(data){
+				for(var j = 0;j < data.length;j+=2){
+					self.redisDao.db.zadd("area:area"+areaId+":zset:"+rankTypes[i],data[j+1],data[j],function(err){})
+				}
+			}
+		})
+	}
 }
 //合并名称
 areaDeploy.prototype.mergeAreaName = function(oriId,areaId) {
