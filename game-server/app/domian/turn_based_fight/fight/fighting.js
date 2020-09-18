@@ -261,9 +261,9 @@ model.prototype.after = function() {
 	for(var i = 0;i < this.diedList.length;i++){
 		if(this.diedList[i]["died_buff_s"]){
 			var buffTargets = this.locator.getBuffTargets(this.diedList[i],this.diedList[i].died_buff_s.buff_tg)
-			for(var i = 0;i < buffTargets.length;i++){
+			for(var j = 0;j < buffTargets.length;j++){
 				if(this.seeded.random("判断BUFF命中率") < this.diedList[i].died_buff_s.buffRate){
-					buffManager.createBuff(this.diedList[i],buffTargets[i],{buffId : this.diedList[i].died_buff_s.buffId,buffArg : this.diedList[i].died_buff_s.buffArg,duration : this.diedList[i].died_buff_s.duration})
+					buffManager.createBuff(this.diedList[i],buffTargets[j],{buffId : this.diedList[i].died_buff_s.buffId,buffArg : this.diedList[i].died_buff_s.buffArg,duration : this.diedList[i].died_buff_s.duration})
 				}
 			}
 		}
