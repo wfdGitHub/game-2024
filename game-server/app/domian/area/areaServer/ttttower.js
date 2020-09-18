@@ -46,13 +46,13 @@ module.exports = function() {
 		async.waterfall([
 			function(next) {
 				//获取通天塔数据
-				self.getObj(uid,"level",function(data) {
+				self.getObj(uid,main_name,"level",function(data) {
 					level = Number(data) + 1
+					if(ttttower_level[level])
+						next()
+					else
+						next("关卡不存在"+level)
 				})
-				if(ttttower_level[level])
-					next()
-				else
-					next("关卡不存在"+level)
 			},
 			function(next) {
 			    var fightInfo = self.getFightInfo(uid)
