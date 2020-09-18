@@ -257,7 +257,7 @@ module.exports = function() {
 					var awardList = self.openChestStrNoItem("pickaxe_"+pId)
 					var info = {}
 					info["award_"+pos] = awardList[0]
-					info["time_"+pos] = Date.now() + 10000//default_cfg["pickaxe_time_"+pId]["value"]
+					info["time_"+pos] = Date.now() + default_cfg["pickaxe_time_"+pId]["value"]
 					self.setHMObj(uid,main_name,info)
 					cb(true,info)
 				}
