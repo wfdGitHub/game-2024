@@ -180,7 +180,7 @@ module.exports = function() {
 			   		self.incrbyObj(uid,main_name,"realm_level_"+realm,1)
 			   		self.incrbyObj(uid,main_name,"realm_count_"+realm,1)
 			   		self.addZset("ttt_realm"+realm,uid,level)
-					var awardList = self.addItemStr(uid,ttttower_realm[level]["awards"],1,"阵营塔"+level)
+					var awardList = self.addItemStr(uid,ttttower_realm[level]["awards_"+realm],1,"阵营塔"+level)
 					cb(true,awardList)
 			   	}else{
 			   		cb(false)
@@ -224,7 +224,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//扫荡奖励
-				var awardList = self.addItemStr(uid,ttttower_realm[level]["mopupAward"],1,"阵营塔扫荡"+level)
+				var awardList = self.addItemStr(uid,ttttower_realm[level]["mopupAward_"+realm],1,"阵营塔扫荡"+level)
 				cb(true,awardList)
 			}
 		],function(err) {
