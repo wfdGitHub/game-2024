@@ -5,7 +5,7 @@ var areaDeploy = function() {
 	this.serverMap = {}
 	this.finalServerMap = {}
 }
-var rankTypes = ["ce_rank","checkpoint_rank","lv_rank","seas_rank","ttt_rank","ttt_realm_1","ttt_realm_2","ttt_realm_3","ttt_realm_4"]
+var rankTypes = ["ce_rank","checkpoint_rank","lv_rank","seas_rank","ttt_rank","ttt_realm1","ttt_realm2","ttt_realm3","ttt_realm4"]
 //初始化
 areaDeploy.prototype.init = function(app) {
 	this.app = app
