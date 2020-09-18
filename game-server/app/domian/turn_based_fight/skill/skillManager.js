@@ -74,7 +74,6 @@ model.useSkill = function(skill) {
 		if(skill.character.less_buff_arg){
 			let allLenth = this.locator.getTargetsNum(skill.targetType)
 			buffArg = buffArg * (1 + ((allLenth - targets.length + 1) / allLenth) * skill.character.less_buff_arg)
-			console.log("buffArg",buffArg)
 		}
 		for(var i = 0;i < buffTargets.length;i++){
 			if(buffTargets[i].died){
