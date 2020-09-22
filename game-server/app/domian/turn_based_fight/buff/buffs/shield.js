@@ -4,7 +4,7 @@ var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
 	// console.log("角色"+buff.character.id+"被沉默!!!!!!")
 	buff.name = "护盾"
-    buff.refreshType = "before"
+    buff.refreshType = "before_2"
     buff.value = Math.floor(otps.buffArg * buff.character.getTotalAtt("maxHP"))
 	buff.overlay = function(releaser,otps) {
 		buff.releaser = releaser
