@@ -47,6 +47,8 @@ var model = function() {
 					if(info.kill){
 						str += "\t"+heroNames[info.id]+"已死亡"
 					}
+					if(info.oneblood)
+						str += "\033[32m  绝处逢生\033[0m"
 					console.log(str)
 				break
 				case "poisonDamage":
@@ -60,6 +62,8 @@ var model = function() {
 					if(info.kill){
 						str += "\t"+heroNames[info.id]+"已死亡"
 					}
+					if(info.oneblood)
+						str += "\033[32m  绝处逢生\033[0m"
 					console.log(str)
 				break
 				case "recoverHeal":
@@ -85,6 +89,8 @@ var model = function() {
 							if(info.targets[i].kill){
 								str += "\t击杀目标!"
 							}
+							if(info.targets[i].oneblood)
+								str += "\033[32m  绝处逢生\033[0m"
 							str += "\033[0m"
 					
 						}
@@ -117,6 +123,8 @@ var model = function() {
 				break
 				case "other_damage":
 					var str = "\033[31m"+heroNames[info.id]+"受到"+info.value+"点伤害\t剩余"+info.curValue+"/"+info.maxHP+"\033[0m"
+					if(info.oneblood)
+						str += "\033[32m  绝处逢生\033[0m"
 					console.log(str)
 				break
 				case "self_heal":
