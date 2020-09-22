@@ -350,6 +350,7 @@ model.prototype.onHit = function(attacker,info,source) {
 	}else{
 		if(this.buffs["shield"]){
 			info.value = this.buffs["shield"].offset(info.value)
+			info.shield = true
 		}
 		info.realValue = this.lessHP(info)
 		info.curValue = this.attInfo.hp
