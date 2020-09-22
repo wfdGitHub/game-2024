@@ -239,7 +239,7 @@ adminHandler.prototype.adminSendMail = function(msg, session, next) {
 			next(null,{flag : false,err : data})
 			return
 		}
-		var areaId = data
+		var areaId = self.areaDeploy.getFinalServer(data)
 		var serverId = self.areaDeploy.getServer(areaId)
 	    if(!serverId){
 	        next(null,{flag : false,err : "服务器不存在"})
