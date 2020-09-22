@@ -297,6 +297,10 @@ model.prototype.before = function() {
 	for(var i in this.buffs)
 		if(this.buffs[i].refreshType == "before")
 			this.buffs[i].update()
+	//伤害BUFF刷新
+	for(var i in this.buffs)
+		if(this.buffs[i].refreshType == "before_2")
+			this.buffs[i].update()
 }
 //行动结束后刷新
 model.prototype.after = function() {
