@@ -351,7 +351,7 @@ model.prototype.onHit = function(attacker,info,source) {
 		if(this.buffs["shield"]){
 			info.value = this.buffs["shield"].offset(info.value)
 		}
-		info.realValue = this.lessHP(info.value)
+		info.realValue = this.lessHP(info)
 		info.curValue = this.attInfo.hp
 		info.maxHP = this.attInfo.maxHP
 		if(attacker && info.realValue > 0)
@@ -418,20 +418,21 @@ model.prototype.addHP = function(value) {
 	return realValue
 }
 //扣除血量
-model.prototype.lessHP = function(value) {
-	var realValue = value
-	if((this.attInfo.hp - value) <= 0){
+model.prototype.lessHP = function(info) {
+	info.realValue = info.value
+	if((this.attInfo.hp - info.value) <= 0){
 		if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
 			this.attInfo.hp = 1
-			realValue = this.attInfo.hp - 1
+			info.realValue = this.attInfo.hp - 1
+			info.oneblood = true
 		}else{
-			realValue = this.attInfo.hp
+			info.realValue = this.attInfo.hp
 			this.onDie()
 		}
 	}else{
-		this.attInfo.hp -= value
+		this.attInfo.hp -= info.value
 	}
-	return realValue
+	return info.realValue
 }
 //恢复怒气
 model.prototype.addAnger = function(value,hide) {
