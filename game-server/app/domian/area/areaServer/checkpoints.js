@@ -137,7 +137,7 @@ module.exports = function() {
 		  	rate = (awardTime * rate) / 60 
 		  	self.taskUpdate(uid,"on_hook",1)
 		  	var awardList = self.addItemStr(uid,on_hook_award,rate,"挂机奖励")
-		  	var awardStr = self.gainOnhookItem(level,awardTime/60)
+		  	var awardStr = self.gainOnhookItem(uid,level,awardTime/60)
 		  	if(awardStr)
 		  		awardList = awardList.concat(self.addItemStr(uid,awardStr,1,"挂机道具"))
 		  	cb(true,{allTime : tmpTime,awardTime : awardTime,awardList : awardList})
@@ -193,7 +193,7 @@ module.exports = function() {
 			  		rate += activity_cfg["high_card_onhook"]["value"]
 			  	rate = 120 * rate
 			  	var awardList = self.addItemStr(uid,on_hook_award,rate,"快速挂机奖励")
-			  	var awardStr = self.gainOnhookItem(level,120)
+			  	var awardStr = self.gainOnhookItem(uid,level,120)
 			  	if(awardStr)
 			  		awardList = awardList.concat(self.addItemStr(uid,awardStr,1,"快速挂机道具"))
 			  	self.taskUpdate(uid,"quick",1)
@@ -204,7 +204,8 @@ module.exports = function() {
 		})
 	}
 	//获取挂机道具
-	this.gainOnhookItem = function(level,time) {
+	this.gainOnhookItem = function(uid,level,time) {
+		var acc_level = self.getCheckpointsInfo(uid)
 		var equipLv = checkpointsCfg[level]["equip"] || 0
 		equipLv -= 2
 		if(equipLv <= 1)
@@ -215,8 +216,18 @@ module.exports = function() {
 		if(count > 20)
 			count = 20
 		var list = []
-		var pickaxe1 = Math.min(count,8)
-		var pickaxe2 = Math.floor(pickaxe1 * (Math.random() * 0.3 + 0.3))
+		var awardStr = ""
+		if(acc_level >= 40){
+			var pickaxe1 = Math.min(Math.floor(count / 2),8)
+			var pickaxe2 = Math.floor(pickaxe1 * (Math.random() * 0.3 + 0.2))
+			if(pickaxe1)
+				awardStr = "1000501:"+pickaxe1
+			if(pickaxe2){
+				if(awardStr)
+					awardStr += "&"
+				awardStr += "1000502:"+pickaxe2
+			}
+		}
 		while(count > 0){
 			if(count >= 7){
 				list.push(2)
@@ -228,14 +239,6 @@ module.exports = function() {
 				list.push(0)
 				count -= 1
 			}
-		}
-		var awardStr = ""
-		if(pickaxe1)
-			awardStr = "1000501:"+pickaxe1
-		if(pickaxe2){
-			if(awardStr)
-				awardStr += "&"
-			awardStr += "1000502:"+pickaxe2
 		}
 		for(var i = 0;i < list.length;i++){
 			var lv = equipLv + list[i]

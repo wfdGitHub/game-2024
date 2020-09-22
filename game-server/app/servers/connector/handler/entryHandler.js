@@ -11,6 +11,10 @@ var entryHandler = function(app) {
 };
 //登陆账号
 entryHandler.prototype.entryAccount = function(msg, session, next) {
+	if(!msg.unionid){
+		next(null,{flag : false,err : "参数错误"})
+		return
+	}
 	var unionid = "visitor_"+msg.unionid
 	var loginToken = util.randomString(8)
 	this.redisDao.db.hset("loginToken",unionid,loginToken)
