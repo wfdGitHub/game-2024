@@ -205,7 +205,7 @@ module.exports = function() {
 	}
 	//获取挂机道具
 	this.gainOnhookItem = function(uid,level,time) {
-		var acc_level = self.getCheckpointsInfo(uid)
+		var lv = self.getLordLv(uid)
 		var equipLv = checkpointsCfg[level]["equip"] || 0
 		equipLv -= 2
 		if(equipLv <= 1)
@@ -217,7 +217,7 @@ module.exports = function() {
 			count = 20
 		var list = []
 		var awardStr = ""
-		if(acc_level >= 40){
+		if(lv >= 40){
 			var pickaxe1 = Math.min(Math.floor(count / 2),8)
 			var pickaxe2 = Math.floor(pickaxe1 * (Math.random() * 0.3 + 0.2))
 			if(pickaxe1)
