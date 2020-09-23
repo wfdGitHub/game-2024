@@ -142,7 +142,7 @@ module.exports = function() {
 				console.log(atkTeam)
 				console.log("defTeam",defTeam,typeof(defTeam))
 				if(verify1 != JSON.stringify(atkTeam)){
-					next("verify1 false",atkTeam)
+					next("verify1 false "+JSON.stringify(atkTeam))
 					return
 				}
 				defTeam = area_trial[trialId]["team2"]
@@ -161,7 +161,7 @@ module.exports = function() {
 				console.log(atkTeam)
 				console.log(defTeam)
 				if(verify2 != JSON.stringify(atkTeam)){
-					next("verify2 false")
+					next("verify2 false "+JSON.stringify(atkTeam))
 					return
 				}
 				defTeam = area_trial[trialId]["team3"]
@@ -180,7 +180,7 @@ module.exports = function() {
 				console.log(atkTeam)
 				console.log(defTeam)
 				if(verify3 != JSON.stringify(atkTeam)){
-					next("verify3 false",atkTeam)
+					next("verify3 false "+JSON.stringify(atkTeam))
 					return
 				}
 				var awardList = self.addItemStr(uid,area_trial[trialId]["award"],1,"挑战山海")
