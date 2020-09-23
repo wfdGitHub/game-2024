@@ -185,6 +185,7 @@ module.exports = function() {
 				}
 				var awardList = self.addItemStr(uid,area_trial[trialId]["award"],1,"挑战山海")
 				self.incrbyObj(uid,main_name,"trialId",1)
+				self.addZset("trial_rank",uid,trialId)
 				cb(true,{awardList:awardList,trialId:trialId})
 			}
 		],function(err) {
