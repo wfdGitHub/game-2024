@@ -487,7 +487,11 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 				hash[list[i].hId] = list[i]
 			}
 			for(var i = 0;i < fightTeam.length;i++){
-				fightTeam[i] = hash[fightTeam[i]]
+				if(hash[fightTeam[i]]){
+					fightTeam[i] = hash[fightTeam[i]]
+				}else{
+					fightTeam[i] = null
+				}
 			}
 			cb(true,fightTeam)
 		})
