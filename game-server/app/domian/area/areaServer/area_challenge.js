@@ -142,7 +142,7 @@ module.exports = function() {
 				console.log(atkTeam)
 				console.log("defTeam",defTeam,typeof(defTeam))
 				if(verify1 != JSON.stringify(atkTeam)){
-					next("verify1 false")
+					next("verify1 false",atkTeam)
 					return
 				}
 				defTeam = area_trial[trialId]["team2"]
@@ -167,7 +167,7 @@ module.exports = function() {
 				defTeam = area_trial[trialId]["team3"]
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum3})
 				if(!winFlag){
-					next("第2场战斗失败")
+					next("第2场战斗失败",atkTeam)
 					return
 				}
 				list = self.fightContorl.getFightRecord()
@@ -180,7 +180,7 @@ module.exports = function() {
 				console.log(atkTeam)
 				console.log(defTeam)
 				if(verify3 != JSON.stringify(atkTeam)){
-					next("verify3 false")
+					next("verify3 false",atkTeam)
 					return
 				}
 				var awardList = self.addItemStr(uid,area_trial[trialId]["award"],1,"挑战山海")
