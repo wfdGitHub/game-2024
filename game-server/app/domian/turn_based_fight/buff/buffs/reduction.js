@@ -2,7 +2,7 @@
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
-	buff.name = "护盾"
+	buff.name = "减伤盾"
 	buff.value = otps.buffArg
 	buff.refreshType = "before_2"
 	// console.log("角色"+buff.character.id+"增加护盾BUFF")

@@ -313,7 +313,7 @@ model.prototype.after = function() {
 model.prototype.roundOver = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
-		if(!this.buffs[i].refreshType == "roundOver")
+		if(this.buffs[i].refreshType == "roundOver")
 			this.buffs[i].update()
 }
 //清除指定角色buff

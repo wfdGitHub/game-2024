@@ -259,25 +259,25 @@ model.prototype.getTargetNormal = function(character) {
 		index -= 3
 	}
 	//优先打对位的敌方前排
-	if(!character.enemy[index].died){
+	if(model.check(character.enemy[index])){
 		return  [character.enemy[index]]
 	}
 	//若不存在,选取前排位置顺序靠前单位
 	for(var i = 0;i < 3;i++){
 		if(i != index){
-			if(!character.enemy[i].died){
+			if(model.check(character.enemy[i])){
 				return  [character.enemy[i]]
 			}
 		}
 	}
 	//若不存在前排，选取对位的地方后排
-	if(!character.enemy[index + 3].died){
+	if(model.check(character.enemy[index + 3])){
 		return  [character.enemy[index + 3]]
 	}
 	//最后选取后排位置靠前单位
 	for(var i = 3;i < 6;i++){
 		if(i != index + 3){
-			if(!character.enemy[i].died){
+			if(model.check(character.enemy[i])){
 				return  [character.enemy[i]]
 			}
 		}
@@ -291,25 +291,25 @@ model.prototype.getEnemyNormalBack = function(character) {
 		index += 3
 	}
 	//优先打对位的敌方后排
-	if(!character.enemy[index].died){
+	if(model.check(character.enemy[index])){
 		return  [character.enemy[index]]
 	}
 	//若不存在,选取后排位置顺序靠前单位
 	for(var i = 3;i < 6;i++){
 		if(i != index){
-			if(!character.enemy[i].died){
+			if(model.check(character.enemy[i])){
 				return  [character.enemy[i]]
 			}
 		}
 	}
 	//若不存在后排，选取对位的地方前排
-	if(!character.enemy[index - 3].died){
+	if(model.check(character.enemy[index - 3])){
 		return  [character.enemy[index - 3]]
 	}
 	//最后选取前排位置靠前单位
 	for(var i = 0;i < 3;i++){
 		if(i != index - 3){
-			if(!character.enemy[i].died){
+			if(model.check(character.enemy[i])){
 				return  [character.enemy[i]]
 			}
 		}
@@ -320,7 +320,7 @@ model.prototype.getEnemyNormalBack = function(character) {
 model.prototype.getEnemyRandom = function(character,count) {
     var list = []
     character.enemy.forEach(function(target,index) {
-        if(!target.died){
+        if(model.check(target)){
         	list.push(index)
         }
     })
@@ -343,7 +343,7 @@ model.prototype.getEnemyRandom = function(character,count) {
 //敌方纵排
 model.prototype.getEnemyVertical = function(character) {
 	var list = this.getTargetNormal(character)
-	if(list[0] && list[0].index < 3 && !list[0].team[list[0].index + 3].died){
+	if(list[0] && list[0].index < 3 && model.check(list[0].team[list[0].index + 3])){
 		list.push(list[0].team[list[0].index + 3])
 	}
 	return list
@@ -352,13 +352,13 @@ model.prototype.getEnemyVertical = function(character) {
 model.prototype.getEnemyHorizontalFront = function(character) {
 	var list = []
 	for(var i = 0;i < 3;i++){
-        if(!character.enemy[i].died){
+        if(model.check(character.enemy[i])){
         	list.push(character.enemy[i])
         }
 	}
 	if(!list.length){
 		for(var i = 3;i < 6;i++){
-	        if(!character.enemy[i].died){
+	        if(model.check(character.enemy[i])){
 	        	list.push(character.enemy[i])
 	        }
 		}
@@ -369,13 +369,13 @@ model.prototype.getEnemyHorizontalFront = function(character) {
 model.prototype.getEnemyHorizontalBack = function(character) {
 	var list = []
 	for(var i = 3;i < 6;i++){
-        if(!character.enemy[i].died){
+        if(model.check(character.enemy[i])){
         	list.push(character.enemy[i])
         }
 	}
 	if(!list.length){
 		for(var i = 0;i < 3;i++){
-	        if(!character.enemy[i].died){
+	        if(model.check(character.enemy[i])){
 	        	list.push(character.enemy[i])
 	        }
 		}
@@ -386,7 +386,7 @@ model.prototype.getEnemyHorizontalBack = function(character) {
 model.prototype.getEnemyAll = function(character) {
     var list = []
     character.enemy.forEach(function(target,index) {
-        if(!target.died){
+        if(model.check(target)){
         	list.push(target)
         }
     })
@@ -397,15 +397,15 @@ model.prototype.getEnemyAdjoin = function(character) {
 	var list = this.getTargetNormal(character)
 	if(list[0]){
 		//左方向
-		if(list[0].index % 3 >= 1 && !list[0].team[list[0].index - 1].died){
+		if(list[0].index % 3 >= 1 && model.check(list[0].team[list[0].index - 1])){
 			list.push(list[0].team[list[0].index - 1])
 		}
 		//右方向
-		if(list[0].index % 3 <= 1 && !list[0].team[list[0].index + 1].died){
+		if(list[0].index % 3 <= 1 && model.check(list[0].team[list[0].index + 1])){
 			list.push(list[0].team[list[0].index + 1])
 		}
 		//后方向
-		if(list[0].index < 3 && !list[0].team[list[0].index + 3].died){
+		if(list[0].index < 3 && model.check(list[0].team[list[0].index + 3])){
 			list.push(list[0].team[list[0].index + 3])
 		}
 	}
@@ -415,7 +415,7 @@ model.prototype.getEnemyAdjoin = function(character) {
 model.prototype.getEnemyMinHP = function(character) {
     var minIndex = -1
     character.enemy.forEach(function(target,index) {
-        if(!target.died){
+        if(model.check(target)){
             if(minIndex === -1 || target.attInfo.hp < character.enemy[minIndex].attInfo.hp){
                 minIndex = index
             }
@@ -431,7 +431,7 @@ model.prototype.getEnemyMinHP = function(character) {
 model.prototype.getTeamRandom = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(!target.died){
+        if(model.check(target)){
         	list.push(index)
         }
     })
@@ -455,13 +455,13 @@ model.prototype.getTeamRandom = function(character,count) {
 model.prototype.getTeamHorizontalFront = function(character) {
 	var list = []
 	for(var i = 0;i < 3;i++){
-        if(!character.team[i].died){
+        if(model.check(character.team[i])){
         	list.push(character.team[i])
         }
 	}
 	if(!list.length){
 		for(var i = 3;i < 6;i++){
-	        if(!character.team[i].died){
+	        if(model.check(character.team[i])){
 	        	list.push(character.team[i])
 	        }
 		}
@@ -472,13 +472,13 @@ model.prototype.getTeamHorizontalFront = function(character) {
 model.prototype.getTeamHorizontalBack = function(character) {
 	var list = []
 	for(var i = 3;i < 6;i++){
-        if(!character.team[i].died){
+        if(model.check(character.team[i])){
         	list.push(character.team[i])
         }
 	}
 	if(!list.length){
 		for(var i = 0;i < 3;i++){
-	        if(!character.team[i].died){
+	        if(model.check(character.team[i])){
 	        	list.push(character.team[i])
 	        }
 		}
@@ -489,7 +489,7 @@ model.prototype.getTeamHorizontalBack = function(character) {
 model.prototype.getTeamAll = function(character) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(!target.died){
+        if(model.check(target)){
         	list.push(target)
         }
     })
@@ -499,7 +499,7 @@ model.prototype.getTeamAll = function(character) {
 model.prototype.getTeamRandomMinHp = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(!target.died){
+        if(model.check(target)){
         	list.push(target)
         }
     })
@@ -512,7 +512,7 @@ model.prototype.getTeamRandomMinHp = function(character,count) {
 model.prototype.getFriendRandomMinHp = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(!target.died && target != character){
+        if(model.check(target) && target != character){
         	list.push(target)
         }
     })
@@ -524,10 +524,16 @@ model.prototype.getFriendRandomMinHp = function(character,count) {
 //己方阵容站位最靠前的单位
 model.prototype.getTeamMinIndex = function(character) {
 	for(var i = 0;i < character.team.length;i++){
-		if(!character.team[i].died){
+		if(model.check(character.team[i])){
 			return [character.team[i]]
 		}
 	}
     return []
+}
+model.check = function(character) {
+	if(character.died || character.buffs["banish"])
+		return false
+	else
+		return true
 }
 module.exports = model

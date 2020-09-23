@@ -167,7 +167,7 @@ model.prototype.run = function() {
 	while(this.allTeam[this.teamIndex].index < 6){
 		this.character = this.allTeam[this.teamIndex].team[this.allTeam[this.teamIndex].index]
 		this.allTeam[this.teamIndex].index++
-		if(this.character.died){
+		if(this.character.died || this.character.buffs["banish"]){
 			this.character = false
 		}else{
 			break
