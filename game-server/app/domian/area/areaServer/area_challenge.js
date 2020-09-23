@@ -1,15 +1,21 @@
 //挑战山海
 const area_challenge = require("../../../../config/gameCfg/area_challenge.json")
+const area_trial = require("../../../../config/gameCfg/area_trial.json")
+const async = require("async")
 const main_name = "area_challenge"
 for(var i in area_challenge)
 	for(var j = 1;j <= 3;j++)
 		area_challenge[i]["team"+j] = JSON.parse(area_challenge[i]["team"+j])
+for(var i in area_trial)
+	for(var j = 1;j <= 3;j++)
+		area_trial[i]["team"+j] = JSON.parse(area_trial[i]["team"+j])
 module.exports = function() {
 	var self = this
 	const baseInfo = {
 		"bossId" : 0,
 		"cur_chapter" : 1,
-		"time" : 0
+		"time" : 0,
+		"trialId" : 0
 	}
 	//获取挑战山海数据
 	this.getAreaChallengeData = function(uid,cb) {
@@ -86,6 +92,103 @@ module.exports = function() {
 			    	cb(false,self.fightContorl.getFightRecord())
 			    }
 			}
+		})
+	}
+	//挑战试炼
+	this.areaTrial = function(uid,verifys,cb) {
+		var verify1 = verifys[0]
+		var verify2 = verifys[1]
+		var verify3 = verifys[2]
+		var seededNum1 = verifys[3]
+		var seededNum2 = verifys[4]
+		var seededNum3 = verifys[5]
+		var atkTeam = []
+		var trialId = 0
+		async.waterfall([
+			function(next) {
+				self.getObj(uid,main_name,"trialId",function(data) {
+					trialId = Number(data) || 0
+					trialId++
+					if(!area_trial[trialId]){
+						next("已通关")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+			    var fightInfo = self.getFightInfo(uid)
+			    if(!fightInfo){
+			    	next("未准备")
+			    }else{
+			    	atkTeam = fightInfo.team
+			    	next()
+			    }
+			},
+			function(next) {
+				var defTeam = area_trial[trialId]["team1"]
+				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum1})
+				if(!winFlag){
+					next("第1场战斗失败")
+					return
+				}
+				var list = self.fightContorl.getFightRecord()
+				var overInfo = list[list.length - 1]
+				for(var i = 0;i<atkTeam.length;i++){
+					if(atkTeam[i] && overInfo.atkTeam[i]){
+						atkTeam[i]["surplus_healths"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
+					}
+				}
+				console.log(atkTeam)
+				console.log("defTeam",defTeam,typeof(defTeam))
+				if(verify1 != JSON.stringify(atkTeam)){
+					next("verify1 false")
+					return
+				}
+				defTeam = area_trial[trialId]["team2"]
+				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum2})
+				if(!winFlag){
+					next("第2场战斗失败")
+					return
+				}
+				list = self.fightContorl.getFightRecord()
+				overInfo = list[list.length - 1]
+				for(var i = 0;i<atkTeam.length;i++){
+					if(atkTeam[i] && overInfo.atkTeam[i]){
+						atkTeam[i]["surplus_healths"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
+					}
+				}
+				console.log(atkTeam)
+				console.log(defTeam)
+				if(verify2 != JSON.stringify(atkTeam)){
+					next("verify2 false")
+					return
+				}
+				defTeam = area_trial[trialId]["team3"]
+				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum3})
+				if(!winFlag){
+					next("第2场战斗失败")
+					return
+				}
+				list = self.fightContorl.getFightRecord()
+				overInfo = list[list.length - 1]
+				for(var i = 0;i<atkTeam.length;i++){
+					if(atkTeam[i] && overInfo.atkTeam[i]){
+						atkTeam[i]["surplus_healths"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
+					}
+				}
+				console.log(atkTeam)
+				console.log(defTeam)
+				if(verify3 != JSON.stringify(atkTeam)){
+					next("verify3 false")
+					return
+				}
+				var awardList = self.addItemStr(uid,area_trial[trialId]["award"],1,"挑战山海")
+				self.incrbyObj(uid,main_name,"trialId",1)
+				cb(true,{awardList:awardList,trialId:trialId})
+			}
+		],function(err) {
+			cb(false,err)
 		})
 	}
 }

@@ -68,6 +68,18 @@ activityHandler.prototype.getAreaChallengeData = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//挑战试炼
+activityHandler.prototype.areaTrial = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  if(!msg.verifys || !Array.isArray(msg.verifys) || msg.verifys.length != 6){
+    next(null,{flag:false,err:"verifys error"})
+    return
+  }
+  this.areaManager.areaMap[areaId].areaTrial(uid,msg.verifys,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //挑战新服BOSS
 activityHandler.prototype.areaChallenge = function(msg, session, next) {
   var uid = session.uid
