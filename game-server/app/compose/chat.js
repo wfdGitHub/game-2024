@@ -3,6 +3,7 @@ var chat = function() {
 	this.name = "chat"
 	this.rooms = {}				//聊天室群组
 	this.userMap = {}			//玩家所在聊天室
+	this.records = {}			//聊天记录
 }
 //初始化
 chat.prototype.init = function(app) {
@@ -15,12 +16,16 @@ chat.prototype.say = function(talker,roomName,text,cb) {
 		var notify = {
 			roomName : roomName,
 			talker : talker,
-			text : text
+			text : text,
+			time : Date.now()
 		}
 		this.rooms[roomName].pushMessage("onChat",notify)
+		this.records[roomName].push(notify)
+		if(this.records[roomName].length > 20){
+			this.records[roomName].shift()
+		}
 	}
 }
-
 //玩家加入聊天室
 chat.prototype.joinChatRoom = function(uid,sid,roomName,cb) {
 	// console.log("joinChatRoom",uid,sid,roomName)
@@ -30,6 +35,7 @@ chat.prototype.joinChatRoom = function(uid,sid,roomName,cb) {
 	}
 	if(!this.rooms[roomName]){
 		this.rooms[roomName] = this.channelService.createChannel(roomName)
+		this.records[roomName] = []
 	}
 	this.rooms[roomName].add(uid,sid)
 	if(!this.userMap[uid]){
@@ -37,7 +43,7 @@ chat.prototype.joinChatRoom = function(uid,sid,roomName,cb) {
 	}
 	this.userMap[uid][roomName] = sid
 	if(cb)
-		cb(true)
+		cb(true,this.records[roomName])
 }
 //玩家离开聊天室
 chat.prototype.leaveChatRoom = function(uid,sid,roomName,cb) {
@@ -45,10 +51,6 @@ chat.prototype.leaveChatRoom = function(uid,sid,roomName,cb) {
 	if(this.userMap[uid] && this.userMap[uid][roomName] && this.rooms[roomName]){
 		this.rooms[roomName].leave(uid,sid)
 		delete this.userMap[uid][roomName]
-		if(this.rooms[roomName].getUserAmount() <= 0){
-			this.rooms[roomName].destroy()
-			delete this.rooms[roomName]
-		}
 		if(cb)
 			cb(true)
 	}else{
