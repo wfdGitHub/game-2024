@@ -468,6 +468,7 @@ model.useHealSkill = function(skill) {
 			}
 		}
 	}
+	var callbacks = []
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died && !skill.character.died_use_skill){
 			break
@@ -488,13 +489,15 @@ model.useHealSkill = function(skill) {
 			value = Math.round(value * (skill.character.heal_min_hp_rate + 1))
 		let info = this.formula.calHeal(skill.character,target,value,skill)
 		if(target.forbidden && skill.character.forbidden_shield){
-			buffManager.createBuff(skill.character,target,{buffId : "shield",buffArg : info.value,duration : 1,number : true})
+			callbacks.push(function(){buffManager.createBuff(skill.character,target,{buffId : "shield",buffArg : info.value,duration : 1,number : true})})
 		}else{
 			info = target.onHeal(skill.character,info,skill)
 			recordInfo.targets.push(info)
 		}
 	}
 	fightRecord.push(recordInfo)
+	for(var i = 0;i < callbacks.length;i++)
+		callbacks[i]()
 	return targets
 }
 module.exports = model
