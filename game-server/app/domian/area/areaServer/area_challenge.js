@@ -136,7 +136,7 @@ module.exports = function() {
 				var overInfo = list[list.length - 1]
 				for(var i = 0;i<atkTeam.length;i++){
 					if(atkTeam[i] && overInfo.atkTeam[i]){
-						atkTeam[i]["surplus_healths"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
+						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
 				console.log(atkTeam)
@@ -155,7 +155,7 @@ module.exports = function() {
 				overInfo = list[list.length - 1]
 				for(var i = 0;i<atkTeam.length;i++){
 					if(atkTeam[i] && overInfo.atkTeam[i]){
-						atkTeam[i]["surplus_healths"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
+						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
 				console.log(atkTeam)
@@ -174,7 +174,7 @@ module.exports = function() {
 				overInfo = list[list.length - 1]
 				for(var i = 0;i<atkTeam.length;i++){
 					if(atkTeam[i] && overInfo.atkTeam[i]){
-						atkTeam[i]["surplus_healths"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
+						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
 				console.log(atkTeam)
