@@ -84,7 +84,7 @@ module.exports = function() {
 	}
 	//获取阵容
 	this.getUserTeam = function(uid) {
-		return userTeams[uid]
+		return Object.assign({},userTeams[uid]) 
 	}
 	//获取上阵英雄数量
 	this.getTeamNum = function(uid) {
