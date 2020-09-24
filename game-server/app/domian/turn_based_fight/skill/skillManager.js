@@ -487,8 +487,12 @@ model.useHealSkill = function(skill) {
 		if(min_hp_friend && min_hp_friend == target)
 			value = Math.round(value * (skill.character.heal_min_hp_rate + 1))
 		let info = this.formula.calHeal(skill.character,target,value,skill)
-		info = target.onHeal(skill.character,info,skill)
-		recordInfo.targets.push(info)
+		if(skill.character.forbidden && skill.character.forbidden_shield){
+			buffManager.createBuff(skill.character,target,{buffId : "shield",buffArg : info.value,duration : 1,number : true})
+		}else{
+			info = target.onHeal(skill.character,info,skill)
+			recordInfo.targets.push(info)
+		}
 	}
 	fightRecord.push(recordInfo)
 	return targets
