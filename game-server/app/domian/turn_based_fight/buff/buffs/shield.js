@@ -5,7 +5,11 @@ var model = function(releaser,character,otps) {
 	// console.log("角色"+buff.character.id+"被沉默!!!!!!")
 	buff.name = "护盾"
     buff.refreshType = "before_2"
-    buff.value = Math.floor(otps.buffArg * buff.character.getTotalAtt("maxHP"))
+    if(otps.number)
+    	buff.value = Math.floor(otps.buffArg)
+    else
+    	buff.value = Math.floor(otps.buffArg * buff.character.getTotalAtt("maxHP"))
+    console.log("buff value",buff.value)
 	buff.overlay = function(releaser,otps) {
 		buff.releaser = releaser
 		buff.duration = otps.duration
