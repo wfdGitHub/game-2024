@@ -139,8 +139,6 @@ module.exports = function() {
 						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
-				console.log(atkTeam)
-				console.log("defTeam",defTeam,typeof(defTeam))
 				if(verify1 != JSON.stringify(atkTeam)){
 					next("verify1 false "+JSON.stringify(atkTeam))
 					return
@@ -158,8 +156,6 @@ module.exports = function() {
 						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
-				console.log(atkTeam)
-				console.log(defTeam)
 				if(verify2 != JSON.stringify(atkTeam)){
 					next("verify2 false "+JSON.stringify(atkTeam))
 					return
@@ -177,8 +173,6 @@ module.exports = function() {
 						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
-				console.log(atkTeam)
-				console.log(defTeam)
 				if(verify3 != JSON.stringify(atkTeam)){
 					next("verify3 false "+JSON.stringify(atkTeam))
 					return
