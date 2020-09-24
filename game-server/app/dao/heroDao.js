@@ -196,15 +196,19 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 		})
 	})
 }
-//重生返还资源  返回升级升阶
+//重生返还资源  返回升级升阶法宝
 heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
 	var lv = heroInfo.lv
 	var ad = heroInfo.ad
+	var artifact = heroInfo.artifact
 	var strList = []
 	if(lv_cfg[lv] && lv_cfg[lv].pr)
 		strList.push(lv_cfg[lv].pr)
 	if(advanced_base[ad] && advanced_base[ad].pr)
 		strList.push(advanced_base[ad].pr)
+	if(artifact !== undefined && artifact_level[artifact]){
+		strList.push(artifact_level[artifact]["pr"])
+	}
 	var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
 	var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"重生返还")
 	if(cb)
