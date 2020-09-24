@@ -49,7 +49,6 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		atkTeam[i].init(this)
 		if(atkTeam[i].resurgence_team)
 			this.atkTeamInfo["resurgence_team"] = atkTeam[i].resurgence_team
-		atkTeam[i].camp = "atk"
 		atkTeam[i].index = i
 		atkTeam[i].team = atkTeam
 		atkTeam[i].enemy = defTeam
@@ -73,7 +72,6 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		defTeam[i].init(this)
 		if(defTeam[i].resurgence_team)
 			this.defTeamInfo["resurgence_team"] = defTeam[i].resurgence_team
-		defTeam[i].camp = "def"
 		defTeam[i].index = i
 		defTeam[i].team = defTeam
 		defTeam[i].enemy = atkTeam

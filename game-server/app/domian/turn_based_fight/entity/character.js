@@ -9,7 +9,6 @@ var model = function(otps) {
 	this.realm = otps.realm		//国家
 	this.career = otps.career	//角色职业   healer 治疗者
 	this.index = 0				//所在位置
-	this.camp = ""				//攻方或守方
 	this.isNaN = false			//是否空位置
 	this.team = []				//所在阵容
 	this.enemy = []				//敌对阵容
