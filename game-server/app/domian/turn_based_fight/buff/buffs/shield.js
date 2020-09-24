@@ -9,7 +9,6 @@ var model = function(releaser,character,otps) {
     	buff.value = Math.floor(otps.buffArg)
     else
     	buff.value = Math.floor(otps.buffArg * buff.character.getTotalAtt("maxHP"))
-    console.log("buff value",buff.value)
 	buff.overlay = function(releaser,otps) {
 		buff.releaser = releaser
 		buff.duration = otps.duration
