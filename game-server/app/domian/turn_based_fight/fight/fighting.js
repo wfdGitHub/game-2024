@@ -6,9 +6,11 @@ var skillManager = require("../skill/skillManager.js")
 var character = require("../entity/character.js")
 var fightRecord = require("./fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
+var fightRecord = require("../fight/fightRecord.js")
+var beforeBook = ["single"]
 var maxRound = 20				//最大回合
 var teamLength = 6				//阵容人数
-var model = function(atkTeam,defTeam,otps) {
+var model = function(atkTeam,defTeam,atkBooks,defBooks,otps) {
     fightRecord.init()
     this.atkTeamInfo = {}
     this.defTeamInfo = {}
@@ -22,6 +24,8 @@ var model = function(atkTeam,defTeam,otps) {
 	this.maxRound = otps.maxRound || maxRound		//最大回合
 	this.atkTeam = atkTeam			//攻方阵容  长度为6的角色数组  位置无人则为NULL
 	this.defTeam = defTeam			//守方阵容
+	this.atkBooks = atkBooks		//攻方天书
+	this.defBooks = defBooks		//守方天书
 	this.allTeam = 					//双方阵容
 	[{
 		team : atkTeam,
@@ -116,6 +120,13 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 		}
 	}
+	//天书初始化
+	for(var i in this.atkBooks){
+		this.atkBooks[i].init(this.atkTeam,this.defTeam,this.locator)
+	}
+	for(var i in this.defBooks){
+		this.defBooks[i].init(this.defTeam,this.atkTeam,this.locator)
+	}
 }
 //开始新轮次
 model.prototype.nextRound = function() {
@@ -130,6 +141,12 @@ model.prototype.nextRound = function() {
 	this.allTeam[1].index = 0
 	this.teamIndex = 0
 	fightRecord.push({type : "nextRound",round : this.round})
+	for(var i = 0; i <= beforeBook.length;i++){
+		if(this.atkBooks[beforeBook[i]])
+			this.atkBooks[beforeBook[i]].action()
+		if(this.defBooks[beforeBook[i]])
+			this.defBooks[beforeBook[i]].action()
+	}
 	this.run()
 }
 //整体回合结束

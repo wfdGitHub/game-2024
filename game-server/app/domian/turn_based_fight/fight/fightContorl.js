@@ -15,16 +15,21 @@ var stone_skill = require("../../../../config/gameCfg/stone_skill.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
+var bookIds = ["single"]
+var bookList = {}
+for(var i = 0;i < bookIds.length;i++){
+	bookList[bookIds[i]] = require("../books/"+bookIds[i]+".js")
+}
 //战斗控制器
 var model = function() {
 	this.fighting = false
 }
-//自定义战斗配置
-model.libertyFight = function(atkTeam,defTeam,otps) {
-	var fighting = new fightingFun(atkTeam,defTeam,otps)
-	fighting.nextRound()
-	return fightRecord.getList()
-}
+// //自定义战斗配置
+// model.libertyFight = function(atkTeam,defTeam,otps) {
+// 	var fighting = new fightingFun(atkTeam,defTeam,otps)
+// 	fighting.nextRound()
+// 	return fightRecord.getList()
+// }
 //根据配置表生成战斗配置
 model.beginFight = function(atkTeam,defTeam,otps) {
 	var atkTeamList = []
@@ -33,13 +38,33 @@ model.beginFight = function(atkTeam,defTeam,otps) {
       atkTeamList[i] = this.getCharacterInfo(atkTeam[i])
       defTeamList[i] = this.getCharacterInfo(defTeam[i])
     }
+    var atkBookInfos = atkTeam[6]
+    var defBookInfos = defTeam[6]
+    var atkBooks = {}
+    var defBooks = {}
+	//天书
+	if(atkBookInfos){
+		for(var bookId in atkBookInfos){
+			if(bookList[bookId]){
+				atkBooks[bookId] = new bookList[bookId](atkBookInfos[bookId])
+			}
+		}
+	}
+	if(defBookInfos){
+		for(var bookId in defBookInfos){
+			if(bookList[bookId]){
+				defBooks[bookId] = new bookList[bookId](defBookInfos[bookId])
+			}
+		}
+	}
     var myotps = Object.assign({},otps)
     myotps.atkTeamAdds = Object.assign({},myotps.atkTeamAdds)
     myotps.defTeamAdds = Object.assign({},myotps.defTeamAdds)
     model.mergeData(myotps.atkTeamAdds,this.raceAdd(this.getRaceType(atkTeamList)))
     model.mergeData(myotps.defTeamAdds,this.raceAdd(this.getRaceType(defTeamList)))
-	var fighting = new fightingFun(atkTeamList,defTeamList,myotps)
+	var fighting = new fightingFun(atkTeamList,defTeamList,atkBooks,defBooks,myotps)
 	fighting.nextRound()
+	console.log(fightRecord.list)
 	return fightRecord.isWin()
 }
 //获取种族加成类型

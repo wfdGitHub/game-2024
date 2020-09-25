@@ -27,6 +27,9 @@ var model = function() {
 				case "nextRound":
 					console.log("\n\033[35m第"+info.round+"轮开始\033[0m\n")
 				break
+				case "book":
+					console.log(info)
+				break
 				case "characterAction":
 					console.log("\033[36m"+heroNames[info.id]+"开始行动"+"\033[0m")
 				break
