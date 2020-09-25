@@ -70,6 +70,7 @@ heroHandler.prototype.resetHero = function(msg, session, next) {
       self.heroDao.heroReset(areaId,uid,heroInfo,function(flag,awardList) {
           self.heroDao.setHeroInfo(areaId,uid,hId,"lv",1)
           self.heroDao.setHeroInfo(areaId,uid,hId,"ad",0)
+          self.heroDao.delHeroInfo(areaId,uid,hId,"artifact")
           next(null,{flag : true,awardList : awardList,lv:1,ad:0})
       })
     })

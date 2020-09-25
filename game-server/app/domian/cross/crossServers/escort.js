@@ -276,6 +276,10 @@ module.exports = function() {
 			cb(false,"镖车已不能刷新")
 			return
 		}
+		if((this.curHours < escort_cfg["closeTime1"]["value"] && this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.17))){
+			cb(false,"最后十分钟不能刷新")
+			return
+		}
 		this.consumeItems(crossUid,escort_cfg["refresh"]["value"],1,"刷新镖车",function(flag,err) {
 			if(!flag){
 				cb(false,err)
@@ -312,7 +316,7 @@ module.exports = function() {
 			return
 		}
 		if((this.curHours < escort_cfg["closeTime1"]["value"] && this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.17))){
-			cb(false,"现在不能押镖")
+			cb(false,"最后十分钟不能押镖")
 			return
 		}
 		if(local.userInfos[crossUid]["escortNum"] >= escort_cfg["playCount"]["value"]){

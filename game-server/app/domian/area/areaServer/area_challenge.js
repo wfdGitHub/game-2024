@@ -136,13 +136,12 @@ module.exports = function() {
 				var overInfo = list[list.length - 1]
 				for(var i = 0;i<atkTeam.length;i++){
 					if(atkTeam[i] && overInfo.atkTeam[i]){
-						atkTeam[i]["surplus_healths"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
+						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
-				console.log(atkTeam)
-				console.log("defTeam",defTeam,typeof(defTeam))
 				if(verify1 != JSON.stringify(atkTeam)){
-					next("verify1 false "+JSON.stringify(atkTeam))
+					console.log("verify1 error")
+					next(list)
 					return
 				}
 				defTeam = area_trial[trialId]["team2"]
@@ -155,13 +154,12 @@ module.exports = function() {
 				overInfo = list[list.length - 1]
 				for(var i = 0;i<atkTeam.length;i++){
 					if(atkTeam[i] && overInfo.atkTeam[i]){
-						atkTeam[i]["surplus_healths"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
+						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
-				console.log(atkTeam)
-				console.log(defTeam)
 				if(verify2 != JSON.stringify(atkTeam)){
-					next("verify2 false "+JSON.stringify(atkTeam))
+					console.log("verify2 error")
+					next(list)
 					return
 				}
 				defTeam = area_trial[trialId]["team3"]
@@ -174,13 +172,12 @@ module.exports = function() {
 				overInfo = list[list.length - 1]
 				for(var i = 0;i<atkTeam.length;i++){
 					if(atkTeam[i] && overInfo.atkTeam[i]){
-						atkTeam[i]["surplus_healths"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
+						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
-				console.log(atkTeam)
-				console.log(defTeam)
 				if(verify3 != JSON.stringify(atkTeam)){
-					next("verify3 false "+JSON.stringify(atkTeam))
+					console.log("verify3 error")
+					next(list)
 					return
 				}
 				var awardList = self.addItemStr(uid,area_trial[trialId]["award"],1,"挑战山海")

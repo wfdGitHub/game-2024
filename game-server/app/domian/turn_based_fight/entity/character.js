@@ -57,6 +57,8 @@ var model = function(otps) {
 	this.before_clear_debuff = otps.before_clear_debuff || 0 //自身回合开始前，移除自身所有的异常效果（灼烧、中毒、眩晕、沉默、麻痹、禁疗）的概率
 	this.oneblood_rate = otps.oneblood_rate || 0 //受到致命伤害时保留一滴血概率
 	this.target_anger_amp = otps.target_anger_amp || 0 //敌人超过4点怒气的部分，每点怒气提供伤害加成
+	//=========元神效果=======//
+	this.forbidden_shield = otps.forbidden_shield || 0 //治疗时，若目标处于禁疗状态，转化为护盾比例
 	//=========特殊属性=======//
 	this.buffRate = otps.buffRate || 0			//buff概率   若技能存在buff  以此代替buff本身概率
 	this.buffArg = otps.buffArg || 0			//buff参数   若技能存在buff  以此代替buff本身参数

@@ -97,6 +97,12 @@
         console.log("onChat")
         console.log(data)
       })
+      //获取玩家unionid
+      var getUnionIdByUid = function(uid) {
+        pomelo.request("admin.adminHandler.getUnionIdByUid", {uid:uid}, function(data) {
+            console.log(data);
+        });
+      }
       //挑战试炼
       var areaTrial = function(verifys) {
         pomelo.request("area.activityHandler.areaTrial", {verifys:verifys}, function(data) {
