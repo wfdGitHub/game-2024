@@ -141,7 +141,7 @@ module.exports = function() {
 				}
 				if(verify1 != JSON.stringify(atkTeam)){
 					console.log("verify1 error")
-					next(list)
+					next("verify1 error")
 					return
 				}
 				defTeam = area_trial[trialId]["team2"]
@@ -159,7 +159,7 @@ module.exports = function() {
 				}
 				if(verify2 != JSON.stringify(atkTeam)){
 					console.log("verify2 error")
-					next(list)
+					next("verify2 error")
 					return
 				}
 				defTeam = area_trial[trialId]["team3"]
@@ -177,7 +177,7 @@ module.exports = function() {
 				}
 				if(verify3 != JSON.stringify(atkTeam)){
 					console.log("verify3 error")
-					next(list)
+					next("verify3 error")
 					return
 				}
 				var awardList = self.addItemStr(uid,area_trial[trialId]["award"],1,"挑战山海")
