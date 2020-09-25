@@ -503,9 +503,13 @@ model.prototype.getTeamRandomMinHp = function(character,count) {
         	list.push(target)
         }
     })
-    list.sort(function(a,b) {
-    	return a.attInfo.hp > b.attInfo.hp ? 1 : -1
-    })
+    for(var i = 0;i < list.length;i++)
+    	for(var j = i + 1;j < list.length;j++)
+    		if(list[j].attInfo.hp < list[i].attInfo.hp){
+    			var tmp = list[j]
+    			list[j] = list[i]
+    			list[i] = tmp
+    		}
     return list.slice(0,count)
 }
 //友方(除自己)生命最少的n个单位
@@ -516,9 +520,13 @@ model.prototype.getFriendRandomMinHp = function(character,count) {
         	list.push(target)
         }
     })
-    list.sort(function(a,b) {
-    	return a.attInfo.hp > b.attInfo.hp ? 1 : -1
-    })
+    for(var i = 0;i < list.length;i++)
+    	for(var j = i + 1;j < list.length;j++)
+    		if(list[j].attInfo.hp < list[i].attInfo.hp){
+    			var tmp = list[j]
+    			list[j] = list[i]
+    			list[i] = tmp
+    		}
     return list.slice(0,count)
 }
 //己方阵容站位最靠前的单位
