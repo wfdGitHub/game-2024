@@ -101,19 +101,19 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	fightRecord.push(info)
 	//初始buff
 	for(var i = 0;i < teamLength;i++){
-		if(atkTeam[i].first_buff){
+		if(!atkTeam[i].died && atkTeam[i].first_buff){
 			var burnBuffInfo = atkTeam[i].first_buff
 			buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 		}
-		if(defTeam[i].first_buff){
+		if(!defTeam[i].died && defTeam[i].first_buff){
 			var burnBuffInfo = defTeam[i].first_buff
 			buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 		}
-		if(atkTeam[i].before_buff_s){
+		if(!atkTeam[i].died && atkTeam[i].before_buff_s){
 			var burnBuffInfo = atkTeam[i].before_buff_s
 			buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 		}
-		if(defTeam[i].before_buff_s){
+		if(!defTeam[i].died && defTeam[i].before_buff_s){
 			var burnBuffInfo = defTeam[i].before_buff_s
 			buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
 		}
