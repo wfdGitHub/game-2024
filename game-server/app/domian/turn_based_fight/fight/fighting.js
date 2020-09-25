@@ -7,7 +7,7 @@ var character = require("../entity/character.js")
 var fightRecord = require("./fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
 var fightRecord = require("../fight/fightRecord.js")
-var beforeBook = ["single"]
+var oddRoundEndBook = ["single"] //奇数回合结束后释放
 var maxRound = 20				//最大回合
 var teamLength = 6				//阵容人数
 var model = function(atkTeam,defTeam,atkBooks,defBooks,otps) {
@@ -141,12 +141,6 @@ model.prototype.nextRound = function() {
 	this.allTeam[1].index = 0
 	this.teamIndex = 0
 	fightRecord.push({type : "nextRound",round : this.round})
-	for(var i = 0; i <= beforeBook.length;i++){
-		if(this.atkBooks[beforeBook[i]])
-			this.atkBooks[beforeBook[i]].action()
-		if(this.defBooks[beforeBook[i]])
-			this.defBooks[beforeBook[i]].action()
-	}
 	this.run()
 }
 //整体回合结束
@@ -159,6 +153,14 @@ model.prototype.endRound = function() {
 		if(this.defTeam[i].round_anger_rate && this.defTeam[i].curAnger < 4){
 			if(this.seeded.random("回合结束怒气") < this.defTeam[i].round_anger_rate)
 			this.defTeam[i].addAnger(4 - this.defTeam[i].curAnger)
+		}
+	}
+	if(this.round % 2 == 1){
+		for(var i = 0; i <= oddRoundEndBook.length;i++){
+			if(this.atkBooks[oddRoundEndBook[i]])
+				this.atkBooks[oddRoundEndBook[i]].action()
+			if(this.defBooks[oddRoundEndBook[i]])
+				this.defBooks[oddRoundEndBook[i]].action()
 		}
 	}
 	this.nextRound()

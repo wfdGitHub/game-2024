@@ -47,6 +47,7 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 		for(var bookId in atkBookInfos){
 			if(bookList[bookId]){
 				atkBooks[bookId] = new bookList[bookId](atkBookInfos[bookId])
+				atkBooks[bookId].belong = "atk"
 			}
 		}
 	}
@@ -54,6 +55,7 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 		for(var bookId in defBookInfos){
 			if(bookList[bookId]){
 				defBooks[bookId] = new bookList[bookId](defBookInfos[bookId])
+				atkBooks[bookId].belong = "def"
 			}
 		}
 	}
