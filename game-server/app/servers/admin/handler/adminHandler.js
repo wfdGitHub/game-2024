@@ -300,6 +300,20 @@ adminHandler.prototype.rechargeToUser = function(msg,session,next) {
 		}
 	})
 }
+//获取unionId
+adminHandler.prototype.getUnionIdByUid = function(msg,session,next) {
+	var uid = msg.uid
+	var self = this
+	self.playerDao.getPlayerInfo({uid:uid},function(playerInfo) {
+		if(!playerInfo){
+			next(null,{flag:false})
+			return
+		}
+		self.accountDao.getAccountData({accId:playerInfo.accId,name:"unionid"},function(flag,data) {
+			next(null,{flag:flag,data:data})
+		})
+	})
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "adminHandler",
