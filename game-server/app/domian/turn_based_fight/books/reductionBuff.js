@@ -9,16 +9,19 @@ var model = function(otps) {
 	book.buffArg = otps.buffArg
 	book.heal = otps.heal
 	book.action = function() {
-		var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
-		fightRecord.push(recordInfo)
+		fightRecord.push({type : "book",bookId:book.bookId,belong : book.belong,targets:[]})
+		var recordInfo = {type : "other_heal",targets : []}
 		for(var i = 0;i < book.team.length;i++){
 			if(book.team[i] && !book.team[i].died){	
 				if(book.buffArg)
 					buffManager.createBuff(book,book.team[i],{buffId : "reduction",duration : 1,buffArg:book.buffArg})
-				if(book.heal)
-					book.team[i].onHeal(book,{value : Math.floor(book.team[i].getTotalAtt("maxHP") * book.heal)})
+				if(book.heal){
+					var tmpRecord = book.team[i].onHeal(book,{value : Math.floor(book.team[i].getTotalAtt("maxHP") * book.heal)})
+					recordInfo.targets.push(tmpRecord)
+				}
 			}
 		}
+		fightRecord.push(recordInfo)
 	}
 	return book
 }
