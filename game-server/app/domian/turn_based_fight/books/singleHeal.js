@@ -8,6 +8,7 @@ var model = function(otps) {
 	book.id = "singleHeal"
 	book.value = Math.floor(otps.mul * book.attInfo.atk)
 	book.count = otps.count
+	book.dispel = otps.dispel
 	book.action = function() {
 		if(book.count > 0){
 			var target = book.locator.getTargets(book.team[0],"team_minHp_1")[0]
@@ -16,10 +17,12 @@ var model = function(otps) {
 				var info = target.onHeal(book,{value:book.value})
 				recordInfo.targets.push(info)
 				fightRecord.push(recordInfo)
-				if(target["buffs"]["burn"])
-					target["buffs"]["burn"].destroy()
-				if(target["buffs"]["poison"])
-					target["buffs"]["poison"].destroy()
+				if(book.dispel){
+					if(target["buffs"]["burn"])
+						target["buffs"]["burn"].destroy()
+					if(target["buffs"]["poison"])
+						target["buffs"]["poison"].destroy()
+				}
 			}
 		}
 	}
