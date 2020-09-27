@@ -63,7 +63,7 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 	if(defBookInfos){
 		for(var bookId in defBookInfos){
 			if(bookList[bookId] && bookMap[bookId]){
-				defBooks[bookId] = this.getBookInfo(bookId,atkBookInfos[bookId])
+				defBooks[bookId] = this.getBookInfo(bookId,defBookInfos[bookId])
 				defBooks[bookId].belong = "def"
 				defBookAtts["maxHP"] += Math.floor(defBooks[bookId].attInfo.maxHP/30)
 				defBookAtts["atk"] += Math.floor(defBooks[bookId].attInfo.atk/30)
