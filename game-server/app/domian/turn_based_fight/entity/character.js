@@ -16,6 +16,7 @@ var model = function(otps) {
 	this.star = otps["star"] || 1		//星级
 	this.ad = otps["ad"] || 0			//阶级
 	this.teamInfo = {}
+	this.bookAtts = otps.bookAtts
 	//=========基础属性=======//
 	this.attInfo = {}
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
@@ -278,6 +279,9 @@ model.prototype.calAttAdd = function(team_adds) {
 			default:
 				this.attInfo[i] += this.show_adds[i]
 		}
+	}
+	for(var i in this.bookAtts){
+		this.attInfo[i] += this.bookAtts[i]
 	}
 	this.attInfo.hp = this.attInfo.maxHP
 	if(this.surplus_health === 0){
