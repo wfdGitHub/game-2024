@@ -67,7 +67,7 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // }
 // console.log(atkTeam)
 
-var atkTeam = [{"id":"405080"},0,0,0,0,0,{"single":{atk:100,mul:1}}]
-var defTeam = [{"id":"405080"},0,0,0,0,0]
-var list = fightContorl.beginFight(atkTeam,defTeam,{})
-fightRecord.explain()
+// var atkTeam = [{"id":"405080"},0,0,0,0,0,{"single":{atk:100,mul:1}}]
+// var defTeam = [{"id":"405080"},0,0,0,0,0]
+// var list = fightContorl.beginFight(atkTeam,defTeam,{})
+// fightRecord.explain()
