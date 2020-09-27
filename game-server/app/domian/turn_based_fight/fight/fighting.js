@@ -7,7 +7,11 @@ var character = require("../entity/character.js")
 var fightRecord = require("./fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
 var fightRecord = require("../fight/fightRecord.js")
-var oddRoundEndBook = ["single"] //奇数回合结束后释放
+var fightBegin = ["angerLessBook"]		//战斗开始前
+var roundBegin = ["banishBook"]		//回合开始前
+var oddRoundEndBook = ["singleAtk","angerAddBook","angerLessBook","reductionBuff"] //奇数回合结束后释放
+var evenRoundEndBook = ["singleHeal","backDamage","frontDamage"] //偶数回合结束后释放
+var roundEndBook = ["seckill"]	//回合结束后释放
 var maxRound = 20				//最大回合
 var teamLength = 6				//阵容人数
 var model = function(atkTeam,defTeam,atkBooks,defBooks,otps) {
@@ -122,11 +126,21 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	}
 	//天书初始化
 	for(var i in this.atkBooks){
-		this.atkBooks[i].init(this.atkTeam,this.defTeam,this.locator)
+		this.atkBooks[i].init(this.atkTeam,this.defTeam,this.locator,this.seeded)
 	}
 	for(var i in this.defBooks){
-		this.defBooks[i].init(this.defTeam,this.atkTeam,this.locator)
+		this.defBooks[i].init(this.defTeam,this.atkTeam,this.locator,this.seeded)
 	}
+}
+//战斗开始
+model.prototype.fightBegin = function() {
+	for(var i = 0; i <= fightBegin.length;i++){
+		if(this.atkBooks[fightBegin[i]])
+			this.atkBooks[fightBegin[i]].before()
+		if(this.defBooks[fightBegin[i]])
+			this.defBooks[fightBegin[i]].before()
+	}
+	this.nextRound()
 }
 //开始新轮次
 model.prototype.nextRound = function() {
@@ -141,6 +155,12 @@ model.prototype.nextRound = function() {
 	this.allTeam[1].index = 0
 	this.teamIndex = 0
 	fightRecord.push({type : "nextRound",round : this.round})
+	for(var i = 0; i <= roundBegin.length;i++){
+		if(this.atkBooks[roundBegin[i]])
+			this.atkBooks[roundBegin[i]].action()
+		if(this.defBooks[roundBegin[i]])
+			this.defBooks[roundBegin[i]].action()
+	}
 	this.run()
 }
 //整体回合结束
@@ -162,8 +182,22 @@ model.prototype.endRound = function() {
 			if(this.defBooks[oddRoundEndBook[i]])
 				this.defBooks[oddRoundEndBook[i]].action()
 		}
+	}else{
+		for(var i = 0; i <= evenRoundEndBook.length;i++){
+			if(this.atkBooks[evenRoundEndBook[i]])
+				this.atkBooks[evenRoundEndBook[i]].action()
+			if(this.defBooks[evenRoundEndBook[i]])
+				this.defBooks[evenRoundEndBook[i]].action()
+		}
 	}
-	this.nextRound()
+	for(var i = 0; i <= roundEndBook.length;i++){
+		if(this.atkBooks[roundEndBook[i]])
+			this.atkBooks[roundEndBook[i]].action()
+		if(this.defBooks[roundEndBook[i]])
+			this.defBooks[roundEndBook[i]].action()
+	}
+	if(!this.checkOver())
+		this.nextRound()
 }
 //轮到下一个角色行动
 model.prototype.run = function() {

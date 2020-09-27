@@ -6,7 +6,6 @@ var model = function(otps) {
 	this.belong = otps.belong   //所属阵容
 	this.lv = otps["lv"] || 1		//等级
 	this.star = otps["star"] || 1		//星级
-	this.ad = otps["ad"] || 0			//阶级
 	this.teamInfo = {}
 	//=========基础属性=======//
 	this.attInfo = {}
@@ -28,10 +27,11 @@ model.prototype.onHit = function() {
 model.prototype.kill = function() {
 	
 }
-model.prototype.init = function(team,enemy,locator) {
+model.prototype.init = function(team,enemy,locator,seeded) {
 	this.team = team
 	this.enemy = enemy
 	this.locator = locator
+	this.seeded = seeded
 }
 model.prototype.action = function() {
 	console.error("神器行动未定义")

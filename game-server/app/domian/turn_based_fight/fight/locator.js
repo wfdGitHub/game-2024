@@ -35,6 +35,12 @@ model.prototype.getTargets = function(character,targetType) {
 		case "enemy_horizontal_back":
 			//敌方后排
 			return this.getEnemyHorizontalBack(character)
+		case "enemy_horizontal_front_real":
+			//敌方仅前排
+			return this.getEnemyHorizontalFrontReal(character)
+		case "enemy_horizontal_back_real":
+			//敌方仅后排
+			return this.getEnemyHorizontalBackReal(character)
 		case "enemy_all":
 			//敌方全体
 			return	this.getEnemyAll(character)
@@ -137,6 +143,12 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 		case "enemy_horizontal_back":
 			//敌方后排
 			return this.getEnemyHorizontalBack(character)
+		case "enemy_horizontal_front_real":
+			//敌方仅前排
+			return this.getEnemyHorizontalFrontReal(character)
+		case "enemy_horizontal_back_real":
+			//敌方仅后排
+			return this.getEnemyHorizontalBackReal(character)
 		case "friend_minHp_1":
 			//获取友方生命值最少的1个单位
 			return this.getFriendRandomMinHp(character,1)
@@ -379,6 +391,26 @@ model.prototype.getEnemyHorizontalBack = function(character) {
 	        	list.push(character.enemy[i])
 	        }
 		}
+	}
+	return list
+}
+//敌方仅前排
+model.prototype.getEnemyHorizontalFrontReal = function(character) {
+	var list = []
+	for(var i = 0;i < 3;i++){
+        if(model.check(character.enemy[i])){
+        	list.push(character.enemy[i])
+        }
+	}
+	return list
+}
+//敌方仅后排
+model.prototype.getEnemyHorizontalBackReal = function(character) {
+	var list = []
+	for(var i = 3;i < 6;i++){
+        if(model.check(character.enemy[i])){
+        	list.push(character.enemy[i])
+        }
 	}
 	return list
 }

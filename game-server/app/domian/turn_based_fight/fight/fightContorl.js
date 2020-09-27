@@ -12,20 +12,29 @@ var artifact_level = require("../../../../config/gameCfg/artifact_level.json")
 var artifact_talent = require("../../../../config/gameCfg/artifact_talent.json")
 var stone_base = require("../../../../config/gameCfg/stone_base.json")
 var stone_skill = require("../../../../config/gameCfg/stone_skill.json")
+var book_list = require("../../../../config/gameCfg/book_list.json")
+var book_lv = require("../../../../config/gameCfg/book_lv.json")
+var book_star = require("../../../../config/gameCfg/book_star.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
-var bookIds = ["single"]
+var bookIds = ["singleAtk","backDamage","frontDamage","banishBook","angerAddBook","angerLessBook","reductionBuff","seckill","singleHeal"]
 var bookList = {}
+var bookMap = {}
 for(var i = 0;i < bookIds.length;i++){
 	bookList[bookIds[i]] = require("../books/"+bookIds[i]+".js")
+}
+for(var i in book_list){
+	bookMap[book_list[i]["type"]] = []
+	for(var j = 0;j < 6;j++){
+		bookMap[book_list[i]["type"]][j] = JSON.parse(book_list[i]["otps_"+j])
+	}
 }
 //战斗控制器
 var model = function() {
 	this.fighting = false
 }
-// //自定义战斗配置
-// model.libertyFight = function(atkTeam,defTeam,otps) {
+// //自定义战斗配置// model.libertyFight = function(atkTeam,defTeam,otps) {
 // 	var fighting = new fightingFun(atkTeam,defTeam,otps)
 // 	fighting.nextRound()
 // 	return fightRecord.getList()
@@ -45,16 +54,16 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 	//天书
 	if(atkBookInfos){
 		for(var bookId in atkBookInfos){
-			if(bookList[bookId]){
-				atkBooks[bookId] = new bookList[bookId](atkBookInfos[bookId])
+			if(bookList[bookId] && bookMap[bookId]){
+				atkBooks[bookId] = this.getBookInfo(bookId,atkBookInfos[bookId])
 				atkBooks[bookId].belong = "atk"
 			}
 		}
 	}
 	if(defBookInfos){
 		for(var bookId in defBookInfos){
-			if(bookList[bookId]){
-				defBooks[bookId] = new bookList[bookId](defBookInfos[bookId])
+			if(bookList[bookId] && bookMap[bookId]){
+				defBooks[bookId] = this.getBookInfo(bookId,atkBookInfos[bookId])
 				atkBooks[bookId].belong = "def"
 			}
 		}
@@ -65,8 +74,7 @@ model.beginFight = function(atkTeam,defTeam,otps) {
     model.mergeData(myotps.atkTeamAdds,this.raceAdd(this.getRaceType(atkTeamList)))
     model.mergeData(myotps.defTeamAdds,this.raceAdd(this.getRaceType(defTeamList)))
 	var fighting = new fightingFun(atkTeamList,defTeamList,atkBooks,defBooks,myotps)
-	fighting.nextRound()
-	console.log(fightRecord.list)
+	fighting.fightBegin()
 	return fightRecord.isWin()
 }
 //获取种族加成类型
@@ -277,6 +285,19 @@ model.getCharacterInfo = function(info) {
 	}
 	model.mergeData(info,stoneskillInfo)
 	return new character(info)
+}
+//获取天书数据
+model.getBookInfo = function(bookId,info){
+	if(!info || !bookList[bookId] || !bookMap[bookId] || !book_lv[info.lv] || !book_star[info.star]){
+		return false
+	}
+	info = Object.assign({},info,bookMap[bookId][info.star])
+	var add = book_star[info.star]["add"]
+	info.maxHP = Math.floor(book_lv[info.lv]["maxHP"] * add)
+	info.atk = Math.floor(book_lv[info.lv]["atk"] * add)
+	info.phyDef = Math.floor(book_lv[info.lv]["phyDef"] * add)
+	info.magDef = Math.floor(book_lv[info.lv]["magDef"] * add)
+	return new bookList[bookId](info)
 }
 //获取团队显示数据
 model.getTeamShowData = function(team) {
