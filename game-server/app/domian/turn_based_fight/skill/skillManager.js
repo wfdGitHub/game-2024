@@ -188,11 +188,6 @@ model.useSkill = function(skill) {
 	//判断死亡
 	for(var i = 0;i < targets.length;i++){
 		if(targets[i].died){
-			//复活判断
-			if(targets[i].teamInfo.resurgence_team){
-				targets[i].resurgence(targets[i].teamInfo.resurgence_team)
-				delete targets[i].teamInfo.resurgence_team
-			}
 			//死亡释放技能判断
 			if(targets[i].died_use_skill){
 				this.useSkill(targets[i].angerSkill)

@@ -307,7 +307,6 @@ model.prototype.after = function() {
 	else
 		this.character.must_crit = false
 	this.character.next_must_crit = false
-	//检测战斗是否结束
 	this.character = false
 	for(var i = 0;i < this.diedList.length;i++){
 		if(this.diedList[i]["died_buff_s"]){
@@ -318,8 +317,14 @@ model.prototype.after = function() {
 				}
 			}
 		}
+		//复活判断
+		if(this.diedList[i].teamInfo.resurgence_team){
+			this.diedList[i].resurgence(this.diedList[i].teamInfo.resurgence_team)
+			delete this.diedList[i].teamInfo.resurgence_team
+		}
 	}
 	this.diedList = []
+	//检测战斗是否结束
 	if(!this.checkOver())
 		this.run()
 }
