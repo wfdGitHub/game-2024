@@ -23,7 +23,7 @@ var model = function(otps) {
 					list[book.enemy[i].id]++
 				else
 					list[book.enemy[i].id] = 1
-				targets[i].lessAnger(list[book.enemy[i].id],true)
+				book.enemy[i].lessAnger(list[book.enemy[i].id],true)
 				recordInfo.targets.push({id:book.enemy[i].id,value:-list[book.enemy[i].id]})
 			}
 		}
