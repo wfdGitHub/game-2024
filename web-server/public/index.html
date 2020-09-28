@@ -97,6 +97,49 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============天书==========//
+      //获取天书数据
+      var getBookData = function() {
+        pomelo.request("area.bookHandler.getBookData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //激活天书
+      var activateBook = function(bookType) {
+        pomelo.request("area.bookHandler.activateBook", {bookType:bookType}, function(data) {
+            console.log(data);
+        });
+      }
+      //升级天书
+      var upgradeBookLv = function(bookType) {
+        pomelo.request("area.bookHandler.upgradeBookLv", {bookType:bookType}, function(data) {
+            console.log(data);
+        });
+      }
+      //升星天书
+      var upgradeBookStar = function(bookType) {
+        pomelo.request("area.bookHandler.upgradeBookStar", {bookType:bookType}, function(data) {
+            console.log(data);
+        });
+      }
+      //重生天书
+      var resetBook = function(bookType) {
+        pomelo.request("area.bookHandler.resetBook", {bookType:bookType}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置上阵天书
+      var setBookFight = function(list) {
+        pomelo.request("area.bookHandler.setBookFight", {list:list}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取上阵天书
+      var getFightBook = function() {
+        pomelo.request("area.bookHandler.getFightBook", {}, function(data) {
+            console.log(data);
+        });
+      }
       //获取玩家unionid
       var getUnionIdByUid = function(uid) {
         pomelo.request("admin.adminHandler.getUnionIdByUid", {uid:uid}, function(data) {

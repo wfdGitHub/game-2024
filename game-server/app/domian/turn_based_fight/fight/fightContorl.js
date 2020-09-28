@@ -72,7 +72,6 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 			}
 		}
 	}
-	console.log("atkBookAtts",atkBookAtts,defBookAtts)
 	var atkTeamList = []
 	var defTeamList = []
     for(var i = 0;i < 6;i++){

@@ -13,6 +13,7 @@ var artifact_talent = require("../../config/gameCfg/artifact_talent.json")
 var stone_base = require("../../config/gameCfg/stone_base.json")
 var stone_skill = require("../../config/gameCfg/stone_skill.json")
 var stone_cfg = require("../../config/gameCfg/stone_cfg.json")
+var async = require("async")
 var baseStone = {
 	"1" : 400010100,
 	"2" : 400020100,
@@ -465,40 +466,62 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 //获取出场阵容
 heroDao.prototype.getFightTeam = function(uid,cb) {
 	var self = this
-	self.redisDao.db.get("player:user:"+uid+":fightTeam",function(err,data) {
-		if(err || !data){
-			cb(false,"未设置阵容")
-			return
-		}
-		var fightTeam = JSON.parse(data)
-		var multiList = []
-		var hIds = []
-		for(var i = 0;i < fightTeam.length;i++){
-			if(fightTeam[i]){
-				hIds.push(fightTeam[i])
-				multiList.push(["hgetall","player:user:"+uid+":heros:"+fightTeam[i]])
-			}
-		}
-		self.redisDao.multi(multiList,function(err,list) {
-			var hash = {}
-			for(var i = 0;i < list.length;i++){
-				for(var j in list[i]){
-					var tmp = Number(list[i][j])
-					if(tmp == list[i][j])
-						list[i][j] = tmp
+	async.waterfall([
+		function(next) {
+			self.redisDao.db.get("player:user:"+uid+":fightTeam",function(err,data) {
+				if(err || !data){
+					next("未设置阵容")
+					return
 				}
-				list[i].hId = hIds[i]
-				hash[list[i].hId] = list[i]
-			}
-			for(var i = 0;i < fightTeam.length;i++){
-				if(hash[fightTeam[i]]){
-					fightTeam[i] = hash[fightTeam[i]]
+				var fightTeam = JSON.parse(data)
+				var multiList = []
+				var hIds = []
+				for(var i = 0;i < fightTeam.length;i++){
+					if(fightTeam[i]){
+						hIds.push(fightTeam[i])
+						multiList.push(["hgetall","player:user:"+uid+":heros:"+fightTeam[i]])
+					}
+				}
+				self.redisDao.multi(multiList,function(err,list) {
+					var hash = {}
+					for(var i = 0;i < list.length;i++){
+						for(var j in list[i]){
+							var tmp = Number(list[i][j])
+							if(tmp == list[i][j])
+								list[i][j] = tmp
+						}
+						list[i].hId = hIds[i]
+						hash[list[i].hId] = list[i]
+					}
+					for(var i = 0;i < fightTeam.length;i++){
+						if(hash[fightTeam[i]]){
+							fightTeam[i] = hash[fightTeam[i]]
+						}else{
+							fightTeam[i] = null
+						}
+					}
+					next(null,fightTeam)
+				})
+			})
+		},
+		function(fightTeam,next) {
+			self.redisDao.db.hgetall("player:user:"+uid+":book_fight",function(err,fightBooks) {
+				if(!fightBooks){
+					cb(true,fightTeam)
 				}else{
-					fightTeam[i] = null
+					self.redisDao.db.hgetall("player:user:"+uid+":book",function(err,books) {
+						fightTeam[6] = {}
+						for(var i in fightBooks){
+							var type = fightBooks[i]
+							fightTeam[6][type] = {lv : Number(books[type+"_lv"]),star : Number(books[type+"_star"])}
+						}
+						cb(true,fightTeam)
+					})
 				}
-			}
-			cb(true,fightTeam)
-		})
+			})
+		}
+	],function(err) {
+		cb(false,err)
 	})
 }
 //设置逐鹿之战出场阵容
