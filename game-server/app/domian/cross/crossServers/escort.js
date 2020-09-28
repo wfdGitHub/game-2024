@@ -231,7 +231,7 @@ module.exports = function() {
 		var info = {uid : self.players[crossUid]["uid"],sid : self.players[crossUid]["cid"]}
 		local.subscribeUsers[level].push(info)
 		local.subscribeMaps[crossUid] = info
-		var carList = local.carMap[level].slice(-10)
+		var carList = local.carMap[level].slice(-30)
 		cb(true,carList)
 	}
 	//取消订阅
