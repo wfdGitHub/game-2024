@@ -339,7 +339,7 @@ model.getTeamShowData = function(team) {
 }
 model.getTeamCE = function(team) {
 	var allCE = 0
-	for(var i = 0;i < team.length;i++){
+	for(var i = 0;i < 6;i++){
 		if(team[i]){
 			allCE += lv_cfg[team[i]["lv"] || 1]["ce"]
 			allCE += advanced_base[team[i]["ad"] || 0]["ce"]
@@ -362,6 +362,14 @@ model.getTeamCE = function(team) {
 			for(var j = 5;j <= 8;j++){
 				if(team[i]["s"+j] && stone_skill[team[i]["s"+j]])
         			allCE += stone_skill[team[i]["s"+j]]["ce"]
+			}
+		}
+	}
+	if(team[6]){
+		for(var i in team[6]){
+			if(bookMap[i]){
+				allCE += book_lv[team[6][i]["lv"]]["ce"]
+				allCE += book_star[team[6][i]["star"]]["ce"]
 			}
 		}
 	}
