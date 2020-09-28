@@ -249,7 +249,7 @@ module.exports = function() {
 			self.getObjAll(uid,"book",function(data) {
 				var obj = {}
 				for(var i = 0;i < list.length;i++){
-					if(!data[list[i]+"_lv"]){
+					if(list[i] && !data[list[i]+"_lv"]){
 						cb(false,list[i]+"未激活")
 						return
 					}
