@@ -51,6 +51,9 @@ buffFactory.createBuff = function(releaser,character,otps) {
 			otps.duration = buff.duration
 			this.createBuff(releaser,character,Object.assign({},otps,{buffId : "forbidden"}))
 		}
+		if(buffId == "dizzy" && releaser.dizzy_clear_anger){
+			character.lessAnger(character.curAnger)
+		}
 	}else{
 		console.error("buffId 不存在",buffId)
 		return false

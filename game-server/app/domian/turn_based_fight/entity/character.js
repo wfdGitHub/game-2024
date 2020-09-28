@@ -60,6 +60,7 @@ var model = function(otps) {
 	this.target_anger_amp = otps.target_anger_amp || 0 //敌人超过4点怒气的部分，每点怒气提供伤害加成
 	//=========元神效果=======//
 	this.forbidden_shield = otps.forbidden_shield || 0 //治疗时，若目标处于禁疗状态，转化为护盾比例
+	this.dizzy_clear_anger = otps.dizzy_clear_anger  //眩晕时清空目标所有怒气
 	//=========特殊属性=======//
 	this.buffRate = otps.buffRate || 0			//buff概率   若技能存在buff  以此代替buff本身概率
 	this.buffArg = otps.buffArg || 0			//buff参数   若技能存在buff  以此代替buff本身参数
