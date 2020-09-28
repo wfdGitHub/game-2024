@@ -251,6 +251,9 @@ var model = function(otps) {
 	if(this.target_minHP){
 		this.defaultSkill.targetType = "enemy_minHP"
 		this.angerSkill.targetType = "enemy_minHP"
+		if(this.kill_later_skill && this.kill_later_skill.targetType == "enemy_1"){
+			this.kill_later_skill.targetType = "enemy_minHP"
+		}
 	}
 }
 model.prototype.init = function(fighting) {
@@ -332,10 +335,10 @@ model.prototype.clearReleaserBuff = function(releaser) {
 model.prototype.onHit = function(attacker,info,source) {
 	info.id = this.id
 	info.value = Math.floor(info.value) || 1
-	if(this.died){
-		info.realValue = 0
-		return info
-	}
+	// if(this.died){
+	// 	info.realValue = 0
+	// 	return info
+	// }
 	//免疫
 	if(this.buffs["invincibleSuper"] || this.buffs["invincible"]){
 		info.invincible = true
