@@ -234,11 +234,13 @@ module.exports = function() {
 		}else{
 			var map = {}
 			for(var i = 0;i < list.length;i++){
-				if(map[list[i]]){
-					cb(false,"天书重复")
-					return
+				if(list[i]){
+					if(map[list[i]]){
+						cb(false,"天书重复")
+						return
+					}
+					map[list[i]] = true
 				}
-				map[list[i]] = true
 			}
 			if(!book_slot[length] || self.getLordLv(uid) < book_slot[length]["lv"]){
 				cb(false,"开启等级不足")

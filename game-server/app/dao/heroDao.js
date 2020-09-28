@@ -513,7 +513,8 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 						fightTeam[6] = {}
 						for(var i in fightBooks){
 							var type = fightBooks[i]
-							fightTeam[6][type] = {lv : Number(books[type+"_lv"]),star : Number(books[type+"_star"])}
+							if(type)
+								fightTeam[6][type] = {lv : Number(books[type+"_lv"]),star : Number(books[type+"_star"])}
 						}
 						cb(true,fightTeam)
 					})
