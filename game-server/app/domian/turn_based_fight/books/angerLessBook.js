@@ -11,17 +11,20 @@ var model = function(otps) {
 	book.before = function() {
 		var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
 		var list = {}
-		for(var i = 0;i < book.enemy.length;i++){
-			if(!book.enemy[i].died){
-				list[book.enemy[i].id] = 1
-			}
-		}
 		if(book.before){
 			var targets = book.locator.getEnemyRandom(book.team[0],book.before)
 			for(var i = 0;i < targets.length;i++){
-				list[targets[i].id]++
-				targets[i].lessAnger(list[targets[i].id],true)
-				recordInfo.targets.push({id:targets[i].id,value:-list[targets[i].id]})
+				list[targets[i].id] = 1
+			}
+		}
+		for(var i = 0;i < book.enemy.length;i++){
+			if(!book.enemy[i].died){
+				if(list[book.enemy[i].id])
+					list[book.enemy[i].id]++
+				else
+					list[book.enemy[i].id] = 1
+				targets[i].lessAnger(list[book.enemy[i].id],true)
+				recordInfo.targets.push({id:book.enemy[i].id,value:-list[book.enemy[i].id]})
 			}
 		}
 		fightRecord.push(recordInfo)
