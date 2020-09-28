@@ -4,16 +4,19 @@ var fightRecord = require("../fight/fightRecord.js")
 var model = function(otps) {
 	var book = new bookBasic(otps)
 	book.bookId = "backDamage"
-	var damage = Math.floor(book.attInfo.atk * otps.mul)
+	var mul = otps.mul
 	book.action = function() {
-		var target = book.locator.getTargets(book.team[0],"enemy_horizontal_back_real")
-		if(target.length){
+		var targets = book.locator.getTargets(book.team[0],"enemy_horizontal_back_real")
+		if(targets.length){
 			var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
-			var value = damage - target[0].getTotalAtt("phyDef")
-			if(value < 1)
-				value = 1
-			var info = target[0].onHit(book,{value:value})
-			recordInfo.targets.push(info)
+			for(var i = 0;i < targets.length;i++){
+				var target = targets[i]
+				var value = Math.floor((book.attInfo.atk - target.getTotalAtt("phyDef")) * mul)
+				if(value < 1)
+					value = 1
+				var info = target.onHit(book,{value:value})
+				recordInfo.targets.push(info)
+			}
 			fightRecord.push(recordInfo)
 		}
 	}

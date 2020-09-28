@@ -10,27 +10,31 @@ var model = function(otps) {
 	book.num = otps.num
 	book.before = function() {
 		var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
-		fightRecord.push(recordInfo)
+		var list = {}
 		for(var i = 0;i < book.enemy.length;i++){
 			if(!book.enemy[i].died){
-				book.enemy[i].lessAnger(1)
+				list[book.enemy[i].id] = 1
 			}
 		}
 		if(book.before){
 			var targets = book.locator.getEnemyRandom(book.team[0],book.before)
 			for(var i = 0;i < targets.length;i++){
-				targets[i].lessAnger(1)
+				list[targets[i].id]++
+				targets[i].lessAnger(list[targets[i].id],true)
+				recordInfo.targets.push({id:targets[i].id,value:-list[targets[i].id]})
 			}
 		}
+		fightRecord.push(recordInfo)
 	}
 	book.action = function() {
 		if(this.seeded.random("减怒天书") >= 0.5){
 			var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
-			fightRecord.push(recordInfo)
 			var targets = book.locator.getEnemyRandom(book.team[0],book.num)
 			for(var i = 0;i < targets.length;i++){
-				targets[i].lessAnger(1)
+				recordInfo.targets.push({id:targets[i].id,value:-1})
+				targets[i].lessAnger(1,true)
 			}
+			fightRecord.push(recordInfo)
 		}
 	}
 	return book

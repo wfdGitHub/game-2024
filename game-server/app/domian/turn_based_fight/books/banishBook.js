@@ -27,7 +27,7 @@ var model = function(otps) {
 					}
 				}
 				if(target){
-					var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
+					var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[{id : target.id}]}
 					fightRecord.push(recordInfo)
 					banishList[target.id] = true
 					buffManager.createBuff(book,target,{buffId : "banish",duration : 1})

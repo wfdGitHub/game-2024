@@ -10,14 +10,15 @@ var model = function(otps) {
 	book.buffArg = otps.buffArg
 	book.action = function() {
 		var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
-		fightRecord.push(recordInfo)
 		for(var i = 0;i < book.num;i++){
 			if(book.team[i] && !book.team[i].died){	
-				book.team[i].addAnger(1)
+				recordInfo.targets.push({id:book.team[i].id,value:1})
+				book.team[i].addAnger(1,true)
 				if(book.buffArg)
 					buffManager.createBuff(book,book.team[i],{buffId : "amplify",duration : 1,buffArg:book.buffArg})
 			}
 		}
+		fightRecord.push(recordInfo)
 	}
 	return book
 }
