@@ -11,6 +11,7 @@ var model = function(otps) {
 	book.dispel = otps.dispel
 	book.action = function() {
 		if(book.count > 0){
+			book.count--
 			var target = book.locator.getTargets(book.team[0],"team_minHp_1")[0]
 			if(target){
 				var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
