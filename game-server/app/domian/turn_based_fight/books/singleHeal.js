@@ -9,6 +9,7 @@ var model = function(otps) {
 	book.value = Math.floor(otps.mul * book.attInfo.atk)
 	book.count = otps.count
 	book.dispel = otps.dispel
+	book.control = otps.control
 	book.action = function() {
 		if(book.count > 0){
 			book.count--
