@@ -388,10 +388,6 @@ model.useAttackSkill = function(skill) {
 			}
 			//普通攻击
 			if(!skill.isAnger){
-				//降低攻击者怒气
-				if(targets[i].hit_less_anger){
-					skill.character.lessAnger(targets[i].hit_less_anger,skill.skillId)
-				}
 				//回复自己怒气
 				if(targets[i].hit_anger_s){
 					targets[i].addAnger(targets[i].hit_anger_s,skill.skillId)
@@ -411,13 +407,17 @@ model.useAttackSkill = function(skill) {
 					buffManager.createBuff(targets[i],skill.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 				}
 			}
-			//收到直接伤害反弹
-			if(targets[i].hit_rebound && recordInfo.targets[i].realValue > 0){
-				let hit_rebound_value = targets[i].hit_rebound + targets[i].hit_rebound_add
-				let tmpRecord = {type : "other_damage",value : hit_rebound_value * recordInfo.targets[i].realValue}
-				tmpRecord = skill.character.onHit(targets[i],tmpRecord)
-				fightRecord.push(tmpRecord)
-			}
+		}
+		if(!skill.isAnger && targets[i].hit_less_anger){
+			//降低攻击者怒气
+				skill.character.lessAnger(targets[i].hit_less_anger,skill.skillId)
+		}
+		//收到直接伤害反弹
+		if(targets[i].hit_rebound && recordInfo.targets[i].realValue > 0){
+			let hit_rebound_value = targets[i].hit_rebound + targets[i].hit_rebound_add
+			let tmpRecord = {type : "other_damage",value : hit_rebound_value * recordInfo.targets[i].realValue}
+			tmpRecord = skill.character.onHit(targets[i],tmpRecord)
+			fightRecord.push(tmpRecord)
 		}
 	}
 	//判断攻击目标大于三人则增加两点怒气
