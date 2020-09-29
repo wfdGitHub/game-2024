@@ -308,7 +308,7 @@ module.exports = function() {
 				}
 				//记录
 				local.addRecord(atkUser,"atk",winFlag,targetInfo,fightInfo,data.rank)
-				local.addRecord(targetUid,"def",winFlag,atkUser,fightInfo,targetRank)
+				local.addRecord(targetInfo,"def",winFlag,atkUser,fightInfo,targetRank)
 				cb(true,info)
 			})
 		}else{
@@ -316,7 +316,7 @@ module.exports = function() {
 			self.taskProgressClear(uid,"arena_streak")
 			self.addItemStr(uid,loseAward,1,"竞技场失败")
 			local.addRecord(atkUser,"atk",winFlag,targetInfo,fightInfo)
-			local.addRecord(targetUid,"def",winFlag,atkUser,fightInfo)
+			local.addRecord(targetInfo,"def",winFlag,atkUser,fightInfo)
 			delete local.locks[uid]
 			delete local.locks[targetUid]
 			cb(true,info)
@@ -342,9 +342,9 @@ module.exports = function() {
 		if(rank){
 			info.rank = rank
 		}
-		self.redisDao.db.rpush("player:user:"+uid+":arenaRecord",JSON.stringify(info),function(err,num) {
+		self.redisDao.db.rpush("player:user:"+atkUser.uid+":arenaRecord",JSON.stringify(info),function(err,num) {
 			if(num > maxRecordNum){
-				self.redisDao.db.ltrim("player:user:"+uid+":arenaRecord",-maxRecordNum,-1)
+				self.redisDao.db.ltrim("player:user:"+atkUser.uid+":arenaRecord",-maxRecordNum,-1)
 			}
 		})
 	}
