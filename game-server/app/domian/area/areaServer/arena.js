@@ -176,6 +176,7 @@ module.exports = function() {
 			cb(false,"atkTeam error")
 			return
 	    }
+	    var atkUser = self.getSimpleUser(uid)
 	    var atkTeam = fightInfo.team
 	    var seededNum = fightInfo.seededNum
 		local.getTargetsInfo([targetRank],function(flag,data) {
@@ -211,7 +212,7 @@ module.exports = function() {
 						return
 					}
 					var defTeam = arena_rank[range]["team"].concat()
-					local.challengeArena(uid,targetUid,targetRank,targetInfo,atkTeam,defTeam,seededNum,cb)
+					local.challengeArena(uid,targetUid,targetRank,targetInfo,atkUser,atkTeam,defTeam,seededNum,cb)
 				}else{
 					//玩家队伍
 					self.getDefendTeam(targetUid,function(defTeam) {
@@ -221,7 +222,7 @@ module.exports = function() {
 							delete local.locks[uid]
 							return
 						}
-						local.challengeArena(uid,targetUid,targetRank,targetInfo,atkTeam,defTeam,seededNum,cb)
+						local.challengeArena(uid,targetUid,targetRank,targetInfo,atkUser,atkTeam,defTeam,seededNum,cb)
 					})
 				}
 			})
@@ -269,7 +270,7 @@ module.exports = function() {
 		})
 	}
 	//挑战结算
-	local.challengeArena = function(uid,targetUid,targetRank,targetInfo,atkTeam,defTeam,seededNum,cb) {
+	local.challengeArena = function(uid,targetUid,targetRank,targetInfo,atkUser,atkTeam,defTeam,seededNum,cb) {
 		var info = {}
 		var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 		info.winFlag = winFlag
@@ -306,16 +307,16 @@ module.exports = function() {
 					self.setObj(uid,mainName,"highestRank",data.rank)
 				}
 				//记录
-				local.addRecord(uid,"atk",winFlag,targetInfo,fightInfo,data.rank)
-				local.addRecord(targetUid,"def",winFlag,targetInfo,fightInfo,targetRank)
+				local.addRecord(atkUser,"atk",winFlag,targetInfo,fightInfo,data.rank)
+				local.addRecord(targetUid,"def",winFlag,atkUser,fightInfo,targetRank)
 				cb(true,info)
 			})
 		}else{
 			//失败奖励
 			self.taskProgressClear(uid,"arena_streak")
 			self.addItemStr(uid,loseAward,1,"竞技场失败")
-			local.addRecord(uid,"atk",winFlag,targetInfo,fightInfo)
-			local.addRecord(targetUid,"def",winFlag,targetInfo,fightInfo)
+			local.addRecord(atkUser,"atk",winFlag,targetInfo,fightInfo)
+			local.addRecord(targetUid,"def",winFlag,atkUser,fightInfo)
 			delete local.locks[uid]
 			delete local.locks[targetUid]
 			cb(true,info)
@@ -333,11 +334,10 @@ module.exports = function() {
 		})
 	}
 	//添加记录
-	local.addRecord = function(uid,type,winFlag,targetInfo,fightInfo,rank) {
-		if(uid < 10000){
+	local.addRecord = function(atkUser,type,winFlag,targetInfo,fightInfo,rank) {
+		if(!atkUser){
 			return
 		}
-		var atkUser = self.getSimpleUser(uid)
 		var info = {type : type,winFlag : winFlag,atkUser : atkUser,defUser : targetInfo,fightInfo : fightInfo,time : Date.now()}
 		if(rank){
 			info.rank = rank

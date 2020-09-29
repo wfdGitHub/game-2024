@@ -296,7 +296,7 @@ area.prototype.loginCross = function(uid,cb) {
 	})
 }
 area.prototype.getSimpleUser = function(uid) {
-	if(!this.players[uid]){
+	if(uid < 10000 || !this.players[uid]){
 		return false
 	}
 	var info = {
