@@ -152,7 +152,9 @@ module.exports = function() {
 	}
 	//升级天书
 	this.upgradeBookLv = function(uid,bookType,cb) {
-		self.getObj(uid,"book",bookType+"_lv",function(lv) {
+		self.getHMObj(uid,"book",[bookType+"_lv",bookType+"_star"],function(list) {
+			var lv = list[0]
+			var star = list[1]
 			if(!lv){
 				cb(false,"未激活")
 				return
@@ -160,6 +162,10 @@ module.exports = function() {
 			lv = Number(lv)
 			if(!book_lv[lv] || !book_lv[lv]["pc"]){
 				cb(false,"不可升级")
+				return
+			}
+			if(lv >= book_star[star]["maxLv"]){
+				cb(false,"等级上限")
 				return
 			}
 			self.consumeItems(uid,"1000300:"+book_lv[lv]["pc"],1,"升级天书"+bookType,function(flag,err) {
