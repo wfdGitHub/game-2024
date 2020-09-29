@@ -190,10 +190,6 @@ model.useSkill = function(skill) {
 	//判断死亡
 	for(var i = 0;i < targets.length;i++){
 		if(targets[i].died){
-			//死亡释放技能判断
-			if(targets[i].died_use_skill){
-				this.useSkill(targets[i].angerSkill)
-			}
 			//直接伤害死亡时对击杀者释放buff
 			if(targets[i].died_later_buff){
 				if(!skill.character.died){
