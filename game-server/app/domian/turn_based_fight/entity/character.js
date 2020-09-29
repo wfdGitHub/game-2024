@@ -469,7 +469,7 @@ model.prototype.lessAnger = function(value,hide) {
 model.prototype.getTotalAtt = function(name) {
 	var value = this.attInfo[name] || 0
 	if(this.buffs[name]){
-		value = value * (1 + this.buffs[name].getValue())
+		value += this.buffs[name].getValue()
 	}
 	return value
 }
