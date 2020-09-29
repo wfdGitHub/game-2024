@@ -486,7 +486,7 @@ model.useHealSkill = function(skill) {
 			value = Math.round(value * (skill.character.heal_min_hp_rate + 1))
 		let info = this.formula.calHeal(skill.character,target,value,skill)
 		if(target.forbidden && skill.character.forbidden_shield){
-			callbacks.push(function(){buffManager.createBuff(skill.character,target,{buffId : "shield",buffArg : info.value,duration : 1,number : true})})
+			callbacks.push(function(){buffManager.createBuff(skill.character,target,{buffId : "shield",buffArg : Math.floor(info.value * skill.character.forbidden_shield),duration : 1,number : true})})
 		}else{
 			info = target.onHeal(skill.character,info,skill)
 			recordInfo.targets.push(info)
