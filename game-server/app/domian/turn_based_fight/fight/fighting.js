@@ -157,9 +157,9 @@ model.prototype.nextRound = function() {
 	fightRecord.push({type : "nextRound",round : this.round})
 	for(var i = 0; i <= roundBegin.length;i++){
 		if(this.atkBooks[roundBegin[i]])
-			this.atkBooks[roundBegin[i]].action()
+			this.bookAction(this.atkBooks[roundBegin[i]])
 		if(this.defBooks[roundBegin[i]])
-			this.defBooks[roundBegin[i]].action()
+			this.bookAction(this.defBooks[roundBegin[i]])
 	}
 	this.run()
 }
@@ -178,23 +178,23 @@ model.prototype.endRound = function() {
 	if(this.round % 2 == 1){
 		for(var i = 0; i <= oddRoundEndBook.length;i++){
 			if(this.atkBooks[oddRoundEndBook[i]])
-				this.atkBooks[oddRoundEndBook[i]].action()
+				this.bookAction(this.atkBooks[oddRoundEndBook[i]])
 			if(this.defBooks[oddRoundEndBook[i]])
-				this.defBooks[oddRoundEndBook[i]].action()
+				this.bookAction(this.defBooks[oddRoundEndBook[i]])
 		}
 	}else{
 		for(var i = 0; i <= evenRoundEndBook.length;i++){
 			if(this.atkBooks[evenRoundEndBook[i]])
-				this.atkBooks[evenRoundEndBook[i]].action()
+				this.bookAction(this.atkBooks[evenRoundEndBook[i]])
 			if(this.defBooks[evenRoundEndBook[i]])
-				this.defBooks[evenRoundEndBook[i]].action()
+				this.bookAction(this.defBooks[evenRoundEndBook[i]])
 		}
 	}
 	for(var i = 0; i <= roundEndBook.length;i++){
 		if(this.atkBooks[roundEndBook[i]])
-			this.atkBooks[roundEndBook[i]].action()
+			this.bookAction(this.atkBooks[roundEndBook[i]])
 		if(this.defBooks[roundEndBook[i]])
-			this.defBooks[roundEndBook[i]].action()
+			this.bookAction(this.defBooks[roundEndBook[i]])
 	}
 	if(!this.checkOver())
 		this.nextRound()
@@ -202,7 +202,6 @@ model.prototype.endRound = function() {
 //轮到下一个角色行动
 model.prototype.run = function() {
 	if(!this.isFight){
-		console.error("战斗已结束")
 		return
 	}
 	if(this.allTeam[0].index == this.allTeam[0].team.length && this.allTeam[1].index == this.allTeam[1].team.length){
@@ -352,6 +351,31 @@ model.prototype.checkOver = function() {
 		return true
 	}
 	return false
+}
+model.prototype.bookAction = function(book) {
+	if(!this.isFight){
+		return
+	}
+	book.action()
+	for(var i = 0;i < this.diedList.length;i++){
+		if(this.diedList[i]["died_buff_s"]){
+			var buffTargets = this.locator.getBuffTargets(this.diedList[i],this.diedList[i].died_buff_s.buff_tg)
+			for(var j = 0;j < buffTargets.length;j++){
+				if(this.seeded.random("判断BUFF命中率") < this.diedList[i].died_buff_s.buffRate){
+					buffManager.createBuff(this.diedList[i],buffTargets[j],{buffId : this.diedList[i].died_buff_s.buffId,buffArg : this.diedList[i].died_buff_s.buffArg,duration : this.diedList[i].died_buff_s.duration})
+				}
+			}
+		}
+		//复活判断
+		if(this.diedList[i].teamInfo.resurgence_team){
+			this.diedList[i].resurgence(this.diedList[i].teamInfo.resurgence_team)
+			delete this.diedList[i].teamInfo.resurgence_team
+		}
+	}
+	this.diedList = []
+	//检测战斗是否结束
+	if(this.checkOver())
+		this.fightOver()
 }
 //战斗结束
 model.prototype.fightOver = function(winFlag) {
