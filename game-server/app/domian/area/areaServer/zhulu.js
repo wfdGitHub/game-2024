@@ -333,6 +333,9 @@ module.exports = function() {
 		    		if(atkTeam[i] && userDatas[uid]["surplus_healths"][atkTeam[i].hId] !== undefined)
 		    			atkTeam[i].surplus_health = userDatas[uid]["surplus_healths"][atkTeam[i].hId]
 		    	}
+		    	var team = self.getUserTeam(uid)
+				if(team && team[6])
+					atkTeam[6] = team[6]
 		    	userFightDatas[uid] = {seededNum : Date.now(),atkTeam : atkTeam}
 			    cb(true,userFightDatas[uid])
 			}

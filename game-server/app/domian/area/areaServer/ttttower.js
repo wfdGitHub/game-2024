@@ -177,6 +177,12 @@ module.exports = function() {
 				})
 			},
 			function(atkTeam,next) {
+				var team = self.getUserTeam(uid)
+				if(team && team[6])
+					atkTeam[6] = team[6]
+				next(null,atkTeam)
+			},
+			function(atkTeam,next) {
 			   	var defTeam = ttttower_realm[level]["defTeam"]
 			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
