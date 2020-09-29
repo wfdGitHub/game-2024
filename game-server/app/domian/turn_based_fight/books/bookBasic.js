@@ -22,10 +22,8 @@ model.prototype.getTotalAtt = function(name) {
 	return value
 }
 model.prototype.onHit = function() {
-	console.error(this.name+"天书受到攻击")
 }
 model.prototype.kill = function() {
-	
 }
 model.prototype.init = function(team,enemy,locator,seeded) {
 	this.team = team
