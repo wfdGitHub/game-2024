@@ -6,13 +6,13 @@ var model = function(otps) {
 	var book = new bookBasic(otps)
 	book.bookId = "angerLessBook"
 	book.id = "angerLessBook"
-	book.before = otps.before
+	book.beforeNum = otps.before
 	book.num = otps.num
 	book.before = function() {
 		var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
 		var list = {}
-		if(book.before){
-			var targets = book.locator.getEnemyRandom(book.team[0],book.before)
+		if(book.beforeNum){
+			var targets = book.locator.getEnemyRandom(book.team[0],book.beforeNum)
 			for(var i = 0;i < targets.length;i++){
 				list[targets[i].id] = 1
 			}
