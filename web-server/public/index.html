@@ -97,6 +97,37 @@
         console.log("onChat")
         console.log(data)
       })
+      //=============节日活动=======//
+      //获取活动数据
+      var getFestivalData = function() {
+        pomelo.request("area.festivalHandler.getFestivalData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //每日奖励
+      var gainFestivalDayAward = function() {
+        pomelo.request("area.festivalHandler.gainFestivalDayAward", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战boss
+      var challengeFestivalBoss = function() {
+        pomelo.request("area.festivalHandler.challengeFestivalBoss", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取摇钱树奖励列表
+      var getFestivalTreeList = function() {
+        pomelo.request("area.festivalHandler.getFestivalTreeList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //结算摇钱树奖励
+      var gainFestivalTreeAward = function(count) {
+        pomelo.request("area.festivalHandler.gainFestivalTreeAward", {count:count}, function(data) {
+            console.log(data);
+        });
+      }
       //==============天书==========//
       //获取天书数据
       var getBookData = function() {

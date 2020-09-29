@@ -9,7 +9,7 @@ const default_cfg = require("../../../config/gameCfg/default_cfg.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
@@ -77,6 +77,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.weekDay = (new Date).getDay()
 	this.weekStr = util.getWeek()
 	this.areaDay = util.getTimeDifference(this.openTime,Date.now())
+	this.festivalDayUpdate()
 	this.aceLottoDayUpdate()
 	this.topicRecruitDayUpdate()
 	this.areaBossDayUpdate()
@@ -178,6 +179,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.STDayRefresh(uid)
 	this.TopicRecruitRefresh(uid)
 	this.mysteriousDayUpdate(uid)
+	this.festivalUserDayUpdate(uid)
 }
 //玩家每周首次登陆
 area.prototype.weekFirstLogin = function(uid) {
