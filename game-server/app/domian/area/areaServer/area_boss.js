@@ -40,7 +40,7 @@ module.exports = function() {
 						var curId = self.areaDay - 1
 						self.zrangewithscore(main_name,0,-1,function(list) {
 							var rank = 0
-							for(var i = 0;i < list.length;i += 2){
+							for(var i = list.length - 2;i >= 0;i -= 2){
 								rank++
 								var text = "亲爱的玩家您好，恭喜您在全服BOSS活动中获得"+rank+"名，获得排名奖励，祝您游戏愉快！"
 								if(rank >= 11){
