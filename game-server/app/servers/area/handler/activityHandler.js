@@ -259,7 +259,7 @@ activityHandler.prototype.gainHighCardAward = function(msg, session, next) {
 activityHandler.prototype.getAreaRank = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getAreaRank(function(flag,msg) {
+  this.areaManager.areaMap[areaId].getSprintRank(function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

@@ -69,6 +69,7 @@ module.exports = function() {
 			self.players[uid]["exp"] = notify.curExp
 			self.sendToUser(uid,notify)
 			self.checkLordUpgrade(uid,Number(value))
+			self.updateSprintRank("lv_rank",uid,exp)
 		})
 	}
 	//获取主公等级

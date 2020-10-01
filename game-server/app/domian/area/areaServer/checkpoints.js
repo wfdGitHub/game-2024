@@ -98,6 +98,7 @@ module.exports = function() {
 			    	var awardList = self.checkpointsSuccess(uid,level)
 			    	cb(true,{winFlag : winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,awardList:awardList})
 			    	self.taskUpdate(uid,"checkpoints",1,level)
+			    	self.updateSprintRank("checkpoint_rank",uid,1)
 			    }else{
 			    	cb(false,{winFlag : winFlag})
 			    }

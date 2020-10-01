@@ -130,4 +130,74 @@ module.exports = function() {
 			}
 		})
 	}
+	//获取服务器hash自定义数据
+	this.getAreaObj = function(objName,key,cb) {
+		this.redisDao.db.hget("area:area"+this.areaId+":"+objName,key,function(err,data) {
+			if(err){
+				console.log(err)
+				cb(false)
+			}else{
+				cb(data)
+			}
+		})
+	}
+	//批量获取服务器hash数据
+	this.getAreaHMObj = function(objName,arr,cb) {
+		this.redisDao.db.hmget("area:area"+this.areaId+":"+objName,arr,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
+	//设置服务器hash自定义数据
+	this.setAreaObj = function(objName,key,value,cb) {
+		this.redisDao.db.hset("area:area"+this.areaId+":"+objName,key,value,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
+	//批量设置服务器hash数据
+	this.setAreaHMObj = function(objName,obj,cb) {
+		this.redisDao.db.hmset("area:area"+this.areaId+":"+objName,obj,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
+	//删除服务器hash自定义数据
+	this.delAreaObj = function(objName,key,cb) {
+		this.redisDao.db.hdel("area:area"+this.areaId+":"+objName,key,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
+	//删除服务器hash字段全部数据
+	this.delAreaObjAll = function(objName,cb) {
+		this.redisDao.db.del("area:area"+this.areaId+":"+objName,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
+	//服务器hash自定义数据自增
+	this.incrbyAreaObj = function(objName,key,value,cb) {
+		this.redisDao.db.hincrby("area:area"+this.areaId+":"+objName,key,value,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
+	//获取服务器hash自定义数据整个对象
+	this.getAreaObjAll = function(objName,cb) {
+		this.redisDao.db.hgetall("area:area"+this.areaId+":"+objName,function(err,data) {
+			if(err){
+				console.log(err)
+				cb(false)
+			}else{
+				cb(data)
+			}
+		})
+	}
 }

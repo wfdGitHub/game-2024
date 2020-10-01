@@ -52,13 +52,14 @@ module.exports = function() {
 			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
 			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]))
-			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getFightRecord()})
+			    	next({"text":"战斗验证错误"})
 			    	return
 			    }
 			    self.taskUpdate(uid,"ttt",1)
 			   	if(winFlag){
 			   		self.incrbyObj(uid,main_name,"level",1)
 			   		self.taskUpdate(uid,"tttLv",1)
+			   		self.updateSprintRank("ttt_rank",uid,1)
 					var awardList = self.addItemStr(uid,ttttower_level[level]["awards"])
 					cb(true,awardList)
 			   	}else{
