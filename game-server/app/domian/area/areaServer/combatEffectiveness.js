@@ -191,7 +191,8 @@ module.exports = function() {
 				cb(false,"不可升星")
 				return
 			}
-			self.consumeItems(uid,"1000400:"+book_star[star]["item"],1,"升星天书"+bookType,function(flag,err) {
+			var str = "1000400:"+book_star[star]["item"]+"&"+bookMap[bookType]["id"]+":"+book_star[star]["bookChip"]
+			self.consumeItems(uid,str,1,"升星天书"+bookType,function(flag,err) {
 				if(!flag){
 					cb(false,err)
 				}else{
