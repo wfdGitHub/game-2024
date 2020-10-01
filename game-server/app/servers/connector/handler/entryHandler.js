@@ -84,6 +84,7 @@ entryHandler.entrySuccess = function(session,userInfo,unionid,next) {
 	session.push("limit")
     session.set("unionid",unionid)
     session.push("unionid")
+    userInfo.time = Date.now()
 	// session.on("closed",onUserLeave.bind(this))
   	next(null, {flag : true,msg : userInfo});
 }
