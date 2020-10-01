@@ -13,6 +13,7 @@ module.exports = function() {
 	var self = this
 	var timer = 0
 	var curRankIndex = -1
+	var curTime = 0
 	//初始化
 	this.initSprintRank = function() {
 		if(!self.newArea){
@@ -26,9 +27,11 @@ module.exports = function() {
 				}
 				self.setAreaHMObj(main_name,data)
 				curRankIndex = data.index
+				curTime = data.time
 				timer = setTimeout(self.settleSprintRank.bind(this),rankTime)
 			}else{
 				curRankIndex = Number(data.index)
+				curTime = Number(data.time)
 				if(curRankIndex != -1){
 					var dt = Number(data.time) - Date.now()
 					timer = setTimeout(self.settleSprintRank.bind(this),dt)
@@ -52,20 +55,31 @@ module.exports = function() {
 					self.sendMail(list[i],sprint_rank[curRankIndex]["name"]+"奖励",text,sprint_rank[curRankIndex]["rank_"+rank])
 				}
 				curRankIndex++
+				var data = {}
 				if(sprint_rank[curRankIndex]){
-					var data = {
+					data = {
 						index : curRankIndex,
 						time : Date.now() + rankTime
 					}
+					curRankIndex = data.index
+					curTime = data.time
 					self.setAreaHMObj(main_name,data)
 					timer = setTimeout(self.settleSprintRank.bind(this),rankTime)
 				}else{
-					var data = {
+					data = {
 						index : -1,
 						time : 0
 					}
+					curRankIndex = data.index
+					curTime = data.time
 					self.setAreaHMObj(main_name,data)
 				}
+				var notify = {
+					type : "settleSprintRank",
+					curRankIndex : data.index,
+					time : data.time
+				}
+				self.sendAllUser(notify)
 			})
 		}
 	}
@@ -84,6 +98,7 @@ module.exports = function() {
 					info.userInfos = userInfos
 					info.scores = scores
 					info.curRankIndex = curRankIndex
+					info.time = curTime
 					cb(true,info)
 				})
 			})
@@ -96,8 +111,6 @@ module.exports = function() {
 	this.updateSprintRank = function(type,uid,value) {
 		if(curRankIndex != -1 && rank_type_day[type] >= rank_type_day[sprint_rank[curRankIndex]["rank_type"]]){
 			self.incrbyZset(type,uid,value)
-		}else{
-			console.log("活动已结束")
 		}
 	}
 }
