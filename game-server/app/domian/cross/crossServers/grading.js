@@ -218,13 +218,13 @@ module.exports = function() {
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
 					change = Math.floor(Math.random() * 15) + 20
-					self.redisDao.db.zincrby(["cross:grading:rank",grading_cfg["win_score"]["value"],key],function(err,value) {
+					self.redisDao.db.zincrby(["cross:grading:rank",change,key],function(err,value) {
 						curScore = value
 						next()
 					})
 				}else{
 					change = -Math.floor(Math.random() * 15) - 15
-					self.redisDao.db.zincrby(["cross:grading:rank",grading_cfg["lose_score"]["value"],key],function(err,value) {
+					self.redisDao.db.zincrby(["cross:grading:rank",change,key],function(err,value) {
 						curScore = value
 						if(value < 0){
 							curScore = 0
