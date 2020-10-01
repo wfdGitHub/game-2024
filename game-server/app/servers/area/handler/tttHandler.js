@@ -40,10 +40,12 @@ tttHandler.prototype.challengeRealmBoss = function(msg, session, next) {
     next(null,{flag : false,msg : "seededNum error"})
     return
   }
-  if(!Array.isArray(heros) || heros.length != 6){
+  if(!Array.isArray(heros)){
     next(null,{flag : false,msg : "heros error"})
     return
   }
+  if(heros.length >= 7)
+    heros = heros.slice(0,6)
   this.areaManager.areaMap[areaId].challengeRealmBoss(uid,realm,heros,seededNum,verify,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
