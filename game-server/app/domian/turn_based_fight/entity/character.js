@@ -432,8 +432,8 @@ model.prototype.lessHP = function(info) {
 	info.realValue = info.value
 	if((this.attInfo.hp - info.value) <= 0){
 		if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
-			this.attInfo.hp = 1
 			info.realValue = this.attInfo.hp - 1
+			this.attInfo.hp = 1
 			info.oneblood = true
 		}else{
 			info.realValue = this.attInfo.hp
