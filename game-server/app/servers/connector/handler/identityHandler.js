@@ -61,7 +61,7 @@ local.checkIdentity = function(idcard,name,cb) {
 	  });
 	  res.on('end', function(){
 	  	var data = JSON.parse(_data)
-	     if(data && data.code == "0" && data.message == "成功"){
+	     if(data && data.code == "0" && data.message == "成功" && data.result.description == "一致"){
 	     	cb(true,data.result)
 	     }else{
 	     	cb(false,data)
