@@ -1,4 +1,5 @@
 const peak_cfg = require("../../../../config/gameCfg/peak_cfg.json")
+const async = require("async")
 //王者巅峰赛
 module.exports = function() {
 	var self = this
