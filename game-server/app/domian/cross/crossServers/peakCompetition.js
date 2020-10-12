@@ -64,7 +64,7 @@ module.exports = function() {
 	}
 	//每日刷新
 	this.peakDayUpdate = function() {
-		if(!runFlag && (new Date()).getDay() == 1){
+		if(!look && !runFlag && (new Date()).getDay() == 1){
 			this.peakBegin()
 		}
 	}
