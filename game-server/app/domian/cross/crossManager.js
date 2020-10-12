@@ -18,6 +18,7 @@ crossManager.prototype.init = function() {
 		var fun = require("./crossServers/"+crossServers[i]+".js")
 		fun.call(this)
 	}
+	this.peakInit()
 	setInterval(this.update.bind(this),1000)
 }
 //每日定时器

@@ -217,7 +217,7 @@ module.exports = function() {
 				//计算战斗结果
 				for(var i = 0;i < parList.length;i += 2){
 					var atkTeam = teamList[parList[i]]
-					var defTeam - teamList[parList[i+1]]
+					var defTeam = teamList[parList[i+1]]
 					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 					var overInfo = fightContorl.getOverInfo()
 					var winner
