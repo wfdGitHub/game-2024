@@ -33,6 +33,7 @@ for(var i in book_list){
 //战斗控制器
 var model = function() {
 	this.fighting = false
+	this.overInfo = {}
 }
 // //自定义战斗配置// model.libertyFight = function(atkTeam,defTeam,otps) {
 // 	var fighting = new fightingFun(atkTeam,defTeam,otps)
@@ -85,7 +86,11 @@ model.beginFight = function(atkTeam,defTeam,otps) {
     model.mergeData(myotps.defTeamAdds,this.raceAdd(this.getRaceType(defTeamList)))
 	var fighting = new fightingFun(atkTeamList,defTeamList,atkBooks,defBooks,myotps)
 	fighting.fightBegin()
+	model.overInfo = fightRecord.list[fightRecord.list.length-1]
 	return fightRecord.isWin()
+}
+model.getOverInfo = function() {
+	return this.overInfo
 }
 //获取种族加成类型
 model.getRaceType = function(team) {

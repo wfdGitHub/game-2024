@@ -1,7 +1,7 @@
 const grading_cfg = require("../../../../config/gameCfg/grading_cfg.json")
 const grading_lv = require("../../../../config/gameCfg/grading_lv.json")
 const grading_robot = require("../../../../config/gameCfg/grading_robot.json")
-var boyCfg = require("../../../../config/sysCfg/boy.json")
+const boyCfg = require("../../../../config/sysCfg/boy.json")
 var util = require("../../../../util/util.js")
 const async = require("async")
 for(var i in grading_robot){
@@ -202,9 +202,9 @@ module.exports = function() {
 							next()
 						}else{
 							//玩家
-							self.getDefendTeam(targetSid,targetUid,function(team) {
+							self.getDefendTeam(targetUid,function(team) {
 								defTeam = team
-								self.getPlayerInfoByUid(targetSid,targetUid,function(info) {
+								self.getPlayerInfoByUid(targetUid,function(info) {
 									targetInfo = info
 									next()
 								})

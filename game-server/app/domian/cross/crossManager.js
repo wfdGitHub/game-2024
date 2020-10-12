@@ -25,10 +25,12 @@ crossManager.prototype.dayUpdate = function(curDayStr) {
 	console.log("跨服服务器每日刷新")
 	this.dayStr = curDayStr
 	this.gradingDayUpdate()
+	this.peakDayUpdate()
 }
 crossManager.prototype.update = function() {
 	var date = new Date()
 	this.escortUpdate(date)
+	this.peakUpdate(date)
 	var curDayStr = (new Date()).toDateString()
 	if(this.dayStr !== curDayStr){
 		this.dayUpdate(curDayStr)
@@ -87,8 +89,8 @@ crossManager.prototype.userTeam = function(crossUid) {
 	}
 	return this.players[crossUid]["fightTeam"]
 }
-//获取玩家防御阵容配置(被攻击阵容)
-crossManager.prototype.getDefendTeam = function(areaId,uid,cb) {
+//获取玩家防守阵容配置
+crossManager.prototype.getDefendTeam = function(uid,cb) {
 	this.heroDao.getFightTeam(uid,function(flag,data) {
 		if(flag){
 			cb(data)
@@ -174,7 +176,7 @@ crossManager.prototype.openChestStr = function(crossUid,chestId,rate,cb) {
 	this.app.rpc.area.areaRemote.openChestStr.toServer(serverId,uid,areaId,chestId,rate,cb)
 }
 //获取玩家基本数据
-crossManager.prototype.getPlayerInfoByUid = function(areaId,uid,cb) {
+crossManager.prototype.getPlayerInfoByUid = function(uid,cb) {
 	this.redisDao.db.hmget("player:user:"+uid+":playerInfo",["name","head"],function(err,data) {
 		let info = {
 			uid :uid,

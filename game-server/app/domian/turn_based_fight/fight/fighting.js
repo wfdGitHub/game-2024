@@ -146,7 +146,7 @@ model.prototype.fightBegin = function() {
 model.prototype.nextRound = function() {
 	if(this.round >= this.maxRound){
 		//达到最大轮次，战斗结束
-		this.fightOver(false)
+		this.fightOver(false,true)
 		return
 	}
 	this.round++
@@ -381,19 +381,31 @@ model.prototype.bookAction = function(book) {
 		this.fightOver()
 }
 //战斗结束
-model.prototype.fightOver = function(winFlag) {
+model.prototype.fightOver = function(winFlag,roundEnd) {
 	// console.log("战斗结束")
 	this.isFight = false
-	let info = {type : "fightOver",winFlag : winFlag,atkTeam:[],defTeam:[],round : this.round}
+	var info = {type : "fightOver",winFlag : winFlag,atkTeam:[],defTeam:[],round : this.round,roundEnd : roundEnd||false,atkDamage:0,defDamage:0}
 	for(var i = 0;i < teamLength;i++){
-		if(!this.atkTeam[i].isNaN)
+		if(!this.atkTeam[i].isNaN){
+			info.atkDamage += this.atkTeam[i].totalDamage
 			info.atkTeam.push(this.atkTeam[i].getSimpleInfo())
-		else 
+		}
+		else {
 			info.atkTeam.push(null)
-		if(!this.defTeam[i].isNaN)
+		}
+		if(!this.defTeam[i].isNaN){
+			info.defDamage += this.defTeam[i].totalDamage
 			info.defTeam.push(this.defTeam[i].getSimpleInfo())
-		else
+		}
+		else{
 			info.defTeam.push(null)
+		}
+	}
+	for(var i in this.atkBooks){
+		info.atkDamage += this.atkBooks[i].totalDamage
+	}
+	for(var i in this.defBooks){
+		info.defDamage += this.defBooks[i].totalDamage
 	}
 	fightRecord.push(info)
 	// fightRecord.explain()
