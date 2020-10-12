@@ -21,14 +21,14 @@ module.exports = function() {
 		async.waterfall([
 			function(next) {
 				self.redisDao.db.hgetall("cross:peak",function(err,data) {
-					if(data.state_index != -1){
+					if(data && data.state_index != -1){
 						console.log("存在数据 开始初始化")
 						curRound = Number(data.curRound)
 						state_index = Number(data.state_index)
 						state = peak_cfg[state_index]["state"]
-						participants = JSON.parse(participants)
-						parMap = JSON.parse(parMap)
-						timeList = JSON.parse(timeList)
+						participants = JSON.parse(data.participants)
+						parMap = JSON.parse(data.parMap)
+						timeList = JSON.parse(data.timeList)
 						next()
 					}
 				})
