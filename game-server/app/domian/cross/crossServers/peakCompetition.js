@@ -153,6 +153,7 @@ module.exports = function() {
 							console.error("获取阵容失败 "+uids[i])
 							data = [0,0,0,0,0,0]
 						}
+						console.log("同步"+i)
 						self.redisDao.db.hset("cross:peak:fightTeam",crossUids[i],JSON.stringify(data))
 						count++
 						if(count == totalPlayer){
