@@ -2,7 +2,7 @@
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
 var boyCfg = require("../../../config/sysCfg/boy.json")
 var uuid = require("uuid")
-var crossServers = ["grading","escort"]
+var crossServers = ["grading","escort","peakCompetition"]
 var crossManager = function(app) {
 	this.app = app
 	this.channelService = this.app.get("channelService")

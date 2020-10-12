@@ -112,6 +112,7 @@ module.exports = function() {
 	}
 	//新赛季开启
 	this.peakBegin = function() {
+		console.log("新赛季开启")
 		runFlag = true
 		var crossUids = []
 		var uids = []
@@ -120,6 +121,7 @@ module.exports = function() {
 		async.waterfall([
 			function(next) {
 				//获取初始入选玩家
+				console.log("获取初始入选玩家")
 				self.redisDao.db.zrevrange(["cross:grading:rank",0,-1,"WITHSCORES"],function(err,list) {
 					var strList,uid,serverId
 					for(var i = 0;i < list.length;i+=2){
@@ -188,6 +190,7 @@ module.exports = function() {
 	}
 	//下注阶段
 	this.peakBetting = function() {
+		console.log("下注阶段开始")
 		betInfo = {}
 		self.redisDao.db.hdel("cross:peak:betInfo")
 		state_index++
@@ -200,6 +203,7 @@ module.exports = function() {
 	}
 	//比赛阶段
 	this.peakFight = function() {
+		console.log("比赛阶段开始")
 		look = true
 		var parList = participants[curRound]
 		var teamList = {}
