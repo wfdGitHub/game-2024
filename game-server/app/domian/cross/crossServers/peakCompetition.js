@@ -1,4 +1,4 @@
-const peak_cfg = require("../../../../config/sysCfg/peak_cfg.json")
+const peak_cfg = require("../../../../config/gameCfg/peak_cfg.json")
 //王者巅峰赛
 module.exports = function() {
 	var self = this
@@ -21,6 +21,7 @@ module.exports = function() {
 			function(next) {
 				self.redisDao.db.hgetall("cross:peak",function(err,data) {
 					if(data.state_index != -1){
+						console.log("存在数据 开始初始化")
 						curRound = Number(data.curRound)
 						state_index = Number(data.state_index)
 						state = peak_cfg[state_index]["state"]
@@ -51,6 +52,7 @@ module.exports = function() {
 						betAmount = JSON.parse(Data)
 						runFlag = true
 						look = false
+						console.log("初始化完成")
 					}
 				})
 			}
@@ -221,6 +223,7 @@ module.exports = function() {
 					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 					var overInfo = fightContorl.getOverInfo()
 					var winner
+					console.log("第"+curRound+"轮开始")
 					if(overInfo.roundEnd){
 						if(overInfo.atkDamage > overInfo.defDamage){
 							winner = parList[i]
@@ -234,6 +237,7 @@ module.exports = function() {
 							winner = parList[i+1]
 						}
 					}
+					console.log(winner+"获胜")
 					winners.push(winner)
 				}
 				next()
@@ -267,6 +271,7 @@ module.exports = function() {
 	this.peakEnd = function() {
 		look = true
 		runFlag = false
+		console.log("本赛季结束")
 	}
 	//获取玩家巅峰赛数据
 	this.getPeakData = function(crossUid,cb) {
