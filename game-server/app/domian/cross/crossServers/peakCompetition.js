@@ -68,10 +68,10 @@ module.exports = function() {
 				self.redisDao.db.hgetall("cross:peak:betAmount",function(err,data) {
 					if(data){
 						betAmount = JSON.parse(data)
-						runFlag = true
-						look = false
-						console.log("初始化完成")
 					}
+					runFlag = true
+					look = false
+					console.log("初始化完成")
 				})
 			}
 		],function(err) {
