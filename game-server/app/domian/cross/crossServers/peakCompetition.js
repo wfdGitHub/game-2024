@@ -192,9 +192,9 @@ module.exports = function() {
 				parInfoMap = {}
 				self.getPlayerInfoByUids(areaIds,uids,function(list) {
 					for(var i = 0;i < list.length;i++){
-						parInfoMap[crossUids[i]] = list[i]
+						parInfoMap[crossUids[i]] = JSON.stringify(list[i])
 					}
-					self.redisDao.db.hmset("cross:peak:parInfoMap",JSON.stringify(parInfoMap))
+					self.redisDao.db.hmset("cross:peak:parInfoMap",parInfoMap)
 					next()
 				})
 			},
