@@ -3,9 +3,8 @@ const async = require("async")
 //王者巅峰赛
 module.exports = function() {
 	var self = this
-	var totalPlayer = 256
+	var totalPlayer = 128
 	var curRound = 0			//当前回合
-	var totalRound = 8			//总回合
 	var state_index = -1		//当前状态index
 	var timeList = []			//时间状态
 	var state = 0				//当前阶段
