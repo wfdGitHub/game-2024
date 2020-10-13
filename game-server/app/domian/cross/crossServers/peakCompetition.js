@@ -333,8 +333,11 @@ module.exports = function() {
 					}
 					betInfo[i] = JSON.stringify(betInfo[i])
 				}
+				console.log(betInfo)
 				self.redisDao.db.hmset("cross:peak:betHistory:"+curRound,betInfo)
 				self.redisDao.db.hmset("cross:peak:playerAmount",playerAmount)
+				betInfo = {}
+				self.redisDao.db.del("cross:peak:betInfo")
 				next()
 			},
 			function(next) {
