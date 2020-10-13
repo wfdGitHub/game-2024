@@ -48,14 +48,14 @@ peakHandler.prototype.peakUserBetting = function(msg, session, next) {
 //获取当前下注信息
 peakHandler.prototype.getPeakBetInfo = function(msg, session, next) {
   var crossUid = session.get("crossUid")
-  this.crossManager.getPeakBetInfo(crossUid,target,bet,function(flag,data) {
+  this.crossManager.getPeakBetInfo(crossUid,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
 //查询历史下注信息
 peakHandler.prototype.getPeakBetHistory = function(msg, session, next) {
   var crossUid = session.get("crossUid")
-  this.crossManager.getPeakBetHistory(crossUid,target,bet,function(flag,data) {
+  this.crossManager.getPeakBetHistory(crossUid,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
