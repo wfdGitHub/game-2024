@@ -264,6 +264,7 @@ module.exports = function() {
 			state_index++
 			state = peak_cfg[state_index]["state"]
 			self.redisDao.db.hset("cross:peak","state_index",state_index)
+			look = false
 			if(state == 3){
 				runFlag = false
 				self.peakEnd()
