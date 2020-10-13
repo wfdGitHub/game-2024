@@ -64,7 +64,7 @@ module.exports = function() {
 	}
 	//每日刷新
 	this.peakDayUpdate = function() {
-		if(!look && !runFlag && (new Date()).getDay() == 1){
+		if(!look && !runFlag){
 			this.peakBegin()
 		}
 	}
@@ -179,7 +179,7 @@ module.exports = function() {
 				d.setHours(0,0,0,0)
 				var zeroTime = d.getTime()
 				for(var i in peak_cfg){
-					timeList[i] = zeroTime + peak_cfg[i]["value"]
+					timeList[i] = zeroTime + 5000 //zeroTime + peak_cfg[i]["value"]
 				}
 				console.log("timeList",timeList)
 				self.peakSave()
