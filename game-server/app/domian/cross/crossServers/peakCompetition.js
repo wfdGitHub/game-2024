@@ -30,6 +30,8 @@ module.exports = function() {
 						parMap = JSON.parse(data.parMap)
 						timeList = JSON.parse(data.timeList)
 						next()
+					}else{
+						look = false
 					}
 				})
 			},
