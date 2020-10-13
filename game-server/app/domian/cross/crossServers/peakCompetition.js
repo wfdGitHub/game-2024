@@ -455,7 +455,7 @@ module.exports = function() {
 			cb(false,"本轮已下注")
 			return
 		}
-		if(!Number.isInteger(bet)){
+		if(!Number.isInteger(bet) || bet <= 0){
 			cb(false,"参数错误")
 			return
 		}
