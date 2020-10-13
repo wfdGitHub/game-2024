@@ -64,15 +64,18 @@ module.exports = function() {
 						for(var i in data){
 							data[i] = JSON.parse(data[i])
 						}
+						roundTeam = data
 					}
-					roundTeam = data
 					next()
 				})
 			},
 			function(next) {
 				self.redisDao.db.hgetall("cross:peak:parInfoMap",function(err,data) {
 					if(data){
-						parInfoMap = JSON.parse(data)
+						for(var i in data){
+							data[i] = JSON.parse(data[i])
+						}
+						parInfoMap = data
 					}
 					next()
 				})
@@ -80,7 +83,10 @@ module.exports = function() {
 			function(next) {
 				self.redisDao.db.hgetall("cross:peak:betAmount",function(err,data) {
 					if(data){
-						betAmount = JSON.parse(data)
+						for(var i in data){
+							data[i] = Number(data[i])
+						}
+						betAmount = data
 					}
 					runFlag = true
 					look = false
