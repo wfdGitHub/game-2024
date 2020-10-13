@@ -311,7 +311,7 @@ module.exports = function() {
 		cb(true,fightTeam)
 	}
 	//下注
-	this.peakBetting = function(crossUid,target,bet,cb) {
+	this.peakUserBetting = function(crossUid,target,bet,cb) {
 		if(!runFlag){
 			cb(false,"不在比赛时间")
 			return
