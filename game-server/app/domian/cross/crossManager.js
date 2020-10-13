@@ -141,7 +141,10 @@ crossManager.prototype.sendMail = function(crossUid,title,text,atts,cb) {
 	var areaId = parseInt(list[0])
 	var uid = parseInt(list[1])
 	var serverId = list[2]
-	this.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,cb)
+	if(serverId)
+		this.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,cb)
+	else
+		this.sendMailByUid(areaId,uid,title,text,atts,cb)
 }
 //直接发放邮件
 crossManager.prototype.sendMailByUid = function(areaId,uid,title,text,atts,cb) {

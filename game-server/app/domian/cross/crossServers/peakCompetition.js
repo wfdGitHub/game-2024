@@ -97,10 +97,10 @@ module.exports = function() {
 		betInfo = {}
 		betAmount = {}
 		timeList = []
-		self.redisDao.db.hdel("cross:peak:fightTeam")
-		self.redisDao.db.hdel("cross:peak:betInfo")
-		self.redisDao.db.hdel("cross:peak:playerAmount")
-		self.redisDao.db.hdel("cross:peak:betAmount")
+		self.redisDao.db.del("cross:peak:fightTeam")
+		self.redisDao.db.del("cross:peak:betInfo")
+		self.redisDao.db.del("cross:peak:playerAmount")
+		self.redisDao.db.del("cross:peak:betAmount")
 		self.peakSave()
 	}
 	this.peakSave = function() {
@@ -195,7 +195,7 @@ module.exports = function() {
 	this.peakBetting = function() {
 		console.log("下注阶段开始")
 		betInfo = {}
-		self.redisDao.db.hdel("cross:peak:betInfo")
+		self.redisDao.db.del("cross:peak:betInfo")
 		state_index++
 		state = peak_cfg[state_index]["state"]
 		self.redisDao.db.hset("cross:peak","state_index",state_index)
@@ -227,6 +227,7 @@ module.exports = function() {
 				for(var i = 0;i < parList.length;i += 2){
 					var atkTeam = teamList[parList[i]]
 					var defTeam = teamList[parList[i+1]]
+					var seededNum = Date.now()
 					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 					var overInfo = fightContorl.getOverInfo()
 					var winner
