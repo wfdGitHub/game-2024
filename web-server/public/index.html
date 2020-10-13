@@ -19,6 +19,7 @@
     <script type="text/javascript">
       var pomelo = window.pomelo;
       var host = "127.0.0.1";
+      host = "192.168.0.200"
       // host = "47.107.48.79"
       var queryEntry = function(callback) {
         var route = 'gate.gateHandler.queryClientEntry';
@@ -97,6 +98,7 @@
         console.log("onChat")
         console.log(data)
       })
+      //=============巅峰赛=======//
       //开始新赛程
       var peakBegin = function() {
         pomelo.request("cross.peakHandler.peakBegin", {}, function(data) {
@@ -106,6 +108,48 @@
       //下一阶段
       var peakNextState = function() {
         pomelo.request("cross.peakHandler.peakNextState", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取巅峰赛数据
+      var getPeakData = function() {
+        pomelo.request("cross.peakHandler.getPeakData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //同步阵容
+      var peakSyncFightTeam = function() {
+        pomelo.request("cross.peakHandler.getPeakData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取对阵选手信息
+      var getPeakParticipantsInfo = function() {
+        pomelo.request("cross.peakHandler.getPeakParticipantsInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //下注
+      var peakUserBetting = function(target,bet) {
+        pomelo.request("cross.peakHandler.peakUserBetting", {target:target,bet:bet}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取当前下注信息
+      var getPeakBetInfo = function() {
+        pomelo.request("cross.peakHandler.getPeakBetInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //查询历史下注信息
+      var getPeakBetHistory = function() {
+        pomelo.request("cross.peakHandler.getPeakBetHistory", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //查看指定比赛记录
+      var getPeakMatchHistory = function(round,target) {
+        pomelo.request("cross.peakHandler.getPeakMatchHistory", {round:round,target:target}, function(data) {
             console.log(data);
         });
       }
