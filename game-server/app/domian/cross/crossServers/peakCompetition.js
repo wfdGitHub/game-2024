@@ -331,7 +331,7 @@ module.exports = function() {
 						betInfo[i].win = false
 						playerAmount[i] -= betInfo[i].bet
 					}
-					betInfo[i] = JSON.stringify(betInfo)
+					betInfo[i] = JSON.stringify(betInfo[i])
 				}
 				self.redisDao.db.hmset("cross:peak:betHistory:"+curRound,betInfo)
 				self.redisDao.db.hmset("cross:peak:playerAmount",playerAmount)
