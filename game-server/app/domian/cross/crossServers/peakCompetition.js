@@ -47,7 +47,10 @@ module.exports = function() {
 			function(next) {
 				self.redisDao.db.hgetall("cross:peak:playerAmount",function(err,data) {
 					if(data){
-						playerAmount = JSON.parse(data)
+						for(var i in data){
+							data[i] = Number(data[i])
+						}
+						playerAmount = data
 					}
 					next()
 				})
