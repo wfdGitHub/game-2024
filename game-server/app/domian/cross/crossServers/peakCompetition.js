@@ -170,10 +170,23 @@ module.exports = function() {
 					}
 				})
 			},
-			function(next) {
-				//同步初始阵容
-				name
-			},
+            function(next) {
+                //同步初始阵容
+                var count = 0
+                for(let i = 0;i < uids.length;i++){
+                    self.getDefendTeam(uids[i],function(data) {
+                        if(!data){
+                            console.error("获取阵容失败 "+uids[i])
+                            data = [0,0,0,0,0,0]
+                        }
+                        self.redisDao.db.hset("cross:peak:fightTeam",crossUids[i],JSON.stringify(data))
+                        count++
+                        if(count == totalPlayer){
+                            next()
+                        }
+                    })
+                }
+            },
 			function(next) {
 				//同步名称
 				parInfoMap = {}
