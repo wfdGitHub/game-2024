@@ -142,6 +142,7 @@ module.exports = function() {
 		var areaIds = []
 		participants = {}
 		parMap = {}
+		self.peakArgInit()
 		async.waterfall([
 			function(next) {
 				//获取初始入选玩家
