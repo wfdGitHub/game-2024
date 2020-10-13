@@ -140,6 +140,10 @@ module.exports = function() {
 		self.redisDao.db.del("cross:peak:betInfo")
 		self.redisDao.db.del("cross:peak:playerAmount")
 		self.redisDao.db.del("cross:peak:betAmount")
+		for(var i = 1;i <= 7;i++){
+			self.redisDao.db.del("cross:peak:matchHistory:"+i)
+			self.redisDao.db.del("cross:peak:betHistory:"+i)
+		}
 		self.peakSave()
 	}
 	this.peakSave = function() {
@@ -308,13 +312,13 @@ module.exports = function() {
 						seededNum : seededNum,
 						winner : winner
 					}
-					matchHistory[parList[i]] = info
-					matchHistory[parList[i+1]] = info
+					matchHistory[parList[i]] = JSON.stringify(info)
+					matchHistory[parList[i+1]] = matchHistory[parList[i]]
 					console.log(winner+"获胜")
 					winMaps[winner] = true
 					winners.push(winner)
 				}
-				self.redisDao.db.hmset("cross:peak:matchHistory:"+curRound,JSON.stringify(matchHistory))
+				self.redisDao.db.hmset("cross:peak:matchHistory:"+curRound,matchHistory)
 				next()
 			},
 			function(next) {
@@ -327,8 +331,9 @@ module.exports = function() {
 						betInfo[i].win = false
 						playerAmount[i] -= betInfo[i].bet
 					}
+					betInfo[i] = JSON.stringify(betInfo)
 				}
-				self.redisDao.db.hmset("cross:peak:betHistory:"+curRound,JSON.stringify(betInfo))
+				self.redisDao.db.hmset("cross:peak:betHistory:"+curRound,betInfo)
 				self.redisDao.db.hmset("cross:peak:playerAmount",playerAmount)
 				next()
 			},
