@@ -392,7 +392,7 @@ module.exports = function() {
 		})
 	}
 	//获取对阵选手信息
-	this.getPeakParticipantsInfo = function(cb) {
+	this.getPeakParticipantsInfo = function(crossUid,cb) {
 		if(!runFlag){
 			cb(false,"不在比赛时间")
 			return

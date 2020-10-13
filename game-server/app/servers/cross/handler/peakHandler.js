@@ -32,8 +32,7 @@ peakHandler.prototype.peakSyncFightTeam = function(msg, session, next) {
 //获取对阵选手信息
 peakHandler.prototype.getPeakParticipantsInfo = function(msg, session, next) {
   var crossUid = session.get("crossUid")
-  var uid = session.uid
-  this.crossManager.getPeakParticipantsInfo(crossUid,uid,function(flag,data) {
+  this.crossManager.getPeakParticipantsInfo(crossUid,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
