@@ -39,7 +39,10 @@ module.exports = function() {
 			function(next) {
 				self.redisDao.db.hgetall("cross:peak:betInfo",function(err,data) {
 					if(data){
-						betInfo = JSON.parse(data)
+						for(var i in data){
+							data[i] = JSON.parse(data[i])
+						}
+						betInfo = data
 					}
 					next()
 				})
@@ -58,8 +61,11 @@ module.exports = function() {
 			function(next) {
 				self.redisDao.db.hgetall("cross:peak:roundTeam",function(err,data) {
 					if(data){
-						roundTeam = JSON.parse(data)
+						for(var i in data){
+							data[i] = JSON.parse(data[i])
+						}
 					}
+					roundTeam = data
 					next()
 				})
 			},
@@ -460,7 +466,7 @@ module.exports = function() {
 			return
 		}
 		betInfo[crossUid] = {target : target,bet : bet}
-		self.redisDao.db.hset("cross:peak:betInfo",crossUid,betInfo[crossUid])
+		self.redisDao.db.hset("cross:peak:betInfo",crossUid,JSON.stringify(betInfo[crossUid]))
 		if(!betAmount[target])
 			betAmount[target] = 0
 		betAmount[target] += bet
