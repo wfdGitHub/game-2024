@@ -17,7 +17,7 @@ peakHandler.prototype.peakNextState = function(msg, session, next) {
 //获取巅峰赛数据
 peakHandler.prototype.getPeakData = function(msg, session, next) {
   var crossUid = session.get("crossUid")
-  this.crossManager.getPeakData(crossUid,target,bet,function(flag,data) {
+  this.crossManager.getPeakData(crossUid,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
