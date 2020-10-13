@@ -324,7 +324,9 @@ module.exports = function() {
 			},
 			function(next) {
 				//结算下注信息
+				var state = false
 				for(var i in betInfo){
+					state = true
 					if(winMaps[betInfo[i].target]){
 						betInfo[i].win = true
 						playerAmount[i] += betInfo[i].bet
@@ -334,11 +336,12 @@ module.exports = function() {
 					}
 					betInfo[i] = JSON.stringify(betInfo[i])
 				}
-				console.log(betInfo)
-				self.redisDao.db.hmset("cross:peak:betHistory:"+curRound,betInfo)
-				self.redisDao.db.hmset("cross:peak:playerAmount",playerAmount)
-				betInfo = {}
-				self.redisDao.db.del("cross:peak:betInfo")
+				if(state){
+					self.redisDao.db.hmset("cross:peak:betHistory:"+curRound,betInfo)
+					self.redisDao.db.hmset("cross:peak:playerAmount",playerAmount)
+					betInfo = {}
+					self.redisDao.db.del("cross:peak:betInfo")
+				}
 				next()
 			},
 			function(next) {
