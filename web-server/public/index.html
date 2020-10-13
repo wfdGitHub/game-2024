@@ -119,7 +119,7 @@
       }
       //同步阵容
       var peakSyncFightTeam = function() {
-        pomelo.request("cross.peakHandler.getPeakData", {}, function(data) {
+        pomelo.request("cross.peakHandler.peakSyncFightTeam", {}, function(data) {
             console.log(data);
         });
       }
