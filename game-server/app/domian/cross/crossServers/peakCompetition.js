@@ -41,6 +41,7 @@ module.exports = function() {
 					if(data){
 						betInfo = JSON.parse(data)
 					}
+					next()
 				})
 			},
 			function(next) {
@@ -48,6 +49,7 @@ module.exports = function() {
 					if(data){
 						playerAmount = JSON.parse(data)
 					}
+					next()
 				})
 			},
 			function(next) {
@@ -55,6 +57,7 @@ module.exports = function() {
 					if(data){
 						roundTeam = JSON.parse(data)
 					}
+					next()
 				})
 			},
 			function(next) {
@@ -62,6 +65,7 @@ module.exports = function() {
 					if(data){
 						parInfoMap = JSON.parse(data)
 					}
+					next()
 				})
 			},
 			function(next) {
