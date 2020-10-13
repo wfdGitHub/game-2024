@@ -229,7 +229,7 @@ module.exports = function() {
 					var defTeam = teamList[parList[i+1]]
 					var seededNum = Date.now()
 					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-					var overInfo = fightContorl.getOverInfo()
+					var overInfo = self.fightContorl.getOverInfo()
 					var winner
 					console.log("第"+curRound+"轮开始")
 					if(overInfo.roundEnd){
