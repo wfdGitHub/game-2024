@@ -97,6 +97,18 @@
         console.log("onChat")
         console.log(data)
       })
+      //开始新赛程
+      var peakBegin = function() {
+        pomelo.request("cross.peakHandler.peakBegin", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //下一阶段
+      var peakNextState = function() {
+        pomelo.request("cross.peakHandler.peakNextState", {}, function(data) {
+            console.log(data);
+        });
+      }
       //=============节日活动=======//
       //获取活动数据
       var getFestivalData = function() {

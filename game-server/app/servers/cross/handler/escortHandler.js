@@ -1,7 +1,7 @@
 //跨服押镖
 var bearcat = require("bearcat")
 var escortHandler = function(app) {
-  	this.app = app;
+  this.app = app;
 	this.crossManager = this.app.get("crossManager")
 };
 //获取我的押镖信息

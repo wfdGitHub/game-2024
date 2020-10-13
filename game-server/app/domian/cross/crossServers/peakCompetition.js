@@ -73,16 +73,19 @@ module.exports = function() {
 	this.peakUpdate = function(date) {
 		if(runFlag && !look && date.getTime() >= timeList[state_index]){
 			// 进入下一阶段
-			switch(state){
-				case 1:
-					//进入下注
-					self.peakBetting()
-				break
-				case 2:
-					//开始比赛
-					self.peakFight()
-				break
-			}
+			// this.peakNextState()
+		}
+	}
+	this.peakNextState = function() {
+		switch(state){
+			case 1:
+				//进入下注
+				self.peakBetting()
+			break
+			case 2:
+				//开始比赛
+				self.peakFight()
+			break
 		}
 	}
 	//数据初始化
