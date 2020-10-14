@@ -158,6 +158,9 @@ module.exports = function() {
 	}
 	//新赛季开启
 	this.peakBegin = function() {
+		if(look)
+			return
+		look = true
 		console.log("新赛季开启")
 		runFlag = true
 		var crossUids = []
@@ -189,7 +192,7 @@ module.exports = function() {
 						crossUids = crossUids.slice(0,totalPlayer)
 						next()
 					}else{
-						console.log("未满足条件")
+						next("未满足条件")
 					}
 				})
 			},
@@ -242,10 +245,12 @@ module.exports = function() {
 					timeList[i] = zeroTime + 5000 //zeroTime + peak_cfg[i]["value"]
 				}
 				console.log("timeList",timeList)
+				look = false
 				self.peakSave()
 			}
 		],function(err) {
 			console.error(err)
+			look = false
 			self.peakArgInit()
 		})
 	}
@@ -254,6 +259,8 @@ module.exports = function() {
 		console.log("下注阶段开始")
 		look = true
 		betInfo = {}
+		betAmount = {}
+		self.redisDao.db.del("cross:peak:betAmount")
 		self.redisDao.db.del("cross:peak:betInfo")
 		self.redisDao.db.hgetall("cross:peak:fightTeam",function(err,data) {
 			roundTeam = {}
@@ -324,9 +331,9 @@ module.exports = function() {
 			},
 			function(next) {
 				//结算下注信息
-				var state = false
+				var flag = false
 				for(var i in betInfo){
-					state = true
+					flag = true
 					if(winMaps[betInfo[i].target]){
 						betInfo[i].win = true
 						playerAmount[i] += betInfo[i].bet
@@ -336,7 +343,7 @@ module.exports = function() {
 					}
 					betInfo[i] = JSON.stringify(betInfo[i])
 				}
-				if(state){
+				if(flag){
 					self.redisDao.db.hmset("cross:peak:betHistory:"+curRound,betInfo)
 					self.redisDao.db.hmset("cross:peak:playerAmount",playerAmount)
 					betInfo = {}
@@ -496,14 +503,11 @@ module.exports = function() {
 		var info = {}
 		//本轮下注信息
 		if(betInfo[crossUid]){
-			console.log(betInfo[crossUid])
 			var rand = parMap[curRound][betInfo[crossUid].target]
-			console.log("rand",rand)
 			if(rand != undefined){
 				var rand = Math.floor(rand/2)
 				info.atk = participants[curRound][rand*2]
 				info.def = participants[curRound][rand*2 + 1]
-				console.log(info)
 				info.atkInfo = parInfoMap[info.atk]
 				info.atkAmount = playerAmount[info.atk]
 				info.atkTeam = roundTeam[info.atk]
@@ -545,11 +549,48 @@ module.exports = function() {
 		})
 	}
 	//获取我的比赛记录
-
-	//获取十六强记录
-
+	this.getPeakMatchHistory = function(crossUid,cb) {
+		if(!parInfoMap[crossUid]){
+			cb(false,"未进入本次比赛")
+			return
+		}
+		if(curRound <= 1){
+			cb(true,[])
+			return
+		}
+		var multiList = []
+		for(var i = 1;i < curRound;i++){
+			multiList.push(["hget","cross:peak:matchHistory:"+i,crossUid])
+		}
+		this.redisDao.multi(multiList,function(err,list) {
+			if(err){
+				cb(true,[])
+			}else{
+				cb(true,list)
+			}
+		})
+	}
+	//获取本赛季十六强记录
+	this.getPeakMatchHistory = function(crossUid,cb) {
+		if(curRound <= 1){
+			cb(true,[])
+			return
+		}
+		var data = {}
+		for(var i = 1;i < curRound;i++){
+			data[i] = []
+			for(var j = 0;j < participants.length;j += 2){
+				var info = {}
+				info.crossUid = participants[j]
+				info.info = parInfoMap[crossUid.crossUid]
+				data[i].push(info)
+			}
+		}
+		cb(true,data)
+	}
 	//获取上一赛季信息
 
 	//获取上一赛季比赛记录
 
+	//点赞
 }
