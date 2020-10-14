@@ -498,12 +498,14 @@ module.exports = function() {
 		if(betInfo[crossUid]){
 			console.log(betInfo[crossUid])
 			var rand = parMap[betInfo[crossUid].target]
-			if(parMap[betInfo[crossUid].target]){
+			console.log("rand",rand)
+			if(rand != undefined){
 				var rand = Math.floor(rand/2)
 				info = {
 					atk : participants[curRound][rand*2],
 					def : participants[curRound][rand*2 + 1],
 				}
+				console.log(info)
 				info.atkInfo = parInfoMap[info.atk]
 				info.atkAmount = playerAmount[info.atk]
 				info.atkTeam = roundTeam[info.atk]
