@@ -112,6 +112,8 @@ module.exports = function() {
 		}
 	}
 	this.peakNextState = function() {
+		if(look)
+			return
 		switch(state){
 			case 1:
 				//进入下注
