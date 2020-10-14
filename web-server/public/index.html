@@ -159,7 +159,7 @@
             console.log(data);
         });
       }
-      //获取十六强信息
+      //获取本赛季八强记录
       var getPeakBetterHistory = function() {
         pomelo.request("cross.peakHandler.getPeakBetterHistory", {}, function(data) {
             console.log(data);
@@ -1986,11 +1986,11 @@
   <body>
     <div class="g-button">
       登录系统 : 
-      <input id="test" type="button" value="登录账号" onclick="entry(10016)"/>
+      <input id="test" type="button" value="登录账号" onclick="entry('204_xh_22897178')"/>
       <input id="test" type="button" value="游客账号" onclick="entry(Date.now())"/>
       <input id="test" type="button" value="渠道账号" onclick="quickEntryAccount()"/>
       <input id="test" type="button" value="注册角色" onclick="register(1,''+Date.now(),1)"/>
-      <input id="test" type="button" value="登录服务器" onclick="loginArea(1)"/>
+      <input id="test" type="button" value="登录服务器" onclick="loginArea(16)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
       <input id="test" type="button" value="战斗准备" onclick="readyFight()"/>
       <input id="test" type="button" value="快速挂机" onclick="getQuickOnhookAward()"/>
@@ -2079,6 +2079,8 @@
       <input id="test" type="button" value="选手信息" onclick="getPeakParticipantsInfo()"/>
       <input id="test" type="button" value="当前下注" onclick="getPeakBetInfo()"/>
       <input id="test" type="button" value="历史下注" onclick="getPeakBetHistory()"/>
+      <input id="test" type="button" value="我的比赛" onclick="getPeakMyMatch()"/>
+      <input id="test" type="button" value="十六强" onclick="getPeakBetterHistory()"/>
     </div>
   </body>
 </html>

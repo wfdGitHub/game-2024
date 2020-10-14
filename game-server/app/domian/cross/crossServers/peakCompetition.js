@@ -1,4 +1,5 @@
 const peak_cfg = require("../../../../config/gameCfg/peak_cfg.json")
+const peak_award = require("../../../../config/gameCfg/peak_award.json")
 const async = require("async")
 //王者巅峰赛
 module.exports = function() {
@@ -190,6 +191,8 @@ module.exports = function() {
 					}
 					if(crossUids.length >= totalPlayer){
 						crossUids = crossUids.slice(0,totalPlayer)
+						uids = uids.slice(0,totalPlayer)
+						areaIds = areaIds.slice(0,totalPlayer)
 						next()
 					}else{
 						next("未满足条件")
@@ -226,12 +229,16 @@ module.exports = function() {
 			},
 			function(next) {
 				//对阵表
-				crossUids.sort(function(){return Math.random()>0.5?1:-1})
 				curRound = 1
 				state_index = 0
 				state = peak_cfg[state_index]["state"]
 				participants[curRound] = []
 				parMap[curRound] = {}
+				//初始奖励邮件
+               for(var i = 0;i < uids.length;i++){
+               		self.sendMailByUid(uids[i],peak_award[curRound]["exalt_title"],peak_award[curRound]["exalt_text"],peak_award[curRound]["exalt_award"])
+                }
+				crossUids.sort(function(){return Math.random()>0.5?1:-1})
 				for(var i = 0;i < crossUids.length;i++){
 					parMap[curRound][crossUids[i]] = i
 				}
@@ -323,6 +330,14 @@ module.exports = function() {
 					matchHistory[parList[i+1]] = matchHistory[parList[i]]
 					winMaps[winner] = true
 					tmpWins.push(winner)
+					//奖励
+					if(parList[i] == winner){
+						self.sendMailByUid(parList[i].split("|")[1],peak_award[curRound+1]["exalt_title"],peak_award[curRound+1]["exalt_text"],peak_award[curRound+1]["exalt_award"])
+						self.sendMailByUid(parList[i+1].split("|")[1],peak_award[curRound]["stop_title"],peak_award[curRound]["stop_text"],peak_award[curRound]["stop_award"])
+					}else{
+						self.sendMailByUid(parList[i+1].split("|")[1],peak_award[curRound+1]["exalt_title"],peak_award[curRound+1]["exalt_text"],peak_award[curRound+1]["exalt_award"])
+						self.sendMailByUid(parList[i].split("|")[1],peak_award[curRound]["stop_title"],peak_award[curRound]["stop_text"],peak_award[curRound]["stop_award"])
+					}
 				}
 				self.redisDao.db.hmset("cross:peak:matchHistory:"+curRound,matchHistory)
 				next()
@@ -375,6 +390,10 @@ module.exports = function() {
 		look = true
 		runFlag = false
 		console.log("本赛季结束")
+		//王者币奖励
+		for(var crossUid in playerAmount){
+			self.sendMailByUid(crossUid.split("|")[1],"王者巅峰赛积分奖励","亲爱的玩家，您在王者巅峰赛中的金币已等比转换为王者币，祝您游戏愉快","211:"+playerAmount[crossUid])
+		}
 	}
 	//获取玩家巅峰赛数据
 	this.getPeakData = function(crossUid,cb) {
@@ -585,7 +604,7 @@ module.exports = function() {
 		}
 		cb(true,data)
 	}
-	//获取本赛季十六强记录
+	//获取本赛季八强记录
 	this.getPeakBetterHistory = function(crossUid,cb) {
 		//crossUid = crossUid.split("|area")[0]
 		if(curRound <= 5){
@@ -619,7 +638,8 @@ module.exports = function() {
 	}
 	//获取上一赛季信息
 
+	//点赞
+
 	//获取上一赛季比赛记录
 
-	//点赞
 }

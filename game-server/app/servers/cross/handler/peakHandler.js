@@ -75,7 +75,7 @@ peakHandler.prototype.getPeakMyMatch = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
-//获取十六强信息
+//获取本赛季八强记录
 peakHandler.prototype.getPeakBetterHistory = function(msg, session, next) {
   var crossUid = session.get("crossUid")
   this.crossManager.getPeakBetterHistory(crossUid,function(flag,data) {
