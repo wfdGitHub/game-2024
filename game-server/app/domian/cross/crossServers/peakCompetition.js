@@ -76,6 +76,7 @@ module.exports = function() {
 					if(data){
 						parInfoMap = data
 					}
+					console.log("parInfoMap",data)
 					next()
 				})
 			},
