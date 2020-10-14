@@ -90,6 +90,9 @@ module.exports = function() {
 			case "ss_pass":
 				value = this.getLordAtt(uid,"maxSS") >= task_cfg[taskId]["arg"] ? 1 : 0
 			break
+			case "rank"
+				value = (10000 - this.getAreaHighestRank(uid)) >= task_cfg[taskId]["arg"] ? 1 : 0
+			break
 		}
 		self.setObj(uid,main_name,taskId,value || 0)
 		if(userTaskLists[uid])

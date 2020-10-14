@@ -31,6 +31,7 @@ for(var i = 1;i <= 20;i++){
 module.exports = function() {
 	var self = this
 	var local = {}
+	var player_rank = {}
 	local.locks = {}
 	//匹配规则  计算目标列表
 	local.calRankTargets = function(rank) {
@@ -73,6 +74,7 @@ module.exports = function() {
 	//初始化玩家排名
 	this.initArenaRank = function(uid,cb) {
 		self.redisDao.db.hincrby("area:area"+self.areaId+":areaInfo","lastRank",1,function(err,rank) {
+			rank = Number(rank)
 			var info = {
 				areaId : self.areaId,
 				rank : rank,
@@ -80,6 +82,7 @@ module.exports = function() {
 				buyCount : 0,					//今日购买挑战次数
 				highestRank : rank				//最高排名
 			}
+			player_rank[uid] = info.highestRank
 			self.setHMObj(uid,mainName,info)
 			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,uid)
 			if(cb){
@@ -161,6 +164,7 @@ module.exports = function() {
 			if(!data || data.areaId != self.areaId){
 				self.initArenaRank(uid,cb)
 			}else{
+				player_rank[uid] = Number(data.highestRank)
 				cb(true,data)
 			}
 		})
@@ -280,7 +284,8 @@ module.exports = function() {
 		if(winFlag){
 			self.getObjAll(uid,mainName,function(data) {
 				//交换排名
-				data.rank = parseInt(data.rank)
+				data.rank = Number(data.rank)
+				data.highestRank = Number(data.highestRank)
 				info.rank = data.rank
 				if(data.rank > targetRank){
 					local.swopRank(uid,data.rank,targetUid,targetRank,function() {
@@ -305,6 +310,7 @@ module.exports = function() {
 					info.newRank = data.rank
 					info.upAward = self.addItem({uid : uid,itemId : rankUp,value : value,reason : "排名提升奖励"})
 					self.setObj(uid,mainName,"highestRank",data.rank)
+					player_rank[uid] = Number(data.highestRank)
 				}
 				//记录
 				local.addRecord(atkUser,"atk",winFlag,targetInfo,fightInfo,data.rank)
@@ -395,5 +401,9 @@ module.exports = function() {
 			rank -= count
 		}
 		return num
+	}
+	//获得最高排名
+	this.getAreaHighestRank = function(uid) {
+		return player_rank[uid] || 10000
 	}
 }
