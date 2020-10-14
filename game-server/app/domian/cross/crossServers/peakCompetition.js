@@ -547,7 +547,7 @@ module.exports = function() {
 			cb(true,[])
 		}else{
 			var multiList = []
-			for(var i = 1;i < curRound;i++){
+			for(var i = 1;i <= curRound;i++){
 				multiList.push(["hget","cross:peak:betHistory:"+i,crossUid])
 			}
 			this.redisDao.multi(multiList,function(err,list) {
