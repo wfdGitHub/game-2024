@@ -31,6 +31,7 @@ module.exports = function() {
 						participants = JSON.parse(data.participants)
 						parMap = JSON.parse(data.parMap)
 						timeList = JSON.parse(data.timeList)
+						winners = JSON.parse(winners)
 						next()
 					}else{
 						look = false
@@ -66,17 +67,6 @@ module.exports = function() {
 							data[i] = JSON.parse(data[i])
 						}
 						roundTeam = data
-					}
-					next()
-				})
-			},
-			function(next) {
-				self.redisDao.db.hgetall("cross:peak:winners",function(err,data) {
-					if(data){
-						for(var i in data){
-							data[i] = JSON.parse(data[i])
-						}
-						winners = data
 					}
 					next()
 				})
@@ -150,7 +140,6 @@ module.exports = function() {
 		parInfoMap = {}
 		winners = {}
 		timeList = []
-		self.redisDao.db.del("cross:peak:winners")
 		self.redisDao.db.del("cross:peak:parInfoMap")
 		self.redisDao.db.del("cross:peak:fightTeam")
 		self.redisDao.db.del("cross:peak:betInfo")
@@ -403,10 +392,8 @@ module.exports = function() {
 		info.tiemEnd = timeList[state_index]
 		if(parMap[curRound][crossUid]){
 			var rand = Math.floor(Math.random() * participants[curRound].length / 2)
-			var info = {
-				atk : participants[curRound][rand*2],
-				def : participants[curRound][rand*2 + 1],
-			}
+			info.atk = participants[curRound][rand*2]
+			info.def = participants[curRound][rand*2 + 1]
 			info.atkInfo = parInfoMap[info.atk]
 			info.atkAmount = playerAmount[info.atk]
 			info.defInfo = parInfoMap[info.def]
