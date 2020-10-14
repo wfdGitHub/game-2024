@@ -476,6 +476,7 @@ module.exports = function() {
 	}
 	//下注
 	this.peakUserBetting = function(crossUid,target,bet,cb) {
+		crossUid = crossUid.split("|area")[0]
 		if(!runFlag){
 			cb(false,"不在比赛时间")
 			return
@@ -496,7 +497,6 @@ module.exports = function() {
 			cb(false,"参数错误")
 			return
 		}
-		crossUid = crossUid.split("|area")[0]
 		if(!playerAmount[crossUid] || playerAmount[crossUid] < 1000){
 			playerAmount[crossUid] = 1000
 			self.redisDao.db.hset("cross:peak:playerAmount",crossUid,1000)
