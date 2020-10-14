@@ -76,7 +76,6 @@ module.exports = function() {
 					if(data){
 						parInfoMap = data
 					}
-					console.log("parInfoMap",data)
 					next()
 				})
 			},
@@ -227,7 +226,6 @@ module.exports = function() {
 			},
 			function(next) {
 				//对阵表
-				console.log("crossUids",crossUids)
 				crossUids.sort(function(){return Math.random()>0.5?1:-1})
 				curRound = 1
 				state_index = 0
@@ -243,9 +241,8 @@ module.exports = function() {
 				d.setHours(0,0,0,0)
 				var zeroTime = d.getTime()
 				for(var i in peak_cfg){
-					timeList[i] = zeroTime + 5000 //zeroTime + peak_cfg[i]["value"]
+					timeList[i] = zeroTime + peak_cfg[i]["value"]
 				}
-				console.log("timeList",timeList)
 				look = false
 				self.peakSave()
 			}
@@ -297,7 +294,6 @@ module.exports = function() {
 					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 					var overInfo = self.fightContorl.getOverInfo()
 					var winner
-					console.log("第"+curRound+"轮开始")
 					if(overInfo.roundEnd){
 						if(overInfo.atkDamage > overInfo.defDamage){
 							winner = parList[i]
@@ -325,7 +321,6 @@ module.exports = function() {
 					winners[curRound][parList[i+1]] = winner
 					matchHistory[parList[i]] = JSON.stringify(info)
 					matchHistory[parList[i+1]] = matchHistory[parList[i]]
-					console.log(winner+"获胜")
 					winMaps[winner] = true
 					tmpWins.push(winner)
 				}
@@ -559,7 +554,6 @@ module.exports = function() {
 	//获取我的比赛记录
 	this.getPeakMyMatch = function(crossUid,cb) {
 		crossUid = crossUid.split("|area")[0]
-		console.log("getPeakMyMatch",crossUid,parInfoMap)
 		if(!parInfoMap[crossUid]){
 			cb(false,"未进入本次比赛")
 			return
@@ -604,7 +598,7 @@ module.exports = function() {
 				data[i] = []
 				for(var j = 0;j < participants[i].length;j += 2){
 					var info = {}
-					var rand = Math.floor(rand/2)
+					var rand = Math.floor(j/2)
 					info.round = i
 					info.atk = participants[i][rand*2]
 					info.def = participants[i][rand*2 + 1]
