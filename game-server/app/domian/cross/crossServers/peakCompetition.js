@@ -160,9 +160,6 @@ module.exports = function() {
 	}
 	//新赛季开启
 	this.peakBegin = function() {
-		if(look)
-			return
-		look = true
 		console.log("新赛季开启")
 		runFlag = true
 		var crossUids = []
@@ -252,7 +249,6 @@ module.exports = function() {
 			}
 		],function(err) {
 			console.error(err)
-			look = false
 			self.peakArgInit()
 		})
 	}
