@@ -151,14 +151,14 @@ crossManager.prototype.sendMail = function(crossUid,title,text,atts,cb) {
 }
 //直接发放邮件
 crossManager.prototype.sendMailByUid = function(uid,title,text,atts,cb) {
-	if(self.uidMap[uid]){
-		var crossUid = self.uidMap[uid]
+	if(this.uidMap[uid]){
+		var crossUid = this.uidMap[uid]
 		var list = crossUid.split("|")
 		var areaId = parseInt(list[0])
 		var uid = parseInt(list[1])
 		var serverId = list[2]
 		if(serverId)
-			self.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,cb)
+			this.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,cb)
 		else
 			console.error("sendMailByUid error "+crossUid+" "+title+" "+text+" "+atts)
 	}else{
@@ -172,7 +172,7 @@ crossManager.prototype.sendMailByUid = function(uid,title,text,atts,cb) {
 			mailInfo.atts = atts
 		}
 		mailInfo = JSON.stringify(mailInfo)
-		self.redisDao.db.rpush("player:user:"+uid+":mail",mailInfo)
+		this.redisDao.db.rpush("player:user:"+uid+":mail",mailInfo)
 		if(cb)
 			cb(true)
 	}
