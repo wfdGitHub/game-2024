@@ -421,6 +421,7 @@ module.exports = function() {
 	}
 	//同步阵容
 	this.peakSyncFightTeam = function(crossUid,uid,cb) {
+		crossUid = crossUid.split("|area")[0]
 		if(!runFlag){
 			cb(false,"不在比赛时间")
 			return
@@ -437,7 +438,6 @@ module.exports = function() {
 			cb(false,"未进入本轮比赛")
 			return
 		}
-		crossUid = crossUid.split("|area")[0]
 		self.getDefendTeam(uid,function(data){
 			if(!data){
 				cb(false,"获取阵容失败")
