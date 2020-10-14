@@ -561,6 +561,7 @@ module.exports = function() {
 	//获取我的比赛记录
 	this.getPeakMyMatch = function(crossUid,cb) {
 		crossUid = crossUid.split("|area")[0]
+		console.log("getPeakMyMatch",crossUid,parInfoMap)
 		if(!parInfoMap[crossUid]){
 			cb(false,"未进入本次比赛")
 			return
