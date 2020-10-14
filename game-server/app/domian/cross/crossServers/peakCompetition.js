@@ -15,6 +15,7 @@ module.exports = function() {
 	var betAmount = {}			//选手下注总金额
 	var betInfo = {}			//下注信息
 	var roundTeam = {}			//当前对战阵容
+	var winners = {}			//胜利方
 	var runFlag = false			//比赛中
 	var look = true				//锁
 	//初始化
@@ -65,6 +66,17 @@ module.exports = function() {
 							data[i] = JSON.parse(data[i])
 						}
 						roundTeam = data
+					}
+					next()
+				})
+			},
+			function(next) {
+				self.redisDao.db.hgetall("cross:peak:winners",function(err,data) {
+					if(data){
+						for(var i in data){
+							data[i] = JSON.parse(data[i])
+						}
+						winners = data
 					}
 					next()
 				})
@@ -136,7 +148,9 @@ module.exports = function() {
 		betInfo = {}
 		betAmount = {}
 		parInfoMap = {}
+		winners = {}
 		timeList = []
+		self.redisDao.db.del("cross:peak:winners")
 		self.redisDao.db.del("cross:peak:parInfoMap")
 		self.redisDao.db.del("cross:peak:fightTeam")
 		self.redisDao.db.del("cross:peak:betInfo")
@@ -154,7 +168,8 @@ module.exports = function() {
 			state_index:state_index,
 			timeList : JSON.stringify(timeList),
 			participants:JSON.stringify(participants),
-			parMap:JSON.stringify(parMap)
+			parMap:JSON.stringify(parMap),
+			winners : JSON.stringify(winners)
 		}
 		self.redisDao.db.hmset("cross:peak",info)
 	}
@@ -281,12 +296,13 @@ module.exports = function() {
 		console.log("比赛阶段开始")
 		look = true
 		var parList = participants[curRound]
-		var winners = []
+		var tmpWins = []
 		var winMaps = {}
 		async.waterfall([
 			function(next) {
 				//计算战斗结果
 				var matchHistory = {}
+				winners[curRound] = {}
 				for(var i = 0;i < parList.length;i += 2){
 					var atkTeam = roundTeam[parList[i]]
 					var defTeam = roundTeam[parList[i+1]]
@@ -318,11 +334,13 @@ module.exports = function() {
 						seededNum : seededNum,
 						winner : winner
 					}
+					winners[curRound][parList[i]] = winner
+					winners[curRound][parList[i+1]] = winner
 					matchHistory[parList[i]] = JSON.stringify(info)
 					matchHistory[parList[i+1]] = matchHistory[parList[i]]
 					console.log(winner+"获胜")
 					winMaps[winner] = true
-					winners.push(winner)
+					tmpWins.push(winner)
 				}
 				self.redisDao.db.hmset("cross:peak:matchHistory:"+curRound,matchHistory)
 				next()
@@ -358,10 +376,10 @@ module.exports = function() {
 					//进入下一轮
 					curRound++
 					parMap[curRound] = {}
-					for(var i = 0;i < winners.length;i++){
-						parMap[curRound][winners[i]] = i
+					for(var i = 0;i < tmpWins.length;i++){
+						parMap[curRound][tmpWins[i]] = i
 					}
-					participants[curRound] = winners
+					participants[curRound] = tmpWins
 					look = false
 				}
 				self.peakSave()
@@ -547,7 +565,7 @@ module.exports = function() {
 		})
 	}
 	//获取我的比赛记录
-	this.getPeakMatchHistory = function(crossUid,cb) {
+	this.getPeakMyMatch = function(crossUid,cb) {
 		if(!parInfoMap[crossUid]){
 			cb(false,"未进入本次比赛")
 			return
@@ -556,31 +574,51 @@ module.exports = function() {
 			cb(true,[])
 			return
 		}
-		var multiList = []
-		for(var i = 1;i < curRound;i++){
-			multiList.push(["hget","cross:peak:matchHistory:"+i,crossUid])
-		}
-		this.redisDao.multi(multiList,function(err,list) {
-			if(err){
-				cb(true,[])
+		var data = []
+		for(var i = 1;i <= curRound;i++){
+			var rand = parMap[curRound][crossUid]
+			if(rand != undefined){
+				var rand = Math.floor(rand/2)
+				var info = {}
+				info.round = i
+				info.atk = participants[i][rand*2]
+				info.def = participants[i][rand*2 + 1]
+				info.atkInfo = parInfoMap[info.atk]
+				info.atkAmount = playerAmount[info.atk]
+				info.atkTeam = roundTeam[info.atk]
+				info.defInfo = parInfoMap[info.def]
+				info.defAmount = playerAmount[info.def]
+				info.defTeam = roundTeam[info.def]
+				info.winner = winners[i][info.atk]
+				data.push(info)
 			}else{
-				cb(true,list)
+				break
 			}
-		})
+		}
+		cb(true,data)
 	}
 	//获取本赛季十六强记录
-	this.getPeakMatchHistory = function(crossUid,cb) {
-		if(curRound <= 1){
+	this.getPeakBetterHistory = function(crossUid,cb) {
+		if(curRound <= 5){
 			cb(true,[])
 			return
 		}
 		var data = {}
-		for(var i = 1;i < curRound;i++){
+		for(var i = 5;i <= curRound;i++){
 			data[i] = []
 			for(var j = 0;j < participants.length;j += 2){
 				var info = {}
-				info.crossUid = participants[j]
-				info.info = parInfoMap[crossUid.crossUid]
+				var rand = Math.floor(rand/2)
+				info.round = i
+				info.atk = participants[i][rand*2]
+				info.def = participants[i][rand*2 + 1]
+				info.atkInfo = parInfoMap[info.atk]
+				info.atkAmount = playerAmount[info.atk]
+				info.atkTeam = roundTeam[info.atk]
+				info.defInfo = parInfoMap[info.def]
+				info.defAmount = playerAmount[info.def]
+				info.defTeam = roundTeam[info.def]
+				info.winner = winners[i][info.atk]
 				data[i].push(info)
 			}
 		}

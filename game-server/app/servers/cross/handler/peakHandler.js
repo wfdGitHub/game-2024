@@ -68,6 +68,20 @@ peakHandler.prototype.getPeakMatchHistory = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//获取我的比赛记录
+peakHandler.prototype.getPeakMyMatch = function(msg, session, next) {
+  var crossUid = session.get("crossUid")
+  this.crossManager.getPeakMyMatch(crossUid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//获取十六强信息
+peakHandler.prototype.getPeakBetterHistory = function(msg, session, next) {
+  var crossUid = session.get("crossUid")
+  this.crossManager.getPeakBetterHistory(crossUid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "peakHandler",
