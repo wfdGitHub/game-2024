@@ -74,9 +74,6 @@ module.exports = function() {
 			function(next) {
 				self.redisDao.db.hgetall("cross:peak:parInfoMap",function(err,data) {
 					if(data){
-						for(var i in data){
-							data[i] = JSON.parse(data[i])
-						}
 						parInfoMap = data
 					}
 					next()
