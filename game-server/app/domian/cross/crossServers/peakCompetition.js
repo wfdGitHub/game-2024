@@ -403,7 +403,7 @@ module.exports = function() {
 		info.state = state
 		info.tiemEnd = timeList[state_index]
 		if(parMap[curRound][crossUid]){
-			var rand = Math.floor(Math.random() * participants[curRound].length / 2)
+			var rand = Math.floor(parMap[curRound][crossUid] / 2)
 			info.atk = participants[curRound][rand*2]
 			info.def = participants[curRound][rand*2 + 1]
 			info.atkInfo = parInfoMap[info.atk]
