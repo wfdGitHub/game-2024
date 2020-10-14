@@ -31,7 +31,7 @@ module.exports = function() {
 						participants = JSON.parse(data.participants)
 						parMap = JSON.parse(data.parMap)
 						timeList = JSON.parse(data.timeList)
-						winners = JSON.parse(winners)
+						winners = JSON.parse(data.winners)
 						next()
 					}else{
 						look = false
