@@ -585,7 +585,7 @@ module.exports = function() {
 		var data = []
 		for(var i = 1;i <= curRound;i++){
 			var rand = parMap[curRound][crossUid]
-			if(rand != undefined){
+			if(winners[i] && rand != undefined){
 				var rand = Math.floor(rand/2)
 				var info = {}
 				info.round = i
