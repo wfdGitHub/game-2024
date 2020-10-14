@@ -601,21 +601,25 @@ module.exports = function() {
 		}
 		var data = {}
 		for(var i = 5;i <= curRound;i++){
-			data[i] = []
-			for(var j = 0;j < participants[i].length;j += 2){
-				var info = {}
-				var rand = Math.floor(rand/2)
-				info.round = i
-				info.atk = participants[i][rand*2]
-				info.def = participants[i][rand*2 + 1]
-				info.atkInfo = parInfoMap[info.atk]
-				info.atkAmount = playerAmount[info.atk]
-				info.atkTeam = roundTeam[info.atk]
-				info.defInfo = parInfoMap[info.def]
-				info.defAmount = playerAmount[info.def]
-				info.defTeam = roundTeam[info.def]
-				info.winner = winners[i][info.atk]
-				data[i].push(info)
+			if(winners[i]){
+				data[i] = []
+				for(var j = 0;j < participants[i].length;j += 2){
+					var info = {}
+					var rand = Math.floor(rand/2)
+					info.round = i
+					info.atk = participants[i][rand*2]
+					info.def = participants[i][rand*2 + 1]
+					info.atkInfo = parInfoMap[info.atk]
+					info.atkAmount = playerAmount[info.atk]
+					info.atkTeam = roundTeam[info.atk]
+					info.defInfo = parInfoMap[info.def]
+					info.defAmount = playerAmount[info.def]
+					info.defTeam = roundTeam[info.def]
+					info.winner = winners[i][info.atk]
+					data[i].push(info)
+				}
+			}else{
+				break
 			}
 		}
 		cb(true,data)
