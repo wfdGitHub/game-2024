@@ -396,6 +396,7 @@ module.exports = function() {
 	}
 	//获取玩家巅峰赛数据
 	this.getPeakData = function(crossUid,cb) {
+		crossUid = crossUid.split("|area")[0]
 		var info = {}
 		info.curRound = curRound
 		info.state = state
@@ -436,6 +437,7 @@ module.exports = function() {
 			cb(false,"未进入本轮比赛")
 			return
 		}
+		crossUid = crossUid.split("|area")[0]
 		self.getDefendTeam(uid,function(data){
 			if(!data){
 				cb(false,"获取阵容失败")
@@ -459,6 +461,7 @@ module.exports = function() {
 			cb(false,"不在下注阶段")
 			return
 		}
+		//crossUid = crossUid.split("|area")[0]
 		var rand = Math.floor(Math.random() * participants[curRound].length / 2)
 		var info = {
 			atk : participants[curRound][rand*2],
@@ -494,6 +497,7 @@ module.exports = function() {
 			cb(false,"参数错误")
 			return
 		}
+		crossUid = crossUid.split("|area")[0]
 		if(!playerAmount[crossUid] || playerAmount[crossUid] < 1000){
 			playerAmount[crossUid] = 1000
 			self.redisDao.db.hset("cross:peak:playerAmount",crossUid,1000)
@@ -516,6 +520,7 @@ module.exports = function() {
 	}
 	//获取当前下注信息
 	this.getPeakBetInfo = function(crossUid,cb) {
+		crossUid = crossUid.split("|area")[0]
 		var info = {}
 		//本轮下注信息
 		if(betInfo[crossUid]){
@@ -538,6 +543,7 @@ module.exports = function() {
 	}
 	//查询历史下注信息
 	this.getPeakBetHistory = function(crossUid,cb) {
+		crossUid = crossUid.split("|area")[0]
 		if(curRound <= 1){
 			cb(true,[])
 		}else{
@@ -556,6 +562,7 @@ module.exports = function() {
 	}
 	//查看指定比赛记录
 	this.getPeakMatchHistory = function(crossUid,round,target,cb) {
+		//crossUid = crossUid.split("|area")[0]
 		if(!Number.isInteger(round) || !parInfoMap[target]){
 			cb(false,"参数错误")
 			return
@@ -566,6 +573,7 @@ module.exports = function() {
 	}
 	//获取我的比赛记录
 	this.getPeakMyMatch = function(crossUid,cb) {
+		crossUid = crossUid.split("|area")[0]
 		if(!parInfoMap[crossUid]){
 			cb(false,"未进入本次比赛")
 			return
@@ -599,6 +607,7 @@ module.exports = function() {
 	}
 	//获取本赛季十六强记录
 	this.getPeakBetterHistory = function(crossUid,cb) {
+		//crossUid = crossUid.split("|area")[0]
 		if(curRound <= 5){
 			cb(true,[])
 			return
@@ -606,7 +615,7 @@ module.exports = function() {
 		var data = {}
 		for(var i = 5;i <= curRound;i++){
 			data[i] = []
-			for(var j = 0;j < participants.length;j += 2){
+			for(var j = 0;j < participants[i].length;j += 2){
 				var info = {}
 				var rand = Math.floor(rand/2)
 				info.round = i
