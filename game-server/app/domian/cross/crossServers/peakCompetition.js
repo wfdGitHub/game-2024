@@ -497,7 +497,7 @@ module.exports = function() {
 		//本轮下注信息
 		if(betInfo[crossUid]){
 			var rand = Math.floor(betInfo[crossUid].target/2)
-			var info = {
+			info = {
 				atk : participants[curRound][rand*2],
 				def : participants[curRound][rand*2 + 1],
 			}
