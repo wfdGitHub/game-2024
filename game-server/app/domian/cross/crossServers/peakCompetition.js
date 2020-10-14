@@ -496,17 +496,21 @@ module.exports = function() {
 		var info = {}
 		//本轮下注信息
 		if(betInfo[crossUid]){
-			var rand = Math.floor(betInfo[crossUid].target/2)
-			info = {
-				atk : participants[curRound][rand*2],
-				def : participants[curRound][rand*2 + 1],
+			console.log(betInfo[crossUid])
+			var rand = parMap[betInfo[crossUid].target]
+			if(parMap[betInfo[crossUid].target]){
+				var rand = Math.floor(rand/2)
+				info = {
+					atk : participants[curRound][rand*2],
+					def : participants[curRound][rand*2 + 1],
+				}
+				info.atkInfo = parInfoMap[info.atk]
+				info.atkAmount = playerAmount[info.atk]
+				info.atkTeam = roundTeam[info.atk]
+				info.defInfo = parInfoMap[info.def]
+				info.defAmount = playerAmount[info.def]
+				info.defTeam = roundTeam[info.def]
 			}
-			info.atkInfo = parInfoMap[info.atk]
-			info.atkAmount = playerAmount[info.atk]
-			info.atkTeam = roundTeam[info.atk]
-			info.defInfo = parInfoMap[info.def]
-			info.defAmount = playerAmount[info.def]
-			info.defTeam = roundTeam[info.def]
 			info.target = betInfo[crossUid].target
 			info.bet = betInfo[crossUid].bet
 		}
