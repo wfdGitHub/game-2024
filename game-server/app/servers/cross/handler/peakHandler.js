@@ -97,6 +97,15 @@ peakHandler.prototype.getHonorMathch = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//查看历史指定比赛记录
+peakHandler.prototype.getPeakHonorHistory = function(msg, session, next) {
+  var crossUid = session.get("crossUid")
+  var round = msg.round
+  var target = msg.target
+  this.crossManager.getPeakHonorHistory(crossUid,round,target,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "peakHandler",

@@ -188,56 +188,75 @@ module.exports = function() {
 	this.peakBegin = function() {
 		console.log("新赛季开启")
 		runFlag = true
-		//赛季前四记录
-		if(winners[6] && winners[7]){
-			var better = []
-			for(var i in winners[6]){
-				if(winners[6][i] != i){
-					better.push(i)
-				}
-			}
-			for(var i in winners[7]){
-				if(winners[7][i] != i){
-					better.push(i)
-					better.push(winners[7][i])
-				}
-			}
-			for(var i = 0;i < better.length;i++){
-				better[i] = {crossUid:better[i],info:parInfoMap[better[i]]}
-			}
-			honorList = better
-			self.redisDao.db.hset("cross:peak","honorList",JSON.stringify(honorList))
-			var data = {}
-			for(var i = 5;i <= 7;i++){
-				if(winners[i]){
-					data[i] = []
-					for(var j = 0;j < participants[i].length;j += 2){
-						var info = {}
-						var rand = Math.floor(j/2)
-						info.round = i
-						info.atk = participants[i][rand*2]
-						info.def = participants[i][rand*2 + 1]
-						info.atkInfo = parInfoMap[info.atk]
-						info.atkAmount = playerAmount[info.atk]
-						info.atkTeam = roundTeam[info.atk]
-						info.defInfo = parInfoMap[info.def]
-						info.defAmount = playerAmount[info.def]
-						info.defTeam = roundTeam[info.def]
-						info.winner = winners[i][info.atk]
-						data[i].push(info)
-					}
-				}
-			}
-			honorMathch = data
-			self.redisDao.db.hset("cross:peak","honorMathch",JSON.stringify(honorMathch))
-		}
-		var crossUids = []
-		var uids = []
-		var areaIds = []
-		participants = {}
-		parMap = {}
-		self.peakArgInit()
 		async.waterfall([
+			function(next) {
+				//旧赛季处理
+				//赛季前四记录
+				if(winners[6] && winners[7]){
+					var better = []
+					for(var i in winners[6]){
+						if(winners[6][i] != i){
+							better.push(i)
+						}
+					}
+					for(var i in winners[7]){
+						if(winners[7][i] != i){
+							better.push(i)
+							better.push(winners[7][i])
+						}
+					}
+					for(var i = 0;i < better.length;i++){
+						better[i] = {crossUid:better[i],info:parInfoMap[better[i]]}
+					}
+					honorList = better
+					self.redisDao.db.hset("cross:peak","honorList",JSON.stringify(honorList))
+					var data = {}
+					for(var i = 5;i <= 7;i++){
+						if(winners[i]){
+							data[i] = []
+							for(var j = 0;j < participants[i].length;j += 2){
+								var info = {}
+								var rand = Math.floor(j/2)
+								info.round = i
+								info.atk = participants[i][rand*2]
+								info.def = participants[i][rand*2 + 1]
+								info.atkInfo = parInfoMap[info.atk]
+								info.atkAmount = playerAmount[info.atk]
+								info.atkTeam = roundTeam[info.atk]
+								info.defInfo = parInfoMap[info.def]
+								info.defAmount = playerAmount[info.def]
+								info.defTeam = roundTeam[info.def]
+								info.winner = winners[i][info.atk]
+								data[i].push(info)
+							}
+						}
+					}
+					honorMathch = data
+					self.redisDao.db.hset("cross:peak","honorMathch",JSON.stringify(honorMathch))
+					var count = 0
+					for(let j = 5;j <= 7;j++){
+						self.redisDao.db.hgetall("cross:peak:matchHistory:"+j,function(err,data) {
+							self.redisDao.db.hmset("cross:peak:honorHistory:"+j,data)
+							count++
+							if(count == 3){
+								next()
+							}
+						})
+					}
+				}else{
+					next()
+				}
+			},
+			function(next) {
+				//初始化
+				var crossUids = []
+				var uids = []
+				var areaIds = []
+				participants = {}
+				parMap = {}
+				self.peakArgInit()
+				next()
+			},
 			function(next) {
 				//获取初始入选玩家
 				console.log("获取初始入选玩家")
@@ -645,6 +664,17 @@ module.exports = function() {
 			cb(true,data)
 		})
 	}
+	//查看历史指定比赛记录
+	this.getPeakHonorHistory = function(crossUid,round,target,cb) {
+		//crossUid = crossUid.split("|area")[0]
+		if(!Number.isInteger(round)){
+			cb(false,"参数错误")
+			return
+		}
+		self.redisDao.db.hget("cross:peak:honorHistory:"+round,target,function(err,data) {
+			cb(true,data)
+		})
+	}
 	//获取我的比赛记录
 	this.getPeakMyMatch = function(crossUid,cb) {
 		crossUid = crossUid.split("|area")[0]
@@ -698,10 +728,8 @@ module.exports = function() {
 					info.def = participants[i][rand*2 + 1]
 					info.atkInfo = parInfoMap[info.atk]
 					info.atkAmount = playerAmount[info.atk]
-					info.atkTeam = roundTeam[info.atk]
 					info.defInfo = parInfoMap[info.def]
 					info.defAmount = playerAmount[info.def]
-					info.defTeam = roundTeam[info.def]
 					info.winner = winners[i][info.atk]
 					data[i].push(info)
 				}

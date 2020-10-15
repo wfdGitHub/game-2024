@@ -153,6 +153,12 @@
             console.log(data);
         });
       }
+      //获取上一赛季比赛记录
+      var getPeakHonorHistory = function(round,target) {
+        pomelo.request("cross.peakHandler.getPeakHonorHistory", {round:round,target:target}, function(data) {
+            console.log(data);
+        });
+      }
       //获取我的比赛记录
       var getPeakMyMatch = function() {
         pomelo.request("cross.peakHandler.getPeakMyMatch", {}, function(data) {
