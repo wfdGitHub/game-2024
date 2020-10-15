@@ -248,17 +248,13 @@ module.exports = function() {
 				}
 			},
 			function(next) {
-				//初始化
+				//获取初始入选玩家
 				var crossUids = []
 				var uids = []
 				var areaIds = []
 				participants = {}
 				parMap = {}
 				self.peakArgInit()
-				next()
-			},
-			function(next) {
-				//获取初始入选玩家
 				console.log("获取初始入选玩家")
 				self.redisDao.db.zrevrange(["cross:grading:rank",0,-1,"WITHSCORES"],function(err,list) {
 					var strList,uid,areaId
