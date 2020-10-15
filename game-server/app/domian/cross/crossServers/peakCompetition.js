@@ -18,6 +18,10 @@ module.exports = function() {
 	var roundTeam = {}			//当前对战阵容
 	var winners = {}			//胜利方
 	var runFlag = false			//比赛中
+	var honorList = []			//荣誉榜
+	var likeMap = {}			//点赞榜
+	var likeUsers = {}			//今日点赞
+	var honorMathch = {}		//历史八强
 	var look = true				//锁
 	//初始化
 	this.peakInit = function() {
@@ -33,6 +37,8 @@ module.exports = function() {
 						parMap = JSON.parse(data.parMap)
 						timeList = JSON.parse(data.timeList)
 						winners = JSON.parse(data.winners)
+						honorList = JSON.parse(data.honorList)
+						honorMathch = JSON.parse(data.honorMathch)
 						next()
 					}else{
 						look = false
@@ -57,6 +63,17 @@ module.exports = function() {
 							data[i] = Number(data[i])
 						}
 						playerAmount = data
+					}
+					next()
+				})
+			},
+			function(next) {
+				self.redisDao.db.hgetall("cross:peak:likeMap",function(err,data) {
+					if(data){
+						for(var i in data){
+							data[i] = Number(data[i])
+						}
+						likeMap = data
 					}
 					next()
 				})
@@ -96,10 +113,10 @@ module.exports = function() {
 		],function(err) {
 			console.error(err)
 		})
-
 	}
 	//每日刷新
 	this.peakDayUpdate = function() {
+		likeUsers = {}
 		if(!look && !runFlag){
 			this.peakBegin()
 		}
@@ -164,6 +181,50 @@ module.exports = function() {
 	this.peakBegin = function() {
 		console.log("新赛季开启")
 		runFlag = true
+		//赛季前四记录
+		if(winners[6] && winners[7]){
+			var better = []
+			for(var i in winners[6]){
+				if(winners[6][i] != i){
+					better.push(i)
+				}
+			}
+			for(var i in winners[7]){
+				if(winners[7][i] != i){
+					better.push(i)
+					better.push(winners[7][i])
+				}
+			}
+			for(var i = 0;i < better.length;i++){
+				better[i] = {crossUid:better[i],info:parInfoMap[better[i]]}
+			}
+			console.log("better",better)
+			honorList = better
+			self.redisDao.db.hset("cross:peak","honorList",JSON.stringify(honorList))
+			var data = {}
+			for(var i = 5;i <= 7;i++){
+				if(winners[i]){
+					data[i] = []
+					for(var j = 0;j < participants[i].length;j += 2){
+						var info = {}
+						var rand = Math.floor(j/2)
+						info.round = i
+						info.atk = participants[i][rand*2]
+						info.def = participants[i][rand*2 + 1]
+						info.atkInfo = parInfoMap[info.atk]
+						info.atkAmount = playerAmount[info.atk]
+						info.atkTeam = roundTeam[info.atk]
+						info.defInfo = parInfoMap[info.def]
+						info.defAmount = playerAmount[info.def]
+						info.defTeam = roundTeam[info.def]
+						info.winner = winners[i][info.atk]
+						data[i].push(info)
+					}
+				}
+			}
+			honorMathch = data
+			self.redisDao.db.hset("cross:peak","honorMathch",JSON.stringify(honorMathch))
+		}
 		var crossUids = []
 		var uids = []
 		var areaIds = []
@@ -411,11 +472,17 @@ module.exports = function() {
 			info.defInfo = parInfoMap[info.def]
 			info.defAmount = playerAmount[info.def]
 		}
-		if(!playerAmount[crossUid] || playerAmount[crossUid] < 1000){
+		if(state < 3 && (!playerAmount[crossUid] || playerAmount[crossUid] < 1000)){
 			playerAmount[crossUid] = 1000
 			self.redisDao.db.hset("cross:peak:playerAmount",crossUid,1000)
 		}
 		info.amount = playerAmount[crossUid]
+		info.honorList = honorList
+		info.likeList = []
+		for(var i = 0;i < honorList.length;i++){
+			info.likeList.push(likeMap[honorList[i]["crossUid"]] || 0)
+		}
+		info.likeInfo = likeUsers[crossUid] || {}
 		cb(true,info)
 	}
 	//同步阵容
@@ -636,10 +703,29 @@ module.exports = function() {
 		}
 		cb(true,data)
 	}
-	//获取上一赛季信息
-
 	//点赞
-
+	this.peakLike = function(crossUid,index,cb) {
+		crossUid = crossUid.split("|area")[0]
+		if(!likeUsers[crossUid])
+			likeUsers[crossUid] = {}
+		if(!honorList[index]){
+			cb(false,"目标不存在")
+			return
+		}
+		if(likeUsers[crossUid][index]){
+			cb(false,"今日已点赞")
+			return
+		}
+		likeUsers[crossUid][index] = 1
+		var target = honorList[index]["crossUid"]
+		if(!likeMap[target])
+			likeMap[target] = 0
+		likeMap[target]++
+		self.redisDao.db.hset("cross:peak:likeMap",target,likeMap[target])
+		cb(true,likeMap[target])
+	}
 	//获取上一赛季比赛记录
-
+	this.getHonorMathch = function(crossUid,cb) {
+		cb(true,honorMathch)
+	}
 }

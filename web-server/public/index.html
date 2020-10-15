@@ -165,6 +165,18 @@
             console.log(data);
         });
       }
+      //点赞
+      var peakLike = function(index) {
+        pomelo.request("cross.peakHandler.peakLike", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取上一赛季比赛记录
+      var getHonorMathch = function() {
+        pomelo.request("cross.peakHandler.getHonorMathch", {}, function(data) {
+            console.log(data);
+        });
+      }
       //=============节日活动=======//
       //获取活动数据
       var getFestivalData = function() {

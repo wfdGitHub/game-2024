@@ -67,9 +67,9 @@ crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,player
 //玩家离线
 crossManager.prototype.userLeave = function(crossUid) {
 	if(this.players[crossUid]){
+		delete this.uidMap[this.players[crossUid].uid]
 		delete this.players[crossUid]
 		delete this.oriIds[crossUid]
-		delete this.uidMap[uid]
 		this.onlineNum--
 	}
 	this.unSubscribeCarMessage(crossUid)
