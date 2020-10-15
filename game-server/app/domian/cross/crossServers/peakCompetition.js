@@ -328,7 +328,8 @@ module.exports = function() {
 				timeList = []
 				var d = new Date()
 				d.setHours(0,0,0,0)
-				var zeroTime = d.getTime()
+				var oneDayLong = 24*60*60*1000 ;//一天的毫秒数
+				var zeroTime = d.getTime() - oneDayLong * d.getDay() || 7
 				for(var i in peak_cfg){
 					timeList[i] = zeroTime + peak_cfg[i]["value"]
 				}
