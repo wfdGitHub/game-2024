@@ -23,6 +23,7 @@ module.exports = function() {
 	var likeUsers = {}			//今日点赞
 	var honorMathch = {}		//历史八强
 	var look = true				//锁
+	var baseScore = 200			//初始分数
 	//初始化
 	this.peakInit = function() {
 		async.waterfall([
@@ -204,7 +205,6 @@ module.exports = function() {
 			for(var i = 0;i < better.length;i++){
 				better[i] = {crossUid:better[i],info:parInfoMap[better[i]]}
 			}
-			console.log("better",better)
 			honorList = better
 			self.redisDao.db.hset("cross:peak","honorList",JSON.stringify(honorList))
 			var data = {}
@@ -478,9 +478,9 @@ module.exports = function() {
 			info.defInfo = parInfoMap[info.def]
 			info.defAmount = playerAmount[info.def]
 		}
-		if(state < 3 && (!playerAmount[crossUid] || playerAmount[crossUid] < 1000)){
-			playerAmount[crossUid] = 1000
-			self.redisDao.db.hset("cross:peak:playerAmount",crossUid,1000)
+		if(state < 3 && (!playerAmount[crossUid] || playerAmount[crossUid] < baseScore)){
+			playerAmount[crossUid] = baseScore
+			self.redisDao.db.hset("cross:peak:playerAmount",crossUid,baseScore)
 		}
 		info.amount = playerAmount[crossUid]
 		info.honorList = honorList
@@ -570,9 +570,9 @@ module.exports = function() {
 			cb(false,"参数错误")
 			return
 		}
-		if(!playerAmount[crossUid] || playerAmount[crossUid] < 1000){
-			playerAmount[crossUid] = 1000
-			self.redisDao.db.hset("cross:peak:playerAmount",crossUid,1000)
+		if(!playerAmount[crossUid] || playerAmount[crossUid] < baseScore){
+			playerAmount[crossUid] = baseScore
+			self.redisDao.db.hset("cross:peak:playerAmount",crossUid,baseScore)
 		}
 		if(playerAmount[crossUid] < bet){
 			cb(false,"金额不足"+playerAmount[crossUid]+"/"+bet)
