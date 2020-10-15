@@ -351,6 +351,7 @@ module.exports = function() {
 	}
 	//比赛阶段
 	this.peakFight = function() {
+		console.time("peakFight")
 		console.log("比赛阶段开始")
 		look = true
 		var parList = participants[curRound]
@@ -447,6 +448,7 @@ module.exports = function() {
 					look = false
 				}
 				self.peakSave()
+				console.timeEnd("peakFight")
 			}
 		],function(err) {
 			console.error(err)
@@ -711,24 +713,26 @@ module.exports = function() {
 	}
 	//点赞
 	this.peakLike = function(crossUid,index,cb) {
-		crossUid = crossUid.split("|area")[0]
-		if(!likeUsers[crossUid])
-			likeUsers[crossUid] = {}
+		var newCrossUid = crossUid.split("|area")[0]
+		if(!likeUsers[newCrossUid])
+			likeUsers[newCrossUid] = {}
 		if(!honorList[index]){
 			cb(false,"目标不存在")
 			return
 		}
-		if(likeUsers[crossUid][index]){
+		if(likeUsers[newCrossUid][index]){
 			cb(false,"今日已点赞")
 			return
 		}
-		likeUsers[crossUid][index] = 1
-		var target = honorList[index]["crossUid"]
+		likeUsers[newCrossUid][index] = 1
+		var target = honorList[index]["newCrossUid"]
 		if(!likeMap[target])
 			likeMap[target] = 0
 		likeMap[target]++
 		self.redisDao.db.hset("cross:peak:likeMap",target,likeMap[target])
-		cb(true,likeMap[target])
+		self.addItemStr(crossUid,"201:20000",1,"点赞",function(flag,data) {
+			cb(flag,data)
+		})
 	}
 	//获取上一赛季比赛记录
 	this.getHonorMathch = function(crossUid,cb) {
