@@ -224,10 +224,10 @@ module.exports = function() {
 								info.atk = participants[i][rand*2]
 								info.def = participants[i][rand*2 + 1]
 								info.atkInfo = parInfoMap[info.atk]
-								info.atkAmount = playerAmount[info.atk]
+								info.atkAmount = betAmount[info.atk]
 								info.atkTeam = roundTeam[info.atk]
 								info.defInfo = parInfoMap[info.def]
-								info.defAmount = playerAmount[info.def]
+								info.defAmount = betAmount[info.def]
 								info.defTeam = roundTeam[info.def]
 								info.winner = winners[i][info.atk]
 								data[i].push(info)
@@ -491,9 +491,9 @@ module.exports = function() {
 			info.atk = participants[curRound][rand*2]
 			info.def = participants[curRound][rand*2 + 1]
 			info.atkInfo = parInfoMap[info.atk]
-			info.atkAmount = playerAmount[info.atk]
+			info.atkAmount = betAmount[info.atk]
 			info.defInfo = parInfoMap[info.def]
-			info.defAmount = playerAmount[info.def]
+			info.defAmount = betAmount[info.def]
 		}
 		if(state < 3 && (!playerAmount[crossUid] || playerAmount[crossUid] < baseScore)){
 			playerAmount[crossUid] = baseScore
@@ -557,10 +557,10 @@ module.exports = function() {
 			def : participants[curRound][rand*2 + 1],
 		}
 		info.atkInfo = parInfoMap[info.atk]
-		info.atkAmount = playerAmount[info.atk]
+		info.atkAmount = betAmount[info.atk]
 		info.atkTeam = roundTeam[info.atk]
 		info.defInfo = parInfoMap[info.def]
-		info.defAmount = playerAmount[info.def]
+		info.defAmount = betAmount[info.def]
 		info.defTeam = roundTeam[info.def]
 		cb(true,info)
 	}
@@ -615,14 +615,14 @@ module.exports = function() {
 		if(betInfo[crossUid]){
 			var rand = parMap[curRound][betInfo[crossUid].target]
 			if(rand != undefined){
-				var rand = Math.floor(rand/2)
+				rand = Math.floor(rand/2)
 				info.atk = participants[curRound][rand*2]
 				info.def = participants[curRound][rand*2 + 1]
 				info.atkInfo = parInfoMap[info.atk]
-				info.atkAmount = playerAmount[info.atk]
+				info.atkAmount = betAmount[info.atk]
 				info.atkTeam = roundTeam[info.atk]
 				info.defInfo = parInfoMap[info.def]
-				info.defAmount = playerAmount[info.def]
+				info.defAmount = betAmount[info.def]
 				info.defTeam = roundTeam[info.def]
 			}
 			info.target = betInfo[crossUid].target
@@ -644,7 +644,25 @@ module.exports = function() {
 				if(err){
 					cb(true,[])
 				}else{
-					cb(true,list)
+					var data = []
+					for(var i = 0;i < list.length;i++){
+						if(list[i]){
+							var info = JSON.parse(list[i])
+							info.round = i+1
+							var rand = parMap[info.round][info.target]
+							rand = Math.floor(rand/2)
+							info.atk = participants[info.round][rand*2]
+							info.def = participants[info.round][rand*2 + 1]
+							info.atkInfo = parInfoMap[info.atk]
+							info.atkAmount = betAmount[info.atk]
+							info.defInfo = parInfoMap[info.def]
+							info.defAmount = betAmount[info.def]
+							info.winner = winners[info.round][info.atk]
+							data.push(info)
+						}
+
+					}
+					cb(true,data)
 				}
 			})
 		}
@@ -686,16 +704,16 @@ module.exports = function() {
 		for(var i = 1;i <= curRound;i++){
 			var rand = parMap[i][crossUid]
 			if(winners[i] && rand != undefined){
-				var rand = Math.floor(rand/2)
+				rand = Math.floor(rand/2)
 				var info = {}
 				info.round = i
 				info.atk = participants[i][rand*2]
 				info.def = participants[i][rand*2 + 1]
 				info.atkInfo = parInfoMap[info.atk]
-				info.atkAmount = playerAmount[info.atk]
+				info.atkAmount = betAmount[info.atk]
 				info.atkTeam = roundTeam[info.atk]
 				info.defInfo = parInfoMap[info.def]
-				info.defAmount = playerAmount[info.def]
+				info.defAmount = betAmount[info.def]
 				info.defTeam = roundTeam[info.def]
 				info.winner = winners[i][info.atk]
 				data.push(info)
@@ -723,9 +741,9 @@ module.exports = function() {
 					info.atk = participants[i][rand*2]
 					info.def = participants[i][rand*2 + 1]
 					info.atkInfo = parInfoMap[info.atk]
-					info.atkAmount = playerAmount[info.atk]
+					info.atkAmount = betAmount[info.atk]
 					info.defInfo = parInfoMap[info.def]
-					info.defAmount = playerAmount[info.def]
+					info.defAmount = betAmount[info.def]
 					info.winner = winners[i][info.atk]
 					data[i].push(info)
 				}
