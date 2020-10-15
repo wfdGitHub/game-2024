@@ -345,7 +345,6 @@ module.exports = function() {
 		console.log("下注阶段开始")
 		look = true
 		betInfo = {}
-		betAmount = {}
 		self.redisDao.db.del("cross:peak:betAmount")
 		self.redisDao.db.del("cross:peak:betInfo")
 		self.redisDao.db.hgetall("cross:peak:fightTeam",function(err,data) {
