@@ -725,7 +725,7 @@ module.exports = function() {
 			return
 		}
 		likeUsers[newCrossUid][index] = 1
-		var target = honorList[index]["newCrossUid"]
+		var target = honorList[index]["crossUid"]
 		if(!likeMap[target])
 			likeMap[target] = 0
 		likeMap[target]++
