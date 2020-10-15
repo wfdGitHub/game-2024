@@ -188,6 +188,9 @@ module.exports = function() {
 	this.peakBegin = function() {
 		console.log("新赛季开启")
 		runFlag = true
+		var crossUids = []
+		var uids = []
+		var areaIds = []
 		async.waterfall([
 			function(next) {
 				//旧赛季处理
@@ -249,9 +252,6 @@ module.exports = function() {
 			},
 			function(next) {
 				//获取初始入选玩家
-				var crossUids = []
-				var uids = []
-				var areaIds = []
 				participants = {}
 				parMap = {}
 				self.peakArgInit()
