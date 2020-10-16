@@ -293,6 +293,7 @@ module.exports = function() {
                             data = [0,0,0,0,0,0]
                         }
                         self.redisDao.db.hset("cross:peak:fightTeam",crossUids[i],JSON.stringify(data))
+                        roundTeam[crossUids[i]] = data
                         count++
                         if(count == totalPlayer){
                             next()
@@ -539,6 +540,7 @@ module.exports = function() {
 			if(!data){
 				cb(false,"获取阵容失败")
 			}else{
+				roundTeam[crossUid] = data
 				self.redisDao.db.hset("cross:peak:fightTeam",crossUid,JSON.stringify(data))
 				cb(true,data)
 			}
