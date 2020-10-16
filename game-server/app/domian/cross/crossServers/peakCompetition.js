@@ -604,6 +604,7 @@ module.exports = function() {
 			return
 		}
 		if(!parMap[curRound][target]){
+			console.log("选手不存在 ",target,curRound,parMap[curRound])
 			cb(false,"选手不存在")
 			return
 		}
