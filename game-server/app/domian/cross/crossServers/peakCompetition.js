@@ -603,7 +603,7 @@ module.exports = function() {
 			cb(false,"金额不足"+playerAmount[crossUid]+"/"+bet)
 			return
 		}
-		if(!parMap[curRound][target]){
+		if(parMap[curRound][target] === undefined){
 			console.log("选手不存在 ",target,curRound,parMap[curRound])
 			cb(false,"选手不存在")
 			return
