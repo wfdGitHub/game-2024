@@ -492,7 +492,7 @@ module.exports = function() {
 		info.curRound = curRound
 		info.state = state
 		info.tiemEnd = timeList[state_index]
-		if(parMap[curRound][crossUid]){
+		if(parMap[curRound] && parMap[curRound][crossUid]){
 			var rand = Math.floor(parMap[curRound][crossUid] / 2)
 			info.atk = participants[curRound][rand*2]
 			info.def = participants[curRound][rand*2 + 1]
@@ -502,7 +502,7 @@ module.exports = function() {
 			info.defAmount = betAmount[info.def]
 			info.myTeam = roundTeam[crossUid]
 		}
-		if(state < 3 && (!playerAmount[crossUid] || playerAmount[crossUid] < baseScore)){
+		if(state > 0 && state < 3 && (!playerAmount[crossUid] || playerAmount[crossUid] < baseScore)){
 			playerAmount[crossUid] = baseScore
 			self.redisDao.db.hset("cross:peak:playerAmount",crossUid,baseScore)
 		}
