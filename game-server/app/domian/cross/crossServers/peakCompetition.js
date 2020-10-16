@@ -1,5 +1,6 @@
 const peak_cfg = require("../../../../config/gameCfg/peak_cfg.json")
 const peak_award = require("../../../../config/gameCfg/peak_award.json")
+const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const async = require("async")
 //王者巅峰赛
 module.exports = function() {
@@ -431,12 +432,17 @@ module.exports = function() {
 				var flag = false
 				for(var i in betInfo){
 					flag = true
+					var uid = i.split("|")[1]
 					if(winMaps[betInfo[i].target]){
 						betInfo[i].win = true
 						playerAmount[i] += betInfo[i].bet
+						//竞猜正确邮件
+						self.sendMailByUid(uid,default_cfg["peak_bet_right_title"]["value"],default_cfg["peak_bet_right_text"]["value"],default_cfg["peak_bet_right_atts"]["value"])
 					}else{
 						betInfo[i].win = false
 						playerAmount[i] -= betInfo[i].bet
+						//竞猜错误邮件
+						self.sendMailByUid(uid,default_cfg["peak_bet_wrong_title"]["value"],default_cfg["peak_bet_wrong_text"]["value"],default_cfg["peak_bet_wrong_atts"]["value"])
 					}
 					betInfo[i] = JSON.stringify(betInfo[i])
 				}
