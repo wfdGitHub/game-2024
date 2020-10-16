@@ -482,7 +482,8 @@ module.exports = function() {
 		console.log("本赛季结束")
 		//王者币奖励
 		for(var crossUid in playerAmount){
-			self.sendMailByUid(crossUid.split("|")[1],"王者巅峰赛积分奖励","亲爱的玩家，您在王者巅峰赛中的金币已等比转换为王者币，祝您游戏愉快","211:"+playerAmount[crossUid])
+			if(playerAmount[crossUid])
+				self.sendMailByUid(crossUid.split("|")[1],"王者巅峰赛积分奖励","亲爱的玩家，您在王者巅峰赛中的金币已等比转换为王者币，祝您游戏愉快","211:"+playerAmount[crossUid])
 		}
 	}
 	//获取玩家巅峰赛数据
