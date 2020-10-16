@@ -736,12 +736,12 @@ module.exports = function() {
 	this.getPeakBetterHistory = function(crossUid,cb) {
 		//crossUid = crossUid.split("|area")[0]
 		console.log("getPeakBetterHistory",curRound)
-		if(curRound < 4){
+		if(curRound < 5){
 			cb(true,[])
 			return
 		}
 		var data = {}
-		for(var i = 4;i <= curRound;i++){
+		for(var i = 5;i <= curRound;i++){
 			if(winners[i]){
 				data[i] = []
 				for(var j = 0;j < participants[i].length;j += 2){
@@ -758,6 +758,18 @@ module.exports = function() {
 					data[i].push(info)
 				}
 			}else{
+				for(var j = 0;j < participants[i].length;j += 2){
+					var info = {}
+					var rand = Math.floor(j/2)
+					info.round = i
+					info.atk = participants[i][rand*2]
+					info.def = participants[i][rand*2 + 1]
+					info.atkInfo = parInfoMap[info.atk]
+					info.atkAmount = betAmount[info.atk]
+					info.defInfo = parInfoMap[info.def]
+					info.defAmount = betAmount[info.def]
+					data[i].push(info)
+				}
 				break
 			}
 		}
