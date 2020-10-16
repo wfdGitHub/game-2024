@@ -734,7 +734,7 @@ module.exports = function() {
 	//获取本赛季八强记录
 	this.getPeakBetterHistory = function(crossUid,cb) {
 		//crossUid = crossUid.split("|area")[0]
-		if(curRound <= 5){
+		if(curRound < 5){
 			cb(true,[])
 			return
 		}
