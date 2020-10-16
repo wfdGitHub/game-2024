@@ -742,8 +742,8 @@ module.exports = function() {
 		}
 		var data = {}
 		for(var i = 5;i <= curRound;i++){
+			data[i] = []
 			if(winners[i]){
-				data[i] = []
 				for(var j = 0;j < participants[i].length;j += 2){
 					var info = {}
 					var rand = Math.floor(j/2)
