@@ -735,12 +735,13 @@ module.exports = function() {
 	//获取本赛季八强记录
 	this.getPeakBetterHistory = function(crossUid,cb) {
 		//crossUid = crossUid.split("|area")[0]
-		if(curRound < 5){
+		console.log("getPeakBetterHistory",curRound)
+		if(curRound < 4){
 			cb(true,[])
 			return
 		}
 		var data = {}
-		for(var i = 5;i <= curRound;i++){
+		for(var i = 4;i <= curRound;i++){
 			if(winners[i]){
 				data[i] = []
 				for(var j = 0;j < participants[i].length;j += 2){
