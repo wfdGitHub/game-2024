@@ -131,10 +131,10 @@ module.exports = function() {
 	}
 	//实时刷新
 	this.peakUpdate = function(date) {
-		if(runFlag && !look && date.getTime() >= timeList[state_index]){
-			// 进入下一阶段
-			this.peakNextState()
-		}
+		// if(runFlag && !look && date.getTime() >= timeList[state_index]){
+		// 	// 进入下一阶段
+		// 	this.peakNextState()
+		// }
 	}
 	this.peakNextState = function() {
 		if(look)
