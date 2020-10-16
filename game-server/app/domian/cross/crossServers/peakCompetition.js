@@ -124,7 +124,7 @@ module.exports = function() {
 	//每日刷新
 	this.peakDayUpdate = function() {
 		likeUsers = {}
-		if(!look && !runFlag){
+		if(!look && !runFlag && (new Date()).getDay() == 1){
 			this.peakBegin()
 		}
 	}
@@ -188,6 +188,7 @@ module.exports = function() {
 	this.peakBegin = function() {
 		console.log("新赛季开启")
 		runFlag = true
+		likeUsers = {}
 		var crossUids = []
 		var uids = []
 		var areaIds = []
@@ -494,6 +495,7 @@ module.exports = function() {
 			info.atkAmount = betAmount[info.atk]
 			info.defInfo = parInfoMap[info.def]
 			info.defAmount = betAmount[info.def]
+			info.myTeam = roundTeam[crossUid]
 		}
 		if(state < 3 && (!playerAmount[crossUid] || playerAmount[crossUid] < baseScore)){
 			playerAmount[crossUid] = baseScore
