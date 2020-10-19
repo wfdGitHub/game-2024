@@ -285,12 +285,14 @@ model.useAttackSkill = function(skill) {
 			if(targets[i].buffs["burn"])
 				kill_burn_num++
 		}
-		if(skill.isAnger){
-			if(skill.character.dispel_intensify)
-				target.removeIntensifyBuff()
-		}
 	}
 	fightRecord.push(recordInfo)
+	if(skill.isAnger && skill.character.dispel_intensify){
+		for(var i = 0;i < targets.length;i++){
+			if(!targets[i].died)
+				targets[i].removeIntensifyBuff()
+		}
+	}
 	if(kill_num){
 		if(skill.kill_amp || skill.character.kill_amp)
 			skill.character.addAtt("amplify",(skill.kill_amp + skill.character.kill_amp) * kill_num)
@@ -497,14 +499,22 @@ model.useHealSkill = function(skill) {
 			info = target.onHeal(skill.character,info,skill)
 			recordInfo.targets.push(info)
 		}
-		if(skill.isAnger){
-			if(skill.character.heal_unControl)
-				target.removeControlBuff()
-			if(skill.character.heal_addAnger)
-				target.addAnger(skill.character.heal_addAnger)
-		}
 	}
 	fightRecord.push(recordInfo)
+	if(skill.isAnger){
+		if(skill.character.heal_unControl){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died)
+					targets[i].removeControlBuff()
+			}
+		}
+		if(skill.character.heal_addAnger){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died)
+					targets[i].addAnger(skill.character.heal_addAnger)
+			}
+		}
+	}
 	for(var i = 0;i < callbacks.length;i++)
 		callbacks[i]()
 	return targets

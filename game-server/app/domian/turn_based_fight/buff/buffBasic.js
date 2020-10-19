@@ -15,8 +15,11 @@ buffBasic.prototype.clear = function() {
 }
 buffBasic.prototype.refresh = function() {
 }
-buffBasic.prototype.destroy = function() {
-	fightRecord.push({type : "destroyBuff",character : this.character.id,buffId : this.buffId,name : this.name})
+buffBasic.prototype.destroy = function(reason) {
+	var info = {type : "destroyBuff",character : this.character.id,buffId : this.buffId,name : this.name}
+	if(reason)
+		info.reason = reason
+	fightRecord.push(info)
 	this.character.removeBuff(this.buffId)
 	this.clear()
 }

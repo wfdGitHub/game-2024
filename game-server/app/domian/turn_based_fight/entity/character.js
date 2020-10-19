@@ -315,7 +315,7 @@ model.prototype.before = function() {
 	if(this.before_clear_debuff && this.fighting.seeded.random("判断BUFF命中率") < this.before_clear_debuff){
 		for(var i in this.buffs)
 			if(this.buffs[i].debuff)
-				this.buffs[i].destroy()
+				this.buffs[i].destroy("dispel")
 	}
 	//伤害BUFF刷新
 	for(var i in this.buffs)
@@ -349,14 +349,14 @@ model.prototype.removeControlBuff = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
 		if(this.buffs[i].control)
-			this.buffs[i].destroy()
+			this.buffs[i].destroy("dispel")
 }
 //驱散增益状态
 model.prototype.removeIntensifyBuff = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
 		if(this.buffs[i].intensify)
-			this.buffs[i].destroy()
+			this.buffs[i].destroy("dispel")
 }
 //清除指定角色buff
 model.prototype.clearReleaserBuff = function(releaser) {
