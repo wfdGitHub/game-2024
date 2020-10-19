@@ -4,6 +4,7 @@ var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
 	buff.name = "减伤盾"
 	buff.value = otps.buffArg
+	buff.intensify = true
 	buff.refreshType = "before_2"
 	// console.log("角色"+buff.character.id+"增加护盾BUFF")
 	buff.clear = function() {

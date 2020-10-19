@@ -259,6 +259,11 @@ model.useAttackSkill = function(skill) {
 	var dead_anger = 0
 	var burnDamage = 0
 	var died_targets = []
+	var damage_save_value = 0
+	if(skill.isAnger && skill.character.damage_save_value){
+		damage_save_value = Math.floor(skill.character.damage_save_value / targets.length)
+		skill.character.damage_save_value = 0
+	}
 	for(var i = 0;i < targets.length;i++){
 		if(skill.character.died && !skill.character.died_use_skill){
 			break
@@ -266,6 +271,7 @@ model.useAttackSkill = function(skill) {
 		let target = targets[i]
 		//计算伤害
 		let info = this.formula.calDamage(skill.character, target, skill,addAmp)
+		info.value += damage_save_value
 		info = target.onHit(skill.character,info,skill)
 		if(info.realValue > 0)
 			allDamage += info.realValue
@@ -278,6 +284,10 @@ model.useAttackSkill = function(skill) {
 			dead_anger += target.curAnger
 			if(targets[i].buffs["burn"])
 				kill_burn_num++
+		}
+		if(skill.isAnger){
+			if(skill.character.dispel_intensify)
+				target.removeIntensifyBuff()
 		}
 	}
 	fightRecord.push(recordInfo)
@@ -486,6 +496,12 @@ model.useHealSkill = function(skill) {
 		}else{
 			info = target.onHeal(skill.character,info,skill)
 			recordInfo.targets.push(info)
+		}
+		if(skill.isAnger){
+			if(skill.character.heal_unControl)
+				target.removeControlBuff()
+			if(skill.character.heal_addAnger)
+				target.addAnger(skill.character.heal_addAnger)
 		}
 	}
 	fightRecord.push(recordInfo)

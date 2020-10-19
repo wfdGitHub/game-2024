@@ -23,6 +23,8 @@ var model = function(otps) {
 						target["buffs"]["poison"].destroy()
 					if(target["buffs"]["forbidden"])
 						target["buffs"]["forbidden"].destroy()
+					if(target["buffs"]["banAnger"])
+						target["buffs"]["banAnger"].destroy()
 				}
 				if(book.control){
 					if(target["buffs"]["dizzy"])

@@ -134,6 +134,10 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 }
 //战斗开始
 model.prototype.fightBegin = function() {
+	for(var i = 0; i < teamLength;i++){
+		this.atkTeam[i].begin()
+		this.defTeam[i].begin()
+	}
 	for(var i = 0; i <= fightBegin.length;i++){
 		if(this.atkBooks[fightBegin[i]])
 			this.atkBooks[fightBegin[i]].before()

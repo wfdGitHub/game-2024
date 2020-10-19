@@ -1,4 +1,4 @@
-let buffIds = ["invincibleSuck","disarm","dizzy","forbidden","silence","burn","poison","amplify","reduction","recover","invincibleSuper","invincible","shield","banish"]
+let buffIds = ["invincibleSuck","disarm","dizzy","forbidden","silence","burn","poison","amplify","reduction","recover","invincibleSuper","invincible","shield","banish","banAnger"]
 let controlBuff = {
 	"disarm" : true,
 	"dizzy" : true,
@@ -48,6 +48,10 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		}
 		fightRecord.push({type : "createBuff",releaser : releaser.id,character : character.id,buffId : buffId,name : buff.name})
 		if(buffId == "poison" && releaser.poison_add_forbidden){
+			otps.duration = buff.duration
+			this.createBuff(releaser,character,Object.assign({},otps,{buffId : "forbidden"}))
+		}
+		if(buffId == "banAnger" && releaser.banAnger_add_forbidden){
 			otps.duration = buff.duration
 			this.createBuff(releaser,character,Object.assign({},otps,{buffId : "forbidden"}))
 		}

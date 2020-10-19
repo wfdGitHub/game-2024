@@ -55,7 +55,7 @@ var model = function(otps) {
 	this.record_anger_rate = otps.record_anger_rate || 0 //释放技能后，概率获得本次技能消耗的50%的怒气，最多不超过4点
 	this.round_anger_rate = otps.round_anger_rate || 0 //整体回合结束时，如果自身怒气低于4点，将怒气回复至4点的概率
 	this.action_anger_s = otps.action_anger_s || 0 //自身行动后，回复自身1点怒气概率
-	this.before_clear_debuff = otps.before_clear_debuff || 0 //自身回合开始前，移除自身所有的异常效果（灼烧、中毒、眩晕、沉默、麻痹、禁疗）的概率
+	this.before_clear_debuff = otps.before_clear_debuff || 0 //自身回合开始前，移除自身所有的异常效果（灼烧、中毒、眩晕、沉默、麻痹、禁疗、心魔）的概率
 	this.oneblood_rate = otps.oneblood_rate || 0 //受到致命伤害时保留一滴血概率
 	this.target_anger_amp = otps.target_anger_amp || 0 //敌人超过4点怒气的部分，每点怒气提供伤害加成
 	//=========元神效果=======//
@@ -165,8 +165,9 @@ var model = function(otps) {
 		this.burn_att_change_normal = JSON.parse(otps.burn_att_change_normal)			//灼烧状态属性修改
 	if(otps.burn_buff_change_normal)
 		this.burn_buff_change_normal = JSON.parse(otps.burn_buff_change_normal)		//灼烧状态附加BUFF修改
-	this.burn_not_invincible = otps.burn_not_invincible   //被灼烧的武将无法获得无敌和无敌吸血盾效果
-	this.poison_add_forbidden = otps.poison_add_forbidden //中毒buff附加禁疗
+	this.burn_not_invincible = otps.burn_not_invincible   		//被灼烧的武将无法获得无敌和无敌吸血盾效果
+	this.poison_add_forbidden = otps.poison_add_forbidden 		//中毒buff附加禁疗
+	this.banAnger_add_forbidden = otps.banAnger_add_forbidden 	//禁怒buff附加禁疗
 
 	this.first_nocontrol = otps.first_nocontrol //首回合免疫眩晕、沉默、麻痹效果
 	this.first_crit = otps.first_crit			//首回合必定暴击
@@ -177,7 +178,14 @@ var model = function(otps) {
 	this.died_use_skill = otps.died_use_skill				//死亡时释放一次技能
 	if(otps.died_later_buff)
 		this.died_later_buff = JSON.parse(otps.died_later_buff)	//直接伤害死亡时对击杀者释放buff
-
+	this.maxHP_damage = otps.maxHP_damage						//技能附加最大生命值真实伤害
+	this.maxHP_rate = otps.maxHP_rate							//进入战斗时最大生命加成倍数
+	this.maxHP_loss = otps.maxHP_loss							//每回合生命流失率
+	this.damage_save = otps.damage_save							//释放技能时,上回合受到的所有伤害将100%额外追加真实伤害
+	this.damage_save_value = 0									//累积伤害值 
+	this.heal_unControl = otps.heal_unControl					//释放技能时，解除目标被控制状态
+	this.heal_addAnger = otps.heal_addAnger  					//释放技能时，增加目标怒气值
+	this.dispel_intensify = otps.dispel_intensify				//释放技能时，驱散目标身上所有增益效果(增伤、减伤、持续恢复)
 	//=========状态=======//
 	this.died = this.attInfo.maxHP && this.attInfo.hp ? false : true 	//死亡状态
 	this.buffs = {}					//buff列表
@@ -187,6 +195,7 @@ var model = function(otps) {
 	this.forbidden = false			//禁疗
 	this.poison = false				//中毒
 	this.burn = false				//燃烧
+	this.banAnger = false			//禁怒							
 	//=========属性加成=======//
 	this.self_adds = {}							//自身百分比加成属性
 	this.team_adds = {}							//全队百分比加成属性
@@ -288,13 +297,19 @@ model.prototype.calAttAdd = function(team_adds) {
 		this.attInfo[i] += this.bookAtts[i]
 	}
 	this.attInfo.hp = this.attInfo.maxHP
+}
+//战斗开始
+model.prototype.begin = function() {
+	if(this.maxHP_rate){
+		this.attInfo.maxHP = Math.floor(this.attInfo.maxHP * this.maxHP_rate)
+		this.attInfo.hp = this.attInfo.maxHP
+	}
 	if(this.surplus_health === 0){
 		this.attInfo.hp = 0
 		this.died = true
 	}else if(this.surplus_health)
 		this.attInfo.hp = Math.ceil(this.attInfo.hp * this.surplus_health)
 }
-
 //行动开始前刷新
 model.prototype.before = function() {
 	if(this.before_clear_debuff && this.fighting.seeded.random("判断BUFF命中率") < this.before_clear_debuff){
@@ -317,6 +332,10 @@ model.prototype.after = function() {
 	for(var i in this.buffs)
 		if(this.buffs[i].refreshType == "after")
 			this.buffs[i].update()
+	if(this.maxHP_loss){
+		this.onHPLoss()
+	}
+	this.damage_save_value = 0
 }
 //回合结束后刷新
 model.prototype.roundOver = function() {
@@ -324,6 +343,20 @@ model.prototype.roundOver = function() {
 	for(var i in this.buffs)
 		if(this.buffs[i].refreshType == "roundOver")
 			this.buffs[i].update()
+}
+//移除控制状态
+model.prototype.removeControlBuff = function() {
+	//状态BUFF刷新
+	for(var i in this.buffs)
+		if(this.buffs[i].control)
+			this.buffs[i].destroy()
+}
+//驱散增益状态
+model.prototype.removeIntensifyBuff = function() {
+	//状态BUFF刷新
+	for(var i in this.buffs)
+		if(this.buffs[i].intensify)
+			this.buffs[i].destroy()
 }
 //清除指定角色buff
 model.prototype.clearReleaserBuff = function(releaser) {
@@ -364,6 +397,8 @@ model.prototype.onHit = function(attacker,info,source) {
 		info.realValue = this.lessHP(info)
 		info.curValue = this.attInfo.hp
 		info.maxHP = this.attInfo.maxHP
+		if(this.damage_save)
+			this.damage_save_value += info.realValue
 		if(attacker && info.realValue > 0)
 			attacker.totalDamage += info.realValue
 		if(this.died){
@@ -373,6 +408,18 @@ model.prototype.onHit = function(attacker,info,source) {
 	}
 	// console.log(attacker.name + " 攻击 "+ this.name, info.value,"curHP : ",this.attInfo.hp+"/"+this.attInfo.maxHP)
 	return info
+}
+//生命流失
+model.prototype.onHPLoss = function() {
+	var info = {type : "other_damage",id:this.id}
+	info.value = Math.floor(this.maxHP_loss * this.attInfo.maxHP * this.fighting.round)
+	if(info.value >= this.attInfo.hp){
+		info.value = this.attInfo.hp - 1
+	}
+	info.realValue = this.lessHP(info)
+	info.curValue = this.attInfo.hp
+	info.maxHP = this.attInfo.maxHP
+	fightRecord.push(info)
 }
 //受到治疗
 model.prototype.onHeal = function(releaser,info,source) {
@@ -446,9 +493,14 @@ model.prototype.lessHP = function(info) {
 }
 //恢复怒气
 model.prototype.addAnger = function(value,hide) {
-	value = Math.floor(value) || 1
-	this.curAnger += value
-	fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,hide : hide})
+	if(this.banAnger){
+		value = 0
+		fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,hide : hide,banAnger : true})
+	}else{
+		value = Math.floor(value) || 1
+		this.curAnger += value
+		fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,hide : hide})
+	}
 	return value
 }
 //减少怒气
