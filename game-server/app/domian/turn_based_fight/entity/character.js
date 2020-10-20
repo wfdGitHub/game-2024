@@ -480,6 +480,9 @@ model.prototype.addHP = function(value) {
 }
 //扣除血量
 model.prototype.lessHP = function(info) {
+	if(this.died){
+		return 0
+	}
 	info.realValue = info.value
 	if((this.attInfo.hp - info.value) <= 0){
 		if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
