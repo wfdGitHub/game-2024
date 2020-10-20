@@ -74,6 +74,9 @@ model.prototype.getTargets = function(character,targetType) {
 		case "team_horizontal_back":
 			//己方后排
 			return	this.getTeamHorizontalBack(character)
+		case "team_lossMaxHP":
+			//己方损失血量最多单位
+			return	this.getTeamLossMaxHP(character)
 		case "team_minHp_1":
 			//获取己方生命值最少的1个单位
 			return this.getTeamRandomMinHp(character,1)
@@ -217,6 +220,9 @@ model.prototype.getTargetsNum = function(targetType) {
 			return	4
 		case "enemy_minHP":
 			//敌方生命最少单位
+			return	1
+		case "team_lossMaxHP":
+			//己方损失血量最多单位
 			return	1
 		case "team_1":
 			//己方随机1个目标
@@ -457,6 +463,22 @@ model.prototype.getEnemyMinHP = function(character) {
         return []
     }else{
         return [character.enemy[minIndex]]
+    }
+}
+//己方损失血量最多目标
+model.prototype.getTeamLossMaxHP = function(character) {
+    var minIndex = -1
+    for(var i = 0;i < character.team.length;i++){
+        if(model.check(character.team[i])){
+            if(minIndex === -1 || (character.team[i].attInfo.maxHP - character.team[i].attInfo.hp) > (character.team[minIndex].attInfo.maxHP - character.team[minIndex].attInfo.hp)){
+                minIndex = i
+            }
+        }
+    }
+    if(minIndex === -1){
+        return []
+    }else{
+        return [character.team[minIndex]]
     }
 }
 //己方随机N个单位
