@@ -77,7 +77,7 @@ module.exports = function() {
 				var atkTeam = self.getUserTeam(uid)
 			    var seededNum = Date.now()
 			    var defTeam = festival_list[self.festivalId]["bossTeam"]["value"]
-				defTeam[4].maxHP = 999999999
+				defTeam[4].boss = true
 				var fightOtps = {seededNum : seededNum,maxRound:5}
 			    self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
 			    var info = {

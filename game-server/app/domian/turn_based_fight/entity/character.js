@@ -17,6 +17,7 @@ var model = function(otps) {
 	this.ad = otps["ad"] || 0			//阶级
 	this.teamInfo = {}
 	this.bookAtts = otps.bookAtts
+	this.isBoss = otps.boss || false	//是否是BOSS
 	//=========基础属性=======//
 	this.attInfo = {}
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
@@ -303,6 +304,9 @@ model.prototype.begin = function() {
 	if(this.maxHP_rate){
 		this.attInfo.maxHP = Math.floor(this.attInfo.maxHP * this.maxHP_rate)
 		this.attInfo.hp = this.attInfo.maxHP
+	}
+	if(this.isBoss){
+		this.attInfo.hp = 999999999
 	}
 	if(this.surplus_health === 0){
 		this.attInfo.hp = 0

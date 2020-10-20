@@ -119,7 +119,7 @@ module.exports = function() {
 				var defTeam = area_boss_base[area_data.bossIndex]["team"]
 				for(var i in defTeam){
 					if(defTeam[i])
-						defTeam[i].maxHP = 999999999
+						defTeam[i].boss = true
 				}
 				var fightOtps = {seededNum : seededNum,maxRound:10}
 			    var info = {
