@@ -319,7 +319,7 @@ model.prototype.before = function() {
 	if(this.before_clear_debuff && this.fighting.seeded.random("判断BUFF命中率") < this.before_clear_debuff){
 		for(var i in this.buffs)
 			if(this.buffs[i].debuff)
-				this.buffs[i].destroy("dispel")
+				this.buffs[i].destroy("clear")
 	}
 	//伤害BUFF刷新
 	for(var i in this.buffs)
@@ -353,7 +353,7 @@ model.prototype.removeControlBuff = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
 		if(this.buffs[i].control)
-			this.buffs[i].destroy("dispel")
+			this.buffs[i].destroy("clear")
 }
 //驱散增益状态
 model.prototype.removeIntensifyBuff = function() {
@@ -366,7 +366,7 @@ model.prototype.removeIntensifyBuff = function() {
 model.prototype.clearReleaserBuff = function(releaser) {
 	for(var i in this.buffs)
 		if(this.buffs[i].debuff &&this.buffs[i].releaser == releaser)
-			this.buffs[i].destroy()
+			this.buffs[i].destroy("clear")
 }
 //受到伤害
 model.prototype.onHit = function(attacker,info,source) {
@@ -415,7 +415,7 @@ model.prototype.onHit = function(attacker,info,source) {
 }
 //生命流失
 model.prototype.onHPLoss = function() {
-	var info = {type : "other_damage",id:this.id}
+	var info = {type : "other_damage",id:this.id,"loss":true}
 	info.value = Math.floor(this.maxHP_loss * this.attInfo.maxHP * this.fighting.round)
 	if(info.value >= this.attInfo.hp){
 		info.value = this.attInfo.hp - 1
