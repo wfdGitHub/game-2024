@@ -29,6 +29,7 @@ var model = function(otps,character) {
 	this.lessAmp = otps.lessAmp || 0 					//目标每减少一个伤害加成比例
 	this.kill_amp = otps.kill_amp || 0					//每击杀一个目标提升伤害
 	this.self_heal = otps.self_heal || 0 				//自身生命值恢复比例
+	this.maxHP_damage = otps.maxHP_damage || 0			//技能附加最大生命值真实伤害
 	if(otps.burn_att_change_skill)
 		this.burn_att_change_skill = JSON.parse(otps.burn_att_change_skill)			//技能时 灼烧状态属性修改
 	if(otps.burn_buff_change_skill)

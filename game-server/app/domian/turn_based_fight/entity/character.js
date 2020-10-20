@@ -179,7 +179,7 @@ var model = function(otps) {
 	this.died_use_skill = otps.died_use_skill				//死亡时释放一次技能
 	if(otps.died_later_buff)
 		this.died_later_buff = JSON.parse(otps.died_later_buff)	//直接伤害死亡时对击杀者释放buff
-	this.maxHP_damage = otps.maxHP_damage						//技能附加最大生命值真实伤害
+	this.maxHP_damage = otps.maxHP_damage || 0					//技能附加最大生命值真实伤害
 	this.maxHP_rate = otps.maxHP_rate							//进入战斗时最大生命加成倍数
 	this.maxHP_loss = otps.maxHP_loss							//每回合生命流失率
 	this.damage_save = otps.damage_save							//释放技能时,上回合受到的所有伤害将100%额外追加真实伤害
