@@ -336,7 +336,7 @@ model.prototype.after = function() {
 	for(var i in this.buffs)
 		if(this.buffs[i].refreshType == "after")
 			this.buffs[i].update()
-	if(this.maxHP_loss){
+	if(this.maxHP_loss > 0){
 		this.onHPLoss()
 	}
 	this.damage_save_value = 0
