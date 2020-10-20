@@ -320,6 +320,9 @@ model.prototype.after = function() {
 				}
 			}
 		}
+		if(this.diedList[i].died_use_skill){
+			skillManager.useSkill(this.diedList[i].angerSkill)
+		}
 		//复活判断
 		if(this.diedList[i].teamInfo.resurgence_team){
 			this.diedList[i].resurgence(this.diedList[i].teamInfo.resurgence_team)
