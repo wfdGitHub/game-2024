@@ -184,6 +184,7 @@ module.exports = function() {
 						let index = Math.floor(Math.random() * list.length / 2)
 						if(!list[index*2]){
 							next("匹配失败")
+							self.redisDao.db.hincrby("cross:grading:count",key,-1)
 							return
 						}
 						let strList = list[index*2].split("|")
