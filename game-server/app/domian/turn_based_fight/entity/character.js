@@ -469,7 +469,7 @@ model.prototype.resurgence = function(rate) {
 //恢复血量
 model.prototype.addHP = function(value) {
 	var realValue = value
-	if(!this.boss && (this.attInfo.hp + value) > this.attInfo.maxHP){
+	if(!this.isBoss && (this.attInfo.hp + value) > this.attInfo.maxHP){
 		realValue = this.attInfo.maxHP - this.attInfo.hp
 		this.attInfo.hp = this.attInfo.maxHP
 	}else{
