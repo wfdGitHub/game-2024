@@ -495,7 +495,7 @@ module.exports = function() {
 		info.curRound = curRound
 		info.state = state
 		info.tiemEnd = timeList[state_index]
-		if(parMap[curRound] && parMap[curRound][crossUid]){
+		if(parMap[curRound] && parMap[curRound][crossUid] != undefined){
 			var rand = Math.floor(parMap[curRound][crossUid] / 2)
 			info.atk = participants[curRound][rand*2]
 			info.def = participants[curRound][rand*2 + 1]
@@ -533,7 +533,7 @@ module.exports = function() {
 			cb(false,"不在布阵阶段")
 			return
 		}
-		if(!parMap[curRound][crossUid]){
+		if(parMap[curRound][crossUid] != undefined){
 			cb(false,"未进入本轮比赛")
 			return
 		}
