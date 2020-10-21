@@ -141,7 +141,6 @@ module.exports = function() {
 		}
 		var uid = crossUid.split("|")[1]
     	self.heroDao.getHeroList(uid,hIds,function(flag,list) {
-    		console.log(flag,list)
 			var heroMap = {}
 			for(var i = 0;i < list.length;i++){
 				if(list[i]){
@@ -220,7 +219,7 @@ module.exports = function() {
 						}
 						if(!list.length){
 							//初始机器人
-							defTeams = atkTeams
+							defTeams = [].concat(muye_cfg["default_team1"]["value"],muye_cfg["default_team2"]["value"],muye_cfg["default_team3"]["value"])
 							next()
 						}else{
 							var index = Math.floor(Math.random() * list.length / 2)
