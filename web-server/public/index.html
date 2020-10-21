@@ -19,7 +19,7 @@
     <script type="text/javascript">
       var pomelo = window.pomelo;
       var host = "127.0.0.1";
-      host = "192.168.0.200"
+      // host = "192.168.0.200"
       // host = "47.107.48.79"
       var queryEntry = function(callback) {
         var route = 'gate.gateHandler.queryClientEntry';
@@ -98,6 +98,49 @@
         console.log("onChat")
         console.log(data)
       })
+      //=============牧野之战=======//
+      //赛季结算
+      var settleMuye = function() {
+        pomelo.request("cross.muyeHandler.settleMuye", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取历史挑战记录
+      var getMuyeRecord = function() {
+        pomelo.request("cross.muyeHandler.getMuyeRecord", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取我的数据
+      var getMuyeData = function() {
+        pomelo.request("cross.muyeHandler.getMuyeData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //点赞
+      var muyeLike = function(index) {
+        pomelo.request("cross.muyeHandler.muyeLike", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取宝箱
+      var gainMuyeBox = function(index) {
+        pomelo.request("cross.muyeHandler.gainMuyeBox", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置阵容
+      var muyeSetFightTeams = function(hIds) {
+        pomelo.request("cross.muyeHandler.muyeSetFightTeams", {hIds:hIds}, function(data) {
+            console.log(data);
+        });
+      }
+      //匹配战斗
+      var matchMuye = function() {
+        pomelo.request("cross.muyeHandler.matchMuye", {}, function(data) {
+            console.log(data);
+        });
+      }
       //=============巅峰赛=======//
       //开始新赛程
       var peakBegin = function() {
@@ -2008,7 +2051,7 @@
       <input id="test" type="button" value="游客账号" onclick="entry(Date.now())"/>
       <input id="test" type="button" value="渠道账号" onclick="quickEntryAccount()"/>
       <input id="test" type="button" value="注册角色" onclick="register(1,''+Date.now(),1)"/>
-      <input id="test" type="button" value="登录服务器" onclick="loginArea(16)"/>
+      <input id="test" type="button" value="登录服务器" onclick="loginArea(1)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
       <input id="test" type="button" value="战斗准备" onclick="readyFight()"/>
       <input id="test" type="button" value="快速挂机" onclick="getQuickOnhookAward()"/>
@@ -2099,6 +2142,10 @@
       <input id="test" type="button" value="历史下注" onclick="getPeakBetHistory()"/>
       <input id="test" type="button" value="我的比赛" onclick="getPeakMyMatch()"/>
       <input id="test" type="button" value="十六强" onclick="getPeakBetterHistory()"/>
+    </div>
+    <div class="g-button">
+      牧野之战 : 
+      <input id="test" type="button" value="匹配战斗" onclick="matchMuye()"/>
     </div>
   </body>
 </html>

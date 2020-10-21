@@ -236,26 +236,27 @@ module.exports = function() {
 			},
 			function(next) {
 				glv = util.binarySearchIndex(grading_lv_list,curScore)
-				let awardList = self.addItemStr(crossUid,grading_lv[glv]["challenge_award"],1,"跨服匹配")
-				let info = {
-					winFlag : winFlag,
-					atkTeam : atkTeam,
-					defTeam : defTeam,
-					seededNum : seededNum,
-					awardList : awardList,
-					targetSid : targetSid,
-					targetScore : targetScore,
-					targetInfo : targetInfo,
-					curScore : curScore,
-					time : Date.now(),
-					change : change
-				}
-				self.redisDao.db.rpush("cross:grading:record:"+key,JSON.stringify(info),function(err,num) {
-					if(num > 10){
-						self.redisDao.db.ltrim("cross:grading:record:"+key,-10,-1)
+				self.addItemStr(crossUid,grading_lv[glv]["challenge_award"],1,"跨服匹配",function(flag,awardList) {
+					var info = {
+						winFlag : winFlag,
+						atkTeam : atkTeam,
+						defTeam : defTeam,
+						seededNum : seededNum,
+						awardList : awardList,
+						targetSid : targetSid,
+						targetScore : targetScore,
+						targetInfo : targetInfo,
+						curScore : curScore,
+						time : Date.now(),
+						change : change
 					}
+					self.redisDao.db.rpush("cross:grading:record:"+key,JSON.stringify(info),function(err,num) {
+						if(num > 10){
+							self.redisDao.db.ltrim("cross:grading:record:"+key,-10,-1)
+						}
+					})
+					cb(true,info)
 				})
-				cb(true,info)
 			}
 		],function(err) {
 			cb(false,err)

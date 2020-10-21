@@ -505,24 +505,32 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			})
 		},
 		function(fightTeam,next) {
-			self.redisDao.db.hgetall("player:user:"+uid+":book_fight",function(err,fightBooks) {
-				if(!fightBooks){
-					cb(true,fightTeam)
-				}else{
-					self.redisDao.db.hgetall("player:user:"+uid+":book",function(err,books) {
-						fightTeam[6] = {}
-						for(var i in fightBooks){
-							var type = fightBooks[i]
-							if(type)
-								fightTeam[6][type] = {lv : Number(books[type+"_lv"]),star : Number(books[type+"_star"])}
-						}
-						cb(true,fightTeam)
-					})
-				}
+			self.getFightBook(uid,function(flag,data) {
+				fightTeam[6] = data
+				cb(true,fightTeam)
 			})
 		}
 	],function(err) {
 		cb(false,err)
+	})
+}
+//获取出战天书
+heroDao.prototype.getFightBook = function(uid,cb) {
+	var self = this
+	self.redisDao.db.hgetall("player:user:"+uid+":book_fight",function(err,fightBooks) {
+		if(!fightBooks){
+			cb(true,{})
+		}else{
+			self.redisDao.db.hgetall("player:user:"+uid+":book",function(err,books) {
+				var info = {}
+				for(var i in fightBooks){
+					var type = fightBooks[i]
+					if(type)
+						info[type] = {lv : Number(books[type+"_lv"]),star : Number(books[type+"_star"])}
+				}
+				cb(true,info)
+			})
+		}
 	})
 }
 //设置逐鹿之战出场阵容

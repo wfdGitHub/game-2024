@@ -795,8 +795,8 @@ module.exports = function() {
 		if(!likeMap[target])
 			likeMap[target] = 0
 		likeMap[target]++
-		self.redisDao.db.hset("cross:peak:likeMap",target,likeMap[target])
-		self.addItemStr(crossUid,"201:20000",1,"点赞",function(flag,data) {
+		self.redisDao.db.hincrby("cross:peak:likeMap",target,1)
+		self.addItemStr(crossUid,"201:20000",1,"巅峰点赞",function(flag,data) {
 			cb(flag,data)
 		})
 	}
