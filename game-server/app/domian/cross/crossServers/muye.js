@@ -214,12 +214,12 @@ module.exports = function() {
 				if(challenge_free[crossUid] < 2){
 					challenge_free[crossUid]++
 					self.redisDao.db.hset("cross:muye:challenge_free",crossUid,challenge_free[crossUid])
-					next()
 				}else if(Date.now() - challenge_time[crossUid] < 3600000){
 					cb(false,"挑战冷却中")
 					return
 				}
-			}
+				next()
+			},
 			function(next) {
 				console.log(2222)
 				self.redisDao.db.zrank(["cross:muye:rank",crossUid],function(err,rank) {
