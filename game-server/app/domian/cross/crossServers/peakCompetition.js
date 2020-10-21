@@ -533,7 +533,7 @@ module.exports = function() {
 			cb(false,"不在布阵阶段")
 			return
 		}
-		if(parMap[curRound][crossUid] != undefined){
+		if(parMap[curRound][crossUid] == undefined){
 			cb(false,"未进入本轮比赛")
 			return
 		}
