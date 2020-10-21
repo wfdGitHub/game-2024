@@ -118,7 +118,10 @@ module.exports = function() {
 		}
 		self.redisDao.multi(multiList,function(err,list) {
 			info.boxs = list
-			cb(true,info)
+			self.redisDao.db.hget("cross:muye:fightTeam",crossUid,function(err,data) {
+				info.hIds = data
+				cb(true,info)
+			})
 		})
 	}
 	//设置阵容
