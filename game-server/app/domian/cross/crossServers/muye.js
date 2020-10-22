@@ -164,6 +164,8 @@ module.exports = function() {
 		self.redisDao.db.del("cross:muye:winCounts")
 		self.redisDao.db.del("cross:muye:boxs")
 		self.redisDao.db.del("cross:muye:camps")
+		self.redisDao.db.del("cross:muye:rank:camp0")
+		self.redisDao.db.del("cross:muye:rank:camp1")
 		console.log("新赛季开始")
 		self.redisDao.db.hset("cross:muye","month",util.getMonth())
 	}
@@ -345,7 +347,7 @@ module.exports = function() {
 									self.heroDao.getFightBook(targetUid,function(flag,bookInfo) {
 									    self.redisDao.db.hget("cross:muye:fightTeam",targetcrossUid,function(err,data) {
 									        var hIds = JSON.parse(data)
-									        self.heroDao.getHeroList(uid,hIds,function(flag,heros) {
+									        self.heroDao.getHeroList(targetUid,hIds,function(flag,heros) {
 									            console.log(flag,heros)
 									            defTeams[0] = heros.splice(0,6)
 									            defTeams[0][6] = bookInfo
