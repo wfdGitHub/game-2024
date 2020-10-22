@@ -3,14 +3,20 @@ const muye_cfg = require("../../../../config/gameCfg/muye_cfg.json")
 const muye_rank = require("../../../../config/gameCfg/muye_rank.json")
 const async = require("async")
 var util = require("../../../../util/util.js")
+var camp_state = {
+	"0" : "纣王",
+	"1" : "武王"
+}
 module.exports = function() {
 	var self = this
 	var challenge_time = {}
 	var challenge_free = {}
+	var camps = {}				//阵营记录
 	var honorList = []			//荣誉榜
 	var likeUsers = {}			//点赞记录
 	var likeMap = {}			//点赞榜
 	var winCounts = {}			//挑战次数
+	var look = true				//比赛中
 	var monthStr = ""			//月份记录
 	//初始化
 	this.muyeInit = function() {
@@ -20,6 +26,7 @@ module.exports = function() {
 				honorList = JSON.parse(data.honorList)
 			if(monthStr != util.getMonth())
 				self.settleMuye()
+			look = false
 		})
 		self.redisDao.db.hgetall("cross:muye:challenge_free",function(err,data) {
 			if(data){
@@ -27,6 +34,15 @@ module.exports = function() {
 					data[i] = Number(data[i])
 				}
 				challenge_free = data
+			}
+		})
+		self.redisDao.db.hgetall("cross:muye:camps",function(err,data) {
+			if(data){
+				for(var i in data){
+					data[i] = Number(data[i])
+				}
+				camps = data
+				console.log("camps",camps)
 			}
 		})
 		self.redisDao.db.hgetall("cross:muye:likeMap",function(err,data) {
@@ -48,13 +64,18 @@ module.exports = function() {
 	}
 	//每日刷新
 	this.muyeDayUpdate = function() {
-		likeUsers = {}
-		winCounts = {}
-		challenge_free = {}
-		self.redisDao.db.del("cross:muye:winCounts")
-		self.redisDao.db.del("cross:muye:boxs")
-		self.redisDao.db.del("cross:muye:challenge_free")
 		challenge_time = {}
+		self.redisDao.db.hget("cross:muye","dayStr",function(err,data) {
+			if(!data || self.dayStr != data){
+				likeUsers = {}
+				winCounts = {}
+				challenge_free = {}
+				self.redisDao.db.del("cross:muye:winCounts")
+				self.redisDao.db.del("cross:muye:boxs")
+				self.redisDao.db.del("cross:muye:challenge_free")
+				self.redisDao.db.hset("cross:muye","dayStr",self.dayStr)
+			}
+		})
 		if(monthStr != util.getMonth())
 			self.settleMuye()
 	}
@@ -63,11 +84,11 @@ module.exports = function() {
 		console.log("牧野新赛季开启")
 		async.waterfall([
 			function(next) {
-				self.redisDao.db.zrevrange(["cross:muye:rank",0,-1,"WITHSCORES"],function(err,list) {
+				self.redisDao.db.zrevrange(["cross:muye:rank:camp0",0,-1,"WITHSCORES"],function(err,list) {
 					var strList,sid,uid,score,glv
 					var areaIds = []
 					var uids = []
-					var newRankList = ["cross:muye:rank"]
+					var newRankList = ["cross:muye:rank:camp0"]
 					var rankIndex = 0
 					for(var i = 0;i < list.length;i+=2){
 						strList = list[i].split("|")
@@ -85,9 +106,40 @@ module.exports = function() {
 							}
 						}
 					}
-					self.redisDao.db.zadd(newRankList)
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
-						honorList = userInfos
+						honorList = [null,null,null]
+						for(var i = 0;i < userInfos.length;i++){
+							honorList[i] = userInfos[i]
+						}
+						next()
+					})
+				})
+			},
+			function(next) {
+				self.redisDao.db.zrevrange(["cross:muye:rank:camp1",0,-1,"WITHSCORES"],function(err,list) {
+					var strList,sid,uid,score,glv
+					var areaIds = []
+					var uids = []
+					var newRankList = ["cross:muye:rank:camp1"]
+					var rankIndex = 0
+					for(var i = 0;i < list.length;i+=2){
+						strList = list[i].split("|")
+						sid = Number(strList[0])
+						uid = Number(strList[1])
+						score = Number(list[i+1])
+						if(uid > 10000){
+							if(i > muye_rank[rankIndex]["count"])
+								rankIndex++
+							newRankList.push(0,list[i])
+							self.sendMailByUid(uid,muye_rank[rankIndex]["title"],muye_rank[rankIndex]["text"],muye_rank[rankIndex]["award"])
+							if(uids.length < 3){
+								areaIds.push(sid)
+								uids.push(uid)
+							}
+						}
+					}
+					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
+						honorList = honorList.concat(userInfos)
 						self.redisDao.db.hset("cross:muye","honorList",JSON.stringify(userInfos))
 						next()
 					})
@@ -105,8 +157,13 @@ module.exports = function() {
 	this.newMuye = function() {
 		likeUsers = {}
 		winCounts = {}
+		challenge_time = {}
+		challenge_free = {}
+		camps = {}
+		self.redisDao.db.del("cross:muye:challenge_free")
 		self.redisDao.db.del("cross:muye:winCounts")
 		self.redisDao.db.del("cross:muye:boxs")
+		self.redisDao.db.del("cross:muye:camps")
 		console.log("新赛季开始")
 		self.redisDao.db.hset("cross:muye","month",util.getMonth())
 	}
@@ -119,21 +176,63 @@ module.exports = function() {
 		info.likeList = []
 		info.challengeTime = challenge_time[crossUid] || 0
 		info.challengeFree = challenge_free[crossUid] || 0
+		info.camp = camps[crossUid]
 		for(var i = 0;i < honorList.length;i++){
-			info.likeList.push(likeMap[honorList[i]["crossUid"]] || 0)
+			if(honorList[i])
+				info.likeList.push(likeMap[honorList[i]["crossUid"]] || 0)
+			else
+				info.likeList.push(0)
 		}
 		info.likeInfo = likeUsers[crossUid] || {}
-		var multiList = []
-		for(var i = 1;i <= 3;i++){
-			multiList.push(["hget","cross:muye:boxs",crossUid+"_"+i])
-		}
-		self.redisDao.multi(multiList,function(err,list) {
-			info.boxs = list
-			self.redisDao.db.hget("cross:muye:fightTeam",crossUid,function(err,data) {
-				info.hIds = data
-				cb(true,info)
-			})
+		async.waterfall([
+			function(next) {
+				var multiList = []
+				for(var i = 1;i <= 3;i++){
+					multiList.push(["hget","cross:muye:boxs",crossUid+"_"+i])
+				}
+				self.redisDao.multi(multiList,function(err,list) {
+					info.boxs = list
+					next()
+				})
+			},
+			function(next) {
+				self.redisDao.db.hget("cross:muye:fightTeam",crossUid,function(err,data) {
+					info.hIds = data
+					next()
+				})
+			},
+			function(next) {
+				if(info.camp == undefined){
+					cb(true,info)
+				}else{
+					self.redisDao.db.zscore(["cross:muye:rank:camp"+info.camp,crossUid],function(err,score) {
+						info.score = score || 0
+						cb(true,info)
+					})
+				}
+			}
+		],function(err) {
+			cb(false,err)
 		})
+
+	}
+	//加入阵营
+	this.muyeJoinCamp = function(crossUid,camp,cb) {
+		crossUid = crossUid.split("|area")[0]
+		if(camps[crossUid]){
+			cb(false,"已加入阵营")
+			return
+		}
+		if(!Number.isInteger(camp) || !camp_state[camp]){
+			cb(false,"camp error")
+			return
+		}
+		camps[crossUid] = camp
+		var defCamp = (camp + 1) % 2
+		self.redisDao.db.hset("cross:muye:camps",crossUid,camp)
+		self.redisDao.db.zrem(["cross:muye:rank:camp"+camp,crossUid])
+		self.redisDao.db.zrem(["cross:muye:rank:camp"+defCamp,crossUid])
+		cb(true)
 	}
 	//设置阵容
 	this.muyeSetFightTeams = function(crossUid,hIds,cb) {
@@ -171,13 +270,20 @@ module.exports = function() {
 		var uid = self.players[crossUid]["uid"]
 		var sid = self.players[crossUid]["areaId"]
 		crossUid = crossUid.split("|area")[0]
+		var camp = camps[crossUid]
+		console.log("crossUid ",crossUid,camp,camps)
+		var defCamp = (camp + 1) % 2 
+		if(camp == undefined){
+			cb(false,"未加入阵营")
+			return
+		}
 		if(!challenge_time[crossUid]){
 			challenge_time[crossUid] = 0
 		}
-		if((new Date()).getHours() < 18){
-			cb(false,"17:00之后可挑战")
-			return
-		}
+		// if((new Date()).getHours() < 17){
+		// 	cb(false,"17:00之后可挑战")
+		// 	return
+		// }
 		var atkTeams = []
 		var defTeams = []
 		var wins = []
@@ -208,71 +314,76 @@ module.exports = function() {
 				})
 			},
 			function(next) {
+				console.log(2222)
+				self.redisDao.db.zscore(["cross:muye:rank:camp"+camp,crossUid],function(err,score) {
+					if(!score){
+						defTeams = [].concat(muye_cfg["default_team1"]["value"],muye_cfg["default_team2"]["value"],muye_cfg["default_team3"]["value"])
+						targetInfo = {
+							name : "卫兵",
+							head : "201010"
+						}
+						next()
+					}else{
+						score = Number(score)
+						var begin = score-100
+						var end = score+100
+						self.redisDao.db.zcount(["cross:muye:rank:camp"+defCamp,begin,end],function(err,zcount) {
+							console.log("zcount",zcount)
+							if(!zcount || zcount <= 0){
+								next("匹配不到合适的对手")
+								return
+							}
+							var offset = Math.floor(zcount * Math.random()) 
+							self.redisDao.db.zrangebyscore(["cross:muye:rank:camp"+defCamp,begin,end,"WITHSCORES","limit",offset,1],function(err,list) {
+								if(list && list.length){
+									targetcrossUid = list[0]
+									var strList = targetcrossUid.split("|")
+									targetSid = Number(strList[0])
+									targetUid = Number(strList[1])
+									targetScore = Number(list[1])
+									console.log("targetcrossUid",targetcrossUid,targetSid,targetUid,targetScore)
+									self.heroDao.getFightBook(targetUid,function(flag,bookInfo) {
+									    self.redisDao.db.hget("cross:muye:fightTeam",targetcrossUid,function(err,data) {
+									        var hIds = JSON.parse(data)
+									        self.heroDao.getHeroList(uid,hIds,function(flag,heros) {
+									            console.log(flag,heros)
+									            defTeams[0] = heros.splice(0,6)
+									            defTeams[0][6] = bookInfo
+									            defTeams[1] = heros.splice(0,6)
+									            defTeams[1][6] = bookInfo
+									            defTeams[2] = heros.splice(0,6)
+									            defTeams[2][6] = bookInfo
+									            self.getPlayerInfoByUid(targetUid,function(info) {
+									                targetInfo = info
+									                next()
+									            })
+									        })
+									    })
+									})
+								}else{
+									console.error("zrangebyscore offset/zcount : "+offset+"/"+zcount,err,list)
+									next("匹配出错")
+								}
+							})
+						})
+					}
+				})
+			},
+			function(next) {
 				if(!challenge_free[crossUid]){
 					challenge_free[crossUid] = 0
 				}
 				if(challenge_free[crossUid] < 2){
 					challenge_free[crossUid]++
 					self.redisDao.db.hset("cross:muye:challenge_free",crossUid,challenge_free[crossUid])
-				}else if(Date.now() - challenge_time[crossUid] < 3600000){
-					cb(false,"挑战冷却中")
-					return
+				}else{
+					if(Date.now() - challenge_time[crossUid] < 3600000){
+						cb(false,"挑战冷却中")
+						return
+					}
+					challenge_time[crossUid] = Date.now()
 				}
 				next()
-			},
-			function(next) {
-				console.log(2222)
-				self.redisDao.db.zrank(["cross:muye:rank",crossUid],function(err,rank) {
-					if(rank === null){
-						rank = 0
-					}
-					var begin = rank -3
-					var end = rank + 3
-					if(begin < 0)
-						begin = 0
-					self.redisDao.db.zrange(["cross:muye:rank",begin,end,"WITHSCORES"],function(err,list) {
-						for(var i = 0;i < list.length;i++){
-							if(list[i] == crossUid){
-								list.splice(i,2)
-								break
-							}
-						}
-						if(!list.length){
-							//初始机器人
-							defTeams = [].concat(muye_cfg["default_team1"]["value"],muye_cfg["default_team2"]["value"],muye_cfg["default_team3"]["value"])
-							next()
-						}else{
-							var index = Math.floor(Math.random() * list.length / 2)
-							if(!list[index*2]){
-								next("匹配失败")
-								return
-							}
-							targetcrossUid = list[index*2]
-							var strList = targetcrossUid.split("|")
-							targetSid = Number(strList[0])
-							targetUid = Number(strList[1])
-							targetScore = Number(list[index*2 + 1])
-							self.heroDao.getFightBook(targetUid,function(flag,bookInfo) {
-								self.redisDao.db.hget("cross:muye:fightTeam",targetcrossUid,function(err,data) {
-									var hIds = JSON.parse(data)
-							    	self.heroDao.getHeroList(uid,hIds,function(flag,heros) {
-							    		console.log(flag,heros)
-							    		defTeams[0] = heros.splice(0,6)
-							    		defTeams[0][6] = bookInfo
-							    		defTeams[1] = heros.splice(0,6)
-							    		defTeams[1][6] = bookInfo
-							    		defTeams[2] = heros.splice(0,6)
-							    		defTeams[2][6] = bookInfo
-										self.getPlayerInfoByUid(targetUid,function(info) {
-											targetInfo = info
-											next()
-										})
-							    	})
-								})
-							})
-						}
-					})
-				})
 			},
 			function(next) {
 				console.log(3333)
@@ -300,12 +411,12 @@ module.exports = function() {
 						winCounts[crossUid] = 0
 					winCounts[crossUid]++
 					self.redisDao.db.hincrby("cross:muye:winCounts",crossUid,1)
-					if(winCounts[crossUid] <= 2){
+					if(winCounts[crossUid] <= 1){
 						change *= 2
 					}
 				}
 				self.addItemStr(crossUid,"201:100",1,"牧野之战",function(flag,awardList) {
-					self.redisDao.db.zincrby(["cross:muye:rank",change,crossUid],function(err,curScore) {
+					self.redisDao.db.zincrby(["cross:muye:rank:camp"+camp,change,crossUid],function(err,curScore) {
 						var info = {
 							atkTeams : atkTeams,
 							defTeams : defTeams,
@@ -358,7 +469,7 @@ module.exports = function() {
 		if(!likeMap[target])
 			likeMap[target] = 0
 		likeMap[target]++
-		self.redisDao.db.hincrby("cross:peak:likeMap",target,1)
+		self.redisDao.db.hincrby("cross:muye:likeMap",target,1)
 		self.addItemStr(crossUid,"201:20000",1,"牧野点赞",function(flag,data) {
 			cb(flag,data)
 		})
@@ -371,6 +482,7 @@ module.exports = function() {
 			return
 		}
 		if(!winCounts[crossUid] || winCounts[crossUid] < index){
+			console.log("winCounts",winCounts)
 			cb(false,"条件不足")
 			return
 		}
@@ -382,6 +494,35 @@ module.exports = function() {
 			self.redisDao.db.hset("cross:muye:boxs",newCrossUid+"_"+index,1)
 			self.addItemStr(crossUid,muye_cfg["box_"+index]["value"],1,"牧野宝箱"+index,function(flag,awardList) {
 				cb(true,awardList)
+			})
+		})
+	}
+	//获取排行榜
+	this.getMuyeRank = function(crossUid,camp,cb) {
+		if(!Number.isInteger(camp) || !camp_state[camp]){
+			cb(false,"camp error")
+			return
+		}
+		self.redisDao.db.zrevrange(["cross:muye:rank:camp"+camp,0,10,"WITHSCORES"],function(err,list) {
+			var strList,sid,uid,score
+			var areaIds = []
+			var uids = []
+			var scores = []
+			for(var i = 0;i < list.length;i+=2){
+				strList = list[i].split("|")
+				sid = Number(strList[0])
+				uid = Number(strList[1])
+				score = Number(list[i+1])
+				areaIds.push(sid)
+				uids.push(uid)
+				scores.push(score)
+			}
+			self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
+				var info = {
+					userInfos : userInfos,
+					scores : scores
+				}
+				cb(true,info)
 			})
 		})
 	}

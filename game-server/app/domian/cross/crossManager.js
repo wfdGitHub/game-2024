@@ -20,6 +20,7 @@ crossManager.prototype.init = function() {
 		fun.call(this)
 	}
 	this.peakInit()
+	this.muyeInit()
 	setInterval(this.update.bind(this),1000)
 }
 //每日定时器
@@ -28,6 +29,7 @@ crossManager.prototype.dayUpdate = function(curDayStr) {
 	this.dayStr = curDayStr
 	this.gradingDayUpdate()
 	this.peakDayUpdate()
+	this.muyeDayUpdate()
 }
 crossManager.prototype.update = function() {
 	var date = new Date()

@@ -10,6 +10,22 @@ muyeHandler.prototype.settleMuye = function(msg, session, next) {
   this.crossManager.settleMuye()
   next(null,{flag:true})
 }
+//加入阵营
+muyeHandler.prototype.muyeJoinCamp = function(msg, session, next) {
+  var crossUid = session.get("crossUid")
+  var camp = msg.camp
+  this.crossManager.muyeJoinCamp(crossUid,camp,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//获取排行榜
+muyeHandler.prototype.getMuyeRank = function(msg, session, next) {
+  var crossUid = session.get("crossUid")
+  var camp = msg.camp
+  this.crossManager.getMuyeRank(crossUid,camp,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 //获取历史挑战记录
 muyeHandler.prototype.getMuyeRecord = function(msg, session, next) {
   var crossUid = session.get("crossUid")
