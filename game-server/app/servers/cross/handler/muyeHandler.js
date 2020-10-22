@@ -18,6 +18,13 @@ muyeHandler.prototype.muyeJoinCamp = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//随机阵营
+muyeHandler.prototype.muyeRandCamp = function(msg, session, next) {
+  var crossUid = session.get("crossUid")
+  this.crossManager.muyeRandCamp(crossUid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 //获取排行榜
 muyeHandler.prototype.getMuyeRank = function(msg, session, next) {
   var crossUid = session.get("crossUid")

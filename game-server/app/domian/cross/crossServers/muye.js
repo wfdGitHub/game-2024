@@ -42,7 +42,6 @@ module.exports = function() {
 					data[i] = Number(data[i])
 				}
 				camps = data
-				console.log("camps",camps)
 			}
 		})
 		self.redisDao.db.hgetall("cross:muye:likeMap",function(err,data) {
@@ -166,7 +165,6 @@ module.exports = function() {
 		self.redisDao.db.del("cross:muye:camps")
 		self.redisDao.db.del("cross:muye:rank:camp0")
 		self.redisDao.db.del("cross:muye:rank:camp1")
-		console.log("新赛季开始")
 		self.redisDao.db.hset("cross:muye","month",util.getMonth())
 	}
 	//获取数据
@@ -216,12 +214,11 @@ module.exports = function() {
 		],function(err) {
 			cb(false,err)
 		})
-
 	}
 	//加入阵营
 	this.muyeJoinCamp = function(crossUid,camp,cb) {
 		crossUid = crossUid.split("|area")[0]
-		if(camps[crossUid]){
+		if(camps[crossUid] != undefined){
 			cb(false,"已加入阵营")
 			return
 		}
@@ -230,11 +227,33 @@ module.exports = function() {
 			return
 		}
 		camps[crossUid] = camp
-		var defCamp = (camp + 1) % 2
 		self.redisDao.db.hset("cross:muye:camps",crossUid,camp)
-		self.redisDao.db.zrem(["cross:muye:rank:camp"+camp,crossUid])
-		self.redisDao.db.zrem(["cross:muye:rank:camp"+defCamp,crossUid])
-		cb(true)
+		self.redisDao.db.zrem(["cross:muye:rank:camp0",crossUid])
+		self.redisDao.db.zrem(["cross:muye:rank:camp1",crossUid])
+		cb(true,camp)
+	}
+	//随机阵营
+	this.muyeRandCamp = function(crossUid,cb) {
+		crossUid = crossUid.split("|area")[0]
+		if(camps[crossUid] != undefined){
+			cb(false,"已加入阵营")
+			return
+		}
+		self.redisDao.db.zcard("cross:muye:rank:camp0",function(err,count0) {
+			count0 = Number(count0) || 0
+			self.redisDao.db.zcard("cross:muye:rank:camp1",function(err,count1) {
+				count1 = Number(count1) || 0
+				var camp = 0
+				if(count1 < count0){
+					camp = 1
+				}
+				camps[crossUid] = camp
+				self.redisDao.db.hset("cross:muye:camps",crossUid,camp)
+				self.redisDao.db.zrem(["cross:muye:rank:camp0",crossUid])
+				self.redisDao.db.zrem(["cross:muye:rank:camp1",crossUid])
+				cb(true,camp)
+			})
+		})
 	}
 	//设置阵容
 	this.muyeSetFightTeams = function(crossUid,hIds,cb) {
@@ -273,7 +292,6 @@ module.exports = function() {
 		var sid = self.players[crossUid]["areaId"]
 		crossUid = crossUid.split("|area")[0]
 		var camp = camps[crossUid]
-		console.log("crossUid ",crossUid,camp,camps)
 		var defCamp = (camp + 1) % 2 
 		if(camp == undefined){
 			cb(false,"未加入阵营")
@@ -294,7 +312,6 @@ module.exports = function() {
 		async.waterfall([
 			function(next) {
 				//获取攻方阵容
-				console.log(1111)
 				self.heroDao.getFightBook(uid,function(flag,bookInfo) {
 					self.redisDao.db.hget("cross:muye:fightTeam",crossUid,function(err,data) {
 						if(err || !data){
@@ -303,7 +320,6 @@ module.exports = function() {
 						}
 						var hIds = JSON.parse(data)
 				    	self.heroDao.getHeroList(uid,hIds,function(flag,heros) {
-				    		console.log(flag,heros)
 				    		atkTeams[0] = heros.splice(0,6)
 				    		atkTeams[0][6] = bookInfo
 				    		atkTeams[1] = heros.splice(0,6)
@@ -316,7 +332,6 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				console.log(2222)
 				self.redisDao.db.zscore(["cross:muye:rank:camp"+camp,crossUid],function(err,score) {
 					if(!score){
 						defTeams = [].concat(muye_cfg["default_team1"]["value"],muye_cfg["default_team2"]["value"],muye_cfg["default_team3"]["value"])
@@ -330,7 +345,6 @@ module.exports = function() {
 						var begin = score-100
 						var end = score+100
 						self.redisDao.db.zcount(["cross:muye:rank:camp"+defCamp,begin,end],function(err,zcount) {
-							console.log("zcount",zcount)
 							if(!zcount || zcount <= 0){
 								next("匹配不到合适的对手")
 								return
@@ -343,12 +357,10 @@ module.exports = function() {
 									targetSid = Number(strList[0])
 									targetUid = Number(strList[1])
 									targetScore = Number(list[1])
-									console.log("targetcrossUid",targetcrossUid,targetSid,targetUid,targetScore)
 									self.heroDao.getFightBook(targetUid,function(flag,bookInfo) {
 									    self.redisDao.db.hget("cross:muye:fightTeam",targetcrossUid,function(err,data) {
 									        var hIds = JSON.parse(data)
 									        self.heroDao.getHeroList(targetUid,hIds,function(flag,heros) {
-									            console.log(flag,heros)
 									            defTeams[0] = heros.splice(0,6)
 									            defTeams[0][6] = bookInfo
 									            defTeams[1] = heros.splice(0,6)
@@ -388,9 +400,7 @@ module.exports = function() {
 				next()
 			},
 			function(next) {
-				console.log(3333)
 				//开始战斗
-				console.log("开始战斗",atkTeams,defTeams)
 				for(var i = 0;i < 3;i++){
 					seededNums[i] = Date.now()
 					wins[i] = self.fightContorl.beginFight(atkTeams[i],defTeams[i],{seededNum : seededNums[i]})
@@ -398,7 +408,6 @@ module.exports = function() {
 				next()
 			},
 			function(next) {
-				console.log(4444)
 				var change = 0
 				for(var i = 0;i < 3;i++){
 					if(wins[i])
@@ -484,7 +493,6 @@ module.exports = function() {
 			return
 		}
 		if(!winCounts[newCrossUid] || winCounts[newCrossUid] < index){
-			console.log("winCounts",winCounts)
 			cb(false,"条件不足")
 			return
 		}

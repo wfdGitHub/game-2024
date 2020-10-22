@@ -111,6 +111,12 @@
             console.log(data);
         });
       }
+      //随机阵营
+      var muyeRandCamp = function() {
+        pomelo.request("cross.muyeHandler.muyeRandCamp", {}, function(data) {
+            console.log(data);
+        });
+      }
       //获取排行榜
       var getMuyeRank = function(camp) {
         pomelo.request("cross.muyeHandler.getMuyeRank", {camp:camp}, function(data) {
@@ -2158,6 +2164,7 @@
     <div class="g-button">
       牧野之战 : 
       <input id="test" type="button" value="新赛季" onclick="settleMuye()"/>
+      <input id="test" type="button" value="随机阵营" onclick="muyeRandCamp()"/>
       <input id="test" type="button" value="牧野数据" onclick="getMuyeData()"/>
       <input id="test" type="button" value="匹配战斗" onclick="matchMuye()"/>
 
