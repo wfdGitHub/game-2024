@@ -438,6 +438,7 @@ module.exports = function() {
 							awardList : awardList,
 							targetScore : targetScore,
 							targetInfo : targetInfo,
+							camp : camp,
 							time : Date.now()
 						}
 						self.redisDao.db.rpush("cross:muye:record:"+crossUid,JSON.stringify(info),function(err,num) {
