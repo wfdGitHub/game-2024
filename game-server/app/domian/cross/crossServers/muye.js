@@ -481,7 +481,7 @@ module.exports = function() {
 			cb(false,"宝箱不存在")
 			return
 		}
-		if(!winCounts[crossUid] || winCounts[crossUid] < index){
+		if(!winCounts[newCrossUid] || winCounts[newCrossUid] < index){
 			console.log("winCounts",winCounts)
 			cb(false,"条件不足")
 			return
