@@ -116,7 +116,7 @@ module.exports = function() {
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
 						honorList = []
 						for(var i = 0;i < userInfos.length;i++){
-							honorList.push({crossUid:crossUids[i],info:userInfos[i]})
+							honorList.push({crossUid:crossUids[i],info:JSON.stringify(userInfos[i])})
 						}
 						next()
 					})
@@ -150,7 +150,7 @@ module.exports = function() {
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
 						for(var i = 0;i < 3;i++){
 							if(userInfos[i])
-								honorList.push({crossUid:crossUids[i],info:userInfos[i]})
+								honorList.push({crossUid:crossUids[i],info:JSON.stringify(userInfos[i])})
 							else
 								honorList.push(null)
 						}

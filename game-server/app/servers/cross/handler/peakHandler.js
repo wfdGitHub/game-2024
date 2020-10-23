@@ -4,16 +4,16 @@ var peakHandler = function(app) {
   this.app = app;
 	this.crossManager = this.app.get("crossManager")
 };
-// 开始新赛程
-peakHandler.prototype.peakBegin = function(msg, session, next) {
-  this.crossManager.peakBegin()
-  next(null)
-}
-//下一阶段
-peakHandler.prototype.peakNextState = function(msg, session, next) {
-  this.crossManager.peakNextState()
-  next(null)
-}
+// // 开始新赛程
+// peakHandler.prototype.peakBegin = function(msg, session, next) {
+//   this.crossManager.peakBegin()
+//   next(null)
+// }
+// //下一阶段
+// peakHandler.prototype.peakNextState = function(msg, session, next) {
+//   this.crossManager.peakNextState()
+//   next(null)
+// }
 //获取巅峰赛数据
 peakHandler.prototype.getPeakData = function(msg, session, next) {
   var crossUid = session.get("crossUid")
