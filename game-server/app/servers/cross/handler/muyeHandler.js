@@ -5,11 +5,11 @@ var muyeHandler = function(app) {
 	this.crossManager = this.app.get("crossManager")
 };
 //赛季结算
-muyeHandler.prototype.settleMuye = function(msg, session, next) {
-  var crossUid = session.get("crossUid")
-  this.crossManager.settleMuye()
-  next(null,{flag:true})
-}
+// muyeHandler.prototype.settleMuye = function(msg, session, next) {
+//   var crossUid = session.get("crossUid")
+//   this.crossManager.settleMuye()
+//   next(null,{flag:true})
+// }
 //加入阵营
 muyeHandler.prototype.muyeJoinCamp = function(msg, session, next) {
   var crossUid = session.get("crossUid")
