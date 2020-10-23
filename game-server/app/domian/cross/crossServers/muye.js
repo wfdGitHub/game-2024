@@ -3,8 +3,10 @@ const muye_cfg = require("../../../../config/gameCfg/muye_cfg.json")
 const muye_rank = require("../../../../config/gameCfg/muye_rank.json")
 const async = require("async")
 var util = require("../../../../util/util.js")
-for(var i = 1;i <= 3;i++)
-	muye_cfg["default_team"+i]["value"] = JSON.parse(muye_cfg["default_team"+i]["value"])
+var robotTeam = []
+for(var i = 1;i <= 3;i++){
+	robotTeam.push(JSON.parse(muye_cfg["default_team"+i]["value"]))
+}
 var camp_state = {
 	"0" : "纣王",
 	"1" : "武王"
@@ -344,7 +346,7 @@ module.exports = function() {
 			function(next) {
 				self.redisDao.db.zscore(["cross:muye:rank:camp"+camp,newCrossUid],function(err,score) {
 					if(!score || score <= 0){
-						defTeams = [].concat(muye_cfg["default_team1"]["value"],muye_cfg["default_team2"]["value"],muye_cfg["default_team3"]["value"])
+						defTeams = robotTeam.concat()
 						targetInfo = {
 							name : "卫兵",
 							head : "201010"
