@@ -149,7 +149,7 @@ module.exports = function() {
 					}
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
 						for(var i = 3;i < 6;i++){
-							if(userInfosi])
+							if(userInfos[i])
 								honorList[i] = {crossUid:crossUids[i],info:userInfos[i]}
 							else
 								honorList[i] = null
