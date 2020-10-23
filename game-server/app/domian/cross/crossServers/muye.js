@@ -94,12 +94,14 @@ module.exports = function() {
 					var areaIds = []
 					var uids = []
 					var newRankList = ["cross:muye:rank:camp0"]
+					var crossUids = []
 					var rankIndex = 0
 					for(var i = 0;i < list.length;i+=2){
 						strList = list[i].split("|")
 						sid = Number(strList[0])
 						uid = Number(strList[1])
 						score = Number(list[i+1])
+						crossUids.push(list[i])
 						if(uid > 10000){
 							if(i > muye_rank[rankIndex]["count"])
 								rankIndex++
@@ -114,7 +116,7 @@ module.exports = function() {
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
 						honorList = [null,null,null]
 						for(var i = 0;i < userInfos.length;i++){
-							honorList[i] = userInfos[i]
+							honorList[i] = {crossUid:crossUids[i],info:userInfos[i]}
 						}
 						next()
 					})
