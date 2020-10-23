@@ -154,7 +154,7 @@ module.exports = function() {
 							else
 								honorList.push(null)
 						}
-						self.redisDao.db.hset("cross:muye","honorList",JSON.stringify(userInfos))
+						self.redisDao.db.hset("cross:muye","honorList",JSON.stringify(honorList))
 						next()
 					})
 				})
