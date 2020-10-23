@@ -342,8 +342,9 @@ module.exports = function() {
 		}
 		if(VIP[self.players[uid].vip+1]){
 			if(self.players[uid].vip_exp >= VIP[self.players[uid].vip+1]["rmb"]){
+				var amount = VIP[self.players[uid]["vip"] + 1]["heroAmount"] - VIP[self.players[uid]["vip"]]["heroAmount"]
 				this.incrbyLordData(uid,"vip",1)
-				this.incrbyLordData(uid,"heroAmount",VIP[self.players[uid]["vip"]]["heroAmount"])
+				this.incrbyLordData(uid,"heroAmount",amount)
 				if(self.players[uid]){
 					var notify = {
 						type : "vip",
