@@ -116,7 +116,7 @@ module.exports = function() {
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
 						honorList = []
 						for(var i = 0;i < userInfos.length;i++){
-							honorList[i].push({crossUid:crossUids[i],info:userInfos[i]})
+							honorList.push({crossUid:crossUids[i],info:userInfos[i]})
 						}
 						next()
 					})
@@ -150,9 +150,9 @@ module.exports = function() {
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
 						for(var i = 0;i < 3;i++){
 							if(userInfos[i])
-								honorList[i].push({crossUid:crossUids[i],info:userInfos[i]})
+								honorList.push({crossUid:crossUids[i],info:userInfos[i]})
 							else
-								honorList[i].push(null)
+								honorList.push(null)
 						}
 						self.redisDao.db.hset("cross:muye","honorList",JSON.stringify(userInfos))
 						next()
