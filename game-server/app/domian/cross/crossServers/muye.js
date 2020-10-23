@@ -312,10 +312,10 @@ module.exports = function() {
 		if(!challenge_time[newCrossUid]){
 			challenge_time[newCrossUid] = 0
 		}
-		// if((new Date()).getHours() < 17){
-		// 	cb(false,"17:00之后可挑战")
-		// 	return
-		// }
+		if((new Date()).getHours() < 17){
+			cb(false,"17:00之后可挑战")
+			return
+		}
 		var atkTeams = []
 		var defTeams = []
 		var wins = []
