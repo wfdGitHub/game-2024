@@ -310,7 +310,7 @@ module.exports = function() {
 					info.newRank = data.rank
 					info.upAward = self.addItem({uid : uid,itemId : rankUp,value : value,reason : "排名提升奖励"})
 					self.setObj(uid,mainName,"highestRank",data.rank)
-					player_rank[uid] = Number(data.highestRank)
+					player_rank[uid] = Number(data.rank)
 				}
 				//记录
 				local.addRecord(atkUser,"atk",winFlag,targetInfo,fightInfo,data.rank)
@@ -375,7 +375,7 @@ module.exports = function() {
 					}
 					var notify = {
 						type : "sysChat",
-						text : userName+"在竞技场中打败"+targetName+"获得"+"targetRank"+"名，无敌是多么寂寞！"
+						text : userName+"在竞技场中打败"+targetName+"获得"+targetRank+"名，无敌是多么寂寞！"
 					}
 					self.sendAllUser(notify)
 				})

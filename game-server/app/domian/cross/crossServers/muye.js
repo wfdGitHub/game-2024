@@ -21,9 +21,11 @@ module.exports = function() {
 	//初始化
 	this.muyeInit = function() {
 		self.redisDao.db.hgetall("cross:muye",function(err,data) {
-			monthStr = data.month
-			if(data.honorList)
-				honorList = JSON.parse(data.honorList)
+			if(data){
+				monthStr = data.month
+				if(data.honorList)
+					honorList = JSON.parse(data.honorList)
+			}
 			if(monthStr != util.getMonth())
 				self.settleMuye()
 			look = false
