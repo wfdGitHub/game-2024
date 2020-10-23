@@ -339,7 +339,7 @@ module.exports = function() {
 			},
 			function(next) {
 				self.redisDao.db.zscore(["cross:muye:rank:camp"+camp,newCrossUid],function(err,score) {
-					if(!score){
+					if(!score || score <= 0){
 						defTeams = [].concat(muye_cfg["default_team1"]["value"],muye_cfg["default_team2"]["value"],muye_cfg["default_team3"]["value"])
 						targetInfo = {
 							name : "卫兵",
