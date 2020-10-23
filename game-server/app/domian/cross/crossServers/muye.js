@@ -128,12 +128,14 @@ module.exports = function() {
 					var areaIds = []
 					var uids = []
 					var newRankList = ["cross:muye:rank:camp1"]
+					var crossUids = []
 					var rankIndex = 0
 					for(var i = 0;i < list.length;i+=2){
 						strList = list[i].split("|")
 						sid = Number(strList[0])
 						uid = Number(strList[1])
 						score = Number(list[i+1])
+						crossUids.push(list[i])
 						if(uid > 10000){
 							if(i > muye_rank[rankIndex]["count"])
 								rankIndex++
@@ -146,7 +148,12 @@ module.exports = function() {
 						}
 					}
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
-						honorList = honorList.concat(userInfos)
+						for(var i = 3;i < 6;i++){
+							if(userInfosi])
+								honorList[i] = {crossUid:crossUids[i],info:userInfos[i]}
+							else
+								honorList[i] = null
+						}
 						self.redisDao.db.hset("cross:muye","honorList",JSON.stringify(userInfos))
 						next()
 					})
