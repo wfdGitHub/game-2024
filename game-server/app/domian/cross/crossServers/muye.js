@@ -114,9 +114,9 @@ module.exports = function() {
 						}
 					}
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
-						honorList = [null,null,null]
+						honorList = []
 						for(var i = 0;i < userInfos.length;i++){
-							honorList[i] = {crossUid:crossUids[i],info:userInfos[i]}
+							honorList[i].push({crossUid:crossUids[i],info:userInfos[i]})
 						}
 						next()
 					})
@@ -148,11 +148,11 @@ module.exports = function() {
 						}
 					}
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
-						for(var i = 3;i < 6;i++){
+						for(var i = 0;i < 3;i++){
 							if(userInfos[i])
-								honorList[i] = {crossUid:crossUids[i],info:userInfos[i]}
+								honorList[i].push({crossUid:crossUids[i],info:userInfos[i]})
 							else
-								honorList[i] = null
+								honorList[i].push(null)
 						}
 						self.redisDao.db.hset("cross:muye","honorList",JSON.stringify(userInfos))
 						next()
