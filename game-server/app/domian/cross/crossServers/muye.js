@@ -246,9 +246,7 @@ module.exports = function() {
 		camps[crossUid] = camp
 		self.redisDao.db.hset("cross:muye:camps",crossUid,camp)
 		self.redisDao.db.zrem(["cross:muye:rank:camp"+defCamp,crossUid])
-		self.redisDao.db.zadd(["cross:muye:rank:camp"+camp,0,crossUid],function(err,data) {
-			console.log("zadd",err,data)
-		})
+		self.redisDao.db.zadd(["cross:muye:rank:camp"+camp,0,crossUid])
 		cb(true,camp)
 	}
 	//随机阵营
@@ -266,10 +264,11 @@ module.exports = function() {
 				if(count1 < count0){
 					camp = 1
 				}
-				camps[newCrossUid] = camp
-				self.redisDao.db.hset("cross:muye:camps",newCrossUid,camp)
-				self.redisDao.db.zrem(["cross:muye:rank:camp0",newCrossUid])
-				self.redisDao.db.zrem(["cross:muye:rank:camp1",newCrossUid])
+				var defCamp = (camp + 1) % 2 
+				camps[crossUid] = camp
+				self.redisDao.db.hset("cross:muye:camps",crossUid,camp)
+				self.redisDao.db.zrem(["cross:muye:rank:camp"+defCamp,crossUid])
+				self.redisDao.db.zadd(["cross:muye:rank:camp"+camp,0,crossUid])
 				self.addItemStr(crossUid,muye_cfg["rand_camp"]["value"],1,"牧野决战",function(flag,awardList) {
 					var info = {
 						awardList : awardList,
