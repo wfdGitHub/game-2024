@@ -87,6 +87,8 @@ module.exports = function() {
 	//旧赛季结算
 	this.settleMuye = function() {
 		console.log("牧野新赛季开启")
+		monthStr = util.getMonth()
+		self.redisDao.db.hset("cross:muye","month",monthStr)
 		async.waterfall([
 			function(next) {
 				self.redisDao.db.zrevrange(["cross:muye:rank:camp0",0,-1,"WITHSCORES"],function(err,list) {
@@ -241,10 +243,11 @@ module.exports = function() {
 			cb(false,"camp error")
 			return
 		}
+		var defCamp = (camp + 1) % 2 
 		camps[crossUid] = camp
 		self.redisDao.db.hset("cross:muye:camps",crossUid,camp)
-		self.redisDao.db.zrem(["cross:muye:rank:camp0",crossUid])
-		self.redisDao.db.zrem(["cross:muye:rank:camp1",crossUid])
+		self.redisDao.db.zrem(["cross:muye:rank:camp"+defCamp,crossUid])
+		self.redisDao.db.zadd(["cross:muye:rank:camp"+camp,0,crossUid])
 		cb(true,camp)
 	}
 	//随机阵营

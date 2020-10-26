@@ -479,7 +479,6 @@ module.exports = function() {
 	}
 	//赛季结束
 	this.peakEnd = function() {
-		look = true
 		runFlag = false
 		console.log("本赛季结束")
 		//王者币奖励
