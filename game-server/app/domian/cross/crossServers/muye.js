@@ -246,7 +246,9 @@ module.exports = function() {
 		camps[crossUid] = camp
 		self.redisDao.db.hset("cross:muye:camps",crossUid,camp)
 		self.redisDao.db.zrem(["cross:muye:rank:camp"+defCamp,crossUid])
-		self.redisDao.db.zadd(["cross:muye:rank:camp"+camp,0,crossUid])
+		self.redisDao.db.zadd(["cross:muye:rank:camp"+camp,0,crossUid],function(err,data) {
+			console.log("zadd",err,data)
+		})
 		cb(true,camp)
 	}
 	//随机阵营
