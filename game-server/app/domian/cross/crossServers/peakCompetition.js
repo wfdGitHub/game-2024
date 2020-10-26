@@ -113,9 +113,13 @@ module.exports = function() {
 						}
 						betAmount = data
 					}
-					runFlag = true
+					if(state == 1 || state == 2)
+						runFlag = true
+					else
+						runFlag = false
 					look = false
-					console.log("初始化完成")
+					console.log("巅峰赛初始化完成")
+					self.peakDayUpdate()
 				})
 			}
 		],function(err) {

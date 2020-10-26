@@ -21,16 +21,16 @@ module.exports = function() {
 	var likeMap = {}			//点赞榜
 	var winCounts = {}			//挑战次数
 	var look = true				//比赛中
-	var monthStr = ""			//月份记录
+	var weekStr = ""			//月份记录
 	//初始化
 	this.muyeInit = function() {
 		self.redisDao.db.hgetall("cross:muye",function(err,data) {
 			if(data){
-				monthStr = data.month
+				weekStr = data.week
 				if(data.honorList)
 					honorList = JSON.parse(data.honorList)
 			}
-			if(monthStr != util.getMonth())
+			if(weekStr != util.getWeek())
 				self.settleMuye()
 			look = false
 		})
@@ -81,14 +81,12 @@ module.exports = function() {
 				self.redisDao.db.hset("cross:muye","dayStr",self.dayStr)
 			}
 		})
-		if(monthStr != util.getMonth())
+		if(weekStr != util.getWeek())
 			self.settleMuye()
 	}
 	//旧赛季结算
 	this.settleMuye = function() {
 		console.log("牧野新赛季开启")
-		monthStr = util.getMonth()
-		self.redisDao.db.hset("cross:muye","month",monthStr)
 		async.waterfall([
 			function(next) {
 				self.redisDao.db.zrevrange(["cross:muye:rank:camp0",0,-1,"WITHSCORES"],function(err,list) {
@@ -176,13 +174,14 @@ module.exports = function() {
 		challenge_time = {}
 		challenge_free = {}
 		camps = {}
+		weekStr = util.getWeek()
 		self.redisDao.db.del("cross:muye:challenge_free")
 		self.redisDao.db.del("cross:muye:winCounts")
 		self.redisDao.db.del("cross:muye:boxs")
 		self.redisDao.db.del("cross:muye:camps")
 		self.redisDao.db.del("cross:muye:rank:camp0")
 		self.redisDao.db.del("cross:muye:rank:camp1")
-		self.redisDao.db.hset("cross:muye","month",util.getMonth())
+		self.redisDao.db.hset("cross:muye","week",weekStr)
 	}
 	//获取数据
 	this.getMuyeData = function(crossUid,cb) {
