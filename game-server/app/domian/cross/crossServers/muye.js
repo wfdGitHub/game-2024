@@ -544,7 +544,7 @@ module.exports = function() {
 			cb(false,"camp error")
 			return
 		}
-		self.redisDao.db.zrevrange(["cross:muye:rank:camp"+camp,0,10,"WITHSCORES"],function(err,list) {
+		self.redisDao.db.zrevrange(["cross:muye:rank:camp"+camp,0,19,"WITHSCORES"],function(err,list) {
 			var strList,sid,uid,score
 			var areaIds = []
 			var uids = []
