@@ -384,8 +384,7 @@ model.prototype.bookAction = function(book) {
 	}
 	this.diedList = []
 	//检测战斗是否结束
-	if(this.checkOver())
-		this.fightOver()
+	this.checkOver()
 }
 //战斗结束
 model.prototype.fightOver = function(winFlag,roundEnd) {
