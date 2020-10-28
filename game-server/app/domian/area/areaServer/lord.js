@@ -44,6 +44,13 @@ module.exports = function() {
 				cb(data)
 		})
 	}
+	//删除数据
+	this.delLordData = function(uid,key) {
+		if(self.players[uid]){
+			delete self.players[uid][key]
+		}
+		self.redisDao.db.hdel("player:user:"+uid+":playerInfo",key)
+	}
 	//改变头像
 	this.changeHead = function(uid,id,cb) {
 		self.redisDao.db.hget("player:user:"+uid+":heroArchive",id,function(err,data) {

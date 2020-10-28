@@ -98,6 +98,67 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============公会==========//
+      //创建公会
+      var createGuild = function(name) {
+        pomelo.request("area.guildHandler.createGuild", {name:name}, function(data) {
+            console.log(data);
+        });
+      }
+      //解散公会
+      var dissolveGuild = function() {
+        pomelo.request("area.guildHandler.dissolveGuild", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取我的公会信息
+      var getMyGuild = function() {
+        pomelo.request("area.guildHandler.getMyGuild", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取公会成员
+      var getMyGuildUsers = function() {
+        pomelo.request("area.guildHandler.getMyGuildUsers", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取公会列表
+      var getGuildList = function() {
+        pomelo.request("area.guildHandler.getGuildList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //申请加入公会
+      var applyJoinGuild = function(guildId) {
+        pomelo.request("area.guildHandler.applyJoinGuild", {guildId:guildId}, function(data) {
+            console.log(data);
+        });
+      }
+      //获得申请列表
+      var getGuildApplyList = function() {
+        pomelo.request("area.guildHandler.getGuildApplyList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //同意申请
+      var agreeGuildApply = function(targetUid) {
+        pomelo.request("area.guildHandler.agreeGuildApply", {targetUid:targetUid}, function(data) {
+            console.log(data);
+        });
+      }
+      //拒绝申请
+      var refuseGuildApply = function(targetUid) {
+        pomelo.request("area.guildHandler.refuseGuildApply", {targetUid:targetUid}, function(data) {
+            console.log(data);
+        });
+      }
+      //退出公会
+      var quitGuild = function() {
+        pomelo.request("area.guildHandler.quitGuild", {}, function(data) {
+            console.log(data);
+        });
+      }
       //=============牧野之战=======//
       //赛季结算
       var settleMuye = function() {
@@ -2167,7 +2228,16 @@
       <input id="test" type="button" value="随机阵营" onclick="muyeRandCamp()"/>
       <input id="test" type="button" value="牧野数据" onclick="getMuyeData()"/>
       <input id="test" type="button" value="匹配战斗" onclick="matchMuye()"/>
-
+    </div>
+    <div class="g-button">
+      公会 : 
+      <input id="test" type="button" value="创建公会" onclick="createGuild('5555')"/>
+      <input id="test" type="button" value="解散公会" onclick="dissolveGuild()"/>
+      <input id="test" type="button" value="我的公会" onclick="getMyGuild()"/>
+      <input id="test" type="button" value="公会成员" onclick="getMyGuildUsers()"/>
+      <input id="test" type="button" value="公会列表" onclick="getGuildList()"/>
+      <input id="test" type="button" value="申请列表" onclick="getGuildApplyList()"/>
+      <input id="test" type="button" value="退出公会" onclick="quitGuild()"/>
     </div>
   </body>
 </html>

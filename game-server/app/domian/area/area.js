@@ -9,7 +9,7 @@ const default_cfg = require("../../../config/gameCfg/default_cfg.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
@@ -53,6 +53,7 @@ area.prototype.init = function() {
 	this.worldBossCheck()
 	this.initAreaMail()
 	this.initSprintRank()
+	this.initGuild()
 	this.timer = setInterval(this.update.bind(this),1000)
 }
 //服务器关闭
@@ -300,7 +301,22 @@ area.prototype.getSimpleUser = function(uid) {
 	}
 	var info = {
 		uid : uid,
-		name : this.players[uid]["name"]
+		name : this.players[uid]["name"],
+		head : this.players[uid]["head"]
+	}
+	return info
+}
+area.prototype.getBaseUser = function(uid) {
+	if(uid < 10000 || !this.players[uid]){
+		return false
+	}
+	var info = {
+		uid : uid,
+		name : this.players[uid]["name"],
+		head : this.players[uid]["head"],
+		vip : this.players[uid]["vip"],
+		level : this.players[uid]["level"],
+		ce : this.getCE(uid)
 	}
 	return info
 }
