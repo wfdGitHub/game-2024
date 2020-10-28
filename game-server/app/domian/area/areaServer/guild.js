@@ -3,7 +3,7 @@ const async = require("async")
 const uuid = require("uuid")
 const main_name= "guild"
 const max_num = 20
-const num_att = {"lv":1,"exp":1,"num":1,"id":1,"lead":1}
+const num_att = {"lv":1,"exp":1,"num":1,"id":1,"lead":1,"deputy":1}
 module.exports = function() {
 	var self = this
 	var contributions = {}		//公会玩家列表
@@ -82,10 +82,13 @@ module.exports = function() {
 				scores.push(contributions[guildId][i])
 			}
 			self.getPlayerInfoByUids(uids,function(userInfos) {
-				var info = {}
-				info.userInfos = userInfos
-				info.scores = scores
-				cb(true,info)
+				userInfos = userInfos
+				for(var i = 0;i < userInfos.length;i++){
+					if(self.players[userInfos[i]["uid"]])
+						userInfos[i].online = true
+					userInfos[i].score = scores[i]
+				}
+				cb(true,userInfos)
 			})
 		}else{
 			cb(false,"未加入公会")
@@ -133,7 +136,9 @@ module.exports = function() {
 						id : guildId,
 						name : name,
 						lead : uid,
-						num : 1
+						deputy : 0,
+						num : 1,
+						notify: ""
 					}
 					guildList[guildId] = guildInfo
 					contributions[guildId] = {}
@@ -171,6 +176,80 @@ module.exports = function() {
 		self.redisDao.db.del("guild:guildInfo:"+guildId)
 		cb(true)
 	}
+	//设置成副会长
+	this.setGuildDeputy = function(uid,targetUid,cb) {
+		var guildId = self.players[uid]["gid"]
+		targetUid = Number(targetUid)
+		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
+			cb(false,"不是公会会长")
+			return
+		}
+		if(guildList[guildId]["deputy"]){
+			cb(false,"公会已有副会长")
+			return
+		}
+		if(contributions[guildId][targetUid] == undefined){
+			cb(false,"玩家不存在")
+			return
+		}
+		//todo  邮件通知
+		self.setGuildInfo(guildId,"deputy",targetUid)
+		cb(true)
+	}
+	//设置成普通成员
+	this.setGuildNormal = function(uid,targetUid,cb) {
+		var guildId = self.players[uid]["gid"]
+		targetUid = Number(targetUid)
+		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
+			cb(false,"不是公会会长")
+			return
+		}
+		if(guildList[guildId]["deputy"] != targetUid){
+			cb(false,"目标不是副会长")
+			return
+		}
+		if(contributions[guildId][targetUid] == undefined){
+			cb(false,"玩家不存在")
+			return
+		}
+		//todo  邮件通知
+		self.setGuildInfo(guildId,"deputy",0)
+		cb(true)
+	}
+	//设置成会长
+	this.setGuildLead = function(uid,targetUid,cb) {
+		var guildId = self.players[uid]["gid"]
+		targetUid = Number(targetUid)
+		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
+			cb(false,"不是公会会长")
+			return
+		}
+		if(guildList[guildId]["deputy"] == targetUid || guildList[guildId]["lead"] == targetUid){
+			cb(false,"目标有职务在身")
+			return
+		}
+		if(contributions[guildId][targetUid] == undefined){
+			cb(false,"玩家不存在")
+			return
+		}
+		//todo  邮件通知
+		self.setGuildInfo(guildId,"lead",targetUid)
+		cb(true)
+	}
+	//设置公告
+	this.setGuildNotify = function(uid,notify,cb) {
+		var guildId = self.players[uid]["gid"]
+		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
+			cb(false,"没有权限")
+			return
+		}
+		if(typeof(notify) != "string" || notify.length > 256){
+			cb(false,"notify error")
+			return
+		}
+		self.setGuildInfo(guildId,"notify",notify)
+		cb(true)
+	}
 	//获取公会列表
 	this.getGuildList = function(uid,cb) {
 		cb(true,guildList)
@@ -196,8 +275,8 @@ module.exports = function() {
 	//获得申请列表
 	this.getGuildApplyList = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
-		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是公会会长")
+		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
+			cb(false,"没有权限")
 			return
 		}
 		cb(true,applyList[guildId])
@@ -205,8 +284,8 @@ module.exports = function() {
 	//同意申请
 	this.agreeGuildApply = function(uid,targetUid,cb) {
 		var guildId = self.players[uid]["gid"]
-		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是公会会长")
+		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
+			cb(false,"没有权限")
 			return
 		}
 		if(!applyList[guildId][targetUid]){
@@ -234,8 +313,8 @@ module.exports = function() {
 	//拒绝申请
 	this.refuseGuildApply = function(uid,targetUid,cb) {
 		var guildId = self.players[uid]["gid"]
-		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是公会会长")
+		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
+			cb(false,"没有权限")
 			return
 		}
 		if(!applyList[guildId][targetUid]){
@@ -257,6 +336,8 @@ module.exports = function() {
 			cb(false,"会长不能退出公会")
 			return
 		}
+		if(guildList[guildId]["deputy"] == uid)
+			self.setGuildInfo(guildId,"deputy",0)
 		self.delLordData(uid,"gid")
 		self.incrbyGuildInfo(guildId,"num",-1)
 		delete contributions[guildId][uid]

@@ -29,6 +29,15 @@ guildHandler.prototype.getMyGuild = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//设置公告
+guildHandler.prototype.setGuildNotify = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var notify = msg.notify
+  this.areaManager.areaMap[areaId].setGuildNotify(uid,notify,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 //获取公会成员
 guildHandler.prototype.getMyGuildUsers = function(msg, session, next) {
   var uid = session.uid
@@ -85,6 +94,33 @@ guildHandler.prototype.quitGuild = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].quitGuild(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//设置成副会长
+guildHandler.prototype.setGuildDeputy = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var targetUid = msg.targetUid
+  this.areaManager.areaMap[areaId].setGuildDeputy(uid,targetUid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//设置成普通成员
+guildHandler.prototype.setGuildNormal = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var targetUid = msg.targetUid
+  this.areaManager.areaMap[areaId].setGuildNormal(uid,targetUid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//设置成会长
+guildHandler.prototype.setGuildLead = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var targetUid = msg.targetUid
+  this.areaManager.areaMap[areaId].setGuildLead(uid,targetUid,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }

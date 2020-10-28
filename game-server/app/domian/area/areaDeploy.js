@@ -58,11 +58,23 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 					}
 				}
 				self.changeFinalServerMap(areaList[i],areaId)
-				self.app.rpc.connector.connectorRemote.changeFinalServerMap.toServer("*",areaList[i],areaId,null)
 				self.mergeRank(areaList[i],areaId)
+				self.mergeGuild(areaList[i],areaId)
+				self.app.rpc.connector.connectorRemote.changeFinalServerMap.toServer("*",areaList[i],areaId,null)
 			}
 		}
 	})
+}
+//公会指向调整
+areaDeploy.prototype.mergeGuild = function(oriId,areaId) {
+	var self = this
+	for(let i = 0;i < rankTypes.length;i++){
+		self.redisDao.db.hgetall("area:area"+oriId+":guild",function(err,data) {
+			if(data){
+				self.redisDao.db.hmset("area:area"+areaId+":guild",data)
+			}
+		})
+	}
 }
 //排行榜合并
 areaDeploy.prototype.mergeRank = function(oriId,areaId) {

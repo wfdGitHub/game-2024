@@ -111,6 +111,12 @@
             console.log(data);
         });
       }
+      //设置公告
+      var setGuildNotify = function(notify) {
+        pomelo.request("area.guildHandler.setGuildNotify", {notify:notify}, function(data) {
+            console.log(data);
+        });
+      }
       //获取我的公会信息
       var getMyGuild = function() {
         pomelo.request("area.guildHandler.getMyGuild", {}, function(data) {
@@ -156,6 +162,24 @@
       //退出公会
       var quitGuild = function() {
         pomelo.request("area.guildHandler.quitGuild", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置成副会长
+      var setGuildDeputy = function(targetUid) {
+        pomelo.request("area.guildHandler.setGuildDeputy", {targetUid:targetUid}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置成普通成员
+      var setGuildNormal = function(targetUid) {
+        pomelo.request("area.guildHandler.setGuildNormal", {targetUid:targetUid}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置成会长
+      var setGuildLead = function(targetUid) {
+        pomelo.request("area.guildHandler.setGuildLead", {targetUid:targetUid}, function(data) {
             console.log(data);
         });
       }
