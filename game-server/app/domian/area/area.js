@@ -340,7 +340,7 @@ area.prototype.standardTeam = function(uid,team,dl) {
 	}
 	return team
 }
-//批量获取玩家基本数据
+//批量获取玩家简易数据
 area.prototype.getPlayerInfoByUids = function(uids,cb) {
 	var self = this
 	var multiList = []
@@ -358,6 +358,33 @@ area.prototype.getPlayerInfoByUids = function(uids,cb) {
 					uid : uids[i],
 					name : list[i][0],
 					head : list[i][1]
+				}
+			}
+			userInfos.push(info)
+		}
+		cb(userInfos)
+	})
+}
+//批量获取玩家基本数据
+area.prototype.getPlayerBaseByUids = function(uids,cb) {
+	var self = this
+	var multiList = []
+	for(var i = 0;i < uids.length;i++){
+		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip"]])
+	}
+	self.redisDao.multi(multiList,function(err,list) {
+		var userInfos = []
+		for(var i = 0;i < uids.length;i++){
+			let info = {}
+			if(uids[i] < 10000){
+				info = self.robots[uids[i]]
+			}else{
+				info = {
+					uid : uids[i],
+					name : list[i][0],
+					head : list[i][1],
+					level : list[i][2],
+					vip : list[i][3]
 				}
 			}
 			userInfos.push(info)

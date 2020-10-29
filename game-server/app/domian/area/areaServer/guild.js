@@ -81,11 +81,13 @@ module.exports = function() {
 				uids.push(i)
 				scores.push(contributions[guildId][i])
 			}
-			self.getPlayerInfoByUids(uids,function(userInfos) {
+			self.getPlayerBaseByUids(uids,function(userInfos) {
 				userInfos = userInfos
 				for(var i = 0;i < userInfos.length;i++){
-					if(self.players[userInfos[i]["uid"]])
+					if(self.players[userInfos[i]["uid"]]){
+						userInfos[i].ce = self.getCE(userInfos[i]["uid"])
 						userInfos[i].online = true
+					}
 					userInfos[i].score = scores[i]
 				}
 				cb(true,userInfos)
