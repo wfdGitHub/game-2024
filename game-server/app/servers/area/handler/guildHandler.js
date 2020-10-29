@@ -132,6 +132,16 @@ guildHandler.prototype.getGuildLog = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//请离玩家
+guildHandler.prototype.kickGuildNormal = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var targetUid = msg.targetUid
+  this.areaManager.areaMap[areaId].kickGuildNormal(uid,targetUid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "guildHandler",

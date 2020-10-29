@@ -168,7 +168,7 @@ module.exports = function() {
 		}
 		for(var targetUid in contributions[guildId]){
 			if(targetUid != uid){
-				self.quitGuild(targetUid)
+				self.leaveGuild(guildId,targetUid)
 			}
 		}
 		self.redisDao.db.hdel("guild:guildNameMap",guildList[guildId]["name"],guildId)
@@ -261,6 +261,23 @@ module.exports = function() {
 		self.setGuildInfo(guildId,"notify",notify)
 		cb(true)
 	}
+	//请离玩家
+	this.kickGuildNormal = function(uid,targetUid,cb) {
+		var guildId = self.players[uid]["gid"]
+		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
+			cb(false,"没有权限")
+			return
+		}
+		if((guildList[guildId]["lead"] == targetUid  || guildList[guildId]["deputy"] == targetUid)){
+			cb(false,"目标有职务在身")
+			return
+		}
+		if(contributions[guildId][targetUid] == undefined){
+			cb(false,"玩家不存在")
+			return
+		}
+		self.leaveGuild(guildId,targetUid,cb)
+	}
 	//获取公会列表
 	this.getGuildList = function(uid,cb) {
 		var info = {
@@ -307,9 +324,9 @@ module.exports = function() {
 			cb(false,"不存在该玩家申请")
 			return
 		}
-		if(self.players[targetUid]["gid"]){
+		if(!applyMap[targetUid] || !applyMap[targetUid][guildId]){
 			delete applyList[guildId][targetUid]
-			cb(false,"该玩家已加入公会")
+			cb(false,"该玩家已加入其他公会")
 			return
 		}
 		if(guildList[guildId] >= max_num){
@@ -318,7 +335,7 @@ module.exports = function() {
 		}
 		self.addGuildLog(guildId,{type:"join",uid:targetUid,name:applyList[guildId][targetUid]["name"]})
 		delete applyList[guildId][targetUid]
-		delete applyMap[targetUid][guildId]
+		delete applyMap[targetUid]
 		self.chageLordData(targetUid,"gid",guildId)
 		self.incrbyGuildInfo(guildId,"num",1)
 		contributions[guildId][targetUid] = 0
@@ -344,7 +361,6 @@ module.exports = function() {
 	//退出公会
 	this.quitGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
-		var name = self.players[uid]["name"]
 		if(!guildId){
 			cb(false,"未加入公会")
 			return
@@ -353,14 +369,21 @@ module.exports = function() {
 			cb(false,"会长不能退出公会")
 			return
 		}
+		self.leaveGuild(guildId,uid,cb)
+	}
+	//玩家离开
+	this.leaveGuild = function(guildId,uid,cb) {
 		if(guildList[guildId]["deputy"] == uid)
 			self.setGuildInfo(guildId,"deputy",0)
 		self.delLordData(uid,"gid")
 		self.incrbyGuildInfo(guildId,"num",-1)
 		delete contributions[guildId][uid]
 		self.redisDao.db.hdel("guild:contributions:"+guildId,uid)
-		self.addGuildLog(guildId,{type:"quit",uid:uid,name:name})
-		cb(true)
+		self.getPlayerInfoByUids([uid],function(userInfos) {
+			self.addGuildLog(guildId,{type:"quit",uid:uid,name:userInfos[0]["name"]})
+		})
+		if(cb)
+			cb(true)
 	}
 	//添加日志
 	this.addGuildLog = function(guildId,info) {
@@ -386,4 +409,5 @@ module.exports = function() {
 			}
 		})
 	}
+	//签到
 }

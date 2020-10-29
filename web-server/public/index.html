@@ -189,6 +189,12 @@
             console.log(data);
         });
       }
+      //请离玩家
+      var kickGuildNormal = function(targetUid) {
+        pomelo.request("area.guildHandler.kickGuildNormal", {targetUid:targetUid}, function(data) {
+            console.log(data);
+        });
+      }
       //=============牧野之战=======//
       //赛季结算
       var settleMuye = function() {
