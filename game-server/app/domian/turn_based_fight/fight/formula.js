@@ -81,7 +81,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
 	if(skill.isAnger){
 		if(attacker.maxHP_damage || skill.maxHP_damage){
 			var tmpRate = attacker.maxHP_damage + skill.maxHP_damage
-			info.value += Math.floor(target.attInfo.maxHP * tmpRate)
+			info.realDamage = Math.floor(target.attInfo.maxHP * tmpRate)
+			info.value += info.realDamage
 		}
 	}
 	if(target.reduction_over){
