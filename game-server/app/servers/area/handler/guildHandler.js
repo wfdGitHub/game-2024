@@ -124,6 +124,14 @@ guildHandler.prototype.setGuildLead = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//获取公会日志
+guildHandler.prototype.getGuildLog = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getGuildLog(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "guildHandler",

@@ -3,6 +3,7 @@ const async = require("async")
 const uuid = require("uuid")
 const main_name= "guild"
 const max_num = 20
+const maxRecordNum = 20
 const num_att = {"lv":1,"exp":1,"num":1,"id":1,"lead":1,"deputy":1}
 module.exports = function() {
 	var self = this
@@ -150,6 +151,7 @@ module.exports = function() {
 					self.redisDao.db.hset("guild:guildNameMap",name,guildId)
 					self.redisDao.db.hmset("guild:guildInfo:"+guildId,guildList[guildId])
 					self.redisDao.db.hmset("guild:contributions:"+guildId,contributions[guildId])
+					self.addGuildLog(guildId,{type:"create"})
 					cb(true,guildInfo)
 				})
 			}
@@ -176,6 +178,7 @@ module.exports = function() {
 		self.redisDao.db.del("guild:contributions:"+guildId)
 		delete guildList[guildId]
 		self.redisDao.db.del("guild:guildInfo:"+guildId)
+		self.redisDao.db.del("guild:log:"+guildId)
 		cb(true)
 	}
 	//设置成副会长
@@ -194,6 +197,9 @@ module.exports = function() {
 			cb(false,"玩家不存在")
 			return
 		}
+		self.getPlayerInfoByUids([targetUid],function(userInfos) {
+			self.addGuildLog(guildId,{type:"deputy",uid:targetUid,name:userInfos[0]["name"]})
+		})
 		//todo  邮件通知
 		self.setGuildInfo(guildId,"deputy",targetUid)
 		cb(true)
@@ -234,6 +240,9 @@ module.exports = function() {
 			cb(false,"玩家不存在")
 			return
 		}
+		self.getPlayerInfoByUids([targetUid],function(userInfos) {
+			self.addGuildLog(guildId,{type:"lead",uid:targetUid,name:userInfos[0]["name"]})
+		})
 		//todo  邮件通知
 		self.setGuildInfo(guildId,"lead",targetUid)
 		cb(true)
@@ -303,6 +312,7 @@ module.exports = function() {
 			cb(false,"人数已达上限")
 			return
 		}
+		self.addGuildLog(guildId,{type:"join",uid:targetUid,name:applyList[guildId][targetUid]["name"]})
 		delete applyList[guildId][targetUid]
 		delete applyMap[targetUid][guildId]
 		self.chageLordData(targetUid,"gid",guildId)
@@ -330,6 +340,7 @@ module.exports = function() {
 	//退出公会
 	this.quitGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
+		var name = self.players[uid]["name"]
 		if(!guildId){
 			cb(false,"未加入公会")
 			return
@@ -344,6 +355,31 @@ module.exports = function() {
 		self.incrbyGuildInfo(guildId,"num",-1)
 		delete contributions[guildId][uid]
 		self.redisDao.db.hdel("guild:contributions:"+guildId,uid)
+		self.addGuildLog(guildId,{type:"quit",uid:uid,name:name})
 		cb(true)
+	}
+	//添加日志
+	this.addGuildLog = function(guildId,info) {
+		info.time = Date.now()
+		self.redisDao.db.rpush("guild:log:"+guildId,JSON.stringify(info),function(err,num) {
+			if(num > maxRecordNum){
+				self.redisDao.db.ltrim("player:user:"+atkUser.uid+":arenaRecord",-maxRecordNum,-1)
+			}
+		})
+	}
+	//获取公会日志
+	this.getGuildLog = function(uid,cb) {
+		var guildId = self.players[uid]["gid"]
+		if(!guildId){
+			cb(false,"未加入公会")
+			return
+		}
+		self.redisDao.db.lrange("guild:log:"+guildId,0,-1,function(err,list) {
+			if(err || !list){
+				cb(true,[])
+			}else{
+				cb(true,list)
+			}
+		})
 	}
 }
