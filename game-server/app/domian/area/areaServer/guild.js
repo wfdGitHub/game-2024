@@ -263,7 +263,11 @@ module.exports = function() {
 	}
 	//获取公会列表
 	this.getGuildList = function(uid,cb) {
-		cb(true,guildList)
+		var info = {
+			applys : applyMap[uid],
+			guildList : guildList
+		}
+		cb(true,info)
 	}
 	//申请加入公会
 	this.applyJoinGuild = function(uid,guildId,cb) {

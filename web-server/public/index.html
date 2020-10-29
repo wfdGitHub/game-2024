@@ -183,6 +183,12 @@
             console.log(data);
         });
       }
+      //公会日志
+      var getGuildLog = function() {
+        pomelo.request("area.guildHandler.getGuildLog", {}, function(data) {
+            console.log(data);
+        });
+      }
       //=============牧野之战=======//
       //赛季结算
       var settleMuye = function() {
@@ -2255,13 +2261,14 @@
     </div>
     <div class="g-button">
       公会 : 
-      <input id="test" type="button" value="创建公会" onclick="createGuild('5555')"/>
+      <input id="test" type="button" value="创建公会" onclick="createGuild(Math.random().toString(36).substr(2,5))"/>
       <input id="test" type="button" value="解散公会" onclick="dissolveGuild()"/>
       <input id="test" type="button" value="我的公会" onclick="getMyGuild()"/>
       <input id="test" type="button" value="公会成员" onclick="getMyGuildUsers()"/>
       <input id="test" type="button" value="公会列表" onclick="getGuildList()"/>
       <input id="test" type="button" value="申请列表" onclick="getGuildApplyList()"/>
       <input id="test" type="button" value="退出公会" onclick="quitGuild()"/>
+      <input id="test" type="button" value="公会日志" onclick="getGuildLog()"/>
     </div>
   </body>
 </html>
