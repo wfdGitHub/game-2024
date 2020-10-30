@@ -130,6 +130,10 @@ module.exports = function() {
 				})
 			},
 			function(next) {
+				for(var i in applyMap[uid]){
+					delete applyList[i][uid]
+				}
+				delete applyMap[uid]
 				self.redisDao.db.incrby("guild:lastid",1,function(err,guildId) {
 					console.log("guildId",guildId)
 					//创建公会
@@ -330,6 +334,7 @@ module.exports = function() {
 		}
 		self.getPlayerKeyByUid(targetUid,"gid",function(gid) {
 			if(gid){
+				delete applyList[guildId][targetUid]
 				cb(false,"该玩家已加入其他公会")
 				return
 			}
