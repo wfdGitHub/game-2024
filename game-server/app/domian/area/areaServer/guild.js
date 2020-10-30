@@ -330,12 +330,13 @@ module.exports = function() {
 		}
 		self.getPlayerKeyByUid(targetUid,"gid",function(gid) {
 			if(gid){
+				delete applyList[guildId][targetUid]
 				cb(false,"该玩家已加入其他公会")
 				return
 			}
 			self.addGuildLog(guildId,{type:"join",uid:targetUid,name:applyList[guildId][targetUid]["name"]})
 			delete applyList[guildId][targetUid]
-			delete applyMap[targetUid]
+			delete applyMap[targetUid][guildId]
 			self.chageLordData(targetUid,"gid",guildId)
 			self.incrbyGuildInfo(guildId,"num",1)
 			contributions[guildId][targetUid] = 0
