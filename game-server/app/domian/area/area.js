@@ -340,12 +340,21 @@ area.prototype.standardTeam = function(uid,team,dl) {
 	}
 	return team
 }
+//获取玩家单项数据
+area.prototype.getPlayerKeyByUid = function(uid,key,cb) {
+	self.redisDao.db.hget("player:user:"+uid+":playerInfo",key,function(err,data) {
+		if(!err && data)
+			cb(data)
+		else
+			cb(false)
+	})
+}
 //批量获取玩家简易数据
 area.prototype.getPlayerInfoByUids = function(uids,cb) {
 	var self = this
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
-		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head"]])
+		multiList.push(["hmget",,["name","head"]])
 	}
 	self.redisDao.multi(multiList,function(err,list) {
 		var userInfos = []

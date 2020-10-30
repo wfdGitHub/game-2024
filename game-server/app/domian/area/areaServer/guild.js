@@ -197,8 +197,8 @@ module.exports = function() {
 			cb(false,"玩家不存在")
 			return
 		}
-		self.getPlayerInfoByUids([targetUid],function(userInfos) {
-			self.addGuildLog(guildId,{type:"deputy",uid:targetUid,name:userInfos[0]["name"]})
+		self.getPlayerKeyByUid(targetUid,"name",function(name) {
+			self.addGuildLog(guildId,{type:"deputy",uid:targetUid,name:name})
 		})
 		//todo  邮件通知
 		self.setGuildInfo(guildId,"deputy",targetUid)
@@ -240,8 +240,8 @@ module.exports = function() {
 			cb(false,"玩家不存在")
 			return
 		}
-		self.getPlayerInfoByUids([targetUid],function(userInfos) {
-			self.addGuildLog(guildId,{type:"lead",uid:targetUid,name:userInfos[0]["name"]})
+		self.getPlayerKeyByUid(targetUid,"name",function(name) {
+			self.addGuildLog(guildId,{type:"lead",uid:targetUid,name:name})
 		})
 		//todo  邮件通知
 		self.setGuildInfo(guildId,"lead",targetUid)
@@ -324,24 +324,25 @@ module.exports = function() {
 			cb(false,"不存在该玩家申请")
 			return
 		}
-		if(!applyMap[targetUid] || !applyMap[targetUid][guildId]){
-			delete applyList[guildId][targetUid]
-			cb(false,"该玩家已加入其他公会")
-			return
-		}
 		if(guildList[guildId] >= max_num){
 			cb(false,"人数已达上限")
 			return
 		}
-		self.addGuildLog(guildId,{type:"join",uid:targetUid,name:applyList[guildId][targetUid]["name"]})
-		delete applyList[guildId][targetUid]
-		delete applyMap[targetUid]
-		self.chageLordData(targetUid,"gid",guildId)
-		self.incrbyGuildInfo(guildId,"num",1)
-		contributions[guildId][targetUid] = 0
-		self.redisDao.db.hset("guild:contributions:"+guildId,targetUid,0)
-		//todo 欢迎邮件
-		cb(true)
+		self.getPlayerKeyByUid(targetUid,"gid",function(gid) {
+			if(gid){
+				cb(false,"该玩家已加入其他公会")
+				return
+			}
+			self.addGuildLog(guildId,{type:"join",uid:targetUid,name:applyList[guildId][targetUid]["name"]})
+			delete applyList[guildId][targetUid]
+			delete applyMap[targetUid]
+			self.chageLordData(targetUid,"gid",guildId)
+			self.incrbyGuildInfo(guildId,"num",1)
+			contributions[guildId][targetUid] = 0
+			self.redisDao.db.hset("guild:contributions:"+guildId,targetUid,0)
+			//todo 欢迎邮件
+			cb(true)
+		})
 	}
 	//拒绝申请
 	this.refuseGuildApply = function(uid,targetUid,cb) {
@@ -379,8 +380,8 @@ module.exports = function() {
 		self.incrbyGuildInfo(guildId,"num",-1)
 		delete contributions[guildId][uid]
 		self.redisDao.db.hdel("guild:contributions:"+guildId,uid)
-		self.getPlayerInfoByUids([uid],function(userInfos) {
-			self.addGuildLog(guildId,{type:"quit",uid:uid,name:userInfos[0]["name"]})
+		self.getPlayerKeyByUid(targetUid,"name",function(name) {
+			self.addGuildLog(guildId,{type:"quit",uid:targetUid,name:name})
 		})
 		if(cb)
 			cb(true)
