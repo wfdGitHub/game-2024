@@ -342,6 +342,7 @@ area.prototype.standardTeam = function(uid,team,dl) {
 }
 //获取玩家单项数据
 area.prototype.getPlayerKeyByUid = function(uid,key,cb) {
+	var self = this
 	self.redisDao.db.hget("player:user:"+uid+":playerInfo",key,function(err,data) {
 		if(!err && data)
 			cb(data)

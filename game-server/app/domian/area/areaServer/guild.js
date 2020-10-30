@@ -380,8 +380,8 @@ module.exports = function() {
 		self.incrbyGuildInfo(guildId,"num",-1)
 		delete contributions[guildId][uid]
 		self.redisDao.db.hdel("guild:contributions:"+guildId,uid)
-		self.getPlayerKeyByUid(targetUid,"name",function(name) {
-			self.addGuildLog(guildId,{type:"quit",uid:targetUid,name:name})
+		self.getPlayerKeyByUid(uid,"name",function(name) {
+			self.addGuildLog(guildId,{type:"quit",uid:uid,name:name})
 		})
 		if(cb)
 			cb(true)
