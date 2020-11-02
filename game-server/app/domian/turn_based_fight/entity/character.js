@@ -205,6 +205,10 @@ var model = function(otps) {
 		this.self_adds["atk"] = otps.self_atk_add
 	if(otps.self_maxHP_add)
 		this.self_adds["maxHP"] = otps.self_maxHP_add
+	if(otps.self_phyDef_add)
+		this.self_adds["phyDef"] = otps.self_phyDef_add
+	if(otps.self_magDef_add)
+		this.self_adds["magDef"] = otps.self_magDef_add
 	if(otps.team_atk_add)
 		this.team_adds["atk"] = otps.team_atk_add
 	if(otps.team_maxHP_add)

@@ -15,12 +15,15 @@ var stone_skill = require("../../../../config/gameCfg/stone_skill.json")
 var book_list = require("../../../../config/gameCfg/book_list.json")
 var book_lv = require("../../../../config/gameCfg/book_lv.json")
 var book_star = require("../../../../config/gameCfg/book_star.json")
+var guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
+var guild_skill = require("../../../../config/gameCfg/guild_skill.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
 var bookIds = ["singleAtk","backDamage","frontDamage","banishBook","angerAddBook","angerLessBook","reductionBuff","seckill","singleHeal"]
 var bookList = {}
 var bookMap = {}
+var gSkillAtts = {}
 for(var i = 0;i < bookIds.length;i++){
 	bookList[bookIds[i]] = require("../books/"+bookIds[i]+".js")
 }
@@ -29,6 +32,9 @@ for(var i in book_list){
 	for(var j = 0;j < 6;j++){
 		bookMap[book_list[i]["type"]][j] = JSON.parse(book_list[i]["otps_"+j])
 	}
+}
+for(var i = 1;i <= 4;i++){
+	gSkillAtts[i] = JSON.parse(guild_cfg["career_"+i]["value"])
 }
 //战斗控制器
 var model = function() {
@@ -42,49 +48,12 @@ var model = function() {
 // }
 //根据配置表生成战斗配置
 model.beginFight = function(atkTeam,defTeam,otps) {
-    var atkBookInfos = atkTeam[6]
-    var defBookInfos = defTeam[6]
-    var atkBooks = {}
-    var defBooks = {}
-    var atkBookAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
-    var defBookAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
-	//天书
-	if(atkBookInfos){
-		for(var bookId in atkBookInfos){
-			if(bookList[bookId] && bookMap[bookId]){
-				atkBooks[bookId] = this.getBookInfo(bookId,atkBookInfos[bookId])
-				atkBooks[bookId].belong = "atk"
-				atkBookAtts["maxHP"] += Math.floor(atkBooks[bookId].attInfo.maxHP/30)
-				atkBookAtts["atk"] += Math.floor(atkBooks[bookId].attInfo.atk/30)
-				atkBookAtts["phyDef"] += Math.floor(atkBooks[bookId].attInfo.phyDef/30)
-				atkBookAtts["magDef"] += Math.floor(atkBooks[bookId].attInfo.magDef/30)
-			}
-		}
-	}
-	if(defBookInfos){
-		for(var bookId in defBookInfos){
-			if(bookList[bookId] && bookMap[bookId]){
-				defBooks[bookId] = this.getBookInfo(bookId,defBookInfos[bookId])
-				defBooks[bookId].belong = "def"
-				defBookAtts["maxHP"] += Math.floor(defBooks[bookId].attInfo.maxHP/30)
-				defBookAtts["atk"] += Math.floor(defBooks[bookId].attInfo.atk/30)
-				defBookAtts["phyDef"] += Math.floor(defBooks[bookId].attInfo.phyDef/30)
-				defBookAtts["magDef"] += Math.floor(defBooks[bookId].attInfo.magDef/30)
-			}
-		}
-	}
-	var atkTeamList = []
-	var defTeamList = []
-    for(var i = 0;i < 6;i++){
-      atkTeamList[i] = this.getCharacterInfo(atkTeam[i],atkBookAtts)
-      defTeamList[i] = this.getCharacterInfo(defTeam[i],defBookAtts)
-    }
+    var atkInfo = this.getTeamData(atkTeam)
+    var defInfo = this.getTeamData(defTeam)
     var myotps = Object.assign({},otps)
-    myotps.atkTeamAdds = Object.assign({},myotps.atkTeamAdds)
-    myotps.defTeamAdds = Object.assign({},myotps.defTeamAdds)
-    model.mergeData(myotps.atkTeamAdds,this.raceAdd(this.getRaceType(atkTeamList)))
-    model.mergeData(myotps.defTeamAdds,this.raceAdd(this.getRaceType(defTeamList)))
-	var fighting = new fightingFun(atkTeamList,defTeamList,atkBooks,defBooks,myotps)
+    myotps.atkTeamAdds = atkInfo.teamAdds
+    myotps.defTeamAdds = defInfo.teamAdds
+	var fighting = new fightingFun(atkInfo.team,defInfo.team,atkInfo.books,defInfo.books,myotps)
 	fighting.fightBegin()
 	model.overInfo = fightRecord.list[fightRecord.list.length-1]
 	return fightRecord.isWin()
@@ -145,7 +114,7 @@ model.getFightRecord = function() {
 	return fightRecord.getList()
 }
 //获取角色数据
-model.getCharacterInfo = function(info,bookAtts) {
+model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	if(!info || !herosCfg[info.id]){
 		return false
 	}
@@ -299,6 +268,15 @@ model.getCharacterInfo = function(info,bookAtts) {
 			stoneskillInfo[stone_skill[info["s"+i]]["key"]] = stone_skill[info["s"+i]]["arg"]
 		}
 	}
+	//公会技能计算
+	if(teamCfg["g"+info.career] && gSkillAtts[info.career]){
+		var glv = teamCfg["g"+info.career]
+		var gInfo = {}
+		for(var i = 0;i < gSkillAtts[info.career].length;i++){
+			gInfo[gSkillAtts[info.career][i]] = guild_skill[glv]["pos_"+i]
+		}
+		model.mergeData(info,gInfo)
+	}
 	model.mergeData(info,stoneskillInfo)
 	return new character(info)
 }
@@ -315,31 +293,42 @@ model.getBookInfo = function(bookId,info){
 	info.magDef = Math.floor(book_lv[info.lv]["magDef"] * add)
 	return new bookList[bookId](info)
 }
-//获取团队显示数据
-model.getTeamShowData = function(team) {
-	var atkTeam = team.concat([])
-	var atkBookInfos = atkTeam[6]
-    var atkBooks = {}
-    var atkBookAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
-	//天书
-	if(atkBookInfos){
-		for(var bookId in atkBookInfos){
+//获取团队数据
+model.getTeamData = function(team) {
+	var team = team.concat([])
+	var teamCfg = team[6]
+    var books = {}
+    var bookAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
+    var gSkill = {}
+	if(teamCfg){
+		//天书
+		for(var bookId in teamCfg){
 			if(bookList[bookId] && bookMap[bookId]){
-				atkBooks[bookId] = this.getBookInfo(bookId,atkBookInfos[bookId])
-				atkBooks[bookId].belong = "atk"
-				atkBookAtts["maxHP"] += Math.floor(atkBooks[bookId].attInfo.maxHP/30)
-				atkBookAtts["atk"] += Math.floor(atkBooks[bookId].attInfo.atk/30)
-				atkBookAtts["phyDef"] += Math.floor(atkBooks[bookId].attInfo.phyDef/30)
-				atkBookAtts["magDef"] += Math.floor(atkBooks[bookId].attInfo.magDef/30)
+				books[bookId] = this.getBookInfo(bookId,teamCfg[bookId])
+				books[bookId].belong = "atk"
+				bookAtts["maxHP"] += Math.floor(books[bookId].attInfo.maxHP/30)
+				bookAtts["atk"] += Math.floor(books[bookId].attInfo.atk/30)
+				bookAtts["phyDef"] += Math.floor(books[bookId].attInfo.phyDef/30)
+				bookAtts["magDef"] += Math.floor(books[bookId].attInfo.magDef/30)
 			}
 		}
 	}
-	for(var i = 0;i < atkTeam.length;i++){
-		atkTeam[i] = this.getCharacterInfo(atkTeam[i],atkBookAtts)
+	var characters = []
+	for(var i = 0;i < 6;i++){
+		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
 	}
+    var teamAdds = this.raceAdd(this.getRaceType(characters))
+	return {team:characters,books:books,teamAdds:teamAdds}
+}
+//获取团队显示数据
+model.getTeamShowData = function(team) {
+	var atkTeam = team.concat([])
+	var info = this.getTeamData(atkTeam)
+	atkTeam = info.team
+	var bookAtts = info.bookAtts
 	var defTeam = []
-	var fighting = new fightingFun(atkTeam,defTeam,{},{},{atkRaceType : this.getRaceType(atkTeam)})
-	return {atkTeam : fighting.atkTeam,bookAtts : atkBookAtts}
+	var fighting = new fightingFun(atkTeam,defTeam,{},{},{atkTeamAdds:info.teamAdds})
+	return {atkTeam : fighting.atkTeam,bookAtts : bookAtts}
 }
 model.getTeamCE = function(team) {
 	var allCE = 0
