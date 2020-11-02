@@ -1,13 +1,18 @@
 //公会
+const guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
+const guild_lv = require("../../../../config/gameCfg/guild_lv.json")
+const guild_sign = require("../../../../config/gameCfg/guild_sign.json")
+const guild_skill = require("../../../../config/gameCfg/guild_skill.json")
 const async = require("async")
 const uuid = require("uuid")
 const main_name= "guild"
 const max_num = 20
 const maxRecordNum = 20
 const num_att = {"lv":1,"exp":1,"num":1,"id":1,"lead":1,"deputy":1}
+const currency = guild_cfg["currency"]["value"]
 module.exports = function() {
 	var self = this
-	var contributions = {}		//公会玩家列表
+	var contributions = {}		//公会玩家贡献列表
 	var guildList = {}			//公会信息列表
 	var guideCooling = {}		//加入冷却
 	var applyList = {}			//申请列表
@@ -21,6 +26,10 @@ module.exports = function() {
 				}
 			}
 		})
+	}
+	//玩家每日更新
+	this.guildRefresh = function(uid) {
+		self.delObj(uid,main_name,"sign")
 	}
 	//初始化公会
 	this.initGuildSingle = function(guildId) {
@@ -67,7 +76,11 @@ module.exports = function() {
 	this.getMyGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(guildId){
-			cb(true,guildList[guildId])
+			self.getObj(uid,main_name,"sign",function(data) {
+				var info = Object.assign(guildList[guildId])
+				info.sign = data
+				cb(true,info)
+			})
 		}else{
 			cb(true,{})
 		}
@@ -417,5 +430,50 @@ module.exports = function() {
 			}
 		})
 	}
+	//公会经验增加
+	this.addGuildEXP = function(uid,guild,value) {
+		if(guildList[guildId]){
+			self.incrbyGuildInfo(guildId,"exp",value)
+			if(contributions[guildId] && contributions[guildId][uid]){
+				contributions[guildId][uid] += value
+				self.redisDao.db.hincrby("guild:contributions:"+guildId,uid,value)
+			}
+		}
+	}
+	//增加帮贡
+	this.addGuildCurrency = function(uid,guildId,value,cb) {
+		var awardList = self.addItemStr(uid,"",1,"公会签到"+sign)
+		return awardList
+	}
 	//签到
+	this.signInGuild = function(uid,sign,cb) {
+		var guildId = self.players[uid]["gid"]
+		if(!guildId){
+			cb(false,"未加入公会")
+			return
+		}
+		if(!guild_sign[sign]){
+			cb(false,"sign error")
+			return
+		}
+		self.incrbyObj(uid,main_name,"sign",1,function(data) {
+			if(data != 1){
+				cb(false,"今日已签到")
+				return
+			}
+			self.consumeItems(uid,guild_sign[sign]["pc"],1,"公会签到",function(flag,err) {
+				if(flag){
+					self.addGuildEXP(uid,guildId,guild_sign[sign]["exp"])
+					var awardList = self.addGuildCurrency(uid,guildId,guild_sign[sign]["ctb"])
+					cb(true,awardList)
+				}else{
+					cb(false,err)
+				}
+			})
+		})
+	}
+	//升级公会技能
+	this.upGuildSkill = function(uid,career,cb) {
+		
+	}
 }

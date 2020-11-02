@@ -180,6 +180,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.TopicRecruitRefresh(uid)
 	this.mysteriousDayUpdate(uid)
 	this.festivalUserDayUpdate(uid)
+	this.guildRefresh(uid)
 }
 //玩家每周首次登陆
 area.prototype.weekFirstLogin = function(uid) {
