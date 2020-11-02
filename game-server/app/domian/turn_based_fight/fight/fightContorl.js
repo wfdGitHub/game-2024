@@ -269,7 +269,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		}
 	}
 	//公会技能计算
-	if(teamCfg["g"+info.career] && gSkillAtts[info.career]){
+	if(teamCfg && teamCfg["g"+info.career] && gSkillAtts[info.career]){
 		var glv = teamCfg["g"+info.career]
 		var gInfo = {}
 		for(var i = 0;i < gSkillAtts[info.career].length;i++){
