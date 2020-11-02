@@ -76,9 +76,13 @@ module.exports = function() {
 	this.getMyGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(guildId){
-			self.getObj(uid,main_name,"sign",function(data) {
+			self.getHMObj(uid,main_name,["sign","skill_1","skill_2","skill_3","skill_4"],function(data) {
 				var info = Object.assign(guildList[guildId])
-				info.sign = data
+				info.sign = data[0]
+				info.skill_1 = Number(data[1]) || 0
+				info.skill_2 = Number([2]) || 0
+				info.skill_3 = Number([3]) || 0
+				info.skill_4 = Number([4]) || 0
 				info.score = contributions[guildId][uid]
 				cb(true,info)
 			})
@@ -441,12 +445,9 @@ module.exports = function() {
 	this.addGuildScore = function(uid,guildId,value) {
 		console.log("addGuildScore",uid,guildId,value)
 		if(guildList[guildId]){
-			console.log("11")
 			if(contributions[guildId] && contributions[guildId][uid] !== undefined){
-				console.log("22",contributions[guildId][uid])
 				contributions[guildId][uid] += value
 				self.redisDao.db.hincrby("guild:contributions:"+guildId,uid,value)
-				console.log("33",contributions[guildId][uid])
 			}
 		}
 		var awardList = self.addItemStr(uid,currency+":"+value,1,"公会签到")
@@ -469,9 +470,9 @@ module.exports = function() {
 				cb(false,"今日已签到")
 				return
 			}
-			self.setObj(uid,main_name,"sign",1)
 			self.consumeItems(uid,guild_sign[sign]["pc"],1,"公会签到",function(flag,err) {
 				if(flag){
+					self.setObj(uid,main_name,"sign",1)
 					var awardList = self.addGuildScore(uid,guildId,guild_sign[sign]["score"])
 					self.addGuildEXP(uid,guildId,guild_sign[sign]["exp"])
 					cb(true,awardList)
@@ -483,6 +484,38 @@ module.exports = function() {
 	}
 	//升级公会技能
 	this.upGuildSkill = function(uid,career,cb) {
-		
+		var guildId = self.players[uid]["gid"]
+		if(!guildId){
+			cb(false,"未加入公会")
+			return
+		}
+		if(!guild_cfg["career_"+career]){
+			cb(false,"career error")
+			return
+		}
+		if(guildList[guildId]){
+			var guildLv = guildList[guildId].lv
+			self.getObj(uid,main_name,"skill_"+career,function(lv) {
+				lv = Number(lv) || 0
+				lv += 1
+				if(!guild_skill[lv]){
+					cb(false,"已升满")
+					return
+				}
+				if(lv > guild_lv[guildLv]["skill"]){
+					cb(false,"公会等级不足")
+					return
+				}
+				self.consumeItems(uid,guild_skill[lv]["pc"],1,"升级公会技能",function(flag,err) {
+					if(flag){
+						self.incrbyObj(uid,main_name,"skill_"+career,1,function(data) {
+							cb(true,data)
+						})
+					}else{
+						cb(false,err)
+					}
+				})
+			})
+		}
 	}
 }

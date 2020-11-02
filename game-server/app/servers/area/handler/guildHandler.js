@@ -150,6 +150,15 @@ guildHandler.prototype.signInGuild = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//升级公会技能
+guildHandler.prototype.upGuildSkill = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var career = msg.career
+  this.areaManager.areaMap[areaId].upGuildSkill(uid,career,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "guildHandler",

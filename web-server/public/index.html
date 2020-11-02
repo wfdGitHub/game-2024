@@ -201,6 +201,12 @@
             console.log(data);
         });
       }
+      //升级公会技能
+      var upGuildSkill = function(career) {
+        pomelo.request("area.guildHandler.upGuildSkill", {career:career}, function(data) {
+            console.log(data);
+        });
+      }
       //=============牧野之战=======//
       //赛季结算
       var settleMuye = function() {
