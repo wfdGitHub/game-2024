@@ -79,6 +79,7 @@ module.exports = function() {
 			self.getObj(uid,main_name,"sign",function(data) {
 				var info = Object.assign(guildList[guildId])
 				info.sign = data
+				info.score = contributions[guildId][uid]
 				cb(true,info)
 			})
 		}else{
@@ -436,22 +437,24 @@ module.exports = function() {
 			self.incrbyGuildInfo(guildId,"exp",value)
 		}
 	}
-	//公会贡献增加
-	this.addGuildCtb = function(uid,guildId,value) {
+	//增加帮贡
+	this.addGuildScore = function(uid,guildId,value) {
+		console.log("addGuildScore",uid,guildId,value)
 		if(guildList[guildId]){
-			if(contributions[guildId] && contributions[guildId][uid]){
+			console.log("11")
+			if(contributions[guildId] && contributions[guildId][uid] !== undefined){
+				console.log("22",contributions[guildId][uid])
 				contributions[guildId][uid] += value
 				self.redisDao.db.hincrby("guild:contributions:"+guildId,uid,value)
+				console.log("33",contributions[guildId][uid])
 			}
 		}
-	}
-	//增加帮贡
-	this.addGuildCurrency = function(uid,guildId,value,cb) {
-		var awardList = self.addItemStr(uid,value,1,"公会签到")
+		var awardList = self.addItemStr(uid,currency+":"+value,1,"公会签到")
 		return awardList
 	}
 	//签到
 	this.signInGuild = function(uid,sign,cb) {
+		console.log("signInGuild!!!")
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
 			cb(false,"未加入公会")
@@ -461,8 +464,7 @@ module.exports = function() {
 			cb(false,"sign error")
 			return
 		}
-		self.getObj(uid,main_name,"sign",function(err,data) {
-			console.log(err,data)
+		self.getObj(uid,main_name,"sign",function(data) {
 			if(data){
 				cb(false,"今日已签到")
 				return
@@ -470,9 +472,8 @@ module.exports = function() {
 			self.setObj(uid,main_name,"sign",1)
 			self.consumeItems(uid,guild_sign[sign]["pc"],1,"公会签到",function(flag,err) {
 				if(flag){
-					self.addGuildCtb(uid,guildId,guild_sign[sign]["ctb"])
+					var awardList = self.addGuildScore(uid,guildId,guild_sign[sign]["score"])
 					self.addGuildEXP(uid,guildId,guild_sign[sign]["exp"])
-					var awardList = self.addGuildCurrency(uid,guildId,guild_sign[sign]["pc"])
 					cb(true,awardList)
 				}else{
 					cb(false,err)
