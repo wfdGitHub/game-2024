@@ -201,6 +201,7 @@ module.exports = function() {
 		delete guildList[guildId]
 		self.redisDao.db.del("guild:guildInfo:"+guildId)
 		self.redisDao.db.del("guild:log:"+guildId)
+		self.redisDao.db.zrem("area:area"+self.areaId+":zset:guild",guildId)
 		cb(true)
 	}
 	//设置成副会长
@@ -438,9 +439,25 @@ module.exports = function() {
 	//公会经验增加
 	this.addGuildEXP = function(uid,guildId,value) {
 		if(guildList[guildId]){
+			self.incrbyZset(main_name,guildId,value)
 			self.incrbyGuildInfo(guildId,"exp",value)
 			self.checkGuildUpgrade(guildId)
 		}
+	}
+	//获取公会排行榜
+	this.getGuildRank = function(uid,cb) {
+		self.zrangewithscore(main_name,-10,-1,function(list) {
+			var guilds = []
+			var scores = []
+			var info = {}
+			for(var i = 0;i < list.length;i += 2){
+				guilds.push(guildList[list[i]])
+				scores.push(list[i+1])
+			}
+			info.guilds = guilds
+			info.scores = scores
+			cb(true,info)
+		})
 	}
 	//公会升级检查
 	this.checkGuildUpgrade = function(guildId) {
@@ -482,10 +499,10 @@ module.exports = function() {
 			return
 		}
 		self.getObj(uid,main_name,"sign",function(data) {
-			if(data){
-				cb(false,"今日已签到")
-				return
-			}
+			// if(data){
+			// 	cb(false,"今日已签到")
+			// 	return
+			// }
 			self.consumeItems(uid,guild_sign[sign]["pc"],1,"公会签到",function(flag,err) {
 				if(flag){
 					self.setObj(uid,main_name,"sign",1)

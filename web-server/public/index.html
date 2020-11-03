@@ -207,6 +207,12 @@
             console.log(data);
         });
       }
+      //获取公会排行榜
+      var getGuildRank = function() {
+        pomelo.request("area.guildHandler.getGuildRank", {}, function(data) {
+            console.log(data);
+        });
+      }
       //=============牧野之战=======//
       //赛季结算
       var settleMuye = function() {
@@ -2286,7 +2292,9 @@
       <input id="test" type="button" value="公会列表" onclick="getGuildList()"/>
       <input id="test" type="button" value="申请列表" onclick="getGuildApplyList()"/>
       <input id="test" type="button" value="退出公会" onclick="quitGuild()"/>
+      <input id="test" type="button" value="签到" onclick="signInGuild('sign_3')"/>
       <input id="test" type="button" value="公会日志" onclick="getGuildLog()"/>
+      <input id="test" type="button" value="公会排行" onclick="getGuildRank()"/>
     </div>
   </body>
 </html>

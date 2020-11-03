@@ -159,6 +159,14 @@ guildHandler.prototype.upGuildSkill = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//获取公会排行榜
+guildHandler.prototype.getGuildRank = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getGuildRank(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "guildHandler",
