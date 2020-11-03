@@ -17,7 +17,7 @@ redisDao.prototype.init = function(cb) {
 		        console.log("\033[33m[INFO] DataBase check - acc:lastid\033[0m");
 		        self.db.set("acc:lastid",10000);
 		        self.db.set("user:lastid",101200);
-		        self.db.set("guild:lastid",1001);
+		        self.db.set("guild:lastid",1000);
     		}
 		})
 		cb()

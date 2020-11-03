@@ -126,6 +126,18 @@ module.exports = function() {
 					next()
 			},
 			function(next) {
+				self.getObj(uid,main_name,"cd",function(cd) {
+					console.log("cb",cd)
+					cd = Number(cd) || 0
+					var curTime = Date.now()
+					if(cd > curTime){
+						next("退出公会冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可创建")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
 				//名字检测
 				if(typeof(name) != "string" || name.length >= 12 || name.length < 2){
 					next("name error "+name)
@@ -202,6 +214,7 @@ module.exports = function() {
 		self.redisDao.db.del("guild:guildInfo:"+guildId)
 		self.redisDao.db.del("guild:log:"+guildId)
 		self.redisDao.db.zrem("area:area"+self.areaId+":zset:guild",guildId)
+		self.setObj(uid,main_name,"cd",Date.now()+86400000)
 		cb(true)
 	}
 	//设置成副会长
@@ -319,13 +332,21 @@ module.exports = function() {
 			cb(false,"公会不存在")
 			return
 		}
-		if(!applyList[guildId])
-			applyList[guildId] = {}
-		applyList[guildId][uid] = self.getBaseUser(uid)
-		if(!applyMap[uid])
-			applyMap[uid] = {}
-		applyMap[uid][guildId] = Date.now()
-		cb(true,applyMap[uid])
+		self.getObj(uid,main_name,"cd",function(cd) {
+			cd = Number(cd) || 0
+			var curTime = Date.now()
+			if(cd > curTime){
+				cb(false,"退出公会冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可申请")
+				return
+			}
+			if(!applyList[guildId])
+				applyList[guildId] = {}
+			applyList[guildId][uid] = self.getBaseUser(uid)
+			if(!applyMap[uid])
+				applyMap[uid] = {}
+			applyMap[uid][guildId] = Date.now()
+			cb(true,applyMap[uid])
+		})
 	}
 	//获得申请列表
 	this.getGuildApplyList = function(uid,cb) {
@@ -409,6 +430,7 @@ module.exports = function() {
 		self.getPlayerKeyByUid(uid,"name",function(name) {
 			self.addGuildLog(guildId,{type:"quit",uid:uid,name:name})
 		})
+		self.setObj(uid,main_name,"cd",Date.now()+86400000)
 		if(cb)
 			cb(true)
 	}
