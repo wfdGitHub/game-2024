@@ -439,6 +439,22 @@ module.exports = function() {
 	this.addGuildEXP = function(uid,guildId,value) {
 		if(guildList[guildId]){
 			self.incrbyGuildInfo(guildId,"exp",value)
+			self.checkGuildUpgrade(guildId)
+		}
+	}
+	//公会升级检查
+	this.checkGuildUpgrade = function(guildId) {
+		if(guildList[guildId]){
+			var lv = guildList[guildId]["lv"]
+			var exp = guildList[guildId]["exp"]
+			if(guild_lv[lv]["exp"] && guild_lv[lv+1]){
+				if(exp >= guild_lv[lv]["exp"]){
+					self.incrbyGuildInfo(guildId,"exp",-guild_lv[lv]["exp"])
+					self.incrbyGuildInfo(guildId,"lv",1)
+					self.addGuildLog(guildId,{type:"upgrade",lv:guildList[guildId]["lv"]})
+					this.checkGuildUpgrade(guildId)
+				}
+			}
 		}
 	}
 	//增加帮贡

@@ -466,6 +466,7 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 //获取出场阵容
 heroDao.prototype.getFightTeam = function(uid,cb) {
 	var self = this
+	var fightTeam = []
 	async.waterfall([
 		function(next) {
 			self.redisDao.db.get("player:user:"+uid+":fightTeam",function(err,data) {
@@ -473,7 +474,7 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 					next("未设置阵容")
 					return
 				}
-				var fightTeam = JSON.parse(data)
+				fightTeam = JSON.parse(data)
 				var multiList = []
 				var hIds = []
 				for(var i = 0;i < fightTeam.length;i++){
@@ -500,13 +501,26 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 							fightTeam[i] = null
 						}
 					}
-					next(null,fightTeam)
+					next(null)
 				})
 			})
 		},
-		function(fightTeam,next) {
+		function(next) {
+			//天书
 			self.getFightBook(uid,function(flag,data) {
 				fightTeam[6] = data
+				next()
+			})
+		},
+		function(next) {
+			//公会技能
+			self.redisDao.db.hmget("player:user:"+uid+":guild",["skill_1","skill_2","skill_3","skill_4"],function(err,data) {
+				if(data){
+					fightTeam[6]["g1"] = Number(data[0]) || 0
+					fightTeam[6]["g2"] = Number(data[1]) || 0
+					fightTeam[6]["g3"] = Number(data[2]) || 0
+					fightTeam[6]["g4"] = Number(data[3]) || 0
+				}
 				cb(true,fightTeam)
 			})
 		}
