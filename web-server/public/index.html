@@ -195,6 +195,12 @@
             console.log(data);
         });
       }
+      //签到
+      var signInGuild = function(sign) {
+        pomelo.request("area.guildHandler.signInGuild", {sign:sign}, function(data) {
+            console.log(data);
+        });
+      }
       //=============牧野之战=======//
       //赛季结算
       var settleMuye = function() {

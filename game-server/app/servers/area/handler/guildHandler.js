@@ -141,7 +141,15 @@ guildHandler.prototype.kickGuildNormal = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
-
+//签到
+guildHandler.prototype.signInGuild = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var sign = msg.sign
+  this.areaManager.areaMap[areaId].signInGuild(uid,sign,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "guildHandler",

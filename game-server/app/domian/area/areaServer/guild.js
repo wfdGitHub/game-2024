@@ -431,9 +431,14 @@ module.exports = function() {
 		})
 	}
 	//公会经验增加
-	this.addGuildEXP = function(uid,guild,value) {
+	this.addGuildEXP = function(uid,guildId,value) {
 		if(guildList[guildId]){
 			self.incrbyGuildInfo(guildId,"exp",value)
+		}
+	}
+	//公会贡献增加
+	this.addGuildCtb = function(uid,guildId,value) {
+		if(guildList[guildId]){
 			if(contributions[guildId] && contributions[guildId][uid]){
 				contributions[guildId][uid] += value
 				self.redisDao.db.hincrby("guild:contributions:"+guildId,uid,value)
@@ -442,7 +447,7 @@ module.exports = function() {
 	}
 	//增加帮贡
 	this.addGuildCurrency = function(uid,guildId,value,cb) {
-		var awardList = self.addItemStr(uid,"",1,"公会签到"+sign)
+		var awardList = self.addItemStr(uid,value,1,"公会签到")
 		return awardList
 	}
 	//签到
@@ -456,15 +461,18 @@ module.exports = function() {
 			cb(false,"sign error")
 			return
 		}
-		self.incrbyObj(uid,main_name,"sign",1,function(data) {
-			if(data != 1){
+		self.getObj(uid,main_name,"sign",function(err,data) {
+			console.log(err,data)
+			if(data){
 				cb(false,"今日已签到")
 				return
 			}
+			self.setObj(uid,main_name,"sign",1)
 			self.consumeItems(uid,guild_sign[sign]["pc"],1,"公会签到",function(flag,err) {
 				if(flag){
+					self.addGuildCtb(uid,guildId,guild_sign[sign]["ctb"])
 					self.addGuildEXP(uid,guildId,guild_sign[sign]["exp"])
-					var awardList = self.addGuildCurrency(uid,guildId,guild_sign[sign]["ctb"])
+					var awardList = self.addGuildCurrency(uid,guildId,guild_sign[sign]["pc"])
 					cb(true,awardList)
 				}else{
 					cb(false,err)
