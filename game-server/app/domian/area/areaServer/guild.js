@@ -201,20 +201,14 @@ module.exports = function() {
 			return
 		}
 		for(var targetUid in contributions[guildId]){
-			if(targetUid != uid){
-				self.leaveGuild(guildId,targetUid)
-			}
+			self.leaveGuild(guildId,targetUid)
 		}
 		self.redisDao.db.hdel("guild:guildNameMap",guildList[guildId]["name"],guildId)
-		self.delLordData(uid,"gid")
 		self.delAreaObj(main_name,guildId)
-		delete contributions[guildId]
-		self.redisDao.db.del("guild:contributions:"+guildId)
-		delete guildList[guildId]
-		self.redisDao.db.del("guild:guildInfo:"+guildId)
 		self.redisDao.db.del("guild:log:"+guildId)
 		self.redisDao.db.zrem("area:area"+self.areaId+":zset:guild",guildId)
-		self.setObj(uid,main_name,"cd",Date.now()+86400000)
+		delete guildList[guildId]
+		self.redisDao.db.del("guild:guildInfo:"+guildId)
 		cb(true)
 	}
 	//设置成副会长
@@ -236,7 +230,7 @@ module.exports = function() {
 		self.getPlayerKeyByUid(targetUid,"name",function(name) {
 			self.addGuildLog(guildId,{type:"deputy",uid:targetUid,name:name})
 		})
-		//todo  邮件通知
+		self.sendMail(targetUid,"成为副族长","您已被任命为【"+guildList[guildId]["name"]+"】的副族长")
 		self.setGuildInfo(guildId,"deputy",targetUid)
 		cb(true)
 	}
@@ -256,7 +250,7 @@ module.exports = function() {
 			cb(false,"玩家不存在")
 			return
 		}
-		//todo  邮件通知
+		self.sendMail(targetUid,"卸任副族长","您已不是【"+guildList[guildId]["name"]+"】的副族长")
 		self.setGuildInfo(guildId,"deputy",0)
 		cb(true)
 	}
@@ -279,7 +273,7 @@ module.exports = function() {
 		self.getPlayerKeyByUid(targetUid,"name",function(name) {
 			self.addGuildLog(guildId,{type:"lead",uid:targetUid,name:name})
 		})
-		//todo  邮件通知
+		self.sendMail(targetUid,"成为族长","您已被任命为【"+guildList[guildId]["name"]+"】的族长")
 		self.setGuildInfo(guildId,"lead",targetUid)
 		cb(true)
 	}
@@ -387,7 +381,7 @@ module.exports = function() {
 			self.incrbyGuildInfo(guildId,"num",1)
 			contributions[guildId][targetUid] = 0
 			self.redisDao.db.hset("guild:contributions:"+guildId,targetUid,0)
-			//todo 欢迎邮件
+			self.sendMail(targetUid,"加入宗族","您已成功加入【"+guildList[guildId]["name"]+"】")
 			cb(true)
 		})
 	}
@@ -431,6 +425,8 @@ module.exports = function() {
 			self.addGuildLog(guildId,{type:"quit",uid:uid,name:name})
 		})
 		self.setObj(uid,main_name,"cd",Date.now()+86400000)
+		self.sendMail(uid,"退出宗族","您已离开【"+guildList[guildId]["name"]+"】")
+		self.sendToUser(uid,{type:"leaveGuild"})
 		if(cb)
 			cb(true)
 	}
@@ -572,5 +568,17 @@ module.exports = function() {
 				})
 			})
 		}
+	}
+	//添加公会红包
+	this.addGuildGift = function(guildId) {
+		// body...
+	}
+	//获取公会红包列表
+	this.getGuildGiftList = function() {
+		// body...
+	}
+	//领取公会红包
+	this.gainGuildGift = function() {
+		// body...
 	}
 }
