@@ -167,6 +167,17 @@ guildHandler.prototype.getGuildRank = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//设置审核状态
+guildHandler.prototype.setGuildAudit = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var audit = msg.audit
+  var lv_limit = msg.lv_limit
+  this.areaManager.areaMap[areaId].setGuildAudit(uid,audit,lv_limit,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "guildHandler",

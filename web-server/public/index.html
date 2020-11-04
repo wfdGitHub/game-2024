@@ -213,6 +213,12 @@
             console.log(data);
         });
       }
+      //设置审核状态
+      var setGuildAudit = function(audit,lv_limit) {
+        pomelo.request("area.guildHandler.setGuildAudit", {audit:audit,lv_limit:lv_limit}, function(data) {
+            console.log(data);
+        });
+      }
       //=============牧野之战=======//
       //赛季结算
       var settleMuye = function() {

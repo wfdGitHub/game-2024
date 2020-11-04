@@ -8,7 +8,7 @@ const uuid = require("uuid")
 const main_name= "guild"
 const max_num = 20
 const maxRecordNum = 20
-const num_att = {"lv":1,"exp":1,"num":1,"id":1,"lead":1,"deputy":1}
+const num_att = {"lv":1,"exp":1,"num":1,"id":1,"lead":1,"deputy":1,"audit":1,"lv_limit":1}
 const currency = guild_cfg["currency"]["value"]
 module.exports = function() {
 	var self = this
@@ -175,6 +175,8 @@ module.exports = function() {
 						lead : uid,
 						deputy : 0,
 						num : 1,
+						audit : 1,
+						lv_limit:0,
 						notify: ""
 					}
 					guildList[guildId] = guildInfo
@@ -192,6 +194,23 @@ module.exports = function() {
 		],function(err) {
 			cb(false,err)
 		})
+	}
+	//设置审核状态
+	this.setGuildAudit = function(uid,audit,lv_limit,cb) {
+		var guildId = self.players[uid]["gid"]
+		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
+			cb(false,"不是公会会长")
+			return
+		}
+		if(audit !== 1)
+			audit = 0
+		if(!Number.isInteger(lv_limit) || lv_limit < 0){
+			cb(false,"lv_limit error")
+			return
+		}
+		this.setGuildInfo(guildId,"audit",audit)
+		this.setGuildInfo(guildId,"lv_limit",lv_limit)
+		cb(true)
 	}
 	//解散公会
 	this.dissolveGuild = function(uid,cb) {
@@ -326,6 +345,11 @@ module.exports = function() {
 			cb(false,"公会不存在")
 			return
 		}
+		var lv = self.getLordLv(uid)
+		if(lv < guildList[guildId]["lv_limit"]){
+			cb(false,"等级不足")
+			return
+		}
 		self.getObj(uid,main_name,"cd",function(cd) {
 			cd = Number(cd) || 0
 			var curTime = Date.now()
@@ -339,6 +363,9 @@ module.exports = function() {
 			if(!applyMap[uid])
 				applyMap[uid] = {}
 			applyMap[uid][guildId] = Date.now()
+			if(!guildList[guildId]["audit"]){
+				self.joinGuild(uid,guildId)
+			}
 			cb(true,applyMap[uid])
 		})
 	}
@@ -362,28 +389,8 @@ module.exports = function() {
 			cb(false,"不存在该玩家申请")
 			return
 		}
-		if(guildList[guildId] >= max_num){
-			cb(false,"人数已达上限")
-			return
-		}
-		self.getPlayerKeyByUid(targetUid,"gid",function(gid) {
-			if(gid){
-				delete applyList[guildId][targetUid]
-				cb(false,"该玩家已加入其他公会")
-				return
-			}
-			self.addGuildLog(guildId,{type:"join",uid:targetUid,name:applyList[guildId][targetUid]["name"]})
-			for(var i in applyMap[targetUid]){
-				delete applyList[i][targetUid]
-			}
-			delete applyMap[targetUid]
-			self.chageLordData(targetUid,"gid",guildId)
-			self.incrbyGuildInfo(guildId,"num",1)
-			contributions[guildId][targetUid] = 0
-			self.redisDao.db.hset("guild:contributions:"+guildId,targetUid,0)
-			self.sendMail(targetUid,"加入宗族","您已成功加入【"+guildList[guildId]["name"]+"】")
-			cb(true)
-		})
+		this.joinGuild(targetUid,guildId,cb)
+		cb(true)
 	}
 	//拒绝申请
 	this.refuseGuildApply = function(uid,targetUid,cb) {
@@ -413,6 +420,31 @@ module.exports = function() {
 		}
 		self.leaveGuild(guildId,uid,cb)
 	}
+	//玩家加入
+	this.joinGuild = function(uid,guildId) {
+		if(guildList[guildId] >= max_num){
+			cb(false,"人数已达上限")
+			return
+		}
+		self.getPlayerKeyByUid(uid,"gid",function(gid) {
+			if(gid){
+				delete applyList[guildId][uid]
+				cb(false,"该玩家已加入其他公会")
+				return
+			}
+			self.addGuildLog(guildId,{type:"join",uid:uid,name:applyList[guildId][uid]["name"]})
+			for(var i in applyMap[uid]){
+				delete applyList[i][uid]
+			}
+			delete applyMap[uid]
+			self.chageLordData(uid,"gid",guildId)
+			self.incrbyGuildInfo(guildId,"num",1)
+			contributions[guildId][uid] = 0
+			self.redisDao.db.hset("guild:contributions:"+guildId,uid,0)
+			self.sendMail(uid,"加入宗族","您已成功加入【"+guildList[guildId]["name"]+"】")
+			self.sendToUser(uid,{type:"joinGuild",guildId : guildId})
+		})
+	}
 	//玩家离开
 	this.leaveGuild = function(guildId,uid,cb) {
 		if(guildList[guildId]["deputy"] == uid)
@@ -426,7 +458,7 @@ module.exports = function() {
 		})
 		self.setObj(uid,main_name,"cd",Date.now()+86400000)
 		self.sendMail(uid,"退出宗族","您已离开【"+guildList[guildId]["name"]+"】")
-		self.sendToUser(uid,{type:"leaveGuild"})
+		self.sendToUser(uid,{type:"leaveGuild",guildId : guildId})
 		if(cb)
 			cb(true)
 	}
