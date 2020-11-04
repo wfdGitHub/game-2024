@@ -177,7 +177,44 @@ guildHandler.prototype.setGuildAudit = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
-
+//添加公会红包
+guildHandler.prototype.addGuildGift = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var guildId = msg.guildId
+  var title = msg.title
+  var maxNum = msg.maxNum
+  var amount = msg.amount
+  var time = msg.time
+  this.areaManager.areaMap[areaId].addGuildGift(guildId,title,maxNum,amount,time)
+  next(null,{flag:true})
+}
+//删除公会红包
+guildHandler.prototype.removeGuildGift = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var guildId = msg.guildId
+  var giftId = msg.giftId
+  this.areaManager.areaMap[areaId].removeGuildGift(guildId,giftId)
+  next(null,{flag:true})
+}
+//获取公会红包列表
+guildHandler.prototype.getGuildGiftList = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getGuildGiftList(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//领取公会红包
+guildHandler.prototype.gainGuildGift = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var giftId = msg.giftId
+  this.areaManager.areaMap[areaId].gainGuildGift(uid,giftId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "guildHandler",

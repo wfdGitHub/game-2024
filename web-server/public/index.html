@@ -99,6 +99,30 @@
         console.log(data)
       })
       //==============公会==========//
+      //添加红包
+      var addGuildGift = function(guildId,title,maxNum,amount,time) {
+        pomelo.request("area.guildHandler.addGuildGift", {guildId:guildId,title:title,maxNum:maxNum,amount:amount,time:time}, function(data) {
+            console.log(data);
+        });
+      }
+      //删除公会红包
+      var removeGuildGift = function(guildId,giftId) {
+        pomelo.request("area.guildHandler.removeGuildGift", {guildId:guildId,giftId:giftId}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取公会红包列表
+      var getGuildGiftList = function() {
+        pomelo.request("area.guildHandler.getGuildGiftList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取公会红包
+      var gainGuildGift = function(giftId) {
+        pomelo.request("area.guildHandler.gainGuildGift", {giftId:giftId}, function(data) {
+            console.log(data);
+        });
+      }
       //创建公会
       var createGuild = function(name) {
         pomelo.request("area.guildHandler.createGuild", {name:name}, function(data) {

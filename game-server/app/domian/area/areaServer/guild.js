@@ -17,6 +17,7 @@ module.exports = function() {
 	var guideCooling = {}		//加入冷却
 	var applyList = {}			//申请列表
 	var applyMap = {}			//申请映射
+	var giftInfoList = {}		//公会红包
 	//初始化
 	this.initGuild = function() {
 		self.getAreaObjAll(main_name,function(data) {
@@ -31,9 +32,23 @@ module.exports = function() {
 	this.guildRefresh = function(uid) {
 		self.delObj(uid,main_name,"sign")
 	}
+	//公会每日更新
+	this.guildDayUpdate = function() {
+		for(var guildId in guildList){
+			self.guildCheckGift(guildId)
+		}
+	}
+	this.guildCheckGift = function(guildId) {
+		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,data) {
+			for(var giftId in data){
+				data[giftId] = Number(data[giftId])
+				if(data[giftId] < Date.now())
+					self.removeGuildGift(guildId,giftId)
+			}
+		})
+	}
 	//初始化公会
 	this.initGuildSingle = function(guildId) {
-		console.log("initGuildSingle "+guildId)
 		self.redisDao.db.hgetall("guild:guildInfo:"+guildId,function(err,data) {
 			for(var i in num_att){
 				data[i] = Number(data[i])
@@ -127,13 +142,12 @@ module.exports = function() {
 			},
 			function(next) {
 				self.getObj(uid,main_name,"cd",function(cd) {
-					console.log("cb",cd)
 					cd = Number(cd) || 0
 					var curTime = Date.now()
-					if(cd > curTime){
-						next("退出公会冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可创建")
-						return
-					}
+					// if(cd > curTime){
+					// 	next("退出公会冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可创建")
+					// 	return
+					// }
 					next()
 				})
 			},
@@ -165,7 +179,6 @@ module.exports = function() {
 				}
 				delete applyMap[uid]
 				self.redisDao.db.incrby("guild:lastid",1,function(err,guildId) {
-					console.log("guildId",guildId)
 					//创建公会
 					var guildInfo = {
 						lv : 1,
@@ -228,6 +241,11 @@ module.exports = function() {
 		self.redisDao.db.zrem("area:area"+self.areaId+":zset:guild",guildId)
 		delete guildList[guildId]
 		self.redisDao.db.del("guild:guildInfo:"+guildId)
+		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,map) {
+			for(var giftId in map)
+				self.removeGuildGift(guildId,giftId)
+			self.redisDao.db.del("guild:giftmap:"+guildId)
+		})
 		cb(true)
 	}
 	//设置成副会长
@@ -526,7 +544,6 @@ module.exports = function() {
 	}
 	//增加帮贡
 	this.addGuildScore = function(uid,guildId,value) {
-		console.log("addGuildScore",uid,guildId,value)
 		if(guildList[guildId]){
 			if(contributions[guildId] && contributions[guildId][uid] !== undefined){
 				contributions[guildId][uid] += value
@@ -538,7 +555,6 @@ module.exports = function() {
 	}
 	//签到
 	this.signInGuild = function(uid,sign,cb) {
-		console.log("signInGuild!!!")
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
 			cb(false,"未加入公会")
@@ -602,15 +618,103 @@ module.exports = function() {
 		}
 	}
 	//添加公会红包
-	this.addGuildGift = function(guildId) {
-		// body...
+	this.addGuildGift = function(guildId,title,maxNum,amount,time) {
+		var giftInfo = {
+			id : uuid.v1(),
+			guildId : guildId,
+			title : title,
+			maxNum : maxNum,
+			curNum : 0,
+			amount : amount,
+			time : Date.now() + time
+		}
+		var list = []
+		var weights = []
+		var allWeight = 0
+		for(var i = 0;i < maxNum;i++){
+			var weight = Math.ceil(Math.random() * 100 + 10)
+			allWeight += weight
+			weights.push(weight)
+		}
+		var curNum = 0
+		for(var i = 0;i < maxNum - 1;i++){
+			var value = Math.round((weights[i] / allWeight) * amount)
+			curNum += value
+			list.push(value)
+		}
+		list.push(amount - curNum)
+		for(var i = 0;i < maxNum;i++){
+			giftInfo["user_"+i] = ""
+			giftInfo["amount_"+i] = list[i]
+		}
+		self.redisDao.db.hset("guild:giftmap:"+guildId,giftInfo.id,giftInfo.time)
+		self.redisDao.db.hmset("guild:giftinfo:"+giftInfo.id,giftInfo)
+	}
+	//删除公会红包
+	this.removeGuildGift = function(guildId,giftId) {
+		self.redisDao.db.hdel("guild:giftmap:"+guildId,giftId)
+		self.redisDao.db.del("guild:giftinfo:"+giftId)
 	}
 	//获取公会红包列表
-	this.getGuildGiftList = function() {
-		// body...
+	this.getGuildGiftList = function(uid,cb) {
+		var guildId = self.players[uid]["gid"]
+		if(!guildId){
+			cb(false,"未加入公会")
+			return
+		}
+		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,map) {
+			var multiList = []
+			for(var id in map){
+				multiList.push(["hgetall","guild:giftinfo:"+id])
+			}
+			if(multiList.length == 0){
+				cb(true,[])
+				return
+			}
+			self.redisDao.multi(multiList,function(err,list) {
+				cb(true,list)
+			})
+		})
 	}
 	//领取公会红包
-	this.gainGuildGift = function() {
-		// body...
+	this.gainGuildGift = function(uid,giftId,cb) {
+		var guildId = self.players[uid]["gid"]
+		if(!guildId){
+			cb(false,"未加入公会")
+			return
+		}
+		self.redisDao.db.hgetall("guild:giftinfo:"+giftId,function(err,giftInfo) {
+			if(giftInfo["uid_"+uid] !== undefined){
+				cb(false,"已领取")
+				return
+			}
+			if(giftInfo.guildId != guildId){
+				cb(false,"红包不存在")
+				return
+			}
+			giftInfo.time = Number(giftInfo.time)
+			if(Date.now() >= giftInfo.time){
+				cb(false,"红包已过期")
+				return
+			}
+			giftInfo.maxNum = Number(giftInfo.maxNum)
+			giftInfo.curNum = Number(giftInfo.curNum)
+			if(giftInfo.curNum >= giftInfo.maxNum){
+				cb(false,"红包已领完")
+				return
+			}
+			self.redisDao.db.hincrby("guild:giftinfo:"+giftId,"curNum",1,function(err,num) {
+				if(num > giftInfo.maxNum){
+					self.redisDao.db.hincrby("guild:giftinfo:"+giftId,"curNum",-1)
+					cb(false,"红包已领完")
+					return
+				}
+				num = Number(num) - 1
+				self.redisDao.db.hset("guild:giftinfo:"+giftId,"uid_"+uid,num)
+				self.redisDao.db.hset("guild:giftinfo:"+giftId,"user_"+num,JSON.stringify(self.getSimpleUser(uid)))
+				self.addGuildScore(uid,guildId,giftInfo["amount_"+num])
+				cb(true,giftInfo["amount_"+num])
+			})
+		})
 	}
 }

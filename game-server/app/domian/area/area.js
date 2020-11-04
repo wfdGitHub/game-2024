@@ -43,7 +43,6 @@ var area = function(otps,app) {
 area.prototype.init = function() {
 	console.log("area init",this.areaId)
 	var self = this
-	this.dayUpdate()
 	this.redisDao.db.hgetall("area:area"+this.areaId+":robots",function(err,robots) {
 		self.robots = {}
 		for(let i in robots){
@@ -54,6 +53,7 @@ area.prototype.init = function() {
 	this.initAreaMail()
 	this.initSprintRank()
 	this.initGuild()
+	this.dayUpdate()
 	this.timer = setInterval(this.update.bind(this),1000)
 }
 //服务器关闭
@@ -83,6 +83,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.topicRecruitDayUpdate()
 	this.areaBossDayUpdate()
 	this.shareDayUpdate()
+	this.guildDayUpdate()
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
