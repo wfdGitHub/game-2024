@@ -38,6 +38,10 @@ module.exports = function() {
 			self.guildCheckGift(guildId)
 		}
 	}
+	//公会红包定时发放
+	this.guildGiveGift = function() {
+		
+	}
 	this.guildCheckGift = function(guildId) {
 		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,data) {
 			for(var giftId in data){
@@ -632,7 +636,7 @@ module.exports = function() {
 		var weights = []
 		var allWeight = 0
 		for(var i = 0;i < maxNum;i++){
-			var weight = Math.ceil(Math.random() * 100 + 10)
+			var weight = Math.ceil(Math.random() * 200 + 10)
 			allWeight += weight
 			weights.push(weight)
 		}
@@ -665,7 +669,7 @@ module.exports = function() {
 		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,map) {
 			var multiList = []
 			for(var id in map){
-				multiList.push(["hgetall","guild:giftinfo:"+id])
+				multiList.push(["hmget","guild:giftinfo:"+id,["id","title","maxNum","curNum"]])
 			}
 			if(multiList.length == 0){
 				cb(true,[])
@@ -674,6 +678,12 @@ module.exports = function() {
 			self.redisDao.multi(multiList,function(err,list) {
 				cb(true,list)
 			})
+		})
+	}
+	//获取红包详情
+	this.getGuildGiftDetails = function(uid,giftId,cb) {
+		self.redisDao.db.hgetall("guild:giftinfo:"+giftId,function(err,giftinfo) {
+			cb(true,giftinfo)
 		})
 	}
 	//领取公会红包
@@ -711,9 +721,10 @@ module.exports = function() {
 				}
 				num = Number(num) - 1
 				self.redisDao.db.hset("guild:giftinfo:"+giftId,"uid_"+uid,num)
-				self.redisDao.db.hset("guild:giftinfo:"+giftId,"user_"+num,JSON.stringify(self.getSimpleUser(uid)))
+				giftInfo["user_"+num] = JSON.stringify(self.getSimpleUser(uid))
+				self.redisDao.db.hset("guild:giftinfo:"+giftId,"user_"+num,giftInfo["user_"+num])
 				self.addGuildScore(uid,guildId,giftInfo["amount_"+num])
-				cb(true,giftInfo["amount_"+num])
+				cb(true,{giftInfo : giftInfo,amount : giftInfo["amount_"+num]})
 			})
 		})
 	}

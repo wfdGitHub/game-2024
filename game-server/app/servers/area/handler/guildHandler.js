@@ -206,6 +206,15 @@ guildHandler.prototype.getGuildGiftList = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//获取公会红包详情
+guildHandler.prototype.getGuildGiftDetails = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var giftId = msg.giftId
+  this.areaManager.areaMap[areaId].getGuildGiftDetails(uid,giftId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 //领取公会红包
 guildHandler.prototype.gainGuildGift = function(msg, session, next) {
   var uid = session.uid

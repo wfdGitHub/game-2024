@@ -117,6 +117,12 @@
             console.log(data);
         });
       }
+      //获取公会红包详情
+      var getGuildGiftDetails = function(giftId) {
+        pomelo.request("area.guildHandler.getGuildGiftDetails", {giftId:giftId}, function(data) {
+            console.log(data);
+        });
+      }
       //领取公会红包
       var gainGuildGift = function(giftId) {
         pomelo.request("area.guildHandler.gainGuildGift", {giftId:giftId}, function(data) {
@@ -2323,6 +2329,7 @@
       <input id="test" type="button" value="申请列表" onclick="getGuildApplyList()"/>
       <input id="test" type="button" value="退出公会" onclick="quitGuild()"/>
       <input id="test" type="button" value="签到" onclick="signInGuild('sign_3')"/>
+      <input id="test" type="button" value="红包列表" onclick="getGuildGiftList()"/>
       <input id="test" type="button" value="公会日志" onclick="getGuildLog()"/>
       <input id="test" type="button" value="公会排行" onclick="getGuildRank()"/>
     </div>
