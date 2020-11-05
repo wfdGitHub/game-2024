@@ -6,9 +6,10 @@ const guild_skill = require("../../../../config/gameCfg/guild_skill.json")
 const async = require("async")
 const uuid = require("uuid")
 const main_name= "guild"
+const oneDayTime = 86400000
 const max_num = 20
 const maxRecordNum = 20
-const num_att = {"lv":1,"exp":1,"num":1,"id":1,"lead":1,"deputy":1,"audit":1,"lv_limit":1}
+const num_att = {"lv":1,"exp":1,"num":1,"id":1,"lead":1,"deputy":1,"audit":1,"lv_limit":1,"dayCtb":1}
 const currency = guild_cfg["currency"]["value"]
 module.exports = function() {
 	var self = this
@@ -18,6 +19,7 @@ module.exports = function() {
 	var applyList = {}			//申请列表
 	var applyMap = {}			//申请映射
 	var giftInfoList = {}		//公会红包
+	var timer = 0				//定时器
 	//初始化
 	this.initGuild = function() {
 		self.getAreaObjAll(main_name,function(data) {
@@ -37,10 +39,45 @@ module.exports = function() {
 		for(var guildId in guildList){
 			self.guildCheckGift(guildId)
 		}
+		//定时到六点发放红包
+		var d1 = new Date()
+		d1.setHours(18,0,0,0)
+		var dt = d1.getTime() - Date.now()
+		if(dt < 10000)
+			dt = 10000
+		clearTimeout(timer)
+		console.log("公会每日更新",dt)
+		timer = setTimeout(self.guildGiveGift,dt)
 	}
 	//公会红包定时发放
 	this.guildGiveGift = function() {
-		
+		console.log("公会红包定时发放")
+		var curDayStr = (new Date()).toDateString()
+		for(let guildId in guildList){
+			self.redisDao.db.hget("guild:guildGiftState",guildId,function(err,str) {
+				if(!str || str !== curDayStr){
+					var lv = guildList[guildId]["lv"]
+					var ctb = guildList[guildId]["dayCtb"]
+					self.redisDao.db.hset("guild:guildGiftState",guildId,curDayStr)
+					if(ctb){
+						var index = 0
+						for(var i = 1;i <= 3;i++){
+							if(ctb >= guild_lv[lv]["ctb_"+i])
+								index = i
+							else
+								break
+						}
+						console.log(guildId,"贡献度为 ",index,"红包额度 ",guild_lv[lv]["gift_"+index])
+						self.addGuildGift(guildId,"每日红包",guild_lv[lv]["member"],guild_lv[lv]["gift_"+index],oneDayTime)
+					}else{
+						console.log(guildId,"无贡献度  不发红包 ")
+					}
+				}
+			})
+		}
+	}
+	this.guildDestory = function() {
+		clearTimeout(timer)
 	}
 	this.guildCheckGift = function(guildId) {
 		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,data) {
@@ -63,7 +100,8 @@ module.exports = function() {
 			for(var i in data){
 				data[i] = Number(data[i])
 			}
-			contributions[guildId] = data
+			contributions[guildId] = data || {}
+			console.log()
 		})
 	}
 	//设置公会属性
@@ -190,6 +228,7 @@ module.exports = function() {
 						id : guildId,
 						name : name,
 						lead : uid,
+						dayCtb : 0,
 						deputy : 0,
 						num : 1,
 						audit : 1,
@@ -464,7 +503,8 @@ module.exports = function() {
 			contributions[guildId][uid] = 0
 			self.redisDao.db.hset("guild:contributions:"+guildId,uid,0)
 			self.sendMail(uid,"加入宗族","您已成功加入【"+guildList[guildId]["name"]+"】")
-			self.sendToUser(uid,{type:"joinGuild",guildId : guildId})
+			var userInfo = self.getSimpleUser(uid)
+			self.sendToGuild(guildId,{type:"joinGuild",guildId:guildId,userInfo:userInfo})
 		})
 	}
 	//玩家离开
@@ -540,7 +580,10 @@ module.exports = function() {
 				if(exp >= guild_lv[lv]["exp"]){
 					self.incrbyGuildInfo(guildId,"exp",-guild_lv[lv]["exp"])
 					self.incrbyGuildInfo(guildId,"lv",1)
-					self.addGuildLog(guildId,{type:"upgrade",lv:guildList[guildId]["lv"]})
+					lv++
+					self.addGuildLog(guildId,{type:"upgrade",lv:lv})
+					self.addGuildGift(guildId,"公会升级红包",guild_lv[lv]["member"],guild_lv[lv]["gift_up"],oneDayTime)
+					self.sendToGuild(guildId,{type:"guildUpgrade",lv:lv})
 					this.checkGuildUpgrade(guildId)
 				}
 			}
@@ -553,6 +596,8 @@ module.exports = function() {
 				contributions[guildId][uid] += value
 				self.redisDao.db.hincrby("guild:contributions:"+guildId,uid,value)
 			}
+			self.incrbyGuildInfo(guildId,"dayCtb",value)
+
 		}
 		var awardList = self.addItemStr(uid,currency+":"+value,1,"公会签到")
 		return awardList
@@ -621,6 +666,17 @@ module.exports = function() {
 			})
 		}
 	}
+	//公会通知
+	this.sendToGuild = function(guildId,notify) {
+		for(var uid in contributions[guildId]){
+			if(this.connectorMap[uid]){
+				this.channelService.pushMessageByUids('onMessage', notify, [{
+			      uid: uid,
+			      sid: this.connectorMap[uid]
+			    }])
+			}
+		}
+	}
 	//添加公会红包
 	this.addGuildGift = function(guildId,title,maxNum,amount,time) {
 		var giftInfo = {
@@ -636,7 +692,9 @@ module.exports = function() {
 		var weights = []
 		var allWeight = 0
 		for(var i = 0;i < maxNum;i++){
-			var weight = Math.ceil(Math.random() * 200 + 10)
+			var weight = Math.ceil(Math.random() * 100 + 10)
+			if(Math.random() < 0.1)
+				weight += 100
 			allWeight += weight
 			weights.push(weight)
 		}
@@ -653,6 +711,7 @@ module.exports = function() {
 		}
 		self.redisDao.db.hset("guild:giftmap:"+guildId,giftInfo.id,giftInfo.time)
 		self.redisDao.db.hmset("guild:giftinfo:"+giftInfo.id,giftInfo)
+		self.sendToGuild(guildId,{type:"guildGift",giftInfo:[giftInfo.id,giftInfo.title,giftInfo.maxNum,giftInfo.curNum,giftInfo.time]})
 	}
 	//删除公会红包
 	this.removeGuildGift = function(guildId,giftId) {
@@ -669,7 +728,7 @@ module.exports = function() {
 		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,map) {
 			var multiList = []
 			for(var id in map){
-				multiList.push(["hmget","guild:giftinfo:"+id,["id","title","maxNum","curNum"]])
+				multiList.push(["hmget","guild:giftinfo:"+id,["id","title","maxNum","curNum","time"]])
 			}
 			if(multiList.length == 0){
 				cb(true,[])
@@ -723,8 +782,8 @@ module.exports = function() {
 				self.redisDao.db.hset("guild:giftinfo:"+giftId,"uid_"+uid,num)
 				giftInfo["user_"+num] = JSON.stringify(self.getSimpleUser(uid))
 				self.redisDao.db.hset("guild:giftinfo:"+giftId,"user_"+num,giftInfo["user_"+num])
-				self.addGuildScore(uid,guildId,giftInfo["amount_"+num])
-				cb(true,{giftInfo : giftInfo,amount : giftInfo["amount_"+num]})
+				var awardList = self.addItemStr(uid,currency+":"+giftInfo["amount_"+num],1,"公会红包")
+				cb(true,{giftInfo : giftInfo,awardList : awardList})
 			})
 		})
 	}

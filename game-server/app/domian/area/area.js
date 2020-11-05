@@ -60,6 +60,7 @@ area.prototype.init = function() {
 area.prototype.destory = function() {
 	console.log("area destory",this.areaId)
 	clearInterval(this.timer)
+	this.guildDestory()
 	this.worldBossDestory()
 	this.removeAllUser()
 }
