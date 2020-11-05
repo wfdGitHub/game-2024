@@ -656,9 +656,8 @@ module.exports = function() {
 				}
 				self.consumeItems(uid,guild_skill[lv]["pc"],1,"升级公会技能",function(flag,err) {
 					if(flag){
-						self.incrbyObj(uid,main_name,"skill_"+career,1,function(data) {
-							cb(true,data)
-						})
+						self.incrbyGuildCareerSkill(uid,career)
+						cb(true,lv)
 					}else{
 						cb(false,err)
 					}

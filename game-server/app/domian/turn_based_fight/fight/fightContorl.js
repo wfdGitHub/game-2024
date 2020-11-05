@@ -332,6 +332,7 @@ model.getTeamShowData = function(team) {
 }
 model.getTeamCE = function(team) {
 	var allCE = 0
+	var careers = {"1":0,"2":0,"3":0,"4":0}
 	for(var i = 0;i < 6;i++){
 		if(team[i]){
 			allCE += lv_cfg[team[i]["lv"] || 1]["ce"]
@@ -356,6 +357,8 @@ model.getTeamCE = function(team) {
 				if(team[i]["s"+j] && stone_skill[team[i]["s"+j]])
         			allCE += stone_skill[team[i]["s"+j]]["ce"]
 			}
+			if(herosCfg[team[i]["id"]] && careers[herosCfg[team[i]["id"]]["career"]] != undefined)
+				careers[herosCfg[team[i]["id"]]["career"]]++
 		}
 	}
 	if(team[6]){
@@ -363,6 +366,11 @@ model.getTeamCE = function(team) {
 			if(bookMap[i]){
 				allCE += book_lv[team[6][i]["lv"]]["ce"]
 				allCE += book_star[team[6][i]["star"]]["ce"]
+			}
+		}
+		for(var i = 1;i <= 4;i++){
+			if(team[6]["g"+i] && guild_skill[team[6]["g"+i]]){
+				allCE += Math.ceil(guild_skill[team[6]["g"+i]]["ce"] * careers[i])
 			}
 		}
 	}

@@ -120,6 +120,14 @@ module.exports = function() {
 			cb(true,data)
 		})
 	}
+	//升级技能属性
+	this.incrbyGuildCareerSkill = function(uid,career) {
+		self.incrbyObj(uid,"guild","skill_"+career,1)
+		if(userTeams[uid] && userTeams[uid][6] && userTeams[uid][6]["g"+career] !== undefined){
+			userTeams[uid][6]["g"+career] ++
+			this.updateCE(uid)
+		}
+	}
 	//设置天书属性
 	this.setBookInfo = function(uid,bookType,name,value) {
 		self.setObj(uid,"book",bookType+"_"+name,value)
