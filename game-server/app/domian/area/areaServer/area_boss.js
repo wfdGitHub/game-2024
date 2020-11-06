@@ -117,7 +117,7 @@ module.exports = function() {
 				var atkTeam = self.getUserTeam(uid)
 				var seededNum = Date.now()
 				var defTeam = area_boss_base[area_data.bossIndex]["team"]
-				for(var i in defTeam){
+				for(var i = 0;i < 6;i++){
 					if(defTeam[i])
 						defTeam[i].boss = true
 				}

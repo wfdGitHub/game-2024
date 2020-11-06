@@ -203,6 +203,7 @@ area.prototype.userLeave = function(uid) {
 		this.checkpointsUnload(uid)
 		this.zhuluUnload(uid)
 		this.fbUnload(uid)
+		this.playerDao.setPlayerInfo({uid:uid,key:"offline",value:Date.now()})
 	}
 	if(this.crossUids[uid]){
 		this.app.rpc.cross.crossRemote.userLeave(null,this.crossUids[uid],null)
@@ -383,7 +384,7 @@ area.prototype.getPlayerBaseByUids = function(uids,cb) {
 	var self = this
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
-		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip"]])
+		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip","offline"]])
 	}
 	self.redisDao.multi(multiList,function(err,list) {
 		var userInfos = []
@@ -397,7 +398,8 @@ area.prototype.getPlayerBaseByUids = function(uids,cb) {
 					name : list[i][0],
 					head : list[i][1],
 					level : list[i][2],
-					vip : list[i][3]
+					vip : list[i][3],
+					offline : list[i][4]
 				}
 			}
 			userInfos.push(info)
