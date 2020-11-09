@@ -181,16 +181,16 @@ module.exports = function() {
 				cb(false,"购买次数已达上限")
 				return
 			}
-				self.consumeItems(uid,default_cfg["default_pc_1"]["value"],1,"公会副本次数",function(flag,err) {
-					if(flag){
-						self.incrbyObj(uid,main_name,"buy",1,function(data) {
-							cb(true,data)
-						})
-					}
-					else{
-						cb(false,err)
-					}
-				})
+			self.consumeItems(uid,default_cfg["default_pc_1"]["value"],1,"公会副本次数",function(flag,err) {
+				if(flag){
+					self.incrbyObj(uid,main_name,"buy",1,function(data) {
+						cb(true,data)
+					})
+				}
+				else{
+					cb(false,err)
+				}
+			})
 		})
 	}
 	//删除公会副本数据
