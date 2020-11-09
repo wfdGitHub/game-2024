@@ -224,6 +224,40 @@ guildHandler.prototype.gainGuildGift = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//获取当前副本数据
+guildHandler.prototype.getGuildFBData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getGuildFBData(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//获取历史副本数据
+guildHandler.prototype.getHistoryGuildFB = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var fbId = msg.fbId
+  this.areaManager.areaMap[areaId].getHistoryGuildFB(uid,fbId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//挑战副本
+guildHandler.prototype.challengeGuildFB = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var fbId = msg.fbId
+  this.areaManager.areaMap[areaId].challengeGuildFB(uid,fbId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//购买公会副本挑战次数
+guildHandler.prototype.buyGuildFBCount = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].buyGuildFBCount(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "guildHandler",

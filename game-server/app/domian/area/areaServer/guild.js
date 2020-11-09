@@ -33,6 +33,8 @@ module.exports = function() {
 	//玩家每日更新
 	this.guildRefresh = function(uid) {
 		self.delObj(uid,main_name,"sign")
+		self.delObj(uid,"guild_fb","free")
+		self.delObj(uid,"guild_fb","buy")
 	}
 	//公会每日更新
 	this.guildDayUpdate = function() {
@@ -103,6 +105,14 @@ module.exports = function() {
 			contributions[guildId] = data || {}
 			console.log()
 		})
+	}
+	//获取公会属性
+	this.getGuildInfo = function(guildId,key) {
+		if(guildList[guildId]){
+			return guildList[guildId][key]
+		}else{
+			return false
+		}
 	}
 	//设置公会属性
 	this.setGuildInfo = function(guildId,key,value) {
@@ -239,6 +249,7 @@ module.exports = function() {
 					contributions[guildId] = {}
 					contributions[guildId][uid] = 0
 					self.chageLordData(uid,"gid",guildId)
+					self.chageLordData(uid,"gname",name)
 					self.setAreaObj(main_name,guildId,name)
 					self.redisDao.db.hset("guild:guildNameMap",name,guildId)
 					self.redisDao.db.hmset("guild:guildInfo:"+guildId,guildList[guildId])
@@ -289,6 +300,7 @@ module.exports = function() {
 				self.removeGuildGift(guildId,giftId)
 			self.redisDao.db.del("guild:giftmap:"+guildId)
 		})
+		self.removeGuildFBdata(guildId)
 		cb(true)
 	}
 	//设置成副会长
@@ -395,6 +407,10 @@ module.exports = function() {
 			guildList : guildList
 		}
 		cb(true,info)
+	}
+	//获取公会
+	this.getGuildInfo = function(guildId) {
+		return guildList[guildId]
 	}
 	//申请加入公会
 	this.applyJoinGuild = function(uid,guildId,cb) {
@@ -512,6 +528,7 @@ module.exports = function() {
 		if(guildList[guildId]["deputy"] == uid)
 			self.setGuildInfo(guildId,"deputy",0)
 		self.delLordData(uid,"gid")
+		self.delLordData(uid,"gname")
 		self.incrbyGuildInfo(guildId,"num",-1)
 		delete contributions[guildId][uid]
 		self.redisDao.db.hdel("guild:contributions:"+guildId,uid)
@@ -549,7 +566,7 @@ module.exports = function() {
 		})
 	}
 	//公会经验增加
-	this.addGuildEXP = function(uid,guildId,value) {
+	this.addGuildEXP = function(guildId,value) {
 		if(guildList[guildId]){
 			self.incrbyZset(main_name,guildId,value)
 			self.incrbyGuildInfo(guildId,"exp",value)
@@ -622,7 +639,7 @@ module.exports = function() {
 				if(flag){
 					self.setObj(uid,main_name,"sign",1)
 					var awardList = self.addGuildScore(uid,guildId,guild_sign[sign]["score"])
-					self.addGuildEXP(uid,guildId,guild_sign[sign]["exp"])
+					self.addGuildEXP(guildId,guild_sign[sign]["exp"])
 					cb(true,awardList)
 				}else{
 					cb(false,err)
@@ -692,7 +709,7 @@ module.exports = function() {
 		var allWeight = 0
 		for(var i = 0;i < maxNum;i++){
 			var weight = Math.ceil(Math.random() * 100 + 10)
-			if(Math.random() < 0.1)
+			if(Math.random() < 0.15)
 				weight += 100
 			allWeight += weight
 			weights.push(weight)

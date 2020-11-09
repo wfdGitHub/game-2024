@@ -98,6 +98,31 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============公会副本==========//
+      //获取当前副本数据
+      var getGuildFBData = function() {
+        pomelo.request("area.guildHandler.getGuildFBData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取历史副本数据
+      var getHistoryGuildFB = function(fbId) {
+        pomelo.request("area.guildHandler.getHistoryGuildFB", {fbId:fbId}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战副本
+      var challengeGuildFB = function(fbId) {
+        pomelo.request("area.guildHandler.challengeGuildFB", {fbId:fbId}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买公会副本挑战次数
+      var buyGuildFBCount = function() {
+        pomelo.request("area.guildHandler.buyGuildFBCount", {}, function(data) {
+            console.log(data);
+        });
+      }
       //==============公会==========//
       //添加红包
       var addGuildGift = function(guildId,title,maxNum,amount,time) {
