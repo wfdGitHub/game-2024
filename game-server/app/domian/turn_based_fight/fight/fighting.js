@@ -99,9 +99,11 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	for(var i = 0;i < teamLength;i++){
 		atkTeam[i].calAttAdd(atkTeamAdds)
 		atkTeam[i].teamInfo = this.atkTeamInfo
+		atkTeam[i].begin()
 		info.atkTeam.push(atkTeam[i].getSimpleInfo())
 		defTeam[i].calAttAdd(defTeamAdds)
 		defTeam[i].teamInfo = this.defTeamInfo
+		defTeam[i].begin()
 		info.defTeam.push(defTeam[i].getSimpleInfo())
 	}
 	fightRecord.push(info)
@@ -134,10 +136,6 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 }
 //战斗开始
 model.prototype.fightBegin = function() {
-	for(var i = 0; i < teamLength;i++){
-		this.atkTeam[i].begin()
-		this.defTeam[i].begin()
-	}
 	for(var i = 0; i <= fightBegin.length;i++){
 		if(this.atkBooks[fightBegin[i]])
 			this.atkBooks[fightBegin[i]].before()
