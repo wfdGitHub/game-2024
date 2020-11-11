@@ -121,7 +121,7 @@ module.exports = function() {
 			    }
 			    self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
 			    var overInfo = self.fightContorl.getOverInfo()
-		    	for(var i = 0;i < overInfo.atkTeam.length;i++)
+		    	for(var i = 0;i < 6;i++)
 		    		if(overInfo.atkTeam[i])
 		    			allDamage += overInfo.atkTeam[i].totalDamage
 		    	next()

@@ -98,6 +98,31 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============公会宝藏BOSS==========//
+      //获取宝藏BOSS数据
+     var getAuctionData = function() {
+        pomelo.request("area.guildHandler.getAuctionData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战宝藏BOSS
+     var challengeTreasureBoss = function() {
+        pomelo.request("area.guildHandler.challengeTreasureBoss", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取竞拍列表
+     var getAuctionList = function() {
+        pomelo.request("area.guildHandler.getAuctionList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //举牌竞拍
+     var upForAuction = function(index,price) {
+        pomelo.request("area.guildHandler.upForAuction", {index:index,price:price}, function(data) {
+            console.log(data);
+        });
+      }
       //==============公会副本==========//
       //获取当前副本数据
       var getGuildFBData = function() {
@@ -2358,6 +2383,12 @@
       <input id="test" type="button" value="红包列表" onclick="getGuildGiftList()"/>
       <input id="test" type="button" value="公会日志" onclick="getGuildLog()"/>
       <input id="test" type="button" value="公会排行" onclick="getGuildRank()"/>
+    </div>
+    <div class="g-button">
+      宝藏BOSS : 
+      <input id="test" type="button" value="获取宝藏BOSS数据" onclick="getAuctionData()"/>
+      <input id="test" type="button" value="挑战宝藏BOSS" onclick="challengeTreasureBoss()"/>
+      <input id="test" type="button" value="获取竞拍列表" onclick="getAuctionList()"/>
     </div>
   </body>
 </html>

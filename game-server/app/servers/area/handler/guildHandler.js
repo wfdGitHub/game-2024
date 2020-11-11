@@ -258,6 +258,41 @@ guildHandler.prototype.buyGuildFBCount = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//获取宝藏BOSS数据
+guildHandler.prototype.getAuctionData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getAuctionData(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//挑战宝藏BOSS
+guildHandler.prototype.challengeTreasureBoss = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].challengeTreasureBoss(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//获取竞拍列表
+guildHandler.prototype.getAuctionList = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getAuctionList(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//举牌竞拍
+guildHandler.prototype.upForAuction = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  var price = msg.price
+  this.areaManager.areaMap[areaId].upForAuction(uid,index,price,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "guildHandler",

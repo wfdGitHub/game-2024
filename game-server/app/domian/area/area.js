@@ -9,10 +9,11 @@ const default_cfg = require("../../../config/gameCfg/default_cfg.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
+var timers = {}
 for(var i in standard_ce_cfg){
 	standard_ce[i] = JSON.parse(standard_ce_cfg[i]["base"])
 }
@@ -53,15 +54,15 @@ area.prototype.init = function() {
 	this.initAreaMail()
 	this.initSprintRank()
 	this.initGuild()
-	this.dayUpdate()
 	this.timer = setInterval(this.update.bind(this),1000)
 }
 //服务器关闭
 area.prototype.destory = function() {
 	console.log("area destory",this.areaId)
 	clearInterval(this.timer)
-	this.guildDestory()
 	this.worldBossDestory()
+	for(var i in timers)
+		clearTimeout(i)
 	this.removeAllUser()
 }
 //update
@@ -75,6 +76,7 @@ area.prototype.update = function() {
 //每日定时器
 area.prototype.dayUpdate = function(curDayStr) {
 	// console.log("服务器每日刷新")
+	var self = this
 	this.dayStr = curDayStr
 	this.weekDay = (new Date).getDay()
 	this.weekStr = util.getWeek()
@@ -85,6 +87,19 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.areaBossDayUpdate()
 	this.shareDayUpdate()
 	this.guildDayUpdate()
+	this.guildTreasureDayUpdate()
+	this.getAreaObj("areaInfo","dayStr",function(data) {
+		console.log("!!!!!! ",data,self.dayStr,self.areaId)
+		if(data !== self.dayStr){
+			self.setAreaObj("areaInfo","dayStr",self.dayStr)
+			self.firstDayUpdate()
+		}
+	})
+}
+//每日首次定时器
+area.prototype.firstDayUpdate = function() {
+	console.log("服务器每日首次刷新")
+	this.guildTreasureFirstUpdate()
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
@@ -412,6 +427,14 @@ area.prototype.getPlayerBaseByUids = function(uids,cb) {
 area.prototype.verifyFaild = function(uid,verify1,verify2) {
 	console.log("verifyFaild",uid)
 	this.redisDao.db.rpush("verify_faild",JSON.stringify({uid:uid,client:verify1,server:verify2}))
+}
+//定时器
+area.prototype.setTimeout = function(fun,dt) {
+	var timer = setTimeout(function() {
+		delete timers[timer]
+		fun()
+	},dt)
+	timers[timer] = 1
 }
 module.exports = {
 	id : "area",

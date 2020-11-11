@@ -19,7 +19,6 @@ module.exports = function() {
 	var applyList = {}			//申请列表
 	var applyMap = {}			//申请映射
 	var giftInfoList = {}		//公会红包
-	var timer = 0				//定时器
 	//初始化
 	this.initGuild = function() {
 		self.getAreaObjAll(main_name,function(data) {
@@ -35,6 +34,7 @@ module.exports = function() {
 		self.delObj(uid,main_name,"sign")
 		self.delObj(uid,"guild_fb","free")
 		self.delObj(uid,"guild_fb","buy")
+		self.delObj(uid,"guild_treasure","play")
 	}
 	//公会每日更新
 	this.guildDayUpdate = function() {
@@ -47,9 +47,8 @@ module.exports = function() {
 		var dt = d1.getTime() - Date.now()
 		if(dt < 10000)
 			dt = 10000
-		clearTimeout(timer)
 		console.log("公会每日更新",dt)
-		timer = setTimeout(self.guildGiveGift,dt)
+		self.setTimeout(self.guildGiveGift,dt)
 	}
 	//公会红包定时发放
 	this.guildGiveGift = function() {
@@ -77,9 +76,6 @@ module.exports = function() {
 				}
 			})
 		}
-	}
-	this.guildDestory = function() {
-		clearTimeout(timer)
 	}
 	this.guildCheckGift = function(guildId) {
 		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,data) {
@@ -301,6 +297,8 @@ module.exports = function() {
 			self.redisDao.db.del("guild:giftmap:"+guildId)
 		})
 		self.removeGuildFBdata(guildId)
+		self.redisDao.db.del("guild_treasure:play:"+guildId)
+		self.redisDao.db.del("guild_treasure:"+guildId)
 		cb(true)
 	}
 	//设置成副会长
@@ -411,6 +409,10 @@ module.exports = function() {
 	//获取公会
 	this.getGuildInfo = function(guildId) {
 		return guildList[guildId]
+	}
+	//获取公会列表
+	this.getGuildInfoList = function() {
+		return guildList
 	}
 	//申请加入公会
 	this.applyJoinGuild = function(uid,guildId,cb) {
