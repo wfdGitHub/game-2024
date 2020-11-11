@@ -92,7 +92,7 @@ module.exports = function() {
 	//获取跨服段位赛数据
 	this.getGradingData = function(crossUid,cb) {
 		let uid = self.players[crossUid]["uid"]
-		let sid = self.players[crossUid]["areaId"]
+		let sid = self.players[crossUid]["oriId"]
 		let key = sid+"|"+uid
 		let info = {
 			score : 0,
@@ -138,7 +138,7 @@ module.exports = function() {
 	//使用挑战券
 	this.useGradingItem = function(crossUid,cb) {
 		let uid = self.players[crossUid]["uid"]
-		let sid = self.players[crossUid]["areaId"]
+		let sid = self.players[crossUid]["oriId"]
 		let key = sid+"|"+uid
 		this.consumeItems(crossUid,grading_cfg["item"]["value"]+":"+1,1,"使用挑战券",function(flag,err) {
 			if(flag){
@@ -153,7 +153,7 @@ module.exports = function() {
 	//匹配战斗
 	this.matchGrading = function(crossUid,cb) {
 		let uid = self.players[crossUid]["uid"]
-		let sid = self.players[crossUid]["areaId"]
+		let sid = self.players[crossUid]["oriId"]
 		let key = sid+"|"+uid
 		let glv,targetSid,targetUid,targetScore,targetInfo,atkTeam,defTeam,curScore,change,seededNum,winFlag
 		async.waterfall([
@@ -266,7 +266,7 @@ module.exports = function() {
 	//领取段位奖励
 	this.gainGradingAward = function(crossUid,glv,cb) {
 		let uid = self.players[crossUid]["uid"]
-		let sid = self.players[crossUid]["areaId"]
+		let sid = self.players[crossUid]["oriId"]
 		let key = sid+"|"+uid
 		if(!grading_lv[glv] || !grading_lv[glv]["grading_award"]){
 			cb(false,"段位不存在")
