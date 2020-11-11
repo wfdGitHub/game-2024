@@ -45,7 +45,7 @@ areaDeploy.prototype.openArea = function(cb) {
 areaDeploy.prototype.mergeArea = function(areaList) {
 	console.log("areaList",areaList)
 	var self = this
-	self.openArea(function(areaId) {
+	self.areaDao.createArea(function(areaId) {
 		if(areaId){
 			self.redisDao.db.hset("area:area"+areaId+":areaInfo","oldArea",1)
 			for(let i = 0;i < areaList.length;i++){
@@ -62,6 +62,11 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 				self.mergeGuild(areaList[i],areaId)
 				self.app.rpc.connector.connectorRemote.changeFinalServerMap.toServer("*",areaList[i],areaId,null)
 			}
+			var serverId = self.deploy(areaId)
+			//通知所有的connector，更新服务器配置
+			self.app.rpc.connector.connectorRemote.updateArea.toServer("*",areaId,serverId,null)
+			//通知area服务器加载
+			self.app.rpc.area.areaRemote.loadArea.toServer(serverId,areaId,null)
 		}
 	})
 }
