@@ -211,7 +211,8 @@ module.exports = function() {
 				//获取奖励
 				self.redisDao.db.rpush(main_name+":play:"+guildId,uid)
 				self.setObj(uid,main_name,"play",1)
-				info.awardList = self.addItemStr(uid,guild_lv[lv]["award"],1,"挑战宝藏BOSS")
+				info.awardList = self.addGuildScore(uid,guildId,guild_lv[lv]["auction_ctb"],"宝藏BOSS")
+				info.awardList = info.awardList.concat(self.addItemStr(uid,"201:"+guild_lv[lv]["auction_award"],1,"宝藏BOSS"))
 				info.noFight = noFight
 				info.allDamage = allDamage
 				cb(true,info)

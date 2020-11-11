@@ -164,9 +164,10 @@ module.exports = function() {
 			},
 			function(next) {
 				console.log("allDamage222",allDamage)
+				var info = {allDamage : allDamage,killFlag:killFlag}
 				//奖励
-				var awardList = self.addItemStr(uid,guild_fb[fbId]["award"],1,"挑战公会BOSS")
-				var info = {allDamage : allDamage,awardList:awardList,killFlag:killFlag}
+				info.awardList = self.addGuildScore(uid,guildId,guild_fb[fbId]["ctb"],"宝藏BOSS")
+				info.awardList = info.awardList.concat(self.addItemStr(uid,"201:"+guild_fb[fbId]["coin"],1,"宝藏BOSS"))
 				cb(true,info)
 			}
 		],function(err) {

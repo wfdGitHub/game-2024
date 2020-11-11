@@ -32,7 +32,7 @@ module.exports = function() {
 	//玩家每日更新
 	this.guildRefresh = function(uid) {
 		self.delObj(uid,main_name,"sign")
-		self.delObj(uid,"guild_fb","free")
+		self.delObj(uid,"guild_fb","count")
 		self.delObj(uid,"guild_fb","buy")
 		self.delObj(uid,"guild_treasure","play")
 	}
