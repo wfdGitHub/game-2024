@@ -138,7 +138,7 @@ module.exports = function() {
 	//获取我的公会信息
 	this.getMyGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
-		if(guildId){
+		if(guildId && guildList[guildId]){
 			self.getHMObj(uid,main_name,["sign","skill_1","skill_2","skill_3","skill_4"],function(data) {
 				var info = Object.assign(guildList[guildId])
 				info.sign = data[0]
