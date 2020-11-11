@@ -179,7 +179,10 @@ module.exports = function() {
 		}
 	}
 	//创建公会
-	this.createGuild = function(uid,name,cb) {
+	this.createGuild = function(uid,name,audit,lv_limit,cb) {
+		audit = audit == 1 ? 1 : 0
+		if(!Number.isInteger(lv_limit) || lv_limit < 0 || lv_limit > 255)
+			lv_limit = 0
 		async.waterfall([
 			function(next) {
 				//判断自身是否存在公会
@@ -237,8 +240,8 @@ module.exports = function() {
 						dayCtb : 0,
 						deputy : 0,
 						num : 1,
-						audit : 1,
-						lv_limit:0,
+						audit : audit,
+						lv_limit : lv_limit,
 						notify: ""
 					}
 					guildList[guildId] = guildInfo
