@@ -612,7 +612,7 @@ module.exports = function() {
 		}
 	}
 	//增加帮贡
-	this.addGuildScore = function(uid,guildId,value) {
+	this.addGuildScore = function(uid,guildId,value,reason) {
 		if(guildList[guildId]){
 			if(contributions[guildId] && contributions[guildId][uid] !== undefined){
 				contributions[guildId][uid] += value
@@ -621,7 +621,7 @@ module.exports = function() {
 			self.incrbyGuildInfo(guildId,"dayCtb",value)
 
 		}
-		var awardList = self.addItemStr(uid,currency+":"+value,1,"公会签到")
+		var awardList = self.addItemStr(uid,currency+":"+value,1,reason || "公会活动")
 		return awardList
 	}
 	//签到
@@ -643,7 +643,7 @@ module.exports = function() {
 			self.consumeItems(uid,guild_sign[sign]["pc"],1,"公会签到",function(flag,err) {
 				if(flag){
 					self.setObj(uid,main_name,"sign",1)
-					var awardList = self.addGuildScore(uid,guildId,guild_sign[sign]["score"])
+					var awardList = self.addGuildScore(uid,guildId,guild_sign[sign]["score"],"签到")
 					self.addGuildEXP(guildId,guild_sign[sign]["exp"])
 					cb(true,awardList)
 				}else{
@@ -749,7 +749,7 @@ module.exports = function() {
 		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,map) {
 			var multiList = []
 			for(var id in map){
-				multiList.push(["hmget","guild:giftinfo:"+id,["id","title","maxNum","curNum","time"]])
+				multiList.push(["hmget","guild:giftinfo:"+id,["id","title","maxNum","curNum","time","uid_"+uid]])
 			}
 			if(multiList.length == 0){
 				cb(true,[])
@@ -800,8 +800,10 @@ module.exports = function() {
 					return
 				}
 				num = Number(num) - 1
-				self.redisDao.db.hset("guild:giftinfo:"+giftId,"uid_"+uid,num)
-				giftInfo["user_"+num] = JSON.stringify(self.getSimpleUser(uid))
+				self.redisDao.db.hset("guild:giftinfo:"+giftId,"uid_"+uid,giftInfo["amount_"+num])
+				var info = self.getSimpleUser(uid)
+				info.time = Date.now()
+				giftInfo["user_"+num] = JSON.stringify(info)
 				self.redisDao.db.hset("guild:giftinfo:"+giftId,"user_"+num,giftInfo["user_"+num])
 				var awardList = self.addItemStr(uid,currency+":"+giftInfo["amount_"+num],1,"公会红包")
 				cb(true,{giftInfo : giftInfo,awardList : awardList})
