@@ -130,12 +130,26 @@ module.exports = function() {
 				data["boss_rank"] = 1
 				self.gainAreaBossRankAward(uid)
 			}
+			for(var i = 1;i < 10;i++){
+				if(!activity_cfg["recharge_week_"+i]){
+					break
+				}else{
+					delete data["recharge_week_"+i]
+				}
+			}
 			self.setHMObj(uid,main_name,data)
 		})
 	}
 	//活动数据每周刷新
 	this.activityWeekUpdate = function(uid) {
-		self.setHMObj(uid,main_name,data)
+		for(var i = 1;i < 10;i++){
+			if(!activity_cfg["recharge_week_"+i]){
+				break
+			}else{
+				console.log("delObj","recharge_week_"+i)
+				self.delObj(uid,main_name,"recharge_week_"+i)
+			}
+		}
 	}
 	//领取充值天数礼包
 	this.gainRPayDaysAward = function(uid,id,cb) {
@@ -173,18 +187,17 @@ module.exports = function() {
 			}
 		})
 	}
-
 	//领取每周累充奖励
 	this.gainRechargeWeekAward = function(uid,id,cb) {
 		var real_week = self.players[uid].real_week
-		if(!activity_cfg["recharge_week_rmb_"+id] || real_week < activity_cfg["recharge_week_rmb_"+id]){
+		if(!activity_cfg["recharge_week_rmb_"+id] || real_week < activity_cfg["recharge_week_rmb_"+id]["value"]){
 			cb(false,"条件未达成")
 			return
 		}
-		self.getObj(uid,main_name,"recharge_week_rmb_"+id,function(data) {
-			if(data == 0){
-				self.incrbyObj(uid,main_name,"recharge_week_rmb_"+id,1)
-				var awardList = self.addItemStr(uid,activity_cfg["recharge_week_rmb_"+id]["value"])
+		self.getObj(uid,main_name,"recharge_week_"+id,function(data) {
+			if(!data){
+				self.incrbyObj(uid,main_name,"recharge_week_"+id,1)
+				var awardList = self.addItemStr(uid,activity_cfg["recharge_week_"+id]["value"])
 				cb(true,awardList)
 			}else{
 				cb(false,"已领取")

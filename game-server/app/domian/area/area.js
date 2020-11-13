@@ -175,6 +175,7 @@ area.prototype.weekFirstLogin = function(uid) {
 	this.chageLordData(uid,"weekStr",this.weekStr)
 	this.chageLordData(uid,"week_rmb",0)
 	this.chageLordData(uid,"real_week",0)
+	this.activityWeekUpdate(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
