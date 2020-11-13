@@ -9,7 +9,6 @@ const oneDayTime = 86400000
 const currency = guild_cfg["currency"]["value"]
 for(var i in guild_fb){
 	guild_fb[i]["team"] = JSON.parse(guild_fb[i]["team"])
-	guild_fb[i]["hp"] = 1
 	for(var j = 0;j < 6;j++){
 		if(guild_fb[i]["team"][j])
 			guild_fb[i]["team"][j].boss = true
@@ -83,6 +82,7 @@ module.exports = function() {
 		}
 		var killFlag = false
 		var allDamage = 0
+		var info = {}
 		async.waterfall([
 			function(next) {
 				//检查副本是否开启
@@ -114,7 +114,7 @@ module.exports = function() {
 				var seededNum = Date.now()
 				var defTeam = guild_fb[fbId]["team"]
 				var fightOtps = {seededNum : seededNum,maxRound:5}
-			    var info = {
+			    info = {
 			    	atkTeam : atkTeam,
 			    	defTeam : defTeam,
 			    	fightOtps : fightOtps
@@ -129,10 +129,8 @@ module.exports = function() {
 			function(next) {
 				//更新BOSS信息
 				self.redisDao.db.hget(main_name+":"+guildId,"damage_"+fbId,function(err,damage) {
-					if(!damage)
-						damage = 0
+					damage = Number(damage) || 0
 					if(damage < guild_fb[fbId]["hp"]){
-						console.log("allDamage111",allDamage)
 						//总伤害
 						self.redisDao.db.hincrby(main_name+":"+guildId,"damage_"+fbId,allDamage)
 						//排行榜
@@ -163,8 +161,8 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				console.log("allDamage222",allDamage)
-				var info = {allDamage : allDamage,killFlag:killFlag}
+				info.allDamage = allDamage
+				info.killFlag = killFlag
 				//奖励
 				info.awardList = self.addGuildScore(uid,guildId,guild_fb[fbId]["ctb"],"宝藏BOSS")
 				info.awardList = info.awardList.concat(self.addItemStr(uid,"201:"+guild_fb[fbId]["coin"],1,"宝藏BOSS"))

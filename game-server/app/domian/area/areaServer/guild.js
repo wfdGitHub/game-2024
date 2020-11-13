@@ -643,10 +643,10 @@ module.exports = function() {
 			return
 		}
 		self.getObj(uid,main_name,"sign",function(data) {
-			// if(data){
-			// 	cb(false,"今日已签到")
-			// 	return
-			// }
+			if(data){
+				cb(false,"今日已签到")
+				return
+			}
 			self.consumeItems(uid,guild_sign[sign]["pc"],1,"公会签到",function(flag,err) {
 				if(flag){
 					self.setObj(uid,main_name,"sign",1)

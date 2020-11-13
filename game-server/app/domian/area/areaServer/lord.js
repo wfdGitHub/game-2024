@@ -68,15 +68,17 @@ module.exports = function() {
 		self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","exp",exp,function(err,value) {
 			if(err)
 				console.error(err)
-			var notify = {
-				"type" : "addLordExp",
-				"exp" : exp,
-				"curExp" : Number(value)
-			}
-			self.players[uid]["exp"] = notify.curExp
-			self.sendToUser(uid,notify)
-			self.checkLordUpgrade(uid,Number(value))
 			self.updateSprintRank("lv_rank",uid,exp)
+			if(self.players[uid]){
+				var notify = {
+					"type" : "addLordExp",
+					"exp" : exp,
+					"curExp" : Number(value)
+				}
+				self.players[uid]["exp"] = notify.curExp
+				self.sendToUser(uid,notify)
+				self.checkLordUpgrade(uid,Number(value))
+			}
 		})
 	}
 	//获取主公等级
