@@ -47,7 +47,6 @@ module.exports = function() {
 		var dt = d1.getTime() - Date.now()
 		if(dt < 10000)
 			dt = 10000
-		console.log("宝藏BOSS每日更新",dt)
 		self.setTimeout(function() {
 			var guildList = self.getGuildInfoList()
 			for(var guildId in guildList){

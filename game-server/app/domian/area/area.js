@@ -89,7 +89,6 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.guildDayUpdate()
 	this.guildTreasureDayUpdate()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
-		console.log("!!!!!! ",data,self.dayStr,self.areaId)
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)
 			self.firstDayUpdate()

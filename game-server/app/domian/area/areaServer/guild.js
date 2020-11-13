@@ -47,7 +47,6 @@ module.exports = function() {
 		var dt = d1.getTime() - Date.now()
 		if(dt < 10000)
 			dt = 10000
-		console.log("公会每日更新",dt)
 		self.setTimeout(self.guildGiveGift,dt)
 	}
 	//公会红包定时发放
@@ -210,7 +209,7 @@ module.exports = function() {
 				}
 				self.redisDao.db.hexists("guild:guildNameMap",name,function(err,data) {
 					if(data != 0)
-						next("公会名称已存在")
+						next("公会名称不可用")
 					else
 						next()
 				})
