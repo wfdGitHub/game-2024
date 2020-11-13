@@ -533,7 +533,7 @@ module.exports = function() {
 			self.redisDao.db.hset("guild:contributions:"+guildId,uid,0)
 			self.sendMail(uid,"加入宗族","您已成功加入【"+guildList[guildId]["name"]+"】")
 			var userInfo = self.getSimpleUser(uid)
-			self.sendToGuild(guildId,{type:"joinGuild",guildId:guildId,userInfo:userInfo})
+			self.sendToGuild(guildId,{type:"joinGuild",guildId:guildId,userInfo:userInfo,name:guildList[guildId]["name"]})
 		})
 	}
 	//玩家离开
@@ -550,7 +550,7 @@ module.exports = function() {
 		})
 		self.setObj(uid,main_name,"cd",Date.now()+86400000)
 		self.sendMail(uid,"退出宗族","您已离开【"+guildList[guildId]["name"]+"】")
-		self.sendToUser(uid,{type:"leaveGuild",guildId : guildId})
+		self.sendToUser(uid,{type:"leaveGuild",guildId : guildId,name:guildList[guildId]["name"]})
 		if(cb)
 			cb(true)
 	}
