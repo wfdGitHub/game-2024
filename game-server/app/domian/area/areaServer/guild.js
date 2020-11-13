@@ -405,9 +405,17 @@ module.exports = function() {
 	this.getGuildList = function(uid,cb) {
 		var info = {
 			applys : applyMap[uid],
-			guildList : guildList
+			guildList : guildList,
+			leadInfos : {}
 		}
-		cb(true,info)
+		var uids = []
+		for(var guildId in guildList){
+			uids.push(guildList[guildId]["lead"])
+		}
+		self.getPlayerInfoByUids(uids,function(userInfos) {
+			info.leadInfos = userInfos
+			cb(true,info)
+		})
 	}
 	//获取公会
 	this.getGuildInfo = function(guildId) {
