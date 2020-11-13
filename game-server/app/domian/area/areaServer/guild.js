@@ -143,9 +143,9 @@ module.exports = function() {
 				var info = Object.assign(guildList[guildId])
 				info.sign = data[0]
 				info.skill_1 = Number(data[1]) || 0
-				info.skill_2 = Number([2]) || 0
-				info.skill_3 = Number([3]) || 0
-				info.skill_4 = Number([4]) || 0
+				info.skill_2 = Number(data[2]) || 0
+				info.skill_3 = Number(data[3]) || 0
+				info.skill_4 = Number(data[4]) || 0
 				info.score = contributions[guildId][uid]
 				cb(true,info)
 			})
