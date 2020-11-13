@@ -341,7 +341,7 @@ module.exports = function() {
 	}
 	//添加记录
 	local.addRecord = function(atkUser,type,winFlag,targetInfo,fightInfo,rank) {
-		if(!atkUser){
+		if(!atkUser || atkUser.uid < 10000){
 			return
 		}
 		var info = {type : type,winFlag : winFlag,atkUser : atkUser,defUser : targetInfo,fightInfo : fightInfo,time : Date.now()}

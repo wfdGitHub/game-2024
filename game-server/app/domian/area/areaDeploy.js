@@ -62,24 +62,24 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 				self.mergeGuild(areaList[i],areaId)
 				self.app.rpc.connector.connectorRemote.changeFinalServerMap.toServer("*",areaList[i],areaId,null)
 			}
-			var serverId = self.deploy(areaId)
-			//通知所有的connector，更新服务器配置
-			self.app.rpc.connector.connectorRemote.updateArea.toServer("*",areaId,serverId,null)
-			//通知area服务器加载
-			self.app.rpc.area.areaRemote.loadArea.toServer(serverId,areaId,null)
+			setTimeout(function() {
+				var serverId = self.deploy(areaId)
+				//通知所有的connector，更新服务器配置
+				self.app.rpc.connector.connectorRemote.updateArea.toServer("*",areaId,serverId,null)
+				//通知area服务器加载
+				self.app.rpc.area.areaRemote.loadArea.toServer(serverId,areaId,null)
+			},3000)
 		}
 	})
 }
 //公会指向调整
 areaDeploy.prototype.mergeGuild = function(oriId,areaId) {
 	var self = this
-	for(let i = 0;i < rankTypes.length;i++){
-		self.redisDao.db.hgetall("area:area"+oriId+":guild",function(err,data) {
-			if(data){
-				self.redisDao.db.hmset("area:area"+areaId+":guild",data)
-			}
-		})
-	}
+	self.redisDao.db.hgetall("area:area"+oriId+":guild",function(err,data) {
+		if(data){
+			self.redisDao.db.hmset("area:area"+areaId+":guild",data)
+		}
+	})
 }
 //排行榜合并
 areaDeploy.prototype.mergeRank = function(oriId,areaId) {

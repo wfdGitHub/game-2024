@@ -17,15 +17,20 @@ module.exports = function() {
 	var curSeasonId = 0
 	//每日刷新
 	this.gradingDayUpdate = function() {
-		self.redisDao.db.del("cross:grading:count")
-		self.redisDao.db.hgetall("cross:grading",function(err,data) {
-			if(!data){
-				curSeasonId = 1
-				self.newGrading()
-			}else{
-				curSeasonId = Number(data.seasonId)
-				if(data["month"] != util.getMonth())
-					self.settleGrading()
+		self.redisDao.db.hget("cross:grading","dayStr",function(err,data) {
+			if(!data || self.dayStr != data){
+				self.redisDao.db.hset("cross:grading","dayStr",self.dayStr)
+				self.redisDao.db.del("cross:grading:count")
+				self.redisDao.db.hgetall("cross:grading",function(err,data) {
+					if(!data){
+						curSeasonId = 1
+						self.newGrading()
+					}else{
+						curSeasonId = Number(data.seasonId)
+						if(data["month"] != util.getMonth())
+							self.settleGrading()
+					}
+				})
 			}
 		})
 	}
