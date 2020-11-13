@@ -216,7 +216,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//扣除金额
-				self.consumeItems(uid,"202:10000",1,"创建公会",function(flag,err) {
+				self.consumeItems(uid,guild_cfg["create"]["value"],1,"创建公会",function(flag,err) {
 					if(flag)
 						next()
 					else
