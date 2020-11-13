@@ -559,7 +559,7 @@ module.exports = function() {
 		info.time = Date.now()
 		self.redisDao.db.rpush("guild:log:"+guildId,JSON.stringify(info),function(err,num) {
 			if(num > maxRecordNum){
-				self.redisDao.db.ltrim("player:user:"+atkUser.uid+":arenaRecord",-maxRecordNum,-1)
+				self.redisDao.db.ltrim("guild:log:"+guildId,-maxRecordNum,-1)
 			}
 		})
 	}
@@ -807,6 +807,7 @@ module.exports = function() {
 					cb(false,"红包已领完")
 					return
 				}
+				giftInfo.curNum++
 				num = Number(num) - 1
 				self.redisDao.db.hset("guild:giftinfo:"+giftId,"uid_"+uid,giftInfo["amount_"+num])
 				var info = self.getSimpleUser(uid)
