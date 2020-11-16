@@ -193,9 +193,10 @@ module.exports = function() {
 						if(defTeam[i] && overInfo.defTeam[i]){
 							surplus_health[i] = overInfo.defTeam[i].hp/overInfo.defTeam[i].maxHP
 						}else{
-							diedNum++
 							surplus_health[i] = 0
 						}
+						if(surplus_health[i] <= 0)
+							diedNum++
 			    		if(overInfo.atkTeam[i])
 			    			allDamage += overInfo.atkTeam[i].totalDamage
 					}
