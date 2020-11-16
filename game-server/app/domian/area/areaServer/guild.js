@@ -521,7 +521,7 @@ module.exports = function() {
 				return
 			}
 			self.addGuildLog(guildId,{type:"join",uid:uid,name:applyList[guildId][uid]["name"]})
-			self.sendToGuild(guildId,{type:"joinGuild",guildId:guildId,userName:applyList[guildId][uid]["name"],name:guildList[guildId]["name"]})
+			self.sendToGuild(guildId,{type:"joinGuild",guildId:guildId,userName:applyList[guildId][uid]["name"],uid:uid,name:guildList[guildId]["name"]})
 			for(var i in applyMap[uid]){
 				delete applyList[i][uid]
 			}
