@@ -57,31 +57,32 @@ module.exports = function() {
 		for(var guildId in guildList){
 			arr.push(guildId)
 		}
-		self.redisDao.db.hmget("guild:guildGiftState",arr,function(err,list) {
-			for(var i = 0;i < list.length;i++){
-				var str = list[i]
-				var guildId = arr[i]
-				if(!str || str !== curDayStr){
-					var lv = guildList[guildId]["lv"]
-					var ctb = guildList[guildId]["dayCtb"]
-					self.redisDao.db.hset("guild:guildGiftState",guildId,curDayStr)
-					if(ctb){
-						var index = 0
-						for(var i = 1;i <= 3;i++){
-							if(ctb >= guild_lv[lv]["ctb_"+i])
-								index = i
-							else
-								break
+		if(arr.length){
+			self.redisDao.db.hmget("guild:guildGiftState",arr,function(err,list) {
+				for(var i = 0;i < list.length;i++){
+					var str = list[i]
+					var guildId = arr[i]
+					if(!str || str !== curDayStr){
+						var lv = guildList[guildId]["lv"]
+						var ctb = guildList[guildId]["dayCtb"]
+						self.redisDao.db.hset("guild:guildGiftState",guildId,curDayStr)
+						if(ctb){
+							var index = 0
+							for(var i = 1;i <= 3;i++){
+								if(ctb >= guild_lv[lv]["ctb_"+i])
+									index = i
+								else
+									break
+							}
+							console.log(guildId,"贡献度为 ",index,"红包额度 ",guild_lv[lv]["gift_"+index])
+							self.addGuildGift(guildId,"每日红包",guild_lv[lv]["member"],guild_lv[lv]["gift_"+index],oneDayTime)
+						}else{
+							console.log(guildId,"无贡献度  不发红包 ")
 						}
-						console.log(guildId,"贡献度为 ",index,"红包额度 ",guild_lv[lv]["gift_"+index])
-						self.addGuildGift(guildId,"每日红包",guild_lv[lv]["member"],guild_lv[lv]["gift_"+index],oneDayTime)
-					}else{
-						console.log(guildId,"无贡献度  不发红包 ")
 					}
 				}
-			}
-
-		})
+			})
+		}
 	}
 	this.guildCheckGift = function(guildId) {
 		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,data) {
