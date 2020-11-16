@@ -68,9 +68,9 @@ module.exports = function() {
 						self.redisDao.db.hset("guild:guildGiftState",guildId,curDayStr)
 						if(ctb){
 							var index = 0
-							for(var i = 1;i <= 3;i++){
-								if(ctb >= guild_lv[lv]["ctb_"+i])
-									index = i
+							for(var j = 1;j <= 3;j++){
+								if(ctb >= guild_lv[lv]["ctb_"+j])
+									index = j
 								else
 									break
 							}
