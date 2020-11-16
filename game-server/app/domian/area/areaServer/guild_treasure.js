@@ -99,7 +99,8 @@ module.exports = function() {
 				var allValue = 0
 				for(var i in list){
 					list[i] = JSON.parse(list[i])
-					self.sendMail(list[i]["uid"],"宗族竞拍成功","恭喜您竞拍成功，这是您的竞拍物品。",list[i]["item"])
+					if(list[i]["uid"] && list[i]["uid"] > 10000)
+						self.sendMail(list[i]["uid"],"宗族竞拍成功","恭喜您竞拍成功，这是您的竞拍物品。",list[i]["item"])
 					allValue += list[i]["cur"]
 				}
 				self.redisDao.db.lrange(main_name+":play:"+guildId,0,-1,function(err,data) {
