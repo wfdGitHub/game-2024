@@ -68,7 +68,7 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 				self.app.rpc.connector.connectorRemote.updateArea.toServer("*",areaId,serverId,null)
 				//通知area服务器加载
 				self.app.rpc.area.areaRemote.loadArea.toServer(serverId,areaId,null)
-			},3000)
+			},30000)
 		}
 	})
 }
