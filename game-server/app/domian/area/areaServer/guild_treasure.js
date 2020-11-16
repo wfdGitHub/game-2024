@@ -32,7 +32,8 @@ module.exports = function() {
 		var guildList = self.getGuildInfoList()
 		for(var guildId in guildList){
 			self.redisDao.db.hdel(main_name,guildId)
-			self.redisDao.db.del(main_name+":"+guildId+":rank")
+			self.redisDao.db.del(main_name+":rank:"+guildId)
+			self.redisDao.db.del(main_name+":play:"+guildId)
 		}
 	}
 	//宝藏BOSS每日更新
@@ -76,7 +77,7 @@ module.exports = function() {
 				if(data){
 					info.surplus_health = JSON.parse(data)
 				}
-				self.redisDao.db.zrange(main_name+":"+guildId+":rank",0,-1,"WITHSCORES",function(err,list) {
+				self.redisDao.db.zrange(main_name+":rank:"+guildId,0,-1,"WITHSCORES",function(err,list) {
 					var uids = []
 					var scores = []
 					for(var i = 0;i < list.length;i += 2){
@@ -102,12 +103,13 @@ module.exports = function() {
 					self.sendMail(list[i]["uid"],"宗族竞拍成功","恭喜您竞拍成功，这是您的竞拍物品。",list[i]["item"])
 					allValue += list[i]["cur"]
 				}
-				self.redisDao.db.lrange(main_name+":play:"+guildId,0,-1,function(err,list) {
-					console.log(err,list)
-					if(!err && list && list.length){
-						var oneValue = Math.ceil(allValue / list.length)
-						for(var i = 0;i < list.length;i++)
-							self.sendMail(list[i],"宗族竞拍奖励","您获得了来自宗族竞拍的奖励",currency+":"+oneValue)
+				self.redisDao.db.lrange(main_name+":play:"+guildId,0,-1,function(err,data) {
+					console.log(err,data)
+					if(!err && data && data.length){
+						var oneValue = Math.ceil(allValue / data.length)
+						for(var i = 0;i < data.length;i++){
+							self.sendMail(data[i],"宗族竞拍奖励","您获得了来自宗族竞拍的奖励",currency+":"+oneValue)
+						}
 						self.redisDao.db.del(main_name+":play:"+guildId)
 					}
 				})
@@ -207,7 +209,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//排行榜
-				self.redisDao.db.zincrby(main_name+":"+guildId+":rank",allDamage,uid)
+				self.redisDao.db.zincrby(main_name+":rank:"+guildId,allDamage,uid)
 				//获取奖励
 				self.redisDao.db.rpush(main_name+":play:"+guildId,uid)
 				self.setObj(uid,main_name,"play",1)
