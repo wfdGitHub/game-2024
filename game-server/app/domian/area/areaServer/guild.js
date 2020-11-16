@@ -53,8 +53,14 @@ module.exports = function() {
 	this.guildGiveGift = function() {
 		console.log("宗族红包定时发放")
 		var curDayStr = (new Date()).toDateString()
-		for(let guildId in guildList){
-			self.redisDao.db.hget("guild:guildGiftState",guildId,function(err,str) {
+		var arr = []
+		for(var guildId in guildList){
+			arr.push(guildId)
+		}
+		self.redisDao.db.hmget("guild:guildGiftState",arr,function(err,list) {
+			for(var i = 0;i < list.length;i++){
+				var str = list[i]
+				var guildId = arr[i]
 				if(!str || str !== curDayStr){
 					var lv = guildList[guildId]["lv"]
 					var ctb = guildList[guildId]["dayCtb"]
@@ -73,8 +79,9 @@ module.exports = function() {
 						console.log(guildId,"无贡献度  不发红包 ")
 					}
 				}
-			})
-		}
+			}
+
+		})
 	}
 	this.guildCheckGift = function(guildId) {
 		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,data) {
@@ -100,14 +107,6 @@ module.exports = function() {
 			contributions[guildId] = data || {}
 			console.log()
 		})
-	}
-	//获取宗族属性
-	this.getGuildInfo = function(guildId,key) {
-		if(guildList[guildId]){
-			return guildList[guildId][key]
-		}else{
-			return false
-		}
 	}
 	//设置宗族属性
 	this.setGuildInfo = function(guildId,key,value) {
