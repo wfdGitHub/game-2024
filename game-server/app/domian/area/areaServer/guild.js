@@ -1,4 +1,4 @@
-//公会
+//宗族
 const guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
 const guild_lv = require("../../../../config/gameCfg/guild_lv.json")
 const guild_sign = require("../../../../config/gameCfg/guild_sign.json")
@@ -13,12 +13,12 @@ const num_att = {"lv":1,"exp":1,"num":1,"id":1,"lead":1,"deputy":1,"audit":1,"lv
 const currency = guild_cfg["currency"]["value"]
 module.exports = function() {
 	var self = this
-	var contributions = {}		//公会玩家贡献列表
-	var guildList = {}			//公会信息列表
+	var contributions = {}		//宗族玩家贡献列表
+	var guildList = {}			//宗族信息列表
 	var guideCooling = {}		//加入冷却
 	var applyList = {}			//申请列表
 	var applyMap = {}			//申请映射
-	var giftInfoList = {}		//公会红包
+	var giftInfoList = {}		//宗族红包
 	//初始化
 	this.initGuild = function() {
 		self.getAreaObjAll(main_name,function(data) {
@@ -36,7 +36,7 @@ module.exports = function() {
 		self.delObj(uid,"guild_fb","buy")
 		self.delObj(uid,"guild_treasure","play")
 	}
-	//公会每日更新
+	//宗族每日更新
 	this.guildDayUpdate = function() {
 		for(var guildId in guildList){
 			self.guildCheckGift(guildId)
@@ -49,9 +49,9 @@ module.exports = function() {
 			dt = 10000
 		self.setTimeout(self.guildGiveGift,dt)
 	}
-	//公会红包定时发放
+	//宗族红包定时发放
 	this.guildGiveGift = function() {
-		console.log("公会红包定时发放")
+		console.log("宗族红包定时发放")
 		var curDayStr = (new Date()).toDateString()
 		for(let guildId in guildList){
 			self.redisDao.db.hget("guild:guildGiftState",guildId,function(err,str) {
@@ -85,7 +85,7 @@ module.exports = function() {
 			}
 		})
 	}
-	//初始化公会
+	//初始化宗族
 	this.initGuildSingle = function(guildId) {
 		self.redisDao.db.hgetall("guild:guildInfo:"+guildId,function(err,data) {
 			for(var i in num_att){
@@ -101,7 +101,7 @@ module.exports = function() {
 			console.log()
 		})
 	}
-	//获取公会属性
+	//获取宗族属性
 	this.getGuildInfo = function(guildId,key) {
 		if(guildList[guildId]){
 			return guildList[guildId][key]
@@ -109,14 +109,14 @@ module.exports = function() {
 			return false
 		}
 	}
-	//设置公会属性
+	//设置宗族属性
 	this.setGuildInfo = function(guildId,key,value) {
 		if(guildList[guildId]){
 			guildList[guildId][key] = value
 			self.redisDao.db.hset("guild:guildInfo:"+guildId,key,value)
 		}
 	}
-	//增长公会属性
+	//增长宗族属性
 	this.incrbyGuildInfo = function(guildId,key,value) {
 		if(guildList[guildId]){
 			if(!guildList[guildId][key])
@@ -134,7 +134,7 @@ module.exports = function() {
 			self.redisDao.db.hincrby("guild:contributions:"+guildId,uid,value)
 		}
 	}
-	//获取我的公会信息
+	//获取我的宗族信息
 	this.getMyGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(guildId && guildList[guildId]){
@@ -155,7 +155,7 @@ module.exports = function() {
 			cb(true,{})
 		}
 	}
-	//获取公会成员
+	//获取宗族成员
 	this.getMyGuildUsers = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(guildId){
@@ -176,19 +176,19 @@ module.exports = function() {
 				cb(true,userInfos)
 			})
 		}else{
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 		}
 	}
-	//创建公会
+	//创建宗族
 	this.createGuild = function(uid,name,audit,lv_limit,cb) {
 		audit = audit == 1 ? 1 : 0
 		if(!Number.isInteger(lv_limit) || lv_limit < 0 || lv_limit > 255)
 			lv_limit = 0
 		async.waterfall([
 			function(next) {
-				//判断自身是否存在公会
+				//判断自身是否存在宗族
 				if(self.players[uid]["gid"])
-					next("已加入公会")
+					next("已加入宗族")
 				else
 					next()
 			},
@@ -197,7 +197,7 @@ module.exports = function() {
 					cd = Number(cd) || 0
 					var curTime = Date.now()
 					if(cd > curTime){
-						next("退出公会冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可创建")
+						next("退出宗族冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可创建")
 						return
 					}
 					next()
@@ -211,14 +211,14 @@ module.exports = function() {
 				}
 				self.redisDao.db.hexists("guild:guildNameMap",name,function(err,data) {
 					if(data != 0)
-						next("公会名称不可用")
+						next("宗族名称不可用")
 					else
 						next()
 				})
 			},
 			function(next) {
 				//扣除金额
-				self.consumeItems(uid,guild_cfg["create"]["value"],1,"创建公会",function(flag,err) {
+				self.consumeItems(uid,guild_cfg["create"]["value"],1,"创建宗族",function(flag,err) {
 					if(flag)
 						next()
 					else
@@ -231,7 +231,7 @@ module.exports = function() {
 				}
 				delete applyMap[uid]
 				self.redisDao.db.incrby("guild:lastid",1,function(err,guildId) {
-					//创建公会
+					//创建宗族
 					var guildInfo = {
 						lv : 1,
 						exp : 0,
@@ -267,7 +267,7 @@ module.exports = function() {
 	this.setGuildAudit = function(uid,audit,lv_limit,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是公会会长")
+			cb(false,"不是宗族会长")
 			return
 		}
 		if(audit !== 1)
@@ -280,11 +280,11 @@ module.exports = function() {
 		this.setGuildInfo(guildId,"lv_limit",lv_limit)
 		cb(true)
 	}
-	//解散公会
+	//解散宗族
 	this.dissolveGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是公会会长")
+			cb(false,"不是宗族会长")
 			return
 		}
 		for(var targetUid in contributions[guildId]){
@@ -311,11 +311,11 @@ module.exports = function() {
 		var guildId = self.players[uid]["gid"]
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是公会会长")
+			cb(false,"不是宗族会长")
 			return
 		}
 		if(guildList[guildId]["deputy"]){
-			cb(false,"公会已有副会长")
+			cb(false,"宗族已有副会长")
 			return
 		}
 		if(contributions[guildId][targetUid] == undefined){
@@ -334,7 +334,7 @@ module.exports = function() {
 		var guildId = self.players[uid]["gid"]
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是公会会长")
+			cb(false,"不是宗族会长")
 			return
 		}
 		if(guildList[guildId]["deputy"] != targetUid){
@@ -354,7 +354,7 @@ module.exports = function() {
 		var guildId = self.players[uid]["gid"]
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是公会会长")
+			cb(false,"不是宗族会长")
 			return
 		}
 		if(guildList[guildId]["deputy"] == targetUid || guildList[guildId]["lead"] == targetUid){
@@ -403,7 +403,7 @@ module.exports = function() {
 		}
 		self.leaveGuild(guildId,targetUid,cb)
 	}
-	//获取公会列表
+	//获取宗族列表
 	this.getGuildList = function(uid,cb) {
 		var info = {
 			applys : applyMap[uid],
@@ -419,22 +419,22 @@ module.exports = function() {
 			cb(true,info)
 		})
 	}
-	//获取公会
+	//获取宗族
 	this.getGuildInfo = function(guildId) {
 		return guildList[guildId]
 	}
-	//获取公会列表
+	//获取宗族列表
 	this.getGuildInfoList = function() {
 		return guildList
 	}
-	//申请加入公会
+	//申请加入宗族
 	this.applyJoinGuild = function(uid,guildId,cb) {
 		if(self.players[uid]["gid"]){
-			cb(false,"已加入公会")
+			cb(false,"已加入宗族")
 			return
 		}
 		if(!guildList[guildId]){
-			cb(false,"公会不存在")
+			cb(false,"宗族不存在")
 			return
 		}
 		var lv = self.getLordLv(uid)
@@ -446,7 +446,7 @@ module.exports = function() {
 			cd = Number(cd) || 0
 			var curTime = Date.now()
 			if(cd > curTime){
-				cb(false,"退出公会冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可申请")
+				cb(false,"退出宗族冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可申请")
 				return
 			}
 			if(!applyList[guildId])
@@ -456,9 +456,10 @@ module.exports = function() {
 				applyMap[uid] = {}
 			applyMap[uid][guildId] = Date.now()
 			if(!guildList[guildId]["audit"]){
-				self.joinGuild(uid,guildId)
+				self.joinGuild(uid,guildId,cb)
+			}else{
+				cb(true,applyMap[uid])
 			}
-			cb(true,applyMap[uid])
 		})
 	}
 	//获得申请列表
@@ -482,7 +483,6 @@ module.exports = function() {
 			return
 		}
 		this.joinGuild(targetUid,guildId,cb)
-		cb(true)
 	}
 	//拒绝申请
 	this.refuseGuildApply = function(uid,targetUid,cb) {
@@ -499,29 +499,30 @@ module.exports = function() {
 		delete applyMap[targetUid][guildId]
 		cb(true)
 	}
-	//退出公会
+	//退出宗族
 	this.quitGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 			return
 		}
 		if(guildList[guildId]["lead"] == uid){
-			cb(false,"会长不能退出公会")
+			cb(false,"会长不能退出宗族")
 			return
 		}
 		self.leaveGuild(guildId,uid,cb)
 	}
 	//玩家加入
-	this.joinGuild = function(uid,guildId) {
-		if(guildList[guildId] >= max_num){
+	this.joinGuild = function(uid,guildId,cb) {
+		var lv = guildList[guildId]["lv"]
+		if(guildList[guildId]["num"] >= guild_lv[lv]["member"]){
 			cb(false,"人数已达上限")
 			return
 		}
 		self.getPlayerKeyByUid(uid,"gid",function(gid) {
 			if(gid){
 				delete applyList[guildId][uid]
-				cb(false,"该玩家已加入其他公会")
+				cb(false,"该玩家已加入其他宗族")
 				return
 			}
 			self.chageLordData(uid,"gid",guildId)
@@ -535,6 +536,7 @@ module.exports = function() {
 				delete applyList[i][uid]
 			}
 			delete applyMap[uid]
+			cb(true)
 		})
 	}
 	//玩家离开
@@ -564,11 +566,11 @@ module.exports = function() {
 			}
 		})
 	}
-	//获取公会日志
+	//获取宗族日志
 	this.getGuildLog = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 			return
 		}
 		self.redisDao.db.lrange("guild:log:"+guildId,0,-1,function(err,list) {
@@ -579,7 +581,7 @@ module.exports = function() {
 			}
 		})
 	}
-	//公会经验增加
+	//宗族经验增加
 	this.addGuildEXP = function(guildId,value) {
 		if(guildList[guildId]){
 			self.incrbyZset(main_name,guildId,value)
@@ -587,7 +589,7 @@ module.exports = function() {
 			self.checkGuildUpgrade(guildId)
 		}
 	}
-	//获取公会排行榜
+	//获取宗族排行榜
 	this.getGuildRank = function(uid,cb) {
 		self.zrangewithscore(main_name,-10,-1,function(list) {
 			var guilds = []
@@ -602,7 +604,7 @@ module.exports = function() {
 			cb(true,info)
 		})
 	}
-	//公会升级检查
+	//宗族升级检查
 	this.checkGuildUpgrade = function(guildId) {
 		if(guildList[guildId]){
 			var lv = guildList[guildId]["lv"]
@@ -613,7 +615,7 @@ module.exports = function() {
 					self.incrbyGuildInfo(guildId,"lv",1)
 					lv++
 					self.addGuildLog(guildId,{type:"upgrade",lv:lv})
-					self.addGuildGift(guildId,"公会升级红包",guild_lv[lv]["member"],guild_lv[lv]["gift_up"],oneDayTime)
+					self.addGuildGift(guildId,"宗族升级红包",guild_lv[lv]["member"],guild_lv[lv]["gift_up"],oneDayTime)
 					self.sendToGuild(guildId,{type:"guildUpgrade",lv:lv})
 					this.checkGuildUpgrade(guildId)
 				}
@@ -630,14 +632,14 @@ module.exports = function() {
 			self.incrbyGuildInfo(guildId,"dayCtb",value)
 
 		}
-		var awardList = self.addItemStr(uid,currency+":"+value,1,reason || "公会活动")
+		var awardList = self.addItemStr(uid,currency+":"+value,1,reason || "宗族活动")
 		return awardList
 	}
 	//签到
 	this.signInGuild = function(uid,sign,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 			return
 		}
 		if(!guild_sign[sign]){
@@ -649,7 +651,7 @@ module.exports = function() {
 				cb(false,"今日已签到")
 				return
 			}
-			self.consumeItems(uid,guild_sign[sign]["pc"],1,"公会签到",function(flag,err) {
+			self.consumeItems(uid,guild_sign[sign]["pc"],1,"宗族签到",function(flag,err) {
 				if(flag){
 					self.setObj(uid,main_name,"sign",1)
 					var awardList = self.addGuildScore(uid,guildId,guild_sign[sign]["score"],"签到")
@@ -661,11 +663,11 @@ module.exports = function() {
 			})
 		})
 	}
-	//升级公会技能
+	//升级宗族技能
 	this.upGuildSkill = function(uid,career,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 			return
 		}
 		if(!guild_cfg["career_"+career]){
@@ -682,10 +684,10 @@ module.exports = function() {
 					return
 				}
 				if(lv > guild_lv[guildLv]["skill"]){
-					cb(false,"公会等级不足")
+					cb(false,"宗族等级不足")
 					return
 				}
-				self.consumeItems(uid,guild_skill[lv]["pc"],1,"升级公会技能",function(flag,err) {
+				self.consumeItems(uid,guild_skill[lv]["pc"],1,"升级宗族技能",function(flag,err) {
 					if(flag){
 						self.incrbyGuildCareerSkill(uid,career)
 						cb(true,lv)
@@ -696,7 +698,7 @@ module.exports = function() {
 			})
 		}
 	}
-	//公会通知
+	//宗族通知
 	this.sendToGuild = function(guildId,notify) {
 		for(var uid in contributions[guildId]){
 			if(this.connectorMap[uid]){
@@ -707,7 +709,7 @@ module.exports = function() {
 			}
 		}
 	}
-	//添加公会红包
+	//添加宗族红包
 	this.addGuildGift = function(guildId,title,maxNum,amount,time) {
 		var giftInfo = {
 			id : uuid.v1(),
@@ -743,16 +745,16 @@ module.exports = function() {
 		self.redisDao.db.hmset("guild:giftinfo:"+giftInfo.id,giftInfo)
 		self.sendToGuild(guildId,{type:"guildGift",giftInfo:[giftInfo.id,giftInfo.title,giftInfo.maxNum,giftInfo.curNum,giftInfo.time]})
 	}
-	//删除公会红包
+	//删除宗族红包
 	this.removeGuildGift = function(guildId,giftId) {
 		self.redisDao.db.hdel("guild:giftmap:"+guildId,giftId)
 		self.redisDao.db.del("guild:giftinfo:"+giftId)
 	}
-	//获取公会红包列表
+	//获取宗族红包列表
 	this.getGuildGiftList = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 			return
 		}
 		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,map) {
@@ -775,11 +777,11 @@ module.exports = function() {
 			cb(true,giftinfo)
 		})
 	}
-	//领取公会红包
+	//领取宗族红包
 	this.gainGuildGift = function(uid,giftId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 			return
 		}
 		self.redisDao.db.hgetall("guild:giftinfo:"+giftId,function(err,giftInfo) {
@@ -815,7 +817,7 @@ module.exports = function() {
 				info.time = Date.now()
 				giftInfo["user_"+num] = JSON.stringify(info)
 				self.redisDao.db.hset("guild:giftinfo:"+giftId,"user_"+num,giftInfo["user_"+num])
-				var awardList = self.addItemStr(uid,currency+":"+giftInfo["amount_"+num],1,"公会红包")
+				var awardList = self.addItemStr(uid,currency+":"+giftInfo["amount_"+num],1,"宗族红包")
 				cb(true,{giftInfo : giftInfo,awardList : awardList})
 			})
 		})
