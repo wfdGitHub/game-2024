@@ -84,6 +84,7 @@ module.exports = function() {
 				self.sendToUser(uid,notify)
 				self.taskUpdate(uid,"totalCe",newCE)
 				self.addZset("ce_rank",uid,newCE)
+				self.playerDao.setPlayerInfo({uid:uid,key:"CE",value:newCE})
 			}
 		}
 	}
