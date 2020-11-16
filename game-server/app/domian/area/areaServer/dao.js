@@ -90,7 +90,7 @@ module.exports = function() {
 	this.getPlayerDataAll = function(uid,cb) {
 		self.getObjAll(uid,"playerData",cb)
 	}
-	//增加有序列表数据
+	//设置有序列表数据
 	this.addZset = function(zname,key,score,cb) {
 		this.redisDao.db.zadd("area:area"+this.areaId+":zset:"+zname,score,key,function(err,data) {
 			if(cb){

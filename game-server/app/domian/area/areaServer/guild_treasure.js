@@ -108,7 +108,7 @@ module.exports = function() {
 					if(!err && data && data.length){
 						var oneValue = Math.ceil(allValue / data.length)
 						for(var i = 0;i < data.length;i++){
-							self.sendMail(data[i],"宗族竞拍奖励","您获得了来自宗族竞拍的奖励",currency+":"+oneValue)
+							self.sendMail(data[i],"宗族竞拍分红","您获得了来自宗族竞拍的分红奖励",currency+":"+oneValue)
 						}
 						self.redisDao.db.del(main_name+":play:"+guildId)
 					}

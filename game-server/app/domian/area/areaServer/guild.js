@@ -524,17 +524,17 @@ module.exports = function() {
 				cb(false,"该玩家已加入其他公会")
 				return
 			}
+			self.chageLordData(uid,"gid",guildId)
+			self.incrbyGuildInfo(guildId,"num",1)
+			contributions[guildId][uid] = 0
+			self.redisDao.db.hset("guild:contributions:"+guildId,uid,0)
+			self.sendMail(uid,"加入宗族","您已成功加入【"+guildList[guildId]["name"]+"】")
 			self.addGuildLog(guildId,{type:"join",uid:uid,name:applyList[guildId][uid]["name"]})
 			self.sendToGuild(guildId,{type:"joinGuild",guildId:guildId,userName:applyList[guildId][uid]["name"],uid:uid,name:guildList[guildId]["name"]})
 			for(var i in applyMap[uid]){
 				delete applyList[i][uid]
 			}
 			delete applyMap[uid]
-			self.chageLordData(uid,"gid",guildId)
-			self.incrbyGuildInfo(guildId,"num",1)
-			contributions[guildId][uid] = 0
-			self.redisDao.db.hset("guild:contributions:"+guildId,uid,0)
-			self.sendMail(uid,"加入宗族","您已成功加入【"+guildList[guildId]["name"]+"】")
 		})
 	}
 	//玩家离开
