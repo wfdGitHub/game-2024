@@ -371,6 +371,10 @@ area.prototype.getPlayerKeyByUid = function(uid,key,cb) {
 //批量获取玩家简易数据
 area.prototype.getPlayerInfoByUids = function(uids,cb) {
 	var self = this
+	if(!uids.length){
+		cb([])
+		return
+	}
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
 		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","gname"]])

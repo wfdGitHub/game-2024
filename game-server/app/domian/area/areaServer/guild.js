@@ -255,6 +255,7 @@ module.exports = function() {
 					self.redisDao.db.hmset("guild:guildInfo:"+guildId,guildList[guildId])
 					self.redisDao.db.hmset("guild:contributions:"+guildId,contributions[guildId])
 					self.addGuildLog(guildId,{type:"create"})
+					guildInfo.leadInfo = self.getSimpleUser(uid)
 					cb(true,guildInfo)
 				})
 			}
