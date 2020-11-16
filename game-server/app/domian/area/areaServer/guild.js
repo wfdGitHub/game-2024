@@ -146,8 +146,8 @@ module.exports = function() {
 				info.skill_3 = Number(data[3]) || 0
 				info.skill_4 = Number(data[4]) || 0
 				info.score = contributions[guildId][uid]
-				self.getPlayerInfoByUids([info.lead],function(leadInfo) {
-					info.leadInfo = leadInfo
+				self.getPlayerInfoByUids([info.lead],function(data) {
+					info.leadInfo = data[0]
 					cb(true,info)
 				})
 			})
