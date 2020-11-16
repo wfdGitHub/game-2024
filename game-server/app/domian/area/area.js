@@ -399,7 +399,7 @@ area.prototype.getPlayerBaseByUids = function(uids,cb) {
 	var self = this
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
-		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip","offline"]])
+		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip","offline","CE"]])
 	}
 	self.redisDao.multi(multiList,function(err,list) {
 		var userInfos = []
@@ -414,7 +414,8 @@ area.prototype.getPlayerBaseByUids = function(uids,cb) {
 					head : list[i][1],
 					level : list[i][2],
 					vip : list[i][3],
-					offline : list[i][4]
+					offline : list[i][4],
+					ce : list[i][5]
 				}
 			}
 			userInfos.push(info)
