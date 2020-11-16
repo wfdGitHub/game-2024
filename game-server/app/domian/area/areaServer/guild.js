@@ -166,7 +166,6 @@ module.exports = function() {
 				userInfos = userInfos
 				for(var i = 0;i < userInfos.length;i++){
 					if(self.players[userInfos[i]["uid"]]){
-						userInfos[i].ce = self.getCE(userInfos[i]["uid"])
 						userInfos[i].online = true
 					}
 					userInfos[i].score = scores[i]
@@ -522,6 +521,7 @@ module.exports = function() {
 				return
 			}
 			self.addGuildLog(guildId,{type:"join",uid:uid,name:applyList[guildId][uid]["name"]})
+			self.sendToGuild(guildId,{type:"joinGuild",guildId:guildId,userName:applyList[guildId][uid]["name"],name:guildList[guildId]["name"]})
 			for(var i in applyMap[uid]){
 				delete applyList[i][uid]
 			}
@@ -531,8 +531,6 @@ module.exports = function() {
 			contributions[guildId][uid] = 0
 			self.redisDao.db.hset("guild:contributions:"+guildId,uid,0)
 			self.sendMail(uid,"加入宗族","您已成功加入【"+guildList[guildId]["name"]+"】")
-			var userInfo = self.getSimpleUser(uid)
-			self.sendToGuild(guildId,{type:"joinGuild",guildId:guildId,userInfo:userInfo,name:guildList[guildId]["name"]})
 		})
 	}
 	//玩家离开
