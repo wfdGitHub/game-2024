@@ -35,6 +35,7 @@ module.exports = function() {
 		self.delObj(uid,"guild_fb","count")
 		self.delObj(uid,"guild_fb","buy")
 		self.delObj(uid,"guild_treasure","play")
+		self.delObj(uid,"guild_city","dayAward")
 	}
 	//宗族每日更新
 	this.guildDayUpdate = function() {
@@ -304,6 +305,7 @@ module.exports = function() {
 		self.removeGuildFBdata(guildId)
 		self.redisDao.db.del("guild_treasure:play:"+guildId)
 		self.redisDao.db.del("guild_treasure:"+guildId)
+		self.delAreaObj("guild_city:apply",guildId)
 		cb(true)
 	}
 	//设置成副会长
@@ -554,6 +556,7 @@ module.exports = function() {
 		self.setObj(uid,main_name,"cd",Date.now()+86400000)
 		self.sendMail(uid,"退出宗族","您已离开【"+guildList[guildId]["name"]+"】")
 		self.sendToUser(uid,{type:"leaveGuild",guildId : guildId,name:guildList[guildId]["name"]})
+		self.cancelGuildCityAllTeam(guildId,uid)
 		if(cb)
 			cb(true)
 	}

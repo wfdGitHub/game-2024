@@ -412,6 +412,33 @@ heroDao.prototype.getHeroList = function(uid,hIds,cb) {
 		cb(true,list)
 	})
 }
+//批量获取指定英雄列表
+heroDao.prototype.getMultiHeroList = function(uids,hIdsList,cb) {
+	var multiList = []
+	for(var i = 0;i < uids.length;i++){
+		var hIds = JSON.parse(hIdsList[i])
+		for(var j = 0;j < hIds.length;j++)
+			multiList.push(["hgetall","player:user:"+uids[i]+":heros:"+hIds[j]])
+	}
+	var teams = []
+	this.redisDao.multi(multiList,function(err,list) {
+		if(err){
+			cb(false,err)
+			return
+		}
+		for(var i = 0;i < list.length;i++){
+			for(var j in list[i]){
+				var tmp = Number(list[i][j])
+				if(tmp == list[i][j])
+					list[i][j] = tmp
+			}
+		}
+		for(var i = 0;i < uids.length;i++){
+			teams.push(list.splice(0,6))
+		}
+		cb(true,teams)
+	})
+}
 //获取英雄图鉴
 heroDao.prototype.getHeroArchive = function(uid,cb) {
 	this.redisDao.db.hgetall("player:user:"+uid+":heroArchive",function(err,data) {

@@ -19,7 +19,7 @@
     <script type="text/javascript">
       var pomelo = window.pomelo;
       var host = "127.0.0.1";
-      // host = "192.168.0.200"
+      // host = "192.168.3.200"
       // host = "47.107.48.79"
       var queryEntry = function(callback) {
         var route = 'gate.gateHandler.queryClientEntry';
@@ -98,6 +98,77 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============公会攻城战==========//
+      //报名城池
+      var applyGuildCity = function(cityId) {
+        pomelo.request("area.guildHandler.applyGuildCity", {cityId:cityId}, function(data) {
+            console.log(data);
+        });
+      }
+      //组建队伍
+      var buildGuildTeam = function() {
+        pomelo.request("area.heroHandler.getHeros", {}, function(data) {
+          var hIds = []
+          for(var i in data.data){
+            hIds.push(i)
+          }
+          var teamNum = Math.ceil(hIds.length/6) * 6
+          for(var i = 0;i < teamNum;i++)
+            if(!hIds[i])
+              hIds[i] = 0
+          pomelo.request("area.guildHandler.buildGuildTeam", {hIds:hIds}, function(data) {
+            console.log("buildGuildTeam",data)
+          });
+        });
+      }
+      //队伍列表
+      var getGuildTeam = function() {
+        pomelo.request("area.guildHandler.getGuildTeam", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //派遣队伍
+      var sendGuildCityTeam = function(cityId,teamId) {
+        pomelo.request("area.guildHandler.sendGuildCityTeam", {cityId:cityId,teamId:teamId}, function(data) {
+            console.log(data);
+        });
+      }
+      //撤回队伍
+      var cancelGuildCityTeam = function(teamId) {
+        pomelo.request("area.guildHandler.cancelGuildCityTeam", {teamId:teamId}, function(data) {
+            console.log(data);
+        });
+      }
+      //开始攻城
+      var guildOneCityFight = function(cityId) {
+        pomelo.request("area.guildHandler.guildOneCityFight", {cityId:cityId}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取攻城战数据
+      var getGuildCityData = function() {
+        pomelo.request("area.guildHandler.getGuildCityData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取城池数据
+      var getGuildCityRecord = function(cityId) {
+        pomelo.request("area.guildHandler.getGuildCityRecord", {cityId:cityId}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取战斗数据
+      var getGuildCityFight = function(cityId,index) {
+        pomelo.request("area.guildHandler.getGuildCityFight", {cityId:cityId,index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取每日奖励
+      var gainGuildCityAward = function() {
+        pomelo.request("area.guildHandler.gainGuildCityAward", {}, function(data) {
+            console.log(data);
+        });
+      }
       //==============公会宝藏BOSS==========//
       //获取宝藏BOSS数据
      var getAuctionData = function() {
@@ -2390,5 +2461,19 @@
       <input id="test" type="button" value="挑战宝藏BOSS" onclick="challengeTreasureBoss()"/>
       <input id="test" type="button" value="获取竞拍列表" onclick="getAuctionList()"/>
     </div>
+    <div class="g-button">
+      攻城战 : 
+      <input id="test" type="button" value="报名城池" onclick="applyGuildCity(1)"/>
+      <input id="test" type="button" value="组建队伍" onclick="buildGuildTeam()"/>
+      <input id="test" type="button" value="队伍列表" onclick="getGuildTeam()"/>
+      <input id="test" type="button" value="派遣队伍" onclick="sendGuildCityTeam(1,0)"/>
+      <input id="test" type="button" value="取消队伍" onclick="cancelGuildCityTeam(0)"/>
+      <input id="test" type="button" value="开始攻城" onclick="guildOneCityFight(1)"/>
+      <input id="test" type="button" value="攻城战数据" onclick="getGuildCityData()"/>
+      <input id="test" type="button" value="城池数据" onclick="getGuildCityRecord(1)"/>
+      <input id="test" type="button" value="战斗数据" onclick="getGuildCityFight(1,1)"/>
+      <input id="test" type="button" value="每日奖励" onclick="gainGuildCityAward()"/>
+    </div>
+
   </body>
 </html>

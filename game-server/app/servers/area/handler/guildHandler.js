@@ -294,6 +294,95 @@ guildHandler.prototype.upForAuction = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//报名城池
+guildHandler.prototype.applyGuildCity = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var cityId = msg.cityId
+  this.areaManager.areaMap[areaId].applyGuildCity(uid,cityId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//组建队伍
+guildHandler.prototype.buildGuildTeam = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hIds = msg.hIds
+  this.areaManager.areaMap[areaId].buildGuildTeam(uid,hIds,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//队伍列表
+guildHandler.prototype.getGuildTeam = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getGuildTeam(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//派遣队伍
+guildHandler.prototype.sendGuildCityTeam = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var cityId = msg.cityId
+  var teamId = msg.teamId
+  this.areaManager.areaMap[areaId].sendGuildCityTeam(uid,cityId,teamId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//撤回队伍
+guildHandler.prototype.cancelGuildCityTeam = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var teamId = msg.teamId
+  this.areaManager.areaMap[areaId].cancelGuildCityTeam(uid,teamId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//单城池对决
+guildHandler.prototype.guildOneCityFight = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var cityId = msg.cityId
+  this.areaManager.areaMap[areaId].guildOneCityFight(cityId)
+  next(null,{flag:true})
+}
+
+//获取攻城战数据
+guildHandler.prototype.getGuildCityData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getGuildCityData(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//获取城池数据
+guildHandler.prototype.getGuildCityRecord = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var cityId = msg.cityId
+  this.areaManager.areaMap[areaId].getGuildCityRecord(uid,cityId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//获取战斗数据
+guildHandler.prototype.getGuildCityFight = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var cityId = msg.cityId
+  var index = msg.index
+  this.areaManager.areaMap[areaId].getGuildCityFight(uid,cityId,index,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//领取每日奖励
+guildHandler.prototype.gainGuildCityAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].gainGuildCityAward(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 
 module.exports = function(app) {
   return bearcat.getBean({
