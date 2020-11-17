@@ -310,6 +310,8 @@ module.exports = function() {
 							info.cur = price
 							info.uid = uid
 							info.name = name
+							info.index = index
+							info.max = max
 							self.redisDao.db.hset(main_name+":"+guildId,index,JSON.stringify(info))
 							self.sendToGuild(guildId,{type:"upForAuction",info:info})
 							cb(true,info)
