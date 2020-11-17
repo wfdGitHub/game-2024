@@ -542,14 +542,14 @@ module.exports = function() {
 						next()
 					}
 				}else{
-					// for(var i = 0;i < guild_city[cityId]["count"];i++){
-					// 	defList[i] = {
-					// 		"guildId":0,
-					// 		"uid":0,
-					// 		"info":{"uid":0,"name":"遗迹守卫"}
-					// 	}
-					// 	defTeams.push(guild_city[cityId]["team"])
-					// }
+					for(var i = 0;i < guild_city[cityId]["count"];i++){
+						defList[i] = {
+							"guildId":0,
+							"uid":0,
+							"info":{"uid":0,"name":"遗迹守卫"}
+						}
+						defTeams.push(guild_city[cityId]["team"])
+					}
 					next()
 				}
 			},

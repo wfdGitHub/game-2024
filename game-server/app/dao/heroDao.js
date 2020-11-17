@@ -414,6 +414,7 @@ heroDao.prototype.getHeroList = function(uid,hIds,cb) {
 }
 //批量获取指定英雄列表
 heroDao.prototype.getMultiHeroList = function(uids,hIdsList,cb) {
+	var self = this
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
 		var hIds = JSON.parse(hIdsList[i])
@@ -421,7 +422,7 @@ heroDao.prototype.getMultiHeroList = function(uids,hIdsList,cb) {
 			multiList.push(["hgetall","player:user:"+uids[i]+":heros:"+hIds[j]])
 	}
 	var teams = []
-	this.redisDao.multi(multiList,function(err,list) {
+	self.redisDao.multi(multiList,function(err,list) {
 		if(err){
 			cb(false,err)
 			return
@@ -436,6 +437,25 @@ heroDao.prototype.getMultiHeroList = function(uids,hIdsList,cb) {
 		for(var i = 0;i < uids.length;i++){
 			teams.push(list.splice(0,6))
 		}
+		multiList = []
+		for(var i = 0;i < uids.length;i++){
+			multiList.push(["hmget","player:user:"+uids[i]+":guild",["skill_1","skill_2","skill_3","skill_4"]])
+		}
+		self.redisDao.multi(multiList,function(err,list) {
+			if(err){
+				cb(false,err)
+				return
+			}
+			for(var i = 0;i < uids.length;i++){
+				var info = {
+					"g1" : Number(list[i][0]) || 0,
+					"g2" : Number(list[i][1]) || 0,
+					"g3" : Number(list[i][2]) || 0,
+					"g4" : Number(list[i][3]) || 0
+				}
+				teams[i][6] = info
+			}
+		})
 		cb(true,teams)
 	})
 }
