@@ -337,21 +337,31 @@ module.exports = function() {
 			function(next) {
 				//获取攻方阵容
 				self.heroDao.getFightBook(uid,function(flag,bookInfo) {
-					self.redisDao.db.hget("cross:muye:fightTeam",newCrossUid,function(err,data) {
-						if(err || !data){
-							cb(false,"未设置阵容")
-							return
+					if(!bookInfo)
+						bookInfo = {}
+					self.redisDao.db.hmget("player:user:"+uid+":guild",["skill_1","skill_2","skill_3","skill_4"],function(err,data) {
+						if(data){
+							bookInfo["g1"] = Number(data[0]) || 0
+							bookInfo["g2"] = Number(data[1]) || 0
+							bookInfo["g3"] = Number(data[2]) || 0
+							bookInfo["g4"] = Number(data[3]) || 0
 						}
-						var hIds = JSON.parse(data)
-				    	self.heroDao.getHeroList(uid,hIds,function(flag,heros) {
-				    		atkTeams[0] = heros.splice(0,6)
-				    		atkTeams[0][6] = bookInfo
-				    		atkTeams[1] = heros.splice(0,6)
-				    		atkTeams[1][6] = bookInfo
-				    		atkTeams[2] = heros.splice(0,6)
-				    		atkTeams[2][6] = bookInfo
-				    		next()
-				    	})
+						self.redisDao.db.hget("cross:muye:fightTeam",newCrossUid,function(err,data) {
+							if(err || !data){
+								cb(false,"未设置阵容")
+								return
+							}
+							var hIds = JSON.parse(data)
+					    	self.heroDao.getHeroList(uid,hIds,function(flag,heros) {
+					    		atkTeams[0] = heros.splice(0,6)
+					    		atkTeams[0][6] = bookInfo
+					    		atkTeams[1] = heros.splice(0,6)
+					    		atkTeams[1][6] = bookInfo
+					    		atkTeams[2] = heros.splice(0,6)
+					    		atkTeams[2][6] = bookInfo
+					    		next()
+					    	})
+						})
 					})
 				})
 			},
@@ -382,21 +392,31 @@ module.exports = function() {
 									targetUid = Number(strList[1])
 									targetScore = Number(list[1])
 									self.heroDao.getFightBook(targetUid,function(flag,bookInfo) {
-									    self.redisDao.db.hget("cross:muye:fightTeam",targetcrossUid,function(err,data) {
-									        var hIds = JSON.parse(data)
-									        self.heroDao.getHeroList(targetUid,hIds,function(flag,heros) {
-									            defTeams[0] = heros.splice(0,6)
-									            defTeams[0][6] = bookInfo
-									            defTeams[1] = heros.splice(0,6)
-									            defTeams[1][6] = bookInfo
-									            defTeams[2] = heros.splice(0,6)
-									            defTeams[2][6] = bookInfo
-									            self.getPlayerInfoByUid(targetUid,function(info) {
-									                targetInfo = info
-									                next()
-									            })
-									        })
-									    })
+										if(!bookInfo)
+											bookInfo = {}
+										self.redisDao.db.hmget("player:user:"+targetUid+":guild",["skill_1","skill_2","skill_3","skill_4"],function(err,data) {
+											if(data){
+												bookInfo["g1"] = Number(data[0]) || 0
+												bookInfo["g2"] = Number(data[1]) || 0
+												bookInfo["g3"] = Number(data[2]) || 0
+												bookInfo["g4"] = Number(data[3]) || 0
+											}
+										    self.redisDao.db.hget("cross:muye:fightTeam",targetcrossUid,function(err,data) {
+										        var hIds = JSON.parse(data)
+										        self.heroDao.getHeroList(targetUid,hIds,function(flag,heros) {
+										            defTeams[0] = heros.splice(0,6)
+										            defTeams[0][6] = bookInfo
+										            defTeams[1] = heros.splice(0,6)
+										            defTeams[1][6] = bookInfo
+										            defTeams[2] = heros.splice(0,6)
+										            defTeams[2][6] = bookInfo
+										            self.getPlayerInfoByUid(targetUid,function(info) {
+										                targetInfo = info
+										                next()
+										            })
+										        })
+										    })
+										})
 									})
 								}else{
 									console.error("zrangebyscore offset/zcount : "+offset+"/"+zcount,err,list)
