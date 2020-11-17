@@ -1,4 +1,4 @@
-//公会攻城战
+//宗族攻城战
 const guild_city = require("../../../../config/gameCfg/guild_city.json")
 const main_name = "guild_city"
 const async = require("async")
@@ -38,7 +38,7 @@ module.exports = function() {
 	this.getGuildCityData = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 			return
 		}
 		var info = {}
@@ -61,7 +61,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//获取本公会报名数据
+				//获取本宗族报名数据
 				self.getAreaObj(main_name+":apply",guildId,function(data) {
 					info.apply = data
 					next()
@@ -86,7 +86,7 @@ module.exports = function() {
 	this.getGuildCityRecord = function(uid,cityId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 			return
 		}
 		var info = {}
@@ -106,7 +106,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//本公会队伍
+				//本宗族队伍
 				self.getAreaObjAll(main_name+":city:"+cityId,function(data) {
 					var list = []
 					var uids = []
@@ -156,7 +156,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//公会排名
+				//宗族排名
 				self.zrangewithscore(main_name+":guildDamageRank:"+cityId,-10,-1,function(list) {
 					var guilds = []
 					var scores = []
@@ -185,7 +185,7 @@ module.exports = function() {
 	this.applyGuildCity = function(uid,cityId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 			return
 		}
 		var guildInfo = self.getGuildInfo(guildId)
@@ -286,7 +286,7 @@ module.exports = function() {
 	this.sendGuildCityTeam = function(uid,cityId,teamId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 			return
 		}
 		//检测时间
@@ -368,7 +368,7 @@ module.exports = function() {
 	this.cancelGuildCityTeam = function(uid,teamId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 			return
 		}
 		//检测时间
@@ -392,7 +392,7 @@ module.exports = function() {
 	this.gainGuildCityAward = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入宗族")
 			return
 		}
 		//检测时间
@@ -432,7 +432,7 @@ module.exports = function() {
 	this.guildOneCityFight = function(cityId) {
 		var atkTeams = []
 		var defTeams = []
-		var oldGuildId = 0			//原城主公会
+		var oldGuildId = 0			//原城主宗族
 		var winGuildId = 0			//攻城胜利者
 		var atkList = []
 		var defList = []
@@ -685,7 +685,7 @@ module.exports = function() {
 			cb(false,err)
 		})
 	}
-	//离开公会后撤销派遣
+	//离开宗族后撤销派遣
 	this.cancelGuildCityAllTeam = function(guildId,uid) {
 		//检测队伍是否已派遣
 		var arr = []
