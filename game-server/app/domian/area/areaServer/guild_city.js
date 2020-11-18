@@ -109,6 +109,7 @@ module.exports = function() {
 				//本公会队伍
 				self.getAreaObjAll(main_name+":city:"+cityId,function(data) {
 					var list = []
+					var uids = []
 					for(var key in data){
 					    var strList = key.split("_")
 					    var guildTeamInfo = {
@@ -116,11 +117,24 @@ module.exports = function() {
 					    	uid : Number(strList[1]),
 					    	teamId : Number(strList[2])
 					    }
-					    if(guildTeamInfo.guildId == guildId)
+					    if(guildTeamInfo.guildId == guildId){
+					    	uids.push(guildTeamInfo.uid)
 					    	list.push(guildTeamInfo)
+					    }
 					}
-					info.guildTeams = list
-					next()
+					var multiList = []
+					for(var i = 0;i < list.length;i++){
+						multiList.push(["hget","player:user:"+list[i]["uid"]+":guild_team",list[i]["teamId"]])
+					}
+					self.redisDao.multi(multiList,function(err,hIds) {
+						self.heroDao.getMultiHeroList(uids,hIds,function(flag,data) {
+							for(var i = 0;i < list.length;i++){
+								list[i]["team"] = data[i]
+							}
+							info.guildTeams = list
+							next()
+						})
+					})
 				})
 			},
 			function(next) {
@@ -278,7 +292,7 @@ module.exports = function() {
 		//检测时间
 		var hours = (new Date()).getHours()
 		if(hours >= endHours){
-			cb(false)
+			cb(false,"endHours "+endHours)
 			return
 		}
 		async.waterfall([
