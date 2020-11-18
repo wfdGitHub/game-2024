@@ -138,10 +138,10 @@ module.exports = function() {
 		}
 		var bossId = Math.floor((d.getDate() % 4) + 1)
 		var hours = d.getHours()
-		// if(hours < fightTime || hours >= auctionTime){
-		// 	cb(false,"hours error "+hours)
-		// 	return
-		// }
+		if(hours < fightTime || hours >= auctionTime){
+			cb(false,"hours error "+hours)
+			return
+		}
 		var surplus_health = [1,1,1,1,1,1]
 		var noFight = false
 		var info = {}
@@ -276,10 +276,10 @@ module.exports = function() {
 			cb(false,"price error")
 			return
 		}
-		// if(hours < auctionTime || hours >= endTime){
-		// 	cb(false,"hours error "+hours)
-		// 	return
-		// }
+		if(hours < auctionTime || hours >= endTime){
+			cb(false,"hours error "+hours)
+			return
+		}
 		var name = self.players[uid]["name"]
 		self.consumeItems(uid,currency+":"+price,1,"竞拍",function(flag,err) {
 			if(flag){
