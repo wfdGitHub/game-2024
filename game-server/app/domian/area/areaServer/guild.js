@@ -617,7 +617,7 @@ module.exports = function() {
 					self.incrbyGuildInfo(guildId,"exp",-guild_lv[lv]["exp"])
 					self.incrbyGuildInfo(guildId,"lv",1)
 					lv++
-					self.addGuildLog(guildId,{type:"upgrade",lv:lv})
+					self.addGuildLog(guildId,{type:"upgrade",lv:lv,exp:guild_lv[lv]["exp"]})
 					self.addGuildGift(guildId,"宗族升级红包",guild_lv[lv]["member"],guild_lv[lv]["gift_up"],oneDayTime)
 					self.sendToGuild(guildId,{type:"guildUpgrade",lv:lv})
 					this.checkGuildUpgrade(guildId)
