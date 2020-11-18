@@ -179,7 +179,7 @@ module.exports = function() {
 			cb(false,guildInfo)
 			return
 		}
-		if(guildInfo.lead != uid || guildInfo.deputy != uid){
+		if(guildInfo.lead != uid && guildInfo.deputy != uid){
 			cb(false,"权限不足")
 			return
 		}
