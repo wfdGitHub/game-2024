@@ -640,7 +640,8 @@ module.exports = function() {
 					atkList : atkList,
 					defList : defList,
 					oldGuildId : oldGuildId,
-					winGuildId : winGuildId
+					winGuildId : winGuildId,
+					time : Date.now()
 				}
 				self.redisDao.db.set("area:area"+self.areaId+":"+main_name+":baseInfo:"+cityId,JSON.stringify(info))
 				if(simpleRecord.length){
