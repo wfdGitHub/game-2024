@@ -285,7 +285,8 @@ module.exports = function() {
 			cb(false,"price error")
 			return
 		}
-		if(hours < auctionTime || hours >= endTime){
+		var hours = (new Date()).getHours()
+		if(hours < fightTime || hours >= auctionTime){
 			cb(false,"hours error "+hours)
 			return
 		}
