@@ -29,13 +29,16 @@ module.exports = function() {
 	var local = {}
 	//宝藏BOSS每日首次更新
 	this.guildTreasureFirstUpdate = function() {
-		var guildList = self.getGuildInfoList()
-		for(var guildId in guildList){
-			self.redisDao.db.hdel(main_name,guildId)
-			self.redisDao.db.del(main_name+":rank:"+guildId)
-			self.redisDao.db.del(main_name+":play:"+guildId)
-			self.redisDao.db.del(main_name+":"+guildId)
-		}
+		self.getAreaObjAll(main_name,function(data) {
+			if(data){
+				for(var guildId in data){
+					self.redisDao.db.hdel(main_name,guildId)
+					self.redisDao.db.del(main_name+":rank:"+guildId)
+					self.redisDao.db.del(main_name+":play:"+guildId)
+					self.redisDao.db.del(main_name+":"+guildId)
+				}
+			}
+		})
 	}
 	//宝藏BOSS每日更新
 	this.guildTreasureDayUpdate = function() {

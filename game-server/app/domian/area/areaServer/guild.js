@@ -52,9 +52,13 @@ module.exports = function() {
 	}
 	//宗族每日首次更新
 	this.guildFirstUpdate = function(argument) {
-		for(var guildId in guildList){
-			self.setGuildInfo(guildId,"dayCtb",0)
-		}
+		self.getAreaObjAll(main_name,function(data) {
+			if(data){
+				for(var guildId in data){
+					self.setGuildInfo(guildId,"dayCtb",0)
+				}
+			}
+		})
 	}
 	//宗族红包定时发放
 	this.guildGiveGift = function() {
@@ -567,6 +571,7 @@ module.exports = function() {
 		self.sendMail(uid,"退出宗族","您已离开【"+guildList[guildId]["name"]+"】")
 		self.sendToUser(uid,{type:"leaveGuild",guildId : guildId,name:guildList[guildId]["name"]})
 		self.cancelGuildCityAllTeam(guildId,uid)
+		self.cancelGuildPKAllTeam(guildId,uid)
 		if(cb)
 			cb(true)
 	}
