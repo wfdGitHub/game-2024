@@ -65,7 +65,7 @@ module.exports = function() {
 		var d = new Date()
 		var day = d.getDay()
 		if(day != 1 && day != 3 && day != 5){
-			cb(false,"今日未开启")
+			cb(false,"周一、周三、周五开启")
 			return
 		}
 		info.surplus_health = [1,1,1,1,1,1]

@@ -445,9 +445,13 @@ module.exports = function() {
 			cb(false,"宗族不存在")
 			return
 		}
-		var lv = self.getLordLv(uid)
-		if(lv < guildList[guildId]["lv_limit"]){
-			cb(false,"等级不足")
+		if(self.getLordLv(uid) < guildList[guildId]["lv_limit"]){
+			cb(false,"该宗族需要"+guildList[guildId]["lv_limit"]+"级可加入")
+			return
+		}
+		var lv = guildList[guildId]["lv"]
+		if(guildList[guildId]["num"] >= guild_lv[lv]["member"]){
+			cb(false,"宗族已满员")
 			return
 		}
 		self.getObj(uid,main_name,"cd",function(cd) {
@@ -524,7 +528,7 @@ module.exports = function() {
 	this.joinGuild = function(uid,guildId,cb) {
 		var lv = guildList[guildId]["lv"]
 		if(guildList[guildId]["num"] >= guild_lv[lv]["member"]){
-			cb(false,"人数已达上限")
+			cb(false,"宗族已满员")
 			return
 		}
 		self.getPlayerKeyByUid(uid,"gid",function(gid) {

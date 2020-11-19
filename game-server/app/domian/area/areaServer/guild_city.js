@@ -202,10 +202,10 @@ module.exports = function() {
 			cb(false,"cityId error "+cityId)
 			return
 		}
-		var day = (new Date()).getDay()
 		//检测是否在报名时间
+		var day = (new Date()).getDay()
 		var hours = (new Date()).getHours()
-		if(hours >= endHours){
+		if(fightTime[day] && hours >= endHours){
 			cb(false)
 			return
 		}
@@ -290,8 +290,9 @@ module.exports = function() {
 			return
 		}
 		//检测时间
+		var day = (new Date()).getDay()
 		var hours = (new Date()).getHours()
-		if(hours >= endHours){
+		if(fightTime[day] && hours >= endHours){
 			cb(false,"endHours "+endHours)
 			return
 		}
@@ -345,16 +346,6 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//检测队伍是否存在
-				self.getObj(uid,"guild_team",teamId,function(data) {
-					if(!data){
-						next("队伍不存在")
-						return
-					}
-					next()
-				})
-			},
-			function(next) {
 				//派遣队伍
 				self.setAreaObj(main_name+":sends",uid+"_"+teamId,cityId)
 				self.setAreaObj(main_name+":city:"+cityId,guildId+"_"+uid+"_"+teamId,1)
@@ -369,12 +360,6 @@ module.exports = function() {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
 			cb(false,"未加入宗族")
-			return
-		}
-		//检测时间
-		var hours = (new Date()).getHours()
-		if(hours >= endHours){
-			cb(false)
 			return
 		}
 		//检测队伍是否已派遣
