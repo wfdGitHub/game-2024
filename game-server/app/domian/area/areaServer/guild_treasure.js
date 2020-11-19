@@ -337,7 +337,7 @@ module.exports = function() {
 					cb(false,err)
 				})
 			}else{
-				cb(false,err)
+				cb(false,"贡献不足")
 			}
 		})
 	}
