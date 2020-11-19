@@ -99,6 +99,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 //每日首次定时器
 area.prototype.firstDayUpdate = function() {
 	console.log("服务器每日首次刷新")
+	this.guildFirstUpdate()
 	this.guildTreasureFirstUpdate()
 	this.guildCityFirstUpdate()
 }
