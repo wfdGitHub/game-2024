@@ -103,13 +103,13 @@ module.exports = function() {
 				data[i] = Number(data[i])
 			}
 			guildList[guildId] = data
-		})
-		self.redisDao.db.hgetall("guild:contributions:"+guildId,function(err,data) {
-			for(var i in data){
-				data[i] = Number(data[i])
-			}
-			contributions[guildId] = data || {}
-			console.log()
+			self.redisDao.db.hgetall("guild:contributions:"+guildId,function(err,data) {
+				for(var i in data){
+					data[i] = Number(data[i])
+				}
+				contributions[guildId] = data || {}
+				self.guildDayUpdate()
+			})
 		})
 	}
 	//设置宗族属性
