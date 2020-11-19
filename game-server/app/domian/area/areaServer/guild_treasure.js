@@ -22,7 +22,8 @@ for(var i in guild_auction){
 	var lv = guild_auction[i]["lv"]
 	if(!qualitys[lv])
 		qualitys[lv] = []
-	qualitys[lv].push(guild_auction[i])
+	for(var j = 0;j < guild_auction[i]["count"];j++)
+		qualitys[lv].push(guild_auction[i])
 }
 module.exports = function() {
 	var self = this
