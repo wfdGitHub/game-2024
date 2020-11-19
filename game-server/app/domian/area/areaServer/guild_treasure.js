@@ -286,7 +286,7 @@ module.exports = function() {
 			return
 		}
 		var hours = (new Date()).getHours()
-		if(hours < fightTime || hours >= auctionTime){
+		if(hours < auctionTime || hours >= endTime){
 			cb(false,"hours error "+hours)
 			return
 		}
