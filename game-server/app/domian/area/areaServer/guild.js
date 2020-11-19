@@ -86,6 +86,7 @@ module.exports = function() {
 		}
 	}
 	this.guildCheckGift = function(guildId) {
+		console.log("guildCheckGift ",guildId)
 		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,data) {
 			for(var giftId in data){
 				data[giftId] = Number(data[giftId])
@@ -714,6 +715,7 @@ module.exports = function() {
 	}
 	//添加宗族红包
 	this.addGuildGift = function(guildId,title,maxNum,amount,time) {
+		console.log("addGuildGift",guildId,title,maxNum,amount,time)
 		var giftInfo = {
 			id : uuid.v1(),
 			guildId : guildId,
