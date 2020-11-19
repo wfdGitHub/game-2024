@@ -29,7 +29,7 @@ module.exports = function() {
 	var local = {}
 	//宝藏BOSS每日首次更新
 	this.guildTreasureFirstUpdate = function() {
-		self.getAreaObjAll(main_name,function(data) {
+		self.getAreaObjAll(main_name,function(err,data) {
 			if(data){
 				for(var guildId in data){
 					self.redisDao.db.hdel(main_name,guildId)

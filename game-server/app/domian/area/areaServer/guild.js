@@ -52,7 +52,7 @@ module.exports = function() {
 	}
 	//宗族每日首次更新
 	this.guildFirstUpdate = function(argument) {
-		self.getAreaObjAll(main_name,function(data) {
+		self.getAreaObjAll(main_name,function(err,data) {
 			if(data){
 				for(var guildId in data){
 					self.setGuildInfo(guildId,"dayCtb",0)
