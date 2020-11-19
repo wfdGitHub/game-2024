@@ -39,7 +39,6 @@ module.exports = function() {
 	}
 	//宗族每日更新
 	this.guildDayUpdate = function() {
-		console.log("guildDayUpdate",guildList)
 		for(var guildId in guildList){
 			self.guildCheckGift(guildId)
 		}
@@ -93,7 +92,6 @@ module.exports = function() {
 		}
 	}
 	this.guildCheckGift = function(guildId) {
-		console.log("guildCheckGift ",guildId)
 		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,data) {
 			for(var giftId in data){
 				data[giftId] = Number(data[giftId])
