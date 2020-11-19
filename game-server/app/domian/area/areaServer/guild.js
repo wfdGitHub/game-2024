@@ -51,6 +51,12 @@ module.exports = function() {
 			dt = 10000
 		self.setTimeout(self.guildGiveGift,dt)
 	}
+	//宗族每日首次更新
+	this.guildFirstUpdate = function(argument) {
+		for(var guildId in guildList){
+			self.setGuildInfo(guildId,"dayCtb",0)
+		}
+	}
 	//宗族红包定时发放
 	this.guildGiveGift = function() {
 		console.log("宗族红包定时发放")
