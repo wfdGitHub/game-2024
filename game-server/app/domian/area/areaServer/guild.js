@@ -273,8 +273,8 @@ module.exports = function() {
 	//设置审核状态
 	this.setGuildAudit = function(uid,audit,lv_limit,cb) {
 		var guildId = self.players[uid]["gid"]
-		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是宗族会长")
+		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
+			cb(false,"没有权限")
 			return
 		}
 		if(audit !== 1)

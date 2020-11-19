@@ -34,6 +34,7 @@ module.exports = function() {
 			self.redisDao.db.hdel(main_name,guildId)
 			self.redisDao.db.del(main_name+":rank:"+guildId)
 			self.redisDao.db.del(main_name+":play:"+guildId)
+			self.redisDao.db.del(main_name+":"+guildId)
 		}
 	}
 	//宝藏BOSS每日更新
@@ -94,26 +95,30 @@ module.exports = function() {
 	}
 	//宝藏BOSS竞拍结束
 	this.guildTreasureAuctionEnd = function(guildId) {
-		self.redisDao.db.hgetall(main_name+":"+guildId,function(err,list) {
-			if(list){
-				var allValue = 0
-				for(var i in list){
-					list[i] = JSON.parse(list[i])
-					if(list[i]["uid"] && list[i]["uid"] > 10000)
-						self.sendMail(list[i]["uid"],"宗族竞拍成功","恭喜您竞拍成功，这是您的竞拍物品。",list[i]["item"])
-					allValue += list[i]["cur"]
-				}
-				self.redisDao.db.lrange(main_name+":play:"+guildId,0,-1,function(err,data) {
-					console.log(err,data)
-					if(!err && data && data.length){
-						var oneValue = Math.ceil(allValue / data.length)
-						for(var i = 0;i < data.length;i++){
-							self.sendMail(data[i],"宗族竞拍分红","您获得了来自宗族竞拍的分红奖励",currency+":"+oneValue)
+		var curDayStr = (new Date()).toDateString()
+		self.redisDao.db.hget(main_name+":state",guildId,function(err,data) {
+			if(data != curDayStr){
+				self.redisDao.db.hset(main_name+":state",guildId,curDayStr)
+				self.redisDao.db.hgetall(main_name+":"+guildId,function(err,list) {
+					if(list){
+						var allValue = 0
+						for(var i in list){
+							list[i] = JSON.parse(list[i])
+							if(list[i]["uid"] && list[i]["uid"] > 10000)
+								self.sendMail(list[i]["uid"],"宗族竞拍成功","恭喜您竞拍成功，这是您的竞拍物品。",list[i]["item"])
+							allValue += list[i]["cur"]
 						}
-						self.redisDao.db.del(main_name+":play:"+guildId)
+						self.redisDao.db.lrange(main_name+":play:"+guildId,0,-1,function(err,data) {
+							console.log(err,data)
+							if(!err && data && data.length){
+								var oneValue = Math.ceil(allValue / data.length)
+								for(var i = 0;i < data.length;i++){
+									self.sendMail(data[i],"宗族竞拍分红","您获得了来自宗族竞拍的分红奖励",currency+":"+oneValue)
+								}
+							}
+						})
 					}
 				})
-				self.redisDao.db.del(main_name+":"+guildId)
 			}
 		})
 	}
