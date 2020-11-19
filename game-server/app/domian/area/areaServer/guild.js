@@ -53,7 +53,7 @@ module.exports = function() {
 	//宗族每日首次更新
 	this.guildFirstUpdate = function(argument) {
 		self.getAreaObjAll(main_name,function(data) {
-			console.log("guildFirstUpdate",data)
+			// console.log("guildFirstUpdate",data)
 			if(data){
 				for(var guildId in data){
 					self.setGuildInfo(guildId,"dayCtb",0)
@@ -63,7 +63,7 @@ module.exports = function() {
 	}
 	//宗族红包定时发放
 	this.guildGiveGift = function() {
-		console.log("宗族红包定时发放")
+		// console.log("宗族红包定时发放")
 		var curDayStr = (new Date()).toDateString()
 		var arr = []
 		for(var guildId in guildList){
@@ -86,10 +86,7 @@ module.exports = function() {
 								else
 									break
 							}
-							console.log(guildId,"贡献度为 ",index,"红包额度 ",guild_lv[lv]["gift_"+index])
 							self.addGuildGift(guildId,"每日红包",guild_lv[lv]["member"],guild_lv[lv]["gift_"+index],oneDayTime)
-						}else{
-							console.log(guildId,"无贡献度  不发红包 ")
 						}
 					}
 				}
@@ -730,7 +727,7 @@ module.exports = function() {
 	}
 	//添加宗族红包
 	this.addGuildGift = function(guildId,title,maxNum,amount,time) {
-		console.log("addGuildGift",guildId,title,maxNum,amount,time)
+		// console.log("addGuildGift",guildId,title,maxNum,amount,time)
 		var giftInfo = {
 			id : uuid.v1(),
 			guildId : guildId,

@@ -23,7 +23,7 @@ module.exports = function() {
 			var dt = d1.getTime() - Date.now()
 			if(dt < 10000)
 				dt = 10000
-			console.log("guildCityBeginFight 倒计时 ",dt)
+			// console.log("guildCityBeginFight 倒计时 ",dt)
 			self.setTimeout(self.guildCityBeginFight,dt)
 		}
 	}
@@ -72,7 +72,6 @@ module.exports = function() {
 				var arr = []
 				for(var i in teamNumLv)
 					arr.push(uid+"_"+i)
-				console.log(arr)
 				self.getAreaHMObj(main_name+":sends",arr,function(data) {
 					info.sendTeams = data
 					cb(true,info)
@@ -659,7 +658,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//占领城池
-				console.log("winGuildId",winGuildId)
+				// console.log("winGuildId",winGuildId)
 				if(winGuildId){
 					self.addGuildGift(winGuildId,"【"+guild_city[cityId]["name"]+"】成功占领",guild_city[cityId]["gift"],10,oneDayTime)
 					self.delAreaObj(main_name+":holdCitys:"+winGuildId,cityId)
