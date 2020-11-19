@@ -39,6 +39,7 @@ module.exports = function() {
 	}
 	//宗族每日更新
 	this.guildDayUpdate = function() {
+		console.log("guildDayUpdate",guildList)
 		for(var guildId in guildList){
 			self.guildCheckGift(guildId)
 		}
