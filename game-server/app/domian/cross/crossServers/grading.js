@@ -31,6 +31,12 @@ module.exports = function() {
 							self.settleGrading()
 					}
 				})
+			}else{
+				self.redisDao.db.hget("cross:grading","seasonId",function(err,data) {
+					if(data){
+						curSeasonId = Number(data)
+					}
+				})
 			}
 		})
 	}
