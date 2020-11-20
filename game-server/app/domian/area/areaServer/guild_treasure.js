@@ -31,7 +31,6 @@ module.exports = function() {
 	//宝藏BOSS每日首次更新
 	this.guildTreasureFirstUpdate = function() {
 		self.getAreaObjAll("guild",function(data) {
-			console.log("guildTreasureFirstUpdate",data)
 			if(data){
 				for(var guildId in data){
 					self.redisDao.db.hdel(main_name,guildId)
@@ -249,7 +248,6 @@ module.exports = function() {
 		for(var i = 0;i < list.length;i++){
 			info[i] = JSON.stringify(list[i])
 		}
-		console.log("createTreasureAuction",info)
 		self.redisDao.db.hmset(main_name+":"+guildId,info)
 	}
 	//生成单个竞拍物品
