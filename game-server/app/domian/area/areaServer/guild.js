@@ -610,14 +610,19 @@ module.exports = function() {
 		self.zrangewithscore(main_name,-10,-1,function(list) {
 			var guilds = []
 			var scores = []
+			var uids = []
 			var info = {}
 			for(var i = 0;i < list.length;i += 2){
+				uids.push(guildList[list[i]]["lead"])
 				guilds.push(guildList[list[i]])
 				scores.push(list[i+1])
 			}
 			info.guilds = guilds
 			info.scores = scores
-			cb(true,info)
+			self.getPlayerInfoByUids(uids,function(data) {
+				info.leadInfo = data
+				cb(true,info)
+			})
 		})
 	}
 	//宗族升级检查
