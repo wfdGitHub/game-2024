@@ -26,10 +26,21 @@ crossManager.prototype.init = function() {
 //每日定时器
 crossManager.prototype.dayUpdate = function(curDayStr) {
 	console.log("跨服服务器每日刷新")
+	var self = this
 	this.dayStr = curDayStr
 	this.gradingDayUpdate()
 	this.peakDayUpdate()
 	this.muyeDayUpdate()
+	this.redisDao.db.hget("crossServers","dayStr",function(err,data) {
+		if(data !== self.dayStr){
+			self.redisDao.db.hset("crossServers","dayStr",self.dayStr)
+			self.firstDayUpdate()
+		}
+	})
+}
+//每日首次定时器
+crossManager.prototype.firstDayUpdate = function() {
+	console.log("跨服每日首次刷新")
 }
 crossManager.prototype.update = function() {
 	var date = new Date()
@@ -131,7 +142,9 @@ crossManager.prototype.consumeItems = function(crossUid,str,rate,reason,cb) {
 }
 //物品奖励
 crossManager.prototype.addItemStr = function(crossUid,str,rate,reason,cb) {
+	console.log("addItemStr",crossUid,str,rate,reason)
 	if(!this.players[crossUid]){
+		console.log("this.players[crossUid] not find")
 		cb(false)
 		return
 	}
@@ -142,17 +155,14 @@ crossManager.prototype.addItemStr = function(crossUid,str,rate,reason,cb) {
 }
 //发放邮件
 crossManager.prototype.sendMail = function(crossUid,title,text,atts,cb) {
+	console.log("sendMail",crossUid,title,text,atts)
 	var list = crossUid.split("|")
-	var areaId = parseInt(list[0])
 	var uid = parseInt(list[1])
-	var serverId = list[2]
-	if(serverId)
-		this.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,cb)
-	else
-		this.sendMailByUid(uid,title,text,atts,cb)
+	this.sendMailByUid(uid,title,text,atts,cb)
 }
 //直接发放邮件
 crossManager.prototype.sendMailByUid = function(uid,title,text,atts,cb) {
+	console.log("sendMailByUid",uid,title,text,atts)
 	if(this.uidMap[uid]){
 		var crossUid = this.uidMap[uid]
 		var list = crossUid.split("|")
@@ -181,6 +191,7 @@ crossManager.prototype.sendMailByUid = function(uid,title,text,atts,cb) {
 }
 //发放奖励,若玩家不在线则发邮件
 crossManager.prototype.sendAward = function(crossUid,title,text,str,reason,cb) {
+	console.log("sendAward",crossUid,title,text,str,reason)
 	if(this.players[crossUid]){
 		this.addItemStr(crossUid,str,1,reason,cb)
 	}else{
