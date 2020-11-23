@@ -142,9 +142,7 @@ crossManager.prototype.consumeItems = function(crossUid,str,rate,reason,cb) {
 }
 //物品奖励
 crossManager.prototype.addItemStr = function(crossUid,str,rate,reason,cb) {
-	console.log("addItemStr",crossUid,str,rate,reason)
 	if(!this.players[crossUid]){
-		console.log("this.players[crossUid] not find")
 		cb(false)
 		return
 	}
@@ -155,7 +153,6 @@ crossManager.prototype.addItemStr = function(crossUid,str,rate,reason,cb) {
 }
 //发放邮件
 crossManager.prototype.sendMail = function(crossUid,title,text,atts,cb) {
-	console.log("sendMail",crossUid,title,text,atts)
 	if(this.players[crossUid]){
 		var areaId = this.players[crossUid]["areaId"]
 		var uid = this.players[crossUid]["uid"]
@@ -169,7 +166,6 @@ crossManager.prototype.sendMail = function(crossUid,title,text,atts,cb) {
 }
 //直接发放离线邮件
 crossManager.prototype.sendMailByUid = function(uid,title,text,atts,cb) {
-	console.log("sendMailByUid",uid,title,text,atts)
 	var crossUid = this.uidMap[uid]
 	if(crossUid && this.players[crossUid]){
 		var areaId = this.players[crossUid]["areaId"]
@@ -193,7 +189,6 @@ crossManager.prototype.sendMailByUid = function(uid,title,text,atts,cb) {
 }
 //发放奖励,若玩家不在线则发邮件
 crossManager.prototype.sendAward = function(crossUid,title,text,str,reason,cb) {
-	console.log("sendAward",crossUid,title,text,str,reason)
 	if(this.players[crossUid]){
 		this.addItemStr(crossUid,str,1,reason,cb)
 	}else{
