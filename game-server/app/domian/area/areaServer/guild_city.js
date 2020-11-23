@@ -131,7 +131,10 @@ module.exports = function() {
 								list[i]["team"] = data[i]
 							}
 							info.guildTeams = list
-							next()
+							self.getPlayerInfoByUids(uids,function(userInfos) {
+								info.userInfos = userInfos
+								next()
+							})
 						})
 					})
 				})
