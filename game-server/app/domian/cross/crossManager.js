@@ -156,38 +156,36 @@ crossManager.prototype.addItemStr = function(crossUid,str,rate,reason,cb) {
 //发放邮件
 crossManager.prototype.sendMail = function(crossUid,title,text,atts,cb) {
 	console.log("sendMail",crossUid,title,text,atts)
-	var list = crossUid.split("|")
-	var uid = parseInt(list[1])
-	this.sendMailByUid(uid,title,text,atts,cb)
-}
-//直接发放邮件
-crossManager.prototype.sendMailByUid = function(uid,title,text,atts,cb) {
-	console.log("sendMailByUid",uid,title,text,atts)
-	if(this.uidMap[uid]){
-		var crossUid = this.uidMap[uid]
-		var list = crossUid.split("|")
-		var areaId = parseInt(list[0])
-		var uid = parseInt(list[1])
-		var serverId = list[2]
+	if(this.players[crossUid]){
+		var areaId = this.players[crossUid]["areaId"]
+		var uid = this.players[crossUid]["uid"]
+		var serverId = this.players[crossUid]["serverId"]
 		if(serverId)
 			this.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,cb)
 		else
 			console.error("sendMailByUid error "+crossUid+" "+title+" "+text+" "+atts)
 	}else{
-		var mailInfo = {
-			title : title,
-			text : text,
-			id : uuid.v1(),
-			time : Date.now()
-		}
-		if(atts){
-			mailInfo.atts = atts
-		}
-		mailInfo = JSON.stringify(mailInfo)
-		this.redisDao.db.rpush("player:user:"+uid+":mail",mailInfo)
-		if(cb)
-			cb(true)
+		var list = crossUid.split("|")
+		var uid = parseInt(list[1])
+		this.sendMailByUid(uid,title,text,atts,cb)
 	}
+}
+//直接发放离线邮件
+crossManager.prototype.sendMailByUid = function(uid,title,text,atts,cb) {
+	console.log("sendMailByUid",uid,title,text,atts)
+	var mailInfo = {
+		title : title,
+		text : text,
+		id : uuid.v1(),
+		time : Date.now()
+	}
+	if(atts){
+		mailInfo.atts = atts
+	}
+	mailInfo = JSON.stringify(mailInfo)
+	this.redisDao.db.rpush("player:user:"+uid+":mail",mailInfo)
+	if(cb)
+		cb(true)
 }
 //发放奖励,若玩家不在线则发邮件
 crossManager.prototype.sendAward = function(crossUid,title,text,str,reason,cb) {
