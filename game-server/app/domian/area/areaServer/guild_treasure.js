@@ -71,23 +71,28 @@ module.exports = function() {
 		}
 		info.surplus_health = [1,1,1,1,1,1]
 		info.bossId = Math.floor((d.getDate() % 4) + 1)
-		self.getObj(uid,main_name,"play",function(data) {
-			info.play = data
-			self.redisDao.db.hget(main_name,guildId,function(err,data) {
-				if(data){
-					info.surplus_health = JSON.parse(data)
-				}
-				self.redisDao.db.zrange(main_name+":rank:"+guildId,0,-1,"WITHSCORES",function(err,list) {
-					var uids = []
-					var scores = []
-					for(var i = 0;i < list.length;i += 2){
-						uids.push(list[i])
-						scores.push(list[i+1])
+		self.redisDao.db.lrange(main_name+":play:"+guildId,0,-1,function(err,data) {
+			info.num = 0
+			if(data && data.length)
+				info.num = data.length
+			self.getObj(uid,main_name,"play",function(data) {
+				info.play = data
+				self.redisDao.db.hget(main_name,guildId,function(err,data) {
+					if(data){
+						info.surplus_health = JSON.parse(data)
 					}
-					self.getPlayerInfoByUids(uids,function(userInfos) {
-						info.userInfos = userInfos
-						info.scores = scores
-						cb(true,info)
+					self.redisDao.db.zrange(main_name+":rank:"+guildId,0,-1,"WITHSCORES",function(err,list) {
+						var uids = []
+						var scores = []
+						for(var i = 0;i < list.length;i += 2){
+							uids.push(list[i])
+							scores.push(list[i+1])
+						}
+						self.getPlayerInfoByUids(uids,function(userInfos) {
+							info.userInfos = userInfos
+							info.scores = scores
+							cb(true,info)
+						})
 					})
 				})
 			})
@@ -109,7 +114,6 @@ module.exports = function() {
 							allValue += list[i]["cur"]
 						}
 						self.redisDao.db.lrange(main_name+":play:"+guildId,0,-1,function(err,data) {
-							console.log(err,data)
 							if(!err && data && data.length){
 								var oneValue = Math.ceil(allValue / data.length)
 								for(var i = 0;i < data.length;i++){
