@@ -383,7 +383,60 @@ guildHandler.prototype.gainGuildCityAward = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
-
+//获取PK数据
+guildHandler.prototype.getGuildPKData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getGuildPKData(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//获取单路数据
+guildHandler.prototype.getGuildPKRecord = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var path = msg.path
+  this.areaManager.areaMap[areaId].getGuildPKRecord(uid,path,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//获取战斗数据
+guildHandler.prototype.getGuildPKFight = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var path = msg.path
+  var index = msg.index
+  this.areaManager.areaMap[areaId].getGuildPKFight(uid,path,index,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//报名
+guildHandler.prototype.applyGuildPK = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].applyGuildPK(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//派遣队伍
+guildHandler.prototype.sendGuildPKTeam = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var teamId = msg.teamId
+  var path = msg.path
+  this.areaManager.areaMap[areaId].sendGuildPKTeam(uid,teamId,path,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//撤回队伍
+guildHandler.prototype.cancelGuildPKTeam = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var teamId = msg.teamId
+  this.areaManager.areaMap[areaId].cancelGuildPKTeam(uid,teamId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "guildHandler",

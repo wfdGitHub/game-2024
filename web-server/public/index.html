@@ -98,6 +98,55 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============公会PK==========//
+      //获取PK数据
+      var getGuildPKData = function() {
+        pomelo.request("area.guildHandler.getGuildPKData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取单路数据
+      var getGuildPKRecord = function(path) {
+        pomelo.request("area.guildHandler.getGuildPKRecord", {path:path}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取战斗数据
+      var getGuildPKFight = function(path,index) {
+        pomelo.request("area.guildHandler.getGuildPKFight", {path:path,index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //报名
+      var applyGuildPK = function() {
+        pomelo.request("area.guildHandler.applyGuildPK", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //派遣队伍
+      var sendGuildPKTeam = function(teamId,path) {
+        pomelo.request("area.guildHandler.sendGuildPKTeam", {teamId:teamId,path:path}, function(data) {
+            console.log(data);
+        });
+      }
+      //撤回队伍
+      var cancelGuildPKTeam = function(teamId) {
+        pomelo.request("area.guildHandler.cancelGuildPKTeam", {teamId:teamId}, function(data) {
+            console.log(data);
+        });
+      }
+      //公会PK匹配
+      var matchGuildPKRival = function() {
+        pomelo.request("cross.crossHandler.matchGuildPKRival", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //公会PK战斗
+      var beginGuildPKTable = function() {
+        pomelo.request("cross.crossHandler.beginGuildPKTable", {}, function(data) {
+            console.log(data);
+        });
+      }
       //==============公会攻城战==========//
       //报名城池
       var applyGuildCity = function(cityId) {
@@ -2474,6 +2523,17 @@
       <input id="test" type="button" value="战斗数据" onclick="getGuildCityFight(1,0)"/>
       <input id="test" type="button" value="每日奖励" onclick="gainGuildCityAward()"/>
     </div>
-
+    <div class="g-button">
+      公会PK : 
+      <input id="test" type="button" value="PK数据" onclick="getGuildPKData()"/>
+      <input id="test" type="button" value="报名" onclick="applyGuildPK()"/>
+      <input id="test" type="button" value="派遣队伍" onclick="sendGuildPKTeam(0,1)"/>
+      <input id="test" type="button" value="取消队伍" onclick="cancelGuildPKTeam(0)"/>
+      <input id="test" type="button" value="开始匹配" onclick="matchGuildPKRival()"/>
+      <input id="test" type="button" value="开始战斗" onclick="beginGuildPKTable()"/>
+      <input id="test" type="button" value="上路数据" onclick="getGuildPKRecord(1)"/>
+      <input id="test" type="button" value="中路数据" onclick="getGuildPKRecord(2)"/>
+      <input id="test" type="button" value="下路数据" onclick="getGuildPKRecord(3)"/>
+    </div>
   </body>
 </html>
