@@ -700,7 +700,7 @@ module.exports = function() {
 	this.releaseGuildCity = function(guildId) {
 		self.getAreaObjAll(main_name+":holdCitys:"+guildId,function(data) {
 			for(var cityId in data){
-				self.delAreaObj(main_name+":holdCitys:"+oldGuildId,cityId)
+				self.delAreaObj(main_name+":holdCitys:"+guildId,cityId)
 				self.delAreaObj(main_name+":cityLord",cityId)
 			}
 		})

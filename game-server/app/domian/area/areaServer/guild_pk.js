@@ -259,9 +259,11 @@ module.exports = function() {
 		for(var i in teamNumLv)
 			arr.push(uid+"_"+i)
 		self.redisDao.db.hmget(main_name+":"+guildId,arr,function(data) {
-			for(var i = 0;i < data.length;i++){
-				if(data[i]){
-					self.redisDao.db.hdel(main_name+":"+guildId,uid+"_"+i)
+			if(data){
+				for(var i = 0;i < data.length;i++){
+					if(data[i]){
+						self.redisDao.db.hdel(main_name+":"+guildId,uid+"_"+i)
+					}
 				}
 			}
 		})
