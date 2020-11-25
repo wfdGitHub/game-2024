@@ -672,8 +672,8 @@ module.exports = function() {
 				// console.log("winGuildId",winGuildId)
 				if(winGuildId){
 					self.addGuildGift(winGuildId,"【"+guild_city[cityId]["name"]+"】成功占领",guild_city[cityId]["gift"],10,oneDayTime)
-					self.delAreaObj(main_name+":holdCitys:"+winGuildId,cityId)
-					self.setAreaObj(main_name+":holdCitys:"+winGuildId,cityId,1)
+					self.delAreaObj(main_name+":holdCitys:"+oldGuildId,cityId)
+					self.setAreaObj(main_name+":holdCitys:"+winGuildId,cityId,Date.now())
 					self.setAreaObj(main_name+":cityLord",cityId,winGuildId)
 				}
 			}
@@ -693,6 +693,15 @@ module.exports = function() {
 					self.delAreaObj(main_name+":sends",uid+"_"+i)
 					self.delAreaObj(main_name+":city:"+data[i],guildId+"_"+uid+"_"+i)
 				}
+			}
+		})
+	}
+	//释放城池
+	this.releaseGuildCity = function(guildId) {
+		self.getAreaObjAll(main_name+":holdCitys:"+guildId,function(data) {
+			for(var cityId in data){
+				self.delAreaObj(main_name+":holdCitys:"+oldGuildId,cityId)
+				self.delAreaObj(main_name+":cityLord",cityId)
 			}
 		})
 	}

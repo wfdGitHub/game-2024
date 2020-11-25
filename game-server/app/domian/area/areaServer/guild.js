@@ -314,6 +314,7 @@ module.exports = function() {
 		self.redisDao.db.del("guild_treasure:play:"+guildId)
 		self.redisDao.db.del("guild_treasure:"+guildId)
 		self.delAreaObj("guild_city:apply",guildId)
+		self.releaseGuildCity(guildId)
 		cb(true)
 	}
 	//设置成副会长
@@ -569,7 +570,7 @@ module.exports = function() {
 		self.sendMail(uid,"退出宗族","您已离开【"+guildList[guildId]["name"]+"】")
 		self.sendToUser(uid,{type:"leaveGuild",guildId : guildId,name:guildList[guildId]["name"]})
 		self.cancelGuildCityAllTeam(guildId,uid)
-		//self.cancelGuildPKAllTeam(guildId,uid)
+		self.cancelGuildPKAllTeam(guildId,uid)
 		if(cb)
 			cb(true)
 	}
