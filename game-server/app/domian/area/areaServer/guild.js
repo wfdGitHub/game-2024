@@ -575,7 +575,7 @@ module.exports = function() {
 		self.getPlayerKeyByUid(uid,"name",function(name) {
 			self.addGuildLog(guildId,{type:"quit",uid:uid,name:name})
 		})
-		self.setObj(uid,main_name,"cd",Date.now()+86400000)
+		// self.setObj(uid,main_name,"cd",Date.now()+86400000)
 		self.sendMail(uid,"退出宗族","您已离开【"+guildList[guildId]["name"]+"】")
 		self.sendToUser(uid,{type:"leaveGuild",guildId : guildId,name:guildList[guildId]["name"]})
 		self.cancelGuildCityAllTeam(guildId,uid)
