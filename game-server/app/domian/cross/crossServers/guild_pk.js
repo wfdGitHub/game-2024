@@ -79,8 +79,10 @@ module.exports = function() {
 				//清除初始数据
 				self.redisDao.db.hgetall(main_name+":historyTable",function(err,table) {
 					if(table){
+						console.log("清除初始数据",table)
 						for(var tableIndex in table){
 							var list = JSON.parse(table[tableIndex])
+							console.log("list",list)
 							self.redisDao.db.del(main_name+":baseInfo:"+tableIndex)
 							for(var path = 1;path <= 3;path++){
 								self.redisDao.db.del(main_name+":fightRecordList:"+tableIndex+":"+path)
