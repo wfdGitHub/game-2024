@@ -39,7 +39,6 @@ module.exports = function() {
 		self.redisDao.db.del(main_name+":table")
 		self.redisDao.db.hgetall(main_name+":apply",function(err,list) {
 			console.log("宗族PK获取报名列表",list)
-			self.redisDao.db.del(main_name+":apply")
 			if(list){
 				var arr = []
 				for(var guildId in list){
@@ -95,6 +94,8 @@ module.exports = function() {
 					next()
 				})
 			},function(next) {
+				self.redisDao.db.del(main_name+":parMap")
+				self.redisDao.db.del(main_name+":apply")
 				self.redisDao.db.hgetall(main_name+":table",function(err,table) {
 					if(table){
 						self.redisDao.db.del(main_name+":table")
@@ -137,6 +138,8 @@ module.exports = function() {
 		var winList = {"1":"def","2":"def","3":"def"}
 		var atkGuildLv = 1
 		var defGuildLv = 1
+		var atkGuildName = ""
+		var defGuildName = ""
 		var atkWinNum = 0
 		async.waterfall([
 			function(next) {
@@ -248,6 +251,22 @@ module.exports = function() {
 				next()
 			},
 			function(next) {
+				//获取公会信息
+				self.redisDao.db.hmget("guild:guildInfo:"+guildId1,["name","lv"],function(err,list) {
+					if(data){
+						atkGuildLv = Number(list[1])
+						atkGuildName = list[0]
+					}
+					self.redisDao.db.hmget("guild:guildInfo:"+guildId2,["name","lv"],function(err,list) {
+						if(data){
+							defGuildLv = Number(list[1])
+							defGuildName = list[0]
+						}
+						next()
+					})
+				})
+			},
+			function(next) {
 				//战斗
 				for(var path = 1;path <= 3;path++){
 					var atkSurplus = [1,1,1,1,1,1]
@@ -334,6 +353,8 @@ module.exports = function() {
 					tableIndex : tableIndex,
 					atkDamageRank : atkDamageRank,
 					defDamageRank : defDamageRank,
+					atkGuildName : atkGuildName,
+					defGuildName : defGuildName,
 					atkGuild : guildId1,
 					defGuild : guildId2,
 					atkList : atkList,
@@ -343,18 +364,6 @@ module.exports = function() {
 				}
 				self.redisDao.db.set(main_name+":baseInfo:"+tableIndex,JSON.stringify(baseInfo))
 				next()
-			},
-			function(next) {
-				//获取公会等级
-				self.redisDao.db.hget("guild:guildInfo:"+guildId1,"lv",function(err,data) {
-					if(data)
-						atkGuildLv = Number(data)
-						self.redisDao.db.hget("guild:guildInfo:"+guildId2,"lv",function(err,data) {
-							if(data)
-								defGuildLv = Number(data)
-							next()
-						})
-				})
 			},
 			function(next) {
 				//发放奖励
