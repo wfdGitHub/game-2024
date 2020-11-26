@@ -330,6 +330,8 @@ module.exports = function() {
 				//记录数据 todo公会信息
 				var baseInfo = {
 					tableIndex : tableIndex,
+					atkDamageRank : atkDamageRank,
+					defDamageRank : defDamageRank,
 					atkGuild : guildId1,
 					defGuild : guildId2,
 					atkList : atkList,
