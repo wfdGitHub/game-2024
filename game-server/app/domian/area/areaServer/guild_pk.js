@@ -51,9 +51,15 @@ module.exports = function() {
 					if(tableIndex){
 						info.tableIndex = tableIndex
 						self.redisDao.db.hget(main_name+":table",tableIndex,function(err,data) {
-							if(data)
+							if(data){
 								info.table = JSON.parse(data)
-							next()
+								self.getPlayerInfoByUids(info.table,function(data) {
+									info.leadInfos = data
+									next()
+								})
+							}else{
+								next()
+							}
 						})
 					}else{
 						next()
