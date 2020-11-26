@@ -534,7 +534,7 @@ module.exports = function() {
 					if(defList.length){
 						var multiList = []
 						for(var i = 0;i < defList.length;i++){
-							multiList.push(["hget","player:user:"+defList[i]["uid"]+":"+main_name,defList[i]["teamId"]])
+							multiList.push(["hget","player:user:"+defList[i]["uid"]+":guild_team",defList[i]["teamId"]])
 						}
 						self.redisDao.multi(multiList,function(err,list) {
 							self.heroDao.getMultiHeroList(defUids,list,function(flag,data) {

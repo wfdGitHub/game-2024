@@ -203,12 +203,12 @@ module.exports = function() {
 			},
 			function(next) {
 				self.getObj(uid,main_name,"cd",function(cd) {
-					// cd = Number(cd) || 0
-					// var curTime = Date.now()
-					// if(cd > curTime){
-					// 	next("退出宗族冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可创建")
-					// 	return
-					// }
+					cd = Number(cd) || 0
+					var curTime = Date.now()
+					if(cd > curTime){
+						next("退出宗族冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可创建")
+						return
+					}
 					next()
 				})
 			},
@@ -467,12 +467,12 @@ module.exports = function() {
 			return
 		}
 		self.getObj(uid,main_name,"cd",function(cd) {
-			// cd = Number(cd) || 0
-			// var curTime = Date.now()
-			// if(cd > curTime){
-			// 	cb(false,"退出宗族冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可申请")
-			// 	return
-			// }
+			cd = Number(cd) || 0
+			var curTime = Date.now()
+			if(cd > curTime){
+				cb(false,"退出宗族冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可申请")
+				return
+			}
 			if(!applyList[guildId])
 				applyList[guildId] = {}
 			applyList[guildId][uid] = self.getBaseUser(uid)
@@ -575,7 +575,7 @@ module.exports = function() {
 		self.getPlayerKeyByUid(uid,"name",function(name) {
 			self.addGuildLog(guildId,{type:"quit",uid:uid,name:name})
 		})
-		// self.setObj(uid,main_name,"cd",Date.now()+86400000)
+		self.setObj(uid,main_name,"cd",Date.now()+86400000)
 		self.sendMail(uid,"退出宗族","您已离开【"+guildList[guildId]["name"]+"】")
 		self.sendToUser(uid,{type:"leaveGuild",guildId : guildId,name:guildList[guildId]["name"]})
 		self.cancelGuildCityAllTeam(guildId,uid)
