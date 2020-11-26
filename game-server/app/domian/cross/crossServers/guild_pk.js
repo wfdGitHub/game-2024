@@ -140,6 +140,7 @@ module.exports = function() {
 			function(next) {
 				//获取进攻方队伍
 				self.redisDao.db.hgetall(main_name+":"+guildId1,function(err,data) {
+					self.redisDao.db.del(main_name+":"+guildId1)
 					for(var key in data){
 					    var strList = key.split("_")
 					    var info = {
@@ -148,7 +149,6 @@ module.exports = function() {
 					    	path : data[key]
 					    }
 					    atkList.push(info)
-					    self.redisDao.db.del(main_name+":"+guildId1)
 					}
 					atkList.sort(function(){return Math.random() > 0.5?1:-1})
 					for(var i = 0;i < atkList.length;i++)
@@ -185,6 +185,7 @@ module.exports = function() {
 			function(next) {
 				//获取防守方队伍
 				self.redisDao.db.hgetall(main_name+":"+guildId2,function(err,data) {
+					self.redisDao.db.del(main_name+":"+guildId2)
 					for(var key in data){
 					    var strList = key.split("_")
 					    var info = {
@@ -193,7 +194,6 @@ module.exports = function() {
 					    	path : data[key]
 					    }
 					    defList.push(info)
-					    self.redisDao.db.del(main_name+":"+guildId2)
 					}
 					defList.sort(function(){return Math.random() > 0.5?1:-1})
 					for(var i = 0;i < defList.length;i++)
