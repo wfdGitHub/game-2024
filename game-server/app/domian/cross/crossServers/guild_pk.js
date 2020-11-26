@@ -253,12 +253,12 @@ module.exports = function() {
 			function(next) {
 				//获取公会信息
 				self.redisDao.db.hmget("guild:guildInfo:"+guildId1,["name","lv"],function(err,list) {
-					if(data){
+					if(list){
 						atkGuildLv = Number(list[1])
 						atkGuildName = list[0]
 					}
 					self.redisDao.db.hmget("guild:guildInfo:"+guildId2,["name","lv"],function(err,list) {
-						if(data){
+						if(list){
 							defGuildLv = Number(list[1])
 							defGuildName = list[0]
 						}
