@@ -176,10 +176,10 @@ module.exports = function() {
 			return
 		}
 		var day = (new Date()).getDay()
-		if(day !== 0){
-			cb(false,"仅周日可派遣")
-			return
-		}
+		// if(day !== 0){
+		// 	cb(false,"仅周日可派遣")
+		// 	return
+		// }
 		if(path !== 1 && path !== 2 && path !== 3){
 			cb(false,"path error "+path)
 			return
