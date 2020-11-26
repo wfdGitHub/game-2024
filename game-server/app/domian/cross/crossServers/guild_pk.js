@@ -24,7 +24,7 @@ module.exports = function() {
 					if(dt < 10000)
 						dt = 10000
 					console.log("guildPKDayUpdate dt ",dt)
-					self.setTimeout(function(){
+					setTimeout(function(){
 						self.redisDao.db.hset(main_name,"pkState",curDayStr)
 						self.beginGuildPKTable()
 					},dt)

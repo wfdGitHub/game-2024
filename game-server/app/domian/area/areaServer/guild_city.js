@@ -100,9 +100,15 @@ module.exports = function() {
 			function(next) {
 				//防守宗族
 				self.getAreaObj(main_name+":cityLord",cityId,function(data) {
-					if(data)
+					if(data){
 						info.guildInfo = self.getGuildInfo(data)
-					next()
+						self.getPlayerInfoByUids([info.guildInfo.lead],function(data) {
+							info.leadInfo = data
+							next()
+						})
+					}else{
+						next()
+					}
 				})
 			},
 			function(next) {
