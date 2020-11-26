@@ -67,14 +67,9 @@ module.exports = function() {
 						enemyGuildId = info.table[1]
 					else
 						enemyGuildId = info.table[0]
-					var enemyGuildInfo = {}
-					self.getPlayerInfoByUids([enemyGuildId],function(data) {
-						enemyGuildInfo.leadInfo = data
-						self.redisDao.db.hget("guild:guildInfo:"+enemyGuildId,"name",function(err,data) {
-							enemyGuildInfo.name = data
-							info.enemyGuildInfo = enemyGuildInfo
-							next()
-						})
+					self.redisDao.db.hget(main_name+":apply",enemyGuildId,function(err,data) {
+						info.enemyGuildInfo = data
+						next()
 					})
 				}else{
 					next()
@@ -166,8 +161,10 @@ module.exports = function() {
 			if(data){
 				cb(false,"已报名")
 			}else{
-				self.redisDao.db.hset(main_name+":apply",guildId,1)
-				cb(true)
+				self.getPlayerInfoByUids([guildInfo.lead],function(userInfos) {
+					self.redisDao.db.hset(main_name+":apply",guildId,JSON.stringify(userInfos[0]))
+					cb(true)
+				})
 			}
 		})
 	}

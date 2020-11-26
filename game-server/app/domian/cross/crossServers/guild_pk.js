@@ -52,20 +52,26 @@ module.exports = function() {
 					var table = {}
 					var tableIndex = 1
 					while(arr.length > curNum){
-						if(arr.length >= 2){
+						if(arr.length - curNum >= 2){
 							map[arr[curNum]] = tableIndex
 							map[arr[curNum+1]] = tableIndex
 							table[tableIndex] = JSON.stringify([arr[curNum],arr[curNum+1]])
 						}else{
+							var rand = (curNum+Math.floor(Math.random() * curNum - 1) + 1) % arr.length
+							console.log("arr",arr,rand,arr[rand])
 							map[arr[curNum]] = tableIndex
-							table[tableIndex] = JSON.stringify([arr[curNum],arr[(curNum+Math.floor(Math.random() * arr.length)) % arr.length]])
+							table[tableIndex] = JSON.stringify([arr[curNum],arr[rand]])
 						}
 						tableIndex++
 						curNum += 2
 					}
 					console.log("生成对阵表",table)
-					self.redisDao.db.hmset(main_name+":parMap",map)
+					self.redisDao.db.hmset(main_name+":parMap",map)	
 					self.redisDao.db.hmset(main_name+":table",table)
+				}else{
+					self.redisDao.db.del(main_name+":apply")
+					self.redisDao.db.del(main_name+":parMap")
+					self.redisDao.db.del(main_name+":table")
 				}
 			}
 		})
@@ -78,6 +84,7 @@ module.exports = function() {
 				//清除初始数据
 				self.redisDao.db.hgetall(main_name+":historyTable",function(err,table) {
 					if(table){
+						self.redisDao.db.del(main_name+":historyTable")
 						console.log("清除初始数据",table)
 						for(var tableIndex in table){
 							var list = JSON.parse(table[tableIndex])
@@ -95,7 +102,6 @@ module.exports = function() {
 				})
 			},function(next) {
 				self.redisDao.db.del(main_name+":parMap")
-				self.redisDao.db.del(main_name+":apply")
 				self.redisDao.db.hgetall(main_name+":table",function(err,table) {
 					if(table){
 						self.redisDao.db.del(main_name+":table")
@@ -138,8 +144,8 @@ module.exports = function() {
 		var winList = {"1":"def","2":"def","3":"def"}
 		var atkGuildLv = 1
 		var defGuildLv = 1
-		var atkGuildName = ""
-		var defGuildName = ""
+		var atkGuildInfo = ""
+		var defGuildInfo = ""
 		var atkWinNum = 0
 		async.waterfall([
 			function(next) {
@@ -252,17 +258,15 @@ module.exports = function() {
 			},
 			function(next) {
 				//获取公会信息
-				self.redisDao.db.hmget("guild:guildInfo:"+guildId1,["name","lv"],function(err,list) {
-					if(list){
-						atkGuildLv = Number(list[1])
-						atkGuildName = list[0]
-					}
-					self.redisDao.db.hmget("guild:guildInfo:"+guildId2,["name","lv"],function(err,list) {
-						if(list){
-							defGuildLv = Number(list[1])
-							defGuildName = list[0]
-						}
-						next()
+				self.redisDao.db.hget("guild:guildInfo:"+guildId1,"lv",function(err,data) {
+					atkGuildLv = Number(data) || 1
+					self.redisDao.db.hget("guild:guildInfo:"+guildId2,"lv",function(err,data) {
+						defGuildLv = Number(data) || 1
+						self.redisDao.db.hmget(main_name+":apply",[guildId1,guildId2],function(err,list) {
+							atkGuildInfo = list[0]
+							defGuildInfo = list[1]
+							next()
+						})
 					})
 				})
 			},
@@ -353,8 +357,8 @@ module.exports = function() {
 					tableIndex : tableIndex,
 					atkDamageRank : atkDamageRank,
 					defDamageRank : defDamageRank,
-					atkGuildName : atkGuildName,
-					defGuildName : defGuildName,
+					atkGuildInfo : atkGuildInfo,
+					defGuildInfo : defGuildInfo,
 					atkGuild : guildId1,
 					defGuild : guildId2,
 					atkList : atkList,
@@ -363,6 +367,8 @@ module.exports = function() {
 					time : Date.now()
 				}
 				self.redisDao.db.set(main_name+":baseInfo:"+tableIndex,JSON.stringify(baseInfo))
+				self.redisDao.db.hdel(main_name+":apply",guildId1)
+				self.redisDao.db.hdel(main_name+":apply",guildId2)
 				next()
 			},
 			function(next) {
