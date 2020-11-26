@@ -103,7 +103,7 @@ module.exports = function() {
 					if(data){
 						info.guildInfo = self.getGuildInfo(data)
 						self.getPlayerInfoByUids([info.guildInfo.lead],function(data) {
-							info.leadInfo = data
+							info.leadInfo = data[0]
 							next()
 						})
 					}else{
