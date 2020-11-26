@@ -51,20 +51,34 @@ module.exports = function() {
 					if(tableIndex){
 						info.tableIndex = tableIndex
 						self.redisDao.db.hget(main_name+":table",tableIndex,function(err,data) {
-							if(data){
-								info.table = JSON.parse(data)
-								self.getPlayerInfoByUids(info.table,function(data) {
-									info.leadInfos = data
-									next()
-								})
-							}else{
-								next()
-							}
+							info.table = JSON.parse(data)
+							next()
 						})
 					}else{
 						next()
 					}
 				})
+			},
+			function(next) {
+				if(info.table){
+					//获取宗族信息
+					var enemyGuildId = 0
+					if(info.table[0] == guildId)
+						enemyGuildId = info.table[1]
+					else
+						enemyGuildId = info.table[0]
+					var enemyGuildInfo = {}
+					self.getPlayerInfoByUids([enemyGuildId],function(data) {
+						enemyGuildInfo.leadInfo = data
+						self.redisDao.db.hget("guild:guildInfo:"+enemyGuildId,"name",function(err,data) {
+							enemyGuildInfo.name = data
+							info.enemyGuildInfo = enemyGuildInfo
+							next()
+						})
+					})
+				}else{
+					next()
+				}
 			},
 			function(next) {
 				//获取上轮战报
