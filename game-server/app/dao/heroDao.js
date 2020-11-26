@@ -418,6 +418,10 @@ heroDao.prototype.getMultiHeroList = function(uids,hIdsList,cb) {
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
 		var hIds = JSON.parse(hIdsList[i])
+		if(!hIds){
+			console.log("hIds error ",hIds,uids,hIdsList)
+			hIds = [0,0,0,0,0,0]
+		}
 		for(var j = 0;j < hIds.length;j++)
 			multiList.push(["hgetall","player:user:"+uids[i]+":heros:"+hIds[j]])
 	}
