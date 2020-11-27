@@ -11,6 +11,7 @@ module.exports = function() {
 		var day = d.getDay()
 		var curDayStr = d.toDateString()
 		if(day == 0){
+			console.log("周日 开始检测跨服宗族战")
 			self.redisDao.db.hget(main_name,"dayStr",function(err,data) {
 				if(data != curDayStr){
 					self.redisDao.db.hset(main_name,"dayStr",curDayStr)
@@ -34,7 +35,7 @@ module.exports = function() {
 	}
 	//匹配对手
 	this.matchGuildPKRival = function() {
-		console.log("matchGuildPKRival!!")
+		// console.log("matchGuildPKRival!!")
 		self.redisDao.db.del(main_name+":parMap")
 		self.redisDao.db.del(main_name+":table")
 		self.redisDao.db.del(main_name+":applyHistory")
@@ -61,7 +62,6 @@ module.exports = function() {
 							table[tableIndex] = JSON.stringify([arr[curNum],arr[curNum+1]])
 						}else{
 							var rand = (curNum + Math.ceil(Math.random() * (arr.length-1))) % arr.length
-							console.log("arr",arr,rand,arr[rand])
 							map[arr[curNum]] = tableIndex
 							table[tableIndex] = JSON.stringify([arr[curNum],arr[rand]])
 						}
@@ -91,7 +91,6 @@ module.exports = function() {
 						console.log("清除初始数据",table)
 						for(var tableIndex in table){
 							var list = JSON.parse(table[tableIndex])
-							console.log("list",list)
 							self.redisDao.db.del(main_name+":baseInfo:"+tableIndex)
 							for(var path = 1;path <= 3;path++){
 								self.redisDao.db.del(main_name+":fightRecordList:"+tableIndex+":"+path)
@@ -255,8 +254,8 @@ module.exports = function() {
 						defPathTeam[path].push({index : i,team : defTeams[i]})
 					}
 				}
-				console.log("攻方三路",atkPathTeam)
-				console.log("守方三路",defPathTeam)
+				// console.log("攻方三路",atkPathTeam)
+				// console.log("守方三路",defPathTeam)
 				next()
 			},
 			function(next) {
@@ -284,7 +283,7 @@ module.exports = function() {
 					if(atkPathTeam[path].length)
 						atkWin = true
 					while(atkPathTeam[path][atkNum] && defPathTeam[path][defNum]){
-						console.log("atkNum",atkNum,"defNum",defNum)
+						// console.log("atkNum",atkNum,"defNum",defNum)
 						var atkTeam = atkPathTeam[path][atkNum]["team"]
 						var defTeam = defPathTeam[path][defNum]["team"]
 						for(var i = 0;i < 6;i++){
@@ -299,7 +298,7 @@ module.exports = function() {
 						var defIndex = defPathTeam[path][defNum]["index"]
 						record.atkIndex = atkIndex
 						record.defIndex = defIndex
-						console.log("atkTeam",atkTeam,"defTeam",defTeam)
+						// console.log("atkTeam",atkTeam,"defTeam",defTeam)
 						record.winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 						var overInfo = self.fightContorl.getOverInfo()
 				    	var atkDamage = 0
@@ -352,9 +351,6 @@ module.exports = function() {
 					if(atkWin){
 						winList[path] = "atk"
 						atkWinNum++
-						console.log(path,"攻方获胜")
-					}else{
-						console.log(path,"守方获胜")
 					}
 				}
 				//记录数据 todo公会信息
@@ -376,7 +372,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//发放奖励
-				console.log("winList",winList,atkWinNum)
+				// console.log("winList",winList,atkWinNum)
 				var atkMap = {}
 				var defMap = {}
 				for(var i = 0;i < atkUids.length;i++)

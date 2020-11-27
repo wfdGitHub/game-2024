@@ -22,7 +22,7 @@ module.exports = function() {
 			var dt = d1.getTime() - Date.now()
 			if(dt < 10000)
 				dt = 10000
-			// console.log("guildCityBeginFight 倒计时 ",dt)
+			console.log("guildCityBeginFight 倒计时 ",dt)
 			self.setTimeout(self.guildCityBeginFight,dt)
 		}
 	}
@@ -697,7 +697,7 @@ module.exports = function() {
 			function(next) {
 				// console.log("12000")
 				//占领城池
-				// console.log("winGuildId",winGuildId,oldGuildId)
+				console.log(guild_city[cityId]["name"],winGuildId,oldGuildId)
 				if(winGuildId && atkWin && winGuildId != oldGuildId){
 					self.addGuildGift(winGuildId,"【"+guild_city[cityId]["name"]+"】成功占领",guild_city[cityId]["gift"],10,oneDayTime)
 					self.delAreaObj(main_name+":holdCitys:"+oldGuildId,cityId)
