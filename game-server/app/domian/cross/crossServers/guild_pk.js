@@ -32,24 +32,16 @@ module.exports = function() {
 			})
 		}
 	}
-	this.guildPKFirstUpdate = function() {
-		var day = (new Date()).getDay()
- 		if(day == 1){
-			self.redisDao.db.hgetall(main_name+":apply",function(err,list) {
-				for(var guildId in list){
-					self.redisDao.db.del(main_name+":"+guildId)
-				}
-				self.redisDao.db.del(main_name+":apply")
-			})
-		}
-	}
 	//匹配对手
 	this.matchGuildPKRival = function() {
 		console.log("matchGuildPKRival!!")
 		self.redisDao.db.del(main_name+":parMap")
 		self.redisDao.db.del(main_name+":table")
+		self.redisDao.db.del(main_name+":applyHistory")
 		self.redisDao.db.hgetall(main_name+":apply",function(err,list) {
 			console.log("宗族PK获取报名列表",list)
+			self.redisDao.db.del(main_name+":apply")
+			self.redisDao.db.hmset(main_name+":applyHistory",list)
 			if(list){
 				var arr = []
 				for(var guildId in list){
@@ -271,7 +263,7 @@ module.exports = function() {
 					atkGuildLv = Number(data) || 1
 					self.redisDao.db.hget("guild:guildInfo:"+guildId2,"lv",function(err,data) {
 						defGuildLv = Number(data) || 1
-						self.redisDao.db.hmget(main_name+":apply",[guildId1,guildId2],function(err,list) {
+						self.redisDao.db.hmget(main_name+":applyHistory",[guildId1,guildId2],function(err,list) {
 							atkGuildInfo = list[0]
 							defGuildInfo = list[1]
 							next()
