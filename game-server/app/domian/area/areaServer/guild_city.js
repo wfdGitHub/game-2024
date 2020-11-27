@@ -414,6 +414,7 @@ module.exports = function() {
 	}
 	//城池战斗
 	this.guildCityBeginFight = function() {
+		console.log("城池开始战斗")
 		var curDayStr = Date.now()//(new Date()).toDateString()
 		self.getAreaObj(main_name,"dayStr",function(data) {
 			if(data != curDayStr){
@@ -697,7 +698,7 @@ module.exports = function() {
 			function(next) {
 				// console.log("12000")
 				//占领城池
-				console.log(guild_city[cityId]["name"],winGuildId,oldGuildId)
+				// console.log(guild_city[cityId]["name"],winGuildId,oldGuildId)
 				if(winGuildId && atkWin && winGuildId != oldGuildId){
 					self.addGuildGift(winGuildId,"【"+guild_city[cityId]["name"]+"】占领",10,guild_city[cityId]["gift"],oneDayTime)
 					self.delAreaObj(main_name+":holdCitys:"+oldGuildId,cityId)
