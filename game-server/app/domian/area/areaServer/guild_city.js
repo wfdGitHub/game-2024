@@ -10,7 +10,6 @@ for(var i in guild_city){
 }
 //刷新时间
 var fightTime = {"2":1,"4":1,"6":1}
-var refreshTime = {"3":1,"5":1,"0":1}
 module.exports = function() {
 	var self = this
 	//每日刷新
@@ -28,12 +27,8 @@ module.exports = function() {
 		}
 	}
 	//每日首次刷新
-	this.guildCityFirstUpdate = function() {
-		var day = (new Date()).getDay()
-		if(refreshTime[day]){
-			self.delAreaObjAll(main_name+":apply")
-		}
-	}
+	// this.guildCityFirstUpdate = function() {
+	// }
 	//获取攻城战数据
 	this.getGuildCityData = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
@@ -426,6 +421,7 @@ module.exports = function() {
 				for(var cityId in guild_city){
 					self.guildOneCityFight(cityId)
 				}
+				self.delAreaObjAll(main_name+":apply")
 			}
 		})
 	}
