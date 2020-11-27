@@ -19,7 +19,7 @@
     <script type="text/javascript">
       var pomelo = window.pomelo;
       var host = "127.0.0.1";
-      // host = "192.168.3.200"
+      host = "192.168.3.200"
       // host = "47.107.48.79"
       var queryEntry = function(callback) {
         var route = 'gate.gateHandler.queryClientEntry';
@@ -185,6 +185,12 @@
       //撤回队伍
       var cancelGuildCityTeam = function(teamId) {
         pomelo.request("area.guildHandler.cancelGuildCityTeam", {teamId:teamId}, function(data) {
+            console.log(data);
+        });
+      }
+      //攻城
+      var guildCityBeginFight = function() {
+        pomelo.request("area.guildHandler.guildCityBeginFight", {}, function(data) {
             console.log(data);
         });
       }
@@ -2518,7 +2524,8 @@
       <input id="test" type="button" value="队伍列表" onclick="getGuildTeam()"/>
       <input id="test" type="button" value="派遣队伍" onclick="sendGuildCityTeam(1,0)"/>
       <input id="test" type="button" value="取消队伍" onclick="cancelGuildCityTeam(0)"/>
-      <input id="test" type="button" value="开始攻城" onclick="guildOneCityFight(1)"/>
+      <input id="test" type="button" value="开始攻城" onclick="guildCityBeginFight(1)"/>
+      <input id="test" type="button" value="单城攻城" onclick="guildOneCityFight(1)"/>
       <input id="test" type="button" value="攻城战数据" onclick="getGuildCityData()"/>
       <input id="test" type="button" value="城池数据" onclick="getGuildCityRecord(1)"/>
       <input id="test" type="button" value="战斗数据" onclick="getGuildCityFight(1,0)"/>

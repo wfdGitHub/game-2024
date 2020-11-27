@@ -339,6 +339,13 @@ guildHandler.prototype.cancelGuildCityTeam = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//城池对决
+guildHandler.prototype.guildCityBeginFight = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].guildCityBeginFight()
+  next(null,{flag:true})
+}
 //单城池对决
 guildHandler.prototype.guildOneCityFight = function(msg, session, next) {
   var uid = session.uid
