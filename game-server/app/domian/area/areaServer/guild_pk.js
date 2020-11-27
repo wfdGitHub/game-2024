@@ -29,18 +29,20 @@ module.exports = function() {
 					var atkUids = []
 					for(var key in data){
 					    var strList = key.split("_")
-					    var info = {
+					    var userInfo = {
 					    	uid : Number(strList[0]),
 					    	teamId : Number(strList[1]),
 					    	path : data[key]
 					    }
-					    atkUids.push(info.uid)
-					    atkList.push(info)
+					    atkUids.push(userInfo.uid)
+					    atkList.push(userInfo)
 					}
 					self.getPlayerInfoByUids(atkUids,function(data) {
 						for(var i = 0;i < atkList.length;i++){
 							atkList[i]["info"] = data[i]
 						}
+						info.atkUids = atkUids
+						info.atkList = atkList
 						next()
 					})
 				})
