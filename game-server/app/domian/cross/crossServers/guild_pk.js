@@ -385,9 +385,11 @@ module.exports = function() {
 						self.sendMailByUid(uid,"宗族会武获胜奖","恭喜您的宗族在本次宗族会武活动中大获全胜!",guild_pk[atkGuildLv]["win"])
 						self.sendMailByUid(uid,"宗族会武参与奖","您参与本次宗族会武活动获得了参与奖励。",guild_pk[atkGuildLv]["play"])
 					}
-					for(var uid in defMap){
-						self.sendMailByUid(uid,"宗族会武惜败","您的宗族在本次会武中惜败于对手。",guild_pk[defGuildLv]["lose"])
-						self.sendMailByUid(uid,"宗族会武参与奖","您参与本次宗族会武活动获得了参与奖励。",guild_pk[defGuildLv]["play"])
+					if(!npc){
+						for(var uid in defMap){
+							self.sendMailByUid(uid,"宗族会武惜败","您的宗族在本次会武中惜败于对手。",guild_pk[defGuildLv]["lose"])
+							self.sendMailByUid(uid,"宗族会武参与奖","您参与本次宗族会武活动获得了参与奖励。",guild_pk[defGuildLv]["play"])
+						}
 					}
 				}else{
 					//守方赢
@@ -395,9 +397,11 @@ module.exports = function() {
 						self.sendMailByUid(uid,"宗族会武惜败","您的宗族在本次会武中惜败于对手。",guild_pk[atkGuildLv]["lose"])
 						self.sendMailByUid(uid,"宗族会武参与奖","您参与本次宗族会武活动获得了参与奖励。",guild_pk[atkGuildLv]["play"])
 					}
-					for(var uid in defMap){
-						self.sendMailByUid(uid,"宗族会武获胜奖","恭喜您的宗族在本次宗族会武活动中大获全胜!",guild_pk[defGuildLv]["win"])
-						self.sendMailByUid(uid,"宗族会武参与奖","您参与本次宗族会武活动获得了参与奖励。",guild_pk[defGuildLv]["play"])
+					if(!npc){
+						for(var uid in defMap){
+							self.sendMailByUid(uid,"宗族会武获胜奖","恭喜您的宗族在本次宗族会武活动中大获全胜!",guild_pk[defGuildLv]["win"])
+							self.sendMailByUid(uid,"宗族会武参与奖","您参与本次宗族会武活动获得了参与奖励。",guild_pk[defGuildLv]["play"])
+						}
 					}
 				}
 				self.redisDao.db.hset(main_name+":history",guildId1,tableIndex)
