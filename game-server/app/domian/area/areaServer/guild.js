@@ -295,7 +295,7 @@ module.exports = function() {
 	this.dissolveGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是宗族会长")
+			cb(false,"不是宗族族长")
 			return
 		}
 		for(var targetUid in contributions[guildId]){
@@ -319,16 +319,16 @@ module.exports = function() {
 		self.releaseGuildCity(guildId)
 		cb(true)
 	}
-	//设置成副会长
+	//设置成副族长
 	this.setGuildDeputy = function(uid,targetUid,cb) {
 		var guildId = self.players[uid]["gid"]
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是宗族会长")
+			cb(false,"不是宗族族长")
 			return
 		}
 		if(guildList[guildId]["deputy"]){
-			cb(false,"宗族已有副会长")
+			cb(false,"宗族已有副族长")
 			return
 		}
 		if(contributions[guildId][targetUid] == undefined){
@@ -347,11 +347,11 @@ module.exports = function() {
 		var guildId = self.players[uid]["gid"]
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是宗族会长")
+			cb(false,"不是宗族族长")
 			return
 		}
 		if(guildList[guildId]["deputy"] != targetUid){
-			cb(false,"目标不是副会长")
+			cb(false,"目标不是副族长")
 			return
 		}
 		if(contributions[guildId][targetUid] == undefined){
@@ -362,12 +362,12 @@ module.exports = function() {
 		self.setGuildInfo(guildId,"deputy",0)
 		cb(true)
 	}
-	//设置成会长
+	//设置成族长
 	this.setGuildLead = function(uid,targetUid,cb) {
 		var guildId = self.players[uid]["gid"]
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是宗族会长")
+			cb(false,"不是宗族族长")
 			return
 		}
 		if(guildList[guildId]["deputy"] == targetUid || guildList[guildId]["lead"] == targetUid){
@@ -531,7 +531,7 @@ module.exports = function() {
 			return
 		}
 		if(guildList[guildId]["lead"] == uid){
-			cb(false,"会长不能退出宗族")
+			cb(false,"族长不能退出宗族")
 			return
 		}
 		self.leaveGuild(guildId,uid,cb)
@@ -539,6 +539,7 @@ module.exports = function() {
 	//玩家加入
 	this.joinGuild = function(uid,guildId,cb) {
 		var lv = guildList[guildId]["lv"]
+		var gname = guildList[guildId]["name"]
 		if(guildList[guildId]["num"] >= guild_lv[lv]["member"]){
 			cb(false,"宗族已满员")
 			return
@@ -550,12 +551,13 @@ module.exports = function() {
 				return
 			}
 			self.chageLordData(uid,"gid",guildId)
+			self.chageLordData(uid,"gname",gname)
 			self.incrbyGuildInfo(guildId,"num",1)
 			contributions[guildId][uid] = 0
 			self.redisDao.db.hset("guild:contributions:"+guildId,uid,0)
-			self.sendMail(uid,"加入宗族","您已成功加入【"+guildList[guildId]["name"]+"】")
+			self.sendMail(uid,"加入宗族","您已成功加入【"+gname+"】")
 			self.addGuildLog(guildId,{type:"join",uid:uid,name:applyList[guildId][uid]["name"]})
-			self.sendToGuild(guildId,{type:"joinGuild",guildId:guildId,userName:applyList[guildId][uid]["name"],uid:uid,name:guildList[guildId]["name"]})
+			self.sendToGuild(guildId,{type:"joinGuild",guildId:guildId,userName:applyList[guildId][uid]["name"],uid:uid,name:gname})
 			for(var i in applyMap[uid]){
 				delete applyList[i][uid]
 			}
