@@ -446,7 +446,7 @@ module.exports = function() {
 		async.waterfall([
 			function(next) {
 				//清除初始数据
-				console.log("111")
+				// console.log("111")
 				self.redisDao.db.del("area:area"+self.areaId+":"+main_name+":baseInfo:"+cityId)
 				self.redisDao.db.del("area:area"+self.areaId+":"+main_name+":simpleRecord:"+cityId)
 				self.redisDao.db.del("area:area"+self.areaId+":"+main_name+":fightRecordList:"+cityId)
@@ -455,10 +455,10 @@ module.exports = function() {
 				next()
 			},
 			function(next) {
-				console.log("222")
+				// console.log("222")
 				//获取防守方
 				self.getAreaObj(main_name+":cityLord",cityId,function(data) {
-					console.log("获取原城主 ",data)
+					// console.log("获取原城主 ",data)
 					if(data){
 						oldGuildId = data
 						guildNames[oldGuildId] = self.getGuildName(oldGuildId)
@@ -467,7 +467,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				console.log("333")
+				// console.log("333")
 				//获取城池队伍
 				self.getAreaObjAll(main_name+":city:"+cityId,function(data) {
 					for(var key in data){
@@ -498,7 +498,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				console.log("444")
+				// console.log("444")
 				//获取攻方玩家信息
 				self.getPlayerInfoByUids(atkUids,function(data) {
 					for(var i = 0;i < atkList.length;i++){
@@ -508,7 +508,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				console.log("555")
+				// console.log("555")
 				//获取守方玩家信息
 				self.getPlayerInfoByUids(defUids,function(data) {
 					for(var i = 0;i < defList.length;i++){
@@ -518,7 +518,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				console.log("666")
+				// console.log("666")
 				//获取攻方队伍阵容
 				if(atkList.length){
 					var multiList = []
@@ -536,7 +536,7 @@ module.exports = function() {
 				}
 			},
 			function(next) {
-				console.log("777")
+				// console.log("777")
 				//获取守方队伍阵容
 				if(oldGuildId){
 					if(defList.length){
@@ -566,7 +566,7 @@ module.exports = function() {
 				}
 			},
 			function(next) {
-				console.log("888")
+				// console.log("888")
 				//开始战斗
 				var atkSurplus = [1,1,1,1,1,1]
 				var defSurplus = [1,1,1,1,1,1]
@@ -575,11 +575,11 @@ module.exports = function() {
 			    	if(!guildDamageRank[guildId])
 			    		guildDamageRank[guildId] = 0
 				}
-				console.log("开始战斗",atkNum,defNum)
-				console.log("攻方阵容",atkTeams)
-				console.log("守方阵容",defTeams)
+				// console.log("开始战斗",atkNum,defNum)
+				// console.log("攻方阵容",atkTeams)
+				// console.log("守方阵容",defTeams)
 				while(atkTeams[atkNum] && defTeams[defNum]){
-					console.log("atkNum/defNum",atkNum,defNum,atkWin)
+					// console.log("atkNum/defNum",atkNum,defNum,atkWin)
 					var atkTeam = atkTeams[atkNum]
 					var defTeam = defTeams[defNum]
 					for(var i = 0;i < 6;i++){
@@ -593,7 +593,7 @@ module.exports = function() {
 					record.atkIndex = atkNum
 					record.defIndex = defNum
 					record.winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-					console.log(record.winFlag?"攻方赢":"守方赢")
+					// console.log(record.winFlag?"攻方赢":"守方赢")
 					var overInfo = self.fightContorl.getOverInfo()
 					var guildId = atkList[atkNum]["guildId"]
 			    	var atkDamage = 0
@@ -642,7 +642,7 @@ module.exports = function() {
 						break
 					}
 				}
-				console.log("atkWin",atkWin)
+				// console.log("atkWin",atkWin)
 				if(atkWin){
 					for(var guildId in guildDamageRank){
 						if(!winGuildId || guildDamageRank[guildId] > guildDamageRank[winGuildId]){
@@ -653,7 +653,7 @@ module.exports = function() {
 				next()
 			},
 			function(next) {
-				console.log("999")
+				// console.log("999")
 				//记录数据
 				var info = {
 					atkList : atkList,
@@ -675,7 +675,7 @@ module.exports = function() {
 				next()
 			},
 			function(next) {
-				console.log("10000")
+				// console.log("10000")
 				var uidMap = {}
 				//发放奖励
 				for(var i = 0;i < atkList.length;i++){
@@ -684,7 +684,8 @@ module.exports = function() {
 					uidMap[atkList[i]["uid"]] = 1
 				}
 				//排名奖励
-				self.zrange(main_name,-3,-1,function(list) {
+				self.zrange(main_name+":userDamageRank:"+cityId,-3,-1,function(list) {
+					console.log("排名奖励",list)
 					var rank = 0
 					for(var i = list.length - 1;i >= 0;i--){
 						rank++
@@ -694,9 +695,9 @@ module.exports = function() {
 				next()
 			},
 			function(next) {
-				console.log("12000")
+				// console.log("12000")
 				//占领城池
-				console.log("winGuildId",winGuildId,oldGuildId)
+				// console.log("winGuildId",winGuildId,oldGuildId)
 				if(winGuildId && atkWin && winGuildId != oldGuildId){
 					self.addGuildGift(winGuildId,"【"+guild_city[cityId]["name"]+"】成功占领",guild_city[cityId]["gift"],10,oneDayTime)
 					self.delAreaObj(main_name+":holdCitys:"+oldGuildId,cityId)
