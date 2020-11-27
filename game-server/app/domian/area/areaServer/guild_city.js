@@ -414,7 +414,7 @@ module.exports = function() {
 	}
 	//城池战斗
 	this.guildCityBeginFight = function() {
-		var curDayStr = (new Date()).toDateString()
+		var curDayStr = Date.now()//(new Date()).toDateString()
 		self.getAreaObj(main_name,"dayStr",function(data) {
 			if(data != curDayStr){
 				self.setAreaObj(main_name,"dayStr",curDayStr)
