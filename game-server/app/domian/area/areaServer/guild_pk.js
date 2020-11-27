@@ -162,6 +162,7 @@ module.exports = function() {
 				cb(false,"已报名")
 			}else{
 				self.getPlayerInfoByUids([guildInfo.lead],function(userInfos) {
+					console.log("apply",userInfos,guildInfo.lead)
 					self.redisDao.db.hset(main_name+":apply",guildId,JSON.stringify(userInfos[0]))
 					cb(true)
 				})

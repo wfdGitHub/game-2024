@@ -68,7 +68,7 @@ module.exports = function() {
 							map[arr[curNum+1]] = tableIndex
 							table[tableIndex] = JSON.stringify([arr[curNum],arr[curNum+1]])
 						}else{
-							var rand = (curNum+Math.floor(Math.random() * curNum - 1) + 1) % arr.length
+							var rand = (curNum + Math.ceil(Math.random() * (arr.length-1))) % arr.length
 							console.log("arr",arr,rand,arr[rand])
 							map[arr[curNum]] = tableIndex
 							table[tableIndex] = JSON.stringify([arr[curNum],arr[rand]])
