@@ -699,7 +699,7 @@ module.exports = function() {
 				//占领城池
 				console.log(guild_city[cityId]["name"],winGuildId,oldGuildId)
 				if(winGuildId && atkWin && winGuildId != oldGuildId){
-					self.addGuildGift(winGuildId,"【"+guild_city[cityId]["name"]+"】成功占领",guild_city[cityId]["gift"],10,oneDayTime)
+					self.addGuildGift(winGuildId,"【"+guild_city[cityId]["name"]+"】占领",10,guild_city[cityId]["gift"],oneDayTime)
 					self.delAreaObj(main_name+":holdCitys:"+oldGuildId,cityId)
 					self.setAreaObj(main_name+":holdCitys:"+winGuildId,cityId,Date.now())
 					self.setAreaObj(main_name+":cityLord",cityId,winGuildId)
