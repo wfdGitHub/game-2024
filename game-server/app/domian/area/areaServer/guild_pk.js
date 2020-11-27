@@ -24,7 +24,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//获取公会出战队伍
-				self.redisDao.db.hgetall(main_name+":"+guildId,function(data) {
+				self.redisDao.db.hgetall(main_name+":"+guildId,function(err,data) {
 					var atkList = []
 					var atkUids = []
 					for(var key in data){
