@@ -8,18 +8,18 @@ var crossHandler = function(app) {
 crossHandler.prototype.test = function(msg, session, next) {
   next(null,{flag : true})
 }
-//公会匹配
-crossHandler.prototype.matchGuildPKRival = function(msg, session, next) {
-  var crossUid = session.get("crossUid")
-  this.crossManager.matchGuildPKRival()
-  next(null,{flag : true})
-}
-//公会战斗
-crossHandler.prototype.beginGuildPKTable = function(msg, session, next) {
-  var crossUid = session.get("crossUid")
-  this.crossManager.beginGuildPKTable()
-  next(null,{flag : true})
-}
+// //公会匹配
+// crossHandler.prototype.matchGuildPKRival = function(msg, session, next) {
+//   var crossUid = session.get("crossUid")
+//   this.crossManager.matchGuildPKRival()
+//   next(null,{flag : true})
+// }
+// //公会战斗
+// crossHandler.prototype.beginGuildPKTable = function(msg, session, next) {
+//   var crossUid = session.get("crossUid")
+//   this.crossManager.beginGuildPKTable()
+//   next(null,{flag : true})
+// }
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "crossHandler",

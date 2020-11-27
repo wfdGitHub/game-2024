@@ -340,20 +340,20 @@ guildHandler.prototype.cancelGuildCityTeam = function(msg, session, next) {
   })
 }
 //城池对决
-guildHandler.prototype.guildCityBeginFight = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].guildCityBeginFight()
-  next(null,{flag:true})
-}
+// guildHandler.prototype.guildCityBeginFight = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   this.areaManager.areaMap[areaId].guildCityBeginFight()
+//   next(null,{flag:true})
+// }
 //单城池对决
-guildHandler.prototype.guildOneCityFight = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var cityId = msg.cityId
-  this.areaManager.areaMap[areaId].guildOneCityFight(cityId)
-  next(null,{flag:true})
-}
+// guildHandler.prototype.guildOneCityFight = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var cityId = msg.cityId
+//   this.areaManager.areaMap[areaId].guildOneCityFight(cityId)
+//   next(null,{flag:true})
+// }
 
 //获取攻城战数据
 guildHandler.prototype.getGuildCityData = function(msg, session, next) {
