@@ -154,6 +154,7 @@ module.exports = function() {
 			function(next) {
 				//获取进攻方队伍
 				self.redisDao.db.hgetall(main_name+":"+guildId1,function(err,data) {
+					self.redisDao.db.del(main_name+":"+guildId1)
 					for(var key in data){
 					    var strList = key.split("_")
 					    var info = {
@@ -198,6 +199,7 @@ module.exports = function() {
 			function(next) {
 				//获取防守方队伍
 				self.redisDao.db.hgetall(main_name+":"+guildId2,function(err,data) {
+					self.redisDao.db.del(main_name+":"+guildId2)
 					for(var key in data){
 					    var strList = key.split("_")
 					    var info = {
