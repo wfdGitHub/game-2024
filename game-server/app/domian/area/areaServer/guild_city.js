@@ -177,7 +177,7 @@ module.exports = function() {
 					var guilds = []
 					var scores = []
 					for(var i = 0;i < list.length;i += 2){
-						guilds.push(self.getGuildInfo(list[i]))
+						guilds.push(list[i])
 						scores.push(list[i+1])
 					}
 					var guildRank = {}
