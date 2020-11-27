@@ -685,7 +685,7 @@ module.exports = function() {
 				}
 				//排名奖励
 				self.zrange(main_name+":userDamageRank:"+cityId,-3,-1,function(list) {
-					console.log("排名奖励",list)
+					// console.log("排名奖励",list)
 					var rank = 0
 					for(var i = list.length - 1;i >= 0;i--){
 						rank++

@@ -281,6 +281,8 @@ module.exports = function() {
 					var atkNum = 0
 					var defNum = 0
 					var atkWin = false
+					if(atkPathTeam[path].length)
+						atkWin = true
 					while(atkPathTeam[path][atkNum] && defPathTeam[path][defNum]){
 						console.log("atkNum",atkNum,"defNum",defNum)
 						var atkTeam = atkPathTeam[path][atkNum]["team"]
