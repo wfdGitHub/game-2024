@@ -41,8 +41,8 @@ module.exports = function() {
 		self.redisDao.db.hgetall(main_name+":apply",function(err,list) {
 			console.log("宗族PK获取报名列表",list)
 			self.redisDao.db.del(main_name+":apply")
-			self.redisDao.db.hmset(main_name+":applyHistory",list)
 			if(list){
+				self.redisDao.db.hmset(main_name+":applyHistory",list)
 				var arr = []
 				for(var guildId in list){
 					arr.push(guildId)

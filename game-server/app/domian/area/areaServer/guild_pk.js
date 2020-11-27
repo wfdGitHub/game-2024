@@ -67,7 +67,7 @@ module.exports = function() {
 						enemyGuildId = info.table[1]
 					else
 						enemyGuildId = info.table[0]
-					self.redisDao.db.hget(main_name+":apply",enemyGuildId,function(err,data) {
+					self.redisDao.db.hget(main_name+":applyHistory",enemyGuildId,function(err,data) {
 						info.enemyGuildInfo = data
 						next()
 					})
@@ -204,7 +204,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//检测是否已报名
-				self.redisDao.db.hget(main_name+":apply",guildId,function(err,data) {
+				self.redisDao.db.hget(main_name+":applyHistory",guildId,function(err,data) {
 					if(data)
 						next()
 					else
