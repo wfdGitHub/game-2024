@@ -98,6 +98,14 @@ module.exports = function() {
 				})
 			},
 			function(next) {
+				//防守宗族
+				self.getAreaObj(main_name+":cityLord",cityId,function(data) {
+					if(data)
+						info.guildInfo = self.getGuildInfo(data)
+					next()
+				})
+			},
+			function(next) {
 				//简易战报
 				self.redisDao.db.lrange("area:area"+self.areaId+":"+main_name+":simpleRecord:"+cityId,0,-1,function(err,data) {
 					info.record = data
