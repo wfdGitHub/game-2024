@@ -436,6 +436,13 @@ module.exports = function() {
 	this.getGuildInfo = function(guildId) {
 		return guildList[guildId]
 	}
+	//获取宗族名称
+	this.getGuildName = function(guildId) {
+		if(guildList[guildId])
+			return guildList[guildId]["name"]
+		else
+			return ""
+	}
 	//获取宗族列表
 	this.getGuildInfoList = function() {
 		return guildList

@@ -441,6 +441,7 @@ module.exports = function() {
 		var defUids = []
 		var atkNum = 0
 		var defNum = 0
+		var guildNames = {}
 		var guildDamageRank = {}
 		var userDamageRank = {}
 		var fightRecordList = []
@@ -457,6 +458,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//获取防守方
+				guildNames[oldGuildId] = self.getGuildName(oldGuildId)
 				self.getAreaObj(main_name+":cityLord",cityId,function(data) {
 					if(data)
 						oldGuildId = data
@@ -473,6 +475,8 @@ module.exports = function() {
 					    	uid : Number(strList[1]),
 					    	teamId : Number(strList[2])
 					    }
+					    if(info.guildId && !guildNames[info.guildId])
+					    	guildNames[info.guildId] = self.getGuildName(info.guildId)
 					    if(info.guildId == oldGuildId)
 					    	defList.push(info)
 					    else
@@ -642,6 +646,7 @@ module.exports = function() {
 					defList : defList,
 					oldGuildId : oldGuildId,
 					winGuildId : winGuildId,
+					guildNames : guildNames,
 					time : Date.now()
 				}
 				self.redisDao.db.set("area:area"+self.areaId+":"+main_name+":baseInfo:"+cityId,JSON.stringify(info))
