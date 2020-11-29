@@ -42,6 +42,7 @@ crossManager.prototype.dayUpdate = function(curDayStr) {
 //每日首次定时器
 crossManager.prototype.firstDayUpdate = function() {
 	console.log("跨服每日首次刷新")
+	self.guildPKFirstUpdate()
 }
 crossManager.prototype.update = function() {
 	var date = new Date()

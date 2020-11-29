@@ -32,6 +32,17 @@ module.exports = function() {
 			})
 		}
 	}
+	this.guildPKFirstUpdate = function() {
+		var day = (new Date()).getDay()
+ 		if(day == 1){
+			self.redisDao.db.hgetall(main_name+":apply",function(err,list) {
+				for(var guildId in list){
+					self.redisDao.db.del(main_name+":"+guildId)
+				}
+				self.redisDao.db.del(main_name+":apply")
+			})
+		}
+	}
 	//匹配对手
 	this.matchGuildPKRival = function() {
 		console.log("matchGuildPKRival!!")
@@ -151,7 +162,6 @@ module.exports = function() {
 			function(next) {
 				//获取进攻方队伍
 				self.redisDao.db.hgetall(main_name+":"+guildId1,function(err,data) {
-					self.redisDao.db.del(main_name+":"+guildId1)
 					for(var key in data){
 					    var strList = key.split("_")
 					    var info = {
@@ -196,7 +206,6 @@ module.exports = function() {
 			function(next) {
 				//获取防守方队伍
 				self.redisDao.db.hgetall(main_name+":"+guildId2,function(err,data) {
-					self.redisDao.db.del(main_name+":"+guildId2)
 					for(var key in data){
 					    var strList = key.split("_")
 					    var info = {
@@ -367,8 +376,6 @@ module.exports = function() {
 					time : Date.now()
 				}
 				self.redisDao.db.set(main_name+":baseInfo:"+tableIndex,JSON.stringify(baseInfo))
-				self.redisDao.db.hdel(main_name+":apply",guildId1)
-				self.redisDao.db.hdel(main_name+":apply",guildId2)
 				next()
 			},
 			function(next) {
