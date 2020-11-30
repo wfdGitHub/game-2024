@@ -218,8 +218,8 @@ module.exports = function() {
 		var list = []
 		var awardStr = ""
 		if(lv >= 40){
-			var pickaxe1 = Math.min(Math.floor(count / 2),8)
-			var pickaxe2 = Math.floor(pickaxe1 * (Math.random() * 0.3 + 0.2))
+			var pickaxe1 = Math.min(Math.floor(count / 3),8)
+			var pickaxe2 = Math.floor(pickaxe1 * (Math.random() * 0.3 + 0.1))
 			if(pickaxe1)
 				awardStr = "1000501:"+pickaxe1
 			if(pickaxe2){
