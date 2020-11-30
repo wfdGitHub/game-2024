@@ -63,20 +63,17 @@ module.exports = function() {
 	}
 	//宗族红包定时发放
 	this.guildGiveGift = function() {
-		console.log("宗族红包定时发放")
+		// console.log("宗族红包定时发放")
 		var curDayStr = (new Date()).toDateString()
 		var arr = []
 		for(var guildId in guildList){
 			arr.push(guildId)
 		}
-		console.log("arr",arr)
 		if(arr.length){
 			self.redisDao.db.hmget("guild:guildGiftState",arr,function(err,list) {
-				console.log("list",list)
 				for(var i = 0;i < list.length;i++){
 					var str = list[i]
 					var guildId = arr[i]
-					console.log("str",str,guildId)
 					if(!str || str !== curDayStr){
 						var lv = guildList[guildId]["lv"]
 						var ctb = guildList[guildId]["dayCtb"]
@@ -117,7 +114,6 @@ module.exports = function() {
 					data[i] = Number(data[i])
 				}
 				contributions[guildId] = data || {}
-				self.guildDayUpdate()
 			})
 		})
 	}
@@ -747,7 +743,7 @@ module.exports = function() {
 	}
 	//添加宗族红包
 	this.addGuildGift = function(guildId,title,maxNum,amount,time) {
-		console.log("addGuildGift",guildId,title,maxNum,amount,time)
+		// console.log("addGuildGift",guildId,title,maxNum,amount,time)
 		var giftInfo = {
 			id : uuid.v1(),
 			guildId : guildId,
