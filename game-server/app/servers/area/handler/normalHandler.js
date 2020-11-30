@@ -1,5 +1,6 @@
 var bearcat = require("bearcat")
 var async = require("async")
+var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var normalHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
@@ -206,7 +207,7 @@ normalHandler.prototype.changeName = function(msg, session, next) {
         if(flag){
           cb()
         }else{
-          self.areaManager.areaMap[areaId].consumeItems(uid,"202:500",1,"玩家改名",function(flag,err) {
+          self.areaManager.areaMap[areaId].consumeItems(uid,default_cfg["changeName"]["value"],1,"改名",function(flag,err) {
             if(flag){
               cb()
             }else{

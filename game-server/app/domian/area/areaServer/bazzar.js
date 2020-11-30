@@ -127,6 +127,8 @@ module.exports = function() {
 						let equipLv = checkpoints[lv]["equip"]
 						if(!equipLv)
 							equipLv = 1
+						if(equipLv > 10)
+							equipLv = 10
 						let part = Math.floor(Math.random() * 4) + 1
 						goods.itemId = equip_level[equipLv]["part_"+part]
 					break

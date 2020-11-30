@@ -5,6 +5,7 @@ var async = require("async")
 const standard_dl = require("../../../config/gameCfg/standard_dl.json")
 const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
+const stone_lv = require("../../../config/gameCfg/stone_lv.json")
 const default_cfg = require("../../../config/gameCfg/default_cfg.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
@@ -15,7 +16,17 @@ var util = require("../../../util/util.js")
 var standard_ce = {}
 var timers = {}
 for(var i in standard_ce_cfg){
-	standard_ce[i] = JSON.parse(standard_ce_cfg[i]["base"])
+	standard_ce[i] = {
+		"lv" : standard_ce_cfg[i]["lv"],
+		"ad" : standard_ce_cfg[i]["ad"],
+		"star" : standard_ce_cfg[i]["star"],
+		"artifact" : standard_ce_cfg[i]["artifact"]
+	}
+	for(var j = 1;j <= 4;j++){
+		standard_ce[i]["equip_"+j] = standard_ce_cfg[i]["equip"]
+		standard_ce[i]["s"+j] = stone_lv[standard_ce_cfg[i]["stone_lv"]]["s"+j]
+		standard_ce[i]["g"+j] = standard_ce_cfg[i]["guild"]
+	}
 }
 var area = function(otps,app) {
 	this.areaId = otps.areaId
