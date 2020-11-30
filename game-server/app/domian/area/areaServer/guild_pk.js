@@ -37,13 +37,24 @@ module.exports = function() {
 					    atkUids.push(userInfo.uid)
 					    atkList.push(userInfo)
 					}
-					self.getPlayerInfoByUids(atkUids,function(data) {
-						for(var i = 0;i < atkList.length;i++){
-							atkList[i]["info"] = data[i]
-						}
-						info.atkUids = atkUids
-						info.atkList = atkList
-						next()
+					var multiList = []
+					for(var i = 0;i < atkList.length;i++){
+						multiList.push(["hget","player:user:"+atkList[i]["uid"]+":guild_team",atkList[i]["teamId"]])
+					}
+					self.redisDao.multi(multiList,function(err,hIds) {
+						self.heroDao.getMultiHeroList(atkUids,hIds,function(flag,data) {
+							for(var i = 0;i < atkList.length;i++){
+								atkList[i]["team"] = data[i]
+							}
+							self.getPlayerInfoByUids(atkUids,function(userInfos) {
+								for(var i = 0;i < atkList.length;i++){
+									atkList[i]["info"] = userInfos[i]
+								}
+								info.atkUids = atkUids
+								info.atkList = atkList
+								next()
+							})
+						})
 					})
 				})
 			},
