@@ -210,6 +210,8 @@ module.exports = function() {
 		equipLv -= 2
 		if(equipLv <= 1)
 			equipLv = 1
+		if(equipLv > 7)
+			equipLv = 7
 		var count = Math.floor(time / 60)
 		if(time % 60 / 60 > Math.random())
 			count++
