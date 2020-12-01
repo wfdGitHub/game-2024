@@ -743,7 +743,7 @@ module.exports = function() {
 	}
 	//添加宗族红包
 	this.addGuildGift = function(guildId,title,maxNum,amount,time) {
-		// console.log("addGuildGift",guildId,title,maxNum,amount,time)
+		console.log("新红包","guildId:"+guildId,title,maxNum+"个",amount)
 		var giftInfo = {
 			id : uuid.v1(),
 			guildId : guildId,
