@@ -39,6 +39,7 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 payDao.prototype.finishGameOrder = function(otps,cb) {
 	var self = this
 	var sql = "select * from game_order where game_order = ?"
+	var daySyr = (new Date()).toLocaleDateString()
 	self.db.query(sql,[otps.game_order], function(err, res) {
 		if(err || !res){
 			console.error(err)
@@ -74,6 +75,9 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 					otps.messagetype = "finishGameOrder"
 					otps.goodsName = pay_cfg[data.pay_id]["name"]
 					self.cacheDao.saveCache(otps)
+					self.redisDao.db.hincrby("game:recharge_amount",otps.areaId,data.amount)
+					self.redisDao.db.hincrby("game:recharge_date",daySyr,data.amount)
+					self.redisDao.db.hincrby("game:recharge_date","all",data.amount)
 					cb(true,null,data)
 				}
 			}
@@ -84,6 +88,7 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 	var self = this
 	var sql = "select * from game_order where game_order = ?"
+	var daySyr = (new Date()).toLocaleDateString()
 	otps.game_order = otps.extras_params
 	self.db.query(sql,[otps.extras_params], function(err, res) {
 		if(err || !res){
@@ -120,6 +125,9 @@ payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 					otps.messagetype = "finishGameOrder"
 					otps.goodsName = pay_cfg[data.pay_id]["name"]
 					self.cacheDao.saveCache(otps)
+					self.redisDao.db.hincrby("game:recharge_amount",otps.areaId,data.amount)
+					self.redisDao.db.hincrby("game:recharge_date",daySyr,data.amount)
+					self.redisDao.db.hincrby("game:recharge_date","all",data.amount)
 					cb(true,null,data)
 				}
 			}
