@@ -81,6 +81,7 @@ serverManager.prototype.quick_order = function(data,cb) {
 				var areaId = self.areaDeploy.getFinalServer(data.areaId)
 				var serverId = self.areaDeploy.getServer(areaId)
 			    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
+			    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,data.uid,Math.floor(Number(info.amount) * 100),function(){})
 			}
 			if(err)
 				cb(false,err)
