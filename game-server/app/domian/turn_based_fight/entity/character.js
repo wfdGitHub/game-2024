@@ -43,6 +43,14 @@ var model = function(otps) {
 	this.allAnger = otps["allAnger"] || false   //技能消耗所有怒气
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
+	//=========觉醒效果=======//
+	this.banLessAnger = otps.banLessAnger || false  //免疫减怒
+	this.overDamageToMaxHp = otps.overDamageToMaxHp || 0 //溢出伤害对血量最高的敌方目标造成伤害比例
+	this.invincibleAnger = otps.invincibleAnger || 0 //无敌盾增加怒气
+	this.invincibleHeal = otps.invincibleHeal || 0 //无敌盾同阵营消失时恢复生命上限比例
+	this.unpoison_heal = otps.unpoison_heal || 0   //同阵营解除中毒与治疗加成比例
+	this.skill_must_hit = otps.skill_must_hit || false //技能必定命中
+	this.realm_extra_buff_minHp = otps.realm_extra_buff_minHp || 0 //额外对敌方血量最少目标释放BUFF概率（每个同阵营英雄加成）
 	//=========宝石效果=======//
 	this.kill_clear_buff = otps.kill_clear_buff || 0 //直接伤害击杀目标后，概率清除己方武将身上该目标死亡前释放的所有异常效果（灼烧、中毒、眩晕、沉默、麻痹）
 	this.control_amp = otps.control_amp || 0 //攻击正在被控制（眩晕、沉默、麻痹）的目标时，增加伤害比例
@@ -125,7 +133,7 @@ var model = function(otps) {
 	this.hit_rebound = otps.hit_rebound || 0		//受到直接伤害反弹比例
 	this.hit_rebound_add = otps.hit_rebound_add || 0 //反弹增加比例
 	this.hit_less_anger = otps.hit_less_anger || 0	//受到普通攻击后，降低攻击自己的武将怒气
-	this.hit_anger_s = otps.hit_anger_s || 0 		//收到普通攻击后，回复自己的怒气
+	this.hit_anger_s = otps.hit_anger_s || 0 		//受到普通攻击后，回复自己的怒气
 	if(otps.hit_buff){
 		this.hit_buff = JSON.parse(otps.hit_buff)	//受到伤害给攻击者附加BUFF
 	}
@@ -141,7 +149,10 @@ var model = function(otps) {
 	if(otps.normal_later_buff){
 		this.normal_later_buff = JSON.parse(otps.normal_later_buff)	//普攻后附加BUFF
 	}
-	this.add_d_s_crit = otps.add_d_s_crit					//追加普攻必定暴击
+	this.add_d_s_crit = otps.add_d_s_crit						//追加普攻必定暴击
+	this.add_default_amp = otps.add_default_amp || 0			//追加普攻伤害加成
+	this.add_default_maxHp = otps.add_default_maxHp || 0		//追加普攻生命上限伤害
+	this.add_skill_amp = otps.add_skill_amp || 0 				//追加技能伤害加成
 
 	this.action_anger = otps.action_anger || 0				//行动后回复自身怒气
 	if(otps.action_buff){
@@ -182,7 +193,7 @@ var model = function(otps) {
 	this.maxHP_damage = otps.maxHP_damage || 0					//技能附加最大生命值真实伤害
 	this.maxHP_rate = otps.maxHP_rate							//进入战斗时最大生命加成倍数
 	this.maxHP_loss = otps.maxHP_loss							//每回合生命流失率
-	this.damage_save = otps.damage_save							//释放技能时,上回合受到的所有伤害将100%额外追加真实伤害
+	this.damage_save = otps.damage_save							//释放技能时,上回合受到的所有伤害将100%额外追加伤害
 	this.damage_save_value = 0									//累积伤害值 
 	this.heal_unControl = otps.heal_unControl					//释放技能时，解除目标被控制状态
 	this.heal_addAnger = otps.heal_addAnger  					//释放技能时，增加目标怒气值
@@ -410,6 +421,7 @@ model.prototype.onHit = function(attacker,info,source) {
 		if(attacker && info.realValue > 0)
 			attacker.totalDamage += info.realValue
 		if(this.died){
+			info.overflow = info.value - info.realValue
 			info.kill = true
 			attacker.kill(this)
 		}
@@ -515,7 +527,10 @@ model.prototype.addAnger = function(value,hide) {
 	return value
 }
 //减少怒气
-model.prototype.lessAnger = function(value,hide) {
+model.prototype.lessAnger = function(value,hide,use) {
+	if(!use && this.banLessAnger){
+		return 0
+	}
 	value = Math.floor(value) || 1
 	var realValue = value
 	if((this.curAnger - value) < 0){

@@ -251,11 +251,11 @@ model.prototype.action = function() {
 				skill.angerAmp = (this.character.curAnger - 4) * 0.15
 				needValue = this.character.curAnger
 			}
-			if(this.character.skill_free && this.seeded.random("不消耗怒气判断") > this.character.skill_free){
+			if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free){
 				needValue = 0
 			}
 			if(needValue){
-				this.character.lessAnger(needValue,needValue>4?false:true)
+				this.character.lessAnger(needValue,needValue>4?false:true,true)
 			}
 		}else{
 			if(!this.character.disarm){

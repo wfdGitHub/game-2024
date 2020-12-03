@@ -140,6 +140,10 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 		case "team_horizontal_back":
 			//己方后排
 			return	this.getTeamHorizontalBack(character)
+		case "team_maxAtk_2":
+			//获取己方攻击最高的2个单位
+			return this.getTeamMaxAtk(character,2)
+		break
 		case "enemy_horizontal_front":
 			//敌方前排
 			return this.getEnemyHorizontalFront(character)
@@ -269,6 +273,20 @@ model.prototype.getTargetsNum = function(targetType) {
 		default :
 			return 1
 	}
+}
+//从给定目标中选择血量最多的目标
+model.prototype.getTargesMaxHP = function(targets) {
+	var index = -1
+	for(var i = 0;i < targets.length;i++){
+		if(!targets[i].died){
+			if(index == -1 || targets[i].attInfo.hp < targets[index].attInfo.hp)
+				index = i
+		}
+	}
+	if(index != -1)
+		return targets[index]
+	else
+		return false
 }
 //默认单个目标
 model.prototype.getTargetNormal = function(character) {
@@ -577,6 +595,23 @@ model.prototype.getFriendRandomMinHp = function(character,count) {
     for(var i = 0;i < list.length;i++)
     	for(var j = i + 1;j < list.length;j++)
     		if(list[j].attInfo.hp < list[i].attInfo.hp){
+    			var tmp = list[j]
+    			list[j] = list[i]
+    			list[i] = tmp
+    		}
+    return list.slice(0,count)
+}
+//己方攻击最高的n个单位
+model.prototype.getTeamMaxAtk = function(character,count) {
+    var list = []
+    character.team.forEach(function(target,index) {
+        if(model.check(target)){
+        	list.push(target)
+        }
+    })
+    for(var i = 0;i < list.length;i++)
+    	for(var j = i + 1;j < list.length;j++)
+    		if(list[j].attInfo.atk > list[i].attInfo.atk){
     			var tmp = list[j]
     			list[j] = list[i]
     			list[i] = tmp

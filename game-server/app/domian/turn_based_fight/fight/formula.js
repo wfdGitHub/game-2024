@@ -2,7 +2,7 @@ var formula = function(seeded) {
 	this.seeded = seeded
 }
 //伤害计算
-formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
+formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,chase) {
 	var info = {type : "damage",value : 0}
 	var tmpAmplify = 0
 	var tmpCrit = 0
@@ -36,13 +36,17 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
 		tmpAmplify += attacker.control_amp
 	}
 	//命中判断
-	var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
-	if(this.seeded.random("闪避判断") > hitRate){
-		info.miss = true
-		return info
+	if(!(skill.isAnger && attacker.skill_must_hit)){
+		var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
+		if(this.seeded.random("闪避判断") > hitRate){
+			info.miss = true
+			return info
+		}
 	}
 	//暴击判断
 	if(!skill.isAnger && attacker.normal_crit){
+		info.crit = true
+	}else if(must_crit){
 		info.crit = true
 	}else{
 		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit
@@ -78,11 +82,20 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp) {
 	if(info.crit){
 		info.value = Math.round(info.value * (1.5 + attacker.getTotalAtt("slay") - target.getTotalAtt("slayDef")))
 	}
-	if(skill.isAnger){
-		if(attacker.maxHP_damage || skill.maxHP_damage){
-			var tmpRate = attacker.maxHP_damage + skill.maxHP_damage
-			info.realDamage = Math.floor(target.attInfo.maxHP * tmpRate)
-			info.value += info.realDamage
+	if(chase){
+		if(!skill.isAnger){
+			if(attacker.add_default_maxHp){
+				info.realDamage = Math.floor(target.attInfo.maxHP * attacker.add_default_maxHp)
+				info.value += info.realDamage
+			}
+		}
+	}else{
+		if(skill.isAnger){
+			if(attacker.maxHP_damage || skill.maxHP_damage){
+				var tmpRate = attacker.maxHP_damage + skill.maxHP_damage
+				info.realDamage = Math.floor(target.attInfo.maxHP * tmpRate)
+				info.value += info.realDamage
+			}
 		}
 	}
 	if(target.reduction_over){
