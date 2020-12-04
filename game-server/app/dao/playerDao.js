@@ -1,6 +1,8 @@
 var bearcat = require("bearcat")
+const VIP = require("../../config/gameCfg/VIP.json")
 var playerDao = function() {}
 var beginHero = 304040
+var vipLv = 10
 //创建角色
 playerDao.prototype.createPlayer = function(otps,cb) {
 	var playerInfo = {
@@ -15,8 +17,8 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		rmb : 0,
 		rmb_day : 0,
 		week_rmb : 0,
-		vip : 0,
-		vip_exp: 0,
+		vip : vipLv,
+		vip_exp: VIP[vipLv]["rmb"],
 		exp : 0,
 		level : 1,
 		heroAmount : 100,
