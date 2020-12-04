@@ -22,14 +22,17 @@ cacheDao.prototype.init = function(cb) {
 	cb()
 }
 cacheDao.prototype.saveCache = function(info) {
+	return
 	info.time = Date.now()
 	this.db.rpush(publish_normal,JSON.stringify(info))
 }
 cacheDao.prototype.saveChat = function(info) {
+	return
 	info.time = Date.now()
 	this.db.rpush(publish_chat,JSON.stringify(info))
 }
 cacheDao.prototype.saveItemChange = function(info) {
+	return
 	info.time = Date.now()
 	this.db.rpush(publish_item,JSON.stringify(info))
 }
