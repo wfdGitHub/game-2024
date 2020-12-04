@@ -209,6 +209,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.mysteriousDayUpdate(uid)
 	this.festivalUserDayUpdate(uid)
 	this.guildRefresh(uid)
+	this.TopicRecruitRefresh(uid)
 }
 //玩家每周首次登陆
 area.prototype.weekFirstLogin = function(uid) {
@@ -216,7 +217,6 @@ area.prototype.weekFirstLogin = function(uid) {
 	this.chageLordData(uid,"week_rmb",0)
 	this.chageLordData(uid,"real_week",0)
 	this.activityWeekUpdate(uid)
-	this.TopicRecruitRefresh(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {

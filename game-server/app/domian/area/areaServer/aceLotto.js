@@ -26,8 +26,8 @@ module.exports = function() {
 	var local = {}
 	//每日更新
 	this.aceLottoDayUpdate = function() {
-		var week = util.getWeekNum()
-		curTopic = week % topicList.length
+		var day = (new Date()).getDate() - 1
+		curTopic = day % topicList.length
 	}
 	//获取元神抽奖数据
 	this.getaceLottoData = function(uid,cb) {

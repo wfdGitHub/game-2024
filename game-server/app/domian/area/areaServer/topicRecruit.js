@@ -17,8 +17,8 @@ module.exports = function() {
 	var local = {}
 	//每日更新
 	this.topicRecruitDayUpdate = function() {
-		var week = util.getWeekNum()
-		var curIndex = week % topicList.length
+		var day = (new Date()).getDate() - 1
+		var curIndex = day % topicList.length
 		curTopic = topicList[curIndex].id
 		curTopicHero = topicList[curIndex].heroId
 	}
