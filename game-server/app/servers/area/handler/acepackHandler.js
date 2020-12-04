@@ -2,6 +2,7 @@ var bearcat = require("bearcat")
 var async = require("async")
 var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var ace_pack_base = require("../../../../config/gameCfg/ace_pack_base.json")
+var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var limits = {}
 for(var i in ace_pack){
   if(ace_pack[i].limits){
@@ -150,7 +151,7 @@ acepackHandler.prototype.compoundAcepack = function(msg, session, next) {
     return
   }
   var needList = {}
-  var pc = "201:1000000"
+  var pc = default_cfg["hcyuanshen"]["value"]
   var num = 0
   for(var i in msg.list){
     if(!ace_pack[i] || ace_pack[i]["quality"] != 6 || !Number.isInteger(msg.list[i]) || msg.list[i] < 1){
