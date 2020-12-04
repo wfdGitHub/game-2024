@@ -86,6 +86,15 @@ model.useSkill = function(skill,chase) {
 					buffManager.createBuff(skill.character,buffTargets[i],{buffId : skill.buffId,buffArg : buffArg,duration : skill.duration})
 				}
 			}
+			if(skill.character.realm_extra_buff_minHp){
+				var target = this.locator.getTargets(skill.character,"enemy_minHP")[0]
+				if(target && !target.buffs[skill.buffId]){
+					buffRate = (buffRate * skill.character.realm_extra_buff_minHp * (skill.character.teamInfo["realms"][skill.character.realm] - 1))
+					if(buffRate && this.seeded.random("判断BUFF命中率") < buffRate){
+						buffManager.createBuff(skill.character,target,{buffId : skill.buffId,buffArg : buffArg,duration : skill.duration})
+					}
+				}
+			}
 		}
 		//判断自身生命值恢复
 		if(skill.self_heal){
