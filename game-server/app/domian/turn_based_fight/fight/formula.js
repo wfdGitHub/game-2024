@@ -75,12 +75,24 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		if(attacker.buffs["burn"])
 			mul *= 1 - target.burn_hit_reduction
 	}
+	if(attacker.first_amp && attacker.fighting.round == 1){
+		mul *= 1 + attacker.first_amp
+	}
+	if(target.buffs["dizzy"] && target.buffs["dizzy"].releaser && target.buffs["dizzy"].releaser.realm_dizzy_amp && target.buffs["dizzy"].releaser.realm == attacker.realm){
+		mul *= 1 + target.buffs["dizzy"].releaser.realm_dizzy_amp
+	}
+	if(target.realm_friend_reduction){
+		mul *= 1 - (target.realm_friend_reduction * (target.teamInfo["realms_survival"][target.realm] - 1))
+	}
 	info.value = Math.round((atk - def) * skill.mul * mul)
 	if(addAmp){
 		info.value = Math.round(info.value * (1+addAmp))
 	}
 	if(info.crit){
 		info.value = Math.round(info.value * (1.5 + attacker.getTotalAtt("slay") - target.getTotalAtt("slayDef")))
+		if(skill.isAnger && attacker.skill_crit_maxHp){
+			info.value +=  Math.floor(attacker.skill_crit_maxHp * target.attInfo.maxHP)
+		}
 	}
 	if(chase){
 		if(!skill.isAnger){

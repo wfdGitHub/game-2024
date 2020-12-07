@@ -51,6 +51,24 @@ var model = function(otps) {
 	this.unpoison_heal = otps.unpoison_heal || 0   //同阵营解除中毒与治疗加成比例
 	this.skill_must_hit = otps.skill_must_hit || false //技能必定命中
 	this.realm_extra_buff_minHp = otps.realm_extra_buff_minHp || 0 //额外对敌方血量最少目标释放BUFF概率（每个同阵营英雄加成）
+	this.skill_crit_maxHp = otps.skill_crit_maxHp || 0 	//技能暴击造成的额外生命上限伤害
+	this.realm_dizzy_amp = otps.realm_dizzy_amp || 0 //眩晕时同阵营英雄伤害加成
+	if(otps.realm_heal_buff_minHp)
+		this.realm_heal_buff_minHp = JSON.parse(otps.realm_heal_buff_minHp) || false //技能治疗目标中血量最少且同阵营英雄施加BUFF
+	this.reduction_heal_maxHp = otps.reduction_heal_maxHp || 0 //释放减伤盾消失后恢复目标生命值上限
+	this.skill_add_maxAtk_anger = otps.skill_add_maxAtk_anger || 0 //释放技能后恢复攻击最高队友怒气
+	this.realm_friend_reduction = otps.realm_friend_reduction || 0 //每个存活的友方同阵营英雄提供伤害减免
+	this.recover_maxHp = otps.recover_maxHp || 0	//持续治疗目标为同阵营英雄时,结算时额外回复其生命上限的血量
+	this.invincibleSuper_again = otps.invincibleSuper_again //超级无敌消失时重复释放概率
+	this.burn_hit_anger = otps.burn_hit_anger || 0 //被灼烧敌人攻击时回复怒气
+	this.extraAtion = otps.extraAtion || false //释放技能后，怒气最少的其他同族英雄额外行动一回合。
+	this.dizzy_less_anger = otps.dizzy_less_anger || 0 //释放技能附加的眩晕结束时，被眩晕的目标降低怒气
+	this.dizzy_hit_anger = otps.dizzy_hit_anger || 0 //攻击受到眩晕效果的目标时，额外降低目标怒气。
+	this.skill_amp_or_lessAnger = otps.skill_amp_or_lessAnger || 0 //释放技能时，如果目标怒气不足4点，技能伤害额外增加，如果目标怒气大于4点，额外降低目标1点怒气。
+	this.heal_maxHp = otps.heal_maxHp || 0 //治疗时额外恢复目标英雄生命值百分比
+	this.skill_add_realm3_anger = otps.skill_add_realm3_anger || 0 //释放技能后恢复同阵营怒气最少的三个英雄怒气值
+	this.normal_atk_turn_hp = otps.normal_atk_turn_hp || 0 //受到普通攻击转化血量
+	this.skill_atk_turn_hp = otps.skill_atk_turn_hp || 0 //受到技能攻击转化血量
 	//=========宝石效果=======//
 	this.kill_clear_buff = otps.kill_clear_buff || 0 //直接伤害击杀目标后，概率清除己方武将身上该目标死亡前释放的所有异常效果（灼烧、中毒、眩晕、沉默、麻痹）
 	this.control_amp = otps.control_amp || 0 //攻击正在被控制（眩晕、沉默、麻痹）的目标时，增加伤害比例
@@ -138,7 +156,10 @@ var model = function(otps) {
 		this.hit_buff = JSON.parse(otps.hit_buff)	//受到伤害给攻击者附加BUFF
 	}
 	if(otps.hit_normal_buff){
-		this.hit_normal_buff = JSON.parse(otps.hit_normal_buff)	//受到伤害给攻击者附加BUFF
+		this.hit_normal_buff = JSON.parse(otps.hit_normal_buff)	//受到普通攻击给攻击者附加BUFF
+	}
+	if(otps.hit_skill_buff){
+		this.hit_skill_buff = JSON.parse(otps.hit_skill_buff)	//受到技能攻击释放buff
 	}
 	this.normal_crit = otps.normal_crit || false 				//普攻必定暴击(含治疗)	
 	this.normal_heal_amp = otps.normal_heal_amp || 0			//普攻治疗量加成
@@ -165,7 +186,7 @@ var model = function(otps) {
 	this.enemy_died_amp = otps.enemy_died_amp || 0			//敌方每阵亡一人，伤害加成比例
 
 	this.single_less_anger = otps.single_less_anger || 0 	//攻击单体目标额外降低怒气
-
+	this.resurgence_self = otps.resurgence_self || 0 		//首次死亡后复活自身恢复血量百分比
 	this.resurgence_team = otps.resurgence_team || 0		//复活本方第1位阵亡的武将，并恢复其50%的生命，每场战斗只可触发1次
 	this.burn_hit_reduction = otps.burn_hit_reduction || 0	//被灼烧状态敌人攻击伤害减免
 
@@ -181,13 +202,15 @@ var model = function(otps) {
 	this.poison_add_forbidden = otps.poison_add_forbidden 		//中毒buff附加禁疗
 	this.banAnger_add_forbidden = otps.banAnger_add_forbidden 	//禁怒buff附加禁疗
 
-	this.first_nocontrol = otps.first_nocontrol //首回合免疫眩晕、沉默、麻痹效果
+	this.first_nocontrol = otps.first_nocontrol //首回合免控
 	this.first_crit = otps.first_crit			//首回合必定暴击
+	this.first_amp = otps.first_amp || 0		//首回合伤害加成
 	if(this.first_crit)
 		this.must_crit = true
 	if(otps.first_buff)
 		this.first_buff = JSON.parse(otps.first_buff)		//首回合附加BUFF
 	this.died_use_skill = otps.died_use_skill				//死亡时释放一次技能
+	this.died_burn_buff_must = otps.died_burn_buff_must 	//死亡释放buff时必定命中
 	if(otps.died_later_buff)
 		this.died_later_buff = JSON.parse(otps.died_later_buff)	//直接伤害死亡时对击杀者释放buff
 	this.maxHP_damage = otps.maxHP_damage || 0					//技能附加最大生命值真实伤害
@@ -261,6 +284,10 @@ var model = function(otps) {
 	//=========技能=======//
 	if(otps.defaultSkill){
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
+		if(this.buffDuration)
+			this.defaultSkill.duration = this.buffDuration
+		if(this.buffDuration)
+			this.defaultSkill.duration = this.buffDuration
 	}
 	if(otps.angerSkill){
 		this.angerSkill = skillManager.createSkill(otps.angerSkill,this)		//怒气技能
@@ -442,7 +469,7 @@ model.prototype.onHPLoss = function() {
 	fightRecord.push(info)
 }
 //受到治疗
-model.prototype.onHeal = function(releaser,info,source) {
+model.prototype.onHeal = function(releaser,info) {
 	info.id = this.id
 	info.value = Math.floor(info.value) || 1
 	if(this.forbidden){
@@ -471,6 +498,8 @@ model.prototype.onDie = function() {
 	this.attInfo.hp = 0
 	this.died = true
 	this.fighting.diedList.push(this)
+	for(var i in this.buffs)
+		this.buffs[i].destroy()
 }
 //击杀目标
 model.prototype.kill = function(target) {
@@ -479,8 +508,9 @@ model.prototype.kill = function(target) {
 //复活
 model.prototype.resurgence = function(rate) {
 	this.attInfo.hp = Math.floor(rate * this.attInfo.maxHP) || 1
+	this.curAnger = 0
 	this.died = false
-	fightRecord.push({type : "resurgence",curValue : this.attInfo.hp,maxHP : this.attInfo.maxHP,id : this.id})
+	fightRecord.push({type : "resurgence",curValue : this.attInfo.hp,maxHP : this.attInfo.maxHP,id : this.id,curAnger : 0})
 }
 //恢复血量
 model.prototype.addHP = function(value) {

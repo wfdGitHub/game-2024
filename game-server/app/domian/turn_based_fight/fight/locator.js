@@ -112,9 +112,24 @@ model.prototype.getTargets = function(character,targetType) {
 			//获取友方生命值最少的5个单位
 			return this.getFriendRandomMinHp(character,5)
 		break
+		case "friend_minAnger_1":
+			//获取友方怒气最少的1个单位
+			return this.getFriendMinAnger(character,1)
+		break
+		case "friend_minAnger_2":
+			//获取友方怒气最少的2个单位
+			return this.getFriendMinAnger(character,2)
+		break
+		case "friend_minAnger_3":
+			//获取友方怒气最少的3个单位
+			return this.getFriendMinAnger(character,3)
+		break
 		case "team_min_index":
 			//己方阵容站位最靠前的单位
 			return this.getTeamMinIndex(character)
+		case "team_maxAtk_1":
+			//获取己方攻击最高的1个单位
+			return this.getTeamMaxAtk(character,1)
 		case "team_self":
 			//选择自己
 			return [character]
@@ -140,6 +155,9 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 		case "team_horizontal_back":
 			//己方后排
 			return	this.getTeamHorizontalBack(character)
+		case "team_maxAtk_1":
+			//获取己方攻击最高的1个单位
+			return this.getTeamMaxAtk(character,1)
 		case "team_maxAtk_2":
 			//获取己方攻击最高的2个单位
 			return this.getTeamMaxAtk(character,2)
@@ -176,6 +194,9 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 			//获取友方生命值最少的5个单位
 			return this.getFriendRandomMinHp(character,5)
 		break
+		case "realm_minHp_2":
+			//获取己方同阵营生命值最少的2个单位
+			return this.getTeamEealmMinHp(character,2)
 		case "enemy_all":
 			//敌方全体
 			return	this.getEnemyAll(character)
@@ -584,6 +605,23 @@ model.prototype.getTeamRandomMinHp = function(character,count) {
     		}
     return list.slice(0,count)
 }
+//己方同阵营生命最少的n个单位
+model.prototype.getTeamEealmMinHp = function(character,count) {
+    var list = []
+    character.team.forEach(function(target,index) {
+        if(target.realm == character.realm && model.check(target)){
+        	list.push(target)
+        }
+    })
+    for(var i = 0;i < list.length;i++)
+    	for(var j = i + 1;j < list.length;j++)
+    		if(list[j].attInfo.hp < list[i].attInfo.hp){
+    			var tmp = list[j]
+    			list[j] = list[i]
+    			list[i] = tmp
+    		}
+    return list.slice(0,count)
+}
 //友方(除自己)生命最少的n个单位
 model.prototype.getFriendRandomMinHp = function(character,count) {
     var list = []
@@ -595,6 +633,23 @@ model.prototype.getFriendRandomMinHp = function(character,count) {
     for(var i = 0;i < list.length;i++)
     	for(var j = i + 1;j < list.length;j++)
     		if(list[j].attInfo.hp < list[i].attInfo.hp){
+    			var tmp = list[j]
+    			list[j] = list[i]
+    			list[i] = tmp
+    		}
+    return list.slice(0,count)
+}
+//友方(除自己)怒气最少的N个单位
+model.prototype.getFriendMinAnger = function(character,count) {
+    var list = []
+    character.team.forEach(function(target,index) {
+        if(model.check(target) && target != character){
+        	list.push(target)
+        }
+    })
+    for(var i = 0;i < list.length;i++)
+    	for(var j = i + 1;j < list.length;j++)
+    		if(list[j].curAnger < list[i].curAnger){
     			var tmp = list[j]
     			list[j] = list[i]
     			list[i] = tmp

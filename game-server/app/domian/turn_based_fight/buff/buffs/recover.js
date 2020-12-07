@@ -9,12 +9,16 @@ var model = function(releaser,character,otps) {
 	buff.name = "恢复"
 	buff.value = Math.floor(buff.buffArg * releaser.getTotalAtt("atk"))
 	buff.refresh = function() {
-		let info = {type : "recoverHeal",value : buff.value ,id : buff.character.id}
-		info = buff.character.onHeal(buff.releaser,info,buff)
+		var info = {type : "recoverHeal",value : buff.value}
+		info = buff.character.onHeal(buff.releaser,info)
 		fightRecord.push(info)
 	}
 	buff.clear = function() {
-		// console.log(buff.character.id+"燃烧结束")
+		if(!buff.character.died && buff.releaser.recover_maxHp && buff.releaser.realm == buff.character.realm){
+			var recordInfo =  buff.character.onHeal(buff.releaser,{type : "heal",value : buff.character.getTotalAtt("maxHP") * buff.releaser.recover_maxHp})
+			recordInfo.type = "self_heal"
+			fightRecord.push(recordInfo)
+		}
 	}
 	return buff
 }
