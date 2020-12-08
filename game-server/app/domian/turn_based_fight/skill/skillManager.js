@@ -596,7 +596,7 @@ model.useHealSkill = function(skill,chase) {
 			}
 			value = Math.round(value * (skill.character.unpoison_heal + 1))
 		}
-		if(skill.character.heal_maxHp){
+		if(skill.isAnger && skill.character.heal_maxHp){
 			value += Math.round(skill.character.heal_maxHp * target.getTotalAtt("maxHP"))
 		}
 		let info = this.formula.calHeal(skill.character,target,value,skill)
