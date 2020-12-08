@@ -391,9 +391,8 @@ model.prototype.diedListCheck = function() {
 			skillManager.useSkill(this.diedList[i].angerSkill)
 		}
 		//复活判断
-		if(this.diedList[i].resurgence_self){
-			this.diedList[i].resurgence(this.diedList[i].resurgence_self)
-			this.diedList[i].resurgence_self = 0
+		if(this.diedList[i].resurgence_self && this.seeded.random("复活判断") < this.diedList[i].resurgence_self){
+			this.diedList[i].resurgence(1)
 		}else if(this.diedList[i].teamInfo.resurgence_team){
 			this.diedList[i].resurgence(this.diedList[i].teamInfo.resurgence_team)
 			delete this.diedList[i].teamInfo.resurgence_team
