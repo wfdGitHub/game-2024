@@ -110,35 +110,6 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		defTeam[i].calAttAdd(defTeamAdds)
 		defTeam[i].teamInfo = this.defTeamInfo
 	}
-	//初始buff
-	for(var i = 0;i < teamLength;i++){
-		if(!atkTeam[i].died){
-			if(atkTeam[i].first_buff){
-				var burnBuffInfo = atkTeam[i].first_buff
-				buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
-			}
-			if(atkTeam[i].before_buff_s){
-				var burnBuffInfo = atkTeam[i].before_buff_s
-				buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
-			}
-			if(atkTeam[i].first_nocontrol){
-				buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : "immune",duration : 1,"refreshType" : "roundOver"})
-			}
-		}
-		if(!defTeam[i].died){
-			if(defTeam[i].first_buff){
-				var burnBuffInfo = defTeam[i].first_buff
-				buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
-			}
-			if(defTeam[i].before_buff_s){
-				var burnBuffInfo = defTeam[i].before_buff_s
-				buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
-			}
-			if(defTeam[i].first_nocontrol){
-				buffManager.createBuff(defTeam[i],defTeam[i],{buffId : "immune",duration : 1,"refreshType" : "roundOver"})
-			}
-		}
-	}
 	//天书初始化
 	for(var i in this.atkBooks){
 		this.atkBooks[i].init(this.atkTeam,this.defTeam,this.locator,this.seeded)
@@ -157,6 +128,35 @@ model.prototype.fightBegin = function() {
 		info.defTeam.push(this.defTeam[i].getSimpleInfo())
 	}
 	fightRecord.push(info)
+	//初始buff
+	for(var i = 0;i < teamLength;i++){
+		if(!this.atkTeam[i].died){
+			if(this.atkTeam[i].first_buff){
+				var burnBuffInfo = this.atkTeam[i].first_buff
+				buffManager.createBuff(this.atkTeam[i],this.atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			}
+			if(this.atkTeam[i].before_buff_s){
+				var burnBuffInfo = this.atkTeam[i].before_buff_s
+				buffManager.createBuff(this.atkTeam[i],this.atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			}
+			if(this.atkTeam[i].first_nocontrol){
+				buffManager.createBuff(this.atkTeam[i],this.atkTeam[i],{buffId : "immune",duration : 1,"refreshType" : "roundOver"})
+			}
+		}
+		if(!this.defTeam[i].died){
+			if(this.defTeam[i].first_buff){
+				var burnBuffInfo = this.defTeam[i].first_buff
+				buffManager.createBuff(this.defTeam[i],this.defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			}
+			if(this.defTeam[i].before_buff_s){
+				var burnBuffInfo = this.defTeam[i].before_buff_s
+				buffManager.createBuff(this.defTeam[i],this.defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			}
+			if(this.defTeam[i].first_nocontrol){
+				buffManager.createBuff(this.defTeam[i],this.defTeam[i],{buffId : "immune",duration : 1,"refreshType" : "roundOver"})
+			}
+		}
+	}
 	for(var i = 0; i <= fightBegin.length;i++){
 		if(this.atkBooks[fightBegin[i]])
 			this.atkBooks[fightBegin[i]].before()
