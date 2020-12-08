@@ -46,7 +46,6 @@ var model = function(atkTeam,defTeam,atkBooks,defBooks,otps) {
 }
 //初始配置
 model.prototype.load = function(atkTeam,defTeam,otps) {
-	var info = {type : "fightBegin",atkTeam : [],defTeam : [],seededNum : this.seededNum,maxRound : this.maxRound}
 	var id = 0
 	var atkTeamAdds = Object.assign({},otps.atkTeamAdds)
 	var defTeamAdds = Object.assign({},otps.defTeamAdds)
@@ -108,14 +107,9 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	for(var i = 0;i < teamLength;i++){
 		atkTeam[i].calAttAdd(atkTeamAdds)
 		atkTeam[i].teamInfo = this.atkTeamInfo
-		atkTeam[i].begin()
-		info.atkTeam.push(atkTeam[i].getSimpleInfo())
 		defTeam[i].calAttAdd(defTeamAdds)
 		defTeam[i].teamInfo = this.defTeamInfo
-		defTeam[i].begin()
-		info.defTeam.push(defTeam[i].getSimpleInfo())
 	}
-	fightRecord.push(info)
 	//初始buff
 	for(var i = 0;i < teamLength;i++){
 		if(!atkTeam[i].died){
@@ -155,6 +149,14 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 }
 //战斗开始
 model.prototype.fightBegin = function() {
+	var info = {type : "fightBegin",atkTeam : [],defTeam : [],seededNum : this.seededNum,maxRound : this.maxRound}
+	for(var i = 0;i < teamLength;i++){
+		this.atkTeam[i].begin()
+		info.atkTeam.push(this.atkTeam[i].getSimpleInfo())
+		this.defTeam[i].begin()
+		info.defTeam.push(this.defTeam[i].getSimpleInfo())
+	}
+	fightRecord.push(info)
 	for(var i = 0; i <= fightBegin.length;i++){
 		if(this.atkBooks[fightBegin[i]])
 			this.atkBooks[fightBegin[i]].before()
