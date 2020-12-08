@@ -399,6 +399,7 @@ model.prototype.diedListCheck = function() {
 		}else{
 			this.diedList[i].teamInfo["realms_survival"][this.diedList[i]["realm"]]--
 		}
+		this.diedList[i].diedClear()
 	}
 	this.diedList = []
 }

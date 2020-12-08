@@ -16,7 +16,7 @@ var model = function(releaser,character,otps) {
 	buff.clear = function() {
 		// console.log(buff.buff.character.id+"眩晕结束")
 		if(!buff.character.died && buff.releaser.invincibleHeal && buff.releaser.realm == buff.character.realm){
-			var recordInfo =  buff.character.onHeal(buff.releaser,{type : "heal",value : buff.character.getTotalAtt("maxHP") * buff.releaser.invincibleHeal})
+			var recordInfo =  buff.character.onHeal(buff.releaser,{type : "heal",maxRate : buff.releaser.invincibleHeal})
 			recordInfo.type = "self_heal"
 			fightRecord.push(recordInfo)
 		}

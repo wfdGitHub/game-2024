@@ -116,7 +116,7 @@ model.useSkill = function(skill,chase) {
 	}
 	//判断自身生命值恢复
 	if(skill.self_heal && !skill.character.died){
-		var recordInfo =  skill.character.onHeal(skill.character,{type : "heal",value : skill.character.getTotalAtt("maxHP") * skill.self_heal},skill)
+		var recordInfo =  skill.character.onHeal(skill.character,{type : "heal",maxRate : skill.self_heal},skill)
 		recordInfo.type = "self_heal"
 		fightRecord.push(recordInfo)
 	}
@@ -372,7 +372,7 @@ model.useAttackSkill = function(skill,chase) {
 			skill.character.addAtt("crit",skill.character.kill_crit * kill_num)
 		if(skill.character.kill_heal){
 			let tmpRecord = {type : "other_heal",targets : []}
-			tmpRecord.targets.push(skill.character.onHeal(skill.character,{value : skill.character.getTotalAtt("maxHP") * skill.character.kill_heal * kill_num},skill))
+			tmpRecord.targets.push(skill.character.onHeal(skill.character,{maxRate : skill.character.kill_heal * kill_num}))
 			fightRecord.push(tmpRecord)
 		}
 		if(skill.character.kill_must_crit)
@@ -381,10 +381,8 @@ model.useAttackSkill = function(skill,chase) {
 			skill.character.addAnger(dead_anger,skill.skillId)
 		//直接伤害击杀灼烧目标后，回复自身生命值百分比
 		if(skill.character.kill_burn_heal && kill_burn_num){
-			let tmpRecord = {type : "other_heal",targets : []}
-			let value = Math.floor(skill.character.kill_burn_heal * skill.character.attInfo.maxHP)
-			let info = skill.character.onHeal(skill.character,{value : value},skill)
-			tmpRecord.targets.push(info)
+			var tmpRecord =  skill.character.onHeal(skill.character,{maxRate : skill.character.kill_burn_heal * kill_burn_num})
+			tmpRecord.type = "self_heal"
 			fightRecord.push(tmpRecord)
 		}
 		//直接伤害击杀目标后，概率清除己方武将身上该目标死亡前释放的所有异常效果（灼烧、中毒、眩晕、沉默、麻痹
@@ -596,10 +594,9 @@ model.useHealSkill = function(skill,chase) {
 			}
 			value = Math.round(value * (skill.character.unpoison_heal + 1))
 		}
-		if(skill.isAnger && skill.character.heal_maxHp){
-			value += Math.round(skill.character.heal_maxHp * target.getTotalAtt("maxHP"))
-		}
 		let info = this.formula.calHeal(skill.character,target,value,skill)
+		if(skill.isAnger && skill.character.heal_maxHp)
+			info.maxRate = skill.character.heal_maxHp
 		if(target.forbidden && skill.character.forbidden_shield){
 			callbacks.push(function(){buffManager.createBuff(skill.character,target,{buffId : "shield",buffArg : Math.floor(info.value * skill.character.forbidden_shield),duration : 1,number : true})})
 		}else{

@@ -410,6 +410,12 @@ model.prototype.clearReleaserBuff = function(releaser) {
 		if(this.buffs[i].debuff &&this.buffs[i].releaser == releaser)
 			this.buffs[i].destroy("clear")
 }
+//清除所有buff
+model.prototype.diedClear = function() {
+	this.curAnger = 0
+	for(var i in this.buffs)
+		this.buffs[i].destroy()
+}
 //受到伤害
 model.prototype.onHit = function(attacker,info,source) {
 	info.id = this.id
@@ -471,12 +477,15 @@ model.prototype.onHPLoss = function() {
 //受到治疗
 model.prototype.onHeal = function(releaser,info) {
 	info.id = this.id
-	info.value = Math.floor(info.value) || 1
+	info.value = Math.floor(info.value) || 0
+	info.maxRate = info.maxRate || 0
 	if(this.forbidden){
 		info.value = 0
 		info.realValue = 0
 	}else{
 		info.value = Math.floor(info.value * (1 + this.attInfo.healAdd / 10000))
+		if(info.maxRate)
+			info.value += Math.floor(this.attInfo.maxHP * info.maxRate)
 		info.realValue = this.addHP(info.value)
 	}
 	if(releaser && info.realValue > 0)
@@ -498,8 +507,6 @@ model.prototype.onDie = function() {
 	this.attInfo.hp = 0
 	this.died = true
 	this.fighting.diedList.push(this)
-	for(var i in this.buffs)
-		this.buffs[i].destroy()
 }
 //击杀目标
 model.prototype.kill = function(target) {
@@ -508,7 +515,6 @@ model.prototype.kill = function(target) {
 //复活
 model.prototype.resurgence = function(rate) {
 	this.attInfo.hp = Math.floor(rate * this.attInfo.maxHP) || 1
-	this.curAnger = 0
 	this.died = false
 	fightRecord.push({type : "resurgence",curValue : this.attInfo.hp,maxHP : this.attInfo.maxHP,id : this.id,curAnger : 0})
 }

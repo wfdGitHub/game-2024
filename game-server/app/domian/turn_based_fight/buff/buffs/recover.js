@@ -15,7 +15,7 @@ var model = function(releaser,character,otps) {
 	}
 	buff.clear = function() {
 		if(!buff.character.died && buff.releaser.recover_maxHp && buff.releaser.realm == buff.character.realm){
-			var recordInfo =  buff.character.onHeal(buff.releaser,{type : "heal",value : buff.character.getTotalAtt("maxHP") * buff.releaser.recover_maxHp})
+			var recordInfo =  buff.character.onHeal(buff.releaser,{type : "heal",maxRate : buff.releaser.recover_maxHp})
 			recordInfo.type = "self_heal"
 			fightRecord.push(recordInfo)
 		}

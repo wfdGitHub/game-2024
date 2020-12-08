@@ -10,7 +10,7 @@ var model = function(releaser,character,otps) {
 	// console.log("角色"+buff.character.id+"增加护盾BUFF")
 	buff.clear = function() {
 		if(!buff.character.died && buff.releaser.reduction_heal_maxHp){
-			var recordInfo =  buff.character.onHeal(buff.releaser,{type : "heal",value : buff.character.getTotalAtt("maxHP") * buff.releaser.reduction_heal_maxHp})
+			var recordInfo =  buff.character.onHeal(buff.releaser,{type : "heal",maxRate : buff.releaser.reduction_heal_maxHp})
 			recordInfo.type = "self_heal"
 			fightRecord.push(recordInfo)
 		}
