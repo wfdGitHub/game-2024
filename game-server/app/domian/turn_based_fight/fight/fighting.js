@@ -40,6 +40,7 @@ var model = function(atkTeam,defTeam,atkBooks,defBooks,otps) {
 	}]
 	this.teamIndex = 0				//当前行动阵容
 	this.character = false 			//当前行动角色
+	this.next_character = false		//插入行动角色
 	this.diedList = []				//死亡列表
 	this.load(atkTeam,defTeam,otps)
 }
@@ -49,10 +50,14 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	var id = 0
 	var atkTeamAdds = Object.assign({},otps.atkTeamAdds)
 	var defTeamAdds = Object.assign({},otps.defTeamAdds)
+	this.atkTeamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0}
+	this.defTeamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0}
 	for(var i = 0;i < teamLength;i++){
 		if(!atkTeam[i]){
 			atkTeam[i] = new character({})
 			atkTeam[i].isNaN = true
+		}else{
+			this.atkTeamInfo["realms"][atkTeam[i].realm]++
 		}
 		atkTeam[i].init(this)
 		if(atkTeam[i].resurgence_team)
@@ -76,6 +81,8 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		if(!defTeam[i]){
 			defTeam[i] = new character({})
 			defTeam[i].isNaN = true
+		}else{
+			this.defTeamInfo["realms"][defTeam[i].realm]++
 		}
 		defTeam[i].init(this)
 		if(defTeam[i].resurgence_team)
@@ -95,6 +102,8 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			}
 		}
 	}
+	this.atkTeamInfo["realms_survival"] = this.atkTeamInfo["realms"]
+	this.defTeamInfo["realms_survival"] = this.defTeamInfo["realms"]
 	//属性加成
 	for(var i = 0;i < teamLength;i++){
 		atkTeam[i].calAttAdd(atkTeamAdds)
@@ -109,21 +118,31 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	fightRecord.push(info)
 	//初始buff
 	for(var i = 0;i < teamLength;i++){
-		if(!atkTeam[i].died && atkTeam[i].first_buff){
-			var burnBuffInfo = atkTeam[i].first_buff
-			buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+		if(!atkTeam[i].died){
+			if(atkTeam[i].first_buff){
+				var burnBuffInfo = atkTeam[i].first_buff
+				buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			}
+			if(atkTeam[i].before_buff_s){
+				var burnBuffInfo = atkTeam[i].before_buff_s
+				buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			}
+			if(atkTeam[i].first_nocontrol){
+				buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : "immune",duration : 1,"refreshType" : "roundOver"})
+			}
 		}
-		if(!defTeam[i].died && defTeam[i].first_buff){
-			var burnBuffInfo = defTeam[i].first_buff
-			buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
-		}
-		if(!atkTeam[i].died && atkTeam[i].before_buff_s){
-			var burnBuffInfo = atkTeam[i].before_buff_s
-			buffManager.createBuff(atkTeam[i],atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
-		}
-		if(!defTeam[i].died && defTeam[i].before_buff_s){
-			var burnBuffInfo = defTeam[i].before_buff_s
-			buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+		if(!defTeam[i].died){
+			if(defTeam[i].first_buff){
+				var burnBuffInfo = defTeam[i].first_buff
+				buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			}
+			if(defTeam[i].before_buff_s){
+				var burnBuffInfo = defTeam[i].before_buff_s
+				buffManager.createBuff(atkTeam[i],defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
+			}
+			if(defTeam[i].first_nocontrol){
+				buffManager.createBuff(defTeam[i],defTeam[i],{buffId : "immune",duration : 1,"refreshType" : "roundOver"})
+			}
 		}
 	}
 	//天书初始化
@@ -251,11 +270,11 @@ model.prototype.action = function() {
 				skill.angerAmp = (this.character.curAnger - 4) * 0.15
 				needValue = this.character.curAnger
 			}
-			if(this.character.skill_free && this.seeded.random("不消耗怒气判断") > this.character.skill_free){
+			if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free){
 				needValue = 0
 			}
 			if(needValue){
-				this.character.lessAnger(needValue,needValue>4?false:true)
+				this.character.lessAnger(needValue,needValue>4?false:true,true)
 			}
 		}else{
 			if(!this.character.disarm){
@@ -309,28 +328,18 @@ model.prototype.after = function() {
 		this.character.must_crit = false
 	this.character.next_must_crit = false
 	this.character = false
-	for(var i = 0;i < this.diedList.length;i++){
-		if(this.diedList[i]["died_buff_s"]){
-			var buffTargets = this.locator.getBuffTargets(this.diedList[i],this.diedList[i].died_buff_s.buff_tg)
-			for(var j = 0;j < buffTargets.length;j++){
-				if(this.seeded.random("判断BUFF命中率") < this.diedList[i].died_buff_s.buffRate){
-					buffManager.createBuff(this.diedList[i],buffTargets[j],{buffId : this.diedList[i].died_buff_s.buffId,buffArg : this.diedList[i].died_buff_s.buffArg,duration : this.diedList[i].died_buff_s.duration})
-				}
-			}
-		}
-		if(this.diedList[i].died_use_skill){
-			skillManager.useSkill(this.diedList[i].angerSkill)
-		}
-		//复活判断
-		if(this.diedList[i].teamInfo.resurgence_team){
-			this.diedList[i].resurgence(this.diedList[i].teamInfo.resurgence_team)
-			delete this.diedList[i].teamInfo.resurgence_team
+	this.diedListCheck()
+	//检测战斗是否结束
+	if(!this.checkOver()){
+		if(this.next_character && !this.next_character.died){
+			fightRecord.push({type : "extraAtion",id : this.next_character.id})
+			this.character = this.next_character
+			this.next_character = false
+			this.before()
+		}else{
+			this.run()
 		}
 	}
-	this.diedList = []
-	//检测战斗是否结束
-	if(!this.checkOver())
-		this.run()
 }
 model.prototype.checkOver = function() {
 	var flag = true
@@ -362,6 +371,11 @@ model.prototype.bookAction = function(book) {
 		return
 	}
 	book.action()
+	this.diedListCheck()
+	//检测战斗是否结束
+	this.checkOver()
+}
+model.prototype.diedListCheck = function() {
 	for(var i = 0;i < this.diedList.length;i++){
 		if(this.diedList[i]["died_buff_s"]){
 			var buffTargets = this.locator.getBuffTargets(this.diedList[i],this.diedList[i].died_buff_s.buff_tg)
@@ -375,14 +389,17 @@ model.prototype.bookAction = function(book) {
 			skillManager.useSkill(this.diedList[i].angerSkill)
 		}
 		//复活判断
-		if(this.diedList[i].teamInfo.resurgence_team){
+		if(this.diedList[i].resurgence_self){
+			this.diedList[i].resurgence(this.diedList[i].resurgence_self)
+			this.diedList[i].resurgence_self = 0
+		}else if(this.diedList[i].teamInfo.resurgence_team){
 			this.diedList[i].resurgence(this.diedList[i].teamInfo.resurgence_team)
 			delete this.diedList[i].teamInfo.resurgence_team
+		}else{
+			this.diedList[i].teamInfo["realms_survival"][this.diedList[i]["realm"]]--
 		}
 	}
 	this.diedList = []
-	//检测战斗是否结束
-	this.checkOver()
 }
 //战斗结束
 model.prototype.fightOver = function(winFlag,roundEnd) {

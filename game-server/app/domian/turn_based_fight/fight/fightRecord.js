@@ -93,7 +93,7 @@ var model = function() {
 				break
 				case "recoverHeal":
 					//生命值恢复
-					var str = ""+heroNames[info.id]+"恢复"+info.value+"点生命值"
+					var str = "\033[32m"+heroNames[info.id]+"恢复"+info.value+"点生命值\033[0m"
 					str += "\t剩余"+info.curValue+"/"+info.maxHP
 					console.log(str)
 				break
@@ -154,7 +154,7 @@ var model = function() {
 				break
 				case "self_heal":
 					//自身生命值恢复
-					var str = "\033[36m"+heroNames[info.id]+"自身生命值恢复\033[0m"+info.value
+					var str = "\033[32m"+heroNames[info.id]+"自身生命值恢复\033[0m"+info.value
 					str += "\t剩余"+info.curValue+"/"+info.maxHP+"\033[0m"
 					console.log(str)
 				break
@@ -176,6 +176,9 @@ var model = function() {
 					// 	console.log(info.atkTeam[i])
 					// for(var i = 0;i < info.defTeam.length;i++)
 					// 	console.log(info.defTeam[i])
+				break
+				case "extraAtion":
+					console.log(heroNames[info.id]+" 获得额外回合 ")
 				break
 				default:
 					console.log("类型未定义 : ",info.type)

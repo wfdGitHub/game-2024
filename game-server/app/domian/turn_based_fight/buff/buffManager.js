@@ -1,4 +1,4 @@
-let buffIds = ["invincibleSuck","disarm","dizzy","forbidden","silence","burn","poison","amplify","reduction","recover","invincibleSuper","invincible","shield","banish","banAnger"]
+let buffIds = ["invincibleSuck","disarm","dizzy","forbidden","silence","burn","poison","amplify","reduction","recover","invincibleSuper","invincible","shield","banish","banAnger","immune"]
 let controlBuff = {
 	"disarm" : true,
 	"dizzy" : true,
@@ -10,11 +10,11 @@ let damageBuff = {
 }
 var buffList = {}
 var fightRecord = require("../fight/fightRecord.js")
-for(var i = 0;i < buffIds.length;i++){
-	buffList[buffIds[i]] = require("./buffs/"+buffIds[i]+".js")
-}
 var buffFactory = function() {}
 buffFactory.init = function(seeded,fighting) {
+	for(var i = 0;i < buffIds.length;i++){
+		buffList[buffIds[i]] = require("./buffs/"+buffIds[i]+".js")
+	}
 	this.seeded = seeded
 	this.fighting = fighting
 }
@@ -25,9 +25,9 @@ buffFactory.createBuff = function(releaser,character,otps) {
 	if(controlBuff[buffId]){
 		if(character.control_buff_lowrate && this.seeded.random("控制buff抗性") < character.control_buff_lowrate)
 			return
-		if(character.first_nocontrol && this.fighting.round == 1)
-			return
 		if(character.buffs["invincibleSuper"])
+			return
+		if(character.buffs["immune"])
 			return
 	}
 	//判断灼烧、中毒buff抗性

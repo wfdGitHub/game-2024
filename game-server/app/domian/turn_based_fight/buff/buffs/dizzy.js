@@ -11,6 +11,8 @@ var model = function(releaser,character,otps) {
 	buff.clear = function() {
 		// console.log(buff.character.id+"眩晕结束")
 		buff.character.dizzy = false
+		if(!buff.character.died && buff.releaser.dizzy_less_anger)
+			buff.character.lessAnger(buff.releaser.dizzy_less_anger)
 	}
 	return buff
 }
