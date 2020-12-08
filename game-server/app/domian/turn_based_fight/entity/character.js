@@ -504,6 +504,8 @@ model.prototype.addAtt = function(name,value) {
 //角色死亡
 model.prototype.onDie = function() {
 	// console.log(this.name+"死亡")
+	if(this.resurgence_team)
+		delete this.teamInfo.resurgence_team
 	this.attInfo.hp = 0
 	this.died = true
 	this.fighting.diedList.push(this)
