@@ -88,11 +88,11 @@ model.useSkill = function(skill,chase) {
 		//判断技能目标减少
 		if(skill.character.less_skill_buffRate){
 			var allLenth = this.locator.getTargetsNum(skill.targetType)
-			buffRate += ((allLenth - targets.length + 1) / allLenth) * skill.character.less_skill_buffRate
+			buffRate = buffRate * (1 + (allLenth - targets.length + 1) / allLenth) * skill.character.less_skill_buffRate
 		}
 		if(skill.character.less_buff_arg){
 			var allLenth = this.locator.getTargetsNum(skill.targetType)
-			buffArg = buffArg * (1 + ((allLenth - targets.length + 1) / allLenth) * skill.character.less_buff_arg)
+			buffArg = buffArg * (1 + ((allLenth - targets.length + 1) / allLenth)) * skill.character.less_buff_arg
 		}
 		// if(skill.buffId == "dizzy" && skill.character.dizzy_clear_anger)
 		// 	buffRate *= 0.5
@@ -485,7 +485,7 @@ model.useAttackSkill = function(skill,chase) {
 				if(targets[i].hit_skill_buff){
 					var buffInfo = targets[i].hit_skill_buff
 					if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
-						var tmptargets = this.locator.getTargets(targets[i],buffInfo.buff_tg)
+						var tmptargets = this.locator.getTargets(skill.character,buffInfo.buff_tg)
 						for(var j = 0;j < tmptargets.length;j++)
 							buffManager.createBuff(targets[i],tmptargets[j],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 					}

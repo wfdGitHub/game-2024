@@ -188,6 +188,7 @@ var model = function(otps) {
 	this.single_less_anger = otps.single_less_anger || 0 	//攻击单体目标额外降低怒气
 	this.resurgence_self = otps.resurgence_self || 0 		//首次死亡后复活自身恢复血量百分比
 	this.resurgence_team = otps.resurgence_team || 0		//复活本方第1位阵亡的武将，并恢复其50%的生命，每场战斗只可触发1次
+	this.resurgence_realmRate = otps.resurgence_realmRate || 0 //同阵营复活血量倍率
 	this.burn_hit_reduction = otps.burn_hit_reduction || 0	//被灼烧状态敌人攻击伤害减免
 
 	if(otps.burn_att_change_skill)

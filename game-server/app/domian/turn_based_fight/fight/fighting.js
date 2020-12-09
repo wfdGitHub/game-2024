@@ -59,8 +59,13 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			this.atkTeamInfo["realms"][atkTeam[i].realm]++
 		}
 		atkTeam[i].init(this)
-		if(atkTeam[i].resurgence_team)
+		if(atkTeam[i].resurgence_team){
 			this.atkTeamInfo["resurgence_team"] = atkTeam[i].resurgence_team
+			if(atkTeam[i]["resurgence_realmRate"]){
+				this.atkTeamInfo["resurgence_realmRate"] = atkTeam[i]["resurgence_realmRate"]
+				this.atkTeamInfo["resurgence_realmId"] = atkTeam[i]["realm"]
+			}
+		}
 		atkTeam[i].index = i
 		atkTeam[i].team = atkTeam
 		atkTeam[i].enemy = defTeam
@@ -84,8 +89,13 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			this.defTeamInfo["realms"][defTeam[i].realm]++
 		}
 		defTeam[i].init(this)
-		if(defTeam[i].resurgence_team)
+		if(defTeam[i].resurgence_team){
 			this.defTeamInfo["resurgence_team"] = defTeam[i].resurgence_team
+			if(defTeam[i]["resurgence_realmRate"]){
+				this.defTeamInfo["resurgence_realmRate"] = defTeam[i]["resurgence_realmRate"]
+				this.defTeamInfo["resurgence_realmId"] = defTeam[i]["realm"]
+			}
+		}
 		defTeam[i].index = i
 		defTeam[i].team = defTeam
 		defTeam[i].enemy = atkTeam
@@ -394,7 +404,12 @@ model.prototype.diedListCheck = function() {
 		if(this.diedList[i].resurgence_self && this.seeded.random("复活判断") < this.diedList[i].resurgence_self){
 			this.diedList[i].resurgence(1)
 		}else if(this.diedList[i].teamInfo.resurgence_team){
-			this.diedList[i].resurgence(this.diedList[i].teamInfo.resurgence_team)
+			var rate = this.diedList[i].teamInfo.resurgence_team
+			console.log("this.diedList[i].teamInfo.resurgence_realmRate",this.diedList[i].teamInfo.resurgence_realmRate,this.diedList[i].teamInfo.resurgence_realmId,this.diedList[i].realm)
+			if(this.diedList[i].teamInfo.resurgence_realmRate && this.diedList[i].teamInfo.resurgence_realmId == this.diedList[i].realm){
+				rate = rate * this.diedList[i].teamInfo.resurgence_realmRate
+			}
+			this.diedList[i].resurgence(rate)
 			delete this.diedList[i].teamInfo.resurgence_team
 		}else{
 			this.diedList[i].teamInfo["realms_survival"][this.diedList[i]["realm"]]--

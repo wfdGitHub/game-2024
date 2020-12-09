@@ -47,6 +47,9 @@ model.prototype.getTargets = function(character,targetType) {
 		case "enemy_adjoin":
 			//敌方相邻目标
 			return	this.getEnemyAdjoin(character)
+		case "team_adjoin":
+			//我方相邻目标
+			return	this.getTeamAdjoin(character)
 		case "enemy_minHP":
 			//敌方生命最少单位
 			return	this.getEnemyMinHP(character)
@@ -488,6 +491,27 @@ model.prototype.getEnemyAdjoin = function(character) {
 	}
 	return list
 }
+//我方相邻单位
+model.prototype.getTeamAdjoin = function(character) {
+	var list = []
+	if(character){
+		list.push(character)
+		//左方向
+		if(character.index % 3 >= 1 && model.check(character.team[character.index - 1])){
+			list.push(character.team[character.index - 1])
+		}
+		//右方向
+		if(character.index % 3 <= 1 && model.check(character.team[character.index + 1])){
+			list.push(character.team[character.index + 1])
+		}
+		//后方向
+		if(character.index < 3 && model.check(character.team[character.index + 3])){
+			list.push(character.team[list[0].index + 3])
+		}
+	}
+	return list
+}
+
 //敌方血量最少目标
 model.prototype.getEnemyMinHP = function(character) {
     var minIndex = -1
