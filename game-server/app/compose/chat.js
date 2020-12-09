@@ -11,11 +11,14 @@ chat.prototype.init = function(app) {
 	this.channelService = this.app.get('channelService')
 }
 //发送聊天消息
-chat.prototype.say = function(talker,roomName,text,cb) {
-	if(this.rooms[roomName] && this.rooms[roomName].getMember(talker.uid) && typeof(text) === "string" && text.length < 1000){
+chat.prototype.say = function(talker,gname,roomName,type,arg,text) {
+	if(this.rooms[roomName] && this.rooms[roomName].getMember(talker.uid)){
 		var notify = {
 			roomName : roomName,
 			talker : talker,
+			gname : gname,
+			type : type,
+			arg : arg,
 			text : text,
 			time : Date.now()
 		}
