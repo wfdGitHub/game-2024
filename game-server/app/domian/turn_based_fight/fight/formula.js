@@ -110,6 +110,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			}
 		}
 	}
+	if(target.buffs["reduction"]){
+		info.value = Math.floor(info.value * (1-target.buffs["reduction"]["value"]))
+	}
 	if(target.reduction_over){
 		if(info.value >= target.attInfo.maxHP * 0.4){
 			info.value = Math.floor(info.value * (1-target.reduction_over))

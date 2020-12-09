@@ -21,7 +21,7 @@ var model = function(releaser,character,otps) {
 		buff.value = otps.buffArg
 	}
 	buff.getValue = function() {
-		return buff.value
+		return 0
 	}
 	return buff
 }
