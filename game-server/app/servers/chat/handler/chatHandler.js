@@ -38,6 +38,7 @@ chatHandler.prototype.say = function(msg, session, next) {
 		return
 	}
 	var uid = session.uid
+	var gname = msg.gname
 	var type = msg.type
 	var arg = msg.arg
 	var text = msg.text
@@ -53,9 +54,11 @@ chatHandler.prototype.say = function(msg, session, next) {
 		name : name,
 		head : head
 	}
-	this.chat.say(talker,roomName,type,arg,text)
-	this.cacheDao.saveChat({messagetype:"chat",uid:uid,nickname:name,type:type,arg:arg,text:text,roomName:roomName})
-	this.mysqlDao.addChatRecord(uid,name,text,roomName)
+	this.chat.say(talker,gname,roomName,type,arg,text)
+	if(text){
+		this.cacheDao.saveChat({messagetype:"chat",uid:uid,nickname:name,type:type,arg:arg,text:text,roomName:roomName})
+		this.mysqlDao.addChatRecord(uid,name,text,roomName)
+	}
 	next(null)
 }
 module.exports = function(app) {

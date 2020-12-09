@@ -2175,8 +2175,8 @@
         });
       }
       //发送聊天消息
-      var say = function(roomName,type,arg,text) {
-        pomelo.notify("chat.chatHandler.say",{roomName : roomName,type : type,arg : arg,text : text}, function(data) {
+      var say = function(roomName,gname,type,arg,text) {
+        pomelo.notify("chat.chatHandler.say",{roomName : roomName,gname:gname,type : type,arg : arg,text : text}, function(data) {
             console.log(data);
         });
       }
