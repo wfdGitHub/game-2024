@@ -109,7 +109,7 @@ module.exports = function() {
 	    var luckNum = 0
 	    for(var i = 0;i < count;i++){
 	      num++
-	      if(num == 150){
+	      if(num == 100){
 			var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : curTopicHero})
 			heroInfos.push(heroInfo)
 	      }else if(i == 9 && luckNum == 0){
