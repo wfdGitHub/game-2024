@@ -281,9 +281,9 @@ model.useAttackSkill = function(skill,chase) {
 				if(!targets[i].died && (targets[i].buffs["invincible"] || targets[i].buffs["invincibleSuck"])){
 					if(this.seeded.random("清除无敌盾") < buffRate){
 						if(targets[i].buffs["invincible"])
-							targets[i].buffs["invincible"].destroy()
+							targets[i].buffs["invincible"].destroy("dispel")
 						if(targets[i].buffs["invincibleSuck"])
-							targets[i].buffs["invincibleSuck"].destroy()
+							targets[i].buffs["invincibleSuck"].destroy("dispel")
 					}
 				}
 			}
