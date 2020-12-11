@@ -88,11 +88,11 @@ model.useSkill = function(skill,chase) {
 		//判断技能目标减少
 		if(skill.character.less_skill_buffRate){
 			var allLenth = this.locator.getTargetsNum(skill.targetType)
-			buffRate = buffRate * (1 + (allLenth - targets.length + 1) / allLenth) * skill.character.less_skill_buffRate
+			buffRate += buffRate * (1 + (allLenth - targets.length + 1) / allLenth) * skill.character.less_skill_buffRate
 		}
 		if(skill.character.less_buff_arg){
 			var allLenth = this.locator.getTargetsNum(skill.targetType)
-			buffArg = buffArg * (1 + ((allLenth - targets.length + 1) / allLenth)) * skill.character.less_buff_arg
+			buffArg += buffArg * (1 + ((allLenth - targets.length + 1) / allLenth)) * skill.character.less_buff_arg
 		}
 		// if(skill.buffId == "dizzy" && skill.character.dizzy_clear_anger)
 		// 	buffRate *= 0.5
