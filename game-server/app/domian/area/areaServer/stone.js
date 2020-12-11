@@ -254,10 +254,11 @@ module.exports = function() {
 				if(!flag){
 					cb(false,err)
 				}else{
-					if(self.checkLimitedTime("kuangchang"))
+					if(self.checkLimitedTime("kuangchang")){
 						var awardList = self.openChestStrNoItem("pickaxe_limited_"+pId)
-					else
+					}else{
 						var awardList = self.openChestStrNoItem("pickaxe_"+pId)
+					}
 					var info = {}
 					info["award_"+pos] = awardList[0]
 					info["time_"+pos] = Date.now() + default_cfg["pickaxe_time_"+pId]["value"]
