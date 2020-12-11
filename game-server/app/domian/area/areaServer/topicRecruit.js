@@ -106,10 +106,9 @@ module.exports = function() {
 		var weights = Object.assign({},recruit_base["topic"]["weights"])
 		console.log("weights",weights)
 	  	if(self.checkLimitedTime("zhaohuan")){
-	  		allWeight += weights["topic"]
-	  		allWeight += weights["hero_10"]
-	  		weights["topic"] += weights["topic"]
-	  		weights["hero_10"] += weights["hero_10"]
+	  		allWeight += 200
+	  		weights["topic"] += 100
+	  		weights["hero_10"] += 100
 	  		console.log("召唤活动中",weights,allWeight)
 	  	}
 	    var heroInfos = []
