@@ -104,6 +104,7 @@ module.exports = function() {
 	local.recruit = function(uid,num,count) {
 		var allWeight = recruit_base["topic"]["allWeight"]
 		var weights = Object.assign({},recruit_base["topic"]["weights"])
+		console.log("weights",weights)
 	  	if(self.checkLimitedTime("zhaohuan")){
 	  		allWeight += weights["topic"]
 	  		allWeight += weights["hero_10"]
