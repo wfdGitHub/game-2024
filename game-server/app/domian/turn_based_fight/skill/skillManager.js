@@ -493,7 +493,7 @@ model.useAttackSkill = function(skill,chase) {
 				//技能攻击
 				if(targets[i].hit_skill_buff){
 					var buffInfo = targets[i].hit_skill_buff
-					if(true || this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+					if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
 						var tmptargets = this.locator.getTargets(skill.character,buffInfo.buff_tg)
 						for(var j = 0;j < tmptargets.length;j++)
 							buffManager.createBuff(targets[i],tmptargets[j],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})

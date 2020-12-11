@@ -50,6 +50,7 @@ var model = function(otps) {
 	this.invincibleHeal = otps.invincibleHeal || 0 //无敌盾同阵营消失时恢复生命上限比例
 	this.unpoison_heal = otps.unpoison_heal || 0   //同阵营解除中毒与治疗加成比例
 	this.skill_must_hit = otps.skill_must_hit || false //技能必定命中
+	this.realm_extra_buff_maxAtk = otps.realm_extra_buff_maxAtk || 0 //额外对敌方攻击最高目标释放BUFF概率（每个同阵营英雄加成）
 	this.realm_extra_buff_minHp = otps.realm_extra_buff_minHp || 0 //额外对敌方血量最少目标释放BUFF概率（每个同阵营英雄加成）
 	this.skill_crit_maxHp = otps.skill_crit_maxHp || 0 	//技能暴击造成的额外生命上限伤害
 	this.realm_dizzy_amp = otps.realm_dizzy_amp || 0 //眩晕时同阵营英雄伤害加成
