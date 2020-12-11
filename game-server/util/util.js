@@ -76,7 +76,11 @@ util.prototype.getWeekNum = function() {
 }
 //获取当天零点时间
 util.prototype.getZeroTime = function(time){
-    var nowTemp = new Date(time);//当前时间
+    var nowTemp
+    if(time)
+        nowTemp = new Date(time);//当前时间
+    else
+        nowTemp = new Date();//当前时间
     nowTemp.setHours(0,0,0,0)
     return nowTemp.getTime()
 }

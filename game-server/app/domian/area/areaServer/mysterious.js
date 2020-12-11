@@ -150,7 +150,10 @@ module.exports = function() {
 				self.getObj(uid,main_name,"lv_"+lv,function(star) {
 					if(star == 3){
 						self.incrbyObj(uid,main_name,"count",1)
-						var awardList = self.addItemStr(uid,mysterious_realm[lv]["mopup_award"])
+						var rate = 1
+						if(self.checkLimitedTime("saodang"))
+							rate = 2
+						var awardList = self.addItemStr(uid,mysterious_realm[lv]["mopup_award"],rate)
 						self.taskUpdate(uid,"ss_play",1)
 						cb(true,awardList)
 					}else{

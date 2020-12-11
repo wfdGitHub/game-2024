@@ -162,8 +162,15 @@ module.exports = function() {
     	info.score = score
     	self.scoreChange(uid,score)
     	info.curScore = userScores[uid]
-    	info.award =  self.addItemStr(uid,"201:"+coin,1,"世界BOSS")
-    	info.award = info.award.concat(self.openChestAward(uid,world_boss_cfg["chest"]["value"]))
+
+		if(self.checkLimitedTime("saodang")){
+	    	info.award =  self.addItemStr(uid,"201:"+coin,2,"世界BOSS")
+	    	info.award = info.award.concat(self.openChestAward(uid,world_boss_cfg["chest"]["value"]))
+	    	info.award = info.award.concat(self.openChestAward(uid,world_boss_cfg["chest"]["value"]))
+		}else{
+	    	info.award =  self.addItemStr(uid,"201:"+coin,1,"世界BOSS")
+	    	info.award = info.award.concat(self.openChestAward(uid,world_boss_cfg["chest"]["value"]))
+		}
     	cb(true,info)
 	}
 	this.scoreChange = function(uid,score) {

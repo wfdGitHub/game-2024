@@ -120,7 +120,10 @@ module.exports = function() {
 				self.taskUpdate(uid,"fb",1)
 				self.taskUpdate(uid,"fb_hard",1,daily_fb_base[fbId]["lv"])
 				let award = daily_fb_base[fbId]["award"]
-				var awardList = self.addItemStr(uid,award,1,"日常副本"+fbId)
+				var rate = 1
+				if(self.checkLimitedTime("fuben"))
+					rate = 2
+				var awardList = self.addItemStr(uid,award,rate,"日常副本"+fbId)
 				cb(true,awardList)
 			}
 		],function(err) {

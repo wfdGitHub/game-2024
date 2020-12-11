@@ -71,6 +71,8 @@ module.exports = function() {
 			    if(winFlag){
 			    	self.incrbyObj(uid,main_name,"invade",1)
 			    	var rate = invade["base_rate"]["value"] + lv * invade["lv_rate"]["value"]
+			    	if(self.checkLimitedTime("saodang"))
+			    		rate *= 2
 			    	var awardList = self.addItemStr(uid,invade["base_award"]["value"],rate,"魔物入侵")
 			    	var record = self.fightContorl.getFightRecord()
 			    	var overInfo = record[record.length - 1]
@@ -281,7 +283,6 @@ module.exports = function() {
 			}
 		})
 	}
-
 	//签到
 	this.gainSignInAward = function(uid,cb) {
 		self.getHMObj(uid,main_name,["signCount","signDay"],function(data) {

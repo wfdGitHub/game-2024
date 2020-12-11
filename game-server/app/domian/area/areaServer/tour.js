@@ -178,7 +178,10 @@ module.exports = function() {
 				self.delObj(uid,main_name,"free_"+taskInfo.hIds[i])
 			}
 			self.delObj(uid,main_name,"run_"+id)
-			var awardList = self.addItemStr(uid,tour_task[taskInfo.taskId]["award"],1,"游历奖励")
+			var rate = 1
+		  	if(self.checkLimitedTime("sanjie"))
+		  		rate = 2
+			var awardList = self.addItemStr(uid,tour_task[taskInfo.taskId]["award"],rate,"游历奖励")
 			cb(true,awardList)
 		})
 	}

@@ -232,6 +232,30 @@ normalHandler.prototype.changeName = function(msg, session, next) {
     next(null,{flag : false,err : err})
   })
 }
+//开启限时活动
+normalHandler.prototype.openNewLimitedTime = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  var day = msg.day
+  this.areaManager.areaMap[areaId].openNewLimitedTime(id,day)
+  next(null,{flag:true})
+}
+//关闭限时活动
+normalHandler.prototype.endNewLimitedTime = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  this.areaManager.areaMap[areaId].endNewLimitedTime(id)
+  next(null,{flag:true})
+}
+//获取限时活动列表
+normalHandler.prototype.getLimitedTimeList = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var list = this.areaManager.areaMap[areaId].getLimitedTimeList()
+  next(null,{flag:true,list:list})
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "normalHandler",

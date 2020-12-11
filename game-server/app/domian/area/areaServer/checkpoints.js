@@ -188,9 +188,11 @@ module.exports = function() {
 			function(next) {
 				self.incrbyPlayerData(uid,"quick",1)
 			  	var on_hook_award = checkpointsCfg[level].on_hook_award
-			  	var rate = (1+VIP[self.players[uid]["vip"]]["onhookAward"])
+			  	var rate = 1
 			  	if(self.players[uid]["highCard"])
 			  		rate += activity_cfg["high_card_onhook"]["value"]
+			  	if(self.checkLimitedTime("guaji"))
+			  		rate *= 2
 			  	rate = 120 * rate
 			  	var awardList = self.addItemStr(uid,on_hook_award,rate,"快速挂机奖励")
 			  	var awardStr = self.gainOnhookItem(uid,level,120)

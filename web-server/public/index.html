@@ -98,6 +98,25 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============限时活动==========//
+      //开启限时活动
+      var openNewLimitedTime = function(id,day) {
+        pomelo.request("area.normalHandler.openNewLimitedTime", {id:id,day:day}, function(data) {
+            console.log(data);
+        });
+      }
+      //关闭限时活动
+      var endNewLimitedTime = function(id) {
+        pomelo.request("area.normalHandler.endNewLimitedTime", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取限时活动列表
+      var getLimitedTimeList = function() {
+        pomelo.request("area.normalHandler.getLimitedTimeList", {}, function(data) {
+            console.log(data);
+        });
+      }
       //==============公会PK==========//
       //获取PK数据
       var getGuildPKData = function() {

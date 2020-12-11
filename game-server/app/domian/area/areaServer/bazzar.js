@@ -99,6 +99,34 @@ module.exports = function() {
 					self.setObj(uid,main_name,type+"_"+index,JSON.stringify(goods))
 					let awardList = self.addItemStr(uid,goods.itemId+":"+goods.value,1,"神秘商店"+type)
 					self.taskUpdate(uid,"bazzar_buy",1)
+					if(self.checkLimitedTime("shangdian")){
+						self.getObjAll(uid,main_name,function(data) {
+							var list = []
+							for(var id in data){
+								if(id.indexOf(type) == 0 && id != type+"_"+index){
+									var info = JSON.parse(data[id])
+									if(!info.sellOut && info.discount > 0.1){
+										list.push({id : id,info:info})
+									}
+								}
+							}
+							if(list.length){
+								var rand = Math.floor(Math.random() * list.length)
+								var info = list[rand]["info"]
+								var mstr = info.price.split(":")
+								var original = Math.round(mstr[1] / info.discount)
+								info.discount -= 0.1
+								info.price = mstr[0]+":"+Math.round(original*info.discount)
+								self.setObj(uid,main_name,list[rand]["id"],JSON.stringify(info))
+								var notify = {
+									type : "bazaar_goods_change",
+									id : list[rand]["id"],
+									info : info
+								}
+								self.sendToUser(uid,notify)
+							}
+						})
+					}
 					cb(true,awardList)
 				}
 			})

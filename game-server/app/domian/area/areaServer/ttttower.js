@@ -126,7 +126,10 @@ module.exports = function() {
 			function(next) {
 				//扫荡奖励
 				self.taskUpdate(uid,"ttt",1)
-				var awardList = self.addItemStr(uid,ttttower_level[level]["mopupAward"],1,"通天塔扫荡"+level)
+				var rate = 1
+				if(self.checkLimitedTime("saodang"))
+					rate = 2
+				var awardList = self.addItemStr(uid,ttttower_level[level]["mopupAward"],rate,"通天塔扫荡"+level)
 				cb(true,awardList)
 			}
 		],function(err) {
@@ -238,7 +241,10 @@ module.exports = function() {
 			},
 			function(next) {
 				//扫荡奖励
-				var awardList = self.addItemStr(uid,ttttower_realm[level]["mopupAward_"+realm],1,"阵营塔扫荡"+level)
+				var rate = 1
+				if(self.checkLimitedTime("saodang"))
+					rate = 2
+				var awardList = self.addItemStr(uid,ttttower_realm[level]["mopupAward_"+realm],rate,"阵营塔扫荡"+level)
 				cb(true,awardList)
 			}
 		],function(err) {

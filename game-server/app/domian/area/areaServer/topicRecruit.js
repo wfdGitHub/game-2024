@@ -103,7 +103,14 @@ module.exports = function() {
 	//主题招募
 	local.recruit = function(uid,num,count) {
 		var allWeight = recruit_base["topic"]["allWeight"]
-		var weights = recruit_base["topic"]["weights"]
+		var weights = Object.assign({},recruit_base["topic"]["weights"])
+	  	if(self.checkLimitedTime("zhaohuan")){
+	  		allWeight += weights["topic"]
+	  		allWeight += weights["hero_10"]
+	  		weights["topic"] += weights["topic"]
+	  		weights["hero_10"] += weights["hero_10"]
+	  		console.log("召唤活动中",weights,allWeight)
+	  	}
 	    var heroInfos = []
 	    num = Number(num) || 0
 	    var luckNum = 0

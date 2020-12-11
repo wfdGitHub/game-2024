@@ -383,7 +383,10 @@ module.exports = function() {
 		    		info.curChoose = -2
 			    	local.changeData(uid,"spoils_list",info.spoils_list)
 		    		local.changeData(uid,"curChoose",info.curChoose)
-		    		info.awardList = self.addItemStr(uid,zhulu_award[grid]["award"],1,"逐鹿战斗")
+		    		var rate = 1
+		    		if(self.checkLimitedTime("zhulu"))
+			    		rate = 2
+		    		info.awardList = self.addItemStr(uid,zhulu_award[grid]["award"],rate,"逐鹿战斗")
 		    		self.taskUpdate(uid,"zhulu_monster",1)
 			    }else{
 			    	for(var i = 0;i<defTeam.length;i++){
