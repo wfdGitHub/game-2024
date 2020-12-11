@@ -42,8 +42,8 @@ model.useSkill = function(skill,chase) {
 		//技能判断燃烧状态附加BUFF
 		if(skill.burn_buff_change_skill){
 			for(var i = 0;i < targets.length;i++){
-				if(targets[i].died ||!targets[i].buffs["burn"]){
-					break
+				if(targets[i].died || !targets[i].buffs["burn"]){
+					continue
 				}
 				var buffInfo = Object.assign({},skill.burn_buff_change_skill,skill.character.burn_buff_change_skill)
 				if((diedSkill && skill.character.died_burn_buff_must) || this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
@@ -60,7 +60,7 @@ model.useSkill = function(skill,chase) {
 		}
 		//释放技能后恢复同阵营怒气最少的三个英雄怒气值
 		if(skill.character.skill_add_realm3_anger){
-			var tmpTargets = this.locator.getTargets(skill.character,"friend_minAnger_3")
+			var tmpTargets = this.locator.getTargets(skill.character,"realm_minAnger_3")
 			for(var i = 0;i < tmpTargets.length;i++){
 				if(!tmpTargets[i]["died"]){
 					tmpTargets[i].addAnger(skill.character.skill_add_realm3_anger,skill)
@@ -108,6 +108,15 @@ model.useSkill = function(skill,chase) {
 			var target = this.locator.getTargets(skill.character,"enemy_minHP")[0]
 			if(target && !target.buffs[skill.buffId]){
 				buffRate = (buffRate * skill.character.realm_extra_buff_minHp * (skill.character.teamInfo["realms"][skill.character.realm] - 1))
+				if(buffRate && this.seeded.random("判断BUFF命中率") < buffRate){
+					buffManager.createBuff(skill.character,target,{buffId : skill.buffId,buffArg : buffArg,duration : skill.duration})
+				}
+			}
+		}
+		if(skill.character.realm_extra_buff_maxAtk){
+			var target = this.locator.getTargets(skill.character,"enemy_maxAtk_1")[0]
+			if(target && !target.buffs[skill.buffId]){
+				buffRate = (buffRate * skill.character.realm_extra_buff_maxAtk * (skill.character.teamInfo["realms"][skill.character.realm] - 1))
 				if(buffRate && this.seeded.random("判断BUFF命中率") < buffRate){
 					buffManager.createBuff(skill.character,target,{buffId : skill.buffId,buffArg : buffArg,duration : skill.duration})
 				}
@@ -233,7 +242,7 @@ model.useSkill = function(skill,chase) {
 	}
 	//额外回合
 	if(skill.isAnger && skill.character.extraAtion){
-		var tmpTargets = this.locator.getTargets(skill.character,"friend_minAnger_1")
+		var tmpTargets = this.locator.getTargets(skill.character,"realm_minAnger_1")
 		if(tmpTargets[0]){
 			this.fighting.next_character = tmpTargets[0]
 		}
@@ -484,7 +493,7 @@ model.useAttackSkill = function(skill,chase) {
 				//技能攻击
 				if(targets[i].hit_skill_buff){
 					var buffInfo = targets[i].hit_skill_buff
-					if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+					if(true || this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
 						var tmptargets = this.locator.getTargets(skill.character,buffInfo.buff_tg)
 						for(var j = 0;j < tmptargets.length;j++)
 							buffManager.createBuff(targets[i],tmptargets[j],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})

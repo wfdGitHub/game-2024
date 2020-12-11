@@ -47,6 +47,9 @@ model.prototype.getTargets = function(character,targetType) {
 		case "enemy_adjoin":
 			//敌方相邻目标
 			return	this.getEnemyAdjoin(character)
+		case "enemy_maxAtk_1":
+			//获取敌方攻击最高的1个单位
+			return this.getEnemyMaxAtk(character,1)
 		case "team_adjoin":
 			//我方相邻目标
 			return	this.getTeamAdjoin(character)
@@ -127,6 +130,14 @@ model.prototype.getTargets = function(character,targetType) {
 			//获取友方怒气最少的3个单位
 			return this.getFriendMinAnger(character,3)
 		break
+		case "realm_minAnger_1":
+			//获取同阵营怒气最少的3个单位
+			return this.getRealmMinAnger(character,1)
+		break
+		case "realm_minAnger_3":
+			//获取同阵营怒气最少的3个单位
+			return this.getRealmMinAnger(character,3)
+		break
 		case "team_min_index":
 			//己方阵容站位最靠前的单位
 			return this.getTeamMinIndex(character)
@@ -199,7 +210,10 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 		break
 		case "realm_minHp_2":
 			//获取己方同阵营生命值最少的2个单位
-			return this.getTeamEealmMinHp(character,2)
+			return this.getTeamRealmMinHp(character,2)
+		case "realm_maxAtk_2":
+			//获取己方同阵营攻击最高的2个单位
+			return this.getRealmMaxAtk(character,2)
 		case "enemy_all":
 			//敌方全体
 			return	this.getEnemyAll(character)
@@ -488,6 +502,10 @@ model.prototype.getEnemyAdjoin = function(character) {
 		if(list[0].index < 3 && model.check(list[0].team[list[0].index + 3])){
 			list.push(list[0].team[list[0].index + 3])
 		}
+		//前方向
+		if(list[0].index >= 3 && model.check(list[0].team[list[0].index - 3])){
+			list.push(list[0].team[list[0].index - 3])
+		}
 	}
 	return list
 }
@@ -507,6 +525,10 @@ model.prototype.getTeamAdjoin = function(character) {
 		//后方向
 		if(character.index < 3 && model.check(character.team[character.index + 3])){
 			list.push(character.team[list[0].index + 3])
+		}
+		//前方向
+		if(list[0].index >= 3 && model.check(list[0].team[list[0].index - 3])){
+			list.push(list[0].team[list[0].index - 3])
 		}
 	}
 	return list
@@ -630,7 +652,7 @@ model.prototype.getTeamRandomMinHp = function(character,count) {
     return list.slice(0,count)
 }
 //己方同阵营生命最少的n个单位
-model.prototype.getTeamEealmMinHp = function(character,count) {
+model.prototype.getTeamRealmMinHp = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
         if(target.realm == character.realm && model.check(target)){
@@ -680,11 +702,62 @@ model.prototype.getFriendMinAnger = function(character,count) {
     		}
     return list.slice(0,count)
 }
+//同阵营(除自己)怒气最少的N个单位
+model.prototype.getRealmMinAnger = function(character,count) {
+    var list = []
+    character.team.forEach(function(target,index) {
+        if(model.check(target) && target != character && target.realm == character.realm){
+        	list.push(target)
+        }
+    })
+    for(var i = 0;i < list.length;i++)
+    	for(var j = i + 1;j < list.length;j++)
+    		if(list[j].curAnger < list[i].curAnger){
+    			var tmp = list[j]
+    			list[j] = list[i]
+    			list[i] = tmp
+    		}
+    return list.slice(0,count)
+}
+//敌方攻击最高的n个单位
+model.prototype.getEnemyMaxAtk = function(character,count) {
+    var list = []
+    character.enemy.forEach(function(target,index) {
+        if(model.check(target)){
+        	list.push(target)
+        }
+    })
+    for(var i = 0;i < list.length;i++)
+    	for(var j = i + 1;j < list.length;j++)
+    		if(list[j].attInfo.atk > list[i].attInfo.atk){
+    			var tmp = list[j]
+    			list[j] = list[i]
+    			list[i] = tmp
+    		}
+    return list.slice(0,count)
+}
 //己方攻击最高的n个单位
 model.prototype.getTeamMaxAtk = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
         if(model.check(target)){
+        	list.push(target)
+        }
+    })
+    for(var i = 0;i < list.length;i++)
+    	for(var j = i + 1;j < list.length;j++)
+    		if(list[j].attInfo.atk > list[i].attInfo.atk){
+    			var tmp = list[j]
+    			list[j] = list[i]
+    			list[i] = tmp
+    		}
+    return list.slice(0,count)
+}
+//己方同阵营攻击最高的n个单位
+model.prototype.getRealmMaxAtk = function(character,count) {
+    var list = []
+    character.team.forEach(function(target,index) {
+        if(model.check(target) && target.realm == character.realm){
         	list.push(target)
         }
     })

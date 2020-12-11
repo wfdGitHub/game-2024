@@ -144,6 +144,8 @@ var model = function(otps) {
 	}
 	if(otps.skill_later_buff){
 		this.skill_later_buff = JSON.parse(otps.skill_later_buff)	//释放技能后附加buff
+		if(this.buffDuration)
+			this.skill_later_buff.duration = this.buffDuration
 	}
 
 	this.hit_turn_rate = otps.hit_turn_rate || 0	//受到直接伤害转化成生命值百分比
@@ -169,6 +171,8 @@ var model = function(otps) {
 	this.normal_burn_turn_heal = otps.normal_burn_turn_heal || 0//如果目标处于灼烧状态，普攻直接伤害的百分比转化为生命治疗自己
 	if(otps.normal_later_buff){
 		this.normal_later_buff = JSON.parse(otps.normal_later_buff)	//普攻后附加BUFF
+		if(this.buffDuration)
+			this.normal_later_buff.duration = this.buffDuration
 	}
 	this.add_d_s_crit = otps.add_d_s_crit						//追加普攻必定暴击
 	this.add_default_amp = otps.add_default_amp || 0			//追加普攻伤害加成
