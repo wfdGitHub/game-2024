@@ -113,6 +113,7 @@ area.prototype.firstDayUpdate = function() {
 	console.log("服务器每日首次刷新")
 	this.guildFirstUpdate()
 	this.guildTreasureFirstUpdate()
+	this.dayUpdateLimitedTime()
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {

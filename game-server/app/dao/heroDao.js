@@ -75,7 +75,11 @@ heroDao.prototype.randHero = function(areaId,uid,type,count) {
 //英雄池获得英雄
 heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 	var allWeight = recruit_base[type]["allWeight"]
-	var weights = recruit_base[type]["weights"]
+	var weights = Object.assign({},recruit_base[type]["weights"])
+  	if(this.areaManager.areaMap[areaId].checkLimitedTime("zhaohuan")){
+  		allWeight += weights["hero_10"]
+  		weights["hero_10"] += weights["hero_10"]
+  	}
     var heroInfos = []
     var r_luck = this.areaManager.areaMap[areaId].players[uid]["r_luck"]
     var star4_num = 0
