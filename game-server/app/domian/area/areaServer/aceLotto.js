@@ -40,12 +40,11 @@ module.exports = function() {
 	}
 	//免费元神抽奖
 	this.aceLottoFree = function(uid,cb) {
-		self.getHMObj(uid,main_name,["free","redNum","orangeNum"],function(list) {
+		self.getHMObj(uid,main_name,["free","redNum"],function(list) {
 			var redNum = Number(list[1]) || 0
-			var orangeNum = Number(list[2]) || 0
 			if(list[0] != self.dayStr){
 				self.setObj(uid,main_name,"free",self.dayStr)
-				local.aceLottoBase(uid,redNum,orangeNum,1,cb)
+				local.aceLottoBase(uid,redNum,1,cb)
 			}else{
 				cb(false,"今日已使用")
 			}
@@ -57,10 +56,9 @@ module.exports = function() {
 			if(!flag){
 				cb(false,err)
 			}else{
-				self.getHMObj(uid,main_name,["redNum","orangeNum"],function(list) {
+				self.getHMObj(uid,main_name,["redNum"],function(list) {
 					var redNum = Number(list[0]) || 0
-					var orangeNum = Number(list[1]) || 0
-					local.aceLottoBase(uid,redNum,orangeNum,1,cb)
+					local.aceLottoBase(uid,redNum,1,cb)
 				})
 			}
 		})
@@ -71,28 +69,21 @@ module.exports = function() {
 			if(!flag){
 				cb(false,err)
 			}else{
-				self.getHMObj(uid,main_name,["redNum","orangeNum"],function(list) {
+				self.getHMObj(uid,main_name,["redNum"],function(list) {
 					var redNum = Number(list[0]) || 0
-					var orangeNum = Number(list[1]) || 0
-					local.aceLottoBase(uid,redNum,orangeNum,10,cb)
+					local.aceLottoBase(uid,redNum,10,cb)
 				})
 			}
 		})
 	}
 	//随机抽取
-	local.aceLottoBase = function(uid,redNum,orangeNum,count,cb) {
+	local.aceLottoBase = function(uid,redNum,count,cb) {
 		var awardList = []
 		for(var i = 0;i < count;i++){
 			redNum++
-			orangeNum++
 			if(redNum >= 100){
-				if(orangeNum >= 30)
-					orangeNum -= 30
 				redNum -= 100
-				awardList = awardList.concat(local.aceRed(uid))
-			}else if(orangeNum == 30){
-				orangeNum -= 30
-				awardList = awardList.concat(local.aceOrange(uid))
+				awardList = awardList.concat(local.aceTopic(uid))
 			}else{
 				var rand = Math.random() * allWeight
 				for(var j = 0;j < aceLottoWeight.length;j++){
@@ -119,10 +110,10 @@ module.exports = function() {
 				}
 			}
 		}
-		self.setHMObj(uid,main_name,{"redNum":redNum,"orangeNum":orangeNum})
-		cb(true,{awardList:awardList,redNum:redNum,orangeNum:orangeNum})
+		self.setHMObj(uid,main_name,{"redNum":redNum})
+		cb(true,{awardList:awardList,redNum:redNum})
 	}
-	//固定主题元神
+	//固定主题
 	local.aceTopic = function(uid) {
 		var award = topicList[curTopic][Math.floor(Math.random() * topicList[curTopic].length)]
 		return self.addItemStr(uid,award+":1",1,"元神抽奖")
