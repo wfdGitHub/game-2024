@@ -131,7 +131,7 @@ module.exports = function() {
 		  	}
 		  	var on_hook_award = checkpointsCfg[level].on_hook_award
 		  	// console.log("on_hook_award ",on_hook_award)
-		  	var rate = (1+VIP[self.players[uid]["vip"]]["onhookAward"])
+		  	var rate = 1
 		  	if(self.players[uid]["highCard"])
 		  		rate += activity_cfg["high_card_onhook"]["value"]
 		  	rate = (awardTime * rate) / 60 
