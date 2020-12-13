@@ -256,6 +256,26 @@ normalHandler.prototype.getLimitedTimeList = function(msg, session, next) {
   var list = this.areaManager.areaMap[areaId].getLimitedTimeList()
   next(null,{flag:true,list:list})
 }
+//获取玩家基本信息
+normalHandler.prototype.getPlayerBaseInfo = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var target = msg.target
+  var self = this
+  self.areaManager.areaMap[areaId].getPlayerInfoByUids([target],function(userInfos) {
+    if(userInfos && userInfos[0] && userInfos[0].uid){
+      var info = {
+        userInfo : userInfos[0]
+      }
+      self.areaManager.areaMap[areaId].getDefendTeam(target,function(data) {
+        info.team = data
+        next(null,{flag:true,info:info})
+      })
+    }else{
+      next(null,{flag:false})
+    }
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "normalHandler",

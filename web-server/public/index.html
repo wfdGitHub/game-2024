@@ -98,6 +98,12 @@
         console.log("onChat")
         console.log(data)
       })
+      //获取玩家基本信息
+      var getPlayerBaseInfo = function(target) {
+        pomelo.request("area.normalHandler.getPlayerBaseInfo", {target:target}, function(data) {
+            console.log(data);
+        });
+      }
       //==============限时活动==========//
       //开启限时活动
       var openNewLimitedTime = function(id,day) {
