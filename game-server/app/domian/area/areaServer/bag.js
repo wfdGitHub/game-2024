@@ -89,6 +89,23 @@ module.exports = function() {
 					}
 				})
 			break
+			case "optional":
+				//自选包
+				var list = JSON.parse(itemCfg[otps.itemId].arg)
+				var index = otps.index
+				if(!Number.isInteger(index) || !list[index]){
+					cb(false,"index error "+index)
+					return
+				}
+				self.consumeItems(uid,otps.itemId+":"+value,1,"自选包"+otps.itemId,function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						var awardList = self.addItemStr(uid,list[index],value,"自选包"+otps.itemId)
+						cb(true,awardList)
+					}
+				})
+			break
 			default:
 				cb(false,"类型错误"+itemCfg[otps.itemId].useType)
 		}
