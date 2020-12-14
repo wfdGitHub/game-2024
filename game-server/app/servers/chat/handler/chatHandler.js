@@ -38,6 +38,7 @@ chatHandler.prototype.say = function(msg, session, next) {
 		return
 	}
 	var uid = session.uid
+	var areaId = session.get("oriId")
 	var gname = msg.gname
 	var type = msg.type
 	var arg = msg.arg
@@ -52,7 +53,8 @@ chatHandler.prototype.say = function(msg, session, next) {
 	var talker = {
 		uid : uid,
 		name : name,
-		head : head
+		head : head,
+		areaId : areaId
 	}
 	this.chat.say(talker,gname,roomName,type,arg,text)
 	if(text){
