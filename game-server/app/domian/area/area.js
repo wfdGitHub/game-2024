@@ -383,6 +383,13 @@ area.prototype.getPlayerKeyByUid = function(uid,key,cb) {
 			cb(false)
 	})
 }
+//获取玩家基础数据
+area.prototype.getPlayerBaseInfo = function(uid,cb) {
+	var self = this
+	self.redisDao.db.hmget("player:user:"+uid+":playerInfo",["name","head","gname","ce","level"],function(err,data) {
+		cb(true,data)
+	})
+}
 //批量获取玩家简易数据
 area.prototype.getPlayerInfoByUids = function(uids,cb) {
 	var self = this
