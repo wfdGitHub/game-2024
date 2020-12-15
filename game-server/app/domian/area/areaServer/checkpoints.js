@@ -148,8 +148,6 @@ module.exports = function() {
 		var level = 0
 		var count = 0
 		var maxCount = 4 + VIP[self.players[uid]["vip"]]["quick"]
-		if(self.players[uid]["highCard"])
-			maxCount += activity_cfg["high_card_quik"]["value"]
 		async.waterfall([
 			function(next) {
 				//获取今日快速挂机次数

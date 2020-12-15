@@ -241,10 +241,10 @@ module.exports = function() {
 			cb(false,"pId error "+pId)
 			return
 		}
-		if(pos > 4 && !self.players[uid]["highCard"]){
-			cb(false,"未开启至尊特权")
-			return
-		}
+		// if(pos > 4 && !self.players[uid]["highCard"]){
+		// 	cb(false,"未开启至尊特权")
+		// 	return
+		// }
 		self.getObj(uid,main_name,"award_"+pos,function(data) {
 			if(data){
 				cb(false,"正在挖矿 ",data)
