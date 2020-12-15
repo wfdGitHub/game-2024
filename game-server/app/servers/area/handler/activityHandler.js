@@ -42,6 +42,15 @@ activityHandler.prototype.gainRPayDaysAward = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//领取每日免费礼包
+activityHandler.prototype.gainFreeDayAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  this.areaManager.areaMap[areaId].gainFreeDayAward(uid,id,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //领取每日首充礼包
 activityHandler.prototype.gainRechargeDayAward = function(msg, session, next) {
   var uid = session.uid

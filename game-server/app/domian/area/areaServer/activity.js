@@ -118,6 +118,7 @@ module.exports = function() {
 			data["vip_day_award"] = 0
 			data["recharge_day_1"] = 0
 			data["recharge_day_2"] = 0
+			data["free_day_1"] = 0
 			data["invade"] = 0
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
@@ -141,6 +142,22 @@ module.exports = function() {
 				self.delObj(uid,main_name,"recharge_week_"+i)
 			}
 		}
+	}
+	//领取每日免费礼包
+	this.gainFreeDayAward = function(uid,id,cb) {
+		if(!activity_cfg["free_day_"+id]){
+			cb(false,"礼包不存在")
+			return
+		}
+		self.getObj(uid,main_name,"free_day_"+id,function(data) {
+			if(!data || data == 0){
+				self.incrbyObj(uid,main_name,"free_day_"+id,1)
+				var awardList = self.addItemStr(uid,activity_cfg["free_day_"+id]["value"],1,"免费礼包"+id)
+				cb(true,awardList)
+			}else{
+				cb(false,"已领取")
+			}
+		})
 	}
 	//领取充值天数礼包
 	this.gainRPayDaysAward = function(uid,id,cb) {

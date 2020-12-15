@@ -823,6 +823,12 @@
             console.log(data);
         });
       }
+      //每日免费礼包
+      var gainFreeDayAward = function(id) {
+        pomelo.request("area.activityHandler.gainFreeDayAward", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
       //每日首充礼包
       var gainRechargeDayAward = function(id) {
         pomelo.request("area.activityHandler.gainRechargeDayAward", {id:id}, function(data) {
