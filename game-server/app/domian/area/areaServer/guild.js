@@ -417,14 +417,20 @@ module.exports = function() {
 	}
 	//获取宗族列表
 	this.getGuildList = function(uid,cb) {
+		var list = []
+		for(var guildId in guildList){
+			list.push(guildList[guildId])
+		}
+		list.sort(function() {return Math.random() > 0.5?1:-1})
+		list = list.slice(0,5)
 		var info = {
 			applys : applyMap[uid],
-			guildList : guildList,
+			guildList : list,
 			leadInfos : {}
 		}
 		var uids = []
-		for(var guildId in guildList){
-			uids.push(guildList[guildId]["lead"])
+		for(var i = 0;i < list.length;i++){
+			uids.push(list[i]["lead"])
 		}
 		self.getPlayerInfoByUids(uids,function(userInfos) {
 			info.leadInfos = userInfos
