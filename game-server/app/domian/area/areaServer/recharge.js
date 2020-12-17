@@ -8,6 +8,7 @@ const gift_list = require("../../../../config/gameCfg/gift_list.json")
 const gift_week = require("../../../../config/gameCfg/gift_week.json")
 const gift_month = require("../../../../config/gameCfg/gift_month.json")
 const pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
+const gift_loop = require("../../../../config/gameCfg/gift_loop.json")
 const util = require("../../../../util/util.js")
 const uuid = require("uuid")
 const main_name = "activity"
@@ -82,6 +83,9 @@ module.exports = function() {
 			case "stone_pri":
 				this.buyStonePri(uid,call_back.bind(this,uid))
 			break
+			case "gift_loop":
+				this.buyLoopGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+			break
 		}
 		cb(true)
 	}
@@ -114,6 +118,24 @@ module.exports = function() {
 				rate = recharge[index].normal_rate
 			var award = self.addItem({uid:uid,itemId:202,value:gold,rate:rate,reason:"充值"})
 			cb(true,{awardList:[award]})
+		})
+	}
+	//购买循环礼包
+	this.buyLoopGift = function(uid,loopId,cb) {
+		if(!loopId || !gift_loop[loopId]){
+			cb(false,"礼包不存在")
+			return
+		}
+		self.getObj(uid,main_name,"loop_"+loopId,function(data) {
+			if(data > 0){
+				console.log("循环礼包已购买",loopId)
+			}
+			self.addUserRMB(uid,gift_loop[loopId].rmb)
+			self.incrbyObj(uid,main_name,"loop_"+loopId,1)
+			var award = "202:"+gift_loop[loopId].gold
+			award += "&"+gift_loop[loopId].award
+			var awardList = self.addItemStr(uid,award,1,"循环礼包"+loopId)
+			cb(true,{awardList:awardList})
 		})
 	}
 	//激活等级基金
@@ -199,7 +221,7 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,awardBag_day[index].rmb)
 			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
-			var awardList = self.addItemStr(uid,awardBag_day[index].award,1,"购买买日礼包"+index)
+			var awardList = self.addItemStr(uid,awardBag_day[index].award,1,"每日礼包"+index)
 			cb(true,{awardList:awardList})
 		})
 	}
@@ -228,7 +250,7 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,gift_week[index].rmb)
 			self.incrbyObj(uid,"week_shop",index,1)
-			var awardList = self.addItemStr(uid,gift_week[index].award,1,"购买每周礼包"+index)
+			var awardList = self.addItemStr(uid,gift_week[index].award,1,"每周礼包"+index)
 			cb(true,{awardList:awardList})
 		})
 	}
@@ -246,7 +268,7 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,gift_month[index].rmb)
 			self.incrbyObj(uid,"month_shop",index,1)
-			var awardList = self.addItemStr(uid,gift_month[index].award,1,"购买每月礼包"+index)
+			var awardList = self.addItemStr(uid,gift_month[index].award,1,"每月礼包"+index)
 			cb(true,{awardList:awardList})
 		})
 	}
@@ -275,7 +297,7 @@ module.exports = function() {
 		self.getObj(uid,"limit_gift",id,function(data) {
 			if(data){
 				self.addUserRMB(uid,gift_list[id]["price"])
-				var awardList = self.addItemStr(uid,gift_list[id]["award"],1,"购买限时礼包"+id)
+				var awardList = self.addItemStr(uid,gift_list[id]["award"],1,"限时礼包"+id)
 				self.delObj(uid,"limit_gift",id)
 				cb(true,{awardList:awardList})
 			}else{
