@@ -82,7 +82,11 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
   	}
     var heroInfos = []
     var r_luck = this.areaManager.areaMap[areaId].players[uid]["r_luck"]
-    if(r_luck == -1){
+    if(r_luck == -2){
+    	r_luck = -1
+		var heroInfo = this.gainHero(areaId,uid,{id : 103020})
+		heroInfos.push(heroInfo)
+    }if(r_luck == -1){
     	r_luck = Math.floor(Math.random() * 3) + 20
 		var heroInfo = this.gainHero(areaId,uid,{id : 205070})
 		heroInfos.push(heroInfo)

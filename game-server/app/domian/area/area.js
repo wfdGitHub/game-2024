@@ -138,7 +138,7 @@ area.prototype.register = function(otps,cb) {
                     self.sendMail(playerInfo.uid,login_mail_title,login_mail_text,login_mail_atts)
 				//TODO test
 				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",1000500,1)
-				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",202,100)
+				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",1000080,1)
 				cb(true,playerInfo)
 			})
 		}

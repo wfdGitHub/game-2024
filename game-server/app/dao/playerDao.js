@@ -26,7 +26,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		maxSS : 0,
 		dayStr : 0,
 		weekStr : 0,
-		r_luck : -1,
+		r_luck : -2,
 		freeze : 0
 	}
 	var self = this
