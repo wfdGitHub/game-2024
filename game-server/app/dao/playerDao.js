@@ -26,7 +26,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		maxSS : 0,
 		dayStr : 0,
 		weekStr : 0,
-		r_luck : Math.floor(Math.random() * 3) + 20,
+		r_luck : -1,
 		freeze : 0
 	}
 	var self = this
@@ -41,7 +41,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 			if(!err){
 				self.redisDao.db.hset("game:nameMap",otps.name,uid)
 				self.heroDao.gainHero(otps.areaId,uid,{id : beginHero},function(flag,heroInfo) {
-					self.heroDao.setFightTeam(otps.areaId,uid,[null,heroInfo.hId,null,null,null,null])
+					self.heroDao.setFightTeam(otps.areaId,uid,[heroInfo.hId,0,null,null,null,null])
 				})
 				cb(playerInfo)
 			}else{
