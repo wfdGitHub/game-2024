@@ -80,6 +80,7 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
   		allWeight += weights["hero_10"]
   		weights["hero_10"] += weights["hero_10"]
   	}
+  	console.log(weights,allWeight)
     var heroInfos = []
     var r_luck = this.areaManager.areaMap[areaId].players[uid]["r_luck"]
     if(r_luck == -2){
