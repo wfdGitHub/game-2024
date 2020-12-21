@@ -104,12 +104,10 @@ module.exports = function() {
 	local.recruit = function(uid,num,count) {
 		var allWeight = recruit_base["topic"]["allWeight"]
 		var weights = Object.assign({},recruit_base["topic"]["weights"])
-		console.log("weights",weights)
 	  	if(self.checkLimitedTime("zhaohuan")){
 	  		allWeight += 200
 	  		weights["topic"] += 100
 	  		weights["hero_10"] += 100
-	  		console.log("召唤活动中",weights,allWeight)
 	  	}
 	    var heroInfos = []
 	    num = Number(num) || 0
