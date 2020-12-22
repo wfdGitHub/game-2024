@@ -82,57 +82,54 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
   	}
     var heroInfos = []
     var r_luck = this.areaManager.areaMap[areaId].players[uid]["r_luck"]
-    if(count == 1 && r_luck == -2){
-    	r_luck = -1
-		var heroInfo = this.gainHero(areaId,uid,{id : 103020})
-		heroInfos.push(heroInfo)
-    }else if(count == 1 && r_luck == -1){
-    	r_luck = Math.floor(Math.random() * 3) + 20
-		var heroInfo = this.gainHero(areaId,uid,{id : 205070})
-		heroInfos.push(heroInfo)
-    }else{
-	    var star4_num = 0
-	    var star5_num = 0
-	    for(var num = 0;num < count;num++){
-	    	if(r_luck >= 29){
-		      	var heroId = this.randHeroId("randChip_5_2")
-				var heroInfo = this.gainHero(areaId,uid,{id : heroId})
-				heroInfos.push(heroInfo)
-	    		r_luck = 0
-	    		star4_num++
-	    		star5_num++
-	    	}else if(num == 9 && (star4_num + star5_num) == 0){
-		      	var heroId = this.randHeroId("randChip_5_1")
-				var heroInfo = this.gainHero(areaId,uid,{id : heroId})
-				r_luck++
-				star4_num++
-				heroInfos.push(heroInfo)
-	    	}else{
-				var rand = Math.random() * allWeight
-				for(var i in weights){
-					if(rand < weights[i]){
-						var heroList = recruit_list[i].heroList
-						var heroId = heroList[Math.floor(heroList.length * Math.random())]
-						if(star5_num >= 2 && herosCfg[heroId].min_star >= 5){
-							heroId = this.randHeroId("randChip_5_1")
-						}
-						var heroInfo = this.gainHero(areaId,uid,{id : heroId})
-						heroInfos.push(heroInfo)
-						if(heroInfo.star < 5)
-							r_luck++
-						if(heroInfo.star == 4)
-							star4_num++
-						if(heroInfo.star == 5){
-							star5_num++
-							r_luck = 0
-						}
-						break
+    var star4_num = 0
+    var star5_num = 0
+    for(var num = 0;num < count;num++){
+    	if(r_luck == -2){
+    		r_luck = -1
+    		var heroInfo = this.gainHero(areaId,uid,{id : 103020})
+    		heroInfos.push(heroInfo)
+    	}else if(r_luck == -1){
+	    	r_luck = Math.floor(Math.random() * 3) + 20
+			var heroInfo = this.gainHero(areaId,uid,{id : 205070})
+			heroInfos.push(heroInfo)
+    	}else if(r_luck >= 29){
+	      	var heroId = this.randHeroId("randChip_5_2")
+			var heroInfo = this.gainHero(areaId,uid,{id : heroId})
+			heroInfos.push(heroInfo)
+    		r_luck = 0
+    		star4_num++
+    		star5_num++
+    	}else if(num == 9 && (star4_num + star5_num) == 0){
+	      	var heroId = this.randHeroId("randChip_5_1")
+			var heroInfo = this.gainHero(areaId,uid,{id : heroId})
+			r_luck++
+			star4_num++
+			heroInfos.push(heroInfo)
+    	}else{
+			var rand = Math.random() * allWeight
+			for(var i in weights){
+				if(rand < weights[i]){
+					var heroList = recruit_list[i].heroList
+					var heroId = heroList[Math.floor(heroList.length * Math.random())]
+					if(star5_num >= 2 && herosCfg[heroId].min_star >= 5){
+						heroId = this.randHeroId("randChip_5_1")
 					}
+					var heroInfo = this.gainHero(areaId,uid,{id : heroId})
+					heroInfos.push(heroInfo)
+					if(heroInfo.star < 5)
+						r_luck++
+					if(heroInfo.star == 4)
+						star4_num++
+					if(heroInfo.star == 5){
+						star5_num++
+						r_luck = 0
+					}
+					break
 				}
-	    	}
-	    }
+			}
+    	}
     }
-
     this.areaManager.areaMap[areaId].chageLordData(uid,"r_luck",r_luck)
   	return heroInfos
 }
