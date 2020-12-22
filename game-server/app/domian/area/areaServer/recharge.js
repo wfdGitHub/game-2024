@@ -12,7 +12,7 @@ const gift_loop = require("../../../../config/gameCfg/gift_loop.json")
 const util = require("../../../../util/util.js")
 const uuid = require("uuid")
 const main_name = "activity"
-const day31Time = 2678400000
+const day31Time = 2592000000
 module.exports = function() {
 	var self = this
 	//申请充值
