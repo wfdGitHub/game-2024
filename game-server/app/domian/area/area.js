@@ -114,6 +114,10 @@ area.prototype.firstDayUpdate = function() {
 	this.guildFirstUpdate()
 	this.guildTreasureFirstUpdate()
 	this.dayUpdateLimitedTime()
+	self.delAreaObj("areaInfo","day_create")
+	self.delAreaObj("areaInfo","day_login")
+	self.delAreaObj("areaInfo","day_play_count")
+	self.delAreaObj("areaInfo","day_play_amount")
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
@@ -137,6 +141,7 @@ area.prototype.register = function(otps,cb) {
                 if(login_mail_title)
                     self.sendMail(playerInfo.uid,login_mail_title,login_mail_text,login_mail_atts)
 				//TODO test
+				self.incrbyAreaObj("areaInfo","day_create",1)
 				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",1000500,1)
 				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",1000080,1)
 				cb(true,playerInfo)
@@ -213,6 +218,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.festivalUserDayUpdate(uid)
 	this.guildRefresh(uid)
 	this.TopicRecruitRefresh(uid)
+	this.incrbyAreaObj("areaInfo","day_login",1)
 }
 //玩家每周首次登陆
 area.prototype.weekFirstLogin = function(uid) {

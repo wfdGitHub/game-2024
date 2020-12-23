@@ -49,7 +49,6 @@ areaDao.prototype.createArea = function(cb) {
 //删除服务器
 areaDao.prototype.destoryArea = function(areaId) {
 	console.log("关闭服务器",areaId)
-	this.redisDao.db.del("area:area"+areaId+":areaInfo")
 	this.redisDao.db.lrem("area:list",0,areaId)
 	this.redisDao.db.del("area:area"+areaId+":robots")
 	this.redisDao.db.del("area:area"+areaId+":arena")

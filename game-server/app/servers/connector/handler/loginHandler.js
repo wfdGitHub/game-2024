@@ -194,10 +194,9 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 				// session.push("real_rmb")
 				playerInfo.areaId = areaId
 				self.cacheDao.saveCache(Object.assign({"messagetype":"login"},playerInfo))
-		        next(null,{flag : flag,msg : playerInfo})
-			}else{
-				next(null,{flag : flag,msg : playerInfo})
 			}
+			
+			next(null,{flag : flag,msg : playerInfo})
 		})
     })
 }
@@ -206,12 +205,14 @@ var onUserLeave = function(session) {
 		return
 	var uid = session.uid
 	if(uid){
+		var dt = Date.now() - session.get("beginTime")
 		session.unbind(uid)
 		var accId = session.get("accId")
 		var beginTime = session.get("beginTime")
 		var serverId = session.get("serverId")
 		if(accId)
 			this.accountDao.updatePlaytime({accId : accId,beginTime : beginTime})
+		this.cacheDao.saveCache({"messagetype":"leave",time:dt,uid:uid,accId:accId,name:session.get("name"),beginTime:beginTime})
 		if(serverId)
 			this.app.rpc.area.areaRemote.userLeave.toServer(serverId,uid,this.app.serverId,null)
 		this.app.rpc.chat.chatRemote.userLeave(null,uid,this.app.serverId,null)

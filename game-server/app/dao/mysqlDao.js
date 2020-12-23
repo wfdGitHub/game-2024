@@ -7,7 +7,7 @@ mysqlDao.prototype.init  = function() {
 }
 //添加聊天记录
 mysqlDao.prototype.addChatRecord  = function(uid,nickname,text,roomName) {
-	sql = 'insert into chat_record SET ?'
+	var sql = 'insert into chat_record SET ?'
 	var info = {
 		time : Date.now(),
 		uid : uid,
@@ -53,5 +53,6 @@ module.exports = {
 	id : "mysqlDao",
 	func : mysqlDao,
 	init : "init",
-	props : []
+	props : [],
+	order : 0
 }

@@ -263,6 +263,7 @@ module.exports = function() {
 					self.redisDao.db.hmset("guild:guildInfo:"+guildId,guildList[guildId])
 					self.redisDao.db.hmset("guild:contributions:"+guildId,contributions[guildId])
 					self.addGuildLog(guildId,{type:"create"})
+					self.cacheDao.saveCache({"messagetype":"joinGuild","gname":name,"uid":uid})
 					self.getPlayerInfoByUids([uid],function(userInfos) {
 						guildInfo.leadInfo = userInfos[0]
 						cb(true,guildInfo)
@@ -561,6 +562,7 @@ module.exports = function() {
 			contributions[guildId][uid] = 0
 			self.redisDao.db.hset("guild:contributions:"+guildId,uid,0)
 			self.sendMail(uid,"加入宗族","您已成功加入【"+gname+"】")
+			self.cacheDao.saveCache({"messagetype":"joinGuild","gname":gname,"uid":uid})
 			self.addGuildLog(guildId,{type:"join",uid:uid,name:applyList[guildId][uid]["name"]})
 			self.sendToGuild(guildId,{type:"joinGuild",guildId:guildId,userName:applyList[guildId][uid]["name"],uid:uid,name:gname})
 			for(var i in applyMap[uid]){
@@ -584,6 +586,7 @@ module.exports = function() {
 		})
 		self.setObj(uid,main_name,"cd",Date.now()+86400000)
 		self.sendMail(uid,"退出宗族","您已离开【"+guildList[guildId]["name"]+"】")
+		self.cacheDao.saveCache({"messagetype":"leaveGuild","guildId":guildId,"uid":uid})
 		self.sendToUser(uid,{type:"leaveGuild",guildId : guildId,name:guildList[guildId]["name"]})
 		self.cancelGuildCityAllTeam(guildId,uid)
 		self.cancelGuildPKAllTeam(guildId,uid)

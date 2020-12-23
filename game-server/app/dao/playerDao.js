@@ -43,6 +43,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 				self.heroDao.gainHero(otps.areaId,uid,{id : beginHero},function(flag,heroInfo) {
 					self.heroDao.setFightTeam(otps.areaId,uid,[heroInfo.hId,0,null,null,null,null])
 				})
+				self.cacheDao.saveCache(Object.assign({"messagetype":"create"},playerInfo))
 				cb(playerInfo)
 			}else{
 				cb(false)
@@ -134,5 +135,8 @@ module.exports = {
 	},{
 		name : "heroDao",
 		ref : "heroDao"
+	},{
+		name : "cacheDao",
+		ref : "cacheDao"
 	}]
 }
