@@ -48,6 +48,9 @@ cacheDao.prototype.saveCache = function(info) {
 		case "itemChange":
 			local.itemLog(this,info)
 		break
+		case "adminSendMail":
+			local.adminSendMail(this,info)
+		break
 	}
 	// return
 	// info.time = Date.now()
@@ -158,6 +161,23 @@ local.finishGameOrder = function(self,info) {
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_count",1)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","day_play_amount",info.amoun)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_amount",info.amoun)
+}
+local.adminSendMail = function(self,info) {
+	var sql1 = 'insert into mail_log SET ?'
+	var info1 = {
+		admin : info.adminAccId,
+		uid : info.uid,
+		areaId : info.areaId,
+		title : info.title,
+		text : info.text,
+		atts : info.atts,
+		time : Date.now()
+	}
+	self.mysqlDao.db.query(sql1,info1, function(err, res) {
+		if (err) {
+			console.error('adminSendMail! ' + err.stack);
+		}
+	})
 }
 local.itemLog = function(self,info) {
 	var sql1 = 'insert into item_log SET ?'

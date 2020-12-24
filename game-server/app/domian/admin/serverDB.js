@@ -128,6 +128,36 @@ var model = function() {
 			})
 		})
 	}
+	//获取邮件日志
+	posts["/mail_log"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var arr = []
+		if(data.uid)
+			arr.push({key : "uid",value : data.uid})
+		if(data.admin)
+			arr.push({key : "admin",value : data.admin})
+		if(data.areaId)
+			arr.push({key : "areaId",value : data.areaId})
+		var info = local.getSQL("mail_log",arr,pageSize,pageCurrent,"id")
+		var sql1 = info.sql1
+		var sql2 = info.sql2
+		var args1 = info.args1
+		var args2 = info.args2
+		var info = {}
+		self.mysqlDao.db.query(sql1,args1,function(err,total) {
+			info.total = JSON.parse(JSON.stringify(total))[0]["count(*)"]
+			self.mysqlDao.db.query(sql2,args2, function(err, list) {
+				if (err) {
+					// console.log('getCDTypeList! ' + err.stack);
+					return
+				}
+				info.list = JSON.parse(JSON.stringify(list))
+				res.send(info)
+			})
+		})
+	}
 	//获取登陆日志
 	posts["/login_log"] = function(req,res) {
 		var data = req.body
