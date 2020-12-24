@@ -114,10 +114,10 @@ area.prototype.firstDayUpdate = function() {
 	this.guildFirstUpdate()
 	this.guildTreasureFirstUpdate()
 	this.dayUpdateLimitedTime()
-	self.delAreaObj("areaInfo","day_create")
-	self.delAreaObj("areaInfo","day_login")
-	self.delAreaObj("areaInfo","day_play_count")
-	self.delAreaObj("areaInfo","day_play_amount")
+	this.delAreaObj("areaInfo","day_create")
+	this.delAreaObj("areaInfo","day_login")
+	this.delAreaObj("areaInfo","day_play_count")
+	this.delAreaObj("areaInfo","day_play_amount")
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {

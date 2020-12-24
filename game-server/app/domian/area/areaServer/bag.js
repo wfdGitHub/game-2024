@@ -231,7 +231,7 @@ module.exports = function() {
 						break
 					}
 					// if(itemChangeMap[itemId])
-						self.cacheDao.saveItemChange({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue,reason:otps.reason})
+					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue,reason:otps.reason})
 					var notify = {
 						"type" : "addItem",
 						"itemId" : itemId,

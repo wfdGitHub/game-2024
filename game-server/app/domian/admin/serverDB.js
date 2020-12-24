@@ -158,6 +158,38 @@ var model = function() {
 			})
 		})
 	}
+	//获取道具日志
+	posts["/item_log"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var arr = []
+		if(data.uid)
+			arr.push({key : "uid",value : data.uid})
+		if(data.itemId)
+			arr.push({key : "itemId",value : data.itemId})
+		if(data.reason)
+			arr.push({key : "reason",value : data.reason})
+		if(data.type)
+			arr.push({key : "type",value : data.type})
+		var info = local.getSQL("item_log",arr,pageSize,pageCurrent,"id")
+		var sql1 = info.sql1
+		var sql2 = info.sql2
+		var args1 = info.args1
+		var args2 = info.args2
+		var info = {}
+		self.mysqlDao.db.query(sql1,args1,function(err,total) {
+			info.total = JSON.parse(JSON.stringify(total))[0]["count(*)"]
+			self.mysqlDao.db.query(sql2,args2, function(err, list) {
+				if (err) {
+					// console.log('getCDTypeList! ' + err.stack);
+					return
+				}
+				info.list = JSON.parse(JSON.stringify(list))
+				res.send(info)
+			})
+		})
+	}
 	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
 		var sql1 = "select count(*) from "+tableName
 		var sql2 = "select * from "+tableName	

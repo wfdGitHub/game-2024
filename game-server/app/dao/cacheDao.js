@@ -45,20 +45,24 @@ cacheDao.prototype.saveCache = function(info) {
 		case "finishGameOrder":
 			local.finishGameOrder(this,info)
 		break
+		case "itemChange":
+			local.itemLog(this,info)
+		break
 	}
 	// return
 	// info.time = Date.now()
 	// this.db.rpush(publish_normal,JSON.stringify(info))
 }
 cacheDao.prototype.saveChat = function(info) {
-	return
-	info.time = Date.now()
-	this.db.rpush(publish_chat,JSON.stringify(info))
+	// return
+	// info.time = Date.now()
+	// this.db.rpush(publish_chat,JSON.stringify(info))
 }
 cacheDao.prototype.saveItemChange = function(info) {
-	return
-	info.time = Date.now()
-	this.db.rpush(publish_item,JSON.stringify(info))
+	console.log("saveItemChange",info)
+	// return
+	// info.time = Date.now()
+	// this.db.rpush(publish_item,JSON.stringify(info))
 }
 local.create = function(self,info) {
 	var sql = 'insert into user_list SET ?'
@@ -154,6 +158,23 @@ local.finishGameOrder = function(self,info) {
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_count",1)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","day_play_amount",info.amoun)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_amount",info.amoun)
+}
+local.itemLog = function(self,info) {
+	var sql1 = 'insert into item_log SET ?'
+	var info1 = {
+		uid : info.uid,
+		itemId : info.itemId,
+		value : info.value,
+		curValue : info.curValue,
+		reason : info.reason,
+		type : info.value >= 0 ? 1 : 2,
+		time : Date.now()
+	}
+	self.mysqlDao.db.query(sql1,info1, function(err, res) {
+		if (err) {
+			console.error('itemLog! ' + err.stack);
+		}
+	})
 }
 module.exports = {
 	id : "cacheDao",
