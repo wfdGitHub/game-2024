@@ -364,8 +364,9 @@ area.prototype.getBaseUser = function(uid) {
 	return info
 }
 //基准战力阵容
-area.prototype.standardTeam = function(uid,team,dl) {
-	let lv = this.getLordLv(uid)
+area.prototype.standardTeam = function(uid,team,dl,lv) {
+	if(!lv)
+		lv = this.getLordLv(uid)
 	let standardInfo = standard_ce[lv]
 	let dlInfo = standard_dl[dl]
 	let info = Object.assign({},standardInfo)
