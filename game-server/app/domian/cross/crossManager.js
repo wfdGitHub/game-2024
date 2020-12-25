@@ -48,7 +48,7 @@ crossManager.prototype.update = function() {
 	var date = new Date()
 	this.escortUpdate(date)
 	this.peakUpdate(date)
-	var curDayStr = (new Date()).toLocaleDateString()
+	var curDayStr = (new Date()).toDateString()
 	if(this.dayStr !== curDayStr){
 		this.dayUpdate(curDayStr)
 	}

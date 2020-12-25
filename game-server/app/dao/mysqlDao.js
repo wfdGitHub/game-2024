@@ -1,10 +1,12 @@
 const stringRandom = require('string-random');
 var mysql = require("./mysql/mysql.js")
-var util = require("../../util/util.js")
+const util = require("../../util/util.js")
+console.log("util!!!!!",util)
 var pageNum = 11
 var mysqlDao = function() {}
 mysqlDao.prototype.init  = function() {
 	this.db = mysql.init()
+
 }
 var retention_days = [1,2,3,4,5,6,7,15,30,45,60]
 var ltv_days = [1,2,3,4,5,7,15,30,45,60]
@@ -55,7 +57,7 @@ mysqlDao.prototype.getChatRecordList = function(dataNum,cb) {
 //创建今日报表
 mysqlDao.prototype.createDayTable = function() {
 	var sql = "select * from daily_table where date=?"
-	var date = (new Date()).toLocaleDateString()
+	var date = (new Date()).toDateString()
 	var args = [date]
 	var self = this
 	self.db.query(sql,args, function(err, res) {
@@ -64,6 +66,7 @@ mysqlDao.prototype.createDayTable = function() {
 			return
 		}
 		res =JSON.parse( JSON.stringify(res))
+		console.log("res",res)
 		if(!res.length){
 			var sql1 = 'insert into daily_table SET ?'
 			var info1 = {
@@ -72,7 +75,7 @@ mysqlDao.prototype.createDayTable = function() {
 				userNum : 0,
 				activeNum : 0,
 				n_pay_amount : 0,
-				a_play_amount : 0,
+				a_pay_amount : 0,
 				n_pay_number : 0,
 				a_pay_number : 0
 			}
@@ -132,7 +135,7 @@ mysqlDao.prototype.createDayTable = function() {
 //更新单日报表
 mysqlDao.prototype.addDaylyData  = function(key,num) {
 	console.log("addDaylyData",key,num)
-	var date = (new Date()).toLocaleDateString()
+	var date = (new Date()).toDateString()
 	var sql = "update daily_table SET "+key+"="+key+"+? where date=?"
 	var args = [num,date];
 	this.db.query(sql,args, function(err, res) {
@@ -144,8 +147,8 @@ mysqlDao.prototype.addDaylyData  = function(key,num) {
 }
 //玩家登陆更新留存报表
 mysqlDao.prototype.updateRetention = function(uid,createTime) {
-	var date = (new Date(createTime)).toLocaleDateString()
-	var day = Math.ceil((Date.now() - util.getgetZeroTime(createTime)) / 86400000)
+	var date = (new Date(createTime)).toDateString()
+	var day = Math.ceil((Date.now() - this.util.getgetZeroTime(createTime)) / 86400000)
 	var index = "more"
 	for(var i = 0;i < retention_days.length;i++){
 		if(day <= retention_days[i]){
@@ -160,7 +163,7 @@ mysqlDao.prototype.updateRetention = function(uid,createTime) {
 mysqlDao.prototype.addRetentionData  = function(key,num,date) {
 	console.log("retention_table",key,num)
 	if(!date)
-		date = (new Date()).toLocaleDateString()
+		date = (new Date()).toDateString()
 	var sql = "update retention_table SET "+key+"="+key+"+? where date=?"
 	var args = [num,date];
 	this.db.query(sql,args, function(err, res) {
@@ -172,8 +175,8 @@ mysqlDao.prototype.addRetentionData  = function(key,num,date) {
 }
 //玩家充值更新LTV报表
 mysqlDao.prototype.updateLTV = function(uid,amount,createTime) {
-	var date = (new Date(createTime)).toLocaleDateString()
-	var day = Math.ceil((Date.now() - util.getgetZeroTime(createTime)) / 86400000)
+	var date = (new Date(createTime)).toDateString()
+	var day = Math.ceil((Date.now() - this.util.getgetZeroTime(createTime)) / 86400000)
 	var index = "more"
 	for(var i = 0;i < ltv_days.length;i++){
 		if(day <= ltv_days[i]){
@@ -188,7 +191,7 @@ mysqlDao.prototype.updateLTV = function(uid,amount,createTime) {
 mysqlDao.prototype.addLTVData  = function(key,num,date) {
 	console.log("LTV_table",key,num)
 	if(!date)
-		date = (new Date()).toLocaleDateString()
+		date = (new Date()).toDateString()
 	var sql = "update LTV_table SET "+key+"="+key+"+? where date=?"
 	var args = [num,date];
 	this.db.query(sql,args, function(err, res) {

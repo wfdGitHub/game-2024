@@ -80,7 +80,7 @@ area.prototype.destory = function() {
 //update
 area.prototype.update = function() {
 	this.runTime += 1000
-	var curDayStr = (new Date()).toLocaleDateString()
+	var curDayStr = (new Date()).toDateString()
 	if(this.dayStr !== curDayStr){
 		this.dayUpdate(curDayStr)
 	}

@@ -39,7 +39,7 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 payDao.prototype.finishGameOrder = function(otps,cb) {
 	var self = this
 	var sql = "select * from game_order where game_order = ?"
-	var daySyr = (new Date()).toLocaleDateString()
+	var daySyr = (new Date()).toDateString()
 	self.db.query(sql,[otps.game_order], function(err, res) {
 		if(err || !res){
 			console.error(err)
@@ -88,7 +88,7 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 	var self = this
 	var sql = "select * from game_order where game_order = ?"
-	var daySyr = (new Date()).toLocaleDateString()
+	var daySyr = (new Date()).toDateString()
 	otps.game_order = otps.extras_params
 	self.db.query(sql,[otps.extras_params], function(err, res) {
 		if(err || !res){

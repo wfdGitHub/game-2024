@@ -1,6 +1,7 @@
 const area_boss_cfg = require("../../../../config/gameCfg/area_boss_cfg.json")
 const area_boss_base = require("../../../../config/gameCfg/area_boss_base.json")
 var util = require("../../../../util/util.js")
+console.log("util2 !!!!",util)
 const main_name = "area_boss"
 var maxBoss = 0
 for(var i in area_boss_base){
