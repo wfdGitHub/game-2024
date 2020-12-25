@@ -205,6 +205,9 @@ module.exports = {
 	id : "mysqlDao",
 	func : mysqlDao,
 	init : "init",
-	props : [],
-	order : 0
+	order : 0,
+	props : [{
+		name : "redisDao",
+		ref : "redisDao"
+	}]
 }
