@@ -11,6 +11,14 @@ var model = function() {
 			server.post(key,posts[key])
 		}
 	}
+	//获取总数据
+	posts["/game_info"] = function(req,res) {
+		var data = req.body
+		console.log("areaInfos",data)
+		self.redisDao.db.hgetall("game:info",function(err,data) {
+			res.send(data)
+		})
+	}
 	//获取服务器列表
 	posts["/areaInfos"] = function(req,res) {
 		var data = req.body

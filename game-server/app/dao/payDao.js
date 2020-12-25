@@ -75,9 +75,6 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 					otps.messagetype = "finishGameOrder"
 					otps.goodsName = pay_cfg[data.pay_id]["name"]
 					self.cacheDao.saveCache(otps)
-					self.redisDao.db.hincrby("game:recharge_amount",otps.areaId,data.amount)
-					self.redisDao.db.hincrby("game:recharge_date",daySyr,data.amount)
-					self.redisDao.db.hincrby("game:recharge_date","all",data.amount)
 					cb(true,null,data)
 				}
 			}
@@ -125,9 +122,6 @@ payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 					otps.messagetype = "finishGameOrder"
 					otps.goodsName = pay_cfg[data.pay_id]["name"]
 					self.cacheDao.saveCache(otps)
-					self.redisDao.db.hincrby("game:recharge_amount",otps.areaId,data.amount)
-					self.redisDao.db.hincrby("game:recharge_date",daySyr,data.amount)
-					self.redisDao.db.hincrby("game:recharge_date","all",data.amount)
 					cb(true,null,data)
 				}
 			}

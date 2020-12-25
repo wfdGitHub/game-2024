@@ -157,6 +157,7 @@ local.finishGameOrder = function(self,info) {
 			console.error('login! ' + err.stack);
 		}
 	})
+	self.redisDao.db.hincrby("game:info","amount",info.amount)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","day_play_count",1)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_count",1)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","day_play_amount",info.amount)
