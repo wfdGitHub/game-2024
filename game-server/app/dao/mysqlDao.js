@@ -61,11 +61,10 @@ mysqlDao.prototype.createDayTable = function() {
 	var self = this
 	self.db.query(sql,args, function(err, res) {
 		if (err) {
-			console.log('createDayTable! ' + err.stack);
+			console.error('createDayTable! ' + err.stack);
 			return
 		}
 		res =JSON.parse( JSON.stringify(res))
-		console.log("res",res)
 		if(!res.length){
 			var sql1 = 'insert into daily_table SET ?'
 			var info1 = {
@@ -133,12 +132,10 @@ mysqlDao.prototype.createDayTable = function() {
 }
 //更新单日报表
 mysqlDao.prototype.addDaylyData  = function(key,num) {
-	console.log("addDaylyData",key,num)
 	var date = (new Date()).toDateString()
 	var sql = "update daily_table SET "+key+"="+key+"+? where date=?"
 	var args = [num,date];
 	this.db.query(sql,args, function(err, res) {
-		console.log(sql,res)
 		if (err) {
 			console.error('addDaylyData! ' + err.stack);
 		}
@@ -155,18 +152,15 @@ mysqlDao.prototype.updateRetention = function(uid,createTime) {
 			break
 		}
 	}
-	console.log("day ",day,"index",index)
 	this.addRetentionData("retention_"+index,1,date)
 }
 //更新留存报表
 mysqlDao.prototype.addRetentionData  = function(key,num,date) {
-	console.log("retention_table",key,num)
 	if(!date)
 		date = (new Date()).toDateString()
 	var sql = "update retention_table SET "+key+"="+key+"+? where date=?"
 	var args = [num,date];
 	this.db.query(sql,args, function(err, res) {
-		console.log(sql,res)
 		if (err) {
 			console.error('retention_table! ' + err.stack);
 		}
@@ -183,18 +177,15 @@ mysqlDao.prototype.updateLTV = function(uid,amount,createTime) {
 			break
 		}
 	}
-	console.log("day ",day,"index",index)
 	this.addLTVData("LTV_"+index,amount,date)
 }
 //更新LTV报表
 mysqlDao.prototype.addLTVData  = function(key,num,date) {
-	console.log("LTV_table",key,num)
 	if(!date)
 		date = (new Date()).toDateString()
 	var sql = "update LTV_table SET "+key+"="+key+"+? where date=?"
 	var args = [num,date];
 	this.db.query(sql,args, function(err, res) {
-		console.log(sql,res)
 		if (err) {
 			console.error('LTV_table! ' + err.stack);
 		}
