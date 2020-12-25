@@ -166,7 +166,7 @@ local.finishGameOrder = function(self,info) {
 		createTime = Number(createTime)
 		if((new Date(createTime)).toLocaleDateString() == (new Date()).toLocaleDateString()){
 			//新角色充值
-			console.loh("新角色充值")
+			console.log("新角色充值")
 			self.mysqlDao.addDaylyData("n_pay_amount",info.amount)
 			self.mysqlDao.addDaylyData("n_pay_number",1)
 		}
