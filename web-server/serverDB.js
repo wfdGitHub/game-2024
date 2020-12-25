@@ -226,7 +226,7 @@ var model = function() {
 		var pageSize = data.pageSize
 		var pageCurrent = data.pageCurrent
 		var arr = []
-		var info = local.getSQL("daily_table",arr,pageSize,pageCurrent,"date")
+		var info = local.getSQL("daily_table",arr,pageSize,pageCurrent,"id")
 		var sql1 = info.sql1
 		var sql2 = info.sql2
 		var args1 = info.args1
@@ -250,7 +250,7 @@ var model = function() {
 		var pageSize = data.pageSize
 		var pageCurrent = data.pageCurrent
 		var arr = []
-		var info = local.getSQL("retention_table",arr,pageSize,pageCurrent,"date")
+		var info = local.getSQL("retention_table",arr,pageSize,pageCurrent,"id")
 		var sql1 = info.sql1
 		var sql2 = info.sql2
 		var args1 = info.args1
@@ -274,7 +274,7 @@ var model = function() {
 		var pageSize = data.pageSize
 		var pageCurrent = data.pageCurrent
 		var arr = []
-		var info = local.getSQL("LTV_table",arr,pageSize,pageCurrent,"date")
+		var info = local.getSQL("LTV_table",arr,pageSize,pageCurrent,"id")
 		var sql1 = info.sql1
 		var sql2 = info.sql2
 		var args1 = info.args1
@@ -310,7 +310,7 @@ var model = function() {
 		}
 		sql2 += " order by "+key+" desc LIMIT ?,"+pageSize
 		args2.push((pageCurrent-1)*pageSize)
-		console.log("getSQL sql1",sql1,"sql2",sql2,args1,args2)
+		// console.log("getSQL sql1",sql1,"sql2",sql2,args1,args2)
 		return {sql1:sql1,sql2:sql2,args1:args1,args2:args2}
 	}
 }
