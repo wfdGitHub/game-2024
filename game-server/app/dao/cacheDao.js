@@ -163,11 +163,9 @@ local.finishGameOrder = function(self,info) {
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","day_play_amount",info.amount)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_amount",info.amount)
 	self.redisDao.db.hget("player:user:"+info.uid+":playerInfo","createTime",function(err,createTime) {
-		console.log("createTime",createTime)
 		createTime = Number(createTime)
 		if((new Date(createTime)).toDateString() == (new Date()).toDateString()){
 			//新角色充值
-			console.log("新角色充值")
 			self.mysqlDao.addDaylyData("n_pay_amount",info.amount)
 			self.mysqlDao.addDaylyData("n_pay_number",1)
 		}
