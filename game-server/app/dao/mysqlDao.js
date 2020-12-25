@@ -75,7 +75,9 @@ mysqlDao.prototype.createDayTable = function() {
 				n_pay_amount : 0,
 				a_pay_amount : 0,
 				n_pay_number : 0,
-				a_pay_number : 0
+				a_pay_number : 0,
+				n_pay_user : 0,
+				a_pay_user : 0
 			}
 			self.db.query(sql1,info1, function(err, res) {
 				if (err) {
@@ -171,13 +173,21 @@ mysqlDao.prototype.updateLTV = function(uid,amount,createTime) {
 	var date = (new Date(createTime)).toDateString()
 	var day = Math.ceil((Date.now() - util.getZeroTime(createTime)) / 86400000)
 	var index = "more"
+	var self = this
 	for(var i = 0;i < ltv_days.length;i++){
 		if(day <= ltv_days[i]){
 			index = ltv_days[i]
 			break
 		}
 	}
-	this.addLTVData("LTV_"+index,amount,date)
+	self.addLTVData("LTV_"+index,amount,date)
+	self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","pay_state",1,function(err,data) {
+		if(data == 1){
+			if(day == 1)
+				self.addDaylyData("n_pay_user",info.amount)
+			self.addDaylyData("a_pay_user",info.amount)
+		}
+	})
 }
 //更新LTV报表
 mysqlDao.prototype.addLTVData  = function(key,num,date) {

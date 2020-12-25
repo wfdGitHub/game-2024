@@ -156,7 +156,6 @@ local.finishGameOrder = function(self,info) {
 		if (err) {
 			console.error('login! ' + err.stack);
 		}
-		console.log("res",JSON.parse(JSON.stringify(res)))
 	})
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","day_play_count",1)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_count",1)

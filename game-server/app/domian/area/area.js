@@ -219,6 +219,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.guildRefresh(uid)
 	this.TopicRecruitRefresh(uid)
 	this.incrbyAreaObj("areaInfo","day_login",1)
+	this.playerDao.setPlayerInfo({uid:uid,key:"pay_state",value:0})
 	this.mysqlDao.addDaylyData("activeNum",1)
 	this.mysqlDao.updateRetention(uid,this.players[uid]["createTime"])
 }
