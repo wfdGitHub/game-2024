@@ -64,7 +64,7 @@ module.exports = function() {
 	//宗族红包定时发放
 	this.guildGiveGift = function() {
 		// console.log("宗族红包定时发放")
-		var curDayStr = (new Date()).toDateString()
+		var curDayStr = (new Date()).toLocaleDateString()
 		var arr = []
 		for(var guildId in guildList){
 			arr.push(guildId)

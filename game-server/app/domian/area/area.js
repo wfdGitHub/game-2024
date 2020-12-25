@@ -80,7 +80,7 @@ area.prototype.destory = function() {
 //update
 area.prototype.update = function() {
 	this.runTime += 1000
-	var curDayStr = (new Date()).toDateString()
+	var curDayStr = (new Date()).toLocaleDateString()
 	if(this.dayStr !== curDayStr){
 		this.dayUpdate(curDayStr)
 	}
@@ -219,6 +219,8 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.guildRefresh(uid)
 	this.TopicRecruitRefresh(uid)
 	this.incrbyAreaObj("areaInfo","day_login",1)
+	this.mysqlDao.addDaylyData("activeNum",1)
+	this.mysqlDao.updateRetention(uid,self.players[uid]["createTime"])
 }
 //玩家每周首次登陆
 area.prototype.weekFirstLogin = function(uid) {
@@ -496,5 +498,8 @@ module.exports = {
 	},{
 		name : "cacheDao",
 		ref : "cacheDao"
+	},{
+		name : "mysqlDao",
+		ref : "mysqlDao"
 	}]
 }

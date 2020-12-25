@@ -161,6 +161,19 @@ local.finishGameOrder = function(self,info) {
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_count",1)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","day_play_amount",info.amoun)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_amount",info.amoun)
+	self.redisDao.db.hget("player:user:"+info.uid+":playerInfo","createTime",function(err,createTime) {
+		console.log("createTime",createTime)
+		createTime = Number(createTime)
+		if((new Date(createTime)).toLocaleDateString() == (new Date()).toLocaleDateString()){
+			//新角色充值
+			console.loh("新角色充值")
+			self.mysqlDao.addDaylyData("n_pay_amount",info.amount)
+			self.mysqlDao.addDaylyData("n_pay_number",1)
+		}
+		self.mysqlDao.addDaylyData("a_pay_amount",info.amount)
+		self.mysqlDao.addDaylyData("a_pay_number",1)
+		self.mysqlDao.updateLTV(info.uid,info.amount,createTime)
+	})
 }
 local.adminSendMail = function(self,info) {
 	var sql1 = 'insert into mail_log SET ?'
@@ -200,10 +213,12 @@ module.exports = {
 	id : "cacheDao",
 	func : cacheDao,
 	init : "init",
-	async : true,
 	order : 0,
 	props : [{
 		name : "mysqlDao",
 		ref : "mysqlDao"
+	},{
+		name : "redisDao",
+		ref : "redisDao"
 	}]
 }

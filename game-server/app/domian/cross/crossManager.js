@@ -28,6 +28,7 @@ crossManager.prototype.dayUpdate = function(curDayStr) {
 	console.log("跨服服务器每日刷新")
 	var self = this
 	this.dayStr = curDayStr
+	self.mysqlDao.createDayTable()
 	this.gradingDayUpdate()
 	this.peakDayUpdate()
 	this.muyeDayUpdate()
@@ -47,7 +48,7 @@ crossManager.prototype.update = function() {
 	var date = new Date()
 	this.escortUpdate(date)
 	this.peakUpdate(date)
-	var curDayStr = (new Date()).toDateString()
+	var curDayStr = (new Date()).toLocaleDateString()
 	if(this.dayStr !== curDayStr){
 		this.dayUpdate(curDayStr)
 	}
@@ -267,5 +268,8 @@ module.exports = {
 	},{
 		name : "redisDao",
 		ref : "redisDao"
+	},{
+		name : "mysqlDao",
+		ref : "mysqlDao"
 	}]
 }

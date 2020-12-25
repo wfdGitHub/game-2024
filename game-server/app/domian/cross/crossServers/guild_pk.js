@@ -9,7 +9,7 @@ module.exports = function() {
 	this.guildPKDayUpdate = function() {
 		var d = new Date()
 		var day = d.getDay()
-		var curDayStr = d.toDateString()
+		var curDayStr = d.toLocaleDateString()
 		if(day == 0){
 			console.log("周日 开始检测跨服宗族战")
 			self.redisDao.db.hget(main_name,"dayStr",function(err,data) {

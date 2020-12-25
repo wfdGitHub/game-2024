@@ -21,6 +21,9 @@ accountDao.prototype.createAccount = function(otps,cb) {
 			self.redisDao.db.hmset("acc:user:"+userInfo.accId+":base",userInfo)
 			//建立映射
 			self.redisDao.db.hset("acc:accMap:unionid",userInfo.unionid,userInfo.accId)
+			self.mysqlDao.addDaylyData("accNum",1)
+			self.mysqlDao.addRetentionData("accNum",1)
+			self.mysqlDao.addLTVData("accNum",1)
 			cb(true,userInfo)
 		}else{
 			cb(false,"createAccount error")
@@ -117,5 +120,8 @@ module.exports = {
 	props : [{
 		name : "redisDao",
 		ref : "redisDao"
+	},{
+		name : "mysqlDao",
+		ref : "mysqlDao"
 	}]
 }

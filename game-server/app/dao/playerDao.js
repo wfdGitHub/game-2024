@@ -31,6 +31,9 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 	}
 	var self = this
 	self.redisDao.db.hincrby("area:area"+otps.areaId+":areaInfo","playerAmount",1)
+	self.mysqlDao.addDaylyData("userNum",1)
+	self.mysqlDao.addRetentionData("userNum",1)
+	self.mysqlDao.addLTVData("userNum",1)
 	self.redisDao.db.incrby("user:lastid",1,function(err,uid) {
 		uid = parseInt(uid)
 		playerInfo.uid = uid
@@ -138,5 +141,8 @@ module.exports = {
 	},{
 		name : "cacheDao",
 		ref : "cacheDao"
+	},{
+		name : "mysqlDao",
+		ref : "mysqlDao"
 	}]
 }

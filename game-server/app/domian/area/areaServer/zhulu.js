@@ -60,7 +60,7 @@ module.exports = function() {
 		self.getObjAll(uid,main_name,function(data) {
 			if(!data || self.dayStr != data.dayStr){
 				data = {
-					dayStr : (new Date()).toDateString(),
+					dayStr : (new Date()).toLocaleDateString(),
 					curGrid : 0,
 					curChoose : -1,
 					surplus_healths : {},
