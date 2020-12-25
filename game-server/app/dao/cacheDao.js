@@ -22,7 +22,7 @@ cacheDao.prototype.init = function(cb) {
 	cb()
 }
 cacheDao.prototype.saveCache = function(info) {
-	console.log("saveCache",info)
+	// console.log("saveCache",info)
 	switch(info.messagetype){
 		case "create":
 			local.create(this,info)
@@ -159,8 +159,8 @@ local.finishGameOrder = function(self,info) {
 	})
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","day_play_count",1)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_count",1)
-	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","day_play_amount",info.amoun)
-	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_amount",info.amoun)
+	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","day_play_amount",info.amount)
+	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_amount",info.amount)
 	self.redisDao.db.hget("player:user:"+info.uid+":playerInfo","createTime",function(err,createTime) {
 		console.log("createTime",createTime)
 		createTime = Number(createTime)

@@ -220,7 +220,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.TopicRecruitRefresh(uid)
 	this.incrbyAreaObj("areaInfo","day_login",1)
 	this.mysqlDao.addDaylyData("activeNum",1)
-	this.mysqlDao.updateRetention(uid,self.players[uid]["createTime"])
+	this.mysqlDao.updateRetention(uid,this.players[uid]["createTime"])
 }
 //玩家每周首次登陆
 area.prototype.weekFirstLogin = function(uid) {
