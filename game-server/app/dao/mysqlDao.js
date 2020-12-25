@@ -184,8 +184,8 @@ mysqlDao.prototype.updateLTV = function(uid,amount,createTime) {
 	self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","pay_state",1,function(err,data) {
 		if(data == 1){
 			if(day == 1)
-				self.addDaylyData("n_pay_user",info.amount)
-			self.addDaylyData("a_pay_user",info.amount)
+				self.addDaylyData("n_pay_user",1)
+			self.addDaylyData("a_pay_user",1)
 		}
 	})
 }
