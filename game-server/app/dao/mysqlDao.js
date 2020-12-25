@@ -1,7 +1,6 @@
 const stringRandom = require('string-random');
 var mysql = require("./mysql/mysql.js")
 const util = require("../../util/util.js")
-console.log("util!!!!!",util)
 var pageNum = 11
 var mysqlDao = function() {}
 mysqlDao.prototype.init  = function() {
@@ -148,7 +147,7 @@ mysqlDao.prototype.addDaylyData  = function(key,num) {
 //玩家登陆更新留存报表
 mysqlDao.prototype.updateRetention = function(uid,createTime) {
 	var date = (new Date(createTime)).toDateString()
-	var day = Math.ceil((Date.now() - this.util.getgetZeroTime(createTime)) / 86400000)
+	var day = Math.ceil((Date.now() - util.getZeroTime(createTime)) / 86400000)
 	var index = "more"
 	for(var i = 0;i < retention_days.length;i++){
 		if(day <= retention_days[i]){
@@ -176,7 +175,7 @@ mysqlDao.prototype.addRetentionData  = function(key,num,date) {
 //玩家充值更新LTV报表
 mysqlDao.prototype.updateLTV = function(uid,amount,createTime) {
 	var date = (new Date(createTime)).toDateString()
-	var day = Math.ceil((Date.now() - this.util.getgetZeroTime(createTime)) / 86400000)
+	var day = Math.ceil((Date.now() - util.getZeroTime(createTime)) / 86400000)
 	var index = "more"
 	for(var i = 0;i < ltv_days.length;i++){
 		if(day <= ltv_days[i]){
