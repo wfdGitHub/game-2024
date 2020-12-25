@@ -26,9 +26,11 @@ redisDao.db.on("ready",function(res) {
 	})
 })
 server.all('*', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', '*');
-  next();
+	res.header('Access-Control-Allow-Origin', '*')
+	res.header('Access-Control-Allow-Headers', 'Authorization,X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method' )
+	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PATCH, PUT, DELETE')
+	res.header('Allow', 'GET, POST, PATCH, OPTIONS, PUT, DELETE')
+  	next();
 });
 server.use(express.static(__dirname + '/public'));
 // console.log("Web server has started.\nPlease log on http://127.0.0.1:3001/index.html");
