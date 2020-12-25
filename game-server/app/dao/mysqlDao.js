@@ -149,12 +149,12 @@ mysqlDao.prototype.updateRetention = function(uid,createTime) {
 	var day = Math.ceil((Date.now() - util.getZeroTime(createTime)) / 86400000)
 	var index = "more"
 	for(var i = 0;i < retention_days.length;i++){
-		if(day <= retention_days[i]){
+		if(day == retention_days[i]){
 			index = retention_days[i]
-			break
+			this.addRetentionData("retention_"+index,1,date)
+			return
 		}
 	}
-	this.addRetentionData("retention_"+index,1,date)
 }
 //更新留存报表
 mysqlDao.prototype.addRetentionData  = function(key,num,date) {
