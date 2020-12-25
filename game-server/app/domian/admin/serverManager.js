@@ -1,6 +1,6 @@
 var express = require('express');
 var xmlparser = require('express-xml-bodyparser')
-var serverDB = require('./serverDB.js')
+// var serverDB = require('./serverDB.js')
 var parseString = require('xml2js').parseString;
 var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var util = require("../../../util/util.js")
@@ -57,7 +57,7 @@ serverManager.prototype.init = function() {
 				res.send("SUCCESS")
 		})
 	})
-	serverDB.init(server,self.mysqlDao,self.redisDao)
+	// serverDB.init(server,self.mysqlDao,self.redisDao)
 	server.listen(80);
 }
 serverManager.prototype.quick_order = function(data,cb) {
