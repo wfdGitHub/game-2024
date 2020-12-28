@@ -7,22 +7,43 @@ var model = function() {
 		self.mysqlDao = mysqlDao
 		self.redisDao = redisDao
 		for(var key in posts){
-			console.log("注册",key)
 			server.post(key,posts[key])
 		}
+	}
+	//清除战斗校验错误数据
+	posts["/verify_clear"] = function(req,res) {
+		self.redisDao.db.llen("verify_faild",function(err,total) {
+			self.redisDao.db.del("verify_faild",function(err,data) {
+				res.send()
+			})
+		})
+	}
+	//获取战斗校验错误日志
+	posts["/verify_faild"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("verify_faild",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("verify_faild",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
 	}
 	//获取总数据
 	posts["/game_info"] = function(req,res) {
 		var data = req.body
-		console.log("areaInfos",data)
+		var info = {}
 		self.redisDao.db.hgetall("game:info",function(err,data) {
+			info.list = data
 			res.send(data)
 		})
 	}
 	//获取服务器列表
 	posts["/areaInfos"] = function(req,res) {
 		var data = req.body
-		console.log("areaInfos",data)
 		self.redisDao.db.get("area:lastid",function(err,lastid) {
 			var multiList = []
 			for(var i = 1;i <= lastid;i++){
@@ -69,7 +90,6 @@ var model = function() {
 	}
 	//获取订单记录
 	posts["/game_order"] = function(req,res) {
-		console.log("game_order")
 		var data = req.body
 		var pageSize = data.pageSize
 		var pageCurrent = data.pageCurrent
