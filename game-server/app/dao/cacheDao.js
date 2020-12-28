@@ -22,7 +22,11 @@ cacheDao.prototype.init = function(cb) {
 	cb()
 }
 cacheDao.prototype.saveCache = function(info) {
-	// console.log("saveCache",info)
+	setTimeout(this.cacheExc.bind(this,info),1)
+}
+cacheDao.prototype.cacheExc = function(info) {
+	if(!this.mysqlDao.db)
+		return
 	switch(info.messagetype){
 		case "create":
 			local.create(this,info)
@@ -52,9 +56,6 @@ cacheDao.prototype.saveCache = function(info) {
 			local.adminSendMail(this,info)
 		break
 	}
-	// return
-	// info.time = Date.now()
-	// this.db.rpush(publish_normal,JSON.stringify(info))
 }
 cacheDao.prototype.saveChat = function(info) {
 	// return
