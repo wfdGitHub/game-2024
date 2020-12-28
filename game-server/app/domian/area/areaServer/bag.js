@@ -22,6 +22,13 @@ module.exports = function() {
 			cb(false,"value error " + otps.value)
 			return
 		}
+		if(itemCfg[otps.itemId].useLv){
+			var lv = self.getLordLv(uid)
+			if(lv < itemCfg[otps.itemId].useLv){
+				cb(false,"等级不足 "+lv+"/"+itemCfg[otps.itemId].useLv)
+				return
+			}
+		}
 		var value = Number(otps.value)
 		switch(itemCfg[otps.itemId].useType){
 			case "heroChip":
