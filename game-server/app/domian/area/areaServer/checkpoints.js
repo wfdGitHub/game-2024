@@ -3,6 +3,7 @@ const checkpoints_task = require("../../../../config/gameCfg/checkpoints_task.js
 const equip_base = require("../../../../config/gameCfg/equip_base.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 const activity_cfg = require("../../../../config/gameCfg/activity_cfg.json")
+const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const chapter = require("../../../../config/gameCfg/chapter.json")
 var async = require("async")
 module.exports = function() {
@@ -159,9 +160,9 @@ module.exports = function() {
 			},
 			function(next) {
 				//消耗元宝
-				var needGold = count * 50
-				if(needGold > 200)
-					needGold = 200
+				var needGold = count * default_cfg["quick_once"]["value"]
+				if(needGold > default_cfg["quick_max"]["value"])
+					needGold = default_cfg["quick_max"]["value"]
 				if(needGold){
 					self.consumeItems(uid,"202:"+needGold,1,"快速挂机",function(flag,err) {
 						if(flag)

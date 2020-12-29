@@ -119,11 +119,14 @@ module.exports = function() {
 	}
 	//生成格子数据
 	local.createGrid = function(uid,grid) {
+		var lv = self.getLordLv(uid)
+		if(lv < 30)
+			lv = 30
 		if(grid % 10 === 0){
 			//boss
 			let info = {type:"boss"}
 			var team = boss_team[Math.floor(Math.random() * boss_team.length)].concat()
-			team = self.standardTeam(uid,team,"zhulu_boss")
+			team = self.standardTeam(uid,team,"zhulu_boss",lv)
 			var dladd = zhulu_dl[grid]
 			for(let i = 0;i <= team.length;i++){
 				if(team[i]){
@@ -141,7 +144,8 @@ module.exports = function() {
 						case "normal":
 							//普通怪
 							var team = normal_team[Math.floor(Math.random() * normal_team.length)].concat()
-							team = self.standardTeam(uid,team,"zhulu_normal")
+
+							team = self.standardTeam(uid,team,"zhulu_normal",lv)
 							var dladd = zhulu_dl[grid]
 							for(let i = 0;i <= team.length;i++){
 								if(team[i]){
@@ -153,7 +157,7 @@ module.exports = function() {
 						case "elite":
 							//精英怪
 							var team = elite_team[Math.floor(Math.random() * elite_team.length)].concat()
-							team = self.standardTeam(uid,team,"zhulu_elite")
+							team = self.standardTeam(uid,team,"zhulu_elite",lv)
 							var dladd = zhulu_dl[grid]
 							for(let i = 0;i <= team.length;i++){
 								if(team[i]){
