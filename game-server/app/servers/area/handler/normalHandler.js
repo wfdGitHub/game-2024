@@ -234,6 +234,11 @@ normalHandler.prototype.changeName = function(msg, session, next) {
 }
 //开启限时活动
 normalHandler.prototype.openNewLimitedTime = function(msg, session, next) {
+  var limit = session.get("limit")
+  if(limit < 10){
+    next(null,{flag : false})
+    return
+  }
   var uid = session.uid
   var areaId = session.get("areaId")
   var id = msg.id
@@ -243,6 +248,11 @@ normalHandler.prototype.openNewLimitedTime = function(msg, session, next) {
 }
 //关闭限时活动
 normalHandler.prototype.endNewLimitedTime = function(msg, session, next) {
+  var limit = session.get("limit")
+  if(limit < 10){
+    next(null,{flag : false})
+    return
+  }
   var uid = session.uid
   var areaId = session.get("areaId")
   var id = msg.id
