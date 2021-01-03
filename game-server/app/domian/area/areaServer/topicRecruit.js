@@ -23,22 +23,13 @@ module.exports = function() {
 		curTopicHero = topicList[curIndex].heroId
 	}
 	this.TopicRecruitRefresh = function(uid) {
-		self.getObjAll(uid,main_name,function(data) {
-			var week_record = util.getWeek()
-			if(!data){
-				local.resetTopicRecruitTask(uid)
-				self.setObj(uid,main_name,"week_record",week_record)
-			}else if(data.week_record != week_record){
-				local.resetTopicRecruitTask(uid)
-				self.delObj(uid,main_name,"count")
-				self.delObj(uid,main_name,"box_1")
-				self.delObj(uid,main_name,"box_2")
-				self.delObj(uid,main_name,"box_3")
-				self.delObj(uid,main_name,"box_4")
-				self.delObj(uid,main_name,"box_5")
-				self.setObj(uid,main_name,"week_record",week_record)
-			}
-		})
+		self.delObj(uid,main_name,"count")
+		self.delObj(uid,main_name,"box_1")
+		self.delObj(uid,main_name,"box_2")
+		self.delObj(uid,main_name,"box_3")
+		self.delObj(uid,main_name,"box_4")
+		self.delObj(uid,main_name,"box_5")
+		local.resetTopicRecruitTask(uid)
 	}
 	//获取主题招募数据
 	this.getTopicRecruitData = function(uid,cb) {

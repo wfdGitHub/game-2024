@@ -43,6 +43,7 @@ util.prototype.binarySearchIndex = function(arr,target){
 //获取本周周一的时间
 util.prototype.getWeek = function(){
     var nowTemp = new Date();//当前时间
+    nowTemp.setHours(0,0,0,0)
     var oneDayLong = 24*60*60*1000 ;//一天的毫秒数
     var c_time = nowTemp.getTime() ;//当前时间的毫秒时间
     var c_day = nowTemp.getDay()||7;//当前时间的星期几
@@ -55,12 +56,23 @@ util.prototype.getWeek = function(){
 }
 //获取今年第几周
 util.prototype.getWeekNum = function() {
-    let d1 = new Date();
-    let d2 = new Date(345600000);
-    let rq = d1 - d2;
-    let days = Math.ceil(rq / (86400000));
-    let num = Math.ceil(days / 7);
-    return num+1;
+    var nowTemp = new Date();//当前时间
+    var oneDayLong = 24*60*60*1000 ;//一天的毫秒数
+    nowTemp.setHours(0,0,0,0)
+    var c_time = nowTemp.getTime() ;//当前时间的毫秒时间
+    var c_day = nowTemp.getDay()||7;//当前时间的星期几
+    var m_time = c_time - (c_day-1)*oneDayLong;//当前周一的毫秒时间
+    var today = new Date(m_time);//设置周一时间对象
+    var firstDay = new Date(today.getFullYear(),0, 1);
+    var dayOfWeek = firstDay.getDay(); 
+    var spendDay= 1;
+    if (dayOfWeek !=0) {
+        spendDay=7-dayOfWeek+1;
+    }
+    firstDay = new Date(today.getFullYear(),0, 1+spendDay);
+    var d =Math.ceil((today.valueOf()- firstDay.valueOf())/ 86400000);
+    var result =Math.ceil(d/7);
+    return result+1;
 }
 //获取当天零点时间
 util.prototype.getZeroTime = function(time){
