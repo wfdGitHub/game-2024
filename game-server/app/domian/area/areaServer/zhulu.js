@@ -122,6 +122,7 @@ module.exports = function() {
 		var lv = self.getLordLv(uid)
 		if(lv < 30)
 			lv = 30
+		lv -= 10
 		if(grid % 10 === 0){
 			//boss
 			let info = {type:"boss"}
