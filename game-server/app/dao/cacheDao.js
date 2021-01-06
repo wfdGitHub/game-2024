@@ -150,13 +150,10 @@ local.leaveGuild = function(self,info) {
 	})
 }
 local.finishGameOrder = function(self,info) {
-	console.log("finishGameOrder",info)
 	info.amount = Number(info.amount) || 0
-	var sql = 'update user_list SET totalRmb=totalRmb+? and lateRmb=? where uid=?'
+	var sql = 'update user_list SET totalRmb=totalRmb+?,lateRmb=? where uid=?'
 	var args = [info.amount,info.amount,info.uid];
-	console.log(sql,args)
 	self.mysqlDao.db.query(sql,args, function(err, res) {
-		console.log(err,res)
 		if (err) {
 			console.error('update user_list! ' + err.stack);
 		}
