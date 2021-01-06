@@ -110,6 +110,10 @@ var model = function() {
 			arr.push({key : "order_no",value : data.order_no})
 		if(data.status)
 			arr.push({key : "status",value : data.status})
+		if(data.beginTime)
+			arr.push({key : "pay_time",value : data.beginTime,type:"more"})
+		if(data.endTime)
+			arr.push({key : "pay_time",value : data.endTime,type:"less"})
 		var info = local.getSQL("game_order",arr,pageSize,pageCurrent,"id")
 		var sql1 = info.sql1
 		var sql2 = info.sql2
@@ -118,6 +122,12 @@ var model = function() {
 		var info = {}
 		self.mysqlDao.db.query(sql1,args1,function(err,total) {
 			info.total = JSON.parse(JSON.stringify(total))[0]["count(*)"]
+			if(!pageSize || !pageCurrent){
+				if(info.total >= 10000){
+					res.send({"err" : "数据过长"})
+					return
+				}
+			}
 			self.mysqlDao.db.query(sql2,args2, function(err, list) {
 				if (err) {
 					// console.log('getCDTypeList! ' + err.stack);
@@ -230,6 +240,10 @@ var model = function() {
 			arr.push({key : "reason",value : data.reason})
 		if(data.type)
 			arr.push({key : "type",value : data.type})
+		if(data.beginTime)
+			arr.push({key : "time",value : data.beginTime,type:"more"})
+		if(data.endTime)
+			arr.push({key : "time",value : data.endTime,type:"less"})
 		var info = local.getSQL("item_log",arr,pageSize,pageCurrent,"id")
 		var sql1 = info.sql1
 		var sql2 = info.sql2
@@ -238,6 +252,12 @@ var model = function() {
 		var info = {}
 		self.mysqlDao.db.query(sql1,args1,function(err,total) {
 			info.total = JSON.parse(JSON.stringify(total))[0]["count(*)"]
+			if(!pageSize || !pageCurrent){
+				if(info.total >= 10000){
+					res.send({"err" : "数据过长"})
+					return
+				}
+			}
 			self.mysqlDao.db.query(sql2,args2, function(err, list) {
 				if (err) {
 					// console.log('getCDTypeList! ' + err.stack);
@@ -326,18 +346,32 @@ var model = function() {
 		var args1 = []
 		var args2 = []
 		for(var i = 0;i < arr.length;i++){
+			var sign = "="
+			switch(arr[i]["type"]){
+				case "more":
+					sign = ">"
+				break
+				case "less":
+					sign = "<"
+				break
+				default:
+					sign = "="
+			}
 			if(i == 0){
-				sql1 += " where "+arr[i]["key"]+" = ?"
-				sql2 += " where "+arr[i]["key"]+" = ?"
+				sql1 += " where "+arr[i]["key"]+" "+sign+" ?"
+				sql2 += " where "+arr[i]["key"]+" "+sign+" ?"
 			}else{
-				sql1 += " and "+arr[i]["key"]+" = ?"
-				sql2 += " and "+arr[i]["key"]+" = ?"
+				sql1 += " and "+arr[i]["key"]+" "+sign+" ?"
+				sql2 += " and "+arr[i]["key"]+" "+sign+" ?"
 			}
 			args1.push(arr[i]["value"])
 			args2.push(arr[i]["value"])
 		}
-		sql2 += " order by "+key+" desc LIMIT ?,"+pageSize
-		args2.push((pageCurrent-1)*pageSize)
+		sql2 += " order by "+key
+		if(pageSize && pageCurrent){
+			sql2 += " desc LIMIT ?,"+pageSize
+			args2.push((pageCurrent-1)*pageSize)
+		}
 		// console.log("getSQL sql1",sql1,"sql2",sql2,args1,args2)
 		return {sql1:sql1,sql2:sql2,args1:args1,args2:args2}
 	}
