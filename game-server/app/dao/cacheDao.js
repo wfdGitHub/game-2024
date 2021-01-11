@@ -92,8 +92,8 @@ local.create = function(self,info) {
 }
 local.login = function(self,info) {
 	var curTime = Date.now()
-	var sql = 'update user_list SET lv=?,vip=?,lateLogin=?,ce=? where uid=?'
-	var args = [info.level,info.vip,curTime,info.CE,info.uid];
+	var sql = 'update user_list SET lv=?,vip=?,lateLogin=?,ce=?,userName=? where uid=?'
+	var args = [info.level,info.vip,curTime,info.CE,info.name,info.uid];
 	self.mysqlDao.db.query(sql,args, function(err, res) {
 		if (err) {
 			console.error('login! ' + err.stack);

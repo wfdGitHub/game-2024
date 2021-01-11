@@ -15,7 +15,7 @@ entryHandler.prototype.entryAccount = function(msg, session, next) {
 		next(null,{flag : false,err : "参数错误"})
 		return
 	}
-	var unionid = "visitor_"+msg.unionid
+	var unionid = msg.unionid
 	var loginToken = util.randomString(8)
 	this.redisDao.db.hset("loginToken",unionid,loginToken)
 	next(null,{flag:true,unionid:unionid,token:loginToken})

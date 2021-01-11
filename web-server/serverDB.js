@@ -1,4 +1,5 @@
 //数据库查询
+var http = require("http")
 var model = function() {
 	var self = this
 	var posts = {}
@@ -9,6 +10,14 @@ var model = function() {
 		for(var key in posts){
 			server.post(key,posts[key])
 		}
+	}
+	//封号
+	posts["/freezeAcc"] = function(req,res) {
+		var data = req.body
+		console.log("freezeAcc",data)
+		var url = "http://127.0.0.1:5081/freezeAcc?uid="+data.uid+"&value="+data.value
+		http.get(url,function(res){})
+		res.send("SUCCESS")
 	}
 	//清除战斗校验错误数据
 	posts["/verify_clear"] = function(req,res) {

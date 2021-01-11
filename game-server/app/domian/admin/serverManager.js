@@ -1,6 +1,7 @@
 var express = require('express');
 var xmlparser = require('express-xml-bodyparser')
 // var serverDB = require('./serverDB.js')
+var adminManager = require('./adminManager.js')
 var parseString = require('xml2js').parseString;
 var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var util = require("../../../util/util.js")
@@ -59,6 +60,19 @@ serverManager.prototype.init = function() {
 	})
 	// serverDB.init(server,self.mysqlDao,self.redisDao)
 	server.listen(80);
+	var server2 = express()
+	server2.use(express.json());
+	server2.use(express.urlencoded());
+	server2.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*')
+	res.header('Access-Control-Allow-Headers', 'Authorization,X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method' )
+	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PATCH, PUT, DELETE')
+	res.header('Allow', 'GET, POST, PATCH, OPTIONS, PUT, DELETE')
+	next();
+	});
+	server2.use(xmlparser());
+	adminManager.init(server2,self,self.mysqlDao,self.redisDao)
+	server2.listen(5081);
 }
 serverManager.prototype.quick_order = function(data,cb) {
 	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
@@ -277,5 +291,11 @@ module.exports = {
 	},{
 		name : "mysqlDao",
 		ref : "mysqlDao"
+	},{
+		name : "playerDao",
+		ref : "playerDao"
+	},{
+		name : "accountDao",
+		ref : "accountDao"
 	}]
 }
