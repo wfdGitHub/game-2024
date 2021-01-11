@@ -36,7 +36,6 @@ var model = function() {
 	}
 	//踢出玩家
 	local.kickUser = function(uid) {
-		console.log("kickUser",uid)
 		self.playerDao.getPlayerAreaId(uid,function(flag,data) {
 			if(flag){
 				var areaId = self.areaDeploy.getFinalServer(data)
