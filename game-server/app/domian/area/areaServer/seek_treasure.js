@@ -27,6 +27,8 @@ module.exports = function() {
 	this.STDayRefresh = function(uid) {
 		self.setObj(uid,main_name,"normal_free",0)
 		self.setObj(uid,main_name,"high_free",0)
+		self.delObj(uid,main_name,"normal_grid")
+		self.delObj(uid,main_name,"high_grid")
 	}
 	//获得寻宝数据
 	this.getSTData = function(uid,cb) {
