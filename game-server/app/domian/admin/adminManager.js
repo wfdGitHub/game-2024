@@ -11,6 +11,11 @@ var model = function() {
 			server.get(key,gets[key])
 		}
 	}
+	//清聊天记录
+	gets["/clearChatRecord"] = function(req,res) {
+		self.app.rpc.chat.chatRemote.clearChatRecord(null,function(){})
+		res.send("SUCCESS")
+	}
 	//封账号
 	gets["/freezeAcc"] = function(req,res) {
 		var data = req.body

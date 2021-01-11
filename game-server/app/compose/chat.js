@@ -10,6 +10,11 @@ chat.prototype.init = function(app) {
 	this.app = app
 	this.channelService = this.app.get('channelService')
 }
+//清空聊天数据
+chat.prototype.clearChatRecord = function() {
+	for(var roomName in this.records)
+		this.records[roomName] = []
+}
 //发送聊天消息
 chat.prototype.say = function(talker,gname,roomName,type,arg,text) {
 	if(this.rooms[roomName] && this.rooms[roomName].getMember(talker.uid)){

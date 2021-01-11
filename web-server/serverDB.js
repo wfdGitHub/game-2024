@@ -11,6 +11,12 @@ var model = function() {
 			server.post(key,posts[key])
 		}
 	}
+	//清聊天记录
+	posts["/clearChatRecord"] = function(req,res) {
+		var url = "http://127.0.0.1:5081/clearChatRecord"
+		http.get(url,function(res){})
+		res.send("SUCCESS")
+	}
 	//封号
 	posts["/freezeAcc"] = function(req,res) {
 		var data = req.body
