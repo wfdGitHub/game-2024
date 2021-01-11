@@ -124,7 +124,7 @@ module.exports = function() {
 	      }else{
 		      var rand = Math.random() * allWeight
 		      for(var type in weights){
-		        if(rand < weights[type]){
+		        if(rand <= weights[type]){
 		        	if(type == "topic"){
 						var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : curTopicHero})
 						heroInfos.push(heroInfo)
@@ -136,6 +136,13 @@ module.exports = function() {
 		        	}
 		        	break
 		        }
+		      }
+		      if(!heroInfos[i]){
+					var heroList = recruit_list["hero_3"].heroList
+					var heroId = heroList[Math.floor(heroList.length * Math.random())]
+					var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId})
+					heroInfos.push(heroInfo)
+		      		console.error("招募没有找到英雄",weights,rand)
 		      }
 	      }
 	      if(heroInfos[i].star >= 4)
