@@ -325,13 +325,14 @@ module.exports = function() {
 			cb(false,"参数错误")
 			return
 		}
-		self.getHMObj(uid,main_name,["recharge_"+index,"once_award_"+index],function(data) {
-			if(!data[0]){
-				cb(false,"未充值该档位")
-			}else if(data[1]){
-				cb(false,"已领取")
+		self.getHMObj(uid,main_name,["recharge_once_"+index,"once_award_"+index],function(data) {
+			data[0] = Number(data[0]) || 0
+			data[1] = Number(data[1]) || 0
+			console.log("data",data)
+			if(data[0] <= data[1]){
+				cb(false,"已领完")
 			}else{
-				self.setObj(uid,main_name,"once_award_"+index,1)
+				self.incrbyObj(uid,main_name,"once_award_"+index,1)
 				var awardList = self.addItemStr(uid,recharge[index].once_award,1,"单充奖励"+index)
 				cb(true,awardList)
 			}

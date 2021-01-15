@@ -13,6 +13,17 @@ const util = require("../../../../util/util.js")
 const uuid = require("uuid")
 const main_name = "activity"
 const day31Time = 2592000000
+var rechargeMap = {}
+var recharge_once_table = {}
+for(var i in recharge){
+	if(recharge[i]["once_award"])
+		rechargeMap[recharge[i]["rmb"]] = i
+}
+for(var payId in pay_cfg){
+	var rmb = pay_cfg[payId]["rmb"] * 100
+	if(rechargeMap[rmb])
+		recharge_once_table[payId] = rechargeMap[rmb]
+}
 module.exports = function() {
 	var self = this
 	//申请充值
@@ -86,6 +97,17 @@ module.exports = function() {
 			case "gift_loop":
 				this.buyLoopGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
+		}
+		var once_index = recharge_once_table[pay_id]
+		if(once_index){
+			self.incrbyObj(uid,main_name,"recharge_once_"+once_index,1,function(data) {
+				var notify = {
+					type : "recharge_once_update",
+					index : once_index,
+					curValue : data
+				}
+				self.sendToUser(uid,notify)
+			})
 		}
 		cb(true)
 	}
