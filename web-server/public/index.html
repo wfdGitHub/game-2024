@@ -19,7 +19,7 @@
     <script type="text/javascript">
       var pomelo = window.pomelo;
       var host = "127.0.0.1";
-      host = "192.168.3.200"
+      // host = "192.168.3.200"
       // host = "47.107.48.79"
       var queryEntry = function(callback) {
         var route = 'gate.gateHandler.queryClientEntry';
@@ -1097,6 +1097,12 @@
       //领取消耗活动奖励
       var gainConsumeTotalAward = function(index) {
         pomelo.request("area.activityHandler.gainConsumeTotalAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取功能开启活动奖励
+      var gainSysOpenAward = function(index) {
+        pomelo.request("area.activityHandler.gainSysOpenAward", {index:index}, function(data) {
             console.log(data);
         });
       }
