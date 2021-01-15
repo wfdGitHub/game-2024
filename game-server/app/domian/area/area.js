@@ -198,6 +198,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 //玩家当天首次登录
 area.prototype.dayFirstLogin = function(uid) {
 	this.chageLordData(uid,"dayStr",this.dayStr)
+	this.chageLordData(uid,"tour_pri_count",0)
 	this.setPlayerData(uid,"quick",0)
 	this.rebateDayUpdate(uid)
 	this.TTTdayUpdate(uid)

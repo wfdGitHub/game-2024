@@ -87,7 +87,7 @@ module.exports = function() {
 			return self.players[uid]["level"]
 		else return 1
 	}
-	//获取最大英雄等级
+	//获取主公属性
 	this.getLordAtt = function(uid,key) {
 		if(self.players[uid])
 			return self.players[uid][key]

@@ -8,8 +8,10 @@ const gift_list = require("../../../../config/gameCfg/gift_list.json")
 const gift_week = require("../../../../config/gameCfg/gift_week.json")
 const gift_month = require("../../../../config/gameCfg/gift_month.json")
 const pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
+const util = require("../../../../util/util.js")
 const uuid = require("uuid")
 const main_name = "activity"
+const day31Time = 2678400000
 module.exports = function() {
 	var self = this
 	//申请充值
@@ -70,6 +72,15 @@ module.exports = function() {
 			break
 			case "limit_gift":
 				this.buyLimitGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+			break
+			case "quick_pri":
+				this.buyQuickPri(uid,call_back.bind(this,uid))
+			break
+			case "tour_pri":
+				this.buyTourPri(uid,call_back.bind(this,uid))
+			break
+			case "stone_pri":
+				this.buyStonePri(uid,call_back.bind(this,uid))
 			break
 		}
 		cb(true)
@@ -272,5 +283,53 @@ module.exports = function() {
 				return
 			}
 		})
+	}
+	//购买快速作战特权
+	this.buyQuickPri = function(uid,cb) {
+		var  quick_pri = self.getLordAtt(uid,"quick_pri")
+		if(!quick_pri || Date.now() > quick_pri){
+			//新购
+			quick_pri = util.getZeroTime() + day31Time
+		}else{
+			console.log("快速作战特权已购买，延长时间")
+			//延长
+			quick_pri += day31Time
+		}
+		self.addUserRMB(uid,activity_cfg["quick_pri"]["value"])
+		self.chageLordData(uid,"quick_pri",quick_pri)
+		var awardList = self.addItemStr(uid,activity_cfg["quick_award"]["value"],1,"快速作战特权")
+		cb(true,{quick_pri:quick_pri,awardList:awardList})
+	}
+	//购买三界特权
+	this.buyTourPri = function(uid,cb) {
+		var  tour_pri = self.getLordAtt(uid,"tour_pri")
+		if(!tour_pri || Date.now() > tour_pri){
+			//新购
+			tour_pri = util.getZeroTime() + day31Time
+		}else{
+			console.log("三界已购买，延长时间")
+			//延长
+			tour_pri += day31Time
+		}
+		self.addUserRMB(uid,activity_cfg["tour_pri"]["value"])
+		self.chageLordData(uid,"tour_pri",tour_pri)
+		var awardList = self.addItemStr(uid,activity_cfg["tour_award"]["value"],1,"三界特权")
+		cb(true,{tour_pri:tour_pri,awardList:awardList})
+	}
+	//购买宝石矿场特权
+	this.buyStonePri = function(uid,cb) {
+		var  stone_pri = self.getLordAtt(uid,"stone_pri")
+		if(!stone_pri || Date.now() > stone_pri){
+			//新购
+			stone_pri = util.getZeroTime() + day31Time
+		}else{
+			console.log("快速作战特权已购买，延长时间")
+			//延长
+			stone_pri += day31Time
+		}
+		self.addUserRMB(uid,activity_cfg["stone_pri"]["value"])
+		self.chageLordData(uid,"stone_pri",stone_pri)
+		var awardList = self.addItemStr(uid,activity_cfg["stone_award"]["value"],1,"宝石矿场特权")
+		cb(true,{stone_pri:stone_pri,awardList:awardList})
 	}
 }

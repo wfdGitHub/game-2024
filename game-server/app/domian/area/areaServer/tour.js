@@ -26,7 +26,7 @@ module.exports = function() {
 	this.getTourData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(data) {
 			if(!data){
-				let list = local.createTour()
+				let list = local.createTour(uid)
 				self.setHMObj(uid,main_name,list)
 				cb(true,list)
 			}else{
@@ -38,7 +38,7 @@ module.exports = function() {
 	this.refreshTourByGold = function(uid,cb) {
 		self.consumeItems(uid,default_cfg["tour_refresh"]["value"],1,"游历刷新",function(flag,err) {
 			if(flag){
-				let list = local.createTour()
+				let list = local.createTour(uid)
 				self.setHMObj(uid,main_name,list)
 				cb(true,list)
 			}
@@ -51,7 +51,7 @@ module.exports = function() {
 	this.refreshTourByItem = function(uid,cb) {
 		self.consumeItems(uid,"1000160:1",1,"游历刷新",function(flag,err) {
 			if(flag){
-				let list = local.createTour()
+				let list = local.createTour(uid)
 				self.setHMObj(uid,main_name,list)
 				cb(true,list)
 			}
@@ -217,17 +217,24 @@ module.exports = function() {
 		})
 	}
 	//生成游历任务
-	local.createTour = function() {
-		let list = {}
-		for(let i = 1;i <= 6;i++){
-			let rand = Math.random() * allWeight
-			for(let quality in weights){
+	local.createTour = function(uid) {
+		var tour_pri = self.getLordAtt(uid,"tour_pri") || 0
+		var tour_pri_count = self.getLordAtt(uid,"tour_pri_count") || 0
+		var list = {}
+		for(var i = 1;i <= 6;i++){
+			var rand = Math.random() * allWeight
+			for(var quality in weights){
 				if(rand < weights[quality]){
-					let taskId = tour_quality_list[quality][Math.floor(Math.random() * tour_quality_list[quality].length)]
+					var taskId = tour_quality_list[quality][Math.floor(Math.random() * tour_quality_list[quality].length)]
 					list["waiting_"+i] = taskId
 					break
 				}
 			}
+		}
+		if(tour_pri > Date.now() && !tour_pri_count){
+			//首次必定生成橙色任务
+			self.chageLordData(uid,"tour_pri_count",1)
+			list["waiting_1"] = tour_quality_list[5][Math.floor(Math.random() * tour_quality_list[5].length)]
 		}
 		return list
 	}
