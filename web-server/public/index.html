@@ -755,6 +755,12 @@
             console.log(data);
         });
       }
+      //征税
+      var revenueCoin = function(type) {
+        pomelo.request("area.activityHandler.revenueCoin", {type:type}, function(data) {
+            console.log(data);
+        });
+      }
       //==============山海秘境==========//
       //获取关卡数据
       var getMysteriousData = function() {

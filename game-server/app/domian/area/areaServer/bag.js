@@ -318,6 +318,10 @@ module.exports = function() {
 			reason = arguments[3]
 			cb = arguments[4]
 		}
+		if(!str){
+			cb(true)
+			return
+		}
 		var items = []
 		var values = []
 		var strList = str.split("&")

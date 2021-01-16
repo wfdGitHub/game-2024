@@ -25,6 +25,15 @@ activityHandler.prototype.test_recharge = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//征税
+activityHandler.prototype.revenueCoin = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var type = msg.type
+  this.areaManager.areaMap[areaId].revenueCoin(uid,type,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //挑战魔物入侵
 activityHandler.prototype.challengeInvade = function(msg, session, next) {
   var uid = session.uid

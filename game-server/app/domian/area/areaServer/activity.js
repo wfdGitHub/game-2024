@@ -12,6 +12,8 @@ const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
 const pay_days = require("../../../../config/gameCfg/pay_days.json")
 const open_cfg = require("../../../../config/gameCfg/open_cfg.json")
 const invade = require("../../../../config/gameCfg/invade.json")
+const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
+const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const invade_team = JSON.parse(invade["mon_team"]["value"])
 const area_boss_base = require("../../../../config/gameCfg/area_boss_base.json")
 var util = require("../../../../util/util.js")
@@ -34,7 +36,10 @@ module.exports = function() {
 		"highAward" : 0,
 		"recharge_day_1" : 0,
 		"recharge_day_2" : 0,
-		"invade" : 0
+		"invade" : 0,
+		"rv_normal" : 0,
+		"rv_high" : 0,
+		"rv_super" : 0
 	}
 	//获得活动数据
 	this.getActivityData = function(uid,cb) {
@@ -42,6 +47,34 @@ module.exports = function() {
 			for(let i in data)
 				data[i] = Number(data[i])
 			cb(true,data)
+		})
+	}
+	//征收
+	this.revenueCoin = function(uid,type,cb) {
+		if(type !== "normal" && type !== "high" && type !== "super"){
+			cb(false,"type error "+type)
+			return
+		}
+		var lv = self.getLordLv(uid)
+		self.getObj(uid,main_name,"rv_"+type,function(data) {
+			if(data != 0){
+				cb(false,"已征收")
+			}else{
+				var pcStr = ""
+				if(type == "high")
+					pcStr = default_cfg["default_pc_1"]["value"]
+				if(type == "super")
+					pcStr = default_cfg["default_pc_3"]["value"]
+				self.consumeItems(uid,pcStr,1,"征税"+type,function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						self.incrbyObj(uid,main_name,"rv_"+type,1)
+						var awardList = self.addItemStr(uid,"201:"+lord_lv[lv][type],1,"征收"+type)
+						cb(true,awardList)
+					}
+				})
+			}
 		})
 	}
 	//挑战魔物入侵
@@ -121,6 +154,9 @@ module.exports = function() {
 			data["recharge_day_2"] = 0
 			data["free_day_1"] = 0
 			data["invade"] = 0
+			data["rv_normal"] = 0
+			data["rv_high"] = 0
+			data["rv_super"] = 0
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
 			}
