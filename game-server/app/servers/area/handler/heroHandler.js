@@ -62,6 +62,10 @@ heroHandler.prototype.resetHero = function(msg, session, next) {
       next(null,{flag : false,err : "当前状态不能重置"})
       return
     }
+    if(heroInfo.combat){
+      next(null,{flag : false,err : "英雄已出战"})
+      return
+    }
     self.areaManager.areaMap[areaId].consumeItems(uid,default_cfg["hero_reset"]["value"],1,"英雄重生",function(flag,err) {
       if(!flag){
         next(null,{flag : false,err : err})

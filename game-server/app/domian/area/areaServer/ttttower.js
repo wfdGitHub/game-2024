@@ -82,6 +82,7 @@ module.exports = function() {
 			   		self.incrbyObj(uid,main_name,"level",1)
 			   		self.taskUpdate(uid,"tttLv",1)
 			   		self.updateSprintRank("ttt_rank",uid,1)
+			   		self.chageLordData(uid,"ttt_lv",level)
 					var awardList = self.addItemStr(uid,ttttower_level[level]["awards"],1,"通天塔"+level)
 					cb(true,awardList)
 			   	}else{

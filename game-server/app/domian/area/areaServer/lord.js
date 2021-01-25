@@ -1,7 +1,7 @@
 //主公相关
 var lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 var main_name = "playerInfo"
-var numberAtt = ["accId","createTime","rmb","vip","vip_exp","rmb_day","exp","level","heroAmount","heroLv","maxSS","real_rmb","real_day","real_week","r_luck"]
+var numberAtt = ["accId","createTime","rmb","vip","vip_exp","rmb_day","exp","level","heroAmount","heroLv","maxSS","real_rmb","real_day","real_week","r_luck","ttt_lv"]
 module.exports = function() {
 	var self = this
 	//加载主公数据
@@ -29,16 +29,15 @@ module.exports = function() {
 	}
 	//改变数据
 	this.chageLordData = function(uid,key,value) {
-		if(self.players[uid]){
-			self.players[uid][key] = value
-		}
+		self.players[uid][key] = value
 		self.redisDao.db.hset("player:user:"+uid+":playerInfo",key,value)
 	}
 	//增加数据
 	this.incrbyLordData = function(uid,key,value,cb) {
-		if(self.players[uid]){
-			self.players[uid][key] += value
+		if(!self.players[uid]){
+			self.players[uid][key] = 0
 		}
+		self.players[uid][key] += value
 		self.redisDao.db.hincrby("player:user:"+uid+":playerInfo",key,value,function(err,data) {
 			if(!err && cb)
 				cb(data)
