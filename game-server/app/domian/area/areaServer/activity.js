@@ -217,8 +217,8 @@ module.exports = function() {
 	}
 	//领取每日首充奖励
 	this.gainRechargeDayAward = function(uid,id,cb) {
-		var real_day = self.players[uid].real_day
-		if(!activity_cfg["recharge_day_rmb_"+id]["value"] || real_day < activity_cfg["recharge_day_rmb_"+id]["value"]){
+		var rmb_day = self.players[uid].rmb_day
+		if(!activity_cfg["recharge_day_rmb_"+id]["value"] || rmb_day < activity_cfg["recharge_day_rmb_"+id]["value"]){
 			cb(false,"条件未达成")
 			return
 		}
