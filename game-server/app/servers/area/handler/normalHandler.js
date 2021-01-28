@@ -92,7 +92,7 @@ normalHandler.prototype.changeHead = function(msg, session, next) {
 //增加物品  测试功能
 normalHandler.prototype.addItem = function(msg, session, next) {
   var limit = session.get("limit")
-  if(limit < 10){
+  if(limit < 20){
     next(null,{flag : false})
     return
   }
@@ -107,7 +107,7 @@ normalHandler.prototype.addItem = function(msg, session, next) {
 //增加物品str  测试功能
 normalHandler.prototype.addItemStr = function(msg, session, next) {
   var limit = session.get("limit")
-  if(limit < 10){
+  if(limit < 20){
     next(null,{flag : false})
     return
   }
@@ -121,7 +121,7 @@ normalHandler.prototype.addItemStr = function(msg, session, next) {
 //开启宝箱  测试功能
 normalHandler.prototype.openChestStr = function(msg, session, next) {
   var limit = session.get("limit")
-  if(limit < 10){
+  if(limit < 20){
     next(null,{flag : false})
     return
   }
@@ -235,7 +235,7 @@ normalHandler.prototype.changeName = function(msg, session, next) {
 //开启限时活动
 normalHandler.prototype.openNewLimitedTime = function(msg, session, next) {
   var limit = session.get("limit")
-  if(limit < 10){
+  if(limit < 20){
     next(null,{flag : false})
     return
   }
@@ -249,7 +249,7 @@ normalHandler.prototype.openNewLimitedTime = function(msg, session, next) {
 //关闭限时活动
 normalHandler.prototype.endNewLimitedTime = function(msg, session, next) {
   var limit = session.get("limit")
-  if(limit < 10){
+  if(limit < 20){
     next(null,{flag : false})
     return
   }

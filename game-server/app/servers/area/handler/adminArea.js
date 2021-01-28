@@ -7,7 +7,7 @@ var adminArea = function(app) {
 //发放物品
 adminArea.prototype.sendItem = function(msg, session, next) {
   var limit = session.get("limit")
-  if(!limit || limit < 10){
+  if(!limit || limit < 20){
     next(null,{flag : false})
     return
   }
@@ -22,7 +22,7 @@ adminArea.prototype.sendItem = function(msg, session, next) {
 //改变英雄星级
 adminArea.prototype.changeStar = function(msg, session, next) {
   var limit = session.get("limit")
-  if(!limit || limit < 10){
+  if(!limit || limit < 20){
     next(null,{flag : false})
     return
   }
@@ -37,7 +37,7 @@ adminArea.prototype.changeStar = function(msg, session, next) {
 //改变英雄阶级
 adminArea.prototype.changeAdvance = function(msg, session, next) {
   var limit = session.get("limit")
-  if(!limit || limit < 10){
+  if(!limit || limit < 20){
     next(null,{flag : false})
     return
   }
@@ -52,7 +52,7 @@ adminArea.prototype.changeAdvance = function(msg, session, next) {
 //改变英雄等级
 adminArea.prototype.changeLevel = function(msg, session, next) {
   var limit = session.get("limit")
-  if(!limit || limit < 10){
+  if(!limit || limit < 20){
     next(null,{flag : false})
     return
   }
