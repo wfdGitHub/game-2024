@@ -50,11 +50,11 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		}
 		fightRecord.push({type : "createBuff",releaser : releaser.id,character : character.id,buffId : buffId,name : buff.name})
 		if(buffId == "poison" && releaser.poison_add_forbidden){
-			otps.duration = buff.duration
+			otps.duration = 1
 			this.createBuff(releaser,character,Object.assign({},otps,{buffId : "forbidden"}))
 		}
 		if(buffId == "banAnger" && releaser.banAnger_add_forbidden){
-			otps.duration = buff.duration
+			otps.duration = 1
 			this.createBuff(releaser,character,Object.assign({},otps,{buffId : "forbidden"}))
 		}
 		if(buffId == "dizzy" && releaser.dizzy_clear_anger){
