@@ -142,6 +142,23 @@ heroDao.prototype.randHeroId = function(type) {
 		}
 	}
 }
+//英雄池获得英雄id
+heroDao.prototype.randHeroIdButId = function(type,heroId) {
+	console.log("randHeroIdButId",type,heroId)
+	let allWeight = recruit_base[type]["allWeight"]
+	let weights = recruit_base[type]["weights"]
+	let rand = Math.random() * allWeight
+	for(let i in weights){
+		if(rand < weights[i]){
+		  let heroList = recruit_list[i].heroList
+		  var rand = Math.floor(heroList.length * Math.random())
+		  if(heroList[rand] == heroId)
+		  	rand = (rand + 1 + Math.floor((heroList.length - 1) * Math.random())) % heroList.length
+		  let heroId = heroList[rand]
+		  return heroId
+		}
+	}
+}
 //获得英雄
 heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	let id = otps.id

@@ -27,7 +27,7 @@ heroHandler.prototype.getHeroAmount = function(msg, session, next) {
 //获得英雄  测试功能
 heroHandler.prototype.gainHero = function(msg, session, next) {
   var limit = session.get("limit")
-  if(limit < 10){
+  if(limit < 20){
     next(null,{flag : false})
     return
   }
@@ -404,7 +404,7 @@ heroHandler.prototype.replaceHero = function(msg, session, next) {
           next(null,{flag : false,err : err})
           return
         }
-        let heroId = self.heroDao.randHeroId("randChip_"+heros[heroInfo.id].realm+"_2")
+        let heroId = self.heroDao.randHeroIdButId("randChip_"+heros[heroInfo.id].realm+"_2",data.id)
         self.areaManager.areaMap[areaId].setPlayerData(uid,"replaceHero",hId)
         self.areaManager.areaMap[areaId].setPlayerData(uid,"replacePick",heroId)
         next(null,{flag : flag,replaceHero : hId,replacePick:heroId})
