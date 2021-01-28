@@ -21,7 +21,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		vip_exp: VIP[vipLv]["rmb"],
 		exp : 0,
 		level : 1,
-		heroAmount : 100,
+		heroAmount : 100 + VIP[vipLv]["heroAmount"],
 		heroLv : 1,
 		maxSS : 0,
 		dayStr : 0,
