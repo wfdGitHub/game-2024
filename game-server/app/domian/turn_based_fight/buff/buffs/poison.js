@@ -11,7 +11,7 @@ var model = function(releaser,character,otps) {
 	if(releaser.poison_duration)
 		buff.duration += releaser.poison_duration
 	buff.refresh = function() {
-		let info = {type : "poisonDamage",value : buff.damage ,id : buff.character.id}
+		let info = {type : "poisonDamage",value : buff.damage ,id : buff.character.id,d_type:"mag"}
 		info = buff.character.onHit(buff.releaser,info)
 		fightRecord.push(info)
 		if(releaser.poison_change_hp){

@@ -1,4 +1,4 @@
-//对敌方后排造成172%物理伤害。偶数回合结束后释放。
+//对敌方后排造成172%法术伤害。偶数回合结束后释放。
 var bookBasic = require("./bookBasic.js")
 var fightRecord = require("../fight/fightRecord.js")
 var model = function(otps) {
@@ -14,7 +14,7 @@ var model = function(otps) {
 				var value = Math.floor((book.attInfo.atk - target.getTotalAtt("magDef")) * mul)
 				if(value < 1)
 					value = 1
-				var info = target.onHit(book,{value:value})
+				var info = target.onHit(book,{value:value,d_type:"mag"})
 				recordInfo.targets.push(info)
 			}
 			fightRecord.push(recordInfo)

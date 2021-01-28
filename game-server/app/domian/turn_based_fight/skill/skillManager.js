@@ -338,7 +338,8 @@ model.useAttackSkill = function(skill,chase) {
 		//计算伤害
 		let info = this.formula.calDamage(skill.character, target, skill,tmpAddAmp,must_crit,chase)
 		info.value += damage_save_value
-		info = target.onHit(skill.character,info,skill)
+		info.d_type = skill.damageType
+		info = target.onHit(skill.character,info)
 		if(info.overflow)
 			overflow += info.overflow
 		if(info.realValue > 0)
@@ -361,7 +362,7 @@ model.useAttackSkill = function(skill,chase) {
 	if(skill.isAnger && skill.character.overDamageToMaxHp && overflow && !skill.character.died){
 		var target = this.locator.getTargesMaxHP(targets)
 		if(target){
-			let tmpRecord = {type : "other_damage",value : Math.ceil(skill.character.overDamageToMaxHp * overflow)}
+			let tmpRecord = {type : "other_damage",value : Math.ceil(skill.character.overDamageToMaxHp * overflow),d_type:skill.damageType}
 			tmpRecord = target.onHit(skill.character,tmpRecord)
 			fightRecord.push(tmpRecord)
 		}
@@ -528,7 +529,7 @@ model.useAttackSkill = function(skill,chase) {
 		//收到直接伤害反弹
 		if(targets[i].hit_rebound && recordInfo.targets[i].realValue > 0){
 			let hit_rebound_value = targets[i].hit_rebound
-			let tmpRecord = {type : "other_damage",value : hit_rebound_value * recordInfo.targets[i].realValue}
+			let tmpRecord = {type : "other_damage",value : hit_rebound_value * recordInfo.targets[i].realValue,d_type:skill.damageType}
 			tmpRecord = skill.character.onHit(targets[i],tmpRecord)
 			fightRecord.push(tmpRecord)
 		}
@@ -627,6 +628,12 @@ model.useHealSkill = function(skill,chase) {
 			for(var i = 0;i < targets.length;i++){
 				if(!targets[i].died)
 					targets[i].removeControlBuff()
+			}
+		}
+		if(skill.character.cleanDebuff){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died)
+					targets[i].removeDeBuff()
 			}
 		}
 		if(skill.character.heal_addAnger){

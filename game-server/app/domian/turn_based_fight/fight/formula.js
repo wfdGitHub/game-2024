@@ -36,7 +36,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		tmpAmplify += attacker.control_amp
 	}
 	//命中判断
-	if(!(skill.isAnger && attacker.skill_must_hit)){
+	if(!(skill.isAnger && attacker.skill_must_hit) && !target.buffs["suoding"]){
 		var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
 		if(this.seeded.random("闪避判断") > hitRate){
 			info.miss = true
@@ -110,8 +110,13 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			}
 		}
 	}
-	if(target.buffs["reduction"]){
-		info.value = Math.floor(info.value * (1-target.buffs["reduction"]["value"]))
+	//判断震慑
+	if(attacker.buffs["zhenshe"]){
+		info.value = Math.floor(info.value * 0.7)
+	}
+	//判断锁定
+	if(target.buffs["suoding"]){
+		info.value = Math.floor(info.value * 1.2)
 	}
 	if(target.reduction_over){
 		if(info.value >= target.attInfo.maxHP * 0.4){

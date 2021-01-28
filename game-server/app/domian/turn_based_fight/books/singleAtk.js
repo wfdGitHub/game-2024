@@ -12,7 +12,7 @@ var model = function(otps) {
 			var value = Math.floor((book.attInfo.atk - target[0].getTotalAtt("phyDef")) * mul)
 			if(value < 1)
 				value = 1
-			var info = target[0].onHit(book,{value:value})
+			var info = target[0].onHit(book,{value:value,d_type:"phy"})
 			recordInfo.targets.push(info)
 			fightRecord.push(recordInfo)
 		}

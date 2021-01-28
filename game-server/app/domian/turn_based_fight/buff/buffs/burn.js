@@ -11,7 +11,7 @@ var model = function(releaser,character,otps) {
 	if(releaser.burn_duration)
 		buff.duration += releaser.burn_duration
 	buff.refresh = function() {
-		let info = {type : "burnDamage",value : buff.damage ,id : buff.character.id}
+		let info = {type : "burnDamage",value : buff.damage ,id : buff.character.id,d_type:"mag"}
 		info = buff.character.onHit(buff.releaser,info)
 		fightRecord.push(info)
 	}

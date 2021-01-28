@@ -107,6 +107,7 @@ var model = function(otps) {
 	this.damage_buff_lowArg = otps.damage_buff_lowArg || 0 //降低受到的灼烧、中毒伤害
 
 	this.enemy_vertical_anger = otps.enemy_vertical_anger || 0	//攻击纵排目标时降低敌人怒气
+	this.cleanDebuff = otps.cleanDebuff || false	//治疗时净化负面状态
 
 
 	this.must_crit = false						//攻击必定暴击
@@ -410,6 +411,13 @@ model.prototype.removeIntensifyBuff = function() {
 		if(this.buffs[i].intensify)
 			this.buffs[i].destroy("dispel")
 }
+//驱散负面状态
+model.prototype.removeDeBuff = function() {
+	//状态BUFF刷新
+	for(var i in this.buffs)
+		if(this.buffs[i].debuff)
+			this.buffs[i].destroy("dispel")
+}
 //清除指定角色buff
 model.prototype.clearReleaserBuff = function(releaser) {
 	for(var i in this.buffs)
@@ -423,26 +431,38 @@ model.prototype.diedClear = function() {
 		this.buffs[i].destroy()
 }
 //受到伤害
-model.prototype.onHit = function(attacker,info,source) {
+model.prototype.onHit = function(attacker,info) {
 	info.id = this.id
 	info.value = Math.floor(info.value) || 1
 	// if(this.died){
 	// 	info.realValue = 0
 	// 	return info
 	// }
-	//免疫
-	if(this.buffs["invincibleSuper"] || this.buffs["invincible"]){
-		info.invincible = true
-		info.realValue = 0
-		return info
+	//减伤判断
+	if(info.d_type == "phy"){
+		if(this.buffs["reduction"]){
+			info.value = Math.floor(info.value * (1-this.buffs["reduction"]["value"]))
+		}
+	}else if(info.d_type == "mag"){
+		if(this.buffs["reduction_mag"]){
+			info.value = Math.floor(info.value * (1-this.buffs["reduction_mag"]["value"]))
+		}
+	}else{
+		console.error("伤害类型错误",info)
 	}
 	//无敌吸血盾
 	if(this.buffs["invincibleSuck"]){
-		let healInfo = this.onHeal(this.buffs["invincibleSuck"].releaser,info,source)
+		let healInfo = this.onHeal(this.buffs["invincibleSuck"].releaser,info)
 		info.value = -info.value
 		info.realValue = -healInfo.realValue
 		info.curValue = this.attInfo.hp
 		info.maxHP = this.attInfo.maxHP
+		return info
+	}
+	//免疫
+	if(this.buffs["invincibleSuper"] || this.buffs["invincible"]){
+		info.invincible = true
+		info.realValue = 0
 		return info
 	}
 	if(info.miss){
@@ -485,15 +505,12 @@ model.prototype.onHeal = function(releaser,info) {
 	info.id = this.id
 	info.value = Math.floor(info.value) || 0
 	info.maxRate = info.maxRate || 0
-	if(this.forbidden){
-		info.value = 0
-		info.realValue = 0
-	}else{
-		info.value = Math.floor(info.value * (1 + this.attInfo.healAdd / 10000))
-		if(info.maxRate)
-			info.value += Math.floor(this.attInfo.maxHP * info.maxRate)
-		info.realValue = this.addHP(info.value)
-	}
+	info.value = Math.floor(info.value * (1 + this.attInfo.healAdd / 10000))
+	if(info.maxRate)
+		info.value += Math.floor(this.attInfo.maxHP * info.maxRate)
+	if(this.forbidden)
+		info.value = Math.floor(info.value * 0.3)
+	info.realValue = this.addHP(info.value)
 	if(releaser && info.realValue > 0)
 		releaser.totalHeal += info.realValue
 	info.curValue = this.attInfo.hp
