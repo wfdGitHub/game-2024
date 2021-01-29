@@ -12,7 +12,7 @@ var model = function(releaser,character,otps) {
 	buff.overlay = function(releaser,otps) {
 		buff.releaser = releaser
 		buff.duration = otps.duration
-		buff.value = Math.floor(otps.buffArg * buff.character.getTotalAtt("maxHP"))
+		buff.value += Math.floor(otps.buffArg * buff.character.getTotalAtt("maxHP"))
 	}
 	//抵消伤害
 	buff.offset = function(value) {
