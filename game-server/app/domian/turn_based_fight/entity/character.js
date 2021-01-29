@@ -107,7 +107,6 @@ var model = function(otps) {
 	this.damage_buff_lowArg = otps.damage_buff_lowArg || 0 //降低受到的灼烧、中毒伤害
 
 	this.enemy_vertical_anger = otps.enemy_vertical_anger || 0	//攻击纵排目标时降低敌人怒气
-	this.cleanDebuff = otps.cleanDebuff || false	//治疗时净化负面状态
 
 
 	this.must_crit = false						//攻击必定暴击
@@ -483,6 +482,14 @@ model.prototype.onHit = function(attacker,info) {
 			info.overflow = info.value - info.realValue
 			info.kill = true
 			attacker.kill(this)
+		}else{
+			if(info.seckillRate && (this.attInfo.hp / this.attInfo.maxHP) < 1 && this.fighting.seeded.random("秒杀判定") < info.seckillRate){
+				this.onDie()
+				info.seckill = true
+				info.curValue = 0
+				info.kill = true
+				attacker.kill(this)
+			}
 		}
 	}
 	// console.log(attacker.name + " 攻击 "+ this.name, info.value,"curHP : ",this.attInfo.hp+"/"+this.attInfo.maxHP)

@@ -15,6 +15,7 @@ var model = function(otps,character) {
 	this.buffRate = otps.buffRate					//buff概率
 	this.anger_s = otps.anger_s || 0				//自身怒气恢复值
 	this.anger_a = otps.anger_a || 0				//全队怒气恢复值
+	this.cleanDebuff = otps.cleanDebuff || false	//治疗时净化负面状态
 }
 model.prototype.getInfo = function() {
 	var info = {

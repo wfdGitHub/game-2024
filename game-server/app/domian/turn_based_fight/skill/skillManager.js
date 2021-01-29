@@ -339,6 +339,8 @@ model.useAttackSkill = function(skill,chase) {
 		let info = this.formula.calDamage(skill.character, target, skill,tmpAddAmp,must_crit,chase)
 		info.value += damage_save_value
 		info.d_type = skill.damageType
+		if(skill.seckill)
+			info.seckillRate = skill.seckill
 		info = target.onHit(skill.character,info)
 		if(info.overflow)
 			overflow += info.overflow
@@ -347,8 +349,8 @@ model.useAttackSkill = function(skill,chase) {
 		if(target.buffs["burn"])
 			burnDamage += info.realValue
 		recordInfo.targets.push(info)
-		died_targets.push(target)
 		if(info.kill){
+			died_targets.push(target)
 			kill_num++
 			dead_anger += target.curAnger
 			if(target.buffs["burn"])
@@ -630,7 +632,7 @@ model.useHealSkill = function(skill,chase) {
 					targets[i].removeControlBuff()
 			}
 		}
-		if(skill.character.cleanDebuff){
+		if(skill.cleanDebuff){
 			for(var i = 0;i < targets.length;i++){
 				if(!targets[i].died)
 					targets[i].removeDeBuff()
