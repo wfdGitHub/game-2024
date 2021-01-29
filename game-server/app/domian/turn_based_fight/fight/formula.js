@@ -111,8 +111,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		}
 	}
 	//判断震慑
-	if(attacker.buffs["zhenshe"]){
-		info.value = Math.floor(info.value * 0.7)
+	if(attacker.buffs["zhenshe"] && target.realm == 2){
+		info.value = Math.floor(info.value * 0.64)
 	}
 	//判断锁定
 	if(target.buffs["suoding"]){
