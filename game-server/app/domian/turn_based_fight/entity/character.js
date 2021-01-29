@@ -483,7 +483,7 @@ model.prototype.onHit = function(attacker,info) {
 			info.kill = true
 			attacker.kill(this)
 		}else{
-			if(info.seckillRate && (this.attInfo.hp / this.attInfo.maxHP) < 0.2 && this.fighting.seeded.random("秒杀判定") < info.seckillRate){
+			if(info.seckillRate && (this.attInfo.hp / this.attInfo.maxHP) < 0.2 && (attacker.attInfo.atk * 3 > this.attInfo.hp) && this.fighting.seeded.random("秒杀判定") < info.seckillRate){
 				this.onDie()
 				info.seckill = true
 				info.curValue = 0
