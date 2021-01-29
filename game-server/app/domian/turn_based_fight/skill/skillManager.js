@@ -410,7 +410,7 @@ model.useAttackSkill = function(skill,chase) {
 			}
 		}
 		//击杀后追加技能
-		if(skill.character.kill_later_skill && this.seeded.random("判断追加技能") < skill.character.kill_later_skill.rate){
+		if(!chase && skill.character.kill_later_skill && this.seeded.random("判断追加技能") < skill.character.kill_later_skill.rate){
 			let tmpSkillInfo = Object.assign({skillId : skill.skillId,name : skill.name},skill.character.kill_later_skill)
 			let tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
 			this.useSkill(tmpSkill,true)
