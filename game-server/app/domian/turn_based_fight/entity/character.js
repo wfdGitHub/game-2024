@@ -112,12 +112,16 @@ var model = function(otps) {
 	this.must_crit = false						//攻击必定暴击
 	this.next_must_crit = false					//下回合攻击暴击
 
+	this.ignoreInvincible = otps.ignoreInvincible || false //攻击忽视无敌盾效果 
+	this.realmDiedSkill = otps.realmDiedSkill || false	//同阵营武将受直接伤害死亡后释放技能
+
 	this.heal_min_hp_rate = otps.heal_min_hp_rate || 0 	//对己方血量最少武将治疗加成
 	this.heal_min_hp3_rate = otps.heal_min_hp3_rate || 0 	//对己方血量最少3个武将治疗加成
 
 	this.kill_anger = otps.kill_anger || 0		//直接伤害击杀目标回复怒气
 	this.kill_amp = otps.kill_amp || 0			//直接伤害每击杀一个目标提升伤害
 	this.kill_crit = otps.kill_crit || 0		//直接伤害每击杀一个目标提升暴击
+	this.kill_slay = otps.kill_slay || 0		//直接伤害每击杀一个目标提升暴击伤害
 	this.kill_add_d_s = otps.kill_add_d_s		//直接伤害击杀目标后追加普通攻击
 	this.kill_heal = otps.kill_heal || 0		//直接伤害击杀目标后，恢复自身生命值上限
 	this.kill_must_crit = otps.kill_must_crit	//直接伤害击杀目标后，下回合攻击必定暴击
@@ -449,20 +453,22 @@ model.prototype.onHit = function(attacker,info) {
 	}else{
 		console.error("伤害类型错误",info)
 	}
-	//无敌吸血盾
-	if(this.buffs["invincibleSuck"]){
-		let healInfo = this.onHeal(this.buffs["invincibleSuck"].releaser,info)
-		info.value = -info.value
-		info.realValue = -healInfo.realValue
-		info.curValue = this.attInfo.hp
-		info.maxHP = this.attInfo.maxHP
-		return info
-	}
-	//免疫
-	if(this.buffs["invincibleSuper"] || this.buffs["invincible"]){
-		info.invincible = true
-		info.realValue = 0
-		return info
+	if(!attacker.ignoreInvincible){
+		//无敌吸血盾
+		if(this.buffs["invincibleSuck"]){
+			let healInfo = this.onHeal(this.buffs["invincibleSuck"].releaser,info)
+			info.value = -info.value
+			info.realValue = -healInfo.realValue
+			info.curValue = this.attInfo.hp
+			info.maxHP = this.attInfo.maxHP
+			return info
+		}
+		//免疫
+		if(this.buffs["invincibleSuper"] || this.buffs["invincible"]){
+			info.invincible = true
+			info.realValue = 0
+			return info
+		}
 	}
 	if(info.miss){
 		info.realValue = 0

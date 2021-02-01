@@ -9,6 +9,8 @@ var model = function(releaser,character,otps) {
 	buff.name = "恢复"
 	buff.value = Math.floor(buff.buffArg * releaser.getTotalAtt("atk"))
 	buff.refresh = function() {
+		if(buff.character.died)
+			return
 		var info = {type : "recoverHeal",value : buff.value}
 		info = buff.character.onHeal(buff.releaser,info)
 		fightRecord.push(info)

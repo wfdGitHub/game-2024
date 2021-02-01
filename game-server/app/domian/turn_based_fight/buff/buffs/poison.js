@@ -7,10 +7,12 @@ var model = function(releaser,character,otps) {
 	// console.log("角色"+buff.character.id+"被中毒!!!!!!")
 	buff.refreshType = "before"
 	buff.name = "中毒"
-	buff.damage = Math.floor(buff.buffArg * releaser.getTotalAtt("atk"))
+	buff.damage = Math.floor(buff.buffArg * (releaser.getTotalAtt("atk") - character.getTotalAtt("magDef")))
 	if(releaser.poison_duration)
 		buff.duration += releaser.poison_duration
 	buff.refresh = function() {
+		if(buff.character.died)
+			return
 		let info = {type : "poisonDamage",value : buff.damage ,id : buff.character.id,d_type:"mag"}
 		info = buff.character.onHit(buff.releaser,info)
 		fightRecord.push(info)

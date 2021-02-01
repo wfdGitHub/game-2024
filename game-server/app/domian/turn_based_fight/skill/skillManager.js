@@ -226,9 +226,11 @@ model.useSkill = function(skill,chase) {
 		if(skill.character.single_less_anger)
 			targets[0].lessAnger(skill.character.single_less_anger,skill.skillId)
 	}
+	var diedFlag = false
 	//判断死亡
 	for(var i = 0;i < targets.length;i++){
 		if(targets[i].died){
+			diedFlag = true
 			//直接伤害死亡时对击杀者释放buff
 			if(targets[i].died_later_buff){
 				if(!skill.character.died){
@@ -238,6 +240,12 @@ model.useSkill = function(skill,chase) {
 					}
 				}
 			}
+			//同阵营队友阵亡后释放技能
+			for(var j = 0;j < targets[i].team.length;j++)
+				if(targets[i].team[j].realmDiedSkill && !targets[i].team[j].died && targets[i].team[j].id != targets[i].id && targets[i].realm == targets[i].team[j].realm){
+					var tmpSkill = targets[i].team[j].angerSkill
+					this.useSkill(tmpSkill,true)
+				}
 		}
 	}
 	//额外回合
@@ -247,6 +255,11 @@ model.useSkill = function(skill,chase) {
 			this.fighting.next_character = tmpTargets[0]
 		}
 	}
+	//击杀重复释放技能
+	if(diedFlag && skill.killRet && !skill.character.died){
+		this.useSkill(skill,true)
+	}
+
 }
 //伤害技能
 model.useAttackSkill = function(skill,chase) {
@@ -382,6 +395,8 @@ model.useAttackSkill = function(skill,chase) {
 			skill.character.addAnger(skill.character.kill_anger * kill_num,skill.skillId)
 		if(skill.character.kill_crit)
 			skill.character.addAtt("crit",skill.character.kill_crit * kill_num)
+		if(skill.character.kill_slay)
+			skill.character.addAtt("slay",skill.character.kill_slay * kill_num)
 		if(skill.character.kill_heal){
 			let tmpRecord = {type : "other_heal",targets : []}
 			tmpRecord.targets.push(skill.character.onHeal(skill.character,{maxRate : skill.character.kill_heal * kill_num}))
