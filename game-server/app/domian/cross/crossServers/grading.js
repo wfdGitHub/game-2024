@@ -283,14 +283,22 @@ module.exports = function() {
 			cb(false,"段位不存在")
 			return
 		}
-		self.redisDao.db.hget("cross:grading:award",key+"_"+glv,function(err,data) {
-			if(data){
-				cb(false,"已领取")
+		self.redisDao.db.zscore(["cross:grading:rank",key],function(err,score) {
+			if(!score)
+				score = 0
+			if(score < grading_lv[glv]["score"]){
+				cb(false,"未达到指定段位")
 				return
 			}
-			self.redisDao.db.hset("cross:grading:award",key+"_"+glv,1)
-			let awardList = self.addItemStr(crossUid,grading_lv[glv]["grading_award"],1,"段位奖励"+glv)
-			cb(true,awardList)
+			self.redisDao.db.hget("cross:grading:award",key+"_"+glv,function(err,data) {
+				if(data){
+					cb(false,"已领取")
+					return
+				}
+				self.redisDao.db.hset("cross:grading:award",key+"_"+glv,1)
+				let awardList = self.addItemStr(crossUid,grading_lv[glv]["grading_award"],1,"段位奖励"+glv)
+				cb(true,awardList)
+			})
 		})
 	}
 	//获取赛季荣誉榜
