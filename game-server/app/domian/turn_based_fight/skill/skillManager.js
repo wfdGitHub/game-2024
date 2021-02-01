@@ -256,8 +256,8 @@ model.useSkill = function(skill,chase) {
 		}
 	}
 	//击杀重复释放技能
-	if(diedFlag && skill.killRet && !skill.character.died){
-		this.useSkill(skill,true)
+	if(!chase && diedFlag && skill.killRet && !skill.character.died){
+		this.useSkill(skill,false)
 	}
 
 }
