@@ -170,6 +170,7 @@ var model = function() {
 				break
 				case "addAtt":
 					console.log(""+heroNames[info.id]+"获得增益 "+info.name+" : "+info.value)
+				break
 				case "fightOver":
 					console.log("战斗结束")
 					// for(var i = 0;i < info.atkTeam.length;i++)

@@ -248,6 +248,15 @@ model.useSkill = function(skill,chase) {
 				}
 		}
 	}
+	//吸取攻击力
+	if(skill.suckAtk){
+		for(var i = 0;i < targets.length;i++){
+			if(!targets[i].died){
+				buffManager.createBuff(skill.character,skill.character,{buffId:"atk",buffArg:Math.floor(targets[i].attInfo.atk * skill.suckAtk),duration:2})
+				buffManager.createBuff(skill.character,targets[i],{buffId:"atk",buffArg:-Math.floor(targets[i].attInfo.atk * skill.suckAtk),duration:2})
+			}
+		}
+	}
 	//额外回合
 	if(skill.isAnger && skill.character.extraAtion){
 		var tmpTargets = this.locator.getTargets(skill.character,"realm_minAnger_1")
