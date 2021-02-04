@@ -123,6 +123,10 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			info.value = Math.floor(info.value * (1-target.reduction_over))
 		}
 	}
+	//嘲讽减伤
+	if(attacker.buffs["chaofeng"] && target.cfRed){
+		info.value = Math.floor(info.value * (1-target.cfRed))
+	}
 	//最小伤害
 	if (info.value <= 1) {
 		info.value = 1

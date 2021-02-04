@@ -325,6 +325,11 @@ model.prototype.action = function() {
 		if(this.character.action_anger_s && this.seeded.random("行动后怒气") < this.character.action_anger_s){
 			this.character.addAnger(1)
 		}
+		if(this.character.action_heal){
+			var recordInfo =  this.character.onHeal(this.character,{type : "heal",maxRate : this.character.action_heal})
+			recordInfo.type = "self_heal"
+			fightRecord.push(recordInfo)
+		}
 	}
 	else{
 		fightRecord.push({type : "freeze",id : this.character.id})

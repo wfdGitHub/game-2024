@@ -70,6 +70,7 @@ var model = function(otps) {
 	this.skill_add_realm3_anger = otps.skill_add_realm3_anger || 0 //释放技能后恢复同阵营怒气最少的三个英雄怒气值
 	this.normal_atk_turn_hp = otps.normal_atk_turn_hp || 0 //受到普通攻击转化血量
 	this.skill_atk_turn_hp = otps.skill_atk_turn_hp || 0 //受到技能攻击转化血量
+	this.action_heal = otps.action_heal || 0	//行动后恢复血量百分比
 	//=========宝石效果=======//
 	this.kill_clear_buff = otps.kill_clear_buff || 0 //直接伤害击杀目标后，概率清除己方武将身上该目标死亡前释放的所有异常效果（灼烧、中毒、眩晕、沉默、麻痹）
 	this.control_amp = otps.control_amp || 0 //攻击正在被控制（眩晕、沉默、麻痹）的目标时，增加伤害比例
@@ -114,6 +115,7 @@ var model = function(otps) {
 
 	this.ignoreInvincible = otps.ignoreInvincible || false //攻击忽视无敌盾效果 
 	this.realmDiedSkill = otps.realmDiedSkill || false	//同阵营武将受直接伤害死亡后释放技能
+	this.cfRed = otps.cfRed || 0	//嘲讽减伤
 
 	this.heal_min_hp_rate = otps.heal_min_hp_rate || 0 	//对己方血量最少武将治疗加成
 	this.heal_min_hp3_rate = otps.heal_min_hp3_rate || 0 	//对己方血量最少3个武将治疗加成

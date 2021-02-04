@@ -332,6 +332,9 @@ model.prototype.getTargesMaxHP = function(targets) {
 }
 //默认单个目标
 model.prototype.getTargetNormal = function(character) {
+	if(character.buffs["chaofeng"] && model.check(character.buffs["chaofeng"].releaser)){
+		return  [character.buffs["chaofeng"].releaser]
+	}
 	var index = character.index
 	if(index >= 3){
 		index -= 3
@@ -364,6 +367,9 @@ model.prototype.getTargetNormal = function(character) {
 }
 //敌方后排单体
 model.prototype.getEnemyNormalBack = function(character) {
+	if(character.buffs["chaofeng"] && model.check(character.buffs["chaofeng"].releaser)){
+		return  [character.buffs["chaofeng"].releaser]
+	}
 	var index = character.index
 	if(index < 3){
 		index += 3
@@ -397,8 +403,15 @@ model.prototype.getEnemyNormalBack = function(character) {
 //敌方随机N个单位
 model.prototype.getEnemyRandom = function(character,count) {
     var list = []
+    var tmpTeam = []
+    var chaofengId = -1
+	if(character.buffs["chaofeng"] && model.check(character.buffs["chaofeng"].releaser)){
+		tmpTeam.push(character.buffs["chaofeng"].releaser)
+		chaofengId = character.buffs["chaofeng"].releaser.id
+		count--
+	}
     character.enemy.forEach(function(target,index) {
-        if(model.check(target)){
+        if(model.check(target) && target.id != chaofengId){
         	list.push(index)
         }
     })
@@ -411,7 +424,6 @@ model.prototype.getEnemyRandom = function(character,count) {
     		list[i] = list[index]
     		list[index] = tmp
     	}
-    	var tmpTeam = []
     	for(var i = 0; i < count && i < list.length;i++){
     		tmpTeam.push(character.enemy[list[i]])
     	}
@@ -429,16 +441,32 @@ model.prototype.getEnemyVertical = function(character) {
 //敌方前排
 model.prototype.getEnemyHorizontalFront = function(character) {
 	var list = []
-	for(var i = 0;i < 3;i++){
-        if(model.check(character.enemy[i])){
-        	list.push(character.enemy[i])
-        }
-	}
-	if(!list.length){
-		for(var i = 3;i < 6;i++){
+	if(character.buffs["chaofeng"] && model.check(character.buffs["chaofeng"].releaser)){
+		if(character.buffs["chaofeng"].releaser.id < 3){
+			for(var i = 0;i < 3;i++){
+		        if(model.check(character.enemy[i])){
+		        	list.push(character.enemy[i])
+		        }
+			}
+		}else{
+			for(var i = 3;i < 6;i++){
+		        if(model.check(character.enemy[i])){
+		        	list.push(character.enemy[i])
+		        }
+			}
+		}
+	}else{
+		for(var i = 0;i < 3;i++){
 	        if(model.check(character.enemy[i])){
 	        	list.push(character.enemy[i])
 	        }
+		}
+		if(!list.length){
+			for(var i = 3;i < 6;i++){
+		        if(model.check(character.enemy[i])){
+		        	list.push(character.enemy[i])
+		        }
+			}
 		}
 	}
 	return list
@@ -446,16 +474,32 @@ model.prototype.getEnemyHorizontalFront = function(character) {
 //敌方后排
 model.prototype.getEnemyHorizontalBack = function(character) {
 	var list = []
-	for(var i = 3;i < 6;i++){
-        if(model.check(character.enemy[i])){
-        	list.push(character.enemy[i])
-        }
-	}
-	if(!list.length){
-		for(var i = 0;i < 3;i++){
+	if(character.buffs["chaofeng"] && model.check(character.buffs["chaofeng"].releaser)){
+		if(character.buffs["chaofeng"].releaser.id < 3){
+			for(var i = 0;i < 3;i++){
+		        if(model.check(character.enemy[i])){
+		        	list.push(character.enemy[i])
+		        }
+			}
+		}else{
+			for(var i = 3;i < 6;i++){
+		        if(model.check(character.enemy[i])){
+		        	list.push(character.enemy[i])
+		        }
+			}
+		}
+	}else{
+		for(var i = 3;i < 6;i++){
 	        if(model.check(character.enemy[i])){
 	        	list.push(character.enemy[i])
 	        }
+		}
+		if(!list.length){
+			for(var i = 0;i < 3;i++){
+		        if(model.check(character.enemy[i])){
+		        	list.push(character.enemy[i])
+		        }
+			}
 		}
 	}
 	return list
@@ -540,6 +584,9 @@ model.prototype.getTeamAdjoin = function(character) {
 
 //敌方血量最少目标
 model.prototype.getEnemyMinHP = function(character) {
+	if(character.buffs["chaofeng"] && model.check(character.buffs["chaofeng"].releaser)){
+		return  [character.buffs["chaofeng"].releaser]
+	}
     var minIndex = -1
     character.enemy.forEach(function(target,index) {
         if(model.check(target)){
