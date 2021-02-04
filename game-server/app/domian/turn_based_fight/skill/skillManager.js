@@ -669,6 +669,13 @@ model.useHealSkill = function(skill,chase) {
 			}
 		}
 	}
+    //增加怒气
+    if(skill.anger_target){
+        for(var i = 0;i < targets.length;i++){
+            if(!targets[i].died)
+                targets[i].addAnger(skill.anger_target)
+        }
+    }
 	for(var i = 0;i < callbacks.length;i++)
 		callbacks[i]()
 	return targets
