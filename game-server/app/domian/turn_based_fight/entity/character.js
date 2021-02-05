@@ -116,6 +116,7 @@ var model = function(otps) {
 	this.ignoreInvincible = otps.ignoreInvincible || false //攻击忽视无敌盾效果 
 	this.realmDiedSkill = otps.realmDiedSkill || false	//同阵营武将受直接伤害死亡后释放技能
 	this.cfRed = otps.cfRed || 0	//嘲讽减伤
+	this.over_heal_shield = otps.over_heal_shield || 0  //治疗溢出转吸收盾比例
 
 	this.heal_min_hp_rate = otps.heal_min_hp_rate || 0 	//对己方血量最少武将治疗加成
 	this.heal_min_hp3_rate = otps.heal_min_hp3_rate || 0 	//对己方血量最少3个武将治疗加成

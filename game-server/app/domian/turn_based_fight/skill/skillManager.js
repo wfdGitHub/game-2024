@@ -638,6 +638,9 @@ model.useHealSkill = function(skill,chase) {
 		}else{
 			info = target.onHeal(skill.character,info,skill)
 			recordInfo.targets.push(info)
+			if(skill.character.over_heal_shield && info.value > info.realValue){
+				callbacks.push(function(){buffManager.createBuff(skill.character,target,{buffId : "shield",buffArg : Math.floor((info.value - info.realValue) * skill.character.over_heal_shield),duration : 1,number : true})})
+			}
 		}
 	}
 	fightRecord.push(recordInfo)
