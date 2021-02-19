@@ -29,15 +29,17 @@ module.exports = function() {
 	}
 	//改变数据
 	this.chageLordData = function(uid,key,value) {
-		self.players[uid][key] = value
+		if(self.players[uid])
+			self.players[uid][key] = value
 		self.redisDao.db.hset("player:user:"+uid+":playerInfo",key,value)
 	}
 	//增加数据
 	this.incrbyLordData = function(uid,key,value,cb) {
-		if(!self.players[uid]){
-			self.players[uid][key] = 0
+		if(self.players[uid]){
+			if(!self.players[uid][key])
+				self.players[uid][key] = 0
+			self.players[uid][key] += value
 		}
-		self.players[uid][key] += value
 		self.redisDao.db.hincrby("player:user:"+uid+":playerInfo",key,value,function(err,data) {
 			if(!err && cb)
 				cb(data)

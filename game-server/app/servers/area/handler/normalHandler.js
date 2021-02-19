@@ -189,7 +189,7 @@ normalHandler.prototype.changeName = function(msg, session, next) {
   var name = msg.name
   var self = this
   if(name.indexOf(".") != -1){
-    cb(false,"不能包含特殊字符")
+    next(null,{flag:false,err:"不能包含特殊字符"})
     return
   }
   async.waterfall([
