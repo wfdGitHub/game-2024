@@ -151,7 +151,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	//装备计算
 	let equip_suit = {}
 	for(let part = 1;part <= 4;part++){
-		let elv = info["equip_"+part]
+		let elv = info["e"+part]
 		if(elv && equip_level[elv]){
 			if(!equip_suit[elv])
 				equip_suit[elv] = 0
@@ -225,8 +225,8 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	}
 	//锦囊计算
 	for(let i = 1;i <= 10;i++){
-		if(info["acepack_"+i]){
-			let talentId = ace_pack[info["acepack_"+i]]["pa"]
+		if(info["a"+i]){
+			let talentId = ace_pack[info["a"+i]]["pa"]
 			model.mergeTalent(info,talentId)
 		}
 	}
@@ -341,13 +341,13 @@ model.getTeamCE = function(team) {
 			if(team[i]["artifact"] !== undefined)
 				allCE += artifact_level[team[i]["artifact"]]["ce"]
 			for(var j = 1;j <= 10;j++){
-				if(team[i]["acepack_"+j]){
-					allCE += ace_pack[team[i]["acepack_"+j]]["ce"]
+				if(team[i]["a"+j]){
+					allCE += ace_pack[team[i]["a"+j]]["ce"]
 				}
 			}
 			for(var j = 1;j <= 4;j++){
-				if(team[i]["equip_"+j])
-        			allCE += equip_base[equip_level[team[i]["equip_"+j]]["part_"+j]]["ce"]
+				if(team[i]["e"+j])
+        			allCE += equip_base[equip_level[team[i]["e"+j]]["part_"+j]]["ce"]
 			}
 			for(var j = 1;j <= 4;j++){
 				if(team[i]["s"+j] && stone_base[team[i]["s"+j]])

@@ -39,16 +39,16 @@ equipHandler.prototype.wearEquip = function(msg, session, next) {
     },
     function(heroInfo,cb) {
       //卸下原装备
-      if(heroInfo["equip_"+part]){
-        var oldeId = equip_level[heroInfo["equip_"+part]]["part_"+part]
+      if(heroInfo["e"+part]){
+        var oldeId = equip_level[heroInfo["e"+part]]["part_"+part]
         self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : oldeId,value : 1})
       }
       //扣除装备
       self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : eId,value : -1})
       //穿戴装备
       var lv = equip_base[eId]["lv"]
-      heroInfo["equip_"+part] = lv
-      self.heroDao.setHeroInfo(areaId,uid,hId,"equip_"+part,lv)
+      heroInfo["e"+part] = lv
+      self.heroDao.setHeroInfo(areaId,uid,hId,"e"+part,lv)
       self.areaManager.areaMap[areaId].taskUpdate(uid,"wear_equip",1,lv)
       next(null,{flag : true,heroInfo : heroInfo})
     }
@@ -75,12 +75,12 @@ equipHandler.prototype.unwearEquip = function(msg, session, next) {
     },
     function(heroInfo,cb) {
       //卸下原装备
-      if(heroInfo["equip_"+part]){
-        var oldeId = equip_level[heroInfo["equip_"+part]]["part_"+part]
+      if(heroInfo["e"+part]){
+        var oldeId = equip_level[heroInfo["e"+part]]["part_"+part]
         self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : oldeId,value : 1})
-        self.heroDao.delHeroInfo(areaId,uid,hId,"equip_"+part)
-        delete heroInfo["equip_"+part]
-        next(null,{flag : true,heroInfo : heroInfo,eId : heroInfo["equip_"+part]})
+        self.heroDao.delHeroInfo(areaId,uid,hId,"e"+part)
+        delete heroInfo["e"+part]
+        next(null,{flag : true,heroInfo : heroInfo,eId : heroInfo["e"+part]})
       }else{
         cb("该部位没有装备")
       }

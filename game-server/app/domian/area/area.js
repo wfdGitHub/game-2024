@@ -23,7 +23,7 @@ for(var i in standard_ce_cfg){
 		"artifact" : standard_ce_cfg[i]["artifact"]
 	}
 	for(var j = 1;j <= 4;j++){
-		standard_ce[i]["equip_"+j] = standard_ce_cfg[i]["equip"]
+		standard_ce[i]["e"+j] = standard_ce_cfg[i]["equip"]
 		standard_ce[i]["s"+j] = stone_lv[standard_ce_cfg[i]["stone_lv"]]["s"+j]
 		standard_ce[i]["g"+j] = standard_ce_cfg[i]["guild"]
 	}

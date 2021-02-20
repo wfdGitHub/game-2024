@@ -268,14 +268,14 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 		if(advanced_base[ad] && advanced_base[ad].pr)
 			strList.push(advanced_base[ad].pr)
 		for(var part = 1;part <= 4;part++){
-			if(heros[i]["equip_"+part]){
-				var oldeId = equip_level[heros[i]["equip_"+part]]["part_"+part]
+			if(heros[i]["e"+part]){
+				var oldeId = equip_level[heros[i]["e"+part]]["part_"+part]
 				strList.push(oldeId+":"+1)
 			}
 		}
 		for(var j = 0;j <= 10;j++){
-			if(heros[i]["acepack_"+j])
-				strList.push(heros[i]["acepack_"+j]+":1")
+			if(heros[i]["a"+j])
+				strList.push(heros[i]["a"+j]+":1")
 		}
 		if(artifact !== undefined && artifact_level[artifact]){
 			strList.push(artifact_level[artifact]["pr"])
