@@ -1,4 +1,4 @@
-let buffIds = ["invincibleSuck","disarm","dizzy","forbidden","silence","burn","poison","amplify","reduction","reduction_mag","recover","invincibleSuper","invincible","shield","banish","banAnger","immune","zhenshe","suoding","atk","chaofeng"]
+let buffIds = ["invincibleSuck","disarm","dizzy","forbidden","silence","burn","poison","amplify","reduction","reduction_mag","recover","invincibleSuper","invincible","shield","banish","banAnger","immune","zhenshe","suoding","atkAdd","atkLess","chaofeng","armor","amplify_mag","amplify_phy"]
 let controlBuff = {
 	"disarm" : true,
 	"dizzy" : true,
@@ -28,6 +28,8 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		if(character.buffs["invincibleSuper"])
 			return
 		if(character.buffs["immune"])
+			return
+		if(character.defcontrol && this.seeded.random("免控饰品") < character.defcontrol)
 			return
 	}
 	//判断灼烧、中毒buff抗性

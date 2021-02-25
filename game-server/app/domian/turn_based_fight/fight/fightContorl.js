@@ -17,6 +17,8 @@ var book_lv = require("../../../../config/gameCfg/book_lv.json")
 var book_star = require("../../../../config/gameCfg/book_star.json")
 var guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
 var guild_skill = require("../../../../config/gameCfg/guild_skill.json")
+var hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
+var hufu_quality = require("../../../../config/gameCfg/hufu_quality.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -276,6 +278,17 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 			gInfo[gSkillAtts[info.career][i]] = guild_skill[glv]["pos_"+i]
 		}
 		model.mergeData(info,gInfo)
+	}
+	//护符计算
+	if(info.hf){
+		console.log("info",info.hf)
+		if(hufu_quality[info.hf.lv])
+			model.mergeData(info,{"self_atk_add" : hufu_quality[info.hf.lv]["atk"],"self_maxHP_add" : hufu_quality[info.hf.lv]["hp"]})
+		if(info.hf.s1){
+			model.mergeTalent(info,info.hf.s1)
+		}
+		if(info.hf.s2)
+			model.mergeTalent(info,info.hf.s2)
 	}
 	model.mergeData(info,stoneskillInfo)
 	return new character(info)

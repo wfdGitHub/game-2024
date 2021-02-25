@@ -18,6 +18,7 @@ var model = function(otps) {
 	this.teamInfo = {}
 	this.bookAtts = otps.bookAtts
 	this.isBoss = otps.boss || false	//是否是BOSS
+	this.first_buff_list = []			//初始BUFF
 	//=========基础属性=======//
 	this.attInfo = {}
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
@@ -43,6 +44,38 @@ var model = function(otps) {
 	this.allAnger = otps["allAnger"] || false   //技能消耗所有怒气
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
+	//=========饰品效果=======//
+	this.phy_add = otps.phy_add || 0			//物理伤害加成
+	this.mag_add = otps.mag_add || 0			//法术伤害加成
+	this.phy_def = otps.phy_def || 0			//物理伤害减免
+	this.mag_def = otps.mag_def || 0			//法术伤害减免
+	this.neglect_def = otps.neglect_def || 0 	//忽视防御比例
+	this.over_buff_maxHp = otps.over_buff_maxHp || 0	//伤害超出生命值上限时释放buff的生命值比例
+	if(otps.over_buff_arg)
+		this.over_buff_arg = JSON.parse(otps.over_buff_arg) || false 	//伤害超出生命值上限时释放buff的buff参数
+	this.cf_rate = otps.cf_rate || 0			//攻击时有概率嘲讽目标，持续1回合，目标越少效果越好
+	if(otps.died_team_buff)
+		this.died_team_buff	= JSON.parse(otps.died_team_buff) || false 	//死亡时触发全队BUFF
+	this.sw_acc = otps.sw_acc || false 	//携带神武饰品效果
+	this.zh_acc = otps.zh_acc || false 	//携带智慧饰品效果
+	this.sb_acc = otps.sb_acc || 0		//携带闪避饰品效果
+	this.qh_acc = otps.qh_acc || false	//携带亲和饰品效果
+	this.yh_acc = otps.yh_acc || false	//携带愈合饰品效果
+	this.mz_acc = otps.mz_acc || false	//携带瞄准饰品效果
+	this.wy_acc = otps.wy_acc || false	//携带威压饰品效果
+	this.atkcontrol = otps.atkcontrol || 0 //控制概率增加
+	this.defcontrol = otps.defcontrol || 0 //被控概率减免
+	this.phy_turn_hp = otps.phy_turn_hp || 0 //物理伤害转生命值比例
+	if(otps.first_armor)
+		this.first_buff_list.push({buffId : "armor",duration : 2,buffArg : otps.first_armor}) //战斗前2回合免伤提高
+	if(otps.first_amplify_mag)
+		this.first_buff_list.push({buffId : "amplify_mag",duration : 2,buffArg : otps.first_amplify_mag}) //战斗前2回合法伤提高
+	if(otps.first_amplify_phy)
+		this.first_buff_list.push({buffId : "amplify_phy",duration : 2,buffArg : otps.first_amplify_phy}) //战斗前2回合物伤提高
+	this.skill_rebound_ratio = otps.skill_rebound_ratio || 0 	//受到技能伤害反弹比例
+	this.skill_rebound_prob = otps.skill_rebound_prob || 0		//受到技能伤害反弹概率
+	this.mag_fluctuate = otps.mag_fluctuate || 0 	//法术伤害波动下限，上限为下限加0.2
+	this.first_aid = otps.first_aid || 0			//受到直接攻击时，生命值低于40%回复生命比例，仅触发一次
 	//=========觉醒效果=======//
 	this.banLessAnger = otps.banLessAnger || false  //免疫减怒
 	this.overDamageToMaxHp = otps.overDamageToMaxHp || 0 //溢出伤害对血量最高的敌方目标造成伤害比例
@@ -78,7 +111,7 @@ var model = function(otps) {
 	if(otps.died_buff_s)
 		this.died_buff_s = JSON.parse(otps.died_buff_s) || false //死亡时释放BUFF
 	if(otps.before_buff_s)
-		this.before_buff_s = JSON.parse(otps.before_buff_s) || false //战斗前对自身释放BUFF
+		this.first_buff_list.push(JSON.parse(otps.before_buff_s)) //战斗前对自身释放BUFF
 	if(otps.action_buff_s)
 		this.action_buff_s = JSON.parse(otps.action_buff_s) || false //行动后对自身释放BUFF
 	this.record_anger_rate = otps.record_anger_rate || 0 //释放技能后，概率获得本次技能消耗的50%的怒气，最多不超过4点
@@ -159,7 +192,7 @@ var model = function(otps) {
 	this.hit_turn_rate = otps.hit_turn_rate || 0	//受到直接伤害转化成生命值百分比
 	this.hit_turn_tg = otps.hit_turn_tg || 0		//受到直接伤害转化的生命值作用目标
 	this.hit_rebound = otps.hit_rebound || 0		//受到直接伤害反弹比例
-	this.hit_rebound_add = otps.hit_rebound_add || 0 //反弹增加比例
+
 	this.hit_less_anger = otps.hit_less_anger || 0	//受到普通攻击后，降低攻击自己的武将怒气
 	this.hit_anger_s = otps.hit_anger_s || 0 		//受到普通攻击后，回复自己的怒气
 	if(otps.hit_buff){
@@ -198,7 +231,7 @@ var model = function(otps) {
 	this.enemy_died_amp = otps.enemy_died_amp || 0			//敌方每阵亡一人，伤害加成比例
 
 	this.single_less_anger = otps.single_less_anger || 0 	//攻击单体目标额外降低怒气
-	this.resurgence_self = otps.resurgence_self || 0 		//首次死亡后复活自身恢复血量百分比
+	this.resurgence_self = otps.resurgence_self || 0 		//死亡后复活概率，恢复全部血量
 	this.resurgence_team = otps.resurgence_team || 0		//复活本方第1位阵亡的武将，并恢复其50%的生命，每场战斗只可触发1次
 	this.resurgence_realmRate = otps.resurgence_realmRate || 0 //同阵营复活血量倍率
 	this.burn_hit_reduction = otps.burn_hit_reduction || 0	//被灼烧状态敌人攻击伤害减免
@@ -214,14 +247,14 @@ var model = function(otps) {
 	this.burn_not_invincible = otps.burn_not_invincible   		//被灼烧的武将无法获得无敌和无敌吸血盾效果
 	this.poison_add_forbidden = otps.poison_add_forbidden 		//中毒buff附加禁疗
 	this.banAnger_add_forbidden = otps.banAnger_add_forbidden 	//禁怒buff附加禁疗
-
-	this.first_nocontrol = otps.first_nocontrol //首回合免控
+	if(otps.first_nocontrol)
+		this.first_buff_list.push({buffId : "immune",duration : 1,"refreshType" : "roundOver"})	//首回合免控
 	this.first_crit = otps.first_crit			//首回合必定暴击
 	this.first_amp = otps.first_amp || 0		//首回合伤害加成
 	if(this.first_crit)
 		this.must_crit = true
 	if(otps.first_buff)
-		this.first_buff = JSON.parse(otps.first_buff)		//首回合附加BUFF
+		this.first_buff_list.push(JSON.parse(otps.first_buff))	//首回合附加BUFF
 	this.died_use_skill = otps.died_use_skill				//死亡时释放一次技能
 	this.died_burn_buff_must = otps.died_burn_buff_must 	//死亡释放buff时必定命中
 	if(otps.died_later_buff)

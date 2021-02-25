@@ -59,7 +59,13 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}
 	//伤害计算
 	var atk = attacker.getTotalAtt("atk")
+	if(attacker.buffs["atkAdd"])
+		atk += attacker.buffs["atkAdd"].getValue()
+	if(attacker.buffs["atkLess"])
+		atk -= attacker.buffs["atkLess"].getValue()
 	var def = target.getTotalAtt(skill.damageType+"Def")
+	if(attacker.neglect_def)
+		def = Math.floor(def * (1 - attacker.neglect_def))
 	var mul = 1 + attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction")
 	if(mul < 0.1)
 		mul = 0.1
@@ -110,6 +116,15 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			}
 		}
 	}
+	//物理法术伤害加成减免
+	if(attacker[skill.damageType+"_add"] || target[skill.damageType+"_def"]){
+		var tmpRate = attacker[skill.damageType+"_add"] - target[skill.damageType+"_def"]
+		info.value += Math.floor(info.value * tmpRate)
+	}
+	//物理法术增伤BUFF
+	if(attacker.buffs["amplify_"+skill.damageType]){
+		info.value += Math.floor(info.value * attacker.buffs["amplify_"+skill.damageType].value)
+	}
 	//判断震慑
 	if(attacker.buffs["zhenshe"] && target.realm == 2){
 		info.value = Math.floor(info.value * 0.64)
@@ -123,9 +138,29 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			info.value = Math.floor(info.value * (1-target.reduction_over))
 		}
 	}
+	//免伤BUFF
+	if(target.buffs["armor"]){
+		info.value = Math.floor(info.value * (1-target.buffs["armor"].value))
+	}
+	//闪避对神武智慧减伤
+	if(target.sb_acc && (attacker.sw_acc || attacker.zh_acc)){
+		info.value = Math.floor(info.value * (1-target.sb_acc))
+	}
+	//瞄准对闪避增伤
+	if(attacker.mz_acc && target.sb_acc){
+		info.value = Math.floor(info.value * (1+attacker.mz_acc))
+	}
+	//威压对愈合亲和增伤
+	if(attacker.wy_acc && (target.qh_acc || target.yh_acc)){
+		info.value = Math.floor(info.value * (1+attacker.wy_acc))
+	}
 	//嘲讽减伤
 	if(attacker.buffs["chaofeng"] && target.cfRed){
 		info.value = Math.floor(info.value * (1-target.cfRed))
+	}
+	//法术伤害波动
+	if(attacker.mag_fluctuate && skill.damageType == "mag"){
+		info.value = Math.floor(info.value * (attacker.mag_fluctuate + this.seeded.random("法术波动") * 0.2))
 	}
 	//最小伤害
 	if (info.value <= 1) {

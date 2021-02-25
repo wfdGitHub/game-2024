@@ -252,8 +252,9 @@ model.useSkill = function(skill,chase) {
 	if(skill.suckAtk){
 		for(var i = 0;i < targets.length;i++){
 			if(!targets[i].died){
-				buffManager.createBuff(skill.character,skill.character,{buffId:"atk",buffArg:Math.floor(targets[i].attInfo.atk * skill.suckAtk),duration:2})
-				buffManager.createBuff(skill.character,targets[i],{buffId:"atk",buffArg:-Math.floor(targets[i].attInfo.atk * skill.suckAtk),duration:2})
+				var tmpAtk = Math.floor(targets[i].attInfo.atk * skill.suckAtk)
+				buffManager.createBuff(skill.character,skill.character,{buffId:"atkAdd",buffArg:tmpAtk,duration:3})
+				buffManager.createBuff(skill.character,targets[i],{buffId:"atkLess",buffArg:tmpAtk,duration:2})
 			}
 		}
 	}
@@ -380,6 +381,27 @@ model.useAttackSkill = function(skill,chase) {
 		}
 	}
 	fightRecord.push(recordInfo)
+	//伤害超出生命值上限时释放buff判断
+	if(skill.character.over_buff_maxHp && skill.character.over_buff_arg){
+		for(var i = 0;i < targets.length;i++){
+			if(!targets[i].died && (recordInfo.targets[i].realValue / targets[i].attInfo.maxHP) >= skill.character.over_buff_maxHp){
+				var buffInfo = skill.character.over_buff_arg
+				if(this.seeded.random("超出上限buff") < buffInfo.buffRate)
+					buffManager.createBuff(skill.character,targets[i],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+			}
+		}
+	}
+	//嘲讽判断
+	if(skill.character.cf_rate){
+		var allLenth = this.locator.getTargetsNum(skill.targetType)
+		var tmpRate = ((allLenth - targets.length + 1) / allLenth) * skill.character.cf_rate
+		for(var i = 0;i < targets.length;i++){
+			if(!targets[i].died){
+				if(this.seeded.random("嘲讽") < tmpRate)
+					buffManager.createBuff(skill.character,targets[i],{buffId : "chaofeng",duration : 1})
+			}
+		}
+	}
 	for(var i = 0;i < lessAngerList.length;i++){
 		lessAngerList[i].lessAnger(1,skill.skillId)
 	}
@@ -392,9 +414,13 @@ model.useAttackSkill = function(skill,chase) {
 		}
 	}
 	if(skill.isAnger && skill.character.dispel_intensify){
+		var allLenth = this.locator.getTargetsNum(skill.targetType)
+		var tmpRate = ((allLenth - targets.length + 1) / allLenth) * skill.character.dispel_intensify
 		for(var i = 0;i < targets.length;i++){
-			if(!targets[i].died)
-				targets[i].removeIntensifyBuff()
+			if(!targets[i].died){
+				if(this.seeded.random("清除BUFF概率") < tmpRate)
+					targets[i].removeIntensifyBuff()
+			}
 		}
 	}
 	if(kill_num){
@@ -443,23 +469,23 @@ model.useAttackSkill = function(skill,chase) {
 	//伤害值转生命判断
 	if(allDamage > 0){
 		if(skill.turn_rate && skill.turn_tg && !skill.character.died){
-			let tmpRecord = {type : "other_heal",targets : []}
-			let healValue = Math.round(allDamage * (skill.turn_rate + skill.character.skill_turn_rate)) || 1
-			let tmptargets = this.locator.getTargets(skill.character,skill.turn_tg)
+			var tmpRecord = {type : "other_heal",targets : []}
+			var healValue = Math.round(allDamage * (skill.turn_rate + skill.character.skill_turn_rate)) || 1
+			var tmptargets = this.locator.getTargets(skill.character,skill.turn_tg)
 			for(var i = 0;i < tmptargets.length;i++){
-				let target = tmptargets[i]
-				let info = this.formula.calHeal(skill.character,target,healValue,skill)
+				var target = tmptargets[i]
+				var info = this.formula.calHeal(skill.character,target,healValue,skill)
 				info = target.onHeal(skill.character,info,skill)
 				tmpRecord.targets.push(info)
 			}
 			fightRecord.push(tmpRecord)
 		}else if(skill.isAnger && skill.character.skill_turn_rate && skill.character.skill_turn_tg && !skill.character.died){
-			let tmpRecord = {type : "other_heal",targets : []}
-			let healValue = Math.round(allDamage * skill.character.skill_turn_rate) || 1
-			let tmptargets = this.locator.getTargets(skill.character,skill.character.skill_turn_tg)
+			var tmpRecord = {type : "other_heal",targets : []}
+			var healValue = Math.round(allDamage * skill.character.skill_turn_rate) || 1
+			var tmptargets = this.locator.getTargets(skill.character,skill.character.skill_turn_tg)
 			for(var i = 0;i < tmptargets.length;i++){
-				let target = tmptargets[i]
-				let info = this.formula.calHeal(skill.character,target,healValue,skill)
+				var target = tmptargets[i]
+				var info = this.formula.calHeal(skill.character,target,healValue,skill)
 				info = target.onHeal(skill.character,info,skill)
 				tmpRecord.targets.push(info)
 			}
@@ -467,19 +493,24 @@ model.useAttackSkill = function(skill,chase) {
 		}
 		if(burnDamage){
 			if(!skill.isAnger && skill.character.normal_burn_turn_heal){
-				let tmpRecord = {type : "other_heal",targets : []}
-				let info = this.formula.calHeal(skill.character,skill.character,skill.character.normal_burn_turn_heal * burnDamage,skill)
+				var tmpRecord = {type : "other_heal",targets : []}
+				var info = this.formula.calHeal(skill.character,skill.character,skill.character.normal_burn_turn_heal * burnDamage,skill)
 				info = skill.character.onHeal(skill.character,info,skill)
 				tmpRecord.targets.push(info)
 				fightRecord.push(tmpRecord)
 			}
 			if(skill.isAnger && skill.character.skill_burn_turn_heal){
-				let tmpRecord = {type : "other_heal",targets : []}
-				let info = this.formula.calHeal(skill.character,skill.character,skill.character.skill_burn_turn_heal * burnDamage,skill)
+				var tmpRecord = {type : "other_heal",targets : []}
+				var info = this.formula.calHeal(skill.character,skill.character,Math.round(skill.character.skill_burn_turn_heal * burnDamage,skill))
 				info = skill.character.onHeal(skill.character,info,skill)
 				tmpRecord.targets.push(info)
 				fightRecord.push(tmpRecord)
 			}
+		}
+		if(skill.character.phy_turn_hp && skill.damageType == "phy"){
+			var tmpInfo = skill.character.onHeal(skill.character,{type : "heal",value : skill.character.phy_turn_hp * allDamage})
+			tmpInfo.type = "self_heal"
+			fightRecord.push(tmpInfo)
 		}
 	}
 	//受伤判断
@@ -547,17 +578,35 @@ model.useAttackSkill = function(skill,chase) {
 			if(skill.character.dizzy_hit_anger && targets[i].buffs["dizzy"]){
 				targets[i].lessAnger(skill.character.dizzy_hit_anger,skill.skillId)
 			}
+			//受到直接攻击时，生命值低于40%回复生命比例
+			if(targets[i]["first_aid"] && (targets[i].attInfo.hp / targets[i].attInfo.maxHP) < 0.4){
+				var tmpInfo =  targets[i].onHeal(targets[i],{type : "heal",value : targets[i].attInfo.maxHP * targets[i]["first_aid"]})
+				tmpInfo.type = "self_heal"
+				fightRecord.push(tmpInfo)
+				targets[i]["first_aid"] = 0
+			}
 		}
 		if(!skill.isAnger && targets[i].hit_less_anger){
 			//降低攻击者怒气
 				skill.character.lessAnger(targets[i].hit_less_anger,skill.skillId)
 		}
-		//收到直接伤害反弹
-		if(targets[i].hit_rebound && recordInfo.targets[i].realValue > 0){
-			let hit_rebound_value = targets[i].hit_rebound
-			let tmpRecord = {type : "other_damage",value : hit_rebound_value * recordInfo.targets[i].realValue,d_type:skill.damageType}
-			tmpRecord = skill.character.onHit(targets[i],tmpRecord)
-			fightRecord.push(tmpRecord)
+		if(recordInfo.targets[i].realValue > 0){
+			var hit_rebound_value = 0
+			//收到直接伤害反弹
+			if(targets[i].hit_rebound){
+				hit_rebound_value += Math.floor(targets[i].hit_rebound * recordInfo.targets[i].realValue)
+			}
+			//受到技能伤害反弹
+			if(targets[i].skill_rebound_prob && targets[i].skill_rebound_ratio && skill.isAnger){
+				if(this.seeded.random("技能反弹概率") < targets[i].skill_rebound_prob){
+					hit_rebound_value += Math.floor(targets[i].skill_rebound_ratio * recordInfo.targets[i].realValue)
+				}
+			}
+			if(hit_rebound_value){
+				var tmpRecord = {type : "other_damage",value : hit_rebound_value,d_type:skill.damageType}
+				tmpRecord = skill.character.onHit(targets[i],tmpRecord)
+				fightRecord.push(tmpRecord)
+			}
 		}
 	}
 	if(!chase){

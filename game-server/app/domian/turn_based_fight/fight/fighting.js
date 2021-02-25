@@ -141,29 +141,17 @@ model.prototype.fightBegin = function() {
 	//初始buff
 	for(var i = 0;i < teamLength;i++){
 		if(!this.atkTeam[i].died){
-			if(this.atkTeam[i].first_buff){
-				var burnBuffInfo = this.atkTeam[i].first_buff
-				buffManager.createBuff(this.atkTeam[i],this.atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
-			}
-			if(this.atkTeam[i].before_buff_s){
-				var burnBuffInfo = this.atkTeam[i].before_buff_s
-				buffManager.createBuff(this.atkTeam[i],this.atkTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
-			}
-			if(this.atkTeam[i].first_nocontrol){
-				buffManager.createBuff(this.atkTeam[i],this.atkTeam[i],{buffId : "immune",duration : 1,"refreshType" : "roundOver"})
+			if(this.atkTeam[i].first_buff_list.length){
+				for(var j = 0;j < this.atkTeam[i].first_buff_list.length;j++){
+					buffManager.createBuff(this.atkTeam[i],this.atkTeam[i],this.atkTeam[i].first_buff_list[j])
+				}
 			}
 		}
 		if(!this.defTeam[i].died){
-			if(this.defTeam[i].first_buff){
-				var burnBuffInfo = this.defTeam[i].first_buff
-				buffManager.createBuff(this.defTeam[i],this.defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
-			}
-			if(this.defTeam[i].before_buff_s){
-				var burnBuffInfo = this.defTeam[i].before_buff_s
-				buffManager.createBuff(this.defTeam[i],this.defTeam[i],{buffId : burnBuffInfo.buffId,buffArg : burnBuffInfo.buffArg,duration : burnBuffInfo.duration})
-			}
-			if(this.defTeam[i].first_nocontrol){
-				buffManager.createBuff(this.defTeam[i],this.defTeam[i],{buffId : "immune",duration : 1,"refreshType" : "roundOver"})
+			if(this.defTeam[i].first_buff_list.length){
+				for(var j = 0;j < this.defTeam[i].first_buff_list.length;j++){
+					buffManager.createBuff(this.defTeam[i],this.defTeam[i],this.defTeam[i].first_buff_list[j])
+				}
 			}
 		}
 	}
@@ -403,7 +391,25 @@ model.prototype.diedListCheck = function() {
 			}
 		}
 		if(this.diedList[i].died_use_skill){
-			skillManager.useSkill(this.diedList[i].angerSkill)
+			var flag = false
+			for(var j = 0;j < this.diedList[i].team.length;j++){
+				if(!this.diedList[i].team[j].died){
+					flag = true
+					break
+				}
+			}
+			if(flag)
+				skillManager.useSkill(this.diedList[i].angerSkill)
+		}
+		if(this.diedList[i].died_team_buff){
+			var buffInfo = this.diedList[i].died_team_buff
+			if(this.seeded.random("死亡全队BUFF") < buffInfo.buffRate){
+				for(var j = 0;j < this.diedList[i].team.length;j++){
+					if(!this.diedList[i].team[j].died){
+						buffManager.createBuff(this.diedList[i],this.diedList[i].team[j],buffInfo)
+					}
+				}
+			}
 		}
 		//复活判断
 		if(this.diedList[i].resurgence_self && this.seeded.random("复活判断") < this.diedList[i].resurgence_self){

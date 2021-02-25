@@ -1,4 +1,4 @@
-//攻击力BUFF
+//攻击力增加BUFF
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
@@ -8,7 +8,6 @@ var model = function(releaser,character,otps) {
 	buff.refreshType = "after"
 	var id = 0
 	var list = {}
-	list[id++] = {duration : otps.duration,value : otps.buffArg}
 	buff.clear = function() {
 		// console.log("伤害加成BUFF消失")
 	}
@@ -24,7 +23,11 @@ var model = function(releaser,character,otps) {
 		this.releaser = releaser
 		if(otps.duration > this.duration)
 			this.duration = otps.duration
-		list[id++] = {duration : otps.duration,value : otps.buffArg}
+		var value = otps.buffArg
+		if(otps.buffArg < 1)
+			value = Math.ceil(this.character.attInfo.atk * value)
+		list[id++] = {duration : otps.duration,value : value}
+		console.log("list",list)
 	}
 	buff.getValue = function() {
 		var value = 0
@@ -33,6 +36,7 @@ var model = function(releaser,character,otps) {
 		}
 		return value
 	}
+	buff.overlay(releaser,otps)
 	return buff
 }
 module.exports = model
