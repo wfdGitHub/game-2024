@@ -281,14 +281,14 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	}
 	//护符计算
 	if(info.hf){
-		console.log("info",info.hf)
-		if(hufu_quality[info.hf.lv])
-			model.mergeData(info,{"self_atk_add" : hufu_quality[info.hf.lv]["atk"],"self_maxHP_add" : hufu_quality[info.hf.lv]["hp"]})
-		if(info.hf.s1){
-			model.mergeTalent(info,info.hf.s1)
+		var hufuInfo = JSON.parse(info.hf)
+		if(hufu_quality[hufuInfo.lv])
+			model.mergeData(info,{"self_atk_add" : hufu_quality[hufuInfo.lv]["atk"],"self_maxHP_add" : hufu_quality[hufuInfo.lv]["hp"]})
+		if(hufuInfo.s1){
+			model.mergeTalent(info,hufuInfo.s1)
 		}
-		if(info.hf.s2)
-			model.mergeTalent(info,info.hf.s2)
+		if(hufuInfo.s2)
+			model.mergeTalent(info,hufuInfo.s2)
 	}
 	model.mergeData(info,stoneskillInfo)
 	return new character(info)
