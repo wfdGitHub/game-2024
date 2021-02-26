@@ -3,6 +3,7 @@ const main_name= "hufu"
 const hufu_quality = require("../../../../config/gameCfg/hufu_quality.json")
 const hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
 var uuid = require("uuid")
+var async = require("async")
 var skillList = []
 for(var id in hufu_skill)
 	skillList.push(id)
@@ -64,6 +65,75 @@ module.exports = function() {
 		self.sendToUser(uid,notify)
 		info.id = id
 		return info
+	}
+	//穿戴护符
+	this.wearHufu = function(uid,hId,id,cb) {
+		async.waterfall([
+			function(next) {
+				self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+					if(!flag){
+						cb(false,"英雄不存在")
+						return
+					}
+					if(heroInfo["hfLv"]){
+						cb(false,"已穿戴护符")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				self.getObj(uid,main_name,id,function(hufuInfo) {
+					if(!hufuInfo){
+						cb(false,"护符不存在")
+						return
+					}
+					self.delObj(uid,main_name,id)
+					hufuInfo = JSON.parse(hufuInfo)
+					self.heroDao.setHeroInfo(self.areaId,uid,hId,"hfLv",hufuInfo.lv)
+					heroInfo["hfLv"] = hufuInfo.lv
+					if(hufuInfo.s1){
+						self.heroDao.setHeroInfo(self.areaId,uid,hId,"hfs1",hufuInfo.s1)
+						heroInfo["hfs1"] = hufuInfo.s1
+					}
+					if(hufuInfo.s2){
+						self.heroDao.setHeroInfo(self.areaId,uid,hId,"hfs1",hufuInfo.s2)
+						heroInfo["hfs2"] = hufuInfo.s2
+					}
+					cb(true,heroInfo)
+				})
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//卸下护符
+	this.unwearHufu = function(uid,hId) {
+		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+			if(!flag){
+				cb(false,"英雄不存在")
+				return
+			}
+			if(!heroInfo["hfLv"]){
+				cb(false,"未穿戴护符")
+				return
+			}
+			var hufuInfo = {lv:heroInfo["hfLv"]}
+			delete heroInfo["hfLv"]
+			self.delHeroInfo(self.areaId,uid,hId,"hfLv")
+			if(heroInfo["hfs1"]){
+				hufuInfo.s1 = heroInfo["hfs1"]
+				delete heroInfo["hfs1"]
+				self.delHeroInfo(self.areaId,uid,hId,"hfs1")
+			}
+			if(heroInfo["hfs2"]){
+				hufuInfo.s1 = heroInfo["hfs2"]
+				delete heroInfo["hfs2"]
+				self.delHeroInfo(self.areaId,uid,hId,"hfs2")
+			}
+			self.gainHufu(uid,hufuInfo)
+			cb(true,heroInfo)
+		})
 	}
 	//合成护符
 	//洗练护符
