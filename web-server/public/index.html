@@ -98,6 +98,49 @@
         console.log("onChat")
         console.log(data)
       })
+      //==============护符==========//
+      //护符列表
+      var getHufuList = function() {
+        pomelo.request("area.hufuHandler.getHufuList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //生成随机护符
+      var gainRandHufu = function(lv) {
+        pomelo.request("area.hufuHandler.gainRandHufu", {lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //生成指定护符  lv s1 s2
+      var gainHufu = function(info) {
+        pomelo.request("area.hufuHandler.gainHufu", {info:info}, function(data) {
+            console.log(data);
+        });
+      }
+      //穿戴护符
+      var wearHufu = function(hId,id) {
+        pomelo.request("area.hufuHandler.wearHufu", {hId:hId,id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下护符
+      var unwearHufu = function(hId) {
+        pomelo.request("area.hufuHandler.unwearHufu", {hId:hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //合成护符
+      var compoundHufu = function(ids,lv) {
+        pomelo.request("area.hufuHandler.compoundHufu", {ids:ids,lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //洗练护符
+      var resetHufu = function(ids,lv) {
+        pomelo.request("area.hufuHandler.resetHufu", {ids:ids,lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
       //获取玩家基本信息
       var getPlayerBaseInfo = function(target) {
         pomelo.request("area.normalHandler.getPlayerBaseInfo", {target:target}, function(data) {
@@ -2453,8 +2496,9 @@
       <input id="test" type="button" value="获得英雄" onclick="gainHero()"/>
       <input id="test" type="button" value="删除英雄" onclick="removeHero()"/>
       <input id="test" type="button" value="修改英雄属性" onclick="incrbyHeroInfo()"/>
-      <input id="test" type="button" value="获取英雄列表" onclick="getHeros()"/>
-      <input id="test" type="button" value="获取英雄图鉴" onclick="getHeroArchive()"/>
+      <input id="test" type="button" value="英雄列表" onclick="getHeros()"/>
+      <input id="test" type="button" value="护符列表" onclick="getHufuList()"/>
+      <input id="test" type="button" value="英雄图鉴" onclick="getHeroArchive()"/>
     </div>
     <div class="g-button">
       竞技场 : 

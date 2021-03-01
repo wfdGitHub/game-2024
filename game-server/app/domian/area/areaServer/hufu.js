@@ -63,8 +63,7 @@ module.exports = function() {
 			"info" : info
 		}
 		self.sendToUser(uid,notify)
-		info.id = id
-		return info
+		return Object.assign({id : id},info)
 	}
 	//穿戴护符
 	this.wearHufu = function(uid,hId,id,cb) {
@@ -79,10 +78,10 @@ module.exports = function() {
 						cb(false,"已穿戴护符")
 						return
 					}
-					next()
+					next(null,heroInfo)
 				})
 			},
-			function(next) {
+			function(heroInfo,next) {
 				self.getObj(uid,main_name,id,function(hufuInfo) {
 					if(!hufuInfo){
 						cb(false,"护符不存在")
@@ -97,7 +96,7 @@ module.exports = function() {
 						heroInfo["hfs1"] = hufuInfo.s1
 					}
 					if(hufuInfo.s2){
-						self.heroDao.setHeroInfo(self.areaId,uid,hId,"hfs1",hufuInfo.s2)
+						self.heroDao.setHeroInfo(self.areaId,uid,hId,"hfs2",hufuInfo.s2)
 						heroInfo["hfs2"] = hufuInfo.s2
 					}
 					cb(true,heroInfo)
@@ -108,7 +107,7 @@ module.exports = function() {
 		})
 	}
 	//卸下护符
-	this.unwearHufu = function(uid,hId) {
+	this.unwearHufu = function(uid,hId,cb) {
 		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
 			if(!flag){
 				cb(false,"英雄不存在")
@@ -120,21 +119,99 @@ module.exports = function() {
 			}
 			var hufuInfo = {lv:heroInfo["hfLv"]}
 			delete heroInfo["hfLv"]
-			self.delHeroInfo(self.areaId,uid,hId,"hfLv")
+			self.heroDao.delHeroInfo(self.areaId,uid,hId,"hfLv")
 			if(heroInfo["hfs1"]){
 				hufuInfo.s1 = heroInfo["hfs1"]
 				delete heroInfo["hfs1"]
-				self.delHeroInfo(self.areaId,uid,hId,"hfs1")
+				self.heroDao.delHeroInfo(self.areaId,uid,hId,"hfs1")
 			}
 			if(heroInfo["hfs2"]){
-				hufuInfo.s1 = heroInfo["hfs2"]
+				hufuInfo.s2 = heroInfo["hfs2"]
 				delete heroInfo["hfs2"]
-				self.delHeroInfo(self.areaId,uid,hId,"hfs2")
+				self.heroDao.delHeroInfo(self.areaId,uid,hId,"hfs2")
 			}
 			self.gainHufu(uid,hufuInfo)
 			cb(true,heroInfo)
 		})
 	}
 	//合成护符
+	this.compoundHufu = function(uid,ids,lv,cb) {
+		if(!ids || ids.length !== 5){
+			cb(false,"ids error")
+			return
+		}
+		if(!hufu_quality[lv] || !Number.isInteger(lv) || lv >= 4){
+			cb(false,"lv error "+lv)
+			return
+		}
+		var idMap = {}
+		for(var i = 0;i < ids.length;i++){
+			if(typeof(ids[i]) != "string" || !ids[i]){
+			  	cb(false,"Id必须是string")
+			  	return
+			}
+			if(idMap[ids[i]]){
+				cb(false,"Id不能重复")
+			  	return
+			}
+			idMap[ids[i]] = true
+		}
+		self.getHMObj(uid,main_name,ids,function(list) {
+			for(var i = 0;i < list.length;i++){
+				if(!list[i]){
+					cb(false,"id error "+ids[i])
+					return
+				}
+				var info = JSON.parse(list[i])
+				if(info.lv != lv){
+					cb(false,ids[i]+" lv error "+info.lv)
+					return
+				}
+			}
+			for(var i = 0;i < ids.length;i++)
+				self.delObj(uid,main_name,ids[i])
+			var info = self.gainRandHufu(uid,lv+1)
+			cb(true,info)
+		})
+	}
 	//洗练护符
+	this.resetHufu = function(uid,ids,lv,cb) {
+		if(!ids || ids.length !== 2){
+			cb(false,"ids error")
+			return
+		}
+		if(!hufu_quality[lv] || !Number.isInteger(lv)){
+			cb(false,"lv error "+lv)
+			return
+		}
+		var idMap = {}
+		for(var i = 0;i < ids.length;i++){
+			if(typeof(ids[i]) != "string" || !ids[i]){
+			  	cb(false,"Id必须是string")
+			  	return
+			}
+			if(idMap[ids[i]]){
+				cb(false,"Id不能重复")
+			  	return
+			}
+			idMap[ids[i]] = true
+		}
+		self.getHMObj(uid,main_name,ids,function(list) {
+			for(var i = 0;i < list.length;i++){
+				if(!list[i]){
+					cb(false,"id error "+ids[i])
+					return
+				}
+				var info = JSON.parse(list[i])
+				if(info.lv != lv){
+					cb(false,ids[i]+" lv error "+info.lv)
+					return
+				}
+			}
+			for(var i = 0;i < ids.length;i++)
+				self.delObj(uid,main_name,ids[i])
+			var info = self.gainRandHufu(uid,lv)
+			cb(true,info)
+		})
+	}
 }
