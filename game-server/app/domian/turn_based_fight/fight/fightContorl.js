@@ -342,6 +342,71 @@ model.getTeamShowData = function(team) {
 	var fighting = new fightingFun(atkTeam,defTeam,{},{},{atkTeamAdds:info.teamAdds})
 	return {atkTeam : fighting.atkTeam,bookAtts : bookAtts}
 }
+//计算差值
+model.calcCEDiff = function(name,oldValue,newValue) {
+	var oldCE = 0
+	var newCE = 0
+	switch(name){
+		case "lv":
+			oldCE = lv_cfg[oldValue || 1]["ce"]
+			newCE = lv_cfg[newValue || 1]["ce"]
+		break
+		case "ad":
+			oldCE = advanced_base[oldValue || 0]["ce"]
+			newCE = advanced_base[newValue || 0]["ce"]
+		break
+		case "star":
+			oldCE = star_base[oldValue || 1]["ce"]
+			newCE = star_base[newValue || 1]["ce"]
+		break
+		case "artifact":
+			if(oldValue)
+				oldCE = artifact_level[oldValue]["ce"]
+			if(newCE)
+				newCE = artifact_level[newValue]["ce"]
+		break
+		case "a1":
+		case "a2":
+		case "a3":
+		case "a4":
+		case "a5":
+		case "a6":
+		case "a7":
+		case "a8":
+		case "a9":
+		case "a10":
+			if(oldValue)
+				oldCE = ace_pack[oldValue]["ce"]
+			if(newValue)
+				newCE = ace_pack[newValue]["ce"]
+		break
+		case "s1":
+		case "s2":
+		case "s3":
+		case "s4":
+			if(oldValue)
+				oldCE = stone_base[oldValue]["ce"]
+			if(newValue)
+				newCE = stone_base[newValue]["ce"]
+		break
+		case "s5":
+		case "s6":
+		case "s7":
+		case "s8":
+			if(oldValue)
+				oldCE = stone_skill[oldValue]["ce"]
+			if(newValue)
+				newCE = stone_skill[newValue]["ce"]
+		break
+		case "hfLv":
+			if(oldValue)
+				oldCE = hufu_quality[oldValue]["ce"]
+			if(newValue)
+				newCE = hufu_quality[newValue]["ce"]
+		break 
+	}
+	return newCE - oldCE
+}
 model.getTeamCE = function(team) {
 	var allCE = 0
 	var careers = {"1":0,"2":0,"3":0,"4":0}
@@ -371,6 +436,8 @@ model.getTeamCE = function(team) {
 			}
 			if(herosCfg[team[i]["id"]] && careers[herosCfg[team[i]["id"]]["career"]] != undefined)
 				careers[herosCfg[team[i]["id"]]["career"]]++
+			if(team[i]["hfLv"] && hufu_quality[team[i]["hfLv"]])
+				allCE += hufu_quality[team[i]["hfLv"]]["ce"]
 		}
 	}
 	if(team[6]){

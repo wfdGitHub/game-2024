@@ -58,7 +58,7 @@ module.exports = function() {
 					if(heroInfo[key+"v"]){
 						var num = Math.floor(heroInfo[key+"v"] / stone_base[baseStone[pos]]["value"])
 						self.addItem({uid:uid,itemId:baseStone[pos],value:num,reason:"卸下宝石"})
-						self.heroDao.setHeroInfoNormal(self.areaId,uid,hId,key+"v",0)
+						self.heroDao.setHeroInfo(self.areaId,uid,hId,key+"v",0)
 					}
 					self.heroDao.setHeroInfo(self.areaId,uid,hId,key,itemId)
 					cb(true)
@@ -179,7 +179,7 @@ module.exports = function() {
 				cb(false,err)
 			}else{
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,key,itemId)
-				self.heroDao.setHeroInfoNormal(self.areaId,uid,hId,key+"v",allValue)
+				self.heroDao.setHeroInfo(self.areaId,uid,hId,key+"v",allValue)
 				cb(true,{itemId : itemId,value : allValue})
 			}
 		})

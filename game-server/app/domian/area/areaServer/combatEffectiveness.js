@@ -41,32 +41,45 @@ module.exports = function() {
 	//修改英雄属性
 	this.incrbyCEInfo = function(uid,hId,name,value) {
 		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId] !== undefined){
-			let index = userTeamMaps[uid][hId]
+			var index = userTeamMaps[uid][hId]
+			var oldValue = userTeams[uid][index][name]
 			userTeams[uid][index][name] += value
-			this.updateCE(uid)
+			this.incrbyCE(uid,name,oldValue,userTeams[uid][index][name])
 		}
 	}
 	//设置英雄属性
 	this.setCEInfo = function(uid,hId,name,value) {
 		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId] !== undefined){
-			let index = userTeamMaps[uid][hId]
+			var index = userTeamMaps[uid][hId]
+			var oldValue = userTeams[uid][index][name]
 			userTeams[uid][index][name] = value
-			this.updateCE(uid)
-		}
-	}
-	//设置英雄属性不更新战力
-	this.setCEInfoNormal = function(uid,hId,name,value) {
-		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId] !== undefined){
-			let index = userTeamMaps[uid][hId]
-			userTeams[uid][index][name] = value
+			this.incrbyCE(uid,name,oldValue,userTeams[uid][index][name])
 		}
 	}
 	//删除英雄属性
 	this.delCEInfo = function(uid,hId,name) {
 		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId] !== undefined){
-			let index = userTeamMaps[uid][hId]
+			var index = userTeamMaps[uid][hId]
+			var oldValue = userTeams[uid][index][name]
 			delete userTeams[uid][index][name]
-			this.updateCE(uid)
+			this.incrbyCE(uid,name,oldValue,userTeams[uid][index][name])
+		}
+	}
+	//改变战力
+	this.incrbyCE = function(uid,name,oldValue,newValue) {
+		var ce = self.fightContorl.calcCEDiff(name,oldValue,newValue)
+		if(usersCes[uid] && ce){
+			var oldCE = usersCes[uid]
+			usersCes[uid] += ce
+			let notify = {
+				type : "updateCE",
+				oldCE : oldCE,
+				newCE : usersCes[uid]
+			}
+			self.sendToUser(uid,notify)
+			self.taskUpdate(uid,"totalCe",usersCes[uid])
+			self.addZset("ce_rank",uid,usersCes[uid])
+			self.playerDao.setPlayerInfo({uid:uid,key:"CE",value:usersCes[uid]})
 		}
 	}
 	//更新战力

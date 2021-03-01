@@ -344,22 +344,6 @@ heroDao.prototype.setHeroInfo = function(areaId,uid,hId,name,value,cb) {
 		}
 	})
 }
-//设置英雄属性不更新战力
-heroDao.prototype.setHeroInfoNormal = function(areaId,uid,hId,name,value,cb) {
-	var self = this
-	this.redisDao.db.hset("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {
-		if(err){
-			console.error(err)
-			if(cb)
-				cb(false,err)
-		}
-		else{
-			self.areaManager.areaMap[areaId].setCEInfoNormal(uid,hId,name,value)
-			if(cb)
-				cb(true,data)
-		}
-	})
-}
 //删除英雄属性
 heroDao.prototype.delHeroInfo = function(areaId,uid,hId,name,cb) {
 	var self = this
