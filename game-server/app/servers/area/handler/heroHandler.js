@@ -104,8 +104,8 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
         next(null,{flag : false,err : "英雄不存在"+i})
         return
       }
-      if(herolist[i].combat || herolist[i].zhuluCombat){
-        next(null,{flag : false,err : "英雄已出战"+i+","+hIds[i]+",combat:"+herolist[i].combat+",zhuluCombat:"+herolist[i].zhuluCombat})
+      if(herolist[i].combat){
+        next(null,{flag : false,err : "英雄已出战"+i+","+hIds[i]+",combat:"+herolist[i].combat})
         return
       }
     }
@@ -245,7 +245,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
             next(null,{flag : false,data : "材料英雄不存在"+hIds[i]})
             return
           }
-          if(heros[targetHero.id].combat || heros[targetHero.id].zhuluCombat){
+          if(heros[targetHero.id].combat){
             next(null,{flag : false,data : "材料英雄已出战"+hIds[i]})
             return
           }

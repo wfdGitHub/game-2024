@@ -223,8 +223,10 @@ module.exports = function() {
 				}else{
 					hufuInfo = self.gainRandHufu(uid,hufuArg.lv)
 				}
+				if(cb)
+					cb(true,1)
+				self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
 				return {type : "hufu",hufuInfo : hufuInfo}
-				cb(true,1)
 			}else{
 				self.addItemCB(uid,itemId,value,function(flag,curValue) {
 					if(flag){

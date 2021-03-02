@@ -621,30 +621,36 @@ heroDao.prototype.setZhuluTeam = function(areaId,uid,hIds,cb) {
 				return
 			}
 		}
-		self.getZhuluTeam(uid,function(flag,team) {
-			if(flag && team){
-				for(var i = 0;i < team.length;i++){
-					if(team[i])
-						self.delHeroInfo(areaId,uid,team[i].hId,"zhuluCombat")
-				}
-			}
-			self.redisDao.db.set("player:user:"+uid+":zhuluTeam",JSON.stringify(hIds),function(err,data) {
-				if(err){
-					if(cb)
-						cb(false,err)
-				}
-				else{
-					for(var i = 0;i < heroList.length;i++){
-						if(hIds[i]){
-							self.incrbyHeroInfo(areaId,uid,hIds[i],"zhuluCombat",1)
-						}
-					}
-					self.areaManager.areaMap[areaId].CELoad(uid)
-					if(cb)
-						cb(true)
-				}
-			})
+		self.redisDao.db.set("player:user:"+uid+":zhuluTeam",JSON.stringify(hIds),function(err,data) {
+			if(err)
+				cb(false,err)
+			else
+				cb(true)
 		})
+		// self.getZhuluTeam(uid,function(flag,team) {
+		// 	if(flag && team){
+		// 		for(var i = 0;i < team.length;i++){
+		// 			if(team[i])
+		// 				self.delHeroInfo(areaId,uid,team[i].hId,"zhuluCombat")
+		// 		}
+		// 	}
+		// 	self.redisDao.db.set("player:user:"+uid+":zhuluTeam",JSON.stringify(hIds),function(err,data) {
+		// 		if(err){
+		// 			if(cb)
+		// 				cb(false,err)
+		// 		}
+		// 		else{
+		// 			for(var i = 0;i < heroList.length;i++){
+		// 				if(hIds[i]){
+		// 					self.incrbyHeroInfo(areaId,uid,hIds[i],"zhuluCombat",1)
+		// 				}
+		// 			}
+		// 			self.areaManager.areaMap[areaId].CELoad(uid)
+		// 			if(cb)
+		// 				cb(true)
+		// 		}
+		// 	})
+		// })
 	})
 }
 //获取逐鹿出场阵容
