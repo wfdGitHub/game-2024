@@ -67,6 +67,15 @@ model.useSkill = function(skill,chase) {
 				}
 			}
 		}
+		//释放技能后恢复同阵营攻击最高的英雄怒气值
+		if(skill.character.skill_add_maxAtk_realm_anger){
+			var tmpTargets = this.locator.getTargets(skill.character,"realm_maxAtk_1")
+			for(var i = 0;i < tmpTargets.length;i++){
+				if(!tmpTargets[i]["died"]){
+					tmpTargets[i].addAnger(skill.character.skill_add_maxAtk_realm_anger,skill)
+				}
+			}
+		}
 	}else{
 		if(skill.burn_buff_change_normal || skill.character.burn_buff_change_normal){
 			for(var i = 0;i < targets.length;i++){
@@ -460,7 +469,7 @@ model.useAttackSkill = function(skill,chase) {
 			}
 		}
 		//击杀后追加技能
-		if(!chase && skill.character.kill_later_skill && this.seeded.random("判断追加技能") < skill.character.kill_later_skill.rate){
+		if(skill.character.kill_later_skill && this.seeded.random("判断追加技能") < skill.character.kill_later_skill.rate){
 			let tmpSkillInfo = Object.assign({skillId : skill.skillId,name : skill.name},skill.character.kill_later_skill)
 			let tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
 			this.useSkill(tmpSkill,true)

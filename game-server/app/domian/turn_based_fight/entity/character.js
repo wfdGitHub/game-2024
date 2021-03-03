@@ -104,6 +104,7 @@ var model = function(otps) {
 	this.normal_atk_turn_hp = otps.normal_atk_turn_hp || 0 //受到普通攻击转化血量
 	this.skill_atk_turn_hp = otps.skill_atk_turn_hp || 0 //受到技能攻击转化血量
 	this.action_heal = otps.action_heal || 0	//行动后恢复血量百分比
+	this.skill_add_maxAtk_realm_anger = otps.skill_add_maxAtk_realm_anger || 0 //释放技能后恢复同阵营攻击最高的英雄怒气值
 	//=========宝石效果=======//
 	this.kill_clear_buff = otps.kill_clear_buff || 0 //直接伤害击杀目标后，概率清除己方武将身上该目标死亡前释放的所有异常效果（灼烧、中毒、眩晕、沉默、麻痹）
 	this.control_amp = otps.control_amp || 0 //攻击正在被控制（眩晕、沉默、麻痹）的目标时，增加伤害比例

@@ -142,6 +142,8 @@ model.prototype.getTargets = function(character,targetType) {
 			//获取同阵营怒气最少的3个单位
 			return this.getRealmMinAnger(character,3)
 		break
+		case "realm_maxAtk_1":
+			return this.getRealmMaxAtk(character,1)
 		case "team_min_index":
 			//己方阵容站位最靠前的单位
 			return this.getTeamMinIndex(character)
