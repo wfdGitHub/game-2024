@@ -510,7 +510,7 @@ model.useAttackSkill = function(skill,chase) {
 			}
 			if(skill.isAnger && skill.character.skill_burn_turn_heal){
 				var tmpRecord = {type : "other_heal",targets : []}
-				var info = this.formula.calHeal(skill.character,skill.character,Math.round(skill.character.skill_burn_turn_heal * burnDamage,skill))
+				var info = this.formula.calHeal(skill.character,skill.character,Math.round(skill.character.skill_burn_turn_heal * burnDamage),skill)
 				info = skill.character.onHeal(skill.character,info,skill)
 				tmpRecord.targets.push(info)
 				fightRecord.push(tmpRecord)
