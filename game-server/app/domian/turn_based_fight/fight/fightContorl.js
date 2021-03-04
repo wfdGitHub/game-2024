@@ -19,6 +19,7 @@ var guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
 var guild_skill = require("../../../../config/gameCfg/guild_skill.json")
 var hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
 var hufu_quality = require("../../../../config/gameCfg/hufu_quality.json")
+var heroSpine = require("../../../../config/gameCfg/heroSpine.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -288,6 +289,14 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		}
 		if(info.hfs2)
 			model.mergeTalent(info,info.hfs2)
+	}
+	//皮肤计算
+	if(info.skin){
+		if(herosCfg[info.id] && herosCfg[info.id]["skin_"+info.skin]){
+			var skin = herosCfg[info.id]["skin_"+info.skin]
+			if(heroSpine[skin] && heroSpine[skin]["talent"])
+				model.mergeTalent(info,heroSpine[skin]["talent"])
+		}
 	}
 	model.mergeData(info,stoneskillInfo)
 	return new character(info)
