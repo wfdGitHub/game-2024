@@ -98,6 +98,56 @@
         console.log("onChat")
         console.log(data)
       })
+      //
+      //============形象相关=========//
+      //设置头像
+      var changeHead = function(id) {
+        pomelo.request("area.showHandler.changeHead", {id : id}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置形象
+      var changeFigure = function(id) {
+        pomelo.request("area.showHandler.changeFigure", {id : id}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取称号列表
+      var getUserTitleList = function() {
+        pomelo.request("area.showHandler.getUserTitleList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获得称号
+      var gainUserTitle = function(id) {
+        pomelo.request("area.showHandler.gainUserTitle", {id : id}, function(data) {
+            console.log(data);
+        });
+      }
+      //改变称号
+      var changeUserTitle = function(id) {
+        pomelo.request("area.showHandler.changeUserTitle", {id : id}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取头像框列表
+      var getUserFrameList = function() {
+        pomelo.request("area.showHandler.getUserFrameList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获得头像框
+      var gainUserFrame = function(id) {
+        pomelo.request("area.showHandler.gainUserFrame", {id : id}, function(data) {
+            console.log(data);
+        });
+      }
+      //改变头像框
+      var changeUserFrame = function(id) {
+        pomelo.request("area.showHandler.changeUserFrame", {id : id}, function(data) {
+            console.log(data);
+        });
+      }
       //==============护符==========//
       //护符列表
       var getHufuList = function() {
@@ -1388,12 +1438,6 @@
       //获取合服计划
       var getMergePlan = function() {
         pomelo.request("admin.adminHandler.getMergePlan", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //设置头像
-      var changeHead = function(id) {
-        pomelo.request("area.normalHandler.changeHead", {id : id}, function(data) {
             console.log(data);
         });
       }

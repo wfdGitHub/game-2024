@@ -10,7 +10,7 @@ const default_cfg = require("../../../config/gameCfg/default_cfg.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_city","guild_pk","limited_time","hufu"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_city","guild_pk","limited_time","hufu","show"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
@@ -397,7 +397,7 @@ area.prototype.getPlayerKeyByUid = function(uid,key,cb) {
 //获取玩家基础数据
 area.prototype.getPlayerBaseInfo = function(uid,cb) {
 	var self = this
-	self.redisDao.db.hmget("player:user:"+uid+":playerInfo",["name","head","gname","level"],function(err,data) {
+	self.redisDao.db.hmget("player:user:"+uid+":playerInfo",["name","head","gname","level","figure","title","frame"],function(err,data) {
 		cb(true,data)
 	})
 }
@@ -410,7 +410,7 @@ area.prototype.getPlayerInfoByUids = function(uids,cb) {
 	}
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
-		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","gname"]])
+		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","gname","figure","title","frame"]])
 	}
 	self.redisDao.multi(multiList,function(err,list) {
 		var userInfos = []
@@ -436,7 +436,7 @@ area.prototype.getPlayerBaseByUids = function(uids,cb) {
 	var self = this
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
-		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip","offline","CE"]])
+		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip","offline","CE","figure","title","frame"]])
 	}
 	self.redisDao.multi(multiList,function(err,list) {
 		var userInfos = []

@@ -52,18 +52,6 @@ module.exports = function() {
 		}
 		self.redisDao.db.hdel("player:user:"+uid+":playerInfo",key)
 	}
-	//改变头像
-	this.changeHead = function(uid,id,cb) {
-		self.redisDao.db.hget("player:user:"+uid+":heroArchive",id,function(err,data) {
-			if(err || !data){
-				cb(false,"未获得该英雄")
-			}else{
-				self.redisDao.db.hset("player:user:"+uid+":playerInfo","head",id,function(flag,data) {
-					cb(true)
-				})
-			}
-		})
-	}
 	//主公获得经验值
 	this.addLordExp = function(uid,exp) {
 		self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","exp",exp,function(err,value) {
