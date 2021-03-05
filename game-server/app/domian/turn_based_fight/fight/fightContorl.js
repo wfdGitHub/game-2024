@@ -292,10 +292,9 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 			model.mergeTalent(info,info.hfs2)
 	}
 	//皮肤计算
-	if(info.skin && skin_list[info.skin] && skin_list[info.skin]["skin"]){
-		var skin = skin_list[info.skin]["skin"]
-		if(heroSpine[skin] && heroSpine[skin]["talent"])
-			model.mergeTalent(info,heroSpine[skin]["talent"])
+	if(info.skin){
+		if(heroSpine[info.skin] && heroSpine[info.skin]["talent"])
+			model.mergeTalent(info,heroSpine[info.skin]["talent"])
 	}
 	model.mergeData(info,stoneskillInfo)
 	return new character(info)
