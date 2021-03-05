@@ -1,28 +1,31 @@
 //外观展示
 const frame_list = require("../../../../config/gameCfg/frame_list.json")
 const title_list = require("../../../../config/gameCfg/title_list.json")
+const skin_list = require("../../../../config/gameCfg/skin_list.json")
+const heros = require("../../../../config/gameCfg/heros.json")
+const async = require("async")
 const oneDayTime = 86400000
 module.exports = function() {
 	var self = this
 	//改变头像
 	this.changeHead = function(uid,id,cb) {
-		self.redisDao.db.hget("player:user:"+uid+":heroArchive",id,function(err,data) {
-			if(err || !data){
-				cb(false,"未获得该英雄")
-			}else{
+		self.getObj(uid,"heroArchive",id,function(data) {
+			if(data){
 				self.chageLordData(uid,"head",id)
 				cb(true)
+			}else{
+				cb(false,"未获得该英雄")
 			}
 		})
 	}
 	//改变形象
 	this.changeFigure = function(uid,id,cb) {
-		self.redisDao.db.hget("player:user:"+uid+":heroArchive",id,function(err,data) {
-			if(err || !data){
-				cb(false,"未获得该英雄")
-			}else{
+		self.getObj(uid,"heroArchive",id,function(data) {
+			if(data){
 				self.chageLordData(uid,"figure",id)
 				cb(true)
+			}else{
+				cb(false,"未获得该英雄")
 			}
 		})
 	}
@@ -127,5 +130,63 @@ module.exports = function() {
 				}
 			})
 		}
+	}
+	//激活英雄皮肤
+	this.gainHeroSkin = function(uid,id,cb) {
+		if(!skin_list[id]){
+			cb(false,"皮肤不存在")
+			return
+		}
+		self.setObj(uid,"heroArchive",id,Date.now())
+		var notify = {
+			"type" : "gainHeroSkin",
+			"id" : id
+		}
+		self.sendToUser(uid,notify)
+		cb(true)
+	}
+	//改变英雄皮肤
+	this.changeHeroSkin = function(uid,hId,index,cb) {
+		var skinId
+		async.waterfall([
+			function(next) {
+				self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+					if(!flag){
+						cb(false,"英雄不存在")
+						return
+					}
+					var heroId = heroInfo.id
+					if(index == 0){
+						skinId = 0
+						next(null,heroInfo)
+					}else if(heros[heroId] && heros[heroId]["skin_"+index]){
+						skinId = heros[heroId]["skin_"+index]
+						next(null,heroInfo)
+					}else{
+						cb(false,"index error")
+					}
+				})
+			},
+			function(heroInfo,next) {
+				if(skinId == 0){
+					delete heroInfo["skin"]
+					self.heroDao.delHeroInfo(self.areaId,uid,hId,"skin")
+					cb(true,heroInfo)
+				}else{
+					self.getObj(uid,"heroArchive",heroInfo.id+"_"+index,function(data) {
+						if(!data){
+							cb(false,"未获得该皮肤")
+							return
+						}
+						heroInfo["skin"] = skinId
+						self.heroDao.setHeroInfo(self.areaId,uid,hId,"skin",heroInfo["skin"])
+						cb(true,heroInfo)
+					})
+				}
+
+			}
+		],function(err) {
+			cb(false,err)
+		})
 	}
 }

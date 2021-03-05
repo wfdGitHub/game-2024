@@ -86,14 +86,29 @@ showHandler.prototype.changeUserFrame = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].changeUserFrame(uid,msg.id,function(flag,data) {
+      next(null,{flag : flag,data : data})
+  })
+}
+  //激活英雄皮肤
+showHandler.prototype.gainHeroSkin = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].gainHeroSkin(uid,msg.id,function(flag,data) {
     if(flag){
-        session.set("frame",msg.id)
-        session.push("frame",function() {
-          next(null,{flag : true,data : data})
-        })
+        next(null,{flag : true,data : data})
       }else{
         next(null,{flag : false,data : data})
       }
+  })
+}
+  //改变英雄皮肤
+showHandler.prototype.changeHeroSkin = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var index = msg.index
+  this.areaManager.areaMap[areaId].changeHeroSkin(uid,hId,index,function(flag,data) {
+    next(null,{flag : flag,data : data})
   })
 }
 module.exports = function(app) {

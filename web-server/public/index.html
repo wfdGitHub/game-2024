@@ -148,6 +148,18 @@
             console.log(data);
         });
       }
+      //激活英雄皮肤
+      var gainHeroSkin = function(id) {
+        pomelo.request("area.showHandler.gainHeroSkin", {id : id}, function(data) {
+            console.log(data);
+        });
+      }
+      //改变英雄皮肤
+      var changeHeroSkin = function(hId,index) {
+        pomelo.request("area.showHandler.changeHeroSkin", {hId : hId,index : index}, function(data) {
+            console.log(data);
+        });
+      }
       //==============护符==========//
       //护符列表
       var getHufuList = function() {
