@@ -210,64 +210,74 @@ module.exports = function() {
 				}
 				return
 			}
-			//护符
-			if(itemCfg[itemId].type == "hufu"){
-				var hufuArg = JSON.parse(itemCfg[itemId]["arg"])
-				if(!hufuArg.lv){
-					cb(false,"hufu lv error",hufuArg)
-					return
-				}
-				var hufuInfo = {}
-				if(hufuArg.s1){
-					hufuInfo = self.gainHufu(uid,hufuArg)
-				}else{
-					hufuInfo = self.gainRandHufu(uid,hufuArg.lv)
-				}
-				if(cb)
-					cb(true,1)
-				self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-				return {type : "hufu",hufuInfo : hufuInfo}
-			}else{
-				self.addItemCB(uid,itemId,value,function(flag,curValue) {
-					if(flag){
-						if(value > 0){
-							switch(itemCfg[itemId].type){
-								case "equip":
-									self.taskUpdate(uid,"equip",value,equip_base[itemId].lv)
-								break
-								case "ace":
-									self.taskUpdate(uid,"ace",value,ace_pack[itemId].quality)
-								break
-								case "art":
-									self.taskUpdate(uid,"artifact_gain",value)
-								break
-							}
-						}
-						switch(itemId){
-							case 204:
-								if(curValue > 20000){
-									curValue = 20000
-									self.redisDao.db.hset("player:user:"+uid+":bag",itemId,curValue)
-								}
-							break
-							case 202:
-								if(value < 0)
-									self.incrbyPlayerData(uid,"gold_consume",Math.abs(value))
-							break
-						}
-						// if(itemChangeMap[itemId])
-						self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue,reason:otps.reason})
-						var notify = {
-							"type" : "addItem",
-							"itemId" : itemId,
-							"value" : value,
-							"curValue" : curValue
-						}
-						self.sendToUser(uid,notify)
+			switch(itemCfg[itemId].type){
+				case "hufu":
+					//护符
+					var hufuArg = JSON.parse(itemCfg[itemId]["arg"])
+					if(!hufuArg.lv){
+						cb(false,"hufu lv error",hufuArg)
+						return
+					}
+					var hufuInfo = {}
+					if(hufuArg.s1){
+						hufuInfo = self.gainHufu(uid,hufuArg)
+					}else{
+						hufuInfo = self.gainRandHufu(uid,hufuArg.lv)
 					}
 					if(cb)
-						cb(flag,curValue)
-				})
+						cb(true,1)
+					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
+				return {type : "hufu",hufuInfo : hufuInfo}
+				case "title":
+					self.gainUserTitle(uid,itemCfg[itemId]["arg"],cb)
+				return {type : "title",id : itemCfg[itemId]["arg"]}
+				case "frame":
+					self.gainUserFrame(uid,itemCfg[itemId]["arg"],cb)
+				return {type : "frame",id : itemCfg[itemId]["arg"]}
+				case "skin":
+					self.gainHeroSkin(uid,itemCfg[itemId]["arg"],cb)
+				return {type : "skin",id : itemCfg[itemId]["arg"]}
+				default:
+					self.addItemCB(uid,itemId,value,function(flag,curValue) {
+						if(flag){
+							if(value > 0){
+								switch(itemCfg[itemId].type){
+									case "equip":
+										self.taskUpdate(uid,"equip",value,equip_base[itemId].lv)
+									break
+									case "ace":
+										self.taskUpdate(uid,"ace",value,ace_pack[itemId].quality)
+									break
+									case "art":
+										self.taskUpdate(uid,"artifact_gain",value)
+									break
+								}
+							}
+							switch(itemId){
+								case 204:
+									if(curValue > 20000){
+										curValue = 20000
+										self.redisDao.db.hset("player:user:"+uid+":bag",itemId,curValue)
+									}
+								break
+								case 202:
+									if(value < 0)
+										self.incrbyPlayerData(uid,"gold_consume",Math.abs(value))
+								break
+							}
+							// if(itemChangeMap[itemId])
+							self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue,reason:otps.reason})
+							var notify = {
+								"type" : "addItem",
+								"itemId" : itemId,
+								"value" : value,
+								"curValue" : curValue
+							}
+							self.sendToUser(uid,notify)
+						}
+						if(cb)
+							cb(flag,curValue)
+					})
 				return {type : "item",itemId : itemId,value : value}
 			}
 		}else{

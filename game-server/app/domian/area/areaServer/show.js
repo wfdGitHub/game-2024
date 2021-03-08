@@ -38,12 +38,14 @@ module.exports = function() {
 	//获得称号
 	this.gainUserTitle = function(uid,id,cb) {
 		if(!title_list[id]){
-			cb(false,"title id error "+id)
+			if(cb)
+				cb(false,"title id error "+id)
 			return
 		}
 		self.getObj(uid,"title_list",id,function(data) {
 			if(data == -1){
-				cb(true)
+				if(cb)
+					cb(true)
 				return
 			}
 			data = Number(data)
@@ -61,7 +63,8 @@ module.exports = function() {
 				"time" : data
 			}
 			self.sendToUser(uid,notify)
-			cb(true)
+			if(cb)
+				cb(true)
 		})
 	}
 	//改变称号
@@ -89,12 +92,14 @@ module.exports = function() {
 	//获得头像框
 	this.gainUserFrame = function(uid,id,cb) {
 		if(!frame_list[id]){
-			cb(false,"frame id error "+id)
+			if(cb)
+				cb(false,"frame id error "+id)
 			return
 		}
 		self.getObj(uid,"frame_list",id,function(data) {
 			if(data == -1){
-				cb(true)
+				if(cb)
+					cb(true)
 				return
 			}
 			data = Number(data)
@@ -112,7 +117,8 @@ module.exports = function() {
 				"time" : data
 			}
 			self.sendToUser(uid,notify)
-			cb(true)
+			if(cb)
+				cb(true)
 		})
 	}
 	//改变头像框
@@ -134,7 +140,8 @@ module.exports = function() {
 	//激活英雄皮肤
 	this.gainHeroSkin = function(uid,id,cb) {
 		if(!skin_list[id]){
-			cb(false,"皮肤不存在")
+			if(cb)
+				cb(false,"皮肤不存在")
 			return
 		}
 		self.setObj(uid,"heroArchive",id,Date.now())
@@ -143,7 +150,8 @@ module.exports = function() {
 			"id" : id
 		}
 		self.sendToUser(uid,notify)
-		cb(true)
+		if(cb)
+			cb(true)
 	}
 	//改变英雄皮肤
 	this.changeHeroSkin = function(uid,hId,index,cb) {
