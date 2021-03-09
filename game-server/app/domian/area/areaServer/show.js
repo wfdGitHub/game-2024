@@ -137,6 +137,48 @@ module.exports = function() {
 			})
 		}
 	}
+	//过期检查 头像框 称号
+	this.overdueCheck = function(uid,cb) {
+		var title = self.getLordAtt(uid,"title")
+		var frame = self.getLordAtt(uid,"frame")
+		var info = {
+			title : title,
+			frame : frame
+		}
+		async.waterfall([
+			function(next) {
+				if(title){
+					self.getObj(uid,"title_list",title,function(data) {
+						if(!(data && (data == -1 || Number(data) >= Date.now()))){
+							info.title = 0
+							self.chageLordData(uid,"title",0)
+						}
+						next()
+					})
+				}else{
+					next()
+				}
+			},
+			function(next) {
+				if(frame){
+					self.getObj(uid,"frame_list",frame,function(data) {
+						if(!(data && (data == -1 || Number(data) >= Date.now()))){
+							info.frame = 0
+							self.chageLordData(uid,"frame",0)
+						}
+						next()
+					})
+				}else{
+					next()
+				}
+			},
+			function(next) {
+				cb(true,info)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
 	//激活英雄皮肤
 	this.gainHeroSkin = function(uid,id,cb) {
 		if(!skin_list[id]){

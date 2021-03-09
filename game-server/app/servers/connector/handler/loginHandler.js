@@ -188,19 +188,26 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 				session.push("name")
 				session.set("head",playerInfo.head)
 				session.push("head")
-				session.set("title",playerInfo.title)
-				session.push("title")
-				session.set("frame",playerInfo.frame)
-				session.push("frame")
 				session.set("beginTime",Date.now())
 				session.push("beginTime")
 				// session.set("real_rmb",playerInfo.real_rmb)
 				// session.push("real_rmb")
 				playerInfo.areaId = areaId
 				self.cacheDao.saveCache(Object.assign({"messagetype":"login"},playerInfo))
+				self.app.rpc.area.areaRemote.overdueCheck.toServer(serverId,areaId,uid,function(flag,info) {
+					if(flag){
+						playerInfo.title = info.title
+						playerInfo.frame = info.frame
+					}
+					session.set("title",playerInfo.title)
+					session.push("title")
+					session.set("frame",playerInfo.frame)
+					session.push("frame")
+					next(null,{flag : flag,msg : playerInfo})
+				})
+			}else{
+				next(null,{flag : flag,msg : playerInfo})
 			}
-			
-			next(null,{flag : flag,msg : playerInfo})
 		})
     })
 }

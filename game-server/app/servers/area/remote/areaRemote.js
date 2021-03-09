@@ -147,6 +147,14 @@ areaRemote.prototype.deleteAreaMailList = function(areaId,id,cb) {
 		cb(false)
 	}
 }
+//过期检查 头像框 称号
+areaRemote.prototype.overdueCheck  = function(areaId,uid,cb) {
+	if(this.areaManager.areaMap[areaId]){
+		this.areaManager.areaMap[areaId].overdueCheck(uid,cb)
+	}else{
+		cb(false)
+	}
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "areaRemote",
