@@ -188,6 +188,14 @@ serverManager.prototype.setMergePlan = function(areaList,time,cb) {
 	for(var i = 0;i < areaList.length;i++){
 		this.areaLock[areaList[i]] = true
 	}
+	if(this.mergePlans[time]){
+		for(var i = 1;i < 1000;i++){
+			if(!this.mergePlans[time+i]){
+				time = time+i
+				break
+			}
+		}
+	}
 	this.mergePlans[time] = areaList
 	this.redisDao.db.hset("serverManager:mergePlans",time,JSON.stringify(areaList))
 	cb(true)
