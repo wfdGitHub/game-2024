@@ -14,7 +14,7 @@ var model = function(otps) {
 		for(var i = 0;i < book.team.length;i++){
 			if(book.team[i] && !book.team[i].died){	
 				if(book.buffArg)
-					buffManager.createBuff(book,book.team[i],{buffId : "reduction",duration : 1,buffArg : book.buffArg})
+					buffManager.createBuff(book,book.team[i],{buffId : "armor",duration : 1,buffArg : book.buffArg})
 				if(book.heal){
 					var tmpRecord = book.team[i].onHeal(book,{maxRate:book.heal})
 					recordInfo.targets.push(tmpRecord)

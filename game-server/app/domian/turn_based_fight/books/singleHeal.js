@@ -17,22 +17,10 @@ var model = function(otps) {
 			if(target){
 				var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
 				if(book.dispel){
-					if(target["buffs"]["burn"])
-						target["buffs"]["burn"].destroy("clear")
-					if(target["buffs"]["poison"])
-						target["buffs"]["poison"].destroy("clear")
-					if(target["buffs"]["forbidden"])
-						target["buffs"]["forbidden"].destroy("clear")
-					if(target["buffs"]["banAnger"])
-						target["buffs"]["banAnger"].destroy("clear")
+					target.removeDeBuff()
 				}
 				if(book.control){
-					if(target["buffs"]["dizzy"])
-						target["buffs"]["dizzy"].destroy("clear")
-					if(target["buffs"]["disarm"])
-						target["buffs"]["disarm"].destroy("clear")
-					if(target["buffs"]["silence"])
-						target["buffs"]["silence"].destroy("clear")
+					target.removeControlBuff()
 				}
 				var info = target.onHeal(book,{value:book.value})
 				recordInfo.targets.push(info)
