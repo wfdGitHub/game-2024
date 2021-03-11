@@ -423,7 +423,10 @@ area.prototype.getPlayerInfoByUids = function(uids,cb) {
 					uid : uids[i],
 					name : list[i][0],
 					head : list[i][1],
-					gname : list[i][2]
+					gname : list[i][2],
+					figure : list[i][3],
+					title : list[i][4],
+					frame : list[i][5],
 				}
 			}
 			userInfos.push(info)
