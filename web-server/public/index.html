@@ -98,7 +98,49 @@
         console.log("onChat")
         console.log(data)
       })
-      //
+      //============好友系统=========//
+      //好友列表
+      var getFriendList = function() {
+        pomelo.request("area.friendHandler.getFriendList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //ID搜索
+      var searchFriendById = function(target) {
+        pomelo.request("area.friendHandler.searchFriendById", {target:target}, function(data) {
+            console.log(data);
+        });
+      }
+      //换一批好友
+      var searchFriendBatch = function() {
+        pomelo.request("area.friendHandler.searchFriendBatch", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //申请列表
+      var getApplyFriendList = function() {
+        pomelo.request("area.friendHandler.getApplyFriendList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //请求添加
+      var applyAddFriend = function(target) {
+        pomelo.request("area.friendHandler.applyAddFriend", {target:target}, function(data) {
+            console.log(data);
+        });
+      }
+      //同意申请
+      var agreeAddFriend = function(target) {
+        pomelo.request("area.friendHandler.agreeAddFriend", {target:target}, function(data) {
+            console.log(data);
+        });
+      }
+      //拒绝申请
+      var refuseAddFriend = function(target) {
+        pomelo.request("area.friendHandler.refuseAddFriend", {target:target}, function(data) {
+            console.log(data);
+        });
+      }
       //============形象相关=========//
       //设置头像
       var changeHead = function(id) {
@@ -2548,8 +2590,13 @@
       <input id="test" type="button" value="注册角色" onclick="register(1,''+Date.now(),1)"/>
       <input id="test" type="button" value="登录服务器" onclick="loginArea(1)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
+    </div>
+    <div class="g-button">
+      登录系统 : 
       <input id="test" type="button" value="战斗准备" onclick="readyFight()"/>
       <input id="test" type="button" value="快速挂机" onclick="getQuickOnhookAward()"/>
+      <input id="test" type="button" value="好友列表" onclick="getFriendList()"/>
+      <input id="test" type="button" value="换一批好友" onclick="searchFriendBatch()"/>
     </div>
     <div class="g-button">
       英雄 : 

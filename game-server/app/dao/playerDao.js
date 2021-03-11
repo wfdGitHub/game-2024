@@ -44,6 +44,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		self.redisDao.db.hincrby("game:info","playerNum",1)
 		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":playerMap",uid,otps.areaId)
 		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":areaMap",otps.areaId,uid)
+		self.redisDao.db.sadd("area:area"+otps.areaId+":userSet",uid)
 		self.redisDao.db.hmset("player:user:"+uid+":playerInfo",playerInfo,function(err,data) {
 			if(!err){
 				self.redisDao.db.hset("game:nameMap",otps.name,uid)

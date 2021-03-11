@@ -19,6 +19,14 @@ module.exports = function() {
 			}
 		})
 	}
+	//获取hash数据键数量
+	this.getObjLen = function(uid,objName,cb) {
+		this.redisDao.db.hlen("player:user:"+uid+":"+objName,function(err,data) {
+			if(cb){
+				cb(data || 0)
+			}
+		})
+	}
 	//设置角色hash自定义数据
 	this.setObj = function(uid,objName,key,value,cb) {
 		this.redisDao.db.hset("player:user:"+uid+":"+objName,key,value,function(err,data) {
