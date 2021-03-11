@@ -111,6 +111,22 @@ showHandler.prototype.changeHeroSkin = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//玩家反馈
+showHandler.prototype.submitAdvise = function(msg, session, next) {
+  if(!msg.text){
+    next(null,{flag:false})
+    return
+  }
+  var info = {
+    uid : session.uid,
+    areaId : session.get("areaId"),
+    text : msg.text,
+    time : Date.now(),
+    name : session.get("name")
+  }
+  this.redisDao.db.rpush("submitAdvise",JSON.stringify(info))
+  next(null,{flag:true})
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "showHandler",
@@ -119,6 +135,9 @@ module.exports = function(app) {
   		name : "app",
   		value : app
   	}],
-    props : []
+    props : [{
+      name : "redisDao",
+      ref : "redisDao"
+    }]
   })
 };

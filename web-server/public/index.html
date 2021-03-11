@@ -160,6 +160,12 @@
             console.log(data);
         });
       }
+      //提交建议
+      var submitAdvise = function(text) {
+        pomelo.request("area.showHandler.submitAdvise", {text : text}, function(data) {
+            console.log(data);
+        });
+      }
       //==============护符==========//
       //护符列表
       var getHufuList = function() {
