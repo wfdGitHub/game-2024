@@ -52,8 +52,8 @@ var model = function() {
 // }
 //根据配置表生成战斗配置
 model.beginFight = function(atkTeam,defTeam,otps) {
-    var atkInfo = this.getTeamData(atkTeam)
-    var defInfo = this.getTeamData(defTeam)
+    var atkInfo = this.getTeamData(atkTeam,"atk")
+    var defInfo = this.getTeamData(defTeam,"def")
     var myotps = Object.assign({},otps)
     myotps.atkTeamAdds = atkInfo.teamAdds
     myotps.defTeamAdds = defInfo.teamAdds
@@ -313,7 +313,7 @@ model.getBookInfo = function(bookId,info){
 	return new bookList[bookId](info)
 }
 //获取团队数据
-model.getTeamData = function(team) {
+model.getTeamData = function(team,belong) {
 	var team = team.concat([])
 	var teamCfg = team[6]
     var books = {}
@@ -324,7 +324,7 @@ model.getTeamData = function(team) {
 		for(var bookId in teamCfg){
 			if(bookList[bookId] && bookMap[bookId]){
 				books[bookId] = this.getBookInfo(bookId,teamCfg[bookId])
-				books[bookId].belong = "atk"
+				books[bookId].belong = "belong"
 				bookAtts["maxHP"] += Math.floor(books[bookId].attInfo.maxHP/30)
 				bookAtts["atk"] += Math.floor(books[bookId].attInfo.atk/30)
 				bookAtts["phyDef"] += Math.floor(books[bookId].attInfo.phyDef/30)
