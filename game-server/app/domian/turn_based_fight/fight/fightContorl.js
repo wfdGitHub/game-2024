@@ -324,7 +324,7 @@ model.getTeamData = function(team,belong) {
 		for(var bookId in teamCfg){
 			if(bookList[bookId] && bookMap[bookId]){
 				books[bookId] = this.getBookInfo(bookId,teamCfg[bookId])
-				books[bookId].belong = "belong"
+				books[bookId].belong = belong
 				bookAtts["maxHP"] += Math.floor(books[bookId].attInfo.maxHP/30)
 				bookAtts["atk"] += Math.floor(books[bookId].attInfo.atk/30)
 				bookAtts["phyDef"] += Math.floor(books[bookId].attInfo.phyDef/30)
