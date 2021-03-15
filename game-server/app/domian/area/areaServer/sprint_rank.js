@@ -163,4 +163,32 @@ module.exports = function() {
 			self.incrbyZset(type,uid,value)
 		}
 	}
+	//获取排行榜第一玩家
+	this.getfirstRankUserList = function(cb) {
+		var multiList = []
+		for(var i in sprint_rank){
+			multiList.push(["zrange","area:area"+this.areaId+":zset:"+sprint_rank[i]["rank_type"],-1,-1,"WITHSCORES"])
+		}
+		console.log("multiList111",multiList)
+		self.redisDao.multi(multiList,function(err,list) {
+			console.log("multiList222",err,list)
+			var uids = []
+			var scores = []
+			for(var i = 0;i < list.length;i ++){
+				if(list[i] && list[i].length){
+					uids.push(list[i][0])
+					scores.push(list[i][1])
+				}else{
+					uids.push(null)
+					scores.push(null)
+				}
+			}
+			self.getPlayerInfoByUids(uids,function(userInfos) {
+				var info = {}
+				info.userInfos = userInfos
+				info.scores = scores
+				cb(true,info)
+			})
+		})
+	}
 }

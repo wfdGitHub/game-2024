@@ -311,6 +311,22 @@ activityHandler.prototype.getTotalRank = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//获取排名第一排行榜
+activityHandler.prototype.getfirstRankUserList = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getfirstRankUserList(function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//获取宗族第一排行榜
+activityHandler.prototype.getFirstGuildRank = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getFirstGuildRank(function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //领取消耗活动奖励
 activityHandler.prototype.gainConsumeTotalAward = function(msg, session, next) {
   var uid = session.uid

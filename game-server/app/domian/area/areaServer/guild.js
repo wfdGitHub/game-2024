@@ -645,6 +645,26 @@ module.exports = function() {
 			})
 		})
 	}
+	//获取排名第一宗族
+	this.getFirstGuildRank = function(cb) {
+		self.zrangewithscore(main_name,-1,-1,function(list) {
+			var guilds = []
+			var scores = []
+			var uids = []
+			var info = {}
+			for(var i = 0;i < list.length;i += 2){
+				uids.push(guildList[list[i]]["lead"])
+				guilds.push(guildList[list[i]])
+				scores.push(list[i+1])
+			}
+			info.guilds = guilds
+			info.scores = scores
+			self.getPlayerInfoByUids(uids,function(data) {
+				info.leadInfo = data
+				cb(true,info)
+			})
+		})
+	}
 	//宗族升级检查
 	this.checkGuildUpgrade = function(guildId) {
 		if(guildList[guildId]){

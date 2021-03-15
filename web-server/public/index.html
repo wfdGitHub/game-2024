@@ -1301,6 +1301,18 @@
             console.log(data);
         });
       }
+      //获取排名第一排行榜
+      var getfirstRankUserList = function() {
+        pomelo.request("area.activityHandler.getfirstRankUserList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取宗族第一排行榜
+      var getFirstGuildRank = function() {
+        pomelo.request("area.activityHandler.getFirstGuildRank", {}, function(data) {
+            console.log(data);
+        });
+      }
       //领取首充礼包
       var gainFirstRechargeAward = function() {
         pomelo.request("area.activityHandler.gainFirstRechargeAward", {}, function(data) {
