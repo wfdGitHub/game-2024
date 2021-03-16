@@ -64,6 +64,33 @@ friendHandler.prototype.refuseAddFriend = function(msg, session, next) {
   	next(null,{flag : flag,data : data})
   })
 }
+//删除好友
+friendHandler.prototype.delFriend = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var target = msg.target
+  this.areaManager.areaMap[areaId].delFriend(uid,target,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//赠送礼物
+friendHandler.prototype.sendFriendGift = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var list = msg.list
+  this.areaManager.areaMap[areaId].sendFriendGift(uid,list,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//领取礼物
+friendHandler.prototype.gainFriendGift = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var list = msg.list
+  this.areaManager.areaMap[areaId].gainFriendGift(uid,list,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "friendHandler",

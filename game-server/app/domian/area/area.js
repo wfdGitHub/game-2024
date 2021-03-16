@@ -118,6 +118,7 @@ area.prototype.firstDayUpdate = function() {
 	this.delAreaObj("areaInfo","day_login")
 	this.delAreaObj("areaInfo","day_play_count")
 	this.delAreaObj("areaInfo","day_play_amount")
+	this.delAreaObjAll("friend_gift")
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
@@ -468,6 +469,73 @@ area.prototype.getPlayerBaseByUids = function(uids,cb) {
 			userInfos.push(info)
 		}
 		cb(userInfos)
+	})
+}
+//批量获取好友信息
+area.prototype.getFriendByUids = function(uid,uids,cb) {
+	if(!uids.length){
+		cb([])
+		return
+	}
+	var self = this
+	var userInfos = []
+	async.waterfall([
+		function(next) {
+			var multiList = []
+			for(var i = 0;i < uids.length;i++){
+				multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip","offline","CE","figure","title","frame"]])
+			}
+			self.redisDao.multi(multiList,function(err,list) {
+				for(var i = 0;i < uids.length;i++){
+					let info = {}
+					if(uids[i] < 10000){
+						info = self.robots[uids[i]]
+					}else{
+						info = {
+							uid : uids[i],
+							name : list[i][0],
+							head : list[i][1],
+							level : list[i][2],
+							vip : list[i][3],
+							offline : list[i][4],
+							ce : list[i][5],
+							figure : list[i][6],
+							title : list[i][7],
+							frame : list[i][8],
+						}
+					}
+					userInfos.push(info)
+				}
+				next()
+			})
+		},
+		function(next) {
+			//获取赠送记录
+			var arr = []
+			for(var i = 0;i < uids.length;i++)
+				arr.push(uids[i]+"_"+uid)
+			self.getAreaHMObj("friend_gift",arr,function(data) {
+				for(var i = 0;i < data.length;i++){
+					userInfos[i].send = data[i]
+				}
+				next()
+			})
+		},
+		function(next) {
+			//获取被赠送记录
+			var arr = []
+			for(var i = 0;i < uids.length;i++)
+				arr.push(uid+"_"+uids[i])
+			self.getAreaHMObj("friend_gift",arr,function(data) {
+				for(var i = 0;i < data.length;i++){
+					userInfos[i].gain = data[i]
+				}
+				cb(userInfos)
+			})
+		}
+	],function(err) {
+		console.error(err)
+		cb([])
 	})
 }
 //战斗校验错误

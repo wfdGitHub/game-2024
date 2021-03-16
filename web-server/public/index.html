@@ -141,6 +141,24 @@
             console.log(data);
         });
       }
+      //删除好友
+      var delFriend = function(target) {
+        pomelo.request("area.friendHandler.delFriend", {target:target}, function(data) {
+            console.log(data);
+        });
+      }
+      //赠送礼物
+      var sendFriendGift = function(list) {
+        pomelo.request("area.friendHandler.sendFriendGift", {list:list}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取礼物
+      var gainFriendGift = function(list) {
+        pomelo.request("area.friendHandler.gainFriendGift", {list:list}, function(data) {
+            console.log(data);
+        });
+      }
       //============形象相关=========//
       //设置头像
       var changeHead = function(id) {

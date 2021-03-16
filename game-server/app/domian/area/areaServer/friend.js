@@ -1,7 +1,9 @@
 //好友系统
 const main_name = "friend_list"
 const friend_apply = "friend_apply"
+const friend_gift = "friend_gift"
 const maxLen = 20
+const gift_award = "202:10"
 const async = require("async")
 module.exports = function() {
 	var self = this
@@ -15,7 +17,7 @@ module.exports = function() {
 			for(var i in data){
 				arr.push(i)
 			}
-			self.getPlayerBaseByUids(arr,function(userInfos) {
+			self.getFriendByUids(uid,arr,function(userInfos) {
 				cb(true,userInfos)
 			})
 		})
@@ -67,6 +69,11 @@ module.exports = function() {
 				cb(false,"已添加为好友")
 			}else{
 				self.setObj(target,friend_apply,uid,Date.now())
+				var notify = {
+					type : "applyAddFriend",
+					uid : uid
+				}
+				self.sendToUser(uid,notify)
 				cb(true)
 			}
 		})
@@ -120,19 +127,139 @@ module.exports = function() {
 		self.delObj(uid,friend_apply,target)
 		cb(true)
 	}
+	//删除好友
+	this.delFriend = function(uid,target,cb) {
+		async.waterfall([
+			function(next) {
+				//判断好友是否存在
+				self.getObj(uid,main_name,target,function(data) {
+					if(data){
+						next()
+					}else{
+						next("好友不存在")
+					}
+				})
+			},
+			function(next) {
+				local.delFriend(uid,target)
+				cb(true)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
 	//赠送
-	//领取
-	//切磋
-	//删除
+	this.sendFriendGift = function(uid,list,cb) {
+		if(!list || !list.length){
+			cb(false,"list error")
+			return
+		}
+		async.waterfall([
+			function(next) {
+				//判断好友是否存在
+				self.getHMObj(uid,main_name,list,function(data) {
+					for(var i = 0;i < data.length;i++){
+						if(!data[i]){
+							next("好友不存在"+list[i])
+							return
+						}
+					}
+					next()
+				})
+			},
+			function(next) {
+				//判断是否已赠送
+				var arr = []
+				for(var i = 0;i < list.length;i++)
+					arr.push(list[i]+"_"+uid)
+				self.getAreaHMObj(friend_gift,arr,function(data) {
+					for(var i = 0;i < data.length;i++){
+						if(data[i]){
+							next("已赠送"+list[i])
+							return
+						}
+					}
+					next()
+				})
+			},
+			function(next) {
+				for(var i = 0;i < list.length;i++)
+					local.sendFriendGift(uid,list[i])
+				cb(true)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//领取礼物
+	this.gainFriendGift = function(uid,list,cb) {
+		if(!list || !list.length){
+			cb(false,"list error")
+			return
+		}
+		async.waterfall([
+			function(next) {
+				//判断好友是否存在
+				self.getHMObj(uid,main_name,list,function(data) {
+					for(var i = 0;i < data.length;i++){
+						if(!data[i]){
+							next("好友不存在"+list[i])
+							return
+						}
+					}
+					next()
+				})
+			},
+			function(next) {
+				//判断是否可领取
+				var arr = []
+				for(var i = 0;i < list.length;i++)
+					arr.push(uid+"_"+list[i])
+				self.getAreaHMObj(friend_gift,arr,function(data) {
+					for(var i = 0;i < data.length;i++){
+						if(data[i] != 1){
+							next("该礼物不可领取"+list[i])
+							return
+						}
+					}
+					next()
+				})
+			},
+			function(next) {
+				for(var i = 0;i < list.length;i++)
+					self.setAreaObj(friend_gift,uid+"_"+list[i],2)
+				var awardList = self.addItemStr(uid,gift_award,list.length)
+				cb(true,awardList)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//删除好友
+	local.delFriend = function(uid,target) {
+		self.delObj(uid,main_name,target)
+		self.sendToUser(uid,{type : "delFriend",uid : target})
+		self.delObj(target,main_name,uid)
+		self.sendToUser(target,{type : "delFriend",uid : uid})
+	}
 	//添加好友
 	local.addFriend = function(uid,target) {
 		self.setObj(uid,main_name,target,Date.now())
-		self.getPlayerBaseByUids([target],function(userInfos) {
+		self.getFriendByUids(uid,[target],function(userInfos) {
 			var notify = {
 				type : "addFriend",
 				userInfo : userInfos[0]
 			}
 			self.sendToUser(uid,notify)
 		})
+	}
+	//增送礼物
+	local.sendFriendGift = function(uid,target) {
+		self.setAreaObj(friend_gift,target+"_"+uid,1)
+		var notify = {
+			type : "friendGift",
+			uid : uid
+		}
+		self.sendToUser(target,notify)
 	}
 }
