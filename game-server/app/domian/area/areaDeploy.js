@@ -47,7 +47,7 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 	var self = this
 	self.areaDao.createArea(function(areaId) {
 		if(areaId){
-			self.redisDao.db.hset(,"oldArea",1)
+			self.redisDao.db.hset("area:area"+areaId+":areaInfo","oldArea",1)
 			var slist = []
 			for(let i = 0;i < areaList.length;i++){
 				self.redisDao.db.hset("area:area"+areaList[i]+":areaInfo","changeArea",areaId)
