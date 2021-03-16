@@ -355,6 +355,97 @@ var model = function() {
 			})
 		})
 	}
+	//获取跨服数据
+	posts["/cross_grading"] = function(req,res) {
+		self.redisDao.db.zrevrange(["cross:grading:rank",0,-1,"WITHSCORES"],function(err,list) {
+			console.log(err,list)
+			var uids = []
+			var areaIds = []
+			var scores = []
+			for(var i = 0;i < list.length;i+=2){
+				var strList = list[i].split("|")
+				var areaId = Number(strList[0])
+				var uid = Number(strList[1])
+				if(uid > 10000){
+					uids.push(uid)
+					areaIds.push(areaId)
+					scores.push(list[i+1])
+				}
+			}
+			var info = {
+				uids : uids,
+				areaIds : areaIds,
+				scores : scores
+			}
+			local.getPlayerBaseByUids(uids,function(userInfos) {
+				info.userInfos = userInfos
+				res.send(info)
+			})
+		})
+	}
+	//获取王者巅峰赛数据
+	posts["/cross_peak"] = function(req,res) {
+		self.redisDao.db.zrevrange(["cross:grading:rank",0,-1,"WITHSCORES"],function(err,list) {
+			console.log(err,list)
+			var uids = []
+			var areaIds = []
+			var scores = []
+			for(var i = 0;i < list.length;i+=2){
+				var strList = list[i].split("|")
+				var areaId = Number(strList[0])
+				var uid = Number(strList[1])
+				if(uid > 10000){
+					uids.push(uid)
+					areaIds.push(areaId)
+					scores.push(list[i+1])
+				}
+			}
+			var info = {
+				uids : uids,
+				areaIds : areaIds,
+				scores : scores
+			}
+			local.getPlayerBaseByUids(uids,function(userInfos) {
+				info.userInfos = userInfos
+				res.send(info)
+			})
+		})
+	}
+	//批量获取玩家基本数据
+	local.getPlayerBaseByUids = function(uids,cb) {
+		if(!uids.length){
+			cb([])
+			return
+		}
+		var multiList = []
+		for(var i = 0;i < uids.length;i++){
+			multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip","offline","CE","figure","title","frame"]])
+		}
+		self.redisDao.multi(multiList,function(err,list) {
+			var userInfos = []
+			for(var i = 0;i < uids.length;i++){
+				let info = {}
+				if(uids[i] < 10000){
+					info = self.robots[uids[i]]
+				}else{
+					info = {
+						uid : uids[i],
+						name : list[i][0],
+						head : list[i][1],
+						level : list[i][2],
+						vip : list[i][3],
+						offline : list[i][4],
+						ce : list[i][5],
+						figure : list[i][6],
+						title : list[i][7],
+						frame : list[i][8],
+					}
+				}
+				userInfos.push(info)
+			}
+			cb(userInfos)
+		})
+	}
 	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
 		var sql1 = "select count(*) from "+tableName
 		var sql2 = "select * from "+tableName	
