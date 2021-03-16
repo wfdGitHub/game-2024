@@ -1,6 +1,24 @@
 var formula = function(seeded) {
 	this.seeded = seeded
 }
+var restrainMap = {
+	"1_1" : 0,
+	"1_2" : -0.1,
+	"1_3" : 0.1,
+	"1_4" : 0.1,
+	"2_1" : 0.1,
+	"2_2" : 0,
+	"2_3" : -0.1,
+	"2_4" : 0.1,
+	"3_1" : -0.1,
+	"3_2" : 0.1,
+	"3_3" : 0,
+	"3_4" : 0.1,
+	"4_1" : 0.1,
+	"4_2" : 0.1,
+	"4_3" : 0.1,
+	"4_4" : 0,
+}
 //伤害计算
 formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,chase) {
 	var info = {type : "damage",value : 0}
@@ -116,6 +134,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			}
 		}
 	}
+	//种族克制
+	var restrainValue = restrainMap[attacker.realm+"_"+target.realm] || 0
+	info.value += Math.floor(info.value * restrainValue)
 	//物理法术伤害加成减免
 	if(attacker[skill.damageType+"_add"] || target[skill.damageType+"_def"]){
 		var tmpRate = attacker[skill.damageType+"_add"] - target[skill.damageType+"_def"]
