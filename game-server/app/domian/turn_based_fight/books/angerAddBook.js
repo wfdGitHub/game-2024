@@ -18,7 +18,8 @@ var model = function(otps) {
 					buffManager.createBuff(book,book.team[i],{buffId : "amplify",duration : 1,buffArg:book.buffArg})
 			}
 		}
-		fightRecord.push(recordInfo)
+		if(recordInfo.targets.length)
+			fightRecord.push(recordInfo)
 	}
 	return book
 }

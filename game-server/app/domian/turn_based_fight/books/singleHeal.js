@@ -18,8 +18,7 @@ var model = function(otps) {
 				var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
 				if(book.dispel){
 					target.removeDeBuff()
-				}
-				if(book.control){
+				}else if(book.control){
 					target.removeControlBuff()
 				}
 				var info = target.onHeal(book,{value:book.value})
