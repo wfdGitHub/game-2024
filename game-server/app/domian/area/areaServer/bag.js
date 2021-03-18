@@ -203,6 +203,10 @@ module.exports = function() {
 		if(itemCfg[itemId]){
 			value = Math.floor(Number(value) * rate) || 1
 			itemId = parseInt(itemId)
+			if(itemId == "202"){
+				value = Math.round(value * itemCfg["202"]["arg"])
+				itemId = "200"
+			}
 			if(!itemId){
 				console.error("itemId error "+itemId)
 				if(cb){
