@@ -169,9 +169,7 @@ module.exports = function() {
 		for(var i in sprint_rank){
 			multiList.push(["zrange","area:area"+this.areaId+":zset:"+sprint_rank[i]["rank_type"],-1,-1,"WITHSCORES"])
 		}
-		console.log("multiList111",multiList)
 		self.redisDao.multi(multiList,function(err,list) {
-			console.log("multiList222",err,list)
 			var uids = []
 			var scores = []
 			for(var i = 0;i < list.length;i ++){
