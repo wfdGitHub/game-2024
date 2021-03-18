@@ -366,6 +366,7 @@ area.prototype.getBaseUser = function(uid) {
 }
 //基准战力阵容
 area.prototype.standardTeam = function(uid,team,dl,lv) {
+	console.log("standardTeam",uid,team,dl,lv)
 	if(!lv)
 		lv = this.getLordLv(uid)
 	let standardInfo = standard_ce[lv]
@@ -377,8 +378,10 @@ area.prototype.standardTeam = function(uid,team,dl,lv) {
 	}
 	info = Object.assign(info,dlInfo)
 	for(var i = 0;i < team.length;i++){
+		console.log("i",i,team[i])
 		if(team[i]){
 			team[i] = Object.assign({id : team[i]},info)
+			console.log("team[i]",team[i])
 			if(team[i].star < heros[team[i]["id"]]["min_star"])
 				team[i].star = heros[team[i]["id"]]["min_star"]
 		}
