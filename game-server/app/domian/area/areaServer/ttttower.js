@@ -117,8 +117,10 @@ module.exports = function() {
 					}else if(mopup < ttttower_cfg["freeCount"]["value"] + ttttower_cfg["buyCount"]["value"]){
 						//付费扫荡
 						self.consumeItems(uid,ttttower_cfg["mopup"]["value"],1,"通天塔扫荡",function(flag,err) {
-							if(flag)
+							if(flag){
+								self.incrbyObj(uid,main_name,"mopup",1)
 								next()
+							}
 							else
 								next(err)
 						})
@@ -231,13 +233,15 @@ module.exports = function() {
 					}
 					if(mopup < ttttower_cfg["freeCount"]["value"]){
 						//免费扫荡
-						self.incrbyObj(uid,main_name,"mopup",1)
+						self.incrbyObj(uid,main_name,"realm_mopup_"+realm,1)
 						next()
 					}else if(mopup < ttttower_cfg["freeCount"]["value"] + ttttower_cfg["buyCount"]["value"]){
 						//付费扫荡
 						self.consumeItems(uid,ttttower_cfg["mopup"]["value"],1,"通天塔扫荡",function(flag,err) {
-							if(flag)
+							if(flag){
+								self.incrbyObj(uid,main_name,"realm_mopup_"+realm,1)
 								next()
+							}
 							else
 								next(err)
 						})
