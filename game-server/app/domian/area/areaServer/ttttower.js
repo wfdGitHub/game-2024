@@ -48,7 +48,7 @@ module.exports = function() {
 			cb(Object.assign({},TTTInfo,obj))
 		})
 	}
-	//挑战下一关BOSS
+	//挑战通天塔
 	this.challengeTTTBoss = function(uid,verify,cb) {
 		var level = 0
 		async.waterfall([
@@ -70,7 +70,8 @@ module.exports = function() {
 			    }
 			   	var atkTeam = fightInfo.team
 			   	var seededNum = fightInfo.seededNum
-			   	var defTeam = ttttower_level[level]["defTeam"]
+			    var mon_list = ttttower_level[level]["defTeam"]
+			    var defTeam = self.standardTeam(uid,mon_list,"ttt_main",ttttower_level[level]["lv"])
 			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
 			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]))
@@ -109,8 +110,12 @@ module.exports = function() {
 						next("只能扫荡已通关")
 						return
 					}
-					if(mopup >= ttttower_cfg["freeCount"]["value"] + VIP[self.players[uid]["vip"]]["ttt"]){
-						//消耗扫荡券
+					if(mopup < ttttower_cfg["freeCount"]["value"]){
+						//免费扫荡
+						self.incrbyObj(uid,main_name,"mopup",1)
+						next()
+					}else if(mopup < ttttower_cfg["freeCount"]["value"] + ttttower_cfg["buyCount"]["value"]){
+						//付费扫荡
 						self.consumeItems(uid,ttttower_cfg["mopup"]["value"],1,"通天塔扫荡",function(flag,err) {
 							if(flag)
 								next()
@@ -118,9 +123,7 @@ module.exports = function() {
 								next(err)
 						})
 					}else{
-						//免费扫荡
-						self.incrbyObj(uid,main_name,"mopup",1)
-						next()
+						next("扫荡次数已满")
 					}
 				})
 			},
@@ -187,7 +190,8 @@ module.exports = function() {
 				next(null,atkTeam)
 			},
 			function(atkTeam,next) {
-			   	var defTeam = ttttower_realm[level]["defTeam"]
+			    var mon_list = ttttower_realm[level]["defTeam"]
+			    var defTeam = self.standardTeam(uid,mon_list,"ttt_realm",ttttower_realm[level]["lv"])
 			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
 			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]))
@@ -225,18 +229,20 @@ module.exports = function() {
 						cb(false,"level=0")
 						return
 					}
-					if(mopup >= ttttower_cfg["freeCount"]["value"]){
-						//消耗扫荡券
-						self.consumeItems(uid,ttttower_cfg["mopup"]["value"],1,"阵营塔扫荡",function(flag,err) {
+					if(mopup < ttttower_cfg["freeCount"]["value"]){
+						//免费扫荡
+						self.incrbyObj(uid,main_name,"mopup",1)
+						next()
+					}else if(mopup < ttttower_cfg["freeCount"]["value"] + ttttower_cfg["buyCount"]["value"]){
+						//付费扫荡
+						self.consumeItems(uid,ttttower_cfg["mopup"]["value"],1,"通天塔扫荡",function(flag,err) {
 							if(flag)
 								next()
 							else
 								next(err)
 						})
 					}else{
-						//免费扫荡
-						self.incrbyObj(uid,main_name,"realm_mopup_"+realm,1)
-						next()
+						next("扫荡次数已满")
 					}
 				})
 			},
