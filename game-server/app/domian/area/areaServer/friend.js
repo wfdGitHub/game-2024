@@ -69,12 +69,14 @@ module.exports = function() {
 				cb(false,"已添加为好友")
 			}else{
 				self.setObj(target,friend_apply,uid,Date.now())
-				var notify = {
-					type : "applyAddFriend",
-					uid : uid
-				}
-				self.sendToUser(target,notify)
-				cb(true)
+				self.getPlayerBaseByUids([uid],function(userInfos) {
+					var notify = {
+						type : "applyAddFriend",
+						userInfo : userInfos[0]
+					}
+					self.sendToUser(target,notify)
+					cb(true)
+				})
 			}
 		})
 	}
