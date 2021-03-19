@@ -25,7 +25,6 @@ module.exports = function() {
 	//ID搜索
 	this.searchFriendById = function(uid,target,cb) {
 		self.redisDao.db.sismember("area:area"+self.areaId+":userSet",target,function(err,data) {
-			console.log("searchFriendById",err,data)
 			if(!data){
 				cb(false,"该玩家不存在")
 			}
@@ -37,7 +36,6 @@ module.exports = function() {
 	//换一批好友
 	this.searchFriendBatch = function(cb) {
 		self.redisDao.db.srandmember("area:area"+self.areaId+":userSet",10,function(err,data) {
-			console.log("searchFriendBatch",err,data)
 			self.getPlayerBaseByUids(data,function(userInfos) {
 				cb(true,userInfos)
 			})
