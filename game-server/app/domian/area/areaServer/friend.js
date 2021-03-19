@@ -125,8 +125,10 @@ module.exports = function() {
 		})
 	}
 	//拒绝申请
-	this.refuseAddFriend = function(uid,target,cb) {
-		self.delObj(uid,friend_apply,target)
+	this.refuseAddFriend = function(uid,list,cb) {
+		for(var i = 0;i < list.length;i++){
+			self.delObj(uid,friend_apply,list[i])
+		}
 		cb(true)
 	}
 	//删除好友

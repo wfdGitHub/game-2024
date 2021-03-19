@@ -59,8 +59,8 @@ friendHandler.prototype.agreeAddFriend = function(msg, session, next) {
 friendHandler.prototype.refuseAddFriend = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var target = msg.target
-  this.areaManager.areaMap[areaId].refuseAddFriend(uid,target,function(flag,data) {
+  var list = msg.list
+  this.areaManager.areaMap[areaId].refuseAddFriend(uid,list,function(flag,data) {
   	next(null,{flag : flag,data : data})
   })
 }

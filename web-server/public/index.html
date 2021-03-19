@@ -136,8 +136,8 @@
         });
       }
       //拒绝申请
-      var refuseAddFriend = function(target) {
-        pomelo.request("area.friendHandler.refuseAddFriend", {target:target}, function(data) {
+      var refuseAddFriend = function(list) {
+        pomelo.request("area.friendHandler.refuseAddFriend", {list:list}, function(data) {
             console.log(data);
         });
       }
