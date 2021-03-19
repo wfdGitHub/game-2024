@@ -8,7 +8,6 @@ var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var heros = require("../../../../config/gameCfg/heros.json")
 var util = require("../../../../util/util.js")
 var async = require("async")
-var itemChangeMap = {"201":1,"202":1}
 module.exports = function() {
 	var self = this
 	this.playerBags = {}
@@ -196,16 +195,16 @@ module.exports = function() {
 	//获得物品
 	this.addItem = function(otps,cb) {
 		var uid = otps.uid
-		var itemId = otps.itemId
+		var itemId = Number(otps.itemId)
 		var value = otps.value
 		var rate = otps.rate || 1
 		var reason = otps.reason
 		if(itemCfg[itemId]){
 			value = Math.floor(Number(value) * rate) || 1
 			itemId = parseInt(itemId)
-			if(itemId == "202"){
+			if(itemId == 202){
 				value = Math.round(value * itemCfg["202"]["arg"])
-				itemId = "200"
+				itemId = 200
 			}
 			if(!itemId){
 				console.error("itemId error "+itemId)
@@ -264,12 +263,11 @@ module.exports = function() {
 										self.redisDao.db.hset("player:user:"+uid+":bag",itemId,curValue)
 									}
 								break
-								case 202:
+								case 200:
 									if(value < 0)
 										self.incrbyPlayerData(uid,"gold_consume",Math.abs(value))
 								break
 							}
-							// if(itemChangeMap[itemId])
 							self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue,reason:otps.reason})
 							var notify = {
 								"type" : "addItem",
@@ -365,6 +363,10 @@ module.exports = function() {
 			var m_list = m_str.split(":")
 			var itemId = Number(m_list[0])
 			var value = Math.floor(Number(m_list[1]) * rate)
+			if(itemId == 202){
+				value = Math.round(value * itemCfg["202"]["arg"])
+				itemId = 200
+			}
 			items.push(itemId)
 			values.push(value)
 		})
@@ -382,7 +384,7 @@ module.exports = function() {
 					case 201:
 						self.taskUpdate(uid,"use_coin",values[i])
 					break
-					case 202:
+					case 200:
 						self.taskUpdate(uid,"use_gold",values[i])
 					break
 				}
