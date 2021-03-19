@@ -73,7 +73,7 @@ module.exports = function() {
 					type : "applyAddFriend",
 					uid : uid
 				}
-				self.sendToUser(uid,notify)
+				self.sendToUser(target,notify)
 				cb(true)
 			}
 		})
