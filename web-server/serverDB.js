@@ -27,10 +27,8 @@ var model = function() {
 	}
 	//清除战斗校验错误数据
 	posts["/verify_clear"] = function(req,res) {
-		self.redisDao.db.llen("verify_faild",function(err,total) {
-			self.redisDao.db.del("verify_faild",function(err,data) {
-				res.send()
-			})
+		self.redisDao.db.del("verify_faild",function(err,data) {
+			res.send("SUCCESS")
 		})
 	}
 	//获取战斗校验错误日志
@@ -42,6 +40,46 @@ var model = function() {
 		self.redisDao.db.llen("verify_faild",function(err,total) {
 			info.total = total
 			self.redisDao.db.lrange("verify_faild",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
+	}
+	//清除游戏建议数据
+	posts["/advise_clear"] = function(req,res) {
+		self.redisDao.db.del("submitAdvise",function(err,data) {
+			res.send("SUCCESS")
+		})
+	}
+	//获取游戏建议数据
+	posts["/submitAdvise"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("submitAdvise",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("submitAdvise",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
+	}
+	//清除报错堆栈
+	posts["/clear_client_error"] = function(req,res) {
+		self.redisDao.db.del("client:logs",function(err,data) {
+			res.send("SUCCESS")
+		})
+	}
+	//获取报错堆栈
+	posts["/get_client_error"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("client:logs",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("client:logs",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
 				info.list = data
 				res.send(info)
 			})
