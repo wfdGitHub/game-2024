@@ -84,7 +84,10 @@ module.exports = function() {
 			   		self.taskUpdate(uid,"tttLv",1)
 			   		self.updateSprintRank("ttt_rank",uid,1)
 			   		self.chageLordData(uid,"ttt_lv",level)
-					var awardList = self.addItemStr(uid,ttttower_level[level]["awards"],1,"通天塔"+level)
+			   		var awardList = []
+			   		if(ttttower_level[level]["awards"])
+						awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["awards"],1,"通天塔"+level))
+					awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["mopupAward"],rate,"通天塔"+level))
 					cb(true,awardList)
 			   	}else{
 			   		cb(false)
@@ -204,7 +207,10 @@ module.exports = function() {
 			   		self.incrbyObj(uid,main_name,"realm_level_"+realm,1)
 			   		self.incrbyObj(uid,main_name,"realm_count_"+realm,1)
 			   		self.addZset("ttt_realm"+realm,uid,level)
-					var awardList = self.addItemStr(uid,ttttower_realm[level]["awards_"+realm],1,"阵营塔"+level)
+			   		var awardList = []
+			   		if(ttttower_realm[level]["awards_"+realm])
+						awardList = awardList.concat(self.addItemStr(uid,ttttower_realm[level]["awards_"+realm],1,"阵营塔"+level))
+					awardList = awardList.concat(self.addItemStr(uid,ttttower_realm[level]["mopupAward_"+realm],rate,"阵营塔"+level))
 					cb(true,awardList)
 			   	}else{
 			   		cb(false)
@@ -237,7 +243,7 @@ module.exports = function() {
 						next()
 					}else if(mopup < ttttower_cfg["freeCount"]["value"] + ttttower_cfg["buyCount"]["value"]){
 						//付费扫荡
-						self.consumeItems(uid,ttttower_cfg["mopup"]["value"],1,"通天塔扫荡",function(flag,err) {
+						self.consumeItems(uid,ttttower_cfg["mopup"]["value"],1,"阵营塔扫荡",function(flag,err) {
 							if(flag){
 								self.incrbyObj(uid,main_name,"realm_mopup_"+realm,1)
 								next()
