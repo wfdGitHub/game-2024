@@ -138,8 +138,9 @@ module.exports = function() {
 				rate = recharge[index].first_rate
 			else
 				rate = recharge[index].normal_rate
-			var award = self.addItem({uid:uid,itemId:202,value:gold,rate:rate,reason:"充值"})
-			cb(true,{awardList:[award]})
+			var award = "202:"+Math.round(value*rate)
+			self.sendMail("充值奖励","感谢您的充值,这是您的充值奖励,请查收。",award)
+			cb(true)
 		})
 	}
 	//购买循环礼包
@@ -156,8 +157,8 @@ module.exports = function() {
 			self.incrbyObj(uid,main_name,"loop_"+loopId,1)
 			var award = "202:"+gift_loop[loopId].gold
 			award += "&"+gift_loop[loopId].award
-			var awardList = self.addItemStr(uid,award,1,"循环礼包"+loopId)
-			cb(true,{awardList:awardList})
+			self.sendMail("充值奖励","感谢您的充值,这是您的充值奖励,请查收。",award)
+			cb(true)
 		})
 	}
 	//激活等级基金
@@ -225,8 +226,8 @@ module.exports = function() {
 				self.setObj(uid,main_name,"highCard",1)
 				self.chageLordData(uid,"highCard",1)
 				self.addUserRMB(uid,activity_cfg["high_card_lof"]["value"])
-				var awardList = self.addItemStr(uid,activity_cfg["high_card_award"]["value"],1,"激活至尊特权")
-				cb(true,{awardList:awardList})
+				self.sendMail("充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["high_card_award"]["value"])
+				cb(true)
 			}
 		})
 	}
@@ -243,8 +244,8 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,awardBag_day[index].rmb)
 			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
-			var awardList = self.addItemStr(uid,awardBag_day[index].award,1,"每日礼包"+index)
-			cb(true,{awardList:awardList})
+			self.sendMail("充值奖励","感谢您的充值,这是您的充值奖励,请查收。",awardBag_day[index].award)
+			cb(true)
 		})
 	}
 	//获取每周礼包与每月礼包购买数据
@@ -272,8 +273,8 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,gift_week[index].rmb)
 			self.incrbyObj(uid,"week_shop",index,1)
-			var awardList = self.addItemStr(uid,gift_week[index].award,1,"每周礼包"+index)
-			cb(true,{awardList:awardList})
+			self.sendMail("充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_week[index].award)
+			cb(true)
 		})
 	}
 	//购买每月礼包
@@ -290,8 +291,8 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,gift_month[index].rmb)
 			self.incrbyObj(uid,"month_shop",index,1)
-			var awardList = self.addItemStr(uid,gift_month[index].award,1,"每月礼包"+index)
-			cb(true,{awardList:awardList})
+			self.sendMail("充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_month[index].award)
+			cb(true)
 		})
 	}
 	//进阶战令
@@ -305,8 +306,8 @@ module.exports = function() {
 			self.addUserRMB(uid,activity_cfg["war_horn"]["value"])
 			self.setObj(uid,"war_horn","high",1)
 			self.incrbyObj(uid,"war_horn","exp",war_horn[curMonth]["exp"],function(exp) {
-				var awardList = self.addItemStr(uid,war_horn[curMonth]["award"],1,"激活战令")
-				cb(true,{awardList:awardList,exp:exp})
+				self.sendMail("充值奖励","感谢您的充值,这是您的充值奖励,请查收。",war_horn[curMonth]["award"])
+				cb(true,{exp:exp})
 			})
 		})
 	}
@@ -319,9 +320,9 @@ module.exports = function() {
 		self.getObj(uid,"limit_gift",id,function(data) {
 			if(data){
 				self.addUserRMB(uid,gift_list[id]["price"])
-				var awardList = self.addItemStr(uid,gift_list[id]["award"],1,"限时礼包"+id)
+				self.sendMail("充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_list[id]["award"])
 				self.delObj(uid,"limit_gift",id)
-				cb(true,{awardList:awardList})
+				cb(true)
 			}else{
 				cb(false,"限时礼包不存在或已过期")
 				return
@@ -341,8 +342,8 @@ module.exports = function() {
 		}
 		self.addUserRMB(uid,activity_cfg["quick_pri"]["value"])
 		self.chageLordData(uid,"quick_pri",quick_pri)
-		var awardList = self.addItemStr(uid,activity_cfg["quick_award"]["value"],1,"快速作战特权")
-		cb(true,{quick_pri:quick_pri,awardList:awardList})
+		self.sendMail("充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["quick_award"]["value"])
+		cb(true,{quick_pri:quick_pri})
 	}
 	//购买三界特权
 	this.buyTourPri = function(uid,cb) {
@@ -357,8 +358,8 @@ module.exports = function() {
 		}
 		self.addUserRMB(uid,activity_cfg["tour_pri"]["value"])
 		self.chageLordData(uid,"tour_pri",tour_pri)
-		var awardList = self.addItemStr(uid,activity_cfg["tour_award"]["value"],1,"三界特权")
-		cb(true,{tour_pri:tour_pri,awardList:awardList})
+		self.sendMail("充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["tour_award"]["value"])
+		cb(true,{tour_pri:tour_pri})
 	}
 	//购买宝石矿场特权
 	this.buyStonePri = function(uid,cb) {
@@ -373,7 +374,7 @@ module.exports = function() {
 		}
 		self.addUserRMB(uid,activity_cfg["stone_pri"]["value"])
 		self.chageLordData(uid,"stone_pri",stone_pri)
-		var awardList = self.addItemStr(uid,activity_cfg["stone_award"]["value"],1,"宝石矿场特权")
-		cb(true,{stone_pri:stone_pri,awardList:awardList})
+		self.sendMail("充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["stone_award"]["value"])
+		cb(true,{stone_pri:stone_pri})
 	}
 }
