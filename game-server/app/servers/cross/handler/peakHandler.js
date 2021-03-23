@@ -75,6 +75,18 @@ peakHandler.prototype.getPeakMyMatch = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//获取小组赛记录
+peakHandler.prototype.getPeakGrounpHistory = function(msg, session, next) {
+  var crossUid = session.get("crossUid")
+  var num = msg.num
+  if(!Number.isInteger(num) || num < 0 || num > 7){
+    next(null,{flag:false,err:"num error"})
+    return
+  }
+  this.crossManager.getPeakGrounpHistory(num,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 //获取本赛季八强记录
 peakHandler.prototype.getPeakBetterHistory = function(msg, session, next) {
   var crossUid = session.get("crossUid")

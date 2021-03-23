@@ -749,6 +749,12 @@
             console.log(data);
         });
       }
+      //获取小组赛记录
+      var getPeakGrounpHistory = function(num) {
+        pomelo.request("cross.peakHandler.getPeakGrounpHistory", {num : num}, function(data) {
+            console.log(data);
+        });
+      }
       //获取本赛季八强记录
       var getPeakBetterHistory = function() {
         pomelo.request("cross.peakHandler.getPeakBetterHistory", {}, function(data) {

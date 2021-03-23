@@ -738,6 +738,41 @@ module.exports = function() {
 		}
 		cb(true,data)
 	}
+	//获取小组赛记录
+	this.getPeakGrounpHistory = function(num,cb) {
+		if(curRound < 2){
+			cb(true,[])
+			return
+		}
+		var maxNum = curRound
+		if(maxNum > 4)
+			maxNum = 4
+		var data = {}
+		var begin = num * 8
+		var end = (num + 1) * 8
+		for(var i = 2;i <= maxNum;i++){
+			data[i] = []
+			for(var j = begin;j < end;j += 2){
+				var info = {}
+				var rand = Math.floor(j/2)
+				info.round = i
+				info.atk = participants[i][rand*2]
+				info.def = participants[i][rand*2 + 1]
+				info.atkInfo = parInfoMap[info.atk]
+				info.atkAmount = betAmount[info.atk]
+				info.defInfo = parInfoMap[info.def]
+				info.defAmount = betAmount[info.def]
+				if(winners[i])
+					info.winner = winners[i][info.atk]
+				data[i].push(info)
+			}
+			begin = begin / 2
+			end = end / 2
+			if(!winners[i])
+				break
+		}
+		cb(true,data)
+	}
 	//获取本赛季八强记录
 	this.getPeakBetterHistory = function(crossUid,cb) {
 		//crossUid = crossUid.split("|area")[0]
@@ -748,35 +783,22 @@ module.exports = function() {
 		var data = {}
 		for(var i = 5;i <= curRound;i++){
 			data[i] = []
-			if(winners[i]){
-				for(var j = 0;j < participants[i].length;j += 2){
-					var info = {}
-					var rand = Math.floor(j/2)
-					info.round = i
-					info.atk = participants[i][rand*2]
-					info.def = participants[i][rand*2 + 1]
-					info.atkInfo = parInfoMap[info.atk]
-					info.atkAmount = betAmount[info.atk]
-					info.defInfo = parInfoMap[info.def]
-					info.defAmount = betAmount[info.def]
+			for(var j = 0;j < participants[i].length;j += 2){
+				var info = {}
+				var rand = Math.floor(j/2)
+				info.round = i
+				info.atk = participants[i][rand*2]
+				info.def = participants[i][rand*2 + 1]
+				info.atkInfo = parInfoMap[info.atk]
+				info.atkAmount = betAmount[info.atk]
+				info.defInfo = parInfoMap[info.def]
+				info.defAmount = betAmount[info.def]
+				if(winners[i])
 					info.winner = winners[i][info.atk]
-					data[i].push(info)
-				}
-			}else{
-				for(var j = 0;j < participants[i].length;j += 2){
-					var info = {}
-					var rand = Math.floor(j/2)
-					info.round = i
-					info.atk = participants[i][rand*2]
-					info.def = participants[i][rand*2 + 1]
-					info.atkInfo = parInfoMap[info.atk]
-					info.atkAmount = betAmount[info.atk]
-					info.defInfo = parInfoMap[info.def]
-					info.defAmount = betAmount[info.def]
-					data[i].push(info)
-				}
-				break
+				data[i].push(info)
 			}
+			if(!winners[i])
+				break
 		}
 		cb(true,data)
 	}
