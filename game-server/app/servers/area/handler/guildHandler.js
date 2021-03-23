@@ -11,7 +11,8 @@ guildHandler.prototype.createGuild = function(msg, session, next) {
   var name = msg.name
   var audit = msg.audit
   var lv_limit = msg.lv_limit
-  this.areaManager.areaMap[areaId].createGuild(uid,name,audit,lv_limit,function(flag,data) {
+  var notify = msg.notify
+  this.areaManager.areaMap[areaId].createGuild(uid,name,notify,audit,lv_limit,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }

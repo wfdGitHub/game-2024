@@ -188,7 +188,7 @@ module.exports = function() {
 		}
 	}
 	//创建宗族
-	this.createGuild = function(uid,name,audit,lv_limit,cb) {
+	this.createGuild = function(uid,name,notify,audit,lv_limit,cb) {
 		audit = audit == 1 ? 1 : 0
 		if(!Number.isInteger(lv_limit) || lv_limit < 0 || lv_limit > 255)
 			lv_limit = 0
@@ -251,7 +251,7 @@ module.exports = function() {
 						num : 1,
 						audit : audit,
 						lv_limit : lv_limit,
-						notify: ""
+						notify: notify
 					}
 					guildList[guildId] = guildInfo
 					contributions[guildId] = {}
