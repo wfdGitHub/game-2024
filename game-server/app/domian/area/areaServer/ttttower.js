@@ -87,7 +87,7 @@ module.exports = function() {
 			   		var awardList = []
 			   		if(ttttower_level[level]["awards"])
 						awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["awards"],1,"通天塔"+level))
-					awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["mopupAward"],rate,"通天塔"+level))
+					awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["mopupAward"],1,"通天塔"+level))
 					cb(true,awardList)
 			   	}else{
 			   		cb(false)
@@ -210,7 +210,7 @@ module.exports = function() {
 			   		var awardList = []
 			   		if(ttttower_realm[level]["awards_"+realm])
 						awardList = awardList.concat(self.addItemStr(uid,ttttower_realm[level]["awards_"+realm],1,"阵营塔"+level))
-					awardList = awardList.concat(self.addItemStr(uid,ttttower_realm[level]["mopupAward_"+realm],rate,"阵营塔"+level))
+					awardList = awardList.concat(self.addItemStr(uid,ttttower_realm[level]["mopupAward_"+realm],1,"阵营塔"+level))
 					cb(true,awardList)
 			   	}else{
 			   		cb(false)
