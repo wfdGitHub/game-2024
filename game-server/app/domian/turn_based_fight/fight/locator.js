@@ -28,7 +28,7 @@ model.prototype.getTargets = function(character,targetType) {
 			return this.getEnemyRandom(character,5)
 		case "enemy_rand_24":
 			// 敌方随机2-4个目标
-			var rand = Math.floor(Math.random() * 3) + 2
+			var rand = Math.floor(this.seededNum.random("enemy_rand_24") * 3) + 2
 			return this.getEnemyRandom(character,rand)
 		case "enemy_vertical":
 			//敌方纵排
