@@ -332,7 +332,8 @@ module.exports = function() {
 		var defTeams = []
 		var wins = []
 		var seededNums = []
-		var targetcrossUid,targetInfo,targetSid,targetUid,targetScore
+		var voidScore = false
+		var targetcrossUid,targetInfo,targetSid,targetUid,targetScore,begin,end
 		async.waterfall([
 			function(next) {
 				//获取攻方阵容
@@ -370,60 +371,72 @@ module.exports = function() {
 					if(!score || score <= 0){
 						defTeams = robotTeam.concat()
 						targetInfo = {
-							name : "卫兵",
+							name : "士兵",
 							head : "201010"
 						}
 						next()
 					}else{
 						score = Number(score)
-						var begin = score-100
-						var end = score+100
+						begin = score-100
+						end = score+100
 						self.redisDao.db.zcount(["cross:muye:rank:camp"+defCamp,begin,end],function(err,zcount) {
 							if(!zcount || zcount <= 0){
-								next("匹配不到合适的对手")
-								return
+								begin = begin - 100
+								end = end + 100
+								voidScore = true
+								self.redisDao.db.zcount(["cross:muye:rank:camp"+defCamp,begin,end],function(err,zcount) {
+									if(!zcount || zcount <= 0){
+										next("匹配不到合适的对手")
+										return
+									}
+									next(null,zcount)
+								})
+							}else{
+								next(null,zcount)
 							}
-							var offset = Math.floor(zcount * Math.random()) 
-							self.redisDao.db.zrangebyscore(["cross:muye:rank:camp"+defCamp,begin,end,"WITHSCORES","limit",offset,1],function(err,list) {
-								if(list && list.length){
-									targetcrossUid = list[0]
-									var strList = targetcrossUid.split("|")
-									targetSid = Number(strList[0])
-									targetUid = Number(strList[1])
-									targetScore = Number(list[1])
-									self.heroDao.getFightBook(targetUid,function(flag,bookInfo) {
-										if(!bookInfo)
-											bookInfo = {}
-										self.redisDao.db.hmget("player:user:"+targetUid+":guild",["skill_1","skill_2","skill_3","skill_4"],function(err,data) {
-											if(data){
-												bookInfo["g1"] = Number(data[0]) || 0
-												bookInfo["g2"] = Number(data[1]) || 0
-												bookInfo["g3"] = Number(data[2]) || 0
-												bookInfo["g4"] = Number(data[3]) || 0
-											}
-										    self.redisDao.db.hget("cross:muye:fightTeam",targetcrossUid,function(err,data) {
-										        var hIds = JSON.parse(data)
-										        self.heroDao.getHeroList(targetUid,hIds,function(flag,heros) {
-										            defTeams[0] = heros.splice(0,6)
-										            defTeams[0][6] = bookInfo
-										            defTeams[1] = heros.splice(0,6)
-										            defTeams[1][6] = bookInfo
-										            defTeams[2] = heros.splice(0,6)
-										            defTeams[2][6] = bookInfo
-										            self.getPlayerInfoByUid(targetUid,function(info) {
-										                targetInfo = info
-										                next()
-										            })
-										        })
-										    })
-										})
-									})
-								}else{
-									console.error("zrangebyscore offset/zcount : "+offset+"/"+zcount,err,list)
-									next("匹配出错")
+						})
+					}
+				})
+			},
+			function(zcount,next) {
+				var offset = Math.floor(zcount * Math.random()) 
+				self.redisDao.db.zrangebyscore(["cross:muye:rank:camp"+defCamp,begin,end,"WITHSCORES","limit",offset,1],function(err,list) {
+					if(list && list.length){
+						targetcrossUid = list[0]
+						var strList = targetcrossUid.split("|")
+						targetSid = Number(strList[0])
+						targetUid = Number(strList[1])
+						targetScore = Number(list[1])
+						self.heroDao.getFightBook(targetUid,function(flag,bookInfo) {
+							if(!bookInfo)
+								bookInfo = {}
+							self.redisDao.db.hmget("player:user:"+targetUid+":guild",["skill_1","skill_2","skill_3","skill_4"],function(err,data) {
+								if(data){
+									bookInfo["g1"] = Number(data[0]) || 0
+									bookInfo["g2"] = Number(data[1]) || 0
+									bookInfo["g3"] = Number(data[2]) || 0
+									bookInfo["g4"] = Number(data[3]) || 0
 								}
+							    self.redisDao.db.hget("cross:muye:fightTeam",targetcrossUid,function(err,data) {
+							        var hIds = JSON.parse(data)
+							        self.heroDao.getHeroList(targetUid,hIds,function(flag,heros) {
+							            defTeams[0] = heros.splice(0,6)
+							            defTeams[0][6] = bookInfo
+							            defTeams[1] = heros.splice(0,6)
+							            defTeams[1][6] = bookInfo
+							            defTeams[2] = heros.splice(0,6)
+							            defTeams[2][6] = bookInfo
+							            self.getPlayerInfoByUid(targetUid,function(info) {
+							                targetInfo = info
+							                next()
+							            })
+							        })
+							    })
 							})
 						})
+					}else{
+						console.error("zrangebyscore offset/zcount : "+offset+"/"+zcount,err,list)
+						next("匹配出错")
 					}
 				})
 			},
@@ -476,6 +489,8 @@ module.exports = function() {
 						change *= 2
 					}
 				}
+				if(voidScore)
+					change = 0
 				self.addItemStr(crossUid,awardStr,1,"牧野决战",function(flag,awardList) {
 					self.redisDao.db.zincrby(["cross:muye:rank:camp"+camp,change,newCrossUid],function(err,curScore) {
 						var info = {
