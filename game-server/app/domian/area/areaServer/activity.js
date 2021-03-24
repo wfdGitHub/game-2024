@@ -57,7 +57,8 @@ module.exports = function() {
 		}
 		var lv = self.getLordLv(uid)
 		self.getObj(uid,main_name,"rv_"+type,function(data) {
-			if(data && data != 0){
+			data = Number(data) || 0
+			if(data && data >= default_cfg["revenue_"+type]["value"]){
 				cb(false,"已征收")
 			}else{
 				var pcStr = ""
