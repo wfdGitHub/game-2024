@@ -18,6 +18,7 @@ redisDao.prototype.init = function(cb) {
 		        self.db.set("acc:lastid",10000);
 		        self.db.set("user:lastid",101200);
 		        self.db.set("guild:lastid",1000);
+		        self.db.set("merge:lastid",10000);
     		}
 		})
 		cb()

@@ -8,43 +8,63 @@ for(var i in heros){
 	}
 }
 var areaDao = function() {}
-//创建新服务器
+//新服开启
 areaDao.prototype.createArea = function(cb) {
-	console.log("开启新服务器")
+	console.log("创建新服服务器")
 	var areaInfo = {}
 	var self = this
 	self.redisDao.db.incrby("area:lastid",1,function(err,data) {
 		if(!err && data){
-			areaInfo.areaId = data
-			areaInfo.lastRank = 4001
-			areaInfo.openTime = Date.now()
-			self.redisDao.db.hmset("area:area"+areaInfo.areaId+":areaInfo",areaInfo)
-			self.redisDao.db.rpush("area:list",areaInfo.areaId)
-			//初始机器人
-			var robots = {}
-			for(var i = 1;i <= 4001;i++){
-				var info = {
-					"uid" : i
-				}
-				if(Math.random() > 0.5){
-					info["name"] = boyCfg[Math.floor(Math.random() * boyCfg.length)]
-				}else{
-					info["name"] = girlCfg[Math.floor(Math.random() * girlCfg.length)]
-				}
-				info["head"] = heroList[Math.floor(Math.random() * heroList.length)]
-				info["frame"] = info["head"]
-				robots[i] = JSON.stringify(info)
-			}
-			self.redisDao.db.hmset("area:area"+areaInfo.areaId+":robots",robots,function(err) {
-				console.log("机器人数据初始化完成")
-				if(err){
-					console.error(err)
-				}
-				cb(areaInfo.areaId)
-			})
+			self.openArea(data,cb)
 		}else{
 			cb(false)
 		}
+	})
+}
+//合服开启
+areaDao.prototype.createMergeArea = function(cb) {
+	console.log("创建合服服务器")
+	var areaInfo = {}
+	var self = this
+	self.redisDao.db.incrby("merge:lastid",1,function(err,data) {
+		if(!err && data){
+			self.openArea(data,cb)
+		}else{
+			cb(false)
+		}
+	})
+}
+//创建服务器
+areaDao.prototype.openArea = function(areaId,cb) {
+	console.log("创建服务器")
+	var self = this
+	var areaInfo = {}
+	areaInfo.areaId = areaId
+	areaInfo.lastRank = 4001
+	areaInfo.openTime = Date.now()
+	self.redisDao.db.hmset("area:area"+areaInfo.areaId+":areaInfo",areaInfo)
+	self.redisDao.db.rpush("area:list",areaInfo.areaId)
+	//初始机器人
+	var robots = {}
+	for(var i = 1;i <= 4001;i++){
+		var info = {
+			"uid" : i
+		}
+		if(Math.random() > 0.5){
+			info["name"] = boyCfg[Math.floor(Math.random() * boyCfg.length)]
+		}else{
+			info["name"] = girlCfg[Math.floor(Math.random() * girlCfg.length)]
+		}
+		info["head"] = heroList[Math.floor(Math.random() * heroList.length)]
+		info["frame"] = info["head"]
+		robots[i] = JSON.stringify(info)
+	}
+	self.redisDao.db.hmset("area:area"+areaInfo.areaId+":robots",robots,function(err) {
+		console.log("机器人数据初始化完成")
+		if(err){
+			console.error(err)
+		}
+		cb(areaInfo.areaId)
 	})
 }
 //删除服务器
