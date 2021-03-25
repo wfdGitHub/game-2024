@@ -421,6 +421,27 @@ var model = function() {
 			})
 		})
 	}
+	//获取同盟列表
+	posts["/guild_info"] = function(req,res) {
+		var info = {}
+		var arr = []
+		self.redisDao.db.hgetall("guild:guildNameMap",function(err,data) {
+			for(var i in data){
+				arr.push(["hgetall","guild:guildInfo:"+data[i]])
+			}
+			self.redisDao.multi(arr,function(err,data) {
+				arr = []
+				info.guildInfo = data
+				for(var i = 0;i < data.length;i++){
+					arr.push(["hgetall","player:user:"+data[i]["lead"]+":playerInfo"])
+				}
+				self.redisDao.multi(arr,function(err,data) {
+					info.userInfo = data
+					res.send(info)
+				})
+			})
+		})
+	}
 	//获取王者巅峰赛数据
 	posts["/cross_peak"] = function(req,res) {
 		self.redisDao.db.zrevrange(["cross:grading:rank",0,-1,"WITHSCORES"],function(err,list) {

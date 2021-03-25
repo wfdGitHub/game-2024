@@ -346,7 +346,8 @@ area.prototype.getSimpleUser = function(uid) {
 	var info = {
 		uid : uid,
 		name : this.players[uid]["name"],
-		head : this.players[uid]["head"]
+		head : this.players[uid]["head"],
+		level : this.players[uid]["level"]
 	}
 	return info
 }
