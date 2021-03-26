@@ -90,7 +90,6 @@ module.exports = function() {
 					cb(false,"条件不满足")
 				}
 			}
-
 		})
 	}
 	//重置主题任务
@@ -105,9 +104,9 @@ module.exports = function() {
 		var allWeight = recruit_base["topic"]["allWeight"]
 		var weights = Object.assign({},recruit_base["topic"]["weights"])
 	  	if(self.checkLimitedTime("zhaohuan")){
-	  		allWeight += 200
 	  		weights["topic"] += 100
-	  		weights["hero_10"] += 100
+	  		weights["hero_10"] += 200
+	  		allWeight += 200
 	  	}
 	    var heroInfos = []
 	    num = Number(num) || 0
