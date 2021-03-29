@@ -105,8 +105,8 @@ module.exports = function() {
 		var weights = Object.assign({},recruit_base["topic"]["weights"])
 	  	if(self.checkLimitedTime("zhaohuan")){
 	  		weights["topic"] += 100
-	  		weights["hero_10"] += 200
-	  		allWeight += 200
+	  		weights["hero_10"] += 100
+	  		allWeight += 100
 	  	}
 	    var heroInfos = []
 	    num = Number(num) || 0
