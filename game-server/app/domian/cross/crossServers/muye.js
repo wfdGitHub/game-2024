@@ -598,7 +598,10 @@ module.exports = function() {
 					userInfos : userInfos,
 					scores : scores
 				}
-				cb(true,info)
+				self.redisDao.db.zrange("cross:muye:rank:camp"+camp,crossUid,function(err,rank) {
+					info.rank = rank
+					cb(true,info)
+				})
 			})
 		})
 	}
