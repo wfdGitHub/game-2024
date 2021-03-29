@@ -444,7 +444,6 @@ var model = function() {
 	//获取王者巅峰赛数据
 	posts["/cross_peak"] = function(req,res) {
 		self.redisDao.db.zrevrange(["cross:grading:rank",0,-1,"WITHSCORES"],function(err,list) {
-			console.log(err,list)
 			var uids = []
 			var areaIds = []
 			var scores = []
@@ -469,6 +468,34 @@ var model = function() {
 			})
 		})
 	}
+	//获取无双争霸赛数据
+	posts["/beherrscherInfo"] = function(req,res) {
+		var info = {}
+		self.redisDao.db.lrange("area:list",0,-1,function(err,list) {
+			if(list){
+				info.areaList = list
+				var multiList = []
+				for(var i = 0;i < list.length;i++){
+					multiList.push(["hgetall","area:area"+list[i]+":beherrscher"])
+				}
+				self.redisDao.multi(multiList,function(err,list) {
+					info.beherrscherList = list
+					var uids = []
+					for(var i = 0;i < list.length;i++){
+						uids.push(list[i]["seat_1"])
+						uids.push(list[i]["seat_2"])
+						uids.push(list[i]["seat_3"])
+					}
+					local.getPlayerBaseByUids(uids,function(userInfos) {
+						info.userInfos = userInfos
+						res.send(info)
+					})
+				})
+			}else{
+				res.send(info)
+			}
+		})
+	}
 	//批量获取玩家基本数据
 	local.getPlayerBaseByUids = function(uids,cb) {
 		if(!uids.length){
@@ -484,7 +511,7 @@ var model = function() {
 			for(var i = 0;i < uids.length;i++){
 				let info = {}
 				if(uids[i] < 10000){
-					info = self.robots[uids[i]]
+					info = null
 				}else{
 					info = {
 						uid : uids[i],
