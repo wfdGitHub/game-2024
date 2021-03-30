@@ -21,7 +21,7 @@ var model = function(atkTeam,defTeam,atkBooks,defBooks,otps) {
 	this.seededNum = otps.seededNum || (new Date()).getTime()
     this.seeded = new seeded(this.seededNum)
     this.locator = new locator(this.seeded)
-    this.formula = new formula(this.seeded)
+    this.formula = new formula(this.seeded,otps)
     skillManager.init(this,this.locator,this.formula,this.seeded)
 	this.isFight = true				//战斗中标识
 	this.round = 0					//当前回合

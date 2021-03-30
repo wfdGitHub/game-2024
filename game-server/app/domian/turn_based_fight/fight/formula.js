@@ -1,5 +1,7 @@
-var formula = function(seeded) {
+var formula = function(seeded,otps={}) {
 	this.seeded = seeded
+	this.phyRate = otps.phyRate || 1
+	this.magRate = otps.magRate || 1
 }
 var restrainMap = {
 	"1_1" : 0,
@@ -182,6 +184,12 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	//法术伤害波动
 	if(attacker.mag_fluctuate && skill.damageType == "mag"){
 		info.value = Math.floor(info.value * (attacker.mag_fluctuate + this.seeded.random("法术波动") * 0.2))
+	}
+	//场景伤害加成
+	if(skill.damageType == "phy"){
+		info.value = Math.floor(info.value * this.phyRate)
+	}else if(skill.damageType == "mag"){
+		info.value = Math.floor(info.value * this.magRate)
 	}
 	//最小伤害
 	if (info.value <= 1) {
