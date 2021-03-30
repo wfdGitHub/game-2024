@@ -1,6 +1,9 @@
 //跨服服务器
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
-var boyCfg = require("../../../config/sysCfg/boy.json")
+const boyCfg = require("../../../config/sysCfg/boy.json")
+const standard_dl = require("../../../config/gameCfg/standard_dl.json")
+const heros = require("../../../config/gameCfg/heros.json")
+const standard_ce = require("../../../config/gameCfg/standard_ce.json")
 var uuid = require("uuid")
 var crossServers = ["grading","escort","peakCompetition","muye","guild_pk"]
 var crossManager = function(app) {
@@ -92,14 +95,24 @@ crossManager.prototype.userLeave = function(crossUid) {
 //获取玩家简易信息
 crossManager.prototype.getSimpleUser = function(crossUid) {
 	if(!this.players[crossUid]){
-		return false
+		if(Number.isInteger(crossUid) && crossUid < boyCfg.length){
+			var info = {
+				name : boyCfg[crossUid],
+				areaId : Math.floor(Math.random() * 3) + 1
+			}
+			info.oriId = info.areaId
+			return info
+		}else{
+			return false
+		}
+	}else{
+		var info = {
+			name : this.players[crossUid]["playerInfo"]["name"],
+			areaId : this.players[crossUid]["playerInfo"]["areaId"],
+			oriId : this.oriIds[crossUid]
+		}
+		return info
 	}
-	var info = {
-		name : this.players[crossUid]["playerInfo"]["name"],
-		areaId : this.players[crossUid]["playerInfo"]["areaId"],
-		oriId : this.oriIds[crossUid]
-	}
-	return info
 }
 //获取玩家战斗阵容
 crossManager.prototype.userTeam = function(crossUid) {
@@ -249,6 +262,25 @@ crossManager.prototype.getPlayerInfoByUids = function(areaIds,uids,cb) {
 		}
 		cb(userInfos)
 	})
+}
+crossManager.prototype.standardTeam = function(list,dl,lv) {
+	team = list.concat()
+	let standardInfo = standard_ce[lv]
+	let dlInfo = standard_dl[dl]
+	let info = Object.assign({},standardInfo)
+	if(dlInfo.lv){
+		info.lv += dlInfo.lv
+		delete dlInfo.lv
+	}
+	info = Object.assign(info,dlInfo)
+	for(var i = 0;i < team.length;i++){
+		if(team[i]){
+			team[i] = Object.assign({id : team[i]},info)
+			if(team[i].star < heros[team[i]["id"]]["min_star"])
+				team[i].star = heros[team[i]["id"]]["min_star"]
+		}
+	}
+	return team
 }
 module.exports = {
 	id : "crossManager",

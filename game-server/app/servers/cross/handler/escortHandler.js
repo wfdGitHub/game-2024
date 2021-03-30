@@ -12,7 +12,12 @@ escortHandler.prototype.getEscortInfo = function(msg, session, next) {
   })
 }
 //获取镖车列表
-
+escortHandler.prototype.getEscortList = function(msg, session, next) {
+  var crossUid = session.get("crossUid")
+  this.crossManager.getEscortList(crossUid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //镖车刷新
 escortHandler.prototype.updateEscortCar = function(msg, session, next) {
 	var crossUid = session.get("crossUid")
@@ -35,20 +40,20 @@ escortHandler.prototype.robEscort = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
-//订阅镖车信息
-escortHandler.prototype.subscribeCarMessage = function(msg, session, next) {
-  var crossUid = session.get("crossUid")
-  this.crossManager.subscribeCarMessage(crossUid,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
-//取消订阅
-escortHandler.prototype.unSubscribeCarMessage = function(msg, session, next) {
-  var crossUid = session.get("crossUid")
-  this.crossManager.unSubscribeCarMessage(crossUid,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
+// //订阅镖车信息
+// escortHandler.prototype.subscribeCarMessage = function(msg, session, next) {
+//   var crossUid = session.get("crossUid")
+//   this.crossManager.subscribeCarMessage(crossUid,function(flag,data) {
+//     next(null,{flag : flag,data : data})
+//   })
+// }
+// //取消订阅
+// escortHandler.prototype.unSubscribeCarMessage = function(msg, session, next) {
+//   var crossUid = session.get("crossUid")
+//   this.crossManager.unSubscribeCarMessage(crossUid,function(flag,data) {
+//     next(null,{flag : flag,data : data})
+//   })
+// }
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "escortHandler",

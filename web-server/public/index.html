@@ -2112,6 +2112,12 @@
             console.log(data);
         });
       }
+      //获取镖车列表
+      var getEscortList = function() {
+        pomelo.request("cross.escortHandler.getEscortList", {}, function(data) {
+            console.log(data);
+        });
+      }
       //刷新镖车
       var updateEscortCar = function() {
         pomelo.request("cross.escortHandler.updateEscortCar", {}, function(data) {
@@ -2676,10 +2682,9 @@
     <div class="g-button">
       押镖玩法 : 
       <input id="test" type="button" value="参与押镖" onclick="getEscortInfo()"/>
-      <input id="test" type="button" value="订阅镖车消息" onclick="subscribeCarMessage()"/>
-      <input id="test" type="button" value="取消订阅" onclick="unSubscribeCarMessage()"/>
+      <input id="test" type="button" value="镖车列表" onclick="getEscortList()"/>
       <input id="test" type="button" value="开始押镖" onclick="beginEscort()"/>
-      <input id="test" type="button" value="更换镖车" onclick="updateEscortCar()"/>
+      <input id="test" type="button" value="刷新镖车" onclick="updateEscortCar()"/>
     </div>
     <div class="g-button">
       服务器相关 : 

@@ -117,6 +117,18 @@ util.prototype.randomString = function(len){
 util.prototype.md5 = function(str) {
     return md5(str)
 }
+util.prototype.getRandomArray = function(arr, count) {
+    if(count > arr.length)
+        count = arr.length
+    var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
+    while (i-- > min) {
+        index = Math.floor((i + 1) * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
+    }
+    return shuffled.slice(min);
+}
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;
