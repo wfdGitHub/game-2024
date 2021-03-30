@@ -98,6 +98,25 @@
         console.log("onChat")
         console.log(data)
       })
+      //============无双争霸=========//
+      //获取数据
+      var getBeherrscherInfo = function() {
+        pomelo.request("area.beherrscherHandler.getBeherrscherInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战
+      var challengeBeherrscher = function(index) {
+        pomelo.request("area.beherrscherHandler.challengeBeherrscher", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取挑战记录
+      var getBeherrscherRecord = function(index) {
+        pomelo.request("area.beherrscherHandler.getBeherrscherRecord", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
       //============好友系统=========//
       //好友列表
       var getFriendList = function() {

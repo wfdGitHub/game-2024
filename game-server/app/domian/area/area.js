@@ -10,7 +10,7 @@ const default_cfg = require("../../../config/gameCfg/default_cfg.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_city","guild_pk","limited_time","hufu","show","friend"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_city","guild_pk","limited_time","hufu","show","friend","beherrscher"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
@@ -66,6 +66,7 @@ area.prototype.init = function() {
 	this.initSprintRank()
 	this.initGuild()
 	this.initLimitedTime()
+	this.initBeherrscher()
 	this.timer = setInterval(this.update.bind(this),1000)
 }
 //服务器关闭
@@ -93,6 +94,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.weekDay = (new Date).getDay()
 	this.weekStr = util.getWeek()
 	this.areaDay = util.getTimeDifference(this.openTime,Date.now())
+	console.log("areaDay",this.areaDay)
 	this.festivalDayUpdate()
 	this.aceLottoDayUpdate()
 	this.topicRecruitDayUpdate()
@@ -101,6 +103,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.guildDayUpdate()
 	this.guildTreasureDayUpdate()
 	this.guildCityDayUpdate()
+	this.dayUpdateBeherrscher()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)
@@ -359,8 +362,10 @@ area.prototype.getBaseUser = function(uid) {
 		uid : uid,
 		name : this.players[uid]["name"],
 		head : this.players[uid]["head"],
-		vip : this.players[uid]["vip"],
 		level : this.players[uid]["level"],
+		figure : this.players[uid]["figure"],
+		title : this.players[uid]["title"],
+		frame : this.players[uid]["frame"],
 		ce : this.getCE(uid)
 	}
 	return info

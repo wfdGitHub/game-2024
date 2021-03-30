@@ -396,7 +396,6 @@ var model = function() {
 	//获取跨服数据
 	posts["/cross_grading"] = function(req,res) {
 		self.redisDao.db.zrevrange(["cross:grading:rank",0,-1,"WITHSCORES"],function(err,list) {
-			console.log(err,list)
 			var uids = []
 			var areaIds = []
 			var scores = []
