@@ -35,13 +35,13 @@ activityHandler.prototype.revenueCoin = function(msg, session, next) {
   })
 }
 //挑战魔物入侵
-activityHandler.prototype.challengeInvade = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].challengeInvade(uid,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
+// activityHandler.prototype.challengeInvade = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   this.areaManager.areaMap[areaId].challengeInvade(uid,function(flag,data) {
+//     next(null,{flag : flag,data : data})
+//   })
+// }
 //领取充值天数礼包
 activityHandler.prototype.gainRPayDaysAward = function(msg, session, next) {
   var uid = session.uid
@@ -98,11 +98,11 @@ activityHandler.prototype.areaTrial = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
-//挑战新服BOSS
+//挑战单骑救主
 activityHandler.prototype.areaChallenge = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].areaChallenge(uid,msg.verify,function(flag,msg) {
+  this.areaManager.areaMap[areaId].areaChallenge(uid,msg.hId,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

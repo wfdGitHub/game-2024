@@ -45,8 +45,8 @@ module.exports = function() {
 			cb(true,data)
 		})
 	}
-	//挑战山海BOSS
-	this.areaChallenge = function(uid,verify,cb) {
+	//挑战单骑救主
+	this.areaChallenge = function(uid,hId,cb) {
 		self.getObjAll(uid,main_name,function(data) {
 			for(var i in data)
 				data[i] = Number(data[i])
@@ -59,38 +59,38 @@ module.exports = function() {
 			}else if(!area_challenge[cur_chapter]["team"+bossId]){
 				cb(false,"boss错误")
 			}else{
-			    var fightInfo = self.getFightInfo(uid)
-			    if(!fightInfo){
-			    	cb(false,"未准备")
-			    	return
-			    }
-			   	var atkTeam = fightInfo.team
-			   	var seededNum = fightInfo.seededNum
-			   	var defTeam = area_challenge[cur_chapter]["team"+bossId]
-			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-			    	cb(false,self.fightContorl.getFightRecord())
-			    	return
-			    }
-			    if(winFlag){
-		    		var info = {}
-		    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId],1,"挑战山海")
-		    		if(bossId >= 3){
-		    			cur_chapter++
-		    			bossId = 0
-		    			time += 86400000
-		    			self.setObj(uid,main_name,"cur_chapter",cur_chapter)
-		    			self.setObj(uid,main_name,"time",time)
-		    		}
-		    		self.setObj(uid,main_name,"bossId",bossId)
-	    			info.winFlag = winFlag
-	    			info.bossId = bossId
-	    			info.cur_chapter = cur_chapter
-	    			info.time = time
-		    		cb(true,info)
-			    }else{
-			    	cb(false,self.fightContorl.getFightRecord())
-			    }
+				self.heroDao.getHeroOne(uid,hId,function(flag,hero) {
+					if(!flag){
+						cb(false,"hId error "+hId)
+					}else{
+						var seededNum = Date.now()
+						var atkTeam = [0,hero,0,0,0,0]
+						var defTeam = area_challenge[cur_chapter]["team"+bossId]
+					    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+			    		var info = {}
+			    		info.atkTeam = atkTeam
+			    		info.defTeam = defTeam
+			    		info.seededNum = seededNum
+			    		info.winFlag = winFlag
+					    if(winFlag){
+				    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId],1,"挑战山海")
+				    		if(bossId >= 3){
+				    			cur_chapter++
+				    			bossId = 0
+				    			time += 86400000
+				    			self.setObj(uid,main_name,"cur_chapter",cur_chapter)
+				    			self.setObj(uid,main_name,"time",time)
+				    		}
+				    		self.setObj(uid,main_name,"bossId",bossId)
+			    			info.bossId = bossId
+			    			info.cur_chapter = cur_chapter
+			    			info.time = time
+				    		cb(true,info)
+					    }else{
+					    	cb(false,info)
+					    }
+					}
+				})
 			}
 		})
 	}

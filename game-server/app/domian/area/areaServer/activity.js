@@ -79,51 +79,51 @@ module.exports = function() {
 		})
 	}
 	//挑战魔物入侵
-	this.challengeInvade = function(uid,cb) {
-		var curTime = util.getDayMilliseconds()
-		if(curTime < invade["beginTime"]["value"] || curTime > invade["endTime"]["value"]){
-			cb(false,"未到开放时间")
-			return
-		}
-		self.getObj(uid,main_name,"invade",function(count) {
-			count = Number(count) || 0
-			if(count >= invade["count"]["value"]){
-				cb(false,"挑战次数已满")
-			}else{
-				var defTeam = invade_team[Math.floor(Math.random() * invade_team.length)].concat()
-				defTeam = self.standardTeam(uid,defTeam,"invade")
-				var lv = self.getLordLv(uid)
-				var atkTeam = self.getUserTeam(uid)
-				var seededNum = Date.now()
-			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    var record = self.fightContorl.getFightRecord()
-			    var info = {
-			    	atkTeam : atkTeam,
-			    	defTeam : defTeam,
-			    	seededNum : seededNum,
-			    	winFlag : winFlag
-			    }
-			    if(winFlag){
-			    	self.incrbyObj(uid,main_name,"invade",1)
-			    	var rate = invade["base_rate"]["value"] + lv * invade["lv_rate"]["value"]
-			    	if(self.checkLimitedTime("saodang"))
-			    		rate *= 2
-			    	var awardList = self.addItemStr(uid,invade["base_award"]["value"],rate,"魔物入侵")
-			    	var record = self.fightContorl.getFightRecord()
-			    	var overInfo = record[record.length - 1]
-			    	var round = overInfo.round
-			    	if(round > 5)
-			    		round = 5
-			    	awardList = awardList.concat(self.openChestStr(uid,invade["round_"+round]["value"]))
-			    	info.awardList = awardList
-			    	info.count = ++count
-			    	cb(true,info)
-			    }else{
-			    	cb(true,info)
-			    }
-			}
-		})
-	}
+	// this.challengeInvade = function(uid,cb) {
+	// 	var curTime = util.getDayMilliseconds()
+	// 	if(curTime < invade["beginTime"]["value"] || curTime > invade["endTime"]["value"]){
+	// 		cb(false,"未到开放时间")
+	// 		return
+	// 	}
+	// 	self.getObj(uid,main_name,"invade",function(count) {
+	// 		count = Number(count) || 0
+	// 		if(count >= invade["count"]["value"]){
+	// 			cb(false,"挑战次数已满")
+	// 		}else{
+	// 			var defTeam = invade_team[Math.floor(Math.random() * invade_team.length)].concat()
+	// 			defTeam = self.standardTeam(uid,defTeam,"invade")
+	// 			var lv = self.getLordLv(uid)
+	// 			var atkTeam = self.getUserTeam(uid)
+	// 			var seededNum = Date.now()
+	// 		    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+	// 		    var record = self.fightContorl.getFightRecord()
+	// 		    var info = {
+	// 		    	atkTeam : atkTeam,
+	// 		    	defTeam : defTeam,
+	// 		    	seededNum : seededNum,
+	// 		    	winFlag : winFlag
+	// 		    }
+	// 		    if(winFlag){
+	// 		    	self.incrbyObj(uid,main_name,"invade",1)
+	// 		    	var rate = invade["base_rate"]["value"] + lv * invade["lv_rate"]["value"]
+	// 		    	if(self.checkLimitedTime("saodang"))
+	// 		    		rate *= 2
+	// 		    	var awardList = self.addItemStr(uid,invade["base_award"]["value"],rate,"魔物入侵")
+	// 		    	var record = self.fightContorl.getFightRecord()
+	// 		    	var overInfo = record[record.length - 1]
+	// 		    	var round = overInfo.round
+	// 		    	if(round > 5)
+	// 		    		round = 5
+	// 		    	awardList = awardList.concat(self.openChestStr(uid,invade["round_"+round]["value"]))
+	// 		    	info.awardList = awardList
+	// 		    	info.count = ++count
+	// 		    	cb(true,info)
+	// 		    }else{
+	// 		    	cb(true,info)
+	// 		    }
+	// 		}
+	// 	})
+	// }
 	//活动数据更新
 	this.activityUpdate = function(uid) {
 		self.getObjAll(uid,main_name,function(data) {
