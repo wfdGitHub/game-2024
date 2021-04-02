@@ -58,7 +58,7 @@ recruitHandler.prototype.recruitHero = function(msg, session, next) {
             heroInfos = self.heroDao.randHero(areaId,uid,type,count)
             self.areaManager.areaMap[areaId].taskUpdate(uid,"general",count)
           break
-          case "cardScore":
+          default:
             heroInfos = self.heroDao.randHero(areaId,uid,type,count)
           break
         }
