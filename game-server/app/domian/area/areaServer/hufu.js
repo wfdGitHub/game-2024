@@ -27,8 +27,10 @@ module.exports = function() {
 	}
 	//生成随机护符
 	this.gainRandHufu = function(uid,lv) {
-		if(!hufu_quality[lv])
+		if(!hufu_quality[lv]){
 			console.error("gainRandHufu lv error")
+			return
+		}
 		var info = {}
 		info.lv = lv
 		var s1Index = Math.floor(Math.random() * skillList.length)
