@@ -90,7 +90,7 @@ crossManager.prototype.userLeave = function(crossUid) {
 		delete this.oriIds[crossUid]
 		this.onlineNum--
 	}
-	this.unSubscribeCarMessage(crossUid)
+	// this.unSubscribeCarMessage(crossUid)
 }
 //获取玩家简易信息
 crossManager.prototype.getSimpleUser = function(crossUid) {
