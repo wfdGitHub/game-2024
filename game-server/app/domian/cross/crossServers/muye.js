@@ -374,7 +374,7 @@ module.exports = function() {
 							name : "士兵",
 							head : "201010"
 						}
-						next()
+						next(null,-1)
 					}else{
 						score = Number(score)
 						begin = score-100
