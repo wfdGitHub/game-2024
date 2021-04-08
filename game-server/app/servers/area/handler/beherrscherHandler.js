@@ -30,6 +30,14 @@ beherrscherHandler.prototype.getBeherrscherRecord = function(msg, session, next)
     next(null,{flag : flag,data : data})
   })
 }
+//清除CD
+beherrscherHandler.prototype.clearBeherrscherCD = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].clearBeherrscherCD(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "beherrscherHandler",

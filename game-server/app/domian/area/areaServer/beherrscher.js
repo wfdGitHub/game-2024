@@ -2,6 +2,7 @@
 const main_name= "beherrscher"
 const async = require("async")
 const beherrscher_cfg = require("../../../../config/gameCfg/beherrscher.json")
+const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const maxRecordNum = 10
 var npc_team = {}
 for(var i = 1;i <= 3;i++){
@@ -155,6 +156,7 @@ module.exports = function() {
 					local.changeData("seat_"+index,uid)
 					cb(true,info)
 				}else{
+					info.cd = challengeMap[uid]
 					cb(true,info)
 				}
 			},
@@ -172,6 +174,22 @@ module.exports = function() {
 				cb(true,[])
 			}else{
 				cb(true,list)
+			}
+		})
+	}
+	//清除CD
+	this.clearBeherrscherCD = function(uid,cb) {
+		if(!challengeMap[uid] || challengeMap[uid] < Date.now()){
+			cb(false,"当前可挑战")
+			return
+		}
+		self.consumeItems(uid,default_cfg["default_pc_1"]["value"],1,"无双争霸CD",function(flag,err) {
+			if(flag){
+				delete challengeMap[uid]
+				cb(true)
+			}
+			else{
+				cb(flag,err)
 			}
 		})
 	}

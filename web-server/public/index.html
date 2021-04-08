@@ -148,6 +148,12 @@
             console.log(data);
         });
       }
+      //清除CD 
+      var clearBeherrscherCD = function() {
+        pomelo.request("area.beherrscherHandler.clearBeherrscherCD", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============好友系统=========//
       //好友列表
       var getFriendList = function() {
