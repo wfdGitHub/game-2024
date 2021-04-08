@@ -10,7 +10,7 @@ const default_cfg = require("../../../config/gameCfg/default_cfg.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_city","guild_pk","limited_time","hufu","show","friend","beherrscher"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","worldBoss","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","fb","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_city","guild_pk","limited_time","hufu","show","friend","beherrscher","exercise"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
@@ -104,6 +104,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.guildTreasureDayUpdate()
 	this.guildCityDayUpdate()
 	this.dayUpdateBeherrscher()
+	this.exerciseDayUpdate()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)
@@ -155,7 +156,7 @@ area.prototype.register = function(otps,cb) {
 }
 //玩家加入
 area.prototype.userLogin = function(uid,oriId,cid,cb) {
-	if(this.runTime < 6000){
+	if(this.runTime < 10000){
 		cb(false,"服务器正忙，请稍后重试")
 		return
 	}
@@ -222,6 +223,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.festivalUserDayUpdate(uid)
 	this.guildRefresh(uid)
 	this.TopicRecruitRefresh(uid)
+	this.exerciseUserUpdate(uid)
 	this.incrbyAreaObj("areaInfo","day_login",1)
 	this.playerDao.setPlayerInfo({uid:uid,key:"pay_state",value:0})
 	this.mysqlDao.addDaylyData("activeNum",1)

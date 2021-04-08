@@ -5,6 +5,7 @@ connectorManager.prototype.init = function(app) {
 	this.channelService = this.app.get('channelService')
 	this.app.event.on("remove_servers", this.removeServers.bind(this));
 	this.timer = setInterval(this.update.bind(this),5000)
+	this.runTime = 0
 }
 //定时器
 connectorManager.prototype.update = function() {

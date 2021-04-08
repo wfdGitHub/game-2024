@@ -98,6 +98,37 @@
         console.log("onChat")
         console.log(data)
       })
+      //============沙盘演武=========//
+      //获取演武数据
+      var getExerciseData = function() {
+        pomelo.request("area.exerciseHandler.getExerciseData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //选择难度
+      var exerciseChooseLevel = function(level) {
+        pomelo.request("area.exerciseHandler.exerciseChooseLevel", {level:level}, function(data) {
+            console.log(data);
+        });
+      }
+      //开始挑战
+      var exerciseChallenge = function(team,index) {
+        pomelo.request("area.exerciseHandler.exerciseChallenge", {team:team,index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取宝箱
+      var exerciseAward = function(index) {
+        pomelo.request("area.exerciseHandler.exerciseAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //复活
+      var exerciseResurgence = function() {
+        pomelo.request("area.exerciseHandler.exerciseResurgence", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============无双争霸=========//
       //获取数据
       var getBeherrscherInfo = function() {
@@ -2798,6 +2829,11 @@
       <input id="test" type="button" value="上路数据" onclick="getGuildPKRecord(1)"/>
       <input id="test" type="button" value="中路数据" onclick="getGuildPKRecord(2)"/>
       <input id="test" type="button" value="下路数据" onclick="getGuildPKRecord(3)"/>
+    </div>
+    <div class="g-button">
+      沙盘演武 : 
+      <input id="test" type="button" value="演武数据" onclick="getExerciseData()"/>
+      <input id="test" type="button" value="复活" onclick="exerciseResurgence()"/>
     </div>
   </body>
 </html>

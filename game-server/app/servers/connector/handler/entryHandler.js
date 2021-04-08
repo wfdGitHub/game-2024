@@ -46,6 +46,10 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 }
 //token登陆
 entryHandler.prototype.tokenLogin = function(msg, session, next) {
+  if(this.connectorManager.runTime < 10000){
+	next(null,{flag : false,err : "服务器准备中"})
+	return
+  }
   var unionid = msg.unionid
   var token = msg.token
   if(!unionid || !token){
