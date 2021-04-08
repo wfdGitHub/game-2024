@@ -126,7 +126,7 @@ area.prototype.firstDayUpdate = function() {
 }
 //玩家注册
 area.prototype.register = function(otps,cb) {
-	if(this.runTime < 6000){
+	if(this.runTime < 10000){
 		cb(false,"服务器正忙，请稍后重试")
 		return
 	}
