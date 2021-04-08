@@ -416,7 +416,6 @@ model.prototype.diedListCheck = function() {
 			this.diedList[i].resurgence(1)
 		}else if(this.diedList[i].teamInfo.resurgence_team){
 			var rate = this.diedList[i].teamInfo.resurgence_team
-			console.log("this.diedList[i].teamInfo.resurgence_realmRate",this.diedList[i].teamInfo.resurgence_realmRate,this.diedList[i].teamInfo.resurgence_realmId,this.diedList[i].realm)
 			if(this.diedList[i].teamInfo.resurgence_realmRate && this.diedList[i].teamInfo.resurgence_realmId == this.diedList[i].realm){
 				rate = rate * this.diedList[i].teamInfo.resurgence_realmRate
 			}
