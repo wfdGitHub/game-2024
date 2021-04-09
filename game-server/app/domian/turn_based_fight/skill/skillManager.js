@@ -625,10 +625,10 @@ model.useAttackSkill = function(skill,chase) {
 				skill.character.addAnger(2,skill.skillId)
 			}
 		}
-		//追加普通攻击判断(仅怒气技能生效)
-		if((skill.isAnger && (skill.add_d_s || skill.character.skill_add_d_s)) || (kill_num && skill.character.kill_add_d_s)){
-			this.useSkill(skill.character.defaultSkill,true)
-		}
+	}
+	//追加普通攻击判断
+	if((skill.isAnger && (skill.add_d_s || skill.character.skill_add_d_s)) || (kill_num && skill.character.kill_add_d_s)){
+		this.useSkill(skill.character.defaultSkill,true)
 	}
 	return targets
 }
