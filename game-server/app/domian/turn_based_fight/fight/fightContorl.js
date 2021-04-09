@@ -28,6 +28,7 @@ var bookIds = ["singleAtk","backDamage","frontDamage","banishBook","angerAddBook
 var bookList = {}
 var bookMap = {}
 var gSkillAtts = {}
+var hufuSkillCes = {}
 for(var i = 0;i < bookIds.length;i++){
 	bookList[bookIds[i]] = require("../books/"+bookIds[i]+".js")
 }
@@ -39,6 +40,11 @@ for(var i in book_list){
 }
 for(var i = 1;i <= 4;i++){
 	gSkillAtts[i] = JSON.parse(guild_cfg["career_"+i]["value"])
+}
+for(var i in hufu_skill){
+	for(var j = 1;j<= 4;j++){
+		hufuSkillCes[hufu_skill[i]["lv"+j]] = 50000 * j
+	}
 }
 //战斗控制器
 var model = function() {
@@ -443,8 +449,13 @@ model.getTeamCE = function(team) {
 			}
 			if(herosCfg[team[i]["id"]] && careers[herosCfg[team[i]["id"]]["career"]] != undefined)
 				careers[herosCfg[team[i]["id"]]["career"]]++
-			if(team[i]["hfLv"] && hufu_quality[team[i]["hfLv"]])
+			if(team[i]["hfLv"] && hufu_quality[team[i]["hfLv"]]){
 				allCE += hufu_quality[team[i]["hfLv"]]["ce"]
+				if(team[i]["hfs1"] && hufuSkillCes[team[i]["hfs1"]])
+					allCE += hufuSkillCes[team[i]["hfs1"]]
+				if(team[i]["hfs2"] && hufuSkillCes[team[i]["hfs2"]])
+					allCE += hufuSkillCes[team[i]["hfs2"]]
+			}
 		}
 	}
 	if(team[6]){
