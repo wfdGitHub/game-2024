@@ -128,6 +128,7 @@ module.exports = function() {
 	}
 	//每日刷新
 	this.peakDayUpdate = function() {
+		console.log("peakDayUpdate runFlag ",runFlag,(new Date()).getDay())
 		likeUsers = {}
 		if(!runFlag && (new Date()).getDay() == 1){
 			this.peakBegin()
@@ -263,17 +264,15 @@ module.exports = function() {
 				parMap = {}
 				self.peakArgInit()
 				console.log("获取初始入选玩家")
-				self.redisDao.db.zrevrange(["cross:grading:rank",0,-1,"WITHSCORES"],function(err,list) {
+				self.redisDao.db.zrevrange(["cross:grading:realRank",0,-1,"WITHSCORES"],function(err,list) {
 					var strList,uid,areaId
 					for(var i = 0;i < list.length;i+=2){
 						strList = list[i].split("|")
 						areaId = Number(strList[0])
 						uid = Number(strList[1])
-						if(uid > 10000){
-							crossUids.push(list[i])
-							areaIds.push(areaId)
-							uids.push(uid)
-						}
+						crossUids.push(list[i])
+						areaIds.push(areaId)
+						uids.push(uid)
 						if(crossUids.length >= totalPlayer){
 							break
 						}
