@@ -55,7 +55,7 @@ module.exports = function() {
 				var needValue = 30
 				self.heroDao.getHeroAmount(uid,function(flag,info) {
 				  	if(info.cur + value > info.max){
-				    	next(null,{flag : false,data : "英雄背包已满"})
+				    	cb(false,"英雄背包已满")
 				    	return
 				  	}
 					self.consumeItems(uid,otps.itemId+":"+needValue,value,"合成英雄",function(flag,err) {
