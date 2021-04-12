@@ -54,7 +54,7 @@ module.exports = function() {
 			case "randChip":
 				var needValue = 30
 				self.heroDao.getHeroAmount(uid,function(flag,info) {
-				  	if(info.cur >= info.max){
+				  	if(info.cur + value > info.max){
 				    	next(null,{flag : false,data : "英雄背包已满"})
 				    	return
 				  	}
