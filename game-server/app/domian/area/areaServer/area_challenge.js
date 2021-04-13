@@ -45,7 +45,7 @@ module.exports = function() {
 			cb(true,data)
 		})
 	}
-	//挑战单骑救主
+	//挑战单骑
 	this.areaChallenge = function(uid,hId,cb) {
 		self.getObjAll(uid,main_name,function(data) {
 			for(var i in data)
@@ -94,7 +94,7 @@ module.exports = function() {
 			}
 		})
 	}
-	//挑战试炼
+	//三队挑战
 	this.areaTrial = function(uid,verifys,cb) {
 		var verify1 = verifys[0]
 		var verify2 = verifys[1]

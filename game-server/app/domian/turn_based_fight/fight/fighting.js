@@ -456,6 +456,6 @@ model.prototype.fightOver = function(winFlag,roundEnd) {
 		info.defDamage += this.defBooks[i].totalDamage
 	}
 	fightRecord.push(info)
-	// fightRecord.explain()
+	fightRecord.explain()
 }
 module.exports = model

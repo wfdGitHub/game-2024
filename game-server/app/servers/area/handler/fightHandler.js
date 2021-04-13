@@ -52,7 +52,45 @@ fightHandler.prototype.gainChapterAwardBox = function(msg, session, next) {
     next(null,{flag : flag,result : result})
   })
 }
-
+//获取无尽试炼数据
+fightHandler.prototype.getEndlessData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getEndlessData(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//挑战单人试炼
+fightHandler.prototype.challengeOneEndless = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hIds = msg.hIds
+  var id = msg.id
+  var seededList = msg.seededList
+  var index = msg.index
+  this.areaManager.areaMap[areaId].challengeOneEndless(uid,hIds,id,seededList,index,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//挑战三人试炼
+fightHandler.prototype.challengeThreeEndless = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  var seededList = msg.seededList
+  var index = msg.index
+  this.areaManager.areaMap[areaId].challengeThreeEndless(uid,id,seededList,index,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//获取排行榜
+fightHandler.prototype.getEndlessRank = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getEndlessRank(function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "fightHandler",

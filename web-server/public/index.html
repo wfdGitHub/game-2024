@@ -98,6 +98,31 @@
         console.log("onChat")
         console.log(data)
       })
+      //============无尽试炼=========//
+      //获取无尽试炼数据
+      var getEndlessData = function() {
+        pomelo.request("area.fightHandler.getEndlessData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战单人试炼
+      var challengeOneEndless = function(hIds,id,seededList,index) {
+        pomelo.request("area.fightHandler.challengeOneEndless", {hIds:hIds,id:id,seededList:seededList,index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战三人试炼
+      var challengeThreeEndless = function(id,seededList,index) {
+        pomelo.request("area.fightHandler.challengeThreeEndless", {id:id,seededList:seededList,index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取排行榜
+      var getEndlessRank = function() {
+        pomelo.request("area.fightHandler.getEndlessRank", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============沙盘演武=========//
       //获取演武数据
       var getExerciseData = function() {
