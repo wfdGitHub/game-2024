@@ -68,7 +68,8 @@ fightHandler.prototype.challengeOneEndless = function(msg, session, next) {
   var id = msg.id
   var seededList = msg.seededList
   var index = msg.index
-  this.areaManager.areaMap[areaId].challengeOneEndless(uid,hIds,id,seededList,index,function(flag,data) {
+  var verifys = msg.verifys
+  this.areaManager.areaMap[areaId].challengeOneEndless(uid,hIds,id,seededList,index,verifys,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -76,10 +77,12 @@ fightHandler.prototype.challengeOneEndless = function(msg, session, next) {
 fightHandler.prototype.challengeThreeEndless = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
+  var hIds = msg.hIds
   var id = msg.id
   var seededList = msg.seededList
   var index = msg.index
-  this.areaManager.areaMap[areaId].challengeThreeEndless(uid,id,seededList,index,function(flag,data) {
+  var verifys = msg.verifys
+  this.areaManager.areaMap[areaId].challengeThreeEndless(uid,hIds,id,seededList,index,verifys,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
