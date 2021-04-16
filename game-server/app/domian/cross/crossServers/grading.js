@@ -2,6 +2,8 @@ const grading_cfg = require("../../../../config/gameCfg/grading_cfg.json")
 const grading_lv = require("../../../../config/gameCfg/grading_lv.json")
 const grading_robot = require("../../../../config/gameCfg/grading_robot.json")
 const boyCfg = require("../../../../config/sysCfg/boy.json")
+const recruit_list = require("../../../../config/gameCfg/recruit_list.json")
+const hero_list = recruit_list["hero_10"]["heroList"]
 var util = require("../../../../util/util.js")
 const async = require("async")
 for(var i in grading_robot){
@@ -220,7 +222,7 @@ module.exports = function() {
 							targetInfo = {
 								uid : targetUid,
 								name : boyCfg[Math.floor(Math.random() * boyCfg.length)],
-								head : ""
+								head : hero_list[Math.floor(Math.random() * hero_list.length)]
 							}
 							next()
 						}else{
@@ -280,7 +282,11 @@ module.exports = function() {
 							self.redisDao.db.ltrim("cross:grading:record:"+key,-10,-1)
 						}
 					})
-					cb(true,info)
+					self.redisDao.db.zrevrank(["cross:grading:realRank",key],function(err,rank) {
+						if(rank != null)
+							info.rank = Number(rank) + 1
+						cb(true,info)
+					})
 				})
 			}
 		],function(err) {
