@@ -210,9 +210,8 @@ module.exports = function() {
 						}
 						if(surplus_health[i] <= 0)
 							diedNum++
-			    		if(overInfo.atkTeam[i])
-			    			allDamage += overInfo.atkTeam[i].totalDamage
 					}
+					allDamage = overInfo.atkDamage
 					self.redisDao.db.hset(main_name,guildId,JSON.stringify(surplus_health))
 					if(diedNum == 6){
 						//击杀目标

@@ -98,6 +98,31 @@
         console.log("onChat")
         console.log(data)
       })
+      //============极限挑战=========//
+      //获取极限挑战数据
+     var getExtremityData = function() {
+        pomelo.request("area.extremityHandler.getExtremityData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取极限挑战战斗数据
+     var getExtremityFight = function() {
+        pomelo.request("area.extremityHandler.getExtremityFight", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战BOSS
+     var extremityChallenge = function() {
+        pomelo.request("area.extremityHandler.extremityChallenge", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取排行榜
+     var getExtremityRank = function() {
+        pomelo.request("area.extremityHandler.getExtremityRank", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============无尽试炼=========//
       //获取无尽试炼数据
       var getEndlessData = function() {

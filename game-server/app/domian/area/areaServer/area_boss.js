@@ -133,10 +133,7 @@ module.exports = function() {
 			    self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
 		    	var list = self.fightContorl.getFightRecord()
 		    	var overInfo = list[list.length - 1]
-		    	var allDamage = 0
-		    	for(var i = 0;i < overInfo.atkTeam.length;i++)
-		    		if(overInfo.atkTeam[i])
-		    			allDamage += overInfo.atkTeam[i].totalDamage
+		    	var allDamage = overInfo.atkDamage
 		    	//击杀奖励
 		    	if(area_data.less_hp < area_boss_base[area_data.bossIndex]["hp"] && (area_data.less_hp + allDamage >= area_boss_base[area_data.bossIndex]["hp"])){
 		    		self.sendMail(uid,area_boss_cfg["kill_title"]["value"],area_boss_cfg["kill_text"]["value"],area_boss_cfg["kill_award"]["value"])

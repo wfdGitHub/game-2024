@@ -149,10 +149,7 @@ module.exports = function() {
 	    }
     	let list = self.fightContorl.getFightRecord()
     	let overInfo = list[list.length - 1]
-    	let allDamage = 0
-    	for(var i = 0;i < overInfo.atkTeam.length;i++)
-    		if(overInfo.atkTeam[i])
-    			allDamage += overInfo.atkTeam[i].totalDamage
+    	let allDamage = overInfo.atkDamage
     	info.allDamage = allDamage
     	self.taskUpdate(uid,"world_boss_damage",1,allDamage)
     	let score = Math.ceil(allDamage*world_boss_cfg["score"]["value"])

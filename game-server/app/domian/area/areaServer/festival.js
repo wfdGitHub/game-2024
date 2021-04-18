@@ -87,10 +87,7 @@ module.exports = function() {
 			    }
 		    	var list = self.fightContorl.getFightRecord()
 		    	var overInfo = list[list.length - 1]
-		    	var allDamage = 0
-		    	for(var i = 0;i < overInfo.atkTeam.length;i++)
-		    		if(overInfo.atkTeam[i])
-		    			allDamage += overInfo.atkTeam[i].totalDamage
+		    	var allDamage = overInfo.atkDamage
 		    	info.allDamage = allDamage
 		    	var coin = Math.ceil(allDamage*festival_list[self.festivalId]["coin"]["value"])
 		    	if(coin > festival_list[self.festivalId]["coin_max"]["value"])

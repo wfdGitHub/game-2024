@@ -301,14 +301,8 @@ module.exports = function() {
 						// console.log("atkTeam",atkTeam,"defTeam",defTeam)
 						record.winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 						var overInfo = self.fightContorl.getOverInfo()
-				    	var atkDamage = 0
-				    	for(var i = 0;i < overInfo.atkTeam.length;i++)
-				    		if(overInfo.atkTeam[i])
-				    			atkDamage += overInfo.atkTeam[i].totalDamage
-				    	var defDamage = 0
-				    	for(var i = 0;i < overInfo.defTeam.length;i++)
-				    		if(overInfo.defTeam[i])
-				    			defDamage += overInfo.defTeam[i].totalDamage
+				    	var atkDamage = overInfo.atkDamage
+				    	var defDamage = overInfo.defDamage
 				    	if(atkList[atkIndex] && atkList[atkIndex]["uid"]){
 					    	if(!atkDamageRank[atkList[atkIndex]["uid"]])
 					    		atkDamageRank[atkList[atkIndex]["uid"]] = 0

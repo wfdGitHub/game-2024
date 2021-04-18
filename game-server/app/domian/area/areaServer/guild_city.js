@@ -597,14 +597,8 @@ module.exports = function() {
 					// console.log(record.winFlag?"攻方赢":"守方赢")
 					var overInfo = self.fightContorl.getOverInfo()
 					var guildId = atkList[atkNum]["guildId"]
-			    	var atkDamage = 0
-			    	for(var i = 0;i < overInfo.atkTeam.length;i++)
-			    		if(overInfo.atkTeam[i])
-			    			atkDamage += overInfo.atkTeam[i].totalDamage
-			    	var defDamage = 0
-			    	for(var i = 0;i < overInfo.defTeam.length;i++)
-			    		if(overInfo.defTeam[i])
-			    			defDamage += overInfo.defTeam[i].totalDamage
+			    	var atkDamage = overInfo.atkDamage
+			    	var defDamage = overInfo.defDamage
 			    	if(!guildDamageRank[guildId])
 			    		guildDamageRank[guildId] = 0
 			    	guildDamageRank[guildId] += atkDamage
