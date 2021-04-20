@@ -31,6 +31,7 @@ module.exports = function() {
 	this.state = false		//活动状态  false  未开启  true  开启
 	local.userInfos = {}
 	local.carMap = {}			//镖车列表
+	local.timeMap = {}
 	// local.subscribeUsers = {}	//消息订阅列表
 	// local.subscribeMaps = {}	//映射表
 	for(var level in escort_level){
@@ -62,6 +63,7 @@ module.exports = function() {
 		console.log("押镖玩法开始")
 		local.userInfos = {}
 		local.robCD = {}
+		local.timeMap = {}
 	}
 	//押镖玩法结束
 	local.close = function() {
@@ -230,6 +232,11 @@ module.exports = function() {
 			cb(false,"未参与玩法")
 			return
 		}
+		if(local.timeMap[crossUid] && local.timeMap[crossUid] > Date.now()){
+			cb(false,"刷新过快")
+			return
+		}
+		local.timeMap[crossUid] = Date.now() + 10000
 		var level = local.userInfos[crossUid]["level"]
 		console.log("local.carMap[level]",local.carMap[level])
 		var carList = util.getRandomArray(local.carMap[level],10)

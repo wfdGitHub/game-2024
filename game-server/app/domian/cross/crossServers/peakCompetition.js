@@ -25,6 +25,7 @@ module.exports = function() {
 	var honorMathch = {}		//历史八强
 	var look = true				//锁
 	var baseScore = 200			//初始分数
+	var timeMap = {}			//刷新冷却
 	//初始化
 	this.peakInit = function() {
 		async.waterfall([
@@ -130,6 +131,7 @@ module.exports = function() {
 	this.peakDayUpdate = function() {
 		console.log("peakDayUpdate runFlag ",runFlag,(new Date()).getDay())
 		likeUsers = {}
+		timeMap = {}
 		if(!runFlag && (new Date()).getDay() == 1){
 			this.peakBegin()
 		}
@@ -568,6 +570,11 @@ module.exports = function() {
 			cb(false,"不在下注阶段")
 			return
 		}
+		if(timeMap[crossUid] && timeMap[crossUid] > Date.now()){
+			cb(false,"刷新过快")
+			return
+		}
+		timeMap[crossUid] = Date.now() + 10000
 		//crossUid = crossUid.split("|area")[0]
 		var rand = Math.floor(Math.random() * participants[curRound].length / 2)
 		var info = {

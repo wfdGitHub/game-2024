@@ -33,6 +33,7 @@ module.exports = function() {
 	var local = {}
 	var player_rank = {}
 	local.locks = {}
+	local.timeMap = {}
 	//匹配规则  计算目标列表
 	local.calRankTargets = function(rank) {
 		var list = []
@@ -129,6 +130,11 @@ module.exports = function() {
 	}
 	//获取目标列表
 	this.getTargetList = function(uid,cb) {
+		if(local.timeMap[uid] && local.timeMap[uid] > Date.now()){
+			cb(false,"刷新过快")
+			return
+		}
+		local.timeMap[uid] = Date.now() + 10000
 		self.getObj(uid,mainName,"rank",function(rank) {
 			rank = parseInt(rank)
 			var list = local.calRankTargets(rank)
@@ -234,6 +240,7 @@ module.exports = function() {
 	}
 	//竞技场每日刷新
 	this.arenadayUpdate = function(uid) {
+		local.timeMap = {}
 		//发放竞技场奖励
 		self.getObj(uid,mainName,"rank",function(rank) {
 			if(rank != null){
