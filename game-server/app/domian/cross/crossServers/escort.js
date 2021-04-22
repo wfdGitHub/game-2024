@@ -331,7 +331,7 @@ module.exports = function() {
 		var preLv = escort_level[level-1]?escort_level[level-1]["lev_limit"] : 0
 		var maxLv = escort_level[level]["lev_limit"]
 		var lv = Math.floor(Math.random() * (maxLv - preLv)) + preLv
-		var rand = Math.floor()
+		var rand = Math.random()
 		var quality = 0
 		if(rand < 0.2){
 			quality = 0
