@@ -335,14 +335,12 @@ module.exports = function() {
 		var quality = 0
 		if(rand < 0.2){
 			quality = 0
-		}else if(rand < 0.8){
+		}else if(rand < 0.7){
 			quality = 1
-		}else if(rand < 0.95){
+		}else if(rand < 0.9){
 			quality = 2
-		}else if(rand < 0.99){
-			quality = 3
 		}else{
-			quality = 4
+			quality = 3
 		}
 		var carInfo = {
 			"crossUid" : robotId,
@@ -371,8 +369,8 @@ module.exports = function() {
 			cb(false,"正在运输中")
 			return
 		}
-		if((this.curHours < escort_cfg["closeTime1"]["value"] && this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.17))){
-			cb(false,"最后十分钟不能运输")
+		if((this.curHours < escort_cfg["closeTime1"]["value"] && this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.83))){
+			cb(false,"最后五分钟不能运输")
 			return
 		}
 		if(local.userInfos[crossUid]["escortNum"] >= escort_cfg["playCount"]["value"]){
@@ -433,7 +431,7 @@ module.exports = function() {
 			cb(false,"跨服数据未同步")
 			return
 		}
-		local.userInfos[crossUid]["robCD"] = Date.now() + 1000
+		local.userInfos[crossUid]["robCD"] = Date.now() + 60000
 		var defTeam = carInfo["team"]
 		let seededNum = Date.now()
 		var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
