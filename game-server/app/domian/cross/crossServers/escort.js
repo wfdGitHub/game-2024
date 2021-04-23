@@ -133,6 +133,10 @@ module.exports = function() {
 						time : Date.now()
 					}
 					self.sendToUser(messageName,crossUid,notify)
+					if(!local.userInfos[crossUid]){
+						console.log("local.userInfos[crossUid] error ",local.userInfos[crossUid])
+						console.log(local.userInfos)
+					}
 					local.userInfos[crossUid]["messageList"].push(notify)
 				}
 			})
