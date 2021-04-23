@@ -396,6 +396,9 @@ module.exports = function() {
 			cb(false,"该等级未开放运输")
 			return
 		}
+		if(!local.userInfos[crossUid]){
+			local.userInit(crossUid)	
+		}
 		var carInfo = {
 			"crossUid" : crossUid,
 			"user" : self.getSimpleUser(crossUid),
