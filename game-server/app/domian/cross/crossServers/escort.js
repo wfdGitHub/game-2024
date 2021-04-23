@@ -4,7 +4,7 @@ const escort_cfg = require("../../../../config/gameCfg/escort_cfg.json")
 const escort_level = require("../../../../config/gameCfg/escort_level.json")
 const util = require("../../../../util/util.js")
 const runTime = escort_cfg["runTime"]["value"]
-const robotNum = 10
+const robotNum = 30
 const robotCheck = 10000
 escort_cfg["robot_team"] = JSON.parse(escort_cfg["robot_team"]["value"])
 const messageName = "escort"
@@ -239,6 +239,12 @@ module.exports = function() {
 		local.timeMap[crossUid] = Date.now() + 10000
 		var level = local.userInfos[crossUid]["level"]
 		var carList = util.getRandomArray(local.carMap[level],10)
+		for(var i = 0;i < carList.length;i++){
+			if(carList[i]["crossUid"] == crossUid){
+				carList.splice(i,1)
+				break
+			}
+		}
 		cb(true,carList)
 	}
 	// //获取并订阅木牛消息
