@@ -296,8 +296,8 @@ module.exports = function() {
 			cb(false,"队伍已不能刷新")
 			return
 		}
-		if((this.curHours < escort_cfg["closeTime1"]["value"] && this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.17))){
-			cb(false,"最后十分钟不能刷新")
+		if((this.curHours < escort_cfg["closeTime1"]["value"] && this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.083))){
+			cb(false,"最后五分钟不能刷新")
 			return
 		}
 		this.consumeItems(crossUid,escort_cfg["refresh"]["value"],1,"刷新木牛",function(flag,err) {
@@ -368,7 +368,7 @@ module.exports = function() {
 			cb(false,"正在运输中")
 			return
 		}
-		if((this.curHours < escort_cfg["closeTime1"]["value"] && this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.83))){
+		if((this.curHours < escort_cfg["closeTime1"]["value"] && this.curHours >= (escort_cfg["closeTime1"]["value"] - 0.083))){
 			cb(false,"最后五分钟不能运输")
 			return
 		}
