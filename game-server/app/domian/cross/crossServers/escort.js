@@ -238,7 +238,6 @@ module.exports = function() {
 		}
 		local.timeMap[crossUid] = Date.now() + 10000
 		var level = local.userInfos[crossUid]["level"]
-		console.log("local.carMap[level]",local.carMap[level])
 		var carList = util.getRandomArray(local.carMap[level],10)
 		cb(true,carList)
 	}
