@@ -98,6 +98,49 @@
         console.log("onChat")
         console.log(data)
       })
+      //============远古战场=========//
+      //获取排行榜
+      var getAncientRank = function() {
+        pomelo.request("cross.ancientHandler.getAncientRank", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取历史挑战记录
+      var getAncientRecord = function() {
+        pomelo.request("cross.ancientHandler.getAncientRecord", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取我的数据
+      var getAncientData = function() {
+        pomelo.request("cross.ancientHandler.getAncientData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取宝箱
+      var gainAncientBox = function(index) {
+        pomelo.request("cross.ancientHandler.gainAncientBox", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置阵容
+      var ancientSetFightTeams = function(hIds) {
+        pomelo.request("cross.ancientHandler.ancientSetFightTeams", {hIds:hIds}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取目标列表
+      var ancientGetTargetList = function() {
+        pomelo.request("cross.ancientHandler.ancientGetTargetList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //开始挑战
+      var ancientChallenge = function(targetUid,targetInfo) {
+        pomelo.request("cross.ancientHandler.ancientChallenge", {targetUid:targetUid,targetInfo:targetInfo}, function(data) {
+            console.log(data);
+        });
+      }
       //============极限挑战=========//
       //获取极限挑战数据
      var getExtremityData = function() {
@@ -2223,18 +2266,6 @@
             console.log(data);
         });
       }
-      //订阅镖车信息
-      var subscribeCarMessage = function() {
-        pomelo.request("cross.escortHandler.subscribeCarMessage", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //取消订阅
-      var unSubscribeCarMessage = function() {
-        pomelo.request("cross.escortHandler.unSubscribeCarMessage", {}, function(data) {
-            console.log(data);
-        });
-      }
       //============跨服相关================//
       //连接跨服服务器
       var loginCross = function() {
@@ -2890,6 +2921,13 @@
       沙盘演武 : 
       <input id="test" type="button" value="演武数据" onclick="getExerciseData()"/>
       <input id="test" type="button" value="复活" onclick="exerciseResurgence()"/>
+    </div>
+    <div class="g-button">
+      远古战场 : 
+      <input id="test" type="button" value="获取我的数据" onclick="getAncientData()"/>
+      <input id="test" type="button" value="获取排行榜" onclick="getAncientRank()"/>
+      <input id="test" type="button" value="获取历史挑战记录" onclick="getAncientRecord()"/>
+      <input id="test" type="button" value="目标列表" onclick="ancientGetTargetList()"/>
     </div>
   </body>
 </html>

@@ -494,7 +494,6 @@ module.exports = function() {
 	}
 	//获取玩家巅峰赛数据
 	this.getPeakData = function(crossUid,cb) {
-		crossUid = crossUid.split("|area")[0]
 		var info = {}
 		info.curRound = curRound
 		info.rank = -1
@@ -529,7 +528,6 @@ module.exports = function() {
 	}
 	//同步阵容
 	this.peakSyncFightTeam = function(crossUid,uid,cb) {
-		crossUid = crossUid.split("|area")[0]
 		if(!runFlag){
 			cb(false,"不在比赛时间")
 			return
@@ -575,7 +573,6 @@ module.exports = function() {
 			return
 		}
 		timeMap[crossUid] = Date.now() + 10000
-		//crossUid = crossUid.split("|area")[0]
 		var rand = Math.floor(Math.random() * participants[curRound].length / 2)
 		var info = {
 			atk : participants[curRound][rand*2],
@@ -591,7 +588,6 @@ module.exports = function() {
 	}
 	//下注
 	this.peakUserBetting = function(crossUid,target,bet,cb) {
-		crossUid = crossUid.split("|area")[0]
 		if(!runFlag){
 			cb(false,"不在比赛时间")
 			return
@@ -635,7 +631,6 @@ module.exports = function() {
 	}
 	//获取当前下注信息
 	this.getPeakBetInfo = function(crossUid,cb) {
-		crossUid = crossUid.split("|area")[0]
 		var info = {}
 		//本轮下注信息
 		if(betInfo[crossUid]){
@@ -658,7 +653,6 @@ module.exports = function() {
 	}
 	//查询历史下注信息
 	this.getPeakBetHistory = function(crossUid,cb) {
-		crossUid = crossUid.split("|area")[0]
 		if(curRound <= 1){
 			cb(true,[])
 		}else{
@@ -695,7 +689,6 @@ module.exports = function() {
 	}
 	//查看指定比赛记录
 	this.getPeakMatchHistory = function(crossUid,round,target,cb) {
-		//crossUid = crossUid.split("|area")[0]
 		if(!Number.isInteger(round) || !parInfoMap[target]){
 			cb(false,"参数错误")
 			return
@@ -706,7 +699,6 @@ module.exports = function() {
 	}
 	//查看历史指定比赛记录
 	this.getPeakHonorHistory = function(crossUid,round,target,cb) {
-		//crossUid = crossUid.split("|area")[0]
 		if(!Number.isInteger(round)){
 			cb(false,"参数错误")
 			return
@@ -717,7 +709,6 @@ module.exports = function() {
 	}
 	//获取我的比赛记录
 	this.getPeakMyMatch = function(crossUid,cb) {
-		crossUid = crossUid.split("|area")[0]
 		if(!parInfoMap[crossUid]){
 			cb(false,"未进入本次比赛")
 			return
@@ -786,7 +777,6 @@ module.exports = function() {
 	}
 	//获取本赛季八强记录
 	this.getPeakBetterHistory = function(crossUid,cb) {
-		//crossUid = crossUid.split("|area")[0]
 		if(curRound < 5){
 			cb(true,[])
 			return
@@ -815,18 +805,17 @@ module.exports = function() {
 	}
 	//点赞
 	this.peakLike = function(crossUid,index,cb) {
-		var newCrossUid = crossUid.split("|area")[0]
-		if(!likeUsers[newCrossUid])
-			likeUsers[newCrossUid] = {}
+		if(!likeUsers[crossUid])
+			likeUsers[crossUid] = {}
 		if(!honorList[index]){
 			cb(false,"目标不存在")
 			return
 		}
-		if(likeUsers[newCrossUid][index]){
+		if(likeUsers[crossUid][index]){
 			cb(false,"今日已点赞")
 			return
 		}
-		likeUsers[newCrossUid][index] = 1
+		likeUsers[crossUid][index] = 1
 		var target = honorList[index]["crossUid"]
 		if(!likeMap[target])
 			likeMap[target] = 0

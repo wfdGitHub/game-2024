@@ -30,7 +30,7 @@ module.exports = function() {
 	var robotTime = 0		//机器人检测时间
 	this.state = false		//活动状态  false  未开启  true  开启
 	local.userInfos = {}
-	local.carMap = {}			//镖车列表
+	local.carMap = {}			//木牛列表
 	local.timeMap = {}
 	// local.subscribeUsers = {}	//消息订阅列表
 	// local.subscribeMaps = {}	//映射表
@@ -100,7 +100,7 @@ module.exports = function() {
 			return
 		}
 		if(carInfo){
-			//镖车刷新
+			//木牛刷新
 			local.userInfos[crossUid]["quality"] = "car0"
 			var nextQuality = local.updateEscortCar(crossUid)
 			local.userInfos[crossUid]["carInfo"] = false
@@ -215,7 +215,7 @@ module.exports = function() {
 		local.updateEscortCar(crossUid)
 		return local.userInfos[crossUid]
 	}
-	//获取我的镖车信息
+	//获取我的木牛信息
 	this.getEscortInfo = function(crossUid,cb) {
 		if(!this.state){
 			cb(false,"玩法未开启")
@@ -242,7 +242,7 @@ module.exports = function() {
 		var carList = util.getRandomArray(local.carMap[level],10)
 		cb(true,carList)
 	}
-	// //获取并订阅镖车消息
+	// //获取并订阅木牛消息
 	// this.subscribeCarMessage = function(crossUid,cb) {
 	// 	if(!local.userInfos[crossUid]){
 	// 		cb(false,"未参与玩法")
@@ -278,7 +278,7 @@ module.exports = function() {
 	// 	if(cb)
 	// 		cb(true)
 	// }
-	//镖车刷新
+	//木牛刷新
 	this.updateEscortCar = function(crossUid,cb) {
 		if(!this.state){
 			cb(false,"玩法未开启")
@@ -301,7 +301,7 @@ module.exports = function() {
 			cb(false,"最后十分钟不能刷新")
 			return
 		}
-		this.consumeItems(crossUid,escort_cfg["refresh"]["value"],1,"刷新镖车",function(flag,err) {
+		this.consumeItems(crossUid,escort_cfg["refresh"]["value"],1,"刷新木牛",function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
@@ -309,7 +309,7 @@ module.exports = function() {
 			}
 		})
 	}
-	//镖车刷新
+	//木牛刷新
 	local.updateEscortCar = function(crossUid) {
 		var quality = local.userInfos[crossUid]["quality"]
 		var rand = Math.random() * carWeight[quality]["allRand"]

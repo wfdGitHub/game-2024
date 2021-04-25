@@ -4,7 +4,7 @@ const grading_robot = require("../../../../config/gameCfg/grading_robot.json")
 const boyCfg = require("../../../../config/sysCfg/boy.json")
 const recruit_list = require("../../../../config/gameCfg/recruit_list.json")
 const hero_list = recruit_list["hero_10"]["heroList"]
-var util = require("../../../../util/util.js")
+const util = require("../../../../util/util.js")
 const async = require("async")
 for(var i in grading_robot){
 	grading_robot[i]["team"] = JSON.parse(grading_robot[i]["team"])
@@ -63,7 +63,7 @@ module.exports = function() {
 						if(uids.length < 6){
 							areaIds.push(sid)
 							uids.push(uid)
-							self.sendMailByUid(uid,"第"+curSeasonId+"赛季封神台奖励","亲爱的玩家，恭喜您历经磨难，通过考验，立命封神！您已进入第"+curSeasonId+"赛季封神台，供天下万民敬仰！",grading_cfg["award_"+uids.length]["value"])
+							self.sendMailByUid(uid,"第"+curSeasonId+"赛季战神殿奖励","亲爱的玩家，恭喜您成功进入第"+curSeasonId+"赛季战神殿，该记录永久保存！",grading_cfg["award_"+uids.length]["value"])
 						}
 					}
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
@@ -87,13 +87,14 @@ module.exports = function() {
 	}
 	//新赛季开始
 	this.newGrading = function(newRankList) {
-		console.log("新赛季开始")
+		console.log("跨服段位赛新赛季开始")
 		self.redisDao.db.hset("cross:grading","month",util.getMonth())
 		self.redisDao.db.hincrby("cross:grading","seasonId",1)
 		curSeasonId++
 		self.redisDao.db.del("cross:grading:rank")
 		self.redisDao.db.del("cross:grading:award")
 		self.redisDao.db.get("area:lastid",function(err,lastid) {
+			lastid = Number(lastid) || 0
 			var rankList = ["cross:grading:rank"]
 			for(var i in grading_robot){
 				for(var j = 0;j < 10;j++){
@@ -107,10 +108,9 @@ module.exports = function() {
 	}
 	//获取跨服段位赛数据
 	this.getGradingData = function(crossUid,cb) {
-		let uid = self.players[crossUid]["uid"]
-		let sid = self.players[crossUid]["oriId"]
-		let key = sid+"|"+uid
-		let info = {
+		var uid = self.players[crossUid]["uid"]
+		var sid = self.players[crossUid]["oriId"]
+		var info = {
 			score : 0,
 			grading_award_list : [],
 			count : 0,
@@ -120,37 +120,37 @@ module.exports = function() {
 		}
 		async.waterfall([
 			function(next) {
-				self.redisDao.db.zscore(["cross:grading:rank",key],function(err,score) {
+				self.redisDao.db.zscore(["cross:grading:rank",crossUid],function(err,score) {
 					if(score)
 						info.score = Number(score)
 					next()
 				})
 			},
 			function(next) {
-				self.redisDao.db.zrevrank(["cross:grading:realRank",key],function(err,rank) {
+				self.redisDao.db.zrevrank(["cross:grading:realRank",crossUid],function(err,rank) {
 					if(rank != null)
 						info.rank = Number(rank) + 1
 					next()
 				})
 			},
 			function(next) {
-				self.redisDao.db.hget("cross:grading:count",key,function(err,count) {
+				self.redisDao.db.hget("cross:grading:count",crossUid,function(err,count) {
 					if(count)
 						info.count = Number(count)
 					next()
 				})
 			},
 			function(next) {
-				let list = []
-				for(let glv in grading_lv)
-					list.push(key+"_"+glv)
+				var list = []
+				for(var glv in grading_lv)
+					list.push(crossUid+"_"+glv)
 				self.redisDao.db.hmget("cross:grading:award",list,function(err,data) {
 					info.grading_award_list = data
 					next()
 				})
 			},
 			function(next) {
-				self.redisDao.db.lrange("cross:grading:record:"+key,0,-1,function(err,list) {
+				self.redisDao.db.lrange("cross:grading:record:"+crossUid,0,-1,function(err,list) {
 					info.recordList = list
 					cb(true,info)
 				})
@@ -161,12 +161,11 @@ module.exports = function() {
 	}
 	//使用挑战券
 	this.useGradingItem = function(crossUid,cb) {
-		let uid = self.players[crossUid]["uid"]
-		let sid = self.players[crossUid]["oriId"]
-		let key = sid+"|"+uid
+		var uid = self.players[crossUid]["uid"]
+		var sid = self.players[crossUid]["oriId"]
 		this.consumeItems(crossUid,grading_cfg["item"]["value"]+":"+1,1,"使用挑战券",function(flag,err) {
 			if(flag){
-				self.redisDao.db.hincrby("cross:grading:count",key,-1,function(err,value) {
+				self.redisDao.db.hincrby("cross:grading:count",crossUid,-1,function(err,value) {
 					cb(true,value)
 				})
 			}else{
@@ -176,42 +175,41 @@ module.exports = function() {
 	}
 	//匹配战斗
 	this.matchGrading = function(crossUid,cb) {
-		let uid = self.players[crossUid]["uid"]
-		let sid = self.players[crossUid]["oriId"]
-		let key = sid+"|"+uid
-		let glv,targetSid,targetUid,targetScore,targetInfo,atkTeam,defTeam,curScore,change,seededNum,winFlag
+		var uid = self.players[crossUid]["uid"]
+		var sid = self.players[crossUid]["oriId"]
+		var glv,targetSid,targetUid,targetScore,targetInfo,atkTeam,defTeam,curScore,change,seededNum,winFlag
 		async.waterfall([
 			function(next) {
-				self.redisDao.db.hget("cross:grading:count",key,function(err,count) {
+				self.redisDao.db.hget("cross:grading:count",crossUid,function(err,count) {
 					if(count && count >= grading_cfg["free_count"]["value"])
 						next("次数不足")
 					else{
-						self.redisDao.db.hincrby("cross:grading:count",key,1)
+						self.redisDao.db.hincrby("cross:grading:count",crossUid,1)
 						next()
 					}
 				})
 			},
 			function(next) {
-				self.redisDao.db.zrank(["cross:grading:rank",key],function(err,rank) {
+				self.redisDao.db.zrank(["cross:grading:rank",crossUid],function(err,rank) {
 					if(rank === null){
 						rank = 0
 					}
-					let begin = rank + 1
-					let end = rank + 5
+					var begin = rank + 1
+					var end = rank + 5
 					self.redisDao.db.zrange(["cross:grading:rank",begin,end,"WITHSCORES"],function(err,list) {
-						for(let i = 0;i < list.length;i++){
-							if(list[i] == key){
+						for(var i = 0;i < list.length;i += 2){
+							if(list[i] == crossUid){
 								list.splice(i,2)
 								break
 							}
 						}
-						let index = Math.floor(Math.random() * list.length / 2)
+						var index = Math.floor(Math.random() * list.length / 2)
 						if(!list[index*2]){
 							next("匹配失败")
-							self.redisDao.db.hincrby("cross:grading:count",key,-1)
+							self.redisDao.db.hincrby("cross:grading:count",crossUid,-1)
 							return
 						}
-						let strList = list[index*2].split("|")
+						var strList = list[index*2].split("|")
 						targetSid = Number(strList[0])
 						targetUid = Number(strList[1])
 						targetScore = Number(list[index*2 + 1])
@@ -243,20 +241,20 @@ module.exports = function() {
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
 					change = Math.floor(Math.random() * 15) + 20
-					self.redisDao.db.zincrby(["cross:grading:rank",change,key],function(err,value) {
+					self.redisDao.db.zincrby(["cross:grading:rank",change,crossUid],function(err,value) {
 						curScore = value
-						self.redisDao.db.zadd(["cross:grading:realRank",curScore,key])
+						self.redisDao.db.zadd(["cross:grading:realRank",curScore,crossUid])
 						next()
 					})
 				}else{
 					change = -Math.floor(Math.random() * 15) - 15
-					self.redisDao.db.zincrby(["cross:grading:rank",change,key],function(err,value) {
+					self.redisDao.db.zincrby(["cross:grading:rank",change,crossUid],function(err,value) {
 						curScore = value
 						if(value < 0){
 							curScore = 0
-							self.redisDao.db.zadd(["cross:grading:rank",0,key])
+							self.redisDao.db.zadd(["cross:grading:rank",0,crossUid])
 						}
-						self.redisDao.db.zadd(["cross:grading:realRank",curScore,key])
+						self.redisDao.db.zadd(["cross:grading:realRank",curScore,crossUid])
 						next()
 					})
 				}
@@ -277,12 +275,12 @@ module.exports = function() {
 						time : Date.now(),
 						change : change
 					}
-					self.redisDao.db.rpush("cross:grading:record:"+key,JSON.stringify(info),function(err,num) {
+					self.redisDao.db.rpush("cross:grading:record:"+crossUid,JSON.stringify(info),function(err,num) {
 						if(num > 10){
-							self.redisDao.db.ltrim("cross:grading:record:"+key,-10,-1)
+							self.redisDao.db.ltrim("cross:grading:record:"+crossUid,-10,-1)
 						}
 					})
-					self.redisDao.db.zrevrank(["cross:grading:realRank",key],function(err,rank) {
+					self.redisDao.db.zrevrank(["cross:grading:realRank",crossUid],function(err,rank) {
 						if(rank != null)
 							info.rank = Number(rank) + 1
 						cb(true,info)
@@ -295,27 +293,26 @@ module.exports = function() {
 	}
 	//领取段位奖励
 	this.gainGradingAward = function(crossUid,glv,cb) {
-		let uid = self.players[crossUid]["uid"]
-		let sid = self.players[crossUid]["oriId"]
-		let key = sid+"|"+uid
+		var uid = self.players[crossUid]["uid"]
+		var sid = self.players[crossUid]["oriId"]
 		if(!grading_lv[glv] || !grading_lv[glv]["grading_award"]){
 			cb(false,"段位不存在")
 			return
 		}
-		self.redisDao.db.zscore(["cross:grading:rank",key],function(err,score) {
+		self.redisDao.db.zscore(["cross:grading:rank",crossUid],function(err,score) {
 			if(!score)
 				score = 0
 			if(score < grading_lv[glv]["score"]){
 				cb(false,"未达到指定段位")
 				return
 			}
-			self.redisDao.db.hget("cross:grading:award",key+"_"+glv,function(err,data) {
+			self.redisDao.db.hget("cross:grading:award",crossUid+"_"+glv,function(err,data) {
 				if(data){
 					cb(false,"已领取")
 					return
 				}
-				self.redisDao.db.hset("cross:grading:award",key+"_"+glv,1)
-				let awardList = self.addItemStr(crossUid,grading_lv[glv]["grading_award"],1,"段位奖励"+glv)
+				self.redisDao.db.hset("cross:grading:award",crossUid+"_"+glv,1)
+				var awardList = self.addItemStr(crossUid,grading_lv[glv]["grading_award"],1,"段位奖励"+glv)
 				cb(true,awardList)
 			})
 		})

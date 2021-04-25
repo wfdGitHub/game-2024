@@ -1,4 +1,4 @@
-//牧野之战 3V3
+//天命之战 3V3
 const muye_cfg = require("../../../../config/gameCfg/muye_cfg.json")
 const muye_rank = require("../../../../config/gameCfg/muye_rank.json")
 const async = require("async")
@@ -8,8 +8,8 @@ for(var i = 1;i <= 3;i++){
 	robotTeam.push(JSON.parse(muye_cfg["default_team"+i]["value"]))
 }
 var camp_state = {
-	"0" : "纣王",
-	"1" : "武王"
+	"0" : "汉室",
+	"1" : "黄巾"
 }
 module.exports = function() {
 	var self = this
@@ -86,7 +86,7 @@ module.exports = function() {
 	}
 	//旧赛季结算
 	this.settleMuye = function() {
-		console.log("牧野新赛季开启")
+		console.log("天命新赛季开启")
 		async.waterfall([
 			function(next) {
 				self.redisDao.db.zrevrange(["cross:muye:rank:camp0",0,-1,"WITHSCORES"],function(err,list) {
@@ -185,7 +185,6 @@ module.exports = function() {
 	}
 	//获取数据
 	this.getMuyeData = function(crossUid,cb) {
-		crossUid = crossUid.split("|area")[0]
 		var info = {}
 		info.winCount = winCounts[crossUid] || 0
 		info.honorList = honorList
@@ -233,7 +232,6 @@ module.exports = function() {
 	}
 	//加入阵营
 	this.muyeJoinCamp = function(crossUid,camp,cb) {
-		crossUid = crossUid.split("|area")[0]
 		if(camps[crossUid] != undefined){
 			cb(false,"已加入阵营")
 			return
@@ -251,8 +249,7 @@ module.exports = function() {
 	}
 	//随机阵营
 	this.muyeRandCamp = function(crossUid,cb) {
-		var newCrossUid = crossUid.split("|area")[0]
-		if(camps[newCrossUid] != undefined){
+		if(camps[crossUid] != undefined){
 			cb(false,"已加入阵营")
 			return
 		}
@@ -265,11 +262,11 @@ module.exports = function() {
 					camp = 1
 				}
 				var defCamp = (camp + 1) % 2 
-				camps[newCrossUid] = camp
-				self.redisDao.db.hset("cross:muye:camps",newCrossUid,camp)
-				self.redisDao.db.zrem(["cross:muye:rank:camp"+defCamp,newCrossUid])
-				self.redisDao.db.zadd(["cross:muye:rank:camp"+camp,0,newCrossUid])
-				self.addItemStr(crossUid,muye_cfg["rand_camp"]["value"],1,"牧野决战",function(flag,awardList) {
+				camps[crossUid] = camp
+				self.redisDao.db.hset("cross:muye:camps",crossUid,camp)
+				self.redisDao.db.zrem(["cross:muye:rank:camp"+defCamp,crossUid])
+				self.redisDao.db.zadd(["cross:muye:rank:camp"+camp,0,crossUid])
+				self.addItemStr(crossUid,muye_cfg["rand_camp"]["value"],1,"天命决战",function(flag,awardList) {
 					var info = {
 						awardList : awardList,
 						camp : camp
@@ -281,7 +278,6 @@ module.exports = function() {
 	}
 	//设置阵容
 	this.muyeSetFightTeams = function(crossUid,hIds,cb) {
-		crossUid = crossUid.split("|area")[0]
 		if(hIds.length != 18){
 			cb(false,"hids error")
 			return
@@ -314,15 +310,14 @@ module.exports = function() {
 	this.matchMuye = function(crossUid,cb) {
 		var uid = self.players[crossUid]["uid"]
 		var sid = self.players[crossUid]["areaId"]
-		var newCrossUid = crossUid.split("|area")[0]
-		var camp = camps[newCrossUid]
+		var camp = camps[crossUid]
 		var defCamp = (camp + 1) % 2 
 		if(camp == undefined){
 			cb(false,"未加入阵营")
 			return
 		}
-		if(!challenge_time[newCrossUid]){
-			challenge_time[newCrossUid] = 0
+		if(!challenge_time[crossUid]){
+			challenge_time[crossUid] = 0
 		}
 		if((new Date()).getHours() < 17){
 			cb(false,"17:00之后可挑战")
@@ -347,7 +342,7 @@ module.exports = function() {
 							bookInfo["g3"] = Number(data[2]) || 0
 							bookInfo["g4"] = Number(data[3]) || 0
 						}
-						self.redisDao.db.hget("cross:muye:fightTeam",newCrossUid,function(err,data) {
+						self.redisDao.db.hget("cross:muye:fightTeam",crossUid,function(err,data) {
 							if(err || !data){
 								cb(false,"未设置阵容")
 								return
@@ -367,7 +362,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				self.redisDao.db.zscore(["cross:muye:rank:camp"+camp,newCrossUid],function(err,score) {
+				self.redisDao.db.zscore(["cross:muye:rank:camp"+camp,crossUid],function(err,score) {
 					if(!score || score <= 0){
 						defTeams = robotTeam.concat()
 						targetInfo = {
@@ -445,18 +440,18 @@ module.exports = function() {
 				}
 			},
 			function(next) {
-				if(!challenge_free[newCrossUid]){
-					challenge_free[newCrossUid] = 0
+				if(!challenge_free[crossUid]){
+					challenge_free[crossUid] = 0
 				}
-				if(challenge_free[newCrossUid] < 2){
-					challenge_free[newCrossUid]++
-					self.redisDao.db.hset("cross:muye:challenge_free",newCrossUid,challenge_free[newCrossUid])
+				if(challenge_free[crossUid] < 2){
+					challenge_free[crossUid]++
+					self.redisDao.db.hset("cross:muye:challenge_free",crossUid,challenge_free[crossUid])
 				}else{
-					if(Date.now() - challenge_time[newCrossUid] < 3600000){
+					if(Date.now() - challenge_time[crossUid] < 3600000){
 						cb(false,"挑战冷却中")
 						return
 					}
-					challenge_time[newCrossUid] = Date.now()
+					challenge_time[crossUid] = Date.now()
 				}
 				next()
 			},
@@ -481,22 +476,22 @@ module.exports = function() {
 					change = -10
 					awardStr = muye_cfg["lose"]["value"]
 				}else{
-					if(!winCounts[newCrossUid])
-						winCounts[newCrossUid] = 0
-					winCounts[newCrossUid]++
-					self.redisDao.db.hincrby("cross:muye:winCounts",newCrossUid,1)
+					if(!winCounts[crossUid])
+						winCounts[crossUid] = 0
+					winCounts[crossUid]++
+					self.redisDao.db.hincrby("cross:muye:winCounts",crossUid,1)
 					if(change == 30)
 						awardStr = muye_cfg["victory"]["value"]
 					else
 						awardStr = muye_cfg["win"]["value"]
-					if(winCounts[newCrossUid] <= 1){
+					if(winCounts[crossUid] <= 1){
 						change *= 2
 					}
 				}
 				if(voidScore)
 					change = 0
-				self.addItemStr(crossUid,awardStr,1,"牧野决战",function(flag,awardList) {
-					self.redisDao.db.zincrby(["cross:muye:rank:camp"+camp,change,newCrossUid],function(err,curScore) {
+				self.addItemStr(crossUid,awardStr,1,"天命决战",function(flag,awardList) {
+					self.redisDao.db.zincrby(["cross:muye:rank:camp"+camp,change,crossUid],function(err,curScore) {
 						var info = {
 							atkTeams : atkTeams,
 							defTeams : defTeams,
@@ -510,13 +505,13 @@ module.exports = function() {
 							camp : camp,
 							time : Date.now()
 						}
-						self.redisDao.db.rpush("cross:muye:record:"+newCrossUid,JSON.stringify(info),function(err,num) {
+						self.redisDao.db.rpush("cross:muye:record:"+crossUid,JSON.stringify(info),function(err,num) {
 							if(num > 3){
-								self.redisDao.db.ltrim("cross:muye:record:"+newCrossUid,-3,-1)
+								self.redisDao.db.ltrim("cross:muye:record:"+crossUid,-3,-1)
 							}
 						})
-						info.challengeTime = challenge_time[newCrossUid] || 0
-						info.challengeFree = challenge_free[newCrossUid] || 0
+						info.challengeTime = challenge_time[crossUid] || 0
+						info.challengeFree = challenge_free[crossUid] || 0
 						cb(true,info)
 					})
 				})
@@ -527,52 +522,49 @@ module.exports = function() {
 	}
 	//获取历史挑战记录
 	this.getMuyeRecord = function(crossUid,cb) {
-		crossUid = crossUid.split("|area")[0]
 		self.redisDao.db.lrange("cross:muye:record:"+crossUid,0,-1,function(err,list) {
 			cb(true,list)
 		})
 	}
 	//点赞
 	this.muyeLike = function(crossUid,index,cb) {
-		var newCrossUid = crossUid.split("|area")[0]
-		if(!likeUsers[newCrossUid])
-			likeUsers[newCrossUid] = {}
+		if(!likeUsers[crossUid])
+			likeUsers[crossUid] = {}
 		if(!honorList[index]){
 			cb(false,"目标不存在")
 			return
 		}
-		if(likeUsers[newCrossUid][index]){
+		if(likeUsers[crossUid][index]){
 			cb(false,"今日已点赞")
 			return
 		}
-		likeUsers[newCrossUid][index] = 1
+		likeUsers[crossUid][index] = 1
 		var target = honorList[index]["crossUid"]
 		if(!likeMap[target])
 			likeMap[target] = 0
 		likeMap[target]++
 		self.redisDao.db.hincrby("cross:muye:likeMap",target,1)
-		self.addItemStr(crossUid,"201:20000",1,"牧野点赞",function(flag,data) {
+		self.addItemStr(crossUid,"201:20000",1,"天命点赞",function(flag,data) {
 			cb(flag,data)
 		})
 	}
 	//领取宝箱
 	this.gainMuyeBox = function(crossUid,index,cb) {
-		var newCrossUid = crossUid.split("|area")[0]
 		if(!Number.isInteger(index) || index <= 0 || !muye_cfg["box_"+index]){
 			cb(false,"宝箱不存在")
 			return
 		}
-		if(!winCounts[newCrossUid] || winCounts[newCrossUid] < index){
+		if(!winCounts[crossUid] || winCounts[crossUid] < index){
 			cb(false,"条件不足")
 			return
 		}
-		self.redisDao.db.hget("cross:muye:boxs",newCrossUid+"_"+index,function(err,data) {
+		self.redisDao.db.hget("cross:muye:boxs",crossUid+"_"+index,function(err,data) {
 			if(data){
 				cb(false,"今日已领取")
 				return
 			}
-			self.redisDao.db.hset("cross:muye:boxs",newCrossUid+"_"+index,1)
-			self.addItemStr(crossUid,muye_cfg["box_"+index]["value"],1,"牧野宝箱"+index,function(flag,awardList) {
+			self.redisDao.db.hset("cross:muye:boxs",crossUid+"_"+index,1)
+			self.addItemStr(crossUid,muye_cfg["box_"+index]["value"],1,"天命宝箱"+index,function(flag,awardList) {
 				cb(true,awardList)
 			})
 		})

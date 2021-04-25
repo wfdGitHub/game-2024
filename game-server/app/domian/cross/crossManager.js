@@ -5,7 +5,7 @@ const standard_dl = require("../../../config/gameCfg/standard_dl.json")
 const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce = require("../../../config/gameCfg/standard_ce.json")
 var uuid = require("uuid")
-var crossServers = ["grading","escort","peakCompetition","muye","guild_pk"]
+var crossServers = ["grading","escort","peakCompetition","muye","guild_pk","ancient"]
 var crossManager = function(app) {
 	this.app = app
 	this.channelService = this.app.get("channelService")
@@ -46,6 +46,7 @@ crossManager.prototype.dayUpdate = function(curDayStr) {
 //每日首次定时器
 crossManager.prototype.firstDayUpdate = function() {
 	console.log("跨服每日首次刷新")
+	this.ancientDayUpdate()
 }
 crossManager.prototype.update = function() {
 	var date = new Date()
@@ -70,7 +71,7 @@ crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,player
 				playerInfo : playerInfo,
 				fightTeam : fightTeam
 			}
-			var crossUid = oriId+"|"+uid+"|"+serverId
+			var crossUid = oriId+"|"+uid
 			if(!self.players[crossUid])
 				self.onlineNum++
 			self.uidMap[uid] = crossUid
@@ -109,6 +110,8 @@ crossManager.prototype.getSimpleUser = function(crossUid) {
 		var info = {
 			name : this.players[crossUid]["playerInfo"]["name"],
 			areaId : this.players[crossUid]["playerInfo"]["areaId"],
+			head : this.players[crossUid]["playerInfo"]["head"],
+			figure : this.players[crossUid]["playerInfo"]["figure"],
 			oriId : this.oriIds[crossUid]
 		}
 		return info
@@ -223,11 +226,12 @@ crossManager.prototype.openChestStr = function(crossUid,chestId,rate,cb) {
 }
 //获取玩家基本数据
 crossManager.prototype.getPlayerInfoByUid = function(uid,cb) {
-	this.redisDao.db.hmget("player:user:"+uid+":playerInfo",["name","head"],function(err,data) {
+	this.redisDao.db.hmget("player:user:"+uid+":playerInfo",["name","head","figure"],function(err,data) {
 		let info = {
 			uid :uid,
 			name : data[0],
-			head : data[1]
+			head : data[1],
+			figure : data[2]
 		}
 		cb(info)
 	})
@@ -236,7 +240,7 @@ crossManager.prototype.getPlayerInfoByUid = function(uid,cb) {
 crossManager.prototype.getPlayerInfoByUids = function(areaIds,uids,cb) {
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
-		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head"]])
+		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","figure"]])
 	}
 	var self = this
 	self.redisDao.multi(multiList,function(err,list) {
@@ -247,13 +251,15 @@ crossManager.prototype.getPlayerInfoByUids = function(areaIds,uids,cb) {
 				info = {
 					uid : uids[i],
 					name : boyCfg[Math.floor(Math.random() * boyCfg.length)],
-					head : ""
+					head : "",
+					figure : ""
 				}
 			}else{
 				info = {
 					uid : uids[i],
 					name : list[i][0],
-					head : list[i][1]
+					head : list[i][1],
+					figure : list[i][2]
 				}
 				if(areaIds)
 					info.areaId = areaIds[i]
