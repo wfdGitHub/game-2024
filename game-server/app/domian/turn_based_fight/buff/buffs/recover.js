@@ -3,7 +3,7 @@ var fightRecord = require("../../fight/fightRecord.js")
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
-	// console.log("角色"+buff.character.id+"被燃烧!!!!!!")
+	// console.log("角色"+buff.character.id+"恢复!!!!!!")
 	buff.refreshType = "before"
 	buff.intensify = true
 	buff.name = "恢复"

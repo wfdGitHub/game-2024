@@ -132,9 +132,13 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 model.prototype.fightBegin = function() {
 	var info = {type : "fightBegin",atkTeam : [],defTeam : [],seededNum : this.seededNum,maxRound : this.maxRound}
 	for(var i = 0;i < teamLength;i++){
+		this.atkTeam[i].siteInit()
+		this.defTeam[i].siteInit()
+	}
+	for(var i = 0;i < teamLength;i++){
 		this.atkTeam[i].begin()
-		info.atkTeam.push(this.atkTeam[i].getSimpleInfo())
 		this.defTeam[i].begin()
+		info.atkTeam.push(this.atkTeam[i].getSimpleInfo())
 		info.defTeam.push(this.defTeam[i].getSimpleInfo())
 	}
 	fightRecord.push(info)

@@ -110,6 +110,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(target.realm_friend_reduction){
 		mul *= 1 - (target.realm_friend_reduction * (target.teamInfo["realms_survival"][target.realm] - 1))
 	}
+	if(attacker.realm_friend_amp){
+		mul *= 1 + (attacker.realm_friend_amp * (attacker.teamInfo["realms_survival"][attacker.realm] - 1))
+	}
 	info.value = Math.round((atk - def) * skill.mul * mul)
 	if(addAmp){
 		info.value = Math.round(info.value * (1+addAmp))
@@ -184,6 +187,20 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	//法术伤害波动
 	if(attacker.mag_fluctuate && skill.damageType == "mag"){
 		info.value = Math.floor(info.value * (attacker.mag_fluctuate + this.seeded.random("法术波动") * 0.2))
+	}
+	//受击伤害加成
+	if(attacker.behit_value)
+		info.value += Math.floor(info.value * attacker.behit_value)
+	//回合伤害加成
+	if(attacker.round_amplify)
+		info.value += Math.floor(info.value * attacker.round_amplify * (attacker.fighting.round - 1))
+	//减益伤害加成
+	if(attacker.enemy_debuff_amp){
+		info.value += Math.floor(info.value * attacker.enemy_debuff_amp * target.getDebuffNum())
+	}
+	//增益伤害加成
+	if(attacker.my_intensify_amp){
+		info.value += Math.floor(info.value * attacker.my_intensify_amp * attacker.getIntensifyNum())
 	}
 	//场景伤害加成
 	if(skill.damageType == "phy"){

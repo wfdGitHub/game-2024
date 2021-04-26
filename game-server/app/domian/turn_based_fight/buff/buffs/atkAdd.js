@@ -27,7 +27,6 @@ var model = function(releaser,character,otps) {
 		if(otps.buffArg < 1)
 			value = Math.ceil(this.character.attInfo.atk * value)
 		list[id++] = {duration : otps.duration,value : value}
-		console.log("list",list)
 	}
 	buff.getValue = function() {
 		var value = 0

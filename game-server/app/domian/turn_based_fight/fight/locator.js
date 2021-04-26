@@ -832,6 +832,25 @@ model.prototype.getTeamMinIndex = function(character) {
 	}
     return []
 }
+//己方横排英雄
+model.prototype.getFriendVertical = function(character) {
+	var index = Math.floor(character.index / 3) * 3
+	var list = []
+	for(var i = index;i < index + 3;i++){
+        if(i != character.index && model.check(character.team[i])){
+        	list.push(character.team[i])
+        }
+	}
+    return list
+}
+//己方纵排英雄
+model.prototype.getFriendHorizontal = function(character) {
+	var index = (character.index + 3) % 6
+	if(model.check(character.team[index]))
+    	return [character.team[index]]
+    else 
+    	return []
+}
 model.check = function(character) {
 	if(character.died || character.buffs["banish"])
 		return false

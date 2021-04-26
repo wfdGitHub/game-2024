@@ -55,7 +55,7 @@ model.useSkill = function(skill,chase) {
 		if(skill.character.skill_add_maxAtk_anger){
 			var tmpTargets = this.locator.getTargets(skill.character,"team_maxAtk_1")
 			if(tmpTargets[0] && !tmpTargets[0]["died"]){
-				tmpTargets[0].addAnger(skill.character.skill_add_maxAtk_anger,skill)
+				tmpTargets[0].addAnger(skill.character.skill_add_maxAtk_anger)
 			}
 		}
 		//释放技能后恢复同阵营怒气最少的三个英雄怒气值
@@ -63,7 +63,7 @@ model.useSkill = function(skill,chase) {
 			var tmpTargets = this.locator.getTargets(skill.character,"realm_minAnger_3")
 			for(var i = 0;i < tmpTargets.length;i++){
 				if(!tmpTargets[i]["died"]){
-					tmpTargets[i].addAnger(skill.character.skill_add_realm3_anger,skill)
+					tmpTargets[i].addAnger(skill.character.skill_add_realm3_anger)
 				}
 			}
 		}
@@ -72,9 +72,31 @@ model.useSkill = function(skill,chase) {
 			var tmpTargets = this.locator.getTargets(skill.character,"realm_maxAtk_1")
 			for(var i = 0;i < tmpTargets.length;i++){
 				if(!tmpTargets[i]["died"]){
-					tmpTargets[i].addAnger(skill.character.skill_add_maxAtk_realm_anger,skill)
+					tmpTargets[i].addAnger(skill.character.skill_add_maxAtk_realm_anger)
 				}
 			}
+		}
+		//释放技能后增加横排英雄怒气
+		if(skill.character.skill_hor_anger){
+			var tmpTargets = this.locator.getFriendVertical(skill.character)
+			for(var i = 0;i < tmpTargets.length;i++){
+				if(!tmpTargets[i]["died"]){
+					tmpTargets[i].addAnger(skill.character.skill_hor_anger)
+				}
+			}
+			if(!skill.character["died"])
+				skill.character.addAnger(skill.character.skill_hor_anger)
+		}
+		//释放技能后增加纵排英雄怒气
+		if(skill.character.skill_ver_anger){
+			var tmpTargets = this.locator.getFriendHorizontal(skill.character)
+			for(var i = 0;i < tmpTargets.length;i++){
+				if(!tmpTargets[i]["died"]){
+					tmpTargets[i].addAnger(skill.character.skill_ver_anger)
+				}
+			}
+			if(!skill.character["died"])
+				skill.character.addAnger(skill.character.skill_ver_anger)
 		}
 	}else{
 		if(skill.burn_buff_change_normal || skill.character.burn_buff_change_normal){
@@ -286,6 +308,7 @@ model.useAttackSkill = function(skill,chase) {
 	var allDamage = 0
 	var kill_num = 0
 	var kill_burn_num = 0
+	var burn_num = 0
 	var dead_anger = 0
 	var burnDamage = 0
 	var died_targets = []
@@ -300,6 +323,11 @@ model.useAttackSkill = function(skill,chase) {
 	if(!targets.length){
 		fightRecord.push(recordInfo)
 		return []
+	}
+	if(skill.lose_hp){
+		let tmpRecord = {type : "other_damage",value : Math.ceil(skill.lose_hp * skill.character.attInfo.hp),d_type:skill.damageType}
+		tmpRecord = skill.character.onHit(skill.character,tmpRecord)
+		fightRecord.push(tmpRecord)
 	}
 	if(!chase){
 		//判断怒气增加伤害
@@ -378,8 +406,10 @@ model.useAttackSkill = function(skill,chase) {
 			overflow += info.overflow
 		if(info.realValue > 0)
 			allDamage += info.realValue
-		if(target.buffs["burn"])
+		if(target.buffs["burn"]){
+			burn_num++
 			burnDamage += info.realValue
+		}
 		recordInfo.targets.push(info)
 		if(info.kill){
 			died_targets.push(target)
@@ -521,6 +551,10 @@ model.useAttackSkill = function(skill,chase) {
 			tmpInfo.type = "self_heal"
 			fightRecord.push(tmpInfo)
 		}
+		//伤害转护盾
+		if(skill.character.damage_change_shield){
+			buffManager.createBuff(skill.character,skill.character,{buffId : "shield",buffArg : Math.floor(allDamage * skill.character.damage_change_shield),duration : 1,number:true})
+		}
 	}
 	//受伤判断
 	for(var i = 0;i < recordInfo.targets.length;i++){
@@ -625,6 +659,10 @@ model.useAttackSkill = function(skill,chase) {
 				skill.character.addAnger(2,skill.skillId)
 			}
 		}
+	}
+	//释放技能时，每命中一个燃烧状态下的目标恢复自身1点怒气
+	if(skill.isAnger && skill.character.skill_burn_anger && burn_num){
+		skill.character.addAnger(skill.character.skill_burn_anger * burn_num)
 	}
 	//追加普通攻击判断
 	if((skill.isAnger && (skill.add_d_s || skill.character.skill_add_d_s)) || (kill_num && skill.character.kill_add_d_s)){

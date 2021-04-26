@@ -1,11 +1,11 @@
-//胆怯BUFF
+//震慑BUFF
 var buffBasic = require("../buffBasic.js")
 var fightRecord = require("../../fight/fightRecord.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
-	// console.log("角色"+buff.character.id+"被胆怯!!!!!!")
+	// console.log("角色"+buff.character.id+"被震慑!!!!!!")
 	buff.debuff = true
-	buff.name = "胆怯"
+	buff.name = "震慑"
     buff.refreshType = "after"
 	buff.refresh = function() {
 		let info = {type : "other_damage",id : buff.character.id,d_type:"mag"}

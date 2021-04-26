@@ -5,7 +5,7 @@ var model = function(otps) {
 	//=========身份===========//
 	this.name = otps.name		//角色名称
 	this.id = otps.id 			//角色ID
-	this.heroId = otps.heroId
+	this.heroId = Number(otps.heroId)
 	this.realm = otps.realm		//国家
 	this.career = otps.career	//角色职业   healer 治疗者
 	this.index = 0				//所在位置
@@ -44,6 +44,21 @@ var model = function(otps) {
 	this.allAnger = otps["allAnger"] || false   //技能消耗所有怒气
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
+	//=========位置效果=======//
+	this.hor_fri_reduction = otps["hor_fri_reduction"]	//横排英雄免伤加成
+	this.hor_fri_my_maxHp = otps["hor_fri_my_maxHp"]	//横排英雄生命增加自身生命值比例
+	this.ver_fri_reduction = otps["ver_fri_reduction"]	//纵排英雄免伤加成
+	this.ver_fri_crit = otps["ver_fri_crit"]			//纵排英雄暴击加成
+	this.ver_fri_slay = otps["ver_fri_slay"]			//纵排英雄爆伤加成
+	this.ver_fri_my_atk = otps["ver_fri_my_atk"]		//纵排英雄攻击增加自身攻击比例
+	this.ver_fri_amplify = otps["ver_fri_amplify"]		//纵排英雄伤害加成
+	this.back_neglect_def = otps["back_neglect_def"]  	//位于后排时忽视防御
+	this.back_crit = otps["back_crit"]  				//位于后排时暴击加成
+	this.back_hitRate = otps["back_hitRate"]  			//位于后排时命中加成
+	this.back_atk = otps["back_atk"]  					//位于后排时攻击加成
+	this.front_critDef = otps["front_critDef"]  		//位于前排时抗暴加成
+	this.front_maxHP = otps["front_maxHP"]  			//位于前排时血量加成
+	this.front_dodgeRate = otps["front_dodgeRate"]  	//位于前排时闪避加成
 	//=========饰品效果=======//
 	this.phy_add = otps.phy_add || 0			//物理伤害加成
 	this.mag_add = otps.mag_add || 0			//法术伤害加成
@@ -92,6 +107,7 @@ var model = function(otps) {
 	this.reduction_heal_maxHp = otps.reduction_heal_maxHp || 0 //释放减伤盾消失后恢复目标生命值上限
 	this.skill_add_maxAtk_anger = otps.skill_add_maxAtk_anger || 0 //释放技能后恢复攻击最高队友怒气
 	this.realm_friend_reduction = otps.realm_friend_reduction || 0 //每个存活的友方同阵营英雄提供伤害减免
+	this.realm_friend_amp = otps.realm_friend_amp || 0 			   //每个存活的友方同阵营英雄提供伤害加成
 	this.recover_maxHp = otps.recover_maxHp || 0	//持续治疗目标为同阵营英雄时,结算时额外回复其生命上限的血量
 	this.invincibleSuper_again = otps.invincibleSuper_again //超级无敌消失时重复释放概率
 	this.burn_hit_anger = otps.burn_hit_anger || 0 //被灼烧敌人攻击时回复怒气
@@ -142,8 +158,12 @@ var model = function(otps) {
 	this.damage_buff_lowArg = otps.damage_buff_lowArg || 0 //降低受到的灼烧、中毒伤害
 
 	this.enemy_vertical_anger = otps.enemy_vertical_anger || 0	//攻击纵排目标时降低敌人怒气
-
-
+	this.enemy_debuff_amp = otps.enemy_debuff_amp || 0		//目标每有一个负面状态伤害加成
+	this.my_intensify_amp = otps.my_intensify_amp || 0		//自身每有一个增益状态伤害加成
+	this.action_clean_debuff = otps.action_clean_debuff 	//每回合行动前，清除所有自身非控制类负面状态
+	this.action_clean_hp = otps.action_clean_hp || 0		//每清除自身一个负面状态，恢复自身生命值比例
+	this.always_immune = otps.always_immune					//永久免控
+	
 	this.must_crit = false						//攻击必定暴击
 	this.next_must_crit = false					//下回合攻击暴击
 
@@ -154,7 +174,7 @@ var model = function(otps) {
 
 	this.heal_min_hp_rate = otps.heal_min_hp_rate || 0 	//对己方血量最少武将治疗加成
 	this.heal_min_hp3_rate = otps.heal_min_hp3_rate || 0 	//对己方血量最少3个武将治疗加成
-
+	//=========击杀效果=======//
 	this.kill_anger = otps.kill_anger || 0		//直接伤害击杀目标回复怒气
 	this.kill_amp = otps.kill_amp || 0			//直接伤害每击杀一个目标提升伤害
 	this.kill_crit = otps.kill_crit || 0		//直接伤害每击杀一个目标提升暴击
@@ -167,7 +187,7 @@ var model = function(otps) {
 	if(otps.kill_later_skill){
 		this.kill_later_skill = JSON.parse(otps.kill_later_skill)	//直接伤害击杀后追加技能
 	}
-
+	//=========释放技能=======//
 	this.skill_free = otps.skill_free || 0					//释放技能不消耗怒气值概率
 	this.skill_attack_amp = otps.skill_attack_amp || 0		//技能伤害加成
 	this.skill_heal_amp = otps.skill_heal_amp || 0			//技能治疗量加成
@@ -179,8 +199,11 @@ var model = function(otps) {
 	this.skill_anger_back = otps.skill_anger_back || 0		//释放技能后回复己方后排怒气
 	this.skill_anger_first = otps.skill_anger_first || 0	//释放技能后，回复当前本方阵容站位最靠前的武将怒气
 	this.skill_less_anger = otps.skill_less_anger || 0		//释放技能后降低目标怒气
+	this.skill_hor_anger = otps.skill_hor_anger || 0 		//释放技能后增加横排英雄怒气
+	this.skill_ver_anger = otps.skill_ver_anger || 0 		//释放技能后增加纵排英雄怒气
 	this.skill_burn_turn_heal = otps.skill_burn_turn_heal || 0//如果目标处于灼烧状态，技能直接伤害的百分比转化为生命治疗自己
 	this.skill_less_amp = otps.skill_less_amp || 0			//技能目标每减少一个伤害加成比例
+	this.skill_burn_anger = otps.skill_burn_anger || 0		//技能每命中一个燃烧状态下的目标恢复自身怒气
 	if(otps.skill_later_skill){
 		this.skill_later_skill = JSON.parse(otps.skill_later_skill)	//释放技能后后追加技能
 	}
@@ -263,11 +286,15 @@ var model = function(otps) {
 	this.maxHP_damage = otps.maxHP_damage || 0					//技能附加最大生命值真实伤害
 	this.maxHP_rate = otps.maxHP_rate							//进入战斗时最大生命加成倍数
 	this.maxHP_loss = otps.maxHP_loss							//每回合生命流失率
+	this.round_amplify = otps.round_amplify || 0				//每回合伤害加成
+	this.behit_amplify = otps.behit_amplify || 0 				//本回合中每受到一次伤害，下回合攻击伤害加成
+	this.behit_value = 0										//累计受击伤害加成
 	this.damage_save = otps.damage_save							//释放技能时,上回合受到的所有伤害将100%额外追加伤害
 	this.damage_save_value = 0									//累积伤害值 
 	this.heal_unControl = otps.heal_unControl					//释放技能时，解除目标被控制状态
 	this.heal_addAnger = otps.heal_addAnger  					//释放技能时，增加目标怒气值
 	this.dispel_intensify = otps.dispel_intensify				//释放技能时，驱散目标身上所有增益效果(增伤、减伤、持续恢复)
+	this.damage_change_shield = otps.damage_change_shield || 0	//伤害转吸收盾比例
 	//=========状态=======//
 	this.died = this.attInfo.maxHP && this.attInfo.hp ? false : true 	//死亡状态
 	this.buffs = {}					//buff列表
@@ -388,20 +415,87 @@ model.prototype.calAttAdd = function(team_adds) {
 	}
 	this.attInfo.hp = this.attInfo.maxHP
 }
+//站位加成
+model.prototype.siteInit = function() {
+	if(this.hor_fri_reduction){
+		var list = this.fighting.locator.getFriendVertical(this)
+		for(var i = 0;i < list.length;i++){
+			list[i].attInfo.reduction += this.hor_fri_reduction
+		}
+	}
+	if(this.hor_fri_my_maxHp){
+		var list = this.fighting.locator.getFriendVertical(this)
+		for(var i = 0;i < list.length;i++){
+			list[i].attInfo.maxHP += Math.floor(this.hor_fri_my_maxHp * this.attInfo.maxHP)
+		}
+	}
+	if(this.ver_fri_reduction){
+		var list = this.fighting.locator.getFriendHorizontal(this)
+		for(var i = 0;i < list.length;i++){
+			list[i].attInfo.reduction += this.ver_fri_reduction
+		}
+	}
+	if(this.ver_fri_crit){
+		var list = this.fighting.locator.getFriendHorizontal(this)
+		for(var i = 0;i < list.length;i++){
+			list[i].attInfo.crit += this.ver_fri_crit
+		}
+	}
+	if(this.ver_fri_slay){
+		var list = this.fighting.locator.getFriendHorizontal(this)
+		for(var i = 0;i < list.length;i++){
+			list[i].attInfo.slay += this.ver_fri_slay
+		}
+	}
+	if(this.ver_fri_my_atk){
+		var list = this.fighting.locator.getFriendHorizontal(this)
+		for(var i = 0;i < list.length;i++){
+			list[i].attInfo.atk += Math.floor(this.ver_fri_my_atk * this.attInfo.atk)
+		}
+	}
+	if(this.ver_fri_amplify){
+		var list = this.fighting.locator.getFriendHorizontal(this)
+		for(var i = 0;i < list.length;i++){
+			list[i].phy_add += this.ver_fri_amplify
+			list[i].mag_add += this.ver_fri_amplify
+		}
+	}
+	if(this.index < 3){
+		//前排
+		if(this.front_critDef)
+			this.attInfo.critDef += this.front_critDef
+		if(this.front_dodgeRate)
+			this.attInfo.dodgeRate += this.front_dodgeRate
+		if(this.front_maxHP){
+			this.attInfo.maxHP += Math.floor(this.attInfo.maxHP * this.front_maxHP)
+		}
+	}else{
+		//后排
+		if(this.back_neglect_def)
+			this.neglect_def += this.back_neglect_def
+		if(this.back_crit)
+			this.attInfo.crit += this.back_crit
+		if(this.back_hitRate)
+			this.attInfo.hitRate += this.back_hitRate
+		if(this.back_atk){
+			this.attInfo.atk += Math.floor(this.attInfo.atk * this.back_atk)
+		}
+	}
+}
 //战斗开始
 model.prototype.begin = function() {
-	if(this.maxHP_rate){
+	if(this.maxHP_rate)
 		this.attInfo.maxHP = Math.floor(this.attInfo.maxHP * this.maxHP_rate)
-		this.attInfo.hp = this.attInfo.maxHP
-	}
+	this.attInfo.hp = this.attInfo.maxHP
 	if(this.isBoss){
 		this.attInfo.hp = 999999999
 	}
 	if(this.surplus_health === 0){
 		this.attInfo.hp = 0
 		this.died = true
-	}else if(this.surplus_health)
+	}else if(this.surplus_health){
 		this.attInfo.hp = Math.ceil(this.attInfo.hp * this.surplus_health)
+	}
 }
 //行动开始前刷新
 model.prototype.before = function() {
@@ -409,6 +503,14 @@ model.prototype.before = function() {
 		for(var i in this.buffs)
 			if(this.buffs[i].debuff)
 				this.buffs[i].destroy("clear")
+	}
+	if(this.action_clean_debuff){
+		var count = this.removeDeBuffNotControl()
+		if(this.action_clean_hp && count){
+			var tmpRecord = {type : "other_heal",targets : []}
+			tmpRecord.targets.push(this.onHeal(this,{maxRate : this.action_clean_hp * count}))
+			fightRecord.push(tmpRecord)
+		}
 	}
 	//伤害BUFF刷新
 	for(var i in this.buffs)
@@ -428,6 +530,7 @@ model.prototype.after = function() {
 	if(this.maxHP_loss > 0){
 		this.onHPLoss()
 	}
+	this.behit_value = 0
 	this.damage_save_value = 0
 }
 //回合结束后刷新
@@ -444,6 +547,18 @@ model.prototype.removeControlBuff = function() {
 		if(this.buffs[i].control)
 			this.buffs[i].destroy("clear")
 }
+//移除非控制类负面状态
+model.prototype.removeDeBuffNotControl = function() {
+	var count = 0
+	//状态BUFF刷新
+	for(var i in this.buffs){
+		if(this.buffs[i].debuff && !this.buffs[i].control){
+			count++
+			this.buffs[i].destroy("clear")
+		}
+	}
+	return count
+}
 //驱散增益状态
 model.prototype.removeIntensifyBuff = function() {
 	//状态BUFF刷新
@@ -457,6 +572,22 @@ model.prototype.removeDeBuff = function() {
 	for(var i in this.buffs)
 		if(this.buffs[i].debuff)
 			this.buffs[i].destroy("dispel")
+}
+//获得负面状态数量
+model.prototype.getDebuffNum = function() {
+	var num = 0
+	for(var i in this.buffs)
+		if(this.buffs[i].debuff)
+			num++
+		return num
+}
+//获得增益状态数量
+model.prototype.getIntensifyNum = function() {
+	var num = 0
+	for(var i in this.buffs)
+		if(this.buffs[i].intensify)
+			num++
+		return num
 }
 //清除指定角色buff
 model.prototype.clearReleaserBuff = function(releaser) {
@@ -519,6 +650,8 @@ model.prototype.onHit = function(attacker,info) {
 		info.maxHP = this.attInfo.maxHP
 		if(this.damage_save)
 			this.damage_save_value += info.realValue
+		if(this.behit_amplify)
+			this.behit_value += this.behit_amplify
 		if(attacker && info.realValue > 0)
 			attacker.totalDamage += info.realValue
 		if(this.died){
