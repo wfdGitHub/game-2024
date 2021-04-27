@@ -34,6 +34,8 @@ var model = function(otps,character) {
 	this.killRet = otps.killRet || false				//击杀目标后重复释放
 	this.suckAtk = otps.suckAtk || 0					//技能吸取目标攻击力比例
 	this.lose_hp = otps.lose_hp || 0					//技能消耗生命值
+	this.enemy_debuff_amp = otps.enemy_debuff_amp || 0		//目标每有一个负面状态伤害加成
+	this.my_intensify_amp = otps.my_intensify_amp || 0		//自身每有一个增益状态伤害加成
 	if(otps.burn_att_change_skill)
 		this.burn_att_change_skill = JSON.parse(otps.burn_att_change_skill)			//技能时 灼烧状态属性修改
 	if(otps.burn_buff_change_skill)

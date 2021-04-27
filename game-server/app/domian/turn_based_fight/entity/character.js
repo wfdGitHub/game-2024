@@ -158,8 +158,6 @@ var model = function(otps) {
 	this.damage_buff_lowArg = otps.damage_buff_lowArg || 0 //降低受到的灼烧、中毒伤害
 
 	this.enemy_vertical_anger = otps.enemy_vertical_anger || 0	//攻击纵排目标时降低敌人怒气
-	this.enemy_debuff_amp = otps.enemy_debuff_amp || 0		//目标每有一个负面状态伤害加成
-	this.my_intensify_amp = otps.my_intensify_amp || 0		//自身每有一个增益状态伤害加成
 	this.action_clean_debuff = otps.action_clean_debuff 	//每回合行动前，清除所有自身非控制类负面状态
 	this.action_clean_hp = otps.action_clean_hp || 0		//每清除自身一个负面状态，恢复自身生命值比例
 	this.always_immune = otps.always_immune					//永久免控

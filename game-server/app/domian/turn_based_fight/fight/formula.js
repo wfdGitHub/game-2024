@@ -195,12 +195,12 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(attacker.round_amplify)
 		info.value += Math.floor(info.value * attacker.round_amplify * (attacker.fighting.round - 1))
 	//减益伤害加成
-	if(attacker.enemy_debuff_amp){
-		info.value += Math.floor(info.value * attacker.enemy_debuff_amp * target.getDebuffNum())
+	if(skill.enemy_debuff_amp){
+		info.value += Math.floor(info.value * skill.enemy_debuff_amp * target.getDebuffNum())
 	}
 	//增益伤害加成
-	if(attacker.my_intensify_amp){
-		info.value += Math.floor(info.value * attacker.my_intensify_amp * attacker.getIntensifyNum())
+	if(skill.my_intensify_amp){
+		info.value += Math.floor(info.value * skill.my_intensify_amp * attacker.getIntensifyNum())
 	}
 	//场景伤害加成
 	if(skill.damageType == "phy"){
