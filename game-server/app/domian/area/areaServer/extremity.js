@@ -102,7 +102,7 @@ module.exports = function() {
 						break
 					if(oldDamage < extremity_award[i]["value"] && allDamage >= extremity_award[i]["value"]){
 						for(var j = 0;j < extremity_award[i]["count"];j++)
-							awardList = self.openChestAward(uid,extremity_cfg["box_award"]["value"])
+							awardList = awardList.concat(self.openChestAward(uid,extremity_cfg["box_award"]["value"]))
 					}
 				}
 				self.setObj(uid,main_name,"damage",allDamage)
