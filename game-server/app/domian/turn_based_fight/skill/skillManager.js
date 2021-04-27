@@ -324,7 +324,7 @@ model.useAttackSkill = function(skill,chase) {
 		fightRecord.push(recordInfo)
 		return []
 	}
-	if(skill.lose_hp){
+	if(skill.lose_hp && !skill.character.isBoss){
 		let tmpRecord = {type : "other_damage",value : Math.ceil(skill.lose_hp * skill.character.attInfo.hp),d_type:skill.damageType}
 		tmpRecord = skill.character.onHit(skill.character,tmpRecord)
 		fightRecord.push(tmpRecord)
