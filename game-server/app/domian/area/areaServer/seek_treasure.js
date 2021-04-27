@@ -45,6 +45,24 @@ module.exports = function() {
 						data.high_grid = JSON.stringify(local.highSTRefresh(uid))
 					}
 				}
+				data.normal_score = Number(data.normal_score) || 0
+				data.high_score = Number(data.high_score) || 0
+				if(data["normal_luck_1"] && data["normal_luck_2"] && data["normal_luck_3"] && data["normal_luck_4"] && data["normal_luck_5"]){
+					for(var i = 1;i <= 5;i++){
+						self.delObj(uid,main_name,"normal_luck_"+i)
+						delete data["normal_luck_"+i]
+					}
+					data.normal_score -= 1000
+					self.incrbyObj(uid,main_name,"normal_score",-1000)
+				}
+				if(data["high_luck_1"] && data["high_luck_2"] && data["high_luck_3"] && data["high_luck_4"] && data["high_luck_5"]){
+					for(var i = 1;i <= 5;i++){
+						self.delObj(uid,main_name,"high_luck_"+i)
+						delete data["high_luck_"+i]
+					}
+					data.high_score -= 1000
+					self.incrbyObj(uid,main_name,"high_score",-1000)
+				}
 			}
 			cb(true,data)
 		})
