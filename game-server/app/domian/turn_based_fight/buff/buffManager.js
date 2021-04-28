@@ -29,7 +29,7 @@ buffFactory.createBuff = function(releaser,character,otps) {
 			return
 		if(character.buffs["immune"])
 			return
-		if(character.buffs["always_immune"])
+		if(character.always_immune)
 			return
 		if(character.defcontrol && this.seeded.random("免控饰品") < character.defcontrol)
 			return
