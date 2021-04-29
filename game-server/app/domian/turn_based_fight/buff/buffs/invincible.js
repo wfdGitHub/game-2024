@@ -3,7 +3,7 @@ var buffBasic = require("../buffBasic.js")
 var fightRecord = require("../../fight/fightRecord.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
-	buff.refreshType = "before_2"
+	buff.refreshType = "roundOver"
 	buff.name = "无敌"
 	if(buff.releaser.invincibleAnger)
 		buff.character.addAnger(buff.releaser.invincibleAnger)
