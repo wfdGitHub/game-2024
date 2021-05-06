@@ -58,8 +58,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	//命中判断
 	if(!(skill.isAnger && attacker.skill_must_hit) && !target.buffs["suoding"]){
 		var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
-		if(target.low_hp_dodge){
-			hitRate -= Math.floor((low_hp_dodge.attInfo.maxHP-low_hp_dodge.attInfo.hp)/low_hp_dodge.attInfo.maxHP * 10) * low_hp_dodge.low_hp_crit
+		if(target.attInfo.hp < target.attInfo.maxHP && target.low_hp_dodge){
+			hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_crit
 		}
 		if(this.seeded.random("闪避判断") > hitRate){
 			info.miss = true
@@ -73,7 +73,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		info.crit = true
 	}else{
 		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit
-		if(attacker.low_hp_crit){
+		if(attacker.attInfo.hp < attacker.attInfo.maxHP && attacker.low_hp_crit){
 			crit += Math.floor((attacker.attInfo.maxHP-attacker.attInfo.hp)/attacker.attInfo.maxHP * 10) * attacker.low_hp_crit
 		}
 		if(attacker.must_crit || this.seeded.random("暴击判断") < crit){
@@ -98,7 +98,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	 	mul *= 1 + attacker.skill_attack_amp
 	else
 		mul *=1 + attacker.normal_attack_amp
-	if(attacker.low_hp_amp)
+	if(attacker.attInfo.hp < attacker.attInfo.maxHP && attacker.low_hp_amp)
 		mul *= 1 + Math.floor((attacker.attInfo.maxHP-attacker.attInfo.hp)/attacker.attInfo.maxHP * 10) * attacker.low_hp_amp
 	if(target.burn_hit_reduction){
 		if(attacker.buffs["burn"])
@@ -233,7 +233,7 @@ formula.prototype.calHeal = function(character,target,value,skill){
 		info.value = Math.round(info.value * 1.5)
 	}
 	//目标血量每减少10%，对其造成的的治疗量加成
-	if(character.low_hp_heal)
+	if(target.attInfo.hp < target.attInfo.maxHP && character.low_hp_heal)
 		info.value = Math.round(info.value * (1 + Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * character.low_hp_heal))
 	//最小治疗
 	if (info.value <= 1) {
