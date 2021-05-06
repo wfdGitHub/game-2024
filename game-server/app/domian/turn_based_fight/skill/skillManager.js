@@ -719,11 +719,7 @@ model.useHealSkill = function(skill,chase) {
 				value = Math.round(value * (skill.character.heal_min_hp_rate + 1))
 		}
 		if(skill.character.unpoison_heal && skill.character.realm == target.realm){
-			if(target.buffs["poison"]){
-				target.buffs["poison"].destroy("clear")
-				if(target.buffs["forbidden"])
-					target.buffs["forbidden"].destroy("clear")
-			}
+			target.removeDeBuffNotControl()
 			value = Math.round(value * (skill.character.unpoison_heal + 1))
 		}
 		let info = this.formula.calHeal(skill.character,target,value,skill)

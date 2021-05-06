@@ -92,6 +92,7 @@ var model = function(otps) {
 	this.mag_fluctuate = otps.mag_fluctuate || 0 	//法术伤害波动下限，上限为下限加0.2
 	this.first_aid = otps.first_aid || 0			//受到直接攻击时，生命值低于40%回复生命比例，仅触发一次
 	//=========觉醒效果=======//
+	this.neglect_seckill = otps.neglect_seckill || false //免疫斩杀
 	this.banLessAnger = otps.banLessAnger || false  //免疫减怒
 	this.overDamageToMaxHp = otps.overDamageToMaxHp || 0 //溢出伤害对血量最高的敌方目标造成伤害比例
 	this.invincibleAnger = otps.invincibleAnger || 0 //无敌盾增加怒气
@@ -249,6 +250,7 @@ var model = function(otps) {
 
 	this.low_hp_amp = otps.low_hp_amp || 0					//战斗中自身生命每降低10%，伤害加成
 	this.low_hp_crit = otps.low_hp_crit || 0				//战斗中自身生命每降低10%，暴击加成
+	this.low_hp_dodge = otps.low_hp_dodge || 0				//战斗中自身生命每降低10%，闪避加成
 	this.low_hp_heal = otps.low_hp_heal || 0				//目标血量每减少10%，对其造成的的治疗量加成
 	this.enemy_died_amp = otps.enemy_died_amp || 0			//敌方每阵亡一人，伤害加成比例
 
@@ -657,7 +659,7 @@ model.prototype.onHit = function(attacker,info) {
 			info.kill = true
 			attacker.kill(this)
 		}else{
-			if(info.seckillRate && (this.attInfo.hp / this.attInfo.maxHP) < 0.2 && (attacker.attInfo.atk * 3 > this.attInfo.hp) && this.fighting.seeded.random("秒杀判定") < info.seckillRate){
+			if(info.seckillRate && !this.neglect_seckill && (this.attInfo.hp / this.attInfo.maxHP) < 0.2 && (attacker.attInfo.atk * 3 > this.attInfo.hp) && this.fighting.seeded.random("秒杀判定") < info.seckillRate){
 				this.onDie()
 				info.seckill = true
 				info.curValue = 0

@@ -15,7 +15,7 @@ var model = function(otps) {
 				var target = false
 				var min = 0
 				for(var i = 0;i < book.enemy.length;i++){
-					if(!book.enemy[i].died){
+					if(!book.enemy[i].died && !book.enemy[i].neglect_seckill){
 						var rate = book.enemy[i].getTotalAtt("hp") / book.enemy[i].getTotalAtt("maxHP")
 						if(rate < book.arg && (!target || book.enemy[i].getTotalAtt("hp") < target.getTotalAtt("hp"))){
 							target = book.enemy[i]
