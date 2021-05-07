@@ -126,22 +126,6 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			info.value +=  Math.floor(attacker.skill_crit_maxHp * target.attInfo.maxHP)
 		}
 	}
-	if(chase){
-		if(!skill.isAnger){
-			if(attacker.add_default_maxHp){
-				info.realDamage = Math.floor(target.attInfo.maxHP * attacker.add_default_maxHp)
-				info.value += info.realDamage
-			}
-		}
-	}else{
-		if(skill.isAnger){
-			if(attacker.maxHP_damage || skill.maxHP_damage){
-				var tmpRate = attacker.maxHP_damage + skill.maxHP_damage
-				info.realDamage = Math.floor(target.attInfo.maxHP * tmpRate)
-				info.value += info.realDamage
-			}
-		}
-	}
 	//种族克制
 	var restrainValue = restrainMap[attacker.realm+"_"+target.realm] || 0
 	info.value += Math.floor(info.value * restrainValue)
@@ -161,11 +145,6 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	//判断锁定
 	if(target.buffs["suoding"]){
 		info.value = Math.floor(info.value * 1.2)
-	}
-	if(target.reduction_over){
-		if(info.value >= target.attInfo.maxHP * 0.4){
-			info.value = Math.floor(info.value * (1-target.reduction_over))
-		}
 	}
 	//免伤BUFF
 	if(target.buffs["armor"]){
@@ -210,6 +189,31 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		info.value = Math.floor(info.value * this.phyRate)
 	}else if(skill.damageType == "mag"){
 		info.value = Math.floor(info.value * this.magRate)
+	}
+	//最大生命值加成
+	if(chase){
+		if(!skill.isAnger){
+			if(attacker.add_default_maxHp){
+				info.realDamage = Math.floor(target.attInfo.maxHP * attacker.add_default_maxHp)
+				info.value += info.realDamage
+			}
+		}
+	}else{
+		if(attacker.maxHP_damage || skill.maxHP_damage){
+			var tmpRate = skill.maxHP_damage
+			if(skill.isAnger)
+				tmpRate += attacker.maxHP_damage
+			if(tmpRate > 0){
+				info.realDamage = Math.floor(target.attInfo.maxHP * tmpRate)
+				info.value += info.realDamage
+			}
+		}
+	}
+	//减伤判断
+	if(target.reduction_over){
+		if(info.value >= target.attInfo.maxHP * 0.4){
+			info.value = Math.floor(info.value * (1-target.reduction_over))
+		}
 	}
 	//最小伤害
 	if (info.value <= 1) {
