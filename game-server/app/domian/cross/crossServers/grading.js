@@ -240,6 +240,7 @@ module.exports = function() {
 				seededNum = Date.now()
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
+					self.taskUpdate(crossUid,"grading_win",1)
 					change = Math.floor(Math.random() * 15) + 20
 					self.redisDao.db.zincrby(["cross:grading:rank",change,crossUid],function(err,value) {
 						curScore = value

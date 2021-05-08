@@ -627,6 +627,7 @@ module.exports = function() {
 			betAmount[target] = 0
 		betAmount[target] += bet
 		self.redisDao.db.hset("cross:peak:betAmount",target,betAmount[target])
+		self.taskUpdate(crossUid,"peak_bet",1)
 		cb(true,betInfo[crossUid])
 	}
 	//获取当前下注信息

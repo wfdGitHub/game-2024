@@ -370,6 +370,7 @@ module.exports = function() {
 					change = Math.floor(Math.random() * 20) + 10
 					awardStr = ancient_cfg["win"]["value"]
 					self.redisDao.db.hincrby("cross:ancient:wins",crossUid,1)
+					self.taskUpdate(crossUid,"ancient_win",1)
 				}else{
 					change = -Math.floor(Math.random() * 20) -5
 					awardStr = ancient_cfg["lose"]["value"]

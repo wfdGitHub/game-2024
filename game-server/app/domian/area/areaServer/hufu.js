@@ -210,6 +210,7 @@ module.exports = function() {
 					return
 				}
 			}
+			self.taskUpdate(uid,"reset_hufu",1)
 			for(var i = 0;i < ids.length;i++)
 				self.delObj(uid,main_name,ids[i])
 			var info = self.gainRandHufu(uid,lv)

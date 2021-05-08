@@ -258,6 +258,7 @@ module.exports = function() {
 				if(!flag){
 					cb(false,err)
 				}else{
+					self.taskUpdate(uid,"use_pickaxe",1)
 					if(self.checkLimitedTime("kuangchang")){
 						var awardList = self.openChestStrNoItem("pickaxe_limited_"+pId)
 					}else{

@@ -15,6 +15,7 @@ module.exports = function() {
 	var self = this
 	//获取数据
 	this.getEndlessData = function(uid,cb) {
+		self.taskUpdate(uid,"endless_count",1)
 		self.getObjAll(uid,main_name,function(data) {
 			cb(true,data)
 		})
@@ -98,6 +99,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//发放奖励
+				self.taskUpdate(uid,"endless_one_lv",1,level)
 				self.addZset(main_name,uid,level)
 				self.setObj(uid,main_name,"level",level)
 				var awardList = []
@@ -203,6 +205,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//发放奖励
+				self.taskUpdate(uid,"endless_Three_lv",1,level)
 				self.addZset(main_name,uid,level)
 				self.setObj(uid,main_name,"level",level)
 				var awardList = []

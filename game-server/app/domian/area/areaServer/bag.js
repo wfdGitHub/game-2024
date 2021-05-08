@@ -229,6 +229,7 @@ module.exports = function() {
 					}
 					if(cb)
 						cb(true,1)
+					self.taskUpdate(crossUid,"hufu_gain",1)
 					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
 				return {type : "hufu",hufuInfo : hufuInfo}
 				case "title":
@@ -253,6 +254,9 @@ module.exports = function() {
 									break
 									case "art":
 										self.taskUpdate(uid,"artifact_gain",value)
+									break
+									case "stone"
+										self.taskUpdate(uid,"stone_gain",value)
 									break
 								}
 							}

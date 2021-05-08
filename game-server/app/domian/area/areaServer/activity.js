@@ -70,6 +70,7 @@ module.exports = function() {
 					if(!flag){
 						cb(false,err)
 					}else{
+						self.taskUpdate(uid,"revenue",1)
 						self.incrbyObj(uid,main_name,"rv_"+type,1)
 						var awardList = self.addItemStr(uid,"201:"+lord_lv[lv][type],1,"征收"+type)
 						cb(true,awardList)

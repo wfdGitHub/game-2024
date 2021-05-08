@@ -399,6 +399,7 @@ module.exports = function() {
 		if(!local.userInfos[crossUid]){
 			local.userInit(crossUid)	
 		}
+		self.taskUpdate(crossUid,"escort",1)
 		var carInfo = {
 			"crossUid" : crossUid,
 			"user" : self.getSimpleUser(crossUid),

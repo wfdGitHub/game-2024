@@ -257,6 +257,7 @@ module.exports = function() {
 	}
 	//增送礼物
 	local.sendFriendGift = function(uid,target) {
+		self.taskUpdate(uid,"friendGift",1)
 		self.setAreaObj(friend_gift,target+"_"+uid,1)
 		var notify = {
 			type : "friendGift",

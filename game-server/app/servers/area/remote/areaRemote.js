@@ -155,6 +155,15 @@ areaRemote.prototype.overdueCheck  = function(areaId,uid,cb) {
 		cb(false)
 	}
 }
+//任务更新
+areaRemote.prototype.taskUpdate  = function(areaId,uid,type,value,arg,cb) {
+	if(this.areaManager.areaMap[areaId]){
+		this.areaManager.areaMap[areaId].taskUpdate(uid,type,value,arg)
+		cb(true)
+	}else{
+		cb(false)
+	}
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "areaRemote",

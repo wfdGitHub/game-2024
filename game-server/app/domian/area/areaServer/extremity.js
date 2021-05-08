@@ -48,6 +48,7 @@ module.exports = function() {
 	this.getExtremityFight = function(uid,cb) {
 		var atkTeam = this.getUserTeam(uid)
 		if(atkTeam){
+			self.taskUpdate(uid,"extremity",1)
 			var level = self.getLordLv(uid)
 			var defTeam = self.standardTeam(uid,[0,0,0,0,bossId,0],"main",level)
 			defTeam[4].boss = true

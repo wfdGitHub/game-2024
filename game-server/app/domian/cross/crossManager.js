@@ -288,6 +288,16 @@ crossManager.prototype.standardTeam = function(list,dl,lv) {
 	}
 	return team
 }
+crossManager.prototype.taskUpdate  = function(crossUid,type,value,arg) {
+	if(!this.players[crossUid]){
+		cb(false)
+		return
+	}
+	var areaId = this.players[crossUid]["areaId"]
+	var serverId = this.players[crossUid]["serverId"]
+	var uid = this.players[crossUid]["uid"]
+	this.app.rpc.area.areaRemote.taskUpdate.toServer(serverId,areaId,uid,type,value,arg,function(){})
+}
 module.exports = {
 	id : "crossManager",
 	func : crossManager,
