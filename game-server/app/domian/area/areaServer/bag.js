@@ -255,7 +255,7 @@ module.exports = function() {
 									case "art":
 										self.taskUpdate(uid,"artifact_gain",value)
 									break
-									case "stone"
+									case "stone":
 										self.taskUpdate(uid,"stone_gain",value)
 									break
 								}
