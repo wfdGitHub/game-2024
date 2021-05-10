@@ -173,6 +173,12 @@
             console.log(data);
         });
       }
+      //获取无尽试炼种子
+      var getEndlessSeededList = function() {
+        pomelo.request("area.fightHandler.getEndlessSeededList", {}, function(data) {
+            console.log(data);
+        });
+      }
       //挑战单人试炼
       var challengeOneEndless = function(hIds,id,seededList,index,verifys) {
         pomelo.request("area.fightHandler.challengeOneEndless", {hIds:hIds,id:id,seededList:seededList,index:index,verifys:verifys}, function(data) {
@@ -180,8 +186,8 @@
         });
       }
       //挑战三人试炼
-      var challengeThreeEndless = function(id,seededList,index,verifys) {
-        pomelo.request("area.fightHandler.challengeThreeEndless", {id:id,seededList:seededList,index:index,verifys:verifys}, function(data) {
+      var challengeThreeEndless = function(hIds,id,seededList,index,verifys) {
+        pomelo.request("area.fightHandler.challengeThreeEndless", {hIds:hIds,id:id,seededList:seededList,index:index,verifys:verifys}, function(data) {
             console.log(data);
         });
       }

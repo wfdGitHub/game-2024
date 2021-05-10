@@ -15,10 +15,17 @@ module.exports = function() {
 	var self = this
 	//获取数据
 	this.getEndlessData = function(uid,cb) {
-		self.taskUpdate(uid,"endless_count",1)
 		self.getObjAll(uid,main_name,function(data) {
 			cb(true,data)
 		})
+	}
+	//获取试炼种子
+	this.getEndlessSeededList = function(uid,cb) {
+		self.taskUpdate(uid,"endless_count",1)
+		var list = []
+		for(var i = 0;i < 6;i++)
+			list.push(Math.floor(Math.random() * 90000) + 10000)
+		cb(true,list)
 	}
 	//挑战单人试炼
 	this.challengeOneEndless = function(uid,hIds,id,seededList,index,verifys,cb) {

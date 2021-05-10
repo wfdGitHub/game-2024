@@ -52,6 +52,14 @@ fightHandler.prototype.gainChapterAwardBox = function(msg, session, next) {
     next(null,{flag : flag,result : result})
   })
 }
+//获取无尽试炼种子
+fightHandler.prototype.getEndlessSeededList = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getEndlessSeededList(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //获取无尽试炼数据
 fightHandler.prototype.getEndlessData = function(msg, session, next) {
   var uid = session.uid
