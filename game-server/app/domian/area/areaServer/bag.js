@@ -229,7 +229,7 @@ module.exports = function() {
 					}
 					if(cb)
 						cb(true,1)
-					self.taskUpdate(crossUid,"hufu_gain",1)
+					self.taskUpdate(uid,"hufu_gain",1)
 					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
 				return {type : "hufu",hufuInfo : hufuInfo}
 				case "title":
