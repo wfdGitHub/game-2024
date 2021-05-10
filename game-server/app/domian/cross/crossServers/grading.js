@@ -75,9 +75,11 @@ module.exports = function() {
 			function(next) {
 				//更新排名
 				self.redisDao.db.del("cross:grading:realRank")
-				var rankList = ["cross:grading:realRank"]
-				rankList = rankList.concat(newRankList)
-				self.redisDao.db.zadd(rankList)
+				if(newRankList.length){
+					var rankList = ["cross:grading:realRank"]
+					rankList = rankList.concat(newRankList)
+					self.redisDao.db.zadd(rankList)
+				}
 				self.newGrading(newRankList)
 			}
 		],function(err) {
