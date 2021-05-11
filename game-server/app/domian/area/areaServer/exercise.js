@@ -128,8 +128,10 @@ module.exports = function() {
 				if(winFlag){
 					self.setObj(uid,main_name,"index",index)
 					self.delObj(uid,main_name,"play")
-					if(index == 4)
+					if(index == 4){
+						self.setObj(uid,main_name,"pass_"+level,1)
 						self.taskUpdate(uid,"exercise",1)
+					}
 				}else{
 					self.incrbyObj(uid,main_name,"play",1)
 				}
