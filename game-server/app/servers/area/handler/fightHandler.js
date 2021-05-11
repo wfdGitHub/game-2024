@@ -98,7 +98,8 @@ fightHandler.prototype.challengeThreeEndless = function(msg, session, next) {
 fightHandler.prototype.getEndlessRank = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getEndlessRank(function(flag,data) {
+  var type = msg.type
+  this.areaManager.areaMap[areaId].getEndlessRank(type,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

@@ -59,7 +59,7 @@ module.exports = function() {
 		async.waterfall([
 			function(next) {
 				//前置条件判断
-				self.getObj(uid,main_name,"level",function(data) {
+				self.getObj(uid,main_name,"one_level",function(data) {
 					oldLevel = Number(data) || 0
 					oldIndex = oldLevel - (Number(id) - 1) * 6
 					if(oldIndex < 0)
@@ -107,8 +107,8 @@ module.exports = function() {
 			function(next) {
 				//发放奖励
 				self.taskUpdate(uid,"endless_one_lv",1,level)
-				self.addZset(main_name,uid,level)
-				self.setObj(uid,main_name,"level",level)
+				self.addZset(main_name+"_one",uid,level)
+				self.setObj(uid,main_name,"one_level",level)
 				var awardList = []
 				for(var i = oldIndex + 1;i <= index;i++){
 					if(i % 2 == 0){
@@ -158,7 +158,7 @@ module.exports = function() {
 		async.waterfall([
 			function(next) {
 				//前置条件判断
-				self.getObj(uid,main_name,"level",function(data) {
+				self.getObj(uid,main_name,"three_level",function(data) {
 					oldLevel = Number(data) || 0
 					oldIndex = oldLevel - (Number(id) - 1) * 6
 					if(oldIndex < 0)
@@ -212,9 +212,9 @@ module.exports = function() {
 			},
 			function(next) {
 				//发放奖励
-				self.taskUpdate(uid,"endless_Three_lv",1,level)
-				self.addZset(main_name,uid,level)
-				self.setObj(uid,main_name,"level",level)
+				self.taskUpdate(uid,"endless_three_lv",1,level)
+				self.addZset(main_name+"_three",uid,level)
+				self.setObj(uid,main_name,"three_level",level)
 				var awardList = []
 				for(var i = oldIndex + 1;i <= index;i++){
 					if(i % 2 == 0){
@@ -233,8 +233,8 @@ module.exports = function() {
 		})
 	}
 	//获取排行榜
-	this.getEndlessRank = function(cb) {
-		self.zrangewithscore(main_name,-10,-1,function(list) {
+	this.getEndlessRank = function(type,cb) {
+		self.zrangewithscore(main_name+"_"+type,-10,-1,function(list) {
 			var uids = []
 			var scores = []
 			for(var i = 0;i < list.length;i += 2){
