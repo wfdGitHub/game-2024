@@ -1,4 +1,4 @@
-//元神抽奖
+//宝物抽奖
 const ace_lotto_cfg = require("../../../../config/gameCfg/ace_lotto_cfg.json")
 const ace_lotto_topic = require("../../../../config/gameCfg/ace_lotto_topic.json")
 const ace_pack = require("../../../../config/gameCfg/ace_pack.json")
@@ -29,7 +29,7 @@ module.exports = function() {
 		var day = (new Date()).getDate() - 1
 		curTopic = day % topicList.length
 	}
-	//获取元神抽奖数据
+	//获取宝物抽奖数据
 	this.getaceLottoData = function(uid,cb) {
 		this.getObjAll(uid,main_name,function(data) {
 			if(!data)
@@ -38,7 +38,7 @@ module.exports = function() {
 			cb(true,data)
 		})
 	}
-	//免费元神抽奖
+	//免费宝物抽奖
 	this.aceLottoFree = function(uid,cb) {
 		self.getHMObj(uid,main_name,["free","redNum"],function(list) {
 			var redNum = Number(list[1]) || 0
@@ -50,9 +50,9 @@ module.exports = function() {
 			}
 		})
 	}
-	//单次元神抽奖
+	//单次宝物抽奖
 	this.aceLottoOnce = function(uid,cb) {
-		self.consumeItems(uid,default_cfg["ace_lotto_1"]["value"],1,"元神抽奖",function(flag,err) {
+		self.consumeItems(uid,default_cfg["ace_lotto_1"]["value"],1,"宝物抽奖",function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
@@ -63,9 +63,9 @@ module.exports = function() {
 			}
 		})
 	}
-	//十连元神抽奖
+	//十连宝物抽奖
 	this.aceLottoMultiple = function(uid,cb) {
-		self.consumeItems(uid,default_cfg["ace_lotto_10"]["value"],1,"元神抽奖",function(flag,err) {
+		self.consumeItems(uid,default_cfg["ace_lotto_10"]["value"],1,"宝物抽奖",function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
@@ -81,8 +81,8 @@ module.exports = function() {
 		var awardList = []
 		for(var i = 0;i < count;i++){
 			redNum++
-			if(redNum >= 100){
-				redNum -= 100
+			if(redNum >= 200){
+				redNum -= 200
 				awardList = awardList.concat(local.aceTopic(uid))
 			}else{
 				var rand = Math.random() * allWeight
@@ -103,7 +103,7 @@ module.exports = function() {
 								awardList = awardList.concat(local.acePurple(uid))
 							break
 							default:
-								awardList = awardList.concat(self.addItemStr(uid,award,1,"元神抽奖"))
+								awardList = awardList.concat(self.addItemStr(uid,award,1,"宝物抽奖"))
 						}
 						break
 					}
@@ -116,21 +116,21 @@ module.exports = function() {
 	//固定主题
 	local.aceTopic = function(uid) {
 		var award = topicList[curTopic][Math.floor(Math.random() * topicList[curTopic].length)]
-		return self.addItemStr(uid,award+":1",1,"元神抽奖")
+		return self.addItemStr(uid,award+":1",1,"宝物抽奖")
 	}
 	//固定红色元神
 	local.aceRed = function(uid) {
 		var award = ace_qualitys[6][Math.floor(Math.random() * ace_qualitys[6].length)]
-		return self.addItemStr(uid,award+":1",1,"元神抽奖")
+		return self.addItemStr(uid,award+":1",1,"宝物抽奖")
 	}
 	//固定橙色元神
 	local.aceOrange = function(uid) {
 		var award = ace_qualitys[5][Math.floor(Math.random() * ace_qualitys[5].length)]
-		return self.addItemStr(uid,award+":1",1,"元神抽奖")
+		return self.addItemStr(uid,award+":1",1,"宝物抽奖")
 	}
 	//固定紫色元神
 	local.acePurple = function(uid) {
 		var award = ace_qualitys[4][Math.floor(Math.random() * ace_qualitys[4].length)]
-		return self.addItemStr(uid,award+":1",1,"元神抽奖")
+		return self.addItemStr(uid,award+":1",1,"宝物抽奖")
 	}
 }
