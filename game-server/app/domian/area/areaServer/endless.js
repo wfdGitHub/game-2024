@@ -4,8 +4,11 @@ const endless_three = require("../../../../config/gameCfg/endless_three.json")
 const async = require("async")
 const main_name = "endless"
 for(var i in endless_one){
-	for(var j = 1;j <= 6;j++)
+	console.log("i",i)
+	for(var j = 1;j <= 6;j++){
+		console.log("j",j)
 		endless_one[i]["team_"+j] = JSON.parse(endless_one[i]["team_"+j])
+	}
 }
 for(var i in endless_three){
 	for(var j = 1;j <= 6;j++)
