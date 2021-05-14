@@ -29,6 +29,11 @@ module.exports = function() {
 	}
 	//挑战单人试炼
 	this.challengeOneEndless = function(uid,hIds,id,seededList,index,verifys,cb) {
+		var day = (new Date()).getDay()
+		if(day != 2 && day != 4 && day != 6){
+			cb(false,"今日未开放")
+			return
+		}
 		if(!Array.isArray(hIds) || hIds.length !== 1){
 			cb(false,"hIds error "+hIds)
 			return
@@ -128,6 +133,11 @@ module.exports = function() {
 	}
 	//挑战三人试炼
 	this.challengeThreeEndless = function(uid,hIds,id,seededList,index,verifys,cb) {
+		var day = (new Date()).getDay()
+		if(day != 0 && day != 1 && day != 3 && day != 5){
+			cb(false,"今日未开放")
+			return
+		}
 		if(!Array.isArray(hIds) || hIds.length !== 3){
 			cb(false,"hIds error "+hIds)
 			return
