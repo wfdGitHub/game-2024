@@ -5,6 +5,7 @@ var task_type = require("../../../../config/gameCfg/task_type.json")
 var liveness_cfg = require("../../../../config/gameCfg/liveness.json")
 var war_horn = require("../../../../config/gameCfg/war_horn.json")
 var week_target = require("../../../../config/gameCfg/week_target.json")
+var task_week_loop = require("../../../../config/gameCfg/task_week_loop.json")
 var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var util = require("../../../../util/util.js")
 var async = require("async")
@@ -17,6 +18,7 @@ var week_task = {}
 var month_task = {}
 var week_target_task = {}
 var topic_recruit_task = {}
+var week_loop_task = {}
 for(var taskId in task_cfg){
 	if(task_cfg[taskId].first)
 		first_task[taskId] = task_cfg[taskId]
@@ -30,6 +32,8 @@ for(var taskId in task_cfg){
 		week_target_task[taskId] = task_cfg[taskId]
 	if(task_cfg[taskId].refresh == "topic")
 		topic_recruit_task[taskId] = task_cfg[taskId]
+	if(task_cfg[taskId].refresh == "week_loop")
+		week_loop_task[taskId] = task_cfg[taskId]
 }
 for(var i in week_target){
 	var task_list = JSON.parse(week_target[i]["task_list"])
@@ -188,43 +192,37 @@ module.exports = function() {
 	}
 	//每日任务刷新
 	this.dayTaskRefresh = function(uid) {
-		for(let taskId in day_task){
+		for(var taskId in day_task){
 			this.gainTask(uid,taskId,0)
 		}
-		let info = {
+		var info = {
 			value : 0
 		}
-		for(let i in liveness_cfg){
+		for(var i in liveness_cfg){
 			info["index_"+i] = 1
 		}
 		self.setHMObj(uid,liveness_name,info)
-		self.getObj(uid,main_name,"week",function(week) {
-			let curWeek = util.getWeek()
-			if(week != curWeek){
-				// console.log("跨周任务更新",week,curWeek)
-				self.setObj(uid,main_name,"week",curWeek)
-				for(let taskId in week_task){
-					self.gainTask(uid,taskId,0)
-				}
+	}
+	//每周任务刷新
+	this.weekTaskRefresh = function(uid) {
+		for(var taskId in week_task){
+			self.gainTask(uid,taskId,0)
+		}
+		for(var taskId in week_loop_task){
+			self.gainTask(uid,taskId,0)
+		}
+	}
+	//每月任务刷新
+	this.monthTaskRefresh = function(uid) {
+		for(var taskId in month_task){
+			self.gainTask(uid,taskId,0)
+		}
+		self.delObjAll(uid,war_name,function() {
+			var info = {
+				exp : 0,
+				high : 0
 			}
-			self.getObj(uid,main_name,"month",function(month) {
-				let curMonth = util.getMonth()
-				if(month != curMonth){
-					// console.log("跨月任务更新",month,curMonth)
-					self.setObj(uid,main_name,"month",curMonth)
-					for(let taskId in month_task){
-						self.gainTask(uid,taskId,0)
-					}
-					self.delObjAll(uid,war_name,function() {
-						let info = {
-							exp : 0,
-							high : 0
-						}
-						self.setHMObj(uid,war_name,info)
-					})
-				}
-			})
-			self.taskUpdate(uid,"login",1)
+			self.setHMObj(uid,war_name,info)
 		})
 	}
 	//获取任务列表

@@ -93,6 +93,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.dayStr = curDayStr
 	this.weekDay = (new Date).getDay()
 	this.weekStr = util.getWeek()
+	this.monthStr = util.getMonth()
 	this.areaDay = util.getTimeDifference(this.openTime,Date.now())
 	console.log("areaDay",this.areaDay)
 	this.festivalDayUpdate()
@@ -194,12 +195,12 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 			self.players[uid]["areaId"] = self.areaId
 			self.players[uid]["areaDay"] = self.areaDay
 			self.players[uid]["userDay"] = util.getTimeDifference(self.players[uid].createTime,Date.now())
-			if(self.players[uid].dayStr != self.dayStr){
+			if(self.players[uid].dayStr != self.dayStr)
 				self.dayFirstLogin(uid)
-			}
-			if(self.players[uid].weekStr != self.weekStr){
+			if(self.players[uid].weekStr != self.weekStr)
 				self.weekFirstLogin(uid)
-			}
+			if(self.players[uid].monthStr != self.monthStr)
+				self.monthFirstLogin(uid)
 			cb(true,self.players[uid])
 		}
 	],function(err) {
@@ -209,6 +210,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 }
 //玩家当天首次登录
 area.prototype.dayFirstLogin = function(uid) {
+	console.log(uid+" 今日首次登陆")
 	this.chageLordData(uid,"dayStr",this.dayStr)
 	this.chageLordData(uid,"tour_pri_count",0)
 	this.setPlayerData(uid,"quick",0)
@@ -234,10 +236,18 @@ area.prototype.dayFirstLogin = function(uid) {
 }
 //玩家每周首次登陆
 area.prototype.weekFirstLogin = function(uid) {
+	console.log(uid+" 本周首次登陆")
 	this.chageLordData(uid,"weekStr",this.weekStr)
 	this.chageLordData(uid,"week_rmb",0)
 	this.chageLordData(uid,"real_week",0)
 	this.activityWeekUpdate(uid)
+	this.weekTaskRefresh(uid)
+}
+//玩家每月首次登陆
+area.prototype.monthFirstLogin  = function(uid) {
+	console.log(uid+" 本月首次登陆")
+	this.chageLordData(uid,"monthStr",this.monthStr)
+	this.monthTaskRefresh(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
