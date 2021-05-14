@@ -279,21 +279,22 @@ module.exports = function() {
 	}
 	//购买每月礼包
 	this.buyAwardBagMonth = function(uid,index,cb) {
-		if(!index || !gift_month[index]){
-			cb(false,"礼包不存在")
-			return
-		}
-		self.getObj(uid,"month_shop",index,function(data) {
-			data = Number(data) || 0
-			if(data >= gift_month[index]["limit"]){
-				cb(false,"已限购")
-				return
-			}
-			self.addUserRMB(uid,gift_month[index].rmb)
-			self.incrbyObj(uid,"month_shop",index,1)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_month[index].award)
-			cb(true)
-		})
+		cb(false)
+		// if(!index || !gift_month[index]){
+		// 	cb(false,"礼包不存在")
+		// 	return
+		// }
+		// self.getObj(uid,"month_shop",index,function(data) {
+		// 	data = Number(data) || 0
+		// 	if(data >= gift_month[index]["limit"]){
+		// 		cb(false,"已限购")
+		// 		return
+		// 	}
+		// 	self.addUserRMB(uid,gift_month[index].rmb)
+		// 	self.incrbyObj(uid,"month_shop",index,1)
+		// 	self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_month[index].award)
+		// 	cb(true)
+		// })
 	}
 	//进阶战令
 	this.advanceWarHorn = function(uid,cb) {

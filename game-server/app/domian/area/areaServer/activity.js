@@ -303,23 +303,24 @@ module.exports = function() {
 	}
 	//领取累充奖励
 	this.gainRechargeTotalAward = function(uid,index,cb) {
-		if(!recharge_total[index]){
-			cb(false,"参数错误")
-			return
-		}
-		if(!self.players[uid]["rmb"] || self.players[uid]["rmb"] < recharge_total[index].rmb){
-			cb(false,"充值额度不足")
-			return
-		}
-		self.getObj(uid,main_name,"total_award_"+index,function(data) {
-			if(data){
-				cb(false,"已领取")
-			}else{
-				self.setObj(uid,main_name,"total_award_"+index,1)
-				var awardList = self.addItemStr(uid,recharge_total[index].award,1,"累充奖励")
-				cb(true,awardList)
-			}
-		})
+		cb(false)
+		// if(!recharge_total[index]){
+		// 	cb(false,"参数错误")
+		// 	return
+		// }
+		// if(!self.players[uid]["rmb"] || self.players[uid]["rmb"] < recharge_total[index].rmb){
+		// 	cb(false,"充值额度不足")
+		// 	return
+		// }
+		// self.getObj(uid,main_name,"total_award_"+index,function(data) {
+		// 	if(data){
+		// 		cb(false,"已领取")
+		// 	}else{
+		// 		self.setObj(uid,main_name,"total_award_"+index,1)
+		// 		var awardList = self.addItemStr(uid,recharge_total[index].award,1,"累充奖励")
+		// 		cb(true,awardList)
+		// 	}
+		// })
 	}
 	//领取单充奖励
 	this.gainRechargeOnceAward = function(uid,index,cb) {
