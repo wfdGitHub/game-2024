@@ -210,7 +210,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 }
 //玩家当天首次登录
 area.prototype.dayFirstLogin = function(uid) {
-	console.log(uid+" 今日首次登陆")
+	// console.log(uid+" 今日首次登陆")
 	this.chageLordData(uid,"dayStr",this.dayStr)
 	this.chageLordData(uid,"tour_pri_count",0)
 	this.setPlayerData(uid,"quick",0)
@@ -236,7 +236,7 @@ area.prototype.dayFirstLogin = function(uid) {
 }
 //玩家每周首次登陆
 area.prototype.weekFirstLogin = function(uid) {
-	console.log(uid+" 本周首次登陆")
+	// console.log(uid+" 本周首次登陆")
 	this.chageLordData(uid,"weekStr",this.weekStr)
 	this.chageLordData(uid,"week_rmb",0)
 	this.chageLordData(uid,"real_week",0)
@@ -245,7 +245,7 @@ area.prototype.weekFirstLogin = function(uid) {
 }
 //玩家每月首次登陆
 area.prototype.monthFirstLogin  = function(uid) {
-	console.log(uid+" 本月首次登陆")
+	// console.log(uid+" 本月首次登陆")
 	this.chageLordData(uid,"monthStr",this.monthStr)
 	this.monthTaskRefresh(uid)
 }
