@@ -171,10 +171,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		info.value = Math.floor(info.value * (attacker.mag_fluctuate + this.seeded.random("法术波动") * 0.2))
 	}
 	//受击伤害加成
-	if(attacker.behit_value){
+	if(attacker.behit_value)
 		info.value += Math.floor(info.value * attacker.behit_value)
-		attacker.behit_value = 0
-	}
 	//回合伤害加成
 	if(attacker.round_amplify)
 		info.value += Math.floor(info.value * attacker.round_amplify * (attacker.fighting.round - 1))
