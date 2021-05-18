@@ -530,7 +530,6 @@ model.prototype.after = function() {
 	if(this.maxHP_loss > 0){
 		this.onHPLoss()
 	}
-	this.behit_value = 0
 	this.damage_save_value = 0
 }
 //回合结束后刷新
