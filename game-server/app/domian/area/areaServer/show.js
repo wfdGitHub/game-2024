@@ -186,14 +186,20 @@ module.exports = function() {
 				cb(false,"皮肤不存在")
 			return
 		}
-		self.setObj(uid,"heroArchive",id,Date.now())
-		var notify = {
-			"type" : "gainHeroSkin",
-			"id" : id
-		}
-		self.sendToUser(uid,notify)
-		if(cb)
-			cb(true)
+		self.getObj(uid,"heroArchive",id,function(data) {
+			if(data){
+				self.sendMail(uid,skin_list[id]["name"]+"皮肤转换","您已获得"+skin_list[id]["name"]+"皮肤,多出的皮肤已为您转换为元宝","202:3000")
+			}else{
+				self.setObj(uid,"heroArchive",id,Date.now())
+				var notify = {
+					"type" : "gainHeroSkin",
+					"id" : id
+				}
+				self.sendToUser(uid,notify)
+			}
+			if(cb)
+				cb(true)
+		})
 	}
 	//改变英雄皮肤
 	this.changeHeroSkin = function(uid,hId,index,cb) {

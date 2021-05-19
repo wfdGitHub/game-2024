@@ -1,4 +1,4 @@
-//法宝系统
+//神兵系统
 var bearcat = require("bearcat")
 var async = require("async")
 var artifact_level = require("../../../../config/gameCfg/artifact_level.json")
@@ -8,7 +8,7 @@ var artifactHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
-//穿戴法宝
+//穿戴神兵
 artifactHandler.prototype.wearArtifact = function(msg, session, next) {
   let uid = session.uid
   let areaId = session.get("areaId")
@@ -27,12 +27,12 @@ artifactHandler.prototype.wearArtifact = function(msg, session, next) {
           return
         }
         if(!artifact_talent[heroInfo.id]){
-          cb("该英雄没有法宝")
+          cb("该英雄没有神兵")
           return
         }
         aId = artifact_talent[heroInfo.id]["artifact"]
         if(heroInfo.artifact != undefined){
-          cb("已穿戴法宝")
+          cb("已穿戴神兵")
           return
         }
         cb(null,heroInfo)
@@ -41,15 +41,15 @@ artifactHandler.prototype.wearArtifact = function(msg, session, next) {
     function(heroInfo,cb) {
       self.areaManager.areaMap[areaId].getBagItem(uid,aId,function(value) {
         if(value < 1)
-          cb("没有该英雄专属法宝:"+aId)
+          cb("没有该英雄专属神兵:"+aId)
         else
           cb(null,heroInfo)
       })
     },
     function(heroInfo,cb) {
-      //扣除法宝
-      self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : aId,value : -1,reason : "穿戴法宝"})
-      //穿戴法宝
+      //扣除神兵
+      self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : aId,value : -1,reason : "穿戴神兵"})
+      //穿戴神兵
       heroInfo["artifact"] = 0
       self.heroDao.setHeroInfo(areaId,uid,hId,"artifact",0)
       next(null,{flag : true,heroInfo : heroInfo})
@@ -58,7 +58,7 @@ artifactHandler.prototype.wearArtifact = function(msg, session, next) {
     next(null,{flag : false,err : err})
   })
 }
-//法宝升级
+//神兵升级
 artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
   let uid = session.uid
   let areaId = session.get("areaId")
@@ -76,7 +76,7 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
           return
         }
         if(heroInfo.artifact === undefined){
-          cb("未穿戴法宝")
+          cb("未穿戴神兵")
           return
         }
         cb(null,heroInfo)
@@ -106,7 +106,7 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
           else
             str += "&1000150:"+needNum
         }
-        self.areaManager.areaMap[areaId].consumeItems(uid,str,1,"法宝升级",function(flag,err) {
+        self.areaManager.areaMap[areaId].consumeItems(uid,str,1,"神兵升级",function(flag,err) {
           if(!flag){
             next(null,{flag : false,err : err})
             return
@@ -125,7 +125,7 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
     next(null,{flag : false,err : err})
   })
 }
-//出售法宝
+//出售神兵
 artifactHandler.prototype.sellArtifact = function(msg, session, next) {
   let uid = session.uid
   let areaId = session.get("areaId")
@@ -140,12 +140,12 @@ artifactHandler.prototype.sellArtifact = function(msg, session, next) {
     return
   }
   let self = this
-  self.areaManager.areaMap[areaId].consumeItems(uid,aId+":"+count,1,"出售法宝",function(flag,err) {
+  self.areaManager.areaMap[areaId].consumeItems(uid,aId+":"+count,1,"出售神兵",function(flag,err) {
     if(!flag){
       next(null,{flag : false,err : err})
       return
     }
-    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : 207,value : 400 * count,reason : "出售法宝"},function(flag,data) {
+    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : 207,value : 400 * count,reason : "出售神兵"},function(flag,data) {
       next(null,{flag : true,value : data})
     })
   })
