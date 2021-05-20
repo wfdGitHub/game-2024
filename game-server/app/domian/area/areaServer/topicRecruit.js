@@ -95,7 +95,7 @@ module.exports = function() {
 	//重置主题任务
 	local.resetTopicRecruitTask = function(uid) {
 		self.clearTopicRecruitTask(uid)
-		for(var i = 1;i <= 5;i++){
+		for(var i = 1;i <= 4;i++){
 			self.gainTask(uid,recruit_topic_hero[curTopic]["task_"+i])
 		}
 	}
