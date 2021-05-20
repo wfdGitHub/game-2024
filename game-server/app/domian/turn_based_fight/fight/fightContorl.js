@@ -21,6 +21,7 @@ var hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
 var hufu_quality = require("../../../../config/gameCfg/hufu_quality.json")
 var heroSpine = require("../../../../config/gameCfg/heroSpine.json")
 var skin_list = require("../../../../config/gameCfg/skin_list.json")
+var title_list = require("../../../../config/gameCfg/title_list.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -297,6 +298,9 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		if(info.hfs2)
 			model.mergeTalent(info,info.hfs2)
 	}
+	//称号属性
+	if(teamCfg && teamCfg["title"] && title_list[teamCfg["title"]] && title_list[teamCfg["title"]]["talent"])
+		model.mergeTalent(info,title_list[teamCfg["title"]]["talent"])
 	//皮肤计算
 	if(info.skin){
 		if(heroSpine[info.skin] && heroSpine[info.skin]["talent"])
@@ -470,6 +474,8 @@ model.getTeamCE = function(team) {
 				allCE += Math.ceil(guild_skill[team[6]["g"+i]]["ce"] * careers[i])
 			}
 		}
+		if(team[6]["title"] && title_list[team[6]["title"]] && title_list[team[6]["title"]]["ce"])
+			allCE += title_list[team[6]["title"]]["ce"]
 	}
 	return allCE
 }

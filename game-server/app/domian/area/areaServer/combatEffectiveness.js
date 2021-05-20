@@ -150,6 +150,13 @@ module.exports = function() {
 			this.updateCE(uid)
 		}
 	}
+	//更改称号
+	this.setTitle = function(uid,title) {
+		if(userTeams[uid] && userTeams[uid][6]){
+			userTeams[uid][6]["title"] = title
+			this.updateCE(uid)
+		}
+	}
 	//激活天书
 	this.activateBook = function(uid,bookType,cb) {
 		if(!bookMap[bookType]){

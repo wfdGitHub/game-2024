@@ -71,11 +71,13 @@ module.exports = function() {
 	this.changeUserTitle = function(uid,id,cb) {
 		if(id == 0){
 			self.chageLordData(uid,"title",id)
+			self.setTitle(uid,id)
 			cb(true)
 		}else{
 			self.getObj(uid,"title_list",id,function(data) {
 				if(data && (data == -1 || Number(data) >= Date.now())){
 					self.chageLordData(uid,"title",id)
+					self.setTitle(uid,id)
 					cb(true)
 				}else{
 					cb(false,"该称号不能使用")
@@ -152,6 +154,7 @@ module.exports = function() {
 						if(!(data && (data == -1 || Number(data) >= Date.now()))){
 							info.title = 0
 							self.chageLordData(uid,"title",0)
+							self.setTitle(uid,0)
 						}
 						next()
 					})

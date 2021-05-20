@@ -573,6 +573,14 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			})
 		},
 		function(next) {
+			//称号
+			self.redisDao.db.hget("player:user:"+uid+":playerInfo","title",function(err,data) {
+				if(data)
+					fightTeam[6]["title"] = data
+				next()
+			})
+		},
+		function(next) {
 			//公会技能
 			self.redisDao.db.hmget("player:user:"+uid+":guild",["skill_1","skill_2","skill_3","skill_4"],function(err,data) {
 				if(data){
