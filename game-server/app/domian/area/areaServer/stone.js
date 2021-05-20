@@ -199,10 +199,7 @@ module.exports = function() {
 					cb(false,"item error "+i)
 					return
 				}
-				if(stone_skill[i]["type"] == stone_skill[itemId]["type"])
-					allValue += stone_skill[i]["value"] * items[i] * 2
-				else
-					allValue += stone_skill[i]["value"] * items[i]
+				allValue += stone_skill[i]["value"] * items[i]
 				str += i+":"+items[i]+"&"
 			}
 		}
