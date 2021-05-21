@@ -22,6 +22,22 @@ logHandler.prototype.addLogs = function(msg, session, next) {
   this.redisDao.db.rpush("client:logs",JSON.stringify(info))
   next(null)
 }
+//禁言名单
+logHandler.prototype.banSendMsg = function(msg, session, next) {
+  var accId = session.get("accId")
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var text = msg.text
+  var info = {
+    accId : accId,
+    uid : uid,
+    areaId : areaId,
+    text : msg.text,
+    time : (new Date()).toLocaleString()
+  }
+  this.redisDao.db.rpush("client:banSendMsg",JSON.stringify(info))
+  next(null)
+}
 
 module.exports = function(app) {
   return bearcat.getBean({

@@ -98,6 +98,11 @@
         console.log("onChat")
         console.log(data)
       })
+      var banSendMsg = function(text) {
+        pomelo.request("connector.logHandler.banSendMsg", {text:text}, function(data) {
+            console.log(data);
+        });
+      }
       //============远古战场=========//
       //获取排行榜
       var getAncientRank = function() {
