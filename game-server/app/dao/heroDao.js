@@ -14,6 +14,7 @@ var stone_base = require("../../config/gameCfg/stone_base.json")
 var stone_skill = require("../../config/gameCfg/stone_skill.json")
 var stone_cfg = require("../../config/gameCfg/stone_cfg.json")
 var async = require("async")
+var first_recruit = 304010
 var baseStone = {
 	"1" : 400010100,
 	"2" : 400020100,
@@ -86,8 +87,8 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
     var star5_num = 0
     for(var num = 0;num < count;num++){
 		if(r_luck == -1){
-	    	r_luck = Math.floor(Math.random() * 3) + 20
-			var heroInfo = this.gainHero(areaId,uid,{id : 205070})
+	    	r_luck = Math.floor(Math.random() * 3) + 10
+			var heroInfo = this.gainHero(areaId,uid,{id : first_recruit})
 			heroInfos.push(heroInfo)
     	}else if(r_luck >= 29){
 	      	var heroId = this.randHeroId("randChip_5_2")
