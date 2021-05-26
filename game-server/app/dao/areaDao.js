@@ -56,7 +56,6 @@ areaDao.prototype.openArea = function(areaId,cb) {
 			info["name"] = girlCfg[Math.floor(Math.random() * girlCfg.length)]
 		}
 		info["head"] = heroList[Math.floor(Math.random() * heroList.length)]
-		info["frame"] = info["head"]
 		robots[i] = JSON.stringify(info)
 	}
 	self.redisDao.db.hmset("area:area"+areaInfo.areaId+":robots",robots,function(err) {
