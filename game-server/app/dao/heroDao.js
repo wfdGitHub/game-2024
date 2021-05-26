@@ -131,30 +131,29 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 }
 //英雄池获得英雄id
 heroDao.prototype.randHeroId = function(type) {
-	let allWeight = recruit_base[type]["allWeight"]
-	let weights = recruit_base[type]["weights"]
-	let rand = Math.random() * allWeight
-	for(let i in weights){
+	var allWeight = recruit_base[type]["allWeight"]
+	var weights = recruit_base[type]["weights"]
+	var rand = Math.random() * allWeight
+	for(var i in weights){
 		if(rand < weights[i]){
-		  let heroList = recruit_list[i].heroList
-		  let heroId = heroList[Math.floor(heroList.length * Math.random())]
+		  var heroList = recruit_list[i].heroList
+		  var heroId = heroList[Math.floor(heroList.length * Math.random())]
 		  return heroId
 		}
 	}
 }
 //英雄池获得英雄id
 heroDao.prototype.randHeroIdButId = function(type,heroId) {
-	console.log("randHeroIdButId",type,heroId)
-	let allWeight = recruit_base[type]["allWeight"]
-	let weights = recruit_base[type]["weights"]
-	let rand = Math.random() * allWeight
-	for(let i in weights){
+	var allWeight = recruit_base[type]["allWeight"]
+	var weights = recruit_base[type]["weights"]
+	var rand = Math.random() * allWeight
+	for(var i in weights){
 		if(rand < weights[i]){
-		  let heroList = recruit_list[i].heroList
-		  var rand = Math.floor(heroList.length * Math.random())
-		  if(heroList[rand] == heroId)
-		  	rand = (rand + 1 + Math.floor((heroList.length - 1) * Math.random())) % heroList.length
-		  let heroId = heroList[rand]
+		  var heroList = recruit_list[i].heroList
+		  var index = Math.floor(heroList.length * Math.random())
+		  if(heroList[index] == heroId)
+		  	index = (index + 1 + Math.floor((heroList.length - 1) * Math.random())) % heroList.length
+		  var heroId = heroList[index]
 		  return heroId
 		}
 	}
