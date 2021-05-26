@@ -444,7 +444,7 @@ model.prototype.getEnemyVertical = function(character) {
 model.prototype.getEnemyHorizontalFront = function(character) {
 	var list = []
 	if(character.buffs["chaofeng"] && model.check(character.buffs["chaofeng"].releaser)){
-		if(character.buffs["chaofeng"].releaser.id < 3){
+		if(character.buffs["chaofeng"].releaser.index < 3){
 			for(var i = 0;i < 3;i++){
 		        if(model.check(character.enemy[i])){
 		        	list.push(character.enemy[i])
@@ -477,7 +477,7 @@ model.prototype.getEnemyHorizontalFront = function(character) {
 model.prototype.getEnemyHorizontalBack = function(character) {
 	var list = []
 	if(character.buffs["chaofeng"] && model.check(character.buffs["chaofeng"].releaser)){
-		if(character.buffs["chaofeng"].releaser.id < 3){
+		if(character.buffs["chaofeng"].releaser.index < 3){
 			for(var i = 0;i < 3;i++){
 		        if(model.check(character.enemy[i])){
 		        	list.push(character.enemy[i])
