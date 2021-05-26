@@ -69,7 +69,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		atkTeam[i].index = i
 		atkTeam[i].team = atkTeam
 		atkTeam[i].enemy = defTeam
-		atkTeam[i].heroId = atkTeam[i].id
+		atkTeam[i].heroId = atkTeam[i].heroId
 		atkTeam[i].id = id++
 		if(atkTeam[i].team_adds){
 			for(var j in atkTeam[i].team_adds){
@@ -99,7 +99,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		defTeam[i].index = i
 		defTeam[i].team = defTeam
 		defTeam[i].enemy = atkTeam
-		defTeam[i].heroId = defTeam[i].id
+		defTeam[i].heroId = defTeam[i].heroId
 		defTeam[i].id = id++
 		if(defTeam[i].team_adds){
 			for(var j in defTeam[i].team_adds){
