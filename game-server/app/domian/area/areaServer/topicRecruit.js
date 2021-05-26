@@ -111,6 +111,7 @@ module.exports = function() {
 	    var heroInfos = []
 	    num = Number(num) || 0
 	    var luckNum = 0
+	    var star5_num = 0
 	    for(var i = 0;i < count;i++){
 	      num++
 	      if(num == 100){
@@ -125,11 +126,18 @@ module.exports = function() {
 		      for(var type in weights){
 		        if(rand <= weights[type]){
 		        	if(type == "topic"){
-						var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : curTopicHero})
+		        		var heroId = curTopicHero
+						if(star5_num >= 1 && heros[heroId].min_star >= 5){
+							heroId = self.heroDao.randHeroId("randChip_5_1")
+						}
+						var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId})
 						heroInfos.push(heroInfo)
 		        	}else{
 						var heroList = recruit_list[type].heroList
 						var heroId = heroList[Math.floor(heroList.length * Math.random())]
+						if(star5_num >= 1 && heros[heroId].min_star >= 5){
+							heroId = self.heroDao.randHeroId("randChip_5_1")
+						}
 						var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId})
 						heroInfos.push(heroInfo)
 		        	}
@@ -146,6 +154,8 @@ module.exports = function() {
 	      }
 	      if(heroInfos[i].star >= 4)
 	      	luckNum++
+	      if(heroInfos[i].star >= 5)
+	      	star5_num++
 	    }
 	    self.incrbyObj(uid,main_name,"count",count)
 	  	return heroInfos

@@ -108,7 +108,7 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 				if(rand < weights[i]){
 					var heroList = recruit_list[i].heroList
 					var heroId = heroList[Math.floor(heroList.length * Math.random())]
-					if(star5_num >= 2 && herosCfg[heroId].min_star >= 5){
+					if(star5_num >= 1 && herosCfg[heroId].min_star >= 5){
 						heroId = this.randHeroId("randChip_5_1")
 					}
 					var heroInfo = this.gainHero(areaId,uid,{id : heroId})
