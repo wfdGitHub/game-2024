@@ -171,7 +171,7 @@ module.exports = function() {
 				return
 			}
 			self.setObj(uid,main_name,"award_"+index,1)
-			var awardList = self.addItemStr(uid,"201:"+lord_lv[lv]["normal"],exercise_award["award_"+index],"演武宝箱"+index)
+			var awardList = self.addItemStr(uid,"201:"+lord_lv[lv]["normal"],exercise_award["award_"+index]["lv_"+level],"演武宝箱"+index)
 			cb(true,awardList)
 		})
 	}
