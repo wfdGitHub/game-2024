@@ -233,6 +233,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.playerDao.setPlayerInfo({uid:uid,key:"pay_state",value:0})
 	this.mysqlDao.addDaylyData("activeNum",1)
 	this.mysqlDao.updateRetention(uid,this.players[uid]["createTime"])
+	this.taskUpdate(uid,"login",1)
 }
 //玩家每周首次登陆
 area.prototype.weekFirstLogin = function(uid) {

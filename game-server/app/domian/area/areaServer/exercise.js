@@ -4,6 +4,7 @@ const exercise_award = require("../../../../config/gameCfg/exercise_award.json")
 const exercise_team = require("../../../../config/gameCfg/exercise_team.json")
 const recruit_list = require("../../../../config/gameCfg/recruit_list.json")
 const heros = require("../../../../config/gameCfg/heros.json")
+const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const main_name = "exercise"
 var async = require("async")
 var exercise_list = []
@@ -150,6 +151,7 @@ module.exports = function() {
 			cb(false,"index error "+index)
 			return
 		}
+		var lv = self.getLordLv(uid)
 		self.getHMObj(uid,main_name,["index","level","award_"+index],function(list) {
 			var curIndex = -1
 			if(list[0] !== undefined)
@@ -169,7 +171,7 @@ module.exports = function() {
 				return
 			}
 			self.setObj(uid,main_name,"award_"+index,1)
-			var awardList = self.addItemStr(uid,exercise_award["award_"+index]["lv_"+level],1,"演武宝箱"+index)
+			var awardList = self.addItemStr(uid,"201:"+lord_lv[lv]["normal"],exercise_award["award_"+index],"演武宝箱"+index)
 			cb(true,awardList)
 		})
 	}
