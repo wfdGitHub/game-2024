@@ -43,7 +43,10 @@ module.exports = function() {
 			}
 			data.teamId = teamId
 			data.assistId = assistId
-			cb(true,data)
+			self.getObjAll(uid,"exercise_pass",function(pass_data) {
+				Object.assign(data,pass_data)
+				cb(true,data)
+			})
 		})
 	}
 	//选择难度
@@ -129,7 +132,7 @@ module.exports = function() {
 					self.setObj(uid,main_name,"index",index)
 					self.delObj(uid,main_name,"play")
 					if(index == 4){
-						self.setObj(uid,main_name,"pass_"+level,1)
+						self.setObj(uid,"exercise_pass","pass_"+level,1)
 						self.taskUpdate(uid,"exercise",1)
 					}
 				}else{
