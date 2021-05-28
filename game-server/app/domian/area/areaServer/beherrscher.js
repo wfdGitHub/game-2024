@@ -79,6 +79,7 @@ module.exports = function() {
 		self.redisDao.db.del("area:area"+self.areaId+":"+main_name+":1")
 		self.redisDao.db.del("area:area"+self.areaId+":"+main_name+":2")
 		self.redisDao.db.del("area:area"+self.areaId+":"+main_name+":3")
+		clearTimeout(timer)
 		timer = setTimeout(self.endBeherrscher,beherrscherInfo.endTime - Date.now())
 	}
 	//活动结束
@@ -98,7 +99,7 @@ module.exports = function() {
 			cb(false,"index error "+index)
 			return
 		}
-		if(beherrscherInfo["state" != 1]){
+		if(beherrscherInfo["state"] != 1){
 			cb(false,"活动未开启")
 			return
 		}
