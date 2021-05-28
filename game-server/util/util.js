@@ -129,6 +129,18 @@ util.prototype.getRandomArray = function(arr, count) {
     }
     return shuffled.slice(min);
 }
+util.prototype.trace = function(count) {
+    var caller = arguments.callee.caller;
+    var i = 0;
+    count = count || 10;
+    cc.log("***---------------------------------------- ** " + (i + 1));
+    while (caller && i < count) {
+        cc.log(caller.toString());
+        caller = caller.caller;
+        i++;
+        cc.log("***---------------------------------------- ** " + (i + 1));
+    }
+}
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;

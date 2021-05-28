@@ -186,6 +186,7 @@ module.exports = function() {
 			})
 			return {type : "item",itemId : itemId,value : value}
 		}else{
+			util.trace()
 			console.error("item not exist : "+itemId)
 			if(cb)
 				cb(false,"item not exist")
@@ -287,6 +288,7 @@ module.exports = function() {
 				return {type : "item",itemId : itemId,value : value}
 			}
 		}else{
+			util.trace()
 			console.error("item not exist : "+itemId)
 			if(cb)
 				cb(false,"item not exist")
