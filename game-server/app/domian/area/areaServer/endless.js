@@ -88,7 +88,6 @@ module.exports = function() {
 			},
 			function(next) {
 				//开始战斗
-				console.log("无尽试炼开始")
 				for(var i = 0;i < seededList.length;i++){
 					var curLv = i+1
 					defTeam = self.standardTeam(null,endless_one[id]["team_"+curLv],"main",endless_one[id]["level"])
@@ -102,7 +101,6 @@ module.exports = function() {
 				    	next("战斗验证错误")
 				    	return
 				    }
-					console.log("第"+curLv+"场",atkTeam[1])
 					var list = self.fightContorl.getFightRecord()
 					var overInfo = list[list.length - 1]
 					atkTeam[1]["surplus_health"] = overInfo.atkTeam[1].hp/overInfo.atkTeam[1].maxHP
