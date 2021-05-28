@@ -104,9 +104,8 @@ module.exports = function() {
 				    }
 					var list = self.fightContorl.getFightRecord()
 					var overInfo = list[list.length - 1]
-					for(var j = 0;j < 6;j++)
-						if(atkTeam[j] && atkTeam[j]["id"])
-							atkTeam[j]["surplus_health"] = overInfo.atkTeam[j].hp/overInfo.atkTeam[j].maxHP
+					if(atkTeam[1])
+						atkTeam[1]["surplus_health"] = overInfo.atkTeam[1].hp/overInfo.atkTeam[1].maxHP
 				}
 				next()
 			},
@@ -214,10 +213,10 @@ module.exports = function() {
 					var overInfo = list[list.length - 1]
 					if(atkTeam[1])
 						atkTeam[1]["surplus_health"] = overInfo.atkTeam[1].hp/overInfo.atkTeam[1].maxHP
-					if(atkTeam[2])
-						atkTeam[2]["surplus_health"] = overInfo.atkTeam[2].hp/overInfo.atkTeam[2].maxHP
 					if(atkTeam[3])
 						atkTeam[3]["surplus_health"] = overInfo.atkTeam[3].hp/overInfo.atkTeam[3].maxHP
+					if(atkTeam[5])
+						atkTeam[5]["surplus_health"] = overInfo.atkTeam[5].hp/overInfo.atkTeam[5].maxHP
 				}
 				next()
 			},
