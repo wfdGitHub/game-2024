@@ -35,9 +35,9 @@ module.exports = function() {
 			challengeMap = {}
 			//判断开启
 			if(beherrscherInfo.state == 0 && (new Date()).getHours() < hours && ((self.areaDay > 2 && self.weekDay == 1) || (self.areaDay == 2))){
-				self.beginBeherrscher()
 				local.changeData("state",1)
 				local.changeData("endTime",(new Date()).setHours(hours,0,0,0))
+				self.beginBeherrscher()
 			}
 			if(beherrscherInfo.state == 1){
 				clearTimeout(timer)
@@ -79,6 +79,7 @@ module.exports = function() {
 		self.redisDao.db.del("area:area"+self.areaId+":"+main_name+":1")
 		self.redisDao.db.del("area:area"+self.areaId+":"+main_name+":2")
 		self.redisDao.db.del("area:area"+self.areaId+":"+main_name+":3")
+		timer = setTimeout(self.endBeherrscher,beherrscherInfo.endTime - Date.now())
 	}
 	//活动结束
 	this.endBeherrscher = function() {
