@@ -98,12 +98,15 @@ module.exports = function() {
 					}
 				    if(verifys[i] !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
 				    	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]))
+				    	console.log("无尽试炼 第"+i+"场战斗校验错误")
 				    	next("战斗验证错误")
 				    	return
 				    }
 					var list = self.fightContorl.getFightRecord()
 					var overInfo = list[list.length - 1]
-					atkTeam[1]["surplus_health"] = overInfo.atkTeam[1].hp/overInfo.atkTeam[1].maxHP
+					for(var j = 0;j < 6;j++)
+						if(atkTeam[j] && atkTeam[j]["id"])
+							atkTeam[j]["surplus_health"] = overInfo.atkTeam[j].hp/overInfo.atkTeam[j].maxHP
 				}
 				next()
 			},
