@@ -402,7 +402,7 @@ heroDao.prototype.getHeroOne = function(uid,hId,cb) {
 }
 //获取指定英雄列表
 heroDao.prototype.getHeroList = function(uid,hIds,cb) {
-	if(!hIds || !heros){
+	if(!hIds || !hIds.length){
 		cb(true,[])
 		return
 	}
