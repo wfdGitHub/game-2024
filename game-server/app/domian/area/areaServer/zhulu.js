@@ -201,22 +201,18 @@ module.exports = function() {
 		var spoils_list = []
 		switch(type){
 			case "boss":
-				var spoils = util.getRandomArray(spoils_qualitys[5],3)
-				spoils_list.push(spoils)
+				spoils_list = util.getRandomArray(spoils_qualitys[5],3)
 			break
 			case "elite":
 				for(var i = 0;i < 3;i++){
-					var spoils = {}
 					if(Math.random() < 0.7)
-						spoils = util.getRandomArray(spoils_qualitys[3],1)
+						spoils_list.push(util.getRandomArray(spoils_qualitys[3],1)[0])
 					else
-						spoils = util.getRandomArray(spoils_qualitys[4],1)
-					spoils_list.push(spoils)
+						spoils_list.push(util.getRandomArray(spoils_qualitys[4],1)[0])
 				}
 			break
 			case "normal":
-				var spoils = util.getRandomArray(spoils_qualitys[3],3)
-				spoils_list.push(spoils)
+				spoils_list = util.getRandomArray(spoils_qualitys[3],3)
 			break
 		}
 		return spoils_list
