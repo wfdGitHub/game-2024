@@ -34,12 +34,14 @@ module.exports = function() {
 			var uids = []
 			var crossUids = []
 			var rankIndex = 0
+			var rankCount = 0
 			for(var i = 0;i < list.length;i++){
 				crossUids.push(list[i])
 				strList = list[i].split("|")
 				sid = Number(strList[0])
 				uid = Number(strList[1])
-				if(i > ancient_rank[rankIndex]["count"])
+				rankCount++
+				if(rankCount > ancient_rank[rankIndex]["count"])
 					rankIndex++
 				self.sendMailByUid(uid,ancient_rank[rankIndex]["title"],ancient_rank[rankIndex]["text"],ancient_rank[rankIndex]["award"])
 				if(uids.length < 3){

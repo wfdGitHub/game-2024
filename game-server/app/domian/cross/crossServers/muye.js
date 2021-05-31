@@ -96,6 +96,7 @@ module.exports = function() {
 					var newRankList = ["cross:muye:rank:camp0"]
 					var crossUids = []
 					var rankIndex = 0
+					var rankCount = 0
 					for(var i = 0;i < list.length;i+=2){
 						strList = list[i].split("|")
 						sid = Number(strList[0])
@@ -103,7 +104,8 @@ module.exports = function() {
 						score = Number(list[i+1])
 						crossUids.push(list[i])
 						if(uid > 10000){
-							if(i > muye_rank[rankIndex]["count"])
+							rankCount++
+							if(rankCount > muye_rank[rankIndex]["count"])
 								rankIndex++
 							newRankList.push(0,list[i])
 							self.sendMailByUid(uid,muye_rank[rankIndex]["title"],muye_rank[rankIndex]["text"],muye_rank[rankIndex]["award"])
