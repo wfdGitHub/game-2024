@@ -4,7 +4,7 @@ const zhulu_shop = require("../../../../config/gameCfg/zhulu_shop.json")
 const zhulu_spoils = require("../../../../config/gameCfg/zhulu_spoils.json")
 const zhulu_award = require("../../../../config/gameCfg/zhulu_award.json")
 const heros = require("../../../../config/gameCfg/heros.json")
-var util = require("../../../../util/util.js")
+const util = require("../../../../util/util.js")
 var main_name = "zhulu"
 var allWeight = 0
 var normal_team = JSON.parse(zhulu_cfg["normal_team"]["value"])
@@ -201,26 +201,22 @@ module.exports = function() {
 		var spoils_list = []
 		switch(type){
 			case "boss":
-				for(let i = 0;i < 3;i++){
-					var spoils = Object.assign({},spoils_qualitys[5][Math.floor(Math.random() * spoils_qualitys[5].length)])
-					spoils_list.push(spoils)
-				}
+				var spoils = util.getRandomArray(spoils_qualitys[5],3)
+				spoils_list.push(spoils)
 			break
 			case "elite":
-				for(let i = 0;i < 3;i++){
-					var spoils
+				for(var i = 0;i < 3;i++){
+					var spoils = {}
 					if(Math.random() < 0.7)
-						spoils = Object.assign({},spoils_qualitys[3][Math.floor(Math.random() * spoils_qualitys[3].length)])
+						spoils = util.getRandomArray(spoils_qualitys[3],1)
 					else
-						spoils = Object.assign({},spoils_qualitys[4][Math.floor(Math.random() * spoils_qualitys[4].length)])
+						spoils = util.getRandomArray(spoils_qualitys[4],1)
 					spoils_list.push(spoils)
 				}
 			break
 			case "normal":
-				for(let i = 0;i < 3;i++){
-					var spoils = Object.assign({},spoils_qualitys[3][Math.floor(Math.random() * spoils_qualitys[3].length)])
-					spoils_list.push(spoils)
-				}
+				var spoils = util.getRandomArray(spoils_qualitys[3],3)
+				spoils_list.push(spoils)
 			break
 		}
 		return spoils_list
