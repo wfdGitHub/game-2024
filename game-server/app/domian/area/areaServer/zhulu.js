@@ -126,7 +126,7 @@ module.exports = function() {
 			//boss
 			let info = {type:"boss"}
 			var team = boss_team[Math.floor(Math.random() * boss_team.length)].concat()
-			team = self.standardTeam(uid,team,"zhulu_boss",lv-3)
+			team = self.standardTeam(uid,team,"zhulu_boss",lv)
 			var dladd = zhulu_dl[grid]
 			for(let i = 0;i <= team.length;i++){
 				if(team[i]){
@@ -157,7 +157,7 @@ module.exports = function() {
 						case "elite":
 							//精英怪
 							var team = elite_team[Math.floor(Math.random() * elite_team.length)].concat()
-							team = self.standardTeam(uid,team,"zhulu_elite",lv-4)
+							team = self.standardTeam(uid,team,"zhulu_elite",lv-2)
 							var dladd = zhulu_dl[grid]
 							for(let i = 0;i <= team.length;i++){
 								if(team[i]){
