@@ -204,8 +204,10 @@ module.exports = function() {
 				spoils_list = util.getRandomArray(spoils_qualitys[5],3)
 			break
 			case "elite":
-				spoils_list.push(util.getRandomArray(spoils_qualitys[4],1)[0])
-				spoils_list = spoils_list.concat(util.getRandomArray(spoils_qualitys[3],2))
+				var list = util.getRandomArray(spoils_qualitys[3],2)
+				spoils_list[0] = list[0]
+				spoils_list[1] = util.getRandomArray(spoils_qualitys[4],1)[0]
+				spoils_list[2] = list[1]
 			break
 			case "normal":
 				spoils_list = util.getRandomArray(spoils_qualitys[3],3)
