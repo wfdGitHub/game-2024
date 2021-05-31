@@ -402,6 +402,10 @@ heroDao.prototype.getHeroOne = function(uid,hId,cb) {
 }
 //获取指定英雄列表
 heroDao.prototype.getHeroList = function(uid,hIds,cb) {
+	if(!hIds || !heros){
+		cb(true,[])
+		return
+	}
 	var multiList = []
 	for(var i = 0;i < hIds.length;i++){
 		multiList.push(["hgetall","player:user:"+uid+":heros:"+hIds[i]])
