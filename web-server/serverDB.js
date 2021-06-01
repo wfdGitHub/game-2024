@@ -527,9 +527,11 @@ var model = function() {
 					info.beherrscherList = list
 					var uids = []
 					for(var i = 0;i < list.length;i++){
-						uids.push(list[i]["seat_1"])
-						uids.push(list[i]["seat_2"])
-						uids.push(list[i]["seat_3"])
+						if(list[i]){
+							uids.push(list[i]["seat_1"])
+							uids.push(list[i]["seat_2"])
+							uids.push(list[i]["seat_3"])
+						}
 					}
 					local.getPlayerBaseByUids(uids,function(userInfos) {
 						info.userInfos = userInfos
