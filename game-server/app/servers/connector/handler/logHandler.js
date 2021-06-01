@@ -28,11 +28,17 @@ logHandler.prototype.banSendMsg = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   var text = msg.text
+  var rep = msg.rep
+  var count = msg.count
+  var pipeiCount = msg.pipeiCount
   var info = {
     accId : accId,
     uid : uid,
     areaId : areaId,
     text : msg.text,
+    rep : msg.rep,
+    count : msg.count,
+    pipeiCount : msg.pipeiCount,
     time : (new Date()).toLocaleString()
   }
   this.redisDao.db.rpush("client:banSendMsg",JSON.stringify(info))
