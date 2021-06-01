@@ -45,7 +45,7 @@ module.exports = function() {
 		var newRankList = []
 		async.waterfall([
 			function(next) {
-				self.redisDao.db.zrevrange(["cross:grading:rank",0,-1,"WITHSCORES"],function(err,list) {
+				self.redisDao.db.zrevrange(["cross:grading:realRank",0,-1,"WITHSCORES"],function(err,list) {
 					var strList,sid,uid,score,glv
 					var areaIds = []
 					var uids = []
@@ -54,16 +54,14 @@ module.exports = function() {
 						sid = Number(strList[0])
 						uid = Number(strList[1])
 						score = Number(list[i+1])
-						if(uid > 10000){
-							glv = util.binarySearchIndex(grading_lv_list,score)
-							if(grading_lv[glv]["next_id"])
-								newRankList.push(grading_lv[grading_lv[glv]["next_id"]]["score"],list[i])
-							self.sendMailByUid(uid,"第"+curSeasonId+"赛季段位奖励","恭喜您在本赛季晋升到【"+grading_lv[glv]["name"]+"】段位，祝您新的赛季愈战愈勇!",grading_lv[glv]["season_award"])
-							if(uids.length < 6){
-								areaIds.push(sid)
-								uids.push(uid)
-								self.sendMailByUid(uid,"第"+curSeasonId+"赛季封神台奖励","亲爱的玩家，恭喜您历经磨难，通过考验，立命封神！您已进入第"+curSeasonId+"赛季封神台，供天下万民敬仰！",grading_cfg["award_"+uids.length]["value"])
-							}
+						glv = util.binarySearchIndex(grading_lv_list,score)
+						if(grading_lv[glv]["next_id"])
+							newRankList.push(grading_lv[grading_lv[glv]["next_id"]]["score"],list[i])
+						self.sendMailByUid(uid,"第"+curSeasonId+"赛季段位奖励","恭喜您在本赛季晋升到【"+grading_lv[glv]["name"]+"】段位，祝您新的赛季愈战愈勇!",grading_lv[glv]["season_award"])
+						if(uids.length < 6){
+							areaIds.push(sid)
+							uids.push(uid)
+							self.sendMailByUid(uid,"第"+curSeasonId+"赛季封神台奖励","亲爱的玩家，恭喜您历经磨难，通过考验，立命封神！您已进入第"+curSeasonId+"赛季封神台，供天下万民敬仰！",grading_cfg["award_"+uids.length]["value"])
 						}
 					}
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {
@@ -73,6 +71,11 @@ module.exports = function() {
 				})
 			},
 			function(next) {
+				//更新排名
+				self.redisDao.db.del("cross:grading:realRank")
+				var rankList = ["cross:grading:realRank"]
+				rankList = rankList.concat(newRankList)
+				self.redisDao.db.zadd(rankList)
 				self.newGrading(newRankList)
 			}
 		],function(err) {
@@ -110,13 +113,21 @@ module.exports = function() {
 			grading_award_list : [],
 			count : 0,
 			recordList : [],
-			seasonId : curSeasonId
+			seasonId : curSeasonId,
+			rank : -1
 		}
 		async.waterfall([
 			function(next) {
 				self.redisDao.db.zscore(["cross:grading:rank",key],function(err,score) {
 					if(score)
 						info.score = Number(score)
+					next()
+				})
+			},
+			function(next) {
+				self.redisDao.db.zrevrank(["cross:grading:realRank",key],function(err,rank) {
+					if(rank != null)
+						info.rank = Number(rank) + 1
 					next()
 				})
 			},
@@ -232,6 +243,7 @@ module.exports = function() {
 					change = Math.floor(Math.random() * 15) + 20
 					self.redisDao.db.zincrby(["cross:grading:rank",change,key],function(err,value) {
 						curScore = value
+						self.redisDao.db.zadd(["cross:grading:realRank",curScore,key])
 						next()
 					})
 				}else{
@@ -242,6 +254,7 @@ module.exports = function() {
 							curScore = 0
 							self.redisDao.db.zadd(["cross:grading:rank",0,key])
 						}
+						self.redisDao.db.zadd(["cross:grading:realRank",curScore,key])
 						next()
 					})
 				}

@@ -496,6 +496,7 @@ module.exports = function() {
 		crossUid = crossUid.split("|area")[0]
 		var info = {}
 		info.curRound = curRound
+		info.rank = -1
 		info.state = state
 		info.tiemEnd = timeList[state_index]
 		if(parMap[curRound] && parMap[curRound][crossUid] != undefined){
@@ -519,7 +520,11 @@ module.exports = function() {
 			info.likeList.push(likeMap[honorList[i]["crossUid"]] || 0)
 		}
 		info.likeInfo = likeUsers[crossUid] || {}
-		cb(true,info)
+		self.redisDao.db.zrevrank(["cross:grading:realRank",crossUid],function(err,rank) {
+			if(rank != null)
+				info.rank = Number(rank) + 1
+			cb(true,info)
+		})
 	}
 	//同步阵容
 	this.peakSyncFightTeam = function(crossUid,uid,cb) {

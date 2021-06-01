@@ -441,9 +441,9 @@ var model = function() {
 			})
 		})
 	}
-	//获取王者巅峰赛数据
+	//获取跨服数据
 	posts["/cross_peak"] = function(req,res) {
-		self.redisDao.db.zrevrange(["cross:grading:rank",0,-1,"WITHSCORES"],function(err,list) {
+		self.redisDao.db.zrevrange(["cross:grading:realRank",0,-1,"WITHSCORES"],function(err,list) {
 			var uids = []
 			var areaIds = []
 			var scores = []
@@ -451,11 +451,9 @@ var model = function() {
 				var strList = list[i].split("|")
 				var areaId = Number(strList[0])
 				var uid = Number(strList[1])
-				if(uid > 10000){
-					uids.push(uid)
-					areaIds.push(areaId)
-					scores.push(list[i+1])
-				}
+				uids.push(uid)
+				areaIds.push(areaId)
+				scores.push(list[i+1])
 			}
 			var info = {
 				uids : uids,
