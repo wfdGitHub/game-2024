@@ -221,7 +221,7 @@ module.exports = function() {
 								targetInfo = {
 									uid : targetUid,
 									name : boyCfg[Math.floor(Math.random() * boyCfg.length)],
-									head : "",
+									head : 303020,
 									figure : ""
 								}
 								next()
