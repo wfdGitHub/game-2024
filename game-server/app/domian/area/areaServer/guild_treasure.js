@@ -152,7 +152,7 @@ module.exports = function() {
 		var bossId = Math.floor((d.getDate() % 4) + 1)
 		var hours = d.getHours()
 		if(hours < fightTime || hours >= auctionTime){
-			cb(false,"hours error "+hours)
+			cb(false,"当前不在挑战时间")
 			return
 		}
 		var surplus_health = [1,1,1,1,1,1]
