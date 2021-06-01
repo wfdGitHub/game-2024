@@ -140,6 +140,7 @@ module.exports = function() {
 		    	}
 		    	info.allDamage = allDamage
 		    	area_data.less_hp += allDamage
+		    	info.less_hp = area_data.less_hp
 		    	self.redisDao.db.hincrby("area:area"+self.areaId+":"+main_name,"less_hp",allDamage)
 		    	var score = Math.ceil(allDamage*area_boss_cfg["score"]["value"])
 		    	var coin = Math.ceil(allDamage*area_boss_cfg["coin"]["value"])
