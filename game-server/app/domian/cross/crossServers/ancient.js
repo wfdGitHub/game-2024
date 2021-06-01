@@ -361,6 +361,7 @@ module.exports = function() {
 				next()
 			},
 			function(next) {
+				delete timeMap[crossUid]
 				//结算
 				var change = 0
 				var wincount = 0
