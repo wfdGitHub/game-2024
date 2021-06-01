@@ -85,6 +85,26 @@ var model = function() {
 			})
 		})
 	}
+	//清除异常发言
+	posts["/clear_banSendMsg"] = function(req,res) {
+		self.redisDao.db.del("client:banSendMsg",function(err,data) {
+			res.send("SUCCESS")
+		})
+	}
+	//获取异常发言
+	posts["/get_banSendMsg"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("client:banSendMsg",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("client:banSendMsg",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
+	}
 	//获取总数据
 	posts["/game_info"] = function(req,res) {
 		var data = req.body
