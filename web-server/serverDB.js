@@ -415,7 +415,34 @@ var model = function() {
 	}
 	//获取跨服数据
 	posts["/cross_grading"] = function(req,res) {
-		self.redisDao.db.zrevrange(["cross:grading:rank",0,-1,"WITHSCORES"],function(err,list) {
+		self.redisDao.db.zrevrange(["cross:grading:realRank",0,-1,"WITHSCORES"],function(err,list) {
+			var uids = []
+			var areaIds = []
+			var scores = []
+			for(var i = 0;i < list.length;i+=2){
+				var strList = list[i].split("|")
+				var areaId = Number(strList[0])
+				var uid = Number(strList[1])
+				if(uid > 10000){
+					uids.push(uid)
+					areaIds.push(areaId)
+					scores.push(list[i+1])
+				}
+			}
+			var info = {
+				uids : uids,
+				areaIds : areaIds,
+				scores : scores
+			}
+			local.getPlayerBaseByUids(uids,function(userInfos) {
+				info.userInfos = userInfos
+				res.send(info)
+			})
+		})
+	}
+	//获取远古战场数据
+	posts["/ancient_rank"] = function(req,res) {
+		self.redisDao.db.zrevrange(["cross:ancient:realRank",0,-1,"WITHSCORES"],function(err,list) {
 			var uids = []
 			var areaIds = []
 			var scores = []
