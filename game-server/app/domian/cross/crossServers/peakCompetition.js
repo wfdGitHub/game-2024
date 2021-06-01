@@ -753,9 +753,9 @@ module.exports = function() {
 		if(maxNum > 4)
 			maxNum = 4
 		var data = {}
-		var begin = num * 8
-		var end = (num + 1) * 8
-		for(var i = 2;i <= maxNum;i++){
+		var begin = num * 16
+		var end = (num + 1) * 16
+		for(var i = 1;i <= maxNum;i++){
 			data[i] = []
 			for(var j = begin;j < end;j += 2){
 				var info = {}
