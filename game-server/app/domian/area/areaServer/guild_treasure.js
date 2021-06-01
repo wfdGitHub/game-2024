@@ -150,11 +150,11 @@ module.exports = function() {
 			return
 		}
 		var bossId = Math.floor((d.getDate() % 4) + 1)
-		// var hours = d.getHours()
-		// if(hours < fightTime || hours >= auctionTime){
-		// 	cb(false,"hours error "+hours)
-		// 	return
-		// }
+		var hours = d.getHours()
+		if(hours < fightTime || hours >= auctionTime){
+			cb(false,"hours error "+hours)
+			return
+		}
 		var surplus_health = [1,1,1,1,1,1]
 		var noFight = false
 		var info = {}
