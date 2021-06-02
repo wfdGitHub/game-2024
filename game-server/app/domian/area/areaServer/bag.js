@@ -231,7 +231,7 @@ module.exports = function() {
 						cb(true,1)
 					self.taskUpdate(uid,"hufu_gain",1)
 					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-				return {type : "hufu",hufuInfo : hufuInfo}
+				return {type : "hufu",hufuInfo : hufuInfo,itemId:itemId}
 				case "title":
 					self.gainUserTitle(uid,itemCfg[itemId]["arg"],cb)
 				return {type : "title",id : itemCfg[itemId]["arg"]}
