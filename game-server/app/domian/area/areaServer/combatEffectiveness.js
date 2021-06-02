@@ -197,7 +197,7 @@ module.exports = function() {
 				cb(false,"等级上限")
 				return
 			}
-			self.consumeItems(uid,"1000300:"+book_lv[lv]["pc"],1,"升级天书"+bookType,function(flag,err) {
+			self.consumeItems(uid,book_lv[lv]["pc"],1,"升级天书"+bookType,function(flag,err) {
 				if(!flag){
 					cb(false,err)
 				}else{
@@ -248,7 +248,7 @@ module.exports = function() {
 				if(!flag){
 					cb(false,err)
 				}else{
-					var awardList = self.addItemStr(uid,"1000300:"+book_lv[lv]["pr"],1,"重生天书"+bookType)
+					var awardList = self.addItemStr(uid,book_lv[lv]["pr"],1,"重生天书"+bookType)
 					self.setBookInfo(uid,bookType,"lv",1)
 					cb(true,awardList)
 				}
