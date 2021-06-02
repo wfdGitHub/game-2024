@@ -543,6 +543,74 @@ var model = function() {
 			}
 		})
 	}
+	//获取阵营战1数据
+	posts["/muye_rank0"] = function(req,res) {
+		self.redisDao.db.zrevrange(["cross:muye:rank:camp0",0,-1,"WITHSCORES"],function(err,list) {
+			var uids = []
+			var areaIds = []
+			var scores = []
+			for(var i = 0;i < list.length;i+=2){
+				var strList = list[i].split("|")
+				var areaId = Number(strList[0])
+				var uid = Number(strList[1])
+				uids.push(uid)
+				areaIds.push(areaId)
+				scores.push(list[i+1])
+			}
+			var info = {
+				uids : uids,
+				areaIds : areaIds,
+				scores : scores
+			}
+			local.getPlayerBaseByUids(uids,function(userInfos) {
+				info.userInfos = userInfos
+				res.send(info)
+			})
+		})
+	}
+	//获取阵营战2数据
+	posts["/muye_rank1"] = function(req,res) {
+		self.redisDao.db.zrevrange(["cross:muye:rank:camp1",0,-1,"WITHSCORES"],function(err,list) {
+			var uids = []
+			var areaIds = []
+			var scores = []
+			for(var i = 0;i < list.length;i+=2){
+				var strList = list[i].split("|")
+				var areaId = Number(strList[0])
+				var uid = Number(strList[1])
+				uids.push(uid)
+				areaIds.push(areaId)
+				scores.push(list[i+1])
+			}
+			var info = {
+				uids : uids,
+				areaIds : areaIds,
+				scores : scores
+			}
+			local.getPlayerBaseByUids(uids,function(userInfos) {
+				info.userInfos = userInfos
+				res.send(info)
+			})
+		})
+	}
+	//获取攻城战数据
+	posts["/guild_city"] = function(req,res) {
+		var data = req.body
+		self.redisDao.db.get("area:lastid",function(err,lastid) {
+			var multiList = []
+			for(var i = 1;i <= lastid;i++){
+				multiList.push(["get","area:area"+i+":guild_city:cityLord"])
+				for(var j = 1;j <= 9;j++)
+					multiList.push(["get","area:area"+i+":guild_city:baseInfo:"+j])
+			}
+			self.redisDao.multi(multiList,function(err,list) {
+				res.send(list)
+			})
+		})
+	}
+	//获取宗族pk数据
+	
+	
 	//批量获取玩家基本数据
 	local.getPlayerBaseByUids = function(uids,cb) {
 		if(!uids.length){
