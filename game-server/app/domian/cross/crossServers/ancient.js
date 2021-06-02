@@ -222,7 +222,7 @@ module.exports = function() {
 									uid : targetUid,
 									name : boyCfg[Math.floor(Math.random() * boyCfg.length)],
 									head : 303020,
-									figure : ""
+									figure : 303020
 								}
 								next()
 							}else{
@@ -284,7 +284,7 @@ module.exports = function() {
 			fightTeams.push(ancient_robot[uid]["team1"])
 			fightTeams.push(ancient_robot[uid]["team2"])
 			fightTeams.push(ancient_robot[uid]["team3"])
-			userInfo = {uid : uid,name : boyCfg[Math.floor(Math.random() * boyCfg.length)],head : "",figure : ""}
+			userInfo = {uid : uid,name : boyCfg[Math.floor(Math.random() * boyCfg.length)],head : 303020,figure : 303020}
 			cb(fightTeams,userInfo)
 		}else{
 			//玩家
