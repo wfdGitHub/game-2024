@@ -282,6 +282,7 @@ module.exports = function() {
 	}
 	//挑战结算
 	local.challengeArena = function(uid,targetUid,targetRank,targetInfo,atkUser,atkTeam,defTeam,seededNum,cb) {
+		delete local.timeMap[uid]
 		var info = {}
 		var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 		info.winFlag = winFlag
