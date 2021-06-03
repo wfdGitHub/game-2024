@@ -599,7 +599,7 @@ var model = function() {
 		self.redisDao.db.get("area:lastid",function(err,lastid) {
 			var multiList = []
 			for(var i = 1;i <= lastid;i++){
-				multiList.push(["get","area:area"+i+":guild_city:cityLord"])
+				multiList.push(["hgetall","area:area"+i+":guild_city:cityLord"])
 				for(var j = 1;j <= 9;j++)
 					multiList.push(["get","area:area"+i+":guild_city:baseInfo:"+j])
 			}
