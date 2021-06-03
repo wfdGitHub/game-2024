@@ -602,6 +602,7 @@ model.prototype.diedClear = function() {
 //受到伤害
 model.prototype.onHit = function(attacker,info) {
 	info.id = this.id
+	info.source = attacker.id
 	info.value = Math.floor(info.value) || 1
 	// if(this.died){
 	// 	info.realValue = 0
