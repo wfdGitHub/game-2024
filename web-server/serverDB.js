@@ -595,16 +595,21 @@ var model = function() {
 	}
 	//获取攻城战数据
 	posts["/guild_city"] = function(req,res) {
-		var data = req.body
-		self.redisDao.db.get("area:lastid",function(err,lastid) {
-			var multiList = []
-			for(var i = 1;i <= lastid;i++){
-				for(var j = 1;j <= 9;j++)
-					multiList.push(["get","area:area"+i+":guild_city:baseInfo:"+j])
+		var info = {}
+		self.redisDao.db.lrange("area:list",0,-1,function(err,list) {
+			if(list){
+				info.areaList = list
+				var multiList = []
+				for(var i = 0;i < list.length;i++){
+					for(var j = 1;j <= 9;j++)
+						multiList.push(["get","area:area"+list[i]+":guild_city:baseInfo:"+j])
+				}
+
+				self.redisDao.multi(multiList,function(err,list) {
+					info.guild_citys = list
+					res.send(info)
+				})
 			}
-			self.redisDao.multi(multiList,function(err,list) {
-				res.send(list)
-			})
 		})
 	}
 	//获取宗族pk数据
