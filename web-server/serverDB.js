@@ -613,8 +613,18 @@ var model = function() {
 		})
 	}
 	//获取宗族pk数据
-	
-	
+	posts["/guild_pk"] = function(req,res) {
+		var info = {}
+		self.redisDao.db.lrange("guild_pk:historyTable",0,-1,function(err,list) {
+			var multiList = []
+			for(var i = 0;i < list.length;i++){
+				multiList.push(["get","guild_pk:baseInfo:"+list[i]["key"]])
+			}
+			self.redisDao.multi(multiList,function(err,data) {
+				res.send(data)
+			})
+		})
+	}
 	//批量获取玩家基本数据
 	local.getPlayerBaseByUids = function(uids,cb) {
 		if(!uids.length){
