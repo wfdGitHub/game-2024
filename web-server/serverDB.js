@@ -618,7 +618,7 @@ var model = function() {
 		self.redisDao.db.hgetall("guild_pk:historyTable",function(err,list) {
 			var multiList = []
 			for(var i in list){
-				multiList.push(["get","guild_pk:baseInfo:"+list[i]["key"]])
+				multiList.push(["get","guild_pk:baseInfo:"+i])
 			}
 			self.redisDao.multi(multiList,function(err,data) {
 				res.send(data)
