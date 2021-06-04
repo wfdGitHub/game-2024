@@ -615,9 +615,9 @@ var model = function() {
 	//获取宗族pk数据
 	posts["/guild_pk"] = function(req,res) {
 		var info = {}
-		self.redisDao.db.lrange("guild_pk:historyTable",0,-1,function(err,list) {
+		self.redisDao.db.hgetall("guild_pk:historyTable",function(err,list) {
 			var multiList = []
-			for(var i = 0;i < list.length;i++){
+			for(var i in list){
 				multiList.push(["get","guild_pk:baseInfo:"+list[i]["key"]])
 			}
 			self.redisDao.multi(multiList,function(err,data) {
