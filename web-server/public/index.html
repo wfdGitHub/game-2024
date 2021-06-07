@@ -1515,6 +1515,12 @@
             console.log(data);
         });
       }
+      //领取天数奖励
+      var gainActivityDayAward = function(index) {
+        pomelo.request("area.activityHandler.gainActivityDayAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
       //领取战力奖励
       var gainActivityCeAward = function(index) {
         pomelo.request("area.activityHandler.gainActivityCeAward", {index:index}, function(data) {
