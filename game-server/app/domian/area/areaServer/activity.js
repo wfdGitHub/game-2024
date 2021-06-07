@@ -16,6 +16,7 @@ const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const invade_team = JSON.parse(invade["mon_team"]["value"])
 const area_boss_base = require("../../../../config/gameCfg/area_boss_base.json")
+const activity_day = require("../../../../config/gameCfg/activity_day.json")
 var util = require("../../../../util/util.js")
 var maxBoss = 0
 for(var i in area_boss_base){
@@ -429,6 +430,26 @@ module.exports = function() {
 			}
 			self.incrbyObj(uid,main_name,"vip_day_award",1)
 			var awardList = self.addItemStr(uid,VIP[vip]["free_award"],1,"VIP每日礼包")
+			cb(true,awardList)
+		})
+	}
+	//领取登陆天数礼包
+	this.gainActivityDayAward = function(uid,index,cb) {
+		if(!index || !activity_day[index]){
+			cb(false,"index error"+index)
+			return
+		}
+		if(self.players[uid].userDay < activity_day[index]["day"]){
+			cb(false,"天数不足 "+self.players[uid].userDay+"/"+activity_day[index]["day"])
+			return
+		}
+		self.getObj(uid,main_name,["day_award"+index],function(data) {
+			if(data){
+				cb(false,"已领取")
+				return
+			}
+			self.incrbyObj(uid,main_name,"day_award"+index,1)
+			var awardList = self.addItemStr(uid,activity_day[index]["award"],1,"天数礼包"+index)
 			cb(true,awardList)
 		})
 	}
