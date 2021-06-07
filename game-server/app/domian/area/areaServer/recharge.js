@@ -7,6 +7,7 @@ const war_horn = require("../../../../config/gameCfg/war_horn.json")
 const gift_list = require("../../../../config/gameCfg/gift_list.json")
 const gift_week = require("../../../../config/gameCfg/gift_week.json")
 const gift_month = require("../../../../config/gameCfg/gift_month.json")
+const gift_skin = require("../../../../config/gameCfg/gift_skin.json")
 const pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
 const gift_loop = require("../../../../config/gameCfg/gift_loop.json")
 const util = require("../../../../util/util.js")
@@ -24,8 +25,16 @@ for(var payId in pay_cfg){
 	if(rechargeMap[rmb])
 		recharge_once_table[payId] = rechargeMap[rmb]
 }
+var skinArr = []
+for(var i in gift_skin)
+	skinArr.push(i)
+var skinList = []
 module.exports = function() {
 	var self = this
+	//每日刷新
+	this.rechargeDayUpdate = function() {
+		skinList = util.getRandomArray(skinArr,6)
+	}
 	//申请充值
 	this.apply_recharge = function(uid,unionid,pay_id,cb) {
 		if(!pay_cfg[pay_id]){
@@ -96,6 +105,9 @@ module.exports = function() {
 			break
 			case "gift_loop":
 				this.buyLoopGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+			break
+			case "gift_skin":
+				this.buyLimitSkin(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 		}
 		var once_index = recharge_once_table[pay_id]
@@ -255,7 +267,11 @@ module.exports = function() {
 			info.week_shop = data || {}
 			self.getObjAll(uid,"month_shop",function(data) {
 				info.month_shop = data || {}
-				cb(true,info)
+				self.getObjAll(uid,"skin",function(data) {
+					info.skin_shop = data || {}
+					info.skinList = skinList
+					cb(true,info)
+				})
 			})
 		})
 	}
@@ -328,6 +344,25 @@ module.exports = function() {
 				cb(false,"限时礼包不存在或已过期")
 				return
 			}
+		})
+	}
+	//购买皮肤
+	this.buyLimitSkin = function(uid,id,cb) {
+		console.log("buyLimitSkin",uid,id)
+		if(!gift_skin[id]){
+			cb(false,"限时礼包错误")
+			return
+		}
+		self.getObj(uid,"skin",id,function(data) {
+			data = Number(data) || 0
+			if(data >= gift_skin[id]["limit"]){
+				cb(false,"已限购")
+				return
+			}
+			self.addUserRMB(uid,gift_skin[id].rmb)
+			self.incrbyObj(uid,"skin",id,1)
+			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_skin[id].award)
+			cb(true)
 		})
 	}
 	//购买快速作战特权

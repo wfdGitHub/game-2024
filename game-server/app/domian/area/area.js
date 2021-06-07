@@ -96,6 +96,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.monthStr = util.getMonth()
 	this.areaDay = util.getTimeDifference(this.openTime,Date.now())
 	console.log("areaDay",this.areaDay)
+	this.rechargeDayUpdate()
 	this.festivalDayUpdate()
 	this.aceLottoDayUpdate()
 	this.topicRecruitDayUpdate()
