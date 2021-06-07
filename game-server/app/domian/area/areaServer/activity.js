@@ -223,8 +223,8 @@ module.exports = function() {
 	}
 	//领取每日首充奖励
 	this.gainRechargeDayAward = function(uid,id,cb) {
-		var rmb_day = self.players[uid].rmb_day
-		if(!activity_cfg["recharge_day_rmb_"+id]["value"] || rmb_day < activity_cfg["recharge_day_rmb_"+id]["value"]){
+		var real_day = self.players[uid].real_day
+		if(!activity_cfg["recharge_day_rmb_"+id]["value"] || real_day < activity_cfg["recharge_day_rmb_"+id]["value"]){
 			cb(false,"条件未达成")
 			return
 		}
@@ -240,8 +240,8 @@ module.exports = function() {
 	}
 	//领取每周累充奖励
 	this.gainRechargeWeekAward = function(uid,id,cb) {
-		var week_rmb = self.players[uid].week_rmb
-		if(!activity_cfg["recharge_week_rmb_"+id] || week_rmb < activity_cfg["recharge_week_rmb_"+id]["value"]){
+		var real_week = self.players[uid].real_week
+		if(!activity_cfg["recharge_week_rmb_"+id] || real_week < activity_cfg["recharge_week_rmb_"+id]["value"]){
 			cb(false,"条件未达成")
 			return
 		}
