@@ -1308,6 +1308,18 @@
             console.log(data);
         });
       }
+      //欧皇转盘
+      var ohLotto = function(count) {
+        pomelo.request("area.stHandler.ohLotto", {count:count}, function(data) {
+            console.log(data);
+        });
+      }
+      //兵法转盘
+      var bfLotto = function(count) {
+        pomelo.request("area.stHandler.bfLotto", {count:count}, function(data) {
+            console.log(data);
+        });
+      }
       //==============奖励邮件==========//
       //设置全服邮件
       var setAreaMail = function(areaList,title,text,atts,time) {

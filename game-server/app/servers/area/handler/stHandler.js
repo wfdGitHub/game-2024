@@ -102,6 +102,32 @@ stHandler.prototype.gainSTHighBox = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//欧皇转盘
+stHandler.prototype.ohLotto = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var count = msg.count
+  if(!count || !Number.isInteger(count) || count <= 0 || count > 100){
+    next(null,{flag : false,msg : "count error"})
+    return
+  }
+  this.areaManager.areaMap[areaId].ohLotto(uid,count,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//兵法转盘
+stHandler.prototype.bfLotto = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var count = msg.count
+  if(!count || !Number.isInteger(count) || count <= 0 || count > 100){
+    next(null,{flag : false,msg : "count error"})
+    return
+  }
+  this.areaManager.areaMap[areaId].bfLotto(uid,count,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "stHandler",

@@ -1,9 +1,14 @@
 //寻宝系统
 const treasure_cfg = require("../../../../config/gameCfg/treasure_cfg.json")
 const treasure_awards = require("../../../../config/gameCfg/treasure_awards.json")
+const oh_turntable = require("../../../../config/gameCfg/oh_turntable.json")
+const bf_turntable = require("../../../../config/gameCfg/bf_turntable.json")
+const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const main_name = "ST"
 var normal_grid = {}
 var high_grid = {}
+var oh_grid = []
+var bf_grid = []
 for(var i = 0;i < 8;i++){
 	normal_grid[i] = {}
 	normal_grid[i].list = JSON.parse(treasure_cfg["normal_grid_"+i]["value"])
@@ -17,12 +22,16 @@ for(var i = 0;i < 8;i++){
 	for(var j = 0;j < high_grid[i].list.length;j++){
 		high_grid[i].allWeight += treasure_awards[high_grid[i].list[j]]["show"]
 	}
+	oh_grid.push(i)
+	bf_grid.push(i)
 }
 module.exports = function() {
 	var self = this
 	var local = {}
 	var highRecord = []
 	var normalRecord = []
+	var ohRecord = []
+	var bfRecord = []
 	//寻宝每日刷新
 	this.STDayRefresh = function(uid) {
 		self.setObj(uid,main_name,"normal_free",0)
@@ -69,18 +78,31 @@ module.exports = function() {
 	}
 	//获得寻宝记录
 	this.getSTRecord = function(cb) {
-		cb(true,{highRecord:highRecord,normalRecord:normalRecord})
+		cb(true,{highRecord:highRecord,normalRecord:normalRecord,ohRecord:ohRecord,bfRecord:bfRecord})
 	}
 	//保存寻宝记录
 	local.saveSTRecord = function(name,type,award) {
-		if(type == "high"){
-			highRecord.push({name : name,award:award})
-			if(highRecord.length > 10)
-				highRecord.shift()
-		}else if(type == "normal"){
-			normalRecord.push({name : name,award:award})
-			if(normalRecord.length > 10)
-				normalRecord.shift()
+		switch(type){
+			case "high":
+				highRecord.push({name : name,award:award})
+				if(highRecord.length > 5)
+					highRecord.shift()
+			break
+			case "normal":
+				normalRecord.push({name : name,award:award})
+				if(normalRecord.length > 5)
+					normalRecord.shift()
+			break
+			case "oh":
+				ohRecord.push({name : name,award:award})
+				if(ohRecord.length > 5)
+					ohRecord.shift()
+			break
+			case "bf":
+				bfRecord.push({name : name,award:award})
+				if(bfRecord.length > 5)
+					bfRecord.shift()
+			break
 		}
 	}
 	//普通寻宝单次
@@ -378,5 +400,45 @@ module.exports = function() {
 			}
 		}
 		return -1
+	}
+	//欧皇转盘
+	this.ohLotto = function(uid,count,cb) {
+		self.consumeItems(uid,default_cfg["oh_lotto"]["value"],count,"欧皇转盘",function(flag,err) {
+			if(!flag){
+				cb(false,err)
+			}else{
+				var name = self.players[uid]["name"]
+				var awardList = []
+				var index = -1
+				for(var i = 0;i < count;i++){
+					index = Math.floor(Math.random() * oh_grid.length)
+					awardList = awardList.concat(self.addItemStr(uid,oh_turntable[index]["award"],1,"欧皇转盘"))
+					if(oh_turntable[index]["rare"]){
+						local.saveSTRecord(name,"oh",oh_turntable[index]["award"])
+					}
+				}
+				cb(true,{awardList:awardList,index:index})
+			}
+		})
+	}
+	//兵法转盘
+	this.bfLotto = function(uid,count,cb) {
+		self.consumeItems(uid,default_cfg["bf_lotto"]["value"],count,"欧皇转盘",function(flag,err) {
+			if(!flag){
+				cb(false,err)
+			}else{
+				var name = self.players[uid]["name"]
+				var awardList = []
+				var index = -1
+				for(var i = 0;i < count;i++){
+					index = Math.floor(Math.random() * bf_grid.length)
+					awardList = awardList.concat(self.addItemStr(uid,bf_turntable[index]["award"],1,"欧皇转盘"))
+					if(bf_turntable[index]["rare"]){
+						local.saveSTRecord(name,"bf",bf_turntable[index]["award"])
+					}
+				}
+				cb(true,{awardList:awardList,index:index})
+			}
+		})
 	}
 }
