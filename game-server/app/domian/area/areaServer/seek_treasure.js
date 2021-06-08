@@ -423,6 +423,7 @@ module.exports = function() {
 							if(oh_turntable[j]["rare"]){
 								local.saveSTRecord(name,"oh",oh_turntable[j]["award"])
 							}
+							break
 						}
 					}
 				}
@@ -448,6 +449,7 @@ module.exports = function() {
 							if(bf_turntable[j]["rare"]){
 								local.saveSTRecord(name,"bf",bf_turntable[j]["award"])
 							}
+							break
 						}
 					}
 				}
