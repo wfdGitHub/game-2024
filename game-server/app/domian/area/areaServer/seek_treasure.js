@@ -8,7 +8,9 @@ const main_name = "ST"
 var normal_grid = {}
 var high_grid = {}
 var oh_grid = []
+var oh_allWeight = 0
 var bf_grid = []
+var bf_allWeight = 0
 for(var i = 0;i < 8;i++){
 	normal_grid[i] = {}
 	normal_grid[i].list = JSON.parse(treasure_cfg["normal_grid_"+i]["value"])
@@ -22,8 +24,10 @@ for(var i = 0;i < 8;i++){
 	for(var j = 0;j < high_grid[i].list.length;j++){
 		high_grid[i].allWeight += treasure_awards[high_grid[i].list[j]]["show"]
 	}
-	oh_grid.push(i)
-	bf_grid.push(i)
+	oh_allWeight += oh_turntable[i]["weight"]
+	oh_grid.push(oh_allWeight)
+	bf_allWeight += bf_turntable[i]["weight"]
+	bf_grid.push(bf_allWeight)
 }
 module.exports = function() {
 	var self = this
@@ -411,10 +415,15 @@ module.exports = function() {
 				var awardList = []
 				var index = -1
 				for(var i = 0;i < count;i++){
-					index = Math.floor(Math.random() * oh_grid.length)
-					awardList = awardList.concat(self.addItemStr(uid,oh_turntable[index]["award"],1,"欧皇转盘"))
-					if(oh_turntable[index]["rare"]){
-						local.saveSTRecord(name,"oh",oh_turntable[index]["award"])
+					var rand = Math.random() * oh_allWeight
+					for(var j = 0;j < oh_grid.length;j++){
+						if(rand < oh_grid[j]){
+							index = j
+							awardList = awardList.concat(self.addItemStr(uid,oh_turntable[j]["award"],1,"欧皇转盘"))
+							if(oh_turntable[j]["rare"]){
+								local.saveSTRecord(name,"oh",oh_turntable[j]["award"])
+							}
+						}
 					}
 				}
 				cb(true,{awardList:awardList,index:index})
@@ -431,10 +440,15 @@ module.exports = function() {
 				var awardList = []
 				var index = -1
 				for(var i = 0;i < count;i++){
-					index = Math.floor(Math.random() * bf_grid.length)
-					awardList = awardList.concat(self.addItemStr(uid,bf_turntable[index]["award"],1,"欧皇转盘"))
-					if(bf_turntable[index]["rare"]){
-						local.saveSTRecord(name,"bf",bf_turntable[index]["award"])
+					var rand = Math.random() * bf_allWeight
+					for(var j = 0;j < bf_grid.length;j++){
+						if(rand < bf_grid[j]){
+							index = j
+							awardList = awardList.concat(self.addItemStr(uid,bf_turntable[j]["award"],1,"欧皇转盘"))
+							if(bf_turntable[j]["rare"]){
+								local.saveSTRecord(name,"bf",bf_turntable[j]["award"])
+							}
+						}
 					}
 				}
 				cb(true,{awardList:awardList,index:index})
