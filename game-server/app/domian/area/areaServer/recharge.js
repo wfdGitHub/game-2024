@@ -150,7 +150,7 @@ module.exports = function() {
 				rate = recharge[index].first_rate
 			else
 				rate = recharge[index].normal_rate
-			var award = "202:"+Math.round(value*rate)
+			var award = "202:"+Math.round(gold*rate)
 			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",award)
 			cb(true)
 		})
