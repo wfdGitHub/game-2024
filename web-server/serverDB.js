@@ -85,6 +85,26 @@ var model = function() {
 			})
 		})
 	}
+	//清除错误订单
+	posts["/clear_pay_faild_order"] = function(req,res) {
+		self.redisDao.db.del("pay_faild_order",function(err,data) {
+			res.send("SUCCESS")
+		})
+	}
+	//获取错误订单
+	posts["/get_pay_faild_order"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("pay_faild_order",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("pay_faild_order",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
+	}
 	//清除异常发言
 	posts["/clear_banSendMsg"] = function(req,res) {
 		self.redisDao.db.del("client:banSendMsg",function(err,data) {

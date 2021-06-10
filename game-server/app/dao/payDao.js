@@ -131,11 +131,12 @@ payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 payDao.prototype.faildOrder = function(str,sdkInfo,gameInfo) {
 	console.error(str,sdkInfo)
 	var info = {
+		game_order : game_order,
 		err : str,
 		sdkInfo : sdkInfo,
 		gameInfo : gameInfo
 	}
-	this.redisDao.db.hset("pay_faild_order",sdkInfo.game_order,JSON.stringify(info))
+	this.redisDao.db.rpush("pay_faild_order",JSON.stringify(info))
 }
 module.exports = {
 	id : "payDao",

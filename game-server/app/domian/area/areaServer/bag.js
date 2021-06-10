@@ -234,13 +234,13 @@ module.exports = function() {
 				return {type : "hufu",hufuInfo : hufuInfo,itemId:itemId}
 				case "title":
 					self.gainUserTitle(uid,itemCfg[itemId]["arg"],cb)
-				return {type : "title",id : itemCfg[itemId]["arg"]}
+				return {type : "title",id : itemCfg[itemId]["arg"],itemId : itemId}
 				case "frame":
 					self.gainUserFrame(uid,itemCfg[itemId]["arg"],cb)
-				return {type : "frame",id : itemCfg[itemId]["arg"]}
+				return {type : "frame",id : itemCfg[itemId]["arg"],itemId : itemId}
 				case "skin":
 					self.gainHeroSkin(uid,itemCfg[itemId]["arg"],cb)
-				return {type : "item",itemId : itemId}
+				return {type : "skin",itemId : itemId}
 				default:
 					self.addItemCB(uid,itemId,value,function(flag,curValue) {
 						if(flag){
