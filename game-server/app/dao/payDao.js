@@ -88,7 +88,8 @@ payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 	var daySyr = (new Date()).toDateString()
 	otps.game_order = otps.extras_params
 	self.db.query(sql,[otps.extras_params], function(err, res) {
-		if(err || !res){
+		console.log("111")
+		if(true || err || !res){
 			console.error(err)
 			self.faildOrder("订单不存在",otps)
 			cb(false,"finishGameOrder game_order err")
@@ -96,7 +97,7 @@ payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 		}
 		res =JSON.parse( JSON.stringify(res))
 		var data = res[0]
-		if(true || err || !data){
+		if(err || !data){
 			console.error("订单不存在",err)
 			self.faildOrder("订单不存在",otps)
 			cb(false,"finishGameOrder game_order err")
