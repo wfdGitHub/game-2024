@@ -61,10 +61,8 @@ chatHandler.prototype.say = function(msg, session, next) {
 		areaId : areaId
 	}
 	this.chat.say(talker,gname,roomName,type,arg,text)
-	if(text){
-		this.cacheDao.saveChat({messagetype:"chat",uid:uid,nickname:name,type:type,arg:arg,text:text,roomName:roomName})
-		this.mysqlDao.addChatRecord(uid,name,text,roomName)
-	}
+	this.cacheDao.saveChat({messagetype:"chat",uid:uid,nickname:name,type:type,arg:arg,text:text,roomName:roomName})
+	this.mysqlDao.addChatRecord(uid,name,text,roomName)
 	next(null)
 }
 module.exports = function(app) {
