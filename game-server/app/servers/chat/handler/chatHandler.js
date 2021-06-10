@@ -55,6 +55,7 @@ chatHandler.prototype.say = function(msg, session, next) {
 	var talker = {
 		uid : uid,
 		name : name,
+		type : type,
 		head : head,
 		title : title,
 		frame : frame,
