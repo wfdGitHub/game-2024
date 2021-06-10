@@ -236,6 +236,7 @@ module.exports = function() {
 			for(var i = 0;i < userTaskMaps[uid][type].length;i++){
 				var taskId = userTaskMaps[uid][type][i]
 				if(!arg || (task_type[type].equal && arg == task_cfg[taskId].arg) || (!task_type[type].equal && arg >= task_cfg[taskId].arg)){
+					var oldValue = userTaskLists[uid][taskId]
 					if(type == "totalCe"){
 						if(value <= userTaskLists[uid][taskId])
 							continue
@@ -245,12 +246,14 @@ module.exports = function() {
 						userTaskLists[uid][taskId] += value
 						self.incrbyObj(uid,main_name,taskId,value)
 					}
-					if(userTaskLists[uid][taskId] <= task_cfg[taskId]["value"]){
+					if(!oldValue || oldValue < task_cfg[taskId]["value"]){
 						var notify = {
 							"type" : "taskUpdate",
 							"taskId" : taskId,
 							"value" : userTaskLists[uid][taskId]
 						}
+						if(notify.value > task_cfg[taskId]["value"])
+							notify.value = task_cfg[taskId]["value"]
 						self.sendToUser(uid,notify)
 					}
 				}
