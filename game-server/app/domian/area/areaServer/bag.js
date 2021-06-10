@@ -240,7 +240,7 @@ module.exports = function() {
 				return {type : "frame",id : itemCfg[itemId]["arg"]}
 				case "skin":
 					self.gainHeroSkin(uid,itemCfg[itemId]["arg"],cb)
-				return {type : "skin",id : itemCfg[itemId]["arg"]}
+				return {type : "addItem",itemId : "itemId"}
 				default:
 					self.addItemCB(uid,itemId,value,function(flag,curValue) {
 						if(flag){
