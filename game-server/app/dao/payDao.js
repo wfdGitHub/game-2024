@@ -96,7 +96,7 @@ payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 		}
 		res =JSON.parse( JSON.stringify(res))
 		var data = res[0]
-		if(err || !data){
+		if(true || err || !data){
 			console.error("订单不存在",err)
 			self.faildOrder("订单不存在",otps)
 			cb(false,"finishGameOrder game_order err")
