@@ -131,7 +131,7 @@ payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 payDao.prototype.faildOrder = function(str,sdkInfo,gameInfo) {
 	console.error(str,sdkInfo)
 	var info = {
-		game_order : game_order,
+		game_order : sdkInfo.game_order,
 		err : str,
 		sdkInfo : sdkInfo,
 		gameInfo : gameInfo
