@@ -101,6 +101,7 @@ module.exports = function() {
 	}
 	//主题招募
 	local.recruit = function(uid,num,count) {
+		var r_luck = self.players[uid]["r_luck"]
 		var allWeight = recruit_base["topic"]["allWeight"]
 		var weights = Object.assign({},recruit_base["topic"]["weights"])
 	  	if(self.checkLimitedTime("zhaohuan")){
@@ -117,10 +118,15 @@ module.exports = function() {
 	      if(num == 100){
 			var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : curTopicHero})
 			heroInfos.push(heroInfo)
+	      }else if(r_luck >= 29){
+	      	var heroId = self.heroDao.randHeroId("randChip_5_2")
+			var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId})
+			heroInfos.push(heroInfo)
 	      }else if(i == 9 && luckNum == 0){
 	      	var heroId = self.heroDao.randHeroId("randChip_5_1")
 			var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId})
 			heroInfos.push(heroInfo)
+			r_luck++
 	      }else{
 		      var rand = Math.random() * allWeight
 		      for(var type in weights){
@@ -151,12 +157,16 @@ module.exports = function() {
 					heroInfos.push(heroInfo)
 		      		console.error("招募没有找到英雄",weights,rand)
 		      }
+		      r_luck++
 	      }
 	      if(heroInfos[i].star >= 4)
 	      	luckNum++
-	      if(heroInfos[i].star >= 5)
+	      if(heroInfos[i].star >= 5){
+	      	r_luck = 0
 	      	star5_num++
+	      }
 	    }
+	    self.chageLordData(uid,"r_luck",r_luck)
 	    self.incrbyObj(uid,main_name,"count",count)
 	  	return heroInfos
 	}
