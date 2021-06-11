@@ -352,7 +352,7 @@ module.exports = function() {
 				cb(false,"已领完")
 				return
 			}
-			if(data[0] == 1 && !self.players[uid].rmb_day){
+			if(data[0] == 1 && !self.players[uid].real_day){
 				cb(false,"需要任意充值")
 				return
 			}
