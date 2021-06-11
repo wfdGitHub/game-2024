@@ -86,7 +86,14 @@ showHandler.prototype.changeUserFrame = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].changeUserFrame(uid,msg.id,function(flag,data) {
-      next(null,{flag : flag,data : data})
+      if(flag){
+        session.set("frame",msg.id)
+        session.push("frame",function() {
+          next(null,{flag : true,data : data})
+        })
+      }else{
+        next(null,{flag : false,data : data})
+      }
   })
 }
   //激活英雄皮肤
