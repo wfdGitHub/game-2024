@@ -1,8 +1,8 @@
 var rebate_item = require("../../../../config/gameCfg/rebate_item.json")
 var rebate_gold = require("../../../../config/gameCfg/rebate_gold.json")
 var rebate_item_limit = require("../../../../config/gameCfg/rebate_item_limit.json")
-var limit_begin = 1601568000000
-var limit_end = 1602259199000
+var limit_begin = 0
+var limit_end = 0
 //返利活动
 module.exports = function() {
 	var self = this
