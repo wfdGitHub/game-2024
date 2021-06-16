@@ -134,7 +134,6 @@ module.exports = function() {
 		    	var list = self.fightContorl.getFightRecord()
 		    	var overInfo = list[list.length - 1]
 		    	var allDamage = overInfo.atkDamage
-		    	console.log("allDamage",allDamage)
 		    	//击杀奖励
 		    	if(area_data.less_hp < area_boss_base[area_data.bossIndex]["hp"] && (area_data.less_hp + allDamage >= area_boss_base[area_data.bossIndex]["hp"])){
 		    		self.sendMail(uid,area_boss_cfg["kill_title"]["value"],area_boss_cfg["kill_text"]["value"],area_boss_cfg["kill_award"]["value"])
@@ -148,7 +147,6 @@ module.exports = function() {
 		    	if(coin > area_boss_cfg["coin_max"]["value"])
 		    		coin = area_boss_cfg["coin_max"]["value"]
 		    	info.score = score
-		    	console.log("uid",uid,score,coin)
 		    	self.incrbyZset(main_name,uid,score)
 		    	info.awardList = self.addItemStr(uid,"201:"+coin,1,"全服BOSS挑战")
 		    	info.awardList = info.awardList.concat(self.openChestAward(uid,area_boss_cfg["chest"]["value"]))
