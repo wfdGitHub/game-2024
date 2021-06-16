@@ -9,7 +9,7 @@ var model = function(releaser,character,otps) {
     buff.refreshType = "after"
 	buff.refresh = function() {
 		let info = {type : "other_damage",id : buff.character.id,d_type:"mag"}
-		if(buff.character.boss)
+		if(buff.character.isBoss)
 			info.value = Math.floor(buff.character.attInfo.maxHP * 0.1)
 		else
 			info.value = Math.floor(buff.character.attInfo.hp * 0.1)
