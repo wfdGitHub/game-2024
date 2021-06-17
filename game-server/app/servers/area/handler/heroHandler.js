@@ -539,6 +539,9 @@ module.exports = function(app) {
     props : [{
       name : "heroDao",
       ref : "heroDao"
+    },{
+      name : "redisDao",
+      ref : "redisDao"
     }]
   })
 };
