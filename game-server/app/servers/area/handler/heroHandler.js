@@ -443,6 +443,7 @@ heroHandler.prototype.saveReplace = function(msg, session, next) {
         if(flag){
           self.areaManager.areaMap[areaId].delPlayerData(uid,"replaceHero")
           self.areaManager.areaMap[areaId].delPlayerData(uid,"replacePick")
+          self.redisDao.db.hincrby("player:user:"+uid+":heroArchive",heroId,Date.now())
         }
         next(null,{flag : flag,hId:hId,heroId:heroId})
       })
