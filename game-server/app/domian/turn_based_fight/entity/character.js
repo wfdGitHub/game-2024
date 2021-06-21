@@ -43,6 +43,26 @@ var model = function(otps) {
 	this.allAnger = otps["allAnger"] || false   //技能消耗所有怒气
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
+	//=========战法效果=======//
+	this.zf_amp = 0 										//战法伤害加成
+	this.less_anger_skip = otps.less_anger_skip ||  false 	//行动前，如果自己怒气小于4点,则会跳过行动，并使自身怒气增加4点
+	this.recover_anger = otps.recover_anger || 0 			//自身添加的持续治疗效果生效时，使自身怒气增加1点的概率
+	this.friend_died_amp = otps.friend_died_amp || 0		//己方每死亡一名英雄，自身伤害增加比例
+	this.friend_died_count = otps.friend_died_count || 0	//己方每死亡一名英雄，自身伤害增加次数
+	this.last_strategy = otps.last_strategy || false 		//死亡后，自身剩余怒气会转移给怒气最少的友方英雄
+	this.round_same_hit_red = otps.round_same_hit_red || 0  //回合内受到同一敌方英雄攻击时，每受到一次伤害，伤害降低值
+	this.round_same_value = {}								//回合内重复受到同一英雄攻击次数
+	this.enemy_debuff_amp = otps.enemy_debuff_amp || 0 		//对处于异常状态的英雄造成的直接伤害加成
+	this.my_debuff_red = otps.my_debuff_red || 0 			//自身处于异常状态时，免伤增加
+	this.single_skill_heal = otps.single_skill_heal || 0 	//受到单体技能伤害时回血
+	if(otps.no_ation_buff)
+		this.no_ation_buff = JSON.parse(otps.no_ation_buff) || false 	//未行动对自身释放BUFF
+	this.loss_hp_debuff = otps.loss_hp_debuff || 0 		//当自身被添加负面状态和控制效果时，会失去一定比例最大生命值，并免疫此效果。自身生命小于该比例时不会触发
+	this.less_half_hp_heal = otps.less_half_hp_heal || 0 //全局回合结束时 生命值小于50%恢复自身生命
+	if(otps.more_half_hp_buff)
+		this.more_half_hp_buff = JSON.parse(otps.more_half_hp_buff) || false  //全局回合结束时 生命值大于50%释放BUFF
+	this.half_hp_immune = otps.half_hp_immune || false  					//当自身生命值降低到50%以下时，立即清除自己异常状态，并对自身释放无敌盾，持续一回合，每场战斗最多生效一次
+	this.skill_clear_debuff = otps.skill_clear_debuff || false //释放技能后，会清除己方生命最低的1名英雄的非控制类异常状态
 	//=========位置效果=======//
 	this.hor_fri_reduction = otps["hor_fri_reduction"]	//横排英雄免伤加成
 	this.hor_fri_my_maxHp = otps["hor_fri_my_maxHp"]	//横排英雄生命增加自身生命值比例
@@ -531,12 +551,26 @@ model.prototype.after = function() {
 	}
 	this.damage_save_value = 0
 }
-//回合结束后刷新
+//整体回合结束
 model.prototype.roundOver = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
 		if(this.buffs[i].refreshType == "roundOver")
 			this.buffs[i].update()
+	if(this.round_same_hit_red)
+		this.round_same_value = {}
+	var rate = this.attInfo.hp / this.attInfo.maxHP
+	if(rate < 0.5){
+		if(this.less_half_hp_heal){
+			var recordInfo =  this.onHeal(this,{type : "heal",maxRate : this.less_half_hp_heal})
+			recordInfo.type = "self_heal"
+			fightRecord.push(recordInfo)
+		}
+	}else{
+		if(this.more_half_hp_buff){
+			buffManager.createBuff(this,this,{buffId : this.more_half_hp_buff.buffId,buffArg : this.more_half_hp_buff.buffArg,duration : this.more_half_hp_buff.duration})
+		}
+	}
 }
 //移除控制状态
 model.prototype.removeControlBuff = function() {
@@ -600,7 +634,7 @@ model.prototype.diedClear = function() {
 		this.buffs[i].destroy()
 }
 //受到伤害
-model.prototype.onHit = function(attacker,info) {
+model.prototype.onHit = function(attacker,info,callbacks) {
 	info.id = this.id
 	info.source = attacker.id
 	info.value = Math.floor(info.value) || 1
@@ -608,6 +642,11 @@ model.prototype.onHit = function(attacker,info) {
 	// 	info.realValue = 0
 	// 	return info
 	// }
+	if(this.round_same_hit_red){
+		if(!this.round_same_value[attacker.id])
+			this.round_same_value[attacker.id] = 0
+		this.round_same_value[attacker.id]++
+	}
 	//减伤判断
 	if(info.d_type == "phy"){
 		if(this.buffs["reduction"]){
@@ -664,6 +703,14 @@ model.prototype.onHit = function(attacker,info) {
 				info.curValue = 0
 				info.kill = true
 				attacker.kill(this)
+			}else{
+				if(this.half_hp_immune && (this.attInfo.hp / this.attInfo.maxHP < 0.5)){
+					this.half_hp_immune = false
+					callbacks.push((function(){
+						this.removeDeBuff()
+						buffManager.createBuff(this,this,{buffId : "invincible",duration : 1})
+					}).bind(this))
+				}
 			}
 		}
 	}
@@ -714,6 +761,16 @@ model.prototype.onDie = function() {
 	this.attInfo.hp = 0
 	this.died = true
 	this.fighting.diedList.push(this)
+	for(var i = 0;i < this.team.length;i++)
+		if(!this.team[i].died && this.team[i].id != this.id)
+			this.team[i].friendDied(this)
+}
+//队友死亡
+model.prototype.friendDied = function(friend){
+	if(this.friend_died_count > 0 && this.friend_died_amp){
+		this.zf_amp += this.friend_died_amp
+		this.friend_died_count--
+	}
 }
 //击杀目标
 model.prototype.kill = function(target) {

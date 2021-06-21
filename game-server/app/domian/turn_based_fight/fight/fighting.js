@@ -191,13 +191,15 @@ model.prototype.nextRound = function() {
 //整体回合结束
 model.prototype.endRound = function() {
 	for(var i = 0;i < 6;i++){
+		this.atkTeam[i].roundOver()
+		this.defTeam[i].roundOver()
 		if(this.atkTeam[i].round_anger_rate && this.atkTeam[i].curAnger < 4){
 			if(this.seeded.random("回合结束怒气") < this.atkTeam[i].round_anger_rate)
-			this.atkTeam[i].addAnger(4 - this.atkTeam[i].curAnger)
+				this.atkTeam[i].addAnger(4 - this.atkTeam[i].curAnger)
 		}
 		if(this.defTeam[i].round_anger_rate && this.defTeam[i].curAnger < 4){
 			if(this.seeded.random("回合结束怒气") < this.defTeam[i].round_anger_rate)
-			this.defTeam[i].addAnger(4 - this.defTeam[i].curAnger)
+				this.defTeam[i].addAnger(4 - this.defTeam[i].curAnger)
 		}
 	}
 	if(this.round % 2 == 1){
@@ -230,12 +232,6 @@ model.prototype.run = function() {
 		return
 	}
 	if(this.allTeam[0].index == this.allTeam[0].team.length && this.allTeam[1].index == this.allTeam[1].team.length){
-		for(var i = 0;i < 6;i++){
-			if(this.atkTeam[i])
-				this.atkTeam[i].roundOver()
-			if(this.defTeam[i])
-				this.defTeam[i].roundOver()
-		}
 		this.endRound()
 		return
 	}
@@ -266,24 +262,30 @@ model.prototype.before = function() {
 model.prototype.action = function() {
 	var skill = false
 	var needValue = 0
-	if(!this.character.died && !this.character.dizzy){
-		if(!this.character.silence && this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
-			skill = this.character.angerSkill
-			needValue = this.character.needAnger
-			if(this.character.allAnger){
-				skill.angerAmp = (this.character.curAnger - 4) * 0.15
-				needValue = this.character.curAnger
-			}
-			if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free){
-				needValue = 0
-			}
-			if(needValue){
-				this.character.lessAnger(needValue,needValue>4?false:true,true)
-			}
+	if(!this.character.died){
+		if(this.character.less_anger_skip && this.character.curAnger < 4){
+			this.character.addAnger(4)
 		}else{
-			if(!this.character.disarm){
-				skill = this.character.defaultSkill
-				this.character.addAnger(2,true)
+			if(!this.character.dizzy){
+				if(!this.character.silence && this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
+					skill = this.character.angerSkill
+					needValue = this.character.needAnger
+					if(this.character.allAnger){
+						skill.angerAmp = (this.character.curAnger - 4) * 0.15
+						needValue = this.character.curAnger
+					}
+					if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free){
+						needValue = 0
+					}
+					if(needValue){
+						this.character.lessAnger(needValue,needValue>4?false:true,true)
+					}
+				}else{
+					if(!this.character.disarm){
+						skill = this.character.defaultSkill
+						this.character.addAnger(2,true)
+					}
+				}
 			}
 		}
 	}
@@ -325,6 +327,8 @@ model.prototype.action = function() {
 	}
 	else{
 		fightRecord.push({type : "freeze",id : this.character.id})
+		if(this.character.no_ation_buff)
+			buffManager.createBuff(this.character,this.character,{buffId : this.character.no_ation_buff.buffId,buffArg : this.character.no_ation_buff.buffArg,duration : this.character.no_ation_buff.duration})
 	}
 	this.after()
 }
@@ -427,6 +431,14 @@ model.prototype.diedListCheck = function() {
 			delete this.diedList[i].teamInfo.resurgence_team
 		}else{
 			this.diedList[i].teamInfo["realms_survival"][this.diedList[i]["realm"]]--
+		}
+		//遗计
+		if(this.diedList[i].last_strategy && this.diedList[i].curAnger > 0){
+			var targets = this.locator.getTargets(this.diedList[i],"friend_minAnger_1")
+			if(targets[0]){
+				fightRecord.push({type : "last_strategy",id : this.diedList[i].id,target:targets[0].id})
+				targets[0].addAnger(this.diedList[i].curAnger)
+			}
 		}
 		this.diedList[i].diedClear()
 	}

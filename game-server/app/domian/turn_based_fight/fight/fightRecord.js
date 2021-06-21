@@ -117,7 +117,6 @@ var model = function() {
 							if(info.targets[i].oneblood)
 								str += "\033[32m  绝处逢生\033[0m"
 							str += "\033[0m"
-					
 						}
 					}
 					console.log(str)
@@ -180,6 +179,9 @@ var model = function() {
 				break
 				case "extraAtion":
 					console.log(heroNames[info.id]+" 获得额外回合 ")
+				break
+				case "last_strategy":
+					console.log(""+heroNames[info.id]+"遗计!")
 				break
 				default:
 					console.log("类型未定义 : ",info.type)

@@ -39,6 +39,14 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		return
 	if((buffId == "invincible" || buffId == "invincibleSuck") && character.buffs["burn"] && character.buffs["burn"].releaser.burn_not_invincible)
 		return
+	if(character.loss_hp_debuff){
+		if((character.attInfo.hp / character.attInfo.maxHP) > character.loss_hp_debuff){
+			var info = {type : "other_damage",value : Math.floor(character.attInfo.maxHP *  character.loss_hp_debuff),id : character.id,d_type:"phy",arg : "loss_hp_debuff"}
+			info = character.onHit(character,info)
+			fightRecord.push(info)
+			return
+		}
+	}
 	//判断伤害buff伤害降低
 	if(damageBuff[buffId] && character.damage_buff_lowArg){
 		otps.buffArg = otps.buffArg * (1 - character.damage_buff_lowArg)

@@ -14,6 +14,10 @@ var model = function(releaser,character,otps) {
 		var info = {type : "recoverHeal",value : buff.value}
 		info = buff.character.onHeal(buff.releaser,info)
 		fightRecord.push(info)
+		if(!buff.releaser.died && buff.releaser.recover_anger){
+			if(buffManager.seeded.random("恢复回怒") < buff.releaser.recover_anger)
+				buff.releaser.addAnger(1)
+		}
 	}
 	buff.clear = function() {
 		if(!buff.character.died && buff.releaser.recover_maxHp && buff.releaser.realm == buff.character.realm){

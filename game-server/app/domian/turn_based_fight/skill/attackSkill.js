@@ -44,11 +44,10 @@ var model = function(otps,character) {
 		this.burn_att_change_normal = JSON.parse(otps.burn_att_change_normal)		//普攻时 灼烧状态属性修改
 	if(otps.burn_buff_change_normal)
 		this.burn_buff_change_normal = JSON.parse(otps.burn_buff_change_normal)		//普攻时 灼烧状态附加BUFF修改
-	if(this.skillId && (this.skillId == "disarm" || this.skillId == "dizzy" || this.skillId == "silence") || this.character.atkcontrol){
+	if(this.skillId && (this.buffId == "disarm" || this.buffId == "dizzy" || this.buffId == "silence") && this.character.atkcontrol){
 		if(!this.character.buffRate)
 			this.character.buffRate = this.buffRate
 		this.character.buffRate += this.buffRate * this.character.atkcontrol
-		console.log("atkcontrol",this.character.buffRate)
 	}
 }
 model.prototype.getInfo = function() {

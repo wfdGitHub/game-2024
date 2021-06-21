@@ -176,19 +176,31 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	//回合伤害加成
 	if(attacker.round_amplify)
 		info.value += Math.floor(info.value * attacker.round_amplify * (attacker.fighting.round - 1))
-	//减益伤害加成
+	//每个减益BUFF伤害加成
 	if(skill.enemy_debuff_amp){
 		info.value += Math.floor(info.value * skill.enemy_debuff_amp * target.getDebuffNum())
+	}
+	//有减益BUFF伤害加成减免
+	if(target.getDebuffNum() && (attacker.enemy_debuff_amp || target.my_debuff_red)){
+		info.value += Math.floor(info.value * (attacker.enemy_debuff_amp - target.my_debuff_red))
 	}
 	//增益伤害加成
 	if(skill.my_intensify_amp){
 		info.value += Math.floor(info.value * skill.my_intensify_amp * attacker.getIntensifyNum())
+	}
+	//战法伤害加成
+	if(attacker.zf_amp){
+		info.value += Math.floor(info.value * attacker.zf_amp)
 	}
 	//场景伤害加成
 	if(skill.damageType == "phy"){
 		info.value = Math.floor(info.value * this.phyRate)
 	}else if(skill.damageType == "mag"){
 		info.value = Math.floor(info.value * this.magRate)
+	}
+	//本回合受到同一英雄伤害减免
+	if(target.round_same_hit_red && target.round_same_value[attacker.id]){
+		info.value = Math.floor(info.value * (1 - (target.round_same_value[attacker.id] * target.round_same_hit_red)))
 	}
 	//最大生命值加成
 	if(chase){
