@@ -87,6 +87,7 @@ module.exports = function() {
 					if(!data){
 						next("申请不存在")
 					}else{
+						self.delObj(uid,friend_apply,target)
 						next()
 					}
 				})
@@ -113,7 +114,6 @@ module.exports = function() {
 			},
 			function(next) {
 				//添加好友
-				self.delObj(uid,friend_apply,target)
 				local.addFriend(uid,target)
 				local.addFriend(target,uid)
 				cb(true)
