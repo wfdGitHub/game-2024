@@ -408,7 +408,7 @@ module.exports = function() {
 	}
 	//领取周战胜宝箱
 	this.gainAncientBox = function(crossUid,index,cb) {
-		if(!Number.isInteger(index) || !ancient_cfg["box_"+index]){
+		if(!ancient_cfg["box_"+index]){
 			cb(false,"宝箱不存在")
 			return
 		}
