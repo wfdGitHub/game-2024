@@ -49,13 +49,16 @@ crossManager.prototype.firstDayUpdate = function() {
 	this.ancientDayUpdate()
 }
 crossManager.prototype.update = function() {
-	var date = new Date()
-	this.escortUpdate(date)
-	this.peakUpdate(date)
-	var curDayStr = (new Date()).toDateString()
-	if(this.dayStr !== curDayStr){
-		this.dayUpdate(curDayStr)
-	}
+	var self = this
+	setTimeout(function() {
+		var date = new Date()
+		self.escortUpdate(date)
+		self.peakUpdate(date)
+		var curDayStr = (new Date()).toDateString()
+		if(self.dayStr !== curDayStr){
+			self.dayUpdate(curDayStr)
+		}
+	},1)
 }
 //玩家连入跨服服务器
 crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,playerInfo,cb) {

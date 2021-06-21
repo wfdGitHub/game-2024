@@ -136,6 +136,7 @@ module.exports = function() {
 					if(!local.userInfos[crossUid]){
 						console.log("local.userInfos[crossUid] error ",local.userInfos[crossUid])
 						console.log(local.userInfos)
+						return
 					}
 					local.userInfos[crossUid]["messageList"].push(notify)
 				}
