@@ -261,6 +261,9 @@ model.useSkill = function(skill,chase) {
 			this.fighting.next_character = tmpTargets[0]
 		}
 	}
+	//追加普攻增加伤害吸收盾
+	if(chase && skill.character.chase_shield && !skill.character.died)
+		buffManager.createBuff(skill.character,skill.character,{buffId:"shield",buffArg:skill.character.chase_shield,duration:1})
 	//击杀重复释放技能
 	if(!chase && diedFlag && skill.killRet && !skill.character.died){
 		this.useSkill(skill,false)
@@ -297,7 +300,7 @@ model.useAttackSkill = function(skill,chase) {
 	}
 	if(!chase){
 		//判断怒气增加伤害
-		if(skill.character.allAnger && skill.angerAmp){
+		if(skill.angerAmp){
 			addAmp += skill.angerAmp
 			delete skill.angerAmp
 		}
@@ -434,9 +437,9 @@ model.useAttackSkill = function(skill,chase) {
 		callbacks[i]()
 	//受到单体技能回血
 	if(targetsNum == 1 && targets[0].single_skill_heal && !targets[0].died && recordInfo.targets.length == 1 && recordInfo.targets[0].realValue > 0){
+		fightRecord.push({type:"show_tag",id:targets[0].id,tag:"single_skill_heal"})
 		var tmpInfo =  targets[0].onHeal(targets[0],{type : "heal",value : targets[0].attInfo.maxHP * targets[0].single_skill_heal})
 		tmpInfo.type = "self_heal"
-		tmpInfo.arg = "single_skill_heal"
 		fightRecord.push(tmpInfo)
 	}
 	//伤害超出生命值上限时释放buff判断
@@ -519,6 +522,7 @@ model.useAttackSkill = function(skill,chase) {
 		}
 		//击杀后追加技能
 		if(skill.character.kill_later_skill && this.seeded.random("判断追加技能") < skill.character.kill_later_skill.rate){
+			fightRecord.push({type:"show_tag",id:skill.character.id,tag:"kill_later_skill"})
 			var tmpSkillInfo = Object.assign({skillId : skill.skillId,name : skill.name},skill.character.kill_later_skill)
 			var tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
 			this.useSkill(tmpSkill,true)
@@ -647,10 +651,14 @@ model.useAttackSkill = function(skill,chase) {
 				fightRecord.push(tmpInfo)
 				targets[i]["first_aid"] = 0
 			}
+			//受到女性英雄攻击恢复怒气
+			if(targets[i].women_damage_anger && skill.character.sex == 2){
+				targets[i].addAnger(targets[i].women_damage_anger)
+			}
 		}
 		if(!skill.isAnger && targets[i].hit_less_anger){
 			//降低攻击者怒气
-				skill.character.lessAnger(targets[i].hit_less_anger,skill.skillId)
+			skill.character.lessAnger(targets[i].hit_less_anger,skill.skillId)
 		}
 		if(recordInfo.targets[i].realValue > 0){
 			var hit_rebound_value = 0
@@ -716,6 +724,11 @@ model.useHealSkill = function(skill,chase) {
 				min_hp3_list[tmpList[i].id] = true
 			}
 		}
+	}
+	//判断怒气增加伤害
+	if(skill.angerAmp){
+		rate += skill.angerAmp
+		delete skill.angerAmp
 	}
 	var callbacks = []
 	for(var i = 0;i < targets.length;i++){
@@ -824,6 +837,12 @@ model.useHealSkill = function(skill,chase) {
 			for(var i = 0;i < targets.length;i++){
 				if(!targets[i].died)
 					targets[i].addAnger(skill.character.heal_addAnger)
+			}
+		}
+		if(skill.character.heal_same_shild){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died && targets[i].realm == skill.character.realm)
+					buffManager.createBuff(skill.character,targets[i],{buffId : "shield",buffArg : skill.character.heal_same_shild,duration : 1})
 			}
 		}
 	}

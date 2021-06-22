@@ -7,6 +7,7 @@ var model = function(otps) {
 	this.heroId = Number(otps.id)
 	this.realm = otps.realm		//国家
 	this.career = otps.career	//角色职业   healer 治疗者
+	this.sex = otps.sex 		//性别 1男 2女
 	this.index = 0				//所在位置
 	this.isNaN = false			//是否空位置
 	this.team = []				//所在阵容
@@ -41,6 +42,7 @@ var model = function(otps) {
 	this.needAnger = otps["needAnger"] || 4				//技能所需怒气值
 	this.curAnger = (otps["curAnger"] || 0) + 2	//当前怒气值
 	this.allAnger = otps["allAnger"] || false   //技能消耗所有怒气
+	this.anyAnger = otps["anyAnger"] || false   //当前怒气小于4点时，也能施放技能，技能伤害降低15%*(4-当前怒气值)
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
 	//=========战法效果=======//
@@ -62,7 +64,18 @@ var model = function(otps) {
 	if(otps.more_half_hp_buff)
 		this.more_half_hp_buff = JSON.parse(otps.more_half_hp_buff) || false  //全局回合结束时 生命值大于50%释放BUFF
 	this.half_hp_immune = otps.half_hp_immune || false  					//当自身生命值降低到50%以下时，立即清除自己异常状态，并对自身释放无敌盾，持续一回合，每场战斗最多生效一次
-	this.skill_clear_debuff = otps.skill_clear_debuff || false //释放技能后，会清除己方生命最低的1名英雄的非控制类异常状态
+	this.half_hp_shild = otps.half_hp_shild || 0 				//当自身受到直接伤害使生命值降低到50%以下时，为自己附加伤害吸收盾，每回合可触发一次
+	this.half_hp_shild_flag = true
+	this.skill_clear_debuff = otps.skill_clear_debuff || false  //释放技能后，会清除己方生命最低的1名英雄的非控制类异常状态
+	this.phy_turn_team_anger = otps.phy_turn_team_anger || 0 	//受到直接物理伤害时己方全体怒气提升1点，每回合最多触发次数
+	this.phy_turn_value = 0 									//本回合已触发次数
+	this.man_damage_red = otps.man_damage_red || 0 				//受到男性英雄直接伤害时，伤害降低率
+	this.women_damage_anger = otps.women_damage_anger || 0  	//受到女性英雄直接伤害时，怒气增加
+	this.chase_shield = otps.chase_shield || 0 					//追加普攻或技能时，会使自身增加生命值一定比例的伤害吸收盾，可叠加
+	this.damage_always_burn = otps.damage_always_burn || false  //对敌方造成直接伤害时，始终视目标为灼烧状态
+	this.poison_clean_damage = otps.poison_clean_damage || 0 	//对敌方造成的中毒状态结算或被清除时，对其造成最大生命值的伤害
+	this.heal_same_shild = otps.heal_same_shild || 0 			//释放治疗技能后，若目标英雄与自身同阵营，则为其添加伤害吸收盾
+	this.realm_action_amp = otps.realm_action_amp || 0 			//本回合中，己方其他同阵营英雄行动后，自身伤害提升比例，最多叠加4次
 	//=========位置效果=======//
 	this.hor_fri_reduction = otps["hor_fri_reduction"]	//横排英雄免伤加成
 	this.hor_fri_my_maxHp = otps["hor_fri_my_maxHp"]	//横排英雄生命增加自身生命值比例
@@ -159,7 +172,7 @@ var model = function(otps) {
 	this.target_anger_amp = otps.target_anger_amp || 0 //敌人超过4点怒气的部分，每点怒气提供伤害加成
 	//=========元神效果=======//
 	this.forbidden_shield = otps.forbidden_shield || 0 //治疗时，若目标处于禁疗状态，转化为护盾比例
-	this.dizzy_clear_anger = otps.dizzy_clear_anger  //眩晕概率减半 眩晕时清空目标所有怒气
+	this.dizzy_clear_anger = otps.dizzy_clear_anger  //眩晕时清空目标所有怒气
 	//=========特殊属性=======//
 	this.buffRate = otps.buffRate || 0			//buff概率   若技能存在buff  以此代替buff本身概率
 	this.buffArg = otps.buffArg || 0			//buff参数   若技能存在buff  以此代替buff本身参数
@@ -571,6 +584,8 @@ model.prototype.roundOver = function() {
 			buffManager.createBuff(this,this,{buffId : this.more_half_hp_buff.buffId,buffArg : this.more_half_hp_buff.buffArg,duration : this.more_half_hp_buff.duration})
 		}
 	}
+	this.phy_turn_value = 0
+	this.half_hp_shild_flag = true
 }
 //移除控制状态
 model.prototype.removeControlBuff = function() {
@@ -704,12 +719,40 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 				info.kill = true
 				attacker.kill(this)
 			}else{
-				if(this.half_hp_immune && (this.attInfo.hp / this.attInfo.maxHP < 0.5)){
-					this.half_hp_immune = false
-					callbacks.push((function(){
-						this.removeDeBuff()
-						buffManager.createBuff(this,this,{buffId : "invincible",duration : 1})
-					}).bind(this))
+				//callbacks存在时为直接伤害
+				if(callbacks){
+					//受到物理伤害时增加全队怒气
+					if(info.d_type == "phy" && this.phy_turn_team_anger && this.phy_turn_value < this.phy_turn_team_anger){
+						this.phy_turn_value++
+						callbacks.push((function(){
+							var targets = this.fighting.locator.getTargets(this,"team_all")
+							if(targets.length){
+								fightRecord.push({type:"show_tag",id:this.id,tag:"phy_turn_team_anger"})
+								for(var i = 0;i < targets.length;i++){
+									targets[i].addAnger(1)
+								}
+							}
+						}).bind(this))
+					}
+					if((this.attInfo.hp / this.attInfo.maxHP < 0.5)){
+						//生命值低于一半时触发无敌
+						if(this.half_hp_immune){
+							this.half_hp_immune = false
+							callbacks.push((function(){
+								fightRecord.push({type:"show_tag",id:this.id,tag:"half_hp_immune"})
+								this.removeDeBuff()
+								buffManager.createBuff(this,this,{buffId : "invincible",duration : 1})
+							}).bind(this))
+						}
+						//生命值低于一半时触发吸收盾
+						if(this.half_hp_shild && this.half_hp_shild_flag){
+							this.half_hp_shild_flag = false
+							callbacks.push((function(){
+								fightRecord.push({type:"show_tag",id:this.id,tag:"half_hp_shild"})
+								buffManager.createBuff(this,this,{buffId : "shield",buffArg : this.half_hp_shild,duration : 1})
+							}).bind(this))
+						}
+					}
 				}
 			}
 		}

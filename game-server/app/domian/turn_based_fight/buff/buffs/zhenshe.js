@@ -8,7 +8,7 @@ var model = function(releaser,character,otps) {
 	buff.name = "震慑"
     buff.refreshType = "after"
 	buff.refresh = function() {
-		let info = {type : "other_damage",id : buff.character.id,d_type:"mag"}
+		var info = {type : "other_damage",id : buff.character.id,d_type:"mag"}
 		if(buff.character.isBoss)
 			info.value = Math.floor(buff.character.attInfo.maxHP * 0.1)
 		else

@@ -51,6 +51,8 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	var defTeamAdds = Object.assign({},otps.defTeamAdds)
 	this.atkTeamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0}
 	this.defTeamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0}
+	this.atkTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0}
+	this.defTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0}
 	for(var i = 0;i < teamLength;i++){
 		if(!atkTeam[i]){
 			atkTeam[i] = new character({})
@@ -223,6 +225,9 @@ model.prototype.endRound = function() {
 		if(this.defBooks[roundEndBook[i]])
 			this.bookAction(this.defBooks[roundEndBook[i]])
 	}
+	console.log("realms_ation",this.atkTeamInfo["realms_ation"],this.defTeamInfo["realms_ation"])
+	this.atkTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0}
+	this.defTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0}
 	if(!this.checkOver())
 		this.nextRound()
 }
@@ -271,15 +276,23 @@ model.prototype.action = function() {
 					skill = this.character.angerSkill
 					needValue = this.character.needAnger
 					if(this.character.allAnger){
+						fightRecord.push({type:"show_tag",id:this.character.id,tag:"allAnger"})
 						skill.angerAmp = (this.character.curAnger - 4) * 0.15
 						needValue = this.character.curAnger
 					}
-					if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free){
+					if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free)
 						needValue = 0
-					}
-					if(needValue){
+					if(needValue)
 						this.character.lessAnger(needValue,needValue>4?false:true,true)
-					}
+				}else if(this.character.anyAnger){
+					fightRecord.push({type:"show_tag",id:this.character.id,tag:"anyAnger"})
+					skill = this.character.angerSkill
+					skill.angerAmp = (this.character.curAnger - 4) * 0.15
+					needValue = this.character.curAnger
+					if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free)
+						needValue = 0
+					if(needValue)
+						this.character.lessAnger(needValue)
 				}else{
 					if(!this.character.disarm){
 						skill = this.character.defaultSkill
@@ -324,8 +337,8 @@ model.prototype.action = function() {
 			recordInfo.type = "self_heal"
 			fightRecord.push(recordInfo)
 		}
-	}
-	else{
+		this.character.teamInfo["realms_ation"][this.character.realm]++
+	}else{
 		fightRecord.push({type : "freeze",id : this.character.id})
 		if(this.character.no_ation_buff)
 			buffManager.createBuff(this.character,this.character,{buffId : this.character.no_ation_buff.buffId,buffArg : this.character.no_ation_buff.buffArg,duration : this.character.no_ation_buff.duration})
@@ -436,7 +449,7 @@ model.prototype.diedListCheck = function() {
 		if(this.diedList[i].last_strategy && this.diedList[i].curAnger > 0){
 			var targets = this.locator.getTargets(this.diedList[i],"friend_minAnger_1")
 			if(targets[0]){
-				fightRecord.push({type : "last_strategy",id : this.diedList[i].id,target:targets[0].id})
+				fightRecord.push({type : "show_tag",id : this.diedList[i].id,tag:"last_strategy"})
 				targets[0].addAnger(this.diedList[i].curAnger)
 			}
 		}

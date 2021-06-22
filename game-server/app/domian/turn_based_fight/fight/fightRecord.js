@@ -180,8 +180,8 @@ var model = function() {
 				case "extraAtion":
 					console.log(heroNames[info.id]+" 获得额外回合 ")
 				break
-				case "last_strategy":
-					console.log(""+heroNames[info.id]+"遗计!")
+				case "show_tag":
+					console.log(heroNames[info.id]+" show_tag "+info.tag)
 				break
 				default:
 					console.log("类型未定义 : ",info.type)

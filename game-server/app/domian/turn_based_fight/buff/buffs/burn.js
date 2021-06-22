@@ -13,7 +13,7 @@ var model = function(releaser,character,otps) {
 	buff.refresh = function() {
 		if(buff.character.died)
 			return
-		let info = {type : "burnDamage",value : buff.damage ,id : buff.character.id,d_type:"mag"}
+		var info = {type : "burnDamage",value : buff.damage ,id : buff.character.id,d_type:"mag"}
 		info = buff.character.onHit(buff.releaser,info)
 		fightRecord.push(info)
 	}

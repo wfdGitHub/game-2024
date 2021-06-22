@@ -26,7 +26,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	var info = {type : "damage",value : 0}
 	var tmpAmplify = 0
 	var tmpCrit = 0
-	if(target.buffs["burn"]){
+	if(attacker.damage_always_burn || target.buffs["burn"]){
 		if(skill.isAnger){
 			if(skill.burn_att_change_skill || skill.character.burn_att_change_skill){
 				var attInfo = Object.assign({},skill.burn_att_change_skill)
@@ -191,6 +191,17 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	//战法伤害加成
 	if(attacker.zf_amp){
 		info.value += Math.floor(info.value * attacker.zf_amp)
+	}
+	//己方同阵营英雄行动后，自身伤害提升，最多叠加4次
+	if(attacker.realm_action_amp && attacker.teamInfo["realms_ation"][attacker.realm]){
+		var count = attacker.teamInfo["realms_ation"][attacker.realm]
+		if(count > 4)
+			count = 4
+		info.value += Math.floor(info.value * attacker.realm_action_amp * count)
+	}
+	//男性英雄伤害减免
+	if(target.man_damage_red && attacker.sex == 1){
+		info.value -= Math.floor(info.value * target.man_damage_red)
 	}
 	//场景伤害加成
 	if(skill.damageType == "phy"){

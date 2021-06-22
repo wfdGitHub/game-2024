@@ -41,7 +41,8 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		return
 	if(character.loss_hp_debuff){
 		if((character.attInfo.hp / character.attInfo.maxHP) > character.loss_hp_debuff){
-			var info = {type : "other_damage",value : Math.floor(character.attInfo.maxHP *  character.loss_hp_debuff),id : character.id,d_type:"phy",arg : "loss_hp_debuff"}
+			fightRecord.push({type:"show_tag",id:character.id,tag:"loss_hp_debuff"})
+			var info = {type : "other_damage",value : Math.floor(character.attInfo.maxHP *  character.loss_hp_debuff),id : character.id,d_type:"phy"}
 			info = character.onHit(character,info)
 			fightRecord.push(info)
 			return
@@ -70,6 +71,7 @@ buffFactory.createBuff = function(releaser,character,otps) {
 			this.createBuff(releaser,character,Object.assign({},otps,{buffId : "forbidden"}))
 		}
 		if(buffId == "dizzy" && releaser.dizzy_clear_anger){
+			fightRecord.push({type:"show_tag",id:character.id,tag:"dizzy_clear_anger"})
 			character.lessAnger(character.curAnger)
 		}
 	}else{
