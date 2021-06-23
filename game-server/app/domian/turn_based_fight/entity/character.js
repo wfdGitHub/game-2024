@@ -76,6 +76,25 @@ var model = function(otps) {
 	this.poison_clean_damage = otps.poison_clean_damage || 0 	//对敌方造成的中毒状态结算或被清除时，对其造成最大生命值的伤害
 	this.heal_same_shild = otps.heal_same_shild || 0 			//释放治疗技能后，若目标英雄与自身同阵营，则为其添加伤害吸收盾
 	this.realm_action_amp = otps.realm_action_amp || 0 			//本回合中，己方其他同阵营英雄行动后，自身伤害提升比例，最多叠加4次
+	this.first_beSkill_red = otps.first_beSkill_red || 0 		//每回合受到的第一次技能伤害降低比例
+	this.first_beSkill_flag = true 							
+	this.shield_red = otps.shield_red || 0 						//自身拥有伤害吸收盾时，受到的伤害降低
+	this.damage_firend_shild = otps.damage_firend_shild || 0    //受到直接伤害时，伤害比例转化为伤害吸收盾附加给己方生命值最少的英雄
+	this.onHit_extra_action = otps.onHit_extra_action || 0 		//受到伤害时额外行动概率
+	this.onHit_extra_flag = true
+	this.action_extra_action = otps.action_extra_action || 0    //行动后额外行动概率
+	this.action_extra_flag = true 
+	this.begin_realm_crit = otps.begin_realm_crit || 0 			//战斗开始前，己方全体暴击概率提升(值*己方场上同阵营英雄数量)，持续1回合
+	this.before_action_red = otps.before_action_red || 0 		//本回合内，自身行动前受到的直接伤害降低
+	this.action_flag = false 
+	this.died_maxHp_damage = otps.died_maxHp_damage || 0 		//受到直接伤害死亡时，对击杀自身的英雄造成最大生命值伤害
+	this.half_hp_red = otps.half_hp_red || false 				//若本回合内受到了超过生命上限50%的伤害，则本回合内后续受到直接伤害降至1点
+	this.round_damage = 0
+	this.mag_debuff_anger = otps.mag_debuff_anger || false  	//对敌方造成法术伤害时，如果目标处于异常状态，则使其怒气降低1点
+	this.friend_ation_hp = otps.friend_ation_hp || 0 			//全局回合结束后，自身恢复(值*己方所有同阵营英雄回合内行动次数)生命
+	this.ignore_shild = otps.ignore_shild || false 				//造成的物理伤害无视目标伤害吸收盾
+	this.forbidden_amp = otps.forbidden_amp || 0 				//对重伤状态下的目标伤害提升
+	this.died_resurgence = otps.died_resurgence || false  		//战斗中首次死亡时复活，并恢复全部血量
 	//=========位置效果=======//
 	this.hor_fri_reduction = otps["hor_fri_reduction"]	//横排英雄免伤加成
 	this.hor_fri_my_maxHp = otps["hor_fri_my_maxHp"]	//横排英雄生命增加自身生命值比例
@@ -305,6 +324,8 @@ var model = function(otps) {
 	this.banAnger_add_forbidden = otps.banAnger_add_forbidden 	//禁怒buff附加禁疗
 	if(otps.first_nocontrol)
 		this.first_buff_list.push({buffId : "immune",duration : 1,"refreshType" : "roundOver"})	//首回合免控
+	if(otps.zf_sjms)
+		this.first_buff_list.push({buffId : "immune",duration : 2,"refreshType" : "roundOver"})	//前2回合免控
 	this.first_crit = otps.first_crit			//首回合必定暴击
 	this.first_amp = otps.first_amp || 0		//首回合伤害加成
 	if(this.first_crit)
@@ -327,6 +348,7 @@ var model = function(otps) {
 	this.heal_addAnger = otps.heal_addAnger  					//释放技能时，增加目标怒气值
 	this.dispel_intensify = otps.dispel_intensify				//释放技能时，驱散目标身上所有增益效果(增伤、减伤、持续恢复)
 	this.damage_change_shield = otps.damage_change_shield || 0	//伤害转吸收盾比例
+	this.mag_change_shield = otps.mag_change_shield || 0		//法术伤害转吸收盾比例
 	//=========状态=======//
 	this.died = this.attInfo.maxHP && this.attInfo.hp ? false : true 	//死亡状态
 	this.buffs = {}					//buff列表
@@ -336,7 +358,7 @@ var model = function(otps) {
 	this.forbidden = false			//禁疗
 	this.poison = false				//中毒
 	this.burn = false				//燃烧
-	this.banAnger = false			//禁怒							
+	this.banAnger = false			//禁怒
 	//=========属性加成=======//
 	this.self_adds = {}							//自身百分比加成属性
 	this.team_adds = {}							//全队百分比加成属性
@@ -531,6 +553,7 @@ model.prototype.begin = function() {
 }
 //行动开始前刷新
 model.prototype.before = function() {
+	this.action_flag = true
 	if(this.before_clear_debuff && this.fighting.seeded.random("判断BUFF命中率") < this.before_clear_debuff){
 		for(var i in this.buffs)
 			if(this.buffs[i].debuff)
@@ -584,8 +607,20 @@ model.prototype.roundOver = function() {
 			buffManager.createBuff(this,this,{buffId : this.more_half_hp_buff.buffId,buffArg : this.more_half_hp_buff.buffArg,duration : this.more_half_hp_buff.duration})
 		}
 	}
+	if(this.friend_ation_hp){
+		fightRecord.push({type:"show_tag",id:this.id,tag:"friend_ation_hp"})
+		var rate = this.teamInfo.realms_ation[this.realm] * this.friend_ation_hp
+		var recordInfo =  this.onHeal(this,{type : "heal",maxRate : rate})
+		recordInfo.type = "self_heal"
+		fightRecord.push(recordInfo)
+	}
 	this.phy_turn_value = 0
 	this.half_hp_shild_flag = true
+	this.first_beSkill_flag = true
+	this.onHit_extra_flag = true
+	this.action_extra_flag = true
+	this.action_flag = false
+	this.round_damage = 0
 }
 //移除控制状态
 model.prototype.removeControlBuff = function() {
@@ -694,7 +729,7 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 	if(info.miss){
 		info.realValue = 0
 	}else{
-		if(this.buffs["shield"]){
+		if(!attacker.ignore_shild && this.buffs["shield"]){
 			info.value = this.buffs["shield"].offset(info.value)
 			info.shield = true
 		}
@@ -711,6 +746,19 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 			info.overflow = info.value - info.realValue
 			info.kill = true
 			attacker.kill(this)
+			if(callbacks){
+				//受到直接伤害死亡时，对击杀自身的英雄造成最大生命值伤害
+				if(this.died_maxHp_damage){
+					callbacks.push((function(attacker,value){
+						if(!attacker.died){
+							fightRecord.push({type:"show_tag",id:this.id,tag:"died_maxHp_damage"})
+							var tmpRecord = {type : "other_damage",value : value,d_type:"phy"}
+							tmpRecord = attacker.onHit(this,tmpRecord)
+							fightRecord.push(tmpRecord)
+						}
+					}).bind(this,attacker,Math.floor(attacker.attInfo.maxHP * this.died_maxHp_damage)))
+				}
+			}
 		}else{
 			if(info.seckillRate && !this.neglect_seckill && (this.attInfo.hp / this.attInfo.maxHP) < 0.2 && (attacker.attInfo.atk * 3 > this.attInfo.hp) && this.fighting.seeded.random("秒杀判定") < info.seckillRate){
 				this.onDie()
@@ -750,6 +798,26 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 							callbacks.push((function(){
 								fightRecord.push({type:"show_tag",id:this.id,tag:"half_hp_shild"})
 								buffManager.createBuff(this,this,{buffId : "shield",buffArg : this.half_hp_shild,duration : 1})
+							}).bind(this))
+						}
+					}
+					//受到直接伤害时，伤害转化为伤害吸收盾附加给己方生命值最少的英雄
+					if(this.damage_firend_shild){
+						callbacks.push((function(value){
+							var targets = this.fighting.locator.getTargets(this,"friend_minHp_1")
+							if(targets[0]){
+								fightRecord.push({type:"show_tag",id:this.id,tag:"damage_firend_shild"})
+								buffManager.createBuff(this,targets[0],{buffId : "shield",buffArg : value,duration : 1,"number" : true})
+							}
+						}).bind(this,Math.floor(info.realValue * this.damage_firend_shild)))
+					}
+					//受到直接伤害时，额外行动
+					if(this.onHit_extra_action && this.onHit_extra_flag){
+						if(this.fighting.seeded.random("onHit_extra_action") < this.onHit_extra_action){
+							this.onHit_extra_flag = false
+							this.fighting.next_character.push(this)
+							callbacks.push((function(){
+								fightRecord.push({type:"show_tag",id:this.id,tag:"onHit_extra_action"})
 							}).bind(this))
 						}
 					}
@@ -811,6 +879,7 @@ model.prototype.onDie = function() {
 //队友死亡
 model.prototype.friendDied = function(friend){
 	if(this.friend_died_count > 0 && this.friend_died_amp){
+		fightRecord.push({type:"show_tag",id:this.id,tag:"friend_died_amp"})
 		this.zf_amp += this.friend_died_amp
 		this.friend_died_count--
 	}
@@ -842,6 +911,9 @@ model.prototype.lessHP = function(info) {
 	if(this.died){
 		return 0
 	}
+	if(this.half_hp_red && (this.round_damage >= (this.attInfo.maxHP / 2))){
+		info.value = 1
+	}
 	info.realValue = info.value
 	if((this.attInfo.hp - info.value) <= 0){
 		if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
@@ -855,6 +927,7 @@ model.prototype.lessHP = function(info) {
 	}else{
 		this.attInfo.hp -= info.value
 	}
+	this.round_damage += info.realValue
 	return info.realValue
 }
 //恢复怒气

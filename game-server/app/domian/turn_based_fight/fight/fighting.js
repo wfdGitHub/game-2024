@@ -40,7 +40,7 @@ var model = function(atkTeam,defTeam,atkBooks,defBooks,otps) {
 	}]
 	this.teamIndex = 0				//当前行动阵容
 	this.character = false 			//当前行动角色
-	this.next_character = false		//插入行动角色
+	this.next_character = []		//插入行动角色
 	this.diedList = []				//死亡列表
 	this.load(atkTeam,defTeam,otps)
 }
@@ -152,6 +152,19 @@ model.prototype.fightBegin = function() {
 					buffManager.createBuff(this.atkTeam[i],this.atkTeam[i],this.atkTeam[i].first_buff_list[j])
 				}
 			}
+			if(this.atkTeam[i].begin_realm_crit){
+				fightRecord.push({type:"show_tag",id:this.atkTeam[i].id,tag:"begin_realm_crit"})
+				for(var j = 0;j < this.atkTeam[i].team.length;j++){
+					if(!this.atkTeam[i].team[j].died)
+						buffManager.createBuff(this.atkTeam[i],this.atkTeam[i].team[j],{buffId : "crit",buffArg : this.atkTeam[i].begin_realm_crit * this.atkTeamInfo["realms"][this.atkTeam[i].realm],duration : 1})
+				}
+			}
+			if(this.atkTeam[i].ignoreInvincible)
+				fightRecord.push({type:"show_tag",id:this.atkTeam[i].id,tag:"ignoreInvincible"})
+			if(this.atkTeam[i].ignore_shild)
+				fightRecord.push({type:"show_tag",id:this.atkTeam[i].id,tag:"ignore_shild"})
+			if(this.atkTeam[i].half_hp_red)
+				fightRecord.push({type:"show_tag",id:this.atkTeam[i].id,tag:"half_hp_red"})
 		}
 		if(!this.defTeam[i].died){
 			if(this.defTeam[i].first_buff_list.length){
@@ -159,6 +172,19 @@ model.prototype.fightBegin = function() {
 					buffManager.createBuff(this.defTeam[i],this.defTeam[i],this.defTeam[i].first_buff_list[j])
 				}
 			}
+			if(this.defTeam[i].begin_realm_crit){
+				fightRecord.push({type:"show_tag",id:this.defTeam[i].id,tag:"begin_realm_crit"})
+				for(var j = 0;j < this.defTeam[i].team.length;j++){
+					if(!this.defTeam[i].team[j].died)
+						buffManager.createBuff(this.defTeam[i],this.defTeam[i].team[j],{buffId : "crit",buffArg : this.defTeam[i].begin_realm_crit * this.defTeamInfo["realms"][this.defTeam[i].realm],duration : 1})
+				}
+			}
+			if(this.defTeam[i].ignoreInvincible)
+				fightRecord.push({type:"show_tag",id:this.defTeam[i].id,tag:"ignoreInvincible"})
+			if(this.defTeam[i].ignore_shild)
+				fightRecord.push({type:"show_tag",id:this.defTeam[i].id,tag:"ignore_shild"})
+			if(this.defTeam[i].half_hp_red)
+				fightRecord.push({type:"show_tag",id:this.defTeam[i].id,tag:"half_hp_red"})
 		}
 	}
 	for(var i = 0; i <= fightBegin.length;i++){
@@ -225,7 +251,6 @@ model.prototype.endRound = function() {
 		if(this.defBooks[roundEndBook[i]])
 			this.bookAction(this.defBooks[roundEndBook[i]])
 	}
-	console.log("realms_ation",this.atkTeamInfo["realms_ation"],this.defTeamInfo["realms_ation"])
 	this.atkTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0}
 	this.defTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0}
 	if(!this.checkOver())
@@ -269,6 +294,7 @@ model.prototype.action = function() {
 	var needValue = 0
 	if(!this.character.died){
 		if(this.character.less_anger_skip && this.character.curAnger < 4){
+			fightRecord.push({type:"show_tag",id:this.character.id,tag:"less_anger_skip"})
 			this.character.addAnger(4)
 		}else{
 			if(!this.character.dizzy){
@@ -338,6 +364,14 @@ model.prototype.action = function() {
 			fightRecord.push(recordInfo)
 		}
 		this.character.teamInfo["realms_ation"][this.character.realm]++
+		//行动后额外行动概率
+		if(this.character.action_extra_action && this.character.action_extra_flag){
+			if(this.seeded.random("action_extra_action") < this.character.action_extra_action){
+				fightRecord.push({type:"show_tag",id:this.character.id,tag:"action_extra_action"})
+				this.character.action_extra_flag = false
+				this.next_character.push(this.character)
+			}
+		}
 	}else{
 		fightRecord.push({type : "freeze",id : this.character.id})
 		if(this.character.no_ation_buff)
@@ -357,11 +391,15 @@ model.prototype.after = function() {
 	this.diedListCheck()
 	//检测战斗是否结束
 	if(!this.checkOver()){
-		if(this.next_character && !this.next_character.died){
-			fightRecord.push({type : "extraAtion",id : this.next_character.id})
-			this.character = this.next_character
-			this.next_character = false
-			this.before()
+		if(this.next_character.length){
+			var next_character = this.next_character.shift()
+			if(next_character.died){
+				this.run()
+			}else{
+				fightRecord.push({type : "extraAtion",id : next_character.id})
+				this.character = next_character
+				this.before()
+			}
 		}else{
 			this.run()
 		}
@@ -433,7 +471,10 @@ model.prototype.diedListCheck = function() {
 			}
 		}
 		//复活判断
-		if(this.diedList[i].resurgence_self && this.seeded.random("复活判断") < this.diedList[i].resurgence_self){
+		if(this.diedList[i].died_resurgence){
+			this.diedList[i].died_resurgence = false
+			this.diedList[i].resurgence(1)
+		}else if(this.diedList[i].resurgence_self && this.seeded.random("复活判断") < this.diedList[i].resurgence_self){
 			this.diedList[i].resurgence(1)
 		}else if(this.diedList[i].teamInfo.resurgence_team){
 			var rate = this.diedList[i].teamInfo.resurgence_team

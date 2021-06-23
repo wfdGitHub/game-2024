@@ -203,6 +203,23 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(target.man_damage_red && attacker.sex == 1){
 		info.value -= Math.floor(info.value * target.man_damage_red)
 	}
+	//每回合首次受到伤害减免
+	if(skill.isAnger && target.first_beSkill_red && target.first_beSkill_flag){
+		target.first_beSkill_flag = false
+		info.value -= Math.floor(info.value * target.first_beSkill_red)
+	}
+	//行动前伤害减免
+	if(target.before_action_red && !target.action_flag){
+		info.value -= Math.floor(info.value * target.before_action_red)
+	}
+	//伤害吸收盾伤害减免
+	if(target.buffs["shield"] && target.shield_red){
+		info.value -= Math.floor(info.value * target.shield_red)
+	}
+	//对重伤状态下的目标伤害提升
+	if(attacker.forbidden_amp && target.buffs["forbidden"]){
+		info.value += Math.floor(info.value * attacker.forbidden_amp)
+	}
 	//场景伤害加成
 	if(skill.damageType == "phy"){
 		info.value = Math.floor(info.value * this.phyRate)

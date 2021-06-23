@@ -1,4 +1,4 @@
-let buffIds = ["invincibleSuck","disarm","dizzy","forbidden","silence","burn","poison","amplify","reduction","reduction_mag","recover","invincibleSuper","invincible","shield","banish","banAnger","immune","zhenshe","suoding","atkAdd","atkLess","chaofeng","armor","amplify_mag","amplify_phy"]
+let buffIds = ["invincibleSuck","disarm","dizzy","forbidden","silence","burn","poison","amplify","reduction","reduction_mag","recover","invincibleSuper","invincible","shield","banish","banAnger","immune","zhenshe","suoding","atkAdd","atkLess","chaofeng","armor","amplify_mag","amplify_phy","crit"]
 let controlBuff = {
 	"disarm" : true,
 	"dizzy" : true,

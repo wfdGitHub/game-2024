@@ -258,7 +258,7 @@ model.useSkill = function(skill,chase) {
 	if(skill.isAnger && skill.character.extraAtion){
 		var tmpTargets = this.locator.getTargets(skill.character,"realm_minAnger_1")
 		if(tmpTargets[0]){
-			this.fighting.next_character = tmpTargets[0]
+			this.fighting.next_character.push(tmpTargets[0])
 		}
 	}
 	//追加普攻增加伤害吸收盾
@@ -404,8 +404,6 @@ model.useAttackSkill = function(skill,chase) {
 			var allLenth = targetsNum
 			buffArg += buffArg * (1 + ((allLenth - targets.length + 1) / allLenth)) * skill.character.less_buff_arg
 		}
-		// if(skill.buffId == "dizzy" && skill.character.dizzy_clear_anger)
-		// 	buffRate *= 0.5
 		for(var i = 0;i < buffTargets.length;i++){
 			if(buffTargets[i].died){
 				break
@@ -578,6 +576,10 @@ model.useAttackSkill = function(skill,chase) {
 		if(skill.character.damage_change_shield){
 			buffManager.createBuff(skill.character,skill.character,{buffId : "shield",buffArg : Math.floor(allDamage * skill.character.damage_change_shield),duration : 1,number:true})
 		}
+		//法术伤害转护盾
+		if(skill.character.mag_change_shield && skill.damageType == "mag"){
+			buffManager.createBuff(skill.character,skill.character,{buffId : "shield",buffArg : Math.floor(allDamage * skill.character.mag_change_shield),duration : 1,number:true})
+		}
 	}
 	//受伤判断
 	for(var i = 0;i < recordInfo.targets.length;i++){
@@ -654,6 +656,10 @@ model.useAttackSkill = function(skill,chase) {
 			//受到女性英雄攻击恢复怒气
 			if(targets[i].women_damage_anger && skill.character.sex == 2){
 				targets[i].addAnger(targets[i].women_damage_anger)
+			}
+			//对敌方造成法术伤害时，如果目标处于异常状态，则使其怒气降低1点
+			if(skill.character.mag_debuff_anger && skill.damageType == "mag" && targets[i].getDebuffNum()){
+				targets[i].lessAnger(1)
 			}
 		}
 		if(!skill.isAnger && targets[i].hit_less_anger){
