@@ -22,6 +22,7 @@ var hufu_quality = require("../../../../config/gameCfg/hufu_quality.json")
 var heroSpine = require("../../../../config/gameCfg/heroSpine.json")
 var skin_list = require("../../../../config/gameCfg/skin_list.json")
 var title_list = require("../../../../config/gameCfg/title_list.json")
+var zhanfa = require("../../../../config/gameCfg/zhanfa.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -279,6 +280,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 			stoneskillInfo[stone_skill[info["s"+i]]["key"]] = stone_skill[info["s"+i]]["arg"]
 		}
 	}
+	model.mergeData(info,stoneskillInfo)
 	//公会技能计算
 	if(teamCfg && teamCfg["g"+info.career] && gSkillAtts[info.career]){
 		var glv = teamCfg["g"+info.career]
@@ -306,7 +308,13 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		if(heroSpine[info.skin] && heroSpine[info.skin]["talent"])
 			model.mergeTalent(info,heroSpine[info.skin]["talent"])
 	}
-	model.mergeData(info,stoneskillInfo)
+	//战法技能
+	if(info.zf_1 && zhanfa[info.zf_1]["talent"])
+		model.mergeTalent(info,zhanfa[info.zf_1]["talent"])
+	if(info.zf_2 && zhanfa[info.zf_2]["talent"])
+		model.mergeTalent(info,zhanfa[info.zf_2]["talent"])
+	if(info.zf_3 && zhanfa[info.zf_3]["talent"])
+		model.mergeTalent(info,zhanfa[info.zf_3]["talent"])
 	return new character(info)
 }
 //获取天书数据
