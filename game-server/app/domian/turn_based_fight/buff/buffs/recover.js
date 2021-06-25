@@ -1,5 +1,6 @@
 //恢复
 var fightRecord = require("../../fight/fightRecord.js")
+var buffManager = require("../buffManager.js")
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
