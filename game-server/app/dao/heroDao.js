@@ -297,6 +297,14 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 			strList.push(star_base[10].pr)
 			strList.push(star_base[10].pr)
 		}
+		if(heros[i]["hfLv"]){
+			var hufuInfo = {lv:heros[i]["hfLv"]}
+			if(heros[i]["hfs1"])
+				hufuInfo.s1 = heros[i]["hfs1"]
+			if(heros[i]["hfs2"])
+				hufuInfo.s2 = heros[i]["hfs2"]
+			self.gainHufu(uid,hufuInfo)
+		}
 	}
 	if(strList.length){
 		var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
