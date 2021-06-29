@@ -36,13 +36,14 @@ heroHandler.prototype.gainHero = function(msg, session, next) {
   var id = msg.id
   var ad = msg.ad
   var lv = msg.lv
+  var star = msg.star
   var self = this
   self.heroDao.getHeroAmount(uid,function(flag,info) {
       if(info.cur >= info.max){
         next(null,{flag : false,data : "英雄背包已满"})
         return
       }
-      self.heroDao.gainHero(areaId,uid,{id : id,ad : ad,lv : lv},function(flag,data) {
+      self.heroDao.gainHero(areaId,uid,{id : id,ad : ad,lv : lv,star : star},function(flag,data) {
         next(null,{flag : flag,data : data})
       })
   })
@@ -108,6 +109,10 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
         next(null,{flag : false,err : "英雄已出战"+i+","+hIds[i]+",combat:"+herolist[i].combat})
         return
       }
+      if((herolist[i].zf_1 && herolist[i].zf_1 != 1) || (herolist[i].zf_2 && herolist[i].zf_2 != 1) || (herolist[i].zf_3 && herolist[i].zf_3 != 1)){
+        next(null,{flag : false,err : "英雄已穿戴战法"+i+","+hIds[i]})
+        return
+      }
     }
     self.heroDao.removeHeroList(uid,hIds,function(flag,err) {
       if(flag){
@@ -118,6 +123,86 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
         next(null,{flag : false})
       }
     })
+  })
+}
+//英雄战法栏解锁
+heroHandler.prototype.unlockZhanfaGrid = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  var target = msg.target
+  var hIds = msg.hIds
+  var self = this
+  var key = "zf_"+index
+  if(index !== 2 && index !== 3){
+    next(null,{flag : false,err : "index error "+index})
+    return
+  }
+  var count = index - 1
+  if(!(hIds instanceof Array) || hIds.length != count){
+    next(null,{flag : false,data : "必须传数组"})
+    return
+  }
+  hIds.push(target)
+  var hIdmap = {}
+  for(var i = 0;i < hIds.length;i++){
+    if(typeof(hIds[i]) != "string" || !hIds[i]){
+      next(null,{flag : false,data : "英雄hId必须是string"})
+      return
+    }
+    if(hIdmap[hIds[i]]){
+      next(null,{flag : false,data : "英雄hId不能重复"})
+      return
+    }
+    hIdmap[hIds[i]] = true
+  }
+  self.heroDao.getHeroList(uid,hIds,function(flag,data) {
+      if(!flag || !data){
+        next(null,{flag : false,data : "材料英雄错误"})
+        return
+      }
+      var targetHero = data.pop()
+      hIds.pop()
+      if(!targetHero){
+        next(null,{flag : false,data : "目标英雄不存在"})
+        return
+      }
+      if(targetHero.star < 11){
+        next(null,{flag : false,data : "英雄未觉醒"})
+        return
+      }
+      if(targetHero[key]){
+        next(null,{flag : false,data : "该战法栏已解锁"})
+        return
+      }
+      //材料英雄检测
+      for(var i = 0;i < data.length;i++){
+        if(!data[i] || !data[i].id){
+          next(null,{flag : false,data : "英雄不存在"+hIds[i]})
+          return
+        }
+        if(data[i].combat){
+          next(null,{flag : false,data : "英雄已出战"+hIds[i]})
+          return
+        }
+        if(data[i].star != 10){
+          next(null,{flag : false,data : "必须为10星英雄"+hIds[i]})
+          return
+        }
+        if((data[i].zf_1 && data[i].zf_1 != 1) || (data[i].zf_2 && data[i].zf_2 != 1) || (data[i].zf_3 && data[i].zf_3 != 1)){
+          next(null,{flag : false,err : "英雄已穿戴战法"+hIds[i]})
+          return
+        }
+      }
+      self.heroDao.removeHeroList(uid,hIds,function(flag,err) {
+          if(err)
+            console.error(err)
+          self.heroDao.heroPrlvadnad(areaId,uid,data,function(flag,awardList) {
+            self.heroDao.setHeroInfo(areaId,uid,target,key,1,function(flag,data) {
+              next(null,{flag : flag,hId:target,key:key,awardList:awardList})
+            })
+          })
+      })
   })
 }
 //英雄升级 升阶与星级取最低等级限制
@@ -136,9 +221,9 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
       next(null,{flag : false,err : "英雄不存在"})
       return
     }
-    let star_limit = star_base[heroInfo.star].lev_limit || 0
-    let ad_limit = advanced_base[heroInfo.ad].lev_limit || 0
-    let lev_limit = star_limit < ad_limit ? star_limit : ad_limit
+    var star_limit = star_base[heroInfo.star].lev_limit || 0
+    var ad_limit = advanced_base[heroInfo.ad].lev_limit || 0
+    var lev_limit = star_limit < ad_limit ? star_limit : ad_limit
     if(aimLv <= heroInfo.lv || aimLv > lev_limit){
       next(null,{flag : false,err : "等级限制"})
       return
@@ -197,10 +282,10 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
 }
 //英雄升星   有最大星级限制
 heroHandler.prototype.upgradeStar = function(msg, session, next) {
-  let uid = session.uid
-  let areaId = session.get("areaId")
-  let target = msg.target
-  let hIds = msg.hIds
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var target = msg.target
+  var hIds = msg.hIds
   if(!hIds instanceof Array){
     next(null,{flag : false,data : "必须传数组"})
     return
@@ -221,10 +306,10 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
   var self = this
   self.heroDao.getHeroList(uid,hIds,function(flag,data) {
     if(data){
-      let targetHero = data.pop()
+      var targetHero = data.pop()
       hIds.pop()
-      let star = targetHero.star
-      let pc_hero = star_base[star].pc_hero
+      var star = targetHero.star
+      var pc_hero = star_base[star].pc_hero
       if(!targetHero){
         next(null,{flag : false,data : "目标英雄不存在"})
         return
@@ -241,12 +326,16 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
           return
         }
         for(var i = 0;i < pc_hero.length;i++){
-          if(!data[i] || !heros[targetHero.id]){
-            next(null,{flag : false,data : "材料英雄不存在"+hIds[i]})
+          if(!data[i] || !data[i].id){
+            next(null,{flag : false,data : "英雄不存在"+hIds[i]})
             return
           }
-          if(heros[targetHero.id].combat){
-            next(null,{flag : false,data : "材料英雄已出战"+hIds[i]})
+          if(data[i].combat){
+            next(null,{flag : false,data : "英雄已出战"+hIds[i]})
+            return
+          }
+          if((data[i].zf_1 && data[i].zf_1 != 1) || (data[i].zf_2 && data[i].zf_2 != 1) || (data[i].zf_3 && data[i].zf_3 != 1)){
+            next(null,{flag : false,err : "英雄已穿戴战法"+hIds[i]})
             return
           }
           switch(pc_hero[i][0]){
@@ -276,9 +365,9 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
             break
           }
         }
-        let pcStr = star_base[star].pc
-        let name = session.get("name")
-        let heroName = heros[targetHero.id]["name"]
+        var pcStr = star_base[star].pc
+        var name = session.get("name")
+        var heroName = heros[targetHero.id]["name"]
         if(pcStr){
           self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,"英雄升星",function(flag,err) {
             if(!flag){
@@ -294,13 +383,13 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                       if(star == 10){
                         var notify = {
                           type : "sysChat",
-                          text : "恭喜"+name+"合成出10星"+heroName+"英雄，实力暴涨名誉三界"
+                          text : "恭喜"+name+"合成出10星"+heroName+"英雄，实力暴涨名满三国"
                         }
                         self.areaManager.areaMap[areaId].sendAllUser(notify)
                       }else if(star > 5){
                         var notify = {
                           type : "sysChat",
-                          text : "恭喜"+name+"合成出"+star+"星"+heroName+"英雄，实力大涨名动八荒"
+                          text : "恭喜"+name+"合成出"+star+"星"+heroName+"英雄，实力大涨威震四方"
                         }
                         self.areaManager.areaMap[areaId].sendAllUser(notify)
                       }

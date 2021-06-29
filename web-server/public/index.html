@@ -103,6 +103,43 @@
             console.log(data);
         });
       }
+      //============战法=========//
+      //战法列表
+      var getZhanfaList = function() {
+        pomelo.request("area.zhanfaHandler.getZhanfaList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获得随机战法
+      var gainRandZhanfa = function() {
+        pomelo.request("area.zhanfaHandler.gainRandZhanfa", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //获得指定战法
+      var gainSpecialZhanfa = function(zId) {
+        pomelo.request("area.zhanfaHandler.gainSpecialZhanfa", {zId:zId}, function(data) {
+            console.log(data);
+        });
+      }
+      //穿戴战法
+      var wearZhanfa = function(zId,hId,index) {
+        pomelo.request("area.zhanfaHandler.wearZhanfa", {zId:zId,hId:hId,index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下战法
+      var unwearZhanfa = function(hId,index) {
+        pomelo.request("area.zhanfaHandler.unwearZhanfa", {hId:hId,index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //解锁战法栏
+      var unlockZhanfaGrid = function(target,index,hIds) {
+        pomelo.request("area.heroHandler.unlockZhanfaGrid", {target:target,index:index,hIds:hIds}, function(data) {
+            console.log(data);
+        });
+      }
       //============远古战场=========//
       //获取排行榜
       var getAncientRank = function() {
@@ -2146,8 +2183,8 @@
         });
       }
       //获得英雄
-      var gainHero = function(id,ad,lv) {
-        pomelo.request("area.heroHandler.gainHero", {id : id,ad : ad,lv : lv}, function(data) {
+      var gainHero = function(id,ad,lv,star) {
+        pomelo.request("area.heroHandler.gainHero", {id : id,ad : ad,lv : lv,star : star}, function(data) {
             console.log(data);
         });
       }

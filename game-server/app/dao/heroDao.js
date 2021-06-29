@@ -291,6 +291,12 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 				}
 			}
 		}
+		if(heros[i]["zf_2"])
+			strList.push(star_base[10].pr)
+		if(heros[i]["zf_3"]){
+			strList.push(star_base[10].pr)
+			strList.push(star_base[10].pr)
+		}
 	}
 	if(strList.length){
 		var str = this.areaManager.areaMap[areaId].mergepcstr(strList)

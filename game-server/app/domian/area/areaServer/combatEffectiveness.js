@@ -38,6 +38,12 @@ module.exports = function() {
 		delete usersCes[uid]
 		delete userTeamMaps[uid]
 	}
+	//获得英雄属性
+	this.getHeroInfo = function(uid,hId) {
+		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId]){
+			return userTeamMaps[uid][hId]
+		}
+	}
 	//修改英雄属性
 	this.incrbyCEInfo = function(uid,hId,name,value) {
 		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId] !== undefined){
