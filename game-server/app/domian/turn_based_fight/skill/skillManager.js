@@ -434,7 +434,7 @@ model.useAttackSkill = function(skill,chase) {
 	for(var i = 0;i < callbacks.length;i++)
 		callbacks[i]()
 	//受到单体技能回血
-	if(targetsNum == 1 && targets[0].single_skill_heal && !targets[0].died && recordInfo.targets.length == 1 && recordInfo.targets[0].realValue > 0){
+	if(skill.isAnger && targetsNum == 1 && targets[0].single_skill_heal && !targets[0].died && recordInfo.targets.length == 1 && recordInfo.targets[0].realValue > 0){
 		fightRecord.push({type:"show_tag",id:targets[0].id,tag:"single_skill_heal"})
 		var tmpInfo =  targets[0].onHeal(targets[0],{type : "heal",value : targets[0].attInfo.maxHP * targets[0].single_skill_heal})
 		tmpInfo.type = "self_heal"
