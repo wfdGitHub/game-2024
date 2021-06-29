@@ -95,6 +95,7 @@ var model = function(otps) {
 	this.ignore_shild = otps.ignore_shild || false 				//造成的物理伤害无视目标伤害吸收盾
 	this.forbidden_amp = otps.forbidden_amp || 0 				//对重伤状态下的目标伤害提升
 	this.died_resurgence = otps.died_resurgence || false  		//战斗中首次死亡时复活，并恢复全部血量
+	this.extra_count = 0 										//本回合额外行动次数
 	//=========位置效果=======//
 	this.hor_fri_reduction = otps["hor_fri_reduction"]	//横排英雄免伤加成
 	this.hor_fri_my_maxHp = otps["hor_fri_my_maxHp"]	//横排英雄生命增加自身生命值比例
@@ -589,6 +590,8 @@ model.prototype.after = function() {
 }
 //整体回合结束
 model.prototype.roundOver = function() {
+	if(this.died)
+		return
 	//状态BUFF刷新
 	for(var i in this.buffs)
 		if(this.buffs[i].refreshType == "roundOver")
@@ -621,6 +624,7 @@ model.prototype.roundOver = function() {
 	this.action_extra_flag = true
 	this.action_flag = false
 	this.round_damage = 0
+	this.extra_count = 0
 }
 //移除控制状态
 model.prototype.removeControlBuff = function() {

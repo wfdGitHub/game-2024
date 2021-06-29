@@ -117,6 +117,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		mul *= 1 + (attacker.realm_friend_amp * (attacker.teamInfo["realms_survival"][attacker.realm] - 1))
 	}
 	info.value = Math.round((atk - def) * skill.mul * mul)
+	if(info.value < 1)
+		info.value = 1
 	if(addAmp){
 		info.value = Math.round(info.value * (1+addAmp))
 	}
@@ -228,7 +230,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}
 	//本回合受到同一英雄伤害减免
 	if(target.round_same_hit_red && target.round_same_value[attacker.id]){
-		info.value = Math.floor(info.value * (1 - (target.round_same_value[attacker.id] * target.round_same_hit_red)))
+		info.value = Math.floor(info.value * Math.max((1 - (target.round_same_value[attacker.id] * target.round_same_hit_red)),0))
 	}
 	//最大生命值加成
 	if(chase){

@@ -8,6 +8,9 @@ var model = function(otps,character) {
 	this.healType = otps.healType || "atk" 			//恢复类型（基数） atk  施法者攻击力   hp 被治疗者最大生命值
 	this.targetType = otps.targetType || "team_1"	//目标类型  normal
 	this.mul = otps.mul || 0						//技能系数
+	this.skill_anger_s = otps.skill_anger_s || 0		//自身怒气恢复值
+	if(character.skill_anger_s)
+		this.skill_anger_s += character.skill_anger_s
 	this.buffId = otps.buffId						//附加buffId
 	this.buff_tg = otps.buff_tg || "skill_targets"	//BUFF目标
 	this.buffArg = otps.buffArg						//buff参数

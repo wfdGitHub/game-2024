@@ -429,6 +429,14 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 			if(newValue)
 				newCE = hufu_quality[newValue]["ce"]
 		break 
+		case "zf_1":
+		case "zf_2":
+		case "zf_3":
+			if(oldValue && zhanfa[oldValue])
+				oldCE = zhanfa[oldValue]["ce"]
+			if(newValue && zhanfa[newValue])
+				newCE = zhanfa[newValue]["ce"]
+		break
 	}
 	return newCE - oldCE
 }
@@ -467,6 +475,10 @@ model.getTeamCE = function(team) {
 					allCE += hufuSkillCes[team[i]["hfs1"]]
 				if(team[i]["hfs2"] && hufuSkillCes[team[i]["hfs2"]])
 					allCE += hufuSkillCes[team[i]["hfs2"]]
+			}
+			for(var j = 1;j <= 3;j++){
+				if(team[i]["zf_"+j] && zhanfa[team[i]["zf_"+j]])
+        			allCE += zhanfa[team[i]["zf_"+j]]["ce"]
 			}
 		}
 	}

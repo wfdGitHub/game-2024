@@ -1,13 +1,7 @@
 let buffIds = ["invincibleSuck","disarm","dizzy","forbidden","silence","burn","poison","amplify","reduction","reduction_mag","recover","invincibleSuper","invincible","shield","banish","banAnger","immune","zhenshe","suoding","atkAdd","atkLess","chaofeng","armor","amplify_mag","amplify_phy","crit"]
-let controlBuff = {
-	"disarm" : true,
-	"dizzy" : true,
-	"silence" : true
-}
-let damageBuff = {
-	"burn" : true,
-	"poison" : true
-}
+let controlBuff = {"disarm" : true,"dizzy" : true,"silence" : true}
+let damageBuff = {"burn" : true,"poison" : true}
+let deBuffs = {"atkLess" : true,"banAnger" : true,"banish" : true,"chaofeng" : true,"disarm" : true,"dizzy" : true,"silence" : true,"burn" : true,"poison" : true,"forbidden" : true,"suoding" : true,"zhenshe" : true}
 var buffList = {}
 var fightRecord = require("../fight/fightRecord.js")
 var buffFactory = function() {}
@@ -39,7 +33,7 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		return
 	if((buffId == "invincible" || buffId == "invincibleSuck") && character.buffs["burn"] && character.buffs["burn"].releaser.burn_not_invincible)
 		return
-	if(character.loss_hp_debuff){
+	if(deBuffs[buffId] && character.loss_hp_debuff){
 		if((character.attInfo.hp / character.attInfo.maxHP) > character.loss_hp_debuff){
 			fightRecord.push({type:"show_tag",id:character.id,tag:"loss_hp_debuff"})
 			var info = {type : "other_damage",value : Math.floor(character.attInfo.maxHP *  character.loss_hp_debuff),id : character.id,d_type:"phy"}

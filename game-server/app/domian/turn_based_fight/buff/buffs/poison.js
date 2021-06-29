@@ -26,7 +26,7 @@ var model = function(releaser,character,otps) {
 	buff.clear = function() {
 		// console.log(buff.character.id+"中毒结束")
 		if(buff.releaser.poison_clean_damage){
-			fightRecord.push({type:"show_tag",id:this.id,tag:"poison_clean_damage"})
+			fightRecord.push({type:"show_tag",id:buff.character.id,tag:"poison_clean_damage"})
 			var info = {type : "poisonDamage",id : buff.character.id,d_type:"mag"}
 			info.value = Math.floor(buff.character.attInfo.maxHP * buff.releaser.poison_clean_damage)
 			info = buff.character.onHit(buff.releaser,info)

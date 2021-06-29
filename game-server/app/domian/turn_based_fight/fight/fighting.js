@@ -391,6 +391,9 @@ model.prototype.after = function() {
 	this.diedListCheck()
 	//检测战斗是否结束
 	if(!this.checkOver()){
+		if(this.next_character[0] && (this.next_character[0].died || this.next_character[0].extra_count >= 7)){
+			this.next_character.shift()
+		}
 		if(this.next_character.length){
 			var next_character = this.next_character.shift()
 			if(next_character.died){
@@ -398,6 +401,7 @@ model.prototype.after = function() {
 			}else{
 				fightRecord.push({type : "extraAtion",id : next_character.id})
 				this.character = next_character
+				this.character.extra_count++
 				this.before()
 			}
 		}else{
