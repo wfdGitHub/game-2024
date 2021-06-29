@@ -309,11 +309,11 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 			model.mergeTalent(info,heroSpine[info.skin]["talent"])
 	}
 	//战法技能
-	if(info.zf_1 && zhanfa[info.zf_1]["talent"])
+	if(info.zf_1 && zhanfa[info.zf_1] && zhanfa[info.zf_1]["talent"])
 		model.mergeTalent(info,zhanfa[info.zf_1]["talent"])
-	if(info.zf_2 && zhanfa[info.zf_2]["talent"])
+	if(info.zf_2 && zhanfa[info.zf_2] && zhanfa[info.zf_2]["talent"])
 		model.mergeTalent(info,zhanfa[info.zf_2]["talent"])
-	if(info.zf_3 && zhanfa[info.zf_3]["talent"])
+	if(info.zf_3 && zhanfa[info.zf_3] && zhanfa[info.zf_3]["talent"])
 		model.mergeTalent(info,zhanfa[info.zf_3]["talent"])
 	return new character(info)
 }
