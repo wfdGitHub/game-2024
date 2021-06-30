@@ -303,7 +303,7 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 				hufuInfo.s1 = heros[i]["hfs1"]
 			if(heros[i]["hfs2"])
 				hufuInfo.s2 = heros[i]["hfs2"]
-			self.gainHufu(uid,hufuInfo)
+			this.areaManager.areaMap[areaId].gainHufu(uid,hufuInfo)
 		}
 	}
 	if(strList.length){
