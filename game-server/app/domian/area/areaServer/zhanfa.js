@@ -128,7 +128,6 @@ module.exports = function() {
 			function(next) {
 				//判断战法
 				self.getObj(uid,main_name,zId,function(data) {
-					console.log("zhanfa ",data)
 					if(!data){
 						next("该战法未获得")
 						return
