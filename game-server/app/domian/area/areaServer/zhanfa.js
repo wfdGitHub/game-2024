@@ -103,7 +103,7 @@ module.exports = function() {
 			function(next) {
 				//判断英雄
 				self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
-					if(!heroInfo){
+					if(!heroInfo || !heroInfo.id){
 						next("英雄不存在")
 						return
 					}
