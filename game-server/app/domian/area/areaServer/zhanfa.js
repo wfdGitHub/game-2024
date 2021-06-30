@@ -104,18 +104,22 @@ module.exports = function() {
 				//判断英雄
 				self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
 					if(!heroInfo){
-						cb(false,"英雄不存在")
+						next("英雄不存在")
+						return
+					}
+					if(heroInfo.star < 11){
+						next("英雄未觉醒")
 						return
 					}
 					var zhanfa = heroInfo[key]
 					if(index == 1 && !zhanfa)
 						zhanfa = 1
 					if(!zhanfa){
-						cb(false,"战法栏未解锁")
+						next("战法栏未解锁")
 						return
 					}
 					if(zhanfa != 1){
-						cb(false,"已穿戴战法")
+						next("已穿戴战法")
 						return
 					}
 					next()
