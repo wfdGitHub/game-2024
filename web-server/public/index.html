@@ -103,6 +103,12 @@
             console.log(data);
         });
       }
+      //升级官职
+      var promotionOfficer = function() {
+        pomelo.request("area.normalHandler.promotionOfficer", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============战法=========//
       //战法列表
       var getZhanfaList = function() {

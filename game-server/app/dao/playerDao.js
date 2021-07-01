@@ -30,6 +30,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		dayStr : 0,
 		weekStr : 0,
 		monthStr : 0,
+		officer : 0,
 		r_luck : -1,
 		freeze : 0
 	}

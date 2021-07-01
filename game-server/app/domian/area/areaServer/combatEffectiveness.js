@@ -163,6 +163,13 @@ module.exports = function() {
 			this.updateCE(uid)
 		}
 	}
+	//更改官职
+	this.setOfficer = function(uid,officer) {
+		if(userTeams[uid] && userTeams[uid][6]){
+			userTeams[uid][6]["officer"] = officer
+			this.updateCE(uid)
+		}
+	}
 	//激活天书
 	this.activateBook = function(uid,bookType,cb) {
 		if(!bookMap[bookType]){

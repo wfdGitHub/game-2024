@@ -19,6 +19,7 @@ var month_task = {}
 var week_target_task = {}
 var topic_recruit_task = {}
 var week_loop_task = {}
+var officer_task = {}
 for(var taskId in task_cfg){
 	if(task_cfg[taskId].first)
 		first_task[taskId] = task_cfg[taskId]
@@ -34,6 +35,8 @@ for(var taskId in task_cfg){
 		topic_recruit_task[taskId] = task_cfg[taskId]
 	if(task_cfg[taskId].refresh == "week_loop")
 		week_loop_task[taskId] = task_cfg[taskId]
+	if(task_cfg[taskId].refresh == "officer")
+		officer_task[taskId] = task_cfg[taskId]
 }
 for(var i in week_target){
 	var task_list = JSON.parse(week_target[i]["task_list"])
@@ -61,6 +64,9 @@ module.exports = function() {
 			this.gainTask(uid,taskId,0)
 		}
 		for(var taskId in week_target_task){
+			this.gainTask(uid,taskId,0)
+		}
+		for(var taskId in officer_task){
 			this.gainTask(uid,taskId,0)
 		}
 		this.gainTask(uid,900001,0)
@@ -392,5 +398,14 @@ module.exports = function() {
 				delete userTaskLists[uid][taskId]
 			}
 		}
+	}
+	//查询任务是否存在
+	this.checkTaskExist = function(uid,taskId) {
+		if(!userTaskLists[uid])
+			return false
+		if(userTaskLists[uid] && userTaskLists[uid][taskId])
+			return true
+		else
+			return false
 	}
 }

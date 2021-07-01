@@ -1,7 +1,8 @@
 //主公相关
 var lord_lv = require("../../../../config/gameCfg/lord_lv.json")
+var officer = require("../../../../config/gameCfg/officer.json")
 var main_name = "playerInfo"
-var numberAtt = ["accId","createTime","rmb","vip","vip_exp","rmb_day","exp","level","heroAmount","heroLv","maxSS","real_rmb","real_day","real_week","r_luck","ttt_lv","title","frame"]
+var numberAtt = ["accId","createTime","rmb","vip","vip_exp","rmb_day","exp","level","heroAmount","heroLv","maxSS","real_rmb","real_day","real_week","r_luck","ttt_lv","title","frame","officer"]
 module.exports = function() {
 	var self = this
 	//加载主公数据
@@ -114,5 +115,24 @@ module.exports = function() {
 			self.checkLimitGiftLv(uid,level,level+upLv)
 			self.cacheDao.saveCache({"messagetype":"lordUpgrade",uid:uid,level:level+upLv})
 		}
+	}
+	//提升官职
+	this.promotionOfficer = function(uid,cb) {
+		var officer_lv = self.getLordAtt(uid,"officer")
+		if(!officer[officer_lv + 1]){
+			cb(false,"已满级")
+			return
+		}
+		officer_lv++
+		for(var i = 1;i <= 4;i++){
+			if(self.checkTaskExist(uid,officer[officer_lv]["task"+i])){
+				cb(false,"任务未完成"+officer[officer_lv]["task"+i])
+				return
+			}
+		}
+		self.chageLordData(uid,"officer",officer_lv)
+		self.setOfficer(uid,officer_lv)
+		var awardList = self.addItemStr(uid,officer[officer_lv]["award"],1,"提升官职"+officer_lv)
+		cb(true,{officer : officer_lv,awardList : awardList})
 	}
 }

@@ -609,6 +609,14 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 				}
 				cb(true,fightTeam)
 			})
+		},
+		function(next) {
+			//官职
+			self.redisDao.db.hget("player:user:"+uid+":playerInfo","officer",function(err,data) {
+				if(data)
+					fightTeam[6]["officer"] = data
+				next()
+			})
 		}
 	],function(err) {
 		cb(false,err)

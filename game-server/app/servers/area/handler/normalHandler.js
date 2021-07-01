@@ -25,6 +25,14 @@ normalHandler.prototype.verifyCDKey = function(msg, session, next) {
     }
   })
 }
+//提升官职
+normalHandler.prototype.promotionOfficer = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].promotionOfficer(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //获取背包
 normalHandler.prototype.getBagList = function(msg, session, next) {
   var uid = session.uid
