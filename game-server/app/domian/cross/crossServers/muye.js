@@ -484,6 +484,7 @@ module.exports = function() {
 						winCounts[crossUid] = 0
 					winCounts[crossUid]++
 					self.redisDao.db.hincrby("cross:muye:winCounts",crossUid,1)
+					self.taskUpdate(crossUid,"muye_win",1)
 					if(change == 30)
 						awardStr = muye_cfg["victory"]["value"]
 					else
