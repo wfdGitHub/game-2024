@@ -1,4 +1,4 @@
-//服务器sg_svip2
+//服务器sg_svip3
 var bearcat = require("bearcat")
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
 const async = require("async")
