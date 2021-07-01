@@ -23,6 +23,7 @@ var heroSpine = require("../../../../config/gameCfg/heroSpine.json")
 var skin_list = require("../../../../config/gameCfg/skin_list.json")
 var title_list = require("../../../../config/gameCfg/title_list.json")
 var zhanfa = require("../../../../config/gameCfg/zhanfa.json")
+var officer = require("../../../../config/gameCfg/officer.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -153,7 +154,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	//等级计算
 	if(info.lv && lv_cfg[info.lv]){
 		let lvInfo = {
-		    "maxHP": lv_cfg[info.lv].manHP,
+		    "maxHP": lv_cfg[info.lv].maxHP,
 		    "atk": lv_cfg[info.lv].atk,
 		    "phyDef": lv_cfg[info.lv].phyDef,
 		    "magDef": lv_cfg[info.lv].magDef,
@@ -303,6 +304,16 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	//称号属性
 	if(teamCfg && teamCfg["title"] && title_list[teamCfg["title"]] && title_list[teamCfg["title"]]["talent"])
 		model.mergeTalent(info,title_list[teamCfg["title"]]["talent"])
+	//官职计算
+	if(teamCfg && teamCfg["officer"] && officer[teamCfg["officer"]]){
+		var officerInfo = {
+		    "maxHP": officer[teamCfg["officer"]].maxHP,
+		    "atk": officer[teamCfg["officer"]].atk,
+		    "phyDef": officer[teamCfg["officer"]].phyDef,
+		    "magDef": officer[teamCfg["officer"]].magDef
+		}
+		model.mergeData(info,officerInfo)
+	}
 	//皮肤计算
 	if(info.skin){
 		if(heroSpine[info.skin] && heroSpine[info.skin]["talent"])
@@ -496,6 +507,8 @@ model.getTeamCE = function(team) {
 		}
 		if(team[6]["title"] && title_list[team[6]["title"]] && title_list[team[6]["title"]]["ce"])
 			allCE += title_list[team[6]["title"]]["ce"]
+		if(team[6]["officer"] && officer[team[6]["officer"]] && officer[team[6]["officer"]]["ce"])
+			allCE += officer[team[6]["officer"]]["ce"]
 	}
 	return allCE
 }
