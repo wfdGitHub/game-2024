@@ -434,7 +434,7 @@ area.prototype.getPlayerInfoByUids = function(uids,cb) {
 	}
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
-		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","gname","figure","title","frame"]])
+		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","gname","figure","title","frame","officer"]])
 	}
 	self.redisDao.multi(multiList,function(err,list) {
 		var userInfos = []
@@ -451,6 +451,7 @@ area.prototype.getPlayerInfoByUids = function(uids,cb) {
 					figure : list[i][3],
 					title : list[i][4],
 					frame : list[i][5],
+					officer : list[i][6]
 				}
 			}
 			userInfos.push(info)
@@ -467,7 +468,7 @@ area.prototype.getPlayerBaseByUids = function(uids,cb) {
 	var self = this
 	var multiList = []
 	for(var i = 0;i < uids.length;i++){
-		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip","offline","CE","figure","title","frame"]])
+		multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip","offline","CE","figure","title","frame","officer"]])
 	}
 	self.redisDao.multi(multiList,function(err,list) {
 		var userInfos = []
@@ -487,6 +488,7 @@ area.prototype.getPlayerBaseByUids = function(uids,cb) {
 					figure : list[i][6],
 					title : list[i][7],
 					frame : list[i][8],
+					officer : list[i][9],
 				}
 			}
 			userInfos.push(info)
@@ -506,7 +508,7 @@ area.prototype.getFriendByUids = function(uid,uids,cb) {
 		function(next) {
 			var multiList = []
 			for(var i = 0;i < uids.length;i++){
-				multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip","offline","CE","figure","title","frame"]])
+				multiList.push(["hmget","player:user:"+uids[i]+":playerInfo",["name","head","level","vip","offline","CE","figure","title","frame","officer"]])
 			}
 			self.redisDao.multi(multiList,function(err,list) {
 				for(var i = 0;i < uids.length;i++){
@@ -525,6 +527,7 @@ area.prototype.getFriendByUids = function(uid,uids,cb) {
 							figure : list[i][6],
 							title : list[i][7],
 							frame : list[i][8],
+							officer : list[i][9],
 						}
 					}
 					userInfos.push(info)
