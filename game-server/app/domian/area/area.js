@@ -261,7 +261,6 @@ area.prototype.userLeave = function(uid) {
 		this.lordUnload(uid)
 		this.checkpointsUnload(uid)
 		this.zhuluUnload(uid)
-		this.fbUnload(uid)
 		this.playerDao.setPlayerInfo({uid:uid,key:"offline",value:Date.now()})
 	}
 	if(this.crossUids[uid]){
