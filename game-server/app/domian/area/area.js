@@ -14,6 +14,7 @@ const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar",
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
+var standard_team_ce = {}
 var timers = {}
 for(var i in standard_ce_cfg){
 	standard_ce[i] = {
@@ -22,11 +23,13 @@ for(var i in standard_ce_cfg){
 		"star" : standard_ce_cfg[i]["star"],
 		"artifact" : standard_ce_cfg[i]["artifact"]
 	}
+	standard_team_ce[i] = {}
 	for(var j = 1;j <= 4;j++){
 		standard_ce[i]["e"+j] = standard_ce_cfg[i]["equip"]
 		standard_ce[i]["s"+j] = stone_lv[standard_ce_cfg[i]["stone_lv"]]["s"+j]
-		standard_ce[i]["g"+j] = standard_ce_cfg[i]["guild"]
+		standard_team_ce[i]["g"+j] = standard_ce_cfg[i]["guild"]
 	}
+	standard_team_ce[i]["officer"] = standard_ce_cfg[i]["officer"]
 }
 var area = function(otps,app) {
 	this.areaId = otps.areaId
@@ -405,6 +408,7 @@ area.prototype.standardTeam = function(uid,list,dl,lv) {
 				team[i].star = heros[team[i]["id"]]["min_star"]
 		}
 	}
+	team[6] = Object.assign({},standard_team_ce[lv])
 	return team
 }
 //获取玩家单项数据

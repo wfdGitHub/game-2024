@@ -103,6 +103,12 @@
             console.log(data);
         });
       }
+      //测试基准战力
+      var testStandardTeam = function(list,dl,lv) {
+        pomelo.request("area.normalHandler.testStandardTeam", {list:list,dl:dl,lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
       //升级官职
       var promotionOfficer = function() {
         pomelo.request("area.normalHandler.promotionOfficer", {}, function(data) {

@@ -294,6 +294,15 @@ normalHandler.prototype.getPlayerBaseInfo = function(msg, session, next) {
     }
   })
 }
+normalHandler.prototype.testStandardTeam = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var list = msg.list
+  var dl = msg.dl
+  var lv = msg.lv
+  var team = this.areaManager.areaMap[areaId].standardTeam(uid,list,dl,lv)
+  next(null,{flag:true,team:team})
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "normalHandler",
