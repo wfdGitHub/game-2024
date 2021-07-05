@@ -405,9 +405,9 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 			newCE = star_base[newValue || 1]["ce"]
 		break
 		case "artifact":
-			if(oldValue)
+			if(Number.isFinite(oldValue))
 				oldCE = artifact_level[oldValue]["ce"]
-			if(newValue)
+			if(Number.isFinite(newValue))
 				newCE = artifact_level[newValue]["ce"]
 		break
 		case "a1":
