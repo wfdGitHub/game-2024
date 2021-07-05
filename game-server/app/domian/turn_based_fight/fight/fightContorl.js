@@ -383,6 +383,15 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 	var oldCE = 0
 	var newCE = 0
 	switch(name){
+		case "e1":
+		case "e2":
+		case "e3":
+		case "e4":
+			if(oldValue)
+				oldCE = equip_base[equip_level[oldValue]["part_1"]]["ce"]
+			if(newValue)
+				newCE = equip_base[equip_level[newValue]["part_1"]]["ce"]
+		break
 		case "lv":
 			oldCE = lv_cfg[oldValue || 1]["ce"]
 			newCE = lv_cfg[newValue || 1]["ce"]
@@ -398,7 +407,7 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 		case "artifact":
 			if(oldValue)
 				oldCE = artifact_level[oldValue]["ce"]
-			if(newCE)
+			if(newValue)
 				newCE = artifact_level[newValue]["ce"]
 		break
 		case "a1":
