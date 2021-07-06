@@ -45,6 +45,8 @@ var model = function(otps) {
 	this.anyAnger = otps["anyAnger"] || false   //当前怒气小于4点时，也能施放技能，技能伤害降低15%*(4-当前怒气值)
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
+	//=========其他效果=======//
+	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
 	//=========战法效果=======//
 	this.zf_amp = 0 										//战法伤害加成
 	this.less_anger_skip = otps.less_anger_skip ||  false 	//行动前，如果自己怒气小于4点,则会跳过行动，并使自身怒气增加4点

@@ -506,6 +506,10 @@ model.useAttackSkill = function(skill,chase) {
 			tmpRecord.type = "self_heal"
 			fightRecord.push(tmpRecord)
 		}
+		//击杀后给自身添加伤害吸收盾
+		if(skill.character.kill_shield){
+			buffManager.createBuff(skill.character,skill.character,{buffId : "shield",buffArg : skill.character.kill_shield * kill_num,duration : 1})
+		}
 		//直接伤害击杀目标后，概率清除己方武将身上该目标死亡前释放的所有异常效果（灼烧、中毒、眩晕、沉默、麻痹
 		if(skill.character.kill_clear_buff){
 			for(var i = 0;i < died_targets.length;i++){
