@@ -120,7 +120,7 @@ equipHandler.prototype.compoundEquip = function(msg, session, next) {
   var areaId = session.get("areaId")
   var eId = Number(msg.eId)
   var count = Number(msg.count)
-  if(!eId || !equip_base[eId]){
+  if(!eId || !equip_base[eId] || !equip_base[eId]["next"]){
     next(null,{flag : false,err : "eId error "+eId})
     return
   }
@@ -129,8 +129,8 @@ equipHandler.prototype.compoundEquip = function(msg, session, next) {
     return
   }
   var self = this
-  var pc = "201:"+count*equip_base[eId]["compound_pc"]+"&"+eId+":"+count*3
-  self.areaManager.areaMap[areaId].consumeItems(uid,pc,1,"合成装备",function(flag,err) {
+  var pc = equip_base[eId]["compound_pc"]+"&"+eId+":"+equip_base[eId]["count"]
+  self.areaManager.areaMap[areaId].consumeItems(uid,pc,count,"合成装备",function(flag,err) {
     if(!flag){
       next(null,{flag : false,err : err})
       return

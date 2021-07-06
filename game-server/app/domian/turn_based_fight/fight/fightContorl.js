@@ -188,6 +188,9 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 				suitInfo[m_list[0]] = Number(m_list[1])
 				model.mergeData(info,suitInfo)
 			}
+			if(equip_level[elv]["suit_"+suitlv+"_talent"]){
+				model.mergeTalent(info,equip_level[elv]["suit_"+suitlv+"_talent"])
+			}
 		}
 	}
 	//升星计算
