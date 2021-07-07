@@ -424,7 +424,7 @@ area.prototype.getPlayerKeyByUid = function(uid,key,cb) {
 //获取玩家基础数据
 area.prototype.getPlayerBaseInfo = function(uid,cb) {
 	var self = this
-	self.redisDao.db.hmget("player:user:"+uid+":playerInfo",["name","head","gname","level","figure","title","frame"],function(err,data) {
+	self.redisDao.db.hmget("player:user:"+uid+":playerInfo",["name","head","gname","level","figure","title","frame","officer"],function(err,data) {
 		cb(true,data)
 	})
 }
