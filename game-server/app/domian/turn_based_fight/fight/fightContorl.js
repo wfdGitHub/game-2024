@@ -369,7 +369,7 @@ model.getTeamData = function(team,belong) {
 		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
 	}
     var teamAdds = this.raceAdd(this.getRaceType(characters))
-	return {team:characters,books:books,teamAdds:teamAdds}
+	return {team:characters,books:books,teamAdds:teamAdds,bookAtts:bookAtts}
 }
 //获取团队显示数据
 model.getTeamShowData = function(team) {
