@@ -762,7 +762,7 @@ var model = function() {
 				var m_list = strList[i].split(":")
 				var itemId = Number(m_list[0])
 				var value = Math.floor(m_list[1])
-				if(!item_cfg[itemId] || value != m_list[1]){
+				if(itemId == 202 || !item_cfg[itemId] || value != m_list[1]){
 					cb("奖励错误 "+itemId+ "   "+value)
 					return
 				}
