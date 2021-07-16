@@ -1,5 +1,7 @@
 //数据库查询
 var http = require("http")
+var uuid = require("uuid")
+var item_cfg = require("../game-server/config/gameCfg/item.json")
 var model = function() {
 	var self = this
 	var posts = {}
@@ -645,6 +647,37 @@ var model = function() {
 			})
 		})
 	}
+	//获取玩家数据
+	posts["/getPlayerInfo"] = function(req,res) {
+		var data = req.body
+		var uid = data.uid
+		console.log("getPlayerInfo",uid)
+		if(!uid){
+			res.send(false)
+		}else{
+			local.getPlayerBaseByUids([uid],function(userInfos) {
+				if(userInfos && userInfos[0])
+					res.send(userInfos[0])
+				else
+					res.send(false)
+			})
+		}
+	}
+	//发送邮件
+	posts["/send_mail"] = function(req,res) {
+		var data = req.body
+		var uid = data.uid
+		var title = data.title
+		var text = data.text
+		var atts = data.atts
+		if(!uid){
+			res.send(false)
+		}else{
+			local.sendMail(uid,title,text,atts,function(err,data) {
+				res.send(err)
+			})
+		}
+	}
 	//批量获取玩家基本数据
 	local.getPlayerBaseByUids = function(uids,cb) {
 		if(!uids.length){
@@ -714,6 +747,52 @@ var model = function() {
 		}
 		// console.log("getSQL sql1",sql1,"sql2",sql2,args1,args2)
 		return {sql1:sql1,sql2:sql2,args1:args1,args2:args2}
+	}
+	//发送邮件
+	local.sendMail = function(uid,title,text,atts,cb) {
+		var mailInfo = {
+			title : title,
+			text : text,
+			id : uuid.v1(),
+			time : Date.now()
+		}
+		if(atts){
+			var strList = atts.split("&")
+			for(var i = 0;i < strList.length;i++){
+				var m_list = strList[i].split(":")
+				var itemId = Number(m_list[0])
+				var value = Math.floor(m_list[1])
+				if(!item_cfg[itemId] || value != m_list[1]){
+					cb("奖励错误 "+itemId+ "   "+value)
+					return
+				}
+			}
+			mailInfo.atts = atts
+		}
+		local.adminSendMail(mailInfo)
+		mailInfo = JSON.stringify(mailInfo)
+		self.redisDao.db.rpush("player:user:"+uid+":mail",mailInfo,function(err,data) {
+			console.log(err,data)
+			cb(err)
+		})
+	}
+	//邮件日志
+	local.adminSendMail = function(info) {
+		var sql1 = 'insert into mail_log SET ?'
+		var info1 = {
+			admin : "0001",
+			uid : info.uid,
+			areaId : info.areaId,
+			title : info.title,
+			text : info.text,
+			atts : info.atts,
+			time : Date.now()
+		}
+		self.mysqlDao.db.query(sql1,info1, function(err, res) {
+			if (err) {
+				console.error('adminSendMail! ' + err.stack);
+			}
+		})
 	}
 }
 module.exports = new model()
