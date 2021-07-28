@@ -182,9 +182,9 @@ module.exports = function() {
 				self.delObj(uid,main_name,"recharge_week_"+i)
 			}
 		}
-		self.setPlayerData(uid,"gold_consume",0)
-		for(var index in consumeTotal)
-			self.delObj(uid,main_name,"consumeTotal_"+index)
+		// self.setPlayerData(uid,"gold_consume",0)
+		// for(var index in consumeTotal)
+		// 	self.delObj(uid,main_name,"consumeTotal_"+index)
 	}
 	//领取每日免费礼包
 	this.gainFreeDayAward = function(uid,id,cb) {
