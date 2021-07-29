@@ -294,6 +294,16 @@ normalHandler.prototype.getPlayerBaseInfo = function(msg, session, next) {
     }
   })
 }
+//GM商城购买
+normalHandler.prototype.buyGMShop = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var shopId = msg.shopId
+  var count = msg.count
+  this.areaManager.areaMap[areaId].buyGMShop(uid,shopId,count,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 normalHandler.prototype.testStandardTeam = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")

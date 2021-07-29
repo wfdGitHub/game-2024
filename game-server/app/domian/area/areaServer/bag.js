@@ -7,6 +7,7 @@ var equip_base = require("../../../../config/gameCfg/equip_base.json")
 var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var heros = require("../../../../config/gameCfg/heros.json")
 var util = require("../../../../util/util.js")
+var gm_shop = require("../../../../config/gameCfg/gm_shop.json")
 var async = require("async")
 module.exports = function() {
 	var self = this
@@ -514,6 +515,49 @@ module.exports = function() {
 			cb(false,err)
 		})
 	}
+    //GM商城购买
+    this.buyGMShop = function(uid,shopId,count,cb) {
+        if(!shopId || !Number.isInteger(count) || count <= 0){
+            cb(false,"args type error")
+            return
+        }
+        var shopInfo = gm_shop[shopId]
+        if(!shopInfo){
+            cb(false,"shopId error "+shopId)
+            return
+        }
+        var vip = self.getLordAtt(uid,"vip")
+        if(vip < shopInfo.vip){
+            cb(false,"vip等级不足")
+            return
+        }
+        async.waterfall([
+            function(next) {
+                if(gm_shop[shopId]["day_count"]){
+                    self.getObj(uid,"shop",shopId,function(value) {
+                        value = Number(value) || 0
+                        if(gm_shop[shopId]["day_count"] >= count + value){
+                            next()
+                        }else{
+                            next("购买次数到达上限")
+                        }
+                    })
+                }else{
+                    next()
+                }
+            },
+            function(next) {
+                if(gm_shop[shopId]["day_count"])
+                    self.incrbyObj(uid,"shop",shopId,count)
+                if(gm_shop[shopId]["type"])
+                    self.taskUpdate(uid,"shop_buy",count)
+                self.addItemStr(uid,shopInfo.pa,count,"gm商城购买"+shopId)
+                cb(true,shopInfo.pa)
+            }
+        ],function(err) {
+            cb(false,err)
+        })
+    }
 	//获得商城数据
 	this.getShopData = function(uid,cb) {
 		self.getObjAll(uid,"shop",function(data) {

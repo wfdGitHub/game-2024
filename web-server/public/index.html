@@ -115,6 +115,12 @@
             console.log(data);
         });
       }
+      //GM商城购买
+      var buyGMShop = function(shopId,count) {
+        pomelo.request("area.normalHandler.buyGMShop",{shopId : shopId,count : count}, function(data) {
+            console.log(data);
+        })
+      }
       //============战法=========//
       //战法列表
       var getZhanfaList = function() {
