@@ -2,6 +2,7 @@
 var areaDeploy = function() {
 	this.name = "areaDeploy"
 	this.areaList = []
+	this.areaName = {}
 	this.serverMap = {}
 	this.finalServerMap = {}
 }
@@ -17,6 +18,9 @@ areaDeploy.prototype.init = function(app) {
 			}
 		}
 	})
+	self.redisDao.db.hgetall("area:areaName",function(err,data) {
+		self.areaName = data || {}
+	})
 	self.redisDao.db.hgetall("area:serverMap",function(err,data) {
 		if(data)
 			self.serverMap = data
@@ -24,6 +28,13 @@ areaDeploy.prototype.init = function(app) {
 	self.redisDao.db.hgetall("area:finalServerMap",function(err,data) {
 		if(data)
 			self.finalServerMap = data
+	})
+}
+//更新服务器名称
+areaDeploy.prototype.updateAreaName = function(cb) {
+	var self = this
+	self.redisDao.db.hgetall("area:areaName",function(err,data) {
+		self.areaName = data || {}
 	})
 }
 //开启游戏新服务器
