@@ -34,6 +34,13 @@ var model = function() {
 		})
 		res.send("SUCCESS")
 	}
+	//更新服务器名称
+	gets["/updateAreaName"] = function(req,res) {
+		var areaDeploy = self.app.get("areaDeploy")
+		areaDeploy.updateAreaName()
+		self.app.rpc.connector.connectorRemote.updateAreaName.toServer("*",null)
+		res.send("SUCCESS")
+	}
 	//踢出玩家
 	local.kickUser = function(uid) {
 		self.playerDao.getPlayerAreaId(uid,function(flag,data) {

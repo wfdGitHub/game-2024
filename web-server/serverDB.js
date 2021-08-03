@@ -27,6 +27,16 @@ var model = function() {
 		http.get(url,function(res){})
 		res.send("SUCCESS")
 	}
+	//设置服务器名称
+	posts["/setAreaName"] = function(req,res) {
+		var data = req.body
+		self.redisDao.db.hset("area:areaName",data.areaId,data.name,function(err) {
+			self.redisDao.db.hset("area:area"+data.areaId+":areaInfo","areaName",data.name)
+			var url = "http://127.0.0.1:5081/updateAreaName"
+			http.get(url,function(res){})
+			res.send("SUCCESS")
+		})
+	}
 	//清除战斗校验错误数据
 	posts["/verify_clear"] = function(req,res) {
 		self.redisDao.db.del("verify_faild",function(err,data) {
@@ -147,6 +157,13 @@ var model = function() {
 			self.redisDao.multi(multiList,function(err,list) {
 				res.send(list)
 			})
+		})
+	}
+	//获取服务器名称
+	posts["/areaNames"] = function(req,res) {
+		var data = req.body
+		self.redisDao.db.hgetall("area,areaName",function(err,data) {
+			res.send(data || {})
 		})
 	}
 	//获取玩家列表
