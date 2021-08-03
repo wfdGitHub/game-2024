@@ -171,6 +171,7 @@ module.exports = function() {
 				}
 			}
 			self.setHMObj(uid,main_name,data)
+			self.setObj(uid,main_name,"onlineIndex",0)
 		})
 	}
 	//活动数据每周刷新
