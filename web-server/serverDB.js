@@ -27,6 +27,69 @@ var model = function() {
 		http.get(url,function(res){})
 		res.send("SUCCESS")
 	}
+	//获取返利道具
+	posts["/getRebateItem"] = function(req,res) {
+		self.redisDao.db.hgetall("rebate_item_map",function(err,data) {
+			res.send(data)
+		})
+	}
+	//设置返利道具
+	posts["/setRebateItem"] = function(req,res) {
+		var data = req.body
+		var info = {
+			"rmb" : data.rmb,
+			"title" : data.title,
+			"text" : data.text,
+			"award" : data.award,
+			"beginTime" : data.beginTime,
+			"endTime" : data.endTime
+		}
+		console.log("setRebateItem",data.id,info)
+		self.redisDao.db.hset("rebate_item_map",data.id,JSON.stringify(info),function(err) {
+			var url = "http://127.0.0.1:5081/updateRebate"
+			http.get(url,function(res){})
+			res.send("SUCCESS")
+		})
+	}
+	//删除返利道具
+	posts["/delRebateItem"] = function(req,res) {
+		var data = req.body
+		self.redisDao.db.hdel("rebate_item_map",data.id,function(err) {
+			var url = "http://127.0.0.1:5081/updateRebate"
+			http.get(url,function(res){})
+			res.send("SUCCESS")
+		})
+	}
+	//获取返利元宝
+	posts["/getRebateGold"] = function(req,res) {
+		self.redisDao.db.hgetall("rebate_gold_map",function(err,data) {
+			res.send(data)
+		})
+	}
+	//设置返利元宝
+	posts["/setRebateGold"] = function(req,res) {
+		var data = req.body
+		var info = {
+			"title" : data.title,
+			"text" : data.text,
+			"rate" : data.rate
+		}
+		console.log("setRebategold",data.id,info)
+		self.redisDao.db.hset("rebate_gold_map",data.id,JSON.stringify(info),function(err) {
+			var url = "http://127.0.0.1:5081/updateRebate"
+			http.get(url,function(res){})
+			res.send("SUCCESS")
+		})
+	}
+	//删除返利元宝
+	posts["/delRebateGold"] = function(req,res) {
+		var data = req.body
+		self.redisDao.db.hdel("rebate_gold_map",data.id,function(err) {
+			var url = "http://127.0.0.1:5081/updateRebate"
+			http.get(url,function(res){})
+			res.send("SUCCESS")
+		})
+	}
 	//设置服务器名称
 	posts["/setAreaName"] = function(req,res) {
 		var data = req.body

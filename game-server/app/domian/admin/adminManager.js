@@ -41,6 +41,11 @@ var model = function() {
 		self.app.rpc.connector.connectorRemote.updateAreaName.toServer("*",null)
 		res.send("SUCCESS")
 	}
+	//更新返利
+	gets["/updateRebate"] = function(req,res) {
+		self.app.rpc.area.areaRemote.updateRebate.toServer("*",null)
+		res.send("SUCCESS")
+	}
 	//踢出玩家
 	local.kickUser = function(uid) {
 		self.playerDao.getPlayerAreaId(uid,function(flag,data) {
