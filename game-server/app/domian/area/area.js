@@ -70,6 +70,7 @@ area.prototype.init = function() {
 	this.initGuild()
 	this.initLimitedTime()
 	this.initBeherrscher()
+	this.rebateInit()
 	this.timer = setInterval(this.update.bind(this),1000)
 }
 //服务器关闭

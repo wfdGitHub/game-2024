@@ -164,6 +164,13 @@ areaRemote.prototype.taskUpdate  = function(areaId,uid,type,value,arg,cb) {
 		cb(false)
 	}
 }
+//更新返利
+areaRemote.prototype.updateRebate = function(cb) {
+	for(var areaId in this.areaManager.areaMap){
+		this.areaManager.areaMap[areaId].rebateInit()
+	}
+	cb(true)
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "areaRemote",
