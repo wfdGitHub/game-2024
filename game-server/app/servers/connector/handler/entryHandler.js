@@ -30,7 +30,7 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	http.get(url,function(res){
 	  	res.on("data",function(data) {
 	    	if(data == 1){
-	    		var unionid = channel_code+"_"+uid
+	    		var unionid = uid
 	    		var loginToken = util.randomString(8)
 	    		self.redisDao.db.hset("loginToken",unionid,loginToken)
 	    		next(null,{flag:true,unionid:unionid,token:loginToken})
