@@ -217,6 +217,37 @@ module.exports = function() {
 		})
 		this.addUserVIPExp(uid,rmb)
 	}
+	//仅增加rmb余额
+	this.onlyUserRMB = function(uid,rmb) {
+		if(rmb <= 0)
+			return
+		self.incrbyLordData(uid,"rmb_day",rmb,function(data) {
+			if(data == rmb)
+				self.incrbyObj(uid,main_name,"pay_days",1)
+		})
+		self.incrbyLordData(uid,"rmb",rmb)
+		self.incrbyLordData(uid,"week_rmb",rmb)
+		self.incrbyObj(uid,main_name,"normalRmb",rmb,function(data) {
+			data = Number(data)
+			if((data - rmb) < activity_cfg["normal_card_rmb"]["value"] && data >= activity_cfg["normal_card_rmb"]["value"]){
+				self.setObj(uid,main_name,"normalCard",1)
+				var notify = {
+					type : "activateNormalCard",
+					normalRmb : data
+				}
+				self.sendToUser(uid,notify)
+			}
+			if(self.players[uid]){
+				var notify = {
+					type : "addUserRMB",
+					rmb_day : self.players[uid].rmb_day,
+					rmb : self.players[uid].rmb,
+					week_rmb : self.players[uid].week_rmb
+				}
+				self.sendToUser(uid,notify)
+			}
+		})
+	}
 	//增加VIP经验
 	this.addUserVIPExp = function(uid,exp) {
 		self.incrbyLordData(uid,"vip_exp",exp)
