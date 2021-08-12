@@ -1,7 +1,9 @@
 //数据库查询
 var http = require("http")
 var uuid = require("uuid")
-var item_cfg = require("../game-server/config/gameCfg/item.json")
+const item_cfg = require("../game-server/config/gameCfg/item.json")
+const hufu_quality = require("../game-server/config/gameCfg/hufu_quality.json")
+const hufu_skill = require("../game-server/config/gameCfg/hufu_skill.json")
 var model = function() {
 	var self = this
 	var posts = {}
@@ -194,7 +196,36 @@ var model = function() {
 		var info = {}
 		self.redisDao.db.llen("client:banSendMsg",function(err,total) {
 			info.total = total
-			self.redisDao.db.lrange("client:banSendMsg",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+			self.redisDao.db.lrange("client:banSendMsg",-(pageCurrent-1)*pageSize,-(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
+	}
+	//发放护符
+	posts["/send_hufu"] = function(req,res) {
+		var data = req.body
+		var uid = data.uid
+		var lv = data.lv
+		var s1 = data.s1
+		var s2 = data.s2
+		if(!uid){
+			res.send(false)
+		}else{
+			local.sendHufu(uid,lv,s1,s2,function(flag,err) {
+				res.send({flag:flag,err:err})
+			})
+		}
+	}
+	//获取护符记录
+	posts["/get_hufuLog"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("game:sendHufu",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("game:sendHufu",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
 				info.list = data
 				res.send(info)
 			})
@@ -849,7 +880,7 @@ var model = function() {
 			}
 			mailInfo.atts = atts
 		}
-		local.adminSendMail(mailInfo)
+		local.adminSendMail(uid,mailInfo)
 		mailInfo = JSON.stringify(mailInfo)
 		self.redisDao.db.rpush("player:user:"+uid+":mail",mailInfo,function(err,data) {
 			console.log(err,data)
@@ -857,11 +888,11 @@ var model = function() {
 		})
 	}
 	//邮件日志
-	local.adminSendMail = function(info) {
+	local.adminSendMail = function(uid,info) {
 		var sql1 = 'insert into mail_log SET ?'
 		var info1 = {
 			admin : "0001",
-			uid : info.uid,
+			uid : uid,
 			areaId : info.areaId,
 			title : info.title,
 			text : info.text,
@@ -871,6 +902,34 @@ var model = function() {
 		self.mysqlDao.db.query(sql1,info1, function(err, res) {
 			if (err) {
 				console.error('adminSendMail! ' + err.stack);
+			}
+		})
+	}
+	//发送护符
+	local.sendHufu = function(uid,lv,s1,s2,cb) {
+		var id = uuid.v1()
+		var info = {}
+		if(!hufu_quality[lv]){
+			cb(false,"护符等级错误")
+			return
+		}
+		if((!s1 && !s2) || (s1 == s2)){
+			cb(false,"护符技能错误")
+			return
+		}
+		info.lv = lv
+		if(s1)
+			info.s1 = s1
+		if(s2)
+			info.s2 = s2
+		self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
+			if(err || !data){
+				cb(false,"用户不存在")
+				return
+			}else{
+				self.redisDao.db.hset("player:user:"+uid+":hufu",id,JSON.stringify(info))
+				self.redisDao.db.rpush("game:sendHufu",JSON.stringify({uid:uid,info:info,time:Date.now(),name:data}))
+				cb(true)
 			}
 		})
 	}
