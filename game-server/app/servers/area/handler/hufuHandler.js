@@ -13,19 +13,21 @@ hufuHandler.prototype.getHufuList = function(msg, session, next) {
 }
 //生成随机护符
 hufuHandler.prototype.gainRandHufu = function(msg, session, next) {
-  var areaId = session.get("areaId")
-  var uid = session.uid
-  var lv = msg.lv
-  var data = this.areaManager.areaMap[areaId].gainRandHufu(uid,lv)
-  next(null,{flag:true,data:data})
+  // var areaId = session.get("areaId")
+  // var uid = session.uid
+  // var lv = msg.lv
+  // var data = this.areaManager.areaMap[areaId].gainRandHufu(uid,lv)
+  // next(null,{flag:true,data:data})
+  next(null,{flag:false})
 }
 //生成指定护符  lv s1 s2
 hufuHandler.prototype.gainHufu = function(msg, session, next) {
-  var areaId = session.get("areaId")
-  var uid = session.uid
-  var info = msg.info
-  var data = this.areaManager.areaMap[areaId].gainHufu(uid,info)
-  next(null,{flag:true,data:data})
+  // var areaId = session.get("areaId")
+  // var uid = session.uid
+  // var info = msg.info
+  // var data = this.areaManager.areaMap[areaId].gainHufu(uid,info)
+  // next(null,{flag:true,data:data})
+  next(null,{flag:false})
 }
 //穿戴护符
 hufuHandler.prototype.wearHufu = function(msg, session, next) {
@@ -64,6 +66,29 @@ hufuHandler.prototype.resetHufu = function(msg, session, next) {
   var lv = msg.lv
   this.areaManager.areaMap[areaId].resetHufu(uid,ids,lv,function(flag,data) {
     next(null,{flag:flag,data:data})
+  })
+}
+//洗练石洗练
+hufuHandler.prototype.washHufu = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var id = msg.id
+  this.areaManager.areaMap[areaId].washHufu(uid,id,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//出售护符
+hufuHandler.prototype.sellHufu = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  var self = this
+  self.areaManager.areaMap[areaId].sellHufu(uid,id,function(flag,data) {
+    if(!flag){
+      next(null,{flag : flag,err : data})
+    }else{
+      next(null,{flag : flag,awardList : data})
+    }
   })
 }
 module.exports = function(app) {

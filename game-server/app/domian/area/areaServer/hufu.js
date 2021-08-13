@@ -26,7 +26,7 @@ module.exports = function() {
 		})
 	}
 	//生成随机护符
-	this.gainRandHufu = function(uid,lv) {
+	this.gainRandHufu = function(uid,lv,id) {
 		if(!hufu_quality[lv]){
 			console.error("gainRandHufu lv error")
 			return
@@ -53,11 +53,12 @@ module.exports = function() {
 			if(s1Index == s2Index)
 				console.error("gainRandHufu error s1Index == s2Index",s1Index,s2Index)
 		}
-		return self.gainHufu(uid,info)
+		return self.gainHufu(uid,info,id)
 	}
 	//生成指定护符  lv s1 s2
-	this.gainHufu = function(uid,info){
-		var id = uuid.v1()
+	this.gainHufu = function(uid,info,id){
+		if(!id)
+			id = uuid.v1()
 		self.setObj(uid,main_name,id,JSON.stringify(info))
 		var notify = {
 			"type" : "gainHufu",
@@ -106,6 +107,20 @@ module.exports = function() {
 			}
 		],function(err) {
 			cb(false,err)
+		})
+	}
+	//出售护符
+	this.sellHufu = function(uid,id,cb) {
+		self.getObj(uid,main_name,id,function(hufuInfo) {
+			if(!hufuInfo){
+				cb(false,"护符不存在")
+				return
+			}
+			self.delObj(uid,main_name,id)
+			var info = JSON.parse(hufuInfo)
+			var count = hufu_quality[info.lv]["sell"]
+			var awardList = self.addItemStr(uid,"1000040:"+count,1,"出售护符"+hufuInfo)
+			cb(true,awardList)
 		})
 	}
 	//卸下护符
@@ -215,6 +230,28 @@ module.exports = function() {
 				self.delObj(uid,main_name,ids[i])
 			var info = self.gainRandHufu(uid,lv)
 			cb(true,info)
+		})
+	}
+	//洗练石洗练
+	this.washHufu = function(uid,id,cb) {
+		self.getObj(uid,main_name,id,function(hufuInfo) {
+			if(!hufuInfo){
+				cb(false,"护符不存在")
+				return
+			}
+			self.delObj(uid,main_name,id)
+			var info = JSON.parse(hufuInfo)
+			var count = hufu_quality[info.lv]["wash"]
+			self.consumeItems(uid,"1000040:"+count,1,"洗练护符"+hufuInfo,function(flag,err) {
+				if(!flag){
+					cb(flag,err)
+					return
+				}
+				self.taskUpdate(uid,"reset_hufu",1)
+				self.delObj(uid,main_name,id)
+				var data = self.gainRandHufu(uid,info.lv,id)
+				cb(true,data)
+			})
 		})
 	}
 }

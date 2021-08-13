@@ -484,6 +484,18 @@
             console.log(data);
         });
       }
+      //洗练石洗练
+      var washHufu = function(id) {
+        pomelo.request("area.hufuHandler.washHufu", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //出售护符
+      var sellHufu = function(id) {
+        pomelo.request("area.hufuHandler.sellHufu", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
       //获取玩家基本信息
       var getPlayerBaseInfo = function(target) {
         pomelo.request("area.normalHandler.getPlayerBaseInfo", {target:target}, function(data) {
