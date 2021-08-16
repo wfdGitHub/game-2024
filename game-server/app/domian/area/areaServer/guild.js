@@ -423,7 +423,7 @@ module.exports = function() {
 			list.push(guildList[guildId])
 		}
 		list.sort(function() {return Math.random() > 0.5?1:-1})
-		list = list.slice(0,5)
+		list = list.slice(0,0)
 		var info = {
 			applys : applyMap[uid],
 			guildList : list,
