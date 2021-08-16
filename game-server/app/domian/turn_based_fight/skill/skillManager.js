@@ -702,7 +702,10 @@ model.useAttackSkill = function(skill,chase) {
 		skill.character.addAnger(skill.character.skill_burn_anger * burn_num)
 	}
 	//追加普通攻击判断
-	if((skill.isAnger && (skill.add_d_s || skill.character.skill_add_d_s)) || (kill_num && skill.character.kill_add_d_s)){
+	if(skill.isAnger && (skill.add_d_s || skill.character.skill_add_d_s)){
+		this.useSkill(skill.character.defaultSkill,true)
+	}
+	if(kill_num && skill.character.kill_add_d_s){
 		this.useSkill(skill.character.defaultSkill,true)
 	}
 	return targets
