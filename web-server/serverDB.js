@@ -8,13 +8,21 @@ var model = function() {
 	var self = this
 	var posts = {}
 	var local = {}
+	var items = {}
 	this.init = function (server,mysqlDao,redisDao) {
 		self.mysqlDao = mysqlDao
 		self.redisDao = redisDao
 		for(var key in posts){
 			server.post(key,posts[key])
 		}
+        for(var i in item_cfg){
+			items[i] = item_cfg[i]["name"]
+        }
 	}
+    //获取物品表
+    posts["/get_items"] = function(req,res) {
+        res.send(items)
+    }
 	//清聊天记录
 	posts["/clearChatRecord"] = function(req,res) {
 		var url = "http://127.0.0.1:5081/clearChatRecord"
@@ -873,7 +881,7 @@ var model = function() {
 				var m_list = strList[i].split(":")
 				var itemId = Number(m_list[0])
 				var value = Math.floor(m_list[1])
-				if(itemId == 202 || !item_cfg[itemId] || value != m_list[1]){
+				if(itemId == 202 || !item_cfg[itemId] || value != m_list[1] || value < 1){
 					cb("奖励错误 "+itemId+ "   "+value)
 					return
 				}
