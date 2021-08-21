@@ -4,6 +4,14 @@ var guildHandler = function(app) {
   	this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+//弹劾盟主
+guildHandler.prototype.impeachLead = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].impeachLead(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 //创建公会
 guildHandler.prototype.createGuild = function(msg, session, next) {
   var uid = session.uid

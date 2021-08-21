@@ -722,6 +722,12 @@
             console.log(data);
         });
       }
+      //弹劾盟主
+      var impeachLead = function() {
+        pomelo.request("area.guildHandler.impeachLead", {}, function(data) {
+            console.log(data);
+        });
+      }
       //创建公会
       var createGuild = function(name) {
         pomelo.request("area.guildHandler.createGuild", {name:name}, function(data) {
@@ -2974,6 +2980,7 @@
       <input id="test" type="button" value="红包列表" onclick="getGuildGiftList()"/>
       <input id="test" type="button" value="公会日志" onclick="getGuildLog()"/>
       <input id="test" type="button" value="公会排行" onclick="getGuildRank()"/>
+      <input id="test" type="button" value="弹劾盟主" onclick="impeachLead()"/>
     </div>
     <div class="g-button">
       宝藏BOSS : 
