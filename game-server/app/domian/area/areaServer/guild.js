@@ -295,7 +295,7 @@ module.exports = function() {
 	this.dissolveGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是同盟族长")
+			cb(false,"不是同盟盟主")
 			return
 		}
 		for(var targetUid in contributions[guildId]){
@@ -319,16 +319,16 @@ module.exports = function() {
 		self.releaseGuildCity(guildId)
 		cb(true)
 	}
-	//设置成副族长
+	//设置成副盟主
 	this.setGuildDeputy = function(uid,targetUid,cb) {
 		var guildId = self.players[uid]["gid"]
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是同盟族长")
+			cb(false,"不是同盟盟主")
 			return
 		}
 		if(guildList[guildId]["deputy"]){
-			cb(false,"同盟已有副族长")
+			cb(false,"同盟已有副盟主")
 			return
 		}
 		if(contributions[guildId][targetUid] == undefined){
@@ -338,7 +338,7 @@ module.exports = function() {
 		self.getPlayerKeyByUid(targetUid,"name",function(name) {
 			self.addGuildLog(guildId,{type:"deputy",uid:targetUid,name:name})
 		})
-		self.sendMail(targetUid,"成为副族长","您已被任命为【"+guildList[guildId]["name"]+"】的副族长")
+		self.sendMail(targetUid,"成为副盟主","您已被任命为【"+guildList[guildId]["name"]+"】的副盟主")
 		self.setGuildInfo(guildId,"deputy",targetUid)
 		cb(true)
 	}
@@ -347,27 +347,27 @@ module.exports = function() {
 		var guildId = self.players[uid]["gid"]
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是同盟族长")
+			cb(false,"不是同盟盟主")
 			return
 		}
 		if(guildList[guildId]["deputy"] != targetUid){
-			cb(false,"目标不是副族长")
+			cb(false,"目标不是副盟主")
 			return
 		}
 		if(contributions[guildId][targetUid] == undefined){
 			cb(false,"玩家不存在")
 			return
 		}
-		self.sendMail(targetUid,"卸任副族长","您已不是【"+guildList[guildId]["name"]+"】的副族长")
+		self.sendMail(targetUid,"卸任副盟主","您已不是【"+guildList[guildId]["name"]+"】的副盟主")
 		self.setGuildInfo(guildId,"deputy",0)
 		cb(true)
 	}
-	//设置成族长
+	//设置成盟主
 	this.setGuildLead = function(uid,targetUid,cb) {
 		var guildId = self.players[uid]["gid"]
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是同盟族长")
+			cb(false,"不是同盟盟主")
 			return
 		}
 		if(guildList[guildId]["deputy"] == targetUid || guildList[guildId]["lead"] == targetUid){
@@ -381,7 +381,7 @@ module.exports = function() {
 		self.getPlayerKeyByUid(targetUid,"name",function(name) {
 			self.addGuildLog(guildId,{type:"lead",uid:targetUid,name:name})
 		})
-		self.sendMail(targetUid,"成为族长","您已被任命为【"+guildList[guildId]["name"]+"】的族长")
+		self.sendMail(targetUid,"成为盟主","您已被任命为【"+guildList[guildId]["name"]+"】的盟主")
 		self.setGuildInfo(guildId,"lead",targetUid)
 		cb(true)
 	}
@@ -537,7 +537,7 @@ module.exports = function() {
 			return
 		}
 		if(guildList[guildId]["lead"] == uid){
-			cb(false,"族长不能退出同盟")
+			cb(false,"盟主不能退出同盟")
 			return
 		}
 		self.leaveGuild(guildId,uid,cb)
@@ -592,6 +592,45 @@ module.exports = function() {
 		self.cancelGuildPKAllTeam(guildId,uid)
 		if(cb)
 			cb(true)
+	}
+	//弹劾盟主
+	this.impeachLead = function(uid,cb) {
+		var guildId = self.players[uid]["gid"]
+		if(!guildId){
+			cb(false,"未加入同盟")
+			return
+		}
+		if(guildList[guildId]["lead"] === uid){
+			cb(false,"不能弹劾自己")
+			return
+		}
+		async.waterfall([
+			function(next) {
+				//判断盟主是否离线超过五天
+				self.getPlayerKeyByUid(guildList[guildId]["lead"],"offline",function(offline) {
+					offline = Number(offline)
+					if(!offline || (Date.now() - offline) < 5 * oneDayTime){
+						next("未满足弹劾条件")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				//设置盟主
+				if(guildList[guildId]["deputy"] === uid){
+					self.setGuildInfo(guildId,"deputy",0)
+				}
+				self.sendMail(guildList[guildId]["lead"],"盟主转让","您已被弹劾，不再是【"+guildList[guildId]["name"]+"】盟主")
+				var name = self.getLordAtt(uid,"name")
+				self.addGuildLog(guildId,{type:"lead",uid:uid,name:name})
+				self.sendMail(uid,"弹劾成功","您已成为【"+guildList[guildId]["name"]+"】的盟主")
+				self.setGuildInfo(guildId,"lead",uid)
+				cb(true)
+			}
+		],function(err) {
+			cb(false,err)
+		})
 	}
 	//添加日志
 	this.addGuildLog = function(guildId,info) {
