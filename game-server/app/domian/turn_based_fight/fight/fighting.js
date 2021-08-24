@@ -30,15 +30,16 @@ var model = function(atkTeam,defTeam,atkBooks,defBooks,otps) {
 	this.defTeam = defTeam			//守方阵容
 	this.atkBooks = atkBooks		//攻方天书
 	this.defBooks = defBooks		//守方天书
-	this.allTeam = 					//双方阵容
-	[{
-		team : atkTeam,
-		index : 0
-	},{
-		team : defTeam,
-		index : 0
-	}]
-	this.teamIndex = 0				//当前行动阵容
+	this.allHero = []				//所有英雄列表
+	// this.allTeam = 					//双方阵容
+	// [{
+	// 	team : atkTeam,
+	// 	index : 0
+	// },{
+	// 	team : defTeam,
+	// 	index : 0
+	// }]
+	// this.teamIndex = 0				//当前行动阵容
 	this.character = false 			//当前行动角色
 	this.next_character = []		//插入行动角色
 	this.diedList = []				//死亡列表
@@ -82,6 +83,8 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 				}
 			}
 		}
+		if(!atkTeam[i].isNaN)
+			this.allHero.push(atkTeam[i])
 	}
 	for(var i = 0;i < teamLength;i++){
 		if(!defTeam[i]){
@@ -112,6 +115,8 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 				}
 			}
 		}
+		if(!defTeam[i].isNaN)
+			this.allHero.push(defTeam[i])
 	}
 	this.atkTeamInfo["realms_survival"] = this.atkTeamInfo["realms"]
 	this.defTeamInfo["realms_survival"] = this.defTeamInfo["realms"]
@@ -204,9 +209,10 @@ model.prototype.nextRound = function() {
 	}
 	this.round++
 	// console.log("第 "+this.round+" 轮开始")
-	this.allTeam[0].index = 0
-	this.allTeam[1].index = 0
-	this.teamIndex = 0
+	for(var i = 0;i < this.allHero.length;i++){
+		this.allHero[i].isAction = false
+	}
+	// this.teamIndex = 0
 	fightRecord.push({type : "nextRound",round : this.round})
 	for(var i = 0; i <= roundBegin.length;i++){
 		if(this.atkBooks[roundBegin[i]])
@@ -261,26 +267,43 @@ model.prototype.run = function() {
 	if(!this.isFight){
 		return
 	}
-	if(this.allTeam[0].index == this.allTeam[0].team.length && this.allTeam[1].index == this.allTeam[1].team.length){
+	var index = -1
+	//找出下一个行动目标
+	for(var i = 0;i < this.allHero.length;i++){
+		if(!this.allHero[i].died && !this.allHero[i].isAction && !this.allHero[i].buffs["banish"]){
+			if(index == -1 || this.allHero[i].getTotalAtt("speed") > this.allHero[index].getTotalAtt("speed")){
+				index = i
+			}
+		}
+	}
+	if(index != -1){
+		this.character = this.allHero[index]
+		this.character.isAction = true
+		this.before()
+	}else{
 		this.endRound()
 		return
 	}
-	while(this.allTeam[this.teamIndex].index < 6){
-		this.character = this.allTeam[this.teamIndex].team[this.allTeam[this.teamIndex].index]
-		this.allTeam[this.teamIndex].index++
-		if(this.character.died || this.character.buffs["banish"]){
-			this.character = false
-		}else{
-			break
-		}
-	}
-	this.teamIndex = (this.teamIndex + 1) % 2
-	if(!this.character){
-		//查询不到角色，换阵营
-		this.run()
-	}else{
-		this.before()
-	}
+	// if(this.allTeam[0].index == this.allTeam[0].team.length && this.allTeam[1].index == this.allTeam[1].team.length){
+	// 	this.endRound()
+	// 	return
+	// }
+	// while(this.allTeam[this.teamIndex].index < 6){
+	// 	this.character = this.allTeam[this.teamIndex].team[this.allTeam[this.teamIndex].index]
+	// 	this.allTeam[this.teamIndex].index++
+	// 	if(this.character.died || this.character.buffs["banish"]){
+	// 		this.character = false
+	// 	}else{
+	// 		break
+	// 	}
+	// }
+	// this.teamIndex = (this.teamIndex + 1) % 2
+	// if(!this.character){
+	// 	//查询不到角色，换阵营
+	// 	this.run()
+	// }else{
+	// 	this.before()
+	// }
 }
 //回合前结算
 model.prototype.before = function() {

@@ -67,7 +67,7 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // }
 // console.log(atkTeam)
 
-// var atkTeam = [0,{"id":"305020","artifact":25,"star":15,"skill_clear_debuff":true},0,0,0,0,{}]
-// var defTeam = [0,{"id":"305020","artifact":25,"star":15,"buffRate":1},0,0,0,0,{}]
+// var atkTeam = [0,{"id":"105140","ad":5},0,0,0,0,{}]
+// var defTeam = [0,{"id":"305020","speed":1},{"id":"305020","speed":1},{"id":"305020","speed":1},0,0,{}]
 // var list = fightContorl.beginFight(atkTeam,defTeam,{})
 // fightRecord.explain()
