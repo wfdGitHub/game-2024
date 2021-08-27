@@ -158,6 +158,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		    "atk": lv_cfg[info.lv].atk,
 		    "phyDef": lv_cfg[info.lv].phyDef,
 		    "magDef": lv_cfg[info.lv].magDef,
+		    "speed" : lv_cfg[info.lv].speed
 		}
 		model.mergeData(info,lvInfo)
 	}
@@ -254,6 +255,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		    "atk": artifact_level[artifact].atk,
 		    "phyDef": artifact_level[artifact].phyDef,
 		    "magDef": artifact_level[artifact].magDef,
+		    "speed" : artifact_level[artifact].speed
 		}
 		model.mergeData(info,lvInfo)
 		for(let i = 0;i <= artifact;i++){
