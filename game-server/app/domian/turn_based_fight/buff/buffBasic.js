@@ -1,6 +1,9 @@
 //buff基础
 var fightRecord = require("../fight/fightRecord.js")
+var buffManager = require("./buffManager.js")
 var buffBasic = function(releaser,character,otps) {
+	this.fightRecord = fightRecord
+	this.buffManager = buffManager
 	this.buffId = otps.buffId
 	this.type = "buff"
 	this.buffArg = otps.buffArg
@@ -19,7 +22,7 @@ buffBasic.prototype.destroy = function(reason) {
 	var info = {type : "destroyBuff",character : this.character.id,buffId : this.buffId,name : this.name}
 	if(reason)
 		info.reason = reason
-	fightRecord.push(info)
+	this.fightRecord.push(info)
 	this.character.removeBuff(this.buffId)
 	this.clear()
 }

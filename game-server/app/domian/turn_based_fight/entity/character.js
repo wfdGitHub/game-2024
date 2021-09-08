@@ -1,6 +1,7 @@
 var skillManager = require("../skill/skillManager.js")
 var fightRecord = require("../fight/fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
+var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var model = function(otps) {
 	//=========身份===========//
 	this.name = otps.name		//角色名称
@@ -35,7 +36,7 @@ var model = function(otps) {
 	this.attInfo.reduction = otps["reduction"] || 0		//伤害减免
 	this.attInfo.healRate = otps["healRate"] || 0		//治疗暴击几率
 	this.attInfo.healAdd = otps["healAdd"] || 0			//被治疗加成
-	this.attInfo.speed = otps["speed"] || 0 			//速度值
+	this.attInfo.speed = (otps["speed"] || 0) + 100 	//速度值
 
 	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
 	this.surplus_health = otps.surplus_health			//剩余生命值比例
@@ -46,6 +47,8 @@ var model = function(otps) {
 	this.anyAnger = otps["anyAnger"] || false   //当前怒气小于4点时，也能施放技能，技能伤害降低15%*(4-当前怒气值)
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
+	//=========新战斗属性=======//
+	this.recover_settle = otps.recover_settle || false 		//释放持续恢复效果时，若目标身上已存在治疗效果，则立即结算原效果剩余回合数
 	//=========其他效果=======//
 	this.first_buff_list = []			//初始BUFF
 	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
@@ -198,9 +201,6 @@ var model = function(otps) {
 	this.forbidden_shield = otps.forbidden_shield || 0 //治疗时，若目标处于禁疗状态，转化为护盾比例
 	this.dizzy_clear_anger = otps.dizzy_clear_anger  //眩晕时清空目标所有怒气
 	//=========特殊属性=======//
-	this.buffRate = otps.buffRate || 0			//buff概率   若技能存在buff  以此代替buff本身概率
-	this.buffArg = otps.buffArg || 0			//buff参数   若技能存在buff  以此代替buff本身参数
-	this.buffDuration = otps.buffDuration || 0	//buff持续时间   若技能存在buff  以此代替buff本身持续时间
 	this.burn_duration = otps.burn_duration || 0 //灼烧持续时间增长
 	this.poison_duration = otps.poison_duration || 0 //中毒持续时间增长
 	this.poison_change_hp = otps.poison_change_hp || 0 //造成的中毒伤害转化为血量治疗自己。
@@ -262,11 +262,6 @@ var model = function(otps) {
 	if(otps.skill_later_skill){
 		this.skill_later_skill = JSON.parse(otps.skill_later_skill)	//释放技能后后追加技能
 	}
-	if(otps.skill_later_buff){
-		this.skill_later_buff = JSON.parse(otps.skill_later_buff)	//释放技能后附加buff
-		if(this.buffDuration)
-			this.skill_later_buff.duration = this.buffDuration
-	}
 
 	this.hit_turn_rate = otps.hit_turn_rate || 0	//受到直接伤害转化成生命值百分比
 	this.hit_turn_tg = otps.hit_turn_tg || 0		//受到直接伤害转化的生命值作用目标
@@ -289,11 +284,6 @@ var model = function(otps) {
 	this.normal_less_anger = otps.normal_less_anger || 0		//普攻后降低目标怒气
 	this.normal_attack_amp = otps.normal_attack_amp || 0		//普攻伤害加成
 	this.normal_burn_turn_heal = otps.normal_burn_turn_heal || 0//如果目标处于灼烧状态，普攻直接伤害的百分比转化为生命治疗自己
-	if(otps.normal_later_buff){
-		this.normal_later_buff = JSON.parse(otps.normal_later_buff)	//普攻后附加BUFF
-		if(this.buffDuration)
-			this.normal_later_buff.duration = this.buffDuration
-	}
 	this.add_d_s_crit = otps.add_d_s_crit						//追加普攻必定暴击
 	this.add_default_amp = otps.add_default_amp || 0			//追加普攻伤害加成
 	this.add_default_maxHp = otps.add_default_maxHp || 0		//追加普攻生命上限伤害
@@ -328,9 +318,9 @@ var model = function(otps) {
 	this.poison_add_forbidden = otps.poison_add_forbidden 		//中毒buff附加禁疗
 	this.banAnger_add_forbidden = otps.banAnger_add_forbidden 	//禁怒buff附加禁疗
 	if(otps.first_nocontrol)
-		this.first_buff_list.push({buffId : "immune",duration : 1,"refreshType" : "roundOver"})	//首回合免控
+		this.first_buff_list.push({buffId : "immune",duration : 1})	//首回合免控
 	if(otps.zf_sjms)
-		this.first_buff_list.push({buffId : "immune",duration : 2,"refreshType" : "roundOver"})	//前2回合免控
+		this.first_buff_list.push({buffId : "immune",duration : 2})	//前2回合免控
 	this.first_crit = otps.first_crit			//首回合必定暴击
 	this.first_amp = otps.first_amp || 0		//首回合伤害加成
 	if(this.first_crit)
@@ -357,13 +347,6 @@ var model = function(otps) {
 	//=========状态=======//
 	this.died = this.attInfo.maxHP && this.attInfo.hp ? false : true 	//死亡状态
 	this.buffs = {}					//buff列表
-	this.dizzy = false				//眩晕
-	this.silence = false			//沉默
-	this.disarm = false				//麻痹
-	this.forbidden = false			//禁疗
-	this.poison = false				//中毒
-	this.burn = false				//燃烧
-	this.banAnger = false			//禁怒
 	//=========属性加成=======//
 	this.self_adds = {}							//自身百分比加成属性
 	this.team_adds = {}							//全队百分比加成属性
@@ -415,29 +398,36 @@ var model = function(otps) {
 			this.attInfo.magDef += Math.ceil(otps.magDef_grow * lvdif) || 0
 	}
 	//=========技能=======//
-	if(otps.defaultSkill){
+	if(otps.defaultSkill)
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
-		if(this.buffDuration)
-			this.defaultSkill.duration = this.buffDuration
-		if(this.buffDuration)
-			this.defaultSkill.duration = this.buffDuration
-	}
 	if(otps.angerSkill){
 		this.angerSkill = skillManager.createSkill(otps.angerSkill,this)		//怒气技能
 		this.angerSkill.isAnger = true
-		if(this.buffRate)
-			this.angerSkill.buffRate = this.buffRate
-		if(this.buffArg)
-			this.angerSkill.buffArg = this.buffArg
-		if(this.buffDuration)
-			this.angerSkill.duration = this.buffDuration
 	}
+	if(otps.skill_buff1)
+		this.angerSkill.addBuff(otps.skill_buff1)				//技能buff1
+	if(otps.skill_buff2)
+		this.angerSkill.addBuff(otps.skill_buff2)				//技能buff2
+	if(otps.skill_buff3)
+		this.angerSkill.addBuff(otps.skill_buff3)				//技能buff3
+	if(otps.normal_buff1)
+		this.defaultSkill.addBuff(otps.normal_buff1) 			//普攻buff1
+	if(otps.normal_buff2)
+		this.defaultSkill.addBuff(otps.normal_buff2) 			//普攻buff2
+	if(otps.normal_buff3)
+		this.defaultSkill.addBuff(otps.normal_buff3) 			//普攻buff3
 	this.target_minHP = otps.target_minHP		//单体输出武将的所有攻击优先攻击敌方当前血量最低的武将
 	if(this.target_minHP){
 		this.defaultSkill.targetType = "enemy_minHP"
 		this.angerSkill.targetType = "enemy_minHP"
 		if(this.kill_later_skill && this.kill_later_skill.targetType == "enemy_1"){
 			this.kill_later_skill.targetType = "enemy_minHP"
+		}
+	}
+	if(this.atkcontrol){
+		for(var id in this.angerSkill.skill_buffs){
+			if(this.angerSkill.skill_buffs[id].buffId == "disarm" || this.angerSkill.skill_buffs[id].buffId == "dizzy" || this.angerSkill.skill_buffs[id].buffId == "silence")
+				this.angerSkill.skill_buffs[id].buffRate += this.angerSkill.skill_buffs[id].buffRate * this.atkcontrol
 		}
 	}
 }
@@ -561,7 +551,7 @@ model.prototype.before = function() {
 	this.action_flag = true
 	if(this.before_clear_debuff && this.fighting.seeded.random("判断BUFF命中率") < this.before_clear_debuff){
 		for(var i in this.buffs)
-			if(this.buffs[i].debuff)
+			if(buff_cfg[i].debuff)
 				this.buffs[i].destroy("clear")
 	}
 	if(this.action_clean_debuff){
@@ -574,18 +564,18 @@ model.prototype.before = function() {
 	}
 	//伤害BUFF刷新
 	for(var i in this.buffs)
-		if(this.buffs[i].refreshType == "before")
+		if(buff_cfg[i].refreshType == "before")
 			this.buffs[i].update()
 	//伤害BUFF刷新
 	for(var i in this.buffs)
-		if(this.buffs[i].refreshType == "before_2")
+		if(buff_cfg[i].refreshType == "before_2")
 			this.buffs[i].update()
 }
 //行动结束后刷新
 model.prototype.after = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
-		if(this.buffs[i].refreshType == "after")
+		if(buff_cfg[i].refreshType == "after")
 			this.buffs[i].update()
 	if(this.maxHP_loss > 0){
 		this.onHPLoss()
@@ -598,7 +588,7 @@ model.prototype.roundOver = function() {
 		return
 	//状态BUFF刷新
 	for(var i in this.buffs)
-		if(this.buffs[i].refreshType == "roundOver")
+		if(buff_cfg[i].refreshType == "roundOver")
 			this.buffs[i].update()
 	if(this.round_same_hit_red)
 		this.round_same_value = {}
@@ -634,7 +624,7 @@ model.prototype.roundOver = function() {
 model.prototype.removeControlBuff = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
-		if(this.buffs[i].control)
+		if(buff_cfg[i].control)
 			this.buffs[i].destroy("clear")
 }
 //移除非控制类负面状态
@@ -642,7 +632,7 @@ model.prototype.removeDeBuffNotControl = function() {
 	var count = 0
 	//状态BUFF刷新
 	for(var i in this.buffs){
-		if(this.buffs[i].debuff && !this.buffs[i].control){
+		if(buff_cfg[i].debuff && !buff_cfg[i].control){
 			count++
 			this.buffs[i].destroy("clear")
 		}
@@ -653,21 +643,21 @@ model.prototype.removeDeBuffNotControl = function() {
 model.prototype.removeIntensifyBuff = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
-		if(this.buffs[i].intensify)
+		if(buff_cfg[i].intensify)
 			this.buffs[i].destroy("dispel")
 }
 //驱散负面状态
 model.prototype.removeDeBuff = function() {
 	//状态BUFF刷新
 	for(var i in this.buffs)
-		if(this.buffs[i].debuff)
+		if(buff_cfg[i].debuff)
 			this.buffs[i].destroy("dispel")
 }
 //获得负面状态数量
 model.prototype.getDebuffNum = function() {
 	var num = 0
 	for(var i in this.buffs)
-		if(this.buffs[i].debuff)
+		if(buff_cfg[i].debuff)
 			num++
 		return num
 }
@@ -675,14 +665,14 @@ model.prototype.getDebuffNum = function() {
 model.prototype.getIntensifyNum = function() {
 	var num = 0
 	for(var i in this.buffs)
-		if(this.buffs[i].intensify)
+		if(buff_cfg[i].intensify)
 			num++
 		return num
 }
 //清除指定角色buff
 model.prototype.clearReleaserBuff = function(releaser) {
 	for(var i in this.buffs)
-		if(this.buffs[i].debuff &&this.buffs[i].releaser == releaser)
+		if(buff_cfg[i].debuff &&this.buffs[i].releaser == releaser)
 			this.buffs[i].destroy("clear")
 }
 //清除所有buff
@@ -829,6 +819,16 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 							}).bind(this))
 						}
 					}
+					//寒冰护盾
+					if(this.buffs["cold_shield"]){
+						if(this.fighting.seeded.random("cold_shield") < 0.5){
+							callbacks.push((function(){
+								buffManager.createBuff(this,attacker,{buffId : "cold",duration : 2})
+							}).bind(this))
+						}
+					}
+					if(this.buffs["frozen"])
+						this.buffs["frozen"].onHit()
 				}
 			}
 		}
@@ -856,7 +856,7 @@ model.prototype.onHeal = function(releaser,info) {
 	info.value = Math.floor(info.value * (1 + this.attInfo.healAdd / 10000))
 	if(info.maxRate)
 		info.value += Math.floor(this.attInfo.maxHP * info.maxRate)
-	if(this.forbidden)
+	if(this.buffs["forbidden"])
 		info.value = Math.floor(info.value * 0.3)
 	info.realValue = this.addHP(info.value)
 	if(releaser && info.realValue > 0)
@@ -940,7 +940,7 @@ model.prototype.lessHP = function(info) {
 }
 //恢复怒气
 model.prototype.addAnger = function(value,hide) {
-	if(this.banAnger){
+	if(this.buffs["banAnger"]){
 		value = 0
 		fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,hide : hide,banAnger : true})
 	}else{
@@ -973,6 +973,20 @@ model.prototype.getTotalAtt = function(name) {
 	if(this.buffs[name]){
 		value += this.buffs[name].getValue()
 	}
+	switch(name){
+		case "speed":
+			if(this.buffs["cold"])
+				value += this.buffs["cold"].getValue()
+		break
+		case "atk":
+			if(this.buffs["polang"])
+				value += Math.floor(value * this.buffs["polang"].getValue())
+		break
+		case "crit":
+			if(this.buffs["polang"])
+				value += this.buffs["polang"].getValue()
+		break
+	}
 	return value
 }
 //获取信息
@@ -1003,25 +1017,6 @@ model.prototype.getInfo = function() {
 	info.needAnger = this.needAnger
 	info.curAnger = this.curAnger
 	return info
-}
-//获取战斗力  comat effectiveness
-model.prototype.getCE = function() {
-	var ce = 0
-	ce += this.attInfo.atk
-	ce += this.attInfo.maxHP / 6
-	ce += this.attInfo.phyDef / 3
-	ce += this.attInfo.magDef / 3
-	ce += this.attInfo.crit * 10000
-	ce += this.attInfo.critDef * 10000
-	ce += this.attInfo.slayDef * 10000
-	ce += this.attInfo.hitRate * 10000
-	ce += this.attInfo.dodgeRate * 10000
-	ce += this.attInfo.amplify * 10000
-	ce += this.attInfo.reduction * 10000
-	ce += this.attInfo.healRate * 10000
-	ce += this.attInfo.healAdd * 10000
-	ce = Math.floor(ce)
-	return ce
 }
 model.prototype.getSimpleInfo = function() {
 	var info = {}

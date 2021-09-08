@@ -320,8 +320,8 @@ model.prototype.action = function() {
 			fightRecord.push({type:"show_tag",id:this.character.id,tag:"less_anger_skip"})
 			this.character.addAnger(4)
 		}else{
-			if(!this.character.dizzy){
-				if(!this.character.silence && this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
+			if(!this.character.buffs["dizzy"] && !this.character.buffs["frozen"]){
+				if(!this.character.buffs["silence"] && this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
 					skill = this.character.angerSkill
 					needValue = this.character.needAnger
 					if(this.character.allAnger){
@@ -343,7 +343,7 @@ model.prototype.action = function() {
 					if(needValue)
 						this.character.lessAnger(needValue)
 				}else{
-					if(!this.character.disarm){
+					if(!this.character.buffs["disarm"]){
 						skill = this.character.defaultSkill
 						this.character.addAnger(2,true)
 					}

@@ -128,6 +128,13 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			info.value +=  Math.floor(attacker.skill_crit_maxHp * target.attInfo.maxHP)
 		}
 	}
+	//破冰一击
+	if(skill.thawing_frozen && target.buffs["frozen"]){
+		target.buffs["frozen"].destroy()
+		console.log(info.value)
+		info.value *= 2
+		console.log(info.value)
+	}
 	//种族克制
 	var restrainValue = restrainMap[attacker.realm+"_"+target.realm] || 0
 	info.value += Math.floor(info.value * restrainValue)

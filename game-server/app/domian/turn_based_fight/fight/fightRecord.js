@@ -183,6 +183,9 @@ var model = function() {
 				case "show_tag":
 					console.log(heroNames[info.id]+" show_tag "+info.tag)
 				break
+				case "buff_num":
+					console.log(heroNames[info.id]+" "+info.buffId+" 剩余"+info.num+"层")
+				break
 				default:
 					console.log("类型未定义 : ",info.type)
 			}
