@@ -278,7 +278,9 @@ model.useSkill = function(skill,chase) {
 	if(!chase && diedFlag && skill.killRet && !skill.character.died){
 		this.useSkill(skill,false)
 	}
-
+	if(!chase && skill.isAnger && !skill.character.died && skill.character.skill_again && this.seeded.random("skill_again") < skill.character.skill_again){
+		this.useSkill(skill,true)
+	}
 }
 //伤害技能
 model.useAttackSkill = function(skill,chase) {
@@ -614,6 +616,10 @@ model.useAttackSkill = function(skill,chase) {
 			//被灼烧敌人攻击时回复怒气
 			if(targets[i].burn_hit_anger && skill.character.buffs["burn"]){
 				targets[i].addAnger(targets[i].burn_hit_anger,skill.skillId)
+			}
+			//被寒冷敌人攻击时回复怒气
+			if(targets[i].cold_hit_anger && skill.character.buffs["cold"]){
+				targets[i].addAnger(targets[i].cold_hit_anger,skill.skillId)
 			}
 			//攻击受到眩晕效果的目标时，额外降低目标怒气。
 			if(skill.character.dizzy_hit_anger && targets[i].buffs["dizzy"]){

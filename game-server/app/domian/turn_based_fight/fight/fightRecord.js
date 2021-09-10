@@ -44,6 +44,9 @@ var model = function() {
 							if(info.targets[i].kill){
 								str += "\t击杀目标!"
 							}
+							if(info.targets[i].seckill){
+								str += "\t秒杀!"
+							}
 							if(info.targets[i].oneblood)
 								str += "\033[32m  绝处逢生\033[0m"
 							str += "\033[0m"
@@ -113,6 +116,9 @@ var model = function() {
 							str += "\t剩余"+info.targets[i].curValue+"/"+info.targets[i].maxHP
 							if(info.targets[i].kill){
 								str += "\t击杀目标!"
+							}
+							if(info.targets[i].seckill){
+								str += "\t秒杀!"
 							}
 							if(info.targets[i].oneblood)
 								str += "\033[32m  绝处逢生\033[0m"

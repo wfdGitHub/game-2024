@@ -12,7 +12,6 @@ var model = function(otps,character) {
 	this.skill_anger_s = 0 								//自身怒气恢复值
 	this.skill_anger_a = 0 								//全队怒气恢复值
 	this.skill_less_anger = 0 							//降低目标怒气值
-	this.cold_to_frozen = true
 	this.otps = otps
 }
 model.prototype.init = function() {
@@ -54,10 +53,10 @@ model.prototype.init = function() {
 	}
 }
 model.prototype.addBuff = function(buffStr) {
-	console.log(buffStr)
 	var buff = JSON.parse(buffStr)
+	if(this.character.buffDuration)
+		buff.duration += this.character.buffDuration
 	this.skill_buffs[buff.buffId] = buff
-	console.log(this.skill_buffs)
 }
 model.prototype.getInfo = function() {
 	var info = {

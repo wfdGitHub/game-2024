@@ -54,6 +54,8 @@ model.prototype.init = function() {
 }
 model.prototype.addBuff = function(buffStr) {
 	var buff = JSON.parse(buffStr)
+	if(this.character.buffDuration)
+		buff.duration += this.character.buffDuration
 	this.skill_buffs[buff.buffId] = buff
 }
 model.prototype.getInfo = function() {

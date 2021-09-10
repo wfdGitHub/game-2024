@@ -48,10 +48,27 @@ var model = function(otps) {
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
 	//=========新战斗属性=======//
+	this.kill_buffs = {}
+
+	this.tmpAmp = 0 										//临时伤害加成
 	this.recover_settle = otps.recover_settle || false 		//释放持续恢复效果时，若目标身上已存在治疗效果，则立即结算原效果剩余回合数
+	this.buffDuration = otps.buffDuration || 0 				//buff回合数增加
+	this.remove_one_lower= otps.remove_one_lower || false   //行动前移除一个减益效果
+	this.cold_hit_anger = otps.cold_hit_anger || 0 			//被寒冷状态下的敌人攻击时恢复怒气
+	this.skill_again = otps.skill_again || 0 				//释放技能后再次释放概率
+	this.add_anger_maxHp = otps.add_anger_maxHp || 0 		//追加技能伤害加成
+	this.kill_buff1 = otps.kill_buff1 						//击杀后触发buff1
+	this.kill_buff2 = otps.kill_buff2 						//击杀后触发buff2
+	this.thawing_frozen = otps.thawing_frozen || 0 			//破冰一击伤害加成
+	this.polang_heal = otps.polang_heal || 0 				//破浪每层回血
+	this.polang_power = otps.polang_power || 0 				//破浪每层最大生命值伤害
+	this.skill_anger_maxAtk = otps.skill_anger_maxAtk || 0 
+	this.seckill = otps.seckill || false 					//释放技能时生命值低时秒杀
+
 	//=========其他效果=======//
 	this.first_buff_list = []			//初始BUFF
 	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
+	this.skill_heal_maxHp = otps.skill_heal_maxHp || 0		//释放技能后恢复自身最大生命值
 	//=========战法效果=======//
 	this.zf_amp = 0 										//战法伤害加成
 	this.less_anger_skip = otps.less_anger_skip ||  false 	//行动前，如果自己怒气小于4点,则会跳过行动，并使自身怒气增加4点
@@ -403,6 +420,8 @@ var model = function(otps) {
 	if(otps.angerSkill){
 		this.angerSkill = skillManager.createSkill(otps.angerSkill,this)		//怒气技能
 		this.angerSkill.isAnger = true
+		if(this.skill_heal_maxHp)
+			this.angerSkill.self_heal = this.skill_heal_maxHp
 	}
 	if(otps.skill_buff1)
 		this.angerSkill.addBuff(otps.skill_buff1)				//技能buff1
@@ -433,6 +452,12 @@ var model = function(otps) {
 }
 model.prototype.init = function(fighting) {
 	this.fighting = fighting
+	if(this.kill_buff1)
+		this.addKillBuff(this.kill_buff1)
+	if(this.kill_buff2)
+		this.addKillBuff(this.kill_buff2)
+	if(this.seckill)
+		this.angerSkill.seckill = true
 }
 //百分比属性加成
 model.prototype.calAttAdd = function(team_adds) {
@@ -562,6 +587,8 @@ model.prototype.before = function() {
 			fightRecord.push(tmpRecord)
 		}
 	}
+	if(this.remove_one_lower)
+		this.removeOneLower()
 	//伤害BUFF刷新
 	for(var i in this.buffs)
 		if(buff_cfg[i].refreshType == "before")
@@ -639,6 +666,15 @@ model.prototype.removeDeBuffNotControl = function() {
 	}
 	return count
 }
+//解除一个减益状态
+model.prototype.removeOneLower = function() {
+	for(var i in this.buffs){
+		if(buff_cfg[i].lower){
+			this.buffs[i].destroy("clear")
+			break
+		}
+	}
+}
 //驱散增益状态
 model.prototype.removeIntensifyBuff = function() {
 	//状态BUFF刷新
@@ -680,6 +716,10 @@ model.prototype.diedClear = function() {
 	this.curAnger = 0
 	for(var i in this.buffs)
 		this.buffs[i].destroy()
+}
+model.prototype.addKillBuff = function(buffStr) {
+	var buff = JSON.parse(buffStr)
+	this.kill_buffs[buff.buffId] = buff
 }
 //受到伤害
 model.prototype.onHit = function(attacker,info,callbacks) {
@@ -743,7 +783,13 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 		if(this.died){
 			info.overflow = info.value - info.realValue
 			info.kill = true
-			attacker.kill(this)
+			if(callbacks){
+				callbacks.push((function(){
+					if(!attacker.died){
+						attacker.kill(this)
+					}
+				}).bind(this))
+			}
 			if(callbacks){
 				//受到直接伤害死亡时，对击杀自身的英雄造成最大生命值伤害
 				if(this.died_maxHp_damage){
@@ -758,7 +804,7 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 				}
 			}
 		}else{
-			if(info.seckillRate && !this.neglect_seckill && (this.attInfo.hp / this.attInfo.maxHP) < 0.2 && (attacker.attInfo.atk * 3 > this.attInfo.hp) && this.fighting.seeded.random("秒杀判定") < info.seckillRate){
+			if(info.seckillRate && !this.neglect_seckill && (this.attInfo.hp / this.attInfo.maxHP) < 0.15){
 				this.onDie()
 				info.seckill = true
 				info.curValue = 0
@@ -895,6 +941,23 @@ model.prototype.friendDied = function(friend){
 //击杀目标
 model.prototype.kill = function(target) {
     // console.log(this.name+"击杀"+target.name)
+    if(this.kill_buffs){
+		for(var buffId in this.kill_buffs){
+			var buff = this.kill_buffs[buffId]
+			var buffTargets = this.fighting.locator.getBuffTargets(this,buff.buff_tg)
+			var buffRate = buff.buffRate
+			var buffArg = buff.buffArg
+			var duration = buff.duration
+			for(var i = 0;i < buffTargets.length;i++){
+				if(buffTargets[i].died){
+					break
+				}
+				if(this.fighting.seeded.random("kill_buffs") < buffRate){
+					buffManager.createBuff(this,buffTargets[i],{buffId : buffId,buffArg : buffArg,duration : duration})
+				}
+			}
+		}
+    }
 }
 //复活
 model.prototype.resurgence = function(rate) {
@@ -980,11 +1043,11 @@ model.prototype.getTotalAtt = function(name) {
 		break
 		case "atk":
 			if(this.buffs["polang"])
-				value += Math.floor(value * this.buffs["polang"].getValue())
+				value += Math.floor(value * this.buffs["polang"].getValue() * 0.05)
 		break
 		case "crit":
 			if(this.buffs["polang"])
-				value += this.buffs["polang"].getValue()
+				value += this.buffs["polang"].getValue() * 0.05
 		break
 	}
 	return value

@@ -131,9 +131,10 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	//破冰一击
 	if(skill.thawing_frozen && target.buffs["frozen"]){
 		target.buffs["frozen"].destroy()
-		console.log(info.value)
-		info.value *= 2
-		console.log(info.value)
+		var tmpRate = skill.thawing_frozen
+		if(skill.character.thawing_frozen)
+			tmpRate += skill.character.thawing_frozen
+		info.value += Math.floor(tmpRate * info.value)
 	}
 	//种族克制
 	var restrainValue = restrainMap[attacker.realm+"_"+target.realm] || 0
@@ -246,6 +247,11 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 				info.realDamage = Math.floor(target.attInfo.maxHP * attacker.add_default_maxHp)
 				info.value += info.realDamage
 			}
+		}else{
+			if(attacker.add_anger_maxHp){
+				info.realDamage = Math.floor(target.attInfo.maxHP * attacker.add_anger_maxHp)
+				info.value += info.realDamage
+			}
 		}
 	}else{
 		if(attacker.maxHP_damage || skill.maxHP_damage){
@@ -257,6 +263,10 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 				info.value += info.realDamage
 			}
 		}
+	}
+	if(skill.isAnger && attacker.polang_power && attacker.buffs["polang"]){
+		info.realDamage = Math.floor(target.attInfo.maxHP * attacker.buffs["polang"].getValue() * attacker.polang_power)
+		info.value += info.realDamage
 	}
 	//减伤判断
 	if(target.reduction_over){
