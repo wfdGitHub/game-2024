@@ -76,7 +76,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		if(attacker.attInfo.hp < attacker.attInfo.maxHP && attacker.low_hp_crit){
 			crit += Math.floor((attacker.attInfo.maxHP-attacker.attInfo.hp)/attacker.attInfo.maxHP * 10) * attacker.low_hp_crit
 		}
-		if(attacker.must_crit || this.seeded.random("暴击判断") < crit){
+		if(attacker.must_crit || attacker.buffs["baonu"] || this.seeded.random("暴击判断") < crit){
 			info.crit = true
 		}
 	}
@@ -122,12 +122,6 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(addAmp){
 		info.value = Math.round(info.value * (1+addAmp))
 	}
-	if(info.crit){
-		info.value = Math.round(info.value * (1.5 + attacker.getTotalAtt("slay") - target.getTotalAtt("slayDef")))
-		if(skill.isAnger && attacker.skill_crit_maxHp){
-			info.value +=  Math.floor(attacker.skill_crit_maxHp * target.attInfo.maxHP)
-		}
-	}
 	//破冰一击
 	if(skill.thawing_frozen && target.buffs["frozen"]){
 		target.buffs["frozen"].destroy()
@@ -135,6 +129,16 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		if(skill.character.thawing_frozen)
 			tmpRate += skill.character.thawing_frozen
 		info.value += Math.floor(tmpRate * info.value)
+	}
+	if(info.crit){
+		info.value = Math.round(info.value * (1.5 + attacker.getTotalAtt("slay") - target.getTotalAtt("slayDef")))
+		if(skill.isAnger && attacker.skill_crit_maxHp){
+			info.value +=  Math.floor(attacker.skill_crit_maxHp * target.attInfo.maxHP)
+		}
+		if(target.buffs["crit_seal"]){
+			info.value +=  Math.floor(0.08 * target.attInfo.maxHP)
+			target.buffs["crit_seal"].useBuff()
+		}
 	}
 	//种族克制
 	var restrainValue = restrainMap[attacker.realm+"_"+target.realm] || 0
@@ -155,6 +159,10 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	//判断锁定
 	if(target.buffs["suoding"]){
 		info.value = Math.floor(info.value * 1.2)
+	}
+	//判断沙尘暴
+	if(target.buffs["sand"] && target.buffs["sand"].releaser == attacker){
+		info.value = Math.floor(info.value * 1.3)
 	}
 	//免伤BUFF
 	if(target.buffs["armor"]){

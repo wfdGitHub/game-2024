@@ -94,6 +94,14 @@ var model = function() {
 						str += "\033[32m  绝处逢生\033[0m"
 					console.log(str)
 				break
+				case "heat_halo_damage":
+					var str = "\033[36m炙热光环伤害 \033[0m"
+					for(var i = 0;i < info.targets.length;i++){
+						str += "\n  \033[31m对"+heroNames[info.targets[i].id]+"\t"
+						str += "造成"+ info.targets[i].value+"点伤害"
+					}
+					console.log(str)
+				break
 				case "recoverHeal":
 					//生命值恢复
 					var str = "\033[32m"+heroNames[info.id]+"恢复"+info.value+"点生命值\033[0m"

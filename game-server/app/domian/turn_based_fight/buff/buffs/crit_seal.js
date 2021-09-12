@@ -1,4 +1,4 @@
-//寒冷buff
+//暴击印记buff
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
@@ -17,20 +17,31 @@ var model = function(releaser,character,otps) {
 		buff.fightRecord.push(recordInfo)
 	}
 	buff.overlay = function(releaser,otps) {
-		this.releaser = releaser
-		if(otps.duration > this.duration)
-			this.duration = otps.duration
-		list[id++] = {duration : otps.duration}
-		count++
-		if(count >= 3){
-			buff.destroy()
-			buff.buffManager.createBuff(buff.releaser,buff.character,{buffId : "frozen",duration : 2})
+		for(var i = 0;i < otps.buffArg;i++){
+			if(count >= 5)
+				break
+			this.releaser = releaser
+			if(otps.duration > this.duration)
+				this.duration = otps.duration
+			list[id++] = {duration : otps.duration}
+			count++
 		}
 		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
 		buff.fightRecord.push(recordInfo)
 	}
-	buff.getValue = function() {
-		return Math.floor(this.character.attInfo.speed * count * -0.05)
+	//消耗1层暴击印记
+	buff.useBuff = function() {
+		for(var i in list){
+			delete list[i]
+			count--
+			break
+		}
+		if(count <= 0){
+			buff.destroy()
+		}else{
+			var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
+			buff.fightRecord.push(recordInfo)
+		}
 	}
 	buff.overlay(releaser,otps)
 	return buff

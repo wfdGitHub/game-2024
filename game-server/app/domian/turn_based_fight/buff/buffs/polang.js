@@ -18,18 +18,21 @@ var model = function(releaser,character,otps) {
 				count--
 			}
 		}
-		var info = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
-		buff.fightRecord.push(info)
+		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
+		buff.fightRecord.push(recordInfo)
 	}
 	buff.overlay = function(releaser,otps) {
-		if(otps.duration > this.duration)
-			this.duration = otps.duration
 		for(var i = 0;i < otps.buffArg;i++){
 			if(count >= 20)
 				break
+			this.releaser = releaser
+			if(otps.duration > this.duration)
+				this.duration = otps.duration
 			list[id++] = {duration : otps.duration}
 			count++
 		}
+		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
+		buff.fightRecord.push(recordInfo)
 	}
 	buff.getValue = function() {
 		return count

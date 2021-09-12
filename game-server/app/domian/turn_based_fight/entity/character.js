@@ -875,6 +875,13 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 					}
 					if(this.buffs["frozen"])
 						this.buffs["frozen"].onHit()
+					if(this.buffs["burn_shield"]){
+						if(this.fighting.seeded.random("burn_shield") < 0.3){
+							callbacks.push((function(){
+								buffManager.createBuff(this,attacker,{"buffId" : "burn","buffArg":0.2,"duration":2})
+							}).bind(this))
+						}
+					}
 				}
 			}
 		}
@@ -1048,6 +1055,10 @@ model.prototype.getTotalAtt = function(name) {
 		case "crit":
 			if(this.buffs["polang"])
 				value += this.buffs["polang"].getValue() * 0.05
+		break
+		case "slay":
+			if(this.buffs["baonu"])
+				value += 0.2
 		break
 	}
 	return value

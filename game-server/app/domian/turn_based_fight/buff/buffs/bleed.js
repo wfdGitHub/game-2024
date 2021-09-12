@@ -1,4 +1,4 @@
-//寒冷buff
+//流血buff
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
@@ -6,6 +6,10 @@ var model = function(releaser,character,otps) {
 	var list = {}
 	var count = 0
 	buff.refresh = function() {
+		var info = {type : "other_damage",id : buff.character.id,d_type:"phy"}
+		info.value = Math.floor(buff.character.attInfo.maxHP * count * 0.02)
+		var recordInfo = buff.character.onHit(buff.releaser,info)
+		buff.fightRecord.push(recordInfo)
 		for(var i in list){
 			list[i].duration--
 			if(list[i].duration <= 0){
@@ -17,20 +21,17 @@ var model = function(releaser,character,otps) {
 		buff.fightRecord.push(recordInfo)
 	}
 	buff.overlay = function(releaser,otps) {
-		this.releaser = releaser
-		if(otps.duration > this.duration)
-			this.duration = otps.duration
-		list[id++] = {duration : otps.duration}
-		count++
-		if(count >= 3){
-			buff.destroy()
-			buff.buffManager.createBuff(buff.releaser,buff.character,{buffId : "frozen",duration : 2})
+		for(var i = 0;i < otps.buffArg;i++){
+			if(count >= 5)
+				break
+			this.releaser = releaser
+			if(otps.duration > this.duration)
+				this.duration = otps.duration
+			list[id++] = {duration : otps.duration}
+			count++
 		}
 		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
 		buff.fightRecord.push(recordInfo)
-	}
-	buff.getValue = function() {
-		return Math.floor(this.character.attInfo.speed * count * -0.05)
 	}
 	buff.overlay(releaser,otps)
 	return buff
