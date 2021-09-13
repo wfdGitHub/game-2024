@@ -33,6 +33,9 @@ var model = function(releaser,character,otps) {
 		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
 		buff.fightRecord.push(recordInfo)
 	}
+	buff.getValue = function() {
+		return count
+	}
 	buff.overlay(releaser,otps)
 	return buff
 }

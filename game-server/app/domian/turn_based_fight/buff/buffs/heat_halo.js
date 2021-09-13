@@ -14,6 +14,10 @@ var model = function(releaser,character,otps,fighting) {
 		for(var i = 0;i < targets.length;i++){
 			if(!targets[i].died){
 				info.targets.push(targets[i].onHit(buff.releaser,{type : "burnDamage",value : buff.damage,d_type:"mag"}))
+				if(buff.releaser.heat_halo_burn)
+					buff.buffManager.createBuff(buff.releaser,targets[i],{"buffId":"burn","buffArg":0.2,"duration":2})
+				if(buff.releaser.heat_halo_less)
+					targets[i].lessAnger(1)
 			}
 		}
 		buff.fightRecord.push(info)

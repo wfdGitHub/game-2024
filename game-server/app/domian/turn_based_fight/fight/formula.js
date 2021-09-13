@@ -1,3 +1,4 @@
+var buffManager = require("../buff/buffManager.js")
 var formula = function(seeded,otps={}) {
 	this.seeded = seeded
 	this.phyRate = otps.phyRate || 1
@@ -130,8 +131,22 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			tmpRate += skill.character.thawing_frozen
 		info.value += Math.floor(tmpRate * info.value)
 	}
+	//水龙冲击
+	if(skill.thawing_burn && target.buffs["burn"]){
+		target.buffs["burn"].destroy()
+		var tmpRate = skill.thawing_burn
+		if(skill.character.thawing_burn)
+			tmpRate += skill.character.thawing_burn
+		info.value += Math.floor(tmpRate * info.value)
+		if(attacker.thawing_burn_hudun){
+			buffManager.createBuff(attacker,attacker,{buffId : "shield",buffArg : attacker.thawing_burn_hudun,duration : 1})
+		}
+		if(attacker.thawing_burn_anger)
+			attacker.addAnger(attacker.thawing_burn_anger)
+	}
 	if(info.crit){
 		info.value = Math.round(info.value * (1.5 + attacker.getTotalAtt("slay") - target.getTotalAtt("slayDef")))
+		
 		if(skill.isAnger && attacker.skill_crit_maxHp){
 			info.value +=  Math.floor(attacker.skill_crit_maxHp * target.attInfo.maxHP)
 		}
@@ -238,6 +253,10 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(attacker.forbidden_amp && target.buffs["forbidden"]){
 		info.value += Math.floor(info.value * attacker.forbidden_amp)
 	}
+	//对流血状态下的目标伤害提升
+	if(attacker.bleed_amp && target.buffs["bleed"]){
+		info.value += Math.floor(info.value * attacker.bleed_amp)
+	}
 	//场景伤害加成
 	if(skill.damageType == "phy"){
 		info.value = Math.floor(info.value * this.phyRate)
@@ -272,9 +291,16 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			}
 		}
 	}
-	if(skill.isAnger && attacker.polang_power && attacker.buffs["polang"]){
-		info.realDamage = Math.floor(target.attInfo.maxHP * attacker.buffs["polang"].getValue() * attacker.polang_power)
-		info.value += info.realDamage
+	//技能最大生命值加成
+	if(skill.isAnger){
+		if(attacker.polang_power && attacker.buffs["polang"]){
+			info.realDamage = Math.floor(target.attInfo.maxHP * attacker.buffs["polang"].getValue() * attacker.polang_power)
+			info.value += info.realDamage
+		}
+		if(attacker.skill_bleed_maxHp && target.buffs["bleed"]){
+			info.realDamage = Math.floor(target.attInfo.maxHP * target.buffs["bleed"].getValue() * attacker.skill_bleed_maxHp)
+			info.value += info.realDamage
+		}
 	}
 	//减伤判断
 	if(target.reduction_over){

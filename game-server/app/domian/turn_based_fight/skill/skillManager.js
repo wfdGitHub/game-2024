@@ -640,6 +640,10 @@ model.useAttackSkill = function(skill,chase) {
 			if(skill.character.mag_debuff_anger && skill.damageType == "mag" && targets[i].getDebuffNum()){
 				targets[i].lessAnger(1)
 			}
+			
+			if(skill.character.skill_bleed_zs && targets[i].buffs["bleed"] && targets[i].buffs["bleed"].getValue() >= 5){
+				buffManager.createBuff(skill.character,targets[i],{buffId : "forbidden",duration : 1})
+			}
 		}
 		if(!skill.isAnger && targets[i].hit_less_anger){
 			//降低攻击者怒气

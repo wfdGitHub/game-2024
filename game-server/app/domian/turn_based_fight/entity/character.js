@@ -60,10 +60,21 @@ var model = function(otps) {
 	this.kill_buff1 = otps.kill_buff1 						//击杀后触发buff1
 	this.kill_buff2 = otps.kill_buff2 						//击杀后触发buff2
 	this.thawing_frozen = otps.thawing_frozen || 0 			//破冰一击伤害加成
+	this.thawing_burn = otps.thawing_burn || 0 				//水龙冲击伤害加成
 	this.polang_heal = otps.polang_heal || 0 				//破浪每层回血
 	this.polang_power = otps.polang_power || 0 				//破浪每层最大生命值伤害
 	this.skill_anger_maxAtk = otps.skill_anger_maxAtk || 0 
 	this.seckill = otps.seckill || false 					//释放技能时生命值低时秒杀
+
+	this.skill_bleed_maxHp = otps.skill_bleed_maxHp 		//释放技能时，目标身上每有1层流血效果，额外造成最大生命值的伤害
+	this.heat_halo_burn = otps.heat_halo_burn 				//炙热光环生效时对目标附加灼烧状态
+	this.heat_halo_less = otps.heat_halo_less   			//炙热光环每次造成伤害时降低目标1点怒气
+	this.skill_bleed_zs = otps.skill_bleed_zs  				//释放技能时，若目标身上的流血效果在5层及以上，则使其重伤，持续1回合。
+	this.bleed_amp = otps.bleed_amp 						//对流血状态的目标造成伤害增加
+	this.thawing_burn_hudun = otps.thawing_burn_hudun 		//释放水龙冲击后，为自身添加护盾，吸收最大生命值百分比的伤害，持续1回合
+	this.thawing_burn_anger = otps.thawing_burn_anger 		//水龙冲击每命中一个目标，恢复自身怒气值
+	this.sand_low_hit = otps.sand_low_hit 					//沙尘暴状态下的目标命中率降低
+	this.sand_low_damage = otps.sand_low_damage 			//沙尘暴状态下的目标攻击力降低
 
 	//=========其他效果=======//
 	this.first_buff_list = []			//初始BUFF
@@ -873,6 +884,12 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 							}).bind(this))
 						}
 					}
+					//释放技能时，若目标身上的流血效果在5层及以上，则使其重伤
+					if(attacker.skill_bleed_zs && this.buffs["bleed"] && this.buffs["bleed"] >= 5){
+						callbacks.push((function(){
+							buffManager.createBuff(attacker,this,{buffId : "forbidden",duration : 1})
+						}).bind(this))
+					}
 					if(this.buffs["frozen"])
 						this.buffs["frozen"].onHit()
 					if(this.buffs["burn_shield"]){
@@ -1051,6 +1068,8 @@ model.prototype.getTotalAtt = function(name) {
 		case "atk":
 			if(this.buffs["polang"])
 				value += Math.floor(value * this.buffs["polang"].getValue() * 0.05)
+			if(this.buffs["sand"] && this.buffs["sand"].releaser.sand_low_damage)
+				value -= Math.floor(value * this.buffs["sand"].releaser.sand_low_damage)
 		break
 		case "crit":
 			if(this.buffs["polang"])
@@ -1059,6 +1078,11 @@ model.prototype.getTotalAtt = function(name) {
 		case "slay":
 			if(this.buffs["baonu"])
 				value += 0.2
+		break
+		case "hitRate":
+			if(this.buffs["sand"] && this.buffs["sand"].releaser.sand_low_hit){
+				value -= this.buffs["sand"].releaser.sand_low_hit
+			}
 		break
 	}
 	return value
