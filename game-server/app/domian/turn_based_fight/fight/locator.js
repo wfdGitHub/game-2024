@@ -153,6 +153,8 @@ model.prototype.getTargets = function(character,targetType) {
 		case "team_self":
 			//选择自己
 			return [character]
+		case "team_died":
+			return this.getTeamDied(character)
 		default :
 			console.error("targetType error ",targetType)
 			return []
@@ -788,6 +790,21 @@ model.prototype.getEnemyMaxAtk = function(character,count) {
     			list[i] = tmp
     		}
     return list.slice(0,count)
+}
+//己方随机一个阵亡单位
+model.prototype.getTeamDied = function(character) {
+	var list = []
+	for(var i = 0;i < character.team.length;i++){
+		if(!character.team[i].isNaN && character.team[i].died){
+			list.push(character.team[i])
+		}
+	}
+	if(list.length == 0){
+		return []
+	}else{
+		var index = Math.floor(this.seededNum.random("排序") * list.length)
+		return [list[index]]
+	}
 }
 //己方攻击最高的n个单位
 model.prototype.getTeamMaxAtk = function(character,count) {

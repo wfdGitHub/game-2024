@@ -374,6 +374,8 @@ var model = function(otps) {
 	this.mag_change_shield = otps.mag_change_shield || 0		//法术伤害转吸收盾比例
 	//=========状态=======//
 	this.died = this.attInfo.maxHP && this.attInfo.hp ? false : true 	//死亡状态
+	if(this.died)
+		this.isNaN = true
 	this.buffs = {}					//buff列表
 	//=========属性加成=======//
 	this.self_adds = {}							//自身百分比加成属性
@@ -899,6 +901,13 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 							}).bind(this))
 						}
 					}
+					if(this.buffs["fengzheng"] && this.buffs["fengzheng"].releaser !== attacker){
+						callbacks.push((function(){
+							var tmpreleaser = this.buffs["fengzheng"].releaser
+							this.buffs["fengzheng"].useBuff()
+							skillManager.useSkill(tmpreleaser.defaultSkill,true,this)
+						}).bind(this))
+					}
 				}
 			}
 		}
@@ -1083,6 +1092,15 @@ model.prototype.getTotalAtt = function(name) {
 			if(this.buffs["sand"] && this.buffs["sand"].releaser.sand_low_hit){
 				value -= this.buffs["sand"].releaser.sand_low_hit
 			}
+		break
+		case "dodgeRate":
+			if(this.buffs["fanzhi"]){
+				value += this.buffs["fanzhi"].getValue()
+			}
+		break
+		case "reduction":
+			if(this.buffs["pojia"])
+				value -= this.buffs["pojia"].getValue() * 0.12
 		break
 	}
 	return value

@@ -1,4 +1,4 @@
-//流血buff
+//疾速buff
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
@@ -6,10 +6,6 @@ var model = function(releaser,character,otps) {
 	var list = {}
 	var count = 0
 	buff.refresh = function() {
-		var info = {type : "other_damage",id : buff.character.id,d_type:"phy"}
-		info.value = Math.floor(buff.character.attInfo.maxHP * count * 0.02)
-		var recordInfo = buff.character.onHit(buff.releaser,info)
-		buff.fightRecord.push(recordInfo)
 		for(var i in list){
 			list[i].duration--
 			if(list[i].duration <= 0){
@@ -22,7 +18,7 @@ var model = function(releaser,character,otps) {
 	}
 	buff.overlay = function(releaser,otps) {
 		for(var i = 0;i < otps.buffArg;i++){
-			if(count >= 5)
+			if(count >= 3)
 				break
 			this.releaser = releaser
 			if(otps.duration > this.duration)
@@ -33,20 +29,8 @@ var model = function(releaser,character,otps) {
 		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
 		buff.fightRecord.push(recordInfo)
 	}
-	//立即结算
-	buff.settle = function() {
-		var num = 0
-		for(var i in list){
-			num += list[i].duration
-		}
-		var info = {type : "other_damage",id : buff.character.id,d_type:"phy"}
-		info.value = Math.floor(buff.character.attInfo.maxHP * num * 0.02)
-		var recordInfo = buff.character.onHit(buff.releaser,info)
-		buff.fightRecord.push(recordInfo)
-		this.destroy()
-	}
 	buff.getValue = function() {
-		return count
+		return count * 0.05
 	}
 	buff.overlay(releaser,otps)
 	return buff

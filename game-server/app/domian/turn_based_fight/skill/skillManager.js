@@ -26,15 +26,15 @@ model.createSkill = function(otps,character) {
 			return false
 	}
 }
-//使用技能
-model.useSkill = function(skill,chase) {
+//使用技能  point 指定目标
+model.useSkill = function(skill,chase,point) {
 	var targets = []
 	var diedSkill = false
 	if(skill.character.died)
-		diedSkill = true
+	diedSkill = true
 	switch(skill.type){
 		case "attack":
-			targets = this.useAttackSkill(skill,chase)
+			targets = this.useAttackSkill(skill,chase,point)
 		break
 		case "heal":
 			targets = this.useHealSkill(skill,chase)
@@ -264,6 +264,14 @@ model.useSkill = function(skill,chase) {
 			}
 		}
 	}
+	//立即结算流血效果
+	if(skill.bleed_settle){
+		for(var i = 0;i < targets.length;i++){
+			if(!targets[i].died && targets[i].buffs["bleed"]){
+				targets[i].buffs["bleed"].settle()
+			}
+		}
+	}
 	//额外回合
 	if(skill.isAnger && skill.character.extraAtion){
 		var tmpTargets = this.locator.getTargets(skill.character,"realm_minAnger_1")
@@ -283,7 +291,7 @@ model.useSkill = function(skill,chase) {
 	}
 }
 //伤害技能
-model.useAttackSkill = function(skill,chase) {
+model.useAttackSkill = function(skill,chase,point) {
 	var addAmp = 0
 	var allDamage = 0
 	var kill_num = 0
@@ -296,11 +304,13 @@ model.useAttackSkill = function(skill,chase) {
 	var recordInfo = skill.getInfo()
 	var overflow = 0
 	recordInfo.targets = []
-	var targetsNum = this.locator.getTargetsNum(skill.targetType)
-	if(targetsNum > 1){
-		recordInfo.group = true
+	if(point){
+		var targetsNum = 1
+		var targets = [point]
+	}else{
+		var targetsNum = this.locator.getTargetsNum(skill.targetType)
+		var targets = this.locator.getTargets(skill.character,skill.targetType)
 	}
-	var targets = this.locator.getTargets(skill.character,skill.targetType)
 	if(!targets.length){
 		fightRecord.push(recordInfo)
 		return []
@@ -693,10 +703,15 @@ model.useAttackSkill = function(skill,chase) {
 model.useHealSkill = function(skill,chase) {
 	var recordInfo = skill.getInfo()
 	recordInfo.targets = []
-	var targetsNum = this.locator.getTargetsNum(skill.targetType)
-	if(targetsNum > 1){
-		recordInfo.group = true
+	if(skill.rescue_heal){
+		var targets = this.locator.getTargets(skill.character,"team_died")
+		if(targets.length !== 0){
+			var info = {id : targets[0].id,source : skill.character.id,rescue : true}
+			targets[0].resurgence(skill.rescue_heal)
+			return targets
+		}
 	}
+	var targetsNum = this.locator.getTargetsNum(skill.targetType)
 	var targets = this.locator.getTargets(skill.character,skill.targetType)
 	var rate = 1
 	if(skill.character.skill_heal_amp && skill.isAnger)

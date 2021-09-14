@@ -13,7 +13,6 @@ var model = function(otps,character) {
 	this.skill_anger_a = 0 								//全队怒气恢复值
 	this.skill_less_anger = 0 							//降低目标怒气值
 	this.otps = otps
-	this.thawing_burn = 1
 }
 model.prototype.init = function() {
 	for(var i = 1;i <= 5;i++){
