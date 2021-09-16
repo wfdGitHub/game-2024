@@ -692,6 +692,14 @@ model.useAttackSkill = function(skill,chase,point) {
 				}
 			}
 		}
+		if(skill.dispel_intensify){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died){
+					if(this.seeded.random("清除BUFF概率") < tmpRate)
+						targets[i].removeIntensifyBuff()
+				}
+			}
+		}
 		//释放技能时，每命中一个燃烧状态下的目标恢复自身1点怒气
 		if(skill.character.skill_burn_anger && burn_num){
 			skill.character.addAnger(skill.character.skill_burn_anger * burn_num)
@@ -720,6 +728,14 @@ model.useAttackSkill = function(skill,chase,point) {
 					buffManager.createBuff(skill.character,targets[i],{buffId : "pojia",buffArg : tmpValue,duration : 3})
 					skill.character.buffs["fanzhi"].destroy()
 					break
+				}
+			}
+		}
+		//释放技能后净化我方全体1个负面状态
+		if(skill.clean_team){
+			for(var i = 0;i < skill.character.team.length;i++){
+				if(!skill.character.team[i].died){
+					skill.character.team[i].removeOneLower()
 				}
 			}
 		}
