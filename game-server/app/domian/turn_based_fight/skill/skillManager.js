@@ -447,8 +447,8 @@ model.useAttackSkill = function(skill,chase,point) {
 		lessAngerList[i].lessAnger(1,skill.skillId)
 	}
 	if(kill_num){
-		if(skill.kill_amp || skill.character.kill_amp)
-			skill.character.addAtt("amplify",(skill.kill_amp + skill.character.kill_amp) * kill_num)
+		if(skill.character.kill_amp)
+			skill.character.addAtt("amplify",(skill.character.kill_amp) * kill_num)
 		if(skill.character.kill_anger)
 			skill.character.addAnger(skill.character.kill_anger * kill_num,skill.skillId)
 		if(skill.character.kill_crit)

@@ -145,6 +145,10 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		if(attacker.thawing_burn_anger)
 			attacker.addAnger(attacker.thawing_burn_anger)
 	}
+	if(target.buffs["flash"]){
+		info.value +=  Math.floor(0.03 * target.attInfo.maxHP)
+		target.buffs["flash"].useBuff()
+	}
 	if(info.crit){
 		info.value = Math.round(info.value * (1.5 + attacker.getTotalAtt("slay") - target.getTotalAtt("slayDef")))
 		

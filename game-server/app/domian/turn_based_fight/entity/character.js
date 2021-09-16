@@ -1138,9 +1138,17 @@ model.prototype.getTotalAtt = function(name) {
 				value += this.buffs["fanzhi"].getValue() * 0.05
 			}
 		break
+		case "amplify":
+			if(this.buffs["god_power"]){
+				value += this.buffs["god_power"].getValue() * 0.15
+			}
+		break
 		case "reduction":
 			if(this.buffs["pojia"])
 				value -= this.buffs["pojia"].getValue() * 0.12
+			if(this.buffs["god_shield"]){
+				value += this.buffs["god_shield"].getValue() * 0.15
+			}
 		break
 	}
 	return value
