@@ -354,45 +354,37 @@ model.prototype.action = function() {
 	if(skill){
 		skillManager.useSkill(skill)
 		//行动后
-		if(this.character.action_anger)
-			this.character.addAnger(this.character.action_anger)
-		if(this.character.action_buff){
-			if(!this.character.died){
-				var buffInfo = this.character.action_buff
+		if(!this.character.died){
+			if(this.character.action_anger)
+				this.character.addAnger(this.character.action_anger)
+			for(var i in this.character.action_buffs){
+				var buffInfo = this.character.action_buffs[i]
 				if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
 					buffManager.createBuff(this.character,this.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 				}
 			}
-		}
-		if(this.character.action_buff_s){
-			if(!this.character.died){
-				var buffInfo = this.character.action_buff_s
-				if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
-					buffManager.createBuff(this.character,this.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+			if(this.character.record_anger_rate && this.seeded.random("判断BUFF命中率") < this.character.record_anger_rate){
+				needValue = Math.floor(needValue/2)
+				if(needValue){
+					this.character.addAnger(Math.min(needValue,4))
 				}
 			}
-		}
-		if(this.character.record_anger_rate && this.seeded.random("判断BUFF命中率") < this.character.record_anger_rate){
-			needValue = Math.floor(needValue/2)
-			if(needValue){
-				this.character.addAnger(Math.min(needValue,4))
+			if(this.character.action_anger_s && this.seeded.random("行动后怒气") < this.character.action_anger_s){
+				this.character.addAnger(1)
 			}
-		}
-		if(this.character.action_anger_s && this.seeded.random("行动后怒气") < this.character.action_anger_s){
-			this.character.addAnger(1)
-		}
-		if(this.character.action_heal){
-			var recordInfo =  this.character.onHeal(this.character,{type : "heal",maxRate : this.character.action_heal})
-			recordInfo.type = "self_heal"
-			fightRecord.push(recordInfo)
-		}
-		this.character.teamInfo["realms_ation"][this.character.realm]++
-		//行动后额外行动概率
-		if(this.character.action_extra_action && this.character.action_extra_flag){
-			if(this.seeded.random("action_extra_action") < this.character.action_extra_action){
-				fightRecord.push({type:"show_tag",id:this.character.id,tag:"action_extra_action"})
-				this.character.action_extra_flag = false
-				this.next_character.push(this.character)
+			if(this.character.action_heal){
+				var recordInfo =  this.character.onHeal(this.character,{type : "heal",maxRate : this.character.action_heal})
+				recordInfo.type = "self_heal"
+				fightRecord.push(recordInfo)
+			}
+			this.character.teamInfo["realms_ation"][this.character.realm]++
+			//行动后额外行动概率
+			if(this.character.action_extra_action && this.character.action_extra_flag){
+				if(this.seeded.random("action_extra_action") < this.character.action_extra_action){
+					fightRecord.push({type:"show_tag",id:this.character.id,tag:"action_extra_action"})
+					this.character.action_extra_flag = false
+					this.next_character.push(this.character)
+				}
 			}
 		}
 	}else{

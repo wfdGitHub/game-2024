@@ -64,6 +64,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		}
 		if(this.seeded.random("闪避判断") > hitRate){
 			info.miss = true
+			target.onMiss()
 			return info
 		}
 	}
@@ -256,6 +257,10 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	//对流血状态下的目标伤害提升
 	if(attacker.bleed_amp && target.buffs["bleed"]){
 		info.value += Math.floor(info.value * attacker.bleed_amp)
+	}
+	//破甲伤害加成
+	if(attacker.pojia_amp && target.buffs["pojia"]){
+		info.value += Math.floor(info.value * target.buffs["pojia"].getValue() * attacker.pojia_amp)
 	}
 	//场景伤害加成
 	if(skill.damageType == "phy"){

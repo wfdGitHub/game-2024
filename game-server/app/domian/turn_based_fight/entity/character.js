@@ -49,6 +49,7 @@ var model = function(otps) {
 	this.totalHeal = 0							//累计治疗
 	//=========新战斗属性=======//
 	this.kill_buffs = {}
+	this.action_buffs = {}
 
 	this.tmpAmp = 0 										//临时伤害加成
 	this.recover_settle = otps.recover_settle || false 		//释放持续恢复效果时，若目标身上已存在治疗效果，则立即结算原效果剩余回合数
@@ -59,6 +60,8 @@ var model = function(otps) {
 	this.add_anger_maxHp = otps.add_anger_maxHp || 0 		//追加技能伤害加成
 	this.kill_buff1 = otps.kill_buff1 						//击杀后触发buff1
 	this.kill_buff2 = otps.kill_buff2 						//击杀后触发buff2
+	this.action_buff1 = otps.action_buff1 					//行动后触发buff1
+	this.action_buff2 = otps.action_buff2 					//行动后触发buff2
 	this.thawing_frozen = otps.thawing_frozen || 0 			//破冰一击伤害加成
 	this.thawing_burn = otps.thawing_burn || 0 				//水龙冲击伤害加成
 	this.polang_heal = otps.polang_heal || 0 				//破浪每层回血
@@ -75,6 +78,16 @@ var model = function(otps) {
 	this.thawing_burn_anger = otps.thawing_burn_anger 		//水龙冲击每命中一个目标，恢复自身怒气值
 	this.sand_low_hit = otps.sand_low_hit 					//沙尘暴状态下的目标命中率降低
 	this.sand_low_damage = otps.sand_low_damage 			//沙尘暴状态下的目标攻击力降低
+
+	this.normal_combo = otps.normal_combo || 0 				//普攻连击概率
+	this.behit_heal = otps.behit_heal || 0 					//受到攻击后恢复最大生命值
+	this.pojia_amp = otps.pojia_amp || 0 					//破甲伤害加成
+	this.round_heal_type = otps.round_heal_type || 0 		//行动后，恢复目标类型
+	this.round_heal_value = otps.round_heal_value || 0 		//行动后，恢复攻击力百分比的生命值
+	this.cleanDebuff = otps.cleanDebuff || false 			//释放技能后，驱散负面状态
+	this.rescue_realm_heal = otps.rescue_realm_heal || 0 	//复活同阵营英雄时生命值加成
+	this.shanbi_fanzhi = otps.shanbi_fanzhi || false 		//闪避时获得闪避印记
+	this.fanzhi_to_zs = otps.fanzhi_to_zs || false 			//释放技能时，若反制印记在3层以上时，对目标添加重伤效果
 
 	//=========其他效果=======//
 	this.first_buff_list = []			//初始BUFF
@@ -217,8 +230,6 @@ var model = function(otps) {
 		this.died_buff_s = JSON.parse(otps.died_buff_s) || false //死亡时释放BUFF
 	if(otps.before_buff_s)
 		this.first_buff_list.push(JSON.parse(otps.before_buff_s)) //战斗前对自身释放BUFF
-	if(otps.action_buff_s)
-		this.action_buff_s = JSON.parse(otps.action_buff_s) || false //行动后对自身释放BUFF
 	this.record_anger_rate = otps.record_anger_rate || 0 //释放技能后，概率获得本次技能消耗的50%的怒气，最多不超过4点
 	this.round_anger_rate = otps.round_anger_rate || 0 //整体回合结束时，如果自身怒气低于4点，将怒气回复至4点的概率
 	this.action_anger_s = otps.action_anger_s || 0 //自身行动后，回复自身1点怒气概率
@@ -318,9 +329,6 @@ var model = function(otps) {
 	this.add_skill_amp = otps.add_skill_amp || 0 				//追加技能伤害加成
 
 	this.action_anger = otps.action_anger || 0				//行动后回复自身怒气
-	if(otps.action_buff){
-		this.action_buff = JSON.parse(otps.action_buff)		//行动后追加buff
-	}
 
 	this.low_hp_amp = otps.low_hp_amp || 0					//战斗中自身生命每降低10%，伤害加成
 	this.low_hp_crit = otps.low_hp_crit || 0				//战斗中自身生命每降低10%，暴击加成
@@ -353,8 +361,10 @@ var model = function(otps) {
 	this.first_amp = otps.first_amp || 0		//首回合伤害加成
 	if(this.first_crit)
 		this.must_crit = true
-	if(otps.first_buff)
-		this.first_buff_list.push(JSON.parse(otps.first_buff))	//首回合附加BUFF
+	if(otps.first_buff1)
+		this.first_buff_list.push(JSON.parse(otps.first_buff1))		//首回合附加BUFF1
+	if(otps.first_buff2)
+		this.first_buff_list.push(JSON.parse(otps.first_buff2))		//首回合附加BUFF1
 	this.died_use_skill = otps.died_use_skill				//死亡时释放一次技能
 	this.died_burn_buff_must = otps.died_burn_buff_must 	//死亡释放buff时必定命中
 	if(otps.died_later_buff)
@@ -389,6 +399,8 @@ var model = function(otps) {
 		this.self_adds["phyDef"] = otps.self_phyDef_add
 	if(otps.self_magDef_add)
 		this.self_adds["magDef"] = otps.self_magDef_add
+	if(otps.self_speed_add)
+		this.self_adds["speed"] = otps.self_speed_add
 	if(otps.team_atk_add)
 		this.team_adds["atk"] = otps.team_atk_add
 	if(otps.team_maxHP_add)
@@ -469,6 +481,10 @@ model.prototype.init = function(fighting) {
 		this.addKillBuff(this.kill_buff1)
 	if(this.kill_buff2)
 		this.addKillBuff(this.kill_buff2)
+	if(this.action_buff1)
+		this.addActionBuff(this.action_buff1)
+	if(this.action_buff2)
+		this.addActionBuff(this.action_buff2)
 	if(this.seckill)
 		this.angerSkill.seckill = true
 }
@@ -488,6 +504,7 @@ model.prototype.calAttAdd = function(team_adds) {
 			case "maxHP":
 			case "phyDef":
 			case "magDef":
+			case "speed":
 				this.attInfo[i] += Math.ceil(this.attInfo[i] * this.show_adds[i])
 			break
 			case "curAnger":
@@ -620,6 +637,16 @@ model.prototype.after = function() {
 	if(this.maxHP_loss > 0){
 		this.onHPLoss()
 	}
+	if(this.round_heal_type && this.round_heal_value){
+		var tmpRecord = {type : "other_heal",targets : []}
+		var targets = this.fighting.locator.getTargets(this,this.round_heal_type)
+		for(var i = 0;i < targets.length;i++){
+			var info = this.fighting.formula.calHeal(this,targets[i],Math.floor(this.getTotalAtt("atk") * this.round_heal_value),{})
+			info = targets[i].onHeal(this,info,{})
+			tmpRecord.targets.push(info)
+		}
+		fightRecord.push(tmpRecord)
+	}
 	this.damage_save_value = 0
 }
 //整体回合结束
@@ -733,6 +760,15 @@ model.prototype.diedClear = function() {
 model.prototype.addKillBuff = function(buffStr) {
 	var buff = JSON.parse(buffStr)
 	this.kill_buffs[buff.buffId] = buff
+}
+model.prototype.addActionBuff = function(buffStr) {
+	var buff = JSON.parse(buffStr)
+	this.action_buffs[buff.buffId] = buff
+}
+//闪避
+model.prototype.onMiss = function() {
+	if(this.shanbi_fanzhi)
+		buffManager.createBuff(this,this,{buffId : "fanzhi",duration :2,buffArg : 1})
 }
 //受到伤害
 model.prototype.onHit = function(attacker,info,callbacks) {
@@ -886,10 +922,12 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 							}).bind(this))
 						}
 					}
-					//释放技能时，若目标身上的流血效果在5层及以上，则使其重伤
-					if(attacker.skill_bleed_zs && this.buffs["bleed"] && this.buffs["bleed"] >= 5){
+					//受到攻击后恢复生命值
+					if(this.behit_heal){
 						callbacks.push((function(){
-							buffManager.createBuff(attacker,this,{buffId : "forbidden",duration : 1})
+							var tmpRecord = {type : "other_heal",targets : []}
+							tmpRecord.targets.push(this.onHeal(this,{maxRate : this.behit_heal}))
+							fightRecord.push(tmpRecord)
 						}).bind(this))
 					}
 					if(this.buffs["frozen"])
@@ -994,6 +1032,8 @@ model.prototype.kill = function(target) {
 }
 //复活
 model.prototype.resurgence = function(rate) {
+	if(rate > 1)
+		rate = 1
 	this.attInfo.hp = Math.floor(rate * this.attInfo.maxHP) || 1
 	this.died = false
 	fightRecord.push({type : "resurgence",curValue : this.attInfo.hp,maxHP : this.attInfo.maxHP,id : this.id,curAnger : 0})
@@ -1095,7 +1135,7 @@ model.prototype.getTotalAtt = function(name) {
 		break
 		case "dodgeRate":
 			if(this.buffs["fanzhi"]){
-				value += this.buffs["fanzhi"].getValue()
+				value += this.buffs["fanzhi"].getValue() * 0.05
 			}
 		break
 		case "reduction":

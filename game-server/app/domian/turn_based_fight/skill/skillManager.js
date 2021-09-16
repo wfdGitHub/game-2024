@@ -138,56 +138,64 @@ model.useSkill = function(skill,chase,point) {
 			targets[i].lessAnger(skill.character.enemy_vertical_anger)
 		}
 	}
-	if(skill.isAnger && !skill.character.died){
-		if(!chase){
-			//释放技能后恢复自身怒气
-			if(skill.skill_anger_s){
-				skill.character.addAnger(skill.skill_anger_s,skill.skillId)
-			}
-			//释放技能后恢复全体队友怒气
-			if(skill.skill_anger_a)
-				for(var i = 0;i < skill.character.team.length;i++)
-					if(!skill.character.team[i].died)
-						skill.character.team[i].addAnger(skill.skill_anger_a)
-			//释放技能后回复当前本方阵容站位最靠前的武将怒气
-			if(skill.character.skill_anger_first){
-				var tmpTargets = this.locator.getTargets(skill.character,"team_min_index")
-				for(var i = 0;i < tmpTargets.length;i++){
-					tmpTargets[i].addAnger(skill.character.skill_anger_first)
+	if(!skill.character.died){
+		if(skill.isAnger){
+			//怒气技能
+			if(!chase){
+				//释放技能后恢复自身怒气
+				if(skill.skill_anger_s){
+					skill.character.addAnger(skill.skill_anger_s,skill.skillId)
 				}
-			}
-			//释放技能后降低敌方怒气
-			if(skill.skill_less_anger){
-				for(var i = 0;i < targets.length;i++){
-					if(targets[i].died){
-						break
+				//释放技能后恢复全体队友怒气
+				if(skill.skill_anger_a)
+					for(var i = 0;i < skill.character.team.length;i++)
+						if(!skill.character.team[i].died)
+							skill.character.team[i].addAnger(skill.skill_anger_a)
+				//释放技能后回复当前本方阵容站位最靠前的武将怒气
+				if(skill.character.skill_anger_first){
+					var tmpTargets = this.locator.getTargets(skill.character,"team_min_index")
+					for(var i = 0;i < tmpTargets.length;i++){
+						tmpTargets[i].addAnger(skill.character.skill_anger_first)
 					}
-					targets[i].lessAnger(skill.skill_less_anger,skill.skillId)
+				}
+				//释放技能后降低敌方怒气
+				if(skill.skill_less_anger){
+					for(var i = 0;i < targets.length;i++){
+						if(targets[i].died){
+							break
+						}
+						targets[i].lessAnger(skill.skill_less_anger,skill.skillId)
+					}
+				}
+				//释放技能后恢复己方后排怒气
+				if(skill.character.skill_anger_back){
+					var tmpTargets = this.locator.getTargets(skill.character,"team_horizontal_back")
+					for(var i = 0;i < tmpTargets.length;i++){
+						tmpTargets[i].addAnger(skill.character.skill_anger_back)
+					}
+				}
+				//释放技能后追加技能
+				if(skill.character.skill_later_skill && this.seeded.random("判断追加技能") < skill.character.skill_later_skill.rate){
+					var tmpSkillInfo = Object.assign({skillId : skill.skillId,name : skill.name},skill.character.skill_later_skill)
+					var tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
+					tmpSkill.isAnger = true
+					this.useSkill(tmpSkill,true)
 				}
 			}
-			//释放技能后恢复己方后排怒气
-			if(skill.character.skill_anger_back){
-				var tmpTargets = this.locator.getTargets(skill.character,"team_horizontal_back")
-				for(var i = 0;i < tmpTargets.length;i++){
-					tmpTargets[i].addAnger(skill.character.skill_anger_back)
+		}else{
+			//普攻技能
+			//普攻后恢复自身怒气
+			if(skill.character.normal_add_anger)
+				skill.character.addAnger(skill.character.normal_add_anger,skill.skillId)
+			//普攻后降低目标怒气
+			if(skill.character.normal_less_anger){
+				for(var i = 0;i < targets.length;i++){
+					targets[i].lessAnger(skill.character.normal_less_anger,skill.skillId)
 				}
 			}
-			//释放技能后追加技能
-			if(skill.character.skill_later_skill && this.seeded.random("判断追加技能") < skill.character.skill_later_skill.rate){
-				var tmpSkillInfo = Object.assign({skillId : skill.skillId,name : skill.name},skill.character.skill_later_skill)
-				var tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
-				tmpSkill.isAnger = true
-				this.useSkill(tmpSkill,true)
-			}
-		}
-	}else if(!skill.character.died){
-		//普攻后恢复自身怒气
-		if(skill.character.normal_add_anger)
-			skill.character.addAnger(skill.character.normal_add_anger,skill.skillId)
-		//普攻后降低目标怒气
-		if(skill.character.normal_less_anger){
-			for(var i = 0;i < targets.length;i++){
-				targets[i].lessAnger(skill.character.normal_less_anger,skill.skillId)
+			//普攻连击
+			if(skill.character.normal_combo && !targets[0].died && this.seeded.random("normal_combo") < skill.character.normal_combo){
+				this.useSkill(skill.character.defaultSkill,true)
 			}
 		}
 	}
@@ -414,13 +422,6 @@ model.useAttackSkill = function(skill,chase,point) {
 	fightRecord.push(recordInfo)
 	for(var i = 0;i < callbacks.length;i++)
 		callbacks[i]()
-	//受到单体技能回血
-	if(skill.isAnger && targetsNum == 1 && targets[0].single_skill_heal && !targets[0].died && recordInfo.targets.length == 1 && recordInfo.targets[0].realValue > 0){
-		fightRecord.push({type:"show_tag",id:targets[0].id,tag:"single_skill_heal"})
-		var tmpInfo =  targets[0].onHeal(targets[0],{type : "heal",value : targets[0].attInfo.maxHP * targets[0].single_skill_heal})
-		tmpInfo.type = "self_heal"
-		fightRecord.push(tmpInfo)
-	}
 	//伤害超出生命值上限时释放buff判断
 	if(skill.character.over_buff_maxHp && skill.character.over_buff_arg){
 		for(var i = 0;i < targets.length;i++){
@@ -444,24 +445,6 @@ model.useAttackSkill = function(skill,chase,point) {
 	}
 	for(var i = 0;i < lessAngerList.length;i++){
 		lessAngerList[i].lessAnger(1,skill.skillId)
-	}
-	if(skill.isAnger && skill.character.overDamageToMaxHp && overflow && !skill.character.died){
-		var target = this.locator.getTargesMaxHP(targets)
-		if(target){
-			var tmpRecord = {type : "other_damage",value : Math.ceil(skill.character.overDamageToMaxHp * overflow),d_type:skill.damageType}
-			tmpRecord = target.onHit(skill.character,tmpRecord)
-			fightRecord.push(tmpRecord)
-		}
-	}
-	if(skill.isAnger && skill.character.dispel_intensify){
-		var allLenth = targetsNum
-		var tmpRate = ((allLenth - targets.length + 1) / allLenth) * skill.character.dispel_intensify
-		for(var i = 0;i < targets.length;i++){
-			if(!targets[i].died){
-				if(this.seeded.random("清除BUFF概率") < tmpRate)
-					targets[i].removeIntensifyBuff()
-			}
-		}
 	}
 	if(kill_num){
 		if(skill.kill_amp || skill.character.kill_amp)
@@ -650,10 +633,6 @@ model.useAttackSkill = function(skill,chase,point) {
 			if(skill.character.mag_debuff_anger && skill.damageType == "mag" && targets[i].getDebuffNum()){
 				targets[i].lessAnger(1)
 			}
-			
-			if(skill.character.skill_bleed_zs && targets[i].buffs["bleed"] && targets[i].buffs["bleed"].getValue() >= 5){
-				buffManager.createBuff(skill.character,targets[i],{buffId : "forbidden",duration : 1})
-			}
 		}
 		if(!skill.isAnger && targets[i].hit_less_anger){
 			//降低攻击者怒气
@@ -686,13 +665,68 @@ model.useAttackSkill = function(skill,chase,point) {
 			}
 		}
 	}
-	//释放技能时，每命中一个燃烧状态下的目标恢复自身1点怒气
-	if(skill.isAnger && skill.character.skill_burn_anger && burn_num){
-		skill.character.addAnger(skill.character.skill_burn_anger * burn_num)
-	}
-	//追加普通攻击判断
-	if(skill.isAnger && (skill.add_d_s || skill.character.skill_add_d_s)){
-		this.useSkill(skill.character.defaultSkill,true)
+	//技能判断
+	if(skill.isAnger){
+		//受到单体技能回血
+		if(targetsNum == 1 && targets[0].single_skill_heal && !targets[0].died && recordInfo.targets.length == 1 && recordInfo.targets[0].realValue > 0){
+			fightRecord.push({type:"show_tag",id:targets[0].id,tag:"single_skill_heal"})
+			var tmpInfo =  targets[0].onHeal(targets[0],{type : "heal",value : targets[0].attInfo.maxHP * targets[0].single_skill_heal})
+			tmpInfo.type = "self_heal"
+			fightRecord.push(tmpInfo)
+		}
+		if(skill.character.overDamageToMaxHp && overflow && !skill.character.died){
+			var target = this.locator.getTargesMaxHP(targets)
+			if(target){
+				var tmpRecord = {type : "other_damage",value : Math.ceil(skill.character.overDamageToMaxHp * overflow),d_type:skill.damageType}
+				tmpRecord = target.onHit(skill.character,tmpRecord)
+				fightRecord.push(tmpRecord)
+			}
+		}
+		if(skill.character.dispel_intensify){
+			var allLenth = targetsNum
+			var tmpRate = ((allLenth - targets.length + 1) / allLenth) * skill.character.dispel_intensify
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died){
+					if(this.seeded.random("清除BUFF概率") < tmpRate)
+						targets[i].removeIntensifyBuff()
+				}
+			}
+		}
+		//释放技能时，每命中一个燃烧状态下的目标恢复自身1点怒气
+		if(skill.character.skill_burn_anger && burn_num){
+			skill.character.addAnger(skill.character.skill_burn_anger * burn_num)
+		}
+		//释放技能时，若目标流血效果在5层以上施加重伤
+		if(skill.character.skill_bleed_zs){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died && targets[i].buffs["bleed"] && targets[i].buffs["bleed"].getValue() >= 5){
+					buffManager.createBuff(skill.character,targets[i],{buffId : "forbidden",duration : 1})
+				}
+			}
+		}
+		//释放技能时，若自身反制效果在3层以上施加重伤
+		if(skill.character.fanzhi_to_zs && skill.character.buffs["fanzhi"] && skill.character.buffs["fanzhi"].getValue() >= 3){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died){
+					buffManager.createBuff(skill.character,targets[i],{buffId : "forbidden",duration : 1})
+				}
+			}
+		}
+		//消耗反制印记转为破甲
+		if(skill.fanzhi_to_pojia && skill.character.buffs["fanzhi"]){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died){
+					var tmpValue = skill.character.buffs["fanzhi"].getValue()
+					buffManager.createBuff(skill.character,targets[i],{buffId : "pojia",buffArg : tmpValue,duration : 3})
+					skill.character.buffs["fanzhi"].destroy()
+					break
+				}
+			}
+		}
+		//追加普通攻击判断
+		if((skill.add_d_s || skill.character.skill_add_d_s)){
+			this.useSkill(skill.character.defaultSkill,true)
+		}
 	}
 	if(kill_num && skill.character.kill_add_d_s){
 		this.useSkill(skill.character.defaultSkill,true)
@@ -703,11 +737,15 @@ model.useAttackSkill = function(skill,chase,point) {
 model.useHealSkill = function(skill,chase) {
 	var recordInfo = skill.getInfo()
 	recordInfo.targets = []
+	//技能复活
 	if(skill.rescue_heal){
 		var targets = this.locator.getTargets(skill.character,"team_died")
 		if(targets.length !== 0){
 			var info = {id : targets[0].id,source : skill.character.id,rescue : true}
-			targets[0].resurgence(skill.rescue_heal)
+			var tmpValue = skill.rescue_heal
+			if(skill.character.rescue_realm_heal)
+				tmpValue += skill.character.rescue_realm_heal
+			targets[0].resurgence(tmpValue)
 			return targets
 		}
 	}
@@ -791,7 +829,7 @@ model.useHealSkill = function(skill,chase) {
 					targets[i].removeControlBuff()
 			}
 		}
-		if(skill.cleanDebuff){
+		if(skill.cleanDebuff || skill.character.cleanDebuff){
 			for(var i = 0;i < targets.length;i++){
 				if(!targets[i].died)
 					targets[i].removeDeBuff()
