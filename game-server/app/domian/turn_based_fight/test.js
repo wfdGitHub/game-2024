@@ -66,8 +66,8 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // 	}
 // }
 // console.log(atkTeam)
-var buff = {"buffId":"god_shield","buff_tg":"skill_targets","buffArg":5,"duration":3,"buffRate":1}
-var atkTeam = [{"id":"105040","star":15,"normal_buff2":JSON.stringify(buff)},0,0,0,0,0,{}]
+var buff = {"buffId":"cold","buff_tg":"skill_targets","buffArg":5,"duration":3,"buffRate":1}
+var atkTeam = [{"id":"105040","star":15},{"id":"105040","star":15,"normal_buff2":JSON.stringify(buff)},0,0,0,0,{}]
 var defTeam = [{"id":"105040","star":15},0,0,0,0,0,{}]
 var list = fightContorl.beginFight(atkTeam,defTeam,{})
 fightRecord.explain()

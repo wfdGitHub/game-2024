@@ -316,36 +316,43 @@ model.prototype.action = function() {
 	var skill = false
 	var needValue = 0
 	if(!this.character.died){
-		if(this.character.less_anger_skip && this.character.curAnger < 4){
-			fightRecord.push({type:"show_tag",id:this.character.id,tag:"less_anger_skip"})
-			this.character.addAnger(4)
+		if(this.character.buffs["chaofeng"] && this.character.defaultSkill.type != "heal"){
+			if(!this.character.buffs["disarm"]){
+				skill = this.character.defaultSkill
+				this.character.addAnger(2,true)
+			}
 		}else{
-			if(!this.character.buffs["dizzy"] && !this.character.buffs["frozen"]){
-				if(!this.character.buffs["silence"] && this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
-					skill = this.character.angerSkill
-					needValue = this.character.needAnger
-					if(this.character.allAnger){
-						fightRecord.push({type:"show_tag",id:this.character.id,tag:"allAnger"})
+			if(this.character.less_anger_skip && this.character.curAnger < 4){
+				fightRecord.push({type:"show_tag",id:this.character.id,tag:"less_anger_skip"})
+				this.character.addAnger(4)
+			}else{
+				if(!this.character.buffs["dizzy"] && !this.character.buffs["frozen"]){
+					if(!this.character.buffs["silence"] && this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
+						skill = this.character.angerSkill
+						needValue = this.character.needAnger
+						if(this.character.allAnger){
+							fightRecord.push({type:"show_tag",id:this.character.id,tag:"allAnger"})
+							skill.angerAmp = (this.character.curAnger - 4) * 0.15
+							needValue = this.character.curAnger
+						}
+						if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free)
+							needValue = 0
+						if(needValue)
+							this.character.lessAnger(needValue,needValue>4?false:true,true)
+					}else if(this.character.anyAnger){
+						fightRecord.push({type:"show_tag",id:this.character.id,tag:"anyAnger"})
+						skill = this.character.angerSkill
 						skill.angerAmp = (this.character.curAnger - 4) * 0.15
 						needValue = this.character.curAnger
-					}
-					if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free)
-						needValue = 0
-					if(needValue)
-						this.character.lessAnger(needValue,needValue>4?false:true,true)
-				}else if(this.character.anyAnger){
-					fightRecord.push({type:"show_tag",id:this.character.id,tag:"anyAnger"})
-					skill = this.character.angerSkill
-					skill.angerAmp = (this.character.curAnger - 4) * 0.15
-					needValue = this.character.curAnger
-					if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free)
-						needValue = 0
-					if(needValue)
-						this.character.lessAnger(needValue)
-				}else{
-					if(!this.character.buffs["disarm"]){
-						skill = this.character.defaultSkill
-						this.character.addAnger(2,true)
+						if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free)
+							needValue = 0
+						if(needValue)
+							this.character.lessAnger(needValue)
+					}else{
+						if(!this.character.buffs["disarm"]){
+							skill = this.character.defaultSkill
+							this.character.addAnger(2,true)
+						}
 					}
 				}
 			}
