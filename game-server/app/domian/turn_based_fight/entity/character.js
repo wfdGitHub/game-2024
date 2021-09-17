@@ -42,14 +42,16 @@ var model = function(otps) {
 	this.surplus_health = otps.surplus_health			//剩余生命值比例
 
 	this.needAnger = otps["needAnger"] || 4				//技能所需怒气值
-	this.curAnger = (otps["curAnger"] || 0) + 2	//当前怒气值
-	this.allAnger = otps["allAnger"] || false   //技能消耗所有怒气
-	this.anyAnger = otps["anyAnger"] || false   //当前怒气小于4点时，也能施放技能，技能伤害降低15%*(4-当前怒气值)
-	this.totalDamage = 0						//累计伤害
-	this.totalHeal = 0							//累计治疗
+	this.curAnger = (otps["curAnger"] || 0) + 2			//当前怒气值
+	this.allAnger = otps["allAnger"] || false   		//技能消耗所有怒气
+	this.anyAnger = otps["anyAnger"] || false   		//当前怒气小于4点时，也能施放技能，技能伤害降低15%*(4-当前怒气值)
+	this.totalDamage = 0								//累计伤害
+	this.totalHeal = 0									//累计治疗
 	//=========新战斗属性=======//
-	this.kill_buffs = {}
-	this.action_buffs = {}
+	this.first_buff_list = []			//初始BUFF
+	this.kill_buffs = {} 				//击杀BUFF
+	this.action_buffs = {} 				//行动后buff
+	this.died_buffs = {} 				//死亡时buff
 
 	this.tmpAmp = 0 										//临时伤害加成
 	this.recover_settle = otps.recover_settle || false 		//释放持续恢复效果时，若目标身上已存在治疗效果，则立即结算原效果剩余回合数
@@ -62,6 +64,10 @@ var model = function(otps) {
 	this.kill_buff2 = otps.kill_buff2 						//击杀后触发buff2
 	this.action_buff1 = otps.action_buff1 					//行动后触发buff1
 	this.action_buff2 = otps.action_buff2 					//行动后触发buff2
+	this.died_buff1 = otps.died_buff1 						//死亡后触发buff1
+	this.died_buff2 = otps.died_buff2 						//死亡后触发buff2
+	if(otps.died_once_buff)
+		this.died_once_buff = JSON.parse(otps.died_once_buff) //死亡后触发buff,仅生效1
 	this.thawing_frozen = otps.thawing_frozen || 0 			//破冰一击伤害加成
 	this.thawing_burn = otps.thawing_burn || 0 				//水龙冲击伤害加成
 	this.polang_heal = otps.polang_heal || 0 				//破浪每层回血
@@ -80,6 +86,7 @@ var model = function(otps) {
 	this.sand_low_damage = otps.sand_low_damage 			//沙尘暴状态下的目标攻击力降低
 
 	this.normal_combo = otps.normal_combo || 0 				//普攻连击概率
+	this.skill_combo = otps.skill_combo || 0 				//技能连击，仅1次
 	this.behit_heal = otps.behit_heal || 0 					//受到攻击后恢复最大生命值
 	this.pojia_amp = otps.pojia_amp || 0 					//破甲伤害加成
 	this.round_heal_type = otps.round_heal_type || 0 		//行动后，恢复目标类型
@@ -88,9 +95,16 @@ var model = function(otps) {
 	this.rescue_realm_heal = otps.rescue_realm_heal || 0 	//复活同阵营英雄时生命值加成
 	this.shanbi_fanzhi = otps.shanbi_fanzhi || false 		//闪避时获得闪避印记
 	this.fanzhi_to_zs = otps.fanzhi_to_zs || false 			//释放技能时，若反制印记在3层以上时，对目标添加重伤效果
+	this.flash_settle = otps.flash_settle || false 			//技能立即结算感电
+	this.flash_died_settle = otps.flash_died_settle || false //死亡时立即结算所有敌人感电
+	this.died_heal_team = otps.died_heal_team || 0 			//死亡时恢复全体生命值，仅生效1次
+	this.skill_dispel_enemy = otps.skill_dispel_enemy || false //释放技能后驱散目标1个增益效果
+	this.cleanDebuff_anger = otps.cleanDebuff_anger || 0 		//释放技能每净化一个减益效果，增加怒气值
+	this.died_rescue_team = otps.died_rescue_team || 0 		//阵亡后复活全体已阵亡友军，恢复百分比最大生命值，每场战斗仅生效1次
+
+
 
 	//=========其他效果=======//
-	this.first_buff_list = []			//初始BUFF
 	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
 	this.skill_heal_maxHp = otps.skill_heal_maxHp || 0		//释放技能后恢复自身最大生命值
 	//=========战法效果=======//
@@ -169,8 +183,6 @@ var model = function(otps) {
 	if(otps.over_buff_arg)
 		this.over_buff_arg = JSON.parse(otps.over_buff_arg) || false 	//伤害超出生命值上限时释放buff的buff参数
 	this.cf_rate = otps.cf_rate || 0			//攻击时有概率嘲讽目标，持续1回合，目标越少效果越好
-	if(otps.died_team_buff)
-		this.died_team_buff	= JSON.parse(otps.died_team_buff) || false 	//死亡时触发全队BUFF
 	this.sw_acc = otps.sw_acc || false 	//携带神武饰品效果
 	this.zh_acc = otps.zh_acc || false 	//携带智慧饰品效果
 	this.sb_acc = otps.sb_acc || 0		//携带闪避饰品效果
@@ -226,8 +238,6 @@ var model = function(otps) {
 	this.kill_clear_buff = otps.kill_clear_buff || 0 //直接伤害击杀目标后，概率清除己方武将身上该目标死亡前释放的所有异常效果（灼烧、中毒、眩晕、沉默、麻痹）
 	this.control_amp = otps.control_amp || 0 //攻击正在被控制（眩晕、沉默、麻痹）的目标时，增加伤害比例
 	this.reduction_over = otps.reduction_over || 0 //受到武将直接伤害时，如果该伤害超过自身生命上限的40%，减免此次伤害的比例
-	if(otps.died_buff_s)
-		this.died_buff_s = JSON.parse(otps.died_buff_s) || false //死亡时释放BUFF
 	if(otps.before_buff_s)
 		this.first_buff_list.push(JSON.parse(otps.before_buff_s)) //战斗前对自身释放BUFF
 	this.record_anger_rate = otps.record_anger_rate || 0 //释放技能后，概率获得本次技能消耗的50%的怒气，最多不超过4点
@@ -298,6 +308,7 @@ var model = function(otps) {
 	this.skill_burn_turn_heal = otps.skill_burn_turn_heal || 0//如果目标处于灼烧状态，技能直接伤害的百分比转化为生命治疗自己
 	this.skill_less_amp = otps.skill_less_amp || 0			//技能目标每减少一个伤害加成比例
 	this.skill_burn_anger = otps.skill_burn_anger || 0		//技能每命中一个燃烧状态下的目标恢复自身怒气
+	this.skill_flash_anger = otps.skill_flash_anger || 0    //技能每命中一个感电状态下的目标恢复自身怒气
 	if(otps.skill_later_skill){
 		this.skill_later_skill = JSON.parse(otps.skill_later_skill)	//释放技能后后追加技能
 	}
@@ -485,6 +496,10 @@ model.prototype.init = function(fighting) {
 		this.addActionBuff(this.action_buff1)
 	if(this.action_buff2)
 		this.addActionBuff(this.action_buff2)
+	if(this.died_buff1)
+		this.addDiedBuff(this.died_buff1)
+	if(this.died_buff2)
+		this.addDiedBuff(this.died_buff2)
 	if(this.seckill)
 		this.angerSkill.seckill = true
 }
@@ -722,6 +737,16 @@ model.prototype.removeIntensifyBuff = function() {
 		if(buff_cfg[i].intensify)
 			this.buffs[i].destroy("dispel")
 }
+//驱散一个增益状态
+model.prototype.removeOneIntensify = function() {
+	//状态BUFF刷新
+	for(var i in this.buffs){
+		if(buff_cfg[i].intensify){
+			this.buffs[i].destroy("dispel")
+			break
+		}
+	}
+}
 //驱散负面状态
 model.prototype.removeDeBuff = function() {
 	//状态BUFF刷新
@@ -764,6 +789,10 @@ model.prototype.addKillBuff = function(buffStr) {
 model.prototype.addActionBuff = function(buffStr) {
 	var buff = JSON.parse(buffStr)
 	this.action_buffs[buff.buffId] = buff
+}
+model.prototype.addDiedBuff = function(buffStr) {
+	var buff = JSON.parse(buffStr)
+	this.died_buffs[buff.buffId] = buff
 }
 //闪避
 model.prototype.onMiss = function() {

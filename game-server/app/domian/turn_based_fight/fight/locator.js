@@ -153,6 +153,8 @@ model.prototype.getTargets = function(character,targetType) {
 		case "team_self":
 			//选择自己
 			return [character]
+		case "team_died_all":
+			return this.getTeamDiedAll(character)
 		case "team_died":
 			return this.getTeamDied(character)
 		default :
@@ -790,6 +792,16 @@ model.prototype.getEnemyMaxAtk = function(character,count) {
     			list[i] = tmp
     		}
     return list.slice(0,count)
+}
+//己方除自身外全部阵亡单位
+model.prototype.getTeamDiedAll = function(character) {
+	var list = []
+	for(var i = 0;i < character.team.length;i++){
+		if(!character.team[i].isNaN && character.team[i].died && character.team[i] != character){
+			list.push(character.team[i])
+		}
+	}
+	return list
 }
 //己方随机一个阵亡单位
 model.prototype.getTeamDied = function(character) {

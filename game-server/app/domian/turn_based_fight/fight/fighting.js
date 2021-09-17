@@ -467,13 +467,24 @@ model.prototype.bookAction = function(book) {
 }
 model.prototype.diedListCheck = function() {
 	for(var i = 0;i < this.diedList.length;i++){
-		if(this.diedList[i]["died_buff_s"]){
-			var buffTargets = this.locator.getBuffTargets(this.diedList[i],this.diedList[i].died_buff_s.buff_tg)
-			for(var j = 0;j < buffTargets.length;j++){
-				if(this.seeded.random("判断BUFF命中率") < this.diedList[i].died_buff_s.buffRate){
-					buffManager.createBuff(this.diedList[i],buffTargets[j],{buffId : this.diedList[i].died_buff_s.buffId,buffArg : this.diedList[i].died_buff_s.buffArg,duration : this.diedList[i].died_buff_s.duration})
+		for(var j in this.diedList[i]["died_buffs"]){
+			var buffInfo = this.diedList[i]["died_buffs"][j]
+			var buffTargets = this.locator.getBuffTargets(this.diedList[i],buffInfo.buff_tg)
+			for(var k = 0;k < buffTargets.length;k++){
+				if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+					buffManager.createBuff(this.diedList[i],buffTargets[k],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 				}
 			}
+		}
+		if(this.diedList[i].died_once_buff){
+			var buffInfo = this.diedList[i].died_once_buff
+			var buffTargets = this.locator.getBuffTargets(this.diedList[i],buffInfo.buff_tg)
+			for(var k = 0;k < buffTargets.length;k++){
+				if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+					buffManager.createBuff(this.diedList[i],buffTargets[k],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+				}
+			}
+			this.diedList[i].died_once_buff = false
 		}
 		if(this.diedList[i].died_use_skill){
 			var flag = false
@@ -486,15 +497,33 @@ model.prototype.diedListCheck = function() {
 			if(flag)
 				skillManager.useSkill(this.diedList[i].angerSkill)
 		}
-		if(this.diedList[i].died_team_buff){
-			var buffInfo = this.diedList[i].died_team_buff
-			if(this.seeded.random("死亡全队BUFF") < buffInfo.buffRate){
-				for(var j = 0;j < this.diedList[i].team.length;j++){
-					if(!this.diedList[i].team[j].died){
-						buffManager.createBuff(this.diedList[i],this.diedList[i].team[j],buffInfo)
-					}
-				}
+		//死亡触发感电
+		if(this.diedList[i].flash_died_settle){
+			var targets = this.locator.getTargets(this.diedList[i],"enemy_all")
+			for(var k = 0;k < targets.length;k++){
+				if(targets[k].buffs["flash"])
+					targets[k].buffs["flash"].settle()
 			}
+		}
+		//死亡时全队回血
+		if(this.diedList[i].died_heal_team){
+			var targets = this.locator.getTargets(this.diedList[i],"team_all")
+			var healValue = Math.round(this.diedList[i].getTotalAtt("atk") * this.diedList[i].died_heal_team)
+			var tmpRecord = {type : "other_heal",targets : []}
+			for(var k = 0;k < targets.length;k++){
+				var info = this.formula.calHeal(this.diedList[i],targets[k],healValue,{})
+				tmpRecord.targets.push(targets[k].onHeal(this.diedList[i],info))
+			}
+			fightRecord.push(tmpRecord)
+			this.diedList[i].died_heal_team = 0
+		}
+		//死亡时全队复活
+		if(this.diedList[i].died_rescue_team){
+			var targets = this.locator.getTargets(this.diedList[i],"team_died_all")
+			for(var k = 0;k < targets.length;k++){
+				targets[k].resurgence(this.diedList[i].died_rescue_team)
+			}
+			this.diedList[i].died_rescue_team = 0
 		}
 		//复活判断
 		if(this.diedList[i].died_resurgence){

@@ -110,6 +110,14 @@ model.useSkill = function(skill,chase,point) {
 				tmpTarget[0].removeDeBuffNotControl()
 			}
 		}
+		//立即结算感电效果
+		if(skill.character.flash_settle){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died && targets[i].buffs["flash"]){
+					targets[i].buffs["flash"].settle()
+				}
+			}
+		}
 	}else{
 		if(skill.burn_buff_change_normal || skill.character.burn_buff_change_normal){
 			for(var i = 0;i < targets.length;i++){
@@ -180,6 +188,10 @@ model.useSkill = function(skill,chase,point) {
 					var tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
 					tmpSkill.isAnger = true
 					this.useSkill(tmpSkill,true)
+				}
+				//技能连击
+				if(!chase && skill.character.skill_combo && this.seeded.random("skill_combo") < skill.character.skill_combo){
+					this.useSkill(skill.character.angerSkill,true)
 				}
 			}
 		}else{
@@ -305,6 +317,7 @@ model.useAttackSkill = function(skill,chase,point) {
 	var kill_num = 0
 	var kill_burn_num = 0
 	var burn_num = 0
+	var flash_num = 0
 	var dead_anger = 0
 	var burnDamage = 0
 	var died_targets = []
@@ -410,6 +423,8 @@ model.useAttackSkill = function(skill,chase,point) {
 			burn_num++
 			burnDamage += info.realValue
 		}
+		if(target.buffs["flash"])
+			flash_num++
 		recordInfo.targets.push(info)
 		if(info.kill){
 			died_targets.push(target)
@@ -700,9 +715,19 @@ model.useAttackSkill = function(skill,chase,point) {
 				}
 			}
 		}
+		if(skill.character.skill_dispel_enemy){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died)
+					targets[i].removeOneIntensify()
+			}
+		}
 		//释放技能时，每命中一个燃烧状态下的目标恢复自身1点怒气
 		if(skill.character.skill_burn_anger && burn_num){
 			skill.character.addAnger(skill.character.skill_burn_anger * burn_num)
+		}
+		//释放技能时，每命中一个感电状态下的目标恢复自身1点怒气
+		if(skill.character.skill_flash_anger && flash_num){
+			skill.character.addAnger(skill.character.skill_flash_anger * flash_num)
 		}
 		//释放技能时，若目标流血效果在5层以上施加重伤
 		if(skill.character.skill_bleed_zs){
@@ -846,9 +871,15 @@ model.useHealSkill = function(skill,chase) {
 			}
 		}
 		if(skill.cleanDebuff || skill.character.cleanDebuff){
+			var tmpCount = 0
 			for(var i = 0;i < targets.length;i++){
-				if(!targets[i].died)
+				if(!targets[i].died){
+					tmpCount += targets[i].getDebuffNum()
 					targets[i].removeDeBuff()
+				}
+			}
+			if(skill.character.cleanDebuff_anger && tmpCount){
+				skill.character.addAnger(tmpCount)
 			}
 		}
 		if(skill.character.heal_addAnger){
