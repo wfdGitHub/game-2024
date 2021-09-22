@@ -25,6 +25,7 @@ model.prototype.init = function() {
 				case "burn_buff_change_skill":
 				case "burn_att_change_normal":
 				case "burn_buff_change_normal":
+				case "kill_buff":
 					value = JSON.parse(value)
 				break
 				case "buff1":
@@ -52,6 +53,8 @@ model.prototype.init = function() {
 				this.skill_buffs[id].buffRate += this.skill_buffs[id].buffRate * this.character.atkcontrol
 		}
 	}
+	this.kill_buff = {"buffId":"sneak","buff_tg":"team_self","duration":1,"buffRate":1}
+
 }
 model.prototype.addBuff = function(buffStr) {
 	var buff = JSON.parse(buffStr)

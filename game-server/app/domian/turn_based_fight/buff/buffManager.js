@@ -16,6 +16,9 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		console.error("buff 不存在 ",buffId)
 		return
 	}
+	//亡魂不状态不可释放BUFF
+	if(character.ghost)
+		return
 	//判断控制buff抗性
 	if(buff_cfg[buffId].control){
 		if(character.control_buff_lowrate && this.seeded.random("控制buff抗性") < character.control_buff_lowrate)

@@ -569,19 +569,19 @@ model.prototype.getTeamAdjoin = function(character) {
 	if(character){
 		list.push(character)
 		//左方向
-		if(character.index % 3 >= 1 && model.check(character.team[character.index - 1])){
+		if(character.index % 3 >= 1 && model.friendCheck(character.team[character.index - 1])){
 			list.push(character.team[character.index - 1])
 		}
 		//右方向
-		if(character.index % 3 <= 1 && model.check(character.team[character.index + 1])){
+		if(character.index % 3 <= 1 && model.friendCheck(character.team[character.index + 1])){
 			list.push(character.team[character.index + 1])
 		}
 		//后方向
-		if(character.index < 3 && model.check(character.team[character.index + 3])){
+		if(character.index < 3 && model.friendCheck(character.team[character.index + 3])){
 			list.push(character.team[list[0].index + 3])
 		}
 		//前方向
-		if(list[0].index >= 3 && model.check(list[0].team[list[0].index - 3])){
+		if(list[0].index >= 3 && model.friendCheck(list[0].team[list[0].index - 3])){
 			list.push(list[0].team[list[0].index - 3])
 		}
 	}
@@ -611,7 +611,7 @@ model.prototype.getEnemyMinHP = function(character) {
 model.prototype.getTeamLossMaxHP = function(character) {
     var minIndex = -1
     for(var i = 0;i < character.team.length;i++){
-        if(model.check(character.team[i])){
+        if(model.friendCheck(character.team[i])){
             if(minIndex === -1 || (character.team[i].attInfo.maxHP - character.team[i].attInfo.hp) > (character.team[minIndex].attInfo.maxHP - character.team[minIndex].attInfo.hp)){
                 minIndex = i
             }
@@ -627,7 +627,7 @@ model.prototype.getTeamLossMaxHP = function(character) {
 model.prototype.getTeamRandom = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(model.check(target)){
+        if(model.friendCheck(target)){
         	list.push(index)
         }
     })
@@ -651,13 +651,13 @@ model.prototype.getTeamRandom = function(character,count) {
 model.prototype.getTeamHorizontalFront = function(character) {
 	var list = []
 	for(var i = 0;i < 3;i++){
-        if(model.check(character.team[i])){
+        if(model.friendCheck(character.team[i])){
         	list.push(character.team[i])
         }
 	}
 	if(!list.length){
 		for(var i = 3;i < 6;i++){
-	        if(model.check(character.team[i])){
+	        if(model.friendCheck(character.team[i])){
 	        	list.push(character.team[i])
 	        }
 		}
@@ -668,13 +668,13 @@ model.prototype.getTeamHorizontalFront = function(character) {
 model.prototype.getTeamHorizontalBack = function(character) {
 	var list = []
 	for(var i = 3;i < 6;i++){
-        if(model.check(character.team[i])){
+        if(model.friendCheck(character.team[i])){
         	list.push(character.team[i])
         }
 	}
 	if(!list.length){
 		for(var i = 0;i < 3;i++){
-	        if(model.check(character.team[i])){
+	        if(model.friendCheck(character.team[i])){
 	        	list.push(character.team[i])
 	        }
 		}
@@ -685,7 +685,7 @@ model.prototype.getTeamHorizontalBack = function(character) {
 model.prototype.getTeamAll = function(character) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(model.check(target)){
+        if(model.friendCheck(target)){
         	list.push(target)
         }
     })
@@ -695,7 +695,7 @@ model.prototype.getTeamAll = function(character) {
 model.prototype.getTeamRandomMinHp = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(model.check(target)){
+        if(model.friendCheck(target)){
         	list.push(target)
         }
     })
@@ -712,7 +712,7 @@ model.prototype.getTeamRandomMinHp = function(character,count) {
 model.prototype.getTeamRealmMinHp = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(target.realm == character.realm && model.check(target)){
+        if(target.realm == character.realm && model.friendCheck(target)){
         	list.push(target)
         }
     })
@@ -729,7 +729,7 @@ model.prototype.getTeamRealmMinHp = function(character,count) {
 model.prototype.getFriendRandomMinHp = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(model.check(target) && target != character){
+        if(model.friendCheck(target) && target != character){
         	list.push(target)
         }
     })
@@ -746,7 +746,7 @@ model.prototype.getFriendRandomMinHp = function(character,count) {
 model.prototype.getFriendMinAnger = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(model.check(target) && target != character){
+        if(model.friendCheck(target) && target != character){
         	list.push(target)
         }
     })
@@ -763,7 +763,7 @@ model.prototype.getFriendMinAnger = function(character,count) {
 model.prototype.getRealmMinAnger = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(model.check(target) && target != character && target.realm == character.realm){
+        if(model.friendCheck(target) && target != character && target.realm == character.realm){
         	list.push(target)
         }
     })
@@ -797,7 +797,7 @@ model.prototype.getEnemyMaxAtk = function(character,count) {
 model.prototype.getTeamDiedAll = function(character) {
 	var list = []
 	for(var i = 0;i < character.team.length;i++){
-		if(!character.team[i].isNaN && character.team[i].died && character.team[i] != character){
+		if(!character.team[i].isNaN && character.team[i].died && character.team[i] != character && !character.team[i].buffs["jinhun"] && !character.team[i].ghost){
 			list.push(character.team[i])
 		}
 	}
@@ -807,7 +807,7 @@ model.prototype.getTeamDiedAll = function(character) {
 model.prototype.getTeamDied = function(character) {
 	var list = []
 	for(var i = 0;i < character.team.length;i++){
-		if(!character.team[i].isNaN && character.team[i].died){
+		if(!character.team[i].isNaN && character.team[i].died && !character.team[i].buffs["jinhun"] && !character.team[i].ghost){
 			list.push(character.team[i])
 		}
 	}
@@ -822,7 +822,7 @@ model.prototype.getTeamDied = function(character) {
 model.prototype.getTeamMaxAtk = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(model.check(target)){
+        if(model.friendCheck(target)){
         	list.push(target)
         }
     })
@@ -839,7 +839,7 @@ model.prototype.getTeamMaxAtk = function(character,count) {
 model.prototype.getRealmMaxAtk = function(character,count) {
     var list = []
     character.team.forEach(function(target,index) {
-        if(model.check(target) && target.realm == character.realm){
+        if(model.friendCheck(target) && target.realm == character.realm){
         	list.push(target)
         }
     })
@@ -855,7 +855,7 @@ model.prototype.getRealmMaxAtk = function(character,count) {
 //己方阵容站位最靠前的单位
 model.prototype.getTeamMinIndex = function(character) {
 	for(var i = 0;i < character.team.length;i++){
-		if(model.check(character.team[i])){
+		if(model.friendCheck(character.team[i])){
 			return [character.team[i]]
 		}
 	}
@@ -866,7 +866,7 @@ model.prototype.getFriendVertical = function(character) {
 	var index = Math.floor(character.index / 3) * 3
 	var list = []
 	for(var i = index;i < index + 3;i++){
-        if(i != character.index && model.check(character.team[i])){
+        if(i != character.index && model.friendCheck(character.team[i])){
         	list.push(character.team[i])
         }
 	}
@@ -875,13 +875,21 @@ model.prototype.getFriendVertical = function(character) {
 //己方纵排英雄
 model.prototype.getFriendHorizontal = function(character) {
 	var index = (character.index + 3) % 6
-	if(model.check(character.team[index]))
+	if(model.friendCheck(character.team[index]))
     	return [character.team[index]]
     else 
     	return []
 }
+//敌方选中检测
 model.check = function(character) {
-	if(character.died || character.buffs["banish"])
+	if(character.died || character.buffs["banish"] || character.buffs["sneak"] || character.buffs["ghost"])
+		return false
+	else
+		return true
+}
+//潜行检测 敌方无法选中  我方可选中
+model.friendCheck = function(character) {
+	if(character.died || character.buffs["banish"] || character.buffs["ghost"])
 		return false
 	else
 		return true

@@ -1,34 +1,36 @@
-//暴击BUFF
+//暴击加成
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
-	// console.log("角色"+buff.character.id+"增加伤害加成BUFF")
 	var id = 0
 	var list = {}
-	buff.clear = function() {
-		// console.log("伤害加成BUFF消失")
-	}
+	var count = 0
 	buff.refresh = function() {
 		for(var i in list){
 			list[i].duration--
 			if(list[i].duration <= 0){
 				delete list[i]
+				count--
 			}
 		}
+		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
+		buff.fightRecord.push(recordInfo)
 	}
 	buff.overlay = function(releaser,otps) {
-		this.releaser = releaser
-		if(otps.duration > this.duration)
-			this.duration = otps.duration
-		var value = otps.buffArg
-		list[id++] = {duration : otps.duration,value : value}
+		for(var i = 0;i < otps.buffArg;i++){
+			if(count >= 3)
+				break
+			this.releaser = releaser
+			if(otps.duration > this.duration)
+				this.duration = otps.duration
+			list[id++] = {duration : otps.duration}
+			count++
+		}
+		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
+		buff.fightRecord.push(recordInfo)
 	}
 	buff.getValue = function() {
-		var value = 0
-		for(var i in list){
-			value += list[i].value
-		}
-		return value
+		return count * 0.15
 	}
 	buff.overlay(releaser,otps)
 	return buff

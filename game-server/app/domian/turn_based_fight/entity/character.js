@@ -101,9 +101,9 @@ var model = function(otps) {
 	this.skill_dispel_enemy = otps.skill_dispel_enemy || false //释放技能后驱散目标1个增益效果
 	this.cleanDebuff_anger = otps.cleanDebuff_anger || 0 		//释放技能每净化一个减益效果，增加怒气值
 	this.died_rescue_team = otps.died_rescue_team || 0 		//阵亡后复活全体已阵亡友军，恢复百分比最大生命值，每场战斗仅生效1次
-
-
-
+	
+	
+	
 	//=========其他效果=======//
 	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
 	this.skill_heal_maxHp = otps.skill_heal_maxHp || 0		//释放技能后恢复自身最大生命值
@@ -666,8 +666,11 @@ model.prototype.after = function() {
 }
 //整体回合结束
 model.prototype.roundOver = function() {
-	if(this.died)
+	if(this.died){
+		if(this.buffs["jinhun"])
+			this.buffs["jinhun"].update()
 		return
+	}
 	//状态BUFF刷新
 	for(var i in this.buffs)
 		if(buff_cfg[i].refreshType == "roundOver")
@@ -711,10 +714,12 @@ model.prototype.removeControlBuff = function() {
 }
 //移除非控制类负面状态
 model.prototype.removeDeBuffNotControl = function() {
+	if(this.buffs["moyin"])
+		return 0
 	var count = 0
 	//状态BUFF刷新
 	for(var i in this.buffs){
-		if(buff_cfg[i].debuff && !buff_cfg[i].control){
+		if(buff_cfg[i].lower){
 			count++
 			this.buffs[i].destroy("clear")
 		}
@@ -723,6 +728,8 @@ model.prototype.removeDeBuffNotControl = function() {
 }
 //解除一个减益状态
 model.prototype.removeOneLower = function() {
+	if(this.buffs["moyin"])
+		return
 	for(var i in this.buffs){
 		if(buff_cfg[i].lower){
 			this.buffs[i].destroy("clear")
@@ -749,9 +756,15 @@ model.prototype.removeOneIntensify = function() {
 }
 //驱散负面状态
 model.prototype.removeDeBuff = function() {
-	//状态BUFF刷新
+	//负面状态
+	if(!this.buffs["moyin"]){
+		for(var i in this.buffs)
+			if(buff_cfg[i].lower)
+				this.buffs[i].destroy("dispel")
+	}
+	//控制效果
 	for(var i in this.buffs)
-		if(buff_cfg[i].debuff)
+		if(buff_cfg[i].control)
 			this.buffs[i].destroy("dispel")
 }
 //获得负面状态数量
@@ -778,9 +791,18 @@ model.prototype.clearReleaserBuff = function(releaser) {
 }
 //清除所有buff
 model.prototype.diedClear = function() {
-	this.curAnger = 0
-	for(var i in this.buffs)
-		this.buffs[i].destroy()
+	if(this.buffs["ghost"]){
+		for(var i in this.buffs){
+			if(buff_cfg[i].debuff && i != "jinhun")
+				this.buffs[i].destroy()
+		}
+	}else{
+		this.curAnger = 0
+		for(var i in this.buffs){
+			if(i != "jinhun")
+				this.buffs[i].destroy()
+		}
+	}
 }
 model.prototype.addKillBuff = function(buffStr) {
 	var buff = JSON.parse(buffStr)
@@ -996,6 +1018,9 @@ model.prototype.onHPLoss = function() {
 }
 //受到治疗
 model.prototype.onHeal = function(releaser,info) {
+	if(this.buffs["soul_steal"]){
+		return this.buffs["soul_steal"].releaser.onHeal(releaser,info)
+	}
 	info.id = this.id
 	info.value = Math.floor(info.value) || 0
 	info.maxRate = info.maxRate || 0
@@ -1026,6 +1051,7 @@ model.prototype.onDie = function() {
 	this.attInfo.hp = 0
 	this.died = true
 	this.fighting.diedList.push(this)
+	this.teamInfo["realms_survival"][this["realm"]]--
 	for(var i = 0;i < this.team.length;i++)
 		if(!this.team[i].died && this.team[i].id != this.id)
 			this.team[i].friendDied(this)
@@ -1061,10 +1087,13 @@ model.prototype.kill = function(target) {
 }
 //复活
 model.prototype.resurgence = function(rate) {
+	if(this.buffs["jinhun"])
+		return
 	if(rate > 1)
 		rate = 1
 	this.attInfo.hp = Math.floor(rate * this.attInfo.maxHP) || 1
 	this.died = false
+	this.teamInfo["realms_survival"][this["realm"]]++
 	fightRecord.push({type : "resurgence",curValue : this.attInfo.hp,maxHP : this.attInfo.maxHP,id : this.id,curAnger : 0})
 }
 //恢复血量
@@ -1170,6 +1199,9 @@ model.prototype.getTotalAtt = function(name) {
 		case "amplify":
 			if(this.buffs["god_power"]){
 				value += this.buffs["god_power"].getValue() * 0.15
+			}
+			if(this.buffs["weak"]){
+				value -= this.buffs["weak"].getValue() * 0.15
 			}
 		break
 		case "reduction":

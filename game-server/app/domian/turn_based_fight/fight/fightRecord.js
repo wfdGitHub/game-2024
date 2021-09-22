@@ -138,12 +138,20 @@ var model = function() {
 				case "heal":
 					var str = "\033[36m"+heroNames[info.id]+"使用"+info.name+"\033[0m"
 					for(var i = 0;i < info.targets.length;i++){
-						str += "\n  \033[32m恢复"+heroNames[info.targets[i].id]+" "+info.targets[i].value+" 点血量"
-						if(info.targets[i].crit){
-							str +="(暴击)"
+						if(info.targets[i].rescue){
+							str += "\n  \033[32m复活"+heroNames[info.targets[i].id]
+							str += "\033[0m"
+						}else if(info.targets[i].turn_ghost){
+							str += "\n  \033[32m亡魂"+heroNames[info.targets[i].id]
+							str += "\033[0m"
+						}else{
+							str += "\n  \033[32m恢复"+heroNames[info.targets[i].id]+" "+info.targets[i].value+" 点血量"
+							if(info.targets[i].crit){
+								str +="(暴击)"
+							}
+							str += "\t剩余"+info.targets[i].curValue+"/"+info.targets[i].maxHP+"\033[0m"
+							str += "\033[0m"
 						}
-						str += "\t剩余"+info.targets[i].curValue+"/"+info.targets[i].maxHP+"\033[0m"
-						str += "\033[0m"
 					}
 					console.log(str)
 				break

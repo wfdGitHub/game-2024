@@ -526,20 +526,20 @@ model.prototype.diedListCheck = function() {
 			this.diedList[i].died_rescue_team = 0
 		}
 		//复活判断
-		if(this.diedList[i].died_resurgence){
-			this.diedList[i].died_resurgence = false
-			this.diedList[i].resurgence(1)
-		}else if(this.diedList[i].resurgence_self && this.seeded.random("复活判断") < this.diedList[i].resurgence_self){
-			this.diedList[i].resurgence(1)
-		}else if(this.diedList[i].teamInfo.resurgence_team){
-			var rate = this.diedList[i].teamInfo.resurgence_team
-			if(this.diedList[i].teamInfo.resurgence_realmRate && this.diedList[i].teamInfo.resurgence_realmId == this.diedList[i].realm){
-				rate = rate * this.diedList[i].teamInfo.resurgence_realmRate
+		if(!this.diedList[i].buffs["jinhun"]){
+			if(this.diedList[i].died_resurgence){
+				this.diedList[i].died_resurgence = false
+				this.diedList[i].resurgence(1)
+			}else if(this.diedList[i].resurgence_self && this.seeded.random("复活判断") < this.diedList[i].resurgence_self){
+				this.diedList[i].resurgence(1)
+			}else if(this.diedList[i].teamInfo.resurgence_team){
+				var rate = this.diedList[i].teamInfo.resurgence_team
+				if(this.diedList[i].teamInfo.resurgence_realmRate && this.diedList[i].teamInfo.resurgence_realmId == this.diedList[i].realm){
+					rate = rate * this.diedList[i].teamInfo.resurgence_realmRate
+				}
+				this.diedList[i].resurgence(rate)
+				delete this.diedList[i].teamInfo.resurgence_team
 			}
-			this.diedList[i].resurgence(rate)
-			delete this.diedList[i].teamInfo.resurgence_team
-		}else{
-			this.diedList[i].teamInfo["realms_survival"][this.diedList[i]["realm"]]--
 		}
 		//遗计
 		if(this.diedList[i].last_strategy && this.diedList[i].curAnger > 0){

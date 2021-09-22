@@ -244,6 +244,11 @@ model.useSkill = function(skill,chase,point) {
 			}
 			for(var i = 0;i < buffTargets.length;i++){
 				if(buffTargets[i].died){
+					if(buffId == "jinhun"){
+						if(this.seeded.random("判断BUFF命中率") < buffRate){
+							buffManager.createBuff(skill.character,buffTargets[i],{buffId : buffId,buffArg : buffArg,duration : duration})
+						}
+					}
 					break
 				}
 				if(this.seeded.random("判断BUFF命中率") < buffRate){
@@ -272,6 +277,12 @@ model.useSkill = function(skill,chase,point) {
 					var tmpSkill = targets[i].team[j].angerSkill
 					this.useSkill(tmpSkill,true)
 				}
+		}
+	}
+	//技能击杀后对自身释放BUFF
+	if(diedFlag && skill.kill_buff){
+		if(this.seeded.random("判断BUFF命中率") < skill.kill_buff.buffRate){
+			buffManager.createBuff(skill.character,skill.character,{buffId : skill.kill_buff.buffId,buffArg : skill.kill_buff.buffArg,duration : skill.kill_buff.duration})
 		}
 	}
 	//吸取攻击力
@@ -550,8 +561,14 @@ model.useAttackSkill = function(skill,chase,point) {
 				fightRecord.push(tmpRecord)
 			}
 		}
-		if(skill.character.phy_turn_hp && skill.damageType == "phy"){
-			var tmpInfo = skill.character.onHeal(skill.character,{type : "heal",value : skill.character.phy_turn_hp * allDamage})
+		//吸血
+		var bloodValue = 0
+		if(skill.character.phy_turn_hp && skill.damageType == "phy")
+			bloodValue += skill.character.phy_turn_hp * allDamage
+		if(skill.character.buffs["blood"])
+			bloodValue += skill.character.buffs["blood"].getValue() * allDamage
+		if(bloodValue){
+			var tmpInfo = skill.character.onHeal(skill.character,{type : "heal",value : bloodValue})
 			tmpInfo.type = "self_heal"
 			fightRecord.push(tmpInfo)
 		}
@@ -782,11 +799,26 @@ model.useHealSkill = function(skill,chase) {
 	if(skill.rescue_heal){
 		var targets = this.locator.getTargets(skill.character,"team_died")
 		if(targets.length !== 0){
-			var info = {id : targets[0].id,source : skill.character.id,rescue : true}
+			var info = {id : targets[0].id,source : skill.character.id}
 			var tmpValue = skill.rescue_heal
 			if(skill.character.rescue_realm_heal)
 				tmpValue += skill.character.rescue_realm_heal
+			info.rescue = true
+			recordInfo.targets.push(info)
+			fightRecord.push(recordInfo)
 			targets[0].resurgence(tmpValue)
+			return targets
+		}
+	}
+	//转化亡魂
+	if(skill.turn_ghost){
+		var targets = this.locator.getTargets(skill.character,"team_died")
+		if(targets.length !== 0){
+			var info = {id : targets[0].id,source : skill.character.id}
+			info.turn_ghost = true
+			recordInfo.targets.push(info)
+			fightRecord.push(recordInfo)
+			buffManager.createBuff(skill.character,targets[0],{buffId : "ghost",duration : 2})
 			return targets
 		}
 	}
