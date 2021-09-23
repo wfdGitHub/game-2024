@@ -96,12 +96,13 @@ var model = function(otps) {
 	this.shanbi_fanzhi = otps.shanbi_fanzhi || false 		//闪避时获得闪避印记
 	this.fanzhi_to_zs = otps.fanzhi_to_zs || false 			//释放技能时，若反制印记在3层以上时，对目标添加重伤效果
 	this.flash_settle = otps.flash_settle || false 			//技能立即结算感电
+	this.curse_settle = otps.curse_settle || false 			//技能立即结算诅咒
 	this.flash_died_settle = otps.flash_died_settle || false //死亡时立即结算所有敌人感电
 	this.died_heal_team = otps.died_heal_team || 0 			//死亡时恢复全体生命值，仅生效1次
 	this.skill_dispel_enemy = otps.skill_dispel_enemy || false //释放技能后驱散目标1个增益效果
 	this.cleanDebuff_anger = otps.cleanDebuff_anger || 0 		//释放技能每净化一个减益效果，增加怒气值
 	this.died_rescue_team = otps.died_rescue_team || 0 		//阵亡后复活全体已阵亡友军，恢复百分比最大生命值，每场战斗仅生效1次
-	
+	this.soul_steal_anger = otps.soul_steal_anger || false  //灵魂窃取的目标怒气值转移至自身
 	
 	
 	//=========其他效果=======//
@@ -384,7 +385,7 @@ var model = function(otps) {
 	this.maxHP_rate = otps.maxHP_rate							//进入战斗时最大生命加成倍数
 	this.maxHP_loss = otps.maxHP_loss							//每回合生命流失率
 	this.round_amplify = otps.round_amplify || 0				//每回合伤害加成
-	this.behit_amplify = otps.behit_amplify || 0 				//本回合中每受到一次伤害，下回合攻击伤害加成
+	this.behit_amplify = otps.behit_amplify || 0 				//每受到一次伤害，自身伤害永久增加
 	this.behit_value = 0										//累计受击伤害加成
 	this.damage_save = otps.damage_save							//释放技能时,上回合受到的所有伤害将100%额外追加伤害
 	this.damage_save_value = 0									//累积伤害值 
@@ -1138,6 +1139,9 @@ model.prototype.addAnger = function(value,hide) {
 		value = 0
 		fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,hide : hide,banAnger : true})
 	}else{
+		if(this.buffs["soul_steal"] && this.buffs["soul_steal"].releaser.soul_steal_anger){
+			return this.buffs["soul_steal"].releaser.addAnger(value,hide)
+		}
 		value = Math.floor(value) || 1
 		this.curAnger += value
 		fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,hide : hide})

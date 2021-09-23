@@ -118,6 +118,15 @@ model.useSkill = function(skill,chase,point) {
 				}
 			}
 		}
+		//立即结算诅咒效果
+		if(skill.character.curse_settle){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died && targets[i].buffs["curse"]){
+					targets[i].buffs["curse"].settle()
+				}
+			}
+		}
+		
 	}else{
 		if(skill.burn_buff_change_normal || skill.character.burn_buff_change_normal){
 			for(var i = 0;i < targets.length;i++){

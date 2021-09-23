@@ -224,6 +224,9 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 		case "realm_maxAtk_2":
 			//获取己方同阵营攻击最高的2个单位
 			return this.getRealmMaxAtk(character,2)
+		case "team_realm":
+			//我方同阵营英雄
+			return this.getTeamRealm(character)
 		case "enemy_all":
 			//敌方全体
 			return	this.getEnemyAll(character)
@@ -860,6 +863,16 @@ model.prototype.getTeamMinIndex = function(character) {
 		}
 	}
     return []
+}
+//我方同阵营英雄
+model.prototype.getTeamRealm = function(character) {
+    var list = []
+    character.team.forEach(function(target,index) {
+        if(model.friendCheck(target) && target.realm == character.realm){
+        	list.push(target)
+        }
+    })
+    return list
 }
 //己方横排英雄
 model.prototype.getFriendVertical = function(character) {
