@@ -285,6 +285,12 @@ module.exports = function() {
 			if(data){
 				cb(false,"已激活至尊特权")
 			}else{
+				self.incrbyObj(uid,main_name,"wuxian_1",1)
+				var notify = {
+					type : "wuxian",
+					wuxianId : "wuxian_1"
+				}
+				self.sendToUser(uid,notify)
 				self.setObj(uid,main_name,"highCard",1)
 				self.chageLordData(uid,"highCard",1)
 				self.addUserRMB(uid,activity_cfg["high_card_lof"]["value"])
