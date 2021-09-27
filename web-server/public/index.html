@@ -1165,6 +1165,18 @@
             console.log(data);
         });
       }
+      //开启无限资源
+      var openWuxian = function(wuxianId) {
+        pomelo.request("area.activityHandler.openWuxian", {wuxianId:wuxianId}, function(data) {
+            console.log(data);
+        });
+      }
+      //开启累充无限资源
+      var openWuxianByRmb = function(wuxianId) {
+        pomelo.request("area.activityHandler.openWuxianByRmb", {wuxianId:wuxianId}, function(data) {
+            console.log(data);
+        });
+      }
       //征税
       var revenueCoin = function(type) {
         pomelo.request("area.activityHandler.revenueCoin", {type:type}, function(data) {

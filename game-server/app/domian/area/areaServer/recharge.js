@@ -10,6 +10,7 @@ const gift_month = require("../../../../config/gameCfg/gift_month.json")
 const gift_skin = require("../../../../config/gameCfg/gift_skin.json")
 const pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
 const gift_loop = require("../../../../config/gameCfg/gift_loop.json")
+const wuxian = require("../../../../config/gameCfg/wuxian.json")
 const util = require("../../../../util/util.js")
 const uuid = require("uuid")
 const main_name = "activity"
@@ -109,6 +110,9 @@ module.exports = function() {
 			case "gift_skin":
 				this.buyLimitSkin(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
+			case "wuxian":
+				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+			break
 		}
 		var once_index = recharge_once_table[pay_id]
 		if(once_index){
@@ -154,6 +158,21 @@ module.exports = function() {
 			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",award)
 			cb(true)
 		})
+	}
+	//购买无限特权
+	this.buyWuxian = function(uid,id,cb) {
+		if(!wuxian[id] || !wuxian[id]["rmb"]){
+			cb(false,"无限特权不存在")
+			return
+		}
+		self.addUserRMB(uid,wuxian[id].rmb)
+		self.incrbyObj(uid,main_name,id,1)
+		var notify = {
+			type : "wuxian",
+			wuxianId : id
+		}
+		self.sendToUser(uid,notify)
+		cb(true)
 	}
 	//购买循环礼包
 	this.buyLoopGift = function(uid,loopId,cb) {
