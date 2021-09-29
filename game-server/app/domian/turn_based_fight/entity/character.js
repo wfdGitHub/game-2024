@@ -103,6 +103,16 @@ var model = function(otps) {
 	this.cleanDebuff_anger = otps.cleanDebuff_anger || 0 		//释放技能每净化一个减益效果，增加怒气值
 	this.died_rescue_team = otps.died_rescue_team || 0 		//阵亡后复活全体已阵亡友军，恢复百分比最大生命值，每场战斗仅生效1次
 	this.soul_steal_anger = otps.soul_steal_anger || false  //灵魂窃取的目标怒气值转移至自身
+
+	this.first_ace_buff1 = otps.first_ace_buff1 || false 	// 初始buff1
+	this.first_ace_buff2 = otps.first_ace_buff2 || false 	// 初始buff2
+	this.slcj_zs = otps.slcj_zs || false  					// 释放水龙冲击时，添加1回合重伤效果
+	this.pbyj_qs = otps.pbyj_qs || false  					// 释放破冰一击时，驱散目标所有增益效果
+	this.pj_less_anger = otps.pj_less_anger || 0 			// 使用技能攻击时，降低破甲状态下的目标一点怒气值
+	this.curse_amp = otps.curse_amp || 0 					// 诅咒伤害增加百分比
+	this.gd_mb = otps.gd_mb || false 						// 攻击触发感电效果时，有概率麻痹目标，持续1回合
+	this.xr_zs = otps.xr_zs || false 						// 攻击虚弱状态下的英雄时，有概率添加重伤，持续1回合
+	
 	
 	
 	//=========其他效果=======//
@@ -310,6 +320,8 @@ var model = function(otps) {
 	this.skill_less_amp = otps.skill_less_amp || 0			//技能目标每减少一个伤害加成比例
 	this.skill_burn_anger = otps.skill_burn_anger || 0		//技能每命中一个燃烧状态下的目标恢复自身怒气
 	this.skill_flash_anger = otps.skill_flash_anger || 0    //技能每命中一个感电状态下的目标恢复自身怒气
+	this.skill_frozen_anger = otps.skill_frozen_anger || 0 	// 使用技能攻击时，若目标处于冰冻状态，恢复自身1点怒气
+
 	if(otps.skill_later_skill){
 		this.skill_later_skill = JSON.parse(otps.skill_later_skill)	//释放技能后后追加技能
 	}
@@ -377,6 +389,11 @@ var model = function(otps) {
 		this.first_buff_list.push(JSON.parse(otps.first_buff1))		//首回合附加BUFF1
 	if(otps.first_buff2)
 		this.first_buff_list.push(JSON.parse(otps.first_buff2))		//首回合附加BUFF1
+	if(otps.first_ace_buff1)
+		this.first_buff_list.push(JSON.parse(otps.first_ace_buff1))		//首回合附加BUFF1
+	if(otps.first_ace_buff2)
+		this.first_buff_list.push(JSON.parse(otps.first_ace_buff2))		//首回合附加BUFF2
+	
 	this.died_use_skill = otps.died_use_skill				//死亡时释放一次技能
 	this.died_burn_buff_must = otps.died_burn_buff_must 	//死亡释放buff时必定命中
 	if(otps.died_later_buff)
@@ -466,6 +483,8 @@ var model = function(otps) {
 		this.angerSkill.addBuff(otps.skill_buff2)				//技能buff2
 	if(otps.skill_buff3)
 		this.angerSkill.addBuff(otps.skill_buff3)				//技能buff3
+	if(otps.skill_buff_ace)
+		this.angerSkill.addBuff(otps.skill_buff_ace)			//宝物技能BUFF
 	if(otps.normal_buff1)
 		this.defaultSkill.addBuff(otps.normal_buff1) 			//普攻buff1
 	if(otps.normal_buff2)
@@ -589,6 +608,9 @@ model.prototype.siteInit = function() {
 		if(this.front_maxHP){
 			this.attInfo.maxHP += Math.floor(this.attInfo.maxHP * this.front_maxHP)
 		}
+		if(this.front_reduction){
+			this.attInfo.reduction += this.front_reduction
+		}
 	}else{
 		//后排
 		if(this.back_neglect_def)
@@ -600,6 +622,8 @@ model.prototype.siteInit = function() {
 		if(this.back_atk){
 			this.attInfo.atk += Math.floor(this.attInfo.atk * this.back_atk)
 		}
+		if(this.back_amp)
+			this.attInfo.amplify += this.back_amp
 	}
 }
 //战斗开始

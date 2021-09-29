@@ -244,12 +244,10 @@ model.useSkill = function(skill,chase,point) {
 			var duration = buff.duration
 			//判断技能目标减少
 			if(skill.character.less_skill_buffRate){
-				var allLenth = targetsNum
-				buffRate += buffRate * (1 + (allLenth - targets.length + 1) / allLenth) * skill.character.less_skill_buffRate
+				buffRate += skill.character.less_skill_buffRate * (targetsNum - targets.length)
 			}
 			if(skill.character.less_buff_arg){
-				var allLenth = targetsNum
-				buffArg += buffArg * (1 + ((allLenth - targets.length + 1) / allLenth)) * skill.character.less_buff_arg
+				buffArg += skill.character.less_buff_arg * (targetsNum - targets.length)
 			}
 			for(var i = 0;i < buffTargets.length;i++){
 				if(buffTargets[i].died){
@@ -338,6 +336,7 @@ model.useAttackSkill = function(skill,chase,point) {
 	var kill_burn_num = 0
 	var burn_num = 0
 	var flash_num = 0
+	var frozen_num = 0
 	var dead_anger = 0
 	var burnDamage = 0
 	var died_targets = []
@@ -445,6 +444,8 @@ model.useAttackSkill = function(skill,chase,point) {
 		}
 		if(target.buffs["flash"])
 			flash_num++
+		if(target.buffs["frozen"])
+			frozen_num++
 		recordInfo.targets.push(info)
 		if(info.kill){
 			died_targets.push(target)
@@ -639,6 +640,9 @@ model.useAttackSkill = function(skill,chase,point) {
 					tmpInfo.type = "self_heal"
 					fightRecord.push(tmpInfo)
 				}
+				if(skill.character.pj_less_anger && targets[i].buffs["pojia"]){
+					targets[i].lessAnger(skill.character.pj_less_anger)
+				}
 			}
 			//受到伤害附加BUFF
 			if(targets[i].hit_buff){
@@ -754,6 +758,10 @@ model.useAttackSkill = function(skill,chase,point) {
 		//释放技能时，每命中一个感电状态下的目标恢复自身1点怒气
 		if(skill.character.skill_flash_anger && flash_num){
 			skill.character.addAnger(skill.character.skill_flash_anger * flash_num)
+		}
+		//释放技能时，每命中一个冰冻状态下的目标恢复自身1点怒气
+		if(skill.character.skill_frozen_anger && frozen_num){
+			skill.character.addAnger(skill.character.skill_frozen_anger * frozen_num)
 		}
 		//释放技能时，若目标流血效果在5层以上施加重伤
 		if(skill.character.skill_bleed_zs){

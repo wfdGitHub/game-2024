@@ -5,22 +5,11 @@ var formula = function(seeded,otps={}) {
 	this.magRate = otps.magRate || 1
 }
 var restrainMap = {
-	"1_1" : 0,
-	"1_2" : -0.1,
-	"1_3" : 0.1,
-	"1_4" : 0.1,
-	"2_1" : 0.1,
-	"2_2" : 0,
-	"2_3" : -0.1,
-	"2_4" : 0.1,
-	"3_1" : -0.1,
-	"3_2" : 0.1,
-	"3_3" : 0,
-	"3_4" : 0.1,
-	"4_1" : 0.1,
-	"4_2" : 0.1,
-	"4_3" : 0.1,
-	"4_4" : 0,
+	"1_2" : 0.2,
+	"2_3" : 0.2,
+	"3_1" : 0.2,
+	"4_5" : 0.2,
+	"5_4" : 0.2
 }
 //伤害计算
 formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,chase) {
@@ -128,9 +117,11 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(skill.thawing_frozen && target.buffs["frozen"]){
 		target.buffs["frozen"].destroy()
 		var tmpRate = skill.thawing_frozen
-		if(skill.character.thawing_frozen)
-			tmpRate += skill.character.thawing_frozen
+		if(attacker.thawing_frozen)
+			tmpRate += attacker.thawing_frozen
 		info.value += Math.floor(tmpRate * info.value)
+		if(attacker.pbyj_qs)
+			target.removeIntensifyBuff()
 	}
 	//水龙冲击
 	if(skill.thawing_burn && target.buffs["burn"]){
@@ -139,15 +130,22 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		if(skill.character.thawing_burn)
 			tmpRate += skill.character.thawing_burn
 		info.value += Math.floor(tmpRate * info.value)
-		if(attacker.thawing_burn_hudun){
+		if(attacker.thawing_burn_hudun)
 			buffManager.createBuff(attacker,attacker,{buffId : "shield",buffArg : attacker.thawing_burn_hudun,duration : 1})
-		}
 		if(attacker.thawing_burn_anger)
 			attacker.addAnger(attacker.thawing_burn_anger)
+		if(attacker.slcj_zs)
+			buffManager.createBuff(attacker,target,{"buffId":"forbidden","duration":1})
 	}
 	if(target.buffs["flash"]){
 		info.value +=  Math.floor(0.03 * target.attInfo.maxHP)
 		target.buffs["flash"].useBuff()
+		if(attacker.gd_mb && this.seeded.random("gd_mb") < attacker.gd_mb)
+			buffManager.createBuff(attacker,target,{"buffId":"disarm","duration":1})
+	}
+	if(target.buffs["weak"]){
+		if(attacker.xr_zs && this.seeded.random("xr_zs") < attacker.xr_zs)
+			buffManager.createBuff(attacker,target,{"buffId":"forbidden","duration":1})
 	}
 	if(info.crit){
 		info.value = Math.round(info.value * (1.5 + attacker.getTotalAtt("slay") - target.getTotalAtt("slayDef")))
@@ -161,8 +159,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		}
 	}
 	//种族克制
-	var restrainValue = restrainMap[attacker.realm+"_"+target.realm] || 0
-	info.value += Math.floor(info.value * restrainValue)
+	if(restrainMap[attacker.realm+"_"+target.realm]){
+		info.value += Math.floor(info.value * restrainMap[attacker.realm+"_"+target.realm])
+	}
 	//物理法术伤害加成减免
 	if(attacker[skill.damageType+"_add"] || target[skill.damageType+"_def"]){
 		var tmpRate = attacker[skill.damageType+"_add"] - target[skill.damageType+"_def"]
