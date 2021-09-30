@@ -4,10 +4,10 @@ var stone_skill = require("../../../../config/gameCfg/stone_skill.json")
 var stone_cfg = require("../../../../config/gameCfg/stone_cfg.json")
 var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var baseStone = {
-	"1" : 400010100,
-	"2" : 400020100,
-	"3" : 400030100,
-	"4" : 400040100
+	"1" : 4110,
+	"2" : 4210,
+	"3" : 4310,
+	"4" : 4410
 }
 var pickaxes = {
 	"1" : "1000501:1",

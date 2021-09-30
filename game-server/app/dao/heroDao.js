@@ -16,10 +16,10 @@ var stone_cfg = require("../../config/gameCfg/stone_cfg.json")
 var async = require("async")
 var first_recruit = 304010
 var baseStone = {
-	"1" : 400010100,
-	"2" : 400020100,
-	"3" : 400030100,
-	"4" : 400040100
+	"1" : 4110,
+	"2" : 4210,
+	"3" : 4310,
+	"4" : 4410
 }
 for(let i in recruit_base){
 	recruit_base[i]["weights"] = JSON.parse(recruit_base[i]["weights"])
@@ -171,7 +171,7 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	let ad = otps.ad || 0
 	let lv = otps.lv || 1
 	let star = otps.star || herosCfg[id].min_star
-	var hId = uuid.v1()
+	var hId = this.areaManager.areaMap[areaId].getLordLastid(uid)
 	var heroInfo = {id : id,ad : ad,lv : lv,star : star}
 	this.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)

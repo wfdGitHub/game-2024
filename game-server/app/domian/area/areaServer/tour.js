@@ -144,7 +144,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//进行任务
-				let id = uuid.v1()
+				let id = Date.now()
 				let taskInfo = {
 					taskId : taskId,
 					hIds : hIds,

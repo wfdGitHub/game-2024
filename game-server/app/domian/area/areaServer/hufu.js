@@ -58,7 +58,7 @@ module.exports = function() {
 	//生成指定护符  lv s1 s2
 	this.gainHufu = function(uid,info,id){
 		if(!id)
-			id = uuid.v1()
+			id = self.getLordLastid(uid)
 		self.setObj(uid,main_name,id,JSON.stringify(info))
 		var notify = {
 			"type" : "gainHufu",

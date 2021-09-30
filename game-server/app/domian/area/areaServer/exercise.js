@@ -15,7 +15,7 @@ for(var i in exercise_team){
 	}
 	exercise_list.push(tmpList)
 }
-const assistList = recruit_list["hero_10"]["heroList"]
+const assistList = recruit_list["hero_5"]["heroList"]
 module.exports = function() {
 	var self = this
 	var teamId = -1

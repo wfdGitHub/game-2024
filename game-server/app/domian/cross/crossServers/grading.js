@@ -3,7 +3,7 @@ const grading_lv = require("../../../../config/gameCfg/grading_lv.json")
 const grading_robot = require("../../../../config/gameCfg/grading_robot.json")
 const boyCfg = require("../../../../config/sysCfg/boy.json")
 const recruit_list = require("../../../../config/gameCfg/recruit_list.json")
-const hero_list = recruit_list["hero_10"]["heroList"]
+const hero_list = recruit_list["hero_5"]["heroList"]
 const util = require("../../../../util/util.js")
 const async = require("async")
 for(var i in grading_robot){
