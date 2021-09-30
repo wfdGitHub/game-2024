@@ -415,6 +415,10 @@ module.exports = function() {
 						seededNum : seededNum,
 						winner : winner
 					}
+					if(winner == parList[i])
+						info.winFlag = true
+					else
+						info.winFlag = false
 					winners[curRound][parList[i]] = winner
 					winners[curRound][parList[i+1]] = winner
 					matchHistory[parList[i]] = JSON.stringify(info)
