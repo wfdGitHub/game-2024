@@ -48,8 +48,8 @@ entryHandler.prototype.entryAccount = function(msg, session, next) {
 // }
 //39SDK登陆
 entryHandler.prototype.quickEntry = function(msg, session, next) {
-		var juhe_token = msg.juhe_token
-		var juhe_userid = msg.juhe_userid
+		var juhe_token = msg.token
+		var juhe_userid = msg.uid
 		var app_id = sdkConfig["app_id"]
 		var channel_userid = ""
 		var payment_key = sdkConfig["payment_key"]
