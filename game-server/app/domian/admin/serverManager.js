@@ -46,6 +46,9 @@ serverManager.prototype.init = function() {
 		case "jianwan":
 			self.pay_order = self.jianwan_order
 		break
+		case "39SDK":
+			self.pay_order = self.sdk39_order
+		break
 		default:
 			console.error("sdktype error")
 	}
@@ -74,6 +77,7 @@ serverManager.prototype.init = function() {
 	adminManager.init(server2,self,self.mysqlDao,self.redisDao)
 	server2.listen(5081);
 }
+//quick支付回调
 serverManager.prototype.quick_order = function(data,cb) {
 	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
 	if(v_sign != data.md5Sign){
@@ -113,6 +117,7 @@ serverManager.prototype.quick_order = function(data,cb) {
 		})
 	});
 }
+//简玩支付回调
 serverManager.prototype.jianwan_order = function(data,cb) {
 	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
 	if(v_sign != data.md5Sign){
@@ -136,6 +141,45 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 		extras_params : data.nt_data_json["extras_params"] || 0
 	}
 	self.payDao.finishGameOrderJianwan(info,function(flag,err,data) {
+		if(flag){
+			//发货
+			var areaId = self.areaDeploy.getFinalServer(data.areaId)
+			var serverId = self.areaDeploy.getServer(areaId)
+		    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
+		    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,data.uid,Math.floor(Number(info.amount) * 100),function(){})
+		}
+		if(err)
+			cb(false,err)
+		else
+			cb(true)
+	})
+}
+//39SDK支付回调
+serverManager.prototype.sdk39_order = function(data,cb) {
+	console.log("sdk39_order",data)
+	var str = "channel_userid"+data.channel_userid+"cp_order_id"+data.cp_order_id+"ext"+data.ext+"juhe_order_id"+data.juhe_order_id+"money"+data.money+"package_id"+data.package_id+"unix_name"+data.unix_name+sdkConfig["payment_key"]
+	var v_sign = util.md5(str).toLocaleUpperCase()
+	if(v_sign != data.sign){
+		console.error("签名验证失败")
+		cb(false,"签名验证失败")
+		return
+	}
+	var self = this
+	var message = result.quicksdk_message.message[0]
+	var info = {
+		is_test : 0,
+		channel : 0,
+		channel_name : 0,
+		channel_uid : data.channel_userid,
+		channel_order : data.juhe_order_id,
+		game_order : data.cp_order_id,
+		order_no : 0,
+		pay_time : Date.now(),
+		amount : data.money,
+		status : 0,
+		extras_params : data.ext,
+	}
+	self.payDao.finishGameOrder(info,function(flag,err,data) {
 		if(flag){
 			//发货
 			var areaId = self.areaDeploy.getFinalServer(data.areaId)

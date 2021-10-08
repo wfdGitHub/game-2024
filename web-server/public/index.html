@@ -60,6 +60,29 @@
           });
         })
       }
+      var SDK39Entry = function(argument) {
+        queryEntry(function(host,port) {
+          pomelo.init({
+            host: host,
+            port: port,
+            log: true
+          },function() {
+            var juhe_token = "2fcd41e3820442c4163617494a842fff"
+            var juhe_userid = 6841253
+            var app_id = 15
+            pomelo.request("connector.entryHandler.quickEntry",{juhe_token : juhe_token,juhe_userid:juhe_userid,app_id:app_id}, function(data) {
+                console.log(data);
+                if(data.flag){
+                  pomelo.request("connector.entryHandler.tokenLogin",{unionid : data.unionid,token:data.token}, function(data) {
+                      console.log(data);
+                  });
+                }else{
+                  //todo  登陆失败
+                }
+            });
+          });
+        })
+      }
       var quickEntryAccount = function() {
         queryEntry(function(host,port) {
           pomelo.init({
