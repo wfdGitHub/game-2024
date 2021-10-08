@@ -56,7 +56,6 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 		var self = this
 		var sign = util.md5("app_id="+app_id+"&channel_userid="+channel_userid+"&juhe_token="+juhe_token+"&juhe_userid="+juhe_userid+payment_key)
 		sign = sign.toLocaleUpperCase()
-		console.log(sign)
 		var postData=querystring.stringify({  
 		    "juhe_token":juhe_token,
 		    "juhe_userid" : juhe_userid,

@@ -165,7 +165,6 @@ serverManager.prototype.sdk39_order = function(data,cb) {
 		return
 	}
 	var self = this
-	var message = result.quicksdk_message.message[0]
 	var info = {
 		is_test : 0,
 		channel : 0,
