@@ -76,49 +76,51 @@ model.getOverInfo = function() {
 }
 //获取种族加成类型
 model.getRaceType = function(team) {
-	let raceList = {"1" : 0,"2" : 0, "3" : 0, "4" : 0}
-	let maxNum = 0
-	for(let i = 0;i < team.length;i++){
+	var raceList = {"1" : 0,"2" : 0, "3" : 0, "4" : 0,"5" : 0}
+	var type = 0
+	for(var i = 0;i < team.length;i++){
 		if(team[i]){
 			raceList[team[i].realm]++
-			if(raceList[team[i].realm] > maxNum){
-				maxNum = raceList[team[i].realm]
-			}
 		}
 	}
-	if(maxNum >= 4){
-		return maxNum
+	if(raceList[4] >= 6 || raceList[5] >= 6){
+		type = 7
+	}else if(raceList[1] >= 6 || raceList[2] >= 6 || raceList[3] >= 6){
+		type = 3
+	}else if(raceList[1] >= 1 || raceList[2] >= 1 || raceList[3] >= 1 || raceList[4] >= 1 || raceList[5] >= 1){
+		type = 8
+	}else if(raceList[1] == 2 || raceList[2] == 2 || raceList[3] == 2){
+		type = 4
+	}else if(raceList[4] >= 4 || raceList[5] >= 4){
+		type = 6
+	}else if(raceList[1] >= 4 || raceList[2] >= 4 || raceList[3] >= 4){
+		type = 2
+	}else if(raceList[4] >= 2 || raceList[5] >= 2){
+		type = 5
+	}else if(raceList[1] >= 2 || raceList[2] >= 2 || raceList[3] >= 2){
+		type = 1
 	}
-	let list = [0,0,0,0,0,0,0]
-	for(let i in raceList){
-		list[raceList[i]]++
-	}
-	if(list[3] >= 2){
-		return 3
-	}
-	if(maxNum >= 3){
-		return 2
-	}
-	if(list[2] >= 3){
-		return 1
-	}
-	return 0
+	return type
 }
 //种族加成
 model.raceAdd = function(raceType) {
 	switch(raceType){
 		case 1:
-		return {"atk" : 0.06,"maxHP" : 0.09}
+		return {"atk" : 0.05,"maxHP" : 0.07}
 		case 2:
 		return {"atk" : 0.08,"maxHP" : 0.12}
 		case 3:
-		return {"atk" : 0.1,"maxHP" : 0.15}
+		return {"atk" : 0.16,"maxHP" : 0.22}
 		case 4:
-		return {"atk" : 0.12,"maxHP" : 0.18}
+		return {"atk" : 0.14,"maxHP" : 0.18}
 		case 5:
-		return {"atk" : 0.14,"maxHP" : 0.21,"reduction" : 0.05}
+		return {"atk" : 0.07,"maxHP" : 0.1}
 		case 6:
-		return {"atk" : 0.2,"maxHP" : 0.3,"reduction" : 0.1}
+		return {"atk" : 0.12,"maxHP" : 0.16}
+		case 7:
+		return {"atk" : 0.2,"maxHP" : 0.3}
+		case 8:
+		return {"atk" : 0.15,"maxHP" : 0.2}
 		default:
 		return {}
 	}
