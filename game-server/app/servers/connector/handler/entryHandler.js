@@ -79,7 +79,6 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	  });
 	  res.on('end', function(){
 	  	var data = JSON.parse(_data)
-	  	console.log(data)
     	if(data && data.success == true){
     		var unionid = juhe_userid
     		var loginToken = util.randomString(8)

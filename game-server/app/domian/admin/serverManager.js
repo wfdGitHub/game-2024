@@ -156,7 +156,6 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 }
 //39SDK支付回调
 serverManager.prototype.sdk39_order = function(data,cb) {
-	console.log("sdk39_order",data)
 	var str = "channel_userid"+data.channel_userid+"cp_order_id"+data.cp_order_id+"ext"+data.ext+"juhe_order_id"+data.juhe_order_id+"money"+data.money+"package_id"+data.package_id+"unix_name"+data.unix_name+sdkConfig["payment_key"]
 	var v_sign = util.md5(str).toLocaleUpperCase()
 	if(v_sign != data.sign){
