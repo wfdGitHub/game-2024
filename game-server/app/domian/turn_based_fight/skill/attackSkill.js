@@ -53,7 +53,6 @@ model.prototype.init = function() {
 				this.skill_buffs[id].buffRate += this.skill_buffs[id].buffRate * this.character.atkcontrol
 		}
 	}
-	this.kill_buff = {"buffId":"sneak","buff_tg":"team_self","duration":1,"buffRate":1}
 
 }
 model.prototype.addBuff = function(buffStr) {
