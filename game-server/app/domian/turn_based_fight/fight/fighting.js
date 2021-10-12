@@ -432,6 +432,7 @@ model.prototype.after = function() {
 	}
 }
 model.prototype.checkOver = function() {
+	this.diedListCheck()
 	var flag = true
 	for(var i = 0;i < this.atkTeam.length;i++){
 		if(!this.atkTeam[i].died){
