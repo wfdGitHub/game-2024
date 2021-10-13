@@ -9,7 +9,7 @@ var model = function(releaser,character,otps,fighting) {
 	buff.refresh = function() {
 		if(buff.character.died)
 			return
-		var info = {type : "heat_halo_damage",targets : []}
+		var info = {type : "heat_halo_damage",targets : [],id:buff.character.id}
 		var targets = fighting.locator.getTargets(buff.character,"team_adjoin")
 		for(var i = 0;i < targets.length;i++){
 			if(!targets[i].died){
