@@ -522,6 +522,7 @@ model.prototype.init = function(fighting) {
 		this.addDiedBuff(this.died_buff2)
 	if(this.seckill)
 		this.angerSkill.seckill = true
+	this.attInfo.speed += this.fighting.seeded.random("随机速度") * 5
 }
 //百分比属性加成
 model.prototype.calAttAdd = function(team_adds) {
