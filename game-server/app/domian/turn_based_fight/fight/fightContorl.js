@@ -87,9 +87,9 @@ model.getRaceType = function(team) {
 		type = 7
 	}else if(raceList[1] >= 6 || raceList[2] >= 6 || raceList[3] >= 6){
 		type = 3
-	}else if(raceList[1] >= 1 || raceList[2] >= 1 || raceList[3] >= 1 || raceList[4] >= 1 || raceList[5] >= 1){
+	}else if(raceList[1] >= 1 && raceList[2] >= 1 && raceList[3] >= 1 && raceList[4] >= 1 && raceList[5] >= 1){
 		type = 8
-	}else if(raceList[1] == 2 || raceList[2] == 2 || raceList[3] == 2){
+	}else if(raceList[1] == 2 && raceList[2] == 2 && raceList[3] == 2){
 		type = 4
 	}else if(raceList[4] >= 4 || raceList[5] >= 4){
 		type = 6
