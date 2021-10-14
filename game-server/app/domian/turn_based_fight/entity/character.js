@@ -1006,8 +1006,12 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 							fightRecord.push(tmpRecord)
 						}).bind(this))
 					}
-					if(this.buffs["frozen"])
-						this.buffs["frozen"].onHit()
+					if(this.buffs["frozen"]){
+						callbacks.push((function(){
+							if(this.buffs["frozen"])
+								this.buffs["frozen"].onHit()
+						}).bind(this))
+					}
 					if(this.buffs["burn_shield"]){
 						if(this.fighting.seeded.random("burn_shield") < 0.3){
 							callbacks.push((function(){
