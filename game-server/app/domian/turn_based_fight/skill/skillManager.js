@@ -126,7 +126,6 @@ model.useSkill = function(skill,chase,point) {
 				}
 			}
 		}
-		
 	}else{
 		if(skill.burn_buff_change_normal || skill.character.burn_buff_change_normal){
 			for(var i = 0;i < targets.length;i++){
@@ -215,7 +214,7 @@ model.useSkill = function(skill,chase,point) {
 				}
 			}
 			//普攻连击
-			if(skill.character.normal_combo && !targets[0].died && this.seeded.random("normal_combo") < skill.character.normal_combo){
+			if(skill.character.normal_combo && targets[0] && !targets[0].died && this.seeded.random("normal_combo") < skill.character.normal_combo){
 				this.useSkill(skill.character.defaultSkill,true)
 			}
 		}
