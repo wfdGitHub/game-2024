@@ -835,6 +835,8 @@ model.useHealSkill = function(skill,chase) {
 			recordInfo.targets.push(info)
 			fightRecord.push(recordInfo)
 			buffManager.createBuff(skill.character,targets[0],{buffId : "ghost",duration : 2})
+			if(skill.character.wh_anger)
+				skill.character.addAnger(skill.character.wh_anger)
 			return targets
 		}
 	}

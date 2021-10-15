@@ -7,7 +7,7 @@ var model = function(releaser,character,otps) {
 	var count = 0
 	buff.refresh = function() {
 		var info = {type : "other_damage",id : buff.character.id,d_type:"phy"}
-		info.value = Math.floor(buff.character.attInfo.maxHP * count * 0.02)
+		info.value = Math.floor(buff.character.attInfo.maxHP * count * 0.03)
 		var recordInfo = buff.character.onHit(buff.releaser,info)
 		buff.fightRecord.push(recordInfo)
 		for(var i in list){
@@ -40,7 +40,7 @@ var model = function(releaser,character,otps) {
 			num += list[i].duration
 		}
 		var info = {type : "other_damage",id : buff.character.id,d_type:"phy"}
-		info.value = Math.floor(buff.character.attInfo.maxHP * num * 0.02)
+		info.value = Math.floor(buff.character.attInfo.maxHP * num * 0.03)
 		var recordInfo = buff.character.onHit(buff.releaser,info)
 		buff.fightRecord.push(recordInfo)
 		this.destroy()
