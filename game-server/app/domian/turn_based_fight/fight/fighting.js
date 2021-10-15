@@ -50,10 +50,10 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	var id = 0
 	var atkTeamAdds = Object.assign({},otps.atkTeamAdds)
 	var defTeamAdds = Object.assign({},otps.defTeamAdds)
-	this.atkTeamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0}
-	this.defTeamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0}
-	this.atkTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0}
-	this.defTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0}
+	this.atkTeamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
+	this.defTeamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
+	this.atkTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
+	this.defTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
 	for(var i = 0;i < teamLength;i++){
 		if(!atkTeam[i]){
 			atkTeam[i] = new character({})
