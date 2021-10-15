@@ -4,7 +4,7 @@ var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
 	character.ghost = true
 	buff.character.died = false
-	buff.character.addAnger(4)
+	buff.character.addAnger(8)
 	buff.clear = function() {
 		// console.log(buff.character.id+"中毒结束")
 		buff.character.died = true

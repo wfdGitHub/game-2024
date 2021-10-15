@@ -1214,6 +1214,8 @@ model.prototype.getTotalAtt = function(name) {
 		case "crit":
 			if(this.buffs["polang"])
 				value += this.buffs["polang"].getValue() * 0.05
+			if(this.buffs["blood"])
+				value += this.buffs["blood"].getValue()
 		break
 		case "slay":
 			if(this.buffs["baonu"])

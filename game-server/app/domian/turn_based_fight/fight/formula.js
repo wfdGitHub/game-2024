@@ -138,7 +138,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			buffManager.createBuff(attacker,target,{"buffId":"forbidden","duration":1})
 	}
 	if(target.buffs["flash"]){
-		info.value +=  Math.floor(0.03 * target.attInfo.maxHP)
+		info.value +=  Math.floor(0.05 * target.attInfo.maxHP)
 		target.buffs["flash"].useBuff()
 		if(attacker.gd_mb && this.seeded.random("gd_mb") < attacker.gd_mb)
 			buffManager.createBuff(attacker,target,{"buffId":"disarm","duration":1})

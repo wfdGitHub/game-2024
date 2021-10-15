@@ -50,7 +50,7 @@ var model = function(releaser,character,otps) {
 			num += list[i].duration
 		}
 		var info = {type : "other_damage",id : buff.character.id,d_type:"mag"}
-		info.value = Math.floor(buff.character.attInfo.maxHP * num * 0.03)
+		info.value = Math.floor(buff.character.attInfo.maxHP * num * 0.05)
 		var recordInfo = buff.character.onHit(buff.releaser,info)
 		buff.fightRecord.push(recordInfo)
 		this.destroy()
