@@ -319,6 +319,14 @@ model.useSkill = function(skill,chase,point) {
 	//追加普攻增加伤害吸收盾
 	if(chase && skill.character.chase_shield && !skill.character.died)
 		buffManager.createBuff(skill.character,skill.character,{buffId:"shield",buffArg:skill.character.chase_shield,duration:1})
+	//行动后净化我方全体1个负面状态
+	if(skill.character.clean_team){
+		for(var i = 0;i < skill.character.team.length;i++){
+			if(!skill.character.team[i].died){
+				skill.character.team[i].removeOneLower()
+			}
+		}
+	}
 	//击杀重复释放技能
 	if(!chase && diedFlag && skill.killRet && !skill.character.died){
 		this.useSkill(skill,false)

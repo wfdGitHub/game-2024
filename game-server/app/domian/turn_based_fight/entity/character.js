@@ -112,7 +112,7 @@ var model = function(otps) {
 	this.curse_amp = otps.curse_amp || 0 					// 诅咒伤害增加百分比
 	this.gd_mb = otps.gd_mb || false 						// 攻击触发感电效果时，有概率麻痹目标，持续1回合
 	this.xr_zs = otps.xr_zs || false 						// 攻击虚弱状态下的英雄时，有概率添加重伤，持续1回合
-	
+	this.clean_team = otps.clean_team || false 				//行动后解除我方全体1个减益效果
 	
 	
 	//=========其他效果=======//
