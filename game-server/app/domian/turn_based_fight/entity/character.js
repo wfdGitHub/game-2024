@@ -114,7 +114,8 @@ var model = function(otps) {
 	this.xr_zs = otps.xr_zs || false 						// 攻击虚弱状态下的英雄时，有概率添加重伤，持续1回合
 	this.clean_team = otps.clean_team || false 				//行动后解除我方全体1个减益效果
 	this.normal_add_skill = otps.normal_add_skill || 0 		//普攻后追加技能概率
-	
+	this.wh_anger = otps.wh_anger || 0 						//释放技能转化亡魂后恢复怒气
+
 	//=========其他效果=======//
 	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
 	this.skill_heal_maxHp = otps.skill_heal_maxHp || 0		//释放技能后恢复自身最大生命值
@@ -832,14 +833,20 @@ model.prototype.diedClear = function() {
 }
 model.prototype.addKillBuff = function(buffStr) {
 	var buff = JSON.parse(buffStr)
+	if(this.buffDuration)
+		buff.duration += this.buffDuration
 	this.kill_buffs[buff.buffId] = buff
 }
 model.prototype.addActionBuff = function(buffStr) {
 	var buff = JSON.parse(buffStr)
+	if(this.buffDuration)
+		buff.duration += this.buffDuration
 	this.action_buffs[buff.buffId] = buff
 }
 model.prototype.addDiedBuff = function(buffStr) {
 	var buff = JSON.parse(buffStr)
+	if(this.buffDuration)
+		buff.duration += this.buffDuration
 	this.died_buffs[buff.buffId] = buff
 }
 //闪避
