@@ -113,7 +113,7 @@ var model = function(otps) {
 	this.gd_mb = otps.gd_mb || false 						// 攻击触发感电效果时，有概率麻痹目标，持续1回合
 	this.xr_zs = otps.xr_zs || false 						// 攻击虚弱状态下的英雄时，有概率添加重伤，持续1回合
 	this.clean_team = otps.clean_team || false 				//行动后解除我方全体1个减益效果
-	
+	this.normal_add_skill = otps.normal_add_skill || 0 		//普攻后追加技能概率
 	
 	//=========其他效果=======//
 	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
@@ -993,7 +993,7 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 					}
 					//寒冰护盾
 					if(this.buffs["cold_shield"]){
-						if(this.fighting.seeded.random("cold_shield") < 0.5){
+						if(this.fighting.seeded.random("cold_shield") < 0.3){
 							callbacks.push((function(){
 								buffManager.createBuff(this,attacker,{buffId : "cold",duration : 2})
 							}).bind(this))

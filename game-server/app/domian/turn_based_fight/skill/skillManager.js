@@ -809,6 +809,11 @@ model.useAttackSkill = function(skill,chase,point) {
 		if((skill.add_d_s || skill.character.skill_add_d_s)){
 			this.useSkill(skill.character.defaultSkill,true)
 		}
+	}else{
+		//普攻追加技能判断
+		if(skill.character.normal_add_skill && this.seeded.random("普攻追加技能判断") < skill.character.normal_add_skill){
+			this.useSkill(skill.character.angerSkill,true)
+		}
 	}
 	if(kill_num && skill.character.kill_add_d_s){
 		this.useSkill(skill.character.defaultSkill,true)
