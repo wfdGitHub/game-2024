@@ -25,6 +25,24 @@ activityHandler.prototype.test_recharge = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//开启无限资源
+activityHandler.prototype.openWuxian = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var wuxianId = msg.wuxianId
+  this.areaManager.areaMap[areaId].openWuxian(uid,wuxianId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//开启累充无限资源
+activityHandler.prototype.openWuxianByRmb = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var wuxianId = msg.wuxianId
+  this.areaManager.areaMap[areaId].openWuxianByRmb(uid,wuxianId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //征税
 activityHandler.prototype.revenueCoin = function(msg, session, next) {
   var uid = session.uid
