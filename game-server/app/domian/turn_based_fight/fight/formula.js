@@ -73,10 +73,6 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}
 	//伤害计算
 	var atk = attacker.getTotalAtt("atk")
-	if(attacker.buffs["atkAdd"])
-		atk += attacker.buffs["atkAdd"].getValue()
-	if(attacker.buffs["atkLess"])
-		atk -= attacker.buffs["atkLess"].getValue()
 	var def = target.getTotalAtt(skill.damageType+"Def")
 	if(attacker.neglect_def)
 		def = Math.floor(def * (1 - attacker.neglect_def))

@@ -1217,6 +1217,10 @@ model.prototype.getTotalAtt = function(name) {
 				value += Math.floor(value * this.buffs["polang"].getValue() * 0.05)
 			if(this.buffs["sand"] && this.buffs["sand"].releaser.sand_low_damage)
 				value -= Math.floor(value * this.buffs["sand"].releaser.sand_low_damage)
+			if(this.buffs["atkAdd"])
+				value += this.buffs["atkAdd"].getValue()
+			if(this.buffs["atkLess"])
+				value -= this.buffs["atkLess"].getValue()
 		break
 		case "crit":
 			if(this.buffs["polang"])
