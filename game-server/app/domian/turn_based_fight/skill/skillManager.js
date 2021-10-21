@@ -45,7 +45,7 @@ model.useSkill = function(skill,chase,point) {
 	var targetsNum = this.locator.getTargetsNum(skill.targetType)
 	if(skill.isAnger){
 		//技能判断燃烧状态附加BUFF
-		if(skill.burn_buff_change_skill){
+		if(skill.burn_buff_change_skill || skill.character.burn_buff_change_skill){
 			for(var i = 0;i < targets.length;i++){
 				if(targets[i].died || !targets[i].buffs["burn"]){
 					continue
