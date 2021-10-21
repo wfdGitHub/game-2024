@@ -12,6 +12,13 @@ var model = function() {
 	this.isWin = function() {
 		return this.list[this.list.length - 1]["winFlag"]
 	}
+	this.sampleResult = function() {
+		var recordList = this.getList()
+		var beginInfo = recordList.shift()
+		console.log("战斗开始\n\n攻方阵容",JSON.stringify(beginInfo.atkTeam),"\n守方阵容",JSON.stringify(beginInfo.defTeam))
+		var endInfo = recordList.pop()
+		console.log("\n回合数:"+endInfo.round+"   攻方胜利:" + (endInfo.winFlag?"是":"否"))
+	}
 	this.explain = function() {
 		var recordList = this.getList()
 		var beginInfo = recordList.shift()

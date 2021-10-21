@@ -1055,7 +1055,7 @@ model.prototype.onHPLoss = function() {
 }
 //受到治疗
 model.prototype.onHeal = function(releaser,info) {
-	if(this.buffs["soul_steal"]){
+	if(this.buffs["soul_steal"] && !this.buffs["soul_steal"].releaser.buffs["soul_steal"]){
 		return this.buffs["soul_steal"].releaser.onHeal(releaser,info)
 	}
 	info.id = this.id
@@ -1175,7 +1175,7 @@ model.prototype.addAnger = function(value,hide) {
 		value = 0
 		fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,hide : hide,banAnger : true})
 	}else{
-		if(this.buffs["soul_steal"] && this.buffs["soul_steal"].releaser.soul_steal_anger){
+		if(this.buffs["soul_steal"] && !this.buffs["soul_steal"].releaser.buffs["soul_steal"]  && this.buffs["soul_steal"].releaser.soul_steal_anger){
 			return this.buffs["soul_steal"].releaser.addAnger(value,hide)
 		}
 		value = Math.floor(value) || 1
