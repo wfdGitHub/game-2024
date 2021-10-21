@@ -153,6 +153,9 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 			info.angerSkill = Object.assign({skillId : info.angerSkill},skillsCfg[info.angerSkill])
 		}
 	}
+	//被动技能
+	if(herosCfg[info.id]["talent"])
+		model.mergeTalent(info,herosCfg[info.id]["talent"])
 	//等级计算
 	if(info.lv && lv_cfg[info.lv]){
 		let lvInfo = {
