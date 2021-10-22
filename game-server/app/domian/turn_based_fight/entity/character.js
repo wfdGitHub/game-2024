@@ -106,6 +106,8 @@ var model = function(otps) {
 
 	this.first_ace_buff1 = otps.first_ace_buff1 || false 	// 初始buff1
 	this.first_ace_buff2 = otps.first_ace_buff2 || false 	// 初始buff2
+	if(otps.first_realm_buff)
+		this.first_realm_buff = JSON.parse(otps.first_realm_buff)
 	this.slcj_zs = otps.slcj_zs || false  					// 释放水龙冲击时，添加1回合重伤效果
 	this.pbyj_qs = otps.pbyj_qs || false  					// 释放破冰一击时，驱散目标所有增益效果
 	this.pj_less_anger = otps.pj_less_anger || 0 			// 使用技能攻击时，降低破甲状态下的目标一点怒气值
@@ -116,6 +118,9 @@ var model = function(otps) {
 	this.normal_add_skill = otps.normal_add_skill || 0 		//普攻后追加技能概率
 	this.wh_anger = otps.wh_anger || 0 						//释放技能转化亡魂后恢复怒气
 	this.my_intensify_amp = otps.my_intensify_amp 			//自身每有1个增益效果，造成的伤害增加
+	this.enemy_low_amp = otps.enemy_low_amp 				//目标每有一个负面状态伤害加成
+
+
 	//=========其他效果=======//
 	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
 	this.skill_heal_maxHp = otps.skill_heal_maxHp || 0		//释放技能后恢复自身最大生命值

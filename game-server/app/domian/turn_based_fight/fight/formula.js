@@ -217,8 +217,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(attacker.round_amplify)
 		info.value += Math.floor(info.value * attacker.round_amplify * (attacker.fighting.round - 1))
 	//每个减益BUFF伤害加成
-	if(skill.enemy_debuff_amp){
-		info.value += Math.floor(info.value * skill.enemy_debuff_amp * target.getDebuffNum())
+	if(attacker.enemy_low_amp){
+		info.value += Math.floor(info.value * attacker.enemy_low_amp * target.getDebuffNum())
 	}
 	//有减益BUFF伤害加成减免
 	if(target.getDebuffNum() && (attacker.enemy_debuff_amp || target.my_debuff_red)){

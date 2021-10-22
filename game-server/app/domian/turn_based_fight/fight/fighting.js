@@ -157,6 +157,12 @@ model.prototype.fightBegin = function() {
 					buffManager.createBuff(this.atkTeam[i],this.atkTeam[i],this.atkTeam[i].first_buff_list[j])
 				}
 			}
+			if(this.atkTeam[i].first_realm_buff){
+				for(var j = 0;j < this.atkTeam[i].team.length;j++){
+					if(this.atkTeam[i].realm == this.atkTeam[i].team[j].realm)
+						buffManager.createBuff(this.atkTeam[i],this.atkTeam[i].team[j],this.atkTeam[i].first_realm_buff)
+				}
+			}
 			if(this.atkTeam[i].begin_realm_crit){
 				fightRecord.push({type:"show_tag",id:this.atkTeam[i].id,tag:"begin_realm_crit"})
 				for(var j = 0;j < this.atkTeam[i].team.length;j++){
