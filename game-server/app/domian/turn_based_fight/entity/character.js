@@ -119,6 +119,7 @@ var model = function(otps) {
 	this.wh_anger = otps.wh_anger || 0 						//释放技能转化亡魂后恢复怒气
 	this.my_intensify_amp = otps.my_intensify_amp 			//自身每有1个增益效果，造成的伤害增加
 	this.enemy_low_amp = otps.enemy_low_amp 				//目标每有一个负面状态伤害加成
+	this.ghost_amp = otps.ghost_amp || 0 					//亡魂状态增伤
 
 
 	//=========其他效果=======//
@@ -1254,6 +1255,8 @@ model.prototype.getTotalAtt = function(name) {
 			if(this.buffs["weak"]){
 				value -= this.buffs["weak"].getValue() * 0.15
 			}
+			if(this.buffs["ghost"] && this.ghost_amp)
+				value += this.ghost_amp
 		break
 		case "reduction":
 			if(this.buffs["pojia"])
