@@ -119,11 +119,11 @@ module.exports = function() {
 			var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : curTopicHero})
 			heroInfos.push(heroInfo)
 	      }else if(r_luck >= 29){
-	      	var heroId = self.heroDao.randHeroId("randChip_5_2")
+	      	var heroId = self.heroDao.randHeroId("hero_5")
 			var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId})
 			heroInfos.push(heroInfo)
 	      }else if(i == 9 && luckNum == 0){
-	      	var heroId = self.heroDao.randHeroId("randChip_5_1")
+	      	var heroId = self.heroDao.randHeroId("hero_4")
 			var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId})
 			heroInfos.push(heroInfo)
 			r_luck++
@@ -134,7 +134,7 @@ module.exports = function() {
 		        	if(type == "topic"){
 		        		var heroId = curTopicHero
 						if(star5_num >= 1 && heros[heroId].min_star >= 5){
-							heroId = self.heroDao.randHeroId("randChip_5_1")
+							heroId = self.heroDao.randHeroId("hero_4")
 						}
 						var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId})
 						heroInfos.push(heroInfo)
@@ -142,7 +142,7 @@ module.exports = function() {
 						var heroList = recruit_list[type].heroList
 						var heroId = heroList[Math.floor(heroList.length * Math.random())]
 						if(star5_num >= 1 && heros[heroId].min_star >= 5){
-							heroId = self.heroDao.randHeroId("randChip_5_1")
+							heroId = self.heroDao.randHeroId("hero_4")
 						}
 						var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId})
 						heroInfos.push(heroInfo)
