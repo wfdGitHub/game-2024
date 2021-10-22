@@ -163,10 +163,6 @@ module.exports = function() {
 		}
 		var idMap = {}
 		for(var i = 0;i < ids.length;i++){
-			if(typeof(ids[i]) != "string" || !ids[i]){
-			  	cb(false,"Id必须是string")
-			  	return
-			}
 			if(idMap[ids[i]]){
 				cb(false,"Id不能重复")
 			  	return
@@ -205,10 +201,6 @@ module.exports = function() {
 		for(var i = 0;i < ids.length;i++){
 			if(typeof(ids[i]) != "string" || !ids[i]){
 			  	cb(false,"Id必须是string")
-			  	return
-			}
-			if(idMap[ids[i]]){
-				cb(false,"Id不能重复")
 			  	return
 			}
 			idMap[ids[i]] = true
