@@ -134,8 +134,15 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			buffManager.createBuff(attacker,target,{"buffId":"forbidden","duration":1})
 	}
 	if(target.buffs["flash"]){
-		info.value +=  Math.floor(0.04 * target.attInfo.maxHP)
-		target.buffs["flash"].useBuff()
+		var count = 0
+		if(attacker.flash_settle){
+			count = target.buffs["flash"].getValue()
+			target.buffs["flash"].destroy()
+		}else{
+			count = 1
+			target.buffs["flash"].useBuff()
+		}
+		info.value +=  Math.floor(0.04 * target.attInfo.maxHP * count)
 		if(attacker.gd_mb && this.seeded.random("gd_mb") < attacker.gd_mb)
 			buffManager.createBuff(attacker,target,{"buffId":"disarm","duration":1})
 	}
@@ -218,8 +225,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		info.value += Math.floor(info.value * (attacker.enemy_debuff_amp - target.my_debuff_red))
 	}
 	//增益伤害加成
-	if(skill.my_intensify_amp){
-		info.value += Math.floor(info.value * skill.my_intensify_amp * attacker.getIntensifyNum())
+	if(attacker.my_intensify_amp){
+		info.value += Math.floor(info.value * attacker.my_intensify_amp * attacker.getIntensifyNum())
 	}
 	//战法伤害加成
 	if(attacker.zf_amp){

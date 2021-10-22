@@ -115,7 +115,7 @@ var model = function(otps) {
 	this.clean_team = otps.clean_team || false 				//行动后解除我方全体1个减益效果
 	this.normal_add_skill = otps.normal_add_skill || 0 		//普攻后追加技能概率
 	this.wh_anger = otps.wh_anger || 0 						//释放技能转化亡魂后恢复怒气
-
+	this.my_intensify_amp = otps.my_intensify_amp 			//自身每有1个增益效果，造成的伤害增加
 	//=========其他效果=======//
 	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
 	this.skill_heal_maxHp = otps.skill_heal_maxHp || 0		//释放技能后恢复自身最大生命值

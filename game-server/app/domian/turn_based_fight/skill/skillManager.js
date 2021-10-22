@@ -110,14 +110,6 @@ model.useSkill = function(skill,chase,point) {
 				tmpTarget[0].removeDeBuffNotControl()
 			}
 		}
-		//立即结算感电效果
-		if(skill.character.flash_settle){
-			for(var i = 0;i < targets.length;i++){
-				if(!targets[i].died && targets[i].buffs["flash"]){
-					targets[i].buffs["flash"].settle()
-				}
-			}
-		}
 		//立即结算诅咒效果
 		if(skill.character.curse_settle){
 			for(var i = 0;i < targets.length;i++){
@@ -747,8 +739,7 @@ model.useAttackSkill = function(skill,chase,point) {
 		if(skill.dispel_intensify){
 			for(var i = 0;i < targets.length;i++){
 				if(!targets[i].died){
-					if(this.seeded.random("清除BUFF概率") < tmpRate)
-						targets[i].removeIntensifyBuff()
+					targets[i].removeIntensifyBuff()
 				}
 			}
 		}
@@ -830,7 +821,7 @@ model.useHealSkill = function(skill,chase) {
 		if(targets.length !== 0){
 			var info = {id : targets[0].id,source : skill.character.id}
 			var tmpValue = skill.rescue_heal
-			if(skill.character.rescue_realm_heal)
+			if(skill.character.rescue_realm_heal && skill.character.realm == this.realm)
 				tmpValue += skill.character.rescue_realm_heal
 			info.rescue = true
 			recordInfo.targets.push(info)
