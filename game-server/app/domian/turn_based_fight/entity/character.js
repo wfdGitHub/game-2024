@@ -120,7 +120,8 @@ var model = function(otps) {
 	this.my_intensify_amp = otps.my_intensify_amp 			//自身每有1个增益效果，造成的伤害增加
 	this.enemy_low_amp = otps.enemy_low_amp 				//目标每有一个负面状态伤害加成
 	this.ghost_amp = otps.ghost_amp || 0 					//亡魂状态增伤
-
+	this.kill_ghost_dur = otps.kill_ghost_dur 				//每击杀一个目标亡魂持续回合数+1
+	this.kill_ghost_value = 0 								//亡魂叠加回合数
 
 	//=========其他效果=======//
 	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
@@ -1126,6 +1127,9 @@ model.prototype.kill = function(target) {
 				}
 			}
 		}
+    }
+    if(this.kill_ghost_dur){
+    	this.kill_ghost_value++
     }
 }
 //复活
