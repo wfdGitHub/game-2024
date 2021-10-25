@@ -274,30 +274,37 @@ module.exports = function() {
 						}
 					}
 				break
-				case "human":
+				case "team_1":
 					for(let k = 0;k < atkTeam.length;k++){
 						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 2){
 							targetList.push(k)
 						}
 					}
 				break
-				case "celestial":
+				case "team_2":
 					for(let k = 0;k < atkTeam.length;k++){
 						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 1){
 							targetList.push(k)
 						}
 					}
 				break
-				case "wizard":
+				case "team_3":
 					for(let k = 0;k < atkTeam.length;k++){
 						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 3){
 							targetList.push(k)
 						}
 					}
 				break
-				case "orc":
+				case "team_4":
 					for(let k = 0;k < atkTeam.length;k++){
 						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 4){
+							targetList.push(k)
+						}
+					}
+				break
+				case "team_5":
+					for(let k = 0;k < atkTeam.length;k++){
+						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 5){
 							targetList.push(k)
 						}
 					}
