@@ -189,9 +189,11 @@ var model = function(otps) {
 	this.back_crit = otps["back_crit"]  				//位于后排时暴击加成
 	this.back_hitRate = otps["back_hitRate"]  			//位于后排时命中加成
 	this.back_atk = otps["back_atk"]  					//位于后排时攻击加成
+	this.back_amp = otps["back_amp"]  					//位于后排时伤害加成
 	this.front_critDef = otps["front_critDef"]  		//位于前排时抗暴加成
 	this.front_maxHP = otps["front_maxHP"]  			//位于前排时血量加成
 	this.front_dodgeRate = otps["front_dodgeRate"]  	//位于前排时闪避加成
+	this.front_reduction = otps["front_reduction"]  	//位于前排时免伤加成
 	//=========饰品效果=======//
 	this.phy_add = otps.phy_add || 0			//物理伤害加成
 	this.mag_add = otps.mag_add || 0			//法术伤害加成
