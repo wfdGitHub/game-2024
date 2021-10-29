@@ -43,6 +43,14 @@ var model = function(releaser,character,otps) {
 			buff.fightRecord.push(recordInfo)
 		}
 	}
+	//立即结算
+	buff.settle = function() {
+		var info = {type : "other_damage",id : buff.character.id,d_type:"mag"}
+		info.value = Math.floor(buff.character.attInfo.maxHP * count * 0.04)
+		var recordInfo = buff.character.onHit(buff.releaser,info)
+		buff.fightRecord.push(recordInfo)
+		this.destroy()
+	}
 	buff.getValue = function() {
 		return count
 	}

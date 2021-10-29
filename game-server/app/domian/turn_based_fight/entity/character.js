@@ -64,8 +64,10 @@ var model = function(otps) {
 	this.kill_buff2 = otps.kill_buff2 						//击杀后触发buff2
 	this.action_buff1 = otps.action_buff1 					//行动后触发buff1
 	this.action_buff2 = otps.action_buff2 					//行动后触发buff2
+	this.action_buff_s = otps.action_buff_s 				//行动后触发buff 宝石效果
 	this.died_buff1 = otps.died_buff1 						//死亡后触发buff1
 	this.died_buff2 = otps.died_buff2 						//死亡后触发buff2
+	this.died_buff_s = otps.died_buff_s 					//死亡后触发buff 宝石效果
 	if(otps.died_once_buff)
 		this.died_once_buff = JSON.parse(otps.died_once_buff) //死亡后触发buff,仅生效1
 	this.thawing_frozen = otps.thawing_frozen || 0 			//破冰一击伤害加成
@@ -103,6 +105,7 @@ var model = function(otps) {
 	this.cleanDebuff_anger = otps.cleanDebuff_anger || 0 		//释放技能每净化一个减益效果，增加怒气值
 	this.died_rescue_team = otps.died_rescue_team || 0 		//阵亡后复活全体已阵亡友军，恢复百分比最大生命值，每场战斗仅生效1次
 	this.soul_steal_anger = otps.soul_steal_anger || false  //灵魂窃取的目标怒气值转移至自身
+	this.ghost_atk_heal = otps.ghost_atk_heal || 0 			//受到亡魂状态的敌人攻击后恢复自身最大生命值
 
 	this.first_ace_buff1 = otps.first_ace_buff1 || false 	// 初始buff1
 	this.first_ace_buff2 = otps.first_ace_buff2 || false 	// 初始buff2
@@ -526,10 +529,14 @@ model.prototype.init = function(fighting) {
 		this.addActionBuff(this.action_buff1)
 	if(this.action_buff2)
 		this.addActionBuff(this.action_buff2)
+	if(this.action_buff_s)
+		this.addActionBuff(this.action_buff_s)
 	if(this.died_buff1)
 		this.addDiedBuff(this.died_buff1)
 	if(this.died_buff2)
 		this.addDiedBuff(this.died_buff2)
+	if(this.died_buff_s)
+		this.addDiedBuff(this.died_buff_s)
 	if(this.seckill)
 		this.angerSkill.seckill = true
 	this.attInfo.speed += this.fighting.seeded.random("随机速度") * 0.5
@@ -1041,6 +1048,13 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 							var tmpreleaser = this.buffs["fengzheng"].releaser
 							this.buffs["fengzheng"].useBuff()
 							skillManager.useSkill(tmpreleaser.defaultSkill,true,this)
+						}).bind(this))
+					}
+					if(this.ghost_atk_heal && attacker.buffs["ghost"]){
+						callbacks.push((function(){
+							var tmpRecord = {type : "other_heal",targets : []}
+							tmpRecord.targets.push(this.onHeal(this,{maxRate : this.ghost_atk_heal}))
+							fightRecord.push(tmpRecord)
 						}).bind(this))
 					}
 				}
