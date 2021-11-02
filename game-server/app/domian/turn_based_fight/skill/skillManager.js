@@ -31,7 +31,10 @@ model.useSkill = function(skill,chase,point) {
 	var targets = []
 	var diedSkill = false
 	if(skill.character.died)
-	diedSkill = true
+		diedSkill = true
+	if(skill.character.buffs["frozen"] || skill.character.buffs["dizzy"]){
+		return []
+	}
 	switch(skill.type){
 		case "attack":
 			targets = this.useAttackSkill(skill,chase,point)
