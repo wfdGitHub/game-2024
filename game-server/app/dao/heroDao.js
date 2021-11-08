@@ -242,7 +242,7 @@ heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
 		cb(true,awardList)
 }
 //分解返还资源   返还全部
-heroDao.prototype.heroPrAll = function(areaId,uid,heros,cb) {
+heroDao.prototype.heroPrAll = function(areaId,uid,heros,hIds,cb) {
 	var strList = []
 	for(let i = 0;i < heros.length;i++){
 		let star = heros[i].star
@@ -252,18 +252,19 @@ heroDao.prototype.heroPrAll = function(areaId,uid,heros,cb) {
 	var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
 	var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"分解英雄")
 	this.areaManager.areaMap[areaId].taskUpdate(uid,"resolve",heros.length)
-	this.heroPrlvadnad(areaId,uid,heros,function(flag,awardList2) {
+	this.heroPrlvadnad(areaId,uid,heros,hIds,function(flag,awardList2) {
 	if(cb)
 		cb(true,awardList2.concat(awardList))
 	})
 }
 //材料返还资源  返还除升星外(升级  升阶 装备 锦囊 神兵 宝石)
-heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
+heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 	var strList = []
-	for(let i = 0;i < heros.length;i++){
-		let lv = heros[i].lv
-		let ad = heros[i].ad
-		let artifact = heros[i].artifact
+	for(var i = 0;i < heros.length;i++){
+		var id = heros[i].id
+		var lv = heros[i].lv
+		var ad = heros[i].ad
+		var artifact = heros[i].artifact
 		if(lv_cfg[lv] && lv_cfg[lv].pr)
 			strList.push(lv_cfg[lv].pr)
 		if(advanced_base[ad] && advanced_base[ad].pr)
@@ -306,6 +307,7 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 				hufuInfo.s2 = heros[i]["hfs2"]
 			this.areaManager.areaMap[areaId].gainHufu(uid,hufuInfo)
 		}
+		this.areaManager.areaMap[areaId].remove_heroRank(uid,id,hIds[i])
 	}
 	if(strList.length){
 		var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
@@ -338,6 +340,7 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 				break
 			}
 			self.areaManager.areaMap[areaId].incrbyCEInfo(uid,hId,name,value)
+			self.updateHeroCe(areaId,uid,hId)
 		}
 		if(cb)
 			cb(true,data)
@@ -354,6 +357,7 @@ heroDao.prototype.setHeroInfo = function(areaId,uid,hId,name,value,cb) {
 		}
 		else{
 			self.areaManager.areaMap[areaId].setCEInfo(uid,hId,name,value)
+			self.updateHeroCe(areaId,uid,hId)
 			if(cb)
 				cb(true,data)
 		}
@@ -365,8 +369,10 @@ heroDao.prototype.delHeroInfo = function(areaId,uid,hId,name,cb) {
 	this.redisDao.db.hdel("player:user:"+uid+":heros:"+hId,name,function(err,data) {
 		if(err)
 			console.error(err)
-		else
+		else{
 			self.areaManager.areaMap[areaId].delCEInfo(uid,hId,name)
+			self.updateHeroCe(areaId,uid,hId)
+		}
 		if(cb)
 			cb(true,data)
 	})
@@ -400,6 +406,18 @@ heroDao.prototype.getHeros = function(uid,cb) {
 		})
 	})
 }
+//更新英雄战力
+heroDao.prototype.updateHeroCe = function(areaId,uid,hId) {
+	var self = this
+	self.getHeroOne(uid,hId,function(flag,data) {
+		if(flag && data){
+			var ce = self.areaManager.areaMap[areaId].fightContorl.getTeamCE([data,0,0,0,0,0])
+			if(ce >= 200000){
+				self.areaManager.areaMap[areaId].update_heroRank(uid,data.id,hId,ce)
+			}
+		}
+	})
+}
 //获取单个英雄
 heroDao.prototype.getHeroOne = function(uid,hId,cb) {
 	this.redisDao.db.hgetall("player:user:"+uid+":heros:"+hId,function(err,data) {
@@ -424,6 +442,31 @@ heroDao.prototype.getHeroList = function(uid,hIds,cb) {
 	var multiList = []
 	for(var i = 0;i < hIds.length;i++){
 		multiList.push(["hgetall","player:user:"+uid+":heros:"+hIds[i]])
+	}
+	this.redisDao.multi(multiList,function(err,list) {
+		if(err){
+			cb(false,err)
+			return
+		}
+		for(var i = 0;i < list.length;i++){
+			for(var j in list[i]){
+				var tmp = Number(list[i][j])
+				if(tmp == list[i][j])
+					list[i][j] = tmp
+			}
+		}
+		cb(true,list)
+	})
+}
+//获取不同玩家指定英雄列表
+heroDao.prototype.getDiffHeroList = function(uids,hIds,cb) {
+	if(!uids || !hIds || !hIds.length || hIds.length != uids.length){
+		cb(true,[])
+		return
+	}
+	var multiList = []
+	for(var i = 0;i < hIds.length;i++){
+		multiList.push(["hgetall","player:user:"+uids[i]+":heros:"+hIds[i]])
 	}
 	this.redisDao.multi(multiList,function(err,list) {
 		if(err){
