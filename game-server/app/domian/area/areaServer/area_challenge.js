@@ -141,6 +141,8 @@ module.exports = function() {
 				}
 				if(verify1 != JSON.stringify(atkTeam)){
 					console.log("verify1 error")
+					console.log(verify1)
+					console.log(JSON.stringify(atkTeam))
 					next("verify1 error")
 					return
 				}
