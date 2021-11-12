@@ -414,6 +414,8 @@ heroDao.prototype.updateHeroCe = function(areaId,uid,hId) {
 			var ce = self.areaManager.areaMap[areaId].fightContorl.getTeamCE([data,0,0,0,0,0])
 			if(ce >= 200000){
 				self.areaManager.areaMap[areaId].update_heroRank(uid,data.id,hId,ce)
+			}else{
+				self.areaManager.areaMap[areaId].remove_heroRank(uid,data.id,hId)
 			}
 		}
 	})
