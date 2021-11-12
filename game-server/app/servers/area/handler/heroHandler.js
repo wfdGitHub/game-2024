@@ -493,7 +493,7 @@ heroHandler.prototype.replaceHero = function(msg, session, next) {
           next(null,{flag : false,err : err})
           return
         }
-        var heroId = self.heroDao.randHeroIdButId("randChip_"+heros[heroInfo.id].realm+"_2",heroInfo.id)
+        var heroId = self.heroDao.randHeroIdButId("camp_"+heros[heroInfo.id].realm,heroInfo.id)
         self.areaManager.areaMap[areaId].setPlayerData(uid,"replaceHero",hId)
         self.areaManager.areaMap[areaId].setPlayerData(uid,"replacePick",heroId)
         next(null,{flag : flag,replaceHero : hId,replacePick:heroId})
