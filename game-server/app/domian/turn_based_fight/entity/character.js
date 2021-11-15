@@ -1038,6 +1038,15 @@ model.prototype.getSimpleInfo = function() {
 	info.heroId = this.heroId
 	return info
 }
+model.prototype.getBeginData = function() {
+	var info = {}
+	info.id = this.id
+	info.lv = this.lv
+	info.star = this.star
+	info.ad = this.ad
+	info.heroId = this.heroId
+	return info
+}
 model.prototype.addBuff = function(releaser,buff) {
 	if(this.buffs[buff.buffId]){
 		this.buffs[buff.buffId].overlay(releaser,buff)
