@@ -59,6 +59,7 @@ serverManager.prototype.init = function() {
 		})
 	})
 	// serverDB.init(server,self.mysqlDao,self.redisDao)
+	server.use(express.static(__dirname + '/public'));
 	server.listen(80);
 	var server2 = express()
 	server2.use(express.json());
