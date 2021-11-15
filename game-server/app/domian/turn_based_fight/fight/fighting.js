@@ -140,8 +140,8 @@ model.prototype.fightBegin = function() {
 	for(var i = 0;i < teamLength;i++){
 		this.atkTeam[i].begin()
 		this.defTeam[i].begin()
-		info.atkTeam.push(this.atkTeam[i].getBeginData())
-		info.defTeam.push(this.defTeam[i].getBeginData())
+		info.atkTeam.push(this.atkTeam[i].getSimpleInfo())
+		info.defTeam.push(this.defTeam[i].getSimpleInfo())
 	}
 	fightRecord.push(info)
 	//初始buff
