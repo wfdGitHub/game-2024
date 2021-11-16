@@ -1045,9 +1045,11 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 					}
 					if(this.buffs["fengzheng"] && this.buffs["fengzheng"].releaser !== attacker){
 						callbacks.push((function(){
-							var tmpreleaser = this.buffs["fengzheng"].releaser
-							this.buffs["fengzheng"].useBuff()
-							skillManager.useSkill(tmpreleaser.defaultSkill,true,this)
+							if(this.buffs["fengzheng"]){
+								var tmpreleaser = this.buffs["fengzheng"].releaser
+								this.buffs["fengzheng"].useBuff()
+								skillManager.useSkill(tmpreleaser.defaultSkill,true,this)
+							}
 						}).bind(this))
 					}
 					if(this.ghost_atk_heal && attacker.buffs["ghost"]){
