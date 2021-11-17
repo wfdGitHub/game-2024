@@ -83,6 +83,29 @@
           });
         })
       }
+      var VNGzoneEntry = function() {
+        queryEntry(function(host,port) {
+          pomelo.init({
+            host: host,
+            port: port,
+            log: true
+          },function() {
+            var token = "1"
+            var uid = "1"
+            var channel_code = "1"
+            pomelo.request("connector.entryHandler.VNGzoneEntry",{app_key:app_key,token : token}, function(data) {
+                console.log(data);
+                if(data.flag){
+                  pomelo.request("connector.entryHandler.tokenLogin",{unionid : data.unionid,token:data.token}, function(data) {
+                      console.log(data);
+                  });
+                }else{
+                  //todo  登陆失败
+                }
+            });
+          });
+        })
+      }
       pomelo.on("close",function(reason) {
         console.log("close",reason)
       })
