@@ -18,7 +18,7 @@
     </script> 
     <script type="text/javascript">
       var pomelo = window.pomelo;
-      var host = "127.0.0.1";
+      var host = "103.153.73.237";
       // host = "192.168.3.200"
       // host = "47.107.48.79"
       var queryEntry = function(callback) {
@@ -83,16 +83,13 @@
           });
         })
       }
-      var VNGzoneEntry = function() {
+      var VNGzoneEntry = function(app_key,token) {
         queryEntry(function(host,port) {
           pomelo.init({
             host: host,
             port: port,
             log: true
           },function() {
-            var token = "1"
-            var uid = "1"
-            var channel_code = "1"
             pomelo.request("connector.entryHandler.VNGzoneEntry",{app_key:app_key,token : token}, function(data) {
                 console.log(data);
                 if(data.flag){
