@@ -28,21 +28,27 @@ entryHandler.prototype.VNGzoneEntry = function(msg, session, next) {
 	var self = this
 	var url = "https://plf.gzone.tech/api/Oauth/ verifyUser.json?app="+app_key+"&token="+token
 	https.get(url,function(res){
-	  	res.on("data",function(data) {
-	  		console.log("VNGzoneEntry",data)
-	    	if(data && data.message == "OK"){
-	    		var unionid = data.data.account_id
-	    		var loginToken = util.randomString(8)
-	    		self.redisDao.db.hset("loginToken",unionid,loginToken)
-	    		next(null,{flag:true,unionid:unionid,token:loginToken})
-	    	}else{
-	    		next(null,{flag:false,err:"渠道账号验证错误"})
-	    	}
-	  	})
-		res.on("error", err => {
-			console.log(err.message);
-			next(null,{flag:false,err:err})
-		});
+	    var json = '';
+	    res.on('data', function (d) {
+	        json += d;
+	    });
+	    res.on('end',function(){
+	        //获取到的数据
+	        var data = JSON.parse(json);
+		  		console.log("VNGzoneEntry",data)
+		    	if(data && data.message == "OK"){
+		    		var unionid = data.data.account_id
+		    		var loginToken = util.randomString(8)
+		    		self.redisDao.db.hset("loginToken",unionid,loginToken)
+		    		next(null,{flag:true,unionid:unionid,token:loginToken})
+		    	}else{
+		    		next(null,{flag:false,err:"渠道账号验证错误"})
+		    	}
+	    });
+			res.on("error", err => {
+				console.log(err.message);
+				next(null,{flag:false,err:err})
+			});
 	})
 }
 //quickSDK登陆
