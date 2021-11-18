@@ -1,15 +1,4 @@
 var accountDao = function() {}
-//检查初始账号
-accountDao.prototype.init = function() {
-	var self = this
-	self.getAccountInfo({unionid : "visitor_wgl"},function(flag,data) {
-		if(!flag){
-			self.createAccount({unionid:"visitor_wgl"},function(flag,userInfo) {
-				self.setAccountData({accId:userInfo.accId,name:"limit",value:20})
-			})
-		}
-	})
-}
 //创建新账号
 accountDao.prototype.createAccount = function(otps,cb) {
 	if(!otps.unionid){
@@ -129,7 +118,6 @@ accountDao.prototype.incrbyAccountData = function(otps,cb) {
 module.exports = {
 	id : "accountDao",
 	func : accountDao,
-	init : "init",
 	props : [{
 		name : "redisDao",
 		ref : "redisDao"
