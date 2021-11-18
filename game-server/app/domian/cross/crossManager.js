@@ -25,6 +25,17 @@ crossManager.prototype.init = function() {
 	this.peakInit()
 	this.muyeInit()
 	setInterval(this.update.bind(this),1000)
+	var self = this
+	setTimeout(function() {
+		self.accountDao.getAccountInfo({unionid : "visitor_wgl"},function(flag,data) {
+			if(!flag){
+				console.log("创建初始账号")
+				self.accountDao.createAccount({unionid:"visitor_wgl"},function(flag,userInfo) {
+					self.accountDao.setAccountData({accId:userInfo.accId,name:"limit",value:20})
+				})
+			}
+		})
+	},10000)
 }
 //每日定时器
 crossManager.prototype.dayUpdate = function(curDayStr) {
@@ -311,6 +322,9 @@ module.exports = {
 		type : "Object"
 	}],
 	props : [{
+		name : "accountDao",
+		ref : "accountDao"
+	},{
 		name : "playerDao",
 		ref : "playerDao"
 	},{
