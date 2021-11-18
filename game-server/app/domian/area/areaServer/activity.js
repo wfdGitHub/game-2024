@@ -292,25 +292,26 @@ module.exports = function() {
 		})
 	}
 	//领取首充礼包
-	this.gainFirstRechargeAward = function(uid,index,cb) {
-		if(!activity_cfg["first_recharge_"+index]){
+	this.gainFirstRechargeAward = function(uid,type,index,cb) {
+		if(type != 1 && type != 2 && type != 3){
 			cb(false,"参数错误")
 			return
 		}
-		if(self.players[uid].userDay - 1 < index){
+		if(self.players[uid]["real_rmb"] < activity_cfg["shouchong_"+type]["value"]){
+			cb(false,"充值额度不足")
+			return
+		}
+		if(self.players[uid].userDay < index){
 			cb(false,"未到领取时间")
 			return
 		}
-		if(!self.players[uid]["real_rmb"]){
-			cb(false,"未充值")
-			return
-		}
-		self.getObj(uid,main_name,"first_award_"+index,function(data) {
+		var str = "shouchong_"+type+"_"+index
+		self.getObj(uid,main_name,str,function(data) {
 			if(data){
 				cb(false,"已领取")
 			}else{
-				self.incrbyObj(uid,main_name,"first_award_"+index,1)
-				var awardList = self.addItemStr(uid,activity_cfg["first_recharge_"+index]["value"],1,"首充礼包"+index)
+				self.incrbyObj(uid,main_name,str,1)
+				var awardList = self.addItemStr(uid,activity_cfg[str]["value"],1,"首充礼包"+str)
 				cb(true,awardList)
 			}
 		})
