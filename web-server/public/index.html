@@ -1200,6 +1200,12 @@
             console.log(data);
         });
       }
+      //开启vip无限资源
+      var openWuxianByVip = function(wuxianId) {
+        pomelo.request("area.activityHandler.openWuxianByVip", {wuxianId:wuxianId}, function(data) {
+            console.log(data);
+        });
+      }
       //征税
       var revenueCoin = function(type) {
         pomelo.request("area.activityHandler.revenueCoin", {type:type}, function(data) {

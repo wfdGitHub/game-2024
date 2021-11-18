@@ -18,6 +18,7 @@ const invade_team = JSON.parse(invade["mon_team"]["value"])
 const area_boss_base = require("../../../../config/gameCfg/area_boss_base.json")
 const activity_day = require("../../../../config/gameCfg/activity_day.json")
 const wuxian = require("../../../../config/gameCfg/wuxian.json")
+const wuxian_vip = require("../../../../config/gameCfg/wuxian_vip.json")
 const oneDayTime = 86400000
 var util = require("../../../../util/util.js")
 var maxBoss = 0
@@ -625,6 +626,37 @@ module.exports = function() {
 			info.count = data + 1
 			self.incrbyObj(uid,main_name,wuxianId+"_count",1)
 			info.awardList = self.openChestAward(uid,wuxian[wuxianId]["chest"])
+			cb(true,info)
+		})
+	}
+	//开启VIP无限资源
+	this.openWuxianByVip = function(uid,wuxianId,cb) {
+		if(!wuxian_vip[wuxianId]){
+			cb(false,"特权不存在")
+			return
+		}
+		var vip = self.players[uid].vip
+		if(vip < wuxian_vip[wuxianId]["vip"]){
+			cb(false,"vip等级不足")
+			return
+		}
+		self.getHMObj(uid,main_name,[wuxianId+"_count",wuxianId+"_cd"],function(list) {
+			list[0] = Number(list[0]) || 0
+			list[1] = Number(list[1]) || 0
+			var info = {}
+			if(list[0] >= wuxian_vip[wuxianId]["basic"]){
+				if(list[1] < Date.now()){
+					var cd = Date.now() + wuxian_vip[wuxianId]["base_cd"] + (list[0] - 100) * wuxian_vip[wuxianId]["up_cd"]
+					info.cd = cd
+					self.setObj(uid,main_name,wuxianId+"_cd",cd)
+				}else{
+					cb(false,"冷却中,"+Math.floor((list[1]-Date.now())/1000)+"秒后可开启")
+					return
+				}
+			}
+			self.incrbyObj(uid,main_name,wuxianId+"_count",1)
+			info.count = list[0] + 1
+			info.awardList = self.openChestAward(uid,wuxian_vip[wuxianId]["chest"])
 			cb(true,info)
 		})
 	}

@@ -43,6 +43,15 @@ activityHandler.prototype.openWuxianByRmb = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//开启vip无限资源
+activityHandler.prototype.openWuxianByVip = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var wuxianId = msg.wuxianId
+  this.areaManager.areaMap[areaId].openWuxianByVip(uid,wuxianId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //征税
 activityHandler.prototype.revenueCoin = function(msg, session, next) {
   var uid = session.uid
