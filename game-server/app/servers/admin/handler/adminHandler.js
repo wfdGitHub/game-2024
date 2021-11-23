@@ -52,6 +52,22 @@ adminHandler.prototype.getAreaPlayers = function(msg, session, next) {
     	next(null,{flag : true,list : list})
 	})
 }
+//测试完成gzone_order支付
+adminHandler.prototype.gzone_order = function(msg, session, next) {
+	var data = {
+		order_id : Date.now(),
+		product_id : 2001,
+		platform_price : 22000,
+		role_id : 101201,
+		area_id : 1,
+		account_id : 10001,
+		channel_cod : "PC",
+		detail : ""
+	}
+	this.serverManager.gzone_order(data,function(flag,err) {
+		next(null,{flag : flag,err : err})
+	})
+}
 //添加开服计划
 adminHandler.prototype.setOpenPlan = function(msg, session, next) {
 	this.serverManager.setOpenPlan(msg.time,function(flag,data) {

@@ -35,6 +35,45 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 		}
 	})
 }
+//创建完成订单
+payDao.prototype.createFinishOrder = function(otps,cb) {
+	var self = this
+	self.redisDao.db.hmget("player:user:"+otps.uid+":playerInfo",["name","accId"],function(err,list) {
+		if(!list[0] || !list[1]){
+			self.faildOrder("玩家不存在",otps)
+			cb(false,"createFinishOrder err")
+			return
+		}
+		var name = list[0]
+		var accId = list[1]
+		sql = 'insert into game_order SET ?'
+		var info = {
+			game_order : otps.game_order,
+			pay_id : otps.pay_id,
+			goodsName : pay_cfg[otps.pay_id]["name"],
+			amount : otps.amount,
+			uid : otps.uid,
+			areaId : otps.areaId,
+			unionid : otps.unionid,
+			userName : name,
+			accId : accId,
+			pay_time : Date.now(),
+			create_time : Date.now(),
+			status : 0,
+			channel_code : otps.channel_code,
+			extras_params : otps.detail
+		}
+		self.db.query(sql,info, function(err, res) {
+			if (err) {
+				// console.error('createCDType! ' + err.stack);
+				cb(false,err)
+			}else{
+				cb(true,info)
+			}
+		})
+	})
+
+}
 //完成充值订单
 payDao.prototype.finishGameOrder = function(otps,cb) {
 	var self = this

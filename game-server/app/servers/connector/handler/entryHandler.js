@@ -26,7 +26,7 @@ entryHandler.prototype.VNGzoneEntry = function(msg, session, next) {
 	var app_key = msg.app_key
 	var token = msg.token
 	var self = this
-	var url = "https://plf.gzone.tech/api/Oauth/verifyUser.json?app="+app_key+"&token="+token
+	var url = sdkConfig["CheckUserInfo"]+"?app="+app_key+"&token="+token
 	console.log("url",url)
 	https.get(url,function(res){
 	    var json = '';

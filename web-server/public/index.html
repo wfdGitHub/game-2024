@@ -123,6 +123,12 @@
             console.log(data);
         });
       }
+      //gzone_order测试支付
+      var gzone_order = function() {
+        pomelo.request("admin.adminHandler.gzone_order", {}, function(data) {
+            console.log(data);
+        });
+      }
       //测试基准战力
       var testStandardTeam = function(list,dl,lv) {
         pomelo.request("area.normalHandler.testStandardTeam", {list:list,dl:dl,lv:lv}, function(data) {

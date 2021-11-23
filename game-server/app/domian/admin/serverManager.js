@@ -46,6 +46,9 @@ serverManager.prototype.init = function() {
 		case "jianwan":
 			self.pay_order = self.jianwan_order
 		break
+		case "gzone":
+			self.pay_order = self.gzone_order
+		break
 		default:
 			console.error("sdktype error")
 	}
@@ -143,6 +146,39 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 			var serverId = self.areaDeploy.getServer(areaId)
 		    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
 		    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,data.uid,Math.floor(Number(info.amount) * 100),function(){})
+		}
+		if(err)
+			cb(false,err)
+		else
+			cb(true)
+	})
+}
+serverManager.prototype.gzone_order = function(data,cb) {
+	// var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
+	// if(v_sign != data.md5Sign){
+	// 	console.error("签名验证失败")
+	// 	cb(false,"签名验证失败")
+	// 	return
+	// }
+	console.log("gzone_order",data)
+	var self = this
+	var info = {
+		game_order : data.order_id,
+		pay_id : data.product_id,
+		amount : data.platform_price,
+		uid : data.role_id,
+		areaId : data.area_id,
+		unionid : data.account_id,
+		channel_cod : data.channel_cod,
+		detail : data.detail,
+	}
+	self.payDao.createFinishOrder(info,function(flag,err,data) {
+		if(flag){
+			//发货
+			var areaId = self.areaDeploy.getFinalServer(data.areaId)
+			var serverId = self.areaDeploy.getServer(areaId)
+		    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
+		    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,data.uid,Number(info.amount),function(){})
 		}
 		if(err)
 			cb(false,err)
