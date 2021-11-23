@@ -172,13 +172,13 @@ serverManager.prototype.gzone_order = function(data,cb) {
 		channel_cod : data.channel_cod,
 		detail : data.detail,
 	}
-	self.payDao.createFinishOrder(info,function(flag,err,data) {
+	self.payDao.createFinishOrder(info,function(flag,err) {
 		if(flag){
 			//发货
-			var areaId = self.areaDeploy.getFinalServer(data.areaId)
+			var areaId = self.areaDeploy.getFinalServer(info.areaId)
 			var serverId = self.areaDeploy.getServer(areaId)
-		    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
-		    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,data.uid,Number(info.amount),function(){})
+		    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,info.uid,info.pay_id,function(){})
+		    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,info.uid,Number(info.amount),function(){})
 		}
 		if(err)
 			cb(false,err)
