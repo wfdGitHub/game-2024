@@ -154,13 +154,18 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 	})
 }
 serverManager.prototype.gzone_order = function(data,cb) {
-	// var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
-	// if(v_sign != data.md5Sign){
-	// 	console.error("签名验证失败")
-	// 	cb(false,"签名验证失败")
-	// 	return
-	// }
 	console.log("gzone_order",data)
+	var app_key = data.app_key
+	if(!sdkConfig.app_keys[app_key]){
+		cb(false,"app_key 错误")
+		return
+	}
+	var v_sign = util.md5(data.app_key+data.order_id+data.role_id+data.area_id+data.platform_price+data.price_game+data.product_id+sdkConfig.app_keys[app_key]["secret_key"])
+	if(v_sign != data.signature){
+		console.error("签名验证失败")
+		cb(false,"签名验证失败")
+		return
+	}
 	var self = this
 	var info = {
 		game_order : data.order_id,
@@ -169,7 +174,7 @@ serverManager.prototype.gzone_order = function(data,cb) {
 		uid : data.role_id,
 		areaId : data.area_id,
 		unionid : data.account_id,
-		channel_cod : data.channel_cod,
+		channel_code : sdkConfig.app_keys[app_key]["secret_key"],
 		detail : data.detail,
 	}
 	self.payDao.createFinishOrder(info,function(flag,err) {
