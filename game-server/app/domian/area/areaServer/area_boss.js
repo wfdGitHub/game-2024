@@ -42,12 +42,12 @@ module.exports = function() {
 							var rank = 0
 							for(var i = list.length - 2;i >= 0;i -= 2){
 								rank++
-								var text = "亲爱的玩家您好，恭喜您在全服BOSS活动中获得"+rank+"名，获得排名奖励，祝您游戏愉快！"
+								var text = "[mail_AreaBoss_rank_text1]"+rank+"[mail_AreaBoss_rank_text2]"
 								if(rank >= 11){
 									rank = 11
-									text = "亲爱的玩家您好，恭喜您在全服BOSS活动中获得参与奖励，祝您游戏愉快！"
+									text = "[mail_AreaBoss_play_text1]"
 								}
-								self.sendMail(list[i],"全服BOSS活动奖励",text,area_boss_base[curId]["rank_"+rank])
+								self.sendMail(list[i],"[mail_AreaBoss_title]",text,area_boss_base[curId]["rank_"+rank])
 							}
 							self.delZset(main_name)
 						})
@@ -87,12 +87,12 @@ module.exports = function() {
 		self.redisDao.db.zrevrank("area:area"+self.areaId+":zset:"+main_name,uid,function(err,rank) {
 			if(rank != null){
 				rank = Number(rank) + 1
-				var text = "亲爱的玩家您好，恭喜您在全服BOSS活动中获得"+rank+"名，获得排名奖励，祝您游戏愉快！"
+				var text = "[mail_AreaBoss_rank_text1]"+rank+"[mail_AreaBoss_rank_text2]"
 				if(rank >= 11){
 					rank = 11
-					text = "亲爱的玩家您好，恭喜您在全服BOSS活动中获得参与奖励，祝您游戏愉快！"
+					text = "[mail_AreaBoss_play_text1]"
 				}
-				self.sendMail(uid,"全服BOSS活动奖励",text,area_boss_cfg["rank_"+rank])
+				self.sendMail(uid,"[mail_AreaBoss_title]",text,area_boss_cfg["rank_"+rank])
 			}
 		})
 	}

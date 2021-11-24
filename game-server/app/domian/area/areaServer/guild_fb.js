@@ -136,7 +136,7 @@ module.exports = function() {
 						if((damage + allDamage) >= guild_fb[fbId]["hp"]){
 							//击杀
 							killFlag = true
-							self.sendMail(uid,"击杀同盟BOSS","恭喜您,成功击杀同盟BOSS。",currency+":"+guild_fb[fbId]["kill"])
+							self.sendMail(uid,"[mail_guild_boss_title]","[mail_guild_boss_text1]",currency+":"+guild_fb[fbId]["kill"])
 							self.addGuildEXP(guildId,guild_fb[fbId]["exp"])
 							self.addGuildGift(guildId,"同盟副本【"+(fbId+1)+"】",10,guild_fb[fbId]["gift"],oneDayTime)
 							self.redisDao.db.hincrby(main_name+":"+guildId,"curFB",1)
@@ -145,8 +145,8 @@ module.exports = function() {
 								for(var i = list.length - 1;i >= 0;i--){
 									rank++
 									if(list[i]){
-										var text = "恭喜您在同盟BOSS伤害排名中获得"+rank+"名，获得排名奖励，祝您游戏愉快！"
-										self.sendMail(list[i],"同盟BOSS伤害第"+rank+"名",text,guild_fb[fbId]["damage_"+rank])
+										var text = "[mail_guild_boss_rank_text1]"+rank+"[mail_guild_boss_rank_text1]"
+										self.sendMail(list[i],"[mail_guild_boss_rank_title1]"+rank+"[mail_guild_boss_rank_title2]",text,guild_fb[fbId]["damage_"+rank])
 									}
 								}
 							})

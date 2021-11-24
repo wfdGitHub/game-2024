@@ -675,7 +675,7 @@ module.exports = function() {
 				//发放奖励
 				for(var i = 0;i < atkList.length;i++){
 					if(!uidMap[atkList[i]["uid"]])
-						self.sendMail(atkList[i]["uid"],"攻城战参与奖励","您参与本次同盟活动【攻城战】，挑战【"+guild_city[cityId]["name"]+"】时获得了参与奖励",guild_city[cityId]["play"])
+						self.sendMail(atkList[i]["uid"],"[mail_city_play_title]","[mail_city_play_text1]"+guild_city[cityId]["name"]+"[mail_city_play_text2]",guild_city[cityId]["play"])
 					uidMap[atkList[i]["uid"]] = 1
 				}
 				//排名奖励
@@ -684,7 +684,7 @@ module.exports = function() {
 					var rank = 0
 					for(var i = list.length - 1;i >= 0;i--){
 						rank++
-						self.sendMail(list[i],"攻城战排名奖励","您参与本次同盟活动【攻城战】，挑战【"+guild_city[cityId]["name"]+"】时获得了获得了伤害第"+rank+"名，获得了排名奖励",guild_city[cityId]["damage_"+rank])
+						self.sendMail(list[i],"[mail_city_rank_title]","[mail_city_rank_text1]"+guild_city[cityId]["name"]+"[mail_city_rank_text2]"+rank+"[mail_city_rank_text3]",guild_city[cityId]["damage_"+rank])
 					}
 				})
 				next()

@@ -191,7 +191,7 @@ module.exports = function() {
 		}
 		self.getObj(uid,"heroArchive",id,function(data) {
 			if(data){
-				self.sendMail(uid,skin_list[id]["name"]+"皮肤转换","您已获得"+skin_list[id]["name"]+"皮肤,多出的皮肤已为您转换为元宝","202:3000")
+				self.sendMail(uid,skin_list[id]["name"]+"[mail_skin_title]","[mail_skin_text1]"+skin_list[id]["name"]+"皮肤,[mail_skin_text2]","202:3000")
 			}else{
 				self.setObj(uid,"heroArchive",id,Date.now())
 				var notify = {
