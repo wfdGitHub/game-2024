@@ -1,7 +1,6 @@
 const grading_cfg = require("../../../../config/gameCfg/grading_cfg.json")
 const grading_lv = require("../../../../config/gameCfg/grading_lv.json")
 const grading_robot = require("../../../../config/gameCfg/grading_robot.json")
-const boyCfg = require("../../../../config/sysCfg/boy.json")
 const recruit_list = require("../../../../config/gameCfg/recruit_list.json")
 const hero_list = recruit_list["hero_5"]["heroList"]
 const util = require("../../../../util/util.js")
@@ -221,7 +220,7 @@ module.exports = function() {
 							defTeam = grading_robot[targetUid]["team"]
 							targetInfo = {
 								uid : targetUid,
-								name : boyCfg[Math.floor(Math.random() * boyCfg.length)],
+								name : self.namespace.getName(),
 								head : hero_list[Math.floor(Math.random() * hero_list.length)]
 							}
 							next()

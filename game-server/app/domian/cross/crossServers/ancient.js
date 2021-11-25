@@ -2,7 +2,6 @@
 const ancient_cfg = require("../../../../config/gameCfg/ancient_cfg.json")
 const ancient_rank = require("../../../../config/gameCfg/ancient_rank.json")
 const ancient_robot = require("../../../../config/gameCfg/ancient_robot.json")
-const boyCfg = require("../../../../config/sysCfg/boy.json")
 const main_rank = "cross:ancient:rank"
 const real_rank = "cross:ancient:realRank"
 const util = require("../../../../util/util.js")
@@ -221,7 +220,7 @@ module.exports = function() {
 								defTeam = ancient_robot[targetUid]["team"]
 								targetInfo = {
 									uid : targetUid,
-									name : boyCfg[Math.floor(Math.random() * boyCfg.length)],
+									name : self.namespace.getName(),
 									head : 105010,
 									figure : 105010
 								}
@@ -285,7 +284,7 @@ module.exports = function() {
 			fightTeams.push(ancient_robot[uid]["team1"])
 			fightTeams.push(ancient_robot[uid]["team2"])
 			fightTeams.push(ancient_robot[uid]["team3"])
-			userInfo = {uid : uid,name : boyCfg[Math.floor(Math.random() * boyCfg.length)],head : 105010,figure : 105010}
+			userInfo = {uid : uid,name : self.namespace.getName(),head : 105010,figure : 105010}
 			cb(fightTeams,userInfo)
 		}else{
 			//玩家

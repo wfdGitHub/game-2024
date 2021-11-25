@@ -1,5 +1,3 @@
-var boyCfg = require("../../config/sysCfg/boy.json")
-var girlCfg = require("../../config/sysCfg/girl.json")
 var heros = require("../../config/gameCfg/heros.json")
 var heroList = []
 for(var i in heros){
@@ -47,14 +45,9 @@ areaDao.prototype.openArea = function(areaId,cb) {
 	//初始机器人
 	var robots = {}
 	for(var i = 1;i <= 4001;i++){
-		var info = {
-			"uid" : i
-		}
-		if(Math.random() > 0.5){
-			info["name"] = boyCfg[Math.floor(Math.random() * boyCfg.length)]
-		}else{
-			info["name"] = girlCfg[Math.floor(Math.random() * girlCfg.length)]
-		}
+		var info = {}
+		info["uid"] = i
+		info["name"] = self.namespace.getName()
 		info["head"] = heroList[Math.floor(Math.random() * heroList.length)]
 		robots[i] = JSON.stringify(info)
 	}
@@ -110,5 +103,8 @@ module.exports = {
 	props : [{
 		name : "redisDao",
 		ref : "redisDao"
+	},{
+		name : "namespace",
+		ref : "namespace"
 	}]
 }
