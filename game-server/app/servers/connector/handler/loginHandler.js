@@ -1,13 +1,9 @@
-var boyNames = require("../../../../config/sysCfg/boy.json")
-var girlNames = require("../../../../config/sysCfg/girl.json")
 var bearcat = require("bearcat")
 var loginHandler = function(app) {
   this.app = app;
   this.areaDeploy = this.app.get('areaDeploy')
   this.sessionService = this.app.get('sessionService')
   this.connectorManager = this.app.get('connectorManager')
-  this.boyNameNum = boyNames.length
-  this.girlNameNum = girlNames.length
 }
 //获取服务器列表
 loginHandler.prototype.getAreaList = function(msg, session, next) {
@@ -120,16 +116,7 @@ loginHandler.prototype.register = function(msg, session, next) {
 }
 //获取随机姓名
 loginHandler.prototype.getRandomName = function(msg, session, next) {
-	var name = ""
-	if(Math.random() > 0.5){
-		//男
-		var rand = Math.floor(this.boyNameNum * Math.random())
-		name = boyNames[rand]
-	}else{
-		//女
-		var rand = Math.floor(this.girlNameNum * Math.random())
-		name = girlNames[rand]
-	}
+	var name = this.namespace.getName()
 	next(null,{flag : true,name : name})
 }
 //登录游戏
@@ -241,11 +228,14 @@ module.exports = function(app) {
 		name : "playerDao",
 		ref : "playerDao"
 	},{
-      name : "accountDao",
-      ref : "accountDao"
+      	name : "accountDao",
+      	ref : "accountDao"
     },{
-      name : "cacheDao",
-      ref : "cacheDao"
-    }]
+      	name : "cacheDao",
+      	ref : "cacheDao"
+    },{
+		name : "namespace",
+		ref : "namespace"
+	}]
   })
 };

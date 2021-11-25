@@ -1,6 +1,5 @@
 //跨服服务器
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
-const boyCfg = require("../../../config/sysCfg/boy.json")
 const standard_dl = require("../../../config/gameCfg/standard_dl.json")
 const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce = require("../../../config/gameCfg/standard_ce.json")
@@ -25,6 +24,17 @@ crossManager.prototype.init = function() {
 	this.peakInit()
 	this.muyeInit()
 	setInterval(this.update.bind(this),1000)
+	var self = this
+	setTimeout(function() {
+		self.accountDao.getAccountInfo({unionid : "visitor_wgl"},function(flag,data) {
+			if(!flag){
+				console.log("创建初始账号")
+				self.accountDao.createAccount({unionid:"visitor_wgl"},function(flag,userInfo) {
+					self.accountDao.setAccountData({accId:userInfo.accId,name:"limit",value:20})
+				})
+			}
+		})
+	},10000)
 }
 //每日定时器
 crossManager.prototype.dayUpdate = function(curDayStr) {
@@ -99,9 +109,9 @@ crossManager.prototype.userLeave = function(crossUid) {
 //获取玩家简易信息
 crossManager.prototype.getSimpleUser = function(crossUid) {
 	if(!this.players[crossUid]){
-		if(Number.isInteger(crossUid) && crossUid < boyCfg.length){
+		if(Number.isInteger(crossUid)){
 			var info = {
-				name : boyCfg[crossUid],
+				name : this.namespace.getNameByIndex(crossUid),
 				areaId : Math.floor(Math.random() * 3) + 1
 			}
 			info.oriId = info.areaId
@@ -253,7 +263,7 @@ crossManager.prototype.getPlayerInfoByUids = function(areaIds,uids,cb) {
 			if(uids[i] < 10000){
 				info = {
 					uid : uids[i],
-					name : boyCfg[Math.floor(Math.random() * boyCfg.length)],
+					name : self.namespace.getName(),
 					head : "",
 					figure : ""
 				}
@@ -311,6 +321,9 @@ module.exports = {
 		type : "Object"
 	}],
 	props : [{
+		name : "accountDao",
+		ref : "accountDao"
+	},{
 		name : "playerDao",
 		ref : "playerDao"
 	},{
@@ -322,5 +335,8 @@ module.exports = {
 	},{
 		name : "mysqlDao",
 		ref : "mysqlDao"
+	},{
+		name : "namespace",
+		ref : "namespace"
 	}]
 }
