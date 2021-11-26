@@ -115,6 +115,38 @@ accountDao.prototype.incrbyAccountData = function(otps,cb) {
 		}
 	})
 }
+//获取角色列表
+accountDao.prototype.getRoleList = function(unionid,cb) {
+	var self = this
+	var data = []
+	self.redisDao.db.hget("acc:accMap:unionid",unionid,function(err,accId) {
+		if(err || !accId){
+			cb(false)
+		}else{
+			self.playerDao.getPlayerList({accId:accId},function(flag,list) {
+				var multiList = []
+				for(var i in list){
+					var player_info = {}
+					player_info.role_id = Number(list[i])
+					player_info.area_id = i
+					player_info.area_name = "Server S"+i
+					data.push(player_info)
+					multiList.push(["hget","player:user:"+player_info.role_id+":playerInfo","name"])
+				}
+				if(multiList.length){
+					self.redisDao.multi(multiList,function(err,list) {
+						if(list){
+							for(var i = 0;i < list.length;i++){
+								data[i].role_name = list[i]
+							}
+						}
+						cb(true,data)
+					})
+				}
+			})
+		}
+	})
+}
 module.exports = {
 	id : "accountDao",
 	func : accountDao,
@@ -124,5 +156,8 @@ module.exports = {
 	},{
 		name : "mysqlDao",
 		ref : "mysqlDao"
+	},{
+		name : "playerDao",
+		ref : "playerDao"
 	}]
 }

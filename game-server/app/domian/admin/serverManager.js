@@ -1,6 +1,6 @@
 var express = require('express');
 var xmlparser = require('express-xml-bodyparser')
-// var serverDB = require('./serverDB.js')
+var serverDB = require('./serverDB.js')
 var adminManager = require('./adminManager.js')
 var parseString = require('xml2js').parseString;
 var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
@@ -55,13 +55,28 @@ serverManager.prototype.init = function() {
 	server.post(sdkConfig["pay_callback"],function(req,res) {
 		var data = req.body
 		self.pay_order(data,function(flag,err) {
-			// if(!flag)
-			// 	res.send(err)
-			// else
-				res.send("SUCCESS")
+			if(!flag)
+						res.send({
+							'error_code' : 200,
+							'message' : err
+						})
+			else{
+				switch(sdkConfig.sdk_type){
+					case "gzone":
+						res.send({
+							'error_code' : 0,
+							'order_id' : data.order_id,
+							'coin' : data.platform_price,
+							'message' : "Thành công"
+						})
+					break
+					default:
+						res.send("SUCCESS")
+				}
+			}
 		})
 	})
-	// serverDB.init(server,self.mysqlDao,self.redisDao)
+	serverDB.init(server,self.mysqlDao,self.redisDao,self.accountDao)
 	server.use(express.static(__dirname + '../../../../../web-server/public'));
 	server.listen(80);
 	var server2 = express()

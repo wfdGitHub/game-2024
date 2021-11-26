@@ -3,9 +3,10 @@ var model = function() {
 	var self = this
 	var posts = {}
 	var local = {}
-	this.init = function (server,mysqlDao,redisDao) {
+	this.init = function (server,mysqlDao,redisDao,accountDao) {
 		self.mysqlDao = mysqlDao
 		self.redisDao = redisDao
+		self.accountDao = accountDao
 		for(var key in posts){
 			console.log("注册",key)
 			server.post(key,posts[key])
@@ -220,6 +221,37 @@ var model = function() {
 			})
 		})
 	}
+	//获取角色列表
+	posts["/getRoleList"] = function(req,res) {
+		var data = req.body
+		var account_id = data.account_id
+		if(!account_id){
+			res.send({
+				"error_code" : 1,
+				"message" : "account_id : "+account_id
+			})
+		}else{
+			self.accountDao.getRoleList(account_id,function(flag,data) {
+				var info = {
+					"error_code" : 0,
+					"message" : "Thành công",
+					"data" : data
+				}
+				res.send(info)
+			})
+		}
+	}
+	//使用激活码
+	posts["/"] = function(req,res) {
+		var data = req.body
+		var app_key = data.app_key
+		var account_id = data.account_id
+		var role_id = data.role_id
+		var area_id = data.area_id
+		var giftcode = data.giftcode
+		var signature = data.signature
+		
+	}
 	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
 		var sql1 = "select count(*) from "+tableName
 		var sql2 = "select * from "+tableName	
@@ -240,6 +272,11 @@ var model = function() {
 		args2.push((pageCurrent-1)*pageSize)
 		console.log("getSQL sql1",sql1,"sql2",sql2,args1,args2)
 		return {sql1:sql1,sql2:sql2,args1:args1,args2:args2}
+	}
+	local.getRoleList = function(account_id,cb) {
+			self.accountDao.getRoleList(account_id,function(flag,data) {
+				cb(data)
+			})
 	}
 }
 module.exports = new model()
