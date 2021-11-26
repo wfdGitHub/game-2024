@@ -68,6 +68,8 @@ payDao.prototype.createFinishOrder = function(otps,cb) {
 				// console.error('createCDType! ' + err.stack);
 				cb(false,err)
 			}else{
+				info.messagetype = "finishGameOrder"
+				self.cacheDao.saveCache(info)
 				cb(true,info)
 			}
 		})
