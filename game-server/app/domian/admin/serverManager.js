@@ -1,7 +1,7 @@
 var express = require('express');
 var xmlparser = require('express-xml-bodyparser')
-var serverDB = require('./serverDB.js')
-var adminManager = require('./adminManager.js')
+var http_post = require('./http_post.js')
+var http_get = require('./http_get.js')
 var parseString = require('xml2js').parseString;
 var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var util = require("../../../util/util.js")
@@ -76,7 +76,6 @@ serverManager.prototype.init = function() {
 			}
 		})
 	})
-	serverDB.init(server,self.mysqlDao,self.redisDao,self.accountDao)
 	server.use(express.static(__dirname + '../../../../../web-server/public'));
 	server.listen(80);
 	var server2 = express()
@@ -90,7 +89,8 @@ serverManager.prototype.init = function() {
 	next();
 	});
 	server2.use(xmlparser());
-	adminManager.init(server2,self,self.mysqlDao,self.redisDao)
+	http_get.init(server2,self,self.mysqlDao,self.redisDao)
+	http_post.init(server2,self.mysqlDao,self.redisDao,self.accountDao)
 	server2.listen(5081);
 }
 serverManager.prototype.quick_order = function(data,cb) {

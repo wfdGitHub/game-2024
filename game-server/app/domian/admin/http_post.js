@@ -225,6 +225,7 @@ var model = function() {
 	posts["/getRoleList"] = function(req,res) {
 		var data = req.body
 		var account_id = data.account_id
+		console.log("getRoleList",account_id)
 		if(!account_id){
 			res.send({
 				"error_code" : 1,
@@ -242,16 +243,16 @@ var model = function() {
 		}
 	}
 	//使用激活码
-	posts["/"] = function(req,res) {
-		var data = req.body
-		var app_key = data.app_key
-		var account_id = data.account_id
-		var role_id = data.role_id
-		var area_id = data.area_id
-		var giftcode = data.giftcode
-		var signature = data.signature
+	// posts["/"] = function(req,res) {
+	// 	var data = req.body
+	// 	var app_key = data.app_key
+	// 	var account_id = data.account_id
+	// 	var role_id = data.role_id
+	// 	var area_id = data.area_id
+	// 	var giftcode = data.giftcode
+	// 	var signature = data.signature
 		
-	}
+	// }
 	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
 		var sql1 = "select count(*) from "+tableName
 		var sql2 = "select * from "+tableName	
