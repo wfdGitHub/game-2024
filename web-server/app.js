@@ -46,8 +46,8 @@ server.get("/updateNotify",function(req,res) {
 	})
 	res.send("ok")
 })
-server.listen(3001);
 serverDB.init(server,mysqlDao,redisDao)
+server.listen(3001);
 process.on('uncaughtException', function (err) {
   console.error(' !!! Caught exception: ' + err.stack);
 });
