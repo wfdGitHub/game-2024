@@ -77,7 +77,7 @@ serverManager.prototype.init = function() {
 		})
 	})
 	server.use(express.static(__dirname + '../../../../../web-server/public'));
-	http_post.init(server,self.mysqlDao,self.redisDao,self.accountDao)
+	http_post.init(server,self)
 	server.listen(80);
 	var server2 = express()
 	server2.use(express.json());
@@ -90,7 +90,7 @@ serverManager.prototype.init = function() {
 	next();
 	});
 	server2.use(xmlparser());
-	http_get.init(server2,self,self.mysqlDao,self.redisDao)
+	http_get.init(server2,self)
 	server2.listen(5081);
 }
 serverManager.prototype.quick_order = function(data,cb) {
@@ -362,5 +362,8 @@ module.exports = {
 	},{
 		name : "accountDao",
 		ref : "accountDao"
+	},{
+		name : "CDKeyDao",
+		ref : "CDKeyDao"
 	}]
 }

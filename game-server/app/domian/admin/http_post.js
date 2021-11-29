@@ -3,10 +3,8 @@ var model = function() {
 	var self = this
 	var posts = {}
 	var local = {}
-	this.init = function (server,mysqlDao,redisDao,accountDao) {
-		self.mysqlDao = mysqlDao
-		self.redisDao = redisDao
-		self.accountDao = accountDao
+	this.init = function (server,serverManager) {
+		self = serverManager
 		for(var key in posts){
 			console.log("注册",key)
 			server.post(key,posts[key])
@@ -225,7 +223,6 @@ var model = function() {
 	posts["/getRoleList"] = function(req,res) {
 		var data = req.body
 		var account_id = data.account_id
-		console.log("getRoleList",account_id)
 		if(!account_id){
 			res.send({
 				"error_code" : 1,
@@ -243,16 +240,49 @@ var model = function() {
 		}
 	}
 	//使用激活码
-	// posts["/"] = function(req,res) {
-	// 	var data = req.body
-	// 	var app_key = data.app_key
-	// 	var account_id = data.account_id
-	// 	var role_id = data.role_id
-	// 	var area_id = data.area_id
-	// 	var giftcode = data.giftcode
-	// 	var signature = data.signature
-		
-	// }
+	posts["/giftcode"] = function(req,res) {
+		var data = req.body
+		var app_key = data.app_key
+		var account_id = data.account_id
+		var uid = data.role_id
+		var areaId = data.area_id
+		var key = data.giftcode
+		var signature = data.signature
+		console.log("giftcode",data)
+		//检查signature
+		self.playerDao.getPlayerInfo({uid:uid},function(playerInfo) {
+			console.log("playerInfo",playerInfo)
+			if(!playerInfo || !playerInfo.areaId || !playerInfo.name){
+				res.send({
+					"error_code" : 1,
+					"message" : "Thành công"
+				})
+				return
+			}
+			if(playerInfo.areaId != areaId){
+				res.send({
+					"error_code" : 1,
+					"message" : "Thành công"
+				})
+				return
+			}
+			self.CDKeyDao.verifyCDKey(key,uid,areaId,playerInfo.name,function(flag,str) {
+				if(!flag){
+					res.send({
+						"error_code" : 1,
+						"message" : str
+					})
+				}else{
+					var serverId = self.areaDeploy.getServer(areaId)
+					self.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,"Mã gói","Bạn đã lấy được mã gói thành công!",str,null)
+					res.send({
+						"error_code" : 0,
+						"message" : "Thành công"
+					})
+				}
+			})
+		})
+	}
 	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
 		var sql1 = "select count(*) from "+tableName
 		var sql2 = "select * from "+tableName	
