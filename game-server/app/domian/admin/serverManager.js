@@ -77,6 +77,7 @@ serverManager.prototype.init = function() {
 		})
 	})
 	server.use(express.static(__dirname + '../../../../../web-server/public'));
+	http_post.init(server,self.mysqlDao,self.redisDao,self.accountDao)
 	server.listen(80);
 	var server2 = express()
 	server2.use(express.json());
@@ -90,7 +91,6 @@ serverManager.prototype.init = function() {
 	});
 	server2.use(xmlparser());
 	http_get.init(server2,self,self.mysqlDao,self.redisDao)
-	http_post.init(server2,self.mysqlDao,self.redisDao,self.accountDao)
 	server2.listen(5081);
 }
 serverManager.prototype.quick_order = function(data,cb) {
