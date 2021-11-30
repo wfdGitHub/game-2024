@@ -154,9 +154,8 @@ module.exports = function() {
 				rate = recharge[index].first_rate
 			else
 				rate = recharge[index].normal_rate
-			var award = "202:"+Math.round(gold*rate)
-			self.sendMail(uid,"[mail_recharge_title]","[mail_recharge_text]",award)
-			cb(true)
+			var award = self.addItem({uid:uid,itemId:202,value:gold,rate:rate,reason:"充值"})
+			cb(true,{awardList:[award]})
 		})
 	}
 	//购买无限特权
@@ -188,8 +187,8 @@ module.exports = function() {
 			self.incrbyObj(uid,main_name,"loop_"+loopId,1)
 			var award = "202:"+gift_loop[loopId].gold
 			award += "&"+gift_loop[loopId].award
-			self.sendMail(uid,"[mail_recharge_title]","[mail_recharge_text]",award)
-			cb(true)
+			var awardList = self.addItemStr(uid,award,1,"循环礼包"+loopId)
+			cb(true,{awardList:awardList})
 		})
 	}
 	//激活等级基金
@@ -288,8 +287,8 @@ module.exports = function() {
 				self.setObj(uid,main_name,"highCard",1)
 				self.chageLordData(uid,"highCard",1)
 				self.addUserRMB(uid,activity_cfg["high_card_lof"]["value"])
-				self.sendMail(uid,"[mail_recharge_title]","[mail_recharge_text]",activity_cfg["high_card_award"]["value"])
-				cb(true)
+				var awardList = self.addItemStr(uid,activity_cfg["high_card_award"]["value"],1,"激活至尊特权")
+				cb(true,{awardList:awardList})
 			}
 		})
 	}
@@ -306,8 +305,8 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,awardBag_day[index].rmb)
 			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
-			self.sendMail(uid,"[mail_recharge_title]","[mail_recharge_text]",awardBag_day[index].award)
-			cb(true)
+			var awardList = self.addItemStr(uid,awardBag_day[index].award,1,"每日礼包"+index)
+			cb(true,{awardList:awardList})
 		})
 	}
 	//获取每周礼包与每月礼包购买数据
@@ -339,8 +338,8 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,gift_week[index].rmb)
 			self.incrbyObj(uid,"week_shop",index,1)
-			self.sendMail(uid,"[mail_recharge_title]","[mail_recharge_text]",gift_week[index].award)
-			cb(true)
+			var awardList = self.addItemStr(uid,gift_week[index].award,1,"每周礼包"+index)
+			cb(true,{awardList:awardList})
 		})
 	}
 	//购买每月礼包
@@ -357,8 +356,8 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,gift_month[index].rmb)
 			self.incrbyObj(uid,"month_shop",index,1)
-			self.sendMail(uid,"[mail_recharge_title]","[mail_recharge_text]",gift_month[index].award)
-			cb(true)
+			var awardList = self.addItemStr(uid,gift_month[index].award,1,"每月礼包"+index)
+			cb(true,{awardList:awardList})
 		})
 	}
 	//进阶战令
@@ -372,8 +371,8 @@ module.exports = function() {
 			self.addUserRMB(uid,activity_cfg["war_horn"]["value"])
 			self.setObj(uid,"war_horn","high",1)
 			self.incrbyObj(uid,"war_horn","exp",war_horn[curMonth]["exp"],function(exp) {
-				self.sendMail(uid,"[mail_recharge_title]","[mail_recharge_text]",war_horn[curMonth]["award"])
-				cb(true,{exp:exp})
+				var awardList = self.addItemStr(uid,war_horn[curMonth]["award"],1,"激活战令")
+				cb(true,{awardList:awardList,exp:exp})
 			})
 		})
 	}
@@ -386,9 +385,9 @@ module.exports = function() {
 		self.getObj(uid,"limit_gift",id,function(data) {
 			if(data){
 				self.addUserRMB(uid,gift_list[id]["price"])
-				self.sendMail(uid,"[mail_recharge_title]","[mail_recharge_text]",gift_list[id]["award"])
+				var awardList = self.addItemStr(uid,gift_list[id]["award"],1,"限时礼包"+id)
 				self.delObj(uid,"limit_gift",id)
-				cb(true)
+				cb(true,{awardList:awardList})
 			}else{
 				cb(false,"限时礼包不存在或已过期")
 				return
@@ -410,8 +409,8 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,gift_skin[id].rmb)
 			self.incrbyObj(uid,"skin",id,1)
-			self.sendMail(uid,"[mail_recharge_title]","[mail_recharge_text]",gift_skin[id].award)
-			cb(true)
+			var awardList = self.addItemStr(uid,gift_skin[id].award,1,"购买皮肤")
+			cb(true,{awardList:awardList})
 		})
 	}
 	//购买快速作战特权
@@ -427,8 +426,8 @@ module.exports = function() {
 		}
 		self.addUserRMB(uid,activity_cfg["quick_pri"]["value"])
 		self.chageLordData(uid,"quick_pri",quick_pri)
-		self.sendMail(uid,"[mail_recharge_title]","[mail_recharge_text]",activity_cfg["quick_award"]["value"])
-		cb(true,{quick_pri:quick_pri})
+		var awardList = self.addItemStr(uid,activity_cfg["quick_award"]["value"],1,"快速作战特权")
+		cb(true,{quick_pri:quick_pri,awardList:awardList})
 	}
 	//购买三界特权
 	this.buyTourPri = function(uid,cb) {
@@ -443,8 +442,8 @@ module.exports = function() {
 		}
 		self.addUserRMB(uid,activity_cfg["tour_pri"]["value"])
 		self.chageLordData(uid,"tour_pri",tour_pri)
-		self.sendMail(uid,"[mail_recharge_title]","[mail_recharge_text]",activity_cfg["tour_award"]["value"])
-		cb(true,{tour_pri:tour_pri})
+		var awardList = self.addItemStr(uid,activity_cfg["tour_award"]["value"],1,"三界特权")
+		cb(true,{tour_pri:tour_pri,awardList:awardList})
 	}
 	//购买宝石矿场特权
 	this.buyStonePri = function(uid,cb) {
@@ -459,7 +458,7 @@ module.exports = function() {
 		}
 		self.addUserRMB(uid,activity_cfg["stone_pri"]["value"])
 		self.chageLordData(uid,"stone_pri",stone_pri)
-		self.sendMail(uid,"[mail_recharge_title]","[mail_recharge_text]",activity_cfg["stone_award"]["value"])
-		cb(true,{stone_pri:stone_pri})
+		var awardList = self.addItemStr(uid,activity_cfg["stone_award"]["value"],1,"宝石矿场特权")
+		cb(true,{stone_pri:stone_pri,awardList:awardList})
 	}
 }
