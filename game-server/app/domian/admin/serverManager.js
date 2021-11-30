@@ -189,7 +189,7 @@ serverManager.prototype.gzone_order = function(data,cb) {
 		uid : data.role_id,
 		areaId : data.area_id,
 		unionid : data.account_id,
-		channel_code : sdkConfig.app_keys[app_key]["secret_key"],
+		channel_code : sdkConfig.app_keys[app_key]["des"],
 		detail : data.detail,
 	}
 	self.payDao.createFinishOrder(info,function(flag,err) {
