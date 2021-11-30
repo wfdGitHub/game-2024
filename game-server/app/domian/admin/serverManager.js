@@ -200,10 +200,7 @@ serverManager.prototype.gzone_order = function(data,cb) {
 		    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,info.uid,info.pay_id,function(){})
 		    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,info.uid,Number(info.amount),function(){})
 		}
-		if(err)
-			cb(false,err)
-		else
-			cb(true)
+		cb(flag)
 	})
 }
 //update
