@@ -86,7 +86,7 @@ module.exports = function() {
 								else
 									break
 							}
-							self.addGuildGift(guildId,"每日红包",guild_lv[lv]["member"],guild_lv[lv]["gift_"+index],oneDayTime)
+							self.addGuildGift(guildId,"Gói màu đỏ hàng ngày",guild_lv[lv]["member"],guild_lv[lv]["gift_"+index],oneDayTime)
 						}
 					}
 				}
@@ -715,7 +715,7 @@ module.exports = function() {
 					self.incrbyGuildInfo(guildId,"lv",1)
 					lv++
 					self.addGuildLog(guildId,{type:"upgrade",lv:lv,exp:guild_lv[lv]["exp"]})
-					self.addGuildGift(guildId,"同盟升级红包",guild_lv[lv]["member"],guild_lv[lv]["gift_up"],oneDayTime)
+					self.addGuildGift(guildId,"Phong bì đỏ nâng cấp liên minh",guild_lv[lv]["member"],guild_lv[lv]["gift_up"],oneDayTime)
 					self.sendToGuild(guildId,{type:"guildUpgrade",lv:lv})
 					this.checkGuildUpgrade(guildId)
 				}

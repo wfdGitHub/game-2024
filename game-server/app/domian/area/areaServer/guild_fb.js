@@ -138,7 +138,7 @@ module.exports = function() {
 							killFlag = true
 							self.sendMail(uid,"[mail_guild_boss_title]","[mail_guild_boss_text1]",currency+":"+guild_fb[fbId]["kill"])
 							self.addGuildEXP(guildId,guild_fb[fbId]["exp"])
-							self.addGuildGift(guildId,"同盟副本【"+(fbId+1)+"】",10,guild_fb[fbId]["gift"],oneDayTime)
+							self.addGuildGift(guildId,"Bản sao liên minh【"+(fbId+1)+"】",10,guild_fb[fbId]["gift"],oneDayTime)
 							self.redisDao.db.hincrby(main_name+":"+guildId,"curFB",1)
 							self.redisDao.db.zrange(main_name+":"+guildId+":"+fbId,-3,-1,function(err,list) {
 								var rank = 0
