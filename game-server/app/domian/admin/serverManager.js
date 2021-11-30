@@ -55,25 +55,25 @@ serverManager.prototype.init = function() {
 	server.post(sdkConfig["pay_callback"],function(req,res) {
 		var data = req.body
 		self.pay_order(data,function(flag,err) {
-			if(!flag)
-						res.send({
-							'error_code' : 200,
-							'message' : err
-						})
-			else{
 				switch(sdkConfig.sdk_type){
 					case "gzone":
-						res.send({
-							'error_code' : 0,
-							'order_id' : data.order_id,
-							'coin' : data.platform_price,
-							'message' : "Thành công"
-						})
+						if(flag){
+							res.send({
+								'error_code' : 0,
+								'order_id' : data.order_id,
+								'coin' : data.platform_price,
+								'message' : "Thành công"
+							})
+						}else{
+							res.send({
+								'error_code' : 200,
+								'message' : err
+							})
+						}
 					break
 					default:
 						res.send("SUCCESS")
 				}
-			}
 		})
 	})
 	server.use(express.static(__dirname + '../../../../../web-server/public'));
