@@ -41,7 +41,7 @@ payDao.prototype.createFinishOrder = function(otps,cb) {
 	var sql = "select * from game_order where game_order = ?"
 	var daySyr = (new Date()).toDateString()
 	self.db.query(sql,[otps.game_order], function(err, res) {
-		if(res){
+		if(res && res.length){
 			self.faildOrder("订单已存在",res)
 			cb(false,"订单已存在")
 			return
