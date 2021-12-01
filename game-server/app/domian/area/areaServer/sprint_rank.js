@@ -49,7 +49,7 @@ module.exports = function() {
 				for(var i = list.length - 2;i >= 0;i -= 2){
 					rank++
 					var score = Math.floor(list[i+1])
-					var text = "亲爱的玩家您好，恭喜您在"+sprint_rank[curRankIndex]["name"]+"活动中获得"+rank+"名，获得排名奖励，祝您游戏愉快！"
+					var text = "亲爱的玩家您好，恭喜您在"+sprint_rank[curRankIndex]["name"]+"活动中获得第"+rank+"名，获得排名奖励，祝您游戏愉快！"
 					if(rank >= 11){
 						rank = 11
 						text = "亲爱的玩家您好，恭喜您在"+sprint_rank[curRankIndex]["name"]+"活动中获得参与奖励，祝您游戏愉快！"
