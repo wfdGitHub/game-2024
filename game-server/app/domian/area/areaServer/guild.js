@@ -1,4 +1,4 @@
-//同盟
+//公会
 const guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
 const guild_lv = require("../../../../config/gameCfg/guild_lv.json")
 const guild_sign = require("../../../../config/gameCfg/guild_sign.json")
@@ -13,12 +13,12 @@ const num_att = {"lv":1,"exp":1,"num":1,"id":1,"lead":1,"deputy":1,"audit":1,"lv
 const currency = guild_cfg["currency"]["value"]
 module.exports = function() {
 	var self = this
-	var contributions = {}		//同盟玩家贡献列表
-	var guildList = {}			//同盟信息列表
+	var contributions = {}		//公会玩家贡献列表
+	var guildList = {}			//公会信息列表
 	var guideCooling = {}		//加入冷却
 	var applyList = {}			//申请列表
 	var applyMap = {}			//申请映射
-	var giftInfoList = {}		//同盟红包
+	var giftInfoList = {}		//公会红包
 	//初始化
 	this.initGuild = function() {
 		self.getAreaObjAll(main_name,function(data) {
@@ -37,7 +37,7 @@ module.exports = function() {
 		self.delObj(uid,"guild_treasure","play")
 		self.delObj(uid,"guild_city","dayAward")
 	}
-	//同盟每日更新
+	//公会每日更新
 	this.guildDayUpdate = function() {
 		for(var guildId in guildList){
 			self.guildCheckGift(guildId)
@@ -50,7 +50,7 @@ module.exports = function() {
 			dt = 10000
 		self.setTimeout(self.guildGiveGift,dt)
 	}
-	//同盟每日首次更新
+	//公会每日首次更新
 	this.guildFirstUpdate = function(argument) {
 		self.getAreaObjAll(main_name,function(data) {
 			// console.log("guildFirstUpdate",data)
@@ -61,9 +61,9 @@ module.exports = function() {
 			}
 		})
 	}
-	//同盟红包定时发放
+	//公会红包定时发放
 	this.guildGiveGift = function() {
-		// console.log("同盟红包定时发放")
+		// console.log("公会红包定时发放")
 		var curDayStr = (new Date()).toDateString()
 		var arr = []
 		for(var guildId in guildList){
@@ -102,7 +102,7 @@ module.exports = function() {
 			}
 		})
 	}
-	//初始化同盟
+	//初始化公会
 	this.initGuildSingle = function(guildId) {
 		self.redisDao.db.hgetall("guild:guildInfo:"+guildId,function(err,data) {
 			for(var i in num_att){
@@ -117,14 +117,14 @@ module.exports = function() {
 			})
 		})
 	}
-	//设置同盟属性
+	//设置公会属性
 	this.setGuildInfo = function(guildId,key,value) {
 		if(guildList[guildId]){
 			guildList[guildId][key] = value
 			self.redisDao.db.hset("guild:guildInfo:"+guildId,key,value)
 		}
 	}
-	//增长同盟属性
+	//增长公会属性
 	this.incrbyGuildInfo = function(guildId,key,value) {
 		if(guildList[guildId]){
 			if(!guildList[guildId][key])
@@ -142,7 +142,7 @@ module.exports = function() {
 			self.redisDao.db.hincrby("guild:contributions:"+guildId,uid,value)
 		}
 	}
-	//获取我的同盟信息
+	//获取我的公会信息
 	this.getMyGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(guildId && guildList[guildId]){
@@ -163,7 +163,7 @@ module.exports = function() {
 			cb(true,{})
 		}
 	}
-	//获取同盟成员
+	//获取公会成员
 	this.getMyGuildUsers = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(guildId){
@@ -184,19 +184,19 @@ module.exports = function() {
 				cb(true,userInfos)
 			})
 		}else{
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 		}
 	}
-	//创建同盟
+	//创建公会
 	this.createGuild = function(uid,name,notify,audit,lv_limit,cb) {
 		audit = audit == 1 ? 1 : 0
 		if(!Number.isInteger(lv_limit) || lv_limit < 0 || lv_limit > 255)
 			lv_limit = 0
 		async.waterfall([
 			function(next) {
-				//判断自身是否存在同盟
+				//判断自身是否存在公会
 				if(self.players[uid]["gid"])
-					next("已加入同盟")
+					next("已加入公会")
 				else
 					next()
 			},
@@ -205,7 +205,7 @@ module.exports = function() {
 					cd = Number(cd) || 0
 					var curTime = Date.now()
 					if(cd > curTime){
-						next("退出同盟冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可创建")
+						next("退出公会冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可创建")
 						return
 					}
 					next()
@@ -219,14 +219,14 @@ module.exports = function() {
 				}
 				self.redisDao.db.hexists("guild:guildNameMap",name,function(err,data) {
 					if(data != 0)
-						next("同盟名称不可用")
+						next("公会名称不可用")
 					else
 						next()
 				})
 			},
 			function(next) {
 				//扣除金额
-				self.consumeItems(uid,guild_cfg["create"]["value"],1,"创建同盟",function(flag,err) {
+				self.consumeItems(uid,guild_cfg["create"]["value"],1,"创建公会",function(flag,err) {
 					if(flag)
 						next()
 					else
@@ -239,7 +239,7 @@ module.exports = function() {
 				}
 				delete applyMap[uid]
 				self.redisDao.db.incrby("guild:lastid",1,function(err,guildId) {
-					//创建同盟
+					//创建公会
 					var guildInfo = {
 						lv : 1,
 						exp : 0,
@@ -291,11 +291,11 @@ module.exports = function() {
 		this.setGuildInfo(guildId,"lv_limit",lv_limit)
 		cb(true)
 	}
-	//解散同盟
+	//解散公会
 	this.dissolveGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是同盟盟主")
+			cb(false,"不是公会会长")
 			return
 		}
 		for(var targetUid in contributions[guildId]){
@@ -319,16 +319,16 @@ module.exports = function() {
 		self.releaseGuildCity(guildId)
 		cb(true)
 	}
-	//设置成副盟主
+	//设置成副会长
 	this.setGuildDeputy = function(uid,targetUid,cb) {
 		var guildId = self.players[uid]["gid"]
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是同盟盟主")
+			cb(false,"不是公会会长")
 			return
 		}
 		if(guildList[guildId]["deputy"]){
-			cb(false,"同盟已有副盟主")
+			cb(false,"公会已有副会长")
 			return
 		}
 		if(contributions[guildId][targetUid] == undefined){
@@ -347,11 +347,11 @@ module.exports = function() {
 		var guildId = self.players[uid]["gid"]
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是同盟盟主")
+			cb(false,"不是公会会长")
 			return
 		}
 		if(guildList[guildId]["deputy"] != targetUid){
-			cb(false,"目标不是副盟主")
+			cb(false,"目标不是副会长")
 			return
 		}
 		if(contributions[guildId][targetUid] == undefined){
@@ -362,12 +362,12 @@ module.exports = function() {
 		self.setGuildInfo(guildId,"deputy",0)
 		cb(true)
 	}
-	//设置成盟主
+	//设置成会长
 	this.setGuildLead = function(uid,targetUid,cb) {
 		var guildId = self.players[uid]["gid"]
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
-			cb(false,"不是同盟盟主")
+			cb(false,"不是公会会长")
 			return
 		}
 		if(guildList[guildId]["deputy"] == targetUid || guildList[guildId]["lead"] == targetUid){
@@ -416,7 +416,7 @@ module.exports = function() {
 		}
 		self.leaveGuild(guildId,targetUid,cb)
 	}
-	//获取同盟列表
+	//获取公会列表
 	this.getGuildList = function(uid,cb) {
 		var list = []
 		for(var guildId in guildList){
@@ -438,45 +438,45 @@ module.exports = function() {
 			cb(true,info)
 		})
 	}
-	//获取同盟
+	//获取公会
 	this.getGuildInfo = function(guildId) {
 		return guildList[guildId]
 	}
-	//获取同盟名称
+	//获取公会名称
 	this.getGuildName = function(guildId) {
 		if(guildList[guildId])
 			return guildList[guildId]["name"]
 		else
 			return ""
 	}
-	//获取同盟列表
+	//获取公会列表
 	this.getGuildInfoList = function() {
 		return guildList
 	}
-	//申请加入同盟
+	//申请加入公会
 	this.applyJoinGuild = function(uid,guildId,cb) {
 		if(self.players[uid]["gid"]){
-			cb(false,"已加入同盟")
+			cb(false,"已加入公会")
 			return
 		}
 		if(!guildList[guildId]){
-			cb(false,"同盟不存在")
+			cb(false,"公会不存在")
 			return
 		}
 		if(self.getLordLv(uid) < guildList[guildId]["lv_limit"]){
-			cb(false,"该同盟需要"+guildList[guildId]["lv_limit"]+"级可加入")
+			cb(false,"该公会需要"+guildList[guildId]["lv_limit"]+"级可加入")
 			return
 		}
 		var lv = guildList[guildId]["lv"]
 		if(guildList[guildId]["num"] >= guild_lv[lv]["member"]){
-			cb(false,"同盟已满员")
+			cb(false,"公会已满员")
 			return
 		}
 		self.getObj(uid,main_name,"cd",function(cd) {
 			cd = Number(cd) || 0
 			var curTime = Date.now()
 			if(cd > curTime){
-				cb(false,"退出同盟冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可申请")
+				cb(false,"退出公会冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可申请")
 				return
 			}
 			if(!applyList[guildId])
@@ -529,15 +529,15 @@ module.exports = function() {
 		delete applyMap[targetUid][guildId]
 		cb(true)
 	}
-	//退出同盟
+	//退出公会
 	this.quitGuild = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		if(guildList[guildId]["lead"] == uid){
-			cb(false,"盟主不能退出同盟")
+			cb(false,"会长不能退出公会")
 			return
 		}
 		self.leaveGuild(guildId,uid,cb)
@@ -547,13 +547,13 @@ module.exports = function() {
 		var lv = guildList[guildId]["lv"]
 		var gname = guildList[guildId]["name"]
 		if(guildList[guildId]["num"] >= guild_lv[lv]["member"]){
-			cb(false,"同盟已满员")
+			cb(false,"公会已满员")
 			return
 		}
 		self.getPlayerKeyByUid(uid,"gid",function(gid) {
 			if(gid){
 				delete applyList[guildId][uid]
-				cb(false,"该玩家已加入其他同盟")
+				cb(false,"该玩家已加入其他公会")
 				return
 			}
 			self.chageLordData(uid,"gid",guildId)
@@ -593,11 +593,11 @@ module.exports = function() {
 		if(cb)
 			cb(true)
 	}
-	//弹劾盟主
+	//弹劾会长
 	this.impeachLead = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		if(guildList[guildId]["lead"] === uid){
@@ -606,7 +606,7 @@ module.exports = function() {
 		}
 		async.waterfall([
 			function(next) {
-				//判断盟主是否离线超过五天
+				//判断会长是否离线超过五天
 				self.getPlayerKeyByUid(guildList[guildId]["lead"],"offline",function(offline) {
 					offline = Number(offline)
 					if(!offline || (Date.now() - offline) < 5 * oneDayTime){
@@ -617,7 +617,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//设置盟主
+				//设置会长
 				if(guildList[guildId]["deputy"] === uid){
 					self.setGuildInfo(guildId,"deputy",0)
 				}
@@ -641,11 +641,11 @@ module.exports = function() {
 			}
 		})
 	}
-	//获取同盟日志
+	//获取公会日志
 	this.getGuildLog = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		self.redisDao.db.lrange("guild:log:"+guildId,0,-1,function(err,list) {
@@ -656,7 +656,7 @@ module.exports = function() {
 			}
 		})
 	}
-	//同盟经验增加
+	//公会经验增加
 	this.addGuildEXP = function(guildId,value) {
 		if(guildList[guildId]){
 			self.incrbyZset(main_name,guildId,value)
@@ -664,7 +664,7 @@ module.exports = function() {
 			self.checkGuildUpgrade(guildId)
 		}
 	}
-	//获取同盟排行榜
+	//获取公会排行榜
 	this.getGuildRank = function(uid,cb) {
 		self.zrangewithscore(main_name,-10,-1,function(list) {
 			var guilds = []
@@ -684,7 +684,7 @@ module.exports = function() {
 			})
 		})
 	}
-	//获取排名第一同盟
+	//获取排名第一公会
 	this.getFirstGuildRank = function(cb) {
 		self.zrangewithscore(main_name,-1,-1,function(list) {
 			var guilds = []
@@ -704,7 +704,7 @@ module.exports = function() {
 			})
 		})
 	}
-	//同盟升级检查
+	//公会升级检查
 	this.checkGuildUpgrade = function(guildId) {
 		if(guildList[guildId]){
 			var lv = guildList[guildId]["lv"]
@@ -732,14 +732,14 @@ module.exports = function() {
 			self.incrbyGuildInfo(guildId,"dayCtb",value)
 
 		}
-		var awardList = self.addItemStr(uid,currency+":"+value,1,reason || "同盟活动")
+		var awardList = self.addItemStr(uid,currency+":"+value,1,reason || "公会活动")
 		return awardList
 	}
 	//签到
 	this.signInGuild = function(uid,sign,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		if(!guild_sign[sign]){
@@ -751,7 +751,7 @@ module.exports = function() {
 				cb(false,"今日已签到")
 				return
 			}
-			self.consumeItems(uid,guild_sign[sign]["pc"],1,"同盟签到",function(flag,err) {
+			self.consumeItems(uid,guild_sign[sign]["pc"],1,"公会签到",function(flag,err) {
 				if(flag){
 					self.setObj(uid,main_name,"sign",1)
 					var awardList = self.addGuildScore(uid,guildId,guild_sign[sign]["score"],"签到")
@@ -763,11 +763,11 @@ module.exports = function() {
 			})
 		})
 	}
-	//升级同盟技能
+	//升级公会技能
 	this.upGuildSkill = function(uid,career,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		if(!guild_cfg["career_"+career]){
@@ -784,10 +784,10 @@ module.exports = function() {
 					return
 				}
 				if(lv > guild_lv[guildLv]["skill"]){
-					cb(false,"同盟等级不足")
+					cb(false,"公会等级不足")
 					return
 				}
-				self.consumeItems(uid,guild_skill[lv]["pc"],1,"升级同盟技能",function(flag,err) {
+				self.consumeItems(uid,guild_skill[lv]["pc"],1,"升级公会技能",function(flag,err) {
 					if(flag){
 						self.incrbyGuildCareerSkill(uid,career)
 						cb(true,lv)
@@ -798,7 +798,7 @@ module.exports = function() {
 			})
 		}
 	}
-	//同盟通知
+	//公会通知
 	this.sendToGuild = function(guildId,notify) {
 		for(var uid in contributions[guildId]){
 			if(this.connectorMap[uid]){
@@ -809,7 +809,7 @@ module.exports = function() {
 			}
 		}
 	}
-	//添加同盟红包
+	//添加公会红包
 	this.addGuildGift = function(guildId,title,maxNum,amount,time) {
 		console.log("新红包","guildId:"+guildId,title,maxNum+"个",amount)
 		var giftInfo = {
@@ -846,16 +846,16 @@ module.exports = function() {
 		self.redisDao.db.hmset("guild:giftinfo:"+giftInfo.id,giftInfo)
 		self.sendToGuild(guildId,{type:"guildGift",giftInfo:[giftInfo.id,giftInfo.title,giftInfo.maxNum,giftInfo.curNum,giftInfo.time]})
 	}
-	//删除同盟红包
+	//删除公会红包
 	this.removeGuildGift = function(guildId,giftId) {
 		self.redisDao.db.hdel("guild:giftmap:"+guildId,giftId)
 		self.redisDao.db.del("guild:giftinfo:"+giftId)
 	}
-	//获取同盟红包列表
+	//获取公会红包列表
 	this.getGuildGiftList = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		self.redisDao.db.hgetall("guild:giftmap:"+guildId,function(err,map) {
@@ -878,11 +878,11 @@ module.exports = function() {
 			cb(true,giftinfo)
 		})
 	}
-	//领取同盟红包
+	//领取公会红包
 	this.gainGuildGift = function(uid,giftId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		self.redisDao.db.hgetall("guild:giftinfo:"+giftId,function(err,giftInfo) {
@@ -918,7 +918,7 @@ module.exports = function() {
 				info.time = Date.now()
 				giftInfo["user_"+num] = JSON.stringify(info)
 				self.redisDao.db.hset("guild:giftinfo:"+giftId,"user_"+num,giftInfo["user_"+num])
-				var awardList = self.addItemStr(uid,currency+":"+giftInfo["amount_"+num],1,"同盟红包")
+				var awardList = self.addItemStr(uid,currency+":"+giftInfo["amount_"+num],1,"公会红包")
 				cb(true,{giftInfo : giftInfo,awardList : awardList})
 			})
 		})
