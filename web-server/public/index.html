@@ -1436,6 +1436,12 @@
             console.log(data);
         });
       }
+      //创建机器人
+      var createRobotAccount = function() {
+        pomelo.request("admin.adminHandler.createRobotAccount", {}, function(data) {
+            console.log(data);
+        });
+      }
       //==============礼包码============//
       //创建礼包码类型
       var createCDType = function(type,award,des) {
