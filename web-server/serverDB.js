@@ -4,6 +4,7 @@ var uuid = require("uuid")
 const item_cfg = require("../game-server/config/gameCfg/item.json")
 const hufu_quality = require("../game-server/config/gameCfg/hufu_quality.json")
 const hufu_skill = require("../game-server/config/gameCfg/hufu_skill.json")
+const stringRandom = require('string-random');
 var model = function() {
 	var self = this
 	var posts = {}
@@ -12,6 +13,7 @@ var model = function() {
 	this.init = function (server,mysqlDao,redisDao) {
 		self.mysqlDao = mysqlDao
 		self.redisDao = redisDao
+		self.server = server
 		for(var key in posts){
 			server.post(key,posts[key])
 		}
@@ -797,7 +799,177 @@ var model = function() {
 			})
 		}
 	}
-	//批量获取玩家基本数据
+	//获取公告
+	posts["/getNotify"] = function(req,res) {
+		var data = req.body
+		self.redisDao.db.get("game:notify",function(err,data) {
+			res.send({flag:true,data:data})
+		})
+	}
+	//设置公告
+	posts["/setNotify"] = function(req,res) {
+		var data = req.body
+		console.log("setNotify",data)
+		self.redisDao.db.set("game:notify",data.notify,function(err) {
+			self.server.changeNotify(data.notify)
+			res.send({flag:true})
+		})
+	}
+	//获取CDKEY类型列表
+	posts["/getCDType"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var arr = []
+		var info = local.getSQL("CDType",arr,pageSize,pageCurrent,"c_time")
+		var sql1 = info.sql1
+		var sql2 = info.sql2
+		var args1 = info.args1
+		var args2 = info.args2
+		var info = {}
+		self.mysqlDao.db.query(sql1,args1,function(err,total) {
+			info.total = JSON.parse(JSON.stringify(total))[0]["count(*)"]
+			self.mysqlDao.db.query(sql2,args2, function(err, list) {
+				if (err) {
+					// console.log('getCDTypeList! ' + err.stack);
+					res.send({flag:false,data:err})
+					return
+				}
+				info.list = JSON.parse(JSON.stringify(list))
+				res.send({flag:true,data:info})
+			})
+		})
+	}
+	//创建礼包码类型
+	posts["/createCDType"] = function(req,res) {
+		var data = req.body
+		var type = data.type
+		var award = data.award
+		var des = data.des
+		var once = data.once
+		var sql = "select * from CDType where type = ?"
+		var args = [type];
+		self.mysqlDao.db.query(sql,args, function(err,data) {
+			if (err) {
+				res.send({flag:false,data:err})
+				return
+			}
+			if(data && data.length){
+				sql = 'update CDType SET award=?,once=?,des=? where type=?'
+				args = [award,once,des,type];
+				self.mysqlDao.db.query(sql,args, function(err) {
+					if (err) {
+						// console.error('pauseCDType! ' + err.stack);
+						res.send({flag:false,data:err})
+					}else{
+						res.send({flag:true})
+					}
+				})
+			}else{
+				sql = 'insert into CDType SET ?'
+				var info = {
+					type : type,
+					award : award,
+					valid : 1,
+					c_time : Date.now(),
+					once : once || 0,
+					des : des
+				}
+				self.mysqlDao.db.query(sql,info, function(err) {
+					if (err) {
+						// console.error('createCDType! ' + err.stack);
+						res.send({flag:false,data:err})
+					}else{
+						res.send({flag:true})
+					}
+				})
+			}
+		})
+	}
+	//禁用礼包码类型
+	posts["/pauseCDType"] = function(req,res) {
+		var data = req.body
+		var type = data.type
+		var sql = 'update CDType SET valid=0 where type=?'
+		var args = [type];
+		console.log("pauseCDType",sql,args)
+		self.mysqlDao.db.query(sql,args, function(err) {
+			if (err) {
+				// console.error('pauseCDType! ' + err.stack);
+				res.send({flag:false,data:err})
+			}else{
+				res.send({flag:true})
+			}
+		})
+	}
+	//恢复礼包码类型
+	posts["/resumeCDType"] = function(req,res) {
+		var data = req.body
+		var type = data.type
+		var sql = 'update CDType SET valid=1 where type=?'
+		var args = [type];
+		self.mysqlDao.db.query(sql,args, function(err) {
+			if (err) {
+				// console.error('pauseCDType! ' + err.stack);
+				res.send({flag:false,data:err})
+			}else{
+				res.send({flag:true})
+			}
+		})
+	}
+	//生成礼包码
+	posts["/createCDKey"] = function(req,res) {
+		var data = req.body
+		var key = data.key
+		var type = data.type
+		var num = data.num
+		var expires = data.expires
+		console.time("createCDKey")
+		var curTime = Date.now()
+		var list = []
+		var cdkeyList = []
+		if(key && typeof(key) === "string"){
+			list.push([key,type,curTime,expires,9999999])
+			cdkeyList.push(key)
+		}else{
+			for(let i = 0;i < num;i++){
+				var cdkey = stringRandom(18)
+				list.push([cdkey,type,curTime,expires,1])
+				cdkeyList.push(cdkey)
+			}
+		}
+		var sql = "INSERT INTO CDKey(cdkey,type,c_time,expires,maxCount) VALUES ?"
+		self.mysqlDao.db.query(sql,[list], function(err) {
+			if (err) {
+				// console.error('createCDKey! ' + err.stack);
+				res.send({flag:false,data:err})
+			}else{
+				sql = 'update CDType SET total=total+? where type = ?'
+				self.mysqlDao.db.query(sql,[num,type],function(){})
+				res.send({flag:true,cdkeyList:cdkeyList})
+				console.timeEnd("createCDKey")
+			}
+		})
+	}
+	//获取礼包码数据
+	posts["/getCDKeyInfo"] = function(req,res) {
+		var data = req.body
+		var key = data.key
+		var sql = "select * from CDKey where cdkey = ?"
+		var args = [key];
+		self.mysqlDao.db.query(sql,args, function(err,info) {
+			console.log(err,info)
+			if(err){
+				res.send({flag:false,data:err})
+			}else{
+				if(info.length){
+					res.send({flag:true,data:JSON.parse(JSON.stringify(info[0]))})
+				}else{
+					res.send({flag:false,data:"礼包码不存在"})
+				}
+			}
+		})
+	}
 	local.getPlayerBaseByUids = function(uids,cb) {
 		if(!uids.length){
 			cb([])

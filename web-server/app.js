@@ -39,6 +39,9 @@ server.use(express.urlencoded({extended:true}));
 server.get("/notify",function(req,res) {
 	res.send(notify)
 })
+server.changeNotify = function(data) {
+	notify = data
+}
 server.get("/updateNotify",function(req,res) {
 	redisDao.db.get("game:notify",function(err,data) {
 		if(!err && data)
@@ -48,6 +51,7 @@ server.get("/updateNotify",function(req,res) {
 })
 server.listen(3001);
 serverDB.init(server,mysqlDao,redisDao)
+
 process.on('uncaughtException', function (err) {
   console.error(' !!! Caught exception: ' + err.stack);
 });
