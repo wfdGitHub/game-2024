@@ -37,6 +37,8 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		freeze : 0,
 		last_id : 0,
 	}
+	if(otps.robot)
+		playerInfo.level = 56
 	var self = this
 	self.redisDao.db.hincrby("area:area"+otps.areaId+":areaInfo","playerAmount",1)
 	self.redisDao.db.incrby("user:lastid",1,function(err,uid) {
