@@ -13,13 +13,13 @@ for(var i in ttttower_realm){
 	ttttower_realm[i]["defTeam"] = JSON.parse(ttttower_realm[i]["defTeam"])
 }
 var realm_day = {
-	"0" : {"1":true},
-	"1" : {"2":true},
-	"2" : {"3":true},
-	"3" : {"4":true},
-	"4" : {"5":true},
-	"5" : {"1":true,"2":true,"3":true},
-	"6" : {"4":true,"5":true}
+	"1" : {"1":true},
+	"2" : {"2":true},
+	"3" : {"3":true},
+	"4" : {"4":true},
+	"5" : {"5":true},
+	"6" : {"1":true,"2":true,"3":true},
+	"0" : {"4":true,"5":true}
 }
 module.exports = function() {
 	var self = this
