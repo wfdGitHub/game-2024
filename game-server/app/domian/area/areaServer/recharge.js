@@ -21,9 +21,9 @@ for(var i in recharge){
 		rechargeMap[recharge[i]["rmb"]] = i
 }
 for(var payId in pay_cfg){
-	var rmb = pay_cfg[payId]["rmb"] * 100
-	if(rechargeMap[rmb])
-		recharge_once_table[payId] = rechargeMap[rmb]
+	var cent = pay_cfg[payId]["cent"]
+	if(rechargeMap[cent])
+		recharge_once_table[payId] = rechargeMap[cent]
 }
 var skinArr = []
 for(var i in gift_skin)
@@ -57,6 +57,7 @@ module.exports = function() {
 	this.finish_recharge = function(uid,pay_id,cb) {
 		var call_back = function(uid,flag,data) {
 			if(flag){
+				self.addUserRMB(uid,pay_cfg[pay_id].cent)
 				var notify = {
 					type : "finish_recharge",
 					pay_id : pay_id,
@@ -142,7 +143,6 @@ module.exports = function() {
 	}
 	//充值
 	this.recharge = function(uid,index,cb) {
-		self.addUserRMB(uid,recharge[index].rmb)
 		self.incrbyObj(uid,main_name,"recharge_"+index,1,function(data) {
 			var gold = recharge[index].gold
 			var rate = 0
@@ -165,7 +165,6 @@ module.exports = function() {
 			if(data > 0){
 				console.log("循环礼包已购买",loopId)
 			}
-			self.addUserRMB(uid,gift_loop[loopId].rmb)
 			self.incrbyObj(uid,main_name,"loop_"+loopId,1)
 			var award = "202:"+gift_loop[loopId].gold
 			award += "&"+gift_loop[loopId].award
@@ -180,7 +179,6 @@ module.exports = function() {
 				cb(false,"已激活基金")
 			}else{
 				self.setObj(uid,main_name,"lv_fund",1)
-				self.addUserRMB(uid,activity_cfg["grow_lof"]["value"])
 				cb(true)
 			}
 		})
@@ -268,7 +266,6 @@ module.exports = function() {
 			}else{
 				self.setObj(uid,main_name,"highCard",1)
 				self.chageLordData(uid,"highCard",1)
-				self.addUserRMB(uid,activity_cfg["high_card_lof"]["value"])
 				self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["high_card_award"]["value"])
 				cb(true)
 			}
@@ -285,7 +282,6 @@ module.exports = function() {
 				cb(false,"已购买")
 				return
 			}
-			self.addUserRMB(uid,awardBag_day[index].rmb)
 			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
 			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",awardBag_day[index].award)
 			cb(true)
@@ -318,7 +314,6 @@ module.exports = function() {
 				cb(false,"已限购")
 				return
 			}
-			self.addUserRMB(uid,gift_week[index].rmb)
 			self.incrbyObj(uid,"week_shop",index,1)
 			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_week[index].award)
 			cb(true)
@@ -336,7 +331,6 @@ module.exports = function() {
 				cb(false,"已限购")
 				return
 			}
-			self.addUserRMB(uid,gift_month[index].rmb)
 			self.incrbyObj(uid,"month_shop",index,1)
 			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_month[index].award)
 			cb(true)
@@ -350,7 +344,6 @@ module.exports = function() {
 				cb(false,"已进阶")
 				return
 			}
-			self.addUserRMB(uid,activity_cfg["war_horn"]["value"])
 			self.setObj(uid,"war_horn","high",1)
 			self.incrbyObj(uid,"war_horn","exp",war_horn[curMonth]["exp"],function(exp) {
 				self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",war_horn[curMonth]["award"])
@@ -366,7 +359,6 @@ module.exports = function() {
 		}
 		self.getObj(uid,"limit_gift",id,function(data) {
 			if(data){
-				self.addUserRMB(uid,gift_list[id]["price"])
 				self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_list[id]["award"])
 				self.delObj(uid,"limit_gift",id)
 				cb(true)
@@ -389,7 +381,6 @@ module.exports = function() {
 				cb(false,"已限购")
 				return
 			}
-			self.addUserRMB(uid,gift_skin[id].rmb)
 			self.incrbyObj(uid,"skin",id,1)
 			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_skin[id].award)
 			cb(true)
@@ -406,7 +397,6 @@ module.exports = function() {
 			//延长
 			quick_pri += day31Time
 		}
-		self.addUserRMB(uid,activity_cfg["quick_pri"]["value"])
 		self.chageLordData(uid,"quick_pri",quick_pri)
 		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["quick_award"]["value"])
 		cb(true,{quick_pri:quick_pri})
@@ -422,7 +412,6 @@ module.exports = function() {
 			//延长
 			tour_pri += day31Time
 		}
-		self.addUserRMB(uid,activity_cfg["tour_pri"]["value"])
 		self.chageLordData(uid,"tour_pri",tour_pri)
 		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["tour_award"]["value"])
 		cb(true,{tour_pri:tour_pri})
@@ -438,7 +427,6 @@ module.exports = function() {
 			//延长
 			stone_pri += day31Time
 		}
-		self.addUserRMB(uid,activity_cfg["stone_pri"]["value"])
 		self.chageLordData(uid,"stone_pri",stone_pri)
 		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["stone_award"]["value"])
 		cb(true,{stone_pri:stone_pri})
