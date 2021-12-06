@@ -117,6 +117,9 @@ module.exports = function() {
 			case "wuxian":
 				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
+			case "finish":
+				this.finish_recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+			break
 		}
 		cb(true)
 	}
@@ -159,8 +162,8 @@ module.exports = function() {
 		})
 	}
 	//直接获得道具
-	this.recharge = function(uid,index,cb) {
-		var awardList = self.addItemStr(uid,recharge[index].arg,1,"直接道具"+index)
+	this.finish_recharge = function(uid,str,cb) {
+		var awardList = self.addItemStr(uid,str,1,"直接充值"+str)
 		cb(true,{awardList:awardList})
 	}
 	//购买无限特权
