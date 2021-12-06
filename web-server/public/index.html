@@ -129,6 +129,12 @@
             console.log(data);
         });
       }
+      //点票支付
+      var dianpiao_recharge = function(pay_id) {
+        pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id}, function(data) {
+            console.log(data);
+        });
+      }
       //测试基准战力
       var testStandardTeam = function(list,dl,lv) {
         pomelo.request("area.normalHandler.testStandardTeam", {list:list,dl:dl,lv:lv}, function(data) {

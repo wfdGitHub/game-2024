@@ -54,10 +54,25 @@ module.exports = function() {
 			cb(flag,data)
 		})
 	}
+	//点票支付
+	this.dianpiao_recharge = function(uid,pay_id,cb) {
+		if(!pay_cfg[pay_id] || !pay_cfg[pay_id]["dianpiao"]){
+			cb(false,"pay_id error")
+			return
+		}
+		self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
+			if(flag){
+				self.finish_recharge(uid,pay_id,cb)
+			}else{
+				cb(false,err)
+			}
+		})
+	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,cb) {
 		var call_back = function(uid,flag,data) {
 			if(flag){
+				self.addUserRMB(uid,pay_cfg[pay_id]["rmb"])
 				var notify = {
 					type : "finish_recharge",
 					pay_id : pay_id,
@@ -114,17 +129,6 @@ module.exports = function() {
 				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 		}
-		var once_index = recharge_once_table[pay_id]
-		if(once_index){
-			self.incrbyObj(uid,main_name,"recharge_once_"+once_index,1,function(data) {
-				var notify = {
-					type : "recharge_once_update",
-					index : once_index,
-					curValue : data
-				}
-				self.sendToUser(uid,notify)
-			})
-		}
 		cb(true)
 	}
 	//真实充值
@@ -146,7 +150,14 @@ module.exports = function() {
 	}
 	//充值
 	this.recharge = function(uid,index,cb) {
-		self.addUserRMB(uid,recharge[index].rmb)
+		self.incrbyObj(uid,main_name,"recharge_once_"+index,1,function(data) {
+			var notify = {
+				type : "recharge_once_update",
+				index : index,
+				curValue : data
+			}
+			self.sendToUser(uid,notify)
+		})
 		self.incrbyObj(uid,main_name,"recharge_"+index,1,function(data) {
 			var gold = recharge[index].gold
 			var rate = 0
@@ -158,13 +169,17 @@ module.exports = function() {
 			cb(true,{awardList:[award]})
 		})
 	}
+	//直接获得道具
+	this.recharge = function(uid,index,cb) {
+		var awardList = self.addItemStr(uid,recharge[index].arg,1,"直接道具"+index)
+		cb(true,{awardList:awardList})
+	}
 	//购买无限特权
 	this.buyWuxian = function(uid,id,cb) {
 		if(!wuxian[id] || !wuxian[id]["rmb"]){
 			cb(false,"无限特权不存在")
 			return
 		}
-		self.addUserRMB(uid,wuxian[id].rmb)
 		self.incrbyObj(uid,main_name,id,1)
 		var notify = {
 			type : "wuxian",
@@ -183,7 +198,6 @@ module.exports = function() {
 			if(data > 0){
 				console.log("循环礼包已购买",loopId)
 			}
-			self.addUserRMB(uid,gift_loop[loopId].rmb)
 			self.incrbyObj(uid,main_name,"loop_"+loopId,1)
 			var award = "202:"+gift_loop[loopId].gold
 			award += "&"+gift_loop[loopId].award
@@ -198,7 +212,6 @@ module.exports = function() {
 				cb(false,"已激活基金")
 			}else{
 				self.setObj(uid,main_name,"lv_fund",1)
-				self.addUserRMB(uid,activity_cfg["grow_lof"]["value"])
 				cb(true)
 			}
 		})
@@ -282,11 +295,11 @@ module.exports = function() {
 	this.activateHighCard = function(uid,cb) {
 		self.getObj(uid,main_name,"highCard",function(data) {
 			if(data){
-				cb(false,"已激活至尊特权")
+				var awardList = self.addItemStr(uid,"202:2000",1,"激活至尊特权")
+				cb(true,{awardList:awardList})
 			}else{
 				self.setObj(uid,main_name,"highCard",1)
 				self.chageLordData(uid,"highCard",1)
-				self.addUserRMB(uid,activity_cfg["high_card_lof"]["value"])
 				var awardList = self.addItemStr(uid,activity_cfg["high_card_award"]["value"],1,"激活至尊特权")
 				cb(true,{awardList:awardList})
 			}
@@ -303,7 +316,6 @@ module.exports = function() {
 				cb(false,"已购买")
 				return
 			}
-			self.addUserRMB(uid,awardBag_day[index].rmb)
 			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
 			var awardList = self.addItemStr(uid,awardBag_day[index].award,1,"每日礼包"+index)
 			cb(true,{awardList:awardList})
@@ -336,7 +348,6 @@ module.exports = function() {
 				cb(false,"已限购")
 				return
 			}
-			self.addUserRMB(uid,gift_week[index].rmb)
 			self.incrbyObj(uid,"week_shop",index,1)
 			var awardList = self.addItemStr(uid,gift_week[index].award,1,"每周礼包"+index)
 			cb(true,{awardList:awardList})
@@ -354,7 +365,6 @@ module.exports = function() {
 				cb(false,"已限购")
 				return
 			}
-			self.addUserRMB(uid,gift_month[index].rmb)
 			self.incrbyObj(uid,"month_shop",index,1)
 			var awardList = self.addItemStr(uid,gift_month[index].award,1,"每月礼包"+index)
 			cb(true,{awardList:awardList})
@@ -368,7 +378,6 @@ module.exports = function() {
 				cb(false,"已进阶")
 				return
 			}
-			self.addUserRMB(uid,activity_cfg["war_horn"]["value"])
 			self.setObj(uid,"war_horn","high",1)
 			self.incrbyObj(uid,"war_horn","exp",war_horn[curMonth]["exp"],function(exp) {
 				var awardList = self.addItemStr(uid,war_horn[curMonth]["award"],1,"激活战令")
@@ -384,7 +393,6 @@ module.exports = function() {
 		}
 		self.getObj(uid,"limit_gift",id,function(data) {
 			if(data){
-				self.addUserRMB(uid,gift_list[id]["price"])
 				var awardList = self.addItemStr(uid,gift_list[id]["award"],1,"限时礼包"+id)
 				self.delObj(uid,"limit_gift",id)
 				cb(true,{awardList:awardList})
@@ -407,7 +415,6 @@ module.exports = function() {
 				cb(false,"已限购")
 				return
 			}
-			self.addUserRMB(uid,gift_skin[id].rmb)
 			self.incrbyObj(uid,"skin",id,1)
 			var awardList = self.addItemStr(uid,gift_skin[id].award,1,"购买皮肤")
 			cb(true,{awardList:awardList})
@@ -424,7 +431,6 @@ module.exports = function() {
 			//延长
 			quick_pri += day31Time
 		}
-		self.addUserRMB(uid,activity_cfg["quick_pri"]["value"])
 		self.chageLordData(uid,"quick_pri",quick_pri)
 		var awardList = self.addItemStr(uid,activity_cfg["quick_award"]["value"],1,"快速作战特权")
 		cb(true,{quick_pri:quick_pri,awardList:awardList})
@@ -440,7 +446,6 @@ module.exports = function() {
 			//延长
 			tour_pri += day31Time
 		}
-		self.addUserRMB(uid,activity_cfg["tour_pri"]["value"])
 		self.chageLordData(uid,"tour_pri",tour_pri)
 		var awardList = self.addItemStr(uid,activity_cfg["tour_award"]["value"],1,"三界特权")
 		cb(true,{tour_pri:tour_pri,awardList:awardList})
@@ -456,7 +461,6 @@ module.exports = function() {
 			//延长
 			stone_pri += day31Time
 		}
-		self.addUserRMB(uid,activity_cfg["stone_pri"]["value"])
 		self.chageLordData(uid,"stone_pri",stone_pri)
 		var awardList = self.addItemStr(uid,activity_cfg["stone_award"]["value"],1,"宝石矿场特权")
 		cb(true,{stone_pri:stone_pri,awardList:awardList})
