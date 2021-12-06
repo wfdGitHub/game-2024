@@ -118,7 +118,7 @@ module.exports = function() {
 				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "finish":
-				this.finish_recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+				this.finish_item(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 		}
 		cb(true)
@@ -162,7 +162,7 @@ module.exports = function() {
 		})
 	}
 	//直接获得道具
-	this.finish_recharge = function(uid,str,cb) {
+	this.finish_item = function(uid,str,cb) {
 		var awardList = self.addItemStr(uid,str,1,"直接充值"+str)
 		cb(true,{awardList:awardList})
 	}
