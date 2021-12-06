@@ -15,17 +15,6 @@ const util = require("../../../../util/util.js")
 const uuid = require("uuid")
 const main_name = "activity"
 const day31Time = 2592000000
-var rechargeMap = {}
-var recharge_once_table = {}
-for(var i in recharge){
-	if(recharge[i]["once_award"])
-		rechargeMap[recharge[i]["rmb"]] = i
-}
-for(var payId in pay_cfg){
-	var rmb = pay_cfg[payId]["rmb"] * 100
-	if(rechargeMap[rmb])
-		recharge_once_table[payId] = rechargeMap[rmb]
-}
 var skinArr = []
 for(var i in gift_skin)
 	skinArr.push(i)
