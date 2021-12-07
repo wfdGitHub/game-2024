@@ -162,6 +162,12 @@ module.exports = function() {
 			data["rv_normal"] = 0
 			data["rv_high"] = 0
 			data["rv_super"] = 0
+			for(var i in recharge){
+				if(recharge[i]["once_award"]){
+					data["recharge_once_"+i] = 0
+					data["once_award_"+i] = 0
+				}
+			}
 			for(var i in wuxian){
 				if(wuxian[i]["rmb"]){
 					data[i+"_count"] = 0
@@ -345,7 +351,7 @@ module.exports = function() {
 			data[0] = Number(data[0]) || 0
 			data[1] = Number(data[1]) || 0
 			console.log("data",data)
-			if(data[0] <= data[1]){
+			if(data[0] <= data[1] || data[1] >= 5){
 				cb(false,"已领完")
 			}else{
 				self.incrbyObj(uid,main_name,"once_award_"+index,1)
