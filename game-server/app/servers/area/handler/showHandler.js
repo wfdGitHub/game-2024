@@ -25,8 +25,8 @@ showHandler.prototype.changeFigure = function(msg, session, next) {
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].changeFigure(uid,msg.id,function(flag,data) {
     if(flag){
-        session.set("head",msg.id)
-        session.push("head",function() {
+        session.set("figure",msg.id)
+        session.push("figure",function() {
           next(null,{flag : true,data : data})
         })
       }else{
