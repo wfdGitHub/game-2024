@@ -301,7 +301,7 @@ module.exports = function() {
 				cb(true)
 			break
 			case 109:
-				this.onlyUserRMB(uid,value)
+				this.addUserRMB(uid,value)
 				cb(true)
 			break
 			default:
