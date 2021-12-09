@@ -4,7 +4,7 @@ var guildHandler = function(app) {
   	this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
-//弹劾盟主
+//弹劾会长
 guildHandler.prototype.impeachLead = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")

@@ -1,4 +1,4 @@
-//同盟PK
+//公会PK
 const async = require("async")
 const main_name = "guild_pk"
 const endHours = 19
@@ -9,7 +9,7 @@ module.exports = function() {
 	this.getGuildPKData = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		var info = {}
@@ -74,7 +74,7 @@ module.exports = function() {
 			},
 			function(next) {
 				if(info.table){
-					//获取同盟信息
+					//获取公会信息
 					var enemyGuildId = 0
 					if(info.table[0] == guildId)
 						enemyGuildId = info.table[1]
@@ -119,7 +119,7 @@ module.exports = function() {
 	this.getGuildPKRecord = function(uid,path,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		self.redisDao.db.hget(main_name+":history",guildId,function(err,tableIndex) {
@@ -136,7 +136,7 @@ module.exports = function() {
 	this.getGuildPKFight = function(uid,path,index,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		self.redisDao.db.hget(main_name+":history",guildId,function(err,tableIndex) {
@@ -158,7 +158,7 @@ module.exports = function() {
 		// }
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		var guildInfo = self.getGuildInfo(guildId)
@@ -185,7 +185,7 @@ module.exports = function() {
 	this.sendGuildPKTeam = function(uid,teamId,path,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		var day = (new Date()).getDay()
@@ -269,7 +269,7 @@ module.exports = function() {
 	this.cancelGuildPKTeam = function(uid,teamId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入公会")
 			return
 		}
 		self.redisDao.db.hget(main_name+":"+guildId,uid+"_"+teamId,function(err,data) {
@@ -282,7 +282,7 @@ module.exports = function() {
 			}
 		})
 	}
-	//离开同盟后撤销派遣
+	//离开公会后撤销派遣
 	this.cancelGuildPKAllTeam = function(guildId,uid) {
 		//检测队伍是否已派遣
 		var arr = []

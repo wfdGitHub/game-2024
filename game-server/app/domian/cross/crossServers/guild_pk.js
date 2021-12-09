@@ -2,7 +2,7 @@ const main_name = "guild_pk"
 const async = require("async")
 const guild_pk = require("../../../../config/gameCfg/guild_pk.json")
 const endTime= 19
-//跨服同盟战
+//跨服公会战
 module.exports = function() {
 	var self = this
 	//每日刷新
@@ -11,7 +11,7 @@ module.exports = function() {
 		var day = d.getDay()
 		var curDayStr = d.toDateString()
 		if(day == 0){
-			console.log("周日 开始检测跨服同盟战")
+			console.log("周日 开始检测跨服公会战")
 			self.redisDao.db.hget(main_name,"dayStr",function(err,data) {
 				if(data != curDayStr){
 					self.redisDao.db.hset(main_name,"dayStr",curDayStr)
@@ -40,7 +40,7 @@ module.exports = function() {
 		self.redisDao.db.del(main_name+":table")
 		self.redisDao.db.del(main_name+":applyHistory")
 		self.redisDao.db.hgetall(main_name+":apply",function(err,list) {
-			console.log("同盟PK获取报名列表",list)
+			console.log("公会PK获取报名列表",list)
 			self.redisDao.db.del(main_name+":apply")
 			if(list){
 				self.redisDao.db.hmset(main_name+":applyHistory",list)
@@ -50,7 +50,7 @@ module.exports = function() {
 				}
 				arr.sort(function(){return Math.random() > 0.5?1:-1})
 				if(arr.length > 1){
-					console.log("报名同盟大于1,开始比赛。总报名数: ",arr.length)
+					console.log("报名公会大于1,开始比赛。总报名数: ",arr.length)
 					var curNum = 0
 					var map = {}
 					var table = {}
@@ -108,7 +108,7 @@ module.exports = function() {
 					if(table){
 						self.redisDao.db.del(main_name+":table")
 						self.redisDao.db.hmset(main_name+":historyTable",table)
-						console.log("同盟PK 存在对阵表 开始对阵",table)
+						console.log("公会PK 存在对阵表 开始对阵",table)
 						var map = {}
 						for(var tableIndex in table){
 							var list = JSON.parse(table[tableIndex])
@@ -120,7 +120,7 @@ module.exports = function() {
 							self.guildPKFight(tableIndex,list[0],list[1],npc)
 						}
 					}else{
-						console.log("同盟PK 无对阵表")
+						console.log("公会PK 无对阵表")
 					}
 				})
 			}
@@ -376,25 +376,25 @@ module.exports = function() {
 				if(atkWinNum >= 2){
 					//攻方赢
 					for(var uid in atkMap){
-						self.sendMailByUid(uid,"同盟会武获胜奖","恭喜您的同盟在本次同盟会武活动中大获全胜!",guild_pk[atkGuildLv]["win"])
-						self.sendMailByUid(uid,"同盟会武参与奖","您参与本次同盟会武活动获得了参与奖励。",guild_pk[atkGuildLv]["play"])
+						self.sendMailByUid(uid,"公会会武获胜奖","恭喜您的公会在本次公会会武活动中大获全胜!",guild_pk[atkGuildLv]["win"])
+						self.sendMailByUid(uid,"公会会武参与奖","您参与本次公会会武活动获得了参与奖励。",guild_pk[atkGuildLv]["play"])
 					}
 					if(!npc){
 						for(var uid in defMap){
-							self.sendMailByUid(uid,"同盟会武惜败","您的同盟在本次会武中惜败于对手。",guild_pk[defGuildLv]["lose"])
-							self.sendMailByUid(uid,"同盟会武参与奖","您参与本次同盟会武活动获得了参与奖励。",guild_pk[defGuildLv]["play"])
+							self.sendMailByUid(uid,"公会会武惜败","您的公会在本次会武中惜败于对手。",guild_pk[defGuildLv]["lose"])
+							self.sendMailByUid(uid,"公会会武参与奖","您参与本次公会会武活动获得了参与奖励。",guild_pk[defGuildLv]["play"])
 						}
 					}
 				}else{
 					//守方赢
 					for(var uid in atkMap){
-						self.sendMailByUid(uid,"同盟会武惜败","您的同盟在本次会武中惜败于对手。",guild_pk[atkGuildLv]["lose"])
-						self.sendMailByUid(uid,"同盟会武参与奖","您参与本次同盟会武活动获得了参与奖励。",guild_pk[atkGuildLv]["play"])
+						self.sendMailByUid(uid,"公会会武惜败","您的公会在本次会武中惜败于对手。",guild_pk[atkGuildLv]["lose"])
+						self.sendMailByUid(uid,"公会会武参与奖","您参与本次公会会武活动获得了参与奖励。",guild_pk[atkGuildLv]["play"])
 					}
 					if(!npc){
 						for(var uid in defMap){
-							self.sendMailByUid(uid,"同盟会武获胜奖","恭喜您的同盟在本次同盟会武活动中大获全胜!",guild_pk[defGuildLv]["win"])
-							self.sendMailByUid(uid,"同盟会武参与奖","您参与本次同盟会武活动获得了参与奖励。",guild_pk[defGuildLv]["play"])
+							self.sendMailByUid(uid,"公会会武获胜奖","恭喜您的公会在本次公会会武活动中大获全胜!",guild_pk[defGuildLv]["win"])
+							self.sendMailByUid(uid,"公会会武参与奖","您参与本次公会会武活动获得了参与奖励。",guild_pk[defGuildLv]["play"])
 						}
 					}
 				}
