@@ -26,7 +26,7 @@ module.exports = function() {
 	this.searchFriendById = function(uid,target,cb) {
 		self.redisDao.db.sismember("area:area"+self.areaId+":userSet",target,function(err,data) {
 			if(!data){
-				cb(false,"该玩家不存在")
+				cb(false,"Chưa mở")
 			}
 			self.getPlayerBaseByUids([target],function(userInfos) {
 				cb(true,userInfos[0])

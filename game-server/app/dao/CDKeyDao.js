@@ -179,7 +179,7 @@ CDKeyDao.prototype.getCDKeyInfo = function(key,cb) {
 			cb(false,err)
 		}else{
 			if(!res.length){
-				cb(false,"礼包码不存在")
+				cb(false,"không tồn tại")
 			}else{
 				cb(true,JSON.parse(JSON.stringify(res[0])))
 			}

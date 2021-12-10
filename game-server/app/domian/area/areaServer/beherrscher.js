@@ -100,7 +100,7 @@ module.exports = function() {
 			return
 		}
 		if(beherrscherInfo["state"] != 1){
-			cb(false,"活动未开启")
+			cb(false,"Chưa mở")
 			return
 		}
 		if(beherrscherInfo["seat_1"] == uid || beherrscherInfo["seat_2"] == uid || beherrscherInfo["seat_3"] == uid){

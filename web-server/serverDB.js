@@ -965,7 +965,7 @@ var model = function() {
 				if(info.length){
 					res.send({flag:true,data:JSON.parse(JSON.stringify(info[0]))})
 				}else{
-					res.send({flag:false,data:"礼包码不存在"})
+					res.send({flag:false,data:"không tồn tại"})
 				}
 			}
 		})
