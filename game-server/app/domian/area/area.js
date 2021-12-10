@@ -569,9 +569,9 @@ area.prototype.getFriendByUids = function(uid,uids,cb) {
 	})
 }
 //战斗校验错误
-area.prototype.verifyFaild = function(uid,verify1,verify2) {
+area.prototype.verifyFaild = function(uid,verify1,verify2,source) {
 	console.log("verifyFaild",uid)
-	this.redisDao.db.rpush("verify_faild",JSON.stringify({uid:uid,client:verify1,server:verify2}))
+	this.redisDao.db.rpush("verify_faild",JSON.stringify({uid:uid,client:verify1,server:verify2,source:source}))
 }
 //定时器
 area.prototype.setTimeout = function(fun,dt) {

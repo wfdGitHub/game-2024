@@ -97,7 +97,7 @@ module.exports = function() {
 						return
 					}
 				    if(verifys[i] !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-				    	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]))
+				    	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]),"单人无尽试炼")
 				    	console.log("无尽试炼 第"+i+"场战斗校验错误")
 				    	next("战斗验证错误")
 				    	return
@@ -204,7 +204,7 @@ module.exports = function() {
 						return
 					}
 				    if(verifys[i] !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-				    	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]))
+				    	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]),"三人无尽试炼")
 				    	next("战斗验证错误")
 				    	return
 				    }
