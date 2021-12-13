@@ -339,7 +339,6 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 					break
 				}
 				self.areaManager.areaMap[areaId].incrbyCEInfo(uid,hId,name,value)
-				self.updateHeroCe(areaId,uid,hId)
 			}
 		}
 		if(cb)
