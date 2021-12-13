@@ -1448,6 +1448,17 @@
             console.log(data);
         });
       }
+      //创建机器人
+      var createRobotAccount = function(count) {
+        if(!count){
+          count = 1
+        }
+        for(var i = 0;i < count;i++){
+          pomelo.request("admin.adminHandler.createRobotAccount", {}, function(data) {
+              console.log(data);
+          });
+        }
+      }
       //==============礼包码============//
       //创建礼包码类型
       var createCDType = function(type,award,des) {
@@ -2875,7 +2886,7 @@
   <body>
     <div class="g-button">
       登录系统 : 
-      <input id="test" type="button" value="登录账号1" onclick="entry('1001')"/>
+      <input id="test" type="button" value="登录账号1" onclick="entry('visitor_wgl')"/>
       <input id="test" type="button" value="登录账号2" onclick="entry('1002')"/>
       <input id="test" type="button" value="登录账号3" onclick="entry('1003')"/>
       <input id="test" type="button" value="游客账号" onclick="entry(Date.now())"/>
