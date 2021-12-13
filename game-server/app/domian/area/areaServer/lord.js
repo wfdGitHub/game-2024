@@ -1,6 +1,7 @@
 //主公相关
 var lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 var officer = require("../../../../config/gameCfg/officer.json")
+var uuid = require("uuid")
 var main_name = "playerInfo"
 var numberAtt = ["accId","createTime","rmb","vip","vip_exp","rmb_day","exp","level","heroAmount","heroLv","maxSS","real_rmb","real_day","real_week","r_luck","ttt_lv","title","frame","officer","last_id"]
 module.exports = function() {
