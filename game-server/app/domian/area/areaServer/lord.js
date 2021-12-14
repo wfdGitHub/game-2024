@@ -1,8 +1,9 @@
 //主公相关
 var lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 var officer = require("../../../../config/gameCfg/officer.json")
+var uuid = require("uuid")
 var main_name = "playerInfo"
-var numberAtt = ["accId","createTime","rmb","vip","vip_exp","rmb_day","exp","level","heroAmount","heroLv","maxSS","real_rmb","real_day","real_week","r_luck","ttt_lv","title","frame","officer"]
+var numberAtt = ["accId","createTime","rmb","vip","vip_exp","rmb_day","exp","level","heroAmount","heroLv","maxSS","real_rmb","real_day","real_week","r_luck","ttt_lv","title","frame","officer","last_id","gather"]
 module.exports = function() {
 	var self = this
 	//加载主公数据
@@ -33,6 +34,17 @@ module.exports = function() {
 		if(self.players[uid])
 			self.players[uid][key] = value
 		self.redisDao.db.hset("player:user:"+uid+":playerInfo",key,value)
+	}
+	//获得last_id
+	this.getLordLastid = function(uid) {
+		if(self.players[uid]){
+			self.players[uid]["last_id"] += 1
+			self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","last_id",1)
+			return self.players[uid]["last_id"]
+		}else{
+			return uuid.v1()
+		}
+		
 	}
 	//增加数据
 	this.incrbyLordData = function(uid,key,value,cb) {

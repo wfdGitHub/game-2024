@@ -319,6 +319,13 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		}
 		model.mergeData(info,officerInfo)
 	}
+	if(teamCfg && teamCfg["gather"]){
+		var gatherInfo = {
+		    "maxHP": teamCfg["gather"] * 10,
+		    "atk": teamCfg["gather"] * 2
+		}
+		model.mergeData(info,gatherInfo)
+	}
 	//皮肤计算
 	if(info.skin){
 		if(heroSpine[info.skin] && heroSpine[info.skin]["talent"])
@@ -523,6 +530,8 @@ model.getTeamCE = function(team) {
 			allCE += title_list[team[6]["title"]]["ce"]
 		if(team[6]["officer"] && officer[team[6]["officer"]] && officer[team[6]["officer"]]["ce"])
 			allCE += officer[team[6]["officer"]]["ce"]
+		if(team[6]["gather"])
+			allCE += 1000 * team[6]["gather"]
 	}
 	return allCE
 }
