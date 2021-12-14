@@ -114,6 +114,14 @@ module.exports = function() {
 			}
 		})
 	}
+	//增长有序列表数据
+	this.removeZset = function(zname,key,cb) {
+		this.redisDao.db.zrem("area:area"+this.areaId+":zset:"+zname,key,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
 	//删除有序列表
 	this.delZset = function(zname,cb) {
 		this.redisDao.db.del("area:area"+this.areaId+":zset:"+zname,function(err,data) {
@@ -137,6 +145,26 @@ module.exports = function() {
 				cb(data)
 			}
 		})
+	}
+	//倒序获取有序列表带分数
+	this.zrevrangewithscore = function(zname,begin,end,cb) {
+		this.redisDao.db.zrevrange("area:area"+this.areaId+":zset:"+zname,begin,end,"WITHSCORES",function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
+	//获取有序列表排名
+	this.zrevrank = function(zname,key,cb) {
+		this.redisDao.db.zrevrank("area:area"+this.areaId+":zset:"+zname,key,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
+	//若有序列表过长，则去除多余部分
+	this.zremrangebyrank = function(zname,maxNum,cb) {
+		this.redisDao.db.zremrangebyrank("area:area"+this.areaId+":zset:"+zname,0,-maxNum-1)
 	}
 	//获取服务器hash自定义数据
 	this.getAreaObj = function(objName,key,cb) {

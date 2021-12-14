@@ -116,7 +116,7 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
     }
     self.heroDao.removeHeroList(uid,hIds,function(flag,err) {
       if(flag){
-        self.heroDao.heroPrAll(areaId,uid,herolist,function(flag,awardList) {
+        self.heroDao.heroPrAll(areaId,uid,herolist,hIds,function(flag,awardList) {
           next(null,{flag : true,awardList : awardList})
         })
       }else{
@@ -197,7 +197,7 @@ heroHandler.prototype.unlockZhanfaGrid = function(msg, session, next) {
       self.heroDao.removeHeroList(uid,hIds,function(flag,err) {
           if(err)
             console.error(err)
-          self.heroDao.heroPrlvadnad(areaId,uid,data,function(flag,awardList) {
+          self.heroDao.heroPrlvadnad(areaId,uid,data,hIds,function(flag,awardList) {
             self.heroDao.setHeroInfo(areaId,uid,target,key,1,function(flag,data) {
               next(null,{flag : flag,hId:target,key:key,awardList:awardList})
             })
@@ -377,7 +377,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
             self.heroDao.removeHeroList(uid,hIds,function(flag,err) {
                 if(err)
                   console.error(err)
-                self.heroDao.heroPrlvadnad(areaId,uid,data,function(flag,awardList) {
+                self.heroDao.heroPrlvadnad(areaId,uid,data,hIds,function(flag,awardList) {
                   self.heroDao.incrbyHeroInfo(areaId,uid,target,"star",1,function(flag,star) {
                     if(flag){
                       if(star == 10){
@@ -406,7 +406,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
             self.heroDao.removeHeroList(uid,hIds,function(flag,err) {
                 if(err)
                   console.error(err)
-                self.heroDao.heroPrlvadnad(areaId,uid,data,function(flag,awardList) {
+                self.heroDao.heroPrlvadnad(areaId,uid,data,hIds,function(flag,awardList) {
                   self.heroDao.incrbyHeroInfo(areaId,uid,target,"star",1,function(flag,star) {
                     if(flag){
                       if(star == 10){
@@ -614,6 +614,24 @@ heroHandler.prototype.setFightTeam = function(msg, session, next) {
 heroHandler.prototype.getFightTeam = function(msg, session, next) {
   var uid = session.uid
   this.heroDao.getFightTeam(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//获取英雄排名表
+heroHandler.prototype.getHeroRankList = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var heroId = msg.heroId
+  this.areaManager.areaMap[areaId].getHeroRankList(heroId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//获取单个英雄排名
+heroHandler.prototype.getHeroRankOne = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = msg.uid
+  var hId = msg.hId
+  var heroId = msg.heroId
+  this.areaManager.areaMap[areaId].getHeroRankOne(uid,hId,heroId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
