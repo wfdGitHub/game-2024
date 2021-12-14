@@ -512,7 +512,8 @@ module.exports = function() {
 			info.defInfo = parInfoMap[info.def]
 			info.defAmount = betAmount[info.def]
 			info.myTeam = roundTeam[crossUid]
-			info.enemyTeam = roundTeam[info.def]
+			info.atkTeam = roundTeam[info.atk]
+			info.defTeam = roundTeam[info.def]
 		}
 		if(state > 0 && state < 3 && (!playerAmount[crossUid] || playerAmount[crossUid] < baseScore)){
 			playerAmount[crossUid] = baseScore
