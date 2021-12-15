@@ -59,6 +59,15 @@ tttHandler.prototype.realmMopup = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//升级阵营加成
+tttHandler.prototype.upgradCampAtt = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var camp = msg.camp
+  this.areaManager.areaMap[areaId].upgradCampAtt(uid,camp,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "tttHandler",
