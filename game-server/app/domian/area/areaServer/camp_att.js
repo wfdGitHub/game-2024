@@ -25,6 +25,7 @@ module.exports = function() {
 		self.consumeItems(uid,camp_item[camp]+":"+camp_att[lv]["score"],1,"阵营加成"+camp,function(flag,err) {
 			if(flag){
 				self.incrbyLordData(uid,key,1,function(data) {
+					self.setCampAtt(uid,camp,Number(data))
 					cb(true,data)
 				})
 			}else{

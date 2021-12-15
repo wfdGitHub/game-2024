@@ -542,6 +542,11 @@ model.getTeamCE = function(team) {
 			allCE += officer[team[6]["officer"]]["ce"]
 		if(team[6]["gather"])
 			allCE += 1000 * team[6]["gather"]
+		for(var i = 1;i <= 4;i++){
+			if(team[6]["camp_"+i]){
+				allCE += 2000 * team[6]["camp_"+i]
+			}
+		}
 	}
 	return allCE
 }
