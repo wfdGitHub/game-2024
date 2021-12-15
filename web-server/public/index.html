@@ -126,6 +126,12 @@
             console.log(data);
         });
       }
+      //升级阵营加成
+      var upgradCampAtt = function(camp,cb) {
+        pomelo.request("area.tttHandler.upgradCampAtt", {camp:camp}, function(data) {
+            console.log(data);
+        });
+      }
       //测试基准战力
       var testStandardTeam = function(list,dl,lv) {
         pomelo.request("area.normalHandler.testStandardTeam", {list:list,dl:dl,lv:lv}, function(data) {
