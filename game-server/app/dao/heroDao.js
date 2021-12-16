@@ -695,6 +695,18 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			})
 		},
 		function(next) {
+			//阵营加成
+			self.redisDao.db.hmget("player:user:"+uid+":playerInfo",["camp_1","camp_2","camp_3","camp_4"],function(err,data) {
+				if(data){
+					fightTeam[6]["camp_1"] = Number(data[0]) || 0
+					fightTeam[6]["camp_2"] = Number(data[1]) || 0
+					fightTeam[6]["camp_3"] = Number(data[2]) || 0
+					fightTeam[6]["camp_4"] = Number(data[3]) || 0
+				}
+				next()
+			})
+		},
+		function(next) {
 			//公会技能
 			self.redisDao.db.hmget("player:user:"+uid+":guild",["skill_1","skill_2","skill_3","skill_4"],function(err,data) {
 				if(data){
