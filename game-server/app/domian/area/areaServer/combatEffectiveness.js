@@ -177,6 +177,13 @@ module.exports = function() {
 			this.updateCE(uid)
 		}
 	}
+	//更新阵营加成
+	this.setCampAtt = function(uid,camp,value) {
+		if(userTeams[uid] && userTeams[uid][6]){
+			userTeams[uid][6]["camp_"+camp] = value
+			this.updateCE(uid)
+		}
+	}
 	//激活天书
 	this.activateBook = function(uid,bookType,cb) {
 		if(!bookMap[bookType]){
