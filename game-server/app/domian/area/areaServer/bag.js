@@ -300,8 +300,11 @@ module.exports = function() {
 				this.addLordExp(uid,value)
 				cb(true)
 			break
-			case 109:
+			case 108:
 				this.onlyUserRMB(uid,value)
+			break
+			case 109:
+				this.addUserRMB(uid,value)
 				cb(true)
 			break
 			default:
