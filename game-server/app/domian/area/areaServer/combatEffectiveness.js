@@ -170,6 +170,13 @@ module.exports = function() {
 			this.updateCE(uid)
 		}
 	}
+	//更新图鉴值
+	this.setGather = function(uid,gather) {
+		if(userTeams[uid] && userTeams[uid][6]){
+			userTeams[uid][6]["gather"] = gather
+			this.updateCE(uid)
+		}
+	}
 	//激活天书
 	this.activateBook = function(uid,bookType,cb) {
 		if(!bookMap[bookType]){
