@@ -384,7 +384,6 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                       if(star >= 5)
                         self.areaManager.areaMap[areaId].taskUpdate(uid,"heroStar_"+star,1,targetHero.id)
                     }
-                    self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,targetHero.id,star)
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
                 })
@@ -413,7 +412,6 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                       if(star >= 5)
                         self.areaManager.areaMap[areaId].taskUpdate(uid,"heroStar_"+star,1,targetHero.id)
                     }
-                    self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,targetHero.id,star)
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
                 })
@@ -459,7 +457,6 @@ heroHandler.prototype.upgradeStarSimple = function(msg, session, next) {
               text : "恭喜"+name+"合成出6星英雄"+heroName+",实力大涨名动八荒"
             }
             self.areaManager.areaMap[areaId].sendAllUser(notify)
-            self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,heroInfo.id,star)
             self.areaManager.areaMap[areaId].taskUpdate(uid,"heroStar_6",1,heroInfo.id)
         }
         next(null,{flag : flag,star : star})
@@ -572,6 +569,32 @@ heroHandler.prototype.getHeros = function(msg, session, next) {
 heroHandler.prototype.getHeroArchive = function(msg, session, next) {
   var uid = session.uid
   this.heroDao.getHeroArchive(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//获得已激活图鉴
+heroHandler.prototype.getHeroBook = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getHeroBook(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//激活图鉴
+heroHandler.prototype.activateHeroBook = function(msg, session, next) {
+  var uid = session.uid
+  var id = msg.id
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].activateHeroBook(uid,id,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//升级图鉴
+heroHandler.prototype.upgradeHeroBook = function(msg, session, next) {
+  var uid = session.uid
+  var id = msg.id
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].upgradeHeroBook(uid,id,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
