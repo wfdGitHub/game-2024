@@ -1,3 +1,4 @@
+var herosCfg = require("../../../../config/gameCfg/heros.json")
 var model = function() {
 	this.list = []
 	this.init = function() {
@@ -24,9 +25,11 @@ var model = function() {
 		var beginInfo = recordList.shift()
 		var heroNames = {}
 		for(var i in beginInfo.atkTeam)
-			heroNames[beginInfo.atkTeam[i]["id"]] = beginInfo.atkTeam[i]["name"]+beginInfo.atkTeam[i]["id"]
+			if(beginInfo.atkTeam[i]["heroId"])
+				heroNames[beginInfo.atkTeam[i]["id"]] = herosCfg[beginInfo.atkTeam[i]["heroId"]]["name"]+beginInfo.atkTeam[i]["id"]
 		for(var i in beginInfo.defTeam)
-			heroNames[beginInfo.defTeam[i]["id"]] = beginInfo.defTeam[i]["name"]+beginInfo.defTeam[i]["id"]
+			if(beginInfo.defTeam[i]["heroId"])
+				heroNames[beginInfo.defTeam[i]["id"]] = herosCfg[beginInfo.defTeam[i]["heroId"]]["name"]+beginInfo.defTeam[i]["id"]
 		console.log("战斗开始\n攻方阵容",JSON.stringify(beginInfo.atkTeam),"\n守方阵容",JSON.stringify(beginInfo.defTeam))
 		while(recordList.length){
 			let info = recordList.shift()
