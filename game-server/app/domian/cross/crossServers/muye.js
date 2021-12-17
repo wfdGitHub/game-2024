@@ -370,7 +370,7 @@ module.exports = function() {
 					if(!score || score <= 0){
 						defTeams = robotTeam.concat()
 						targetInfo = {
-							name : "士兵",
+							name : "Lính",
 							head : "201010"
 						}
 						next(null,-1)
