@@ -49,7 +49,7 @@ module.exports = function() {
 			}
 			console.log("data",data)
 			self.getObj(uid,main_name,id,function(star) {
-				console.log("star",satr,data <= star)
+				console.log("star",star,data <= star)
 				if(!star || data <= star){
 					cb(false,"该英雄图鉴未满足升级条件")
 					return
