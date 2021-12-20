@@ -41,12 +41,15 @@ module.exports = function() {
 			cb(false,"id error "+id)
 			return
 		}
+		console.log("upgradeHeroBook",uid,id)
 		self.redisDao.db.hget("player:user:"+uid+":heroArchive",id,function(err,data) {
 			if(!data){
 				cb(false,"该英雄未获得")
 				return
 			}
+			console.log("data",data)
 			self.getObj(uid,main_name,id,function(star) {
+				console.log("star",satr,data <= star)
 				if(!star || data <= star){
 					cb(false,"该英雄图鉴未满足升级条件")
 					return
