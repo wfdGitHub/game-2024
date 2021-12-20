@@ -5,7 +5,8 @@ var camp_item = {
 	"1" : "401",
 	"2" : "402",
 	"3" : "403",
-	"4" : "404"
+	"4" : "404",
+	"5" : "405"
 }
 module.exports = function() {
 	var self = this

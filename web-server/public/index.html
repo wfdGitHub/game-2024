@@ -139,6 +139,12 @@
             console.log(data);
         })
       }
+      //升级阵营加成
+      var upgradCampAtt = function(camp,cb) {
+        pomelo.request("area.tttHandler.upgradCampAtt", {camp:camp}, function(data) {
+            console.log(data);
+        });
+      }
       //============战法=========//
       //战法列表
       var getZhanfaList = function() {
