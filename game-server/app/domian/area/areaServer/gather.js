@@ -29,6 +29,7 @@ module.exports = function() {
 				var star = heros[id]["min_star"]
 				self.setObj(uid,main_name,id,star)
 				self.incrbyLordData(uid,"gather",star_base[star]["gather"],function(data) {
+					self.setGather(uid,Number(data))
 					cb(true,{star : star,gather : data})
 				})
 			})
@@ -53,6 +54,7 @@ module.exports = function() {
 				star = Number(star)+1
 				self.incrbyObj(uid,main_name,id,1)
 				self.incrbyLordData(uid,"gather",star_base[star]["gather"],function(data) {
+					self.setGather(uid,Number(data))
 					cb(true,{star : star,gather : data})
 				})
 			})
