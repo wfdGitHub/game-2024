@@ -46,7 +46,10 @@ module.exports = function() {
 				cb(false,"该英雄未获得")
 				return
 			}
+			data = Number(data)
 			self.getObj(uid,main_name,id,function(star) {
+				if(star)
+					star = Number(star)
 				if(!star || data <= star){
 					cb(false,"该英雄图鉴未满足升级条件")
 					return
