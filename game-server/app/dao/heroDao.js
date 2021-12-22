@@ -171,7 +171,7 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	let ad = otps.ad || 0
 	let lv = otps.lv || 1
 	let star = otps.star || herosCfg[id].min_star
-	var hId = uuid.v1()
+	var hId = this.areaManager.areaMap[areaId].getLordLastid(uid)
 	var heroInfo = {id : id,ad : ad,lv : lv,star : star}
 	this.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
