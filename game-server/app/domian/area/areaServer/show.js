@@ -207,6 +207,7 @@ module.exports = function() {
 	//改变英雄皮肤
 	this.changeHeroSkin = function(uid,hId,index,cb) {
 		var skinId
+		var heroId
 		async.waterfall([
 			function(next) {
 				self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
@@ -214,7 +215,7 @@ module.exports = function() {
 						cb(false,"英雄不存在")
 						return
 					}
-					var heroId = heroInfo.id
+					heroId = heroInfo.id
 					if(index == 0){
 						skinId = 0
 						next(null,heroInfo)
