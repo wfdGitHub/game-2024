@@ -232,7 +232,9 @@ module.exports = function() {
 					self.heroDao.delHeroInfo(self.areaId,uid,hId,"skin")
 					cb(true,heroInfo)
 				}else{
+					console.log("skin_"+index,heroId,heros[heroId]["skin_"+index])
 					self.getObj(uid,"heroArchive",heros[heroId]["skin_"+index],function(data) {
+						console.log(data)
 						if(!data){
 							cb(false,"未获得该皮肤")
 							return
