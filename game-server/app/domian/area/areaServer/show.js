@@ -206,6 +206,7 @@ module.exports = function() {
 	}
 	//改变英雄皮肤
 	this.changeHeroSkin = function(uid,hId,index,cb) {
+		console.log("changeHeroSkin",uid,hId,index)
 		var skinId
 		async.waterfall([
 			function(next) {
