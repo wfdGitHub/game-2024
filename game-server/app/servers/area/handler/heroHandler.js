@@ -492,8 +492,16 @@ heroHandler.prototype.replaceHero = function(msg, session, next) {
         next(null,{flag : false,err : "英雄不存在"})
         return
       }
+      if(heroInfo.combat){
+        next(null,{flag : false,data : "英雄已上阵"})
+        return
+      }
       if(heroInfo.star !== 5){
         next(null,{flag : false,data : "必须为五星英雄"})
+        return
+      }
+      if(heroInfo.skin){
+        next(null,{flag : false,data : "重置的英雄必须为初始形象"})
         return
       }
       var pcStr = "1000180:1"
@@ -525,14 +533,28 @@ heroHandler.prototype.saveReplace = function(msg, session, next) {
           next(null,{flag : false,data : "数据不存在"+heroId})
           return
       }
-      self.heroDao.setHeroInfo(areaId,uid,hId,"id",heroId,function(flag,data) {
-        if(flag){
-          self.areaManager.areaMap[areaId].delPlayerData(uid,"replaceHero")
-          self.areaManager.areaMap[areaId].delPlayerData(uid,"replacePick")
-          self.heroDao.updateHeroArchive(areaId,uid,heroId,5)
-        }
-        next(null,{flag : flag,hId:hId,heroId:heroId})
-      })
+      self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+          if(heroInfo.combat){
+            next(null,{flag : false,data : "英雄已上阵"})
+            return
+          }
+          if(heroInfo.star !== 5){
+            next(null,{flag : false,data : "必须为五星英雄"})
+            return
+          }
+          if(heroInfo.skin){
+            next(null,{flag : false,data : "重置的英雄必须为初始形象"})
+            return
+          }
+          self.heroDao.setHeroInfo(areaId,uid,hId,"id",heroId,function(flag,data) {
+            if(flag){
+              self.areaManager.areaMap[areaId].delPlayerData(uid,"replaceHero")
+              self.areaManager.areaMap[areaId].delPlayerData(uid,"replacePick")
+              self.redisDao.db.hincrby("player:user:"+uid+":heroArchive",heroId,Date.now())
+            }
+            next(null,{flag : flag,hId:hId,heroId:heroId})
+          })
+        })
     })
   })
 }
