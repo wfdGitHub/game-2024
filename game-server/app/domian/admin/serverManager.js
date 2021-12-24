@@ -46,6 +46,9 @@ serverManager.prototype.init = function() {
 		case "jianwan":
 			self.pay_order = self.jianwan_order
 		break
+		case "227":
+			self.pay_order = self.game277_order
+		break 
 		default:
 			console.error("sdktype error")
 	}
@@ -113,6 +116,7 @@ serverManager.prototype.quick_order = function(data,cb) {
 		})
 	});
 }
+//简玩
 serverManager.prototype.jianwan_order = function(data,cb) {
 	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
 	if(v_sign != data.md5Sign){
@@ -134,6 +138,44 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 		amount : data.nt_data_json["amount"] || 0,
 		status : data.nt_data_json["status"] || 0,
 		extras_params : data.nt_data_json["extras_params"] || 0
+	}
+	self.payDao.finishGameOrderJianwan(info,function(flag,err,data) {
+		if(flag){
+			//发货
+			var areaId = self.areaDeploy.getFinalServer(data.areaId)
+			var serverId = self.areaDeploy.getServer(areaId)
+		    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
+		    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,data.uid,Math.floor(Number(info.amount) * 100),function(){})
+		}
+		if(err)
+			cb(false,err)
+		else
+			cb(true)
+	})
+}
+//277
+serverManager.prototype.game277_order = function(data,cb) {
+	console.log("game277_order",data)
+	var v_sign = util.md5("amount="+data.amount+"&extendsinfo="+data.extendsinfo+"&gameid="+data.gameid+"&orderid="+data.orderid+"&out_trade_no="+data.out_trade_no+"&servername="+data.servername+"&time="+data.time+"&username="+data.username+sdkConfig["secretkey"])
+	if(v_sign != data.sign){
+		console.error("签名验证失败")
+		cb(false,"签名验证失败")
+		return
+	}
+	var self = this
+	data.nt_data_json = JSON.parse(data.nt_data_json)
+	var info = {
+		is_test : 0,
+		channel : 0,
+		channel_name : 0,
+		channel_uid : 0,
+		channel_order : 0,
+		game_order : data.out_trade_no || 0,
+		order_no : data.orderid || 0,
+		pay_time : data.time || 0,
+		amount : data.amount || 0,
+		status : 0,
+		extras_params : 0
 	}
 	self.payDao.finishGameOrderJianwan(info,function(flag,err,data) {
 		if(flag){

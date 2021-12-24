@@ -1,5 +1,6 @@
 var bearcat = require("bearcat")
-var http = require('http')
+var http=require('http')
+var querystring = require("querystring")
 var sdkConfig = require("../../../../config/sysCfg/sdkConfig.json")
 var product_code = sdkConfig.product_code
 var util = require("../../../../util/util.js")
@@ -43,6 +44,51 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 			next(null,{flag:false,err:err})
 		});
 	})
+}
+//277登陆
+entryHandler.prototype.quickEntry = function(msg, session, next) {
+	var data = { 
+	  appid: sdkConfig["appid"],
+	  certification: 0,
+	  token: msg.token,
+	  username: msg.username
+	}
+	data.sign = util.md5("appid="+data.appid+"&certification="+data.certification+"&token="+data.token+"&username="+data.username)
+	var postData=querystring.stringify(data)
+	var self = this
+	var options={
+	  hostname:'sdkapi.277sy.com',
+	  path:'/index.php/User/check',
+	  method:'POST',
+	  headers:{
+	    "Content-Type":"application/x-www-form-urlencoded; charset=utf-8",
+	    "Content-Length" : postData.length
+	  }
+	}
+	var url = sdkConfig["CheckUserInfo"]+"?token="+token+"&product_code="+product_code+"&username="+username+"&channel_code="+channel_code
+	var req=http.request(options,function(res){
+	var _data='';
+	res.on('data', function(chunk){
+	   _data += chunk;
+	});
+	res.on('end', function(){
+		console.log(_data)
+		var info = JSON.parse(_data)
+  	if(info.state == "ok"){
+  		var unionid = info.username
+  		var loginToken = util.randomString(8)
+  		self.redisDao.db.hset("loginToken",unionid,loginToken)
+  		next(null,{flag:true,unionid:unionid,token:loginToken})
+  	}else{
+  		next(null,{flag:false,err:"渠道账号验证错误"})
+  	}
+	 });
+	})
+	req.on('error', function(e) {
+	  console.log(e)
+	})
+	req.write(postData);
+	req.end()
 }
 //token登陆
 entryHandler.prototype.tokenLogin = function(msg, session, next) {
