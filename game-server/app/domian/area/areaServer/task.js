@@ -103,7 +103,7 @@ module.exports = function() {
 			case "rank":
 				value = (10000 - this.getAreaHighestRank(uid)) >= task_cfg[taskId]["arg"] ? 1 : 0
 			break
-			case "ttt_lv":
+			case "tttLv":
 				value = this.getLordAtt(uid,"ttt_lv") >= task_cfg[taskId]["arg"] ? 1 : 0
 			break 
 		}
