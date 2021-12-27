@@ -89,8 +89,8 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
   var self = this
   var hIdmap = {}
   for(var i = 0;i < hIds.length;i++){
-    if(typeof(hIds[i]) != "string" || !hIds[i]){
-      next(null,{flag : false,data : "英雄hId必须是string"})
+    if(!hIds[i]){
+      next(null,{flag : false,data : "英雄hId不存在"})
       return
     }
     if(hIdmap[hIds[i]]){
@@ -146,8 +146,8 @@ heroHandler.prototype.unlockZhanfaGrid = function(msg, session, next) {
   hIds.push(target)
   var hIdmap = {}
   for(var i = 0;i < hIds.length;i++){
-    if(typeof(hIds[i]) != "string" || !hIds[i]){
-      next(null,{flag : false,data : "英雄hId必须是string"})
+    if(!hIds[i]){
+      next(null,{flag : false,data : "英雄hId不存在"})
       return
     }
     if(hIdmap[hIds[i]]){
@@ -293,8 +293,8 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
   hIds.push(target)
   var hIdmap = {}
   for(var i = 0;i < hIds.length;i++){
-    if(typeof(hIds[i]) != "string" || !hIds[i]){
-      next(null,{flag : false,data : "英雄hId必须是string"})
+    if(!hIds[i]){
+      next(null,{flag : false,data : "英雄hId不存在"})
       return
     }
     if(hIdmap[hIds[i]]){
