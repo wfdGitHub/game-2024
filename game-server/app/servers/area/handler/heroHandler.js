@@ -488,6 +488,10 @@ heroHandler.prototype.replaceHero = function(msg, session, next) {
         next(null,{flag : false,data : "必须为五星英雄"})
         return
       }
+      if(heroInfo.skin){
+        next(null,{flag : false,data : "重置的英雄必须为初始形象"})
+        return
+      }
       var pcStr = "1000180:1"
       self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,"英雄重置",function(flag,err) {
         if(!flag){
@@ -524,6 +528,10 @@ heroHandler.prototype.saveReplace = function(msg, session, next) {
           }
           if(heroInfo.star !== 5){
             next(null,{flag : false,data : "必须为五星英雄"})
+            return
+          }
+          if(heroInfo.skin){
+            next(null,{flag : false,data : "重置的英雄必须为初始形象"})
             return
           }
           self.heroDao.setHeroInfo(areaId,uid,hId,"id",heroId,function(flag,data) {
