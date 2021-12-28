@@ -46,7 +46,7 @@ serverManager.prototype.init = function() {
 		case "jianwan":
 			self.pay_order = self.jianwan_order
 		break
-		case "227":
+		case "277":
 			self.pay_order = self.game277_order
 		break 
 		default:
