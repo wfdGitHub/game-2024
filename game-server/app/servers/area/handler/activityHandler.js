@@ -188,9 +188,10 @@ activityHandler.prototype.getWeekAndMonthRecord = function(msg, session, next) {
 //领取首充礼包
 activityHandler.prototype.gainFirstRechargeAward = function(msg, session, next) {
   var uid = session.uid
+  var type = msg.type
   var index = msg.index
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].gainFirstRechargeAward(uid,index,function(flag,msg) {
+  this.areaManager.areaMap[areaId].gainFirstRechargeAward(uid,type,index,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }
