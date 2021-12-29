@@ -54,8 +54,8 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	  token: msg.token,
 	  username: msg.uid
 	}
-	data.sign = util.md5("appid="+data.appid+"&certification="+data.certification+"&token="+data.token+"&username="+data.username+sdkConfig["secretkey"])
-	console.log("appid="+data.appid+"&certification="+data.certification+"&token="+data.token+"&username="+data.username+sdkConfig["secretkey"],data.sign)
+	data.sign = util.md5("appid="+data.appid+"&token="+data.token+"&username="+data.username+sdkConfig["secretkey"])
+	console.log("appid="+data.appid+"&token="+data.token+"&username="+data.username+sdkConfig["secretkey"],data.sign)
 	var postData=querystring.stringify(data)
 	var self = this
 	var options={
