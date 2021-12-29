@@ -47,6 +47,7 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 }
 //277登陆
 entryHandler.prototype.quickEntry = function(msg, session, next) {
+	console.log("msg",msg)
 	var data = { 
 	  appid: sdkConfig["appid"],
 	  certification: 0,
@@ -65,7 +66,6 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	    "Content-Length" : postData.length
 	  }
 	}
-	var url = sdkConfig["CheckUserInfo"]+"?token="+token+"&product_code="+product_code+"&username="+username+"&channel_code="+channel_code
 	var req=http.request(options,function(res){
 	var _data='';
 	res.on('data', function(chunk){
