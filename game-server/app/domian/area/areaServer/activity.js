@@ -169,6 +169,10 @@ module.exports = function() {
 					data[i+"_cd"] = 0
 				}
 			}
+			for(var i in wuxian_vip){
+				data[i+"_count"] = 0
+				data[i+"_cd"] = 0
+			}
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
 			}
