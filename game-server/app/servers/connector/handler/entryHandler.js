@@ -47,7 +47,6 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 }
 //277登陆
 entryHandler.prototype.quickEntry = function(msg, session, next) {
-	console.log("msg",msg)
 	var data = { 
 	  appid: sdkConfig["appid"],
 	  certification: 0,
@@ -55,7 +54,6 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	  username: msg.uid
 	}
 	data.sign = util.md5("appid="+data.appid+"&token="+data.token+"&username="+data.username+sdkConfig["secretkey"])
-	console.log("appid="+data.appid+"&token="+data.token+"&username="+data.username+sdkConfig["secretkey"],data.sign)
 	var postData=querystring.stringify(data)
 	var self = this
 	var options={
@@ -73,10 +71,9 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	   _data += chunk;
 	});
 	res.on('end', function(){
-		console.log(_data)
 		var info = JSON.parse(_data)
   	if(info.state == "ok"){
-  		var unionid = info.username
+  		var unionid = data.username
   		var loginToken = util.randomString(8)
   		self.redisDao.db.hset("loginToken",unionid,loginToken)
   		next(null,{flag:true,unionid:unionid,token:loginToken})
