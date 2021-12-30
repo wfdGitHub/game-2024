@@ -30,6 +30,8 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	var url = sdkConfig["CheckUserInfo"]+"?token="+token+"&product_code="+product_code+"&uid="+uid+"&channel_code="+channel_code
 	http.get(url,function(res){
 	  	res.on("data",function(data) {
+	  		console.log("url",url)
+	  		console.log("data",data)
 	    	if(data == 1){
 	    		var unionid = uid
 	    		var loginToken = util.randomString(8)
