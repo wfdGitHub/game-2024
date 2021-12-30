@@ -158,11 +158,11 @@ local.finishGameOrder = function(self,info) {
 			console.error('update user_list! ' + err.stack);
 		}
 	})
-	self.redisDao.db.hincrby("game:info","amount",info.amount)
+	self.redisDao.db.hincrbyfloat("game:info","amount",info.amount)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","day_play_count",1)
 	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_count",1)
-	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","day_play_amount",info.amount)
-	self.redisDao.db.hincrby("area:area"+info.areaId+":areaInfo","all_play_amount",info.amount)
+	self.redisDao.db.hincrbyfloat("area:area"+info.areaId+":areaInfo","day_play_amount",info.amount)
+	self.redisDao.db.hincrbyfloat("area:area"+info.areaId+":areaInfo","all_play_amount",info.amount)
 	self.redisDao.db.hget("player:user:"+info.uid+":playerInfo","createTime",function(err,createTime) {
 		createTime = Number(createTime)
 		if((new Date(createTime)).toDateString() == (new Date()).toDateString()){
