@@ -163,7 +163,6 @@ serverManager.prototype.game277_order = function(data,cb) {
 		return
 	}
 	var self = this
-	data.nt_data_json = JSON.parse(data.nt_data_json)
 	var info = {
 		is_test : 0,
 		channel : 0,
