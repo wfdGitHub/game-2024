@@ -156,7 +156,7 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 //277
 serverManager.prototype.game277_order = function(data,cb) {
 	console.log("game277_order",data)
-	var v_sign = util.md5("amount="+data.amount+"&extendsinfo="+data.extendsinfo+"&gameid="+data.gameid+"&orderid="+data.orderid+"&out_trade_no="+data.out_trade_no+"&servername="+data.servername+"&time="+data.time+"&username="+data.username+sdkConfig["secretkey"])
+	var v_sign = util.md5(encodeURI("amount="+data.amount+"&extendsinfo="+data.extendsinfo+"&gameid="+data.gameid+"&orderid="+data.orderid+"&out_trade_no="+data.out_trade_no+"&servername="+data.servername+"&time="+data.time+"&username="+data.username+sdkConfig["secretkey"]))
 	if(v_sign != data.sign){
 		console.error("签名验证失败")
 		cb(false,"签名验证失败")
