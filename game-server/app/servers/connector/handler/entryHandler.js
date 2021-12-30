@@ -23,78 +23,78 @@ entryHandler.prototype.entryAccount = function(msg, session, next) {
 	next(null,{flag:true,unionid:unionid,token:loginToken})
 }
 //quickSDK登陆
-// entryHandler.prototype.quickEntry = function(msg, session, next) {
-// 	var token = msg.token
-// 	var uid = msg.uid
-// 	var channel_code = msg.channel_code
-// 	var self = this
-// 	var url = sdkConfig["CheckUserInfo"]+"?token="+token+"&product_code="+product_code+"&uid="+uid+"&channel_code="+channel_code
-// 	http.get(url,function(res){
-// 	  	res.on("data",function(data) {
-// 	    	if(data == 1){
-// 	    		var unionid = uid
-// 	    		var loginToken = util.randomString(8)
-// 	    		self.redisDao.db.hset("loginToken",unionid,loginToken)
-// 	    		next(null,{flag:true,unionid:unionid,token:loginToken})
-// 	    	}else{
-// 	    		next(null,{flag:false,err:"渠道账号验证错误"})
-// 	    	}
-// 	  	})
-// 		res.on("error", err => {
-// 			console.log(err.message);
-// 			next(null,{flag:false,err:err})
-// 		});
-// 	})
-// }
-//39SDK登陆
 entryHandler.prototype.quickEntry = function(msg, session, next) {
-		var juhe_token = msg.token
-		var juhe_userid = msg.uid
-		var app_id = sdkConfig["app_id"]
-		var channel_userid = ""
-		var payment_key = sdkConfig["payment_key"]
-		var self = this
-		var sign = util.md5("app_id="+app_id+"&channel_userid="+channel_userid+"&juhe_token="+juhe_token+"&juhe_userid="+juhe_userid+payment_key)
-		sign = sign.toLocaleUpperCase()
-		var postData=querystring.stringify({  
-		    "juhe_token":juhe_token,
-		    "juhe_userid" : juhe_userid,
-		    "app_id" : app_id,
-		    "channel_userid" : channel_userid,
-		    "sign" : sign
-		})
-		var options={
-		  hostname:'juhesdk.3975ad.com',
-		  path:'/api/oauth/verify_token',
-		  method:'POST',
-		  headers:{
-		    "Content-Type":"application/x-www-form-urlencoded; charset=utf-8",
-		    "Content-Length" : postData.length
-		  }
-		}
-	  var req=https.request(options,function(res){
-	  var _data='';
-	  res.on('data', function(chunk){
-	     _data += chunk;
-	  });
-	  res.on('end', function(){
-	  	var data = JSON.parse(_data)
-    	if(data && data.success == true){
-    		var unionid = juhe_userid
-    		var loginToken = util.randomString(8)
-    		self.redisDao.db.hset("loginToken",unionid,loginToken)
-    		next(null,{flag:true,unionid:unionid,token:loginToken})
-    	}else{
-    		next(null,{flag:false,err:"渠道账号验证错误"})
-    	}
-	   });
-	  })
-	  req.on('error', function(e) {
-	    cb(false,e)
-	  })
-	  req.write(postData);
-	  req.end()
+	var token = msg.token
+	var uid = msg.uid
+	var channel_code = msg.channel_code
+	var self = this
+	var url = sdkConfig["CheckUserInfo"]+"?token="+token+"&product_code="+product_code+"&uid="+uid+"&channel_code="+channel_code
+	http.get(url,function(res){
+	  	res.on("data",function(data) {
+	    	if(data == 1){
+	    		var unionid = uid
+	    		var loginToken = util.randomString(8)
+	    		self.redisDao.db.hset("loginToken",unionid,loginToken)
+	    		next(null,{flag:true,unionid:unionid,token:loginToken})
+	    	}else{
+	    		next(null,{flag:false,err:"渠道账号验证错误"})
+	    	}
+	  	})
+		res.on("error", err => {
+			console.log(err.message);
+			next(null,{flag:false,err:err})
+		});
+	})
 }
+//39SDK登陆
+// entryHandler.prototype.quickEntry = function(msg, session, next) {
+// 		var juhe_token = msg.token
+// 		var juhe_userid = msg.uid
+// 		var app_id = sdkConfig["app_id"]
+// 		var channel_userid = ""
+// 		var payment_key = sdkConfig["payment_key"]
+// 		var self = this
+// 		var sign = util.md5("app_id="+app_id+"&channel_userid="+channel_userid+"&juhe_token="+juhe_token+"&juhe_userid="+juhe_userid+payment_key)
+// 		sign = sign.toLocaleUpperCase()
+// 		var postData=querystring.stringify({  
+// 		    "juhe_token":juhe_token,
+// 		    "juhe_userid" : juhe_userid,
+// 		    "app_id" : app_id,
+// 		    "channel_userid" : channel_userid,
+// 		    "sign" : sign
+// 		})
+// 		var options={
+// 		  hostname:'juhesdk.3975ad.com',
+// 		  path:'/api/oauth/verify_token',
+// 		  method:'POST',
+// 		  headers:{
+// 		    "Content-Type":"application/x-www-form-urlencoded; charset=utf-8",
+// 		    "Content-Length" : postData.length
+// 		  }
+// 		}
+// 	  var req=https.request(options,function(res){
+// 	  var _data='';
+// 	  res.on('data', function(chunk){
+// 	     _data += chunk;
+// 	  });
+// 	  res.on('end', function(){
+// 	  	var data = JSON.parse(_data)
+//     	if(data && data.success == true){
+//     		var unionid = juhe_userid
+//     		var loginToken = util.randomString(8)
+//     		self.redisDao.db.hset("loginToken",unionid,loginToken)
+//     		next(null,{flag:true,unionid:unionid,token:loginToken})
+//     	}else{
+//     		next(null,{flag:false,err:"渠道账号验证错误"})
+//     	}
+// 	   });
+// 	  })
+// 	  req.on('error', function(e) {
+// 	    cb(false,e)
+// 	  })
+// 	  req.write(postData);
+// 	  req.end()
+// }
 //token登陆
 entryHandler.prototype.tokenLogin = function(msg, session, next) {
   if(this.connectorManager.runTime < 10000){
