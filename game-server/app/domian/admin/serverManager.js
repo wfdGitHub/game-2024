@@ -176,7 +176,7 @@ serverManager.prototype.game277_order = function(data,cb) {
 		status : 0,
 		extras_params : 0
 	}
-	self.payDao.finishGameOrderJianwan(info,function(flag,err,data) {
+	self.payDao.finishGameOrder(info,function(flag,err,data) {
 		if(flag){
 			//发货
 			var areaId = self.areaDeploy.getFinalServer(data.areaId)
