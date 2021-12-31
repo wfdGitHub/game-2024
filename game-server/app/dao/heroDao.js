@@ -175,13 +175,29 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	var heroInfo = {id : id,ad : ad,lv : lv,star : star}
 	this.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
-	this.redisDao.db.hincrby("player:user:"+uid+":heroArchive",id,Date.now())
 	heroInfo.hId = hId
 	this.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
+	this.updateHeroArchive(areaId,uid,id,star)
 	if(cb)
 		cb(true,heroInfo)
 	heroInfo.hId = hId
 	return heroInfo
+}
+//升级英雄图鉴
+heroDao.prototype.updateHeroArchive = function(areaId,uid,id,star) {
+	var self = this
+	self.redisDao.db.hget("player:user:"+uid+":heroArchive",id,function(err,data) {
+		if(!data || star > data){
+			self.redisDao.db.hset("player:user:"+uid+":heroArchive",id,star)
+			self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,id,star)
+			var notify = {
+				type : "updateHeroArchive",
+				id : id,
+				star : star
+			}
+			self.areaManager.areaMap[areaId].sendToUser(uid,notify)
+		}
+	})
 }
 //批量删除英雄
 heroDao.prototype.removeHeroList = function(uid,hIds,cb) {
@@ -326,6 +342,9 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 			switch(name){
 				case "star":
 					self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
+					self.getHeroInfo(uid,hId,"id",function(id) {
+						self.updateHeroArchive(areaId,uid,id,data)
+					})
 				break
 				case "lv":
 					self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
@@ -356,6 +375,12 @@ heroDao.prototype.setHeroInfo = function(areaId,uid,hId,name,value,cb) {
 			if(cb)
 				cb(true,data)
 		}
+	})
+}
+//获取英雄属性
+heroDao.prototype.getHeroInfo = function(uid,hId,name,cb) {
+	this.redisDao.db.hget("player:user:"+uid+":heros:"+hId,name,function(err,data) {
+		cb(data)
 	})
 }
 //删除英雄属性
@@ -603,6 +628,14 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			self.redisDao.db.hget("player:user:"+uid+":playerInfo","officer",function(err,data) {
 				if(data)
 					fightTeam[6]["officer"] = data
+				next()
+			})
+		},
+		function(next) {
+			//图鉴值
+			self.redisDao.db.hget("player:user:"+uid+":playerInfo","gather",function(err,data) {
+				if(data)
+					fightTeam[6]["gather"] = data
 				next()
 			})
 		},

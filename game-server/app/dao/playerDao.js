@@ -34,6 +34,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		r_luck : -1,
 		freeze : 0,
 		last_id : 0,
+		gather : 0
 	}
 	var self = this
 	self.redisDao.db.hincrby("area:area"+otps.areaId+":areaInfo","playerAmount",1)

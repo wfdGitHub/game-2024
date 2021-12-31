@@ -153,6 +153,24 @@
             console.log(data);
         })
       }
+      //获得已激活图鉴
+      var getHeroBook = function() {
+        pomelo.request("area.heroHandler.getHeroBook",{}, function(data) {
+            console.log(data);
+        })
+      }
+      //激活图鉴
+      var activateHeroBook = function(id) {
+        pomelo.request("area.heroHandler.activateHeroBook",{id,id}, function(data) {
+            console.log(data);
+        })
+      }
+      //升级图鉴
+      var upgradeHeroBook = function(id) {
+        pomelo.request("area.heroHandler.upgradeHeroBook",{id:id}, function(data) {
+            console.log(data);
+        })
+      }
       //============战法=========//
       //战法列表
       var getZhanfaList = function() {
