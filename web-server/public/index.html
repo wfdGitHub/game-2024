@@ -2333,6 +2333,18 @@
             console.log(data);
         });
       }
+      //获取英雄排名表
+      var getHeroRankList = function(heroId) {
+        pomelo.request("area.heroHandler.getHeroRankList", {heroId:heroId}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取单个英雄排名
+      var getHeroRankOne = function(uid,hId,heroId) {
+        pomelo.request("area.heroHandler.getHeroRankOne", {uid:uid,hId:hId,heroId:heroId}, function(data) {
+            console.log(data);
+        });
+      }
       //=================================//
       //绑定身份证
       var bindIdentity = function(idcard,name) {
