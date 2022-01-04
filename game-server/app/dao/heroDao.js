@@ -21,6 +21,19 @@ var baseStone = {
 	"3" : 400030100,
 	"4" : 400040100
 }
+var tips_str = {
+	"5":"Danh Tiếng Vang Xa",
+	"6":"Dũng Vũ Vượt Người",
+	"7":"Danh Tiếng Vang Dội Tam Quốc",
+	"8":"Dũng Quan Tam Quân",
+	"9":"Nhất Kỵ Đương Thiên",
+	"10":"Bất Khả Chiến Bại",
+	"11":"Không Thể Ngăn Cản",
+	"12":"Uy Chấn Hoa Hạ",
+	"13":"Thiên Hạ Vô Song",
+	"14":"Đột Phá Thiên Cảnh",
+	"15":"Thần Tiên Hạ Phàm"
+}
 for(let i in recruit_base){
 	recruit_base[i]["weights"] = JSON.parse(recruit_base[i]["weights"])
 	recruit_base[i].allWeight = 0
@@ -202,6 +215,14 @@ heroDao.prototype.updateHeroArchive = function(areaId,uid,id,star) {
 				star : star
 			}
 			self.areaManager.areaMap[areaId].sendToUser(uid,notify)
+			var name = self.areaManager.areaMap[areaId].getLordAtt(uid,"name")
+			if(name){
+        var notify = {
+          type : "sysChat",
+          text : "Chúc mừng "+name+" đã nhận được Tướng "+star+" sao,"+herosCfg[id]["name_vn"]+tips_str[star]
+        }
+        self.areaManager.areaMap[areaId].sendAllUser(notify)
+			}
 		}
 	})
 }

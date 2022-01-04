@@ -1,6 +1,6 @@
 var uuid = require("uuid")
 const default_cfg = require("../../config/gameCfg/default_cfg.json")
-const beginHero = default_cfg["begin_hero"]["value"]
+const beginHero = 303020//205070
 var accountDao = function() {}
 //创建新账号
 accountDao.prototype.createAccount = function(otps,cb) {
