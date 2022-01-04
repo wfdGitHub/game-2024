@@ -76,7 +76,8 @@ serverManager.prototype.init = function() {
 					break
 					default:
 						res.send("SUCCESS")
-		}
+			}
+		})
 	})
 	// serverDB.init(server,self.mysqlDao,self.redisDao)
 	server.listen(80);
