@@ -55,11 +55,28 @@ serverManager.prototype.init = function() {
 	server.post(sdkConfig["pay_callback"],function(req,res) {
 		var data = req.body
 		self.pay_order(data,function(flag,err) {
-			// if(!flag)
-			// 	res.send(err)
-			// else
-				res.send("SUCCESS")
-		})
+				switch(sdkConfig.sdk_type){
+					case "gzone":
+						if(flag){
+							res.send({
+								'error_code' : 0,
+								'order_id' : data.order_id,
+								'coin' : data.platform_price,
+								'message' : "Thành công"
+							})
+						}else{
+							res.send({
+								'error_code' : 200,
+								'message' : err
+							})
+						}
+					break
+					case "277":
+							res.send("succ")
+					break
+					default:
+						res.send("SUCCESS")
+		}
 	})
 	// serverDB.init(server,self.mysqlDao,self.redisDao)
 	server.listen(80);
@@ -155,7 +172,6 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 }
 //277
 serverManager.prototype.game277_order = function(data,cb) {
-	console.log("game277_order",data)
 	var v_sign = util.md5(encodeURI("amount="+data.amount+"&extendsinfo="+data.extendsinfo+"&gameid="+data.gameid+"&orderid="+data.orderid+"&out_trade_no="+data.out_trade_no+"&servername="+data.servername+"&time="+data.time+"&username="+data.username+sdkConfig["secretkey"]))
 	if(v_sign != data.sign){
 		console.error("签名验证失败")
