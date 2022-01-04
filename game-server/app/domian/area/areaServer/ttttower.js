@@ -34,10 +34,12 @@ module.exports = function() {
 		self.setObj(uid,main_name,"realm_count_2",0)
 		self.setObj(uid,main_name,"realm_count_3",0)
 		self.setObj(uid,main_name,"realm_count_4",0)
+		self.setObj(uid,main_name,"realm_count_5",0)
 		self.setObj(uid,main_name,"realm_mopup_1",0)
 		self.setObj(uid,main_name,"realm_mopup_2",0)
 		self.setObj(uid,main_name,"realm_mopup_3",0)
 		self.setObj(uid,main_name,"realm_mopup_4",0)
+		self.setObj(uid,main_name,"realm_mopup_5",0)
 	}
 	//获取通天塔数据
 	this.getTTTInfo = function(uid,cb) {
