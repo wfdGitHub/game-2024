@@ -24,6 +24,7 @@ var skin_list = require("../../../../config/gameCfg/skin_list.json")
 var title_list = require("../../../../config/gameCfg/title_list.json")
 var zhanfa = require("../../../../config/gameCfg/zhanfa.json")
 var officer = require("../../../../config/gameCfg/officer.json")
+var camp_att = require("../../../../config/gameCfg/camp_att.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -324,6 +325,15 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		}
 		model.mergeData(info,gatherInfo)
 	}
+	if(teamCfg && teamCfg["camp_"+info.realm]){
+		var strs = camp_att[teamCfg["camp_"+info.realm]]["att"].split("&")
+		var campInfo = {}
+		strs.forEach(function(m_str) {
+			var m_list = m_str.split(":")
+			campInfo[m_list[0]] = Number(m_list[1])
+		})
+		model.mergeData(info,campInfo)
+	}
 	//皮肤计算
 	if(info.skin){
 		if(heroSpine[info.skin] && heroSpine[info.skin]["talent"])
@@ -530,6 +540,11 @@ model.getTeamCE = function(team) {
 			allCE += officer[team[6]["officer"]]["ce"]
 		if(team[6]["gather"])
 			allCE += 1000 * team[6]["gather"]
+		for(var i = 1;i <= 4;i++){
+			if(team[6]["camp_"+i]){
+				allCE += 2000 * team[6]["camp_"+i]
+			}
+		}
 	}
 	return allCE
 }
