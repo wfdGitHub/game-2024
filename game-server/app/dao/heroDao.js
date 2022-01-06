@@ -372,6 +372,9 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 				switch(name){
 					case "star":
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
+						self.getHeroInfo(uid,hId,"id",function(id) {
+							self.updateHeroArchive(areaId,uid,id,data)
+						})
 					break
 					case "lv":
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
