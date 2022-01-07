@@ -78,7 +78,7 @@ serverManager.prototype.init = function() {
 	})
 	server.use(express.static(__dirname + '../../../../../web-server/public'));
 	http_post.init(server,self)
-	server.listen(80);
+	server.listen(2080);
 	var server2 = express()
 	server2.use(express.json());
 	server2.use(express.urlencoded());
