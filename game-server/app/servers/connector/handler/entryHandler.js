@@ -46,48 +46,48 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	})
 }
 //277登陆
-entryHandler.prototype.quickEntry = function(msg, session, next) {
-	var data = { 
-	  appid: sdkConfig["appid"],
-	  certification: 0,
-	  token: msg.token,
-	  username: msg.uid
-	}
-	data.sign = util.md5("appid="+data.appid+"&token="+data.token+"&username="+data.username+sdkConfig["secretkey"])
-	var postData=querystring.stringify(data)
-	var self = this
-	var options={
-	  hostname:'sdkapi.277sy.com',
-	  path:'/index.php/User/check',
-	  method:'POST',
-	  headers:{
-	    "Content-Type":"application/x-www-form-urlencoded; charset=utf-8",
-	    "Content-Length" : postData.length
-	  }
-	}
-	var req=http.request(options,function(res){
-	var _data='';
-	res.on('data', function(chunk){
-	   _data += chunk;
-	});
-	res.on('end', function(){
-		var info = JSON.parse(_data)
-  	if(info.state == "ok"){
-  		var unionid = data.username
-  		var loginToken = util.randomString(8)
-  		self.redisDao.db.hset("loginToken",unionid,loginToken)
-  		next(null,{flag:true,unionid:unionid,token:loginToken})
-  	}else{
-  		next(null,{flag:false,err:"渠道账号验证错误"})
-  	}
-	 });
-	})
-	req.on('error', function(e) {
-	  console.log(e)
-	})
-	req.write(postData);
-	req.end()
-}
+// entryHandler.prototype.quickEntry = function(msg, session, next) {
+// 	var data = { 
+// 	  appid: sdkConfig["appid"],
+// 	  certification: 0,
+// 	  token: msg.token,
+// 	  username: msg.uid
+// 	}
+// 	data.sign = util.md5("appid="+data.appid+"&token="+data.token+"&username="+data.username+sdkConfig["secretkey"])
+// 	var postData=querystring.stringify(data)
+// 	var self = this
+// 	var options={
+// 	  hostname:'sdkapi.277sy.com',
+// 	  path:'/index.php/User/check',
+// 	  method:'POST',
+// 	  headers:{
+// 	    "Content-Type":"application/x-www-form-urlencoded; charset=utf-8",
+// 	    "Content-Length" : postData.length
+// 	  }
+// 	}
+// 	var req=http.request(options,function(res){
+// 	var _data='';
+// 	res.on('data', function(chunk){
+// 	   _data += chunk;
+// 	});
+// 	res.on('end', function(){
+// 		var info = JSON.parse(_data)
+//   	if(info.state == "ok"){
+//   		var unionid = data.username
+//   		var loginToken = util.randomString(8)
+//   		self.redisDao.db.hset("loginToken",unionid,loginToken)
+//   		next(null,{flag:true,unionid:unionid,token:loginToken})
+//   	}else{
+//   		next(null,{flag:false,err:"渠道账号验证错误"})
+//   	}
+// 	 });
+// 	})
+// 	req.on('error', function(e) {
+// 	  console.log(e)
+// 	})
+// 	req.write(postData);
+// 	req.end()
+// }
 //token登陆
 entryHandler.prototype.tokenLogin = function(msg, session, next) {
   if(this.connectorManager.runTime < 3000){
