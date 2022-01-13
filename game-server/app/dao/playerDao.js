@@ -3,7 +3,7 @@ const VIP = require("../../config/gameCfg/VIP.json")
 const default_cfg = require("../../config/gameCfg/default_cfg.json")
 var playerDao = function() {}
 var beginHero = default_cfg["begin_hero"]["value"]
-var vipLv = 15
+var vipLv = 14
 //创建角色
 playerDao.prototype.createPlayer = function(otps,cb) {
 	var playerInfo = {
