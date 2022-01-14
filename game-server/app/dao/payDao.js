@@ -10,7 +10,7 @@ payDao.prototype.init  = function() {
 payDao.prototype.createGameOrder = function(otps,cb) {
 	var self = this
 	sql = 'insert into game_order SET ?'
-	console.log("createGameOrder",otps,pay_cfg[otps.pay_id])
+	// console.log("createGameOrder",otps,pay_cfg[otps.pay_id])
 	var info = {
 		game_order : uuid.v1(),
 		pay_id : otps.pay_id,
@@ -97,8 +97,6 @@ payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 		}
 		res =JSON.parse( JSON.stringify(res))
 		var data = res[0]
-		console.log("res",res)
-		console.log("data",data)
 		if(err || !data){
 			console.error("订单不存在",err)
 			self.faildOrder("订单不存在",otps)
