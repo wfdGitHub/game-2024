@@ -456,27 +456,27 @@ module.exports = function() {
 	//申请加入公会
 	this.applyJoinGuild = function(uid,guildId,cb) {
 		if(self.players[uid]["gid"]){
-			cb(false,"已加入公会")
+			cb(false,"tham gia hội")
 			return
 		}
 		if(!guildList[guildId]){
-			cb(false,"公会不存在")
+			cb(false,"Bang hội không tồn tại")
 			return
 		}
 		if(self.getLordLv(uid) < guildList[guildId]["lv_limit"]){
-			cb(false,"该公会需要"+guildList[guildId]["lv_limit"]+"级可加入")
+			cb(false,"Bang hội cần cấp"+guildList[guildId]["lv_limit"]+"để tham gia")
 			return
 		}
 		var lv = guildList[guildId]["lv"]
 		if(guildList[guildId]["num"] >= guild_lv[lv]["member"]){
-			cb(false,"公会已满员")
+			cb(false,"Bang hội đã đầy")
 			return
 		}
 		self.getObj(uid,main_name,"cd",function(cd) {
 			cd = Number(cd) || 0
 			var curTime = Date.now()
 			if(cd > curTime){
-				cb(false,"退出公会冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可申请")
+				cb(false,"Áp dụng lại sau thời gian ,"+Math.ceil((cd - curTime)/60000))
 				return
 			}
 			if(!applyList[guildId])
