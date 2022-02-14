@@ -112,7 +112,6 @@ module.exports = function() {
 			var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
 			var list = self.fightContorl.getFightRecord()
 			var overInfo = list[list.length - 1]
-			console.log(overInfo)
 			var allDamage = overInfo.atkDamage
 			//保存挑战记录
 			self.incrbyZset("guildCityBossUserRank:"+index,uid,allDamage)
