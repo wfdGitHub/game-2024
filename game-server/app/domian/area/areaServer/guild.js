@@ -36,6 +36,10 @@ module.exports = function() {
 		self.delObj(uid,"guild_fb","buy")
 		self.delObj(uid,"guild_treasure","play")
 		self.delObj(uid,"guild_city","dayAward")
+		var guildId = self.players[uid]["gid"]
+		//自动报名
+		if(guildId)
+			self.redisDao.db.hset("guild_pk:apply",guildId,1)
 	}
 	//公会每日更新
 	this.guildDayUpdate = function() {
@@ -115,6 +119,8 @@ module.exports = function() {
 				}
 				contributions[guildId] = data || {}
 			})
+			//宝藏BOSS竞拍结算
+			self.guildTreasureAuctionEnd(guildId)
 		})
 	}
 	//设置公会属性
@@ -315,8 +321,7 @@ module.exports = function() {
 		self.removeGuildFBdata(guildId)
 		self.redisDao.db.del("guild_treasure:play:"+guildId)
 		self.redisDao.db.del("guild_treasure:"+guildId)
-		self.delAreaObj("guild_city:apply",guildId)
-		self.releaseGuildCity(guildId)
+		self.redisDao.db.hdel("guild_pk:apply",guildId)
 		cb(true)
 	}
 	//设置成副会长
@@ -588,8 +593,6 @@ module.exports = function() {
 		self.sendMail(uid,"退出公会","您已离开【"+guildList[guildId]["name"]+"】")
 		self.cacheDao.saveCache({"messagetype":"leaveGuild","guildId":guildId,"uid":uid})
 		self.sendToUser(uid,{type:"leaveGuild",guildId : guildId,name:guildList[guildId]["name"]})
-		self.cancelGuildCityAllTeam(guildId,uid)
-		self.cancelGuildPKAllTeam(guildId,uid)
 		if(cb)
 			cb(true)
 	}
@@ -886,6 +889,10 @@ module.exports = function() {
 			return
 		}
 		self.redisDao.db.hgetall("guild:giftinfo:"+giftId,function(err,giftInfo) {
+			if(!giftInfo){
+				cb(false,"红包不存在")
+				return
+			}
 			if(giftInfo["uid_"+uid] !== undefined){
 				cb(false,"已领取")
 				return

@@ -1,409 +1,460 @@
-const main_name = "guild_pk"
+const main_name = "cross:guild_pk"
 const async = require("async")
 const guild_pk = require("../../../../config/gameCfg/guild_pk.json")
-const endTime= 19
+const guild_lv = require("../../../../config/gameCfg/guild_lv.json")
+const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+const openTime = {"3":1,"0":1}   //开启时间
+const fightTime = 5 //战斗开始时间
+const star_add = {
+	"1" : {amplify : -0.3,reduction : -0.3},
+	"2" : {amplify : -0.1,reduction : -0.1,self_maxHP_add : 0.3},
+	"3" : {amplify : 0.15,reduction : 0.15,self_maxHP_add : 0.3}
+}
 //跨服公会战
 module.exports = function() {
 	var self = this
-	//每日刷新
+	var pk_info = {}
+	//每日首次刷新
 	this.guildPKDayUpdate = function() {
-		var d = new Date()
-		var day = d.getDay()
-		var curDayStr = d.toDateString()
-		if(day == 0){
-			console.log("周日 开始检测跨服公会战")
-			self.redisDao.db.hget(main_name,"dayStr",function(err,data) {
-				if(data != curDayStr){
-					self.redisDao.db.hset(main_name,"dayStr",curDayStr)
+		console.log("guildPKDayUpdate!!!")
+		var day = (new Date()).getDay()
+		self.redisDao.db.hgetall(main_name,function(err,data) {
+			if(data){
+				pk_info = data
+				pk_info.guildList = JSON.parse(data.guildList)
+				pk_info.guildInfos = JSON.parse(data.guildInfos)
+				pk_info.parMap = JSON.parse(data.parMap)
+				pk_info.table = JSON.parse(data.table)
+				pk_info.open = Number(pk_info.open)
+			}else{
+				data = {}
+			}
+			if(data.dayStr != (new Date()).toDateString()){
+				if(pk_info.open){
+					//PK结算
+					self.guildPkSettle()
+				}else if(openTime[day]){
+					//判断开启
 					self.matchGuildPKRival()
 				}
-			})
-			self.redisDao.db.hget(main_name,"pkState",function(err,data) {
-				if(data != curDayStr){
-					d.setHours(endTime,0,0,0)
-					var dt = d.getTime() - Date.now()
-					if(dt < 10000)
-						dt = 10000
-					console.log("guildPKDayUpdate dt ",dt)
-					setTimeout(function(){
-						self.redisDao.db.hset(main_name,"pkState",curDayStr)
-						self.beginGuildPKTable()
-					},dt)
-				}
-			})
-		}
+			}
+		})
 	}
-	//匹配对手
+	//匹配公会
 	this.matchGuildPKRival = function() {
-		// console.log("matchGuildPKRival!!")
-		self.redisDao.db.del(main_name+":parMap")
-		self.redisDao.db.del(main_name+":table")
-		self.redisDao.db.del(main_name+":applyHistory")
-		self.redisDao.db.hgetall(main_name+":apply",function(err,list) {
-			console.log("公会PK获取报名列表",list)
-			self.redisDao.db.del(main_name+":apply")
-			if(list){
-				self.redisDao.db.hmset(main_name+":applyHistory",list)
-				var arr = []
-				for(var guildId in list){
-					arr.push(guildId)
-				}
-				arr.sort(function(){return Math.random() > 0.5?1:-1})
-				if(arr.length > 1){
-					console.log("报名公会大于1,开始比赛。总报名数: ",arr.length)
-					var curNum = 0
-					var map = {}
-					var table = {}
-					var tableIndex = 1
-					while(arr.length > curNum){
-						if(arr.length - curNum >= 2){
-							map[arr[curNum]] = tableIndex
-							map[arr[curNum+1]] = tableIndex
-							table[tableIndex] = JSON.stringify([arr[curNum],arr[curNum+1]])
-						}else{
-							var rand = (curNum + Math.ceil(Math.random() * (arr.length-1))) % arr.length
-							map[arr[curNum]] = tableIndex
-							table[tableIndex] = JSON.stringify([arr[curNum],arr[rand]])
-						}
-						tableIndex++
-						curNum += 2
-					}
-					console.log("生成对阵表",table)
-					self.redisDao.db.hmset(main_name+":parMap",map)	
-					self.redisDao.db.hmset(main_name+":table",table)
-				}else{
-					self.redisDao.db.del(main_name+":apply")
-					self.redisDao.db.del(main_name+":parMap")
-					self.redisDao.db.del(main_name+":table")
-				}
-			}
-		})
-	}
-	//战斗
-	this.beginGuildPKTable = function() {
-		console.log("beginGuildPKTable!!")
+		console.log("匹配公会")
 		async.waterfall([
 			function(next) {
-				//清除初始数据
-				self.redisDao.db.hgetall(main_name+":historyTable",function(err,table) {
-					if(table){
-						self.redisDao.db.del(main_name+":historyTable")
-						console.log("清除初始数据",table)
-						for(var tableIndex in table){
-							var list = JSON.parse(table[tableIndex])
-							self.redisDao.db.del(main_name+":baseInfo:"+tableIndex)
-							for(var path = 1;path <= 3;path++){
-								self.redisDao.db.del(main_name+":fightRecordList:"+tableIndex+":"+path)
-								self.redisDao.db.del(main_name+":simpleRecord:"+tableIndex+":"+path)
-							}
-							self.redisDao.db.hdel(main_name+":history",list[0])
-							self.redisDao.db.hdel(main_name+":history",list[1])
-						}
-					}
-					next()
-				})
-			},function(next) {
-				self.redisDao.db.del(main_name+":parMap")
-				self.redisDao.db.hgetall(main_name+":table",function(err,table) {
-					if(table){
-						self.redisDao.db.del(main_name+":table")
-						self.redisDao.db.hmset(main_name+":historyTable",table)
-						console.log("公会PK 存在对阵表 开始对阵",table)
-						var map = {}
-						for(var tableIndex in table){
-							var list = JSON.parse(table[tableIndex])
-							var npc = false
-							if(map[list[0]] || map[list[1]])
-								npc = true
-							map[list[0]] = tableIndex
-							map[list[1]] = tableIndex
-							self.guildPKFight(tableIndex,list[0],list[1],npc)
-						}
-					}else{
-						console.log("公会PK 无对阵表")
-					}
-				})
-			}
-		],function(err) {
-			console.log(err)
-		})
-	}
-	//单次对阵
-	this.guildPKFight = function(tableIndex,guildId1,guildId2,npc) {
-		console.log("guildPKFight",tableIndex,guildId1,guildId2)
-		var atkTeams = []
-		var defTeams = []
-		var atkList = []
-		var defList = []
-		var atkUids = []
-		var defUids = []
-		var atkDamageRank = {}
-		var defDamageRank = {}
-		var fightRecordList = {"1":[],"2":[],"3":[]}
-		var simpleRecord = {"1":[],"2":[],"3":[]}
-		var atkPathTeam = {"1":[],"2":[],"3":[]}
-		var defPathTeam = {"1":[],"2":[],"3":[]}
-		var winList = {"1":"def","2":"def","3":"def"}
-		var atkGuildLv = 1
-		var defGuildLv = 1
-		var atkGuildInfo = ""
-		var defGuildInfo = ""
-		var atkWinNum = 0
-		async.waterfall([
-			function(next) {
-				//获取进攻方队伍
-				self.redisDao.db.hgetall(main_name+":"+guildId1,function(err,data) {
-					self.redisDao.db.del(main_name+":"+guildId1)
-					for(var key in data){
-					    var strList = key.split("_")
-					    var info = {
-					    	uid : Number(strList[0]),
-					    	teamId : Number(strList[1]),
-					    	path : data[key]
-					    }
-					    atkList.push(info)
-					}
-					atkList.sort(function(){return Math.random() > 0.5?1:-1})
-					for(var i = 0;i < atkList.length;i++)
-						atkUids.push(atkList[i].uid)
-					next()
-				})
-			},
-			function(next) {
-				//获取攻方玩家信息
-				self.getPlayerInfoByUids([],atkUids,function(data) {
-					for(var i = 0;i < atkList.length;i++){
-						atkList[i]["info"] = data[i]
-					}
-					next()
-				})
-			},
-			function(next) {
-				//获取攻方队伍阵容
-				if(atkList.length){
-					var multiList = []
-					for(var i = 0;i < atkList.length;i++){
-						multiList.push(["hget","player:user:"+atkList[i]["uid"]+":guild_team",atkList[i]["teamId"]])
-					}
-					self.redisDao.multi(multiList,function(err,list) {
-						self.heroDao.getMultiHeroList(atkUids,list,function(flag,data) {
-							atkTeams = data
-							next()
-						})
-					})
-				}else{
-					next()
-				}
-			},
-			function(next) {
-				//获取防守方队伍
-				self.redisDao.db.hgetall(main_name+":"+guildId2,function(err,data) {
-					self.redisDao.db.del(main_name+":"+guildId2)
-					for(var key in data){
-					    var strList = key.split("_")
-					    var info = {
-					    	uid : Number(strList[0]),
-					    	teamId : Number(strList[1]),
-					    	path : data[key]
-					    }
-					    defList.push(info)
-					}
-					defList.sort(function(){return Math.random() > 0.5?1:-1})
-					for(var i = 0;i < defList.length;i++)
-						defUids.push(defList[i].uid)
-					next()
-				})
-			},
-			function(next) {
-				//获取防守玩家信息
-				self.getPlayerInfoByUids([],defUids,function(data) {
-					for(var i = 0;i < defList.length;i++){
-						defList[i]["info"] = data[i]
-					}
-					next()
-				})
-			},
-			function(next) {
-				//获取防守方队伍阵容
-				if(defList.length){
-					var multiList = []
-					for(var i = 0;i < defList.length;i++){
-						multiList.push(["hget","player:user:"+defList[i]["uid"]+":guild_team",defList[i]["teamId"]])
-					}
-					self.redisDao.multi(multiList,function(err,list) {
-						self.heroDao.getMultiHeroList(defUids,list,function(flag,data) {
-							defTeams = data
-							next()
-						})
-					})
-				}else{
-					next()
-				}
-			},
-			function(next) {
-				//开始对战
-				for(var i = 0;i < atkList.length;i++){
-					var path = atkList[i]["path"]
-					if(atkPathTeam[path]){
-						atkPathTeam[path].push({index : i,team : atkTeams[i]})
+				//旧数据清理
+				if(pk_info.guildList){
+					for(var i = 0;i < pk_info.guildList.length;i++){
+						self.redisDao.db.del(main_name+":"+pk_info.guildList[i])
+						self.redisDao.db.del(main_name+":star:"+pk_info.guildList[i])
+						self.redisDao.db.del(main_name+":team:"+pk_info.guildList[i])
+						self.redisDao.db.del(main_name+":atkRank:"+pk_info.guildList[i])
+						self.redisDao.db.del(main_name+":defRank:"+pk_info.guildList[i])
+						self.redisDao.db.del(main_name+":userInfo:"+pk_info.guildList[i])
+						for(var j = 0;j < 10;j++)
+							self.redisDao.db.del(main_name+":record:"+pk_info.guildList[i]+":"+j)
 					}
 				}
-				for(var i = 0;i < defList.length;i++){
-					var path = defList[i]["path"]
-					if(defPathTeam[path]){
-						defPathTeam[path].push({index : i,team : defTeams[i]})
-					}
-				}
-				// console.log("攻方三路",atkPathTeam)
-				// console.log("守方三路",defPathTeam)
+				pk_info = {}
+				self.redisDao.db.del(main_name)
+				self.redisDao.db.del(main_name+":play")
+				pk_info.dayStr = (new Date()).toDateString()
+				self.redisDao.db.hset(main_name,"dayStr",pk_info.dayStr)
 				next()
+			},
+			function(next) {
+				//获取报名公会
+				self.redisDao.db.hgetall("guild_pk:apply",function(err,list) {
+					console.log("guild_pk:apply",list)
+					self.redisDao.db.del("guild_pk:apply")
+					var arr = []
+					for(var guildId in list){
+						arr.push(guildId)
+					}
+					if(arr.length > 1){
+						pk_info.guildList = arr
+						self.redisDao.db.hset(main_name,"guildList",JSON.stringify(pk_info.guildList))
+						pk_info.open = 1
+						self.redisDao.db.hset(main_name,"open",pk_info.open)
+						next()
+					}else{
+						pk_info.open = 0
+						self.redisDao.db.hset(main_name,"open",pk_info.open)
+					}
+				})
 			},
 			function(next) {
 				//获取公会信息
-				self.redisDao.db.hget("guild:guildInfo:"+guildId1,"lv",function(err,data) {
-					atkGuildLv = Number(data) || 1
-					self.redisDao.db.hget("guild:guildInfo:"+guildId2,"lv",function(err,data) {
-						defGuildLv = Number(data) || 1
-						self.redisDao.db.hmget(main_name+":applyHistory",[guildId1,guildId2],function(err,list) {
-							atkGuildInfo = list[0]
-							defGuildInfo = list[1]
-							next()
-						})
+				var multiList = []
+				for(var i = 0;i < pk_info.guildList.length;i++){
+					multiList.push(["hgetall","guild:guildInfo:"+pk_info.guildList[i]])
+				}
+				self.redisDao.multi(multiList,function(err,list) {
+					pk_info.guildInfos = {}
+					for(var i = 0;i < list.length;i++){
+						list[i]["exp"] = guild_lv[list[i]["lv"]]["exp"] + Number(list[i]["exp"])
+						//随机波动
+						list[i]["exp"] += Math.floor(list[i]["exp"] * Math.random() * 0.1)
+						
+					}
+					//排序
+					list.sort(function(a,b) {
+						return a.exp < b.exp ? 1 : -1
+					})
+					if(list.length % 2 == 1){
+						list.pop()
+					}
+					pk_info.parMap = {}
+					pk_info.table = {}
+					var tableIndex = 1
+					for(var i = 0;i < list.length;i += 2){
+						if(list[i+1]){
+							//存在目标
+							pk_info.parMap[list[i]["id"]] = list[i+1]["id"]
+							pk_info.parMap[list[i+1]["id"]] = list[i]["id"]
+							pk_info.table[tableIndex] = [list[i]["id"],list[i+1]["id"]]
+						}
+						tableIndex++
+					}
+					self.redisDao.db.hset(main_name,"parMap",JSON.stringify(pk_info.parMap))
+					self.redisDao.db.hset(main_name,"table",JSON.stringify(pk_info.table))
+					for(var i = 0;i < list.length;i++){
+						pk_info.guildInfos[list[i]["id"]] = list[i]
+						self.redisDao.db.hset(main_name,"guildInfos",JSON.stringify(pk_info.guildInfos))
+						self.initGuildPKFight(list[i]["id"])
+					}
+				})
+			}
+		],function(err) {
+			console.error(err)
+		})
+	}
+	//初始化公会出战列表
+	this.initGuildPKFight = function(guildId) {
+		self.redisDao.db.hset(main_name+":star:"+guildId,"total",0)
+		self.redisDao.db.hgetall("guild:contributions:"+guildId,function(err,data) {
+			if(!data)
+				data = {}
+			var multiList = []
+			var guildUsers = []
+			for(uid in data){
+				guildUsers.push({uid : uid})
+				multiList.push(["hgetall","player:user:"+uid+":playerInfo"])
+			}
+			self.redisDao.multi(multiList,function(err,list) {
+				for(var i = 0;i < guildUsers.length;i++){
+					guildUsers[i]["uid"] = list[i]["uid"]
+					guildUsers[i]["name"] = list[i]["name"]
+					guildUsers[i]["head"] = list[i]["head"]
+					guildUsers[i]["figure"] = list[i]["figure"]
+					guildUsers[i]["level"] = list[i]["level"]
+					guildUsers[i]["CE"] = Number(list[i]["CE"])
+				}
+				guildUsers.sort(function(a,b) {
+					return a["CE"] < b["CE"] ? 1 : -1
+				})
+				for(var i = 0;i < 10;i++){
+					self.initGuildPKUser(guildId,guildUsers[i],i)
+				}
+			})
+		})
+	}
+	//初始化公会出战玩家
+	this.initGuildPKUser = function(guildId,userInfo,index) {
+		self.redisDao.db.hset(main_name+":star:"+guildId,index,0)
+		if(userInfo){
+			delete userInfo["CE"]
+			//玩家存在
+			self.getDefendTeam(userInfo.uid,function(team) {
+				self.redisDao.db.hset(main_name+":"+guildId,"seat_"+index,JSON.stringify(userInfo))
+				self.redisDao.db.hset(main_name+":team:"+guildId,index,JSON.stringify(team))
+			})
+		}else{
+			//填充机器人
+			var guildLv = pk_info.guildInfos[guildId]["lv"]
+			userInfo = {
+				uid : 0,
+				name : "精锐战士",
+				head : default_cfg["first_hero"]["value"],
+				figure : default_cfg["first_hero"]["value"],
+				level : guild_lv[guildLv]["level"]
+			}
+			self.redisDao.db.hset(main_name+":"+guildId,"seat_"+index,JSON.stringify(userInfo))
+			self.redisDao.db.hset(main_name+":team:"+guildId,index,guild_pk[guildLv]["npc_team"])
+		}
+	}
+	//获取PK信息  双方阵容  排行榜   总星数
+	this.getGuildPKInfo = function(crossUid,cb) {
+		var uid = self.players[crossUid]["uid"]
+		var sid = self.players[crossUid]["oriId"]
+		var gid = self.players[crossUid]["playerInfo"]["gid"]
+		if(!pk_info.guildInfos){
+			cb(false,"玩法未开启")
+			return
+		}
+		var targetGuildId = pk_info.parMap[gid]
+		if(!targetGuildId || !pk_info.guildInfos[gid]){
+			cb(false,"未参与该玩法")
+			return
+		}
+		var info = {}
+		info.open = pk_info.open
+		info.myGuild = {info : pk_info.guildInfos[gid]}
+		info.targetGuild = {info : pk_info.guildInfos[targetGuildId]}
+		async.waterfall([
+			function(next) {
+				//获取挑战次数
+				self.redisDao.db.hget(main_name+":play",crossUid,function(err,count) {
+					info.count = Number(count) || 0
+					next()
+				})
+			},
+			function(next) {
+				//获取我方出战信息
+				var multiList = []
+				for(var i = 0;i < 10;i++){
+					multiList.push(["hget",main_name+":"+gid,"seat_"+i])
+				}
+				self.redisDao.multi(multiList,function(err,list) {
+					info.myGuild.seats = list
+					next()
+				})
+			},
+			function(next) {
+				//获取敌方出战信息
+				var multiList = []
+				for(var i = 0;i < 10;i++){
+					multiList.push(["hget",main_name+":"+targetGuildId,"seat_"+i])
+				}
+				self.redisDao.multi(multiList,function(err,list) {
+					info.targetGuild.seats = list
+					next()
+				})
+			},
+			function(next) {
+				//获取我方星数
+				self.redisDao.db.hgetall(main_name+":star:"+gid,function(err,list) {
+					info.myGuild.stars = list
+					next()
+				})
+			},
+			function(next) {
+				//获取敌方星数
+				self.redisDao.db.hgetall(main_name+":star:"+targetGuildId,function(err,list) {
+					info.targetGuild.stars = list
+					next()
+				})
+			},
+			function(next) {
+				//获取我方排行榜
+				self.redisDao.db.hgetall(main_name+":atkRank:"+gid,function(err,list) {
+					info.myGuild.atkRank = list
+					self.redisDao.db.hgetall(main_name+":defRank:"+gid,function(err,list) {
+						info.myGuild.defRank = list
+						next()
 					})
 				})
 			},
 			function(next) {
-				//战斗
-				for(var path = 1;path <= 3;path++){
-					var atkSurplus = [1,1,1,1,1,1]
-					var defSurplus = [1,1,1,1,1,1]
-					var atkNum = 0
-					var defNum = 0
-					var atkWin = false
-					if(atkPathTeam[path].length)
-						atkWin = true
-					while(atkPathTeam[path][atkNum] && defPathTeam[path][defNum]){
-						// console.log("atkNum",atkNum,"defNum",defNum)
-						var atkTeam = atkPathTeam[path][atkNum]["team"]
-						var defTeam = defPathTeam[path][defNum]["team"]
-						for(var i = 0;i < 6;i++){
-							if(atkTeam[i])
-								atkTeam[i]["surplus_health"] = atkSurplus[i]
-							if(defTeam[i])
-								defTeam[i]["surplus_health"] = defSurplus[i]
-						}
-						var seededNum = Date.now()
-						var record = {atkTeam:atkTeam,defTeam,defTeam,seededNum:seededNum}
-						var atkIndex = atkPathTeam[path][atkNum]["index"]
-						var defIndex = defPathTeam[path][defNum]["index"]
-						record.atkIndex = atkIndex
-						record.defIndex = defIndex
-						// console.log("atkTeam",atkTeam,"defTeam",defTeam)
-						record.winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-						var overInfo = self.fightContorl.getOverInfo()
-				    	var atkDamage = overInfo.atkDamage
-				    	var defDamage = overInfo.defDamage
-				    	if(atkList[atkIndex] && atkList[atkIndex]["uid"]){
-					    	if(!atkDamageRank[atkList[atkIndex]["uid"]])
-					    		atkDamageRank[atkList[atkIndex]["uid"]] = 0
-							atkDamageRank[atkList[atkIndex]["uid"]] += atkDamage
-				    	}
-				    	if(defList[defIndex] && defList[defIndex]["uid"]){
-					    	if(!defDamageRank[defList[defIndex]["uid"]])
-					    		defDamageRank[defList[defIndex]["uid"]] = 0
-							defDamageRank[defList[defIndex]["uid"]] += defDamage
-				    	}
-						atkSurplus = [1,1,1,1,1,1]
-						defSurplus = [1,1,1,1,1,1]
-						if(record.winFlag){
-							//攻方赢
-							for(var i = 0;i < 6;i++){
-								if(overInfo.atkTeam[i])
-									atkSurplus[i] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
-							}
-							defNum++
-							atkWin = true
-						}else{
-							//守方赢
-							for(var i = 0;i < 6;i++){
-								if(overInfo.defTeam[i])
-									defSurplus[i] = overInfo.defTeam[i].hp/overInfo.defTeam[i].maxHP
-							}
-							atkNum++
-							atkWin = false
-						}
-						fightRecordList[path].push(JSON.stringify(record))
-						simpleRecord[path].push(JSON.stringify({atkIndex : record.atkIndex,defIndex : record.defIndex,winFlag : record.winFlag}))
-						if(atkNum >= 200 || defNum >= 200){
-							break
-						}
-					}
-					if(fightRecordList[path].length)
-						self.redisDao.db.rpush(main_name+":fightRecordList:"+tableIndex+":"+path,fightRecordList[path])
-					if(simpleRecord[path].length)
-						self.redisDao.db.rpush(main_name+":simpleRecord:"+tableIndex+":"+path,simpleRecord[path])
-					if(atkWin){
-						winList[path] = "atk"
-						atkWinNum++
-					}
-				}
-				//记录数据 todo公会信息
-				var baseInfo = {
-					tableIndex : tableIndex,
-					atkDamageRank : atkDamageRank,
-					defDamageRank : defDamageRank,
-					atkGuildInfo : atkGuildInfo,
-					defGuildInfo : defGuildInfo,
-					atkGuild : guildId1,
-					defGuild : guildId2,
-					atkList : atkList,
-					defList : defList,
-					winList : winList,
-					time : Date.now()
-				}
-				self.redisDao.db.set(main_name+":baseInfo:"+tableIndex,JSON.stringify(baseInfo))
-				next()
+				//获取敌方排行榜
+				self.redisDao.db.hgetall(main_name+":atkRank:"+targetGuildId,function(err,list) {
+					info.targetGuild.atkRank = list
+					self.redisDao.db.hgetall(main_name+":defRank:"+targetGuildId,function(err,list) {
+						info.targetGuild.defRank = list
+						next()
+					})
+				})
 			},
 			function(next) {
-				//发放奖励
-				// console.log("winList",winList,atkWinNum)
-				var atkMap = {}
-				var defMap = {}
-				for(var i = 0;i < atkUids.length;i++)
-					atkMap[atkUids[i]] = 1
-				for(var i = 0;i < defUids.length;i++)
-					defMap[defUids[i]] = 1
-				if(atkWinNum >= 2){
-					//攻方赢
-					for(var uid in atkMap){
-						self.sendMailByUid(uid,"公会会武获胜奖","恭喜您的公会在本次公会会武活动中大获全胜!",guild_pk[atkGuildLv]["win"])
-						self.sendMailByUid(uid,"公会会武参与奖","您参与本次公会会武活动获得了参与奖励。",guild_pk[atkGuildLv]["play"])
-					}
-					if(!npc){
-						for(var uid in defMap){
-							self.sendMailByUid(uid,"公会会武惜败","您的公会在本次会武中惜败于对手。",guild_pk[defGuildLv]["lose"])
-							self.sendMailByUid(uid,"公会会武参与奖","您参与本次公会会武活动获得了参与奖励。",guild_pk[defGuildLv]["play"])
-						}
-					}
-				}else{
-					//守方赢
-					for(var uid in atkMap){
-						self.sendMailByUid(uid,"公会会武惜败","您的公会在本次会武中惜败于对手。",guild_pk[atkGuildLv]["lose"])
-						self.sendMailByUid(uid,"公会会武参与奖","您参与本次公会会武活动获得了参与奖励。",guild_pk[atkGuildLv]["play"])
-					}
-					if(!npc){
-						for(var uid in defMap){
-							self.sendMailByUid(uid,"公会会武获胜奖","恭喜您的公会在本次公会会武活动中大获全胜!",guild_pk[defGuildLv]["win"])
-							self.sendMailByUid(uid,"公会会武参与奖","您参与本次公会会武活动获得了参与奖励。",guild_pk[defGuildLv]["play"])
-						}
-					}
-				}
-				self.redisDao.db.hset(main_name+":history",guildId1,tableIndex)
-				if(!npc)
-					self.redisDao.db.hset(main_name+":history",guildId2,tableIndex)
+				//获取我方用户数据
+				self.redisDao.db.hgetall(main_name+":userInfo:"+gid,function(err,list) {
+					info.myGuild.userInfos = list
+					next()
+				})
+			},
+			function(next) {
+				//获取敌方用户数据
+				self.redisDao.db.hgetall(main_name+":userInfo:"+targetGuildId,function(err,list) {
+					info.targetGuild.userInfos = list
+					next()
+				})
+			},
+			function(next) {
+				//获取排行榜
+				cb(true,info)
 			}
 		],function(err) {
-			console.error(err)
+			cb(false,err)
+		})
+	}
+	//获取挑战记录
+	this.getGuildPKRecord = function(crossUid,guildId,index,cb) {
+		var info = {}
+		self.redisDao.db.hget(main_name+":team:"+guildId,index,function(err,defTeam) {
+			if(!defTeam){
+				cb(false,"玩家不存在")
+			}else{
+				info.defTeam = defTeam
+				self.redisDao.db.lrange(main_name+":record:"+guildId+":"+index,0,-1,function(err,list) {
+					info.list = list || []
+					cb(true,info)
+				})
+			}
+		})
+	}
+	//挑战对手
+	this.challengeGuildPk = function(crossUid,index,star,cb){
+		var uid = self.players[crossUid]["uid"]
+		var name = self.players[crossUid]["playerInfo"]["name"]
+		var head = self.players[crossUid]["playerInfo"]["head"]
+		var figure = self.players[crossUid]["playerInfo"]["figure"]
+		var sid = self.players[crossUid]["oriId"]
+		var gid = self.players[crossUid]["playerInfo"]["gid"]
+		if((new Date()).getHours() < fightTime){
+			cb(false,fightTime+"点之后可以挑战")
+			return
+		}
+		if(!Number.isInteger(index) || index < 0 || index > 9){
+			cb(false,"index error "+index)
+		}
+		if(!pk_info.open || !pk_info.guildInfos){
+			cb(false,"玩法未开启")
+			return
+		}
+		var targetGuildId = pk_info.parMap[gid]
+		if(!targetGuildId || !pk_info.guildInfos[gid]){
+			cb(false,"未参与该玩法")
+			return
+		}
+		var guildLv = pk_info.guildInfos[gid]["lv"]
+		if(!star_add[star]){
+			cb(false,"star error "+star)
+			return
+		}
+		var fightInfo = {}
+		fightInfo.star = star
+		async.waterfall([
+			function(next) {
+				//获取对手信息
+				fightInfo.atkInfo = {uid:uid,name:name,head:head,figure:figure}
+				self.redisDao.db.hget(main_name+":"+targetGuildId,"seat_"+index,function(err,defInfo) {
+					fightInfo.defInfo = JSON.parse(defInfo)
+					next()
+				})
+			},
+			function(next) {
+				//获取对手星数
+				self.redisDao.db.hget(main_name+":star:"+targetGuildId,index,function(err,curStar) {
+					curStar = Number(curStar) || 0
+					if(curStar >= 3 || curStar >= star){
+						cb(false,"该星级已获胜")
+						return
+					}
+					fightInfo.oldStar = curStar
+					next()
+				})
+			},
+			function(next) {
+				//获取对手阵容
+				self.redisDao.db.hget(main_name+":team:"+targetGuildId,index,function(err,defTeam) {
+					if(!defTeam){
+						cb(false,"玩家不存在")
+					}else{
+						fightInfo.atkTeam = self.userTeam(crossUid)
+						fightInfo.defTeam = JSON.parse(defTeam)
+						next()
+					}
+				})
+			},
+			function(next) {
+				//获取挑战次数
+				self.redisDao.db.hget(main_name+":play",crossUid,function(err,count) {
+					count = Number(count) || 0
+					if(count >= 100){
+						cb(false,"挑战次数已满")
+						return
+					}
+					self.redisDao.db.hincrby(main_name+":play",crossUid,1)
+					next()
+				})
+			},
+			function(next) {
+				//挑战结算
+				fightInfo.seededNum = Date.now()
+				for(var i = 0;i < 6;i++){
+					if(fightInfo.defTeam[i]){
+						Object.assign(fightInfo.defTeam[i],star_add[star])
+					}
+				}
+				fightInfo.winFlag = self.fightContorl.beginFight(fightInfo.atkTeam,fightInfo.defTeam,{seededNum : fightInfo.seededNum})
+				self.redisDao.db.rpush(main_name+":record:"+targetGuildId+":"+index,JSON.stringify(fightInfo))
+				//保存进攻方用户数据
+				self.redisDao.db.hset(main_name+":userInfo:"+gid,fightInfo.atkInfo.uid,JSON.stringify(fightInfo.atkInfo))
+				if(fightInfo.defInfo.uid){
+					//保存进攻方用户数据
+					self.redisDao.db.hset(main_name+":userInfo:"+targetGuildId,fightInfo.defInfo.uid,JSON.stringify(fightInfo.defInfo))
+				}
+				if(fightInfo.winFlag){
+					self.redisDao.db.hincrby(main_name+":star:"+gid,"total",fightInfo.star - fightInfo.oldStar)
+					self.redisDao.db.hincrby(main_name+":atkRank:"+gid,uid,fightInfo.star - fightInfo.oldStar)
+					self.redisDao.db.hset(main_name+":star:"+targetGuildId,index,fightInfo.star)
+					//发放奖励
+					self.addItemStr(crossUid,guild_pk[guildLv]["star_"+star],1,"公会PK",function(flag,awardList) {
+						var info = {
+							awardList : awardList,
+							fightInfo : fightInfo
+						}
+						cb(true,info)
+					})
+				}else{
+					if(fightInfo.defInfo.uid){
+						self.redisDao.db.hincrby(main_name+":defRank:"+targetGuildId,fightInfo.defInfo.uid,1)
+					}
+					cb(true,{fightInfo:fightInfo})
+				}
+			},
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//比赛结算
+	this.guildPkSettle = function() {
+		if(pk_info.open && pk_info.table){
+			pk_info.open = 0
+			self.redisDao.db.hset(main_name,"open",pk_info.open)
+			for(var  i in pk_info.table){
+				self.guildPkSettleSingle(pk_info.table[i][0],pk_info.table[i][1])
+			}
+		}
+	}
+	//单组公会胜利判断
+	this.guildPkSettleSingle = function(guildId1,guildId2) {
+		var star1 = 0
+		var star2 = 0
+		var guildLv1 = pk_info.guildInfos[guildId1]["lv"]
+		var guildLv2 = pk_info.guildInfos[guildId2]["lv"]
+		self.redisDao.db.hget(main_name+":star:"+guildId1,"total",function(err,data) {
+			star1 = Number(data) || 0
+			self.redisDao.db.hget(main_name+":star:"+guildId2,"total",function(err,data) {
+				star2 = Number(data) || 0
+				if(star1 >= 30 || star1 > star2){
+					//公会1获胜
+					self.sendMailByGuildId(guildId1,"会武获胜","您在本次会武活动中表现优异,成功获得胜利!",guild_pk[guildLv1]["win_award"])
+				}else{
+					//公会1失败
+					self.sendMailByGuildId(guildId1,"会武失败","您在本次会武活动中表现出色,但仍然遗憾落败,请再接再厉!",guild_pk[guildLv1]["lose_award"])
+				}
+				if(star2 >= 30 || star2 > star1){
+					//公会2获胜
+					self.sendMailByGuildId(guildId2,"会武获胜","您在本次会武活动中表现出色,成功获得胜利!",guild_pk[guildLv2]["win_award"])
+				}else{
+					//公会2失败
+					self.sendMailByGuildId(guildId2,"会武失败","您在本次会武活动中表现出色,但仍然遗憾落败,请再接再厉!",guild_pk[guildLv2]["lose_award"])
+				}
+			})
 		})
 	}
 }
