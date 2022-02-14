@@ -1639,8 +1639,8 @@
         });
       }
       //领取首充礼包
-      var gainFirstRechargeAward = function() {
-        pomelo.request("area.activityHandler.gainFirstRechargeAward", {}, function(data) {
+      var gainFirstRechargeAward = function(type,index) {
+        pomelo.request("area.activityHandler.gainFirstRechargeAward", {type:type,index:index}, function(data) {
             console.log(data);
         });
       }
