@@ -373,7 +373,7 @@ module.exports = function() {
 				//获取挑战次数
 				self.redisDao.db.hget(main_name+":play",crossUid,function(err,count) {
 					count = Number(count) || 0
-					if(count >= 100){
+					if(count >= 2){
 						cb(false,"挑战次数已满")
 						return
 					}
