@@ -18,8 +18,7 @@
     </script> 
     <script type="text/javascript">
       var pomelo = window.pomelo;
-      var host = "106.55.19.184";
-      host = "127.0.0.1"
+      var host = "127.0.0.1";
       // host = "192.168.3.200"
       // host = "47.107.48.79"
       var queryEntry = function(callback) {
@@ -84,26 +83,6 @@
           });
         })
       }
-      var VNGzoneEntry = function(app_key,token) {
-        queryEntry(function(host,port) {
-          pomelo.init({
-            host: host,
-            port: port,
-            log: true
-          },function() {
-            pomelo.request("connector.entryHandler.VNGzoneEntry",{app_key:app_key,token : token}, function(data) {
-                console.log(data);
-                if(data.flag){
-                  pomelo.request("connector.entryHandler.tokenLogin",{unionid : data.unionid,token:data.token}, function(data) {
-                      console.log(data);
-                  });
-                }else{
-                  //todo  登陆失败
-                }
-            });
-          });
-        })
-      }
       pomelo.on("close",function(reason) {
         console.log("close",reason)
       })
@@ -124,18 +103,70 @@
             console.log(data);
         });
       }
-      //gzone_order测试支付
-      var gzone_order = function() {
-        pomelo.request("admin.adminHandler.gzone_order", {}, function(data) {
+      //===============新公会PK=========//
+      // 报名PK
+      var applyGuildPKRival = function() {
+        pomelo.request("cross.guildPkHandler.applyGuildPKRival", {}, function(data) {
             console.log(data);
         });
       }
-      //点票支付
-      var dianpiao_recharge = function(pay_id) {
-        pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id}, function(data) {
+      // 匹配公会
+      var matchGuildPKRival = function() {
+        pomelo.request("cross.guildPkHandler.matchGuildPKRival", {}, function(data) {
             console.log(data);
         });
       }
+      // 结算PK
+      var guildPkSettle = function() {
+        pomelo.request("cross.guildPkHandler.guildPkSettle", {}, function(data) {
+            console.log(data);
+        });
+      }
+      
+      // 获取PK信息
+      var getGuildPKInfo = function() {
+        pomelo.request("cross.guildPkHandler.getGuildPKInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 获取挑战记录
+      var getGuildPKRecord = function(guildId,index) {
+        pomelo.request("cross.guildPkHandler.getGuildPKRecord", {guildId:guildId,index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      // 挑战对手
+      var challengeGuildPk = function(index,star) {
+        pomelo.request("cross.guildPkHandler.challengeGuildPk", {index:index,star:star}, function(data) {
+            console.log(data);
+        });
+      }
+      //============新公会攻城战=========//
+      // 城池BOSS刷新
+      var createGuildCityBoss = function() {
+        pomelo.request("area.guildHandler.createGuildCityBoss", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 获取攻城战信息
+      var getGuildCityBossData = function() {
+        pomelo.request("area.guildHandler.getGuildCityBossData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 挑战攻城战BOSS
+      var challengeGuildCityBoss = function(index) {
+        pomelo.request("area.guildHandler.challengeGuildCityBoss", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      // 获取城池信息(个人排行榜,公会排行榜)
+      var getGuildCityBossInfo = function(index) {
+        pomelo.request("area.guildHandler.getGuildCityBossInfo", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+
       //测试基准战力
       var testStandardTeam = function(list,dl,lv) {
         pomelo.request("area.normalHandler.testStandardTeam", {list:list,dl:dl,lv:lv}, function(data) {
@@ -171,6 +202,12 @@
         pomelo.request("area.heroHandler.upgradeHeroBook",{id:id}, function(data) {
             console.log(data);
         })
+      }
+      //升级阵营加成
+      var upgradCampAtt = function(camp,cb) {
+        pomelo.request("area.tttHandler.upgradCampAtt", {camp:camp}, function(data) {
+            console.log(data);
+        });
       }
       //============战法=========//
       //战法列表
@@ -573,54 +610,54 @@
         });
       }
       //==============公会PK==========//
-      //获取PK数据
-      var getGuildPKData = function() {
-        pomelo.request("area.guildHandler.getGuildPKData", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //获取单路数据
-      var getGuildPKRecord = function(path) {
-        pomelo.request("area.guildHandler.getGuildPKRecord", {path:path}, function(data) {
-            console.log(data);
-        });
-      }
-      //获取战斗数据
-      var getGuildPKFight = function(path,index) {
-        pomelo.request("area.guildHandler.getGuildPKFight", {path:path,index:index}, function(data) {
-            console.log(data);
-        });
-      }
-      //报名
-      var applyGuildPK = function() {
-        pomelo.request("area.guildHandler.applyGuildPK", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //派遣队伍
-      var sendGuildPKTeam = function(teamId,path) {
-        pomelo.request("area.guildHandler.sendGuildPKTeam", {teamId:teamId,path:path}, function(data) {
-            console.log(data);
-        });
-      }
-      //撤回队伍
-      var cancelGuildPKTeam = function(teamId) {
-        pomelo.request("area.guildHandler.cancelGuildPKTeam", {teamId:teamId}, function(data) {
-            console.log(data);
-        });
-      }
-      //公会PK匹配
-      var matchGuildPKRival = function() {
-        pomelo.request("cross.crossHandler.matchGuildPKRival", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //公会PK战斗
-      var beginGuildPKTable = function() {
-        pomelo.request("cross.crossHandler.beginGuildPKTable", {}, function(data) {
-            console.log(data);
-        });
-      }
+      // //获取PK数据
+      // var getGuildPKData = function() {
+      //   pomelo.request("area.guildHandler.getGuildPKData", {}, function(data) {
+      //       console.log(data);
+      //   });
+      // }
+      // //获取单路数据
+      // var getGuildPKRecord = function(path) {
+      //   pomelo.request("area.guildHandler.getGuildPKRecord", {path:path}, function(data) {
+      //       console.log(data);
+      //   });
+      // }
+      // //获取战斗数据
+      // var getGuildPKFight = function(path,index) {
+      //   pomelo.request("area.guildHandler.getGuildPKFight", {path:path,index:index}, function(data) {
+      //       console.log(data);
+      //   });
+      // }
+      // //报名
+      // var applyGuildPK = function() {
+      //   pomelo.request("area.guildHandler.applyGuildPK", {}, function(data) {
+      //       console.log(data);
+      //   });
+      // }
+      // //派遣队伍
+      // var sendGuildPKTeam = function(teamId,path) {
+      //   pomelo.request("area.guildHandler.sendGuildPKTeam", {teamId:teamId,path:path}, function(data) {
+      //       console.log(data);
+      //   });
+      // }
+      // //撤回队伍
+      // var cancelGuildPKTeam = function(teamId) {
+      //   pomelo.request("area.guildHandler.cancelGuildPKTeam", {teamId:teamId}, function(data) {
+      //       console.log(data);
+      //   });
+      // }
+      // //公会PK匹配
+      // var matchGuildPKRival = function() {
+      //   pomelo.request("cross.crossHandler.matchGuildPKRival", {}, function(data) {
+      //       console.log(data);
+      //   });
+      // }
+      // //公会PK战斗
+      // var beginGuildPKTable = function() {
+      //   pomelo.request("cross.crossHandler.beginGuildPKTable", {}, function(data) {
+      //       console.log(data);
+      //   });
+      // }
       //==============公会攻城战==========//
       //报名城池
       var applyGuildCity = function(cityId) {
@@ -1213,18 +1250,6 @@
       //挑战魔物入侵
       var challengeInvade = function() {
         pomelo.request("area.activityHandler.challengeInvade", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //开启无限资源
-      var openWuxian = function(wuxianId) {
-        pomelo.request("area.activityHandler.openWuxian", {wuxianId:wuxianId}, function(data) {
-            console.log(data);
-        });
-      }
-      //开启累充无限资源
-      var openWuxianByRmb = function(wuxianId) {
-        pomelo.request("area.activityHandler.openWuxianByRmb", {wuxianId:wuxianId}, function(data) {
             console.log(data);
         });
       }
@@ -3082,29 +3107,17 @@
     </div>
     <div class="g-button">
       攻城战 : 
-      <input id="test" type="button" value="报名城池" onclick="applyGuildCity(1)"/>
-      <input id="test" type="button" value="组建队伍" onclick="buildGuildTeam()"/>
-      <input id="test" type="button" value="队伍列表" onclick="getGuildTeam()"/>
-      <input id="test" type="button" value="派遣队伍" onclick="sendGuildCityTeam(1,0)"/>
-      <input id="test" type="button" value="取消队伍" onclick="cancelGuildCityTeam(0)"/>
-      <input id="test" type="button" value="开始攻城" onclick="guildCityBeginFight(1)"/>
-      <input id="test" type="button" value="单城攻城" onclick="guildOneCityFight(1)"/>
-      <input id="test" type="button" value="攻城战数据" onclick="getGuildCityData()"/>
-      <input id="test" type="button" value="城池数据" onclick="getGuildCityRecord(1)"/>
-      <input id="test" type="button" value="战斗数据" onclick="getGuildCityFight(1,0)"/>
-      <input id="test" type="button" value="每日奖励" onclick="gainGuildCityAward()"/>
+      <input id="test" type="button" value="城池刷新" onclick="createGuildCityBoss()"/>
+      <input id="test" type="button" value="攻城信息" onclick="getGuildCityBossData()"/>
+      <input id="test" type="button" value="挑战BOSS" onclick="challengeGuildCityBoss(1)"/>
+      <input id="test" type="button" value="获取城池信息" onclick="getGuildCityBossInfo(1)"/>
     </div>
     <div class="g-button">
       公会PK : 
-      <input id="test" type="button" value="PK数据" onclick="getGuildPKData()"/>
-      <input id="test" type="button" value="报名" onclick="applyGuildPK()"/>
-      <input id="test" type="button" value="派遣队伍" onclick="sendGuildPKTeam(0,1)"/>
-      <input id="test" type="button" value="取消队伍" onclick="cancelGuildPKTeam(0)"/>
+      <input id="test" type="button" value="报名" onclick="applyGuildPKRival()"/>
       <input id="test" type="button" value="开始匹配" onclick="matchGuildPKRival()"/>
-      <input id="test" type="button" value="开始战斗" onclick="beginGuildPKTable()"/>
-      <input id="test" type="button" value="上路数据" onclick="getGuildPKRecord(1)"/>
-      <input id="test" type="button" value="中路数据" onclick="getGuildPKRecord(2)"/>
-      <input id="test" type="button" value="下路数据" onclick="getGuildPKRecord(3)"/>
+      <input id="test" type="button" value="获取PK信息" onclick="getGuildPKInfo()"/>
+      <input id="test" type="button" value="结算PK" onclick="guildPkSettle()"/>
     </div>
     <div class="g-button">
       沙盘演武 : 

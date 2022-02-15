@@ -303,51 +303,51 @@ guildHandler.prototype.upForAuction = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
-//报名城池
-guildHandler.prototype.applyGuildCity = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var cityId = msg.cityId
-  this.areaManager.areaMap[areaId].applyGuildCity(uid,cityId,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//组建队伍
-guildHandler.prototype.buildGuildTeam = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var hIds = msg.hIds
-  this.areaManager.areaMap[areaId].buildGuildTeam(uid,hIds,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//队伍列表
-guildHandler.prototype.getGuildTeam = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getGuildTeam(uid,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//派遣队伍
-guildHandler.prototype.sendGuildCityTeam = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var cityId = msg.cityId
-  var teamId = msg.teamId
-  this.areaManager.areaMap[areaId].sendGuildCityTeam(uid,cityId,teamId,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//撤回队伍
-guildHandler.prototype.cancelGuildCityTeam = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var teamId = msg.teamId
-  this.areaManager.areaMap[areaId].cancelGuildCityTeam(uid,teamId,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
+// //报名城池
+// guildHandler.prototype.applyGuildCity = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var cityId = msg.cityId
+//   this.areaManager.areaMap[areaId].applyGuildCity(uid,cityId,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //组建队伍
+// guildHandler.prototype.buildGuildTeam = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var hIds = msg.hIds
+//   this.areaManager.areaMap[areaId].buildGuildTeam(uid,hIds,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //队伍列表
+// guildHandler.prototype.getGuildTeam = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   this.areaManager.areaMap[areaId].getGuildTeam(uid,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //派遣队伍
+// guildHandler.prototype.sendGuildCityTeam = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var cityId = msg.cityId
+//   var teamId = msg.teamId
+//   this.areaManager.areaMap[areaId].sendGuildCityTeam(uid,cityId,teamId,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //撤回队伍
+// guildHandler.prototype.cancelGuildCityTeam = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var teamId = msg.teamId
+//   this.areaManager.areaMap[areaId].cancelGuildCityTeam(uid,teamId,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
 //城池对决
 // guildHandler.prototype.guildCityBeginFight = function(msg, session, next) {
 //   var uid = session.uid
@@ -364,92 +364,125 @@ guildHandler.prototype.cancelGuildCityTeam = function(msg, session, next) {
 //   next(null,{flag:true})
 // }
 
-//获取攻城战数据
-guildHandler.prototype.getGuildCityData = function(msg, session, next) {
+// //获取攻城战数据
+// guildHandler.prototype.getGuildCityData = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   this.areaManager.areaMap[areaId].getGuildCityData(uid,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //获取城池数据
+// guildHandler.prototype.getGuildCityRecord = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var cityId = msg.cityId
+//   this.areaManager.areaMap[areaId].getGuildCityRecord(uid,cityId,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //获取战斗数据
+// guildHandler.prototype.getGuildCityFight = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var cityId = msg.cityId
+//   var index = msg.index
+//   this.areaManager.areaMap[areaId].getGuildCityFight(uid,cityId,index,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //领取每日奖励
+// guildHandler.prototype.gainGuildCityAward = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   this.areaManager.areaMap[areaId].gainGuildCityAward(uid,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //获取PK数据
+// guildHandler.prototype.getGuildPKData = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   this.areaManager.areaMap[areaId].getGuildPKData(uid,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //获取单路数据
+// guildHandler.prototype.getGuildPKRecord = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var path = msg.path
+//   this.areaManager.areaMap[areaId].getGuildPKRecord(uid,path,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //获取战斗数据
+// guildHandler.prototype.getGuildPKFight = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var path = msg.path
+//   var index = msg.index
+//   this.areaManager.areaMap[areaId].getGuildPKFight(uid,path,index,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //报名
+// guildHandler.prototype.applyGuildPK = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   this.areaManager.areaMap[areaId].applyGuildPK(uid,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //派遣队伍
+// guildHandler.prototype.sendGuildPKTeam = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var teamId = msg.teamId
+//   var path = msg.path
+//   this.areaManager.areaMap[areaId].sendGuildPKTeam(uid,teamId,path,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// //撤回队伍
+// guildHandler.prototype.cancelGuildPKTeam = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   var teamId = msg.teamId
+//   this.areaManager.areaMap[areaId].cancelGuildPKTeam(uid,teamId,function(flag,data) {
+//     next(null,{flag:flag,data:data})
+//   })
+// }
+// 城池BOSS刷新
+// guildHandler.prototype.createGuildCityBoss = function(msg, session, next) {
+//   var uid = session.uid
+//   var areaId = session.get("areaId")
+//   this.areaManager.areaMap[areaId].createGuildCityBoss()
+//   next(null,{flag:true})
+// }
+// 获取攻城战信息
+guildHandler.prototype.getGuildCityBossData = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getGuildCityData(uid,function(flag,data) {
+  this.areaManager.areaMap[areaId].getGuildCityBossData(uid,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
-//获取城池数据
-guildHandler.prototype.getGuildCityRecord = function(msg, session, next) {
+// 挑战攻城战BOSS
+guildHandler.prototype.challengeGuildCityBoss = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var cityId = msg.cityId
-  this.areaManager.areaMap[areaId].getGuildCityRecord(uid,cityId,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//获取战斗数据
-guildHandler.prototype.getGuildCityFight = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var cityId = msg.cityId
   var index = msg.index
-  this.areaManager.areaMap[areaId].getGuildCityFight(uid,cityId,index,function(flag,data) {
+  this.areaManager.areaMap[areaId].challengeGuildCityBoss(uid,index,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
-//领取每日奖励
-guildHandler.prototype.gainGuildCityAward = function(msg, session, next) {
+// 获取城池信息(个人排行榜,公会排行榜)
+guildHandler.prototype.getGuildCityBossInfo = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].gainGuildCityAward(uid,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//获取PK数据
-guildHandler.prototype.getGuildPKData = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getGuildPKData(uid,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//获取单路数据
-guildHandler.prototype.getGuildPKRecord = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var path = msg.path
-  this.areaManager.areaMap[areaId].getGuildPKRecord(uid,path,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//获取战斗数据
-guildHandler.prototype.getGuildPKFight = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var path = msg.path
   var index = msg.index
-  this.areaManager.areaMap[areaId].getGuildPKFight(uid,path,index,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//报名
-guildHandler.prototype.applyGuildPK = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].applyGuildPK(uid,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//派遣队伍
-guildHandler.prototype.sendGuildPKTeam = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var teamId = msg.teamId
-  var path = msg.path
-  this.areaManager.areaMap[areaId].sendGuildPKTeam(uid,teamId,path,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//撤回队伍
-guildHandler.prototype.cancelGuildPKTeam = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var teamId = msg.teamId
-  this.areaManager.areaMap[areaId].cancelGuildPKTeam(uid,teamId,function(flag,data) {
+  this.areaManager.areaMap[areaId].getGuildCityBossInfo(uid,index,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }

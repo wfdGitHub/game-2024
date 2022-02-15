@@ -4,10 +4,9 @@ const guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
 const guild_lv = require("../../../../config/gameCfg/guild_lv.json")
 const guild_auction = require("../../../../config/gameCfg/guild_auction.json")
 const main_name = "guild_treasure"
-const fightTime = 17
-const auctionTime = 19
-const endTime = 20
 const currency = guild_cfg["currency"]["value"]
+const openTime = {"1":1,"3":1,"5":1,"0":1}   //开启时间
+const fightTime = 5 //战斗开始时间
 for(var i in guild_lv){
 	for(var j = 1;j <= 4;j++){
 		guild_lv[i]["team"+j] = JSON.parse(guild_lv[i]["team"+j])
@@ -30,34 +29,9 @@ module.exports = function() {
 	var local = {}
 	//宝藏BOSS每日首次更新
 	this.guildTreasureFirstUpdate = function() {
-		self.getAreaObjAll("guild",function(data) {
-			if(data){
-				for(var guildId in data){
-					self.redisDao.db.hdel(main_name,guildId)
-					self.redisDao.db.del(main_name+":rank:"+guildId)
-					self.redisDao.db.del(main_name+":play:"+guildId)
-					self.redisDao.db.del(main_name+":"+guildId)
-				}
-			}
-		})
 	}
 	//宝藏BOSS每日更新
 	this.guildTreasureDayUpdate = function() {
-		var d1 = new Date()
-		var day = d1.getDay()
-		if(day != 1 && day != 3 && day != 5){
-			return
-		}
-		d1.setHours(endTime,0,0,0)
-		var dt = d1.getTime() - Date.now()
-		if(dt < 10000)
-			dt = 10000
-		self.setTimeout(function() {
-			var guildList = self.getGuildInfoList()
-			for(var guildId in guildList){
-				self.guildTreasureAuctionEnd(guildId)
-			}
-		},dt)
 	}
 	//获取宝藏BOSS数据
 	this.getAuctionData = function(uid,cb) {
@@ -69,8 +43,8 @@ module.exports = function() {
 		var info = {}
 		var d = new Date()
 		var day = d.getDay()
-		if(day != 1 && day != 3 && day != 5){
-			cb(false,"周一、周三、周五开启")
+		if(!openTime[day]){
+			cb(false,"今日未开启")
 			return
 		}
 		info.surplus_health = [1,1,1,1,1,1]
@@ -102,7 +76,7 @@ module.exports = function() {
 			})
 		})
 	}
-	//宝藏BOSS竞拍结束
+	//宝藏BOSS竞拍结算
 	this.guildTreasureAuctionEnd = function(guildId) {
 		var curDayStr = (new Date()).toDateString()
 		self.redisDao.db.hget(main_name+":state",guildId,function(err,data) {
@@ -124,8 +98,13 @@ module.exports = function() {
 									self.sendMail(data[i],"[mail_guild_red_title]","[mail_guild_red_text]",currency+":"+oneValue)
 								}
 							}
+							self.redisDao.db.del(main_name+":play:"+guildId)
+
 						})
 					}
+					self.redisDao.db.del(main_name+":"+guildId)
+					self.redisDao.db.del(main_name+":rank:"+guildId)
+					self.redisDao.db.hdel(main_name,guildId)
 				})
 			}
 		})
@@ -137,6 +116,10 @@ module.exports = function() {
 			cb(false,"未加入公会")
 			return
 		}
+		if((new Date()).getHours() < fightTime){
+			cb(false,fightTime+"点之后可以挑战")
+			return
+		}
 		var guildInfo = self.getGuildInfo(guildId)
 		if(!guildInfo){
 			cb(false,guildInfo)
@@ -145,16 +128,12 @@ module.exports = function() {
 		var lv = guildInfo.lv
 		var d = new Date()
 		var day = d.getDay()
-		if(day != 1 && day != 3 && day != 5){
+		if(!openTime[day]){
 			cb(false,"今日未开启")
 			return
 		}
 		var bossId = Math.floor((d.getDate() % 4) + 1)
 		var hours = d.getHours()
-		if(hours < fightTime || hours >= auctionTime){
-			cb(false,"当前不在挑战时间")
-			return
-		}
 		var surplus_health = [1,1,1,1,1,1]
 		var noFight = false
 		var info = {}
@@ -285,11 +264,6 @@ module.exports = function() {
 		}
 		if(!Number.isInteger(price) || price <= 0){
 			cb(false,"price error")
-			return
-		}
-		var hours = (new Date()).getHours()
-		if(hours < auctionTime || hours >= endTime){
-			cb(false,"hours error "+hours)
 			return
 		}
 		var name = self.players[uid]["name"]

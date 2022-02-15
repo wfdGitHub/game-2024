@@ -311,6 +311,18 @@ crossManager.prototype.taskUpdate  = function(crossUid,type,value,arg) {
 	var uid = this.players[crossUid]["uid"]
 	this.app.rpc.area.areaRemote.taskUpdate.toServer(serverId,areaId,uid,type,value,arg,function(){})
 }
+
+//发放公会邮件
+crossManager.prototype.sendMailByGuildId  = function(guildId,title,text,atts) {
+	var self = this
+	self.redisDao.db.hgetall("guild:contributions:"+guildId,function(err,data) {
+		if(!data)
+			data = {}
+		for(uid in data){
+			self.sendMailByUid(uid,title,text,atts)
+		}
+	})
+}
 module.exports = {
 	id : "crossManager",
 	func : crossManager,
