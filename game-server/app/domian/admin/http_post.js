@@ -3,7 +3,7 @@ var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var util = require("../../../util/util.js")
 var Md5_Key = sdkConfig["Md5_Key"]
 var model = function() {
-	var self = this
+	var self
 	var posts = {}
 	var local = {}
 	this.init = function (server,serverManager) {
@@ -300,6 +300,59 @@ var model = function() {
 					})
 				}
 			})
+		})
+	}
+	//添加开服计划
+	posts["/getOpenPlan"] = function(req,res) {
+		var data = req.body
+		console.log("getOpenPlan",data)
+		var time = data.time
+		self.setOpenPlan(time,function(flag,err) {
+			res.send({flag:flag,err:err})
+		})
+	}
+	//获取开服计划表
+	posts["/getOpenPlan"] = function(req,res) {
+		var data = req.body
+		console.log("getOpenPlan",data)
+		self.getOpenPlan(time,function(flag,data) {
+			res.send({flag:flag,data:data})
+		})
+	}
+	//删除开服计划
+	posts["/delOpenPlan"] = function(req,res) {
+		var data = req.body
+		console.log("delOpenPlan",data)
+		var time = data.time
+		self.delOpenPlan(time,function(flag,err) {
+			res.send({flag:flag,err:err})
+		})
+	}
+	//添加合服计划
+	posts["/setMergePlan"] = function(req,res) {
+		var data = req.body
+		console.log("setMergePlan",data)
+		var time = data.time
+		var areaList = data.areaList
+		self.setMergePlan(areaList,time,function(flag,err) {
+			res.send({flag:flag,err:err})
+		})
+	}
+	//获取合服计划表
+	posts["/getMergePlan"] = function(req,res) {
+		var data = req.body
+		console.log("getMergePlan",data)
+		self.getMergePlan(function(flag,data) {
+			res.send({flag:flag,data:data})
+		})
+	}
+	//删除合服计划
+	posts["/delMergePlan"] = function(req,res) {
+		var data = req.body
+		console.log("delMergePlan",data)
+		var time = data.time
+		self.delMergePlan(time,function(flag,err) {
+			res.send({flag:flag,err:err})
 		})
 	}
 	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
