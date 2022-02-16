@@ -5,6 +5,7 @@ const guild_lv = require("../../../../config/gameCfg/guild_lv.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const openTime = {"3":1,"0":1}   //开启时间
 const fightTime = 5 //战斗开始时间
+const beginHero = 303020
 const star_add = {
 	"1" : {amplify : -0.3,reduction : -0.3},
 	"2" : {amplify : -0.1,reduction : -0.1,self_maxHP_add : 0.3},
@@ -178,8 +179,8 @@ module.exports = function() {
 			userInfo = {
 				uid : 0,
 				name : "精锐战士",
-				head : default_cfg["first_hero"]["value"],
-				figure : default_cfg["first_hero"]["value"],
+				head : beginHero,
+				figure : beginHero,
 				level : guild_lv[guildLv]["level"]
 			}
 			self.redisDao.db.hset(main_name+":"+guildId,"seat_"+index,JSON.stringify(userInfo))
