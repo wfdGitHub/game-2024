@@ -454,12 +454,12 @@ guildHandler.prototype.upForAuction = function(msg, session, next) {
 //   })
 // }
 // 城池BOSS刷新
-// guildHandler.prototype.createGuildCityBoss = function(msg, session, next) {
-//   var uid = session.uid
-//   var areaId = session.get("areaId")
-//   this.areaManager.areaMap[areaId].createGuildCityBoss()
-//   next(null,{flag:true})
-// }
+guildHandler.prototype.createGuildCityBoss = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].createGuildCityBoss()
+  next(null,{flag:true})
+}
 // 获取攻城战信息
 guildHandler.prototype.getGuildCityBossData = function(msg, session, next) {
   var uid = session.uid

@@ -15,18 +15,18 @@ guildPkHandler.prototype.applyGuildPKRival = function(msg, session, next) {
     next(null,{flag:false})
   }
 }
-//匹配公会
-// guildPkHandler.prototype.matchGuildPKRival = function(msg, session, next) {
-//   var crossUid = session.get("crossUid")
-//   this.crossManager.matchGuildPKRival()
-//   next(null)
-// }
-//结算PK
-// guildPkHandler.prototype.guildPkSettle = function(msg, session, next) {
-//   var crossUid = session.get("crossUid")
-//   this.crossManager.guildPkSettle()
-//   next(null)
-// }
+// 匹配公会
+guildPkHandler.prototype.matchGuildPKRival = function(msg, session, next) {
+  var crossUid = session.get("crossUid")
+  this.crossManager.matchGuildPKRival()
+  next(null)
+}
+// 结算PK
+guildPkHandler.prototype.guildPkSettle = function(msg, session, next) {
+  var crossUid = session.get("crossUid")
+  this.crossManager.guildPkSettle()
+  next(null)
+}
 //获取PK信息
 guildPkHandler.prototype.getGuildPKInfo = function(msg, session, next) {
   var crossUid = session.get("crossUid")
