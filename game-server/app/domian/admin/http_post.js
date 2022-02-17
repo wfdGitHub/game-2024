@@ -1,5 +1,6 @@
 //数据库查询
 var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
+var pay_cfg = require("../../../config/gameCfg/pay_cfg.json")
 var util = require("../../../util/util.js")
 var Md5_Key = sdkConfig["Md5_Key"]
 const uuid = require("uuid")
@@ -393,6 +394,32 @@ var model = function() {
 		    }
 		})
 		res.send({flag:true})
+	}
+	//模拟充值
+	posts["/rechargeToUser"] = function(req,res) {
+		var uid = req.body.uid
+		var pay_id = req.body.pay_id
+		if(!pay_cfg[pay_id]){
+			res.send({flag:false,err:"参数错误"})
+			return
+		}
+		self.playerDao.getPlayerAreaId(uid,function(flag,data) {
+			if(flag){
+				var areaId = self.areaDeploy.getFinalServer(data)
+				var serverId = self.areaDeploy.getServer(areaId)
+				if(serverId){
+					self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(pay_cfg[pay_id]["rmb"])),function(){})
+					self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,function(flag,data) {
+						self.redisDao.db.rpush("admin:recharge",JSON.stringify({uid:uid,payInfo:pay_cfg[pay_id]}))
+						res.send({flag:true})
+					})
+				}else{
+					res.send({flag:false,err:"参数错误"})
+				}
+			}else{
+				res.send({flag:false,err:"参数错误"})
+			}
+		})
 	}
 	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
 		var sql1 = "select count(*) from "+tableName

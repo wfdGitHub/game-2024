@@ -3,6 +3,7 @@ const http = require("http")
 const uuid = require("uuid")
 const querystring = require("querystring")
 const item_cfg = require("../game-server/config/gameCfg/item.json")
+const pay_cfg = require("../game-server/config/gameCfg/pay_cfg.json")
 const hufu_quality = require("../game-server/config/gameCfg/hufu_quality.json")
 const hufu_skill = require("../game-server/config/gameCfg/hufu_skill.json")
 const stringRandom = require('string-random');
@@ -84,6 +85,30 @@ var model = function() {
     //获取物品表
     posts["/get_items"] = function(req,res) {
         res.send(items)
+    }
+    //获取支付表
+    posts["/get_pay_cfg"] = function(req,res) {
+        res.send(pay_cfg)
+    }
+    //模拟充值
+    posts["/rechargeToUser"] = function(req,res) {
+		local.post("127.0.0.1",2080,"/rechargeToUser",req.body,function(data) {
+			res.send(data)
+		})
+    }
+    //获取充值列表
+    posts["/getRechargeToUserList"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("admin:recharge",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("admin:recharge",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
     }
 	//清聊天记录
 	posts["/clearChatRecord"] = function(req,res) {
