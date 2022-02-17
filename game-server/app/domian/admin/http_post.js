@@ -427,6 +427,19 @@ var model = function() {
 			res.send({flag:flag,err:err})
 		})
 	}
+	//获取服务器内玩家信息
+	posts["/getAreaPlayers"] = function(req,res) {
+		var areaId = req.body.areaId
+		var serverId = self.areaDeploy.getServer(areaId)
+	    if(!serverId){
+	        next(null,{flag : false,err : "服务器不存在"})
+	        return
+	    }
+	    self.app.rpc.area.areaRemote.getAreaPlayers.toServer(serverId,areaId,function(flag,list) {
+	    	res.send({flag:flag,list:list})
+		})
+	}
+
 	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
 		var sql1 = "select count(*) from "+tableName
 		var sql2 = "select * from "+tableName	
