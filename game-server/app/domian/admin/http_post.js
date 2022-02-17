@@ -421,6 +421,12 @@ var model = function() {
 			}
 		})
 	}
+	//增加跨服机器人
+	posts["/createRobotAccount"] = function(req,res) {
+		self.accountDao.createRobotAccount(function(flag,err) {
+			res.send({flag:flag,err:err})
+		})
+	}
 	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
 		var sql1 = "select count(*) from "+tableName
 		var sql2 = "select * from "+tableName	

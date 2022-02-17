@@ -96,6 +96,12 @@ var model = function() {
 			res.send(data)
 		})
     }
+    //增加跨服机器人
+    posts["/createRobotAccount"] = function(req,res) {
+		local.post("127.0.0.1",2080,"/createRobotAccount",{},function(data) {
+			res.send(data)
+		})
+    }
     //获取充值列表
     posts["/getRechargeToUserList"] = function(req,res) {
 		var data = req.body
