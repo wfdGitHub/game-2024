@@ -2,6 +2,7 @@
 var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var util = require("../../../util/util.js")
 var Md5_Key = sdkConfig["Md5_Key"]
+const uuid = require("uuid")
 var model = function() {
 	var self
 	var posts = {}
@@ -16,7 +17,6 @@ var model = function() {
 	//获取服务器列表
 	posts["/areaInfos"] = function(req,res) {
 		var data = req.body
-		console.log("areaInfos",data)
 		self.redisDao.db.get("area:lastid",function(err,lastid) {
 			var multiList = []
 			for(var i = 1;i <= lastid;i++){
@@ -225,7 +225,6 @@ var model = function() {
 	//获取角色列表
 	posts["/getRoleList"] = function(req,res) {
 		var data = req.body
-		console.log("getRoleList",data)
 		var account_id = data.account_id
 		if(!account_id){
 			res.send({
@@ -246,7 +245,6 @@ var model = function() {
 	//使用激活码
 	posts["/giftcode"] = function(req,res) {
 		var data = req.body
-		console.log("getRoleList",data)
 		var app_key = data.app_key
 		var account_id = data.account_id
 		var uid = data.role_id
@@ -270,7 +268,6 @@ var model = function() {
 		}
 		//检查signature
 		self.playerDao.getPlayerInfo({uid:uid},function(playerInfo) {
-			console.log("playerInfo",playerInfo)
 			if(!playerInfo || !playerInfo.areaId || !playerInfo.name){
 				res.send({
 					"error_code" : 1,
@@ -303,10 +300,9 @@ var model = function() {
 		})
 	}
 	//添加开服计划
-	posts["/getOpenPlan"] = function(req,res) {
+	posts["/setOpenPlan"] = function(req,res) {
 		var data = req.body
-		console.log("getOpenPlan",data)
-		var time = data.time
+		var time = Number(data.time)
 		self.setOpenPlan(time,function(flag,err) {
 			res.send({flag:flag,err:err})
 		})
@@ -314,15 +310,13 @@ var model = function() {
 	//获取开服计划表
 	posts["/getOpenPlan"] = function(req,res) {
 		var data = req.body
-		console.log("getOpenPlan",data)
-		self.getOpenPlan(time,function(flag,data) {
+		self.getOpenPlan(function(flag,data) {
 			res.send({flag:flag,data:data})
 		})
 	}
 	//删除开服计划
 	posts["/delOpenPlan"] = function(req,res) {
 		var data = req.body
-		console.log("delOpenPlan",data)
 		var time = data.time
 		self.delOpenPlan(time,function(flag,err) {
 			res.send({flag:flag,err:err})
@@ -331,8 +325,7 @@ var model = function() {
 	//添加合服计划
 	posts["/setMergePlan"] = function(req,res) {
 		var data = req.body
-		console.log("setMergePlan",data)
-		var time = data.time
+		var time = Number(data.time)
 		var areaList = data.areaList
 		self.setMergePlan(areaList,time,function(flag,err) {
 			res.send({flag:flag,err:err})
@@ -341,19 +334,65 @@ var model = function() {
 	//获取合服计划表
 	posts["/getMergePlan"] = function(req,res) {
 		var data = req.body
-		console.log("getMergePlan",data)
-		self.getMergePlan(function(flag,data) {
-			res.send({flag:flag,data:data})
+		self.getMergePlan(function(flag,data,areaLock) {
+			res.send({flag:flag,data:data,areaLock:areaLock})
 		})
 	}
 	//删除合服计划
 	posts["/delMergePlan"] = function(req,res) {
 		var data = req.body
-		console.log("delMergePlan",data)
 		var time = data.time
 		self.delMergePlan(time,function(flag,err) {
 			res.send({flag:flag,err:err})
 		})
+	}
+	//获取全服邮件
+	posts["/getAreaMailList"] = function(req,res) {
+		self.redisDao.db.hgetall("allAreaMail",function(err,data) {
+			res.send({flag:true,data:data})
+		})
+	}
+	//发放全服邮件
+	posts["/setAreaMailList"] = function(req,res) {
+		var data = req.body
+		data.beginTime = Number(data.beginTime)
+		data.endTime = Number(data.endTime)
+		data.areaMap = JSON.parse(data.areaMap)
+		if(!data.areaMap || typeof(data.title) != "string" || typeof(data.text) != "string" || typeof(data.atts) != "string" || !Number.isInteger(data.beginTime) || !Number.isInteger(data.endTime)){
+			res.send({flag:false,err:"参数错误"})
+			return
+		}
+		var id = data.id ? data.id : uuid.v1()
+		var mailInfo = {
+			areaMap : data.areaMap,
+			title : data.title,
+			text : data.text,
+			atts : data.atts,
+			beginTime : data.beginTime,
+			endTime : data.endTime
+		}
+		self.redisDao.db.hset("allAreaMail",id,JSON.stringify(mailInfo),function(err) {
+			var serverIds = self.app.getServersByType('area')
+		    for(var i = 0;i < serverIds.length;i++){
+		        self.app.rpc.area.areaRemote.updateAreaMail.toServer(serverIds[i]["id"],function(flag,data) {})
+		    }
+		})
+		res.send({flag:true})
+	}
+	//删除全服邮件
+	posts["/delAreaMailList"] = function(req,res) {
+		var data = req.body
+		if(!data.id){
+			res.send({flag:false,err:"参数错误"})
+			return
+		}
+		self.redisDao.db.hdel("allAreaMail",data.id,function(err) {
+			var serverIds = self.app.getServersByType('area')
+		    for(var i = 0;i < serverIds.length;i++){
+		        self.app.rpc.area.areaRemote.updateAreaMail.toServer(serverIds[i]["id"],function(flag,data) {})
+		    }
+		})
+		res.send({flag:true})
 	}
 	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
 		var sql1 = "select count(*) from "+tableName
@@ -373,7 +412,6 @@ var model = function() {
 		}
 		sql2 += " order by "+key+" desc LIMIT ?,"+pageSize
 		args2.push((pageCurrent-1)*pageSize)
-		console.log("getSQL sql1",sql1,"sql2",sql2,args1,args2)
 		return {sql1:sql1,sql2:sql2,args1:args1,args2:args2}
 	}
 	local.getRoleList = function(account_id,cb) {

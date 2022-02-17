@@ -261,6 +261,7 @@ area.prototype.userLeave = function(uid) {
 		delete this.connectorMap[uid]
 		delete this.oriIds[uid]
 		this.onlineNum--
+		this.redisDao.db.hincrby("onlineNums",this.areaId,-1)
 		this.taskUnload(uid)
 		this.CEUnload(uid)
 		this.lordUnload(uid)

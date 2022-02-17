@@ -123,29 +123,12 @@ areaRemote.prototype.sendMail = function(uid,areaId,title,text,atts,cb) {
 		cb(false)
 	}
 }
-//设置全服邮件
-areaRemote.prototype.setAreaMail = function(areaId,title,text,atts,time,cb) {
-	if(this.areaManager.areaMap[areaId]){
-		this.areaManager.areaMap[areaId].setAreaMail(title,text,atts,time,cb)
-	}else{
-		cb(false)
+//更新全服邮件
+areaRemote.prototype.updateAreaMail = function(cb) {
+	for(var areaId in this.areaManager.areaMap){
+		this.areaManager.areaMap[areaId].updateAreaMail()
 	}
-}
-//获取全服邮件
-areaRemote.prototype.getAreaMailList = function(areaId,cb) {
-	if(this.areaManager.areaMap[areaId]){
-		this.areaManager.areaMap[areaId].getAreaMailList(cb)
-	}else{
-		cb(false)
-	}
-}
-//删除全服邮件
-areaRemote.prototype.deleteAreaMailList = function(areaId,id,cb) {
-	if(this.areaManager.areaMap[areaId]){
-		this.areaManager.areaMap[areaId].deleteAreaMailList(id,cb)
-	}else{
-		cb(false)
-	}
+	cb(true)
 }
 //过期检查 头像框 称号
 areaRemote.prototype.overdueCheck  = function(areaId,uid,cb) {
