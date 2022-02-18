@@ -92,19 +92,19 @@ var model = function() {
     }
     //模拟充值
     posts["/rechargeToUser"] = function(req,res) {
-		local.post("127.0.0.1",80,"/rechargeToUser",req.body,function(data) {
+		local.post("127.0.0.1",5081,"/rechargeToUser",req.body,function(data) {
 			res.send(data)
 		})
     }
     //增加跨服机器人
     posts["/createRobotAccount"] = function(req,res) {
-		local.post("127.0.0.1",80,"/createRobotAccount",{},function(data) {
+		local.post("127.0.0.1",5081,"/createRobotAccount",{},function(data) {
 			res.send(data)
 		})
     }
     //获取服务器内玩家列表
     posts["/getAreaPlayers"] = function(req,res) {
-		local.post("127.0.0.1",80,"/getAreaPlayers",req.body,function(data) {
+		local.post("127.0.0.1",5081,"/getAreaPlayers",req.body,function(data) {
 			res.send(data)
 		})
     }
