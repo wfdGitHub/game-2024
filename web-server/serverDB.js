@@ -1,7 +1,9 @@
 //数据库查询
-var http = require("http")
-var uuid = require("uuid")
+const http = require("http")
+const uuid = require("uuid")
+const querystring = require("querystring")
 const item_cfg = require("../game-server/config/gameCfg/item.json")
+const pay_cfg = require("../game-server/config/gameCfg/pay_cfg.json")
 const hufu_quality = require("../game-server/config/gameCfg/hufu_quality.json")
 const hufu_skill = require("../game-server/config/gameCfg/hufu_skill.json")
 const stringRandom = require('string-random');
@@ -21,9 +23,104 @@ var model = function() {
 			items[i] = item_cfg[i]["name"]
         }
 	}
+	//获取全服邮件
+	posts["/getAreaMailList"] = function(req,res) {
+		local.post("127.0.0.1",5081,"/getAreaMailList",{},function(data) {
+			res.send(data)
+		})
+	}
+	//发放全服邮件
+	posts["/setAreaMailList"] = function(req,res) {
+		local.post("127.0.0.1",5081,"/setAreaMailList",req.body,function(data) {
+			res.send(data)
+		})
+	}
+	//删除全服邮件
+	posts["/delAreaMailList"] = function(req,res) {
+		local.post("127.0.0.1",5081,"/delAreaMailList",req.body,function(data) {
+			res.send(data)
+		})
+	}
+	//获取开服计划表
+	posts["/getOpenPlan"] = function(req,res) {
+		local.post("127.0.0.1",5081,"/getOpenPlan",{},function(data) {
+			res.send(data)
+		})
+	}
+	//添加开服计划
+	posts["/setOpenPlan"] = function(req,res) {
+		var data = req.body
+		local.post("127.0.0.1",5081,"/setOpenPlan",{time:data.time},function(data) {
+			res.send(data)
+		})
+	}
+	//删除开服计划
+	posts["/delOpenPlan"] = function(req,res) {
+		var data = req.body
+		local.post("127.0.0.1",5081,"/delOpenPlan",{time:data.time},function(data) {
+			res.send(data)
+		})
+	}
+	//获取合服计划表
+	posts["/getMergePlan"] = function(req,res) {
+		var data = req.body
+		local.post("127.0.0.1",5081,"/getMergePlan",{},function(data) {
+			res.send(data)
+		})
+	}
+	//添加合服计划
+	posts["/setMergePlan"] = function(req,res) {
+		var data = req.body
+		local.post("127.0.0.1",5081,"/setMergePlan",{time:data.time,areaList:data.areaList},function(data) {
+			res.send(data)
+		})
+	}
+	//删除合服计划
+	posts["/delMergePlan"] = function(req,res) {
+		var data = req.body
+		local.post("127.0.0.1",5081,"/delMergePlan",{time:data.time},function(data) {
+			res.send(data)
+		})
+	}
     //获取物品表
     posts["/get_items"] = function(req,res) {
         res.send(items)
+    }
+    //获取支付表
+    posts["/get_pay_cfg"] = function(req,res) {
+        res.send(pay_cfg)
+    }
+    //模拟充值
+    posts["/rechargeToUser"] = function(req,res) {
+		local.post("127.0.0.1",80,"/rechargeToUser",req.body,function(data) {
+			res.send(data)
+		})
+    }
+    //增加跨服机器人
+    posts["/createRobotAccount"] = function(req,res) {
+		local.post("127.0.0.1",80,"/createRobotAccount",{},function(data) {
+			res.send(data)
+		})
+    }
+    //获取服务器内玩家列表
+    posts["/getAreaPlayers"] = function(req,res) {
+		local.post("127.0.0.1",80,"/getAreaPlayers",req.body,function(data) {
+			res.send(data)
+		})
+    }
+    //获取充值列表
+    posts["/getRechargeToUserList"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("admin:recharge",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("admin:recharge",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
     }
 	//清聊天记录
 	posts["/clearChatRecord"] = function(req,res) {
@@ -34,7 +131,6 @@ var model = function() {
 	//封号
 	posts["/freezeAcc"] = function(req,res) {
 		var data = req.body
-		console.log("freezeAcc",data)
 		var url = "http://127.0.0.1:5081/freezeAcc?uid="+data.uid+"&value="+data.value
 		http.get(url,function(res){})
 		res.send("SUCCESS")
@@ -56,7 +152,6 @@ var model = function() {
 			"beginTime" : data.beginTime,
 			"endTime" : data.endTime
 		}
-		console.log("setRebateItem",data.id,info)
 		self.redisDao.db.hset("rebate_item_map",data.id,JSON.stringify(info),function(err) {
 			var url = "http://127.0.0.1:5081/updateRebate"
 			http.get(url,function(res){})
@@ -86,7 +181,6 @@ var model = function() {
 			"text" : data.text,
 			"rate" : data.rate
 		}
-		console.log("setRebategold",data.id,info)
 		self.redisDao.db.hset("rebate_gold_map",data.id,JSON.stringify(info),function(err) {
 			var url = "http://127.0.0.1:5081/updateRebate"
 			http.get(url,function(res){})
@@ -261,6 +355,11 @@ var model = function() {
 			self.redisDao.multi(multiList,function(err,list) {
 				res.send(list)
 			})
+		})
+	}
+	posts["/onlineNums"] = function(req,res) {
+		self.redisDao.db.hgetall("onlineNums",function(err,data) {
+			res.send(data)
 		})
 	}
 	//获取服务器名称
@@ -772,7 +871,6 @@ var model = function() {
 	posts["/getPlayerInfo"] = function(req,res) {
 		var data = req.body
 		var uid = data.uid
-		console.log("getPlayerInfo",uid)
 		if(!uid){
 			res.send(false)
 		}else{
@@ -809,7 +907,6 @@ var model = function() {
 	//设置公告
 	posts["/setNotify"] = function(req,res) {
 		var data = req.body
-		console.log("setNotify",data)
 		self.redisDao.db.set("game:notify",data.notify,function(err) {
 			self.server.changeNotify(data.notify)
 			res.send({flag:true})
@@ -892,7 +989,6 @@ var model = function() {
 		var type = data.type
 		var sql = 'update CDType SET valid=0 where type=?'
 		var args = [type];
-		console.log("pauseCDType",sql,args)
 		self.mysqlDao.db.query(sql,args, function(err) {
 			if (err) {
 				// console.error('pauseCDType! ' + err.stack);
@@ -958,7 +1054,6 @@ var model = function() {
 		var sql = "select * from CDKey where cdkey = ?"
 		var args = [key];
 		self.mysqlDao.db.query(sql,args, function(err,info) {
-			console.log(err,info)
 			if(err){
 				res.send({flag:false,data:err})
 			}else{
@@ -1063,7 +1158,6 @@ var model = function() {
 		local.adminSendMail(uid,mailInfo)
 		mailInfo = JSON.stringify(mailInfo)
 		self.redisDao.db.rpush("player:user:"+uid+":mail",mailInfo,function(err,data) {
-			console.log(err,data)
 			cb(err)
 		})
 	}
@@ -1112,6 +1206,34 @@ var model = function() {
 				cb(true)
 			}
 		})
+	}
+	//post请求
+	local.post = function(hostname,port,path,args,callback) {
+		var postData=querystring.stringify(args)
+		var options={
+		  hostname:hostname,
+		  port:port,
+		  path:path,
+		  method:'POST',
+		  headers:{
+		    "Content-Type":"application/x-www-form-urlencoded; charset=utf-8",
+		    "Content-Length" : postData.length
+		  }
+		}
+		var req=http.request(options,function(res){
+		var _data='';
+		res.on('data', function(chunk){
+		   _data += chunk;
+		});
+		res.on('end', function(){
+			callback(_data)
+		 });
+		})
+		req.on('error', function(e) {
+		  console.error(e)
+		})
+		req.write(postData);
+		req.end()
 	}
 }
 module.exports = new model()
