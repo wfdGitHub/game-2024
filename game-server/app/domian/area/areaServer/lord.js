@@ -16,8 +16,10 @@ module.exports = function() {
 				
 				for(var i = 0;i < numberAtt.length;i++)
 					info[numberAtt[i]] = Number(info[numberAtt[i]]) || 0
-				if(!self.players[uid])
+				if(!self.players[uid]){
+					self.redisDao.db.hincrby("onlineNums",self.areaId,1)
 					self.onlineNum++
+				}
 				self.players[uid] = info
 				self.checkVipLv(uid)
 				cb()

@@ -162,63 +162,46 @@ module.exports = function() {
 	//初始化全服邮件
 	this.initAreaMail = function() {
 		var self = this
-		self.redisDao.db.hgetall("area:area"+self.areaId+":areaMail",function(err,data) {
+		self.redisDao.db.hgetall("allAreaMail",function(err,data) {
 			self.areaMailList = {}
 			for(var id in data){
-				self.areaMailList[id] = JSON.parse(data[id])
+				data[id] = JSON.parse(data[id])
+				if(data[id].areaMap["all"] || data[id].areaMap[self.areaId])
+					self.areaMailList[id] = data[id]
 			}
 		})
 	}
-	//全服邮件每日更新
-	this.dayUpdateAreaMail = function() {
-		var curTime = Date.now()
-		for(var id in this.areaMailList){
-			if(curTime > this.areaMailList[id]){
-				delete this.areaMailList[id]
-				this.redisDao.db.hdel("area:area"+this.areaId+":areaMail",id)
-			}
-		}
-	}
-	//设置全服邮件
-	this.setAreaMail = function(title,text,atts,time,cb) {
-		var id = uuid.v1()
-		var areaMailInfo = {
-			title : title,
-			text : text,
-			atts : atts,
-			time : time
-		}
+	//更新全服邮件
+	this.updateAreaMail = function() {
 		var self = this
-		self.redisDao.db.hset("area:area"+this.areaId+":areaMail",id,JSON.stringify(areaMailInfo),function(err) {
-			if(!err){
-				self.areaMailList[id] = areaMailInfo
-				for(var uid in self.players){
-					self.checkAreaMailOne(uid,id)
+		self.redisDao.db.hgetall("allAreaMail",function(err,data) {
+			var oldMailList = self.areaMailList
+			self.areaMailList = {}
+			for(var id in data){
+				data[id] = JSON.parse(data[id])
+				if(data[id].areaMap["all"] || data[id].areaMap[self.areaId]){
+					self.areaMailList[id] = data[id]
+					if(!oldMailList[id]){
+						for(var uid in self.players){
+							self.checkAreaMailOne(uid,id)
+						}
+					}
 				}
 			}
 		})
-		cb(true,{id:id,areaMailInfo:areaMailInfo})
 	}
 	//获取全服邮件
 	this.getAreaMailList = function(cb) {
 		cb(true,this.areaMailList)
 	}
-	//删除全服邮件
-	this.deleteAreaMailList = function(id,cb) {
-		if(this.areaMailList[id]){
-			delete this.areaMailList[id]
-			this.redisDao.db.hdel("area:area"+this.areaId+":areaMail",id)
-			cb(true)
-		}else{
-			cb(false,"邮件不存在")
-		}
-	}
 	//检测所有全服邮件
 	this.checkAreaMailAll = function(uid) {
 		var ids = []
 		var self = this
+		var curTime = Date.now()
 		for(var id in self.areaMailList){
-			ids.push(id)
+			if(curTime > self.areaMailList[id].beginTime && curTime < self.areaMailList[id].endTime)
+				ids.push(id)
 		}
 		self.getHMObj(uid,"areaMail",ids,function(list) {
 			for(var i = 0;i < ids.length;i++){
@@ -231,12 +214,15 @@ module.exports = function() {
 	}
 	//检测单个全服邮件
 	this.checkAreaMailOne = function(uid,id) {
+		var curTime = Date.now()
 		var self = this
-		self.getObj(uid,"areaMail",id,function(data) {
-			if(!data){
-				self.setObj(uid,"areaMail",id,1)
-				self.sendMail(uid,self.areaMailList[id].title,self.areaMailList[id].text,self.areaMailList[id].atts)
-			}
-		})
+		if(curTime > self.areaMailList[id].beginTime && curTime < self.areaMailList[id].endTime){
+			self.getObj(uid,"areaMail",id,function(data) {
+				if(!data){
+					self.setObj(uid,"areaMail",id,1)
+					self.sendMail(uid,self.areaMailList[id].title,self.areaMailList[id].text,self.areaMailList[id].atts)
+				}
+			})
+		}
 	}
 }
