@@ -1,6 +1,6 @@
 var express = require('express');
 var xmlparser = require('express-xml-bodyparser')
-// var serverDB = require('./serverDB.js')
+var serverDB = require('./serverDB.js')
 var adminManager = require('./adminManager.js')
 var parseString = require('xml2js').parseString;
 var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
@@ -79,7 +79,7 @@ serverManager.prototype.init = function() {
 			}
 		})
 	})
-	// serverDB.init(server,self.mysqlDao,self.redisDao)
+	
 	server.listen(80);
 	var server2 = express()
 	server2.use(express.json());
@@ -92,7 +92,8 @@ serverManager.prototype.init = function() {
 	next();
 	});
 	server2.use(xmlparser());
-	adminManager.init(server2,self,self.mysqlDao,self.redisDao)
+	serverDB.init(server2,self)
+	adminManager.init(server2,self)
 	server2.listen(5081);
 }
 serverManager.prototype.quick_order = function(data,cb) {
@@ -233,7 +234,7 @@ serverManager.prototype.update = function() {
 }
 //添加合服计划
 serverManager.prototype.setMergePlan = function(areaList,time,cb) {
-	if(!Number.isInteger(time) || time < Date.now() || !Array.isArray(areaList)){
+	if(!Number.isInteger(time) || time < Date.now() || !Array.isArray(areaList) || areaList.length <= 1){
 		cb(false,"参数错误")
 		return
 	}
@@ -274,12 +275,16 @@ serverManager.prototype.delMergePlan = function(time,cb) {
 }
 //获取合服计划表
 serverManager.prototype.getMergePlan = function(cb) {
-	cb(true,this.mergePlans)
+	cb(true,this.mergePlans,this.areaLock)
 }
 //添加开服计划
 serverManager.prototype.setOpenPlan = function(time,cb) {
 	if(!Number.isInteger(time) || time < Date.now()){
 		cb(false,"参数错误")
+		return
+	}
+	if(this.openPlans[time]){
+		cb(false,"该时间已设置")
 		return
 	}
 	this.openPlans[time] = 1
@@ -298,7 +303,11 @@ serverManager.prototype.delOpenPlan = function(time,cb) {
 }
 //获取开服计划表
 serverManager.prototype.getOpenPlan = function(cb) {
-	cb(true,{openPlans : this.openPlans,areaLock : this.areaLock})
+	var self = this
+	self.redisDao.db.get("area:lastid",function(err,data) {
+			cb(true,{openPlans : self.openPlans,areaLock : self.areaLock,lastArea : data})
+	})
+	
 }
 local.decode = function(str,key){
 	if(str.length <= 0){
