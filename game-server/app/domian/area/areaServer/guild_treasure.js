@@ -308,7 +308,7 @@ module.exports = function() {
 					cb(false,err)
 				})
 			}else{
-				cb(false,"贡献不足")
+				cb(false,"không đóng góp đủ")
 			}
 		})
 	}
