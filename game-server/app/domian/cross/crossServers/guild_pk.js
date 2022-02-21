@@ -178,7 +178,7 @@ module.exports = function() {
 			var guildLv = pk_info.guildInfos[guildId]["lv"]
 			userInfo = {
 				uid : 0,
-				name : "精锐战士",
+				name : "Chiến sĩ tinh nhuệ",
 				head : beginHero,
 				figure : beginHero,
 				level : guild_lv[guildLv]["level"]
