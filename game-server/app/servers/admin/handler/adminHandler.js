@@ -1,4 +1,5 @@
 var bearcat = require("bearcat")
+var uuid = require("uuid")
 var pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
 var adminHandler = function(app) {
 	this.app = app
@@ -94,53 +95,15 @@ adminHandler.prototype.getServerList = function(msg, session, next) {
 }
 //设置全服邮件
 adminHandler.prototype.setAreaMail = function(msg, session, next) {
-	var areaList = msg.areaList
-	var title = msg.title
-	var text = msg.text
-	var atts = msg.atts
-	var time = msg.time
-	if(!areaList || typeof(title) != "string" || typeof(text) != "string" || typeof(atts) != "string" || !Number.isInteger(time)){
-		next(null,{flag : false,err : "参数错误"})
-		return
-	}
-	var serverIds = []
-	for(var i = 0;i < areaList.length;i++){
-		var serverId = this.areaDeploy.getServer(areaList[i])
-	    if(!serverId){
-	        next(null,{flag : false,err : "服务器不存在"+areaList[i]})
-	        return
-	    }
-	    serverIds.push(serverId)
-	}
-	for(var i = 0;i < serverIds.length;i++){
-	    this.app.rpc.area.areaRemote.setAreaMail.toServer(serverIds[i],areaList[i],title,text,atts,time,function(flag,data) {})
-	}
-	next(null,{flag : true})
+	next(null,{flag : false})
 }
 //获取全服邮件
 adminHandler.prototype.getAreaMailList = function(msg, session, next) {
-	var areaId = msg.areaId
-	var serverId = this.areaDeploy.getServer(areaId)
-    if(!serverId){
-        next(null,{flag : false,err : "服务器不存在"})
-        return
-    }
-    this.app.rpc.area.areaRemote.getAreaMailList.toServer(serverId,areaId,function(flag,list) {
-    	next(null,{flag : true,list : list})
-	})
+	next(null,{flag : false})
 }
 //删除全服邮件
 adminHandler.prototype.deleteAreaMailList = function(msg, session, next) {
-	var areaId = msg.areaId
-	var id = msg.id
-	var serverId = this.areaDeploy.getServer(areaId)
-    if(!serverId){
-        next(null,{flag : false,err : "服务器不存在"})
-        return
-    }
-    this.app.rpc.area.areaRemote.deleteAreaMailList.toServer(serverId,areaId,id,function(flag,list) {
-    	next(null,{flag : true,list : list})
-	})
+	next(null,{flag : false})
 }
 //查询玩家信息
 adminHandler.prototype.getPlayerInfo = function(msg, session, next) {
