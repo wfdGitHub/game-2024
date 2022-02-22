@@ -133,12 +133,12 @@ module.exports = function() {
 	this.killGuildCityBoss = function(uid,index,guildId) {
 		var lv = city_boss["boss_"+index+"_lv"]
 		//击杀奖励
-		self.sendMail(uid,"Phần thưởng đòn cuối cùng","恭Chúc mừng bạn đã hoàn thành đòn cuối cùng khi tấn công 【"+guild_city[index]["name"]+"】",guild_city_boss[city_boss["boss_"+index+"_lv"]]["kill_award"])
+		self.sendMail(uid,"Phần thưởng đòn cuối cùng","恭Chúc mừng bạn đã hoàn thành đòn cuối cùng khi tấn công 【"+guild_city[index]["name_vn"]+"】",guild_city_boss[city_boss["boss_"+index+"_lv"]]["kill_award"])
 		//排名奖励
 		self.zrange("guildCityBossUserRank:"+index,-3,-1,function(list) {
 			var rank = 1
 			for(var i = list.length - 1;i >= 0;i--){
-				self.sendMail(list[i],"thưởng xếp hạng","Khi bạn tấn công 【"+guild_city[index]["name"]+"】, xếp hạng ST là "+rank+",sẽ nhận được phần thưởng xếp hạng",guild_city_boss[city_boss["boss_"+index+"_lv"]]["damage_"+rank])
+				self.sendMail(list[i],"thưởng xếp hạng","Khi bạn tấn công 【"+guild_city[index]["name_vn"]+"】, xếp hạng ST là "+rank+",sẽ nhận được phần thưởng xếp hạng",guild_city_boss[city_boss["boss_"+index+"_lv"]]["damage_"+rank])
 				rank++
 			}
 		})
@@ -147,7 +147,7 @@ module.exports = function() {
 			var win_id = list[0]
 			//绑定占领公会
 			self.addGuildEXP(win_id,500)
-			self.addGuildGift(win_id,"【"+guild_city[index]["name"]+"】",10,guild_city_boss[city_boss["boss_"+index+"_lv"]]["red_award"],oneDayTime)
+			self.addGuildGift(win_id,"【"+guild_city[index]["name_vn"]+"】",10,guild_city_boss[city_boss["boss_"+index+"_lv"]]["red_award"],oneDayTime)
 			self.redisDao.db.hget("guild:guildInfo:"+win_id,"name",function(err,data) {
 				city_boss["boss_"+index+"_guild"] = data
 				self.setAreaObj(main_name,"boss_"+index+"_guild",city_boss["boss_"+index+"_guild"])
