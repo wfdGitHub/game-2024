@@ -85,7 +85,7 @@ module.exports = function() {
 				//判断申请是否存在
 				self.getObj(uid,friend_apply,target,function(data) {
 					if(!data){
-						next("申请不存在")
+						next("không tồn tại")
 					}else{
 						self.delObj(uid,friend_apply,target)
 						next()

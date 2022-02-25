@@ -64,7 +64,7 @@ heroHandler.prototype.resetHero = function(msg, session, next) {
       return
     }
     if(heroInfo.combat){
-      next(null,{flag : false,err : "英雄已出战"})
+      next(null,{flag : false,err : "trong đội"})
       return
     }
     self.areaManager.areaMap[areaId].consumeItems(uid,default_cfg["hero_reset"]["value"],1,"英雄重生",function(flag,err) {
@@ -106,7 +106,7 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
         return
       }
       if(herolist[i].combat){
-        next(null,{flag : false,err : "英雄已出战"+i+","+hIds[i]+",combat:"+herolist[i].combat})
+        next(null,{flag : false,err : "trong đội"+i+","+hIds[i]+",combat:"+herolist[i].combat})
         return
       }
       if((herolist[i].zf_1 && herolist[i].zf_1 != 1) || (herolist[i].zf_2 && herolist[i].zf_2 != 1) || (herolist[i].zf_3 && herolist[i].zf_3 != 1)){
@@ -182,7 +182,7 @@ heroHandler.prototype.unlockZhanfaGrid = function(msg, session, next) {
           return
         }
         if(data[i].combat){
-          next(null,{flag : false,data : "英雄已出战"+hIds[i]})
+          next(null,{flag : false,data : "trong đội"+hIds[i]})
           return
         }
         if(data[i].star != 10){
@@ -331,7 +331,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
             return
           }
           if(data[i].combat){
-            next(null,{flag : false,data : "英雄已出战"+hIds[i]})
+            next(null,{flag : false,data : "trong đội"+hIds[i]})
             return
           }
           if((data[i].zf_1 && data[i].zf_1 != 1) || (data[i].zf_2 && data[i].zf_2 != 1) || (data[i].zf_3 && data[i].zf_3 != 1)){

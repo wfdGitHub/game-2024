@@ -250,7 +250,7 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 			return
 		}
 		if(heroInfo.combat){
-			cb(false,"英雄已出战")
+			cb(false,"trong đội")
 			return
 		}
 		self.redisDao.db.hdel("player:user:"+uid+":heroMap",hId,function(err,data) {
