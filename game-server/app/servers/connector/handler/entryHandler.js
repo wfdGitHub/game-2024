@@ -27,7 +27,6 @@ entryHandler.prototype.VNGzoneEntry = function(msg, session, next) {
 	var token = msg.token
 	var self = this
 	var url = sdkConfig["CheckUserInfo"]+"?app="+app_key+"&token="+token
-	console.log("url",url)
 	https.get(url,function(res){
 	    var json = '';
 	    res.on('data', function (d) {
@@ -36,7 +35,6 @@ entryHandler.prototype.VNGzoneEntry = function(msg, session, next) {
 	    res.on('end',function(){
 	        //获取到的数据
 	        var data = JSON.parse(json);
-		  		console.log("VNGzoneEntry",data)
 		    	if(data && data.message == "OK"){
 		    		var unionid = data.data.account_id
 		    		var loginToken = util.randomString(8)
