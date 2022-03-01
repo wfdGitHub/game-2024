@@ -211,7 +211,7 @@ module.exports = function() {
 					cd = Number(cd) || 0
 					var curTime = Date.now()
 					if(cd > curTime){
-						next("退出公会冷却中,"+Math.ceil((cd - curTime)/60000)+"分钟后可创建")
+						next("Thời gian hồi chiêu thoát, bang hội có thể được tạo sau "+Math.ceil((cd - curTime)/60000)+" phút")
 						return
 					}
 					next()
