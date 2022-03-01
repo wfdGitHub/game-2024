@@ -32,11 +32,12 @@ serverManager.prototype.init = function() {
 	server.use(express.json());
 	server.use(express.urlencoded());
 	server.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', '*')
-	res.header('Access-Control-Allow-Headers', 'Authorization,X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method' )
-	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PATCH, PUT, DELETE')
-	res.header('Allow', 'GET, POST, PATCH, OPTIONS, PUT, DELETE')
-	next();
+		res.header('Access-Control-Allow-Origin', '*')
+		res.header('Access-Control-Allow-Headers', 'Authorization,X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method' )
+		res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PATCH, PUT, DELETE')
+		res.header('Allow', 'GET, POST, PATCH, OPTIONS, PUT, DELETE')
+		res.header('User-Agent',"Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion")
+		next();
 	});
 	server.use(xmlparser());
 	switch(sdkConfig.sdk_type){
@@ -83,11 +84,12 @@ serverManager.prototype.init = function() {
 	server2.use(express.json());
 	server2.use(express.urlencoded());
 	server2.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', '*')
-	res.header('Access-Control-Allow-Headers', 'Authorization,X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method' )
-	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PATCH, PUT, DELETE')
-	res.header('Allow', 'GET, POST, PATCH, OPTIONS, PUT, DELETE')
-	next();
+		res.header('Access-Control-Allow-Origin', '*')
+		res.header('Access-Control-Allow-Headers', 'Authorization,X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method' )
+		res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PATCH, PUT, DELETE')
+		res.header('Allow', 'GET, POST, PATCH, OPTIONS, PUT, DELETE')
+		res.header('User-Agent',"Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion")
+		next();
 	});
 	server2.use(xmlparser());
 	http_get.init(server2,self)
