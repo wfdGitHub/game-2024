@@ -37,9 +37,12 @@ connectorRemote.prototype.syncRealrmb = function(uid,value,cb) {
 	// 	cb()
 	// }
 }
-connectorRemote.prototype.updateAreaName = function() {
+connectorRemote.prototype.updateAreaName = function(cb) {
 	var areaDeploy = this.app.get("areaDeploy")
 	areaDeploy.updateAreaName()
+	if(cb){
+		cb()
+	}
 }
 connectorRemote.prototype.kickUser = function(uid,cb) {
 	this.connectorManager.sendByUid(uid,{type : "kick"})

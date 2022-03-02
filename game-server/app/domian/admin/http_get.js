@@ -38,7 +38,7 @@ var model = function() {
 	gets["/updateAreaName"] = function(req,res) {
 		var areaDeploy = self.app.get("areaDeploy")
 		areaDeploy.updateAreaName()
-		self.app.rpc.connector.connectorRemote.updateAreaName.toServer("*",null)
+		self.app.rpc.connector.connectorRemote.updateAreaName.toServer("*",function(){})
 		res.send("SUCCESS")
 	}
 	//更新返利
