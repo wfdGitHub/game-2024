@@ -196,6 +196,12 @@ var model = function() {
 			res.send("SUCCESS")
 		})
 	}
+	//获取服务器名称
+	posts["/getAreaName"] = function(req,res) {
+		self.redisDao.db.hgetall("area:areaName",function(err,data) {
+			res.send({areaNames:data || {}})
+		})
+	}
 	//设置服务器名称
 	posts["/setAreaName"] = function(req,res) {
 		var data = req.body
