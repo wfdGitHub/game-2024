@@ -39,8 +39,8 @@ var createMysqlPool = function () {
         }  
     }
     var opts = {
-        max: 100, // maximum size of the pool  
-        min: 10, // minimum size of the pool  
+        max: 20, // maximum size of the pool  
+        min: 5, // minimum size of the pool  
         idleTimeoutMillis: 600000,
         evictionRunIntervalMillis : 60000,
         // 如果 设置为 true 的话，就是使用 console.log 打印日志，当然你可以传递一个 function 最为作为日志记录handler  
