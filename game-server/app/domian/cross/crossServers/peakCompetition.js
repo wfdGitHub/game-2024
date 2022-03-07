@@ -28,7 +28,6 @@ module.exports = function() {
 	var timeMap = {}			//刷新冷却
 	//初始化
 	this.peakInit = function() {
-		return
 		async.waterfall([
 			function(next) {
 				self.redisDao.db.hgetall("cross:peak",function(err,data) {
@@ -130,7 +129,6 @@ module.exports = function() {
 	}
 	//每日刷新
 	this.peakDayUpdate = function() {
-		return
 		console.log("peakDayUpdate runFlag ",runFlag,(new Date()).getDay())
 		likeUsers = {}
 		timeMap = {}
@@ -140,7 +138,6 @@ module.exports = function() {
 	}
 	//实时刷新
 	this.peakUpdate = function(date) {
-		return
 		if(runFlag && !look && date.getTime() >= timeList[state_index+1]){
 			console.log("peakUpdate",date.getTime(),timeList[state_index+1])
 			// 进入下一阶段
