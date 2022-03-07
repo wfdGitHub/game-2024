@@ -304,6 +304,9 @@ module.exports = function() {
 			}else if(data["value"] < liveness_cfg[index]["value"]){
 				cb(false,"活跃度不足")
 			}else{
+				//突发礼包
+				if(index == 4 && Math.random() < 0.3)
+					self.checkSuddenGift(uid)
 				self.setObj(uid,liveness_name,"index_"+index,0)
 				let awardList = self.addItemStr(uid,liveness_cfg[index]["award"],1,"活跃度宝箱"+index)
 				cb(true,{awardList : awardList})

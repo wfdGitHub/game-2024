@@ -206,6 +206,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 				self.weekFirstLogin(uid)
 			if(self.players[uid].monthStr != self.monthStr)
 				self.monthFirstLogin(uid)
+			self.checkSuddenGiftForTime(uid)
 			cb(true,self.players[uid])
 		}
 	],function(err) {
@@ -236,6 +237,9 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.extremityUserUpdate(uid)
 	this.incrbyAreaObj("areaInfo","day_login",1)
 	this.playerDao.setPlayerInfo({uid:uid,key:"pay_state",value:0})
+	//每日随机时间
+	var rand_time = util.getZeroTime() + Math.floor((Math.random() * 0.41 + 0.42) * oneDayTime)
+	this.setPlayerData(uid,"rand_time",rand_time)
 	this.mysqlDao.addDaylyData("activeNum",1)
 	this.mysqlDao.updateRetention(uid,this.players[uid]["createTime"])
 	this.taskUpdate(uid,"login",1)
