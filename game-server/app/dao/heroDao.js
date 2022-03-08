@@ -14,7 +14,7 @@ var stone_base = require("../../config/gameCfg/stone_base.json")
 var stone_skill = require("../../config/gameCfg/stone_skill.json")
 var stone_cfg = require("../../config/gameCfg/stone_cfg.json")
 var async = require("async")
-var first_recruit = 304010
+var first_recruit = 205070
 var baseStone = {
 	"1" : 400010100,
 	"2" : 400020100,
