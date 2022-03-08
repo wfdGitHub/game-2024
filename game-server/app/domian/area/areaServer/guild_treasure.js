@@ -1,4 +1,4 @@
-//同盟宝藏BOSS
+//仙盟宝藏BOSS
 const async = require("async")
 const guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
 const guild_lv = require("../../../../config/gameCfg/guild_lv.json")
@@ -63,7 +63,7 @@ module.exports = function() {
 	this.getAuctionData = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入仙盟")
 			return
 		}
 		var info = {}
@@ -114,14 +114,14 @@ module.exports = function() {
 						for(var i in list){
 							list[i] = JSON.parse(list[i])
 							if(list[i]["uid"] && list[i]["uid"] > 10000)
-								self.sendMail(list[i]["uid"],"同盟竞拍成功","恭喜您竞拍成功，这是您的竞拍物品。",list[i]["item"])
+								self.sendMail(list[i]["uid"],"仙盟竞拍成功","恭喜您竞拍成功，这是您的竞拍物品。",list[i]["item"])
 							allValue += list[i]["cur"]
 						}
 						self.redisDao.db.lrange(main_name+":play:"+guildId,0,-1,function(err,data) {
 							if(!err && data && data.length){
 								var oneValue = Math.ceil(allValue / data.length)
 								for(var i = 0;i < data.length;i++){
-									self.sendMail(data[i],"同盟竞拍分红","您获得了来自同盟竞拍的分红奖励",currency+":"+oneValue)
+									self.sendMail(data[i],"仙盟竞拍分红","您获得了来自仙盟竞拍的分红奖励",currency+":"+oneValue)
 								}
 							}
 						})
@@ -134,7 +134,7 @@ module.exports = function() {
 	this.challengeTreasureBoss = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入仙盟")
 			return
 		}
 		var guildInfo = self.getGuildInfo(guildId)
@@ -269,7 +269,7 @@ module.exports = function() {
 	this.getAuctionList = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入仙盟")
 			return
 		}
 		self.redisDao.db.hgetall(main_name+":"+guildId,function(err,list) {
@@ -280,7 +280,7 @@ module.exports = function() {
 	this.upForAuction = function(uid,index,price,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入仙盟")
 			return
 		}
 		if(!Number.isInteger(price) || price <= 0){

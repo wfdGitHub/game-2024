@@ -1,4 +1,4 @@
-//同盟攻城战
+//仙盟攻城战
 const guild_city = require("../../../../config/gameCfg/guild_city.json")
 const main_name = "guild_city"
 const async = require("async")
@@ -33,7 +33,7 @@ module.exports = function() {
 	this.getGuildCityData = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入仙盟")
 			return
 		}
 		var info = {}
@@ -56,7 +56,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//获取本同盟报名数据
+				//获取本仙盟报名数据
 				self.getAreaObj(main_name+":apply",guildId,function(data) {
 					info.apply = data
 					next()
@@ -80,7 +80,7 @@ module.exports = function() {
 	this.getGuildCityRecord = function(uid,cityId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入仙盟")
 			return
 		}
 		var info = {}
@@ -93,7 +93,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//防守同盟
+				//防守仙盟
 				self.getAreaObj(main_name+":cityLord",cityId,function(data) {
 					if(data){
 						info.guildInfo = self.getGuildInfo(data)
@@ -114,7 +114,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//本同盟队伍
+				//本仙盟队伍
 				self.getAreaObjAll(main_name+":city:"+cityId,function(data) {
 					var list = []
 					var uids = []
@@ -167,7 +167,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//同盟排名
+				//仙盟排名
 				self.zrangewithscore(main_name+":guildDamageRank:"+cityId,-10,-1,function(list) {
 					var guilds = []
 					var scores = []
@@ -196,7 +196,7 @@ module.exports = function() {
 	this.applyGuildCity = function(uid,cityId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入仙盟")
 			return
 		}
 		var guildInfo = self.getGuildInfo(guildId)
@@ -297,7 +297,7 @@ module.exports = function() {
 	this.sendGuildCityTeam = function(uid,cityId,teamId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入仙盟")
 			return
 		}
 		//检测时间
@@ -370,7 +370,7 @@ module.exports = function() {
 	this.cancelGuildCityTeam = function(uid,teamId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入仙盟")
 			return
 		}
 		//检测队伍是否已派遣
@@ -388,7 +388,7 @@ module.exports = function() {
 	this.gainGuildCityAward = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入同盟")
+			cb(false,"未加入仙盟")
 			return
 		}
 		//检测时间
@@ -430,7 +430,7 @@ module.exports = function() {
 	this.guildOneCityFight = function(cityId) {
 		var atkTeams = []
 		var defTeams = []
-		var oldGuildId = 0			//原城主同盟
+		var oldGuildId = 0			//原城主仙盟
 		var winGuildId = 0			//攻城胜利者
 		var atkList = []
 		var defList = []
@@ -675,7 +675,7 @@ module.exports = function() {
 				//发放奖励
 				for(var i = 0;i < atkList.length;i++){
 					if(!uidMap[atkList[i]["uid"]])
-						self.sendMail(atkList[i]["uid"],"攻城战参与奖励","您参与本次同盟活动【攻城战】，挑战【"+guild_city[cityId]["name"]+"】时获得了参与奖励",guild_city[cityId]["play"])
+						self.sendMail(atkList[i]["uid"],"攻城战参与奖励","您参与本次仙盟活动【攻城战】，挑战【"+guild_city[cityId]["name"]+"】时获得了参与奖励",guild_city[cityId]["play"])
 					uidMap[atkList[i]["uid"]] = 1
 				}
 				//排名奖励
@@ -684,7 +684,7 @@ module.exports = function() {
 					var rank = 0
 					for(var i = list.length - 1;i >= 0;i--){
 						rank++
-						self.sendMail(list[i],"攻城战排名奖励","您参与本次同盟活动【攻城战】，挑战【"+guild_city[cityId]["name"]+"】时获得了获得了伤害第"+rank+"名，获得了排名奖励",guild_city[cityId]["damage_"+rank])
+						self.sendMail(list[i],"攻城战排名奖励","您参与本次仙盟活动【攻城战】，挑战【"+guild_city[cityId]["name"]+"】时获得了获得了伤害第"+rank+"名，获得了排名奖励",guild_city[cityId]["damage_"+rank])
 					}
 				})
 				next()
@@ -704,7 +704,7 @@ module.exports = function() {
 			cb(false,err)
 		})
 	}
-	//离开同盟后撤销派遣
+	//离开仙盟后撤销派遣
 	this.cancelGuildCityAllTeam = function(guildId,uid) {
 		//检测队伍是否已派遣
 		var arr = []
