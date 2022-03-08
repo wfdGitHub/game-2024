@@ -76,8 +76,6 @@ module.exports = function() {
 				if(Date.now() > data){
 					self.redisDao.db.hset("player:user:"+uid+":playerData","rand_time",-1)
 					self.checkSuddenGift(uid)
-				}else{
-					console.log("不满足时间要求")
 				}
 			}
 		})

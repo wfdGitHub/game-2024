@@ -171,7 +171,6 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 	})
 }
 serverManager.prototype.gzone_order = function(data,cb) {
-	console.log("gzone_order",data)
 	var app_key = data.app_key
 	if(!sdkConfig.app_keys[app_key]){
 		cb(false,"app_key 错误")
