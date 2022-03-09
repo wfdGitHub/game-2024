@@ -42,22 +42,21 @@ module.exports = function() {
 			return
 		}
 		self.redisDao.db.hget("player:user:"+uid+":heroArchive",id,function(err,data) {
+			data = Number(data)
 			if(!data){
 				cb(false,"该英雄未获得")
 				return
 			}
-			data = Number(data)
 			self.getObj(uid,main_name,id,function(star) {
-				if(star)
-					star = Number(star)
+				star = Number(star)
 				if(!star || data <= star){
 					cb(false,"该英雄图鉴未满足升级条件")
 					return
 				}
-				star = Number(star)+1
+				star += 1
 				self.incrbyObj(uid,main_name,id,1)
 				self.incrbyLordData(uid,"gather",star_base[star]["gather"],function(data) {
-					self.setGather(uid,Number(data))
+					self.setGather(uid,data)
 					cb(true,{star : star,gather : data})
 				})
 			})
