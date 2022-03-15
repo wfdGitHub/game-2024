@@ -78,7 +78,6 @@ serverManager.prototype.pay_callback = function(server,type) {
 		self.pay_order[type] = pay_order
 		server.post(sdkConfig[type]["pay_callback"],function(req,res) {
 			var data = req.body
-			console.log("pay_callback",data)
 			self.pay_order[type](type,data,function(flag,err) {
 					switch(sdkConfig[type].sdk_type){
 						case "gzone":
