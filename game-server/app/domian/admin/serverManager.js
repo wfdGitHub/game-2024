@@ -5,8 +5,6 @@ var adminManager = require('./adminManager.js')
 var parseString = require('xml2js').parseString;
 var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var util = require("../../../util/util.js")
-var Md5_Key = sdkConfig["Md5_Key"]
-var Callback_Key = sdkConfig["Callback_Key"]
 var local = {}
 var serverManager = function(app) {
 	this.app = app
@@ -14,6 +12,7 @@ var serverManager = function(app) {
 	this.openPlans = {}
 	this.mergePlans = {}
 	this.areaLock = {}
+	this.pay_order = {}
 }
 serverManager.prototype.init = function() {
 	var self = this
@@ -39,46 +38,9 @@ serverManager.prototype.init = function() {
 	next();
 	});
 	server.use(xmlparser());
-	switch(sdkConfig.sdk_type){
-		case "quick":
-			self.pay_order = self.quick_order
-		break
-		case "jianwan":
-			self.pay_order = self.jianwan_order
-		break
-		case "277":
-			self.pay_order = self.game277_order
-		break 
-		default:
-			console.error("sdktype error")
+	for(var type in sdkConfig){
+		self.pay_callback(server,type)
 	}
-	server.post(sdkConfig["pay_callback"],function(req,res) {
-		var data = req.body
-		self.pay_order(data,function(flag,err) {
-				switch(sdkConfig.sdk_type){
-					case "gzone":
-						if(flag){
-							res.send({
-								'error_code' : 0,
-								'order_id' : data.order_id,
-								'coin' : data.platform_price,
-								'message' : "Thành công"
-							})
-						}else{
-							res.send({
-								'error_code' : 200,
-								'message' : err
-							})
-						}
-					break
-					case "277":
-							res.send("succ")
-					break
-					default:
-						res.send("SUCCESS")
-			}
-		})
-	})
 	// serverDB.init(server,self.mysqlDao,self.redisDao)
 	server.listen(80);
 	var server2 = express()
@@ -95,15 +57,62 @@ serverManager.prototype.init = function() {
 	adminManager.init(server2,self,self.mysqlDao,self.redisDao)
 	server2.listen(5081);
 }
-serverManager.prototype.quick_order = function(data,cb) {
-	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
+serverManager.prototype.pay_callback = function(server,type) {
+		if(!sdkConfig[type])
+			return
+		var self = this
+		var pay_order
+		switch(sdkConfig[type].sdk_type){
+			case "quick":
+				pay_order = self.quick_order.bind(self)
+			break
+			case "jianwan":
+				pay_order = self.jianwan_order.bind(self)
+			break
+			case "277":
+				pay_order = self.game277_order.bind(self)
+			break 
+			default:
+				console.error("sdktype error")
+		}
+		self.pay_order[type] = pay_order
+		server.post(sdkConfig[type]["pay_callback"],function(req,res) {
+			var data = req.body
+			self.pay_order[type](type,data,function(flag,err) {
+					switch(sdkConfig[type].sdk_type){
+						case "gzone":
+							if(flag){
+								res.send({
+									'error_code' : 0,
+									'order_id' : data.order_id,
+									'coin' : data.platform_price,
+									'message' : "Thành công"
+								})
+							}else{
+								res.send({
+									'error_code' : 200,
+									'message' : err
+								})
+							}
+						break
+						case "277":
+								res.send("succ")
+						break
+						default:
+							res.send("SUCCESS")
+				}
+			})
+		})
+}
+serverManager.prototype.quick_order = function(type,data,cb) {
+	var v_sign = util.md5(data.nt_data+data.sign+sdkConfig[type]["Md5_Key"])
 	if(v_sign != data.md5Sign){
 		console.error("签名验证失败")
 		cb(false,"签名验证失败")
 		return
 	}
 	var self = this
-	var xmlStr = local.decode(data.nt_data,Callback_Key)
+	var xmlStr = local.decode(data.nt_data,sdkConfig[type]["Callback_Key"])
 	parseString(xmlStr,function(err,result) {
 		var message = result.quicksdk_message.message[0]
 		var info = {
@@ -135,8 +144,8 @@ serverManager.prototype.quick_order = function(data,cb) {
 	});
 }
 //简玩
-serverManager.prototype.jianwan_order = function(data,cb) {
-	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
+serverManager.prototype.jianwan_order = function(type,data,cb) {
+	var v_sign = util.md5(data.nt_data+data.sign+sdkConfig[type]["Md5_Key"])
 	if(v_sign != data.md5Sign){
 		console.error("签名验证失败")
 		cb(false,"签名验证失败")
@@ -172,8 +181,8 @@ serverManager.prototype.jianwan_order = function(data,cb) {
 	})
 }
 //277
-serverManager.prototype.game277_order = function(data,cb) {
-	var v_sign = util.md5(encodeURI("amount="+data.amount+"&extendsinfo="+data.extendsinfo+"&gameid="+data.gameid+"&orderid="+data.orderid+"&out_trade_no="+data.out_trade_no+"&servername="+data.servername+"&time="+data.time+"&username="+data.username+sdkConfig["secretkey"]))
+serverManager.prototype.game277_order = function(type,data,cb) {
+	var v_sign = util.md5(encodeURI("amount="+data.amount+"&extendsinfo="+data.extendsinfo+"&gameid="+data.gameid+"&orderid="+data.orderid+"&out_trade_no="+data.out_trade_no+"&servername="+data.servername+"&time="+data.time+"&username="+data.username+sdkConfig[type]["secretkey"]))
 	if(v_sign != data.sign){
 		console.error("签名验证失败")
 		cb(false,"签名验证失败")

@@ -2,7 +2,6 @@ var bearcat = require("bearcat")
 var http=require('http')
 var querystring = require("querystring")
 var sdkConfig = require("../../../../config/sysCfg/sdkConfig.json")
-var product_code = sdkConfig.product_code
 var util = require("../../../../util/util.js")
 var entryHandler = function(app) {
   this.app = app;
@@ -26,8 +25,9 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	var token = msg.token
 	var uid = msg.uid
 	var channel_code = msg.channel_code
+	var pro_code = sdkConfig["normal"]["product_code"]
 	var self = this
-	var url = sdkConfig["CheckUserInfo"]+"?token="+token+"&product_code="+product_code+"&uid="+uid+"&channel_code="+channel_code
+	var url = sdkConfig["normal"]["CheckUserInfo"]+"?token="+token+"&product_code="+pro_code+"&uid="+uid+"&channel_code="+channel_code
 	http.get(url,function(res){
 	  	res.on("data",function(data) {
 	    	if(data == 1){
@@ -45,15 +45,40 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 		});
 	})
 }
+entryHandler.prototype.quickEntryWithType = function(msg, session, next) {
+	var token = msg.token
+	var uid = msg.uid
+	var channel_code = msg.channel_code
+	var type = msg.type
+	var pro_code = sdkConfig[type]["product_code"]
+	var self = this
+	var url = sdkConfig[type]["CheckUserInfo"]+"?token="+token+"&product_code="+pro_code+"&uid="+uid+"&channel_code="+channel_code
+	http.get(url,function(res){
+	  	res.on("data",function(data) {
+	    	if(data == 1){
+	    		var unionid = uid
+	    		var loginToken = util.randomString(8)
+	    		self.redisDao.db.hset("loginToken",unionid,loginToken)
+	    		next(null,{flag:true,unionid:unionid,token:loginToken,areaDiff:sdkConfig[type]["areaDiff"]})
+	    	}else{
+	    		next(null,{flag:false,err:"渠道账号验证错误"})
+	    	}
+	  	})
+		res.on("error", err => {
+			console.log(err.message);
+			next(null,{flag:false,err:err})
+		});
+	})
+}
 //277登陆
 entryHandler.prototype.quickEntry = function(msg, session, next) {
 	var data = { 
-	  appid: sdkConfig["appid"],
+	  appid: sdkConfig["normal"]["appid"],
 	  certification: 0,
 	  token: msg.token,
 	  username: msg.uid
 	}
-	data.sign = util.md5("appid="+data.appid+"&token="+data.token+"&username="+data.username+sdkConfig["secretkey"])
+	data.sign = util.md5("appid="+data.appid+"&token="+data.token+"&username="+data.username+sdkConfig["normal"]["secretkey"])
 	var postData=querystring.stringify(data)
 	var self = this
 	var options={
