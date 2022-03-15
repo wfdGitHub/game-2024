@@ -4,6 +4,15 @@ var activityHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 }
+//点票支付
+activityHandler.prototype.dianpiao_recharge = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var pay_id = msg.pay_id
+  this.areaManager.areaMap[areaId].dianpiao_recharge(uid,pay_id,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //申请支付
 activityHandler.prototype.apply_recharge = function(msg, session, next) {
   var uid = session.uid
