@@ -46,6 +46,14 @@ var model = function(otps) {
 	this.anyAnger = otps["anyAnger"] || false   		//当前怒气小于4点时，也能施放技能，技能伤害降低15%*(4-当前怒气值)
 	this.totalDamage = 0								//累计伤害
 	this.totalHeal = 0									//累计治疗
+	//==========MEGA属性========//
+	this.frozen_anger = otps.frozen_anger 				//冰冻后恢复怒气值
+	this.enter_skill = otps.enter_skill 				//入场后释放怒气技能
+	this.fanzhi_damage = otps.fanzhi_damage  			//每消耗1层反制印记，额外造成目标最大生命值的伤害
+	if(otps.begin_round_buffs)
+		this.begin_round_buffs = JSON.parse(otps.begin_round_buffs)  //回合开始时获得随机BUFF
+	this.rescue_anger = otps.rescue_anger  				//复活恢复怒气值
+	this.ghost_unlimit = otps.ghost_unlimit 			//亡魂无限制
 	//=========新战斗属性=======//
 	this.first_buff_list = []			//初始BUFF
 	this.kill_buffs = {} 				//击杀BUFF
@@ -658,6 +666,11 @@ model.prototype.begin = function() {
 		this.attInfo.hp = Math.ceil(this.attInfo.hp * this.surplus_health)
 	}
 }
+//战前准备
+model.prototype.beginAction = function() {
+	if(this.enter_skill)
+		skillManager.useSkill(this.angerSkill)
+}
 //行动开始前刷新
 model.prototype.before = function() {
 	this.action_flag = true
@@ -684,6 +697,11 @@ model.prototype.before = function() {
 	for(var i in this.buffs)
 		if(buff_cfg[i].refreshType == "before_2")
 			this.buffs[i].update()
+	//随机BUFF判断
+	if(this.begin_round_buffs){
+		var rand = Math.floor(Math.random() * this.begin_round_buffs.length)
+		buffManager.createBuff(this,this,this.begin_round_buffs[rand])
+	}
 }
 //行动结束后刷新
 model.prototype.after = function() {
@@ -1150,7 +1168,7 @@ model.prototype.kill = function(target) {
     }
 }
 //复活
-model.prototype.resurgence = function(rate) {
+model.prototype.resurgence = function(rate,releaser) {
 	if(this.buffs["jinhun"])
 		return
 	if(rate > 1)
@@ -1159,6 +1177,9 @@ model.prototype.resurgence = function(rate) {
 	this.died = false
 	this.teamInfo["realms_survival"][this["realm"]]++
 	fightRecord.push({type : "resurgence",curValue : this.attInfo.hp,maxHP : this.attInfo.maxHP,id : this.id,curAnger : 0})
+	if(releaser.rescue_anger){
+		this.addAnger(releaser.rescue_anger)
+	}
 }
 //恢复血量
 model.prototype.addHP = function(value) {

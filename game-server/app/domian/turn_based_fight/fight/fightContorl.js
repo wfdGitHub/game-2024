@@ -138,22 +138,6 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	info.bookAtts = bookAtts
 	let id = info.id
 	model.mergeData(info,herosCfg[id])
-	if(info.defaultSkill){
-		if(!skillsCfg[info.defaultSkill]){
-			console.error("技能不存在",info.id,info.defaultSkill)
-			info.defaultSkill = false
-		}else{
-			info.defaultSkill = Object.assign({skillId : info.defaultSkill},skillsCfg[info.defaultSkill])
-		}
-	}
-	if(info.angerSkill){
-		if(!skillsCfg[info.angerSkill]){
-			console.error("技能不存在",info.id,info.angerSkill)
-			info.angerSkill = false
-		}else{
-			info.angerSkill = Object.assign({skillId : info.angerSkill},skillsCfg[info.angerSkill])
-		}
-	}
 	//被动技能
 	if(herosCfg[info.id]["talent"])
 		model.mergeTalent(info,herosCfg[info.id]["talent"])
@@ -353,6 +337,29 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		model.mergeTalent(info,zhanfa[info.zf_2]["talent"])
 	if(info.zf_3 && zhanfa[info.zf_3] && zhanfa[info.zf_3]["talent"])
 		model.mergeTalent(info,zhanfa[info.zf_3]["talent"])
+
+
+	//技能设置
+	if(info.normal_change)
+		info.defaultSkill = info.normal_change
+	if(info.skill_change)
+		info.angerSkill = info.skill_change
+	if(info.defaultSkill){
+		if(!skillsCfg[info.defaultSkill]){
+			console.error("技能不存在",info.id,info.defaultSkill)
+			info.defaultSkill = false
+		}else{
+			info.defaultSkill = Object.assign({skillId : info.defaultSkill},skillsCfg[info.defaultSkill])
+		}
+	}
+	if(info.angerSkill){
+		if(!skillsCfg[info.angerSkill]){
+			console.error("技能不存在",info.id,info.angerSkill)
+			info.angerSkill = false
+		}else{
+			info.angerSkill = Object.assign({skillId : info.angerSkill},skillsCfg[info.angerSkill])
+		}
+	}
 	return new character(info)
 }
 //获取天书数据

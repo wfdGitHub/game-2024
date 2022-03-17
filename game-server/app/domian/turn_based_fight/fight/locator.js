@@ -30,6 +30,10 @@ model.prototype.getTargets = function(character,targetType) {
 			// 敌方随机2-4个目标
 			var rand = Math.floor(this.seededNum.random("enemy_rand_24") * 3) + 2
 			return this.getEnemyRandom(character,rand)
+		case "enemy_rand_35":
+			// 敌方随机3-5个目标
+			var rand = Math.floor(this.seededNum.random("enemy_rand_35") * 3) + 3
+			return this.getEnemyRandom(character,rand)
 		case "enemy_vertical":
 			//敌方纵排
 			return this.getEnemyVertical(character)
@@ -157,6 +161,8 @@ model.prototype.getTargets = function(character,targetType) {
 			return this.getTeamDiedAll(character)
 		case "team_died":
 			return this.getTeamDied(character)
+		case "team_died_unghost":
+			return this.getTeamDiedUnghost(character)
 		default :
 			console.error("targetType error ",targetType)
 			return []
@@ -821,6 +827,22 @@ model.prototype.getTeamDied = function(character) {
 		return [list[index]]
 	}
 }
+//己方随机一个阵亡单位(未亡魂)
+model.prototype.getTeamDiedUnghost = function(character) {
+	var list = []
+	for(var i = 0;i < character.team.length;i++){
+		if(!character.team[i].isNaN && character.team[i].died && !character.team[i].buffs["jinhun"] && (!character.team[i].ghost || character.team[i].ghost_unlimit)){
+			list.push(character.team[i])
+		}
+	}
+	if(list.length == 0){
+		return []
+	}else{
+		var index = Math.floor(this.seededNum.random("排序") * list.length)
+		return [list[index]]
+	}
+}
+
 //己方攻击最高的n个单位
 model.prototype.getTeamMaxAtk = function(character,count) {
     var list = []

@@ -312,6 +312,10 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			info.realDamage = Math.floor(target.attInfo.maxHP * target.buffs["bleed"].getValue() * attacker.skill_bleed_maxHp)
 			info.value += info.realDamage
 		}
+		if(attacker.fanzhi_damage && attacker.buffs["fanzhi"]){
+			info.realDamage = Math.floor(target.attInfo.maxHP * attacker.buffs["fanzhi"].getValue() * attacker.fanzhi_damage)
+			info.value += info.realDamage
+		}
 	}
 	//减伤判断
 	if(target.reduction_over){

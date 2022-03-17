@@ -829,13 +829,13 @@ model.useHealSkill = function(skill,chase) {
 			info.rescue = true
 			recordInfo.targets.push(info)
 			fightRecord.push(recordInfo)
-			targets[0].resurgence(tmpValue)
+			targets[0].resurgence(tmpValue,skill.character)
 			return targets
 		}
 	}
 	//转化亡魂
 	if(skill.turn_ghost){
-		var targets = this.locator.getTargets(skill.character,"team_died")
+		var targets = this.locator.getTargets(skill.character,"team_died_unghost")
 		if(targets.length !== 0){
 			var info = {id : targets[0].id,source : skill.character.id}
 			info.turn_ghost = true

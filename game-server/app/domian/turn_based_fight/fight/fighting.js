@@ -63,6 +63,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		}
 		atkTeam[i].init(this)
 		if(atkTeam[i].resurgence_team){
+			this.atkTeamInfo["resurgence_team_character"] = atkTeam[i]
 			this.atkTeamInfo["resurgence_team"] = atkTeam[i].resurgence_team
 			if(atkTeam[i]["resurgence_realmRate"]){
 				this.atkTeamInfo["resurgence_realmRate"] = atkTeam[i]["resurgence_realmRate"]
@@ -95,6 +96,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		}
 		defTeam[i].init(this)
 		if(defTeam[i].resurgence_team){
+			this.defTeamInfo["resurgence_team_character"] = defTeam[i]
 			this.defTeamInfo["resurgence_team"] = defTeam[i].resurgence_team
 			if(defTeam[i]["resurgence_realmRate"]){
 				this.defTeamInfo["resurgence_realmRate"] = defTeam[i]["resurgence_realmRate"]
@@ -149,6 +151,10 @@ model.prototype.fightBegin = function() {
 		info.defTeam.push(this.defTeam[i].getSimpleInfo())
 	}
 	fightRecord.push(info)
+	for(var i = 0;i < teamLength;i++){
+		this.atkTeam[i].beginAction()
+		this.defTeam[i].beginAction()
+	}
 	//初始buff
 	for(var i = 0;i < teamLength;i++){
 		if(!this.atkTeam[i].died){
@@ -528,7 +534,7 @@ model.prototype.diedListCheck = function() {
 		if(this.diedList[i].died_rescue_team){
 			var targets = this.locator.getTargets(this.diedList[i],"team_died_all")
 			for(var k = 0;k < targets.length;k++){
-				targets[k].resurgence(this.diedList[i].died_rescue_team)
+				targets[k].resurgence(this.diedList[i].died_rescue_team,this.diedList[i])
 			}
 			this.diedList[i].died_rescue_team = 0
 		}
@@ -536,15 +542,15 @@ model.prototype.diedListCheck = function() {
 		if(!this.diedList[i].buffs["jinhun"]){
 			if(this.diedList[i].died_resurgence){
 				this.diedList[i].died_resurgence = false
-				this.diedList[i].resurgence(1)
+				this.diedList[i].resurgence(1,this.diedList[i])
 			}else if(this.diedList[i].resurgence_self && this.seeded.random("复活判断") < this.diedList[i].resurgence_self){
-				this.diedList[i].resurgence(1)
+				this.diedList[i].resurgence(1,this.diedList[i])
 			}else if(this.diedList[i].teamInfo.resurgence_team){
 				var rate = this.diedList[i].teamInfo.resurgence_team
 				if(this.diedList[i].teamInfo.resurgence_realmRate && this.diedList[i].teamInfo.resurgence_realmId == this.diedList[i].realm){
 					rate = rate * this.diedList[i].teamInfo.resurgence_realmRate
 				}
-				this.diedList[i].resurgence(rate)
+				this.diedList[i].resurgence(rate,this.diedList[i].teamInfo.resurgence_team_character)
 				delete this.diedList[i].teamInfo.resurgence_team
 			}
 		}
