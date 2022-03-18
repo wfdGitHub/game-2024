@@ -53,8 +53,8 @@ serverManager.prototype.init = function() {
 	next();
 	});
 	server2.use(xmlparser());
-	adminManager.init(server2,self,self.mysqlDao,self.redisDao)
-	serverDB.init(server2,self.mysqlDao,self.redisDao)
+	adminManager.init(server2,self)
+	serverDB.init(server2,self)
 	server2.listen(5081);
 }
 serverManager.prototype.pay_callback = function(server,type) {
