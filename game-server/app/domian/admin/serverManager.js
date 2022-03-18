@@ -1,6 +1,6 @@
 var express = require('express');
 var xmlparser = require('express-xml-bodyparser')
-// var serverDB = require('./serverDB.js')
+var serverDB = require('./serverDB.js')
 var adminManager = require('./adminManager.js')
 var parseString = require('xml2js').parseString;
 var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
@@ -41,7 +41,6 @@ serverManager.prototype.init = function() {
 	for(var type in sdkConfig){
 		self.pay_callback(server,type)
 	}
-	// serverDB.init(server,self.mysqlDao,self.redisDao)
 	server.listen(80);
 	var server2 = express()
 	server2.use(express.json());
@@ -55,6 +54,7 @@ serverManager.prototype.init = function() {
 	});
 	server2.use(xmlparser());
 	adminManager.init(server2,self,self.mysqlDao,self.redisDao)
+	serverDB.init(server2,self.mysqlDao,self.redisDao)
 	server2.listen(5081);
 }
 serverManager.prototype.pay_callback = function(server,type) {
