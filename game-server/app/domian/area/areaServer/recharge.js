@@ -304,8 +304,8 @@ module.exports = function() {
 			return
 		}
 		self.getObj(uid,main_name,"bagDay_"+index,function(data) {
-			if(data > 0){
-				cb(false,"已购买")
+			if(data >= awardBag_day[index]["limit"]){
+				cb(false,"已限购")
 				return
 			}
 			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
