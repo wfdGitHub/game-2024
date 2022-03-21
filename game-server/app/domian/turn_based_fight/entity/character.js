@@ -408,7 +408,9 @@ var model = function(otps) {
 	if(otps.first_buff1)
 		this.first_buff_list.push(JSON.parse(otps.first_buff1))		//首回合附加BUFF1
 	if(otps.first_buff2)
-		this.first_buff_list.push(JSON.parse(otps.first_buff2))		//首回合附加BUFF1
+		this.first_buff_list.push(JSON.parse(otps.first_buff2))		//首回合附加BUFF2
+	if(otps.first_buff3)
+		this.first_buff_list.push(JSON.parse(otps.first_buff3))		//首回合附加BUFF3
 	if(otps.first_ace_buff1)
 		this.first_buff_list.push(JSON.parse(otps.first_ace_buff1))		//首回合附加BUFF1
 	if(otps.first_ace_buff2)
