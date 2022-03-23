@@ -49,6 +49,25 @@ accountDao.prototype.updatePlaytime = function(otps) {
 		this.setAccountData({accId : otps.accId,name : "dayStr",value : endStr})
 	}
 }
+//创建机器人账号
+accountDao.prototype.createRobotAccount = function(cb) {
+	var self = this
+	var areaId = 1
+	self.createAccount({unionid : uuid.v1(),head : beginHero,robot:true},function(flag,userInfo) {
+		if(flag){
+			self.playerDao.createPlayer({accId : userInfo.accId,areaId:areaId,name:self.namespace.getName(),robot:true},function(playerInfo) {
+				if(playerInfo){
+					self.playerDao.setRobotTeam(areaId,playerInfo)
+					var crossUid = areaId+"|"+playerInfo.uid
+					self.redisDao.db.zincrby(["cross:grading:rank",10,crossUid],function(err,value) {
+						self.redisDao.db.zadd(["cross:grading:realRank",10,crossUid])
+					})
+				}
+				cb(true)
+			})
+		}
+	})
+}
 //获取账号信息
 accountDao.prototype.getAccountInfo = function(otps,cb) {
 	var unionid = otps.unionid
