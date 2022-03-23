@@ -1,5 +1,5 @@
 const uuid = require("uuid")
-const boyNames = require("../../../../config/sysCfg/boy.json")
+const boyNames = require("../../config/sysCfg/boy.json")
 var beginHero = 303020
 var accountDao = function() {}
 //创建新账号
