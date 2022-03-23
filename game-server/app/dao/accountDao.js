@@ -145,5 +145,8 @@ module.exports = {
 	},{
 		name : "mysqlDao",
 		ref : "mysqlDao"
+	},{
+		name : "playerDao",
+		ref : "playerDao"
 	}]
 }
