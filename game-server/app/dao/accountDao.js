@@ -1,4 +1,5 @@
 const uuid = require("uuid")
+var beginHero = 303020
 var accountDao = function() {}
 //创建新账号
 accountDao.prototype.createAccount = function(otps,cb) {
