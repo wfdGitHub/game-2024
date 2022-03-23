@@ -423,7 +423,6 @@ var model = function() {
 	}
 	//增加跨服机器人
 	posts["/createRobotAccount"] = function(req,res) {
-		console.log("createRobotAccount",req)
 		self.accountDao.createRobotAccount(function(flag,err) {
 			res.send({flag:flag,err:err})
 		})
