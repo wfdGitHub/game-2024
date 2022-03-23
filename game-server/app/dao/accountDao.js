@@ -1,3 +1,4 @@
+const uuid = require("uuid")
 var accountDao = function() {}
 //创建新账号
 accountDao.prototype.createAccount = function(otps,cb) {
