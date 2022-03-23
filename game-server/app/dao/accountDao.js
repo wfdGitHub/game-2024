@@ -1,3 +1,6 @@
+const uuid = require("uuid")
+const boyNames = require("../../config/sysCfg/boy.json")
+var beginHero = 303020
 var accountDao = function() {}
 //创建新账号
 accountDao.prototype.createAccount = function(otps,cb) {
@@ -48,6 +51,25 @@ accountDao.prototype.updatePlaytime = function(otps) {
 		this.setAccountData({accId : otps.accId,name : "dayTime",value : playTime})
 		this.setAccountData({accId : otps.accId,name : "dayStr",value : endStr})
 	}
+}
+//创建机器人账号
+accountDao.prototype.createRobotAccount = function(cb) {
+	var self = this
+	var areaId = 1
+	self.createAccount({unionid : uuid.v1(),head : beginHero,robot:true},function(flag,userInfo) {
+		if(flag){
+			self.playerDao.createPlayer({accId : userInfo.accId,areaId:areaId,name:boyNames[Math.floor(Math.random() * boyNames.length)],robot:true},function(playerInfo) {
+				if(playerInfo){
+					self.playerDao.setRobotTeam(areaId,playerInfo)
+					var crossUid = areaId+"|"+playerInfo.uid
+					self.redisDao.db.zincrby(["cross:grading:rank",10,crossUid],function(err,value) {
+						self.redisDao.db.zadd(["cross:grading:realRank",10,crossUid])
+					})
+				}
+				cb(true)
+			})
+		}
+	})
 }
 //获取账号信息
 accountDao.prototype.getAccountInfo = function(otps,cb) {
@@ -124,5 +146,8 @@ module.exports = {
 	},{
 		name : "mysqlDao",
 		ref : "mysqlDao"
+	},{
+		name : "playerDao",
+		ref : "playerDao"
 	}]
 }
