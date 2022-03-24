@@ -103,6 +103,31 @@
             console.log(data);
         });
       }
+      //=================家园===========//
+      //获取家园数据
+      var manor_data = function() {
+        pomelo.request("area.manorHandler.manor_data", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //建设升级建筑
+      var manor_build = function(bId,land) {
+        pomelo.request("area.manorHandler.manor_build", {bId:bId,land:land}, function(data) {
+            console.log(data);
+        });
+      }
+      //建设升级建筑
+      var manor_swap = function(land1,land2) {
+        pomelo.request("area.manorHandler.manor_swap", {land1:land1,land2:land2}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取收益
+      var manor_reap = function(bId) {
+        pomelo.request("area.manorHandler.manor_reap", {bId:bId}, function(data) {
+            console.log(data);
+        });
+      }
       //===============新公会PK=========//
       // 报名PK
       var applyGuildPKRival = function() {

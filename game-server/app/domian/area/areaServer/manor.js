@@ -6,6 +6,7 @@ for(var i in manor_builds){
 	if(!builds[manor_builds[i]["basic"]])
 		builds[manor_builds[i]["basic"]] = require("../../../../config/gameCfg/manor_"+manor_builds[i]["basic"]+".json")
 }
+const hourTime = 3600000
 console.log(builds)
 const main_name = "manor"
 module.exports = function() {
@@ -31,13 +32,18 @@ module.exports = function() {
 			cb(false,"bId error "+bId)
 			return
 		}
+		if(!Number.isInteger(land)){
+			cb(false,"land error "+land)
+			return
+		}
+		var mainLv = 0
 		var basic = manor_builds[bId]["basic"]
 		async.waterfall([
 			function(next) {
 				//获取主建筑等级
-				self.getObj(uid,main_name,"main",function(mainLv) {
-					mainLv = Number(mainLv) || 0
-					if(manor_builds[basic]["main_lv"] > mainLv){
+				self.getObj(uid,main_name,"main",function(data) {
+					mainLv = Number(data) || 0
+					if(manor_builds[bId]["main_lv"] > mainLv){
 						next("主建筑等级不足")
 						return
 					}
@@ -60,6 +66,10 @@ module.exports = function() {
 					buildLv++
 					if(!builds[basic][buildLv]){
 						next("建筑等级已满")
+						return
+					}
+					if(bId != "main" && buildLv > mainLv){
+						next("主建筑等级不足")
 						return
 					}
 					if(builds[basic][buildLv]["upgrade"]){
@@ -92,6 +102,10 @@ module.exports = function() {
 	}
 	//交换建筑
 	this.manor_swap = function(uid,land1,land2,cb) {
+		if(!Number.isInteger(land1) || !Number.isInteger(land2)){
+			cb(false,"land error "+land1+" "+land2)
+			return
+		}
 		var bId1 = ""
 		var bId2 = ""
 		self.getObj(uid,main_name,"land_"+land1,function(data) {
@@ -114,7 +128,9 @@ module.exports = function() {
 			cb(false,"非资源建筑")
 			return
 		}
+		var basic = manor_builds[bId]["basic"]
 		var item = manor_builds[bId]["award"]
+		var curTime = Date.now()
 		self.getHMObj(uid,main_name,[bId,bId+"_time"],function(data) {
 			var buildLv = Number(data[0]) || 0
 			var time = Number(data[1]) || 0
@@ -122,9 +138,18 @@ module.exports = function() {
 				cb(false,"建筑不存在")
 				return
 			}
-			var awardTime = Date.now() - time
+			var awardTime = curTime - time
 			console.log("awardTime",awardTime)
-			
+			var value = Math.floor(awardTime / hourTime * builds[basic][buildLv]["output"])
+			if(awardTime < 10000 || value < 1){
+				cb(false,"资源正在生产中")
+				return
+			}
+			if(value > builds[basic][buildLv]["capacity"])
+				value = builds[basic][buildLv]["capacity"]
+			var awardList = self.addItemStr(uid,item+":"+value,1,"收获"+bId)
+			self.setObj(uid,main_name,bId+"_time",curTime)
+			cb(true,{awardList:awardList,time:curTime})
 		})
 	}
 	//驯养马匹
