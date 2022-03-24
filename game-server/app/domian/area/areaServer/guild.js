@@ -613,7 +613,7 @@ module.exports = function() {
 				self.getPlayerKeyByUid(guildList[guildId]["lead"],"offline",function(offline) {
 					offline = Number(offline)
 					if(!offline || (Date.now() - offline) < 5 * oneDayTime){
-						next("未满足弹劾条件")
+						next("điều kiện không được đáp ứng")
 						return
 					}
 					next()

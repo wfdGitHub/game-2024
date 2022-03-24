@@ -131,12 +131,12 @@ CDKeyDao.prototype.verifyCDKey = function(key,uid,area,name,cb) {
 			cb(false,data)
 		}else{
 			if(data.maxCount <= data.count){
-				cb(false,"该礼包码已经被激活")
+				cb(false,"Mã quà tặng đã được sử dụng")
 				return
 			}
 			var curTime = Date.now()
 			if(data.expires < curTime){
-				cb(false,"该礼包码已失效")
+				cb(false,"Mã phiếu giảm giá này đã hết hạn")
 				return
 			}
 			self.redisDao.db.hget("player:user:"+uid+":cdkey",data.type,function(err,state) {
@@ -149,11 +149,11 @@ CDKeyDao.prototype.verifyCDKey = function(key,uid,area,name,cb) {
 							cb(false,err)
 						}else{
 							if(res[0].valid == 0){
-								cb(false,"该礼包码已失效")
+								cb(false,"Mã phiếu giảm giá này đã hết hạn")
 								return
 							}
 							if(res[0].once == 1 && state){
-								cb(false,"该类型礼包码已经激活过了")
+								cb(false,"Loại mã quà tặng này đã được kích hoạt")
 								return
 							}
 							sql = 'update CDKey SET count=count+?,uid=?,area=?,name=?,u_time=? where cdkey = ?'
