@@ -168,7 +168,7 @@ module.exports = function() {
 				return
 			}
 			var time = Number(data[1]) || 0
-			self.consumeItems(uid,builds[basic][buildLv]["pc"],1,"驯养马匹:"buildLv,function(flag,err) {
+			self.consumeItems(uid,builds[basic][buildLv]["pc"],1,"驯养马匹:"+buildLv,function(flag,err) {
 				if(flag){
 					var curTime = Date.now()
 					self.setObj(uid,main_name,bId+"_time",curTime)
@@ -199,15 +199,60 @@ module.exports = function() {
 				var horseInfo = {}
 				self.delObj(uid,main_name,bId+"_time")
 				cb(true,horseInfo)
+			}else{
+				cb(false,"未到收取时间")
 			}
 		})
 	}
 	//打造护符
 	this.manorStartHufu = function(uid,cb) {
-		
+		var bId = "qjf"
+		var basic = "qjf"
+		self.getHMObj(uid,main_name,[bId,bId+"_time"],function(data) {
+			var buildLv = Number(data[0]) || 0
+			if(!buildLv){
+				cb(false,"建筑不存在")
+				return
+			}
+			if(data[1]){
+				cb(false,"正在生产中")
+				return
+			}
+			var time = Number(data[1]) || 0
+			self.consumeItems(uid,builds[basic][buildLv]["pc"],1,"打造护符:"+buildLv,function(flag,err) {
+				if(flag){
+					var curTime = Date.now()
+					self.setObj(uid,main_name,bId+"_time",curTime)
+					cb(true,curTime)
+				}else{
+					cb(false,err)
+				}
+			})
+		})
 	}
 	//收取护符
 	this.manorGainHufu = function(uid,cb) {
-		
+		var bId = "qjf"
+		var basic = "qjf"
+		self.getHMObj(uid,main_name,[bId,bId+"_time"],function(data) {
+			var buildLv = Number(data[0]) || 0
+			if(!buildLv){
+				cb(false,"建筑不存在")
+				return
+			}
+			if(!data[1]){
+				cb(false,"不在生成中")
+				return
+			}
+			var time = Number(data[1]) || 0
+			if(time > oneDayTime){
+				//获得护符
+				var horseInfo = {}
+				self.delObj(uid,main_name,bId+"_time")
+				cb(true,horseInfo)
+			}else{
+				cb(false,"未到收取时间")
+			}
+		})
 	}
 }
