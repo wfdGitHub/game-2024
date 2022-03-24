@@ -64,6 +64,7 @@ module.exports = function() {
 		self.redisDao.db.del(real_rank)
 		self.redisDao.db.del(main_rank)
 		self.redisDao.db.del("cross:ancient:wins")
+		self.redisDao.db.del("cross:ancient:award")
 		self.redisDao.db.hset("cross:ancient","week",util.getWeek())
 		self.redisDao.db.get("area:lastid",function(err,lastid) {
 			lastid = Number(lastid) || 0
