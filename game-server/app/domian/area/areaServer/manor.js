@@ -7,6 +7,7 @@ for(var i in manor_builds){
 		builds[manor_builds[i]["basic"]] = require("../../../../config/gameCfg/manor_"+manor_builds[i]["basic"]+".json")
 }
 const hourTime = 3600000
+const oneDayTime = 86400000
 console.log(builds)
 const main_name = "manor"
 module.exports = function() {
@@ -153,11 +154,60 @@ module.exports = function() {
 		})
 	}
 	//驯养马匹
-	this.manor_horse = function(uid,cb) {
-		
+	this.manorStartHorse = function(uid,cb) {
+		var bId = "xmc"
+		var basic = "xmc"
+		self.getHMObj(uid,main_name,[bId,bId+"_time"],function(data) {
+			var buildLv = Number(data[0]) || 0
+			if(!buildLv){
+				cb(false,"建筑不存在")
+				return
+			}
+			if(data[1]){
+				cb(false,"正在生产中")
+				return
+			}
+			var time = Number(data[1]) || 0
+			self.consumeItems(uid,builds[basic][buildLv]["pc"],1,"驯养马匹:"buildLv,function(flag,err) {
+				if(flag){
+					var curTime = Date.now()
+					self.setObj(uid,main_name,bId+"_time",curTime)
+					cb(true,curTime)
+				}else{
+					cb(false,err)
+				}
+			})
+		})
+	}
+	//收取马匹
+	this.manorGainHorse = function(uid,cb) {
+		var bId = "xmc"
+		var basic = "xmc"
+		self.getHMObj(uid,main_name,[bId,bId+"_time"],function(data) {
+			var buildLv = Number(data[0]) || 0
+			if(!buildLv){
+				cb(false,"建筑不存在")
+				return
+			}
+			if(!data[1]){
+				cb(false,"不在生成中")
+				return
+			}
+			var time = Number(data[1]) || 0
+			if(time > oneDayTime){
+				//获得马匹
+				var horseInfo = {}
+				self.delObj(uid,main_name,bId+"_time")
+				cb(true,horseInfo)
+			}
+		})
 	}
 	//打造护符
-	this.manor_hufu = function(uid,cb) {
+	this.manorStartHufu = function(uid,cb) {
+		
+	}
+	//收取护符
+	this.manorGainHufu = function(uid,cb) {
 		
 	}
 }
