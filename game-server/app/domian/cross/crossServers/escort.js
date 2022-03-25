@@ -433,7 +433,7 @@ module.exports = function() {
 			return
 		}
 		if(local.userInfos[crossUid]["robCD"] >= Date.now()){
-			cb(false,"奇袭冷却中")
+			cb(false,"Tấn công khi hồi chiêu")
 			return
 		}
 		if(carInfo["robCount"] >= escort_cfg["loseCount"]["value"]){
