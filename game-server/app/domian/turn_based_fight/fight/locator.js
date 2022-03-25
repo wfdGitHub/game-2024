@@ -174,6 +174,27 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 		case "skill_targets":
 			//技能目标
 			return targets || []
+		case "enemy_normal":
+			//默认敌人前排单体
+			return this.getTargetNormal(character)
+		case "enemy_normal_back":
+			//默认敌方后排单体
+			return this.getEnemyNormalBack(character)
+		case "enemy_1":
+			//敌方随机单体
+			return this.getEnemyRandom(character,1)
+		case "enemy_2":
+			//敌方2个随机单体
+			return this.getEnemyRandom(character,2)
+		case "enemy_3":
+			//敌方3个随机单体
+			return this.getEnemyRandom(character,3)
+		case "enemy_4":
+			//敌方4个随机单体
+			return this.getEnemyRandom(character,4)
+		case "enemy_5":
+			//敌方5个随机单体
+			return this.getEnemyRandom(character,5)
 		case "team_self":
 			return [character]
 		case "team_all":
