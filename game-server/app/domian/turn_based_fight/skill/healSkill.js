@@ -27,13 +27,13 @@ model.prototype.init = function() {
 					value = JSON.parse(value)
 				break
 				case "buff1":
-					this.addBuff(this.otps.value1)
+					this.addBuff(value)
 				break
 				case "buff2":
-					this.addBuff(this.otps.value2)
+					this.addBuff(value)
 				break
 				case "buff3":
-					this.addBuff(this.otps.value3)
+					this.addBuff(value)
 				break
 			}
 			this[key] = value
