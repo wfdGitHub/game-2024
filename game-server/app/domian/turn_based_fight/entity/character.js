@@ -405,6 +405,8 @@ var model = function(otps) {
 	this.first_amp = otps.first_amp || 0		//首回合伤害加成
 	if(this.first_crit)
 		this.must_crit = true
+	if(otps.maga_buff1)
+		this.maga_buff1 = JSON.parse(otps.maga_buff1)				//首回合附加  可选其他目标
 	if(otps.first_buff1)
 		this.first_buff_list.push(JSON.parse(otps.first_buff1))		//首回合附加BUFF1
 	if(otps.first_buff2)
@@ -672,6 +674,16 @@ model.prototype.begin = function() {
 model.prototype.beginAction = function() {
 	if(this.enter_skill)
 		skillManager.useSkill(this.angerSkill)
+	if(this.maga_buff1){
+		var buff = this.maga_buff1
+		var buffTargets = this.fighting.locator.getBuffTargets(this,buff.buff_tg)
+		for(var i = 0;i < buffTargets.length;i++){
+			if(buffTargets[i].died){
+				continue
+			}
+			buffManager.createBuff(this,buffTargets[i],{buffId : buff.buffId,buffArg : buff.buffArg,duration : buff.duration})
+		}
+	}
 }
 //行动开始前刷新
 model.prototype.before = function() {
@@ -1157,7 +1169,7 @@ model.prototype.kill = function(target) {
 			var duration = buff.duration
 			for(var i = 0;i < buffTargets.length;i++){
 				if(buffTargets[i].died){
-					break
+					continue
 				}
 				if(this.fighting.seeded.random("kill_buffs") < buffRate){
 					buffManager.createBuff(this,buffTargets[i],{buffId : buffId,buffArg : buffArg,duration : duration})

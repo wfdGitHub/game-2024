@@ -17,7 +17,7 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		return
 	}
 	//亡魂不状态不可释放BUFF
-	if(character.ghost)
+	if(buffId != "ghost" && character.ghost)
 		return
 	//判断控制buff抗性
 	if(buff_cfg[buffId].control){

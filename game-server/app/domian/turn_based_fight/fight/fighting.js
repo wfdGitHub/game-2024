@@ -155,7 +155,7 @@ model.prototype.fightBegin = function() {
 		this.atkTeam[i].beginAction()
 		this.defTeam[i].beginAction()
 	}
-	//初始buff
+	//初始自身buff
 	for(var i = 0;i < teamLength;i++){
 		if(!this.atkTeam[i].died){
 			if(this.atkTeam[i].first_buff_list.length){
