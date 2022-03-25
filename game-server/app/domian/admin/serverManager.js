@@ -7,6 +7,7 @@ var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var util = require("../../../util/util.js")
 var Md5_Key = sdkConfig["Md5_Key"]
 var Callback_Key = sdkConfig["Callback_Key"]
+var ip_white_list = ["3.0.248.130","61.28.239.131"]
 var local = {}
 var serverManager = function(app) {
 	this.app = app
@@ -55,6 +56,20 @@ serverManager.prototype.init = function() {
 	}
 	server.post(sdkConfig["pay_callback"],function(req,res) {
 		var data = req.body
+		var ipFlag = false
+		for(var i = 0;i < ip_white_list.length;i++){
+			if(req.ip.indexOf(ip_white_list[i]) != -1){
+				ipFlag = true
+				break
+			}
+		}
+		if(!ipFlag){
+				res.send({
+					'error_code' : 299,
+					'message' : "ip error"
+				})
+				return
+		}
 		self.pay_order(data,function(flag,err) {
 				switch(sdkConfig.sdk_type){
 					case "gzone":
