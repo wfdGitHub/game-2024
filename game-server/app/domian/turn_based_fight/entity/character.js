@@ -18,7 +18,7 @@ var model = function(otps) {
 	this.teamInfo = {}
 	this.bookAtts = otps.bookAtts
 	this.isBoss = otps.boss || false	//是否是BOSS
-	this.first_buff_list = []			//初始BUFF
+	this.isAction = false 				//行动标识
 	//=========基础属性=======//
 	this.attInfo = {}
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
@@ -35,6 +35,7 @@ var model = function(otps) {
 	this.attInfo.reduction = otps["reduction"] || 0		//伤害减免
 	this.attInfo.healRate = otps["healRate"] || 0		//治疗暴击几率
 	this.attInfo.healAdd = otps["healAdd"] || 0			//被治疗加成
+	this.attInfo.speed = otps["speed"] || 0 			//速度值
 
 	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
 	this.surplus_health = otps.surplus_health			//剩余生命值比例
@@ -46,6 +47,7 @@ var model = function(otps) {
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
 	//=========其他效果=======//
+	this.first_buff_list = []			//初始BUFF
 	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
 	//=========战法效果=======//
 	this.zf_amp = 0 										//战法伤害加成
@@ -986,7 +988,8 @@ model.prototype.getInfo = function() {
 	info.hp = this.attInfo.hp
 	info.atk = this.attInfo.atk
 	info.phyDef = this.attInfo.phyDef
-	info.magDef = this.attInfo.mthis.attInfoagDef
+	info.magDef = this.attInfo.magDef
+	info.speed = this.attInfo.speed
 	info.crit = this.attInfo.crit
 	info.critDef = this.attInfo.critDef
 	info.slay = this.attInfo.slay
@@ -1031,6 +1034,7 @@ model.prototype.getSimpleInfo = function() {
 	info.atk = this.attInfo.atk
 	info.maxHP = this.attInfo.maxHP
 	info.hp = this.attInfo.hp
+	info.speed = this.speed
 	info.curAnger = this.curAnger
 	info.needAnger = this.needAnger
 	info.totalDamage = this.totalDamage
