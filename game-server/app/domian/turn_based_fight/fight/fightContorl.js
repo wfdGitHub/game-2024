@@ -25,6 +25,7 @@ var title_list = require("../../../../config/gameCfg/title_list.json")
 var zhanfa = require("../../../../config/gameCfg/zhanfa.json")
 var officer = require("../../../../config/gameCfg/officer.json")
 var camp_att = require("../../../../config/gameCfg/camp_att.json")
+var war_horse = require("../../../../config/gameCfg/war_horse.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -305,6 +306,13 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		if(info.hfs2)
 			model.mergeTalent(info,info.hfs2)
 	}
+	//战马属性
+	if(info.horse){
+		var horseInfo = JSON.parse(info.horse)
+		model.mergeData(info,{"speed":horseInfo.val})
+		if(horseInfo.s1)
+			model.mergeTalent(info,horseInfo.s1)
+	}
 	//称号属性
 	if(teamCfg && teamCfg["title"] && title_list[teamCfg["title"]] && title_list[teamCfg["title"]]["talent"])
 		model.mergeTalent(info,title_list[teamCfg["title"]]["talent"])
@@ -469,6 +477,16 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 			if(newValue)
 				newCE = hufu_quality[newValue]["ce"]
 		break 
+		case "horse":
+			if(oldValue){
+				oldValue = JSON.parse(oldValue)
+				oldCE = war_horse[oldValue.id]["ce"]
+			}
+			if(newValue){
+				newValue = JSON.parse(newValue)
+				newCE = war_horse[newValue.id]["ce"]
+			}
+		break
 		case "zf_1":
 		case "zf_2":
 		case "zf_3":
@@ -515,6 +533,10 @@ model.getTeamCE = function(team) {
 					allCE += hufuSkillCes[team[i]["hfs1"]]
 				if(team[i]["hfs2"] && hufuSkillCes[team[i]["hfs2"]])
 					allCE += hufuSkillCes[team[i]["hfs2"]]
+			}
+			if(team[i]["horse"]){
+				var horseInfo = JSON.parse(team[i]["horse"])
+				allCE += war_horse[horseInfo.id]["ce"]
 			}
 			for(var j = 1;j <= 3;j++){
 				if(team[i]["zf_"+j] && zhanfa[team[i]["zf_"+j]])

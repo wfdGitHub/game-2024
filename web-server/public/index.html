@@ -554,6 +554,55 @@
             console.log(data);
         });
       }
+      //==============战马==========//
+      //战马列表
+      var getHorseList = function() {
+        pomelo.request("area.hufuHandler.getHorseList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //生成随机战马
+      var gainRandHorse = function(lv) {
+        pomelo.request("area.hufuHandler.gainRandHorse", {lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //穿戴战马
+      var wearHorse = function(hId,id) {
+        pomelo.request("area.hufuHandler.wearHorse", {hId:hId,id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下战马
+      var unwearHorse = function(hId) {
+        pomelo.request("area.hufuHandler.unwearHorse", {hId:hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //合成战马
+      var compoundHorse = function(ids,lv) {
+        pomelo.request("area.hufuHandler.compoundHorse", {ids:ids,lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //洗练战马
+      var resetHorse = function(ids,lv) {
+        pomelo.request("area.hufuHandler.resetHorse", {ids:ids,lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //战马洗练
+      var washHorse = function(id) {
+        pomelo.request("area.hufuHandler.washHorse", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //出售战马
+      var sellHorse = function(id) {
+        pomelo.request("area.hufuHandler.sellHorse", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
       //==============护符==========//
       //护符列表
       var getHufuList = function() {

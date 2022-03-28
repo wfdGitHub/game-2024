@@ -91,6 +91,85 @@ hufuHandler.prototype.sellHufu = function(msg, session, next) {
     }
   })
 }
+
+//战马列表
+hufuHandler.prototype.getHorseList = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  this.areaManager.areaMap[areaId].getHorseList(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//生成随机战马
+hufuHandler.prototype.gainRandHorse = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var lv = msg.lv
+  var data = this.areaManager.areaMap[areaId].gainRandHorse(uid,lv)
+  next(null,{flag:true,data:data})
+}
+//穿戴战马
+hufuHandler.prototype.wearHorse = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hId = msg.hId
+  var id = msg.id
+  this.areaManager.areaMap[areaId].wearHorse(uid,hId,id,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//卸下战马
+hufuHandler.prototype.unwearHorse = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].unwearHorse(uid,hId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//合成战马
+hufuHandler.prototype.compoundHorse = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var ids = msg.ids
+  var lv = msg.lv
+  this.areaManager.areaMap[areaId].compoundHorse(uid,ids,lv,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//洗练战马
+hufuHandler.prototype.resetHorse = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var ids = msg.ids
+  var lv = msg.lv
+  this.areaManager.areaMap[areaId].resetHorse(uid,ids,lv,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//洗练石洗练
+hufuHandler.prototype.washHorse = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var id = msg.id
+  this.areaManager.areaMap[areaId].washHorse(uid,id,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//出售战马
+hufuHandler.prototype.sellHorse = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  var self = this
+  self.areaManager.areaMap[areaId].sellHorse(uid,id,function(flag,data) {
+    if(!flag){
+      next(null,{flag : flag,err : data})
+    }else{
+      next(null,{flag : flag,awardList : data})
+    }
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "hufuHandler",
