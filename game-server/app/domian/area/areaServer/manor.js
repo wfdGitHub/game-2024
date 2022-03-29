@@ -6,9 +6,20 @@ for(var i in manor_builds){
 	if(!builds[manor_builds[i]["basic"]])
 		builds[manor_builds[i]["basic"]] = require("../../../../config/gameCfg/manor_"+manor_builds[i]["basic"]+".json")
 }
+for(var i in builds["xmc"]){
+	builds["xmc"][i]["allWeight"] = 0
+	for(var j = 1; j <= 4;j++)
+		if(builds["xmc"][i]["quality_"+j])
+			builds["xmc"][i]["allWeight"] +=builds["xmc"][i]["quality_"+j]
+}
+for(var i in builds["qjf"]){
+	builds["qjf"][i]["allWeight"] = 0
+	for(var j = 1; j <= 4;j++)
+		if(builds["qjf"][i]["quality_"+j])
+			builds["qjf"][i]["allWeight"] +=builds["qjf"][i]["quality_"+j]
+}
 const hourTime = 3600000
-const oneDayTime = 86400000
-console.log(builds)
+const build_time = 3000
 const main_name = "manor"
 module.exports = function() {
 	var self = this
@@ -168,9 +179,9 @@ module.exports = function() {
 				return
 			}
 			var time = Number(data[1]) || 0
-			self.consumeItems(uid,builds[basic][buildLv]["pc"],1,"驯养马匹:"+buildLv,function(flag,err) {
+			self.consumeItems(uid,"810:"+builds[basic][buildLv]["pc"],1,"驯养马匹:"+buildLv,function(flag,err) {
 				if(flag){
-					var curTime = Date.now()
+					var curTime = Date.now() + build_time
 					self.setObj(uid,main_name,bId+"_time",curTime)
 					cb(true,curTime)
 				}else{
@@ -190,13 +201,23 @@ module.exports = function() {
 				return
 			}
 			if(!data[1]){
-				cb(false,"不在生成中")
+				cb(false,"不在生产中")
 				return
 			}
 			var time = Number(data[1]) || 0
-			if(time > oneDayTime){
+			if(Date.now() > time){
 				//获得马匹
-				var horseInfo = {}
+				var rand = Math.random() * builds[bId][buildLv]["allWeight"]
+				var lv = 1
+				for(var i = 1; i <= 4;i++){
+					if(rand < builds[bId][buildLv]["quality_"+i]){
+						lv = i
+						break
+					}else{
+						rand -= builds[bId][buildLv]["quality_"+i]
+					}
+				}
+				var horseInfo = self.gainRandHorse(uid,lv)
 				self.delObj(uid,main_name,bId+"_time")
 				cb(true,horseInfo)
 			}else{
@@ -219,9 +240,9 @@ module.exports = function() {
 				return
 			}
 			var time = Number(data[1]) || 0
-			self.consumeItems(uid,builds[basic][buildLv]["pc"],1,"打造护符:"+buildLv,function(flag,err) {
+			self.consumeItems(uid,"810:"+builds[basic][buildLv]["pc"],1,"打造护符:"+buildLv,function(flag,err) {
 				if(flag){
-					var curTime = Date.now()
+					var curTime = Date.now() + build_time
 					self.setObj(uid,main_name,bId+"_time",curTime)
 					cb(true,curTime)
 				}else{
@@ -241,15 +262,25 @@ module.exports = function() {
 				return
 			}
 			if(!data[1]){
-				cb(false,"不在生成中")
+				cb(false,"不在生产中")
 				return
 			}
 			var time = Number(data[1]) || 0
-			if(time > oneDayTime){
-				//获得护符
-				var horseInfo = {}
+			if(Date.now() > time){
+				//收取护符
+				var rand = Math.random() * builds[bId][buildLv]["allWeight"]
+				var lv = 1
+				for(var i = 1; i <= 4;i++){
+					if(rand < builds[bId][buildLv]["quality_"+i]){
+						lv = i
+						break
+					}else{
+						rand -= builds[bId][buildLv]["quality_"+i]
+					}
+				}
+				var hufuInfo = self.gainRandHufu(uid,lv)
 				self.delObj(uid,main_name,bId+"_time")
-				cb(true,horseInfo)
+				cb(true,hufuInfo)
 			}else{
 				cb(false,"未到收取时间")
 			}

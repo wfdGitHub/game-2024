@@ -40,6 +40,38 @@ manorHandler.prototype.manor_reap = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//驯养马匹
+manorHandler.prototype.manorStartHorse = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorStartHorse(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//收取马匹
+manorHandler.prototype.manorGainHorse = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorGainHorse(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//打造护符
+manorHandler.prototype.manorStartHufu = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorStartHufu(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//收取护符
+manorHandler.prototype.manorGainHufu = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorGainHufu(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "manorHandler",
