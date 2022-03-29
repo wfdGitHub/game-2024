@@ -138,16 +138,6 @@ hufuHandler.prototype.compoundHorse = function(msg, session, next) {
   })
 }
 //洗练战马
-hufuHandler.prototype.resetHorse = function(msg, session, next) {
-  var areaId = session.get("areaId")
-  var uid = session.uid
-  var ids = msg.ids
-  var lv = msg.lv
-  this.areaManager.areaMap[areaId].resetHorse(uid,ids,lv,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//洗练石洗练
 hufuHandler.prototype.washHorse = function(msg, session, next) {
   var areaId = session.get("areaId")
   var uid = session.uid
@@ -163,6 +153,142 @@ hufuHandler.prototype.sellHorse = function(msg, session, next) {
   var id = msg.id
   var self = this
   self.areaManager.areaMap[areaId].sellHorse(uid,id,function(flag,data) {
+    if(!flag){
+      next(null,{flag : flag,err : data})
+    }else{
+      next(null,{flag : flag,awardList : data})
+    }
+  })
+}
+//战鼓列表
+hufuHandler.prototype.getDrumList = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  this.areaManager.areaMap[areaId].getDrumList(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//生成随机战鼓
+hufuHandler.prototype.gainRandDrum = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var lv = msg.lv
+  var data = this.areaManager.areaMap[areaId].gainRandDrum(uid,lv)
+  next(null,{flag:true,data:data})
+}
+//穿戴战鼓
+hufuHandler.prototype.wearDrum = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hId = msg.hId
+  var id = msg.id
+  this.areaManager.areaMap[areaId].wearDrum(uid,hId,id,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//卸下战鼓
+hufuHandler.prototype.unwearDrum = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].unwearDrum(uid,hId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//合成战鼓
+hufuHandler.prototype.compoundDrum = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var ids = msg.ids
+  var lv = msg.lv
+  this.areaManager.areaMap[areaId].compoundDrum(uid,ids,lv,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//洗练战鼓
+hufuHandler.prototype.washDrum = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var id = msg.id
+  this.areaManager.areaMap[areaId].washDrum(uid,id,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//出售战鼓
+hufuHandler.prototype.sellDrum = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  var self = this
+  self.areaManager.areaMap[areaId].sellDrum(uid,id,function(flag,data) {
+    if(!flag){
+      next(null,{flag : flag,err : data})
+    }else{
+      next(null,{flag : flag,awardList : data})
+    }
+  })
+}
+//军旗列表
+hufuHandler.prototype.getBannerList = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  this.areaManager.areaMap[areaId].getBannerList(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//生成随机军旗
+hufuHandler.prototype.gainRandBanner = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var lv = msg.lv
+  var data = this.areaManager.areaMap[areaId].gainRandBanner(uid,lv)
+  next(null,{flag:true,data:data})
+}
+//穿戴军旗
+hufuHandler.prototype.wearBanner = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hId = msg.hId
+  var id = msg.id
+  this.areaManager.areaMap[areaId].wearBanner(uid,hId,id,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//卸下军旗
+hufuHandler.prototype.unwearBanner = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].unwearBanner(uid,hId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//合成军旗
+hufuHandler.prototype.compoundBanner = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var ids = msg.ids
+  var lv = msg.lv
+  this.areaManager.areaMap[areaId].compoundBanner(uid,ids,lv,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//洗练军旗
+hufuHandler.prototype.washBanner = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var id = msg.id
+  this.areaManager.areaMap[areaId].washBanner(uid,id,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//出售军旗
+hufuHandler.prototype.sellBanner = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  var self = this
+  self.areaManager.areaMap[areaId].sellBanner(uid,id,function(flag,data) {
     if(!flag){
       next(null,{flag : flag,err : data})
     }else{
