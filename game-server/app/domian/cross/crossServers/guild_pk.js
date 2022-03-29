@@ -21,10 +21,10 @@ module.exports = function() {
 		self.redisDao.db.hgetall(main_name,function(err,data) {
 			if(data){
 				pk_info = data
-				pk_info.guildList = JSON.parse(data.guildList)
-				pk_info.guildInfos = JSON.parse(data.guildInfos)
-				pk_info.parMap = JSON.parse(data.parMap)
-				pk_info.table = JSON.parse(data.table)
+				pk_info.guildList = data.guildList ? JSON.parse(data.guildList) : []
+				pk_info.guildInfos =data.guildInfos ?  JSON.parse(data.guildInfos) : {}
+				pk_info.parMap =data.parMap ?  JSON.parse(data.parMap) : {}
+				pk_info.table =data.table ?  JSON.parse(data.table) : {}
 				pk_info.open = Number(pk_info.open)
 			}else{
 				data = {}
