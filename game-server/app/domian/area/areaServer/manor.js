@@ -36,7 +36,9 @@ module.exports = function() {
 	//初始化家园
 	this.manor_init = function(uid,cb) {
 		self.setObj(uid,main_name,"main",1)
-		cb(true,{"main":1})
+		self.incrbyLordData(uid,"warehouse",builds["main"][1]["food"])
+		if(cb)
+			cb(true,{"main":1})
 	}
 	//建设升级建筑
 	this.manor_build = function(uid,bId,land,cb) {
@@ -112,11 +114,18 @@ module.exports = function() {
 					case "qby":
 						self.setBuildLv(uid,bId,buildLv)
 					break
+					case "main":
+					case "cangku":
+						var old_food = 0
+						if(buildLv > 1)
+							old_food = builds[bId][buildLv-1]["food"]
+						var add_food = builds[bId][buildLv]["food"] - old_food
+						self.incrbyLordData(uid,"warehouse",add_food)
+					break
 				}
 				cb(true,buildLv)
 			}
 		],function(err) {
-			// body...
 			cb(false,err)
 		})
 	}

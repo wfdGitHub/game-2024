@@ -3,7 +3,7 @@ var lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 var officer = require("../../../../config/gameCfg/officer.json")
 var uuid = require("uuid")
 var main_name = "playerInfo"
-var numberAtt = ["accId","createTime","rmb","vip","vip_exp","rmb_day","exp","level","heroAmount","heroLv","maxSS","real_rmb","real_day","real_week","r_luck","ttt_lv","title","frame","officer","last_id","gather","camp_1","camp_2","camp_3","camp_4"]
+var numberAtt = ["accId","createTime","rmb","vip","vip_exp","rmb_day","exp","level","heroAmount","heroLv","maxSS","real_rmb","real_day","real_week","r_luck","ttt_lv","title","frame","officer","last_id","gather","camp_1","camp_2","camp_3","camp_4","warehouse"]
 module.exports = function() {
 	var self = this
 	//加载主公数据
@@ -46,7 +46,6 @@ module.exports = function() {
 		}else{
 			return uuid.v1()
 		}
-		
 	}
 	//增加数据
 	this.incrbyLordData = function(uid,key,value,cb) {

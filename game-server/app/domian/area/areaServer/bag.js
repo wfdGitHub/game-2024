@@ -272,6 +272,14 @@ module.exports = function() {
 									if(value < 0)
 										self.incrbyPlayerData(uid,"gold_consume",Math.abs(value))
 								break
+								case 810:
+									if(value > 0){
+										var warehouse = self.getLordAtt(uid,"warehouse")
+										if(curValue > warehouse)
+											curValue = warehouse
+										self.redisDao.db.hset("player:user:"+uid+":bag",itemId,curValue)
+									}
+								break
 							}
 							self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue,reason:otps.reason})
 							var notify = {
