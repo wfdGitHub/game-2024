@@ -738,6 +738,17 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			})
 		},
 		function(next) {
+			//家园建筑
+			self.redisDao.db.hmget("player:user:"+uid+":manor",["gjy","dby","qby"],function(err,data) {
+				if(data){
+					fightTeam[6]["gjy"] = Number(data[0]) || 0
+					fightTeam[6]["dby"] = Number(data[1]) || 0
+					fightTeam[6]["qby"] = Number(data[2]) || 0
+				}
+				next()
+			})
+		},
+		function(next) {
 			//公会技能
 			self.redisDao.db.hmget("player:user:"+uid+":guild",["skill_1","skill_2","skill_3","skill_4"],function(err,data) {
 				if(data){

@@ -105,6 +105,14 @@ module.exports = function() {
 				}
 				//升级建筑
 				self.setObj(uid,main_name,bId,buildLv)
+				//建筑类型判断
+				switch(bId){
+					case "gjy":
+					case "dby":
+					case "qby":
+						self.setBuildLv(uid,bId,buildLv)
+					break
+				}
 				cb(true,buildLv)
 			}
 		],function(err) {
