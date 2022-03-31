@@ -24,24 +24,28 @@ const main_name = "manor"
 module.exports = function() {
 	var self = this
 	//获取家园数据
-	this.manor_data = function(uid,cb) {
+	this.manorData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(data) {
 			if(!data){
-				self.manor_init(uid,cb)
+				self.manorInit(uid,cb)
 			}else{
 				cb(true,data)
 			}
 		})
 	}
 	//初始化家园
-	this.manor_init = function(uid,cb) {
+	this.manorInit = function(uid,cb) {
 		self.setObj(uid,main_name,"main",1)
 		self.incrbyLordData(uid,"warehouse",builds["main"][1]["food"])
 		if(cb)
-			cb(true,{"main":1})
+			cb(true,{"main":1,"action":0})
+	}
+	//每日刷新
+	this.manorDayUpdate = function(uid) {
+		self.setObj(uid,main_name,"buy",0)
 	}
 	//建设升级建筑
-	this.manor_build = function(uid,bId,land,cb) {
+	this.manorBuild = function(uid,bId,land,cb) {
 		if(!manor_builds[bId]){
 			cb(false,"bId error "+bId)
 			return
@@ -130,7 +134,7 @@ module.exports = function() {
 		})
 	}
 	//交换建筑
-	this.manor_swap = function(uid,land1,land2,cb) {
+	this.manorSwap = function(uid,land1,land2,cb) {
 		if(!Number.isInteger(land1) || !Number.isInteger(land2)){
 			cb(false,"land error "+land1+" "+land2)
 			return
@@ -148,7 +152,7 @@ module.exports = function() {
 		})
 	}
 	//获取收益
-	this.manor_reap = function(uid,bId,cb) {
+	this.manorReap = function(uid,bId,cb) {
 		if(!manor_builds[bId]){
 			cb(false,"bId error "+bId)
 			return
@@ -303,4 +307,22 @@ module.exports = function() {
 			}
 		})
 	}
+	//===============贼寇==============//
+	//购买军令
+	this.manorBuyAction = function(uid,cb) {
+		
+	}
+	//获取军令时间
+	this.manorActionTime = function(uid,cb) {
+		self.getObj(uid,main_name,"action",)
+	}
+	//挑战首领
+	this.manorBoss = function(uid,cb) {
+		// body...
+	}
+	//挑战山贼
+
+	//山贼刷新
+
+	
 }
