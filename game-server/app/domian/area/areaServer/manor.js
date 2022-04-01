@@ -45,6 +45,8 @@ module.exports = function() {
 	//每日刷新
 	this.manorDayUpdate = function(uid) {
 		self.setObj(uid,main_name,"buy",0)
+		self.setObj(uid,main_name,"boss",0)
+		self.setObj(uid,main_name,"boss_time",0)
 	}
 	//建设升级建筑
 	this.manorBuild = function(uid,bId,land,cb) {
@@ -359,7 +361,9 @@ module.exports = function() {
 	}
 	//挑战首领
 	this.manorBoss = function(uid,cb) {
-		
+		self.getHMObj(uid,main_name,["main","boss","boss_time"],function(data) {
+
+		})
 	}
 	//挑战山贼
 	this.manorMon = function(uid,cb) {
