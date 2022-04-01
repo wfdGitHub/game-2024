@@ -1,5 +1,6 @@
 //家园系统
 const manor_builds = require("../../../../config/gameCfg/manor_builds.json")
+const default_cfg = require("../../../../config/gameCfg/manor_builds.json")
 const async = require("async")
 const builds = {}
 for(var i in manor_builds){
@@ -19,6 +20,7 @@ for(var i in builds["qjf"]){
 			builds["qjf"][i]["allWeight"] +=builds["qjf"][i]["quality_"+j]
 }
 const hourTime = 3600000
+const buyTime = 3600000 * 5
 const build_time = 3000
 const main_name = "manor"
 module.exports = function() {
@@ -310,19 +312,61 @@ module.exports = function() {
 	//===============贼寇==============//
 	//购买军令
 	this.manorBuyAction = function(uid,cb) {
-		
+		async.waterfall([
+			function(next) {
+				self.getObj(uid,main_name,"buy",function(count) {
+					count = Number(count) || 0
+					//消耗元宝
+					var needGold = count * default_cfg["quick_once"]["value"]
+					if(needGold > default_cfg["quick_max"]["value"])
+						needGold = default_cfg["quick_max"]["value"]
+					if(needGold){
+						self.consumeItems(uid,"202:"+needGold,1,"快速挂机",function(flag,err) {
+							if(flag)
+								next()
+							else
+								next(err)
+						})
+					}else{
+						next()
+					}
+				})
+			},
+			function(next) {
+				self.incrbyObj(uid,main_name,"action",buyTime,function(data) {
+					cb(true,data)
+				})
+			}
+		],function(err) {
+			cb(false,err)
+		})
 	}
-	//获取军令时间
+	//消耗军令
 	this.manorActionTime = function(uid,cb) {
-		self.getObj(uid,main_name,"action",)
+		self.getObj(uid,main_name,"action",function(data) {
+			data = Number(data) || 0
+			var diff = Date.now() - data
+			if(diff < hourTime){
+				cb(false,"军令不足")
+				return
+			}
+			if(diff > 10 * hourTime)
+				data = Date.now() - 10 * hourTime
+			data -= hourTime
+			self.setObj(uid,main_name,"action",data)
+			cb(true,data)
+		})
 	}
 	//挑战首领
 	this.manorBoss = function(uid,cb) {
-		// body...
+		
 	}
 	//挑战山贼
-
+	this.manorMon = function(uid,cb) {
+		
+	}
 	//山贼刷新
-
-	
+	this.manorMonUpdate = function(uid,cb) {
+		
+	}
 }
