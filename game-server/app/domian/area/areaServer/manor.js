@@ -19,9 +19,19 @@ for(var i in builds["qjf"]){
 		if(builds["qjf"][i]["quality_"+j])
 			builds["qjf"][i]["allWeight"] +=builds["qjf"][i]["quality_"+j]
 }
+var mon_weight = {"all":10000,"1":3000,"2":5000,"3":7000,"4":8500,"5":9500,"6":10000}
+for(var i in builds["main"]){
+	builds["main"][i]["boss_team"] = JSON.parse(builds["main"][i]["boss_team"])
+	for(var j = 1;j <= 6;j++){
+		builds["main"][i]["mon_"+j] = JSON.parse(builds["main"][i]["mon_"+j])
+
+	}
+}
 const hourTime = 3600000
-const buyTime = 3600000 * 5
+const buyTime = hourTime * 5
 const build_time = 3000
+const boss_cd = hourTime * 6
+const mon_cd = hourTime * 2
 const main_name = "manor"
 module.exports = function() {
 	var self = this
@@ -37,16 +47,26 @@ module.exports = function() {
 	}
 	//初始化家园
 	this.manorInit = function(uid,cb) {
-		self.setObj(uid,main_name,"main",1)
 		self.incrbyLordData(uid,"warehouse",builds["main"][1]["food"])
+		var info = {
+			"main":1,
+			"action":0,
+			"boss_time":0,
+			"boss_count":0,
+			"buy":0
+		}
+		for(var i = 1;i <= 6;i++){
+			info["mon_time_"+i] = 0
+			info["mon_lv_"+i] = 1
+		}
+		self.setHMObj(uid,mainName,info)
 		if(cb)
-			cb(true,{"main":1,"action":0})
+			cb(true,info)
 	}
 	//每日刷新
 	this.manorDayUpdate = function(uid) {
 		self.setObj(uid,main_name,"buy",0)
-		self.setObj(uid,main_name,"boss",0)
-		self.setObj(uid,main_name,"boss_time",0)
+		self.setObj(uid,main_name,"boss_count",0)
 	}
 	//建设升级建筑
 	this.manorBuild = function(uid,bId,land,cb) {
@@ -361,16 +381,95 @@ module.exports = function() {
 	}
 	//挑战首领
 	this.manorBoss = function(uid,cb) {
-		self.getHMObj(uid,main_name,["main","boss","boss_time"],function(data) {
-
+		var buildLv = 1
+		var bossCount = 0
+		async.waterfall([
+			function(next) {
+				self.getHMObj(uid,main_name,["main","boss_count","boss_time"],function(data) {
+					buildLv = Number(data[0]) || 1
+					bossCount = Number(data[1]) || 0
+					var bossTime = Number(data[2]) || 0
+					if(bossTime < Date.now()){
+						next("冷却中")
+						return
+					}
+					if(bossCount >= 2){
+						next("挑战次数已满")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				//战斗结算
+				var atkTeam = self.getUserTeam(uid)
+				var seededNum = Date.now()
+				var defTeam = self.standardTeam(uid,builds["main"][buildLv]["boss_team"],"worldBoss",self.getLordLv(uid))
+				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+				if(winFlag){
+					var boss_time = Date.now() + boss_cd
+					self.setObj(uid,main_name,"boss_time",boss_time)
+					self.incrbyObj(uid,main_name,"boss_count",1)
+					bossCount++
+					var awardList = self.addItemStr(uid,builds["main"][buildLv]["boss_award"],1,"家园BOSS")
+					next(true,{winFlag:winFlag,awardList:awardList,bossCount:bossCount,cd:cd})
+				}else{
+					next(true,{winFlag:winFlag})
+				}
+			}
+		],function(err) {
+			next(false,err)
 		})
 	}
 	//挑战山贼
-	this.manorMon = function(uid,cb) {
-		
-	}
-	//山贼刷新
-	this.manorMonUpdate = function(uid,cb) {
-		
+	this.manorMon = function(uid,monId,cb) {
+		var buildLv = 1
+		var monLv = 1
+		async.waterfall([
+			function(next) {
+				self.getHMObj(uid,main_name,["main","mon_time_"+monId,"mon_lv_"+monId],function(data) {
+					buildLv = Number(data[0]) || 1
+					var monTime = Number(data[1]) || 0
+					if(monTime < Date.now()){
+						next("冷却中")
+						return
+					}
+					monLv = Number(data[2]) || 1
+					next()
+				})
+			},
+			function(next) {
+				//战斗结算
+				var atkTeam = self.getUserTeam(uid)
+				var seededNum = Date.now()
+				var dl = "zhulu_normal"
+				if(monLv >= 4)
+					dl = "zhulu_boss"
+				else if(monLv >= 2)
+					dl = "zhulu_elite"
+				var defTeam = self.standardTeam(uid,builds["main"][buildLv]["mon_"+monLv],dl,self.getLordLv(uid))
+				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+				if(winFlag){
+					var cd = Date.now() + mon_cd
+					var awardList = self.addItemStr(uid,builds["main"][buildLv]["mon_award"+monLv],1,"家园怪物")
+					//新等级
+					var rand = Math.random() * mon_weight["all"]
+					var lv = 1
+					for(var i = 1; i <= 6;i++){
+						if(rand < mon_weight[i]){
+							lv = i
+							break
+						}
+					}
+					self.setObj(uid,main_name,"mon_lv_"+monId,lv)
+					self.setObj(uid,main_name,"mon_time_"+monId,cd)
+					next(true,{winFlag:winFlag,awardList:awardList,cd:cd,lv:lv})
+				}else{
+					next(true,{winFlag:winFlag})
+				}
+			}
+		],function(err) {
+			next(false,err)
+		})
 	}
 }
