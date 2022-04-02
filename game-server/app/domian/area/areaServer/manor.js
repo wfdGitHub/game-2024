@@ -1,6 +1,6 @@
 //家园系统
 const manor_builds = require("../../../../config/gameCfg/manor_builds.json")
-const default_cfg = require("../../../../config/gameCfg/manor_builds.json")
+const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const async = require("async")
 const builds = {}
 for(var i in manor_builds){
@@ -59,7 +59,7 @@ module.exports = function() {
 			info["mon_time_"+i] = 0
 			info["mon_lv_"+i] = 1
 		}
-		self.setHMObj(uid,mainName,info)
+		self.setHMObj(uid,main_name,info)
 		if(cb)
 			cb(true,info)
 	}
@@ -196,7 +196,6 @@ module.exports = function() {
 				return
 			}
 			var awardTime = curTime - time
-			console.log("awardTime",awardTime)
 			var value = Math.floor(awardTime / hourTime * builds[basic][buildLv]["output"])
 			if(awardTime < 10000 || value < 1){
 				cb(false,"资源正在生产中")
@@ -343,7 +342,7 @@ module.exports = function() {
 					if(needGold > default_cfg["quick_max"]["value"])
 						needGold = default_cfg["quick_max"]["value"]
 					if(needGold){
-						self.consumeItems(uid,"202:"+needGold,1,"快速挂机",function(flag,err) {
+						self.consumeItems(uid,"202:"+needGold,1,"购买军令",function(flag,err) {
 							if(flag)
 								next()
 							else
@@ -355,7 +354,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				self.incrbyObj(uid,main_name,"action",buyTime,function(data) {
+				self.incrbyObj(uid,main_name,"action",-buyTime,function(data) {
 					cb(true,data)
 				})
 			}
@@ -366,15 +365,17 @@ module.exports = function() {
 	//消耗军令
 	this.manorActionTime = function(uid,cb) {
 		self.getObj(uid,main_name,"action",function(data) {
+			console.log("初始值 : ",data)
 			data = Number(data) || 0
 			var diff = Date.now() - data
+			console.log("diff",diff)
 			if(diff < hourTime){
 				cb(false,"军令不足")
 				return
 			}
 			if(diff > 10 * hourTime)
 				data = Date.now() - 10 * hourTime
-			data -= hourTime
+			data += hourTime
 			self.setObj(uid,main_name,"action",data)
 			cb(true,data)
 		})
@@ -383,13 +384,14 @@ module.exports = function() {
 	this.manorBoss = function(uid,cb) {
 		var buildLv = 1
 		var bossCount = 0
+		var action = 0
 		async.waterfall([
 			function(next) {
 				self.getHMObj(uid,main_name,["main","boss_count","boss_time"],function(data) {
 					buildLv = Number(data[0]) || 1
 					bossCount = Number(data[1]) || 0
 					var bossTime = Number(data[2]) || 0
-					if(bossTime < Date.now()){
+					if(Date.now() < bossTime){
 						next("冷却中")
 						return
 					}
@@ -401,41 +403,66 @@ module.exports = function() {
 				})
 			},
 			function(next) {
+				self.manorActionTime(uid,function(flag,data) {
+					if(flag){
+						action = data
+						next()
+					}else{
+						next("军令不足")
+					}
+				})
+			},
+			function(next) {
 				//战斗结算
 				var atkTeam = self.getUserTeam(uid)
 				var seededNum = Date.now()
 				var defTeam = self.standardTeam(uid,builds["main"][buildLv]["boss_team"],"worldBoss",self.getLordLv(uid))
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
-					var boss_time = Date.now() + boss_cd
-					self.setObj(uid,main_name,"boss_time",boss_time)
+					var cd = Date.now() + boss_cd
+					self.setObj(uid,main_name,"boss_time",cd)
 					self.incrbyObj(uid,main_name,"boss_count",1)
 					bossCount++
 					var awardList = self.addItemStr(uid,builds["main"][buildLv]["boss_award"],1,"家园BOSS")
-					next(true,{winFlag:winFlag,awardList:awardList,bossCount:bossCount,cd:cd})
+					cb(true,{winFlag:winFlag,awardList:awardList,bossCount:bossCount,cd:cd,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
 				}else{
-					next(true,{winFlag:winFlag})
+					cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
 				}
 			}
 		],function(err) {
-			next(false,err)
+			cb(false,err)
 		})
 	}
 	//挑战山贼
 	this.manorMon = function(uid,monId,cb) {
 		var buildLv = 1
 		var monLv = 1
+		var action = 0
+		if(!Number.isInteger(monId) || monId < 1 || monId > 6){
+			cb(false,"monId error "+monId)
+			return
+		}
 		async.waterfall([
 			function(next) {
 				self.getHMObj(uid,main_name,["main","mon_time_"+monId,"mon_lv_"+monId],function(data) {
 					buildLv = Number(data[0]) || 1
 					var monTime = Number(data[1]) || 0
-					if(monTime < Date.now()){
+					if(Date.now() < monTime){
 						next("冷却中")
 						return
 					}
 					monLv = Number(data[2]) || 1
 					next()
+				})
+			},
+			function(next) {
+				self.manorActionTime(uid,function(flag,data) {
+					if(flag){
+						action = data
+						next()
+					}else{
+						next("军令不足")
+					}
 				})
 			},
 			function(next) {
@@ -463,13 +490,13 @@ module.exports = function() {
 					}
 					self.setObj(uid,main_name,"mon_lv_"+monId,lv)
 					self.setObj(uid,main_name,"mon_time_"+monId,cd)
-					next(true,{winFlag:winFlag,awardList:awardList,cd:cd,lv:lv})
+					cb(true,{winFlag:winFlag,awardList:awardList,cd:cd,lv:lv,action:action})
 				}else{
-					next(true,{winFlag:winFlag})
+					cb(true,{winFlag:winFlag,action:action})
 				}
 			}
 		],function(err) {
-			next(false,err)
+			cb(false,err)
 		})
 	}
 }

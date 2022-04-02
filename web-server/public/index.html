@@ -152,6 +152,24 @@
             console.log(data);
         });
       }
+      //购买军令
+      var manorBuyAction = function() {
+        pomelo.request("area.manorHandler.manorBuyAction", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战首领
+      var manorBoss = function() {
+        pomelo.request("area.manorHandler.manorBoss", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战山贼
+      var manorMon = function(monId) {
+        pomelo.request("area.manorHandler.manorMon", {monId:monId}, function(data) {
+            console.log(data);
+        });
+      }
       //===============新公会PK=========//
       // 报名PK
       var applyGuildPKRival = function() {

@@ -72,6 +72,31 @@ manorHandler.prototype.manorGainHufu = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//购买军令
+manorHandler.prototype.manorBuyAction = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorBuyAction(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//挑战首领
+manorHandler.prototype.manorBoss = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorBoss(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//挑战山贼
+manorHandler.prototype.manorMon = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var monId = msg.monId
+  this.areaManager.areaMap[areaId].manorMon(uid,monId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "manorHandler",
