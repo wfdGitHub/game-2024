@@ -71,7 +71,8 @@ area.prototype.init = function() {
 	this.initLimitedTime()
 	this.initBeherrscher()
 	this.rebateInit()
-	this.timer = setInterval(this.update.bind(this),1000)
+	this.manorInitData()
+	this.timer = setInterval(this.update.bind(this),5000)
 }
 //服务器关闭
 area.prototype.destory = function() {
@@ -84,11 +85,12 @@ area.prototype.destory = function() {
 }
 //update
 area.prototype.update = function() {
-	this.runTime += 1000
+	this.runTime += 5000
 	var curDayStr = (new Date()).toDateString()
 	if(this.dayStr !== curDayStr){
 		this.dayUpdate(curDayStr)
 	}
+	this.manorUpdate()
 }
 //每日定时器
 area.prototype.dayUpdate = function(curDayStr) {

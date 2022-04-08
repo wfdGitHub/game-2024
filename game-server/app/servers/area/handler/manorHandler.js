@@ -97,6 +97,31 @@ manorHandler.prototype.manorMon = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//获取特殊地点数据
+manorHandler.prototype.manorCityInfos = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorCityInfos(function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//占领特殊地点
+manorHandler.prototype.manorOccupyCity = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var land = msg.land
+  this.areaManager.areaMap[areaId].manorOccupyCity(uid,land,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//放弃地点
+manorHandler.prototype.manorGiveUp = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var land = msg.land
+  this.areaManager.areaMap[areaId].manorGiveUp(uid,land,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "manorHandler",

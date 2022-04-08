@@ -1,6 +1,7 @@
 //家园系统
 const manor_builds = require("../../../../config/gameCfg/manor_builds.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+const manor_citys = require("../../../../config/gameCfg/manor_citys.json")
 const async = require("async")
 const builds = {}
 for(var i in manor_builds){
@@ -27,14 +28,39 @@ for(var i in builds["main"]){
 
 	}
 }
+var citis = []
+for(var i in manor_citys){
+	manor_citys[i]["npc_team"] = JSON.parse(manor_citys[i]["npc_team"])
+	citis.push(i)
+}
 const hourTime = 3600000
 const buyTime = hourTime * 5
+const validityTime = hourTime * 8
 const build_time = 3000
 const boss_cd = hourTime * 6
 const mon_cd = hourTime * 2
 const main_name = "manor"
+const fightAward = "820:1&810:200"
 module.exports = function() {
 	var self = this
+	var local = {}
+	var city_infos = {}
+	//家园初始化
+	this.manorInitData = function() {
+		var arr = []
+		for(var i = 0;i < 9;i++)
+			arr.push("city_"+i)
+		self.getAreaHMObj(main_name,arr,function(data) {
+			city_infos = {}
+			for(var i = 0;i < data.length;i++){
+				if(data[i]){
+					city_infos[i] = JSON.parse(data[i])
+				}else{
+					city_infos[i] = false
+				}
+			}
+		})
+	}
 	//获取家园数据
 	this.manorData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(data) {
@@ -45,7 +71,7 @@ module.exports = function() {
 			}
 		})
 	}
-	//初始化家园
+	//初始化玩家家园
 	this.manorInit = function(uid,cb) {
 		self.incrbyLordData(uid,"warehouse",builds["main"][1]["food"])
 		var info = {
@@ -63,7 +89,11 @@ module.exports = function() {
 		if(cb)
 			cb(true,info)
 	}
-	//每日刷新
+	//家园每秒刷新
+	this.manorUpdate = function() {
+		local.manorCitysUpdate()
+	}
+	//玩家每日刷新
 	this.manorDayUpdate = function(uid) {
 		self.setObj(uid,main_name,"buy",0)
 		self.setObj(uid,main_name,"boss_count",0)
@@ -365,10 +395,8 @@ module.exports = function() {
 	//消耗军令
 	this.manorActionTime = function(uid,cb) {
 		self.getObj(uid,main_name,"action",function(data) {
-			console.log("初始值 : ",data)
 			data = Number(data) || 0
 			var diff = Date.now() - data
-			console.log("diff",diff)
 			if(diff < hourTime){
 				cb(false,"军令不足")
 				return
@@ -498,5 +526,176 @@ module.exports = function() {
 		],function(err) {
 			cb(false,err)
 		})
+	}
+	//家园特殊地点刷新
+	local.manorCitysUpdate = function() {
+		var curTime = Date.now()
+		for(var land in city_infos){
+			if(city_infos[land]["own"]){
+				//存在拥有者,判断收益
+				if(Date.now() > city_infos[land]["endTime"]){
+					local.gainCityAward(land)
+				}
+			}else{
+				//不存在拥有者,判断刷新
+				if(!city_infos[land] || Date.now() > city_infos[land]["overTime"]){
+					local.manorCreateCity(land)
+				}
+			}
+		}
+	}
+	//生成新地点
+	local.manorCreateCity = function(land) {
+		city_infos[land] = {
+			"id" : citis[Math.floor(citis.length * Math.random())],    	//城池类型
+			"occupyTime" : 0,  									   		//占领时间
+			"endTime" : 0,      									   	//结束时间
+			"overTime" : Date.now() + validityTime + validityTime,      //过期时间
+			"own" : 0                                              		//拥有者
+		}
+		local.saveCity(land)
+	}
+	local.saveCity = function(land) {
+		self.setAreaObj(main_name,"city_"+land,JSON.stringify(city_infos[land]))
+	}
+	local.gainCityAward = function(land) {
+		//结算收益
+		if(city_infos[land].own){
+			var ownUid = city_infos[land].own
+			var curTime = Date.now()
+			if(curTime > city_infos[land].endTime)
+				curTime = city_infos[land].endTime
+			var awardTime = curTime - city_infos[land].occupyTime
+			var item = manor_citys[city_infos[land].id]["award"]
+			var cityId = city_infos[land].id
+			city_infos[land].occupyTime = 0
+			city_infos[land].own = 0
+			local.saveCity(land)
+			self.getObj(ownUid,main_name,"main",function(data) {
+				var buildLv = Number(data) || 1
+				var value = Math.floor(awardTime / hourTime * manor_citys[cityId]["output"] * builds["main"][buildLv]["city_add"])
+				var awardStr = ""
+				if(value)
+					awardStr = item+":"+value
+				else
+					awardStr = item+":1"
+				self.sendMail(ownUid,"特殊地点收益","您占领的【"+manor_citys[cityId]["name"]+"】已获得收益",awardStr)
+			})
+		}
+	}
+	//获取特殊地点数据
+	this.manorCityInfos = function(cb) {
+		cb(true,city_infos)
+	}
+	//占领特殊地点
+	this.manorOccupyCity = function(uid,land,cb) {
+		if(!city_infos[land]){
+			cb(false,"land error "+land)
+			return
+		}
+		var atkTeam = self.getUserTeam(uid)
+		var defTeam = []
+		var seededNum = Date.now()
+		var awardList = []
+		var buildLv = 1
+		var action = 0
+		var winFlag = false
+		async.waterfall([
+			function(next) {
+				//条件判定
+				if(city_infos[land].endTime && Date.now() > city_infos[land].endTime){
+					next("该地点不可占领")
+					return
+				}
+				if(city_infos[land].own == uid){
+					next("不能攻打自己的城池")
+					return
+				}
+				next()
+			},
+			function(next) {
+				self.getObj(uid,main_name,"main",function(data) {
+					buildLv = Number(data) || 1
+					next()
+				})
+			},
+			function(next) {
+				self.manorActionTime(uid,function(flag,data) {
+					if(flag){
+						action = data
+						next()
+					}else{
+						next("军令不足")
+					}
+				})
+			},
+			function(next) {
+				//获取敌方阵容
+				if(!city_infos[land]["own"]){
+					//机器人队伍
+					defTeam = self.standardTeam(uid,manor_citys[city_infos[land].id]["npc_team"],"zhulu_boss",self.getLordLv(uid))
+					next()
+				}else{
+					//玩家队伍
+					self.getDefendTeam(city_infos[land]["own"],function(team) {
+						defTeam = team
+						next()
+					})
+				}
+			},
+			function(next) {
+				//开始战斗
+				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+				if(winFlag){
+					//胜利
+					awardList = self.addItemStr(uid,fightAward,2,"特殊地点")
+					next()
+				}else{
+					//失败
+					awardList = self.addItemStr(uid,fightAward,1,"特殊地点")
+					cb(true,{winFlag:winFlag,awardList:awardList,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
+				}
+			},
+			function(next) {
+				//占领成功
+				var curTime = Date.now()
+				if(city_infos[land].own){
+					//有人 结算收益
+					if(curTime > city_infos[land].endTime)
+						curTime = city_infos[land].endTime
+					var awardTime = curTime - city_infos[land].occupyTime
+					var item = manor_citys[city_infos[land].id]["award"]
+					var value = Math.floor(awardTime / hourTime * manor_citys[city_infos[land].id]["output"] * builds["main"][buildLv]["city_add"] * 0.5)
+					var awardStr = ""
+					if(value)
+						awardStr = item+":"+value
+					else
+						awardStr = item+":1"
+					self.sendMail(uid,"占领特殊地点","您已经成功占领了【"+manor_citys[city_infos[land].id]["name"]+"】,夺取了50%占领收益",awardStr)
+					self.sendMail(city_infos[land].own,"特殊地点被占领","您所占领的【"+manor_citys[city_infos[land].id]["name"]+"】已被夺走,失去了50%收益,请前往夺回！",awardStr)
+					city_infos[land].occupyTime = curTime
+					city_infos[land].own = uid
+				}else{
+					//无人占领
+					if(!city_infos[land].endTime)
+						city_infos[land].endTime = curTime + validityTime
+					city_infos[land].occupyTime = curTime
+					city_infos[land].own = uid
+				}
+				local.saveCity(land)
+				cb(true,{winFlag:winFlag,awardList:awardList,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//放弃地点
+	this.manorGiveUp = function(uid,land,cb) {
+		if(!city_infos[land] || city_infos[land].own != uid){
+			cb(false,"所有权错误")
+			return
+		}
+		local.gainCityAward(land)
+		cb(true)
 	}
 }

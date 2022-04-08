@@ -170,6 +170,24 @@
             console.log(data);
         });
       }
+      //获取特殊地点数据
+      var manorCityInfos = function() {
+        pomelo.request("area.manorHandler.manorCityInfos", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //占领特殊地点
+      var manorOccupyCity = function(land) {
+        pomelo.request("area.manorHandler.manorOccupyCity", {land:land}, function(data) {
+            console.log(data);
+        });
+      }
+      //放弃特殊地点
+      var manorGiveUp = function(land) {
+        pomelo.request("area.manorHandler.manorGiveUp", {land:land}, function(data) {
+            console.log(data);
+        });
+      }
       //===============新公会PK=========//
       // 报名PK
       var applyGuildPKRival = function() {
@@ -3320,6 +3338,12 @@
       <input id="test" type="button" value="获取排行榜" onclick="getAncientRank()"/>
       <input id="test" type="button" value="获取历史挑战记录" onclick="getAncientRecord()"/>
       <input id="test" type="button" value="目标列表" onclick="ancientGetTargetList()"/>
+    </div>
+    <div class="g-button">
+      家园 : 
+      <input id="test" type="button" value="获取家园数据" onclick="manorData()"/>
+      <input id="test" type="button" value="获取特殊地点" onclick="manorCityInfos()"/>
+      <input id="test" type="button" value="占领特殊地点1" onclick="manorOccupyCity(3)"/>
     </div>
   </body>
 </html>
