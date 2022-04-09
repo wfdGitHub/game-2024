@@ -117,8 +117,8 @@ manorHandler.prototype.manorOccupyCity = function(msg, session, next) {
 manorHandler.prototype.manorGiveUp = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var land = msg.land
-  this.areaManager.areaMap[areaId].manorGiveUp(uid,land,function(flag,data) {
+  var grid = msg.grid
+  this.areaManager.areaMap[areaId].manorGiveUp(uid,grid,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }

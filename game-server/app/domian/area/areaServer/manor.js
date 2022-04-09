@@ -73,18 +73,25 @@ module.exports = function() {
 	}
 	//初始化玩家家园
 	this.manorInit = function(uid,cb) {
+		console.log("manorInit",uid)
 		self.incrbyLordData(uid,"warehouse",builds["main"][1]["food"])
 		var info = {
 			"main":1,
 			"action":0,
 			"boss_time":0,
 			"boss_count":0,
-			"buy":0
+			"buy":0,
+			"grid_1":0,
+			"grid_2":0,
+			"grid_3":0,
+			"grid_4":-1,
+			"grid_5":-1
 		}
 		for(var i = 1;i <= 6;i++){
 			info["mon_time_"+i] = 0
 			info["mon_lv_"+i] = 1
 		}
+		console.log("info",info)
 		self.setHMObj(uid,main_name,info)
 		if(cb)
 			cb(true,info)
@@ -157,11 +164,20 @@ module.exports = function() {
 				})
 			},
 			function(buildLv,next) {
+				var info = {}
+				info.buildLv = buildLv
 				if(buildLv == 1){
 					//设置地块
 					self.setObj(uid,main_name,"land_"+land,bId)
 					if(manor_builds[bId]["type"] == "res")
 						self.setObj(uid,main_name,bId+"_time",Date.now())
+					if(bId == "yzyd_1"){
+						info["grid_4"] = 0
+						self.setObj(uid,main_name,"grid_4",0)
+					}else if(bId == "yzyd_2"){
+						info["grid_5"] = 0
+						self.setObj(uid,main_name,"grid_5",0)
+					}
 				}
 				//升级建筑
 				self.setObj(uid,main_name,bId,buildLv)
@@ -181,7 +197,7 @@ module.exports = function() {
 						self.incrbyLordData(uid,"warehouse",add_food)
 					break
 				}
-				cb(true,buildLv)
+				cb(true,info)
 			}
 		],function(err) {
 			cb(false,err)
@@ -547,11 +563,14 @@ module.exports = function() {
 	//生成新地点
 	local.manorCreateCity = function(land) {
 		city_infos[land] = {
+			"type" : "city", 											//特殊地点
 			"id" : citis[Math.floor(citis.length * Math.random())],    	//城池类型
 			"occupyTime" : 0,  									   		//占领时间
 			"endTime" : 0,      									   	//结束时间
 			"overTime" : Date.now() + validityTime + validityTime,      //过期时间
-			"own" : 0                                              		//拥有者
+			"own" : 0,                                              	//拥有者
+			"land" : land,  											//位置
+			"grid" : 0 													//地块
 		}
 		local.saveCity(land)
 	}
@@ -568,9 +587,12 @@ module.exports = function() {
 			var awardTime = curTime - city_infos[land].occupyTime
 			var item = manor_citys[city_infos[land].id]["award"]
 			var cityId = city_infos[land].id
+			var grid = city_infos[land].grid
 			city_infos[land].occupyTime = 0
 			city_infos[land].own = 0
+			city_infos[land].grid = 0
 			local.saveCity(land)
+			self.setObj(ownUid,main_name,"grid_"+grid,0)
 			self.getObj(ownUid,main_name,"main",function(data) {
 				var buildLv = Number(data) || 1
 				var value = Math.floor(awardTime / hourTime * manor_citys[cityId]["output"] * builds["main"][buildLv]["city_add"])
@@ -600,6 +622,7 @@ module.exports = function() {
 		var buildLv = 1
 		var action = 0
 		var winFlag = false
+		var grid = 0
 		async.waterfall([
 			function(next) {
 				//条件判定
@@ -614,9 +637,19 @@ module.exports = function() {
 				next()
 			},
 			function(next) {
-				self.getObj(uid,main_name,"main",function(data) {
-					buildLv = Number(data) || 1
-					next()
+				self.getHMObj(uid,main_name,["main","grid_1","grid_2","grid_3","grid_4","grid_5"],function(data) {
+					buildLv = Number(data[0]) || 1
+					for(var i = 1;i <= 5;i++){
+						if(data[i] == 0){
+							grid = i
+							break
+						}
+					}
+					if(!grid){
+						cb(false,"占领城池已到上限")
+					}else{
+						next()
+					}
 				})
 			},
 			function(next) {
@@ -682,20 +715,31 @@ module.exports = function() {
 					city_infos[land].occupyTime = curTime
 					city_infos[land].own = uid
 				}
+				city_infos[land]["grid"] = grid
+				self.setObj(uid,main_name,"grid_"+grid,JSON.stringify(city_infos[land]))
 				local.saveCity(land)
-				cb(true,{winFlag:winFlag,awardList:awardList,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
+				cb(true,{winFlag:winFlag,awardList:awardList,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action,"grid":grid,cityInfo:city_infos[land]})
 			}
 		],function(err) {
 			cb(false,err)
 		})
 	}
 	//放弃地点
-	this.manorGiveUp = function(uid,land,cb) {
-		if(!city_infos[land] || city_infos[land].own != uid){
-			cb(false,"所有权错误")
+	this.manorGiveUp = function(uid,grid,cb) {
+		if(!Number.isInteger(grid) || grid < 1 || grid > 5){
+			cb(false,"grid error "+grid)
 			return
 		}
-		local.gainCityAward(land)
-		cb(true)
+		self.getObj(uid,main_name,"grid_"+grid,function(data) {
+			if(data == 0 || data == -1){
+				cb(false)
+				return
+			}
+			data = JSON.parse(data)
+			if(data.type == "city"){
+				local.gainCityAward(data.land)
+				cb(true)
+			}
+		})
 	}
 }

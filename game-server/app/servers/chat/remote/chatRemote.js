@@ -6,11 +6,13 @@ var chatRemote = function(app) {
 
 chatRemote.prototype.userLeave = function(uid,sid,cb) {
 	this.chat.userLeave(uid,sid)
-	cb()
+	if(cb)
+		cb()
 }
 chatRemote.prototype.clearChatRecord = function(cb) {
 	this.chat.clearChatRecord()
-	cb()
+	if(cb)
+		cb()
 }
 module.exports = function(app) {
 	return bearcat.getBean({

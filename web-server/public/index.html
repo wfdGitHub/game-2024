@@ -183,8 +183,8 @@
         });
       }
       //放弃特殊地点
-      var manorGiveUp = function(land) {
-        pomelo.request("area.manorHandler.manorGiveUp", {land:land}, function(data) {
+      var manorGiveUp = function(grid) {
+        pomelo.request("area.manorHandler.manorGiveUp", {grid:grid}, function(data) {
             console.log(data);
         });
       }
