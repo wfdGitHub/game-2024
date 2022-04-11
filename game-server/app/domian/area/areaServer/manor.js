@@ -64,7 +64,7 @@ module.exports = function() {
 	//获取家园数据
 	this.manorData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(data) {
-			if(!data){
+			if(!data || !data.main){
 				self.manorInit(uid,cb)
 			}else{
 				cb(true,data)
