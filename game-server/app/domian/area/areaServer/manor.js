@@ -215,8 +215,14 @@ module.exports = function() {
 			bId1 = data
 			self.getObj(uid,main_name,"land_"+land2,function(data) {
 				bId2 = data
-				self.setObj(uid,main_name,"land_"+land1,bId2)
-				self.setObj(uid,main_name,"land_"+land2,bId1)
+				if(bId2)
+					self.setObj(uid,main_name,"land_"+land1,bId2)
+				else
+					self.delObj(uid,main_name,"land_"+land1)
+				if(bId1)
+					self.setObj(uid,main_name,"land_"+land2,bId1)
+				else
+					self.delObj(uid,main_name,"land_"+land2)
 				cb(true)
 			})
 		})
