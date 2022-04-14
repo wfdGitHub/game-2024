@@ -42,7 +42,6 @@ for(var i in builds["main"]){
 	}
 	builds["main"][i]["robot_city"] = robot_city
 }
-console.log(builds["main"])
 var citis = []
 for(var i in manor_citys){
 	manor_citys[i]["npc_team"] = JSON.parse(manor_citys[i]["npc_team"])
@@ -585,7 +584,7 @@ module.exports = function() {
 			if(city_infos[land]["own"]){
 				//存在拥有者,判断收益
 				if(Date.now() > city_infos[land]["endTime"]){
-					local.gainCityAward(land)
+					local.gainCityAward(city_infos[land]["own"],land)
 				}
 			}else{
 				//不存在拥有者,判断刷新
@@ -613,10 +612,9 @@ module.exports = function() {
 		self.setAreaObj(main_name,"city_"+land,JSON.stringify(city_infos[land]))
 	}
 	//特殊地点收益
-	local.gainCityAward = function(land) {
+	local.gainCityAward = function(uid,land) {
 		//结算收益
-		if(city_infos[land].own){
-			var ownUid = city_infos[land].own
+		if(city_infos[land].own && uid == city_infos[land].own){
 			var curTime = Date.now()
 			if(curTime > city_infos[land].endTime)
 				curTime = city_infos[land].endTime
@@ -629,8 +627,7 @@ module.exports = function() {
 			city_infos[land].grid = 0
 			delete city_infos[land].atkInfo
 			local.saveCity(land)
-			self.setObj(ownUid,main_name,"grid_"+grid,0)
-			self.getObj(ownUid,main_name,"main",function(data) {
+			self.getObj(uid,main_name,"main",function(data) {
 				var buildLv = Number(data) || 1
 				var value = Math.floor(awardTime / hourTime * manor_citys[cityId]["output"] * builds["main"][buildLv]["city_add"])
 				var awardStr = ""
@@ -638,9 +635,10 @@ module.exports = function() {
 					awardStr = item+":"+value
 				else
 					awardStr = item+":1"
-				self.sendMail(ownUid,"特殊地点收益","您占领的【"+manor_citys[cityId]["name"]+"】已获得收益",awardStr)
+				self.sendMail(uid,"特殊地点收益","您占领的【"+manor_citys[cityId]["name"]+"】已获得收益",awardStr)
 			})
 		}
+		self.setObj(uid,main_name,"grid_"+grid,0)
 	}
 	//玩家城池收益
 	local.gainCityUser = function(uid,cityInfo) {
@@ -806,7 +804,7 @@ module.exports = function() {
 			}
 			data = JSON.parse(data)
 			if(data.type == "city"){
-				local.gainCityAward(data.land)
+				local.gainCityAward(uid,data.land)
 				cb(true)
 			}else if(data.type == "user"){
 				local.gainCityUser(uid,data)
