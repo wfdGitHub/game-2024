@@ -390,11 +390,11 @@ module.exports = function() {
 				self.getObj(uid,main_name,"buy",function(count) {
 					count = Number(count) || 0
 					//消耗元宝
-					var needGold = count * default_cfg["quick_once"]["value"]
+					var needGold = (count + 1) * default_cfg["quick_once"]["value"]
 					if(needGold > default_cfg["quick_max"]["value"])
 						needGold = default_cfg["quick_max"]["value"]
 					if(needGold){
-						self.consumeItems(uid,"202:"+needGold,1,"购买军令",function(flag,err) {
+						self.consumeItems(uid,"202:"+needGold,2,"购买军令",function(flag,err) {
 							if(flag)
 								next()
 							else
@@ -403,6 +403,11 @@ module.exports = function() {
 					}else{
 						next()
 					}
+				})
+			},
+			function(next) {
+				self.incrbyObj(uid,main_name,"buy",1,function(data) {
+					next()
 				})
 			},
 			function(next) {
