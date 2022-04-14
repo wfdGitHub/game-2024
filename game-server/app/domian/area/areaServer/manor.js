@@ -627,6 +627,7 @@ module.exports = function() {
 			city_infos[land].occupyTime = 0
 			city_infos[land].own = 0
 			city_infos[land].grid = 0
+			delete city_infos[land].atkInfo
 			local.saveCity(land)
 			self.setObj(ownUid,main_name,"grid_"+grid,0)
 			self.getObj(ownUid,main_name,"main",function(data) {
@@ -681,6 +682,7 @@ module.exports = function() {
 		var action = 0
 		var winFlag = false
 		var grid = 0
+		var atkInfo = self.getSimpleUser(uid)
 		async.waterfall([
 			function(next) {
 				//条件判定
@@ -782,6 +784,7 @@ module.exports = function() {
 					city_infos[land].own = uid
 				}
 				city_infos[land]["grid"] = grid
+				city_infos[land]["atkInfo"] = atkInfo
 				self.setObj(uid,main_name,"grid_"+grid,JSON.stringify(city_infos[land]))
 				local.saveCity(land)
 				cb(true,{winFlag:winFlag,awardList:awardList,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action,"grid":grid,cityInfo:city_infos[land]})
