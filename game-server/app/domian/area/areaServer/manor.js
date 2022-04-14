@@ -540,9 +540,9 @@ module.exports = function() {
 					}
 					self.setObj(uid,main_name,"mon_lv_"+monId,lv)
 					self.setObj(uid,main_name,"mon_time_"+monId,cd)
-					cb(true,{winFlag:winFlag,awardList:awardList,cd:cd,lv:lv,action:action})
+					cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,awardList:awardList,cd:cd,lv:lv,action:action})
 				}else{
-					cb(true,{winFlag:winFlag,action:action})
+					cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
 				}
 			}
 		],function(err) {
