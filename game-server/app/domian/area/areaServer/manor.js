@@ -3,6 +3,7 @@ const manor_builds = require("../../../../config/gameCfg/manor_builds.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const manor_citys = require("../../../../config/gameCfg/manor_citys.json")
 const async = require("async")
+const heroId = 305010
 const builds = {}
 for(var i in manor_builds){
 	if(!builds[manor_builds[i]["basic"]])
@@ -22,12 +23,26 @@ for(var i in builds["qjf"]){
 }
 var mon_weight = {"all":10000,"1":3000,"2":5000,"3":7000,"4":8500,"5":9500,"6":10000}
 for(var i in builds["main"]){
+	i = Number(i)
 	builds["main"][i]["boss_team"] = JSON.parse(builds["main"][i]["boss_team"])
+	builds["main"][i]["robot"] = JSON.parse(builds["main"][i]["robot"])
 	for(var j = 1;j <= 6;j++){
 		builds["main"][i]["mon_"+j] = JSON.parse(builds["main"][i]["mon_"+j])
-
 	}
+	//生成机器人主城配置
+	var robot_city = {}
+	var tmpLand = 0
+	for(var k in manor_builds){
+		if(manor_builds[k]["main_lv"] <= i){
+			robot_city[k] = i
+			if(!builds[manor_builds[k]["basic"]][i])
+				robot_city[k] = 4
+			robot_city["land_"+tmpLand++] = k
+		}
+	}
+	builds["main"][i]["robot_city"] = robot_city
 }
+console.log(builds["main"])
 var citis = []
 for(var i in manor_citys){
 	manor_citys[i]["npc_team"] = JSON.parse(manor_citys[i]["npc_team"])
@@ -93,6 +108,7 @@ module.exports = function() {
 		}
 		console.log("info",info)
 		self.setHMObj(uid,main_name,info)
+		local.manorAddLevel(uid)
 		if(cb)
 			cb(true,info)
 	}
@@ -189,6 +205,7 @@ module.exports = function() {
 						self.setBuildLv(uid,bId,buildLv)
 					break
 					case "main":
+						local.manorMoveLevel(uid,buildLv)
 					case "cangku":
 						var old_food = 0
 						if(buildLv > 1)
@@ -240,11 +257,16 @@ module.exports = function() {
 		var basic = manor_builds[bId]["basic"]
 		var item = manor_builds[bId]["award"]
 		var curTime = Date.now()
-		self.getHMObj(uid,main_name,[bId,bId+"_time"],function(data) {
+		self.getHMObj(uid,main_name,[bId,bId+"_time","fall"],function(data) {
 			var buildLv = Number(data[0]) || 0
 			var time = Number(data[1]) || 0
+			var fall = Number(data[2]) || 0
 			if(!buildLv){
 				cb(false,"建筑不存在")
+				return
+			}
+			if(fall && fall > Date.now()){
+				cb(false,"被占领时不能领取收益")
 				return
 			}
 			var awardTime = curTime - time
@@ -390,7 +412,7 @@ module.exports = function() {
 				self.getObj(uid,main_name,"buy",function(count) {
 					count = Number(count) || 0
 					if(count > 4){
-						next("购买已达上限")
+						next("今日购买已达上限")
 						return
 					}
 					//消耗元宝
@@ -590,6 +612,7 @@ module.exports = function() {
 	local.saveCity = function(land) {
 		self.setAreaObj(main_name,"city_"+land,JSON.stringify(city_infos[land]))
 	}
+	//特殊地点收益
 	local.gainCityAward = function(land) {
 		//结算收益
 		if(city_infos[land].own){
@@ -617,6 +640,28 @@ module.exports = function() {
 				self.sendMail(ownUid,"特殊地点收益","您占领的【"+manor_citys[cityId]["name"]+"】已获得收益",awardStr)
 			})
 		}
+	}
+	//玩家城池收益
+	local.gainCityUser = function(uid,cityInfo) {
+		//结算收益
+		var curTime = Date.now()
+		if(curTime > cityInfo.endTime)
+			curTime = cityInfo.endTime
+		var awardTime = curTime - cityInfo.occupyTime
+		var grid = cityInfo.grid
+		var value = Math.floor(awardTime / hourTime * cityInfo["output"])
+		var awardStr = ""
+		if(value)
+			awardStr = "810:"+value
+		else
+			awardStr = "810:1"
+		self.sendMail(uid,"占领收益","您占领的【"+cityInfo.defInfo.name+"】封地已获得收益",awardStr)
+		self.setObj(uid,main_name,"grid_"+grid,0)
+		self.redisDao.db.zscore("cross:manorFall",cityInfo.defInfo.uid,function(err,data) {
+			if(data && data == cityInfo.endTime){
+				self.redisDao.db.zadd("cross:manorFall",0,cityInfo.defInfo.uid)
+			}
+		})
 	}
 	//获取特殊地点数据
 	this.manorCityInfos = function(cb) {
@@ -673,6 +718,14 @@ module.exports = function() {
 					}else{
 						next("军令不足")
 					}
+				})
+			},
+			function(next) {
+				//免战判断
+				self.getObj(uid,main_name,"truce",function(data) {
+					if(data)
+						self.redisDao.db.zadd("cross:manorTruce",0,uid)
+					next()
 				})
 			},
 			function(next) {
@@ -752,6 +805,408 @@ module.exports = function() {
 			if(data.type == "city"){
 				local.gainCityAward(data.land)
 				cb(true)
+			}else if(data.type == "user"){
+				local.gainCityUser(uid,data)
+				cb(true)
+			}else{
+				cb(false)
+			}
+		})
+	}
+	//搜寻玩家
+	this.manorFindUser = function(uid,cb) {
+		var list = []
+		var info = {}
+		var buildLv
+		async.waterfall([
+			function(next) {
+				self.consumeItems(uid,"810:100",1,"搜寻玩家",function(flag,err) {
+					if(flag)
+						next()
+					else
+						next(err)
+				})
+			},
+			function(next) {
+				self.getObj(uid,main_name,"main",function(lv) {
+					buildLv = lv
+					local.manorSrandmember(buildLv,2,function(flag,data) {
+						if(flag){
+							list = data
+							next()
+						}else{
+							self.addItemStr(uid,"810:100",1,"搜寻返还")
+							next("找不到可用的目标")
+						}
+					})
+				})
+			},
+			function(next) {
+				for(var i = 0;i < list.length;i++){
+					if(list[i] != uid){
+						info.uid = list[i]
+						break
+					}
+				}
+				if(!info.uid){
+					self.addItemStr(uid,"810:100",1,"搜寻返还")
+					next("找不到可用的目标")
+					return
+				}
+				next()
+			},
+			function(next) {
+				if(info.uid > 10000){
+					self.getPlayerBaseInfo(info.uid,function(flag,data) {
+						info.userInfo = data
+						next()
+					})
+				}else{
+					info.userInfo = {"uid" : info.uid,"head":heroId,"name" : self.namespace.getNameByIndex(info.uid)}
+					next()
+				}
+			},
+			function(next) {
+				//建筑布局
+				if(info.uid > 10000){
+					self.getObjAll(info.uid,main_name,function(data) {
+						info.cityInfo = data
+						next()
+					})
+				}else{
+					info.cityInfo = builds["main"][buildLv]["robot_city"]
+					next()
+				}
+			},
+			function(next) {
+				cb(true,info)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//占领玩家
+	this.manorOccupyUser = function(uid,target,cb) {
+		if(!target || !Number.isInteger(target)){
+			cb(false,"target error")
+			return
+		}
+		var atkTeam = self.getUserTeam(uid)
+		var defTeam = []
+		var seededNum = Date.now()
+		var awardList = []
+		var buildLv = 1
+		var output = 0
+		var targetBlv = 1
+		var safety = 0
+		var action = 0
+		var winFlag = false
+		var grid = 0
+		var diff = 0
+		var atkInfo = self.getSimpleUser(uid)
+		var defInfo = {"uid" : target,"head":heroId}
+		var endTime = Date.now() + validityTime
+		async.waterfall([
+			function(next) {
+				self.getHMObj(uid,main_name,["main","grid_1","grid_2","grid_3","grid_4","grid_5"],function(data) {
+					buildLv = Number(data[0]) || 1
+					for(var i = 1;i <= 5;i++){
+						if(data[i] == 0){
+							grid = i
+							break
+						}
+					}
+					if(!grid){
+						cb(false,"占领城池已到上限")
+					}else{
+						next()
+					}
+				})
+			},
+			function(next) {
+				//获取对方数据
+				if(target < 10000){
+					defInfo.name = self.namespace.getNameByIndex(target)
+					next()
+				}else{
+					self.getPlayerKeyByUid(target,"name",function(name) {
+						if(!name){
+							next("玩家不存在")
+							return
+						}
+						defInfo.name = name
+						next()
+					})
+				}
+			},
+			function(next) {
+				//消耗军令
+				self.manorActionTime(uid,function(flag,data) {
+					if(flag){
+						action = data
+						next()
+					}else{
+						next("军令不足")
+					}
+				})
+			},
+			function(next) {
+				//免战判断
+				self.getObj(uid,main_name,"truce",function(data) {
+					if(data)
+						self.redisDao.db.zadd("cross:manorTruce",0,uid)
+					next()
+				})
+			},
+			function(next) {
+				//获取敌方队伍
+				if(target < 10000){
+					//机器人队伍
+					defTeam = builds["main"][buildLv]["robot"]
+					next()
+				}else{
+					//玩家队伍
+					self.getDefendTeam(target,function(team) {
+						defTeam = team
+						next()
+					})
+				}
+			},
+			function(next) {
+				//开始战斗
+				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+				if(winFlag){
+					//胜利
+					next()
+				}else{
+					//失败
+					//记录战报
+					local.addRecord(winFlag,atkInfo,defInfo,{seededNum : seededNum},0)
+					awardList = self.addItemStr(uid,fightAward,1,"玩家城池")
+					cb(true,{winFlag:winFlag,awardList:awardList,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
+				}
+			},
+			function(next) {
+				//获取收益
+				if(target > 10000){
+					self.getHMObj(target,main_name,["nc_1","nc_2","cangku","main"],function(data) {
+						output = 0
+						if(builds["nc"][data[0]])
+							output += builds["nc"][data[0]]
+						if(builds["nc"][data[1]])
+							output += builds["nc"][data[1]]
+						var cangku = data[2] || 0
+						if(builds["cangku"][cangku])
+							safety = builds["cangku"][cangku]["safety"]
+						targetBlv = data[3] || 1
+						next()
+					})
+				}else{
+					output = builds["main"][buildLv]["robot_output"]
+					next()
+				}
+			},
+			function(next) {
+				//转移至占领列表
+				if(target > 10000){
+					local.manorAddFall(target,targetBlv,endTime,function(data) {
+						if(data)
+							next()
+						else
+							next("该玩家不能占领")
+					})
+				}else{
+					next()
+				}
+			},
+			function(next) {
+				//胜利
+				awardList = self.addItemStr(uid,fightAward,2,"玩家城池")
+				//获取保护资源之外的资源
+				if(target > 10000){
+					self.redisDao.db.hget("player:user:"+target+":bag","810",function(err,value) {
+						if(value && value > safety){
+							diff = value - safety
+							awardList = awardList.concat(self.addItemStr(uid,"810:"+diff,1,"玩家城池"))
+							self.redisDao.db.hset("player:user:"+target+":bag",810,safety)
+							next()
+						}else{
+							next()
+						}
+						//记录战报
+						local.addRecord(winFlag,atkInfo,defInfo,{seededNum : seededNum},diff)
+					})
+				}else{
+					diff = builds["main"][buildLv]["robot_food"]
+					awardList = awardList.concat(self.addItemStr(uid,"810:"+diff,1,"机器人城池"))
+					//记录战报
+					local.addRecord(winFlag,atkInfo,defInfo,{seededNum : seededNum},diff)
+					next()
+				}
+			},
+			function(next) {
+				//数据处理
+				var cityInfo = {
+					"type" : "user", 											//特殊地点
+					"defInfo" : defInfo,    									//玩家信息
+					"occupyTime" : Date.now(),  								//占领时间
+					"endTime" : endTime,      									//结束时间
+					"output" : output, 											//产出速度
+					"grid" : grid 												//地块
+				}
+				self.setObj(uid,main_name,"grid_"+grid,JSON.stringify(cityInfo))
+				if(target > 10000){
+					self.setObj(target,main_name,"fall",cityInfo.endTime)
+					atkInfo.grid = grid
+					self.setObj(target,main_name,"fallUser",JSON.stringify(atkInfo))
+				}
+				cb(true,{winFlag:winFlag,awardList:awardList,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action,"grid":grid,cityInfo:cityInfo,diff:diff})
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//反击
+	this.manorRevolt = function(uid,cb) {
+		var atkTeam = self.getUserTeam(uid)
+		var defTeam = []
+		var seededNum = Date.now()
+		var atkInfo = self.getSimpleUser(uid)
+		var defInfo = {}
+		async.waterfall([
+			function(next) {
+				//占领状态
+				self.redisDao.db.zscore("cross:manorFall",uid,function(err,data) {
+					if(err || !data)
+						next("未被占领")
+					else
+						next()
+				})
+			},
+			function(next) {
+				self.getObj(uid,main_name,"fallUser",function(data) {
+					if(data){
+						defInfo = JSON.parse(data)
+						next(null)
+					}else{
+						next("未被占领")
+					}
+				})
+			},
+			function(next) {
+				//玩家队伍
+				self.getDefendTeam(defInfo.uid,function(team) {
+					defTeam = team
+					next()
+				})
+			},
+			function(next) {
+				//开始战斗
+				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+				if(winFlag){
+					//胜利
+					local.addRecord(winFlag,atkInfo,defInfo,{seededNum : seededNum},0,true)
+				}
+				next()
+			},
+			function(next) {
+				//解除占领状态
+				self.setObj(defInfo.uid,main_name,"grid_"+defInfo.grid,0)
+				self.redisDao.db.zadd("cross:manorFall",0,uid)
+				cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum})
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//添加记录
+	local.addRecord = function(winFlag,atkUser,defUser,fightInfo,diff,revolt) {
+		if(revolt){
+			if(atkUser.uid > 10000){
+				var info = {"type":"revolt_atk",winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
+				self.redisDao.db.rpush("player:user:"+atkUser.uid+":manorRecord",JSON.stringify(info),function(err,num) {
+					if(num > 5){
+						self.redisDao.db.ltrim("player:user:"+atkUser.uid+":manorRecord",-5,-1)
+					}
+				})
+			}
+			if(defUser.uid > 10000){
+				var info = {"type":"revolt_def",winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
+				self.redisDao.db.rpush("player:user:"+defUser.uid+":manorRecord",JSON.stringify(info),function(err,num) {
+					if(num > 5){
+						self.redisDao.db.ltrim("player:user:"+defUser.uid+":manorRecord",-5,-1)
+					}
+				})
+			}
+		}else{
+			if(atkUser.uid > 10000){
+				var info = {"type":"atk",winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
+				self.redisDao.db.rpush("player:user:"+atkUser.uid+":manorRecord",JSON.stringify(info),function(err,num) {
+					if(num > 5){
+						self.redisDao.db.ltrim("player:user:"+atkUser.uid+":manorRecord",-5,-1)
+					}
+				})
+			}
+			if(defUser.uid > 10000){
+				var info = {"type":"def",winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
+				self.redisDao.db.rpush("player:user:"+defUser.uid+":manorRecord",JSON.stringify(info),function(err,num) {
+					if(num > 5){
+						self.redisDao.db.ltrim("player:user:"+defUser.uid+":manorRecord",-5,-1)
+					}
+				})
+			}
+		}
+	}
+	//获取记录
+	this.manorRerord = function(uid,cb) {
+		self.redisDao.db.lrange("player:user:"+uid+":manorRecord",0,-1,function(err,list) {
+			if(err || !list){
+				cb(true,[])
+			}else{
+				cb(true,list)
+			}
+		})
+	}
+	//添加玩家等级集合
+	local.manorAddLevel = function(uid) {
+		self.redisDao.db.sadd("cross:manorLevel:1",uid)
+	}
+	//转移玩家等级集合
+	local.manorMoveLevel = function(uid,newLv) {
+		self.redisDao.db.smove("cross:manorLevel:"+(newLv-1),"cross:manorLevel:"+newLv,uid,function(err,data) {
+			if(err || !data){
+				console.error("转移玩家等级错误 uid:" +uid+"  lv:"+newLv+" err:"+err+"data:"+data)
+			}
+		})
+	}
+	//添加进占领列表
+	local.manorAddFall = function(uid,lv,endTime,cb) {
+		self.redisDao.db.srem("cross:manorLevel:"+lv,uid,function(err,data) {
+			if(!err && data){
+				self.redisDao.db.zadd("cross:manorFall",endTime,uid)
+				cb(true)
+			}else{
+				cb(false)
+			}
+		})
+	}
+	//随机获取玩家集合
+	local.manorSrandmember = function(lv,count,cb) {
+		self.redisDao.db.scard("cross:manorLevel:"+lv,function(err,data) {
+			if(data && data < 0){
+				var list = []
+				for(var i = 0;i < count;i++){
+					list.push(Math.floor(Math.random() * 9000 + 1000))
+				}
+				cb(true,list)
+			}else{
+				self.redisDao.db.srandmember("cross:manorLevel:"+lv,count,function(err,data) {
+					if(err || !data){
+						cb(false)
+					}else{
+						cb(true,data)
+					}
+				})
 			}
 		})
 	}

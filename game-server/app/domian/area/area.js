@@ -620,5 +620,8 @@ module.exports = {
 	},{
 		name : "mysqlDao",
 		ref : "mysqlDao"
+	},{
+		name : "namespace",
+		ref : "namespace"
 	}]
 }

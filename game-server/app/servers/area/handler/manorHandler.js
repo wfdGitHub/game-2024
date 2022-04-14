@@ -122,6 +122,39 @@ manorHandler.prototype.manorGiveUp = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//搜寻玩家
+manorHandler.prototype.manorFindUser = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorFindUser(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//占领玩家
+manorHandler.prototype.manorOccupyUser = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var target = msg.target
+  this.areaManager.areaMap[areaId].manorOccupyUser(uid,target,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//反击
+manorHandler.prototype.manorRevolt = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorRevolt(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//查看战报
+manorHandler.prototype.manorRerord = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorRerord(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "manorHandler",
