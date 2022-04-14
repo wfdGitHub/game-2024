@@ -389,10 +389,12 @@ module.exports = function() {
 			function(next) {
 				self.getObj(uid,main_name,"buy",function(count) {
 					count = Number(count) || 0
+					if(count > 4){
+						next("购买已达上限")
+						return
+					}
 					//消耗元宝
-					var needGold = (count + 1) * default_cfg["quick_once"]["value"]
-					if(needGold > default_cfg["quick_max"]["value"])
-						needGold = default_cfg["quick_max"]["value"]
+					var needGold = count * default_cfg["quick_once"]["value"]
 					if(needGold){
 						self.consumeItems(uid,"202:"+needGold,2,"购买军令",function(flag,err) {
 							if(flag)
