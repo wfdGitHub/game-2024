@@ -661,7 +661,7 @@ module.exports = function() {
 		var awardTime = curTime - cityInfo.occupyTime
 		var grid = cityInfo.grid
 		var value = Math.floor(awardTime / hourTime * cityInfo["output"])
-		self.getObk(uid,main_name,"zlt",function(data) {
+		self.getObj(uid,main_name,"zlt",function(data) {
 			var zlt = Number(data) || 0
 			if(builds["zlt"][zlt])
 				value += Math.floor(builds["zlt"][zlt]["add"] * value)
@@ -742,6 +742,20 @@ module.exports = function() {
 				self.getObj(uid,main_name,"truce",function(data) {
 					if(data)
 						self.redisDao.db.zadd("cross:manorTruce",0,uid)
+					next()
+				})
+			},
+			function(next) {
+				//统帅厅加成
+				self.getObj(uid,main_name,"tst",function(data) {
+					if(data && builds["tst"][data]){
+						if(!atkTeam[6]["team_atk_add"])
+							atkTeam[6]["team_atk_add"] = 0
+						atkTeam[6]["team_atk_add"] += builds["tst"][data]["add"]
+						if(!atkTeam[6]["team_maxHP_add"])
+							atkTeam[6]["team_maxHP_add"] = 0
+						atkTeam[6]["team_maxHP_add"] += builds["tst"][data]["add"]
+					}
 					next()
 				})
 			},
@@ -977,6 +991,20 @@ module.exports = function() {
 				})
 			},
 			function(next) {
+				//统帅厅加成
+				self.getObj(uid,main_name,"tst",function(data) {
+					if(data && builds["tst"][data]){
+						if(!atkTeam[6]["team_atk_add"])
+							atkTeam[6]["team_atk_add"] = 0
+						atkTeam[6]["team_atk_add"] += builds["tst"][data]["add"]
+						if(!atkTeam[6]["team_maxHP_add"])
+							atkTeam[6]["team_maxHP_add"] = 0
+						atkTeam[6]["team_maxHP_add"] += builds["tst"][data]["add"]
+					}
+					next()
+				})
+			},
+			function(next) {
 				//获取敌方队伍
 				if(target < 10000){
 					//机器人队伍
@@ -1109,6 +1137,20 @@ module.exports = function() {
 					}else{
 						next("未被占领")
 					}
+				})
+			},
+			function(next) {
+				//统帅厅加成
+				self.getObj(uid,main_name,"tst",function(data) {
+					if(data && builds["tst"][data]){
+						if(!atkTeam[6]["team_atk_add"])
+							atkTeam[6]["team_atk_add"] = 0
+						atkTeam[6]["team_atk_add"] += builds["tst"][data]["add"]
+						if(!atkTeam[6]["team_maxHP_add"])
+							atkTeam[6]["team_maxHP_add"] = 0
+						atkTeam[6]["team_maxHP_add"] += builds["tst"][data]["add"]
+					}
+					next()
 				})
 			},
 			function(next) {
