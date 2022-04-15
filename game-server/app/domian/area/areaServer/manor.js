@@ -889,7 +889,7 @@ module.exports = function() {
 			},
 			function(next) {
 				if(info.uid > 10000){
-					self.getPlayerInfoByUids([info.uid],function(flag,data) {
+					self.getPlayerInfoByUids([info.uid],function(data) {
 						info.userInfo = data[0]
 						next()
 					})
