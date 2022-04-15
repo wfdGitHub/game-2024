@@ -88,7 +88,6 @@ module.exports = function() {
 	}
 	//初始化玩家家园
 	this.manorInit = function(uid,cb) {
-		console.log("manorInit",uid)
 		self.incrbyLordData(uid,"warehouse",builds["main"][1]["food"])
 		var info = {
 			"main":1,
@@ -106,8 +105,9 @@ module.exports = function() {
 			info["mon_time_"+i] = 0
 			info["mon_lv_"+i] = 1
 		}
-		console.log("info",info)
-		self.setHMObj(uid,main_name,info)
+		self.setHMObj(uid,main_name,info,function() {
+			self.addItemStr(uid,"810:2000",1,"家园初始化")
+		})
 		local.manorAddLevel(uid)
 		if(cb)
 			cb(true,info)
