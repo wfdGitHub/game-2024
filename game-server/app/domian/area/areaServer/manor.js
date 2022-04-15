@@ -899,6 +899,20 @@ module.exports = function() {
 				}
 			},
 			function(next) {
+				//获取敌方队伍
+				if(info.uid < 10000){
+					//机器人队伍
+					info.defTeam = builds["main"][buildLv]["robot"]
+					next()
+				}else{
+					//玩家队伍
+					self.getDefendTeam(info.uid,function(team) {
+						info.defTeam = team
+						next()
+					})
+				}
+			},
+			function(next) {
 				//建筑布局
 				if(info.uid > 10000){
 					self.getObjAll(info.uid,main_name,function(data) {
@@ -907,6 +921,17 @@ module.exports = function() {
 					})
 				}else{
 					info.cityInfo = builds["main"][buildLv]["robot_city"]
+					next()
+				}
+			},
+			function(next) {
+				if(info.uid > 10000){
+					self.redisDao.db.hget("player:user:"+info.uid+":bag","810",function(err,value) {
+						info.value = value
+						next()
+					})
+				}else{
+					info.value = builds["main"][buildLv]["robot_food"] + builds["cangku"][info.cityInfo["cangku"]]["safety"]
 					next()
 				}
 			},
@@ -1253,7 +1278,7 @@ module.exports = function() {
 	//随机获取玩家集合
 	local.manorSrandmember = function(lv,count,cb) {
 		self.redisDao.db.scard("cross:manorLevel:"+lv,function(err,data) {
-			if(data && data < 0){
+			if(data && data < 20){
 				var list = []
 				for(var i = 0;i < count;i++){
 					list.push(Math.floor(Math.random() * 9000 + 1000))
