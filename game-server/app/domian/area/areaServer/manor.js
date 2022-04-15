@@ -636,9 +636,12 @@ module.exports = function() {
 			city_infos[land].grid = 0
 			delete city_infos[land].atkInfo
 			local.saveCity(land)
-			self.getObj(uid,main_name,"main",function(data) {
-				var buildLv = Number(data) || 1
+			self.getHMObj(uid,main_name,["main","zlt"],function(list) {
+				var buildLv = Number(list[0]) || 1
+				var zlt = Number(list[1]) || 0
 				var value = Math.floor(awardTime / hourTime * manor_citys[cityId]["output"] * builds["main"][buildLv]["city_add"])
+				if(builds["zlt"][zlt])
+					value += Math.floor(builds["zlt"][zlt]["add"] * value)
 				var awardStr = ""
 				if(value)
 					awardStr = item+":"+value
@@ -658,17 +661,22 @@ module.exports = function() {
 		var awardTime = curTime - cityInfo.occupyTime
 		var grid = cityInfo.grid
 		var value = Math.floor(awardTime / hourTime * cityInfo["output"])
-		var awardStr = ""
-		if(value)
-			awardStr = "810:"+value
-		else
-			awardStr = "810:1"
-		self.sendMail(uid,"占领收益","您占领的【"+cityInfo.defInfo.name+"】封地已获得收益",awardStr)
-		self.setObj(uid,main_name,"grid_"+grid,0)
-		self.redisDao.db.zscore("cross:manorFall",cityInfo.defInfo.uid,function(err,data) {
-			if(data && data == cityInfo.endTime){
-				self.redisDao.db.zadd("cross:manorFall",0,cityInfo.defInfo.uid)
-			}
+		self.getObk(uid,main_name,"zlt",function(data) {
+			var zlt = Number(data) || 0
+			if(builds["zlt"][zlt])
+				value += Math.floor(builds["zlt"][zlt]["add"] * value)
+			var awardStr = ""
+			if(value)
+				awardStr = "810:"+value
+			else
+				awardStr = "810:1"
+			self.sendMail(uid,"占领收益","您占领的【"+cityInfo.defInfo.name+"】封地已获得收益",awardStr)
+			self.setObj(uid,main_name,"grid_"+grid,0)
+			self.redisDao.db.zscore("cross:manorFall",cityInfo.defInfo.uid,function(err,data) {
+				if(data && data == cityInfo.endTime){
+					self.redisDao.db.zadd("cross:manorFall",0,cityInfo.defInfo.uid)
+				}
+			})
 		})
 	}
 	//获取特殊地点数据
