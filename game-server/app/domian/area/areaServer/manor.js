@@ -4,6 +4,15 @@ const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const manor_citys = require("../../../../config/gameCfg/manor_citys.json")
 const async = require("async")
 const heroId = 305010
+const hourTime = 3600000
+const buyTime = hourTime * 5
+const validityTime = hourTime * 8
+const build_time = 3000
+const boss_cd = hourTime * 6
+const mon_cd = hourTime * 2
+const main_name = "manor"
+const fightAward = "820:1&810:200"
+const actionBasic = 10
 const builds = {}
 for(var i in manor_builds){
 	if(!builds[manor_builds[i]["basic"]])
@@ -47,14 +56,6 @@ for(var i in manor_citys){
 	manor_citys[i]["npc_team"] = JSON.parse(manor_citys[i]["npc_team"])
 	citis.push(i)
 }
-const hourTime = 3600000
-const buyTime = hourTime * 5
-const validityTime = hourTime * 8
-const build_time = 3000
-const boss_cd = hourTime * 6
-const mon_cd = hourTime * 2
-const main_name = "manor"
-const fightAward = "820:1&810:200"
 module.exports = function() {
 	var self = this
 	var local = {}
@@ -444,18 +445,25 @@ module.exports = function() {
 	}
 	//消耗军令
 	this.manorActionTime = function(uid,cb) {
-		self.getObj(uid,main_name,"action",function(data) {
-			data = Number(data) || 0
-			var diff = Date.now() - data
+		self.getHMObj(uid,main_name,["action","yzyd_1","yzyd_2"],function(list) {
+			var action = Number(list[0]) || 0
+			var actionMax = actionBasic
+			var yzyd_1 = Number(list[1]) || 0
+			var yzyd_2 = Number(list[2]) || 0
+			var diff = Date.now() - action
 			if(diff < hourTime){
 				cb(false,"军令不足")
 				return
 			}
-			if(diff > 10 * hourTime)
-				data = Date.now() - 10 * hourTime
-			data += hourTime
-			self.setObj(uid,main_name,"action",data)
-			cb(true,data)
+			if(builds["yzyd"][yzyd_1])
+				actionMax += builds["yzyd"][yzyd_1]["add"]
+			if(builds["yzyd"][yzyd_2])
+				actionMax += builds["yzyd"][yzyd_2]["add"]
+			if(diff > actionMax * hourTime)
+				action = Date.now() - actionMax * hourTime
+			action += hourTime
+			self.setObj(uid,main_name,"action",action)
+			cb(true,action)
 		})
 	}
 	//挑战首领
@@ -482,6 +490,7 @@ module.exports = function() {
 			},
 			function(next) {
 				self.manorActionTime(uid,function(flag,data) {
+
 					if(flag){
 						action = data
 						next()
