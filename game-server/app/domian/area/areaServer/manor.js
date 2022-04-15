@@ -931,7 +931,9 @@ module.exports = function() {
 						next()
 					})
 				}else{
-					info.value = builds["main"][buildLv]["robot_food"] + builds["cangku"][info.cityInfo["cangku"]]["safety"]
+					info.value = builds["main"][buildLv]["robot_food"]
+					if(info.cityInfo["cangku"] && builds["cangku"][info.cityInfo["cangku"]])
+						info.value += builds["cangku"][info.cityInfo["cangku"]]["safety"]
 					next()
 				}
 			},
