@@ -811,6 +811,7 @@ module.exports = function() {
 						value2 = 1
 					var awardStr2 = item+":"+value2
 					self.sendMail(city_infos[land].own,"特殊地点被占领","您所占领的【"+manor_citys[city_infos[land].id]["name"]+"】已被夺走,失去了50%收益,请前往夺回！",awardStr2)
+					self.setObj(city_infos[land].own,main_name,"grid_"+city_infos[land].grid,0)
 					city_infos[land].occupyTime = curTime
 					city_infos[land].own = uid
 				}else{
