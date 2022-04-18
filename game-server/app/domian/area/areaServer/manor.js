@@ -1054,7 +1054,7 @@ module.exports = function() {
 				}else{
 					//失败
 					//记录战报
-					local.addRecord(winFlag,atkInfo,defInfo,{seededNum : seededNum},0)
+					local.addRecord(winFlag,atkTeam,defTeam,atkInfo,defInfo,{seededNum : seededNum},0)
 					awardList = self.addItemStr(uid,fightAward,1,"玩家城池")
 					cb(true,{winFlag:winFlag,awardList:awardList,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
 				}
@@ -1107,13 +1107,13 @@ module.exports = function() {
 							next()
 						}
 						//记录战报
-						local.addRecord(winFlag,atkInfo,defInfo,{seededNum : seededNum},diff)
+						local.addRecord(winFlag,atkTeam,defTeam,atkInfo,defInfo,{seededNum : seededNum},diff)
 					})
 				}else{
 					diff = builds["main"][buildLv]["robot_food"]
 					awardList = awardList.concat(self.addItemStr(uid,"810:"+diff,1,"机器人城池"))
 					//记录战报
-					local.addRecord(winFlag,atkInfo,defInfo,{seededNum : seededNum},diff)
+					local.addRecord(winFlag,atkTeam,defTeam,atkInfo,defInfo,{seededNum : seededNum},diff)
 					next()
 				}
 			},
@@ -1192,7 +1192,7 @@ module.exports = function() {
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
 					//胜利
-					local.addRecord(winFlag,atkInfo,defInfo,{seededNum : seededNum},0,true)
+					local.addRecord(winFlag,atkTeam,defTeam,atkInfo,defInfo,{seededNum : seededNum},0,true)
 				}
 				next()
 			},
@@ -1207,10 +1207,10 @@ module.exports = function() {
 		})
 	}
 	//添加记录
-	local.addRecord = function(winFlag,atkUser,defUser,fightInfo,diff,revolt) {
+	local.addRecord = function(winFlag,atkTeam,defTeam,atkUser,defUser,fightInfo,diff,revolt) {
 		if(revolt){
 			if(atkUser.uid > 10000){
-				var info = {"type":"revolt_atk",winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
+				var info = {"type":"revolt_atk",atkTeam:atkTeam,defTeam:defTeam,winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
 				self.redisDao.db.rpush("player:user:"+atkUser.uid+":manorRecord",JSON.stringify(info),function(err,num) {
 					if(num > 5){
 						self.redisDao.db.ltrim("player:user:"+atkUser.uid+":manorRecord",-5,-1)
@@ -1218,7 +1218,7 @@ module.exports = function() {
 				})
 			}
 			if(defUser.uid > 10000){
-				var info = {"type":"revolt_def",winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
+				var info = {"type":"revolt_def",atkTeam:atkTeam,defTeam:defTeam,winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
 				self.redisDao.db.rpush("player:user:"+defUser.uid+":manorRecord",JSON.stringify(info),function(err,num) {
 					if(num > 5){
 						self.redisDao.db.ltrim("player:user:"+defUser.uid+":manorRecord",-5,-1)
@@ -1227,7 +1227,7 @@ module.exports = function() {
 			}
 		}else{
 			if(atkUser.uid > 10000){
-				var info = {"type":"atk",winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
+				var info = {"type":"atk",atkTeam:atkTeam,defTeam:defTeam,winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
 				self.redisDao.db.rpush("player:user:"+atkUser.uid+":manorRecord",JSON.stringify(info),function(err,num) {
 					if(num > 5){
 						self.redisDao.db.ltrim("player:user:"+atkUser.uid+":manorRecord",-5,-1)
@@ -1235,7 +1235,7 @@ module.exports = function() {
 				})
 			}
 			if(defUser.uid > 10000){
-				var info = {"type":"def",winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
+				var info = {"type":"def",atkTeam:atkTeam,defTeam:defTeam,winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
 				self.redisDao.db.rpush("player:user:"+defUser.uid+":manorRecord",JSON.stringify(info),function(err,num) {
 					if(num > 5){
 						self.redisDao.db.ltrim("player:user:"+defUser.uid+":manorRecord",-5,-1)
