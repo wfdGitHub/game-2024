@@ -881,6 +881,7 @@ module.exports = function() {
 							targetLv++
 					}
 					local.manorSrandmember(targetLv,2,function(flag,data) {
+						console.log(err,data)
 						if(flag){
 							list = data
 							next()
@@ -1297,7 +1298,9 @@ module.exports = function() {
 	}
 	//随机获取玩家集合
 	local.manorSrandmember = function(lv,count,cb) {
+		console.log("manorSrandmember",lv,count)
 		self.redisDao.db.scard("cross:manorLevel:"+lv,function(err,data) {
+			console.log("scard",data,data && data < 2)
 			if(data && data < 2){
 				var list = []
 				for(var i = 0;i < count;i++){
