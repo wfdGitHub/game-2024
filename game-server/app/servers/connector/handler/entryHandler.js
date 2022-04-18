@@ -29,7 +29,6 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	var uid = msg.uid
 	var channel_code = msg.channel_code
 	var device_id = msg.device_id
-	console.log("quickEntry",channel_code,device_id)
 	async.waterfall([
 		function(cb) {
 			//渠道隔离
