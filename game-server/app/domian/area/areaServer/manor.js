@@ -1280,7 +1280,7 @@ module.exports = function() {
 	//随机获取玩家集合
 	local.manorSrandmember = function(lv,count,cb) {
 		self.redisDao.db.scard("cross:manorLevel:"+lv,function(err,data) {
-			if(data && data < 20){
+			if(data && data < 5){
 				var list = []
 				for(var i = 0;i < count;i++){
 					list.push(Math.floor(Math.random() * 9000 + 1000))
