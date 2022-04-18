@@ -881,7 +881,7 @@ module.exports = function() {
 							targetLv++
 					}
 					local.manorSrandmember(targetLv,2,function(flag,data) {
-						console.log(err,data)
+						console.log(flag,data)
 						if(flag){
 							list = data
 							next()
