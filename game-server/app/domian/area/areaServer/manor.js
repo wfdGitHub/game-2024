@@ -867,7 +867,7 @@ module.exports = function() {
 					if(rand < 0.3){
 						if(targetLv > 1)
 							targetLv--
-					}else if(rand < 0.4){
+					}else if(rand > 0.9){
 						if(targetLv <= 10)
 							targetLv++
 					}
