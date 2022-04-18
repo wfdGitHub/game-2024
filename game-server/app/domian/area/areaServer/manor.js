@@ -694,6 +694,7 @@ module.exports = function() {
 		var seededNum = Date.now()
 		var awardList = []
 		var buildLv = 1
+		var targetLv = 1
 		var action = 0
 		var winFlag = false
 		var grid = 0
@@ -764,12 +765,16 @@ module.exports = function() {
 				if(!city_infos[land]["own"]){
 					//机器人队伍
 					defTeam = self.standardTeam(uid,manor_citys[city_infos[land].id]["npc_team"],"zhulu_boss",self.getLordLv(uid))
+					targetLv = buildLv
 					next()
 				}else{
 					//玩家队伍
 					self.getDefendTeam(city_infos[land]["own"],function(team) {
 						defTeam = team
-						next()
+						self.getObj(city_infos[land]["own"],"main",function(data) {
+							targetLv = Number(data) || 1
+							next()
+						})
 					})
 				}
 			},
@@ -795,14 +800,17 @@ module.exports = function() {
 						curTime = city_infos[land].endTime
 					var awardTime = curTime - city_infos[land].occupyTime
 					var item = manor_citys[city_infos[land].id]["award"]
-					var value = Math.floor(awardTime / hourTime * manor_citys[city_infos[land].id]["output"] * builds["main"][buildLv]["city_add"] * 0.5)
-					var awardStr = ""
-					if(value)
-						awardStr = item+":"+value
-					else
-						awardStr = item+":1"
-					self.sendMail(uid,"占领特殊地点","您已经成功占领了【"+manor_citys[city_infos[land].id]["name"]+"】,夺取了50%占领收益",awardStr)
-					self.sendMail(city_infos[land].own,"特殊地点被占领","您所占领的【"+manor_citys[city_infos[land].id]["name"]+"】已被夺走,失去了50%收益,请前往夺回！",awardStr)
+					var value1 = Math.floor(awardTime / hourTime * manor_citys[city_infos[land].id]["output"] * builds["main"][buildLv]["city_add"] * 0.5)
+					if(!value1)
+						value1 = 1
+					var awardStr1 = item+":"+value1
+					self.sendMail(uid,"占领特殊地点","您已经成功占领了【"+manor_citys[city_infos[land].id]["name"]+"】,夺取了50%占领收益",awardStr1)
+					var value2 = Math.floor(awardTime / hourTime * manor_citys[city_infos[land].id]["output"] * builds["main"][targetLv]["city_add"] * 0.5)
+					var awardStr2 = ""
+					if(!value2)
+						value2 = 1
+					var awardStr2 = item+":"+value2
+					self.sendMail(city_infos[land].own,"特殊地点被占领","您所占领的【"+manor_citys[city_infos[land].id]["name"]+"】已被夺走,失去了50%收益,请前往夺回！",awardStr2)
 					city_infos[land].occupyTime = curTime
 					city_infos[land].own = uid
 				}else{
