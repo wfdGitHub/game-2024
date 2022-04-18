@@ -771,7 +771,7 @@ module.exports = function() {
 					//玩家队伍
 					self.getDefendTeam(city_infos[land]["own"],function(team) {
 						defTeam = team
-						self.getObj(city_infos[land]["own"],"main",function(data) {
+						self.getObj(city_infos[land]["own"],main_name,"main",function(data) {
 							targetLv = Number(data) || 1
 							next()
 						})
