@@ -861,8 +861,11 @@ module.exports = function() {
 			},
 			function(next) {
 				self.getObj(uid,main_name,"main",function(lv) {
-					buildLv = lv
-					local.manorSrandmember(buildLv,2,function(flag,data) {
+					buildLv = Number(lv) || 1
+					var targetLv = buildLv
+					if(targetLv > 1 && Math.random() < 0.1)
+						targetLv--
+					local.manorSrandmember(targetLv,2,function(flag,data) {
 						if(flag){
 							list = data
 							next()
