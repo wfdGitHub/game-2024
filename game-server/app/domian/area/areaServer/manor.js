@@ -863,8 +863,14 @@ module.exports = function() {
 				self.getObj(uid,main_name,"main",function(lv) {
 					buildLv = Number(lv) || 1
 					var targetLv = buildLv
-					if(targetLv > 1 && Math.random() < 0.1)
-						targetLv--
+					var rand = Math.random()
+					if(rand < 0.3){
+						if(targetLv > 1)
+							targetLv--
+					}else if(rand < 0.4){
+						if(targetLv <= 10)
+							targetLv++
+					}
 					local.manorSrandmember(targetLv,2,function(flag,data) {
 						if(flag){
 							list = data
