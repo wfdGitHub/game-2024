@@ -635,6 +635,7 @@ module.exports = function() {
 			city_infos[land].own = 0
 			city_infos[land].grid = 0
 			delete city_infos[land].atkInfo
+			delete city_infos[land].atkTeam
 			local.saveCity(land)
 			self.getHMObj(uid,main_name,["main","zlt"],function(list) {
 				var buildLv = Number(list[0]) || 1
@@ -821,6 +822,7 @@ module.exports = function() {
 					city_infos[land].occupyTime = curTime
 					city_infos[land].own = uid
 				}
+				city_infos[land]["atkTeam"] = atkTeam
 				city_infos[land]["grid"] = grid
 				city_infos[land]["atkInfo"] = atkInfo
 				self.setObj(uid,main_name,"grid_"+grid,JSON.stringify(city_infos[land]))
