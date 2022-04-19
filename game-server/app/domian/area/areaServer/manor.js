@@ -1084,9 +1084,9 @@ module.exports = function() {
 					self.getHMObj(target,main_name,["nc_1","nc_2","cangku","main"],function(data) {
 						output = 0
 						if(builds["nc"][data[0]])
-							output += builds["nc"][data[0]]
+							output += builds["nc"][data[0]]["output"]
 						if(builds["nc"][data[1]])
-							output += builds["nc"][data[1]]
+							output += builds["nc"][data[1]]["output"]
 						var cangku = data[2] || 0
 						if(builds["cangku"][cangku])
 							safety = builds["cangku"][cangku]["safety"]
