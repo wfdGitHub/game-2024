@@ -1087,6 +1087,8 @@ module.exports = function() {
 							output += builds["nc"][data[0]]["output"]
 						if(builds["nc"][data[1]])
 							output += builds["nc"][data[1]]["output"]
+						if(!output)
+							output = 100
 						var cangku = data[2] || 0
 						if(builds["cangku"][cangku])
 							safety = builds["cangku"][cangku]["safety"]
