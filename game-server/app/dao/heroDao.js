@@ -357,9 +357,9 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 			var drumInfo = JSON.parse(heros[i]["drum"])
 			this.areaManager.areaMap[areaId].gainDrum(uid,horseInfo)
 		}
-		if(heros[i]["horse"]){
-			var horseInfo = JSON.parse(heros[i]["horse"])
-			this.areaManager.areaMap[areaId].gainHorse(uid,horseInfo)
+		if(heros[i]["banner"]){
+			var bannerInfo = JSON.parse(heros[i]["banner"])
+			this.areaManager.areaMap[areaId].gainBanner(uid,bannerInfo)
 		}
 		this.areaManager.areaMap[areaId].remove_heroRank(uid,id,hIds[i])
 	}
