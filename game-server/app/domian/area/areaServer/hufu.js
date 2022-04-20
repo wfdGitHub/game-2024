@@ -376,7 +376,7 @@ module.exports = function() {
 			delete heroInfo["horse"]
 			self.heroDao.delHeroInfo(self.areaId,uid,hId,"horse")
 			self.gainHorse(uid,horseInfo)
-			cb(true,horseInfo)
+			cb(true,heroInfo)
 		})
 	}
 	//合成战马
@@ -531,7 +531,7 @@ module.exports = function() {
 			delete heroInfo["drum"]
 			self.heroDao.delHeroInfo(self.areaId,uid,hId,"drum")
 			self.gainDrum(uid,drumInfo)
-			cb(true,drumInfo)
+			cb(true,heroInfo)
 		})
 	}
 	//合成战鼓
@@ -686,7 +686,7 @@ module.exports = function() {
 			delete heroInfo["banner"]
 			self.heroDao.delHeroInfo(self.areaId,uid,hId,"banner")
 			self.gainBanner(uid,bannerInfo)
-			cb(true,bannerInfo)
+			cb(true,heroInfo)
 		})
 	}
 	//合成军旗
