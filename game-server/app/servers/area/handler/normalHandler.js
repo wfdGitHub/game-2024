@@ -240,6 +240,50 @@ normalHandler.prototype.changeName = function(msg, session, next) {
     next(null,{flag : false,err : err})
   })
 }
+//初始化名称性别
+normalHandler.prototype.initNameAndSex = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
+  var name = msg.name
+  var sex = msg.sex
+  var self = this
+  if(!name || (sex !== 1 && sex !== 2)){
+    next(null,{flag:false,err:"参数错误"})
+    return
+  }
+  if(name.indexOf(".") != -1){
+    next(null,{flag:false,err:"不能包含特殊字符"})
+    return
+  }
+  if(sex !== 1)
+    sex = 2
+  async.waterfall([
+    function(cb) {
+      self.redisDao.db.hexists("game:nameMap",name,function(err,data) {
+        if(data){
+          cb("名称已存在")
+        }else{
+          cb()
+        }
+      })
+    },
+    function() {
+      self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
+        self.redisDao.db.hdel("game:nameMap",data)
+        self.redisDao.db.hset("game:nameMap",name,uid)
+        self.playerDao.setPlayerInfo({uid : uid,key : "name",value : name})
+        self.playerDao.setPlayerInfo({uid : uid,key : "sex",value : sex})
+        session.set("name",name)
+        session.push("name",function() {
+          next(null,{flag:true})
+        })
+      })
+    }
+  ],function(err) {
+    next(null,{flag : false,err : err})
+  })
+}
 //开启限时活动
 normalHandler.prototype.openNewLimitedTime = function(msg, session, next) {
   var limit = session.get("limit")

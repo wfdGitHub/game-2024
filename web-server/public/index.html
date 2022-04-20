@@ -1832,6 +1832,12 @@
             console.log(data);
         });
       }
+      //初始化名称性别
+      var initNameAndSex = function(name,sex) {
+        pomelo.request("area.normalHandler.initNameAndSex", {name : name,sex : sex}, function(data) {
+            console.log(data);
+        });
+      }
       //============开服计划============//
       //获取服务器列表
       var getServerList = function() {

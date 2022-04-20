@@ -11,6 +11,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		accId : otps.accId,
 		areaId : otps.areaId,
 		name : otps.name,
+		sex : 1,
 		head : beginHero,
 		figure : beginHero,
 		title : 0,
