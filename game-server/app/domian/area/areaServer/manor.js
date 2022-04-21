@@ -652,7 +652,7 @@ module.exports = function() {
 					awardStr = item+":"+value
 				else
 					awardStr = item+":1"
-				self.sendMail(uid,"特殊地点收益","您占领的【"+manor_citys[cityId]["name"]+"】已获得收益",awardStr)
+				self.sendMail(uid,"Thu hoạch chiếm đống","【"+manor_citys[cityId]["name"]+"】 mà Chúa Công chiếm đóng đã được thu hoạch",awardStr)
 			})
 		}
 		self.setObj(uid,main_name,"grid_"+grid,0)
@@ -675,7 +675,7 @@ module.exports = function() {
 				awardStr = "810:"+value
 			else
 				awardStr = "810:1"
-			self.sendMail(uid,"占领收益","您占领的【"+cityInfo.defInfo.name+"】封地已获得收益",awardStr)
+			self.sendMail(uid,"Thu hoạch chiếm đống","【"+cityInfo.defInfo.name+"】 mà Chúa Công chiếm đóng đã được thu hoạch ",awardStr)
 			self.setObj(uid,main_name,"grid_"+grid,0)
 			self.redisDao.db.zscore("cross:manorFall",cityInfo.defInfo.uid,function(err,data) {
 				if(data && data == cityInfo.endTime){
@@ -809,13 +809,13 @@ module.exports = function() {
 					if(!value1)
 						value1 = 1
 					var awardStr1 = item+":"+value1
-					self.sendMail(uid,"占领特殊地点","您已经成功占领了【"+manor_citys[city_infos[land].id]["name"]+"】,夺取了50%占领收益",awardStr1)
+					self.sendMail(uid,"Chiếm đóng vị trí đặc biệt","【"+manor_citys[city_infos[land].id]["name"]+"】mà Chúa Công chiếm đóng thành công đã bị cướp đi 50% thu hoạch",awardStr1)
 					var value2 = Math.floor(awardTime / hourTime * manor_citys[city_infos[land].id]["output"] * builds["main"][targetLv]["city_add"] * 0.5)
 					var awardStr2 = ""
 					if(!value2)
 						value2 = 1
 					var awardStr2 = item+":"+value2
-					self.sendMail(city_infos[land].own,"特殊地点被占领","您所占领的【"+manor_citys[city_infos[land].id]["name"]+"】已被夺走,失去了50%收益,请前往夺回！",awardStr2)
+					self.sendMail(city_infos[land].own,"Vị trí đặc biệt bị chiếm đóng","【"+manor_citys[city_infos[land].id]["name"]+"】 mà Chúa Công chiếm đóng đã bị cướp, mất 50% thu hoạch, hãy đi cướp lại!",awardStr2)
 					self.setObj(city_infos[land].own,main_name,"grid_"+city_infos[land].grid,0)
 					city_infos[land].occupyTime = curTime
 					city_infos[land].own = uid
