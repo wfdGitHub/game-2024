@@ -25,6 +25,15 @@ var title_list = require("../../../../config/gameCfg/title_list.json")
 var zhanfa = require("../../../../config/gameCfg/zhanfa.json")
 var officer = require("../../../../config/gameCfg/officer.json")
 var camp_att = require("../../../../config/gameCfg/camp_att.json")
+var war_horse = require("../../../../config/gameCfg/war_horse.json")
+var war_drum = require("../../../../config/gameCfg/war_drum.json")
+var war_banner = require("../../../../config/gameCfg/war_banner.json")
+var manor_gjy = require("../../../../config/gameCfg/manor_gjy.json")
+var manor_dby = require("../../../../config/gameCfg/manor_dby.json")
+var manor_qby = require("../../../../config/gameCfg/manor_qby.json")
+
+
+
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -305,6 +314,34 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		if(info.hfs2)
 			model.mergeTalent(info,info.hfs2)
 	}
+	//战马属性
+	if(info.horse){
+		var horseInfo = JSON.parse(info.horse)
+		model.mergeData(info,{"speed":horseInfo.val})
+		if(horseInfo.s1)
+			model.mergeTalent(info,horseInfo.s1)
+	}
+	//战鼓属性
+	if(info.drum){
+		var drumInfo = JSON.parse(info.drum)
+		var tmpInfo = {}
+		tmpInfo[war_drum[drumInfo.id]["key"]] = drumInfo.val
+		model.mergeData(info,tmpInfo)
+	}
+	//军旗属性
+	if(info.banner){
+		var bannerInfo = JSON.parse(info.banner)
+		var tmpInfo = {}
+		tmpInfo[war_banner[bannerInfo.id]["key"]] = bannerInfo.val
+		model.mergeData(info,tmpInfo)
+	}
+	//建筑属性
+	if(teamCfg && teamCfg["gjy"])
+		model.mergeData(info,{"self_atk_add":manor_gjy[teamCfg["gjy"]]["add"]})
+	if(teamCfg && teamCfg["dby"])
+		model.mergeData(info,{"self_maxHP_add":manor_dby[teamCfg["dby"]]["add"]})
+	if(teamCfg && teamCfg["qby"])
+		model.mergeData(info,{"speed":manor_qby[teamCfg["qby"]]["add"]})
 	//称号属性
 	if(teamCfg && teamCfg["title"] && title_list[teamCfg["title"]] && title_list[teamCfg["title"]]["talent"])
 		model.mergeTalent(info,title_list[teamCfg["title"]]["talent"])
@@ -469,6 +506,36 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 			if(newValue)
 				newCE = hufu_quality[newValue]["ce"]
 		break 
+		case "horse":
+			if(oldValue){
+				oldValue = JSON.parse(oldValue)
+				oldCE = war_horse[oldValue.id]["ce"]
+			}
+			if(newValue){
+				newValue = JSON.parse(newValue)
+				newCE = war_horse[newValue.id]["ce"]
+			}
+		break
+		case "drum":
+			if(oldValue){
+				oldValue = JSON.parse(oldValue)
+				oldCE = war_drum[oldValue.id]["ce"]
+			}
+			if(newValue){
+				newValue = JSON.parse(newValue)
+				newCE = war_drum[newValue.id]["ce"]
+			}
+		break
+		case "banner":
+			if(oldValue){
+				oldValue = JSON.parse(oldValue)
+				oldCE = war_banner[oldValue.id]["ce"]
+			}
+			if(newValue){
+				newValue = JSON.parse(newValue)
+				newCE = war_banner[newValue.id]["ce"]
+			}
+		break
 		case "zf_1":
 		case "zf_2":
 		case "zf_3":
@@ -516,6 +583,18 @@ model.getTeamCE = function(team) {
 				if(team[i]["hfs2"] && hufuSkillCes[team[i]["hfs2"]])
 					allCE += hufuSkillCes[team[i]["hfs2"]]
 			}
+			if(team[i]["horse"]){
+				var horseInfo = JSON.parse(team[i]["horse"])
+				allCE += war_horse[horseInfo.id]["ce"]
+			}
+			if(team[i]["drum"]){
+				var drumInfo = JSON.parse(team[i]["drum"])
+				allCE += war_drum[drumInfo.id]["ce"]
+			}
+			if(team[i]["banner"]){
+				var bannerInfo = JSON.parse(team[i]["banner"])
+				allCE += war_banner[bannerInfo.id]["ce"]
+			}
 			for(var j = 1;j <= 3;j++){
 				if(team[i]["zf_"+j] && zhanfa[team[i]["zf_"+j]])
         			allCE += zhanfa[team[i]["zf_"+j]]["ce"]
@@ -545,6 +624,12 @@ model.getTeamCE = function(team) {
 				allCE += 2000 * team[6]["camp_"+i]
 			}
 		}
+		if(team[6]["gjy"])
+			allCE += 80000 * team[6]["gjy"]
+		if(team[6]["dby"])
+			allCE += 80000 * team[6]["dby"]
+		if(team[6]["qby"])
+			allCE += 80000 * team[6]["qby"]
 	}
 	return allCE
 }

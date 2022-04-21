@@ -103,6 +103,115 @@
             console.log(data);
         });
       }
+      //=================家园===========//
+      //获取家园数据
+      var manorData = function() {
+        pomelo.request("area.manorHandler.manorData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //建设升级建筑
+      var manorBuild = function(bId,land) {
+        pomelo.request("area.manorHandler.manorBuild", {bId:bId,land:land}, function(data) {
+            console.log(data);
+        });
+      }
+      //建设升级建筑
+      var manorSwap = function(land1,land2) {
+        pomelo.request("area.manorHandler.manorSwap", {land1:land1,land2:land2}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取收益
+      var manorReap = function(bId) {
+        pomelo.request("area.manorHandler.manorReap", {bId:bId}, function(data) {
+            console.log(data);
+        });
+      }
+      //驯养马匹
+      var manorStartHorse = function() {
+        pomelo.request("area.manorHandler.manorStartHorse", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //收取马匹
+      var manorGainHorse = function() {
+        pomelo.request("area.manorHandler.manorGainHorse", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //打造护符
+      var manorStartHufu = function() {
+        pomelo.request("area.manorHandler.manorStartHufu", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //收取护符
+      var manorGainHufu = function() {
+        pomelo.request("area.manorHandler.manorGainHufu", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买军令
+      var manorBuyAction = function() {
+        pomelo.request("area.manorHandler.manorBuyAction", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战首领
+      var manorBoss = function() {
+        pomelo.request("area.manorHandler.manorBoss", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战山贼
+      var manorMon = function(monId) {
+        pomelo.request("area.manorHandler.manorMon", {monId:monId}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取特殊地点数据
+      var manorCityInfos = function() {
+        pomelo.request("area.manorHandler.manorCityInfos", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //占领特殊地点
+      var manorOccupyCity = function(land) {
+        pomelo.request("area.manorHandler.manorOccupyCity", {land:land}, function(data) {
+            console.log(data);
+        });
+      }
+      //放弃特殊地点
+      var manorGiveUp = function(grid) {
+        pomelo.request("area.manorHandler.manorGiveUp", {grid:grid}, function(data) {
+            console.log(data);
+        });
+      }
+      //搜寻玩家
+      var manorFindUser = function() {
+        pomelo.request("area.manorHandler.manorFindUser", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //占领玩家
+      var manorOccupyUser = function(target) {
+        pomelo.request("area.manorHandler.manorOccupyUser", {target:target}, function(data) {
+            console.log(data);
+        });
+      }
+      //反击
+      var manorRevolt = function() {
+        pomelo.request("area.manorHandler.manorRevolt", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //查看战报
+      var manorRerord = function() {
+        pomelo.request("area.manorHandler.manorRerord", {}, function(data) {
+            console.log(data);
+        });
+      }
       //===============新公会PK=========//
       // 报名PK
       var applyGuildPKRival = function() {
@@ -529,6 +638,129 @@
             console.log(data);
         });
       }
+      //==============战马==========//
+      //战马列表
+      var getHorseList = function() {
+        pomelo.request("area.hufuHandler.getHorseList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //生成随机战马
+      var gainRandHorse = function(lv) {
+        pomelo.request("area.hufuHandler.gainRandHorse", {lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //穿戴战马
+      var wearHorse = function(hId,id) {
+        pomelo.request("area.hufuHandler.wearHorse", {hId:hId,id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下战马
+      var unwearHorse = function(hId) {
+        pomelo.request("area.hufuHandler.unwearHorse", {hId:hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //战马洗练
+      var washHorse = function(id) {
+        pomelo.request("area.hufuHandler.washHorse", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //出售战马
+      var sellHorse = function(id) {
+        pomelo.request("area.hufuHandler.sellHorse", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //==============战鼓==========//
+      //战鼓列表
+      var getDrumList = function() {
+        pomelo.request("area.hufuHandler.getDrumList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //生成随机战鼓
+      var gainRandDrum = function(lv) {
+        pomelo.request("area.hufuHandler.gainRandDrum", {lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //穿戴战鼓
+      var wearDrum = function(hId,id) {
+        pomelo.request("area.hufuHandler.wearDrum", {hId:hId,id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下战鼓
+      var unwearDrum = function(hId) {
+        pomelo.request("area.hufuHandler.unwearDrum", {hId:hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //合成战鼓
+      var compoundDrum = function(ids,lv) {
+        pomelo.request("area.hufuHandler.compoundDrum", {ids:ids,lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //战鼓洗练
+      var washDrum = function(id) {
+        pomelo.request("area.hufuHandler.washDrum", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //出售战鼓
+      var sellDrum = function(id) {
+        pomelo.request("area.hufuHandler.sellDrum", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //==============军旗==========//
+      //军旗列表
+      var getBannerList = function() {
+        pomelo.request("area.hufuHandler.getBannerList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //生成随机军旗
+      var gainRandBanner = function(lv) {
+        pomelo.request("area.hufuHandler.gainRandBanner", {lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //穿戴军旗
+      var wearBanner = function(hId,id) {
+        pomelo.request("area.hufuHandler.wearBanner", {hId:hId,id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下军旗
+      var unwearBanner = function(hId) {
+        pomelo.request("area.hufuHandler.unwearBanner", {hId:hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //合成军旗
+      var compoundBanner = function(ids,lv) {
+        pomelo.request("area.hufuHandler.compoundBanner", {ids:ids,lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //军旗洗练
+      var washBanner = function(id) {
+        pomelo.request("area.hufuHandler.washBanner", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //出售军旗
+      var sellBanner = function(id) {
+        pomelo.request("area.hufuHandler.sellBanner", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
       //==============护符==========//
       //护符列表
       var getHufuList = function() {
@@ -579,8 +811,8 @@
         });
       }
       //出售护符
-      var sellHufu = function(id) {
-        pomelo.request("area.hufuHandler.sellHufu", {id:id}, function(data) {
+      var sellHufu = function(ids) {
+        pomelo.request("area.hufuHandler.sellHufu", {ids:ids}, function(data) {
             console.log(data);
         });
       }
@@ -3130,6 +3362,16 @@
       <input id="test" type="button" value="获取排行榜" onclick="getAncientRank()"/>
       <input id="test" type="button" value="获取历史挑战记录" onclick="getAncientRecord()"/>
       <input id="test" type="button" value="目标列表" onclick="ancientGetTargetList()"/>
+    </div>
+    <div class="g-button">
+      家园 : 
+      <input id="test" type="button" value="获取家园数据" onclick="manorData()"/>
+      <input id="test" type="button" value="获取特殊地点" onclick="manorCityInfos()"/>
+      <input id="test" type="button" value="占领特殊地点1" onclick="manorOccupyCity(3)"/>
+      <input id="test" type="button" value="搜寻玩家" onclick="manorFindUser()"/>
+      <input id="test" type="button" value="占领玩家" onclick="manorOccupyUser()"/>
+      <input id="test" type="button" value="反击" onclick="manorRevolt()"/>
+      <input id="test" type="button" value="查看战报" onclick="manorRerord()"/>
     </div>
   </body>
 </html>

@@ -299,7 +299,7 @@ heroDao.prototype.heroPrAll = function(areaId,uid,heros,hIds,cb) {
 		cb(true,awardList2.concat(awardList))
 	})
 }
-//材料返还资源  返还除升星外(升级  升阶 装备 锦囊 神兵 宝石)
+//材料返还资源  返还除升星外(升级  升阶 装备 锦囊 神兵 宝石 护符 战马 战鼓 军旗)
 heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 	var strList = []
 	for(var i = 0;i < heros.length;i++){
@@ -348,6 +348,18 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 			if(heros[i]["hfs2"])
 				hufuInfo.s2 = heros[i]["hfs2"]
 			this.areaManager.areaMap[areaId].gainHufu(uid,hufuInfo)
+		}
+		if(heros[i]["horse"]){
+			var horseInfo = JSON.parse(heros[i]["horse"])
+			this.areaManager.areaMap[areaId].gainHorse(uid,horseInfo)
+		}
+		if(heros[i]["drum"]){
+			var drumInfo = JSON.parse(heros[i]["drum"])
+			this.areaManager.areaMap[areaId].gainDrum(uid,horseInfo)
+		}
+		if(heros[i]["banner"]){
+			var bannerInfo = JSON.parse(heros[i]["banner"])
+			this.areaManager.areaMap[areaId].gainBanner(uid,bannerInfo)
 		}
 		this.areaManager.areaMap[areaId].remove_heroRank(uid,id,hIds[i])
 	}
@@ -721,6 +733,17 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 					fightTeam[6]["camp_2"] = Number(data[1]) || 0
 					fightTeam[6]["camp_3"] = Number(data[2]) || 0
 					fightTeam[6]["camp_4"] = Number(data[3]) || 0
+				}
+				next()
+			})
+		},
+		function(next) {
+			//家园建筑
+			self.redisDao.db.hmget("player:user:"+uid+":manor",["gjy","dby","qby"],function(err,data) {
+				if(data){
+					fightTeam[6]["gjy"] = Number(data[0]) || 0
+					fightTeam[6]["dby"] = Number(data[1]) || 0
+					fightTeam[6]["qby"] = Number(data[2]) || 0
 				}
 				next()
 			})

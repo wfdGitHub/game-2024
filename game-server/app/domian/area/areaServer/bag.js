@@ -233,6 +233,27 @@ module.exports = function() {
 					self.taskUpdate(uid,"hufu_gain",1)
 					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
 				return {type : "hufu",hufuInfo : hufuInfo,itemId:itemId}
+				case "horse":
+					//战马
+					var horseInfo = self.gainRandHorse(uid,itemCfg[itemId]["arg"])
+					if(cb)
+						cb(true,1)
+					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
+				return {type : "horse",horseInfo : horseInfo,itemId:itemId}
+				case "drum":
+					//战鼓
+					var drumInfo = self.gainRandDrum(uid,itemCfg[itemId]["arg"])
+					if(cb)
+						cb(true,1)
+					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
+				return {type : "drum",drumInfo : drumInfo,itemId:itemId}
+				case "banner":
+					//军旗
+					var bannerInfo = self.gainRandBanner(uid,itemCfg[itemId]["arg"])
+					if(cb)
+						cb(true,1)
+					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
+				return {type : "banner",bannerInfo : bannerInfo,itemId:itemId}
 				case "title":
 					self.gainUserTitle(uid,itemCfg[itemId]["arg"],cb)
 				return {type : "title",id : itemCfg[itemId]["arg"],itemId : itemId}
@@ -271,6 +292,14 @@ module.exports = function() {
 								case 200:
 									if(value < 0)
 										self.incrbyPlayerData(uid,"gold_consume",Math.abs(value))
+								break
+								case 810:
+									if(value > 0){
+										var warehouse = self.getLordAtt(uid,"warehouse")
+										if(curValue > warehouse)
+											curValue = warehouse
+										self.redisDao.db.hset("player:user:"+uid+":bag",itemId,curValue)
+									}
 								break
 							}
 							self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue,reason:otps.reason})
