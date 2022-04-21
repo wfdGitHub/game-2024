@@ -296,14 +296,17 @@ module.exports = function() {
 		})
 	}
 	//生成随机战马
-	this.gainRandHorse = function(uid,lv,id) {
+	this.gainRandHorse = function(uid,lv,id,horseId) {
 		if(!horse_quality[lv]){
 			console.error("gainRandHorse lv error " +lv)
 			return
 		}
 		var info = {}
 		info.lv = lv
-		info.id = horse_quality[lv][Math.floor(Math.random() * horse_quality[lv].length)]
+		if(horseId)
+			info.id = horseId
+		else
+			info.id = horse_quality[lv][Math.floor(Math.random() * horse_quality[lv].length)]
 		info.val = Math.floor(Math.random() * (war_horse[info.id]["max"] - war_horse[info.id]["min"] + 1)) + war_horse[info.id]["min"]
 		//概率获得技能
 		if(info.lv >= 3 && Math.random() < 0.3)
@@ -450,7 +453,7 @@ module.exports = function() {
 					return
 				}
 				self.delObj(uid,horse_name,id)
-				var data = self.gainRandHorse(uid,info.lv,id)
+				var data = self.gainRandHorse(uid,info.lv,id,info.id)
 				cb(true,data)
 			})
 		})
