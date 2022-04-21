@@ -288,13 +288,21 @@ normalHandler.prototype.initNameAndSex = function(msg, session, next) {
 normalHandler.prototype.chooseFirstHero = function(msg, session, next) {
   var uid = session.uid
   var index = msg.index
+  var areaId = session.get("areaId")
   if(!default_cfg["choose_hero"+index]){
     next(null,{flag:false,err:"index error"+index})
     return
   }
-  self.heroDao.gainHero(otps.areaId,uid,{id : default_cfg["choose_hero"+index]["value"]},function(flag,heroInfo) {
-    self.heroDao.setFightTeam(otps.areaId,uid,[heroInfo.hId,null,null,null,null,null])
-    cb(true,heroInfo)
+  var self = this
+  self.redisDao.db.hget("player:user:"+uid+":playerInfo","last_id",function(err,data) {
+    if(data == 0){
+      self.heroDao.gainHero(areaId,uid,{id : default_cfg["choose_hero"+index]["value"]},function(flag,heroInfo) {
+        self.heroDao.setFightTeam(areaId,uid,[heroInfo.hId,null,null,null,null,null])
+        next(null,{flag:true,heroInfo:heroInfo})
+      })
+    }else{
+      next(null,{flag:false})
+    }
   })
 }
 //开启限时活动
@@ -384,6 +392,9 @@ module.exports = function(app) {
     },{
       name : "redisDao",
       ref : "redisDao"
+    },{
+      name : "heroDao",
+      ref : "heroDao"
     },{
       name : "CDKeyDao",
       ref : "CDKeyDao"

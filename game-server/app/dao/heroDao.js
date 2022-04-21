@@ -202,14 +202,14 @@ heroDao.prototype.updateHeroArchive = function(areaId,uid,id,star) {
 				star : star
 			}
 			self.areaManager.areaMap[areaId].sendToUser(uid,notify)
-			var name = self.areaManager.areaMap[areaId].getLordAtt(uid,"name")
-			if(name){
-	      var notify2 = {
-	        type : "sysChat",
-	        text : "恭喜!!!"+name+"合成出"+star+"星"+herosCfg[id].name+"英雄，实力暴涨名满三国"
-	      }
-	      self.areaManager.areaMap[areaId].sendAllUser(notify2)
-			}
+			// var name = self.areaManager.areaMap[areaId].getLordAtt(uid,"name")
+			// if(name){
+	  //     var notify2 = {
+	  //       type : "sysChat",
+	  //       text : "恭喜!!!"+name+"合成出"+star+"星"+herosCfg[id].name+"英雄，实力暴涨名满三国"
+	  //     }
+	  //     self.areaManager.areaMap[areaId].sendAllUser(notify2)
+			// }
 		}
 	})
 }

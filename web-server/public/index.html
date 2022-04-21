@@ -1838,6 +1838,12 @@
             console.log(data);
         });
       }
+      //选择初始英雄
+      var chooseFirstHero = function(index) {
+        pomelo.request("area.normalHandler.chooseFirstHero", {index : index}, function(data) {
+            console.log(data);
+        });
+      }
       //============开服计划============//
       //获取服务器列表
       var getServerList = function() {

@@ -426,11 +426,11 @@ heroHandler.prototype.upgradeStarSimple = function(msg, session, next) {
         if(flag){
             var name = session.get("name")
             var heroName = heros[heroInfo.id]["name"]
-            var notify = {
-              type : "sysChat",
-              text : "恭喜"+name+"合成出6星英雄"+heroName+",实力大涨名动八荒"
-            }
-            self.areaManager.areaMap[areaId].sendAllUser(notify)
+            // var notify = {
+            //   type : "sysChat",
+            //   text : "恭喜"+name+"合成出6星英雄"+heroName+",实力大涨名动八荒"
+            // }
+            // self.areaManager.areaMap[areaId].sendAllUser(notify)
             self.areaManager.areaMap[areaId].taskUpdate(uid,"heroStar_6",1,heroInfo.id)
         }
         next(null,{flag : flag,star : star})
