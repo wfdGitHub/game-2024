@@ -883,7 +883,6 @@ module.exports = function() {
 							targetLv++
 					}
 					local.manorSrandmember(targetLv,2,function(flag,data) {
-						console.log(flag,data)
 						if(flag){
 							list = data
 							next()
@@ -1216,13 +1215,10 @@ module.exports = function() {
 				if(winFlag){
 					//胜利
 					local.addRecord(winFlag,atkTeam,defTeam,atkInfo,defInfo,{seededNum : seededNum},0,true)
+					//解除占领状态
+					self.setObj(defInfo.uid,main_name,"grid_"+defInfo.grid,0)
+					self.redisDao.db.zadd("cross:manorFall",0,uid)
 				}
-				next()
-			},
-			function(next) {
-				//解除占领状态
-				self.setObj(defInfo.uid,main_name,"grid_"+defInfo.grid,0)
-				self.redisDao.db.zadd("cross:manorFall",0,uid)
 				cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum})
 			}
 		],function(err) {
@@ -1302,9 +1298,7 @@ module.exports = function() {
 	}
 	//随机获取玩家集合
 	local.manorSrandmember = function(lv,count,cb) {
-		console.log("manorSrandmember",lv,count)
 		self.redisDao.db.scard("cross:manorLevel:"+lv,function(err,data) {
-			console.log("scard",data,data && data < 2)
 			if(!err && data < 2){
 				var list = []
 				for(var i = 0;i < count;i++){
