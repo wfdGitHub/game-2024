@@ -284,6 +284,19 @@ normalHandler.prototype.initNameAndSex = function(msg, session, next) {
     next(null,{flag : false,err : err})
   })
 }
+//选择初始英雄
+normalHandler.prototype.chooseFirstHero = function(msg, session, next) {
+  var uid = session.uid
+  var index = msg.index
+  if(!default_cfg["choose_hero"+index]){
+    next(null,{flag:false,err:"index error"+index})
+    return
+  }
+  self.heroDao.gainHero(otps.areaId,uid,{id : default_cfg["choose_hero"+index]["value"]},function(flag,heroInfo) {
+    self.heroDao.setFightTeam(otps.areaId,uid,[heroInfo.hId,null,null,null,null,null])
+    cb(true,heroInfo)
+  })
+}
 //开启限时活动
 normalHandler.prototype.openNewLimitedTime = function(msg, session, next) {
   var limit = session.get("limit")

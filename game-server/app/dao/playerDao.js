@@ -54,9 +54,6 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 			if(!err){
 				self.redisDao.db.hset("game:nameMap",otps.name,uid)
 				if(!otps.robot){
-					self.heroDao.gainHero(otps.areaId,uid,{id : beginHero},function(flag,heroInfo) {
-						self.heroDao.setFightTeam(otps.areaId,uid,[heroInfo.hId,0,null,null,null,null])
-					})
 					self.mysqlDao.addDaylyData("userNum",1)
 					self.mysqlDao.addRetentionData("userNum",1)
 					self.mysqlDao.addLTVData("userNum",1)
