@@ -82,7 +82,10 @@ module.exports = function() {
 			if(!data || !data.main){
 				self.manorInit(uid,cb)
 			}else{
-				cb(true,data)
+				self.getBagItem(uid,"810",function(value) {
+					data["810"] = value
+					cb(true,data)
+				})
 			}
 		})
 	}
@@ -99,7 +102,8 @@ module.exports = function() {
 			"grid_2":0,
 			"grid_3":0,
 			"grid_4":-1,
-			"grid_5":-1
+			"grid_5":-1,
+			"810" : 2000
 		}
 		for(var i = 1;i <= 6;i++){
 			info["mon_time_"+i] = 0
@@ -635,7 +639,7 @@ module.exports = function() {
 			city_infos[land].own = 0
 			city_infos[land].grid = 0
 			delete city_infos[land].atkInfo
-			delete city_infos[land].atkTeam
+			delete city_infos[land].team
 			local.saveCity(land)
 			self.getHMObj(uid,main_name,["main","zlt"],function(list) {
 				var buildLv = Number(list[0]) || 1
@@ -822,7 +826,7 @@ module.exports = function() {
 					city_infos[land].occupyTime = curTime
 					city_infos[land].own = uid
 				}
-				city_infos[land]["atkTeam"] = atkTeam
+				city_infos[land]["team"] = atkTeam
 				city_infos[land]["grid"] = grid
 				city_infos[land]["atkInfo"] = atkInfo
 				self.setObj(uid,main_name,"grid_"+grid,JSON.stringify(city_infos[land]))
@@ -1139,7 +1143,8 @@ module.exports = function() {
 					"occupyTime" : Date.now(),  								//占领时间
 					"endTime" : endTime,      									//结束时间
 					"output" : output, 											//产出速度
-					"grid" : grid 												//地块
+					"grid" : grid, 												//地块
+					"team" : defTeam 										//敌方阵容
 				}
 				self.setObj(uid,main_name,"grid_"+grid,JSON.stringify(cityInfo))
 				if(target > 10000){
