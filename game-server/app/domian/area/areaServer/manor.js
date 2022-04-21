@@ -863,14 +863,6 @@ module.exports = function() {
 		var buildLv
 		async.waterfall([
 			function(next) {
-				self.consumeItems(uid,"810:100",1,"搜寻玩家",function(flag,err) {
-					if(flag)
-						next()
-					else
-						next(err)
-				})
-			},
-			function(next) {
 				self.getObj(uid,main_name,"main",function(lv) {
 					buildLv = Number(lv) || 1
 					var targetLv = buildLv
