@@ -81,9 +81,9 @@ hufuHandler.prototype.washHufu = function(msg, session, next) {
 hufuHandler.prototype.sellHufu = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var id = msg.id
+  var ids = msg.ids
   var self = this
-  self.areaManager.areaMap[areaId].sellHufu(uid,id,function(flag,data) {
+  self.areaManager.areaMap[areaId].sellHufu(uid,ids,function(flag,data) {
     if(!flag){
       next(null,{flag : flag,err : data})
     }else{
@@ -150,9 +150,9 @@ hufuHandler.prototype.washHorse = function(msg, session, next) {
 hufuHandler.prototype.sellHorse = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var id = msg.id
+  var ids = msg.ids
   var self = this
-  self.areaManager.areaMap[areaId].sellHorse(uid,id,function(flag,data) {
+  self.areaManager.areaMap[areaId].sellHorse(uid,ids,function(flag,data) {
     if(!flag){
       next(null,{flag : flag,err : data})
     }else{
@@ -218,9 +218,9 @@ hufuHandler.prototype.washDrum = function(msg, session, next) {
 hufuHandler.prototype.sellDrum = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var id = msg.id
+  var ids = msg.ids
   var self = this
-  self.areaManager.areaMap[areaId].sellDrum(uid,id,function(flag,data) {
+  self.areaManager.areaMap[areaId].sellDrum(uid,ids,function(flag,data) {
     if(!flag){
       next(null,{flag : flag,err : data})
     }else{
@@ -286,9 +286,9 @@ hufuHandler.prototype.washBanner = function(msg, session, next) {
 hufuHandler.prototype.sellBanner = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var id = msg.id
+  var ids = msg.ids
   var self = this
-  self.areaManager.areaMap[areaId].sellBanner(uid,id,function(flag,data) {
+  self.areaManager.areaMap[areaId].sellBanner(uid,ids,function(flag,data) {
     if(!flag){
       next(null,{flag : flag,err : data})
     }else{

@@ -811,8 +811,8 @@
         });
       }
       //出售护符
-      var sellHufu = function(id) {
-        pomelo.request("area.hufuHandler.sellHufu", {id:id}, function(data) {
+      var sellHufu = function(ids) {
+        pomelo.request("area.hufuHandler.sellHufu", {ids:ids}, function(data) {
             console.log(data);
         });
       }
