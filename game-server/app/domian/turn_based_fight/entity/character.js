@@ -36,7 +36,6 @@ var model = function(otps) {
 	this.attInfo.healRate = otps["healRate"] || 0		//治疗暴击几率
 	this.attInfo.healAdd = otps["healAdd"] || 0			//被治疗加成
 	this.attInfo.speed = (otps["speed"] || 0) + 100 	//速度值
-
 	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
 	this.surplus_health = otps.surplus_health			//剩余生命值比例
 
@@ -133,7 +132,25 @@ var model = function(otps) {
 	this.kill_ghost_dur = otps.kill_ghost_dur 				//每击杀一个目标亡魂持续回合数+1
 	this.kill_ghost_value = 0 								//亡魂叠加回合数
 
+	this.curAnger = (otps["curAnger"] || 0) + 2	//当前怒气值
+	this.allAnger = otps["allAnger"] || false   //技能消耗所有怒气
+	this.anyAnger = otps["anyAnger"] || false   //当前怒气小于4点时，也能施放技能，技能伤害降低15%*(4-当前怒气值)
+	this.totalDamage = 0						//累计伤害
+	this.totalHeal = 0							//累计治疗
+	//=========阵营抗性=======//
+	this.att_realm_1 = otps.att_realm_1 || 0 	//攻击阵营1增益
+	this.att_realm_2 = otps.att_realm_2 || 0 	//攻击阵营2增益
+	this.att_realm_3 = otps.att_realm_3 || 0 	//攻击阵营3增益
+	this.att_realm_4 = otps.att_realm_4 || 0 	//攻击阵营4增益
+	this.att_realm_5 = otps.att_realm_5 || 0 	//攻击阵营5增益
+	this.def_realm_1 = otps.def_realm_1 || 0 	//防御阵营1增益
+	this.def_realm_2 = otps.def_realm_2 || 0 	//防御阵营2增益
+	this.def_realm_3 = otps.def_realm_3 || 0 	//防御阵营3增益
+	this.def_realm_4 = otps.def_realm_4 || 0 	//防御阵营4增益
+	this.def_realm_5 = otps.def_realm_5 || 0 	//防御阵营5增益
+	
 	//=========其他效果=======//
+	this.first_buff_list = []			//初始BUFF
 	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
 	this.skill_heal_maxHp = otps.skill_heal_maxHp || 0		//释放技能后恢复自身最大生命值
 	//=========战法效果=======//

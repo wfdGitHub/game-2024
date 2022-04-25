@@ -165,6 +165,12 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(restrainMap[attacker.realm+"_"+target.realm]){
 		info.value += Math.floor(info.value * restrainMap[attacker.realm+"_"+target.realm])
 	}
+	var restrainValue = restrainMap[attacker.realm+"_"+target.realm] || 0
+	if(attacker["att_realm_"+target.realm])
+		restrainValue += attacker["att_realm_"+target.realm]
+	if(target["def_realm_"+attacker.realm])
+		restrainValue -= target["def_realm_"+attacker.realm]
+	info.value += Math.floor(info.value * restrainValue)
 	//物理法术伤害加成减免
 	if(attacker[skill.damageType+"_add"] || target[skill.damageType+"_def"]){
 		var tmpRate = attacker[skill.damageType+"_add"] - target[skill.damageType+"_def"]
