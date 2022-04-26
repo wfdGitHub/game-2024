@@ -294,8 +294,9 @@ normalHandler.prototype.chooseFirstHero = function(msg, session, next) {
     return
   }
   var self = this
-  self.redisDao.db.hget("player:user:"+uid+":playerInfo","last_id",function(err,data) {
-    if(data == 0){
+  self.redisDao.db.hget("player:user:"+uid+":playerData","choose",function(err,data) {
+    if(!data){
+      self.redisDao.db.hset("player:user:"+uid+":playerData","choose",1)
       self.heroDao.gainHero(areaId,uid,{id : default_cfg["choose_hero"+index]["value"]},function(flag,heroInfo) {
         self.heroDao.setFightTeam(areaId,uid,[heroInfo.hId,null,null,null,null,null])
         next(null,{flag:true,heroInfo:heroInfo})
