@@ -19,7 +19,7 @@ module.exports = function() {
 		console.log("guildPKDayUpdate!!!")
 		var day = (new Date()).getDay()
 		self.redisDao.db.hgetall(main_name,function(err,data) {
-			if(data){
+			if(data && data.guildList){
 				pk_info = data
 				pk_info.guildList = JSON.parse(data.guildList)
 				pk_info.guildInfos = JSON.parse(data.guildInfos)
