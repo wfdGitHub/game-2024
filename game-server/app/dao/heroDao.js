@@ -14,6 +14,7 @@ var stone_base = require("../../config/gameCfg/stone_base.json")
 var stone_skill = require("../../config/gameCfg/stone_skill.json")
 var stone_cfg = require("../../config/gameCfg/stone_cfg.json")
 var default_cfg = require("../../config/gameCfg/default_cfg.json")
+var evolutionCfg = require("../../config/gameCfg/evolution.json")
 var async = require("async")
 var first_recruit = default_cfg["first_hero"]["value"]
 var baseStone = {
@@ -177,7 +178,7 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 		hId = this.areaManager.areaMap[areaId].getLordLastid(uid)
 	else 
 		hId = uuid.v1()
-	var heroInfo = {id : id,ad : ad,lv : lv,star : star}
+	var heroInfo = {id : id,ad : ad,lv : lv,star : star,evo : 0}
 	this.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
 	heroInfo.hId = hId
@@ -348,6 +349,8 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 			var bannerInfo = JSON.parse(heros[i]["banner"])
 			this.areaManager.areaMap[areaId].gainBanner(uid,bannerInfo)
 		}
+		if(heros[i]["evo"])
+			strList.push(evolutionCfg[heros[i]["evo"]].pr)
 		this.areaManager.areaMap[areaId].remove_heroRank(uid,id,hIds[i])
 	}
 	if(strList.length){

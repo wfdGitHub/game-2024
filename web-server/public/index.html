@@ -109,9 +109,6 @@
             console.log(data);
         });
       }
-      //完成主题招募英雄任务
-      var finishTopicRecruitHeroTask = function(heroId,star) {
-        pomelo.request("area.recruitHandler.finishTopicRecruitHeroTask", {heroId:heroId,star:star}, function(data) {
       //=================家园===========//
       //获取家园数据
       var manorData = function() {
@@ -2555,6 +2552,12 @@
       //英雄升星
       var upgradeStar = function(target,hIds) {
         pomelo.request("area.heroHandler.upgradeStar", {target : target,hIds : hIds}, function(data) {
+            console.log(data);
+        });
+      }
+      //英雄进化
+      var upgraEvolution = function(hId) {
+        pomelo.request("area.heroHandler.upgraEvolution", {hId : hId}, function(data) {
             console.log(data);
         });
       }

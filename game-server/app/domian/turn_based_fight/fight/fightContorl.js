@@ -579,6 +579,12 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 			if(newValue && zhanfa[newValue])
 				newCE = zhanfa[newValue]["ce"]
 		break
+		case "evo":
+			if(oldValue && evolutionCfg[oldValue])
+				oldCE = evolutionCfg[oldValue]["ce"]
+			if(newValue && evolutionCfg[newValue])
+				newCE = evolutionCfg[newValue]["ce"]
+		break
 	}
 	return newCE - oldCE
 }
@@ -634,6 +640,8 @@ model.getTeamCE = function(team) {
 				if(team[i]["zf_"+j] && zhanfa[team[i]["zf_"+j]])
         			allCE += zhanfa[team[i]["zf_"+j]]["ce"]
 			}
+			if(team[i]["evo"])
+				allCE += evolutionCfg[team[i]["evo"]]["ce"]
 		}
 	}
 	if(team[6]){
