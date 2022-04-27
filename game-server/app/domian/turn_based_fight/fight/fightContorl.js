@@ -31,8 +31,8 @@ var war_banner = require("../../../../config/gameCfg/war_banner.json")
 var manor_gjy = require("../../../../config/gameCfg/manor_gjy.json")
 var manor_dby = require("../../../../config/gameCfg/manor_dby.json")
 var manor_qby = require("../../../../config/gameCfg/manor_qby.json")
-
-
+var aptitudeCfg = require("../../../../config/gameCfg/aptitude.json")
+var evolutionCfg = require("../../../../config/gameCfg/evolution.json")
 
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
@@ -146,21 +146,42 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	info = Object.assign({},info)
 	info.bookAtts = bookAtts
 	let id = info.id
+	var aptitude = herosCfg[id].aptitude
 	model.mergeData(info,herosCfg[id])
 	//被动技能
 	if(herosCfg[info.id]["talent"])
 		model.mergeTalent(info,herosCfg[info.id]["talent"])
+	//初始属性
+	var lvInfo = {
+	    "maxHP":aptitudeCfg[aptitude].maxHP,
+	    "atk": aptitudeCfg[aptitude].atk,
+	    "phyDef": aptitudeCfg[aptitude].phyDef,
+	    "magDef": aptitudeCfg[aptitude].magDef
+	}
+	//进化计算
+	if(info.evo){
+		if(evolutionCfg[info.evo]){
+			lvInfo.maxHP += evolutionCfg[info.evo].maxHP
+			lvInfo.atk += evolutionCfg[info.evo].atk
+			lvInfo.phyDef += evolutionCfg[info.evo].phyDef
+			lvInfo.magDef += evolutionCfg[info.evo].magDef
+			aptitude += evolutionCfg[info.evo].aptitude
+		}
+		//进化天赋
+		if(info.evo >= 3 && herosCfg[info.id]["evo_3"])
+			model.mergeTalent(info,herosCfg[info.id]["evo_3"])
+		if(info.evo >= 4 && herosCfg[info.id]["evo_4"])
+			model.mergeTalent(info,herosCfg[info.id]["evo_4"])
+	}
 	//等级计算
 	if(info.lv && lv_cfg[info.lv]){
-		let lvInfo = {
-		    "maxHP": lv_cfg[info.lv].maxHP,
-		    "atk": lv_cfg[info.lv].atk,
-		    "phyDef": lv_cfg[info.lv].phyDef,
-		    "magDef": lv_cfg[info.lv].magDef,
-		    "speed" : lv_cfg[info.lv].speed
-		}
-		model.mergeData(info,lvInfo)
+		lvInfo.maxHP += Math.floor(lv_cfg[info.lv].maxHP * aptitudeCfg[aptitude].growth)
+		lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * aptitudeCfg[aptitude].growth)
+		lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * aptitudeCfg[aptitude].growth)
+		lvInfo.magDef += Math.floor(lv_cfg[info.lv].magDef * aptitudeCfg[aptitude].growth)
+		lvInfo.speed += lv_cfg[info.lv].speed
 	}
+	model.mergeData(info,lvInfo)
 	//装备计算
 	let equip_suit = {}
 	for(let part = 1;part <= 4;part++){

@@ -378,8 +378,11 @@ model.prototype.action = function() {
 				this.character.addAnger(this.character.action_anger)
 			for(var i in this.character.action_buffs){
 				var buffInfo = this.character.action_buffs[i]
-				if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
-					buffManager.createBuff(this.character,this.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+				var buffTargets = this.locator.getBuffTargets(this.character,buffInfo.buff_tg)
+				for(var k = 0;k < buffTargets.length;k++){
+					if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+						buffManager.createBuff(this.character,buffTargets[k],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+					}
 				}
 			}
 			if(this.character.record_anger_rate && this.seeded.random("判断BUFF命中率") < this.character.record_anger_rate){

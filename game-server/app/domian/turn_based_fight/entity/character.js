@@ -53,6 +53,8 @@ var model = function(otps) {
 		this.begin_round_buffs = JSON.parse(otps.begin_round_buffs)  //回合开始时获得随机BUFF
 	this.rescue_anger = otps.rescue_anger  				//复活恢复怒气值
 	this.ghost_unlimit = otps.ghost_unlimit 			//亡魂无限制
+	this.dodgeFirst = otps.dodgeFirst  					//闪避每回合第一次攻击
+	this.dodgeState = false
 	//=========新战斗属性=======//
 	this.first_buff_list = []			//初始BUFF
 	this.kill_buffs = {} 				//击杀BUFF
@@ -118,6 +120,7 @@ var model = function(otps) {
 	if(otps.first_realm_buff)
 		this.first_realm_buff = JSON.parse(otps.first_realm_buff)
 	this.slcj_zs = otps.slcj_zs || false  					// 释放水龙冲击时，添加1回合重伤效果
+	this.slcj_xy = otps.slcj_xy || false 					// 释放水龙冲击时，添加1回合眩晕效果
 	this.pbyj_qs = otps.pbyj_qs || false  					// 释放破冰一击时，驱散目标所有增益效果
 	this.pj_less_anger = otps.pj_less_anger || 0 			// 使用技能攻击时，降低破甲状态下的目标一点怒气值
 	this.curse_amp = otps.curse_amp || 0 					// 诅咒伤害增加百分比
@@ -701,6 +704,8 @@ model.prototype.beginAction = function() {
 			buffManager.createBuff(this,buffTargets[i],{buffId : buff.buffId,buffArg : buff.buffArg,duration : buff.duration})
 		}
 	}
+	if(this.dodgeFirst)
+		this.dodgeState = true
 }
 //行动开始前刷新
 model.prototype.before = function() {
@@ -762,6 +767,8 @@ model.prototype.roundOver = function() {
 			this.buffs["jinhun"].update()
 		return
 	}
+	if(this.dodgeFirst)
+		this.dodgeState = true
 	//状态BUFF刷新
 	for(var i in this.buffs)
 		if(buff_cfg[i].refreshType == "roundOver")

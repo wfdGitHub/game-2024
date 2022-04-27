@@ -46,16 +46,22 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		tmpAmplify += attacker.control_amp
 	}
 	//命中判断
-	if(!(skill.isAnger && attacker.skill_must_hit) && !target.buffs["suoding"]){
+	var dodgeFlag = false
+	if(target.dodgeState){
+		target.dodgeState = false
+		dodgeFlag = true
+	}else if(!(skill.isAnger && attacker.skill_must_hit) && !target.buffs["suoding"]){
 		var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
 		if(target.attInfo.hp < target.attInfo.maxHP && target.low_hp_dodge){
 			hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_crit
 		}
-		if(this.seeded.random("闪避判断") > hitRate){
-			info.miss = true
-			target.onMiss()
-			return info
-		}
+		if(this.seeded.random("闪避判断") > hitRate)
+			dodgeFlag = true
+	}
+	if(dodgeFlag){
+		info.miss = true
+		target.onMiss()
+		return info
 	}
 	//暴击判断
 	if(!skill.isAnger && attacker.normal_crit){
@@ -132,6 +138,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			attacker.addAnger(attacker.thawing_burn_anger)
 		if(attacker.slcj_zs)
 			buffManager.createBuff(attacker,target,{"buffId":"forbidden","duration":1})
+		if(attacker.slcj_xy)
+			buffManager.createBuff(attacker,target,{"buffId":"dizzy","duration":1})
 	}
 	if(target.buffs["flash"]){
 		var count = 0
