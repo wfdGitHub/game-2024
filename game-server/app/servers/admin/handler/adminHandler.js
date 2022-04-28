@@ -283,6 +283,22 @@ adminHandler.prototype.getUnionIdByUid = function(msg,session,next) {
 		})
 	})
 }
+//无双争霸玩法开启
+adminHandler.prototype.beginBeherrscher = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].beginBeherrscher(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//无双争霸玩法关闭
+adminHandler.prototype.endBeherrscher = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].endBeherrscher(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "adminHandler",

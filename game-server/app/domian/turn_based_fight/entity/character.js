@@ -46,6 +46,8 @@ var model = function(otps) {
 	this.totalDamage = 0								//累计伤害
 	this.totalHeal = 0									//累计治疗
 	//==========MEGA属性========//
+	if(otps["amplify_"+this.realm])
+		this.attInfo.amplify += otps["amplify_"+this.realm]
 	this.frozen_anger = otps.frozen_anger 				//冰冻后恢复怒气值
 	this.enter_skill = otps.enter_skill 				//入场后释放怒气技能
 	this.fanzhi_damage = otps.fanzhi_damage  			//每消耗1层反制印记，额外造成目标最大生命值的伤害

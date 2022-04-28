@@ -4,16 +4,18 @@ const async = require("async")
 const beherrscher_cfg = require("../../../../config/gameCfg/beherrscher.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const maxRecordNum = 10
+const seatCount = 6
 var npc_team = {}
-for(var i = 1;i <= 3;i++){
+for(var i = 1;i <= seatCount;i++){
 	beherrscher_cfg["team_"+i] = JSON.parse(beherrscher_cfg["team_"+i]["value"])
 }
-var scene_otps = {
-	"1" : {"phyRate" : 1.2,"magRate" : 1.2},
-	"2" : {"phyRate" : 1.2},
-	"3" : {"magRate" : 1.2}
-}
 const hours = 20
+var scene_otps = {}
+for(var i = 1;i <= seatCount; i++){
+	scene_otps[i] = {}
+	scene_otps[i]["amplify_"+i] = 0.3
+}
+scene_otps[6]["amplify"] = 0.3
 module.exports = function() {
 	var self = this
 	//state 0 未开赛  1 开赛中
@@ -23,11 +25,10 @@ module.exports = function() {
 	var challengeMap = {}
 	var beherrscherInfo = {
 		"state" : 0,
-		"endTime" : 0,
-		"seat_1" : 0,
-		"seat_2" : 0,
-		"seat_3" : 0
+		"endTime" : 0
 	}
+	for(var i = 1;i <= seatCount; i++)
+		beherrscherInfo["seat_"+i] = 0
 	//每日更新
 	this.dayUpdateBeherrscher = function() {
 		console.log("dayUpdateBeherrscher")
@@ -60,7 +61,9 @@ module.exports = function() {
 	}
 	//获取数据
 	this.getBeherrscherInfo = function(uid,cb) {
-		var uids = [beherrscherInfo["seat_1"],beherrscherInfo["seat_2"],beherrscherInfo["seat_3"]]
+		var uids = []
+		for(var i = 1;i <= seatCount;i++)
+			uids.push(beherrscherInfo["seat_"+i])
 		self.getPlayerInfoByUids(uids,function(userInfos) {
 			var info = {
 				beherrscherInfo : beherrscherInfo,
@@ -73,12 +76,6 @@ module.exports = function() {
 	this.beginBeherrscher = function() {
 		console.log("beginBeherrscher")
 		local.changeData("state",1)
-		local.changeData("seat_1",0)
-		local.changeData("seat_2",0)
-		local.changeData("seat_3",0)
-		self.redisDao.db.del("area:area"+self.areaId+":"+main_name+":1")
-		self.redisDao.db.del("area:area"+self.areaId+":"+main_name+":2")
-		self.redisDao.db.del("area:area"+self.areaId+":"+main_name+":3")
 		clearTimeout(timer)
 		timer = setTimeout(self.endBeherrscher,beherrscherInfo.endTime - Date.now())
 	}
@@ -87,7 +84,7 @@ module.exports = function() {
 		console.log("endBeherrscher")
 		//发放奖励
 		local.changeData("state",0)
-		for(var i = 1;i <= 3;i++){
+		for(var i = 1;i <= seatCount;i++){
 			if(beherrscherInfo["seat_"+i] != 0){
 				self.sendMail(beherrscherInfo["seat_"+i],beherrscher_cfg["mail_"+i]["name"],beherrscher_cfg["mail_"+i]["value"],beherrscher_cfg["award_"+i]["value"])
 			}
@@ -95,7 +92,7 @@ module.exports = function() {
 	}
 	//挑战
 	this.challengeBeherrscher = function(uid,index,cb) {
-		if(beherrscherInfo["seat_"+index] === undefined){
+		if(beherrscherInfo["seat_"+index] === undefined || beherrscherInfo["seat_"+index] == uid){
 			cb(false,"index error "+index)
 			return
 		}
@@ -103,9 +100,23 @@ module.exports = function() {
 			cb(false,"活动未开启")
 			return
 		}
-		if(beherrscherInfo["seat_1"] == uid || beherrscherInfo["seat_2"] == uid || beherrscherInfo["seat_3"] == uid){
-			cb(false,"当前已有席位")
-			return
+		var seatIndex = 0
+		for(var i = 1;i <= seatCount;i++){
+			if(beherrscherInfo["seat_"+i] == uid){
+				seatIndex = i
+				break
+			}
+		}
+		if(index == 6){
+			if(!seatIndex){
+				cb(false,"当前没有大师席位")
+				return
+			}
+		}else{
+			if(seatIndex){
+				cb(false,"当前已有大师席位")
+				return
+			}
 		}
 		if(challengeMap[uid] && challengeMap[uid] > Date.now()){
 			cb(false,"挑战冷却中,"+Math.ceil((challengeMap[uid] - Date.now()) / 1000)+"秒后可挑战")
@@ -113,8 +124,12 @@ module.exports = function() {
 		}
 		var info = {}
 		var atkTeam = this.getUserTeam(uid)
+		for(var i = 0;i < 6;i++){
+			if(atkTeam[i])
+				atkTeam[i] = Object.assign(atkTeam[i],scene_otps[index])
+		}
 		var defTeam
-		var fightOtps = Object.assign({seededNum : Date.now()},scene_otps[index])
+		var fightOtps = Object.assign({seededNum : Date.now()})
 		async.waterfall([
 			function(next) {
 				//获取防守方阵容
@@ -140,9 +155,11 @@ module.exports = function() {
 				next()
 			},
 			function(next) {
-				challengeMap[uid] = Date.now() + 3000
+				challengeMap[uid] = Date.now() + 300000
 				//获胜处理
 				if(info.winFlag){
+					if(seatIndex)
+						local.changeData("seat_"+seatIndex,0)
 					if(beherrscherInfo["seat_"+index] != 0){
 						var arr = []
 						arr.push(uid)
@@ -168,6 +185,19 @@ module.exports = function() {
 		],function(err) {
 			cb(false,err)
 		})
+	}
+	//放弃席位
+	this.beherrscherGiveup = function(uid,index,cb) {
+		if(beherrscherInfo["state"] != 1){
+			cb(false,"活动未开启")
+			return
+		}
+		if(beherrscherInfo["seat_"+index] !== uid){
+			cb(false,"未获得该席位")
+			return
+		}
+		local.changeData("seat_"+index,0)
+		cb(true)
 	}
 	//获取挑战记录
 	this.getBeherrscherRecord = function(index,cb) {

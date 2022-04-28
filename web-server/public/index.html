@@ -492,6 +492,18 @@
         });
       }
       //============无双争霸=========//
+      //玩法开启
+      var beginBeherrscher = function() {
+        pomelo.request("area.adminHandler.beginBeherrscher", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //玩法关闭
+      var endBeherrscher = function() {
+        pomelo.request("area.adminHandler.endBeherrscher", {}, function(data) {
+            console.log(data);
+        });
+      }
       //获取数据
       var getBeherrscherInfo = function() {
         pomelo.request("area.beherrscherHandler.getBeherrscherInfo", {}, function(data) {
@@ -513,6 +525,12 @@
       //清除CD 
       var clearBeherrscherCD = function() {
         pomelo.request("area.beherrscherHandler.clearBeherrscherCD", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //放弃席位
+      var beherrscherGiveup = function(index) {
+        pomelo.request("area.beherrscherHandler.beherrscherGiveup", {index:index}, function(data) {
             console.log(data);
         });
       }
@@ -3396,6 +3414,19 @@
       <input id="test" type="button" value="占领玩家" onclick="manorOccupyUser()"/>
       <input id="test" type="button" value="反击" onclick="manorRevolt()"/>
       <input id="test" type="button" value="查看战报" onclick="manorRerord()"/>
+    </div>
+    <div class="g-button">
+      无双争霸赛 : 
+      <input id="test" type="button" value="玩法开启" onclick="beginBeherrscher()"/>
+      <input id="test" type="button" value="玩法关闭" onclick="endBeherrscher()"/>
+      <input id="test" type="button" value="获取数据" onclick="getBeherrscherInfo()"/>
+      <input id="test" type="button" value="挑战席位1" onclick="challengeBeherrscher(1)"/>
+      <input id="test" type="button" value="挑战席位2" onclick="challengeBeherrscher(2)"/>
+      <input id="test" type="button" value="挑战席位3" onclick="challengeBeherrscher(3)"/>
+      <input id="test" type="button" value="挑战席位4" onclick="challengeBeherrscher(4)"/>
+      <input id="test" type="button" value="挑战席位5" onclick="challengeBeherrscher(5)"/>
+      <input id="test" type="button" value="挑战席位6" onclick="challengeBeherrscher(6)"/>
+      <input id="test" type="button" value="清除CD" onclick="clearBeherrscherCD()"/>
     </div>
   </body>
 </html>
