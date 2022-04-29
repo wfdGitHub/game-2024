@@ -488,6 +488,9 @@ module.exports = function() {
 		if(bossLv == 3){
 			//通关
 			self.taskUpdate(uid,"zhulu_pass",1)
+			//逐鹿通关触发突发礼包
+			if(Math.random() < 0.4)
+				self.checkSuddenGift(uid)
 		}
 		var boxId = "box"+bossLv
 		var awardList = self.addItemStr(uid,zhulu_cfg[boxId]["value"],1,"逐鹿宝箱")

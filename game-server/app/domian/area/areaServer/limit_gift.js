@@ -4,6 +4,7 @@ const second_name = "arg_gift"
 var gift_lv = {}
 var gift_star = {}
 var gift_hero = {}
+var suddens = {}
 for(var i in gift_list){
 	switch(gift_list[i]["type"]){
 		case "lv":
@@ -14,6 +15,11 @@ for(var i in gift_list){
 		break
 		case "hero":
 			gift_hero[gift_list[i]["arg"]] = Object.assign({id:i},gift_list[i]) 
+		break
+		case "sudden":
+			if(!suddens[gift_list[i]["arg"]])
+				suddens[gift_list[i]["arg"]] = []
+			suddens[gift_list[i]["arg"]].push(i)
 		break
 	}
 }
@@ -62,6 +68,37 @@ module.exports = function() {
 				}
 			})
 		}
+	}
+	//检查随机时间突发礼包
+	this.checkSuddenGiftForTime = function(uid) {
+		self.redisDao.db.hget("player:user:"+uid+":playerData","rand_time",function(err,data) {
+			if(data && data != -1){
+				if(Date.now() > data){
+					self.redisDao.db.hset("player:user:"+uid+":playerData","rand_time",-1)
+					self.checkSuddenGift(uid)
+				}else{
+					console.log("不满足时间要求")
+				}
+			}
+		})
+	}
+	//检查突发礼包
+	this.checkSuddenGift = function(uid) {
+		self.getLimitGiftData(uid,function(flag,data) {
+			for(var id in data){
+				if(gift_list[id]["type"] == "sudden"){
+					return
+				}
+			}
+			var rea_rmb = self.getLordAtt(uid,"real_rmb")
+			for(var i in suddens){
+				if(rea_rmb < i){
+					var rand = Math.floor(Math.random() * suddens[i].length)
+					local.createLimitGift(uid,suddens[i][rand])
+					break
+				}
+			}
+		})
 	}
 	//生成限时礼包
 	local.createLimitGift = function(uid,id) {

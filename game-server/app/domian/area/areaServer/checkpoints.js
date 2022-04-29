@@ -188,6 +188,9 @@ module.exports = function() {
 			  	if(awardStr)
 			  		awardList = awardList.concat(self.addItemStr(uid,awardStr,1,"快速挂机道具"))
 			  	self.taskUpdate(uid,"quick",1)
+			  	//快速作战第三次触发突发礼包
+			  	if(((count+1) % 3) == 2 && Math.random() < 0.3)
+			  		self.checkSuddenGift(uid)
 			  	cb(true,{awardList : awardList})
 			}
 		],function(err) {
