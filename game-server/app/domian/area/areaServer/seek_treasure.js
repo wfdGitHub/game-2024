@@ -46,6 +46,8 @@ module.exports = function() {
 	//获得寻宝数据
 	this.getSTData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(data) {
+			if(!data)
+				data = {}
 			if(!data.normal_grid || !data.high_grid){
 				data.normal_grid = JSON.stringify(local.normalSTRefresh(uid))
 				data.high_grid = JSON.stringify(local.highSTRefresh(uid))
