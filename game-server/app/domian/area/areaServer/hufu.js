@@ -461,7 +461,14 @@ module.exports = function() {
 	//战鼓列表
 	this.getDrumList = function(uid,cb) {
 		self.getObjAll(uid,drum_name,function(list) {
-			cb(true,list || {})
+			if(!list)
+				list = {}
+			for(var i in list){
+				if(!list[i]){
+					delete list[i]
+				}
+			}
+			cb(true,list)
 		})
 	}
 	//生成随机战鼓
