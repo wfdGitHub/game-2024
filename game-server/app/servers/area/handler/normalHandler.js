@@ -252,10 +252,6 @@ normalHandler.prototype.initNameAndSex = function(msg, session, next) {
     next(null,{flag:false,err:"参数错误"})
     return
   }
-  if(name.indexOf(".") != -1){
-    next(null,{flag:false,err:"不能包含特殊字符"})
-    return
-  }
   if(sex !== 1)
     sex = 2
   async.waterfall([
