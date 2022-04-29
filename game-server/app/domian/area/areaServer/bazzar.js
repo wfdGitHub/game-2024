@@ -169,7 +169,6 @@ module.exports = function() {
 						goods.itemId = art_list[Math.floor(Math.random() * art_list.length)]
 					break
 				}
-				console.log("goods.itemId",goods.itemId)
 				goods.value = bazaar_goods[type][i]["value"] * item_cfg[goods.itemId]["buyNum"]
 				if(!goods.value){
 					console.error("goods.itemId ",goods.itemId,bazaar_goods[type][i]["value"],item_cfg[goods.itemId]["buyNum"])
