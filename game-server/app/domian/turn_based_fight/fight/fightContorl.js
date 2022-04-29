@@ -149,8 +149,12 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	var aptitude = herosCfg[id].aptitude
 	model.mergeData(info,herosCfg[id])
 	//被动技能
-	if(herosCfg[info.id]["talent"])
-		model.mergeTalent(info,herosCfg[info.id]["talent"])
+	if(herosCfg[info.id]["talent1"])
+		model.mergeTalent(info,herosCfg[info.id]["talent1"])
+	if(herosCfg[info.id]["talent2"])
+		model.mergeTalent(info,herosCfg[info.id]["talent2"])
+	if(herosCfg[info.id]["talent3"])
+		model.mergeTalent(info,herosCfg[info.id]["talent3"])
 	//初始属性
 	var lvInfo = {
 	    "maxHP":aptitudeCfg[aptitude].maxHP,
