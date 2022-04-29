@@ -461,6 +461,7 @@ module.exports = function() {
 	//战鼓列表
 	this.getDrumList = function(uid,cb) {
 		self.getObjAll(uid,drum_name,function(list) {
+			console.log(list)
 			if(!list)
 				list = {}
 			for(var i in list){
@@ -468,6 +469,7 @@ module.exports = function() {
 					delete list[i]
 				}
 			}
+			console.log(list)
 			cb(true,list)
 		})
 	}
