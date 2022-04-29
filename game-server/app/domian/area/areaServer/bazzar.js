@@ -25,10 +25,12 @@ for(let type in bazaar_cfg){
 var star_4_heros = []
 var star_5_heros = []
 for(let heroId in heros){
-	if(heros[heroId].min_star == 4){
-		star_4_heros.push(heroId)
-	}else if(heros[heroId].min_star == 5){
-		star_5_heros.push(heroId)
+	if(!heros[heroId]["NPC"]){
+		if(heros[heroId].min_star == 4){
+			star_4_heros.push(heroId)
+		}else if(heros[heroId].min_star == 5){
+			star_5_heros.push(heroId)
+		}
 	}
 }
 for(let i in ace_pack){
