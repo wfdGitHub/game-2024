@@ -20,6 +20,7 @@ for(var i in gift_skin)
 	skinArr.push(i)
 var skinList = []
 module.exports = function() {
+	var local = {}
 	var self = this
 	//每日刷新
 	this.rechargeDayUpdate = function() {
