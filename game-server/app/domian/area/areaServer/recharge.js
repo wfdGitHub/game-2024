@@ -61,6 +61,7 @@ module.exports = function() {
 	this.dianpiao_finish = function(uid,pay_id,cb) {
 		var call_back = function(uid,flag,data) {
 			if(flag){
+				self.onlyUserRMB(uid,pay_cfg[pay_id]["rmb"])
 				var notify = {
 					type : "finish_recharge",
 					pay_id : pay_id,
