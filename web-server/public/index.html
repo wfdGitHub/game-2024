@@ -109,6 +109,12 @@
             console.log(data);
         });
       }
+      //领取超梦逆袭章节奖励
+      var gainMewtwoAward = function(index) {
+        pomelo.request("area.activityHandler.gainMewtwoAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
       //=================家园===========//
       //获取家园数据
       var manorData = function() {

@@ -17,6 +17,7 @@ const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const invade_team = JSON.parse(invade["mon_team"]["value"])
 const area_boss_base = require("../../../../config/gameCfg/area_boss_base.json")
 const activity_day = require("../../../../config/gameCfg/activity_day.json")
+const mewtwo_task = require("../../../../config/gameCfg/mewtwo_task.json")
 var util = require("../../../../util/util.js")
 var maxBoss = 0
 for(var i in area_boss_base){
@@ -567,6 +568,26 @@ module.exports = function() {
 			}else{
 				self.setObj(uid,main_name,"open_"+index,1)
 				var awardList = self.addItemStr(uid,open_cfg[index]["award"],1,"功能开启"+index)
+				cb(true,awardList)
+			}
+		})
+	}
+	//领取超梦逆袭章节奖励
+	this.gainMewtwoAward = function(uid,index,cb) {
+		if(!mewtwo_task[index]){
+			cb(false,"index error "+index)
+			return
+		}
+		self.getObj(uid,main_name,"mewtwo_"+index,function(data) {
+			if(data){
+				cb(false,"已领取")
+			}else{
+				if(self.checkTaskExist(uid,mewtwo_task[index]["task1"]) || self.checkTaskExist(uid,mewtwo_task[index]["task2"]) || self.checkTaskExist(uid,mewtwo_task[index]["task3"])){
+					cb(false,"任务未完成")
+					return
+				}
+				self.setObj(uid,main_name,"mewtwo_"+index,1)
+				var awardList = self.addItemStr(uid,mewtwo_task[index]["award"],1,"超梦任务"+index)
 				cb(true,awardList)
 			}
 		})

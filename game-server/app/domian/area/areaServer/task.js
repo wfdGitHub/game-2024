@@ -7,6 +7,7 @@ var war_horn = require("../../../../config/gameCfg/war_horn.json")
 var week_target = require("../../../../config/gameCfg/week_target.json")
 var task_week_loop = require("../../../../config/gameCfg/task_week_loop.json")
 var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+var mewtwo_task = require("../../../../config/gameCfg/mewtwo_task.json")
 var util = require("../../../../util/util.js")
 var async = require("async")
 var main_name = "task"
@@ -68,6 +69,11 @@ module.exports = function() {
 		}
 		for(var taskId in officer_task){
 			this.gainTask(uid,taskId,0)
+		}
+		for(var id in mewtwo_task){
+			this.gainTask(uid,mewtwo_task[id]["task1"],0)
+			this.gainTask(uid,mewtwo_task[id]["task2"],0)
+			this.gainTask(uid,mewtwo_task[id]["task3"],0)
 		}
 		this.gainTask(uid,900001,0)
 	}
