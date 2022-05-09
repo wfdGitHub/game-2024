@@ -20,7 +20,6 @@ for(var i in gift_skin)
 	skinArr.push(i)
 var skinList = []
 module.exports = function() {
-	var local = {}
 	var self = this
 	//每日刷新
 	this.rechargeDayUpdate = function() {
@@ -74,7 +73,7 @@ module.exports = function() {
 			cb(false)
 			return
 		}
-		local.finish_recharge(uid,pay_id,call_back)
+		self.finish_pay(uid,pay_id,call_back)
 		cb(true)
 	}
 	//充值成功
@@ -94,10 +93,10 @@ module.exports = function() {
 			cb(false)
 			return
 		}
-		local.finish_recharge(uid,pay_id,call_back)
+		self.finish_pay(uid,pay_id,call_back)
 		cb(true)
 	}
-	local.finish_recharge = function(uid,pay_id,call_back) {
+	self.finish_pay = function(uid,pay_id,call_back) {
 		switch(pay_cfg[pay_id]["type"]){
 			case "lv_fund":
 				this.activateLvFund(uid,call_back.bind(this,uid))
