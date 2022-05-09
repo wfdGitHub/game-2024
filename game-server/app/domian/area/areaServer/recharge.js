@@ -51,11 +51,30 @@ module.exports = function() {
 		}
 		self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
 			if(flag){
-				self.finish_recharge(uid,pay_id,cb)
+				self.dianpiao_finish(uid,pay_id,cb)
 			}else{
 				cb(false,err)
 			}
 		})
+	}
+	//点票充值成功
+	this.dianpiao_finish = function(uid,pay_id,cb) {
+		var call_back = function(uid,flag,data) {
+			if(flag){
+				var notify = {
+					type : "finish_recharge",
+					pay_id : pay_id,
+					data : data
+				}
+				self.sendToUser(uid,notify)
+			}
+		}
+		if(!pay_cfg[pay_id]){
+			cb(false)
+			return
+		}
+		local.finish_recharge(uid,pay_id,call_back)
+		cb(true)
 	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,cb) {
@@ -74,6 +93,10 @@ module.exports = function() {
 			cb(false)
 			return
 		}
+		local.finish_recharge(uid,pay_id,call_back)
+		cb(true)
+	}
+	local.finish_recharge = function(uid,pay_id,call_back) {
 		switch(pay_cfg[pay_id]["type"]){
 			case "lv_fund":
 				this.activateLvFund(uid,call_back.bind(this,uid))
@@ -121,7 +144,6 @@ module.exports = function() {
 				this.finish_item(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 		}
-		cb(true)
 	}
 	//真实充值
 	this.real_recharge = function(uid,value,cb) {
