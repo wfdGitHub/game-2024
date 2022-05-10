@@ -695,14 +695,16 @@ model.mergeTalent = function(info,talentId) {
 //数据合并
 model.mergeData = function(info1,info2) {
 	for(var i in info2){
-		if(info1[i]){
-			if(Number.isFinite(info1[i]) && Number.isFinite(info2[i])){
-				info1[i] += info2[i]
+		if(info2[i]){
+			if(info1[i] && Number.isFinite(info2[i])){
+				if(Number.isFinite(info1[i])){
+					info1[i] += info2[i]
+				}else{
+					info1[i] = info2[i]
+				}
 			}else{
 				info1[i] = info2[i]
 			}
-		}else{
-			info1[i] = info2[i]
 		}
 	}
 }
