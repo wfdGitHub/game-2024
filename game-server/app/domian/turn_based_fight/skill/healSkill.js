@@ -63,7 +63,8 @@ model.prototype.getInfo = function() {
 		type : this.type,
 		id : this.character.id,
 		skillId : this.skillId,
-		name : this.name
+		name : this.name,
+		isAnger : this.isAnger
 	}
 	return info
 }
