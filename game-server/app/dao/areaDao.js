@@ -1,7 +1,7 @@
 var heros = require("../../config/gameCfg/heros.json")
 var heroList = []
 for(var i in heros){
-	if(heros[i]["min_star"] >= 5){
+	if(heros[i]["min_star"] >= 5 && !heros[i]["NPC"]){
 		heroList.push(i)
 	}
 }
