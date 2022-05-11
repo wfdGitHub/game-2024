@@ -242,6 +242,10 @@ module.exports = function() {
 				case "skin":
 					self.gainHeroSkin(uid,itemCfg[itemId]["arg"],cb)
 				return {type : "skin",itemId : itemId}
+				case "hero"
+					var star = itemCfg[itemId].useType
+					var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : heroId,star : star})
+				return {type : "hero",heroInfo,heroInfo}
 				default:
 					self.addItemCB(uid,itemId,value,function(flag,curValue) {
 						if(flag){
