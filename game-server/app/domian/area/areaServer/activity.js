@@ -411,6 +411,7 @@ module.exports = function() {
 				var amount = VIP[self.players[uid]["vip"] + 1]["heroAmount"] - VIP[self.players[uid]["vip"]]["heroAmount"]
 				this.incrbyLordData(uid,"vip",1)
 				this.incrbyLordData(uid,"heroAmount",amount)
+				this.setObj(uid,main_name,"vip_day_award",0)
 				if(self.players[uid]){
 					var notify = {
 						type : "vip",
