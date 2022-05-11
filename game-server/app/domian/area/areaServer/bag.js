@@ -245,6 +245,11 @@ module.exports = function() {
 				case "hero":
 					var star = itemCfg[itemId]["useType"]
 					var heroInfo = self.heroDao.gainHero(self.areaId,uid,{id : itemCfg[itemId]["arg"],star : star},cb)
+					var notify = {
+						"type" : "newHero",
+						"heroInfo" : heroInfo
+					}
+					self.sendToUser(uid,notify)
 				return {type : "hero",heroInfo,heroInfo}
 				default:
 					self.addItemCB(uid,itemId,value,function(flag,curValue) {
