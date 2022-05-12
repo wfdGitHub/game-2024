@@ -94,6 +94,7 @@ module.exports = function() {
 		self.incrbyLordData(uid,"warehouse",builds["main"][1]["food"])
 		var info = {
 			"main":1,
+			"land_0":"main",
 			"action":0,
 			"boss_time":0,
 			"boss_count":0,
@@ -136,6 +137,7 @@ module.exports = function() {
 			return
 		}
 		var mainLv = 0
+		var buildLv = 0
 		var basic = manor_builds[bId]["basic"]
 		async.waterfall([
 			function(next) {
@@ -150,18 +152,9 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//判断格子
-				self.getObj(uid,main_name,"land_"+land,function(data) {
-					if(data && data != bId)
-						next("地块已被占用")
-					else
-						next()
-				})
-			},
-			function(next) {
 				//获取建筑等级并消耗资源
-				self.getObj(uid,main_name,bId,function(buildLv) {
-					buildLv = Number(buildLv) || 0
+				self.getObj(uid,main_name,bId,function(data) {
+					buildLv = Number(data) || 0
 					buildLv++
 					if(!builds[basic][buildLv]){
 						next("建筑等级已满")
@@ -171,17 +164,30 @@ module.exports = function() {
 						next("主建筑等级不足")
 						return
 					}
-					if(builds[basic][buildLv]["upgrade"]){
-						self.consumeItems(uid,builds[basic][buildLv]["upgrade"],1,"升级建筑:"+bId+":"+buildLv,function(flag,err) {
-							if(flag)
-								next(null,buildLv)
+					//判断格子
+					if(buildLv == 1){
+						self.getObj(uid,main_name,"land_"+land,function(data) {
+							if(data && data != bId)
+								next("地块已被占用")
 							else
-								next(err)
+								next()
 						})
 					}else{
 						next()
 					}
 				})
+			},
+			function(next) {
+				if(builds[basic][buildLv]["upgrade"]){
+					self.consumeItems(uid,builds[basic][buildLv]["upgrade"],1,"升级建筑:"+bId+":"+buildLv,function(flag,err) {
+						if(flag)
+							next(null,buildLv)
+						else
+							next(err)
+					})
+				}else{
+					next()
+				}
 			},
 			function(buildLv,next) {
 				var info = {}
