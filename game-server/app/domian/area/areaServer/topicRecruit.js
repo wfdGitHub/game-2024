@@ -34,6 +34,8 @@ module.exports = function() {
 		for(var type in recruit_base){
 			self.delObj(uid,"playerData",type+"_count")
 		}
+		self.delObj(uid,"playerData","ace_lotto_count")
+		self.delObj(uid,"playerData","bf_lotto_count")
 		// local.resetTopicRecruitTask(uid)
 	}
 	//获取主题招募数据
