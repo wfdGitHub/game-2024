@@ -250,7 +250,7 @@ module.exports = function() {
 						"heroInfo" : heroInfo
 					}
 					self.sendToUser(uid,notify)
-				return {type : "hero",heroInfo,heroInfo}
+				return {type : "item",itemId : itemId,value : value}
 				default:
 					self.addItemCB(uid,itemId,value,function(flag,curValue) {
 						if(flag){
