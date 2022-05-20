@@ -120,6 +120,18 @@
             console.log(data);
         });
       }
+      //使用跳过次数
+      var useVipSkipCount = function() {
+        pomelo.request("area.activityHandler.useVipSkipCount", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //使用跳过次数
+      var buyVipSkipCount = function() {
+        pomelo.request("area.activityHandler.buyVipSkipCount", {}, function(data) {
+            console.log(data);
+        });
+      }
       //=================家园===========//
       //获取家园数据
       var manorData = function() {

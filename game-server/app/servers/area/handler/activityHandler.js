@@ -364,6 +364,22 @@ activityHandler.prototype.gainMewtwoAward = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//使用跳过次数
+activityHandler.prototype.useVipSkipCount = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].useVipSkipCount(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//购买跳过次数
+activityHandler.prototype.buyVipSkipCount = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].buyVipSkipCount(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "activityHandler",

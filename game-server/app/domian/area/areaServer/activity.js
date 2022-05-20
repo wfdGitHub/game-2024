@@ -593,4 +593,29 @@ module.exports = function() {
 			}
 		})
 	}
+	//使用跳过次数
+	this.useVipSkipCount = function(uid,cb) {
+		var vip = self.players[uid].vip
+		self.getObj(uid,main_name,"vip_skip",function(data) {
+			data = Number(data) || 0
+			if(data >= VIP[vip]["skip"]){
+				cb(false,"次数已达上限")
+				return
+			}
+			self.incrbyObj(uid,main_name,"vip_skip",1)
+			data++
+			cb(true,data)
+		})
+	}
+	//购买跳过次数
+	this.buyVipSkipCount = function(uid,cb) {
+		var pcStr = default_cfg["default_pc_1"]["value"]
+		self.consumeItems(uid,pcStr,1,"跳过",function(flag,err) {
+			if(!flag){
+				cb(false,err)
+			}else{
+				cb(true)
+			}
+		})
+	}
 }
