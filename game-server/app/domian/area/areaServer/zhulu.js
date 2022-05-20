@@ -9,7 +9,10 @@ var main_name = "zhulu"
 var allWeight = 0
 var normal_team = JSON.parse(zhulu_cfg["normal_team"]["value"])
 var elite_team = JSON.parse(zhulu_cfg["elite_team"]["value"])
-var boss_team = JSON.parse(zhulu_cfg["boss_team"]["value"])
+var bossTeams = {}
+bossTeams[1] = JSON.parse(zhulu_cfg["boss1"]["value"])
+bossTeams[2] = JSON.parse(zhulu_cfg["boss2"]["value"])
+bossTeams[3] = JSON.parse(zhulu_cfg["boss3"]["value"])
 var weights = {
 	"elite":0,
 	"normal":0,
@@ -125,7 +128,7 @@ module.exports = function() {
 		if(grid % 10 === 0){
 			//boss
 			let info = {type:"boss"}
-			var team = boss_team[Math.floor(Math.random() * boss_team.length)].concat()
+			var team = bossTeams[grid / 10]
 			team = self.standardTeam(uid,team,"zhulu_boss",lv)
 			var dladd = zhulu_dl[grid]
 			for(let i = 0;i <= team.length;i++){
