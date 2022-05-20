@@ -125,8 +125,8 @@ module.exports = function() {
 			},
 			function(next) {
 				//战斗
-				var atkTeam = self.standardTeam(uid,team,"main",155)
-				var defTeam = self.standardTeam(uid,exercise_list[teamId][index],"exercise_"+level,155)
+				var atkTeam = self.standardTeam(uid,team,"main",107)
+				var defTeam = self.standardTeam(uid,exercise_list[teamId][index],"exercise_"+level,107)
 				var seededNum = Date.now()
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
@@ -171,7 +171,7 @@ module.exports = function() {
 				return
 			}
 			self.setObj(uid,main_name,"award_"+index,1)
-			var awardList = self.addItemStr(uid,"201:"+lord_lv[lv]["normal"],exercise_award["award_"+index]["lv_"+level],"演武宝箱"+index)
+			var awardList = self.addItemStr(uid,"101:"+lord_lv[lv]["normal"],exercise_award["award_"+index]["lv_"+level],"演武宝箱"+index)
 			cb(true,awardList)
 		})
 	}

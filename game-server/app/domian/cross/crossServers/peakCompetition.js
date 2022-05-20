@@ -24,7 +24,7 @@ module.exports = function() {
 	var likeUsers = {}			//今日点赞
 	var honorMathch = {}		//历史八强
 	var look = true				//锁
-	var baseScore = 200			//初始分数
+	var baseScore = 1000		//初始分数
 	var timeMap = {}			//刷新冷却
 	//初始化
 	this.peakInit = function() {

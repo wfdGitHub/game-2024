@@ -103,6 +103,11 @@
             console.log(data);
         });
       }
+      var finishTopicRecruitHeroTask = function(heroId,star) {
+        pomelo.request("area.recruitHandler.finishTopicRecruitHeroTask", {heroId:heroId,star:star}, function(data) {
+            console.log(data);
+        });
+      }
       //获取主题招募英雄任务
       var gainTopicRecruitHeroTask = function(heroId) {
         pomelo.request("area.recruitHandler.gainTopicRecruitHeroTask", {heroId:heroId}, function(data) {
