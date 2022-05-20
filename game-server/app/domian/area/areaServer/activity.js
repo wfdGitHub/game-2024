@@ -161,6 +161,7 @@ module.exports = function() {
 			data["rv_normal"] = 0
 			data["rv_high"] = 0
 			data["rv_super"] = 0
+			data["vip_skip"] = 0
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
 			}
