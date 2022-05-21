@@ -10,7 +10,7 @@ const VIP = require("../../../../config/gameCfg/VIP.json")
 const consumeTotal = require("../../../../config/gameCfg/consumeTotal.json")
 const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
 const pay_days = require("../../../../config/gameCfg/pay_days.json")
-const open_cfg = require("../../../../config/gameCfg/open_cfg.json")
+const unlock_cfg = require("../../../../config/gameCfg/unlock_cfg.json")
 const invade = require("../../../../config/gameCfg/invade.json")
 const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
@@ -560,8 +560,12 @@ module.exports = function() {
 	//领取功能开启奖励
 	this.gainSysOpenAward = function(uid,index,cb) {
 		var lv = self.getLordLv(uid)
-		if(!index || !open_cfg[index] || lv < open_cfg[index]["lv"]){
+		if(!index || !unlock_cfg[index] || lv < unlock_cfg[index]["lv"]){
 			cb(false,"等级不足")
+			return
+		}
+		if(!unlock_cfg[index]["award"]){
+			cb(false,"没有奖励")
 			return
 		}
 		self.getObj(uid,main_name,"open_"+index,function(data) {
@@ -569,7 +573,7 @@ module.exports = function() {
 				cb(false,"已领取")
 			}else{
 				self.setObj(uid,main_name,"open_"+index,1)
-				var awardList = self.addItemStr(uid,open_cfg[index]["award"],1,"功能开启"+index)
+				var awardList = self.addItemStr(uid,unlock_cfg[index]["award"],1,"功能开启"+index)
 				cb(true,awardList)
 			}
 		})
