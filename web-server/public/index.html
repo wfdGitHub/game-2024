@@ -26,7 +26,7 @@
         pomelo.init({
           host: host,
           port: "3910",
-          log: true
+          log: true 
         }, function(data) {
           console.log("!!!!!")
           console.log(data)
@@ -1574,6 +1574,18 @@
       //主题招募十次
       var topicRecruitMultiple = function() {
         pomelo.request("area.recruitHandler.topicRecruitMultiple", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //道具招募
+      var recruitHeroByItem = function(type,count) {
+        pomelo.request("area.recruitHandler.recruitHeroByItem", {type:type,count:count}, function(data) {
+            console.log(data);
+        });
+      }
+      //元宝招募
+      var recruitHeroByGold = function(type,count) {
+        pomelo.request("area.recruitHandler.recruitHeroByGold", {type:type,count:count}, function(data) {
             console.log(data);
         });
       }
