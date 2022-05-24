@@ -137,6 +137,9 @@ module.exports = function() {
 			case "wuxian":
 				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
+			case "gmLv":
+				this.buyGMLv(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+			break
 		}
 		var once_index = recharge_once_table[pay_id]
 		if(once_index){
@@ -188,11 +191,24 @@ module.exports = function() {
 			cb(false,"无限特权不存在")
 			return
 		}
-		self.addUserRMB(uid,wuxian[id].rmb)
 		self.incrbyObj(uid,main_name,id,1)
 		var notify = {
 			type : "wuxian",
 			wuxianId : id
+		}
+		self.sendToUser(uid,notify)
+		cb(true)
+	}
+	//购买GM等级
+	this.buyGMLv = function(uid,id,cb) {
+		if(!wuxian[id] || !wuxian[id]["rmb"]){
+			cb(false,"无限特权不存在")
+			return
+		}
+		self.chageLordData(uid,"gmLv",id)
+		var notify = {
+			type : "gmLv",
+			lv : id
 		}
 		self.sendToUser(uid,notify)
 		cb(true)
