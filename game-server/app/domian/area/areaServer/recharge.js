@@ -52,6 +52,7 @@ module.exports = function() {
 			}
 			self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
 				if(flag){
+					self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
 					self.finish_recharge(uid,pay_id,cb)
 				}else{
 					cb(false,err)
