@@ -5,6 +5,7 @@ const recruit_list = require("../../../../config/gameCfg/recruit_list.json")
 const recruit_topic_cfg = require("../../../../config/gameCfg/recruit_topic_cfg.json")
 const recruit_topic_hero = require("../../../../config/gameCfg/recruit_topic_hero.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
 const util = require("../../../../util/util.js")
 const main_name = "topic_recruit"
 var topicList = []
@@ -86,6 +87,7 @@ module.exports = function() {
 			return
 		}
 		var pcStr = recruit_base[type]["gold_"+count]
+		var gmLv = self.getLordAtt(uid,"gmLv")
 		var heroInfos = []
 		async.waterfall([
 			function(next) {
@@ -103,7 +105,7 @@ module.exports = function() {
 				if(recruit_base[type]["count"]){
 					self.getObj(uid,"playerData",type+"_count",function(data) {
 						data = Number(data) || 0
-						if((data + count) > recruit_base[type]["count"]){
+						if((data + count) > (recruit_base[type]["count"] + GM_CFG[gmLv]["recruit"])){
 							next("可用次数不足")
 						}else{
 							next()

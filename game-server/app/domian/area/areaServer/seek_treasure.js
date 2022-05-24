@@ -4,6 +4,7 @@ const treasure_awards = require("../../../../config/gameCfg/treasure_awards.json
 const oh_turntable = require("../../../../config/gameCfg/oh_turntable.json")
 const bf_turntable = require("../../../../config/gameCfg/bf_turntable.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
 const main_name = "ST"
 var normal_grid = {}
 var high_grid = {}
@@ -433,9 +434,10 @@ module.exports = function() {
 	}
 	//兵法转盘
 	this.bfLotto = function(uid,count,cb) {
+		var gmLv = self.getLordAtt(uid,"gmLv")
 		self.getObj(uid,"playerData","bf_lotto_count",function(data) {
 			data = Number(data) || 0
-			if((data + count) > default_cfg["bf_lotto_count"]["value"]){
+			if((data + count) > (default_cfg["bf_lotto_count"]["value"] + GM_CFG[gmLv]["lotto"])){
 				cb(false,"可用次数不足")
 			}else{
 				self.incrbyObj(uid,"playerData","bf_lotto_count",count)

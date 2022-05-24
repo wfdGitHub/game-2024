@@ -128,7 +128,10 @@
       }
       //升级阵营加成
       var upgradCampAtt = function(camp,cb) {
-        pomelo.request("area.tttHandler.upgradCampAtt", {camp:camp}, function(data) {
+        pomelo.request("area.recruitHandler.upgradCampAtt", {camp:camp}, function(data) {
+            console.log(data);
+        });
+      }
       var finishTopicRecruitHeroTask = function(heroId,star) {
         pomelo.request("area.recruitHandler.finishTopicRecruitHeroTask", {heroId:heroId,star:star}, function(data) {
             console.log(data);
