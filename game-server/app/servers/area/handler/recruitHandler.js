@@ -146,6 +146,25 @@ recruitHandler.prototype.gainTopicRecruitBoxAward = function(msg, session, next)
     next(null,{flag : true,data : data})
   })
 }
+//获取主题招募英雄任务
+recruitHandler.prototype.gainTopicRecruitHeroTask = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var heroId = msg.heroId
+  this.areaManager.areaMap[areaId].gainTopicRecruitHeroTask(uid,heroId,function(flag,data) {
+    next(null,{flag : true,data : data})
+  })
+}
+//完成主题招募英雄任务
+recruitHandler.prototype.finishTopicRecruitHeroTask = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var heroId = msg.heroId
+  var star = msg.star
+  this.areaManager.areaMap[areaId].finishTopicRecruitHeroTask(uid,heroId,star,function(flag,data) {
+    next(null,{flag : true,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "recruitHandler",
