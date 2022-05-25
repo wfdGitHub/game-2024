@@ -7,6 +7,7 @@ const recruit_topic_hero = require("../../../../config/gameCfg/recruit_topic_her
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
 const util = require("../../../../util/util.js")
+const async = require("async")
 const main_name = "topic_recruit"
 var topicList = []
 for(var i in recruit_topic_hero)
