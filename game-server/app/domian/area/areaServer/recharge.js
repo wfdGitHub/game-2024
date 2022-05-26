@@ -202,8 +202,8 @@ module.exports = function() {
 	}
 	//购买GM等级
 	this.buyGMLv = function(uid,id,cb) {
-		if(!wuxian[id] || !wuxian[id]["rmb"]){
-			cb(false,"无限特权不存在")
+		if(!GM_CFG[id] || !GM_CFG[id]["award"]){
+			cb(false,"GM特权不存在")
 			return
 		}
 		self.chageLordData(uid,"gmLv",id)
@@ -212,6 +212,7 @@ module.exports = function() {
 			lv : id
 		}
 		self.sendToUser(uid,notify)
+		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",GM_CFG[id]["award"])
 		cb(true)
 	}
 	//购买循环礼包
