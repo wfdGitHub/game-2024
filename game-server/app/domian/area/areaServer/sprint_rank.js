@@ -48,20 +48,20 @@ module.exports = function() {
 				var saveDate = []
 				for(var i = list.length - 2;i >= 0;i -= 2){
 					rank++
-					var score = Math.floor(list[i+1])
-					var text = "亲爱的玩家您好，恭喜您在"+sprint_rank[curRankIndex]["name"]+"活动中获得第"+rank+"名，获得排名奖励，祝您游戏愉快！"
-					if(rank >= 11){
+					if(rank >= 11)
 						rank = 11
-						text = "亲爱的玩家您好，恭喜您在"+sprint_rank[curRankIndex]["name"]+"活动中获得参与奖励，祝您游戏愉快！"
-					}else{
-						self.incrbyZset(rankType+"_settle",list[i],score)
-					}
+					var score = Math.floor(list[i+1])
 	                var award = ""
 	                award = sprint_rank[curRankIndex]["rank_"+rank]
 	                if(score >= sprint_rank[curRankIndex]["extra_premise"]){
 	                    award += "&"+sprint_rank[curRankIndex]["extra_award"]
 	                }
-					self.sendMail(list[i],sprint_rank[curRankIndex]["name"]+"奖励",text,award)
+					if(rank >= 11){
+						self.sendTextToMail(list[i],"sprint_play",award)
+					}else{
+						self.incrbyZset(rankType+"_settle",list[i],score)
+						self.sendTextToMail(list[i],"sprint_rank",award,rank)
+					}
 				}
 				curRankIndex++
 				var data = {}

@@ -3,6 +3,7 @@ var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
 const standard_dl = require("../../../config/gameCfg/standard_dl.json")
 const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce = require("../../../config/gameCfg/standard_ce.json")
+const mailText = require("../../../config/gameCfg/mailText.json")
 var uuid = require("uuid")
 var crossServers = ["grading","escort","peakCompetition","muye","guild_pk","ancient","manorCross"]
 var crossManager = function(app) {
@@ -185,6 +186,14 @@ crossManager.prototype.addItemStr = function(crossUid,str,rate,reason,cb) {
 	var uid = this.players[crossUid]["uid"]
 	this.app.rpc.area.areaRemote.addItemStr.toServer(serverId,uid,areaId,str,rate,reason,cb)
 }
+//通过文本模板发送邮件
+crossManager.prototype.sendTextToMail = function(crossUid,key,atts,arg,cb) {
+	var title = mailText[key]["title"]
+	var text = mailText[key]["text"]
+	if(arg)
+		text.replace("xxx",arg)
+	this.sendMail(crossUid,title,text,atts,cb)
+}
 //发放邮件
 crossManager.prototype.sendMail = function(crossUid,title,text,atts,cb) {
 	if(this.players[crossUid]){
@@ -197,6 +206,14 @@ crossManager.prototype.sendMail = function(crossUid,title,text,atts,cb) {
 		var uid = parseInt(list[1])
 		this.sendMailByUid(uid,title,text,atts,cb)
 	}
+}
+//通过文本模板发送邮件
+crossManager.prototype.sendTextToMailById = function(uid,key,atts,arg,cb) {
+	var title = mailText[key]["title"]
+	var text = mailText[key]["text"]
+	if(arg)
+		text.replace("xxx",arg)
+	this.sendMailByUid(uid,title,text,atts,cb)
 }
 //直接发放离线邮件
 crossManager.prototype.sendMailByUid = function(uid,title,text,atts,cb) {
@@ -316,13 +333,13 @@ crossManager.prototype.taskUpdate  = function(crossUid,type,value,arg) {
 }
 
 //发放公会邮件
-crossManager.prototype.sendMailByGuildId  = function(guildId,title,text,atts) {
+crossManager.prototype.sendMailByGuildId  = function(guildId,key,atts) {
 	var self = this
 	self.redisDao.db.hgetall("guild:contributions:"+guildId,function(err,data) {
 		if(!data)
 			data = {}
 		for(uid in data){
-			self.sendMailByUid(uid,title,text,atts)
+			self.sendTextToMailById(uid,key,atts)
 		}
 	})
 }

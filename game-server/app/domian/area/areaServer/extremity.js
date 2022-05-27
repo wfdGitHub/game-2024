@@ -24,7 +24,7 @@ module.exports = function() {
 				count++
 				var rankId = count > 11 ? 11 : count
 				var award = extremity_cfg["rank_"+rankId]["value"]
-				self.sendMail(list[i],extremity_cfg["name"]["value"]+"排名奖励","恭喜您在"+extremity_cfg["name"]["value"]+"中获得第"+count+"名!",award)
+				self.sendTextToMail(list[i],"extremity_day",award,rankId)
 			}
 			self.delZset(main_name)
 		})

@@ -253,9 +253,7 @@ module.exports = function() {
 				if(rank <= 4000){
 					var range = util.binarySearch(rankList,rank)
 					if(arena_rank[range] && arena_rank[range]["dayAward"]){
-						var title = "竞技场排名奖励"
-						var text = "恭喜您在竞技场排名第"+rank+"名,这是您的排名奖励"
-						self.sendMail(uid,title,text,arena_rank[range]["dayAward"])
+						self.sendTextToMail(uid,"arena_rank",arena_rank[range]["dayAward"],rank)
 					}
 				}
 			}

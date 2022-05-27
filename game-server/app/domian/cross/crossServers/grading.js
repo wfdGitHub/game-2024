@@ -58,11 +58,11 @@ module.exports = function() {
 						glv = util.binarySearchIndex(grading_lv_list,score)
 						if(grading_lv[glv]["next_id"])
 							newRankList.push(grading_lv[grading_lv[glv]["next_id"]]["score"],list[i])
-						self.sendMailByUid(uid,"第"+curSeasonId+"赛季段位奖励","恭喜您在本赛季晋升到【"+grading_lv[glv]["name"]+"】段位，祝您新的赛季愈战愈勇!",grading_lv[glv]["season_award"])
+						self.sendTextToMailById(uid,"grading_dwjl",grading_lv[glv]["season_award"],grading_lv[glv]["name"])
 						if(uids.length < 6){
 							areaIds.push(sid)
 							uids.push(uid)
-							self.sendMailByUid(uid,"第"+curSeasonId+"赛季战神殿奖励","亲爱的玩家，恭喜您成功进入第"+curSeasonId+"赛季战神殿，该记录永久保存！",grading_cfg["award_"+uids.length]["value"])
+							self.sendTextToMailById(uid,"grading_zsd",grading_cfg["award_"+uids.length]["value"],curSeasonId)
 						}
 					}
 					self.getPlayerInfoByUids(areaIds,uids,function(userInfos) {

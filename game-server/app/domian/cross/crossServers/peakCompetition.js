@@ -327,7 +327,7 @@ module.exports = function() {
 				parMap[curRound] = {}
 				//初始奖励邮件
                for(var i = 0;i < uids.length;i++){
-               		self.sendMailByUid(uids[i],peak_award[curRound]["exalt_title"],peak_award[curRound]["exalt_text"],peak_award[curRound]["exalt_award"])
+               		self.sendTextToMailById(uids[i],"peak_"+curRound,peak_award[curRound]["exalt_award"])
                 }
 				crossUids.sort(function(){return Math.random()>0.5?1:-1})
 				for(var i = 0;i < crossUids.length;i++){
@@ -427,11 +427,11 @@ module.exports = function() {
 					tmpWins.push(winner)
 					//奖励
 					if(parList[i] == winner){
-						self.sendMailByUid(parList[i].split("|")[1],peak_award[curRound+1]["exalt_title"],peak_award[curRound+1]["exalt_text"],peak_award[curRound+1]["exalt_award"])
-						self.sendMailByUid(parList[i+1].split("|")[1],peak_award[curRound]["stop_title"],peak_award[curRound]["stop_text"],peak_award[curRound]["stop_award"])
+						self.sendTextToMailById(parList[i].split("|")[1],"peak_"+(curRound+1),peak_award[curRound+1]["exalt_award"])
+						self.sendTextToMailById(parList[i+1].split("|")[1],"peak_stop_"+curRound,peak_award[curRound]["stop_award"])
 					}else{
-						self.sendMailByUid(parList[i+1].split("|")[1],peak_award[curRound+1]["exalt_title"],peak_award[curRound+1]["exalt_text"],peak_award[curRound+1]["exalt_award"])
-						self.sendMailByUid(parList[i].split("|")[1],peak_award[curRound]["stop_title"],peak_award[curRound]["stop_text"],peak_award[curRound]["stop_award"])
+						self.sendTextToMailById(parList[i+1].split("|")[1],"peak_"+(curRound+1),peak_award[curRound+1]["exalt_award"])
+						self.sendTextToMailById(parList[i].split("|")[1],"peak_stop_"+curRound,peak_award[curRound]["stop_award"])
 					}
 				}
 				self.redisDao.db.hmset("cross:peak:matchHistory:"+curRound,matchHistory)
@@ -447,12 +447,12 @@ module.exports = function() {
 						betInfo[i].win = true
 						playerAmount[i] += betInfo[i].bet
 						//竞猜正确邮件
-						self.sendMailByUid(uid,default_cfg["peak_bet_right_title"]["value"],default_cfg["peak_bet_right_text"]["value"],default_cfg["peak_bet_right_atts"]["value"])
+						self.sendTextToMailById(uid,"peak_bet_right",default_cfg["peak_bet_right_atts"]["value"])
 					}else{
 						betInfo[i].win = false
 						playerAmount[i] -= betInfo[i].bet
 						//竞猜错误邮件
-						self.sendMailByUid(uid,default_cfg["peak_bet_wrong_title"]["value"],default_cfg["peak_bet_wrong_text"]["value"],default_cfg["peak_bet_wrong_atts"]["value"])
+						self.sendTextToMailById(uid,"peak_bet_wrong",default_cfg["peak_bet_wrong_atts"]["value"])
 					}
 					betInfo[i] = JSON.stringify(betInfo[i])
 				}
@@ -493,7 +493,7 @@ module.exports = function() {
 		//王者币奖励
 		for(var crossUid in playerAmount){
 			if(playerAmount[crossUid])
-				self.sendMailByUid(crossUid.split("|")[1],"王者巅峰赛积分奖励","亲爱的玩家，您在王者巅峰赛中的金币已等比转换为王者币，祝您游戏愉快","211:"+playerAmount[crossUid])
+				self.sendTextToMailById(crossUid.split("|")[1],"peak_change","211:"+playerAmount[crossUid])
 		}
 	}
 	//获取玩家巅峰赛数据

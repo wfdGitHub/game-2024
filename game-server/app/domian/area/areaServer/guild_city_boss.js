@@ -133,12 +133,12 @@ module.exports = function() {
 	this.killGuildCityBoss = function(uid,index,guildId) {
 		var lv = city_boss["boss_"+index+"_lv"]
 		//击杀奖励
-		self.sendMail(uid,"最后一击奖励","恭喜您在攻打【"+guild_city[index]["name"]+"】时完成最后一击",guild_city_boss[city_boss["boss_"+index+"_lv"]]["kill_award"])
+		self.sendTextToMail(uid,"guildcity_kill",guild_city_boss[city_boss["boss_"+index+"_lv"]]["kill_award"],guild_city[index]["name"])
 		//排名奖励
 		self.zrange("guildCityBossUserRank:"+index,-3,-1,function(list) {
 			var rank = 1
 			for(var i = list.length - 1;i >= 0;i--){
-				self.sendMail(list[i],"城池排名奖励","您在攻打【"+guild_city[index]["name"]+"】时伤害排名为第"+rank+"名,获得排名奖励",guild_city_boss[city_boss["boss_"+index+"_lv"]]["damage_"+rank])
+				self.sendTextToMail(list[i],"guildcity_rank",guild_city_boss[city_boss["boss_"+index+"_lv"]]["damage_"+rank],rank)
 				rank++
 			}
 		})

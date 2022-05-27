@@ -136,7 +136,7 @@ module.exports = function() {
 						if((damage + allDamage) >= guild_fb[fbId]["hp"]){
 							//击杀
 							killFlag = true
-							self.sendMail(uid,"击杀公会BOSS","恭喜您,成功击杀公会BOSS。",currency+":"+guild_fb[fbId]["kill"])
+							self.sendTextToMail(uid,"guildfb_kill",currency+":"+guild_fb[fbId]["kill"])
 							self.addGuildEXP(guildId,guild_fb[fbId]["exp"])
 							self.addGuildGift(guildId,"公会副本【"+(fbId+1)+"】",10,guild_fb[fbId]["gift"],oneDayTime)
 							self.redisDao.db.hincrby(main_name+":"+guildId,"curFB",1)
@@ -146,7 +146,7 @@ module.exports = function() {
 									rank++
 									if(list[i]){
 										var text = "恭喜您在公会BOSS伤害排名中获得"+rank+"名，获得排名奖励，祝您游戏愉快！"
-										self.sendMail(list[i],"公会BOSS伤害第"+rank+"名",text,guild_fb[fbId]["damage_"+rank])
+										self.sendTextToMail(list[i],"guildfb_kill",text,guild_fb[fbId]["damage_"+rank],rank)
 									}
 								}
 							})

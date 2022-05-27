@@ -108,7 +108,7 @@ module.exports = function() {
 							if(rankCount > muye_rank[rankIndex]["count"])
 								rankIndex++
 							newRankList.push(0,list[i])
-							self.sendMailByUid(uid,muye_rank[rankIndex]["title"],muye_rank[rankIndex]["text"],muye_rank[rankIndex]["award"])
+							self.sendTextToMailById(uid,"muye_0",muye_rank[rankIndex]["award"])
 							if(uids.length < 3){
 								areaIds.push(sid)
 								uids.push(uid)
@@ -144,7 +144,7 @@ module.exports = function() {
 							if(rankCount > muye_rank[rankIndex]["count"])
 								rankIndex++
 							newRankList.push(0,list[i])
-							self.sendMailByUid(uid,muye_rank[rankIndex]["title"],muye_rank[rankIndex]["text"],muye_rank[rankIndex]["award"])
+							self.sendTextToMailById(uid,"muye_0",muye_rank[rankIndex]["award"])
 							if(uids.length < 3){
 								areaIds.push(sid)
 								uids.push(uid)

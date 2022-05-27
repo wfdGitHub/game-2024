@@ -442,17 +442,17 @@ module.exports = function() {
 				star2 = Number(data) || 0
 				if(star1 >= 30 || star1 > star2){
 					//公会1获胜
-					self.sendMailByGuildId(guildId1,"会武获胜","您在本次会武活动中表现优异,成功获得胜利!",guild_pk[guildLv1]["win_award"])
+					self.sendMailByGuildId(guildId1,"guild_pk_win",guild_pk[guildLv1]["win_award"])
 				}else{
 					//公会1失败
-					self.sendMailByGuildId(guildId1,"会武失败","您在本次会武活动中表现出色,但仍然遗憾落败,请再接再厉!",guild_pk[guildLv1]["lose_award"])
+					self.sendMailByGuildId(guildId1,"guild_pk_lose",guild_pk[guildLv1]["lose_award"])
 				}
 				if(star2 >= 30 || star2 > star1){
 					//公会2获胜
-					self.sendMailByGuildId(guildId2,"会武获胜","您在本次会武活动中表现出色,成功获得胜利!",guild_pk[guildLv2]["win_award"])
+					self.sendMailByGuildId(guildId2,"guild_pk_win",guild_pk[guildLv2]["win_award"])
 				}else{
 					//公会2失败
-					self.sendMailByGuildId(guildId2,"会武失败","您在本次会武活动中表现出色,但仍然遗憾落败,请再接再厉!",guild_pk[guildLv2]["lose_award"])
+					self.sendMailByGuildId(guildId2,"guild_pk_lose",guild_pk[guildLv2]["lose_award"])
 				}
 			})
 		})
