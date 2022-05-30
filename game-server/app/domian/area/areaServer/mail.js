@@ -29,7 +29,7 @@ module.exports = function() {
 		var title = mailText[key]["title"]
 		var text = mailText[key]["text"]
 		if(arg)
-			text.replace("xxx",arg)
+			text = text.replace("xxx",arg)
 		this.sendMail(uid,title,text,atts,cb)
 	}
 	//发送邮件

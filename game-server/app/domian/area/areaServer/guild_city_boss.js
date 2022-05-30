@@ -34,6 +34,7 @@ module.exports = function() {
 	}
 	//刷新初始BOSS
 	this.createGuildCityBoss = function() {
+		console.log("createGuildCityBoss",city_boss)
 		city_boss.dayStr = (new Date()).toDateString()
 		for(var i in guild_city){
 			if(!city_boss["boss_"+i+"_lv"]){
@@ -41,6 +42,7 @@ module.exports = function() {
 			}else{
 				if(city_boss["boss_"+i+"_hp"] <= 0){
 					//已死亡则升级
+					console.log(i+"升级")
 					if(guild_city_boss[Number(city_boss["boss_"+i+"_lv"]) + 1]){
 						city_boss["boss_"+i+"_lv"] = Number(city_boss["boss_"+i+"_lv"]) + 1
 					}
