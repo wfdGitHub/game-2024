@@ -259,12 +259,13 @@ crossManager.prototype.openChestStr = function(crossUid,chestId,rate,cb) {
 }
 //获取玩家基本数据
 crossManager.prototype.getPlayerInfoByUid = function(uid,cb) {
-	this.redisDao.db.hmget("player:user:"+uid+":playerInfo",["name","head","figure"],function(err,data) {
+	this.redisDao.db.hmget("player:user:"+uid+":playerInfo",["name","head","figure","sex"],function(err,data) {
 		let info = {
 			uid :uid,
 			name : data[0],
 			head : data[1],
-			figure : data[2]
+			figure : data[2],
+			sex : data[3]
 		}
 		cb(info)
 	})
