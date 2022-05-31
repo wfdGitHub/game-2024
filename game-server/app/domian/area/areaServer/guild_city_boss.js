@@ -16,7 +16,7 @@ module.exports = function() {
 		self.getAreaObjAll(main_name,function(data) {
 			city_boss = data || {}
 			// if(openTime[day]){
-			if(data.dayStr != (new Date()).toDateString()){
+			if(city_boss.dayStr != (new Date()).toDateString()){
 				self.createGuildCityBoss()
 			}else{
 				for(var i in city_boss){
