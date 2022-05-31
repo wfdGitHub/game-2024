@@ -222,8 +222,7 @@ module.exports = function() {
 									uid : targetUid,
 									name : self.namespace.getName(),
 									head : 105010,
-									figure : 105010,
-									sex : Math.floor(Math.random() * 2) + 1
+									figure : 105010
 								}
 								next()
 							}else{
