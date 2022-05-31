@@ -285,7 +285,7 @@ module.exports = function() {
 			fightTeams.push(ancient_robot[uid]["team1"])
 			fightTeams.push(ancient_robot[uid]["team2"])
 			fightTeams.push(ancient_robot[uid]["team3"])
-			userInfo = {uid : uid,name : self.namespace.getName(),head : 105010,figure : 105010}
+			userInfo = {uid : uid,name : self.namespace.getName(),head : 105010,figure : 105010,sex : Math.floor(Math.random() * 2) + 1}
 			cb(fightTeams,userInfo)
 		}else{
 			//玩家
