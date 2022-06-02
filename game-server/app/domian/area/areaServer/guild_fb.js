@@ -145,8 +145,7 @@ module.exports = function() {
 								for(var i = list.length - 1;i >= 0;i--){
 									rank++
 									if(list[i]){
-										var text = "恭喜您在公会BOSS伤害排名中获得"+rank+"名，获得排名奖励，祝您游戏愉快！"
-										self.sendTextToMail(list[i],"guildfb_kill",text,guild_fb[fbId]["damage_"+rank],rank)
+										self.sendTextToMail(list[i],"guildfb_rank",guild_fb[fbId]["damage_"+rank],rank)
 									}
 								}
 							})

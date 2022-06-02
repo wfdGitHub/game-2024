@@ -191,7 +191,7 @@ crossManager.prototype.sendTextToMail = function(crossUid,key,atts,arg,cb) {
 	var title = mailText[key]["title"]
 	var text = mailText[key]["text"]
 	if(arg)
-		text.replace("xxx",arg)
+		text = text.replace("xxx",arg)
 	this.sendMail(crossUid,title,text,atts,cb)
 }
 //发放邮件
