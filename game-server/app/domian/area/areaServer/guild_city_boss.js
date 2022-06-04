@@ -4,7 +4,7 @@ const guild_city = require("../../../../config/gameCfg/guild_city.json")
 const guild_city_boss = require("../../../../config/gameCfg/guild_city_boss.json")
 const util = require("../../../../util/util.js")
 const async = require("async")
-const openTime = {"2":1,"4":1,"6":1}   //开启时间
+// const openTime = {"2":1,"4":1,"6":1}   //开启时间
 const oneDayTime = 86400000
 const fightTime = 5 //战斗开始时间
 module.exports = function() {
@@ -14,27 +14,24 @@ module.exports = function() {
 	this.guildCityBossDayUpdate = function() {
 		var day = (new Date()).getDay()
 		self.getAreaObjAll(main_name,function(data) {
-			if(!data)
-				data = {}
-			if(openTime[day]){
-				if(data.dayStr != (new Date()).toDateString()){
-					self.createGuildCityBoss()
-				}else{
-					city_boss = data
-					for(var i in city_boss){
-						if(i != "dayStr")
-							city_boss[i] = Number(city_boss[i])
-					}
-				}
-				city_boss.open = true
+			city_boss = data || {}
+			// if(openTime[day]){
+			if(data.dayStr != (new Date()).toDateString()){
+				self.createGuildCityBoss()
 			}else{
-				city_boss.open = false
+				for(var i in city_boss){
+					if(i != "dayStr")
+						city_boss[i] = Number(city_boss[i])
+				}
 			}
+			city_boss.open = true
+			// }else{
+			// 	city_boss.open = false
+			// }
 		})
 	}
 	//刷新初始BOSS
 	this.createGuildCityBoss = function() {
-		console.log("createGuildCityBoss",city_boss)
 		city_boss.dayStr = (new Date()).toDateString()
 		for(var i in guild_city){
 			if(!city_boss["boss_"+i+"_lv"]){
@@ -42,7 +39,6 @@ module.exports = function() {
 			}else{
 				if(city_boss["boss_"+i+"_hp"] <= 0){
 					//已死亡则升级
-					console.log(i+"升级")
 					if(guild_city_boss[Number(city_boss["boss_"+i+"_lv"]) + 1]){
 						city_boss["boss_"+i+"_lv"] = Number(city_boss["boss_"+i+"_lv"]) + 1
 					}
