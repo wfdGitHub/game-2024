@@ -115,6 +115,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.exerciseDayUpdate()
 	this.extremityInit()
 	this.guildCityBossDayUpdate()
+	this.taskDayUpdate()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)
@@ -269,7 +270,6 @@ area.prototype.userLeave = function(uid) {
 		delete this.oriIds[uid]
 		this.onlineNum--
 		this.redisDao.db.hincrby("onlineNums",this.areaId,-1)
-		this.taskUnload(uid)
 		this.CEUnload(uid)
 		this.lordUnload(uid)
 		this.checkpointsUnload(uid)
