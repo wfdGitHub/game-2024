@@ -58,6 +58,14 @@ module.exports = function() {
 	var self = this
 	var userTaskLists = {}			//玩家任务列表
 	var userTaskMaps = {}			//玩家任务类型映射表
+	this.taskDayUpdate = function() {
+		//重置玩家任务列表
+		for(var uid in userTaskMaps){
+			if(!self.players[uid]){
+				this.taskUnload(uid)
+			}
+		}
+	}
 	//角色创建后领取初始任务
 	this.taskInit = function(uid) {
 		for(var taskId in first_task){
