@@ -26,7 +26,7 @@
         pomelo.init({
           host: host,
           port: "3910",
-          log: true
+          log: true 
         }, function(data) {
           console.log("!!!!!")
           console.log(data)
@@ -129,6 +129,207 @@
       //升级阵营加成
       var upgradCampAtt = function(camp,cb) {
         pomelo.request("area.tttHandler.upgradCampAtt", {camp:camp}, function(data) {
+            console.log(data);
+        });
+      }
+      var finishTopicRecruitHeroTask = function(heroId,star) {
+        pomelo.request("area.recruitHandler.finishTopicRecruitHeroTask", {heroId:heroId,star:star}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取主题招募英雄任务
+      var gainTopicRecruitHeroTask = function(heroId) {
+        pomelo.request("area.recruitHandler.gainTopicRecruitHeroTask", {heroId:heroId}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取超梦逆袭章节奖励
+      var gainMewtwoAward = function(index) {
+        pomelo.request("area.activityHandler.gainMewtwoAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //使用跳过次数
+      var useVipSkipCount = function() {
+        pomelo.request("area.activityHandler.useVipSkipCount", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买跳过次数
+      var buyVipSkipCount = function() {
+        pomelo.request("area.activityHandler.buyVipSkipCount", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //=================家园===========//
+      //获取家园数据
+      var manorData = function() {
+        pomelo.request("area.manorHandler.manorData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //建设升级建筑
+      var manorBuild = function(bId,land) {
+        pomelo.request("area.manorHandler.manorBuild", {bId:bId,land:land}, function(data) {
+            console.log(data);
+        });
+      }
+      //建设升级建筑
+      var manorSwap = function(land1,land2) {
+        pomelo.request("area.manorHandler.manorSwap", {land1:land1,land2:land2}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取收益
+      var manorReap = function(bId) {
+        pomelo.request("area.manorHandler.manorReap", {bId:bId}, function(data) {
+            console.log(data);
+        });
+      }
+      //驯养马匹
+      var manorStartHorse = function() {
+        pomelo.request("area.manorHandler.manorStartHorse", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //收取马匹
+      var manorGainHorse = function() {
+        pomelo.request("area.manorHandler.manorGainHorse", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //打造护符
+      var manorStartHufu = function() {
+        pomelo.request("area.manorHandler.manorStartHufu", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //收取护符
+      var manorGainHufu = function() {
+        pomelo.request("area.manorHandler.manorGainHufu", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买军令
+      var manorBuyAction = function() {
+        pomelo.request("area.manorHandler.manorBuyAction", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战首领
+      var manorBoss = function() {
+        pomelo.request("area.manorHandler.manorBoss", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战山贼
+      var manorMon = function(monId) {
+        pomelo.request("area.manorHandler.manorMon", {monId:monId}, function(data) {
+            console.log(data);
+        });
+      }
+      //获取特殊地点数据
+      var manorCityInfos = function() {
+        pomelo.request("area.manorHandler.manorCityInfos", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //占领特殊地点
+      var manorOccupyCity = function(land) {
+        pomelo.request("area.manorHandler.manorOccupyCity", {land:land}, function(data) {
+            console.log(data);
+        });
+      }
+      //放弃特殊地点
+      var manorGiveUp = function(grid) {
+        pomelo.request("area.manorHandler.manorGiveUp", {grid:grid}, function(data) {
+            console.log(data);
+        });
+      }
+      //搜寻玩家
+      var manorFindUser = function() {
+        pomelo.request("area.manorHandler.manorFindUser", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //占领玩家
+      var manorOccupyUser = function(target) {
+        pomelo.request("area.manorHandler.manorOccupyUser", {target:target}, function(data) {
+            console.log(data);
+        });
+      }
+      //反击
+      var manorRevolt = function() {
+        pomelo.request("area.manorHandler.manorRevolt", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //查看战报
+      var manorRerord = function() {
+        pomelo.request("area.manorHandler.manorRerord", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //===============新公会PK=========//
+      // 报名PK
+      var applyGuildPKRival = function() {
+        pomelo.request("cross.guildPkHandler.applyGuildPKRival", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 匹配公会
+      var matchGuildPKRival = function() {
+        pomelo.request("cross.guildPkHandler.matchGuildPKRival", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 结算PK
+      var guildPkSettle = function() {
+        pomelo.request("cross.guildPkHandler.guildPkSettle", {}, function(data) {
+            console.log(data);
+        });
+      }
+      
+      // 获取PK信息
+      var getGuildPKInfo = function() {
+        pomelo.request("cross.guildPkHandler.getGuildPKInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 获取挑战记录
+      var getGuildPKRecord = function(guildId,index) {
+        pomelo.request("cross.guildPkHandler.getGuildPKRecord", {guildId:guildId,index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      // 挑战对手
+      var challengeGuildPk = function(index,star) {
+        pomelo.request("cross.guildPkHandler.challengeGuildPk", {index:index,star:star}, function(data) {
+            console.log(data);
+        });
+      }
+      //============新公会攻城战=========//
+      // 城池BOSS刷新
+      var createGuildCityBoss = function() {
+        pomelo.request("area.guildHandler.createGuildCityBoss", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 获取攻城战信息
+      var getGuildCityBossData = function() {
+        pomelo.request("area.guildHandler.getGuildCityBossData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 挑战攻城战BOSS
+      var challengeGuildCityBoss = function(index) {
+        pomelo.request("area.guildHandler.challengeGuildCityBoss", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      // 获取城池信息(个人排行榜,公会排行榜)
+      var getGuildCityBossInfo = function(index) {
+        pomelo.request("area.guildHandler.getGuildCityBossInfo", {index:index}, function(data) {
             console.log(data);
         });
       }
@@ -1289,6 +1490,18 @@
       //主题招募十次
       var topicRecruitMultiple = function() {
         pomelo.request("area.recruitHandler.topicRecruitMultiple", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //道具招募
+      var recruitHeroByItem = function(type,count) {
+        pomelo.request("area.recruitHandler.recruitHeroByItem", {type:type,count:count}, function(data) {
+            console.log(data);
+        });
+      }
+      //元宝招募
+      var recruitHeroByGold = function(type,count) {
+        pomelo.request("area.recruitHandler.recruitHeroByGold", {type:type,count:count}, function(data) {
             console.log(data);
         });
       }
