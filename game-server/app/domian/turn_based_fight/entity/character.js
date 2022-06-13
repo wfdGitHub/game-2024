@@ -18,7 +18,8 @@ var model = function(otps) {
 	this.teamInfo = {}
 	this.bookAtts = otps.bookAtts
 	this.isBoss = otps.boss || false	//是否是BOSS
-	this.isAction = false 				//行动标识
+	this.isAction = false 				//行动过标识
+	this.onAction = false  				//行动中标识
 	//=========基础属性=======//
 	this.attInfo = {}
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
@@ -57,6 +58,7 @@ var model = function(otps) {
 	this.ghost_unlimit = otps.ghost_unlimit 			//亡魂无限制
 	this.dodgeFirst = otps.dodgeFirst  					//闪避每回合第一次攻击
 	this.dodgeState = false
+	this.gj_my = otps.gj_my || false 					//进攻时免疫所有伤害
 	//=========新战斗属性=======//
 	this.first_buff_list = []			//初始BUFF
 	this.kill_buffs = {} 				//击杀BUFF
@@ -740,6 +742,7 @@ model.prototype.before = function() {
 		var rand = Math.floor(Math.random() * this.begin_round_buffs.length)
 		buffManager.createBuff(this,this,this.begin_round_buffs[rand])
 	}
+	this.onAction = true
 }
 //行动结束后刷新
 model.prototype.after = function() {
@@ -761,6 +764,7 @@ model.prototype.after = function() {
 		fightRecord.push(tmpRecord)
 	}
 	this.damage_save_value = 0
+	this.onAction = false
 }
 //整体回合结束
 model.prototype.roundOver = function() {
@@ -937,6 +941,13 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 	// 	return info
 	// }
 	if(this.buffs["ghost"]){
+		info.value = 0
+		info.realValue = 0
+		info.curValue = this.attInfo.hp
+		info.maxHP = this.attInfo.maxHP
+		return info
+	}
+	if(this.gj_my && this.onAction){
 		info.value = 0
 		info.realValue = 0
 		info.curValue = this.attInfo.hp
