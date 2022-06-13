@@ -747,6 +747,7 @@ model.prototype.before = function() {
 //行动结束后刷新
 model.prototype.after = function() {
 	//状态BUFF刷新
+	this.onAction = false
 	for(var i in this.buffs)
 		if(buff_cfg[i].refreshType == "after")
 			this.buffs[i].update()
@@ -764,7 +765,6 @@ model.prototype.after = function() {
 		fightRecord.push(tmpRecord)
 	}
 	this.damage_save_value = 0
-	this.onAction = false
 }
 //整体回合结束
 model.prototype.roundOver = function() {
