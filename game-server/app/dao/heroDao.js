@@ -13,9 +13,8 @@ var artifact_talent = require("../../config/gameCfg/artifact_talent.json")
 var stone_base = require("../../config/gameCfg/stone_base.json")
 var stone_skill = require("../../config/gameCfg/stone_skill.json")
 var stone_cfg = require("../../config/gameCfg/stone_cfg.json")
-var default_cfg = require("../../config/gameCfg/default_cfg.json")
 var async = require("async")
-var first_recruit = default_cfg["first_hero"]["value"]
+var first_recruit = 205070
 var baseStone = {
 	"1" : 400010100,
 	"2" : 400020100,
@@ -172,18 +171,13 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	let ad = otps.ad || 0
 	let lv = otps.lv || 1
 	let star = otps.star || herosCfg[id].min_star
-	var hId
-	if(!otps.robot)
-		hId = this.areaManager.areaMap[areaId].getLordLastid(uid)
-	else 
-		hId = uuid.v1()
+	var hId = this.areaManager.areaMap[areaId].getLordLastid(uid)
 	var heroInfo = {id : id,ad : ad,lv : lv,star : star}
 	this.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
 	this.redisDao.db.hincrby("player:user:"+uid+":heroArchive",id,Date.now())
 	heroInfo.hId = hId
-	if(!otps.robot)
-		this.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
+	this.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
 	if(cb)
 		cb(true,heroInfo)
 	heroInfo.hId = hId
@@ -329,21 +323,18 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 		if(err)
 			console.error(err)
 		else{
-			if(self.areaManager.areaMap[areaId]){
-				switch(name){
-					case "star":
-						self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
-					break
-					case "lv":
-						self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
-						if(self.areaManager.areaMap[areaId].players[uid] && self.areaManager.areaMap[areaId].players[uid]["heroLv"] < data)
-							self.areaManager.areaMap[areaId].chageLordData(uid,"heroLv",data)
-					break
-					case "ad":
-						self.areaManager.areaMap[areaId].taskUpdate(uid,"heroAd",1,data)
-					break
-				}
-				self.updateHeroCe(areaId,uid,hId)
+			switch(name){
+				case "star":
+					self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
+				break
+				case "lv":
+					self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
+					if(self.areaManager.areaMap[areaId].players[uid] && self.areaManager.areaMap[areaId].players[uid]["heroLv"] < data)
+						self.areaManager.areaMap[areaId].chageLordData(uid,"heroLv",data)
+				break
+				case "ad":
+					self.areaManager.areaMap[areaId].taskUpdate(uid,"heroAd",1,data)
+				break
 			}
 			self.areaManager.areaMap[areaId].incrbyCEInfo(uid,hId,name,value)
 		}
@@ -541,10 +532,8 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 							self.incrbyHeroInfo(areaId,uid,hIds[i],"combat",1)
 						}
 					}
-					if(self.areaManager.areaMap[areaId]){
-						self.areaManager.areaMap[areaId].CELoad(uid)
-						self.areaManager.areaMap[areaId].taskUpdate(uid,"battleNum",1,self.areaManager.areaMap[areaId].getTeamNum(uid))
-					}
+					self.areaManager.areaMap[areaId].CELoad(uid)
+					self.areaManager.areaMap[areaId].taskUpdate(uid,"battleNum",1,self.areaManager.areaMap[areaId].getTeamNum(uid))
 					if(cb)
 						cb(true)
 				}
