@@ -1,8 +1,10 @@
 var bearcat = require("bearcat")
 const VIP = require("../../config/gameCfg/VIP.json")
+const default_cfg = require("../../config/gameCfg/default_cfg.json")
 var playerDao = function() {}
-var beginHero = 205030//205070
+var beginHero = default_cfg["begin_hero"]["value"]
 var vipLv = 17
+var robotTeam = [[105030,105040,105050,105060,105070,105080],[105090,105070,105060,105040,105050,105030],[105030,105050,105070,105090,105100,105010],[205020,205030,205040,205050,205060,205070],[205040,205050,205060,205070,205080,205090],[205030,205040,205050,205060,205070,205080],[305070,305030,305040,305070,305010,305070],[305030,305040,305050,305060,305070,305080],[305090,305070,305060,305040,305050,305030],[405020,405040,405060,405080,405010,405050],[405030,405040,405050,405060,405070,405080],[405090,405070,405060,405040,405050,405030],[505030,505040,505050,505060,505070,505080],[505020,505040,505060,505080,505010,505050],[505090,505070,505060,505040,505050,505030]]
 //创建角色
 playerDao.prototype.createPlayer = function(otps,cb) {
 	var playerInfo = {
@@ -35,25 +37,29 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		freeze : 0,
 		last_id : 0,
 	}
+	if(otps.robot)
+		playerInfo.level = 56
 	var self = this
 	self.redisDao.db.hincrby("area:area"+otps.areaId+":areaInfo","playerAmount",1)
-	self.mysqlDao.addDaylyData("userNum",1)
-	self.mysqlDao.addRetentionData("userNum",1)
-	self.mysqlDao.addLTVData("userNum",1)
 	self.redisDao.db.incrby("user:lastid",1,function(err,uid) {
 		uid = parseInt(uid)
 		playerInfo.uid = uid
 		playerInfo.CE = 1000
-		self.redisDao.db.hincrby("game:info","playerNum",1)
 		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":playerMap",uid,otps.areaId)
 		self.redisDao.db.hset("acc:user:"+playerInfo.accId+":areaMap",otps.areaId,uid)
 		self.redisDao.db.sadd("area:area"+otps.areaId+":userSet",uid)
 		self.redisDao.db.hmset("player:user:"+uid+":playerInfo",playerInfo,function(err,data) {
 			if(!err){
 				self.redisDao.db.hset("game:nameMap",otps.name,uid)
-				self.heroDao.gainHero(otps.areaId,uid,{id : beginHero,"star":10},function(flag,heroInfo) {
-					self.heroDao.setFightTeam(otps.areaId,uid,[heroInfo.hId,0,null,null,null,null])
-				})
+				if(!otps.robot){
+					self.heroDao.gainHero(otps.areaId,uid,{id : beginHero},function(flag,heroInfo) {
+						self.heroDao.setFightTeam(otps.areaId,uid,[heroInfo.hId,0,null,null,null,null])
+					})
+					self.mysqlDao.addDaylyData("userNum",1)
+					self.mysqlDao.addRetentionData("userNum",1)
+					self.mysqlDao.addLTVData("userNum",1)
+					self.redisDao.db.hincrby("game:info","playerNum",1)
+				}
 				self.cacheDao.saveCache(Object.assign({"messagetype":"create"},playerInfo))
 				cb(playerInfo)
 			}else{
@@ -61,6 +67,15 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 			}
 		})
 	})
+}
+//设置机器人阵容
+playerDao.prototype.setRobotTeam = function(areaId,playerInfo) {
+	var team = robotTeam[Math.floor(Math.random() * robotTeam.length)]
+	var arr = []
+	for(var i = 0;i < team.length;i++){
+		arr[i] = this.heroDao.gainHero(areaId,playerInfo.uid,{id : team[i],star:6,lv:145,ad:5,robot:true}).hId
+	}
+	this.heroDao.setFightTeam(areaId,playerInfo.uid,arr)
 }
 //获取角色列表
 playerDao.prototype.getPlayerList = function(otps,cb) {
