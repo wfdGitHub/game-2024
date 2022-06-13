@@ -1,5 +1,6 @@
 var uuid = require("uuid")
 const default_cfg = require("../../config/gameCfg/default_cfg.json")
+const boyCfg = require("../../config/sysCfg/boy.json")
 const beginHero = default_cfg["begin_hero"]["value"]
 var accountDao = function() {}
 //创建新账号
@@ -42,7 +43,7 @@ accountDao.prototype.createRobotAccount = function(cb) {
 	var areaId = 1
 	self.createAccount({unionid : uuid.v1(),head : beginHero,robot:true},function(flag,userInfo) {
 		if(flag){
-			self.playerDao.createPlayer({accId : userInfo.accId,areaId:areaId,name:self.namespace.getName(),robot:true},function(playerInfo) {
+			self.playerDao.createPlayer({accId : userInfo.accId,areaId:areaId,name:boyCfg[Math.floor(Math.random() * boyCfg.length)],robot:true},function(playerInfo) {
 				if(playerInfo){
 					self.playerDao.setRobotTeam(areaId,playerInfo)
 					var crossUid = areaId+"|"+playerInfo.uid
