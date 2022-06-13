@@ -156,7 +156,7 @@ module.exports = function() {
 				return
 			}
 		}
-		if(!endless_one[id] || !endless_one[id]["team_"+index]){
+		if(!endless_three[id] || !endless_three[id]["team_"+index]){
 			cb(false,"id error "+id)
 			return
 		}
@@ -197,7 +197,7 @@ module.exports = function() {
 				// console.log("无尽试炼开始")
 				for(var i = 0;i < seededList.length;i++){
 					var curLv = i+1
-					defTeam = self.standardTeam(null,endless_one[id]["team_"+curLv],"main",endless_one[id]["level"])
+					defTeam = self.standardTeam(null,endless_three[id]["team_"+curLv],"main",endless_three[id]["level"])
 					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededList[i]})
 					if(!winFlag){
 						next("第"+curLv+"场战斗失败")
@@ -229,7 +229,7 @@ module.exports = function() {
 				for(var i = oldIndex + 1;i <= index;i++){
 					if(i % 2 == 0){
 						var awardId = i / 2
-						awardList = awardList.concat(self.addItemStr(uid,endless_one[id]["award_"+awardId],1,"三人试炼"+id+"-"+awardId))
+						awardList = awardList.concat(self.addItemStr(uid,endless_three[id]["award_"+awardId],1,"三人试炼"+id+"-"+awardId))
 					}
 				}
 				var info = {
