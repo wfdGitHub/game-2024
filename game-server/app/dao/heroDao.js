@@ -343,7 +343,6 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"heroAd",1,data)
 					break
 				}
-				self.updateHeroCe(areaId,uid,hId)
 			}
 			self.areaManager.areaMap[areaId].incrbyCEInfo(uid,hId,name,value)
 		}
