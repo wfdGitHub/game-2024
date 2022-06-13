@@ -25,6 +25,23 @@ module.exports = function() {
 			self.redisDao.db.hmget("area:area"+self.areaId+":"+main_name,["bossIndex","less_hp"],function(err,list) {
 				area_data.bossIndex = Number(list[0]) || 0
 				area_data.less_hp = Number(list[1]) || 0
+				//发放排行榜奖励
+				if(area_data.bossIndex != -1 && self.areaDay <= maxBoss + 1){
+					var curId = self.areaDay - 1
+					self.zrangewithscore(main_name,0,-1,function(list) {
+						var rank = 0
+						for(var i = list.length - 2;i >= 0;i -= 2){
+							rank++
+							if(rank >= 11){
+								rank = 11
+								self.sendTextToMail(list[i],"area_boss_play",area_boss_base[curId]["rank_"+rank])
+							}else{
+								self.sendTextToMail(list[i],"area_boss_rank",area_boss_base[curId]["rank_"+rank],rank)
+							}
+						}
+						self.delZset(main_name)
+					})
+				}
 				if(!area_data.bossIndex || area_data.bossIndex < self.areaDay){
 					if(area_boss_base[self.areaDay]){
 						self.redisDao.db.del("area:area"+self.areaId+":"+main_name)
@@ -34,23 +51,6 @@ module.exports = function() {
 					}else{
 						area_data.bossIndex = -1
 						area_data.less_hp = 0
-					}
-					//发放排行榜奖励
-					if(area_data.bossIndex != -1 && self.areaDay <= maxBoss + 1){
-						var curId = self.areaDay - 1
-						self.zrangewithscore(main_name,0,-1,function(list) {
-							var rank = 0
-							for(var i = list.length - 2;i >= 0;i -= 2){
-								rank++
-								if(rank >= 11){
-									rank = 11
-									self.sendTextToMail(list[i],"area_boss_play",area_boss_base[curId]["rank_"+rank])
-								}else{
-									self.sendTextToMail(list[i],"area_boss_rank",area_boss_base[curId]["rank_"+rank],rank)
-								}
-							}
-							self.delZset(main_name)
-						})
 					}
 				}
 			})
