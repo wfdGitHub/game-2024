@@ -936,6 +936,13 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 	// 	info.realValue = 0
 	// 	return info
 	// }
+	if(this.buffs["ghost"]){
+		info.value = 0
+		info.realValue = 0
+		info.curValue = this.attInfo.hp
+		info.maxHP = this.attInfo.maxHP
+		return info
+	}
 	if(this.round_same_hit_red){
 		if(!this.round_same_value[attacker.id])
 			this.round_same_value[attacker.id] = 0
