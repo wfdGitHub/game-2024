@@ -28,19 +28,21 @@ module.exports = function() {
 				//发放排行榜奖励
 				if(area_data.bossIndex != -1 && self.areaDay <= maxBoss + 1){
 					var curId = self.areaDay - 1
-					self.zrangewithscore(main_name,0,-1,function(list) {
-						var rank = 0
-						for(var i = list.length - 2;i >= 0;i -= 2){
-							rank++
-							if(rank >= 11){
-								rank = 11
-								self.sendTextToMail(list[i],"area_boss_play",area_boss_base[curId]["rank_"+rank])
-							}else{
-								self.sendTextToMail(list[i],"area_boss_rank",area_boss_base[curId]["rank_"+rank],rank)
+					if(area_boss_base[curId]){
+						self.zrangewithscore(main_name,0,-1,function(list) {
+							var rank = 0
+							for(var i = list.length - 2;i >= 0;i -= 2){
+								rank++
+								if(rank >= 11){
+									rank = 11
+									self.sendTextToMail(list[i],"area_boss_play",area_boss_base[curId]["rank_"+rank])
+								}else{
+									self.sendTextToMail(list[i],"area_boss_rank",area_boss_base[curId]["rank_"+rank],rank)
+								}
 							}
-						}
-						self.delZset(main_name)
-					})
+							self.delZset(main_name)
+						})
+					}
 				}
 				if(!area_data.bossIndex || area_data.bossIndex < self.areaDay){
 					if(area_boss_base[self.areaDay]){
