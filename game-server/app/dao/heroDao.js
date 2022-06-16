@@ -319,9 +319,9 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,cb) {
 			var drumInfo = JSON.parse(heros[i]["drum"])
 			this.areaManager.areaMap[areaId].gainDrum(uid,horseInfo)
 		}
-		if(heros[i]["horse"]){
-			var horseInfo = JSON.parse(heros[i]["horse"])
-			this.areaManager.areaMap[areaId].gainHorse(uid,horseInfo)
+		if(heros[i]["banner"]){
+			var bannerInfo = JSON.parse(heros[i]["banner"])
+			this.areaManager.areaMap[areaId].gainBanner(uid,bannerInfo)
 		}
 	}
 	if(strList.length){
@@ -625,6 +625,17 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			self.redisDao.db.hget("player:user:"+uid+":playerInfo","officer",function(err,data) {
 				if(data)
 					fightTeam[6]["officer"] = data
+				next()
+			})
+		},
+		function(next) {
+			//家园建筑
+			self.redisDao.db.hmget("player:user:"+uid+":manor",["gjy","dby","qby"],function(err,data) {
+				if(data){
+					fightTeam[6]["gjy"] = Number(data[0]) || 0
+					fightTeam[6]["dby"] = Number(data[1]) || 0
+					fightTeam[6]["qby"] = Number(data[2]) || 0
+				}
 				next()
 			})
 		},

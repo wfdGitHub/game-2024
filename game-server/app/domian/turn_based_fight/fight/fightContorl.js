@@ -27,6 +27,12 @@ var officer = require("../../../../config/gameCfg/officer.json")
 var war_horse = require("../../../../config/gameCfg/war_horse.json")
 var war_drum = require("../../../../config/gameCfg/war_drum.json")
 var war_banner = require("../../../../config/gameCfg/war_banner.json")
+var manor_gjy = require("../../../../config/gameCfg/manor_gjy.json")
+var manor_dby = require("../../../../config/gameCfg/manor_dby.json")
+var manor_qby = require("../../../../config/gameCfg/manor_qby.json")
+
+
+
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -328,6 +334,13 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		tmpInfo[war_banner[bannerInfo.id]["key"]] = bannerInfo.val
 		model.mergeData(info,tmpInfo)
 	}
+	//建筑属性
+	if(teamCfg && teamCfg["gjy"])
+		model.mergeData(info,{"self_atk_add":manor_gjy[teamCfg["gjy"]]["add"]})
+	if(teamCfg && teamCfg["dby"])
+		model.mergeData(info,{"self_maxHP_add":manor_dby[teamCfg["dby"]]["add"]})
+	if(teamCfg && teamCfg["qby"])
+		model.mergeData(info,{"speed":manor_qby[teamCfg["qby"]]["add"]})
 	//称号属性
 	if(teamCfg && teamCfg["title"] && title_list[teamCfg["title"]] && title_list[teamCfg["title"]]["talent"])
 		model.mergeTalent(info,title_list[teamCfg["title"]]["talent"])
@@ -587,6 +600,19 @@ model.getTeamCE = function(team) {
 			allCE += title_list[team[6]["title"]]["ce"]
 		if(team[6]["officer"] && officer[team[6]["officer"]] && officer[team[6]["officer"]]["ce"])
 			allCE += officer[team[6]["officer"]]["ce"]
+		if(team[6]["gather"])
+			allCE += 1000 * team[6]["gather"]
+		for(var i = 1;i <= 4;i++){
+			if(team[6]["camp_"+i]){
+				allCE += 2000 * team[6]["camp_"+i]
+			}
+		}
+		if(team[6]["gjy"])
+			allCE += 80000 * team[6]["gjy"]
+		if(team[6]["dby"])
+			allCE += 80000 * team[6]["dby"]
+		if(team[6]["qby"])
+			allCE += 80000 * team[6]["qby"]
 	}
 	return allCE
 }

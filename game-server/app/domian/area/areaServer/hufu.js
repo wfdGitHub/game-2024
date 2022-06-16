@@ -138,16 +138,24 @@ module.exports = function() {
 		})
 	}
 	//出售护符
-	this.sellHufu = function(uid,id,cb) {
-		self.getObj(uid,main_name,id,function(hufuInfo) {
-			if(!hufuInfo){
-				cb(false,"护符不存在")
-				return
+	this.sellHufu = function(uid,ids,cb) {
+		if(!Array.isArray(ids)){
+			cb(false,"ids error "+ids)
+			return
+		}
+		self.getHMObj(uid,main_name,ids,function(hufuInfos) {
+			var awardList = []
+			var count = 0
+			for(var i = 0;i < ids.length;i++){
+				if(!hufuInfos[i]){
+					cb(false,"护符不存在")
+					return
+				}
+				self.delObj(uid,main_name,ids[i])
+				var info = JSON.parse(hufuInfos[i])
+				count += hufu_quality[info.lv]["sell"]
 			}
-			self.delObj(uid,main_name,id)
-			var info = JSON.parse(hufuInfo)
-			var count = hufu_quality[info.lv]["sell"]
-			var awardList = self.addItemStr(uid,"1000040:"+count,1,"出售护符"+hufuInfo)
+			awardList = self.addItemStr(uid,"1000040:"+count,1,"出售护符"+hufuInfos[i])
 			cb(true,awardList)
 		})
 	}
@@ -288,14 +296,17 @@ module.exports = function() {
 		})
 	}
 	//生成随机战马
-	this.gainRandHorse = function(uid,lv,id) {
+	this.gainRandHorse = function(uid,lv,id,horseId) {
 		if(!horse_quality[lv]){
 			console.error("gainRandHorse lv error " +lv)
 			return
 		}
 		var info = {}
 		info.lv = lv
-		info.id = horse_quality[lv][Math.floor(Math.random() * horse_quality[lv].length)]
+		if(horseId)
+			info.id = horseId
+		else
+			info.id = horse_quality[lv][Math.floor(Math.random() * horse_quality[lv].length)]
 		info.val = Math.floor(Math.random() * (war_horse[info.id]["max"] - war_horse[info.id]["min"] + 1)) + war_horse[info.id]["min"]
 		//概率获得技能
 		if(info.lv >= 3 && Math.random() < 0.3)
@@ -348,16 +359,24 @@ module.exports = function() {
 		})
 	}
 	//出售战马
-	this.sellHorse = function(uid,id,cb) {
-		self.getObj(uid,horse_name,id,function(hufuInfo) {
-			if(!hufuInfo){
-				cb(false,"战马不存在")
-				return
+	this.sellHorse = function(uid,ids,cb) {
+		if(!Array.isArray(ids)){
+			cb(false,"ids error "+ids)
+			return
+		}
+		self.getHMObj(uid,horse_name,ids,function(hufuInfos) {
+			var awardList = []
+			var count = 0
+			for(var i = 0;i < ids.length;i++){
+				if(!hufuInfos[i]){
+					cb(false,"护符不存在")
+					return
+				}
+				self.delObj(uid,horse_name,ids[i])
+				var info = JSON.parse(hufuInfos[i])
+				count += war_horse[info.id]["sell"]
 			}
-			self.delObj(uid,horse_name,id)
-			var info = JSON.parse(hufuInfo)
-			var count = war_horse[info.id]["sell"]
-			var awardList = self.addItemStr(uid,"1000040:"+count,1,"出售战马"+hufuInfo)
+			awardList = self.addItemStr(uid,"1000040:"+count,1,"出售战马"+hufuInfos[i])
 			cb(true,awardList)
 		})
 	}
@@ -376,7 +395,7 @@ module.exports = function() {
 			delete heroInfo["horse"]
 			self.heroDao.delHeroInfo(self.areaId,uid,hId,"horse")
 			self.gainHorse(uid,horseInfo)
-			cb(true,horseInfo)
+			cb(true,heroInfo)
 		})
 	}
 	//合成战马
@@ -434,7 +453,7 @@ module.exports = function() {
 					return
 				}
 				self.delObj(uid,horse_name,id)
-				var data = self.gainRandHorse(uid,info.lv,id)
+				var data = self.gainRandHorse(uid,info.lv,id,info.id)
 				cb(true,data)
 			})
 		})
@@ -503,16 +522,24 @@ module.exports = function() {
 		})
 	}
 	//出售战鼓
-	this.sellDrum = function(uid,id,cb) {
-		self.getObj(uid,drum_name,id,function(hufuInfo) {
-			if(!hufuInfo){
-				cb(false,"战鼓不存在")
-				return
+	this.sellDrum = function(uid,ids,cb) {
+		if(!Array.isArray(ids)){
+			cb(false,"ids error "+ids)
+			return
+		}
+		self.getHMObj(uid,drum_name,ids,function(hufuInfos) {
+			var awardList = []
+			var count = 0
+			for(var i = 0;i < ids.length;i++){
+				if(!hufuInfos[i]){
+					cb(false,"护符不存在")
+					return
+				}
+				self.delObj(uid,drum_name,ids[i])
+				var info = JSON.parse(hufuInfos[i])
+				count += war_drum[info.id]["sell"]
 			}
-			self.delObj(uid,drum_name,id)
-			var info = JSON.parse(hufuInfo)
-			var count = war_drum[info.id]["sell"]
-			var awardList = self.addItemStr(uid,"1000040:"+count,1,"出售战鼓"+hufuInfo)
+			awardList = self.addItemStr(uid,"1000040:"+count,1,"出售战鼓"+hufuInfos[i])
 			cb(true,awardList)
 		})
 	}
@@ -531,7 +558,7 @@ module.exports = function() {
 			delete heroInfo["drum"]
 			self.heroDao.delHeroInfo(self.areaId,uid,hId,"drum")
 			self.gainDrum(uid,drumInfo)
-			cb(true,drumInfo)
+			cb(true,heroInfo)
 		})
 	}
 	//合成战鼓
@@ -658,16 +685,24 @@ module.exports = function() {
 		})
 	}
 	//出售军旗
-	this.sellBanner = function(uid,id,cb) {
-		self.getObj(uid,banner_name,id,function(hufuInfo) {
-			if(!hufuInfo){
-				cb(false,"军旗不存在")
-				return
+	this.sellBanner = function(uid,ids,cb) {
+		if(!Array.isArray(ids)){
+			cb(false,"ids error "+ids)
+			return
+		}
+		self.getHMObj(uid,banner_name,ids,function(hufuInfos) {
+			var awardList = []
+			var count = 0
+			for(var i = 0;i < ids.length;i++){
+				if(!hufuInfos[i]){
+					cb(false,"护符不存在")
+					return
+				}
+				self.delObj(uid,banner_name,ids[i])
+				var info = JSON.parse(hufuInfos[i])
+				count += war_banner[info.id]["sell"]
 			}
-			self.delObj(uid,banner_name,id)
-			var info = JSON.parse(hufuInfo)
-			var count = war_banner[info.id]["sell"]
-			var awardList = self.addItemStr(uid,"1000040:"+count,1,"出售军旗"+hufuInfo)
+			awardList = self.addItemStr(uid,"1000040:"+count,1,"出售军旗"+hufuInfos[i])
 			cb(true,awardList)
 		})
 	}
@@ -686,7 +721,7 @@ module.exports = function() {
 			delete heroInfo["banner"]
 			self.heroDao.delHeroInfo(self.areaId,uid,hId,"banner")
 			self.gainBanner(uid,bannerInfo)
-			cb(true,bannerInfo)
+			cb(true,heroInfo)
 		})
 	}
 	//合成军旗

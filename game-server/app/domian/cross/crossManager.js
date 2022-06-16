@@ -5,7 +5,7 @@ const standard_dl = require("../../../config/gameCfg/standard_dl.json")
 const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce = require("../../../config/gameCfg/standard_ce.json")
 var uuid = require("uuid")
-var crossServers = ["grading","escort","peakCompetition","muye","guild_pk","ancient"]
+var crossServers = ["grading","escort","peakCompetition","muye","guild_pk","ancient","manorCross"]
 var crossManager = function(app) {
 	this.app = app
 	this.channelService = this.app.get("channelService")
@@ -22,9 +22,11 @@ crossManager.prototype.init = function() {
 		var fun = require("./crossServers/"+crossServers[i]+".js")
 		fun.call(this)
 	}
+	var dao = require("../area/areaServer/dao.js")
+	dao.call(this)
 	this.peakInit()
 	this.muyeInit()
-	setInterval(this.update.bind(this),1000)
+	setInterval(this.update.bind(this),3000)
 	var self = this
 	setTimeout(function() {
 		self.accountDao.getAccountInfo({unionid : "visitor_wgl"},function(flag,data) {
@@ -65,6 +67,7 @@ crossManager.prototype.update = function() {
 		var date = new Date()
 		self.escortUpdate(date)
 		self.peakUpdate(date)
+		self.manorCrossUpdate(date)
 		var curDayStr = (new Date()).toDateString()
 		if(self.dayStr !== curDayStr){
 			self.dayUpdate(curDayStr)
