@@ -103,6 +103,18 @@
             console.log(data);
         });
       }
+      //获取主题招募英雄任务
+      var gainTopicRecruitHeroTask = function(heroId) {
+        pomelo.request("area.recruitHandler.gainTopicRecruitHeroTask", {heroId:heroId}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取超梦逆袭章节奖励
+      var gainMewtwoAward = function(index) {
+        pomelo.request("area.activityHandler.gainMewtwoAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
       //=================家园===========//
       //获取家园数据
       var manorData = function() {

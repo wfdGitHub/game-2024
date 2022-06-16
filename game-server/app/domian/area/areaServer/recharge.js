@@ -305,6 +305,7 @@ module.exports = function() {
 					wuxianId : "wuxian_1"
 				}
 				self.sendToUser(uid,notify)
+				self.taskUpdate(uid,"buy_zztq",1)
 				self.setObj(uid,main_name,"highCard",1)
 				self.chageLordData(uid,"highCard",1)
 				self.addUserRMB(uid,activity_cfg["high_card_lof"]["value"])
@@ -391,6 +392,7 @@ module.exports = function() {
 			}
 			self.addUserRMB(uid,activity_cfg["war_horn"]["value"])
 			self.setObj(uid,"war_horn","high",1)
+			self.taskUpdate(uid,"buy_zl",1)
 			self.incrbyObj(uid,"war_horn","exp",war_horn[curMonth]["exp"],function(exp) {
 				self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",war_horn[curMonth]["award"])
 				cb(true,{exp:exp})
@@ -446,6 +448,7 @@ module.exports = function() {
 			quick_pri += day31Time
 		}
 		self.addUserRMB(uid,activity_cfg["quick_pri"]["value"])
+		self.taskUpdate(uid,"buy_kszz",1)
 		self.chageLordData(uid,"quick_pri",quick_pri)
 		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["quick_award"]["value"])
 		cb(true,{quick_pri:quick_pri})
