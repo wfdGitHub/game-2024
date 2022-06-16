@@ -37,7 +37,7 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		return
 	if((buffId == "invincible" || buffId == "invincibleSuck") && character.buffs["burn"] && character.buffs["burn"].releaser.burn_not_invincible)
 		return
-	if(buff_cfg[buffId].debuff && character.loss_hp_debuff){
+	if(buff_cfg[buffId].debuff && character.loss_hp_debuff && buffId != "banish"){
 		if((character.attInfo.hp / character.attInfo.maxHP) > character.loss_hp_debuff){
 			fightRecord.push({type:"show_tag",id:character.id,tag:"loss_hp_debuff"})
 			var info = {type : "other_damage",value : Math.floor(character.attInfo.maxHP *  character.loss_hp_debuff),id : character.id,d_type:"phy"}
