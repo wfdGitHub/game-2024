@@ -240,7 +240,6 @@ module.exports = function() {
 		}
 		if(pos > 4){
 			var stone_pri = self.getLordAtt(uid,"stone_pri") || 0
-			console.log("stone_pri",stone_pri)
 			if(stone_pri < Date.now()){
 				cb(false,"未开启矿场特权")
 				return

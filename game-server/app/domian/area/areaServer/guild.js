@@ -814,7 +814,7 @@ module.exports = function() {
 	}
 	//添加公会红包
 	this.addGuildGift = function(guildId,title,maxNum,amount,time) {
-		console.log("新红包","guildId:"+guildId,title,maxNum+"个",amount)
+		// console.log("新红包","guildId:"+guildId,title,maxNum+"个",amount)
 		var giftInfo = {
 			id : uuid.v1(),
 			guildId : guildId,
