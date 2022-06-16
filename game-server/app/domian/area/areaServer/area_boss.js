@@ -64,7 +64,7 @@ module.exports = function() {
 			self.redisDao.db.hmget("area:area"+self.areaId+":"+main_name,["bossIndex","less_hp"],function(err,list) {
 				area_data.bossIndex = Number(list[0]) || 0
 				area_data.less_hp = Number(list[1]) || 0
-				if(!area_boss_base[area_data.bossIndex]){
+				if(!area_boss_base[area_data.bossIndex] || area_data.bossIndex < self.areaDay){
 					area_data.bossIndex = -1
 					area_data.less_hp = 0
 				}
