@@ -15,6 +15,7 @@ const util = require("../../../../util/util.js")
 const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
 const uuid = require("uuid")
 const main_name = "activity"
+const day7Time = 604800000
 const day31Time = 2592000000
 var rechargeMap = {}
 var recharge_once_table = {}
@@ -468,11 +469,11 @@ module.exports = function() {
 		var  quick_pri = self.getLordAtt(uid,"quick_pri")
 		if(!quick_pri || Date.now() > quick_pri){
 			//新购
-			quick_pri = util.getZeroTime() + day31Time
+			quick_pri = util.getZeroTime() + day7Time
 		}else{
 			console.log("快速作战特权已购买，延长时间")
 			//延长
-			quick_pri += day31Time
+			quick_pri += day7Time
 		}
 		self.addUserRMB(uid,activity_cfg["quick_pri"]["value"])
 		self.taskUpdate(uid,"buy_kszz",1)
