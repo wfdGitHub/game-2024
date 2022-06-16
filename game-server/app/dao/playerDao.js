@@ -36,6 +36,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		r_luck : -1,
 		freeze : 0,
 		last_id : 0,
+		gmLv : 0
 	}
 	if(otps.robot)
 		playerInfo.level = 56

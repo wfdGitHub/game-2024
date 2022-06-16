@@ -3,6 +3,7 @@ const ace_lotto_cfg = require("../../../../config/gameCfg/ace_lotto_cfg.json")
 const ace_lotto_topic = require("../../../../config/gameCfg/ace_lotto_topic.json")
 const ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
 var util = require("../../../../util/util.js")
 const main_name = "ace_lotto" 
 var topicList = []
@@ -52,9 +53,10 @@ module.exports = function() {
 	}
 	//单次宝物抽奖
 	this.aceLottoOnce = function(uid,cb) {
+		var gmLv = self.getLordAtt(uid,"gmLv")
 		self.getObj(uid,"playerData","ace_lotto_count",function(data) {
 			data = Number(data) || 0
-			if((data + 1) > default_cfg["ace_lotto_count"]["value"]){
+			if((data + 1) > (default_cfg["ace_lotto_count"]["value"] + GM_CFG[gmLv]["lotto"])){
 				cb(false,"可用次数不足")
 			}else{
 				self.incrbyObj(uid,"playerData","ace_lotto_count",1)
@@ -73,9 +75,10 @@ module.exports = function() {
 	}
 	//十连宝物抽奖
 	this.aceLottoMultiple = function(uid,cb) {
+		var gmLv = self.getLordAtt(uid,"gmLv")
 		self.getObj(uid,"playerData","ace_lotto_count",function(data) {
 			data = Number(data) || 0
-			if((data + 10) > default_cfg["ace_lotto_count"]["value"]){
+			if((data + 10) > (default_cfg["ace_lotto_count"]["value"] + GM_CFG[gmLv]["lotto"])){
 				cb(false,"可用次数不足")
 			}else{
 				self.incrbyObj(uid,"playerData","ace_lotto_count",10)

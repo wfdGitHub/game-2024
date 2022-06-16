@@ -12,6 +12,7 @@ const pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
 const gift_loop = require("../../../../config/gameCfg/gift_loop.json")
 const wuxian = require("../../../../config/gameCfg/wuxian.json")
 const util = require("../../../../util/util.js")
+const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
 const uuid = require("uuid")
 const main_name = "activity"
 const day31Time = 2592000000
@@ -42,12 +43,21 @@ module.exports = function() {
 			cb(false,"pay_id error")
 			return
 		}
-		self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
-			if(flag){
-				self.finish_recharge(uid,pay_id,cb)
-			}else{
-				cb(false,err)
+		var gmLv = self.getLordAtt(uid,"gmLv")
+		self.getPlayerData(uid,"diaopiao_use",function(value) {
+			value = Number(value) || 0
+			if((value + pay_cfg[pay_id]["dianpiao"]) > GM_CFG[gmLv]["dianpiao"]){
+				cb(false,"可用额度不足 "+value+"/"+GM_CFG[gmLv]["dianpiao"])
+				return
 			}
+			self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
+				if(flag){
+					self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
+					self.finish_recharge(uid,pay_id,cb)
+				}else{
+					cb(false,err)
+				}
+			})
 		})
 	}
 	//申请充值
@@ -127,6 +137,9 @@ module.exports = function() {
 			case "wuxian":
 				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
+			case "gmLv":
+				this.buyGMLv(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+			break
 		}
 		var once_index = recharge_once_table[pay_id]
 		if(once_index){
@@ -179,13 +192,27 @@ module.exports = function() {
 			cb(false,"无限特权不存在")
 			return
 		}
-		self.addUserRMB(uid,wuxian[id].rmb)
 		self.incrbyObj(uid,main_name,id,1)
 		var notify = {
 			type : "wuxian",
 			wuxianId : id
 		}
 		self.sendToUser(uid,notify)
+		cb(true)
+	}
+	//购买GM等级
+	this.buyGMLv = function(uid,id,cb) {
+		if(!GM_CFG[id] || !GM_CFG[id]["award"]){
+			cb(false,"GM特权不存在")
+			return
+		}
+		self.chageLordData(uid,"gmLv",id)
+		var notify = {
+			type : "gmLv",
+			lv : id
+		}
+		self.sendToUser(uid,notify)
+		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",GM_CFG[id]["award"])
 		cb(true)
 	}
 	//购买循环礼包
