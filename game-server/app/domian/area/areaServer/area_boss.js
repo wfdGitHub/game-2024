@@ -58,6 +58,19 @@ module.exports = function() {
 			})
 		}
 	}
+	//全服BOSS初始化
+	this.areaBossInit = function() {
+		if(self.newArea){
+			self.redisDao.db.hmget("area:area"+self.areaId+":"+main_name,["bossIndex","less_hp"],function(err,list) {
+				area_data.bossIndex = Number(list[0]) || 0
+				area_data.less_hp = Number(list[1]) || 0
+				if(!area_boss_base[area_data.bossIndex]){
+					area_data.bossIndex = -1
+					area_data.less_hp = 0
+				}
+			})
+		}
+	}
 	//获取全服BOSS数据
 	this.getAreaBossData = function(uid,cb) {
 		if(!self.newArea){

@@ -115,6 +115,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.extremityInit()
 	this.guildCityBossDayUpdate()
 	this.taskDayUpdate()
+	this.areaBossInit()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)
