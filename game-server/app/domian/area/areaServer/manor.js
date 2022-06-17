@@ -513,7 +513,7 @@ module.exports = function() {
 				//战斗结算
 				var atkTeam = self.getUserTeam(uid)
 				var seededNum = Date.now()
-				var defTeam = self.standardTeam(uid,builds["main"][buildLv]["boss_team"],"worldBoss",self.getLordLv(uid))
+				var defTeam = self.standardTeam(uid,builds["main"][buildLv]["boss_team"],"worldBoss",self.getLordLv(uid) - 2)
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
 					var cd = Date.now() + boss_cd
@@ -571,7 +571,7 @@ module.exports = function() {
 					dl = "zhulu_boss"
 				else if(monLv >= 2)
 					dl = "zhulu_elite"
-				var defTeam = self.standardTeam(uid,builds["main"][buildLv]["mon_"+monLv],dl,self.getLordLv(uid))
+				var defTeam = self.standardTeam(uid,builds["main"][buildLv]["mon_"+monLv],dl,self.getLordLv(uid) - 5)
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
 					var cd = Date.now() + mon_cd

@@ -148,7 +148,7 @@ module.exports = function() {
 							//普通怪
 							var team = normal_team[Math.floor(Math.random() * normal_team.length)].concat()
 
-							team = self.standardTeam(uid,team,"zhulu_normal",lv-5)
+							team = self.standardTeam(uid,team,"zhulu_normal",lv-8)
 							var dladd = zhulu_dl[grid]
 							for(let i = 0;i <= team.length;i++){
 								if(team[i]){
@@ -160,7 +160,7 @@ module.exports = function() {
 						case "elite":
 							//精英怪
 							var team = elite_team[Math.floor(Math.random() * elite_team.length)].concat()
-							team = self.standardTeam(uid,team,"zhulu_elite",lv-2)
+							team = self.standardTeam(uid,team,"zhulu_elite",lv-5)
 							var dladd = zhulu_dl[grid]
 							for(let i = 0;i <= team.length;i++){
 								if(team[i]){
