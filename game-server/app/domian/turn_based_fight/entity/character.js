@@ -455,6 +455,7 @@ var model = function(otps) {
 }
 model.prototype.init = function(fighting) {
 	this.fighting = fighting
+	this.attInfo.speed += this.fighting.seeded.random("随机速度") * 5
 }
 //百分比属性加成
 model.prototype.calAttAdd = function(team_adds) {

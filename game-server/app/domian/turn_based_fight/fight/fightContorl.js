@@ -167,6 +167,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		    "atk": lv_cfg[info.lv].atk,
 		    "phyDef": lv_cfg[info.lv].phyDef,
 		    "magDef": lv_cfg[info.lv].magDef,
+		    "speed" : info.lv
 		}
 		model.mergeData(info,lvInfo)
 	}
