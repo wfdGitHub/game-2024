@@ -20,7 +20,7 @@ var model = function(otps) {
 		if(num >= book.num){
 			if(book.buffRate == 1 || this.seeded.random("放逐天书") >= this.buffRate){
 				for(var i = 0;i < book.enemy.length;i++){
-					if(!book.enemy[i].died && !banishList[book.enemy[i].id]){
+					if(!book.enemy[i].died && !banishList[book.enemy[i].id] && !book.enemy[i].buffs["banish"]){
 						if(!target || book.enemy[i].getTotalAtt("atk") > target.getTotalAtt("atk")){
 							target = book.enemy[i]
 						}
