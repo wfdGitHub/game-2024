@@ -59,6 +59,7 @@ var model = function(otps) {
 	this.dodgeFirst = otps.dodgeFirst  					//闪避每回合第一次攻击
 	this.dodgeState = false
 	this.gj_my = otps.gj_my || false 					//进攻时免疫所有伤害
+	this.bm_fz = otps.bm_fz || false 					//首次受到致命伤害时保留1点血量，使自身进入放逐状态，持续3回合
 	//=========新战斗属性=======//
 	this.first_buff_list = []			//初始BUFF
 	this.kill_buffs = {} 				//击杀BUFF
@@ -995,7 +996,7 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 			info.value = this.buffs["shield"].offset(info.value)
 			info.shield = true
 		}
-		info.realValue = this.lessHP(info)
+		info.realValue = this.lessHP(info,callbacks)
 		info.curValue = this.attInfo.hp
 		info.maxHP = this.attInfo.maxHP
 		if(this.damage_save)
@@ -1252,7 +1253,7 @@ model.prototype.addHP = function(value) {
 	return realValue
 }
 //扣除血量
-model.prototype.lessHP = function(info) {
+model.prototype.lessHP = function(info,callbacks) {
 	if(this.died){
 		return 0
 	}
@@ -1261,13 +1262,22 @@ model.prototype.lessHP = function(info) {
 	}
 	info.realValue = info.value
 	if((this.attInfo.hp - info.value) <= 0){
-		if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
+		if(this.bm_fz && callbacks){
+			this.bm_fz = false
 			info.realValue = this.attInfo.hp - 1
 			this.attInfo.hp = 1
-			info.oneblood = true
+			callbacks.push((function(){
+				buffManager.createBuff(this,this,{buffId : "banish",duration : 4})
+			}).bind(this))
 		}else{
-			info.realValue = this.attInfo.hp
-			this.onDie()
+			if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
+				info.realValue = this.attInfo.hp - 1
+				this.attInfo.hp = 1
+				info.oneblood = true
+			}else{
+				info.realValue = this.attInfo.hp
+				this.onDie()
+			}
 		}
 	}else{
 		this.attInfo.hp -= info.value

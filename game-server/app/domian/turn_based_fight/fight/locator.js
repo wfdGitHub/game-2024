@@ -195,6 +195,9 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 		case "enemy_5":
 			//敌方5个随机单体
 			return this.getEnemyRandom(character,5)
+		case "enemy_maxAtk_1":
+			//获取敌方攻击最高的1个单位
+			return this.getEnemyMaxAtk(character,1)
 		case "team_self":
 			return [character]
 		case "team_all":

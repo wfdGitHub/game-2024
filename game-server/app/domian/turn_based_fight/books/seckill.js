@@ -9,13 +9,14 @@ var model = function(otps) {
 	book.rate = otps.rate
 	book.arg = otps.arg
 	book.count = otps.count
+	book.ghost = otps.ghost
 	book.action = function() {
 		if(book.count > 0){
 			if(book.rate == 1 || this.seeded.random("斩杀天书") < book.rate){
 				var target = false
 				var min = 0
 				for(var i = 0;i < book.enemy.length;i++){
-					if(!book.enemy[i].died && !book.enemy[i].neglect_seckill && !book.enemy[i].buffs["ghost"]){
+					if(!book.enemy[i].died && !book.enemy[i].neglect_seckill && (!book.enemy[i].buffs["ghost"] || book.ghost)){
 						var rate = book.enemy[i].getTotalAtt("hp") / book.enemy[i].getTotalAtt("maxHP")
 						if(rate < book.arg && (!target || book.enemy[i].getTotalAtt("hp") < target.getTotalAtt("hp"))){
 							target = book.enemy[i]
