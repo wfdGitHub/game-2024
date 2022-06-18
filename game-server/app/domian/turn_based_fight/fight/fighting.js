@@ -338,7 +338,7 @@ model.prototype.action = function() {
 				fightRecord.push({type:"show_tag",id:this.character.id,tag:"less_anger_skip"})
 				this.character.addAnger(4)
 			}else{
-				if(!this.character.buffs["dizzy"] && !this.character.buffs["frozen"]){
+				if(this.character.checkActionable()){
 					if(!this.character.buffs["silence"] && this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
 						skill = this.character.angerSkill
 						needValue = this.character.needAnger

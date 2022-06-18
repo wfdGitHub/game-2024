@@ -27,6 +27,7 @@ var model = function(otps) {
 					book.count--
 					var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[{id:target.id,kill:true}]}
 					fightRecord.push(recordInfo)
+					target.diedClear()
 					target.onDie()
 				}
 			}

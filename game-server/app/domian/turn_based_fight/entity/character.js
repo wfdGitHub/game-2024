@@ -712,6 +712,13 @@ model.prototype.beginAction = function() {
 	if(this.dodgeFirst)
 		this.dodgeState = true
 }
+//检查可行的
+model.prototype.checkActionable = function() {
+	if(this.died || this.buffs["dizzy"] || this.buffs["frozen"] || this.buffs["banish"])
+		return false
+	else
+		return true
+}
 //行动开始前刷新
 model.prototype.before = function() {
 	this.action_flag = true

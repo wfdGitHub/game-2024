@@ -274,7 +274,7 @@ model.useSkill = function(skill,chase,point) {
 			}
 			//同阵营队友阵亡后释放技能
 			for(var j = 0;j < targets[i].team.length;j++)
-				if(targets[i].team[j].realmDiedSkill && !targets[i].team[j].died && targets[i].team[j].id != targets[i].id && targets[i].realm == targets[i].team[j].realm){
+				if(targets[i].team[j].realmDiedSkill && targets[i].team[j].checkActionable() && targets[i].team[j].id != targets[i].id && targets[i].realm == targets[i].team[j].realm){
 					var tmpSkill = targets[i].team[j].angerSkill
 					this.useSkill(tmpSkill,true)
 				}
