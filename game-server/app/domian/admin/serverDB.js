@@ -3,6 +3,7 @@ var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var pay_cfg = require("../../../config/gameCfg/pay_cfg.json")
 var util = require("../../../util/util.js")
 var Md5_Key = sdkConfig["Md5_Key"]
+const async = require("async")
 const uuid = require("uuid")
 var model = function() {
 	var self
@@ -439,7 +440,72 @@ var model = function() {
 	    	res.send({flag:flag,list:list})
 		})
 	}
-
+	var festivalBasicInfo = {
+		"type" : "string",  		//类型
+		"beginTime" : "number",	//开始时间  当天零点时间戳
+		"duration" : "number", 	//持续时间
+		"signAward" : "array", 	//签到奖励列表
+		"bossTeam" : "array",	//boss阵容
+		"bossAward" : "array",	//boss奖励
+		"bossCount" : "number",  	//boss次数
+		"shopList" : "array",	//兑换列表
+		"dropItem" : "string", 	//掉落道具  快速作战   日常任务   逐鹿之战  竞技场  跨服竞技场 日冲副本
+		"open" : "object"
+	}
+	//更新节日活动
+	posts["/setFestivalInfo"] = function(req,res) {
+		var data = req.body
+		for(var i in data){
+			if(festivalBasicInfo[i] == "object" || festivalBasicInfo[i] == "array")
+				data[i] = JSON.parse(data[i])
+			else if(festivalBasicInfo[i] == "number")
+				data[i] = Number(data[i])
+		}
+		console.log(data)
+		var festivalInfo = {}
+		//参数检测
+		async.waterfall([
+			function(next) {
+				//检测参数
+				if(!data || typeof(data) != "object"){
+					next("data error")
+					return
+				}
+				for(var i in festivalBasicInfo){
+					switch(festivalBasicInfo[i]){
+						case "array":
+							if(!Array.isArray(data[i])){
+								next(i+"  type error "+data[i]+"  "+data[i])
+								return
+							}
+						break
+						default:
+							if(data[i] === undefined || typeof(data[i]) != festivalBasicInfo[i]){
+								next(i+"  type error "+data[i]+"  "+data[i])
+								return
+							}
+					}
+				}
+				next()
+			},
+			function(next) {
+				for(var i in festivalBasicInfo)
+					festivalInfo[i] = data[i]
+				next()
+			},
+			function(next) {
+				self.redisDao.db.set("game:festival",JSON.stringify(festivalInfo),function(err) {
+					var serverIds = self.app.getServersByType('area')
+				    for(var i = 0;i < serverIds.length;i++){
+				        self.app.rpc.area.areaRemote.updateFestivalInfo.toServer(serverIds[i]["id"],function(flag,data) {})
+				    }
+				})
+				res.send({flag:true})
+			}
+		],function(err) {
+			res.send({flag:false,err:err})
+		})
+	}
 	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
 		var sql1 = "select count(*) from "+tableName
 		var sql2 = "select * from "+tableName	

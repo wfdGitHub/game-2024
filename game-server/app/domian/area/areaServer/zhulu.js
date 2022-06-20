@@ -390,7 +390,12 @@ module.exports = function() {
 		    		var rate = 1
 		    		if(self.checkLimitedTime("zhulu"))
 			    		rate = 2
-		    		info.awardList = self.addItemStr(uid,zhulu_award[grid]["award"],rate,"逐鹿战斗")
+			    	var awardStr = zhulu_award[grid]["award"]
+					//节日任务活动掉落
+					var dropItem = self.festivalDrop()
+					if(dropItem && Math.random() < 0.3)
+						awardStr += "&"+dropItem+":1"
+		    		info.awardList = self.addItemStr(uid,awardStr,rate,"逐鹿战斗")
 		    		self.taskUpdate(uid,"zhulu_monster",1)
 			    }else{
 			    	for(var i = 0;i<defTeam.length;i++){

@@ -154,6 +154,13 @@ areaRemote.prototype.updateRebate = function(cb) {
 	}
 	cb(true)
 }
+//更新节日活动
+areaRemote.prototype.updateFestivalInfo = function(cb) {
+	for(var areaId in this.areaManager.areaMap){
+		this.areaManager.areaMap[areaId].updateFestivalInfo()
+	}
+	cb(true)
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "areaRemote",

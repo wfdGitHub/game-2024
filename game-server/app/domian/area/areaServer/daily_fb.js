@@ -119,10 +119,14 @@ module.exports = function() {
 					self.setObj(uid,main_name,type+"_lv",daily_fb_base[fbId]["lv"])
 				self.taskUpdate(uid,"fb",1)
 				self.taskUpdate(uid,"fb_hard",1,daily_fb_base[fbId]["lv"])
-				let award = daily_fb_base[fbId]["award"]
+				var award = daily_fb_base[fbId]["award"]
 				var rate = 1
 				if(self.checkLimitedTime("fuben"))
 					rate = 2
+				//节日任务活动掉落
+				var dropItem = self.festivalDrop()
+				if(dropItem)
+					award += "&"+dropItem+":1"
 				var awardList = self.addItemStr(uid,award,rate,"日常副本"+fbId)
 				cb(true,awardList)
 			}
