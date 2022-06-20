@@ -206,6 +206,12 @@ var model = function() {
 			res.send("SUCCESS")
 		})
 	}
+	//获取服务器名称
+	posts["/getAreaName"] = function(req,res) {
+		self.redisDao.db.hgetall("area:areaName",function(err,data) {
+			res.send({areaNames:data || {}})
+		})
+	}
 	//清除战斗校验错误数据
 	posts["/verify_clear"] = function(req,res) {
 		self.redisDao.db.del("verify_faild",function(err,data) {
