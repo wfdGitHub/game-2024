@@ -304,6 +304,7 @@ var model = function() {
 	//获取服务器名称
 	posts["/getAreaName"] = function(req,res) {
 		var data = req.body
+		console.log("getAreaName!")
 		self.redisDao.db.hgetall("area:areaName",function(err,data) {
 			res.send({flag:flag,areaNames:data})
 		})
