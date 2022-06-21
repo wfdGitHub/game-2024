@@ -360,7 +360,6 @@ module.exports = function() {
 	}
 	//出售战马
 	this.sellHorse = function(uid,ids,cb) {
-		console.log(uid,ids,typeof(ids),Array.isArray(ids))
 		if(!Array.isArray(ids)){
 			cb(false,"ids error "+ids)
 			return
