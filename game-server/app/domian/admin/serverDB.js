@@ -455,6 +455,8 @@ var model = function() {
 	//更新节日活动
 	posts["/setFestivalInfo"] = function(req,res) {
 		var data = req.body
+		console.log(typeof(data))
+		console.log(JSON.parse(data))
 		for(var i in data){
 			if(festivalBasicInfo[i] == "object" || festivalBasicInfo[i] == "array")
 				data[i] = JSON.parse(data[i])
