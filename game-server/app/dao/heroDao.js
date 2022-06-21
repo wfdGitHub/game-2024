@@ -180,13 +180,14 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	var heroInfo = {id : id,ad : ad,lv : lv,star : star}
 	this.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
-	this.redisDao.db.hincrby("player:user:"+uid+":heroArchive",id,Date.now())
+	this.redisDao.db.hincrby("player:user:"+uid+":heroArchive",id,star)
 	heroInfo.hId = hId
 	if(!otps.robot)
 		this.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
 	if(cb)
 		cb(true,heroInfo)
 	heroInfo.hId = hId
+	this.updateHeroArchive(areaId,uid,id,star)
 	return heroInfo
 }
 //批量删除英雄
@@ -226,6 +227,30 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 			self.redisDao.db.del("player:user:"+uid+":heros:"+hId)
 			cb(true,heroInfo)
 		})
+	})
+}
+//升级英雄图鉴
+heroDao.prototype.updateHeroArchive = function(areaId,uid,id,star) {
+	var self = this
+	self.redisDao.db.hget("player:user:"+uid+":heroArchive",id,function(err,data) {
+		if(!data || star > data){
+			self.redisDao.db.hset("player:user:"+uid+":heroArchive",id,star)
+			self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,id,star)
+			var notify = {
+				type : "updateHeroArchive",
+				id : id,
+				star : star
+			}
+			self.areaManager.areaMap[areaId].sendToUser(uid,notify)
+			// var name = self.areaManager.areaMap[areaId].getLordAtt(uid,"name")
+			// if(name){
+	  //     var notify2 = {
+	  //       type : "sysChat",
+	  //       text : "恭喜!!!"+name+"合成出"+star+"星"+herosCfg[id].name+"英雄，实力暴涨名满三国"
+	  //     }
+	  //     self.areaManager.areaMap[areaId].sendAllUser(notify2)
+			// }
+		}
 	})
 }
 //重生返还资源  返回升级升阶法宝
@@ -345,6 +370,9 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 				switch(name){
 					case "star":
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
+            self.getHeroInfo(uid,hId,"id",function(id) {
+                self.updateHeroArchive(areaId,uid,id,data)
+            })
 					break
 					case "lv":
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
@@ -376,6 +404,12 @@ heroDao.prototype.setHeroInfo = function(areaId,uid,hId,name,value,cb) {
 			if(cb)
 				cb(true,data)
 		}
+	})
+}
+//获取英雄属性
+heroDao.prototype.getHeroInfo = function(uid,hId,name,cb) {
+	this.redisDao.db.hget("player:user:"+uid+":heros:"+hId,name,function(err,data) {
+		cb(data)
 	})
 }
 //删除英雄属性
