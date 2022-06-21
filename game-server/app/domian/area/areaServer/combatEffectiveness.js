@@ -177,6 +177,13 @@ module.exports = function() {
 			this.updateCE(uid)
 		}
 	}
+	//更新建筑等级
+	this.setBuildLv = function(uid,bId,lv) {
+		if(userTeams[uid] && userTeams[uid][6]){
+			userTeams[uid][6][bId] = lv
+			this.updateCE(uid)
+		}
+	}
 	//更新阵营加成
 	this.setCampAtt = function(uid,camp,value) {
 		if(userTeams[uid] && userTeams[uid][6]){

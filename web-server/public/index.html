@@ -229,6 +229,36 @@
             console.log(data);
         });
       }
+      //放弃特殊地点
+      var manorGiveUp = function(grid) {
+        pomelo.request("area.manorHandler.manorGiveUp", {grid:grid}, function(data) {
+            console.log(data);
+        });
+      }
+      //搜寻玩家
+      var manorFindUser = function() {
+        pomelo.request("area.manorHandler.manorFindUser", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //占领玩家
+      var manorOccupyUser = function(target) {
+        pomelo.request("area.manorHandler.manorOccupyUser", {target:target}, function(data) {
+            console.log(data);
+        });
+      }
+      //反击
+      var manorRevolt = function() {
+        pomelo.request("area.manorHandler.manorRevolt", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //查看战报
+      var manorRerord = function() {
+        pomelo.request("area.manorHandler.manorRerord", {}, function(data) {
+            console.log(data);
+        });
+      }
       //===============新公会PK=========//
       // 报名PK
       var applyGuildPKRival = function() {
@@ -834,8 +864,8 @@
         });
       }
       //出售护符
-      var sellHufu = function(id) {
-        pomelo.request("area.hufuHandler.sellHufu", {id:id}, function(data) {
+      var sellHufu = function(ids) {
+        pomelo.request("area.hufuHandler.sellHufu", {ids:ids}, function(data) {
             console.log(data);
         });
       }
@@ -3397,6 +3427,16 @@
       <input id="test" type="button" value="获取排行榜" onclick="getAncientRank()"/>
       <input id="test" type="button" value="获取历史挑战记录" onclick="getAncientRecord()"/>
       <input id="test" type="button" value="目标列表" onclick="ancientGetTargetList()"/>
+    </div>
+    <div class="g-button">
+      家园 : 
+      <input id="test" type="button" value="获取家园数据" onclick="manorData()"/>
+      <input id="test" type="button" value="获取特殊地点" onclick="manorCityInfos()"/>
+      <input id="test" type="button" value="占领特殊地点1" onclick="manorOccupyCity(3)"/>
+      <input id="test" type="button" value="搜寻玩家" onclick="manorFindUser()"/>
+      <input id="test" type="button" value="占领玩家" onclick="manorOccupyUser()"/>
+      <input id="test" type="button" value="反击" onclick="manorRevolt()"/>
+      <input id="test" type="button" value="查看战报" onclick="manorRerord()"/>
     </div>
   </body>
 </html>
