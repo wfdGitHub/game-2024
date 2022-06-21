@@ -249,7 +249,19 @@ module.exports = function() {
 		self.redisDao.db.hset("cross:muye:camps",crossUid,camp)
 		self.redisDao.db.zrem(["cross:muye:rank:camp"+defCamp,crossUid])
 		self.redisDao.db.zadd(["cross:muye:rank:camp"+camp,0,crossUid])
-		cb(true,camp)
+		var hIds = []
+		var fightTeam = self.userTeam(crossUid)
+		for(var i = 0;i < 6;i++){
+			if(fightTeam[i])
+				hIds.push(fightTeam[i].hId)
+			else
+				hIds.push(null)
+			hIds.push(null)
+			hIds.push(null)
+		}
+		self.muyeSetFightTeams(crossUid,hIds,function(flag,err) {
+			cb(true,camp)
+		})
 	}
 	//随机阵营
 	this.muyeRandCamp = function(crossUid,cb) {
@@ -275,7 +287,19 @@ module.exports = function() {
 						awardList : awardList,
 						camp : camp
 					}
-					cb(true,info)
+					var hIds = []
+					var fightTeam = self.userTeam(crossUid)
+					for(var i = 0;i < 6;i++){
+						if(fightTeam[i])
+							hIds.push(fightTeam[i].hId)
+						else
+							hIds.push(null)
+						hIds.push(null)
+						hIds.push(null)
+					}
+					self.muyeSetFightTeams(crossUid,hIds,function(flag,err) {
+						cb(true,info)
+					})
 				})
 			})
 		})
