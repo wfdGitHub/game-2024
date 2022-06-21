@@ -52,26 +52,42 @@ module.exports = function() {
 	}
 	//单次宝物抽奖
 	this.aceLottoOnce = function(uid,cb) {
-		self.consumeItems(uid,default_cfg["ace_lotto_1"]["value"],1,"宝物抽奖",function(flag,err) {
-			if(!flag){
-				cb(false,err)
+		self.getObj(uid,"playerData","ace_lotto_count",function(data) {
+			data = Number(data) || 0
+			if((data + 1) > default_cfg["ace_lotto_count"]["value"]){
+				cb(false,"可用次数不足")
 			}else{
-				self.getHMObj(uid,main_name,["redNum"],function(list) {
-					var redNum = Number(list[0]) || 0
-					local.aceLottoBase(uid,redNum,1,cb)
+				self.incrbyObj(uid,"playerData","ace_lotto_count",1)
+				self.consumeItems(uid,default_cfg["ace_lotto_1"]["value"],1,"宝物抽奖",function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						self.getHMObj(uid,main_name,["redNum"],function(list) {
+							var redNum = Number(list[0]) || 0
+							local.aceLottoBase(uid,redNum,1,cb)
+						})
+					}
 				})
 			}
 		})
 	}
 	//十连宝物抽奖
 	this.aceLottoMultiple = function(uid,cb) {
-		self.consumeItems(uid,default_cfg["ace_lotto_10"]["value"],1,"宝物抽奖",function(flag,err) {
-			if(!flag){
-				cb(false,err)
+		self.getObj(uid,"playerData","ace_lotto_count",function(data) {
+			data = Number(data) || 0
+			if((data + 10) > default_cfg["ace_lotto_count"]["value"]){
+				cb(false,"可用次数不足")
 			}else{
-				self.getHMObj(uid,main_name,["redNum"],function(list) {
-					var redNum = Number(list[0]) || 0
-					local.aceLottoBase(uid,redNum,10,cb)
+				self.incrbyObj(uid,"playerData","ace_lotto_count",10)
+				self.consumeItems(uid,default_cfg["ace_lotto_10"]["value"],1,"宝物抽奖",function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						self.getHMObj(uid,main_name,["redNum"],function(list) {
+							var redNum = Number(list[0]) || 0
+							local.aceLottoBase(uid,redNum,10,cb)
+						})
+					}
 				})
 			}
 		})

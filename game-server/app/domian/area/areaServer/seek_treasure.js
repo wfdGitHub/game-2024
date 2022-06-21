@@ -433,27 +433,35 @@ module.exports = function() {
 	}
 	//兵法转盘
 	this.bfLotto = function(uid,count,cb) {
-		self.consumeItems(uid,default_cfg["bf_lotto"]["value"],count,"欧皇转盘",function(flag,err) {
-			if(!flag){
-				cb(false,err)
+		self.getObj(uid,"playerData","bf_lotto_count",function(data) {
+			data = Number(data) || 0
+			if((data + count) > default_cfg["bf_lotto_count"]["value"]){
+				cb(false,"可用次数不足")
 			}else{
-				var name = self.players[uid]["name"]
-				var awardList = []
-				var index = -1
-				for(var i = 0;i < count;i++){
-					var rand = Math.random() * bf_allWeight
-					for(var j = 0;j < bf_grid.length;j++){
-						if(rand < bf_grid[j]){
-							index = j
-							awardList = awardList.concat(self.addItemStr(uid,bf_turntable[j]["award"],1,"欧皇转盘"))
-							if(bf_turntable[j]["rare"]){
-								local.saveSTRecord(name,"bf",bf_turntable[j]["award"])
+				self.incrbyObj(uid,"playerData","bf_lotto_count",count)
+				self.consumeItems(uid,default_cfg["bf_lotto"]["value"],count,"欧皇转盘",function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						var name = self.players[uid]["name"]
+						var awardList = []
+						var index = -1
+						for(var i = 0;i < count;i++){
+							var rand = Math.random() * bf_allWeight
+							for(var j = 0;j < bf_grid.length;j++){
+								if(rand < bf_grid[j]){
+									index = j
+									awardList = awardList.concat(self.addItemStr(uid,bf_turntable[j]["award"],1,"欧皇转盘"))
+									if(bf_turntable[j]["rare"]){
+										local.saveSTRecord(name,"bf",bf_turntable[j]["award"])
+									}
+									break
+								}
 							}
-							break
 						}
+						cb(true,{awardList:awardList,index:index})
 					}
-				}
-				cb(true,{awardList:awardList,index:index})
+				})
 			}
 		})
 	}

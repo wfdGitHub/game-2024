@@ -31,6 +31,11 @@ module.exports = function() {
 		self.delObj(uid,main_name,"box_3")
 		self.delObj(uid,main_name,"box_4")
 		self.delObj(uid,main_name,"box_5")
+		for(var type in recruit_base){
+			self.delObj(uid,"playerData",type+"_count")
+		}
+		self.delObj(uid,"playerData","ace_lotto_count")
+		self.delObj(uid,"playerData","bf_lotto_count")
 		// local.resetTopicRecruitTask(uid)
 	}
 	//获取主题招募数据
@@ -44,31 +49,146 @@ module.exports = function() {
 			cb(true,data)
 		})
 	}
+	//道具招募英雄
+	this.recruitHeroByItem = function(uid,type,count,cb) {
+		if(!Number.isInteger(count) || count < 1 || !recruit_base[type] || !recruit_base[type]["pc"]){
+			cb(false,"arg error")
+			return
+		}
+		var pcStr = recruit_base[type]["pc"]
+		var heroInfos = []
+		async.waterfall([
+			function(next) {
+			  //判断背包上限
+			  self.heroDao.getHeroAmount(uid,function(flag,info) {
+			      if(info.cur + count > info.max){
+			        next("英雄背包已满")
+			      }else{
+			        next()
+			      }
+			  })
+			},
+			function(next) {
+		      self.consumeItems(uid,pcStr,count,"召唤"+type,function(flag,err) {
+		        if(!flag){
+		          next(err)
+		          return
+		        }
+		        local.recruitHero(uid,type,count,cb)
+		      })
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//元宝招募英雄
+	this.recruitHeroByGold = function(uid,type,count,cb) {
+		if(!Number.isInteger(count) || count < 1 || !recruit_base[type] || !recruit_base[type]["gold_"+count]){
+			cb(false,"arg error")
+			return
+		}
+		var pcStr = recruit_base[type]["gold_"+count]
+		var heroInfos = []
+		async.waterfall([
+			function(next) {
+			  //判断背包上限
+			  self.heroDao.getHeroAmount(uid,function(flag,info) {
+			      if(info.cur + count > info.max){
+			        next("英雄背包已满")
+			      }else{
+			        next()
+			      }
+			  })
+			},
+			function(next) {
+				//判断招募上限
+				if(recruit_base[type]["count"]){
+					self.getObj(uid,"playerData",type+"_count",function(data) {
+						data = Number(data) || 0
+						if((data + count) > recruit_base[type]["count"]){
+							next("可用次数不足")
+						}else{
+							next()
+						}
+					})
+				}else{
+					next()
+				}
+			},
+			function(next) {
+		      self.consumeItems(uid,pcStr,1,"召唤"+type,function(flag,err) {
+		        if(!flag){
+		          next(err)
+		          return
+		        }
+		        if(recruit_base[type]["count"])
+		        	self.incrbyObj(uid,"playerData",type+"_count",count)
+				local.recruitHero(uid,type,count,cb)
+		      })
+			}
+		],function(err) {
+			console.log(err)
+			cb(false,err)
+		})
+	}
+	local.recruitHero = function(uid,type,count,cb) {
+        var paStr = recruit_base[type].pa
+        if(paStr)
+          self.addItemStr(uid,paStr,count,"召唤英雄")
+        switch(type){
+          case "normal":
+            self.taskUpdate(uid,"recruit_normal",count)
+            self.taskUpdate(uid,"recruit",count)
+            heroInfos = self.heroDao.randHero(self.areaId,uid,type,count)
+          break
+          case "great":
+            self.taskUpdate(uid,"recruit_great",count)
+            self.taskUpdate(uid,"recruit",count)
+            heroInfos = self.heroDao.randHeroLuck(self.areaId,uid,type,count)
+          break
+          case "camp_1":
+          case "camp_2":
+          case "camp_3":
+          case "camp_4":
+            heroInfos = self.heroDao.randHero(self.areaId,uid,type,count)
+            self.taskUpdate(uid,"general",count)
+          break
+          case "topic":
+			self.getObj(uid,main_name,"count",function(num) {
+				heroInfos = local.recruit(uid,num,count)
+				cb(true,heroInfos)
+			})
+		  return
+          break
+          default:
+            heroInfos = self.heroDao.randHero(self.areaId,uid,type,count)
+          break
+        }
+        cb(true,heroInfos)
+	}
 	//主题招募一次
 	this.topicRecruitOnce = function(uid,cb) {
-		self.consumeItems(uid,default_cfg["topic_lotto_1"]["value"],1,"主题召唤",function(flag,err) {
-			if(!flag){
-				cb(false,err)
-			}else{
-				self.getObj(uid,main_name,"count",function(num) {
-					var heroInfos = local.recruit(uid,num,1)
-					cb(true,heroInfos)
-				})
-			}
-		})
+		cb(false,"接口已弃用")
+		// self.consumeItems(uid,default_cfg["topic_lotto_1"]["value"],1,"主题召唤",function(flag,err) {
+		// 	if(!flag){
+		// 		cb(false,err)
+		// 	}else{
+		// 	}
+		// })
 	}
 	//主题招募十次
 	this.topicRecruitMultiple = function(uid,cb) {
-		self.consumeItems(uid,default_cfg["topic_lotto_10"]["value"],1,"主题召唤",function(flag,err) {
-			if(!flag){
-				cb(false,err)
-			}else{
-				self.getObj(uid,main_name,"count",function(num) {
-					var heroInfos = local.recruit(uid,num,10)
-					cb(true,heroInfos)
-				})
-			}
-		})
+		cb(false,"接口已弃用")
+		// self.consumeItems(uid,default_cfg["topic_lotto_10"]["value"],1,"主题召唤",function(flag,err) {
+		// 	if(!flag){
+		// 		cb(false,err)
+		// 	}else{
+		// 		self.getObj(uid,main_name,"count",function(num) {
+		// 			var heroInfos = local.recruit(uid,num,10)
+		// 			cb(true,heroInfos)
+		// 		})
+		// 	}
+		// })
 	}
 	//领取主题招募奖励
 	this.gainTopicRecruitBoxAward = function(uid,index,cb) {
@@ -94,13 +214,6 @@ module.exports = function() {
 			}
 		})
 	}
-	//重置主题任务
-	// local.resetTopicRecruitTask = function(uid) {
-		// self.clearTopicRecruitTask(uid)
-	// 	for(var i = 1;i <= 4;i++){
-	// 		self.gainTask(uid,recruit_topic_hero[curTopic]["task_"+i])
-	// 	}
-	// }
 	//主题招募
 	local.recruit = function(uid,num,count) {
 		var r_luck = self.players[uid]["r_luck"]
@@ -213,6 +326,5 @@ module.exports = function() {
 		],function(err) {
 			cb(false,err)
 		})
-
 	}
 }

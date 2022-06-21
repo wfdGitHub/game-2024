@@ -160,6 +160,7 @@ module.exports = function() {
 			data["rv_normal"] = 0
 			data["rv_high"] = 0
 			data["rv_super"] = 0
+			data["vip_skip"] = 0
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
 			}
@@ -566,8 +567,53 @@ module.exports = function() {
 				cb(false,"已领取")
 			}else{
 				self.setObj(uid,main_name,"open_"+index,1)
-				var awardList = self.addItemStr(uid,open_cfg[index]["award"],1,"功能开启"+index)
+				var awardList = self.addItemStr(uid,unlock_cfg[index]["award"],1,"功能开启"+index)
 				cb(true,awardList)
+			}
+		})
+	}
+	//领取超梦逆袭章节奖励
+	this.gainMewtwoAward = function(uid,index,cb) {
+		if(!mewtwo_task[index]){
+			cb(false,"index error "+index)
+			return
+		}
+		self.getObj(uid,main_name,"mewtwo_"+index,function(data) {
+			if(data){
+				cb(false,"已领取")
+			}else{
+				if(self.checkTaskExist(uid,mewtwo_task[index]["task1"]) || self.checkTaskExist(uid,mewtwo_task[index]["task2"]) || self.checkTaskExist(uid,mewtwo_task[index]["task3"])){
+					cb(false,"任务未完成")
+					return
+				}
+				self.setObj(uid,main_name,"mewtwo_"+index,1)
+				var awardList = self.addItemStr(uid,mewtwo_task[index]["award"],1,"超梦任务"+index)
+				cb(true,awardList)
+			}
+		})
+	}
+	//使用跳过次数
+	this.useVipSkipCount = function(uid,cb) {
+		var vip = self.players[uid].vip
+		self.getObj(uid,main_name,"vip_skip",function(data) {
+			data = Number(data) || 0
+			if(data >= VIP[vip]["skip"]){
+				cb(false,"次数已达上限")
+				return
+			}
+			self.incrbyObj(uid,main_name,"vip_skip",1)
+			data++
+			cb(true,data)
+		})
+	}
+	//购买跳过次数
+	this.buyVipSkipCount = function(uid,cb) {
+		var pcStr = default_cfg["default_pc_1"]["value"]
+		self.consumeItems(uid,pcStr,1,"跳过",function(flag,err) {
+			if(!flag){
+				cb(false,err)
+			}else{
+				cb(true)
 			}
 		})
 	}
