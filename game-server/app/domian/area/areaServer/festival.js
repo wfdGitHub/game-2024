@@ -27,7 +27,6 @@ module.exports = function() {
 	//设置活动信息  
 	this.setFestivalInfo = function(data) {
 		//检查参数
-		console.log("setFestivalInfo",data)
 		festivalInfo = data 
 		festivalInfo["key"] = festivalInfo["type"] + "_" + festivalInfo["beginTime"]
 		festivalInfo["endTime"] = festivalInfo["beginTime"] + (festivalInfo["duration"] * oneDayTime)
