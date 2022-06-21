@@ -109,6 +109,18 @@
             console.log(data);
         });
       }
+      //获取主题招募英雄任务
+      var gainTopicRecruitHeroTask = function(heroId) {
+        pomelo.request("area.recruitHandler.gainTopicRecruitHeroTask", {heroId:heroId}, function(data) {
+            console.log(data);
+        });
+      }
+      //完成主题招募英雄任务
+      var finishTopicRecruitHeroTask = function(heroId,star) {
+        pomelo.request("area.recruitHandler.finishTopicRecruitHeroTask", {heroId:heroId,star:star}, function(data) {
+            console.log(data);
+        });
+      }
       //===============新公会PK=========//
       // 报名PK
       var applyGuildPKRival = function() {

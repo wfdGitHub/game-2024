@@ -4,7 +4,9 @@ const recruit_base = require("../../../../config/gameCfg/recruit_base.json")
 const recruit_list = require("../../../../config/gameCfg/recruit_list.json")
 const recruit_topic_cfg = require("../../../../config/gameCfg/recruit_topic_cfg.json")
 const recruit_topic_hero = require("../../../../config/gameCfg/recruit_topic_hero.json")
+const star_base = require("../../../../config/gameCfg/star_base.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+const async = require("async")
 const util = require("../../../../util/util.js")
 const main_name = "topic_recruit"
 var topicList = []
@@ -29,7 +31,7 @@ module.exports = function() {
 		self.delObj(uid,main_name,"box_3")
 		self.delObj(uid,main_name,"box_4")
 		self.delObj(uid,main_name,"box_5")
-		local.resetTopicRecruitTask(uid)
+		// local.resetTopicRecruitTask(uid)
 	}
 	//获取主题招募数据
 	this.getTopicRecruitData = function(uid,cb) {
@@ -93,12 +95,12 @@ module.exports = function() {
 		})
 	}
 	//重置主题任务
-	local.resetTopicRecruitTask = function(uid) {
-		self.clearTopicRecruitTask(uid)
-		for(var i = 1;i <= 4;i++){
-			self.gainTask(uid,recruit_topic_hero[curTopic]["task_"+i])
-		}
-	}
+	// local.resetTopicRecruitTask = function(uid) {
+		// self.clearTopicRecruitTask(uid)
+	// 	for(var i = 1;i <= 4;i++){
+	// 		self.gainTask(uid,recruit_topic_hero[curTopic]["task_"+i])
+	// 	}
+	// }
 	//主题招募
 	local.recruit = function(uid,num,count) {
 		var r_luck = self.players[uid]["r_luck"]
@@ -169,5 +171,48 @@ module.exports = function() {
 	    self.chageLordData(uid,"r_luck",r_luck)
 	    self.incrbyObj(uid,main_name,"count",count)
 	  	return heroInfos
+	}
+	//获取主题招募英雄任务
+	this.gainTopicRecruitHeroTask = function(uid,heroId,cb) {
+		self.getObjAll(uid,main_name+":"+heroId,function(data) {
+			cb(true,data || {})
+		})
+	}
+	//完成主题招募英雄任务
+	this.finishTopicRecruitHeroTask = function(uid,heroId,star,cb) {
+		if(!heros[heroId]){
+			cb(false,"heroId error "+heroId)
+			return
+		}
+		if(!(Number.isInteger(star) && star_base[star] && star_base[star]["topic_award"])){
+			cb(false,"star error "+star)
+			return
+		}
+		async.waterfall([
+			function(next) {
+				self.getObj(uid,"heroArchive",heroId,function(data) {
+					if(!data || data < star)
+						next("star limit")
+					else
+						next()
+				})
+			},
+			function(next) {
+				self.getObj(uid,main_name+":"+heroId,star,function(data) {
+					if(data)
+						next("已领取")
+					else
+						next()
+				})
+			},
+			function(next) {
+				self.setObj(uid,main_name+":"+heroId,star,1)
+				var awardList = self.addItemStr(uid,star_base[star]["topic_award"],1,"升星"+heroId+":"+star)
+				cb(true,awardList)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+
 	}
 }

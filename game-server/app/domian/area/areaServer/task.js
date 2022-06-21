@@ -386,19 +386,19 @@ module.exports = function() {
 		}
 	}
 	//清除主题招募任务
-	this.clearTopicRecruitTask = function(uid) {
-		for(var taskId in userTaskLists[uid]){
-			if(topic_recruit_task[taskId]){
-				if(userTaskMaps[uid]){
-					let type = task_cfg[taskId].type
-					if(userTaskMaps[uid][type])
-						userTaskMaps[uid][type].remove(taskId)
-				}
-				self.delObj(uid,main_name,taskId)
-				delete userTaskLists[uid][taskId]
-			}
-		}
-	}
+	// this.clearTopicRecruitTask = function(uid) {
+	// 	for(var taskId in userTaskLists[uid]){
+	// 		if(topic_recruit_task[taskId]){
+	// 			if(userTaskMaps[uid]){
+	// 				let type = task_cfg[taskId].type
+	// 				if(userTaskMaps[uid][type])
+	// 					userTaskMaps[uid][type].remove(taskId)
+	// 			}
+	// 			self.delObj(uid,main_name,taskId)
+	// 			delete userTaskLists[uid][taskId]
+	// 		}
+	// 	}
+	// }
 	//查询任务是否存在
 	this.checkTaskExist = function(uid,taskId) {
 		if(!userTaskLists[uid])
