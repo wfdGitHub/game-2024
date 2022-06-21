@@ -547,6 +547,135 @@
             console.log(data);
         });
       }
+      //==============战马==========//
+      //战马列表
+      var getHorseList = function() {
+        pomelo.request("area.hufuHandler.getHorseList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //生成随机战马
+      var gainRandHorse = function(lv) {
+        pomelo.request("area.hufuHandler.gainRandHorse", {lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //穿戴战马
+      var wearHorse = function(hId,id) {
+        pomelo.request("area.hufuHandler.wearHorse", {hId:hId,id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下战马
+      var unwearHorse = function(hId) {
+        pomelo.request("area.hufuHandler.unwearHorse", {hId:hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //合成战马
+      var compoundHorse = function(ids,lv) {
+        pomelo.request("area.hufuHandler.compoundHorse", {ids:ids,lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //战马洗练
+      var washHorse = function(id) {
+        pomelo.request("area.hufuHandler.washHorse", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //出售战马
+      var sellHorse = function(id) {
+        pomelo.request("area.hufuHandler.sellHorse", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //==============战鼓==========//
+      //战鼓列表
+      var getDrumList = function() {
+        pomelo.request("area.hufuHandler.getDrumList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //生成随机战鼓
+      var gainRandDrum = function(lv) {
+        pomelo.request("area.hufuHandler.gainRandDrum", {lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //穿戴战鼓
+      var wearDrum = function(hId,id) {
+        pomelo.request("area.hufuHandler.wearDrum", {hId:hId,id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下战鼓
+      var unwearDrum = function(hId) {
+        pomelo.request("area.hufuHandler.unwearDrum", {hId:hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //合成战鼓
+      var compoundDrum = function(ids,lv) {
+        pomelo.request("area.hufuHandler.compoundDrum", {ids:ids,lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //战鼓洗练
+      var washDrum = function(id) {
+        pomelo.request("area.hufuHandler.washDrum", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //出售战鼓
+      var sellDrum = function(id) {
+        pomelo.request("area.hufuHandler.sellDrum", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //==============军旗==========//
+      //军旗列表
+      var getBannerList = function() {
+        pomelo.request("area.hufuHandler.getBannerList", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //生成随机军旗
+      var gainRandBanner = function(lv) {
+        pomelo.request("area.hufuHandler.gainRandBanner", {lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //穿戴军旗
+      var wearBanner = function(hId,id) {
+        pomelo.request("area.hufuHandler.wearBanner", {hId:hId,id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下军旗
+      var unwearBanner = function(hId) {
+        pomelo.request("area.hufuHandler.unwearBanner", {hId:hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //合成军旗
+      var compoundBanner = function(ids,lv) {
+        pomelo.request("area.hufuHandler.compoundBanner", {ids:ids,lv:lv}, function(data) {
+            console.log(data);
+        });
+      }
+      //军旗洗练
+      var washBanner = function(id) {
+        pomelo.request("area.hufuHandler.washBanner", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //出售军旗
+      var sellBanner = function(id) {
+        pomelo.request("area.hufuHandler.sellBanner", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
       //==============护符==========//
       //护符列表
       var getHufuList = function() {
