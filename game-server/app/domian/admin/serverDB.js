@@ -449,7 +449,7 @@ var model = function() {
 		"bossAward" : "array",	//boss奖励
 		"bossCount" : "number",  	//boss次数
 		"shopList" : "array",	//兑换列表
-		"dropItem" : "string", 	//掉落道具  快速作战   日常任务   逐鹿之战  竞技场  跨服竞技场 日冲副本
+		"dropItem" : "number", 	//掉落道具  快速作战   日常任务   逐鹿之战  竞技场  跨服竞技场 日冲副本
 		"open" : "object"
 	}
 	//更新节日活动
