@@ -17,6 +17,7 @@ const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const invade_team = JSON.parse(invade["mon_team"]["value"])
 const area_boss_base = require("../../../../config/gameCfg/area_boss_base.json")
 const activity_day = require("../../../../config/gameCfg/activity_day.json")
+const mewtwo_task = require("../../../../config/gameCfg/mewtwo_task.json")
 var util = require("../../../../util/util.js")
 var maxBoss = 0
 for(var i in area_boss_base){
