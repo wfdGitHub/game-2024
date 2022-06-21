@@ -47,6 +47,19 @@ var model = function(otps) {
 	this.totalDamage = 0								//累计伤害
 	this.totalHeal = 0									//累计治疗
 	//=========新战斗属性=======//
+	//=========阵营抗性=======//
+	this.att_realm_1 = otps.att_realm_1 || 0 	//攻击阵营1增益
+	this.att_realm_2 = otps.att_realm_2 || 0 	//攻击阵营2增益
+	this.att_realm_3 = otps.att_realm_3 || 0 	//攻击阵营3增益
+	this.att_realm_4 = otps.att_realm_4 || 0 	//攻击阵营4增益
+	this.att_realm_5 = otps.att_realm_5 || 0 	//攻击阵营5增益
+	this.def_realm_1 = otps.def_realm_1 || 0 	//防御阵营1增益
+	this.def_realm_2 = otps.def_realm_2 || 0 	//防御阵营2增益
+	this.def_realm_3 = otps.def_realm_3 || 0 	//防御阵营3增益
+	this.def_realm_4 = otps.def_realm_4 || 0 	//防御阵营4增益
+	this.def_realm_5 = otps.def_realm_5 || 0 	//防御阵营5增益
+	
+	//=========其他效果=======//
 	this.first_buff_list = []			//初始BUFF
 	this.kill_buffs = {} 				//击杀BUFF
 	this.action_buffs = {} 				//行动后buff
