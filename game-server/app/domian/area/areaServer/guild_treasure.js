@@ -29,6 +29,10 @@ module.exports = function() {
 	var local = {}
 	//宝藏BOSS每日首次更新
 	this.guildTreasureFirstUpdate = function() {
+        var guildList = self.getGuildInfoList()
+        for(var guildId in guildList){
+            self.guildTreasureAuctionEnd(guildId)
+        }
 	}
 	//宝藏BOSS每日更新
 	this.guildTreasureDayUpdate = function() {
