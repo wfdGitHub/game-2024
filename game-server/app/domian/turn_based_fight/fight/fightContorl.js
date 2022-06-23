@@ -158,9 +158,13 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		    "maxHP": lv_cfg[info.lv].maxHP,
 		    "atk": lv_cfg[info.lv].atk,
 		    "phyDef": lv_cfg[info.lv].phyDef,
-		    "magDef": lv_cfg[info.lv].magDef,
-		    "speed" : lv_cfg[info.lv].speed
+		    "magDef": lv_cfg[info.lv].magDef
 		}
+		if(herosCfg[id]["realm"] == 4){
+			for(var i in lvInfo)
+				lvInfo[i] = lvInfo[i] * 2
+		}
+		lvInfo.speed = lv_cfg[info.lv].speed
 		model.mergeData(info,lvInfo)
 	}
 	//装备计算
