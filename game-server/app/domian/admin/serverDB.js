@@ -445,7 +445,7 @@ var model = function() {
 		"beginTime" : "number",	//开始时间  当天零点时间戳
 		"duration" : "number", 	//持续时间
 		"signAward" : "array", 	//签到奖励列表
-		"bossTeam" : "array",	//boss阵容
+		"bossTeam" : "number",	//boss阵容
 		"bossAward" : "array",	//boss奖励
 		"bossCount" : "number",  	//boss次数
 		"shopList" : "array",	//兑换列表

@@ -10,7 +10,7 @@ module.exports = function() {
 		"beginTime" : 0,	//开始时间  当天零点时间戳
 		"duration" : 0, 	//持续时间
 		"signAward" : [], 	//签到奖励列表
-		"bossTeam" : [],	//boss阵容
+		"bossTeam" : 105020,	//boss阵容
 		"bossAward" : [],	//boss奖励
 		"bossCount" : 0,  	//boss次数
 		"shopList" : [],	//兑换列表
@@ -113,7 +113,7 @@ module.exports = function() {
 				self.incrbyObj(uid,main_name,"bossCount",1)
 				var atkTeam = self.getUserTeam(uid)
 			    var seededNum = Date.now()
-			    var defTeam = festivalInfo["bossTeam"]
+			    var defTeam = self.standardTeam(uid,[0,0,0,0,festivalInfo["bossTeam"],0],"zhulu_boss",self.getLordLv(uid))
 				defTeam[4].boss = true
 				var fightOtps = {seededNum : seededNum,maxRound:5}
 			    self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
