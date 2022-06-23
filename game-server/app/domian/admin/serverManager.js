@@ -52,20 +52,20 @@ serverManager.prototype.init = function() {
 	}
 	server.post(sdkConfig["pay_callback"],function(req,res) {
 		var data = req.body
-		var ipFlag = false
-		for(var i = 0;i < ip_white_list.length;i++){
-			if(req.ip.indexOf(ip_white_list[i]) != -1){
-				ipFlag = true
-				break
-			}
-		}
-		if(!ipFlag){
-				res.send({
-					'error_code' : 299,
-					'message' : "ip error"
-				})
-				return
-		}
+		// var ipFlag = false
+		// for(var i = 0;i < ip_white_list.length;i++){
+		// 	if(req.ip.indexOf(ip_white_list[i]) != -1){
+		// 		ipFlag = true
+		// 		break
+		// 	}
+		// }
+		// if(!ipFlag){
+		// 		res.send({
+		// 			'error_code' : 299,
+		// 			'message' : "ip error"
+		// 		})
+		// 		return
+		// }
 		self.pay_order(data,function(flag,err) {
 			// if(!flag)
 			// 	res.send(err)
