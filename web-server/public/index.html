@@ -132,6 +132,25 @@
             console.log(data);
         });
       }
+      //============新增特权======//
+      //领取通天塔特权奖励
+      var tttPriAward = function() {
+        pomelo.request("area.tttHandler.tttPriAward", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //逐鹿恢复满血
+      var zhuluRevive = function() {
+        pomelo.request("area.zhuluHandler.zhuluRevive", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //逐鹿重置次数
+      var zhuluReset = function() {
+        pomelo.request("area.zhuluHandler.zhuluReset", {}, function(data) {
+            console.log(data);
+        });
+      }
       //============节日活动======//
       //获取活动数据
       var getFestivalData = function() {

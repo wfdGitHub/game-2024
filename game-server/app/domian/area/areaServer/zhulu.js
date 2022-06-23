@@ -49,7 +49,9 @@ var keysType = {
 	spoils : "obj",
 	spoils_list : "obj",
 	chooseList :"obj",
-	sellOutList : "obj"
+	sellOutList : "obj",
+	revive : "num",
+	reset : "num"
 }
 var gridCounts = [1,2,3,2,3,2,3,2,3,2,1,2,3,2,3,2,3,2,3,2,1,2,3,2,3,2,3,2,3,2,1]
 //逐鹿之战
@@ -73,7 +75,9 @@ module.exports = function() {
 					spoils : [],
 					spoils_list : [],
 					chooseList : {},
-					sellOutList : {}
+					sellOutList : {},
+					revive : 0,
+					reset : 0
 				}
 				// let fightTeam = self.getUserTeam(uid)
 				// for(let i = 0;i < fightTeam.length;i++){
@@ -389,7 +393,11 @@ module.exports = function() {
 		    		local.changeData(uid,"curChoose",info.curChoose)
 		    		var rate = 1
 		    		if(self.checkLimitedTime("zhulu"))
-			    		rate = 2
+			    		rate += 1
+			    	var zhulu_pri = self.getLordAtt(uid,"zhulu_pri")
+			    	if(zhulu_pri > Date.now()){
+			    		rate += 1
+			    	}
 			    	var awardStr = zhulu_award[grid]["award"]
 					//节日任务活动掉落
 					var dropItem = self.festivalDrop()
@@ -554,5 +562,67 @@ module.exports = function() {
 		if(keysType[key] == "obj")
 			value = JSON.stringify(value)
 		self.setObj(uid,main_name,key,value)
+	}
+	//恢复满血
+	this.zhuluRevive = function(uid,cb) {
+		if(!userDatas[uid]){
+			cb(false,"userDatas error")
+			return
+		}
+    	var zhulu_pri = self.getLordAtt(uid,"zhulu_pri")
+    	if(!zhulu_pri  || zhulu_pri < Date.now()){
+    		cb(false,"特权已过期")
+    		return
+    	}
+		userDatas[uid]["surplus_healths"] = {}
+		local.changeData(uid,"surplus_healths",userDatas[uid]["surplus_healths"])
+		cb(true,{surplus_healths : userDatas[uid]["surplus_healths"]})
+	}
+	//重置次数
+	this.zhuluReset = function(uid,cb) {
+    	var zhulu_pri = self.getLordAtt(uid,"zhulu_pri")
+    	if(!zhulu_pri  || zhulu_pri < Date.now()){
+    		cb(false,"特权已过期")
+    		return
+    	}
+		var data = {
+			dayStr : (new Date()).toDateString(),
+			curGrid : 0,
+			curChoose : -1,
+			surplus_healths : {},
+			zhuluTeam : [],
+			grids : {},
+			gridList : {},
+			spoils : [],
+			spoils_list : [],
+			chooseList : {},
+			sellOutList : {},
+			revive : 0,
+			reset : 0
+		}
+		// let fightTeam = self.getUserTeam(uid)
+		// for(let i = 0;i < fightTeam.length;i++){
+		// 	if(fightTeam[i] && fightTeam[i].hId)
+		// 		data.zhuluTeam.push(fightTeam[i].hId)
+		// 	else
+		// 		data.zhuluTeam.push(null)
+		// }
+		// self.heroDao.setZhuluTeam(self.areaId,uid,data.zhuluTeam)
+		for(let i = 1;i < gridCounts.length;i++){
+			data.grids[i] = []
+			for(let j = 0;j < gridCounts[i];j++){
+				data.grids[i].push(local.createGrid(uid,i))
+			}
+		}
+		userDatas[uid] = data
+		let info = {}
+		for(let i in data){
+			if(keysType[i] == "obj")
+				info[i] = JSON.stringify(data[i])
+			else
+				info[i] = data[i]
+		}
+		self.setHMObj(uid,main_name,info)
+		cb(true,userDatas[uid])
 	}
 }

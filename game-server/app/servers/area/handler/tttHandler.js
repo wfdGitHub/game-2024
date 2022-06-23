@@ -68,6 +68,14 @@ tttHandler.prototype.upgradCampAtt = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//领取通天塔特权奖励
+tttHandler.prototype.tttPriAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].tttPriAward(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "tttHandler",

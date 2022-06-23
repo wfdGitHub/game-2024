@@ -101,7 +101,22 @@ zhuluHandler.prototype.openZhuluBox = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
-
+//恢复满血
+zhuluHandler.prototype.zhuluRevive = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].zhuluRevive(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//重置次数
+zhuluHandler.prototype.zhuluReset = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].zhuluReset(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "zhuluHandler",

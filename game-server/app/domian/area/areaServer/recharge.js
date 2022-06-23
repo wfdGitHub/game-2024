@@ -14,6 +14,7 @@ const util = require("../../../../util/util.js")
 const uuid = require("uuid")
 const main_name = "activity"
 const day31Time = 2592000000
+const day14Time = 1209600000
 const day7Time = 604800000
 var rechargeMap = {}
 var recharge_once_table = {}
@@ -104,6 +105,15 @@ module.exports = function() {
 			break
 			case "stone_pri":
 				this.buyStonePri(uid,call_back.bind(this,uid))
+			break
+			case "ttt_pri":
+				this.buyTTTPri(uid,call_back.bind(this,uid))
+			break
+			case "zhulu_pri":
+				this.buyZhuluPri(uid,call_back.bind(this,uid))
+			break
+			case "manor_pri":
+				this.buyManorPri(uid,call_back.bind(this,uid))
 			break
 			case "gift_loop":
 				this.buyLoopGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
@@ -434,5 +444,38 @@ module.exports = function() {
 		self.chageLordData(uid,"stone_pri",stone_pri)
 		self.sendTextToMail(uid,"recharge",activity_cfg["stone_award"]["value"])
 		cb(true,{stone_pri:stone_pri})
+	}
+	//购买通天塔特权
+	this.buyTTTPri = function(uid,cb) {
+		self.chageLordData(uid,"ttt_pri",1)
+		cb(true,{ttt_pri:ttt_pri})
+	}
+	//购买逐鹿之战特权
+	this.buyZhuluPri = function(uid,cb) {
+		var  zhulu_pri = self.getLordAtt(uid,"zhulu_pri")
+		if(!zhulu_pri || Date.now() > zhulu_pri){
+			//新购
+			zhulu_pri = util.getZeroTime() + day14Time
+		}else{
+			console.log("快速作战特权已购买，延长时间")
+			//延长
+			zhulu_pri += day14Time
+		}
+		self.chageLordData(uid,"zhulu_pri",zhulu_pri)
+		cb(true,{zhulu_pri:zhulu_pri})
+	}
+	//购买家园特权
+	this.buyManorPri = function(uid,cb) {
+		var  manor_pri = self.getLordAtt(uid,"manor_pri")
+		if(!manor_pri || Date.now() > manor_pri){
+			//新购
+			manor_pri = util.getZeroTime() + day14Time
+		}else{
+			console.log("快速作战特权已购买，延长时间")
+			//延长
+			manor_pri += day14Time
+		}
+		self.chageLordData(uid,"manor_pri",manor_pri)
+		cb(true,{manor_pri:manor_pri})
 	}
 }

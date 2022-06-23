@@ -417,11 +417,16 @@ module.exports = function() {
 	//===============贼寇==============//
 	//购买军令
 	this.manorBuyAction = function(uid,cb) {
+		var maxCount = 4
+    	var manor_pri = self.getLordAtt(uid,"manor_pri")
+    	if(manor_pri > Date.now()){
+    		maxCount += 3
+    	}
 		async.waterfall([
 			function(next) {
 				self.getObj(uid,main_name,"buy",function(count) {
 					count = Number(count) || 0
-					if(count > 4){
+					if(count > maxCount){
 						next("今日购买已达上限")
 						return
 					}
@@ -481,6 +486,13 @@ module.exports = function() {
 		var buildLv = 1
 		var bossCount = 0
 		var action = 0
+		var maxCount = 2
+		var rate = 1
+    	var manor_pri = self.getLordAtt(uid,"manor_pri")
+    	if(manor_pri > Date.now()){
+    		maxCount += 1
+    		rate = 1.5
+    	}
 		async.waterfall([
 			function(next) {
 				self.getHMObj(uid,main_name,["main","boss_count","boss_time"],function(data) {
@@ -491,7 +503,7 @@ module.exports = function() {
 						next("冷却中")
 						return
 					}
-					if(bossCount >= 2){
+					if(bossCount >= maxCount){
 						next("挑战次数已满")
 						return
 					}
@@ -520,7 +532,7 @@ module.exports = function() {
 					self.setObj(uid,main_name,"boss_time",cd)
 					self.incrbyObj(uid,main_name,"boss_count",1)
 					bossCount++
-					var awardList = self.addItemStr(uid,builds["main"][buildLv]["boss_award"],1,"家园BOSS")
+					var awardList = self.addItemStr(uid,builds["main"][buildLv]["boss_award"],rate,"家园BOSS")
 					cb(true,{winFlag:winFlag,awardList:awardList,bossCount:bossCount,cd:cd,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
 				}else{
 					cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
@@ -539,6 +551,13 @@ module.exports = function() {
 			cb(false,"monId error "+monId)
 			return
 		}
+		var rate = 1
+    	var manor_pri = self.getLordAtt(uid,"manor_pri")
+    	var monCd = mon_cd
+    	if(manor_pri > Date.now()){
+    		rate = 1.5
+    		monCd = Math.floor(monCd / 4)
+    	}
 		async.waterfall([
 			function(next) {
 				self.getHMObj(uid,main_name,["main","mon_time_"+monId,"mon_lv_"+monId],function(data) {
@@ -574,8 +593,8 @@ module.exports = function() {
 				var defTeam = self.standardTeam(uid,builds["main"][buildLv]["mon_"+monLv],dl,self.getLordLv(uid) - 5)
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
-					var cd = Date.now() + mon_cd
-					var awardList = self.addItemStr(uid,builds["main"][buildLv]["mon_award"+monLv],1,"家园怪物")
+					var cd = Date.now() + monCd
+					var awardList = self.addItemStr(uid,builds["main"][buildLv]["mon_award"+monLv],rate,"家园怪物")
 					//新等级
 					var rand = Math.random() * mon_weight["all"]
 					var lv = 1
@@ -1204,6 +1223,19 @@ module.exports = function() {
 					}
 					next()
 				})
+			},
+			function(next) {
+				//家园特权加成
+		    	var manor_pri = self.getLordAtt(uid,"manor_pri")
+		    	if(manor_pri > Date.now()){
+					if(!atkTeam[6]["team_atk_add"])
+						atkTeam[6]["team_atk_add"] = 0
+					atkTeam[6]["team_atk_add"] += 1
+					if(!atkTeam[6]["team_maxHP_add"])
+						atkTeam[6]["team_maxHP_add"] = 0
+					atkTeam[6]["team_maxHP_add"] += 1
+		    	}
+		    	next()
 			},
 			function(next) {
 				//玩家队伍
