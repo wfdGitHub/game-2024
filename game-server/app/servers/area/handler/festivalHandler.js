@@ -37,6 +37,15 @@ festivalHandler.prototype.festivalShop = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//领取累充奖励
+festivalHandler.prototype.festivalGainTotalAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  this.areaManager.areaMap[areaId].festivalGainTotalAward(uid,index,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "festivalHandler",

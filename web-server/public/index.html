@@ -176,6 +176,12 @@
             console.log(data);
         });
       }
+      //领取累充奖励
+      var festivalGainTotalAward = function(index) {
+        pomelo.request("area.festivalHandler.festivalGainTotalAward", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
       //=================家园===========//
       //获取家园数据
       var manorData = function() {

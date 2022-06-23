@@ -149,6 +149,7 @@ module.exports = function() {
 			}
 			self.sendToUser(uid,notify)
 		}
+		self.festivalTotalRecharge(uid,value)
 		if(cb)
 			cb(true)
 	}
