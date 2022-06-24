@@ -38,6 +38,20 @@ module.exports = function() {
 	this.rechargeDayUpdate = function() {
 		skinList = util.getRandomArray(skinArr,6)
 	}
+	//点票支付
+	this.dianpiao_recharge = function(uid,pay_id,cb) {
+		if(!pay_cfg[pay_id] || !pay_cfg[pay_id]["dianpiao"]){
+			cb(false,"pay_id error")
+			return
+		}
+		self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
+			if(flag){
+				self.finish_recharge(uid,pay_id,cb)
+			}else{
+				cb(false,err)
+			}
+		})
+	}
 	//申请充值
 	this.apply_recharge = function(uid,unionid,pay_id,cb) {
 		if(!pay_cfg[pay_id]){

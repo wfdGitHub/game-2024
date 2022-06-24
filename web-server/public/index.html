@@ -291,6 +291,12 @@
             console.log(data);
         });
       }
+      //点票支付
+      var dianpiao_recharge = function(pay_id) {
+        pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id}, function(data) {
+            console.log(data);
+        });
+      }
       //===============新公会PK=========//
       // 报名PK
       var applyGuildPKRival = function() {
