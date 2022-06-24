@@ -18,6 +18,8 @@ const invade_team = JSON.parse(invade["mon_team"]["value"])
 const area_boss_base = require("../../../../config/gameCfg/area_boss_base.json")
 const activity_day = require("../../../../config/gameCfg/activity_day.json")
 const mewtwo_task = require("../../../../config/gameCfg/mewtwo_task.json")
+const wuxian = require("../../../../config/gameCfg/wuxian.json")
+const oneDayTime = 86400000
 var util = require("../../../../util/util.js")
 var maxBoss = 0
 for(var i in area_boss_base){
@@ -162,6 +164,12 @@ module.exports = function() {
 			data["rv_high"] = 0
 			data["rv_super"] = 0
 			data["vip_skip"] = 0
+			for(var i in wuxian){
+				if(wuxian[i]["rmb"]){
+					data[i+"_count"] = 0
+					data[i+"_cd"] = 0
+				}
+			}
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
 			}
@@ -620,6 +628,56 @@ module.exports = function() {
 			}else{
 				cb(true)
 			}
+		})
+	}
+	//开启无限资源
+	this.openWuxian = function(uid,wuxianId,cb) {
+		if(!wuxian[wuxianId] || !wuxian[wuxianId]["rmb"]){
+			cb(false,"特权不存在")
+			return
+		}
+		self.getHMObj(uid,main_name,[wuxianId,wuxianId+"_count",wuxianId+"_cd"],function(list) {
+			if(!list[0]){
+				cb(false,"特权未激活")
+				return
+			}
+			list[1] = Number(list[1]) || 0
+			list[2] = Number(list[2]) || 0
+			var info = {}
+			if(list[1] >= wuxian[wuxianId]["basic"]){
+				if(list[2] < Date.now()){
+					var cd = Date.now() + wuxian[wuxianId]["base_cd"] + (list[1] - 100) * wuxian[wuxianId]["up_cd"]
+					info.cd = cd
+					self.setObj(uid,main_name,wuxianId+"_cd",cd)
+				}else{
+					cb(false,"冷却中,"+Math.floor((list[2]-Date.now())/1000)+"秒后可开启")
+					return
+				}
+			}
+			self.incrbyObj(uid,main_name,wuxianId+"_count",1)
+			info.count = list[1] + 1
+			info.awardList = self.openChestAward(uid,wuxian[wuxianId]["chest"])
+			cb(true,info)
+		})
+	}
+	//开启累充无限资源
+	this.openWuxianByRmb = function(uid,wuxianId,cb) {
+		if(!wuxian[wuxianId] || !wuxian[wuxianId]["need"]){
+			cb(false,"特权不存在")
+			return
+		}
+		var real_rmb = self.players[uid].real_rmb
+		self.getObj(uid,main_name,wuxianId+"_count",function(data) {
+			data = Number(data) || 0
+			if((data + 1) * wuxian[wuxianId]["need"] > real_rmb){
+				cb(false,"未满足条件")
+				return
+			}
+			var info = {}
+			info.count = data + 1
+			self.incrbyObj(uid,main_name,wuxianId+"_count",1)
+			info.awardList = self.openChestAward(uid,wuxian[wuxianId]["chest"])
+			cb(true,info)
 		})
 	}
 }
