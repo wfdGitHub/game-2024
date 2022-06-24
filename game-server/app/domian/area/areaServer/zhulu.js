@@ -574,6 +574,12 @@ module.exports = function() {
     		cb(false,"特权已过期")
     		return
     	}
+    	if(userDatas[uid]["revive"]){
+    		cb(false,"已使用")
+    		return
+    	}
+    	userDatas[uid]["revive"] = 1
+    	local.changeData(uid,"revive",userDatas[uid]["revive"])
 		userDatas[uid]["surplus_healths"] = {}
 		local.changeData(uid,"surplus_healths",userDatas[uid]["surplus_healths"])
 		cb(true,{surplus_healths : userDatas[uid]["surplus_healths"]})
@@ -583,6 +589,10 @@ module.exports = function() {
     	var zhulu_pri = self.getLordAtt(uid,"zhulu_pri")
     	if(!zhulu_pri  || zhulu_pri < Date.now()){
     		cb(false,"特权已过期")
+    		return
+    	}
+    	if(userDatas[uid]["reset"]){
+    		cb(false,"已使用")
     		return
     	}
 		var data = {
@@ -598,7 +608,7 @@ module.exports = function() {
 			chooseList : {},
 			sellOutList : {},
 			revive : 0,
-			reset : 0
+			reset : 1
 		}
 		// let fightTeam = self.getUserTeam(uid)
 		// for(let i = 0;i < fightTeam.length;i++){
