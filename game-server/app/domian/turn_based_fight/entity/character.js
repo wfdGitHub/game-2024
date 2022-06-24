@@ -373,7 +373,7 @@ var model = function(otps) {
 
 	this.hit_turn_rate = otps.hit_turn_rate || 0	//受到直接伤害转化成生命值百分比
 	this.hit_turn_tg = otps.hit_turn_tg || 0		//受到直接伤害转化的生命值作用目标
-	this.hit_rebound = otps.hit_rebound || 0		//受到直接伤害反弹比例
+	this.hit_rebound = otps.hit_rebound || 0		//受到直接物理伤害反弹比例
 
 	this.hit_less_anger = otps.hit_less_anger || 0	//受到普通攻击后，降低攻击自己的武将怒气
 	this.hit_anger_s = otps.hit_anger_s || 0 		//受到普通攻击后，回复自己的怒气

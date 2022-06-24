@@ -688,7 +688,7 @@ model.useAttackSkill = function(skill,chase,point) {
 		if(recordInfo.targets[i].realValue > 0){
 			var hit_rebound_value = 0
 			//收到直接伤害反弹
-			if(targets[i].hit_rebound){
+			if(targets[i].hit_rebound && skill.damageType == "phy"){
 				hit_rebound_value += Math.floor(targets[i].hit_rebound * recordInfo.targets[i].realValue)
 			}
 			//受到技能伤害反弹

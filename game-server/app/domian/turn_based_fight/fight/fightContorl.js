@@ -179,10 +179,13 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	}
 	//等级计算
 	if(info.lv && lv_cfg[info.lv]){
-		lvInfo.maxHP += Math.floor(lv_cfg[info.lv].maxHP * aptitudeCfg[aptitude].growth)
-		lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * aptitudeCfg[aptitude].growth)
-		lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * aptitudeCfg[aptitude].growth)
-		lvInfo.magDef += Math.floor(lv_cfg[info.lv].magDef * aptitudeCfg[aptitude].growth)
+		var growth = aptitudeCfg[aptitude].growth
+		if(aptitudeCfg[herosCfg[id].aptitude] && aptitudeCfg[herosCfg[id].aptitude]["extra"])
+			growth += aptitudeCfg[herosCfg[id].aptitude]["extra"]
+		lvInfo.maxHP += Math.floor(lv_cfg[info.lv].maxHP * growth)
+		lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * growth)
+		lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * growth)
+		lvInfo.magDef += Math.floor(lv_cfg[info.lv].magDef * growth)
 		lvInfo.speed += lv_cfg[info.lv].speed
 	}
 	model.mergeData(info,lvInfo)
