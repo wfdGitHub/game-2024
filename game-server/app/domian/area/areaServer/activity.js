@@ -49,7 +49,7 @@ module.exports = function() {
 	}
 	//活动数据每日更新
 	this.activityDayUpdate = function() {
-		curTopic = util.getWeekNum() % topicList.length
+		curTopic = util.getWeekNum() % 4
 	}
 	//获得活动数据
 	this.getActivityData = function(uid,cb) {
