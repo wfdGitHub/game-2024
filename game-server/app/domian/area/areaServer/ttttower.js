@@ -286,8 +286,9 @@ module.exports = function() {
 			}else{
 				self.setObj(uid,main_name,"pri_index",level)
 				var value = 0
-				for(var i = index;i < level;i++){
-					value += ttttower_level[i]["pri_award"]
+				for(var i = index;i <= level;i++){
+					if(ttttower_level[i])
+						value += ttttower_level[i]["pri_award"]
 				}
 				var awardList = self.addItemStr(uid,"1000050:"+value,1,"通天塔特权")
 				cb(true,awardList)
