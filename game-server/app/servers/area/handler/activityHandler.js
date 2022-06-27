@@ -134,11 +134,19 @@ activityHandler.prototype.areaTrial = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
-//挑战单骑救主
+//挑战单骑救主(1vs1)
 activityHandler.prototype.areaChallenge = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].areaChallenge(uid,msg.hId,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//挑战单骑救主(3vs3)
+activityHandler.prototype.areaChallengeThree = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].areaChallengeThree(uid,msg.hIds,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

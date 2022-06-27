@@ -1686,6 +1686,12 @@
             console.log(data);
         });
       }
+      //挑战单骑救主(3vs3)
+      var areaChallengeThree = function(hIds) {
+        pomelo.request("area.activityHandler.areaChallengeThree", {hIds:hIds}, function(data) {
+            console.log(data);
+        });
+      }
       //==============限时礼包==========//
       //获取限时礼包数据
       var getLimitGiftData = function() {
