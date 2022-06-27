@@ -482,7 +482,7 @@ module.exports = function() {
 	//购买通天塔特权
 	this.buyTTTPri = function(uid,cb) {
 		self.chageLordData(uid,"ttt_pri",1)
-		cb(true,{ttt_pri:ttt_pri})
+		cb(true,{ttt_pri:1})
 	}
 	//购买逐鹿之战特权
 	this.buyZhuluPri = function(uid,cb) {
