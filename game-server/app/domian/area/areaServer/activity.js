@@ -19,6 +19,7 @@ const area_boss_base = require("../../../../config/gameCfg/area_boss_base.json")
 const activity_day = require("../../../../config/gameCfg/activity_day.json")
 const mewtwo_task = require("../../../../config/gameCfg/mewtwo_task.json")
 const wuxian = require("../../../../config/gameCfg/wuxian.json")
+const recharge_week = require("../../../../config/gameCfg/recharge_week.json")
 const oneDayTime = 86400000
 var util = require("../../../../util/util.js")
 var maxBoss = 0
@@ -28,6 +29,7 @@ for(var i in area_boss_base){
 const main_name = "activity"
 module.exports = function() {
 	var self = this
+	var curTopic = 1
 	const baseInfo = {
 		"signDay" : 1,
 		"signCount" : 0,
@@ -45,11 +47,16 @@ module.exports = function() {
 		"rv_high" : 0,
 		"rv_super" : 0
 	}
+	//活动数据每日更新
+	this.activityDayUpdate = function() {
+		curTopic = util.getWeekNum() % topicList.length
+	}
 	//获得活动数据
 	this.getActivityData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(data) {
 			for(let i in data)
 				data[i] = Number(data[i])
+			data["curTopic"] = curTopic
 			cb(true,data)
 		})
 	}
@@ -252,14 +259,14 @@ module.exports = function() {
 	//领取每周累充奖励
 	this.gainRechargeWeekAward = function(uid,id,cb) {
 		var week_rmb = self.players[uid].week_rmb
-		if(!activity_cfg["recharge_week_rmb_"+id] || week_rmb < activity_cfg["recharge_week_rmb_"+id]["value"]){
-			cb(false,"条件未达成")
+		if(!recharge_week[id] || week_rmb < recharge_week[id]["rmb"]){
+			cb(false,"条件未达成"+week_rmb+"/"+recharge_week[id]["rmb"])
 			return
 		}
 		self.getObj(uid,main_name,"recharge_week_"+id,function(data) {
 			if(!data){
 				self.incrbyObj(uid,main_name,"recharge_week_"+id,1)
-				var awardList = self.addItemStr(uid,activity_cfg["recharge_week_"+id]["value"],1,"每周累充"+id)
+				var awardList = self.addItemStr(uid,recharge_week[id]["topic_"+curTopic],1,"每周累充"+id)
 				cb(true,awardList)
 			}else{
 				cb(false,"已领取")

@@ -101,7 +101,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.weekStr = util.getWeek()
 	this.monthStr = util.getMonth()
 	this.areaDay = util.getTimeDifference(this.openTime,Date.now())
-	console.log("areaDay",this.areaDay)
+	// console.log("areaDay",this.areaDay)
 	this.rechargeDayUpdate()
 	this.aceLottoDayUpdate()
 	this.topicRecruitDayUpdate()
@@ -116,6 +116,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.taskDayUpdate()
 	this.areaBossInit()
 	this.updateFestivalInfo()
+	this.activityDayUpdate()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)
