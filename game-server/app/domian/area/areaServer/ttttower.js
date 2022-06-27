@@ -286,7 +286,7 @@ module.exports = function() {
 			}else{
 				self.setObj(uid,main_name,"pri_index",level)
 				var value = 0
-				for(var i = index;i <= level;i++){
+				for(var i = index + 1;i <= level;i++){
 					if(ttttower_level[i])
 						value += ttttower_level[i]["pri_award"]
 				}
@@ -294,7 +294,5 @@ module.exports = function() {
 				cb(true,awardList)
 			}
 		})
-		
-
 	}
 }
