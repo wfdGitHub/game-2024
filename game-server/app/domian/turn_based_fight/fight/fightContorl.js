@@ -37,6 +37,7 @@ var evolutionCfg = require("../../../../config/gameCfg/evolution.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
+var master = require("../entity/master.js")
 var bookIds = ["singleAtk","backDamage","frontDamage","banishBook","angerAddBook","angerLessBook","reductionBuff","seckill","singleHeal"]
 var bookList = {}
 var bookMap = {}
@@ -69,17 +70,29 @@ var model = function() {
 // 	fighting.nextRound()
 // 	return fightRecord.getList()
 // }
-//根据配置表生成战斗配置
-model.beginFight = function(atkTeam,defTeam,otps) {
+model.loadFight = function(atkTeam,defTeam,otps) {
     var atkInfo = this.getTeamData(atkTeam,"atk")
     var defInfo = this.getTeamData(defTeam,"def")
     var myotps = Object.assign({},otps)
     myotps.atkTeamAdds = atkInfo.teamAdds
     myotps.defTeamAdds = defInfo.teamAdds
-	var fighting = new fightingFun(atkInfo.team,defInfo.team,atkInfo.books,defInfo.books,myotps)
+	var fighting = new fightingFun(atkInfo,defInfo,myotps)
+	return fighting
+}
+//自动战斗
+model.beginFight = function(atkTeam,defTeam,otps) {
+	otps.manual = false
+	var fighting = model.loadFight(atkTeam,defTeam,otps)
 	fighting.fightBegin()
 	model.overInfo = fightRecord.list[fightRecord.list.length-1]
 	return fightRecord.isWin()
+}
+//手动战斗
+model.manualFight = function(atkTeam,defTeam,otps) {
+	otps.manual = true
+	var fighting = model.loadFight(atkTeam,defTeam,otps)
+	fighting.fightBegin()
+	return fighting
 }
 model.getOverInfo = function() {
 	return this.overInfo
@@ -137,6 +150,9 @@ model.raceAdd = function(raceType) {
 }
 model.getFightRecord = function() {
 	return fightRecord.getList()
+}
+model.getFightStageRecord = function() {
+	return fightRecord.getStageList()
 }
 //获取角色数据
 model.getCharacterInfo = function(info,bookAtts,teamCfg) {
@@ -427,6 +443,10 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	}
 	return new character(info)
 }
+//获取主角信息
+model.getMasterInfo = function(info) {
+	return new master(info)
+}
 //获取天书数据
 model.getBookInfo = function(bookId,info){
 	if(!info || !bookList[bookId] || !bookMap[bookId] || !book_lv[info.lv] || !book_star[info.star]){
@@ -460,12 +480,15 @@ model.getTeamData = function(team,belong) {
 			}
 		}
 	}
+	//主角
+	var master = this.getMasterInfo(bookAtts)
+	master.belong = belong
 	var characters = []
 	for(var i = 0;i < 6;i++){
 		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
 	}
     var teamAdds = this.raceAdd(this.getRaceType(characters))
-	return {team:characters,books:books,teamAdds:teamAdds,bookAtts:bookAtts}
+	return {master:master,team:characters,books:books,teamAdds:teamAdds,bookAtts:bookAtts}
 }
 //获取团队显示数据
 model.getTeamShowData = function(team) {

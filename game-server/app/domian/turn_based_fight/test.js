@@ -67,7 +67,16 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // }
 // console.log(atkTeam)
 // var buff = {"buffId":"ghost","buff_tg":"team_self","buffArg":5,"duration":3,"buffRate":1}
-// var atkTeam = [{"id":405040},0,0,0,0,0,{}]
-// var defTeam = [{"id":405040},0,0,0,0,0,{}]
-// var list = fightContorl.beginFight(atkTeam,defTeam,{})
-// fightRecord.explain()
+var atkTeam = [{"id":405040},0,0,0,0,0,{}]
+var defTeam = [{"id":405040},0,0,0,0,0,{}]
+var fighting = fightContorl.beginFight(atkTeam,defTeam,{"masterSkills":[ { belong: 'atk', runCount: 3 }, { belong: 'atk', runCount: 3 }] })
+// var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
+// console.log(fighting.keepRun())
+// console.log(fighting.keepRun())
+// console.log(fighting.atkMasterSkill())
+// console.log(fighting.atkMasterSkill())
+// var data = fighting.keepRun()
+// while(data){
+// 	data = fighting.keepRun()
+// }
+fightRecord.explain()

@@ -6,7 +6,6 @@ var skillManager = require("../skill/skillManager.js")
 var character = require("../entity/character.js")
 var fightRecord = require("./fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
-var fightRecord = require("../fight/fightRecord.js")
 var fightBegin = ["angerLessBook"]		//战斗开始前
 var roundBegin = ["banishBook"]		//回合开始前
 var oddRoundEndBook = ["singleAtk","angerAddBook","angerLessBook","reductionBuff"] //奇数回合结束后释放
@@ -14,7 +13,7 @@ var evenRoundEndBook = ["backDamage","frontDamage"] //偶数回合结束后释�
 var roundEndBook = ["singleHeal","seckill"]	//回合结束后释放
 var maxRound = 20				//最大回合
 var teamLength = 6				//阵容人数
-var model = function(atkTeam,defTeam,atkBooks,defBooks,otps) {
+var model = function(atkInfo,defInfo,otps) {
     fightRecord.init()
     this.atkTeamInfo = {}
     this.defTeamInfo = {}
@@ -24,26 +23,25 @@ var model = function(atkTeam,defTeam,atkBooks,defBooks,otps) {
     this.formula = new formula(this.seeded,otps)
     skillManager.init(this,this.locator,this.formula,this.seeded)
 	this.isFight = true				//战斗中标识
+	this.runFlag = true 			//回合行动标识
+	this.runCount = 1 				//行动次数标识
 	this.round = 0					//当前回合
 	this.maxRound = otps.maxRound || maxRound		//最大回合
-	this.atkTeam = atkTeam			//攻方阵容  长度为6的角色数组  位置无人则为NULL
-	this.defTeam = defTeam			//守方阵容
-	this.atkBooks = atkBooks		//攻方天书
-	this.defBooks = defBooks		//守方天书
+	this.atkTeam = atkInfo.team			//攻方阵容  长度为6的角色数组  位置无人则为NULL
+	this.defTeam = defInfo.team			//守方阵容
+	this.atkBooks = atkInfo.books		//攻方天书
+	this.defBooks = defInfo.books		//守方天书
+	this.atkMaster = atkInfo.master		//攻方主角
+	this.defMaster = defInfo.master		//守方主角
 	this.allHero = []				//所有英雄列表
-	// this.allTeam = 					//双方阵容
-	// [{
-	// 	team : atkTeam,
-	// 	index : 0
-	// },{
-	// 	team : defTeam,
-	// 	index : 0
-	// }]
-	// this.teamIndex = 0				//当前行动阵容
 	this.character = false 			//当前行动角色
 	this.next_character = []		//插入行动角色
 	this.diedList = []				//死亡列表
-	this.load(atkTeam,defTeam,otps)
+    this.manual = otps.manual || false  //手动操作标识
+	this.masterSkills = [] 			//主角技能列表
+	this.masterIndex = 0 			//技能列表标识
+	this.masterSkillsRecord = otps.masterSkills || [] //技能释放列表检测
+	this.load(atkInfo.team,defInfo.team,otps)
 }
 //初始配置
 model.prototype.load = function(atkTeam,defTeam,otps) {
@@ -136,6 +134,8 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	for(var i in this.defBooks){
 		this.defBooks[i].init(this.defTeam,this.atkTeam,this.locator,this.seeded)
 	}
+	this.atkMaster.init(this.atkTeam,this.defTeam,this.locator,this.seeded)
+	this.defMaster.init(this.defTeam,this.atkTeam,this.locator,this.seeded)
 }
 //战斗开始
 model.prototype.fightBegin = function() {
@@ -232,7 +232,7 @@ model.prototype.nextRound = function() {
 		if(this.defBooks[roundBegin[i]])
 			this.bookAction(this.defBooks[roundBegin[i]])
 	}
-	this.run()
+	this.runCheck()
 }
 //整体回合结束
 model.prototype.endRound = function() {
@@ -274,8 +274,22 @@ model.prototype.endRound = function() {
 	if(!this.checkOver())
 		this.nextRound()
 }
+//运行检测
+model.prototype.runCheck = function() {
+	if(this.manual){
+		this.runFlag = false
+		return
+	}else if(this.checkMaster()){
+		this.runCheck()
+	}else{
+		this.run()
+	}
+}
 //轮到下一个角色行动
 model.prototype.run = function() {
+	this.runCount++
+	if(!this.runFlag)
+		return
 	if(!this.isFight){
 		return
 	}
@@ -296,26 +310,6 @@ model.prototype.run = function() {
 		this.endRound()
 		return
 	}
-	// if(this.allTeam[0].index == this.allTeam[0].team.length && this.allTeam[1].index == this.allTeam[1].team.length){
-	// 	this.endRound()
-	// 	return
-	// }
-	// while(this.allTeam[this.teamIndex].index < 6){
-	// 	this.character = this.allTeam[this.teamIndex].team[this.allTeam[this.teamIndex].index]
-	// 	this.allTeam[this.teamIndex].index++
-	// 	if(this.character.died || this.character.buffs["banish"]){
-	// 		this.character = false
-	// 	}else{
-	// 		break
-	// 	}
-	// }
-	// this.teamIndex = (this.teamIndex + 1) % 2
-	// if(!this.character){
-	// 	//查询不到角色，换阵营
-	// 	this.run()
-	// }else{
-	// 	this.before()
-	// }
 }
 //回合前结算
 model.prototype.before = function() {
@@ -434,7 +428,7 @@ model.prototype.after = function() {
 		if(this.next_character.length){
 			var next_character = this.next_character.shift()
 			if(next_character.died){
-				this.run()
+				this.runCheck()
 			}else{
 				fightRecord.push({type : "extraAtion",id : next_character.id})
 				this.character = next_character
@@ -442,10 +436,11 @@ model.prototype.after = function() {
 				this.before()
 			}
 		}else{
-			this.run()
+			this.runCheck()
 		}
 	}
 }
+//检查结束
 model.prototype.checkOver = function() {
 	this.diedListCheck()
 	var flag = true
@@ -472,6 +467,7 @@ model.prototype.checkOver = function() {
 	}
 	return false
 }
+//天书行动
 model.prototype.bookAction = function(book) {
 	if(!this.isFight){
 		return
@@ -481,6 +477,7 @@ model.prototype.bookAction = function(book) {
 	//检测战斗是否结束
 	this.checkOver()
 }
+//死亡检测
 model.prototype.diedListCheck = function() {
 	for(var i = 0;i < this.diedList.length;i++){
 		for(var j in this.diedList[i]["died_buffs"]){
@@ -569,6 +566,49 @@ model.prototype.diedListCheck = function() {
 	}
 	this.diedList = []
 }
+//继续运行
+model.prototype.keepRun = function() {
+	if(this.manual && !this.runFlag){
+		this.runFlag = true
+		this.run()
+		return fightRecord.getStageList()
+	}else{
+		return false
+	}
+}
+//攻方主角释放主动技能
+model.prototype.atkMasterSkill = function() {
+	var info = {
+		belong : this.atkMaster.belong,
+		runCount : this.runCount
+	}
+	this.masterSkills.push(info)
+	this.atkMaster.useSkill()
+}
+//守方主角释放主动技能
+model.prototype.defMasterSkill = function() {
+	var info = {
+		belong : this.defMaster.belong,
+		runCount : this.runCount
+	}
+	this.masterSkills.push(info)
+	this.defMaster.useSkill()
+}
+//检测主动技能
+model.prototype.checkMaster = function() {
+	if(this.masterSkillsRecord.length){
+		if(this.masterSkillsRecord[0]["runCount"] == this.runCount){
+			var info = this.masterSkillsRecord.shift()
+			if(info.belong == "atk"){
+				this.atkMasterSkill()
+			}else if(info.belong == "def"){
+				this.defMasterSkill()
+			}
+			return true
+		}
+	}
+	return false
+}
 //战斗结束
 model.prototype.fightOver = function(winFlag,roundEnd) {
 	// console.log("战斗结束")
@@ -596,6 +636,7 @@ model.prototype.fightOver = function(winFlag,roundEnd) {
 	for(var i in this.defBooks){
 		info.defDamage += this.defBooks[i].totalDamage
 	}
+	info.masterSkills = this.masterSkills
 	fightRecord.push(info)
 	// fightRecord.explain()
 }
