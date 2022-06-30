@@ -30,7 +30,7 @@ module.exports = function() {
 			}else{
 				//挑战时间到
 				var flag = false
-				while(data.time < Date.now() && data.cur_chapter < 8){
+				while(data.time < Date.now() && data.cur_chapter < 15){
 					flag = true
 					data.cur_chapter++
 					data.time += 86400000
@@ -45,7 +45,7 @@ module.exports = function() {
 			cb(true,data)
 		})
 	}
-	//挑战单骑
+	//挑战单骑(1vs1)
 	this.areaChallenge = function(uid,hId,cb) {
 		self.getObjAll(uid,main_name,function(data) {
 			for(var i in data)
@@ -54,8 +54,8 @@ module.exports = function() {
 			bossId++
 			var cur_chapter = data["cur_chapter"] || 1
 			var time = data["time"]
-			if(!area_challenge[cur_chapter]){
-				cb(false,"已通关")
+			if(!area_challenge[cur_chapter] || cur_chapter >= 8){
+				cb(false,cb(false,"chapter erro "+cur_chapter))
 			}else if(!area_challenge[cur_chapter]["team"+bossId]){
 				cb(false,"boss错误")
 			}else{
@@ -73,7 +73,79 @@ module.exports = function() {
 			    		info.seededNum = seededNum
 			    		info.winFlag = winFlag
 					    if(winFlag){
-				    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId],1,"挑战山海")
+				    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId],1,"挑战山海"+cur_chapter)
+				    		if(bossId >= 3){
+				    			cur_chapter++
+				    			bossId = 0
+				    			time += 86400000
+				    			self.setObj(uid,main_name,"cur_chapter",cur_chapter)
+				    			self.setObj(uid,main_name,"time",time)
+				    		}
+				    		self.setObj(uid,main_name,"bossId",bossId)
+			    			info.bossId = bossId
+			    			info.cur_chapter = cur_chapter
+			    			info.time = time
+				    		cb(true,info)
+					    }else{
+					    	cb(false,info)
+					    }
+					}
+				})
+			}
+		})
+	}
+	//挑战单骑(3vs3)
+	this.areaChallengeThree = function(uid,hIds,cb) {
+		self.getObjAll(uid,main_name,function(data) {
+			for(var i in data)
+				data[i] = Number(data[i])
+			var bossId = Number(data["bossId"]) || 0
+			bossId++
+			var cur_chapter = data["cur_chapter"] || 1
+			var time = data["time"]
+			if(!area_challenge[cur_chapter] || cur_chapter < 8){
+				cb(false,"chapter erro "+cur_chapter)
+			}else if(!area_challenge[cur_chapter]["team"+bossId]){
+				cb(false,"boss错误")
+			}else{
+				  if(!hIds || hIds.length != 6){
+				    cb(false,"英雄列表错误")
+				    return
+				  }
+				  var heroNum = 0
+				  //判断重复
+				  for(var i = 0;i < hIds.length;i++){
+				    if(!hIds[i])
+				      continue
+				    heroNum++
+				    for(var j = i + 1;j < hIds.length;j++){
+				      if(!hIds[j])
+				        continue
+				      if(hIds[i] == hIds[j]){
+				      	cb(false,"不能有重复的hId")
+				        return
+				      }
+				    }
+				  }
+				  if(heroNum != 3){
+			      	cb(false,"上阵数量错误 "+heroNum)
+			        return
+				  }
+				self.heroDao.getHeroList(uid,hIds,function(flag,list) {
+					if(!flag){
+						cb(false,"hIds error "+hIds)
+					}else{
+						var seededNum = Date.now()
+						var atkTeam = list
+						var defTeam = area_challenge[cur_chapter]["team"+bossId]
+					    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+			    		var info = {}
+			    		info.atkTeam = atkTeam
+			    		info.defTeam = defTeam
+			    		info.seededNum = seededNum
+			    		info.winFlag = winFlag
+					    if(winFlag){
+				    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId],1,"挑战山海"+cur_chapter)
 				    		if(bossId >= 3){
 				    			cur_chapter++
 				    			bossId = 0
