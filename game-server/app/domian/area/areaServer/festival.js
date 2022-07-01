@@ -130,8 +130,10 @@ module.exports = function() {
 		    	if(coin > 1000000)
 		    		coin = 1000000
 		    	var award = "201:"+coin
-		    	if(festivalInfo["bossAward"])
-		    		award += "&"+festivalInfo["bossAward"]
+		    	if(festivalInfo["bossAward"]){
+		    		for(var i = 0;i < festivalInfo["bossAward"].length;i++)
+		    			award += "&"+festivalInfo["bossAward"][i]
+		    	}
 		    	info.awardList =  self.addItemStr(uid,award,1,"节日boss")
 		    	info.bossCount = data+1
 		    	cb(true,info)
