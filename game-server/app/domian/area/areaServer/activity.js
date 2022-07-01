@@ -20,6 +20,7 @@ const activity_day = require("../../../../config/gameCfg/activity_day.json")
 const wuxian = require("../../../../config/gameCfg/wuxian.json")
 const oneDayTime = 86400000
 const mewtwo_task = require("../../../../config/gameCfg/mewtwo_task.json")
+const open_cfg = require("../../../../config/gameCfg/open_cfg.json")
 var util = require("../../../../util/util.js")
 var maxBoss = 0
 for(var i in area_boss_base){
