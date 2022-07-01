@@ -566,7 +566,7 @@ module.exports = function() {
 		})
 	}
 	//领取功能开启奖励
-	this.gainSysOpenAward = function(uid,index,cb) {1
+	this.gainSysOpenAward = function(uid,index,cb) {
 		var lv = self.getLordLv(uid)
 		if(!index || !open_cfg[index] || lv < open_cfg[index]["lv"]){
 			cb(false,"等级不足")
