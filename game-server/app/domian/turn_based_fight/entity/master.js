@@ -10,7 +10,7 @@ var master = function(otps) {
 	this.attInfo.atk = otps["atk"] || 0					//攻击力
 	this.attInfo.phyDef = otps["phyDef"] || 0			//物理防御力
 	this.attInfo.magDef = otps["magDef"] || 0			//法术防御力
-
+	this.BP = 0 										//当前行动值
 }
 //初始化
 master.prototype.init = function(team,enemy,locator,seeded) {
