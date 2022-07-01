@@ -178,7 +178,7 @@ module.exports = function() {
 	}
 	//活动期间累计充值
 	this.festivalTotalRecharge = function(uid,value) {
-		if(Date.now() > festivalInfo["beginTime"] && Date.now() < festivalInfo["endTime"]){
+		if(Date.now() > festivalInfo["beginTime"] && Date.now() < festivalInfo["hideTime"]){
 			self.incrbyObj(uid,main_name,"rmb",value,function(data) {
 				var notify = {
 					type : "festival_recharge",
