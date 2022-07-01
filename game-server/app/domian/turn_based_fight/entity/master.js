@@ -11,6 +11,7 @@ var master = function(otps) {
 	this.attInfo.phyDef = otps["phyDef"] || 0			//物理防御力
 	this.attInfo.magDef = otps["magDef"] || 0			//法术防御力
 	this.BP = 0 										//当前行动值
+	this.powers = [] 									//技能列表
 }
 //初始化
 master.prototype.init = function(team,enemy,locator,seeded) {
@@ -28,17 +29,27 @@ master.prototype.onHit = function() {
 }
 master.prototype.kill = function() {
 }
+//每个英雄行动后
+master.prototype.heroAction = function() {
+	this.BP++
+}
+//整体回合结束后
+master.prototype.endRound = function() {
+	for(var i = 0;i < this.powers.length;i++){
+		this.powers[i].updateCD()
+	}
+}
 //使用技能
-master.prototype.useSkill = function() {
-	var target = this.locator.getTargets(this.team[0],"enemy_1")
-	if(target.length){
-		var recordInfo = {type : "master",belong:this.belong,targets:[]}
-		var value = Math.floor((this.attInfo.atk - target[0].getTotalAtt("phyDef")) * 1)
-		if(value < 1)
-			value = 1
-		var info = target[0].onHit(this,{value:value,d_type:"phy"})
-		recordInfo.targets.push(info)
-		fightRecord.push(recordInfo)
+master.prototype.masterPower = function(index) {
+	if(this.powers[index]){
+		if(this.BP < this.powers[index].NEED_BP){
+			console.error("BP不足,不能使用")
+			return false
+		}
+		return this.powers[index].masterPower()
+	}else{
+		console.error("主角技能不存在")
+		return false
 	}
 }
 module.exports = master

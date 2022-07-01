@@ -271,6 +271,8 @@ model.prototype.endRound = function() {
 	}
 	this.atkTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0}
 	this.defTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0}
+	this.atkMaster.endRound()
+	this.defMaster.endRound()
 	if(!this.checkOver())
 		this.nextRound()
 }
@@ -577,22 +579,30 @@ model.prototype.keepRun = function() {
 	}
 }
 //攻方主角释放主动技能
-model.prototype.atkMasterSkill = function() {
-	var info = {
-		belong : this.atkMaster.belong,
-		runCount : this.runCount
+model.prototype.atkMasterSkill = function(index) {
+	if(this.atkMaster.masterPower(index)){
+		var info = {
+			belong : this.atkMaster.belong,
+			runCount : this.runCount,
+			index : index
+		}
+		this.masterSkills.push(info)
+	}else{
+		return false
 	}
-	this.masterSkills.push(info)
-	this.atkMaster.useSkill()
 }
 //守方主角释放主动技能
-model.prototype.defMasterSkill = function() {
-	var info = {
-		belong : this.defMaster.belong,
-		runCount : this.runCount
+model.prototype.defMasterSkill = function(index) {
+	if(this.defMaster.masterPower(index)){
+		var info = {
+			belong : this.defMaster.belong,
+			runCount : this.runCount,
+			index : index
+		}
+		this.masterSkills.push(info)
+	}else{
+		return false
 	}
-	this.masterSkills.push(info)
-	this.defMaster.useSkill()
 }
 //检测主动技能
 model.prototype.checkMaster = function() {
