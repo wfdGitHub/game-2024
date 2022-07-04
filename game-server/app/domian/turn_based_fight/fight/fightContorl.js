@@ -465,16 +465,18 @@ model.getTeamData = function(team,belong) {
 		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
 	}
     var teamAdds = this.raceAdd(this.getRaceType(characters))
-	if(teamCfg.team_atk_add){
-		if(!teamAdds["atk"])
-			teamAdds["atk"] = 0
-		teamAdds["atk"] += teamCfg.team_atk_add
-	}
-	if(teamCfg.team_maxHP_add){
-		if(!teamAdds["maxHP"])
-			teamAdds["maxHP"] = 0
-		teamAdds["maxHP"] += teamCfg.team_maxHP_add
-	}
+    if(teamCfg){
+		if(teamCfg.team_atk_add){
+			if(!teamAdds["atk"])
+				teamAdds["atk"] = 0
+			teamAdds["atk"] += teamCfg.team_atk_add
+		}
+		if(teamCfg.team_maxHP_add){
+			if(!teamAdds["maxHP"])
+				teamAdds["maxHP"] = 0
+			teamAdds["maxHP"] += teamCfg.team_maxHP_add
+		}
+    }
 	return {team:characters,books:books,teamAdds:teamAdds,bookAtts:bookAtts}
 }
 //获取团队显示数据
