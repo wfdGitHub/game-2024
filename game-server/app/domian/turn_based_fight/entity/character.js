@@ -579,7 +579,6 @@ model.prototype.init = function(fighting) {
 }
 //百分比属性加成
 model.prototype.calAttAdd = function(team_adds) {
-	console.log("team_adds",team_adds)
 	this.show_adds = Object.assign({},this.self_adds)
 	for(var i in team_adds){
 		if(!this.show_adds[i]){
@@ -608,7 +607,6 @@ model.prototype.calAttAdd = function(team_adds) {
 		this.attInfo[i] += this.bookAtts[i]
 	}
 	this.attInfo.hp = this.attInfo.maxHP
-	console.log(this.attInfo)
 }
 //站位加成
 model.prototype.siteInit = function() {
