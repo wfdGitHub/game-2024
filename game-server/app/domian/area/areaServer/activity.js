@@ -138,8 +138,9 @@ module.exports = function() {
 	// }
 	//活动数据更新
 	this.activityUpdate = function(uid) {
-		self.getObjAll(uid,main_name,function(data) {
-			data = Object.assign({},baseInfo,data)
+		self.getObjAll(uid,main_name,function(oldData) {
+			var info = {}
+			var data = Object.assign({},baseInfo,oldData)
 			for(var i in data)
 				data[i] = Number(data[i])
 			if(data["signCount"]){
@@ -180,7 +181,12 @@ module.exports = function() {
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
 			}
-			self.setHMObj(uid,main_name,data)
+			for(var i in oldData){
+				if(oldData[i] != data[i]){
+					info[i] = data[i]
+				}
+			}
+			self.setHMObj(uid,main_name,info)
 			self.setObj(uid,main_name,"onlineIndex",0)
 		})
 	}
