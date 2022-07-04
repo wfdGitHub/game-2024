@@ -20,6 +20,7 @@ var model = function(otps) {
 	this.isBoss = otps.boss || false	//是否是BOSS
 	this.isAction = false 				//行动过标识
 	this.onAction = false  				//行动中标识
+	this.master = false 				//所属主角
 	//=========基础属性=======//
 	this.attInfo = {}
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
@@ -773,6 +774,9 @@ model.prototype.after = function() {
 		fightRecord.push(tmpRecord)
 	}
 	this.damage_save_value = 0
+	if(this.master){
+		this.master.heroAfter()
+	}
 }
 //整体回合结束
 model.prototype.roundOver = function() {

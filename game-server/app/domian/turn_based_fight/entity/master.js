@@ -19,6 +19,9 @@ master.prototype.init = function(team,enemy,locator,seeded) {
 	this.enemy = enemy
 	this.locator = locator
 	this.seeded = seeded
+	for(var i = 0;i < this.team.length;i++){
+		this.team[i].master = this
+	}
 }
 //获取属性
 master.prototype.getTotalAtt = function(name) {
@@ -30,8 +33,13 @@ master.prototype.onHit = function() {
 master.prototype.kill = function() {
 }
 //每个英雄行动后
-master.prototype.heroAction = function() {
+master.prototype.heroAfter = function() {
 	this.BP++
+	var recordInfo =  {}
+	recordInfo.type = "bp_update"
+	recordInfo.belong = this.belong
+	recordInfo.BP = this.BP
+	fightRecord.push(recordInfo)
 }
 //整体回合结束后
 master.prototype.endRound = function() {

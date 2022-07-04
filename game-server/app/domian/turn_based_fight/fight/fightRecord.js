@@ -258,6 +258,9 @@ var model = function() {
 				case "buff_num":
 					console.log(heroNames[info.id]+" "+info.buffId+" 剩余"+info.num+"层")
 				break
+				case "bp_update":
+					console.log(info.belong+"主角BP值更新 "+info.BP)
+				break
 				default:
 					console.log("类型未定义 : ",info.type)
 			}
