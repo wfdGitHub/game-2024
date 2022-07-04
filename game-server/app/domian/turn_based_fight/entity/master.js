@@ -1,5 +1,6 @@
 var fightRecord = require("../fight/fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
+var power = require("./power.js")
 var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 //主角
 var master = function(otps) {
@@ -12,6 +13,9 @@ var master = function(otps) {
 	this.attInfo.magDef = otps["magDef"] || 0			//法术防御力
 	this.BP = 0 										//当前行动值
 	this.powers = [] 									//技能列表
+	this.totalDamage = 0								//累计伤害
+	this.totalHeal = 0									//累计治疗
+	this.addPower()
 }
 //初始化
 master.prototype.init = function(team,enemy,locator,seeded) {
@@ -22,6 +26,10 @@ master.prototype.init = function(team,enemy,locator,seeded) {
 	for(var i = 0;i < this.team.length;i++){
 		this.team[i].master = this
 	}
+}
+//初始化技能
+master.prototype.addPower = function() {
+	this.powers.push(new power(this,{"NEED_BP":1}))
 }
 //获取属性
 master.prototype.getTotalAtt = function(name) {
@@ -34,12 +42,7 @@ master.prototype.kill = function() {
 }
 //每个英雄行动后
 master.prototype.heroAfter = function() {
-	this.BP++
-	var recordInfo =  {}
-	recordInfo.type = "bp_update"
-	recordInfo.belong = this.belong
-	recordInfo.BP = this.BP
-	fightRecord.push(recordInfo)
+	this.changeBP(1)
 }
 //整体回合结束后
 master.prototype.endRound = function() {
@@ -54,10 +57,20 @@ master.prototype.masterPower = function(index) {
 			console.error("BP不足,不能使用")
 			return false
 		}
+		this.changeBP(-this.powers[index].NEED_BP)
 		return this.powers[index].masterPower()
 	}else{
 		console.error("主角技能不存在")
 		return false
 	}
+}
+master.prototype.changeBP = function(change) {
+	this.BP = this.BP + change
+	var info =  {}
+	info.type = "bp_update"
+	info.belong = this.belong
+	info.change = change
+	info.BP = this.BP
+	fightRecord.push(info)
 }
 module.exports = master
