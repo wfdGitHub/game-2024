@@ -30,7 +30,7 @@ module.exports = function() {
 		//检查参数
 		festivalInfo = data 
 		festivalInfo["key"] = festivalInfo["type"] + "_" + festivalInfo["beginTime"]
-		festivalInfo["endTime"] = festivalInfo["beginTime"] + (festivalInfo["duration"] * oneDayTime)
+		festivalInfo["endTime"] = festivalInfo["beginTime"] + (festivalInfo["duration"] * oneDayTime) - 1000
 		festivalInfo["hideTime"] = festivalInfo["endTime"] + (2 * oneDayTime)
 	}
 	//更新活动信息
