@@ -180,23 +180,19 @@ module.exports = function() {
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
 			}
-			for(var i = 1;i < 10;i++){
-				if(!activity_cfg["recharge_week_"+i]){
-					break
-				}else{
-					delete data["recharge_week_"+i]
-				}
-			}
 			self.setHMObj(uid,main_name,data)
 			self.setObj(uid,main_name,"onlineIndex",0)
 		})
 	}
 	//活动数据每周刷新
 	this.activityWeekUpdate = function(uid) {
+		console.log("activityWeekUpdate",uid)
 		for(var i = 1;i < 10;i++){
+			console.log(i,recharge_week[i])
 			if(!recharge_week[i]){
 				break
 			}else{
+				console.log("recharge_week_")
 				self.delObj(uid,main_name,"recharge_week_"+i)
 			}
 		}
