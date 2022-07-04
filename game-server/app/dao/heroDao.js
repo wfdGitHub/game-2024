@@ -334,7 +334,7 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 		}
 		if(heros[i]["drum"]){
 			var drumInfo = JSON.parse(heros[i]["drum"])
-			this.areaManager.areaMap[areaId].gainDrum(uid,horseInfo)
+			this.areaManager.areaMap[areaId].gainDrum(uid,drumInfo)
 		}
 		if(heros[i]["banner"]){
 			var bannerInfo = JSON.parse(heros[i]["banner"])
