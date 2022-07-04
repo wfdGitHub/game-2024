@@ -194,7 +194,7 @@ module.exports = function() {
 	//活动数据每周刷新
 	this.activityWeekUpdate = function(uid) {
 		for(var i = 1;i < 10;i++){
-			if(!activity_cfg["recharge_week_"+i]){
+			if(!recharge_week[i]){
 				break
 			}else{
 				self.delObj(uid,main_name,"recharge_week_"+i)
