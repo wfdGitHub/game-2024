@@ -74,33 +74,53 @@ var model = function() {
 					console.log(str)
 				break
 				case "master":
+					console.log(info)
 					var str = ""
 					if(info.belong == "atk")
 						str = "\033[36m我方主角开始行动\033[0m"
 					else
 						str = "\033[36m敌方主角开始行动\033[0m"
-					for(var i = 0;i < info.targets.length;i++){
-						str += "\n  \033[31m攻击"+heroNames[info.targets[i].id]+"\t"
-						if(info.targets[i].miss){
-							str += "被闪避"
-						}else if(info.targets[i].invincible){
-							str += "免疫"
-						}else{
-							str += "造成"+ info.targets[i].value+"点伤害"
-							if(info.targets[i].crit){
-								str +="(暴击)"
+					if(info.skill == "heal"){
+						for(var i = 0;i < info.targets.length;i++){
+							if(info.targets[i].rescue){
+								str += "\n  \033[32m复活"+heroNames[info.targets[i].id]
+								str += "\033[0m"
+							}else if(info.targets[i].turn_ghost){
+								str += "\n  \033[32m亡魂"+heroNames[info.targets[i].id]
+								str += "\033[0m"
+							}else{
+								str += "\n  \033[32m恢复"+heroNames[info.targets[i].id]+" "+info.targets[i].value+" 点血量"
+								if(info.targets[i].crit){
+									str +="(暴击)"
+								}
+								str += "\t剩余"+info.targets[i].curValue+"/"+info.targets[i].maxHP+"\033[0m"
+								str += "\033[0m"
 							}
-							str += "\t剩余"+info.targets[i].curValue+"/"+info.targets[i].maxHP
-							if(info.targets[i].kill){
-								str += "\t击杀目标!"
+						}
+					}else{
+						for(var i = 0;i < info.targets.length;i++){
+							str += "\n  \033[31m攻击"+heroNames[info.targets[i].id]+"\t"
+							if(info.targets[i].miss){
+								str += "被闪避"
+							}else if(info.targets[i].invincible){
+								str += "免疫"
+							}else{
+								str += "造成"+ info.targets[i].value+"点伤害"
+								if(info.targets[i].crit){
+									str +="(暴击)"
+								}
+								str += "\t剩余"+info.targets[i].curValue+"/"+info.targets[i].maxHP
+								if(info.targets[i].kill){
+									str += "\t击杀目标!"
+								}
+								if(info.targets[i].seckill){
+									str += "\t秒杀!"
+								}
+								if(info.targets[i].oneblood)
+									str += "\033[32m  绝处逢生\033[0m"
+								str += "\033[0m"
+						
 							}
-							if(info.targets[i].seckill){
-								str += "\t秒杀!"
-							}
-							if(info.targets[i].oneblood)
-								str += "\033[32m  绝处逢生\033[0m"
-							str += "\033[0m"
-					
 						}
 					}
 					console.log(str)

@@ -1,11 +1,11 @@
 var fightRecord = require("../fight/fightRecord.js")
-var buffManager = require("../buff/buffManager.js")
 var power = require("./power.js")
 var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 //主角
 var master = function(otps) {
 	//=========基础属性=======//
 	this.belong = otps.belong   //所属阵容
+	this.id = this.belong+"master"
 	this.attInfo = {}
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
 	this.attInfo.atk = otps["atk"] || 0					//攻击力
@@ -29,7 +29,7 @@ master.prototype.init = function(team,enemy,locator,seeded) {
 }
 //初始化技能
 master.prototype.addPower = function() {
-	this.powers.push(new power(this,{"NEED_BP":1}))
+	this.powers.push(new power(this,{"type":"heal","mul":0.1,"NEED_BP":1,"buff1":"{\"buffId\":\"cold\",\"buff_tg\":\"skill_targets\",\"buffArg\":0,\"duration\":2,\"buffRate\":1}"}))
 }
 //获取属性
 master.prototype.getTotalAtt = function(name) {

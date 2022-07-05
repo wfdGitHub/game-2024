@@ -1,8 +1,9 @@
 var fightRecord = require("../fight/fightRecord.js")
+var buffManager = require("../buff/buffManager.js")
 //主角技能
 var model = function(master,otps) {
 	this.master = master 								//主角
-	this.type = otps.type 								//类型  heal  attack
+	this.type = otps.type || "attack"					//类型  heal  attack
 	this.skillId = otps.skillId							//技能ID
 	this.mul = otps.mul || 1 							//技能系数
 	this.damageType = otps.damageType || "phy" 			//伤害类型（目标防御选取）phy 物理伤害 mag 法术伤害
@@ -11,28 +12,17 @@ var model = function(master,otps) {
 	this.NEED_CD = otps.NEED_CD || 10 					//技能所需CD
 	this.CUR_CD = otps.CUR_CD || 0						//初始CD
 	this.skill_buffs = {}								//技能附带BUFF
-	for(var i = 1;i <= 5;i++){
-		if(otps["key"+i] && otps["value"+i]){
-			var key = otps["key"+i]
-			var value = otps["value"+i]
-			switch(key){
-				case "buff1":
-					this.addBuff(value)
-				break
-				case "buff2":
-					this.addBuff(value)
-				break
-				case "buff3":
-					this.addBuff(value)
-				break
-			}
-			this[key] = value
-		}
-	}
+	if(otps["buff1"])
+		this.addBuff(otps["buff1"])
+	if(otps["buff2"])
+		this.addBuff(otps["buff2"])
+	if(otps["buff3"])
+		this.addBuff(otps["buff3"])
 }
 //增加BUFF
 model.prototype.addBuff = function(buffStr) {
-	this.skill_buffs[buff.buffId] = JSON.parse(buffStr)
+	var buff = JSON.parse(buffStr)
+	this.skill_buffs[buff.buffId] = buff
 }
 //使用技能
 model.prototype.masterPower = function() {
@@ -54,11 +44,11 @@ model.prototype.masterPower = function() {
 			}
 		}
 		//buff判定
-		if(this.skill_buffs.length){
-			for(var i = 0;i < this.skill_buffs.length;i++){
+		if(this.skill_buffs){
+			for(var i in this.skill_buffs){
 				var buffInfo = this.skill_buffs[i]
 				for(var j = 0;j < targets.length;j++){
-					if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+					if(this.master.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
 						buffManager.createBuff(this.master,targets[j],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 					}
 				}
@@ -69,7 +59,7 @@ model.prototype.masterPower = function() {
 }
 //伤害技能
 model.prototype.attack = function(targets) {
-	var recordInfo = {type : "master",belong:this.master.belong,targets:[]}
+	var recordInfo = {"type" : "master","skill":"attack","belong":this.master.belong,"targets":[]}
 	for(var i = 0;i < targets.length;i++){
 		var value = Math.floor((this.master.attInfo.atk - targets[i].getTotalAtt(this.damageType+"Def")) * this.mul)
 		if(value < 1)
@@ -81,7 +71,7 @@ model.prototype.attack = function(targets) {
 }
 //恢复技能
 model.prototype.heal = function(targets) {
-	var recordInfo = {type : "master",belong:this.master.belong,targets:[]}
+	var recordInfo = {"type" : "master","skill":"heal","belong":this.master.belong,"targets":[]}
 	for(var i = 0;i < targets.length;i++){
 		var info = targets[i].onHeal(this.master,{maxRate:this.mul})
 		recordInfo.targets.push(info)

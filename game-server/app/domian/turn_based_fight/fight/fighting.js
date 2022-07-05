@@ -587,6 +587,7 @@ model.prototype.atkMasterSkill = function(index) {
 			index : index
 		}
 		this.masterSkills.push(info)
+		return true
 	}else{
 		return false
 	}
