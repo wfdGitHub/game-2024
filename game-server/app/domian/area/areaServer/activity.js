@@ -139,6 +139,8 @@ module.exports = function() {
 	//活动数据更新
 	this.activityUpdate = function(uid) {
 		self.getObjAll(uid,main_name,function(oldData) {
+			if(!oldData)
+				oldData = {}
 			var info = {}
 			var data = Object.assign({},baseInfo,oldData)
 			for(var i in data)
