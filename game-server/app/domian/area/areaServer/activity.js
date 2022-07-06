@@ -181,8 +181,8 @@ module.exports = function() {
 			for(var i in awardBag_day){
 				data["bagDay_"+i] = 0
 			}
-			for(var i in oldData){
-				if(oldData[i] != data[i] || data[i] == baseInfo[i]){
+			for(var i in data){
+				if(oldData[i] != data[i]){
 					info[i] = data[i]
 				}
 			}
