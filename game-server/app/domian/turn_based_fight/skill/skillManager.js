@@ -16,11 +16,9 @@ model.createSkill = function(otps,character) {
 	switch(otps.type){
 		case "attack":
 			var skill = new attackSkill(otps,character)
-			skill.init()
 			return skill
 		case "heal":
 			var skill = new healSkill(otps,character)
-			skill.init()
 			return skill
 		default:
 			return false
@@ -417,47 +415,49 @@ model.useAttackSkill = function(skill,chase,point) {
 		must_crit = true
 	var lessAngerList = []
 	var callbacks = []
-	for(var i = 0;i < targets.length;i++){
-		if(skill.character.died && !skill.character.died_use_skill){
-			break
+	if(skill.mul){
+		for(var i = 0;i < targets.length;i++){
+			if(skill.character.died && !skill.character.died_use_skill){
+				break
+			}
+			var target = targets[i]
+			var tmpAddAmp = addAmp
+			if(skill.character.skill_amp_or_lessAnger){
+				if(target.curAnger < 4)
+					tmpAddAmp += skill.character.skill_amp_or_lessAnger
+				else if(target.curAnger > 4)
+					lessAngerList.push(target)
+			}
+			//计算伤害
+			var info = this.formula.calDamage(skill.character, target, skill,tmpAddAmp,must_crit,chase)
+			info.value += damage_save_value
+			info.d_type = skill.damageType
+			if(skill.seckill)
+				info.seckillRate = skill.seckill
+			info = target.onHit(skill.character,info,callbacks)
+			if(info.overflow)
+				overflow += info.overflow
+			if(info.realValue > 0)
+				allDamage += info.realValue
+			if(target.buffs["burn"]){
+				burn_num++
+				burnDamage += info.realValue
+			}
+			if(target.buffs["flash"])
+				flash_num++
+			if(target.buffs["frozen"])
+				frozen_num++
+			recordInfo.targets.push(info)
+			if(info.kill){
+				died_targets.push(target)
+				kill_num++
+				dead_anger += target.curAnger
+				if(target.buffs["burn"])
+					kill_burn_num++
+			}
 		}
-		var target = targets[i]
-		var tmpAddAmp = addAmp
-		if(skill.character.skill_amp_or_lessAnger){
-			if(target.curAnger < 4)
-				tmpAddAmp += skill.character.skill_amp_or_lessAnger
-			else if(target.curAnger > 4)
-				lessAngerList.push(target)
-		}
-		//计算伤害
-		var info = this.formula.calDamage(skill.character, target, skill,tmpAddAmp,must_crit,chase)
-		info.value += damage_save_value
-		info.d_type = skill.damageType
-		if(skill.seckill)
-			info.seckillRate = skill.seckill
-		info = target.onHit(skill.character,info,callbacks)
-		if(info.overflow)
-			overflow += info.overflow
-		if(info.realValue > 0)
-			allDamage += info.realValue
-		if(target.buffs["burn"]){
-			burn_num++
-			burnDamage += info.realValue
-		}
-		if(target.buffs["flash"])
-			flash_num++
-		if(target.buffs["frozen"])
-			frozen_num++
-		recordInfo.targets.push(info)
-		if(info.kill){
-			died_targets.push(target)
-			kill_num++
-			dead_anger += target.curAnger
-			if(target.buffs["burn"])
-				kill_burn_num++
-		}
+		fightRecord.push(recordInfo)
 	}
-	fightRecord.push(recordInfo)
 	for(var i = 0;i < callbacks.length;i++)
 		callbacks[i]()
 	//伤害超出生命值上限时释放buff判断
@@ -874,44 +874,43 @@ model.useHealSkill = function(skill,chase) {
 		delete skill.angerAmp
 	}
 	var callbacks = []
-	for(var i = 0;i < targets.length;i++){
-		if(skill.character.died && !skill.character.died_use_skill){
-			break
-		}
-		var target = targets[i]
-		var value = 0
-		var mul = skill.mul
-		if(min_hp3_list && min_hp3_list[target.id])
-			mul += skill.character.heal_min_hp3_rate
-		if(skill.healType == "atk"){
+	if(skill.mul || skill.character.heal_maxHp || skill.heal_maxHp){
+		for(var i = 0;i < targets.length;i++){
+			if(skill.character.died && !skill.character.died_use_skill){
+				break
+			}
+			var target = targets[i]
+			var value = 0
+			var mul = skill.mul
+			if(min_hp3_list && min_hp3_list[target.id])
+				mul += skill.character.heal_min_hp3_rate
 			value = Math.round(skill.character.getTotalAtt("atk") * mul * rate)
-		}else if(healType == "hp"){
-			value = Math.round(target.getTotalAtt("maxHP") * mul * rate)
-		}else{
-			console.error("healType error "+healType)
-		}
-		if(min_hp_friend && min_hp_friend == target){
-			if(skill.character.heal_min_hp_rate)
-				value = Math.round(value * (skill.character.heal_min_hp_rate + 1))
-		}
-		if(skill.character.unpoison_heal && skill.character.realm == target.realm){
-			target.removeDeBuffNotControl()
-			value = Math.round(value * (skill.character.unpoison_heal + 1))
-		}
-		var info = this.formula.calHeal(skill.character,target,value,skill)
-		if(skill.isAnger && skill.character.heal_maxHp)
-			info.maxRate = skill.character.heal_maxHp
-		if(target.buffs["forbidden"] && skill.character.forbidden_shield){
-			callbacks.push(function(){buffManager.createBuff(skill.character,target,{buffId : "shield",buffArg : Math.floor(info.value * skill.character.forbidden_shield),duration : 1,number : true})})
-		}else{
-			info = target.onHeal(skill.character,info,skill)
-			recordInfo.targets.push(info)
-			if(skill.character.over_heal_shield && info.value > info.realValue){
-				callbacks.push(function(){buffManager.createBuff(skill.character,target,{buffId : "shield",buffArg : Math.floor((info.value - info.realValue) * skill.character.over_heal_shield),duration : 1,number : true})})
+			if(min_hp_friend && min_hp_friend == target){
+				if(skill.character.heal_min_hp_rate)
+					value = Math.round(value * (skill.character.heal_min_hp_rate + 1))
+			}
+			if(skill.character.unpoison_heal && skill.character.realm == target.realm){
+				target.removeDeBuffNotControl()
+				value = Math.round(value * (skill.character.unpoison_heal + 1))
+			}
+			var info = this.formula.calHeal(skill.character,target,value,skill)
+			info.maxRate = 0
+			if(skill.isAnger && skill.character.heal_maxHp)
+				info.maxRate += skill.character.heal_maxHp
+			if(skill.heal_maxHp)
+				info.maxRate += skill.heal_maxHp
+			if(target.buffs["forbidden"] && skill.character.forbidden_shield){
+				callbacks.push(function(){buffManager.createBuff(skill.character,target,{buffId : "shield",buffArg : Math.floor(info.value * skill.character.forbidden_shield),duration : 1,number : true})})
+			}else{
+				info = target.onHeal(skill.character,info,skill)
+				recordInfo.targets.push(info)
+				if(skill.character.over_heal_shield && info.value > info.realValue){
+					callbacks.push(function(){buffManager.createBuff(skill.character,target,{buffId : "shield",buffArg : Math.floor((info.value - info.realValue) * skill.character.over_heal_shield),duration : 1,number : true})})
+				}
 			}
 		}
+		fightRecord.push(recordInfo)
 	}
-	fightRecord.push(recordInfo)
 	if(skill.isAnger){
 		if(skill.character.realm_heal_buff_minHp && min_hp_friend && min_hp_friend.realm == skill.character.realm){
 			for(var i = 0;i < targets.length;i++){

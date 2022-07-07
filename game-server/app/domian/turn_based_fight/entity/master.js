@@ -1,11 +1,13 @@
 var fightRecord = require("../fight/fightRecord.js")
-var power = require("./power.js")
+var power = require("../skill/powerSkill.js")
 var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
+var skillManager = require("../skill/skillManager.js")
 //主角
 var master = function(otps) {
 	//=========基础属性=======//
 	this.belong = otps.belong   //所属阵容
 	this.id = this.belong+"master"
+	this.index = 0				//所在位置
 	this.attInfo = {}
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
 	this.attInfo.atk = otps["atk"] || 0					//攻击力
@@ -15,6 +17,7 @@ var master = function(otps) {
 	this.powers = [] 									//技能列表
 	this.totalDamage = 0								//累计伤害
 	this.totalHeal = 0									//累计治疗
+	this.buffs = {}
 	this.addPower()
 }
 //初始化
@@ -29,7 +32,7 @@ master.prototype.init = function(team,enemy,locator,seeded) {
 }
 //初始化技能
 master.prototype.addPower = function() {
-	this.powers.push(new power(this,{"type":"heal","mul":0.1,"NEED_BP":1,"buff1":"{\"buffId\":\"cold\",\"buff_tg\":\"skill_targets\",\"buffArg\":0,\"duration\":2,\"buffRate\":1}"}))
+	this.powers.push(new power({"type":"heal","mul":0.1,"NEED_BP":1,"key1":"buff1","value1":"{\"buffId\":\"cold\",\"buff_tg\":\"skill_targets\",\"buffArg\":0,\"duration\":2,\"buffRate\":1}"},this))
 }
 //获取属性
 master.prototype.getTotalAtt = function(name) {
@@ -57,8 +60,13 @@ master.prototype.masterPower = function(index) {
 			console.error("BP不足,不能使用")
 			return false
 		}
+		if(this.powers[index].CUR_CD !== 0){
+			console.error("冷却中,不能使用 "+this.powers[index].CUR_CD+"/"+this.powers[index].NEED_CD)
+			return false
+		}
 		this.changeBP(-this.powers[index].NEED_BP)
-		return this.powers[index].masterPower()
+		skillManager.useSkill(this.powers[index])
+		return true
 	}else{
 		console.error("主角技能不存在")
 		return false
