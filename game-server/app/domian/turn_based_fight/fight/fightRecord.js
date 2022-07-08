@@ -1,8 +1,10 @@
 var herosCfg = require("../../../../config/gameCfg/heros.json")
 var model = function() {
 	this.list = []
+	this.stageIndex = 0
 	this.init = function() {
 		this.list = []
+		this.stageIndex = 0
 	}
 	this.push = function(info) {
 		this.list.push(info)
@@ -20,20 +22,26 @@ var model = function() {
 		var endInfo = recordList.pop()
 		console.log("\n回合数:"+endInfo.round+"   攻方胜利:" + (endInfo.winFlag?"是":"否"))
 	}
+	this.getStageList = function() {
+		var arr = this.list.slice(this.stageIndex)
+		this.stageIndex = this.list.length+1
+		return arr
+	}
 	this.explain = function() {
 		var recordList = this.getList()
-		var beginInfo = recordList.shift()
-		var heroNames = {}
-		for(var i in beginInfo.atkTeam)
-			if(beginInfo.atkTeam[i]["heroId"])
-				heroNames[beginInfo.atkTeam[i]["id"]] = herosCfg[beginInfo.atkTeam[i]["heroId"]]["name"]+beginInfo.atkTeam[i]["id"]
-		for(var i in beginInfo.defTeam)
-			if(beginInfo.defTeam[i]["heroId"])
-				heroNames[beginInfo.defTeam[i]["id"]] = herosCfg[beginInfo.defTeam[i]["heroId"]]["name"]+beginInfo.defTeam[i]["id"]
-		console.log("战斗开始\n攻方阵容",JSON.stringify(beginInfo.atkTeam),"\n守方阵容",JSON.stringify(beginInfo.defTeam))
 		while(recordList.length){
 			let info = recordList.shift()
 			switch(info.type){
+				case "fightBegin":
+					var heroNames = {}
+					for(var i in info.atkTeam)
+						if(info.atkTeam[i]["heroId"])
+							heroNames[info.atkTeam[i]["id"]] = herosCfg[info.atkTeam[i]["heroId"]]["name"]+info.atkTeam[i]["id"]
+					for(var i in info.defTeam)
+						if(info.defTeam[i]["heroId"])
+							heroNames[info.defTeam[i]["id"]] = herosCfg[info.defTeam[i]["heroId"]]["name"]+info.defTeam[i]["id"]
+					console.log("战斗开始\n攻方阵容",JSON.stringify(info.atkTeam),"\n守方阵容",JSON.stringify(info.defTeam))
+				break
 				case "nextRound":
 					console.log("\n\033[35m第"+info.round+"轮开始\033[0m\n")
 				break
@@ -61,6 +69,58 @@ var model = function() {
 								str += "\033[32m  绝处逢生\033[0m"
 							str += "\033[0m"
 					
+						}
+					}
+					console.log(str)
+				break
+				case "master":
+					console.log(info)
+					var str = ""
+					if(info.belong == "atk")
+						str = "\033[32m我方主角开始行动\033[0m"
+					else
+						str = "\033[32m敌方主角开始行动\033[0m"
+					if(info.skill == "heal"){
+						for(var i = 0;i < info.targets.length;i++){
+							if(info.targets[i].rescue){
+								str += "\n  \033[32m复活"+heroNames[info.targets[i].id]
+								str += "\033[0m"
+							}else if(info.targets[i].turn_ghost){
+								str += "\n  \033[32m亡魂"+heroNames[info.targets[i].id]
+								str += "\033[0m"
+							}else{
+								str += "\n  \033[32m恢复"+heroNames[info.targets[i].id]+" "+info.targets[i].value+" 点血量"
+								if(info.targets[i].crit){
+									str +="(暴击)"
+								}
+								str += "\t剩余"+info.targets[i].curValue+"/"+info.targets[i].maxHP+"\033[0m"
+								str += "\033[0m"
+							}
+						}
+					}else{
+						for(var i = 0;i < info.targets.length;i++){
+							str += "\n  \033[31m攻击"+heroNames[info.targets[i].id]+"\t"
+							if(info.targets[i].miss){
+								str += "被闪避"
+							}else if(info.targets[i].invincible){
+								str += "免疫"
+							}else{
+								str += "造成"+ info.targets[i].value+"点伤害"
+								if(info.targets[i].crit){
+									str +="(暴击)"
+								}
+								str += "\t剩余"+info.targets[i].curValue+"/"+info.targets[i].maxHP
+								if(info.targets[i].kill){
+									str += "\t击杀目标!"
+								}
+								if(info.targets[i].seckill){
+									str += "\t秒杀!"
+								}
+								if(info.targets[i].oneblood)
+									str += "\033[32m  绝处逢生\033[0m"
+								str += "\033[0m"
+						
+							}
 						}
 					}
 					console.log(str)
@@ -119,7 +179,14 @@ var model = function() {
 					console.log(str)
 				break
 				case "attack":
-					var str = "\033[36m"+heroNames[info.id]+"使用"+info.name+"\033[0m"
+					var str = ""
+					if(info.id == "atkMaster"){
+						str = "\033[34m我方主角使用技能"+info.name+"\033[0m"
+					}else if(info.id == "defMaster"){
+						str = "\033[34m敌方主角使用技能"+info.name+"\033[0m"
+					}else{
+						str = "\033[36m"+heroNames[info.id]+"使用"+info.name+"\033[0m"
+					}
 					for(var i = 0;i < info.targets.length;i++){
 						str += "\n  \033[31m攻击"+heroNames[info.targets[i].id]+"\t"
 						if(info.targets[i].miss){
@@ -217,6 +284,9 @@ var model = function() {
 				break
 				case "buff_num":
 					console.log(heroNames[info.id]+" "+info.buffId+" 剩余"+info.num+"层")
+				break
+				case "bp_update":
+					console.log(info.belong+"主角BP值更新 "+info.BP)
 				break
 				default:
 					console.log("类型未定义 : ",info.type)

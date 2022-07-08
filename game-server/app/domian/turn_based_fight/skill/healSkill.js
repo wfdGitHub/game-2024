@@ -5,7 +5,6 @@ var model = function(otps,character) {
 	this.skillId = otps.skillId						//技能ID
 	this.isAnger = false							//是否怒气技能
 	this.name = otps.name							//技能名称
-	this.healType = otps.healType || "atk" 			//恢复类型（基数） atk  施法者攻击力   hp 被治疗者最大生命值
 	this.targetType = otps.targetType || "team_1"	//目标类型  normal
 	this.mul = otps.mul || 0						//技能系数
 	this.skill_buffs = {}							//技能附带buff
@@ -13,8 +12,9 @@ var model = function(otps,character) {
 	this.skill_anger_a = 0 							//全队怒气恢复值
 	this.skill_less_anger = 0 						//降低目标怒气值
 	this.otps = otps
+	this.initArg()
 }
-model.prototype.init = function() {
+model.prototype.initArg = function() {
 	for(var i = 1;i <= 5;i++){
 		if(this.otps["key"+i] && this.otps["value"+i]){
 			var key = this.otps["key"+i]

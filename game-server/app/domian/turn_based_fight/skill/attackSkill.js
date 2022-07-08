@@ -14,8 +14,9 @@ var model = function(otps,character) {
 	this.skill_less_anger = 0 							//降低目标怒气值
 	this.maxHP_damage = 0 								//生命上限伤害
 	this.otps = otps
+	this.initArg()
 }
-model.prototype.init = function() {
+model.prototype.initArg = function() {
 	for(var i = 1;i <= 5;i++){
 		if(this.otps["key"+i] && this.otps["value"+i]){
 			var key = this.otps["key"+i]
@@ -53,7 +54,6 @@ model.prototype.init = function() {
 				this.skill_buffs[id].buffRate += this.skill_buffs[id].buffRate * this.character.atkcontrol
 		}
 	}
-
 }
 model.prototype.addBuff = function(buffStr) {
 	var buff = JSON.parse(buffStr)
