@@ -41,7 +41,7 @@ model.useSkill = function(skill,chase,point) {
 			targets = this.useHealSkill(skill,chase)
 		break
 		default:
-			targets = []
+			targets = this.locator.getTargets(skill.character,skill.targetType)
 	}
 	var targetsNum = this.locator.getTargetsNum(skill.targetType)
 	if(skill.isAnger){

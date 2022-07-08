@@ -77,9 +77,9 @@ var model = function() {
 					console.log(info)
 					var str = ""
 					if(info.belong == "atk")
-						str = "\033[36m我方主角开始行动\033[0m"
+						str = "\033[32m我方主角开始行动\033[0m"
 					else
-						str = "\033[36m敌方主角开始行动\033[0m"
+						str = "\033[32m敌方主角开始行动\033[0m"
 					if(info.skill == "heal"){
 						for(var i = 0;i < info.targets.length;i++){
 							if(info.targets[i].rescue){
@@ -179,7 +179,14 @@ var model = function() {
 					console.log(str)
 				break
 				case "attack":
-					var str = "\033[36m"+heroNames[info.id]+"使用"+info.name+"\033[0m"
+					var str = ""
+					if(info.id == "atkMaster"){
+						str = "\033[34m我方主角使用技能"+info.name+"\033[0m"
+					}else if(info.id == "defMaster"){
+						str = "\033[34m敌方主角使用技能"+info.name+"\033[0m"
+					}else{
+						str = "\033[36m"+heroNames[info.id]+"使用"+info.name+"\033[0m"
+					}
 					for(var i = 0;i < info.targets.length;i++){
 						str += "\n  \033[31m攻击"+heroNames[info.targets[i].id]+"\t"
 						if(info.targets[i].miss){

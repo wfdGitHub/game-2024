@@ -1,12 +1,14 @@
 var fightRecord = require("../fight/fightRecord.js")
-var power = require("../skill/powerSkill.js")
+var powerSkill = require("../skill/powerSkill.js")
 var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var skillManager = require("../skill/skillManager.js")
+var power_base = require("../../../../config/gameCfg/power_base.json")
+var skillsCfg = require("../../../../config/gameCfg/skills.json")
 //主角
 var master = function(otps) {
 	//=========基础属性=======//
 	this.belong = otps.belong   //所属阵容
-	this.id = this.belong+"master"
+	this.id = this.belong+"Master"
 	this.index = 0				//所在位置
 	this.attInfo = {}
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
@@ -18,7 +20,7 @@ var master = function(otps) {
 	this.totalDamage = 0								//累计伤害
 	this.totalHeal = 0									//累计治疗
 	this.buffs = {}
-	this.addPower()
+	this.otps = otps
 }
 //初始化
 master.prototype.init = function(team,enemy,locator,seeded) {
@@ -31,8 +33,16 @@ master.prototype.init = function(team,enemy,locator,seeded) {
 	}
 }
 //初始化技能
-master.prototype.addPower = function() {
-	this.powers.push(new power({"type":"heal","mul":0.1,"NEED_BP":1,"key1":"buff1","value1":"{\"buffId\":\"cold\",\"buff_tg\":\"skill_targets\",\"buffArg\":0,\"duration\":2,\"buffRate\":1}"},this))
+master.prototype.addPower = function(info) {
+	var skillId = power_base[info.id]["star"+info.star]
+	if(skillsCfg[skillId]){
+		var powerInfo = skillsCfg[skillId]
+		powerInfo.CUR_CD = power_base[info.id].CUR_CD
+		powerInfo.NEED_BP = power_base[info.id].NEED_BP
+		powerInfo.NEED_CD = power_base[info.id].NEED_CD
+		powerInfo.name = power_base[info.id].name
+		this.powers.push(new powerSkill(powerInfo,this))
+	}
 }
 //获取属性
 master.prototype.getTotalAtt = function(name) {
@@ -57,7 +67,7 @@ master.prototype.endRound = function() {
 master.prototype.masterPower = function(index) {
 	if(this.powers[index]){
 		if(this.BP < this.powers[index].NEED_BP){
-			console.error("BP不足,不能使用")
+			console.error("BP不足,不能使用 "+this.BP+"/"+this.powers[index].NEED_BP)
 			return false
 		}
 		if(this.powers[index].CUR_CD !== 0){
@@ -80,5 +90,15 @@ master.prototype.changeBP = function(change) {
 	info.change = change
 	info.BP = this.BP
 	fightRecord.push(info)
+}
+//获取显示数据
+master.prototype.getShowData = function() {
+	var info = {
+		BP : this.BP
+	}
+	for(var i = 0;i < this.powers.length;i++){
+		info["power"+i] = this.powers[i].getShowData()
+	}
+	return info
 }
 module.exports = master

@@ -33,6 +33,10 @@ var manor_dby = require("../../../../config/gameCfg/manor_dby.json")
 var manor_qby = require("../../../../config/gameCfg/manor_qby.json")
 var aptitudeCfg = require("../../../../config/gameCfg/aptitude.json")
 var evolutionCfg = require("../../../../config/gameCfg/evolution.json")
+var power_ad = require("../../../../config/gameCfg/power_ad.json")
+var power_aptitude = require("../../../../config/gameCfg/power_aptitude.json")
+var power_base = require("../../../../config/gameCfg/power_base.json")
+var power_lv = require("../../../../config/gameCfg/power_lv.json")
 
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
@@ -444,7 +448,8 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	return new character(info)
 }
 //获取主角信息
-model.getMasterInfo = function(info) {
+model.getMasterInfo = function(info,belong) {
+	info.belong = belong
 	return new master(info)
 }
 //获取天书数据
@@ -466,6 +471,7 @@ model.getTeamData = function(team,belong) {
 	var teamCfg = team[6]
     var books = {}
     var bookAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
+    var masterAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
     var gSkill = {}
 	if(teamCfg){
 		//天书
@@ -479,16 +485,44 @@ model.getTeamData = function(team,belong) {
 				bookAtts["magDef"] += Math.floor(books[bookId].attInfo.magDef/30)
 			}
 		}
+		//主角技能
+		for(var i = 1;i <= 4;i++){
+			if(teamCfg["power"+i]){
+				var powerInfo = teamCfg["power"+i]
+				if(powerInfo.lv && power_lv[powerInfo.lv]){
+					var powerAptitude = power_base[powerInfo.id]["aptitude"]
+					if(powerInfo.ad && power_ad[powerInfo.ad])
+						powerAptitude += power_ad[powerInfo.ad]["aptitude"]
+					var growth = power_aptitude[powerAptitude].growth
+					if(power_aptitude[power_base[powerInfo.id]["aptitude"]] && power_aptitude[power_base[powerInfo.id]["aptitude"]]["extra"]){
+						growth += power_aptitude[power_base[powerInfo.id]["aptitude"]]["extra"]
+						masterAtts["maxHP"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["maxHP"]
+						masterAtts["atk"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["atk"]
+						masterAtts["phyDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["phyDef"]
+						masterAtts["magDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["magDef"]
+					}
+					masterAtts["maxHP"] += Math.floor(power_lv[powerInfo.lv].maxHP * growth)
+					masterAtts["atk"] += Math.floor(power_lv[powerInfo.lv].atk * growth)
+					masterAtts["phyDef"] += Math.floor(power_lv[powerInfo.lv].phyDef * growth)
+					masterAtts["magDef"] += Math.floor(power_lv[powerInfo.lv].magDef * growth)
+				}
+			}
+		}
+		for(var i in masterAtts)
+			bookAtts[i] += masterAtts[i]
 	}
 	//主角
-	var master = this.getMasterInfo(bookAtts)
+	var master = this.getMasterInfo(masterAtts,belong)
 	master.belong = belong
 	var characters = []
 	for(var i = 0;i < 6;i++){
 		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
 	}
+	for(var i = 1;i <= 4;i++)
+		if(teamCfg["power"+i])
+			master.addPower(teamCfg["power"+i])
     var teamAdds = this.raceAdd(this.getRaceType(characters))
-	return {master:master,team:characters,books:books,teamAdds:teamAdds,bookAtts:bookAtts}
+	return {master:master,team:characters,books:books,teamAdds:teamAdds,bookAtts:bookAtts,masterAtts:masterAtts}
 }
 //获取团队显示数据
 model.getTeamShowData = function(team) {

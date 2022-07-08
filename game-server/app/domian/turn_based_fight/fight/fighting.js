@@ -605,6 +605,14 @@ model.prototype.defMasterSkill = function(index) {
 		return false
 	}
 }
+//获取主动技能显示数据
+model.prototype.getMasterShowData = function() {
+	var info = {
+		"atkMaster" : this.atkMaster.getShowData(),
+		"defMaster" : this.defMaster.getShowData()
+	}
+	return info
+}
 //检测主动技能
 model.prototype.checkMaster = function() {
 	if(this.masterSkillsRecord.length){

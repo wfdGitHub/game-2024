@@ -4,7 +4,8 @@ var buffManager = require("../buff/buffManager.js")
 var model = function(otps,master) {
 	this.character = master 							//主角
 	this.isAnger = true
-	this.type = otps.type || "attack"					//类型  heal  attack
+	this.name = otps.name
+	this.type = otps.type								//类型  heal  attack
 	this.skillId = otps.skillId							//技能ID
 	this.mul = otps.mul									//技能系数
 	this.damageType = otps.damageType || "phy" 			//伤害类型（目标防御选取）phy 物理伤害 mag 法术伤害
@@ -54,6 +55,15 @@ model.prototype.getInfo = function() {
 		skillId : this.skillId,
 		name : this.name,
 		isAnger : this.isAnger
+	}
+	return info
+}
+//获取显示数据
+model.prototype.getShowData = function() {
+	var info = {
+		NEED_BP : this.NEED_BP,
+		NEED_CD : this.NEED_CD,
+		CUR_CD : this.CUR_CD
 	}
 	return info
 }
