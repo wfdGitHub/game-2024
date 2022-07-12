@@ -43,6 +43,7 @@ model.useSkill = function(skill,chase,point) {
 		default:
 			targets = this.locator.getTargets(skill.character,skill.targetType)
 	}
+	skill.useSkillOver()
 	var targetsNum = this.locator.getTargetsNum(skill.targetType)
 	if(skill.isAnger){
 		//技能判断燃烧状态附加BUFF
@@ -278,10 +279,13 @@ model.useSkill = function(skill,chase,point) {
 				}
 		}
 	}
-	//技能击杀后对自身释放BUFF
-	if(diedFlag && skill.kill_buff){
-		if(this.seeded.random("判断BUFF命中率") < skill.kill_buff.buffRate){
-			buffManager.createBuff(skill.character,skill.character,{buffId : skill.kill_buff.buffId,buffArg : skill.kill_buff.buffArg,duration : skill.kill_buff.duration})
+	if(diedFlag){
+		skill.onKill()
+		//技能击杀后对自身释放BUFF
+		if(skill.kill_buff){
+			if(this.seeded.random("判断BUFF命中率") < skill.kill_buff.buffRate){
+				buffManager.createBuff(skill.character,skill.character,{buffId : skill.kill_buff.buffId,buffArg : skill.kill_buff.buffArg,duration : skill.kill_buff.duration})
+			}
 		}
 	}
 	//吸取攻击力

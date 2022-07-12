@@ -725,6 +725,7 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 					fightTeam[6]["camp_2"] = Number(data[1]) || 0
 					fightTeam[6]["camp_3"] = Number(data[2]) || 0
 					fightTeam[6]["camp_4"] = Number(data[3]) || 0
+					fightTeam[6]["camp_5"] = Number(data[4]) || 0
 				}
 				next()
 			})

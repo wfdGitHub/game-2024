@@ -55,6 +55,14 @@ model.prototype.initArg = function() {
 		}
 	}
 }
+//使用技能结束
+model.prototype.useSkillOver = function(argument) {
+	
+}
+//击杀目标后
+model.prototype.onKill = function() {
+
+}
 model.prototype.addBuff = function(buffStr) {
 	var buff = JSON.parse(buffStr)
 	if(this.character.buffDuration)

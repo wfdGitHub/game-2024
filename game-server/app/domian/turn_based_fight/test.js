@@ -67,26 +67,16 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // }
 // console.log(atkTeam)
 // var buff = {"buffId":"ghost","buff_tg":"team_self","buffArg":5,"duration":3,"buffRate":1}
-// var atkTeam = [{"id":405040},0,0,0,0,0,{"power1":{"id":500800,"star":1,"lv":100,"ad":1}}]
-// var defTeam = [{"id":405040,"self_maxHP_add":10},0,0,0,0,0,{}]
+var atkTeam = [{"id":405040},{"id":405040},{"id":405040},{"id":405040},{"id":405040},{"id":405040},{"power1":{"id":500800,"star":1,"lv":100,"ad":1}}]
+var defTeam = [{"id":405040,"self_maxHP_add":10},0,0,0,0,0,{}]
 // var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
 // // var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
 // // console.log(fighting.keepRun())
-// fighting.keepRun()
-// console.log(fighting.getMasterShowData())
-// fighting.keepRun()
-// fighting.keepRun()
-// fighting.keepRun()
-// fighting.keepRun()
-// fighting.keepRun()
-// fighting.keepRun()
-// fighting.keepRun()
-// console.log(fighting.atkMasterSkill(0))
-// console.log(fighting.getMasterShowData())
-// fighting.keepRun()
-// fighting.keepRun()
-// fighting.keepRun()
-// // console.log(fighting.atkMasterSkill())
+// for(var i = 0;i < 8;i++){
+// 	fighting.keepRun()
+// }
+console.log(fightContorl.getTeamShowData(atkTeam))
+// console.log(fighting.atkMasterSkill())
 // var data = fighting.keepRun()
 // while(data){
 // 	data = fighting.keepRun()

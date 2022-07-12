@@ -134,8 +134,8 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	for(var i in this.defBooks){
 		this.defBooks[i].init(this.defTeam,this.atkTeam,this.locator,this.seeded)
 	}
-	this.atkMaster.init(this.atkTeam,this.defTeam,this.locator,this.seeded)
-	this.defMaster.init(this.defTeam,this.atkTeam,this.locator,this.seeded)
+	this.atkMaster.init(this.atkTeam,this.defTeam,this.locator,this.seeded,this.defMaster)
+	this.defMaster.init(this.defTeam,this.atkTeam,this.locator,this.seeded,this.atkMaster)
 }
 //战斗开始
 model.prototype.fightBegin = function() {

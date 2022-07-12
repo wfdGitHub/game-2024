@@ -10,6 +10,7 @@ var master = function(otps) {
 	this.belong = otps.belong   //所属阵容
 	this.id = this.belong+"Master"
 	this.index = 0				//所在位置
+	this.peerMaster = {}        //对方主角
 	this.attInfo = {}
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
 	this.attInfo.atk = otps["atk"] || 0					//攻击力
@@ -19,15 +20,18 @@ var master = function(otps) {
 	this.powers = [] 									//技能列表
 	this.totalDamage = 0								//累计伤害
 	this.totalHeal = 0									//累计治疗
+	this.TMP_CURBP = 0 									//本回合BP改变值
+	this.ONCE_CURBP = 0 								//下一个技能BP改变值
 	this.buffs = {}
 	this.otps = otps
 }
 //初始化
-master.prototype.init = function(team,enemy,locator,seeded) {
+master.prototype.init = function(team,enemy,locator,seeded,peerMaster) {
 	this.team = team
 	this.enemy = enemy
 	this.locator = locator
 	this.seeded = seeded
+	this.peerMaster = peerMaster
 	for(var i = 0;i < this.team.length;i++){
 		this.team[i].master = this
 	}
@@ -59,31 +63,48 @@ master.prototype.heroAfter = function() {
 }
 //整体回合结束后
 master.prototype.endRound = function() {
+	this.TMP_CURBP = 0
+	this.updateCD(-1)
+}
+master.prototype.updateCD = function(value) {
 	for(var i = 0;i < this.powers.length;i++){
-		this.powers[i].updateCD()
+		this.powers[i].updateCD(value)
 	}
 }
 //使用技能
 master.prototype.masterPower = function(index) {
+	var needBp = this.TMP_CURBP + this.powers[index].NEED_BP
+	if(this.powers[index].ONCE_CURBP){
+		needBp += this.powers[index].ONCE_CURBP
+		this.powers[index].ONCE_CURBP = 0
+	}
 	if(this.powers[index]){
-		if(this.BP < this.powers[index].NEED_BP){
-			console.error("BP不足,不能使用 "+this.BP+"/"+this.powers[index].NEED_BP)
+		if(this.BP < needBp){
+			console.error("BP不足,不能使用 "+this.BP+"/"+needBp)
 			return false
 		}
 		if(this.powers[index].CUR_CD !== 0){
 			console.error("冷却中,不能使用 "+this.powers[index].CUR_CD+"/"+this.powers[index].NEED_CD)
 			return false
 		}
-		this.changeBP(-this.powers[index].NEED_BP)
+		this.changeBP(-needBp)
 		skillManager.useSkill(this.powers[index])
 		return true
 	}else{
 		console.error("主角技能不存在")
-		return false
+		return false 
 	}
 }
 master.prototype.changeBP = function(change) {
 	this.BP = this.BP + change
+	if(this.BP > 12 && change > 0)
+		return
+	if(this.BP <= 0 && change  < 0)
+		return
+	if(this.BP < 0)
+		this.BP = 0
+	if(this.BP > 12)
+		this.BP = 12
 	var info =  {}
 	info.type = "bp_update"
 	info.belong = this.belong

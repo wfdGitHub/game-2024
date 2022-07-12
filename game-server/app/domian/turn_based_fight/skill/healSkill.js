@@ -58,6 +58,14 @@ model.prototype.addBuff = function(buffStr) {
 		buff.duration += this.character.buffDuration
 	this.skill_buffs[buff.buffId] = buff
 }
+//使用技能结束
+model.prototype.useSkillOver = function(argument) {
+	
+}
+//击杀目标后
+model.prototype.onKill = function() {
+
+}
 model.prototype.getInfo = function() {
 	var info = {
 		type : this.type,

@@ -38,16 +38,37 @@ model.prototype.initArg = function() {
 		}
 	}
 }
+//使用技能结束
+model.prototype.useSkillOver = function() {
+	//使用技能后改变BP
+	if((this.NEED_BP + this.use_change_bp) >= 3  && (this.NEED_BP + this.use_change_bp) <= 12){
+		this.NEED_BP += this.use_change_bp
+	}
+	if(this.enemy_cd_up && this.character.peerMaster){
+		this.character.peerMaster.updateCD(this.enemy_cd_up)
+	}
+	if(this.enemy_bp_up && this.character.peerMaster)
+		this.character.peerMaster.TMP_CURBP += this.enemy_bp_up
+	if(this.use_un_bp)
+		this.character.ONCE_CURBP = -1
+}
+//击杀目标后
+model.prototype.onKill = function() {
+	if(this.power_kill_bp)
+		this.character.changeBP(1)
+}
 //增加BUFF
 model.prototype.addBuff = function(buffStr) {
 	var buff = JSON.parse(buffStr)
 	this.skill_buffs[buff.buffId] = buff
 }
 //更新CD
-model.prototype.updateCD = function() {
-	if(this.CUR_CD > 0)
-		this.CUR_CD--
+model.prototype.updateCD = function(value) {
+	this.CUR_CD += value
+	if(this.CUR_CD < 0)
+		this.CUR_CD = 0
 }
+//获取信息
 model.prototype.getInfo = function() {
 	var info = {
 		type : this.type,
@@ -61,7 +82,7 @@ model.prototype.getInfo = function() {
 //获取显示数据
 model.prototype.getShowData = function() {
 	var info = {
-		NEED_BP : this.NEED_BP,
+		NEED_BP : this.NEED_BP + this.master.TMP_CURBP +this.master.ONCE_CURBP,
 		NEED_CD : this.NEED_CD,
 		CUR_CD : this.CUR_CD
 	}

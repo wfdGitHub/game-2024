@@ -24,7 +24,7 @@ var model = function() {
 	}
 	this.getStageList = function() {
 		var arr = this.list.slice(this.stageIndex)
-		this.stageIndex = this.list.length+1
+		this.stageIndex = this.list.length
 		return arr
 	}
 	this.explain = function() {
