@@ -6,9 +6,11 @@ var model = function(otps,character) {
 	baseSkill.call(this,otps,character)
 	this.type = otps.type
 	//初始化参数
+	this.baseMUl = this.mul 							//技能初始威力
 	this.NEED_BP = otps.NEED_BP || 10					//所需BP值
 	this.NEED_CD = otps.NEED_CD || 10 					//技能所需CD
 	this.CUR_CD = otps.CUR_CD || 0						//初始CD
+	this.tmpBuffRate = 0 								//临时BUFF概率
 	//初始化方法
 	this.initArg = function() {
 		for(var i = 1;i <= 5;i++){
@@ -43,11 +45,20 @@ var model = function(otps,character) {
 			this.character.peerMaster.TMP_CURBP += this.enemy_bp_up
 		if(this.use_un_bp)
 			this.character.ONCE_CURBP = -1
+		if(this.use_up_mul)
+			this.mul += this.baseMUl * this.use_up_mul
 	}
 	//击杀目标后
 	this.onKill = function() {
 		if(this.power_kill_bp)
 			this.character.changeBP(1)
+	}
+	//回合结束
+	this.endRound = function() {
+		this.updateCD(-1)
+		//若未使用技能叠加BUFF命中率
+		if(this.round_buff_rate)
+			this.tmpBuffRate += this.round_buff_rate
 	}
 	//更新CD
 	this.updateCD = function(value) {

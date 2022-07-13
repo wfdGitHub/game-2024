@@ -33,5 +33,7 @@ var model = function(otps,character) {
 		}
 		return info
 	}
+	//回合结束
+	this.endRound = function() {}
 }
 module.exports = model

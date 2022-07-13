@@ -66,7 +66,9 @@ master.prototype.heroAfter = function() {
 //整体回合结束后
 master.prototype.endRound = function() {
 	this.TMP_CURBP = 0
-	this.updateCD(-1)
+	for(var i = 0;i < this.powers.length;i++){
+		this.powers[i].endRound()
+	}
 }
 master.prototype.updateCD = function(value) {
 	for(var i = 0;i < this.powers.length;i++){

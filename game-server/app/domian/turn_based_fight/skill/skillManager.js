@@ -43,7 +43,6 @@ model.useSkill = function(skill,chase,point) {
 		default:
 			targets = this.locator.getTargets(skill.character,skill.targetType)
 	}
-	skill.useSkillOver()
 	var targetsNum = this.locator.getTargetsNum(skill.targetType)
 	if(skill.isAnger){
 		//技能判断燃烧状态附加BUFF
@@ -233,6 +232,10 @@ model.useSkill = function(skill,chase,point) {
 			var buff = skill.skill_buffs[buffId]
 			var buffTargets = this.locator.getBuffTargets(skill.character,buff.buff_tg,targets)
 			var buffRate = buff.buffRate
+			if(skill.tmpBuffRate){
+				buffRate += skill.tmpBuffRate
+				skill.tmpBuffRate = 0
+			}
 			var buffArg = buff.buffArg
 			var duration = buff.duration
 			//判断技能目标减少
@@ -324,6 +327,8 @@ model.useSkill = function(skill,chase,point) {
 			}
 		}
 	}
+	//技能使用结束
+	skill.useSkillOver()
 	//击杀重复释放技能
 	if(!chase && diedFlag && skill.killRet && !skill.character.died){
 		this.useSkill(skill,false)
