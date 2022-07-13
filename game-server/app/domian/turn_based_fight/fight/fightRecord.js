@@ -195,7 +195,7 @@ var model = function() {
 							str += "免疫"
 						}else{
 							str += "造成"+ info.targets[i].value+"点伤害"
-							if(info.targets[i].crit){
+							if(info.targets[i].crit){x
 								str +="(暴击)"
 							}
 							str += "\t剩余"+info.targets[i].curValue+"/"+info.targets[i].maxHP

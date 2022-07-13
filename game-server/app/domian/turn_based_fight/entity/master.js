@@ -9,6 +9,7 @@ var master = function(otps) {
 	//=========基础属性=======//
 	this.belong = otps.belong   //所属阵容
 	this.id = this.belong+"Master"
+	console.log(this.id)
 	this.index = 0				//所在位置
 	this.peerMaster = {}        //对方主角
 	this.attInfo = {}
@@ -45,6 +46,7 @@ master.prototype.addPower = function(info) {
 		powerInfo.NEED_BP = power_base[info.id].NEED_BP
 		powerInfo.NEED_CD = power_base[info.id].NEED_CD
 		powerInfo.name = power_base[info.id].name
+		powerInfo.skillId = info.id
 		this.powers.push(new powerSkill(powerInfo,this))
 	}
 }
@@ -73,6 +75,10 @@ master.prototype.updateCD = function(value) {
 }
 //使用技能
 master.prototype.masterPower = function(index) {
+	if(!this.powers[index]){
+		console.error("技能不存在 "+index)
+		return false	
+	}
 	var needBp = this.TMP_CURBP + this.powers[index].NEED_BP
 	if(this.powers[index].ONCE_CURBP){
 		needBp += this.powers[index].ONCE_CURBP
