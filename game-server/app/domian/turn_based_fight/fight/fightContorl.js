@@ -448,8 +448,9 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	return new character(info)
 }
 //获取主角信息
-model.getMasterInfo = function(info,belong) {
+model.getMasterInfo = function(info,belong,manualModel) {
 	info.belong = belong
+	info.manualModel = manualModel
 	return new master(info)
 }
 //获取天书数据
@@ -468,7 +469,7 @@ model.getBookInfo = function(bookId,info){
 //获取团队数据
 model.getTeamData = function(team,belong) {
 	var team = team.concat([])
-	var teamCfg = team[6]
+	var teamCfg = team[6] || {}
     var books = {}
     var bookAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
     var masterAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
@@ -512,11 +513,11 @@ model.getTeamData = function(team,belong) {
 			bookAtts[i] += masterAtts[i]
 	}
 	//主角
-	var master = this.getMasterInfo(masterAtts,belong)
+	var master = this.getMasterInfo(masterAtts,belong,teamCfg["manualModel"])
 	master.belong = belong
 	var characters = []
 	for(var i = 0;i < 6;i++){
-		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
+		characters[i] = this.getCharacterInfo(team[i],bookAtts)
 	}
     var teamAdds = this.raceAdd(this.getRaceType(characters))
     if(teamCfg){

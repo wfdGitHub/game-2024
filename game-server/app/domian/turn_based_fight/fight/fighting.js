@@ -38,9 +38,13 @@ var model = function(atkInfo,defInfo,otps) {
 	this.next_character = []		//插入行动角色
 	this.diedList = []				//死亡列表
     this.manual = otps.manual || false  //手动操作标识
+    this.video = otps.video || false 	//是否为录像
 	this.masterSkills = [] 			//主角技能列表
 	this.masterIndex = 0 			//技能列表标识
-	this.masterSkillsRecord = otps.masterSkills || [] //技能释放列表检测
+	if(otps.masterSkills && Array.isArray(otps.masterSkills))
+		this.masterSkillsRecord = JSON.parse(JSON.stringify(otps.masterSkills))   //录像技能释放列表
+	else
+		this.masterSkillsRecord = []
 	this.load(atkInfo.team,defInfo.team,otps)
 }
 //初始配置
@@ -134,8 +138,8 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 	for(var i in this.defBooks){
 		this.defBooks[i].init(this.defTeam,this.atkTeam,this.locator,this.seeded)
 	}
-	this.atkMaster.init(this.atkTeam,this.defTeam,this.locator,this.seeded,this.defMaster)
-	this.defMaster.init(this.defTeam,this.atkTeam,this.locator,this.seeded,this.atkMaster)
+	this.atkMaster.init(this,this.atkTeam,this.defTeam,this.locator,this.seeded,this.defMaster)
+	this.defMaster.init(this,this.defTeam,this.atkTeam,this.locator,this.seeded,this.atkMaster)
 }
 //战斗开始
 model.prototype.fightBegin = function() {
@@ -615,16 +619,25 @@ model.prototype.getMasterShowData = function() {
 }
 //检测主动技能
 model.prototype.checkMaster = function() {
-	if(this.masterSkillsRecord.length){
-		if(this.masterSkillsRecord[0]["runCount"] == this.runCount){
-			var info = this.masterSkillsRecord.shift()
-			if(info.belong == "atk"){
-				this.atkMasterSkill()
-			}else if(info.belong == "def"){
-				this.defMasterSkill()
+	if(this.video){
+		//录像模式检测技能释放
+		if(this.masterSkillsRecord.length){
+			if(this.masterSkillsRecord[0]["runCount"] == this.runCount){
+				var info = this.masterSkillsRecord.shift()
+				if(info.belong == "atk"){
+					this.atkMasterSkill(info["index"])
+				}else if(info.belong == "def"){
+					this.defMasterSkill(info["index"])
+				}
+				return true
 			}
-			return true
 		}
+	}else{
+		//自动战斗模式检测技能释放
+		if(this.atkMaster.checkManualModel())
+			return true
+		if(this.defMaster.checkManualModel())
+			return true
 	}
 	return false
 }

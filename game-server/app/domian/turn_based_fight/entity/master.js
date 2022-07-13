@@ -9,7 +9,6 @@ var master = function(otps) {
 	//=========基础属性=======//
 	this.belong = otps.belong   //所属阵容
 	this.id = this.belong+"Master"
-	console.log(this.id)
 	this.index = 0				//所在位置
 	this.peerMaster = {}        //对方主角
 	this.attInfo = {}
@@ -17,6 +16,8 @@ var master = function(otps) {
 	this.attInfo.atk = otps["atk"] || 0					//攻击力
 	this.attInfo.phyDef = otps["phyDef"] || 0			//物理防御力
 	this.attInfo.magDef = otps["magDef"] || 0			//法术防御力
+	this.manualModel = otps.manualModel || 0    		//技能释放模式
+	this.manualIndex = 0 								//当前执行技能下标
 	this.BP = 0 										//当前行动值
 	this.powers = [] 									//技能列表
 	this.totalDamage = 0								//累计伤害
@@ -27,7 +28,8 @@ var master = function(otps) {
 	this.otps = otps
 }
 //初始化
-master.prototype.init = function(team,enemy,locator,seeded,peerMaster) {
+master.prototype.init = function(fighting,team,enemy,locator,seeded,peerMaster) {
+	this.fighting = fighting
 	this.team = team
 	this.enemy = enemy
 	this.locator = locator
@@ -35,6 +37,41 @@ master.prototype.init = function(team,enemy,locator,seeded,peerMaster) {
 	this.peerMaster = peerMaster
 	for(var i = 0;i < this.team.length;i++){
 		this.team[i].master = this
+	}
+}
+//技能释放判断
+master.prototype.checkManualModel = function() {
+	switch(this.manualModel){
+		case 1:
+			if(this.powers[this.manualIndex]){
+				var needBp = this.TMP_CURBP + this.powers[this.manualIndex].NEED_BP + this.ONCE_CURBP
+				if(this.BP >= needBp){
+					this.masterPower(this.manualIndex)
+					var info = {
+						belong : this.belong,
+						runCount : this.fighting.runCount,
+						index : this.manualIndex
+					}
+					this.fighting.masterSkills.push(info)
+					this.manualIndex = (this.manualIndex + 1) % this.powers.length
+					return true
+				}
+			}
+		break
+		default:
+			for(var index = 0;index < this.powers.length;index++){
+				var needBp = this.TMP_CURBP + this.powers[index].NEED_BP + this.ONCE_CURBP
+				if(this.BP >= needBp){
+					this.masterPower(index)
+					var info = {
+						belong : this.belong,
+						runCount : this.fighting.runCount,
+						index : index
+					}
+					this.fighting.masterSkills.push(info)
+					return true
+				}
+			}
 	}
 }
 //初始化技能
@@ -82,9 +119,9 @@ master.prototype.masterPower = function(index) {
 		return false	
 	}
 	var needBp = this.TMP_CURBP + this.powers[index].NEED_BP
-	if(this.powers[index].ONCE_CURBP){
-		needBp += this.powers[index].ONCE_CURBP
-		this.powers[index].ONCE_CURBP = 0
+	if(this.ONCE_CURBP){
+		needBp += this.ONCE_CURBP
+		this.ONCE_CURBP = 0
 	}
 	if(this.powers[index]){
 		if(this.BP < needBp){
