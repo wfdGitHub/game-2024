@@ -568,7 +568,7 @@ module.exports = function() {
 				cb(false,"已领取")
 			}else{
 				self.setObj(uid,main_name,"open_"+index,1)
-				var awardList = self.addItemStr(uid,unlock_cfg[index]["award"],1,"功能开启"+index)
+				var awardList = self.addItemStr(uid,open_cfg[index]["award"],1,"功能开启"+index)
 				cb(true,awardList)
 			}
 		})
