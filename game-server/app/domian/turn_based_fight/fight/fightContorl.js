@@ -518,11 +518,11 @@ model.getTeamData = function(team,belong) {
 	for(var i = 0;i < 6;i++){
 		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
 	}
-	for(var i = 1;i <= 4;i++)
-		if(teamCfg["power"+i])
-			master.addPower(teamCfg["power"+i])
     var teamAdds = this.raceAdd(this.getRaceType(characters))
     if(teamCfg){
+		for(var i = 1;i <= 4;i++)
+			if(teamCfg["power"+i])
+				master.addPower(teamCfg["power"+i])
 		if(teamCfg.team_atk_add){
 			if(!teamAdds["atk"])
 				teamAdds["atk"] = 0
@@ -539,11 +539,11 @@ model.getTeamData = function(team,belong) {
 //获取团队显示数据
 model.getTeamShowData = function(team) {
 	var atkTeam = team.concat([])
-	var info = this.getTeamData(atkTeam)
-	atkTeam = info.team
-	var bookAtts = info.bookAtts
+	var atkInfo = this.getTeamData(atkTeam,"atk")
+	var defInfo = this.getTeamData([],"def")
+	var bookAtts = atkInfo.bookAtts
 	var defTeam = []
-	var fighting = new fightingFun(atkTeam,defTeam,{},{},{atkTeamAdds:info.teamAdds})
+	var fighting = new fightingFun(atkInfo,defInfo,{atkTeamAdds:atkInfo.teamAdds})
 	return {atkTeam : fighting.atkTeam,bookAtts : bookAtts}
 }
 //计算差值
