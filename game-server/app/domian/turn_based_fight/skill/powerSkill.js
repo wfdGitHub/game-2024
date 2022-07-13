@@ -69,7 +69,7 @@ var model = function(otps,character) {
 	//获取显示数据
 	this.getShowData = function() {
 		var info = {
-			NEED_BP : this.NEED_BP + this.master.TMP_CURBP +this.master.ONCE_CURBP,
+			NEED_BP : this.NEED_BP + this.character.TMP_CURBP +this.character.ONCE_CURBP,
 			NEED_CD : this.NEED_CD,
 			CUR_CD : this.CUR_CD
 		}
