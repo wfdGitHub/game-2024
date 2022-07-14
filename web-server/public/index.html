@@ -132,6 +132,75 @@
             console.log(data);
         });
       }
+      //点票支付
+      var dianpiao_recharge = function(pay_id) {
+        pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id}, function(data) {
+            console.log(data);
+        });
+      }
+      //===============新公会PK=========//
+      // 报名PK
+      var applyGuildPKRival = function() {
+        pomelo.request("cross.guildPkHandler.applyGuildPKRival", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 匹配公会
+      var matchGuildPKRival = function() {
+        pomelo.request("cross.guildPkHandler.matchGuildPKRival", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 结算PK
+      var guildPkSettle = function() {
+        pomelo.request("cross.guildPkHandler.guildPkSettle", {}, function(data) {
+            console.log(data);
+        });
+      }
+      
+      // 获取PK信息
+      var getGuildPKInfo = function() {
+        pomelo.request("cross.guildPkHandler.getGuildPKInfo", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 获取挑战记录
+      var getGuildPKRecord = function(guildId,index) {
+        pomelo.request("cross.guildPkHandler.getGuildPKRecord", {guildId:guildId,index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      // 挑战对手
+      var challengeGuildPk = function(index,star) {
+        pomelo.request("cross.guildPkHandler.challengeGuildPk", {index:index,star:star}, function(data) {
+            console.log(data);
+        });
+      }
+      //============新公会攻城战=========//
+      // 城池BOSS刷新
+      var createGuildCityBoss = function() {
+        pomelo.request("area.guildHandler.createGuildCityBoss", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 获取攻城战信息
+      var getGuildCityBossData = function() {
+        pomelo.request("area.guildHandler.getGuildCityBossData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      // 挑战攻城战BOSS
+      var challengeGuildCityBoss = function(index) {
+        pomelo.request("area.guildHandler.challengeGuildCityBoss", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      // 获取城池信息(个人排行榜,公会排行榜)
+      var getGuildCityBossInfo = function(index) {
+        pomelo.request("area.guildHandler.getGuildCityBossInfo", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
       //测试基准战力
       var testStandardTeam = function(list,dl,lv) {
         pomelo.request("area.normalHandler.testStandardTeam", {list:list,dl:dl,lv:lv}, function(data) {
