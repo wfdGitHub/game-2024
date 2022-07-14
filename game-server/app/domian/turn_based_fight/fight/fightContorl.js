@@ -750,6 +750,17 @@ model.getTeamCE = function(team) {
 			allCE += 80000 * team[6]["dby"]
 		if(team[6]["qby"])
 			allCE += 80000 * team[6]["qby"]
+		//主动技能
+		for(var i = 1;i <= 4;i++){
+			if(team[6]["power"+i]){
+				var tmpCE = 20000
+				tmpCE += power_lv[team[6]["power"+i]["lv"]] || 0
+				tmpCE += power_ad[team[6]["power"+i]["ad"]] || 0
+				tmpCE += power_star[team[6]["power"+i]["star"]] || 0
+				tmpCE = Math.floor(tmpCE * power_aptitude[power_base[team[6]["power"+i]["id"]]["aptitude"]])["ceRate"]
+				allCE += tmpCE
+			}
+		}
 	}
 	return allCE
 }
