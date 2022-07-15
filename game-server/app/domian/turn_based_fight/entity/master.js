@@ -132,6 +132,7 @@ master.prototype.masterPower = function(index) {
 			console.error("冷却中,不能使用 "+this.powers[index].CUR_CD+"/"+this.powers[index].NEED_CD)
 			return false
 		}
+		this.powers[index].updateCD(this.powers[index].NEED_CD)
 		this.changeBP(-needBp)
 		skillManager.useSkill(this.powers[index])
 		return true
