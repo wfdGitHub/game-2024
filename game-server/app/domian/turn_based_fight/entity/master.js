@@ -92,10 +92,6 @@ master.prototype.getTotalAtt = function(name) {
 	var value = this.attInfo[name] || 0
 	return value
 }
-master.prototype.onHit = function() {
-}
-master.prototype.kill = function() {
-}
 //每个英雄行动后
 master.prototype.heroAfter = function() {
 	this.changeBP(1)
@@ -168,4 +164,59 @@ master.prototype.getShowData = function() {
 	}
 	return info
 }
+//移除控制状态
+model.prototype.removeControlBuff = function() {}
+//移除非控制类负面状态
+model.prototype.removeDeBuffNotControl = function() {}
+//解除一个减益状态
+model.prototype.removeOneLower = function() {}
+//驱散增益状态
+model.prototype.removeIntensifyBuff = function() {}
+//驱散一个增益状态
+model.prototype.removeOneIntensify = function() {}
+//驱散负面状态
+model.prototype.removeDeBuff = function() {}
+//获得负面状态数量
+model.prototype.getDebuffNum = function() {}
+//获得增益状态数量
+model.prototype.getIntensifyNum = function() {}
+//清除指定角色buff
+model.prototype.clearReleaserBuff = function(releaser) {}
+//清除所有buff
+model.prototype.diedClear = function() {}
+model.prototype.addKillBuff = function(buffStr) {}
+model.prototype.addActionBuff = function(buffStr) {}
+model.prototype.addDiedBuff = function(buffStr) {}
+//闪避
+model.prototype.onMiss = function() {}
+//受到伤害
+model.prototype.onHit = function(attacker,info,callbacks) {}
+//生命流失
+model.prototype.onHPLoss = function() {}
+//受到治疗
+model.prototype.onHeal = function(releaser,info) {}
+//永久增加属性
+model.prototype.addAtt = function(name,value) {}
+//角色死亡
+model.prototype.onDie = function() {}
+//队友死亡
+model.prototype.friendDied = function(friend){}
+//击杀目标
+model.prototype.kill = function(target) {}
+//复活
+model.prototype.resurgence = function(rate,releaser) {}
+//恢复血量
+model.prototype.addHP = function(value) {}
+//扣除血量
+model.prototype.lessHP = function(info,callbacks) {}
+//恢复怒气
+model.prototype.addAnger = function(value,hide) {}
+//减少怒气
+model.prototype.lessAnger = function(value,hide,use) {}
+//获取属性
+//获取信息
+model.prototype.getInfo = function() {}
+model.prototype.getSimpleInfo = function() {}
+model.prototype.addBuff = function(releaser,buff) {}
+model.prototype.removeBuff = function(buffId) {}
 module.exports = master
