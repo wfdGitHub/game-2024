@@ -77,6 +77,8 @@ var model = function() {
 // 	return fightRecord.getList()
 // }
 model.loadFight = function(atkTeam,defTeam,otps) {
+	if(!otps.seededNum)
+		otps.seededNum = Date.now()
 	fightVerifyInfo.atkTeam = atkTeam
 	fightVerifyInfo.defTeam = defTeam
 	fightVerifyInfo.otps = otps
