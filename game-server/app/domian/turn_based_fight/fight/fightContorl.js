@@ -513,6 +513,28 @@ model.getBookInfo = function(bookId,info){
 	info.magDef = Math.floor(book_lv[info.lv]["magDef"] * add)
 	return new bookList[bookId](info)
 }
+//获取主动技能数据
+model.getPowerInfo = function(powerInfo){
+	var masterAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
+	if(powerInfo.lv && power_lv[powerInfo.lv]){
+		var powerAptitude = power_base[powerInfo.id]["aptitude"]
+		if(powerInfo.ad && power_ad[powerInfo.ad])
+			powerAptitude += power_ad[powerInfo.ad]["aptitude"]
+		var growth = power_aptitude[powerAptitude].growth
+		if(power_aptitude[power_base[powerInfo.id]["aptitude"]] && power_aptitude[power_base[powerInfo.id]["aptitude"]]["extra"]){
+			growth += power_aptitude[power_base[powerInfo.id]["aptitude"]]["extra"]
+			masterAtts["maxHP"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["maxHP"]
+			masterAtts["atk"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["atk"]
+			masterAtts["phyDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["phyDef"]
+			masterAtts["magDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["magDef"]
+		}
+		masterAtts["maxHP"] += Math.floor(power_lv[powerInfo.lv].maxHP * growth)
+		masterAtts["atk"] += Math.floor(power_lv[powerInfo.lv].atk * growth)
+		masterAtts["phyDef"] += Math.floor(power_lv[powerInfo.lv].phyDef * growth)
+		masterAtts["magDef"] += Math.floor(power_lv[powerInfo.lv].magDef * growth)
+	}
+	return masterAtts
+}
 //获取团队数据
 model.getTeamData = function(team,belong) {
 	var team = team.concat([])
