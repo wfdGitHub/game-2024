@@ -48,6 +48,7 @@ var bookList = {}
 var bookMap = {}
 var gSkillAtts = {}
 var hufuSkillCes = {}
+var fightVerifyInfo = {}
 for(var i = 0;i < bookIds.length;i++){
 	bookList[bookIds[i]] = require("../books/"+bookIds[i]+".js")
 }
@@ -76,6 +77,9 @@ var model = function() {
 // 	return fightRecord.getList()
 // }
 model.loadFight = function(atkTeam,defTeam,otps) {
+	fightVerifyInfo.atkTeam = atkTeam
+	fightVerifyInfo.defTeam = defTeam
+	fightVerifyInfo.otps = otps
     var atkInfo = this.getTeamData(atkTeam,"atk")
     var defInfo = this.getTeamData(defTeam,"def")
     var myotps = Object.assign({},otps)
@@ -89,7 +93,6 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 	otps.manual = false
 	var fighting = model.loadFight(atkTeam,defTeam,otps)
 	fighting.fightBegin()
-	model.overInfo = fightRecord.list[fightRecord.list.length-1]
 	return fightRecord.isWin()
 }
 //手动战斗
@@ -99,8 +102,51 @@ model.manualFight = function(atkTeam,defTeam,otps) {
 	fighting.fightBegin()
 	return fighting
 }
+//战斗校验
+model.fightVerifyCheck = function() {
+	var list1 = fightRecord.getList()
+	var overInfo1 = list1[list1.length-1]
+	fightVerifyInfo.otps.video = true
+	fightVerifyInfo.otps.masterSkills = overInfo1.masterSkills
+	var fighting = this.beginFight(fightVerifyInfo.atkTeam,fightVerifyInfo.defTeam,fightVerifyInfo.otps)
+	var list2 = fightRecord.getList()
+	var overInfo2 = list2[list2.length-1]
+	var d1 = JSON.stringify(list1)
+	var d2 = JSON.stringify(list2)
+	if(d1 != d2){
+		console.log("战斗校验错误",d1.length,d2.length)
+		console.log(d1)
+		console.log(d2)
+		for(var i = 0;i < list1.length;i++){
+			var l1 = JSON.stringify(list1[i])
+			var l2 = JSON.stringify(list2[i])
+			if(l1 != l2){
+				console.log("错误发生在第"+i+"项")
+				console.log(l1)
+				console.log(l2)
+				var str = ""
+				for(var j = 0;j < l1.length;j++){
+					if(l1[j] != l2[j]){
+						console.log("详细信息:第"+j+"行",str)
+						return
+					}else{
+						str += l1[j]
+					}
+				}
+				break
+			}
+		}
+	}else{
+		console.log("战斗校验成功")
+	}
+}
+
 model.getOverInfo = function() {
-	return this.overInfo
+	var overInfo = fightRecord.list[fightRecord.list.length-1]
+	if(overInfo && overInfo["type"] == "fightOver")
+		return fightRecord.list[fightRecord.list.length-1]
+	else
+		return {"err":"not find overInfo"}
 }
 //获取种族加成类型
 model.getRaceType = function(team) {
