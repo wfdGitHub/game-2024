@@ -165,58 +165,58 @@ master.prototype.getShowData = function() {
 	return info
 }
 //移除控制状态
-model.prototype.removeControlBuff = function() {}
+master.prototype.removeControlBuff = function() {}
 //移除非控制类负面状态
-model.prototype.removeDeBuffNotControl = function() {}
+master.prototype.removeDeBuffNotControl = function() {}
 //解除一个减益状态
-model.prototype.removeOneLower = function() {}
+master.prototype.removeOneLower = function() {}
 //驱散增益状态
-model.prototype.removeIntensifyBuff = function() {}
+master.prototype.removeIntensifyBuff = function() {}
 //驱散一个增益状态
-model.prototype.removeOneIntensify = function() {}
+master.prototype.removeOneIntensify = function() {}
 //驱散负面状态
-model.prototype.removeDeBuff = function() {}
+master.prototype.removeDeBuff = function() {}
 //获得负面状态数量
-model.prototype.getDebuffNum = function() {}
+master.prototype.getDebuffNum = function() {}
 //获得增益状态数量
-model.prototype.getIntensifyNum = function() {}
+master.prototype.getIntensifyNum = function() {}
 //清除指定角色buff
-model.prototype.clearReleaserBuff = function(releaser) {}
+master.prototype.clearReleaserBuff = function(releaser) {}
 //清除所有buff
-model.prototype.diedClear = function() {}
-model.prototype.addKillBuff = function(buffStr) {}
-model.prototype.addActionBuff = function(buffStr) {}
-model.prototype.addDiedBuff = function(buffStr) {}
+master.prototype.diedClear = function() {}
+master.prototype.addKillBuff = function(buffStr) {}
+master.prototype.addActionBuff = function(buffStr) {}
+master.prototype.addDiedBuff = function(buffStr) {}
 //闪避
-model.prototype.onMiss = function() {}
+master.prototype.onMiss = function() {}
 //受到伤害
-model.prototype.onHit = function(attacker,info,callbacks) {}
+master.prototype.onHit = function(attacker,info,callbacks) {}
 //生命流失
-model.prototype.onHPLoss = function() {}
+master.prototype.onHPLoss = function() {}
 //受到治疗
-model.prototype.onHeal = function(releaser,info) {}
+master.prototype.onHeal = function(releaser,info) {}
 //永久增加属性
-model.prototype.addAtt = function(name,value) {}
+master.prototype.addAtt = function(name,value) {}
 //角色死亡
-model.prototype.onDie = function() {}
+master.prototype.onDie = function() {}
 //队友死亡
-model.prototype.friendDied = function(friend){}
+master.prototype.friendDied = function(friend){}
 //击杀目标
-model.prototype.kill = function(target) {}
+master.prototype.kill = function(target) {}
 //复活
-model.prototype.resurgence = function(rate,releaser) {}
+master.prototype.resurgence = function(rate,releaser) {}
 //恢复血量
-model.prototype.addHP = function(value) {}
+master.prototype.addHP = function(value) {}
 //扣除血量
-model.prototype.lessHP = function(info,callbacks) {}
+master.prototype.lessHP = function(info,callbacks) {}
 //恢复怒气
-model.prototype.addAnger = function(value,hide) {}
+master.prototype.addAnger = function(value,hide) {}
 //减少怒气
-model.prototype.lessAnger = function(value,hide,use) {}
+master.prototype.lessAnger = function(value,hide,use) {}
 //获取属性
 //获取信息
-model.prototype.getInfo = function() {}
-model.prototype.getSimpleInfo = function() {}
-model.prototype.addBuff = function(releaser,buff) {}
-model.prototype.removeBuff = function(buffId) {}
+master.prototype.getInfo = function() {}
+master.prototype.getSimpleInfo = function() {}
+master.prototype.addBuff = function(releaser,buff) {}
+master.prototype.removeBuff = function(buffId) {}
 module.exports = master
