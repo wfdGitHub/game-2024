@@ -694,6 +694,15 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			})
 		},
 		function(next) {
+			//主动技能
+			self.getFightPower(uid,function(powers,manualModel) {
+				for(var i in powers)
+					fightTeam[6][i] = powers[i]
+				fightTeam[6]["manualModel"] = Number(manualModel) || 0
+				next()
+			})
+		},
+		function(next) {
 			//称号
 			self.redisDao.db.hget("player:user:"+uid+":playerInfo","title",function(err,data) {
 				if(data)
@@ -773,6 +782,31 @@ heroDao.prototype.getFightBook = function(uid,cb) {
 				}
 				cb(true,info)
 			})
+		}
+	})
+}
+//获取出战技能
+heroDao.prototype.getFightPower = function(uid,cb) {
+	var self = this
+	self.redisDao.db.hgetall("player:user:"+uid+":power",function(err,data) {
+		if(!data || !data.fightMap){
+			cb({},0)
+		}else{
+			var fightMap = JSON.parse(data.fightMap)
+			var index = 0
+			var powers = {}
+			for(var i in fightMap){
+				var id = fightMap[i]
+				var lv = Number(data[id+"_lv"])
+				var ad = Number(data[id+"_ad"])
+				var star = Number(data[id+"_star"])
+				if(lv && ad && star){
+					var powerInfo = {id : id,lv:lv,ad:ad,star:star}
+					index++
+					powers["power"+index] = powerInfo
+				}
+			}
+			cb(powers,data.manualModel)
 		}
 	})
 }

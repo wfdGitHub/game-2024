@@ -5,11 +5,22 @@ const book_lv = require("../../../../config/gameCfg/book_lv.json")
 const book_star = require("../../../../config/gameCfg/book_star.json")
 const book_slot = require("../../../../config/gameCfg/book_slot.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+const power_base = require("../../../../config/gameCfg/power_base.json")
+const power_lv = require("../../../../config/gameCfg/power_lv.json")
+const power_ad = require("../../../../config/gameCfg/power_ad.json")
+const power_star = require("../../../../config/gameCfg/power_star.json")
+const power_aptitude = require("../../../../config/gameCfg/power_aptitude.json")
+const power_slot = require("../../../../config/gameCfg/power_slot.json")
 const main_name = "CE"
 var bookMap = {}
 for(var i in book_list){
 	book_list[i].id = i
 	bookMap[book_list[i]["type"]] = book_list[i]
+}
+//消耗倍率
+var powerRates = {}
+for(var i in power_base){
+	powerRates[i] = power_aptitude[power_base[i]["aptitude"]]["upRate"]
 }
 module.exports = function() {
 	var self = this
@@ -332,13 +343,186 @@ module.exports = function() {
 			})
 		}
 	}
+	//获取主动技能数据
+	this.getPowerData = function(uid,cb) {
+		this.getObjAll(uid,"power",function(data) {
+			if(!data)
+				data = {}
+			for(var i in data){
+				data[i] = Number(data[i])
+			}
+			cb(true,data)
+		})
+	}
+	//设置技能属性
+	this.setPowerInfo = function(uid,powerId,name,value) {
+		self.setObj(uid,"power",powerId+"_"+name,value)
+		if(userTeams[uid] && userTeams[uid][6]){
+			for(var i = 0;i <= 4;i++){
+				if(userTeams[uid][6]["power"+i] && userTeams[uid][6]["power"+i]["id"] == powerId){
+					userTeams[uid][6]["power"+i][name] = value
+					this.updateCE(uid)
+					break
+				}
+			}
+		}
+	}
 	//主动技能升星
-
+	this.upPowerStar = function(uid,powerId,cb) {
+		if(!power_base[powerId]){
+			cb(false,"powerId not find "+powerId)
+			return
+		}
+		var rate = powerRates[powerId]
+		var item = power_base[powerId]["item"]
+		self.getObj(uid,"power",powerId+"_star",function(star) {
+			star = Number(star) || 0
+			star++
+			if(!power_star[star]){
+				cb(false,"不可升星")
+				return
+			}
+			var str = item+":"+power_star[star]["itemValue"]+"&1000730:"+power_star[star]["foodValue"]
+			self.consumeItems(uid,str,rate,"主动技能升星"+powerId,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					self.setPowerInfo(uid,powerId,"star",star)
+					if(star == 1){
+						self.setObj(uid,"power",powerId+"_lv",1)
+						self.setObj(uid,"power",powerId+"_ad",1)
+					}
+					cb(true,star)
+				}
+			})
+		})
+	}
 	//主动技能升级
-
+	this.upPowerLv = function(uid,powerId,cb) {
+		if(!power_base[powerId]){
+			cb(false,"powerId not find "+powerId)
+			return
+		}
+		var rate = powerRates[powerId]
+		self.getHMObj(uid,"power",[powerId+"_lv",powerId+"_ad"],function(list) {
+			var lv = Number(list[0]) || 1
+			var ad = Number(list[1]) || 1
+			if(lv >= power_ad[ad]["lv_limit"]){
+				cb(false,"已满级，需要升阶")
+				return
+			}
+			var str = power_lv[lv]["pc"]
+			self.consumeItems(uid,str,rate,"主动技能升级"+powerId,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					lv++
+					self.setPowerInfo(uid,powerId,"lv",lv)
+					cb(true,lv)
+				}
+			})
+		})
+	}
 	//主动技能升阶
-
-	//主动技能上阵
-
+	this.upPowerAd = function(uid,powerId,cb) {
+		if(!power_base[powerId]){
+			cb(false,"powerId not find "+powerId)
+			return
+		}
+		var rate = powerRates[powerId]
+		self.getHMObj(uid,"power",[powerId+"_lv",powerId+"_ad"],function(list) {
+			var lv = Number(list[0]) || 1
+			var ad = Number(list[1]) || 1
+			if(lv < power_ad[ad]["lv_limit"]){
+				cb(false,"先升满级"+lv+"/"+power_ad[ad]["lv_limit"])
+				return
+			}
+			var str = power_ad[ad]["pc"]
+			self.consumeItems(uid,str,rate,"主动技能升阶"+powerId,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					ad++
+					self.setPowerInfo(uid,powerId,"ad",ad)
+					cb(true,ad)
+				}
+			})
+		})
+	}
+	//设置上阵技能
+	this.setPowerFight = function(uid,list,cb) {
+		if(!Array.isArray(list)){
+			cb(false,"参数错误")
+			return
+		}
+		var map = {}
+		for(var i = 0;i < list.length;i++){
+			if(list[i]){
+				if(map[list[i]]){
+					cb(false,"技能重复")
+					return
+				}
+				map[list[i]] = true
+			}
+		}
+		var lv = self.getLordLv(uid)
+		for(var i = 0;i < list.length;i++){
+			if(!list[i] || !power_base[list]){
+				cb(false,"power not find"+list[i])
+				return
+			}
+			var index = i+1
+			if(!power_slot[index]){
+				cb(false,"插槽不存在"+index)
+				return
+			}
+			if(lv < power_slot[index]["lv"]){
+				cb(false,"插槽未开启"+index)
+				return
+			}
+		}
+		self.setObj(uid,"power","fightMap",JSON.stringify(list),function() {
+			self.CELoad(uid)
+		})
+		cb(true)
+	}
+	//主动技能重生
+	this.resetPower = function(uid,powerId,cb) {
+		if(!power_base[powerId]){
+			cb(false,"powerId not find "+powerId)
+			return
+		}
+		self.getHMObj(uid,"power",[powerId+"_lv",powerId+"_ad"],function(list) {
+			var lv = Number(list[0]) || 1
+			var ad = Number(list[1]) || 1
+			if(lv == 1){
+				cb(false,"当前不可重生")
+				return
+			}
+			self.consumeItems(uid,default_cfg["default_pc_2"]["value"],1,"重生消耗"+powerId,function(flag,err) {
+				if(flag){
+					var str = power_lv[lv]["pr"]
+					if(power_ad[ad]["pr"])
+						str += "&"+power_ad[ad]["pr"]
+					self.setPowerInfo(uid,powerId,"lv",1)
+					self.setPowerInfo(uid,powerId,"ad",1)
+					var rate = powerRates[powerId]
+					var awardList = self.addItemStr(uid,str,rate,"重生技能"+powerId)
+					cb(true,awardList)
+				}else{
+					cb(false,err)
+				}
+			})
+		})
+	}
 	//设置释放偏好
+	this.setManualModel = function(uid,type,cb) {
+		if(type !== 0 && type !== 1){
+			cb(false,"type error "+type)
+			return
+		}
+		userTeams[uid][6]["manualModel"] = type
+		self.setObj(uid,"power","manualModel",type,function(){})
+		cb(true)
+	}
 }

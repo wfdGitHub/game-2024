@@ -98,6 +98,52 @@
         console.log("onChat")
         console.log(data)
       })
+      //=================主动技能==================//
+      //获取主动技能数据
+      var getPowerData = function() {
+        pomelo.request("area.powerHandler.getPowerData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //主动技能升星
+      var upPowerStar = function(powerId) {
+        pomelo.request("area.powerHandler.upPowerStar", {powerId:powerId}, function(data) {
+            console.log(data);
+        });
+      }
+      //主动技能升阶
+      var upPowerAd = function(powerId) {
+        pomelo.request("area.powerHandler.upPowerAd", {powerId:powerId}, function(data) {
+            console.log(data);
+        });
+      }
+      //主动技能升级
+      var upPowerLv = function(powerId) {
+        pomelo.request("area.powerHandler.upPowerLv", {powerId:powerId}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置上阵技能
+      var setPowerFight = function(list) {
+        pomelo.request("area.powerHandler.setPowerFight", {list:list}, function(data) {
+            console.log(data);
+        });
+      }
+      //主动技能重生
+      var resetPower = function(powerId) {
+        pomelo.request("area.powerHandler.resetPower", {powerId:powerId}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置释放偏好
+      var setManualModel = function(type) {
+        pomelo.request("area.powerHandler.setManualModel", {type:type}, function(data) {
+            console.log(data);
+        });
+      }
+
+
+
       var banSendMsg = function(text) {
         pomelo.request("connector.logHandler.banSendMsg", {text:text}, function(data) {
             console.log(data);
@@ -3512,6 +3558,15 @@
       <input id="test" type="button" value="签到" onclick="festivalSignIn(0)"/>
       <input id="test" type="button" value="挑战boss" onclick="challengeFestivalBoss()"/>
       <input id="test" type="button" value="兑换物品" onclick="festivalShop(0)"/>
+    </div>
+    <div class="g-button">
+      主动技能 : 
+      <input id="test" type="button" value="主动技能数据" onclick="getPowerData()"/>
+      <input id="test" type="button" value="升星" onclick="upPowerStar(500800)"/>
+      <input id="test" type="button" value="升阶" onclick="upPowerAd(500800)"/>
+      <input id="test" type="button" value="升级" onclick="upPowerLv(500800)"/>
+      <input id="test" type="button" value="重生" onclick="resetPower(500800)"/>
+      <input id="test" type="button" value="设置偏好" onclick="setManualModel(0)"/>
     </div>
   </body>
 </html>
