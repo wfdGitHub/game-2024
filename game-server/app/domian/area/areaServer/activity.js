@@ -11,6 +11,7 @@ const consumeTotal = require("../../../../config/gameCfg/consumeTotal.json")
 const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
 const pay_days = require("../../../../config/gameCfg/pay_days.json")
 const unlock_cfg = require("../../../../config/gameCfg/unlock_cfg.json")
+const open_cfg = require("../../../../config/gameCfg/open_cfg.json")
 const invade = require("../../../../config/gameCfg/invade.json")
 const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
@@ -573,6 +574,10 @@ module.exports = function() {
 		var lv = self.getLordLv(uid)
 		if(!index || !open_cfg[index] || lv < open_cfg[index]["lv"]){
 			cb(false,"等级不足")
+			return
+		}
+		if(!open_cfg[index]["award"]){
+			cb(false,"没有奖励")
 			return
 		}
 		self.getObj(uid,main_name,"open_"+index,function(data) {
