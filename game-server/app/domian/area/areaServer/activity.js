@@ -571,11 +571,11 @@ module.exports = function() {
 	//领取功能开启奖励
 	this.gainSysOpenAward = function(uid,index,cb) {
 		var lv = self.getLordLv(uid)
-		if(!index || !unlock_cfg[index] || lv < unlock_cfg[index]["lv"]){
+		if(!index || !open_cfg[index] || lv < open_cfg[index]["lv"]){
 			cb(false,"等级不足")
 			return
 		}
-		if(!unlock_cfg[index]["award"]){
+		if(!open_cfg[index]["award"]){
 			cb(false,"没有奖励")
 			return
 		}
@@ -584,7 +584,7 @@ module.exports = function() {
 				cb(false,"已领取")
 			}else{
 				self.setObj(uid,main_name,"open_"+index,1)
-				var awardList = self.addItemStr(uid,unlock_cfg[index]["award"],1,"功能开启"+index)
+				var awardList = self.addItemStr(uid,open_cfg[index]["award"],1,"功能开启"+index)
 				cb(true,awardList)
 			}
 		})
