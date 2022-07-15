@@ -37,6 +37,7 @@ var power_ad = require("../../../../config/gameCfg/power_ad.json")
 var power_aptitude = require("../../../../config/gameCfg/power_aptitude.json")
 var power_base = require("../../../../config/gameCfg/power_base.json")
 var power_lv = require("../../../../config/gameCfg/power_lv.json")
+var power_star = require("../../../../config/gameCfg/power_star.json")
 
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
@@ -754,10 +755,10 @@ model.getTeamCE = function(team) {
 		for(var i = 1;i <= 4;i++){
 			if(team[6]["power"+i]){
 				var tmpCE = 20000
-				tmpCE += power_lv[team[6]["power"+i]["lv"]] || 0
-				tmpCE += power_ad[team[6]["power"+i]["ad"]] || 0
-				tmpCE += power_star[team[6]["power"+i]["star"]] || 0
-				tmpCE = Math.floor(tmpCE * power_aptitude[power_base[team[6]["power"+i]["id"]]["aptitude"]])["ceRate"]
+				tmpCE += power_lv[team[6]["power"+i]["lv"]]["ce"] || 0
+				tmpCE += power_ad[team[6]["power"+i]["ad"]]["ce"] || 0
+				tmpCE += power_star[team[6]["power"+i]["star"]]["ce"] || 0
+				tmpCE = Math.floor(tmpCE * power_aptitude[power_base[team[6]["power"+i]["id"]]["aptitude"]]["ceRate"])
 				allCE += tmpCE
 			}
 		}
