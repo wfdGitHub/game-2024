@@ -181,6 +181,8 @@ var model = function() {
 				case "none":
 				case "attack":
 					var str = ""
+					if(!heroNames[info.id])
+						console.log(info)
 					if(info.id == "atkMaster"){
 						str = "\033[34m我方主角使用技能"+info.name+"\033[0m"
 					}else if(info.id == "defMaster"){
@@ -214,7 +216,14 @@ var model = function() {
 					console.log(str)
 				break
 				case "heal":
-					var str = "\033[36m"+heroNames[info.id]+"使用"+info.name+"\033[0m"
+					var str = ""
+					if(info.id == "atkMaster"){
+						str = "\033[34m我方主角使用技能"+info.name+"\033[0m"
+					}else if(info.id == "defMaster"){
+						str = "\033[34m敌方主角使用技能"+info.name+"\033[0m"
+					}else{
+						str = "\033[36m"+heroNames[info.id]+"使用"+info.name+"\033[0m"
+					}
 					for(var i = 0;i < info.targets.length;i++){
 						if(info.targets[i].rescue){
 							str += "\n  \033[32m复活"+heroNames[info.targets[i].id]

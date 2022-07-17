@@ -846,6 +846,10 @@ model.useHealSkill = function(skill,chase) {
 			targets[0].resurgence(tmpValue,skill.character)
 			return targets
 		}
+		if(!skill.mul){
+			fightRecord.push(recordInfo)
+			return []
+		}
 	}
 	//转化亡魂
 	if(skill.turn_ghost){
