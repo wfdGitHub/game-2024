@@ -530,10 +530,10 @@ model.getPowerInfo = function(powerInfo){
 			masterAtts["phyDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["phyDef"]
 			masterAtts["magDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["magDef"]
 		}
-		masterAtts["maxHP"] = Math.floor(power_lv[powerInfo.lv].maxHP * growth)
-		masterAtts["atk"] = Math.floor(power_lv[powerInfo.lv].atk * growth)
-		masterAtts["phyDef"] = Math.floor(power_lv[powerInfo.lv].phyDef * growth)
-		masterAtts["magDef"] = Math.floor(power_lv[powerInfo.lv].magDef * growth)
+		masterAtts["maxHP"] = Math.floor(power_lv[powerInfo.lv].maxHP * growth + masterAtts["maxHP"])
+		masterAtts["atk"] = Math.floor(power_lv[powerInfo.lv].atk * growth + masterAtts["atk"])
+		masterAtts["phyDef"] = Math.floor(power_lv[powerInfo.lv].phyDef * growth + masterAtts["phyDef"])
+		masterAtts["magDef"] = Math.floor(power_lv[powerInfo.lv].magDef * growth + masterAtts["magDef"])
 	}
 	return masterAtts
 }
@@ -573,10 +573,10 @@ model.getTeamData = function(team,belong) {
 						masterAtts["phyDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["phyDef"]
 						masterAtts["magDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["magDef"]
 					}
-					masterAtts["maxHP"] = Math.floor(power_lv[powerInfo.lv].maxHP * growth)
-					masterAtts["atk"] = Math.floor(power_lv[powerInfo.lv].atk * growth)
-					masterAtts["phyDef"] = Math.floor(power_lv[powerInfo.lv].phyDef * growth)
-					masterAtts["magDef"] = Math.floor(power_lv[powerInfo.lv].magDef * growth)
+					masterAtts["maxHP"] = Math.floor(power_lv[powerInfo.lv].maxHP * growth + masterAtts["maxHP"])
+					masterAtts["atk"] = Math.floor(power_lv[powerInfo.lv].atk * growth + masterAtts["atk"])
+					masterAtts["phyDef"] = Math.floor(power_lv[powerInfo.lv].phyDef * growth + masterAtts["phyDef"])
+					masterAtts["magDef"] = Math.floor(power_lv[powerInfo.lv].magDef * growth + masterAtts["magDef"])
 				}
 			}
 		}

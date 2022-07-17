@@ -316,6 +316,11 @@ model.useSkill = function(skill,chase,point) {
 			this.fighting.next_character.push(tmpTargets[0])
 		}
 	}
+	if(skill.extraAtion){
+		if(!targets[0].died){
+			this.fighting.next_character.push(targets[0])
+		}
+	}
 	//追加普攻增加伤害吸收盾
 	if(chase && skill.character.chase_shield && !skill.character.died)
 		buffManager.createBuff(skill.character,skill.character,{buffId:"shield",buffArg:skill.character.chase_shield,duration:1})

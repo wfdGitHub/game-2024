@@ -114,6 +114,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}
 	if(skill["camp_amp_"+target.realm])
 		mul *= 1 + skill["camp_amp_"+target.realm]
+	if(attacker.power_up && skill.skillType == "power")
+		mul *= 1 + attacker.power_up
 	info.value = Math.round((atk - def) * skill.mul * mul)
 	if(info.value < 1)
 		info.value = 1

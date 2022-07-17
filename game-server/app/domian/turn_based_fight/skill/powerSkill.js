@@ -5,6 +5,7 @@ var baseSkill = require("./baseSkill.js")
 var model = function(otps,character) {
 	baseSkill.call(this,otps,character)
 	this.type = otps.type
+	this.skillType = "power"
 	//初始化参数
 	this.baseMUl = this.mul 							//技能初始威力
 	this.NEED_BP = otps.NEED_BP || 10					//所需BP值
@@ -31,6 +32,8 @@ var model = function(otps,character) {
 				this[key] = value
 			}
 		}
+		if(this.power_up)
+			this.character.power_up += this.power_up
 	}
 	//使用技能结束
 	this.useSkillOver = function() {

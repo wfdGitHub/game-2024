@@ -4,6 +4,7 @@ var model = function(otps,character) {
 	baseSkill.call(this,otps,character)
 	//初始化参数
 	this.type = "attack"
+	this.skillType = "hero"
 	this.skill_anger_s = 0 								//自身怒气恢复值
 	this.skill_anger_a = 0 								//全队怒气恢复值
 	this.skill_less_anger = 0 							//降低目标怒气值
