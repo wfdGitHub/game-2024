@@ -178,6 +178,7 @@ var model = function() {
 					str += "\t剩余"+info.curValue+"/"+info.maxHP
 					console.log(str)
 				break
+				case "none":
 				case "attack":
 					var str = ""
 					if(info.id == "atkMaster"){
@@ -289,7 +290,7 @@ var model = function() {
 					console.log(info.belong+"主角BP值更新 "+info.BP)
 				break
 				default:
-					console.log("类型未定义 : ",info.type)
+					console.log("类型未定义 : ",info)
 			}
 		}
 	}

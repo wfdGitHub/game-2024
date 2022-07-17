@@ -8,6 +8,7 @@ var skillsCfg = require("../../../../config/gameCfg/skills.json")
 var master = function(otps) {
 	//=========基础属性=======//
 	this.belong = otps.belong   //所属阵容
+	this.characterType = "master"  //角色类型
 	this.id = this.belong+"Master"
 	this.index = 0				//所在位置
 	this.peerMaster = {}        //对方主角

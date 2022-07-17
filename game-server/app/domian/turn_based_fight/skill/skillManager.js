@@ -41,7 +41,7 @@ model.useSkill = function(skill,chase,point) {
 			targets = this.useHealSkill(skill,chase)
 		break
 		default:
-			targets = this.locator.getTargets(skill.character,skill.targetType)
+			targets = this.userNoneSkill(skill,chase)
 	}
 	var targetsNum = this.locator.getTargetsNum(skill.targetType)
 	if(skill.isAnger){
@@ -975,5 +975,13 @@ model.useHealSkill = function(skill,chase) {
 	for(var i = 0;i < callbacks.length;i++)
 		callbacks[i]()
 	return targets
+}
+//非直接技能
+model.userNoneSkill = function(skill,chase) {
+	var recordInfo = skill.getInfo()
+	recordInfo.type = "attack"
+	recordInfo.targets = []
+	fightRecord.push(recordInfo)
+	return this.locator.getTargets(skill.character,skill.targetType)
 }
 module.exports = model

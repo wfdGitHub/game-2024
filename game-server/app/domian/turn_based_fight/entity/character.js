@@ -5,6 +5,7 @@ var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var model = function(otps) {
 	//=========身份===========//
 	this.heroId = Number(otps.id)
+	this.characterType = "hero"  //角色类型
 	this.realm = otps.realm		//国家
 	this.career = otps.career	//角色职业   healer 治疗者
 	this.sex = otps.sex 		//性别 1男 2女
