@@ -143,7 +143,6 @@ master.prototype.masterPower = function(index) {
 	}
 }
 master.prototype.changeBP = function(change) {
-	this.BP = this.BP + change
 	if(this.BP > 12 && change > 0)
 		return
 	if(this.BP <= 0 && change  < 0)
@@ -152,6 +151,7 @@ master.prototype.changeBP = function(change) {
 		this.BP = 0
 	if(this.BP > 12)
 		this.BP = 12
+	this.BP = this.BP + change
 	var info =  {}
 	info.type = "bp_update"
 	info.belong = this.belong
