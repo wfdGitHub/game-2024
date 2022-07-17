@@ -74,7 +74,6 @@ var model = function() {
 					console.log(str)
 				break
 				case "master":
-					console.log(info)
 					var str = ""
 					if(info.belong == "atk")
 						str = "\033[32m我方主角开始行动\033[0m"
@@ -181,8 +180,6 @@ var model = function() {
 				case "none":
 				case "attack":
 					var str = ""
-					if(!heroNames[info.id])
-						console.log(info)
 					if(info.id == "atkMaster"){
 						str = "\033[34m我方主角使用技能"+info.name+"\033[0m"
 					}else if(info.id == "defMaster"){

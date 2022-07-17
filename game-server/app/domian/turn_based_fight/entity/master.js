@@ -120,10 +120,8 @@ master.prototype.masterPower = function(index) {
 		return false	
 	}
 	var needBp = this.TMP_CURBP + this.powers[index].NEED_BP
-	if(this.ONCE_CURBP){
+	if(this.ONCE_CURBP)
 		needBp += this.ONCE_CURBP
-		this.ONCE_CURBP = 0
-	}
 	if(this.powers[index]){
 		if(this.BP < needBp){
 			console.error("BP不足,不能使用 "+this.BP+"/"+needBp)
@@ -135,6 +133,7 @@ master.prototype.masterPower = function(index) {
 		}
 		this.powers[index].updateCD(this.powers[index].NEED_CD)
 		this.changeBP(-needBp)
+		this.ONCE_CURBP = 0
 		skillManager.useSkill(this.powers[index])
 		return true
 	}else{
