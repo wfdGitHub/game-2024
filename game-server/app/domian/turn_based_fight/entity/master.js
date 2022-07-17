@@ -45,7 +45,7 @@ master.prototype.checkManualModel = function() {
 		case 1:
 			if(this.powers[this.manualIndex]){
 				var needBp = this.TMP_CURBP + this.powers[this.manualIndex].NEED_BP + this.ONCE_CURBP
-				if(this.BP >= needBp){
+				if(this.BP >= needBp && this.powers[this.manualIndex].CUR_CD == 0){
 					this.masterPower(this.manualIndex)
 					var info = {
 						belong : this.belong,
@@ -61,15 +61,18 @@ master.prototype.checkManualModel = function() {
 		default:
 			for(var index = 0;index < this.powers.length;index++){
 				var needBp = this.TMP_CURBP + this.powers[index].NEED_BP + this.ONCE_CURBP
-				if(this.BP >= needBp){
-					this.masterPower(index)
-					var info = {
-						belong : this.belong,
-						runCount : this.fighting.runCount,
-						index : index
+				if(this.BP >= needBp && this.powers[index].CUR_CD == 0){
+					if(this.masterPower(index)){
+						var info = {
+							belong : this.belong,
+							runCount : this.fighting.runCount,
+							index : index
+						}
+						this.fighting.masterSkills.push(info)
+						return 	true
+					}else{
+						return false
 					}
-					this.fighting.masterSkills.push(info)
-					return true
 				}
 			}
 	}

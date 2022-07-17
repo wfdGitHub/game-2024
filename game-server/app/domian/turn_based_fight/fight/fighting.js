@@ -625,11 +625,10 @@ model.prototype.checkMaster = function() {
 			if(this.masterSkillsRecord[0]["runCount"] == this.runCount){
 				var info = this.masterSkillsRecord.shift()
 				if(info.belong == "atk"){
-					this.atkMasterSkill(info["index"])
+					return this.atkMasterSkill(info["index"])
 				}else if(info.belong == "def"){
-					this.defMasterSkill(info["index"])
+					return this.defMasterSkill(info["index"])
 				}
-				return true
 			}
 		}
 	}else{
