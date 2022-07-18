@@ -6,6 +6,7 @@ var model = function(otps,character) {
 	baseSkill.call(this,otps,character)
 	this.type = otps.type
 	this.skillType = "power"
+	this.isAnger = true
 	//初始化参数
 	this.baseMUl = this.mul 							//技能初始威力
 	this.NEED_BP = otps.NEED_BP || 10					//所需BP值
