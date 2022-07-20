@@ -42,7 +42,8 @@ fbHandler.prototype.challengeDailyfb = function(msg, session, next) {
   var areaId = session.get("areaId")
   var fbId = msg.fbId
   var verify = msg.verify
-  this.areaManager.areaMap[areaId].challengeDailyfb(uid,fbId,verify,function(flag,msg) {
+  var masterSkills = msg.masterSkills
+  this.areaManager.areaMap[areaId].challengeDailyfb(uid,fbId,verify,masterSkills,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

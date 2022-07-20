@@ -32,7 +32,7 @@ module.exports = function() {
 		})
 	}
 	//挑战关卡
-	this.challengeMysterious = function(uid,lv,verify,cb) {
+	this.challengeMysterious = function(uid,lv,verify,masterSkills,cb) {
 		if(!mysterious_realm[lv]){
 			cb(false,"关卡不存在")
 			return
@@ -72,10 +72,10 @@ module.exports = function() {
 			   	var atkTeam = fightInfo.team
 			   	var seededNum = fightInfo.seededNum
 			   	var defTeam = mysterious_realm[lv]["team"]
-			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"英雄试炼")
-			    	next("战斗验证错误")
+			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
+			    if(verify !== self.fightContorl.getVerifyInfo()){
+			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"英雄试炼")
+			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
 			    	return
 			    }
 			    var info = {}

@@ -39,7 +39,8 @@ fightHandler.prototype.challengeCheckpoints = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   var verify = msg.verify
-  this.areaManager.areaMap[areaId].challengeCheckpoints(uid,verify,function(flag,result) {
+  var masterSkills = msg.masterSkills
+  this.areaManager.areaMap[areaId].challengeCheckpoints(uid,verify,masterSkills,function(flag,result) {
     next(null,{flag : flag,result : result})
   })
 }
@@ -77,7 +78,8 @@ fightHandler.prototype.challengeOneEndless = function(msg, session, next) {
   var seededList = msg.seededList
   var index = msg.index
   var verifys = msg.verifys
-  this.areaManager.areaMap[areaId].challengeOneEndless(uid,hIds,id,seededList,index,verifys,function(flag,data) {
+  var masterSkillList = msg.masterSkillList
+  this.areaManager.areaMap[areaId].challengeOneEndless(uid,hIds,id,seededList,index,verifys,masterSkillList,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -90,7 +92,8 @@ fightHandler.prototype.challengeThreeEndless = function(msg, session, next) {
   var seededList = msg.seededList
   var index = msg.index
   var verifys = msg.verifys
-  this.areaManager.areaMap[areaId].challengeThreeEndless(uid,hIds,id,seededList,index,verifys,function(flag,data) {
+  var masterSkillList = msg.masterSkillList
+  this.areaManager.areaMap[areaId].challengeThreeEndless(uid,hIds,id,seededList,index,verifys,masterSkillList,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

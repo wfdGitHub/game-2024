@@ -18,7 +18,8 @@ mysteriousHandler.prototype.challengeMysterious = function(msg, session, next) {
   var areaId = session.get("areaId")
   var lv = msg.lv
   var verify = msg.verify
-  this.areaManager.areaMap[areaId].challengeMysterious(uid,lv,verify,function(flag,data) {
+  var masterSkills = msg.masterSkills
+  this.areaManager.areaMap[areaId].challengeMysterious(uid,lv,verify,masterSkills,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

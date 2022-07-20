@@ -51,7 +51,7 @@ module.exports = function() {
 		})
 	}
 	//挑战通天塔
-	this.challengeTTTBoss = function(uid,verify,cb) {
+	this.challengeTTTBoss = function(uid,verify,masterSkills,cb) {
 		var level = 0
 		async.waterfall([
 			function(next) {
@@ -74,10 +74,10 @@ module.exports = function() {
 			   	var seededNum = fightInfo.seededNum
 			    var mon_list = ttttower_level[level]["defTeam"]
 			    var defTeam = self.standardTeam(uid,mon_list,"ttt_main",ttttower_level[level]["lv"])
-			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"通天塔")
-			    	next({"text":"战斗验证错误"})
+			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
+			    if(verify !== self.fightContorl.getVerifyInfo()){
+			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"通天塔")
+			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
 			    	return
 			    }
 			    self.taskUpdate(uid,"ttt",1)
@@ -148,7 +148,7 @@ module.exports = function() {
 		})
 	}
 	//挑战阵营塔
-	this.challengeRealmBoss = function(uid,realm,heros,seededNum,verify,cb) {
+	this.challengeRealmBoss = function(uid,realm,heros,seededNum,verify,masterSkills,cb) {
 		if(!realm_day[self.weekDay][realm]){
 			cb(false,"今日未开放该阵营")
 			return
@@ -199,10 +199,10 @@ module.exports = function() {
 			function(atkTeam,next) {
 			    var mon_list = ttttower_realm[level]["defTeam"]
 			    var defTeam = self.standardTeam(uid,mon_list,"ttt_realm",ttttower_realm[level]["lv"])
-			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"阵营塔")
-			    	next({"text":"战斗验证错误"})
+			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
+			    if(verify !== self.fightContorl.getVerifyInfo()){
+			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"阵营塔")
+			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
 			    	return
 			    }
 			   	if(winFlag){

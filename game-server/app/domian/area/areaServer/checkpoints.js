@@ -45,7 +45,7 @@ module.exports = function() {
 	this.checkpointsFail = function(uid,level,cb) {
 	}
 	//开始挑战关卡
-	this.challengeCheckpoints = function(uid,verify,cb) {
+	this.challengeCheckpoints = function(uid,verify,masterSkills,cb) {
 		var level = 0
 		async.waterfall([
 			function(next) {
@@ -76,10 +76,10 @@ module.exports = function() {
 			    let defTeam = []
 			    let mon_list = JSON.parse(checkpointsCfg[level].mon_list)
 			    defTeam = self.standardTeam(uid,mon_list,"main",checkpointsCfg[level]["lev_limit"])
-			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"主线关卡")
-			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getFightRecord()})
+			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
+			    if(verify !== self.fightContorl.getVerifyInfo()){
+			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"主线关卡")
+			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
 			    	return
 			    }
 			    if(winFlag){

@@ -28,7 +28,7 @@ module.exports = function() {
 		cb(true,list)
 	}
 	//挑战单人试炼
-	this.challengeOneEndless = function(uid,hIds,id,seededList,index,verifys,cb) {
+	this.challengeOneEndless = function(uid,hIds,id,seededList,index,verifys,masterSkillList,cb) {
 		var day = (new Date()).getDay()
 		if(day != 2 && day != 4 && day != 6){
 			cb(false,"今日未开放")
@@ -91,15 +91,14 @@ module.exports = function() {
 				for(var i = 0;i < seededList.length;i++){
 					var curLv = i+1
 					defTeam = self.standardTeam(null,endless_one[id]["team_"+curLv],"main",endless_one[id]["level"])
-					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededList[i]})
+					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededList[i],masterSkills : masterSkillList[i]})
 					if(!winFlag){
 						next("第"+curLv+"场战斗失败")
 						return
 					}
-				    if(verifys[i] !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-				    	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]),"单人无尽试炼")
-				    	console.log("无尽试炼 第"+i+"场战斗校验错误")
-				    	next("战斗验证错误")
+					if(verifys[i] !== self.fightContorl.getVerifyInfo()){
+				    	self.verifyFaild(uid,verifys[i],self.fightContorl.getVerifyInfo(),"单人无尽试炼"+i)
+				    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
 				    	return
 				    }
 					var list = self.fightContorl.getFightRecord()
@@ -132,7 +131,7 @@ module.exports = function() {
 		})
 	}
 	//挑战三人试炼
-	this.challengeThreeEndless = function(uid,hIds,id,seededList,index,verifys,cb) {
+	this.challengeThreeEndless = function(uid,hIds,id,seededList,index,verifys,masterSkillList,cb) {
 		var day = (new Date()).getDay()
 		if(day != 0 && day != 1 && day != 3 && day != 5){
 			cb(false,"今日未开放")
@@ -198,14 +197,14 @@ module.exports = function() {
 				for(var i = 0;i < seededList.length;i++){
 					var curLv = i+1
 					defTeam = self.standardTeam(null,endless_three[id]["team_"+curLv],"main",endless_three[id]["level"])
-					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededList[i]})
+					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededList[i],masterSkills : masterSkillList[i]})
 					if(!winFlag){
 						next("第"+curLv+"场战斗失败")
 						return
 					}
-				    if(verifys[i] !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-				    	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]),"三人无尽试炼")
-				    	next("战斗验证错误")
+					if(verifys[i] !== self.fightContorl.getVerifyInfo()){
+				    	self.verifyFaild(uid,verifys[i],self.fightContorl.getVerifyInfo(),"三人无尽试炼"+i)
+				    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
 				    	return
 				    }
 					// console.log("第"+curLv+"场",atkTeam[1])

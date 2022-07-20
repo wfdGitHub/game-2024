@@ -81,14 +81,14 @@ model.loadFight = function(atkTeam,defTeam,otps) {
 		otps.seededNum = Date.now()
 	fightVerifyInfo.atkTeam = atkTeam
 	fightVerifyInfo.defTeam = defTeam
-	fightVerifyInfo.otps = otps
+	fightVerifyInfo.otps = otps || {}
     var atkInfo = this.getTeamData(atkTeam,"atk")
     var defInfo = this.getTeamData(defTeam,"def")
     var myotps = Object.assign({},otps)
     myotps.atkTeamAdds = atkInfo.teamAdds
     myotps.defTeamAdds = defInfo.teamAdds
-	var fighting = new fightingFun(atkInfo,defInfo,myotps)
-	return fighting
+	this.fighting = new fightingFun(atkInfo,defInfo,myotps)
+	return this.fighting
 }
 //自动战斗
 model.beginFight = function(atkTeam,defTeam,otps) {
@@ -96,6 +96,12 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 	var fighting = model.loadFight(atkTeam,defTeam,otps)
 	fighting.fightBegin()
 	return fightRecord.isWin()
+}
+//获取校验数据
+model.getVerifyInfo = function() {
+	if(this.fighting && fightVerifyInfo)
+		fightVerifyInfo.otps.masterSkills = this.fighting.masterSkills
+	return JSON.stringify(fightVerifyInfo)
 }
 //手动战斗
 model.manualFight = function(atkTeam,defTeam,otps) {

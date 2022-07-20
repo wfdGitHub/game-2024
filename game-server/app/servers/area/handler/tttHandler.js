@@ -15,7 +15,7 @@ tttHandler.prototype.getTTTInfo = function(msg, session, next) {
 tttHandler.prototype.challengeTTTBoss = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].challengeTTTBoss(uid,msg.verify,function(flag,msg) {
+  this.areaManager.areaMap[areaId].challengeTTTBoss(uid,msg.verify,msg.masterSkills,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }
@@ -36,6 +36,7 @@ tttHandler.prototype.challengeRealmBoss = function(msg, session, next) {
   var heros = msg.heros
   var seededNum = msg.seededNum
   var verify = msg.verify
+  var masterSkills = msg.masterSkills
   if(!Number.isInteger(seededNum)){
     next(null,{flag : false,msg : "seededNum error"})
     return
@@ -46,7 +47,7 @@ tttHandler.prototype.challengeRealmBoss = function(msg, session, next) {
   }
   if(heros.length >= 7)
     heros = heros.slice(0,6)
-  this.areaManager.areaMap[areaId].challengeRealmBoss(uid,realm,heros,seededNum,verify,function(flag,msg) {
+  this.areaManager.areaMap[areaId].challengeRealmBoss(uid,realm,heros,seededNum,verify,masterSkills,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

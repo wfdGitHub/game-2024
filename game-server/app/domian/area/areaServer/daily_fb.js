@@ -29,7 +29,7 @@ module.exports = function() {
 		}
 	}
 	//挑战日常副本
-	this.challengeDailyfb = function(uid,fbId,verify,cb) {
+	this.challengeDailyfb = function(uid,fbId,verify,masterSkills,cb) {
 		if(!daily_fb_base[fbId]){
 			cb(false,"副本不存在")
 			return
@@ -78,10 +78,10 @@ module.exports = function() {
 				   	}
 				   	var seededNum = fightInfo.seededNum
 				   	var defTeam = JSON.parse(daily_fb_base[fbId]["npcteam"])
-				   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-				    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-				    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"日常副本")
-				    	next({"text":"战斗验证错误"})
+				   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
+				    if(verify !== self.fightContorl.getVerifyInfo()){
+				    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"日常副本")
+				    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
 				    	return
 				    }
 				   	if(winFlag){
