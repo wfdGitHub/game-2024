@@ -65,8 +65,9 @@ heroDao.prototype.randHero = function(areaId,uid,type,count) {
       for(var i in weights){
         if(rand < weights[i]){
           var heroList = recruit_list[i].heroList
+          var star = recruit_list[i].star
           var heroId = heroList[Math.floor(heroList.length * Math.random())]
-          var heroInfo = this.gainHero(areaId,uid,{id : heroId})
+          var heroInfo = this.gainHero(areaId,uid,{id : heroId,star : star})
           heroInfos.push(heroInfo)
           break
         }
