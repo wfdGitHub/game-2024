@@ -382,7 +382,9 @@ module.exports = function() {
 				cb(false,"不可升星")
 				return
 			}
-			var str = item+":"+power_star[star]["itemValue"]+"&1000730:"+power_star[star]["foodValue"]
+			var str = item+":"+power_star[star]["itemValue"]
+			if(power_star[star]["foodValue"])
+				str += "&1000730:"+power_star[star]["foodValue"]
 			self.consumeItems(uid,str,rate,"主动技能升星"+powerId,function(flag,err) {
 				if(!flag){
 					cb(false,err)
