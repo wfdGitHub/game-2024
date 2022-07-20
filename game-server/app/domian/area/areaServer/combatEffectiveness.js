@@ -472,7 +472,7 @@ module.exports = function() {
 		}
 		var lv = self.getLordLv(uid)
 		for(var i = 0;i < list.length;i++){
-			if(!list[i] || !power_base[list]){
+			if(list[i] && !power_base[list[i]]){
 				cb(false,"power not find"+list[i])
 				return
 			}
