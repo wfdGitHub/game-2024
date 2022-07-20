@@ -349,7 +349,10 @@ module.exports = function() {
 			if(!data)
 				data = {}
 			for(var i in data){
-				data[i] = Number(data[i])
+				if(i == "fightMap")
+					data[i] = JSON.parse(data[i])
+				else
+					data[i] = Number(data[i])
 			}
 			cb(true,data)
 		})
