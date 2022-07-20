@@ -81,45 +81,45 @@ var fighting = fightContorl.beginFight(atkTeam,defTeam,{"video":false,"seededNum
 // var data = fighting.keepRun()
 // while(data){
 // 	data = fighting.keepRun()
-// }
-var list1 = fightRecord.getList()
-var overInfo1 = list1[list1.length-1]
+// // }
+// var list1 = fightRecord.getList()
+// var overInfo1 = list1[list1.length-1]
 // fightRecord.explain()
 // [
 //   { belong: 'atk', runCount: 8, index: 0 },
 //   { belong: 'atk', runCount: 17, index: 0 }
 // ]
-var fighting = fightContorl.beginFight(atkTeam,defTeam,{"video":true,"masterSkills":overInfo1.masterSkills,"seededNum":seededNum})
-var list2 = fightRecord.getList()
-var overInfo2 = list2[list2.length-1]
-// console.log(overInfo2)
-fightRecord.explain()
+// var fighting = fightContorl.beginFight(atkTeam,defTeam,{"video":true,"masterSkills":overInfo1.masterSkills,"seededNum":seededNum})
+// var list2 = fightRecord.getList()
+// var overInfo2 = list2[list2.length-1]
+// // console.log(overInfo2)
+// fightRecord.explain()
 
-var d1 = JSON.stringify(list1)
-var d2 = JSON.stringify(list2)
-if(d1 != d2){
-	console.log("校验错误",d1.length,d2.length)
-	console.log(d1)
-	console.log(d2)
-	for(var i = 0;i < list1.length;i++){
-		var l1 = JSON.stringify(list1[i])
-		var l2 = JSON.stringify(list2[i])
-		if(l1 != l2){
-			console.log("错误发生在第"+i+"项")
-			console.log(l1)
-			console.log(l2)
-			var str = ""
-			for(var j = 0;j < l1.length;j++){
-				if(l1[j] != l2[j]){
-					console.log("详细信息:第"+j+"行",str)
-					return
-				}else{
-					str += l1[j]
-				}
-			}
-			break
-		}
-	}
-}else{
-	console.log("校验成功")
-}
+// var d1 = JSON.stringify(list1)
+// var d2 = JSON.stringify(list2)
+// if(d1 != d2){
+// 	console.log("校验错误",d1.length,d2.length)
+// 	console.log(d1)
+// 	console.log(d2)
+// 	for(var i = 0;i < list1.length;i++){
+// 		var l1 = JSON.stringify(list1[i])
+// 		var l2 = JSON.stringify(list2[i])
+// 		if(l1 != l2){
+// 			console.log("错误发生在第"+i+"项")
+// 			console.log(l1)
+// 			console.log(l2)
+// 			var str = ""
+// 			for(var j = 0;j < l1.length;j++){
+// 				if(l1[j] != l2[j]){
+// 					console.log("详细信息:第"+j+"行",str)
+// 					return
+// 				}else{
+// 					str += l1[j]
+// 				}
+// 			}
+// 			break
+// 		}
+// 	}
+// }else{
+// 	console.log("校验成功")
+// }
