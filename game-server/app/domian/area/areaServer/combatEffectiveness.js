@@ -472,18 +472,20 @@ module.exports = function() {
 		}
 		var lv = self.getLordLv(uid)
 		for(var i = 0;i < list.length;i++){
-			if(list[i] && !power_base[list[i]]){
-				cb(false,"power not find"+list[i])
-				return
-			}
-			var index = i+1
-			if(!power_slot[index]){
-				cb(false,"插槽不存在"+index)
-				return
-			}
-			if(lv < power_slot[index]["lv"]){
-				cb(false,"插槽未开启"+index)
-				return
+			if(list[i]){
+				if(!power_base[list[i]]){
+					cb(false,"power not find"+list[i])
+					return
+				}
+				var index = i+1
+				if(!power_slot[index]){
+					cb(false,"插槽不存在"+index)
+					return
+				}
+				if(lv < power_slot[index]["lv"]){
+					cb(false,"插槽未开启"+index)
+					return
+				}
 			}
 		}
 		self.setObj(uid,"power","fightMap",JSON.stringify(list),function() {
