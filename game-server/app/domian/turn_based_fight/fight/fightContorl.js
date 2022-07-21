@@ -622,7 +622,7 @@ model.getTeamShowData = function(team) {
 	var bookAtts = atkInfo.bookAtts
 	var defTeam = []
 	var fighting = new fightingFun(atkInfo,defInfo,{atkTeamAdds:atkInfo.teamAdds})
-	return {atkTeam : fighting.atkTeam,bookAtts : bookAtts}
+	return {atkTeam : fighting.atkTeam,bookAtts : bookAtts,masterAtts : atkInfo.masterAtts}
 }
 //计算差值
 model.calcCEDiff = function(name,oldValue,newValue) {
