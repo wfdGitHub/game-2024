@@ -640,6 +640,11 @@ model.prototype.checkMaster = function() {
 	}
 	return false
 }
+//检查录像技能
+model.prototype.checkVideo = function() {
+	if(this.video && this.checkMaster())
+		this.checkMaster()
+}
 //战斗结束
 model.prototype.fightOver = function(winFlag,roundEnd) {
 	// console.log("战斗结束")
