@@ -200,6 +200,21 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 			return this.getEnemyMaxAtk(character,1)
 		case "team_self":
 			return [character]
+		case "team_1":
+			//己方随机1个目标
+			return	this.getTeamRandom(character,1)
+		case "team_2":
+			//己方随机2个目标
+			return	this.getTeamRandom(character,2)
+		case "team_3":
+			//己方随机3个目标
+			return	this.getTeamRandom(character,3)
+		case "team_4":
+			//己方随机4个目标
+			return	this.getTeamRandom(character,4)
+		case "team_5":
+			//己方随机5个目标
+			return	this.getTeamRandom(character,5)
 		case "team_all":
 			//己方全体
 			return	this.getTeamAll(character)
@@ -374,9 +389,14 @@ model.prototype.getTargetNormal = function(character) {
 	if(character.buffs["chaofeng"] && model.check(character.buffs["chaofeng"].releaser)){
 		return  [character.buffs["chaofeng"].releaser]
 	}
-	var index = character.index
-	if(index >= 3){
-		index -= 3
+	var index = 0
+	if(character.characterType == "master"){
+		index = Math.floor(this.seededNum.random("主角位置") * 3)
+	}else{
+		index = character.index
+		if(index >= 3){
+			index -= 3
+		}
 	}
 	//优先打对位的敌方前排
 	if(model.check(character.enemy[index])){

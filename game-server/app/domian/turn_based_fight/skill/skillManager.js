@@ -58,10 +58,11 @@ model.useSkill = function(skill,chase,point) {
 			}
 		}
 		//释放技能后恢复攻击最高队友怒气
-		if(skill.character.skill_add_maxAtk_anger){
+		if(skill.skill_add_maxAtk_anger || skill.character.skill_add_maxAtk_anger){
+			var tmpAnger = (skill.skill_add_maxAtk_anger || 0) + (skill.character.skill_add_maxAtk_anger || 0)
 			var tmpTargets = this.locator.getTargets(skill.character,"team_maxAtk_1")
 			if(tmpTargets[0] && !tmpTargets[0]["died"]){
-				tmpTargets[0].addAnger(skill.character.skill_add_maxAtk_anger)
+				tmpTargets[0].addAnger(tmpAnger)
 			}
 		}
 		//释放技能后恢复同阵营怒气最少的三个英雄怒气值
@@ -109,6 +110,14 @@ model.useSkill = function(skill,chase,point) {
 			var tmpTarget = this.locator.getTargets(skill.character,"team_minHp_1")
 			if(tmpTarget[0]){
 				tmpTarget[0].removeDeBuffNotControl()
+			}
+		}
+		//释放技能后，清除目标1个减益效果
+		if(skill.clean_one_lowe){
+			for(var i = 0;i < targets.length;i++){
+				if(!targets[i].died){
+					targets[i].removeOneLower()
+				}
 			}
 		}
 		//立即结算诅咒效果
@@ -160,6 +169,11 @@ model.useSkill = function(skill,chase,point) {
 					for(var i = 0;i < skill.character.team.length;i++)
 						if(!skill.character.team[i].died)
 							skill.character.team[i].addAnger(skill.skill_anger_a)
+				//释放技能后降低敌方全体怒气
+				if(skill.enemy_less_anger)
+					for(var i = 0;i < skill.character.enemy.length;i++)
+						if(!skill.character.enemy[i].died)
+							skill.character.enemy[i].lessAnger(skill.enemy_less_anger)
 				//释放技能后回复当前本方阵容站位最靠前的武将怒气
 				if(skill.character.skill_anger_first){
 					var tmpTargets = this.locator.getTargets(skill.character,"team_min_index")
@@ -429,7 +443,7 @@ model.useAttackSkill = function(skill,chase,point) {
 		must_crit = true
 	var lessAngerList = []
 	var callbacks = []
-	if(skill.mul){
+	if(skill.mul || skill.maxHP_damage){
 		for(var i = 0;i < targets.length;i++){
 			if(skill.character.died && !skill.character.died_use_skill){
 				break

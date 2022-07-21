@@ -83,8 +83,12 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	//伤害计算
 	var atk = attacker.getTotalAtt("atk")
 	var def = target.getTotalAtt(skill.damageType+"Def")
-	if(attacker.neglect_def)
-		def = Math.floor(def * (1 - attacker.neglect_def))
+	if(attacker.neglect_def || skill.neglect_def){
+		var neglect_def = (attacker.neglect_def || 0) + (skill.neglect_def || 0)
+		if(neglect_def > 1)
+			neglect_def = 1
+		def = Math.floor(def * (1 - neglect_def))
+	}
 	var mul = 1 + attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction")
 	if(mul < 0.1)
 		mul = 0.1
