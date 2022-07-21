@@ -574,6 +574,8 @@ model.prototype.diedListCheck = function() {
 }
 //继续运行
 model.prototype.keepRun = function() {
+	if(this.video)
+		this.checkVideo()
 	if(this.manual && !this.runFlag){
 		this.runFlag = true
 		this.run()
@@ -643,7 +645,7 @@ model.prototype.checkMaster = function() {
 //检查录像技能
 model.prototype.checkVideo = function() {
 	if(this.video && this.checkMaster())
-		this.checkMaster()
+		this.checkVideo()
 }
 //战斗结束
 model.prototype.fightOver = function(winFlag,roundEnd) {
