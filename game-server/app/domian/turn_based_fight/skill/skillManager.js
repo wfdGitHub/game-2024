@@ -999,7 +999,11 @@ model.userNoneSkill = function(skill,chase) {
 	var recordInfo = skill.getInfo()
 	recordInfo.type = "attack"
 	recordInfo.targets = []
+	var targets = this.locator.getTargets(skill.character,skill.targetType)
+	for(var i = 0;i < targets.length;i++){
+		recordInfo.targets.push({"id" : targets[i].id,"source" : skill.character.id})
+	}
 	fightRecord.push(recordInfo)
-	return this.locator.getTargets(skill.character,skill.targetType)
+	return targets
 }
 module.exports = model
