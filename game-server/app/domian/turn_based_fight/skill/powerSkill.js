@@ -16,7 +16,7 @@ var model = function(otps,character) {
 	//初始化方法
 	this.initArg = function() {
 		for(var i = 1;i <= 5;i++){
-			if(this.otps["key"+i] && this.otps["value"+i]){
+			if(this.otps["key"+i] && this.otps["value"+i] !== undefined){
 				var key = this.otps["key"+i]
 				var value = this.otps["value"+i]
 				switch(key){
