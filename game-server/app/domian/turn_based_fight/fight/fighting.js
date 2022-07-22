@@ -647,6 +647,32 @@ model.prototype.checkVideo = function() {
 	if(this.video && this.checkMaster())
 		this.checkVideo()
 }
+//获取行动顺序
+model.prototype.getActionList = function() {
+	var self = this
+	var info = {curRound : [],nextRound:[]}
+	for(var i = 0;i < self.allHero.length;i++){
+		if(!self.allHero[i].died){
+			info["nextRound"].push(i)
+			if(!self.allHero[i].isAction && !self.allHero[i].buffs["banish"]){
+				info["curRound"].push(i)
+			}
+		}
+	}
+	info["curRound"].sort(function(a,b) {
+		return self.allHero[a].getTotalAtt("speed") > self.allHero[b].getTotalAtt("speed") ? 1 : -1
+	})
+	for(var i = 0;i < info["curRound"].length;i++){
+		info["curRound"][i] = self.allHero[info["curRound"][i]]["id"]
+	}
+	info["nextRound"].sort(function(a,b) {
+		return self.allHero[a].getTotalAtt("speed") > self.allHero[b].getTotalAtt("speed") ? 1 : -1
+	})
+	for(var i = 0;i < info["nextRound"].length;i++){
+		info["nextRound"][i] = self.allHero[info["nextRound"][i]]["id"]
+	}
+	return info
+}
 //战斗结束
 model.prototype.fightOver = function(winFlag,roundEnd) {
 	// console.log("战斗结束")
