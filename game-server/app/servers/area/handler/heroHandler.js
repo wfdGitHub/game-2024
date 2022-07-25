@@ -185,8 +185,8 @@ heroHandler.prototype.unlockZhanfaGrid = function(msg, session, next) {
           next(null,{flag : false,data : "英雄已出战"+hIds[i]})
           return
         }
-        if(data[i].star != 10){
-          next(null,{flag : false,data : "必须为10星英雄"+hIds[i]})
+        if(data[i].star != 20){
+          next(null,{flag : false,data : "必须为20星英雄"+hIds[i]})
           return
         }
         if((data[i].zf_1 && data[i].zf_1 != 1) || (data[i].zf_2 && data[i].zf_2 != 1) || (data[i].zf_3 && data[i].zf_3 != 1)){
