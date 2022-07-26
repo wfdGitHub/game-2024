@@ -100,7 +100,7 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 }
 //录像战斗
 model.videoFight = function(atkTeam,defTeam,otps) {
-	otps.video = false
+	otps.video = true
 	return model.beginFight(atkTeam,defTeam,otps)
 }
 //获取校验数据
