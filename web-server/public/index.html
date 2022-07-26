@@ -98,6 +98,37 @@
         console.log("onChat")
         console.log(data)
       })
+      //=================转盘抽奖==================//
+      //获取抽奖数据
+      var getLottoData = function() {
+        pomelo.request("area.lottoHandler.getLottoData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //转盘免费抽奖
+      var lottoByFree = function(type) {
+        pomelo.request("area.lottoHandler.lottoByFree", {type:type}, function(data) {
+            console.log(data);
+        });
+      }
+      //转盘元宝抽奖
+      var lottoByGold = function(type,count) {
+        pomelo.request("area.lottoHandler.lottoByGold", {type:type,count:count}, function(data) {
+            console.log(data);
+        });
+      }
+      //转盘道具抽奖
+      var lottoByItem = function(type,count) {
+        pomelo.request("area.lottoHandler.lottoByItem", {type:type,count:count}, function(data) {
+            console.log(data);
+        });
+      }
+      //转盘道具抽奖
+      var getLottoRecord = function(type) {
+        pomelo.request("area.lottoHandler.getLottoRecord", {type:type}, function(data) {
+            console.log(data);
+        });
+      }
       //=================主动技能==================//
       //获取主动技能数据
       var getPowerData = function() {
