@@ -72,7 +72,7 @@ module.exports = function() {
 			   	var atkTeam = fightInfo.team
 			   	var seededNum = fightInfo.seededNum
 			   	var defTeam = mysterious_realm[lv]["team"]
-			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
+			    var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
 			    if(verify !== self.fightContorl.getVerifyInfo()){
 			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"英雄试炼")
 			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})

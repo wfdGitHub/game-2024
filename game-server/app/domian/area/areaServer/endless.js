@@ -91,7 +91,7 @@ module.exports = function() {
 				for(var i = 0;i < seededList.length;i++){
 					var curLv = i+1
 					defTeam = self.standardTeam(null,endless_one[id]["team_"+curLv],"main",endless_one[id]["level"])
-					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededList[i],masterSkills : masterSkillList[i]})
+					var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededList[i],masterSkills : masterSkillList[i]})
 					if(!winFlag){
 						next("第"+curLv+"场战斗失败")
 						return
@@ -197,7 +197,7 @@ module.exports = function() {
 				for(var i = 0;i < seededList.length;i++){
 					var curLv = i+1
 					defTeam = self.standardTeam(null,endless_three[id]["team_"+curLv],"main",endless_three[id]["level"])
-					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededList[i],masterSkills : masterSkillList[i]})
+					var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededList[i],masterSkills : masterSkillList[i]})
 					if(!winFlag){
 						next("第"+curLv+"场战斗失败")
 						return

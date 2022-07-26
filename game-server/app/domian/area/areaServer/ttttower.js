@@ -74,7 +74,7 @@ module.exports = function() {
 			   	var seededNum = fightInfo.seededNum
 			    var mon_list = ttttower_level[level]["defTeam"]
 			    var defTeam = self.standardTeam(uid,mon_list,"ttt_main",ttttower_level[level]["lv"])
-			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
+			   	var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
 			    if(verify !== self.fightContorl.getVerifyInfo()){
 			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"通天塔")
 			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
@@ -199,7 +199,7 @@ module.exports = function() {
 			function(atkTeam,next) {
 			    var mon_list = ttttower_realm[level]["defTeam"]
 			    var defTeam = self.standardTeam(uid,mon_list,"ttt_realm",ttttower_realm[level]["lv"])
-			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
+			   	var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
 			    if(verify !== self.fightContorl.getVerifyInfo()){
 			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"阵营塔")
 			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})

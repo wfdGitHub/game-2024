@@ -98,6 +98,14 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 	fighting.fightBegin()
 	return fightRecord.isWin()
 }
+//录像战斗
+model.videoFight = function(atkTeam,defTeam,otps) {
+	otps.manual = false
+	otps.video = false
+	var fighting = model.loadFight(atkTeam,defTeam,otps)
+	fighting.fightBegin()
+	return fightRecord.isWin()
+}
 //获取校验数据
 model.getVerifyInfo = function() {
 	if(this.fighting && fightVerifyInfo)
