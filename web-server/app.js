@@ -53,5 +53,10 @@ server.listen(3001);
 serverDB.init(server,mysqlDao,redisDao)
 
 process.on('uncaughtException', function (err) {
+	redisDao.db.rpush("server:logs",JSON.stringify(err),function(err,num) {
+			if(num > 200){
+				redisDao.db.ltrim("server:logs",-200,-1)
+			}
+	})
   console.error(' !!! Caught exception: ' + err.stack);
 });
