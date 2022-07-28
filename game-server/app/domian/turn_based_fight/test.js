@@ -66,11 +66,11 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // 	}
 // }
 // console.log(atkTeam)
-// var buff = {"buffId":"ghost","buff_tg":"team_self","buffArg":5,"duration":3,"buffRate":1}
-var seededNum = Date.now()
-var atkTeam = [{"id":405040},0,0,0,0,0,{"power1":{"id":500100,"star":1,"lv":1,"ad":1},"power2":{"id":500800,"star":1,"lv":1,"ad":1},"manualModel":1}]
-var defTeam = [{"id":405040,"self_maxHP_add":10},0,0,0,0,0,{"power1":{"id":500800,"star":1,"lv":1,"ad":1}}]
-var fighting = fightContorl.beginFight(atkTeam,defTeam,{"video":false,"seededNum":seededNum})
+// // var buff = {"buffId":"ghost","buff_tg":"team_self","buffArg":5,"duration":3,"buffRate":1}
+// var seededNum = Date.now()
+// var atkTeam = [{"id":405040},0,0,0,0,0,{"power1":{"id":500100,"star":1,"lv":1,"ad":1},"power2":{"id":500800,"star":1,"lv":1,"ad":1},"manualModel":1}]
+// var defTeam = [{"id":405040,"self_maxHP_add":10},0,0,0,0,0,{"power1":{"id":500800,"star":1,"lv":1,"ad":1}}]
+// var fighting = fightContorl.beginFight(atkTeam,defTeam,{"video":false,"seededNum":seededNum})
 
 // // var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
 // // console.log(fighting.keepRun())
