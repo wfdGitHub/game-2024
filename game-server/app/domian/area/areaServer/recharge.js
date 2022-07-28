@@ -44,7 +44,7 @@ module.exports = function() {
 			cb(false,"pay_id error")
 			return
 		}
-		if(GM_CFG[gmLv]["dianpiao"] == 0){
+		if(pay_cfg[pay_id]["dianpiao"] == 0){
 			self.finish_recharge(uid,pay_id,cb)
 		}else{
 			var gmLv = self.getLordAtt(uid,"gmLv")
