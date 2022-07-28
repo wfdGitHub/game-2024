@@ -30,21 +30,21 @@ entryHandler.prototype.quickEntry = function(msg, session, next) {
 	var channel_code = msg.channel_code
 	var device_id = msg.device_id
 	async.waterfall([
-		function(cb) {
-			//渠道隔离
-			if(device_id){
-				self.redisDao.db.hget("device_channel",device_id,function(err,data) {
-					if(data && data != channel_code){
-						cb("您已在其他平台注册，请返回原平台登录")
-					}else{
-						self.redisDao.db.hset("device_channel",device_id,channel_code)
-						cb()
-					}
-				})
-			}else{
-				cb()
-			}
-		},
+		// function(cb) {
+		// 	//渠道隔离
+		// 	if(device_id){
+		// 		self.redisDao.db.hget("device_channel",device_id,function(err,data) {
+		// 			if(data && data != channel_code){
+		// 				cb("您已在其他平台注册，请返回原平台登录")
+		// 			}else{
+		// 				self.redisDao.db.hset("device_channel",device_id,channel_code)
+		// 				cb()
+		// 			}
+		// 		})
+		// 	}else{
+		// 		cb()
+		// 	}
+		// },
 		function(cb) {
 			var url = sdkConfig["CheckUserInfo"]+"?token="+token+"&product_code="+product_code+"&uid="+uid+"&channel_code="+channel_code
 			http.get(url,function(res){
