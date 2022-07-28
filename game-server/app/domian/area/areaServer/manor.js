@@ -631,7 +631,7 @@ module.exports = function() {
 		self.setAreaObj(main_name,"city_"+land,JSON.stringify(city_infos[land]))
 	}
 	//特殊地点收益
-	local.gainCityAward = function(uid,land) {
+	local.gainCityAward = function(uid,land,grid) {
 		//结算收益
 		if(city_infos[land].own && uid == city_infos[land].own){
 			var curTime = Date.now()
@@ -640,7 +640,7 @@ module.exports = function() {
 			var awardTime = curTime - city_infos[land].occupyTime
 			var item = manor_citys[city_infos[land].id]["award"]
 			var cityId = city_infos[land].id
-			var grid = city_infos[land].grid
+			grid = city_infos[land].grid
 			city_infos[land].occupyTime = 0
 			city_infos[land].own = 0
 			city_infos[land].grid = 0
@@ -661,7 +661,8 @@ module.exports = function() {
 				self.sendMail(uid,"特殊地点收益","您占领的【"+manor_citys[cityId]["name"]+"】已获得收益",awardStr)
 			})
 		}
-		self.setObj(uid,main_name,"grid_"+grid,0)
+		if(grid)
+			self.setObj(uid,main_name,"grid_"+grid,0)
 	}
 	//玩家城池收益
 	local.gainCityUser = function(uid,cityInfo) {
@@ -856,7 +857,7 @@ module.exports = function() {
 			}
 			data = JSON.parse(data)
 			if(data.type == "city"){
-				local.gainCityAward(uid,data.land)
+				local.gainCityAward(uid,data.land,grid)
 				cb(true)
 			}else if(data.type == "user"){
 				local.gainCityUser(uid,data)
