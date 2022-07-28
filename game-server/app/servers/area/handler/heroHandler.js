@@ -1,6 +1,6 @@
 var bearcat = require("bearcat")
 var heros = require("../../../../config/gameCfg/heros.json")
-var advanced_base = require("../../../../config/gameCfg/advanced_base.json")
+var hero_ad = require("../../../../config/gameCfg/hero_ad.json")
 var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var star_base = require("../../../../config/gameCfg/star_base.json")
 var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
@@ -221,10 +221,8 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
       next(null,{flag : false,err : "英雄不存在"})
       return
     }
-    var star_limit = star_base[heroInfo.star].lev_limit || 0
-    var ad_limit = advanced_base[heroInfo.ad].lev_limit || 0
-    var lev_limit = star_limit < ad_limit ? star_limit : ad_limit
-    if(aimLv <= heroInfo.lv || aimLv > lev_limit){
+    var ad_limit = hero_ad[heroInfo.ad].lv || 0
+    if(aimLv <= heroInfo.lv || aimLv > ad_limit){
       next(null,{flag : false,err : "等级限制"})
       return
     }
@@ -244,7 +242,7 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
     })
   })
 }
-//英雄升阶  受星级与等级限制
+//英雄升阶
 heroHandler.prototype.upgraAdvance = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
@@ -256,19 +254,15 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
       return
     }
     var aimAd = heroInfo.ad + 1
-    if(!advanced_base[aimAd]){
+    if(!hero_ad[aimAd]){
       next(null,{flag : false,err : "没有下一阶"})
       return
     }
-    if(heroInfo.lv != advanced_base[heroInfo.ad].lev_limit){
-      next(null,{flag : false,err : "等级限制"})
+    if(heroInfo.lv < hero_ad[heroInfo.ad].lv){
+      next(null,{flag : false,err : "等级限制 "+heroInfo.lv+"/"+hero_ad[heroInfo.ad].lv})
       return
     }
-    if(aimAd > star_base[heroInfo.star].stage_limit){
-      next(null,{flag : false,err : "星级限制"})
-      return
-    }
-    var pcStr = advanced_base[heroInfo.ad].pc
+    var pcStr = hero_ad[heroInfo.ad].pc
     self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,"英雄升阶",function(flag,err) {
       if(!flag){
         next(null,{flag : false,err : err})

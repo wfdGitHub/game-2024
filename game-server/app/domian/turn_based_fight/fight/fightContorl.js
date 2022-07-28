@@ -2,7 +2,7 @@ var skillsCfg = require("../../../../config/gameCfg/skills.json")
 var herosCfg = require("../../../../config/gameCfg/heros.json")
 var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 var star_base = require("../../../../config/gameCfg/star_base.json")
-var advanced_base = require("../../../../config/gameCfg/advanced_base.json")
+var hero_ad = require("../../../../config/gameCfg/hero_ad.json")
 var advanced_talent = require("../../../../config/gameCfg/advanced_talent.json")
 var talent_list = require("../../../../config/gameCfg/talent_list.json")
 var equip_base = require("../../../../config/gameCfg/equip_base.json")
@@ -199,7 +199,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	if(info.star){
 		if(advanced_talent[info.id]){
 			let starInfo = {}
-			for(let i = 6;i <= info.star;i++){
+			for(let i = 1;i <= info.star;i++){
 				let talentId = advanced_talent[info.id]["talent_"+i]
 				if(talentId)
 					model.mergeTalent(starInfo,talentId)
@@ -219,20 +219,8 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	}
 	//进阶计算
 	if(info.ad){
-		if(advanced_talent[info.id]){
-			let advancedInfo = {}
-			for(let i = 1;i <= info.ad;i++){
-				if(i > 5)
-					break
-				let talentId = advanced_talent[info.id]["talent_"+i]
-				if(talentId)
-					model.mergeTalent(advancedInfo,talentId)
-			}
-			// console.log("advancedInfo",advancedInfo)
-			model.mergeData(info,advancedInfo)
-		}
-		if(advanced_base[info.ad] && advanced_base[info.ad]["att"]){
-			let strs = advanced_base[info.ad]["att"].split("&")
+		if(hero_ad[info.ad] && hero_ad[info.ad]["att"]){
+			let strs = hero_ad[info.ad]["att"].split("&")
 			let advancedInfo = {}
 			strs.forEach(function(m_str) {
 				let m_list = m_str.split(":")
@@ -388,7 +376,29 @@ model.getTeamData = function(team,belong) {
 		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
 	}
     var teamAdds = this.raceAdd(this.getRaceType(characters))
-	return {team:characters,books:books,teamAdds:teamAdds,bookAtts:bookAtts}
+    var info = {team:characters,books:books,teamAdds:teamAdds,bookAtts:bookAtts}
+    var teamAd = 0
+   for(var i = 0;i < 6;i++){
+		if(team[i] && team[i]["ad"] && hero_ad[team[i]["ad"]]["ad"]){
+			if(!teamAd){
+				teamAd = hero_ad[team[i]["ad"]]["ad"]
+			}else{
+				if(hero_ad[team[i]["ad"]]["ad"] != teamAd){
+					break
+				}
+			}
+			if(i == 5){
+				//全部同阶级
+				info.teamAd = teamAd * 6
+				if(!teamAdds["maxHP"])
+					teamAdds["maxHP"] = 0
+				teamAdds["maxHP"] += hero_ad[info.teamAd]["same_att"]
+			}
+		}else{
+			break
+		}
+   }
+	return info
 }
 //获取团队显示数据
 model.getTeamShowData = function(team) {
@@ -419,8 +429,8 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 			newCE = lv_cfg[newValue || 1]["ce"]
 		break
 		case "ad":
-			oldCE = advanced_base[oldValue || 0]["ce"]
-			newCE = advanced_base[newValue || 0]["ce"]
+			oldCE = hero_ad[oldValue || 0]["ce"]
+			newCE = hero_ad[newValue || 0]["ce"]
 		break
 		case "star":
 			oldCE = star_base[oldValue || 1]["ce"]
@@ -488,7 +498,7 @@ model.getTeamCE = function(team) {
 	for(var i = 0;i < 6;i++){
 		if(team[i]){
 			allCE += lv_cfg[team[i]["lv"] || 1]["ce"]
-			allCE += advanced_base[team[i]["ad"] || 0]["ce"]
+			allCE += hero_ad[team[i]["ad"] || 0]["ce"]
 			allCE += star_base[team[i]["star"] || 1]["ce"]
 			if(team[i]["artifact"] !== undefined)
 				allCE += artifact_level[team[i]["artifact"]]["ce"]
