@@ -239,6 +239,12 @@ module.exports = function() {
 				awardStr += "&"
 			awardStr += equip_list[lv][Math.floor(equip_list[lv].length * Math.random())] + ":1"
 		}
+		//活动掉落
+		var dropItem = self.festivalDrop()
+		if(dropItem){
+			var dropCount = Math.floor(time / 30)
+			awardStr += "&"+dropItem+":"+dropCount
+		}
 		return awardStr
 	}
 	//获取关卡任务数据

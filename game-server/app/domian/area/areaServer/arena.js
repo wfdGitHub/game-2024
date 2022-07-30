@@ -314,7 +314,12 @@ module.exports = function() {
 				//获胜奖励
 				self.taskUpdate(uid,"arena_win",1)
 				self.taskUpdate(uid,"arena_streak",1)
-				info.winAward =  self.addItemStr(uid,winAward,rate,"竞技场获胜")
+				//节日任务活动掉落
+				var awardStr = winAward
+				var dropItem = self.festivalDrop()
+				if(dropItem)
+					awardStr += "&"+dropItem+":1"
+				info.winAward =  self.addItemStr(uid,awardStr,rate,"竞技场获胜")
 				//排名提升奖励
 				if(data.rank < data.highestRank){
 					var value = local.calRankUpAward(data.highestRank,data.rank)
