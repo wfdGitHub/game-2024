@@ -37,30 +37,17 @@ module.exports = function() {
 	}
 	//点票支付
 	this.dianpiao_recharge = function(uid,pay_id,cb) {
-		if(!pay_cfg[pay_id] || pay_cfg[pay_id]["dianpiao"] === undefined){
+		if(!pay_cfg[pay_id] || !pay_cfg[pay_id]["dianpiao"]){
 			cb(false,"pay_id error")
 			return
 		}
-		if(pay_cfg[pay_id]["dianpiao"] == 0){
-			self.finish_recharge(uid,pay_id,cb)
-		}else{
-			var gmLv = self.getLordAtt(uid,"gmLv")
-			self.getPlayerData(uid,"diaopiao_use",function(value) {
-				value = Number(value) || 0
-				if((value + pay_cfg[pay_id]["dianpiao"]) > GM_CFG[gmLv]["dianpiao"]){
-					cb(false,"可用额度不足 "+value+"/"+GM_CFG[gmLv]["dianpiao"])
-					return
-				}
-				self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
-					if(flag){
-						self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
-						self.finish_recharge(uid,pay_id,cb)
-					}else{
-						cb(false,err)
-					}
-				})
-			})
-		}
+		self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
+			if(flag){
+				self.finish_recharge(uid,pay_id,cb)
+			}else{
+				cb(false,err)
+			}
+		})
 	}
 	//申请充值
 	this.apply_recharge = function(uid,unionid,pay_id,cb) {
