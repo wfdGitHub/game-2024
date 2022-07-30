@@ -522,7 +522,6 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 			newCE = (newValue || 0) * 3
 		break
 	}
-	console.log(name,oldValue,newValue,"oldCE",oldCE,"newCE",newCE)
 	return newCE - oldCE
 }
 model.getTeamCE = function(team) {
