@@ -3,6 +3,7 @@ var herosCfg = require("../../../../config/gameCfg/heros.json")
 var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 var star_base = require("../../../../config/gameCfg/star_base.json")
 var hero_ad = require("../../../../config/gameCfg/hero_ad.json")
+var hero_tr = require("../../../../config/gameCfg/hero_tr.json")
 var advanced_talent = require("../../../../config/gameCfg/advanced_talent.json")
 var talent_list = require("../../../../config/gameCfg/talent_list.json")
 var equip_base = require("../../../../config/gameCfg/equip_base.json")
@@ -236,6 +237,18 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 			model.mergeTalent(info,talentId)
 		}
 	}
+	//培养计算
+	var trInfo = {
+	    "maxHP": info["tr_maxHP"] || 0,
+	    "atk": info["tr_atk"] || 0,
+	    "phyDef": info["tr_phyDef"] || 0,
+	    "magDef": info["tr_magDef"] || 0
+	}
+	if(info["tr_lv"]){
+		trInfo["amplify"] = hero_tr[info["tr_lv"]]["att"]
+		trInfo["reduction"] = hero_tr[info["tr_lv"]]["att"]
+	}
+	model.mergeData(info,trInfo)
 	//神器计算
 	if(info["artifact"] !== undefined){
 		let artifact = info["artifact"]
@@ -420,27 +433,27 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 		case "e3":
 		case "e4":
 			if(oldValue)
-				oldCE = equip_base[equip_level[oldValue]["part_1"]]["ce"]
+				oldCE = equip_base[equip_level[oldValue]["part_1"]]["ce"] || 0
 			if(newValue)
-				newCE = equip_base[equip_level[newValue]["part_1"]]["ce"]
+				newCE = equip_base[equip_level[newValue]["part_1"]]["ce"] || 0
 		break
 		case "lv":
-			oldCE = lv_cfg[oldValue || 1]["ce"]
-			newCE = lv_cfg[newValue || 1]["ce"]
+			oldCE = lv_cfg[oldValue || 1]["ce"] || 0
+			newCE = lv_cfg[newValue || 1]["ce"] || 0
 		break
 		case "ad":
-			oldCE = hero_ad[oldValue || 0]["ce"]
-			newCE = hero_ad[newValue || 0]["ce"]
+			oldCE = hero_ad[oldValue || 0]["ce"] || 0
+			newCE = hero_ad[newValue || 0]["ce"] || 0
 		break
 		case "star":
-			oldCE = star_base[oldValue || 1]["ce"]
-			newCE = star_base[newValue || 1]["ce"]
+			oldCE = star_base[oldValue || 1]["ce"] || 0
+			newCE = star_base[newValue || 1]["ce"] || 0
 		break
 		case "artifact":
 			if(Number.isFinite(oldValue))
-				oldCE = artifact_level[oldValue]["ce"]
+				oldCE = artifact_level[oldValue]["ce"] || 0
 			if(Number.isFinite(newValue))
-				newCE = artifact_level[newValue]["ce"]
+				newCE = artifact_level[newValue]["ce"] || 0
 		break
 		case "a1":
 		case "a2":
@@ -453,43 +466,63 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 		case "a9":
 		case "a10":
 			if(oldValue)
-				oldCE = ace_pack[oldValue]["ce"]
+				oldCE = ace_pack[oldValue]["ce"] || 0
 			if(newValue)
-				newCE = ace_pack[newValue]["ce"]
+				newCE = ace_pack[newValue]["ce"] || 0
 		break
 		case "s1":
 		case "s2":
 		case "s3":
 		case "s4":
 			if(oldValue)
-				oldCE = stone_base[oldValue]["ce"]
+				oldCE = stone_base[oldValue]["ce"] || 0
 			if(newValue)
-				newCE = stone_base[newValue]["ce"]
+				newCE = stone_base[newValue]["ce"] || 0
 		break
 		case "s5":
 		case "s6":
 		case "s7":
 		case "s8":
 			if(oldValue)
-				oldCE = stone_skill[oldValue]["ce"]
+				oldCE = stone_skill[oldValue]["ce"] || 0
 			if(newValue)
-				newCE = stone_skill[newValue]["ce"]
+				newCE = stone_skill[newValue]["ce"] || 0
 		break
 		case "hfLv":
 			if(oldValue)
-				oldCE = hufu_quality[oldValue]["ce"]
+				oldCE = hufu_quality[oldValue]["ce"] || 0
 			if(newValue)
-				newCE = hufu_quality[newValue]["ce"]
+				newCE = hufu_quality[newValue]["ce"] || 0
 		break 
 		case "zf_1":
 		case "zf_2":
 		case "zf_3":
 			if(oldValue && zhanfa[oldValue])
-				oldCE = zhanfa[oldValue]["ce"]
+				oldCE = zhanfa[oldValue]["ce"] || 0
 			if(newValue && zhanfa[newValue])
-				newCE = zhanfa[newValue]["ce"]
+				newCE = zhanfa[newValue]["ce"] || 0
+		break
+		case "tr_lv":
+			if(oldValue && hero_tr[oldValue])
+				oldCE = hero_tr[oldValue]["ce"] || 0
+			if(newValue && hero_tr[newValue])
+				newCE = hero_tr[newValue]["ce"] || 0
+		break
+		case "tr_maxHP":
+			oldCE = oldValue || 0
+			newCE = newValue || 0
+		break
+		case "tr_atk":
+			oldCE = (oldValue || 0) * 6
+			newCE = (newValue || 0) * 6
+		break
+		case "tr_phyDef":
+		case "tr_magDef":
+			oldCE = (oldValue || 0) * 3
+			newCE = (newValue || 0) * 3
 		break
 	}
+	console.log(name,oldValue,newValue,"oldCE",oldCE,"newCE",newCE)
 	return newCE - oldCE
 }
 model.getTeamCE = function(team) {
@@ -532,6 +565,16 @@ model.getTeamCE = function(team) {
 				if(team[i]["zf_"+j] && zhanfa[team[i]["zf_"+j]])
         			allCE += zhanfa[team[i]["zf_"+j]]["ce"]
 			}
+			if(team[i]["tr_lv"] && hero_tr[team[i]["tr_lv"]])
+				allCE += hero_tr[team[i]["tr_lv"]]["ce"] || 0
+			if(team[i]["tr_maxHP"])
+				allCE += team[i]["tr_maxHP"]
+			if(team[i]["tr_atk"])
+				allCE += team[i]["tr_atk"] * 6
+			if(team[i]["tr_phyDef"])
+				allCE += team[i]["tr_phyDef"] * 3
+			if(team[i]["tr_magDef"])
+				allCE += team[i]["tr_magDef"] * 3
 		}
 	}
 	if(team[6]){

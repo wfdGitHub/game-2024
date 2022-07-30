@@ -126,6 +126,18 @@
             console.log(data);
         });
       }
+      //英雄培养属性
+      var heroTrainAtt = function(hId,value) {
+        pomelo.request("area.heroHandler.heroTrainAtt", {hId:hId,value:value}, function(data) {
+            console.log(data);
+        });
+      }
+      //英雄培养突破
+      var heroTrainLv = function(hId) {
+        pomelo.request("area.heroHandler.heroTrainLv", {hId:hId}, function(data) {
+            console.log(data);
+        });
+      }
       //升级阵营加成
       var upgradCampAtt = function(camp,cb) {
         pomelo.request("area.tttHandler.upgradCampAtt", {camp:camp}, function(data) {
