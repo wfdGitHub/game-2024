@@ -266,7 +266,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 				model.mergeTalent(info,talentId)
 			}
 		}
-		if(artifact >= 25){
+		if(artifact >= 50){
 			if(artifact_talent[info.id]){
 				let talentId = artifact_talent[info.id].talent
 				model.mergeTalent(info,talentId)
