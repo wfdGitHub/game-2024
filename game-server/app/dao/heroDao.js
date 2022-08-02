@@ -506,10 +506,14 @@ heroDao.prototype.getHeroList = function(uid,hIds,cb) {
 			return
 		}
 		for(var i = 0;i < list.length;i++){
-			for(var j in list[i]){
-				var tmp = Number(list[i][j])
-				if(tmp == list[i][j])
-					list[i][j] = tmp
+			if(list[i]){
+				for(var j in list[i]){
+					var tmp = Number(list[i][j])
+					if(tmp == list[i][j])
+						list[i][j] = tmp
+				}
+			}else{
+				list[i] = 0
 			}
 		}
 		cb(true,list)
