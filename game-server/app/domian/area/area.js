@@ -225,6 +225,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.chageLordData(uid,"dayStr",this.dayStr)
 	this.chageLordData(uid,"tour_pri_count",0)
 	this.setPlayerData(uid,"quick",0)
+	this.setPlayerData(uid,"diaopiao_use",0)
 	this.rebateDayUpdate(uid)
 	this.TTTdayUpdate(uid)
 	this.arenadayUpdate(uid)
