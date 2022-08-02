@@ -586,7 +586,7 @@ model.prototype.keepRun = function() {
 }
 //攻方主角释放主动技能
 model.prototype.atkMasterSkill = function(index) {
-	if(this.atkMaster.masterPower(index)){
+	if(this.isFight && this.atkMaster.masterPower(index)){
 		var info = {
 			belong : this.atkMaster.belong,
 			runCount : this.runCount,
@@ -600,7 +600,7 @@ model.prototype.atkMasterSkill = function(index) {
 }
 //守方主角释放主动技能
 model.prototype.defMasterSkill = function(index) {
-	if(this.defMaster.masterPower(index)){
+	if(this.isFight && this.defMaster.masterPower(index)){
 		var info = {
 			belong : this.defMaster.belong,
 			runCount : this.runCount,
@@ -633,7 +633,7 @@ model.prototype.checkMaster = function() {
 				}
 			}
 		}
-	}else{
+	}else if(this.isFight){
 		//自动战斗模式检测技能释放
 		if(this.atkMaster.checkManualModel())
 			return true
