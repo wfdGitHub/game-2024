@@ -728,7 +728,7 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 		},
 		function(next) {
 			//阵营加成
-			self.redisDao.db.hmget("player:user:"+uid+":playerInfo",["camp_1","camp_2","camp_3","camp_4"],function(err,data) {
+			self.redisDao.db.hmget("player:user:"+uid+":playerInfo",["camp_1","camp_2","camp_3","camp_4","camp_5"],function(err,data) {
 				if(data){
 					fightTeam[6]["camp_1"] = Number(data[0]) || 0
 					fightTeam[6]["camp_2"] = Number(data[1]) || 0
