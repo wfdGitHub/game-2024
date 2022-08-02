@@ -49,6 +49,8 @@ module.exports = function() {
 		if(userTeams[uid] && userTeamMaps[uid] && userTeamMaps[uid][hId] !== undefined){
 			var index = userTeamMaps[uid][hId]
 			var oldValue = userTeams[uid][index][name]
+			if(!userTeams[uid][index][name])
+				userTeams[uid][index][name] = 0
 			userTeams[uid][index][name] += value
 			this.incrbyCE(uid,name,oldValue,userTeams[uid][index][name])
 		}

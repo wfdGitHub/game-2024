@@ -698,6 +698,16 @@ heroHandler.prototype.heroTrainLv = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//英雄装备强化
+heroHandler.prototype.heroEquipStrengthen = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var slot = msg.slot
+  this.areaManager.areaMap[areaId].heroEquipStrengthen(uid,hId,slot,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "heroHandler",

@@ -8,6 +8,7 @@ var advanced_talent = require("../../../../config/gameCfg/advanced_talent.json")
 var talent_list = require("../../../../config/gameCfg/talent_list.json")
 var equip_base = require("../../../../config/gameCfg/equip_base.json")
 var equip_level = require("../../../../config/gameCfg/equip_level.json")
+var equip_st = require("../../../../config/gameCfg/equip_st.json")
 var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var artifact_level = require("../../../../config/gameCfg/artifact_level.json")
 var artifact_talent = require("../../../../config/gameCfg/artifact_talent.json")
@@ -196,6 +197,21 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 			}
 		}
 	}
+	//装备强化
+	var minETLv = 0
+	for(var part = 1;part <= 4;part++){
+		var etlv = info["et"+part] || 0
+		if(!minETLv || etlv < minETLv)
+			minETLv = etlv
+		if(etlv && equip_st[etlv]){
+			var m_list = equip_st[etlv]["slot_"+part].split(":")
+			var etInfo = {}
+			etInfo[m_list[0]] = Number(m_list[1])
+			model.mergeData(info,etInfo)
+		}
+	}
+	if(minETLv && equip_st[minETLv]["att"])
+		model.mergeData(info,{"self_atk_add" : equip_st[minETLv]["att"],"self_maxHP_add" : equip_st[minETLv]["att"]})
 	//升星计算
 	if(info.star){
 		if(advanced_talent[info.id]){
@@ -521,6 +537,15 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 			oldCE = (oldValue || 0) * 3
 			newCE = (newValue || 0) * 3
 		break
+		case "et1":
+		case "et2":
+		case "et3":
+		case "et4":
+			if(oldValue && equip_st[oldValue])
+				oldCE = equip_st[oldValue]["ce"] || 0
+			if(newValue && equip_st[newValue])
+				newCE = equip_st[newValue]["ce"] || 0
+		break
 	}
 	return newCE - oldCE
 }
@@ -542,6 +567,8 @@ model.getTeamCE = function(team) {
 			for(var j = 1;j <= 4;j++){
 				if(team[i]["e"+j])
         			allCE += equip_base[equip_level[team[i]["e"+j]]["part_"+j]]["ce"]
+				if(team[i]["et"+j] && equip_st[team[i]["et"+j]])
+        			allCE += equip_st[team[i]["et"+j]]["ce"]
 			}
 			for(var j = 1;j <= 4;j++){
 				if(team[i]["s"+j] && stone_base[team[i]["s"+j]])

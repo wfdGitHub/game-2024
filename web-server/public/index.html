@@ -126,6 +126,12 @@
             console.log(data);
         });
       }
+      //装备强化
+      var heroEquipStrengthen = function(hId,slot) {
+        pomelo.request("area.heroHandler.heroEquipStrengthen", {hId:hId,slot:slot}, function(data) {
+            console.log(data);
+        });
+      }
       //英雄培养属性
       var heroTrainAtt = function(hId,value) {
         pomelo.request("area.heroHandler.heroTrainAtt", {hId:hId,value:value}, function(data) {
