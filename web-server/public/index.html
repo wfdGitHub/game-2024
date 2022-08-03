@@ -132,12 +132,6 @@
             console.log(data);
         });
       }
-      //购买特权礼包
-      var priBuyGift = function(pId) {
-        pomelo.request("area.activityHandler.priBuyGift", {pId:pId}, function(data) {
-            console.log(data);
-        });
-      }
       //领取特权礼包每日奖励
       var priGainGift = function(pId) {
         pomelo.request("area.activityHandler.priGainGift", {pId:pId}, function(data) {
