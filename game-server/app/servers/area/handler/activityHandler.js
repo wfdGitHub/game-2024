@@ -416,6 +416,32 @@ activityHandler.prototype.buyVipSkipCount = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//获取特权礼包数据
+activityHandler.prototype.priGetData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].priGetData(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//购买特权礼包
+activityHandler.prototype.priBuyGift = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var pId = msg.pId
+  this.areaManager.areaMap[areaId].priBuyGift(uid,pId,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//领取特权礼包每日奖励
+activityHandler.prototype.priGainGift = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var pId = msg.pId
+  this.areaManager.areaMap[areaId].priGainGift(uid,pId,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "activityHandler",
