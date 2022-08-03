@@ -1,5 +1,6 @@
 //抽奖系统
 const lotto_cfg = require("../../../../config/gameCfg/lotto_cfg.json")
+const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
 const lottoMaps = {}
 const allWeightMap = {}
 const lottoRecords = {}
@@ -55,7 +56,8 @@ module.exports = function() {
         }
         self.getObj(uid,main_name,type+"_count",function(data) {
         	data = Number(data) || 0
-        	if(data && (data + count) > lotto_cfg[type]["count"]){
+        	var gmLv = self.getLordAtt(uid,"gmLv")
+        	if(data && (data + count) > (lotto_cfg[type]["count"] + GM_CFG[gmLv]["lotto"])){
         		cb(false,"抽奖次数不足")
         		return
         	}
