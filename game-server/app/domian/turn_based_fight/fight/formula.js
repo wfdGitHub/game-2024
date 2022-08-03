@@ -46,22 +46,24 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		tmpAmplify += attacker.control_amp
 	}
 	//命中判断
-	var dodgeFlag = false
-	if(target.dodgeState){
-		target.dodgeState = false
-		dodgeFlag = true
-	}else if(!(skill.isAnger && attacker.skill_must_hit) && !target.buffs["suoding"]){
-		var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
-		if(target.attInfo.hp < target.attInfo.maxHP && target.low_hp_dodge){
-			hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_crit
-		}
-		if(this.seeded.random("闪避判断") > hitRate)
+	if(attacker.characterType == "master"){
+		var dodgeFlag = false
+		if(target.dodgeState){
+			target.dodgeState = false
 			dodgeFlag = true
-	}
-	if(dodgeFlag){
-		info.miss = true
-		target.onMiss()
-		return info
+		}else if(!(skill.isAnger && attacker.skill_must_hit) && !target.buffs["suoding"]){
+			var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
+			if(target.attInfo.hp < target.attInfo.maxHP && target.low_hp_dodge){
+				hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_crit
+			}
+			if(this.seeded.random("闪避判断") > hitRate)
+				dodgeFlag = true
+		}
+		if(dodgeFlag){
+			info.miss = true
+			target.onMiss()
+			return info
+		}
 	}
 	//暴击判断
 	if(!skill.isAnger && attacker.normal_crit){
@@ -89,7 +91,10 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			neglect_def = 1
 		def = Math.floor(def * (1 - neglect_def))
 	}
-	var mul = 1 + attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction")
+	var mul = 1
+	if(attacker.characterType != "master"){
+		mul += attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction")
+	}
 	if(mul < 0.1)
 		mul = 0.1
 	if(tmpAmplify)
@@ -318,9 +323,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		}
 	}else{
 		if(attacker.maxHP_damage || skill.maxHP_damage){
-			var tmpRate = skill.maxHP_damage
+			var tmpRate = skill.maxHP_damage || 0
 			if(skill.isAnger)
-				tmpRate += attacker.maxHP_damage
+				tmpRate += attacker.maxHP_damage || 0
 			if(tmpRate > 0){
 				info.realDamage = Math.floor(target.attInfo.maxHP * tmpRate)
 				info.value += info.realDamage
