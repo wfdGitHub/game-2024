@@ -41,6 +41,7 @@ module.exports = function() {
 				max_need += (hero_tr[tr_lv]["magDef"] - tr_magDef) / train_arg["base"]["value"] / train_arg["magDef"]["value"]
 				max_need = Math.ceil(max_need)
 				//若最大所需培养丹大于当前使用培养丹  则只使用最大所需
+				console.log("max_need",max_need,tr_lv)
 				if(value > max_need)
 					value = max_need
 				if(max_need <= 0){
@@ -58,6 +59,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//增加属性
+				console.log("value",value)
 				if(value >= max_need){
 					//加满属性
 					info.tr_maxHP = hero_tr[tr_lv]["maxHP"]
@@ -66,6 +68,7 @@ module.exports = function() {
 					info.tr_magDef = hero_tr[tr_lv]["magDef"]
 				}else{
 					var weights = util.randomFigure(train_arg["base"]["value"],4)
+					console.log("weights1",weights)
 					for(var i = 0;i < weights.length;i++){
 						weights[i] *= info.useValue
 						//上下浮动
@@ -76,15 +79,20 @@ module.exports = function() {
 							weights[i] -= Math.sqrt(info.useValue) * 0.3 * train_arg["base"]["value"]
 						}
 					}
+					console.log("weights2",weights)
 					if(tr_maxHP < hero_tr[tr_lv]["maxHP"])
-						info.tr_maxHP = Math.min(Math.floor(tr_maxHP + weights[0] * train_arg["maxHP"]["value"] * info.useValue),hero_tr[tr_lv]["maxHP"])
+						info.tr_maxHP = Math.min(Math.floor(tr_maxHP + weights[0] * train_arg["maxHP"]["value"]),hero_tr[tr_lv]["maxHP"])
+					console.log("info.tr_maxHP",info.tr_maxHP,train_arg["maxHP"]["value"])
 					if(tr_atk < hero_tr[tr_lv]["atk"])
-						info.tr_atk = Math.min(Math.floor(tr_atk + weights[1] * train_arg["atk"]["value"] * info.useValue),hero_tr[tr_lv]["atk"])
+						info.tr_atk = Math.min(Math.floor(tr_atk + weights[1] * train_arg["atk"]["value"]),hero_tr[tr_lv]["atk"])
+					console.log("info.tr_atk",info.tr_atk,train_arg["atk"]["value"])
 					if(tr_phyDef < hero_tr[tr_lv]["phyDef"])
-						info.tr_phyDef = Math.min(Math.floor(tr_phyDef + weights[2] * train_arg["phyDef"]["value"] * info.useValue),hero_tr[tr_lv]["phyDef"])
+						info.tr_phyDef = Math.min(Math.floor(tr_phyDef + weights[2] * train_arg["phyDef"]["value"]),hero_tr[tr_lv]["phyDef"])
+					console.log("info.tr_phyDef",info.tr_phyDef,train_arg["phyDef"]["value"])
 					if(tr_magDef < hero_tr[tr_lv]["magDef"])
-						info.tr_magDef = Math.min(Math.floor(tr_magDef + weights[3] * train_arg["magDef"]["value"] * info.useValue),hero_tr[tr_lv]["magDef"])
-					
+						info.tr_magDef = Math.min(Math.floor(tr_magDef + weights[3] * train_arg["magDef"]["value"]),hero_tr[tr_lv]["magDef"])
+					console.log("info.tr_magDef",info.tr_magDef,train_arg["magDef"]["value"])
+					console.log("hero_tr[tr_lv - 1]",hero_tr[tr_lv - 1])
 					if(info.tr_maxHP < hero_tr[tr_lv - 1]["tr_maxHP"])
 						info.tr_maxHP = hero_tr[tr_lv - 1]["tr_maxHP"]
 					if(info.tr_atk < hero_tr[tr_lv - 1]["tr_atk"])
