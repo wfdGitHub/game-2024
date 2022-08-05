@@ -4,6 +4,7 @@ const hero_tr = require("../../../../config/gameCfg/hero_tr.json")
 const train_arg = require("../../../../config/gameCfg/train_arg.json")
 const equip_st = require("../../../../config/gameCfg/equip_st.json")
 const util = require("../../../../util/util.js")
+hero_tr[-1] = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
 module.exports = function() {
 	var self = this
 	//英雄培养属性
@@ -76,13 +77,22 @@ module.exports = function() {
 						}
 					}
 					if(tr_maxHP < hero_tr[tr_lv]["maxHP"])
-						info.tr_maxHP = tr_maxHP + weights[0] * 16 * info.useValue
+						info.tr_maxHP = Math.min(Math.floor(tr_maxHP + weights[0] * train_arg["maxHP"]["value"] * info.useValue),hero_tr[tr_lv]["maxHP"])
 					if(tr_atk < hero_tr[tr_lv]["atk"])
-						info.tr_atk = tr_atk + weights[1] * 16 * info.useValue
+						info.tr_atk = Math.min(Math.floor(tr_atk + weights[1] * train_arg["atk"]["value"] * info.useValue),hero_tr[tr_lv]["atk"])
 					if(tr_phyDef < hero_tr[tr_lv]["phyDef"])
-						info.tr_phyDef = tr_phyDef + weights[2] * 16 * info.useValue
+						info.tr_phyDef = Math.min(Math.floor(tr_phyDef + weights[2] * train_arg["phyDef"]["value"] * info.useValue),hero_tr[tr_lv]["phyDef"])
 					if(tr_magDef < hero_tr[tr_lv]["magDef"])
-						info.tr_magDef = tr_magDef + weights[3] * 16 * info.useValue
+						info.tr_magDef = Math.min(Math.floor(tr_magDef + weights[3] * train_arg["magDef"]["value"] * info.useValue),hero_tr[tr_lv]["magDef"])
+					
+					if(info.tr_maxHP < hero_tr[tr_lv - 1]["tr_maxHP"])
+						info.tr_maxHP = hero_tr[tr_lv - 1]["tr_maxHP"]
+					if(info.tr_atk < hero_tr[tr_lv - 1]["tr_atk"])
+						info.tr_atk = hero_tr[tr_lv - 1]["tr_atk"]
+					if(info.tr_phyDef < hero_tr[tr_lv - 1]["tr_phyDef"])
+						info.tr_phyDef = hero_tr[tr_lv - 1]["tr_phyDef"]
+					if(info.tr_magDef < hero_tr[tr_lv - 1]["tr_magDef"])
+						info.tr_magDef = hero_tr[tr_lv - 1]["tr_magDef"]
 				}
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,"tr_maxHP",info.tr_maxHP)
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,"tr_atk",info.tr_atk)
