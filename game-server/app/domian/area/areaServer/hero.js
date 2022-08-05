@@ -84,14 +84,14 @@ module.exports = function() {
 						tr_phyDef = Math.min(Math.floor(tr_phyDef + weights[2] * train_arg["phyDef"]["value"]),hero_tr[tr_lv]["phyDef"])
 					if(tr_magDef < hero_tr[tr_lv]["magDef"])
 						tr_magDef = Math.min(Math.floor(tr_magDef + weights[3] * train_arg["magDef"]["value"]),hero_tr[tr_lv]["magDef"])
-					if(tr_maxHP < hero_tr[tr_lv - 1]["tr_maxHP"])
-						tr_maxHP = hero_tr[tr_lv - 1]["tr_maxHP"]
-					if(tr_atk < hero_tr[tr_lv - 1]["tr_atk"])
-						tr_atk = hero_tr[tr_lv - 1]["tr_atk"]
-					if(tr_phyDef < hero_tr[tr_lv - 1]["tr_phyDef"])
-						tr_phyDef = hero_tr[tr_lv - 1]["tr_phyDef"]
-					if(tr_magDef < hero_tr[tr_lv - 1]["tr_magDef"])
-						tr_magDef = hero_tr[tr_lv - 1]["tr_magDef"]
+					if(tr_maxHP < hero_tr[tr_lv - 1]["maxHP"])
+						tr_maxHP = hero_tr[tr_lv - 1]["maxHP"]
+					if(tr_atk < hero_tr[tr_lv - 1]["atk"])
+						tr_atk = hero_tr[tr_lv - 1]["atk"]
+					if(tr_phyDef < hero_tr[tr_lv - 1]["phyDef"])
+						tr_phyDef = hero_tr[tr_lv - 1]["phyDef"]
+					if(tr_magDef < hero_tr[tr_lv - 1]["magDef"])
+						tr_magDef = hero_tr[tr_lv - 1]["magDef"]
 					info.tr_maxHP = tr_maxHP
 					info.tr_atk = tr_atk
 					info.tr_phyDef = tr_phyDef
