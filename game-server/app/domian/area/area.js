@@ -21,14 +21,22 @@ for(var i in standard_ce_cfg){
 	standard_ce[i] = {
 		"lv" : standard_ce_cfg[i]["lv"],
 		"ad" : standard_ce_cfg[i]["ad"],
-		"star" : standard_ce_cfg[i]["star"],
-		"artifact" : standard_ce_cfg[i]["artifact"]
+		"star" : standard_ce_cfg[i]["star"]
 	}
+	if(standard_ce_cfg[i]["artifact"])
+		standard_ce[i]["artifact"] = standard_ce_cfg[i]["artifact"]
 	standard_team_ce[i] = {}
 	for(var j = 1;j <= 4;j++){
 		standard_ce[i]["e"+j] = standard_ce_cfg[i]["equip"]
 		standard_ce[i]["s"+j] = stone_lv[standard_ce_cfg[i]["stone_lv"]]["s"+j]
 		standard_team_ce[i]["g"+j] = standard_ce_cfg[i]["guild"]
+		standard_ce[i]["et"+j] = standard_ce_cfg[i]["et_lv"]
+	}
+	if(standard_ce_cfg[i]["tr_lv"] && hero_tr[standard_ce_cfg[i]["tr_lv"] - 1]){
+		standard_ce[i]["tr_maxHP"] = hero_tr[standard_ce_cfg[i]["tr_lv"] - 1]["maxHP"]
+		standard_ce[i]["tr_atk"] = hero_tr[standard_ce_cfg[i]["tr_lv"] - 1]["atk"]
+		standard_ce[i]["tr_phyDef"] = hero_tr[standard_ce_cfg[i]["tr_lv"] - 1]["phyDef"]
+		standard_ce[i]["tr_magDef"] = hero_tr[standard_ce_cfg[i]["tr_lv"] - 1]["magDef"]
 	}
 	standard_team_ce[i]["officer"] = standard_ce_cfg[i]["officer"]
 }
@@ -73,7 +81,6 @@ area.prototype.init = function() {
 	this.initBeherrscher()
 	this.rebateInit()
 	this.timer = setInterval(this.update.bind(this),1000)
-	console.log("standardTeam",self.standardTeam(null,[105010],"main",100))
 }
 //服务器关闭
 area.prototype.destory = function() {
@@ -412,19 +419,6 @@ area.prototype.standardTeam = function(uid,list,dl,lv) {
 			team[i] = Object.assign({id : team[i]},info)
 			if(team[i].star < heros[team[i]["id"]]["min_star"])
 				team[i].star = heros[team[i]["id"]]["min_star"]
-			if(team[i]["tr_lv"] && hero_tr[team[i]["tr_lv"] - 1]){
-				team[i]["tr_maxHP"] = hero_tr[team[i]["tr_lv"] - 1]["maxHP"]
-				team[i]["tr_atk"] = hero_tr[team[i]["tr_lv"] - 1]["atk"]
-				team[i]["tr_phyDef"] = hero_tr[team[i]["tr_lv"] - 1]["phyDef"]
-				team[i]["tr_magDef"] = hero_tr[team[i]["tr_lv"] - 1]["magDef"]
-			}
-			if(team[i]["et_lv"]){
-				team[i]["et1"] = team[i]["et_lv"]
-				team[i]["et2"] = team[i]["et_lv"]
-				team[i]["et3"] = team[i]["et_lv"]
-				team[i]["et4"] = team[i]["et_lv"]
-				delete team[i]["et_lv"]
-			}
 		}
 	}
 	team[6] = Object.assign({},standard_team_ce[lv])
