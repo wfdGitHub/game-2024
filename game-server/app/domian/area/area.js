@@ -7,6 +7,7 @@ const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
 const stone_lv = require("../../../config/gameCfg/stone_lv.json")
 const default_cfg = require("../../../config/gameCfg/default_cfg.json")
+const hero_tr = require("../../../config/gameCfg/hero_tr.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
@@ -72,6 +73,7 @@ area.prototype.init = function() {
 	this.initBeherrscher()
 	this.rebateInit()
 	this.timer = setInterval(this.update.bind(this),1000)
+	console.log("standardTeam",self.standardTeam(null,[105010],"main",100))
 }
 //服务器关闭
 area.prototype.destory = function() {
@@ -410,6 +412,19 @@ area.prototype.standardTeam = function(uid,list,dl,lv) {
 			team[i] = Object.assign({id : team[i]},info)
 			if(team[i].star < heros[team[i]["id"]]["min_star"])
 				team[i].star = heros[team[i]["id"]]["min_star"]
+			if(team[i]["tr_lv"] && hero_tr[team[i]["tr_lv"] - 1]){
+				team[i]["tr_maxHP"] = hero_tr[team[i]["tr_lv"] - 1]["maxHP"]
+				team[i]["tr_atk"] = hero_tr[team[i]["tr_lv"] - 1]["atk"]
+				team[i]["tr_phyDef"] = hero_tr[team[i]["tr_lv"] - 1]["phyDef"]
+				team[i]["tr_magDef"] = hero_tr[team[i]["tr_lv"] - 1]["magDef"]
+			}
+			if(team[i]["et_lv"]){
+				team[i]["et1"] = team[i]["et_lv"]
+				team[i]["et2"] = team[i]["et_lv"]
+				team[i]["et3"] = team[i]["et_lv"]
+				team[i]["et4"] = team[i]["et_lv"]
+				delete team[i]["et_lv"]
+			}
 		}
 	}
 	team[6] = Object.assign({},standard_team_ce[lv])
