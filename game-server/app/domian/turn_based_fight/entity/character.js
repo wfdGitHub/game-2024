@@ -443,6 +443,7 @@ var model = function(otps) {
 }
 model.prototype.init = function(fighting) {
 	this.fighting = fighting
+	this.attInfo.speed += this.fighting.seeded.random("随机速度") * 0.5
 }
 //百分比属性加成
 model.prototype.calAttAdd = function(team_adds) {
@@ -989,7 +990,7 @@ model.prototype.getInfo = function() {
 	info.atk = this.attInfo.atk
 	info.phyDef = this.attInfo.phyDef
 	info.magDef = this.attInfo.magDef
-	info.speed = this.attInfo.speed
+	info.speed = Math.floor(this.attInfo.speed)
 	info.crit = this.attInfo.crit
 	info.critDef = this.attInfo.critDef
 	info.slay = this.attInfo.slay
@@ -1034,7 +1035,7 @@ model.prototype.getSimpleInfo = function() {
 	info.atk = this.attInfo.atk
 	info.maxHP = this.attInfo.maxHP
 	info.hp = this.attInfo.hp
-	info.speed = this.speed
+	info.speed = Math.floor(this.attInfo.speed)
 	info.curAnger = this.curAnger
 	info.needAnger = this.needAnger
 	info.totalDamage = this.totalDamage
