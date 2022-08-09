@@ -244,7 +244,7 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 		})
 	})
 }
-//重生返还资源  返回 升级 升阶 法宝 培养
+//重生返还资源  返回 升级 升阶 法宝 培养 强化
 heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
 	var lv = heroInfo.lv
 	var ad = heroInfo.ad
