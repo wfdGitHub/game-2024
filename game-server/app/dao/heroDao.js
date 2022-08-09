@@ -16,6 +16,7 @@ var stone_skill = require("../../config/gameCfg/stone_skill.json")
 var stone_cfg = require("../../config/gameCfg/stone_cfg.json")
 var default_cfg = require("../../config/gameCfg/default_cfg.json")
 var train_arg = require("../../config/gameCfg/train_arg.json")
+var equip_st = require("../../config/gameCfg/equip_st.json")
 var util = require("../../util/util.js")
 var async = require("async")
 var first_recruit = default_cfg["first_hero"]["value"]
@@ -257,6 +258,10 @@ heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
 		strList.push(artifact_level[artifact]["pr"])
 	if(hero_tr[heroInfo.tr_lv] && hero_tr[heroInfo.tr_lv]["pr"])
 		strList.push(hero_tr[heroInfo.tr_lv]["pr"])
+	for(var i = 1;i <= 4;i++){
+		if(equip_st[heroInfo["et"+i]] && equip_st[heroInfo["et"+i]]["pr"])
+			strList.push(equip_st[heroInfo["et"+i]]["pr"])
+	}
 	var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
 	var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"重生返还")
 	if(cb)
@@ -292,6 +297,10 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 			strList.push(hero_ad[ad].pr)
 		if(hero_tr[heros[i].tr_lv] && hero_tr[heros[i].tr_lv]["pr"])
 			strList.push(hero_tr[heros[i].tr_lv]["pr"])
+		for(var i = 1;i <= 4;i++){
+			if(equip_st[heros[i]["et"+i]] && equip_st[heros[i]["et"+i]]["pr"])
+				strList.push(equip_st[heros[i]["et"+i]]["pr"])
+		}
 		for(var part = 1;part <= 4;part++){
 			if(heros[i]["e"+part]){
 				var oldeId = equip_level[heros[i]["e"+part]]["part_"+part]
