@@ -297,9 +297,9 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 			strList.push(hero_ad[ad].pr)
 		if(hero_tr[heros[i].tr_lv] && hero_tr[heros[i].tr_lv]["pr"])
 			strList.push(hero_tr[heros[i].tr_lv]["pr"])
-		for(var i = 1;i <= 4;i++){
-			if(equip_st[heros[i]["et"+i]] && equip_st[heros[i]["et"+i]]["pr"])
-				strList.push(equip_st[heros[i]["et"+i]]["pr"])
+		for(var j = 1;j <= 4;j++){
+			if(equip_st[heros[i]["et"+j]] && equip_st[heros[i]["et"+j]]["pr"])
+				strList.push(equip_st[heros[i]["et"+j]]["pr"])
 		}
 		for(var part = 1;part <= 4;part++){
 			if(heros[i]["e"+part]){
