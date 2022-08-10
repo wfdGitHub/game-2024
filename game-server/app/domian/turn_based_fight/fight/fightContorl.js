@@ -554,9 +554,9 @@ model.getTeamCE = function(team) {
 	var careers = {"1":0,"2":0,"3":0,"4":0}
 	for(var i = 0;i < 6;i++){
 		if(team[i]){
-			allCE += lv_cfg[team[i]["lv"] || 1]["ce"]
-			allCE += hero_ad[team[i]["ad"] || 0]["ce"]
-			allCE += star_base[team[i]["star"] || 1]["ce"]
+			allCE += lv_cfg[team[i]["lv"]] ? lv_cfg[team[i]["lv"]]["ce"] : 0
+			allCE += hero_ad[team[i]["ad"]] ? hero_ad[team[i]["ad"]]["ce"] : 0
+			allCE += star_base[team[i]["star"]] ? star_base[team[i]["star"]]["ce"] : 0
 			if(team[i]["artifact"] !== undefined)
 				allCE += artifact_level[team[i]["artifact"]]["ce"]
 			for(var j = 1;j <= 10;j++){
