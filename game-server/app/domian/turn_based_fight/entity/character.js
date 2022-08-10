@@ -951,6 +951,13 @@ model.prototype.addAnger = function(value,hide) {
 	}
 	return value
 }
+//检查可行的
+model.prototype.checkActionable = function() {
+	if(this.died || this.buffs["dizzy"] || this.buffs["frozen"] || this.buffs["banish"])
+		return false
+	else
+		return true
+}
 //减少怒气
 model.prototype.lessAnger = function(value,hide,use) {
 	if(!use && this.banLessAnger){
