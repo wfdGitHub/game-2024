@@ -454,16 +454,16 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 				newCE = equip_base[equip_level[newValue]["part_1"]]["ce"] || 0
 		break
 		case "lv":
-			oldCE = lv_cfg[oldValue || 1]["ce"] || 0
-			newCE = lv_cfg[newValue || 1]["ce"] || 0
+			oldCE = lv_cfg[oldValue] ? lv_cfg[oldValue]["ce"] : 0
+			newCE = lv_cfg[newValue] ? lv_cfg[newValue]["ce"] : 0
 		break
 		case "ad":
-			oldCE = hero_ad[oldValue || 0]["ce"] || 0
-			newCE = hero_ad[newValue || 0]["ce"] || 0
+			oldCE = hero_ad[oldValue] ? hero_ad[oldValue]["ce"] : 0
+			newCE = hero_ad[newValue ] ? hero_ad[newValue ]["ce"] : 0
 		break
 		case "star":
-			oldCE = star_base[oldValue || 1]["ce"] || 0
-			newCE = star_base[newValue || 1]["ce"] || 0
+			oldCE = star_base[oldValue]["ce"] || 0
+			newCE = star_base[newValue]["ce"] || 0
 		break
 		case "artifact":
 			if(Number.isFinite(oldValue))
