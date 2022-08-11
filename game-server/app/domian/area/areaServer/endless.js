@@ -82,7 +82,7 @@ module.exports = function() {
 						next("英雄不存在")
 						return
 					}
-					atkTeam[1] = list[0]
+					atkTeam = [0,list[0],0,0,0,0]
 		    		next()
 		    	})
 			},
@@ -185,9 +185,7 @@ module.exports = function() {
 						next("英雄不存在")
 						return
 					}
-					atkTeam[1] = list[0]
-					atkTeam[3] = list[1]
-					atkTeam[5] = list[2]
+					atkTeam = [0,list[0],0,list[1],0,list[2]]
 		    		next()
 		    	})
 			},
