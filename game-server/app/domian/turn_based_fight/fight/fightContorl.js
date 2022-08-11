@@ -105,8 +105,19 @@ model.videoFight = function(atkTeam,defTeam,otps) {
 }
 //获取校验数据
 model.getVerifyInfo = function() {
-	if(this.fighting && fightVerifyInfo)
+	if(this.fighting && fightVerifyInfo){
 		fightVerifyInfo.otps.masterSkills = this.fighting.masterSkills
+		for(var i = 0;i < 6;i++){
+			if(fightVerifyInfo.atkTeam[i]){
+				delete fightVerifyInfo.atkTeam[i]["combat"]
+				delete fightVerifyInfo.atkTeam[i]["hId"]
+			}
+			if(fightVerifyInfo.defTeam[i]){
+				delete fightVerifyInfo.defTeam[i]["combat"]
+				delete fightVerifyInfo.defTeam[i]["hId"]
+			}
+		}
+	}
 	return JSON.stringify(fightVerifyInfo)
 }
 //手动战斗
