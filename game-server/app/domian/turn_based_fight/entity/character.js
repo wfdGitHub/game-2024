@@ -951,6 +951,13 @@ model.prototype.lessHP = function(info) {
 	this.round_damage += info.realValue
 	return info.realValue
 }
+//检查可行的
+model.prototype.checkActionable = function() {
+	if(this.died || this.buffs["dizzy"] || this.buffs["frozen"] || this.buffs["banish"])
+		return false
+	else
+		return true
+}
 //恢复怒气
 model.prototype.addAnger = function(value,hide) {
 	if(this.banAnger){
