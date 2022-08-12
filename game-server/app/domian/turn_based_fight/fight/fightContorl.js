@@ -79,8 +79,8 @@ var model = function() {
 model.loadFight = function(atkTeam,defTeam,otps) {
 	if(!otps.seededNum)
 		otps.seededNum = Date.now()
-	fightVerifyInfo.atkTeam = atkTeam
-	fightVerifyInfo.defTeam = defTeam
+	fightVerifyInfo.atkTeam = JSON.parse(JSON.stringify(atkTeam))
+	fightVerifyInfo.defTeam = JSON.parse(JSON.stringify(defTeam))
 	fightVerifyInfo.otps = {}
 	fightVerifyInfo.otps.seededNum = otps.seededNum
     var atkInfo = this.getTeamData(atkTeam,"atk")
