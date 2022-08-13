@@ -29,7 +29,6 @@ module.exports = function() {
 	}
 	//挑战单人试炼
 	this.challengeOneEndless = function(uid,hIds,id,seededList,index,verifys,masterSkillList,cb) {
-		console.log("challengeOneEndless",uid,hIds,id,seededList,index,verifys,masterSkillList)
 		var day = (new Date()).getDay()
 		if(day != 2 && day != 4 && day != 6){
 			cb(false,"今日未开放")
@@ -92,7 +91,6 @@ module.exports = function() {
 				for(var i = 0;i < seededList.length;i++){
 					var curLv = i+1
 					defTeam = self.standardTeam(null,endless_one[id]["team_"+curLv],"main",endless_one[id]["level"])
-					console.log("第"+i+"场",atkTeam,defTeam,seededList[i])
 					var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededList[i],masterSkills : masterSkillList[i]})
 					if(!winFlag){
 						next("第"+curLv+"场战斗失败")
