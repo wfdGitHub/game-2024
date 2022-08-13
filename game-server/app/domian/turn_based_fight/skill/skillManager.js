@@ -155,10 +155,8 @@ model.useSkill = function(skill,chase) {
 			//释放技能后降低敌方怒气
 			if(skill.skill_less_anger){
 				for(var i = 0;i < targets.length;i++){
-					if(targets[i].died){
-						break
-					}
-					targets[i].lessAnger(skill.skill_less_anger,skill.skillId)
+					if(!targets[i].died)
+						targets[i].lessAnger(skill.skill_less_anger,skill.skillId)
 				}
 			}
 			//释放技能后恢复己方后排怒气
