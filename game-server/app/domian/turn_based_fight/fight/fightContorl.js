@@ -81,6 +81,10 @@ model.loadFight = function(atkTeam,defTeam,otps) {
 		otps.seededNum = Date.now()
 	fightVerifyInfo.atkTeam = JSON.parse(JSON.stringify(atkTeam))
 	fightVerifyInfo.defTeam = JSON.parse(JSON.stringify(defTeam))
+	if(fightVerifyInfo.atkTeam[6])
+		delete fightVerifyInfo.atkTeam[6]["manualModel"]
+	if(fightVerifyInfo.defTeam[6])
+		delete fightVerifyInfo.defTeam[6]["manualModel"]
 	fightVerifyInfo.otps = {}
 	fightVerifyInfo.otps.seededNum = otps.seededNum
     var atkInfo = this.getTeamData(atkTeam,"atk")
