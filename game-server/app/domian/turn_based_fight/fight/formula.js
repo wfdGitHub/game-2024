@@ -46,7 +46,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		tmpAmplify += attacker.control_amp
 	}
 	//命中判断
-	if(attacker.characterType == "master"){
+	if(attacker.characterType != "master"){
 		var dodgeFlag = false
 		if(target.dodgeState){
 			target.dodgeState = false
