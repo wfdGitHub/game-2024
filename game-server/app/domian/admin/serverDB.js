@@ -445,11 +445,12 @@ var model = function() {
 		"beginTime" : "number",	//开始时间  当天零点时间戳
 		"duration" : "number", 	//持续时间
 		"signAward" : "array", 	//签到奖励列表
-		"bossTeam" : "array",	//boss阵容
+		"bossTeam" : "number",	//boss阵容
 		"bossAward" : "array",	//boss奖励
 		"bossCount" : "number",  	//boss次数
 		"shopList" : "array",	//兑换列表
-		"dropItem" : "number", 	//掉落道具  快速作战   日常任务   逐鹿之战  竞技场  跨服竞技场 日冲副本
+		"dropItem" : "number", 	//掉落道具  快速作战   日常任务   逐鹿之战  竞技场  跨服竞技场 日常副本
+		"totalAwards" : "array", //累充奖励
 		"open" : "object"
 	}
 	//获取节日获得

@@ -10,12 +10,13 @@ module.exports = function() {
 		"beginTime" : 0,	//开始时间  当天零点时间戳
 		"duration" : 0, 	//持续时间
 		"signAward" : [], 	//签到奖励列表
-		"bossTeam" : [],	//boss阵容
+		"bossTeam" : 105020,	//boss阵容
 		"bossAward" : [],	//boss奖励
 		"bossCount" : 0,  	//boss次数
 		"shopList" : [],	//兑换列表
+		"totalAwards" : [], //累充奖励
 		"dropItem" : "", 	//掉落道具 itemId	  快速作战   日常任务   逐鹿之战  竞技场  跨服竞技场 日冲副本
-		"open" : {"signin" : true,"boss" : true,"shop" : true}
+		"open" : {"signin" : false,"boss" : false,"shop" : false,"total":false}
 	}
 	this.festivalDrop = function() {
 		if(Date.now() > festivalInfo["beginTime"] && Date.now() < festivalInfo["endTime"]){
@@ -112,7 +113,7 @@ module.exports = function() {
 				self.incrbyObj(uid,main_name,"bossCount",1)
 				var atkTeam = self.getUserTeam(uid)
 			    var seededNum = Date.now()
-			    var defTeam = festivalInfo["bossTeam"]
+			    var defTeam = self.standardTeam(uid,[0,0,0,0,festivalInfo["bossTeam"],0],"zhulu_boss",self.getLordLv(uid))
 				defTeam[4].boss = true
 				var fightOtps = {seededNum : seededNum,maxRound:5}
 			    self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
@@ -129,8 +130,10 @@ module.exports = function() {
 		    	if(coin > 1000000)
 		    		coin = 1000000
 		    	var award = "201:"+coin
-		    	if(festivalInfo["bossAward"])
-		    		award += "&"+festivalInfo["bossAward"]
+		    	if(festivalInfo["bossAward"]){
+		    		for(var i = 0;i < festivalInfo["bossAward"].length;i++)
+		    			award += "&"+festivalInfo["bossAward"][i]
+		    	}
 		    	info.awardList =  self.addItemStr(uid,award,1,"节日boss")
 		    	info.bossCount = data+1
 		    	cb(true,info)
@@ -171,6 +174,43 @@ module.exports = function() {
 			}
 		],function(err) {
 			cb(false,err)
+		})
+	}
+	//活动期间累计充值
+	this.festivalTotalRecharge = function(uid,value) {
+		if(Date.now() > festivalInfo["beginTime"] && Date.now() < festivalInfo["hideTime"]){
+			self.incrbyObj(uid,main_name,"rmb",value,function(data) {
+				var notify = {
+					type : "festival_recharge",
+					rmb : data
+				}
+				self.sendToUser(uid,notify)
+			})
+		}
+	}
+	//领取累充奖励
+	this.festivalGainTotalAward = function(uid,index,cb) {
+		if(Date.now() > festivalInfo["hideTime"]){
+			cb(false,"活动已结束")
+			return
+		}
+		if(!festivalInfo.totalAwards[index]){
+			cb(false,"累充奖励不存在")
+			return
+		}
+		self.getHMObj(uid,main_name,["rmb","total_"+index],function(list) {
+			if(list[1]){
+				cb(false,"已领取该档位")
+				return
+			}
+			var rmb = Number(list[0]) || 0
+			if(rmb >= festivalInfo.totalAwards[index]["rmb"]){
+				self.setObj(uid,main_name,"total_"+index,1)
+				var awardList = self.addItemStr(uid,festivalInfo.totalAwards[index]["award"],1,"限时累充活动"+index)
+				cb(true,awardList)
+			}else{
+				cb(false,"条件未满足")
+			}
 		})
 	}
 }
