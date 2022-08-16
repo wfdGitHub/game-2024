@@ -243,7 +243,8 @@ module.exports = function() {
 		var dropItem = self.festivalDrop()
 		if(dropItem){
 			var dropCount = Math.floor(time / 30)
-			awardStr += "&"+dropItem+":"+dropCount
+			if(dropCount)
+				awardStr += "&"+dropItem+":"+dropCount
 		}
 		return awardStr
 	}
