@@ -138,6 +138,31 @@
             console.log(data);
         });
       }
+      //============节日活动======//
+      //获取活动数据
+      var getFestivalData = function() {
+        pomelo.request("area.festivalHandler.getFestivalData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //签到
+      var festivalSignIn = function(index) {
+        pomelo.request("area.festivalHandler.festivalSignIn", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战boss
+      var challengeFestivalBoss = function() {
+        pomelo.request("area.festivalHandler.challengeFestivalBoss", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //兑换物品
+      var festivalShop = function(index) {
+        pomelo.request("area.festivalHandler.festivalShop", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
       //=================家园===========//
       //获取家园数据
       var manorData = function() {
@@ -1376,37 +1401,6 @@
       //获取上一赛季比赛记录
       var getHonorMathch = function() {
         pomelo.request("cross.peakHandler.getHonorMathch", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //=============节日活动=======//
-      //获取活动数据
-      var getFestivalData = function() {
-        pomelo.request("area.festivalHandler.getFestivalData", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //每日奖励
-      var gainFestivalDayAward = function() {
-        pomelo.request("area.festivalHandler.gainFestivalDayAward", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //挑战boss
-      var challengeFestivalBoss = function() {
-        pomelo.request("area.festivalHandler.challengeFestivalBoss", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //获取摇钱树奖励列表
-      var getFestivalTreeList = function() {
-        pomelo.request("area.festivalHandler.getFestivalTreeList", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //结算摇钱树奖励
-      var gainFestivalTreeAward = function(count) {
-        pomelo.request("area.festivalHandler.gainFestivalTreeAward", {count:count}, function(data) {
             console.log(data);
         });
       }
@@ -3437,6 +3431,26 @@
       <input id="test" type="button" value="占领玩家" onclick="manorOccupyUser()"/>
       <input id="test" type="button" value="反击" onclick="manorRevolt()"/>
       <input id="test" type="button" value="查看战报" onclick="manorRerord()"/>
+    </div>
+    <div class="g-button">
+      无双争霸赛 : 
+      <input id="test" type="button" value="玩法开启" onclick="beginBeherrscher()"/>
+      <input id="test" type="button" value="玩法关闭" onclick="endBeherrscher()"/>
+      <input id="test" type="button" value="获取数据" onclick="getBeherrscherInfo()"/>
+      <input id="test" type="button" value="挑战席位1" onclick="challengeBeherrscher(1)"/>
+      <input id="test" type="button" value="挑战席位2" onclick="challengeBeherrscher(2)"/>
+      <input id="test" type="button" value="挑战席位3" onclick="challengeBeherrscher(3)"/>
+      <input id="test" type="button" value="挑战席位4" onclick="challengeBeherrscher(4)"/>
+      <input id="test" type="button" value="挑战席位5" onclick="challengeBeherrscher(5)"/>
+      <input id="test" type="button" value="挑战席位6" onclick="challengeBeherrscher(6)"/>
+      <input id="test" type="button" value="清除CD" onclick="clearBeherrscherCD()"/>
+    </div>
+    <div class="g-button">
+      节日活动 : 
+      <input id="test" type="button" value="获取活动数据" onclick="getFestivalData()"/>
+      <input id="test" type="button" value="签到" onclick="festivalSignIn(0)"/>
+      <input id="test" type="button" value="挑战boss" onclick="challengeFestivalBoss()"/>
+      <input id="test" type="button" value="兑换物品" onclick="festivalShop(0)"/>
     </div>
   </body>
 </html>

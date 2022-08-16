@@ -103,7 +103,6 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.areaDay = util.getTimeDifference(this.openTime,Date.now())
 	console.log("areaDay",this.areaDay)
 	this.rechargeDayUpdate()
-	this.festivalDayUpdate()
 	this.aceLottoDayUpdate()
 	this.topicRecruitDayUpdate()
 	this.areaBossDayUpdate()
@@ -116,6 +115,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.extremityInit()
 	this.guildCityBossDayUpdate()
 	this.taskDayUpdate()
+	this.updateFestivalInfo()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)

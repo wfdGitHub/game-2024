@@ -148,7 +148,14 @@ module.exports = function() {
 			cb(false,"该任务需要服务器开启时间达到才可完成 "+this.players[uid].userDay+"/"+week_target_task[taskId])
 			return
 		}
-		let award = task_cfg[taskId].award
+		var award = task_cfg[taskId].award
+		//节日任务活动掉落
+		if(task_cfg[taskId]["refresh"] == "day"){
+			var dropItem = self.festivalDrop()
+			if(dropItem){
+				award += "&"+dropItem+":1"
+			}
+		}
 		let awardList = []
 		if(award)
 			awardList = this.addItemStr(uid,award,1,"任务奖励"+taskId)
