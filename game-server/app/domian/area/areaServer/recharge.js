@@ -175,6 +175,7 @@ module.exports = function() {
 				real_week : self.players[uid].real_week
 			}
 			self.sendToUser(uid,notify)
+			self.festivalTotalRecharge(uid,value)
 		}
 		if(cb)
 			cb(true)
