@@ -615,7 +615,7 @@ model.getTeamData = function(team,belong) {
 	master.belong = belong
 	var characters = []
 	for(var i = 0;i < 6;i++){
-		characters[i] = this.getCharacterInfo(team[i],bookAtts)
+		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
 	}
     var teamAdds = this.raceAdd(this.getRaceType(characters))
     if(teamCfg){
