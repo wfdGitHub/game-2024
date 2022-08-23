@@ -156,7 +156,7 @@ module.exports = function() {
 				if(award)
 					award += "&"+dropItem+":1"
 				else
-					award = "&"+dropItem+":1"
+					award = dropItem+":1"
 			}
 		}
 		let awardList = []
