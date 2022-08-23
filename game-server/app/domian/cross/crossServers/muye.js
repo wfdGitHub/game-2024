@@ -404,8 +404,8 @@ module.exports = function() {
 						end = score+100
 						self.redisDao.db.zcount(["cross:muye:rank:camp"+defCamp,begin,end],function(err,zcount) {
 							if(!zcount || zcount <= 0){
-								begin = begin - 100
-								end = end + 100
+								begin = begin - 200
+								end = end + 200
 								voidScore = true
 								self.redisDao.db.zcount(["cross:muye:rank:camp"+defCamp,begin,end],function(err,zcount) {
 									if(!zcount || zcount <= 0){
@@ -518,7 +518,7 @@ module.exports = function() {
 					}
 				}
 				if(voidScore)
-					change = 0
+					change = 1
 				self.addItemStr(crossUid,awardStr,1,"天命决战",function(flag,awardList) {
 					self.redisDao.db.zincrby(["cross:muye:rank:camp"+camp,change,crossUid],function(err,curScore) {
 						var info = {
