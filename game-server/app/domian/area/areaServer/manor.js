@@ -20,15 +20,19 @@ for(var i in manor_builds){
 }
 for(var i in builds["xmc"]){
 	builds["xmc"][i]["allWeight"] = 0
-	for(var j = 1; j <= 4;j++)
-		if(builds["xmc"][i]["quality_"+j])
-			builds["xmc"][i]["allWeight"] +=builds["xmc"][i]["quality_"+j]
+	for(var j = 1; j <= 4;j++){
+		if(!builds["xmc"][i]["quality_"+j])
+			builds["xmc"][i]["quality_"+j] = 0
+		builds["xmc"][i]["allWeight"] += builds["xmc"][i]["quality_"+j]
+	}
 }
 for(var i in builds["qjf"]){
 	builds["qjf"][i]["allWeight"] = 0
-	for(var j = 1; j <= 4;j++)
-		if(builds["qjf"][i]["quality_"+j])
-			builds["qjf"][i]["allWeight"] +=builds["qjf"][i]["quality_"+j]
+	for(var j = 1; j <= 4;j++){
+		if(!builds["qjf"][i]["quality_"+j])
+			builds["qjf"][i]["quality_"+j] = 0
+		builds["qjf"][i]["allWeight"] += builds["qjf"][i]["quality_"+j]
+	}
 }
 var mon_weight = {"all":10000,"1":3000,"2":6000,"3":8000,"4":9000,"5":9600,"6":10000}
 for(var i in builds["main"]){
