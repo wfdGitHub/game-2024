@@ -8,9 +8,11 @@ const async = require("async")
 for(var i in grading_robot){
 	grading_robot[i]["team"] = JSON.parse(grading_robot[i]["team"])
 }
+var max_score = 0
 var grading_lv_list = []
 for(var i in grading_lv){
 	grading_lv_list.push(grading_lv[i]["score"])
+	max_score = grading_lv[i]["score"]
 }
 //跨服段位赛
 module.exports = function() {
@@ -195,7 +197,9 @@ module.exports = function() {
 					if(rank === null){
 						rank = 0
 					}
-					var begin = rank + 1
+					var begin = rank - 5
+					if(begin < 0)
+						begin = 0
 					var end = rank + 5
 					self.redisDao.db.zrange(["cross:grading:rank",begin,end,"WITHSCORES"],function(err,list) {
 						for(var i = 0;i < list.length;i += 2){
@@ -242,7 +246,10 @@ module.exports = function() {
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
 					self.taskUpdate(crossUid,"grading_win",1)
-					change = Math.floor(Math.random() * 15) + 20
+					if(targetScore > max_score)
+						change = 1
+					else
+						change = Math.floor(Math.random() * 15) + 20
 					self.redisDao.db.zincrby(["cross:grading:rank",change,crossUid],function(err,value) {
 						curScore = value
 						self.redisDao.db.zadd(["cross:grading:realRank",curScore,crossUid])
