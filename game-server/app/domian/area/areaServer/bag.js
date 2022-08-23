@@ -326,7 +326,7 @@ module.exports = function() {
 				return {type : "item",itemId : itemId,value : value}
 			}
 		}else{
-			console.trace("item not exist : "+itemId)
+			console.trace("item not exist : "+JSON.stringify(otps))
 			if(cb)
 				cb(false,"item not exist")
 		}
