@@ -153,7 +153,10 @@ module.exports = function() {
 		if(task_cfg[taskId]["refresh"] == "day"){
 			var dropItem = self.festivalDrop()
 			if(dropItem){
-				award += "&"+dropItem+":1"
+				if(award)
+					award += "&"+dropItem+":1"
+				else
+					award = "&"+dropItem+":1"
 			}
 		}
 		let awardList = []
