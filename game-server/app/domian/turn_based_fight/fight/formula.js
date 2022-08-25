@@ -197,7 +197,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	info.value += Math.floor(info.value * restrainValue)
 	//物理法术伤害加成减免
 	if(attacker[skill.damageType+"_add"] || target[skill.damageType+"_def"]){
-		var tmpRate = attacker[skill.damageType+"_add"] - target[skill.damageType+"_def"]
+		var tmpRate = (attacker[skill.damageType+"_add"] || 0) - (target[skill.damageType+"_def"] || 0)
 		info.value += Math.floor(info.value * tmpRate)
 	}
 	//物理法术增伤BUFF
