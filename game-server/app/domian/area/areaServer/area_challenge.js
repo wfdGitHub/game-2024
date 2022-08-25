@@ -187,8 +187,6 @@ module.exports = function() {
 				}
 			    var atkTeam = fightInfo.team
 			    var seededNum = fightInfo.seededNum
-				var seededNum = Date.now()
-				var atkTeam = list
 				var defTeam = area_challenge[cur_chapter]["team"+bossId]
 			    var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
 			    if(verify !== self.fightContorl.getVerifyInfo()){
