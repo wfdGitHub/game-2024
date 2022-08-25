@@ -175,7 +175,7 @@ module.exports = function() {
 			bossId++
 			var cur_chapter = data["cur_chapter"] || 1
 			var time = data["time"]
-			if(!area_challenge[cur_chapter] || cur_chapter < 29){
+			if(!area_challenge[cur_chapter] || cur_chapter < 15){
 				cb(false,"chapter erro "+cur_chapter)
 			}else if(!area_challenge[cur_chapter]["team"+bossId]){
 				cb(false,"boss错误")
