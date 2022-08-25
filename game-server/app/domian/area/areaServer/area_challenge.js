@@ -30,7 +30,7 @@ module.exports = function() {
 			}else{
 				//挑战时间到
 				var flag = false
-				while(data.time < Date.now() && data.cur_chapter < 15){
+				while(data.time < Date.now() && data.cur_chapter < 29){
 					flag = true
 					data.cur_chapter++
 					data.time += 86400000
@@ -163,6 +163,61 @@ module.exports = function() {
 					    }
 					}
 				})
+			}
+		})
+	}
+	//挑战单骑(6vs6)
+	this.areaChallengeSix = function(uid,verify,masterSkills,cb) {
+		self.getObjAll(uid,main_name,function(data) {
+			for(var i in data)
+				data[i] = Number(data[i])
+			var bossId = Number(data["bossId"]) || 0
+			bossId++
+			var cur_chapter = data["cur_chapter"] || 1
+			var time = data["time"]
+			if(!area_challenge[cur_chapter] || cur_chapter < 16){
+				cb(false,"chapter erro "+cur_chapter)
+			}else if(!area_challenge[cur_chapter]["team"+bossId]){
+				cb(false,"boss错误")
+			}else{
+				var fightInfo = self.getFightInfo(uid)
+				if(!fightInfo){
+					next("未准备")
+					return
+				}
+			    var atkTeam = fightInfo.team
+			    var seededNum = fightInfo.seededNum
+				var seededNum = Date.now()
+				var atkTeam = list
+				var defTeam = area_challenge[cur_chapter]["team"+bossId]
+			    var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
+			    if(verify !== self.fightContorl.getVerifyInfo()){
+			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"挑战单骑(6vs6)")
+			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
+			    	return
+			    }
+	    		var info = {}
+	    		info.atkTeam = atkTeam
+	    		info.defTeam = defTeam
+	    		info.seededNum = seededNum
+	    		info.winFlag = winFlag
+			    if(winFlag){
+		    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId],1,"挑战山海"+cur_chapter)
+		    		if(bossId >= 3){
+		    			cur_chapter++
+		    			bossId = 0
+		    			time += 86400000
+		    			self.setObj(uid,main_name,"cur_chapter",cur_chapter)
+		    			self.setObj(uid,main_name,"time",time)
+		    		}
+		    		self.setObj(uid,main_name,"bossId",bossId)
+	    			info.bossId = bossId
+	    			info.cur_chapter = cur_chapter
+	    			info.time = time
+		    		cb(true,info)
+			    }else{
+			    	cb(false,info)
+			    }
 			}
 		})
 	}

@@ -150,6 +150,16 @@ activityHandler.prototype.areaChallengeThree = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//挑战单骑救主(6vs6)
+activityHandler.prototype.areaChallengeSix = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var verify = msg.verify
+  var masterSkills = msg.masterSkills
+  this.areaManager.areaMap[areaId].areaChallengeSix(uid,verify,masterSkills,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //获取限时礼包数据
 activityHandler.prototype.getLimitGiftData = function(msg, session, next) {
   var uid = session.uid

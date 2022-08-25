@@ -1769,6 +1769,12 @@
             console.log(data);
         });
       }
+      //挑战单骑救主(6vs6)
+      var areaChallengeSix = function(verify,masterSkills) {
+        pomelo.request("area.activityHandler.areaChallengeSix", {verify:verify,masterSkills:masterSkills}, function(data) {
+            console.log(data);
+        });
+      }
       //==============限时礼包==========//
       //获取限时礼包数据
       var getLimitGiftData = function() {
