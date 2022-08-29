@@ -22,6 +22,7 @@ var model = function(atkInfo,defInfo,otps) {
     this.locator = new locator(this.seeded)
     this.formula = new formula(this.seeded,otps)
     skillManager.init(this,this.locator,this.formula,this.seeded)
+    this.skillManager = skillManager
 	this.isFight = true				//战斗中标识
 	this.runFlag = true 			//回合行动标识
 	this.runCount = 1 				//行动次数标识

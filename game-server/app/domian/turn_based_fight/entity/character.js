@@ -1345,6 +1345,8 @@ model.prototype.getTotalAtt = function(name) {
 		case "speed":
 			if(this.buffs["cold"])
 				value += this.buffs["cold"].getValue()
+			if(this.buffs["wind"])
+				value += Math.floor(value * this.buffs["wind"].getValue() * 0.02)
 		break
 		case "atk":
 			if(this.buffs["polang"])
@@ -1355,6 +1357,8 @@ model.prototype.getTotalAtt = function(name) {
 				value += this.buffs["atkAdd"].getValue()
 			if(this.buffs["atkLess"])
 				value -= this.buffs["atkLess"].getValue()
+			if(this.buffs["wind"])
+				value += Math.floor(value * this.buffs["wind"].getValue() * 0.03)
 		break
 		case "crit":
 			if(this.buffs["polang"])
