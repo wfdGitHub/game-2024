@@ -5,7 +5,7 @@ var buffFactory = function() {}
 buffFactory.init = function(seeded,fighting) {
 	for(var buffId in buff_cfg){
 		if(buff_cfg[buffId]["default"])
-			buffList[buffId] = require("./buffs/defaultBuff.js")
+			buffList[buffId] = require("./defaultBuff.js")
 		else
 			buffList[buffId] = require("./buffs/"+buffId+".js")
 	}
@@ -59,7 +59,6 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		otps.buffArg = otps.buffArg * (1 - character.damage_buff_lowArg)
 	}
 	if(buffList[buffId]){
-		fightRecord.push({type : "createBuff",releaser : releaser.id,character : character.id,buffId : buffId,name : buff_cfg[buffId].name})
 		var buff
 		if(character.buffs[buffId]){
 			buff = character.buffs[buffId]
@@ -69,6 +68,8 @@ buffFactory.createBuff = function(releaser,character,otps) {
 			buff.name = buff_cfg[buffId].name
 			character.addBuff(releaser,buff)
 		}
+		if(buff)
+			fightRecord.push({type : "createBuff",releaser : releaser.id,character : character.id,buffId : buffId,name : buff_cfg[buffId].name})
 		if(buffId == "poison" && releaser.poison_add_forbidden){
 			this.createBuff(releaser,character,{"buffId" : "forbidden","duration":1})
 		}

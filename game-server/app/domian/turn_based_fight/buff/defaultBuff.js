@@ -1,6 +1,6 @@
 //通用BUFF
-var buffBasic = require("../buffBasic.js")
-var buff_cfg = require("../../../../../config/gameCfg/buff_cfg.json")
+var buffBasic = require("./buffBasic.js")
+var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
 	var id = 0

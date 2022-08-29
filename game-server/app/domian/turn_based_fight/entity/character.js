@@ -796,7 +796,7 @@ model.prototype.roundOver = function() {
 		this.dodgeState = true
 	//状态BUFF刷新
 	for(var i in this.buffs)
-		if(buff_cfg[i].refreshType == "roundOver")
+		if(buff_cfg[i].refreshType == "roundOver" || buff_cfg[i].refreshType == "always")
 			this.buffs[i].update()
 	if(this.round_same_hit_red)
 		this.round_same_value = {}
@@ -916,13 +916,13 @@ model.prototype.clearReleaserBuff = function(releaser) {
 model.prototype.diedClear = function() {
 	if(this.buffs["ghost"]){
 		for(var i in this.buffs){
-			if(buff_cfg[i].debuff && i != "jinhun")
+			if(buff_cfg[i].debuff && buff_cfg[i].refreshType != "always")
 				this.buffs[i].destroy()
 		}
 	}else{
 		this.curAnger = 0
 		for(var i in this.buffs){
-			if(i != "jinhun")
+			if(buff_cfg[i].refreshType != "always")
 				this.buffs[i].destroy()
 		}
 	}
