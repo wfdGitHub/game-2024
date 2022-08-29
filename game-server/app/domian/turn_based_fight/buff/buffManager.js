@@ -4,7 +4,10 @@ var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var buffFactory = function() {}
 buffFactory.init = function(seeded,fighting) {
 	for(var buffId in buff_cfg){
-		buffList[buffId] = require("./buffs/"+buffId+".js")
+		if(buff_cfg[buffId]["default"])
+			buffList[buffId] = require("./buffs/defaultBuff.js")
+		else
+			buffList[buffId] = require("./buffs/"+buffId+".js")
 	}
 	this.seeded = seeded
 	this.fighting = fighting
@@ -19,6 +22,8 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		console.error("buff 不存在 ",buffId)
 		return
 	}
+	if(!otps.duration)
+		otps.duration = buff_cfg[buffId]["duration"] || 1
 	//亡魂不状态不可释放BUFF
 	if(buffId != "ghost" && character.ghost)
 		return

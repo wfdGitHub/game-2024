@@ -758,6 +758,12 @@ model.prototype.before = function() {
 model.prototype.after = function() {
 	//状态BUFF刷新
 	this.onAction = false
+	//冰霜回合结束冰冻判断
+	if(this.buffs["frost"] && this.buffs["frost"].getValue() >= 10){
+		var targets = this.fighting.locator.getBuffTargets(this,"enemy_1")
+		if(targets[0])
+			buffManager.createBuff(this,targets[0],{buffId : "dizzy",duration : 1})
+	}
 	for(var i in this.buffs)
 		if(buff_cfg[i].refreshType == "after")
 			this.buffs[i].update()
@@ -1383,9 +1389,10 @@ model.prototype.getTotalAtt = function(name) {
 		case "reduction":
 			if(this.buffs["pojia"])
 				value -= this.buffs["pojia"].getValue() * 0.12
-			if(this.buffs["god_shield"]){
+			if(this.buffs["god_shield"])
 				value += this.buffs["god_shield"].getValue() * 0.15
-			}
+			if(this.buffs["frost"])
+				value += this.buffs["frost"].getValue() * 0.05
 		break
 	}
 	return value
