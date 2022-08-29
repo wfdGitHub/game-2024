@@ -819,6 +819,18 @@ model.prototype.roundOver = function() {
 		recordInfo.type = "self_heal"
 		fightRecord.push(recordInfo)
 	}
+	//圣火加血
+	if(this.buffs["flame"]){
+		var tmpRecord = {type : "other_heal",targets : []}
+		var targets = this.fighting.locator.getTargets(this,"team_all")
+		var healValue = Math.floor(this.getTotalAtt("atk") * 0.2 * this.buffs["flame"].getValue())
+		for(var i = 0;i < targets.length;i++){
+			var info = this.fighting.formula.calHeal(this,targets[i],healValue,{})
+			info = targets[i].onHeal(this,info,{})
+			tmpRecord.targets.push(info)
+		}
+		fightRecord.push(tmpRecord)
+	}
 	this.phy_turn_value = 0
 	this.half_hp_shild_flag = true
 	this.first_beSkill_flag = true
@@ -1013,6 +1025,14 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 		if(!attacker.ignore_shild && this.buffs["shield"]){
 			info.value = this.buffs["shield"].offset(info.value)
 			info.shield = true
+		}
+		if(this.buffs["protect"] && !this.buffs["protect"].releaser.died && callbacks){
+			info.value = Math.floor(info.value/2)
+			callbacks.push((function(){
+				var tmpRecord = {type : "other_damage",value : info.value,d_type:info.d_type}
+				tmpRecord = this.buffs["protect"].releaser.onHit(this,tmpRecord)
+				fightRecord.push(tmpRecord)
+			}).bind(this))
 		}
 		info.realValue = this.lessHP(info,callbacks)
 		info.curValue = this.attInfo.hp
@@ -1365,6 +1385,8 @@ model.prototype.getTotalAtt = function(name) {
 				value += this.buffs["polang"].getValue() * 0.05
 			if(this.buffs["blood"])
 				value += this.buffs["blood"].getValue()
+			if(this.buffs["flame"])
+				value += this.buffs["flame"].getValue() * 0.03
 		break
 		case "slay":
 			if(this.buffs["baonu"])
@@ -1397,6 +1419,10 @@ model.prototype.getTotalAtt = function(name) {
 				value += this.buffs["god_shield"].getValue() * 0.15
 			if(this.buffs["frost"])
 				value += this.buffs["frost"].getValue() * 0.05
+			if(this.buffs["flame"])
+				value += this.buffs["flame"].getValue() * 0.03
+			if(this.buffs["protect"])
+				value += 0.2
 		break
 	}
 	return value
