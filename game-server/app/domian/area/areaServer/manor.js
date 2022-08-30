@@ -1231,11 +1231,8 @@ module.exports = function() {
 			},
 			function(next) {
 				//家园特权加成
-				console.log("manor_pri",manor_pri,Date.now(),manor_pri > Date.now())
-				console.log(atkTeam[6])
 		    	var manor_pri = self.getLordAtt(uid,"manor_pri")
 		    	if(manor_pri > Date.now()){
-		    		console.log("特权生效中")
 					if(!atkTeam[6]["team_atk_add"])
 						atkTeam[6]["team_atk_add"] = 0
 					atkTeam[6]["team_atk_add"] += 1
@@ -1243,7 +1240,6 @@ module.exports = function() {
 						atkTeam[6]["team_maxHP_add"] = 0
 					atkTeam[6]["team_maxHP_add"] += 1
 		    	}
-		    	console.log(atkTeam[6])
 		    	next()
 			},
 			function(next) {
