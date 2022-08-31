@@ -138,6 +138,9 @@ model.prototype.getTargets = function(character,targetType) {
 			//获取友方怒气最少的3个单位
 			return this.getFriendMinAnger(character,3)
 		break
+		case "friend_maxAtk_1":
+			//获取友方攻击最高的1个单位
+			return this.getFriendMaxAtk(character,1)
 		case "realm_minAnger_1":
 			//获取同阵营怒气最少的3个单位
 			return this.getRealmMinAnger(character,1)
@@ -263,6 +266,9 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 			//获取友方生命值最少的5个单位
 			return this.getFriendRandomMinHp(character,5)
 		break
+		case "friend_maxAtk_1":
+			//获取友方攻击最高的1个单位
+			return this.getFriendMaxAtk(character,1)
 		case "realm_minHp_2":
 			//获取己方同阵营生命值最少的2个单位
 			return this.getTeamRealmMinHp(character,2)
@@ -812,6 +818,23 @@ model.prototype.getFriendMinAnger = function(character,count) {
     		}
     return list.slice(0,count)
 }
+//友分攻击最高的n个单位
+model.prototype.getFriendMaxAtk = function(character,count) {
+    var list = []
+    character.team.forEach(function(target,index) {
+        if(model.friendCheck(target) && target != character){
+        	list.push(target)
+        }
+    })
+    for(var i = 0;i < list.length;i++)
+    	for(var j = i + 1;j < list.length;j++)
+    		if(list[j].attInfo.atk > list[i].attInfo.atk){
+    			var tmp = list[j]
+    			list[j] = list[i]
+    			list[i] = tmp
+    		}
+    return list.slice(0,count)
+}
 //同阵营(除自己)怒气最少的N个单位
 model.prototype.getRealmMinAnger = function(character,count) {
     var list = []
@@ -886,7 +909,6 @@ model.prototype.getTeamDiedUnghost = function(character) {
 		return [list[index]]
 	}
 }
-
 //己方攻击最高的n个单位
 model.prototype.getTeamMaxAtk = function(character,count) {
     var list = []

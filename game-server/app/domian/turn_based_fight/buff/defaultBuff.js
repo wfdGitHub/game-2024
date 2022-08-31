@@ -19,6 +19,9 @@ var model = function(releaser,character,otps) {
 		buff.fightRecord.push(recordInfo)
 	}
 	buff.overlay = function(releaser,otps) {
+		if(buff_cfg[buff.buffId]["fury"])
+			buff.character.removeDeBuff()
+		otps.buffArg = otps.buffArg || 1
 		for(var i = 0;i < otps.buffArg;i++){
 			if(count >= max)
 				break

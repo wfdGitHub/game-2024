@@ -21,8 +21,6 @@ var model = function(atkInfo,defInfo,otps) {
     this.seeded = new seeded(this.seededNum)
     this.locator = new locator(this.seeded)
     this.formula = new formula(this.seeded,otps)
-    skillManager.init(this,this.locator,this.formula,this.seeded)
-    this.skillManager = skillManager
 	this.isFight = true				//战斗中标识
 	this.runFlag = true 			//回合行动标识
 	this.runCount = 1 				//行动次数标识
@@ -47,6 +45,8 @@ var model = function(atkInfo,defInfo,otps) {
 	else
 		this.masterSkillsRecord = []
 	this.load(atkInfo.team,defInfo.team,otps)
+    skillManager.init(this,this.locator,this.formula,this.seeded)
+    this.skillManager = skillManager
 }
 //初始配置
 model.prototype.load = function(atkTeam,defTeam,otps) {
@@ -65,6 +65,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			this.atkTeamInfo["realms"][atkTeam[i].realm]++
 		}
 		atkTeam[i].init(this)
+		atkTeam[i].belong = "atk"
 		if(atkTeam[i].resurgence_team){
 			this.atkTeamInfo["resurgence_team_character"] = atkTeam[i]
 			this.atkTeamInfo["resurgence_team"] = atkTeam[i].resurgence_team
@@ -98,6 +99,7 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			this.defTeamInfo["realms"][defTeam[i].realm]++
 		}
 		defTeam[i].init(this)
+		defTeam[i].belong = "def"
 		if(defTeam[i].resurgence_team){
 			this.defTeamInfo["resurgence_team_character"] = defTeam[i]
 			this.defTeamInfo["resurgence_team"] = defTeam[i].resurgence_team
@@ -165,7 +167,13 @@ model.prototype.fightBegin = function() {
 		if(!this.atkTeam[i].died){
 			if(this.atkTeam[i].first_buff_list.length){
 				for(var j = 0;j < this.atkTeam[i].first_buff_list.length;j++){
-					buffManager.createBuff(this.atkTeam[i],this.atkTeam[i],this.atkTeam[i].first_buff_list[j])
+					if(this.atkTeam[i].first_buff_list[j]["buff_tg"]){
+						var targets = this.locator.getBuffTargets(this.atkTeam[i],this.atkTeam[i].first_buff_list[j]["buff_tg"])
+						for(var k = 0;k < targets.length;k++)
+							buffManager.createBuff(this.atkTeam[i],targets[k],this.atkTeam[i].first_buff_list[j])
+					}else{
+						buffManager.createBuff(this.atkTeam[i],this.atkTeam[i],this.atkTeam[i].first_buff_list[j])
+					}
 				}
 			}
 			if(this.atkTeam[i].first_realm_buff){

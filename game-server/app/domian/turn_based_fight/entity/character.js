@@ -9,6 +9,7 @@ var model = function(otps) {
 	this.realm = otps.realm		//国家
 	this.career = otps.career	//角色职业   healer 治疗者
 	this.sex = otps.sex 		//性别 1男 2女
+	this.belong = ""   			//所属阵容
 	this.index = 0				//所在位置
 	this.isNaN = false			//是否空位置
 	this.team = []				//所在阵容
@@ -33,7 +34,7 @@ var model = function(otps) {
 	this.attInfo.slay = otps["slay"] || 0				//爆伤加成
 	this.attInfo.slayDef = otps["slayDef"] || 0			//爆伤减免
 	this.attInfo.hitRate = otps["hitRate"] || 0			//命中率
-	this.attInfo.dodgeRate = otps["dodgeRate"] || 0		//闪避率
+	this.attInfo.dodgeRate = otps["dodgeRate"] || 0		//闪避率				
 	this.attInfo.amplify = otps["amplify"] || 0			//伤害加深
 	this.attInfo.reduction = otps["reduction"] || 0		//伤害减免
 	this.attInfo.healRate = otps["healRate"] || 0		//治疗暴击几率
@@ -48,6 +49,15 @@ var model = function(otps) {
 	this.anyAnger = otps["anyAnger"] || false   		//当前怒气小于4点时，也能施放技能，技能伤害降低15%*(4-当前怒气值)
 	this.totalDamage = 0								//累计伤害
 	this.totalHeal = 0									//累计治疗
+	//==========闪光阶级========//
+	this.listen_enemyBuff = otps.listen_enemyBuff 				//监听敌方获得BUFF
+	this.listen_teamBuff = otps.listen_teamBuff 				//监听我方获得BUFF
+	if(otps.listen_addBuff)
+		this.listen_addBuff = JSON.parse(otps.listen_addBuff)  	//监听后自身获得BUFF
+	this.polang_buff = otps.polang_buff 						//破浪叠满20层
+	this.less_hp_rate = otps.less_hp_rate 						//生命值降低到一定程度触发BUFF
+	this.less_hp_buff = otps.less_hp_buff 						//生命值降低到一定程度触发BUFF
+
 	//==========MEGA属性========//
 	if(otps["amplify_"+this.realm])
 		this.attInfo.amplify += otps["amplify_"+this.realm]
@@ -787,17 +797,14 @@ model.prototype.after = function() {
 }
 //整体回合结束
 model.prototype.roundOver = function() {
-	if(this.died){
-		if(this.buffs["jinhun"])
-			this.buffs["jinhun"].update()
-		return
-	}
-	if(this.dodgeFirst)
-		this.dodgeState = true
 	//状态BUFF刷新
 	for(var i in this.buffs)
 		if(buff_cfg[i].refreshType == "roundOver" || buff_cfg[i].refreshType == "always")
 			this.buffs[i].update()
+	if(this.died)
+		return
+	if(this.dodgeFirst)
+		this.dodgeState = true
 	if(this.round_same_hit_red)
 		this.round_same_value = {}
 	var rate = this.attInfo.hp / this.attInfo.maxHP
@@ -816,6 +823,11 @@ model.prototype.roundOver = function() {
 		fightRecord.push({type:"show_tag",id:this.id,tag:"friend_ation_hp"})
 		var rate = this.teamInfo.realms_ation[this.realm] * this.friend_ation_hp
 		var recordInfo =  this.onHeal(this,{type : "heal",maxRate : rate})
+		recordInfo.type = "self_heal"
+		fightRecord.push(recordInfo)
+	}
+	if(this.buffs["kb_boss2"] || this.buffs["huosheng"]){
+		var recordInfo =  this.onHeal(this,{type : "heal",maxRate : 0.3})
 		recordInfo.type = "self_heal"
 		fightRecord.push(recordInfo)
 	}
@@ -1173,6 +1185,21 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 							fightRecord.push(tmpRecord)
 						}).bind(this))
 					}
+					if(this.buffs["bingshen"]){
+						if(this.fighting.seeded.random("bingshen") < 0.3){
+							callbacks.push((function(){
+								buffManager.createBuff(this,attacker,{"buffId" : "frozen","buffArg":1,"duration":2})
+							}).bind(this))
+						}
+					}
+					if(this.less_hp_rate && this.less_hp_buff && ((this.attInfo.hp / this.attInfo.maxHP) < this.less_hp_rate)){
+						//生命值低于一定比例触发BUFF
+						delete this.less_hp_rate
+						callbacks.push((function(){
+							buffManager.createBuff(this,this,{buffId : this.less_hp_buff})
+							delete this.less_hp_buff
+						}).bind(this))
+					}
 				}
 			}
 		}
@@ -1387,10 +1414,20 @@ model.prototype.getTotalAtt = function(name) {
 				value += this.buffs["blood"].getValue()
 			if(this.buffs["flame"])
 				value += this.buffs["flame"].getValue() * 0.03
+			if(this.buffs["kb_boss1"])
+				value += 0.5
+		break
+		case "critDef":
+			if(this.buffs["kb_boss2"])
+				value += 0.5
 		break
 		case "slay":
 			if(this.buffs["baonu"])
 				value += 0.2
+			if(this.buffs["kb_polang"])
+				value += 0.3
+			if(this.buffs["kb_boss1"])
+				value += 0.5
 		break
 		case "hitRate":
 			if(this.buffs["sand"] && this.buffs["sand"].releaser.sand_low_hit){
@@ -1411,6 +1448,10 @@ model.prototype.getTotalAtt = function(name) {
 			}
 			if(this.buffs["ghost"] && this.ghost_amp)
 				value += this.ghost_amp
+			if(this.buffs["huosheng"])
+				value += 0.3
+			if(this.buffs["juexing"])
+				value += 0.2
 		break
 		case "reduction":
 			if(this.buffs["pojia"])
@@ -1423,6 +1464,14 @@ model.prototype.getTotalAtt = function(name) {
 				value += this.buffs["flame"].getValue() * 0.03
 			if(this.buffs["protect"])
 				value += 0.2
+			if(this.buffs["bingshen"])
+				value += 0.3
+			if(this.buffs["kb_boss3"])
+				value += 0.3
+		break
+		case "healRate":
+			if(this.buffs["kb_boss4"])
+				value += 1
 		break
 	}
 	return value

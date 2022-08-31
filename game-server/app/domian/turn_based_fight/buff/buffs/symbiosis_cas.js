@@ -13,7 +13,6 @@ var model = function(releaser,character,otps) {
 		recordInfo.targets.push(buff.releaser.onHeal(buff.character,{value : heal_value}))
 		buff.fightRecord.push(recordInfo)
 	}
-	buff.buffManager.createBuff(buff.character,buff.releaser,{buffId : "symbiosis_rec",duration : -1})
 	return buff
 }
 module.exports = model

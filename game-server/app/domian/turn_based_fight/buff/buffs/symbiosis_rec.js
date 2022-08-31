@@ -9,6 +9,7 @@ var model = function(releaser,character,otps) {
 	character.addAtt("hp",maxHP)
 	character.addAtt("phyDef",phyDef)
 	character.addAtt("magDef",magDef)
+	buff.buffManager.createBuff(buff.character,buff.releaser,{buffId : "symbiosis_cas",duration : -1})
 	return buff
 }
 module.exports = model

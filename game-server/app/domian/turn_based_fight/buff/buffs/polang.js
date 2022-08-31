@@ -31,6 +31,10 @@ var model = function(releaser,character,otps) {
 			list[id++] = {duration : otps.duration}
 			count++
 		}
+		if(buff.character.polang_buff && count >= 20){
+			buff.buffManager.createBuff(buff.character,buff.character,{"buffId":buff.character.polang_buff})
+			delete buff.character.polang_buff
+		}
 		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
 		buff.fightRecord.push(recordInfo)
 	}
