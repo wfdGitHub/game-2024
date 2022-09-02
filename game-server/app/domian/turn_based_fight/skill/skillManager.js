@@ -246,6 +246,8 @@ model.useSkill = function(skill,chase,point) {
 			var buff = skill.skill_buffs[buffId]
 			var buffTargets = this.locator.getBuffTargets(skill.character,buff.buff_tg,targets)
 			var buffRate = buff.buffRate
+			if(skill.character.isPassive("skill_buff_up"))
+				buffRate += skill.character.getPassiveArg("skill_buff_up")
 			if(skill.tmpBuffRate){
 				buffRate += skill.tmpBuffRate
 				skill.tmpBuffRate = 0

@@ -9,7 +9,6 @@ var model = function(releaser,character,otps) {
 		round++
 		if(!buff.character.buffs["jinhun"] && (round >= 5 || (round > 0 && buff.buffManager.seeded.random("恢复回怒") < rate))){
 			buff.character.resurgence(1,buff.character)
-			buff.destroy()
 			return
 		}
 		rate += 0.1

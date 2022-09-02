@@ -35,6 +35,7 @@ var model = function(atkInfo,defInfo,otps) {
 	this.allHero = []				//所有英雄列表
 	this.character = false 			//当前行动角色
 	this.next_character = []		//插入行动角色
+	this.teamDiedList = {"atk":[],"def":[]} //死亡列表
 	this.diedList = []				//死亡列表
     this.manual = otps.manual || false  //手动操作标识
     this.video = otps.video || false 	//是否为录像
@@ -233,12 +234,13 @@ model.prototype.nextRound = function() {
 		return
 	}
 	this.round++
+	fightRecord.push({type : "nextRound",round : this.round})
 	// console.log("第 "+this.round+" 轮开始")
 	for(var i = 0;i < this.allHero.length;i++){
 		this.allHero[i].isAction = false
+		this.allHero[i].roundBegin()
 	}
 	// this.teamIndex = 0
-	fightRecord.push({type : "nextRound",round : this.round})
 	for(var i = 0; i <= roundBegin.length;i++){
 		if(this.atkBooks[roundBegin[i]])
 			this.bookAction(this.atkBooks[roundBegin[i]])
