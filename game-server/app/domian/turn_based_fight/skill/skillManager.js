@@ -385,6 +385,13 @@ model.useAttackSkill = function(skill,chase,point) {
 		fightRecord.push(recordInfo)
 		return []
 	}
+	if(skill.character.isPassive("zh_zz")){
+		for(var i = 0;i < targets.length;i++){
+			var count = targets[i].removeIntensifyBuff()
+			if(count)
+				buffManager.createBuff(skill.character,targets[i],{"buffId":"curse","buff_tg":"skill_targets","buffArg":count,"duration":3,"buffRate":1})
+		}
+	}
 	if(skill.lose_hp && !skill.character.isBoss){
 		var tmpRecord = {type : "other_damage",value : Math.ceil(skill.lose_hp * skill.character.attInfo.hp),d_type:skill.damageType}
 		tmpRecord = skill.character.onHit(skill.character,tmpRecord)

@@ -70,11 +70,11 @@ var model = function(otps) {
 		this.round_buffs.push(JSON.parse(otps.round_buff1)) //回合开始前BUFF
 	this.oneblood_round = otps.oneblood_round 				//受到致命伤害时100%概率触发保命，保留20%生命值，该技能触发后冷却4回合
 	if(otps.passive1 && passive_cfg[otps.passive1])
-		this.passives[otps.passive1] = new passive(passive_cfg[otps.passive1])
+		this.passives[otps.passive1] = new passive(passive_cfg[otps.passive1],otps.passiveArg1)
 	if(otps.passive2 && passive_cfg[otps.passive2])
-		this.passives[otps.passive2] = new passive(passive_cfg[otps.passive2])
+		this.passives[otps.passive2] = new passive(passive_cfg[otps.passive2],otps.passiveArg2)
 	if(otps.passive3 && passive_cfg[otps.passive3])
-		this.passives[otps.passive3] = new passive(passive_cfg[otps.passive3])
+		this.passives[otps.passive3] = new passive(passive_cfg[otps.passive3],otps.passiveArg3)
 	//==========MEGA属性========//
 	if(otps["amplify_"+this.realm])
 		this.attInfo.amplify += otps["amplify_"+this.realm]
@@ -787,6 +787,19 @@ model.prototype.after = function() {
 		var index = Math.floor(this.fighting.seeded.random("fh_dy") * this.fighting.teamDiedList[this.belong].length)
 		this.team[index].resurgence(this.getTotalAtt("atk") * this.getPassiveArg("fh_dy"),this)
 	}
+	//转移诅咒
+	if(this.isPassive("zy_zz")){
+		var count = 0
+		for(var i = 0;i < this.team.length;i++){
+			count += this.team[i].removeOneLower()
+		}
+		console.log("count",count)
+		if(count){
+			var targets = this.fighting.locator.getTargets(this,"enemy_1")
+			if(targets[0])
+				buffManager.createBuff(this,targets[0],{"buffId":"curse","buff_tg":"skill_targets","buffArg":count,"duration":3,"buffRate":1})
+		}
+	}
 	//冰霜回合结束冰冻判断
 	if(this.buffs["frost"] && this.buffs["frost"].getValue() >= 10){
 		var targets = this.fighting.locator.getBuffTargets(this,"enemy_1")
@@ -830,6 +843,12 @@ model.prototype.roundBegin = function() {
 }
 //整体回合结束
 model.prototype.roundOver = function() {
+	if(this.buffs["delay_death"]){
+		this.buffs["delay_death"].destroy()
+		if(this.attInfo.hp <= 0){
+			this.onDie()
+		}
+	}
 	//状态BUFF刷新
 	for(var i in this.buffs)
 		if(buff_cfg[i].refreshType == "roundOver" || buff_cfg[i].refreshType == "always")
@@ -911,20 +930,26 @@ model.prototype.removeDeBuffNotControl = function() {
 //解除一个减益状态
 model.prototype.removeOneLower = function() {
 	if(this.buffs["moyin"])
-		return
+		return 0
 	for(var i in this.buffs){
 		if(buff_cfg[i].lower){
 			this.buffs[i].destroy("clear")
-			break
+			return 1
 		}
 	}
+	return 0
 }
 //驱散增益状态
 model.prototype.removeIntensifyBuff = function() {
+	var count = 0
 	//状态BUFF刷新
-	for(var i in this.buffs)
-		if(buff_cfg[i].intensify)
+	for(var i in this.buffs){
+		if(buff_cfg[i].intensify){
+			count++
 			this.buffs[i].destroy("dispel")
+		}	
+	}
+	return count
 }
 //驱散一个增益状态
 model.prototype.removeOneIntensify = function() {
@@ -1284,6 +1309,17 @@ model.prototype.addAtt = function(name,value) {
 //角色死亡
 model.prototype.onDie = function(callbacks) {
 	// console.log(this.name+"死亡")
+	if(this.isPassive("died_buff")){
+		var buff = JSON.parse(this.getPassiveArg("died_buff"))
+		var targets = this.fighting.locator.getTargets(this,buff.buff_tg)
+		if(targets.length){
+			for(var i = 0;i < targets.length;i++){
+				buffManager.createBuff(this,targets[i],buff)
+			}
+		}
+	}
+	if(this.buffs["delay_death"])
+		return
 	if(this.resurgence_team)
 		delete this.teamInfo.resurgence_team
 	this.attInfo.hp = 0
@@ -1407,7 +1443,7 @@ model.prototype.lessHP = function(info,callbacks) {
 					buffManager.createBuff(this,this,{buffId : "invincibleSuper",duration : 1})
 				}).bind(this))
 			}else{
-				info.realValue = this.attInfo.hp
+				this.attInfo.hp -= info.value
 				this.onDie(callbacks)
 			}
 		}

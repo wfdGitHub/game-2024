@@ -19,15 +19,18 @@ var model = function(releaser,character,otps) {
 		buff.fightRecord.push(recordInfo)
 	}
 	buff.overlay = function(releaser,otps) {
-		if(count >= 5)
-			return
-		if(otps.duration > this.duration)
-			this.duration = otps.duration
-		var amp = 1
-		if(releaser.curse_amp)
-			amp += releaser.curse_amp
-		list[id++] = {releaser : releaser,value : Math.floor((releaser.getTotalAtt("atk") - buff.character.getTotalAtt("magDef")) * amp),duration : otps.duration}
-		count++
+		otps.buffArg = otps.buffArg || 1
+		for(var i = 0;i < otps.buffArg;i++){
+			if(count >= 5)
+				break
+			if(otps.duration > this.duration)
+				this.duration = otps.duration
+			var amp = 1
+			if(releaser.curse_amp)
+				amp += releaser.curse_amp
+			list[id++] = {releaser : releaser,value : Math.floor((releaser.getTotalAtt("atk") - buff.character.getTotalAtt("magDef")) * amp),duration : otps.duration}
+			count++
+		}
 		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
 		buff.fightRecord.push(recordInfo)
 	}

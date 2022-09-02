@@ -1,7 +1,10 @@
 //被动技能
-var model = function(otps) {
+var model = function(otps,arg) {
 	this.id = otps.id
-	this.arg = otps.arg
+	if(arg)
+		this.arg = arg
+	else
+		this.arg = otps.arg
 	this.needCD = otps.cd
 	this.curCD = 0
 }
