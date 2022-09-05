@@ -36,9 +36,11 @@ buffBasic.prototype.overlay = function(releaser,otps) {
 //update
 buffBasic.prototype.update = function(dt) {
 	this.refresh()
-	this.duration -= 1
-	if(this.duration <= 0){
-		this.destroy()
+	if(this.duration != -1){
+		this.duration -= 1
+		if(this.duration <= 0){
+			this.destroy()
+		}
 	}
 }
 module.exports = buffBasic

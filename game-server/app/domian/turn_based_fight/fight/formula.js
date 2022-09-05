@@ -78,7 +78,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		if(attacker.attInfo.hp < attacker.attInfo.maxHP && attacker.low_hp_crit){
 			crit += Math.floor((attacker.attInfo.maxHP-attacker.attInfo.hp)/attacker.attInfo.maxHP * 10) * attacker.low_hp_crit
 		}
-		if(attacker.must_crit || attacker.buffs["baonu"] || this.seeded.random("暴击判断") < crit){
+		if(attacker.must_crit || attacker.buffs["baonu"] || attacker.buffs["kb_polang"] || this.seeded.random("暴击判断") < crit){
 			info.crit = true
 		}
 	}

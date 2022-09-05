@@ -1,7 +1,9 @@
 var skillManager = require("../skill/skillManager.js")
+var passive = require("../skill/passive.js")
 var fightRecord = require("../fight/fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
 var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
+var passive_cfg = require("../../../../config/gameCfg/passive_cfg.json")
 var model = function(otps) {
 	//=========身份===========//
 	this.heroId = Number(otps.id)
@@ -9,6 +11,7 @@ var model = function(otps) {
 	this.realm = otps.realm		//国家
 	this.career = otps.career	//角色职业   healer 治疗者
 	this.sex = otps.sex 		//性别 1男 2女
+	this.belong = ""   			//所属阵容
 	this.index = 0				//所在位置
 	this.isNaN = false			//是否空位置
 	this.team = []				//所在阵容
@@ -33,7 +36,7 @@ var model = function(otps) {
 	this.attInfo.slay = otps["slay"] || 0				//爆伤加成
 	this.attInfo.slayDef = otps["slayDef"] || 0			//爆伤减免
 	this.attInfo.hitRate = otps["hitRate"] || 0			//命中率
-	this.attInfo.dodgeRate = otps["dodgeRate"] || 0		//闪避率
+	this.attInfo.dodgeRate = otps["dodgeRate"] || 0		//闪避率				
 	this.attInfo.amplify = otps["amplify"] || 0			//伤害加深
 	this.attInfo.reduction = otps["reduction"] || 0		//伤害减免
 	this.attInfo.healRate = otps["healRate"] || 0		//治疗暴击几率
@@ -48,6 +51,30 @@ var model = function(otps) {
 	this.anyAnger = otps["anyAnger"] || false   		//当前怒气小于4点时，也能施放技能，技能伤害降低15%*(4-当前怒气值)
 	this.totalDamage = 0								//累计伤害
 	this.totalHeal = 0									//累计治疗
+
+	this.first_buff_list = []			//初始BUFF
+	this.kill_buffs = {} 				//击杀BUFF
+	this.action_buffs = {} 				//行动后buff
+	this.round_buffs = [] 				//回合开始前BUFF
+	this.died_buffs = {} 				//死亡时buff
+	this.passives = {} 					//被动技能
+	//==========闪光阶级========//
+	this.listen_enemyBuff = otps.listen_enemyBuff 				//监听敌方获得BUFF
+	this.listen_teamBuff = otps.listen_teamBuff 				//监听我方获得BUFF
+	if(otps.listen_addBuff)
+		this.listen_addBuff = JSON.parse(otps.listen_addBuff)  	//监听后自身获得BUFF
+	this.polang_buff = otps.polang_buff 						//破浪叠满20层
+	this.less_hp_rate = otps.less_hp_rate 						//生命值降低到一定程度触发BUFF
+	this.less_hp_buff = otps.less_hp_buff 						//生命值降低到一定程度触发BUFF
+	if(otps.round_buff1)
+		this.round_buffs.push(JSON.parse(otps.round_buff1)) //回合开始前BUFF
+	this.oneblood_round = otps.oneblood_round 				//受到致命伤害时100%概率触发保命，保留20%生命值，该技能触发后冷却4回合
+	if(otps.passive1 && passive_cfg[otps.passive1])
+		this.passives[otps.passive1] = new passive(passive_cfg[otps.passive1],otps.passiveArg1)
+	if(otps.passive2 && passive_cfg[otps.passive2])
+		this.passives[otps.passive2] = new passive(passive_cfg[otps.passive2],otps.passiveArg2)
+	if(otps.passive3 && passive_cfg[otps.passive3])
+		this.passives[otps.passive3] = new passive(passive_cfg[otps.passive3],otps.passiveArg3)
 	//==========MEGA属性========//
 	if(otps["amplify_"+this.realm])
 		this.attInfo.amplify += otps["amplify_"+this.realm]
@@ -63,11 +90,6 @@ var model = function(otps) {
 	this.gj_my = otps.gj_my || false 					//进攻时免疫所有伤害
 	this.bm_fz = otps.bm_fz || false 					//首次受到致命伤害时保留1点血量，使自身进入放逐状态，持续3回合
 	//=========新战斗属性=======//
-	this.first_buff_list = []			//初始BUFF
-	this.kill_buffs = {} 				//击杀BUFF
-	this.action_buffs = {} 				//行动后buff
-	this.died_buffs = {} 				//死亡时buff
-
 	this.tmpAmp = 0 										//临时伤害加成
 	this.recover_settle = otps.recover_settle || false 		//释放持续恢复效果时，若目标身上已存在治疗效果，则立即结算原效果剩余回合数
 	this.buffDuration = otps.buffDuration || 0 				//buff回合数增加
@@ -758,6 +780,32 @@ model.prototype.before = function() {
 model.prototype.after = function() {
 	//状态BUFF刷新
 	this.onAction = false
+	if(this.died)
+		return
+	//判断复活队友
+	if(this.fighting.teamDiedList[this.belong].length && this.isPassive("fh_dy")){
+		var index = Math.floor(this.fighting.seeded.random("fh_dy") * this.fighting.teamDiedList[this.belong].length)
+		this.team[index].resurgence(this.getTotalAtt("atk") * this.getPassiveArg("fh_dy"),this)
+	}
+	//转移诅咒
+	if(this.isPassive("zy_zz")){
+		var count = 0
+		for(var i = 0;i < this.team.length;i++){
+			count += this.team[i].removeOneLower()
+		}
+		console.log("count",count)
+		if(count){
+			var targets = this.fighting.locator.getTargets(this,"enemy_1")
+			if(targets[0])
+				buffManager.createBuff(this,targets[0],{"buffId":"curse","buff_tg":"skill_targets","buffArg":count,"duration":3,"buffRate":1})
+		}
+	}
+	//冰霜回合结束冰冻判断
+	if(this.buffs["frost"] && this.buffs["frost"].getValue() >= 10){
+		var targets = this.fighting.locator.getBuffTargets(this,"enemy_1")
+		if(targets[0])
+			buffManager.createBuff(this,targets[0],{buffId : "dizzy",duration : 1})
+	}
 	for(var i in this.buffs)
 		if(buff_cfg[i].refreshType == "after")
 			this.buffs[i].update()
@@ -775,23 +823,42 @@ model.prototype.after = function() {
 		fightRecord.push(tmpRecord)
 	}
 	this.damage_save_value = 0
-	if(this.master){
+	if(this.master)
 		this.master.heroAfter()
+}
+//整体回合开始
+model.prototype.roundBegin = function() {
+	if(this.died)
+		return
+	//回合开始时前BUFF
+	for(var i = 0;i < this.round_buffs.length;i++){
+		var buffInfo = this.round_buffs[i]
+		var buffTargets = this.fighting.locator.getBuffTargets(this,buffInfo.buff_tg)
+		for(var k = 0;k < buffTargets.length;k++){
+			if(this.fighting.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+				buffManager.createBuff(this,buffTargets[k],buffInfo)
+			}
+		}
 	}
 }
 //整体回合结束
 model.prototype.roundOver = function() {
-	if(this.died){
-		if(this.buffs["jinhun"])
-			this.buffs["jinhun"].update()
-		return
+	if(this.buffs["delay_death"]){
+		this.buffs["delay_death"].destroy()
+		if(this.attInfo.hp <= 0){
+			this.onDie()
+		}
 	}
-	if(this.dodgeFirst)
-		this.dodgeState = true
 	//状态BUFF刷新
 	for(var i in this.buffs)
-		if(buff_cfg[i].refreshType == "roundOver")
+		if(buff_cfg[i].refreshType == "roundOver" || buff_cfg[i].refreshType == "always")
 			this.buffs[i].update()
+	if(this.died)
+		return
+	for(var i in this.passives)
+		this.passives[i].roundUpdate()
+	if(this.dodgeFirst)
+		this.dodgeState = true
 	if(this.round_same_hit_red)
 		this.round_same_value = {}
 	var rate = this.attInfo.hp / this.attInfo.maxHP
@@ -812,6 +879,23 @@ model.prototype.roundOver = function() {
 		var recordInfo =  this.onHeal(this,{type : "heal",maxRate : rate})
 		recordInfo.type = "self_heal"
 		fightRecord.push(recordInfo)
+	}
+	if(this.buffs["kb_boss2"] || this.buffs["huosheng"]){
+		var recordInfo =  this.onHeal(this,{type : "heal",maxRate : 0.3})
+		recordInfo.type = "self_heal"
+		fightRecord.push(recordInfo)
+	}
+	//圣火加血
+	if(this.buffs["flame"]){
+		var tmpRecord = {type : "other_heal",targets : []}
+		var targets = this.fighting.locator.getTargets(this,"team_all")
+		var healValue = Math.floor(this.getTotalAtt("atk") * 0.2 * this.buffs["flame"].getValue())
+		for(var i = 0;i < targets.length;i++){
+			var info = this.fighting.formula.calHeal(this,targets[i],healValue,{})
+			info = targets[i].onHeal(this,info,{})
+			tmpRecord.targets.push(info)
+		}
+		fightRecord.push(tmpRecord)
 	}
 	this.phy_turn_value = 0
 	this.half_hp_shild_flag = true
@@ -846,20 +930,26 @@ model.prototype.removeDeBuffNotControl = function() {
 //解除一个减益状态
 model.prototype.removeOneLower = function() {
 	if(this.buffs["moyin"])
-		return
+		return 0
 	for(var i in this.buffs){
 		if(buff_cfg[i].lower){
 			this.buffs[i].destroy("clear")
-			break
+			return 1
 		}
 	}
+	return 0
 }
 //驱散增益状态
 model.prototype.removeIntensifyBuff = function() {
+	var count = 0
 	//状态BUFF刷新
-	for(var i in this.buffs)
-		if(buff_cfg[i].intensify)
+	for(var i in this.buffs){
+		if(buff_cfg[i].intensify){
+			count++
 			this.buffs[i].destroy("dispel")
+		}	
+	}
+	return count
 }
 //驱散一个增益状态
 model.prototype.removeOneIntensify = function() {
@@ -910,13 +1000,13 @@ model.prototype.clearReleaserBuff = function(releaser) {
 model.prototype.diedClear = function() {
 	if(this.buffs["ghost"]){
 		for(var i in this.buffs){
-			if(buff_cfg[i].debuff && i != "jinhun")
+			if(buff_cfg[i].debuff && buff_cfg[i].refreshType != "always")
 				this.buffs[i].destroy()
 		}
 	}else{
 		this.curAnger = 0
 		for(var i in this.buffs){
-			if(i != "jinhun")
+			if(buff_cfg[i].refreshType != "always")
 				this.buffs[i].destroy()
 		}
 	}
@@ -1008,6 +1098,14 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 			info.value = this.buffs["shield"].offset(info.value)
 			info.shield = true
 		}
+		if(this.buffs["protect"] && !this.buffs["protect"].releaser.died && callbacks){
+			info.value = Math.floor(info.value/2)
+			callbacks.push((function(){
+				var tmpRecord = {type : "other_damage",value : info.value,d_type:info.d_type}
+				tmpRecord = this.buffs["protect"].releaser.onHit(this,tmpRecord)
+				fightRecord.push(tmpRecord)
+			}).bind(this))
+		}
 		info.realValue = this.lessHP(info,callbacks)
 		info.curValue = this.attInfo.hp
 		info.maxHP = this.attInfo.maxHP
@@ -1042,7 +1140,7 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 			}
 		}else{
 			if(info.seckillRate && !this.neglect_seckill && (this.attInfo.hp / this.attInfo.maxHP) < 0.15){
-				this.onDie()
+				this.onDie(callbacks)
 				info.seckill = true
 				info.curValue = 0
 				info.kill = true
@@ -1147,6 +1245,21 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 							fightRecord.push(tmpRecord)
 						}).bind(this))
 					}
+					if(this.buffs["bingshen"]){
+						if(this.fighting.seeded.random("bingshen") < 0.3){
+							callbacks.push((function(){
+								buffManager.createBuff(this,attacker,{"buffId" : "frozen","buffArg":1,"duration":2})
+							}).bind(this))
+						}
+					}
+					if(this.less_hp_rate && this.less_hp_buff && ((this.attInfo.hp / this.attInfo.maxHP) < this.less_hp_rate)){
+						//生命值低于一定比例触发BUFF
+						delete this.less_hp_rate
+						callbacks.push((function(){
+							buffManager.createBuff(this,this,{buffId : this.less_hp_buff})
+							delete this.less_hp_buff
+						}).bind(this))
+					}
 				}
 			}
 		}
@@ -1194,24 +1307,51 @@ model.prototype.addAtt = function(name,value) {
 	}
 }
 //角色死亡
-model.prototype.onDie = function() {
+model.prototype.onDie = function(callbacks) {
 	// console.log(this.name+"死亡")
+	if(this.isPassive("died_buff")){
+		var buff = JSON.parse(this.getPassiveArg("died_buff"))
+		var targets = this.fighting.locator.getTargets(this,buff.buff_tg)
+		if(targets.length){
+			for(var i = 0;i < targets.length;i++){
+				buffManager.createBuff(this,targets[i],buff)
+			}
+		}
+	}
+	if(this.buffs["delay_death"])
+		return
 	if(this.resurgence_team)
 		delete this.teamInfo.resurgence_team
 	this.attInfo.hp = 0
 	this.died = true
+	this.fighting.teamDiedList[this.belong].push(this.index)
 	this.fighting.diedList.push(this)
 	this.teamInfo["realms_survival"][this["realm"]]--
 	for(var i = 0;i < this.team.length;i++)
 		if(!this.team[i].died && this.team[i].id != this.id)
-			this.team[i].friendDied(this)
+			this.team[i].friendDied(this,callbacks)
 }
 //队友死亡
-model.prototype.friendDied = function(friend){
+model.prototype.friendDied = function(friend,callbacks){
 	if(this.friend_died_count > 0 && this.friend_died_amp){
 		fightRecord.push({type:"show_tag",id:this.id,tag:"friend_died_amp"})
 		this.zf_amp += this.friend_died_amp
 		this.friend_died_count--
+	}
+	if(this.passives["fh_ss"] && this.passives["fh_ss"].curCD == 0 && this.attInfo.hp / this.attInfo.maxHP > 0.3){
+		var fh_ss_check = function() {
+			if(friend.died && this.isPassive("fh_ss")){
+				var rate = this.getPassiveArg("fh_ss")
+				var info = {type : "other_damage",id:this.id,"loss":true}
+				info.value = Math.floor(rate * this.attInfo.maxHP)
+				info.realValue = this.lessHP(info)
+				info.curValue = this.attInfo.hp
+				info.maxHP = this.attInfo.maxHP
+				fightRecord.push(info)
+				friend.resurgence(info.realValue,this)
+			}
+		}
+		callbacks.push(fh_ss_check.bind(this))
 	}
 }
 //击杀目标
@@ -1242,14 +1382,23 @@ model.prototype.kill = function(target) {
 model.prototype.resurgence = function(rate,releaser) {
 	if(this.buffs["jinhun"])
 		return
+	if(rate < 0)
+		return
 	if(rate > 1)
-		rate = 1
-	this.attInfo.hp = Math.floor(rate * this.attInfo.maxHP) || 1
+		this.attInfo.hp = Math.floor(rate)
+	else
+		this.attInfo.hp = Math.floor(rate * this.attInfo.maxHP) || 1
 	this.died = false
+    var index = this.fighting.teamDiedList[this.belong].indexOf(this.index);
+    if(index > -1)
+        this.fighting.teamDiedList[this.belong].splice(index, 1);
 	this.teamInfo["realms_survival"][this["realm"]]++
 	fightRecord.push({type : "resurgence",curValue : this.attInfo.hp,maxHP : this.attInfo.maxHP,id : this.id,curAnger : 0})
 	if(releaser.rescue_anger){
 		this.addAnger(releaser.rescue_anger)
+	}
+	if(this.buffs["birth_fire"]){
+		this.buffs["birth_fire"].destroy()
 	}
 }
 //恢复血量
@@ -1286,9 +1435,16 @@ model.prototype.lessHP = function(info,callbacks) {
 				info.realValue = this.attInfo.hp - 1
 				this.attInfo.hp = 1
 				info.oneblood = true
+			}else if(this.isPassive("bm_hx")){
+				this.attInfo.hp = Math.floor(this.attInfo.maxHP * 0.2)
+			}else if(this.isPassive("bm_wd")){
+				this.attInfo.hp = 1
+				callbacks.push((function(){
+					buffManager.createBuff(this,this,{buffId : "invincibleSuper",duration : 1})
+				}).bind(this))
 			}else{
-				info.realValue = this.attInfo.hp
-				this.onDie()
+				this.attInfo.hp -= info.value
+				this.onDie(callbacks)
 			}
 		}
 	}else{
@@ -1339,6 +1495,8 @@ model.prototype.getTotalAtt = function(name) {
 		case "speed":
 			if(this.buffs["cold"])
 				value += this.buffs["cold"].getValue()
+			if(this.buffs["wind"])
+				value += Math.floor(value * this.buffs["wind"].getValue() * 0.02)
 		break
 		case "atk":
 			if(this.buffs["polang"])
@@ -1349,16 +1507,30 @@ model.prototype.getTotalAtt = function(name) {
 				value += this.buffs["atkAdd"].getValue()
 			if(this.buffs["atkLess"])
 				value -= this.buffs["atkLess"].getValue()
+			if(this.buffs["wind"])
+				value += Math.floor(value * this.buffs["wind"].getValue() * 0.03)
 		break
 		case "crit":
 			if(this.buffs["polang"])
 				value += this.buffs["polang"].getValue() * 0.05
 			if(this.buffs["blood"])
 				value += this.buffs["blood"].getValue()
+			if(this.buffs["flame"])
+				value += this.buffs["flame"].getValue() * 0.03
+			if(this.buffs["kb_boss1"])
+				value += 0.5
+		break
+		case "critDef":
+			if(this.buffs["kb_boss2"])
+				value += 0.5
 		break
 		case "slay":
 			if(this.buffs["baonu"])
 				value += 0.2
+			if(this.buffs["kb_polang"])
+				value += 0.3
+			if(this.buffs["kb_boss1"])
+				value += 0.5
 		break
 		case "hitRate":
 			if(this.buffs["sand"] && this.buffs["sand"].releaser.sand_low_hit){
@@ -1379,13 +1551,30 @@ model.prototype.getTotalAtt = function(name) {
 			}
 			if(this.buffs["ghost"] && this.ghost_amp)
 				value += this.ghost_amp
+			if(this.buffs["huosheng"])
+				value += 0.3
+			if(this.buffs["juexing"])
+				value += 0.2
 		break
 		case "reduction":
 			if(this.buffs["pojia"])
 				value -= this.buffs["pojia"].getValue() * 0.12
-			if(this.buffs["god_shield"]){
+			if(this.buffs["god_shield"])
 				value += this.buffs["god_shield"].getValue() * 0.15
-			}
+			if(this.buffs["frost"])
+				value += this.buffs["frost"].getValue() * 0.05
+			if(this.buffs["flame"])
+				value += this.buffs["flame"].getValue() * 0.03
+			if(this.buffs["protect"])
+				value += 0.2
+			if(this.buffs["bingshen"])
+				value += 0.3
+			if(this.buffs["kb_boss3"])
+				value += 0.3
+		break
+		case "healRate":
+			if(this.buffs["kb_boss4"])
+				value += 1
 		break
 	}
 	return value
@@ -1447,5 +1636,20 @@ model.prototype.removeBuff = function(buffId) {
     if(this.buffs[buffId]){
         delete this.buffs[buffId]
     }
+}
+//判断被动技能是否生效
+model.prototype.isPassive = function(id) {
+	if(this.passives[id] && this.passives[id].isUseable()){
+		fightRecord.push({type:"show_tag",id:this.id,tag:id})
+		return true
+	}else
+		return false
+}
+//获取被动技能参数
+model.prototype.getPassiveArg = function(id) {
+	if(this.passives[id]){
+		return this.passives[id].arg
+	}else
+		return 0
 }
 module.exports = model
