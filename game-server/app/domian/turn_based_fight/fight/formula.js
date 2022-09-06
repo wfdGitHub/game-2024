@@ -186,9 +186,6 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		}
 	}
 	//种族克制
-	if(restrainMap[attacker.realm+"_"+target.realm]){
-		info.value += Math.floor(info.value * restrainMap[attacker.realm+"_"+target.realm])
-	}
 	var restrainValue = restrainMap[attacker.realm+"_"+target.realm] || 0
 	if(attacker["att_realm_"+target.realm])
 		restrainValue += attacker["att_realm_"+target.realm]

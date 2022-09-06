@@ -1421,12 +1421,17 @@ model.prototype.lessHP = function(info,callbacks) {
 	if(this.died){
 		return 0
 	}
+	var callFlag = false
+	if(!callbacks){
+		callFlag = true
+		callbacks = []
+	}
 	if(this.half_hp_red && (this.round_damage >= (this.attInfo.maxHP / 2))){
 		info.value = 1
 	}
 	info.realValue = info.value
 	if((this.attInfo.hp - info.value) <= 0){
-		if(this.bm_fz && callbacks){
+		if(this.bm_fz){
 			this.bm_fz = false
 			info.realValue = this.attInfo.hp - 1
 			this.attInfo.hp = 1
@@ -1454,6 +1459,10 @@ model.prototype.lessHP = function(info,callbacks) {
 		this.attInfo.hp -= info.value
 	}
 	this.round_damage += info.realValue
+	if(callFlag){
+		for(var i = 0;i < callbacks.length;i++)
+			callbacks[i]()
+	}
 	return info.realValue
 }
 //恢复怒气
