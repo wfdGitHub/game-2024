@@ -19,6 +19,7 @@ var guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
 var guild_skill = require("../../../../config/gameCfg/guild_skill.json")
 var hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
 var hufu_quality = require("../../../../config/gameCfg/hufu_quality.json")
+var hufu_lv = require("../../../../config/gameCfg/hufu_lv.json")
 var heroSpine = require("../../../../config/gameCfg/heroSpine.json")
 var skin_list = require("../../../../config/gameCfg/skin_list.json")
 var title_list = require("../../../../config/gameCfg/title_list.json")
@@ -63,7 +64,7 @@ for(var i = 1;i <= 4;i++){
 }
 var hufu_map = {}
 for(var i in hufu_skill){
-	for(var j = 1;j<= 4;j++){
+	for(var j = 1;j<= 5;j++){
 		hufu_map[hufu_skill[i]["lv"+j]] = {"id":i,"lv":j}
 		hufuSkillCes[hufu_skill[i]["lv"+j]] = 50000 * j
 	}
@@ -323,7 +324,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	if(info.star){
 		if(advanced_talent[info.id]){
 			let starInfo = {}
-			for(let i = 6;i <= info.star;i++){
+			for(let i = 6;i <= info.star && i <= 15;i++){
 				let talentId = advanced_talent[info.id]["talent_"+i]
 				if(talentId)
 					model.mergeTalent(starInfo,talentId)
@@ -340,6 +341,8 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 			})
 			model.mergeData(info,starInfo)
 		}
+		if(info.star >= 20 && info["fs5"] == 1)
+			model.mergeTalent(info,advanced_talent[info.id]["talent_20"])
 	}
 	//进阶计算
 	if(info.ad){
@@ -781,6 +784,21 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 			if(newValue && evolutionCfg[newValue])
 				newCE = evolutionCfg[newValue]["ce"]
 		break
+		case "fs1":
+		case "fs2":
+		case "fs3":
+		case "fs4":
+			if(oldValue && hufu_map[oldValue])
+				oldCE = hufu_lv[hufu_map[oldValue].lv]["ce"]
+			if(newValue && hufu_map[newValue])
+				newCE = hufu_lv[hufu_map[newValue].lv]["ce"]
+		break
+		case "fs5":
+			if(oldValue)
+				oldCE = 500000
+			if(newValue)
+				newCE = 500000
+		break
 	}
 	return newCE - oldCE
 }
@@ -838,6 +856,18 @@ model.getTeamCE = function(team) {
 			}
 			if(team[i]["evo"])
 				allCE += evolutionCfg[team[i]["evo"]]["ce"]
+			//符文石计算
+			for(var j = 1;j <= 4;j++){
+				if(team[i]["fs"+j]){
+					if(hufu_map[team[i]["fs"+j]]){
+						if(hufu_lv[hufu_map[team[i]["fs"+j]].lv])
+							allCE += hufu_lv[hufu_map[team[i]["fs"+j]].lv]["ce"]
+					}
+				}
+			}
+			//天赋计算
+			if(team[i]["fs5"])
+				allCE += 500000
 		}
 	}
 	if(team[6]){

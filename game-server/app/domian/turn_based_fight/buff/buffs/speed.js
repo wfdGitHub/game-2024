@@ -30,7 +30,7 @@ var model = function(releaser,character,otps) {
 		buff.fightRecord.push(recordInfo)
 	}
 	buff.getValue = function() {
-		return count * 0.05
+		return buff.character.attInfo.speed * count * 0.05
 	}
 	buff.overlay(releaser,otps)
 	return buff

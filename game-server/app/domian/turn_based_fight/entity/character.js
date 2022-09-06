@@ -104,6 +104,7 @@ var model = function(otps) {
 	this.action_buff_s = otps.action_buff_s 				//行动后触发buff 宝石效果
 	this.died_buff1 = otps.died_buff1 						//死亡后触发buff1
 	this.died_buff2 = otps.died_buff2 						//死亡后触发buff2
+	this.died_buff3 = otps.died_buff3 						//死亡后触发buff3
 	this.died_buff_s = otps.died_buff_s 					//死亡后触发buff 宝石效果
 	if(otps.died_once_buff)
 		this.died_once_buff = JSON.parse(otps.died_once_buff) //死亡后触发buff,仅生效1
@@ -595,6 +596,8 @@ model.prototype.init = function(fighting) {
 		this.addDiedBuff(this.died_buff1)
 	if(this.died_buff2)
 		this.addDiedBuff(this.died_buff2)
+	if(this.died_buff3)
+		this.addDiedBuff(this.died_buff3)
 	if(this.died_buff_s)
 		this.addDiedBuff(this.died_buff_s)
 	if(this.seckill)
