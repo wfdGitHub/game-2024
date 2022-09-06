@@ -15,6 +15,8 @@ var stone_skill = require("../../config/gameCfg/stone_skill.json")
 var stone_cfg = require("../../config/gameCfg/stone_cfg.json")
 var default_cfg = require("../../config/gameCfg/default_cfg.json")
 var evolutionCfg = require("../../config/gameCfg/evolution.json")
+var hufu_skill = require("../../config/gameCfg/hufu_skill.json")
+var hufu_lv = require("../../config/gameCfg/hufu_lv.json")
 var async = require("async")
 var first_recruit = default_cfg["first_hero"]["value"]
 var baseStone = {
@@ -33,6 +35,12 @@ for(let i in recruit_base){
 }
 for(let i in recruit_list){
 	recruit_list[i].heroList = JSON.parse(recruit_list[i].heroList)
+}
+var hufu_map = {}
+for(var i in hufu_skill){
+  for(var j = 1;j<= 5;j++){
+    hufu_map[hufu_skill[i]["lv"+j]] = {"id":i,"lv":j}
+  }
 }
 var bearcat = require("bearcat")
 var heroDao = function() {
@@ -351,6 +359,16 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 		}
 		if(heros[i]["evo"])
 			strList.push(evolutionCfg[heros[i]["evo"]].pr)
+		for(var j = 1;j <= 4;j++){
+			var key = "fs"+j
+			if(heros[i][key]){
+				//拆卸符石
+				var fslv = hufu_map[heros[i][key]]["lv"]
+				strList.push("2000060:"+hufu_lv[fslv]["pr"])
+			}
+		}
+		if(heros[i]["fs5"])
+			strList.push("2000100:1")
 		this.areaManager.areaMap[areaId].remove_heroRank(uid,id,hIds[i])
 	}
 	if(strList.length){

@@ -5,6 +5,14 @@ var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var star_base = require("../../../../config/gameCfg/star_base.json")
 var evolutionCfg = require("../../../../config/gameCfg/evolution.json")
 var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
+var hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
+var hufu_lv = require("../../../../config/gameCfg/hufu_lv.json")
+var hufu_map = {}
+for(var i in hufu_skill){
+  for(var j = 1;j<= 5;j++){
+    hufu_map[hufu_skill[i]["lv"+j]] = {"id":i,"lv":j}
+  }
+}
 var heroHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
@@ -677,6 +685,122 @@ heroHandler.prototype.getHeroRankOne = function(msg, session, next) {
   var heroId = msg.heroId
   this.areaManager.areaMap[areaId].getHeroRankOne(uid,hId,heroId,function(flag,data) {
     next(null,{flag : flag,data : data})
+  })
+}
+//升级符石
+heroHandler.prototype.upHeroFS = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var slot = msg.slot
+  var id = msg.id
+  var lv = 1
+  var self = this
+  if(!Number.isInteger(slot) || slot < 1 || slot > 4){
+    next(null,{flag : false,err : "slot error "+slot})
+    return
+  }
+  if(!hufu_skill[id]){
+    next(null,{flag : false,err : "id error "+id})
+    return
+  }
+  self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+    if(!flag){
+      next(null,{flag : false,err : "英雄不存在"})
+      return
+    }
+    if(heroInfo.star < 15+slot){
+      next(null,{flag : false,err : "星级限制"})
+      return
+    }
+    var key = "fs"+slot
+    if(heroInfo[key]){
+      id = hufu_map[heroInfo[key]]["id"]
+      lv = hufu_map[heroInfo[key]]["lv"] + 1
+    }
+    var pcStr = ""
+    if(lv > 5){
+      next(null,{flag : false,err : "已满级"})
+      return
+    }if(lv == 5){
+      pcStr = "2000080:1"
+    }else{
+      pcStr = id+":"+hufu_lv[lv]["base"]
+    }
+    if(hufu_lv[lv]["pc"])
+      pcStr += "&2000060:"+hufu_lv[lv]["pc"]
+    self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,"升级符石"+id,function(flag,err) {
+      if(!flag){
+        next(null,{flag : false,err : err})
+        return
+      }
+      self.heroDao.setHeroInfo(areaId,uid,hId,key,hufu_skill[id]["lv"+lv],function(flag,data) {
+        next(null,{flag : flag,data : hufu_skill[id]["lv"+lv]})
+      })
+    })
+  })
+}
+//卸下符石
+heroHandler.prototype.unHeroFS = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var slot = msg.slot
+  var lv = 1
+  var self = this
+  if(!Number.isInteger(slot) || slot < 1 || slot > 4){
+    next(null,{flag : false,err : "slot error "+slot})
+    return
+  }
+  self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+    if(!flag){
+      next(null,{flag : false,err : "英雄不存在"})
+      return
+    }
+    var key = "fs"+slot
+    if(heroInfo[key]){
+      lv = hufu_map[heroInfo[key]]["lv"]
+    }else{
+      next(null,{flag : false,err : "未装备"})
+      return
+    }
+    var str = "2000060:"+hufu_lv[lv]["pr"]
+    var awardList = self.areaManager.areaMap[areaId].addItemStr(uid,str,1,"卸下符石"+lv)
+    self.heroDao.delHeroInfo(areaId,uid,hId,key,function(flag,data) {
+      next(null,{flag : flag,awardList : awardList})
+    })
+  })
+}
+//激活专属符石
+heroHandler.prototype.actHeroOnlyFS = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var self = this
+  self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+    if(!flag){
+      next(null,{flag : false,err : "英雄不存在"})
+      return
+    }
+    if(heroInfo.star < 20){
+      next(null,{flag : false,err : "星级限制"})
+      return
+    }
+    var key = "fs5"
+    if(heroInfo[key]){      
+      next(null,{flag : false,err : "已激活"})
+      return
+    }
+    var pcStr = "2000100:1"
+    self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,"激活专属符石"+hId,function(flag,err) {
+      if(!flag){
+        next(null,{flag : false,err : err})
+        return
+      }
+      self.heroDao.setHeroInfo(areaId,uid,hId,key,1,function(flag,data) {
+        next(null,{flag : flag,data : data})
+      })  
+    })
   })
 }
 module.exports = function(app) {

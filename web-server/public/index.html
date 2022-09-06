@@ -98,6 +98,25 @@
         console.log("onChat")
         console.log(data)
       })
+
+      //升级符石
+      var upHeroFS = function(hId,slot,id) {
+        pomelo.request("area.heroHandler.upHeroFS", {hId:hId,slot:slot,id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下符石
+      var unHeroFS = function(hId,slot) {
+        pomelo.request("area.heroHandler.unHeroFS", {hId:hId,slot:slot}, function(data) {
+            console.log(data);
+        });
+      }
+      //激活专属符石
+      var actHeroOnlyFS = function(hId) {
+        pomelo.request("area.heroHandler.actHeroOnlyFS", {hId:hId}, function(data) {
+            console.log(data);
+        });
+      }
       //=================转盘抽奖==================//
       //获取抽奖数据
       var getLottoData = function() {
