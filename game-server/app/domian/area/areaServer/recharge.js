@@ -14,6 +14,7 @@ const wuxian = require("../../../../config/gameCfg/wuxian.json")
 const util = require("../../../../util/util.js")
 const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
 const uuid = require("uuid")
+const async = require("async")
 const main_name = "activity"
 const day7Time = 604800000
 const day31Time = 2592000000
@@ -62,26 +63,47 @@ module.exports = function() {
 			cb(false,"pay_id error")
 			return
 		}
-		if(pay_cfg[pay_id]["dianpiao"] == 0){
-			self.finish_recharge(uid,pay_id,cb)
-		}else{
-			var gmLv = self.getLordAtt(uid,"gmLv")
-			self.getPlayerData(uid,"diaopiao_use",function(value) {
-				value = Number(value) || 0
-				if((value + pay_cfg[pay_id]["dianpiao"]) > GM_CFG[gmLv]["dianpiao"]){
-					cb(false,"可用额度不足 "+value+"/"+GM_CFG[gmLv]["dianpiao"])
-					return
+		async.waterfall([
+			function(next) {
+				if(pay_cfg[pay_id]["fast"]){
+					self.getObj(uid,"recharge_fast",pay_id,function(data) {
+						data = Number(data) || 0
+						if(data >= pay_cfg[pay_id]["count"]){
+							cb(false,"购买次数已达上限")
+							return
+						}else{
+							next()
+						}
+					})
+				}else{
+					next()
 				}
-				self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
-					if(flag){
-						self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
-						self.finish_recharge(uid,pay_id,cb)
-					}else{
-						cb(false,err)
-					}
-				})
-			})
-		}
+			},
+			function(next) {
+				if(pay_cfg[pay_id]["dianpiao"] == 0){
+					self.finish_recharge(uid,pay_id,cb)
+				}else{
+					var gmLv = self.getLordAtt(uid,"gmLv")
+					self.getPlayerData(uid,"diaopiao_use",function(value) {
+						value = Number(value) || 0
+						if((value + pay_cfg[pay_id]["dianpiao"]) > GM_CFG[gmLv]["dianpiao"]){
+							cb(false,"可用额度不足 "+value+"/"+GM_CFG[gmLv]["dianpiao"])
+							return
+						}
+						self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
+							if(flag){
+								self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
+								self.finish_recharge(uid,pay_id,cb)
+							}else{
+								cb(false,err)
+							}
+						})
+					})
+				}
+			}
+		],function(err) {
+			cb(false,"pay_id error")
+		})
 	}
 	//获取快速充值数据
 	this.getRechargeFastData = function(uid,cb) {
