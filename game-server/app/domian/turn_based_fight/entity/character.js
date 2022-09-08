@@ -1457,21 +1457,19 @@ model.prototype.lessHP = function(info,callbacks) {
 				buffManager.createBuff(this,this,{buffId : "banish",duration : 4})
 			}).bind(this))
 		}else{
-			callbacks.push(function() {
-				if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
-					info.realValue = this.attInfo.hp - 1
-					this.attInfo.hp = 1
-					info.oneblood = true
-				}else if(this.isPassive("bm_hx")){
-					this.attInfo.hp = Math.floor(this.attInfo.maxHP * 0.2)
-				}else if(this.isPassive("bm_wd")){
-					this.attInfo.hp = 1
-					buffManager.createBuff(this,this,{buffId : "invincibleSuper",duration : 1})
-				}else{
-					this.attInfo.hp -= info.value
-					this.onDie(callbacks)
-				}
-			}.bind(this))
+			if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
+				info.realValue = this.attInfo.hp - 1
+				this.attInfo.hp = 1
+				info.oneblood = true
+			}else if(this.isPassive("bm_hx",callbacks)){
+				this.attInfo.hp = Math.floor(this.attInfo.maxHP * 0.2)
+			}else if(this.isPassive("bm_wd",callbacks)){
+				this.attInfo.hp = 1
+				buffManager.createBuff(this,this,{buffId : "invincibleSuper",duration : 1})
+			}else{
+				this.attInfo.hp -= info.value
+				this.onDie(callbacks)
+			}
 		}
 	}else{
 		this.attInfo.hp -= info.value
@@ -1668,9 +1666,15 @@ model.prototype.removeBuff = function(buffId) {
     }
 }
 //判断被动技能是否生效
-model.prototype.isPassive = function(id) {
+model.prototype.isPassive = function(id,callbacks) {
 	if(this.passives[id] && this.passives[id].isUseable()){
-		fightRecord.push({type:"show_tag",id:this.id,tag:id})
+		if(callbacks){
+			callbacks.push(function(){
+				fightRecord.push({type:"show_tag",id:this.id,tag:id})
+			}.bind(this))
+		}else{
+			fightRecord.push({type:"show_tag",id:this.id,tag:id})
+		}
 		return true
 	}else
 		return false
