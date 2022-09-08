@@ -246,7 +246,7 @@ model.useSkill = function(skill,chase,point) {
 			var buff = skill.skill_buffs[buffId]
 			var buffTargets = this.locator.getBuffTargets(skill.character,buff.buff_tg,targets)
 			var buffRate = buff.buffRate
-			if(skill.character.isPassive("skill_buff_up"))
+			if(skill.isAnger && skill.character.isPassive("skill_buff_up"))
 				buffRate += skill.character.getPassiveArg("skill_buff_up")
 			if(skill.tmpBuffRate){
 				buffRate += skill.tmpBuffRate
@@ -290,12 +290,6 @@ model.useSkill = function(skill,chase,point) {
 					}
 				}
 			}
-			//同阵营队友阵亡后释放技能
-			for(var j = 0;j < targets[i].team.length;j++)
-				if(targets[i].team[j].realmDiedSkill && targets[i].team[j].checkActionable() && targets[i].team[j].id != targets[i].id && targets[i].realm == targets[i].team[j].realm){
-					var tmpSkill = targets[i].team[j].angerSkill
-					this.useSkill(tmpSkill,true)
-				}
 		}
 	}
 	if(diedFlag){

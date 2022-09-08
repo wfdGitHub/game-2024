@@ -774,7 +774,7 @@ model.prototype.before = function() {
 			this.buffs[i].update()
 	//随机BUFF判断
 	if(this.begin_round_buffs){
-		var rand = Math.floor(Math.random() * this.begin_round_buffs.length)
+		var rand = Math.floor(this.fighting.seeded.random("begin_round_buffs") * this.begin_round_buffs.length)
 		buffManager.createBuff(this,this,this.begin_round_buffs[rand])
 	}
 	this.onAction = true
@@ -807,7 +807,7 @@ model.prototype.after = function() {
 	if(this.buffs["frost"] && this.buffs["frost"].getValue() >= 10){
 		var targets = this.fighting.locator.getBuffTargets(this,"enemy_1")
 		if(targets[0])
-			buffManager.createBuff(this,targets[0],{buffId : "dizzy",duration : 1})
+			buffManager.createBuff(this,targets[0],{buffId : "frozen",duration : 1})
 	}
 	for(var i in this.buffs)
 		if(buff_cfg[i].refreshType == "after")
@@ -849,7 +849,10 @@ model.prototype.roundOver = function() {
 	if(this.buffs["delay_death"]){
 		this.buffs["delay_death"].destroy()
 		if(this.attInfo.hp <= 0){
-			this.onDie()
+			this.attInfo.hp = 0
+			var tmpRecord = {type : "other_damage",value : -this.attInfo.hp,d_type:"mag"}
+			tmpRecord = this.onHit(this,tmpRecord)
+			fightRecord.push(tmpRecord)
 		}
 	}
 	//状态BUFF刷新
@@ -1312,6 +1315,11 @@ model.prototype.addAtt = function(name,value) {
 //角色死亡
 model.prototype.onDie = function(callbacks) {
 	// console.log(this.name+"死亡")
+	var callFlag = false
+	if(!callbacks){
+		callFlag = true
+		callbacks = []
+	}
 	if(this.isPassive("died_buff")){
 		var buff = JSON.parse(this.getPassiveArg("died_buff"))
 		var targets = this.fighting.locator.getTargets(this,buff.buff_tg)
@@ -1333,6 +1341,10 @@ model.prototype.onDie = function(callbacks) {
 	for(var i = 0;i < this.team.length;i++)
 		if(!this.team[i].died && this.team[i].id != this.id)
 			this.team[i].friendDied(this,callbacks)
+	if(callFlag){
+		for(var i = 0;i < callbacks.length;i++)
+			callbacks[i]()
+	}
 }
 //队友死亡
 model.prototype.friendDied = function(friend,callbacks){
@@ -1355,6 +1367,11 @@ model.prototype.friendDied = function(friend,callbacks){
 			}
 		}
 		callbacks.push(fh_ss_check.bind(this))
+	}
+	if(this.realmDiedSkill && this.realm == friend.realm && this.checkActionable()){
+		callbacks.push((function(){
+			skillManager.useSkill(this.angerSkill,true)
+		}).bind(this))
 	}
 }
 //击杀目标
