@@ -850,8 +850,8 @@ model.prototype.roundOver = function() {
 	if(this.buffs["delay_death"]){
 		this.buffs["delay_death"].destroy()
 		if(this.attInfo.hp <= 0){
-			this.attInfo.hp = 0
 			var tmpRecord = {type : "other_damage",value : -this.attInfo.hp,d_type:"mag"}
+			this.attInfo.hp = 0
 			tmpRecord = this.onHit(this,tmpRecord)
 			fightRecord.push(tmpRecord)
 		}
