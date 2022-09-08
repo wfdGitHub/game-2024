@@ -847,7 +847,7 @@ model.prototype.roundBegin = function() {
 }
 //整体回合结束
 model.prototype.roundOver = function() {
-	if(this.buffs["delay_death"]){
+	if(this.buffs["delay_death"] && this.buffs["delay_death"].duration == 1){
 		this.buffs["delay_death"].destroy()
 		if(this.attInfo.hp <= 0){
 			var tmpRecord = {type : "other_damage",value : -this.attInfo.hp,d_type:"mag"}
