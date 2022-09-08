@@ -788,6 +788,7 @@ model.prototype.after = function() {
 	//判断复活队友
 	if(this.fighting.teamDiedList[this.belong].length && this.isPassive("fh_dy")){
 		var index = Math.floor(this.fighting.seeded.random("fh_dy") * this.fighting.teamDiedList[this.belong].length)
+		index = this.fighting.teamDiedList[this.belong][index]
 		this.team[index].resurgence(this.getTotalAtt("atk") * this.getPassiveArg("fh_dy"),this)
 	}
 	//转移诅咒
@@ -1456,21 +1457,21 @@ model.prototype.lessHP = function(info,callbacks) {
 				buffManager.createBuff(this,this,{buffId : "banish",duration : 4})
 			}).bind(this))
 		}else{
-			if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
-				info.realValue = this.attInfo.hp - 1
-				this.attInfo.hp = 1
-				info.oneblood = true
-			}else if(this.isPassive("bm_hx")){
-				this.attInfo.hp = Math.floor(this.attInfo.maxHP * 0.2)
-			}else if(this.isPassive("bm_wd")){
-				this.attInfo.hp = 1
-				callbacks.push((function(){
+			callbacks.push(function() {
+				if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
+					info.realValue = this.attInfo.hp - 1
+					this.attInfo.hp = 1
+					info.oneblood = true
+				}else if(this.isPassive("bm_hx")){
+					this.attInfo.hp = Math.floor(this.attInfo.maxHP * 0.2)
+				}else if(this.isPassive("bm_wd")){
+					this.attInfo.hp = 1
 					buffManager.createBuff(this,this,{buffId : "invincibleSuper",duration : 1})
-				}).bind(this))
-			}else{
-				this.attInfo.hp -= info.value
-				this.onDie(callbacks)
-			}
+				}else{
+					this.attInfo.hp -= info.value
+					this.onDie(callbacks)
+				}
+			}.bind(this))
 		}
 	}else{
 		this.attInfo.hp -= info.value
