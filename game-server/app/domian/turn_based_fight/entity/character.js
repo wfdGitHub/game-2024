@@ -1146,7 +1146,7 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 				}
 			}
 		}else{
-			if(info.seckillRate && !this.buffs["delay_death"] && !this.neglect_seckill && (this.attInfo.hp / this.attInfo.maxHP) < 0.15){
+			if(!info.oneblood && info.seckillRate && !this.buffs["delay_death"] && !this.neglect_seckill && (this.attInfo.hp / this.attInfo.maxHP) < 0.15){
 				this.onDie(callbacks)
 				info.seckill = true
 				info.curValue = 0
@@ -1453,6 +1453,7 @@ model.prototype.lessHP = function(info,callbacks) {
 			this.bm_fz = false
 			info.realValue = this.attInfo.hp - 1
 			this.attInfo.hp = 1
+			info.oneblood = true
 			callbacks.push((function(){
 				buffManager.createBuff(this,this,{buffId : "banish",duration : 4})
 			}).bind(this))
@@ -1462,8 +1463,10 @@ model.prototype.lessHP = function(info,callbacks) {
 				this.attInfo.hp = 1
 				info.oneblood = true
 			}else if(this.isPassive("bm_hx",callbacks)){
+				info.oneblood = true
 				this.attInfo.hp = Math.floor(this.attInfo.maxHP * 0.2)
 			}else if(this.isPassive("bm_wd",callbacks)){
+				info.oneblood = true
 				this.attInfo.hp = 1
 				buffManager.createBuff(this,this,{buffId : "invincibleSuper",duration : 1})
 			}else{
