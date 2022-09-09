@@ -303,6 +303,7 @@ module.exports = function() {
 							info.index = index
 							info.max = max
 							self.redisDao.db.hset(main_name+":"+guildId,index,JSON.stringify(info))
+							self.redisDao.db.rpush(main_name+":play:"+guildId,uid)
 							self.sendToGuild(guildId,{type:"upForAuction",info:info})
 							cb(true,info)
 						})
