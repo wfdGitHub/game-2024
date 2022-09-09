@@ -223,4 +223,12 @@ master.prototype.getInfo = function() {}
 master.prototype.getSimpleInfo = function() {}
 master.prototype.addBuff = function(releaser,buff) {}
 master.prototype.removeBuff = function(buffId) {}
+//判断被动技能是否生效
+master.prototype.isPassive = function(id,callbacks) {
+	return false
+}
+//获取被动技能参数
+master.prototype.getPassiveArg = function(id) {
+	return 0
+}
 module.exports = master
