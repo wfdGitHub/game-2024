@@ -30,7 +30,7 @@ module.exports = function() {
 			}else{
 				//挑战时间到
 				var flag = false
-				while(data.time < Date.now() && data.cur_chapter < 29){
+				while(data.time < Date.now() && data.cur_chapter < 57){
 					flag = true
 					data.cur_chapter++
 					data.time += 86400000
