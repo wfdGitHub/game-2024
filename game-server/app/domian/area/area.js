@@ -245,6 +245,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.exerciseUserUpdate(uid)
 	this.extremityUserUpdate(uid)
 	this.priDayUpdate(uid)
+	this.userRechargeDayUpdate(uid)
 	this.incrbyAreaObj("areaInfo","day_login",1)
 	this.playerDao.setPlayerInfo({uid:uid,key:"pay_state",value:0})
 	this.mysqlDao.addDaylyData("activeNum",1)
@@ -259,12 +260,14 @@ area.prototype.weekFirstLogin = function(uid) {
 	this.chageLordData(uid,"real_week",0)
 	this.activityWeekUpdate(uid)
 	this.weekTaskRefresh(uid)
+	this.userRechargeWeekUpdate(uid)
 }
 //玩家每月首次登陆
 area.prototype.monthFirstLogin  = function(uid) {
 	// console.log(uid+" 本月首次登陆")
 	this.chageLordData(uid,"monthStr",this.monthStr)
 	this.monthTaskRefresh(uid)
+	this.userRechargeMonthUpdate(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {
