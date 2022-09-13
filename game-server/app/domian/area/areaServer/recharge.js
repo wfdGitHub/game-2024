@@ -13,6 +13,7 @@ const gift_loop = require("../../../../config/gameCfg/gift_loop.json")
 const util = require("../../../../util/util.js")
 const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
 const uuid = require("uuid")
+const async = require("async")
 const main_name = "activity"
 const day31Time = 2592000000
 var rechargeMap = {}
@@ -36,27 +37,76 @@ module.exports = function() {
 	this.rechargeDayUpdate = function() {
 		skinList = util.getRandomArray(skinArr,6)
 	}
+	//玩家每日刷新
+	this.userRechargeDayUpdate = function(uid) {
+		for(var i in pay_cfg)
+			if(pay_cfg[i]["type"] == "fast" && pay_cfg[i]["updateType"] == "day")
+				self.delObj(uid,"recharge_fast",i)
+	}
+	//玩家每周刷新
+	this.userRechargeWeekUpdate = function(uid) {
+		for(var i in pay_cfg)
+			if(pay_cfg[i]["type"] == "fast" && pay_cfg[i]["updateType"] == "week")
+				self.delObj(uid,"recharge_fast",i)
+	}
+	//玩家每月刷新
+	this.userRechargeMonthUpdate = function(uid) {
+		for(var i in pay_cfg)
+			if(pay_cfg[i]["type"] == "fast" && pay_cfg[i]["updateType"] == "month")
+				self.delObj(uid,"recharge_fast",i)
+	}
 	//点票支付
 	this.dianpiao_recharge = function(uid,pay_id,cb) {
 		if(!pay_cfg[pay_id] || !pay_cfg[pay_id]["dianpiao"]){
 			cb(false,"pay_id error")
 			return
 		}
-		var gmLv = self.getLordAtt(uid,"gmLv")
-		self.getPlayerData(uid,"diaopiao_use",function(value) {
-			value = Number(value) || 0
-			if((value + pay_cfg[pay_id]["dianpiao"]) > GM_CFG[gmLv]["dianpiao"]){
-				cb(false,"可用额度不足 "+value+"/"+GM_CFG[gmLv]["dianpiao"])
-				return
-			}
-			self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
-				if(flag){
-					self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
+		async.waterfall([
+			function(next) {
+				if(pay_cfg[pay_id]["fast"]){
+					self.getObj(uid,"recharge_fast",pay_id,function(data) {
+						data = Number(data) || 0
+						if(data >= pay_cfg[pay_id]["count"]){
+							cb(false,"购买次数已达上限")
+							return
+						}else{
+							next()
+						}
+					})
+				}else{
+					next()
+				}
+			},
+			function(next) {
+				if(pay_cfg[pay_id]["dianpiao"] == 0){
 					self.finish_recharge(uid,pay_id,cb)
 				}else{
-					cb(false,err)
+					var gmLv = self.getLordAtt(uid,"gmLv")
+					self.getPlayerData(uid,"diaopiao_use",function(value) {
+						value = Number(value) || 0
+						if((value + pay_cfg[pay_id]["dianpiao"]) > GM_CFG[gmLv]["dianpiao"]){
+							cb(false,"可用额度不足 "+value+"/"+GM_CFG[gmLv]["dianpiao"])
+							return
+						}
+						self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
+							if(flag){
+								self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
+								self.finish_recharge(uid,pay_id,cb)
+							}else{
+								cb(false,err)
+							}
+						})
+					})
 				}
-			})
+			}
+		],function(err) {
+			cb(false,"pay_id error")
+		})
+	}
+	//获取快速充值数据
+	this.getRechargeFastData = function(uid,cb) {
+		self.getObjAll(uid,"recharge_fast",function(data) {
+			cb(true,data)
 		})
 	}
 	//申请充值
@@ -65,6 +115,20 @@ module.exports = function() {
 			cb(false,"pay_id error")
 			return
 		}
+		if(pay_cfg[pay_id]["fast"]){
+			self.getObj(uid,"recharge_fast",pay_id,function(data) {
+				data = Number(data) || 0
+				if(data >= pay_cfg[pay_id]["count"]){
+					cb(false,"购买次数已达上限")
+					return
+				}
+				self.create_recharge(uid,unionid,pay_id,cb)
+			})
+		}else{
+			self.create_recharge(uid,unionid,pay_id,cb)
+		}
+	}
+	this.create_recharge = function(uid,unionid,pay_id,cb) {
 		var info = {
 			pay_id : pay_id,
 			userName : this.players[uid]["name"],
@@ -140,6 +204,9 @@ module.exports = function() {
 			case "gmLv":
 				this.buyGMLv(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
+			case "fast":
+				this.buyFastRecharge(uid,pay_id,call_back.bind(this,uid))
+			break
 		}
 		var once_index = recharge_once_table[pay_id]
 		if(once_index){
@@ -185,6 +252,12 @@ module.exports = function() {
 			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",award)
 			cb(true)
 		})
+	}
+	//快速充值
+	this.buyFastRecharge = function(uid,pay_id,cb) {
+		this.incrbyObj(uid,"recharge_fast",pay_id,1)
+		this.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
+		cb(true)
 	}
 	//购买无限特权
 	this.buyWuxian = function(uid,id,cb) {
