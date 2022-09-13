@@ -204,6 +204,12 @@
             console.log(data);
         });
       }
+      //获取快速充值数据
+      var getRechargeFastData = function() {
+        pomelo.request("area.activityHandler.getRechargeFastData", {}, function(data) {
+            console.log(data);
+        });
+      } 
       //获取主题招募英雄任务
       var gainTopicRecruitHeroTask = function(heroId) {
         pomelo.request("area.recruitHandler.gainTopicRecruitHeroTask", {heroId:heroId}, function(data) {

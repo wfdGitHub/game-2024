@@ -4,6 +4,14 @@ var activityHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 }
+//获取快速充值数据
+activityHandler.prototype.getRechargeFastData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getRechargeFastData(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //点票支付
 activityHandler.prototype.dianpiao_recharge = function(msg, session, next) {
   var uid = session.uid
