@@ -40,6 +40,10 @@ var power_base = require("../../../../config/gameCfg/power_base.json")
 var power_lv = require("../../../../config/gameCfg/power_lv.json")
 var power_star = require("../../../../config/gameCfg/power_star.json")
 
+var beauty_ad = require("../../../../config/gameCfg/beauty_ad.json")
+var beauty_base = require("../../../../config/gameCfg/beauty_base.json")
+var beauty_star = require("../../../../config/gameCfg/beauty_star.json")
+
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -593,22 +597,22 @@ model.getTeamData = function(team,belong) {
 	var team = team.concat([])
 	var teamCfg = team[6] || {}
     var books = {}
-    var bookAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
     var masterAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
+    var bookAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
     var gSkill = {}
 	if(teamCfg){
-		//天书
+		//天书属性
 		for(var bookId in teamCfg){
 			if(bookList[bookId] && bookMap[bookId]){
 				books[bookId] = this.getBookInfo(bookId,teamCfg[bookId])
 				books[bookId].belong = belong
-				bookAtts["maxHP"] += Math.floor(books[bookId].attInfo.maxHP/30)
-				bookAtts["atk"] += Math.floor(books[bookId].attInfo.atk/30)
-				bookAtts["phyDef"] += Math.floor(books[bookId].attInfo.phyDef/30)
-				bookAtts["magDef"] += Math.floor(books[bookId].attInfo.magDef/30)
+				masterAtts["maxHP"] += Math.floor(books[bookId].attInfo.maxHP)
+				masterAtts["atk"] += Math.floor(books[bookId].attInfo.atk)
+				masterAtts["phyDef"] += Math.floor(books[bookId].attInfo.phyDef)
+				masterAtts["magDef"] += Math.floor(books[bookId].attInfo.magDef)
 			}
 		}
-		//主角技能
+		//主动技能属性
 		for(var i = 1;i <= 4;i++){
 			if(teamCfg["power"+i]){
 				var powerInfo = teamCfg["power"+i]
@@ -624,16 +628,39 @@ model.getTeamData = function(team,belong) {
 						masterAtts["phyDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["phyDef"]
 						masterAtts["magDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["magDef"]
 					}
-					masterAtts["maxHP"] = Math.floor(power_lv[powerInfo.lv].maxHP * growth + masterAtts["maxHP"])
-					masterAtts["atk"] = Math.floor(power_lv[powerInfo.lv].atk * growth + masterAtts["atk"])
-					masterAtts["phyDef"] = Math.floor(power_lv[powerInfo.lv].phyDef * growth + masterAtts["phyDef"])
-					masterAtts["magDef"] = Math.floor(power_lv[powerInfo.lv].magDef * growth + masterAtts["magDef"])
+					masterAtts["maxHP"] += Math.floor(power_lv[powerInfo.lv].maxHP * growth)
+					masterAtts["atk"] += Math.floor(power_lv[powerInfo.lv].atk * growth)
+					masterAtts["phyDef"] += Math.floor(power_lv[powerInfo.lv].phyDef * growth)
+					masterAtts["magDef"] += Math.floor(power_lv[powerInfo.lv].magDef * growth)
 				}
 			}
 		}
-		for(var i in masterAtts)
-			bookAtts[i] += masterAtts[i]
+		//红颜属性
+		for(var i = 1;i <= 6;i++){
+			if(teamCfg["beauty"+i]){
+				var beautyInfo = teamCfg["beauty"+i]
+				if(beautyInfo.lv && power_lv[beautyInfo.lv]){
+					var beautyAptitude = beauty_base[beautyInfo.id]["aptitude"]
+					if(beautyInfo.ad && beauty_ad[beautyInfo.ad])
+						beautyAptitude += beauty_ad[beautyInfo.ad]["aptitude"]
+					var growth = power_aptitude[beautyAptitude].growth
+					if(power_aptitude[beauty_base[beautyInfo.id]["aptitude"]] && power_aptitude[beauty_base[beautyInfo.id]["aptitude"]]["extra"]){
+						growth += power_aptitude[beauty_base[beautyInfo.id]["aptitude"]]["extra"]
+						masterAtts["maxHP"] += power_aptitude[beauty_base[beautyInfo.id]["aptitude"]]["maxHP"]
+						masterAtts["atk"] += power_aptitude[beauty_base[beautyInfo.id]["aptitude"]]["atk"]
+						masterAtts["phyDef"] += power_aptitude[beauty_base[beautyInfo.id]["aptitude"]]["phyDef"]
+						masterAtts["magDef"] += power_aptitude[beauty_base[beautyInfo.id]["aptitude"]]["magDef"]
+					}
+					masterAtts["maxHP"] += Math.floor(power_lv[beautyInfo.lv].maxHP * growth)
+					masterAtts["atk"] += Math.floor(power_lv[beautyInfo.lv].atk * growth)
+					masterAtts["phyDef"] += Math.floor(power_lv[beautyInfo.lv].phyDef * growth)
+					masterAtts["magDef"] += Math.floor(power_lv[beautyInfo.lv].magDef * growth)
+				}
+			}
+		}
 	}
+	for(var i in masterAtts)
+		bookAtts[i] = Math.floor(masterAtts[i] / 20)
 	//主角
 	var master = this.getMasterInfo(masterAtts,belong,teamCfg["manualModel"])
 	master.belong = belong
@@ -641,11 +668,15 @@ model.getTeamData = function(team,belong) {
 	for(var i = 0;i < 6;i++){
 		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
 	}
+	for(var i in books)
+		books[i].master = master
     var teamAdds = this.raceAdd(this.getRaceType(characters))
     if(teamCfg){
 		for(var i = 1;i <= 4;i++)
 			if(teamCfg["power"+i])
 				master.addPower(teamCfg["power"+i])
+		if(teamCfg["bcombat"] && teamCfg["beauty"+teamCfg["bcombat"]])
+			master.addBeautyPower(teamCfg["beauty"+teamCfg["bcombat"]])
 		if(teamCfg.team_atk_add){
 			if(!teamAdds["atk"])
 				teamAdds["atk"] = 0
@@ -907,6 +938,17 @@ model.getTeamCE = function(team) {
 				tmpCE += power_ad[team[6]["power"+i]["ad"]]["ce"] || 0
 				tmpCE += power_star[team[6]["power"+i]["star"]]["ce"] || 0
 				tmpCE = Math.floor(tmpCE * power_aptitude[power_base[team[6]["power"+i]["id"]]["aptitude"]]["ceRate"])
+				allCE += tmpCE
+			}
+		}
+		//红颜技能
+		for(var i = 1;i <= 4;i++){
+			if(team[6]["beauty"+i]){
+				var tmpCE = 20000
+				tmpCE += power_lv[team[6]["beauty"+i]["lv"]]["ce"] || 0
+				tmpCE += beauty_ad[team[6]["beauty"+i]["ad"]]["ce"] || 0
+				tmpCE += beauty_star[team[6]["beauty"+i]["star"]]["ce"] || 0
+				tmpCE = Math.floor(tmpCE * beauty_aptitude[beauty_base[team[6]["beauty"+i]["id"]]["aptitude"]]["ceRate"])
 				allCE += tmpCE
 			}
 		}

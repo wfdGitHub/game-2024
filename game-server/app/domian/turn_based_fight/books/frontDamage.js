@@ -11,7 +11,7 @@ var model = function(otps) {
 			var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
 			for(var i = 0;i < targets.length;i++){
 				var target = targets[i]
-				var value = Math.floor((book.attInfo.atk - target.getTotalAtt("magDef")) * mul)
+				var value = Math.floor((book.master.getTotalAtt("atk") - target.getTotalAtt("magDef")) * mul)
 				if(value < 1)
 					value = 1
 				var info = target.onHit(book,{value:value,d_type:"mag"})

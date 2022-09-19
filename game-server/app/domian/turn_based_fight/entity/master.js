@@ -3,6 +3,7 @@ var powerSkill = require("../skill/powerSkill.js")
 var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var skillManager = require("../skill/skillManager.js")
 var power_base = require("../../../../config/gameCfg/power_base.json")
+var beauty_base = require("../../../../config/gameCfg/beauty_base.json")
 var skillsCfg = require("../../../../config/gameCfg/skills.json")
 //主角
 var master = function(otps) {
@@ -79,7 +80,7 @@ master.prototype.checkManualModel = function() {
 			}
 	}
 }
-//初始化技能
+//添加主动技能
 master.prototype.addPower = function(info) {
 	var skillId = power_base[info.id]["star"+info.star]
 	if(skillsCfg[skillId]){
@@ -88,6 +89,19 @@ master.prototype.addPower = function(info) {
 		powerInfo.NEED_BP = power_base[info.id].NEED_BP
 		powerInfo.NEED_CD = power_base[info.id].NEED_CD
 		powerInfo.name = power_base[info.id].name
+		powerInfo.skillId = info.id
+		this.powers.push(new powerSkill(powerInfo,this))
+	}
+}
+//添加红颜技能
+master.prototype.addBeautyPower = function(info) {
+	var skillId = beauty_base[info.id]["star"+info.star]
+	if(skillsCfg[skillId]){
+		var powerInfo = skillsCfg[skillId]
+		powerInfo.CUR_CD = beauty_base[info.id].CUR_CD
+		powerInfo.NEED_BP = beauty_base[info.id].NEED_BP
+		powerInfo.NEED_CD = beauty_base[info.id].NEED_CD
+		powerInfo.name = beauty_base[info.id].name
 		powerInfo.skillId = info.id
 		this.powers.push(new powerSkill(powerInfo,this))
 	}

@@ -9,7 +9,7 @@ var model = function(otps) {
 		var target = book.locator.getTargets(book.team[0],"enemy_1")
 		if(target.length){
 			var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
-			var value = Math.floor((book.attInfo.atk - target[0].getTotalAtt("phyDef")) * mul)
+			var value = Math.floor((book.master.getTotalAtt("atk") - target[0].getTotalAtt("phyDef")) * mul)
 			if(value < 1)
 				value = 1
 			var info = target[0].onHit(book,{value:value,d_type:"phy"})
