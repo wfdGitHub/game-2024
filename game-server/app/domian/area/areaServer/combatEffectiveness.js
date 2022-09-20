@@ -11,6 +11,9 @@ const power_ad = require("../../../../config/gameCfg/power_ad.json")
 const power_star = require("../../../../config/gameCfg/power_star.json")
 const power_aptitude = require("../../../../config/gameCfg/power_aptitude.json")
 const power_slot = require("../../../../config/gameCfg/power_slot.json")
+const beauty_base = require("../../../../config/gameCfg/beauty_base.json")
+const beauty_ad = require("../../../../config/gameCfg/beauty_ad.json")
+const beauty_star = require("../../../../config/gameCfg/beauty_star.json")
 const main_name = "CE"
 var bookMap = {}
 for(var i in book_list){
@@ -19,9 +22,10 @@ for(var i in book_list){
 }
 //消耗倍率
 var powerRates = {}
-for(var i in power_base){
+for(var i in power_base)
 	powerRates[i] = power_aptitude[power_base[i]["aptitude"]]["upRate"]
-}
+for(var i in beauty_base)
+	powerRates[i] = power_aptitude[beauty_base[i]["aptitude"]]["upRate"]
 module.exports = function() {
 	var self = this
 	var userTeams = {}
@@ -531,5 +535,119 @@ module.exports = function() {
 		userTeams[uid][6]["manualModel"] = type
 		self.setObj(uid,"power","manualModel",type,function(){})
 		cb(true)
+	}
+	//获取红颜技能数据
+	this.getBeautyData = function(uid,cb) {
+		this.getObjAll(uid,"beaut",function(data) {
+			cb(true,data)
+		})
+	}
+	//获取红颜属性
+	this.getBeautyInfo = function(uid,beautId) {
+		if(userTeams[uid] && userTeams[uid][6] && userTeams[uid][6]["beaut_"+beautId])
+			return userTeams[uid][6]["beaut_"+beautId]
+		else
+			return false
+	}
+	//设置红颜属性
+	this.setBeautInfo = function(uid,beautId,name,value) {
+		self.setObj(uid,"beaut",beautId+"_"+name,value)
+		if(userTeams[uid] && userTeams[uid][6]){
+			if(!userTeams[uid][6]["beaut_"+beautId])
+				userTeams[uid][6]["beaut_"+beautId] = {}
+			userTeams[uid][6]["beaut_"+beautId][name] = value
+		}
+	}
+	//红颜技能升星
+	this.upBeautStar = function(uid,beautId,cb) {
+		if(!beauty_base[beautId]){
+			cb(false,"beautId not find "+beautId)
+			return
+		}
+		var rate = powerRates[beautId]
+		var item = beauty_base[beautId]["item"]
+		self.getHMObj(uid,"beaut",[beautId+"_star",beautId+"_opinion"],function(list) {
+			var star = Number(list[0]) || 0
+			var opinion = Number(list[1]) || 0
+			star++
+			if(!beauty_star[star]){
+				cb(false,"不可升星")
+				return
+			}
+			if(star > 1 && opinion < beauty_ad[beauty_star[star]["opinion"]]["opinion_value"]){
+				cb(false,"好感度不足")
+				return
+			}
+			var str = item+":"+beauty_star[star]["itemValue"]
+			self.consumeItems(uid,str,rate,"红颜技能升星"+beautId,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					self.setBeautInfo(uid,beautId,"star",star)
+					if(star == 1){
+						self.setBeautInfo(uid,beautId,"ad",1)
+						self.setBeautInfo(uid,beautId,"att1",0)
+						self.setBeautInfo(uid,beautId,"att2",0)
+						self.setBeautInfo(uid,beautId,"att3",0)
+						self.setBeautInfo(uid,beautId,"att4",0)
+						self.setBeautInfo(uid,beautId,"opinion",0)
+					}
+					self.updateCE(uid)
+					var beautInfo = self.getBeautyInfo(uid,beautId)
+					cb(true,beautInfo)
+				}
+			})
+		})
+	}
+	//红颜技能升阶
+	this.upBeautAd = function(uid,beautId,cb) {
+		if(!beauty_base[beautId]){
+			cb(false,"beautId not find "+beautId)
+			return
+		}
+		var rate = powerRates[beautId]
+		self.getHMObj(uid,"beaut",[beautId+"_ad",beautId+"_att1",beautId+"_att2",beautId+"_att3",beautId+"_att4",beautId+"_opinion"],function(list) {
+			var ad = Number(list[0]) || 1
+			var att1 = Number(list[1]) || 0
+			var att2 = Number(list[2]) || 0
+			var att3 = Number(list[3]) || 0
+			var att4 = Number(list[4]) || 0
+			var opinion = Number(list[5]) || 0
+			if(att1 < beauty_ad[ad]["att"] || att2 < beauty_ad[ad]["att"] || att3 < beauty_ad[ad]["att"] || att4 < beauty_ad[ad]["att"]){
+				cb(false,"属性未满")
+				return
+			}
+			if(opinion < beauty_ad[ad]["opinion_value"]){
+				cb(false,"好感度不足")
+				return
+			}
+			var str = beauty_ad[ad]["pc"]
+			self.consumeItems(uid,str,rate,"红颜技能升阶"+beautId,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					ad++
+					self.setBeautInfo(uid,beautId,"ad",ad)
+					self.updateCE(uid)
+					var beautInfo = self.getBeautyInfo(uid,beautId)
+					cb(true,beautInfo)
+				}
+			})
+		})
+	}
+	//设置红颜技能
+	this.setBeautFight = function(uid,beautId,cb) {
+		if(!beauty_base[beautId]){
+			cb(false,"技能不存在"+beautId)
+			return
+		}
+		self.getObj(uid,"beaut",beautId+"_star",function(data) {
+			if(!data){
+				cb(false,"未激活")
+				return
+			}
+			self.setObj(uid,"beaut","bcombat",beautId)
+			cb(true)
+		})
 	}
 }

@@ -98,7 +98,40 @@
         console.log("onChat")
         console.log(data)
       })
+      //=================红颜系统==================//
+      //获取红颜技能
+      var getBeautyData = function() {
+        pomelo.request("area.powerHandler.getBeautyData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //红颜技能升星
+      var upBeautStar = function(beautId) {
+        pomelo.request("area.powerHandler.upBeautStar", {beautId:beautId}, function(data) {
+            console.log(data);
+        });
+      }
+      //红颜技能升阶
+      var upBeautAd = function(beautId) {
+        pomelo.request("area.powerHandler.upBeautAd", {beautId:beautId}, function(data) {
+            console.log(data);
+        });
+      }
+      //红颜送礼
+      var giveBeautGift = function(beautId,itemId,count) {
+        pomelo.request("area.powerHandler.giveBeautGift", {beautId:beautId,itemId:itemId,count:count}, function(data) {
+            console.log(data);
+        });
+      }
+      //红颜上阵
+      var setBeautFight = function(beautId) {
+        pomelo.request("area.powerHandler.setBeautFight", {beautId:beautId}, function(data) {
+            console.log(data);
+        });
+      }
 
+
+      
       //升级符石
       var upHeroFS = function(hId,slot,id) {
         pomelo.request("area.heroHandler.upHeroFS", {hId:hId,slot:slot,id:id}, function(data) {

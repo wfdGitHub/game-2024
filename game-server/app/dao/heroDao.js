@@ -17,6 +17,7 @@ var default_cfg = require("../../config/gameCfg/default_cfg.json")
 var evolutionCfg = require("../../config/gameCfg/evolution.json")
 var hufu_skill = require("../../config/gameCfg/hufu_skill.json")
 var hufu_lv = require("../../config/gameCfg/hufu_lv.json")
+var beauty_base = require("../../config/gameCfg/beauty_base.json")
 var async = require("async")
 var first_recruit = default_cfg["first_hero"]["value"]
 var baseStone = {
@@ -725,6 +726,13 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			})
 		},
 		function(next) {
+			//红颜技能
+			self.getBeautys(uid,function(beautys) {
+				Object.assign(fightTeam[6],beautys)
+				next()
+			})
+		},
+		function(next) {
 			//称号
 			self.redisDao.db.hget("player:user:"+uid+":playerInfo","title",function(err,data) {
 				if(data)
@@ -807,7 +815,7 @@ heroDao.prototype.getFightBook = function(uid,cb) {
 		}
 	})
 }
-//获取出战技能
+//获取主动技能
 heroDao.prototype.getFightPower = function(uid,cb) {
 	var self = this
 	self.redisDao.db.hgetall("player:user:"+uid+":power",function(err,data) {
@@ -829,6 +837,33 @@ heroDao.prototype.getFightPower = function(uid,cb) {
 				}
 			}
 			cb(powers,data.manualModel)
+		}
+	})
+}
+//获取红颜技能
+heroDao.prototype.getBeautys = function(uid,cb) {
+	var self = this
+	self.redisDao.db.hgetall("player:user:"+uid+":beaut",function(err,data) {
+		if(!data){
+			cb({},0)
+		}else{
+			var beautys = {}
+			for(var id in beauty_base){
+				if(data[id+"_star"]){
+					var ad = Number(data[id+"_ad"])
+					var star = Number(data[id+"_star"])
+					var att1 = Number(data[id+"_att1"])
+					var att2 = Number(data[id+"_att2"])
+					var att3 = Number(data[id+"_att3"])
+					var att4 = Number(data[id+"_att4"])
+					var opinion = Number(data[id+"_opinion"])
+					var beautyInfo = {id : id,ad:ad,star:star,att1:att1,att2:att2,att3:att3,att4:att4,opinion:opinion}
+					beautys["beaut_"+id] = beautyInfo
+				}
+			}
+			if(data["bcombat"])
+				beautys["bcombat"] = data["bcombat"] 
+			cb(beautys)
 		}
 	})
 }
