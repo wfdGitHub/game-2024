@@ -129,9 +129,30 @@
             console.log(data);
         });
       }
-
-
-      
+      //红颜出游
+      var beginBeautTour = function(beautId,place) {
+        pomelo.request("area.powerHandler.beginBeautTour", {beautId:beautId,place:place}, function(data) {
+            console.log(data);
+        });
+      }
+      //红颜出游结果
+      var resultBeautTour = function(beautId,result) {
+        pomelo.request("area.powerHandler.resultBeautTour", {beautId:beautId,result:result}, function(data) {
+            console.log(data);
+        });
+      }
+      //增加行动力
+      var addTourAction = function() {
+        pomelo.request("area.powerHandler.addTourAction", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //增加属性值
+      var addBeautyAtt = function(beautId,att,count) {
+        pomelo.request("area.powerHandler.addBeautyAtt", {beautId:beautId,att:att,count:count}, function(data) {
+            console.log(data);
+        });
+      }
       //升级符石
       var upHeroFS = function(hId,slot,id) {
         pomelo.request("area.heroHandler.upHeroFS", {hId:hId,slot:slot,id:id}, function(data) {

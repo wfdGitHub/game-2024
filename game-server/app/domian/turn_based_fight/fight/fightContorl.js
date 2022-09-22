@@ -664,7 +664,6 @@ model.getTeamData = function(team,belong) {
 			}
 		}
 	}
-	console.log("masterAtts",masterAtts)
 	for(var i in masterAtts)
 		bookAtts[i] = Math.floor(masterAtts[i] / 20)
 	//主角

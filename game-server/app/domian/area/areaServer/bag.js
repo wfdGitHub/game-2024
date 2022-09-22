@@ -201,7 +201,7 @@ module.exports = function() {
 		var rate = otps.rate || 1
 		var reason = otps.reason
 		if(itemCfg[itemId]){
-			value = Math.floor(Number(value) * rate) || 1
+			value = Math.floor(Number(value) * rate) || 0
 			itemId = parseInt(itemId)
 			if(itemId == 202){
 				value = Math.round(value * itemCfg["202"]["arg"])
@@ -410,6 +410,8 @@ module.exports = function() {
 				value = Math.round(value * itemCfg["202"]["arg"])
 				itemId = 200
 			}
+			if(value < 0)
+				value = 0
 			items.push(itemId)
 			values.push(value)
 		})

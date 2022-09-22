@@ -549,6 +549,19 @@ module.exports = function() {
 		else
 			return false
 	}
+	//增加红颜属性
+	this.incrbyBeautInfo = function(uid,beautId,name,value) {
+		if(name && value){
+			self.incrbyObj(uid,"beaut",beautId+"_"+name,value)
+			if(userTeams[uid] && userTeams[uid][6]){
+				if(!userTeams[uid][6]["beaut_"+beautId])
+					userTeams[uid][6]["beaut_"+beautId] = {}
+				if(!userTeams[uid][6]["beaut_"+beautId][name])
+					userTeams[uid][6]["beaut_"+beautId][name] = 0
+				userTeams[uid][6]["beaut_"+beautId][name] += value
+			}
+		}
+	}
 	//设置红颜属性
 	this.setBeautInfo = function(uid,beautId,name,value) {
 		self.setObj(uid,"beaut",beautId+"_"+name,value)

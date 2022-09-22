@@ -1,6 +1,29 @@
 var bearcat = require("bearcat")
+var async = require("async")
 var beauty_gift = require("../../../../config/gameCfg/beauty_gift.json")
+var beauty_ad = require("../../../../config/gameCfg/beauty_ad.json")
 var beauty_base = require("../../../../config/gameCfg/beauty_base.json")
+var beauty_place = require("../../../../config/gameCfg/beauty_place.json")
+var beauty_event = require("../../../../config/gameCfg/beauty_event.json")
+var beauty_result = require("../../../../config/gameCfg/beauty_result.json")
+var beauty_cfg = require("../../../../config/gameCfg/beauty_cfg.json")
+var place_weight = {}
+for(var i in beauty_place){
+  place_weight[i] = [0]
+  for(var j = 1; j <= 6;j++){
+    place_weight[i][j] = place_weight[i][j-1] + beauty_place[i]["weight"+j]
+  }
+}
+var result_weight = {}
+for(var i in beauty_result){
+  result_weight[i] = [0]
+  for(var j = 1; j <= 4;j++){
+    result_weight[i][j] = result_weight[i][j-1] + beauty_result[i]["att_"+j]
+  }
+}
+console.log(place_weight,result_weight)
+const actionTime = beauty_cfg["actionTime"]["value"]
+const actionMax = beauty_cfg["actionMax"]["value"]
 var powerHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
@@ -67,7 +90,6 @@ powerHandler.prototype.setManualModel = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
-
 //获取红颜技能
 powerHandler.prototype.getBeautyData = function(msg, session, next) {
   var uid = session.uid
@@ -121,25 +143,181 @@ powerHandler.prototype.giveBeautGift = function(msg, session, next) {
       next(null,{flag : false,err : err})
       return
     }
+    self.areaManager.areaMap[areaId].incrbyBeautInfo(uid,beautId,"opinion",value)
     var beautInfo = self.areaManager.areaMap[areaId].getBeautyInfo(uid,beautId)
-    var oldValue = beautInfo.opinion
-    beautInfo.opinion += value
-    self.areaManager.areaMap[areaId].setBeautInfo(uid,beautId,"opinion",beautInfo.opinion)
-    next(null,{flag : true,curValue : value,oldValue : oldValue,beautInfo:beautInfo})
+    next(null,{flag : true,value : value,beautInfo:beautInfo})
   })
 }
-//红颜互动
-
+//红颜出游
+powerHandler.prototype.beginBeautTour = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var beautId = msg.beautId
+  var place = msg.place
+  var action = 0
+  if(!beauty_place[place]){
+    next(null,{flag : false,err : "地点错误"})
+    return
+  }
+  var self = this
+  async.waterfall([
+    function(cb) {
+      self.redisDao.db.hmget("player:user:"+uid+":beaut",[beautId+"_star","action","event"],function(err,list) {
+        var star =  Number(list[0]) || 0
+        action = Number(list[1]) || 0
+        var event = list[2]
+        if(!star){
+          cb("红颜未激活")
+          return
+        }
+        if(event){
+          cb("已在事件中")
+          return
+        }
+        cb()
+      })
+    },
+    function(cb) {
+      //消耗行动力
+      var diff = Date.now() - action
+      if(diff < actionTime){
+        cb("行动值不足")
+        return
+      }
+      if(diff > actionMax * actionTime)
+        action = Date.now() - actionMax * actionTime
+      action += actionTime
+      self.redisDao.db.hset("player:user:"+uid+":beaut","action",action)
+      cb()
+    },
+    function(cb) {
+      var rand = Math.floor(Math.random() * place_weight[place][6])
+      var index = 1
+      for(var i = 1;i <= 6;i++){
+        if(rand < place_weight[place][i]){
+          index = i
+          break
+        }
+      }
+      self.redisDao.db.hset("player:user:"+uid+":beaut","event",beauty_place[place]["event"+index])
+      next(null,{flag:true,action:action,event:beauty_place[place]["event"+index]})
+    }
+  ],function(err) {
+    next(null,{flag : false,err : err})
+  })
+}
+//红颜出游结果
+powerHandler.prototype.resultBeautTour = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var self = this
+  var event = 0
+  var result = msg.result
+  var beautId = msg.beautId
+  if(!result_weight[result]){
+    next(null,{flag : false,err:"result error "+result})
+    return
+  }
+  var beautInfo = self.areaManager.areaMap[areaId].getBeautyInfo(uid,beautId)
+  if(!beautInfo){
+    cb(false,"红颜未激活 ")
+    return
+  }
+  async.waterfall([
+    function(cb) {
+      self.redisDao.db.hget("player:user:"+uid+":beaut","event",function(err,data) {
+        event = data
+        if(!event){
+          cb("未处于出游状态")
+          return
+        }
+        cb()
+      })
+    },
+    function(cb) {
+      var rand = Math.floor(Math.random() * result_weight[result][4])
+      var index = 1
+      for(var i = 1;i <= 4;i++){
+        if(rand < result_weight[result][i]){
+          index = i
+          break
+        }
+      }
+      var attName = "att"+index
+      var attValue = Math.floor(Math.random() * (beauty_result[result]["att_max"] - beauty_result[result]["att_min"]) + beauty_result[result]["att_min"])
+      if(beautInfo[attName] + attValue > beauty_ad[beautInfo.ad]["att"]){
+        attValue = beauty_ad[beautInfo.ad]["att"] - beautInfo[attName]
+        if(attValue < 0)
+          attValue = 0
+      }
+      var opinion = Math.floor(Math.random() * (beauty_result[result]["opinion_max"] - beauty_result[result]["opinion_min"]) + beauty_result[result]["opinion_min"])
+      var awardList = self.areaManager.areaMap[areaId].openChestAward(uid,beauty_result[result]["chest"])
+      self.areaManager.areaMap[areaId].incrbyBeautInfo(uid,beautId,attName,attValue)
+      self.areaManager.areaMap[areaId].incrbyBeautInfo(uid,beautId,"opinion",opinion)
+      self.redisDao.db.hdel("player:user:"+uid+":beaut","event")
+      beautInfo = self.areaManager.areaMap[areaId].getBeautyInfo(uid,beautId)
+      next(null,{flag:true,attName:attName,attValue:attValue,opinion:opinion,beautInfo:beautInfo,awardList:awardList})
+    }
+  ],function(err) {
+    next(null,{flag : false,err : err})
+  })
+}
 //红颜上阵
 powerHandler.prototype.setBeautFight = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   var beautId = msg.beautId
   this.areaManager.areaMap[areaId].setBeautFight(uid,beautId,function(flag,data) {
-    next(null,{flag : flag,data : data})
+    next(null,{flag : false,data : data})
   })
 }
-
+//增加行动力
+powerHandler.prototype.addTourAction = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var self = this
+  self.areaManager.areaMap[areaId].consumeItems(uid,beauty_cfg["actionItem"]["value"]+":1",1,"出游体力",function(flag,err) {
+    if(!flag){
+      next(null,{flag : false,err : err})
+      return
+    }
+    self.redisDao.db.hincrby("player:user:"+uid+":beaut","action",-actionTime * 5,function(err,data) {
+       next(null,{flag : true,action : data})
+    })
+  })
+}
+//增加属性值
+powerHandler.prototype.addBeautyAtt = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var beautId = msg.beautId
+  var att = msg.att
+  var count = msg.count
+  if(!beauty_cfg["attItem"+att]){
+    next(null,{flag : false,err : "att error "+att})
+    return
+  }
+  if(!Number.isInteger(count) || count < 1){
+    next(null,{flag : false,err : "count error "+count})
+    return
+  }
+  var self = this
+  var beautInfo = self.areaManager.areaMap[areaId].getBeautyInfo(uid,beautId)
+  var attName = "att"+att
+  if(beautInfo[attName] + count > beauty_ad[beautInfo.ad]["att"]){
+    next(null,{flag : false,err : "超出属性上限"+(beautInfo[attName] + count)+"/"+beauty_ad[beautInfo.ad]["att"]})
+    return
+  }
+  self.areaManager.areaMap[areaId].consumeItems(uid,beauty_cfg["attItem"+att]["value"]+":"+count,1,"出游体力",function(flag,err) {
+    if(!flag){
+      next(null,{flag : false,err : err})
+      return
+    }
+    self.areaManager.areaMap[areaId].incrbyBeautInfo(uid,beautId,attName,count)
+    beautInfo = self.areaManager.areaMap[areaId].getBeautyInfo(uid,beautId)
+    next(null,{flag : true,beautInfo : beautInfo})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "powerHandler",
@@ -147,6 +325,10 @@ module.exports = function(app) {
   	args : [{
   		name : "app",
   		value : app
-  	}]
+  	}],
+    props : [{
+      name : "redisDao",
+      ref : "redisDao"
+    }]
   })
 };
