@@ -621,18 +621,11 @@ module.exports = function() {
 				cb(false,"好感度不足")
 				return
 			}
-			var str = beauty_ad[ad]["pc"]
-			self.consumeItems(uid,str,rate,"红颜技能升阶"+beautId,function(flag,err) {
-				if(!flag){
-					cb(false,err)
-				}else{
-					ad++
-					self.setBeautInfo(uid,beautId,"ad",ad)
-					self.updateCE(uid)
-					var beautInfo = self.getBeautyInfo(uid,beautId)
-					cb(true,beautInfo)
-				}
-			})
+			ad++
+			self.setBeautInfo(uid,beautId,"ad",ad)
+			self.updateCE(uid)
+			var beautInfo = self.getBeautyInfo(uid,beautId)
+			cb(true,beautInfo)
 		})
 	}
 	//设置红颜技能
