@@ -1,12 +1,13 @@
 var bearcat = require("bearcat")
 var heros = require("../../../../config/gameCfg/heros.json")
-var advanced_base = require("../../../../config/gameCfg/advanced_base.json")
+var hero_ad = require("../../../../config/gameCfg/hero_ad.json")
 var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var star_base = require("../../../../config/gameCfg/star_base.json")
 var evolutionCfg = require("../../../../config/gameCfg/evolution.json")
 var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 var hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
 var hufu_lv = require("../../../../config/gameCfg/hufu_lv.json")
+var lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 var hufu_map = {}
 for(var i in hufu_skill){
   for(var j = 1;j<= 5;j++){
@@ -206,7 +207,7 @@ heroHandler.prototype.unlockZhanfaGrid = function(msg, session, next) {
       })
   })
 }
-//英雄升级 升阶与星级取最低等级限制
+//英雄升级 受阶级限制
 heroHandler.prototype.upgradeLevel = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
@@ -222,9 +223,7 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
       next(null,{flag : false,err : "英雄不存在"})
       return
     }
-    var star_limit = star_base[heroInfo.star].lev_limit || 0
-    var ad_limit = advanced_base[heroInfo.ad].lev_limit || 0
-    var lev_limit = star_limit < ad_limit ? star_limit : ad_limit
+    var lv = hero_ad[heroInfo.ad].lv || 0
     if(aimLv <= heroInfo.lv || aimLv > lev_limit){
       next(null,{flag : false,err : "等级限制"})
       return
@@ -245,7 +244,7 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
     })
   })
 }
-//英雄升阶  受星级与等级限制
+//英雄升阶  受玩家等级限制
 heroHandler.prototype.upgraAdvance = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
@@ -257,19 +256,16 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
       return
     }
     var aimAd = heroInfo.ad + 1
-    if(!advanced_base[aimAd]){
+    if(!hero_ad[aimAd]){
       next(null,{flag : false,err : "没有下一阶"})
       return
     }
-    if(heroInfo.lv != advanced_base[heroInfo.ad].lev_limit){
-      next(null,{flag : false,err : "等级限制"})
+    var lv = self.areaManager.areaMap[areaId].getLordLv(uid)
+    if(aimAd > lord_lv[lv]["ad"]){
+      next(null,{flag : false,err : "等级限制"+heroInfo.ad+"/"+lord_lv[lv]["ad"]})
       return
     }
-    if(aimAd > star_base[heroInfo.star].stage_limit){
-      next(null,{flag : false,err : "星级限制"})
-      return
-    }
-    var pcStr = advanced_base[heroInfo.ad].pc
+    var pcStr = hero_ad[heroInfo.ad].pc
     self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,"英雄升阶",function(flag,err) {
       if(!flag){
         next(null,{flag : false,err : err})
@@ -281,7 +277,7 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
     })
   })
 }
-//英雄升星   有最大星级限制
+//英雄升星   受玩家等级限制
 heroHandler.prototype.upgradeStar = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
@@ -313,6 +309,11 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
       }
       if(targetHero.star == heros[targetHero.id].max_star){
         next(null,{flag : false,data : "已达到最大星级"})
+        return
+      }
+      var lv = self.areaManager.areaMap[areaId].getLordLv(uid)
+      if(star >= lord_lv[lv]["star"]){
+        next(null,{flag : false,err : "等级限制"+star+"/"+lord_lv[lv]["star"]})
         return
       }
       //材料英雄检测

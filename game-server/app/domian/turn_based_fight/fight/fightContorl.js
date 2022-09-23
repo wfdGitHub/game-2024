@@ -378,8 +378,8 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 			// console.log("advancedInfo",advancedInfo)
 			model.mergeData(info,advancedInfo)
 		}
-		if(advanced_base[info.ad] && advanced_base[info.ad]["att"]){
-			let strs = advanced_base[info.ad]["att"].split("&")
+		if(hero_ad[info.ad] && hero_ad[info.ad]["att"]){
+			let strs = hero_ad[info.ad]["att"].split("&")
 			let advancedInfo = {}
 			strs.forEach(function(m_str) {
 				let m_list = m_str.split(":")
@@ -901,7 +901,7 @@ model.getTeamCE = function(team) {
 	for(var i = 0;i < 6;i++){
 		if(team[i]){
 			allCE += lv_cfg[team[i]["lv"] || 1]["ce"]
-			allCE += advanced_base[team[i]["ad"] || 0]["ce"]
+			allCE += hero_ad[team[i]["ad"] || 0]["ce"]
 			allCE += star_base[team[i]["star"] || 1]["ce"]
 			if(team[i]["artifact"] !== undefined)
 				allCE += artifact_level[team[i]["artifact"]]["ce"]

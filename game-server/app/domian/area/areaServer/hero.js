@@ -3,6 +3,7 @@ const async = require("async")
 const hero_tr = require("../../../../config/gameCfg/hero_tr.json")
 const train_arg = require("../../../../config/gameCfg/train_arg.json")
 const equip_st = require("../../../../config/gameCfg/equip_st.json")
+const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const util = require("../../../../util/util.js")
 module.exports = function() {
 	var self = this
@@ -147,8 +148,8 @@ module.exports = function() {
 				return
 			}
 			var lv = self.getLordLv(uid)
-			if(slv >= lv){
-				cb(false,"强化不能超过主角等级 "+slv+"/"+lv)
+			if(slv >= lord_lv[lv]["st"]){
+				cb(false,"等级上限"+slv+"/"+lord_lv[lv]["st"])
 				return
 			}
 			self.consumeItems(uid,equip_st[slv]["pc"],1,"英雄培养",function(flag,err) {

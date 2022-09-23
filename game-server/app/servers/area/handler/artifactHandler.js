@@ -3,6 +3,7 @@ var bearcat = require("bearcat")
 var async = require("async")
 var artifact_level = require("../../../../config/gameCfg/artifact_level.json")
 var artifact_talent = require("../../../../config/gameCfg/artifact_talent.json")
+var lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 var items = require("../../../../config/gameCfg/item.json")
 var artifactHandler = function(app) {
   this.app = app;
@@ -86,9 +87,9 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
       //判断物品数量
       let aId = artifact_talent[heroInfo.id]["artifact"]
       let lv = heroInfo.artifact || 0
-      var lord_lv = self.areaManager.areaMap[areaId].getLordLv(uid)
-      if(lv >= lord_lv){
-        cb("不能超过主公等级")
+      var lordLv = self.areaManager.areaMap[areaId].getLordLv(uid)
+      if(lv >= lord_lv[lordLv]["artifact"]){
+        cb("等级限制"+lv+"/"+lord_lv[lordLv]["artifact"])
         return
       }
       if(!artifact_level[lv] || !artifact_level[lv+1]){

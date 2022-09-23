@@ -7,6 +7,7 @@ const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
 const stone_lv = require("../../../config/gameCfg/stone_lv.json")
 const default_cfg = require("../../../config/gameCfg/default_cfg.json")
+const hero_tr = require("../../../config/gameCfg/hero_tr.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
@@ -16,21 +17,28 @@ var util = require("../../../util/util.js")
 var standard_ce = {}
 var standard_team_ce = {}
 var timers = {}
+var trMap = [0,"maxHP","atk","phyDef","magDef"]
 for(var i in standard_ce_cfg){
 	standard_ce[i] = {
 		"lv" : standard_ce_cfg[i]["lv"],
 		"ad" : standard_ce_cfg[i]["ad"],
 		"star" : standard_ce_cfg[i]["star"],
-		"artifact" : standard_ce_cfg[i]["artifact"]
+		"artifact" : standard_ce_cfg[i]["artifact"],
+		"tr_lv" : standard_ce_cfg[i]["tr"]
 	}
 	standard_team_ce[i] = {}
 	for(var j = 1;j <= 4;j++){
 		standard_ce[i]["e"+j] = standard_ce_cfg[i]["equip"]
+		if(stone_lv[standard_ce_cfg[i]["stone_lv"]])
 		standard_ce[i]["s"+j] = stone_lv[standard_ce_cfg[i]["stone_lv"]]["s"+j]
+		standard_ce[i]["et"+j] = standard_ce_cfg[i]["st"]
 		standard_team_ce[i]["g"+j] = standard_ce_cfg[i]["guild"]
+		if(standard_ce[i]["tr_lv"])
+			standard_ce[i]["tr_"+trMap[j]] = hero_tr[standard_ce[i]["tr_lv"]][trMap[j]]
 	}
 	standard_team_ce[i]["officer"] = standard_ce_cfg[i]["officer"]
 }
+console.log(standard_ce)
 var area = function(otps,app) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName
