@@ -803,6 +803,30 @@ heroHandler.prototype.actHeroOnlyFS = function(msg, session, next) {
     })
   })
 }
+//英雄培养属性
+heroHandler.prototype.heroTrainAtt = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var value = msg.value
+  if(!Number.isInteger(value)){
+    next(null,{flag : false,err : "value error "+value})
+    return
+  }
+  console.log("heroHandler heroTrainAtt  ",msg)
+  this.areaManager.areaMap[areaId].heroTrainAtt(uid,hId,value,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//英雄培养突破
+heroHandler.prototype.heroTrainLv = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].heroTrainLv(uid,hId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "heroHandler",

@@ -3,7 +3,8 @@ var uuid = require("uuid")
 var herosCfg = require("../../config/gameCfg/heros.json")
 var lv_cfg = require("../../config/gameCfg/lv_cfg.json")
 var star_base = require("../../config/gameCfg/star_base.json")
-var advanced_base = require("../../config/gameCfg/advanced_base.json")
+var hero_ad = require("../../config/gameCfg/hero_ad.json")
+var hero_tr = require("../../config/gameCfg/hero_tr.json")
 var recruit_base = require("../../config/gameCfg/recruit_base.json")
 var recruit_list = require("../../config/gameCfg/recruit_list.json")
 var equip_base = require("../../config/gameCfg/equip_base.json")
@@ -18,6 +19,8 @@ var evolutionCfg = require("../../config/gameCfg/evolution.json")
 var hufu_skill = require("../../config/gameCfg/hufu_skill.json")
 var hufu_lv = require("../../config/gameCfg/hufu_lv.json")
 var beauty_base = require("../../config/gameCfg/beauty_base.json")
+var train_arg = require("../../config/gameCfg/train_arg.json")
+var util = require("../../util/util.js")
 var async = require("async")
 var first_recruit = default_cfg["first_hero"]["value"]
 var baseStone = {
@@ -270,11 +273,12 @@ heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
 	var strList = []
 	if(lv_cfg[lv] && lv_cfg[lv].pr)
 		strList.push(lv_cfg[lv].pr)
-	if(advanced_base[ad] && advanced_base[ad].pr)
-		strList.push(advanced_base[ad].pr)
-	if(artifact !== undefined && artifact_level[artifact]){
+	if(hero_ad[ad] && hero_ad[ad].pr)
+		strList.push(hero_ad[ad].pr)
+	if(artifact !== undefined && artifact_level[artifact])
 		strList.push(artifact_level[artifact]["pr"])
-	}
+	if(hero_tr[heroInfo.tr_lv] && hero_tr[heroInfo.tr_lv]["pr"])
+		strList.push(hero_tr[heroInfo.tr_lv]["pr"])
 	var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
 	var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"重生返还")
 	if(cb)
@@ -306,8 +310,10 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 		var artifact = heros[i].artifact
 		if(lv_cfg[lv] && lv_cfg[lv].pr)
 			strList.push(lv_cfg[lv].pr)
-		if(advanced_base[ad] && advanced_base[ad].pr)
-			strList.push(advanced_base[ad].pr)
+		if(hero_ad[ad] && hero_ad[ad].pr)
+			strList.push(hero_ad[ad].pr)
+		if(hero_tr[heros[i].tr_lv] && hero_tr[heros[i].tr_lv]["pr"])
+			strList.push(hero_tr[heros[i].tr_lv]["pr"])
 		for(var part = 1;part <= 4;part++){
 			if(heros[i]["e"+part]){
 				var oldeId = equip_level[heros[i]["e"+part]]["part_"+part]
