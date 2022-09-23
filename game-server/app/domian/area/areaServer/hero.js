@@ -2,6 +2,7 @@
 const async = require("async")
 const hero_tr = require("../../../../config/gameCfg/hero_tr.json")
 const train_arg = require("../../../../config/gameCfg/train_arg.json")
+const equip_st = require("../../../../config/gameCfg/equip_st.json")
 const util = require("../../../../util/util.js")
 module.exports = function() {
 	var self = this
@@ -125,6 +126,39 @@ module.exports = function() {
 			}else{
 				cb(false,"英雄不存在"+hId)
 			}
+		})
+	}
+	//装备强化
+	this.heroEquipStrengthen = function(uid,hId,slot,cb) {
+		if(!Number.isInteger(slot) || slot < 1 || slot > 4){
+			cb(false,"槽位错误"+slot)
+			return
+		}
+		var key = "et"+slot
+		//todo 判定英雄是否存在
+		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo){
+			if(!flag || !heroInfo.id){
+				cb(false,"英雄不存在"+hId)
+				return
+			}
+			var slv = Number(heroInfo[key]) || 0
+			if(!equip_st[slv+1]){
+				cb(false,"强化等级已满"+slv)
+				return
+			}
+			var lv = self.getLordLv(uid)
+			if(slv >= lv){
+				cb(false,"强化不能超过主角等级 "+slv+"/"+lv)
+				return
+			}
+			self.consumeItems(uid,equip_st[slv]["pc"],1,"英雄培养",function(flag,err) {
+				if(flag){
+					self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,key,1)
+					cb(true,slv+1)
+				}else{
+					cb(false,err)
+				}
+			})
 		})
 	}
 }

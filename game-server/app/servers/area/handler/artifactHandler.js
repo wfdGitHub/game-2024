@@ -85,7 +85,12 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
     function(heroInfo,cb) {
       //判断物品数量
       let aId = artifact_talent[heroInfo.id]["artifact"]
-      let lv = heroInfo.artifact
+      let lv = heroInfo.artifact || 0
+      var lord_lv = self.areaManager.areaMap[areaId].getLordLv(uid)
+      if(lv >= lord_lv){
+        cb("不能超过主公等级")
+        return
+      }
       if(!artifact_level[lv] || !artifact_level[lv+1]){
           cb("已不能升级")
           return
