@@ -21,7 +21,6 @@ for(var i in beauty_result){
     result_weight[i][j] = result_weight[i][j-1] + beauty_result[i]["att_"+j]
   }
 }
-console.log(place_weight,result_weight)
 const actionTime = beauty_cfg["actionTime"]["value"]
 const actionMax = beauty_cfg["actionMax"]["value"]
 var powerHandler = function(app) {

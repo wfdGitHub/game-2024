@@ -38,7 +38,6 @@ for(var i in standard_ce_cfg){
 	}
 	standard_team_ce[i]["officer"] = standard_ce_cfg[i]["officer"]
 }
-console.log(standard_ce)
 var area = function(otps,app) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName
