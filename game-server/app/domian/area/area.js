@@ -24,7 +24,13 @@ for(var i in standard_ce_cfg){
 		"ad" : standard_ce_cfg[i]["ad"],
 		"star" : standard_ce_cfg[i]["star"],
 		"artifact" : standard_ce_cfg[i]["artifact"],
-		"tr_lv" : standard_ce_cfg[i]["tr"]
+		"tr_lv" : standard_ce_cfg[i]["tr"],
+		"crit" : standard_ce_cfg[i]["crit"],
+		"critDef" : standard_ce_cfg[i]["critDef"],
+		"slay" : standard_ce_cfg[i]["slay"],
+		"slayDef" : standard_ce_cfg[i]["slayDef"],
+		"hitRate" : standard_ce_cfg[i]["hitRate"],
+		"dodgeRate" : standard_ce_cfg[i]["dodgeRate"]
 	}
 	standard_team_ce[i] = {}
 	for(var j = 1;j <= 4;j++){

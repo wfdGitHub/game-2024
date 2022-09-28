@@ -77,6 +77,10 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 				self.app.rpc.connector.connectorRemote.changeFinalServerMap.toServer("*",areaList[i],areaId,null)
 			}
 			self.redisDao.db.sunionstore("area:area"+areaId+":userSet",slist)
+			self.redisDao.db.hget("area:area"+areaList[0]+":extremity","bossLv",function(err,data) {
+				if(!err && data)
+					self.redisDao.db.hset("area:area"+areaId+":extremity","bossLv",data)
+			})
 			setTimeout(function() {
 				var serverId = self.deploy(areaId)
 				//通知所有的connector，更新服务器配置

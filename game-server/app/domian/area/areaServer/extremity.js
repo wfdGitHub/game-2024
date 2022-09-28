@@ -2,31 +2,53 @@
 const extremity_award = require("../../../../config/gameCfg/extremity_award.json")
 const extremity_cfg = require("../../../../config/gameCfg/extremity_cfg.json")
 const heros = require("../../../../config/gameCfg/heros.json")
-const bossList = JSON.parse(extremity_cfg["bossList"]["value"])
+const bossId = extremity_cfg["bossId"]["value"]
+const maxRound = extremity_cfg["maxRound"]["value"]
 const main_name = "extremity"
 const async = require("async")
 module.exports = function() {
 	var self = this
-	var bossId = -1
 	var teamId = -1
+	var bossLv = 1
 	var fightInfos = {}
 	//每日更新
 	this.extremityInit = function() {
-		var day = Math.ceil((new Date()-new Date(new Date().getFullYear().toString()))/86400000)
-		bossId = bossList[day % bossList.length]
-		teamId = day % 4 + 1
+		teamId = self.areaDay % 5 + 1
+		self.getAreaObj(main_name,"bossLv",function(data) {
+			bossLv = Number(data) || 1
+		})
 	}
 	//每日发放排行榜奖励
 	this.extremityDayUpdate = function() {
-		self.zrange(main_name,-10,-1,function(list) {
-			var count = 0
-			for(var i = list.length-1;i >= 0;i--){
-				count++
-				var rankId = count > 11 ? 11 : count
-				var award = extremity_cfg["rank_"+rankId]["value"]
-				self.sendTextToMail(list[i],"extremity_day",award,rankId)
-			}
-			self.delZset(main_name)
+		self.getAreaObj(main_name,"bossLv",function(data) {
+			bossLv = Number(data) || 1
+			self.zrangewithscore(main_name,-10,-1,function(list) {
+				var count = 0
+				var allDamage = 0
+				for(var i = list.length-1;i >= 0;i -= 2){
+					var uid = list[i-1]
+					var damage = Number(list[i]) || 0
+					count++
+					var rankId = count > 11 ? 11 : count
+					if(count <= 10){
+						allDamage += damage
+					}
+					var award = extremity_award[bossLv]["rank_"+rankId]
+					self.sendTextToMail(uid,"extremity_day",award,rankId)
+				}
+				if(allDamage >= extremity_award[bossLv]["hp"]){
+					if(extremity_award[bossLv+1]){
+						bossLv++
+						self.incrbyAreaObj(main_name,"bossLv",1)
+					}
+				}else if(allDamage < extremity_award[bossLv]["hp"] * 0.7){
+					if(extremity_award[bossLv-1]){
+						bossLv--
+						self.incrbyAreaObj(main_name,"bossLv",-1)
+					}
+				}
+				self.delZset(main_name)
+			})
 		})
 	}
 	//玩家每日更新
@@ -37,83 +59,56 @@ module.exports = function() {
 	this.getExtremityData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(data) {
 			if(!data)
-				data = {damage : 0}
-			data.damage = Number(data.damage)
-			data.bossId = bossId
+				data = {}
 			data.teamId = teamId
+			data.bossLv = bossLv
 			cb(true,data)
 		})
 	}
-	//获取极限挑战战斗数据
-	this.getExtremityFight = function(uid,cb) {
-		var atkTeam = this.getUserTeam(uid)
-		if(atkTeam){
-			self.taskUpdate(uid,"extremity",1)
-			var level = self.getLordLv(uid)
-			var defTeam = self.standardTeam(uid,[0,0,0,0,bossId,0],"main",level)
-			defTeam[4].boss = true
-		    for(var i = 0;i < 6;i++){
-		    	if(atkTeam[i] && heros[atkTeam[i]["id"]] && heros[atkTeam[i]["id"]]["realm"] == teamId)
-		    		atkTeam[i]["self_atk_add"] = 0.5
-		    }
-			var fightOtps = {seededNum : Date.now(),maxRound:5}
-			fightInfos[uid] = {atkTeam : atkTeam,defTeam : defTeam,fightOtps : fightOtps}
-			cb(true,fightInfos[uid])
-		}else{
-			cb(false)
-		}
-	}
 	//挑战BOSS
 	this.extremityChallenge = function(uid,cb) {
-		var oldDamage = 0
-		var allDamage = 0
+		var atkTeam = this.getUserTeam(uid)
 		async.waterfall([
-			function(next){
-				//获取伤害
-				self.getObj(uid,main_name,"damage",function(data) {
-					if(data)
-						oldDamage = Number(data)
-					next()
+			function(next) {
+				//获取次数
+				self.getObj(uid,main_name,"count",function(count) {
+					count = Number(count) || 0
+					if(count >= extremity_cfg["count"]["value"]){
+						next("次数不足")
+					}else{
+						self.incrbyObj(uid,main_name,"count",1)
+						next()
+					}
 				})
 			},
 			function(next) {
-				var fightInfo = fightInfos[uid]
-				if(!fightInfo){
-					next("未准备")
-					return
-				}
-				delete fightInfos[uid]
-			    var atkTeam = fightInfo.atkTeam
-			    var defTeam = fightInfo.defTeam
-			    var fightOtps = fightInfo.fightOtps
+				self.taskUpdate(uid,"extremity",1)
+				var level = extremity_award[bossLv]["lv"]
+				var defTeam = self.standardTeam(uid,[0,0,0,0,bossId,0],"main",level)
+				var fightOtps = {seededNum : Date.now(),maxRound:maxRound}
+				defTeam[4].boss = true
+			    for(var i = 0;i < 6;i++){
+			    	if(atkTeam[i] && heros[atkTeam[i]["id"]] && heros[atkTeam[i]["id"]]["realm"] == teamId)
+			    		atkTeam[i]["self_atk_add"] = 0.5
+			    }
 			    self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
 		    	var list = self.fightContorl.getFightRecord()
-		    	allDamage = list[list.length - 1].atkDamage
-		    	next()
+		    	var allDamage = list[list.length - 1].atkDamage
+		    	next(null,allDamage)
 			},
-			function(next) {
-				if(oldDamage >= allDamage){
-					console.error("伤害未超过之前记录 "+oldDamage+"/"+allDamage)
-					next("伤害未超过之前记录 "+oldDamage+"/"+allDamage)
-					return
-				}
-				var awardList = []
-				for(var i in extremity_award){
-					if(allDamage < extremity_award[i]["value"])
-						break
-					if(oldDamage < extremity_award[i]["value"] && allDamage >= extremity_award[i]["value"]){
-						for(var j = 0;j < extremity_award[i]["count"];j++)
-							awardList = awardList.concat(self.openChestAward(uid,extremity_cfg["box_award"]["value"]))
-					}
-				}
-				self.setObj(uid,main_name,"damage",allDamage)
+			function(allDamage,next) {
+				//记录伤害
+				self.incrbyObj(uid,main_name,"damage",allDamage)
 				self.addZset(main_name,uid,allDamage)
-				var info = {
-					damage : allDamage,
-					awardList : awardList
-				}
-				cb(true,info)
-			}
+				//计算奖励
+				var rate = 1
+				var damageRate = allDamage / extremity_award[bossLv]["hp"]
+				if(damageRate > 0.2)
+					damageRate = 0.2
+				rate += Number((extremity_cfg["damage_rate"]["value"] *  damageRate * 100).toFixed(2))
+				var awardList = self.addItemStr(uid,extremity_award[bossLv]["award"],rate,"极限挑战")
+				cb(true,{verify:self.fightContorl.getVerifyInfo(),allDamage:allDamage,awardList:awardList})
+			},
 		],function(err) {
 			cb(false,err)
 		})
