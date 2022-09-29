@@ -49,7 +49,7 @@ module.exports = function() {
 		self.chageLordData(uid,"rmb_day",0)
 		self.chageLordData(uid,"real_day",0)
 		var curTime = Date.now()
-		if(real_day){
+		if(self.players[uid].userDay > 1){
 			for(var i in self.rebate_item_map){
 				if(real_day >= self.rebate_item_map[i]["rmb"] && curTime >= self.rebate_item_map[i]["beginTime"] && curTime <= (self.rebate_item_map[i]["endTime"] + oneDayTime)){
 					self.sendMail(uid,self.rebate_item_map[i]["title"],self.rebate_item_map[i]["text"],self.rebate_item_map[i]["award"])
