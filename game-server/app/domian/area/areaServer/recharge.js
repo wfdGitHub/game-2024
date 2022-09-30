@@ -205,6 +205,9 @@ module.exports = function() {
 			case "gmLv":
 				this.buyGMLv(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
+			case "pri":
+				this.priBuyGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+			break
 			case "fast":
 				this.buyFastRecharge(uid,pay_id,call_back.bind(this,uid))
 			break
