@@ -427,8 +427,8 @@ heroHandler.prototype.upgraEvolution = function(msg, session, next) {
       next(null,{flag : false,err : "最大进阶"})
       return
     }
-    if(heroInfo.star < evolutionCfg[aimEvo].star_limit){
-      next(null,{flag : false,err : "星级限制"})
+    if(heroInfo.lv < evolutionCfg[aimEvo].lv_limit){
+      next(null,{flag : false,err : "等级限制 "+heroInfo.lv+"/"+evolutionCfg[aimEvo].lv_limit})
       return
     }
     var pcStr = evolutionCfg[aimEvo].pc

@@ -275,11 +275,6 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 			lvInfo.magDef += evolutionCfg[info.evo].magDef
 			aptitude += evolutionCfg[info.evo].aptitude
 		}
-		//进化天赋
-		if(info.evo >= 3 && herosCfg[info.id]["evo_3"])
-			model.mergeTalent(info,herosCfg[info.id]["evo_3"])
-		if(info.evo >= 4 && herosCfg[info.id]["evo_4"])
-			model.mergeTalent(info,herosCfg[info.id]["evo_4"])
 	}
 	//等级计算
 	if(info.lv && lv_cfg[info.lv]){

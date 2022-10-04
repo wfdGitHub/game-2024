@@ -65,9 +65,9 @@ module.exports = function() {
 					info.tr_phyDef = hero_tr[tr_lv]["phyDef"]
 					info.tr_magDef = hero_tr[tr_lv]["magDef"]
 				}else{
-					var weights = util.randomFigure(train_arg["base"]["value"],4)
+					var weights = util.randomFigure(train_arg["base"]["value"]*100,4)
 					for(var i = 0;i < weights.length;i++){
-						weights[i] *= info.useValue
+						weights[i] = weights[i] * info.useValue / 100
 						//上下浮动
 						var rand = Math.random()
 						if(rand > 0.85){
@@ -76,14 +76,18 @@ module.exports = function() {
 							weights[i] -= Math.sqrt(info.useValue) * 0.3 * train_arg["base"]["value"]
 						}
 					}
-					if(tr_maxHP < hero_tr[tr_lv]["maxHP"])
-						info.tr_maxHP = tr_maxHP + weights[0] * 16 * info.useValue
-					if(tr_atk < hero_tr[tr_lv]["atk"])
-						info.tr_atk = tr_atk + weights[1] * 16 * info.useValue
-					if(tr_phyDef < hero_tr[tr_lv]["phyDef"])
-						info.tr_phyDef = tr_phyDef + weights[2] * 16 * info.useValue
-					if(tr_magDef < hero_tr[tr_lv]["magDef"])
-						info.tr_magDef = tr_magDef + weights[3] * 16 * info.useValue
+					info.tr_maxHP = Math.floor(tr_maxHP + weights[0] * train_arg["maxHP"]["value"])
+					info.tr_atk =  Math.floor(tr_atk + weights[1] * train_arg["atk"]["value"])
+					info.tr_phyDef =  Math.floor(tr_phyDef + weights[2] * train_arg["phyDef"]["value"])
+					info.tr_magDef =  Math.floor(tr_magDef + weights[3] * train_arg["magDef"]["value"])
+					if(info.tr_maxHP > hero_tr[tr_lv]["maxHP"])
+						info.tr_maxHP = hero_tr[tr_lv]["maxHP"]
+					if(info.tr_atk > hero_tr[tr_lv]["atk"])
+						info.tr_atk = hero_tr[tr_lv]["atk"]
+					if(info.tr_phyDef > hero_tr[tr_lv]["phyDef"])
+						info.tr_phyDef = hero_tr[tr_lv]["phyDef"]
+					if(info.tr_magDef > hero_tr[tr_lv]["magDef"])
+						info.tr_magDef = hero_tr[tr_lv]["magDef"]
 				}
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,"tr_maxHP",info.tr_maxHP)
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,"tr_atk",info.tr_atk)
