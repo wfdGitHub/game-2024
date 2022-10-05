@@ -25,6 +25,7 @@ for(var i in standard_ce_cfg){
 		"star" : standard_ce_cfg[i]["star"],
 		"artifact" : standard_ce_cfg[i]["artifact"],
 		"tr_lv" : standard_ce_cfg[i]["tr"],
+		"evo" : standard_ce_cfg[i]["evo"],
 		"crit" : standard_ce_cfg[i]["crit"],
 		"critDef" : standard_ce_cfg[i]["critDef"],
 		"slay" : standard_ce_cfg[i]["slay"],
