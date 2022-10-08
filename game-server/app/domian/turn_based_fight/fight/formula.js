@@ -16,7 +16,12 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	var info = {type : "damage",value : 0}
 	var tmpAmplify = 0
 	var tmpCrit = 0
-	var adDiff = (attacker.ad - target.ad) * 0.02
+	var lvDiff = attacker.lv - target.lv
+	if(lvDiff > 200)
+		lvDiff = 200
+	if(lvDiff < -200)
+		lvDiff = -200
+	var attDiff = lvDiff * 0.002
 	if(attacker.damage_always_burn || target.buffs["burn"]){
 		if(skill.isAnger){
 			if(skill.burn_att_change_skill || skill.character.burn_att_change_skill){
@@ -53,7 +58,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			target.dodgeState = false
 			dodgeFlag = true
 		}else if(!(skill.isAnger && attacker.skill_must_hit) && !target.buffs["suoding"]){
-			var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate") + adDiff
+			var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate") + attDiff
 			if(target.attInfo.hp < target.attInfo.maxHP && target.low_hp_dodge){
 				hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_crit
 			}
@@ -72,7 +77,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}else if(must_crit){
 		info.crit = true
 	}else{
-		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit + adDiff
+		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit + attDiff
 		if(skill.tmp_crit){
 			crit += skill.tmp_crit
 		}
@@ -94,7 +99,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}
 	var mul = 1
 	if(attacker.characterType != "master"){
-		mul += attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction") + adDiff
+		mul += attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction") + attDiff
 	}
 	if(mul < 0.1)
 		mul = 0.1
