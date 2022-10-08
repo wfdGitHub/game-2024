@@ -676,15 +676,15 @@ model.getTeamData = function(team,belong) {
 		for(var i in beauty_base){
 			if(teamCfg["beaut_"+i]){
 				var beautyInfo = teamCfg["beaut_"+i]
-				var beautyAptitude = beauty_base[beautyInfo.id]["aptitude"]
+				var beautyAptitude = beauty_base[i]["aptitude"]
 				if(beautyInfo.ad && beauty_ad[beautyInfo.ad])
 					beautyAptitude += beauty_ad[beautyInfo.ad]["aptitude"]
 				var growth = power_aptitude[beautyAptitude].growth
-				growth += power_aptitude[beauty_base[beautyInfo.id]["aptitude"]]["extra"]
-				masterAtts["maxHP"] += beauty_cfg["maxHP"]["value"] * beautyInfo["att1"] || 0 * growth * beauty_cfg[beauty_base[beautyInfo.id]["att1"]]["value"]
-				masterAtts["atk"] += beauty_cfg["atk"]["value"] * beautyInfo["att2"] || 0 * growth * beauty_cfg[beauty_base[beautyInfo.id]["att2"]]["value"]
-				masterAtts["phyDef"] += beauty_cfg["phyDef"]["value"] * beautyInfo["att3"] || 0 * growth * beauty_cfg[beauty_base[beautyInfo.id]["att3"]]["value"]
-				masterAtts["magDef"] += beauty_cfg["magDef"]["value"] * beautyInfo["att4"] || 0 * growth * beauty_cfg[beauty_base[beautyInfo.id]["att4"]]["value"]
+				growth += power_aptitude[beauty_base[i]["aptitude"]]["extra"]
+				masterAtts["maxHP"] += beauty_cfg["maxHP"]["value"] * beautyInfo["att1"] || 0 * growth * beauty_cfg[beauty_base[i]["att1"]]["value"]
+				masterAtts["atk"] += beauty_cfg["atk"]["value"] * beautyInfo["att2"] || 0 * growth * beauty_cfg[beauty_base[i]["att2"]]["value"]
+				masterAtts["phyDef"] += beauty_cfg["phyDef"]["value"] * beautyInfo["att3"] || 0 * growth * beauty_cfg[beauty_base[i]["att3"]]["value"]
+				masterAtts["magDef"] += beauty_cfg["magDef"]["value"] * beautyInfo["att4"] || 0 * growth * beauty_cfg[beauty_base[i]["att4"]]["value"]
 			}
 		}
 	}
@@ -1016,7 +1016,7 @@ model.getTeamCE = function(team) {
 				var tmpCE = 20000
 				tmpCE += beauty_ad[team[6]["beaut_"+i]["ad"]]["ce"] || 0
 				tmpCE += beauty_star[team[6]["beaut_"+i]["star"]]["ce"] || 0
-				tmpCE = Math.floor(tmpCE * power_aptitude[beauty_base[team[6]["beaut_"+i]["id"]]["aptitude"]]["ceRate"])
+				tmpCE = Math.floor(tmpCE * power_aptitude[beauty_base[i]["aptitude"]]["ceRate"])
 				allCE += tmpCE
 			}
 		}
