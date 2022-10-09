@@ -267,7 +267,7 @@ powerHandler.prototype.setBeautFight = function(msg, session, next) {
   var areaId = session.get("areaId")
   var beautId = msg.beautId
   this.areaManager.areaMap[areaId].setBeautFight(uid,beautId,function(flag,data) {
-    next(null,{flag : false,data : data})
+    next(null,{flag : flag,data : data})
   })
 }
 //增加行动力
