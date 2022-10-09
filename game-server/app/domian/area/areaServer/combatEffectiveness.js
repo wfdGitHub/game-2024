@@ -645,18 +645,15 @@ module.exports = function() {
 	}
 	//设置红颜技能
 	this.setBeautFight = function(uid,beautId,cb) {
-		console.log("setBeautFight11111",uid,beautId)
 		if(!beauty_base[beautId]){
 			cb(false,"技能不存在"+beautId)
 			return
 		}
-		console.log("setBeautFight22222")
 		self.getObj(uid,"beaut",beautId+"_star",function(data) {
 			if(!data){
 				cb(false,"未激活")
 				return
 			}
-			console.log("setBeautFight33333")
 			self.setObj(uid,"beaut","bcombat",beautId)
 			cb(true)
 		})
