@@ -129,6 +129,8 @@ master.prototype.updateCD = function(value) {
 }
 //使用技能
 master.prototype.masterPower = function(index) {
+	if(index == -1)
+		index = this.powers.length - 1
 	if(!this.powers[index]){
 		console.error("技能不存在 "+index)
 		return false	
