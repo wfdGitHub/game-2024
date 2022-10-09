@@ -11,7 +11,7 @@ const hero_tr = require("../../../config/gameCfg/hero_tr.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_city","guild_pk","limited_time","hufu","show","friend","beherrscher","exercise","endless","extremity","zhanfa","hero_rank","gather","camp_att","hero","guild_city_boss","manor","lotto"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_city","guild_pk","limited_time","hufu","show","friend","beherrscher","exercise","endless","extremity","zhanfa","hero_rank","gather","camp_att","hero","guild_city_boss","manor","lotto","worldLevel"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
@@ -131,6 +131,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.areaBossInit()
 	this.updateFestivalInfo()
 	this.activityDayUpdate()
+	this.worldLevelInit()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)
@@ -146,6 +147,7 @@ area.prototype.firstDayUpdate = function() {
 	this.dayUpdateLimitedTime()
 	this.extremityDayUpdate()
 	this.areaBossDayUpdate()
+	this.worldLevelDayUpdate()
 	this.delAreaObj("areaInfo","day_create")
 	this.delAreaObj("areaInfo","day_login")
 	this.delAreaObj("areaInfo","day_play_count")
@@ -219,6 +221,7 @@ area.prototype.userLogin = function(uid,oriId,cid,cb) {
 			self.players[uid]["areaId"] = self.areaId
 			self.players[uid]["areaDay"] = self.areaDay
 			self.players[uid]["userDay"] = util.getTimeDifference(self.players[uid].createTime,Date.now())
+			self.players[uid]["worldLevel"] = self.worldLevel
 			if(self.players[uid].dayStr != self.dayStr)
 				self.dayFirstLogin(uid)
 			if(self.players[uid].weekStr != self.weekStr)
