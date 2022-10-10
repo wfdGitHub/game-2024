@@ -57,7 +57,7 @@ module.exports = function() {
 	}
 	//点票支付
 	this.dianpiao_recharge = function(uid,pay_id,cb) {
-		if(!pay_cfg[pay_id] || !pay_cfg[pay_id]["dianpiao"]){
+		if(!pay_cfg[pay_id] || pay_cfg[pay_id]["dianpiao"] === undefined){
 			cb(false,"pay_id error")
 			return
 		}
