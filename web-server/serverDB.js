@@ -7,6 +7,7 @@ const pay_cfg = require("../game-server/config/gameCfg/pay_cfg.json")
 const hufu_quality = require("../game-server/config/gameCfg/hufu_quality.json")
 const hufu_skill = require("../game-server/config/gameCfg/hufu_skill.json")
 const stringRandom = require('string-random');
+const dataClean = require("./model/dataClean.js")
 var model = function() {
 	var self = this
 	var posts = {}
@@ -16,6 +17,7 @@ var model = function() {
 		self.mysqlDao = mysqlDao
 		self.redisDao = redisDao
 		self.server = server
+		dataClean.init(server,mysqlDao,redisDao)
 		for(var key in posts){
 			server.post(key,posts[key])
 		}
@@ -1064,6 +1066,16 @@ var model = function() {
 				}
 			}
 		})
+	}
+	//清理无效账号
+	posts["/cleanPlayer"] = function(req,res) {
+		dataClean.checkPlayer()
+		res.send({flag:true})
+	}
+	//清理数据库记录
+	posts["/cleanSql"] = function(req,res) {
+		dataClean.cleanMysqlLog()
+		res.send({flag:true})
 	}
 	local.getPlayerBaseByUids = function(uids,cb) {
 		if(!uids.length){
