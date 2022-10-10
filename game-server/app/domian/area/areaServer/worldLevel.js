@@ -7,7 +7,7 @@ module.exports = function() {
 	self.worldLevel = BEGIN_LEVEL
 	//初始化
 	this.worldLevelInit = function() {
-		self.getAreaObj("areaInfo","worldLevel",function(data) {
+		self.redisDao.db.zscore("game:worldLevels",self.areaId,function(data) {
 			if(data)
 				self.worldLevel = Number(data)
 		})
@@ -21,7 +21,7 @@ module.exports = function() {
 					score += Number(list[i+1]) || 0
 				}
 			}
-			var rankLv = MAX_LEVEL
+			var rankLv = BEGIN_LEVEL
 			if(score){
 				score = Number(score / 20)
 				for(var i in lord_lv){
@@ -33,8 +33,7 @@ module.exports = function() {
 			}
 			var areaLv = BEGIN_LEVEL + self.areaDay
 			var worldLevel = Math.max(rankLv,areaLv)
-			console.log("worldLevelDayUpdate!!",rankLv,areaLv,worldLevel)
-			self.setAreaObj("areaInfo","worldLevel",worldLevel)
+			self.redisDao.db.zadd("game:worldLevels",worldLevel,self.areaId)
 		})
 	}
 }

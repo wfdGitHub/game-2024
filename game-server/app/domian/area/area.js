@@ -132,6 +132,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.updateFestivalInfo()
 	this.activityDayUpdate()
 	this.worldLevelInit()
+	this.worldLevelDayUpdate()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)
@@ -147,7 +148,6 @@ area.prototype.firstDayUpdate = function() {
 	this.dayUpdateLimitedTime()
 	this.extremityDayUpdate()
 	this.areaBossDayUpdate()
-	this.worldLevelDayUpdate()
 	this.delAreaObj("areaInfo","day_create")
 	this.delAreaObj("areaInfo","day_login")
 	this.delAreaObj("areaInfo","day_play_count")

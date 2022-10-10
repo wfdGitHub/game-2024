@@ -5,7 +5,7 @@ const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce = require("../../../config/gameCfg/standard_ce.json")
 const mailText = require("../../../config/gameCfg/mailText.json")
 var uuid = require("uuid")
-var crossServers = ["grading","escort","peakCompetition","muye","guild_pk","ancient","manorCross"]
+var crossServers = ["grading","escort","peakCompetition","muye","guild_pk","ancient","manorCross","theatre"]
 var crossManager = function(app) {
 	this.app = app
 	this.channelService = this.app.get("channelService")
@@ -24,8 +24,8 @@ crossManager.prototype.init = function() {
 	}
 	var dao = require("../area/areaServer/dao.js")
 	dao.call(this)
-	this.peakInit()
 	this.muyeInit()
+	this.theatreInit()
 	setInterval(this.update.bind(this),3000)
 	var self = this
 	setTimeout(function() {
@@ -59,6 +59,7 @@ crossManager.prototype.dayUpdate = function(curDayStr) {
 //每日首次定时器
 crossManager.prototype.firstDayUpdate = function() {
 	console.log("跨服每日首次刷新")
+	this.theatreDayUpdate()
 	this.ancientDayUpdate()
 }
 crossManager.prototype.update = function() {
@@ -86,7 +87,8 @@ crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,player
 				serverId : serverId,
 				cid : cid,
 				playerInfo : playerInfo,
-				fightTeam : fightTeam
+				fightTeam : fightTeam,
+				theatreId : self.theatreMap[areaId] || 0
 			}
 			var crossUid = oriId+"|"+uid
 			if(!self.players[crossUid])
@@ -331,7 +333,6 @@ crossManager.prototype.taskUpdate  = function(crossUid,type,value,arg) {
 	var uid = this.players[crossUid]["uid"]
 	this.app.rpc.area.areaRemote.taskUpdate.toServer(serverId,areaId,uid,type,value,arg,function(){})
 }
-
 //发放公会邮件
 crossManager.prototype.sendMailByGuildId  = function(guildId,key,atts) {
 	var self = this
@@ -342,6 +343,10 @@ crossManager.prototype.sendMailByGuildId  = function(guildId,key,atts) {
 			self.sendTextToMailById(uid,key,atts)
 		}
 	})
+}
+//重新分配战区
+crossManager.prototype.theatreDeploy = function() {
+	this.theatreDeploy()
 }
 module.exports = {
 	id : "crossManager",

@@ -3,8 +3,9 @@ const peak_award = require("../../../../config/gameCfg/peak_award.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const async = require("async")
 //王者巅峰赛
-module.exports = function() {
-	var self = this
+var peakEntity = function(self,theatreId) {
+	var self = self
+	var theatreId = theatreId   //战区
 	var totalPlayer = 128
 	var curRound = 0			//当前回合
 	var state_index = -1		//当前状态index
@@ -26,13 +27,15 @@ module.exports = function() {
 	var look = true				//锁
 	var baseScore = 1000		//初始分数
 	var timeMap = {}			//刷新冷却
+	var local = {} 				//本地函数
+	var main_name = "cross:"+theatreId+":peak"
 	//初始化
 	this.peakInit = function() {
 		async.waterfall([
 			function(next) {
-				self.redisDao.db.hgetall("cross:peak",function(err,data) {
+				self.redisDao.db.hgetall(main_name,function(err,data) {
 					if(data && data.state_index != -1){
-						console.log("存在数据 开始初始化")
+						console.log("战区"+theatreId+"存在数据 开始初始化")
 						curRound = Number(data.curRound)
 						state_index = Number(data.state_index)
 						state = peak_cfg[state_index]["state"]
@@ -55,7 +58,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				self.redisDao.db.hgetall("cross:peak:betInfo",function(err,data) {
+				self.redisDao.db.hgetall(main_name+":betInfo",function(err,data) {
 					if(data){
 						for(var i in data){
 							data[i] = JSON.parse(data[i])
@@ -66,7 +69,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				self.redisDao.db.hgetall("cross:peak:playerAmount",function(err,data) {
+				self.redisDao.db.hgetall(main_name+":playerAmount",function(err,data) {
 					if(data){
 						for(var i in data){
 							data[i] = Number(data[i])
@@ -77,7 +80,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				self.redisDao.db.hgetall("cross:peak:likeMap",function(err,data) {
+				self.redisDao.db.hgetall(main_name+":likeMap",function(err,data) {
 					if(data){
 						for(var i in data){
 							data[i] = Number(data[i])
@@ -88,7 +91,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				self.redisDao.db.hgetall("cross:peak:roundTeam",function(err,data) {
+				self.redisDao.db.hgetall(main_name+":roundTeam",function(err,data) {
 					if(data){
 						for(var i in data){
 							data[i] = JSON.parse(data[i])
@@ -99,7 +102,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				self.redisDao.db.hgetall("cross:peak:parInfoMap",function(err,data) {
+				self.redisDao.db.hgetall(main_name+":parInfoMap",function(err,data) {
 					if(data){
 						parInfoMap = data
 					}
@@ -107,7 +110,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				self.redisDao.db.hgetall("cross:peak:betAmount",function(err,data) {
+				self.redisDao.db.hgetall(main_name+":betAmount",function(err,data) {
 					if(data){
 						for(var i in data){
 							data[i] = Number(data[i])
@@ -129,37 +132,36 @@ module.exports = function() {
 	}
 	//每日刷新
 	this.peakDayUpdate = function() {
-		console.log("peakDayUpdate runFlag ",runFlag,(new Date()).getDay())
 		likeUsers = {}
 		timeMap = {}
 		if(!runFlag && (new Date()).getDay() == 1){
-			this.peakBegin()
+			local.peakBegin()
 		}
 	}
 	//实时刷新
 	this.peakUpdate = function(date) {
 		if(runFlag && !look && date.getTime() >= timeList[state_index+1]){
-			console.log("peakUpdate",date.getTime(),timeList[state_index+1])
 			// 进入下一阶段
-			this.peakNextState()
+			local.peakNextState()
 		}
 	}
-	this.peakNextState = function() {
+	//下一阶段
+	local.peakNextState = function() {
 		if(look)
 			return
 		switch(state){
 			case 1:
 				//进入下注
-				self.peakBetting()
+				local.peakBetting()
 			break
 			case 2:
 				//开始比赛
-				self.peakFight()
+				local.peakFight()
 			break
 		}
 	}
 	//数据初始化
-	this.peakArgInit = function() {
+	local.peakArgInit = function() {
 		curRound = 0			//当前回合
 		state_index = -1		//当前阶段
 		state = 0				//当前状态 0 未开赛  1 布阵阶段 2 下注阶段 3 比赛已结束
@@ -171,18 +173,18 @@ module.exports = function() {
 		parInfoMap = {}
 		winners = {}
 		timeList = []
-		self.redisDao.db.del("cross:peak:parInfoMap")
-		self.redisDao.db.del("cross:peak:fightTeam")
-		self.redisDao.db.del("cross:peak:betInfo")
-		self.redisDao.db.del("cross:peak:playerAmount")
-		self.redisDao.db.del("cross:peak:betAmount")
+		self.redisDao.db.del(main_name+":parInfoMap")
+		self.redisDao.db.del(main_name+":fightTeam")
+		self.redisDao.db.del(main_name+":betInfo")
+		self.redisDao.db.del(main_name+":playerAmount")
+		self.redisDao.db.del(main_name+":betAmount")
 		for(var i = 1;i <= 7;i++){
-			self.redisDao.db.del("cross:peak:matchHistory:"+i)
-			self.redisDao.db.del("cross:peak:betHistory:"+i)
+			self.redisDao.db.del(main_name+":matchHistory:"+i)
+			self.redisDao.db.del(main_name+":betHistory:"+i)
 		}
-		self.peakSave()
+		local.peakSave()
 	}
-	this.peakSave = function() {
+	local.peakSave = function() {
 		var info = {
 			curRound:curRound,
 			state_index:state_index,
@@ -191,10 +193,10 @@ module.exports = function() {
 			parMap:JSON.stringify(parMap),
 			winners : JSON.stringify(winners)
 		}
-		self.redisDao.db.hmset("cross:peak",info)
+		self.redisDao.db.hmset(main_name,info)
 	}
 	//新赛季开启
-	this.peakBegin = function() {
+	local.peakBegin = function() {
 		console.log("新赛季开启")
 		runFlag = true
 		likeUsers = {}
@@ -222,7 +224,7 @@ module.exports = function() {
 						better[i] = {crossUid:better[i],info:parInfoMap[better[i]]}
 					}
 					honorList = better
-					self.redisDao.db.hset("cross:peak","honorList",JSON.stringify(honorList))
+					self.redisDao.db.hset(main_name,"honorList",JSON.stringify(honorList))
 					var data = {}
 					for(var i = 5;i <= 7;i++){
 						if(winners[i]){
@@ -245,11 +247,11 @@ module.exports = function() {
 						}
 					}
 					honorMathch = data
-					self.redisDao.db.hset("cross:peak","honorMathch",JSON.stringify(honorMathch))
+					self.redisDao.db.hset(main_name,"honorMathch",JSON.stringify(honorMathch))
 					var count = 0
 					for(let j = 5;j <= 7;j++){
-						self.redisDao.db.hgetall("cross:peak:matchHistory:"+j,function(err,data) {
-							self.redisDao.db.hmset("cross:peak:honorHistory:"+j,data)
+						self.redisDao.db.hgetall(main_name+":matchHistory:"+j,function(err,data) {
+							self.redisDao.db.hmset(main_name+":honorHistory:"+j,data)
 							count++
 							if(count == 3){
 								next()
@@ -264,9 +266,9 @@ module.exports = function() {
 				//获取初始入选玩家
 				participants = {}
 				parMap = {}
-				self.peakArgInit()
+				local.peakArgInit()
 				console.log("获取初始入选玩家")
-				self.redisDao.db.zrevrange(["cross:grading:realRank",0,-1,"WITHSCORES"],function(err,list) {
+				self.redisDao.db.zrevrange(["cross:"+theatreId+"grading:realRank",0,-1,"WITHSCORES"],function(err,list) {
 					var strList,uid,areaId
 					for(var i = 0;i < list.length;i+=2){
 						strList = list[i].split("|")
@@ -298,7 +300,7 @@ module.exports = function() {
                             console.error("获取阵容失败 "+uids[i])
                             data = [0,0,0,0,0,0]
                         }
-                        self.redisDao.db.hset("cross:peak:fightTeam",crossUids[i],JSON.stringify(data))
+                        self.redisDao.db.hset(main_name+":fightTeam",crossUids[i],JSON.stringify(data))
                         roundTeam[crossUids[i]] = data
                         count++
                         if(count == totalPlayer){
@@ -314,7 +316,7 @@ module.exports = function() {
 					for(var i = 0;i < list.length;i++){
 						parInfoMap[crossUids[i]] = JSON.stringify(list[i])
 					}
-					self.redisDao.db.hmset("cross:peak:parInfoMap",parInfoMap)
+					self.redisDao.db.hmset(main_name+":parInfoMap",parInfoMap)
 					next()
 				})
 			},
@@ -343,37 +345,37 @@ module.exports = function() {
 					timeList[i] = zeroTime + peak_cfg[i]["value"]
 				}
 				look = false
-				self.peakSave()
+				local.peakSave()
 			}
 		],function(err) {
 			console.error(err)
-			self.peakArgInit()
+			local.peakArgInit()
 		})
 	}
 	//下注阶段
-	this.peakBetting = function() {
+	local.peakBetting = function() {
 		console.log("下注阶段开始")
 		look = true
 		betInfo = {}
-		self.redisDao.db.del("cross:peak:betInfo")
-		self.redisDao.db.hgetall("cross:peak:fightTeam",function(err,data) {
+		self.redisDao.db.del(main_name+":betInfo")
+		self.redisDao.db.hgetall(main_name+":fightTeam",function(err,data) {
 			roundTeam = {}
 			for(var i in data){
 				roundTeam[i] = JSON.parse(data[i])
 			}
-			self.redisDao.db.hmset("cross:peak:roundTeam",data)
+			self.redisDao.db.hmset(main_name+":roundTeam",data)
 			state_index++
 			state = peak_cfg[state_index]["state"]
-			self.redisDao.db.hset("cross:peak","state_index",state_index)
+			self.redisDao.db.hset(main_name,"state_index",state_index)
 			look = false
 			if(state == 3){
 				runFlag = false
-				self.peakEnd()
+				local.peakEnd()
 			}
 		})
 	}
 	//比赛阶段
-	this.peakFight = function() {
+	local.peakFight = function() {
 		console.time("peakFight")
 		console.log("比赛阶段开始")
 		look = true
@@ -434,7 +436,7 @@ module.exports = function() {
 						self.sendTextToMailById(parList[i].split("|")[1],"peak_stop_"+curRound,peak_award[curRound]["stop_award"])
 					}
 				}
-				self.redisDao.db.hmset("cross:peak:matchHistory:"+curRound,matchHistory)
+				self.redisDao.db.hmset(main_name+":matchHistory:"+curRound,matchHistory)
 				next()
 			},
 			function(next) {
@@ -457,10 +459,10 @@ module.exports = function() {
 					betInfo[i] = JSON.stringify(betInfo[i])
 				}
 				if(flag){
-					self.redisDao.db.hmset("cross:peak:betHistory:"+curRound,betInfo)
-					self.redisDao.db.hmset("cross:peak:playerAmount",playerAmount)
+					self.redisDao.db.hmset(main_name+":betHistory:"+curRound,betInfo)
+					self.redisDao.db.hmset(main_name+":playerAmount",playerAmount)
 					betInfo = {}
-					self.redisDao.db.del("cross:peak:betInfo")
+					self.redisDao.db.del(main_name+":betInfo")
 				}
 				next()
 			},
@@ -468,7 +470,7 @@ module.exports = function() {
 				state_index++
 				state = peak_cfg[state_index]["state"]
 				if(state == 3){
-					self.peakEnd()
+					local.peakEnd()
 				}else{
 					//进入下一轮
 					curRound++
@@ -479,7 +481,7 @@ module.exports = function() {
 					participants[curRound] = tmpWins
 					look = false
 				}
-				self.peakSave()
+				local.peakSave()
 				console.timeEnd("peakFight")
 			}
 		],function(err) {
@@ -487,7 +489,7 @@ module.exports = function() {
 		})
 	}
 	//赛季结束
-	this.peakEnd = function() {
+	local.peakEnd = function() {
 		runFlag = false
 		console.log("本赛季结束")
 		//王者币奖励
@@ -517,7 +519,7 @@ module.exports = function() {
 		}
 		if(state > 0 && state < 3 && (!playerAmount[crossUid] || playerAmount[crossUid] < baseScore)){
 			playerAmount[crossUid] = baseScore
-			self.redisDao.db.hset("cross:peak:playerAmount",crossUid,baseScore)
+			self.redisDao.db.hset(main_name+":playerAmount",crossUid,baseScore)
 		}
 		info.amount = playerAmount[crossUid]
 		info.honorList = honorList
@@ -526,7 +528,7 @@ module.exports = function() {
 			info.likeList.push(likeMap[honorList[i]["crossUid"]] || 0)
 		}
 		info.likeInfo = likeUsers[crossUid] || {}
-		self.redisDao.db.zrevrank(["cross:grading:realRank",crossUid],function(err,rank) {
+		self.redisDao.db.zrevrank(["cross:"+theatreId+"grading:realRank",crossUid],function(err,rank) {
 			if(rank != null)
 				info.rank = Number(rank) + 1
 			cb(true,info)
@@ -555,7 +557,7 @@ module.exports = function() {
 				cb(false,"获取阵容失败")
 			}else{
 				roundTeam[crossUid] = data
-				self.redisDao.db.hset("cross:peak:fightTeam",crossUid,JSON.stringify(data))
+				self.redisDao.db.hset(main_name+":fightTeam",crossUid,JSON.stringify(data))
 				cb(true,data)
 			}
 		})
@@ -616,7 +618,7 @@ module.exports = function() {
 		}
 		if(!playerAmount[crossUid] || playerAmount[crossUid] < baseScore){
 			playerAmount[crossUid] = baseScore
-			self.redisDao.db.hset("cross:peak:playerAmount",crossUid,baseScore)
+			self.redisDao.db.hset(main_name+":playerAmount",crossUid,baseScore)
 		}
 		if(playerAmount[crossUid] < bet){
 			cb(false,"金额不足"+playerAmount[crossUid]+"/"+bet)
@@ -628,11 +630,11 @@ module.exports = function() {
 			return
 		}
 		betInfo[crossUid] = {target : target,bet : bet}
-		self.redisDao.db.hset("cross:peak:betInfo",crossUid,JSON.stringify(betInfo[crossUid]))
+		self.redisDao.db.hset(main_name+":betInfo",crossUid,JSON.stringify(betInfo[crossUid]))
 		if(!betAmount[target])
 			betAmount[target] = 0
 		betAmount[target] += bet
-		self.redisDao.db.hset("cross:peak:betAmount",target,betAmount[target])
+		self.redisDao.db.hset(main_name+":betAmount",target,betAmount[target])
 		self.taskUpdate(crossUid,"peak_bet",1)
 		cb(true,betInfo[crossUid])
 	}
@@ -665,7 +667,7 @@ module.exports = function() {
 		}else{
 			var multiList = []
 			for(var i = 1;i <= curRound;i++){
-				multiList.push(["hget","cross:peak:betHistory:"+i,crossUid])
+				multiList.push(["hget",main_name+":betHistory:"+i,crossUid])
 			}
 			this.redisDao.multi(multiList,function(err,list) {
 				if(err){
@@ -700,7 +702,7 @@ module.exports = function() {
 			cb(false,"参数错误")
 			return
 		}
-		self.redisDao.db.hget("cross:peak:matchHistory:"+round,target,function(err,data) {
+		self.redisDao.db.hget(main_name+":matchHistory:"+round,target,function(err,data) {
 			cb(true,data)
 		})
 	}
@@ -710,7 +712,7 @@ module.exports = function() {
 			cb(false,"参数错误")
 			return
 		}
-		self.redisDao.db.hget("cross:peak:honorHistory:"+round,target,function(err,data) {
+		self.redisDao.db.hget(main_name+":honorHistory:"+round,target,function(err,data) {
 			cb(true,data)
 		})
 	}
@@ -827,7 +829,7 @@ module.exports = function() {
 		if(!likeMap[target])
 			likeMap[target] = 0
 		likeMap[target]++
-		self.redisDao.db.hincrby("cross:peak:likeMap",target,1)
+		self.redisDao.db.hincrby(main_name+":likeMap",target,1)
 		self.addItemStr(crossUid,"201:20000",1,"巅峰点赞",function(flag,data) {
 			cb(flag,data)
 		})
@@ -835,5 +837,97 @@ module.exports = function() {
 	//获取上一赛季比赛记录
 	this.getHonorMathch = function(crossUid,cb) {
 		cb(true,honorMathch)
+	}
+}
+module.exports = function() {
+	var peakList = {}
+	var self = this
+	//战区初始化
+	this.peakInit = function(theatreNum) {
+		peakList = {}
+		for(var i = 0; i < theatreNum;i++){
+			peakList[i] = new peakEntity(this,i)
+			peakList[i].peakInit()
+		}
+	}
+	//每日刷新
+	this.peakDayUpdate = function() {
+		for(var i in peakList)
+			peakList[i].peakDayUpdate()
+	}
+	//实时刷新
+	this.peakUpdate = function(date) {
+		for(var i in peakList)
+			peakList[i].peakUpdate(date)
+	}
+	//获取玩家巅峰赛数据
+	this.getPeakData = function(crossUid,cb){
+		var theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].getPeakData(crossUid,cb)
+	}
+	//同步阵容
+	this.peakSyncFightTeam = function(crossUid,uid,cb){
+		var theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].peakSyncFightTeam(crossUid,uid,cb)
+	}
+	//获取对阵选手信息
+	this.getPeakParticipantsInfo = function(crossUid,cb){
+		var theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].getPeakParticipantsInfo(crossUid,cb)
+	}
+	//下注
+	this.peakUserBetting = function(crossUid,target,bet,cb){
+		var theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].peakUserBetting(crossUid,target,bet,cb)
+	}
+	//获取当前下注信息
+	this.getPeakBetInfo = function(crossUid,cb){
+		var theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].getPeakBetInfo(crossUid,cb)
+	}
+	//查询历史下注信息
+	this.getPeakBetHistory = function(crossUid,cb){
+		var theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].getPeakBetHistory(crossUid,cb)
+	}
+	//查看指定比赛记录
+	this.getPeakMatchHistory = function(theatreId,crossUid,round,target,cb){
+		if(!theatreId)
+			theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].getPeakMatchHistory(crossUid,round,target,cb)
+	}
+	//查看历史指定比赛记录
+	this.getPeakHonorHistory = function(theatreId,crossUid,round,target,cb){
+		if(!theatreId)
+			theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].getPeakHonorHistory(crossUid,round,target,cb)
+	}
+	//获取我的比赛记录
+	this.getPeakMyMatch = function(crossUid,cb){
+		var theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].getPeakMyMatch(crossUid,cb)
+	}
+	//获取小组赛记录
+	this.getPeakGrounpHistory = function(theatreId,num,cb){
+		if(!theatreId)
+			theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].getPeakGrounpHistory(num,cb)
+	}
+	//获取本赛季八强记录
+	this.getPeakBetterHistory = function(theatreId,crossUid,cb){
+		if(!theatreId)
+			theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].getPeakBetterHistory(crossUid,cb)
+	}
+	//点赞
+	this.peakLike = function(crossUid,index,cb){
+		var theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].peakLike(crossUid,index,cb)
+	}
+	//获取上一赛季比赛记录
+	this.getHonorMathch = function(theatreId,crossUid,cb){
+		if(!theatreId)
+			theatreId = self.players[crossUid].theatreId
+		peakList[theatreId].getHonorMathch(crossUid,cb)
 	}
 }

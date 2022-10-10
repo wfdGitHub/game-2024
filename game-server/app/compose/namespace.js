@@ -9,14 +9,14 @@ var namespace = function() {
 //获取随机名称
 namespace.prototype.getName = function() {
 	if(Math.random() < 0.5)
-		return FirstName1[Math.floor(Math.random() * FirstName1.length)] + "•"+ LastName1[Math.floor(Math.random() * LastName1.length)]
+		return FirstName1[Math.floor(Math.random() * FirstName1.length)] + LastName1[Math.floor(Math.random() * LastName1.length)]
 	else
-		return FirstName2[Math.floor(Math.random() * FirstName2.length)] + "•"+ LastName2[Math.floor(Math.random() * LastName2.length)]
+		return FirstName2[Math.floor(Math.random() * FirstName2.length)] + LastName2[Math.floor(Math.random() * LastName2.length)]
 }
 //获取指定顺序名称
 namespace.prototype.getNameByIndex = function(id) {
 	var index = Math.floor(Math.sqrt(id))
-	return FirstName1[index] + "•"+ LastName1[index]
+	return FirstName1[index] + LastName1[index]
 }
 module.exports = {
 	id : "namespace",

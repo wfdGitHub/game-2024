@@ -37,9 +37,8 @@ accountDao.prototype.createAccount = function(otps,cb) {
 	})
 }
 //创建机器人账号
-accountDao.prototype.createRobotAccount = function(cb) {
+accountDao.prototype.createRobotAccount = function(areaId,cb) {
 	var self = this
-	var areaId = 1
 	self.createAccount({unionid : uuid.v1(),head : beginHero,robot:true},function(flag,userInfo) {
 		if(flag){
 			self.playerDao.createPlayer({accId : userInfo.accId,areaId:areaId,name:self.namespace.getName(),robot:true},function(playerInfo) {
@@ -47,6 +46,7 @@ accountDao.prototype.createRobotAccount = function(cb) {
 					self.playerDao.setRobotTeam(areaId,playerInfo)
 					var crossUid = areaId+"|"+playerInfo.uid
 					self.redisDao.db.zincrby(["cross:grading:rank",10,crossUid],function(err,value) {
+						self.redisDao.db.hincrby("game:areaActives",areaId,1)
 						self.redisDao.db.zadd(["cross:grading:realRank",10,crossUid])
 					})
 				}

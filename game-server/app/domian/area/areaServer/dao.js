@@ -114,7 +114,7 @@ module.exports = function() {
 			}
 		})
 	}
-	//增长有序列表数据
+	//移除有序列表数据
 	this.removeZset = function(zname,key,cb) {
 		this.redisDao.db.zrem("area:area"+this.areaId+":zset:"+zname,key,function(err,data) {
 			if(cb){

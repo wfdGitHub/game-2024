@@ -194,9 +194,10 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	this.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
 	heroInfo.hId = hId
-	if(!otps.robot)
+	if(!otps.robot){
 		this.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
-	this.updateHeroArchive(areaId,uid,id,star)
+		this.updateHeroArchive(areaId,uid,id,star)
+	}
 	if(cb)
 		cb(true,heroInfo)
 	heroInfo.hId = hId

@@ -2048,15 +2048,18 @@
         });
       }
       //创建机器人
-      var createRobotAccount = function(count) {
-        if(!count){
-          count = 1
-        }
+      var createRobotAccount = function(areaId,count) {
         for(var i = 0;i < count;i++){
-          pomelo.request("admin.adminHandler.createRobotAccount", {}, function(data) {
+          pomelo.request("admin.adminHandler.createRobotAccount", {areaId:areaId}, function(data) {
               console.log(data);
           });
         }
+      }
+      //重新分配战区
+      var theatreDeploy = function() {
+        pomelo.request("cross.crossHandler.theatreDeploy", {}, function(data) {
+            console.log(data);
+        });
       }
       //==============礼包码============//
       //创建礼包码类型

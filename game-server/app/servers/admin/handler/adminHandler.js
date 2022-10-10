@@ -178,7 +178,8 @@ adminHandler.prototype.freezeAcc = function(msg, session, next) {
 }
 //创建机器人账号
 adminHandler.prototype.createRobotAccount = function(msg, session, next) {
-	this.accountDao.createRobotAccount(function(flag,err) {
+	var areaId = msg.areaId || 1
+	this.accountDao.createRobotAccount(areaId,function(flag,err) {
 		next(null,{flag : true})
 	})
 }

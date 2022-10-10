@@ -20,6 +20,11 @@ crossHandler.prototype.test = function(msg, session, next) {
 //   this.crossManager.beginGuildPKTable()
 //   next(null,{flag : true})
 // }
+//重新分配战区
+crossHandler.prototype.theatreDeploy = function(msg, session, next) {
+  this.crossManager.theatreDeploy()
+  next(null,{flag : true})
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "crossHandler",

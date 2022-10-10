@@ -1,4 +1,5 @@
 //服务器调配器,开服管理器
+const async = require("async")
 var areaDeploy = function() {
 	this.name = "areaDeploy"
 	this.areaList = []
@@ -60,11 +61,11 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 		if(areaId){
 			self.redisDao.db.hset("area:area"+areaId+":areaInfo","oldArea",1)
 			var slist = []
-			for(let i = 0;i < areaList.length;i++){
+			for(var i = 0;i < areaList.length;i++){
 				self.redisDao.db.hset("area:area"+areaList[i]+":areaInfo","changeArea",areaId)
 				self.areaDao.destoryArea(areaList[i])
 				self.pauseArea(areaList[i])
-				for(let j in self.finalServerMap){
+				for(var j in self.finalServerMap){
 					if(self.finalServerMap[j] == areaList[i]){
 						self.redisDao.db.hset("area:finalServerMap",j,areaId)
 						self.mergeAreaName(j,areaId)
@@ -216,11 +217,25 @@ areaDeploy.prototype.removeArea = function(areaId) {
 }
 //改变最终服务器指向
 areaDeploy.prototype.changeFinalServerMap = function(areaId,finalId) {
+	var self = this
 	for(var i in this.finalServerMap){
 		if(this.finalServerMap[i] == areaId){
 			this.finalServerMap[i] = finalId
 		}
 	}
+	//移除世界等级
+	self.redisDao.db.zscore("game:worldLevels",areaId,function(err,data) {
+		data = Number(data) || 0
+		if(data)
+			self.redisDao.db.zadd("game:worldLevels",data,finalId)
+		self.redisDao.db.zrem("game:worldLevels",areaId)
+	})
+	self.redisDao.db.hget("game:areaActives",areaId,function(err,data) {
+		data = Number(data) || 0
+		if(data)
+			self.redisDao.db.hincrby("game:areaActives",finalId,data)
+		self.redisDao.db.hdel("game:areaActives",areaId)
+	})
 }
 //获取最终服务器
 areaDeploy.prototype.getFinalServer = function(areaId) {
