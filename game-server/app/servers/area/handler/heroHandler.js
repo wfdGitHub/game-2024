@@ -814,7 +814,6 @@ heroHandler.prototype.heroTrainAtt = function(msg, session, next) {
     next(null,{flag : false,err : "value error "+value})
     return
   }
-  console.log("heroHandler heroTrainAtt  ",msg)
   this.areaManager.areaMap[areaId].heroTrainAtt(uid,hId,value,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
