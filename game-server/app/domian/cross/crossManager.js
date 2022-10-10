@@ -88,7 +88,8 @@ crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,player
 				cid : cid,
 				playerInfo : playerInfo,
 				fightTeam : fightTeam,
-				theatreId : self.theatreMap[areaId] || 0
+				theatreId : self.theatreMap[areaId] || 0,
+				theatreLength : self.theatreList.length || 1
 			}
 			var crossUid = oriId+"|"+uid
 			if(!self.players[crossUid])
