@@ -387,11 +387,11 @@ area.prototype.loginCross = function(uid,cb) {
 		return
 	}
 	var self = this
-    self.app.rpc.cross.crossRemote.userLogin(null,uid,self.areaId,self.oriIds[uid],self.app.serverId,self.connectorMap[uid],self.players[uid],function(flag,crossUid) {
+    self.app.rpc.cross.crossRemote.userLogin(null,uid,self.areaId,self.oriIds[uid],self.app.serverId,self.connectorMap[uid],self.players[uid],function(flag,crossUid,theatreId,theatreLength) {
     	if(flag){
     		self.crossUids[uid] = crossUid
     	}
-		cb(flag,crossUid)
+		cb(flag,{crossUid:crossUid,theatreId:theatreId,theatreLength:theatreLength})
 	})
 }
 area.prototype.getSimpleUser = function(uid) {

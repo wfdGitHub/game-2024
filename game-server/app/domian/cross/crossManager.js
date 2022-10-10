@@ -87,9 +87,7 @@ crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,player
 				serverId : serverId,
 				cid : cid,
 				playerInfo : playerInfo,
-				fightTeam : fightTeam,
-				theatreId : self.theatreMap[areaId] || 0,
-				theatreLength : self.theatreList.length || 1
+				fightTeam : fightTeam
 			}
 			var crossUid = oriId+"|"+uid
 			if(!self.players[crossUid])
@@ -97,7 +95,7 @@ crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,player
 			self.uidMap[uid] = crossUid
 			self.players[crossUid] = userInfo
 			self.oriIds[crossUid] = oriId
-			cb(true,crossUid)
+			cb(true,crossUid,self.theatreMap[areaId] || 0,self.theatreList.length || 1)
 		}else{
 			cb(false,"获取玩家战斗阵容失败")
 		}
