@@ -80,6 +80,8 @@ crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,player
 	var self = this
 	self.heroDao.getFightTeam(uid,function(flag,fightTeam) {
 		if(flag){
+			var theatreLen = self.theatreList.length || 1
+			var theatreId = self.theatreMap[areaId] || (theatreLen - 1)
 			var userInfo = {
 				uid : uid,
 				areaId : areaId,
@@ -87,7 +89,8 @@ crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,player
 				serverId : serverId,
 				cid : cid,
 				playerInfo : playerInfo,
-				fightTeam : fightTeam
+				fightTeam : fightTeam,
+				theatreId : theatreId
 			}
 			var crossUid = oriId+"|"+uid
 			if(!self.players[crossUid])
@@ -95,8 +98,6 @@ crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,player
 			self.uidMap[uid] = crossUid
 			self.players[crossUid] = userInfo
 			self.oriIds[crossUid] = oriId
-			var theatreLen = self.theatreList.length || 1
-			var theatreId = self.theatreMap[areaId] || (theatreLen - 1)
 			cb(true,crossUid,theatreId,theatreLen)
 		}else{
 			cb(false,"获取玩家战斗阵容失败")
