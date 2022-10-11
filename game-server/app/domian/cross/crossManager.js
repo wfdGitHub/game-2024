@@ -95,7 +95,9 @@ crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,player
 			self.uidMap[uid] = crossUid
 			self.players[crossUid] = userInfo
 			self.oriIds[crossUid] = oriId
-			cb(true,crossUid,self.theatreMap[areaId] || 0,self.theatreList.length || 1)
+			var theatreLen = self.theatreList.length || 1
+			var theatreId = self.theatreMap[areaId] || (theatreLen - 1)
+			cb(true,crossUid,theatreId,theatreLen)
 		}else{
 			cb(false,"获取玩家战斗阵容失败")
 		}
