@@ -64,7 +64,8 @@ peakHandler.prototype.getPeakMatchHistory = function(msg, session, next) {
   var crossUid = session.get("crossUid")
   var round = msg.round
   var target = msg.target
-  this.crossManager.getPeakMatchHistory(crossUid,round,target,function(flag,data) {
+  var theatreId = msg.theatreId
+  this.crossManager.getPeakMatchHistory(theatreId,crossUid,round,target,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
@@ -83,14 +84,16 @@ peakHandler.prototype.getPeakGrounpHistory = function(msg, session, next) {
     next(null,{flag:false,err:"num error"})
     return
   }
-  this.crossManager.getPeakGrounpHistory(num,function(flag,data) {
+  var theatreId = msg.theatreId
+  this.crossManager.getPeakGrounpHistory(theatreId,num,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
 //获取本赛季八强记录
 peakHandler.prototype.getPeakBetterHistory = function(msg, session, next) {
   var crossUid = session.get("crossUid")
-  this.crossManager.getPeakBetterHistory(crossUid,function(flag,data) {
+  var theatreId = msg.theatreId
+  this.crossManager.getPeakBetterHistory(theatreId,crossUid,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
@@ -105,7 +108,8 @@ peakHandler.prototype.peakLike = function(msg, session, next) {
 //获取上一赛季比赛记录
 peakHandler.prototype.getHonorMathch = function(msg, session, next) {
   var crossUid = session.get("crossUid")
-  this.crossManager.getHonorMathch(crossUid,function(flag,data) {
+  var theatreId = msg.theatreId
+  this.crossManager.getHonorMathch(theatreId,crossUid,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
@@ -114,7 +118,8 @@ peakHandler.prototype.getPeakHonorHistory = function(msg, session, next) {
   var crossUid = session.get("crossUid")
   var round = msg.round
   var target = msg.target
-  this.crossManager.getPeakHonorHistory(crossUid,round,target,function(flag,data) {
+  var theatreId = msg.theatreId
+  this.crossManager.getPeakHonorHistory(theatreId,crossUid,round,target,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
