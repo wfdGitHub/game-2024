@@ -892,14 +892,22 @@ module.exports = function() {
 	}
 	//查看指定比赛记录
 	this.getPeakMatchHistory = function(theatreId,crossUid,round,target,cb){
-		if(!theatreId)
+		if(theatreId === undefined)
 			theatreId = self.players[crossUid].theatreId
+		if(!peakList[theatreId]){
+			cb(false,"战区不存在"+theatreId)
+			return
+		}
 		peakList[theatreId].getPeakMatchHistory(crossUid,round,target,cb)
 	}
 	//查看历史指定比赛记录
 	this.getPeakHonorHistory = function(theatreId,crossUid,round,target,cb){
-		if(!theatreId)
+		if(theatreId === undefined)
 			theatreId = self.players[crossUid].theatreId
+		if(!peakList[theatreId]){
+			cb(false,"战区不存在"+theatreId)
+			return
+		}
 		peakList[theatreId].getPeakHonorHistory(crossUid,round,target,cb)
 	}
 	//获取我的比赛记录
@@ -909,14 +917,22 @@ module.exports = function() {
 	}
 	//获取小组赛记录
 	this.getPeakGrounpHistory = function(theatreId,num,cb){
-		if(!theatreId)
+		if(theatreId === undefined)
 			theatreId = self.players[crossUid].theatreId
+		if(!peakList[theatreId]){
+			cb(false,"战区不存在"+theatreId)
+			return
+		}
 		peakList[theatreId].getPeakGrounpHistory(num,cb)
 	}
 	//获取本赛季八强记录
 	this.getPeakBetterHistory = function(theatreId,crossUid,cb){
-		if(!theatreId)
+		if(theatreId === undefined)
 			theatreId = self.players[crossUid].theatreId
+		if(!peakList[theatreId]){
+			cb(false,"战区不存在"+theatreId)
+			return
+		}
 		peakList[theatreId].getPeakBetterHistory(crossUid,cb)
 	}
 	//点赞
@@ -926,8 +942,12 @@ module.exports = function() {
 	}
 	//获取上一赛季比赛记录
 	this.getHonorMathch = function(theatreId,crossUid,cb){
-		if(!theatreId)
+		if(theatreId === undefined)
 			theatreId = self.players[crossUid].theatreId
+		if(!peakList[theatreId]){
+			cb(false,"战区不存在"+theatreId)
+			return
+		}
 		peakList[theatreId].getHonorMathch(crossUid,cb)
 	}
 }
