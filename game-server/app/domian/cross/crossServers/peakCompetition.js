@@ -916,7 +916,7 @@ module.exports = function() {
 		peakList[theatreId].getPeakMyMatch(crossUid,cb)
 	}
 	//获取小组赛记录
-	this.getPeakGrounpHistory = function(theatreId,num,cb){
+	this.getPeakGrounpHistory = function(theatreId,crossUid,num,cb){
 		if(theatreId === undefined)
 			theatreId = self.players[crossUid].theatreId
 		if(!peakList[theatreId]){

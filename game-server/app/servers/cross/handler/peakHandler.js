@@ -84,8 +84,9 @@ peakHandler.prototype.getPeakGrounpHistory = function(msg, session, next) {
     next(null,{flag:false,err:"num error"})
     return
   }
+  var crossUid = session.get("crossUid")
   var theatreId = msg.theatreId
-  this.crossManager.getPeakGrounpHistory(theatreId,num,function(flag,data) {
+  this.crossManager.getPeakGrounpHistory(theatreId,crossUid,num,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
