@@ -62,7 +62,15 @@ module.exports = function() {
 				var beginArea = 0
 				for(var i = 0;i < worldLevels.length;i++){
 					curNum += areaActives[worldLevels[i]] || 0
-					if((i == worldLevels.length - 1) || curNum >= activeNum){
+					if(i == worldLevels.length - 1){
+						var list = []
+						for(var j = beginArea;j <= i;j++){
+							self.theatreMap[worldLevels[j]] = self.theatreList.length - 1
+							list.push(worldLevels[j])
+						}
+						self.theatreList[self.theatreList.length - 1] = self.theatreList[self.theatreList.length - 1].concat(list)
+						break
+					}else if(curNum >= activeNum){
 						var list = []
 						for(var j = beginArea;j <= i;j++){
 							self.theatreMap[worldLevels[j]] = self.theatreList.length
