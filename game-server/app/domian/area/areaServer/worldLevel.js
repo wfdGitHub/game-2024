@@ -7,7 +7,7 @@ module.exports = function() {
 	self.worldLevel = BEGIN_LEVEL
 	//初始化
 	this.worldLevelInit = function() {
-		self.redisDao.db.zscore("game:worldLevels",self.areaId,function(data) {
+		self.redisDao.db.zscore("game:worldLevels",self.areaId,function(err,data) {
 			if(data)
 				self.worldLevel = Number(data)
 		})

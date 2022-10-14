@@ -81,7 +81,7 @@ crossManager.prototype.userLogin = function(uid,areaId,oriId,serverId,cid,player
 	self.heroDao.getFightTeam(uid,function(flag,fightTeam) {
 		if(flag){
 			var theatreLen = self.theatreList.length || 1
-			var theatreId = self.theatreMap[areaId] || (theatreLen - 1)
+			var theatreId = self.theatreMap[areaId] === undefined ?  (theatreLen - 1) : self.theatreMap[areaId]
 			var userInfo = {
 				uid : uid,
 				areaId : areaId,
