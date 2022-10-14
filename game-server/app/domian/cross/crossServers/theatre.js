@@ -14,6 +14,7 @@ module.exports = function() {
 				self.theatreMap = JSON.parse(data.theatreMap)
 			if(data && data.theatreList)
 				self.theatreList = JSON.parse(data.theatreList)
+			console.log("战区初始化",self.theatreMap,self.theatreList)
 			self.peakInit(self.theatreList.length || 1)
 			self.gradingInit(self.theatreList.length || 1)
 		})
