@@ -387,6 +387,8 @@ module.exports = function() {
 	}
 	//设置公告
 	this.setGuildNotify = function(uid,notify,cb) {
+		cb(false,"系统升级维护中")
+		return
 		var guildId = self.players[uid]["gid"]
 		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
 			cb(false,"没有权限")
