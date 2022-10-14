@@ -96,7 +96,9 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
   		weights["hero_10"] += 200
   	}
     var heroInfos = []
-    var r_luck = this.areaManager.areaMap[areaId].players[uid]["r_luck"]
+    var r_luck = 0
+    if(this.areaManager.areaMap[areaId] && this.areaManager.areaMap[areaId].players[uid])
+    	r_luck = this.areaManager.areaMap[areaId].players[uid]["r_luck"]
     var star4_num = 0
     var star5_num = 0
     for(var num = 0;num < count;num++){
