@@ -368,6 +368,9 @@ model.useAttackSkill = function(skill,chase,point) {
 	var recordInfo = skill.getInfo()
 	var overflow = 0
 	recordInfo.targets = []
+	if(skill.character.died && !skill.character.died_use_skill){
+		return
+	}
 	if(point){
 		var targetsNum = 1
 		var targets = [point]
@@ -448,9 +451,6 @@ model.useAttackSkill = function(skill,chase,point) {
 	var callbacks = []
 	if(skill.mul || skill.maxHP_damage){
 		for(var i = 0;i < targets.length;i++){
-			if(skill.character.died && !skill.character.died_use_skill){
-				break
-			}
 			var target = targets[i]
 			var tmpAddAmp = addAmp
 			if(skill.character.skill_amp_or_lessAnger){
@@ -849,6 +849,9 @@ model.useAttackSkill = function(skill,chase,point) {
 model.useHealSkill = function(skill,chase) {
 	var recordInfo = skill.getInfo()
 	recordInfo.targets = []
+	if(skill.character.died && !skill.character.died_use_skill){
+		return
+	}
 	//技能复活
 	if(skill.rescue_heal){
 		var targets = this.locator.getTargets(skill.character,"team_died")
@@ -911,9 +914,6 @@ model.useHealSkill = function(skill,chase) {
 	var callbacks = []
 	if(skill.mul || skill.character.heal_maxHp || skill.heal_maxHp){
 		for(var i = 0;i < targets.length;i++){
-			if(skill.character.died && !skill.character.died_use_skill){
-				break
-			}
 			var target = targets[i]
 			var value = 0
 			var mul = skill.mul
