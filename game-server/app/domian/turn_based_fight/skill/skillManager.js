@@ -944,8 +944,8 @@ model.useHealSkill = function(skill,chase) {
 				}
 			}
 		}
-		fightRecord.push(recordInfo)
 	}
+	fightRecord.push(recordInfo)
 	if(skill.isAnger){
 		if(skill.character.realm_heal_buff_minHp && min_hp_friend && min_hp_friend.realm == skill.character.realm){
 			for(var i = 0;i < targets.length;i++){
