@@ -268,7 +268,7 @@ var peakEntity = function(self,theatreId) {
 				parMap = {}
 				local.peakArgInit()
 				console.log("获取初始入选玩家")
-				self.redisDao.db.zrevrange(["cross:"+theatreId+"grading:realRank",0,-1,"WITHSCORES"],function(err,list) {
+				self.redisDao.db.zrevrange(["cross:"+theatreId+":grading:realRank",0,-1,"WITHSCORES"],function(err,list) {
 					var strList,uid,areaId
 					for(var i = 0;i < list.length;i+=2){
 						strList = list[i].split("|")
@@ -528,7 +528,7 @@ var peakEntity = function(self,theatreId) {
 			info.likeList.push(likeMap[honorList[i]["crossUid"]] || 0)
 		}
 		info.likeInfo = likeUsers[crossUid] || {}
-		self.redisDao.db.zrevrank(["cross:"+theatreId+"grading:realRank",crossUid],function(err,rank) {
+		self.redisDao.db.zrevrank(["cross:"+theatreId+":grading:realRank",crossUid],function(err,rank) {
 			if(rank != null)
 				info.rank = Number(rank) + 1
 			cb(true,info)
