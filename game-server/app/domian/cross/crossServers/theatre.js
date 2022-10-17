@@ -26,7 +26,7 @@ module.exports = function() {
 				self.redisDao.db.hset("game:theatre","deploy",Date.now())
 				setTimeout(function() {
 					self.theatreDeploy()
-				},3000)
+				},15000)
 			}
 		})
 	}

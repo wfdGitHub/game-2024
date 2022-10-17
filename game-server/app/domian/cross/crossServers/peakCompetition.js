@@ -852,8 +852,10 @@ module.exports = function() {
 	}
 	//每日刷新
 	this.peakDayUpdate = function() {
-		for(var i in peakList)
-			peakList[i].peakDayUpdate()
+		setTimeout(function() {
+			for(var i in peakList)
+				peakList[i].peakDayUpdate()
+		},30000)
 	}
 	//实时刷新
 	this.peakUpdate = function(date) {
