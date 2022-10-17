@@ -376,7 +376,7 @@ var peakEntity = function(self,theatreId) {
 	}
 	//比赛阶段
 	local.peakFight = function() {
-		console.time("peakFight")
+		console.time("peakFight"+theatreId)
 		console.log("比赛阶段开始")
 		look = true
 		var parList = participants[curRound]
@@ -482,7 +482,7 @@ var peakEntity = function(self,theatreId) {
 					look = false
 				}
 				local.peakSave()
-				console.timeEnd("peakFight")
+				console.timeEnd("peakFight"+theatreId)
 			}
 		],function(err) {
 			console.error(err)
