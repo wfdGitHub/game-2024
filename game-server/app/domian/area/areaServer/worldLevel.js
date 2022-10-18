@@ -14,9 +14,7 @@ module.exports = function() {
 	}
 	//每日刷新
 	this.worldLevelDayUpdate = function() {
-		console.log("worldLevelDayUpdate!!!!!!!!!!!!!")
 		self.zrangewithscore("lv_rank",-10,-1,function(list) {
-			console.log("list",list)
 			var score = 0
 			for(var i = 0;i < list.length;i += 2){
 				if(list[i+1]){
@@ -24,7 +22,6 @@ module.exports = function() {
 				}
 			}
 			var rankLv = BEGIN_LEVEL
-			console.log("score",score)
 			if(score){
 				score = Number(score / 10)
 				for(var i in lord_lv){
@@ -37,9 +34,7 @@ module.exports = function() {
 				}
 			}
 			var areaLv = BEGIN_LEVEL + self.areaDay
-			console.log("areaLv",areaLv)
 			var worldLevel = Math.max(rankLv,areaLv)
-			console.log("worldLevel",worldLevel)
 			self.redisDao.db.zadd("game:worldLevels",worldLevel,self.areaId)
 		})
 	}
