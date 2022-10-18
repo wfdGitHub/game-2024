@@ -14,6 +14,7 @@ module.exports = function() {
 	}
 	//每日刷新
 	this.worldLevelDayUpdate = function() {
+		console.log("worldLevelDayUpdate!!!!!!!!!!!!!")
 		self.zrangewithscore("lv_rank",-10,-1,function(list) {
 			console.log("list",list)
 			var score = 0
@@ -27,11 +28,12 @@ module.exports = function() {
 			if(score){
 				score = Number(score / 10)
 				for(var i in lord_lv){
-					if(score <= lord_lv[i]["exp"]){
+					if(score < lord_lv[i]["exp"]){
 						rankLv = Number(i) - 1
 						console.log(rankLv,lord_lv[i]["exp"])
 						break
 					}
+					score -= lord_lv[i]["exp"]
 				}
 			}
 			var areaLv = BEGIN_LEVEL + self.areaDay
