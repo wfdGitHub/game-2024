@@ -29,7 +29,8 @@ muyeHandler.prototype.muyeRandCamp = function(msg, session, next) {
 muyeHandler.prototype.getMuyeRank = function(msg, session, next) {
   var crossUid = session.get("crossUid")
   var camp = msg.camp
-  this.crossManager.getMuyeRank(crossUid,camp,function(flag,data) {
+  var theatreId = msg.theatreId 
+  this.crossManager.getMuyeRank(theatreId,crossUid,camp,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }

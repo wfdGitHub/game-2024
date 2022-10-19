@@ -7,7 +7,8 @@ var ancientHandler = function(app) {
 //获取排行榜
 ancientHandler.prototype.getAncientRank = function(msg, session, next) {
   var crossUid = session.get("crossUid")
-  this.crossManager.getAncientRank(crossUid,function(flag,data) {
+  var theatreId = msg.theatreId
+  this.crossManager.getAncientRank(theatreId,crossUid,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }

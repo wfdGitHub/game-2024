@@ -24,7 +24,6 @@ crossManager.prototype.init = function() {
 	}
 	var dao = require("../area/areaServer/dao.js")
 	dao.call(this)
-	this.muyeInit()
 	this.theatreInit()
 	setInterval(this.update.bind(this),3000)
 	var self = this

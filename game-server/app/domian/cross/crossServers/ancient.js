@@ -2,8 +2,6 @@
 const ancient_cfg = require("../../../../config/gameCfg/ancient_cfg.json")
 const ancient_rank = require("../../../../config/gameCfg/ancient_rank.json")
 const ancient_robot = require("../../../../config/gameCfg/ancient_robot.json")
-const main_rank = "cross:ancient:rank"
-const real_rank = "cross:ancient:realRank"
 const util = require("../../../../util/util.js")
 const async = require("async")
 const boxs = [2,5,10,15]
@@ -12,21 +10,25 @@ for(var i in ancient_robot){
 	ancient_robot[i]["team2"] = JSON.parse(ancient_robot[i]["team2"])
 	ancient_robot[i]["team3"] = JSON.parse(ancient_robot[i]["team3"])
 }
-module.exports = function() {
-	var self = this
+var ancientEntity = function(self,theatreId) {
+	var self = self
+	var theatreId = theatreId
 	var local = {}
 	var timeMap = {}			//刷新冷却
+	const main_name = "cross:"+theatreId+":ancient"
+	const main_rank = "cross:"+theatreId+":ancient:rank"
+	const real_rank = "cross:"+theatreId+":ancient:realRank"
 	//每日刷新
 	this.ancientDayUpdate = function() {
 		timeMap = {}
-		self.redisDao.db.del("cross:ancient:count")
-		self.redisDao.db.hget("cross:ancient","week",function(err,data) {
+		self.redisDao.db.del(main_name+":count")
+		self.redisDao.db.hget("cross:"+theatreId+":ancient","week",function(err,data) {
 			if(!data || data != util.getWeek())
-				self.settleAncient()
+				local.settleAncient()
 		})
 	}
 	//旧赛季结算
-	this.settleAncient = function() {
+	local.settleAncient = function() {
 		self.redisDao.db.zrevrange([real_rank,0,-1],function(err,list) {
 			var strList,sid,uid,glv
 			var areaIds = []
@@ -53,19 +55,19 @@ module.exports = function() {
 				for(var i = 0;i < userInfos.length;i++){
 					honorList.push({crossUid:crossUids[i],info:JSON.stringify(userInfos[i])})
 				}
-				self.redisDao.db.hset("cross:ancient","honorList",JSON.stringify(honorList))
+				self.redisDao.db.hset(main_name,"honorList",JSON.stringify(honorList))
 			})
-			self.newAncient()
+			local.newAncient()
 		})
 	}
 	//新赛季开始
-	this.newAncient = function() {
+	local.newAncient = function() {
 		console.log("远古战场新赛季开始")
 		self.redisDao.db.del(real_rank)
 		self.redisDao.db.del(main_rank)
-		self.redisDao.db.del("cross:ancient:wins")
-		self.redisDao.db.del("cross:ancient:award")
-		self.redisDao.db.hset("cross:ancient","week",util.getWeek())
+		self.redisDao.db.del(main_name+":wins")
+		self.redisDao.db.del(main_name+":award")
+		self.redisDao.db.hset(main_name,"week",util.getWeek())
 		self.redisDao.db.get("area:lastid",function(err,lastid) {
 			lastid = Number(lastid) || 0
 			var rankList = [main_rank]
@@ -90,14 +92,14 @@ module.exports = function() {
 		}
 		async.waterfall([
 			function(next) {
-				self.redisDao.db.hget("cross:ancient:fightTeam",uid,function(err,data) {
+				self.redisDao.db.hget(main_name+":fightTeam",uid,function(err,data) {
 					if(data)
 						info.hIds = data
 					next()
 				})
 			},
 			function(next) {
-				self.redisDao.db.hget("cross:ancient","honorList",function(err,data) {
+				self.redisDao.db.hget(main_name,"honorList",function(err,data) {
 					if(data)
 						info.honorList = JSON.parse(data)
 					next()
@@ -118,14 +120,14 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				self.redisDao.db.hget("cross:ancient:count",crossUid,function(err,count) {
+				self.redisDao.db.hget(main_name+":count",crossUid,function(err,count) {
 					if(count)
 						info.count = Number(count)
 					next()
 				})
 			},
 			function(next) {
-				self.redisDao.db.hget("cross:ancient:wins",crossUid,function(err,wins) {
+				self.redisDao.db.hget(main_name+":wins",crossUid,function(err,wins) {
 					if(wins)
 						info.wins = Number(wins)
 					next()
@@ -135,13 +137,13 @@ module.exports = function() {
 				var list = []
 				for(var i = 0;i < boxs.length;i++)
 					list.push(crossUid+"_"+boxs[i])
-				self.redisDao.db.hmget("cross:ancient:award",list,function(err,data) {
+				self.redisDao.db.hmget(main_name+":award",list,function(err,data) {
 					info.ancient_award_list = data
 					next()
 				})
 			},
 			function(next) {
-				self.redisDao.db.lrange("cross:ancient:record:"+crossUid,0,-1,function(err,list) {
+				self.redisDao.db.lrange(main_name+":record:"+crossUid,0,-1,function(err,list) {
 					info.recordList = list
 					cb(true,info)
 				})
@@ -176,7 +178,7 @@ module.exports = function() {
 					heroMap[list[i].id] = 1
 				}
 			}
-			self.redisDao.db.hset("cross:ancient:fightTeam",uid,JSON.stringify(hIds))
+			self.redisDao.db.hset(main_name+":fightTeam",uid,JSON.stringify(hIds))
     		cb(true)
     	})
 	}
@@ -288,7 +290,7 @@ module.exports = function() {
 			cb(fightTeams,userInfo)
 		}else{
 			//玩家
-			self.redisDao.db.hget("cross:ancient:fightTeam",uid,function(err,hIds) {
+			self.redisDao.db.hget(main_name+":fightTeam",uid,function(err,hIds) {
 				if(!hIds)
 					hIds = []
 				else
@@ -314,7 +316,7 @@ module.exports = function() {
 		async.waterfall([
 			function (next) {
 				//判断次数
-				self.redisDao.db.hget("cross:ancient:count",crossUid,function(err,count) {
+				self.redisDao.db.hget(main_name+":count",crossUid,function(err,count) {
 					count = Number(count) || 0
 					if(count >= ancient_cfg["free_count"]["value"])
 						next("无挑战次数")
@@ -372,13 +374,13 @@ module.exports = function() {
 				if(wincount >= 2){
 					change = Math.floor(Math.random() * 20) + 10
 					awardStr = ancient_cfg["win"]["value"]
-					self.redisDao.db.hincrby("cross:ancient:wins",crossUid,1)
+					self.redisDao.db.hincrby(main_name+":wins",crossUid,1)
 					self.taskUpdate(crossUid,"ancient_win",1)
 				}else{
 					change = -Math.floor(Math.random() * 20) -5
 					awardStr = ancient_cfg["lose"]["value"]
 				}
-				self.redisDao.db.hincrby("cross:ancient:count",crossUid,1)
+				self.redisDao.db.hincrby(main_name+":count",crossUid,1)
 				self.addItemStr(crossUid,awardStr,1,"远古战场",function(flag,awardList) {
 					self.redisDao.db.zincrby([real_rank,change,crossUid],function(err,curScore) {
 						self.redisDao.db.zadd([main_rank,curScore,crossUid])
@@ -393,9 +395,9 @@ module.exports = function() {
 							targetInfo : defInfo,
 							time : Date.now()
 						}
-						self.redisDao.db.rpush("cross:ancient:record:"+crossUid,JSON.stringify(info),function(err,num) {
+						self.redisDao.db.rpush(main_name+":record:"+crossUid,JSON.stringify(info),function(err,num) {
 							if(num > 3){
-								self.redisDao.db.ltrim("cross:ancient:record:"+crossUid,-3,-1)
+								self.redisDao.db.ltrim(main_name+":record:"+crossUid,-3,-1)
 							}
 						})
 						cb(true,info)
@@ -412,17 +414,17 @@ module.exports = function() {
 			cb(false,"宝箱不存在")
 			return
 		}
-		self.redisDao.db.hget("cross:ancient:wins",crossUid,function(err,wins) {
+		self.redisDao.db.hget(main_name+":wins",crossUid,function(err,wins) {
 			wins = Number(wins) || 0
 			if(wins < index){
 				cb(false,"条件未完成")
 				return
 			}
-			self.redisDao.db.hget("cross:ancient:award",crossUid+"_"+index,function(err,data) {
+			self.redisDao.db.hget(main_name+":award",crossUid+"_"+index,function(err,data) {
 				if(data){
 					cb(false,"已领取")
 				}else{
-					self.redisDao.db.hset("cross:ancient:award",crossUid+"_"+index,1)
+					self.redisDao.db.hset(main_name+":award",crossUid+"_"+index,1)
 					self.addItemStr(crossUid,ancient_cfg["box_"+index]["value"],1,"远古周宝箱",function(flag,awardList) {
 						cb(true,awardList)
 					})
@@ -460,8 +462,63 @@ module.exports = function() {
 	}
 	//获取挑战记录
 	this.getAncientRecord = function(crossUid,cb) {
-		self.redisDao.db.lrange("cross:ancient:record:"+crossUid,0,-1,function(err,list) {
+		self.redisDao.db.lrange(main_name+":record:"+crossUid,0,-1,function(err,list) {
 			cb(true,list)
 		})
+	}
+}
+module.exports = function() {
+	var ancientList = {}
+	var self = this
+	//战区初始化
+	this.ancientInit = function(theatreNum) {
+		ancientList = {}
+		for(var i = 0; i < theatreNum;i++){
+			ancientList[i] = new ancientEntity(this,i)
+			ancientList[i].ancientDayUpdate()
+		}
+	}
+	//每日刷新
+	this.ancientDayUpdate = function() {
+		setTimeout(function() {
+			for(var i in ancientList)
+				ancientList[i].ancientDayUpdate()
+		},30000)
+	}
+	//获取远古战场数据
+	this.getAncientData = function(crossUid,cb){
+		var theatreId = self.players[crossUid].theatreId
+		ancientList[theatreId].getAncientData(crossUid,cb)
+	}
+	//设置阵容
+	this.ancientSetFightTeams = function(crossUid,hIds,cb){
+		var theatreId = self.players[crossUid].theatreId
+		ancientList[theatreId].ancientSetFightTeams(crossUid,hIds,cb)
+	}
+	//获取目标列表
+	this.ancientGetTargetList = function(crossUid,cb){
+		var theatreId = self.players[crossUid].theatreId
+		ancientList[theatreId].ancientGetTargetList(crossUid,cb)
+	}
+	//开始挑战
+	this.ancientChallenge = function(crossUid,targetUid,targetInfo,cb){
+		var theatreId = self.players[crossUid].theatreId
+		ancientList[theatreId].ancientChallenge(crossUid,targetUid,targetInfo,cb)
+	}
+	//领取周战胜宝箱
+	this.gainAncientBox = function(crossUid,index,cb){
+		var theatreId = self.players[crossUid].theatreId
+		ancientList[theatreId].gainAncientBox(crossUid,index,cb)
+	}
+	//获取排行榜
+	this.getAncientRank = function(theatreId,crossUid,cb){
+		if(theatreId === undefined)
+			theatreId = self.players[crossUid].theatreId
+		ancientList[theatreId].getAncientRank(crossUid,cb)
+	}
+	//获取挑战记录
+	this.getAncientRecord = function(crossUid,cb){
+		var theatreId = self.players[crossUid].theatreId
+		ancientList[theatreId].getAncientRecord(crossUid,cb)
 	}
 }

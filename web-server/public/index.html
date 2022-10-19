@@ -662,8 +662,10 @@
       }
       //开始挑战
       var ancientChallenge = function(targetUid,targetInfo) {
-        pomelo.request("cross.ancientHandler.ancientChallenge", {targetUid:targetUid,targetInfo:targetInfo}, function(data) {
-            console.log(data);
+        pomelo.request("cross.ancientHandler.ancientGetTargetList", {}, function(data) {
+          pomelo.request("cross.ancientHandler.ancientChallenge", {targetUid:data.data[0].crossUid,targetInfo:data.data[0].userInfo}, function(data) {
+              console.log(data);
+          });
         });
       }
       //============极限挑战=========//
@@ -3674,6 +3676,7 @@
       <input id="test" type="button" value="获取排行榜" onclick="getAncientRank()"/>
       <input id="test" type="button" value="获取历史挑战记录" onclick="getAncientRecord()"/>
       <input id="test" type="button" value="目标列表" onclick="ancientGetTargetList()"/>
+      <input id="test" type="button" value="开始挑战" onclick="ancientChallenge()"/>
     </div>
     <div class="g-button">
       家园 : 

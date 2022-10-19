@@ -15,9 +15,17 @@ module.exports = function() {
 			if(data && data.theatreList)
 				self.theatreList = JSON.parse(data.theatreList)
 			console.log("战区初始化",self.theatreMap,self.theatreList)
-			self.peakInit(self.theatreList.length || 1)
-			self.gradingInit(self.theatreList.length || 1)
+			self.crossModeInit(self.theatreList.length)
 		})
+	}
+	//各玩法模块初始化
+	this.crossModeInit = function(theatreNum) {
+		if(theatreNum < 1)
+			theatreNum = 1
+		self.peakInit(theatreNum)
+		self.gradingInit(theatreNum)
+		self.ancientInit(theatreNum)
+		self.muyeInit(theatreNum)
 	}
 	//战区每日首次更新
 	this.theatreDayUpdate = function() {
@@ -87,8 +95,7 @@ module.exports = function() {
 				}
 				self.redisDao.db.hset("game:theatre","theatreMap",JSON.stringify(self.theatreMap))
 				self.redisDao.db.hset("game:theatre","theatreList",JSON.stringify(self.theatreList))
-				self.peakInit(self.theatreList.length || 1)
-				self.gradingInit(self.theatreList.length || 1)
+				self.crossModeInit(self.theatreList.length)
 				next()
 			},
 			function(next) {
