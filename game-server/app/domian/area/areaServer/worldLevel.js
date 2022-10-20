@@ -23,7 +23,7 @@ module.exports = function() {
 					score += Number(list[i+1]) || 0
 				}
 			}
-			var rankLv = MAX_LEVEL
+			var rankLv = BEGIN_LEVEL
 			if(score){
 				score = Number(score / 10)
 				for(var i in lord_lv){
@@ -32,6 +32,8 @@ module.exports = function() {
 						break
 					}
 					score -= lord_lv[i]["exp"]
+					if(i >= MAX_LEVEL)
+						rankLv = MAX_LEVEL
 				}
 			}
 			var areaLv = BEGIN_LEVEL + self.areaDay
