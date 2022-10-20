@@ -7,10 +7,12 @@ module.exports = function() {
 	self.worldLevel = BEGIN_LEVEL
 	//初始化
 	this.worldLevelInit = function() {
-		self.redisDao.db.zscore("game:worldLevels",self.areaId,function(err,data) {
-			if(data)
-				self.worldLevel = Number(data)
-		})
+		setTimeout(function() {
+			self.redisDao.db.zscore("game:worldLevels",self.areaId,function(err,data) {
+				if(data)
+					self.worldLevel = Number(data)
+			})
+		},10000)
 	}
 	//每日刷新
 	this.worldLevelDayUpdate = function() {

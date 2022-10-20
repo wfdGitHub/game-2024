@@ -229,12 +229,7 @@ areaDeploy.prototype.changeFinalServerMap = function(areaId,finalId) {
 areaDeploy.prototype.clearAreaData = function(areaId,finalId) {
 	var self = this
 	//移除世界等级
-	self.redisDao.db.zscore("game:worldLevels",areaId,function(err,data) {
-		data = Number(data) || 0
-		if(data)
-			self.redisDao.db.zadd("game:worldLevels",data,finalId)
-		self.redisDao.db.zrem("game:worldLevels",areaId)
-	})
+	self.redisDao.db.zrem("game:worldLevels",areaId)
 	self.redisDao.db.hget("game:areaActives",areaId,function(err,data) {
 		data = Number(data) || 0
 		console.log("game:areaActives  "+areaId,data)
