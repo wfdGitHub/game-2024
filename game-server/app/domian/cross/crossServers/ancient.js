@@ -12,6 +12,7 @@ for(var i in ancient_robot){
 }
 var ancientEntity = function(self,theatreId) {
 	var self = self
+	var mySelf = this
 	var theatreId = theatreId
 	var local = {}
 	var timeMap = {}			//刷新冷却
@@ -68,6 +69,9 @@ var ancientEntity = function(self,theatreId) {
 		self.redisDao.db.del(main_name+":wins")
 		self.redisDao.db.del(main_name+":award")
 		self.redisDao.db.hset(main_name,"week",util.getWeek())
+		mySelf.initAncientRobot()
+	}
+	this.initAncientRobot = function() {
 		self.redisDao.db.get("area:lastid",function(err,lastid) {
 			lastid = Number(lastid) || 0
 			var rankList = [main_rank]
@@ -475,7 +479,7 @@ module.exports = function() {
 		ancientList = {}
 		for(var i = 0; i < theatreNum;i++){
 			ancientList[i] = new ancientEntity(this,i)
-			ancientList[i].ancientDayUpdate()
+			ancientList[i].initAncientRobot()
 		}
 	}
 	//每日刷新
