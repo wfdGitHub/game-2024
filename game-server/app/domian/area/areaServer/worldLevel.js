@@ -1,6 +1,6 @@
 //世界等级
 const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
-const BEGIN_LEVEL = 40
+const BEGIN_LEVEL = 39
 const MAX_LEVEL = 200
 module.exports = function() {
 	var self = this
