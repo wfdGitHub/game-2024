@@ -41,6 +41,7 @@ module.exports = function() {
 	}
 	//战区分配
 	this.theatreDeploy = function() {
+		console.log("战区分配")
 		var worldLevels = []
 		var areaActives = {}
 		async.waterfall([
@@ -50,6 +51,7 @@ module.exports = function() {
 					for(var i = 0;i < data.length;i ++){
 						worldLevels.push(Number(data[i]))
 					}
+					console.log("worldLevels",worldLevels)
 					next()
 				})
 			},
@@ -59,6 +61,7 @@ module.exports = function() {
 					areaActives = data || {}
 					for(var i in areaActives)
 						areaActives[i] = Number(areaActives[i])
+					console.log("areaActives",areaActives)
 					next()
 				})
 			},
@@ -71,6 +74,7 @@ module.exports = function() {
 				var beginArea = 0
 				for(var i = 0;i < worldLevels.length;i++){
 					curNum += areaActives[worldLevels[i]] || 0
+					console.log(i,worldLevels[i],curNum)
 					if(i == worldLevels.length - 1){
 						var lastId = self.theatreList.length > 0 ? self.theatreList.length - 1 : 0
 						var list = []

@@ -73,6 +73,7 @@ areaDeploy.prototype.mergeArea = function(areaList) {
 				}
 				slist.push("area:area"+areaList[i]+":userSet")
 				self.changeFinalServerMap(areaList[i],areaId)
+				self.clearAreaData(areaList[i],areaId)
 				self.mergeRank(areaList[i],areaId)
 				self.mergeGuild(areaList[i],areaId)
 				self.app.rpc.connector.connectorRemote.changeFinalServerMap.toServer("*",areaList[i],areaId,null)
@@ -223,6 +224,10 @@ areaDeploy.prototype.changeFinalServerMap = function(areaId,finalId) {
 			this.finalServerMap[i] = finalId
 		}
 	}
+}
+//服务器数据处理
+areaDeploy.prototype.clearAreaData = function(areaId,finalId) {
+	var self = this
 	//移除世界等级
 	self.redisDao.db.zscore("game:worldLevels",areaId,function(err,data) {
 		data = Number(data) || 0
@@ -232,6 +237,7 @@ areaDeploy.prototype.changeFinalServerMap = function(areaId,finalId) {
 	})
 	self.redisDao.db.hget("game:areaActives",areaId,function(err,data) {
 		data = Number(data) || 0
+		console.log("game:areaActives  "+areaId,data)
 		if(data)
 			self.redisDao.db.hincrby("game:areaActives",finalId,data)
 		self.redisDao.db.hdel("game:areaActives",areaId)
