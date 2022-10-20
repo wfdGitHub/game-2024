@@ -47,7 +47,7 @@ module.exports = function() {
 		async.waterfall([
 			function(next) {
 				//获取世界等级
-				self.redisDao.db.zrange("game:worldLevels",0,-1,function(err,data) {
+				self.redisDao.db.zrevrange("game:worldLevels",0,-1,function(err,data) {
 					for(var i = 0;i < data.length;i ++){
 						worldLevels.push(Number(data[i]))
 					}
