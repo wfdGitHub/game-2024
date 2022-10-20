@@ -36,7 +36,7 @@ module.exports = function() {
 						rankLv = MAX_LEVEL
 				}
 			}
-			var areaLv = BEGIN_LEVEL + self.areaDay
+			var areaLv = BEGIN_LEVEL + self.areaDay - 1
 			var worldLevel = Math.max(rankLv,areaLv)
 			console.log(self.areaId+"服世界等级",worldLevel,rankLv,areaLv)
 			self.redisDao.db.zadd("game:worldLevels",worldLevel,self.areaId)
