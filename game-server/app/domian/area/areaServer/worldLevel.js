@@ -29,7 +29,6 @@ module.exports = function() {
 				for(var i in lord_lv){
 					if(score < lord_lv[i]["exp"]){
 						rankLv = Number(i) - 1
-						console.log(rankLv,lord_lv[i]["exp"])
 						break
 					}
 					score -= lord_lv[i]["exp"]
@@ -37,6 +36,7 @@ module.exports = function() {
 			}
 			var areaLv = BEGIN_LEVEL + self.areaDay
 			var worldLevel = Math.max(rankLv,areaLv)
+			console.log(self.areaId+"服战区等级",worldLevel,rankLv,areaLv)
 			self.redisDao.db.zadd("game:worldLevels",worldLevel,self.areaId)
 		})
 	}
