@@ -27,9 +27,13 @@ crossManager.prototype.init = function() {
 	this.theatreInit()
 	setInterval(this.update.bind(this),3000)
 	var self = this
-	//创建初始账号
-	self.accountDao.createAccount({unionid:"visitor_wgl"},function(flag,userInfo) {
-		self.accountDao.setAccountData({accId:userInfo.accId,name:"limit",value:20})
+	self.accountDao.getAccountInfo({unionid : "visitor_wgl"},function(flag,data) {
+		if(!flag){
+			console.log("创建初始账号")
+			self.accountDao.createAccount({unionid:"visitor_wgl"},function(flag,userInfo) {
+				self.accountDao.setAccountData({accId:userInfo.accId,name:"limit",value:20})
+			})
+		}
 	})
 }
 //每日定时器
