@@ -132,7 +132,7 @@ var muyeEntity = function(self,theatreId) {
 							if(rankCount > muye_rank[rankIndex]["count"])
 								rankIndex++
 							newRankList.push(0,list[i])
-							self.sendTextToMailById(uid,"muye_0",muye_rank[rankIndex]["award"])
+							self.sendTextToMailById(uid,"muye_"+rankIndex,muye_rank[rankIndex]["award"])
 							if(uids.length < 3){
 								areaIds.push(sid)
 								uids.push(uid)
@@ -168,7 +168,7 @@ var muyeEntity = function(self,theatreId) {
 							if(rankCount > muye_rank[rankIndex]["count"])
 								rankIndex++
 							newRankList.push(0,list[i])
-							self.sendTextToMailById(uid,"muye_0",muye_rank[rankIndex]["award"])
+							self.sendTextToMailById(uid,"muye_"+rankIndex,muye_rank[rankIndex]["award"])
 							if(uids.length < 3){
 								areaIds.push(sid)
 								uids.push(uid)
