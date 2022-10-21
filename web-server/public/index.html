@@ -1584,6 +1584,12 @@
             console.log(data);
         });
       }
+      //获取荣誉榜
+      var getPeakHonorList = function(theatreId) {
+        pomelo.request("cross.peakHandler.getPeakHonorList", {theatreId:theatreId}, function(data) {
+            console.log(data);
+        });
+      }
       //获取我的比赛记录
       var getPeakMyMatch = function() {
         pomelo.request("cross.peakHandler.getPeakMyMatch", {}, function(data) {

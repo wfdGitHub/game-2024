@@ -838,6 +838,10 @@ var peakEntity = function(self,theatreId) {
 	this.getHonorMathch = function(crossUid,cb) {
 		cb(true,honorMathch)
 	}
+	//获取荣誉榜
+	this.getPeakHonorList = function(cb) {
+		cb(true,honorList)
+	}
 }
 module.exports = function() {
 	var peakList = {}
@@ -951,5 +955,15 @@ module.exports = function() {
 			return
 		}
 		peakList[theatreId].getHonorMathch(crossUid,cb)
+	}
+	//获取荣誉榜
+	this.getPeakHonorList = function(theatreId,crossUid,cb) {
+		if(theatreId === undefined)
+			theatreId = self.players[crossUid].theatreId
+		if(!peakList[theatreId]){
+			cb(false,"战区不存在"+theatreId)
+			return
+		}
+		peakList[theatreId].getPeakHonorList(cb)
 	}
 }

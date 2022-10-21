@@ -124,6 +124,14 @@ peakHandler.prototype.getPeakHonorHistory = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//获取荣誉榜
+peakHandler.prototype.getPeakHonorList = function(msg, session, next) {
+  var crossUid = session.get("crossUid")
+  var theatreId = msg.theatreId
+  this.crossManager.getPeakHonorList(theatreId,crossUid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "peakHandler",
