@@ -105,8 +105,11 @@ var muyeEntity = function(self,theatreId) {
 				self.redisDao.db.hset(main_name,"dayStr",self.dayStr)
 			}
 		})
-		if(weekStr != util.getWeek())
-			local.settleMuye()
+		self.redisDao.db.hget(main_name,"week",function(err,data) {
+			weekStr = data
+			if(weekStr != util.getWeek())
+				local.settleMuye()
+		})
 	}
 	//旧赛季结算
 	local.settleMuye = function() {
