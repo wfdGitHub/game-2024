@@ -72,15 +72,6 @@ var gradingEntity = function(self,theatreId) {
 			},
 			function(next) {
 				//更新排名
-				self.redisDao.db.del(main_name+":realRank")
-				if(newRankList.length){
-					var rankList = [main_name+":realRank"]
-					rankList = rankList.concat(newRankList)
-					self.redisDao.db.zadd(rankList)
-					rankList = ["cross:grading:realRank"]
-					rankList = rankList.concat(newRankList)
-					self.redisDao.db.zadd(rankList)
-				}
 				local.newGrading(newRankList)
 			}
 		],function(err) {
@@ -95,6 +86,7 @@ var gradingEntity = function(self,theatreId) {
 	local.newGrading = function(newRankList) {
 		console.log("跨服段位赛新赛季开始")
 		self.redisDao.db.hset(main_name,"month",util.getMonth())
+		self.redisDao.db.del(main_name+":realRank")
 		self.redisDao.db.del(main_name+":rank")
 		self.redisDao.db.del(main_name+":award")
 		self.redisDao.db.get("area:lastid",function(err,lastid) {
@@ -105,8 +97,15 @@ var gradingEntity = function(self,theatreId) {
 					rankList.push(Math.floor(grading_robot[i].score * (1 + j * 0.1)),(Math.floor(Math.random()*lastid) + 1)+"|"+i+"|"+j)
 				}
 			}
-			if(newRankList)
+			if(newRankList){
 				rankList = rankList.concat(newRankList)
+				var realRankList = [main_name+":realRank"]
+				realRankList = realRankList.concat(newRankList)
+				self.redisDao.db.zadd(realRankList)
+				realRankList = ["cross:grading:realRank"]
+				realRankList = realRankList.concat(newRankList)
+				self.redisDao.db.zadd(realRankList)
+			}
 			self.redisDao.db.zadd(rankList)
 		})
 	}
