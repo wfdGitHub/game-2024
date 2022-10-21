@@ -633,6 +633,7 @@ module.exports = function() {
 		muyeList = {}
 		for(var i = 0; i < theatreNum;i++){
 			muyeList[i] = new muyeEntity(this,i)
+			muyeList[i].muyeInit()
 		}
 	}
 	//每日更新

@@ -363,8 +363,10 @@ module.exports = function() {
 	//新赛季
 	this.newGrading = function(theatreId,newRankList) {
 		var rankList = ["cross:"+theatreId+":grading:realRank"]
-		rankList = rankList.concat(newRankList)
-		self.redisDao.db.zadd(rankList)
+		if(newRankList){
+			rankList = rankList.concat(newRankList)
+			self.redisDao.db.zadd(rankList)
+		}
 		gradingList[theatreId].newGrading(newRankList)
 	}
 }
