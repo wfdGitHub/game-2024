@@ -669,7 +669,7 @@ var peakEntity = function(self,theatreId) {
 			for(var i = 1;i <= curRound;i++){
 				multiList.push(["hget",main_name+":betHistory:"+i,crossUid])
 			}
-			this.redisDao.multi(multiList,function(err,list) {
+			self.redisDao.multi(multiList,function(err,list) {
 				if(err){
 					cb(true,[])
 				}else{
