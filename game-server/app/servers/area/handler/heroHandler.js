@@ -224,7 +224,7 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
       return
     }
     var lv = hero_ad[heroInfo.ad].lv || 0
-    if(aimLv <= heroInfo.lv || aimLv > lev_limit){
+    if(aimLv <= heroInfo.lv || aimLv > lv){
       next(null,{flag : false,err : "等级限制"})
       return
     }
