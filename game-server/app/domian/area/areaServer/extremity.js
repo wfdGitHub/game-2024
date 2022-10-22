@@ -84,9 +84,9 @@ module.exports = function() {
 			function(next) {
 				self.taskUpdate(uid,"extremity",1)
 				var level = extremity_award[bossLv]["lv"]
-				var defTeam = self.standardTeam(uid,[0,bossId,0,0,0,0],"main",level)
+				var defTeam = self.standardTeam(uid,[0,0,0,0,bossId,0],"main",level)
 				var fightOtps = {seededNum : Date.now(),maxRound:maxRound}
-				defTeam[1].boss = true
+				defTeam[4].boss = true
 			    for(var i = 0;i < 6;i++){
 			    	if(atkTeam[i] && heros[atkTeam[i]["id"]] && heros[atkTeam[i]["id"]]["realm"] == teamId)
 			    		atkTeam[i]["self_atk_add"] = 0.5
