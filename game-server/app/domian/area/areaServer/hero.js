@@ -32,7 +32,7 @@ module.exports = function() {
 			function(heroInfo,next) {
 				//消耗培养丹
 				tr_lv = heroInfo["tr_lv"] || 0
-				min_lv = Math.max(tr_lv - 1,0)
+				min_lv = tr_lv - 1
 				tr_maxHP = heroInfo["tr_maxHP"]  || 0
 				tr_atk = heroInfo["tr_atk"]  || 0
 				tr_phyDef = heroInfo["tr_phyDef"]  || 0
