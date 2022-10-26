@@ -64,7 +64,7 @@ module.exports = function() {
 		}
 		async.waterfall([
 			function(next) {
-				if(pay_cfg[pay_id]["fast"]){
+				if(pay_cfg[pay_id]["type"] === "fast"){
 					self.getObj(uid,"recharge_fast",pay_id,function(data) {
 						data = Number(data) || 0
 						if(data >= pay_cfg[pay_id]["count"]){
@@ -116,7 +116,7 @@ module.exports = function() {
 			cb(false,"pay_id error")
 			return
 		}
-		if(pay_cfg[pay_id]["fast"]){
+		if(pay_cfg[pay_id]["type"] === "fast"){
 			self.getObj(uid,"recharge_fast",pay_id,function(data) {
 				data = Number(data) || 0
 				if(data >= pay_cfg[pay_id]["count"]){
