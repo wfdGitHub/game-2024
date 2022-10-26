@@ -254,10 +254,10 @@ serverManager.prototype.setMergePlan = function(areaList,time,cb) {
 		return
 	}
 	var date = new Date(time)
-	// if(date.getDay() != 0 || date.getHours() < 22){
-	// 	cb(false,"只能在周日晚上22点至24点合服")
-	// 	return
-	// }
+	if(date.getDay() != 0 || date.getHours() < 22){
+		cb(false,"只能在周日晚上22点至24点合服")
+		return
+	}
 	for(var i = 0;i < areaList.length;i++){
 		if(!this.areaDeploy.serverMap[areaList[i]] || this.areaLock[areaList[i]]){
 			cb(false,areaList[i]+"不存在或已在合服计划")

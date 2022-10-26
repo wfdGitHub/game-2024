@@ -625,7 +625,6 @@ var peakEntity = function(self,theatreId) {
 			return
 		}
 		if(parMap[curRound][target] === undefined){
-			console.log("选手不存在 ",target,curRound,parMap[curRound])
 			cb(false,"选手不存在")
 			return
 		}

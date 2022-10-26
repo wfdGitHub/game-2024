@@ -107,7 +107,6 @@ var muyeEntity = function(self,theatreId) {
 		})
 		self.redisDao.db.hget(main_name,"week",function(err,data) {
 			weekStr = data
-			console.log("muyeDayUpdate "+theatreId,err,data,util.getWeek(),weekStr != util.getWeek())
 			if(weekStr != util.getWeek())
 				local.settleMuye()
 		})
