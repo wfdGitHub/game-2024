@@ -12,6 +12,7 @@ module.exports = function() {
 		var self = this
 		var max_need = 0
 		var tr_lv
+		var min_lv
 		var tr_maxHP
 		var tr_atk
 		var tr_phyDef
@@ -31,6 +32,7 @@ module.exports = function() {
 			function(heroInfo,next) {
 				//消耗培养丹
 				tr_lv = heroInfo["tr_lv"] || 0
+				min_lv = Math.max(tr_lv - 1,0)
 				tr_maxHP = heroInfo["tr_maxHP"]  || 0
 				tr_atk = heroInfo["tr_atk"]  || 0
 				tr_phyDef = heroInfo["tr_phyDef"]  || 0
@@ -75,21 +77,15 @@ module.exports = function() {
 						}else if(rand < 0.15){
 							weights[i] -= Math.sqrt(info.useValue) * 0.3 * train_arg["base"]["value"]
 						}
-						if(weights[i] < 0)
-							weights[i] = 0
 					}
-					info.tr_maxHP = Math.floor(tr_maxHP + weights[0] * train_arg["maxHP"]["value"])
-					info.tr_atk =  Math.floor(tr_atk + weights[1] * train_arg["atk"]["value"])
-					info.tr_phyDef =  Math.floor(tr_phyDef + weights[2] * train_arg["phyDef"]["value"])
-					info.tr_magDef =  Math.floor(tr_magDef + weights[3] * train_arg["magDef"]["value"])
-					if(info.tr_maxHP > hero_tr[tr_lv]["maxHP"])
-						info.tr_maxHP = hero_tr[tr_lv]["maxHP"]
-					if(info.tr_atk > hero_tr[tr_lv]["atk"])
-						info.tr_atk = hero_tr[tr_lv]["atk"]
-					if(info.tr_phyDef > hero_tr[tr_lv]["phyDef"])
-						info.tr_phyDef = hero_tr[tr_lv]["phyDef"]
-					if(info.tr_magDef > hero_tr[tr_lv]["magDef"])
-						info.tr_magDef = hero_tr[tr_lv]["magDef"]
+					tr_maxHP = Math.floor(tr_maxHP + weights[0] * train_arg["maxHP"]["value"])
+					tr_atk =  Math.floor(tr_atk + weights[1] * train_arg["atk"]["value"])
+					tr_phyDef =  Math.floor(tr_phyDef + weights[2] * train_arg["phyDef"]["value"])
+					tr_magDef =  Math.floor(tr_magDef + weights[3] * train_arg["magDef"]["value"])
+					info.tr_maxHP = Math.max(Math.min(tr_maxHP,hero_tr[tr_lv]["maxHP"]),hero_tr[min_lv]["maxHP"])
+					info.tr_atk = Math.max(Math.min(tr_atk,hero_tr[tr_lv]["atk"]),hero_tr[min_lv]["atk"])
+					info.tr_phyDef = Math.max(Math.min(tr_phyDef,hero_tr[tr_lv]["phyDef"]),hero_tr[min_lv]["phyDef"])
+					info.tr_magDef = Math.max(Math.min(tr_magDef,hero_tr[tr_lv]["magDef"]),hero_tr[min_lv]["magDef"])
 				}
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,"tr_maxHP",info.tr_maxHP)
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,"tr_atk",info.tr_atk)
