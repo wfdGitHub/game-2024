@@ -83,10 +83,22 @@ heroHandler.prototype.resetHero = function(msg, session, next) {
         return
       }
       self.heroDao.heroReset(areaId,uid,heroInfo,function(flag,awardList) {
-          self.heroDao.setHeroInfo(areaId,uid,hId,"lv",1)
-          self.heroDao.setHeroInfo(areaId,uid,hId,"ad",0)
+          var info = {
+            "lv":1,
+            "ad":0,
+            "tr_lv":0,
+            "tr_maxHP":0,
+            "tr_atk":0,
+            "tr_phyDef":0,
+            "tr_magDef":0,
+            "et1":0,
+            "et2":0,
+            "et3":0,
+            "et4":0
+          }
+          self.heroDao.setHMHeroInfo(areaId,uid,hId,info)
           self.heroDao.delHeroInfo(areaId,uid,hId,"artifact")
-          next(null,{flag : true,awardList : awardList,lv:1,ad:0})
+          next(null,{flag : true,awardList : awardList,lv:info.lv,ad:info.ad})
       })
     })
   })

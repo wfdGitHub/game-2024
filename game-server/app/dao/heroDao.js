@@ -9,6 +9,7 @@ var recruit_base = require("../../config/gameCfg/recruit_base.json")
 var recruit_list = require("../../config/gameCfg/recruit_list.json")
 var equip_base = require("../../config/gameCfg/equip_base.json")
 var equip_level = require("../../config/gameCfg/equip_level.json")
+var equip_st = require("../../config/gameCfg/equip_st.json")
 var artifact_level = require("../../config/gameCfg/artifact_level.json")
 var artifact_talent = require("../../config/gameCfg/artifact_talent.json")
 var stone_base = require("../../config/gameCfg/stone_base.json")
@@ -282,6 +283,9 @@ heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
 		strList.push(artifact_level[artifact]["pr"])
 	if(hero_tr[heroInfo.tr_lv] && hero_tr[heroInfo.tr_lv]["pr"])
 		strList.push(hero_tr[heroInfo.tr_lv]["pr"])
+	for(var part = 1;part <= 4;part++)
+		if(heroInfo["et"+part])
+			strList.push(equip_st[heroInfo["et"+part]]["pr"])
 	var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
 	var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"重生返还")
 	if(cb)
@@ -323,6 +327,9 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 				strList.push(oldeId+":"+1)
 			}
 		}
+		for(var part = 1;part <= 4;part++)
+			if(heros[i]["et"+part])
+				strList.push(equip_st[heros[i]["et"+part]]["pr"])
 		for(var j = 0;j <= 10;j++){
 			if(heros[i]["a"+j])
 				strList.push(heros[i]["a"+j]+":1")
@@ -434,6 +441,22 @@ heroDao.prototype.setHeroInfo = function(areaId,uid,hId,name,value,cb) {
 		}
 		else{
 			self.areaManager.areaMap[areaId].setCEInfo(uid,hId,name,value)
+			self.updateHeroCe(areaId,uid,hId)
+			if(cb)
+				cb(true,data)
+		}
+	})
+}
+heroDao.prototype.setHMHeroInfo = function(areaId,uid,hId,obj,cb) {
+	var self = this
+	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,obj,function(err,data) {
+		if(err){
+			console.error(err)
+			if(cb)
+				cb(false,err)
+		}else{
+			for(var i in obj)
+				self.areaManager.areaMap[areaId].setCEInfo(uid,hId,i,obj[i])
 			self.updateHeroCe(areaId,uid,hId)
 			if(cb)
 				cb(true,data)

@@ -75,6 +75,8 @@ module.exports = function() {
 						}else if(rand < 0.15){
 							weights[i] -= Math.sqrt(info.useValue) * 0.3 * train_arg["base"]["value"]
 						}
+						if(weights[i] < 0)
+							weights[i] = 0
 					}
 					info.tr_maxHP = Math.floor(tr_maxHP + weights[0] * train_arg["maxHP"]["value"])
 					info.tr_atk =  Math.floor(tr_atk + weights[1] * train_arg["atk"]["value"])
