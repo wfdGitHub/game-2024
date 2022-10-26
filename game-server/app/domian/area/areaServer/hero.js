@@ -72,10 +72,10 @@ module.exports = function() {
 						weights[i] = weights[i] * info.useValue / 100
 						//上下浮动
 						var rand = Math.random()
-						if(rand > 0.85){
-							weights[i] += Math.sqrt(info.useValue) * 0.3 * train_arg["base"]["value"]
-						}else if(rand < 0.15){
-							weights[i] -= Math.sqrt(info.useValue) * 0.3 * train_arg["base"]["value"]
+						if(rand > 0.8){
+							weights[i] += Math.sqrt(info.useValue) * 0.8 * train_arg["base"]["value"]
+						}else if(rand < 0.1){
+							weights[i] -= Math.sqrt(info.useValue) * 0.8 * train_arg["base"]["value"]
 						}
 					}
 					tr_maxHP = Math.floor(tr_maxHP + weights[0] * train_arg["maxHP"]["value"])
