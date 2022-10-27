@@ -737,7 +737,7 @@ model.getTeamData = function(team,belong) {
 	if(teamCfg["coexist"])
 		coexistInfo = this.getCoexistInfo(teamCfg["coexist"])
 	for(var i = 0;i < 6;i++){
-		if(team[i]["coexist"] && coexistInfo){
+		if(team[i] && team[i]["coexist"] && coexistInfo){
 			for(var j in coexisATT){
 				if(!team[i][coexisATT[j]] || team[i][coexisATT[j]] < coexistInfo[coexisATT[j]])
 					team[i][coexisATT[j]] = coexistInfo[coexisATT[j]]
