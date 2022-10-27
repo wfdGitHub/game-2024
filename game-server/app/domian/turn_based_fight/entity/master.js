@@ -1,6 +1,7 @@
 var fightRecord = require("../fight/fightRecord.js")
 var powerSkill = require("../skill/powerSkill.js")
 var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
+var power_lv = require("../../../../config/gameCfg/power_lv.json")
 var skillManager = require("../skill/skillManager.js")
 var power_base = require("../../../../config/gameCfg/power_base.json")
 var beauty_base = require("../../../../config/gameCfg/beauty_base.json")
@@ -90,6 +91,7 @@ master.prototype.addPower = function(info) {
 		powerInfo.NEED_CD = power_base[info.id].NEED_CD
 		powerInfo.name = power_base[info.id].name
 		powerInfo.skillId = info.id
+		powerInfo.basic = power_lv[info.lv]["basic"]
 		this.powers.push(new powerSkill(powerInfo,this))
 	}
 }
@@ -103,6 +105,7 @@ master.prototype.addBeautyPower = function(info) {
 		powerInfo.NEED_CD = beauty_base[info.id].NEED_CD
 		powerInfo.name = beauty_base[info.id].name
 		powerInfo.skillId = info.id
+		powerInfo.basic = info.att1 + info.att2 + info.att3 +info.att4
 		this.powers.push(new powerSkill(powerInfo,this))
 	}
 }

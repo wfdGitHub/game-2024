@@ -919,7 +919,10 @@ model.useHealSkill = function(skill,chase) {
 			var mul = skill.mul
 			if(min_hp3_list && min_hp3_list[target.id])
 				mul += skill.character.heal_min_hp3_rate
-			value = Math.round(skill.character.getTotalAtt("atk") * mul * rate)
+			value = skill.character.getTotalAtt("atk")
+			if(skill.skillType == "power")
+				value += skill.basic
+			value = Math.round(value * mul * rate)
 			if(min_hp_friend && min_hp_friend == target){
 				if(skill.character.heal_min_hp_rate)
 					value = Math.round(value * (skill.character.heal_min_hp_rate + 1))

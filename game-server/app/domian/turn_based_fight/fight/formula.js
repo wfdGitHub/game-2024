@@ -90,6 +90,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}
 	//伤害计算
 	var atk = attacker.getTotalAtt("atk")
+	if(skill.skillType == "power")
+		atk += skill.basic
 	var def = target.getTotalAtt(skill.damageType+"Def")
 	if(attacker.neglect_def || skill.neglect_def){
 		var neglect_def = (attacker.neglect_def || 0) + (skill.neglect_def || 0)

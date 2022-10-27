@@ -12,6 +12,7 @@ var model = function(otps,character) {
 	this.NEED_BP = otps.NEED_BP || 10					//所需BP值
 	this.NEED_CD = otps.NEED_CD || 10 					//技能所需CD
 	this.CUR_CD = otps.CUR_CD || 0						//初始CD
+	this.basic = otps.basic || 0 						//基础伤害加成
 	this.tmpBuffRate = 0 								//临时BUFF概率
 	//初始化方法
 	this.initArg = function() {
