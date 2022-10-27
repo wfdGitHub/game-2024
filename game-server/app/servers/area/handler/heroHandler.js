@@ -536,6 +536,10 @@ heroHandler.prototype.replaceHero = function(msg, session, next) {
         next(null,{flag : false,err : "英雄不存在"})
         return
       }
+      if(heroInfo.coexist){
+        next(null,{flag : false,err : "该英雄共鸣中"})
+        return
+      }
       if(heroInfo.combat){
         next(null,{flag : false,data : "英雄已上阵"})
         return
@@ -578,6 +582,10 @@ heroHandler.prototype.saveReplace = function(msg, session, next) {
           return
       }
       self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+          if(heroInfo.coexist){
+            next(null,{flag : false,err : "该英雄共鸣中"})
+            return
+          }
           if(heroInfo.combat){
             next(null,{flag : false,data : "英雄已上阵"})
             return
