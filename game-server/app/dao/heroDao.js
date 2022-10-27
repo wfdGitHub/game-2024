@@ -460,7 +460,8 @@ heroDao.prototype.setHMHeroInfo = function(areaId,uid,hId,obj,cb) {
 		}else{
 			for(var i in obj)
 				self.areaManager.areaMap[areaId].setCEInfo(uid,hId,i,obj[i])
-			self.areaManager.areaMap[areaId].removeCheckCoexist(uid,[hId])
+			if(obj["lv"])
+				self.areaManager.areaMap[areaId].removeCheckCoexist(uid,[hId])
 			self.updateHeroCe(areaId,uid,hId)
 			if(cb)
 				cb(true,data)
