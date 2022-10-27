@@ -69,6 +69,10 @@ heroHandler.prototype.resetHero = function(msg, session, next) {
       next(null,{flag : false,err : "英雄不存在"})
       return
     }
+    if(heroInfo.coexist){
+      next(null,{flag : false,err : "该英雄共鸣中"})
+      return
+    }
     if(heroInfo.lv == 1 && heroInfo.ad == 0){
       next(null,{flag : false,err : "当前状态不能重置"})
       return
@@ -121,6 +125,10 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
     for(var i in herolist){
       if(!herolist[i]){
         next(null,{flag : false,err : "英雄不存在"+i})
+        return
+      }
+      if(herolist[i].coexist){
+        next(null,{flag : false,err : "该英雄共鸣中"})
         return
       }
       if(herolist[i].combat){
@@ -193,6 +201,10 @@ heroHandler.prototype.unlockZhanfaGrid = function(msg, session, next) {
       for(var i = 0;i < data.length;i++){
         if(!data[i] || !data[i].id){
           next(null,{flag : false,data : "英雄不存在"+hIds[i]})
+          return
+        }
+        if(data[i].coexist){
+          next(null,{flag : false,err : "该英雄共鸣中"})
           return
         }
         if(data[i].combat){
@@ -346,6 +358,10 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
         for(var i = 0;i < pc_hero.length;i++){
           if(!data[i] || !data[i].id){
             next(null,{flag : false,data : "英雄不存在"+hIds[i]})
+            return
+          }
+          if(data[i].coexist){
+            next(null,{flag : false,err : "该英雄共鸣中"})
             return
           }
           if(data[i].combat){
