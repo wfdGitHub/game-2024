@@ -231,17 +231,19 @@ heroDao.prototype.updateHeroArchive = function(areaId,uid,id,star) {
 	})
 }
 //批量删除英雄
-heroDao.prototype.removeHeroList = function(uid,hIds,cb) {
+heroDao.prototype.removeHeroList = function(areaId,uid,hIds,cb) {
+	var self = this
 	var multiList = []
 	for(var i = 0;i < hIds.length;i++){
 		multiList.push(["hdel","player:user:"+uid+":heroMap",hIds[i]])
 		multiList.push(["del","player:user:"+uid+":heros:"+hIds[i]])
 	}
-	this.redisDao.multi(multiList,function(err) {
+	self.redisDao.multi(multiList,function(err) {
 		if(err){
 			cb(false,err)
 			return
 		}
+		self.areaManager.areaMap[areaId].removeCheckCoexist(uid,hIds)
 		cb(true)
 	})
 }
@@ -415,6 +417,7 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 					break
 					case "lv":
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
+						self.areaManager.areaMap[areaId].checkCoexistMap(uid,hId,data)
 						if(self.areaManager.areaMap[areaId].players[uid] && self.areaManager.areaMap[areaId].players[uid]["heroLv"] < data)
 							self.areaManager.areaMap[areaId].chageLordData(uid,"heroLv",data)
 					break
@@ -457,6 +460,7 @@ heroDao.prototype.setHMHeroInfo = function(areaId,uid,hId,obj,cb) {
 		}else{
 			for(var i in obj)
 				self.areaManager.areaMap[areaId].setCEInfo(uid,hId,i,obj[i])
+			self.areaManager.areaMap[areaId].removeCheckCoexist(uid,[hId])
 			self.updateHeroCe(areaId,uid,hId)
 			if(cb)
 				cb(true,data)
@@ -809,6 +813,13 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 					fightTeam[6]["dby"] = Number(data[1]) || 0
 					fightTeam[6]["qby"] = Number(data[2]) || 0
 				}
+				next()
+			})
+		},
+		function(next) {
+			//共鸣等级
+			self.redisDao.db.hget("player:user:"+uid+":playerInfo","coexist",function(err,data) {
+				fightTeam[6]["coexist"] = data || 0
 				next()
 			})
 		},

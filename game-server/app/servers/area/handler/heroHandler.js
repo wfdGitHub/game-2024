@@ -132,7 +132,7 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
         return
       }
     }
-    self.heroDao.removeHeroList(uid,hIds,function(flag,err) {
+    self.heroDao.removeHeroList(areaId,uid,hIds,function(flag,err) {
       if(flag){
         self.heroDao.heroPrAll(areaId,uid,herolist,hIds,function(flag,awardList) {
           next(null,{flag : true,awardList : awardList})
@@ -208,7 +208,7 @@ heroHandler.prototype.unlockZhanfaGrid = function(msg, session, next) {
           return
         }
       }
-      self.heroDao.removeHeroList(uid,hIds,function(flag,err) {
+      self.heroDao.removeHeroList(areaId,uid,hIds,function(flag,err) {
           if(err)
             console.error(err)
           self.heroDao.heroPrlvadnad(areaId,uid,data,hIds,function(flag,awardList) {
@@ -384,7 +384,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
               next(null,{flag : false,err : err})
               return
             }
-            self.heroDao.removeHeroList(uid,hIds,function(flag,err) {
+            self.heroDao.removeHeroList(areaId,uid,hIds,function(flag,err) {
                 if(err)
                   console.error(err)
                 self.heroDao.heroPrlvadnad(areaId,uid,data,hIds,function(flag,awardList) {
@@ -399,7 +399,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
             })
           })
         }else{
-            self.heroDao.removeHeroList(uid,hIds,function(flag,err) {
+            self.heroDao.removeHeroList(areaId,uid,hIds,function(flag,err) {
                 if(err)
                   console.error(err)
                 self.heroDao.heroPrlvadnad(areaId,uid,data,hIds,function(flag,awardList) {
