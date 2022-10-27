@@ -1,50 +1,53 @@
-var skillsCfg = require("../../../../config/gameCfg/skills.json")
-var herosCfg = require("../../../../config/gameCfg/heros.json")
-var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
-var star_base = require("../../../../config/gameCfg/star_base.json")
-var hero_ad = require("../../../../config/gameCfg/hero_ad.json")
-var hero_tr = require("../../../../config/gameCfg/hero_tr.json")
-var advanced_talent = require("../../../../config/gameCfg/advanced_talent.json")
-var talent_list = require("../../../../config/gameCfg/talent_list.json")
-var equip_base = require("../../../../config/gameCfg/equip_base.json")
-var equip_level = require("../../../../config/gameCfg/equip_level.json")
-var equip_st = require("../../../../config/gameCfg/equip_st.json")
-var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
-var artifact_level = require("../../../../config/gameCfg/artifact_level.json")
-var artifact_talent = require("../../../../config/gameCfg/artifact_talent.json")
-var stone_base = require("../../../../config/gameCfg/stone_base.json")
-var stone_skill = require("../../../../config/gameCfg/stone_skill.json")
-var book_list = require("../../../../config/gameCfg/book_list.json")
-var book_lv = require("../../../../config/gameCfg/book_lv.json")
-var book_star = require("../../../../config/gameCfg/book_star.json")
-var guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
-var guild_skill = require("../../../../config/gameCfg/guild_skill.json")
-var hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
-var hufu_quality = require("../../../../config/gameCfg/hufu_quality.json")
-var hufu_lv = require("../../../../config/gameCfg/hufu_lv.json")
-var heroSpine = require("../../../../config/gameCfg/heroSpine.json")
-var skin_list = require("../../../../config/gameCfg/skin_list.json")
-var title_list = require("../../../../config/gameCfg/title_list.json")
-var zhanfa = require("../../../../config/gameCfg/zhanfa.json")
-var officer = require("../../../../config/gameCfg/officer.json")
-var camp_att = require("../../../../config/gameCfg/camp_att.json")
-var war_horse = require("../../../../config/gameCfg/war_horse.json")
-var war_drum = require("../../../../config/gameCfg/war_drum.json")
-var war_banner = require("../../../../config/gameCfg/war_banner.json")
-var manor_gjy = require("../../../../config/gameCfg/manor_gjy.json")
-var manor_dby = require("../../../../config/gameCfg/manor_dby.json")
-var manor_qby = require("../../../../config/gameCfg/manor_qby.json")
-var aptitudeCfg = require("../../../../config/gameCfg/aptitude.json")
-var evolutionCfg = require("../../../../config/gameCfg/evolution.json")
-var power_ad = require("../../../../config/gameCfg/power_ad.json")
-var power_aptitude = require("../../../../config/gameCfg/power_aptitude.json")
-var power_base = require("../../../../config/gameCfg/power_base.json")
-var power_lv = require("../../../../config/gameCfg/power_lv.json")
-var power_star = require("../../../../config/gameCfg/power_star.json")
-var beauty_ad = require("../../../../config/gameCfg/beauty_ad.json")
-var beauty_base = require("../../../../config/gameCfg/beauty_base.json")
-var beauty_star = require("../../../../config/gameCfg/beauty_star.json")
-var beauty_cfg = require("../../../../config/gameCfg/beauty_cfg.json")
+const standard_ce_cfg = require("../../../../config/gameCfg/standard_ce.json")
+const standard_dl = require("../../../../config/gameCfg/standard_dl.json")
+const stone_lv = require("../../../../config/gameCfg/stone_lv.json")
+const skillsCfg = require("../../../../config/gameCfg/skills.json")
+const herosCfg = require("../../../../config/gameCfg/heros.json")
+const lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
+const star_base = require("../../../../config/gameCfg/star_base.json")
+const hero_ad = require("../../../../config/gameCfg/hero_ad.json")
+const hero_tr = require("../../../../config/gameCfg/hero_tr.json")
+const advanced_talent = require("../../../../config/gameCfg/advanced_talent.json")
+const talent_list = require("../../../../config/gameCfg/talent_list.json")
+const equip_base = require("../../../../config/gameCfg/equip_base.json")
+const equip_level = require("../../../../config/gameCfg/equip_level.json")
+const equip_st = require("../../../../config/gameCfg/equip_st.json")
+const ace_pack = require("../../../../config/gameCfg/ace_pack.json")
+const artifact_level = require("../../../../config/gameCfg/artifact_level.json")
+const artifact_talent = require("../../../../config/gameCfg/artifact_talent.json")
+const stone_base = require("../../../../config/gameCfg/stone_base.json")
+const stone_skill = require("../../../../config/gameCfg/stone_skill.json")
+const book_list = require("../../../../config/gameCfg/book_list.json")
+const book_lv = require("../../../../config/gameCfg/book_lv.json")
+const book_star = require("../../../../config/gameCfg/book_star.json")
+const guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
+const guild_skill = require("../../../../config/gameCfg/guild_skill.json")
+const hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
+const hufu_quality = require("../../../../config/gameCfg/hufu_quality.json")
+const hufu_lv = require("../../../../config/gameCfg/hufu_lv.json")
+const heroSpine = require("../../../../config/gameCfg/heroSpine.json")
+const skin_list = require("../../../../config/gameCfg/skin_list.json")
+const title_list = require("../../../../config/gameCfg/title_list.json")
+const zhanfa = require("../../../../config/gameCfg/zhanfa.json")
+const officer = require("../../../../config/gameCfg/officer.json")
+const camp_att = require("../../../../config/gameCfg/camp_att.json")
+const war_horse = require("../../../../config/gameCfg/war_horse.json")
+const war_drum = require("../../../../config/gameCfg/war_drum.json")
+const war_banner = require("../../../../config/gameCfg/war_banner.json")
+const manor_gjy = require("../../../../config/gameCfg/manor_gjy.json")
+const manor_dby = require("../../../../config/gameCfg/manor_dby.json")
+const manor_qby = require("../../../../config/gameCfg/manor_qby.json")
+const aptitudeCfg = require("../../../../config/gameCfg/aptitude.json")
+const evolutionCfg = require("../../../../config/gameCfg/evolution.json")
+const power_ad = require("../../../../config/gameCfg/power_ad.json")
+const power_aptitude = require("../../../../config/gameCfg/power_aptitude.json")
+const power_base = require("../../../../config/gameCfg/power_base.json")
+const power_lv = require("../../../../config/gameCfg/power_lv.json")
+const power_star = require("../../../../config/gameCfg/power_star.json")
+const beauty_ad = require("../../../../config/gameCfg/beauty_ad.json")
+const beauty_base = require("../../../../config/gameCfg/beauty_base.json")
+const beauty_star = require("../../../../config/gameCfg/beauty_star.json")
+const beauty_cfg = require("../../../../config/gameCfg/beauty_cfg.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -73,6 +76,43 @@ for(var i in hufu_skill){
 		hufu_map[hufu_skill[i]["lv"+j]] = {"id":i,"lv":j}
 		hufuSkillCes[hufu_skill[i]["lv"+j]] = 50000 * j
 	}
+}
+const coexisATT = ["lv","ad","artifact","tr_lv","tr_maxHP","tr_atk","tr_phyDef","tr_magDef","et1","et2","et3","et4"]
+var coexistLvMap = []
+for(var i in standard_ce_cfg){
+	for(var j = coexistLvMap.length;j <= standard_ce_cfg[i]["lv"];j++){
+		coexistLvMap[j] = i
+	}
+}
+var standard_ce = {}
+var standard_team_ce = {}
+var trMap = [0,"maxHP","atk","phyDef","magDef"]
+for(var i in standard_ce_cfg){
+	standard_ce[i] = {
+		"lv" : standard_ce_cfg[i]["lv"],
+		"ad" : standard_ce_cfg[i]["ad"],
+		"star" : standard_ce_cfg[i]["star"],
+		"artifact" : standard_ce_cfg[i]["artifact"],
+		"tr_lv" : standard_ce_cfg[i]["tr"],
+		"evo" : standard_ce_cfg[i]["evo"],
+		"crit" : standard_ce_cfg[i]["crit"],
+		"critDef" : standard_ce_cfg[i]["critDef"],
+		"slay" : standard_ce_cfg[i]["slay"],
+		"slayDef" : standard_ce_cfg[i]["slayDef"],
+		"hitRate" : standard_ce_cfg[i]["hitRate"],
+		"dodgeRate" : standard_ce_cfg[i]["dodgeRate"]
+	}
+	standard_team_ce[i] = {}
+	for(var j = 1;j <= 4;j++){
+		standard_ce[i]["e"+j] = standard_ce_cfg[i]["equip"]
+		if(stone_lv[standard_ce_cfg[i]["stone_lv"]])
+		standard_ce[i]["s"+j] = stone_lv[standard_ce_cfg[i]["stone_lv"]]["s"+j]
+		standard_ce[i]["et"+j] = standard_ce_cfg[i]["st"]
+		standard_team_ce[i]["g"+j] = standard_ce_cfg[i]["guild"]
+		if(standard_ce[i]["tr_lv"])
+			standard_ce[i]["tr_"+trMap[j]] = hero_tr[standard_ce[i]["tr_lv"]][trMap[j]]
+	}
+	standard_team_ce[i]["officer"] = standard_ce_cfg[i]["officer"]
 }
 //战斗控制器
 var model = function() {
@@ -177,7 +217,6 @@ model.fightVerifyCheck = function() {
 		console.log("战斗校验成功")
 	}
 }
-
 model.getOverInfo = function() {
 	var overInfo = fightRecord.list[fightRecord.list.length-1]
 	if(overInfo && overInfo["type"] == "fightOver")
@@ -694,7 +733,16 @@ model.getTeamData = function(team,belong) {
 	var master = this.getMasterInfo(masterAtts,belong,teamCfg["manualModel"])
 	master.belong = belong
 	var characters = []
+	var coexistInfo = false
+	if(teamCfg["coexist"])
+		coexistInfo = this.getCoexistInfo(teamCfg["coexist"])
 	for(var i = 0;i < 6;i++){
+		if(team[i]["coexist"] && coexistInfo){
+			for(var j in coexisATT){
+				if(!team[i][coexisATT[j]] || team[i][coexisATT[j]] < coexistInfo[coexisATT[j]])
+					team[i][coexisATT[j]] = coexistInfo[coexisATT[j]]
+			}
+		}
 		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
 	}
 	for(var i in books)
@@ -890,6 +938,7 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 	}
 	return newCE - oldCE
 }
+//获取团队战力
 model.getTeamCE = function(team) {
 	var allCE = 0
 	var careers = {"1":0,"2":0,"3":0,"4":0}
@@ -1049,6 +1098,39 @@ model.mergeData = function(info1,info2) {
 				info1[i] = info2[i]
 			}
 		}
+	}
+}
+//获取基准战力表
+model.getStandardCE = function() {
+	return {standard_ce:standard_ce,standard_team_ce:standard_team_ce}
+}
+//获取基准战力阵容
+model.standardTeam = function(uid,list,dl,lv) {
+	team = list.concat()
+	var standardInfo = standard_ce[lv]
+	var dlInfo = standard_dl[dl]
+	var info = Object.assign({},standardInfo)
+	if(dlInfo.lv){
+		info.lv += dlInfo.lv
+		delete dlInfo.lv
+	}
+	info = Object.assign(info,dlInfo)
+	for(var i = 0;i < team.length;i++){
+		if(team[i]){
+			team[i] = Object.assign({id : team[i]},info)
+			if(team[i].star < herosCfg[team[i]["id"]]["min_star"])
+				team[i].star = herosCfg[team[i]["id"]]["min_star"]
+		}
+	}
+	team[6] = Object.assign({},standard_team_ce[lv])
+	return team
+}
+//获取共鸣属性
+model.getCoexistInfo = function(lv) {
+	if(coexistLvMap[lv] && standard_ce[coexistLvMap[lv]]){
+		return standard_ce[coexistLvMap[lv]]
+	}else{
+		return false
 	}
 }
 module.exports = model

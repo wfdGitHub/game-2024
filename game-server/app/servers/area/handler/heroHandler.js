@@ -235,6 +235,10 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
       next(null,{flag : false,err : "英雄不存在"})
       return
     }
+    if(heroInfo.coexist){
+      next(null,{flag : false,err : "该英雄共鸣中"})
+      return
+    }
     var lv = hero_ad[heroInfo.ad].lv || 0
     if(aimLv <= heroInfo.lv || aimLv > lv){
       next(null,{flag : false,err : "等级限制"})
@@ -265,6 +269,10 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
   self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
     if(!flag){
       next(null,{flag : false,err : "英雄不存在"})
+      return
+    }
+    if(heroInfo.coexist){
+      next(null,{flag : false,err : "该英雄共鸣中"})
       return
     }
     var aimAd = heroInfo.ad + 1
@@ -846,6 +854,34 @@ heroHandler.prototype.heroEquipStrengthen = function(msg, session, next) {
   var hId = msg.hId
   var slot = msg.slot
   this.areaManager.areaMap[areaId].heroEquipStrengthen(uid,hId,slot,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//获取共鸣英雄数据
+heroHandler.prototype.getCoexistData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getCoexistData(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//放置共鸣英雄
+heroHandler.prototype.setCoexistHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var index = msg.index
+  this.areaManager.areaMap[areaId].setCoexistHero(uid,hId,index,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//取出共鸣英雄
+heroHandler.prototype.cleanCoexistHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var index = msg.index
+  this.areaManager.areaMap[areaId].cleanCoexistHero(uid,hId,index,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

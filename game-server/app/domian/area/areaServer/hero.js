@@ -22,6 +22,10 @@ module.exports = function() {
 			function(next) {
 				//获取英雄数据
 				self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+				    if(heroInfo.coexist){
+				      next("该英雄共鸣中")
+				      return
+				    }
 					if(flag && heroInfo){
 						next(null,heroInfo)
 					}else{
@@ -101,6 +105,10 @@ module.exports = function() {
 	this.heroTrainLv = function(uid,hId,cb) {
 		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
 			if(flag && heroInfo){
+			    if(heroInfo.coexist){
+			      next("该英雄共鸣中")
+			      return
+			    }
 				var tr_lv = heroInfo["tr_lv"] || 0
 				var tr_maxHP = heroInfo["tr_maxHP"]  || 0
 				var tr_atk = heroInfo["tr_atk"]  || 0
@@ -144,6 +152,10 @@ module.exports = function() {
 				cb(false,"英雄不存在"+hId)
 				return
 			}
+		    if(heroInfo.coexist){
+		      next("该英雄共鸣中")
+		      return
+		    }
 			var slv = Number(heroInfo[key]) || 0
 			if(!equip_st[slv+1]){
 				cb(false,"强化等级已满"+slv)

@@ -14,7 +14,9 @@ const power_slot = require("../../../../config/gameCfg/power_slot.json")
 const beauty_base = require("../../../../config/gameCfg/beauty_base.json")
 const beauty_ad = require("../../../../config/gameCfg/beauty_ad.json")
 const beauty_star = require("../../../../config/gameCfg/beauty_star.json")
+const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const main_name = "CE"
+const oneDayTime = 86400000
 var bookMap = {}
 for(var i in book_list){
 	book_list[i].id = i
@@ -159,7 +161,7 @@ module.exports = function() {
 		self.heroDao.getHeros(uid,function(flag,data) {
 			if(flag){
 				for(var i in data){
-					if(list.length < 6 || data[i]["lv"] > minLv){
+					if(!data[i]["coexist"] && (list.length < 6 || data[i]["lv"] > minLv)){
 						data[i]["hId"] = i
 						list.push(data[i])
 						list.sort(function(a,b) {
@@ -181,6 +183,7 @@ module.exports = function() {
 				console.log("最终数据",userCoexistMaps[uid],userCoexistLength[uid],userTeams[uid][6]["coexist"])
 				self.delObjAll(uid,"coexistMap")
 				self.setHMObj(uid,"coexistMap",maps)
+				local.updateCoexistNotify(uid)
 			}
 		})
 		console.log("userCoexistMaps",userCoexistMaps[uid])
@@ -219,11 +222,129 @@ module.exports = function() {
 				userTeams[uid][6]["coexist"] = min
 				self.setObj(uid,"playerInfo","coexist",min)
 			}
+			local.updateCoexistNotify(uid)
 		}
 		console.log("userCoexistMaps",userCoexistMaps[uid])
 	}
-	//上阵共鸣英雄
-	//下阵共鸣英雄
+	//通知共鸣数据更新
+	local.updateCoexistNotify = function(uid) {
+		if(userCoexistMaps[uid] && userTeams[uid]){
+			var notify = {
+				type : "coexist",
+				coexistMaps : userCoexistMaps[uid],
+				coexist : userTeams[uid][6]["coexist"]
+			}
+			self.sendToUser(uid,notify)
+		}
+	}
+	//获取共鸣英雄数据
+	this.getCoexistData = function(uid,cb) {
+		self.getObjAll(uid,"coexistList",function(coexistList) {
+			var info = {}
+			info.coexistList = coexistList || {}
+			info.coexistMaps = userCoexistMaps[uid]
+			cb(true,info)
+		})
+	}
+	//放置共鸣英雄
+	this.setCoexistHero = function(uid,hId,index,cb) {
+		async.waterfall([
+			function(next) {
+				if(userCoexistMaps[uid] && userCoexistMaps[uid][hId])
+					next("不能为供奉英雄")
+				else
+					next()
+			},
+			function(next) {
+				self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+				    if(!flag){
+				      	next("英雄不存在")
+				    }else{
+				    	if(heroInfo["coexist"]){
+				    		next("该英雄已共鸣")
+				    		return
+				    	}
+				    	next()
+				    }
+				})
+			},
+			function(next) {
+				//index判断
+				if(!Number.isInteger(index) || index < 1){
+					next("index error "+index)
+					return
+				}
+				var lv = self.getLordLv(uid)
+				if(lv < lord_lv[lv]["coexistSlot"]){
+					next("主公等级限制 "+lv+"/"+lord_lv[lv]["coexistSlot"])
+					return
+				}
+				self.getHMObj(uid,"coexistList",["slot_"+index,"time_"+index],function(list) {
+					if(list[0]){
+						next("该槽位已有英雄")
+						return
+					}
+					if(list[1] && Date.now() < Number(list[1])){
+						next("槽位冷却中")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				self.heroDao.setHeroInfo(self.areaId,uid,hId,"coexist",1)
+				self.setObj(uid,"coexistList","slot_"+index,hId)
+				cb(true)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//取出共鸣英雄
+	this.cleanCoexistHero = function(uid,hId,index,cb) {
+		async.waterfall([
+			function(next) {
+				self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+				    if(!flag){
+				      	next("英雄不存在")
+				    }else{
+				    	if(!heroInfo["coexist"]){
+				    		next("该英雄未共鸣")
+				    		return
+				    	}
+				    	next()
+				    }
+				})
+			},
+			function(next) {
+				//index判断
+				if(!Number.isInteger(index) || index < 1){
+					next("index error "+index)
+					return
+				}
+				self.getObj(uid,"coexistList","slot_"+index,function(data) {
+					if(!data){
+						next("该槽位没有英雄")
+						return
+					}
+					if(data != hId){
+						next("hId error "+data)
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				var time = Date.now()+oneDayTime
+				self.heroDao.delHeroInfo(self.areaId,uid,hId,"coexist")
+				self.delObj(uid,"coexistList","slot_"+index)
+				self.setObj(uid,"coexistList","time_"+index,time)
+				cb(true,time)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
 	//改变战力
 	this.incrbyCE = function(uid,name,oldValue,newValue) {
 		var ce = self.fightContorl.calcCEDiff(name,oldValue,newValue)

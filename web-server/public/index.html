@@ -98,6 +98,25 @@
         console.log("onChat")
         console.log(data)
       })
+      //共鸣
+      //获取共鸣英雄数据
+      var getCoexistData = function() {
+        pomelo.request("area.heroHandler.getCoexistData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //放置共鸣英雄
+      var setCoexistHero = function(hId,index) {
+        pomelo.request("area.heroHandler.setCoexistHero", {hId:hId,index:index}, function(data) {
+            console.log(data);
+        });
+      }
+      //取出共鸣英雄
+      var cleanCoexistHero = function(hId,index) {
+        pomelo.request("area.heroHandler.cleanCoexistHero", {hId:hId,index:index}, function(data) {
+            console.log(data);
+        });
+      }
       //=================红颜系统==================//
       //获取红颜技能
       var getBeautyData = function() {

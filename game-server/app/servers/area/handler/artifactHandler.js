@@ -23,6 +23,10 @@ artifactHandler.prototype.wearArtifact = function(msg, session, next) {
           cb("英雄不存在")
           return
         }
+        if(heroInfo.coexist){
+          next("该英雄共鸣中")
+          return
+        }
         if(heroInfo.star < 6){
           cb("英雄星级不够")
           return
@@ -70,6 +74,10 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
       self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
         if(!flag){
           cb("英雄不存在")
+          return
+        }
+        if(heroInfo.coexist){
+          next("该英雄共鸣中")
           return
         }
         if(heroInfo.star < 6){
