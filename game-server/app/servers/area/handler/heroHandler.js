@@ -1,6 +1,7 @@
 var bearcat = require("bearcat")
 var heros = require("../../../../config/gameCfg/heros.json")
 var hero_ad = require("../../../../config/gameCfg/hero_ad.json")
+var officer = require("../../../../config/gameCfg/officer.json")
 var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var star_base = require("../../../../config/gameCfg/star_base.json")
 var evolutionCfg = require("../../../../config/gameCfg/evolution.json")
@@ -459,12 +460,9 @@ heroHandler.prototype.upgraEvolution = function(msg, session, next) {
       next(null,{flag : false,err : "没有下一级"})
       return
     }
-    if(aimEvo > heros[heroInfo.id]["evo_max"]){
-      next(null,{flag : false,err : "最大进阶"})
-      return
-    }
-    if(heroInfo.lv < evolutionCfg[aimEvo].lv_limit){
-      next(null,{flag : false,err : "等级限制 "+heroInfo.lv+"/"+evolutionCfg[aimEvo].lv_limit})
+    var olv = self.areaManager.areaMap[areaId].getLordAtt(uid,"officer")
+    if(aimEvo > officer[olv]["officer"]){
+      next(null,{flag : false,err : "爵位限制"})
       return
     }
     var pcStr = evolutionCfg[aimEvo].pc

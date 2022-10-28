@@ -152,6 +152,13 @@ module.exports = function() {
 						next("主建筑等级不足")
 						return
 					}
+					if(bId == "main"){
+						var olv = self.getLordAtt(uid,"officer")
+						if(mainLv >= olv){
+							next("爵位限制")
+							return
+						}
+					}
 					next()
 				})
 			},
@@ -190,7 +197,7 @@ module.exports = function() {
 							next(err)
 					})
 				}else{
-					next()
+					next(null,buildLv)
 				}
 			},
 			function(buildLv,next) {

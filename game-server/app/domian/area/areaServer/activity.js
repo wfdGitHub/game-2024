@@ -20,6 +20,7 @@ const activity_day = require("../../../../config/gameCfg/activity_day.json")
 const mewtwo_task = require("../../../../config/gameCfg/mewtwo_task.json")
 const wuxian = require("../../../../config/gameCfg/wuxian.json")
 const recharge_week = require("../../../../config/gameCfg/recharge_week.json")
+const officer = require("../../../../config/gameCfg/officer.json")
 const oneDayTime = 86400000
 var util = require("../../../../util/util.js")
 var maxBoss = 0
@@ -67,6 +68,8 @@ module.exports = function() {
 			return
 		}
 		var lv = self.getLordLv(uid)
+		var olv = self.getLordAtt(uid,"officer")
+		var rate = 1 + (officer[olv]["revenueAdd"] || 0)
 		self.getObj(uid,main_name,"rv_"+type,function(data) {
 			data = Number(data) || 0
 			if(data && data >= default_cfg["revenue_"+type]["value"]){
@@ -83,7 +86,7 @@ module.exports = function() {
 					}else{
 						self.taskUpdate(uid,"revenue",1)
 						self.incrbyObj(uid,main_name,"rv_"+type,1)
-						var awardList = self.addItemStr(uid,"201:"+lord_lv[lv][type],1,"征收"+type)
+						var awardList = self.addItemStr(uid,"201:"+lord_lv[lv][type],rate,"征收"+type)
 						cb(true,awardList)
 					}
 				})
