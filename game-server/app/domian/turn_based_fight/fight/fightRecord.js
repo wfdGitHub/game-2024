@@ -31,7 +31,7 @@ var model = function() {
 		var recordList = this.getList()
 		while(recordList.length){
 			let info = recordList.shift()
-			switch(info.type){
+			switch(info && info.type){
 				case "fightBegin":
 					var heroNames = {}
 					for(var i in info.atkTeam)
