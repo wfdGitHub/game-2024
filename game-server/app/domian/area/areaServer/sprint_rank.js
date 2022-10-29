@@ -158,10 +158,8 @@ module.exports = function() {
 		})
 	}
 	//更新排行榜
-	this.updateSprintRank = function(type,uid,value) {
-		if(rank_type_day[type]){
-			self.incrbyZset(type,uid,value)
-		}
+	this.updateSprintRank = function(rankType,uid,value) {
+		self.incrbyZset(rankType,uid,value)
 	}
 	//获取排行榜第一玩家
 	this.getfirstRankUserList = function(cb) {

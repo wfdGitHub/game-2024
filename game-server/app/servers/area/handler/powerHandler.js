@@ -142,6 +142,7 @@ powerHandler.prototype.giveBeautGift = function(msg, session, next) {
       next(null,{flag : false,err : err})
       return
     }
+    self.areaManager.areaMap[areaId].updateSprintRank("gift_rank",uid,value)
     self.areaManager.areaMap[areaId].incrbyBeautInfo(uid,beautId,"opinion",value)
     var beautInfo = self.areaManager.areaMap[areaId].getBeautyInfo(uid,beautId)
     next(null,{flag : true,value : value,beautInfo:beautInfo})

@@ -96,6 +96,7 @@ module.exports = function() {
 	//初始化玩家家园
 	this.manorInit = function(uid,cb) {
 		self.incrbyLordData(uid,"warehouse",builds["main"][1]["food"])
+		self.updateSprintRank("manor_rank",uid,manor_builds["main"]["score_rate"])
 		var info = {
 			"main":1,
 			"land_0":"main",
@@ -235,6 +236,7 @@ module.exports = function() {
 						self.incrbyLordData(uid,"warehouse",add_food)
 					break
 				}
+				self.updateSprintRank("manor_rank",uid,manor_builds[bId]["score_rate"])
 				cb(true,info)
 			}
 		],function(err) {
@@ -1150,13 +1152,13 @@ module.exports = function() {
 			function(next) {
 				//胜利
 				awardList = self.addItemStr(uid,fightAward,2,"玩家城池")
-				//获取保护资源之外的资源
+				//获取保护资源之外的资源的30%
 				if(target > 10000){
 					self.redisDao.db.hget("player:user:"+target+":bag","810",function(err,value) {
 						if(value && value > safety){
-							diff = value - safety
+							diff = Math.floor((value - safety) * 0.3)
 							awardList = awardList.concat(self.addItemStr(uid,"810:"+diff,1,"玩家城池"))
-							self.redisDao.db.hset("player:user:"+target+":bag",810,safety)
+							self.redisDao.db.hincrby("player:user:"+target+":bag",810,-diff)
 							next()
 						}else{
 							next()

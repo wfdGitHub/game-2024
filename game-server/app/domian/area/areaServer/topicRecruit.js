@@ -147,6 +147,7 @@ module.exports = function() {
             self.taskUpdate(uid,"recruit_great",count)
             self.taskUpdate(uid,"recruit",count)
             heroInfos = self.heroDao.randHeroLuck(self.areaId,uid,type,count)
+            self.updateSprintRank("recruit_rank",uid,count)
           break
           case "camp_1":
           case "camp_2":
