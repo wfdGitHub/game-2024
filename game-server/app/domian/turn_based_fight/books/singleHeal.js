@@ -6,7 +6,6 @@ var model = function(otps) {
 	var book = new bookBasic(otps)
 	book.bookId = "singleHeal"
 	book.id = "singleHeal"
-	book.value = Math.floor(otps.mul * book.master.getTotalAtt("atk"))
 	book.count = otps.count
 	book.dispel = otps.dispel
 	book.control = otps.control
@@ -21,7 +20,8 @@ var model = function(otps) {
 				}else if(book.control){
 					target.removeControlBuff()
 				}
-				var info = target.onHeal(book,{value:book.value})
+				var info = target.onHeal(book,{value:Math.floor(this.mul * book.master.getTotalAtt("atk"))})
+				info.type = "other_heal"
 				recordInfo.targets.push(info)
 				fightRecord.push(recordInfo)
 

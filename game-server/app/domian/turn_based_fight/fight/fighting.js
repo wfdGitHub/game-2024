@@ -135,15 +135,15 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 		defTeam[i].calAttAdd(defTeamAdds)
 		defTeam[i].teamInfo = this.defTeamInfo
 	}
-	//天书初始化
-	for(var i in this.atkBooks){
-		this.atkBooks[i].init(this.atkTeam,this.defTeam,this.locator,this.seeded)
-	}
-	for(var i in this.defBooks){
-		this.defBooks[i].init(this.defTeam,this.atkTeam,this.locator,this.seeded)
-	}
 	this.atkMaster.init(this,this.atkTeam,this.defTeam,this.locator,this.seeded,this.defMaster)
 	this.defMaster.init(this,this.defTeam,this.atkTeam,this.locator,this.seeded,this.atkMaster)
+	//天书初始化
+	for(var i in this.atkBooks){
+		this.atkBooks[i].init(this.atkTeam,this.defTeam,this.locator,this.seeded,this.atkMaster)
+	}
+	for(var i in this.defBooks){
+		this.defBooks[i].init(this.defTeam,this.atkTeam,this.locator,this.seeded,this.defMaster)
+	}
 }
 //战斗开始
 model.prototype.fightBegin = function() {

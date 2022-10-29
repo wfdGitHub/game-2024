@@ -4,14 +4,13 @@ var fightRecord = require("../fight/fightRecord.js")
 var model = function(otps) {
 	var book = new bookBasic(otps)
 	book.bookId = "frontDamage"
-	var mul = otps.mul
 	book.action = function() {
 		var targets = book.locator.getTargets(book.team[0],"enemy_horizontal_front_real")
 		if(targets.length){
 			var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
 			for(var i = 0;i < targets.length;i++){
 				var target = targets[i]
-				var value = Math.floor((book.master.getTotalAtt("atk") - target.getTotalAtt("magDef")) * mul)
+				var value = Math.floor((book.master.getTotalAtt("atk") - target.getTotalAtt("magDef")) * this.mul)
 				if(value < 1)
 					value = 1
 				var info = target.onHit(book,{value:value,d_type:"mag"})

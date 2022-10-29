@@ -13,6 +13,7 @@ var model = function(otps) {
 	this.attInfo.atk = otps["atk"] || 0					//攻击力
 	this.attInfo.phyDef = otps["phyDef"] || 0			//物理防御力
 	this.attInfo.magDef = otps["magDef"] || 0			//法术防御力
+	this.mul = otps["mul"] || 0
 	this.totalDamage = 0						//累计伤害
 	this.totalHeal = 0							//累计治疗
 }
@@ -25,11 +26,12 @@ model.prototype.onHit = function() {
 }
 model.prototype.kill = function() {
 }
-model.prototype.init = function(team,enemy,locator,seeded) {
+model.prototype.init = function(team,enemy,locator,seeded,master) {
 	this.team = team
 	this.enemy = enemy
 	this.locator = locator
 	this.seeded = seeded
+	this.master = master
 }
 model.prototype.action = function() {
 	console.error("神器行动未定义")
