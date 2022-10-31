@@ -97,7 +97,7 @@ var gradingEntity = function(self,theatreId) {
 					rankList.push(Math.floor(grading_robot[i].score * (1 + j * 0.1)),(Math.floor(Math.random()*lastid) + 1)+"|"+i+"|"+j)
 				}
 			}
-			if(newRankList){
+			if(newRankList && newRankList.length){
 				rankList = rankList.concat(newRankList)
 				var realRankList = [main_name+":realRank"]
 				realRankList = realRankList.concat(newRankList)
