@@ -863,6 +863,7 @@ module.exports = function() {
 						self.setBeautInfo(uid,beautId,"att3",0)
 						self.setBeautInfo(uid,beautId,"att4",0)
 						self.setBeautInfo(uid,beautId,"opinion",0)
+						self.taskUpdate(uid,"beauty_num",1)
 					}
 					self.updateCE(uid)
 					var beautInfo = self.getBeautyInfo(uid,beautId)

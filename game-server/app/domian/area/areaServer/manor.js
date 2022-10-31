@@ -236,7 +236,10 @@ module.exports = function() {
 						self.incrbyLordData(uid,"warehouse",add_food)
 					break
 				}
+				if(bId == "main")
+					self.taskUpdate(uid,"manor_lv",1,buildLv)
 				self.updateSprintRank("manor_rank",uid,manor_builds[bId]["score_rate"])
+				self.taskUpdate(uid,"manor_score",manor_builds[bId]["score_rate"])
 				cb(true,info)
 			}
 		],function(err) {
