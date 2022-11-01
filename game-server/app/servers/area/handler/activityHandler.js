@@ -176,6 +176,23 @@ activityHandler.prototype.getLimitGiftData = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//获取单骑挑战首通记录
+activityHandler.prototype.getAreaChallengeRecord = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getAreaChallengeRecord(function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//领取单骑首通奖励
+activityHandler.prototype.gainAreaChallengePass = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  this.areaManager.areaMap[areaId].gainAreaChallengePass(uid,index,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 // //购买限时礼包
 // activityHandler.prototype.buyLimitGift = function(msg, session, next) {
 //   var uid = session.uid

@@ -59,6 +59,7 @@ area.prototype.init = function() {
 	this.initBeherrscher()
 	this.rebateInit()
 	this.manorInitData()
+	this.initAreaChallenge()
 	this.timer = setInterval(this.update.bind(this),5000)
 }
 //服务器关闭

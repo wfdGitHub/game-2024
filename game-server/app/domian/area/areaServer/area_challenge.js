@@ -17,6 +17,13 @@ module.exports = function() {
 		"time" : 0,
 		"trialId" : 0
 	}
+	this.maxIndex = 9999
+	//初始化
+	this.initAreaChallenge = function() {
+		self.getAreaObj("areaInfo",main_name,function(data) {
+			self.maxIndex = Number(data) || 0
+		})
+	}
 	//获取挑战山海数据
 	this.getAreaChallengeData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(data) {
@@ -75,6 +82,7 @@ module.exports = function() {
 					    if(winFlag){
 				    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId],1,"挑战山海"+cur_chapter)
 				    		if(bossId >= 3){
+				    			self.areaChallengePass(uid,cur_chapter)
 				    			cur_chapter++
 				    			bossId = 0
 				    			time += 86400000
@@ -147,6 +155,7 @@ module.exports = function() {
 					    if(winFlag){
 				    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId],1,"挑战山海"+cur_chapter)
 				    		if(bossId >= 3){
+				    			self.areaChallengePass(uid,cur_chapter)
 				    			cur_chapter++
 				    			bossId = 0
 				    			time += 86400000
@@ -202,6 +211,7 @@ module.exports = function() {
 			    if(winFlag){
 		    		info.awardList = self.addItemStr(uid,area_challenge[cur_chapter]["award"+bossId],1,"挑战山海"+cur_chapter)
 		    		if(bossId >= 3){
+		    			self.areaChallengePass(uid,cur_chapter)
 		    			cur_chapter++
 		    			bossId = 0
 		    			time += 86400000
@@ -217,6 +227,57 @@ module.exports = function() {
 			    	cb(false,info)
 			    }
 			}
+		})
+	}
+	//获取单骑挑战首通记录
+	this.getAreaChallengeRecord = function(cb) {
+		self.getAreaObjAll(main_name,function(data) {
+			cb(true,data)
+		})
+	}
+	//单骑挑战通过
+	this.areaChallengePass = function(uid,lv) {
+		console.log("areaChallengePass",uid,lv,self.maxIndex)
+		if(lv > self.maxIndex){
+			self.maxIndex = lv
+			self.setAreaObj("areaInfo",main_name,self.maxIndex)
+			//记录
+			var userInfos = self.getSimpleUser(uid)
+			userInfos.time = Date.now()
+			self.setAreaObj(main_name,self.maxIndex,JSON.stringify(userInfos))
+			//奖励
+			self.sendTextToMail(uid,"area_challenge",area_challenge[self.maxIndex]["pass_award"])
+		}
+	}
+	//领取单骑首通奖励
+	this.gainAreaChallengePass = function(uid,index,cb) {
+		async.waterfall([
+			function(next) {
+				if(!area_challenge[index])
+					next("index error")
+				else
+					next()
+			},
+			function(next) {
+				self.getAreaObj(main_name,self.maxIndex,function(data) {
+					if(!data)
+						next("该关卡尚未首通")
+					else
+						next()
+				})
+			},
+			function(next) {
+				self.getObj(uid,main_name,"pass_"+index,function(data) {
+					if(data){
+						next("该奖励已领取")
+					}else{
+						self.setObj(uid,main_name,"pass_"+index,1)
+						var awardList = self.addItemStr(uid,area_challenge[index]["area_award"],1,"单骑首通"+index)
+					}
+				})
+			}
+		],function(err) {
+			cb(false,err)
 		})
 	}
 	//三队挑战

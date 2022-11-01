@@ -1908,6 +1908,18 @@
             console.log(data);
         });
       }
+      //获取单骑挑战首通记录
+      var getAreaChallengeRecord = function() {
+        pomelo.request("area.activityHandler.getAreaChallengeRecord", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取单骑首通奖励
+      var gainAreaChallengePass = function(index) {
+        pomelo.request("area.activityHandler.gainAreaChallengePass", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
       //==============限时礼包==========//
       //获取限时礼包数据
       var getLimitGiftData = function() {
