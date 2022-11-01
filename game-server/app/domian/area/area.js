@@ -152,6 +152,7 @@ area.prototype.register = function(otps,cb) {
 				self.incrbyAreaObj("areaInfo","day_create",1)
 				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",1000500,1)
 				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",1000080,1)
+				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",200100,10)
 				cb(true,playerInfo)
 			})
 		}
