@@ -302,12 +302,14 @@ module.exports = function() {
 	}
 	//取出共鸣英雄
 	this.cleanCoexistHero = function(uid,hId,index,cb) {
+		var heroInfo = {}
 		async.waterfall([
 			function(next) {
-				self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
 				    if(!flag){
 				      	next("英雄不存在")
 				    }else{
+				    	heroInfo = data
 				    	if(!heroInfo["coexist"]){
 				    		next("该英雄未共鸣")
 				    		return
@@ -339,6 +341,7 @@ module.exports = function() {
 				self.heroDao.delHeroInfo(self.areaId,uid,hId,"coexist")
 				self.delObj(uid,"coexistList","slot_"+index)
 				self.setObj(uid,"coexistList","time_"+index,time)
+				self.checkCoexistMap(uid,hId,heroInfo.lv)
 				cb(true,time)
 			}
 		],function(err) {

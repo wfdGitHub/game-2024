@@ -269,11 +269,15 @@ module.exports = function() {
 	}
 	//购买GM等级
 	this.buyGMLv = function(uid,pay_id,cb) {
-		if(!GM_CFG[id] || !GM_CFG[id]["award"]){
-			cb(false,"GM特权不存在")
+		if(!pay_cfg[pay_id]){
+			cb(false,"pay_id error "+pay_id)
 			return
 		}
 		var id = pay_cfg[pay_id]["arg"]
+		if(!GM_CFG[id]){
+			cb(false,"GM特权不存在")
+			return
+		}
 		var index = self.getLordAtt(uid,"gmLv")
 		if(id <= index){
 			console.error("gm等级错误 "+id+"/"+index)
