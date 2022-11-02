@@ -112,8 +112,8 @@ module.exports = function() {
 	}
 	//判断共鸣属性
 	this.checkCoexistMap = function(uid,hId,lv) {
-		console.log("userCoexistMaps",userCoexistMaps[uid],lv,userTeams[uid][6]["coexist"])
 		if(userCoexistMaps[uid] && userTeams[uid]){
+			console.log("userCoexistMaps",userCoexistMaps[uid],lv,userTeams[uid][6]["coexist"])
 			if(userCoexistMaps[uid][hId]){
 				//共鸣英雄
 				console.log("1111111")
@@ -212,9 +212,9 @@ module.exports = function() {
 	local.calCoexistLv = function(uid) {
 		console.log("计算共鸣属性")
 		if(userCoexistMaps[uid] && userTeams[uid]){
-			var min = -1
+			var min = 1
 			for(var i in userCoexistMaps[uid]){
-				if(min == -1 || userCoexistMaps[uid][i] < min){
+				if(userCoexistMaps[uid][i] < min){
 					min = userCoexistMaps[uid][i]
 				}
 			}

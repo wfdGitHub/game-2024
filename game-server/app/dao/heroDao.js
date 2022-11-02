@@ -200,6 +200,7 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	if(!otps.robot){
 		this.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
 		this.updateHeroArchive(areaId,uid,id,star)
+		this.areaManager.areaMap[areaId].checkCoexistMap(uid,hId,1)
 	}
 	if(cb)
 		cb(true,heroInfo)
