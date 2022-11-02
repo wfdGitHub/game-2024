@@ -273,6 +273,7 @@ module.exports = function() {
 					}else{
 						self.setObj(uid,main_name,"pass_"+index,1)
 						var awardList = self.addItemStr(uid,area_challenge[index]["area_award"],1,"单骑首通"+index)
+						cb(true,awardList)
 					}
 				})
 			}
