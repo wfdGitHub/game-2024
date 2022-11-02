@@ -2,14 +2,9 @@ const recharge = require("../../../../config/gameCfg/recharge.json")
 const recharge_total = require("../../../../config/gameCfg/recharge_total.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 const activity_cfg = require("../../../../config/gameCfg/activity_cfg.json")
-const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
 const war_horn = require("../../../../config/gameCfg/war_horn.json")
 const gift_list = require("../../../../config/gameCfg/gift_list.json")
-const gift_week = require("../../../../config/gameCfg/gift_week.json")
-const gift_month = require("../../../../config/gameCfg/gift_month.json")
-const gift_skin = require("../../../../config/gameCfg/gift_skin.json")
 const pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
-const gift_loop = require("../../../../config/gameCfg/gift_loop.json")
 const wuxian = require("../../../../config/gameCfg/wuxian.json")
 const util = require("../../../../util/util.js")
 const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
@@ -30,15 +25,15 @@ for(var payId in pay_cfg){
 	if(rechargeMap[cent])
 		recharge_once_table[payId] = rechargeMap[cent]
 }
-var skinArr = []
-for(var i in gift_skin)
-	skinArr.push(i)
-var skinList = []
+// var skinArr = []
+// for(var i in gift_skin)
+// 	skinArr.push(i)
+// var skinList = []
 module.exports = function() {
 	var self = this
 	//每日刷新
 	this.rechargeDayUpdate = function() {
-		skinList = util.getRandomArray(skinArr,6)
+		// skinList = util.getRandomArray(skinArr,6)
 	}
 	//玩家每日刷新
 	this.userRechargeDayUpdate = function(uid) {
@@ -174,17 +169,8 @@ module.exports = function() {
 			case "recharge":
 				this.recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
-			case "box_day":
-				this.buyAwardBagday(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "box_week":
-				this.buyAwardBagWeek(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "box_month":
-				this.buyAwardBagMonth(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
 			case "limit_gift":
-				this.buyLimitGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+				this.buyLimitGift(uid,pay_id,call_back.bind(this,uid))
 			break
 			case "quick_pri":
 				this.buyQuickPri(uid,call_back.bind(this,uid))
@@ -204,12 +190,6 @@ module.exports = function() {
 			case "manor_pri":
 				this.buyManorPri(uid,call_back.bind(this,uid))
 			break
-			case "gift_loop":
-				this.buyLoopGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "gift_skin":
-				this.buyLimitSkin(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
 			case "wuxian":
 				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
@@ -219,6 +199,8 @@ module.exports = function() {
 			case "fast":
 				this.buyFastRecharge(uid,pay_id,call_back.bind(this,uid))
 			break
+			default:
+				console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
 		}
 		var once_index = recharge_once_table[pay_id]
 		if(once_index){
@@ -301,22 +283,22 @@ module.exports = function() {
 		cb(true)
 	}
 	//购买循环礼包
-	this.buyLoopGift = function(uid,loopId,cb) {
-		if(!loopId || !gift_loop[loopId]){
-			cb(false,"礼包不存在")
-			return
-		}
-		self.getObj(uid,main_name,"loop_"+loopId,function(data) {
-			if(data > 0){
-				console.log("循环礼包已购买",loopId)
-			}
-			self.incrbyObj(uid,main_name,"loop_"+loopId,1)
-			var award = "202:"+gift_loop[loopId].gold
-			award += "&"+gift_loop[loopId].award
-			self.sendTextToMail(uid,"recharge",award)
-			cb(true)
-		})
-	}
+	// this.buyLoopGift = function(uid,loopId,cb) {
+	// 	if(!loopId || !gift_loop[loopId]){
+	// 		cb(false,"礼包不存在")
+	// 		return
+	// 	}
+	// 	self.getObj(uid,main_name,"loop_"+loopId,function(data) {
+	// 		if(data > 0){
+	// 			console.log("循环礼包已购买",loopId)
+	// 		}
+	// 		self.incrbyObj(uid,main_name,"loop_"+loopId,1)
+	// 		var award = "202:"+gift_loop[loopId].gold
+	// 		award += "&"+gift_loop[loopId].award
+	// 		self.sendTextToMail(uid,"recharge",award)
+	// 		cb(true)
+	// 	})
+	// }
 	//激活等级基金
 	this.activateLvFund = function(uid,cb) {
 		self.getObj(uid,main_name,"lv_fund",function(data) {
@@ -419,68 +401,57 @@ module.exports = function() {
 	}
 	//购买每日礼包
 	this.buyAwardBagday = function(uid,index,cb) {
-		if(!index || !awardBag_day[index]){
-			cb(false,"礼包不存在")
-			return
-		}
-		self.getObj(uid,main_name,"bagDay_"+index,function(data) {
-			if(data > 0){
-				cb(false,"已购买")
-				return
-			}
-			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
-			self.sendTextToMail(uid,"recharge",awardBag_day[index].award)
-			cb(true)
-		})
+		// if(!index || !awardBag_day[index]){
+		// 	cb(false,"礼包不存在")
+		// 	return
+		// }
+		// self.getObj(uid,main_name,"bagDay_"+index,function(data) {
+		// 	if(data > 0){
+		// 		cb(false,"已购买")
+		// 		return
+		// 	}
+		// 	self.incrbyObj(uid,main_name,"bagDay_"+index,1)
+		// 	self.sendTextToMail(uid,"recharge",awardBag_day[index].award)
+		// 	cb(true)
+		// })
 	}
 	//获取每周礼包与每月礼包购买数据
 	this.getWeekAndMonthRecord = function(uid,cb) {
-		var info = {}
-		self.getObjAll(uid,"week_shop",function(data) {
-			info.week_shop = data || {}
-			self.getObjAll(uid,"month_shop",function(data) {
-				info.month_shop = data || {}
-				self.getObjAll(uid,"skin",function(data) {
-					info.skin_shop = data || {}
-					info.skinList = skinList
-					cb(true,info)
-				})
-			})
-		})
+		cb(true)
 	}
 	//购买每周礼包
 	this.buyAwardBagWeek = function(uid,index,cb) {
-		if(!index || !gift_week[index]){
-			cb(false,"礼包不存在")
-			return
-		}
-		self.getObj(uid,"week_shop",index,function(data) {
-			data = Number(data) || 0
-			if(data >= gift_week[index]["limit"]){
-				cb(false,"已限购")
-				return
-			}
-			self.incrbyObj(uid,"week_shop",index,1)
-			self.sendTextToMail(uid,"recharge",gift_week[index].award)
-			cb(true)
-		})
+		// if(!index || !gift_week[index]){
+		// 	cb(false,"礼包不存在")
+		// 	return
+		// }
+		// self.getObj(uid,"week_shop",index,function(data) {
+		// 	data = Number(data) || 0
+		// 	if(data >= gift_week[index]["limit"]){
+		// 		cb(false,"已限购")
+		// 		return
+		// 	}
+		// 	self.incrbyObj(uid,"week_shop",index,1)
+		// 	self.sendTextToMail(uid,"recharge",gift_week[index].award)
+		// 	cb(true)
+		// })
 	}
 	//购买每月礼包
 	this.buyAwardBagMonth = function(uid,index,cb) {
-		if(!index || !gift_month[index]){
-			cb(false,"礼包不存在")
-			return
-		}
-		self.getObj(uid,"month_shop",index,function(data) {
-			data = Number(data) || 0
-			if(data >= gift_month[index]["limit"]){
-				cb(false,"已限购")
-				return
-			}
-			self.incrbyObj(uid,"month_shop",index,1)
-			self.sendTextToMail(uid,"recharge",gift_month[index].award)
-			cb(true)
-		})
+		// if(!index || !gift_month[index]){
+		// 	cb(false,"礼包不存在")
+		// 	return
+		// }
+		// self.getObj(uid,"month_shop",index,function(data) {
+		// 	data = Number(data) || 0
+		// 	if(data >= gift_month[index]["limit"]){
+		// 		cb(false,"已限购")
+		// 		return
+		// 	}
+		// 	self.incrbyObj(uid,"month_shop",index,1)
+		// 	self.sendTextToMail(uid,"recharge",gift_month[index].award)
+		// 	cb(true)
+		// })
 	}
 	//进阶战令
 	this.advanceWarHorn = function(uid,cb) {
@@ -499,15 +470,15 @@ module.exports = function() {
 		})
 	}
 	//购买限时礼包
-	this.buyLimitGift = function(uid,id,cb) {
-		if(!gift_list[id]){
+	this.buyLimitGift = function(uid,pay_id,cb) {
+		if(!gift_list[pay_id] || !pay_cfg[pay_id]){
 			cb(false,"限时礼包错误")
 			return
 		}
-		self.getObj(uid,"limit_gift",id,function(data) {
+		self.getObj(uid,"limit_gift",pay_id,function(data) {
 			if(data){
-				self.sendTextToMail(uid,"recharge",gift_list[id]["award"])
-				self.delObj(uid,"limit_gift",id)
+				self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
+				self.delObj(uid,"limit_gift",pay_id)
 				cb(true)
 			}else{
 				cb(false,"限时礼包不存在或已过期")
@@ -517,21 +488,21 @@ module.exports = function() {
 	}
 	//购买皮肤
 	this.buyLimitSkin = function(uid,id,cb) {
-		console.log("buyLimitSkin",uid,id)
-		if(!gift_skin[id]){
-			cb(false,"限时礼包错误")
-			return
-		}
-		self.getObj(uid,"skin",id,function(data) {
-			data = Number(data) || 0
-			if(data >= gift_skin[id]["limit"]){
-				cb(false,"已限购")
-				return
-			}
-			self.incrbyObj(uid,"skin",id,1)
-			self.sendTextToMail(uid,"recharge",gift_skin[id].award)
-			cb(true)
-		})
+		// console.log("buyLimitSkin",uid,id)
+		// if(!gift_skin[id]){
+		// 	cb(false,"限时礼包错误")
+		// 	return
+		// }
+		// self.getObj(uid,"skin",id,function(data) {
+		// 	data = Number(data) || 0
+		// 	if(data >= gift_skin[id]["limit"]){
+		// 		cb(false,"已限购")
+		// 		return
+		// 	}
+		// 	self.incrbyObj(uid,"skin",id,1)
+		// 	self.sendTextToMail(uid,"recharge",gift_skin[id].award)
+		// 	cb(true)
+		// })
 	}
 	//购买快速作战特权
 	this.buyQuickPri = function(uid,cb) {

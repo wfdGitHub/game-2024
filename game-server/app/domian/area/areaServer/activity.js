@@ -8,7 +8,7 @@ const recharge = require("../../../../config/gameCfg/recharge.json")
 const recharge_total = require("../../../../config/gameCfg/recharge_total.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 const consumeTotal = require("../../../../config/gameCfg/consumeTotal.json")
-const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
+// const awardBag_day = require("../../../../config/gameCfg/awardBag_day.json")
 const pay_days = require("../../../../config/gameCfg/pay_days.json")
 const unlock_cfg = require("../../../../config/gameCfg/unlock_cfg.json")
 const invade = require("../../../../config/gameCfg/invade.json")
@@ -182,9 +182,6 @@ module.exports = function() {
 					data[i+"_count"] = 0
 					data[i+"_cd"] = 0
 				}
-			}
-			for(var i in awardBag_day){
-				data["bagDay_"+i] = 0
 			}
 			for(var i in data){
 				if(oldData[i] != data[i]){
