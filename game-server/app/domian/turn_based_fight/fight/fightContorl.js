@@ -1106,7 +1106,7 @@ model.getStandardCE = function() {
 }
 //获取基准战力阵容
 model.standardTeam = function(uid,list,dl,lv) {
-	team = list.concat()
+	var team = list.concat()
 	var standardInfo = standard_ce[lv]
 	var dlInfo = standard_dl[dl]
 	var info = Object.assign({},standardInfo)
@@ -1115,6 +1115,27 @@ model.standardTeam = function(uid,list,dl,lv) {
 		delete dlInfo.lv
 	}
 	info = Object.assign(info,dlInfo)
+	for(var i = 0;i < team.length;i++){
+		if(team[i]){
+			team[i] = Object.assign({id : team[i]},info)
+			if(team[i].star < herosCfg[team[i]["id"]]["min_star"])
+				team[i].star = herosCfg[team[i]["id"]]["min_star"]
+		}
+	}
+	team[6] = Object.assign({},standard_team_ce[lv])
+	return team
+}
+//获取原始基准战力阵容(无属性加成)
+model.oriStandardTeam = function(list,lv) {
+	var team = list.concat()
+	var standardInfo = standard_ce[lv]
+	var info = Object.assign({},standardInfo)
+	delete info["crit"]
+	delete info["critDef"]
+	delete info["slay"]
+	delete info["slayDef"]
+	delete info["hitRate"]
+	delete info["dodgeRate"]
 	for(var i = 0;i < team.length;i++){
 		if(team[i]){
 			team[i] = Object.assign({id : team[i]},info)
