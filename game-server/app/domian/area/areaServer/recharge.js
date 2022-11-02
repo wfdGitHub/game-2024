@@ -161,10 +161,10 @@ module.exports = function() {
 				this.activateLvFund(uid,call_back.bind(this,uid))
 			break
 			case "highCard":
-				this.activateHighCard(uid,call_back.bind(this,uid))
+				this.activateHighCard(uid,pay_id,call_back.bind(this,uid))
 			break
 			case "warHorn":
-				this.advanceWarHorn(uid,call_back.bind(this,uid))
+				this.advanceWarHorn(uid,pay_id,call_back.bind(this,uid))
 			break
 			case "recharge":
 				this.recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
@@ -173,13 +173,13 @@ module.exports = function() {
 				this.buyLimitGift(uid,pay_id,call_back.bind(this,uid))
 			break
 			case "quick_pri":
-				this.buyQuickPri(uid,call_back.bind(this,uid))
+				this.buyQuickPri(uid,pay_id,call_back.bind(this,uid))
 			break
 			case "tour_pri":
-				this.buyTourPri(uid,call_back.bind(this,uid))
+				this.buyTourPri(uid,pay_id,call_back.bind(this,uid))
 			break
 			case "stone_pri":
-				this.buyStonePri(uid,call_back.bind(this,uid))
+				this.buyStonePri(uid,pay_id,call_back.bind(this,uid))
 			break
 			case "ttt_pri":
 				this.buyTTTPri(uid,call_back.bind(this,uid))
@@ -194,7 +194,7 @@ module.exports = function() {
 				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "gmLv":
-				this.buyGMLv(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+				this.buyGMLv(uid,pay_id,call_back.bind(this,uid))
 			break
 			case "fast":
 				this.buyFastRecharge(uid,pay_id,call_back.bind(this,uid))
@@ -268,9 +268,15 @@ module.exports = function() {
 		cb(true)
 	}
 	//购买GM等级
-	this.buyGMLv = function(uid,id,cb) {
+	this.buyGMLv = function(uid,pay_id,cb) {
 		if(!GM_CFG[id] || !GM_CFG[id]["award"]){
 			cb(false,"GM特权不存在")
+			return
+		}
+		var id = pay_cfg[pay_id]["arg"]
+		var index = self.getLordAtt(uid,"gmLv")
+		if(id <= index){
+			console.error("gm等级错误 "+id+"/"+index)
 			return
 		}
 		self.chageLordData(uid,"gmLv",id)
@@ -279,7 +285,7 @@ module.exports = function() {
 			lv : id
 		}
 		self.sendToUser(uid,notify)
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",GM_CFG[id]["award"])
+		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
 		cb(true)
 	}
 	//购买循环礼包
@@ -386,7 +392,7 @@ module.exports = function() {
 		}
 	}
 	//激活至尊特权
-	this.activateHighCard = function(uid,cb) {
+	this.activateHighCard = function(uid,pay_id,cb) {
 		self.getObj(uid,main_name,"highCard",function(data) {
 			if(data){
 				cb(false,"已激活至尊特权")
@@ -394,7 +400,7 @@ module.exports = function() {
 				self.taskUpdate(uid,"buy_zztq",1)
 				self.setObj(uid,main_name,"highCard",1)
 				self.chageLordData(uid,"highCard",1)
-				self.sendTextToMail(uid,"recharge",activity_cfg["high_card_award"]["value"])
+				self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 				cb(true)
 			}
 		})
@@ -454,7 +460,7 @@ module.exports = function() {
 		// })
 	}
 	//进阶战令
-	this.advanceWarHorn = function(uid,cb) {
+	this.advanceWarHorn = function(uid,pay_id,cb) {
 		let curMonth = (new Date()).getMonth()
 		self.getObj(uid,"war_horn","high",function(data) {
 			if(data == 1){
@@ -464,7 +470,7 @@ module.exports = function() {
 			self.setObj(uid,"war_horn","high",1)
 			self.taskUpdate(uid,"buy_zl",1)
 			self.incrbyObj(uid,"war_horn","exp",war_horn[curMonth]["exp"],function(exp) {
-				self.sendTextToMail(uid,"recharge",war_horn[curMonth]["award"])
+				self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 				cb(true,{exp:exp})
 			})
 		})
@@ -505,7 +511,7 @@ module.exports = function() {
 		// })
 	}
 	//购买快速作战特权
-	this.buyQuickPri = function(uid,cb) {
+	this.buyQuickPri = function(uid,pay_id,cb) {
 		var  quick_pri = self.getLordAtt(uid,"quick_pri")
 		if(!quick_pri || Date.now() > quick_pri){
 			//新购
@@ -517,11 +523,11 @@ module.exports = function() {
 		}
 		self.taskUpdate(uid,"buy_kszz",1)
 		self.chageLordData(uid,"quick_pri",quick_pri)
-		self.sendTextToMail(uid,"recharge",activity_cfg["quick_award"]["value"])
+		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 		cb(true,{quick_pri:quick_pri})
 	}
 	//购买三界特权
-	this.buyTourPri = function(uid,cb) {
+	this.buyTourPri = function(uid,pay_id,cb) {
 		var  tour_pri = self.getLordAtt(uid,"tour_pri")
 		if(!tour_pri || Date.now() > tour_pri){
 			//新购
@@ -532,11 +538,11 @@ module.exports = function() {
 			tour_pri += day31Time
 		}
 		self.chageLordData(uid,"tour_pri",tour_pri)
-		self.sendTextToMail(uid,"recharge",activity_cfg["tour_award"]["value"])
+		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 		cb(true,{tour_pri:tour_pri})
 	}
 	//购买宝石矿场特权
-	this.buyStonePri = function(uid,cb) {
+	this.buyStonePri = function(uid,pay_id,cb) {
 		var  stone_pri = self.getLordAtt(uid,"stone_pri")
 		if(!stone_pri || Date.now() > stone_pri){
 			//新购
@@ -547,7 +553,7 @@ module.exports = function() {
 			stone_pri += day31Time
 		}
 		self.chageLordData(uid,"stone_pri",stone_pri)
-		self.sendTextToMail(uid,"recharge",activity_cfg["stone_award"]["value"])
+		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 		cb(true,{stone_pri:stone_pri})
 	}
 	//购买通天塔特权
