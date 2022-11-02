@@ -546,7 +546,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"highAward",1)
-			var awardList = self.addItemStr(uid,pay_cfg["1002"]["arg"],1,"至尊特权每日")
+			var awardList = self.addItemStr(uid,activity_cfg["high_card_day"]["value"],1,"至尊特权每日")
 			cb(true,awardList)
 		})
 	}
