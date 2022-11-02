@@ -153,7 +153,7 @@ module.exports = function() {
 				return
 			}
 		    if(heroInfo.coexist){
-		      next("该英雄共鸣中")
+		    	cb(false,"该英雄共鸣中"+hId)
 		      return
 		    }
 			var slv = Number(heroInfo[key]) || 0
