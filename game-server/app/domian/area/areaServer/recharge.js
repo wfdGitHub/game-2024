@@ -113,7 +113,7 @@ module.exports = function() {
 			cb(false,"pay_id error")
 			return
 		}
-		if(pay_cfg[pay_id]["type"] === "fast"){
+		if(pay_cfg[pay_id]["count"]){
 			self.getObj(uid,"recharge_fast",pay_id,function(data) {
 				data = Number(data) || 0
 				if(data >= pay_cfg[pay_id]["count"]){
@@ -199,9 +199,14 @@ module.exports = function() {
 			case "fast":
 				this.buyFastRecharge(uid,pay_id,call_back.bind(this,uid))
 			break
+			case "area_gift":
+				this.buyAreaGift(uid,pay_id,call_back.bind(this,uid))
+			break
 			default:
 				console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
 		}
+		if(pay_cfg[pay_id]["count"])
+			self.incrbyObj(uid,"recharge_fast",pay_id,1)
 		var once_index = recharge_once_table[pay_id]
 		if(once_index){
 			self.incrbyObj(uid,main_name,"recharge_once_"+once_index,1,function(data) {
@@ -249,8 +254,13 @@ module.exports = function() {
 	}
 	//快速充值
 	this.buyFastRecharge = function(uid,pay_id,cb) {
-		this.incrbyObj(uid,"recharge_fast",pay_id,1)
-		this.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
+		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
+		cb(true)
+	}
+	//新服限购
+	this.buyAreaGift = function(uid,pay_id,cb) {
+		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
+		self.addAreaGiftNum(pay_cfg[pay_id]["arg"])
 		cb(true)
 	}
 	//购买无限特权
