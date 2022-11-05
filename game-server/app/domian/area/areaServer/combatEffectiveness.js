@@ -212,7 +212,7 @@ module.exports = function() {
 	local.calCoexistLv = function(uid) {
 		console.log("计算共鸣属性")
 		if(userCoexistMaps[uid] && userTeams[uid]){
-			var min = 1
+			var min = 9999
 			for(var i in userCoexistMaps[uid]){
 				if(userCoexistMaps[uid][i] < min){
 					min = userCoexistMaps[uid][i]

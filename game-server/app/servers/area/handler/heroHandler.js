@@ -414,10 +414,6 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                   console.error(err)
                 self.heroDao.heroPrlvadnad(areaId,uid,data,hIds,function(flag,awardList) {
                   self.heroDao.incrbyHeroInfo(areaId,uid,target,"star",1,function(flag,star) {
-                    if(flag){
-                      if(star >= 5)
-                        self.areaManager.areaMap[areaId].taskUpdate(uid,"heroStar_"+star,1,targetHero.id)
-                    }
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
                 })
@@ -429,10 +425,6 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                   console.error(err)
                 self.heroDao.heroPrlvadnad(areaId,uid,data,hIds,function(flag,awardList) {
                   self.heroDao.incrbyHeroInfo(areaId,uid,target,"star",1,function(flag,star) {
-                    if(flag){
-                      if(star >= 5)
-                        self.areaManager.areaMap[areaId].taskUpdate(uid,"heroStar_"+star,1,targetHero.id)
-                    }
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
                 })
@@ -511,7 +503,6 @@ heroHandler.prototype.upgradeStarSimple = function(msg, session, next) {
             //   text : "恭喜"+name+"合成出6星英雄"+heroName+",实力大涨名动八荒"
             // }
             // self.areaManager.areaMap[areaId].sendAllUser(notify)
-            self.areaManager.areaMap[areaId].taskUpdate(uid,"heroStar_6",1,heroInfo.id)
         }
         next(null,{flag : flag,star : star})
       })
