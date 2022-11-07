@@ -10,6 +10,8 @@ const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
 const util = require("../../../../util/util.js")
 const async = require("async")
 const main_name = "topic_recruit"
+const shilian_high = JSON.parse(default_cfg["shilian_high"]["value"])
+const shilian_middle = JSON.parse(default_cfg["shilian_middle"]["value"])
 var topicList = []
 for(var i in recruit_topic_hero)
 	topicList.push({id:i,heroId:recruit_topic_hero[i]["topic"]})
@@ -18,6 +20,12 @@ module.exports = function() {
 	var curTopic = 0
 	var curTopicHero = 0
 	var local = {}
+	var highHeroMap = {}
+	var middleHeroMap = {}
+	for(var i = 0;i < recruit_list["hero_5_3"]["heroList"].length;i++)
+		highHeroMap[recruit_list["hero_5_3"]["heroList"][i]] = 1
+	for(var i = 0;i < recruit_list["hero_5_2"]["heroList"].length;i++)
+		middleHeroMap[recruit_list["hero_5_2"]["heroList"][i]] = 1
 	//每日更新
 	this.topicRecruitDayUpdate = function() {
 		var day = (new Date()).getDate() - 1
@@ -157,11 +165,11 @@ module.exports = function() {
             self.taskUpdate(uid,"general",count)
           break
           case "topic":
-			self.getObj(uid,main_name,"count",function(num) {
-				heroInfos = local.recruit(uid,num,count)
-				cb(true,heroInfos)
-			})
-		  return
+						self.getObj(uid,main_name,"count",function(num) {
+							heroInfos = local.recruit(uid,num,count)
+							cb(true,heroInfos)
+						})
+						return
           break
           default:
             heroInfos = self.heroDao.randHero(self.areaId,uid,type,count)
@@ -325,6 +333,63 @@ module.exports = function() {
 				self.setObj(uid,main_name+":"+heroId,star,1)
 				var awardList = self.addItemStr(uid,star_base[star]["topic_award"],1,"升星"+heroId+":"+star)
 				cb(true,awardList)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//提取无限十连英雄
+	this.extractInfiniteRecruit = function(uid,heroList,cb) {
+		async.waterfall([
+			function(next) {
+				//判断参数
+				if(!heroList || !Array.isArray(heroList) || heroList.length !== 10){
+					next("heroList error "+heroList)
+					return
+				}
+				var highNum = 0
+				var middleNum = 0
+				for(var i = 0;i < heroList.length;i++){
+					if(!heros[heroList[i]] || heros[heroList[i]]["NPC"]){
+						next("heroId error "+heroList[i])
+						return
+					}
+					if(highHeroMap[heroList[i]])
+						highNum++
+					if(middleHeroMap[heroList[i]])
+						middleNum++
+				}
+				if(highNum > shilian_high.length){
+						next("高资质英雄数量错误"+highNum)
+						return
+				}
+				if(middleNum > shilian_middle.length){
+						next("中资质英雄数量错误"+middleNum)
+						return
+				}
+				next()
+			},
+			function(next) {
+			  //判断背包上限
+			  self.heroDao.getHeroAmount(uid,function(flag,info) {
+			      if(info.cur + 10 > info.max){
+			        next("英雄背包已满")
+			      }else{
+			        next()
+			      }
+			  })
+			},
+			function(next) {
+		      self.consumeItems(uid,"10020:1",1,"无限十连",function(flag,err) {
+		        if(!flag){
+		          next(err)
+		          return
+		        }
+						var info = []
+						for(var i = 0;i < heroList.length;i++)
+							info.push(self.heroDao.gainHero(self.areaId,uid,{id : heroList[i]}))
+						cb(true,info)
+		      })
 			}
 		],function(err) {
 			cb(false,err)

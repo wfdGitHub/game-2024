@@ -98,6 +98,12 @@
         console.log("onChat")
         console.log(data)
       })
+      //提取无限十连英雄
+      var extractInfiniteRecruit = function(heroList) {
+        pomelo.request("area.recruitHandler.extractInfiniteRecruit", {heroList:heroList}, function(data) {
+            console.log(data);
+        });
+      }
       //新服限购
       //获取新服限购数据
       var getAreaGiftData = function() {
