@@ -39,7 +39,7 @@ module.exports = function() {
 				  		cb(false,"英雄背包已满")
 				    	return
 				  	}
-					self.consumeItems(uid,otps.itemId+":"+needValue,value,"合成英雄",function(flag,err) {
+					self.consumeItems(uid,otps.itemId+":"+needValue,value,"合成英雄*"+value,function(flag,err) {
 						if(!flag){
 							cb(false,err)
 						}else{
@@ -59,7 +59,7 @@ module.exports = function() {
 				    	cb(false,"英雄背包已满")
 				    	return
 				  	}
-					self.consumeItems(uid,otps.itemId+":"+needValue,value,"合成英雄",function(flag,err) {
+					self.consumeItems(uid,otps.itemId+":"+needValue,value,"合成英雄*"+value,function(flag,err) {
 						if(!flag){
 							cb(false,err)
 						}else{
@@ -72,7 +72,7 @@ module.exports = function() {
 			break
 			case "chest":
 				//宝箱
-				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝箱"+otps.itemId,function(flag,err) {
+				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝箱"+otps.itemId+"*"+value,function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
@@ -87,7 +87,7 @@ module.exports = function() {
 			break
 			case "box":
 				//宝盒
-				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝盒"+otps.itemId,function(flag,err) {
+				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝盒"+otps.itemId+"*"+value,function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
@@ -104,7 +104,7 @@ module.exports = function() {
 					cb(false,"index error "+index)
 					return
 				}
-				self.consumeItems(uid,otps.itemId+":"+value,1,"自选包"+otps.itemId,function(flag,err) {
+				self.consumeItems(uid,otps.itemId+":"+value,1,"自选包"+otps.itemId+"*"+value,function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
