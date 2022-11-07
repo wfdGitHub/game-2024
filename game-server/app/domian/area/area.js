@@ -252,6 +252,7 @@ area.prototype.weekFirstLogin = function(uid) {
 	this.chageLordData(uid,"weekStr",this.weekStr)
 	this.chageLordData(uid,"week_rmb",0)
 	this.chageLordData(uid,"real_week",0)
+	this.setPlayerData(uid,"guild_swap",0)
 	this.activityWeekUpdate(uid)
 	this.weekTaskRefresh(uid)
 	this.userRechargeWeekUpdate(uid)

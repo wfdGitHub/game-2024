@@ -98,6 +98,12 @@
         console.log("onChat")
         console.log(data)
       })
+      //免费置换
+      var guildSwapHero = function(hId,heroId) {
+        pomelo.request("area.guildHandler.guildSwapHero", {hId:hId,heroId:heroId}, function(data) {
+            console.log(data);
+        });
+      }
       //提取无限十连英雄
       var extractInfiniteRecruit = function(heroList) {
         pomelo.request("area.recruitHandler.extractInfiniteRecruit", {heroList:heroList}, function(data) {

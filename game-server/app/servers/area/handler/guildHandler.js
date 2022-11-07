@@ -486,6 +486,16 @@ guildHandler.prototype.getGuildCityBossInfo = function(msg, session, next) {
     next(null,{flag:flag,data:data})
   })
 }
+//免费置换
+guildHandler.prototype.guildSwapHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var heroId = msg.heroId
+  this.areaManager.areaMap[areaId].guildSwapHero(uid,hId,heroId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "guildHandler",

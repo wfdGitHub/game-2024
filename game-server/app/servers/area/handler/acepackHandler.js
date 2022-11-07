@@ -44,13 +44,6 @@ acepackHandler.prototype.wearAcepack = function(msg, session, next) {
       })
     },
     function(cb) {
-      let lv = self.areaManager.areaMap[areaId].getLordLv(uid)
-        if(lv < ace_pack_base["pos_"+pos]["role_lv"])
-          cb("主公等级不够，未开放该锦囊格")
-        else
-          cb()
-    },
-    function(cb) {
       self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
         if(!flag){
           cb("英雄不存在")

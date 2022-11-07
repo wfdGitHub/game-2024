@@ -1,4 +1,5 @@
 //公会
+const heros = require("../../../../config/gameCfg/heros.json")
 const guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
 const guild_lv = require("../../../../config/gameCfg/guild_lv.json")
 const guild_sign = require("../../../../config/gameCfg/guild_sign.json")
@@ -927,6 +928,62 @@ module.exports = function() {
 				self.redisDao.db.hset("guild:giftinfo:"+giftId,"user_"+num,giftInfo["user_"+num])
 				var awardList = self.addItemStr(uid,currency+":"+giftInfo["amount_"+num],1,"公会红包")
 				cb(true,{giftInfo : giftInfo,awardList : awardList})
+			})
+		})
+	}
+	//公会免费置换
+	this.guildSwapHero = function(uid,hId,heroId,cb) {
+		var guildId = self.players[uid]["gid"]
+		if(!guildId){
+			cb(false,"未加入公会")
+			return
+		}
+		var guildLv = guildList[guildId].lv
+		var swapNum = guild_lv[guildLv]["swap"]
+		self.getPlayerData(uid,"guild_swap",function(data) {
+			data = Number(data) || 0
+			if(data >= swapNum){
+				cb(false,"置换次数已达上限")
+				return
+			}
+			self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+			    if(!flag){
+			      	cb(false,"英雄不存在")
+			    }else{
+			    	if(heroInfo.combat){
+			    		cb(false,"英雄已上阵不可置换")
+			    		return
+			    	}
+			    	if(heros[heroInfo.id]["min_star"] < 5){
+			    		cb(false,"五星英雄才可以置换")
+			    		return
+			    	}
+			    	if(!heros[heroId] || heros[heroId]["NPC"]){
+			    		cb(false,"heroId error "+heroId)
+			    		return
+			    	}
+			    	if(Math.abs(heros[heroInfo.id]["aptitude"]-heros[heroId]["aptitude"]) > 1){
+			    		cb(false,"只能置换同品质的英雄")
+			    		return
+			    	}
+			    	self.incrbyPlayerData(uid,"guild_swap",1)
+			    	var strList = []
+			    	for(var i = 0;i <= 10;i++){
+						if(heroInfo["a"+i]){
+							self.heroDao.delHeroInfo(self.areaId,uid,hId,"a"+i)
+							strList.push(heroInfo["a"+i]+":1")
+							delete heroInfo["a"+i]
+						}
+					}
+					var awardList = []
+					if(strList.length){
+						var str = self.mergepcstr(strList)
+						awardList = self.addItemStr(uid,str,1,"材料返还")
+					}
+					heroInfo.id = heroId
+			    	self.heroDao.setHeroInfo(self.areaId,uid,hId,"id",heroId)
+			    	cb(true,{heroInfo:heroInfo,awardList:awardList})
+			    }
 			})
 		})
 	}
