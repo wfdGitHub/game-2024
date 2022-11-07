@@ -962,7 +962,7 @@ module.exports = function() {
 			    		cb(false,"heroId error "+heroId)
 			    		return
 			    	}
-			    	if(Math.abs(heros[heroInfo.id]["aptitude"]-heros[heroId]["aptitude"]) > 1){
+			    	if(heros[heroInfo.id]["aptitude"] !== heros[heroId]["aptitude"]){
 			    		cb(false,"只能置换同品质的英雄")
 			    		return
 			    	}
