@@ -400,18 +400,6 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	}
 	//进阶计算
 	if(info.ad){
-		if(advanced_talent[info.id]){
-			let advancedInfo = {}
-			for(let i = 1;i <= info.ad;i++){
-				if(i > 5)
-					break
-				let talentId = advanced_talent[info.id]["talent_"+i]
-				if(talentId)
-					model.mergeTalent(advancedInfo,talentId)
-			}
-			// console.log("advancedInfo",advancedInfo)
-			model.mergeData(info,advancedInfo)
-		}
 		if(hero_ad[info.ad] && hero_ad[info.ad]["att"]){
 			let strs = hero_ad[info.ad]["att"].split("&")
 			let advancedInfo = {}
