@@ -30,8 +30,8 @@ module.exports = function() {
 		})
 	}
 	//刷新
-	this.updateSprintRank = function() {
-		if(curRankIndex != -1 && sprint_rank[curRankIndex] && Date.now() > settleTime)
+	this.sprintRankDayUpdate = function() {
+		if((curRankIndex != -1) && sprint_rank[curRankIndex] && (Date.now() > settleTime))
 			self.settleSprintRank()
 	}
 	//结算排行榜
