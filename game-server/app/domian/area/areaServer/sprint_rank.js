@@ -39,7 +39,7 @@ module.exports = function() {
 		if(sprint_rank[curRankIndex]){
 			var index = curRankIndex
 			var rankType = sprint_rank[index]["rank_type"]
-			settleTime += rankTime
+			settleTime = Date.now() + rankTime
 			self.setAreaObj(main_name,"time",settleTime)
 			self.zrangewithscore(rankType,0,-1,function(list) {
 				var rank = 0
