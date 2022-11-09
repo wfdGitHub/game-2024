@@ -361,10 +361,6 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
             next(null,{flag : false,data : "英雄不存在"+hIds[i]})
             return
           }
-          if(data[i].coexist){
-            next(null,{flag : false,err : "该英雄共鸣中"})
-            return
-          }
           if(data[i].combat){
             next(null,{flag : false,data : "英雄已出战"+hIds[i]})
             return
