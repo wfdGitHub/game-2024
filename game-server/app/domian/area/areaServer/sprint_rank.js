@@ -10,9 +10,8 @@ for(var i in sprint_rank){
 }
 module.exports = function() {
 	var self = this
-	var timer = 0
 	var curRankIndex = -1
-	var curTime = 0
+	var settleTime = 0
 	//初始化
 	this.initSprintRank = function() {
 		if(!self.newArea){
@@ -25,24 +24,23 @@ module.exports = function() {
 					time : Date.now() + rankTime
 				}
 				self.setAreaHMObj(main_name,data)
-				curRankIndex = data.index
-				curTime = data.time
-				timer = setTimeout(self.settleSprintRank.bind(this),rankTime)
-			}else{
-				curRankIndex = Number(data.index)
-				curTime = Number(data.time)
-				if(curRankIndex != -1){
-					var dt = Number(data.time) - Date.now()
-					timer = setTimeout(self.settleSprintRank.bind(this),dt)
-				}
 			}
+			curRankIndex = Number(data.index)
+			settleTime = Number(data.time)
 		})
+	}
+	//刷新
+	this.updateSprintRank = function() {
+		if(curRankIndex != -1 && sprint_rank[curRankIndex] && Date.now() > settleTime)
+			self.settleSprintRank()
 	}
 	//结算排行榜
 	this.settleSprintRank = function() {
-		clearTimeout(timer)
 		if(sprint_rank[curRankIndex]){
-			var rankType = sprint_rank[curRankIndex]["rank_type"]
+			var index = curRankIndex
+			var rankType = sprint_rank[index]["rank_type"]
+			settleTime += rankTime
+			self.setAreaObj(main_name,"time",settleTime)
 			self.zrangewithscore(rankType,0,-1,function(list) {
 				var rank = 0
 				var saveDate = []
@@ -52,9 +50,9 @@ module.exports = function() {
 						rank = 11
 					var score = Math.floor(list[i+1])
 	                var award = ""
-	                award = sprint_rank[curRankIndex]["rank_"+rank]
-	                if(score >= sprint_rank[curRankIndex]["extra_premise"]){
-	                    award += "&"+sprint_rank[curRankIndex]["extra_award"]
+	                award = sprint_rank[index]["rank_"+rank]
+	                if(score >= sprint_rank[index]["extra_premise"]){
+	                    award += "&"+sprint_rank[index]["extra_award"]
 	                }
 					if(rank >= 11){
 						self.sendTextToMail(list[i],"sprint_play",award)
@@ -64,29 +62,13 @@ module.exports = function() {
 					}
 				}
 				curRankIndex++
-				var data = {}
-				if(sprint_rank[curRankIndex]){
-					data = {
-						index : curRankIndex,
-						time : Date.now() + rankTime
-					}
-					curRankIndex = data.index
-					curTime = data.time
-					self.setAreaHMObj(main_name,data)
-					timer = setTimeout(self.settleSprintRank.bind(this),rankTime)
-				}else{
-					data = {
-						index : -1,
-						time : 0
-					}
-					curRankIndex = data.index
-					curTime = data.time
-					self.setAreaHMObj(main_name,data)
-				}
+				if(!sprint_rank[curRankIndex])
+					curRankIndex = -1
+				self.setAreaObj(main_name,"index",curRankIndex)
 				var notify = {
 					type : "settleSprintRank",
-					curRankIndex : data.index,
-					time : data.time
+					index : curRankIndex,
+					time : settleTime
 				}
 				self.sendAllUser(notify)
 			})
@@ -107,7 +89,7 @@ module.exports = function() {
 					info.userInfos = userInfos
 					info.scores = scores
 					info.curRankIndex = curRankIndex
-					info.time = curTime
+					info.time = settleTime
 					cb(true,info)
 				})
 			})
@@ -131,7 +113,7 @@ module.exports = function() {
 					info.userInfos = userInfos
 					info.scores = scores
 					info.curRankIndex = curRankIndex
-					info.time = curTime
+					info.time = settleTime
 					cb(true,info)
 				})
 			})

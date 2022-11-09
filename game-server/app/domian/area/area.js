@@ -80,6 +80,7 @@ area.prototype.update = function() {
 		this.dayUpdate(curDayStr)
 	}
 	this.manorUpdate()
+	this.settleSprintRank()
 }
 //每日定时器
 area.prototype.dayUpdate = function(curDayStr) {
