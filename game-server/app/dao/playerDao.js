@@ -55,7 +55,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 			if(!err){
 				self.redisDao.db.hset("game:nameMap",otps.name,uid)
 				self.heroDao.gainHero(otps.areaId,uid,{id : beginHero},function(flag,heroInfo) {
-					self.heroDao.setFightTeam(otps.areaId,uid,[heroInfo.hId,0,null,null,null,null])
+					self.heroDao.setFightTeam(otps.areaId,uid,[0,heroInfo.hId,0,0,0,0])
 				})
 				self.cacheDao.saveCache(Object.assign({"messagetype":"create"},playerInfo))
 				cb(playerInfo)
