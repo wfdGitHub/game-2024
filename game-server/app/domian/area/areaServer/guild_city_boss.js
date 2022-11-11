@@ -1,4 +1,4 @@
-//新公会攻城战
+//新同盟攻城战
 const main_name = "guild_city_boss"
 const guild_city = require("../../../../config/gameCfg/guild_city.json")
 const guild_city_boss = require("../../../../config/gameCfg/guild_city_boss.json")
@@ -82,7 +82,7 @@ module.exports = function() {
 		}
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入同盟")
 			return
 		}
 		if((new Date()).getHours() < fightTime){
@@ -143,7 +143,7 @@ module.exports = function() {
 		//占领奖励
 		self.zrange("guildCityBossGuildRank:"+index,-1,-1,function(list) {
 			var win_id = list[0]
-			//绑定占领公会
+			//绑定占领同盟
 			self.addGuildEXP(win_id,500)
 			self.addGuildGift(win_id,"【"+guild_city[index]["name"]+"】",10,guild_city_boss[city_boss["boss_"+index+"_lv"]]["red_award"],oneDayTime)
 			self.redisDao.db.hget("guild:guildInfo:"+win_id,"name",function(err,data) {
@@ -152,7 +152,7 @@ module.exports = function() {
 			})
 		})
 	}
-	//获取城池信息(个人排行榜,公会排行榜)
+	//获取城池信息(个人排行榜,同盟排行榜)
 	this.getGuildCityBossInfo = function(uid,index,cb) {
 		var info = {}
 		info.bossHp = city_boss["boss_"+index+"_hp"]

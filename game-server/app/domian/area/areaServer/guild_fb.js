@@ -1,4 +1,4 @@
-//公会副本
+//同盟副本
 const async = require("async")
 const guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
 const guild_fb = require("../../../../config/gameCfg/guild_fb.json")
@@ -20,7 +20,7 @@ module.exports = function() {
 	this.getGuildFBData = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入同盟")
 			return
 		}
 		var info = {}
@@ -37,7 +37,7 @@ module.exports = function() {
 	this.getHistoryGuildFB =function(uid,fbId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入同盟")
 			return
 		}
 		if(!guild_fb[fbId]){
@@ -67,7 +67,7 @@ module.exports = function() {
 	this.challengeGuildFB = function(uid,fbId,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入同盟")
 			return
 		}
 		var guildInfo = self.getGuildInfo(guildId)
@@ -138,7 +138,7 @@ module.exports = function() {
 							killFlag = true
 							self.sendTextToMail(uid,"guildfb_kill",currency+":"+guild_fb[fbId]["kill"])
 							self.addGuildEXP(guildId,guild_fb[fbId]["exp"])
-							self.addGuildGift(guildId,"公会副本【"+(fbId+1)+"】",10,guild_fb[fbId]["gift"],oneDayTime)
+							self.addGuildGift(guildId,"同盟副本【"+(fbId+1)+"】",10,guild_fb[fbId]["gift"],oneDayTime)
 							self.redisDao.db.hincrby(main_name+":"+guildId,"curFB",1)
 							self.redisDao.db.zrange(main_name+":"+guildId+":"+fbId,-3,-1,function(err,list) {
 								var rank = 0
@@ -173,7 +173,7 @@ module.exports = function() {
 			cb(false,err)
 		})
 	}
-	//购买公会副本挑战次数
+	//购买同盟副本挑战次数
 	this.buyGuildFBCount = function(uid,cb) {
 		self.getObj(uid,main_name,"buy",function(buy) {
 			buy = Number(buy) || 0
@@ -181,7 +181,7 @@ module.exports = function() {
 				cb(false,"购买次数已达上限")
 				return
 			}
-			self.consumeItems(uid,default_cfg["default_pc_1"]["value"],1,"公会副本次数",function(flag,err) {
+			self.consumeItems(uid,default_cfg["default_pc_1"]["value"],1,"同盟副本次数",function(flag,err) {
 				if(flag){
 					self.incrbyObj(uid,main_name,"buy",1,function(data) {
 						cb(true,data)
@@ -193,7 +193,7 @@ module.exports = function() {
 			})
 		})
 	}
-	//删除公会副本数据
+	//删除同盟副本数据
 	this.removeGuildFBdata = function(guildId) {
 		self.redisDao.db.del(main_name+":"+guildId)
 		for(var fbId in guild_fb)

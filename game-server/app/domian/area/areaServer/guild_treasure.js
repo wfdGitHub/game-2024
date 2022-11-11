@@ -1,4 +1,4 @@
-//公会宝藏BOSS
+//同盟宝藏BOSS
 const async = require("async")
 const guild_cfg = require("../../../../config/gameCfg/guild_cfg.json")
 const guild_lv = require("../../../../config/gameCfg/guild_lv.json")
@@ -41,7 +41,7 @@ module.exports = function() {
 	this.getAuctionData = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入同盟")
 			return
 		}
 		var info = {}
@@ -117,7 +117,7 @@ module.exports = function() {
 	this.challengeTreasureBoss = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入同盟")
 			return
 		}
 		if((new Date()).getHours() < fightTime){
@@ -252,7 +252,7 @@ module.exports = function() {
 	this.getAuctionList = function(uid,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入同盟")
 			return
 		}
 		self.redisDao.db.hgetall(main_name+":"+guildId,function(err,list) {
@@ -263,7 +263,7 @@ module.exports = function() {
 	this.upForAuction = function(uid,index,price,cb) {
 		var guildId = self.players[uid]["gid"]
 		if(!guildId){
-			cb(false,"未加入公会")
+			cb(false,"未加入同盟")
 			return
 		}
 		if(!Number.isInteger(price) || price <= 0){

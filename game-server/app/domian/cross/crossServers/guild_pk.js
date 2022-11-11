@@ -10,7 +10,7 @@ const star_add = {
 	"2" : {amplify : -0.1,reduction : -0.1,self_maxHP_add : 0.3},
 	"3" : {amplify : 0.15,reduction : 0.15,self_maxHP_add : 0.3}
 }
-//跨服公会战
+//跨服同盟战
 module.exports = function() {
 	var self = this
 	var pk_info = {}
@@ -40,9 +40,9 @@ module.exports = function() {
 			}
 		})
 	}
-	//匹配公会
+	//匹配同盟
 	this.matchGuildPKRival = function() {
-		console.log("匹配公会")
+		console.log("匹配同盟")
 		async.waterfall([
 			function(next) {
 				//旧数据清理
@@ -66,7 +66,7 @@ module.exports = function() {
 				next()
 			},
 			function(next) {
-				//获取报名公会
+				//获取报名同盟
 				self.redisDao.db.hgetall("guild_pk:apply",function(err,list) {
 					console.log("guild_pk:apply",list)
 					self.redisDao.db.del("guild_pk:apply")
@@ -87,7 +87,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//获取公会信息
+				//获取同盟信息
 				var multiList = []
 				for(var i = 0;i < pk_info.guildList.length;i++){
 					multiList.push(["hgetall","guild:guildInfo:"+pk_info.guildList[i]])
@@ -132,7 +132,7 @@ module.exports = function() {
 			console.error(err)
 		})
 	}
-	//初始化公会出战列表
+	//初始化同盟出战列表
 	this.initGuildPKFight = function(guildId) {
 		self.redisDao.db.hset(main_name+":star:"+guildId,"total",0)
 		self.redisDao.db.hgetall("guild:contributions:"+guildId,function(err,data) {
@@ -162,7 +162,7 @@ module.exports = function() {
 			})
 		})
 	}
-	//初始化公会出战玩家
+	//初始化同盟出战玩家
 	this.initGuildPKUser = function(guildId,userInfo,index) {
 		self.redisDao.db.hset(main_name+":star:"+guildId,index,0)
 		if(userInfo){
@@ -402,7 +402,7 @@ module.exports = function() {
 					self.redisDao.db.hincrby(main_name+":atkRank:"+gid,uid,fightInfo.star - fightInfo.oldStar)
 					self.redisDao.db.hset(main_name+":star:"+targetGuildId,index,fightInfo.star)
 					//发放奖励
-					self.addItemStr(crossUid,guild_pk[guildLv]["star_"+star],1,"公会PK",function(flag,awardList) {
+					self.addItemStr(crossUid,guild_pk[guildLv]["star_"+star],1,"同盟PK",function(flag,awardList) {
 						var info = {
 							awardList : awardList,
 							fightInfo : fightInfo
@@ -430,7 +430,7 @@ module.exports = function() {
 			}
 		}
 	}
-	//单组公会胜利判断
+	//单组同盟胜利判断
 	this.guildPkSettleSingle = function(guildId1,guildId2) {
 		var star1 = 0
 		var star2 = 0
@@ -441,17 +441,17 @@ module.exports = function() {
 			self.redisDao.db.hget(main_name+":star:"+guildId2,"total",function(err,data) {
 				star2 = Number(data) || 0
 				if(star1 >= 30 || star1 > star2){
-					//公会1获胜
+					//同盟1获胜
 					self.sendMailByGuildId(guildId1,"guild_pk_win",guild_pk[guildLv1]["win_award"])
 				}else{
-					//公会1失败
+					//同盟1失败
 					self.sendMailByGuildId(guildId1,"guild_pk_lose",guild_pk[guildLv1]["lose_award"])
 				}
 				if(star2 >= 30 || star2 > star1){
-					//公会2获胜
+					//同盟2获胜
 					self.sendMailByGuildId(guildId2,"guild_pk_win",guild_pk[guildLv2]["win_award"])
 				}else{
-					//公会2失败
+					//同盟2失败
 					self.sendMailByGuildId(guildId2,"guild_pk_lose",guild_pk[guildLv2]["lose_award"])
 				}
 			})
