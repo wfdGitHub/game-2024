@@ -7,8 +7,10 @@ var namespace = function() {
 	this.name = "namespace"
 }
 //获取随机名称
-namespace.prototype.getName = function() {
-	if(Math.random() < 0.5)
+namespace.prototype.getName = function(sex) {
+	if(!sex || sex !== 1)
+		sex = 2
+	if(sex == 1)
 		return FirstName1[Math.floor(Math.random() * FirstName1.length)] + LastName1[Math.floor(Math.random() * LastName1.length)]
 	else
 		return FirstName2[Math.floor(Math.random() * FirstName2.length)] + LastName2[Math.floor(Math.random() * LastName2.length)]

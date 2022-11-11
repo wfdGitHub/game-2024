@@ -116,7 +116,8 @@ loginHandler.prototype.register = function(msg, session, next) {
 }
 //获取随机姓名
 loginHandler.prototype.getRandomName = function(msg, session, next) {
-	var name = this.namespace.getName()
+	var sex = msg.sex
+	var name = this.namespace.getName(sex)
 	next(null,{flag : true,name : name})
 }
 //登录游戏
