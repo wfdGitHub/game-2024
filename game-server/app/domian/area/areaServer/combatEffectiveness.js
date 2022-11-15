@@ -134,7 +134,7 @@ module.exports = function() {
 						minId = i
 					}
 				}
-				if(minId){
+				if(minId && userCoexistMaps[uid][minId] < lv){
 					local.delCoexistHero(uid,minId)
 					local.addCoexistHero(uid,hId,lv)
 					local.calCoexistLv(uid)
