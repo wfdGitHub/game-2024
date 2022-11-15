@@ -118,6 +118,7 @@ module.exports = function() {
 				//共鸣英雄
 				console.log("1111111")
 				userCoexistMaps[uid][hId] = lv
+				self.setObj(uid,"coexistMap",hId,lv)
 				local.calCoexistLv(uid)
 			}else if(userCoexistLength[uid] < 6){
 				console.log("22222222")
