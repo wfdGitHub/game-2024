@@ -171,10 +171,6 @@ powerHandler.prototype.beginBeautTour = function(msg, session, next) {
           cb("红颜未激活")
           return
         }
-        if(event){
-          cb("已在事件中")
-          return
-        }
         cb()
       })
     },
