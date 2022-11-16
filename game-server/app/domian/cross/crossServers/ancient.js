@@ -299,10 +299,10 @@ var ancientEntity = function(self,theatreId) {
 					hIds = []
 				else
 					hIds = JSON.parse(hIds)
-		    	self.heroDao.getHeroList(uid,hIds,function(flag,list) {
-		    		fightTeams.push([0,list[0],0,0,0,0])
-		    		fightTeams.push([0,list[1],0,0,list[2],0])
-		    		fightTeams.push([0,0,0,list[3],list[4],list[5]])
+		    	self.heroDao.getHeroWithCoexist(uid,hIds,function(flag,list,coexist) {
+		    		fightTeams.push([0,list[0],0,0,0,0,{coexist:coexist}])
+		    		fightTeams.push([0,list[1],0,0,list[2],0,{coexist:coexist}])
+		    		fightTeams.push([0,0,0,list[3],list[4],list[5],{coexist:coexist}])
 		    		self.getPlayerInfoByUid(uid,function(userInfo) {
 		    			cb(fightTeams,userInfo)
 		    		})
