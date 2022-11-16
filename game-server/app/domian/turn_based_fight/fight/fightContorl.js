@@ -77,13 +77,6 @@ for(var i in hufu_skill){
 		hufuSkillCes[hufu_skill[i]["lv"+j]] = 50000 * j
 	}
 }
-const coexisATT = ["lv","ad","artifact","tr_lv","tr_maxHP","tr_atk","tr_phyDef","tr_magDef","et1","et2","et3","et4"]
-var coexistLvMap = []
-for(var i in standard_ce_cfg){
-	for(var j = coexistLvMap.length;j <= standard_ce_cfg[i]["lv"];j++){
-		coexistLvMap[j] = i
-	}
-}
 var standard_ce = {}
 var standard_team_ce = {}
 var trMap = [0,"maxHP","atk","phyDef","magDef"]
@@ -113,6 +106,13 @@ for(var i in standard_ce_cfg){
 			standard_ce[i]["tr_"+trMap[j]] = hero_tr[standard_ce[i]["tr_lv"]][trMap[j]]
 	}
 	standard_team_ce[i]["officer"] = standard_ce_cfg[i]["officer"]
+}
+const coexisATT = ["lv","ad","artifact","tr_lv","tr_maxHP","tr_atk","tr_phyDef","tr_magDef","et1","et2","et3","et4"]
+var coexistLvMap = []
+for(var i in standard_ce){
+	for(var j = coexistLvMap.length;j <= standard_ce[i]["lv"];j++){
+		coexistLvMap[j] = Object.assign({},standard_ce[i],{"lv":j})
+	}
 }
 //战斗控制器
 var model = function() {
@@ -1136,10 +1136,9 @@ model.oriStandardTeam = function(list,lv) {
 }
 //获取共鸣属性
 model.getCoexistInfo = function(lv) {
-	if(coexistLvMap[lv] && standard_ce[coexistLvMap[lv]]){
-		return standard_ce[coexistLvMap[lv]]
-	}else{
+	if(coexistLvMap[lv])
+		return coexistLvMap[lv]
+	else
 		return false
-	}
 }
 module.exports = model
