@@ -113,19 +113,19 @@ module.exports = function() {
 	//判断共鸣属性
 	this.checkCoexistMap = function(uid,hId,lv) {
 		if(userCoexistMaps[uid] && userTeams[uid]){
-			console.log("userCoexistMaps",userCoexistMaps[uid],lv,userTeams[uid][6]["coexist"])
+			// console.log("userCoexistMaps",userCoexistMaps[uid],lv,userTeams[uid][6]["coexist"])
 			if(userCoexistMaps[uid][hId]){
 				//共鸣英雄
-				console.log("1111111")
+				// console.log("1111111")
 				userCoexistMaps[uid][hId] = lv
 				self.setObj(uid,"coexistMap",hId,lv)
 				local.calCoexistLv(uid)
 			}else if(userCoexistLength[uid] < 6){
-				console.log("22222222")
+				// console.log("22222222")
 				local.addCoexistHero(uid,hId,lv)
 				local.calCoexistLv(uid)
 			}else if(userTeams[uid] && lv > userTeams[uid][6]["coexist"]){
-				console.log("3333333333")
+				// console.log("3333333333")
 				//非共鸣英雄等级足够
 				var min = -1
 				var minId = ""
@@ -156,7 +156,7 @@ module.exports = function() {
 	}
 	//重构共鸣英雄
 	local.resetCoexistHero = function(uid) {
-		console.log("重构共鸣英雄",uid)
+		// console.log("重构共鸣英雄",uid)
 		var minLv = 0
 		var list = []
 		self.heroDao.getHeros(uid,function(flag,data) {
@@ -174,44 +174,44 @@ module.exports = function() {
 				}
 				userTeams[uid][6]["coexist"] = minLv
 				self.setObj(uid,"playerInfo","coexist",minLv)
-				console.log("重构共鸣英雄",list)
+				// console.log("重构共鸣英雄",list)
 				var maps = {}
 				for(var i = 0;i < list.length;i++)
 					maps[list[i]["hId"]] = list[i]["lv"]
-				console.log("maps",maps)
+				// console.log("maps",maps)
 				userCoexistMaps[uid] = maps
 				userCoexistLength[uid] = Object.keys(userCoexistMaps[uid]).length
-				console.log("最终数据",userCoexistMaps[uid],userCoexistLength[uid],userTeams[uid][6]["coexist"])
+				// console.log("最终数据",userCoexistMaps[uid],userCoexistLength[uid],userTeams[uid][6]["coexist"])
 				self.delObjAll(uid,"coexistMap")
 				self.setHMObj(uid,"coexistMap",maps)
 				local.updateCoexistNotify(uid)
 			}
 		})
-		console.log("userCoexistMaps",userCoexistMaps[uid])
+		// console.log("userCoexistMaps",userCoexistMaps[uid])
 	}
 	//添加共鸣英雄
 	local.addCoexistHero = function(uid,hId,lv) {
-		console.log("添加共鸣英雄")
+		// console.log("添加共鸣英雄")
 		self.setObj(uid,"coexistMap",hId,lv)
 		if(userCoexistMaps[uid]){
 			userCoexistMaps[uid][hId] = lv
 			userCoexistLength[uid] = Object.keys(userCoexistMaps[uid]).length
 		}
-		console.log("userCoexistMaps",userCoexistMaps[uid])
+		// console.log("userCoexistMaps",userCoexistMaps[uid])
 	}
 	//移除共鸣英雄
 	local.delCoexistHero = function(uid,hId) {
-		console.log("移除共鸣英雄")
+		// console.log("移除共鸣英雄")
 		self.delObj(uid,"coexistMap",hId)
 		if(userCoexistMaps[uid]){
 			delete userCoexistMaps[uid][hId]
 			userCoexistLength[uid] = Object.keys(userCoexistMaps[uid]).length
 		}
-		console.log("userCoexistMaps",userCoexistMaps[uid])
+		// console.log("userCoexistMaps",userCoexistMaps[uid])
 	}
 	//计算共鸣属性
 	local.calCoexistLv = function(uid) {
-		console.log("计算共鸣属性")
+		// console.log("计算共鸣属性")
 		if(userCoexistMaps[uid] && userTeams[uid]){
 			var min = 9999
 			for(var i in userCoexistMaps[uid]){
@@ -225,7 +225,7 @@ module.exports = function() {
 			}
 			local.updateCoexistNotify(uid)
 		}
-		console.log("userCoexistMaps",userCoexistMaps[uid])
+		// console.log("userCoexistMaps",userCoexistMaps[uid])
 	}
 	//通知共鸣数据更新
 	local.updateCoexistNotify = function(uid) {
