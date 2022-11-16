@@ -148,14 +148,14 @@ module.exports = function() {
 		if(userCoexistMaps[uid]){
 			for(var i = 0;i < hIds.length;i++){
 				if(userCoexistMaps[uid][hIds[i]]){
-					local.resetCoexistHero(uid)
+					self.resetCoexistHero(uid)
 					return
 				}
 			}
 		}
 	}
 	//重构共鸣英雄
-	local.resetCoexistHero = function(uid) {
+	this.resetCoexistHero = function(uid) {
 		// console.log("重构共鸣英雄",uid)
 		var minLv = 0
 		var list = []
