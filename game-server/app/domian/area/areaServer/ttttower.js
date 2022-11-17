@@ -88,8 +88,7 @@ module.exports = function() {
 			   		self.chageLordData(uid,"ttt_lv",level)
 			   		var awardList = []
 			   		if(ttttower_level[level]["awards"])
-						awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["awards"],1,"通天塔"+level))
-					awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["mopupAward"],1,"通天塔"+level))
+						awardList = self.addItemStr(uid,ttttower_level[level]["awards"],1,"通天塔"+level)
 					cb(true,awardList)
 			   	}else{
 			   		cb(false)
