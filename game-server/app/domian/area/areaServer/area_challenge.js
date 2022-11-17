@@ -247,7 +247,7 @@ module.exports = function() {
 			userInfos.time = Date.now()
 			self.setAreaObj(main_name,self.maxIndex,JSON.stringify(userInfos))
 			//奖励
-			self.sendTextToMail(uid,"area_challenge",area_challenge[self.maxIndex]["pass_award"])
+			self.sendTextToMail(uid,"area_challenge",area_challenge[self.maxIndex]["pass_award"],area_challenge[self.maxIndex]["name"])
 		}
 	}
 	//领取单骑首通奖励
