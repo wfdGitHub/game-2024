@@ -8,6 +8,7 @@ for(var i in sprint_rank){
 	rankCount++
 	rank_type_day[sprint_rank[i]["rank_type"]] = rankCount
 }
+const rankTypes = ["ce_rank","lv_rank","checkpoint_rank","ttt_rank","seas_rank","guild_rank","gift_rank","manor_rank"]
 module.exports = function() {
 	var self = this
 	var curRankIndex = -1
@@ -146,8 +147,8 @@ module.exports = function() {
 	//获取排行榜第一玩家
 	this.getfirstRankUserList = function(cb) {
 		var multiList = []
-		for(var i in sprint_rank){
-			multiList.push(["zrange","area:area"+this.areaId+":zset:"+sprint_rank[i]["rank_type"],-1,-1,"WITHSCORES"])
+		for(var i = 0; i < rankTypes.length;i++){
+			multiList.push(["zrange","area:area"+this.areaId+":zset:"+rankTypes[i],-1,-1,"WITHSCORES"])
 		}
 		self.redisDao.multi(multiList,function(err,list) {
 			var uids = []
