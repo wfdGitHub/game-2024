@@ -1145,7 +1145,7 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 				}
 			}
 		}else{
-			if(!info.oneblood && info.seckillRate && !this.buffs["delay_death"] && !this.neglect_seckill && (this.attInfo.hp / this.attInfo.maxHP) < 0.15){
+			if(!info.oneblood && info.seckillRate && !this.buffs["delay_death"] && !this.neglect_seckill && (this.attInfo.hp / this.attInfo.maxHP) < 0.15 && !this.isBoss){
 				this.onDie(callbacks)
 				info.seckill = true
 				info.curValue = 0
