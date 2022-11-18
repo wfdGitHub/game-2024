@@ -713,7 +713,7 @@ model.prototype.begin = function() {
 		this.attInfo.maxHP = Math.floor(this.attInfo.maxHP * this.maxHP_rate)
 	this.attInfo.hp = this.attInfo.maxHP
 	if(this.isBoss){
-		this.attInfo.hp = 999999999
+		this.attInfo.hp = 99999999999
 	}
 	if(this.surplus_health === 0){
 		this.attInfo.hp = 0
