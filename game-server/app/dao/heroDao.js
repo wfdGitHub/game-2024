@@ -94,7 +94,7 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 	var weights = Object.assign({},recruit_base[type]["weights"])
   	if(this.areaManager.areaMap[areaId].checkLimitedTime("zhaohuan")){
   		allWeight += 200
-  		weights["hero_10"] += 200
+  		weights["hero_5"] += 200
   	}
     var heroInfos = []
     var r_luck = 0
@@ -107,7 +107,7 @@ heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
 	    	r_luck = Math.floor(Math.random() * 3) + 10
 				var heroInfo = this.gainHero(areaId,uid,{id : first_recruit})
 				heroInfos.push(heroInfo)
-    	}else if(r_luck >= 29){
+    	}else if(r_luck >= 49){
 	      var heroId = this.randHeroId("hero_5")
 				var heroInfo = this.gainHero(areaId,uid,{id : heroId})
 				heroInfos.push(heroInfo)
