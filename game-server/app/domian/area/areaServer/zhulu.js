@@ -6,23 +6,30 @@ const zhulu_award = require("../../../../config/gameCfg/zhulu_award.json")
 const heros = require("../../../../config/gameCfg/heros.json")
 const util = require("../../../../util/util.js")
 var main_name = "zhulu"
-var allWeight = 0
 var normal_team = JSON.parse(zhulu_cfg["normal_team"]["value"])
 var elite_team = JSON.parse(zhulu_cfg["elite_team"]["value"])
 var bossTeams = {}
 bossTeams[1] = JSON.parse(zhulu_cfg["boss1"]["value"])
 bossTeams[2] = JSON.parse(zhulu_cfg["boss2"]["value"])
 bossTeams[3] = JSON.parse(zhulu_cfg["boss3"]["value"])
-var weights = {
+var monallWeight = 0
+var monWeights = {
 	"elite":0,
-	"normal":0,
+	"normal":0
+}
+for(let type in monWeights){
+	monWeights[type] = zhulu_cfg[type]["value"] + monallWeight
+	monallWeight = monWeights[type]
+}
+var landWeights = {
 	"heal":0,
 	"resurgence":0,
 	"shop":0
 }
-for(let type in weights){
-	weights[type] = zhulu_cfg[type]["value"] + allWeight
-	allWeight = weights[type]
+var landallWeight = 0
+for(let type in landWeights){
+	landWeights[type] = zhulu_cfg[type]["value"] + landallWeight
+	landallWeight = landWeights[type]
 }
 var shopAllWeight = 0
 var shopWeights = {}
@@ -143,6 +150,16 @@ module.exports = function() {
 			info.team = team
 			return info
 		}else{
+			var gridId = grid % 10
+			var allWeight = 0
+			var weights = {}
+			if(gridId == 3 || gridId == 7){
+				allWeight = landallWeight
+				weights = landWeights
+			}else{
+				allWeight = monallWeight
+				weights = monWeights
+			}
 			let rand = Math.random() * allWeight
 			for(let type in weights){
 				if(rand < weights[type]){
