@@ -45,7 +45,7 @@ module.exports = function() {
 					if(!data)
 						data = {}
 					for(var i in data)
-						data[i] = Number(i)
+						data[i] = Number(data[i])
 					userCoexistMaps[uid] = data
 					userCoexistLength[uid] = Object.keys(userCoexistMaps[uid]).length
 					next()
