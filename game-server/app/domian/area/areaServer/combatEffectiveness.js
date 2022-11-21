@@ -42,7 +42,11 @@ module.exports = function() {
 			function(next) {
 				//共鸣英雄列表
 				self.getObjAll(uid,"coexistMap",function(data) {
-					userCoexistMaps[uid] = data || {}
+					if(!data)
+						data = {}
+					for(var i in data)
+						data[i] = Number(i)
+					userCoexistMaps[uid] = data
 					userCoexistLength[uid] = Object.keys(userCoexistMaps[uid]).length
 					next()
 				})
@@ -117,7 +121,7 @@ module.exports = function() {
 			if(userCoexistMaps[uid][hId]){
 				//共鸣英雄
 				console.log("1111111")
-				userCoexistMaps[uid][hId] = lv
+				userCoexistMaps[uid][hId] = Number(lv)
 				self.setObj(uid,"coexistMap",hId,lv)
 				local.calCoexistLv(uid)
 			}else if(userCoexistLength[uid] < 6){
@@ -163,7 +167,7 @@ module.exports = function() {
 			if(flag){
 				for(var i in data){
 					if(!data[i]["coexist"] && (list.length < 6 || data[i]["lv"] > minLv)){
-						data[i]["hId"] = i
+						data[i]["hId"] = Number(i)
 						list.push(data[i])
 						list.sort(function(a,b) {
 							return a.lv > b.lv ? -1 : 1
@@ -194,7 +198,7 @@ module.exports = function() {
 		console.log("添加共鸣英雄")
 		self.setObj(uid,"coexistMap",hId,lv)
 		if(userCoexistMaps[uid]){
-			userCoexistMaps[uid][hId] = lv
+			userCoexistMaps[uid][hId] = Number(lv)
 			userCoexistLength[uid] = Object.keys(userCoexistMaps[uid]).length
 		}
 		console.log("userCoexistMaps",userCoexistMaps[uid])
