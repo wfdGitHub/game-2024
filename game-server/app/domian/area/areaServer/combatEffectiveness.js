@@ -225,7 +225,7 @@ module.exports = function() {
 			}
 			local.updateCoexistNotify(uid)
 		}
-		console.log("userCoexistMaps",userCoexistMaps[uid])
+		console.log("userCoexistMaps",userCoexistMaps[uid],"共鸣等级:"+min)
 	}
 	//通知共鸣数据更新
 	local.updateCoexistNotify = function(uid) {
