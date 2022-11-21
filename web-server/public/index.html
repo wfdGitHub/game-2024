@@ -98,7 +98,25 @@
         console.log("onChat")
         console.log(data)
       })
-
+      //提取无限十连英雄
+      var extractInfiniteRecruit = function(heroList) {
+        pomelo.request("area.recruitHandler.extractInfiniteRecruit", {heroList:heroList}, function(data) {
+            console.log(data);
+        });
+      }
+      //新服限购
+      //获取新服限购数据
+      var getAreaGiftData = function() {
+        pomelo.request("area.areaHandler.getAreaGiftData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取新服限购奖励
+      var gainAreaGiftAward = function(index,type) {
+        pomelo.request("area.areaHandler.gainAreaGiftAward", {index:index,type:type}, function(data) {
+            console.log(data);
+        });
+      }
       //升级符石
       var upHeroFS = function(hId,slot,id) {
         pomelo.request("area.heroHandler.upHeroFS", {hId:hId,slot:slot,id:id}, function(data) {
@@ -3442,6 +3460,7 @@
       <input id="test" type="button" value="注册角色" onclick="register(1,''+Date.now(),1)"/>
       <input id="test" type="button" value="登录服务器" onclick="loginArea(1)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
+      <input id="test" type="button" value="开启新服务器" onclick="openArea()"/>
     </div>
     <div class="g-button">
       登录系统 : 
