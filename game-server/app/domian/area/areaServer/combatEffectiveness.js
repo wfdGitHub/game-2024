@@ -167,7 +167,7 @@ module.exports = function() {
 			if(flag){
 				for(var i in data){
 					if(!data[i]["coexist"] && (list.length < 6 || data[i]["lv"] > minLv)){
-						data[i]["hId"] = Number(i)
+						data[i]["hId"] = i
 						list.push(data[i])
 						list.sort(function(a,b) {
 							return a.lv > b.lv ? -1 : 1
@@ -181,7 +181,7 @@ module.exports = function() {
 				console.log("重构共鸣英雄",list)
 				var maps = {}
 				for(var i = 0;i < list.length;i++)
-					maps[list[i]["hId"]] = list[i]["lv"]
+					maps[list[i]["hId"]] = Number(list[i]["lv"])
 				console.log("maps",maps)
 				userCoexistMaps[uid] = maps
 				userCoexistLength[uid] = Object.keys(userCoexistMaps[uid]).length
