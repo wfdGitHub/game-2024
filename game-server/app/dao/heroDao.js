@@ -286,6 +286,18 @@ heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
 		strList.push(artifact_level[artifact]["pr"])
 	if(hero_tr[heroInfo.tr_lv] && hero_tr[heroInfo.tr_lv]["pr"])
 		strList.push(hero_tr[heroInfo.tr_lv]["pr"])
+	var tr_value = 0
+	if(heroInfo.tr_maxHP)
+		tr_value += heroInfo.tr_maxHP / train_arg["maxHP"]["value"]
+	if(heroInfo.tr_atk)
+		tr_value += heroInfo.tr_atk / train_arg["atk"]["value"]
+	if(heroInfo.tr_phyDef)
+		tr_value += heroInfo.tr_phyDef / train_arg["phyDef"]["value"]
+	if(heroInfo.tr_magDef)
+		tr_value += heroInfo.tr_magDef / train_arg["magDef"]["value"]
+	tr_value = Math.floor(tr_value * 0.75)
+	if(tr_value)
+		strList.push("1000020:"+tr_value)
 	for(var part = 1;part <= 4;part++)
 		if(heroInfo["et"+part])
 			strList.push(equip_st[heroInfo["et"+part]]["pr"])
@@ -324,6 +336,18 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 			strList.push(hero_ad[ad].pr)
 		if(hero_tr[heros[i].tr_lv] && hero_tr[heros[i].tr_lv]["pr"])
 			strList.push(hero_tr[heros[i].tr_lv]["pr"])
+		var tr_value = 0
+		if(heros[i].tr_maxHP)
+			tr_value += heros[i].tr_maxHP / train_arg["maxHP"]["value"]
+		if(heros[i].tr_atk)
+			tr_value += heros[i].tr_atk / train_arg["atk"]["value"]
+		if(heros[i].tr_phyDef)
+			tr_value += heros[i].tr_phyDef / train_arg["phyDef"]["value"]
+		if(heros[i].tr_magDef)
+			tr_value += heros[i].tr_magDef / train_arg["magDef"]["value"]
+		tr_value = Math.floor(tr_value * 0.75)
+		if(tr_value)
+			strList.push("1000020:"+tr_value)
 		for(var part = 1;part <= 4;part++){
 			if(heros[i]["e"+part]){
 				var oldeId = equip_level[heros[i]["e"+part]]["part_"+part]
