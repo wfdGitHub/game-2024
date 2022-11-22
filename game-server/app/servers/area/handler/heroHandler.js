@@ -365,6 +365,10 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
             next(null,{flag : false,data : "英雄已出战"+hIds[i]})
             return
           }
+          if(data[i].coexist){
+            next(null,{flag : false,err : "该英雄共鸣中"})
+            return
+          }
           if((data[i].zf_1 && data[i].zf_1 != 1) || (data[i].zf_2 && data[i].zf_2 != 1) || (data[i].zf_3 && data[i].zf_3 != 1)){
             next(null,{flag : false,err : "英雄已穿戴战法"+hIds[i]})
             return
