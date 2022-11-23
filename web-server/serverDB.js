@@ -341,6 +341,67 @@ var model = function() {
 			})
 		})
 	}
+	//发放英雄
+	posts["/send_hero"] = function(req,res) {
+		var data = req.body
+		var uid = data.uid
+		var otps = data.otps
+		if(!uid){
+			res.send(false)
+		}else{
+			local.sendHero(uid,otps,function(flag,err) {
+				res.send({flag:flag,err:err})
+			})
+		}
+	}
+	//获取英雄记录
+	posts["/get_heroLog"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("game:sendHero",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("game:sendHero",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
+	}
+	//修改点票使用额度
+	posts["/change_diaopiao_use"] = function(req,res) {
+		var data = req.body
+		var uid = data.uid
+		var value = Number(data.value)
+		if(!uid || !value){
+			res.send(false)
+		}else{
+			self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
+				if(err || !data){
+					cb(false,"用户不存在")
+					return
+				}else{
+					self.redisDao.db.hincrby("player:user:"+uid+":playerData","diaopiao_use",-value)
+					self.redisDao.db.rpush("game:diaopiao_use",JSON.stringify({uid:uid,value:value,time:Date.now(),name:data}))
+					res.send({flag:true})
+				}
+			})
+		}
+	}
+	//获取点票额度修改记录
+	posts["/get_diaopiao_use"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("game:diaopiao_use",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("game:diaopiao_use",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
+	}
 	//获取总数据
 	posts["/game_info"] = function(req,res) {
 		var data = req.body
