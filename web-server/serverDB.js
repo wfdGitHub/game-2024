@@ -408,6 +408,7 @@ var model = function() {
 				}else{
 					self.redisDao.db.hincrby("player:user:"+uid+":playerData","diaopiao_use",-value)
 					self.redisDao.db.rpush("game:diaopiao_use",JSON.stringify({uid:uid,value:value,time:Date.now(),name:data}))
+					res.send({flag:true})
 				}
 			})
 		}
