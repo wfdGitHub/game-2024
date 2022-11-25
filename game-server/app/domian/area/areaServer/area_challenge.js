@@ -329,6 +329,7 @@ module.exports = function() {
 				}
 				if(verify1 != JSON.stringify(atkTeam)){
 					console.log("verify1 error")
+					self.verifyFaild(uid,verify1,self.fightContorl.getVerifyInfo(),"血战华容1")
 					next("verify1 error")
 					return
 				}
@@ -347,6 +348,7 @@ module.exports = function() {
 				}
 				if(verify2 != JSON.stringify(atkTeam)){
 					console.log("verify2 error")
+					self.verifyFaild(uid,verify2,self.fightContorl.getVerifyInfo(),"血战华容2")
 					next("verify2 error")
 					return
 				}
@@ -365,6 +367,7 @@ module.exports = function() {
 				}
 				if(verify3 != JSON.stringify(atkTeam)){
 					console.log("verify3 error")
+					self.verifyFaild(uid,verify3,self.fightContorl.getVerifyInfo(),"血战华容3")
 					next("verify3 error")
 					return
 				}
