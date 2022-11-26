@@ -373,6 +373,15 @@ activityHandler.prototype.getAreaRank = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//获取玩家排行榜数据
+activityHandler.prototype.getPlayerSprintRank = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var rankType = msg.rankType
+  this.areaManager.areaMap[areaId].getPlayerSprintRank(uid,rankType,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //获取已结算排行榜
 activityHandler.prototype.getSprintSettleRank = function(msg, session, next) {
   var uid = session.uid

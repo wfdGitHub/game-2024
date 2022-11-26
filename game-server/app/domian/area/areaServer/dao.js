@@ -146,6 +146,15 @@ module.exports = function() {
 			}
 		})
 	}
+	//获取有序列表指定项
+	this.zrangeScoreByKey = function(zname,key,cb) {
+		this.redisDao.db.zscore("area:area"+this.areaId+":zset:"+zname,key,function(err,data) {
+			if(!data)
+				data = 0
+			if(cb)
+				cb(data)
+		})
+	}
 	//倒序获取有序列表带分数
 	this.zrevrangewithscore = function(zname,begin,end,cb) {
 		this.redisDao.db.zrevrange("area:area"+this.areaId+":zset:"+zname,begin,end,"WITHSCORES",function(err,data) {

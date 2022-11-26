@@ -98,6 +98,12 @@
         console.log("onChat")
         console.log(data)
       })
+      //获取玩家排行榜数据
+      var getPlayerSprintRank = function(rankType) {
+        pomelo.request("area.activityHandler.getPlayerSprintRank", {rankType:rankType}, function(data) {
+            console.log(data);
+        });
+      }
       //免费置换
       var guildSwapHero = function(hId,heroId) {
         pomelo.request("area.guildHandler.guildSwapHero", {hId:hId,heroId:heroId}, function(data) {
