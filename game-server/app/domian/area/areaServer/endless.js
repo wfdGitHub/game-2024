@@ -94,13 +94,11 @@ module.exports = function() {
 					var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededList[i],masterSkills : masterSkillList[i]})
 					if(!winFlag){
 						next("第"+curLv+"场战斗失败")
+						if(verifys[i] !== self.fightContorl.getVerifyInfo()){
+					    	self.verifyFaild(uid,verifys[i],self.fightContorl.getVerifyInfo(),"单人无尽试炼"+i)
+					    }
 						return
 					}
-					if(verifys[i] !== self.fightContorl.getVerifyInfo()){
-				    	self.verifyFaild(uid,verifys[i],self.fightContorl.getVerifyInfo(),"单人无尽试炼"+i)
-				    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
-				    	return
-				    }
 					var list = self.fightContorl.getFightRecord()
 					var overInfo = list[list.length - 1]
 					if(atkTeam[1])
@@ -198,13 +196,11 @@ module.exports = function() {
 					var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededList[i],masterSkills : masterSkillList[i]})
 					if(!winFlag){
 						next("第"+curLv+"场战斗失败")
+						if(verifys[i] !== self.fightContorl.getVerifyInfo()){
+					    	self.verifyFaild(uid,verifys[i],self.fightContorl.getVerifyInfo(),"三人无尽试炼"+i)
+					    }
 						return
 					}
-					if(verifys[i] !== self.fightContorl.getVerifyInfo()){
-				    	self.verifyFaild(uid,verifys[i],self.fightContorl.getVerifyInfo(),"三人无尽试炼"+i)
-				    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
-				    	return
-				    }
 					// console.log("第"+curLv+"场",atkTeam[1])
 					var list = self.fightContorl.getFightRecord()
 					var overInfo = list[list.length - 1]

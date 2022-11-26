@@ -79,14 +79,13 @@ module.exports = function() {
 				   	var seededNum = fightInfo.seededNum
 				   	var defTeam = JSON.parse(daily_fb_base[fbId]["npcteam"])
 				   	var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
-				    if(verify !== self.fightContorl.getVerifyInfo()){
+				   	if(winFlag){
+				   		next()
+				   	}else if(verify !== self.fightContorl.getVerifyInfo()){
 				    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"日常副本")
 				    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
 				    	return
-				    }
-				   	if(winFlag){
-				   		next()
-				   	}else{
+				    }else{
 				   		next("战斗失败")
 				   	}
 				}

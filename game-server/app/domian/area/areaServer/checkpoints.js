@@ -77,17 +77,14 @@ module.exports = function() {
 			    let mon_list = JSON.parse(checkpointsCfg[level].mon_list)
 			    defTeam = self.standardTeam(uid,mon_list,"main",checkpointsCfg[level]["lev_limit"])
 			    var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
-			    if(verify !== self.fightContorl.getVerifyInfo()){
-			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"主线关卡")
-			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
-			    	return
-			    }
 			    if(winFlag){
 			    	var awardList = self.checkpointsSuccess(uid,level)
 			    	cb(true,{winFlag : winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,awardList:awardList})
 			    	self.taskUpdate(uid,"checkpoints",1,level)
 			    	self.updateSprintRank("checkpoint_rank",uid,1)
 			    	self.cacheDao.saveCache({"messagetype":"checkpoints",uid:uid,level:level})
+			    }else if(verify !== self.fightContorl.getVerifyInfo()){
+			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"主线关卡")
 			    }else{
 			    	cb(false,{winFlag : winFlag})
 			    }

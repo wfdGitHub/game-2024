@@ -75,11 +75,6 @@ module.exports = function() {
 			    var mon_list = ttttower_level[level]["defTeam"]
 			    var defTeam = self.standardTeam(uid,mon_list,"ttt_main",ttttower_level[level]["lv"])
 			   	var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
-			    if(verify !== self.fightContorl.getVerifyInfo()){
-			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"通天塔")
-			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
-			    	return
-			    }
 			    self.taskUpdate(uid,"ttt",1)
 			   	if(winFlag){
 			   		self.incrbyObj(uid,main_name,"level",1)
@@ -91,6 +86,8 @@ module.exports = function() {
 						awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["awards"],1,"通天塔"+level))
 					awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["mopupAward"],1,"通天塔"+level))
 					cb(true,awardList)
+			   	}else if(verify !== self.fightContorl.getVerifyInfo()){
+			   		self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"通天塔")
 			   	}else{
 			   		cb(false)
 			   	}
@@ -200,11 +197,6 @@ module.exports = function() {
 			    var mon_list = ttttower_realm[level]["defTeam"]
 			    var defTeam = self.standardTeam(uid,mon_list,"ttt_realm",ttttower_realm[level]["lv"])
 			   	var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
-			    if(verify !== self.fightContorl.getVerifyInfo()){
-			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"阵营塔")
-			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
-			    	return
-			    }
 			   	if(winFlag){
 			   		self.incrbyObj(uid,main_name,"realm_level_"+realm,1)
 			   		self.incrbyObj(uid,main_name,"realm_count_"+realm,1)
@@ -215,7 +207,11 @@ module.exports = function() {
 						awardList = awardList.concat(self.addItemStr(uid,ttttower_realm[level]["awards_"+realm],1,"阵营塔"+level))
 					awardList = awardList.concat(self.addItemStr(uid,ttttower_realm[level]["mopupAward_"+realm],1,"阵营塔"+level))
 					cb(true,awardList)
-			   	}else{
+			   	}else if(verify !== self.fightContorl.getVerifyInfo()){
+			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"阵营塔")
+			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
+			    	return
+			    }else{
 			   		cb(false)
 			   	}
 			}
