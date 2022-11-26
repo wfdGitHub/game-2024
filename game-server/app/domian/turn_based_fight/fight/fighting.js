@@ -63,6 +63,8 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			atkTeam[i] = new character({})
 			atkTeam[i].isNaN = true
 		}else{
+			if(!this.atkTeamInfo["realms"][atkTeam[i].realm])
+				this.atkTeamInfo["realms"][[atkTeam[i].realm]] = 0
 			this.atkTeamInfo["realms"][atkTeam[i].realm]++
 		}
 		atkTeam[i].init(this)
@@ -97,6 +99,8 @@ model.prototype.load = function(atkTeam,defTeam,otps) {
 			defTeam[i] = new character({})
 			defTeam[i].isNaN = true
 		}else{
+			if(!this.defTeamInfo["realms"][defTeam[i].realm])
+				this.defTeamInfo["realms"][[defTeam[i].realm]] = 0
 			this.defTeamInfo["realms"][defTeam[i].realm]++
 		}
 		defTeam[i].init(this)
