@@ -196,8 +196,6 @@ normalHandler.prototype.changeName = function(msg, session, next) {
   var oriId = session.get("oriId")
   var name = msg.name
   var self = this
-  next(null,{flag:false,err:"系统升级维护中"})
-  return
   if(name.indexOf(".") != -1){
     next(null,{flag:false,err:"不能包含特殊字符"})
     return
