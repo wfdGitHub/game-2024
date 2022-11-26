@@ -51,7 +51,8 @@ accountDao.prototype.createRobotAccount = function(cb) {
 						self.redisDao.db.zadd(["cross:grading:realRank",10,crossUid])
 					})
 				}
-				cb(true)
+				if(cb)
+					cb(true)
 			})
 		}
 	})
