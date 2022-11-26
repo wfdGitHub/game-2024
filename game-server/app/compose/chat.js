@@ -17,7 +17,6 @@ chat.prototype.clearChatRecord = function() {
 }
 //发送聊天消息
 chat.prototype.say = function(talker,gname,roomName,type,arg,text) {
-	return
 	if(this.rooms[roomName] && this.rooms[roomName].getMember(talker.uid)){
 		var notify = {
 			roomName : roomName,
