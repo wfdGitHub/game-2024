@@ -61,6 +61,7 @@ area.prototype.init = function() {
 	this.manorInitData()
 	this.initAreaChallenge()
 	this.addAreaGiftInit()
+	this.worldLevelDayUpdate()
 	this.timer = setInterval(this.update.bind(this),5000)
 }
 //服务器关闭
