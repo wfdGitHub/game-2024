@@ -2,7 +2,7 @@ var skillsCfg = require("../../../../config/gameCfg/skills.json")
 var herosCfg = require("../../../../config/gameCfg/heros.json")
 var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 var star_base = require("../../../../config/gameCfg/star_base.json")
-var hero_ad = require("../../../../config/gameCfg/hero_ad.json")
+var advanced_base = require("../../../../config/gameCfg/advanced_base.json")
 var hero_tr = require("../../../../config/gameCfg/hero_tr.json")
 var advanced_talent = require("../../../../config/gameCfg/advanced_talent.json")
 var talent_list = require("../../../../config/gameCfg/talent_list.json")
@@ -483,8 +483,8 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 			newCE = lv_cfg[newValue || 1]["ce"] || 0
 		break
 		case "ad":
-			oldCE = hero_ad[oldValue || 0]["ce"] || 0
-			newCE = hero_ad[newValue || 0]["ce"] || 0
+			oldCE = advanced_base[oldValue || 0]["ce"] || 0
+			newCE = advanced_base[newValue || 0]["ce"] || 0
 		break
 		case "star":
 			oldCE = star_base[oldValue || 1]["ce"] || 0
