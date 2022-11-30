@@ -239,6 +239,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.exerciseUserUpdate(uid)
 	this.extremityUserUpdate(uid)
 	this.manorDayUpdate(uid)
+	this.userRechargeDayUpdate(uid)
 	this.incrbyAreaObj("areaInfo","day_login",1)
 	this.playerDao.setPlayerInfo({uid:uid,key:"pay_state",value:0})
 	//每日随机时间
@@ -254,6 +255,7 @@ area.prototype.weekFirstLogin = function(uid) {
 	this.chageLordData(uid,"weekStr",this.weekStr)
 	this.chageLordData(uid,"week_rmb",0)
 	this.chageLordData(uid,"real_week",0)
+	this.userRechargeWeekUpdate(uid)
 	this.activityWeekUpdate(uid)
 	this.weekTaskRefresh(uid)
 }
@@ -261,6 +263,7 @@ area.prototype.weekFirstLogin = function(uid) {
 area.prototype.monthFirstLogin  = function(uid) {
 	// console.log(uid+" 本月首次登陆")
 	this.chageLordData(uid,"monthStr",this.monthStr)
+	this.userRechargeMonthUpdate(uid)
 	this.monthTaskRefresh(uid)
 }
 //玩家退出

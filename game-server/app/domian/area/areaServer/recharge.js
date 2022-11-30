@@ -70,21 +70,13 @@ module.exports = function() {
 				if(pay_cfg[pay_id]["dianpiao"] == 0){
 					self.finish_recharge(uid,pay_id,cb)
 				}else{
-					var gmLv = self.getLordAtt(uid,"gmLv")
-					self.getPlayerData(uid,"diaopiao_use",function(value) {
-						value = Number(value) || 0
-						if((value + pay_cfg[pay_id]["dianpiao"]) > GM_CFG[gmLv]["dianpiao"]){
-							cb(false,"可用额度不足 "+value+"/"+GM_CFG[gmLv]["dianpiao"])
-							return
+					self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
+						if(flag){
+							self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
+							self.finish_recharge(uid,pay_id,cb)
+						}else{
+							cb(false,err)
 						}
-						self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
-							if(flag){
-								self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
-								self.finish_recharge(uid,pay_id,cb)
-							}else{
-								cb(false,err)
-							}
-						})
 					})
 				}
 			}
