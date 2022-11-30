@@ -17,7 +17,7 @@ module.exports = function() {
 	//每日刷新
 	this.worldLevelDayUpdate = function() {
 		self.zrangewithscore("lv_rank",-10,-1,function(list) {
-			console.log(self.areaId+"服世界列表",list)
+			// console.log(self.areaId+"服世界列表",list)
 			var score = 0
 			for(var i = 0;i < list.length;i += 2){
 				if(list[i+1]){
