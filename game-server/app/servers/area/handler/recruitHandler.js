@@ -124,6 +124,15 @@ recruitHandler.prototype.gainTopicRecruitBoxAward = function(msg, session, next)
     next(null,{flag : true,data : data})
   })
 }
+//提取无限十连英雄
+recruitHandler.prototype.extractInfiniteRecruit = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var heroList = msg.heroList
+  this.areaManager.areaMap[areaId].extractInfiniteRecruit(uid,heroList,function(flag,data) {
+    next(null,{flag : true,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "recruitHandler",

@@ -98,6 +98,123 @@
         console.log("onChat")
         console.log(data)
       })
+<<<<<<< Updated upstream
+=======
+      //提取无限十连英雄
+      var extractInfiniteRecruit = function(heroList) {
+        pomelo.request("area.recruitHandler.extractInfiniteRecruit", {heroList:heroList}, function(data) {
+            console.log(data);
+        });
+      }
+      //新服限购
+      //获取新服限购数据
+      var getAreaGiftData = function() {
+        pomelo.request("area.areaHandler.getAreaGiftData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //领取新服限购奖励
+      var gainAreaGiftAward = function(index,type) {
+        pomelo.request("area.areaHandler.gainAreaGiftAward", {index:index,type:type}, function(data) {
+            console.log(data);
+        });
+      }
+      //升级符石
+      var upHeroFS = function(hId,slot,id) {
+        pomelo.request("area.heroHandler.upHeroFS", {hId:hId,slot:slot,id:id}, function(data) {
+            console.log(data);
+        });
+      }
+      //卸下符石
+      var unHeroFS = function(hId,slot) {
+        pomelo.request("area.heroHandler.unHeroFS", {hId:hId,slot:slot}, function(data) {
+            console.log(data);
+        });
+      }
+      //激活专属符石
+      var actHeroOnlyFS = function(hId) {
+        pomelo.request("area.heroHandler.actHeroOnlyFS", {hId:hId}, function(data) {
+            console.log(data);
+        });
+      }
+      //=================转盘抽奖==================//
+      //获取抽奖数据
+      var getLottoData = function() {
+        pomelo.request("area.lottoHandler.getLottoData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //转盘免费抽奖
+      var lottoByFree = function(type) {
+        pomelo.request("area.lottoHandler.lottoByFree", {type:type}, function(data) {
+            console.log(data);
+        });
+      }
+      //转盘元宝抽奖
+      var lottoByGold = function(type,count) {
+        pomelo.request("area.lottoHandler.lottoByGold", {type:type,count:count}, function(data) {
+            console.log(data);
+        });
+      }
+      //转盘道具抽奖
+      var lottoByItem = function(type,count) {
+        pomelo.request("area.lottoHandler.lottoByItem", {type:type,count:count}, function(data) {
+            console.log(data);
+        });
+      }
+      //转盘道具抽奖
+      var getLottoRecord = function(type) {
+        pomelo.request("area.lottoHandler.getLottoRecord", {type:type}, function(data) {
+            console.log(data);
+        });
+      }
+      //=================主动技能==================//
+      //获取主动技能数据
+      var getPowerData = function() {
+        pomelo.request("area.powerHandler.getPowerData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //主动技能升星
+      var upPowerStar = function(powerId) {
+        pomelo.request("area.powerHandler.upPowerStar", {powerId:powerId}, function(data) {
+            console.log(data);
+        });
+      }
+      //主动技能升阶
+      var upPowerAd = function(powerId) {
+        pomelo.request("area.powerHandler.upPowerAd", {powerId:powerId}, function(data) {
+            console.log(data);
+        });
+      }
+      //主动技能升级
+      var upPowerLv = function(powerId) {
+        pomelo.request("area.powerHandler.upPowerLv", {powerId:powerId}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置上阵技能
+      var setPowerFight = function(list) {
+        pomelo.request("area.powerHandler.setPowerFight", {list:list}, function(data) {
+            console.log(data);
+        });
+      }
+      //主动技能重生
+      var resetPower = function(powerId) {
+        pomelo.request("area.powerHandler.resetPower", {powerId:powerId}, function(data) {
+            console.log(data);
+        });
+      }
+      //设置释放偏好
+      var setManualModel = function(type) {
+        pomelo.request("area.powerHandler.setManualModel", {type:type}, function(data) {
+            console.log(data);
+        });
+      }
+
+
+
+>>>>>>> Stashed changes
       var banSendMsg = function(text) {
         pomelo.request("connector.logHandler.banSendMsg", {text:text}, function(data) {
             console.log(data);
@@ -3232,6 +3349,7 @@
       <input id="test" type="button" value="注册角色" onclick="register(1,''+Date.now(),1)"/>
       <input id="test" type="button" value="登录服务器" onclick="loginArea(1)"/>
       <input id="test" type="button" value="连接跨服服务器" onclick="loginCross()"/>
+      <input id="test" type="button" value="开启新服务器" onclick="openArea()"/>
     </div>
     <div class="g-button">
       登录系统 : 
