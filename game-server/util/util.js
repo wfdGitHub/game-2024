@@ -129,6 +129,30 @@ util.prototype.getRandomArray = function(arr, count) {
     }
     return shuffled.slice(min);
 }
+//数字范围随机
+util.prototype.randomFrom = function(lowerValue, upperValue) {
+    return Math.floor(Math.random() * (upperValue - lowerValue + 1) + lowerValue);
+}
+//数字随机分割
+util.prototype.randomFigure = function(number, count) {
+    var list = []
+    var weights = []
+    var allWeight = 0
+    var curValue = 0
+    for(var i = 0;i < count;i++){
+        weights[i] = this.randomFrom(100,400)
+        allWeight += weights[i]
+    }
+    for(var i = 0;i < count;i++){
+        if(i == (count-1)){
+            list[i] = number - curValue
+        }else{
+            list[i] = Math.floor(number * weights[i] / allWeight)
+            curValue += list[i]
+        }
+    }
+    return list;
+}
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;
