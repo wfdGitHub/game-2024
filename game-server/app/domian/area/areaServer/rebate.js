@@ -18,7 +18,7 @@ module.exports = function() {
 		"rate" : 0
 	}
 	this.rebateInit = function() {
-		console.log("rebateInit")
+		// console.log("rebateInit")
 		self.redisDao.db.hgetall("rebate_item_map",function(err,data) {
 			if(data){
 				self.rebate_item_map = data
@@ -28,7 +28,7 @@ module.exports = function() {
 			}
 			else
 				self.rebate_item_map = {}
-			console.log("rebate_item_map",self.rebate_item_map)
+			// console.log("rebate_item_map",self.rebate_item_map)
 		})
 		self.redisDao.db.hgetall("rebate_gold_map",function(err,data) {
 			if(data){
@@ -39,7 +39,7 @@ module.exports = function() {
 			}
 			else
 				self.rebate_gold_map = {}
-			console.log("rebate_gold_map",self.rebate_gold_map)
+			// console.log("rebate_gold_map",self.rebate_gold_map)
 		})
 	}
 	//计算返利活动
