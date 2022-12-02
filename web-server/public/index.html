@@ -98,6 +98,12 @@
         console.log("onChat")
         console.log(data)
       })
+      //获取玩家排行榜数据
+      var getPlayerSprintRank = function(rankType) {
+        pomelo.request("area.activityHandler.getPlayerSprintRank", {rankType:rankType}, function(data) {
+            console.log(data);
+        });
+      }
       //提取无限十连英雄
       var extractInfiniteRecruit = function(heroList) {
         pomelo.request("area.recruitHandler.extractInfiniteRecruit", {heroList:heroList}, function(data) {

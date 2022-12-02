@@ -92,6 +92,12 @@ module.exports = function() {
 			})
 		}
 	}
+	//获取玩家排行数据
+	this.getPlayerSprintRank = function(uid,rankType,cb) {
+		self.zrangeScoreByKey(rankType,uid,function(data) {
+			cb(true,data)
+		})
+	}
 	//获取当前排行榜
 	this.getSprintRank = function(cb) {
 		if(sprint_rank[curRankIndex]){
