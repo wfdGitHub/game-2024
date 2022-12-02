@@ -6,6 +6,7 @@ var chest_cfg = require("../../../../config/gameCfg/chest_cfg.json")
 var equip_base = require("../../../../config/gameCfg/equip_base.json")
 var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var heros = require("../../../../config/gameCfg/heros.json")
+var checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
 var util = require("../../../../util/util.js")
 var gm_shop = require("../../../../config/gameCfg/gm_shop.json")
 var async = require("async")
@@ -109,6 +110,25 @@ module.exports = function() {
 						cb(false,err)
 					}else{
 						var awardList = self.addItemStr(uid,list[index],value,"自选包"+otps.itemId)
+						cb(true,awardList)
+					}
+				})
+			break
+			case "hook_lord":
+			case "hook_hero":
+			case "hook_coin":
+				//挂机主公经验
+				var level = self.getCheckpointsInfo(uid)
+				if(!checkpointsCfg[level] || !checkpointsCfg[level][itemCfg[otps.itemId].useType]){
+					cb(false,"level config error "+level)
+					return
+				}
+				self.consumeItems(uid,otps.itemId+":"+value,1,"使用"+otps.itemId+"*"+value,function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						var rate = Math.floor(itemCfg[otps.itemId].arg * value)
+						var awardList = self.addItemStr(uid,checkpointsCfg[level][itemCfg[otps.itemId].useType],rate,"挂机卡"+otps.itemId)
 						cb(true,awardList)
 					}
 				})
