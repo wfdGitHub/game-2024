@@ -6,6 +6,9 @@ const item_cfg = require("../game-server/config/gameCfg/item.json")
 const pay_cfg = require("../game-server/config/gameCfg/pay_cfg.json")
 const hufu_quality = require("../game-server/config/gameCfg/hufu_quality.json")
 const hufu_skill = require("../game-server/config/gameCfg/hufu_skill.json")
+const heros = require("../game-server/config/gameCfg/heros.json")
+const lv_cfg = require("../game-server/config/gameCfg/lv_cfg.json")
+const star_base = require("../game-server/config/gameCfg/star_base.json")
 const stringRandom = require('string-random');
 var model = function() {
 	var self = this
@@ -1270,6 +1273,45 @@ var model = function() {
 			}else{
 				self.redisDao.db.hset("player:user:"+uid+":hufu",id,JSON.stringify(info))
 				self.redisDao.db.rpush("game:sendHufu",JSON.stringify({uid:uid,info:info,time:Date.now(),name:data}))
+				cb(true)
+			}
+		})
+	}
+	//发送英雄
+	local.sendHero = function(uid,otps,cb) {
+		var hId = uuid.v1()
+		var id = otps.id
+		var ad = Number(otps.ad) || 0
+		var lv = Number(otps.lv) || 1
+		var star = Number(otps.star) || 5
+		if(!heros[id]){
+			cb(false,"英雄ID错误 "+id)
+			return
+		}
+		if(!lv_cfg[lv]){
+			cb(false,"英雄等级错误 "+lv)
+			return
+		}
+		if(!star_base[star]){
+			cb(false,"英雄星级错误 "+star)
+			return
+		}
+		var heroInfo = {id : id,ad : ad,lv : lv,star : star}
+		self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
+			if(err || !data){
+				cb(false,"用户不存在")
+				return
+			}else{
+				self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
+				self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
+				heroInfo.hId = hId
+				self.redisDao.db.rpush("game:sendHero",JSON.stringify({uid:uid,info:heroInfo,time:Date.now(),name:data}))
+				self.redisDao.db.hget("player:user:"+uid+":heroArchive",id,function(err,data) {
+					data = Number(data) || 0
+					if(star > data){
+						self.redisDao.db.hset("player:user:"+uid+":heroArchive",id,star)
+					}
+				})
 				cb(true)
 			}
 		})
