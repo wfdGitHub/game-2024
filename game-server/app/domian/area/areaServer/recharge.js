@@ -43,19 +43,19 @@ module.exports = function() {
 	//玩家每日刷新
 	this.userRechargeDayUpdate = function(uid) {
 		for(var i in pay_cfg)
-			if(pay_cfg[i]["updateType"] == "day")
+			if(pay_cfg[i]["count"] && pay_cfg[i]["updateType"] == "day")
 				self.delObj(uid,"recharge_fast",i)
 	}
 	//玩家每周刷新
 	this.userRechargeWeekUpdate = function(uid) {
 		for(var i in pay_cfg)
-			if(pay_cfg[i]["updateType"] == "week")
+			if(pay_cfg[i]["count"] && pay_cfg[i]["updateType"] == "week")
 				self.delObj(uid,"recharge_fast",i)
 	}
 	//玩家每月刷新
 	this.userRechargeMonthUpdate = function(uid) {
 		for(var i in pay_cfg)
-			if(pay_cfg[i]["updateType"] == "month")
+			if(pay_cfg[i]["count"] && pay_cfg[i]["updateType"] == "month")
 				self.delObj(uid,"recharge_fast",i)
 	}
 	//点票支付
