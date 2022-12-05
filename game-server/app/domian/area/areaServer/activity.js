@@ -248,9 +248,8 @@ module.exports = function() {
 			cb(false,"条件未达成")
 			return
 		}
-		self.getObj(uid,main_name,"recharge_week_"+id,function(data) {
-			if(!data){
-				self.incrbyObj(uid,main_name,"recharge_week_"+id,1)
+		self.incrbyObj(uid,main_name,"recharge_week_"+id,1,function(data) {
+			if(data == 1){
 				var awardList = self.addItemStr(uid,activity_cfg["recharge_week_"+id]["value"],1,"每周累充"+id)
 				cb(true,awardList)
 			}else{
