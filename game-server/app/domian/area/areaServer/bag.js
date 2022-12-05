@@ -117,7 +117,8 @@ module.exports = function() {
 			case "hook_lord":
 			case "hook_hero":
 			case "hook_coin":
-				//挂机主公经验
+			case "hook_power":
+				//挂机资源卡
 				var level = self.getCheckpointsInfo(uid)
 				if(!checkpointsCfg[level] || !checkpointsCfg[level][itemCfg[otps.itemId].useType]){
 					cb(false,"level config error "+level)
