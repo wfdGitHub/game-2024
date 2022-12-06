@@ -103,7 +103,9 @@ var model = function() {
     }
     //增加跨服机器人
     posts["/createRobotAccount"] = function(req,res) {
-		local.post("127.0.0.1",5081,"/createRobotAccount",{},function(data) {
+		var data = req.body
+		var areaId = data.areaId
+		local.post("127.0.0.1",5081,"/createRobotAccount",{areaId:areaId},function(data) {
 			res.send(data)
 		})
     }
