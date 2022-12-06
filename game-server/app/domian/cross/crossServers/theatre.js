@@ -118,7 +118,7 @@ module.exports = function() {
 					var rankInfos = []
 					for(var i = 0;i < list.length;i+=2){
 						strList = list[i].split("|")
-						areaId = Number(strList[0])
+						areaId = Number(strList[0]) || 0
 						areaId = self.theatreMap[finalServerMap[areaId]] || 0
 						newRankLists[areaId].push(Number(list[i+1]),list[i])
 					}
