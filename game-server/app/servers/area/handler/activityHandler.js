@@ -349,6 +349,14 @@ activityHandler.prototype.gainNormalCardAward = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//领取高级月卡
+activityHandler.prototype.gainBetterCardAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].gainBetterCardAward(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 // //激活专属月卡
 // activityHandler.prototype.activateHighCard = function(msg, session, next) {
 //   var uid = session.uid

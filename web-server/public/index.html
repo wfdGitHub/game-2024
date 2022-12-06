@@ -2319,13 +2319,19 @@
             console.log(data);
         });
       }
-      //激活专属月卡
+      //领取高级月卡
+      var gainBetterCardAward = function() {
+        pomelo.request("area.activityHandler.gainBetterCardAward", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //激活至尊特权
       var activateHighCard = function() {
         pomelo.request("area.activityHandler.activateHighCard", {}, function(data) {
             console.log(data);
         });
       }
-      //领取专属月卡
+      //领取至尊特权
       var gainHighCardAward = function() {
         pomelo.request("area.activityHandler.gainHighCardAward", {}, function(data) {
             console.log(data);

@@ -41,6 +41,9 @@ module.exports = function() {
 		"normalCard" : 0,
 		"normalRmb" : 0,
 		"normalAward" : 0,
+		"betterCard" : 0,
+		"betterRmb" : 0,
+		"betterAward" : 0,
 		"highAward" : 0,
 		"recharge_day_1" : 0,
 		"recharge_day_2" : 0,
@@ -167,7 +170,15 @@ module.exports = function() {
 					data["normalRmb"] = 0
 				}
 			}
+			if(data["betterCard"]){
+				data["betterCard"]++
+				if(data["betterCard"] > 30){
+					data["betterCard"] = 0
+					data["betterRmb"] = 0
+				}
+			}
 			data["normalAward"] = 0
+			data["betterAward"] = 0
 			data["highAward"] = 0
 			data["vip_day_award"] = 0
 			data["recharge_day_1"] = 0
@@ -526,7 +537,7 @@ module.exports = function() {
 	this.gainNormalCardAward = function(uid,cb) {
 		self.getHMObj(uid,main_name,["normalCard","normalAward"],function(data) {
 			if(data[0] == "0"){
-				cb(false,"未激活普通月卡")
+				cb(false,"未激活")
 				return
 			}
 			if(data[1] != "0"){
@@ -534,11 +545,27 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"normalAward",1)
-			var awardList = self.addItemStr(uid,activity_cfg["normal_card_day"]["value"],1,"普通月卡每日")
+			var awardList = self.addItemStr(uid,activity_cfg["normal_card_day"]["value"],1,"普通月卡")
 			cb(true,awardList)
 		})
 	}
-	//领取专属月卡
+	//领取高级月卡
+	this.gainBetterCardAward = function(uid,cb) {
+		self.getHMObj(uid,main_name,["betterCard","betterAward"],function(data) {
+			if(data[0] == "0"){
+				cb(false,"未激活")
+				return
+			}
+			if(data[1] != "0"){
+				cb(false,"今日已领取")
+				return
+			}
+			self.incrbyObj(uid,main_name,"betterAward",1)
+			var awardList = self.addItemStr(uid,activity_cfg["better_card_day"]["value"],1,"高级月卡")
+			cb(true,awardList)
+		})
+	}
+	//领取至尊特权
 	this.gainHighCardAward = function(uid,cb) {
 		self.getHMObj(uid,main_name,["highCard","highAward"],function(data) {
 			if(!data[0]){
