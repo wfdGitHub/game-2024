@@ -14,6 +14,7 @@ const main_name = "activity"
 const day31Time = 2592000000
 const day14Time = 1209600000
 const day7Time = 604800000
+const oneDayTime = 86400000
 var rechargeMap = {}
 var recharge_once_table = {}
 for(var i in recharge){
@@ -602,5 +603,25 @@ module.exports = function() {
 		}
 		self.chageLordData(uid,"manor_pri",manor_pri)
 		cb(true,{manor_pri:manor_pri})
+	}
+	//购买周卡
+	this.buyLongAward = function(uid,pay_id,cb) {
+		var time = util.getZeroTime() + pay_cfg[pay_id]["day"] * oneDayTime
+		self.setObj(uid,main_name,"pay_"+pay_id,time)
+		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
+		cb(true)
+	}
+	//领取周卡奖励
+	this.gainLongAward = function(uid,pay_id,cb) {
+		self.getHMObj(uid,main_name,["pay_"+pay_id,"award_"+pay_id],function(list) {
+			var time = Number(list[0]) || 0
+			if(Date.now() < time && !list[1]){
+				self.incrbyObj(uid,main_name,"award_"+pay_id,1)
+				var awardList = self.addItemStr(uid,pay_cfg[pay_id]["arg2"],1,pay_cfg[pay_id]["name"])
+				cb(true,awardList)
+			}else{
+				cb(false)
+			}
+		})
 	}
 }
