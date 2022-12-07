@@ -1,7 +1,6 @@
 const sign_in_day = require("../../../../config/gameCfg/sign_in_day.json")
 const sign_in_cfg = require("../../../../config/gameCfg/sign_in_cfg.json")
 const online_time = require("../../../../config/gameCfg/online_time.json")
-const activity_lv = require("../../../../config/gameCfg/activity_lv.json")
 const activity_cfg = require("../../../../config/gameCfg/activity_cfg.json")
 const activity_ce = require("../../../../config/gameCfg/activity_ce.json")
 const recharge = require("../../../../config/gameCfg/recharge.json")
@@ -22,6 +21,11 @@ const wuxian = require("../../../../config/gameCfg/wuxian.json")
 const recharge_week = require("../../../../config/gameCfg/recharge_week.json")
 const officer = require("../../../../config/gameCfg/officer.json")
 const pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
+const fundMap = {
+	lv_fund : require("../../../../config/gameCfg/lv_fund.json"),
+	power_fund : require("../../../../config/gameCfg/power_fund.json"),
+	beaty_fund : require("../../../../config/gameCfg/beaty_fund.json")
+}
 const oneDayTime = 86400000
 var util = require("../../../../util/util.js")
 var maxBoss = 0
@@ -489,27 +493,31 @@ module.exports = function() {
 			cb(true,awardList)
 		})
 	}
-	//领取等级基金奖励
-	this.gainActivityLvAward = function(uid,index,cb) {
-		if(!index || !activity_lv[index]){
-			cb(false,"index error"+index)
+	//领取基金奖励
+	this.gainFundAward = function(uid,type,index,cb) {
+		if(!index || !fundMap[type] || !fundMap[type][index]){
+			cb(false,"arg error  "+type+"  "+index)
 			return
 		}
-		if(self.players[uid].level < activity_lv[index]["lv"]){
-			cb(false,"等级不足 "+self.players[uid].level+"/"+activity_lv[index]["lv"])
+		if(fundMap[type][index]["lv"] && self.players[uid].level < fundMap[type][index]["lv"]){
+			cb(false,"等级不足 "+self.players[uid].level+"/"+fundMap[type][index]["lv"])
 			return
 		}
-		self.getHMObj(uid,main_name,["lv_fund","lv_award"+index],function(data) {
+		if(fundMap[type][index]["day"] && self.players[uid].userDay < fundMap[type][index]["day"]){
+			cb(false,"天数不足 "+self.players[uid].userDay+"/"+fundMap[type][index]["day"])
+			return
+		}
+		self.getHMObj(uid,main_name,[type,type+"_"+index],function(data) {
 			if(!data[0]){
-				cb(false,"未激活等级基金")
+				cb(false,"未激活基金")
 				return
 			}
 			if(data[1]){
 				cb(false,"已领取")
 				return
 			}
-			self.incrbyObj(uid,main_name,"lv_award"+index,1)
-			var awardList = self.addItemStr(uid,activity_lv[index]["award"],1,"等级基金"+index)
+			self.incrbyObj(uid,main_name,type+"_"+index,1)
+			var awardList = self.addItemStr(uid,fundMap[type][index]["award"],1,type)
 			cb(true,awardList)
 		})
 	}

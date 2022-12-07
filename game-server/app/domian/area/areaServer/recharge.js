@@ -159,7 +159,9 @@ module.exports = function() {
 		}
 		switch(pay_cfg[pay_id]["type"]){
 			case "lv_fund":
-				this.activateLvFund(uid,call_back.bind(this,uid))
+			case "power_fund":
+			case "beaty_fund":
+				this.activateFund(uid,pay_cfg[pay_id]["type"],call_back.bind(this,uid))
 			break
 			case "highCard":
 				this.activateHighCard(uid,pay_id,call_back.bind(this,uid))
@@ -323,13 +325,13 @@ module.exports = function() {
 	// 		cb(true)
 	// 	})
 	// }
-	//激活等级基金
-	this.activateLvFund = function(uid,cb) {
-		self.getObj(uid,main_name,"lv_fund",function(data) {
+	//激活基金
+	this.activateFund = function(uid,type,cb) {
+		self.getObj(uid,main_name,type,function(data) {
 			if(data){
 				cb(false,"已激活基金")
 			}else{
-				self.setObj(uid,main_name,"lv_fund",1)
+				self.setObj(uid,main_name,type,1)
 				cb(true)
 			}
 		})

@@ -2295,9 +2295,9 @@
             console.log(data);
         });
       }
-      //领取等级奖励
-      var gainActivityLvAward = function(index) {
-        pomelo.request("area.activityHandler.gainActivityLvAward", {index:index}, function(data) {
+      //领取基金奖励
+      var gainFundAward = function(type,index) {
+        pomelo.request("area.activityHandler.gainFundAward", {type:type,index:index}, function(data) {
             console.log(data);
         });
       }

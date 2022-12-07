@@ -316,11 +316,12 @@ activityHandler.prototype.buyVipAward = function(msg, session, next) {
   })
 }
 //领取等级奖励
-activityHandler.prototype.gainActivityLvAward = function(msg, session, next) {
+activityHandler.prototype.gainFundAward = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   var index = msg.index
-  this.areaManager.areaMap[areaId].gainActivityLvAward(uid,index,function(flag,msg) {
+  var type = msg.type
+  this.areaManager.areaMap[areaId].gainFundAward(uid,type,index,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }
