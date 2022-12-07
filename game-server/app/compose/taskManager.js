@@ -1,7 +1,7 @@
 var sequeue = require('seq-queue');
 
 var manager = module.exports;
-var MAX_COUNT = 30
+var MAX_COUNT = 50
 var queues = {};
 
 manager.timeout = 3000;
