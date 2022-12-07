@@ -101,52 +101,6 @@ module.exports = function() {
 			}
 		})
 	}
-	//挑战魔物入侵
-	// this.challengeInvade = function(uid,cb) {
-	// 	var curTime = util.getDayMilliseconds()
-	// 	if(curTime < invade["beginTime"]["value"] || curTime > invade["endTime"]["value"]){
-	// 		cb(false,"未到开放时间")
-	// 		return
-	// 	}
-	// 	self.getObj(uid,main_name,"invade",function(count) {
-	// 		count = Number(count) || 0
-	// 		if(count >= invade["count"]["value"]){
-	// 			cb(false,"挑战次数已满")
-	// 		}else{
-	// 			var defTeam = invade_team[Math.floor(Math.random() * invade_team.length)].concat()
-	// 			defTeam = self.standardTeam(uid,defTeam,"invade")
-	// 			var lv = self.getLordLv(uid)
-	// 			var atkTeam = self.getUserTeam(uid)
-	// 			var seededNum = Date.now()
-	// 		    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-	// 		    var record = self.fightContorl.getFightRecord()
-	// 		    var info = {
-	// 		    	atkTeam : atkTeam,
-	// 		    	defTeam : defTeam,
-	// 		    	seededNum : seededNum,
-	// 		    	winFlag : winFlag
-	// 		    }
-	// 		    if(winFlag){
-	// 		    	self.incrbyObj(uid,main_name,"invade",1)
-	// 		    	var rate = invade["base_rate"]["value"] + lv * invade["lv_rate"]["value"]
-	// 		    	if(self.checkLimitedTime("saodang"))
-	// 		    		rate *= 2
-	// 		    	var awardList = self.addItemStr(uid,invade["base_award"]["value"],rate,"魔物入侵")
-	// 		    	var record = self.fightContorl.getFightRecord()
-	// 		    	var overInfo = record[record.length - 1]
-	// 		    	var round = overInfo.round
-	// 		    	if(round > 5)
-	// 		    		round = 5
-	// 		    	awardList = awardList.concat(self.openChestStr(uid,invade["round_"+round]["value"]))
-	// 		    	info.awardList = awardList
-	// 		    	info.count = ++count
-	// 		    	cb(true,info)
-	// 		    }else{
-	// 		    	cb(true,info)
-	// 		    }
-	// 		}
-	// 	})
-	// }
 	//活动数据更新
 	this.activityUpdate = function(uid) {
 		self.getObjAll(uid,main_name,function(oldData) {
@@ -231,13 +185,12 @@ module.exports = function() {
 			cb(false,"礼包不存在")
 			return
 		}
-		self.getObj(uid,main_name,"free_day_"+id,function(data) {
-			if(!data || data == 0){
-				self.incrbyObj(uid,main_name,"free_day_"+id,1)
+		self.incrbyObj(uid,main_name,"free_day_"+id,1,function(data) {
+			if(data != 1){
+				cb(false,"已领取")
+			}else{
 				var awardList = self.addItemStr(uid,activity_cfg["free_day_"+id]["value"],1,"免费礼包"+id)
 				cb(true,awardList)
-			}else{
-				cb(false,"已领取")
 			}
 		})
 	}
@@ -254,9 +207,15 @@ module.exports = function() {
 			}else if(days < pay_days[id]["day"]){
 				cb(false,"条件未达成")
 			}else{
-				self.setObj(uid,main_name,"pay_days_"+id,1)
-				var awardList = self.addItemStr(uid,pay_days[id]["award"],1,"充值天数礼包"+id)
-				cb(true,awardList)
+				self.incrbyObj(uid,main_name,"pay_days_"+id,1,function(data) {
+					if(data == 1){
+						var awardList = self.addItemStr(uid,pay_days[id]["award"],1,"充值天数礼包"+id)
+						cb(true,awardList)
+					}else{
+						cb(false,"已领取")
+					}
+				})
+
 			}
 		})
 	}
@@ -267,13 +226,12 @@ module.exports = function() {
 			cb(false,"条件未达成")
 			return
 		}
-		self.getObj(uid,main_name,"recharge_day_"+id,function(data) {
-			if(data == 0){
-				self.incrbyObj(uid,main_name,"recharge_day_"+id,1)
+		self.incrbyObj(uid,main_name,"recharge_day_"+id,1,function(data) {
+			if(data == 1){
 				var awardList = self.addItemStr(uid,activity_cfg["recharge_day_"+id]["value"],1,"每日首充"+id)
 				cb(true,awardList)
 			}else{
-				cb(false,"已领取")
+			cb(false,"已领取")
 			}
 		})
 	}
@@ -284,9 +242,8 @@ module.exports = function() {
 			cb(false,"条件未达成"+week_rmb+"/"+recharge_week[id]["rmb"])
 			return
 		}
-		self.getObj(uid,main_name,"recharge_week_"+id,function(data) {
-			if(!data){
-				self.incrbyObj(uid,main_name,"recharge_week_"+id,1)
+		self.incrbyObj(uid,main_name,"recharge_week_"+id,1,function(data) {
+			if(data == 1){
 				var awardList = self.addItemStr(uid,recharge_week[id]["topic_"+curTopic],1,"每周累充"+id)
 				cb(true,awardList)
 			}else{
@@ -335,13 +292,12 @@ module.exports = function() {
 			return
 		}
 		var str = "shouchong_"+type+"_"+index
-		self.getObj(uid,main_name,str,function(data) {
-			if(data){
-				cb(false,"已领取")
-			}else{
-				self.incrbyObj(uid,main_name,str,1)
+		self.incrbyObj(uid,main_name,str,1,function(data) {
+			if(data == 1){
 				var awardList = self.addItemStr(uid,activity_cfg[str]["value"],1,"首充礼包"+str)
 				cb(true,awardList)
+			}else{
+				cb(false,"已领取")
 			}
 		})
 	}
@@ -426,14 +382,12 @@ module.exports = function() {
 	}
 	//在线奖励
 	this.gainOnlineTimeAward = function(uid,cb) {
-		self.getObj(uid,main_name,"onlineIndex",function(data) {
-			data = Number(data) + 1
+		self.incrbyObj(uid,main_name,"onlineIndex",1,function(data) {
 			if(!online_time[data]){
 				cb(false,"已领完")
 				return
 			}
-			self.incrbyObj(uid,main_name,"onlineIndex",1)
-			let awardList = self.addItemStr(uid,online_time[data]["award"],1,"在线奖励"+data)
+			var awardList = self.addItemStr(uid,online_time[data]["award"],1,"在线奖励"+data)
 			cb(true,awardList)
 		})
 	}
@@ -463,12 +417,11 @@ module.exports = function() {
 	//领取vip免费礼包
 	this.gainVipAward = function(uid,cb) {
 		var vip = self.players[uid].vip
-		self.getObj(uid,main_name,"vip_day_award",function(data) {
+		self.incrbyObj(uid,main_name,"vip_day_award",1,function(data) {
 			if(data != 0){
 				cb(false,"已领取")
 				return
 			}
-			self.incrbyObj(uid,main_name,"vip_day_award",1)
 			var awardList = self.addItemStr(uid,VIP[vip]["free_award"],1,"VIP每日礼包")
 			cb(true,awardList)
 		})
@@ -483,14 +436,13 @@ module.exports = function() {
 			cb(false,"天数不足 "+self.players[uid].userDay+"/"+activity_day[index]["day"])
 			return
 		}
-		self.getObj(uid,main_name,["day_award"+index],function(data) {
-			if(data){
+		self.incrbyObj(uid,main_name,"day_award"+index,1,function(data) {
+			if(data == 1){
+				var awardList = self.addItemStr(uid,activity_day[index]["award"],1,"天数礼包"+index)
+				cb(true,awardList)
+			}else{
 				cb(false,"已领取")
-				return
 			}
-			self.incrbyObj(uid,main_name,"day_award"+index,1)
-			var awardList = self.addItemStr(uid,activity_day[index]["award"],1,"天数礼包"+index)
-			cb(true,awardList)
 		})
 	}
 	//领取基金奖励
@@ -516,9 +468,15 @@ module.exports = function() {
 				cb(false,"已领取")
 				return
 			}
-			self.incrbyObj(uid,main_name,type+"_"+index,1)
-			var awardList = self.addItemStr(uid,fundMap[type][index]["award"],1,type)
-			cb(true,awardList)
+			self.incrbyObj(uid,main_name,type+"_"+index,1,function(data) {
+				if(data == 1){
+					var awardList = self.addItemStr(uid,fundMap[type][index]["award"],1,type)
+					cb(true,awardList)
+				}else{
+					cb(false,"已领取")
+				}
+			})
+
 		})
 	}
 	//领取战力奖励
@@ -531,14 +489,13 @@ module.exports = function() {
 			cb(false,"战力不足 "+self.getCE(uid)+"/"+activity_ce[index]["ce"])
 			return
 		}
-		self.getObj(uid,main_name,"ce_award"+index,function(data) {
-			if(data){
+		self.incrbyObj(uid,main_name,"ce_award"+index,1,function(data) {
+			if(data == 1){
+				var awardList = self.addItemStr(uid,activity_ce[index]["award"],1,"战力奖励"+index)
+				cb(true,awardList)
+			}else{
 				cb(false,"已领取")
-				return
 			}
-			self.incrbyObj(uid,main_name,"ce_award"+index,1)
-			var awardList = self.addItemStr(uid,activity_ce[index]["award"],1,"战力奖励"+index)
-			cb(true,awardList)
 		})
 	}
 	//领取普通月卡
@@ -549,12 +506,18 @@ module.exports = function() {
 				return
 			}
 			if(data[1] != "0"){
-				cb(false,"今日已领取")
+				cb(false,"已领取")
 				return
 			}
-			self.incrbyObj(uid,main_name,"normalAward",1)
-			var awardList = self.addItemStr(uid,activity_cfg["normal_card_day"]["value"],1,"普通月卡")
-			cb(true,awardList)
+			self.incrbyObj(uid,main_name,"normalAward",1,function(data) {
+				if(data == 1){
+					var awardList = self.addItemStr(uid,activity_cfg["normal_card_day"]["value"],1,"普通月卡")
+					cb(true,awardList)
+				}else{
+					cb(false,"已领取")
+				}
+			})
+
 		})
 	}
 	//领取高级月卡
@@ -565,12 +528,18 @@ module.exports = function() {
 				return
 			}
 			if(data[1] != "0"){
-				cb(false,"今日已领取")
+				cb(false,"已领取")
 				return
 			}
-			self.incrbyObj(uid,main_name,"betterAward",1)
-			var awardList = self.addItemStr(uid,activity_cfg["better_card_day"]["value"],1,"高级月卡")
-			cb(true,awardList)
+			self.incrbyObj(uid,main_name,"betterAward",1,function(data) {
+				if(data == 1){
+					var awardList = self.addItemStr(uid,activity_cfg["better_card_day"]["value"],1,"高级月卡")
+					cb(true,awardList)
+				}else{
+					cb(false,"已领取")
+				}
+			})
+
 		})
 	}
 	//领取至尊特权
@@ -584,9 +553,15 @@ module.exports = function() {
 				cb(false,"今日已领取")
 				return
 			}
-			self.incrbyObj(uid,main_name,"highAward",1)
-			var awardList = self.addItemStr(uid,activity_cfg["high_card_day"]["value"],1,"至尊特权每日")
-			cb(true,awardList)
+			self.incrbyObj(uid,main_name,"highAward",1,function(data) {
+				if(data == 1){
+					var awardList = self.addItemStr(uid,activity_cfg["high_card_day"]["value"],1,"至尊特权每日")
+					cb(true,awardList)
+				}else{
+					cb(false,"已领取")
+				}
+			})
+
 		})
 	}
 	//领取消耗活动奖励
@@ -602,9 +577,15 @@ module.exports = function() {
 				self.getPlayerData(uid,"gold_consume",function(data) {
 					data = Number(data)
 					if(data && data >= consumeTotal[index]["need_gold"]){
-						self.incrbyObj(uid,main_name,"consumeTotal_"+index,1)
-						var awardList = self.addItemStr(uid,consumeTotal[index]["award"],1,"消耗元宝活动"+index)
-						cb(true,awardList)
+						self.incrbyObj(uid,main_name,"consumeTotal_"+index,1,function(data) {
+							if(data == 1){
+								var awardList = self.addItemStr(uid,consumeTotal[index]["award"],1,"消耗元宝活动"+index)
+								cb(true,awardList)
+							}else{
+								cb(false,"已领取")
+							}
+						})
+
 					}else{
 						cb(false,"条件未达成"+data+"/"+consumeTotal[index]["need_gold"])
 					}
@@ -627,9 +608,15 @@ module.exports = function() {
 			if(data){
 				cb(false,"已领取")
 			}else{
-				self.setObj(uid,main_name,"open_"+index,1)
-				var awardList = self.addItemStr(uid,unlock_cfg[index]["award"],1,"功能开启"+index)
-				cb(true,awardList)
+				self.incrbyObj(uid,main_name,"open_"+index,1,function(data) {
+				if(data == 1){
+					var awardList = self.addItemStr(uid,unlock_cfg[index]["award"],1,"功能开启"+index)
+					cb(true,awardList)
+				}else{
+					cb(false,"已领取")
+				}
+			})
+
 			}
 		})
 	}
@@ -647,9 +634,14 @@ module.exports = function() {
 					cb(false,"任务未完成")
 					return
 				}
-				self.setObj(uid,main_name,"mewtwo_"+index,1)
-				var awardList = self.addItemStr(uid,mewtwo_task[index]["award"],1,"超梦任务"+index)
-				cb(true,awardList)
+				self.incrbyObj(uid,main_name,"mewtwo_"+index,1,function(data) {
+					if(data == 1){
+						var awardList = self.addItemStr(uid,mewtwo_task[index]["award"],1,"超梦任务"+index)
+						cb(true,awardList)
+					}else{
+						cb(false,"已领取")
+					}
+				})
 			}
 		})
 	}

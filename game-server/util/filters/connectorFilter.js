@@ -1,5 +1,4 @@
 const bearcat = require("bearcat")
-const MAX_COUNT = 50
 module.exports = function() {
   return new Filter();
 }
