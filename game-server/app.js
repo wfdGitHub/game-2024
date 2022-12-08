@@ -89,7 +89,6 @@ bearcat.start(function() {
       app.filter(pomelo.filters.timeout());
       //错误处理
       app.set('errorHandler',errorFilter.errorHandler);
->>>>>>> Stashed changes
       app.before(crossFilter());
     });
     app.configure('production|development', 'admin', function() {
