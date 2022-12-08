@@ -16,6 +16,7 @@ var Filter = function(app,timeout) {
  * request serialization after filter
  */
 Filter.prototype.before = function(msg, session, next) {
+  console.log(msg)
   if(taskManager.checkOver(session.id)){
     // console.log(this.app.areaDeploy,this.app.get("areaDeploy"))
     var serverId = this.app.get("areaDeploy").getServer(session.get("areaId"))
