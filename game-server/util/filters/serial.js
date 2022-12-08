@@ -16,18 +16,23 @@ var Filter = function(app,timeout) {
  * request serialization after filter
  */
 Filter.prototype.before = function(msg, session, next) {
-  if(taskManager.checkOver(session.id)){
-    // console.log(this.app.areaDeploy,this.app.get("areaDeploy"))
-    var serverId = this.app.get("areaDeploy").getServer(session.get("areaId"))
-    this.app.rpc.area.areaRemote.kickUser.toServer(serverId,session.uid,null)
-    next("504")
+  var uid = session.uid
+  if(!uid){
+    next()
   }else{
-    taskManager.addTask(session.id, function(task) {
-      session.__serialTask__ = task;
-      next();
-    }, function() {
-      logger.error('[serial filter] msg timeout, msg:' + JSON.stringify(msg));
-    }, this.timeout);
+    if(taskManager.checkOver(uid)){
+      // console.log(this.app.areaDeploy,this.app.get("areaDeploy"))
+      var serverId = this.app.get("areaDeploy").getServer(session.get("areaId"))
+      this.app.rpc.area.areaRemote.kickUser.toServer(serverId,uid,null)
+      next("504")
+    }else{
+      taskManager.addTask(uid, function(task) {
+        session.__serialTask__ = task;
+        next();
+      }, function() {
+        logger.error('[serial filter] msg timeout, msg:' + JSON.stringify(msg));
+      }, this.timeout);
+    }
   }
 };
 
