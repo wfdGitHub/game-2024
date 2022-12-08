@@ -42,7 +42,8 @@ manager.closeQueue = function(key, force) {
 
 
 manager.checkOver = function(key) {
-  console.log(key,queues[key].queue.length)
+  if(queues[key])
+    console.log(key,queues[key].queue.length)
   if(queues[key] && queues[key].queue.length > MAX_COUNT){
     console.log("数量过多",queues[key].queue.length)
     return true
