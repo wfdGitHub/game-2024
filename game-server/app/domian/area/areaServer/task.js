@@ -263,6 +263,8 @@ module.exports = function() {
 	this.taskUpdate = function(uid,type,value,arg) {
 		value = Number(value)
 		if(userTaskMaps[uid] && userTaskMaps[uid][type]){
+			var taskIds = []
+			var taskValues = []
 			for(var i = 0;i < userTaskMaps[uid][type].length;i++){
 				var taskId = userTaskMaps[uid][type][i]
 				if(!arg || (task_type[type].equal && arg == task_cfg[taskId].arg) || (!task_type[type].equal && arg >= task_cfg[taskId].arg)){
@@ -277,16 +279,18 @@ module.exports = function() {
 						self.incrbyObj(uid,main_name,taskId,value)
 					}
 					if(!oldValue || oldValue < task_cfg[taskId]["value"]){
-						var notify = {
-							"type" : "taskUpdate",
-							"taskId" : taskId,
-							"value" : userTaskLists[uid][taskId]
-						}
-						if(notify.value > task_cfg[taskId]["value"])
-							notify.value = task_cfg[taskId]["value"]
-						self.sendToUser(uid,notify)
+						taskIds.push(taskId)
+						taskValues.push(Math.min(userTaskLists[uid][taskId],task_cfg[taskId]["value"]))
 					}
 				}
+			}
+			if(taskIds.length){
+				var notify = {
+					"type" : "tasksUpdate",
+					"taskIds" : taskIds,
+					"taskValues" : taskValues
+				}
+				self.sendToUser(uid,notify)
 			}
 		}
 	}
