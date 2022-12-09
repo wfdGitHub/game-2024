@@ -1,7 +1,7 @@
 var sequeue = require('seq-queue');
 
 var manager = module.exports;
-var MAX_COUNT = 50
+var MAX_COUNT = 30
 var queues = {};
 
 manager.timeout = 3000;
@@ -42,10 +42,8 @@ manager.closeQueue = function(key, force) {
 
 
 manager.checkOver = function(key) {
-  if(queues[key])
-    console.log(key,queues[key].queue.length)
   if(queues[key] && queues[key].queue.length > MAX_COUNT){
-    console.log("数量过多",queues[key].queue.length)
+    console.log(key+" to busy "+queues[key].queue.length)
     return true
   }else
     return false

@@ -102,8 +102,6 @@ bearcat.start(function() {
         areaManager.init(app)
         app.set("areaManager",areaManager)
       });
-      app.configure('production|development', 'chat', function() {
-      });
       app.configure('production|development', 'cross', function() {
         var crossManager = bearcat.getBean("crossManager",app)
         app.set("crossManager",crossManager)
