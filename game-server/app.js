@@ -67,28 +67,6 @@ bearcat.start(function() {
       app.filter(pomelo.filters.timeout());
       //错误处理
       app.set('errorHandler',errorFilter.errorHandler);
-      app.before(areaFilter());
-    });
-    app.configure('production|development', 'chat', function() {
-      //消息串行化
-      app.filter(serial(app));
-      //检测到node.js中事件循环的请求等待队列过长，超过一个阀值时，就会触发toobusy
-      app.before(pomelo.filters.toobusy());
-      //处理超时进行警告，默认三秒
-      app.filter(pomelo.filters.timeout());
-      //错误处理
-      app.set('errorHandler',errorFilter.errorHandler);
-      app.before(chatFilter());
-    });
-    app.configure('production|development', 'cross', function() {
-      //消息串行化
-      app.filter(serial(app));
-      //检测到node.js中事件循环的请求等待队列过长，超过一个阀值时，就会触发toobusy
-      app.before(pomelo.filters.toobusy());
-      //处理超时进行警告，默认三秒
-      app.filter(pomelo.filters.timeout());
-      //错误处理
-      app.set('errorHandler',errorFilter.errorHandler);
       app.before(crossFilter());
     });
     app.configure('production|development', 'admin', function() {
@@ -123,8 +101,6 @@ bearcat.start(function() {
         var areaManager = bearcat.getBean("areaManager")
         areaManager.init(app)
         app.set("areaManager",areaManager)
-      });
-      app.configure('production|development', 'chat', function() {
       });
       app.configure('production|development', 'cross', function() {
         var crossManager = bearcat.getBean("crossManager",app)

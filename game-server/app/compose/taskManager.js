@@ -42,8 +42,10 @@ manager.closeQueue = function(key, force) {
 
 
 manager.checkOver = function(key) {
-  if(queues[key] && queues[key].queue.length > MAX_COUNT)
+  if(queues[key] && queues[key].queue.length > MAX_COUNT){
+    console.log(key+" to busy "+queues[key].queue.length)
     return true
+  }
   else
     return false
 }
