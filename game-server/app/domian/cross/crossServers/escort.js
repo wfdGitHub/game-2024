@@ -125,6 +125,8 @@ module.exports = function() {
 			var text = escort_cfg["passText"]["value"]
 			self.sendAward(crossUid,title,text,str,"木牛流马奖励",function(flag,data) {
 				if(flag){
+					if(!local.userInfos[crossUid])
+						return
 					var notify = {
 						type : "myEscortFinish",
 						awardList : data,
@@ -133,11 +135,6 @@ module.exports = function() {
 						time : Date.now()
 					}
 					self.sendToUser(messageName,crossUid,notify)
-					if(!local.userInfos[crossUid]){
-						console.log("local.userInfos[crossUid] error ",local.userInfos[crossUid])
-						console.log(local.userInfos)
-						return
-					}
 					local.userInfos[crossUid]["messageList"].push(notify)
 				}
 			})
