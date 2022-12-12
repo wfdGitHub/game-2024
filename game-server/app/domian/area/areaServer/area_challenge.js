@@ -282,7 +282,7 @@ module.exports = function() {
 			cb(false,err)
 		})
 	}
-	//三队挑战
+	//血战华容
 	this.areaTrial = function(uid,verifys,cb) {
 		var verify1 = verifys[0]
 		var verify2 = verifys[1]
