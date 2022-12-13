@@ -22,8 +22,10 @@ Filter.prototype.before = function(msg, session, next) {
   }else{
     if(taskManager.checkOver(uid)){
       // console.log(this.app.areaDeploy,this.app.get("areaDeploy"))
-      var serverId = this.app.get("areaDeploy").getServer(session.get("areaId"))
-      this.app.rpc.area.areaRemote.kickUser.toServer(serverId,uid,null)
+      if(this.app.get("areaDeploy")){
+        var serverId = this.app.get("areaDeploy").getServer(session.get("areaId"))
+        this.app.rpc.area.areaRemote.kickUser.toServer(serverId,uid,null)
+      }
       next("504")
     }else{
       taskManager.addTask(uid, function(task) {
