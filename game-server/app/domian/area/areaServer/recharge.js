@@ -203,6 +203,9 @@ module.exports = function() {
 			case "area_gift":
 				this.buyAreaGift(uid,pay_id,call_back.bind(this,uid))
 			break
+			case "long_award":
+				this.buyLongAward(uid,pay_id,call_back.bind(this,uid))
+			break
 			default:
 				console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
 		}
@@ -609,13 +612,18 @@ module.exports = function() {
 		var time = util.getZeroTime() + pay_cfg[pay_id]["day"] * oneDayTime
 		self.setObj(uid,main_name,"pay_"+pay_id,time)
 		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
-		cb(true)
+		cb(true,time)
 	}
 	//领取周卡奖励
 	this.gainLongAward = function(uid,pay_id,cb) {
+		if(!pay_cfg[pay_id] || pay_cfg[pay_id]["type"] != "long_award"){
+			cb(false,"pay_id error "+pay_id)
+			return
+		}
 		self.getHMObj(uid,main_name,["pay_"+pay_id,"award_"+pay_id],function(list) {
 			var time = Number(list[0]) || 0
-			if(Date.now() < time && !list[1]){
+			var state = Number(list[1]) || 0
+			if(Date.now() < time && !state){
 				self.incrbyObj(uid,main_name,"award_"+pay_id,1)
 				var awardList = self.addItemStr(uid,pay_cfg[pay_id]["arg2"],1,pay_cfg[pay_id]["name"])
 				cb(true,awardList)

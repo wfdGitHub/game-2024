@@ -459,6 +459,15 @@ activityHandler.prototype.buyVipSkipCount = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//领取周卡奖励
+activityHandler.prototype.gainLongAward = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var pay_id = msg.pay_id
+  this.areaManager.areaMap[areaId].gainLongAward(uid,pay_id,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "activityHandler",

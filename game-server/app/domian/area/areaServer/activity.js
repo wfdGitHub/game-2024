@@ -184,6 +184,10 @@ module.exports = function() {
 					data[i+"_cd"] = 0
 				}
 			}
+			for(var i in pay_cfg){
+				if(pay_cfg[i]["type"] == "long_award")
+					data["award_"+i] = 0
+			}
 			for(var i in data){
 				if(oldData[i] != data[i]){
 					info[i] = data[i]

@@ -98,6 +98,12 @@
         console.log("onChat")
         console.log(data)
       })
+      //领取周卡奖励
+      var gainLongAward = function(pay_id) {
+        pomelo.request("area.activityHandler.gainLongAward", {pay_id:pay_id}, function(data) {
+            console.log(data);
+        });
+      }
       //获取玩家排行榜数据
       var getPlayerSprintRank = function(rankType) {
         pomelo.request("area.activityHandler.getPlayerSprintRank", {rankType:rankType}, function(data) {
