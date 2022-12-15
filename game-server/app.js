@@ -6,7 +6,9 @@ var areaFilter = require('./util/filters/areaFilter.js');
 var chatFilter = require('./util/filters/chatFilter.js');
 var crossFilter = require('./util/filters/crossFilter.js');
 var adminFilter = require('./util/filters/adminFilter.js')
-var util = require('./util/util.js');
+var errorFilter = require('./util/filters/errorFilter.js')
+var serial = require('./util/filters/serial.js')
+var connectorFilter = require('./util/filters/connectorFilter.js')
 var app = pomelo.createApp();
 /**
  * Init app for client.
@@ -18,10 +20,14 @@ bearcat.start(function() {
     app.configure('production|development','connector|gate',function() {
       //消息串行化
       // app.filter(pomelo.filters.serial());
+      app.filter(serial(app));
       //检测到node.js中事件循环的请求等待队列过长，超过一个阀值时，就会触发toobusy
       app.before(pomelo.filters.toobusy());
       //处理超时进行警告，默认三秒
       app.filter(pomelo.filters.timeout());
+      //错误处理
+      app.set('errorHandler',errorFilter.errorHandler);
+      app.filter(connectorFilter());
       app.set('connectorConfig',
         {
           connector : pomelo.connectors.hybridconnector,
@@ -32,15 +38,47 @@ bearcat.start(function() {
         });
     })
     app.configure('production|development', 'area', function() {
-      app.filter(areaFilter());
+      //消息串行化
+      app.filter(serial(app));
+      //检测到node.js中事件循环的请求等待队列过长，超过一个阀值时，就会触发toobusy
+      app.before(pomelo.filters.toobusy());
+      //处理超时进行警告，默认三秒
+      app.filter(pomelo.filters.timeout());
+      //错误处理
+      app.set('errorHandler',errorFilter.errorHandler);
+      app.before(areaFilter());
     });
     app.configure('production|development', 'chat', function() {
+      //消息串行化
+      app.filter(serial(app));
+      //检测到node.js中事件循环的请求等待队列过长，超过一个阀值时，就会触发toobusy
+      app.before(pomelo.filters.toobusy());
+      //处理超时进行警告，默认三秒
+      app.filter(pomelo.filters.timeout());
+      //错误处理
+      app.set('errorHandler',errorFilter.errorHandler);
       app.before(chatFilter());
     });
     app.configure('production|development', 'cross', function() {
+      //消息串行化
+      app.filter(serial(app));
+      //检测到node.js中事件循环的请求等待队列过长，超过一个阀值时，就会触发toobusy
+      app.before(pomelo.filters.toobusy());
+      //处理超时进行警告，默认三秒
+      app.filter(pomelo.filters.timeout());
+      //错误处理
+      app.set('errorHandler',errorFilter.errorHandler);
       app.before(crossFilter());
     });
     app.configure('production|development', 'admin', function() {
+      //消息串行化
+      app.filter(serial(app));
+      //检测到node.js中事件循环的请求等待队列过长，超过一个阀值时，就会触发toobusy
+      app.before(pomelo.filters.toobusy());
+      //处理超时进行警告，默认三秒
+      app.filter(pomelo.filters.timeout());
+      //错误处理
+      app.set('errorHandler',errorFilter.errorHandler);
       app.before(adminFilter());
     });
     app.start(function() {
@@ -64,8 +102,6 @@ bearcat.start(function() {
         var areaManager = bearcat.getBean("areaManager")
         areaManager.init(app)
         app.set("areaManager",areaManager)
-      });
-      app.configure('production|development', 'chat', function() {
       });
       app.configure('production|development', 'cross', function() {
         var crossManager = bearcat.getBean("crossManager",app)
