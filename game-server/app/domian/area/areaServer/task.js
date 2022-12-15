@@ -72,9 +72,6 @@ module.exports = function() {
 		for(var taskId in first_task){
 			this.gainTask(uid,taskId,0)
 		}
-		for(var taskId in week_target_task){
-			this.gainTask(uid,taskId,0)
-		}
 		for(var taskId in officer_task){
 			this.gainTask(uid,taskId,0)
 		}
@@ -401,6 +398,13 @@ module.exports = function() {
 			self.setObj(uid,war_name,type+"_"+lv,1)
 			cb(true,{awardList : awardList})
 		})
+	}
+	//领取七日任务
+	this.gainWeekTask = function(uid) {
+		self.setObj(uid,"week_target","taskCount",0)
+		for(var taskId in week_target_task){
+			this.gainTask(uid,taskId,0)
+		}
 	}
 	//清除七日任务
 	this.clearWeekTarget = function(uid) {

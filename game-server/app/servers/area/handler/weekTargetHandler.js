@@ -15,6 +15,8 @@ weekTargetHandler.prototype.getWeekTargetData = function(msg, session, next) {
 }
 //领取七天登陆礼包
 weekTargetHandler.prototype.gainLoginAward = function(msg, session, next) {
+  next(null,{flag : false,msg : "接口弃用"})
+  return
   let uid = session.uid
   let areaId = session.get("areaId")
   let day = msg.day
@@ -24,6 +26,8 @@ weekTargetHandler.prototype.gainLoginAward = function(msg, session, next) {
 }
 //领取每日礼包
 weekTargetHandler.prototype.gainDayAward = function(msg, session, next) {
+  next(null,{flag : false,msg : "接口弃用"})
+  return
   let uid = session.uid
   let areaId = session.get("areaId")
   let day = msg.day
@@ -33,6 +37,8 @@ weekTargetHandler.prototype.gainDayAward = function(msg, session, next) {
 }
 //领取等级礼包
 weekTargetHandler.prototype.gainLvAward = function(msg, session, next) {
+  next(null,{flag : false,msg : "接口弃用"})
+  return
   let uid = session.uid
   let areaId = session.get("areaId")
   let day = msg.day
@@ -42,6 +48,8 @@ weekTargetHandler.prototype.gainLvAward = function(msg, session, next) {
 }
 //领取充值礼包
 weekTargetHandler.prototype.gainRmbAward = function(msg, session, next) {
+  next(null,{flag : false,msg : "接口弃用"})
+  return
   let uid = session.uid
   let areaId = session.get("areaId")
   let day = msg.day
@@ -51,6 +59,8 @@ weekTargetHandler.prototype.gainRmbAward = function(msg, session, next) {
 }
 //购买限购礼包
 weekTargetHandler.prototype.buyWeekTargetGoods = function(msg, session, next) {
+  next(null,{flag : false,msg : "接口弃用"})
+  return
   let uid = session.uid
   let areaId = session.get("areaId")
   let day = msg.day
@@ -59,7 +69,7 @@ weekTargetHandler.prototype.buyWeekTargetGoods = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
-//购买限购礼包
+//领取七日目标宝箱
 weekTargetHandler.prototype.gainWeekTargetBox = function(msg, session, next) {
   let uid = session.uid
   let areaId = session.get("areaId")

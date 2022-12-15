@@ -61,6 +61,7 @@ area.prototype.init = function() {
 	this.manorInitData()
 	this.initAreaChallenge()
 	this.addAreaGiftInit()
+	this.weekTaskDayUpdate()
 	this.timer = setInterval(this.update.bind(this),5000)
 }
 //服务器关闭
@@ -109,6 +110,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.activityDayUpdate()
 	this.worldLevelInit()
 	this.worldLevelDayUpdate()
+	this.weekTaskDayUpdate()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)
