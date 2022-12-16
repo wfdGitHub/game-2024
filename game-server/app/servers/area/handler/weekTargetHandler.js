@@ -15,8 +15,6 @@ weekTargetHandler.prototype.getWeekTargetData = function(msg, session, next) {
 }
 //领取七天登陆礼包
 weekTargetHandler.prototype.gainLoginAward = function(msg, session, next) {
-  next(null,{flag : false,msg : "接口弃用"})
-  return
   let uid = session.uid
   let areaId = session.get("areaId")
   let day = msg.day
