@@ -932,7 +932,11 @@ model.getTeamCE = function(team) {
 	var careers = {"1":0,"2":0,"3":0,"4":0}
 	for(var i = 0;i < 6;i++){
 		if(team[i]){
-			allCE += lv_cfg[team[i]["lv"] || 1]["ce"]
+			//等级计算
+			if(team[i]["lv"]){
+				var growth = aptitudeCfg[herosCfg[team[i]["id"]]["aptitude"]]["ce"]
+				allCE += Math.floor(lv_cfg[team[i]["lv"]]["ce"] * growth)
+			}
 			allCE += hero_ad[team[i]["ad"] || 0]["ce"]
 			allCE += star_base[team[i]["star"] || 1]["ce"]
 			if(team[i]["artifact"] !== undefined)

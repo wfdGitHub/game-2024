@@ -21,7 +21,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		lvDiff = 200
 	if(lvDiff < -200)
 		lvDiff = -200
-	var attDiff = lvDiff * 0.002
+	var starDiff = attacker.star - target.star
+	var attDiff = lvDiff * 0.002 + starDiff * 0.05
+
 	if(attacker.damage_always_burn || target.buffs["burn"]){
 		if(skill.isAnger){
 			if(skill.burn_att_change_skill || skill.character.burn_att_change_skill){
