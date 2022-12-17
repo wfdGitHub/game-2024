@@ -384,6 +384,7 @@ var ancientEntity = function(self,theatreId) {
 					change = -Math.floor(Math.random() * 20) -5
 					awardStr = ancient_cfg["lose"]["value"]
 				}
+				self.taskUpdate(crossUid,"ancient",1)
 				self.redisDao.db.hincrby(main_name+":count",crossUid,1)
 				self.addItemStr(crossUid,awardStr,1,"远古战场",function(flag,awardList) {
 					self.redisDao.db.zincrby([real_rank,change,crossUid],function(err,curScore) {

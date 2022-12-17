@@ -512,6 +512,7 @@ var muyeEntity = function(self,theatreId) {
 						change *= 2
 					}
 				}
+				self.taskUpdate(crossUid,"muye",1)
 				if(voidScore)
 					change = 1
 				self.addItemStr(crossUid,awardStr,1,"天命决战",function(flag,awardList) {

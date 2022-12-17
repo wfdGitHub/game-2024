@@ -464,6 +464,7 @@ heroHandler.prototype.upgraEvolution = function(msg, session, next) {
         return
       }
       self.heroDao.incrbyHeroInfo(areaId,uid,hId,"evo",1,function(flag,data) {
+        self.areaManager.areaMap[areaId].taskUpdate(uid,"evolution",1,aimEvo)
         next(null,{flag : flag,data : data})
       })
     })

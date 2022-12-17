@@ -125,6 +125,7 @@ module.exports = function() {
 				if(tr_maxHP >= hero_tr[tr_lv]["maxHP"] && tr_atk >= hero_tr[tr_lv]["atk"] && tr_phyDef >= hero_tr[tr_lv]["phyDef"] && tr_magDef >= hero_tr[tr_lv]["magDef"]){
 					self.consumeItems(uid,hero_tr[tr_lv]["pc"],1,"英雄培养",function(flag,err) {
 						if(flag){
+							self.taskUpdate(uid,"hero_tr",1,tr_lv+1)
 							self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"tr_lv",1)
 							cb(true,tr_lv+1)
 						}else{
@@ -168,6 +169,7 @@ module.exports = function() {
 			}
 			self.consumeItems(uid,equip_st[slv]["pc"],1,"英雄培养",function(flag,err) {
 				if(flag){
+					self.taskUpdate(uid,"equip_st",1,slv+1)
 					self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,key,1)
 					cb(true,slv+1)
 				}else{

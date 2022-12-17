@@ -244,6 +244,7 @@ var gradingEntity = function(self,theatreId) {
 			function(next) {
 				seededNum = Date.now()
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
+				self.taskUpdate(crossUid,"grading",1)
 				if(winFlag){
 					self.taskUpdate(crossUid,"grading_win",1)
 					if(targetScore > max_score)

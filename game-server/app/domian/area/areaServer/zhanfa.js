@@ -85,6 +85,7 @@ module.exports = function() {
 		}
 		self.setObj(uid,main_name,zId,1)
 		self.incrbyObj(uid,main_name,"count",1)
+		self.taskUpdate(uid,"zhanfa_gain",1,zId)
 		cb(true,zId)
 	}
 	//穿戴战法

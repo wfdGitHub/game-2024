@@ -224,6 +224,9 @@ module.exports = function() {
 				}
 			}
 			if(min != userTeams[uid][6]["coexist"]){
+				if(min > userTeams[uid][6]["coexist"]){
+					self.taskUpdate(uid,"coexist_lv",1,min)
+				}
 				userTeams[uid][6]["coexist"] = min
 				self.setObj(uid,"playerInfo","coexist",min)
 			}
@@ -487,6 +490,7 @@ module.exports = function() {
 					if(!flag){
 						cb(false,err)
 					}else{
+						self.taskUpdate(uid,"book_gain",1,bookMap[bookType].id)
 						self.setBookInfo(uid,bookType,"lv",1)
 						self.setBookInfo(uid,bookType,"star",0)
 						cb(true)
@@ -664,6 +668,7 @@ module.exports = function() {
 					cb(false,err)
 				}else{
 					self.setPowerInfo(uid,powerId,"star",star)
+					self.taskUpdate(uid,"power_star",star,powerId)
 					if(star == 1){
 						self.setObj(uid,"power",powerId+"_lv",1)
 						self.setObj(uid,"power",powerId+"_ad",1)
@@ -874,6 +879,7 @@ module.exports = function() {
 						self.taskUpdate(uid,"beauty_num",1)
 					}
 					self.updateCE(uid)
+					self.taskUpdate(uid,"beauty_star",star,beautId)
 					var beautInfo = self.getBeautyInfo(uid,beautId)
 					cb(true,beautInfo)
 				}

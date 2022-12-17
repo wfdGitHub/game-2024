@@ -355,7 +355,7 @@ module.exports = function() {
 				defTeam = area_trial[trialId]["team3"]
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum3})
 				if(!winFlag){
-					next("第2场战斗失败",atkTeam)
+					next("第3场战斗失败",atkTeam)
 					return
 				}
 				list = self.fightContorl.getFightRecord()
@@ -374,6 +374,7 @@ module.exports = function() {
 				var awardList = self.addItemStr(uid,area_trial[trialId]["award"],1,"挑战山海")
 				self.incrbyObj(uid,main_name,"trialId",1)
 				self.addZset("trial_rank",uid,trialId)
+				self.taskUpdate(uid,"area_trial",1,trialId)
 				cb(true,{awardList:awardList,trialId:trialId})
 			}
 		],function(err) {

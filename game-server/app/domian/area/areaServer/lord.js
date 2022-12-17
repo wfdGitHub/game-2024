@@ -143,6 +143,7 @@ module.exports = function() {
 		}
 		self.chageLordData(uid,"officer",officer_lv)
 		self.setOfficer(uid,officer_lv)
+		self.taskUpdate(uid,"officer",1,officer_lv)
 		var awardList = self.addItemStr(uid,officer[officer_lv]["award"],1,"提升官职"+officer_lv)
 		cb(true,{officer : officer_lv,awardList : awardList})
 	}

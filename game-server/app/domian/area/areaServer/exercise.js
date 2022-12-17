@@ -132,6 +132,7 @@ module.exports = function() {
 				if(winFlag){
 					self.setObj(uid,main_name,"index",index)
 					self.delObj(uid,main_name,"play")
+					self.taskUpdate(uid,"exercise_fight",1)
 					if(index == 4){
 						self.setObj(uid,"exercise_pass","pass_"+level,1)
 						self.taskUpdate(uid,"exercise",1)
