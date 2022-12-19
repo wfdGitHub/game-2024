@@ -52,6 +52,7 @@ module.exports = function() {
 				return
 			}
 		}
+		id = Number(id) || 0
 		if(!endless_one[id] || !endless_one[id]["team_"+index]){
 			cb(false,"id error "+id)
 			return
@@ -60,13 +61,13 @@ module.exports = function() {
 		var defTeam = []
 		var oldLevel = 0
 		var oldIndex = 0
-		var level = (Number(id) - 1) * 6 +index
+		var level = (id - 1) * 6 +index
 		async.waterfall([
 			function(next) {
 				//前置条件判断
 				self.getObj(uid,main_name,"one_level",function(data) {
 					oldLevel = Number(data) || 0
-					oldIndex = oldLevel - (Number(id) - 1) * 6
+					oldIndex = oldLevel - (id - 1) * 6
 					if(oldIndex < 0)
 						next("未通关前置关卡 "+id)
 					else if(level <= oldLevel)
@@ -108,7 +109,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//发放奖励
-				self.taskUpdate(uid,"endless_one_lv",1,level)
+				self.taskUpdate(uid,"endless_one_lv",1,id)
 				self.addZset(main_name+"_one",uid,level)
 				self.setObj(uid,main_name,"one_level",level)
 				var awardList = []
@@ -153,6 +154,7 @@ module.exports = function() {
 				return
 			}
 		}
+		id = Number(id) || 0
 		if(!endless_three[id] || !endless_three[id]["team_"+index]){
 			cb(false,"id error "+id)
 			return
@@ -161,13 +163,13 @@ module.exports = function() {
 		var defTeam = []
 		var oldLevel = 0
 		var oldIndex = 0
-		var level = (Number(id) - 1) * 6 +index
+		var level = (id - 1) * 6 +index
 		async.waterfall([
 			function(next) {
 				//前置条件判断
 				self.getObj(uid,main_name,"three_level",function(data) {
 					oldLevel = Number(data) || 0
-					oldIndex = oldLevel - (Number(id) - 1) * 6
+					oldIndex = oldLevel - (id - 1) * 6
 					if(oldIndex < 0)
 						next("未通关前置关卡 "+id)
 					else if(level <= oldLevel)
@@ -215,7 +217,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//发放奖励
-				self.taskUpdate(uid,"endless_three_lv",1,level)
+				self.taskUpdate(uid,"endless_three_lv",1,id)
 				self.addZset(main_name+"_three",uid,level)
 				self.setObj(uid,main_name,"three_level",level)
 				var awardList = []
