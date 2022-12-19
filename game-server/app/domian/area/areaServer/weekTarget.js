@@ -31,6 +31,10 @@ module.exports = function() {
 				self.setObj(uid,main_name,"index",index)
 				data["taskCount"] = 0
 				self.setObj(uid,"week_target","taskCount",0)
+				for(var boxId in week_box){
+					delete data["box"+boxId]
+					self.delObj(uid,main_name,"box"+boxId)
+				}
 			}
 			data["index"] = index
 			cb(true,data)
