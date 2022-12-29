@@ -83,7 +83,8 @@ module.exports = function() {
 				if(pay_cfg[pay_id]["dianpiao"] == 0){
 					self.finish_recharge(uid,pay_id,cb)
 				}else{
-					var dp_limit = self.getLordAtt(uid,"dp_limit")
+                    var gmLv = self.getLordAtt(uid,"gmLv")
+					var dp_limit = self.getLordAtt(uid,"dp_limit") + GM_CFG[gmLv]["dianpiao"]
 					self.getPlayerData(uid,"diaopiao_use",function(value) {
 						value = Number(value) || 0
 						if((value + pay_cfg[pay_id]["dianpiao"]) > dp_limit){
