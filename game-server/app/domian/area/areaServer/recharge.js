@@ -294,19 +294,21 @@ module.exports = function() {
 			cb(false,"GM特权不存在")
 			return
 		}
-		var index = self.getLordAtt(uid,"gmLv")
-		if(id <= index){
-			console.error("gm等级错误 "+id+"/"+index)
-			return
-		}
-		self.chageLordData(uid,"gmLv",id)
-		var notify = {
-			type : "gmLv",
-			lv : id
-		}
-		self.sendToUser(uid,notify)
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
-		cb(true)
+		self.redisDao.db.hget("player:user:"+uid+":playerInfo","gmLv",function(err,data) {
+			var index = Number(data) || 0
+			if(id <= index){
+				console.error(uid+ " gm等级错误 "+id+"/"+index)
+			}else{
+				self.chageLordData(uid,"gmLv",id)
+				var notify = {
+					type : "gmLv",
+					lv : id
+				}
+				self.sendToUser(uid,notify)
+			}
+			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
+			cb(true)
+		})
 	}
 	//购买循环礼包
 	// this.buyLoopGift = function(uid,loopId,cb) {
