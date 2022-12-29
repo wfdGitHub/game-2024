@@ -668,7 +668,7 @@ module.exports = function() {
 					cb(false,err)
 				}else{
 					self.setPowerInfo(uid,powerId,"star",star)
-					self.taskUpdate(uid,"power_star",star,powerId)
+					self.taskUpdate(uid,"power_star",1,powerId)
 					if(star == 1){
 						self.setObj(uid,"power",powerId+"_lv",1)
 						self.setObj(uid,"power",powerId+"_ad",1)
@@ -879,7 +879,7 @@ module.exports = function() {
 						self.taskUpdate(uid,"beauty_num",1)
 					}
 					self.updateCE(uid)
-					self.taskUpdate(uid,"beauty_star",star,beautId)
+					self.taskUpdate(uid,"beauty_star",1,beautId)
 					var beautInfo = self.getBeautyInfo(uid,beautId)
 					cb(true,beautInfo)
 				}
