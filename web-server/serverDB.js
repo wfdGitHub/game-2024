@@ -22,6 +22,7 @@ var model = function() {
 		self.redisDao = redisDao
 		self.server = server
 		dataClean.init(server,mysqlDao,redisDao)
+		sqlClean.init(server,mysqlDao,redisDao)
 		for(var key in posts){
 			server.post(key,posts[key])
 		}
