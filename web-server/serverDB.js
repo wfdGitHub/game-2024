@@ -34,7 +34,7 @@ var model = function() {
 		sqlClean.dataClean(function(flag,data) {
 			if(flag){
 				res.send("SUCCESS")
-			}esle{
+			}else{
 				res.send(data)
 			}
 		})
