@@ -11,6 +11,7 @@ const lv_cfg = require("../game-server/config/gameCfg/lv_cfg.json")
 const star_base = require("../game-server/config/gameCfg/star_base.json")
 const stringRandom = require('string-random');
 const dataClean = require("./model/dataClean.js")
+const sqlClean = require("./model/sqlClean.js")
 var model = function() {
 	var self = this
 	var posts = {}
@@ -27,6 +28,16 @@ var model = function() {
         for(var i in item_cfg){
 			items[i] = item_cfg[i]["name"]
         }
+	}
+	//数据库清档
+	posts["/sqlClean"] = function(req,res) {
+		sqlClean.dataClean(function(flag,data) {
+			if(flag){
+				res.send("SUCCESS")
+			}esle{
+				res.send(data)
+			}
+		})
 	}
 	//获取全服邮件
 	posts["/getAreaMailList"] = function(req,res) {
