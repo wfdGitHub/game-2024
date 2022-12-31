@@ -34,7 +34,15 @@ model.prototype.redisDaoClean = function() {
 
 //mysql清档
 model.prototype.mysqlClean = function() {
+	this.mysqlDao.db.query("delete from chat_record",[],function(err) {})
+	this.mysqlDao.db.query("delete from daily_table",[],function(err) {})
+	this.mysqlDao.db.query("delete from game_order",[],function(err) {})
 	this.mysqlDao.db.query("delete from item_log",[],function(err) {})
+	this.mysqlDao.db.query("delete from login_log",[],function(err) {})
+	this.mysqlDao.db.query("delete from LTV_table",[],function(err) {})
+	this.mysqlDao.db.query("delete from mail_log",[],function(err) {})
+	this.mysqlDao.db.query("delete from retention_table",[],function(err) {})
+	this.mysqlDao.db.query("delete from user_list",[],function(err) {})
 }
 
 module.exports = new model()
