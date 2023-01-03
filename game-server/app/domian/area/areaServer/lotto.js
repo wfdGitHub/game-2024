@@ -93,6 +93,7 @@ module.exports = function() {
     //开始抽奖
     local.onLotto = function(uid,type,count,cb) {
 		var name = self.players[uid]["name"]
+		var awards = {}
 		var awardList = []
 		var index = -1
 		for(var i = 0;i < count;i++){
@@ -100,13 +101,18 @@ module.exports = function() {
 			for(var j = 0;j < MAX_GRID;j++){
 				if(rand < lottoMaps[type][j]["weight"]){
 					index = j
-					awardList = awardList.concat(self.addItemStr(uid,lottoMaps[type][j]["award"],1,"转盘:"+type))
+					if(!awards[lottoMaps[type][j]["award"]])
+						awards[lottoMaps[type][j]["award"]] = 0
+					awards[lottoMaps[type][j]["award"]]++
 					if(lottoMaps[type][j]["rare"]){
 						local.saveRecord(name,type,lottoMaps[type][j]["award"])
 					}
 					break
 				}
 			}
+		}
+		for(var awardStr in awards){
+			awardList = awardList.concat(self.addItemStr(uid,awardStr,awards[awardStr],"转盘:"+type))
 		}
 		cb(true,{awardList:awardList,index:index})
     }
