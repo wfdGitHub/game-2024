@@ -22,11 +22,11 @@ module.exports = function() {
 			function(next) {
 				//获取英雄数据
 				self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
-				    if(heroInfo.coexist){
-				      next("该英雄共鸣中")
-				      return
-				    }
 					if(flag && heroInfo){
+					    if(heroInfo.coexist){
+					      next("该英雄共鸣中")
+					      return
+					    }
 						next(null,heroInfo)
 					}else{
 						next("hero not find "+heroInfo)
