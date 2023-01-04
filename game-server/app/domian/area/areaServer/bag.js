@@ -76,11 +76,8 @@ module.exports = function() {
 					if(!flag){
 						cb(false,err)
 					}else{
-						var awardList = []
 						var chestId = itemCfg[otps.itemId].arg
-						for(var i = 0;i < value;i++){
-							awardList = awardList.concat(self.openChestAward(uid,chestId))
-						}
+						var awardList = self.openChestAward(uid,chestId,value)
 						cb(true,awardList)
 					}
 				})
@@ -615,16 +612,16 @@ module.exports = function() {
 			var m_list = m_str.split(":")
 			var chestId = m_list[0]
 			var value = parseInt(m_list[1]) || 1
-			for(var i = 0;i < value;i++)
-				awardList = awardList.concat(self.openChestAward(uid,chestId))
+			awardList = awardList.concat(self.openChestAward(uid,chestId,value))
 		})
 		return awardList
 	}
 	//奖励池获取奖励
-	this.openChestAward = function(uid,chestId) {
+	this.openChestAward = function(uid,chestId,value) {
 		if(!chest_cfg[chestId] || !chest_cfg[chestId]["randAward"]){
 			return []
 		}
+		value = Number(value) || 1
 		var awardMap = []
 		var keyMap = []
 		var chestStr = chest_cfg[chestId]["randAward"]
@@ -637,24 +634,26 @@ module.exports = function() {
 			awardMap.push(allValue)
 			keyMap.push(itemId)
 		})
-		var str = false
-		var rand = Math.random() * allValue
-		for(var i in awardMap){
-			if(rand < awardMap[i]){
-				if(!chest_awards[keyMap[i]]){
-					console.error(chestId+"宝箱奖励未找到"+keyMap[i])
-					return [{"err" : chestId+"宝箱奖励未找到"+keyMap[i]}]
-				}else{
-					str = chest_awards[keyMap[i]]["str"]
+		var strs = {}
+		for(var k = 0;k < value;k++){
+			var rand = Math.random() * allValue
+			for(var i in awardMap){
+				if(rand < awardMap[i]){
+					if(!chest_awards[keyMap[i]]){
+						console.error(chestId+"宝箱奖励未找到"+keyMap[i])
+					}else{
+						if(!strs[chest_awards[keyMap[i]]["str"]])
+							strs[chest_awards[keyMap[i]]["str"]] = 0
+						strs[chest_awards[keyMap[i]]["str"]]++
+					}
+					break
 				}
-				break
 			}
 		}
-		if(str){
-			return this.addItemStr(uid,str,1,"奖励池"+chestId)
-		}else{
-			return []
-		}
+		var awardList = []
+		for(var awardStr in strs)
+			awardList = awardList.concat(this.addItemStr(uid,awardStr,strs[awardStr],"奖励池"+awardStr))
+		return awardList
 	}
 	//解析奖励池str
 	this.openChestStrNoItem = function(str) {
