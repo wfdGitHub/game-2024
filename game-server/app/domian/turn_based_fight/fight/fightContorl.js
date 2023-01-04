@@ -602,7 +602,6 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 				newCE = equip_st[newValue]["ce"] || 0
 		break
 	}
-	console.log(name,oldValue,newValue,"oldCE",oldCE,"newCE",newCE)
 	return newCE - oldCE
 }
 model.getTeamCE = function(team) {
