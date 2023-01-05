@@ -14,8 +14,8 @@ module.exports = function() {
 		if(!area_party_cfg[index])
 			index = -1
 	}
-	//获取七日目标数据
-	this.getWeekTargetData = function(uid,cb) {
+	//七日目标刷新
+	this.weekTargetRefresh = function(uid) {
 		self.getObjAll(uid,main_name,function(data) {
 			if(!data)
 				data = {}
@@ -24,17 +24,24 @@ module.exports = function() {
 			}
 			if(index == -1 && !data["finish"]){
                 self.clearWeekTarget(uid)
-                data["finish"] = 1
                 self.setObj(uid,main_name,"finish",1)
 			}else if(index != 0 && data["index"] != index){
 				self.gainWeekTask(uid)
 				self.setObj(uid,main_name,"index",index)
-				data["taskCount"] = 0
 				self.setObj(uid,"week_target","taskCount",0)
 				for(var boxId in week_box){
-					delete data["box"+boxId]
 					self.delObj(uid,main_name,"box"+boxId)
 				}
+			}
+		})
+	}
+	//获取七日目标数据
+	this.getWeekTargetData = function(uid,cb) {
+		self.getObjAll(uid,main_name,function(data) {
+			if(!data)
+				data = {}
+			for(var i in data){
+				data[i] = Number(data[i])
 			}
 			data["index"] = index
 			cb(true,data)
