@@ -1328,6 +1328,8 @@ var model = function() {
 		var ad = Number(otps.ad) || 0
 		var lv = Number(otps.lv) || 1
 		var star = Number(otps.star) || 5
+		var aptitude = Number(otps.aptitude) || 0
+		var name = otps.name
 		if(!heros[id]){
 			cb(false,"英雄ID错误 "+id)
 			return
@@ -1340,7 +1342,7 @@ var model = function() {
 			cb(false,"英雄星级错误 "+star)
 			return
 		}
-		var heroInfo = {id : id,ad : ad,lv : lv,star : star}
+		var heroInfo = {id : id,ad : ad,lv : lv,star : star,aptitude : aptitude,name : name}
 		self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
 			if(err || !data){
 				cb(false,"用户不存在")

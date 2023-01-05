@@ -290,6 +290,8 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	info.bookAtts = bookAtts
 	let id = info.id
 	var aptitude = herosCfg[id].aptitude
+	if(info.aptitude)
+		aptitude += Number(info.aptitude) || 0
 	model.mergeData(info,herosCfg[id])
 	//被动技能
 	if(herosCfg[info.id]["talent1"])
