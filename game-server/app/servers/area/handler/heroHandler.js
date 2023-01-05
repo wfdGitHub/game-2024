@@ -128,6 +128,10 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
         next(null,{flag : false,err : "英雄不存在"+i})
         return
       }
+      if(herolist[i].custom){
+        next(null,{flag : false,err : "定制英雄不能分解"+i})
+        return
+      }
       if(herolist[i].coexist){
         next(null,{flag : false,err : "该英雄共鸣中"})
         return
@@ -202,6 +206,10 @@ heroHandler.prototype.unlockZhanfaGrid = function(msg, session, next) {
       for(var i = 0;i < data.length;i++){
         if(!data[i] || !data[i].id){
           next(null,{flag : false,data : "英雄不存在"+hIds[i]})
+          return
+        }
+        if(data[i].custom){
+          next(null,{flag : false,err : "定制英雄不能分解"+hIds[i]})
           return
         }
         if(data[i].coexist){
@@ -359,6 +367,10 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
         for(var i = 0;i < pc_hero.length;i++){
           if(!data[i] || !data[i].id){
             next(null,{flag : false,data : "英雄不存在"+hIds[i]})
+            return
+          }
+          if(data[i].custom){
+            next(null,{flag : false,err : "定制英雄不能分解"+hIds[i]})
             return
           }
           if(data[i].combat){

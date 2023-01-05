@@ -954,6 +954,10 @@ module.exports = function() {
 			    		cb(false,"英雄已上阵不可置换")
 			    		return
 			    	}
+			    	if(heroInfo.custom){
+			    		cb(false,"定制英雄不可置换")
+			    		return
+			    	}
 			    	if(heros[heroInfo.id]["min_star"] < 5){
 			    		cb(false,"五星英雄才可以置换")
 			    		return
