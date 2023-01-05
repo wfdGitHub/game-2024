@@ -131,6 +131,17 @@ module.exports = function() {
 					}
 				})
 			break
+			case "dp_limit":
+				self.consumeItems(uid,otps.itemId+":"+value,1,"增加额度"+otps.itemId,function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						self.incrbyLordData(uid,"dp_limit",value,function(data) {
+							cb(true,data)
+						})
+					}
+				})
+			break
 			default:
 				cb(false,"类型错误"+itemCfg[otps.itemId].useType)
 		}
