@@ -9,6 +9,7 @@ const util = require("../../../../util/util.js")
 const main_name = "topic_recruit"
 const shilian_high = JSON.parse(default_cfg["shilian_high"]["value"])
 const shilian_middle = JSON.parse(default_cfg["shilian_middle"]["value"])
+const async = require("async")
 var topicList = []
 for(var i in recruit_topic_hero)
 	topicList.push({id:i,heroId:recruit_topic_hero[i]["topic"]})
