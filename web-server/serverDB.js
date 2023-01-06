@@ -1343,6 +1343,7 @@ var model = function() {
 			return
 		}
 		var heroInfo = {id : id,ad : ad,lv : lv,star : star,aptitude : aptitude,name : name,custom : 1}
+		console.log("heroInfo",heroInfo)
 		self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
 			if(err || !data){
 				cb(false,"用户不存在")
