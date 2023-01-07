@@ -20,6 +20,17 @@ var skinArr = []
 for(var i in gift_skin)
 	skinArr.push(i)
 var skinList = []
+var rechargeMap = {}
+var recharge_once_table = {}
+for(var i in recharge){
+	if(recharge[i]["once_award"])
+		rechargeMap[recharge[i]["rmb"]] = i
+}
+for(var payId in pay_cfg){
+	var cent = pay_cfg[payId]["cent"]
+	if(rechargeMap[cent])
+		recharge_once_table[payId] = rechargeMap[cent]
+}
 module.exports = function() {
 	var self = this
 	//每日刷新
