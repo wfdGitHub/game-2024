@@ -258,12 +258,12 @@ module.exports = function() {
 	}
 	//快速充值
 	this.buyFastRecharge = function(uid,pay_id,cb) {
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
+		self.sendMail(uid,"Phần thưởng nạp tiền", "Cảm ơn bạn đã nạp tiền, đây là phần thưởng nạp tiền của bạn, vui lòng kiểm tra.",pay_cfg[pay_id]["award"])
 		cb(true)
 	}
 	//新服限购
 	this.buyAreaGift = function(uid,pay_id,cb) {
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
+		self.sendMail(uid,"Phần thưởng nạp tiền", "Cảm ơn bạn đã nạp tiền, đây là phần thưởng nạp tiền của bạn, vui lòng kiểm tra.",pay_cfg[pay_id]["award"])
 		self.addAreaGiftNum(pay_cfg[pay_id]["arg"])
 		cb(true)
 	}
