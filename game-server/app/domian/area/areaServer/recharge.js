@@ -222,7 +222,6 @@ module.exports = function() {
 				self.sendToUser(uid,notify)
 			})
 		}
-		cb(true)
 	}
 	//真实充值
 	this.real_recharge = function(uid,value,cb) {
