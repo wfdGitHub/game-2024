@@ -68,9 +68,13 @@ module.exports = function() {
 	}
 	//主公获得经验值
 	this.addLordExp = function(uid,exp) {
+		if(self.players[uid]){
+			self.players[uid]["exp"] += exp
+		}
 		self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","exp",exp,function(err,value) {
 			if(value < 0){
 				value = 0
+				self.players[uid]["exp"] = 0
 				self.redisDao.db.hset("player:user:"+uid+":playerInfo","exp",0)
 			}
 			self.updateSprintRank("lv_rank",uid,exp)
@@ -80,7 +84,6 @@ module.exports = function() {
 					"exp" : exp,
 					"curExp" : Number(value)
 				}
-				self.players[uid]["exp"] = notify.curExp
 				self.sendToUser(uid,notify)
 				self.checkLordUpgrade(uid)
 			}
