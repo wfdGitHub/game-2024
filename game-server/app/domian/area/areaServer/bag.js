@@ -246,43 +246,59 @@ module.exports = function() {
 			switch(itemCfg[itemId].type){
 				case "hufu":
 					//护符
-					var hufuArg = JSON.parse(itemCfg[itemId]["arg"])
-					if(!hufuArg.lv){
-						cb(false,"hufu lv error",hufuArg)
-						return
+					var awardList = []
+					for(var i = 0;i < value;i++){
+						var hufuArg = JSON.parse(itemCfg[itemId]["arg"])
+						if(!hufuArg.lv){
+							cb(false,"hufu lv error",hufuArg)
+							return
+						}
+						var hufuInfo = {}
+						if(hufuArg.s1){
+							hufuInfo = self.gainHufu(uid,hufuArg)
+						}else{
+							hufuInfo = self.gainRandHufu(uid,hufuArg.lv)
+						}
+						self.taskUpdate(uid,"hufu_gain",1)
+						awardList.push({type : "hufu",hufuInfo : hufuInfo,itemId:itemId})
 					}
-					var hufuInfo = {}
-					if(hufuArg.s1){
-						hufuInfo = self.gainHufu(uid,hufuArg)
-					}else{
-						hufuInfo = self.gainRandHufu(uid,hufuArg.lv)
-					}
+					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:1,reason:otps.reason})
 					if(cb)
 						cb(true,1)
-					self.taskUpdate(uid,"hufu_gain",1)
-					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-				return {type : "hufu",hufuInfo : hufuInfo,itemId:itemId}
+				return awardList
 				case "horse":
 					//战马
-					var horseInfo = self.gainRandHorse(uid,itemCfg[itemId]["arg"])
+					var awardList = []
+					for(var i = 0;i < value;i++){
+						var horseInfo = self.gainRandHorse(uid,itemCfg[itemId]["arg"])
+						awardList.push({type : "horse",horseInfo : horseInfo,itemId:itemId})
+					}
+					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
 					if(cb)
 						cb(true,1)
-					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-				return {type : "horse",horseInfo : horseInfo,itemId:itemId}
+				return awardList
 				case "drum":
 					//战鼓
-					var drumInfo = self.gainRandDrum(uid,itemCfg[itemId]["arg"])
+					var awardList = []
+					for(var i = 0;i < value;i++){
+						var drumInfo = self.gainRandDrum(uid,itemCfg[itemId]["arg"])
+						awardList.push({type : "drum",drumInfo : drumInfo,itemId:itemId})
+					}
 					if(cb)
 						cb(true,1)
 					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-				return {type : "drum",drumInfo : drumInfo,itemId:itemId}
+				return awardList
 				case "banner":
 					//军旗
-					var bannerInfo = self.gainRandBanner(uid,itemCfg[itemId]["arg"])
+					var awardList = []
+					for(var i = 0;i < value;i++){
+						var bannerInfo = self.gainRandBanner(uid,itemCfg[itemId]["arg"])
+						awardList.push({type : "banner",bannerInfo : bannerInfo,itemId:itemId})
+					}
 					if(cb)
 						cb(true,1)
 					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-				return {type : "banner",bannerInfo : bannerInfo,itemId:itemId}
+				return awardList
 				case "title":
 					self.gainUserTitle(uid,itemCfg[itemId]["arg"],cb)
 				return {type : "title",id : itemCfg[itemId]["arg"],itemId : itemId}
@@ -495,7 +511,7 @@ module.exports = function() {
 			var m_list = m_str.split(":")
 			var itemId = m_list[0]
 			var value = m_list[1]
-			awardList.push(self.addItem({uid : uid,itemId : itemId,value : value,rate : rate,reason : reason}))
+			awardList = awardList.concat(self.addItem({uid : uid,itemId : itemId,value : value,rate : rate,reason : reason}))
 		})
 		if(cb && typeof(cb) == "function")
 			cb(true,awardList)
