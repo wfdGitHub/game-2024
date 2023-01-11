@@ -14,12 +14,13 @@ module.exports = function() {
 	this.playerBags = {}
 	//使用背包物品
 	this.useItem = function(uid,otps,cb) {
+		var value = Number(otps.value)
 		if(!itemCfg[otps.itemId] || !itemCfg[otps.itemId].useType){
-			cb(false,"item not exist or can't use")
+			cb(false,"item not exist or can't use "+otps.itemId)
 			return
 		}
-		if(!Number.isInteger(otps.value) || otps.value <= 0 || otps.value > 10000){
-			cb(false,"value error " + otps.value)
+		if(!value || value <= 0){
+			cb(false,"value error "+value)
 			return
 		}
 		if(itemCfg[otps.itemId].useLv){
@@ -29,7 +30,6 @@ module.exports = function() {
 				return
 			}
 		}
-		var value = Number(otps.value)
 		switch(itemCfg[otps.itemId].useType){
 			case "heroChip":
 				var heroId = itemCfg[otps.itemId].arg
@@ -72,6 +72,10 @@ module.exports = function() {
 			break
 			case "chest":
 				//宝箱
+				if(value > 10000){
+					cb(false,"value too much " + value)
+					return
+				}
 				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝箱"+otps.itemId,function(flag,err) {
 					if(!flag){
 						cb(false,err)
