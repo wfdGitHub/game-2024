@@ -80,11 +80,8 @@ module.exports = function() {
 					if(!flag){
 						cb(false,err)
 					}else{
-						var awardList = []
 						var chestId = itemCfg[otps.itemId].arg
-						for(var i = 0;i < value;i++){
-							awardList = awardList.concat(self.openChestAward(uid,chestId))
-						}
+						var awardList = self.openChestAward(uid,chestId,value)
 						cb(true,awardList)
 					}
 				})
@@ -232,43 +229,59 @@ module.exports = function() {
 			switch(itemCfg[itemId].type){
 				case "hufu":
 					//护符
-					var hufuArg = JSON.parse(itemCfg[itemId]["arg"])
-					if(!hufuArg.lv){
-						cb(false,"hufu lv error",hufuArg)
-						return
+					var awardList = []
+					for(var i = 0;i < value;i++){
+						var hufuArg = JSON.parse(itemCfg[itemId]["arg"])
+						if(!hufuArg.lv){
+							cb(false,"hufu lv error",hufuArg)
+							return
+						}
+						var hufuInfo = {}
+						if(hufuArg.s1){
+							hufuInfo = self.gainHufu(uid,hufuArg)
+						}else{
+							hufuInfo = self.gainRandHufu(uid,hufuArg.lv)
+						}
+						self.taskUpdate(uid,"hufu_gain",1)
+						awardList.push({type : "hufu",hufuInfo : hufuInfo,itemId:itemId})
 					}
-					var hufuInfo = {}
-					if(hufuArg.s1){
-						hufuInfo = self.gainHufu(uid,hufuArg)
-					}else{
-						hufuInfo = self.gainRandHufu(uid,hufuArg.lv)
-					}
+					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:1,reason:otps.reason})
 					if(cb)
 						cb(true,1)
-					self.taskUpdate(uid,"hufu_gain",1)
-					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-				return {type : "hufu",hufuInfo : hufuInfo,itemId:itemId}
+				return awardList
 				case "horse":
 					//战马
-					var horseInfo = self.gainRandHorse(uid,itemCfg[itemId]["arg"])
+					var awardList = []
+					for(var i = 0;i < value;i++){
+						var horseInfo = self.gainRandHorse(uid,itemCfg[itemId]["arg"])
+						awardList.push({type : "horse",horseInfo : horseInfo,itemId:itemId})
+					}
+					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
 					if(cb)
 						cb(true,1)
-					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-				return {type : "horse",horseInfo : horseInfo,itemId:itemId}
+				return awardList
 				case "drum":
 					//战鼓
-					var drumInfo = self.gainRandDrum(uid,itemCfg[itemId]["arg"])
+					var awardList = []
+					for(var i = 0;i < value;i++){
+						var drumInfo = self.gainRandDrum(uid,itemCfg[itemId]["arg"])
+						awardList.push({type : "drum",drumInfo : drumInfo,itemId:itemId})
+					}
 					if(cb)
 						cb(true,1)
 					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-				return {type : "drum",drumInfo : drumInfo,itemId:itemId}
+				return awardList
 				case "banner":
 					//军旗
-					var bannerInfo = self.gainRandBanner(uid,itemCfg[itemId]["arg"])
+					var awardList = []
+					for(var i = 0;i < value;i++){
+						var bannerInfo = self.gainRandBanner(uid,itemCfg[itemId]["arg"])
+						awardList.push({type : "banner",bannerInfo : bannerInfo,itemId:itemId})
+					}
 					if(cb)
 						cb(true,1)
 					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-				return {type : "banner",bannerInfo : bannerInfo,itemId:itemId}
+				return awardList
 				case "title":
 					self.gainUserTitle(uid,itemCfg[itemId]["arg"],cb)
 				return {type : "title",id : itemCfg[itemId]["arg"],itemId : itemId}
@@ -479,7 +492,7 @@ module.exports = function() {
 			var m_list = m_str.split(":")
 			var itemId = m_list[0]
 			var value = m_list[1]
-			awardList.push(self.addItem({uid : uid,itemId : itemId,value : value,rate : rate,reason : reason}))
+			awardList = awardList.concat(self.addItem({uid : uid,itemId : itemId,value : value,rate : rate,reason : reason}))
 		})
 		if(cb && typeof(cb) == "function")
 			cb(true,awardList)
@@ -628,16 +641,16 @@ module.exports = function() {
 			var m_list = m_str.split(":")
 			var chestId = m_list[0]
 			var value = parseInt(m_list[1]) || 1
-			for(var i = 0;i < value;i++)
-				awardList = awardList.concat(self.openChestAward(uid,chestId))
+			awardList = awardList.concat(self.openChestAward(uid,chestId,value))
 		})
 		return awardList
 	}
 	//奖励池获取奖励
-	this.openChestAward = function(uid,chestId) {
+	this.openChestAward = function(uid,chestId,value) {
 		if(!chest_cfg[chestId] || !chest_cfg[chestId]["randAward"]){
 			return []
 		}
+		value = Number(value) || 1
 		var awardMap = []
 		var keyMap = []
 		var chestStr = chest_cfg[chestId]["randAward"]
@@ -650,24 +663,26 @@ module.exports = function() {
 			awardMap.push(allValue)
 			keyMap.push(itemId)
 		})
-		var str = false
-		var rand = Math.random() * allValue
-		for(var i in awardMap){
-			if(rand < awardMap[i]){
-				if(!chest_awards[keyMap[i]]){
-					console.error(chestId+"宝箱奖励未找到"+keyMap[i])
-					return [{"err" : chestId+"宝箱奖励未找到"+keyMap[i]}]
-				}else{
-					str = chest_awards[keyMap[i]]["str"]
+		var strs = {}
+		for(var k = 0;k < value;k++){
+			var rand = Math.random() * allValue
+			for(var i in awardMap){
+				if(rand < awardMap[i]){
+					if(!chest_awards[keyMap[i]]){
+						console.error(chestId+"宝箱奖励未找到"+keyMap[i])
+					}else{
+						if(!strs[chest_awards[keyMap[i]]["str"]])
+							strs[chest_awards[keyMap[i]]["str"]] = 0
+						strs[chest_awards[keyMap[i]]["str"]]++
+					}
+					break
 				}
-				break
 			}
 		}
-		if(str){
-			return this.addItemStr(uid,str,1,"奖励池"+chestId)
-		}else{
-			return []
-		}
+		var awardList = []
+		for(var awardStr in strs)
+			awardList = awardList.concat(this.addItemStr(uid,awardStr,strs[awardStr],"奖励池"+awardStr))
+		return awardList
 	}
 	//解析奖励池str
 	this.openChestStrNoItem = function(str) {
