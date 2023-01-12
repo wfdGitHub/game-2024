@@ -37,6 +37,7 @@ var model = function() {
 		info.freemem = os.freemem()
 		info.totalmem = os.totalmem()
 		info.cpus = os.cpus()
+		info.uptime = os.uptime()
 		console.log("getOSData",info)
 		res.send(info)
 	}
