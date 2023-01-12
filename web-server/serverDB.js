@@ -1,6 +1,7 @@
 //数据库查询
 const http = require("http")
 const uuid = require("uuid")
+const os = require('os');
 const querystring = require("querystring")
 const item_cfg = require("../game-server/config/gameCfg/item.json")
 const pay_cfg = require("../game-server/config/gameCfg/pay_cfg.json")
@@ -27,6 +28,15 @@ var model = function() {
         for(var i in item_cfg){
 			items[i] = item_cfg[i]["name"]
         }
+	}
+	//获取系统数据
+	posts["/getOSData"] = function(req,res) {
+		var info = {}
+		info.freemem = os.freemem()
+		info.totalmem = os.totalmem()
+		info.cpus = os.cpus()
+		info.uptime = os.uptime()
+		res.send(info)
 	}
 	//获取全服邮件
 	posts["/getAreaMailList"] = function(req,res) {
