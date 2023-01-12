@@ -37,6 +37,7 @@ var model = function() {
 		info.freemem = os.freemem()
 		info.totalmem = os.totalmem()
 		info.cpus = os.cpus()
+		console.log("getOSData",info)
 		res.send(info)
 	}
 	//数据库清档
