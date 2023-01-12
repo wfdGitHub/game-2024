@@ -38,7 +38,6 @@ var model = function() {
 		info.totalmem = os.totalmem()
 		info.cpus = os.cpus()
 		info.uptime = os.uptime()
-		console.log("getOSData",info)
 		res.send(info)
 	}
 	//数据库清档
