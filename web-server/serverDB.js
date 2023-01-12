@@ -1,6 +1,7 @@
 //数据库查询
 const http = require("http")
 const uuid = require("uuid")
+const os = require('os');
 const querystring = require("querystring")
 const item_cfg = require("../game-server/config/gameCfg/item.json")
 const pay_cfg = require("../game-server/config/gameCfg/pay_cfg.json")
@@ -29,6 +30,15 @@ var model = function() {
         for(var i in item_cfg){
 			items[i] = item_cfg[i]["name"]
         }
+	}
+	//获取系统数据
+	posts["/getOSData"] = function(req,res) {
+		var info = {}
+		info.freemem = os.freemem()
+		info.totalmem = os.totalmem()
+		info.cpus = os.cpus()
+		info.uptime = os.uptime()
+		res.send(info)
 	}
 	//数据库清档
 	posts["/sqlClean"] = function(req,res) {
@@ -284,6 +294,26 @@ var model = function() {
 		self.redisDao.db.llen("client:logs",function(err,total) {
 			info.total = total
 			self.redisDao.db.lrange("client:logs",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
+	}
+	//清除报错堆栈
+	posts["/clear_server_error"] = function(req,res) {
+		self.redisDao.db.del("server:logs",function(err,data) {
+			res.send("SUCCESS")
+		})
+	}
+	//获取报错堆栈
+	posts["/get_server_error"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("server:logs",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("server:logs",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
 				info.list = data
 				res.send(info)
 			})
