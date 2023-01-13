@@ -1,7 +1,9 @@
 //数据库查询
-var http = require("http")
-var uuid = require("uuid")
 const item_cfg = require("../game-server/config/gameCfg/item.json")
+const http = require("http")
+const uuid = require("uuid")
+const os = require('os');
+const querystring = require("querystring")const item_cfg = require("../game-server/config/gameCfg/item.json")
 const hufu_quality = require("../game-server/config/gameCfg/hufu_quality.json")
 const hufu_skill = require("../game-server/config/gameCfg/hufu_skill.json")
 const heros = require("../game-server/config/gameCfg/heros.json")
@@ -27,6 +29,15 @@ var model = function() {
         for(var i in item_cfg){
 			items[i] = item_cfg[i]["name"]
         }
+	}
+	//获取系统数据
+	posts["/getOSData"] = function(req,res) {
+		var info = {}
+		info.freemem = os.freemem()
+		info.totalmem = os.totalmem()
+		info.cpus = os.cpus()
+		info.uptime = os.uptime()
+		res.send(info)
 	}
 	//数据库清档
 	posts["/sqlClean"] = function(req,res) {
