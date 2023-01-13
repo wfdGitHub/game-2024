@@ -99,5 +99,11 @@ bearcat.start(function() {
     })
 })
 process.on('uncaughtException', function (err) {
+  var redisDao = bearcat.getBean("redisDao")
+  redisDao.db.rpush("server:logs",JSON.stringify(err.stack),function(err,num) {
+      if(num > 200){
+        redisDao.db.ltrim("server:logs",-200,-1)
+      }
+  })
   console.error(' !!! Caught exception: ' + err.stack);
 });
