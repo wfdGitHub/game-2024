@@ -1,9 +1,9 @@
 //数据库查询
-const item_cfg = require("../game-server/config/gameCfg/item.json")
 const http = require("http")
 const uuid = require("uuid")
 const os = require('os');
-const querystring = require("querystring")const item_cfg = require("../game-server/config/gameCfg/item.json")
+const querystring = require("querystring")
+const item_cfg = require("../game-server/config/gameCfg/item.json")
 const hufu_quality = require("../game-server/config/gameCfg/hufu_quality.json")
 const hufu_skill = require("../game-server/config/gameCfg/hufu_skill.json")
 const heros = require("../game-server/config/gameCfg/heros.json")
