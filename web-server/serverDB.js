@@ -27,8 +27,12 @@ var model = function() {
 			server.post(key,posts[key])
 		}
         for(var i in item_cfg){
-			items[i] = item_cfg[i]["name"]
+			items[i] = item_cfg[i]["name"]+"("+item_cfg[i]["des"]+")"
         }
+	}
+	//获取英雄表
+	posts["/getHeros"] = function(req,res) {
+		res.send(heros)
 	}
 	//数据库清档
 	posts["/sqlClean"] = function(req,res) {
