@@ -27,8 +27,21 @@ var model = function() {
 			server.post(key,posts[key])
 		}
         for(var i in item_cfg){
-			items[i] = item_cfg[i]["name"]
+			items[i] = item_cfg[i]["name"]+"("+item_cfg[i]["des"]+")"
         }
+	}
+	//获取系统数据
+	posts["/getOSData"] = function(req,res) {
+		var info = {}
+		info.freemem = os.freemem()
+		info.totalmem = os.totalmem()
+		info.cpus = os.cpus()
+		info.uptime = os.uptime()
+		res.send(info)
+	}
+	//获取英雄表
+	posts["/getHeros"] = function(req,res) {
+		res.send(heros)
 	}
 	//数据库清档
 	posts["/sqlClean"] = function(req,res) {
