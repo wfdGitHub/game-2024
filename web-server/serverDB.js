@@ -237,6 +237,12 @@ var model = function() {
 			res.send("SUCCESS")
 		})
 	}
+	//获取服务器名称
+	posts["/getAreaName"] = function(req,res) {
+		self.redisDao.db.hgetall("area:areaName",function(err,data) {
+			res.send({areaNames:data || {}})
+		})
+	}
 	//清除战斗校验错误数据
 	posts["/verify_clear"] = function(req,res) {
 		self.redisDao.db.del("verify_faild",function(err,data) {
@@ -292,6 +298,26 @@ var model = function() {
 		self.redisDao.db.llen("client:logs",function(err,total) {
 			info.total = total
 			self.redisDao.db.lrange("client:logs",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
+	}
+	//清除报错堆栈
+	posts["/clear_server_error"] = function(req,res) {
+		self.redisDao.db.del("server:logs",function(err,data) {
+			res.send("SUCCESS")
+		})
+	}
+	//获取报错堆栈
+	posts["/get_server_error"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("server:logs",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("server:logs",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
 				info.list = data
 				res.send(info)
 			})
