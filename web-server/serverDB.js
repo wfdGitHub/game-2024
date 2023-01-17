@@ -11,6 +11,8 @@ const heros = require("../game-server/config/gameCfg/heros.json")
 const lv_cfg = require("../game-server/config/gameCfg/lv_cfg.json")
 const star_base = require("../game-server/config/gameCfg/star_base.json")
 const stringRandom = require('string-random');
+const dataClean = require("./model/dataClean.js")
+const sqlClean = require("./model/sqlClean.js")
 var model = function() {
 	var self = this
 	var posts = {}
@@ -20,6 +22,8 @@ var model = function() {
 		self.mysqlDao = mysqlDao
 		self.redisDao = redisDao
 		self.server = server
+		dataClean.init(server,mysqlDao,redisDao)
+		sqlClean.init(server,mysqlDao,redisDao)
 		for(var key in posts){
 			server.post(key,posts[key])
 		}
@@ -1108,6 +1112,16 @@ var model = function() {
 				}
 			}
 		})
+	}
+	//清理无效账号
+	posts["/cleanPlayer"] = function(req,res) {
+		dataClean.checkPlayer()
+		res.send({flag:true})
+	}
+	//清理数据库记录
+	posts["/cleanSql"] = function(req,res) {
+		dataClean.cleanMysqlLog()
+		res.send({flag:true})
 	}
 	local.getPlayerBaseByUids = function(uids,cb) {
 		if(!uids.length){
