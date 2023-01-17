@@ -28,8 +28,10 @@ var model = function() {
 			server.post(key,posts[key])
 		}
         for(var i in item_cfg){
-			items[i] = item_cfg[i]["name"]+"("+item_cfg[i]["des"]+")"
+        	items[i] = item_cfg[i]["name"]+"("+item_cfg[i]["des"]+")"
+			// items[i] = item_cfg[i]["name"]
         }
+        items["item_cfg"] = item_cfg
 	}
 	//获取系统数据
 	posts["/getOSData"] = function(req,res) {
@@ -210,7 +212,9 @@ var model = function() {
 		var info = {
 			"title" : data.title,
 			"text" : data.text,
-			"rate" : data.rate
+			"rate" : data.rate,
+			"beginTime" : data.beginTime,
+			"endTime" : data.endTime
 		}
 		self.redisDao.db.hset("rebate_gold_map",data.id,JSON.stringify(info),function(err) {
 			var url = "http://127.0.0.1:5081/updateRebate"
@@ -231,6 +235,37 @@ var model = function() {
 	posts["/getAreaName"] = function(req,res) {
 		self.redisDao.db.hgetall("area:areaName",function(err,data) {
 			res.send({areaNames:data || {}})
+		})
+	}
+	//获取返利现金券
+	posts["/getRebateRMB"] = function(req,res) {
+		self.redisDao.db.hgetall("rebate_rmb_map",function(err,data) {
+			res.send(data)
+		})
+	}
+	//设置返利现金券
+	posts["/setRebateRMB"] = function(req,res) {
+		var data = req.body
+		var info = {
+			"title" : data.title,
+			"text" : data.text,
+			"rate" : data.rate,
+			"beginTime" : data.beginTime,
+			"endTime" : data.endTime
+		}
+		self.redisDao.db.hset("rebate_rmb_map",data.id,JSON.stringify(info),function(err) {
+			var url = "http://127.0.0.1:5081/updateRebate"
+			http.get(url,function(res){})
+			res.send("SUCCESS")
+		})
+	}
+	//删除返利现金券
+	posts["/delRebateRMB"] = function(req,res) {
+		var data = req.body
+		self.redisDao.db.hdel("rebate_rmb_map",data.id,function(err) {
+			var url = "http://127.0.0.1:5081/updateRebate"
+			http.get(url,function(res){})
+			res.send("SUCCESS")
 		})
 	}
 	//设置服务器名称
