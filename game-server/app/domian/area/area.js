@@ -122,6 +122,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.extremityInit()
 	this.taskDayUpdate()
 	this.updateFestivalInfo()
+	this.rebateInit()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)
