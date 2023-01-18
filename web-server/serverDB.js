@@ -33,6 +33,10 @@ var model = function() {
 	posts["/getRechargeCfg"] = function(req,res) {
 		res.send(recharge_cfg)
 	}
+	//获取直充表
+	posts["/getRechargeCfg"] = function(req,res) {
+		res.send(recharge_cfg)
+	}
 	//获取全服邮件
 	posts["/getAreaMailList"] = function(req,res) {
 		local.post("127.0.0.1",5081,"/getAreaMailList",{},function(data) {
