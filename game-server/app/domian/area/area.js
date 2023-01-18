@@ -111,6 +111,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.worldLevelInit()
 	this.worldLevelDayUpdate()
 	this.weekTaskDayUpdate()
+	this.rebateInit()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)
