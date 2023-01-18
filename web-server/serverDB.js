@@ -5,6 +5,7 @@ const os = require('os');
 const querystring = require("querystring")
 const item_cfg = require("../game-server/config/gameCfg/item.json")
 const pay_cfg = require("../game-server/config/gameCfg/pay_cfg.json")
+const recharge_cfg = require("../game-server/config/gameCfg/recharge.json")
 const hufu_quality = require("../game-server/config/gameCfg/hufu_quality.json")
 const hufu_skill = require("../game-server/config/gameCfg/hufu_skill.json")
 const heros = require("../game-server/config/gameCfg/heros.json")
@@ -32,6 +33,10 @@ var model = function() {
 			// items[i] = item_cfg[i]["name"]
         }
         items["item_cfg"] = item_cfg
+	}
+	//获取直充表
+	posts["/getRechargeCfg"] = function(req,res) {
+		res.send(recharge_cfg)
 	}
 	//获取系统数据
 	posts["/getOSData"] = function(req,res) {
@@ -117,7 +122,7 @@ var model = function() {
 	}
     //获取物品表
     posts["/get_items"] = function(req,res) {
-        res.send(items)
+        res.send(item_cfg)
     }
     //获取支付表
     posts["/get_pay_cfg"] = function(req,res) {
