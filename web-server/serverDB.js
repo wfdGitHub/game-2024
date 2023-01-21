@@ -42,6 +42,7 @@ var model = function() {
 		info.freemem = os.freemem()
 		info.totalmem = os.totalmem()
 		info.cpus = os.cpus()
+		info.uptime = os.uptime()
 		res.send(info)
 	}
 	//获取英雄表
