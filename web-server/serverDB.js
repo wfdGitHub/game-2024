@@ -30,7 +30,13 @@ var model = function() {
 		}
         for(var i in item_cfg){
 			items[i] = item_cfg[i]["name"]
+			// items[i] = item_cfg[i]["name"]
         }
+        items["item_cfg"] = item_cfg
+	}
+	//获取直充表
+	posts["/getRechargeCfg"] = function(req,res) {
+		res.send(recharge_cfg)
 	}
 	//获取直充表
 	posts["/getRechargeCfg"] = function(req,res) {
@@ -58,6 +64,42 @@ var model = function() {
     //获取物品表
     posts["/get_items"] = function(req,res) {
         res.send(item_cfg)
+    }
+    //获取支付表
+    posts["/get_pay_cfg"] = function(req,res) {
+        res.send(pay_cfg)
+    }
+    //模拟充值
+    posts["/rechargeToUser"] = function(req,res) {
+		local.post("127.0.0.1",5081,"/rechargeToUser",req.body,function(data) {
+			res.send(data)
+		})
+    }
+    //增加跨服机器人
+    posts["/createRobotAccount"] = function(req,res) {
+		local.post("127.0.0.1",5081,"/createRobotAccount",{},function(data) {
+			res.send(data)
+		})
+    }
+    //获取服务器内玩家列表
+    posts["/getAreaPlayers"] = function(req,res) {
+		local.post("127.0.0.1",5081,"/getAreaPlayers",req.body,function(data) {
+			res.send(data)
+		})
+    }
+    //获取充值列表
+    posts["/getRechargeToUserList"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("admin:recharge",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("admin:recharge",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
     }
 	//清聊天记录
 	posts["/clearChatRecord"] = function(req,res) {
