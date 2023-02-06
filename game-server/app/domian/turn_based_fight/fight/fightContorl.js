@@ -310,11 +310,11 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	//进化计算
 	if(info.evo){
 		if(evolutionCfg[info.evo]){
-			lvInfo.maxHP += evolutionCfg[info.evo].maxHP
-			lvInfo.atk += evolutionCfg[info.evo].atk
-			lvInfo.phyDef += evolutionCfg[info.evo].phyDef
-			lvInfo.magDef += evolutionCfg[info.evo].magDef
-			aptitude += evolutionCfg[info.evo].aptitude
+			lvInfo.maxHP += evolutionCfg[info.evo].maxHP || 0
+			lvInfo.atk += evolutionCfg[info.evo].atk || 0
+			lvInfo.phyDef += evolutionCfg[info.evo].phyDef || 0
+			lvInfo.magDef += evolutionCfg[info.evo].magDef || 0
+			aptitude += evolutionCfg[info.evo].aptitude || 0
 		}
 	}
 	//等级计算
