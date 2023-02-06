@@ -247,6 +247,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	//每日随机时间
 	var rand_time = util.getZeroTime() + Math.floor((Math.random() * 0.41 + 0.42) * oneDayTime)
 	this.setPlayerData(uid,"rand_time",rand_time)
+	this.delLordData(uid,"dp_limit")
 	this.mysqlDao.addDaylyData("activeNum",1)
 	this.mysqlDao.updateRetention(uid,this.players[uid]["createTime"])
 	this.taskUpdate(uid,"login",1)
