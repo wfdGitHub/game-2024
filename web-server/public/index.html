@@ -1966,6 +1966,12 @@
             console.log(data);
         });
       }
+      //点票充值
+      var dianpiao_recharge = function(pay_id) {
+        pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id}, function(data) {
+            console.log(data);
+        });
+      }
       //创建机器人
       var createRobotAccount = function(count) {
         if(!count){
