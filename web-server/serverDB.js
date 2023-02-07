@@ -65,6 +65,16 @@ var model = function() {
 			}
 		})
 	}
+	//数据库清档
+	posts["/sqlClean"] = function(req,res) {
+		sqlClean.dataClean(function(flag,data) {
+			if(flag){
+				res.send("SUCCESS")
+			}else{
+				res.send(data)
+			}
+		})
+	}
 	//获取全服邮件
 	posts["/getAreaMailList"] = function(req,res) {
 		local.post("127.0.0.1",5081,"/getAreaMailList",{},function(data) {
