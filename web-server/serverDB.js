@@ -60,6 +60,15 @@ var model = function() {
 		info.uptime = os.uptime()
 		res.send(info)
 	}
+	//获取系统数据
+	posts["/getOSData"] = function(req,res) {
+		var info = {}
+		info.freemem = os.freemem()
+		info.totalmem = os.totalmem()
+		info.cpus = os.cpus()
+		info.uptime = os.uptime()
+		res.send(info)
+	}
 	//数据库清档
 	posts["/sqlClean"] = function(req,res) {
 		sqlClean.dataClean(function(flag,data) {
