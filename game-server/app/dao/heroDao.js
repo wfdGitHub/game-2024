@@ -172,12 +172,17 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	let ad = otps.ad || 0
 	let lv = otps.lv || 1
 	let star = otps.star || herosCfg[id].min_star
-	var hId = this.areaManager.areaMap[areaId].getLordLastid(uid)
+	var hId
+	if(!otps.robot)
+		hId = this.areaManager.areaMap[areaId].getLordLastid(uid)
+	else 
+		hId = uuid.v1()
 	var heroInfo = {id : id,ad : ad,lv : lv,star : star}
 	this.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
 	heroInfo.hId = hId
-	this.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
+	if(!otps.robot)
+		this.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
 	this.updateHeroArchive(areaId,uid,id,star)
 	if(cb)
 		cb(true,heroInfo)
@@ -187,16 +192,19 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 //升级英雄图鉴
 heroDao.prototype.updateHeroArchive = function(areaId,uid,id,star) {
 	var self = this
+	if(self.areaManager.areaMap[areaId])
 	self.redisDao.db.hget("player:user:"+uid+":heroArchive",id,function(err,data) {
 		if(!data || star > data){
 			self.redisDao.db.hset("player:user:"+uid+":heroArchive",id,star)
-			self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,id,star)
-			var notify = {
-				type : "updateHeroArchive",
-				id : id,
-				star : star
+			if(self.areaManager.areaMap[areaId]){
+				self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,id,star)
+				var notify = {
+					type : "updateHeroArchive",
+					id : id,
+					star : star
+				}
+				self.areaManager.areaMap[areaId].sendToUser(uid,notify)
 			}
-			self.areaManager.areaMap[areaId].sendToUser(uid,notify)
 		}
 	})
 }
@@ -341,7 +349,7 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 	this.redisDao.db.hincrby("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {
 		if(err)
 			console.error(err)
-		else{
+		else if(self.areaManager.areaMap[areaId]){
 			switch(name){
 				case "star":
 					self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
@@ -601,8 +609,10 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 							self.incrbyHeroInfo(areaId,uid,hIds[i],"combat",1)
 						}
 					}
-					self.areaManager.areaMap[areaId].CELoad(uid)
-					self.areaManager.areaMap[areaId].taskUpdate(uid,"battleNum",1,self.areaManager.areaMap[areaId].getTeamNum(uid))
+					if(self.areaManager.areaMap[areaId]){
+						self.areaManager.areaMap[areaId].CELoad(uid)
+						self.areaManager.areaMap[areaId].taskUpdate(uid,"battleNum",1,self.areaManager.areaMap[areaId].getTeamNum(uid))
+					}
 					if(cb)
 						cb(true)
 				}

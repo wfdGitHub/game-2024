@@ -176,6 +176,12 @@ adminHandler.prototype.freezeAcc = function(msg, session, next) {
 		}
 	})
 }
+//创建机器人账号
+adminHandler.prototype.createRobotAccount = function(msg, session, next) {
+	this.accountDao.createRobotAccount(function(flag,err) {
+		next(null,{flag : true})
+	})
+}
 //踢出玩家
 adminHandler.prototype.kickUser = function(uid) {
 	var self = this

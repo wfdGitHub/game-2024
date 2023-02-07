@@ -3154,6 +3154,17 @@
             console.log(data);
         })
       }
+      //创建机器人
+      var createRobotAccount = function(count) {
+        if(!count){
+          count = 1
+        }
+        for(var i = 0;i < count;i++){
+          pomelo.request("admin.adminHandler.createRobotAccount", {}, function(data) {
+              console.log(data);
+          });
+        }
+      }
     </script>
   </head>
   <body>

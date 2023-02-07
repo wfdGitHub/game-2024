@@ -1,3 +1,7 @@
+var uuid = require("uuid")
+const default_cfg = require("../../config/gameCfg/default_cfg.json")
+const boyCfg = require("../../config/sysCfg/boy.json")
+const beginHero = default_cfg["begin_hero"]["value"]
 var accountDao = function() {}
 //创建新账号
 accountDao.prototype.createAccount = function(otps,cb) {
@@ -21,13 +25,34 @@ accountDao.prototype.createAccount = function(otps,cb) {
 			self.redisDao.db.hmset("acc:user:"+userInfo.accId+":base",userInfo)
 			//建立映射
 			self.redisDao.db.hset("acc:accMap:unionid",userInfo.unionid,userInfo.accId)
-			self.redisDao.db.hincrby("game:info","accNum",1)
-			self.mysqlDao.addDaylyData("accNum",1)
-			self.mysqlDao.addRetentionData("accNum",1)
-			self.mysqlDao.addLTVData("accNum",1)
+			if(!otps.robot){
+				self.redisDao.db.hincrby("game:info","accNum",1)
+				self.mysqlDao.addDaylyData("accNum",1)
+				self.mysqlDao.addRetentionData("accNum",1)
+				self.mysqlDao.addLTVData("accNum",1)
+			}
 			cb(true,userInfo)
 		}else{
 			cb(false,"createAccount error")
+		}
+	})
+}
+//创建机器人账号
+accountDao.prototype.createRobotAccount = function(cb) {
+	var self = this
+	var areaId = 1
+	self.createAccount({unionid : uuid.v1(),head : beginHero,robot:true},function(flag,userInfo) {
+		if(flag){
+			self.playerDao.createPlayer({accId : userInfo.accId,areaId:areaId,name:boyCfg[Math.floor(Math.random() * boyCfg.length)],robot:true},function(playerInfo) {
+				if(playerInfo){
+					self.playerDao.setRobotTeam(areaId,playerInfo)
+					var crossUid = areaId+"|"+playerInfo.uid
+					self.redisDao.db.zincrby(["cross:grading:rank",10,crossUid],function(err,value) {
+						self.redisDao.db.zadd(["cross:grading:realRank",10,crossUid])
+					})
+				}
+				cb(true)
+			})
 		}
 	})
 }
@@ -124,5 +149,8 @@ module.exports = {
 	},{
 		name : "mysqlDao",
 		ref : "mysqlDao"
+	},{
+		name : "playerDao",
+		ref : "playerDao"
 	}]
 }
