@@ -15,10 +15,13 @@ var master = function(otps) {
 	this.index = 1				//所在位置
 	this.peerMaster = {}        //对方主角
 	this.attInfo = {}
-	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
-	this.attInfo.atk = otps["atk"] || 0					//攻击力
-	this.attInfo.phyDef = otps["phyDef"] || 0			//物理防御力
-	this.attInfo.magDef = otps["magDef"] || 0			//法术防御力
+	this.attInfo.maxHP = 0								//最大生命值
+	this.attInfo.atk = 0								//攻击力
+	this.attInfo.phyDef = 0								//物理防御力
+	this.attInfo.magDef = 0								//法术防御力
+	this.lord_power = otps.lord_power || 0 				//主公威力加成值
+	this.ws_power = otps.ws_power || 0  				//无双威力加成百分比
+	this.beauty_power = otps.beauty_power || 0 			//红颜威力加成百分比
 	this.power_up = 0 									//技能系数增强
 	this.manualModel = otps.manualModel || 0    		//技能释放模式
 	this.manualIndex = 0 								//当前执行技能下标
@@ -91,7 +94,7 @@ master.prototype.addPower = function(info) {
 		powerInfo.NEED_CD = power_base[info.id].NEED_CD
 		powerInfo.name = power_base[info.id].name
 		powerInfo.skillId = info.id
-		powerInfo.basic = power_lv[info.lv]["basic"]
+		powerInfo.basic = Math.floor(info.basic * (1 + this.ws_power))
 		this.powers.push(new powerSkill(powerInfo,this))
 	}
 }
@@ -105,14 +108,16 @@ master.prototype.addBeautyPower = function(info) {
 		powerInfo.NEED_CD = beauty_base[info.id].NEED_CD
 		powerInfo.name = beauty_base[info.id].name
 		powerInfo.skillId = info.id
-		powerInfo.basic = info.att1 + info.att2 + info.att3 +info.att4
+		powerInfo.basic = Math.floor(info.basic * (1 + this.beauty_power))
 		this.powers.push(new powerSkill(powerInfo,this))
 	}
 }
 //获取属性
 master.prototype.getTotalAtt = function(name) {
-	var value = this.attInfo[name] || 0
-	return value
+	if(name == "atk")
+		return this.lord_power
+	else
+		return this.attInfo[name] || 0
 }
 //每个英雄行动后
 master.prototype.heroAfter = function() {

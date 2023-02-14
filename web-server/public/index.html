@@ -98,6 +98,75 @@
         console.log("onChat")
         console.log(data)
       })
+      //===============兵符===============//
+      //获取兵符数据
+      var getBingfuData = function() {
+        pomelo.request("area.bingfuHandler.getBingfuData", {}, function(data) {
+            console.log(data);
+        })
+      }
+      //洗练兵符
+      var washBingfu = function(bId) {
+        pomelo.request("area.bingfuHandler.washBingfu", {bId:bId}, function(data) {
+            console.log(data);
+            console.log(data.data.qa);
+        })
+      }
+      //精炼兵符
+      var refineBingfu = function(bId) {
+        pomelo.request("area.bingfuHandler.refineBingfu", {bId:bId}, function(data) {
+            console.log(data);
+        })
+      }
+      //保存洗练属性
+      var replaceBingfu = function(bId) {
+        pomelo.request("area.bingfuHandler.replaceBingfu", {bId:bId}, function(data) {
+            console.log(data);
+        })
+      }
+      //洗练已穿戴兵符
+      var washBingfuForWear = function(type) {
+        pomelo.request("area.bingfuHandler.washBingfuForWear", {type:type}, function(data) {
+            console.log(data);
+        })
+      }
+      //精炼已穿戴兵符
+      var refineBingfuForWear = function(type) {
+        pomelo.request("area.bingfuHandler.refineBingfuForWear", {type:type}, function(data) {
+            console.log(data);
+        })
+      }
+      //保存已穿戴洗练属性
+      var replaceBingfuForWear = function(type) {
+        pomelo.request("area.bingfuHandler.replaceBingfuForWear", {type:type}, function(data) {
+            console.log(data);
+        })
+      }
+      //兵符分解
+      var resolveBingfu = function(bIds) {
+        pomelo.request("area.bingfuHandler.resolveBingfu", {bIds:bIds}, function(data) {
+            console.log(data);
+        })
+      }
+      //兵符合成
+      var compoundBingfu = function(bIds) {
+        pomelo.request("area.bingfuHandler.compoundBingfu", {bIds:bIds}, function(data) {
+            console.log(data);
+        })
+      }
+      //兵符穿戴
+      var wearBingfu = function(bId) {
+        pomelo.request("area.bingfuHandler.wearBingfu", {bId:bId}, function(data) {
+            console.log(data);
+        })
+      }
+      //兵符卸下
+      var unwearBingfu = function(type) {
+        pomelo.request("area.bingfuHandler.unwearBingfu", {type:type}, function(data) {
+            console.log(data);
+        })
+      }
+
       //领取周卡奖励
       var gainLongAward = function(pay_id) {
         pomelo.request("area.activityHandler.gainLongAward", {pay_id:pay_id}, function(data) {

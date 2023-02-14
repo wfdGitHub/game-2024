@@ -20,7 +20,7 @@ var model = function(otps) {
 	this.star = otps["star"] || 5		//星级
 	this.ad = otps["ad"] || 0			//阶级
 	this.teamInfo = {}
-	this.bookAtts = otps.bookAtts
+	this.heroAtts = otps.heroAtts
 	this.isBoss = otps.boss || false	//是否是BOSS
 	this.isAction = false 				//行动过标识
 	this.onAction = false  				//行动中标识
@@ -76,8 +76,6 @@ var model = function(otps) {
 	if(otps.passive3 && passive_cfg[otps.passive3])
 		this.passives[otps.passive3] = new passive(passive_cfg[otps.passive3],otps.passiveArg3)
 	//==========MEGA属性========//
-	if(otps["amplify_"+this.realm])
-		this.attInfo.amplify += otps["amplify_"+this.realm]
 	this.frozen_anger = otps.frozen_anger 				//冰冻后恢复怒气值
 	this.enter_skill = otps.enter_skill 				//入场后释放怒气技能
 	this.fanzhi_damage = otps.fanzhi_damage  			//每消耗1层反制印记，额外造成目标最大生命值的伤害
@@ -528,6 +526,28 @@ var model = function(otps) {
 		this.team_adds["crit"] = otps.team_crit_add
 	if(otps.team_critDef_add)
 		this.team_adds["critDef"] = otps.team_critDef_add
+	//=========阵营属性加成======//
+	if(otps["amplify_"+this.realm])
+		this.addAttInfo("amplify",otps["amplify_"+this.realm])
+	if(otps["crit_"+this.realm])
+		this.addAttInfo("crit",otps["crit_"+this.realm])
+	if(otps["critDef_"+this.realm])
+		this.addAttInfo("critDef",otps["critDef_"+this.realm])
+	if(otps["reduction_"+this.realm])
+		this.addAttInfo("reduction",otps["reduction_"+this.realm])
+	if(otps["hitRate_"+this.realm])
+		this.addAttInfo("hitRate",otps["hitRate_"+this.realm])
+	if(otps["dodgeRate_"+this.realm])
+		this.addAttInfo("dodgeRate",otps["dodgeRate_"+this.realm])
+	
+	if(otps["phy_amp_"+this.realm])
+		this.addTalentValue("phy_add",otps["phy_amp_"+this.realm])
+	if(otps["mag_amp_"+this.realm])
+		this.addTalentValue("mag_add",otps["mag_amp_"+this.realm])
+	if(otps["phyDef_add_"+this.realm])
+		this.addTalentValue("phy_def",otps["phyDef_add_"+this.realm])
+	if(otps["magDef_add_"+this.realm])
+		this.addTalentValue("mag_def",otps["magDef_add_"+this.realm])
 	//=======属性加成======//
 	if(this.lv > 100){
 		var lvdif = this.lv - 100
@@ -604,6 +624,17 @@ model.prototype.init = function(fighting) {
 		this.angerSkill.seckill = true
 	this.attInfo.speed += this.fighting.seeded.random("随机速度") * 0.5
 }
+//添加属性
+model.prototype.addAttInfo = function(key,value) {
+	if(this.attInfo[key] !== undefined)
+		this.attInfo[key] += Number(value) || 0
+}
+//添加属性
+model.prototype.addTalentValue = function(key,value) {
+	if(!this[key])
+		this[key] = 0
+	this[key] += Number(value) || 0
+}
 //百分比属性加成
 model.prototype.calAttAdd = function(team_adds) {
 	this.show_adds = Object.assign({},this.self_adds)
@@ -630,8 +661,8 @@ model.prototype.calAttAdd = function(team_adds) {
 				this.attInfo[i] += this.show_adds[i]
 		}
 	}
-	for(var i in this.bookAtts){
-		this.attInfo[i] += this.bookAtts[i]
+	for(var i in this.heroAtts){
+		this.attInfo[i] += this.heroAtts[i]
 	}
 	this.attInfo.hp = this.attInfo.maxHP
 }
