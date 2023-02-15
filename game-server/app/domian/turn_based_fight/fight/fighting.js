@@ -510,16 +510,6 @@ model.prototype.diedListCheck = function() {
 				}
 			}
 		}
-		if(this.diedList[i].died_once_buff){
-			var buffInfo = this.diedList[i].died_once_buff
-			var buffTargets = this.locator.getBuffTargets(this.diedList[i],buffInfo.buff_tg)
-			for(var k = 0;k < buffTargets.length;k++){
-				if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
-					buffManager.createBuff(this.diedList[i],buffTargets[k],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
-				}
-			}
-			this.diedList[i].died_once_buff = false
-		}
 		if(this.diedList[i].died_use_skill){
 			var flag = false
 			for(var j = 0;j < this.diedList[i].team.length;j++){
@@ -573,6 +563,18 @@ model.prototype.diedListCheck = function() {
 				}
 				this.diedList[i].resurgence(rate,this.diedList[i].teamInfo.resurgence_team_character)
 				delete this.diedList[i].teamInfo.resurgence_team
+			}
+		}
+		if(this.diedList[i].died_once_buff){
+			var buffInfo = this.diedList[i].died_once_buff
+			if(!(buffInfo.buffId == "ghost" && !this.diedList[i].died)){
+				var buffTargets = this.locator.getBuffTargets(this.diedList[i],buffInfo.buff_tg)
+				for(var k = 0;k < buffTargets.length;k++){
+					if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+						buffManager.createBuff(this.diedList[i],buffTargets[k],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+					}
+				}
+				this.diedList[i].died_once_buff = false
 			}
 		}
 		//遗计
