@@ -369,7 +369,7 @@ module.exports = function() {
 			}
 		})
 	}
-	//打造兵符
+	//打造护符
 	this.manorStartHufu = function(uid,cb) {
 		var bId = "qjf"
 		var basic = "qjf"
@@ -384,7 +384,7 @@ module.exports = function() {
 				return
 			}
 			var time = Number(data[1]) || 0
-			self.consumeItems(uid,"810:"+builds[basic][buildLv]["pc"],1,"打造兵符:"+buildLv,function(flag,err) {
+			self.consumeItems(uid,"810:"+builds[basic][buildLv]["pc"],1,"打造护符:"+buildLv,function(flag,err) {
 				if(flag){
 					var curTime = Date.now() + build_time
 					self.setObj(uid,main_name,bId+"_time",curTime)
@@ -395,7 +395,7 @@ module.exports = function() {
 			})
 		})
 	}
-	//收取兵符
+	//收取护符
 	this.manorGainHufu = function(uid,cb) {
 		var bId = "qjf"
 		var basic = "qjf"
@@ -411,7 +411,7 @@ module.exports = function() {
 			}
 			var time = Number(data[1]) || 0
 			if(Date.now() > time){
-				//收取兵符
+				//收取护符
 				var rand = Math.random() * builds[bId][buildLv]["allWeight"]
 				var lv = 1
 				for(var i = 1; i <= 4;i++){
@@ -422,7 +422,7 @@ module.exports = function() {
 						rand -= builds[bId][buildLv]["quality_"+i]
 					}
 				}
-				var hufuInfo = self.gainBingfu(uid,{lv:lv})
+				var hufuInfo = self.gainRandHufu(uid,lv)
 				self.delObj(uid,main_name,bId+"_time")
 				cb(true,hufuInfo)
 			}else{

@@ -359,21 +359,18 @@ module.exports = function() {
 	//改变战力1
 	this.incrbyCE = function(uid,name,oldValue,newValue) {
 		var ce = self.fightContorl.calcCEDiff(name,oldValue,newValue)
-		local.updateCENotify(uid,ce)
-	}
-	local.updateCENotify = function(uid,ce) {
 		if(usersCes[uid] && ce){
 			var oldCE = usersCes[uid]
 			usersCes[uid] += ce
-			self.taskUpdate(uid,"totalCe",usersCes[uid])
-			self.addZset("ce_rank",uid,usersCes[uid])
-			self.playerDao.setPlayerInfo({uid:uid,key:"CE",value:usersCes[uid]})
-			var notify = {
+			let notify = {
 				type : "updateCE",
 				oldCE : oldCE,
 				newCE : usersCes[uid]
 			}
 			self.sendToUser(uid,notify)
+			self.taskUpdate(uid,"totalCe",usersCes[uid])
+			self.addZset("ce_rank",uid,usersCes[uid])
+			self.playerDao.setPlayerInfo({uid:uid,key:"CE",value:usersCes[uid]})
 		}
 	}
 	//更新战力
@@ -932,27 +929,5 @@ module.exports = function() {
 			self.setObj(uid,"beaut","bcombat",beautId)
 			cb(true)
 		})
-	}
-	//获取兵符数据
-	this.getBfData = function(uid) {
-		if(userTeams[uid] && userTeams[uid][6] && userTeams[uid][6]["bingfu"])
-			return userTeams[uid][6]["bingfu"]
-		else
-			return false
-	}
-	//设置兵符数据
-	this.setBingfuInfo = function(uid,bfData) {
-		self.updateBingfuCE(uid,bfData)
-		self.setObj(uid,"playerInfo","bingfu",bfData)
-		if(userTeams[uid] && userTeams[uid][6])
-			userTeams[uid][6]["bingfu"] = bfData
-	}
-	//兵符战力更新
-	this.updateBingfuCE = function(uid,bfData) {
-		var oldCE = 0
-		if(userTeams[uid] && userTeams[uid][6] && userTeams[uid][6]["bingfu"])
-			oldCE = self.fightContorl.bingfuEntity.getBfDataCE(userTeams[uid][6]["bingfu"])
-		var newCE = self.fightContorl.bingfuEntity.getBfDataCE(bfData)
-		local.updateCENotify(uid,newCE - oldCE)
 	}
 }

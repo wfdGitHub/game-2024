@@ -39,13 +39,19 @@ const manor_dby = require("../../../../config/gameCfg/manor_dby.json")
 const manor_qby = require("../../../../config/gameCfg/manor_qby.json")
 const aptitudeCfg = require("../../../../config/gameCfg/aptitude.json")
 const evolutionCfg = require("../../../../config/gameCfg/evolution.json")
+const power_ad = require("../../../../config/gameCfg/power_ad.json")
+const power_aptitude = require("../../../../config/gameCfg/power_aptitude.json")
+const power_base = require("../../../../config/gameCfg/power_base.json")
+const power_lv = require("../../../../config/gameCfg/power_lv.json")
+const power_star = require("../../../../config/gameCfg/power_star.json")
+const beauty_ad = require("../../../../config/gameCfg/beauty_ad.json")
 const beauty_base = require("../../../../config/gameCfg/beauty_base.json")
+const beauty_star = require("../../../../config/gameCfg/beauty_star.json")
+const beauty_cfg = require("../../../../config/gameCfg/beauty_cfg.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
-var masterEntity = require("../entity/master.js")
-var bingfuEntity = require("../entity/bingfuEntity.js")
-var powerEntity = require("../entity/powerEntity.js")
+var master = require("../entity/master.js")
 var bookIds = ["singleAtk","backDamage","frontDamage","banishBook","angerAddBook","angerLessBook","reductionBuff","seckill","singleHeal"]
 var bookList = {}
 var bookMap = {}
@@ -113,8 +119,6 @@ var model = function() {
 	this.fighting = false
 	this.overInfo = {}
 }
-model.bingfuEntity = bingfuEntity
-model.powerEntity = powerEntity
 // //自定义战斗配置// model.libertyFight = function(atkTeam,defTeam,otps) {
 // 	var fighting = new fightingFun(atkTeam,defTeam,otps)
 // 	fighting.nextRound()
@@ -278,12 +282,12 @@ model.getFightStageRecord = function() {
 	return fightRecord.getStageList()
 }
 //获取角色数据
-model.getCharacterInfo = function(info,heroAtts,teamCfg) {
+model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	if(!info || !herosCfg[info.id]){
 		return false
 	}
 	info = Object.assign({},info)
-	info.heroAtts = heroAtts
+	info.bookAtts = bookAtts
 	let id = info.id
 	var aptitude = herosCfg[id].aptitude
 	if(info.aptitude)
@@ -599,6 +603,12 @@ model.getCharacterInfo = function(info,heroAtts,teamCfg) {
 	}
 	return new character(info)
 }
+//获取主角信息
+model.getMasterInfo = function(info,belong,manualModel) {
+	info.belong = belong
+	info.manualModel = manualModel
+	return new master(info)
+}
 //获取天书数据
 model.getBookInfo = function(bookId,info){
 	if(!info || !bookList[bookId] || !bookMap[bookId] || !book_lv[info.lv] || !book_star[info.star]){
@@ -614,65 +624,104 @@ model.getBookInfo = function(bookId,info){
 }
 //获取主动技能数据
 model.getPowerInfo = function(powerInfo){
-	return this.powerEntity.getPowerInfo(powerInfo)
+	var masterAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
+	if(powerInfo.lv && power_lv[powerInfo.lv]){
+		var powerAptitude = power_base[powerInfo.id]["aptitude"]
+		if(powerInfo.ad && power_ad[powerInfo.ad])
+			powerAptitude += power_ad[powerInfo.ad]["aptitude"]
+		var growth = power_aptitude[powerAptitude].growth
+		if(power_aptitude[power_base[powerInfo.id]["aptitude"]] && power_aptitude[power_base[powerInfo.id]["aptitude"]]["extra"]){
+			growth += power_aptitude[power_base[powerInfo.id]["aptitude"]]["extra"]
+			masterAtts["maxHP"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["maxHP"]
+			masterAtts["atk"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["atk"]
+			masterAtts["phyDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["phyDef"]
+			masterAtts["magDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["magDef"]
+		}
+		masterAtts["maxHP"] = Math.floor(power_lv[powerInfo.lv].maxHP * growth + masterAtts["maxHP"])
+		masterAtts["atk"] = Math.floor(power_lv[powerInfo.lv].atk * growth + masterAtts["atk"])
+		masterAtts["phyDef"] = Math.floor(power_lv[powerInfo.lv].phyDef * growth + masterAtts["phyDef"])
+		masterAtts["magDef"] = Math.floor(power_lv[powerInfo.lv].magDef * growth + masterAtts["magDef"])
+	}
+	return masterAtts
 }
 //获取红颜技能数据
 model.getBeautyInfo = function(beautyInfo){
-	return this.powerEntity.getBeautyInfo(beautyInfo)
+	var masterAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
+	var beautyAptitude = beauty_base[beautyInfo.id]["aptitude"]
+	if(beautyInfo.ad && beauty_ad[beautyInfo.ad])
+		beautyAptitude += beauty_ad[beautyInfo.ad]["aptitude"]
+	var growth = power_aptitude[beautyAptitude].growth
+	growth += power_aptitude[beauty_base[beautyInfo.id]["aptitude"]]["extra"]
+	masterAtts["maxHP"] += beauty_cfg["maxHP"]["value"] * beautyInfo["att1"] || 0 * growth * beauty_cfg[beauty_base[beautyInfo.id]["att1"]]["value"]
+	masterAtts["atk"] += beauty_cfg["atk"]["value"] * beautyInfo["att2"] || 0 * growth * beauty_cfg[beauty_base[beautyInfo.id]["att2"]]["value"]
+	masterAtts["phyDef"] += beauty_cfg["phyDef"]["value"] * beautyInfo["att3"] || 0 * growth * beauty_cfg[beauty_base[beautyInfo.id]["att3"]]["value"]
+	masterAtts["magDef"] += beauty_cfg["magDef"]["value"] * beautyInfo["att4"] || 0 * growth * beauty_cfg[beauty_base[beautyInfo.id]["att4"]]["value"]
+	return masterAtts
 }
 //获取团队数据
 model.getTeamData = function(team,belong) {
-	var team = JSON.parse(JSON.stringify(team))
+	var team = team.concat([])
 	var teamCfg = team[6] || {}
     var books = {}
     var masterAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
     var bookAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
-    var powerAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
-    var beautyAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
-    var heroAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
     var gSkill = {}
-	//主角
-	var master = new masterEntity({belong:belong,manualModel:teamCfg["manualModel"]})
-	//天书属性
-	for(var bookId in teamCfg){
-		if(bookList[bookId] && bookMap[bookId]){
-			books[bookId] = this.getBookInfo(bookId,teamCfg[bookId])
-			books[bookId].belong = belong
-			bookAtts["maxHP"] = Math.floor(books[bookId].attInfo.maxHP)
-			bookAtts["atk"] = Math.floor(books[bookId].attInfo.atk)
-			bookAtts["phyDef"] = Math.floor(books[bookId].attInfo.phyDef)
-			bookAtts["magDef"] = Math.floor(books[bookId].attInfo.magDef)
-			for(var att in bookAtts)
-				bookAtts[att] += powerAtts[att]
+	if(teamCfg){
+		//天书属性
+		for(var bookId in teamCfg){
+			if(bookList[bookId] && bookMap[bookId]){
+				books[bookId] = this.getBookInfo(bookId,teamCfg[bookId])
+				books[bookId].belong = belong
+				masterAtts["maxHP"] += Math.floor(books[bookId].attInfo.maxHP)
+				masterAtts["atk"] += Math.floor(books[bookId].attInfo.atk)
+				masterAtts["phyDef"] += Math.floor(books[bookId].attInfo.phyDef)
+				masterAtts["magDef"] += Math.floor(books[bookId].attInfo.magDef)
+			}
+		}
+		//主动技能属性
+		for(var i = 1;i <= 4;i++){
+			if(teamCfg["power"+i]){
+				var powerInfo = teamCfg["power"+i]
+				if(powerInfo.lv && power_lv[powerInfo.lv]){
+					var powerAptitude = power_base[powerInfo.id]["aptitude"]
+					if(powerInfo.ad && power_ad[powerInfo.ad])
+						powerAptitude += power_ad[powerInfo.ad]["aptitude"]
+					var growth = power_aptitude[powerAptitude].growth
+					if(power_aptitude[power_base[powerInfo.id]["aptitude"]] && power_aptitude[power_base[powerInfo.id]["aptitude"]]["extra"]){
+						growth += power_aptitude[power_base[powerInfo.id]["aptitude"]]["extra"]
+						masterAtts["maxHP"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["maxHP"]
+						masterAtts["atk"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["atk"]
+						masterAtts["phyDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["phyDef"]
+						masterAtts["magDef"] += power_aptitude[power_base[powerInfo.id]["aptitude"]]["magDef"]
+					}
+					masterAtts["maxHP"] += Math.floor(power_lv[powerInfo.lv].maxHP * growth)
+					masterAtts["atk"] += Math.floor(power_lv[powerInfo.lv].atk * growth)
+					masterAtts["phyDef"] += Math.floor(power_lv[powerInfo.lv].phyDef * growth)
+					masterAtts["magDef"] += Math.floor(power_lv[powerInfo.lv].magDef * growth)
+				}
+			}
+		}
+		//红颜属性
+		for(var i in beauty_base){
+			if(teamCfg["beaut_"+i]){
+				var beautyInfo = teamCfg["beaut_"+i]
+				var beautyAptitude = beauty_base[i]["aptitude"]
+				if(beautyInfo.ad && beauty_ad[beautyInfo.ad])
+					beautyAptitude += beauty_ad[beautyInfo.ad]["aptitude"]
+				var growth = power_aptitude[beautyAptitude].growth
+				growth += power_aptitude[beauty_base[i]["aptitude"]]["extra"]
+				masterAtts["maxHP"] += beauty_cfg["maxHP"]["value"] * beautyInfo["att1"] || 0 * growth * beauty_cfg[beauty_base[i]["att1"]]["value"]
+				masterAtts["atk"] += beauty_cfg["atk"]["value"] * beautyInfo["att2"] || 0 * growth * beauty_cfg[beauty_base[i]["att2"]]["value"]
+				masterAtts["phyDef"] += beauty_cfg["phyDef"]["value"] * beautyInfo["att3"] || 0 * growth * beauty_cfg[beauty_base[i]["att3"]]["value"]
+				masterAtts["magDef"] += beauty_cfg["magDef"]["value"] * beautyInfo["att4"] || 0 * growth * beauty_cfg[beauty_base[i]["att4"]]["value"]
+			}
 		}
 	}
-	//主动技能属性
-	for(var i = 1;i <= 4;i++){
-		if(teamCfg["power"+i]){
-			var powerInfo = teamCfg["power"+i]
-			powerAtts = this.powerEntity.getPowerInfo(powerInfo)
-			for(var att in masterAtts)
-				masterAtts[att] += powerAtts[att]
-			teamCfg["power"+i]["basic"] = powerAtts["basic"]
-		}
-	}
-	//红颜属性
-	for(var i in beauty_base){
-		if(teamCfg["beaut_"+i]){
-			var beautyInfo = teamCfg["beaut_"+i]
-			beautyAtts = this.powerEntity.getBeautyInfo(beautyInfo)
-			for(var att in masterAtts)
-				masterAtts[att] += beautyAtts[att]
-			teamCfg["beaut_"+i]["basic"] = beautyAtts["basic"]
-		}
-	}
-	//兵符属性
-	this.calBingfu(master,team,teamCfg["bingfu"])
-	//主公属性加成
 	for(var i in masterAtts)
-		heroAtts[i] = Math.floor(masterAtts[i] / 20)
-
-	//英雄属性
+		bookAtts[i] = Math.floor(masterAtts[i] / 20)
+	//主角
+	var master = this.getMasterInfo(masterAtts,belong,teamCfg["manualModel"])
+	master.belong = belong
 	var characters = []
 	var coexistInfo = false
 	if(teamCfg["coexist"])
@@ -684,7 +733,7 @@ model.getTeamData = function(team,belong) {
 					team[i][coexisATT[j]] = coexistInfo[coexisATT[j]]
 			}
 		}
-		characters[i] = this.getCharacterInfo(team[i],heroAtts,teamCfg)
+		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
 	}
 	for(var i in books)
 		books[i].master = master
@@ -706,7 +755,7 @@ model.getTeamData = function(team,belong) {
 			teamAdds["maxHP"] += teamCfg.team_maxHP_add
 		}
     }
-	return {master:master,team:characters,books:books,teamAdds:teamAdds,masterAtts:masterAtts,bookAtts:bookAtts,powerAtts:powerAtts,beautyAtts:beautyAtts,heroAtts:heroAtts}
+	return {master:master,team:characters,books:books,teamAdds:teamAdds,bookAtts:bookAtts,masterAtts:masterAtts}
 }
 //获取团队显示数据
 model.getTeamShowData = function(team) {
@@ -718,30 +767,6 @@ model.getTeamShowData = function(team) {
 	var fighting = new fightingFun(atkInfo,defInfo,{atkTeamAdds:atkInfo.teamAdds})
 	return {atkTeam : fighting.atkTeam,bookAtts : bookAtts,masterAtts : atkInfo.masterAtts}
 }
-//计算兵符属性
-model.calBingfu = function(master,team,bfStr) {
-	if(bfStr){
-		var bfAtt = this.bingfuEntity.callBingfuData(bfStr)
-		var bfAttMap = {}
-		for(var talentId in bfAtt)
-			this.mergeTalent(bfAttMap,talentId,bfAtt[talentId])
-		console.log("计算兵符属性",bfAttMap)
-		//主公属性
-		var attList = ["lord_power","ws_power","beauty_power"]
-		for(var i = 0;i < attList.length;i++){
-			if(bfAttMap[attList[i]]){
-				master[attList[i]] += bfAttMap[attList[i]]
-				delete bfAttMap[attList[i]]
-			}
-		}
-		//英雄加成
-		for(var i = 0;i < 6;i++){
-			if(team[i]){
-				this.mergeData(team[i],bfAttMap)
-			}
-		}
-	}
-}
 //计算差值
 model.calcCEDiff = function(name,oldValue,newValue) {
 	var oldCE = 0
@@ -750,7 +775,7 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 		case "e1":
 		case "e2":
 		case "e3":
-		case "e4":  
+		case "e4":
 			if(oldValue)
 				oldCE = equip_base[equip_level[oldValue]["part_1"]]["ce"] || 0
 			if(newValue)
@@ -1018,30 +1043,36 @@ model.getTeamCE = function(team) {
 		if(team[6]["qby"])
 			allCE += 80000 * team[6]["qby"]
 		//主动技能
-		for(var i = 1;i <= 4;i++)
-			if(team[6]["power"+i])
-				allCE += this.powerEntity.getPowerCE(team[6]["power"+i])
+		for(var i = 1;i <= 4;i++){
+			if(team[6]["power"+i]){
+				var tmpCE = 20000
+				tmpCE += power_lv[team[6]["power"+i]["lv"]]["ce"] || 0
+				tmpCE += power_ad[team[6]["power"+i]["ad"]]["ce"] || 0
+				tmpCE += power_star[team[6]["power"+i]["star"]]["ce"] || 0
+				tmpCE = Math.floor(tmpCE * power_aptitude[power_base[team[6]["power"+i]["id"]]["aptitude"]]["ceRate"])
+				allCE += tmpCE
+			}
+		}
 		//红颜技能
-		for(var i in beauty_base)
-			if(team[6]["beaut_"+i])
-				allCE += this.powerEntity.getBeautyCE(team[6]["beaut_"+i])
-		//兵符
-		if(team[6]["bingfu"])
-			allCE += this.bingfuEntity.getBfDataCE(team[6]["bingfu"])
+		for(var i in beauty_base){
+			if(team[6]["beaut_"+i]){
+				var tmpCE = 20000
+				tmpCE += beauty_ad[team[6]["beaut_"+i]["ad"]]["ce"] || 0
+				tmpCE += beauty_star[team[6]["beaut_"+i]["star"]]["ce"] || 0
+				tmpCE = Math.floor(tmpCE * power_aptitude[beauty_base[i]["aptitude"]]["ceRate"])
+				allCE += tmpCE
+			}
+		}
 	}
 	return allCE
 }
 //新增天赋
-model.mergeTalent = function(info,talentId,value) {
+model.mergeTalent = function(info,talentId) {
 	if(talent_list[talentId]){
 		let tmpTalent = {}
-		for(var i = 1;i <= 2;i++){
-			if(talent_list[talentId]["key"+i]){
-				tmpTalent[talent_list[talentId]["key"+i]] = talent_list[talentId]["value"+i]
-				if(tmpTalent[talent_list[talentId]["key"+i]] == "dynamic")
-					tmpTalent[talent_list[talentId]["key"+i]] = value || 0
-			}
-		}
+		tmpTalent[talent_list[talentId].key1] = talent_list[talentId].value1
+		if(talent_list[talentId].key2)
+			tmpTalent[talent_list[talentId].key2] = talent_list[talentId].value2
 		model.mergeData(info,tmpTalent)
 	}else{
 		console.error("talentId error",talentId)

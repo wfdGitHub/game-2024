@@ -317,17 +317,6 @@ module.exports = function() {
 					}
 					self.sendToUser(uid,notify)
 				return {type : "item",itemId : itemId,value : value}
-				case "bingfu":
-					//兵符
-					var awardList = []
-					for(var i = 0;i < value;i++){
-						var bfInfo = self.gainBingfu(uid,itemCfg[itemId]["arg"])
-						awardList.push({type : "bingfu",bfInfo : bfInfo})
-					}
-					if(cb)
-						cb(true,awardList)
-					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:value,reason:otps.reason})
-				return awardList
 				default:
 					self.addItemCB(uid,itemId,value,function(flag,curValue) {
 						if(flag){
