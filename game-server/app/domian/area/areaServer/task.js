@@ -258,9 +258,6 @@ module.exports = function() {
 	}
 	//任务进度更新
 	this.taskUpdate = function(uid,type,value,arg) {
-		if(uid == 102600){
-			console.log("taskUpdate",uid,type,value,arg)
-		}
 		value = Number(value) || 0
 		if(userTaskMaps[uid] && userTaskMaps[uid][type]){
 			var taskIds = []
@@ -285,9 +282,6 @@ module.exports = function() {
 				}
 			}
 			if(taskIds.length){
-				if(uid == 102600){
-					console.log("taskValues",taskValues)
-				}
 				var notify = {
 					"type" : "tasksUpdate",
 					"taskIds" : taskIds,

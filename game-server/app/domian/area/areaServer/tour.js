@@ -66,9 +66,6 @@ module.exports = function() {
 			cb(false,"arg error")
 			return
 		}
-		if(uid == 102600){
-			console.log("runTour",uid,index,hIds)
-		}
 		var taskId,quality
 		async.waterfall([
 			function(next) {
@@ -157,9 +154,6 @@ module.exports = function() {
 				self.delObj(uid,main_name,"waiting_"+index)
 				for(var i = 0;i < hIds.length;i++){
 					self.setObj(uid,main_name,"free_"+hIds[i],1)
-				}
-				if(uid == 102600){
-					console.log("runTour22222",1,quality)
 				}
 				self.taskUpdate(uid,"tour",1,quality)
 				cb(true,{taskInfo:taskInfo,id:id})
