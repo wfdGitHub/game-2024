@@ -260,10 +260,10 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
       next(null,{flag : false,err : "没有下一阶"})
       return
     }
-    if(heroInfo.lv != advanced_base[heroInfo.ad].lev_limit){
-      next(null,{flag : false,err : "等级限制"})
-      return
-    }
+    // if(heroInfo.lv != advanced_base[heroInfo.ad].lev_limit){
+    //   next(null,{flag : false,err : "等级限制"})
+    //   return
+    // }
     if(aimAd > star_base[heroInfo.star].stage_limit){
       next(null,{flag : false,err : "星级限制"})
       return
