@@ -1304,7 +1304,6 @@ var model = function() {
 			sql2 += " LIMIT ?,"+pageSize
 			args2.push((pageCurrent-1)*pageSize)
 		}
-		console.log("getSQL sql1",sql1,"sql2",sql2,args1,args2)
 		return {sql1:sql1,sql2:sql2,args1:args1,args2:args2}
 	}
 	//发送邮件
