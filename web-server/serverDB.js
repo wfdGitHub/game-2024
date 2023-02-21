@@ -61,6 +61,109 @@ var model = function() {
 			}
 		})
 	}
+	//获取玩家英雄列表
+	posts["/getUserHeros"] = function(req,res) {
+		var uid = req.body.uid
+		self.redisDao.db.hgetall("player:user:"+uid+":heroMap",function(err,data) {
+			if(err || !data){
+				res.send({})
+				return
+			}
+			var multiList = []
+			var hIds = []
+			for(var hId in data){
+				hIds.push(hId)
+				multiList.push(["hgetall","player:user:"+uid+":heros:"+hId])
+			}
+			self.redisDao.multi(multiList,function(err,list) {
+				var hash = {}
+				for(var i = 0;i < list.length;i++){
+					for(var j in list[i]){
+						var tmp = Number(list[i][j])
+						if(tmp == list[i][j])
+							list[i][j] = tmp
+					}
+					list[i].hId = hIds[i]
+					hash[list[i].hId] = list[i]
+				}
+				res.send(hash)
+				return
+			})
+		})
+	}
+	//获取玩家道具背包
+	posts["/getUserBag"] = function(req,res) {
+		var uid = req.body.uid
+		self.redisDao.db.hgetall("player:user:"+uid+":bag",function(err,data) {
+			res.send(data)
+		})
+	}
+	//获取玩家个人信息
+	posts["/getUserInfo"] = function(req,res) {
+		var uid = req.body.uid
+		self.redisDao.db.hgetall("player:user:"+uid+":playerInfo",function(err,data) {
+			res.send(data)
+		})
+	}
+	//获取全服邮件
+	posts["/getAreaMailList"] = function(req,res) {
+		local.post("127.0.0.1",5081,"/getAreaMailList",{},function(data) {
+			res.send(data)
+		})
+	}
+	//发放全服邮件
+	posts["/setAreaMailList"] = function(req,res) {
+		local.post("127.0.0.1",5081,"/setAreaMailList",req.body,function(data) {
+			res.send(data)
+		})
+	}
+	//删除全服邮件
+	posts["/delAreaMailList"] = function(req,res) {
+		local.post("127.0.0.1",5081,"/delAreaMailList",req.body,function(data) {
+			res.send(data)
+		})
+	}
+	//获取开服计划表
+	posts["/getOpenPlan"] = function(req,res) {
+		local.post("127.0.0.1",5081,"/getOpenPlan",{},function(data) {
+			res.send(data)
+		})
+	}
+	//添加开服计划
+	posts["/setOpenPlan"] = function(req,res) {
+		var data = req.body
+		local.post("127.0.0.1",5081,"/setOpenPlan",{time:data.time},function(data) {
+			res.send(data)
+		})
+	}
+	//删除开服计划
+	posts["/delOpenPlan"] = function(req,res) {
+		var data = req.body
+		local.post("127.0.0.1",5081,"/delOpenPlan",{time:data.time},function(data) {
+			res.send(data)
+		})
+	}
+	//获取合服计划表
+	posts["/getMergePlan"] = function(req,res) {
+		var data = req.body
+		local.post("127.0.0.1",5081,"/getMergePlan",{},function(data) {
+			res.send(data)
+		})
+	}
+	//添加合服计划
+	posts["/setMergePlan"] = function(req,res) {
+		var data = req.body
+		local.post("127.0.0.1",5081,"/setMergePlan",{time:data.time,areaList:data.areaList},function(data) {
+			res.send(data)
+		})
+	}
+	//删除合服计划
+	posts["/delMergePlan"] = function(req,res) {
+		var data = req.body
+		local.post("127.0.0.1",5081,"/delMergePlan",{time:data.time},function(data) {
+			res.send(data)
+		})
+	}
     //获取物品表
     posts["/get_items"] = function(req,res) {
         res.send(item_cfg)
@@ -411,6 +514,8 @@ var model = function() {
 		var data = req.body
 		var pageSize = data.pageSize
 		var pageCurrent = data.pageCurrent
+		var key = data.key || "uid"
+		var desc = data.desc
 		var arr = []
 		if(data.uid)
 			arr.push({key : "uid",value : data.uid})
@@ -422,7 +527,7 @@ var model = function() {
 			arr.push({key : "gname",value : data.gname})
 		if(data.area)
 			arr.push({key : "area",value : data.area})
-		var info = local.getSQL("user_list",arr,pageSize,pageCurrent,"uid")
+		var info = local.getSQL("user_list",arr,pageSize,pageCurrent,key,desc)
 		var sql1 = info.sql1
 		var sql2 = info.sql2
 		var args1 = info.args1
@@ -445,6 +550,8 @@ var model = function() {
 		var data = req.body
 		var pageSize = data.pageSize
 		var pageCurrent = data.pageCurrent
+		var key = data.key || "id"
+		var desc = data.desc
 		var arr = []
 		if(data.uid)
 			arr.push({key : "uid",value : data.uid})
@@ -466,7 +573,8 @@ var model = function() {
 			arr.push({key : "pay_time",value : data.beginTime,type:"more"})
 		if(data.endTime)
 			arr.push({key : "pay_time",value : data.endTime,type:"less"})
-		var info = local.getSQL("game_order",arr,pageSize,pageCurrent,"id")
+
+		var info = local.getSQL("game_order",arr,pageSize,pageCurrent,key,desc)
 		var sql1 = info.sql1
 		var sql2 = info.sql2
 		var args1 = info.args1
@@ -1150,7 +1258,7 @@ var model = function() {
 			cb(userInfos)
 		})
 	}
-	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
+	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key,desc) {
 		var sql1 = "select count(*) from "+tableName
 		var sql2 = "select * from "+tableName	
 		var args1 = []
@@ -1178,11 +1286,12 @@ var model = function() {
 			args2.push(arr[i]["value"])
 		}
 		sql2 += " order by "+key
+		if(desc)
+			sql2 += " "+desc
 		if(pageSize && pageCurrent){
-			sql2 += " desc LIMIT ?,"+pageSize
+			sql2 += " LIMIT ?,"+pageSize
 			args2.push((pageCurrent-1)*pageSize)
 		}
-		// console.log("getSQL sql1",sql1,"sql2",sql2,args1,args2)
 		return {sql1:sql1,sql2:sql2,args1:args1,args2:args2}
 	}
 	//发送邮件
