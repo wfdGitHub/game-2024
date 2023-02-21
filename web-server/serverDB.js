@@ -31,7 +31,7 @@ var model = function() {
 		var uid = req.body.uid
 		self.redisDao.db.hgetall("player:user:"+uid+":heroMap",function(err,data) {
 			if(err || !data){
-				cb(true,{})
+				res.send({})
 				return
 			}
 			var multiList = []
@@ -59,14 +59,14 @@ var model = function() {
 	//获取玩家道具背包
 	posts["/getUserBag"] = function(req,res) {
 		var uid = req.body.uid
-		self.redisDao.db.hegtall("player:user:"+uid+":bag",function(err,data) {
+		self.redisDao.db.hgetall("player:user:"+uid+":bag",function(err,data) {
 			res.send(data)
 		})
 	}
 	//获取玩家个人信息
 	posts["/getUserInfo"] = function(req,res) {
 		var uid = req.body.uid
-		self.redisDao.db.hegtall("player:user:"+uid+":playerInfo",function(err,data) {
+		self.redisDao.db.hgetall("player:user:"+uid+":playerInfo",function(err,data) {
 			res.send(data)
 		})
 	}
