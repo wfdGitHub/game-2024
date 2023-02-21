@@ -205,7 +205,7 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	if(cb)
 		cb(true,heroInfo)
 	heroInfo.hId = hId
-	this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:star,reason:hId})
+	this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:star,reason:reason+"-"+hId})
 	return heroInfo
 }
 //升级英雄图鉴
@@ -417,7 +417,7 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb,reason) {
 		if(heros[i]["fs5"])
 			strList.push("2000100:1")
 		this.areaManager.areaMap[areaId].remove_heroRank(uid,id,hIds[i])
-		this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+heros[i].id,value:-1,curValue:0,reason:hIds[i]})
+		this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+heros[i].id,value:-1,curValue:0,reason:reason+"-"+hIds[i]})
 	}
 	if(strList.length){
 		var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
@@ -442,7 +442,7 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
 						self.getHeroInfo(uid,hId,"id",function(id) {
 							self.updateHeroArchive(areaId,uid,id,data)
-							self.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:data,reason:hId})
+							self.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:data,reason:reason+"-"+hId})
 						})
 					break
 					case "lv":
