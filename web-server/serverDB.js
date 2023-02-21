@@ -1301,7 +1301,7 @@ var model = function() {
 		if(desc)
 			sql2 += " "+desc
 		if(pageSize && pageCurrent){
-			sql2 += " desc LIMIT ?,"+pageSize
+			sql2 += " LIMIT ?,"+pageSize
 			args2.push((pageCurrent-1)*pageSize)
 		}
 		console.log("getSQL sql1",sql1,"sql2",sql2,args1,args2)
