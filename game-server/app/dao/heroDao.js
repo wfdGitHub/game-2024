@@ -1071,5 +1071,8 @@ module.exports = {
 	},{
 		name : "areaManager",
 		ref : "areaManager"
+	},{
+		name : "cacheDao",
+		ref : "cacheDao"
 	}]
 }
