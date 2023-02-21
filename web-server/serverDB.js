@@ -530,6 +530,8 @@ var model = function() {
 		var data = req.body
 		var pageSize = data.pageSize
 		var pageCurrent = data.pageCurrent
+		var key = data.key || "uid"
+		var desc = data.desc
 		var arr = []
 		if(data.uid)
 			arr.push({key : "uid",value : data.uid})
@@ -541,7 +543,7 @@ var model = function() {
 			arr.push({key : "gname",value : data.gname})
 		if(data.area)
 			arr.push({key : "area",value : data.area})
-		var info = local.getSQL("user_list",arr,pageSize,pageCurrent,"uid")
+		var info = local.getSQL("user_list",arr,pageSize,pageCurrent,key,desc)
 		var sql1 = info.sql1
 		var sql2 = info.sql2
 		var args1 = info.args1
@@ -564,6 +566,8 @@ var model = function() {
 		var data = req.body
 		var pageSize = data.pageSize
 		var pageCurrent = data.pageCurrent
+		var key = data.key || "id"
+		var desc = data.desc
 		var arr = []
 		if(data.uid)
 			arr.push({key : "uid",value : data.uid})
@@ -585,7 +589,8 @@ var model = function() {
 			arr.push({key : "pay_time",value : data.beginTime,type:"more"})
 		if(data.endTime)
 			arr.push({key : "pay_time",value : data.endTime,type:"less"})
-		var info = local.getSQL("game_order",arr,pageSize,pageCurrent,"id")
+
+		var info = local.getSQL("game_order",arr,pageSize,pageCurrent,key,desc)
 		var sql1 = info.sql1
 		var sql2 = info.sql2
 		var args1 = info.args1
@@ -1265,7 +1270,7 @@ var model = function() {
 			cb(userInfos)
 		})
 	}
-	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key) {
+	local.getSQL = function(tableName,arr,pageSize,pageCurrent,key,desc) {
 		var sql1 = "select count(*) from "+tableName
 		var sql2 = "select * from "+tableName	
 		var args1 = []
@@ -1293,6 +1298,8 @@ var model = function() {
 			args2.push(arr[i]["value"])
 		}
 		sql2 += " order by "+key
+		if(desc)
+			sql2 += " "+desc
 		if(pageSize && pageCurrent){
 			sql2 += " desc LIMIT ?,"+pageSize
 			args2.push((pageCurrent-1)*pageSize)
