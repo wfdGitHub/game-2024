@@ -16,6 +16,7 @@ var model = function() {
 	var local = {}
 	var items = {}
 	this.init = function (server,mysqlDao,redisDao) {
+		console.log("初始redisDao",redisDao)
 		self.mysqlDao = mysqlDao
 		self.redisDao = redisDao
 		self.server = server
@@ -163,6 +164,7 @@ var model = function() {
 		var pageSize = data.pageSize
 		var pageCurrent = data.pageCurrent
 		var info = {}
+		console.log("获取充值列表",self.redisDao)
 		self.redisDao.db.llen("admin:recharge",function(err,total) {
 			info.total = total
 			self.redisDao.db.lrange("admin:recharge",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
