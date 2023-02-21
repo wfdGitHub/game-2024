@@ -27,7 +27,7 @@ var model = function() {
         }
 	}
 	//获取玩家英雄列表
-	posts["/getUserInfo"] = function(req,res) {
+	posts["/getUserHeros"] = function(req,res) {
 		var uid = req.body.uid
 		var self = this
 		self.redisDao.db.hgetall("player:user:"+uid+":heroMap",function(err,data) {
@@ -58,7 +58,7 @@ var model = function() {
 		})
 	}
 	//获取玩家道具背包
-	posts["/getUserInfo"] = function(req,res) {
+	posts["/getUserBag"] = function(req,res) {
 		var uid = req.body.uid
 		self.redisDao.db.hegtall("player:user:"+uid+":bag",function(err,data) {
 			res.send(data)
