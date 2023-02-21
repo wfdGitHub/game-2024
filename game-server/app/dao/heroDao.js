@@ -205,6 +205,7 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	if(cb)
 		cb(true,heroInfo)
 	heroInfo.hId = hId
+	this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:star,reason:reason+"-"+hId})
 	return heroInfo
 }
 //升级英雄图鉴
@@ -232,7 +233,7 @@ heroDao.prototype.updateHeroArchive = function(areaId,uid,id,star) {
 	})
 }
 //批量删除英雄
-heroDao.prototype.removeHeroList = function(areaId,uid,hIds,cb) {
+heroDao.prototype.removeHeroList = function(areaId,uid,hIds,cb,reason) {
 	var self = this
 	var multiList = []
 	for(var i = 0;i < hIds.length;i++){
@@ -250,27 +251,29 @@ heroDao.prototype.removeHeroList = function(areaId,uid,hIds,cb) {
 }
 //删除英雄
 heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
-	var self = this
-	self.getHeroOne(uid,hId,function(flag,heroInfo) {
-		if(!flag){
-			cb(false,"英雄不存在")
-			return
-		}
-		if(heroInfo.combat){
-			cb(false,"英雄已出战")
-			return
-		}
-		self.redisDao.db.hdel("player:user:"+uid+":heroMap",hId,function(err,data) {
-			if(err || !data){
-				console.error("removeHero ",err,data)
-				if(cb)
-					cb(false)
-				return
-			}
-			self.redisDao.db.del("player:user:"+uid+":heros:"+hId)
-			cb(true,heroInfo)
-		})
-	})
+	console.error("接口已弃用")
+	return
+	// var self = this
+	// self.getHeroOne(uid,hId,function(flag,heroInfo) {
+	// 	if(!flag){
+	// 		cb(false,"英雄不存在")
+	// 		return
+	// 	}
+	// 	if(heroInfo.combat){
+	// 		cb(false,"英雄已出战")
+	// 		return
+	// 	}
+	// 	self.redisDao.db.hdel("player:user:"+uid+":heroMap",hId,function(err,data) {
+	// 		if(err || !data){
+	// 			console.error("removeHero ",err,data)
+	// 			if(cb)
+	// 				cb(false)
+	// 			return
+	// 		}
+	// 		self.redisDao.db.del("player:user:"+uid+":heros:"+hId)
+	// 		cb(true,heroInfo)
+	// 	})
+	// })
 }
 //重生返还资源  返回升级升阶法宝
 heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
@@ -307,7 +310,7 @@ heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
 		cb(true,awardList)
 }
 //分解返还资源   返还全部
-heroDao.prototype.heroPrAll = function(areaId,uid,heros,hIds,cb) {
+heroDao.prototype.heroPrAll = function(areaId,uid,heros,hIds,cb,reason) {
 	var strList = []
 	for(let i = 0;i < heros.length;i++){
 		let star = heros[i].star
@@ -320,10 +323,10 @@ heroDao.prototype.heroPrAll = function(areaId,uid,heros,hIds,cb) {
 	this.heroPrlvadnad(areaId,uid,heros,hIds,function(flag,awardList2) {
 	if(cb)
 		cb(true,awardList2.concat(awardList))
-	})
+	},reason)
 }
 //材料返还资源  返还除升星外(升级  升阶 装备 锦囊 神兵 宝石 护符 战马 战鼓 军旗)
-heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
+heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb,reason) {
 	var strList = []
 	for(var i = 0;i < heros.length;i++){
 		var id = heros[i].id
@@ -414,6 +417,7 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 		if(heros[i]["fs5"])
 			strList.push("2000100:1")
 		this.areaManager.areaMap[areaId].remove_heroRank(uid,id,hIds[i])
+		this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+heros[i].id,value:-1,curValue:0,reason:reason+"-"+hIds[i]})
 	}
 	if(strList.length){
 		var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
@@ -438,6 +442,7 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
 						self.getHeroInfo(uid,hId,"id",function(id) {
 							self.updateHeroArchive(areaId,uid,id,data)
+							self.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:data,reason:reason+"-"+hId})
 						})
 					break
 					case "lv":
@@ -1060,5 +1065,8 @@ module.exports = {
 	},{
 		name : "areaManager",
 		ref : "areaManager"
+	},{
+		name : "cacheDao",
+		ref : "cacheDao"
 	}]
 }
