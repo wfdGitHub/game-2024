@@ -16,7 +16,6 @@ var model = function() {
 	var local = {}
 	var items = {}
 	this.init = function (server,mysqlDao,redisDao) {
-		console.log("初始redisDao",redisDao)
 		self.mysqlDao = mysqlDao
 		self.redisDao = redisDao
 		self.server = server
@@ -30,7 +29,6 @@ var model = function() {
 	//获取玩家英雄列表
 	posts["/getUserHeros"] = function(req,res) {
 		var uid = req.body.uid
-		var self = this
 		self.redisDao.db.hgetall("player:user:"+uid+":heroMap",function(err,data) {
 			if(err || !data){
 				cb(true,{})
@@ -61,7 +59,6 @@ var model = function() {
 	//获取玩家道具背包
 	posts["/getUserBag"] = function(req,res) {
 		var uid = req.body.uid
-		console.log("self.redisDao",self.redisDao)
 		self.redisDao.db.hegtall("player:user:"+uid+":bag",function(err,data) {
 			res.send(data)
 		})
@@ -164,7 +161,6 @@ var model = function() {
 		var pageSize = data.pageSize
 		var pageCurrent = data.pageCurrent
 		var info = {}
-		console.log("获取充值列表",self.redisDao)
 		self.redisDao.db.llen("admin:recharge",function(err,total) {
 			info.total = total
 			self.redisDao.db.lrange("admin:recharge",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
