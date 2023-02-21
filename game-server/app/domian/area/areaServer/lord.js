@@ -82,6 +82,7 @@ module.exports = function() {
 				self.players[uid]["exp"] = value
 				self.sendToUser(uid,notify)
 				self.checkLordUpgrade(uid,value)
+				self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:100,value:exp,curValue:value,reason:"获得经验"})
 			}
 		})
 	}
