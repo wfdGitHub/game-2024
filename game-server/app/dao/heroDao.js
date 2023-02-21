@@ -205,7 +205,7 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	if(cb)
 		cb(true,heroInfo)
 	heroInfo.hId = hId
-	self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:id*1000,value:1,curValue:star,reason:"获得"+hId})
+	this.cacheDao.saveCache({messagetype:"itemChange",areaId:this.areaId,uid:uid,itemId:id*1000,value:1,curValue:star,reason:"获得"+hId})
 	return heroInfo
 }
 //升级英雄图鉴
@@ -417,7 +417,7 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb,reason) {
 		if(heros[i]["fs5"])
 			strList.push("2000100:1")
 		this.areaManager.areaMap[areaId].remove_heroRank(uid,id,hIds[i])
-		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:heros[i].id*1000,value:1,curValue:heros[i].star,reason:reason+"-"+heros[i].hId})
+		this.cacheDao.saveCache({messagetype:"itemChange",areaId:this.areaId,uid:uid,itemId:heros[i].id*1000,value:1,curValue:heros[i].star,reason:reason+"-"+heros[i].hId})
 	}
 	if(strList.length){
 		var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
