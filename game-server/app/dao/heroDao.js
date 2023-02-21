@@ -417,7 +417,7 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb,reason) {
 		if(heros[i]["fs5"])
 			strList.push("2000100:1")
 		this.areaManager.areaMap[areaId].remove_heroRank(uid,id,hIds[i])
-		this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+heros[i].id,value:-1,curValue:0,hIds[i]})
+		this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+heros[i].id,value:-1,curValue:0,reason:hIds[i]})
 	}
 	if(strList.length){
 		var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
