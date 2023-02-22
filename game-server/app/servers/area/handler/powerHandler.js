@@ -3,17 +3,9 @@ var async = require("async")
 var beauty_gift = require("../../../../config/gameCfg/beauty_gift.json")
 var beauty_ad = require("../../../../config/gameCfg/beauty_ad.json")
 var beauty_base = require("../../../../config/gameCfg/beauty_base.json")
-var beauty_place = require("../../../../config/gameCfg/beauty_place.json")
 var beauty_event = require("../../../../config/gameCfg/beauty_event.json")
 var beauty_result = require("../../../../config/gameCfg/beauty_result.json")
 var beauty_cfg = require("../../../../config/gameCfg/beauty_cfg.json")
-var place_weight = {}
-for(var i in beauty_place){
-  place_weight[i] = [0]
-  for(var j = 1; j <= 6;j++){
-    place_weight[i][j] = place_weight[i][j-1] + beauty_place[i]["weight"+j]
-  }
-}
 var result_weight = {}
 for(var i in beauty_result){
   result_weight[i] = [0]
@@ -154,12 +146,7 @@ powerHandler.prototype.beginBeautTour = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   var beautId = msg.beautId
-  var place = msg.place
   var action = 0
-  if(!beauty_place[place]){
-    next(null,{flag : false,err : "地点错误"})
-    return
-  }
   var self = this
   async.waterfall([
     function(cb) {
@@ -188,16 +175,31 @@ powerHandler.prototype.beginBeautTour = function(msg, session, next) {
       cb()
     },
     function(cb) {
-      var rand = Math.floor(Math.random() * place_weight[place][6])
+      var result = "att5_"+(Math.floor(Math.random() * 6) + 1)
+      var rand = Math.floor(Math.random() * result_weight[result][4])
       var index = 1
-      for(var i = 1;i <= 6;i++){
-        if(rand < place_weight[place][i]){
+      for(var i = 1;i <= 4;i++){
+        if(rand < result_weight[result][i]){
           index = i
           break
         }
       }
-      self.redisDao.db.hset("player:user:"+uid+":beaut","event",beauty_place[place]["event"+index])
-      next(null,{flag:true,action:action,event:beauty_place[place]["event"+index]})
+      var attName = "att"+index
+      var attValue = Math.floor(Math.random() * (beauty_result[result]["att_max"] - beauty_result[result]["att_min"]) + beauty_result[result]["att_min"])
+      if(beautInfo[attName] + attValue > beauty_ad[beautInfo.ad]["att"]){
+        attValue = beauty_ad[beautInfo.ad]["att"] - beautInfo[attName]
+        if(attValue < 0)
+          attValue = 0
+      }
+      var opinion = Math.floor(Math.random() * (beauty_result[result]["opinion_max"] - beauty_result[result]["opinion_min"]) + beauty_result[result]["opinion_min"])
+      var awardList = self.areaManager.areaMap[areaId].openChestAward(uid,beauty_result[result]["chest"])
+      self.areaManager.areaMap[areaId].incrbyBeautInfo(uid,beautId,attName,attValue)
+      self.areaManager.areaMap[areaId].incrbyBeautInfo(uid,beautId,"opinion",opinion)
+      self.redisDao.db.hdel("player:user:"+uid+":beaut","event")
+      beautInfo = self.areaManager.areaMap[areaId].getBeautyInfo(uid,beautId)
+      var otherAward = self.areaManager.areaMap[areaId].openChestStrNoItem(beauty_result[result]["chest"])
+      otherAward = otherAward.concat(self.areaManager.areaMap[areaId].openChestStrNoItem(beauty_result[result]["chest"]))
+      next(null,{flag:true,attName:attName,attValue:attValue,opinion:opinion,beautInfo:beautInfo,awardList:awardList,otherAward:otherAward})
     }
   ],function(err) {
     next(null,{flag : false,err : err})
@@ -231,30 +233,7 @@ powerHandler.prototype.resultBeautTour = function(msg, session, next) {
         cb()
       })
     },
-    function(cb) {
-      var rand = Math.floor(Math.random() * result_weight[result][4])
-      var index = 1
-      for(var i = 1;i <= 4;i++){
-        if(rand < result_weight[result][i]){
-          index = i
-          break
-        }
-      }
-      var attName = "att"+index
-      var attValue = Math.floor(Math.random() * (beauty_result[result]["att_max"] - beauty_result[result]["att_min"]) + beauty_result[result]["att_min"])
-      if(beautInfo[attName] + attValue > beauty_ad[beautInfo.ad]["att"]){
-        attValue = beauty_ad[beautInfo.ad]["att"] - beautInfo[attName]
-        if(attValue < 0)
-          attValue = 0
-      }
-      var opinion = Math.floor(Math.random() * (beauty_result[result]["opinion_max"] - beauty_result[result]["opinion_min"]) + beauty_result[result]["opinion_min"])
-      var awardList = self.areaManager.areaMap[areaId].openChestAward(uid,beauty_result[result]["chest"])
-      self.areaManager.areaMap[areaId].incrbyBeautInfo(uid,beautId,attName,attValue)
-      self.areaManager.areaMap[areaId].incrbyBeautInfo(uid,beautId,"opinion",opinion)
-      self.redisDao.db.hdel("player:user:"+uid+":beaut","event")
-      beautInfo = self.areaManager.areaMap[areaId].getBeautyInfo(uid,beautId)
-      next(null,{flag:true,attName:attName,attValue:attValue,opinion:opinion,beautInfo:beautInfo,awardList:awardList})
-    }
+
   ],function(err) {
     next(null,{flag : false,err : err})
   })
