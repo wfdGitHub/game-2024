@@ -442,7 +442,7 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
 						self.getHeroInfo(uid,hId,"id",function(id) {
 							self.updateHeroArchive(areaId,uid,id,data)
-							self.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:data,reason:reason+"-"+hId})
+							self.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:data,reason:"升星-"+hId})
 						})
 					break
 					case "lv":
