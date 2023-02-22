@@ -441,6 +441,7 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 					case "star":
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
 						self.getHeroInfo(uid,hId,"id",function(id) {
+							id = Number(id) || 0
 							self.updateHeroArchive(areaId,uid,id,data)
 							self.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:data,reason:"升星-"+hId})
 						})
