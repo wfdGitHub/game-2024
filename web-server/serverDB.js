@@ -1339,6 +1339,8 @@ var model = function() {
 		var sql2 = "select * from "+tableName	
 		var args1 = []
 		var args2 = []
+		if(!desc)
+			desc = "desc"
 		for(var i = 0;i < arr.length;i++){
 			var sign = "="
 			switch(arr[i]["type"]){
