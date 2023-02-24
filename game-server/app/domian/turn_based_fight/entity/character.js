@@ -624,6 +624,74 @@ model.prototype.init = function(fighting) {
 		this.angerSkill.seckill = true
 	this.attInfo.speed += this.fighting.seeded.random("随机速度") * 0.5
 }
+//选择技能
+model.prototype.chooseSkill = function() {
+	if(this.died)
+		return false
+	//被嘲讽使用普攻
+	if(this.buffs["chaofeng"] && this.defaultSkill.type != "heal"){
+		if(!this.buffs["disarm"])
+			return this.userNormalSkill()
+	}
+	//怒气不足跳过回合回怒
+	if(this.less_anger_skip && this.curAnger < 4){
+		fightRecord.push({type:"show_tag",id:this.id,tag:"less_anger_skip"})
+		this.addAnger(4)
+		return false
+	}
+	//被控制跳过回合
+	if(!this.checkActionable())
+		return false
+	//非沉默状态判断怒气
+	if(!this.buffs["silence"] && this.angerSkill){
+		if(this.curAnger >= this.needAnger || this.anyAnger)
+			return this.userAngerSkill()
+	}
+	if(!this.buffs["disarm"])
+		return this.userNormalSkill()
+}
+//使用怒气技能消耗怒气
+model.prototype.userAngerSkill = function() {
+	if(this.died || !this.checkActionable() || this.buffs["silence"])
+		return false
+	var needAnger = this.needAnger
+	var skill = false
+	//怒气足够
+	if(this.curAnger >= this.needAnger){
+		skill = this.angerSkill
+		needValue = this.needAnger
+		//消耗所有怒气
+		if(this.allAnger){
+			fightRecord.push({type:"show_tag",id:this.id,tag:"allAnger"})
+			needValue = this.curAnger
+		}
+	}else if(this.anyAnger){
+		//怒气不足也可以放技能
+		fightRecord.push({type:"show_tag",id:this.id,tag:"anyAnger"})
+		skill = this.angerSkill
+		needValue = this.curAnger
+	}
+	if(skill){
+		skill.angerAmp = (needAnger - 4) * 0.15
+		if(this.skill_free && this.fighting.seeded.random("不消耗怒气判断") < this.skill_free)
+			needValue = 0
+		if(needValue){
+			this.lessAnger(needValue,needValue == 4 ? true:false,true)
+			if(this.record_anger_rate && this.fighting.seeded.random("判断回怒") < this.record_anger_rate){
+				needValue = Math.floor(needValue/2)
+				if(needValue){
+					this.addAnger(Math.min(needValue,4))
+				}
+			}
+		}
+	}
+	return skill
+}
+//使用普攻技能获得怒气
+model.prototype.userNormalSkill = function() {
+	this.addAnger(2,true)
+	return this.defaultSkill
+}
 //添加属性
 model.prototype.addAttInfo = function(key,value) {
 	if(this.attInfo[key] !== undefined)
@@ -770,7 +838,7 @@ model.prototype.beginAction = function() {
 	if(this.dodgeFirst)
 		this.dodgeState = true
 }
-//检查可行的
+//检查可行动
 model.prototype.checkActionable = function() {
 	if(this.died || this.buffs["dizzy"] || this.buffs["frozen"] || this.buffs["banish"])
 		return false
@@ -816,6 +884,37 @@ model.prototype.after = function() {
 	this.onAction = false
 	if(this.died)
 		return
+	//行动后回怒
+	if(this.action_anger)
+		this.addAnger(this.action_anger)
+	//行动结束BUFF
+	for(var i in this.action_buffs){
+		var buffInfo = this.action_buffs[i]
+		var buffTargets = this.fighting.locator.getBuffTargets(this,buffInfo.buff_tg)
+		for(var k = 0;k < buffTargets.length;k++){
+			if(this.fighting.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+				buffManager.createBuff(this,buffTargets[k],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+			}
+		}
+	}
+	//行动结束回怒概率
+	if(this.action_anger_s && this.fighting.seeded.random("行动后怒气") < this.action_anger_s)
+		this.addAnger(1)
+	//行动结束回血
+	if(this.action_heal){
+		var recordInfo =  this.onHeal(this,{type : "heal",maxRate : this.action_heal})
+		recordInfo.type = "self_heal"
+		fightRecord.push(recordInfo)
+	}
+	this.teamInfo["realms_ation"][this.realm]++
+	//行动后额外行动概率
+	if(this.action_extra_action && this.action_extra_flag){
+		if(this.fighting.seeded.random("action_extra_action") < this.action_extra_action){
+			fightRecord.push({type:"show_tag",id:this.id,tag:"action_extra_action"})
+			this.action_extra_flag = false
+			this.fighting.next_character.push(this)
+		}
+	}
 	//判断复活队友
 	if(this.fighting.teamDiedList[this.belong].length && this.isPassive("fh_dy")){
 		var index = Math.floor(this.fighting.seeded.random("fh_dy") * this.fighting.teamDiedList[this.belong].length)

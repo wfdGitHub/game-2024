@@ -340,90 +340,9 @@ model.prototype.before = function() {
 }
 //开始行动释放技能
 model.prototype.action = function() {
-	var skill = false
-	var needValue = 0
-	if(!this.character.died){
-		if(this.character.buffs["chaofeng"] && this.character.defaultSkill.type != "heal"){
-			if(!this.character.buffs["disarm"]){
-				skill = this.character.defaultSkill
-				this.character.addAnger(2,true)
-			}
-		}else{
-			if(this.character.less_anger_skip && this.character.curAnger < 4){
-				fightRecord.push({type:"show_tag",id:this.character.id,tag:"less_anger_skip"})
-				this.character.addAnger(4)
-			}else{
-				if(this.character.checkActionable()){
-					if(!this.character.buffs["silence"] && this.character.angerSkill && this.character.curAnger >= this.character.needAnger){
-						skill = this.character.angerSkill
-						needValue = this.character.needAnger
-						if(this.character.allAnger){
-							fightRecord.push({type:"show_tag",id:this.character.id,tag:"allAnger"})
-							skill.angerAmp = (this.character.curAnger - 4) * 0.15
-							needValue = this.character.curAnger
-						}
-						if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free)
-							needValue = 0
-						if(needValue)
-							this.character.lessAnger(needValue,needValue>4?false:true,true)
-					}else if(this.character.anyAnger){
-						fightRecord.push({type:"show_tag",id:this.character.id,tag:"anyAnger"})
-						skill = this.character.angerSkill
-						skill.angerAmp = (this.character.curAnger - 4) * 0.15
-						needValue = this.character.curAnger
-						if(this.character.skill_free && this.seeded.random("不消耗怒气判断") < this.character.skill_free)
-							needValue = 0
-						if(needValue)
-							this.character.lessAnger(needValue)
-					}else{
-						if(!this.character.buffs["disarm"]){
-							skill = this.character.defaultSkill
-							this.character.addAnger(2,true)
-						}
-					}
-				}
-			}
-		}
-	}
+	var skill = this.character.userAngerSkill()
 	if(skill){
 		skillManager.useSkill(skill)
-		//行动后
-		if(!this.character.died){
-			if(this.character.action_anger)
-				this.character.addAnger(this.character.action_anger)
-			for(var i in this.character.action_buffs){
-				var buffInfo = this.character.action_buffs[i]
-				var buffTargets = this.locator.getBuffTargets(this.character,buffInfo.buff_tg)
-				for(var k = 0;k < buffTargets.length;k++){
-					if(this.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
-						buffManager.createBuff(this.character,buffTargets[k],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
-					}
-				}
-			}
-			if(this.character.record_anger_rate && this.seeded.random("判断BUFF命中率") < this.character.record_anger_rate){
-				needValue = Math.floor(needValue/2)
-				if(needValue){
-					this.character.addAnger(Math.min(needValue,4))
-				}
-			}
-			if(this.character.action_anger_s && this.seeded.random("行动后怒气") < this.character.action_anger_s){
-				this.character.addAnger(1)
-			}
-			if(this.character.action_heal){
-				var recordInfo =  this.character.onHeal(this.character,{type : "heal",maxRate : this.character.action_heal})
-				recordInfo.type = "self_heal"
-				fightRecord.push(recordInfo)
-			}
-			this.character.teamInfo["realms_ation"][this.character.realm]++
-			//行动后额外行动概率
-			if(this.character.action_extra_action && this.character.action_extra_flag){
-				if(this.seeded.random("action_extra_action") < this.character.action_extra_action){
-					fightRecord.push({type:"show_tag",id:this.character.id,tag:"action_extra_action"})
-					this.character.action_extra_flag = false
-					this.next_character.push(this.character)
-				}
-			}
-		}
 	}else{
 		fightRecord.push({type : "freeze",id : this.character.id})
 		if(this.character.no_ation_buff)
