@@ -28,6 +28,8 @@ model.createSkill = function(otps,character) {
 model.useSkill = function(skill,chase,point) {
 	var targets = []
 	var diedSkill = false
+	if(!skill)
+		return []
 	if(skill.character.died)
 		diedSkill = true
 	if(skill.character.buffs["frozen"] || skill.character.buffs["dizzy"]){
@@ -346,7 +348,7 @@ model.useSkill = function(skill,chase,point) {
 	skill.useSkillOver()
 	//击杀重复释放技能
 	if(!chase && diedFlag && skill.killRet && !skill.character.died){
-		skill.character.userAngerSkill()
+		this.useSkill(skill.character.userAngerSkill())
 	}
 	if(!chase && skill.isAnger && !skill.character.died && skill.character.skill_again && this.seeded.random("skill_again") < skill.character.skill_again){
 		this.useSkill(skill,true)
