@@ -656,6 +656,7 @@ model.prototype.userAngerSkill = function() {
 	if(this.died || !this.checkActionable() || this.buffs["silence"])
 		return false
 	var needAnger = this.needAnger
+	var needValue = 0
 	var skill = false
 	//怒气足够
 	if(this.curAnger >= this.needAnger){
