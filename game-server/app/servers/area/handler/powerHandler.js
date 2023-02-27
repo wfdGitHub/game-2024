@@ -184,6 +184,7 @@ powerHandler.prototype.beginBeautTour = function(msg, session, next) {
           break
         }
       }
+      var beautInfo = self.areaManager.areaMap[areaId].getBeautyInfo(uid,beautId)
       var attName = "att"+index
       var attValue = Math.floor(Math.random() * (beauty_result[result]["att_max"] - beauty_result[result]["att_min"]) + beauty_result[result]["att_min"])
       if(beautInfo[attName] + attValue > beauty_ad[beautInfo.ad]["att"]){
@@ -196,7 +197,6 @@ powerHandler.prototype.beginBeautTour = function(msg, session, next) {
       self.areaManager.areaMap[areaId].incrbyBeautInfo(uid,beautId,attName,attValue)
       self.areaManager.areaMap[areaId].incrbyBeautInfo(uid,beautId,"opinion",opinion)
       self.redisDao.db.hdel("player:user:"+uid+":beaut","event")
-      beautInfo = self.areaManager.areaMap[areaId].getBeautyInfo(uid,beautId)
       var otherAward = self.areaManager.areaMap[areaId].openChestStrNoItem(beauty_result[result]["chest"])
       otherAward = otherAward.concat(self.areaManager.areaMap[areaId].openChestStrNoItem(beauty_result[result]["chest"]))
       next(null,{flag:true,attName:attName,attValue:attValue,opinion:opinion,beautInfo:beautInfo,awardList:awardList,otherAward:otherAward})
