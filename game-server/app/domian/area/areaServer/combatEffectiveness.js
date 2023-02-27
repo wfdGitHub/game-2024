@@ -873,6 +873,7 @@ module.exports = function() {
 				}else{
 					self.setBeautInfo(uid,beautId,"star",star)
 					if(star == 1){
+						self.setBeautInfo(uid,beautId,"id",beautId)
 						self.setBeautInfo(uid,beautId,"ad",1)
 						self.setBeautInfo(uid,beautId,"att1",0)
 						self.setBeautInfo(uid,beautId,"att2",0)
