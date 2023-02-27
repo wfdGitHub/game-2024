@@ -4,10 +4,10 @@ var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
 	buff.update = function(dt) {
 		//没有存活队友则消失
-		var flag = false
+		var flag = true
 		for(var i = 0;i < this.character.team.length;i++){
 			if(this.character.team[i]["id"] != this.character.id && !this.character.team[i].died){
-				flag = true
+				flag = false
 				break
 			}
 		}

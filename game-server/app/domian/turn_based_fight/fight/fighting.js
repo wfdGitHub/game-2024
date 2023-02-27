@@ -340,7 +340,7 @@ model.prototype.before = function() {
 }
 //开始行动释放技能
 model.prototype.action = function() {
-	var skill = this.character.userAngerSkill()
+	var skill = this.character.chooseSkill()
 	if(skill){
 		skillManager.useSkill(skill)
 	}else{

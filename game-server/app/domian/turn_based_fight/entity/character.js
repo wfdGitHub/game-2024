@@ -332,6 +332,7 @@ var model = function(otps) {
 	this.burn_duration = otps.burn_duration || 0 //灼烧持续时间增长
 	this.poison_duration = otps.poison_duration || 0 //中毒持续时间增长
 	this.poison_change_hp = otps.poison_change_hp || 0 //造成的中毒伤害转化为血量治疗自己。
+	this.poison_settle = otps.poison_settle || 0 		//中毒立即结算
 
 	this.less_skill_buffRate = otps.less_skill_buffRate || 0 //技能最高提升buff概率(目标越多效果越低)
 	this.less_normal_buffRate = otps.less_normal_buffRate || 0 //普攻最高提升buff概率(目标越多效果越低)
@@ -848,6 +849,7 @@ model.prototype.checkActionable = function() {
 //行动开始前刷新
 model.prototype.before = function() {
 	this.action_flag = true
+	this.onAction = true
 	if(this.before_clear_debuff && this.fighting.seeded.random("判断BUFF命中率") < this.before_clear_debuff){
 		for(var i in this.buffs)
 			if(buff_cfg[i].debuff)
@@ -876,7 +878,6 @@ model.prototype.before = function() {
 		var rand = Math.floor(this.fighting.seeded.random("begin_round_buffs") * this.begin_round_buffs.length)
 		buffManager.createBuff(this,this,this.begin_round_buffs[rand])
 	}
-	this.onAction = true
 }
 //行动结束后刷新
 model.prototype.after = function() {
@@ -1420,6 +1421,10 @@ model.prototype.onHeal = function(releaser,info) {
 	if(this.buffs["soul_steal"] && !this.buffs["soul_steal"].releaser.buffs["soul_steal"]){
 		return this.buffs["soul_steal"].releaser.onHeal(releaser,info)
 	}
+	if(this.died || this.buffs["ghost"]){
+		info.value = 0
+		info.maxRate = 0
+	}
 	info.id = this.id
 	info.value = Math.floor(info.value) || 0
 	info.maxRate = info.maxRate || 0
@@ -1428,6 +1433,8 @@ model.prototype.onHeal = function(releaser,info) {
 		info.value += Math.floor(this.attInfo.maxHP * info.maxRate)
 	if(this.buffs["forbidden"])
 		info.value = Math.floor(info.value * 0.3)
+	if(this.buffs["poison"])
+		info.value = Math.floor(info.value * this.buffs["poison"].getValue())
 	info.realValue = this.addHP(info.value)
 	if(releaser && info.realValue > 0)
 		releaser.totalHeal += info.realValue
