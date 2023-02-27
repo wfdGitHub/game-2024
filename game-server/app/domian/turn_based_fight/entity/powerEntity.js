@@ -27,7 +27,6 @@ model.prototype.getPowerInfo = function(powerInfo){
 }
 //获取无双技战力
 model.prototype.getPowerCE = function(powerInfo) {
-	console.log("powerInfo",powerInfo)
 	var ce = 20000
 	ce += power_lv[powerInfo["lv"]]["ce"] || 0
 	ce += power_ad[powerInfo["ad"]]["ce"] || 0
@@ -55,7 +54,6 @@ model.prototype.getBeautyInfo = function(beautyInfo){
 }
 //获取红颜战力
 model.prototype.getBeautyCE = function(beautyInfo) {
-	console.log("beautyInfo",beautyInfo)
 	var ce = 20000
 	ce += beauty_ad[beautyInfo["ad"]]["ce"] || 0
 	ce += beauty_star[beautyInfo["star"]]["ce"] || 0
