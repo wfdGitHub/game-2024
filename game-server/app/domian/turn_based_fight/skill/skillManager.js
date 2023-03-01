@@ -347,7 +347,7 @@ model.useSkill = function(skill,chase,point) {
 	//技能使用结束
 	skill.useSkillOver()
 	//击杀重复释放技能
-	if(!chase && skill.character.checkChaseSkill() && diedFlag && skill.killRet && !skill.character.died){
+	if(!chase && diedFlag && skill.killRet && !skill.character.died){
 		this.useSkill(skill.character.userAngerSkill(),true)
 	}
 	if(!chase && skill.isAnger && !skill.character.died && skill.character.skill_again && this.seeded.random("skill_again") < skill.character.skill_again){
@@ -558,7 +558,7 @@ model.useAttackSkill = function(skill,chase,point) {
 			}
 		}
 		//击杀后追加技能
-		if(!chase && skill.character.kill_later_skill && this.seeded.random("判断追加技能") < skill.character.kill_later_skill.rate){
+		if(!chase && skill.character.checkChaseSkill() && skill.character.kill_later_skill && this.seeded.random("判断追加技能") < skill.character.kill_later_skill.rate){
 			fightRecord.push({type:"show_tag",id:skill.character.id,tag:"kill_later_skill"})
 			var tmpSkillInfo = Object.assign({skillId : skill.skillId,name : skill.name},skill.character.kill_later_skill)
 			var tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
