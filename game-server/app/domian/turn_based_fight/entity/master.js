@@ -241,6 +241,7 @@ master.prototype.lessHP = function(info,callbacks) {}
 master.prototype.addAnger = function(value,hide) {}
 //减少怒气
 master.prototype.lessAnger = function(value,hide,use) {}
+master.prototype.checkChaseSkill = function() {}
 //获取属性
 //获取信息
 master.prototype.getInfo = function() {}
