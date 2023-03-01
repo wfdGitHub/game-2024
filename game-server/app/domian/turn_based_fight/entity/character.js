@@ -851,6 +851,7 @@ model.prototype.checkActionable = function() {
 model.prototype.before = function() {
 	this.action_flag = true
 	this.onAction = true
+	this.chaseFlag = false
 	if(this.before_clear_debuff && this.fighting.seeded.random("判断BUFF命中率") < this.before_clear_debuff){
 		for(var i in this.buffs)
 			if(buff_cfg[i].debuff)
@@ -1652,6 +1653,15 @@ model.prototype.lessAnger = function(value,hide,use) {
 	if(realValue)
 		fightRecord.push({type : "lessAnger",realValue : realValue,curAnger : this.curAnger,needAnger : this.needAnger,id : this.id,hide : hide})
 	return realValue
+}
+//检查连击技能
+model.prototype.checkChaseSkill = function() {
+	if(this.chaseFlag){
+		return false
+	}else{
+		this.chaseFlag = true
+		return true
+	}
 }
 //获取属性
 model.prototype.getTotalAtt = function(name) {
