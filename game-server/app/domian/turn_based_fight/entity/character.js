@@ -674,7 +674,7 @@ model.prototype.userAngerSkill = function() {
 		needValue = this.curAnger
 	}
 	if(skill){
-		skill.angerAmp = (needAnger - 4) * 0.15
+		skill.angerAmp = (needValue - 4) * 0.15
 		if(this.skill_free && this.fighting.seeded.random("不消耗怒气判断") < this.skill_free)
 			needValue = 0
 		if(needValue){
