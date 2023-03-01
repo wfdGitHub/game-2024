@@ -558,7 +558,7 @@ model.useAttackSkill = function(skill,chase,point) {
 			}
 		}
 		//击杀后追加技能
-		if(skill.character.kill_later_skill && this.seeded.random("判断追加技能") < skill.character.kill_later_skill.rate){
+		if(!chase && skill.character.kill_later_skill && this.seeded.random("判断追加技能") < skill.character.kill_later_skill.rate){
 			fightRecord.push({type:"show_tag",id:skill.character.id,tag:"kill_later_skill"})
 			var tmpSkillInfo = Object.assign({skillId : skill.skillId,name : skill.name},skill.character.kill_later_skill)
 			var tmpSkill = this.createSkill(tmpSkillInfo,skill.character)
