@@ -50,6 +50,7 @@ model.prototype.createBingfu = function(type,lv,qa,sec_att,sec_vel) {
 	this.randMainVel(bfInfo)
 	//次属性
 	this.randSecVel(bfInfo,sec_att,sec_vel)
+	this.saveTmpData(bfInfo)
 	return bfInfo
 }
 //生成随机品质
