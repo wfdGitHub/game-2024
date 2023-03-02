@@ -1190,11 +1190,7 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 		return info
 	}
 	if(this.gj_my && this.onAction){
-		info.value = 0
-		info.realValue = 0
-		info.curValue = this.attInfo.hp
-		info.maxHP = this.attInfo.maxHP
-		return info
+		info.value = Math.floor(info.value * (1 - this.gj_my))
 	}
 	if(this.round_same_hit_red){
 		if(!this.round_same_value[attacker.id])
