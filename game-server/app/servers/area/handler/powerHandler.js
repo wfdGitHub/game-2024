@@ -199,7 +199,7 @@ powerHandler.prototype.beginBeautTour = function(msg, session, next) {
       self.redisDao.db.hdel("player:user:"+uid+":beaut","event")
       var otherAward = self.areaManager.areaMap[areaId].openChestStrNoItem(beauty_result[result]["chest"])
       otherAward = otherAward.concat(self.areaManager.areaMap[areaId].openChestStrNoItem(beauty_result[result]["chest"]))
-      next(null,{flag:true,attName:attName,attValue:attValue,opinion:opinion,beautInfo:beautInfo,awardList:awardList,otherAward:otherAward})
+      next(null,{flag:true,attName:attName,attValue:attValue,opinion:opinion,beautInfo:beautInfo,awardList:awardList,otherAward:otherAward,action:action})
     }
   ],function(err) {
     next(null,{flag : false,err : err})
