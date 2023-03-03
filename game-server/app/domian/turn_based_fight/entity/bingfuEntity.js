@@ -234,7 +234,6 @@ model.prototype.getBfDataCE = function(bfData) {
 //获取兵符总战力
 model.prototype.getBingfuCE = function(bfInfo) {
 	var CE = 0
-	console.log("bfInfo",bfInfo)
 	var count = bfInfo["qa"] * bfInfo["qa"]
 	for(var i  = 0;i < bfInfo["main"].length;i++)
 		count += bfInfo["main"][i]
