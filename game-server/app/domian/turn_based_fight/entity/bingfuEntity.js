@@ -161,11 +161,18 @@ model.prototype.getBingfuDes = function(bfInfo) {
 	for(var i = 0;i < bfInfo["sec_att"].length;i++){
 		var attInfo = bingfu_att[bfInfo["sec_att"][i]]
 		if(attInfo){
-			bfDes.secAtt[i] =  {"name" : talent_list[attInfo.talent]["name"]}
+			bfDes.secAtt[i] =  {"name" : talent_list[attInfo.talent]["name"],"qa":0}
 			if(attInfo.number)
 				bfDes.secAtt[i].value = "+"+Number((attInfo.basic * bfInfo["sec_vel"][i]))
 			else
 				bfDes.secAtt[i].value = "+"+(attInfo.basic * bfInfo["sec_vel"][i] * 100).toFixed(1)+"%"
+			for(var j = 0;j <= 5;j++){
+				if(bfInfo["sec_vel"][i] < bingfu_lv_cfg[bfDes.lv]["Q"+j]){
+					break
+				}else{
+					bfDes.secAtt[i]["qa"] = j
+				}
+			}
 		}
 	}
 	return bfDes
