@@ -97,9 +97,15 @@ model.prototype.randSecVel = function(bfInfo,sec_att,sec_vel) {
 	var type = tmpInfo.type
 	var lv = tmpInfo.lv
 	var qa = tmpInfo.qa
+	var lucky = tmpInfo.lucky || 0
+	lucky++
 	qa = util.randomFrom(1,qa)
 	var maxValue = bingfu_lv_cfg[lv]["Q"+qa]
-	var minValue = bingfu_lv_cfg[lv]["Q"+(qa-1)]
+	var minValue = bingfu_lv_cfg[lv]["Q"+Math.max((qa-2),0)]
+	if(lucky >= 100){
+		lucky = 0
+		minValue = Math.floor(maxValue*0.9)
+	}
 	var baseValue = util.randomFrom(minValue,maxValue)
 	var count = bingfu_lv_cfg[lv]["sec_num"]
 	var overValue = (baseValue - minValue) * count
@@ -114,6 +120,7 @@ model.prototype.randSecVel = function(bfInfo,sec_att,sec_vel) {
 	else
 		tmpInfo.sec_att = util.getRandomArray(bingfu_type_cfg[type]["sec_att"],count)
 	bfInfo.tmp = tmpInfo
+	bfInfo.lucky = lucky
 	return bfInfo
 }
 //获取兵符数据
