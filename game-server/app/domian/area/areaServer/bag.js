@@ -321,7 +321,7 @@ module.exports = function() {
 					//兵符
 					var awardList = []
 					for(var i = 0;i < value;i++){
-						var bfInfo = self.gainBingfu(uid,itemCfg[itemId]["arg"])
+						var bfInfo = self.gainBingfu(uid,JSON.parse(itemCfg[itemId]["arg"]))
 						awardList.push({type : "bingfu",bfInfo : bfInfo})
 					}
 					if(cb)

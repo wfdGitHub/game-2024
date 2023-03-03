@@ -17,7 +17,7 @@ module.exports = function() {
 	}
 	//获取兵符
 	this.gainBingfu = function(uid,bfInfo) {
-		bfInfo = bfInfo ? JSON.parse(bfInfo) : {}
+		bfInfo = bfInfo ? bfInfo : {}
 		bfInfo = self.fightContorl.bingfuEntity.createBingfu(bfInfo.type,bfInfo.lv,bfInfo.qa,bfInfo.sec_att,bfInfo.sec_vel)
 		bfInfo.id = self.getLordLastid(uid)
 		local.saveBingfu(uid,bfInfo)
