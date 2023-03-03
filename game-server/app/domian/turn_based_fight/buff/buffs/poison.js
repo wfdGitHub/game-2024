@@ -50,9 +50,6 @@ var model = function(releaser,character,otps) {
 		}
 		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
 		buff.fightRecord.push(recordInfo)
-		if(releaser.poison_settle && buff.buffManager.seeded.random("中毒结算") < releaser.poison_settle){
-			buff.settle()
-		}
 	}
 	//立即结算
 	buff.settle = function() {

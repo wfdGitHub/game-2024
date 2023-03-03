@@ -1570,7 +1570,7 @@ model.prototype.addHP = function(value) {
 }
 //扣除血量
 model.prototype.lessHP = function(info,callbacks) {
-	if(this.died){
+	if(this.died || this.buffs["banish"]){
 		return 0
 	}
 	var callFlag = false

@@ -85,8 +85,13 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		}
 		if(buff)
 			fightRecord.push({type : "createBuff",releaser : releaser.id,character : character.id,buffId : buffId,name : buff_cfg[buffId].name})
-		if(buffId == "poison" && releaser.poison_add_forbidden){
-			this.createBuff(releaser,character,{"buffId" : "forbidden","duration":1})
+		if(buffId == "poison"){
+			if(releaser.poison_add_forbidden){
+				this.createBuff(releaser,character,{"buffId" : "forbidden","duration":1})
+			}
+			if(releaser.poison_settle && this.seeded.random("中毒结算") < releaser.poison_settle){
+				buff.settle()
+			}
 		}
 		if(buffId == "banAnger" && releaser.banAnger_add_forbidden){
 			this.createBuff(releaser,character,{"buffId" : "forbidden","duration":1})
