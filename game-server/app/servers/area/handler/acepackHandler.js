@@ -57,6 +57,14 @@ acepackHandler.prototype.wearAcepack = function(msg, session, next) {
           cb("该英雄不能装备这件锦囊")
           return
         }
+        if(heroInfo){
+          for(var i = 1;i <= 10;i++){
+            if(heroInfo["a"+pos] && heroInfo["a"+pos] == aId){
+              cb("不能穿戴两个一样的宝物")
+              return
+            }
+          }
+        }
         cb(null,heroInfo)
       })
     },
