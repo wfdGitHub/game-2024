@@ -725,7 +725,6 @@ model.calBingfu = function(master,team,bfStr) {
 		var bfAttMap = {}
 		for(var talentId in bfAtt)
 			this.mergeTalent(bfAttMap,talentId,bfAtt[talentId])
-		console.log("计算兵符属性",bfAttMap)
 		//主公属性
 		var attList = ["lord_power","ws_power","beauty_power"]
 		for(var i = 0;i < attList.length;i++){
