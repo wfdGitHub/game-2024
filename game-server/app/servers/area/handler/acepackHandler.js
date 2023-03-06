@@ -59,7 +59,7 @@ acepackHandler.prototype.wearAcepack = function(msg, session, next) {
         }
         if(heroInfo){
           for(var i = 1;i <= 10;i++){
-            if(heroInfo["a"+pos] && heroInfo["a"+pos] == aId){
+            if(heroInfo["a"+i] && heroInfo["a"+i] == aId){
               cb("不能穿戴两个一样的宝物")
               return
             }
