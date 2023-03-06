@@ -2,6 +2,15 @@
 var model = function(seededNum) {
 	this.seededNum = seededNum
 }
+//判断存在可攻击目标
+model.prototype.existsTarget = function(character) {
+	for(var i = 0;i < 6;i++){
+		if(model.check(character.enemy[i])){
+			return  true
+		}
+	}
+	return false
+}
 //获取目标
 model.prototype.getTargets = function(character,targetType) {
 	switch(targetType){

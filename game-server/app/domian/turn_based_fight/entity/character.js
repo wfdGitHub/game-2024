@@ -629,16 +629,20 @@ model.prototype.init = function(fighting) {
 model.prototype.chooseSkill = function() {
 	if(this.died)
 		return false
-	//被嘲讽使用普攻
-	if(this.buffs["chaofeng"] && this.defaultSkill.type != "heal"){
-		if(!this.buffs["disarm"])
-			return this.userNormalSkill()
-	}
 	//怒气不足跳过回合回怒
 	if(this.less_anger_skip && this.curAnger < 4){
 		fightRecord.push({type:"show_tag",id:this.id,tag:"less_anger_skip"})
 		this.addAnger(4)
 		return false
+	}
+	if(!this.fighting.locator.existsTarget(this)){
+		this.addAnger(2,true)
+		return false
+	}
+	//被嘲讽使用普攻
+	if(this.buffs["chaofeng"] && this.defaultSkill.type != "heal"){
+		if(!this.buffs["disarm"])
+			return this.userNormalSkill()
 	}
 	//被控制跳过回合
 	if(!this.checkActionable())
