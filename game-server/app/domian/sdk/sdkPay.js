@@ -21,10 +21,10 @@ model.prototype.pay_order = function(data,finish_callback,res) {
 }
 //quick订单
 model.prototype.quick_order = function(data,finish_callback,res) {
+	res.send("SUCCESS")
 	var v_sign = util.md5(data.nt_data+data.sign+this.sdkConfig["Md5_Key"])
 	if(v_sign != data.md5Sign){
 		console.error("签名验证失败")
-		res.send("签名验证失败")
 		return
 	}
 	var self = this
@@ -45,12 +45,11 @@ model.prototype.quick_order = function(data,finish_callback,res) {
 			extras_params : message["extras_params"]? message["extras_params"][0] : 0,
 		}
 		self.payDao.finishGameOrder(info,function(flag,err,data) {
+			if(err)
+				console.error(err)
 			if(flag){
 				//订单发货
 				finish_callback(data.areaId,data.uid,data.amount,data.pay_id)
-				res.send("SUCCESS")
-			}else{
-				res.send("FAILD "+err)
 			}
 		})
 	});
