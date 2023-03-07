@@ -49,7 +49,7 @@ model.prototype.getBeautyInfo = function(beautyInfo){
 	atts["atk"] = Math.floor(beauty_cfg["atk"]["value"] * basics["att2"])
 	atts["phyDef"] = Math.floor(beauty_cfg["phyDef"]["value"] * basics["att3"])
 	atts["magDef"] = Math.floor(beauty_cfg["magDef"]["value"] * basics["att4"])
-	atts["basic"] = Math.floor((basics["att1"] + basics["att2"] + basics["att3"] + basics["att4"]) * 5)
+	atts["basic"] = Math.floor((power_lv[1]["basic"] * growth) + (basics["att1"] + basics["att2"] + basics["att3"] + basics["att4"]) * 5)
 	return atts
 }
 //获取红颜战力
