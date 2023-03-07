@@ -21,28 +21,10 @@ entryHandler.prototype.entryAccount = function(msg, session, next) {
 	this.redisDao.db.hset("loginToken",unionid,loginToken)
 	next(null,{flag:true,unionid:unionid,token:loginToken})
 }
-//quickSDK登陆
+//SDK登陆
 entryHandler.prototype.quickEntry = function(msg, session, next) {
-	var token = msg.token
-	var uid = msg.uid
-	var channel_code = msg.channel_code
-	var self = this
-	var url = sdkConfig["CheckUserInfo"]+"?token="+token+"&product_code="+product_code+"&uid="+uid+"&channel_code="+channel_code
-	http.get(url,function(res){
-	  	res.on("data",function(data) {
-	    	if(data == 1){
-	    		var unionid = uid
-	    		var loginToken = util.randomString(8)
-	    		self.redisDao.db.hset("loginToken",unionid,loginToken)
-	    		next(null,{flag:true,unionid:unionid,token:loginToken})
-	    	}else{
-	    		next(null,{flag:false,err:"渠道账号验证错误"})
-	    	}
-	  	})
-		res.on("error", err => {
-			console.log(err.message);
-			next(null,{flag:false,err:err})
-		});
+	this.sdkEntry.entry(msg,function(data) {
+			next(null,data)
 	})
 }
 //277登陆
@@ -164,6 +146,9 @@ module.exports = function(app) {
   	},{
   		name : "redisDao",
   		ref : "redisDao"
+  	},{
+  		name : "sdkEntry",
+  		ref : "sdkEntry"
   	}]
   })
 };

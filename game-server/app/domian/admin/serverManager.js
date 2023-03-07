@@ -37,7 +37,7 @@ serverManager.prototype.init = function() {
 	res.header('Access-Control-Allow-Headers', 'Authorization,X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method' )
 	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PATCH, PUT, DELETE')
 	res.header('Allow', 'GET, POST, PATCH, OPTIONS, PUT, DELETE')
-	next();
+		next();
 	});
 	server.use(xmlparser());
 	switch(sdkConfig.sdk_type){
@@ -53,7 +53,7 @@ serverManager.prototype.init = function() {
 		default:
 			console.error("sdktype error")
 	}
-	server.post(sdkConfig["pay_callback"],function(req,res) {
+	server.post("/pay_order",function(req,res) {
 		var data = req.body
 		// var ipFlag = false
 		// for(var i = 0;i < ip_white_list.length;i++){
@@ -69,6 +69,8 @@ serverManager.prototype.init = function() {
 		// 		})
 		// 		return
 		// }
+		self.sdkPay.pay_order(req.body,self.finish_callback,res)
+		return
 		self.pay_order(data,function(flag,err) {
 				switch(sdkConfig.sdk_type){
 					case "gzone":
@@ -111,6 +113,12 @@ serverManager.prototype.init = function() {
 	adminManager.init(server2,self)
 	server2.listen(5081);
 }
+serverManager.prototype.finish_callback = function(areaId,uid,amount,pay_id) {
+		//支付成功发货
+		var serverId = self.areaDeploy.getServer(self.areaDeploy.getFinalServer(areaId))
+    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,function(){})
+    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(amount) * 100),function(){})
+}
 serverManager.prototype.quick_order = function(data,cb) {
 	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
 	if(v_sign != data.md5Sign){
@@ -137,11 +145,7 @@ serverManager.prototype.quick_order = function(data,cb) {
 		}
 		self.payDao.finishGameOrder(info,function(flag,err,data) {
 			if(flag){
-				//发货
-				var areaId = self.areaDeploy.getFinalServer(data.areaId)
-				var serverId = self.areaDeploy.getServer(areaId)
-			    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
-			    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,data.uid,Math.floor(Number(info.amount) * 100),function(){})
+
 			}
 			if(err)
 				cb(false,err)
