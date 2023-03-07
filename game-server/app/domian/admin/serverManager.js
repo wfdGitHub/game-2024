@@ -69,7 +69,7 @@ serverManager.prototype.init = function() {
 		// 		})
 		// 		return
 		// }
-		self.sdkPay.pay_order(req.body,self.finish_callback,res)
+		self.sdkPay.pay_order(req.body,self.finish_callback.bind(self),res)
 		return
 		self.pay_order(data,function(flag,err) {
 				switch(sdkConfig.sdk_type){
