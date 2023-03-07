@@ -396,5 +396,8 @@ module.exports = {
 	},{
 		name : "accountDao",
 		ref : "accountDao"
+	},{
+		name : "sdkPay",
+		ref : "sdkPay"
 	}]
 }
