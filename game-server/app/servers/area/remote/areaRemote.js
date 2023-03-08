@@ -147,6 +147,13 @@ areaRemote.prototype.taskUpdate  = function(areaId,uid,type,value,arg,cb) {
 		cb(false)
 	}
 }
+//更新SDK配置
+areaRemote.prototype.updateSDKCFG = function() {
+	if(this.sdkEntry)
+		this.sdkEntry.init()
+	if(this.sdkPay)
+		this.sdkPay.init()
+}
 //更新返利
 areaRemote.prototype.updateRebate = function(cb) {
 	for(var areaId in this.areaManager.areaMap){
@@ -172,6 +179,12 @@ module.exports = function(app) {
 		props : [{
 			name : "playerDao",
 			ref : "playerDao"
+		},{
+			name : "sdkEntry",
+			ref : "sdkEntry"
+		},{
+			name : "sdkPay",
+			ref : "sdkPay"
 		}]
 	})
 }

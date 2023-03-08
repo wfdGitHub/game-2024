@@ -4,6 +4,7 @@
     "private": false,
     "dependencies": {
         "bearcat": "^0.4.29",
+        "crypto": "^1.0.1",
         "express": "^4.16.4",
         "express-xml-bodyparser": "^0.3.0",
         "generic-pool": "^3.7.1",
