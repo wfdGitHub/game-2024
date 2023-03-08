@@ -235,6 +235,7 @@ module.exports = {
 	id : "sdkPay",
 	func : model,
 	init : "init",
+	scope : "prototype",
 	props : [{
 		name : "redisDao",
 		ref : "redisDao"
