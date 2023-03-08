@@ -1,8 +1,6 @@
 var bearcat = require("bearcat")
 var http=require('http')
 var querystring = require("querystring")
-var sdkConfig = require("../../../../config/sysCfg/sdkConfig.json")
-var product_code = sdkConfig.product_code
 var util = require("../../../../util/util.js")
 var async = require("async")
 var entryHandler = function(app) {

@@ -48,6 +48,7 @@ var model = function() {
 				console.error("error：", err);
 				throw err;
 			}
+			local.post("127.0.0.1",5081,"/updateSDKCFG",{},function(){})
 			console.log('changeSDKCFG successfully  -->  ',req.body.data);
 		});
 		res.send("SUCCESS")
