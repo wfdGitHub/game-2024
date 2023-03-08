@@ -43,6 +43,7 @@ var model = function() {
 	}
 	//修改sdkconfig
 	posts["/changeSDKCFG"] = function(req,res) {
+		console.log("changeSDKCFG",req.body)
 		fs.writeFile("../game-server/config/sysCfg/sdkConfig.json", req.body, err => {
 			if (err) {
 				console.error("error：", err);
