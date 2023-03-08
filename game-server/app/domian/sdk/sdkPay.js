@@ -7,7 +7,7 @@ var model = function() {}
 var local = {}
 //初始化获取配置
 model.prototype.init = function(cb) {
-	console.log("SKD支付模块 初始化SDK配置")
+	// console.log("SKD支付模块 初始化SDK配置")
 	this.sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 }
 //收到支付回调

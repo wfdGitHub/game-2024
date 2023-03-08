@@ -7,7 +7,7 @@ const querystring = require("querystring")
 var model = function() {}
 //初始化获取配置
 model.prototype.init = function(cb) {
-	console.log("SKD登陆模块 初始化SDK配置")
+	// console.log("SKD登陆模块 初始化SDK配置")
 	this.sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 }
 //渠道隔离
