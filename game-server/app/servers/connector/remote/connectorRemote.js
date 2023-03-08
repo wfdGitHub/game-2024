@@ -38,12 +38,11 @@ connectorRemote.prototype.syncRealrmb = function(uid,value,cb) {
 	// }
 }
 //更新SDK配置
-connectorRemote.prototype.updateSDKCFG = function(cb) {
+connectorRemote.prototype.updateSDKCFG = function() {
 	if(this.sdkEntry)
 		this.sdkEntry.init()
 	if(this.sdkPay)
 		this.sdkPay.init()
-	cb(true)
 }
 connectorRemote.prototype.updateAreaName = function() {
 	var areaDeploy = this.app.get("areaDeploy")

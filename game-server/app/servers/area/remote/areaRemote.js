@@ -148,12 +148,11 @@ areaRemote.prototype.taskUpdate  = function(areaId,uid,type,value,arg,cb) {
 	}
 }
 //更新SDK配置
-areaRemote.prototype.updateSDKCFG = function(cb) {
+areaRemote.prototype.updateSDKCFG = function() {
 	if(this.sdkEntry)
 		this.sdkEntry.init()
 	if(this.sdkPay)
 		this.sdkPay.init()
-	cb(true)
 }
 //更新返利
 areaRemote.prototype.updateRebate = function(cb) {
