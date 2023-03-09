@@ -1,11 +1,15 @@
 //SDK获取数据模块
 const async = require("async")
 const crypto = require('crypto');
+const NodeRSA = require('node-rsa');
+var priKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCimZ5iIRKMjqVVAJU5Xkqg2ozLh4pg6z3VwXa8RMnqLirZ+n3gssJRCVVX0vOEefLJGH997h6GV9Gv97URHFAqoHrQP43nz6t0foizzTndYCJONoKFH1q8qnbdkVx2FzlMUUJOwPTRtZUw9RTEHPHAV+39mERtd6mLoB7HfcvW9/IdaSO3hmh90giaP598Sc6cKflVByZ22EgfqFJl2fU1cP4Ol/dnwiTSNqYGRABT05iLJHt2zeLn6d0hIw+QskzRUaep7G3+fhZGHyBQ93q3fziY6CtlOC59LSfr/Sn497M1Qjcq537qr98Y+Vp/usJeQE9UEE8WHK/yPJJfQdbpAgMBAAECggEAVBKWACsVijOfbOoWPklw0Obv8bStaht4J3QWzpXKyRkB8x8/wtTrADeRNw3N9+uOC0htc1GR2ujBdPjhWG2JTeEYX2DdIMUR4/Qg/sbYaoxwcHxi1C44HmENgNbONgkgCUPiwxGmBGCdOWkfSZ+lqExOs9btWqSKt7Uc9Q0oPoe0fGELCwfN9BrB5dJW9hU9Rx+o32PfdAG4xpnwh9J++ssTulrVUuhU6ZGEcR6aVdqXkR/89EicZm5vmACXt92A76zB30ptQz05RooSLG2Fc8g6oMnKAQZbTUQMXze02aIm37eXO8i1d/awoP1Fqqg6T+aqe04j04DXcbfpRPlGeQKBgQDpKNDStPkOCzDft6R8vQ9sIWzluimZwlwv2p4G/GDZJ4irSVjVSxtQ9w8kpSyGYMx66D/y5kNKcpmmpZkhlxF2RYNWv1gcu8ABXogQl+9gMvN/qqjEdYZISNPa/VelN4SSJL9+sy3fa/Rgcf6AtAUQxWg/afu4FZEHykIuUoOxCwKBgQCyh0/HuYGqjxcmT+vcG2EZmol2bZtdHG3bEubLOZVX2RG4KNBaWfQVbpbkdmNgG9D/etseoUVX9o21TutIOHl4yGmRx+5ZxRaejcjEKA721ZxPO2x7mZVPQ3p0FiCGPcsQAcKgY0wpE7ITuZC3f2w5XrH/nIiq37FFtrEprNa4WwKBgCz6zcZIWV+nMweFovrZcjc2/44V6t6ZyzUEJMZOO9TItqnsnXGQarWk48v6/WrzE5+GXIfcehDLqO6oNbFwNlMtt9etVC8+3RymgvNIjEpvqd/wKVy1G3Gocw5lH1plKnMTGco0gN4AMoXEmAd2Mx/4JVNOe9wYdQEeuMO88WDfAoGAIRsYf0f2NKOuPkuJyFpHalEO9qgirGSONpbNt5fpCs5VC9p9sJOHwMWuM5WEnhjqa8Xjhk2Pp10wMBP/a3gVhoFbmk4B9CGpLSPLvBxVkg5QmxzA5Da5ymYP+iD0TRB+bGx3I/jl8aQWXLQHkw+NCSJ3TZhAe7dZjzzuo3TKqIsCgYEA1CzXGF5Ia+glJ84y/JEsTb3hpBG+dND11O2NexE6T6Ftw4a+6BDW2Sg/bN6OyC1myDNGYOAS4PAKbRwCgwpwgCTWViGkO8LHFpUdUduVVHjNTLVDbosfC+RExLtOG3WZ0u09opSsZfsagm9A2V+Ctd3RVNUUoIeiYU/ru2nz0GE="
+var pubKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAopmeYiESjI6lVQCVOV5KoNqMy4eKYOs91cF2vETJ6i4q2fp94LLCUQlVV9LzhHnyyRh/fe4ehlfRr/e1ERxQKqB60D+N58+rdH6Is8053WAiTjaChR9avKp23ZFcdhc5TFFCTsD00bWVMPUUxBzxwFft/ZhEbXepi6Aex33L1vfyHWkjt4ZofdIImj+ffEnOnCn5VQcmdthIH6hSZdn1NXD+Dpf3Z8Ik0jamBkQAU9OYiyR7ds3i5+ndISMPkLJM0VGnqext/n4WRh8gUPd6t384mOgrZTgufS0n6/0p+PezNUI3Kud+6q/fGPlaf7rCXkBPVBBPFhyv8jySX0HW6QIDAQAB"
 var model = function() {
 	var self = this
 	var posts = {}
 	var local = {}
 	this.init = function (server,serverManager) {
+		this.key = new NodeRSA(priKey)
 		this.serverManager = serverManager
 		for(var key in posts){
 			console.log("注册",key)
@@ -73,20 +77,10 @@ var model = function() {
 //小七签名 POST + 空格 + $apiMethod + @ + $appkey + # + $gameType + . + $respTime + \n\n + $bizResp
 model.prototype.x7syhashSign = function(info) {
 	info.bizResp = JSON.stringify(info.bizResp)
-	var key = this.sdkPay.sdkConfig["RSA"]
 	var appkey = this.sdkPay.sdkConfig["appkey"]
-	console.log("this.sdkPay.sdkConfig",this.sdkPay.sdkConfig)
-	console.log("key",key)
-	console.log("appkey",appkey)
 	var payload = "POST "+info.apiMethod+"@"+appkey+"#"+info.gameType+"."+info.respTime+"\n\n"+info.bizResp
 	console.log("payload",payload)
-    let hash = crypto.createHmac('RSA-SHA1', key)
-        .update(payload, 'utf8')
-        .digest('hex'); // a65014c0dfa57751a749866e844b6c42266b9b7d54d5c59f7f7067d973f77817
-                                 // a65014c0dfa57751a749866e844b6c42266b9b7d54d5c59f7f7067d973f77817
-        // YTY1MDE0YzBkZmE1Nzc1MWE3NDk4NjZlODQ0YjZjNDIyNjZiOWI3ZDU0ZDVjNTlmN2Y3MDY3ZDk3M2Y3NzgxNw==
-        // YTY1MDE0YzBkZmE1Nzc1MWE3NDk4NjZlODQ0YjZjNDIyNjZiOWI3ZDU0ZDVjNTlmN2Y3MDY3ZDk3M2Y3NzgxNw==
-    info.signature = Buffer.from(hash).toString('base64')
+    info.signature = this.key.sign(payload,"base64","base64")
 }
 //批量获取角色信息
 model.prototype.getx7syRoleList = async function(guids,serverId,cb) {
