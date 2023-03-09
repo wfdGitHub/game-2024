@@ -1,11 +1,11 @@
 //SDK获取数据模块
 var async = require("async")
 var model = function() {
-	var self
+	var self = this
 	var posts = {}
 	var local = {}
 	this.init = function (server,serverManager) {
-		self = serverManager
+		this.serverManager = serverManager
 		for(var key in posts){
 			console.log("注册",key)
 			server.post(key,posts[key])
