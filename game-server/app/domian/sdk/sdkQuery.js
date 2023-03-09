@@ -75,6 +75,7 @@ model.prototype.x7syhashSign = function(info) {
 	info.bizResp = JSON.stringify(info.bizResp)
 	var key = this.sdkPay.sdkConfig["RSA"]
 	var appkey = this.sdkPay.sdkConfig["appkey"]
+	console.log("this.sdkPay.sdkConfig",this.sdkPay.sdkConfig)
 	console.log("key",key)
 	console.log("appkey",appkey)
 	var payload = "POST "+info.apiMethod+"@"+appkey+"#"+info.gameType+"."+info.respTime+"\n\n"+info.bizResp
