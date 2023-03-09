@@ -3,11 +3,7 @@ var xmlparser = require('express-xml-bodyparser')
 var serverDB = require('./serverDB.js')
 var adminManager = require('./adminManager.js')
 var parseString = require('xml2js').parseString;
-var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var util = require("../../../util/util.js")
-var Md5_Key = sdkConfig["Md5_Key"]
-var Callback_Key = sdkConfig["Callback_Key"]
-// var ip_white_list = ["171.83.96.216"]
 var local = {}
 var serverManager = function(app) {
 	this.app = app
@@ -40,61 +36,9 @@ serverManager.prototype.init = function() {
 		next();
 	});
 	server.use(xmlparser());
-	switch(sdkConfig.sdk_type){
-		case "quick":
-			self.pay_order = self.quick_order
-		break
-		case "jianwan":
-			self.pay_order = self.jianwan_order
-		break
-		case "277":
-			self.pay_order = self.game277_order
-		break 
-		default:
-			console.error("sdktype error")
-	}
 	server.post("/pay_order",function(req,res) {
 		var data = req.body
-		// var ipFlag = false
-		// for(var i = 0;i < ip_white_list.length;i++){
-		// 	if(req.ip.indexOf(ip_white_list[i]) != -1){
-		// 		ipFlag = true
-		// 		break
-		// 	}
-		// }
-		// if(!ipFlag){
-		// 		res.send({
-		// 			'error_code' : 299,
-		// 			'message' : "ip error"
-		// 		})
-		// 		return
-		// }
 		self.sdkPay.pay_order(req.body,self.finish_callback.bind(self),res)
-		return
-		self.pay_order(data,function(flag,err) {
-				switch(sdkConfig.sdk_type){
-					case "gzone":
-						if(flag){
-							res.send({
-								'error_code' : 0,
-								'order_id' : data.order_id,
-								'coin' : data.platform_price,
-								'message' : "Thành công"
-							})
-						}else{
-							res.send({
-								'error_code' : 200,
-								'message' : err
-							})
-						}
-					break
-					case "277":
-							res.send("succ")
-					break
-					default:
-						res.send("SUCCESS")
-			}
-		})
 	})
 	
 	server.listen(80);
@@ -332,45 +276,6 @@ serverManager.prototype.getOpenPlan = function(cb) {
 			cb(true,{openPlans : self.openPlans,areaLock : self.areaLock,lastArea : data})
 	})
 	
-}
-local.decode = function(str,key){
-	if(str.length <= 0){
-		return '';
-	}
-	var list = new Array();
-	var resultMatch = str.match(/\d+/g);
-	for(var i= 0;i<resultMatch.length;i++){
-		list.push(resultMatch[i]);
-	}
-	if(list.length <= 0){
-		return '';
-	}
-	var keysByte = local.stringToBytes(key);
-	var dataByte = new Array();
-	for(var i = 0 ; i < list.length ; i++){
-		dataByte[i] = parseInt(list[i]) - (0xff & parseInt(keysByte[i % keysByte.length]));
-	}
-	if(dataByte.length <= 0){
-		return '';
-	}
-	var parseStr = local.bytesToString(dataByte);
-	return parseStr;
-}
-local.stringToBytes = function(str) {
-	var ch, st, re = [];  
-  	for (var i = 0; i < str.length; i++ ) {  
-    	ch = str.charCodeAt(i);
-    	st = []; 
-    	do {  
-      		st.push( ch & 0xFF );
-      		ch = ch >> 8;
-    	}while ( ch );  
-    	re = re.concat( st.reverse() );  
-	}  
-  	return re;  
-} 
-local.bytesToString = function(array) {
-  return String.fromCharCode.apply(String, array);
 }
 module.exports = {
 	id : "serverManager",

@@ -105,6 +105,7 @@ module.exports = {
 	id : "sdkEntry",
 	func : model,
 	init : "init",	
+	scope : "prototype",
 	props : [{
 		name : "redisDao",
 		ref : "redisDao"

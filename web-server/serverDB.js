@@ -2,6 +2,7 @@
 const http = require("http")
 const uuid = require("uuid")
 const os = require('os');
+const fs = require('fs');
 const querystring = require("querystring")
 const item_cfg = require("../game-server/config/gameCfg/item.json")
 const pay_cfg = require("../game-server/config/gameCfg/pay_cfg.json")
@@ -31,6 +32,24 @@ var model = function() {
         for(var i in item_cfg){
 			items[i] = item_cfg[i]["name"]
         }
+	}
+	//获取sdkconfig
+	posts["/getSDKCFG"] = function(req,res) {
+		fs.readFile("../game-server/config/sysCfg/sdkConfig.json", (err, data) => {
+			res.send(data)
+		})
+	}
+	//修改sdkconfig
+	posts["/changeSDKCFG"] = function(req,res) {
+		fs.writeFile("../game-server/config/sysCfg/sdkConfig.json", req.body.data, err => {
+			if (err) {
+				console.error("error：", err);
+				throw err;
+			}
+			local.post("127.0.0.1",5081,"/updateSDKCFG",{},function(){})
+			console.log('changeSDKCFG successfully  -->  ',req.body.data);
+		});
+		res.send("SUCCESS")
 	}
 	//获取直充表
 	posts["/getRechargeCfg"] = function(req,res) {
