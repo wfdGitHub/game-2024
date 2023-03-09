@@ -80,7 +80,13 @@ model.prototype.x7syhashSign = function(info) {
 	console.log("appkey",appkey)
 	var payload = "POST "+info.apiMethod+"@"+appkey+"#"+info.gameType+"."+info.respTime+"\n\n"+info.bizResp
 	console.log("payload",payload)
-	info.signature = Buffer.from(crypto.createHmac('sha256', key).update(payload, 'utf8').digest('hex'),'base64').toString('base64')
+    let hash = crypto.createHmac('RSA-SHA1', key)
+        .update(payload, 'utf8')
+        .digest('hex'); // a65014c0dfa57751a749866e844b6c42266b9b7d54d5c59f7f7067d973f77817
+                                 // a65014c0dfa57751a749866e844b6c42266b9b7d54d5c59f7f7067d973f77817
+        // YTY1MDE0YzBkZmE1Nzc1MWE3NDk4NjZlODQ0YjZjNDIyNjZiOWI3ZDU0ZDVjNTlmN2Y3MDY3ZDk3M2Y3NzgxNw==
+        // YTY1MDE0YzBkZmE1Nzc1MWE3NDk4NjZlODQ0YjZjNDIyNjZiOWI3ZDU0ZDVjNTlmN2Y3MDY3ZDk3M2Y3NzgxNw==
+    info.signature = Buffer.from(hash).toString('base64')
 }
 //批量获取角色信息
 model.prototype.getx7syRoleList = async function(guids,serverId,cb) {
