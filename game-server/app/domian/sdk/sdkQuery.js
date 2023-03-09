@@ -1,5 +1,6 @@
 //SDK获取数据模块
-var async = require("async")
+const async = require("async")
+const crypto = require('crypto');
 var model = function() {
 	var self = this
 	var posts = {}
@@ -24,7 +25,6 @@ var model = function() {
 	posts["/x7sy_roleQuery"] = function(req,res) {
 		var body = req.body
 		var data = JSON.parse(body.bizParams)
-		console.log(body)
 		var info = {
 			bizResp : {
 				respCode : "SUCCESS",
@@ -54,7 +54,7 @@ var model = function() {
 						}else{
 							info.bizResp.role = roleData
 						}
-						info.bizResp = JSON.stringify(info.bizResp)
+						self.x7syhashSign(info)
 						res.send(info)
 					})
 				})
@@ -64,15 +64,24 @@ var model = function() {
 			self.getx7syRoleList(data.guids,data.serverId,function(roles) {
 				console.log("roles",roles)
 				info.bizResp.guidRoles = roles
-				info.bizResp = JSON.stringify(info.bizResp)
+				self.x7syhashSign(info)
 				res.send(info)
 			})
 		}else{
 			console.log("参数错误")
-			info.bizResp = JSON.stringify(info.bizResp)
+			self.x7syhashSign(info)
 			res.send(info)
 		}
 	}
+}
+//小七签名 POST + 空格 + $apiMethod + @ + $appkey + # + $gameType + . + $respTime + \n\n + $bizResp
+model.prototype.x7syhashSign = function(info) {
+	info.bizResp = JSON.stringify(info.bizResp)
+	var key = self.sdkPay.sdkConfig["RSA"]
+	var appkey = self.sdkPay.sdkConfig["appkey"]
+	var payload = "POST "+info.apiMethod+"@"+appkey+"#"+info.gameType+"."+info.respTime+"\n\n"+info.bizResp
+	console.log("payload",payload)
+	info.signature = crypto.createHmac('sha256', key).update(payload, 'utf8').digest('hex');
 }
 //批量获取角色信息
 model.prototype.getx7syRoleList = async function(guids,serverId,cb) {
@@ -192,5 +201,8 @@ module.exports = {
 	},{
 		name : "payDao",
 		ref : "payDao"
+	},{
+		name : "sdkPay",
+		ref : "sdkPay"
 	}]
 }
