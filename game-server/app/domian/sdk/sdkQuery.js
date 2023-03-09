@@ -13,7 +13,7 @@ var model = function() {
 	}
 	//获取角色信息
 	posts["/x7sy_roleQuery"] = function(req,res) {
-		var data = req.body
+		var data = req.body.bizParams
 		console.log(data)
 		var info = {
 			respCode : "SUCCESS",
