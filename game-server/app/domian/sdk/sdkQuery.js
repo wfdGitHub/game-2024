@@ -28,6 +28,7 @@ var model = function() {
 		var info = {
 			bizResp : {
 				respCode : "SUCCESS",
+				respMsg : "SUCCESS"
 				role : {},
 				guidRoles : []
 			},
