@@ -43,6 +43,7 @@ serverManager.prototype.init = function() {
 	})
 	
 	server.listen(80);
+	self.sdkQuery.init(server,self)
 	var server2 = express()
 	server2.use(express.json());
 	server2.use(express.urlencoded());
@@ -192,5 +193,8 @@ module.exports = {
 	},{
 		name : "sdkPay",
 		ref : "sdkPay"
+	},{
+		name : "sdkQuery",
+		ref : "sdkQuery"
 	}]
 }
