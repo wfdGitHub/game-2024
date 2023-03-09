@@ -54,6 +54,7 @@ var model = function() {
 						}else{
 							info.bizResp.role = roleData
 						}
+						info.bizResp = JSON.stringify(info.bizResp)
 						res.send(info)
 					})
 				})
@@ -63,10 +64,12 @@ var model = function() {
 			self.getx7syRoleList(data.guids,data.serverId,function(roles) {
 				console.log("roles",roles)
 				info.bizResp.guidRoles = roles
+				info.bizResp = JSON.stringify(info.bizResp)
 				res.send(info)
 			})
 		}else{
 			console.log("参数错误")
+			info.bizResp = JSON.stringify(info.bizResp)
 			res.send(info)
 		}
 	}
