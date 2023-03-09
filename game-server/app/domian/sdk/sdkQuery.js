@@ -124,6 +124,7 @@ model.prototype.getx7syRoleAwait = function(unionid,serverId) {
 // roleRechargeAmount	Float (10,2)	是	角色总充值，精度为小数点后2位，无此属性可留空
 // roleGuild	String (100)	否	角色所属公会，无此属性可不传
 model.prototype.getx7syRole = function(unionid,serverId,cb) {
+	console.log("getx7syRole",unionid,serverId)
 	var self = this
 	var role = {}
 	async.waterfall([
