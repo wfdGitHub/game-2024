@@ -17,8 +17,8 @@ var model = function() {
 	}
 	//更新SDK配置
 	posts["/updateSDKCFG"] = function(req,res) {
-		self.app.areaRemote.updateSDKCFG()
-		self.app.connectorRemote.updateSDKCFG()
+		self.app.sdkEntry.init()
+		self.app.sdkPay.init()
 		self.app.rpc.area.areaRemote.updateSDKCFG.toServer("*",null)
 		self.app.rpc.connector.connectorRemote.updateSDKCFG.toServer("*",null)
 	}
