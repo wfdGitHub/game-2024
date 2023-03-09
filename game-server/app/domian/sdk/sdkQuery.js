@@ -11,35 +11,53 @@ var model = function() {
 			server.post(key,posts[key])
 		}
 	}
+
+	// Response字段	类型	必选	说明
+	// bizResp	String	是	响应参数，值为每个接口对应响应参数的JSON字符串
+	// apiMethod	String	是	接口名称
+	// respTime	String	是	响应时间，格式使用ISO8601规范，示例：2023-03-09T14:41:19+0800
+	// appkey	String	是	游戏appkey
+	// gameType	String	是	游戏端类型，网游为client H5游戏为 h5
+	// signature	String	是	响应签名（签名方式参见下文）
+	// osType	String	否	系统类型，ios或android
 	//获取角色信息
 	posts["/x7sy_roleQuery"] = function(req,res) {
-		var data = req.body.bizParams
-		console.log(data)
+		var body = req.body
+		var data = body.bizParams
+		console.log(body)
 		var info = {
-			respCode : "SUCCESS",
-			role : {},
-			guidRoles : []
+			bizResp : {
+				respCode : "SUCCESS",
+				role : {},
+				guidRoles : []
+			},
+			apiMethod : body.apiMethod,
+			respTime : body.reqTime,
+			appkey : body.appkey,
+			gameType : body.gameType,
+			signature : body.signature,
+			osType : body.osType
 		}
 		if(data.roleId){
 			self.redisDao.db.hmget("player:user:"+data.roleId+":playerInfo",["accId","areaId"],function(err,list) {
 				self.redisDao.db.hget("acc:user:"+list[0]+":base","unionid",function(err,unionid) {
 					self.getx7syRole(list[0],list[1],function(flag,roleData) {
 						if(!flag){
-							info.respCode = "FAILD"
-							info.respMsg = roleData
+							info.bizResp.respCode = "FAILD"
+							info.bizResp.respMsg = roleData
 						}else
-							info.role = roleData
-						res.send({"bizResp" : info})
+							info.bizResp.role = roleData
+						res.send(info)
 					})
 				})
 			})
 		}else if(data.guids){
 			self.getx7syRoleList(data.guids,data.serverId,function(roles) {
-				info.guidRoles = roles
-				res.send({"bizResp" : info})
+				info.bizResp.guidRoles = roles
+				res.send(info)
 			})
 		}else{
-			res.send({"bizResp" : info})
+			res.send(info)
 		}
 	}
 }
