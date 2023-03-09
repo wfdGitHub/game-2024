@@ -130,7 +130,7 @@ model.prototype.getx7syRole = function(unionid,serverId,cb) {
 	async.waterfall([
 		function(next) {
 			role.guid = unionid
-			self.redisDao.db.hget("acc:accMap:unionid","unionid",function(err,data) {
+			self.redisDao.db.hget("acc:accMap:unionid",unionid,function(err,data) {
 				if(!data){
 					next("账号不存在")
 					return
