@@ -41,9 +41,8 @@ serverManager.prototype.init = function() {
 		var data = req.body
 		self.sdkPay.pay_order(req.body,self.finish_callback.bind(self),res)
 	})
-	
-	server.listen(80);
 	self.sdkQuery.init(server,self)
+	server.listen(80);
 	var server2 = express()
 	server2.use(express.json());
 	server2.use(express.urlencoded());
