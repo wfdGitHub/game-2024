@@ -80,7 +80,7 @@ model.prototype.x7syhashSign = function(info) {
 	console.log("appkey",appkey)
 	var payload = "POST "+info.apiMethod+"@"+appkey+"#"+info.gameType+"."+info.respTime+"\n\n"+info.bizResp
 	console.log("payload",payload)
-	info.signature = crypto.createHmac('sha256', key).update(payload, 'utf8').digest('hex');
+	info.signature = crypto.createHmac('sha256', key).update(payload, 'utf8').toString('base64')
 }
 //批量获取角色信息
 model.prototype.getx7syRoleList = async function(guids,serverId,cb) {
