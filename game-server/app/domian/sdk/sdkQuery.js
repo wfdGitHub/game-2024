@@ -43,7 +43,6 @@ var model = function() {
 			signature : body.signature,
 			osType : body.osType
 		}
-		console.log("开始获取角色数据")
 		if(data.roleId){
 			self.redisDao.db.hmget("player:user:"+data.roleId+":playerInfo",["accId","areaId"],function(err,list) {
 				self.redisDao.db.hget("acc:user:"+list[0]+":base","unionid",function(err,unionid) {
@@ -60,15 +59,12 @@ var model = function() {
 				})
 			})
 		}else if(data.guids){
-			console.log("guids",data.guids)
 			self.getx7syRoleList(data.guids,data.serverId,function(roles) {
-				console.log("roles",roles)
 				info.bizResp.guidRoles = roles
 				self.x7syhashSign(info)
 				res.send(info)
 			})
 		}else{
-			console.log("参数错误")
 			self.x7syhashSign(info)
 			res.send(info)
 		}
@@ -79,7 +75,7 @@ model.prototype.x7syhashSign = function(info) {
 	info.bizResp = JSON.stringify(info.bizResp)
 	var appkey = this.sdkPay.sdkConfig["appkey"]
 	var payload = "POST "+info.apiMethod+"@"+appkey+"#"+info.gameType+"."+info.respTime+"\n\n"+info.bizResp
-	console.log("payload",payload)
+	// console.log("payload",payload)
     info.signature = this.key.sign(payload,"base64","base64")
 }
 //批量获取角色信息
@@ -94,6 +90,7 @@ model.prototype.getx7syRoleList = async function(guids,serverId,cb) {
 			list = list.concat(gList)
 		}
 	}
+	console.log("list",list)
 	var roles = []
 	for(let i = 0;i < list.length;i++){
 		role = await self.getx7syRoleAwait(list[i].unionid,list[i].serverId)
@@ -137,7 +134,6 @@ model.prototype.getx7syRoleAwait = function(unionid,serverId) {
 // roleRechargeAmount	Float (10,2)	是	角色总充值，精度为小数点后2位，无此属性可留空
 // roleGuild	String (100)	否	角色所属公会，无此属性可不传
 model.prototype.getx7syRole = function(unionid,serverId,cb) {
-	console.log("getx7syRole",unionid,serverId)
 	var self = this
 	var role = {}
 	async.waterfall([
@@ -166,7 +162,6 @@ model.prototype.getx7syRole = function(unionid,serverId,cb) {
 		function(next) {
 			//获取基础数据
 			self.redisDao.db.hgetall("player:user:"+role.roleId+":playerInfo",function(err,userInfo) {
-				console.log(userInfo)
 				if(err || !userInfo){
 					next("角色不存在")
 				}else{
