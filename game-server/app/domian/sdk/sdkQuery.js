@@ -29,17 +29,17 @@ var model = function() {
 							info.respMsg = roleData
 						}else
 							info.role = roleData
-						res.send(info)
+						res.send({"bizResp" : info})
 					})
 				})
 			})
 		}else if(data.guids){
 			self.getx7syRoleList(data.guids,data.serverId,function(roles) {
 				info.guidRoles = roles
-				res.send(info)
+				res.send({"bizResp" : info})
 			})
 		}else{
-			res.send(info)
+			res.send({"bizResp" : info})
 		}
 	}
 }
