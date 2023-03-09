@@ -90,7 +90,8 @@ model.prototype.getx7syRoleList = async function(guids,serverId,cb) {
 		if(serverId){
 			list.push({"unionid" : guids[i],"serverId":serverId})
 		}else{
-			list = await list.concat(self.getx7syServerAwait(guids[i]))
+			var gList = await self.getx7syServerAwait(guids[i])
+			list = list.concat(gList)
 			console.log("list",list)
 		}
 	}
