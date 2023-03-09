@@ -79,6 +79,8 @@ model.prototype.x7syhashSign = function(info) {
 	info.bizResp = JSON.stringify(info.bizResp)
 	var key = this.sdkPay.sdkConfig["RSA"]
 	var appkey = this.sdkPay.sdkConfig["appkey"]
+	console.log("key",key)
+	console.log("appkey",appkey)
 	var payload = "POST "+info.apiMethod+"@"+appkey+"#"+info.gameType+"."+info.respTime+"\n\n"+info.bizResp
 	console.log("payload",payload)
 	info.signature = crypto.createHmac('sha256', key).update(payload, 'utf8').digest('hex');
