@@ -41,13 +41,9 @@ var model = function() {
 		}
 		console.log("开始获取角色数据")
 		if(data.roleId){
-			console.log("roleId存在",data.roleId)
 			self.redisDao.db.hmget("player:user:"+data.roleId+":playerInfo",["accId","areaId"],function(err,list) {
-				console.log("111",list)
 				self.redisDao.db.hget("acc:user:"+list[0]+":base","unionid",function(err,unionid) {
-					console.log("222",unionid)
 					self.getx7syRole(unionid,list[1],function(flag,roleData) {
-						console.log("333",roleData)
 						if(!flag){
 							info.bizResp.respCode = "FAILD"
 							info.bizResp.respMsg = roleData
@@ -122,7 +118,7 @@ model.prototype.getx7syRoleAwait = function(unionid,serverId) {
 	var self = this
 	return new Promise(function(resolve) {
 		self.getx7syRole(unionid,serverId,function(flag,roleData) {
-			resolve(flag,roleData)
+			resolve(roleData)
 		})
 	})
 }
