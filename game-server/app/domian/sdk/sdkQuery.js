@@ -38,6 +38,8 @@ var model = function() {
 				info.guidRoles = roles
 				res.send(info)
 			})
+		}else{
+			res.send(info)
 		}
 	}
 }
