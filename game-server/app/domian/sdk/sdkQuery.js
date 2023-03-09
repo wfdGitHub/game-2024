@@ -39,7 +39,9 @@ var model = function() {
 			signature : body.signature,
 			osType : body.osType
 		}
+		console.log("开始获取角色数据")
 		if(data.roleId){
+			console.log("roleId存在",data.roleId)
 			self.redisDao.db.hmget("player:user:"+data.roleId+":playerInfo",["accId","areaId"],function(err,list) {
 				console.log("111",list)
 				self.redisDao.db.hget("acc:user:"+list[0]+":base","unionid",function(err,unionid) {
@@ -57,12 +59,14 @@ var model = function() {
 				})
 			})
 		}else if(data.guids){
+			console.log("guids",data.guids)
 			self.getx7syRoleList(data.guids,data.serverId,function(roles) {
 				console.log("roles",roles)
 				info.bizResp.guidRoles = roles
 				res.send(info)
 			})
 		}else{
+			console.log("参数错误")
 			res.send(info)
 		}
 	}
