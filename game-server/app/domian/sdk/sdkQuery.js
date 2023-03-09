@@ -46,7 +46,7 @@ var model = function() {
 				console.log("111",list)
 				self.redisDao.db.hget("acc:user:"+list[0]+":base","unionid",function(err,unionid) {
 					console.log("222",unionid)
-					self.getx7syRole(list[0],list[1],function(flag,roleData) {
+					self.getx7syRole(unionid,list[1],function(flag,roleData) {
 						console.log("333",roleData)
 						if(!flag){
 							info.bizResp.respCode = "FAILD"
