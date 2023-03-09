@@ -171,7 +171,7 @@ model.prototype.getx7syRole = function(unionid,serverId,cb) {
 		function(next) {
 			//获取关卡
 			self.redisDao.db.hget("player:user:"+role.roleId+":playerData","boss",function(err,boss) {
-				role.roleStage = Number(boss) || 0
+				role.roleStage = boss || "0"
 				cb(true,role)
 			})
 		}
