@@ -23,7 +23,7 @@ var model = function() {
 	//获取角色信息
 	posts["/x7sy_roleQuery"] = function(req,res) {
 		var body = req.body
-		var data = body.bizParams
+		var data = JSON.parse(body.bizParams)
 		console.log(body)
 		var info = {
 			bizResp : {
