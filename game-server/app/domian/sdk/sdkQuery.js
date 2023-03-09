@@ -9,7 +9,7 @@ var model = function() {
 	var posts = {}
 	var local = {}
 	this.init = function (server,serverManager) {
-		this.key = new NodeRSA(priKey)
+		this.key = new NodeRSA(priKey,'pkcs8-private')
 		this.serverManager = serverManager
 		for(var key in posts){
 			console.log("注册",key)
@@ -28,7 +28,7 @@ var model = function() {
 	//获取角色信息
 	posts["/x7sy_roleQuery"] = function(req,res) {
 		var body = req.body
-		var data = JSON.parse(body.bizParams,'pkcs8-private')
+		var data = JSON.parse(body.bizParams)
 		var info = {
 			bizResp : {
 				respCode : "SUCCESS",
