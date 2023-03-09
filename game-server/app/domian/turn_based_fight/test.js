@@ -71,3 +71,20 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // var defTeam = [{"id":405040,"curAnger":100,"self_atk_add":100},0,0,0,0,0,{}]
 // var list = fightContorl.beginFight(atkTeam,defTeam,{})
 // fightRecord.explain()
+
+
+var list = []
+var fun = function(index) {
+	return new Promise(function(resolve) {
+		setTimeout(function() {
+			resolve(index)
+		},1000) 
+	})
+}
+var test = async function() {
+	for(let i = 0;i < 10;i++){
+		list[i] = await fun(i)
+	}
+	console.log(list)
+}
+test()
