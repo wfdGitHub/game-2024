@@ -41,19 +41,24 @@ var model = function() {
 		}
 		if(data.roleId){
 			self.redisDao.db.hmget("player:user:"+data.roleId+":playerInfo",["accId","areaId"],function(err,list) {
+				console.log("111",list)
 				self.redisDao.db.hget("acc:user:"+list[0]+":base","unionid",function(err,unionid) {
+					console.log("222",unionid)
 					self.getx7syRole(list[0],list[1],function(flag,roleData) {
+						console.log("333",roleData)
 						if(!flag){
 							info.bizResp.respCode = "FAILD"
 							info.bizResp.respMsg = roleData
-						}else
+						}else{
 							info.bizResp.role = roleData
+						}
 						res.send(info)
 					})
 				})
 			})
 		}else if(data.guids){
 			self.getx7syRoleList(data.guids,data.serverId,function(roles) {
+				console.log("roles",roles)
 				info.bizResp.guidRoles = roles
 				res.send(info)
 			})
