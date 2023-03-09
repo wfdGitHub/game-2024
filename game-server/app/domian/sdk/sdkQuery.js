@@ -28,7 +28,7 @@ var model = function() {
 	//获取角色信息
 	posts["/x7sy_roleQuery"] = function(req,res) {
 		var body = req.body
-		var data = JSON.parse(body.bizParams)
+		var data = JSON.parse(body.bizParams,'pkcs8-private')
 		var info = {
 			bizResp : {
 				respCode : "SUCCESS",
