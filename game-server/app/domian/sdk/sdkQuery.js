@@ -12,7 +12,8 @@ var model = function() {
 	}
 	//获取
 	posts["/x7sy_roleQuery"] = function(req,res) {
-		console.log("x7sy_roleQuery!!",req.data)
+		var data = req.body
+		console.log("x7sy_roleQuery!!",data)
 	}
 }
 module.exports = {
