@@ -72,7 +72,8 @@ model.prototype.x7syEntry = function(data,cb) {
 	console.log("x7syEntry",data)
 	var self = this
 	var tokenkey = data.tokenkey
-	var sign = util.md5(encodeURI(self.sdkConfig["appkey"]+tokenkey))
+	console.log(self.sdkConfig["appkey"]+tokenkey)
+	var sign = util.md5(self.sdkConfig["appkey"]+tokenkey)
 	console.log("sign",sign)
 	var url = self.sdkConfig["CheckUserInfo"]+"?tokenkey="+tokenkey+"&sign="+sign
 	https.get(url,function(res){
