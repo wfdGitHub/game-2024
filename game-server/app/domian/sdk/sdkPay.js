@@ -231,7 +231,7 @@ local.ksort = function(obj){
     sortStr += keys[i]+"="+obj[keys[i]]
   }
   return sortStr;
-};
+}
 local.verifySignSHA1 = function(data, sign, publicKey) {
     const verify = crypto.createVerify('RSA-SHA1');
     verify.update(data);
