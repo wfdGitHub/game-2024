@@ -17,6 +17,8 @@ var model = function() {
 	}
 	//更新SDK配置
 	posts["/updateSDKCFG"] = function(req,res) {
+		self.sdkEntry.init()
+		self.sdkPay.init()
 		self.app.rpc.area.areaRemote.updateSDKCFG.toServer("*",null)
 		self.app.rpc.connector.connectorRemote.updateSDKCFG.toServer("*",null)
 	}
@@ -535,9 +537,9 @@ var model = function() {
 		return {sql1:sql1,sql2:sql2,args1:args1,args2:args2}
 	}
 	local.getRoleList = function(account_id,cb) {
-			self.accountDao.getRoleList(account_id,function(flag,data) {
-				cb(data)
-			})
+		self.accountDao.getRoleList(account_id,function(flag,data) {
+			cb(data)
+		})
 	}
 }
 module.exports = new model()

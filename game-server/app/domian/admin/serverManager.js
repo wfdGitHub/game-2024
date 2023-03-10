@@ -41,7 +41,7 @@ serverManager.prototype.init = function() {
 		var data = req.body
 		self.sdkPay.pay_order(req.body,self.finish_callback.bind(self),res)
 	})
-	
+	self.sdkQuery.init(server,self)
 	server.listen(80);
 	var server2 = express()
 	server2.use(express.json());
@@ -190,7 +190,13 @@ module.exports = {
 		name : "accountDao",
 		ref : "accountDao"
 	},{
+		name : "sdkEntry",
+		ref : "sdkEntry"
+	},{
 		name : "sdkPay",
 		ref : "sdkPay"
+	},{
+		name : "sdkQuery",
+		ref : "sdkQuery"
 	}]
 }

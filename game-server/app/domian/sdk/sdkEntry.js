@@ -71,17 +71,23 @@ model.prototype.quickEntry = function(data,cb) {
 model.prototype.x7syEntry = function(data,cb) {
 	console.log("x7syEntry",data)
 	var self = this
-	var tokenkey = data.tokenkey
-	var sign = util.md5(encodeURI(self.sdkConfig["appkey"]+tokenkey))
+	var tokenkey = data.token
+	console.log(self.sdkConfig["appkey"]+tokenkey)
+	var sign = util.md5(self.sdkConfig["appkey"]+tokenkey)
 	console.log("sign",sign)
 	var url = self.sdkConfig["CheckUserInfo"]+"?tokenkey="+tokenkey+"&sign="+sign
-	http.get(url,function(res){
-	  	res.on("data",function(data) {
-	  		console.log(data)
-	    	if(data.errorno == 0){
-	    		self.entrySuccess(data.data.guid,cb)
+	https.get(url,function(res){
+	  	var _data='';
+	  	res.on("data",function(chunk) {
+	  		_data += chunk;
+	  	})
+	  	res.on('end', function(){
+	  		var info = JSON.parse(_data)
+	  		console.log(info)
+	    	if(info.errorno == 0){
+	    		self.entrySuccess(info.data.guid,cb)
 	    	}else{
-	    		self.entryFaild(uid,data.errormsg,cb)
+	    		self.entryFaild(tokenkey,info.errormsg,cb)
 	    	}
 	  	})
 		res.on("error", err => {
