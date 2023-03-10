@@ -39,7 +39,7 @@ serverManager.prototype.init = function() {
 	server.use(xmlparser());
 	server.post("/pay_order",function(req,res) {
 		var data = req.body
-		self.sdkPay.pay_order(req.body,self.finish_callback.bind(self),res)
+		self.sdkPay.pay_order(req.body,self.finish_callback.bind(self),req,res)
 	})
 	self.sdkQuery.init(server,self)
 	server.listen(80);
