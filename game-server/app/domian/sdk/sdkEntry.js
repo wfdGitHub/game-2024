@@ -71,7 +71,7 @@ model.prototype.quickEntry = function(data,cb) {
 model.prototype.x7syEntry = function(data,cb) {
 	console.log("x7syEntry",data)
 	var self = this
-	var tokenkey = data.tokenkey
+	var tokenkey = data.token
 	console.log(self.sdkConfig["appkey"]+tokenkey)
 	var sign = util.md5(self.sdkConfig["appkey"]+tokenkey)
 	console.log("sign",sign)
