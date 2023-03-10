@@ -35,7 +35,7 @@ activityHandler.prototype.apply_recharge = function(msg, session, next) {
 activityHandler.prototype.x7syGameSign = function(msg, session, next) {
   var str = msg.str
   var gameSign = this.sdkPay.x7syGameSign(str)
-  next(null,{flag : flag,gameSign : gameSign})
+  next(null,{flag : true,gameSign : gameSign})
 }
 //申请支付测试接口
 activityHandler.prototype.test_recharge = function(msg, session, next) {
