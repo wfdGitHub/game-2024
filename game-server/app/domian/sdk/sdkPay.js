@@ -136,7 +136,6 @@ model.prototype.game277_order = function(data,finish_callback,req,res) {
 }
 //小七手游订单
 model.prototype.x7sy_order = function(data,finish_callback,req,res) {
-	console.log("x7sy_order",data)
 	var publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]+"\n-----END PUBLIC KEY-----"
 	var raw_sign_data = Buffer.from(data.sign_data, 'base64')
 	delete data.sign_data
@@ -150,7 +149,6 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	var raw_encryp_data = Buffer.from(data.encryp_data, 'base64')
 	var decodedata = crypto.publicDecrypt(publicKey,raw_encryp_data);
 	var encryp_data = querystring.parse(decodedata.toString())
-	console.log("encryp_data", encryp_data)
 	var self = this
 	var info = {
 		is_test : 0,
@@ -178,7 +176,6 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 model.prototype.x7syGameSign = function(str) {
 	str += this.sdkConfig["RSA"]
 	var md5 = util.md5(str)
-	console.log("str",str,md5)
 	return md5
 }
 local.decode = function(str,key){

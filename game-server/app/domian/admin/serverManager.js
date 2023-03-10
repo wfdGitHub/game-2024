@@ -59,8 +59,8 @@ serverManager.prototype.init = function() {
 	server2.listen(5081);
 }
 serverManager.prototype.finish_callback = function(areaId,uid,amount,pay_id) {
-		//支付成功发货
-		var serverId = this.areaDeploy.getServer(this.areaDeploy.getFinalServer(areaId))
+	//支付成功发货
+	var serverId = this.areaDeploy.getServer(this.areaDeploy.getFinalServer(areaId))
     this.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,function(){})
     this.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(amount) * 100),function(){})
 }
