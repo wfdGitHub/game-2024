@@ -76,12 +76,17 @@ model.prototype.x7syEntry = function(data,cb) {
 	console.log("sign",sign)
 	var url = self.sdkConfig["CheckUserInfo"]+"?tokenkey="+tokenkey+"&sign="+sign
 	https.get(url,function(res){
-	  	res.on("data",function(data) {
-	  		console.log(data)
-	    	if(data.errorno == 0){
-	    		self.entrySuccess(data.data.guid,cb)
+	  	var _data='';
+	  	res.on("data",function(chunk) {
+	  		_data += chunk;
+	  	})
+	  	res.on('end', function(){
+	  		var info = JSON.parse(_data)
+	  		console.log(info)
+	    	if(info.errorno == 0){
+	    		self.entrySuccess(info.data.guid,cb)
 	    	}else{
-	    		self.entryFaild(uid,data.errormsg,cb)
+	    		self.entryFaild(tokenkey,data.errormsg,cb)
 	    	}
 	  	})
 		res.on("error", err => {
