@@ -414,7 +414,7 @@ module.exports = function(app) {
     props : [{
       name : "sdkPay",
       ref : "sdkPay"
-    }
+    }]
   })
 };
 
