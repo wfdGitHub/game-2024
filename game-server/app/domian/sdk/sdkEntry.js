@@ -85,7 +85,7 @@ model.prototype.x7syEntry = function(data,cb) {
 	  		var info = JSON.parse(_data)
 	  		console.log(info)
 	    	if(info.errorno == 0){
-	    		self.entrySuccess(info.info.guid,cb)
+	    		self.entrySuccess(info.data.guid,cb)
 	    	}else{
 	    		self.entryFaild(tokenkey,info.errormsg,cb)
 	    	}
