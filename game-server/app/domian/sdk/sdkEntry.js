@@ -62,19 +62,15 @@ model.prototype.quickEntry = function(data,cb) {
 	    	}
 	  	})
 		res.on("error", err => {
-			console.log(err.message);
 			cb({flag:false,err:err})
 		});
 	})
 }
 //小七手游登陆
 model.prototype.x7syEntry = function(data,cb) {
-	console.log("x7syEntry",data)
 	var self = this
 	var tokenkey = data.token
-	console.log(self.sdkConfig["appkey"]+tokenkey)
 	var sign = util.md5(self.sdkConfig["appkey"]+tokenkey)
-	console.log("sign",sign)
 	var url = self.sdkConfig["CheckUserInfo"]+"?tokenkey="+tokenkey+"&sign="+sign
 	https.get(url,function(res){
 	  	var _data='';
@@ -83,7 +79,6 @@ model.prototype.x7syEntry = function(data,cb) {
 	  	})
 	  	res.on('end', function(){
 	  		var info = JSON.parse(_data)
-	  		console.log(info)
 	    	if(info.errorno == 0){
 	    		self.entrySuccess(info.data.guid,cb)
 	    	}else{
@@ -91,7 +86,6 @@ model.prototype.x7syEntry = function(data,cb) {
 	    	}
 	  	})
 		res.on("error", err => {
-			console.log(err.message);
 			cb({flag:false,err:err})
 		});
 	})
@@ -105,7 +99,6 @@ model.prototype.entrySuccess = function(uid,cb) {
 }
 //登陆失败
 model.prototype.entryFaild = function(uid,err,cb) {
-	console.log("entryFaild",uid,err)
 	cb({flag:false,err:err})
 }
 module.exports = {
