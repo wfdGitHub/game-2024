@@ -410,6 +410,11 @@ module.exports = function(app) {
   	args : [{
   		name : "app",
   		value : app
-  	}]
+  	}],
+    props : [{
+      name : "sdkPay",
+      ref : "sdkPay"
+    }
   })
 };
+
