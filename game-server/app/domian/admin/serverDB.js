@@ -2,7 +2,6 @@
 var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var pay_cfg = require("../../../config/gameCfg/pay_cfg.json")
 var util = require("../../../util/util.js")
-var Md5_Key = sdkConfig["Md5_Key"]
 const async = require("async")
 const uuid = require("uuid")
 var model = function() {
@@ -15,6 +14,13 @@ var model = function() {
 			console.log("注册",key)
 			server.post(key,posts[key])
 		}
+	}
+	//更新SDK配置
+	posts["/updateSDKCFG"] = function(req,res) {
+		self.sdkEntry.init()
+		self.sdkPay.init()
+		self.app.rpc.area.areaRemote.updateSDKCFG.toServer("*",null)
+		self.app.rpc.connector.connectorRemote.updateSDKCFG.toServer("*",null)
 	}
 	//获取服务器列表
 	posts["/areaInfos"] = function(req,res) {
@@ -532,9 +538,9 @@ var model = function() {
 		return {sql1:sql1,sql2:sql2,args1:args1,args2:args2}
 	}
 	local.getRoleList = function(account_id,cb) {
-			self.accountDao.getRoleList(account_id,function(flag,data) {
-				cb(data)
-			})
+		self.accountDao.getRoleList(account_id,function(flag,data) {
+			cb(data)
+		})
 	}
 }
 module.exports = new model()
