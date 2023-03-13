@@ -205,7 +205,7 @@ heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
 	if(cb)
 		cb(true,heroInfo)
 	heroInfo.hId = hId
-	this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:star,reason:reason+"-"+hId})
+	this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:star,reason:"获得英雄-"+hId})
 	return heroInfo
 }
 //升级英雄图鉴
@@ -441,8 +441,9 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 					case "star":
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
 						self.getHeroInfo(uid,hId,"id",function(id) {
+							id = Number(id) || 0
 							self.updateHeroArchive(areaId,uid,id,data)
-							self.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:data,reason:reason+"-"+hId})
+							self.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:data,reason:"升星-"+hId})
 						})
 					break
 					case "lv":
