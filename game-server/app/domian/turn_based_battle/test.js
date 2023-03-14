@@ -1,3 +1,3 @@
-var combat_config = require("./combat_config.js")
-var standard = require("./standard.js")
-console.log(standard.standardTeam([105010]))
+var fightContorl = require("./fightContorl.js")
+
+console.log(fightContorl.beginFight([{"id":101201}],[{"id":101201}]))

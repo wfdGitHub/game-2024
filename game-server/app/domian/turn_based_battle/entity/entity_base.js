@@ -1,22 +1,37 @@
 //战斗角色基类
-var model = function(otps,talentList) {
-	//=========身份===========//
-	otps = otps || {}
-	talentList = talentList || []
-	this.id = Number(otps.id)
+var model = function(fighting,otps,talentList) {
+	if(!otps || !otps.id)
+		this.isNaN = true
+	this.otps = otps || {}
+	this.fighting = fighting
+	this.index = -1
+	this.heroId = Number(this.otps.id) || 0
+	this.id = 0
+	this.talentList = talentList || []
+	this.attInit()
+}
+//属性初始化
+model.prototype.attInit = function() {
+	//基础战斗属性
+	this.index = -1 					//战斗位置
+	this.belong = "" 					//所属阵营
+	this.died = false  					//死亡状态
+	this.isAction = false 				//回合行动过标识
+	this.onAction = false  				//回合行动中标识
+	this.sex = 1 						//性别 1男 2女
 	//基础属性
 	this.curAnger = 50 					//初始怒气
 	this.maxAnger = 100 				//最大怒气
 	this.needAnger = 100  				//释放技能所需怒气
 	//一级属性
-	this.mainAtt = {}
-	this.mainAtt.main_1 = 0 			//体质  影响伤免、最大生命值
-	this.mainAtt.main_2 = 0 			//内力  影响内功伤害、内功减免
-	this.mainAtt.main_3 = 0 			//筋骨  影响外功伤害、外功减免
-	this.mainAtt.main_4 = 0 			//身法  影响出手速度、命中、闪避
-	this.mainAtt.main_5 = 0 			//悟性  影响暴击伤害、格挡、破格
-	//二级属性
 	this.attInfo = {}
+	this.attInfo.main_1 = 0 			//体质  影响伤免、最大生命值
+	this.attInfo.main_2 = 0 			//内力  影响内功伤害、内功减免
+	this.attInfo.main_3 = 0 			//筋骨  影响外功伤害、外功减免
+	this.attInfo.main_4 = 0 			//身法  影响出手速度、命中、闪避
+	this.attInfo.main_5 = 0 			//悟性  影响暴击伤害、格挡、破格
+	//二级属性
+	this.attInfo.HP = 0 				//当前生命值
 	this.attInfo.maxHP = 0 				//最大生命值
 	this.attInfo.atk = 0 				//攻击力
 	this.attInfo.armor = 0 				//护甲
@@ -48,11 +63,38 @@ var model = function(otps,talentList) {
 	this.attInfo.poisonAmp = 0 			//中毒增伤
 	this.attInfo.poisonDef = 0 			//中毒减伤
 }
-
-//基础方法
-model.prototype.say = function() {
-	console.log("我是entity_base")
+//战斗初始化
+model.prototype.init = function() {
+	console.log("角色初始化")
 }
-
-
+//个人回合开始
+model.prototype.before = function() {
+	this.isAction = true
+	this.onAction = true
+}
+//个人回合结束
+model.prototype.after = function() {
+	this.onAction = false
+}
+//整体回合开始
+model.prototype.roundBegin = function() {
+	this.isAction = false
+}
+//获得怒气
+model.prototype.addAnger = function(value,show) {}
+//减少怒气
+model.prototype.lessAnger = function(value,show) {}
+//整体回合结束
+model.prototype.roundOver = function() {}
+//获得怒气
+model.prototype.addAnger = function(value,show) {}
+//减少怒气
+model.prototype.lessAnger = function(value,show) {}
+//获取属性
+model.prototype.getTotalAtt = function(name) {
+	var value = this.attInfo[name] || 0
+	return value
+}
+//获取战斗数据
+model.prototype.getCombatData = function() {}
 module.exports = model

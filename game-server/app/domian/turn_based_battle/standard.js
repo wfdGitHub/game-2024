@@ -7,9 +7,10 @@ var model = function() {
 model.prototype.standardTeam = function(team,lv) {
 	if(!team)
 		team = []
-	var teamInfo = [{}]
-	for(var i = 1;i <= TEAMLENGTH;i++)
-		teamInfo[i] = this.standardCharacter(team[i-1])
+	var teamInfo = []
+	for(var i = 0;i < TEAMLENGTH;i++)
+		teamInfo[i] = this.standardCharacter(team[i])
+	teamInfo.push({})
 	return teamInfo
 }
 //基准角色数据
