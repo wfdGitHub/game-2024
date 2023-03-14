@@ -168,7 +168,7 @@ model.prototype.getBingfuDes = function(bfInfo) {
 	for(var i = 0;i < bfInfo["sec_att"].length;i++){
 		var attInfo = bingfu_att[bfInfo["sec_att"][i]]
 		if(attInfo){
-			bfDes.secAtt[i] =  {"name" : talent_list[attInfo.talent]["name"],"qa":0，ori : Number(attInfo.basic * bfInfo["sec_vel"][i])}
+			bfDes.secAtt[i] =  {"name" : talent_list[attInfo.talent]["name"],"qa":0,ori : Number(attInfo.basic * bfInfo["sec_vel"][i])}
 			if(attInfo.number)
 				bfDes.secAtt[i].value = "+"+Number((attInfo.basic * bfInfo["sec_vel"][i]))
 			else
