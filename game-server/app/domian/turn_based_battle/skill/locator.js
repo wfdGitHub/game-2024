@@ -18,32 +18,17 @@ model.prototype.getTargets = function(character,targetType) {
 //选择常规敌方目标
 model.prototype.getEnemyNormal = function(character) {
 	var aimList = []
-	for(var index = 0;index < character.fighting[character.belong].team.length;index++){
-		if(character.fighting[character.belong].team[index].checkAim()){
-			aimList.push({character : character.fighting[character.belong].team[index],dist : this.callDist(MY_MAP[character.index],ENEMY_MAP[index])})
+	for(var index = 0;index < character.fighting[character.rival].team.length;index++){
+		if(character.fighting[character.rival].team[index].checkAim()){
+			aimList.push({character : character.fighting[character.rival].team[index],dist : this.callDist(MY_MAP[character.index],ENEMY_MAP[index])})
 		}
 	}
 	aimList.sort((a,b) => {
 		return a.dist - b.dist
 	})
-	return aimList[0]
-}
-//选择常规友方目标
-model.prototype.getFriendNormal = function(character) {
-	var aimList = []
-	for(var index = 0;index < character.fighting[character.belong].team.length;index++){
-		if(character.fighting[character.belong].team[index].checkAim()){
-			aimList.push({character : character.fighting[character.belong].team[index],dist : this.callDist(MY_MAP[character.index],ENEMY_MAP[index])})
-		}
-	}
-	aimList.sort((a,b) => {
-		return a.dist - b.dist
-	})
-	return aimList[0]
+	return [aimList[0]]
 }
 model.prototype.callDist = function(pos1,pos2) {
 	return Math.abs(pos1[0] - pos2[0]) + Math.abs(pos1[1] - pos2[1])
 }
 module.exports = model
-
-var test = new model()\

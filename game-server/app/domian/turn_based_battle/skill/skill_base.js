@@ -24,20 +24,21 @@ model.prototype.before = function() {
 }
 //技能效果
 model.prototype.action = function() {
-	if(this.atk_mul){
-		
-	}
+	if(this.atk_mul)
+		this.skillAttack()
+	if(this.heal_mul)
+		this.skillheal()
 	this.after()
 }
 //使用技能后
 model.prototype.after = function() {
 
 }
-
-
 //伤害技能
 model.prototype.skillAttack = function() {
-	
+	var targets = this.character.fighting.locator.getTargets(this.character,"enemy_normal")
+	//伤害计算
+
 }
 //治疗技能
 model.prototype.skillheal = function() {
@@ -46,5 +47,9 @@ model.prototype.skillheal = function() {
 //BUFF判断
 model.prototype.skillBuff = function() {
 
+}
+//伤害计算
+model.prototype.callDamage = function() {
+	
 }
 module.exports = model

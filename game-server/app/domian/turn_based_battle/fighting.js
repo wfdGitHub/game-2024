@@ -2,14 +2,16 @@ const TEAMLENGTH = 5 				//队伍人数
 const MAXROUND = 20 				//最大回合数
 const character = require("./entity/character.js")
 const fightRecordFun = require("./fightRecord.js")
+const locatorFun = require("./skill/locator.js")
 var model = function(atkInfo,defInfo,otps) {
 	this.fightInfo = {"atk":{"rival":"def"},"def":{"rival":"atk"}}
 	this.fightInfo.atk.info = JSON.parse(JSON.stringify(atkInfo || []))
 	this.fightInfo.def.info = JSON.parse(JSON.stringify(defInfo || []))
 	this.otps = JSON.parse(JSON.stringify(otps || {}))
-	this.fightRecord = new fightRecordFun(this)
-	//战斗数据
 	this.seededNum = this.otps.seededNum || (new Date()).getTime()
+	this.fightRecord = new fightRecordFun(this)
+	this.locator = new locatorFun(this)
+	//战斗数据
 	this.fightState = 0				//战斗状态 0 未开始  1 已加载数据  2 已开始战斗  3  已结束
 	this.characterId = 0 			//角色ID
 	this.runFlag = true 			//行动状态标识
@@ -46,6 +48,7 @@ model.prototype.loadTeam = function(type,team) {
 		team_character.id = this.characterId++
 		team_character.index = i
 		team_character.belong = type
+		team_character.rival = this.fightInfo[type]["rival"]
 		this.fightInfo[type]["team"][i] = team_character
 		if(!team_character.isNaN){
 			this.fightInfo[type]["survival"]++
