@@ -2,6 +2,9 @@
 var model = function(character,otps,talentList) {
 	otps = otps || {}
 	this.character = character
+	this.sid = otps.sid 			//技能ID
+	this.isAnger = false  			//是否为怒气技能
+	this.damageType = "phy" 		//phy  物伤  mag  法伤   real  真伤
 	//伤害参数
 	this.atk_mul = otps["atk_mul"] || 0
 	this.atk_value = otps["atk_value"] || 0
@@ -14,42 +17,8 @@ var model = function(character,otps,talentList) {
 }
 //技能初始化
 model.prototype.init = function() {}
-//使用技能
-model.prototype.useSkill = function() {
-	this.before()
-}
 //使用技能前
-model.prototype.before = function() {
-	this.action()
-}
-//技能效果
-model.prototype.action = function() {
-	if(this.atk_mul)
-		this.skillAttack()
-	if(this.heal_mul)
-		this.skillheal()
-	this.after()
-}
+model.prototype.before = function() {}
 //使用技能后
-model.prototype.after = function() {
-
-}
-//伤害技能
-model.prototype.skillAttack = function() {
-	var targets = this.character.fighting.locator.getTargets(this.character,"enemy_normal")
-	//伤害计算
-
-}
-//治疗技能
-model.prototype.skillheal = function() {
-
-}
-//BUFF判断
-model.prototype.skillBuff = function() {
-
-}
-//伤害计算
-model.prototype.callDamage = function() {
-	
-}
+model.prototype.after = function() {}
 module.exports = model

@@ -55,6 +55,16 @@ model.prototype.userNormalSkill = function() {
 	this.addAnger(20)
 	return this.defaultSkill
 }
+//收到攻击
+model.prototype.onHit = function(attacker,info) {}
+//受到治疗
+model.prototype.onHeal = function(attacker,info) {}
+//角色死亡
+model.prototype.onDie = function() {}
+//恢复血量
+model.prototype.addHP = function() {}
+//扣除血量
+model.prototype.lessHP = function() {}
 //检查可行动
 model.prototype.checkAction = function() {
 	if(this.died || this.isAction)
@@ -86,4 +96,22 @@ model.prototype.getCombatData = function() {
 	}
 	return info
 }
+//受到攻击
+model.prototype.onHit = function(attacker,info) {}
+//受到治疗
+model.prototype.onHeal = function(attacker,info) {}
+//角色死亡
+model.prototype.onDie = function() {}
+//恢复血量
+model.prototype.addHP = function() {}
+//扣除血量
+model.prototype.lessHP = function() {}
+//击杀
+model.prototype.onKill = function() {}
+//闪避
+model.prototype.onDodge = function() {}
+//格挡
+model.prototype.onBlock = function() {}
+//暴击
+model.prototype.onCrit = function() {}
 module.exports = model

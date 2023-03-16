@@ -25,11 +25,11 @@ model.prototype.attInit = function() {
 	this.needAnger = 100  				//释放技能所需怒气
 	//一级属性
 	this.attInfo = {}
-	this.attInfo.main_1 = 0 			//体质  影响伤免、最大生命值
-	this.attInfo.main_2 = 0 			//内力  影响内功伤害、内功减免
-	this.attInfo.main_3 = 0 			//筋骨  影响外功伤害、外功减免
-	this.attInfo.main_4 = 0 			//身法  影响出手速度、命中、闪避
-	this.attInfo.main_5 = 0 			//悟性  影响暴击伤害、格挡、破格
+	this.attInfo.main_dr = 0 			//体质  影响伤免、最大生命值
+	this.attInfo.main_mag = 0 			//内力  影响内功伤害、内功减免
+	this.attInfo.main_phy = 0 			//筋骨  影响外功伤害、外功减免
+	this.attInfo.main_hit = 0 			//身法  影响出手速度、命中、闪避
+	this.attInfo.main_slay = 0 			//悟性  影响暴击伤害、格挡、破格
 	//二级属性
 	this.attInfo.HP = 0 				//当前生命值
 	this.attInfo.maxHP = 0 				//最大生命值
@@ -56,8 +56,6 @@ model.prototype.attInit = function() {
 	this.attInfo.healAdd = 0 			//受疗加成
 	this.attInfo.phyAmp = 0 			//外功增伤
 	this.attInfo.phyDef = 0 			//外功减伤
-	this.attInfo.magAmp = 0 			//内功增伤
-	this.attInfo.magDef = 0 			//内功减伤
 	this.attInfo.magAmp = 0 			//内功增伤
 	this.attInfo.magDef = 0 			//内功减伤
 	this.attInfo.poisonAmp = 0 			//中毒增伤
@@ -95,6 +93,27 @@ model.prototype.getTotalAtt = function(name) {
 	var value = this.attInfo[name] || 0
 	return value
 }
+//收到攻击
+model.prototype.onHit = function(attacker,info) {}
+//受到治疗
+model.prototype.onHeal = function(attacker,info) {}
+//角色死亡
+model.prototype.onDie = function() {}
+//恢复血量
+model.prototype.addHP = function() {}
+//扣除血量
+model.prototype.lessHP = function() {}
+
+//============================状态触发
+//击杀
+model.prototype.onKill = function() {}
+//闪避
+model.prototype.onDodge = function() {}
+//格挡
+model.prototype.onBlock = function() {}
+//暴击
+model.prototype.onCrit = function() {}
+
 //获取战斗数据
 model.prototype.getCombatData = function() {}
 module.exports = model
