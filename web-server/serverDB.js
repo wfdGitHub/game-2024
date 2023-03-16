@@ -107,7 +107,7 @@ var model = function() {
 	}
     //获取物品表
     posts["/get_items"] = function(req,res) {
-        res.send(items)
+        res.send(item_cfg)
     }
     //获取支付表
     posts["/get_pay_cfg"] = function(req,res) {
