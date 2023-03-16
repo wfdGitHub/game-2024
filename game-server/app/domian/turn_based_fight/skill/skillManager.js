@@ -860,8 +860,10 @@ model.useHealSkill = function(skill,chase) {
 		if(targets.length !== 0){
 			var info = {id : targets[0].id,source : skill.character.id}
 			var tmpValue = skill.rescue_heal
-			if(skill.character.rescue_realm_heal && skill.character.realm == this.realm)
+			if(skill.character.rescue_realm_heal && skill.character.realm == targets[0].realm){
 				tmpValue += skill.character.rescue_realm_heal
+				tmpValue = Math.min(1,tmpValue)
+			}
 			info.rescue = true
 			recordInfo.targets.push(info)
 			fightRecord.push(recordInfo)
