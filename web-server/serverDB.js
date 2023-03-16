@@ -4,6 +4,7 @@ const uuid = require("uuid")
 const querystring = require("querystring")
 const item_cfg = require("../game-server/config/gameCfg/item.json")
 const pay_cfg = require("../game-server/config/gameCfg/pay_cfg.json")
+const heros = require("../game-server/config/gameCfg/heros.json")
 const hufu_quality = require("../game-server/config/gameCfg/hufu_quality.json")
 const hufu_skill = require("../game-server/config/gameCfg/hufu_skill.json")
 const stringRandom = require('string-random');
