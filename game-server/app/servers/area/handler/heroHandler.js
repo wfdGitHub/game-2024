@@ -123,7 +123,7 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
       if(flag){
         self.heroDao.heroPrAll(areaId,uid,herolist,hIds,function(flag,awardList) {
           next(null,{flag : true,awardList : awardList})
-        })
+        },"分解英雄")
       }else{
         next(null,{flag : false})
       }
@@ -202,7 +202,7 @@ heroHandler.prototype.unlockZhanfaGrid = function(msg, session, next) {
             self.heroDao.setHeroInfo(areaId,uid,target,key,1,function(flag,data) {
               next(null,{flag : flag,hId:target,key:key,awardList:awardList})
             })
-          })
+          },"战法栏解锁")
       })
   })
 }
@@ -382,7 +382,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                     }
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
-                })
+                },"升星材料")
             })
           })
         }else{
@@ -397,7 +397,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                     }
                     next(null,{flag : flag,awardList : awardList,star : star})
                   })
-                })
+                },"升星材料")
             })
         }
       }
