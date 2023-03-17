@@ -103,15 +103,16 @@ model.prototype.onDie = function() {}
 model.prototype.addHP = function() {}
 //扣除血量
 model.prototype.lessHP = function() {}
-
+//复活
+model.prototype.resurgence = function(attacker,info) {}
 //============================状态触发
-//击杀
+//触发击杀
 model.prototype.onKill = function() {}
-//闪避
+//触发闪避
 model.prototype.onDodge = function() {}
-//格挡
+//触发格挡
 model.prototype.onBlock = function() {}
-//暴击
+//触发暴击
 model.prototype.onCrit = function() {}
 
 //获取战斗数据

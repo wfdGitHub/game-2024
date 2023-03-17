@@ -97,21 +97,74 @@ model.prototype.getCombatData = function() {
 	return info
 }
 //受到攻击
-model.prototype.onHit = function(attacker,info) {}
+model.prototype.onHit = function(attacker,info) {
+	//受到攻击预处理
+	info.id = this.id
+	return this.lessHP(info)
+}
+//受到攻击结束后
+model.prototype.onHitAfter = function(attacker,info) {}
 //受到治疗
-model.prototype.onHeal = function(attacker,info) {}
+model.prototype.onHeal = function(attacker,info) {
+	//受到治疗预处理
+	info.id = this.id
+	return this.addHP(info)
+}
+//受到治疗结束后
+model.prototype.onHealAfter = function(attacker,info) {}
 //角色死亡
-model.prototype.onDie = function() {}
+model.prototype.onDie = function(info) {
+	this.attInfo.hp = 0
+	this.died = true
+	info.died = true
+}
+//角色死亡结束后
+model.prototype.onDieAfter = function(attacker,info) {}
 //恢复血量
-model.prototype.addHP = function() {}
+model.prototype.addHP = function(info) {
+	if(this.died){
+		info.realValue = 0
+		return info
+	}
+	if(this.attInfo.hp + info.value > this.attInfo.maxHP){
+		info.realValue = this.attInfo.maxHP - this.attInfo.hp
+		this.attInfo.hp = this.attInfo.maxHP
+	}else{
+		info.realValue = info.value
+		this.attInfo.hp += info.value
+	}
+	info.hp = this.attInfo.hp
+	info.maxHP = this.attInfo.maxHP
+	return info
+}
 //扣除血量
-model.prototype.lessHP = function() {}
-//击杀
-model.prototype.onKill = function() {}
-//闪避
-model.prototype.onDodge = function() {}
-//格挡
-model.prototype.onBlock = function() {}
-//暴击
-model.prototype.onCrit = function() {}
+model.prototype.lessHP = function(info) {
+	if(this.died){
+		info.realValue = 0
+		return info
+	}
+	this.attInfo.hp -= info.value
+	if(this.attInfo.hp > 0){
+		info.realValue = info.value
+	}else{
+		info.realValue = this.attInfo.hp
+		this.onDie(info)
+	}
+	info.hp = this.attInfo.hp
+	info.maxHP = this.attInfo.maxHP
+	return info
+}
+//复活
+model.prototype.resurgence = function(attacker,info) {
+
+}
+//======触发
+//触发击杀
+model.prototype.onKill = function(target,info) {}
+//触发闪避
+model.prototype.onDodge = function(attacker,info) {}
+//触发格挡
+model.prototype.onBlock = function(attacker,info) {}
+//触发暴击
+model.prototype.onCrit = function(attacker,info) {}
 module.exports = model

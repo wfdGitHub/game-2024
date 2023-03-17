@@ -12,7 +12,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	dodge += (target.getTotalAtt("main_hit") - attacker.getTotalAtt("main_hit")) * 0.05
 	dodge = Math.min(dodge,0.9) 	//闪避率最高不超过90%
 	if(this.randomCheck(dodge,"dodge")){
-		info.miss = true
+		info.dodge = true
 		return info
 	}
 	//计算基础伤害量

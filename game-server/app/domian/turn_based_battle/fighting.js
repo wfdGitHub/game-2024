@@ -19,7 +19,7 @@ var model = function(atkInfo,defInfo,otps) {
 	this.round = 0					//当前回合
     this.manual = this.otps.manual  //手动操作标识
     this.video = this.otps.video  	//是否为录像
-    this.allHero = [] 				//所有英雄列表
+    this.allHero = {} 				//所有英雄映射表
 	this.cur_character = false 		//当前行动角色
 	this.next_character = []		//插入行动角色
 	this.win_team = "" 				//失败方  planish  打平  atk  攻方赢  def  守方赢
@@ -52,7 +52,7 @@ model.prototype.loadTeam = function(type,team) {
 		this.fightInfo[type]["team"][i] = team_character
 		if(!team_character.isNaN){
 			this.fightInfo[type]["survival"]++
-			this.allHero.push(team_character)
+			this.allHero[team_character.id] = team_character
 		}
 	}
 	for(var i = 0;i < TEAMLENGTH;i++){
@@ -69,7 +69,7 @@ model.prototype.fightBegin = function() {
 	this.fightState = 2
 	//战斗初始化
 	//英雄初始化
-	for(var i = 0;i < this.allHero.length;i++)
+	for(var i in this.allHero)
 		this.allHero[i].init()
 	//开始首回合
 	this.nextRound()
@@ -82,7 +82,7 @@ model.prototype.nextRound = function() {
 		this.fightOver("planish")
 		return
 	}
-	for(var i = 0;i < this.allHero.length;i++)
+	for(var i in this.allHero)
 		this.allHero[i].roundBegin()
 	this.round++
 	//运行检测
@@ -108,17 +108,17 @@ model.prototype.nextCharacter = function() {
 	if(this.fightState !== 2){
 		return
 	}
-	var index = -1
+	var id = -1
 	//找出下一个行动目标
-	for(var i = 0;i < this.allHero.length;i++){
+	for(var i in this.allHero){
 		if(this.allHero[i].checkAction()){
-			if(index == -1 || this.allHero[i].getTotalAtt("speed") > this.allHero[index].getTotalAtt("speed")){
-				index = i
+			if(id == -1 || this.allHero[i].getTotalAtt("speed") > this.allHero[id].getTotalAtt("speed")){
+				id = this.allHero[i].id
 			}
 		}
 	}
-	if(index != -1){
-		this.cur_character = this.allHero[index]
+	if(id != -1){
+		this.cur_character = this.allHero[id]
 		this.beforeCharacter()
 	}else{
 		this.endRound()
@@ -133,10 +133,9 @@ model.prototype.beforeCharacter = function(){
 //英雄回合行动
 model.prototype.actionCharacter = function(){
 	console.log(this.cur_character.belong+"-"+this.cur_character.index+"开始行动")
-	// var skill = this.cur_character.chooseSkill()
-	// if(skill)
-	// 	skillManager.useSkill(skill)
-	// this.after()
+	var skill = this.cur_character.chooseSkill()
+	if(skill)
+		skillManager.useSkill(skill)
 	this.afterCharacter()
 }
 //英雄回合结束
@@ -147,7 +146,7 @@ model.prototype.afterCharacter = function() {
 }
 //整体回合结束
 model.prototype.endRound = function(){
-	for(var i = 0;i < this.allHero.length;i++)
+	for(var i in this.allHero)
 		this.allHero[i].roundOver()
 	this.nextRound()
 }
@@ -213,7 +212,7 @@ model.prototype.random = function(reason) {
 }
 model.prototype.getCombatData = function() {
 	var list = []
-	for(var i = 0;i < this.allHero.length;i++)
+	for(var i in this.allHero)
 		list.push(this.allHero[i].getCombatData())
 	return list
 }
