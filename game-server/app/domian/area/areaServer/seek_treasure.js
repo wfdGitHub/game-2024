@@ -417,18 +417,25 @@ module.exports = function() {
 				var name = self.players[uid]["name"]
 				var awardList = []
 				var index = -1
+				var awards = {}
+				var awardList = []
 				for(var i = 0;i < count;i++){
 					var rand = Math.random() * oh_allWeight
 					for(var j = 0;j < oh_grid.length;j++){
 						if(rand < oh_grid[j]){
 							index = j
-							awardList = awardList.concat(self.addItemStr(uid,oh_turntable[j]["award"],1,"欧皇转盘"))
+							if(!awards[oh_turntable[j]["award"]])
+								awards[oh_turntable[j]["award"]] = 0
+							awards[oh_turntable[j]["award"]]++
 							if(oh_turntable[j]["rare"]){
 								local.saveSTRecord(name,"oh",oh_turntable[j]["award"])
 							}
 							break
 						}
 					}
+				}
+				for(var awardStr in awards){
+					awardList = awardList.concat(self.addItemStr(uid,awardStr,awards[awardStr],"欧皇转盘"))
 				}
 				cb(true,{awardList:awardList,index:index})
 			}
