@@ -133,6 +133,51 @@ var model = function() {
 			res.send(data)
 		})
 	}
+	//获取玩家英雄列表
+	posts["/getUserInfo"] = function(req,res) {
+		var uid = req.body.uid
+		var self = this
+		self.redisDao.db.hgetall("player:user:"+uid+":heroMap",function(err,data) {
+			if(err || !data){
+				cb(true,{})
+				return
+			}
+			var multiList = []
+			var hIds = []
+			for(var hId in data){
+				hIds.push(hId)
+				multiList.push(["hgetall","player:user:"+uid+":heros:"+hId])
+			}
+			self.redisDao.multi(multiList,function(err,list) {
+				var hash = {}
+				for(var i = 0;i < list.length;i++){
+					for(var j in list[i]){
+						var tmp = Number(list[i][j])
+						if(tmp == list[i][j])
+							list[i][j] = tmp
+					}
+					list[i].hId = hIds[i]
+					hash[list[i].hId] = list[i]
+				}
+				res.send(hash)
+				return
+			})
+		})
+	}
+	//获取玩家道具背包
+	posts["/getUserInfo"] = function(req,res) {
+		var uid = req.body.uid
+		self.redisDao.db.hegtall("player:user:"+uid+":bag",function(err,data) {
+			res.send(data)
+		})
+	}
+	//获取玩家个人信息
+	posts["/getUserInfo"] = function(req,res) {
+		var uid = req.body.uid
+		self.redisDao.db.hegtall("player:user:"+uid+":playerInfo",function(err,data) {
+			res.send(data)
+		})
+	}
 	//获取全服邮件
 	posts["/getAreaMailList"] = function(req,res) {
 		local.post("127.0.0.1",5081,"/getAreaMailList",{},function(data) {
