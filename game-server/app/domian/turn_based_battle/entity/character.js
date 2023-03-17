@@ -1,10 +1,12 @@
 //英雄
 var entity_base = require("./entity_base.js")
+var skill_base = require("../skill/skill_base.js")
 var model = function(fighting,otps,talentList) {
 	//继承父类属性
 	entity_base.call(this,fighting,otps,talentList)
 	//初始化技能
-	
+	this.defaultSkill = new skill_base(this,{"atk_aim" : 1,"atk_mul":1})
+	this.angerSkill = new skill_base(this,{"atk_aim" : 1,"atk_mul":3})
 	//初始化天赋
 }
 //继承父类方法
@@ -15,6 +17,7 @@ model.prototype.addAnger = function(value,show) {
 	this.curAnger = Math.min(this.curAnger,this.maxAnger)
 	if(show)
 		this.fighting.fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger})
+	return value
 }
 //减少怒气
 model.prototype.lessAnger = function(value,show) {
@@ -22,6 +25,7 @@ model.prototype.lessAnger = function(value,show) {
 	this.curAnger = Math.max(this.curAnger,0)
 	if(show)
 		this.fighting.fightRecord.push({type : "lessAnger",realValue : value,curAnger : this.curAnger})
+	return value
 }
 //选择技能
 model.prototype.chooseSkill = function() {
@@ -38,33 +42,28 @@ model.prototype.userAngerSkill = function() {
 		return false
 	var needAnger = this.needAnger
 	var needValue = 0
-	var skill = false
+	var info = {}
+	info.skill = false
 	//怒气足够
 	if(this.curAnger >= this.needAnger){
-		skill = this.angerSkill
+		info.skill = this.angerSkill
 		needValue = this.needAnger
 	}
-	if(skill){
+	if(info.skill){
 		if(needValue)
-			this.lessAnger(needValue)
+			info.changeAnger = -this.lessAnger(needValue)
+		info.curAnger = this.curAnger
 	}
-	return skill
+	return info
 }
 //使用普攻技能获得怒气
 model.prototype.userNormalSkill = function() {
-	this.addAnger(20)
-	return this.defaultSkill
+	var info = {}
+	info.skill = this.defaultSkill
+	info.changeAnger = this.addAnger(20)
+	info.curAnger = this.curAnger
+	return info
 }
-//收到攻击
-model.prototype.onHit = function(attacker,info) {}
-//受到治疗
-model.prototype.onHeal = function(attacker,info) {}
-//角色死亡
-model.prototype.onDie = function() {}
-//恢复血量
-model.prototype.addHP = function() {}
-//扣除血量
-model.prototype.lessHP = function() {}
 //检查可行动
 model.prototype.checkAction = function() {
 	if(this.died || this.isAction)
@@ -81,7 +80,7 @@ model.prototype.checkControl = function() {
 }
 //检查可被选中
 model.prototype.checkAim = function() {
-	if(this.died)
+	if(this.isNaN || this.died)
 		return false
 	else
 		return true
@@ -114,9 +113,12 @@ model.prototype.onHeal = function(attacker,info) {
 model.prototype.onHealAfter = function(attacker,info) {}
 //角色死亡
 model.prototype.onDie = function(info) {
+	if(this.died)
+		return
 	this.attInfo.hp = 0
 	this.died = true
 	info.died = true
+	this.fighting.fightInfo[this.belong]["survival"]--
 }
 //角色死亡结束后
 model.prototype.onDieAfter = function(attacker,info) {}
@@ -143,12 +145,13 @@ model.prototype.lessHP = function(info) {
 		info.realValue = 0
 		return info
 	}
-	this.attInfo.hp -= info.value
-	if(this.attInfo.hp > 0){
+	if(this.attInfo.hp < info.value){
 		info.realValue = info.value
-	}else{
-		info.realValue = this.attInfo.hp
+		this.attInfo.hp = 0
 		this.onDie(info)
+	}else{
+		this.attInfo.hp -= info.value
+		info.realValue = info.value
 	}
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
@@ -156,7 +159,9 @@ model.prototype.lessHP = function(info) {
 }
 //复活
 model.prototype.resurgence = function(attacker,info) {
-
+	if(!this.died)
+		return
+	this.fighting.fightInfo[this.belong]["survival"]++
 }
 //======触发
 //触发击杀

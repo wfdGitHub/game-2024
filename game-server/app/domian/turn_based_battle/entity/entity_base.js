@@ -1,7 +1,10 @@
 //战斗角色基类
 var model = function(fighting,otps,talentList) {
-	if(!otps || !otps.id)
+	this.died = false  					//死亡状态
+	if(!otps || !otps.id){
 		this.isNaN = true
+		this.died = true
+	}
 	this.otps = otps || {}
 	this.fighting = fighting
 	this.index = -1
@@ -15,7 +18,6 @@ model.prototype.attInit = function() {
 	//基础战斗属性
 	this.index = -1 					//战斗位置
 	this.belong = "" 					//所属阵营
-	this.died = false  					//死亡状态
 	this.isAction = false 				//回合行动过标识
 	this.onAction = false  				//回合行动中标识
 	this.sex = 1 						//性别 1男 2女
@@ -60,10 +62,19 @@ model.prototype.attInit = function() {
 	this.attInfo.magDef = 0 			//内功减伤
 	this.attInfo.poisonAmp = 0 			//中毒增伤
 	this.attInfo.poisonDef = 0 			//中毒减伤
+
+	this.attInfo["main_dr"] = Math.floor(Math.random() * 100)
+	this.attInfo["main_mag"] = Math.floor(Math.random() * 100)
+	this.attInfo["main_phy"] = Math.floor(Math.random() * 100)
+	this.attInfo["main_hit"] = Math.floor(Math.random() * 100)
+	this.attInfo["main_slay"] = Math.floor(Math.random() * 100)
+	this.attInfo.maxHP = Math.floor(10000) + 10000
+	this.attInfo.hp = this.attInfo.maxHP
+	this.attInfo.atk = Math.floor(1000) + 1000
+	this.attInfo.armor = Math.floor(500) + 500
 }
 //战斗初始化
 model.prototype.init = function() {
-	console.log("角色初始化")
 }
 //个人回合开始
 model.prototype.before = function() {

@@ -3,6 +3,8 @@ const MAXROUND = 20 				//最大回合数
 const character = require("./entity/character.js")
 const fightRecordFun = require("./fightRecord.js")
 const locatorFun = require("./skill/locator.js")
+const formulaFun = require("./skill/formula.js")
+const skillManagerFun = require("./skill/skillManager.js")
 var model = function(atkInfo,defInfo,otps) {
 	this.fightInfo = {"atk":{"rival":"def"},"def":{"rival":"atk"}}
 	this.fightInfo.atk.info = JSON.parse(JSON.stringify(atkInfo || []))
@@ -11,6 +13,8 @@ var model = function(atkInfo,defInfo,otps) {
 	this.seededNum = this.otps.seededNum || (new Date()).getTime()
 	this.fightRecord = new fightRecordFun(this)
 	this.locator = new locatorFun(this)
+	this.formula = new formulaFun(this)
+	this.skillManager = new skillManagerFun(this)
 	//战斗数据
 	this.fightState = 0				//战斗状态 0 未开始  1 已加载数据  2 已开始战斗  3  已结束
 	this.characterId = 0 			//角色ID
@@ -28,7 +32,6 @@ var model = function(atkInfo,defInfo,otps) {
 
 //载入数据
 model.prototype.loadData = function() {
-	console.log("loadData")
 	if(this.fightState !== 0){
 		console.log("战斗已开启")
 		return
@@ -39,9 +42,7 @@ model.prototype.loadData = function() {
 }
 //载入阵容
 model.prototype.loadTeam = function(type,team) {
-	console.log("loadTeam",type)
 	this.fightInfo[type]["team"] = []
-	this.fightInfo[type]["enemy"] = this.fightInfo[this.fightInfo[type]["rival"]]
 	this.fightInfo[type]["survival"] = 0
 	for(var i = 0;i < TEAMLENGTH;i++){
 		var team_character = new character(this,team[i],[])
@@ -61,7 +62,6 @@ model.prototype.loadTeam = function(type,team) {
 }
 //战斗开始
 model.prototype.fightBegin = function() {
-	console.log("fightBegin")
 	if(this.fightState !== 1){
 		console.log("未加载战斗数据")
 		return
@@ -76,7 +76,6 @@ model.prototype.fightBegin = function() {
 }
 //开始新整体回合
 model.prototype.nextRound = function() {
-	console.log("nextRound : "+this.round)
 	if(this.round >= MAXROUND){
 		//达到最大轮次，战斗结束
 		this.fightOver("planish")
@@ -85,6 +84,7 @@ model.prototype.nextRound = function() {
 	for(var i in this.allHero)
 		this.allHero[i].roundBegin()
 	this.round++
+	this.fightRecord.push({type : "nextRound",round : this.round})
 	//运行检测
 	this.runCheck()
 }
@@ -132,10 +132,9 @@ model.prototype.beforeCharacter = function(){
 }
 //英雄回合行动
 model.prototype.actionCharacter = function(){
-	console.log(this.cur_character.belong+"-"+this.cur_character.index+"开始行动")
-	var skill = this.cur_character.chooseSkill()
-	if(skill)
-		skillManager.useSkill(skill)
+	var skillInfo = this.cur_character.chooseSkill()
+	if(skillInfo)
+		this.skillManager.useSkill(skillInfo)
 	this.afterCharacter()
 }
 //英雄回合结束
@@ -160,7 +159,6 @@ model.prototype.checkOver = function() {
 }
 //战斗结束
 model.prototype.fightOver = function(teamType) {
-	console.log("fightOver ",teamType)
 	if(this.fightState !== 2){
 		console.error("未开始战斗")
 		return
