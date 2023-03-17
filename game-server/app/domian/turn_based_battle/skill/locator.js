@@ -5,6 +5,16 @@ const ENEMY_MAP = [[0,0.5],[0,1.5],[-1,0.1],[-1,1],[-1,1.9]]
 var model = function(fighting) {
 	this.fighting = fighting
 }
+//判断存在可攻击目标
+model.prototype.existsTarget = function(character) {
+	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	for(var i = 0;i < enemyTeam.length;i++){
+		if(enemyTeam[i].checkAim()){
+			return  true
+		}
+	}
+	return false
+}
 model.prototype.getTargets = function(character,targetType) {
 	switch(targetType){
 		case "enemy_normal":

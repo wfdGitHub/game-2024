@@ -26,7 +26,7 @@ model.prototype.explain = function() {
 			console.log("\n第"+info.round+"回合开始\n")
 		break
 		case "skill":
-			console.log("\033[36m["+info.id+"号]使用["+info.sid+"]\033[0m    怒气"+info.changeAnger+"("+info.curAnger+")")
+			console.log("\033[36m["+info.id+"号]使用["+info.sid+"]\033[0m    怒气 "+info.changeAnger+"("+info.curAnger+")")
 			for(var i = 0;i < info.attack.length;i++){
 				var str = ""
 				str += "  \033[31m对["+info.attack[i]["id"]+"]\t\033[0m 造成 "+info.attack[i].realValue+"伤害("+info.attack[i].hp+"/"+info.attack[i].maxHP+")"
@@ -40,6 +40,9 @@ model.prototype.explain = function() {
 					str += "\t死亡"
 				console.log(str)
 			}
+		break
+		case "changeAnger":
+			console.log("\033[36m["+info.id+"号]\033[0m 怒气 "+info.changeAnger+"("+info.curAnger+")")
 		break
 		default : 
 			console.log(info)

@@ -16,7 +16,7 @@ model.prototype.addAnger = function(value,show) {
 	this.curAnger += Number(value) || 0
 	this.curAnger = Math.min(this.curAnger,this.maxAnger)
 	if(show)
-		this.fighting.fightRecord.push({type : "addAnger",realValue : value,curAnger : this.curAnger})
+		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : value,curAnger : this.curAnger})
 	return value
 }
 //减少怒气
@@ -24,12 +24,14 @@ model.prototype.lessAnger = function(value,show) {
 	this.curAnger -= Number(value) || 0
 	this.curAnger = Math.max(this.curAnger,0)
 	if(show)
-		this.fighting.fightRecord.push({type : "lessAnger",realValue : value,curAnger : this.curAnger})
+		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : value,curAnger : this.curAnger})
 	return value
 }
 //选择技能
 model.prototype.chooseSkill = function() {
 	if(this.checkControl())
+		return false
+	if(!this.fighting.locator.existsTarget(this))
 		return false
 	if(this.curAnger >= this.needAnger)
 		return this.userAngerSkill()

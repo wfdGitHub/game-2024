@@ -133,8 +133,12 @@ model.prototype.beforeCharacter = function(){
 //英雄回合行动
 model.prototype.actionCharacter = function(){
 	var skillInfo = this.cur_character.chooseSkill()
-	if(skillInfo)
+	if(skillInfo){
 		this.skillManager.useSkill(skillInfo)
+	}else{
+		//未行动恢复怒气
+		this.cur_character.addAnger(20,true)
+	}
 	this.afterCharacter()
 }
 //英雄回合结束
