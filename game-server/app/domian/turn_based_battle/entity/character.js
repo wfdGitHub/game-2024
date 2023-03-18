@@ -11,6 +11,20 @@ var model = function(fighting,otps,talentList) {
 }
 //继承父类方法
 model.prototype = Object.create(entity_base.prototype) //继承父类方法
+//战斗初始化
+model.prototype.init = function() {
+	//主属性增益
+	this.changeTotalAtt("hit",this.getTotalAtt("main_hit") * 0.005)
+	this.changeTotalAtt("hitDef",this.getTotalAtt("main_hit") * 0.005)
+	this.changeTotalAtt("magAmp",this.getTotalAtt("main_mag") * 0.01)
+	this.changeTotalAtt("magDef",this.getTotalAtt("main_mag") * 0.01)
+	this.changeTotalAtt("phyAmp",this.getTotalAtt("main_phy") * 0.01)
+	this.changeTotalAtt("phyDef",this.getTotalAtt("main_phy") * 0.01)
+	this.changeTotalAtt("block",this.getTotalAtt("main_slay") * 0.005)
+	this.changeTotalAtt("blockDef",this.getTotalAtt("main_slay") * 0.005)
+	this.changeTotalAtt("slay",(this.getTotalAtt("main_slay") - 60) * 0.006)
+	this.changeTotalAtt("ampDefMain",(this.getTotalAtt("main_dr") - 60) * 0.006)
+}
 //获得怒气
 model.prototype.addAnger = function(value,show) {
 	this.curAnger += Number(value) || 0
@@ -174,4 +188,17 @@ model.prototype.onDodge = function(attacker,info) {}
 model.prototype.onBlock = function(attacker,info) {}
 //触发暴击
 model.prototype.onCrit = function(attacker,info) {}
+
+
+//======获取信息
+model.prototype.getCombatData = function() {
+	var info = {
+		id : this.id,
+		index : this.index,
+		lv : this.lv,
+		maxHP : this.attInfo.maxHP,
+		hp : this.attInfo.hp
+	}
+	return info
+}
 module.exports = model

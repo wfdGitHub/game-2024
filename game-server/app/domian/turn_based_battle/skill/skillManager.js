@@ -71,8 +71,6 @@ model.prototype.attackSkill = function(skill,record) {
 	for(var i = 0;i < targets.length;i++){
 		var info = this.fighting.formula.calDamage(skill.character, targets[i],skill)
 		info = targets[i].onHit(skill.character,info)
-		if(info.id == 6)
-			console.log("id error")
 		record.attack.push(info)
 	}
 	//BUFF判断

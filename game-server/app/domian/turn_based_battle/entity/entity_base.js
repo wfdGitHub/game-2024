@@ -52,6 +52,7 @@ model.prototype.attInit = function() {
 	this.attInfo.controlDef = 0 		//免控率
 	this.attInfo.amp = 0 				//伤害加成
 	this.attInfo.ampDef = 0 			//伤害减免
+	this.attInfo.ampDefMain = 0 		//主属性减伤
 	this.attInfo.angerAmp = 0 			//技攻增伤
 	this.attInfo.angerDef = 0 			//技攻减伤
 	this.attInfo.healAmp = 0 			//治疗加成
@@ -70,12 +71,13 @@ model.prototype.attInit = function() {
 	this.attInfo["main_slay"] = Math.floor(Math.random() * 100)
 	this.attInfo.maxHP = Math.floor(10000) + 10000
 	this.attInfo.hp = this.attInfo.maxHP
-	this.attInfo.atk = Math.floor(1000) + 1000
+	this.attInfo.atk = Math.floor(3000) + 1000
 	this.attInfo.armor = Math.floor(500) + 500
+	//属性初始化
+	this.attInfo.speed += this.attInfo.main_hit
 }
 //战斗初始化
-model.prototype.init = function() {
-}
+model.prototype.init = function() {}
 //个人回合开始
 model.prototype.before = function() {
 	this.isAction = true
@@ -103,6 +105,11 @@ model.prototype.lessAnger = function(value,show) {}
 model.prototype.getTotalAtt = function(name) {
 	var value = this.attInfo[name] || 0
 	return value
+}
+//改变属性
+model.prototype.changeTotalAtt = function(name,value) {
+	if(this.attInfo[name] !== undefined)
+		this.attInfo[name] += Number(value) || 0
 }
 //收到攻击
 model.prototype.onHit = function(attacker,info) {}

@@ -9,7 +9,6 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	info.value = 0
 	//闪避判断
 	var dodge = target.getTotalAtt("hitDef") - attacker.getTotalAtt("hit")
-	dodge += (target.getTotalAtt("main_hit") - attacker.getTotalAtt("main_hit")) * 0.005
 	dodge = Math.min(dodge,0.9) 	//闪避率最高不超过90%
 	if(this.randomCheck(dodge,"dodge")){
 		info.dodge = true
@@ -18,19 +17,15 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	//计算基础伤害量
 	var basic = Math.ceil((attacker.getTotalAtt("atk") - target.getTotalAtt("armor")) * skill.atk_mul + skill.atk_value)
 	//主属性增伤
-	if(skill.damageType == "mag"){
-		basic += Math.ceil(basic * (target.getTotalAtt("main_mag") - attacker.getTotalAtt("main_mag")) * 0.01)
+	if(skill.damageType == "mag")
 		basic += Math.ceil(basic * (attacker.getTotalAtt("magAmp") - target.getTotalAtt("magDef")))
-	}
-	else if(skill.damageType == "phy"){
-		basic += Math.ceil(basic * (target.getTotalAtt("main_phy") - attacker.getTotalAtt("main_phy")) * 0.01)
+	else if(skill.damageType == "phy")
 		basic += Math.ceil(basic * (attacker.getTotalAtt("phyAmp") - target.getTotalAtt("phyDef")))
-	}
+
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
-	basic = Math.ceil(basic * (1 - (target.getTotalAtt("main_dr") - 50) * 0.008))
+	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
 	//格挡判断
-	var wuxing = attacker.getTotalAtt("main_slay") - target.getTotalAtt("main_slay")
-	var block = target.getTotalAtt("block") - attacker.getTotalAtt("blockDef") - wuxing * 0.005
+	var block = target.getTotalAtt("block") - attacker.getTotalAtt("blockDef")
 	block = Math.min(block,0.9) 	//格挡率最高不超过90%
 	if(this.randomCheck(block,"block")){
 		info.block = true
@@ -40,7 +35,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef")
 		if(this.randomCheck(crit,"crit")){
 			info.crit = true
-			var slay = 1.5 + ((target.getTotalAtt("main_slay") - 50) * 0.006) + attacker.getTotalAtt("slay") - attacker.getTotalAtt("slayDef")
+			var slay = 1.5 + attacker.getTotalAtt("slay") - attacker.getTotalAtt("slayDef")
 			basic = Math.ceil(basic * slay)
 		}
 	}
