@@ -5,6 +5,7 @@ const fightRecordFun = require("./fightRecord.js")
 const locatorFun = require("./skill/locator.js")
 const formulaFun = require("./skill/formula.js")
 const skillManagerFun = require("./skill/skillManager.js")
+const buffManagerFun = require("./buff/buffManager.js")
 var model = function(atkInfo,defInfo,otps) {
 	this.fightInfo = {"atk":{"rival":"def"},"def":{"rival":"atk"}}
 	this.fightInfo.atk.info = JSON.parse(JSON.stringify(atkInfo || []))
@@ -15,6 +16,7 @@ var model = function(atkInfo,defInfo,otps) {
 	this.locator = new locatorFun(this)
 	this.formula = new formulaFun(this)
 	this.skillManager = new skillManagerFun(this)
+	this.buffManager = new buffManagerFun(this)
 	//战斗数据
 	this.fightState = 0				//战斗状态 0 未开始  1 已加载数据  2 已开始战斗  3  已结束
 	this.characterId = 0 			//角色ID

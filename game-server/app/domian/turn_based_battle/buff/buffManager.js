@@ -11,8 +11,4 @@ model.prototype.init = function() {
 model.prototype.createBuff = function() {
 
 }
-//移除BUFF
-model.prototype.removeBuff = function() {
-	
-}
 module.exports = model

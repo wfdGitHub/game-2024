@@ -11,6 +11,7 @@ var model = function(fighting,otps,talentList) {
 	this.heroId = Number(this.otps.id) || 0
 	this.id = 0
 	this.talentList = talentList || []
+	this.buffs = {} 					//buff列表
 	this.attInit()
 }
 //属性初始化
@@ -132,7 +133,12 @@ model.prototype.onDodge = function() {}
 model.prototype.onBlock = function() {}
 //触发暴击
 model.prototype.onCrit = function() {}
-
+//============================外部操作
+//移除BUFF
+model.prototype.removeBuff = function(buffId) {
+    if(this.buffs[buffId])
+        delete this.buffs[buffId]
+}
 //获取战斗数据
 model.prototype.getCombatData = function() {}
 module.exports = model
