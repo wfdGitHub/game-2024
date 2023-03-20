@@ -1,17 +1,15 @@
 //SDK获取数据模块
 const async = require("async")
 const crypto = require('crypto');
-const NodeRSA = require('node-rsa');
 const fs = require('fs');
 const path = require('path');
-var priKey = fs.readFileSync(path.join(__dirname, './key/rsa_private_key.pem')).toString('ascii')
-var pubKey = fs.readFileSync(path.join(__dirname, './key/rsa_public_key.pem')).toString('ascii')
+var privateKey = fs.readFileSync(path.join(__dirname, './key/rsa_private_key.pem')).toString('ascii')
+var publicKey = fs.readFileSync(path.join(__dirname, './key/rsa_public_key.pem')).toString('ascii')
 var model = function() {
 	var self = this
 	var posts = {}
 	var local = {}
 	this.init = function (server,serverManager) {
-		this.key = new NodeRSA(priKey,'pkcs8-private')
 		this.serverManager = serverManager
 		for(var key in posts){
 			console.log("注册",key)
@@ -78,7 +76,11 @@ model.prototype.x7syhashSign = function(info) {
 	var appkey = this.sdkPay.sdkConfig["appkey"]
 	var payload = "POST "+info.apiMethod+"@"+appkey+"#"+info.gameType+"."+info.respTime+"\n\n"+info.bizResp
 	// console.log("payload",payload)
-    info.signature = this.key.sign(payload,"base64","base64")
+	var data = Buffer.from(payload);
+	// Sign the data and returned signature in buffer 
+	var sign = crypto.sign("RSA-SHA256", data , privateKey);
+	// Convert returned buffer to base64
+    info.signature = sign.toString('base64');
 }
 //批量获取角色信息
 model.prototype.getx7syRoleList = async function(guids,serverId,cb) {
