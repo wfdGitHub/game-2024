@@ -2,6 +2,8 @@
 const async = require("async")
 const crypto = require('crypto');
 const NodeRSA = require('node-rsa');
+const fs = require('fs');
+const path = require('path');
 var priKey = fs.readFileSync(path.join(__dirname, './key/rsa_private_key.pem')).toString('ascii')
 var pubKey = fs.readFileSync(path.join(__dirname, './key/rsa_public_key.pem')).toString('ascii')
 var model = function() {
