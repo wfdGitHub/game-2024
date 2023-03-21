@@ -12,6 +12,8 @@ var model = function(fighting,otps,talentList) {
 	this.id = 0
 	this.talentList = talentList || []
 	this.buffs = {} 					//buff列表
+	this.totalDamage = 0								//累计伤害
+	this.totalHeal = 0									//累计治疗
 	this.attInit()
 }
 //属性初始化
@@ -65,39 +67,24 @@ model.prototype.attInit = function() {
 	this.attInfo.poisonAmp = 0 			//中毒增伤
 	this.attInfo.poisonDef = 0 			//中毒减伤
 
-	this.attInfo["main_dr"] = Math.floor(Math.random() * 100)
-	this.attInfo["main_mag"] = Math.floor(Math.random() * 100)
-	this.attInfo["main_phy"] = Math.floor(Math.random() * 100)
-	this.attInfo["main_hit"] = Math.floor(Math.random() * 100)
-	this.attInfo["main_slay"] = Math.floor(Math.random() * 100)
-	this.attInfo.maxHP = Math.floor(10000) + 10000
+	this.attInfo["main_dr"] = 100
+	this.attInfo["main_mag"] = 100
+	this.attInfo["main_phy"] = 100
+	this.attInfo["main_hit"] = 100
+	this.attInfo["main_slay"] = 100
+	this.attInfo.maxHP = 20000
 	this.attInfo.hp = this.attInfo.maxHP
-	this.attInfo.atk = Math.floor(3000) + 1000
-	this.attInfo.armor = Math.floor(500) + 500
+	this.attInfo.atk = 2000
+	this.attInfo.armor = 500
 	//属性初始化
 	this.attInfo.speed += this.attInfo.main_hit
 }
 //战斗初始化
 model.prototype.init = function() {}
-//个人回合开始
-model.prototype.before = function() {
-	this.isAction = true
-	this.onAction = true
-}
-//个人回合结束
-model.prototype.after = function() {
-	this.onAction = false
-}
-//整体回合开始
-model.prototype.roundBegin = function() {
-	this.isAction = false
-}
 //获得怒气
 model.prototype.addAnger = function(value,show) {}
 //减少怒气
 model.prototype.lessAnger = function(value,show) {}
-//整体回合结束
-model.prototype.roundOver = function() {}
 //获得怒气
 model.prototype.addAnger = function(value,show) {}
 //减少怒气
@@ -112,7 +99,7 @@ model.prototype.changeTotalAtt = function(name,value) {
 	if(this.attInfo[name] !== undefined)
 		this.attInfo[name] += Number(value) || 0
 }
-//收到攻击
+//受到攻击
 model.prototype.onHit = function(attacker,info) {}
 //受到治疗
 model.prototype.onHeal = function(attacker,info) {}
@@ -134,11 +121,6 @@ model.prototype.onBlock = function() {}
 //触发暴击
 model.prototype.onCrit = function() {}
 //============================外部操作
-//移除BUFF
-model.prototype.removeBuff = function(buffId) {
-    if(this.buffs[buffId])
-        delete this.buffs[buffId]
-}
 //获取战斗数据
 model.prototype.getCombatData = function() {}
 module.exports = model

@@ -1,5 +1,4 @@
 const TEAMLENGTH = 5 				//队伍人数
-const MAXROUND = 20 				//最大回合数
 const character = require("./entity/character.js")
 const fightRecordFun = require("./fightRecord.js")
 const locatorFun = require("./skill/locator.js")
@@ -17,6 +16,7 @@ var model = function(atkInfo,defInfo,otps) {
 	this.formula = new formulaFun(this)
 	this.skillManager = new skillManagerFun(this)
 	this.buffManager = new buffManagerFun(this)
+	this.maxRound = 20
 	//战斗数据
 	this.fightState = 0				//战斗状态 0 未开始  1 已加载数据  2 已开始战斗  3  已结束
 	this.characterId = 0 			//角色ID
@@ -65,20 +65,24 @@ model.prototype.loadTeam = function(type,team) {
 //战斗开始
 model.prototype.fightBegin = function() {
 	if(this.fightState !== 1){
-		console.log("未加载战斗数据")
+		// console.log("未加载战斗数据")
 		return
 	}
+	var info = {type : "fightBegin",allHero : [],maxRound : this.maxRound}
 	this.fightState = 2
 	//战斗初始化
 	//英雄初始化
-	for(var i in this.allHero)
+	for(var i in this.allHero){
 		this.allHero[i].init()
+		info.allHero.push(this.allHero[i].getCombatData())
+	}
+	this.fightRecord.push(info)
 	//开始首回合
 	this.nextRound()
 }
 //开始新整体回合
 model.prototype.nextRound = function() {
-	if(this.round >= MAXROUND){
+	if(this.round >= this.maxRound){
 		//达到最大轮次，战斗结束
 		this.fightOver("planish")
 		return
@@ -152,7 +156,8 @@ model.prototype.afterCharacter = function() {
 //整体回合结束
 model.prototype.endRound = function(){
 	for(var i in this.allHero)
-		this.allHero[i].roundOver()
+		this.allHero[i].roundEnd()
+	this.checkOver()
 	this.nextRound()
 }
 //检查结束
@@ -166,11 +171,12 @@ model.prototype.checkOver = function() {
 //战斗结束
 model.prototype.fightOver = function(teamType) {
 	if(this.fightState !== 2){
-		console.error("未开始战斗")
+		// console.error("未开始战斗")
 		return
 	}
 	this.win_team = teamType
 	this.fightState = 3
+	this.fightRecord.push({type:"fightOver","win_team":this.win_team})
 }
 //获取常规战斗结果，打平为守方获胜
 model.prototype.getNormalWin = function() {

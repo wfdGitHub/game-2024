@@ -15,12 +15,26 @@ model.prototype.existsTarget = function(character) {
 	}
 	return false
 }
+model.prototype.getBuffTargets = function(character,targetType,targets,attackInfos) {
+	switch(targetType){
+		case "skill_targets":
+			var list = []
+			for(var i = 0;i < targets.length;i++)
+				if(targets[i].checkAim() && !attackInfos[i].dodge)
+					list.push(targets[i])
+			return list
+		break
+		default:
+			return this.getTargets(character,targetType)
+		break
+	}
+}
 model.prototype.getTargets = function(character,targetType) {
 	switch(targetType){
 		case "enemy_normal":
 			//默认单体
 			return this.getEnemyNormal(character)
-		default :
+		default:
 			return this.getEnemyNormal(character)
 	}
 }

@@ -4,6 +4,9 @@ var skill_base = require("../skill/skill_base.js")
 var model = function(fighting,otps,talentList) {
 	//继承父类属性
 	entity_base.call(this,fighting,otps,talentList)
+	this.lv = 1
+	this.star = 1
+	this.ad = 1
 	//初始化技能
 	this.defaultSkill = new skill_base(this,{"atk_aim" : 1,"atk_mul":1})
 	this.angerSkill = new skill_base(this,{"atk_aim" : 1,"atk_mul":3})
@@ -24,6 +27,25 @@ model.prototype.init = function() {
 	this.changeTotalAtt("blockDef",this.getTotalAtt("main_slay") * 0.005)
 	this.changeTotalAtt("slay",(this.getTotalAtt("main_slay") - 60) * 0.006)
 	this.changeTotalAtt("ampDefMain",(this.getTotalAtt("main_dr") - 60) * 0.006)
+}
+//===================生命周期
+//个人回合开始
+model.prototype.before = function() {
+	this.isAction = true
+	this.onAction = true
+}
+//个人回合结束
+model.prototype.after = function() {
+	this.onAction = false
+}
+//整体回合开始
+model.prototype.roundBegin = function() {
+	this.isAction = false
+}
+//整体回合结束
+model.prototype.roundEnd = function() {
+	for(var i in this.buffs)
+		this.buffs[i].update()
 }
 //获得怒气
 model.prototype.addAnger = function(value,show) {
@@ -111,11 +133,17 @@ model.prototype.getCombatData = function() {
 	}
 	return info
 }
+//受到攻击开始前
+model.prototype.onHitBefore = function(attacker) {
+	//受到攻击预处理
+}
 //受到攻击
 model.prototype.onHit = function(attacker,info) {
-	//受到攻击预处理
+	//受到攻击
 	info.id = this.id
-	return this.lessHP(info)
+	this.lessHP(info)
+	attacker.totalDamage += info.realValue
+	return info
 }
 //受到攻击结束后
 model.prototype.onHitAfter = function(attacker,info) {}
@@ -123,7 +151,9 @@ model.prototype.onHitAfter = function(attacker,info) {}
 model.prototype.onHeal = function(attacker,info) {
 	//受到治疗预处理
 	info.id = this.id
-	return this.addHP(info)
+	this.addHP(info)
+	attacker.totalHeal += info.realValue
+	return info
 }
 //受到治疗结束后
 model.prototype.onHealAfter = function(attacker,info) {}
@@ -134,14 +164,17 @@ model.prototype.onDie = function(info) {
 	this.attInfo.hp = 0
 	this.died = true
 	info.died = true
+	//清空BUFF
+	this.buffs = {}
 	this.fighting.fightInfo[this.belong]["survival"]--
 }
 //角色死亡结束后
 model.prototype.onDieAfter = function(attacker,info) {}
 //恢复血量
 model.prototype.addHP = function(info) {
+	info.value = Math.floor(info.value) || 0
+	info.realValue = 0
 	if(this.died){
-		info.realValue = 0
 		return info
 	}
 	if(this.attInfo.hp + info.value > this.attInfo.maxHP){
@@ -157,12 +190,15 @@ model.prototype.addHP = function(info) {
 }
 //扣除血量
 model.prototype.lessHP = function(info) {
+	info.value = Math.floor(info.value) || 0
+	info.realValue = 0
+	info.hp = this.attInfo.hp
+	info.maxHP = this.attInfo.maxHP
 	if(this.died){
-		info.realValue = 0
 		return info
 	}
 	if(this.attInfo.hp < info.value){
-		info.realValue = info.value
+		info.realValue = this.attInfo.hp
 		this.attInfo.hp = 0
 		this.onDie(info)
 	}else{
@@ -179,6 +215,22 @@ model.prototype.resurgence = function(attacker,info) {
 		return
 	this.fighting.fightInfo[this.belong]["survival"]++
 }
+//添加BUFF
+model.prototype.createBuff = function(buff) {
+	if(!this.buffs[buff.buffId]){
+		this.buffs[buff.buffId] = buff
+	}
+}
+//添加1层BUFF
+model.prototype.addBuff = function(attacker,buff) {
+	if(this.buffs[buff.buffId])
+		this.buffs[buff.buffId].addBuff(attacker,buff)
+}
+//移除BUFF
+model.prototype.removeBuff = function(buffId) {
+    if(this.buffs[buffId])
+        delete this.buffs[buffId]
+}
 //======触发
 //触发击杀
 model.prototype.onKill = function(target,info) {}
@@ -194,6 +246,7 @@ model.prototype.onCrit = function(attacker,info) {}
 model.prototype.getCombatData = function() {
 	var info = {
 		id : this.id,
+		belong : this.belong,
 		index : this.index,
 		lv : this.lv,
 		maxHP : this.attInfo.maxHP,

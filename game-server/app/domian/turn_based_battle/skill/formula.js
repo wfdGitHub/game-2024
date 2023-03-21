@@ -2,7 +2,7 @@
 var model = function(fighting) {
 	this.fighting = fighting
 }
-//伤害计算
+//直接伤害计算
 model.prototype.calDamage = function(attacker,target,skill) {
 	var info = {}
 	info.id = target.id
@@ -41,6 +41,15 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	}
 	info.value = basic
 	return info
+}
+//间接伤害计算
+model.prototype.calIndirectDamage = function(attacker,target,mul,value,damageType) {
+	var basic = (attacker.getTotalAtt("atk") - target.getTotalAtt("armor")) * mul
+	basic = Math.max(basic,1) + (value || 0)
+	basic = Math.ceil(basic * (1 + attacker.getTotalAtt(damageType+"Amp") - target.getTotalAtt(damageType+"Def")))
+	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
+	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
+	return basic
 }
 model.prototype.calHeal = function(attacker,target,skill) {
 	var info = {}

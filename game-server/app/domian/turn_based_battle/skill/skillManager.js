@@ -18,11 +18,17 @@ model.prototype.useSkill = function(skillInfo) {
 }
 //使用技能中
 model.prototype.skillAction = function(skill,record) {
-	if(skill.atk_aim && skill.atk_mul)
-		this.attackSkill(skill,record)
-	if(skill.heal_aim && skill.heal_mul)
-		this.healSkill(skill,record)
+	var attackTargets = []
+	var healTargets = []
+	if(skill.atk_aim && skill.atk_mul){
+		attackTargets = this.attackSkill(skill,record)
+	}
+	if(skill.heal_aim && skill.heal_mul){
+		healTargets = this.healSkill(skill,record)
+	}
 	this.fighting.fightRecord.push(record)
+	this.buffSkill(skill,attackTargets,record.attack)
+	this.buffSkill(skill,healTargets,record.heal)
 	this.skillAfter(skill,record)
 }
 //使用技能结束
@@ -69,11 +75,12 @@ model.prototype.attackSkill = function(skill,record) {
 	record.damageType = skill.damageType
 	var targets = this.fighting.locator.getTargets(skill.character,skill.atk_aim)
 	for(var i = 0;i < targets.length;i++){
+		targets[i].onHitBefore(skill.character)
 		var info = this.fighting.formula.calDamage(skill.character, targets[i],skill)
 		info = targets[i].onHit(skill.character,info)
 		record.attack.push(info)
 	}
-	//BUFF判断
+	return targets
 }
 //治疗技能
 model.prototype.healSkill = function(skill,record) {
@@ -82,6 +89,21 @@ model.prototype.healSkill = function(skill,record) {
 	for(var i = 0;i < targets.length;i++){
 		var info = this.fighting.formula.calHeal(skill.character, targets[i],skill)
 		record.heal.push(info)
+	}
+	return targets
+}
+//BUFF判断
+model.prototype.buffSkill = function(skill,targets,infos) {
+	if(!targets.length)
+		return
+	for(var buffId in skill.buffs){
+		var buff = skill.buffs[buffId]
+		var buffTargets = this.fighting.locator.getBuffTargets(skill.character,buff.targetType,targets,infos)
+		for(var i = 0;i < targets.length;i++){
+			if(this.fighting.random(buff.buffId) < buff.rate){
+				this.fighting.buffManager.createBuff(skill.character,targets[i],buff)
+			}
+		}
 	}
 }
 module.exports = model
