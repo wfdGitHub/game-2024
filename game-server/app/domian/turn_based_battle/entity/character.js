@@ -27,6 +27,7 @@ model.prototype.init = function() {
 	this.changeTotalAtt("blockDef",this.getTotalAtt("main_slay") * 0.005)
 	this.changeTotalAtt("slay",(this.getTotalAtt("main_slay") - 60) * 0.006)
 	this.changeTotalAtt("ampDefMain",(this.getTotalAtt("main_dr") - 60) * 0.006)
+	this.changeTotalAtt("speed",Math.random())
 }
 //===================生命周期
 //个人回合开始
@@ -242,8 +243,9 @@ model.prototype.onBlock = function(attacker,info) {}
 model.prototype.onCrit = function(attacker,info) {}
 
 
-//======获取信息
-model.prototype.getCombatData = function() {
+//===============获取信息
+//简单
+model.prototype.getSimpleInfo = function() {
 	var info = {
 		id : this.id,
 		belong : this.belong,
@@ -251,6 +253,23 @@ model.prototype.getCombatData = function() {
 		lv : this.lv,
 		maxHP : this.attInfo.maxHP,
 		hp : this.attInfo.hp
+	}
+	return info
+}
+//详细信息
+model.prototype.getFullInfo = function() {
+	var info = this.getSimpleInfo()
+	info.attInfo = JSON.parse(JSON.stringify(this.attInfo))
+	return info
+}
+//结算信息
+model.prototype.getOverData = function() {
+	var info = {
+		id : this.id,
+		maxHP : this.attInfo.maxHP,
+		hp : this.attInfo.hp,
+		totalDamage : this.totalDamage,
+		totalHeal : this.totalHeal
 	}
 	return info
 }

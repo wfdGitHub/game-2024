@@ -22,6 +22,9 @@ model.prototype.explain = function() {
 		return
 	var info = this.list.shift()
 	switch(info.type){
+		case "fightBegin":
+			console.log("战斗开始")
+		break
 		case "nextRound":
 			//回合标识
 			console.log("\n第"+info.round+"回合开始\n")
@@ -69,7 +72,7 @@ model.prototype.explain = function() {
 			console.log(str)
 		break
 		case "fightOver":
-			console.log("战斗结束 ")
+			console.log("\n战斗结束 ")
 			switch(info.win_team){
 				case "atk":
 					console.log("攻方获胜")
@@ -80,6 +83,9 @@ model.prototype.explain = function() {
 				case "planish":
 					console.log("平局")
 				break
+			}
+			for(var i = 0;i < info.allHero.length;i++){
+				console.log("["+info.allHero[i].id+"] 总伤害 "+info.allHero[i].totalDamage + " 总治疗 "+info.allHero[i].totalHeal)
 			}
 		break
 		default : 

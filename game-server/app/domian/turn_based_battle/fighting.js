@@ -74,7 +74,7 @@ model.prototype.fightBegin = function() {
 	//英雄初始化
 	for(var i in this.allHero){
 		this.allHero[i].init()
-		info.allHero.push(this.allHero[i].getCombatData())
+		info.allHero.push(this.allHero[i].getSimpleInfo())
 	}
 	this.fightRecord.push(info)
 	//开始首回合
@@ -82,6 +82,8 @@ model.prototype.fightBegin = function() {
 }
 //开始新整体回合
 model.prototype.nextRound = function() {
+	if(this.fightState !== 2)
+		return
 	if(this.round >= this.maxRound){
 		//达到最大轮次，战斗结束
 		this.fightOver("planish")
@@ -176,7 +178,11 @@ model.prototype.fightOver = function(teamType) {
 	}
 	this.win_team = teamType
 	this.fightState = 3
-	this.fightRecord.push({type:"fightOver","win_team":this.win_team})
+	var info = {type:"fightOver","win_team":this.win_team,allHero:[]}
+	for(var i in this.allHero){
+		info.allHero.push(this.allHero[i].getOverData())
+	}
+	this.fightRecord.push(info)
 }
 //获取常规战斗结果，打平为守方获胜
 model.prototype.getNormalWin = function() {
