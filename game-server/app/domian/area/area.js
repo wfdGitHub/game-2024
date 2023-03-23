@@ -624,5 +624,8 @@ module.exports = {
 	},{
 		name : "namespace",
 		ref : "namespace"
+	},{
+		name : "sdkPay",
+		ref : "sdkPay"
 	}]
 }
