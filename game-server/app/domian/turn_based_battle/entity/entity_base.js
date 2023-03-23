@@ -1,7 +1,8 @@
+const fightCfg = require("../fightCfg.js")
 //战斗角色基类
 var model = function(fighting,otps,talentList) {
 	this.died = false  					//死亡状态
-	if(!otps || !otps.id){
+	if(!otps || !otps.id || !fightCfg.getCfg("heros")[otps.id]){
 		this.isNaN = true
 		this.died = true
 	}

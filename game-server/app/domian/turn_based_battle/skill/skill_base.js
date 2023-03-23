@@ -1,11 +1,10 @@
 //技能基类 伤害  治疗  BUFF
 var buff_base = require("./buff_base.js")
-var model = function(character,otps,talentList) {
+var model = function(character,otps,talents) {
 	otps = otps || {}
 	this.character = character
 	this.sid = otps.sid || 0 		//技能ID
-	this.lv = otps.lv || 1 			//技能等级
-	this.isAnger = false  			//是否为怒气技能
+	this.isAnger = otps.isAnger || false //是否为怒气技能
 	this.damageType = "phy" 		//phy  物伤  mag  法伤   real  真伤
 	//伤害参数
 	this.atk_count = otps["atk_count"] || 1
@@ -18,15 +17,14 @@ var model = function(character,otps,talentList) {
 	this.heal_aim = otps["heal_aim"] || 0
 	this.buffs = {}
 	this.buffs["mag_damage"] = new buff_base(JSON.stringify({buffId : "mag_damage","mul" : 0.3,"value":1000,"rate" : 0.5,"targetType":"skill_targets","duration":2}))
-	this.talents = {
-		"hp_to_damage" : 0.3,
-		"hp_low_count" : 0.2
-	}
+	this.talents = talents || {}
 	this.tmpCount = 0
 	this.tmpDamage = 0
 }
 //技能初始化
-model.prototype.init = function() {}
+model.prototype.init = function() {
+
+}
 //使用技能前
 model.prototype.before = function() {
 	//释放技能时消耗生命值为临时伤害
@@ -43,4 +41,38 @@ model.prototype.after = function() {
 	this.tmpDamage = 0
 	this.tmpCount = 0
 }
+//==============技能天赋加载
+//新增天赋
+model.prototype.mergeSkillTalent = function(info,talentId,value) {
+	if(talent_list[talentId]){
+		let tmpTalent = {}
+		for(var i = 1;i <= 2;i++){
+			if(talent_list[talentId]["key"+i]){
+				tmpTalent[talent_list[talentId]["key"+i]] = talent_list[talentId]["value"+i]
+				if(tmpTalent[talent_list[talentId]["key"+i]] == "dynamic")
+					tmpTalent[talent_list[talentId]["key"+i]] = value || 0
+			}
+		}
+		model.mergeData(info,tmpTalent)
+	}else{
+		console.error("talentId error",talentId)
+	}
+}
+//数据合并
+model.prototype.mergeData = function(info1,info2) {
+	for(var i in info2){
+		if(info2[i]){
+			if(info1[i] && Number.isFinite(info2[i])){
+				if(Number.isFinite(info1[i])){
+					info1[i] += info2[i]
+				}else{
+					info1[i] = info2[i]
+				}
+			}else{
+				info1[i] = info2[i]
+			}
+		}
+	}
+}
+//==============获取技能信息
 module.exports = model

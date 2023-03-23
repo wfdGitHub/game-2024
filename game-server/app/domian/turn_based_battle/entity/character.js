@@ -1,6 +1,7 @@
 //英雄
-var entity_base = require("./entity_base.js")
-var skill_base = require("../skill/skill_base.js")
+const entity_base = require("./entity_base.js")
+const skill_base = require("../skill/skill_base.js")
+const fightCfg = require("../fightCfg.js")
 var model = function(fighting,otps,talentList) {
 	//继承父类属性
 	entity_base.call(this,fighting,otps,talentList)
@@ -8,8 +9,8 @@ var model = function(fighting,otps,talentList) {
 	this.star = 1
 	this.ad = 1
 	//初始化技能
-	this.defaultSkill = new skill_base(this,{"atk_aim" : 1,"atk_mul":1})
-	this.angerSkill = new skill_base(this,{"atk_aim" : 1,"atk_mul":3})
+	this.defaultSkill = new skill_base(this)
+	this.angerSkill = this.packageAngerSkill()
 	//初始化天赋
 }
 //继承父类方法
@@ -251,7 +252,7 @@ model.prototype.onCrit = function(attacker,info) {}
 
 
 //===============获取信息
-//简单
+//简单信息
 model.prototype.getSimpleInfo = function() {
 	var info = {
 		id : this.id,
@@ -279,5 +280,35 @@ model.prototype.getOverData = function() {
 		totalHeal : this.totalHeal
 	}
 	return info
+}
+//组装普攻技能
+model.prototype.packageDefaultSkill = function() {
+	var sid = fightCfg.getCfg("heros")[this.heroId]["defult"]
+	return this.packageSkill(this,sid,1,0,false)
+}
+//组装怒气技能
+model.prototype.packageAngerSkill = function() {
+	var sid = fightCfg.getCfg("heros")[this.heroId]["skill"]
+	var lv = Number(lv) || 0
+	var star = Number(star) || 1
+	if(star > 5)
+		star = 5
+	return this.packageSkill(this,sid,this.otps.s1_star,this.otps.s1_lv,true)
+}
+//组装技能
+model.prototype.packageSkill = function(sid,star,lv,isAnger) {
+	sid += star
+	if(!fightCfg.getCfg("skills")[sid]){
+		console.log("技能ID错误"+sid+" star "+star)
+		return
+	}
+	var talents = {}
+	var otps = {sid : sid,isAnger : isAnger}
+	Object.assign(otps,fightCfg.getCfg("skills")[sid])
+	if(otps.atk_basic)
+		otps.atk_value = otps.atk_basic * lv
+	if(otps.heal_basic)
+		otps.heal_value = otps.heal_basic * lv
+	return new skill_base(this,otps)
 }
 module.exports = model

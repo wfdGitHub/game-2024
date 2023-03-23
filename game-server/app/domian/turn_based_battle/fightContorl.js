@@ -1,6 +1,9 @@
 //战斗控制器
 const fightingEntity = require("./fighting.js")
-var model = function(){}
+const fightCfg = require("./fightCfg.js")
+var model = function(){
+	fightCfg.init()
+}
 //开始战斗
 model.prototype.beginFight = function(atkTeam,defTeam,otps) {
 	var fighting = new fightingEntity(atkTeam,defTeam,otps)
