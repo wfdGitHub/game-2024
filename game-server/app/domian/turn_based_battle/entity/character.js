@@ -138,10 +138,16 @@ model.prototype.getCombatData = function() {
 model.prototype.onHitBefore = function(attacker) {
 	//受到攻击预处理
 }
+//受到其他伤害
+model.prototype.onOtherDamage = function(attacker,value) {
+	var info = {"type":"other_damage","value":value}
+	this.lessHP(info)
+	this.fighting.fightRecord.push(info)
+	return info
+}
 //受到攻击
 model.prototype.onHit = function(attacker,info) {
 	//受到攻击
-	info.id = this.id
 	this.lessHP(info)
 	attacker.totalDamage += info.realValue
 	return info
@@ -151,7 +157,6 @@ model.prototype.onHitAfter = function(attacker,info) {}
 //受到治疗
 model.prototype.onHeal = function(attacker,info) {
 	//受到治疗预处理
-	info.id = this.id
 	this.addHP(info)
 	attacker.totalHeal += info.realValue
 	return info
@@ -173,6 +178,7 @@ model.prototype.onDie = function(info) {
 model.prototype.onDieAfter = function(attacker,info) {}
 //恢复血量
 model.prototype.addHP = function(info) {
+	info.id = this.id
 	info.value = Math.floor(info.value) || 0
 	info.realValue = 0
 	if(this.died){
@@ -191,6 +197,7 @@ model.prototype.addHP = function(info) {
 }
 //扣除血量
 model.prototype.lessHP = function(info) {
+	info.id = this.id
 	info.value = Math.floor(info.value) || 0
 	info.realValue = 0
 	info.hp = this.attInfo.hp
