@@ -37,6 +37,14 @@ connectorRemote.prototype.syncRealrmb = function(uid,value,cb) {
 	// 	cb()
 	// }
 }
+//更新SDK配置
+connectorRemote.prototype.updateSDKCFG = function(cb) {
+	if(this.sdkEntry)
+		this.sdkEntry.init()
+	if(this.sdkPay)
+		this.sdkPay.init()
+	cb()
+}
 connectorRemote.prototype.updateAreaName = function() {
 	var areaDeploy = this.app.get("areaDeploy")
 	areaDeploy.updateAreaName()
@@ -60,6 +68,12 @@ module.exports = function(app) {
 		args : [{
 			name : "app",
 			value : app
+		},{
+			name : "sdkEntry",
+			ref : "sdkEntry"
+		},{
+			name : "sdkPay",
+			ref : "sdkPay"
 		}]
 	})
 }

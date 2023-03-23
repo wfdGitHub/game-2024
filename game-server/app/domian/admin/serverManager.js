@@ -3,10 +3,7 @@ var xmlparser = require('express-xml-bodyparser')
 var serverDB = require('./serverDB.js')
 var adminManager = require('./adminManager.js')
 var parseString = require('xml2js').parseString;
-var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 var util = require("../../../util/util.js")
-var Md5_Key = sdkConfig["Md5_Key"]
-var Callback_Key = sdkConfig["Callback_Key"]
 var local = {}
 var serverManager = function(app) {
 	this.app = app
@@ -36,32 +33,14 @@ serverManager.prototype.init = function() {
 	res.header('Access-Control-Allow-Headers', 'Authorization,X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method' )
 	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PATCH, PUT, DELETE')
 	res.header('Allow', 'GET, POST, PATCH, OPTIONS, PUT, DELETE')
-	next();
+		next();
 	});
 	server.use(xmlparser());
-	switch(sdkConfig.sdk_type){
-		case "quick":
-			self.pay_order = self.quick_order
-		break
-		case "jianwan":
-			self.pay_order = self.jianwan_order
-		break
-		case "39SDK":
-			self.pay_order = self.sdk39_order
-		break
-		default:
-			console.error("sdktype error")
-	}
-	server.post(sdkConfig["pay_callback"],function(req,res) {
+	server.post("/pay_order",function(req,res) {
 		var data = req.body
-		self.pay_order(data,function(flag,err) {
-			// if(!flag)
-			// 	res.send(err)
-			// else
-				res.send("SUCCESS")
-		})
+		self.sdkPay.pay_order(req.body,self.finish_callback.bind(self),req,res)
 	})
-	
+	self.sdkQuery.init(server,self)
 	server.listen(80);
 	var server2 = express()
 	server2.use(express.json());
@@ -78,119 +57,11 @@ serverManager.prototype.init = function() {
 	adminManager.init(server2,self)
 	server2.listen(5081);
 }
-//quick支付回调
-serverManager.prototype.quick_order = function(data,cb) {
-	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
-	if(v_sign != data.md5Sign){
-		console.error("签名验证失败")
-		cb(false,"签名验证失败")
-		return
-	}
-	var self = this
-	var xmlStr = local.decode(data.nt_data,Callback_Key)
-	parseString(xmlStr,function(err,result) {
-		var message = result.quicksdk_message.message[0]
-		var info = {
-			is_test : message["is_test"]? message["is_test"][0] : 0,
-			channel : message["channel"]? message["channel"][0] : 0,
-			channel_name : message["channel_name"]? message["channel_name"][0] : 0,
-			channel_uid : message["channel_uid"]? message["channel_uid"][0] : 0,
-			channel_order : message["channel_order"]? message["channel_order"][0] : 0,
-			game_order : message["game_order"]? message["game_order"][0] : 0,
-			order_no : message["order_no"]? message["order_no"][0] : 0,
-			pay_time : message["pay_time"]? message["pay_time"][0] : 0,
-			amount : message["amount"]? message["amount"][0] : 0,
-			status : message["status"]? message["status"][0] : 0,
-			extras_params : message["extras_params"]? message["extras_params"][0] : 0,
-		}
-		self.payDao.finishGameOrder(info,function(flag,err,data) {
-			if(flag){
-				//发货
-				var areaId = self.areaDeploy.getFinalServer(data.areaId)
-				var serverId = self.areaDeploy.getServer(areaId)
-			    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
-			    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,data.uid,Math.floor(Number(info.amount) * 100),function(){})
-			}
-			if(err)
-				cb(false,err)
-			else
-				cb(true)
-		})
-	});
-}
-//简玩支付回调
-serverManager.prototype.jianwan_order = function(data,cb) {
-	var v_sign = util.md5(data.nt_data+data.sign+Md5_Key)
-	if(v_sign != data.md5Sign){
-		console.error("签名验证失败")
-		cb(false,"签名验证失败")
-		return
-	}
-	var self = this
-	data.nt_data_json = JSON.parse(data.nt_data_json)
-	var info = {
-		is_test : data.nt_data_json["is_test"] || 0,
-		channel : data.nt_data_json["channel"] || 0,
-		channel_name : data.nt_data_json["channel_name"] || 0,
-		channel_uid : data.nt_data_json["channel_uid"] || 0,
-		channel_order : data.nt_data_json["channel_order"] || 0,
-		game_order : data.nt_data_json["game_order"] || 0,
-		order_no : data.nt_data_json["order_no"] || 0,
-		pay_time : data.nt_data_json["pay_time"] || 0,
-		amount : data.nt_data_json["amount"] || 0,
-		status : data.nt_data_json["status"] || 0,
-		extras_params : data.nt_data_json["extras_params"] || 0
-	}
-	self.payDao.finishGameOrderJianwan(info,function(flag,err,data) {
-		if(flag){
-			//发货
-			var areaId = self.areaDeploy.getFinalServer(data.areaId)
-			var serverId = self.areaDeploy.getServer(areaId)
-		    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
-		    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,data.uid,Math.floor(Number(info.amount) * 100),function(){})
-		}
-		if(err)
-			cb(false,err)
-		else
-			cb(true)
-	})
-}
-//39SDK支付回调
-serverManager.prototype.sdk39_order = function(data,cb) {
-	var str = "channel_userid"+data.channel_userid+"cp_order_id"+data.cp_order_id+"ext"+data.ext+"juhe_order_id"+data.juhe_order_id+"money"+data.money+"package_id"+data.package_id+"unix_name"+data.unix_name+sdkConfig["payment_key"]
-	var v_sign = util.md5(str).toLocaleUpperCase()
-	if(v_sign != data.sign){
-		console.error("签名验证失败")
-		cb(false,"签名验证失败")
-		return
-	}
-	var self = this
-	var info = {
-		is_test : 0,
-		channel : 0,
-		channel_name : 0,
-		channel_uid : data.channel_userid,
-		channel_order : data.juhe_order_id,
-		game_order : data.cp_order_id,
-		order_no : 0,
-		pay_time : Date.now(),
-		amount : data.money,
-		status : 0,
-		extras_params : data.ext,
-	}
-	self.payDao.finishGameOrder(info,function(flag,err,data) {
-		if(flag){
-			//发货
-			var areaId = self.areaDeploy.getFinalServer(data.areaId)
-			var serverId = self.areaDeploy.getServer(areaId)
-		    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,data.uid,data.pay_id,function(){})
-		    self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,data.uid,Math.floor(Number(info.amount) * 100),function(){})
-		}
-		if(err)
-			cb(false,err)
-		else
-			cb(true)
-	})
+serverManager.prototype.finish_callback = function(areaId,uid,amount,pay_id) {
+	//支付成功发货
+	var serverId = this.areaDeploy.getServer(this.areaDeploy.getFinalServer(areaId))
+    this.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,function(){})
+    this.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(amount) * 100),function(){})
 }
 //update
 serverManager.prototype.update = function() {
@@ -291,46 +162,6 @@ serverManager.prototype.getOpenPlan = function(cb) {
 	self.redisDao.db.get("area:lastid",function(err,data) {
 			cb(true,{openPlans : self.openPlans,areaLock : self.areaLock,lastArea : data})
 	})
-	
-}
-local.decode = function(str,key){
-	if(str.length <= 0){
-		return '';
-	}
-	var list = new Array();
-	var resultMatch = str.match(/\d+/g);
-	for(var i= 0;i<resultMatch.length;i++){
-		list.push(resultMatch[i]);
-	}
-	if(list.length <= 0){
-		return '';
-	}
-	var keysByte = local.stringToBytes(key);
-	var dataByte = new Array();
-	for(var i = 0 ; i < list.length ; i++){
-		dataByte[i] = parseInt(list[i]) - (0xff & parseInt(keysByte[i % keysByte.length]));
-	}
-	if(dataByte.length <= 0){
-		return '';
-	}
-	var parseStr = local.bytesToString(dataByte);
-	return parseStr;
-}
-local.stringToBytes = function(str) {
-	var ch, st, re = [];  
-  	for (var i = 0; i < str.length; i++ ) {  
-    	ch = str.charCodeAt(i);
-    	st = []; 
-    	do {  
-      		st.push( ch & 0xFF );
-      		ch = ch >> 8;
-    	}while ( ch );  
-    	re = re.concat( st.reverse() );  
-	}  
-  	return re;  
-} 
-local.bytesToString = function(array) {
-  return String.fromCharCode.apply(String, array);
 }
 module.exports = {
 	id : "serverManager",
@@ -356,5 +187,14 @@ module.exports = {
 	},{
 		name : "accountDao",
 		ref : "accountDao"
+	},{
+		name : "sdkEntry",
+		ref : "sdkEntry"
+	},{
+		name : "sdkPay",
+		ref : "sdkPay"
+	},{
+		name : "sdkQuery",
+		ref : "sdkQuery"
 	}]
 }
