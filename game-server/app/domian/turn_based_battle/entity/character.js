@@ -296,19 +296,23 @@ model.prototype.packageAngerSkill = function() {
 	return this.packageSkill(this,sid,this.otps.s1_star,this.otps.s1_lv,true)
 }
 //组装技能
-model.prototype.packageSkill = function(sid,star,lv,isAnger) {
-	sid += star
-	if(!fightCfg.getCfg("skills")[sid]){
-		console.log("技能ID错误"+sid+" star "+star)
+model.prototype.packageSkill = function(baseSid,star,lv,isAnger) {
+	var sid = baseSid + star
+	if(!fightCfg.getCfg("skills")[baseSid] || !fightCfg.getCfg("skills")[sid]){
+		console.log("技能ID错误 "+baseSid+" "+sid+" star "+star)
 		return
 	}
-	var talents = {}
-	var otps = {sid : sid,isAnger : isAnger}
+	var otps = {sid : baseSid,isAnger : isAnger}
 	Object.assign(otps,fightCfg.getCfg("skills")[sid])
 	if(otps.atk_basic)
 		otps.atk_value = otps.atk_basic * lv
 	if(otps.heal_basic)
 		otps.heal_value = otps.heal_basic * lv
+	var talents = {}
+	for(var i = 1;i < star;i++){
+		baseSid++
+		if()
+	}
 	return new skill_base(this,otps)
 }
 module.exports = model
