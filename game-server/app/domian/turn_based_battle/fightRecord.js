@@ -32,19 +32,26 @@ model.prototype.explain = function() {
 		case "skill":
 			//使用技能(怒气隐式更新)
 			console.log("\033[36m["+info.id+"号]使用["+info.sid+"]\033[0m    怒气 "+info.changeAnger+"("+info.curAnger+")")
-			for(var i = 0;i < info.attack.length;i++){
-				var str = ""
-				str += "  \033[31m对["+info.attack[i]["id"]+"]\t\033[0m 造成 "+info.attack[i].realValue+"伤害("+info.attack[i].hp+"/"+info.attack[i].maxHP+")"
-				if(info.attack[i].dodge)
-					str += "\t闪避"
-				if(info.attack[i].block)
-					str += "\t格挡"
-				if(info.attack[i].crit)
-					str += "\t暴击"
-				if(info.attack[i].died)
-					str += "\t死亡"
-				console.log(str)
+			if(info.attack){
+				for(var i = 0;i < info.attack.length;i++){
+					var str = ""
+					str += "  \033[31m对["+info.attack[i]["id"]+"]\t\033[0m 造成 "+info.attack[i].realValue+"伤害("+info.attack[i].hp+"/"+info.attack[i].maxHP+")"
+					if(info.attack[i].dodge)
+						str += "\t闪避"
+					if(info.attack[i].block)
+						str += "\t格挡"
+					if(info.attack[i].crit)
+						str += "\t暴击"
+					if(info.attack[i].died)
+						str += "\t死亡"
+					console.log(str)
+				}
 			}
+		break
+		case "other_damage":
+			var str = ""
+			str += "\033[31m["+info["id"]+"]\033[0m 受到 "+info.realValue+"伤害("+info.hp+"/"+info.maxHP+")\n"
+			console.log(str)
 		break
 		case "changeAnger":
 			//怒气改变（显式更新）

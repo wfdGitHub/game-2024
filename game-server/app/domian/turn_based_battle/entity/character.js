@@ -5,11 +5,10 @@ const fightCfg = require("../fightCfg.js")
 var model = function(fighting,otps,talentList) {
 	//继承父类属性
 	entity_base.call(this,fighting,otps,talentList)
-	this.lv = 1
-	this.star = 1
-	this.ad = 1
+	if(this.isNaN)
+		return
 	//初始化技能
-	this.defaultSkill = new skill_base(this)
+	this.defaultSkill = this.packageDefaultSkill()
 	this.angerSkill = this.packageAngerSkill()
 	//初始化天赋
 }
@@ -284,35 +283,50 @@ model.prototype.getOverData = function() {
 //组装普攻技能
 model.prototype.packageDefaultSkill = function() {
 	var sid = fightCfg.getCfg("heros")[this.heroId]["defult"]
-	return this.packageSkill(this,sid,1,0,false)
+	return this.packageSkill(sid,1,0,false)
 }
 //组装怒气技能
 model.prototype.packageAngerSkill = function() {
 	var sid = fightCfg.getCfg("heros")[this.heroId]["skill"]
-	var lv = Number(lv) || 0
-	var star = Number(star) || 1
+	var star = Number(this.otps.s1_star) || 1
+	var lv = Number(this.otps.s1_lv) || 0
 	if(star > 5)
 		star = 5
-	return this.packageSkill(this,sid,this.otps.s1_star,this.otps.s1_lv,true)
+	return this.packageSkill(sid,star,lv,true)
 }
 //组装技能
 model.prototype.packageSkill = function(baseSid,star,lv,isAnger) {
 	var sid = baseSid + star
-	if(!fightCfg.getCfg("skills")[baseSid] || !fightCfg.getCfg("skills")[sid]){
+	var skillCfg = fightCfg.getCfg("skills")[sid]
+	if(!skillCfg){
 		console.log("技能ID错误 "+baseSid+" "+sid+" star "+star)
 		return
 	}
 	var otps = {sid : baseSid,isAnger : isAnger}
-	Object.assign(otps,fightCfg.getCfg("skills")[sid])
+	Object.assign(otps,skillCfg)
 	if(otps.atk_basic)
 		otps.atk_value = otps.atk_basic * lv
 	if(otps.heal_basic)
 		otps.heal_value = otps.heal_basic * lv
 	var talents = {}
-	for(var i = 1;i < star;i++){
+	if(this.otps.skillTalents)
+		talents = this.otps.skillTalents
+	for(var i = 1;i <= star;i++){
 		baseSid++
-		if()
+		skillCfg = fightCfg.getCfg("skills")[baseSid]
+		if(skillCfg["talentId"]){
+			var talentInfo = fightCfg.getCfg("skill_talents")[skillCfg["talentId"]]
+			for(var j = 1;j <= 3;j++){
+				var key = talentInfo["key"+j]
+				if(key){
+					if(talents[key] && Number.isFinite(talents[key]))
+						talents[key] += talentInfo["value"+j]
+					else
+						talents[key] = talentInfo["value"+j]
+				}
+			}
+		}
 	}
-	return new skill_base(this,otps)
+	return new skill_base(this,otps,talents)
 }
 module.exports = model

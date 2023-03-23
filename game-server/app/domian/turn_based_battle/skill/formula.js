@@ -4,9 +4,23 @@ var model = function(fighting) {
 }
 //直接伤害计算
 model.prototype.calDamage = function(attacker,target,skill) {
+	attacker.clearTmpInfo()
+	target.clearTmpInfo()
 	var info = {}
 	info.id = target.id
 	info.value = 0
+	var damageType = skill.damageType
+	//伤害类型根据目标最低防御属性选择
+	if(skill.talents.weak_damage_type){
+		if(target.getTotalAtt("main_mag") > target.getTotalAtt("main_phy"))
+			damageType = "phy"
+		else
+			damageType = "mag"
+	}
+	if(damageType == "mag")
+		this.onMag(attacker,target,skill)
+	else if(damageType == "phy")
+		this.onPhy(attacker,target,skill)
 	//闪避判断
 	var dodge = target.getTotalAtt("hitDef") - attacker.getTotalAtt("hit")
 	dodge = Math.min(dodge,0.9) 	//闪避率最高不超过90%
@@ -15,11 +29,11 @@ model.prototype.calDamage = function(attacker,target,skill) {
 		return info
 	}
 	//计算基础伤害量
-	var basic = Math.ceil((attacker.getTotalAtt("atk") - target.getTotalAtt("armor")) * skill.atk_mul + skill.atk_value)
+	var basic = Math.ceil((attacker.getTotalAtt("atk") - target.getTotalAtt("armor") * (1 - attacker.getTotalAtt("ign_armor"))) * skill.atk_mul + skill.atk_value)
 	//主属性增伤
-	if(skill.damageType == "mag")
+	if(damageType == "mag")
 		basic += Math.ceil(basic * (attacker.getTotalAtt("magAmp") - target.getTotalAtt("magDef")))
-	else if(skill.damageType == "phy")
+	else if(damageType == "phy")
 		basic += Math.ceil(basic * (attacker.getTotalAtt("phyAmp") - target.getTotalAtt("phyDef")))
 
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
@@ -51,6 +65,7 @@ model.prototype.calIndirectDamage = function(attacker,target,mul,value,damageTyp
 	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
 	return basic
 }
+//治疗计算
 model.prototype.calHeal = function(attacker,target,skill) {
 	var info = {}
 	info.id = target.id
@@ -59,6 +74,18 @@ model.prototype.calHeal = function(attacker,target,skill) {
 	basic += Math.ceil(basic * target.getTotalAtt("healAdd"))
 	info.value = basic
 	return info
+}
+//外功伤害处理
+model.prototype.onPhy = function(attacker,target,skill) {
+	//外功暴击加成
+	if(skill.phy_slay)
+		attacker.changeTotalTmp("slay",skill.phy_slay)
+}
+//内功伤害处理
+model.prototype.onMag = function(attacker,target,skill) {
+	//内功忽视护甲
+	if(skill.mag_ign_armor)
+		attacker.changeTotalTmp("ign_armor",skill.mag_ign_armor)
 }
 model.prototype.randomCheck = function(num,reason) {
 	return this.fighting.random(reason) < num ? true : false
