@@ -4,7 +4,6 @@ var serverDB = require('./serverDB.js')
 var adminManager = require('./adminManager.js')
 var parseString = require('xml2js').parseString;
 var util = require("../../../util/util.js")
-// var ip_white_list = ["171.83.96.216"]
 var local = {}
 var serverManager = function(app) {
 	this.app = app
@@ -163,7 +162,6 @@ serverManager.prototype.getOpenPlan = function(cb) {
 	self.redisDao.db.get("area:lastid",function(err,data) {
 			cb(true,{openPlans : self.openPlans,areaLock : self.areaLock,lastArea : data})
 	})
-	
 }
 module.exports = {
 	id : "serverManager",
