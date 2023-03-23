@@ -9,6 +9,7 @@ var local = {}
 model.prototype.init = function(cb) {
 	// console.log("SKD支付模块 初始化SDK配置")
 	this.sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
+	console.log("sdkConfig",this.sdkConfig)
 }
 //收到支付回调
 model.prototype.pay_order = function(data,finish_callback,req,res) {
