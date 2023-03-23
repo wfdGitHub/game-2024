@@ -5,7 +5,6 @@ const fs = require('fs');
 const path = require('path');
 var privateKey = fs.readFileSync(path.join(__dirname, './key/rsa_private_key.pem')).toString('ascii')
 var publicKey = fs.readFileSync(path.join(__dirname, './key/rsa_public_key.pem')).toString('ascii')
->>>>>>> Stashed changes
 var model = function() {
 	var self = this
 	var posts = {}
