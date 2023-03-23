@@ -4,11 +4,13 @@
     "private": false,
     "dependencies": {
         "bearcat": "^0.4.29",
+        "crypto": "^1.0.1",
         "express": "^4.16.4",
         "express-xml-bodyparser": "^0.3.0",
         "generic-pool": "^3.7.1",
         "md5-node": "^1.0.1",
         "mysql": "^2.18.1",
+        "node-rsa": "^1.1.1",
         "pomelo": "2.2.5",
         "redis": "^2.8.0",
         "string-random": "^0.1.3",
