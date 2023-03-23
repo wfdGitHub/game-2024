@@ -8,6 +8,7 @@ var local = {}
 //初始化获取配置
 model.prototype.init = function(cb) {
 	// console.log("SKD支付模块 初始化SDK配置")
+	delete require.cache[require.resolve('../../../config/sysCfg/sdkConfig.json')]; 
 	this.sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
 	console.log("sdkConfig",this.sdkConfig)
 }
