@@ -283,7 +283,6 @@ module.exports = function() {
 	}
 	//三队挑战
 	this.areaTrial = function(uid,verifys,cb) {
-		console.log("areaTrial",uid,verifys)
 		var verify1 = verifys[0]
 		var verify2 = verifys[1]
 		var verify3 = verifys[2]
