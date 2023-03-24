@@ -72,7 +72,6 @@ model.prototype.skillAfter = function(skill,record) {
 //伤害技能
 model.prototype.attackSkill = function(skill,record) {
 	record.attack = []
-	record.damageType = skill.damageType
 	var allCount = skill.atk_count + skill.tmpCount
 	for(var count = 0;count < allCount;count++){
 		var targets = this.fighting.locator.getTargets(skill.character,skill.atk_aim)

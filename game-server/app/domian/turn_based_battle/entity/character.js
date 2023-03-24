@@ -292,10 +292,10 @@ model.prototype.packageAngerSkill = function() {
 	var lv = Number(this.otps.s1_lv) || 0
 	if(star > 5)
 		star = 5
-	return this.packageSkill(sid,star,lv,true)
+	return this.packageSkill(sid,star,lv,true,this.otps.skillTalents)
 }
 //组装技能
-model.prototype.packageSkill = function(baseSid,star,lv,isAnger) {
+model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {
 	var sid = baseSid + star
 	var skillCfg = fightCfg.getCfg("skills")[sid]
 	if(!skillCfg){
@@ -308,9 +308,7 @@ model.prototype.packageSkill = function(baseSid,star,lv,isAnger) {
 		otps.atk_value = otps.atk_basic * lv
 	if(otps.heal_basic)
 		otps.heal_value = otps.heal_basic * lv
-	var talents = {}
-	if(this.otps.skillTalents)
-		talents = this.otps.skillTalents
+	talents = talents || {}
 	for(var i = 1;i <= star;i++){
 		baseSid++
 		skillCfg = fightCfg.getCfg("skills")[baseSid]

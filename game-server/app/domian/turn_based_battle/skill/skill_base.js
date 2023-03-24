@@ -5,7 +5,7 @@ var model = function(character,otps,talents) {
 	this.character = character
 	this.sid = otps.sid || 0 		//技能ID
 	this.isAnger = otps.isAnger || false //是否为怒气技能
-	this.damageType = "phy" 		//phy  物伤  mag  法伤   real  真伤
+	this.d_type = "phy" 		//phy  物伤  mag  法伤   real  真伤
 	//伤害参数
 	this.atk_count = otps["atk_count"] || 1
 	this.atk_mul = otps["atk_mul"] || 0

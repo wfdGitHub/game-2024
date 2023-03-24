@@ -35,7 +35,12 @@ model.prototype.explain = function() {
 			if(info.attack){
 				for(var i = 0;i < info.attack.length;i++){
 					var str = ""
-					str += "  \033[31m对["+info.attack[i]["id"]+"]\t\033[0m 造成 "+info.attack[i].realValue+"伤害("+info.attack[i].hp+"/"+info.attack[i].maxHP+")"
+					str += "  \033[31m对["+info.attack[i]["id"]+"]\t\033[0m 造成 "+info.attack[i].realValue
+					if(info.attack[i]["d_type"] == "phy")
+						str += "外功"
+					else if(info.attack[i]["d_type"] == "mag")
+						str += "内功"
+					str += "伤害("+info.attack[i].hp+"/"+info.attack[i].maxHP+")"
 					if(info.attack[i].dodge)
 						str += "\t闪避"
 					if(info.attack[i].block)

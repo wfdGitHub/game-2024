@@ -9,17 +9,18 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	var info = {}
 	info.id = target.id
 	info.value = 0
-	var damageType = skill.damageType
+	var d_type = skill.d_type
 	//伤害类型根据目标最低防御属性选择
 	if(skill.talents.weak_damage_type){
 		if(target.getTotalAtt("main_mag") > target.getTotalAtt("main_phy"))
-			damageType = "phy"
+			d_type = "phy"
 		else
-			damageType = "mag"
+			d_type = "mag"
 	}
-	if(damageType == "mag")
+	info.d_type = d_type
+	if(d_type == "mag")
 		this.onMag(attacker,target,skill)
-	else if(damageType == "phy")
+	else if(d_type == "phy")
 		this.onPhy(attacker,target,skill)
 	//闪避判断
 	var dodge = target.getTotalAtt("hitDef") - attacker.getTotalAtt("hit")
@@ -31,9 +32,9 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	//计算基础伤害量
 	var basic = Math.ceil((attacker.getTotalAtt("atk") - target.getTotalAtt("armor") * (1 - attacker.getTotalAtt("ign_armor"))) * skill.atk_mul + skill.atk_value)
 	//主属性增伤
-	if(damageType == "mag")
+	if(d_type == "mag")
 		basic += Math.ceil(basic * (attacker.getTotalAtt("magAmp") - target.getTotalAtt("magDef")))
-	else if(damageType == "phy")
+	else if(d_type == "phy")
 		basic += Math.ceil(basic * (attacker.getTotalAtt("phyAmp") - target.getTotalAtt("phyDef")))
 
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
@@ -57,10 +58,10 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	return info
 }
 //间接伤害计算
-model.prototype.calIndirectDamage = function(attacker,target,mul,value,damageType) {
+model.prototype.calIndirectDamage = function(attacker,target,mul,value,d_type) {
 	var basic = (attacker.getTotalAtt("atk") - target.getTotalAtt("armor")) * mul
 	basic = Math.max(basic,1) + (value || 0)
-	basic = Math.ceil(basic * (1 + attacker.getTotalAtt(damageType+"Amp") - target.getTotalAtt(damageType+"Def")))
+	basic = Math.ceil(basic * (1 + attacker.getTotalAtt(d_type+"Amp") - target.getTotalAtt(d_type+"Def")))
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
 	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
 	return basic
@@ -78,14 +79,14 @@ model.prototype.calHeal = function(attacker,target,skill) {
 //外功伤害处理
 model.prototype.onPhy = function(attacker,target,skill) {
 	//外功暴击加成
-	if(skill.phy_slay)
-		attacker.changeTotalTmp("slay",skill.phy_slay)
+	if(skill.talents.phy_slay)
+		attacker.changeTotalTmp("slay",skill.talents.phy_slay)
 }
 //内功伤害处理
 model.prototype.onMag = function(attacker,target,skill) {
 	//内功忽视护甲
-	if(skill.mag_ign_armor)
-		attacker.changeTotalTmp("ign_armor",skill.mag_ign_armor)
+	if(skill.talents.mag_ign_armor)
+		attacker.changeTotalTmp("ign_armor",skill.talents.mag_ign_armor)
 }
 model.prototype.randomCheck = function(num,reason) {
 	return this.fighting.random(reason) < num ? true : false
