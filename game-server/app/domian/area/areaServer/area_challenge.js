@@ -283,6 +283,7 @@ module.exports = function() {
 	}
 	//三队挑战
 	this.areaTrial = function(uid,verifys,cb) {
+		console.log("areaTrial",uid,verifys)
 		var verify1 = verifys[0]
 		var verify2 = verifys[1]
 		var verify3 = verifys[2]
@@ -354,7 +355,7 @@ module.exports = function() {
 				defTeam = area_trial[trialId]["team3"]
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum3})
 				if(!winFlag){
-					next("第2场战斗失败",atkTeam)
+					next("第3场战斗失败",atkTeam)
 					return
 				}
 				list = self.fightContorl.getFightRecord()
