@@ -22,6 +22,11 @@ model.prototype.calDamage = function(attacker,target,skill) {
 		this.onMag(attacker,target,skill)
 	else if(d_type == "phy")
 		this.onPhy(attacker,target,skill)
+	//存在BUFF判断
+	if(target.buffs["mag_damage"])
+		this.onMagBuff(attacker,target,skill)
+	if(target.buffs["phy_damage"])
+		this.onPhyBuff(attacker,target,skill)
 	//闪避判断
 	var dodge = target.getTotalAtt("hitDef") - attacker.getTotalAtt("hit")
 	dodge = Math.min(dodge,0.9) 	//闪避率最高不超过90%
@@ -88,6 +93,20 @@ model.prototype.onMag = function(attacker,target,skill) {
 	//内功忽视护甲
 	if(skill.talents.mag_ign_armor)
 		attacker.changeTotalTmp("ign_armor",skill.talents.mag_ign_armor)
+}
+//外伤BUFF处理
+model.prototype.onPhy = function(attacker,target,skill) {
+	//外功暴击加成
+	if(skill.talents.phy_slay)
+		attacker.changeTotalTmp("slay",skill.talents.phy_slay)
+}
+//存在内伤BUFF处理
+model.prototype.onMagBuff = function(attacker,target,skill) {
+
+}
+//存在外伤BUFF处理
+model.prototype.onPhyBuff = function(attacker,target,skill) {
+
 }
 //伤害计算完成后处理
 model.prototype.onDamageOver = function(attacker,target,skill,info) {
