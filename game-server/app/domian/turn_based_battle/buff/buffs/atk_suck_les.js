@@ -12,7 +12,7 @@ model.prototype.buffOtps = function(attacker,info) {
 	info.num = 0
 	if(info.buff.mul)
 		info.num = Number(this.character.attInfo[this.attKey] * info.buff.mul) || 0
-	this.fighting.skillManager.createBuff(attacker,attacker,{"buffId":"atk_suck_add","value":-info.num,"duration":info.buff.duration})
+	this.fighting.buffManager.createBuff(attacker,attacker,{"buffId":"atk_suck_add","value":-info.num,"duration":info.buff.duration})
 }
 //获得加成属性
 model.prototype.getAttInfo = function(name) {

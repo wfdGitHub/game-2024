@@ -42,7 +42,7 @@ model.prototype.attInit = function() {
 	this.attInfo.main_hit = heroInfo.main_hit 			//身法  影响出手速度、命中、闪避
 	this.attInfo.main_slay = heroInfo.main_slay 		//悟性  影响暴击伤害、格挡、破格
 	//二级属性
-	this.attInfo.HP = 0 				//当前生命值
+	this.attInfo.hp = 0 				//当前生命值
 	this.attInfo.maxHP = 0 				//最大生命值
 	this.attInfo.atk = 0 				//攻击力
 	this.attInfo.armor = 0 				//护甲
@@ -52,7 +52,7 @@ model.prototype.attInit = function() {
 	this.attInfo.hitDef = 0 			//闪避率
 	this.attInfo.block = 0 				//格挡率
 	this.attInfo.blockDef = 0 			//破格率
-	this.attInfo.crit = 1 				//暴击率
+	this.attInfo.crit = 0 				//暴击率
 	this.attInfo.critDef = 0 			//抗暴率
 	this.attInfo.slay = 0 				//暴伤加成
 	this.attInfo.slayDef = 0 			//暴伤减免

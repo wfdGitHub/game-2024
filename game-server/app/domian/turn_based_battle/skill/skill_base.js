@@ -46,38 +46,5 @@ model.prototype.after = function() {
 	this.tmpDamage = 0
 	this.tmpCount = 0
 }
-//==============技能天赋加载
-//新增天赋
-model.prototype.mergeSkillTalent = function(info,talentId,value) {
-	if(talent_list[talentId]){
-		let tmpTalent = {}
-		for(var i = 1;i <= 2;i++){
-			if(talent_list[talentId]["key"+i]){
-				tmpTalent[talent_list[talentId]["key"+i]] = talent_list[talentId]["value"+i]
-				if(tmpTalent[talent_list[talentId]["key"+i]] == "dynamic")
-					tmpTalent[talent_list[talentId]["key"+i]] = value || 0
-			}
-		}
-		model.mergeData(info,tmpTalent)
-	}else{
-		console.error("talentId error",talentId)
-	}
-}
-//数据合并
-model.prototype.mergeData = function(info1,info2) {
-	for(var i in info2){
-		if(info2[i]){
-			if(info1[i] && Number.isFinite(info2[i])){
-				if(Number.isFinite(info1[i])){
-					info1[i] += info2[i]
-				}else{
-					info1[i] = info2[i]
-				}
-			}else{
-				info1[i] = info2[i]
-			}
-		}
-	}
-}
 //==============获取技能信息
 module.exports = model

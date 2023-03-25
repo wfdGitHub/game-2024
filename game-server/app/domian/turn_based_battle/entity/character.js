@@ -61,7 +61,7 @@ model.prototype.lessAnger = function(value,show) {
 	this.curAnger -= Number(value) || 0
 	this.curAnger = Math.max(this.curAnger,0)
 	if(show)
-		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : value,curAnger : this.curAnger})
+		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : -value,curAnger : this.curAnger})
 	return value
 }
 //选择技能
@@ -71,12 +71,12 @@ model.prototype.chooseSkill = function() {
 	if(!this.fighting.locator.existsTarget(this))
 		return false
 	if(this.curAnger >= this.needAnger)
-		return this.userAngerSkill()
+		return this.useAngerSkill()
 	else
-		return this.userNormalSkill()
+		return this.useNormalSkill()
 }
 //使用怒气技能消耗怒气
-model.prototype.userAngerSkill = function() {
+model.prototype.useAngerSkill = function() {
 	if(this.checkControl())
 		return false
 	var needAnger = this.needAnger
@@ -93,14 +93,32 @@ model.prototype.userAngerSkill = function() {
 			info.changeAnger = -this.lessAnger(needValue)
 		info.curAnger = this.curAnger
 	}
+	info.mul = 1
+	return info
+}
+//消耗全部怒气再次使用普攻，基础伤害50%
+model.prototype.useAllAangerSkill = function() {
+	if(this.checkControl())
+		return false
+	var needAnger = this.needAnger
+	var needValue = 0
+	var info = {}
+	info.skill = this.angerSkill
+	info.mul = 0.5
+	info.changeAnger = -this.lessAnger(this.curAnger)
+	info.curAnger = this.curAnger
+	info.no_combo = true  			//不可连击
+	if(info.skill.talents.kill_repet)
+		info.mul += Math.floor(info.changeAnger * info.skill.talents.kill_repet)
 	return info
 }
 //使用普攻技能获得怒气
-model.prototype.userNormalSkill = function() {
+model.prototype.useNormalSkill = function() {
 	var info = {}
 	info.skill = this.defaultSkill
 	info.changeAnger = this.addAnger(20)
 	info.curAnger = this.curAnger
+	info.mul = 1
 	return info
 }
 //检查可行动
@@ -168,6 +186,7 @@ model.prototype.onDie = function(info) {
 	if(this.died)
 		return
 	this.attInfo.hp = 0
+	this.curAnger = 0
 	this.died = true
 	info.died = true
 	//清空BUFF
@@ -248,8 +267,6 @@ model.prototype.onDodge = function(attacker,info) {}
 model.prototype.onBlock = function(attacker,info) {}
 //触发暴击
 model.prototype.onCrit = function(attacker,info) {}
-
-
 //===============获取信息
 //简单信息
 model.prototype.getSimpleInfo = function() {
@@ -314,7 +331,7 @@ model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {
 		skillCfg = fightCfg.getCfg("skills")[baseSid]
 		if(skillCfg["talentId"]){
 			var talentInfo = fightCfg.getCfg("skill_talents")[skillCfg["talentId"]]
-			for(var j = 1;j <= 3;j++){
+			for(var j = 1;j <= 4;j++){
 				var key = talentInfo["key"+j]
 				if(key){
 					if(talents[key] && Number.isFinite(talents[key]))

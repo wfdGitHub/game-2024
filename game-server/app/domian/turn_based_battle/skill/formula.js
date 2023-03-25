@@ -102,16 +102,24 @@ model.prototype.onPhy = function(attacker,target,skill) {
 }
 //存在内伤BUFF处理
 model.prototype.onMagBuff = function(attacker,target,skill) {
-
+	if(skill.talents.mag_buff_att1 && skill.talents.mag_buff_value1)
+		attacker.changeTotalTmp(skill.talents.mag_buff_att1,skill.talents.mag_slay1)
+	if(skill.talents.mag_buff_att2 && skill.talents.mag_buff_value2)
+		attacker.changeTotalTmp(skill.talents.mag_buff_att2,skill.talents.mag_slay2)
 }
 //存在外伤BUFF处理
 model.prototype.onPhyBuff = function(attacker,target,skill) {
-
+	if(skill.talents.phy_buff_att1 && skill.talents.phy_buff_value1)
+		attacker.changeTotalTmp(skill.talents.phy_buff_att1,skill.talents.phy_slay1)
+	if(skill.talents.phy_buff_att2 && skill.talents.phy_buff_value2)
+		attacker.changeTotalTmp(skill.talents.phy_buff_att2,skill.talents.phy_slay2)
 }
 //伤害计算完成后处理
 model.prototype.onDamageOver = function(attacker,target,skill,info) {
 	if(skill.talents.maxHP_damage)
 		info.value += Math.floor(target.getTotalAtt("maxHP") * skill.talents.maxHP_damage)
+	if(skill.talents.hp_low_amp)
+		info.value += Math.floor(info.value * (1 - Math.min(1,target.getTotalAtt("hp") / target.getTotalAtt("maxHP"))) * skill.talents.hp_low_amp)
 }
 model.prototype.randomCheck = function(num,reason) {
 	return this.fighting.random(reason) < num ? true : false

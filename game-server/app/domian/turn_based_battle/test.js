@@ -1,6 +1,6 @@
 var fightContorl = require("./fightContorl.js")
-//"buff1":JSON.stringify({"buffId":"atk_down","targetType":"skill_targets","mul":-0.05,"duration":2,"rate":1})
-var atkTeam = [{"id":105010,skillTalents:{"maxHP_damage":0.1}},0,0,0,0]
-var defTeam = [{"id":105010},0,0,0,0]
+// var buff1 = JSON.stringify({"buffId":"mag_damage","targetType":"skill_targets","mul":0.3,"duration":2,"rate":1})
+var atkTeam = [{"id":105050,"s1_star":5},0,0,0,0]
+var defTeam = [{"id":104010},0,0,0,0]
 console.log(fightContorl.beginFight(atkTeam,defTeam,{}))
 fightContorl.fighting.fightRecord.explain()
