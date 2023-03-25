@@ -39,9 +39,29 @@ model.prototype.getTargets = function(character,targetType) {
 		case "enemy_back_rand_1":
 			//后排随机单体
 			return this.getEnemyBackRandom(character,1)
+		case "enemy_1":
+			//敌方随机单体
+			return this.getEnemyRandom(character,1)
+		case "enemy_2":
+			//敌方2个随机单体
+			return this.getEnemyRandom(character,2)
+		case "enemy_3":
+			//敌方3个随机单体
+			return this.getEnemyRandom(character,3)
 		case "enemy_all":
 			//敌方全体
 			return this.getEnemyAll(character)
+		case "enemy_maxAtk_1":
+			//敌方攻击力最高单位
+			return this.getEnemyMaxAtk(character)
+		case "team_maxAtk_1":
+			//友方攻击力最高单位
+			return this.getTeamMaxAtk(character)
+		case "enemy_minHP":
+			//敌方血量最少单位
+			return this.getEnemyMinHP(character)
+		case "team_self":
+			return [character]
 		default:
 			//默认单体
 			return this.getEnemyNormal(character)
@@ -98,6 +118,71 @@ model.prototype.getEnemyAll = function(character) {
 		}
 	}
     return list
+}
+//敌方攻击最高的1个单位
+model.prototype.getEnemyMaxAtk = function(character) {
+    var list = []
+    var target = false
+    var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	for(var index = 0;index < enemyTeam.length;index++){
+		if(enemyTeam[index].checkAim()){
+			if(!target || enemyTeam[index].attInfo.atk > target.attInfo.atk){
+				target = enemyTeam[index]
+			}
+		}
+	}
+	if(target)
+		return [target]
+	else
+		return []
+}
+//友方攻击最高的1个单位
+model.prototype.getTeamMaxAtk = function(character) {
+    var list = []
+    var target = false
+    var team =  character.fighting["fightInfo"][character.belong].team
+	for(var index = 0;index < team.length;index++){
+		if(team[index].checkAim()){
+			if(!target || team[index].attInfo.atk > target.attInfo.atk){
+				target = team[index]
+			}
+		}
+	}
+	if(target)
+		return [target]
+	else
+		return []
+}
+//敌方血量最少的1个目标
+model.prototype.getEnemyMinHP = function(character) {
+    var list = []
+    var target = false
+    var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	for(var index = 0;index < enemyTeam.length;index++){
+		if(enemyTeam[index].checkAim()){
+			if(!target || enemyTeam[index].attInfo.hp < target.attInfo.hp){
+				target = enemyTeam[index]
+			}
+		}
+	}
+	if(target)
+		return [target]
+	else
+		return []
+}
+//敌方随机N个单位
+model.prototype.getEnemyRandom = function(character,count) {
+	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	var tmpList = []
+	for(var i = 0;i < enemyTeam.length;i++)
+		if(enemyTeam[i].checkAim())
+			tmpList.push(enemyTeam[i])
+	var list = []
+	for(var i = 0;i < count && tmpList.length;i++){
+		var rid = Math.floor(character.fighting.random("随机单位") * tmpList.length)
+		list.push(tmpList.splice(rid,1))
+	}
+	return list
 }
 model.prototype.callDist = function(pos1,pos2) {
 	return Math.abs(pos1[0] - pos2[0]) * 10 + Math.abs(pos1[1] - pos2[1])

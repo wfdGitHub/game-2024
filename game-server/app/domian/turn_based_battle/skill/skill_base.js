@@ -16,14 +16,19 @@ var model = function(character,otps,talents) {
 	this.heal_value = otps["heal_value"] || 0
 	this.heal_aim = otps["heal_aim"] || 0
 	this.buffs = {}
-	// this.buffs["mag_damage"] = new buff_base(JSON.stringify({buffId : "mag_damage","mul" : 0.3,"value":1000,"rate" : 0.5,"targetType":"skill_targets","duration":2}))
 	this.talents = talents || {}
 	this.tmpCount = 0
 	this.tmpDamage = 0
+	this.init()
 }
 //技能初始化
 model.prototype.init = function() {
-
+	for(var i = 1;i <= 3;i++){
+		if(this.talents["buff"+i]){
+			var buff = new buff_base(this.talents["buff"+i])
+			this.buffs[buff.buffId] = buff
+		}
+	}
 }
 //使用技能前
 model.prototype.before = function() {

@@ -1,4 +1,4 @@
-//内伤伤害
+//外伤BUFF
 var buff_entity = require("../buff_entity.js")
 var model = function(fighting,character,buffId) {
 	//继承父类属性
@@ -8,11 +8,11 @@ var model = function(fighting,character,buffId) {
 model.prototype = Object.create(buff_entity.prototype) //继承父类方法
 //新增BUFF后参数处理 伤害系数 mul  附加伤害value 受增减伤影响
 model.prototype.buffOtps = function(attacker,info) {
-	info.basic = this.fighting.formula.calIndirectDamage(attacker,this.character,info.buff.mul,info.buff.value,"mag")
+	info.basic = this.fighting.formula.calIndirectDamage(attacker,this.character,info.buff.mul,info.buff.value,"phy")
 }
 //BUFF功能实现
 model.prototype.domain = function(){
-	var record = {type : "buffDamage",id:this.character.id,value:0,realValue:0,d_type:"mag",bId : this.buffId}
+	var record = {type : "buffDamage",id:this.character.id,value:0,realValue:0,d_type:"phy",bId : this.buffId}
 	for(var i = 0;i < this.list.length;i++){
 		var info = this.character.onHit(this.list[i].attacker,{value : this.list[i].basic})
 		record.value += info.value

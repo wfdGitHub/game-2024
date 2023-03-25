@@ -55,6 +55,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 		}
 	}
 	info.value = basic
+	this.onDamageOver(attacker,target,skill,info)
 	return info
 }
 //间接伤害计算
@@ -87,6 +88,11 @@ model.prototype.onMag = function(attacker,target,skill) {
 	//内功忽视护甲
 	if(skill.talents.mag_ign_armor)
 		attacker.changeTotalTmp("ign_armor",skill.talents.mag_ign_armor)
+}
+//伤害计算完成后处理
+model.prototype.onDamageOver = function(attacker,target,skill,info) {
+	if(skill.talents.maxHP_damage)
+		info.value += Math.floor(target.getTotalAtt("maxHP") * skill.talents.maxHP_damage)
 }
 model.prototype.randomCheck = function(num,reason) {
 	return this.fighting.random(reason) < num ? true : false

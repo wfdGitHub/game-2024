@@ -1,20 +1,19 @@
 //BUFF作用基类
-var model = function(fighting,character,buffId) {
+var model = function(fighting,character,buffId,attKey,max_count) {
 	this.fighting = fighting
 	this.buffId = buffId
 	this.list = []
 	this.character = character
+	this.max_count = max_count || 1 	//最大层数
 	this.init()
 }
 //BUFF初始化
-model.prototype.init = function() {
-	this.MAX_COUNT = 10 			//最大层数
-}
+model.prototype.init = function() {}
 //新增一层BUFF
 model.prototype.addBuff = function(attacker,buff) {
 	if(!buff)
 		return
-	if(this.list.length < this.MAX_COUNT){
+	if(this.list.length < this.max_count){
 		this.list.push({attacker:attacker,buff : buff,duration : buff.duration})
 		this.buffOtps(attacker,this.list[this.list.length - 1])
 		this.fighting.fightRecord.push({type : "buffAdd",id : this.character.id,bId : this.buffId,num:this.list.length})
@@ -57,5 +56,5 @@ model.prototype.domain = function() {}
 //buff结算后
 model.prototype.bufflLater = function() {}
 //获取加成属性
-model.prototype.getAttInfo = function(name) {}
+model.prototype.getAttInfo = function(name) { return 0}
 module.exports = model

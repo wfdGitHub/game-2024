@@ -95,6 +95,8 @@ model.prototype.lessAnger = function(value,show) {}
 model.prototype.getTotalAtt = function(name) {
 	var value = this.attInfo[name] || 0
 	value += this.attTmpInfo[name] || 0
+	for(var i in this.buffs)
+		value += this.buffs[i].getAttInfo(name)
 	return value
 }
 //改变属性
