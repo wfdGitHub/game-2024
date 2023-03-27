@@ -54,7 +54,7 @@ model.prototype.addAnger = function(value,show) {
 	this.curAnger = Math.min(this.curAnger,this.maxAnger)
 	if(show)
 		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : value,curAnger : this.curAnger})
-	return value
+	return this.curAnger
 }
 //减少怒气
 model.prototype.lessAnger = function(value,show) {
@@ -62,7 +62,7 @@ model.prototype.lessAnger = function(value,show) {
 	this.curAnger = Math.max(this.curAnger,0)
 	if(show)
 		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : -value,curAnger : this.curAnger})
-	return value
+	return this.curAnger
 }
 //选择技能
 model.prototype.chooseSkill = function() {
@@ -159,8 +159,17 @@ model.prototype.onHitBefore = function(attacker) {
 //受到其他伤害
 model.prototype.onOtherDamage = function(attacker,value) {
 	var info = {"type":"other_damage","value":value}
-	this.lessHP(info)
-	this.fighting.fightRecord.push(info)
+	this.onHit(attacker,info)
+	if(info.realValue)
+		this.fighting.fightRecord.push(info)
+	return info
+}
+//受到其他治疗
+model.prototype.onOtherHeal = function(attacker,value) {
+	var info = {"type":"other_heal","value":value}
+	this.onHeal(attacker,info)
+	if(info.realValue)
+		this.fighting.fightRecord.push(info)
 	return info
 }
 //受到攻击
@@ -170,8 +179,6 @@ model.prototype.onHit = function(attacker,info) {
 	attacker.totalDamage += info.realValue
 	return info
 }
-//受到攻击结束后
-model.prototype.onHitAfter = function(attacker,info) {}
 //受到治疗
 model.prototype.onHeal = function(attacker,info) {
 	//受到治疗预处理
@@ -231,6 +238,8 @@ model.prototype.lessHP = function(info) {
 	}else{
 		this.attInfo.hp -= info.value
 		info.realValue = info.value
+		//受击回怒
+		info.curAnger = this.addAnger(Math.floor((info.realValue / this.attInfo.maxHP) * 80),false)
 	}
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
@@ -258,7 +267,7 @@ model.prototype.removeBuff = function(buffId) {
     if(this.buffs[buffId])
         delete this.buffs[buffId]
 }
-//======触发
+//===============攻击触发
 //触发击杀
 model.prototype.onKill = function(target,info) {}
 //触发闪避
@@ -267,6 +276,8 @@ model.prototype.onDodge = function(attacker,info) {}
 model.prototype.onBlock = function(attacker,info) {}
 //触发暴击
 model.prototype.onCrit = function(attacker,info) {}
+//受到攻击结束后
+model.prototype.onHitAfter = function(attacker,info) {}
 //===============获取信息
 //简单信息
 model.prototype.getSimpleInfo = function() {

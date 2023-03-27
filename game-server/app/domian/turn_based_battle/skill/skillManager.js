@@ -34,10 +34,14 @@ model.prototype.skillAction = function(skillInfo,skill,record) {
 //使用技能结束
 model.prototype.skillAfter = function(skillInfo,skill,record) {
 	var KILL_FLAG = false
+	var EXIST_TARGET = false
+	var allDamage = 0
 	//攻击触发判断
-	if(record.attack){
+	if(record.attack && record.attack.length){
+		EXIST_TARGET = true
 		for(var i = 0;i < record.attack.length;i++){
 			var info = record.attack[i]
+			allDamage += info.realValue
 			var target = this.fighting.allHero[info.id]
 			if(info.died){
 				KILL_FLAG = true
@@ -69,6 +73,9 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 				}
 			}
 		}
+		//吸血
+		if(skill.talents.suck_blood)
+			skill.character.onOtherHeal(skill.character,skill.talents.suck_blood * allDamage)
 	}
 	if(record.heal){
 		//治疗触发判断
@@ -86,6 +93,14 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 			skillInfo = skill.character.useAllAangerSkill()
 			if(skillInfo)
 				this.useSkill(skillInfo)
+		}
+	}else{
+		//未击杀
+		if(skill.talents.loss_hp_amp && EXIST_TARGET){
+			var target = this.fighting.allHero[record.attack[0].id]
+			var loss_hp = Math.floor(skill.character.getTotalAtt("hp") * 0.15)
+			skill.character.onOtherDamage(skill.character,loss_hp)
+			target.onOtherDamage(skill.character,Math.floor(loss_hp * skill.talents.loss_hp_amp))
 		}
 	}
 }

@@ -17,7 +17,7 @@ model.prototype.createBuff = function(attacker,character,buff) {
 	var buffId = buff.buffId
 	if(this.buffList[buffId]){
 		if(!character.buffs[buffId])
-			character.createBuff(new this.buffList[buffId](character.fighting,character,buffId,this.buffCfg[buffId]["attKey"],this.buffCfg[buffId]["max_count"]))
+			character.createBuff(new this.buffList[buffId](character.fighting,character,buffId))
 		character.addBuff(attacker,buff)
 	}
 }

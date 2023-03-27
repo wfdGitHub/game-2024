@@ -10,7 +10,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	info.id = target.id
 	info.value = 0
 	var d_type = skill.d_type
-	//伤害类型根据目标最低防御属性选择
+	//临时属性计算
 	if(skill.talents.weak_damage_type){
 		if(target.getTotalAtt("main_mag") > target.getTotalAtt("main_phy"))
 			d_type = "phy"
@@ -22,11 +22,14 @@ model.prototype.calDamage = function(attacker,target,skill) {
 		this.onMag(attacker,target,skill)
 	else if(d_type == "phy")
 		this.onPhy(attacker,target,skill)
-	//存在BUFF判断
 	if(target.buffs["mag_damage"])
 		this.onMagBuff(attacker,target,skill)
 	if(target.buffs["phy_damage"])
 		this.onPhyBuff(attacker,target,skill)
+	if((target.attInfo.hp / target.attInfo.maxHP) > 0.5)
+		this.onHighHP(attacker,target,skill)
+
+	//==========================开始计算伤害
 	//闪避判断
 	var dodge = target.getTotalAtt("hitDef") - attacker.getTotalAtt("hit")
 	dodge = Math.min(dodge,0.9) 	//闪避率最高不超过90%
@@ -36,6 +39,9 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	}
 	//计算基础伤害量
 	var basic = Math.ceil((attacker.getTotalAtt("atk") - target.getTotalAtt("armor") * (1 - attacker.getTotalAtt("ign_armor"))) * skill.atk_mul + skill.atk_value)
+	//技能增伤
+	if(skill.isAnger)
+		basic += Math.ceil(basic * (attacker.getTotalAtt("angerAmp") - target.getTotalAtt("angerDef")))
 	//主属性增伤
 	if(d_type == "mag")
 		basic += Math.ceil(basic * (attacker.getTotalAtt("magAmp") - target.getTotalAtt("magDef")))
@@ -69,6 +75,13 @@ model.prototype.calIndirectDamage = function(attacker,target,mul,value,d_type) {
 	basic = Math.max(basic,1) + (value || 0)
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt(d_type+"Amp") - target.getTotalAtt(d_type+"Def")))
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
+	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
+	return basic
+}
+//中毒伤害计算
+model.prototype.calPoisonDamage = function(attacker,target,mul,value) {
+	var basic = (attacker.getTotalAtt("atk") - target.getTotalAtt("armor")) * mul
+	basic = Math.max(basic,1) + (value || 0)
 	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
 	return basic
 }
@@ -114,12 +127,21 @@ model.prototype.onPhyBuff = function(attacker,target,skill) {
 	if(skill.talents.phy_buff_att2 && skill.talents.phy_buff_value2)
 		attacker.changeTotalTmp(skill.talents.phy_buff_att2,skill.talents.phy_buff_value2)
 }
+//高于50%生命值处理
+model.prototype.onHighHP = function(attacker,target,skill) {
+	if(skill.talents.high_hp_crit_slay){
+		attacker.changeTotalTmp("crit",skill.talents.high_hp_crit_slay)
+		attacker.changeTotalTmp("slay",skill.talents.high_hp_crit_slay)
+	}
+}
 //伤害计算完成后处理
 model.prototype.onDamageOver = function(attacker,target,skill,info) {
 	if(skill.talents.maxHP_damage)
 		info.value += Math.floor(target.getTotalAtt("maxHP") * skill.talents.maxHP_damage)
 	if(skill.talents.hp_low_amp)
 		info.value += Math.floor(info.value * (1 - Math.min(1,target.getTotalAtt("hp") / target.getTotalAtt("maxHP"))) * skill.talents.hp_low_amp)
+	if(skill.talents["career_amp_"+target.career])
+		info.value += Math.floor(info.value * skill.talents["career_amp_"+target.career])
 }
 model.prototype.randomCheck = function(num,reason) {
 	return this.fighting.random(reason) < num ? true : false

@@ -1,10 +1,10 @@
 //BUFF作用基类
-var model = function(fighting,character,buffId,attKey,max_count) {
+var model = function(fighting,character,buffId) {
 	this.fighting = fighting
 	this.buffId = buffId
 	this.list = []
 	this.character = character
-	this.max_count = max_count || 1 	//最大层数
+	this.max_count = this.fighting.buffManager.buffCfg[this.buffId]["max_count"] || 1 	//最大层数
 	this.init()
 }
 //BUFF初始化

@@ -14,6 +14,8 @@ var model = function(fighting,otps,talentList) {
 	this.lv = 1
 	this.star = 1
 	this.ad = 1
+	this.realm = 1 						//阵营
+	this.career = 1 					//职业
 	this.talentList = talentList || []
 	this.buffs = {} 					//buff列表
 	this.totalDamage = 0								//累计伤害
@@ -31,7 +33,7 @@ model.prototype.attInit = function() {
 	this.onAction = false  				//回合行动中标识
 	this.sex = 1 						//性别 1男 2女
 	//基础属性
-	this.curAnger = 50 					//初始怒气
+	this.curAnger = 100 				//初始怒气
 	this.maxAnger = 100 				//最大怒气
 	this.needAnger = 100  				//释放技能所需怒气
 	//一级属性

@@ -40,7 +40,7 @@ model.prototype.explain = function() {
 						str += "外功"
 					else if(info.attack[i]["d_type"] == "mag")
 						str += "内功"
-					str += "伤害("+info.attack[i].hp+"/"+info.attack[i].maxHP+")"
+					str += "伤害("+info.attack[i].hp+"/"+info.attack[i].maxHP+")"+"(怒气"+info.attack[i].curAnger+")"
 					if(info.attack[i].dodge)
 						str += "\t闪避"
 					if(info.attack[i].block)
@@ -55,7 +55,12 @@ model.prototype.explain = function() {
 		break
 		case "other_damage":
 			var str = ""
-			str += "\033[31m["+info["id"]+"]\033[0m 受到 "+info.realValue+"伤害("+info.hp+"/"+info.maxHP+")\n"
+			str += "\033[31m["+info["id"]+"] 受到 "+info.realValue+"伤害("+info.hp+"/"+info.maxHP+")\033[0m\n"
+			console.log(str)
+		break
+		case "other_heal":
+			var str = ""
+			str += "\033[32m["+info["id"]+"] 恢复 "+info.realValue+"血量("+info.hp+"/"+info.maxHP+")\033[0m\n"
 			console.log(str)
 		break
 		case "changeAnger":

@@ -36,6 +36,8 @@ model.prototype.getTargets = function(character,targetType) {
 		case "enemy_normal":
 			//默认单体
 			return this.getEnemyNormal(character)
+		case "enemy_far":
+			return this.getEnemyFar(character)
 		case "enemy_back_rand_1":
 			//后排随机单体
 			return this.getEnemyBackRandom(character,1)
@@ -81,6 +83,23 @@ model.prototype.getEnemyNormal = function(character) {
 	})
 	if(aimList.length)
 		return [aimList[0].character]
+	else
+		return []
+}
+//选择敌方最远目标
+model.prototype.getEnemyFar = function(character) {
+	var aimList = []
+	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	for(var index = 0;index < enemyTeam.length;index++){
+		if(enemyTeam[index].checkAim()){
+			aimList.push({character : enemyTeam[index],dist : this.callDist(MY_MAP[character.index],ENEMY_MAP[index])})
+		}
+	}
+	aimList.sort((a,b) => {
+		return a.dist - b.dist
+	})
+	if(aimList.length)
+		return [aimList[aimList.length-1].character]
 	else
 		return []
 }
