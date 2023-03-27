@@ -180,7 +180,7 @@ model.prototype.getEnemyRandom = function(character,count) {
 	var list = []
 	for(var i = 0;i < count && tmpList.length;i++){
 		var rid = Math.floor(character.fighting.random("随机单位") * tmpList.length)
-		list.push(tmpList.splice(rid,1))
+		list.push(tmpList.splice(rid,1)[0])
 	}
 	return list
 }
