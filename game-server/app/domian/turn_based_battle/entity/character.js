@@ -56,7 +56,7 @@ model.prototype.addAnger = function(value,show) {
 	this.curAnger = Math.min(this.curAnger,this.maxAnger)
 	if(show)
 		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : value,curAnger : this.curAnger})
-	return this.curAnger
+	return value
 }
 //减少怒气
 model.prototype.lessAnger = function(value,show) {
@@ -64,7 +64,7 @@ model.prototype.lessAnger = function(value,show) {
 	this.curAnger = Math.max(this.curAnger,0)
 	if(show)
 		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : -value,curAnger : this.curAnger})
-	return this.curAnger
+	return value
 }
 //选择技能
 model.prototype.chooseSkill = function() {
@@ -125,7 +125,7 @@ model.prototype.useNormalSkill = function() {
 }
 //检查可行动
 model.prototype.checkAction = function() {
-	if(this.died || this.isAction)
+	if(this.died || this.isAction || this.buffs["jianren"])
 		return false
 	else
 		return true
@@ -154,10 +154,6 @@ model.prototype.getCombatData = function() {
 	}
 	return info
 }
-//受到攻击开始前
-model.prototype.onHitBefore = function(attacker) {
-	//受到攻击预处理
-}
 //受到其他伤害
 model.prototype.onOtherDamage = function(attacker,value) {
 	var info = {"type":"other_damage","value":value}
@@ -177,9 +173,34 @@ model.prototype.onOtherHeal = function(attacker,value) {
 //受到攻击
 model.prototype.onHit = function(attacker,info) {
 	//受到攻击
+	if(this.buffs["hudun"])
+		this.buffs["hudun"].offsetDamage(info)
 	this.lessHP(info)
 	attacker.totalDamage += info.realValue
 	return info
+}
+//受到攻击开始前
+model.prototype.onHitBefore = function(attacker) {
+	//受到攻击预处理
+}
+//受到攻击结束后
+model.prototype.onHitAfter = function(skill,attacker,info) {
+	//反伤
+	if(this.buffs["nuoyi"])
+		attacker.onOtherDamage(this,this.buffs["nuoyi"].getBuffMul() * info.realValue)
+	//护盾更新
+	if(this.buffs["hudun"])
+		this.buffs["hudun"].removeZero()
+	//溅射伤害
+	if(info.realValue && skill.talents.splash_nearby){
+		var splashDamage = Math.floor(skill.talents.splash_nearby * info.realValue)
+		var targets = this.fighting.locator.getNearby(this)
+		for(var i = 0;i < targets.length;i++)
+			targets[i].onOtherDamage(attacker,splashDamage)
+	}
+	//回血
+	if(this.buffs["jianren"])
+		this.onOtherHeal(this,this.buffs["jianren"].getBuffMul() * info.realValue)
 }
 //受到治疗
 model.prototype.onHeal = function(attacker,info) {
@@ -241,7 +262,8 @@ model.prototype.lessHP = function(info) {
 		this.attInfo.hp -= info.value
 		info.realValue = info.value
 		//受击回怒
-		info.curAnger = this.addAnger(Math.floor((info.realValue / this.attInfo.maxHP) * 80),false)
+		this.addAnger(Math.floor((info.realValue / this.attInfo.maxHP) * 80),false)
+		info.curAnger = this.curAnger
 	}
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
@@ -278,8 +300,6 @@ model.prototype.onDodge = function(attacker,info) {}
 model.prototype.onBlock = function(attacker,info) {}
 //触发暴击
 model.prototype.onCrit = function(attacker,info) {}
-//受到攻击结束后
-model.prototype.onHitAfter = function(attacker,info) {}
 //===============获取信息
 //简单信息
 model.prototype.getSimpleInfo = function() {

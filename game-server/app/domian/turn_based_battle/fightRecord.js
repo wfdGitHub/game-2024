@@ -41,6 +41,8 @@ model.prototype.explain = function() {
 					else if(info.attack[i]["d_type"] == "mag")
 						str += "内功"
 					str += "伤害("+info.attack[i].hp+"/"+info.attack[i].maxHP+")"+"(怒气"+info.attack[i].curAnger+")"
+					if(info.attack[i].hudun)
+						str += "\t(护盾抵消"+info.attack[i].hudun+")"
 					if(info.attack[i].dodge)
 						str += "\t闪避"
 					if(info.attack[i].block)

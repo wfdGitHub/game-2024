@@ -41,6 +41,8 @@ model.prototype.before = function() {
 	if(this.talents.hp_low_count)
 		this.tmpCount +=  Math.max(0,Math.floor((1 - this.character.getTotalAtt("hp") / this.character.getTotalAtt("maxHP")) / this.talents.hp_low_count))
 }
+//使用攻击技能前
+
 //使用技能后
 model.prototype.after = function() {
 	this.tmpDamage = 0

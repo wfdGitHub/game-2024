@@ -20,10 +20,10 @@ model.prototype.useSkill = function(skillInfo) {
 model.prototype.skillAction = function(skillInfo,skill,record) {
 	var attackTargets = []
 	var healTargets = []
-	if(skill.atk_aim && skill.atk_mul){
+	if(skill.atk_aim){
 		attackTargets = this.attackSkill(skillInfo,skill,record)
 	}
-	if(skill.heal_aim && skill.heal_mul){
+	if(skill.heal_aim){
 		healTargets = this.healSkill(skillInfo,skill,record)
 	}
 	this.fighting.fightRecord.push(record)
@@ -51,7 +51,7 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 				skill.character.onKill(target,info)
 			}else{
 				//受击处理
-				target.onHitAfter(skill.character,info)
+				target.onHitAfter(skill,skill.character,info)
 				//触发闪避
 				if(info.dodge)
 					target.onDodge(skill.character,info)
@@ -140,10 +140,8 @@ model.prototype.buffSkill = function(skill,targets,infos) {
 	for(var buffId in skill.buffs){
 		var buff = skill.buffs[buffId]
 		var buffTargets = this.fighting.locator.getBuffTargets(skill.character,buff.targetType,targets,infos)
-		for(var i = 0;i < buffTargets.length;i++){
-			if(this.fighting.random(buff.buffId) < buff.rate)
-				this.fighting.buffManager.createBuff(skill.character,buffTargets[i],buff)
-		}
+		for(var i = 0;i < buffTargets.length;i++)
+			this.fighting.buffManager.createBuffWithRate(skill.character,buffTargets[i],buff)
 	}
 }
 module.exports = model

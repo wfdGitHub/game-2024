@@ -1,5 +1,6 @@
 const TEAMLENGTH = 5 				//队伍人数
 const FRONT_NUM = 2 				//前排人数
+const POS_MAP = [[0,0.5],[0,1.5],[1,0],[1,1],[1,2]]
 const MY_MAP = [[0,0.5],[0,1.5],[1,0.1],[1,1],[1,1.9]]
 const ENEMY_MAP = [[0,0.5],[0,1.5],[-1,0.1],[-1,1],[-1,1.9]]
 const FRONT_LIST = [0,1]
@@ -53,6 +54,14 @@ model.prototype.getTargets = function(character,targetType) {
 		case "enemy_all":
 			//敌方全体
 			return this.getEnemyAll(character)
+		case "enemy_front":
+			return this.getEnemyFront(character)
+		case "enemy_back":
+			return this.getEnemyBack(character)
+		case "team_front":
+			return this.getTeamFront(character)
+		case "team_back":
+			return this.getTeamBack(character)
 		case "enemy_maxAtk_1":
 			//敌方攻击力最高单位
 			return this.getEnemyMaxAtk(character)
@@ -64,6 +73,8 @@ model.prototype.getTargets = function(character,targetType) {
 			return this.getEnemyMinHP(character)
 		case "team_self":
 			return [character]
+		case "team_all":
+			return this.getTeamAll(character)
 		default:
 			//默认单体
 			return this.getEnemyNormal(character)
@@ -203,7 +214,82 @@ model.prototype.getEnemyRandom = function(character,count) {
 	}
 	return list
 }
+//我方前排
+model.prototype.getTeamFront = function(character) {
+	var team =  character.fighting["fightInfo"][character.belong].team
+	var list = this.getFront(team)
+	if(!list.length)
+		list = this.getBack(team)
+	return list
+}
+//我方后排
+model.prototype.getTeamBack = function(character) {
+	var team =  character.fighting["fightInfo"][character.belong].team
+	var list = this.getBack(team)
+	if(!list.length)
+		list = this.getFront(team)
+	return list
+}
+//敌方前排
+model.prototype.getEnemyFront = function(character) {
+	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	var list = this.getFront(enemyTeam)
+	if(!list.length)
+		list = this.getBack(enemyTeam)
+	return list
+}
+//敌方后排
+model.prototype.getEnemyBack = function(character) {
+	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	var list = this.getBack(enemyTeam)
+	if(!list.length)
+		list = this.getFront(enemyTeam)
+	return list
+}
+//获取前排
+model.prototype.getFront = function(team) {
+	var list = []
+	for(var i = 0;i < FRONT_LIST.length;i++)
+		if(team[FRONT_LIST[i]].checkAim())
+			list.push(team[FRONT_LIST[i]])
+	return list
+}
+//获取后排
+model.prototype.getBack = function(team) {
+	var list = []
+	for(var i = 0;i < BACK_LIST.length;i++)
+		if(team[BACK_LIST[i]].checkAim())
+			list.push(team[BACK_LIST[i]])
+	return list
+}
+//获取相邻目标
+model.prototype.getNearby = function(character) {
+	var aimList = []
+	var team =  character.fighting["fightInfo"][character.belong].team
+	for(var index = 0;index < team.length;index++){
+		if(index != character.index && team[index].checkAim() && this.isNearby(character.index,index)){
+			aimList.push(team[index])
+		}
+	}
+	return aimList
+}
+//我方全体
+model.prototype.getTeamAll = function(character) {
+    var list = []
+    var team =  character.fighting["fightInfo"][character.belong].team
+	for(var index = 0;index < team.length;index++){
+		if(team[index].checkAim()){
+			list.push(team[index])
+		}
+	}
+    return list
+}
+//计算距离 X轴权重高
 model.prototype.callDist = function(pos1,pos2) {
 	return Math.abs(pos1[0] - pos2[0]) * 10 + Math.abs(pos1[1] - pos2[1])
+}
+//判断相邻
+model.prototype.isNearby = function(index1,index2) {
+	return Math.abs(POS_MAP[index1][0] - POS_MAP[index2][0]) + Math.abs(POS_MAP[index1][1] - POS_MAP[index2][1]) <= 1.5 ? true : false
 }
 module.exports = model

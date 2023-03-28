@@ -1,10 +1,14 @@
 //BUFF作用基类
-var model = function(fighting,character,buffId) {
+var model = function(fighting,character,buffId,buffCfg) {
 	this.fighting = fighting
 	this.buffId = buffId
 	this.list = []
 	this.character = character
-	this.max_count = this.fighting.buffManager.buffCfg[this.buffId]["max_count"] || 1 	//最大层数
+	this.max_count = buffCfg["max_count"] || 1 	//最大层数
+	this.attKeys = {}
+	for(var i = 1;i <= 3;i++)
+		if(buffCfg["attKey"+i])
+			this.attKeys[buffCfg["attKey"+i]] = buffCfg["attValue"+i] || 0
 	this.init()
 }
 //BUFF初始化
@@ -56,5 +60,20 @@ model.prototype.domain = function() {}
 //buff结算后
 model.prototype.bufflLater = function() {}
 //获取加成属性
-model.prototype.getAttInfo = function(name) { return 0}
+model.prototype.getAttInfo = function(name) {
+	if(this.attKeys[name] !== undefined){
+		var value = this.attKeys[name]
+		for(var i = 0;i < this.list.length;i++)
+			value += this.list[i].num
+		return value
+	}
+	return 0
+}
+//获取默认BUFF系数
+model.prototype.getBuffMul = function() {
+	if(this.list && this.list[0])
+		return this.list[0].buff.mul || 0
+	else
+		return 0
+}
 module.exports = model
