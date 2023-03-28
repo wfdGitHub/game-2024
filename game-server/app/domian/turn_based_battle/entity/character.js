@@ -45,8 +45,10 @@ model.prototype.roundBegin = function() {
 }
 //整体回合结束
 model.prototype.roundEnd = function() {
-	for(var i in this.buffs)
-		this.buffs[i].update()
+	for(var i in this.buffs){
+		if(this.buffs[i])
+			this.buffs[i].update()
+	}
 }
 //获得怒气
 model.prototype.addAnger = function(value,show) {
