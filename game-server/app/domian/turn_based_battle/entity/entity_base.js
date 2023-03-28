@@ -33,8 +33,8 @@ model.prototype.attInit = function() {
 	this.onAction = false  				//回合行动中标识
 	this.sex = 1 						//性别 1男 2女
 	//基础属性
-	this.curAnger = 100 				//初始怒气
-	this.maxAnger = 100 				//最大怒气
+	this.curAnger = 1000 				//初始怒气
+	this.maxAnger = 1000 				//最大怒气
 	this.needAnger = 100  				//释放技能所需怒气
 	//一级属性
 	this.attInfo = {}

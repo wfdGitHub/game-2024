@@ -140,9 +140,9 @@ model.prototype.buffSkill = function(skill,targets,infos) {
 	for(var buffId in skill.buffs){
 		var buff = skill.buffs[buffId]
 		var buffTargets = this.fighting.locator.getBuffTargets(skill.character,buff.targetType,targets,infos)
-		for(var i = 0;i < targets.length;i++){
+		for(var i = 0;i < buffTargets.length;i++){
 			if(this.fighting.random(buff.buffId) < buff.rate)
-				this.fighting.buffManager.createBuff(skill.character,targets[i],buff)
+				this.fighting.buffManager.createBuff(skill.character,buffTargets[i],buff)
 		}
 	}
 }

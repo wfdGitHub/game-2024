@@ -9,7 +9,6 @@ model.prototype.init = function() {
 }
 model.prototype.push = function(info) {
 	this.list.push(info)
-	this.explain()
 }
 model.prototype.getList = function() {
 	return this.list.concat([])

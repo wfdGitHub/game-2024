@@ -27,7 +27,7 @@ model.prototype.init = function() {
 	this.changeTotalAtt("blockDef",this.getTotalAtt("main_slay") * 0.005)
 	this.changeTotalAtt("slay",(this.getTotalAtt("main_slay") - 60) * 0.006)
 	this.changeTotalAtt("ampDefMain",(this.getTotalAtt("main_dr") - 60) * 0.006)
-	this.changeTotalAtt("speed",Math.random())
+	this.changeTotalAtt("speed",this.fighting.random())
 }
 //===================生命周期
 //个人回合开始
