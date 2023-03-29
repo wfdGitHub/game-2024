@@ -38,7 +38,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 		return info
 	}
 	//计算基础伤害量
-	var basic = Math.ceil((attacker.getTotalAtt("atk") - target.getTotalAtt("armor") * (1 - attacker.getTotalAtt("ign_armor"))) * skill.atk_mul + skill.atk_value)
+	var basic = Math.ceil((attacker.getTotalAtt("atk") - target.getTotalAtt("armor") * (1 - attacker.getTotalAtt("ign_armor"))) * skill.getTotalAtt("atk_mul") + skill.getTotalAtt("atk_value"))
 	//技能增伤
 	if(skill.isAnger)
 		basic += Math.ceil(basic * (attacker.getTotalAtt("angerAmp") - target.getTotalAtt("angerDef")))

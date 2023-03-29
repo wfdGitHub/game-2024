@@ -76,6 +76,10 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 		//吸血
 		if(skill.talents.suck_blood)
 			skill.character.onOtherHeal(skill.character,skill.talents.suck_blood * allDamage)
+		//储存伤害到下一次普攻
+		if(skill.talents.store_to_normal){
+			skill.character.defaultSkill.changeTotalTmp()
+		}
 	}
 	if(record.heal){
 		//治疗触发判断
@@ -107,13 +111,14 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 //伤害技能
 model.prototype.attackSkill = function(skillInfo,skill,record) {
 	record.attack = []
-	var allCount = skill.atk_count + skill.tmpCount
+	var allCount = skill.getTotalAtt("atk_count")
 	for(var count = 0;count < allCount;count++){
 		var targets = this.fighting.locator.getTargets(skill.character,skill.atk_aim)
+		skill.attackBefore(targets)
 		for(var i = 0;i < targets.length;i++){
 			targets[i].onHitBefore(skill.character)
 			var info = this.fighting.formula.calDamage(skill.character, targets[i],skill)
-			info.value +=  Math.floor(skill.tmpDamage / targets.length / allCount)
+			info.value += skill.getTotalAtt("real_value")
 			info.value = Math.floor(info.value * skillInfo.mul)
 			info = targets[i].onHit(skill.character,info)
 			record.attack.push(info)

@@ -218,6 +218,7 @@ model.prototype.onDie = function(info) {
 	this.attInfo.hp = 0
 	this.curAnger = 0
 	this.died = true
+	info.curAnger = 0
 	info.died = true
 	//清空BUFF
 	this.buffs = {}
