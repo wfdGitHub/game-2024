@@ -31,6 +31,36 @@ model.prototype.skillAction = function(skillInfo,skill,record) {
 	this.buffSkill(skill,healTargets,record.heal)
 	this.skillAfter(skillInfo,skill,record)
 }
+//伤害技能
+model.prototype.attackSkill = function(skillInfo,skill,record) {
+	record.attack = []
+	var allCount = skill.getTotalAtt("atk_count")
+	for(var count = 0;count < allCount;count++){
+		var targets = this.fighting.locator.getTargets(skill.character,skill.atk_aim)
+		skill.attackBefore(targets)
+		for(var i = 0;i < targets.length;i++){
+			var info = this.fighting.formula.calDamage(skill.character, targets[i],skill)
+			info.value += skill.getTotalAtt("real_value")
+			info.value = Math.floor(info.value * skillInfo.mul)
+			info = targets[i].onHit(skill.character,info)
+			targets[i].onHiting(skill.character,skill,info)
+			record.attack.push(info)
+		}
+	}
+	return targets
+}
+//治疗技能
+model.prototype.healSkill = function(skillInfo,skill,record) {
+	record.heal = []
+	var targets = this.fighting.locator.getTargets(skill.character,skill.heal_aim)
+	for(var i = 0;i < targets.length;i++){
+		var info = this.fighting.formula.calHeal(skill.character, targets[i],skill)
+		info.value = Math.floor(info.value * skillInfo.mul)
+		info = targets[i].onHeal(skill.character,info)
+		record.heal.push(info)
+	}
+	return targets
+}
 //使用技能结束
 model.prototype.skillAfter = function(skillInfo,skill,record) {
 	var KILL_FLAG = false
@@ -77,9 +107,8 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 		if(skill.talents.suck_blood)
 			skill.character.onOtherHeal(skill.character,skill.talents.suck_blood * allDamage)
 		//储存伤害到下一次普攻
-		if(skill.talents.store_to_normal){
-			skill.character.defaultSkill.changeTotalTmp()
-		}
+		if(skill.talents.store_to_normal)
+			skill.character.defaultSkill.changeTotalTmp("real_share_value",skill.talents.store_to_normal * allDamage)
 	}
 	if(record.heal){
 		//治疗触发判断
@@ -107,36 +136,6 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 			target.onOtherDamage(skill.character,Math.floor(loss_hp * skill.talents.loss_hp_amp))
 		}
 	}
-}
-//伤害技能
-model.prototype.attackSkill = function(skillInfo,skill,record) {
-	record.attack = []
-	var allCount = skill.getTotalAtt("atk_count")
-	for(var count = 0;count < allCount;count++){
-		var targets = this.fighting.locator.getTargets(skill.character,skill.atk_aim)
-		skill.attackBefore(targets)
-		for(var i = 0;i < targets.length;i++){
-			targets[i].onHitBefore(skill.character)
-			var info = this.fighting.formula.calDamage(skill.character, targets[i],skill)
-			info.value += skill.getTotalAtt("real_value")
-			info.value = Math.floor(info.value * skillInfo.mul)
-			info = targets[i].onHit(skill.character,info)
-			record.attack.push(info)
-		}
-	}
-	return targets
-}
-//治疗技能
-model.prototype.healSkill = function(skillInfo,skill,record) {
-	record.heal = []
-	var targets = this.fighting.locator.getTargets(skill.character,skill.heal_aim)
-	for(var i = 0;i < targets.length;i++){
-		var info = this.fighting.formula.calHeal(skill.character, targets[i],skill)
-		info.value = Math.floor(info.value * skillInfo.mul)
-		info = targets[i].onHeal(skill.character,info)
-		record.heal.push(info)
-	}
-	return targets
 }
 //BUFF判断
 model.prototype.buffSkill = function(skill,targets,infos) {

@@ -34,31 +34,12 @@ model.prototype.explain = function() {
 			console.log("\033[36m["+info.id+"号]使用["+info.sid+"]\033[0m    怒气 "+info.changeAnger+"("+info.curAnger+")")
 			if(info.attack){
 				for(var i = 0;i < info.attack.length;i++){
-					var str = ""
-					str += "  \033[31m对["+info.attack[i]["id"]+"]\t\033[0m 造成 "+info.attack[i].realValue
-					if(info.attack[i]["d_type"] == "phy")
-						str += "外功"
-					else if(info.attack[i]["d_type"] == "mag")
-						str += "内功"
-					str += "伤害("+info.attack[i].hp+"/"+info.attack[i].maxHP+")"+"(怒气"+info.attack[i].curAnger+")"
-					if(info.attack[i].hudun)
-						str += "\t(护盾抵消"+info.attack[i].hudun+")"
-					if(info.attack[i].dodge)
-						str += "\t闪避"
-					if(info.attack[i].block)
-						str += "\t格挡"
-					if(info.attack[i].crit)
-						str += "\t暴击"
-					if(info.attack[i].died)
-						str += "\t死亡"
-					console.log(str)
+					this.attackInfo(info.attack[i],"  \033[31m对["+info.attack[i]["id"]+"]\t\033[0m 造成 ")
 				}
 			}
 		break
 		case "other_damage":
-			var str = ""
-			str += "\033[31m["+info["id"]+"] 受到 "+info.realValue+"伤害("+info.hp+"/"+info.maxHP+")\033[0m\n"
-			console.log(str)
+			this.attackInfo(info,"\033[31m["+info["id"]+"] 受到 ")
 		break
 		case "other_heal":
 			var str = ""
@@ -71,9 +52,7 @@ model.prototype.explain = function() {
 		break
 		case "buffDamage":
 			//buff伤害
-			var str = ""
-			str += "\033[31m["+info["id"]+"]\033[0m 受到 "+info.bId+" "+info.realValue+"伤害("+info.hp+"/"+info.maxHP+")"
-			console.log(str)
+			this.attackInfo(info,"\033[31m["+info["id"]+"]\033[0m 受到 ")
 		break
 		case "buffAdd":
 			var str = ""
@@ -111,5 +90,29 @@ model.prototype.explain = function() {
 			console.log(info)
 	}
 	this.explain()
+}
+model.prototype.attackInfo = function(info,str) {
+	str += info.realValue
+	if(info["d_type"] == "phy")
+		str += "外功"
+	else if(info["d_type"] == "mag")
+		str += "内功"
+	str += "伤害("+info.hp+"/"+info.maxHP+")"+"(怒气"+info.curAnger+")"
+	if(info.hudun)
+		str += "\t(护盾抵消"+info.hudun+")"
+	if(info.dodge)
+		str += "\t闪避"
+	if(info.block)
+		str += "\t格挡"
+	if(info.crit)
+		str += "\t暴击"
+	if(info.died)
+		str += "\t死亡"
+	console.log(str)
+	if(info.splashs){
+		for(var i = 0;i < info.splashs.length;i++){
+			this.attackInfo(info.splashs[i],"  \033[31m溅射["+info.splashs[i]["id"]+"]\033[0m ")
+		}
+	}
 }
 module.exports = model

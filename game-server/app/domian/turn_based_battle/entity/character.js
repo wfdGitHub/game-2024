@@ -52,7 +52,7 @@ model.prototype.roundEnd = function() {
 }
 //获得怒气
 model.prototype.addAnger = function(value,show) {
-	this.curAnger += Number(value) || 0
+	this.curAnger += Math.floor(value) || 0
 	this.curAnger = Math.min(this.curAnger,this.maxAnger)
 	if(show)
 		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : value,curAnger : this.curAnger})
@@ -60,7 +60,7 @@ model.prototype.addAnger = function(value,show) {
 }
 //减少怒气
 model.prototype.lessAnger = function(value,show) {
-	this.curAnger -= Number(value) || 0
+	this.curAnger -= Math.floor(value) || 0
 	this.curAnger = Math.max(this.curAnger,0)
 	if(show)
 		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : -value,curAnger : this.curAnger})
@@ -125,7 +125,7 @@ model.prototype.useNormalSkill = function() {
 }
 //检查可行动
 model.prototype.checkAction = function() {
-	if(this.died || this.isAction || this.buffs["jianren"])
+	if(this.died || this.isAction || this.buffs["jianren"] || this.buffs["petrify"])
 		return false
 	else
 		return true
@@ -179,9 +179,16 @@ model.prototype.onHit = function(attacker,info) {
 	attacker.totalDamage += info.realValue
 	return info
 }
-//受到攻击开始前
-model.prototype.onHitBefore = function(attacker) {
-	//受到攻击预处理
+//受到攻击时
+model.prototype.onHiting = function(attacker,skill,info) {
+	//溅射伤害
+	if(info.realValue && skill.talents.splash_nearby){
+		var splashDamage = Math.floor(skill.talents.splash_nearby * info.realValue)
+		var targets = this.fighting.locator.getNearby(this)
+		info.splashs = []
+		for(var i = 0;i < targets.length;i++)
+			info.splashs.push(targets[i].onHit(attacker,{value:splashDamage}))
+	}
 }
 //受到攻击结束后
 model.prototype.onHitAfter = function(skill,attacker,info) {
@@ -191,13 +198,6 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 	//护盾更新
 	if(this.buffs["hudun"])
 		this.buffs["hudun"].removeZero()
-	//溅射伤害
-	if(info.realValue && skill.talents.splash_nearby){
-		var splashDamage = Math.floor(skill.talents.splash_nearby * info.realValue)
-		var targets = this.fighting.locator.getNearby(this)
-		for(var i = 0;i < targets.length;i++)
-			targets[i].onOtherDamage(attacker,splashDamage)
-	}
 	//回血
 	if(this.buffs["jianren"])
 		this.onOtherHeal(this,this.buffs["jianren"].getBuffMul() * info.realValue)
@@ -339,8 +339,8 @@ model.prototype.packageDefaultSkill = function() {
 //组装怒气技能
 model.prototype.packageAngerSkill = function() {
 	var sid = fightCfg.getCfg("heros")[this.heroId]["skill"]
-	var star = Number(this.otps.s1_star) || 1
-	var lv = Number(this.otps.s1_lv) || 0
+	var star = Math.floor(this.otps.s1_star) || 1
+	var lv = Math.floor(this.otps.s1_lv) || 0
 	if(star > 5)
 		star = 5
 	return this.packageSkill(sid,star,lv,true,this.otps.skillTalents)

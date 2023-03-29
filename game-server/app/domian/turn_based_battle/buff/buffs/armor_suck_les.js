@@ -3,7 +3,7 @@ var buff_entity = require("../buff_entity.js")
 var model = function(fighting,character,buffId,buffCfg) {
 	//继承父类属性
 	buff_entity.call(this,fighting,character,buffId,buffCfg)
-	this.attKey = "atk"
+	this.attKey = "armor"
 }
 //继承父类方法
 model.prototype = Object.create(buff_entity.prototype) //继承父类方法
@@ -12,7 +12,7 @@ model.prototype.buffOtps = function(attacker,info) {
 	info.num = 0
 	if(info.buff.mul)
 		info.num = Number(this.character.attInfo[this.attKey] * info.buff.mul) || 0
-	this.fighting.buffManager.createBuff(attacker,attacker,{"buffId":"atk_suck_add","value":-info.num,"duration":info.buff.duration})
+	this.fighting.buffManager.createBuff(attacker,attacker,{"buffId":"armor_suck_add","value":-info.num,"duration":info.buff.duration})
 }
 //获得加成属性
 model.prototype.getAttInfo = function(name) {
