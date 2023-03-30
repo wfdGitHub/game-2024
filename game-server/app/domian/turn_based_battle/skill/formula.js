@@ -4,8 +4,6 @@ var model = function(fighting) {
 }
 //直接伤害计算
 model.prototype.calDamage = function(attacker,target,skill) {
-	attacker.clearTmpInfo()
-	target.clearTmpInfo()
 	var info = {}
 	info.id = target.id
 	info.value = 0
@@ -31,17 +29,21 @@ model.prototype.calDamage = function(attacker,target,skill) {
 
 	//==========================开始计算伤害
 	//闪避判断
-	var dodge = target.getTotalAtt("hitDef") - attacker.getTotalAtt("hit")
-	dodge = Math.min(dodge,0.9) 	//闪避率最高不超过90%
-	if(this.randomCheck(dodge,"dodge")){
-		info.dodge = true
-		return info
+	if(!target.buffs["vital_point"]){
+		var dodge = target.getTotalAtt("hitDef") - attacker.getTotalAtt("hit")
+		dodge = Math.min(dodge,0.9) 	//闪避率最高不超过90%
+		if(this.randomCheck(dodge,"dodge")){
+			info.dodge = true
+			return info
+		}
 	}
 	//计算基础伤害量
 	var basic = Math.ceil((attacker.getTotalAtt("atk") - target.getTotalAtt("armor") * (1 - attacker.getTotalAtt("ign_armor"))) * skill.getTotalAtt("atk_mul") + skill.getTotalAtt("atk_value"))
 	//技能增伤
 	if(skill.isAnger)
 		basic += Math.ceil(basic * (attacker.getTotalAtt("angerAmp") - target.getTotalAtt("angerDef")))
+	else
+		basic += Math.ceil(basic * (attacker.getTotalAtt("normalAmp") - target.getTotalAtt("normalDef")))
 	//主属性增伤
 	if(d_type == "mag")
 		basic += Math.ceil(basic * (attacker.getTotalAtt("magAmp") - target.getTotalAtt("magDef")))
@@ -51,13 +53,16 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
 	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
 	//格挡判断
-	var block = target.getTotalAtt("block") - attacker.getTotalAtt("blockDef")
-	block = Math.min(block,0.9) 	//格挡率最高不超过90%
-	if(this.randomCheck(block,"block")){
-		info.block = true
-		basic = Math.ceil(basic * 0.5)
-	}else{
-		//暴击判断
+	if(!target.buffs["vital_point"]){
+		var block = target.getTotalAtt("block") - attacker.getTotalAtt("blockDef")
+		block = Math.min(block,0.9) 	//格挡率最高不超过90%
+		if(this.randomCheck(block,"block")){
+			info.block = true
+			basic = Math.ceil(basic * 0.5)
+		}
+	}
+	//暴击判断
+	if(!info.block){
 		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef")
 		if(this.randomCheck(crit,"crit")){
 			info.crit = true
@@ -67,6 +72,8 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	}
 	info.value = basic
 	this.onDamageOver(attacker,target,skill,info)
+	attacker.clearTmpInfo()
+	target.clearTmpInfo()
 	return info
 }
 //间接伤害计算
@@ -119,6 +126,8 @@ model.prototype.onMagBuff = function(attacker,target,skill) {
 		attacker.changeTotalTmp(skill.talents.mag_buff_att1,skill.talents.mag_buff_value1)
 	if(skill.talents.mag_buff_att2 && skill.talents.mag_buff_value2)
 		attacker.changeTotalTmp(skill.talents.mag_buff_att2,skill.talents.mag_buff_value2)
+	if(skill.talents.mag_buff_amp)
+		attacker.changeTotalTmp(skill.talents.mag_buff_att1,skill.talents.mag_buff_value1)
 }
 //存在外伤BUFF处理
 model.prototype.onPhyBuff = function(attacker,target,skill) {

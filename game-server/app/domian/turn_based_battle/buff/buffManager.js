@@ -13,9 +13,17 @@ var model = function() {
 	}
 }
 //创建BUFF判断概率
-model.prototype.createBuffWithRate = function(attacker,character,buff) {
-	if(buff.rate > 1 || attacker.fighting.random(buff.buffId) < buff.rate)
-		this.createBuff(attacker,character,buff)
+model.prototype.createBuffWithRate = function(skill,character,buff) {
+	buff = Object.assign({},buff)
+	var rate = buff.rate
+	//存在指定BUFF概率增加
+	if(skill.target_buff_key && character.buffs[skill.target_buff_key])
+		rate += Number(skill.target_buff_rate) || 0
+	//控制状态下回合数增加
+	if(skill.control_dur && character.checkControl())
+		buff.duration += skill.control_dur
+	if(rate > 1 || character.fighting.random(buff.buffId) < rate)
+		this.createBuff(skill.character,character,buff)
 }
 //创建BUFF
 model.prototype.createBuff = function(attacker,character,buff) {
@@ -24,6 +32,10 @@ model.prototype.createBuff = function(attacker,character,buff) {
 		console.error("!!!!!!!!!!buffId not find")
 		this.buffList[buffId] = normal_buff
 		this.buffCfg[buffId] = {}
+	}
+	if(this.buffCfg[buffId].control){
+		if(character.buffs["totem_friend_amp"])
+			return
 	}
 	if(!character.buffs[buffId])
 		character.createBuff(new this.buffList[buffId](character.fighting,character,buffId,this.buffCfg[buffId]))

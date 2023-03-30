@@ -39,10 +39,11 @@ model.prototype.attackSkill = function(skillInfo,skill,record) {
 		var targets = this.fighting.locator.getTargets(skill.character,skill.atk_aim)
 		skill.attackBefore(targets)
 		for(var i = 0;i < targets.length;i++){
+			targets[i].onHitBefore(skill.character,skill)
 			var info = this.fighting.formula.calDamage(skill.character, targets[i],skill)
 			info.value += skill.getTotalAtt("real_value")
 			info.value = Math.floor(info.value * skillInfo.mul)
-			info = targets[i].onHit(skill.character,info)
+			info = targets[i].onHit(skill.character,info,true)
 			targets[i].onHiting(skill.character,skill,info)
 			record.attack.push(info)
 		}
@@ -145,7 +146,7 @@ model.prototype.buffSkill = function(skill,targets,infos) {
 		var buff = skill.buffs[buffId]
 		var buffTargets = this.fighting.locator.getBuffTargets(skill.character,buff.targetType,targets,infos)
 		for(var i = 0;i < buffTargets.length;i++)
-			this.fighting.buffManager.createBuffWithRate(skill.character,buffTargets[i],buff)
+			this.fighting.buffManager.createBuffWithRate(skill,buffTargets[i],buff)
 	}
 }
 module.exports = model

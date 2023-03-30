@@ -75,6 +75,8 @@ model.prototype.getTargets = function(character,targetType) {
 			return [character]
 		case "team_all":
 			return this.getTeamAll(character)
+		case "team_friend"
+			return this.getFriendAll(character)
 		default:
 			//默认单体
 			return this.getEnemyNormal(character)
@@ -283,6 +285,26 @@ model.prototype.getTeamAll = function(character) {
 		}
 	}
     return list
+}
+//友方除自己外全体
+model.prototype.getFriendAll = function(character) {
+    var list = []
+    var team =  character.fighting["fightInfo"][character.belong].team
+	for(var index = 0;index < team.length;index++){
+		if(index != character.index && team[index].checkAim()){
+			list.push(team[index])
+		}
+	}
+    return list
+}
+//获取敌方存在指定BUFF的目标
+model.prototype.getEnemyHasBuff = function(character,buffId) {
+	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	var list = []
+	for(var i = 0;i < enemyTeam.length;i++)
+		if(enemyTeam[i].checkAim() && enemyTeam[i].buffs[buffId])
+			list.push(enemyTeam[i])
+	return list
 }
 //计算距离 X轴权重高
 model.prototype.callDist = function(pos1,pos2) {
