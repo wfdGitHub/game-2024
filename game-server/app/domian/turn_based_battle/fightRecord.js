@@ -37,6 +37,11 @@ model.prototype.explain = function() {
 					this.attackInfo(info.attack[i],"  \033[31m对["+info.attack[i]["id"]+"]\t\033[0m 造成 ")
 				}
 			}
+			if(info.heal){
+				for(var i = 0;i < info.heal.length;i++){
+					console.log("\033[32m["+info.heal[i]["id"]+"] 恢复 "+info.heal[i].realValue+"血量("+info.heal[i].hp+"/"+info.heal[i].maxHP+")\033[0m\n")
+				}
+			}
 		break
 		case "other_damage":
 			this.attackInfo(info,"\033[31m["+info["id"]+"] 受到 ")
@@ -91,6 +96,7 @@ model.prototype.explain = function() {
 	}
 	this.explain()
 }
+//伤害数据
 model.prototype.attackInfo = function(info,str) {
 	str += info.realValue
 	if(info["d_type"] == "phy")

@@ -7,9 +7,12 @@ var model = function(fighting,character,buffId,buffCfg) {
 	this.buffCfg = buffCfg
 	this.max_count = buffCfg["max_count"] || 1 	//最大层数
 	this.attKeys = {}
-	for(var i = 1;i <= 3;i++)
-		if(buffCfg["attKey"+i])
+	for(var i = 1;i <= 3;i++){
+		if(buffCfg["attKey"+i]){
+			this.attKey = buffCfg["attKey"+i]
 			this.attKeys[buffCfg["attKey"+i]] = buffCfg["attValue"+i] || 0
+		}	
+	}
 	this.init()
 }
 //BUFF初始化

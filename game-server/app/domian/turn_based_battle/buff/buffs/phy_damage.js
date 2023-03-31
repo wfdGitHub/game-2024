@@ -16,11 +16,8 @@ model.prototype.domain = function(){
 	for(var i = 0;i < this.list.length;i++){
 		var info = this.character.onHit(this.list[i].attacker,{value : this.list[i].basic})
 		record.value += info.value
-		record.realValue += info.realValue
-		record.hp = info.hp
-		record.maxHP = info.maxHP
-		if(info.died)
-			record.died = info.died
+		delete info.value
+		record = Object.assign(record,info)
 	}
 	this.fighting.fightRecord.push(record)
 }

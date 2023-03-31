@@ -62,6 +62,10 @@ model.prototype.getTargets = function(character,targetType) {
 			return this.getTeamFront(character)
 		case "team_back":
 			return this.getTeamBack(character)
+		case "team_only_front":
+			return this.getFront(character.fighting["fightInfo"][character.belong].team)
+		case "team_only_back":
+			return this.getBack(character.fighting["fightInfo"][character.belong].team)
 		case "enemy_maxAtk_1":
 			//敌方攻击力最高单位
 			return this.getEnemyMaxAtk(character)
@@ -75,7 +79,7 @@ model.prototype.getTargets = function(character,targetType) {
 			return [character]
 		case "team_all":
 			return this.getTeamAll(character)
-		case "team_friend"
+		case "team_friend":
 			return this.getFriendAll(character)
 		default:
 			//默认单体

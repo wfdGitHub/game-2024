@@ -70,14 +70,16 @@ model.prototype.lessAnger = function(value,show) {
 }
 //选择技能
 model.prototype.chooseSkill = function() {
-	if(this.checkUseSkill())
+	if(this.died || this.checkForceControl())
 		return false
 	if(!this.fighting.locator.existsTarget(this))
 		return false
+	var skill = false
 	if(this.curAnger >= this.needAnger)
-		return this.useAngerSkill()
-	else
-		return this.useNormalSkill()
+		skill = this.useAngerSkill()
+	if(!skill)
+		skill = this.useNormalSkill()
+	return skill
 }
 //使用怒气技能消耗怒气
 model.prototype.useAngerSkill = function() {
@@ -118,6 +120,8 @@ model.prototype.useAllAangerSkill = function() {
 }
 //使用普攻技能获得怒气
 model.prototype.useNormalSkill = function() {
+	if(this.checkUseNormal())
+		return false
 	var info = {}
 	info.skill = this.defaultSkill
 	info.changeAnger = this.addAnger(20)
@@ -127,28 +131,42 @@ model.prototype.useNormalSkill = function() {
 }
 //检查可行动
 model.prototype.checkAction = function() {
-	if(this.died || this.isAction || this.checkTotem() || this.checkControl())
+	if(this.died || this.isAction || this.checkTotem())
 		return false
 	else
 		return true
 }
 //检查可使用技能
 model.prototype.checkUseSkill = function() {
-	if(this.died)
+	if(this.died || this.buffs["silence"] || this.checkForceControl())
+		return true
+	else
+		return false
+}
+//检查可使用普攻
+model.prototype.checkUseNormal = function() {
+	if(this.died || this.buffs["disarm"] || this.checkForceControl())
+		return true
+	else
+		return false
+}
+//检查硬控
+model.prototype.checkForceControl = function() {
+	if(this.buffs["petrify"])
 		return true
 	else
 		return false
 }
 //检查被控制
 model.prototype.checkControl = function() {
-	if(this.buffs["petrify"])
+	if(this.checkForceControl() || this.buffs["disarm"] || this.buffs["silence"])
 		return true
 	else
 		return false
 }
 //检查图腾状态
 model.prototype.checkTotem = function(argument) {
-	if(this.buffs["jianren"])
+	if(this.buffs["jianren"] || this.buffs["totem_friend_amp"])
 		return true
 	else
 		return false
@@ -217,7 +235,7 @@ model.prototype.onHiting = function(attacker,skill,info) {
 			var targets = this.fighting.locator.getEnemyHasBuff(this,"mag_damage")
 			var splashDamage = Math.floor(this.buffs["splash_mag"].getBuffMul() * info.realValue / targets.length)
 			for(var i = 0;i < targets.length;i++)
-				info.splashs.push(targets[i].onHit(attacker,{value:splashDamage}))
+				info.splashs.push(targets[i].onHit(this,{value:splashDamage}))
 		}
 	}
 }
@@ -233,11 +251,14 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 	if(this.buffs["jianren"])
 		this.onOtherHeal(this,this.buffs["jianren"].getBuffMul() * info.realValue)
 	//触发类
-	if(!target.buffs["vital_point"]){
+	if(!this.buffs["vital_point"]){
 		//血量低于50%回血
 		if(this.buffs["hit_heal"] && (this.getTotalAtt("hp") / this.getTotalAtt("maxHP")) < 0.5)
 			this.onOtherHeal(this,this.buffs["hit_heal"].getBuffMul() * this.getTotalAtt("maxHP"))
 	}
+	//减怒
+	if(skill.talents.loss_anger_rate && this.fighting.random("loss_anger_rate") < skill.talents.loss_anger_rate)
+		this.lessAnger(skill.talents.loss_anger_value,true)
 }
 //受到治疗
 model.prototype.onHeal = function(attacker,info) {
@@ -291,6 +312,7 @@ model.prototype.lessHP = function(info,hitFlag) {
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
 	if(this.died){
+		info.curAnger = this.curAnger
 		return info
 	}
 	if(this.attInfo.hp < info.value){
@@ -303,8 +325,8 @@ model.prototype.lessHP = function(info,hitFlag) {
 		//受击回怒
 		if(hitFlag)
 			this.addAnger(Math.floor((info.realValue / this.attInfo.maxHP) * 80),false)
-		info.curAnger = this.curAnger
 	}
+	info.curAnger = this.curAnger
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
 	return info
