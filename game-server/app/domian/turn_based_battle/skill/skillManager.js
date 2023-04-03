@@ -128,6 +128,10 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 			if(skillInfo)
 				this.useSkill(skillInfo)
 		}
+		if(skill.talents.full_heal_kill)
+			skill.character.onOtherHeal(skill.character,skill.character.getTotalAtt("maxHP"))
+		if(skill.talents.addAnger_kill)
+			skill.character.addAnger(skill.talents.addAnger_kill,true)
 	}else{
 		//未击杀
 		if(skill.talents.loss_hp_amp && EXIST_TARGET){

@@ -152,7 +152,7 @@ model.prototype.checkUseNormal = function() {
 }
 //检查硬控
 model.prototype.checkForceControl = function() {
-	if(this.buffs["petrify"])
+	if(this.buffs["petrify"] || this.buffs["frozen"])
 		return true
 	else
 		return false
@@ -209,6 +209,17 @@ model.prototype.onHit = function(attacker,info,hitFlag) {
 	//受到攻击
 	if(this.buffs["hudun"])
 		this.buffs["hudun"].offsetDamage(info)
+	//伤害挪移
+	if(this.buffs["nuoyi_share"]){
+		var targets = this.fighting.locator.team_friend(this)
+		if(targets.length){
+			var splashDamage = Math.floor(info.value * this.buffs["nuoyi_share"].getBuffMul() / targets.length)
+			info.value =  Math.floor(info.value * (1 - this.buffs["nuoyi_share"].getBuffMul()))
+			info.splashs = info.splashs ? info.splashs : []
+			for(var i = 0;i < targets.length;i++)
+				info.splashs.push(targets[i].onHit(attacker,{value:splashDamage}))
+		}
+	}
 	this.lessHP(info,hitFlag)
 	attacker.totalDamage += info.realValue
 	return info
@@ -225,7 +236,7 @@ model.prototype.onHiting = function(attacker,skill,info) {
 		if(skill.talents.splash_nearby){
 			var splashDamage = Math.floor(skill.talents.splash_nearby * info.realValue)
 			var targets = this.fighting.locator.getNearby(this)
-			info.splashs = []
+			info.splashs = info.splashs ? info.splashs : []
 			for(var i = 0;i < targets.length;i++)
 				info.splashs.push(targets[i].onHit(attacker,{value:splashDamage}))
 		}
@@ -242,8 +253,8 @@ model.prototype.onHiting = function(attacker,skill,info) {
 //受到攻击结束后
 model.prototype.onHitAfter = function(skill,attacker,info) {
 	//反伤
-	if(this.buffs["nuoyi"])
-		attacker.onOtherDamage(this,this.buffs["nuoyi"].getBuffMul() * info.realValue)
+	if(this.buffs["nuoyi_back"])
+		attacker.onOtherDamage(this,this.buffs["nuoyi_back"].getBuffMul() * info.realValue)
 	//护盾更新
 	if(this.buffs["hudun"])
 		this.buffs["hudun"].removeZero()
@@ -259,6 +270,18 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 	//减怒
 	if(skill.talents.loss_anger_rate && this.fighting.random("loss_anger_rate") < skill.talents.loss_anger_rate)
 		this.lessAnger(skill.talents.loss_anger_value,true)
+	if(info.died){
+		//若击杀目标，则对敌方其余侠客造成本次伤害一定比例的溅射伤害
+		if(skill.talents.splash_kill){
+			var targets = this.fighting.locator.team_friend(this)
+			if(targets.length){
+				var splashDamage = Math.floor(info.realValue * skill.talents.splash_kill)
+				info.splashs = info.splashs ? info.splashs : []
+				for(var i = 0;i < targets.length;i++)
+					info.splashs.push(targets[i].onHit(attacker,{value:splashDamage}))
+			}
+		}
+	}
 }
 //受到治疗
 model.prototype.onHeal = function(attacker,info) {

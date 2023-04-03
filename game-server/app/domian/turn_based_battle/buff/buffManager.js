@@ -24,6 +24,9 @@ model.prototype.createBuffWithRate = function(skill,character,buff) {
 		buff.duration += skill.control_dur
 	if(rate > 1 || character.fighting.random(buff.buffId) < rate)
 		this.createBuff(skill.character,character,buff)
+	else if(buff.elseBuff){
+		this.createBuff(skill.character,character,buff.elseBuff)
+	}
 }
 //创建BUFF
 model.prototype.createBuff = function(attacker,character,buff) {
@@ -33,9 +36,13 @@ model.prototype.createBuff = function(attacker,character,buff) {
 		this.buffList[buffId] = normal_buff
 		this.buffCfg[buffId] = {}
 	}
+	//控制BUFF在行动后回合数加1
 	if(this.buffCfg[buffId].control){
 		if(character.buffs["totem_friend_amp"])
 			return
+		//控制BUFF已行动则回合数加一
+		if(character.isAction)
+			buff.duration++
 	}
 	if(!character.buffs[buffId])
 		character.createBuff(new this.buffList[buffId](character.fighting,character,buffId,this.buffCfg[buffId]))

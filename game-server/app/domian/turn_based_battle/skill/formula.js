@@ -16,9 +16,9 @@ model.prototype.calDamage = function(attacker,target,skill) {
 			d_type = "mag"
 	}
 	info.d_type = d_type
-	if(d_type == "mag")
+	if(info.d_type == "mag")
 		this.onMag(attacker,target,skill)
-	else if(d_type == "phy")
+	else if(info.d_type == "phy")
 		this.onPhy(attacker,target,skill)
 	if(target.buffs["mag_damage"])
 		this.onMagBuff(attacker,target,skill)
@@ -38,16 +38,16 @@ model.prototype.calDamage = function(attacker,target,skill) {
 		}
 	}
 	//计算基础伤害量
-	var basic = Math.ceil((attacker.getTotalAtt("atk") - target.getTotalAtt("armor") * (1 - attacker.getTotalAtt("ign_armor"))) * skill.getTotalAtt("atk_mul") + skill.getTotalAtt("atk_value"))
+	var basic = Math.ceil((attacker.getTotalAtt("atk") - target.getTotalAtt("armor") * Math.max(0,(1 - attacker.getTotalAtt("ign_armor")))) * skill.getTotalAtt("atk_mul") + skill.getTotalAtt("atk_value"))
 	//技能增伤
 	if(skill.isAnger)
 		basic += Math.ceil(basic * (attacker.getTotalAtt("angerAmp") - target.getTotalAtt("angerDef")))
 	else
 		basic += Math.ceil(basic * (attacker.getTotalAtt("normalAmp") - target.getTotalAtt("normalDef")))
 	//主属性增伤
-	if(d_type == "mag")
+	if(info.d_type == "mag")
 		basic += Math.ceil(basic * (attacker.getTotalAtt("magAmp") - target.getTotalAtt("magDef")))
-	else if(d_type == "phy")
+	else if(info.d_type == "phy")
 		basic += Math.ceil(basic * (attacker.getTotalAtt("phyAmp") - target.getTotalAtt("phyDef")))
 
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))

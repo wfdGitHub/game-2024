@@ -49,6 +49,10 @@ model.prototype.before = function() {
 		var info = this.character.onOtherDamage(this,this.character.getTotalAtt("hp") * 0.3)
 		this.changeTotalTmp("real_share_value",info.realValue)
 	}
+	//伤害无视护甲
+	if(this.talents.ign_armor){
+		this.character.changeTotalTmp("ign_armor",this.talents.ign_armor)
+	}
 }
 //使用技能后
 model.prototype.after = function() {
