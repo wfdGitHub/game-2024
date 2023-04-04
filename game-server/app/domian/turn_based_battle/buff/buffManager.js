@@ -24,8 +24,8 @@ model.prototype.createBuffWithRate = function(skill,character,buff) {
 		buff.duration += skill.control_dur
 	if(rate > 1 || character.fighting.random(buff.buffId) < rate)
 		this.createBuff(skill.character,character,buff)
-	else if(buff.elseBuff){
-		this.createBuff(skill.character,character,buff.elseBuff)
+	else if(buff.otps.elseBuff){
+		this.createBuff(skill.character,character,buff.otps.elseBuff)
 	}
 }
 //创建BUFF

@@ -211,7 +211,7 @@ model.prototype.onHit = function(attacker,info,hitFlag) {
 		this.buffs["hudun"].offsetDamage(info)
 	//伤害挪移
 	if(this.buffs["nuoyi_share"]){
-		var targets = this.fighting.locator.team_friend(this)
+		var targets = this.fighting.locator.getTargets(this,"team_friend")
 		if(targets.length){
 			var splashDamage = Math.floor(info.value * this.buffs["nuoyi_share"].getBuffMul() / targets.length)
 			info.value =  Math.floor(info.value * (1 - this.buffs["nuoyi_share"].getBuffMul()))
@@ -270,18 +270,6 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 	//减怒
 	if(skill.talents.loss_anger_rate && this.fighting.random("loss_anger_rate") < skill.talents.loss_anger_rate)
 		this.lessAnger(skill.talents.loss_anger_value,true)
-	if(info.died){
-		//若击杀目标，则对敌方其余侠客造成本次伤害一定比例的溅射伤害
-		if(skill.talents.splash_kill){
-			var targets = this.fighting.locator.team_friend(this)
-			if(targets.length){
-				var splashDamage = Math.floor(info.realValue * skill.talents.splash_kill)
-				info.splashs = info.splashs ? info.splashs : []
-				for(var i = 0;i < targets.length;i++)
-					info.splashs.push(targets[i].onHit(attacker,{value:splashDamage}))
-			}
-		}
-	}
 }
 //受到治疗
 model.prototype.onHeal = function(attacker,info) {
@@ -307,7 +295,17 @@ model.prototype.onDie = function(info) {
 	this.fighting.fightInfo[this.belong]["survival"]--
 }
 //角色死亡结束后
-model.prototype.onDieAfter = function(attacker,info) {}
+model.prototype.onDieAfter = function(attacker,info,skill) {
+	//若击杀目标，则对敌方其余侠客造成本次伤害一定比例的溅射伤害
+	if(skill.talents.splash_kill){
+		var targets = this.fighting.locator.getTargets(this,"team_friend")
+		if(targets.length){
+			var splashDamage = Math.floor(info.realValue * skill.talents.splash_kill)
+			for(var i = 0;i < targets.length;i++)
+				targets[i].onOtherDamage(attacker,splashDamage)
+		}
+	}
+}
 //恢复血量
 model.prototype.addHP = function(info) {
 	info.id = this.id

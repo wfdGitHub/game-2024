@@ -77,7 +77,7 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 			if(info.died){
 				KILL_FLAG = true
 				//死亡处理
-				target.onDieAfter(skill.character,info)
+				target.onDieAfter(skill.character,info,skill)
 				//触发击杀
 				skill.character.onKill(target,info)
 			}else{
