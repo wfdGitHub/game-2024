@@ -266,7 +266,7 @@ model.useSkill = function(skill,chase) {
 		buffManager.createBuff(skill.character,skill.character,{buffId:"shield",buffArg:skill.character.chase_shield,duration:1})
 	//击杀重复释放技能
 	if(!chase && diedFlag && skill.killRet && !skill.character.died){
-		this.useSkill(skill,false)
+		this.useSkill(skill,true)
 	}
 
 }
