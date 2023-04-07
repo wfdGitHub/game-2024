@@ -38,8 +38,10 @@ model.prototype.init = function() {
 	for(var i = 1;i <= 3;i++){
 		if(this.talents["first_buff"+i])
 			this.fighting.buffManager.createBuffByData(this,this,this.talents["first_buff"+i])
-		if(this.talents["skill_buff"+i])
-			this.talents["skill_buff"+i] = this.fighting.buffManager.getBuffByData(this.talents["skill_buff"+i])
+		if(this.talents["skill_buff"+i]){
+			var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents["skill_buff"+i])
+			this.angerSkill.buffs[tmpBuff.buffId] = tmpBuff
+		}
 	}
 }
 //===================生命周期
@@ -328,9 +330,11 @@ model.prototype.onWillDie = function(info) {
 		this.talents.willdie_ime_count--
 		this.attInfo.hp = 1
 		info.realValue = this.attInfo.hp
-		if(this.talents.willdie_ime_hudun){
-			this.fighting.buffManager.createBuffByData(this,this,{"buffId":"hudun","mul":this.talents.willdie_ime_hudun,"duration":99})
+		this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"one_hp"})
+		if(this.talents.willdie_ime_buff){
+			this.fighting.buffManager.createBuffByData(this,this,this.talents.willdie_ime_buff)
 		}
+		return true
 	}
 }
 //角色死亡结束后
@@ -472,9 +476,9 @@ model.prototype.packageDefaultSkill = function() {
 }
 //组装怒气技能
 model.prototype.packageAngerSkill = function() {
-	var sid = fightCfg.getCfg("heros")[this.heroId]["s0"]
-	var star = Math.floor(this.otps.s0_star) || 1
-	var lv = Math.floor(this.otps.s0_lv) || 0
+	var sid = fightCfg.getCfg("heros")[this.heroId]["s1"]
+	var star = Math.floor(this.otps.s1_star) || 1
+	var lv = Math.floor(this.otps.s1_lv) || 0
 	if(star > 5)
 		star = 5
 	return this.packageSkill(sid,star,lv,true,this.otps.skillTalents)
@@ -515,7 +519,7 @@ model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {
 //组装自身天赋
 model.prototype.packageHeroTalents = function(opts) {
 	var talents = opts.heroTalents || {}
-	for(var index = 1;index <= 4;index++){
+	for(var index = 2;index <= 5;index++){
 		var talentId = fightCfg.getCfg("heros")[this.heroId]["s"+index]
 		for(var i = 1;i <= opts["s"+index+"_star"];i++){
 			talentId++

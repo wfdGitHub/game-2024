@@ -1,3 +1,4 @@
+'use strict';
 //战斗控制器
 const fightingEntity = require("./fighting.js")
 const buffManager = require("./buff/buffManager.js")

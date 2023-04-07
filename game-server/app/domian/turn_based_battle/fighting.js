@@ -1,3 +1,4 @@
+'use strict';
 const TEAMLENGTH = 5 				//队伍人数
 const character = require("./entity/character.js")
 const fightRecordFun = require("./fightRecord.js")
@@ -78,7 +79,7 @@ model.prototype.fightBegin = function() {
 	}
 	this.fightRecord.push(info)
 	//开始首回合
-	this.nextRound()
+	this.trampoline(this.nextRound.bind(this))
 }
 //开始新整体回合
 model.prototype.nextRound = function() {
@@ -94,7 +95,7 @@ model.prototype.nextRound = function() {
 	this.round++
 	this.fightRecord.push({type : "nextRound",round : this.round})
 	//运行检测
-	this.runCheck()
+	return this.runCheck.bind(this)
 }
 //运行检测
 model.prototype.runCheck = function() {
@@ -102,10 +103,10 @@ model.prototype.runCheck = function() {
 		this.runFlag = false
 		return
 	}else if(this.checkMaster()){
-		this.runCheck()
+		return this.runCheck.bind(this)
 	}else{
 		//下一个英雄行动
-		this.nextCharacter()
+		return this.nextCharacter.bind(this)
 	}
 }
 //选择下一个英雄
@@ -127,17 +128,16 @@ model.prototype.nextCharacter = function() {
 	}
 	if(id != -1){
 		this.cur_character = this.allHero[id]
-		this.beforeCharacter()
+		return this.beforeCharacter.bind(this)
 	}else{
-		this.endRound()
-		return
+		return this.endRound.bind(this)
 	}
 }
 //英雄回合开始前
 model.prototype.beforeCharacter = function(){
 	this.insertTmpRecord()
 	this.cur_character.before()
-	this.actionCharacter()
+	return this.actionCharacter.bind(this)
 }
 //英雄回合行动
 model.prototype.actionCharacter = function(){
@@ -148,26 +148,28 @@ model.prototype.actionCharacter = function(){
 		//未行动恢复怒气
 		this.cur_character.addAnger(20,true)
 	}
-	this.afterCharacter()
+	return this.afterCharacter.bind(this)
 }
 //英雄回合结束
 model.prototype.afterCharacter = function() {
 	this.cur_character.after()
 	this.checkOver()
-	this.runCheck()
+	return this.runCheck.bind(this)
 }
 //整体回合结束
 model.prototype.endRound = function(){
 	for(var i in this.allHero)
 		this.allHero[i].roundEnd()
 	this.checkOver()
-	this.nextRound()
+	return this.nextRound.bind(this)
 }
 //检查结束
 model.prototype.checkOver = function() {
+	this.insertTmpRecord()
+	//判断结束
 	for(var type in this.fightInfo){
 		if(this.fightInfo[type]["survival"] <= 0){
-			this.fightOver(this.fightInfo[type]["rival"])
+			return this.fightOver(this.fightInfo[type]["rival"])
 		}
 	}
 }
@@ -184,7 +186,6 @@ model.prototype.fightOver = function(teamType) {
 		info.allHero.push(this.allHero[i].getOverData())
 	}
 	this.fightRecord.push(info)
-	console.trace();
 }
 //获取常规战斗结果，打平为守方获胜
 model.prototype.getNormalWin = function() {
@@ -243,5 +244,12 @@ model.prototype.insertTmpRecord = function() {
 	for(var i = 0;i < this.nextRecord.length;i++)
 		this.fightRecord.push(this.nextRecord[i])
 	this.nextRecord = []
+}
+//蹦床函数
+model.prototype.trampoline = function(f) {
+	while (f && f instanceof Function) {
+		f = f()
+	}
+	return f
 }
 module.exports = model
