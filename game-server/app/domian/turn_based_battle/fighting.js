@@ -78,7 +78,7 @@ model.prototype.fightBegin = function() {
 	}
 	this.fightRecord.push(info)
 	//开始首回合
-	return this.nextRound()
+	this.nextRound()
 }
 //开始新整体回合
 model.prototype.nextRound = function() {
@@ -94,7 +94,7 @@ model.prototype.nextRound = function() {
 	this.round++
 	this.fightRecord.push({type : "nextRound",round : this.round})
 	//运行检测
-	return this.runCheck()
+	this.runCheck()
 }
 //运行检测
 model.prototype.runCheck = function() {
@@ -102,10 +102,10 @@ model.prototype.runCheck = function() {
 		this.runFlag = false
 		return
 	}else if(this.checkMaster()){
-		return this.runCheck()
+		this.runCheck()
 	}else{
 		//下一个英雄行动
-		return this.nextCharacter()
+		this.nextCharacter()
 	}
 }
 //选择下一个英雄
@@ -127,16 +127,17 @@ model.prototype.nextCharacter = function() {
 	}
 	if(id != -1){
 		this.cur_character = this.allHero[id]
-		return this.beforeCharacter()
+		this.beforeCharacter()
 	}else{
-		return this.endRound()
+		this.endRound()
+		return
 	}
 }
 //英雄回合开始前
 model.prototype.beforeCharacter = function(){
 	this.insertTmpRecord()
 	this.cur_character.before()
-	return this.actionCharacter()
+	this.actionCharacter()
 }
 //英雄回合行动
 model.prototype.actionCharacter = function(){
@@ -147,28 +148,26 @@ model.prototype.actionCharacter = function(){
 		//未行动恢复怒气
 		this.cur_character.addAnger(20,true)
 	}
-	return this.afterCharacter()
+	this.afterCharacter()
 }
 //英雄回合结束
 model.prototype.afterCharacter = function() {
 	this.cur_character.after()
 	this.checkOver()
-	return this.runCheck()
+	this.runCheck()
 }
 //整体回合结束
 model.prototype.endRound = function(){
 	for(var i in this.allHero)
 		this.allHero[i].roundEnd()
 	this.checkOver()
-	return this.nextRound()
+	this.nextRound()
 }
 //检查结束
 model.prototype.checkOver = function() {
-	this.insertTmpRecord()
-	//判断结束
 	for(var type in this.fightInfo){
 		if(this.fightInfo[type]["survival"] <= 0){
-			return this.fightOver(this.fightInfo[type]["rival"])
+			this.fightOver(this.fightInfo[type]["rival"])
 		}
 	}
 }
