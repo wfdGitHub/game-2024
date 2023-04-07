@@ -32,7 +32,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	if(!target.buffs["vital_point"]){
 		var dodge = target.getTotalAtt("hitDef") - attacker.getTotalAtt("hit")
 		dodge = Math.min(dodge,0.9) 	//闪避率最高不超过90%
-		if(this.randomCheck(dodge,"dodge")){
+		if(this.fighting.randomCheck(dodge,"dodge")){
 			info.dodge = true
 			return info
 		}
@@ -56,7 +56,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	if(!target.buffs["vital_point"]){
 		var block = target.getTotalAtt("block") - attacker.getTotalAtt("blockDef")
 		block = Math.min(block,0.9) 	//格挡率最高不超过90%
-		if(this.randomCheck(block,"block")){
+		if(this.fighting.randomCheck(block,"block")){
 			info.block = true
 			basic = Math.ceil(basic * 0.5)
 		}
@@ -64,7 +64,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	//暴击判断
 	if(!info.block){
 		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef")
-		if(this.randomCheck(crit,"crit")){
+		if(this.fighting.randomCheck(crit,"crit")){
 			info.crit = true
 			var slay = 1.5 + attacker.getTotalAtt("slay") - attacker.getTotalAtt("slayDef")
 			basic = Math.ceil(basic * slay)
@@ -151,8 +151,5 @@ model.prototype.onDamageOver = function(attacker,target,skill,info) {
 		info.value += Math.floor(info.value * (1 - Math.min(1,target.getTotalAtt("hp") / target.getTotalAtt("maxHP"))) * skill.talents.hp_low_amp)
 	if(skill.talents["career_amp_"+target.career])
 		info.value += Math.floor(info.value * skill.talents["career_amp_"+target.career])
-}
-model.prototype.randomCheck = function(num,reason) {
-	return this.fighting.random(reason) < num ? true : false
 }
 module.exports = model

@@ -27,7 +27,7 @@ model.prototype.addBuff = function(attacker,buff) {
 			buff.duration += 1
 		this.list.push({attacker:attacker,buff : buff,duration : buff.duration})
 		this.buffOtps(attacker,this.list[this.list.length - 1])
-		this.fighting.fightRecord.push({type : "buffAdd",id : this.character.id,bId : this.buffId,num:this.list.length})
+		this.fighting.nextRecord.push({type : "buffAdd",id : this.character.id,bId : this.buffId,num:this.list.length})
 	}
 }
 //移除一层BUFF
@@ -50,12 +50,12 @@ model.prototype.update = function() {
 	if(this.list.length <= 0){
 		this.destroy()
 	}else if(num != this.list.length){
-		this.fighting.fightRecord.push({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
+		this.fighting.nextRecord.push({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
 	}
 }
 //BUFF消失
 model.prototype.destroy = function() {
-	this.fighting.fightRecord.push({type : "buffDel",id : this.character.id,bId : this.buffId})
+	this.fighting.nextRecord.push({type : "buffDel",id : this.character.id,bId : this.buffId})
 	this.character.removeBuff(this.buffId)
 	this.bufflLater()
 }

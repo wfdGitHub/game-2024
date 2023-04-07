@@ -1,6 +1,7 @@
 //buff管理器
 const fightCfg = require("../fightCfg.js")
 const buff_entity = require("./buff_entity.js")
+const buff_base = require("./buff_base.js")
 const normal_buff = require("./buffs/normal_buff.js")
 var model = function() {
 	this.buffCfg = fightCfg.getCfg("buffs")
@@ -47,5 +48,22 @@ model.prototype.createBuff = function(attacker,character,buff) {
 	if(!character.buffs[buffId])
 		character.createBuff(new this.buffList[buffId](character.fighting,character,buffId,this.buffCfg[buffId]))
 	character.addBuff(attacker,buff)
+	//控制BUFF通知友方
+	if(this.buffCfg[buffId].control){
+		var team = character.fighting["fightInfo"][character.belong].team
+		for(var i = 0;i < team.length;i++){
+			if(team[i].checkAim() && team[i].buffs["free_control"]){
+				team[i].buffs["free_control"].teamBeControl(character,buffId)
+				break
+			}
+		}
+	}
+}
+//通过buff数据创建BUFF
+model.prototype.createBuffByData = function(attacker,character,buffData) {
+	this.createBuff(attacker,character,this.getBuffByData(buffData))
+}
+model.prototype.getBuffByData = function(buffData) {
+	return new buff_base(buffData)
 }
 module.exports = model

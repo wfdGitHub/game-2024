@@ -1,6 +1,6 @@
 const fightCfg = require("../fightCfg.js")
 //战斗角色基类
-var model = function(fighting,otps,talentList) {
+var model = function(fighting,otps) {
 	this.died = false  					//死亡状态
 	if(!otps || !otps.id || !fightCfg.getCfg("heros")[otps.id]){
 		this.isNaN = true
@@ -16,7 +16,7 @@ var model = function(fighting,otps,talentList) {
 	this.ad = 1
 	this.realm = 1 						//阵营
 	this.career = 1 					//职业
-	this.talentList = talentList || []
+	this.talents = {}
 	this.buffs = {} 					//buff列表
 	this.totalDamage = 0								//累计伤害
 	this.totalHeal = 0									//累计治疗

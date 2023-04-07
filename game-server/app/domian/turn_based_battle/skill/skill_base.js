@@ -1,5 +1,4 @@
 //技能基类 伤害  治疗  BUFF
-var buff_base = require("./buff_base.js")
 var model = function(character,otps,talents) {
 	otps = otps || {}
 	this.character = character
@@ -27,7 +26,7 @@ var model = function(character,otps,talents) {
 model.prototype.init = function() {
 	for(var i = 1;i <= 3;i++){
 		if(this.talents["buff"+i]){
-			var buff = new buff_base(this.talents["buff"+i])
+			var buff = this.character.fighting.buffManager.getBuffByData(this.talents["buff"+i])
 			this.buffs[buff.buffId] = buff
 		}
 	}
@@ -57,6 +56,11 @@ model.prototype.before = function() {
 //使用技能后
 model.prototype.after = function() {
 	this.attTmpInfo = {}
+	//技能回怒
+	if(this.talents.addAnger)
+		this.character.addAnger(this.talents.addAnger,true)
+	//使用技能结束插入临时记录
+	this.character.fighting.insertTmpRecord()
 }
 //使用攻击技能前
 model.prototype.attackBefore = function(targets) {

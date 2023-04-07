@@ -2,15 +2,16 @@
 const entity_base = require("./entity_base.js")
 const skill_base = require("../skill/skill_base.js")
 const fightCfg = require("../fightCfg.js")
-var model = function(fighting,otps,talentList) {
+var model = function(fighting,otps) {
 	//继承父类属性
-	entity_base.call(this,fighting,otps,talentList)
+	entity_base.call(this,fighting,otps)
 	if(this.isNaN)
 		return
 	//初始化技能
 	this.defaultSkill = this.packageDefaultSkill()
 	this.angerSkill = this.packageAngerSkill()
 	//初始化天赋
+	this.talents = this.packageHeroTalents(otps)
 }
 //继承父类方法
 model.prototype = Object.create(entity_base.prototype) //继承父类方法
@@ -28,6 +29,18 @@ model.prototype.init = function() {
 	this.changeTotalAtt("slay",(this.getTotalAtt("main_slay") - 60) * 0.006)
 	this.changeTotalAtt("ampDefMain",(this.getTotalAtt("main_dr") - 60) * 0.006)
 	this.changeTotalAtt("speed",this.fighting.random())
+	//战斗属性
+	this.hp_loss = 0 			//战斗中失去生命值比例
+	//天赋初始化
+	if(this.talents.hp_loss_skill)
+		this.talents.hp_loss_skill = this.packageSkill(this.talents.hp_loss_skill,this.talents.hp_loss_star,0,false)
+	//初始BUFF
+	for(var i = 1;i <= 3;i++){
+		if(this.talents["first_buff"+i])
+			this.fighting.buffManager.createBuffByData(this,this,this.talents["first_buff"+i])
+		if(this.talents["skill_buff"+i])
+			this.talents["skill_buff"+i] = this.fighting.buffManager.getBuffByData(this.talents["skill_buff"+i])
+	}
 }
 //===================生命周期
 //个人回合开始
@@ -125,6 +138,17 @@ model.prototype.useNormalSkill = function() {
 	var info = {}
 	info.skill = this.defaultSkill
 	info.changeAnger = this.addAnger(20)
+	info.curAnger = this.curAnger
+	info.mul = 1
+	return info
+}
+//选择其他技能
+model.prototype.useOtherSkill = function(skill) {
+	if(this.checkForceControl())
+		return false
+	var info = {}
+	info.skill = skill
+	info.changeAnger = 0
 	info.curAnger = this.curAnger
 	info.mul = 1
 	return info
@@ -255,14 +279,13 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 	//反伤
 	if(this.buffs["nuoyi_back"])
 		attacker.onOtherDamage(this,this.buffs["nuoyi_back"].getBuffMul() * info.realValue)
-	//护盾更新
-	if(this.buffs["hudun"])
-		this.buffs["hudun"].removeZero()
 	//回血
 	if(this.buffs["jianren"])
 		this.onOtherHeal(this,this.buffs["jianren"].getBuffMul() * info.realValue)
 	//触发类
 	if(!this.buffs["vital_point"]){
+		//血量损失触发
+		this.triggerLossHP()
 		//血量低于50%回血
 		if(this.buffs["hit_heal"] && (this.getTotalAtt("hp") / this.getTotalAtt("maxHP")) < 0.5)
 			this.onOtherHeal(this,this.buffs["hit_heal"].getBuffMul() * this.getTotalAtt("maxHP"))
@@ -284,15 +307,31 @@ model.prototype.onHealAfter = function(attacker,info) {}
 model.prototype.onDie = function(info) {
 	if(this.died)
 		return
+	if(this.onWillDie(info))
+		return
+	info.realValue = this.attInfo.hp
 	this.attInfo.hp = 0
+	this.hp_loss = 0
 	this.curAnger = 0
 	this.died = true
-	info.curAnger = 0
 	info.died = true
 	//清空BUFF
 	for(var i in this.buffs)
 		this.buffs[i].destroy()
 	this.fighting.fightInfo[this.belong]["survival"]--
+}
+//濒死触发
+model.prototype.onWillDie = function(info) {
+	if(this.buffs["vital_point"])
+		return false
+	if(this.talents.willdie_ime_count && this.fighting.randomCheck(this.talents.willdie_ime_rate,"willdie_ime_rate")){
+		this.talents.willdie_ime_count--
+		this.attInfo.hp = 1
+		info.realValue = this.attInfo.hp
+		if(this.talents.willdie_ime_hudun){
+			this.fighting.buffManager.createBuffByData(this,this,{"buffId":"hudun","mul":this.talents.willdie_ime_hudun,"duration":99})
+		}
+	}
 }
 //角色死亡结束后
 model.prototype.onDieAfter = function(attacker,info,skill) {
@@ -332,25 +371,38 @@ model.prototype.lessHP = function(info,hitFlag) {
 	info.realValue = 0
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
-	if(this.died){
-		info.curAnger = this.curAnger
+	info.curAnger = this.curAnger
+	if(this.died)
 		return info
-	}
 	if(this.attInfo.hp < info.value){
-		info.realValue = this.attInfo.hp
-		this.attInfo.hp = 0
 		this.onDie(info)
 	}else{
 		this.attInfo.hp -= info.value
 		info.realValue = info.value
 		//受击回怒
-		if(hitFlag)
-			this.addAnger(Math.floor((info.realValue / this.attInfo.maxHP) * 80),false)
+		if(hitFlag){
+			var tmpHPRate = info.realValue / this.attInfo.maxHP
+			this.hp_loss += tmpHPRate
+			this.addAnger(Math.floor(tmpHPRate * 80),false)
+		}
 	}
 	info.curAnger = this.curAnger
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
 	return info
+}
+//触发累计血量损失
+model.prototype.triggerLossHP = function() {
+	if(this.talents.hp_loss_per){
+		//血量满足
+		if(this.hp_loss > this.talents.hp_loss_per){
+			this.hp_loss -= this.talents.hp_loss_per
+			if(this.fighting.randomCheck(this.talents.hp_loss_rate,"hp_loss_rate")){
+				if(this.talents.hp_loss_skill)
+					this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.hp_loss_skill))
+			}
+		}
+	}
 }
 //复活
 model.prototype.resurgence = function(attacker,info) {
@@ -416,13 +468,13 @@ model.prototype.getOverData = function() {
 //组装普攻技能
 model.prototype.packageDefaultSkill = function() {
 	var sid = fightCfg.getCfg("heros")[this.heroId]["defult"]
-	return this.packageSkill(sid,1,0,false)
+	return this.packageSkill(sid,0,0,false)
 }
 //组装怒气技能
 model.prototype.packageAngerSkill = function() {
-	var sid = fightCfg.getCfg("heros")[this.heroId]["skill"]
-	var star = Math.floor(this.otps.s1_star) || 1
-	var lv = Math.floor(this.otps.s1_lv) || 0
+	var sid = fightCfg.getCfg("heros")[this.heroId]["s0"]
+	var star = Math.floor(this.otps.s0_star) || 1
+	var lv = Math.floor(this.otps.s0_lv) || 0
 	if(star > 5)
 		star = 5
 	return this.packageSkill(sid,star,lv,true,this.otps.skillTalents)
@@ -459,5 +511,26 @@ model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {
 		}
 	}
 	return new skill_base(this,otps,talents)
+}
+//组装自身天赋
+model.prototype.packageHeroTalents = function(opts) {
+	var talents = opts.heroTalents || {}
+	for(var index = 1;index <= 4;index++){
+		var talentId = fightCfg.getCfg("heros")[this.heroId]["s"+index]
+		for(var i = 1;i <= opts["s"+index+"_star"];i++){
+			talentId++
+			var talentInfo = fightCfg.getCfg("hero_talents")[talentId]
+			for(var j = 1;j <= 4;j++){
+				var key = talentInfo["key"+j]
+				if(key){
+					if(talents[key] && Number.isFinite(talents[key]))
+						talents[key] += talentInfo["value"+j]
+					else
+						talents[key] = talentInfo["value"+j]
+				}
+			}
+		}
+	}
+	return talents
 }
 module.exports = model

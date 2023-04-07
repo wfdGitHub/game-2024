@@ -19,6 +19,6 @@ model.prototype.domain = function(){
 		delete info.value
 		record = Object.assign(record,info)
 	}
-	this.fighting.fightRecord.push(record)
+	this.fighting.nextRecord.push(record)
 }
 module.exports = model

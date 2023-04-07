@@ -24,6 +24,7 @@ model.prototype.offsetDamage = function(info) {
 		info.hudun += this.list[i].num
 		this.list[i].num = 0
 	}
+	this.removeZero()
 	return info
 }
 //移除护盾为0的BUFF
@@ -38,7 +39,7 @@ model.prototype.removeZero = function() {
 	if(this.list.length <= 0){
 		this.destroy()
 	}else if(num != this.list.length){
-		this.fighting.fightRecord.push({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
+		this.fighting.nextRecord.push({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
 	}
 }
 module.exports = model

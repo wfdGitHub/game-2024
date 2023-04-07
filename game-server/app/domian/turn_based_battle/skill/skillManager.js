@@ -5,6 +5,9 @@ var model = function(fighting) {
 //开始使用技能（预处理）
 model.prototype.useSkill = function(skillInfo) {
 	var skill = skillInfo.skill
+	if(!skill){
+		console.log("skill.character.id")
+	}
 	var record = {
 		"type" : "skill",
 		"id" : skill.character.id,
