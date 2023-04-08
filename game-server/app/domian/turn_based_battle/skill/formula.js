@@ -146,7 +146,7 @@ model.prototype.onHighHP = function(attacker,target,skill) {
 //伤害计算完成后处理
 model.prototype.onDamageOver = function(attacker,target,skill,info) {
 	if(skill.talents.maxHP_damage)
-		info.value += Math.floor(target.getTotalAtt("maxHP") * skill.talents.maxHP_damage)
+		info.value += Math.floor(attacker.getTotalAtt("maxHP") * skill.talents.maxHP_damage)
 	if(skill.talents.hp_low_amp)
 		info.value += Math.floor(info.value * (1 - Math.min(1,target.getTotalAtt("hp") / target.getTotalAtt("maxHP"))) * skill.talents.hp_low_amp)
 	if(skill.talents["career_amp_"+target.career])
