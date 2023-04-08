@@ -51,9 +51,20 @@ model.prototype.getTargets = function(character,targetType) {
 		case "enemy_3":
 			//敌方3个随机单体
 			return this.getEnemyRandom(character,3)
+		case "team_1":
+			//我方随机单体
+			return this.getTeamRandom(character,1)
+		case "team_2":
+			//我方2个随机单体
+			return this.getTeamRandom(character,2)
+		case "team3":
+			//我方3个随机单体
+			return this.getTeamRandom(character,3)
 		case "enemy_all":
 			//敌方全体
 			return this.getEnemyAll(character)
+		case "enemy_adjoin":
+			return this.get
 		case "enemy_front":
 			return this.getEnemyFront(character)
 		case "enemy_back":
@@ -220,6 +231,20 @@ model.prototype.getEnemyRandom = function(character,count) {
 	}
 	return list
 }
+//我方随机N个单位
+model.prototype.getTeamRandom = function(character,count) {
+	var team =  character.fighting["fightInfo"][character.belong].team
+	var tmpList = []
+	for(var i = 0;i < team.length;i++)
+		if(team[i].checkAim())
+			tmpList.push(team[i])
+	var list = []
+	for(var i = 0;i < count && tmpList.length;i++){
+		var rid = Math.floor(character.fighting.random("随机单位") * tmpList.length)
+		list.push(tmpList.splice(rid,1)[0])
+	}
+	return list
+}
 //我方前排
 model.prototype.getTeamFront = function(character) {
 	var team =  character.fighting["fightInfo"][character.belong].team
@@ -267,6 +292,10 @@ model.prototype.getBack = function(team) {
 		if(team[BACK_LIST[i]].checkAim())
 			list.push(team[BACK_LIST[i]])
 	return list
+}
+//敌方相邻目标
+model.prototype.enemyAdjoin = function(character) {
+	// body...
 }
 //获取相邻目标
 model.prototype.getNearby = function(character) {

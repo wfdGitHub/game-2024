@@ -30,7 +30,6 @@ model.prototype.skillAction = function(skillInfo,skill,record) {
 		healTargets = this.healSkill(skillInfo,skill,record)
 	}
 	this.fighting.fightRecord.push(record)
-	this.buffSkill(skill,attackTargets,record.attack)
 	this.buffSkill(skill,healTargets,record.heal)
 	this.skillAfter(skillInfo,skill,record)
 }
@@ -61,7 +60,8 @@ model.prototype.healSkill = function(skillInfo,skill,record) {
 		var info = this.fighting.formula.calHeal(skill.character, targets[i],skill)
 		info.value = Math.floor(info.value * skillInfo.mul)
 		info = targets[i].onHeal(skill.character,info)
-		record.heal.push(info)
+		if(info.value)
+			record.heal.push(info)
 	}
 	return targets
 }
