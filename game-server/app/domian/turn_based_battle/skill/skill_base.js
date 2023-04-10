@@ -18,7 +18,8 @@ var model = function(character,otps,talents) {
 	this.attInfo.heal_mul = otps["heal_mul"] || 0
 	this.attInfo.heal_value = otps["heal_value"] || 0
 	this.heal_aim = otps["heal_aim"] || 0
-	this.buffs = {}
+	this.buffs = {} 					//附带BUFF
+	this.trigger_buffs = {} 			//触发BUFF
 	this.talents = talents || {}
 	this.init()
 }

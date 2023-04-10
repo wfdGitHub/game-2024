@@ -149,11 +149,21 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 model.prototype.buffSkill = function(skill,targets,infos) {
 	if(!targets.length)
 		return
+	//技能BUFF
 	for(var buffId in skill.buffs){
 		var buff = skill.buffs[buffId]
 		var buffTargets = this.fighting.locator.getBuffTargets(skill.character,buff.targetType,targets,infos)
 		for(var i = 0;i < buffTargets.length;i++)
 			this.fighting.buffManager.createBuffWithRate(skill,buffTargets[i],buff)
+	}
+	//触发BUFF
+	if(!skill.character.buffs["vital_point"]){
+		for(var buffId in skill.trigger_buffs){
+			var buff = skill.trigger_buffs[buffId]
+			var buffTargets = this.fighting.locator.getBuffTargets(skill.character,buff.targetType,targets,infos)
+			for(var i = 0;i < buffTargets.length;i++)
+				this.fighting.buffManager.createBuffWithRate(skill,buffTargets[i],buff)
+		}
 	}
 }
 module.exports = model
