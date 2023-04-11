@@ -94,7 +94,29 @@ model.prototype.attackSkillBefore = function(targets) {
 model.prototype.attackNormalBefore = function(targets) {
 
 }
-//改变临时属性
+//使用攻击技能后
+model.prototype.attackAfter = function(targets) {
+	if(this.isAnger)
+		this.attackSkillAfter(targets)
+	else
+		this.attackNormalAfter(targets)
+}
+//技能结束后
+model.prototype.attackSkillAfter = function(targets) {
+
+}
+//普攻结束后
+model.prototype.attackNormalAfter = function(targets) {
+	if(this.character.talents.normal_phybuff_heal){
+		for(var i = 0;i < targets.length;i++){
+			if(targets[i].buffs["phy_damage"]){
+				this.character.onOtherHeal(this.character,this.character.getTotalAtt("maxHP") * this.character.talents.normal_phybuff_heal)
+				break
+			}
+		}
+	}
+	
+}
 model.prototype.changeTotalTmp = function(name,value) {
 	if(!this.attTmpInfo[name])
 		this.attTmpInfo[name] = 0

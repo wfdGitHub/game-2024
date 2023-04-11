@@ -83,10 +83,14 @@ model.prototype.roundBegin = function() {
 }
 //整体回合结束
 model.prototype.roundEnd = function() {
+	if(this.died)
+		return
 	for(var i in this.buffs){
 		if(this.buffs[i])
 			this.buffs[i].update()
 	}
+	if(this.talents.round_healbyatk)
+		this.onOtherHeal(this,this.talents.round_healbyatk * this.getTotalAtt("atk"))
 }
 //获得怒气
 model.prototype.addAnger = function(value,show) {
@@ -323,22 +327,6 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 		if(this.talents.behit_hpanger)
 			this.addAnger(Math.floor(this.getTotalAtt("hp") / this.getTotalAtt("maxHP") * this.talents.behit_hpanger),true)
 	}
-}
-//攻击者结束后
-model.prototype.onAttackAfter = function(skill,target,info) {
-	if(skill.isAnger)
-		this.onSkillAfter(skill,target,info)
-	else
-		this.onNormalAfter(skill,target,info)
-}
-//普攻结束后
-model.prototype.onNormalAfter = function(skill,target,info) {
-	if(this.talents.normal_phybuff_heal && target.buffs["phy_damage"])
-		this.onOtherHeal(this,this.getTotalAtt("maxHP") * this.talents.normal_phybuff_heal)
-}
-//技能结束后
-model.prototype.onSkillAfter = function(skill,target,info) {
-
 }
 //受到治疗
 model.prototype.onHeal = function(attacker,info) {
