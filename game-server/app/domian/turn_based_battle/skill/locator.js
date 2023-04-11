@@ -1,3 +1,4 @@
+const fightCfg = require("../fightCfg.js")
 const TEAMLENGTH = 5 				//队伍人数
 const FRONT_NUM = 2 				//前排人数
 const POS_MAP = [[0,0.5],[0,1.5],[1,0],[1,1],[1,2]]
@@ -18,12 +19,12 @@ model.prototype.existsTarget = function(character) {
 	}
 	return false
 }
-model.prototype.getBuffTargets = function(character,targetType,targets,attackInfos) {
+model.prototype.getBuffTargets = function(character,targetType,targets) {
 	switch(targetType){
 		case "skill_targets":
 			var list = []
 			for(var i = 0;i < targets.length;i++)
-				if(targets[i].checkAim() && !attackInfos[i].dodge)
+				if(targets[i].checkAim())
 					list.push(targets[i])
 			return list
 		break
@@ -96,6 +97,10 @@ model.prototype.getTargets = function(character,targetType) {
 			//默认单体
 			return this.getEnemyNormal(character)
 	}
+}
+//获取默认目标数量
+model.prototype.getTargetTypeNum = function(targetType) {
+	return fightCfg.getCfg("skill_targets")[targetType] ? fightCfg.getCfg("skill_targets")[targetType]["num"] : 1
 }
 //选择常规敌方目标（按距离）
 model.prototype.getEnemyNormal = function(character) {

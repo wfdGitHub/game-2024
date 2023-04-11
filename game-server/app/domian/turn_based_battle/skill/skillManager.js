@@ -30,7 +30,8 @@ model.prototype.skillAction = function(skillInfo,skill,record) {
 		healTargets = this.healSkill(skillInfo,skill,record)
 	}
 	this.fighting.fightRecord.push(record)
-	this.buffSkill(skill,healTargets,record.heal)
+	this.buffSkill(skill,attackTargets)
+	this.buffSkill(skill,healTargets)
 	this.skillAfter(skillInfo,skill,record)
 }
 //伤害技能
@@ -77,6 +78,7 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 			var info = record.attack[i]
 			allDamage += info.realValue
 			var target = this.fighting.allHero[info.id]
+			skill.character.onAttackAfter(skill,target,info)
 			if(info.died){
 				KILL_FLAG = true
 				//死亡处理
@@ -152,7 +154,7 @@ model.prototype.buffSkill = function(skill,targets,infos) {
 	//技能BUFF
 	for(var buffId in skill.buffs){
 		var buff = skill.buffs[buffId]
-		var buffTargets = this.fighting.locator.getBuffTargets(skill.character,buff.targetType,targets,infos)
+		var buffTargets = this.fighting.locator.getBuffTargets(skill.character,buff.targetType,targets)
 		for(var i = 0;i < buffTargets.length;i++)
 			this.fighting.buffManager.createBuffWithRate(skill,buffTargets[i],buff)
 	}
@@ -160,7 +162,7 @@ model.prototype.buffSkill = function(skill,targets,infos) {
 	if(!skill.character.buffs["vital_point"]){
 		for(var buffId in skill.trigger_buffs){
 			var buff = skill.trigger_buffs[buffId]
-			var buffTargets = this.fighting.locator.getBuffTargets(skill.character,buff.targetType,targets,infos)
+			var buffTargets = this.fighting.locator.getBuffTargets(skill.character,buff.targetType,targets)
 			for(var i = 0;i < buffTargets.length;i++)
 				this.fighting.buffManager.createBuffWithRate(skill,buffTargets[i],buff)
 		}

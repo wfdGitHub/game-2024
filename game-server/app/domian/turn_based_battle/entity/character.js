@@ -31,11 +31,28 @@ model.prototype.init = function() {
 	this.changeTotalAtt("speed",this.fighting.random())
 	//战斗属性
 	this.hp_loss = 0 			//战斗中失去生命值比例
+	//属性加成
+	for(var i in this.attInfo){
+		if(this.talents[i])
+			this.attInfo[i] += Number(this.talents[i]) || 0
+	}
+	if(this.talents.self_maxHP)
+		this.attInfo.maxHP += Math.floor(this.attInfo.maxHP * this.talents.self_maxHP)
+	if(this.talents.self_atk)
+		this.attInfo.atk += Math.floor(this.attInfo.atk * this.talents.self_atk)
+	if(this.talents.self_armor)
+		this.attInfo.armor += Math.floor(this.attInfo.armor * this.talents.self_armor)
 	//天赋初始化
 	if(this.talents.hp_loss_skill)
 		this.talents.hp_loss_skill = this.packageSkill(this.talents.hp_loss_skill,this.talents.hp_loss_star,0,false)
 	//初始BUFF
 	for(var i = 1;i <= 3;i++){
+		if(this.talents["begin_buff"+i]){
+			var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents["begin_buff"+i])
+			var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
+			for(var j = 0;j < buffTargets.length;j++)
+				this.fighting.buffManager.createBuff(this,buffTargets[i],tmpBuff)
+		}
 		if(this.talents["first_buff"+i])
 			this.fighting.buffManager.createBuffByData(this,this,this.talents["first_buff"+i])
 		if(this.talents["skill_buff"+i]){
@@ -43,6 +60,12 @@ model.prototype.init = function() {
 			this.angerSkill.buffs[tmpBuff.buffId] = tmpBuff
 		}
 	}
+	//筋骨和内力同步为最高值
+	if(this.talents.same_mag_phy){
+		this.attInfo.main_mag = Math.max(this.attInfo.main_mag,this.attInfo.main_phy)
+		this.attInfo.main_phy = Math.max(this.attInfo.main_mag,this.attInfo.main_phy)
+	}
+	this.attInfo.hp = this.attInfo.maxHP
 }
 //===================生命周期
 //个人回合开始
@@ -284,17 +307,38 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 	//回血
 	if(this.buffs["jianren"])
 		this.onOtherHeal(this,this.buffs["jianren"].getBuffMul() * info.realValue)
-	//触发类
-	if(!this.buffs["vital_point"]){
-		//血量损失触发
-		this.triggerLossHP()
-		//血量低于50%回血
-		if(this.buffs["hit_heal"] && (this.getTotalAtt("hp") / this.getTotalAtt("maxHP")) < 0.5)
-			this.onOtherHeal(this,this.buffs["hit_heal"].getBuffMul() * this.getTotalAtt("maxHP"))
-	}
 	//减怒
-	if(skill.talents.loss_anger_rate && this.fighting.random("loss_anger_rate") < skill.talents.loss_anger_rate)
+	if(skill.talents.loss_anger_rate && this.fighting.randomCheck(skill.talents.loss_anger_rate,"loss_anger_rate"))
 		this.lessAnger(skill.talents.loss_anger_value,true)
+	//触发类
+	if(this.buffs["vital_point"])
+		return
+	//血量损失触发
+	this.triggerLossHP()
+	//血量低于50%回血
+	if(this.buffs["hit_heal"] && (this.getTotalAtt("hp") / this.getTotalAtt("maxHP")) < 0.5)
+		this.onOtherHeal(this,this.buffs["hit_heal"].getBuffMul() * this.getTotalAtt("maxHP"))
+	if(this.talents.behit_healRate && this.fighting.randomCheck(this.talents.behit_healRate,"behit_healRate")){
+		this.onOtherHeal(this,this.talents.behit_healMul * this.getTotalAtt("atk"))
+		if(this.talents.behit_hpanger)
+			this.addAnger(Math.floor(this.getTotalAtt("hp") / this.getTotalAtt("maxHP") * this.talents.behit_hpanger),true)
+	}
+}
+//攻击者结束后
+model.prototype.onAttackAfter = function(skill,target,info) {
+	if(skill.isAnger)
+		this.onSkillAfter(skill,target,info)
+	else
+		this.onNormalAfter(skill,target,info)
+}
+//普攻结束后
+model.prototype.onNormalAfter = function(skill,target,info) {
+	if(this.talents.normal_phybuff_heal && target.buffs["phy_damage"])
+		this.onOtherHeal(this,this.getTotalAtt("maxHP") * this.talents.normal_phybuff_heal)
+}
+//技能结束后
+model.prototype.onSkillAfter = function(skill,target,info) {
+
 }
 //受到治疗
 model.prototype.onHeal = function(attacker,info) {
@@ -309,7 +353,7 @@ model.prototype.onHealAfter = function(attacker,info) {}
 model.prototype.onDie = function(info) {
 	if(this.died)
 		return
-	if(this.onWillDie(info))
+	if(this.onWillDie(attacker,info))
 		return
 	info.realValue = this.attInfo.hp
 	this.attInfo.hp = 0
@@ -323,7 +367,12 @@ model.prototype.onDie = function(info) {
 	this.fighting.fightInfo[this.belong]["survival"]--
 }
 //濒死触发
-model.prototype.onWillDie = function(info) {
+model.prototype.onWillDie = function(attacker,info) {
+	if(this.talents["sexNoDie_"+attacker.sex]){
+		this.attInfo.hp = 1
+		info.realValue = this.attInfo.hp
+		return true
+	}
 	if(this.buffs["vital_point"])
 		return false
 	if(this.talents.willdie_ime_count && this.fighting.randomCheck(this.talents.willdie_ime_rate,"willdie_ime_rate")){

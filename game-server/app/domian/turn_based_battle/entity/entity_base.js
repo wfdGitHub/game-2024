@@ -16,6 +16,7 @@ var model = function(fighting,otps) {
 	this.ad = 1
 	this.realm = 1 						//阵营
 	this.career = 1 					//职业
+	this.sex = 1 						//性别 1男 2女
 	this.talents = {}
 	this.buffs = {} 					//buff列表
 	this.totalDamage = 0								//累计伤害
@@ -31,7 +32,6 @@ model.prototype.attInit = function() {
 	this.belong = "" 					//所属阵营
 	this.isAction = false 				//回合行动过标识
 	this.onAction = false  				//回合行动中标识
-	this.sex = 1 						//性别 1男 2女
 	//基础属性
 	this.curAnger = 100 				//初始怒气
 	this.maxAnger = 100 				//最大怒气
@@ -78,7 +78,6 @@ model.prototype.attInit = function() {
 	this.attInfo.poisonDef = 0 			//中毒减伤
 	this.attInfo.ign_armor = 0 			//忽视护甲
 	this.attInfo.maxHP = 30000
-	this.attInfo.hp = this.attInfo.maxHP
 	this.attInfo.atk = 2000
 	this.attInfo.armor = 500
 	//属性初始化
@@ -118,6 +117,8 @@ model.prototype.changeTotalTmp = function(name,value) {
 		this.attTmpInfo[name] = 0
 	this.attTmpInfo[name] += Number(value) || 0
 }
+//攻击者触发
+model.prototype.onAttackAfter = function() {}
 //受到攻击
 model.prototype.onHit = function(attacker,info) {}
 //受到治疗

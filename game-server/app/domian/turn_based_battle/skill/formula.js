@@ -26,7 +26,6 @@ model.prototype.calDamage = function(attacker,target,skill) {
 		this.onPhyBuff(attacker,target,skill)
 	if((target.attInfo.hp / target.attInfo.maxHP) > 0.5)
 		this.onHighHP(attacker,target,skill)
-
 	//==========================开始计算伤害
 	//闪避判断
 	if(!target.buffs["vital_point"]){
@@ -151,5 +150,8 @@ model.prototype.onDamageOver = function(attacker,target,skill,info) {
 		info.value += Math.floor(info.value * (1 - Math.min(1,target.getTotalAtt("hp") / target.getTotalAtt("maxHP"))) * skill.talents.hp_low_amp)
 	if(skill.talents["career_amp_"+target.career])
 		info.value += Math.floor(info.value * skill.talents["career_amp_"+target.career])
+	if(target.talents["sexDef_"+attacker.sex])
+		info.value = Math.floor(info.value * (1-target.talents["sexDef_"+attacker.sex]))
+	
 }
 module.exports = model

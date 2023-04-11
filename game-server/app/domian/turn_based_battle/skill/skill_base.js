@@ -77,6 +77,22 @@ model.prototype.attackBefore = function(targets) {
 		this.changeTotalTmp("atk_value",Math.floor(this.getTotalAtt("atk_share_value") / Math.max(2,targets.length)))
 		delete this.attTmpInfo.atk_share_value
 	}
+	if(this.isAnger)
+		this.attackSkillBefore(targets)
+	else
+		this.attackNormalBefore(targets)
+}
+//使用技攻前
+model.prototype.attackSkillBefore = function(targets) {
+	//目标每减少一个伤害加成
+	if(this.talents.aim_less_amp){
+		var mulRate = this.talents.aim_less_amp * (this.fighting.locator.getTargetTypeNum(this.atk_aim) - targets.length)
+		this.changeTotalTmp("atk_mul",mulRate * this.attInfo.atk_mul)
+	}
+}
+//使用普攻前
+model.prototype.attackNormalBefore = function(targets) {
+
 }
 //改变临时属性
 model.prototype.changeTotalTmp = function(name,value) {
