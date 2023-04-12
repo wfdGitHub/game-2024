@@ -34,6 +34,8 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 	}
 }
 model.prototype.getTargets = function(character,targetType) {
+	if(character.aim && character.aim.checkAim())
+		return [character.aim]
 	switch(targetType){
 		case "enemy_normal":
 			//默认单体
@@ -93,6 +95,8 @@ model.prototype.getTargets = function(character,targetType) {
 			return this.getTeamAll(character)
 		case "team_friend":
 			return this.getFriendAll(character)
+		case "same_realm":
+			return this.getSameRealm(character)
 		default:
 			//默认单体
 			return this.getEnemyNormal(character)
@@ -330,6 +334,17 @@ model.prototype.getFriendAll = function(character) {
     var team =  character.fighting["fightInfo"][character.belong].team
 	for(var index = 0;index < team.length;index++){
 		if(index != character.index && team[index].checkAim()){
+			list.push(team[index])
+		}
+	}
+    return list
+}
+//获取同阵营
+model.prototype.getSameRealm = function(character) {
+    var list = []
+    var team =  character.fighting["fightInfo"][character.belong].team
+	for(var index = 0;index < team.length;index++){
+		if(team[index].realm == character.realm && team[index].checkAim()){
 			list.push(team[index])
 		}
 	}

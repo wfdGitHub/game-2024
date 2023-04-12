@@ -12,6 +12,8 @@ var model = function(fighting,otps) {
 	this.angerSkill = this.packageAngerSkill()
 	//初始化天赋
 	this.talents = this.packageHeroTalents(otps)
+	//回合技能
+	this.roundSkills = []
 }
 //继承父类方法
 model.prototype = Object.create(entity_base.prototype) //继承父类方法
@@ -42,10 +44,24 @@ model.prototype.init = function() {
 		this.attInfo.atk += Math.floor(this.attInfo.atk * this.talents.self_atk)
 	if(this.talents.self_armor)
 		this.attInfo.armor += Math.floor(this.attInfo.armor * this.talents.self_armor)
-	//天赋初始化
+	//========技能初始化
+	//损失血量技能
 	if(this.talents.hp_loss_skill)
 		this.talents.hp_loss_skill = this.packageSkill(this.talents.hp_loss_skill,this.talents.hp_loss_star,0,false)
-	//初始BUFF
+	//回合技能
+	if(this.talents.round_skill)
+		this.roundSkills.push(this.packageRoundSkill(this.talents.round_skill))
+	//首次攻击技能
+	if(this.talents.first_atk_skill)
+		this.talents.first_atk_skill = this.packageSkill(this.talents.first_atk_skill,this.talents.first_atk_star,0,false)
+	//攻击触发技能 30%
+	if(this.talents.atk_skill){
+		var atk_skill = this.packageSkill(this.talents.atk_skill,this.talents.atk_star,0,false)
+		atk_skill.rate = 0.3
+		this.defaultSkill.laterSkill = atk_skill
+		this.angerSkill.laterSkill = atk_skill
+	}
+	//========初始BUFF
 	for(var i = 1;i <= 3;i++){
 		if(this.talents["begin_buff"+i]){
 			var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents["begin_buff"+i])
@@ -65,6 +81,22 @@ model.prototype.init = function() {
 		this.attInfo.main_mag = Math.max(this.attInfo.main_mag,this.attInfo.main_phy)
 		this.attInfo.main_phy = Math.max(this.attInfo.main_mag,this.attInfo.main_phy)
 	}
+	//阵营增益
+	if(this.talents.realm_add_atk){
+		var targets = this.fighting.locator.getTargets(this,"same_realm")
+		for(var i = 0;i < targets.length;i++)
+			targets[i].changeTotalAtt("atk",Math.floor(targets[i].attInfo.atk * this.talents.realm_add_atk))
+	}
+	if(this.talents.realm_add_armor){
+		var targets = this.fighting.locator.getTargets(this,"same_realm")
+		for(var i = 0;i < targets.length;i++)
+			targets[i].changeTotalAtt("armor",Math.floor(targets[i].attInfo.armor * this.talents.realm_add_armor))
+	}
+	if(this.talents.realm_add_buff){
+		var targets = this.fighting.locator.getTargets(this,"same_realm")
+		for(var i = 0;i < targets.length;i++)
+			this.fighting.buffManager.createBuffByData(this,targets[i],this.talents.realm_add_buff)
+	}
 	this.attInfo.hp = this.attInfo.maxHP
 }
 //===================生命周期
@@ -72,6 +104,18 @@ model.prototype.init = function() {
 model.prototype.before = function() {
 	this.isAction = true
 	this.onAction = true
+	//回合技能
+	for(var i = 0;i < this.roundSkills.length;i++){
+		if(this.roundSkills[i].CUR_CD <= 0){
+			var skill = this.useOtherSkill(this.roundSkills[i])
+			if(skill){
+				this.roundSkills[i].CUR_CD = this.roundSkills[i].NEED_CD
+				this.fighting.skillManager.useSkill(skill)
+			}
+		}else{
+			this.roundSkills[i].CUR_CD--
+		}
+	}
 }
 //个人回合结束
 model.prototype.after = function() {
@@ -83,12 +127,12 @@ model.prototype.roundBegin = function() {
 }
 //整体回合结束
 model.prototype.roundEnd = function() {
-	if(this.died)
-		return
 	for(var i in this.buffs){
 		if(this.buffs[i])
 			this.buffs[i].update()
 	}
+	if(this.died)
+		return
 	if(this.talents.round_healbyatk)
 		this.onOtherHeal(this,this.talents.round_healbyatk * this.getTotalAtt("atk"))
 }
@@ -166,7 +210,7 @@ model.prototype.useNormalSkill = function() {
 		return false
 	var info = {}
 	info.skill = this.defaultSkill
-	info.changeAnger = this.addAnger(20)
+	info.changeAnger = this.addAnger(this.getTotalAtt("roundAnger"))
 	info.curAnger = this.curAnger
 	info.mul = 1
 	return info
@@ -259,6 +303,12 @@ model.prototype.onOtherHeal = function(attacker,value) {
 }
 //受到攻击
 model.prototype.onHit = function(attacker,info,hitFlag) {
+	//秒杀判断
+	if(hitFlag && attacker.talents.hp_seckill && (this.attInfo.hp / this.attInfo.maxHP) < attacker.talents.hp_seckill){
+		this.onSeckill(info)
+		attacker.totalDamage += info.realValue
+		return info
+	}
 	//受到攻击
 	if(this.buffs["hudun"])
 		this.buffs["hudun"].offsetDamage(info)
@@ -267,11 +317,17 @@ model.prototype.onHit = function(attacker,info,hitFlag) {
 		var targets = this.fighting.locator.getTargets(this,"team_friend")
 		if(targets.length){
 			var splashDamage = Math.floor(info.value * this.buffs["nuoyi_share"].getBuffMul() / targets.length)
-			info.value =  Math.floor(info.value * (1 - this.buffs["nuoyi_share"].getBuffMul()))
+			info.value = Math.floor(info.value * (1 - this.buffs["nuoyi_share"].getBuffMul()))
 			info.splashs = info.splashs ? info.splashs : []
 			for(var i = 0;i < targets.length;i++)
 				info.splashs.push(targets[i].onHit(attacker,{value:splashDamage}))
 		}
+	}
+	//受击转化劲
+	if(this.talents.behit_turn_store){
+		var storeDamage = Math.floor(info.value * this.talents.behit_turn_store)
+		info.value -= storeDamage
+		this.fighting.buffManager.createBuff(attacker,this,{"buffId":"store_damage","value":storeDamage,"duration":3})
 	}
 	this.lessHP(info,hitFlag)
 	attacker.totalDamage += info.realValue
@@ -349,9 +405,13 @@ model.prototype.onDie = function(info) {
 	this.curAnger = 0
 	this.died = true
 	info.died = true
+	//印记状态
+	if(this.buffs["sign_unheal"] && this.buffs["sign_unheal"]["not_revived"])
+		this.fighting.buffManager.createBuff(this,this,{"buffId":"not_revived","duration":2})
 	//清空BUFF
 	for(var i in this.buffs)
-		this.buffs[i].destroy()
+		if(i != "not_revived")
+			this.buffs[i].destroy()
 	this.fighting.fightInfo[this.belong]["survival"]--
 }
 //濒死触发
@@ -427,9 +487,25 @@ model.prototype.lessHP = function(info,hitFlag) {
 			this.addAnger(Math.floor(tmpHPRate * 80),false)
 		}
 	}
+	//秒杀判断
+	if(this.buffs["chaodu"])
+		if((this.attInfo.hp / this.attInfo.maxHP) < this.buffs["chaodu"].getBuffMul())
+			return this.onSeckill(info)
 	info.curAnger = this.curAnger
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
+	return info
+}
+//被秒杀
+model.prototype.onSeckill = function(info) {
+	info.id = this.id
+	info.value = this.attInfo.hp
+	info.realValue = 0
+	this.onDie(info)
+	info.curAnger = this.curAnger
+	info.hp = this.attInfo.hp
+	info.maxHP = this.attInfo.maxHP
+	info.seckill = true
 	return info
 }
 //触发累计血量损失
@@ -438,16 +514,24 @@ model.prototype.triggerLossHP = function() {
 		//血量满足
 		if(this.hp_loss > this.talents.hp_loss_per){
 			this.hp_loss -= this.talents.hp_loss_per
-			if(this.fighting.randomCheck(this.talents.hp_loss_rate,"hp_loss_rate")){
+			if(this.talents.hp_loss_rate && this.fighting.randomCheck(this.talents.hp_loss_rate,"hp_loss_rate")){
 				if(this.talents.hp_loss_skill)
 					this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.hp_loss_skill))
 			}
+		}
+	}
+	if(this.buffs["jiuyang"]){
+		if(this.hp_loss > 0.3){
+			this.hp_loss -= 0.3
+			this.fighting.buffManager.createBuffByData(this,this,{"buffId":"jiuyang_up","value":this.buffs["jiuyang"].getBuffMul(),"duration":2})
 		}
 	}
 }
 //复活
 model.prototype.resurgence = function(attacker,info) {
 	if(!this.died)
+		return
+	if(this.buffs["not_revived"])
 		return
 	this.fighting.fightInfo[this.belong]["survival"]++
 }
@@ -469,7 +553,15 @@ model.prototype.removeBuff = function(buffId) {
 }
 //===============攻击触发
 //触发击杀
-model.prototype.onKill = function(target,info) {}
+model.prototype.onKill = function(target,info) {
+	if(this.talents.kill_heal_self)
+		this.onOtherHeal(this,this.talents.kill_heal_self * this.getTotalAtt("maxHP"))
+	if(this.talents.kill_buff)
+		this.fighting.buffManager.createBuffByData(this,this,this.talents.kill_buff)
+	if(this.talents.kill_anger)
+		this.addAnger(this.talents.kill_anger,true)
+	
+}
 //触发闪避
 model.prototype.onDodge = function(attacker,info) {}
 //触发格挡
@@ -519,6 +611,14 @@ model.prototype.packageAngerSkill = function() {
 	if(star > 5)
 		star = 5
 	return this.packageSkill(sid,star,lv,true,this.otps.skillTalents)
+}
+//回合技能
+model.prototype.packageRoundSkill = function(skillId) {
+	var skillInfo = fightCfg.getCfg("round_skill")[skillId]
+	var roundSkill = this.packageSkill(skillInfo.baseSid,skillInfo.star,0,false)
+	roundSkill.NEED_CD = skillInfo.CD
+	roundSkill.CUR_CD = 0
+	this.roundSkills.push(roundSkill)
 }
 //组装技能
 model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {

@@ -59,6 +59,10 @@ model.prototype.destroy = function() {
 	this.character.removeBuff(this.buffId)
 	this.bufflLater()
 }
+//获取Buff层数
+model.prototype.getCount = function() {
+	return this.list.length
+}
 //=========================BUFF效果
 //新增BUFF后参数处理
 model.prototype.buffOtps = function(attacker,buff) {}
@@ -82,5 +86,12 @@ model.prototype.getBuffMul = function() {
 		return this.list[0].buff.mul || 0
 	else
 		return 0
+}
+//获取value
+model.prototype.getBuffValue = function() {
+	var value = 0
+	for(var i = 0;i < this.list.length;i++)
+		value += Number(this.list[0].buff.value) || 0
+	return value
 }
 module.exports = model

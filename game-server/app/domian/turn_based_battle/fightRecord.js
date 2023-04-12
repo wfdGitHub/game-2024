@@ -112,6 +112,8 @@ model.prototype.attackInfo = function(info,str) {
 		str += "\t格挡"
 	if(info.crit)
 		str += "\t暴击"
+	if(info.seckill)
+		str += "\t秒杀"
 	if(info.died)
 		str += "\t死亡"
 	console.log(str)

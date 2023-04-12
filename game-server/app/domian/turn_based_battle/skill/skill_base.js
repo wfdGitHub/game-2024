@@ -65,6 +65,11 @@ model.prototype.after = function() {
 }
 //使用攻击技能前
 model.prototype.attackBefore = function(targets) {
+	if(this.isAnger)
+		this.attackSkillBefore(targets)
+	else
+		this.attackNormalBefore(targets)
+
 	if(this.getTotalAtt("real_share_value")){
 		this.changeTotalTmp("real_value",Math.floor(this.getTotalAtt("real_share_value") / targets.length / this.getTotalAtt("atk_count")))
 		delete this.attTmpInfo.real_share_value
@@ -77,10 +82,6 @@ model.prototype.attackBefore = function(targets) {
 		this.changeTotalTmp("atk_value",Math.floor(this.getTotalAtt("atk_share_value") / Math.max(2,targets.length)))
 		delete this.attTmpInfo.atk_share_value
 	}
-	if(this.isAnger)
-		this.attackSkillBefore(targets)
-	else
-		this.attackNormalBefore(targets)
 }
 //使用技攻前
 model.prototype.attackSkillBefore = function(targets) {
@@ -89,33 +90,49 @@ model.prototype.attackSkillBefore = function(targets) {
 		var mulRate = this.talents.aim_less_amp * (this.fighting.locator.getTargetTypeNum(this.atk_aim) - targets.length)
 		this.changeTotalTmp("atk_mul",mulRate * this.attInfo.atk_mul)
 	}
+	//化劲伤害
+	if(this.talents.hit_add_store && this.character.buffs["store_damage"])
+		this.changeTotalTmp("real_share_value",Math.floor(this.character.buffs["store_damage"].getBuffValue() * this.talents.hit_add_store))
 }
 //使用普攻前
-model.prototype.attackNormalBefore = function(targets) {
+model.prototype.attackNormalBefore = function(target) {
 
 }
 //使用攻击技能后
-model.prototype.attackAfter = function(targets) {
+model.prototype.attackAfter = function(target) {
+	//首次攻击触发技能
+	if(this.character.talents.first_atk_skill){
+		var skill = this.character.talents.first_atk_skill
+		delete this.character.talents.first_atk_skill
+		this.fighting.skillManager.useSkill(this.character.useOtherSkill(skill))
+	}
+	//攻击触发技能
+	if(this.laterSkill && this.fighting.randomCheck(this.laterSkill.rate,"laterSkill"))
+		this.fighting.skillManager.useSkill(this.character.useOtherSkill(this.laterSkill))
+	
 	if(this.isAnger)
-		this.attackSkillAfter(targets)
+		this.attackSkillAfter(target)
 	else
-		this.attackNormalAfter(targets)
+		this.attackNormalAfter(target)
 }
 //技能结束后
-model.prototype.attackSkillAfter = function(targets) {
-
-}
+model.prototype.attackSkillAfter = function(target) {}
 //普攻结束后
-model.prototype.attackNormalAfter = function(targets) {
-	if(this.character.talents.normal_phybuff_heal){
-		for(var i = 0;i < targets.length;i++){
-			if(targets[i].buffs["phy_damage"]){
-				this.character.onOtherHeal(this.character,this.character.getTotalAtt("maxHP") * this.character.talents.normal_phybuff_heal)
-				break
-			}
+model.prototype.attackNormalAfter = function(target) {
+	var talents = this.character.talents
+	if(talents.normal_phybuff_heal && target.buffs["phy_damage"]){
+		this.character.onOtherHeal(this.character,this.character.getTotalAtt("maxHP") * talents.normal_phybuff_heal)
+	}
+	if(talents.normal_suck_anger_rate){
+		var rate = talents.normal_suck_anger_rate
+		if(talents.normal_suck_anger_ctr && target.checkControl())
+			rate += talents.normal_suck_anger_ctr
+		if(this.fighting.randomCheck(rate,"normal_suck_anger_rate")){
+			var anger = Math.floor(target.curAnger / 2)
+			target.lessAnger(anger,true)
+			this.character.addAnger(anger,true)
 		}
 	}
-	
 }
 model.prototype.changeTotalTmp = function(name,value) {
 	if(!this.attTmpInfo[name])

@@ -77,6 +77,7 @@ model.prototype.attInit = function() {
 	this.attInfo.poisonAmp = 0 			//中毒增伤
 	this.attInfo.poisonDef = 0 			//中毒减伤
 	this.attInfo.ign_armor = 0 			//忽视护甲
+	this.attInfo.roundAnger = 20 		//回合回怒
 	this.attInfo.maxHP = 30000
 	this.attInfo.atk = 2000
 	this.attInfo.armor = 500
@@ -86,10 +87,6 @@ model.prototype.attInit = function() {
 }
 //战斗初始化
 model.prototype.init = function() {}
-//获得怒气
-model.prototype.addAnger = function(value,show) {}
-//减少怒气
-model.prototype.lessAnger = function(value,show) {}
 //获得怒气
 model.prototype.addAnger = function(value,show) {}
 //减少怒气

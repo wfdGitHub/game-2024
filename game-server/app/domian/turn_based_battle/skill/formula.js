@@ -152,6 +152,7 @@ model.prototype.onDamageOver = function(attacker,target,skill,info) {
 		info.value += Math.floor(info.value * skill.talents["career_amp_"+target.career])
 	if(target.talents["sexDef_"+attacker.sex])
 		info.value = Math.floor(info.value * (1-target.talents["sexDef_"+attacker.sex]))
-	
+	if(attacker.talents.ctr_amp && target.checkControl())
+		info.value += Math.floor(info.value * attacker.talents.ctr_amp)
 }
 module.exports = model

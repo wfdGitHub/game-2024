@@ -17,7 +17,7 @@ model.prototype.getTargets = function(character,targetType) {
 		case "enemy_normal":
 			//默认敌人前排单体
 			return this.getTargetNormal(character)
-		case "enemy_normal_back":
+		case "enemy_back_rand_1":
 			//默认敌方后排单体
 			return this.getEnemyNormalBack(character)
 		case "enemy_1":

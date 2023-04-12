@@ -7,6 +7,7 @@ model.prototype.useSkill = function(skillInfo) {
 	var skill = skillInfo.skill
 	if(!skill){
 		console.log("skill.character.id")
+		return
 	}
 	var record = {
 		"type" : "skill",

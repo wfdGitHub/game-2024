@@ -47,6 +47,7 @@ model.prototype.loadData = function() {
 model.prototype.loadTeam = function(type,team) {
 	this.fightInfo[type]["team"] = []
 	this.fightInfo[type]["survival"] = 0
+	this.fightInfo[type]["teamAtt"] = {}
 	for(var i = 0;i < TEAMLENGTH;i++){
 		var team_character = new character(this,team[i])
 		team_character.id = this.characterId++
