@@ -2,9 +2,11 @@ const fightCfg = require("../fightCfg.js")
 //战斗角色基类
 var model = function(fighting,otps) {
 	this.died = false  					//死亡状态
-	if(!otps || !otps.id || !fightCfg.getCfg("heros")[otps.id]){
+	var herosCfg = fightCfg.getCfg("heros")[otps.id]
+	if(!otps || !otps.id || !herosCfg){
 		this.isNaN = true
 		this.died = true
+		return
 	}
 	this.otps = otps || {}
 	this.fighting = fighting
@@ -16,7 +18,7 @@ var model = function(fighting,otps) {
 	this.ad = 1
 	this.realm = 1 						//阵营
 	this.career = 1 					//职业
-	this.sex = 1 						//性别 1男 2女
+	this.sex = herosCfg.sex || 1 		//性别 1男 2女
 	this.talents = {}
 	this.buffs = {} 					//buff列表
 	this.totalDamage = 0								//累计伤害

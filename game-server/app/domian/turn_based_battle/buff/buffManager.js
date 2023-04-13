@@ -46,7 +46,7 @@ model.prototype.createBuff = function(attacker,character,buff) {
 			buff.duration++
 	}
 	//印记状态下的目标无法获得护盾
-	if(buffId == "hudun" && this.buffs["sign_unheal"])
+	if(buffId == "hudun" && character.buffs["sign_unheal"])
 		return
 	if(!character.buffs[buffId])
 		character.createBuff(new this.buffList[buffId](character.fighting,character,buffId,this.buffCfg[buffId]))

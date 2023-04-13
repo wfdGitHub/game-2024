@@ -79,6 +79,7 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 			var info = record.attack[i]
 			allDamage += info.realValue
 			var target = this.fighting.allHero[info.id]
+			skill.attackAfter(target)
 			if(info.died){
 				KILL_FLAG = true
 				//死亡处理

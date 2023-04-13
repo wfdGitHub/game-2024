@@ -8,8 +8,6 @@ var model = function(fighting,character,buffId,buffCfg) {
 model.prototype = Object.create(buff_entity.prototype) //继承父类方法
 //新增BUFF后参数处理 伤害系数 mul  附加伤害value 受增减伤影响
 model.prototype.buffOtps = function(attacker,info) {
-	if(info.buff.sexDur && this.character.sex == 2)
-		info.duration = info.buff.sexDur
 	info.basic = this.fighting.formula.calIndirectDamage(attacker,this.character,info.buff.mul,info.buff.value,"mag")
 }
 //BUFF功能实现

@@ -26,8 +26,8 @@ model.prototype.domain = function(){
 }
 //BUFF消失后转移
 model.prototype.bufflLater = function() {
-	var targets = this.fighting.getTargets(this.attacker,"enemy_back_rand_1")
+	var targets = this.fighting.locator.getTargets(this.attacker,"enemy_back_rand_1")
 	if(targets[0])
-		this.fighting.buffManager.createBuff(this.attacker,this.character,this.buff)
+		this.fighting.buffManager.createBuff(this.attacker,targets[0],this.buff)
 }
 module.exports = model

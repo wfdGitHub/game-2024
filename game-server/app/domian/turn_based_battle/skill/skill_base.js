@@ -86,13 +86,13 @@ model.prototype.attackBefore = function(targets) {
 //使用技攻前
 model.prototype.attackSkillBefore = function(targets) {
 	//目标每减少一个伤害加成
-	if(this.talents.aim_less_amp){
-		var mulRate = this.talents.aim_less_amp * (this.fighting.locator.getTargetTypeNum(this.atk_aim) - targets.length)
+	if(this.character.talents.aim_less_amp){
+		var mulRate = this.character.talents.aim_less_amp * (this.character.fighting.locator.getTargetTypeNum(this.atk_aim) - targets.length)
 		this.changeTotalTmp("atk_mul",mulRate * this.attInfo.atk_mul)
 	}
 	//化劲伤害
-	if(this.talents.hit_add_store && this.character.buffs["store_damage"])
-		this.changeTotalTmp("real_share_value",Math.floor(this.character.buffs["store_damage"].getBuffValue() * this.talents.hit_add_store))
+	if(this.character.talents.hit_add_store && this.character.buffs["store_damage"])
+		this.changeTotalTmp("real_share_value",Math.floor(this.character.buffs["store_damage"].getBuffValue() * this.character.talents.hit_add_store))
 }
 //使用普攻前
 model.prototype.attackNormalBefore = function(target) {
@@ -104,11 +104,11 @@ model.prototype.attackAfter = function(target) {
 	if(this.character.talents.first_atk_skill){
 		var skill = this.character.talents.first_atk_skill
 		delete this.character.talents.first_atk_skill
-		this.fighting.skillManager.useSkill(this.character.useOtherSkill(skill))
+		this.character.fighting.skillManager.useSkill(this.character.useOtherSkill(skill))
 	}
 	//攻击触发技能
-	if(this.laterSkill && this.fighting.randomCheck(this.laterSkill.rate,"laterSkill"))
-		this.fighting.skillManager.useSkill(this.character.useOtherSkill(this.laterSkill))
+	if(this.laterSkill && this.character.fighting.randomCheck(this.laterSkill.rate,"laterSkill"))
+		this.character.fighting.skillManager.useSkill(this.character.useOtherSkill(this.laterSkill))
 	
 	if(this.isAnger)
 		this.attackSkillAfter(target)
@@ -127,7 +127,7 @@ model.prototype.attackNormalAfter = function(target) {
 		var rate = talents.normal_suck_anger_rate
 		if(talents.normal_suck_anger_ctr && target.checkControl())
 			rate += talents.normal_suck_anger_ctr
-		if(this.fighting.randomCheck(rate,"normal_suck_anger_rate")){
+		if(this.character.fighting.randomCheck(rate,"normal_suck_anger_rate")){
 			var anger = Math.floor(target.curAnger / 2)
 			target.lessAnger(anger,true)
 			this.character.addAnger(anger,true)

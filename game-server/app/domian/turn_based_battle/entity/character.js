@@ -50,7 +50,7 @@ model.prototype.init = function() {
 		this.talents.hp_loss_skill = this.packageSkill(this.talents.hp_loss_skill,this.talents.hp_loss_star,0,false)
 	//回合技能
 	if(this.talents.round_skill)
-		this.roundSkills.push(this.packageRoundSkill(this.talents.round_skill))
+		this.packageRoundSkill(this.talents.round_skill)
 	//首次攻击技能
 	if(this.talents.first_atk_skill)
 		this.talents.first_atk_skill = this.packageSkill(this.talents.first_atk_skill,this.talents.first_atk_star,0,false)
@@ -67,7 +67,7 @@ model.prototype.init = function() {
 			var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents["begin_buff"+i])
 			var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
 			for(var j = 0;j < buffTargets.length;j++)
-				this.fighting.buffManager.createBuff(this,buffTargets[i],tmpBuff)
+				this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
 		}
 		if(this.talents["first_buff"+i])
 			this.fighting.buffManager.createBuffByData(this,this,this.talents["first_buff"+i])
@@ -98,6 +98,7 @@ model.prototype.init = function() {
 			this.fighting.buffManager.createBuffByData(this,targets[i],this.talents.realm_add_buff)
 	}
 	this.attInfo.hp = this.attInfo.maxHP
+	this.attInfo.speed += this.attInfo.main_hit
 }
 //===================生命周期
 //个人回合开始
@@ -197,11 +198,11 @@ model.prototype.useAllAangerSkill = function() {
 	var info = {}
 	info.skill = this.angerSkill
 	info.mul = 0.5
+	if(info.skill.talents.kill_repet)
+		info.mul += Math.floor(info.curAnger * info.skill.talents.kill_repet)
 	info.changeAnger = -this.lessAnger(this.curAnger)
 	info.curAnger = this.curAnger
 	info.no_combo = true  			//不可连击
-	if(info.skill.talents.kill_repet)
-		info.mul += Math.floor(info.changeAnger * info.skill.talents.kill_repet)
 	return info
 }
 //使用普攻技能获得怒气
@@ -303,12 +304,6 @@ model.prototype.onOtherHeal = function(attacker,value) {
 }
 //受到攻击
 model.prototype.onHit = function(attacker,info,hitFlag) {
-	//秒杀判断
-	if(hitFlag && attacker.talents.hp_seckill && (this.attInfo.hp / this.attInfo.maxHP) < attacker.talents.hp_seckill){
-		this.onSeckill(info)
-		attacker.totalDamage += info.realValue
-		return info
-	}
 	//受到攻击
 	if(this.buffs["hudun"])
 		this.buffs["hudun"].offsetDamage(info)
@@ -330,6 +325,9 @@ model.prototype.onHit = function(attacker,info,hitFlag) {
 		this.fighting.buffManager.createBuff(attacker,this,{"buffId":"store_damage","value":storeDamage,"duration":3})
 	}
 	this.lessHP(info,hitFlag)
+	//秒杀判断
+	if(hitFlag && attacker.talents.hp_seckill && (this.attInfo.hp / this.attInfo.maxHP) < attacker.talents.hp_seckill)
+		this.onSeckill(info)
 	attacker.totalDamage += info.realValue
 	return info
 }
@@ -397,13 +395,17 @@ model.prototype.onHealAfter = function(attacker,info) {}
 model.prototype.onDie = function(info) {
 	if(this.died)
 		return
-	if(this.onWillDie(attacker,info))
+	if(this.onWillDie(info))
 		return
-	info.realValue = this.attInfo.hp
+	info.value += this.attInfo.hp
+	info.realValue += this.attInfo.hp
 	this.attInfo.hp = 0
 	this.hp_loss = 0
 	this.curAnger = 0
 	this.died = true
+	info.curAnger = this.curAnger
+	info.hp = this.attInfo.hp
+	info.maxHP = this.attInfo.maxHP
 	info.died = true
 	//印记状态
 	if(this.buffs["sign_unheal"] && this.buffs["sign_unheal"]["not_revived"])
@@ -415,12 +417,7 @@ model.prototype.onDie = function(info) {
 	this.fighting.fightInfo[this.belong]["survival"]--
 }
 //濒死触发
-model.prototype.onWillDie = function(attacker,info) {
-	if(this.talents["sexNoDie_"+attacker.sex]){
-		this.attInfo.hp = 1
-		info.realValue = this.attInfo.hp
-		return true
-	}
+model.prototype.onWillDie = function(info) {
 	if(this.buffs["vital_point"])
 		return false
 	if(this.talents.willdie_ime_count && this.fighting.randomCheck(this.talents.willdie_ime_rate,"willdie_ime_rate")){
@@ -499,12 +496,7 @@ model.prototype.lessHP = function(info,hitFlag) {
 //被秒杀
 model.prototype.onSeckill = function(info) {
 	info.id = this.id
-	info.value = this.attInfo.hp
-	info.realValue = 0
 	this.onDie(info)
-	info.curAnger = this.curAnger
-	info.hp = this.attInfo.hp
-	info.maxHP = this.attInfo.maxHP
 	info.seckill = true
 	return info
 }
@@ -523,7 +515,7 @@ model.prototype.triggerLossHP = function() {
 	if(this.buffs["jiuyang"]){
 		if(this.hp_loss > 0.3){
 			this.hp_loss -= 0.3
-			this.fighting.buffManager.createBuffByData(this,this,{"buffId":"jiuyang_up","value":this.buffs["jiuyang"].getBuffMul(),"duration":2})
+			this.fighting.buffManager.createBuff(this,this,{"buffId":"jiuyang_up","value":this.buffs["jiuyang"].getBuffMul(),"duration":2})
 		}
 	}
 }
@@ -661,13 +653,15 @@ model.prototype.packageHeroTalents = function(opts) {
 		for(var i = 1;i <= opts["s"+index+"_star"];i++){
 			talentId++
 			var talentInfo = fightCfg.getCfg("hero_talents")[talentId]
-			for(var j = 1;j <= 4;j++){
-				var key = talentInfo["key"+j]
-				if(key){
-					if(talents[key] && Number.isFinite(talents[key]))
-						talents[key] += talentInfo["value"+j]
-					else
-						talents[key] = talentInfo["value"+j]
+			if(talentInfo){
+				for(var j = 1;j <= 4;j++){
+					var key = talentInfo["key"+j]
+					if(key){
+						if(talents[key] && Number.isFinite(talents[key]))
+							talents[key] += talentInfo["value"+j]
+						else
+							talents[key] = talentInfo["value"+j]
+					}
 				}
 			}
 		}
