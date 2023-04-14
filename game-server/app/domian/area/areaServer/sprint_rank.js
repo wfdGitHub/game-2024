@@ -2,6 +2,7 @@
 const sprint_rank = require("../../../../config/gameCfg/sprint_rank.json")
 const main_name = "sprint_rank"
 const rankTime = 86400000
+const MAX_NUM = 30000000000000
 var rankCount = 0
 var rank_type_day = {}
 for(var i in sprint_rank){
@@ -160,7 +161,10 @@ module.exports = function() {
 	//更新排行榜
 	this.updateSprintRank = function(type,uid,value) {
 		if(rank_type_day[type]){
-			self.incrbyZset(type,uid,value)
+			self.zrangeScoreByKey(type,uid,function(data) {
+				value = Math.floor(data) + value + ((MAX_NUM - Date.now()) * 1e-14)
+				self.addZset(type,uid,value)
+			})
 		}
 	}
 	//获取排行榜第一玩家
