@@ -163,6 +163,7 @@ module.exports = function() {
 		if(rank_type_day[type]){
 			self.zrangeScoreByKey(type,uid,function(data) {
 				value = Math.floor(data) + value + ((MAX_NUM - Date.now()) * 1e-14)
+				console.log("value",value)
 				self.addZset(type,uid,value)
 			})
 		}
