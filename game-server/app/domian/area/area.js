@@ -243,6 +243,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.userRechargeDayUpdate(uid)
 	this.incrbyAreaObj("areaInfo","day_login",1)
 	this.playerDao.setPlayerInfo({uid:uid,key:"pay_state",value:0})
+	this.delLordData(uid,"dp_limit")
 	this.mysqlDao.addDaylyData("activeNum",1)
 	this.mysqlDao.updateRetention(uid,this.players[uid]["createTime"])
 	this.taskUpdate(uid,"login",1)
