@@ -98,6 +98,18 @@
         console.log("onChat")
         console.log(data)
       })
+      //锁定英雄
+      var lockHero = function(hId) {
+        pomelo.request("area.heroHandler.lockHero", {hId:hId}, function(data) {
+            console.log(data);
+        })
+      }
+      //解锁英雄
+      var unlockHero = function(hId) {
+        pomelo.request("area.heroHandler.unlockHero", {hId:hId}, function(data) {
+            console.log(data);
+        })
+      }
       //===============兵符===============//
       //获取兵符数据
       var getBingfuData = function() {

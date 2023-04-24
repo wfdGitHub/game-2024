@@ -950,12 +950,8 @@ module.exports = function() {
 			    if(!flag){
 			      	cb(false,"英雄不存在")
 			    }else{
-			    	if(heroInfo.combat){
-			    		cb(false,"英雄已上阵不可置换")
-			    		return
-			    	}
-			    	if(heroInfo.custom){
-			    		cb(false,"定制英雄不可置换")
+			    	if(self.heroDao.heroChangeCheck(heroInfo)){
+			    		cb(false,self.heroDao.heroChangeCheck(heroInfo))
 			    		return
 			    	}
 			    	if(heros[heroInfo.id]["min_star"] < 5){
