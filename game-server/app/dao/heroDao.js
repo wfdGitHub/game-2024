@@ -242,8 +242,6 @@ heroDao.prototype.heroChangeCheck = function(heroInfo) {
 		return "英雄已锁定"
 	if(heroInfo.custom)
 		return "定制英雄"
-	if(heroInfo.lock)
-		return "英雄已锁定"
 	return false
 }
 //英雄锁定检测
