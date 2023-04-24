@@ -97,16 +97,8 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
   }
   self.heroDao.getHeroList(uid,hIds,function(flag,herolist) {
     for(var i in herolist){
-      if(!herolist[i]){
-        next(null,{flag : false,err : "英雄不存在"+i})
-        return
-      }
-      if(herolist[i].combat){
-        next(null,{flag : false,err : "英雄已出战"+i+","+hIds[i]+",combat:"+herolist[i].combat})
-        return
-      }
-      if((herolist[i].zf_1 && herolist[i].zf_1 != 1) || (herolist[i].zf_2 && herolist[i].zf_2 != 1) || (herolist[i].zf_3 && herolist[i].zf_3 != 1)){
-        next(null,{flag : false,err : "英雄已穿戴战法"+i+","+hIds[i]})
+      if(self.heroDao.heroLockCheck(herolist[i])){
+        next(null,{flag:false,err:self.heroDao.heroLockCheck(herolist[i])})
         return
       }
     }
@@ -169,20 +161,12 @@ heroHandler.prototype.unlockZhanfaGrid = function(msg, session, next) {
       }
       //材料英雄检测
       for(var i = 0;i < data.length;i++){
-        if(!data[i] || !data[i].id){
-          next(null,{flag : false,data : "英雄不存在"+hIds[i]})
-          return
-        }
-        if(data[i].combat){
-          next(null,{flag : false,data : "英雄已出战"+hIds[i]})
+        if(self.heroDao.heroLockCheck(data[i])){
+          next(null,{flag : false,err:self.heroDao.heroLockCheck(data[i])})
           return
         }
         if(data[i].star != 10){
           next(null,{flag : false,data : "必须为10星英雄"+hIds[i]})
-          return
-        }
-        if((data[i].zf_1 && data[i].zf_1 != 1) || (data[i].zf_2 && data[i].zf_2 != 1) || (data[i].zf_3 && data[i].zf_3 != 1)){
-          next(null,{flag : false,err : "英雄已穿戴战法"+hIds[i]})
           return
         }
       }
@@ -314,16 +298,8 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
           return
         }
         for(var i = 0;i < pc_hero.length;i++){
-          if(!data[i] || !data[i].id){
-            next(null,{flag : false,data : "英雄不存在"+hIds[i]})
-            return
-          }
-          if(data[i].combat){
-            next(null,{flag : false,data : "英雄已出战"+hIds[i]})
-            return
-          }
-          if((data[i].zf_1 && data[i].zf_1 != 1) || (data[i].zf_2 && data[i].zf_2 != 1) || (data[i].zf_3 && data[i].zf_3 != 1)){
-            next(null,{flag : false,err : "英雄已穿戴战法"+hIds[i]})
+          if(self.heroDao.heroLockCheck(data[i])){
+            next(null,{flag:false,err:self.heroDao.heroLockCheck(data[i])})
             return
           }
           switch(pc_hero[i][0]){
@@ -476,12 +452,8 @@ heroHandler.prototype.replaceHero = function(msg, session, next) {
       return
     }
     self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
-      if(!flag){
-        next(null,{flag : false,err : "英雄不存在"})
-        return
-      }
-      if(heroInfo.combat){
-        next(null,{flag : false,data : "英雄已上阵"})
+      if(self.heroDao.heroChangeCheck(heroInfo)){
+        next(null,{flag : false,data : self.heroDao.heroChangeCheck(heroInfo)})
         return
       }
       if(heroInfo.star !== 5){
@@ -522,8 +494,8 @@ heroHandler.prototype.saveReplace = function(msg, session, next) {
           return
       }
       self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
-          if(heroInfo.combat){
-            next(null,{flag : false,data : "英雄已上阵"})
+          if(self.heroDao.heroChangeCheck(heroInfo)){
+            next(null,{flag : false,data : self.heroDao.heroChangeCheck(heroInfo)})
             return
           }
           if(heroInfo.star !== 5){
@@ -553,6 +525,36 @@ heroHandler.prototype.cancelReplace = function(msg, session, next) {
   this.areaManager.areaMap[areaId].delPlayerData(uid,"replaceHero")
   this.areaManager.areaMap[areaId].delPlayerData(uid,"replacePick")
   next(null,{flag : true})
+}
+//锁定英雄
+heroHandler.prototype.lockHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var self = this
+  self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+    if(!flag || !heroInfo){
+        next(null,{flag : false,data : "hId not find"})
+        return
+    }
+    self.redisDao.db.hset("player:user:"+uid+":heros:"+hId,"lock",1)
+    next(null,{flag : true})
+  })
+}
+//解锁英雄
+heroHandler.prototype.unlockHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var self = this
+  self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+    if(!flag || !heroInfo){
+        next(null,{flag : false,data : "hId not find"})
+        return
+    }
+    self.redisDao.db.hdel("player:user:"+uid+":heros:"+hId,"lock")
+    next(null,{flag : true})
+  })
 }
 //修改英雄属性
 heroHandler.prototype.incrbyHeroInfo = function(msg, session, next) {
