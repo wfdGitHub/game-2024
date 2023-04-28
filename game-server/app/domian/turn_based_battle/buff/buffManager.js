@@ -49,7 +49,7 @@ model.prototype.createBuff = function(attacker,character,buff) {
 	if(buffId == "hudun" && character.buffs["sign_unheal"])
 		return
 	if(!character.buffs[buffId])
-		character.createBuff(new this.buffList[buffId](character.fighting,character,buffId,this.buffCfg[buffId]))
+		character.createBuff(new this.buffList[buffId](character.fighting,character,buff,this.buffCfg[buffId]))
 	character.addBuff(attacker,buff)
 	//控制BUFF通知友方
 	if(this.buffCfg[buffId].control){

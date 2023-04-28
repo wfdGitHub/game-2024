@@ -1,17 +1,20 @@
 //BUFF作用基类
-var model = function(fighting,character,buffId,buffCfg) {
+var model = function(fighting,character,buff,buffCfg) {
 	this.fighting = fighting
-	this.buffId = buffId
+	this.buffId = buff.buffId
 	this.list = []
 	this.character = character
 	this.buffCfg = buffCfg
 	this.max_count = buffCfg["max_count"] || 1 	//最大层数
 	this.attKeys = {}
 	for(var i = 1;i <= 3;i++){
-		if(buffCfg["attKey"+i]){
+		if(buff["attKey"+i]){
+			this.attKey = buffCfg["attKey"+i]
+			this.attKeys[buff["attKey"+i]] = buff["attValue"+i] || 0
+		}else if(buffCfg["attKey"+i]){
 			this.attKey = buffCfg["attKey"+i]
 			this.attKeys[buffCfg["attKey"+i]] = buffCfg["attValue"+i] || 0
-		}	
+		}
 	}
 	this.init()
 }
@@ -73,9 +76,11 @@ model.prototype.bufflLater = function() {}
 //获取加成属性
 model.prototype.getAttInfo = function(name) {
 	if(this.attKeys[name] !== undefined){
-		var value = this.attKeys[name]
-		for(var i = 0;i < this.list.length;i++)
+		var value = 0
+		for(var i = 0;i < this.list.length;i++){
+			value += this.attKeys[name]
 			value += this.list[i].num
+		}
 		return value
 	}
 	return 0

@@ -57,7 +57,7 @@ model.prototype.init = function() {
 	//攻击触发技能 30%
 	if(this.talents.atk_skill){
 		var atk_skill = this.packageSkill(this.talents.atk_skill,this.talents.atk_star,0,false)
-		atk_skill.rate = 0.3
+		atk_skill.rate = this.talents.atk_skill_rate || 0
 		this.defaultSkill.laterSkill = atk_skill
 		this.angerSkill.laterSkill = atk_skill
 	}
@@ -73,7 +73,11 @@ model.prototype.init = function() {
 			this.fighting.buffManager.createBuffByData(this,this,this.talents["first_buff"+i])
 		if(this.talents["skill_buff"+i]){
 			var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents["skill_buff"+i])
-			this.angerSkill.buffs[tmpBuff.buffId] = tmpBuff
+			this.angerSkill.trigger_buffs[tmpBuff.buffId] = tmpBuff
+		}
+		if(this.talents["normal_buff"+i]){
+			var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents["normal_buff"+i])
+			this.defaultSkill.trigger_buffs[tmpBuff.buffId] = tmpBuff
 		}
 	}
 	//筋骨和内力同步为最高值
@@ -91,6 +95,16 @@ model.prototype.init = function() {
 		var targets = this.fighting.locator.getTargets(this,"same_realm")
 		for(var i = 0;i < targets.length;i++)
 			targets[i].changeTotalAtt("armor",Math.floor(targets[i].attInfo.armor * this.talents.realm_add_armor))
+	}
+	if(this.talents.realm_add_amp){
+		var targets = this.fighting.locator.getTargets(this,"same_realm")
+		for(var i = 0;i < targets.length;i++)
+			targets[i].changeTotalAtt("amp",this.talents.realm_add_amp)
+	}
+	if(this.talents.realm_add_ampDef){
+		var targets = this.fighting.locator.getTargets(this,"same_realm")
+		for(var i = 0;i < targets.length;i++)
+			targets[i].changeTotalAtt("ampDef",this.talents.realm_add_ampDef)
 	}
 	if(this.talents.realm_add_buff){
 		var targets = this.fighting.locator.getTargets(this,"same_realm")
@@ -381,6 +395,16 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 		if(this.talents.behit_hpanger)
 			this.addAnger(Math.floor(this.getTotalAtt("hp") / this.getTotalAtt("maxHP") * this.talents.behit_hpanger),true)
 	}
+	//被攻击触发，中毒回血
+	if(this.talents.behit_poison_heal && attacker.buffs["poison"]){
+		this.onOtherHeal(this,this.talents.behit_poison_heal * this.getTotalAtt("atk"))
+	}
+	//被攻击对攻击者释放BUFF
+	if(this.talents.behit_buff)
+		this.fighting.buffManager.createBuffByData(this,attacker,this.talents.behit_buff)
+	//被攻击触发技能概率
+	if(this.talents.behit_skill  && this.fighting.randomCheck(this.talents.behit_skill,"behit_skill"))
+		this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.behit_skill))
 }
 //受到治疗
 model.prototype.onHeal = function(attacker,info) {
@@ -510,6 +534,10 @@ model.prototype.triggerLossHP = function() {
 				if(this.talents.hp_loss_skill)
 					this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.hp_loss_skill))
 			}
+			if(this.talents.hp_loss_buff_once){
+				this.fighting.buffManager.createBuffByData(this,this,this.talents.hp_loss_buff_once)
+				delete this.talents.hp_loss_buff_once
+			}
 		}
 	}
 	if(this.buffs["jiuyang"]){
@@ -611,6 +639,13 @@ model.prototype.packageRoundSkill = function(skillId) {
 	roundSkill.NEED_CD = skillInfo.CD
 	roundSkill.CUR_CD = 0
 	this.roundSkills.push(roundSkill)
+}
+//组装技能根据ID
+model.prototype.packageSkillBySid = function(sid) {
+	sid = Number(sid)
+	var baseSid = Math.floor(sid/10)*10
+	var star = sid % 10
+	return this.packageSkill(baseSid,star,0,false)
 }
 //组装技能
 model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {

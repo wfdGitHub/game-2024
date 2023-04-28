@@ -100,6 +100,8 @@ model.prototype.attackNormalBefore = function(target) {
 }
 //使用攻击技能后
 model.prototype.attackAfter = function(target) {
+	if(this.character.died)
+		return
 	//首次攻击触发技能
 	if(this.character.talents.first_atk_skill){
 		var skill = this.character.talents.first_atk_skill
@@ -120,9 +122,8 @@ model.prototype.attackSkillAfter = function(target) {}
 //普攻结束后
 model.prototype.attackNormalAfter = function(target) {
 	var talents = this.character.talents
-	if(talents.normal_phybuff_heal && target.buffs["phy_damage"]){
+	if(talents.normal_phybuff_heal && target.buffs["phy_damage"])
 		this.character.onOtherHeal(this.character,this.character.getTotalAtt("maxHP") * talents.normal_phybuff_heal)
-	}
 	if(talents.normal_suck_anger_rate){
 		var rate = talents.normal_suck_anger_rate
 		if(talents.normal_suck_anger_ctr && target.checkControl())
