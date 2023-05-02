@@ -573,14 +573,30 @@ model.prototype.removeBuff = function(buffId) {
 }
 //===============攻击触发
 //触发击杀
-model.prototype.onKill = function(target,info) {
+model.prototype.onKill = function(target,skill,info) {
 	if(this.talents.kill_heal_self)
 		this.onOtherHeal(this,this.talents.kill_heal_self * this.getTotalAtt("maxHP"))
 	if(this.talents.kill_buff)
 		this.fighting.buffManager.createBuffByData(this,this,this.talents.kill_buff)
 	if(this.talents.kill_anger)
 		this.addAnger(this.talents.kill_anger,true)
-	
+	if(skill.isAnger){
+		//技能击杀
+		if(this.talents.kill_skill_buff){
+			var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents.kill_skill_buff)
+			var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
+			for(var j = 0;j < buffTargets.length;j++)
+				this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
+		}
+	}else{
+		//普攻击杀
+		if(this.talents.kill_normal_buff){
+			var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents.kill_normal_buff)
+			var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
+			for(var j = 0;j < buffTargets.length;j++)
+				this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
+		}
+	}
 }
 //触发闪避
 model.prototype.onDodge = function(attacker,info) {}

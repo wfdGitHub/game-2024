@@ -85,7 +85,7 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 				//死亡处理
 				target.onDieAfter(skill.character,info,skill)
 				//触发击杀
-				skill.character.onKill(target,info)
+				skill.character.onKill(target,skill,info)
 			}else{
 				//受击处理
 				target.onHitAfter(skill,skill.character,info)
@@ -111,8 +111,10 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 			}
 		}
 		//吸血
-		if(skill.talents.suck_blood)
-			skill.character.onOtherHeal(skill.character,skill.talents.suck_blood * allDamage)
+		if(skill.talents.suck_blood || skill.character.talents.suck_blood){
+			var suck_blood = skill.talents.suck_blood || 0 + skill.character.talents.suck_blood || 0
+			skill.character.onOtherHeal(skill.character,suck_blood * allDamage)
+		}
 		//储存伤害到下一次普攻
 		if(skill.talents.store_to_normal)
 			skill.character.defaultSkill.changeTotalTmp("real_share_value",skill.talents.store_to_normal * allDamage)
