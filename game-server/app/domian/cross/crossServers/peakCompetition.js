@@ -145,6 +145,9 @@ var peakEntity = function(self,theatreId) {
 			local.peakNextState()
 		}
 	}
+	this.peakNextState = function() {
+		local.peakNextState()
+	}
 	//下一阶段
 	local.peakNextState = function() {
 		if(look)
