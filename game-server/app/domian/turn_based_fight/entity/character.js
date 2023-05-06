@@ -709,11 +709,11 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 	//减伤判断
 	if(info.d_type == "phy"){
 		if(this.buffs["reduction"]){
-			info.value = Math.floor(info.value * (1-this.buffs["reduction"]["value"]))
+			info.value = Math.floor(info.value * Math.max((1-this.buffs["reduction"]["value"]),0.1))
 		}
 	}else if(info.d_type == "mag"){
 		if(this.buffs["reduction_mag"]){
-			info.value = Math.floor(info.value * (1-this.buffs["reduction_mag"]["value"]))
+			info.value = Math.floor(info.value * Math.max((1-this.buffs["reduction_mag"]["value"]),0.1))
 		}
 	}else{
 		console.error("伤害类型错误",info)
