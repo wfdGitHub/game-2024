@@ -31,6 +31,7 @@ var model = function(atkInfo,defInfo,otps,managers) {
 	this.win_team = "" 				//失败方  planish  打平  atk  攻方赢  def  守方赢
 	this.nextRecord = [] 			//后续插入记录
 	this.heroAtionMonitor = []		//行动监听
+	this.anyDieMonitor = [] 		//任意角色阵亡监听
 	this.loadData()
 }
 

@@ -53,6 +53,9 @@ model.prototype.before = function() {
 	if(this.talents.ign_armor){
 		this.character.changeTotalTmp("ign_armor",this.talents.ign_armor)
 	}
+	//技攻触发，释放技攻时友方每存活一名侠客，自身技攻伤害提升
+	if(this.character.talents.skill_survival_amp)
+		this.character.changeTotalTmp("amp",this.character.talents.skill_survival_amp * this.fighting.fightInfo[this.character.belong]["survival"])
 }
 //使用技能后
 model.prototype.after = function() {
@@ -126,6 +129,9 @@ model.prototype.attackAfter = function(target) {
 				enemyTeam[i].lessAnger(this.character.talents.atk_enemy_anger,true)
 		}
 	}
+	//攻击触发治疗自身血量
+	if(this.character.talents.atk_heal_self)
+		this.character.onOtherHeal(this,Math.floor(this.character.talents.atk_heal_self * this.character.getTotalAtt("atk")))
 	//攻击降低敌方全体怒气
 	if(this.isAnger)
 		this.attackSkillAfter(target)

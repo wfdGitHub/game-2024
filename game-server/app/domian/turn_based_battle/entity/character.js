@@ -122,6 +122,10 @@ model.prototype.init = function() {
 		for(var i = 0;i < targets.length;i++)
 			this.fighting.buffManager.createBuffByData(this,targets[i],this.talents.realm_add_buff)
 	}
+	if(this.talents.any_die_monitor)
+		this.fighting.anyDieMonitor.push(this)
+	if(this.talents.firend_die_watch_count)
+		this.fighting.fightInfo[this.belong]["firend_die_watch"] = this
 	//双生属性
 	if(this.talents.twin_id){
 		for(var i = 0;i < this.team.length;i++){
@@ -145,6 +149,11 @@ model.prototype.init = function() {
 			}
 			break
 		}
+	}
+	if(this.talents.block_buff1){
+		this.talents.block_buff1 = this.fighting.buffManager.getBuffByData(this.talents.block_buff1)
+		if(this.talents.block_buff2)
+			this.talents.block_buff2 = this.fighting.buffManager.getBuffByData(this.talents.block_buff2)
 	}
 	this.attInfo.hp = this.attInfo.maxHP
 	this.attInfo.speed += this.attInfo.main_hit
@@ -174,10 +183,19 @@ model.prototype.before = function() {
 //个人回合结束
 model.prototype.after = function() {
 	this.onAction = false
+	if(this.talents.totem_hit_heal_rate && this.buffs["totem_hit_heal"])
+		this.onOtherHeal(this,this.talents.totem_hit_heal_rate * this.getTotalAtt("maxHP"))
 }
 //整体回合开始
 model.prototype.roundBegin = function() {
 	this.isAction = false
+	if(this.talents.survive_team_buff){
+		var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents.survive_team_buff)
+		tmpBuff.count = this.fighting.fightInfo[this.belong]["survival"]
+		var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
+		for(var j = 0;j < buffTargets.length;j++)
+				this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
+	}
 }
 //整体回合结束
 model.prototype.roundEnd = function() {
@@ -493,6 +511,17 @@ model.prototype.onDie = function(info) {
 			this.buffs[i].destroy()
 	this.fighting.fightInfo[this.belong]["survival"]--
 }
+//任意角色阵亡
+model.prototype.anyDie = function(target) {
+	if(!this.checkAim())
+		return
+	if(this.talents.any_die_buff){
+		var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents.any_die_buff)
+		var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
+		for(var j = 0;j < buffTargets.length;j++)
+			this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
+	}
+}
 //濒死触发
 model.prototype.onWillDie = function(info) {
 	if(this.buffs["vital_point"])
@@ -506,6 +535,20 @@ model.prototype.onWillDie = function(info) {
 			this.fighting.buffManager.createBuffByData(this,this,this.talents.willdie_ime_buff)
 		}
 		return true
+	}
+	if(this.fighting.fightInfo[this.belong]["firend_die_watch"]){
+		var watchHero = this.fighting.fightInfo[this.belong]["firend_die_watch"]
+		if(watchHero.talents.firend_die_watch_count > 0 && (watchHero.attInfo.hp / watchHero.attInfo.maxHP) > 0.3){
+			watchHero.talents.firend_die_watch_count--
+			this.attInfo.hp = 1
+			info.realValue = this.attInfo.hp
+			this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"one_hp"})
+			var tmpValue = Math.floor(watchHero.attInfo.maxHP * 0.15)
+			if(watchHero.talents.firend_die_watch_hudun)
+				this.fighting.buffManager.createBuff(watchHero,this,{"buffId":"hudun","value":tmpValue,"duration":99})
+			watchHero.onOtherDamage(watchHero,tmpValue)
+			return true
+		}
 	}
 }
 //角色死亡结束后
@@ -524,8 +567,17 @@ model.prototype.onDieAfter = function(attacker,info,skill) {
 		this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.died_skill))
 	//复活
 	if(this.talents.revive_rate){
-		this.revive(this.talents.revive_rate)
+		this.revive(this.talents.revive_rate * this.attInfo.hp)
 		delete this.talents.revive_rate
+	}
+	if(this.talents.died_buff)
+		this.fighting.buffManager.createBuffByData(this,this,this.talents.died_buff)
+	if(this.talents.died_buff_once){
+		this.fighting.buffManager.createBuffByData(this,this,this.talents.died_buff_once)
+		delete this.talents.died_buff_once
+	}
+	for(var i = 0;i < this.fighting.anyDieMonitor.length;i++){
+		this.fighting.anyDieMonitor[i].anyDie(this)
 	}
 }
 //恢复血量
@@ -609,12 +661,12 @@ model.prototype.triggerLossHP = function() {
 	}
 }
 //复活
-model.prototype.revive = function(rate) {
+model.prototype.revive = function(value) {
 	if(!this.died)
 		return
 	if(this.buffs["not_revived"])
 		return
-	this.attInfo.hp = Math.floor(this.attInfo.maxHP * rate)
+	this.attInfo.hp = value
 	this.died = false
 	this.fighting.fightInfo[this.belong]["survival"]++
 	this.fighting.fightRecord.push({type : "revive",id : this.id,hp : this.attInfo.hp})
@@ -667,7 +719,13 @@ model.prototype.onKill = function(target,skill,info) {
 //触发闪避
 model.prototype.onDodge = function(attacker,info) {}
 //触发格挡
-model.prototype.onBlock = function(attacker,info) {}
+model.prototype.onBlock = function(attacker,info) {
+	if(this.talents.block_buff1){
+		this.fighting.buffManager.createBuff(this,this,this.talents.block_buff1)
+		if(this.talents.block_buff2)
+			this.fighting.buffManager.createBuff(this,this,this.talents.block_buff2)
+	}
+}
 //触发暴击
 model.prototype.onCrit = function(attacker,info) {
 	if(this.talents.crit_anger)
