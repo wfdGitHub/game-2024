@@ -123,7 +123,7 @@ model.prototype.attackAfter = function(target) {
 		var enemyTeam =  this.character.fighting["fightInfo"][this.character.rival].team
 		for(var i = 0;i < enemyTeam.length;i++){
 			if(enemyTeam[i].checkAim())
-				enemyTeam[i].addAnger(this.character.talents.atk_enemy_anger,true)
+				enemyTeam[i].lessAnger(this.character.talents.atk_enemy_anger,true)
 		}
 	}
 	//攻击降低敌方全体怒气
@@ -133,7 +133,10 @@ model.prototype.attackAfter = function(target) {
 		this.attackNormalAfter(target)
 }
 //技能结束后
-model.prototype.attackSkillAfter = function(target) {}
+model.prototype.attackSkillAfter = function(target) {
+	if(this.character.talents.skill_anger)
+		this.character.addAnger(this.character.talents.skill_anger,true)
+}
 //普攻结束后
 model.prototype.attackNormalAfter = function(target) {
 	var talents = this.character.talents
@@ -149,6 +152,8 @@ model.prototype.attackNormalAfter = function(target) {
 			this.character.addAnger(anger,true)
 		}
 	}
+	if(this.character.talents.normal_anger)
+		this.character.addAnger(this.character.talents.normal_anger,true)
 }
 model.prototype.changeTotalTmp = function(name,value) {
 	if(!this.attTmpInfo[name])

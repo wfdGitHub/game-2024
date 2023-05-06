@@ -54,6 +54,8 @@ model.prototype.init = function() {
 	//回合技能
 	if(this.talents.round_skill)
 		this.packageRoundSkill(this.talents.round_skill)
+	if(this.talents.kill_dps_skill)
+		this.talents.kill_dps_skill = this.packageSkillBySid(this.talents.kill_dps_skill)
 	//首次攻击技能
 	if(this.talents.first_atk_skill)
 		this.talents.first_atk_skill = this.packageSkill(this.talents.first_atk_skill,this.talents.first_atk_star,0,false)
@@ -64,6 +66,9 @@ model.prototype.init = function() {
 		this.defaultSkill.laterSkill = atk_skill
 		this.angerSkill.laterSkill = atk_skill
 	}
+	//被攻击触发次数
+	if(this.talents.atk_trigger_value)
+		this.talents.atk_trigger_cur = 0
 	//========初始BUFF
 	for(var i = 1;i <= 3;i++){
 		if(this.talents["begin_buff"+i]){
@@ -439,6 +444,20 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 	//被攻击触发技能概率
 	if(this.talents.behit_skill  && this.fighting.randomCheck(this.talents.behit_skill,"behit_skill"))
 		this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.behit_skill))
+	//被攻击触发次数
+	if(this.talents.atk_trigger_value){
+		this.talents.atk_trigger_cur++
+		if(this.talents.atk_trigger_cur >= this.talents.atk_trigger_value){
+			this.talents.atk_trigger_cur = 0
+			if(this.talents.atk_trigger_buff){
+				var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents.atk_trigger_buff)
+				var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
+				for(var j = 0;j < buffTargets.length;j++)
+					if(this.fighting.randomCheck(tmpBuff.rate,"atk_trigger_buff"))
+						this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
+			}
+		}
+	}
 }
 //受到治疗
 model.prototype.onHeal = function(attacker,info) {
@@ -503,6 +522,11 @@ model.prototype.onDieAfter = function(attacker,info,skill) {
 	//死亡触发技能
 	if(this.talents.died_skill)
 		this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.died_skill))
+	//复活
+	if(this.talents.revive_rate){
+		this.revive(this.talents.revive_rate)
+		delete this.talents.revive_rate
+	}
 }
 //恢复血量
 model.prototype.addHP = function(info) {
@@ -585,12 +609,15 @@ model.prototype.triggerLossHP = function() {
 	}
 }
 //复活
-model.prototype.resurgence = function(attacker,info) {
+model.prototype.revive = function(rate) {
 	if(!this.died)
 		return
 	if(this.buffs["not_revived"])
 		return
+	this.attInfo.hp = Math.floor(this.attInfo.maxHP * rate)
+	this.died = false
 	this.fighting.fightInfo[this.belong]["survival"]++
+	this.fighting.fightRecord.push({type : "revive",id : this.id,hp : this.attInfo.hp})
 }
 //添加BUFF
 model.prototype.createBuff = function(buff) {
@@ -617,6 +644,8 @@ model.prototype.onKill = function(target,skill,info) {
 		this.fighting.buffManager.createBuffByData(this,this,this.talents.kill_buff)
 	if(this.talents.kill_anger)
 		this.addAnger(this.talents.kill_anger,true)
+	if(this.talents.kill_dps_skill && (target.realm == 2 || target.realm == 4))
+		this.useOtherSkill(this.talents.kill_dps_skill)
 	if(skill.isAnger){
 		//技能击杀
 		if(this.talents.kill_skill_buff){
