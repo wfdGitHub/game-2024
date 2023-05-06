@@ -89,9 +89,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	var def = target.getTotalAtt(skill.damageType+"Def")
 	if(attacker.neglect_def)
 		def = Math.floor(def * (1 - attacker.neglect_def))
-	var mul = 1 + attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction")
-	if(mul < 0.1)
-		mul = 0.1
+	var mul = Math.max(1 + attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction"),0.1)
 	if(tmpAmplify)
 		mul *= 1 + tmpAmplify
 	if(skill.isAnger)
@@ -116,7 +114,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(attacker.realm_friend_amp){
 		mul *= 1 + (attacker.realm_friend_amp * (attacker.teamInfo["realms_survival"][attacker.realm] - 1))
 	}
-	info.value = Math.round((atk - def) * skill.mul * mul)
+	info.value = Math.round(Math.max(atk - def,1) * skill.mul * mul)
 	if(info.value < 1)
 		info.value = 1
 	if(addAmp){
