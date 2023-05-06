@@ -89,6 +89,7 @@ model.prototype.attInit = function() {
 }
 //战斗初始化
 model.prototype.init = function() {}
+model.prototype.begin = function() {}
 //获得怒气
 model.prototype.addAnger = function(value,show) {}
 //减少怒气
@@ -103,8 +104,11 @@ model.prototype.getTotalAtt = function(name) {
 }
 //改变属性
 model.prototype.changeTotalAtt = function(name,value) {
-	if(this.attInfo[name] !== undefined)
+	if(this.attInfo[name] !== undefined){
 		this.attInfo[name] += Number(value) || 0
+		if(name == "maxHP")
+			this.attInfo["hp"] += Number(value) || 0
+	}
 }
 //重置临时属性
 model.prototype.clearTmpInfo = function() {

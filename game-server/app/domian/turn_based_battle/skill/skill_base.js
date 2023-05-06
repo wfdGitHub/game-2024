@@ -111,7 +111,22 @@ model.prototype.attackAfter = function(target) {
 	//攻击触发技能
 	if(this.laterSkill && this.character.fighting.randomCheck(this.laterSkill.rate,"laterSkill"))
 		this.character.fighting.skillManager.useSkill(this.character.useOtherSkill(this.laterSkill))
-	
+	//攻击增加己方全体怒气
+	if(this.character.talents.atk_team_anger){
+		for(var i = 0;i < this.character.team.length;i++){
+			if(this.character.team[i].checkAim())
+				this.character.team[i].addAnger(this.character.talents.atk_team_anger,true)
+		}
+	}
+	//攻击降低敌方全体怒气
+	if(this.character.talents.atk_enemy_anger){
+		var enemyTeam =  this.character.fighting["fightInfo"][this.character.rival].team
+		for(var i = 0;i < enemyTeam.length;i++){
+			if(enemyTeam[i].checkAim())
+				enemyTeam[i].addAnger(this.character.talents.atk_enemy_anger,true)
+		}
+	}
+	//攻击降低敌方全体怒气
 	if(this.isAnger)
 		this.attackSkillAfter(target)
 	else

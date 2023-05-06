@@ -32,6 +32,8 @@ model.prototype.createBuffWithRate = function(skill,character,buff) {
 //创建BUFF
 model.prototype.createBuff = function(attacker,character,buff) {
 	var buffId = buff.buffId
+	if(!character.checkAim())
+		return
 	if(!this.buffList[buffId]){
 		console.error("!!!!!!!!!!buffId not find")
 		this.buffList[buffId] = normal_buff

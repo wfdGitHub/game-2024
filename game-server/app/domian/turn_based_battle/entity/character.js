@@ -48,6 +48,9 @@ model.prototype.init = function() {
 	//损失血量技能
 	if(this.talents.hp_loss_skill)
 		this.talents.hp_loss_skill = this.packageSkill(this.talents.hp_loss_skill,this.talents.hp_loss_star,0,false)
+	//死亡触发技能
+	if(this.talents.died_skill)
+		this.talents.died_skill = this.packageSkillBySid(this.talents.died_skill)
 	//回合技能
 	if(this.talents.round_skill)
 		this.packageRoundSkill(this.talents.round_skill)
@@ -80,6 +83,9 @@ model.prototype.init = function() {
 			this.defaultSkill.trigger_buffs[tmpBuff.buffId] = tmpBuff
 		}
 	}
+	//其他侠客攻击时为自己添加BUFF
+	if(this.talents["other_hero_ation_buff"])
+		this.fighting.heroAtionMonitor.push({"type":"buff","character":this,"buffData":this.talents["other_hero_ation_buff"]})
 	//筋骨和内力同步为最高值
 	if(this.talents.same_mag_phy){
 		this.attInfo.main_mag = Math.max(this.attInfo.main_mag,this.attInfo.main_phy)
@@ -111,8 +117,36 @@ model.prototype.init = function() {
 		for(var i = 0;i < targets.length;i++)
 			this.fighting.buffManager.createBuffByData(this,targets[i],this.talents.realm_add_buff)
 	}
+	//双生属性
+	if(this.talents.twin_id){
+		for(var i = 0;i < this.team.length;i++){
+			if(this.team[i].heroId == this.talents.twin_id){
+				for(var i = 1;i <= 3;i++){
+					if(this.talents["twin_att"+i]){
+						if(this.talents["twin_value"+i]){
+							this.changeTotalAtt(this.talents["twin_att"+i],this.talents["twin_value"+i])
+							this.team[i].changeTotalAtt(this.talents["twin_att"+i],this.talents["twin_value"+i])
+						}
+						if(this.talents["twin_mul"+i]){
+							this.changeTotalAtt(this.talents["twin_att"+i],this.getTotalAtt(this.talents["twin_att"+i]) * this.talents["twin_mul"+i])
+							this.team[i].changeTotalAtt(this.talents["twin_att"+i],this.getTotalAtt(this.talents["twin_att"+i]) * this.talents["twin_mul"+i])
+						}
+					}
+					if(this.talents["twin_buff"]){
+						this.fighting.buffManager.createBuffByData(this,this,this.talents["twin_buff"])
+						this.fighting.buffManager.createBuffByData(this,this.team[i],this.talents["twin_buff"])
+					}
+				}
+			}
+			break
+		}
+	}
 	this.attInfo.hp = this.attInfo.maxHP
 	this.attInfo.speed += this.attInfo.main_hit
+}
+model.prototype.begin = function() {
+	if(this.talents.beigin_skill)
+		this.useOtherSkill(this.packageSkillBySid(tthis.talents.beigin_skill))
 }
 //===================生命周期
 //个人回合开始
@@ -466,6 +500,9 @@ model.prototype.onDieAfter = function(attacker,info,skill) {
 				targets[i].onOtherDamage(attacker,splashDamage)
 		}
 	}
+	//死亡触发技能
+	if(this.talents.died_skill)
+		this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.died_skill))
 }
 //恢复血量
 model.prototype.addHP = function(info) {
@@ -603,7 +640,12 @@ model.prototype.onDodge = function(attacker,info) {}
 //触发格挡
 model.prototype.onBlock = function(attacker,info) {}
 //触发暴击
-model.prototype.onCrit = function(attacker,info) {}
+model.prototype.onCrit = function(attacker,info) {
+	if(this.talents.crit_anger)
+		this.addAnger(this.talents.crit_anger,true)
+	if(this.talents.crit_buff)
+		this.fighting.buffManager.createBuffByData(this,this,this.talents.crit_buff)
+}
 //===============获取信息
 //简单信息
 model.prototype.getSimpleInfo = function() {

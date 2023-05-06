@@ -30,6 +30,7 @@ var model = function(atkInfo,defInfo,otps,managers) {
 	this.next_character = []		//插入行动角色
 	this.win_team = "" 				//失败方  planish  打平  atk  攻方赢  def  守方赢
 	this.nextRecord = [] 			//后续插入记录
+	this.heroAtionMonitor = []		//行动监听
 	this.loadData()
 }
 
@@ -79,6 +80,8 @@ model.prototype.fightBegin = function() {
 		info.allHero.push(this.allHero[i].getSimpleInfo())
 	}
 	this.fightRecord.push(info)
+	for(var i in this.allHero)
+		this.allHero[i].begin()
 	//开始首回合
 	this.trampoline(this.nextRound.bind(this))
 }
