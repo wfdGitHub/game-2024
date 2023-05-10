@@ -13,5 +13,31 @@ model.prototype.buffOtps = function(attacker,info) {
 		info.num = Number(this.character.attInfo[this.attKey] * info.buff.mul) || 0
 	if(info.buff.value)
 		info.num += Number(info.buff.value) || 0
+	if(info.buff.cd){
+		this.NEED_CD = info.buff.cd
+		this.CUR_CD = 0
+	}
+}
+//获取加成属性
+model.prototype.getAttInfo = function(name) {
+	if(this.attKeys[name] !== undefined){
+		var value = 0
+		for(var i = 0;i < this.list.length;i++){
+			value += this.attKeys[name]
+			value += this.list[i].num
+		}
+		if(this.buffCfg.once)
+			this.destroy()
+		return value
+	}
+	return 0
+}
+//BUFF功能实现
+model.prototype.domain = function() {
+	if(this.NEED_CD){
+		this.CUR_CD--
+		if(this.CUR_CD < 0)
+			this.CUR_CD = 0
+	}
 }
 module.exports = model

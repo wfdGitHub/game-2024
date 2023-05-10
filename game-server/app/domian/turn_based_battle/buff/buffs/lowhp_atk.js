@@ -16,7 +16,7 @@ model.prototype.buffOtps = function(attacker,info) {
 //获得加成属性
 model.prototype.getAttInfo = function(name) {
 	if(name == this.attKey){
-		if((this.character.attInfo.hp / this.character.attInfo.maxHP) < 0.3){
+		if(this.character.getHPRate() < 0.3){
 			var value = 0
 			for(var i = 0;i < this.list.length;i++)
 				value += this.list[i].num

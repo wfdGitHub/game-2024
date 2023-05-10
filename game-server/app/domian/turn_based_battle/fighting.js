@@ -95,10 +95,10 @@ model.prototype.nextRound = function() {
 		this.fightOver("planish")
 		return
 	}
-	for(var i in this.allHero)
-		this.allHero[i].roundBegin()
 	this.round++
 	this.fightRecord.push({type : "nextRound",round : this.round})
+	for(var i in this.allHero)
+		this.allHero[i].roundBegin()
 	//运行检测
 	return this.runCheck.bind(this)
 }

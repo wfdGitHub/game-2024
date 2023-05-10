@@ -46,6 +46,12 @@ model.prototype.createBuff = function(attacker,character,buff) {
 		//控制BUFF已行动则回合数加一
 		if(character.isAction)
 			buff.duration++
+		//耗血免控BUFF
+		if(character.buffs["uncontrol_losshp"] && character.getHPRate() > 0.15 && character.buffs["uncontrol_losshp"].enoughCD()){
+			character.onOtherDamage(character,character.attInfo.maxHP * 0.09)
+			this.fighting.fightRecord.push({type:"tag",id:target.id,tag:"uncontrol_losshp"})
+			return
+		}
 	}
 	//印记状态下的目标无法获得护盾
 	if(buffId == "hudun" && character.buffs["sign_unheal"])

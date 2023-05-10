@@ -94,6 +94,10 @@ model.prototype.begin = function() {}
 model.prototype.addAnger = function(value,show) {}
 //减少怒气
 model.prototype.lessAnger = function(value,show) {}
+//获取生命值比例
+model.prototype.getHPRate = function() {
+	return this.attInfo.hp / this.attInfo.maxHP
+}
 //获取属性
 model.prototype.getTotalAtt = function(name) {
 	var value = this.attInfo[name] || 0

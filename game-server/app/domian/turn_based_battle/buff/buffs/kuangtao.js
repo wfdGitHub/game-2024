@@ -9,7 +9,7 @@ model.prototype = Object.create(buff_entity.prototype) //继承父类方法
 //获取加成属性
 model.prototype.getAttInfo = function(name) {
 	if(this.attKeys[name] !== undefined){
-		var hpRate = 1 - (this.character.attInfo.hp / this.character.attInfo.maxHP)
+		var hpRate = 1 - this.character.getHPRate()
 		switch(name){
 			case "amp":
 				return this.list[0].buff.mul * hpRate

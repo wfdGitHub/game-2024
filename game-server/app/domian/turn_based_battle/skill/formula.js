@@ -24,7 +24,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 		this.onMagBuff(attacker,target,skill)
 	if(target.buffs["phy_damage"])
 		this.onPhyBuff(attacker,target,skill)
-	if((target.attInfo.hp / target.attInfo.maxHP) > 0.5)
+	if(target.getHPRate() > 0.5)
 		this.onHighHP(attacker,target,skill)
 	//==========================开始计算伤害
 	//闪避判断

@@ -196,6 +196,11 @@ model.prototype.roundBegin = function() {
 		for(var j = 0;j < buffTargets.length;j++)
 				this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
 	}
+	if(this.buffs["extra_ation"] && this.buffs["extra_ation"].enoughCD()){
+		var skillInfo = this.chooseSkill()
+		if(skillInfo){
+			this.fighting.skillManager.useSkill(skillInfo)
+	}
 }
 //整体回合结束
 model.prototype.roundEnd = function() {
@@ -397,7 +402,7 @@ model.prototype.onHit = function(attacker,info,hitFlag) {
 	}
 	this.lessHP(info,hitFlag)
 	//秒杀判断
-	if(hitFlag && attacker.talents.hp_seckill && (this.attInfo.hp / this.attInfo.maxHP) < attacker.talents.hp_seckill)
+	if(hitFlag && attacker.talents.hp_seckill && this.getHPRate() < attacker.talents.hp_seckill)
 		this.onSeckill(info)
 	attacker.totalDamage += info.realValue
 	return info
@@ -538,7 +543,7 @@ model.prototype.onWillDie = function(info) {
 	}
 	if(this.fighting.fightInfo[this.belong]["firend_die_watch"]){
 		var watchHero = this.fighting.fightInfo[this.belong]["firend_die_watch"]
-		if(watchHero.talents.firend_die_watch_count > 0 && (watchHero.attInfo.hp / watchHero.attInfo.maxHP) > 0.3){
+		if(watchHero.talents.firend_die_watch_count > 0 && watchHero.getHPRate() > 0.3){
 			watchHero.talents.firend_die_watch_count--
 			this.attInfo.hp = 1
 			info.realValue = this.attInfo.hp
@@ -623,7 +628,7 @@ model.prototype.lessHP = function(info,hitFlag) {
 	}
 	//秒杀判断
 	if(this.buffs["chaodu"])
-		if((this.attInfo.hp / this.attInfo.maxHP) < this.buffs["chaodu"].getBuffMul())
+		if(this.getHPRate() < this.buffs["chaodu"].getBuffMul())
 			return this.onSeckill(info)
 	info.curAnger = this.curAnger
 	info.hp = this.attInfo.hp
