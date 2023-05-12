@@ -204,7 +204,7 @@ model.prototype.roundBegin = function() {
 	}
 	if(this.buffs["extra_ation"] && this.buffs["extra_ation"].enoughCD()){
 		var skillInfo = this.chooseSkill()
-		if(skillInfo){
+		if(skillInfo)
 			this.fighting.skillManager.useSkill(skillInfo)
 	}
 	if(this.buffs["together"] && this.buffs["together"].attacker.died){
@@ -689,7 +689,7 @@ model.prototype.lessHP = function(info,hitFlag) {
 		this.addAnger(Math.floor(tmpHPRate * 80),false)
 	}
 	if(this.buffs["lowhp_heal"] && this.getHPRate() < 0.3 && this.buffs["lowhp_heal"].enoughCD())
-		this.onOtherHeal(this.buffs["lowhp_heal"].getBuffMul() * this.fighting["fightInfo"][character.rival]["survival"] * this.attInfo.maxHP)
+		this.onOtherHeal(this.buffs["lowhp_heal"].getBuffMul() * this.fightInfo[this.rival]["survival"] * this.attInfo.maxHP)
 	info.curAnger = this.curAnger
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP

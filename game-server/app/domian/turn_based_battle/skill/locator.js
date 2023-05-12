@@ -11,7 +11,7 @@ var model = function(fighting) {
 }
 //判断存在可攻击目标
 model.prototype.existsTarget = function(character) {
-	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	var enemyTeam =  character.enemyTeam
 	for(var i = 0;i < enemyTeam.length;i++){
 		if(enemyTeam[i].checkAim()){
 			return  true
@@ -77,9 +77,9 @@ model.prototype.getTargets = function(character,targetType) {
 		case "team_back":
 			return this.getTeamBack(character)
 		case "team_only_front":
-			return this.getFront(character.fighting["fightInfo"][character.belong].team)
+			return this.getFront(character.team)
 		case "team_only_back":
-			return this.getBack(character.fighting["fightInfo"][character.belong].team)
+			return this.getBack(character.team)
 		case "enemy_maxAtk_1":
 			//敌方攻击力最高单位
 			return this.getEnemyMaxAtk(character)
@@ -112,7 +112,7 @@ model.prototype.getTargetTypeNum = function(targetType) {
 //选择常规敌方目标（按距离）
 model.prototype.getEnemyNormal = function(character) {
 	var aimList = []
-	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	var enemyTeam =  character.enemyTeam
 	for(var index = 0;index < enemyTeam.length;index++){
 		if(enemyTeam[index].checkAim()){
 			aimList.push({character : enemyTeam[index],dist : this.callDist(MY_MAP[character.index],ENEMY_MAP[index])})
@@ -129,7 +129,7 @@ model.prototype.getEnemyNormal = function(character) {
 //选择敌方最远目标
 model.prototype.getEnemyFar = function(character) {
 	var aimList = []
-	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	var enemyTeam =  character.enemyTeam
 	for(var index = 0;index < enemyTeam.length;index++){
 		if(enemyTeam[index].checkAim()){
 			aimList.push({character : enemyTeam[index],dist : this.callDist(MY_MAP[character.index],ENEMY_MAP[index])})
@@ -147,7 +147,7 @@ model.prototype.getEnemyFar = function(character) {
 model.prototype.getEnemyBackRandom = function(character,count) {
 	const FRONT_LIST = [0,1]
 	const BACK_LIST = [2,3,4]
-	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	var enemyTeam =  character.enemyTeam
 	var list = []
 	for(var i = 0;i < BACK_LIST.length;i++)
 		if(enemyTeam[BACK_LIST[i]].checkAim())
@@ -170,7 +170,7 @@ model.prototype.getEnemyBackRandom = function(character,count) {
 //敌方全体
 model.prototype.getEnemyAll = function(character) {
     var list = []
-    var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+    var enemyTeam =  character.enemyTeam
 	for(var index = 0;index < enemyTeam.length;index++){
 		if(enemyTeam[index].checkAim()){
 			list.push(enemyTeam[index])
@@ -182,7 +182,7 @@ model.prototype.getEnemyAll = function(character) {
 model.prototype.getEnemyMaxArmor = function(character) {
     var list = []
     var target = false
-    var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+    var enemyTeam =  character.enemyTeam
 	for(var index = 0;index < enemyTeam.length;index++){
 		if(enemyTeam[index].checkAim()){
 			if(!target || enemyTeam[index].attInfo.armor > target.attInfo.armor){
@@ -199,7 +199,7 @@ model.prototype.getEnemyMaxArmor = function(character) {
 model.prototype.getEnemyMaxAtk = function(character) {
     var list = []
     var target = false
-    var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+    var enemyTeam =  character.enemyTeam
 	for(var index = 0;index < enemyTeam.length;index++){
 		if(enemyTeam[index].checkAim()){
 			if(!target || enemyTeam[index].attInfo.atk > target.attInfo.atk){
@@ -216,7 +216,7 @@ model.prototype.getEnemyMaxAtk = function(character) {
 model.prototype.getTeamMaxAtk = function(character) {
     var list = []
     var target = false
-    var team =  character.fighting["fightInfo"][character.belong].team
+    var team =  character.team
 	for(var index = 0;index < team.length;index++){
 		if(team[index].checkAim()){
 			if(!target || team[index].attInfo.atk > target.attInfo.atk){
@@ -233,7 +233,7 @@ model.prototype.getTeamMaxAtk = function(character) {
 model.prototype.getEnemyMinHP = function(character) {
     var list = []
     var target = false
-    var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+    var enemyTeam =  character.enemyTeam
 	for(var index = 0;index < enemyTeam.length;index++){
 		if(enemyTeam[index].checkAim()){
 			if(!target || enemyTeam[index].attInfo.hp < target.attInfo.hp){
@@ -250,7 +250,7 @@ model.prototype.getEnemyMinHP = function(character) {
 model.prototype.getEnemyMaxHP = function(character) {
     var list = []
     var target = false
-    var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+    var enemyTeam =  character.enemyTeam
 	for(var index = 0;index < enemyTeam.length;index++){
 		if(enemyTeam[index].checkAim()){
 			if(!target || enemyTeam[index].attInfo.hp > target.attInfo.hp){
@@ -265,7 +265,7 @@ model.prototype.getEnemyMaxHP = function(character) {
 }
 //敌方随机N个单位
 model.prototype.getEnemyRandom = function(character,count) {
-	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	var enemyTeam =  character.enemyTeam
 	var tmpList = []
 	for(var i = 0;i < enemyTeam.length;i++)
 		if(enemyTeam[i].checkAim())
@@ -279,7 +279,7 @@ model.prototype.getEnemyRandom = function(character,count) {
 }
 //我方随机N个单位
 model.prototype.getTeamRandom = function(character,count) {
-	var team =  character.fighting["fightInfo"][character.belong].team
+	var team =  character.team
 	var tmpList = []
 	for(var i = 0;i < team.length;i++)
 		if(team[i].checkAim())
@@ -293,7 +293,7 @@ model.prototype.getTeamRandom = function(character,count) {
 }
 //我方前排
 model.prototype.getTeamFront = function(character) {
-	var team =  character.fighting["fightInfo"][character.belong].team
+	var team =  character.team
 	var list = this.getFront(team)
 	if(!list.length)
 		list = this.getBack(team)
@@ -301,7 +301,7 @@ model.prototype.getTeamFront = function(character) {
 }
 //我方后排
 model.prototype.getTeamBack = function(character) {
-	var team =  character.fighting["fightInfo"][character.belong].team
+	var team =  character.team
 	var list = this.getBack(team)
 	if(!list.length)
 		list = this.getFront(team)
@@ -309,7 +309,7 @@ model.prototype.getTeamBack = function(character) {
 }
 //敌方前排
 model.prototype.getEnemyFront = function(character) {
-	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	var enemyTeam =  character.enemyTeam
 	var list = this.getFront(enemyTeam)
 	if(!list.length)
 		list = this.getBack(enemyTeam)
@@ -317,7 +317,7 @@ model.prototype.getEnemyFront = function(character) {
 }
 //敌方后排
 model.prototype.getEnemyBack = function(character) {
-	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	var enemyTeam =  character.enemyTeam
 	var list = this.getBack(enemyTeam)
 	if(!list.length)
 		list = this.getFront(enemyTeam)
@@ -346,7 +346,7 @@ model.prototype.enemyAdjoin = function(character) {
 //获取相邻目标
 model.prototype.getNearby = function(character) {
 	var aimList = []
-	var team =  character.fighting["fightInfo"][character.belong].team
+	var team =  character.team
 	for(var index = 0;index < team.length;index++){
 		if(index != character.index && team[index].checkAim() && this.isNearby(character.index,index)){
 			aimList.push(team[index])
@@ -357,7 +357,7 @@ model.prototype.getNearby = function(character) {
 //我方全体
 model.prototype.getTeamAll = function(character) {
     var list = []
-    var team =  character.fighting["fightInfo"][character.belong].team
+    var team =  character.team
 	for(var index = 0;index < team.length;index++){
 		if(team[index].checkAim()){
 			list.push(team[index])
@@ -368,7 +368,7 @@ model.prototype.getTeamAll = function(character) {
 //友方除自己外全体
 model.prototype.getFriendAll = function(character) {
     var list = []
-    var team =  character.fighting["fightInfo"][character.belong].team
+    var team =  character.team
 	for(var index = 0;index < team.length;index++){
 		if(index != character.index && team[index].checkAim()){
 			list.push(team[index])
@@ -379,7 +379,7 @@ model.prototype.getFriendAll = function(character) {
 //获取同阵营
 model.prototype.getSameRealm = function(character) {
     var list = []
-    var team =  character.fighting["fightInfo"][character.belong].team
+    var team =  character.team
 	for(var index = 0;index < team.length;index++){
 		if(team[index].realm == character.realm && team[index].checkAim()){
 			list.push(team[index])
@@ -389,7 +389,7 @@ model.prototype.getSameRealm = function(character) {
 }
 //获取敌方存在指定BUFF的目标
 model.prototype.getEnemyHasBuff = function(character,buffId) {
-	var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	var enemyTeam =  character.enemyTeam
 	var list = []
 	for(var i = 0;i < enemyTeam.length;i++)
 		if(enemyTeam[i].checkAim() && enemyTeam[i].buffs[buffId])

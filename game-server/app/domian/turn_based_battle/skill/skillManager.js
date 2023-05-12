@@ -198,7 +198,7 @@ model.prototype.attackMonitor = function() {
 //技能监听
 model.prototype.skillMonitor = function(skill) {
 	//释放技能监听
-	for(var i = 0;i < skill.character.fighting["fightInfo"]["skillMonitor"].length;i++)
-		skill.character.fighting["fightInfo"]["skillMonitor"][i](skill)
+	for(var i = 0;i < skill.character.fightInfo["skillMonitor"].length;i++)
+		skill.character.fightInfo["skillMonitor"][i](skill)
 }
 module.exports = model

@@ -126,7 +126,7 @@ model.prototype.attackAfter = function(target) {
 	}
 	//攻击降低敌方全体怒气
 	if(this.character.talents.atk_enemy_anger){
-		var enemyTeam =  this.character.fighting["fightInfo"][this.character.rival].team
+		var enemyTeam =  this.character.enemyTeam
 		for(var i = 0;i < enemyTeam.length;i++){
 			if(enemyTeam[i].checkAim())
 				enemyTeam[i].lessAnger(this.character.talents.atk_enemy_anger,true)

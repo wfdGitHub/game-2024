@@ -70,7 +70,7 @@ model.prototype.getCount = function() {
 }
 //记录日志
 model.prototype.addRecord = function(record) {
-	this.addRecord(record)
+    this.fighting.nextRecord.push(record)
 }
 //=========================BUFF效果
 //新增BUFF后参数处理

@@ -6,7 +6,7 @@ const locatorFun = require("./skill/locator.js")
 const formulaFun = require("./skill/formula.js")
 const skillManagerFun = require("./skill/skillManager.js")
 var model = function(atkInfo,defInfo,otps,managers) {
-	this.fightInfo = {"atk":{"rival":"def"},"def":{"rival":"atk"}}
+	this.fightInfo = {"atk":{"rival":"def","team":[]},"def":{"rival":"atk","team":[]}}
 	this.fightInfo.atk.info = JSON.parse(JSON.stringify(atkInfo || []))
 	this.fightInfo.def.info = JSON.parse(JSON.stringify(defInfo || []))
 	this.otps = JSON.parse(JSON.stringify(otps || {}))
@@ -44,6 +44,7 @@ model.prototype.loadData = function() {
 	this.fightState = 1
 	this.loadTeam("atk",this.fightInfo.atk.info)
 	this.loadTeam("def",this.fightInfo.def.info)
+	this.loadEnemy()
 }
 //载入阵容
 model.prototype.loadTeam = function(type,team) {
@@ -57,14 +58,23 @@ model.prototype.loadTeam = function(type,team) {
 		team_character.index = i
 		team_character.belong = type
 		team_character.rival = this.fightInfo[type]["rival"]
+		team_character.fightInfo = this.fightInfo[type]
+		team_character.enemyTeam = this.fightInfo[this.fightInfo[type]["rival"]]["team"]
 		this.fightInfo[type]["team"][i] = team_character
 		if(!team_character.isNaN){
 			this.fightInfo[type]["survival"]++
 			this.allHero[team_character.id] = team_character
 		}
 	}
+
+}
+//载入敌方阵容
+model.prototype.loadEnemy = function() {
 	for(var i = 0;i < TEAMLENGTH;i++){
-		team_character.team = this.fightInfo[type]["team"]
+		this.fightInfo["atk"]["team"][i].team = this.fightInfo["atk"]["team"]
+		this.fightInfo["atk"]["team"][i].enemyTeam = this.fightInfo["def"]["team"]
+		this.fightInfo["def"]["team"][i].team = this.fightInfo["def"]["team"]
+		this.fightInfo["def"]["team"][i].enemyTeam = this.fightInfo["atk"]["team"]
 	}
 }
 //战斗开始
