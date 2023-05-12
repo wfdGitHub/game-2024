@@ -22,7 +22,7 @@ model.prototype.update = function() {
 	if(this.list.length <= 0){
 		this.destroy()
 	}else if(num != this.list.length){
-		this.fighting.nextRecord.push({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
+		this.addRecord({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
 	}
 }
 module.exports = model

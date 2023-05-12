@@ -23,7 +23,7 @@ model.prototype.createBuffWithRate = function(skill,character,buff) {
 	//控制状态下回合数增加
 	if(skill.control_dur && character.checkControl())
 		buff.duration += skill.control_dur
-	if(rate > 1 || character.fighting.random(buff.buffId) < rate)
+	if(character.fighting.randomCheck(rate,"buffRate"))
 		this.createBuff(skill.character,character,buff)
 	else if(buff.otps.elseBuff){
 		this.createBuff(skill.character,character,buff.otps.elseBuff)
@@ -39,6 +39,9 @@ model.prototype.createBuff = function(attacker,character,buff) {
 		this.buffList[buffId] = normal_buff
 		this.buffCfg[buffId] = {}
 	}
+	//出尘免疫异常
+	if(character.buffs["chuchen"] && (this.buffCfg[buffId].control || this.buffCfg[buffId].dispel_less))
+		return
 	//控制BUFF在行动后回合数加1
 	if(this.buffCfg[buffId].control){
 		if(character.buffs["totem_friend_amp"])
@@ -52,6 +55,9 @@ model.prototype.createBuff = function(attacker,character,buff) {
 			this.fighting.fightRecord.push({type:"tag",id:target.id,tag:"uncontrol_losshp"})
 			return
 		}
+		//对应抗性
+		if(character.buffs[buffId+"Def"] && character.fighting.randomCheck(character.buffs[buffId+"Def"].getBuffMul(),"controlDef"))
+			return
 	}
 	//印记状态下的目标无法获得护盾
 	if(buffId == "hudun" && character.buffs["sign_unheal"])

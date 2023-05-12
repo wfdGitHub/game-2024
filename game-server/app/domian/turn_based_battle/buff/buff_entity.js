@@ -16,6 +16,7 @@ var model = function(fighting,character,buff,buffCfg) {
 			this.attKeys[buffCfg["attKey"+i]] = buffCfg["attValue"+i] || 0
 		}
 	}
+	this.record = buffCfg["icon"] || buffCfg["effects"] ? true : false
 	this.init()
 }
 //BUFF初始化
@@ -30,7 +31,8 @@ model.prototype.addBuff = function(attacker,buff) {
 			buff.duration += 1
 		this.list.push({attacker:attacker,buff : buff,duration : buff.duration})
 		this.buffOtps(attacker,this.list[this.list.length - 1])
-		this.fighting.nextRecord.push({type : "buffAdd",id : this.character.id,bId : this.buffId,num:this.list.length})
+		if(this.record)
+			this.fighting.nextRecord.push({type : "buffAdd",id : this.character.id,bId : this.buffId,num:this.list.length})
 	}
 }
 //移除一层BUFF
@@ -53,18 +55,22 @@ model.prototype.update = function() {
 	if(this.list.length <= 0){
 		this.destroy()
 	}else if(num != this.list.length){
-		this.fighting.nextRecord.push({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
+		this.addRecord({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
 	}
 }
 //BUFF消失
 model.prototype.destroy = function() {
-	this.fighting.nextRecord.push({type : "buffDel",id : this.character.id,bId : this.buffId})
+	this.addRecord({type : "buffDel",id : this.character.id,bId : this.buffId})
 	this.character.removeBuff(this.buffId)
 	this.bufflLater()
 }
 //获取Buff层数
 model.prototype.getCount = function() {
 	return this.list.length
+}
+//记录日志
+model.prototype.addRecord = function(record) {
+	this.addRecord(record)
 }
 //=========================BUFF效果
 //新增BUFF后参数处理
@@ -77,6 +83,14 @@ model.prototype.bufflLater = function() {}
 model.prototype.enoughCD = function() {
 	if(this.NEED_CD && this.CUR_CD <= 0){
 		this.CUR_CD = this.NEED_CD
+		return true
+	}
+	return false
+}
+//判断次数满足
+model.prototype.enoughCount = function() {
+	if(this.MAX_NUM && this.CUR_NUM < this.MAX_NUM){
+		this.CUR_NUM++
 		return true
 	}
 	return false
@@ -95,10 +109,10 @@ model.prototype.getAttInfo = function(name) {
 }
 //获取默认BUFF系数
 model.prototype.getBuffMul = function() {
-	if(this.list && this.list[0])
-		return this.list[0].buff.mul || 0
-	else
-		return 0
+	var value = 0
+	for(var i = 0;i < this.list.length;i++)
+		value += Number(this.list[0].buff.mul) || 0
+	return value
 }
 //获取value
 model.prototype.getBuffValue = function() {

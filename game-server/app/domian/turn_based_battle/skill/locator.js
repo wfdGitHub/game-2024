@@ -86,6 +86,9 @@ model.prototype.getTargets = function(character,targetType) {
 		case "team_maxAtk_1":
 			//友方攻击力最高单位
 			return this.getTeamMaxAtk(character)
+		case "enemy_maxHP":
+			//敌方血量最高单位
+			return this.getEnemyMaxHP(character)
 		case "enemy_minHP":
 			//敌方血量最少单位
 			return this.getEnemyMinHP(character)
@@ -158,7 +161,7 @@ model.prototype.getEnemyBackRandom = function(character,count) {
         return []
     }else{
     	var tmpTeam = []
-    	list.sort(function() {return character.fighting.random("排序") < 0.5 ? 1 : -1})
+    	list.sort(function() {return character.fighting.randomCheck(0.5,"排序") ? 1 : -1})
     	for(var i = 0; i < count && i < list.length;i++)
     		tmpTeam.push(list[i])
         return tmpTeam
@@ -174,6 +177,23 @@ model.prototype.getEnemyAll = function(character) {
 		}
 	}
     return list
+}
+//敌方护甲最高的1个单位
+model.prototype.getEnemyMaxArmor = function(character) {
+    var list = []
+    var target = false
+    var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	for(var index = 0;index < enemyTeam.length;index++){
+		if(enemyTeam[index].checkAim()){
+			if(!target || enemyTeam[index].attInfo.armor > target.attInfo.armor){
+				target = enemyTeam[index]
+			}
+		}
+	}
+	if(target)
+		return [target]
+	else
+		return []
 }
 //敌方攻击最高的1个单位
 model.prototype.getEnemyMaxAtk = function(character) {
@@ -217,6 +237,23 @@ model.prototype.getEnemyMinHP = function(character) {
 	for(var index = 0;index < enemyTeam.length;index++){
 		if(enemyTeam[index].checkAim()){
 			if(!target || enemyTeam[index].attInfo.hp < target.attInfo.hp){
+				target = enemyTeam[index]
+			}
+		}
+	}
+	if(target)
+		return [target]
+	else
+		return []
+}
+//敌方血量最高的1个目标
+model.prototype.getEnemyMaxHP = function(character) {
+    var list = []
+    var target = false
+    var enemyTeam =  character.fighting["fightInfo"][character.rival].team
+	for(var index = 0;index < enemyTeam.length;index++){
+		if(enemyTeam[index].checkAim()){
+			if(!target || enemyTeam[index].attInfo.hp > target.attInfo.hp){
 				target = enemyTeam[index]
 			}
 		}

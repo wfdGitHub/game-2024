@@ -142,7 +142,7 @@ model.prototype.init = function() {
 						}
 					}
 					if(this.talents["twin_buff"]){
-						this.fighting.buffManager.createBuffByData(this,this,this.talents["twin_buff"])
+						this.fighting.buffManager.createBuffByData(this.team[i],this,this.talents["twin_buff"])
 						this.fighting.buffManager.createBuffByData(this,this.team[i],this.talents["twin_buff"])
 					}
 				}
@@ -167,6 +167,8 @@ model.prototype.begin = function() {
 model.prototype.before = function() {
 	this.isAction = true
 	this.onAction = true
+	if(this.died)
+		return
 	//回合技能
 	for(var i = 0;i < this.roundSkills.length;i++){
 		if(this.roundSkills[i].CUR_CD <= 0){
@@ -183,12 +185,16 @@ model.prototype.before = function() {
 //个人回合结束
 model.prototype.after = function() {
 	this.onAction = false
+	if(this.died)
+		return
 	if(this.talents.totem_hit_heal_rate && this.buffs["totem_hit_heal"])
 		this.onOtherHeal(this,this.talents.totem_hit_heal_rate * this.getTotalAtt("maxHP"))
 }
 //整体回合开始
 model.prototype.roundBegin = function() {
 	this.isAction = false
+	if(this.died)
+		return
 	if(this.talents.survive_team_buff){
 		var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents.survive_team_buff)
 		tmpBuff.count = this.fighting.fightInfo[this.belong]["survival"]
@@ -201,6 +207,10 @@ model.prototype.roundBegin = function() {
 		if(skillInfo){
 			this.fighting.skillManager.useSkill(skillInfo)
 	}
+	if(this.buffs["together"] && this.buffs["together"].attacker.died){
+		this.buffs["together"].attacker.revive(0.3 * this.buffs["together"].attacker.maxHP)
+		this.buffs["together"].attacker.addAnger(25,true)
+	}
 }
 //整体回合结束
 model.prototype.roundEnd = function() {
@@ -212,6 +222,8 @@ model.prototype.roundEnd = function() {
 		return
 	if(this.talents.round_healbyatk)
 		this.onOtherHeal(this,this.talents.round_healbyatk * this.getTotalAtt("atk"))
+	if(this.buffs["copy_skill"])
+		this.buffs["copy_skill"].repetSkill()
 }
 //获得怒气
 model.prototype.addAnger = function(value,show) {
@@ -237,12 +249,14 @@ model.prototype.chooseSkill = function() {
 		return false
 	if(!this.fighting.locator.existsTarget(this))
 		return false
-	var skill = false
+	var skillInfo = false
 	if(this.curAnger >= this.needAnger)
-		skill = this.useAngerSkill()
-	if(!skill)
-		skill = this.useNormalSkill()
-	return skill
+		skillInfo = this.useAngerSkill()
+	if(!skillInfo)
+		skillInfo = this.useNormalSkill()
+	if(skillInfo && this.buffs["insane"] && this.buffs["insane"].target.checkAim())
+		skillInfo.targets = [this.buffs["insane"].target]
+	return skillInfo
 }
 //使用怒气技能消耗怒气
 model.prototype.useAngerSkill = function() {
@@ -265,18 +279,16 @@ model.prototype.useAngerSkill = function() {
 	info.mul = 1
 	return info
 }
-//消耗全部怒气再次使用技能，基础伤害50%
-model.prototype.useAllAangerSkill = function() {
+//消耗怒气释放指定
+model.prototype.usePointSkill = function(skill,maxAnger) {
 	if(this.checkUseSkill())
 		return false
-	var needAnger = this.needAnger
-	var needValue = 0
+	var needAnger = Math.min(maxAnger,this.needAnger)
 	var info = {}
-	info.skill = this.angerSkill
-	info.mul = 0.5
+	info.skill = skill
 	if(info.skill.talents.kill_repet)
 		info.mul += Math.floor(info.curAnger * info.skill.talents.kill_repet)
-	info.changeAnger = -this.lessAnger(this.curAnger)
+	info.changeAnger = -this.lessAnger(needAnger)
 	info.curAnger = this.curAnger
 	info.no_combo = true  			//不可连击
 	return info
@@ -290,6 +302,10 @@ model.prototype.useNormalSkill = function() {
 	info.changeAnger = this.addAnger(this.getTotalAtt("roundAnger"))
 	info.curAnger = this.curAnger
 	info.mul = 1
+	if(this.buffs["doujiu"] && this.buffs["doujiu"].target && this.buffs["doujiu"].target.checkAim()){
+		info.talents = [this.buffs["doujiu"].target]
+		info.mul += this.buffs["doujiu"].skillMul
+	}
 	return info
 }
 //选择其他技能
@@ -314,8 +330,11 @@ model.prototype.checkAction = function() {
 model.prototype.checkUseSkill = function() {
 	if(this.died || this.buffs["silence"] || this.checkForceControl())
 		return true
-	else
-		return false
+	if(this.buffs["disturb"] && this.fighting.randomCheck(this.buffs["disturb"].getBuffMul(),"disturb")){
+		this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"disturb"})
+		return true
+	}
+	return false
 }
 //检查可使用普攻
 model.prototype.checkUseNormal = function() {
@@ -326,14 +345,14 @@ model.prototype.checkUseNormal = function() {
 }
 //检查硬控
 model.prototype.checkForceControl = function() {
-	if(this.buffs["petrify"] || this.buffs["frozen"])
+	if(this.buffs["petrify"] || this.buffs["frozen"] || this.buffs["dizzy"])
 		return true
 	else
 		return false
 }
 //检查被控制
 model.prototype.checkControl = function() {
-	if(this.checkForceControl() || this.buffs["disarm"] || this.buffs["silence"])
+	if(this.checkForceControl() || this.buffs["disarm"] || this.buffs["silence"] || this.buffs["chaofeng"])
 		return true
 	else
 		return false
@@ -400,6 +419,8 @@ model.prototype.onHit = function(attacker,info,hitFlag) {
 		info.value -= storeDamage
 		this.fighting.buffManager.createBuff(attacker,this,{"buffId":"store_damage","value":storeDamage,"duration":3})
 	}
+	if(this.buffs["wuxiang"] && info.d_type == "phy")
+		info.value = 0
 	this.lessHP(info,hitFlag)
 	//秒杀判断
 	if(hitFlag && attacker.talents.hp_seckill && this.getHPRate() < attacker.talents.hp_seckill)
@@ -411,6 +432,8 @@ model.prototype.onHit = function(attacker,info,hitFlag) {
 model.prototype.onHitBefore = function(attacker,skill) {
 	if(this.buffs["mag_hitDef"] && attacker.buffs["mag_damage"])
 		this.changeTotalTmp("hitDef",this.buffs["mag_hitDef"].getBuffMul())
+	if(this.buffs["jiuyang_real"])
+		this.changeTotalTmp("armor",Math.floor(this.getTotalAtt("atk") * 0.1))
 }
 //受到攻击时
 model.prototype.onHiting = function(attacker,skill,info) {
@@ -438,6 +461,17 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 	//反伤
 	if(this.buffs["nuoyi_back"])
 		attacker.onOtherDamage(this,this.buffs["nuoyi_back"].getBuffMul() * info.realValue)
+	if(this.buffs["jiuyang_real"] && info.d_type == "phy" && this.buffs["jiuyang_real"].getCount() >= 2)
+		attacker.onOtherDamage(this,0.2 * info.realValue)
+	if(this.buffs["damage_rebound"])
+		attacker.onOtherDamage(this,this.buffs["damage_rebound"].getBuffValue() * info.realValue)
+	if(this.buffs["behit_rebound_allAtk"])
+		this.buffs["behit_rebound_allAtk"].rebound(attacker)
+	if(this.buffs["hunyuan"]){
+		var tmpValue = this.buffs["hunyuan"].getBuffMul() * info.realValue
+		if(tmpValue)
+			attacker.onOtherDamage(this,tmpValue)
+	}
 	//回血
 	if(this.buffs["jianren"])
 		this.onOtherHeal(this,this.buffs["jianren"].getBuffMul() * info.realValue)
@@ -479,6 +513,12 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 					if(this.fighting.randomCheck(tmpBuff.rate,"atk_trigger_buff"))
 						this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
 			}
+		}
+	}
+	if(skill.isAnger){
+		if(this.buffs["jiuyang_305030"]){
+			attacker.onOtherDamage(this,this.buffs["jiuyang_305030"].getBuffMul() * info.realValue)
+			this.buffs["jiuyang_305030"].destroy()
 		}
 	}
 }
@@ -533,21 +573,16 @@ model.prototype.onWillDie = function(info) {
 		return false
 	if(this.talents.willdie_ime_count && this.fighting.randomCheck(this.talents.willdie_ime_rate,"willdie_ime_rate")){
 		this.talents.willdie_ime_count--
-		this.attInfo.hp = 1
-		info.realValue = this.attInfo.hp
-		this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"one_hp"})
-		if(this.talents.willdie_ime_buff){
+		this.saveLife(info)
+		if(this.talents.willdie_ime_buff)
 			this.fighting.buffManager.createBuffByData(this,this,this.talents.willdie_ime_buff)
-		}
 		return true
 	}
 	if(this.fighting.fightInfo[this.belong]["firend_die_watch"]){
 		var watchHero = this.fighting.fightInfo[this.belong]["firend_die_watch"]
 		if(watchHero.talents.firend_die_watch_count > 0 && watchHero.getHPRate() > 0.3){
 			watchHero.talents.firend_die_watch_count--
-			this.attInfo.hp = 1
-			info.realValue = this.attInfo.hp
-			this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"one_hp"})
+			this.saveLife(info)
 			var tmpValue = Math.floor(watchHero.attInfo.maxHP * 0.15)
 			if(watchHero.talents.firend_die_watch_hudun)
 				this.fighting.buffManager.createBuff(watchHero,this,{"buffId":"hudun","value":tmpValue,"duration":99})
@@ -555,6 +590,18 @@ model.prototype.onWillDie = function(info) {
 			return true
 		}
 	}
+	if(this.buffs["chuchen_pre"] && this.buffs["chuchen_pre"].enoughCD()){
+		var tmpValue = this.attInfo.hp
+		this.saveLife(info)
+		this.fighting.buffManager.createBuff(this,this,{"buffId":"chuchen","value":tmpValue,"duration":99})
+		return true
+	}
+}
+//触发保命
+model.prototype.saveLife = function(info) {
+	this.attInfo.hp = 1
+	info.realValue = this.attInfo.hp
+	this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"one_hp"})
 }
 //角色死亡结束后
 model.prototype.onDieAfter = function(attacker,info,skill) {
@@ -572,7 +619,7 @@ model.prototype.onDieAfter = function(attacker,info,skill) {
 		this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.died_skill))
 	//复活
 	if(this.talents.revive_rate){
-		this.revive(this.talents.revive_rate * this.attInfo.hp)
+		this.revive(this.talents.revive_rate * this.attInfo.maxHP)
 		delete this.talents.revive_rate
 	}
 	if(this.talents.died_buff)
@@ -583,6 +630,10 @@ model.prototype.onDieAfter = function(attacker,info,skill) {
 	}
 	for(var i = 0;i < this.fighting.anyDieMonitor.length;i++){
 		this.fighting.anyDieMonitor[i].anyDie(this)
+	}
+	if(this.buffs["yinyang"]){
+		this.buffs["yinyang"].destroy()
+		this.revive(0.5 * this.attInfo.maxHP)
 	}
 }
 //恢复血量
@@ -612,24 +663,33 @@ model.prototype.lessHP = function(info,hitFlag) {
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
 	info.curAnger = this.curAnger
+	if(this.buffs["chuchen"]){
+		this.buffs["chuchen"]["value"] += info.value
+		return info
+	}
 	if(this.died)
 		return info
 	if(this.attInfo.hp < info.value){
 		this.onDie(info)
-	}else{
-		this.attInfo.hp -= info.value
-		info.realValue = info.value
-		//受击回怒
-		if(hitFlag){
-			var tmpHPRate = info.realValue / this.attInfo.maxHP
-			this.hp_loss += tmpHPRate
-			this.addAnger(Math.floor(tmpHPRate * 80),false)
-		}
+		info.curAnger = this.curAnger
+		info.hp = this.attInfo.hp
+		info.maxHP = this.attInfo.maxHP
+		return info
 	}
+	this.attInfo.hp -= info.value
+	info.realValue = info.value
 	//秒杀判断
 	if(this.buffs["chaodu"])
 		if(this.getHPRate() < this.buffs["chaodu"].getBuffMul())
 			return this.onSeckill(info)
+	//受击回怒
+	if(hitFlag){
+		var tmpHPRate = info.realValue / this.attInfo.maxHP
+		this.hp_loss += tmpHPRate
+		this.addAnger(Math.floor(tmpHPRate * 80),false)
+	}
+	if(this.buffs["lowhp_heal"] && this.getHPRate() < 0.3 && this.buffs["lowhp_heal"].enoughCD())
+		this.onOtherHeal(this.buffs["lowhp_heal"].getBuffMul() * this.fighting["fightInfo"][character.rival]["survival"] * this.attInfo.maxHP)
 	info.curAnger = this.curAnger
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
@@ -703,6 +763,10 @@ model.prototype.onKill = function(target,skill,info) {
 		this.addAnger(this.talents.kill_anger,true)
 	if(this.talents.kill_dps_skill && (target.realm == 2 || target.realm == 4))
 		this.useOtherSkill(this.talents.kill_dps_skill)
+	if(this.buffs["chuchen"])
+		this.buffs["chuchen"].destroy()
+	if(this.buffs["kill_add_normal"] && this.buffs["kill_add_normal"].enoughCount())
+		this.fighting.skillManager.useSkill(this.useOtherSkill(this.defaultSkill))
 	if(skill.isAnger){
 		//技能击杀
 		if(this.talents.kill_skill_buff){

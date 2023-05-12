@@ -11,7 +11,7 @@ model.prototype = Object.create(buff_entity.prototype) //继承父类方法
 model.prototype.buffOtps = function(attacker,info) {
 	info.num = 0
 	if(info.buff.mul)
-		info.num = Number(this.character.attInfo[this.attKey] * info.buff.mul) || 0
+		info.num = Math.floor(this.character.attInfo[this.attKey] * info.buff.mul) || 0
 	this.fighting.buffManager.createBuff(attacker,attacker,{"buffId":"atk_suck_add","value":-info.num,"duration":info.buff.duration})
 }
 //获得加成属性

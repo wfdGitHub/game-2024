@@ -49,6 +49,7 @@ model.prototype.loadData = function() {
 model.prototype.loadTeam = function(type,team) {
 	this.fightInfo[type]["team"] = []
 	this.fightInfo[type]["survival"] = 0
+	this.fightInfo[type]["skillMonitor"] = []
 	this.fightInfo[type]["teamAtt"] = {}
 	for(var i = 0;i < TEAMLENGTH;i++){
 		var team_character = new character(this,team[i])
@@ -146,7 +147,14 @@ model.prototype.beforeCharacter = function(){
 }
 //英雄回合行动
 model.prototype.actionCharacter = function(){
-	var skillInfo = this.cur_character.chooseSkill()
+	var skillInfo
+	if(this.cur_character.buffs["chaofeng"] && this.cur_character.buffs["chaofeng"].list[0].attacker){
+		skillInfo = this.cur_character.useNormalSkill()
+		if(skillInfo)
+			skillInfo.talents = [this.cur_character.buffs["chaofeng"].list[0].attacker]
+	}else{
+		skillInfo = this.cur_character.chooseSkill()
+	}
 	if(skillInfo){
 		this.skillManager.useSkill(skillInfo)
 	}else{
@@ -236,7 +244,7 @@ model.prototype.random = function(reason) {
 }
 //判断满足随机条件
 model.prototype.randomCheck = function(num,reason) {
-	return this.random(reason) < num ? true : false
+	return (num > 1 || this.random(reason) < num) ? true : false
 }
 model.prototype.getCombatData = function() {
 	var list = []

@@ -21,8 +21,8 @@ var model = function(fighting,otps) {
 	this.sex = herosCfg.sex || 1 		//性别 1男 2女
 	this.talents = {}
 	this.buffs = {} 					//buff列表
-	this.totalDamage = 0								//累计伤害
-	this.totalHeal = 0									//累计治疗
+	this.totalDamage = 0				//累计伤害
+	this.totalHeal = 0					//累计治疗
 	if(!this.isNaN)
 		this.attInit()
 }
@@ -138,6 +138,24 @@ model.prototype.addHP = function() {}
 model.prototype.lessHP = function() {}
 //复活
 model.prototype.resurgence = function(attacker,info) {}
+//驱散控制
+model.prototype.dispelControl = function() {
+	for(var i in this.buffs)
+		if(this.buffs[i]["buffCfg"]["control"])
+			this.buffs[i].destroy()
+}
+//驱散增益
+model.prototype.dispelAdd = function() {
+	for(var i in this.buffs)
+		if(this.buffs[i]["buffCfg"]["dispel_add"])
+			this.buffs[i].destroy()
+}
+//驱散减益
+model.prototype.dispelLess = function() {
+	for(var i in this.buffs)
+		if(this.buffs[i]["buffCfg"]["dispel_less"])
+			this.buffs[i].destroy()
+}
 //============================状态触发
 //触发击杀
 model.prototype.onKill = function() {}

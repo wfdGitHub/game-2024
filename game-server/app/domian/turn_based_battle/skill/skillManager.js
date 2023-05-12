@@ -1,6 +1,8 @@
 //技能管理器
+const skill_base = require("./skill_base.js")
 var model = function(fighting) {
 	this.fighting = fighting
+	this.skill_base = skill_base
 }
 //开始使用技能（预处理）
 model.prototype.useSkill = function(skillInfo) {
@@ -40,7 +42,11 @@ model.prototype.attackSkill = function(skillInfo,skill,record) {
 	record.attack = []
 	var allCount = skill.getTotalAtt("atk_count")
 	for(var count = 0;count < allCount;count++){
-		var targets = this.fighting.locator.getTargets(skill.character,skill.atk_aim)
+		var targets = []
+		if(skillInfo.targets)
+			targets = skillInfo.targets
+		else
+			targets = this.fighting.locator.getTargets(skill.character,skill.atk_aim)
 		skill.attackBefore(targets)
 		for(var i = 0;i < targets.length;i++){
 			targets[i].onHitBefore(skill.character,skill)
@@ -80,7 +86,6 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 			var info = record.attack[i]
 			allDamage += info.realValue
 			var target = this.fighting.allHero[info.id]
-			skill.attackAfter(target)
 			if(info.died){
 				KILL_FLAG = true
 				//死亡处理
@@ -100,20 +105,23 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 				if(info.crit)
 					target.onCrit(skill.character,info)
 			}
+			skill.attackAfter(target)
 		}
 		//概率清空目标怒气
 		if(skill.talents.clear_anger){
 			for(var i = 0;i < record.attack.length;i++){
 				var info = record.attack[i]
-				if(!info.died && this.fighting.random("clear_anger") < skill.talents.clear_anger){
+				if(!info.died && this.fighting.randomCheck(skill.talents.clear_anger,"clear_anger")){
 					var target = this.fighting.allHero[info.id]
 					target.lessAnger(target.curAnger,true)
 				}
 			}
 		}
 		//吸血
-		if(skill.talents.suck_blood || skill.character.talents.suck_blood){
+		if(skill.talents.suck_blood || skill.character.talents.suck_blood || skill.character.buffs["suck_blood"]){
 			var suck_blood = skill.talents.suck_blood || 0 + skill.character.talents.suck_blood || 0
+			if(skill.character.buffs["suck_blood"])
+				suck_blood += skill.character.buffs["suck_blood"].getBuffValue()
 			skill.character.onOtherHeal(skill.character,suck_blood * allDamage)
 		}
 		//储存伤害到下一次普攻
@@ -133,7 +141,8 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 	//击杀触发
 	if(KILL_FLAG){
 		if(skill.talents.kill_repet && !skillInfo.no_combo){
-			skillInfo = skill.character.useAllAangerSkill()
+			skillInfo = skill.character.usePointSkill(skill,100)
+			skillInfo.mul = 0.5
 			if(skillInfo)
 				this.useSkill(skillInfo)
 		}
@@ -150,6 +159,7 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 			target.onOtherDamage(skill.character,Math.floor(loss_hp * skill.talents.loss_hp_amp))
 		}
 	}
+	this.skillMonitor(skill)
 }
 //BUFF判断
 model.prototype.buffSkill = function(skill,targets,infos) {
@@ -184,5 +194,11 @@ model.prototype.attackMonitor = function() {
 			}
 		}
 	}
+}
+//技能监听
+model.prototype.skillMonitor = function(skill) {
+	//释放技能监听
+	for(var i = 0;i < skill.character.fighting["fightInfo"]["skillMonitor"].length;i++)
+		skill.character.fighting["fightInfo"]["skillMonitor"][i](skill)
 }
 module.exports = model

@@ -21,6 +21,7 @@ var model = function(character,otps,talents) {
 	this.buffs = {} 					//附带BUFF
 	this.trigger_buffs = {} 			//触发BUFF
 	this.talents = talents || {}
+	this.otps = otps
 	this.init()
 }
 //技能初始化
@@ -85,6 +86,8 @@ model.prototype.attackBefore = function(targets) {
 		this.changeTotalTmp("atk_value",Math.floor(this.getTotalAtt("atk_share_value") / Math.max(2,targets.length)))
 		delete this.attTmpInfo.atk_share_value
 	}
+	if(this.character.buffs["jiuyang_real"])
+		this.changeTotalTmp("atk",Math.floor(this.getTotalAtt("armor") * 0.2))
 }
 //使用技攻前
 model.prototype.attackSkillBefore = function(targets) {
@@ -132,7 +135,12 @@ model.prototype.attackAfter = function(target) {
 	//攻击触发治疗自身血量
 	if(this.character.talents.atk_heal_self)
 		this.character.onOtherHeal(this,Math.floor(this.character.talents.atk_heal_self * this.character.getTotalAtt("atk")))
-	//攻击降低敌方全体怒气
+	//出尘结算
+	if(this.character.buffs["chuchen"]){
+		var tmpDamage = this.character.buffs["chuchen"].getValue()
+		this.character.buffs["chuchen"].destroy()
+		this.character.onOtherDamage(this.character,tmpDamage)
+	}
 	if(this.isAnger)
 		this.attackSkillAfter(target)
 	else

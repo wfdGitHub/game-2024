@@ -17,6 +17,10 @@ model.prototype.buffOtps = function(attacker,info) {
 		this.NEED_CD = info.buff.cd
 		this.CUR_CD = 0
 	}
+	if(info.buff.num){
+		this.MAX_NUM = info.buff.num
+		this.CUR_NUM = 0
+	}
 }
 //获取加成属性
 model.prototype.getAttInfo = function(name) {
@@ -39,5 +43,7 @@ model.prototype.domain = function() {
 		if(this.CUR_CD < 0)
 			this.CUR_CD = 0
 	}
+	if(this.MAX_NUM)
+		this.CUR_NUM = 0
 }
 module.exports = model
