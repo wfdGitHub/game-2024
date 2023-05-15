@@ -130,15 +130,15 @@ model.prototype.init = function() {
 	if(this.talents.twin_id){
 		for(var i = 0;i < this.team.length;i++){
 			if(this.team[i].heroId == this.talents.twin_id){
-				for(var i = 1;i <= 3;i++){
-					if(this.talents["twin_att"+i]){
-						if(this.talents["twin_value"+i]){
-							this.changeTotalAtt(this.talents["twin_att"+i],this.talents["twin_value"+i])
-							this.team[i].changeTotalAtt(this.talents["twin_att"+i],this.talents["twin_value"+i])
+				for(var j = 1;j <= 3;j++){
+					if(this.talents["twin_att"+j]){
+						if(this.talents["twin_value"+j]){
+							this.changeTotalAtt(this.talents["twin_att"+j],this.talents["twin_value"+j])
+							this.team[i].changeTotalAtt(this.talents["twin_att"+j],this.talents["twin_value"+j])
 						}
-						if(this.talents["twin_mul"+i]){
-							this.changeTotalAtt(this.talents["twin_att"+i],this.getTotalAtt(this.talents["twin_att"+i]) * this.talents["twin_mul"+i])
-							this.team[i].changeTotalAtt(this.talents["twin_att"+i],this.getTotalAtt(this.talents["twin_att"+i]) * this.talents["twin_mul"+i])
+						if(this.talents["twin_mul"+j]){
+							this.changeTotalAtt(this.talents["twin_att"+j],this.getTotalAtt(this.talents["twin_att"+j]) * this.talents["twin_mul"+j])
+							this.team[i].changeTotalAtt(this.talents["twin_att"+j],this.getTotalAtt(this.talents["twin_att"+j]) * this.talents["twin_mul"+j])
 						}
 					}
 					if(this.talents["twin_buff"]){
@@ -146,8 +146,8 @@ model.prototype.init = function() {
 						this.fighting.buffManager.createBuffByData(this,this.team[i],this.talents["twin_buff"])
 					}
 				}
+				break
 			}
-			break
 		}
 	}
 	if(this.talents.block_buff1){
@@ -208,7 +208,7 @@ model.prototype.roundBegin = function() {
 			this.fighting.skillManager.useSkill(skillInfo)
 	}
 	if(this.buffs["together"] && this.buffs["together"].attacker.died){
-		this.buffs["together"].attacker.revive(0.3 * this.buffs["together"].attacker.maxHP)
+		this.buffs["together"].attacker.revive(0.3 * this.buffs["together"].attacker.getTotalAtt("maxHP"))
 		this.buffs["together"].attacker.addAnger(25,true)
 	}
 }
@@ -254,8 +254,15 @@ model.prototype.chooseSkill = function() {
 		skillInfo = this.useAngerSkill()
 	if(!skillInfo)
 		skillInfo = this.useNormalSkill()
-	if(skillInfo && this.buffs["insane"] && this.buffs["insane"].target.checkAim())
-		skillInfo.targets = [this.buffs["insane"].target]
+	if(skillInfo){
+		//干扰
+		if(skillInfo.skill.isAnger && this.buffs["disturb"] && this.fighting.randomCheck(this.buffs["disturb"].getBuffMul(),"disturb")){
+			this.fighting.fightRecord.push({type:"tag",id:this.id,tag:"disturb"})
+			return false
+		}
+		if(this.buffs["insane"] && this.buffs["insane"].target.checkAim())
+			skillInfo.targets = [this.buffs["insane"].target]
+	}
 	return skillInfo
 }
 //使用怒气技能消耗怒气
@@ -330,10 +337,6 @@ model.prototype.checkAction = function() {
 model.prototype.checkUseSkill = function() {
 	if(this.died || this.buffs["silence"] || this.checkForceControl())
 		return true
-	if(this.buffs["disturb"] && this.fighting.randomCheck(this.buffs["disturb"].getBuffMul(),"disturb")){
-		this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"disturb"})
-		return true
-	}
 	return false
 }
 //检查可使用普攻
@@ -734,7 +737,7 @@ model.prototype.revive = function(value) {
 	this.attInfo.hp = value
 	this.died = false
 	this.fighting.fightInfo[this.belong]["survival"]++
-	this.fighting.fightRecord.push({type : "revive",id : this.id,hp : this.attInfo.hp})
+	this.fighting.fightRecord.push({type : "revive",id : this.id,hp : this.attInfo.hp,maxHP:this.attInfo.maxHP})
 }
 //添加BUFF
 model.prototype.createBuff = function(buff) {

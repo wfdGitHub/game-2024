@@ -3,6 +3,7 @@ var model = function(fighting,character,buff,buffCfg) {
 	this.fighting = fighting
 	this.buffId = buff.buffId
 	this.list = []
+	this.attacker = false
 	this.character = character
 	this.buffCfg = buffCfg
 	this.max_count = buffCfg["max_count"] || 1 	//最大层数
@@ -29,6 +30,7 @@ model.prototype.addBuff = function(attacker,buff) {
 		//控制技能已行动则增加一回合
 		if(this.buffCfg.control && this.character.isAction)
 			buff.duration += 1
+		this.attacker = attacker
 		this.list.push({attacker:attacker,buff : buff,duration : buff.duration})
 		this.buffOtps(attacker,this.list[this.list.length - 1])
 		this.addRecord({type : "buffAdd",id : this.character.id,bId : this.buffId,num:this.list.length})

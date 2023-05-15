@@ -44,7 +44,8 @@ model.prototype.explain = function() {
 			}
 		break
 		case "revive":
-			console.log("\033[32m["+info.heal[i]["id"]+"] 复活 "+info.heal[i].realValue+"血量"+info.heal[i].hp+")\033[0m\n")
+			console.log(info)
+			console.log("\033[32m["+info["id"]+"] 复活 (血量"+info.hp+"/"+info.maxHP+")\033[0m\n")
 		break
 		case "other_damage":
 			this.attackInfo(info,"\033[31m["+info["id"]+"] 受到 ")
