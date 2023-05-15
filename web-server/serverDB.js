@@ -51,6 +51,24 @@ var model = function() {
 		});
 		res.send("SUCCESS")
 	}
+	//获取sdkconfig
+	posts["/getSDKCFG"] = function(req,res) {
+		fs.readFile("../game-server/config/sysCfg/sdkConfig.json", (err, data) => {
+			res.send(data)
+		})
+	}
+	//修改sdkconfig
+	posts["/changeSDKCFG"] = function(req,res) {
+		fs.writeFile("../game-server/config/sysCfg/sdkConfig.json", req.body.data, err => {
+			if (err) {
+				console.error("error：", err);
+				throw err;
+			}
+			local.post("127.0.0.1",5081,"/updateSDKCFG",{},function(){})
+			console.log('changeSDKCFG successfully  -->  ',req.body.data);
+		});
+		res.send("SUCCESS")
+	}
 	//获取直充表
 	posts["/getRechargeCfg"] = function(req,res) {
 		res.send(recharge_cfg)
