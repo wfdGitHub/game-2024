@@ -10,7 +10,7 @@ model.prototype = Object.create(buff_entity.prototype) //继承父类方法
 //获得加成属性
 model.prototype.getAttInfo = function(name) {
 	if(name == this.attKey)
-		return this.character.getHPRate() * this.list.getBuffValue()
+		return  (1 - this.character.getHPRate()) * this.list[0].buff.value
 	return 0
 }
 module.exports = model

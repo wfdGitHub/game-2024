@@ -160,7 +160,7 @@ model.prototype.init = function() {
 }
 model.prototype.begin = function() {
 	if(this.talents.beigin_skill)
-		this.useOtherSkill(this.packageSkillBySid(tthis.talents.beigin_skill))
+		this.useOtherSkill(this.packageSkillBySid(this.talents.beigin_skill))
 }
 //===================生命周期
 //个人回合开始
@@ -800,8 +800,8 @@ model.prototype.onBlock = function(attacker,info) {
 }
 //触发暴击
 model.prototype.onCrit = function(attacker,info) {
-	if(this.talents.crit_anger)
-		this.addAnger(this.talents.crit_anger,true)
+	if(attacker.talents.crit_anger)
+		attacker.addAnger(attacker.talents.crit_anger,true)
 	if(this.talents.crit_buff)
 		this.fighting.buffManager.createBuffByData(this,this,this.talents.crit_buff)
 }
