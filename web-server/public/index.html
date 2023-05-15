@@ -162,6 +162,24 @@
             console.log(data);
         });
       }
+      //锁定英雄
+      var lockHero = function(hId) {
+        pomelo.request("area.heroHandler.lockHero", {hId:hId}, function(data) {
+            console.log(data);
+        })
+      }
+      //解锁英雄
+      var unlockHero = function(hId) {
+        pomelo.request("area.heroHandler.unlockHero", {hId:hId}, function(data) {
+            console.log(data);
+        })
+      }
+      //点票支付
+      var dianpiao_recharge = function(pay_id) {
+        pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id}, function(data) {
+            console.log(data);
+        });
+      }
       var finishTopicRecruitHeroTask = function(heroId,star) {
         pomelo.request("area.recruitHandler.finishTopicRecruitHeroTask", {heroId:heroId,star:star}, function(data) {
             console.log(data);
