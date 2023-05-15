@@ -17,7 +17,7 @@ model.prototype.addBuff = function(attacker,buff) {
 			this.list.push({attacker:attacker,buff : buff,duration : buff.duration})
 		}
 	}
-	this.addRecord({type : "buffAdd",id : this.character.id,bId : this.buffId,num:this.list.length})
+	this.addRecord({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
 }
 //我方成员被控制
 model.prototype.teamBeControl = function(target,buffId) {

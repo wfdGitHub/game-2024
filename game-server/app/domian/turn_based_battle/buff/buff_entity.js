@@ -31,8 +31,7 @@ model.prototype.addBuff = function(attacker,buff) {
 			buff.duration += 1
 		this.list.push({attacker:attacker,buff : buff,duration : buff.duration})
 		this.buffOtps(attacker,this.list[this.list.length - 1])
-		if(this.record)
-			this.fighting.nextRecord.push({type : "buffAdd",id : this.character.id,bId : this.buffId,num:this.list.length})
+		this.addRecord({type : "buffAdd",id : this.character.id,bId : this.buffId,num:this.list.length})
 	}
 }
 //移除一层BUFF

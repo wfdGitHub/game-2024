@@ -52,7 +52,7 @@ model.prototype.createBuff = function(attacker,character,buff) {
 		//耗血免控BUFF
 		if(character.buffs["uncontrol_losshp"] && character.getHPRate() > 0.15 && character.buffs["uncontrol_losshp"].enoughCD()){
 			character.onOtherDamage(character,character.attInfo.maxHP * 0.09)
-			this.fighting.fightRecord.push({type:"tag",id:target.id,tag:"uncontrol_losshp"})
+			character.fighting.fightRecord.push({type:"tag",id:character.id,tag:"uncontrol_losshp"})
 			return
 		}
 		//对应抗性

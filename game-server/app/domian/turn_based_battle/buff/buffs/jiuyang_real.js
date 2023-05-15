@@ -12,7 +12,7 @@ model.prototype.addBuff = function(attacker,buff) {
 	if(this.list.length < max_count){
 		this.list.push({attacker:attacker,buff : buff,duration : buff.duration})
 		this.buffOtps(attacker,this.list[this.list.length - 1])
-		this.addRecord({type : "buffAdd",id : this.character.id,bId : this.buffId,num:this.list.length})
+		this.addRecord({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
 	}
 }
 //获取加成属性

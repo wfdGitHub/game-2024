@@ -58,7 +58,7 @@ model.prototype.attackSkill = function(skillInfo,skill,record) {
 			record.attack.push(info)
 		}
 	}
-	this.attackMonitor()
+	this.attackMonitor(skill.character)
 	return targets
 }
 //治疗技能
@@ -183,13 +183,14 @@ model.prototype.buffSkill = function(skill,targets,infos) {
 	}
 }
 //攻击监听
-model.prototype.attackMonitor = function() {
+model.prototype.attackMonitor = function(attacker) {
 	if(this.fighting.heroAtionMonitor.length){
 		for(var i = 0;i < this.fighting.heroAtionMonitor.length;i++){
 			var info = this.fighting.heroAtionMonitor[i]
 			switch(info.type){
 				case "buff":
-					this.fighting.buffManager.createBuffByData(info.character,info.character,info.buffData)
+					if(info.character!= attacker)
+						this.fighting.buffManager.createBuffByData(info.character,info.character,info.buffData)
 				break
 			}
 		}

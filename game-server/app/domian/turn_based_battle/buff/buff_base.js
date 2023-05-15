@@ -8,5 +8,7 @@ var model = function(buffStr) {
 	this.value = Number(otps.value) || 0 			//buff额外数值
 	this.targetType = otps.targetType  				//buff目标
 	this.duration = otps.duration || 1 				//buff持续时间
+	this.cd = otps.cd || 0 							//冷却回合
+	this.num = otps.num || 0 						//回合生效次数
 }
 module.exports = model
