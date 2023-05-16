@@ -56,7 +56,7 @@ model.prototype.before = function() {
 	}
 	//技攻触发，释放技攻时友方每存活一名侠客，自身技攻伤害提升
 	if(this.character.talents.skill_survival_amp)
-		this.character.changeTotalTmp("amp",this.character.talents.skill_survival_amp * this.fighting.fightInfo[this.character.belong]["survival"])
+		this.character.changeTotalTmp("amp",this.character.talents.skill_survival_amp * this.character.fighting.fightInfo[this.character.belong]["survival"])
 }
 //使用技能后
 model.prototype.after = function() {
@@ -64,6 +64,33 @@ model.prototype.after = function() {
 	//技能回怒
 	if(this.talents.addAnger)
 		this.character.addAnger(this.talents.addAnger,true)
+	//攻击增加己方全体怒气
+	if(this.character.talents.atk_team_anger){
+		for(var i = 0;i < this.character.team.length;i++){
+			if(this.character.team[i].checkAim())
+				this.character.team[i].addAnger(this.character.talents.atk_team_anger,true)
+		}
+	}
+	//攻击降低敌方全体怒气
+	if(this.character.talents.atk_enemy_anger){
+		var enemyTeam =  this.character.enemyTeam
+		for(var i = 0;i < enemyTeam.length;i++){
+			if(enemyTeam[i].checkAim())
+				enemyTeam[i].lessAnger(this.character.talents.atk_enemy_anger,true)
+		}
+	}
+	//首次攻击触发技能
+	if(this.character.talents.first_atk_skill){
+		var skill = this.character.talents.first_atk_skill
+		delete this.character.talents.first_atk_skill
+		this.character.fighting.skillManager.useSkill(this.character.useOtherSkill(skill))
+	}
+	//攻击触发技能
+	if(this.laterSkill && this.character.fighting.randomCheck(this.laterSkill.rate,"laterSkill"))
+		this.character.fighting.skillManager.useSkill(this.character.useOtherSkill(this.laterSkill))
+	//攻击触发治疗自身血量
+	if(this.character.talents.atk_heal_self)
+		this.character.onOtherHeal(this,Math.floor(this.character.talents.atk_heal_self * this.character.getTotalAtt("atk")))
 	//使用技能结束插入临时记录
 	this.character.fighting.insertTmpRecord()
 }
@@ -108,39 +135,13 @@ model.prototype.attackNormalBefore = function(target) {
 model.prototype.attackAfter = function(target) {
 	if(this.character.died)
 		return
-	//首次攻击触发技能
-	if(this.character.talents.first_atk_skill){
-		var skill = this.character.talents.first_atk_skill
-		delete this.character.talents.first_atk_skill
-		this.character.fighting.skillManager.useSkill(this.character.useOtherSkill(skill))
-	}
-	//攻击触发技能
-	if(this.laterSkill && this.character.fighting.randomCheck(this.laterSkill.rate,"laterSkill"))
-		this.character.fighting.skillManager.useSkill(this.character.useOtherSkill(this.laterSkill))
-	//攻击增加己方全体怒气
-	if(this.character.talents.atk_team_anger){
-		for(var i = 0;i < this.character.team.length;i++){
-			if(this.character.team[i].checkAim())
-				this.character.team[i].addAnger(this.character.talents.atk_team_anger,true)
-		}
-	}
-	//攻击降低敌方全体怒气
-	if(this.character.talents.atk_enemy_anger){
-		var enemyTeam =  this.character.enemyTeam
-		for(var i = 0;i < enemyTeam.length;i++){
-			if(enemyTeam[i].checkAim())
-				enemyTeam[i].lessAnger(this.character.talents.atk_enemy_anger,true)
-		}
-	}
-	//攻击触发治疗自身血量
-	if(this.character.talents.atk_heal_self)
-		this.character.onOtherHeal(this,Math.floor(this.character.talents.atk_heal_self * this.character.getTotalAtt("atk")))
 	//出尘结算
 	if(this.character.buffs["chuchen"]){
 		var tmpDamage = this.character.buffs["chuchen"].getValue()
 		this.character.buffs["chuchen"].destroy()
 		this.character.onOtherDamage(this.character,tmpDamage)
 	}
+
 	if(this.isAnger)
 		this.attackSkillAfter(target)
 	else

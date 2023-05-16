@@ -8,7 +8,7 @@ var model = function(fighting) {
 model.prototype.useSkill = function(skillInfo) {
 	var skill = skillInfo.skill
 	if(!skill){
-		console.log("skill.character.id")
+		console.log("skillInfo error ",skillInfo)
 		return
 	}
 	var record = {

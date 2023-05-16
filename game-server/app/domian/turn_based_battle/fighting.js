@@ -66,7 +66,6 @@ model.prototype.loadTeam = function(type,team) {
 			this.allHero[team_character.id] = team_character
 		}
 	}
-
 }
 //载入敌方阵容
 model.prototype.loadEnemy = function() {
@@ -161,7 +160,7 @@ model.prototype.actionCharacter = function(){
 	if(this.cur_character.buffs["chaofeng"] && this.cur_character.buffs["chaofeng"].list[0].attacker){
 		skillInfo = this.cur_character.useNormalSkill()
 		if(skillInfo)
-			skillInfo.talents = [this.cur_character.buffs["chaofeng"].list[0].attacker]
+			skillInfo.targets = [this.cur_character.buffs["chaofeng"].list[0].attacker]
 	}else{
 		skillInfo = this.cur_character.chooseSkill()
 	}

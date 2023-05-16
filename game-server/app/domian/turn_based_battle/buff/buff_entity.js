@@ -9,9 +9,9 @@ var model = function(fighting,character,buff,buffCfg) {
 	this.max_count = buffCfg["max_count"] || 1 	//最大层数
 	this.attKeys = {}
 	for(var i = 1;i <= 3;i++){
-		if(buff["attKey"+i]){
-			this.attKey = buffCfg["attKey"+i]
-			this.attKeys[buff["attKey"+i]] = buff["attValue"+i] || 0
+		if(buff.otps && buff.otps["attKey"+i]){
+			this.attKey = buff.otps["attKey"+i]
+			this.attKeys[buff.otps["attKey"+i]] = buff.otps["attValue"+i] || 0
 		}else if(buffCfg["attKey"+i]){
 			this.attKey = buffCfg["attKey"+i]
 			this.attKeys[buffCfg["attKey"+i]] = buffCfg["attValue"+i] || 0
@@ -101,8 +101,8 @@ model.prototype.getAttInfo = function(name) {
 	if(this.attKeys[name] !== undefined){
 		var value = 0
 		for(var i = 0;i < this.list.length;i++){
-			value += this.attKeys[name]
-			value += this.list[i].num
+			value += this.attKeys[name] || 0
+			value += this.list[i].num || 0
 		}
 		return value
 	}

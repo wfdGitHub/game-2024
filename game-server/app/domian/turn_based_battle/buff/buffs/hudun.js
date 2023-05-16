@@ -10,8 +10,8 @@ model.prototype = Object.create(buff_entity.prototype) //继承父类方法
 model.prototype.buffOtps = function(attacker,info) {
 	info.num = Math.floor(this.character.getTotalAtt("atk") * info.buff.mul) || 0
 	//info.buff.turn 治疗转盾
-	if(character.buffs["hunyuan"] && !info.buff.turn)
-		info.num = character.buffs["hunyuan"].getValue()
+	if(this.character.buffs["hunyuan"] && !info.buff.turn)
+		info.num += Math.floor(info.num * this.character.buffs["hunyuan"].getBuffMul())
 }
 //抵扣伤害
 model.prototype.offsetDamage = function(info) {

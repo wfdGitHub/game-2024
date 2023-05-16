@@ -66,16 +66,20 @@ model.prototype.init = function() {
 		this.defaultSkill.laterSkill = atk_skill
 		this.angerSkill.laterSkill = atk_skill
 	}
+	if(this.talents.behit_skill)
+		this.talents.behit_skill = this.packageSkillBySid(this.talents.behit_skill)
 	//被攻击触发次数
 	if(this.talents.atk_trigger_value)
 		this.talents.atk_trigger_cur = 0
 	//========初始BUFF
-	for(var i = 1;i <= 3;i++){
+	for(var i = 1;i <= 4;i++){
 		if(this.talents["begin_buff"+i]){
 			var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents["begin_buff"+i])
 			var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
-			for(var j = 0;j < buffTargets.length;j++)
-				this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
+			for(var j = 0;j < buffTargets.length;j++){
+				if(this.fighting.randomCheck(tmpBuff.rate,"begin_buff"))
+					this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
+			}
 		}
 		if(this.talents["first_buff"+i])
 			this.fighting.buffManager.createBuffByData(this,this,this.talents["first_buff"+i])
@@ -159,8 +163,10 @@ model.prototype.init = function() {
 	this.attInfo.speed += this.attInfo.main_hit
 }
 model.prototype.begin = function() {
-	if(this.talents.beigin_skill)
-		this.useOtherSkill(this.packageSkillBySid(this.talents.beigin_skill))
+	if(this.talents.beigin_skill){
+		var skill = this.useOtherSkill(this.packageSkillBySid(this.talents.beigin_skill))
+		this.fighting.skillManager.useSkill(skill)
+	}
 }
 //===================生命周期
 //个人回合开始
@@ -187,8 +193,6 @@ model.prototype.after = function() {
 	this.onAction = false
 	if(this.died)
 		return
-	if(this.talents.totem_hit_heal_rate && this.buffs["totem_hit_heal"])
-		this.onOtherHeal(this,this.talents.totem_hit_heal_rate * this.getTotalAtt("maxHP"))
 }
 //整体回合开始
 model.prototype.roundBegin = function() {
@@ -222,6 +226,8 @@ model.prototype.roundEnd = function() {
 		return
 	if(this.talents.round_healbyatk)
 		this.onOtherHeal(this,this.talents.round_healbyatk * this.getTotalAtt("atk"))
+	if(this.talents.totem_hit_heal_rate && this.buffs["totem_hit_heal"])
+		this.onOtherHeal(this,this.talents.totem_hit_heal_rate * this.getTotalAtt("maxHP"))
 	if(this.buffs["copy_skill"])
 		this.buffs["copy_skill"].repetSkill()
 }
@@ -237,15 +243,15 @@ model.prototype.addAnger = function(value,show) {
 }
 //减少怒气
 model.prototype.lessAnger = function(value,show) {
-	this.curAnger -= Math.floor(value) || 0
-	this.curAnger = Math.max(this.curAnger,0)
+	value = Math.min(this.curAnger,value)
+	this.curAnger -= value
 	if(show)
 		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : -value,curAnger : this.curAnger})
 	return value
 }
 //选择技能
 model.prototype.chooseSkill = function() {
-	if(this.died || this.checkForceControl())
+	if(this.died || this.checkForceControl() || this.checkTotem())
 		return false
 	if(!this.fighting.locator.existsTarget(this))
 		return false
@@ -288,7 +294,7 @@ model.prototype.useAngerSkill = function() {
 }
 //消耗怒气释放指定
 model.prototype.usePointSkill = function(skill,maxAnger) {
-	if(this.checkUseSkill())
+	if(this.died)
 		return false
 	var needAnger = Math.min(maxAnger,this.needAnger)
 	var info = {}
@@ -310,7 +316,7 @@ model.prototype.useNormalSkill = function() {
 	info.curAnger = this.curAnger
 	info.mul = 1
 	if(this.buffs["doujiu"] && this.buffs["doujiu"].target && this.buffs["doujiu"].target.checkAim()){
-		info.talents = [this.buffs["doujiu"].target]
+		info.targets = [this.buffs["doujiu"].target]
 		info.mul += this.buffs["doujiu"].skillMul
 	}
 	return info
@@ -326,9 +332,18 @@ model.prototype.useOtherSkill = function(skill) {
 	info.mul = 1
 	return info
 }
+//无视免控释放技能
+model.prototype.useOtherSkillFree = function(skill) {
+	var info = {}
+	info.skill = skill
+	info.changeAnger = 0
+	info.curAnger = this.curAnger
+	info.mul = 1
+	return info
+}
 //检查可行动
 model.prototype.checkAction = function() {
-	if(this.died || this.isAction || this.checkTotem())
+	if(this.died || this.isAction)
 		return false
 	else
 		return true
@@ -362,7 +377,7 @@ model.prototype.checkControl = function() {
 }
 //检查图腾状态
 model.prototype.checkTotem = function(argument) {
-	if(this.buffs["jianren"] || this.buffs["totem_friend_amp"])
+	if(this.buffs["totem_hit_heal"] || this.buffs["totem_friend_amp"])
 		return true
 	else
 		return false
@@ -476,8 +491,8 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 			attacker.onOtherDamage(this,tmpValue)
 	}
 	//回血
-	if(this.buffs["jianren"])
-		this.onOtherHeal(this,this.buffs["jianren"].getBuffMul() * info.realValue)
+	if(this.buffs["totem_hit_heal"])
+		this.onOtherHeal(this,this.buffs["totem_hit_heal"].getBuffMul() * info.realValue)
 	//减怒
 	if(skill.talents.loss_anger_rate && this.fighting.randomCheck(skill.talents.loss_anger_rate,"loss_anger_rate"))
 		this.lessAnger(skill.talents.loss_anger_value,true)
@@ -502,7 +517,7 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 	if(this.talents.behit_buff)
 		this.fighting.buffManager.createBuffByData(this,attacker,this.talents.behit_buff)
 	//被攻击触发技能概率
-	if(this.talents.behit_skill  && this.fighting.randomCheck(this.talents.behit_skill,"behit_skill"))
+	if(this.talents.behit_skill  && this.fighting.randomCheck(this.talents.behit_skill_rate,"behit_skill_rate"))
 		this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.behit_skill))
 	//被攻击触发次数
 	if(this.talents.atk_trigger_value){
@@ -520,7 +535,7 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 	}
 	if(skill.isAnger){
 		if(this.buffs["jiuyang_305030"]){
-			attacker.onOtherDamage(this,this.buffs["jiuyang_305030"].getBuffMul() * info.realValue)
+			attacker.onOtherDamage(this,Math.min(this.buffs["jiuyang_305030"].getBuffMul() * this.attInfo.maxHP,info.realValue))
 			this.buffs["jiuyang_305030"].destroy()
 		}
 	}
@@ -692,7 +707,7 @@ model.prototype.lessHP = function(info,hitFlag) {
 		this.addAnger(Math.floor(tmpHPRate * 80),false)
 	}
 	if(this.buffs["lowhp_heal"] && this.getHPRate() < 0.3 && this.buffs["lowhp_heal"].enoughCD())
-		this.onOtherHeal(this.buffs["lowhp_heal"].getBuffMul() * this.fightInfo[this.rival]["survival"] * this.attInfo.maxHP)
+		this.onOtherHeal(this,this.buffs["lowhp_heal"].getBuffMul() * this.fighting.fightInfo[this.rival]["survival"] * this.attInfo.maxHP)
 	info.curAnger = this.curAnger
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
@@ -725,6 +740,15 @@ model.prototype.triggerLossHP = function() {
 		if(this.hp_loss > 0.3){
 			this.hp_loss -= 0.3
 			this.fighting.buffManager.createBuff(this,this,{"buffId":"jiuyang_up","value":this.buffs["jiuyang"].getBuffMul(),"duration":2})
+		}
+	}
+	if(this.buffs["wuxiang_pre"]){
+		if(this.buffs["wuxiang_pre"].list[0].buff.otps.LOWHP1 && this.getHPRate() < this.buffs["wuxiang_pre"].list[0].buff.otps.LOWHP1){
+			delete this.buffs["wuxiang_pre"].list[0].buff.otps.LOWHP1
+			this.fighting.buffManager.createBuff(this,this,this.buffs["wuxiang_pre"].list[0].buff.otps.buff)
+		}else if(this.buffs["wuxiang_pre"].list[0].buff.otps.LOWHP2 && this.getHPRate() < this.buffs["wuxiang_pre"].list[0].buff.otps.LOWHP2){
+			delete this.buffs["wuxiang_pre"].list[0].buff.otps.LOWHP2
+			this.fighting.buffManager.createBuff(this,this,this.buffs["wuxiang_pre"].list[0].buff.otps.buff)
 		}
 	}
 }
@@ -765,7 +789,7 @@ model.prototype.onKill = function(target,skill,info) {
 	if(this.talents.kill_anger)
 		this.addAnger(this.talents.kill_anger,true)
 	if(this.talents.kill_dps_skill && (target.realm == 2 || target.realm == 4))
-		this.useOtherSkill(this.talents.kill_dps_skill)
+		this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.kill_dps_skill))
 	if(this.buffs["chuchen"])
 		this.buffs["chuchen"].destroy()
 	if(this.buffs["kill_add_normal"] && this.buffs["kill_add_normal"].enoughCount())
@@ -838,7 +862,9 @@ model.prototype.getOverData = function() {
 //组装普攻技能
 model.prototype.packageDefaultSkill = function() {
 	var sid = fightCfg.getCfg("heros")[this.heroId]["defult"]
-	return this.packageSkill(sid,0,0,false)
+	var skill = this.packageSkill(sid,0,0,false)
+	skill.origin
+	return skill
 }
 //组装怒气技能
 model.prototype.packageAngerSkill = function() {
@@ -847,7 +873,8 @@ model.prototype.packageAngerSkill = function() {
 	var lv = Math.floor(this.otps.s1_lv) || 0
 	if(star > 5)
 		star = 5
-	return this.packageSkill(sid,star,lv,true,this.otps.skillTalents)
+	var skill = this.packageSkill(sid,star,lv,true,this.otps.skillTalents)
+	return skill
 }
 //回合技能
 model.prototype.packageRoundSkill = function(skillId) {
@@ -884,13 +911,15 @@ model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {
 		skillCfg = fightCfg.getCfg("skills")[baseSid]
 		if(skillCfg["talentId"]){
 			var talentInfo = fightCfg.getCfg("skill_talents")[skillCfg["talentId"]]
-			for(var j = 1;j <= 4;j++){
-				var key = talentInfo["key"+j]
-				if(key){
-					if(talents[key] && Number.isFinite(talents[key]))
-						talents[key] += talentInfo["value"+j]
-					else
-						talents[key] = talentInfo["value"+j]
+			if(talentInfo){
+				for(var j = 1;j <= 4;j++){
+					var key = talentInfo["key"+j]
+					if(key){
+						if(talents[key] && Number.isFinite(talents[key]))
+							talents[key] += talentInfo["value"+j]
+						else
+							talents[key] = talentInfo["value"+j]
+					}
 				}
 			}
 		}

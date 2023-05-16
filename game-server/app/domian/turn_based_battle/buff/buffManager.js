@@ -52,12 +52,17 @@ model.prototype.createBuff = function(attacker,character,buff) {
 		//耗血免控BUFF
 		if(character.buffs["uncontrol_losshp"] && character.getHPRate() > 0.15 && character.buffs["uncontrol_losshp"].enoughCD()){
 			character.onOtherDamage(character,character.attInfo.maxHP * 0.09)
-			character.fighting.fightRecord.push({type:"tag",id:character.id,tag:"uncontrol_losshp"})
+			character.fighting.fightRecord.push({type:"tag",id:character.id,tag:"uncontrol"})
 			return
 		}
 		//对应抗性
 		if(character.buffs[buffId+"Def"] && character.fighting.randomCheck(character.buffs[buffId+"Def"].getBuffMul(),"controlDef"))
 			return
+		if(character.buffs["yinyang"] && !character.buffs["yinyang"].free){
+			character.buffs["yinyang"].free = true
+			character.fighting.fightRecord.push({type:"tag",id:character.id,tag:"uncontrol"})
+			return
+		}
 	}
 	//印记状态下的目标无法获得护盾
 	if(buffId == "hudun" && character.buffs["sign_unheal"])

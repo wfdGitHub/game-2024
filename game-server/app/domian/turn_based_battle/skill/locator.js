@@ -67,7 +67,7 @@ model.prototype.getTargets = function(character,targetType) {
 			//敌方全体
 			return this.getEnemyAll(character)
 		case "enemy_adjoin":
-			return this.get
+			return this.enemyAdjoin(character)
 		case "enemy_front":
 			return this.getEnemyFront(character)
 		case "enemy_back":
@@ -341,7 +341,10 @@ model.prototype.getBack = function(team) {
 }
 //敌方相邻目标
 model.prototype.enemyAdjoin = function(character) {
-	// body...
+	var targets = this.getTargetTypeNum(character)
+	if(targets[0])
+		targets = targets.concat(this.getNearby(targets[0]))
+	return targets
 }
 //获取相邻目标
 model.prototype.getNearby = function(character) {

@@ -3,7 +3,7 @@ var buff_entity = require("../buff_entity.js")
 var model = function(fighting,character,buffId,buffCfg) {
 	//继承父类属性
 	buff_entity.call(this,fighting,character,buffId,buffCfg)
-	this.target = this.fighting.locator.getTargets("enemy_1")[0]
+	this.target = this.fighting.locator.getTargets(this.character,"enemy_1")[0]
 	this.fighting.buffManager.createBuff(this.character,this.character,{"buffId":"petrifyDef","mul":1,"duration":99})
 	this.fighting.buffManager.createBuff(this.character,this.character,{"buffId":"frozenDef","mul":1,"duration":99})
 }

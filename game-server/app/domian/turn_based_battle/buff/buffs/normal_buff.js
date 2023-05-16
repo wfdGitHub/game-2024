@@ -13,14 +13,6 @@ model.prototype.buffOtps = function(attacker,info) {
 		info.num = Number(this.character.attInfo[this.attKey] * info.buff.mul) || 0
 	if(info.buff.value)
 		info.num += Number(info.buff.value) || 0
-	if(info.buff.cd){
-		this.NEED_CD = info.buff.cd
-		this.CUR_CD = 0
-	}
-	if(info.buff.num){
-		this.MAX_NUM = info.buff.num
-		this.CUR_NUM = 0
-	}
 }
 //获取加成属性
 model.prototype.getAttInfo = function(name) {
