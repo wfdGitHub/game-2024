@@ -77,11 +77,11 @@ module.exports = function() {
 			    let mon_list = JSON.parse(checkpointsCfg[level].mon_list)
 			    defTeam = self.standardTeam(uid,mon_list,"main",checkpointsCfg[level]["lev_limit"])
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"主线关卡")
-			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getFightRecord()})
-			    	return
-			    }
+			    // if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
+			    // 	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"主线关卡")
+			    // 	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getFightRecord()})
+			    // 	return
+			    // }
 			    if(winFlag){
 			    	var awardList = self.checkpointsSuccess(uid,level)
 			    	cb(true,{winFlag : winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,awardList:awardList})

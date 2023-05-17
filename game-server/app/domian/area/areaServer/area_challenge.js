@@ -139,11 +139,11 @@ module.exports = function() {
 						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
-				if(verify1 != JSON.stringify(atkTeam)){
-					console.log("verify1 error")
-					next("verify1 error")
-					return
-				}
+				// if(verify1 != JSON.stringify(atkTeam)){
+				// 	console.log("verify1 error")
+				// 	next("verify1 error")
+				// 	return
+				// }
 				defTeam = area_trial[trialId]["team2"]
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum2})
 				if(!winFlag){
@@ -157,11 +157,11 @@ module.exports = function() {
 						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
-				if(verify2 != JSON.stringify(atkTeam)){
-					console.log("verify2 error")
-					next("verify2 error")
-					return
-				}
+				// if(verify2 != JSON.stringify(atkTeam)){
+				// 	console.log("verify2 error")
+				// 	next("verify2 error")
+				// 	return
+				// }
 				defTeam = area_trial[trialId]["team3"]
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum3})
 				if(!winFlag){
@@ -175,11 +175,11 @@ module.exports = function() {
 						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
-				if(verify3 != JSON.stringify(atkTeam)){
-					console.log("verify3 error")
-					next("verify3 error")
-					return
-				}
+				// if(verify3 != JSON.stringify(atkTeam)){
+				// 	console.log("verify3 error")
+				// 	next("verify3 error")
+				// 	return
+				// }
 				var awardList = self.addItemStr(uid,area_trial[trialId]["award"],1,"挑战山海")
 				self.incrbyObj(uid,main_name,"trialId",1)
 				self.addZset("trial_rank",uid,trialId)

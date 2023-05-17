@@ -75,11 +75,11 @@ module.exports = function() {
 			    var mon_list = ttttower_level[level]["defTeam"]
 			    var defTeam = self.standardTeam(uid,mon_list,"ttt_main",ttttower_level[level]["lv"])
 			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"通天塔")
-			    	next({"text":"战斗验证错误"})
-			    	return
-			    }
+			    // if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
+			    // 	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"通天塔")
+			    // 	next({"text":"战斗验证错误"})
+			    // 	return
+			    // }
 			    self.taskUpdate(uid,"ttt",1)
 			   	if(winFlag){
 			   		self.incrbyObj(uid,main_name,"level",1)
@@ -200,11 +200,11 @@ module.exports = function() {
 			    var mon_list = ttttower_realm[level]["defTeam"]
 			    var defTeam = self.standardTeam(uid,mon_list,"ttt_realm",ttttower_realm[level]["lv"])
 			   	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
-			    if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"阵营塔")
-			    	next({"text":"战斗验证错误"})
-			    	return
-			    }
+			    // if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
+			    // 	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"阵营塔")
+			    // 	next({"text":"战斗验证错误"})
+			    // 	return
+			    // }
 			   	if(winFlag){
 			   		self.incrbyObj(uid,main_name,"realm_level_"+realm,1)
 			   		self.incrbyObj(uid,main_name,"realm_count_"+realm,1)

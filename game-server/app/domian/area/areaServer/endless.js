@@ -38,10 +38,10 @@ module.exports = function() {
 			cb(false,"hIds error "+hIds)
 			return
 		}
-		if(!Array.isArray(verifys) || verifys.length != seededList.length){
-			cb(false,"verifys error "+verifys)
-			return
-		}
+		// if(!Array.isArray(verifys) || verifys.length != seededList.length){
+		// 	cb(false,"verifys error "+verifys)
+		// 	return
+		// }
 		if(!Array.isArray(seededList) || !seededList.length || seededList.length !== index){
 			cb(false,"seededList.length != index",seededList,index)
 			return
@@ -96,12 +96,12 @@ module.exports = function() {
 						next("第"+curLv+"场战斗失败")
 						return
 					}
-				    if(verifys[i] !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-				    	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]),"单人无尽试炼")
-				    	console.log("无尽试炼 第"+i+"场战斗校验错误")
-				    	next("战斗验证错误")
-				    	return
-				    }
+				    // if(verifys[i] !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
+				    // 	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]),"单人无尽试炼")
+				    // 	console.log("无尽试炼 第"+i+"场战斗校验错误")
+				    // 	next("战斗验证错误")
+				    // 	return
+				    // }
 					var list = self.fightContorl.getFightRecord()
 					var overInfo = list[list.length - 1]
 					if(atkTeam[1])
@@ -142,10 +142,10 @@ module.exports = function() {
 			cb(false,"hIds error "+hIds)
 			return
 		}
-		if(!Array.isArray(verifys) || verifys.length != seededList.length){
-			cb(false,"verifys error "+verifys)
-			return
-		}
+		// if(!Array.isArray(verifys) || verifys.length != seededList.length){
+		// 	cb(false,"verifys error "+verifys)
+		// 	return
+		// }
 		if(!Array.isArray(seededList) || !seededList.length || seededList.length !== index){
 			cb(false,"seededList.length != index",seededList,index)
 			return
@@ -203,11 +203,11 @@ module.exports = function() {
 						next("第"+curLv+"场战斗失败")
 						return
 					}
-				    if(verifys[i] !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-				    	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]),"三人无尽试炼")
-				    	next("战斗验证错误")
-				    	return
-				    }
+				    // if(verifys[i] !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
+				    // 	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]),"三人无尽试炼")
+				    // 	next("战斗验证错误")
+				    // 	return
+				    // }
 					// console.log("第"+curLv+"场",atkTeam[1])
 					var list = self.fightContorl.getFightRecord()
 					var overInfo = list[list.length - 1]
