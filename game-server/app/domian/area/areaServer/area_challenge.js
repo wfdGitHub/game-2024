@@ -199,11 +199,11 @@ module.exports = function() {
 			    var seededNum = fightInfo.seededNum
 				var defTeam = area_challenge[cur_chapter]["team"+bossId]
 			    var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
-			    if(verify !== self.fightContorl.getVerifyInfo()){
-			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"挑战单骑(6vs6)")
-			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
-			    	return
-			    }
+			    // if(verify !== self.fightContorl.getVerifyInfo()){
+			    // 	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"挑战单骑(6vs6)")
+			    // 	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
+			    // 	return
+			    // }
 	    		var info = {}
 	    		info.atkTeam = atkTeam
 	    		info.defTeam = defTeam
@@ -327,12 +327,12 @@ module.exports = function() {
 						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
-				if(verify1 != JSON.stringify(atkTeam)){
-					console.log("verify1 error")
-					self.verifyFaild(uid,verify1,self.fightContorl.getVerifyInfo(),"血战华容1")
-					next("verify1 error")
-					return
-				}
+				// if(verify1 != JSON.stringify(atkTeam)){
+				// 	console.log("verify1 error")
+				// 	self.verifyFaild(uid,verify1,self.fightContorl.getVerifyInfo(),"血战华容1")
+				// 	next("verify1 error")
+				// 	return
+				// }
 				defTeam = area_trial[trialId]["team2"]
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum2})
 				if(!winFlag){
@@ -346,12 +346,12 @@ module.exports = function() {
 						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
-				if(verify2 != JSON.stringify(atkTeam)){
-					console.log("verify2 error")
-					self.verifyFaild(uid,verify2,self.fightContorl.getVerifyInfo(),"血战华容2")
-					next("verify2 error")
-					return
-				}
+				// if(verify2 != JSON.stringify(atkTeam)){
+				// 	console.log("verify2 error")
+				// 	self.verifyFaild(uid,verify2,self.fightContorl.getVerifyInfo(),"血战华容2")
+				// 	next("verify2 error")
+				// 	return
+				// }
 				defTeam = area_trial[trialId]["team3"]
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum3})
 				if(!winFlag){
@@ -365,12 +365,12 @@ module.exports = function() {
 						atkTeam[i]["surplus_health"] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
 					}
 				}
-				if(verify3 != JSON.stringify(atkTeam)){
-					console.log("verify3 error")
-					self.verifyFaild(uid,verify3,self.fightContorl.getVerifyInfo(),"血战华容3")
-					next("verify3 error")
-					return
-				}
+				// if(verify3 != JSON.stringify(atkTeam)){
+				// 	console.log("verify3 error")
+				// 	self.verifyFaild(uid,verify3,self.fightContorl.getVerifyInfo(),"血战华容3")
+				// 	next("verify3 error")
+				// 	return
+				// }
 				var awardList = self.addItemStr(uid,area_trial[trialId]["award"],1,"挑战山海")
 				self.incrbyObj(uid,main_name,"trialId",1)
 				self.addZset("trial_rank",uid,trialId)

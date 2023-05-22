@@ -38,10 +38,6 @@ module.exports = function() {
 			cb(false,"hIds error "+hIds)
 			return
 		}
-		if(!Array.isArray(verifys) || verifys.length != seededList.length){
-			cb(false,"verifys error "+verifys)
-			return
-		}
 		if(!Array.isArray(seededList) || !seededList.length || seededList.length !== index){
 			cb(false,"seededList.length != index",seededList,index)
 			return
@@ -95,9 +91,6 @@ module.exports = function() {
 					var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededList[i],masterSkills : masterSkillList[i]})
 					if(!winFlag){
 						next("第"+curLv+"场战斗失败")
-						if(verifys[i] !== self.fightContorl.getVerifyInfo()){
-					    	self.verifyFaild(uid,verifys[i],self.fightContorl.getVerifyInfo(),"单人无尽试炼"+i)
-					    }
 						return
 					}
 					var list = self.fightContorl.getFightRecord()
@@ -138,10 +131,6 @@ module.exports = function() {
 		}
 		if(!Array.isArray(hIds) || hIds.length !== 3){
 			cb(false,"hIds error "+hIds)
-			return
-		}
-		if(!Array.isArray(verifys) || verifys.length != seededList.length){
-			cb(false,"verifys error "+verifys)
 			return
 		}
 		if(!Array.isArray(seededList) || !seededList.length || seededList.length !== index){
@@ -198,9 +187,6 @@ module.exports = function() {
 					var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededList[i],masterSkills : masterSkillList[i]})
 					if(!winFlag){
 						next("第"+curLv+"场战斗失败")
-						if(verifys[i] !== self.fightContorl.getVerifyInfo()){
-					    	self.verifyFaild(uid,verifys[i],self.fightContorl.getVerifyInfo(),"三人无尽试炼"+i)
-					    }
 						return
 					}
 					// console.log("第"+curLv+"场",atkTeam[1])

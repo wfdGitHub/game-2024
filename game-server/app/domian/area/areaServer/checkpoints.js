@@ -83,8 +83,6 @@ module.exports = function() {
 			    	self.taskUpdate(uid,"checkpoints",1,level)
 			    	self.updateSprintRank("checkpoint_rank",uid,1)
 			    	self.cacheDao.saveCache({"messagetype":"checkpoints",uid:uid,level:level})
-			    }else if(verify !== self.fightContorl.getVerifyInfo()){
-			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"主线关卡")
 			    }else{
 			    	cb(false,{winFlag : winFlag})
 			    }
