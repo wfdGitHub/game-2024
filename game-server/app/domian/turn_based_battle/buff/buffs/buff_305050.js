@@ -12,7 +12,7 @@ model.prototype = Object.create(buff_entity.prototype) //继承父类方法
 model.prototype.skillMonitor = function(skill) {
 	if( this.character.died)
 		return
-	if(this.fighting.randomCheck(this.list[0].buff.mul,"buff_305050") && this.enoughCount()){
+	if(this.fighting.randomCheck(this.list[0].buff.mul,"buff_305050") && this.enoughNum()){
 		var skillInfo = this.character.useOtherSkillFree(this.character.defaultSkill)
 		skillInfo.targets = [skill.character]
 		skillInfo.mul = 1

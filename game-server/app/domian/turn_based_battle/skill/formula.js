@@ -114,6 +114,12 @@ model.prototype.onMag = function(attacker,target,skill) {
 	//内功忽视护甲
 	if(skill.talents.mag_ign_armor)
 		attacker.changeTotalTmp("ign_armor",skill.talents.mag_ign_armor)
+	//若内力高于目标,造成的伤害提高提升
+	if(attacker.buffs["buff_406022"]){
+		var tmpValue = attacker.getTotalAtt("main_mag") - target.getTotalAtt("main_mag")
+		tmpValue = Math.min(Math.max(tmpValue,0),100)
+		attacker.changeTotalTmp("magAmp",tmpValue * attacker.buffs["buff_406022"].getBuffValue())
+	}
 }
 //外伤BUFF处理
 model.prototype.onPhy = function(attacker,target,skill) {

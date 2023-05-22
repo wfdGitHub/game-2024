@@ -883,7 +883,7 @@ model.prototype.onKill = function(target,skill,info) {
 		this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.kill_dps_skill))
 	if(this.buffs["chuchen"])
 		this.buffs["chuchen"].destroy()
-	if(this.buffs["kill_add_normal"] && this.buffs["kill_add_normal"].enoughCount())
+	if(this.buffs["kill_add_normal"] && this.buffs["kill_add_normal"].enoughNum())
 		this.fighting.skillManager.useSkill(this.useOtherSkill(this.defaultSkill))
 	if(skill.isAnger){
 		//技能击杀

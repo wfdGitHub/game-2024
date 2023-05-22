@@ -26,15 +26,17 @@ model.prototype.init = function() {}
 model.prototype.addBuff = function(attacker,buff) {
 	if(!buff)
 		return
-	if(this.list.length < this.max_count){
-		//控制技能已行动则增加一回合
-		if(this.buffCfg.control && this.character.isAction)
-			buff.duration += 1
-		this.attacker = attacker
-		this.list.push({attacker:attacker,buff : buff,duration : buff.duration})
-		this.buffOtps(attacker,this.list[this.list.length - 1])
-		this.addRecord({type : "buffAdd",id : this.character.id,bId : this.buffId,num:this.list.length})
+	var changeFlag = false
+	var count = buff.otps.count || 1
+	for(var i = 0;i < count;i++){
+		if(this.list.length < this.max_count){
+			changeFlag = true
+			this.list.push({attacker:attacker,buff : buff,duration : buff.duration})
+			this.buffOtps(attacker,this.list[this.list.length - 1])
+		}
 	}
+	if(changeFlag)
+		this.addRecord({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
 }
 //移除一层BUFF
 model.prototype.delBuff = function() {
@@ -94,7 +96,7 @@ model.prototype.enoughCD = function() {
 	return false
 }
 //判断次数满足
-model.prototype.enoughCount = function() {
+model.prototype.enoughNum = function() {
 	if(this.MAX_NUM && this.CUR_NUM < this.MAX_NUM){
 		this.CUR_NUM++
 		return true
