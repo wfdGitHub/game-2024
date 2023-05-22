@@ -448,11 +448,12 @@ module.exports = function() {
 				cb(false,"可用次数不足")
 			}else{
 				self.incrbyObj(uid,"playerData","bf_lotto_count",count)
-				self.consumeItems(uid,default_cfg["bf_lotto"]["value"],count,"欧皇转盘",function(flag,err) {
+				self.consumeItems(uid,default_cfg["bf_lotto"]["value"],count,"神器转盘",function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
 						var name = self.players[uid]["name"]
+						var awards = {}
 						var awardList = []
 						var index = -1
 						for(var i = 0;i < count;i++){
@@ -460,7 +461,9 @@ module.exports = function() {
 							for(var j = 0;j < bf_grid.length;j++){
 								if(rand < bf_grid[j]){
 									index = j
-									awardList = awardList.concat(self.addItemStr(uid,bf_turntable[j]["award"],1,"欧皇转盘"))
+									if(!awards[bf_turntable[j]["award"]])
+										awards[bf_turntable[j]["award"]] = 0
+									awards[bf_turntable[j]["award"]]++
 									if(bf_turntable[j]["rare"]){
 										local.saveSTRecord(name,"bf",bf_turntable[j]["award"])
 									}
@@ -468,6 +471,9 @@ module.exports = function() {
 								}
 							}
 						}
+		                for(var awardStr in awards){
+		                    awardList = awardList.concat(self.addItemStr(uid,awardStr,awards[awardStr],"神器转盘"))
+		                }
 						cb(true,{awardList:awardList,index:index})
 					}
 				})
