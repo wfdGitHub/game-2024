@@ -245,6 +245,9 @@ model.prototype.roundBegin = function() {
 }
 //整体回合结束
 model.prototype.roundEnd = function() {
+	//复活BUFF
+	if(this.died && this.buffs["buff_406010"] && this.buffs["buff_406010"].enoughCD())
+		this.revive(this.buffs["buff_406010"].getBuffMul() * this.attInfo.maxHP)
 	for(var i in this.buffs){
 		if(this.buffs[i])
 			this.buffs[i].update()
@@ -481,6 +484,10 @@ model.prototype.onHitBefore = function(attacker,skill) {
 		this.changeTotalTmp("armor",Math.floor(this.getTotalAtt("atk") * 0.1))
 	if(attacker.talents.atk_dps_amp && (this.realm == 2 || this.realm == 4))
 		attacker.changeTotalTmp("atk",Math.floor(attacker.attInfo.atk * attacker.talents.atk_dps_amp))
+	if(attacker.talents.spe_buff && this.buffs[attacker.talents.spe_buff]){
+		if(attacker.talents.spe_buff_amp)
+			attacker.changeTotalTmp("amp",attacker.talents.spe_buff_amp)
+	}
 	if(skill.isAnger){
 		//男性伤害加成
 		if(this.sex == 1 && attacker.talents.anger_man_amp)
@@ -566,6 +573,11 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 						this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
 			}
 		}
+	}
+	//目标存在指定BUFF添加BUFF
+	if(attacker.talents.spe_buff && this.buffs[attacker.talents.spe_buff]){
+		if(attacker.talents.spe_buff_buff)
+			this.fighting.buffManager.createBuffByData(attacker,this,attacker.talents.spe_buff_buff)
 	}
 	if(skill.isAnger){
 		if(this.buffs["jiuyang_305030"]){
