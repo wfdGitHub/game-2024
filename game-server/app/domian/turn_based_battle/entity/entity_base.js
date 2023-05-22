@@ -160,7 +160,7 @@ model.prototype.dispelLess = function() {
 //触发击杀
 model.prototype.onKill = function() {}
 //触发闪避
-model.prototype.onDodge = function() {}
+model.prototype.onMiss = function() {}
 //触发格挡
 model.prototype.onBlock = function() {}
 //触发暴击

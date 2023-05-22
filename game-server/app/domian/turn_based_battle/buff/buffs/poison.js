@@ -23,4 +23,19 @@ model.prototype.domain = function(){
 	}
 	this.fighting.nextRecord.push(record)
 }
+//引爆一层中毒
+model.prototype.breakOnce = function(attacker) {
+	var buff = this.list.pop()
+	if(buff){
+		var record = {type : "buffDamage",id:this.character.id,value:0,realValue:0,d_type:"mag",bId : this.buffId}
+		var value = Math.floor(buff.basic * buff.duration)
+		if(attacker.talents.amp_poison_break)
+			value += Math.floor(value * attacker.talents.amp_poison_break)
+		var info = this.character.onHit(attacker,{value : value})
+		record.value += info.value
+		delete info.value
+		record = Object.assign(record,info)
+		this.fighting.nextRecord.push(record)
+	}
+}
 module.exports = model

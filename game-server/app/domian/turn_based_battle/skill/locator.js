@@ -28,6 +28,9 @@ model.prototype.getBuffTargets = function(character,targetType,targets) {
 					list.push(targets[i])
 			return list
 		break
+		case "getDiffRealm":
+			return this.getDiffRealm(character,targets)
+		break
 		default:
 			return this.getTargets(character,targetType)
 		break
@@ -98,8 +101,14 @@ model.prototype.getTargets = function(character,targetType) {
 			return this.getTeamAll(character)
 		case "team_friend":
 			return this.getFriendAll(character)
+		case "team_friend_1":
+			return this.getFriend(character,1)
 		case "same_realm":
 			return this.getSameRealm(character)
+		case "enemy_maxAnger":
+			return this.getEnemyMaxAnger(character)
+		case "friend_minHP":
+			return this.getFriendMinHp(character)
 		default:
 			//默认单体
 			return this.getEnemyNormal(character)
@@ -379,6 +388,22 @@ model.prototype.getFriendAll = function(character) {
 	}
     return list
 }
+//友方随机目标
+model.prototype.getFriend = function(character,count) {
+    var tmpList = []
+    var team =  character.team
+	for(var index = 0;index < team.length;index++){
+		if(index != character.index && team[index].checkAim()){
+			tmpList.push(team[index])
+		}
+	}
+	var list = []
+	for(var i = 0;i < count && tmpList.length;i++){
+		var rid = Math.floor(character.fighting.random("随机单位") * tmpList.length)
+		list.push(tmpList.splice(rid,1)[0])
+	}
+	return list
+}
 //获取同阵营
 model.prototype.getSameRealm = function(character) {
     var list = []
@@ -398,6 +423,51 @@ model.prototype.getEnemyHasBuff = function(character,buffId) {
 		if(enemyTeam[i].checkAim() && enemyTeam[i].buffs[buffId])
 			list.push(enemyTeam[i])
 	return list
+}
+//与攻击目标职业不同的敌方目标
+model.prototype.getDiffRealm = function(character,targets) {
+	var list = []
+	if(targets[0]){
+		var enemyTeam =  targets[0].team
+		for(var i = 0;i < enemyTeam.length;i++)
+			if(enemyTeam[i].checkAim() && enemyTeam[i].realm != targets[0].realm)
+				list.push(enemyTeam[i])
+	}
+	return list
+}
+//敌方怒气最高目标
+model.prototype.getEnemyMaxAnger = function(character) {
+    var list = []
+    var target = false
+    var enemyTeam =  character.enemyTeam
+	for(var index = 0;index < enemyTeam.length;index++){
+		if(enemyTeam[index].checkAim()){
+			if(!target || enemyTeam[index].attInfo.curAnger > target.attInfo.curAnger){
+				target = enemyTeam[index]
+			}
+		}
+	}
+	if(target)
+		return [target]
+	else
+		return []
+}
+//友方血量最低目标
+model.prototype.getFriendMinHp = function(character) {
+    var list = []
+    var target = false
+    var team =  character.team
+	for(var index = 0;index < team.length;index++){
+		if(index != character.index && team[index].checkAim()){
+			if(!target || team[index].attInfo.hp < target.attInfo.hp){
+				target = team[index]
+			}
+		}
+	}
+	if(target)
+		return [target]
+	else
+		return []
 }
 //计算距离 X轴权重高
 model.prototype.callDist = function(pos1,pos2) {

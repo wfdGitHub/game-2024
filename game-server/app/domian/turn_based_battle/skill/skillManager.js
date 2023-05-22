@@ -51,8 +51,8 @@ model.prototype.attackSkill = function(skillInfo,skill,record) {
 		for(var i = 0;i < targets.length;i++){
 			targets[i].onHitBefore(skill.character,skill)
 			var info = this.fighting.formula.calDamage(skill.character, targets[i],skill)
-			info.value += skill.getTotalAtt("real_value")
 			info.value = Math.floor(info.value * skillInfo.mul)
+			info.value += skill.getTotalAtt("real_value")
 			info = targets[i].onHit(skill.character,info,true)
 			targets[i].onHiting(skill.character,skill,info)
 			record.attack.push(info)
@@ -97,7 +97,7 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 				target.onHitAfter(skill,skill.character,info)
 				//触发闪避
 				if(info.dodge)
-					target.onDodge(skill.character,info)
+					target.onMiss(skill.character,info)
 				//触发格挡
 				if(info.block)
 					target.onBlock(skill.character,info)

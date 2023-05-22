@@ -159,6 +159,16 @@ model.prototype.init = function() {
 		if(this.talents.block_buff2)
 			this.talents.block_buff2 = this.fighting.buffManager.getBuffByData(this.talents.block_buff2)
 	}
+	if(this.talents.atk_magdmg_buff)
+		this.talents.atk_magdmg_buff = this.fighting.buffManager.getBuffByData(this.talents.atk_magdmg_buff)
+	if(this.talents.miss_buff)
+		this.talents.miss_buff = this.fighting.buffManager.getBuffByData(this.talents.miss_buff)
+	if(this.talents.enemy_die_buff)
+		this.talents.enemy_die_buff = this.fighting.buffManager.getBuffByData(this.talents.enemy_die_buff)
+	if(this.talents.survive_team_buff)
+		this.talents.survive_team_buff = this.fighting.buffManager.getBuffByData(this.talents.survive_team_buff)
+	if(this.talents.round_buff)
+		this.talents.round_buff = this.fighting.buffManager.getBuffByData(this.talents.round_buff)
 	this.attInfo.hp = this.attInfo.maxHP
 	this.attInfo.speed += this.attInfo.main_hit
 }
@@ -187,12 +197,29 @@ model.prototype.before = function() {
 			this.roundSkills[i].CUR_CD--
 		}
 	}
+	if(this.talents.revive_friend_once){
+		var team = this.team
+		for(var i = 0;i < team.length;i++){
+			if(!team[i].isNaN && team[i].died){
+				team[i].revive(Math.floor(team[i].getTotalAtt("maxHP") * this.talents.revive_friend_once))
+				delete this.talents.revive_friend_once
+			}
+		}
+	}
+	if(this.talents.round_buff){
+		var tmpBuff = this.talents.survive_team_buff
+		var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
+		for(var j = 0;j < buffTargets.length;j++)
+			this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
+	}
 }
 //个人回合结束
 model.prototype.after = function() {
 	this.onAction = false
 	if(this.died)
 		return
+	if(this.buffs["totem_friend_amp"])
+		this.buffs["totem_friend_amp"].onAtion()
 }
 //整体回合开始
 model.prototype.roundBegin = function() {
@@ -200,7 +227,7 @@ model.prototype.roundBegin = function() {
 	if(this.died)
 		return
 	if(this.talents.survive_team_buff){
-		var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents.survive_team_buff)
+		var tmpBuff = this.talents.survive_team_buff
 		tmpBuff.count = this.fighting.fightInfo[this.belong]["survival"]
 		var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
 		for(var j = 0;j < buffTargets.length;j++)
@@ -452,6 +479,13 @@ model.prototype.onHitBefore = function(attacker,skill) {
 		this.changeTotalTmp("hitDef",this.buffs["mag_hitDef"].getBuffMul())
 	if(this.buffs["jiuyang_real"])
 		this.changeTotalTmp("armor",Math.floor(this.getTotalAtt("atk") * 0.1))
+	if(attacker.talents.atk_dps_amp && (this.realm == 2 || this.realm == 4))
+		attacker.changeTotalTmp("atk",Math.floor(attacker.attInfo.atk * attacker.talents.atk_dps_amp))
+	if(skill.isAnger){
+		//男性伤害加成
+		if(this.sex == 1 && attacker.talents.anger_man_amp)
+			attacker.changeTotalTmp("amp",attacker.talents.anger_man_amp)
+	}
 }
 //受到攻击时
 model.prototype.onHiting = function(attacker,skill,info) {
@@ -570,7 +604,7 @@ model.prototype.onDie = function(info) {
 		this.fighting.buffManager.createBuff(this,this,{"buffId":"not_revived","duration":2})
 	//清空BUFF
 	for(var i in this.buffs)
-		if(i != "not_revived")
+		if(!this.buffs[i].buffCfg.save)
 			this.buffs[i].destroy()
 	this.fighting.fightInfo[this.belong]["survival"]--
 }
@@ -583,6 +617,19 @@ model.prototype.anyDie = function(target) {
 		var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
 		for(var j = 0;j < buffTargets.length;j++)
 			this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
+	}
+	//敌对目标
+	if(target.belong != this.belong){
+		if(this.talents.enemy_die_buff){
+			var tmpBuff = this.talents.enemy_die_buff
+			var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
+			for(var j = 0;j < buffTargets.length;j++)
+				this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
+		}
+	}else{
+		if(this.talents.friend_die_anger){
+			this.addAnger(this.talents.friend_die_anger,true)
+		}
 	}
 }
 //濒死触发
@@ -643,7 +690,10 @@ model.prototype.onDieAfter = function(attacker,info,skill) {
 	if(this.talents.died_buff)
 		this.fighting.buffManager.createBuffByData(this,this,this.talents.died_buff)
 	if(this.talents.died_buff_once){
-		this.fighting.buffManager.createBuffByData(this,this,this.talents.died_buff_once)
+		var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents.died_buff_once)
+		var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
+		for(var j = 0;j < buffTargets.length;j++)
+			this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
 		delete this.talents.died_buff_once
 	}
 	for(var i = 0;i < this.fighting.anyDieMonitor.length;i++){
@@ -652,6 +702,21 @@ model.prototype.onDieAfter = function(attacker,info,skill) {
 	if(this.buffs["yinyang"]){
 		this.buffs["yinyang"].destroy()
 		this.revive(0.5 * this.attInfo.maxHP)
+	}
+	//引爆中毒
+	if(this.talents.died_poison_break && this.fighting.randomCheck(this.talents.died_poison_break,"died_poison_break")){
+		var targets = this.fighting.locator.getTargets(this,"enemy_all")
+		for(var i = 0;i < targets.length;i++)
+			if(targets[i].buffs["poison"])
+				targets[i].buffs["poison"].breakOnce(this)
+	}
+	//死亡触发，对攻击者释放BUFF，仅触发1次
+	if(this.talents.died_attack_buff_once){
+		this.fighting.buffManager.createBuffByData(this,attacker,this.talents.died_attack_buff_once)
+		delete this.talents.died_attack_buff_once
+	}
+	if(this.talents.died_attack_anger_down){
+		attacker.lessAnger(this.talents.died_attack_anger_down,true)
 	}
 }
 //恢复血量
@@ -779,6 +844,20 @@ model.prototype.removeBuff = function(buffId) {
     if(this.buffs[buffId])
         delete this.buffs[buffId]
 }
+//移除一层负面状态
+model.prototype.dispelLessBuff = function() {
+	for(var i in this.buffs){
+		if(this.buffs[i].buffCfg.dispel_less)
+			this.buffs[i].delBuff()
+	}
+}
+//驱散一层增益状态
+model.prototype.dispelAddBuff = function() {
+	for(var i in this.buffs){
+		if(this.buffs[i].buffCfg.dispel_add)
+			this.buffs[i].delBuff()
+	}
+}
 //===============攻击触发
 //触发击杀
 model.prototype.onKill = function(target,skill,info) {
@@ -813,7 +892,10 @@ model.prototype.onKill = function(target,skill,info) {
 	}
 }
 //触发闪避
-model.prototype.onDodge = function(attacker,info) {}
+model.prototype.onMiss = function(attacker,info) {
+	if(this.talents.miss_buff)
+		this.fighting.buffManager.createBuff(this,attacker,this.talents.miss_buff)
+}
 //触发格挡
 model.prototype.onBlock = function(attacker,info) {
 	if(this.talents.block_buff1){
@@ -878,9 +960,9 @@ model.prototype.packageAngerSkill = function() {
 }
 //回合技能
 model.prototype.packageRoundSkill = function(skillId) {
-	var skillInfo = fightCfg.getCfg("round_skill")[skillId]
-	var roundSkill = this.packageSkill(skillInfo.baseSid,skillInfo.star,0,false)
-	roundSkill.NEED_CD = skillInfo.CD
+	var skillInfo = fightCfg.getCfg("skills")[skillId]
+	var roundSkill = this.packageSkillBySid(skillId)
+	roundSkill.NEED_CD = skillInfo.CD || 99
 	roundSkill.CUR_CD = 0
 	this.roundSkills.push(roundSkill)
 }

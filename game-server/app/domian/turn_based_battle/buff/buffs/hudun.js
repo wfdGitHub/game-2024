@@ -8,7 +8,11 @@ var model = function(fighting,character,buffId,buffCfg) {
 model.prototype = Object.create(buff_entity.prototype) //继承父类方法
 //新增BUFF后参数处理 伤害系数 mul  附加伤害value 受增减伤影响
 model.prototype.buffOtps = function(attacker,info) {
-	info.num = Math.floor(this.character.getTotalAtt("atk") * info.buff.mul) || 0
+	info.num = 0
+	if(info.buff.mul)
+		info.num += Math.floor(this.character.getTotalAtt("atk") * info.buff.mul) || 0
+	if(info.buff.maxHP_mul)
+		info.num +=  Math.floor(this.character.getTotalAtt("maxHP") * info.buff.maxHP_mul) || 0
 	//info.buff.turn 治疗转盾
 	if(this.character.buffs["hunyuan"] && !info.buff.turn)
 		info.num += Math.floor(info.num * this.character.buffs["hunyuan"].getBuffMul())

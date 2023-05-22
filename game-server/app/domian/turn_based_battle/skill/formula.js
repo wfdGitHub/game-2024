@@ -82,6 +82,8 @@ model.prototype.calIndirectDamage = function(attacker,target,mul,value,d_type) {
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt(d_type+"Amp") - target.getTotalAtt(d_type+"Def")))
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
 	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
+	if(attacker.talents.magdmg_amp)
+		basic += Math.ceil(basic * attacker.talents.magdmg_amp)
 	return basic
 }
 //中毒伤害计算

@@ -9,8 +9,13 @@ var model = function() {
 	for(var buffId in this.buffCfg){
 		if(this.buffCfg[buffId].normal)
 			this.buffList[buffId] = normal_buff
-		else
-			this.buffList[buffId] = require("./buffs/"+buffId+".js")
+		else{
+			try{
+				this.buffList[buffId] = require("./buffs/"+buffId+".js")
+			}catch(err){
+				console.log(buffId+" not find")
+			}
+		}
 	}
 }
 //创建BUFF判断概率

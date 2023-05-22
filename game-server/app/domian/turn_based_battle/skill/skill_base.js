@@ -141,16 +141,27 @@ model.prototype.attackAfter = function(target) {
 		this.character.buffs["chuchen"].destroy()
 		this.character.onOtherDamage(this.character,tmpDamage)
 	}
-
+	//攻击触发,目标每有1层【内伤】 状态附加BUFF
+	if(this.character.atk_magdmg_buff && target.buffs["mag_damage"]){
+		this.character.atk_magdmg_buff.count = target.buffs["mag_damage"].getCount()
+		this.character.fighting.buffManager.createBuff(this,target,this.character.atk_magdmg_buff)
+	}
+	if(this.character.talents.poison_diffuse && target.buffs["poison"] && this.character.fighting.randomCheck(this.character.talents.poison_diffuse,"poison_diffuse")){
+		var tmpTarget = this.character.fighting.locator.getTargets(target,"team_friend_1")[0]
+		if(tmpTarget)
+			this.character.fighting.buffManager.createBuff(this.character,tmpTarget,target.buffs["poison"].list[0].buff)
+	}
 	if(this.isAnger)
 		this.attackSkillAfter(target)
 	else
 		this.attackNormalAfter(target)
 }
-//技能结束后
+//技攻结束后
 model.prototype.attackSkillAfter = function(target) {
 	if(this.character.talents.skill_anger)
 		this.character.addAnger(this.character.talents.skill_anger,true)
+	if(this.character.talents.skill_poison_break && target.buffs["poison"] && this.character.fighting.randomCheck(this.character.talents.skill_poison_break,"skill_poison_break"))
+		target.buffs["poison"].breakOnce(this.character)
 }
 //普攻结束后
 model.prototype.attackNormalAfter = function(target) {

@@ -75,7 +75,12 @@ model.prototype.addRecord = function(record) {
 }
 //=========================BUFF效果
 //新增BUFF后参数处理
-model.prototype.buffOtps = function(attacker,buff) {}
+model.prototype.buffOtps = function(attacker,buff) {
+	if(info.buff.num){
+		this.MAX_NUM = info.buff.num
+		this.CUR_NUM = 0
+	}
+}
 //BUFF功能实现
 model.prototype.domain = function() {}
 //buff结算后
