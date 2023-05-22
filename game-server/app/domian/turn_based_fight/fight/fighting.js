@@ -462,7 +462,7 @@ model.prototype.checkOver = function() {
 	this.diedListCheck()
 	var flag = true
 	for(var i = 0;i < this.atkTeam.length;i++){
-		if(!this.atkTeam[i].died){
+		if(!this.atkTeam[i].died && !this.atkTeam[i].buffs["ghost"]){
 			flag = false
 			break
 		}
@@ -473,7 +473,7 @@ model.prototype.checkOver = function() {
 	}
 	flag = true
 	for(var i = 0;i < this.defTeam.length;i++){
-		if(!this.defTeam[i].died){
+		if(!this.defTeam[i].died && !this.defTeam[i].buffs["ghost"]){
 			flag = false
 			break
 		}
