@@ -19,4 +19,9 @@ model.prototype.skillMonitor = function(skill) {
 		this.fighting.skillManager.useSkill(skillInfo)
 	}
 }
+//BUFF功能实现
+model.prototype.domain = function() {
+	if(this.MAX_NUM)
+		this.CUR_NUM = 0
+}
 module.exports = model

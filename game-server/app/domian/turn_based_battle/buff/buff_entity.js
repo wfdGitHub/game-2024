@@ -32,6 +32,10 @@ model.prototype.addBuff = function(attacker,buff) {
 		if(this.list.length < this.max_count){
 			changeFlag = true
 			this.list.push({attacker:attacker,buff : buff,duration : buff.duration})
+			if(buff.num){
+				this.MAX_NUM = buff.num
+				this.CUR_NUM = 0
+			}
 			this.buffOtps(attacker,this.list[this.list.length - 1])
 		}
 	}
@@ -77,12 +81,7 @@ model.prototype.addRecord = function(record) {
 }
 //=========================BUFF效果
 //新增BUFF后参数处理
-model.prototype.buffOtps = function(attacker,buff) {
-	if(info.buff.num){
-		this.MAX_NUM = info.buff.num
-		this.CUR_NUM = 0
-	}
-}
+model.prototype.buffOtps = function(attacker,buff) {}
 //BUFF功能实现
 model.prototype.domain = function() {}
 //buff结算后

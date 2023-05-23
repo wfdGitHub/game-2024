@@ -92,9 +92,6 @@ model.prototype.init = function() {
 			this.defaultSkill.trigger_buffs[tmpBuff.buffId] = tmpBuff
 		}
 	}
-	//其他侠客攻击时为自己添加BUFF
-	if(this.talents["other_hero_ation_buff"])
-		this.fighting.heroAtionMonitor.push({"type":"buff","character":this,"buffData":this.talents["other_hero_ation_buff"]})
 	//筋骨和内力同步为最高值
 	if(this.talents.same_mag_phy){
 		this.attInfo.main_mag = Math.max(this.attInfo.main_mag,this.attInfo.main_phy)
@@ -260,6 +257,8 @@ model.prototype.roundEnd = function() {
 		this.onOtherHeal(this,this.talents.totem_hit_heal_rate * this.getTotalAtt("maxHP"))
 	if(this.buffs["copy_skill"])
 		this.buffs["copy_skill"].repetSkill()
+	if(this.buffs["buff_405015"] && this.fighting.randomCheck(this.buffs["buff_405015"].getBuffMul(),"buff_405015"))
+		this.addAnger(this.buffs["buff_405015"].getValue(),true)
 }
 //获得怒气
 model.prototype.addAnger = function(value,show) {
@@ -447,6 +446,10 @@ model.prototype.onOtherHeal = function(attacker,value) {
 }
 //受到攻击
 model.prototype.onHit = function(attacker,info,hitFlag) {
+	if(this.buffs["wuxiang"] && info.d_type == "phy")
+		info.value = 0
+	if(this.buffs["invincible"])
+		info.value = 0
 	//受到攻击
 	if(this.buffs["hudun"])
 		this.buffs["hudun"].offsetDamage(info)
@@ -467,8 +470,6 @@ model.prototype.onHit = function(attacker,info,hitFlag) {
 		info.value -= storeDamage
 		this.fighting.buffManager.createBuff(attacker,this,{"buffId":"store_damage","value":storeDamage,"duration":3})
 	}
-	if(this.buffs["wuxiang"] && info.d_type == "phy")
-		info.value = 0
 	this.lessHP(info,hitFlag)
 	//秒杀判断
 	if(hitFlag && attacker.talents.hp_seckill && this.getHPRate() < attacker.talents.hp_seckill)
@@ -512,6 +513,14 @@ model.prototype.onHiting = function(attacker,skill,info) {
 			var splashDamage = Math.floor(this.buffs["splash_mag"].getBuffMul() * info.realValue / targets.length)
 			for(var i = 0;i < targets.length;i++)
 				info.splashs.push(targets[i].onHit(this,{value:splashDamage}))
+		}
+		//普攻溅射
+		if(skill.isAnger && attacker.buffs["normal_damage"] && this.fighting.randomCheck(attacker.buffs["normal_damage"].getBuffMul(),"normal_damage")){
+			var splashDamage = Math.floor(attacker.buffs["normal_damage"].getBuffValue() * info.realValue)
+			var targets = this.fighting.locator.getNearby(this)
+			info.splashs = info.splashs ? info.splashs : []
+			for(var i = 0;i < targets.length;i++)
+				info.splashs.push(targets[i].onHit(attacker,{value:splashDamage}))
 		}
 	}
 }
@@ -642,6 +651,10 @@ model.prototype.anyDie = function(target) {
 		if(this.talents.friend_die_anger){
 			this.addAnger(this.talents.friend_die_anger,true)
 		}
+		if(this.buffs["buff_406024"] && this.buffs["buff_406024"].enoughNum()){
+			this.fighting.fightRecord.push({type:"tag",id:this.id,tag:"revive_friend"})
+			target.revive(target.getTotalAtt("maxHP") * this.buffs["buff_406024"].getBuffMul())
+		}
 	}
 }
 //濒死触发
@@ -727,9 +740,11 @@ model.prototype.onDieAfter = function(attacker,info,skill) {
 		this.fighting.buffManager.createBuffByData(this,attacker,this.talents.died_attack_buff_once)
 		delete this.talents.died_attack_buff_once
 	}
-	if(this.talents.died_attack_anger_down){
+	if(this.talents.died_attack_anger_down)
 		attacker.lessAnger(this.talents.died_attack_anger_down,true)
-	}
+	//复活
+	if(this.buffs["buff_405024"] && this.fighting.randomCheck(this.buffs["buff_405024"].getBuffMul(),"buff_405024") && this.buffs["buff_405024"].enoughNum())
+		this.buffs["buff_405024"].trigger()
 }
 //恢复血量
 model.prototype.addHP = function(info) {
@@ -923,6 +938,35 @@ model.prototype.onCrit = function(attacker,info) {
 	if(this.talents.crit_buff)
 		this.fighting.buffManager.createBuffByData(this,this,this.talents.crit_buff)
 }
+//攻击结束后
+model.prototype.attackAfter = function(skill) {
+	if(this.died)
+		return
+	//出尘结算
+	if(this.buffs["chuchen"]){
+		var tmpDamage = this.buffs["chuchen"].getValue()
+		this.buffs["chuchen"].destroy()
+		this.onOtherDamage(this,tmpDamage)
+	}
+	if(skill.isAnger)
+		this.attackSkillAfter(skill)
+	else
+		this.attackNormalAfter(skill)
+}
+//技攻结束后
+model.prototype.attackSkillAfter = function(skill) {
+	if(this.talents.skill_anger)
+		this.addAnger(this.talents.skill_anger,true)
+	if(this.buffs["skill_anger"] && this.fighting.randomCheck(this.buffs["skill_anger"].getBuffMul(),"skill_anger"))
+		this.addAnger(this.buffs["skill_anger"].getBuffValue(),true)
+}
+//普攻结束后
+model.prototype.attackNormalAfter = function(skill) {
+	if(this.talents.normal_anger)
+		this.addAnger(this.talents.normal_anger,true)
+	if(this.buffs["normal_skill"] && this.fighting.randomCheck(this.buffs["normal_skill"].getBuffMul(),"normal_skill"))
+		this.fighting.skillManager.useSkill(this.useOtherSkill(this.buffs["normal_skill"].skill))
+}
 //===============获取信息
 //简单信息
 model.prototype.getSimpleInfo = function() {
@@ -1019,6 +1063,11 @@ model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {
 		}
 	}
 	return new skill_base(this,otps,talents)
+}
+//组装技能
+model.prototype.packageBaseSkill = function(sid,atk_aim,atk_mul,d_type) {
+	var otps = {sid : sid,isAnger : isAnger,atk_aim :atk_aim,atk_mul : atk_mul,d_type : d_type}
+	return new skill_base(this,otps)
 }
 //组装自身天赋
 model.prototype.packageHeroTalents = function(opts) {

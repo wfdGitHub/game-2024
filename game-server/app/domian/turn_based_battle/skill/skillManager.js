@@ -58,7 +58,8 @@ model.prototype.attackSkill = function(skillInfo,skill,record) {
 			record.attack.push(info)
 		}
 	}
-	this.attackMonitor(skill.character)
+	this.attackMonitor(skill.character,skill)
+	this.attackAfter(skill)
 	return targets
 }
 //治疗技能
@@ -105,7 +106,7 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 				if(info.crit)
 					target.onCrit(skill.character,info)
 			}
-			skill.attackAfter(target)
+			skill.attackAfter(target,info)
 		}
 		//概率清空目标怒气
 		if(skill.talents.clear_anger){
@@ -182,23 +183,13 @@ model.prototype.buffSkill = function(skill,targets,infos) {
 		}
 	}
 }
-//攻击监听
-model.prototype.attackMonitor = function(attacker) {
-	if(this.fighting.heroAtionMonitor.length){
-		for(var i = 0;i < this.fighting.heroAtionMonitor.length;i++){
-			var info = this.fighting.heroAtionMonitor[i]
-			switch(info.type){
-				case "buff":
-					if(info.character!= attacker)
-						this.fighting.buffManager.createBuffByData(info.character,info.character,info.buffData)
-				break
-			}
-		}
-	}
+//行动攻击监听
+model.prototype.attackMonitor = function(attacker,skill) {
+	if(this.fighting.heroAtionMonitor.length)
+		this.fighting.heroAtionMonitor[i](attacker,skill)
 }
-//技能监听
+//释放技能监听
 model.prototype.skillMonitor = function(skill) {
-	//释放技能监听
 	for(var i = 0;i < skill.character.fightInfo["skillMonitor"].length;i++)
 		skill.character.fightInfo["skillMonitor"][i](skill)
 }

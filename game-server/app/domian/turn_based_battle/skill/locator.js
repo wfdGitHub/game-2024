@@ -350,7 +350,7 @@ model.prototype.getBack = function(team) {
 }
 //敌方相邻目标
 model.prototype.enemyAdjoin = function(character) {
-	var targets = this.getTargetTypeNum(character)
+	var targets = this.getEnemyNormal(character)
 	if(targets[0])
 		targets = targets.concat(this.getNearby(targets[0]))
 	return targets

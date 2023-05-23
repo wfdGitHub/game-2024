@@ -132,15 +132,9 @@ model.prototype.attackNormalBefore = function(target) {
 
 }
 //使用攻击技能后
-model.prototype.attackAfter = function(target) {
+model.prototype.attackAfter = function(target,info) {
 	if(this.character.died)
 		return
-	//出尘结算
-	if(this.character.buffs["chuchen"]){
-		var tmpDamage = this.character.buffs["chuchen"].getValue()
-		this.character.buffs["chuchen"].destroy()
-		this.character.onOtherDamage(this.character,tmpDamage)
-	}
 	//攻击触发,目标每有1层【内伤】 状态附加BUFF
 	if(this.character.atk_magdmg_buff && target.buffs["mag_damage"]){
 		this.character.atk_magdmg_buff.count = target.buffs["mag_damage"].getCount()
@@ -152,19 +146,17 @@ model.prototype.attackAfter = function(target) {
 			this.character.fighting.buffManager.createBuff(this.character,tmpTarget,target.buffs["poison"].list[0].buff)
 	}
 	if(this.isAnger)
-		this.attackSkillAfter(target)
+		this.attackSkillAfter(target,info)
 	else
-		this.attackNormalAfter(target)
+		this.attackNormalAfter(target,info)
 }
 //技攻结束后
-model.prototype.attackSkillAfter = function(target) {
-	if(this.character.talents.skill_anger)
-		this.character.addAnger(this.character.talents.skill_anger,true)
+model.prototype.attackSkillAfter = function(target,info) {
 	if(this.character.talents.skill_poison_break && target.buffs["poison"] && this.character.fighting.randomCheck(this.character.talents.skill_poison_break,"skill_poison_break"))
 		target.buffs["poison"].breakOnce(this.character)
 }
 //普攻结束后
-model.prototype.attackNormalAfter = function(target) {
+model.prototype.attackNormalAfter = function(target,info) {
 	var talents = this.character.talents
 	if(talents.normal_phybuff_heal && target.buffs["phy_damage"])
 		this.character.onOtherHeal(this.character,this.character.getTotalAtt("maxHP") * talents.normal_phybuff_heal)
@@ -178,8 +170,6 @@ model.prototype.attackNormalAfter = function(target) {
 			this.character.addAnger(anger,true)
 		}
 	}
-	if(this.character.talents.normal_anger)
-		this.character.addAnger(this.character.talents.normal_anger,true)
 }
 model.prototype.changeTotalTmp = function(name,value) {
 	if(!this.attTmpInfo[name])
