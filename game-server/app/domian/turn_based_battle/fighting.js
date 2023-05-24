@@ -261,11 +261,6 @@ model.prototype.getCombatData = function() {
 		list.push(this.allHero[i].getCombatData())
 	return list
 }
-//行动攻击监听
-model.prototype.ationMonitor = function(attacker) {
-	if(this.fighting.heroAtionMonitor.length)
-		this.fighting.heroAtionMonitor[i](attacker)
-}
 //临时记录插入
 model.prototype.insertTmpRecord = function() {
 	for(var i = 0;i < this.nextRecord.length;i++)

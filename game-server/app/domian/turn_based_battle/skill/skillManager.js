@@ -33,16 +33,16 @@ model.prototype.skillAction = function(skillInfo,skill,record) {
 		healTargets = this.healSkill(skillInfo,skill,record)
 	}
 	this.fighting.fightRecord.push(record)
+	this.skillAfter(skillInfo,skill,record,attackTargets)
 	this.buffSkill(skill,attackTargets)
 	this.buffSkill(skill,healTargets)
-	this.skillAfter(skillInfo,skill,record)
 }
 //伤害技能
 model.prototype.attackSkill = function(skillInfo,skill,record) {
 	record.attack = []
 	var allCount = skill.getTotalAtt("atk_count")
+	var targets = []
 	for(var count = 0;count < allCount;count++){
-		var targets = []
 		if(skillInfo.targets)
 			targets = skillInfo.targets
 		else
@@ -58,7 +58,6 @@ model.prototype.attackSkill = function(skillInfo,skill,record) {
 			record.attack.push(info)
 		}
 	}
-	this.attackMonitor(skill.character,skill,targets)
 	skill.character.attackAfter(skill)
 	return targets
 }
@@ -76,7 +75,7 @@ model.prototype.healSkill = function(skillInfo,skill,record) {
 	return targets
 }
 //使用技能结束
-model.prototype.skillAfter = function(skillInfo,skill,record) {
+model.prototype.skillAfter = function(skillInfo,skill,record,attackTargets) {
 	var KILL_FLAG = false
 	var EXIST_TARGET = false
 	var allDamage = 0
@@ -161,6 +160,8 @@ model.prototype.skillAfter = function(skillInfo,skill,record) {
 		}
 	}
 	this.skillMonitor(skill)
+	if(attackTargets.length)
+		this.attackMonitor(skill.character,skill,attackTargets)
 }
 //BUFF判断
 model.prototype.buffSkill = function(skill,targets,infos) {
@@ -184,9 +185,9 @@ model.prototype.buffSkill = function(skill,targets,infos) {
 	}
 }
 //行动攻击监听
-model.prototype.attackMonitor = function(attacker,skill) {
-	if(this.fighting.heroAtionMonitor.length)
-		this.fighting.heroAtionMonitor[i](attacker,skill)
+model.prototype.attackMonitor = function(attacker,skill,targets) {
+	for(var i = 0;i < this.fighting.heroAtionMonitor.length;i++)
+		this.fighting.heroAtionMonitor[i](attacker,skill,targets)
 }
 //释放技能监听
 model.prototype.skillMonitor = function(skill) {

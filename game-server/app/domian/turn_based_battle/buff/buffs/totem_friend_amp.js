@@ -15,9 +15,9 @@ model.prototype.buffOtps = function(attacker,info) {
 	if(this.character.talents.totem_friend_att){
 		var friend = this.fighting.locator.getTargets(this.character,"team_maxAtk_1")[0]
 		if(friend){
-			this.fighting.buffManager.createBuff(attacker,targets[i],{"buffId":"atk_up_always","mul":this.character.talents.totem_friend_att,"duration":info.buff.duration})
+			this.fighting.buffManager.createBuff(attacker,targets[0],{"buffId":"atk_up_always","mul":this.character.talents.totem_friend_att,"duration":info.buff.duration})
 			this.fighting.buffManager.createBuff(attacker,attacker,{"buffId":"atk_up_always","mul":-this.character.talents.totem_friend_att,"duration":info.buff.duration})
-			this.fighting.buffManager.createBuff(attacker,targets[i],{"buffId":"armor_up_always","mul":this.character.talents.totem_friend_att,"duration":info.buff.duration})
+			this.fighting.buffManager.createBuff(attacker,targets[0],{"buffId":"armor_up_always","mul":this.character.talents.totem_friend_att,"duration":info.buff.duration})
 			this.fighting.buffManager.createBuff(attacker,attacker,{"buffId":"armor_up_always","mul":-this.character.talents.totem_friend_att,"duration":info.buff.duration})
 		}
 	}
@@ -31,7 +31,7 @@ model.prototype.bufflLater = function() {
 		damage = Math.floor(damage / targets.length)
 		for(var i = 0;i < targets.length;i++){
 			var info = targets[i].onOtherDamage(this.character,damage)
-			if(this.character.totem_friend_dizzy && targets[i].checkAim() && info.realValue > (targets[i].getTotalAtt("maxHP") * 0.28) && this.fighting.randomCheck(this.character.totem_friend_dizzy))
+			if(this.character.talents.totem_friend_dizzy && targets[i].checkAim() && info.realValue > (targets[i].getTotalAtt("maxHP") * 0.28) && this.fighting.randomCheck(this.character.talents.totem_friend_dizzy))
 				this.fighting.buffManager.createBuff(this.character,targets[i],{"buffId":"dizzy","duration":1})
 		}
 	}

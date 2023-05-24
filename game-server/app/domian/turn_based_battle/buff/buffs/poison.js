@@ -39,5 +39,7 @@ model.prototype.breakOnce = function(attacker) {
 		record = Object.assign(record,info)
 		this.fighting.nextRecord.push(record)
 	}
+	if(!this.list.length)
+		this.destroy()
 }
 module.exports = model

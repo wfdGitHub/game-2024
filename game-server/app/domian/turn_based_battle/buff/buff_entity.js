@@ -9,6 +9,8 @@ var model = function(fighting,character,buff,buffCfg) {
 	this.max_count = buffCfg["max_count"] || 1 	//最大层数
 	this.attKeys = {}
 	this.attBuff = false
+	this.NEED_CD = 0
+	this.CUR_CD = 0
 	for(var i = 1;i <= 3;i++){
 		if(buff.otps && buff.otps["attKey"+i]){
 			this.attBuff = true
@@ -30,7 +32,7 @@ model.prototype.addBuff = function(attacker,buff) {
 	if(!buff)
 		return
 	var changeFlag = false
-	var count = buff.otps.count || 1
+	var count = buff.count || 1
 	for(var i = 0;i < count;i++){
 		if(this.list.length < this.max_count){
 			changeFlag = true
@@ -38,6 +40,10 @@ model.prototype.addBuff = function(attacker,buff) {
 			if(buff.num){
 				this.MAX_NUM = buff.num
 				this.CUR_NUM = 0
+			}
+			if(buff.cd){
+				this.NEED_CD = buff.cd
+				this.CUR_CD = 0
 			}
 			this.buffOtps(attacker,this.list[this.list.length - 1])
 		}

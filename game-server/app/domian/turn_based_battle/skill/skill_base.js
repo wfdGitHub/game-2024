@@ -136,9 +136,9 @@ model.prototype.attackAfter = function(target,info) {
 	if(this.character.died)
 		return
 	//攻击触发,目标每有1层【内伤】 状态附加BUFF
-	if(this.character.atk_magdmg_buff && target.buffs["mag_damage"]){
-		this.character.atk_magdmg_buff.count = target.buffs["mag_damage"].getCount()
-		this.character.fighting.buffManager.createBuff(this,target,this.character.atk_magdmg_buff)
+	if(this.character.talents.atk_magdmg_buff && target.buffs["mag_damage"]){
+		this.character.talents.atk_magdmg_buff.count = target.buffs["mag_damage"].getCount()
+		this.character.fighting.buffManager.createBuff(this,target,this.character.talents.atk_magdmg_buff)
 	}
 	if(this.character.talents.poison_diffuse && target.buffs["poison"] && this.character.fighting.randomCheck(this.character.talents.poison_diffuse,"poison_diffuse")){
 		var tmpTarget = this.character.fighting.locator.getTargets(target,"team_friend_1")[0]
@@ -170,6 +170,8 @@ model.prototype.attackNormalAfter = function(target,info) {
 			this.character.addAnger(anger,true)
 		}
 	}
+	if(this.character.buffs["normal_skill"] && !this.no_combo && this.character.fighting.randomCheck(this.character.buffs["normal_skill"].getBuffMul(),"normal_skill"))
+		this.character.fighting.skillManager.useSkill(this.character.useOtherSkill(this.character.buffs["normal_skill"].skill))
 }
 model.prototype.changeTotalTmp = function(name,value) {
 	if(!this.attTmpInfo[name])

@@ -258,16 +258,20 @@ model.prototype.roundEnd = function() {
 	if(this.buffs["copy_skill"])
 		this.buffs["copy_skill"].repetSkill()
 	if(this.buffs["buff_405015"] && this.fighting.randomCheck(this.buffs["buff_405015"].getBuffMul(),"buff_405015"))
-		this.addAnger(this.buffs["buff_405015"].getValue(),true)
+		this.addAnger(this.buffs["buff_405015"].getBuffValue(),true)
 }
 //获得怒气
-model.prototype.addAnger = function(value,show) {
+model.prototype.addAnger = function(value,show,later) {
 	if(this.died || this.buffs["totem_friend_amp"] || this.buffs["ban_anger"] || this.buffs["buff_405085"])
 		return 0
 	this.curAnger += Math.floor(value) || 0
 	this.curAnger = Math.min(this.curAnger,this.maxAnger)
-	if(show)
-		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : value,curAnger : this.curAnger})
+	if(show){
+		if(later)
+			this.fighting.nextRecord.push({type : "changeAnger",id : this.id,changeAnger : value,curAnger : this.curAnger})
+		else
+			this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : value,curAnger : this.curAnger})
+	}
 	return value
 }
 //减少怒气
@@ -369,6 +373,7 @@ model.prototype.useOtherSkill = function(skill) {
 //无视免控释放技能
 model.prototype.useOtherSkillFree = function(skill) {
 	var info = {}
+	skill.character = this
 	info.skill = skill
 	info.changeAnger = 0
 	info.curAnger = this.curAnger
@@ -527,7 +532,7 @@ model.prototype.onHiting = function(attacker,skill,info) {
 				info.splashs.push(targets[i].onHit(this,{value:splashDamage}))
 		}
 		//普攻溅射
-		if(skill.isAnger && attacker.buffs["normal_damage"] && this.fighting.randomCheck(attacker.buffs["normal_damage"].getBuffMul(),"normal_damage")){
+		if(!skill.isAnger && attacker.buffs["normal_damage"] && this.fighting.randomCheck(attacker.buffs["normal_damage"].getBuffMul(),"normal_damage")){
 			var splashDamage = Math.floor(attacker.buffs["normal_damage"].getBuffValue() * info.realValue)
 			var targets = this.fighting.locator.getNearby(this)
 			info.splashs = info.splashs ? info.splashs : []
@@ -974,16 +979,14 @@ model.prototype.attackAfter = function(skill) {
 //技攻结束后
 model.prototype.attackSkillAfter = function(skill) {
 	if(this.talents.skill_anger)
-		this.addAnger(this.talents.skill_anger,true)
+		this.addAnger(this.talents.skill_anger,true,true)
 	if(this.buffs["skill_anger"] && this.fighting.randomCheck(this.buffs["skill_anger"].getBuffMul(),"skill_anger"))
-		this.addAnger(this.buffs["skill_anger"].getBuffValue(),true)
+		this.addAnger(this.buffs["skill_anger"].getBuffValue(),true,true)
 }
 //普攻结束后
 model.prototype.attackNormalAfter = function(skill) {
 	if(this.talents.normal_anger)
-		this.addAnger(this.talents.normal_anger,true)
-	if(this.buffs["normal_skill"] && this.fighting.randomCheck(this.buffs["normal_skill"].getBuffMul(),"normal_skill"))
-		this.fighting.skillManager.useSkill(this.useOtherSkill(this.buffs["normal_skill"].skill))
+		this.addAnger(this.talents.normal_anger,true,true)
 }
 //===============获取信息
 //简单信息
@@ -1018,7 +1021,9 @@ model.prototype.getOverData = function() {
 //组装普攻技能
 model.prototype.packageDefaultSkill = function() {
 	var sid = fightCfg.getCfg("heros")[this.heroId]["defult"]
-	var skill = this.packageSkill(sid,0,0,false)
+	var star = Math.floor(this.otps.s0_star) || 0
+	var lv = Math.floor(this.otps.s0_lv) || 0
+	var skill = this.packageSkill(sid,star,lv,false)
 	skill.origin
 	return skill
 }
@@ -1052,7 +1057,7 @@ model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {
 	var sid = baseSid + star
 	var skillCfg = fightCfg.getCfg("skills")[sid]
 	if(!skillCfg){
-		console.log("技能ID错误 "+baseSid+" "+sid+" star "+star)
+		console.error("技能ID错误 "+baseSid+" "+sid+" star "+star)
 		return
 	}
 	var otps = {sid : baseSid,isAnger : isAnger}
@@ -1065,7 +1070,7 @@ model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {
 	for(var i = 1;i <= star;i++){
 		baseSid++
 		skillCfg = fightCfg.getCfg("skills")[baseSid]
-		if(skillCfg["talentId"]){
+		if(skillCfg && skillCfg["talentId"]){
 			var talentInfo = fightCfg.getCfg("skill_talents")[skillCfg["talentId"]]
 			if(talentInfo){
 				for(var j = 1;j <= 4;j++){

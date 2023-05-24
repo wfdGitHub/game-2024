@@ -4,16 +4,16 @@ var model = function(fighting,character,buffId,buffCfg) {
 	//继承父类属性
 	buff_entity.call(this,fighting,character,buffId,buffCfg)
 	//监听敌方技能
-	fighting.fightInfo[character.rival]["heroAtionMonitor"].push(this.heroAtionMonitor.bind(this))
+	fighting.heroAtionMonitor.push(this.heroAtionMonitor.bind(this))
 }
 //继承父类方法
 model.prototype = Object.create(buff_entity.prototype) //继承父类方法
 //监听技能
 model.prototype.heroAtionMonitor = function(attacker,skill,targets) {
-	if( this.character.died)
+	if( this.character.died || attacker.belong == this.character.belong)
 		return
 	for(var i = 0;i < targets.length;i++){
-		if(targets[i].realm == this.character.realm){
+		if(targets[i].realm == this.character.realm && targets[i].id != this.character.id){
 			if(this.character.fighting.randomCheck(this.getBuffMul(),"同系反伤")){
 				this.fighting.nextRecord.push({type:"tag",id:this.character.id,tag:"revenge"})
 				attacker.onOtherDamage(this.character,this.character.getTotalAtt("atk") * this.getBuffValue())

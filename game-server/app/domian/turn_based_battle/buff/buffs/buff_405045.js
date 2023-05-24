@@ -1,4 +1,5 @@
 //减伤、每被攻击一次效果降低,不可叠加
+var buff_entity = require("../buff_entity.js")
 var model = function(fighting,character,buffId,buffCfg) {
 	//继承父类属性
 	buff_entity.call(this,fighting,character,buffId,buffCfg)

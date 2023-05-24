@@ -12,7 +12,7 @@ model.prototype.buffOtps = function(attacker,info) {
 	if(attacker.talents.magdmg_amp)
 		info.basic += Math.ceil(info.basic * attacker.talents.magdmg_amp)
 	if(this.character.buffs["buff_405055"])
-		this.character.onOtherDamage(this.character.buffs["buff_405055"].attacker,this.character.getTotalAtt("maxHP") * this.getBuffMul())
+		this.character.onOtherDamage(this.character.buffs["buff_405055"].attacker,this.character.getTotalAtt("maxHP") * this.character.buffs["buff_405055"].getBuffValue())
 }
 //BUFF功能实现
 model.prototype.domain = function(){

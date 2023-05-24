@@ -13,7 +13,7 @@ var model = function() {
 			try{
 				this.buffList[buffId] = require("./buffs/"+buffId+".js")
 			}catch(err){
-				console.log(buffId+" not find")
+				console.log(buffId+" not find",err)
 			}
 		}
 	}
