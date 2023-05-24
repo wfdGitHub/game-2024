@@ -11,9 +11,9 @@ var model = function(otps) {
 			var recordInfo = {type : "book",bookId:book.bookId,belong : book.belong,targets:[]}
 			for(var i = 0;i < targets.length;i++){
 				var target = targets[i]
-				var value = Math.floor((book.master.getTotalAtt("atk") - target.getTotalAtt("phyDef")) * mul)
-				if(value < 1)
-					value = 1
+				var power = book.getTotalAtt("atk")
+				power = Math.max(power - target[0].getTotalAtt("phyDef"),power * 0.1)
+				var value = Math.ceil(power * this.mul)
 				var info = target.onHit(book,{value:value,d_type:"phy"})
 				recordInfo.targets.push(info)
 			}
