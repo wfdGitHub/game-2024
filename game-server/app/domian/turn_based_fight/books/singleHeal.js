@@ -20,7 +20,7 @@ var model = function(otps) {
 				}else if(book.control){
 					target.removeControlBuff()
 				}
-				var info = target.onHeal(book,{value:Math.floor(this.mul * book.master.getTotalAtt("atk"))})
+				var info = target.onHeal(book,{value:Math.floor(this.mul * book.getTotalAtt("atk"))})
 				info.type = "other_heal"
 				recordInfo.targets.push(info)
 				fightRecord.push(recordInfo)

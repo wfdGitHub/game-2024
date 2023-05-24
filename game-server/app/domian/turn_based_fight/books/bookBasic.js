@@ -19,7 +19,7 @@ var model = function(otps) {
 }
 //获取属性
 model.prototype.getTotalAtt = function(name) {
-	var value = this.attInfo[name] || 0
+	var value = this.attInfo[name] || 0 + this.master.getTotalAtt("atk") || 0
 	return value
 }
 model.prototype.onHit = function() {
