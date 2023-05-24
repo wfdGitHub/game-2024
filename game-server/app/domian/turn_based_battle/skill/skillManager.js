@@ -53,12 +53,12 @@ model.prototype.attackSkill = function(skillInfo,skill,record) {
 			var info = this.fighting.formula.calDamage(skill.character, targets[i],skill)
 			info.value = Math.floor(info.value * skillInfo.mul)
 			info.value += skill.getTotalAtt("real_value")
-			info = targets[i].onHit(skill.character,info,true)
+			info = targets[i].onHit(skill.character,info,true,skill.isAnger)
 			targets[i].onHiting(skill.character,skill,info)
 			record.attack.push(info)
 		}
 	}
-	this.attackMonitor(skill.character,skill)
+	this.attackMonitor(skill.character,skill,targets)
 	this.attackAfter(skill)
 	return targets
 }

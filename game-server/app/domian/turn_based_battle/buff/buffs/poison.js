@@ -22,6 +22,8 @@ model.prototype.domain = function(){
 		record = Object.assign(record,info)
 	}
 	this.fighting.nextRecord.push(record)
+	if(this.character.buffs["buff_405073"])
+		this.character.lessAnger(this.character.buffs["buff_405073"].getBuffValue() * Math.min(this.list.length,5),true)
 }
 //引爆一层中毒
 model.prototype.breakOnce = function(attacker) {

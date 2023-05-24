@@ -4,6 +4,7 @@ var model = function(fighting,character,buffId,buffCfg) {
 	buff_entity.call(this,fighting,character,buffId,buffCfg)
 	this.key = "healAdd"
 	this.value = 0
+	this.attBuff = true
 }
 //继承父类方法
 model.prototype = Object.create(buff_entity.prototype) //继承父类方法

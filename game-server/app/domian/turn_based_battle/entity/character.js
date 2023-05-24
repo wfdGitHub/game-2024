@@ -262,8 +262,8 @@ model.prototype.roundEnd = function() {
 }
 //获得怒气
 model.prototype.addAnger = function(value,show) {
-	if(this.died || this.buffs["totem_friend_amp"] || this.buffs["ban_anger"])
-		value = 0
+	if(this.died || this.buffs["totem_friend_amp"] || this.buffs["ban_anger"] || this.buffs["buff_405085"])
+		return 0
 	this.curAnger += Math.floor(value) || 0
 	this.curAnger = Math.min(this.curAnger,this.maxAnger)
 	if(show)
@@ -272,6 +272,8 @@ model.prototype.addAnger = function(value,show) {
 }
 //减少怒气
 model.prototype.lessAnger = function(value,show) {
+	if(this.died)
+		return 0
 	value = Math.min(this.curAnger,value)
 	this.curAnger -= value
 	if(show)
@@ -285,7 +287,10 @@ model.prototype.chooseSkill = function() {
 	if(!this.fighting.locator.existsTarget(this))
 		return false
 	var skillInfo = false
-	if(this.curAnger >= this.needAnger)
+	var needAnger = this.needAnger
+	if(this.buffs["buff_405052"])
+		needAnger += this.buffs["buff_405052"].getBuffValue()
+	if(this.curAnger >= needAnger)
 		skillInfo = this.useAngerSkill()
 	if(!skillInfo)
 		skillInfo = this.useNormalSkill()
@@ -309,9 +314,9 @@ model.prototype.useAngerSkill = function() {
 	var info = {}
 	info.skill = false
 	//怒气足够
-	if(this.curAnger >= this.needAnger){
+	if(this.curAnger >= needAnger){
 		info.skill = this.angerSkill
-		needValue = this.needAnger
+		needValue = needAnger
 	}
 	if(info.skill){
 		if(needValue)
@@ -444,12 +449,19 @@ model.prototype.onOtherHeal = function(attacker,value) {
 		this.fighting.fightRecord.push(info)
 	return info
 }
+//免疫伤害
+model.prototype.immuneDamage = function(info) {
+	info.value = 0
+	info.immune = true
+}
 //受到攻击
-model.prototype.onHit = function(attacker,info,hitFlag) {
+model.prototype.onHit = function(attacker,info,hitFlag,isAnger) {
 	if(this.buffs["wuxiang"] && info.d_type == "phy")
-		info.value = 0
+		this.immuneDamage(info)
 	if(this.buffs["invincible"])
-		info.value = 0
+		this.immuneDamage(info)
+	if(this.buffs["totem_friend_amp"] && this.buffs["buff_405062"] && this.fighting.randomCheck(this.buffs["buff_405062"].getBuffMul()) && this.buffs["buff_405062"].enoughNum())
+		this.immuneDamage(info)
 	//受到攻击
 	if(this.buffs["hudun"])
 		this.buffs["hudun"].offsetDamage(info)
@@ -859,6 +871,8 @@ model.prototype.revive = function(value) {
 model.prototype.createBuff = function(buff) {
 	if(!this.buffs[buff.buffId]){
 		this.buffs[buff.buffId] = buff
+		if(buff.attBuff)
+			this.attBuffs[buff.buffId] = 1
 	}
 }
 //添加1层BUFF
@@ -870,9 +884,12 @@ model.prototype.addBuff = function(attacker,buff) {
 model.prototype.removeBuff = function(buffId) {
     if(this.buffs[buffId])
         delete this.buffs[buffId]
+    if(this.attBuffs[buffId])
+    	delete this.attBuffs[buffId]
 }
 //移除一层负面状态
 model.prototype.dispelLessBuff = function() {
+	this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"dispelLess"})
 	for(var i in this.buffs){
 		if(this.buffs[i].buffCfg.dispel_less)
 			this.buffs[i].delBuff()
@@ -880,6 +897,7 @@ model.prototype.dispelLessBuff = function() {
 }
 //驱散一层增益状态
 model.prototype.dispelAddBuff = function() {
+	this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"dispelAdd"})
 	for(var i in this.buffs){
 		if(this.buffs[i].buffCfg.dispel_add)
 			this.buffs[i].delBuff()

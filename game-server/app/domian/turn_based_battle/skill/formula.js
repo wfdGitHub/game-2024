@@ -82,8 +82,8 @@ model.prototype.calIndirectDamage = function(attacker,target,mul,value,d_type) {
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt(d_type+"Amp") - target.getTotalAtt(d_type+"Def")))
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
 	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
-	if(attacker.talents.magdmg_amp)
-		basic += Math.ceil(basic * attacker.talents.magdmg_amp)
+	if(target.buffs["buff_405095"])
+		basic += Math.ceil(target.buffs["buff_405095"].getBuffMul() * basic)
 	return basic
 }
 //中毒伤害计算
@@ -91,6 +91,8 @@ model.prototype.calPoisonDamage = function(attacker,target,mul,value) {
 	var basic = (attacker.getTotalAtt("atk") - target.getTotalAtt("armor")) * mul
 	basic = Math.max(basic,1) + (value || 0)
 	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
+	if(target.buffs["buff_405095"])
+		basic += Math.ceil(target.buffs["buff_405095"].getBuffMul() * basic)
 	return basic
 }
 //治疗计算

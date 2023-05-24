@@ -20,7 +20,8 @@ var model = function(fighting,otps) {
 	this.career = 1 					//职业
 	this.sex = herosCfg.sex || 1 		//性别 1男 2女
 	this.talents = {}
-	this.buffs = {} 					//buff列表
+	this.buffs = {} 					//全部BUFF
+	this.attBuffs = {} 					//属性增益BUFF
 	this.totalDamage = 0				//累计伤害
 	this.totalHeal = 0					//累计治疗
 	if(!this.isNaN)
@@ -102,7 +103,7 @@ model.prototype.getHPRate = function() {
 model.prototype.getTotalAtt = function(name) {
 	var value = this.attInfo[name] || 0
 	value += this.attTmpInfo[name] || 0
-	for(var i in this.buffs)
+	for(var i in this.attBuffs)
 		value += this.buffs[i].getAttInfo(name)
 	return value
 }

@@ -49,6 +49,13 @@ model.prototype.createBuff = function(attacker,character,buff) {
 		return
 	//控制BUFF在行动后回合数加1
 	if(this.buffCfg[buffId].control){
+		if(character.buffs["buff_405083"] && character.fighting.randomCheck(character.buffs["buff_405083"].getBuffMul()) && character.buffs["buff_405083"].enoughCD()){
+			var target = character.fighting.locator.getTargets(character,"enemy_1")[0]
+			if(target){
+				this.createBuff(attacker,target,buff)
+				return
+			}
+		}
 		if(character.buffs["totem_friend_amp"])
 			return
 		//控制BUFF已行动则回合数加一

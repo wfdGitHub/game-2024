@@ -8,11 +8,14 @@ var model = function(fighting,character,buff,buffCfg) {
 	this.buffCfg = buffCfg
 	this.max_count = buffCfg["max_count"] || 1 	//最大层数
 	this.attKeys = {}
+	this.attBuff = false
 	for(var i = 1;i <= 3;i++){
 		if(buff.otps && buff.otps["attKey"+i]){
+			this.attBuff = true
 			this.attKey = buff.otps["attKey"+i]
 			this.attKeys[buff.otps["attKey"+i]] = buff.otps["attValue"+i] || 0
 		}else if(buffCfg["attKey"+i]){
+			this.attBuff = true
 			this.attKey = buffCfg["attKey"+i]
 			this.attKeys[buffCfg["attKey"+i]] = buffCfg["attValue"+i] || 0
 		}

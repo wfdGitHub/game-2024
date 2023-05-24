@@ -112,6 +112,8 @@ model.prototype.attackInfo = function(info,str) {
 		str += "\t(护盾抵消"+info.hudun+")"
 	if(info.dodge)
 		str += "\t闪避"
+	if(info.immune)
+		str += "\t免疫"
 	if(info.block)
 		str += "\t格挡"
 	if(info.crit)

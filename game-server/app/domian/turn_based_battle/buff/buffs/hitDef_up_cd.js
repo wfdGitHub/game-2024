@@ -5,6 +5,7 @@ var model = function(fighting,character,buffId,buffCfg) {
 	buff_entity.call(this,fighting,character,buffId,buffCfg)
 	this.NEED_CD = 0
 	this.CUR_CD = 0
+	this.attBuff = true
 }
 //继承父类方法
 model.prototype = Object.create(buff_entity.prototype) //继承父类方法
