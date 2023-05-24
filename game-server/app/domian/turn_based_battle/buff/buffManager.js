@@ -40,7 +40,7 @@ model.prototype.createBuff = function(attacker,character,buff) {
 	if(!character.checkAim())
 		return
 	if(!this.buffList[buffId]){
-		console.error("!!!!!!!!!!buffId not find")
+		console.error("!!!!!!!!!!buffId not find "+buffId)
 		this.buffList[buffId] = normal_buff
 		this.buffCfg[buffId] = {}
 	}

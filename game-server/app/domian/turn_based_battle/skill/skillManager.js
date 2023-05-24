@@ -59,7 +59,7 @@ model.prototype.attackSkill = function(skillInfo,skill,record) {
 		}
 	}
 	this.attackMonitor(skill.character,skill,targets)
-	this.attackAfter(skill)
+	skill.character.attackAfter(skill)
 	return targets
 }
 //治疗技能
