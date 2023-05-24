@@ -12,7 +12,7 @@ var model = function(otps) {
 			for(var i = 0;i < targets.length;i++){
 				var target = targets[i]
 				var power = book.getTotalAtt("atk")
-				power = Math.max(power - target[0].getTotalAtt("phyDef"),power * 0.1)
+				power = Math.max(power - target.getTotalAtt("phyDef"),power * 0.1)
 				var value = Math.ceil(power * this.mul)
 				var info = target.onHit(book,{value:value,d_type:"phy"})
 				recordInfo.targets.push(info)
