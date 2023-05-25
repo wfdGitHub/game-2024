@@ -103,6 +103,10 @@ model.prototype.getTargets = function(character,targetType) {
 			return this.getFriendAll(character)
 		case "team_friend_1":
 			return this.getFriend(character,1)
+		case "team_friend_2":
+			return this.getFriend(character,1)
+		case "team_friend_3":
+			return this.getFriend(character,1)
 		case "same_realm":
 			return this.getSameRealm(character)
 		case "enemy_maxAnger":

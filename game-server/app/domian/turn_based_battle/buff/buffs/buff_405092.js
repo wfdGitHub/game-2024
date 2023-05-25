@@ -7,14 +7,14 @@ var model = function(fighting,character,buffId,buffCfg) {
 //继承父类方法
 model.prototype = Object.create(buff_entity.prototype) //继承父类方法
 //触发驱散
-model.prototype.trigger = function() {
-	if( this.character.died)
+model.prototype.trigger = function(skill) {
+	if(this.character.died || !skill.origin)
 		return
 	if(this.character.fighting.randomCheck(this.list[0].buff.mul)){
 		var list = []
 		list.push(this.character)
 		if(this.list[0].buff.otps.player > 1)
-			list = list.concat(this.character.fighting.locator.getTargets("team_"+this.list[0].buff.otps.player))
+			list = list.concat(this.character.fighting.locator.getTargets(this.character,"team_friend_"+this.list[0].buff.otps.player))
 		for(var i = 0;i < list.length;i++){
 			this.fighting.nextRecord.push({type:"tag",id:list[i].id,tag:"dispelLess"})
 			for(var j = 0;j < this.list[0].buff.value;j++){

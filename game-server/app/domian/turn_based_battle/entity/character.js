@@ -204,7 +204,7 @@ model.prototype.before = function() {
 		}
 	}
 	if(this.talents.round_buff){
-		var tmpBuff = this.talents.survive_team_buff
+		var tmpBuff = this.talents.round_buff
 		var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
 		for(var j = 0;j < buffTargets.length;j++)
 			this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
@@ -264,9 +264,9 @@ model.prototype.roundEnd = function() {
 model.prototype.addAnger = function(value,show,later) {
 	if(this.died || this.buffs["totem_friend_amp"] || this.buffs["ban_anger"] || this.buffs["buff_405085"])
 		return 0
+	value = Math.min(value,this.maxAnger - this.curAnger)
 	this.curAnger += Math.floor(value) || 0
-	this.curAnger = Math.min(this.curAnger,this.maxAnger)
-	if(show){
+	if(show && value){
 		if(later)
 			this.fighting.nextRecord.push({type : "changeAnger",id : this.id,changeAnger : value,curAnger : this.curAnger})
 		else
@@ -279,8 +279,8 @@ model.prototype.lessAnger = function(value,show) {
 	if(this.died)
 		return 0
 	value = Math.min(this.curAnger,value)
-	this.curAnger -= value
-	if(show)
+	this.curAnger -= Math.floor(value) || 0
+	if(show && value)
 		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : -value,curAnger : this.curAnger})
 	return value
 }
@@ -911,6 +911,8 @@ model.prototype.dispelAddBuff = function() {
 //===============攻击触发
 //触发击杀
 model.prototype.onKill = function(target,skill,info) {
+	if(this.buffs["vital_point"])
+		return
 	if(this.talents.kill_heal_self)
 		this.onOtherHeal(this,this.talents.kill_heal_self * this.getTotalAtt("maxHP"))
 	if(this.talents.kill_buff)
@@ -943,11 +945,15 @@ model.prototype.onKill = function(target,skill,info) {
 }
 //触发闪避
 model.prototype.onMiss = function(attacker,info) {
+	if(this.buffs["vital_point"])
+		return
 	if(this.talents.miss_buff)
 		this.fighting.buffManager.createBuff(this,attacker,this.talents.miss_buff)
 }
 //触发格挡
 model.prototype.onBlock = function(attacker,info) {
+	if(this.buffs["vital_point"])
+		return
 	if(this.talents.block_buff1){
 		this.fighting.buffManager.createBuff(this,this,this.talents.block_buff1)
 		if(this.talents.block_buff2)
@@ -956,10 +962,12 @@ model.prototype.onBlock = function(attacker,info) {
 }
 //触发暴击
 model.prototype.onCrit = function(attacker,info) {
+	if(this.buffs["vital_point"])
+		return
 	if(attacker.talents.crit_anger)
 		attacker.addAnger(attacker.talents.crit_anger,true)
-	if(this.talents.crit_buff)
-		this.fighting.buffManager.createBuffByData(this,this,this.talents.crit_buff)
+	if(attacker.talents.crit_buff)
+		this.fighting.buffManager.createBuffByData(attacker,attacker,attacker.talents.crit_buff)
 }
 //攻击结束后
 model.prototype.attackAfter = function(skill) {
@@ -971,6 +979,8 @@ model.prototype.attackAfter = function(skill) {
 		this.buffs["chuchen"].destroy()
 		this.onOtherDamage(this,tmpDamage)
 	}
+	if(this.buffs["buff_405092"])
+		this.buffs["buff_405092"].trigger(skill)
 	if(skill.isAnger)
 		this.attackSkillAfter(skill)
 	else
@@ -1024,7 +1034,7 @@ model.prototype.packageDefaultSkill = function() {
 	var star = Math.floor(this.otps.s0_star) || 0
 	var lv = Math.floor(this.otps.s0_lv) || 0
 	var skill = this.packageSkill(sid,star,lv,false)
-	skill.origin
+	skill.origin = true
 	return skill
 }
 //组装怒气技能
@@ -1035,6 +1045,7 @@ model.prototype.packageAngerSkill = function() {
 	if(star > 5)
 		star = 5
 	var skill = this.packageSkill(sid,star,lv,true,this.otps.skillTalents)
+	skill.origin = true
 	return skill
 }
 //回合技能

@@ -52,6 +52,7 @@ model.prototype.createBuff = function(attacker,character,buff) {
 		if(character.buffs["buff_405083"] && character.fighting.randomCheck(character.buffs["buff_405083"].getBuffMul()) && character.buffs["buff_405083"].enoughCD()){
 			var target = character.fighting.locator.getTargets(character,"enemy_1")[0]
 			if(target){
+				character.fighting.fightRecord.push({type:"tag",id:character.id,tag:"transfer"})
 				this.createBuff(attacker,target,buff)
 				return
 			}

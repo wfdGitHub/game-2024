@@ -135,6 +135,8 @@ model.prototype.attackNormalBefore = function(target) {
 model.prototype.attackAfter = function(target,info) {
 	if(this.character.died)
 		return
+	if(this.buffs["vital_point"])
+		return
 	//攻击触发,目标每有1层【内伤】 状态附加BUFF
 	if(this.character.talents.atk_magdmg_buff && target.buffs["mag_damage"]){
 		this.character.talents.atk_magdmg_buff.count = target.buffs["mag_damage"].getCount()
@@ -143,7 +145,7 @@ model.prototype.attackAfter = function(target,info) {
 	if(this.character.talents.poison_diffuse && target.buffs["poison"] && this.character.fighting.randomCheck(this.character.talents.poison_diffuse,"poison_diffuse")){
 		var tmpTarget = this.character.fighting.locator.getTargets(target,"team_friend_1")[0]
 		if(tmpTarget)
-			this.character.fighting.buffManager.createBuff(this.character,tmpTarget,target.buffs["poison"].list[0].buff)
+			this.character.fighting.buffManager.createBuff(this.character,tmpTarget,tmpTarget.buffs["poison"].list[0].buff)
 	}
 	if(this.isAnger)
 		this.attackSkillAfter(target,info)
