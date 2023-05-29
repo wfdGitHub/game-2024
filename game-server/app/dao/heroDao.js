@@ -213,6 +213,34 @@ heroDao.prototype.updateHeroArchive = function(areaId,uid,id,star) {
 		}
 	})
 }
+//英雄置换检测
+heroDao.prototype.heroChangeCheck = function(heroInfo) {
+	if(!heroInfo)
+		return "英雄不存在"
+	if(heroInfo.combat)
+		return "英雄已出战"
+	if(heroInfo.lock)
+		return "英雄已锁定"
+	if(heroInfo.custom)
+		return "定制英雄"
+	return false
+}
+//英雄锁定检测
+heroDao.prototype.heroLockCheck = function(heroInfo) {
+	if(!heroInfo)
+		return "英雄不存在"
+	if(heroInfo.custom)
+		return "定制英雄"
+	if(heroInfo.coexist)
+		return "共鸣英雄"
+	if(heroInfo.combat)
+		return "英雄已出战"
+	if((heroInfo.zf_1 && heroInfo.zf_1 != 1) || (heroInfo.zf_2 && heroInfo.zf_2 != 1) || (heroInfo.zf_3 && heroInfo.zf_3 != 1))
+		return "英雄已穿戴战法"
+	if(heroInfo.lock)
+		return "英雄已锁定"
+	return false
+}
 //批量删除英雄
 heroDao.prototype.removeHeroList = function(uid,hIds,cb) {
 	var multiList = []
