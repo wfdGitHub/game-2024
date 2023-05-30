@@ -718,6 +718,36 @@ heroHandler.prototype.heroEquipStrengthen = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//满星吞噬
+heroHandler.prototype.heroUPDevour = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var targetId = msg.targetId
+  this.areaManager.areaMap[areaId].heroUPDevour(uid,hId,targetId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//符石洗练
+heroHandler.prototype.washFushi = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var slot = msg.slot
+  this.areaManager.areaMap[areaId].washFushi(uid,hId,slot,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//符石洗练保存
+heroHandler.prototype.saveFushi = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var slot = msg.slot
+  this.areaManager.areaMap[areaId].saveFushi(uid,hId,slot,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "heroHandler",

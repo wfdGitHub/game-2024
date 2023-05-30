@@ -174,4 +174,102 @@ module.exports = function() {
 			})
 		})
 	}
+	//满星吞噬
+	this.heroUPDevour = function(uid,hId,targetId,cb) {
+		var hIds = [hId,targetId]
+		self.heroDao.getHeroList(uid,hIds,function(flag,heroList){
+			var heroInfo = heroList[0]
+			var targetInfo = heroList[1]
+			if(self.heroDao.heroLockCheck(targetInfo)){
+				cb(false,"英雄锁定中 "+targetId)
+				return
+			}
+			if(!heroInfo || heroInfo.star < 30 || targetInfo.star < 30){
+				cb(false,"英雄未满星"+hId+" "+targetId)
+				return
+			}
+			heroInfo.dev = Number(heroInfo.dev) || 0
+			targetInfo.dev = Number(targetInfo.dev) || 0
+			if(heroInfo.dev + targetInfo.dev + 1 > 5){
+				cb(false,"吞噬不能超过5层")
+				return
+			}
+      self.heroDao.removeHeroList(uid,[targetId],function(flag,err) {
+          if(err)
+            console.error(err)
+					for(var i = 0;i <  targetInfo.dev + 1;i++){
+						heroInfo.dev++
+						var HufuId = self.gainRandHufuId(Math.random() < 0.5 ? 1 : 2)
+						self.heroDao.setHeroInfo(self.areaId,uid,hId,"fs"+heroInfo.dev,HufuId)
+					}
+					self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"dev",targetInfo.dev+1)
+					cb(true,heroInfo.dev)
+      })
+		})
+	}
+	//符石洗练
+	this.washFushi = function(uid,hId,slot,cb) {
+		if(!Number.isInteger(slot) || slot < 1 || slot > 5){
+			cb(false,"槽位错误"+slot)
+			return
+		}
+		var key = "fstmp"+slot
+		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo){
+			if(!flag || !heroInfo.id){
+				cb(false,"英雄不存在"+hId)
+				return
+			}
+			if(!heroInfo.dev || heroInfo.dev < slot){
+				cb(false,"槽位未开放"+heroInfo.dev)
+				return
+			}
+			self.consumeItems(uid,"1000240:100",1,"符石洗练",function(flag,err) {
+				if(flag){
+					var rand = Math.random()
+					var lv = 1
+					if(rand < 0.75)
+						lv = 2
+					if(rand < 0.45)
+						lv = 3
+					if(rand < 0.15)
+						lv = 4
+					if(rand < 0.03)
+						lv = 5
+					var HufuId = self.gainRandHufuId(lv)
+					self.heroDao.setHeroInfo(self.areaId,uid,hId,key,HufuId)
+					heroInfo[key] = HufuId
+					cb(true,heroInfo)
+				}else{
+					cb(false,err)
+				}
+			})
+		})
+	}
+	//符石洗练保存
+	this.saveFushi = function(uid,hId,slot,cb) {
+		if(!Number.isInteger(slot) || slot < 1 || slot > 5){
+			cb(false,"槽位错误"+slot)
+			return
+		}
+		var key = "fstmp"+slot
+		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo){
+			if(!flag || !heroInfo.id){
+				cb(false,"英雄不存在"+hId)
+				return
+			}
+			if(heroInfo.dev < slot){
+				cb(false,"槽位未开放"+heroInfo.dev)
+				return
+			}
+			if(!heroInfo["fstmp"+slot]){
+				cb(false,"未洗练"+slot)
+				return
+			}
+			self.heroDao.setHeroInfo(self.areaId,uid,hId,"fs"+slot,heroInfo["fstmp"+slot])
+			self.heroDao.delHeroInfo(self.areaId,uid,hId,"fstmp"+slot)
+			heroInfo["fs"+slot] = heroInfo["fstmp"+slot]
+			delete heroInfo["fstmp"+slot]
+			cb(true,heroInfo)
+		})
+	}
 }

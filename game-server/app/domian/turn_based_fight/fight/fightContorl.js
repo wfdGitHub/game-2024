@@ -47,8 +47,10 @@ for(var i in book_list){
 for(var i = 1;i <= 4;i++){
 	gSkillAtts[i] = JSON.parse(guild_cfg["career_"+i]["value"])
 }
+var hufu_map = {}
 for(var i in hufu_skill){
 	for(var j = 1;j<= 4;j++){
+		hufu_map[hufu_skill[i]["lv"+j]] = {"id":i,"lv":j}
 		hufuSkillCes[hufu_skill[i]["lv"+j]] = 50000 * j
 	}
 }
@@ -314,16 +316,35 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		}
 		model.mergeData(info,gInfo)
 	}
+	var hufu_talents = {}
 	//护符计算
 	if(info.hfLv){
 		if(hufu_quality[info.hfLv])
 			model.mergeData(info,{"self_atk_add" : hufu_quality[info.hfLv]["atk"],"self_maxHP_add" : hufu_quality[info.hfLv]["hp"]})
 		if(info.hfs1){
-			model.mergeTalent(info,info.hfs1)
+			if(hufu_map[info.hfs1]){
+				if(!hufu_talents[hufu_map[info.hfs1].id] || hufu_map[info.hfs1].lv > hufu_talents[hufu_map[info.hfs1].id])
+					hufu_talents[hufu_map[info.hfs1].id] = hufu_map[info.hfs1].lv
+			}
 		}
-		if(info.hfs2)
-			model.mergeTalent(info,info.hfs2)
+		if(info.hfs2){
+			if(hufu_map[info.hfs2]){
+				if(!hufu_talents[hufu_map[info.hfs2].id] || hufu_map[info.hfs2].lv > hufu_talents[hufu_map[info.hfs2].id])
+					hufu_talents[hufu_map[info.hfs2].id] = hufu_map[info.hfs2].lv
+			}
+		}
 	}
+	//符文石计算
+	for(var i = 1;i <= 5;i++){
+		if(info["fs"+i]){
+			if(hufu_map[info["fs"+i]]){
+				if(!hufu_talents[hufu_map[info["fs"+i]].id] || hufu_map[info["fs"+i]].lv > hufu_talents[hufu_map[info["fs"+i]].id])
+					hufu_talents[hufu_map[info["fs"+i]].id] = hufu_map[info["fs"+i]].lv
+			}
+		}
+	}
+    for(var i in hufu_talents)
+        model.mergeTalent(info,hufu_skill[i]["lv"+hufu_talents[i]])
 	//称号属性
 	if(teamCfg && teamCfg["title"] && title_list[teamCfg["title"]] && title_list[teamCfg["title"]]["talent"])
 		model.mergeTalent(info,title_list[teamCfg["title"]]["talent"])
@@ -546,6 +567,9 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 			if(newValue && equip_st[newValue])
 				newCE = equip_st[newValue]["ce"] || 0
 		break
+		case "dev":
+			oldCE = oldValue * star_base[30]["ce"] || 0
+			newCE = newValue * star_base[30]["ce"] || 0
 	}
 	return newCE - oldCE
 }

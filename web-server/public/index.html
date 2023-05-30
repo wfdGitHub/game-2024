@@ -121,6 +121,24 @@
         console.log("onChat")
         console.log(data)
       })
+      //满星吞噬
+      var heroUPDevour = function(hId,targetId) {
+        pomelo.request("area.heroHandler.heroUPDevour", {hId:hId,targetId:targetId}, function(data) {
+            console.log(data);
+        });
+      }
+      //符石洗练
+      var washFushi = function(hId,slot) {
+        pomelo.request("area.heroHandler.washFushi", {hId:hId,slot:slot}, function(data) {
+            console.log(data.data["fstmp"+slot]);
+        });
+      }
+      //符石洗练保存
+      var saveFushi = function(hId,slot) {
+        pomelo.request("area.heroHandler.saveFushi", {hId:hId,slot:slot}, function(data) {
+            console.log(data);
+        });
+      }
       var banSendMsg = function(text) {
         pomelo.request("connector.logHandler.banSendMsg", {text:text}, function(data) {
             console.log(data);

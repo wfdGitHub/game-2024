@@ -5,12 +5,19 @@ const hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
 var uuid = require("uuid")
 var async = require("async")
 var skillList = []
-for(var id in hufu_skill)
+var skillQualitys = {}
+for(var id in hufu_skill){
 	skillList.push(id)
+	for(var i = 1;i <= 5;i++){
+		if(!skillQualitys[i])
+			skillQualitys[i] = []
+		skillQualitys[i].push(hufu_skill[id]["lv"+i])
+	}
+}
 var weightMap = {}
 for(var i in hufu_quality){
 	weightMap[i] = {allValue : 0,list : {}}
-	for(var j = 1;j <= 4;j++){
+	for(var j = 1;j <= 5;j++){
 		if(hufu_quality[i]["weight"+j]){
 			weightMap[i].allValue += hufu_quality[i]["weight"+j]
 			weightMap[i].list["lv"+j] = weightMap[i].allValue
@@ -24,6 +31,10 @@ module.exports = function() {
 		self.getObjAll(uid,main_name,function(list) {
 			cb(true,list || {})
 		})
+	}
+	//获得随机护符技能
+	this.gainRandHufuId = function(lv) {
+		return skillQualitys[lv][Math.floor(Math.random() * skillQualitys[lv].length)]
 	}
 	//生成随机护符
 	this.gainRandHufu = function(uid,lv,id) {
