@@ -308,8 +308,13 @@ heroDao.prototype.heroPrAll = function(areaId,uid,heros,hIds,cb) {
 	var strList = []
 	for(let i = 0;i < heros.length;i++){
 		let star = heros[i].star
-		if(star_base[star] && star_base[star].pr)
+		if(star_base[star] && star_base[star].pr){
+			if(heros[i].dev){
+				for(var i = 0;i < heros[i].dev;i++)
+					strList.push(star_base[star].pr)
+			}
 			strList.push(star_base[star].pr)
+		}
 	}
 	var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
 	var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"分解英雄")
