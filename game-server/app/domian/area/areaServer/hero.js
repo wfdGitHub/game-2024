@@ -197,13 +197,16 @@ module.exports = function() {
       self.heroDao.removeHeroList(uid,[targetId],function(flag,err) {
           if(err)
             console.error(err)
-					for(var i = 0;i <  targetInfo.dev + 1;i++){
-						heroInfo.dev++
-						var HufuId = self.gainRandHufuId(Math.random() < 0.5 ? 1 : 2)
-						self.heroDao.setHeroInfo(self.areaId,uid,hId,"fs"+heroInfo.dev,HufuId)
-					}
-					self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"dev",targetInfo.dev+1)
-					cb(true,heroInfo.dev)
+					self.heroDao.heroPrlvadnad(self.areaId,uid,[targetInfo],[targetId],function(flag,awardList) {
+						for(var i = 0;i <  targetInfo.dev + 1;i++){
+							heroInfo.dev++
+							var HufuId = self.gainRandHufuId(Math.random() < 0.5 ? 1 : 2)
+							heroInfo["fs"+heroInfo.dev] = HufuId
+							self.heroDao.setHeroInfo(self.areaId,uid,hId,"fs"+heroInfo.dev,HufuId)
+						}
+						self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"dev",targetInfo.dev+1)
+						cb(true,{heroInfo:heroInfo,awardList:awardList})
+					})
       })
 		})
 	}
