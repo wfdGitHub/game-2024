@@ -46,7 +46,6 @@ module.exports = function() {
 		}else{
 			return uuid.v1()
 		}
-		
 	}
 	//增加数据
 	this.incrbyLordData = function(uid,key,value,cb) {
@@ -69,24 +68,21 @@ module.exports = function() {
 	}
 	//主公获得经验值
 	this.addLordExp = function(uid,exp) {
-		if(self.players[uid]){
-			self.players[uid]["exp"] += exp
-		}
 		self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","exp",exp,function(err,value) {
-			if(value < 0){
-				value = 0
-				self.players[uid]["exp"] = 0
-				self.redisDao.db.hset("player:user:"+uid+":playerInfo","exp",0)
-			}
+			if(err)
+				console.error(err)
 			self.updateSprintRank("lv_rank",uid,exp)
 			if(self.players[uid]){
+				value = Number(value) || 0
 				var notify = {
 					"type" : "addLordExp",
 					"exp" : exp,
-					"curExp" : Number(value)
+					"curExp" : value
 				}
+				self.players[uid]["exp"] = value
 				self.sendToUser(uid,notify)
-				self.checkLordUpgrade(uid)
+				self.checkLordUpgrade(uid,value)
+				self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:100,value:exp,curValue:value,reason:"获得经验"})
 			}
 		})
 	}
@@ -103,37 +99,33 @@ module.exports = function() {
 		else return 0
 	}
 	//主公升级检查
-	this.checkLordUpgrade = function(uid) {
-		level = self.players[uid]["level"]
-		exp = self.players[uid]["exp"]
-		let upLv = 0
-		let needExp = 0
-		let count = 0
-		let gold = 0
-		while(lord_lv[level + upLv + 1] && exp >= lord_lv[level + upLv]["exp"] && count < 200){
-			count++
-			exp -= lord_lv[level + upLv]["exp"]
-			needExp += lord_lv[level + upLv]["exp"]
-			gold += lord_lv[level + upLv]["gold"]
-			upLv += 1
+	this.checkLordUpgrade = function(uid,exp) {
+		var level = self.players[uid]["level"]
+		var upLv = 0
+		var gold = 0
+		for(var i = level + 1;lord_lv[i] !== undefined;i++){
+			if(exp > lord_lv[i]["exp"]){
+				upLv++
+				gold += lord_lv[i]["gold"]
+			}else{
+				break
+			}
 		}
 		if(upLv){
-			self.players[uid]["exp"] -= needExp
-			self.players[uid]["level"] += upLv
 			self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","level",upLv)
-			self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","exp",-needExp)
 			self.addItem({uid : uid,itemId : 202,value : gold,reason : "等级提升奖励"})
-			let notify = {
+			var notify = {
 				"type" : "lordUpgrade",
 				"oldLv" : level,
 				"upgrade" : upLv,
 				"gold" : gold,
 				"curExp" : exp
 			}
+			self.players[uid]["exp"] = exp
+			self.players[uid]["level"] += upLv
 			self.sendToUser(uid,notify)
 			self.taskUpdate(uid,"loadLv",upLv)
-			self.checkLimitGiftLv(uid,level,self.players[uid]["level"])
-			self.cacheDao.saveCache({"messagetype":"lordUpgrade",uid:uid,level:level+upLv})
+			self.checkLimitGiftLv(uid,level,level+upLv)
 		}
 	}
 	//提升官职
