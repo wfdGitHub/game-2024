@@ -27,6 +27,9 @@ var title_list = require("../../../../config/gameCfg/title_list.json")
 var zhanfa = require("../../../../config/gameCfg/zhanfa.json")
 var officer = require("../../../../config/gameCfg/officer.json")
 var camp_att = require("../../../../config/gameCfg/camp_att.json")
+var bond_heros = require("../../../../config/gameCfg/bond_heros.json")
+var bond_list = require("../../../../config/gameCfg/bond_list.json")
+var bond_talents = require("../../../../config/gameCfg/bond_talents.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -421,9 +424,13 @@ model.getTeamData = function(team,belong) {
 			}
 		}
 	}
+	model.callBond(team)
 	var characters = []
 	for(var i = 0;i < 6;i++){
 		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
+		for(var j = 1;j <= 6;j++)
+			if(team[i]["bond"+j])
+				characters[i]["bond"+j] = team[i]["bond"+j]
 	}
     var teamAdds = this.raceAdd(this.getRaceType(characters))
     var info = {team:characters,books:books,teamAdds:teamAdds,bookAtts:bookAtts}
@@ -459,6 +466,57 @@ model.getTeamShowData = function(team) {
 	var defTeam = []
 	var fighting = new fightingFun(atkTeam,defTeam,{},{},{atkTeamAdds:info.teamAdds})
 	return {atkTeam : fighting.atkTeam,bookAtts : bookAtts}
+}
+//英雄羁绊
+model.callBond = function(team) {
+	var heroMaps = {}
+	var aces = {}
+	for(var i = 0;i < 6;i++){
+		aces[team[i]["id"]] = {}
+		if(team[i])
+			heroMaps[team[i]["id"]] = team[i]["star"] || 1
+		for(var j = 1;j <= 10;j++)
+			if(team[i]["a"+j])
+				aces[team[i]["id"]][team[i]["a"+j]] = 1
+	}
+	for(var i = 0;i < 6;i++){
+		if(team[i]){
+			if(bond_heros[team[i]["id"]]){
+				for(var j = 1;j <= 6;j++){
+					if(bond_heros[team[i]["id"]]["slot"+j]){
+						var bondId = bond_heros[team[i]["id"]]["slot"+j]
+						if(bond_list[bondId]){
+							switch(bond_list[bondId]["type"]){
+								case "hero":
+									for(var lv = 1;lv <= 6;lv++){
+										if(!bond_list[bondId]["arg"] || !heroMaps[bond_list[bondId]["arg"]] || heroMaps[bond_list[bondId]["arg"]] < bond_list[bondId]["att"+lv])
+											break
+										team[i]["bond"+j] = bond_talents[bond_list[bondId]["talentId"]]["talent"+lv]
+									}
+								break
+								case "equip":
+									for(var lv = 1;lv <= 6;lv++){
+										if(!team[i]["e"+bond_list[bondId]["arg"]] || team[i]["e"+bond_list[bondId]["arg"]] < bond_list[bondId]["att"+lv])
+											break
+										team[i]["bond"+j] = bond_talents[bond_list[bondId]["talentId"]]["talent"+lv]
+									}
+								break
+								case "ace":
+									for(var lv = 1;lv <= 6;lv++){
+										if(aces[team[i]["id"]][bond_list[bondId]["att"+lv]])
+											team[i]["bond"+j] = bond_talents[bond_list[bondId]["talentId"]]["talent"+lv]
+									}
+								break
+							}
+							if(team[i]["bond"+j])
+								model.mergeTalent(team[i],team[i]["bond"+j])
+						}
+					}
+				}
+			}
+		}
+	}
+	console.log("heroMaps",heroMaps)
 }
 //计算差值
 model.calcCEDiff = function(name,oldValue,newValue) {
