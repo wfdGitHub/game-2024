@@ -2,6 +2,7 @@
 const sprint_rank = require("../../../../config/gameCfg/sprint_rank.json")
 const main_name = "sprint_rank"
 const rankTime = 86400000
+const MAX_NUM = 30000000000000
 var rankCount = 0
 var rank_type_day = {}
 for(var i in sprint_rank){
@@ -106,7 +107,7 @@ module.exports = function() {
 				var scores = []
 				for(var i = 0;i < list.length;i += 2){
 					uids.push(list[i])
-					scores.push(list[i+1])
+					scores.push(Math.floor(list[i+1]))
 				}
 				self.getPlayerInfoByUids(uids,function(userInfos) {
 					var info = {}
@@ -130,7 +131,7 @@ module.exports = function() {
 				var scores = []
 				for(var i = 0;i < list.length;i += 2){
 					uids.push(list[i])
-					scores.push(list[i+1])
+					scores.push(Math.floor(list[i+1]))
 				}
 				self.getPlayerInfoByUids(uids,function(userInfos) {
 					var info = {}
@@ -153,7 +154,7 @@ module.exports = function() {
 			var scores = []
 			for(var i = 0;i < list.length;i += 2){
 				uids.push(list[i])
-				scores.push(list[i+1])
+				scores.push(Math.floor(list[i+1]))
 			}
 			self.getPlayerInfoByUids(uids,function(userInfos) {
 				var info = {}
@@ -164,9 +165,12 @@ module.exports = function() {
 		})
 	}
 	//更新排行榜
-	this.updateSprintRank = function(type,uid,value) {
-		if(rank_type_day[type]){
-			self.incrbyZset(type,uid,value)
+	this.updateSprintRank = function(rankType,uid,value) {
+		if(rank_type_day[rankType]){
+			self.incrbyZset(rankType,uid,value,function(data) {
+				data = Math.floor(data) + ((MAX_NUM - Date.now()) * 1e-14)
+				self.addZset(rankType,uid,data)
+			})
 		}
 	}
 	//获取排行榜第一玩家
@@ -181,7 +185,7 @@ module.exports = function() {
 			for(var i = 0;i < list.length;i ++){
 				if(list[i] && list[i].length){
 					uids.push(list[i][0])
-					scores.push(list[i][1])
+					scores.push(Math.floor(list[i][1]))
 				}else{
 					uids.push(null)
 					scores.push(null)
