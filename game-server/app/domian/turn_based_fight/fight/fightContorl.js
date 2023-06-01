@@ -472,9 +472,10 @@ model.callBond = function(team) {
 	var heroMaps = {}
 	var aces = {}
 	for(var i = 0;i < 6;i++){
-		aces[team[i]["id"]] = {}
-		if(team[i])
+		if(team[i]){
+			aces[team[i]["id"]] = {}
 			heroMaps[team[i]["id"]] = team[i]["star"] || 1
+		}
 		for(var j = 1;j <= 10;j++)
 			if(team[i]["a"+j])
 				aces[team[i]["id"]][team[i]["a"+j]] = 1
