@@ -149,12 +149,10 @@ module.exports = function() {
 	}
 	//更新排行榜
 	this.updateSprintRank = function(rankType,uid,value) {
-		if(rank_type_day[rankType]){
-			self.incrbyZset(rankType,uid,value,function(data) {
-				data = Math.floor(data) + ((MAX_NUM - Date.now()) * 1e-14)
-				self.addZset(rankType,uid,data)
-			})
-		}
+		self.incrbyZset(rankType,uid,value,function(data) {
+			data = Math.floor(data) + ((MAX_NUM - Date.now()) * 1e-14)
+			self.addZset(rankType,uid,data)
+		})
 	}
 	//获取排行榜第一玩家
 	this.getfirstRankUserList = function(cb) {
