@@ -475,10 +475,10 @@ model.callBond = function(team) {
 		if(team[i]){
 			aces[team[i]["id"]] = {}
 			heroMaps[team[i]["id"]] = team[i]["star"] || 1
+			for(var j = 1;j <= 10;j++)
+				if(team[i]["a"+j])
+					aces[team[i]["id"]][team[i]["a"+j]] = 1
 		}
-		for(var j = 1;j <= 10;j++)
-			if(team[i]["a"+j])
-				aces[team[i]["id"]][team[i]["a"+j]] = 1
 	}
 	for(var i = 0;i < 6;i++){
 		if(team[i]){
@@ -517,7 +517,6 @@ model.callBond = function(team) {
 			}
 		}
 	}
-	console.log("heroMaps",heroMaps)
 }
 //计算差值
 model.calcCEDiff = function(name,oldValue,newValue) {
