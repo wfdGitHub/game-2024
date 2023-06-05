@@ -93,7 +93,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(tmpAmplify)
 		mul *= 1 + tmpAmplify
 	if(skill.isAnger)
-	 	mul *= 1 + attacker.skill_attack_amp
+	 	mul *= 1 + attacker.skill_attack_amp - target.skill_attack_def
 	else
 		mul *=1 + attacker.normal_attack_amp
 	if(attacker.attInfo.hp < attacker.attInfo.maxHP && attacker.low_hp_amp)

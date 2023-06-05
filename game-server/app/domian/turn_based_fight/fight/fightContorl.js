@@ -492,7 +492,7 @@ model.callBond = function(team) {
 							switch(bond_list[bondId]["type"]){
 								case "hero":
 									for(var lv = 1;lv <= 6;lv++){
-										if(!bond_list[bondId]["arg"] || !heroMaps[bond_list[bondId]["arg"]] || heroMaps[bond_list[bondId]["arg"]] < bond_list[bondId]["att"+lv])
+										if(!bond_list[bondId]["arg"] || !heroMaps[bond_list[bondId]["arg"]] || !bond_list[bondId]["att"+lv] ||  heroMaps[bond_list[bondId]["arg"]] < bond_list[bondId]["att"+lv])
 											break
 										team[i]["bond"+j] = bond_talents[bond_list[bondId]["talentId"]]["talent"+lv]
 									}
