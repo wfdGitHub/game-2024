@@ -60,10 +60,10 @@ artifactHandler.prototype.wearArtifact = function(msg, session, next) {
 }
 //神兵升级
 artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
-  let uid = session.uid
-  let areaId = session.get("areaId")
-  let hId = msg.hId
-  let self = this
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var self = this
   async.waterfall([
     function(cb) {
       self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
@@ -84,8 +84,8 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
     },
     function(heroInfo,cb) {
       //判断物品数量
-      let aId = artifact_talent[heroInfo.id]["artifact"]
-      let lv = heroInfo.artifact || 0
+      var aId = artifact_talent[heroInfo.id]["artifact"]
+      var lv = heroInfo.artifact || 0
       var lord_lv = self.areaManager.areaMap[areaId].getLordLv(uid)
       if(lv >= lord_lv){
         cb("不能超过主公等级")
@@ -95,7 +95,6 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
           cb("已不能升级")
           return
       }
-      var aId = artifact_talent[heroInfo.id]["artifact"]
       var str = aId+":"+artifact_level[lv]["self_num"]+"&1000150:"+artifact_level[lv]["artifact_num"]
       self.areaManager.areaMap[areaId].consumeItems(uid,str,1,"神兵升级",function(flag,err) {
         if(!flag){
