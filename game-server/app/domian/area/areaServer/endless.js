@@ -203,19 +203,11 @@ module.exports = function() {
 						next("第"+curLv+"场战斗失败")
 						return
 					}
-<<<<<<< Updated upstream
-				    if(verifys[i] !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
-				    	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]))
-				    	next("战斗验证错误")
-				    	return
-				    }
-=======
 				    // if(verifys[i] !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
 				    // 	self.verifyFaild(uid,verifys[i],JSON.stringify(self.fightContorl.getFightRecord()[0]),"三人无尽试炼")
 				    // 	next("战斗验证错误")
 				    // 	return
 				    // }
->>>>>>> Stashed changes
 					// console.log("第"+curLv+"场",atkTeam[1])
 					var list = self.fightContorl.getFightRecord()
 					var overInfo = list[list.length - 1]
