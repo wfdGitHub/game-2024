@@ -194,6 +194,10 @@ module.exports = function() {
 				cb(false,"吞噬不能超过5层")
 				return
 			}
+			if(heroInfo.id != targetInfo.id){
+				cb(false,"必须为同名卡")
+				return
+			}
       self.heroDao.removeHeroList(uid,[targetId],function(flag,err) {
           if(err)
             console.error(err)
