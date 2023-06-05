@@ -234,13 +234,13 @@ module.exports = function() {
 				if(flag){
 					var rand = Math.random()
 					var lv = 1
-					if(rand < 0.75)
+					if(rand < 0.7)
 						lv = 2
-					if(rand < 0.45)
+					if(rand < 0.4)
 						lv = 3
-					if(rand < 0.15)
+					if(rand < 0.08)
 						lv = 4
-					if(rand < 0.03)
+					if(rand < 0.01)
 						lv = 5
 					var HufuId = self.gainRandHufuId(lv)
 					self.heroDao.setHeroInfo(self.areaId,uid,hId,key,HufuId)
