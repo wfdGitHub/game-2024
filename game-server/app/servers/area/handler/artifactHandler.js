@@ -95,29 +95,14 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
           cb("已不能升级")
           return
       }
-      let needNum = artifact_level[lv]["artifact_num"]
-      let coin = artifact_level[lv]["coin"]
-      self.areaManager.areaMap[areaId].getBagItemList(uid,[201,aId,1000150],function(list) {
-        if(list[0] < coin || (list[1] + list[2]) < needNum){
-          cb("资源不足")
+      var aId = artifact_talent[heroInfo.id]["artifact"]
+      var str = aId+":"+artifact_level[lv]["self_num"]+"&1000150:"+artifact_level[lv]["artifact_num"]
+      self.areaManager.areaMap[areaId].consumeItems(uid,str,1,"神兵升级",function(flag,err) {
+        if(!flag){
+          next(null,{flag : false,err : err})
           return
         }
-        let str = "201:"+coin
-        if(needNum){
-          if(list[1] >= needNum)
-            str += "&"+aId+":"+needNum
-          else if(list[1])
-            str += "&"+aId+":"+list[1]+"&1000150:"+(needNum-list[1])
-          else
-            str += "&1000150:"+needNum
-        }
-        self.areaManager.areaMap[areaId].consumeItems(uid,str,1,"神兵升级",function(flag,err) {
-          if(!flag){
-            next(null,{flag : false,err : err})
-            return
-          }
-          cb(null,heroInfo)
-        })
+        cb(null,heroInfo)
       })
     },
     function(heroInfo,cb) {
