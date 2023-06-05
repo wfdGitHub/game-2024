@@ -428,9 +428,11 @@ model.getTeamData = function(team,belong) {
 	var characters = []
 	for(var i = 0;i < 6;i++){
 		characters[i] = this.getCharacterInfo(team[i],bookAtts,teamCfg)
-		for(var j = 1;j <= 6;j++)
-			if(team[i]["bond"+j])
-				characters[i]["bond"+j] = team[i]["bond"+j]
+		if(team[i]){
+			for(var j = 1;j <= 6;j++)
+				if(team[i]["bond"+j])
+					characters[i]["bond"+j] = team[i]["bond"+j]
+		}
 	}
     var teamAdds = this.raceAdd(this.getRaceType(characters))
     var info = {team:characters,books:books,teamAdds:teamAdds,bookAtts:bookAtts}
