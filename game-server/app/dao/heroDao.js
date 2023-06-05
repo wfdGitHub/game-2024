@@ -306,11 +306,11 @@ heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
 //分解返还资源   返还全部
 heroDao.prototype.heroPrAll = function(areaId,uid,heros,hIds,cb) {
 	var strList = []
-	for(let i = 0;i < heros.length;i++){
-		let star = heros[i].star
+	for(var i = 0;i < heros.length;i++){
+		var star = heros[i].star
 		if(star_base[star] && star_base[star].pr){
 			if(heros[i].dev){
-				for(var i = 0;i < heros[i].dev;i++)
+				for(var j = 0;j < heros[i].dev;j++)
 					strList.push(star_base[star].pr)
 			}
 			strList.push(star_base[star].pr)
