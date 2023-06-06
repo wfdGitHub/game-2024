@@ -89,6 +89,7 @@ module.exports = function() {
 			    	self.updateSprintRank("checkpoint_rank",uid,1)
 			    	self.cacheDao.saveCache({"messagetype":"checkpoints",uid:uid,level:level})
 			    }else{
+			    	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"主线关卡")
 			    	cb(false,{winFlag : winFlag})
 			    }
 			}
