@@ -75,9 +75,10 @@ module.exports = function() {
 			    let seededNum = fightInfo.seededNum
 			    let defTeam = []
 			    let mon_list = JSON.parse(checkpointsCfg[level].mon_list)
+			    defTeam = self.standardTeam(uid,mon_list,"main",checkpointsCfg[level]["lev_limit"])
 			    console.log("level",level)
 			    console.log("mon_list",mon_list)
-			    defTeam = self.standardTeam(uid,mon_list,"main",checkpointsCfg[level]["lev_limit"])
+			    console.log("defTeam",defTeam)
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			    // if(verify !== JSON.stringify(self.fightContorl.getFightRecord()[0])){
 			    // 	self.verifyFaild(uid,verify,JSON.stringify(self.fightContorl.getFightRecord()[0]),"主线关卡")
