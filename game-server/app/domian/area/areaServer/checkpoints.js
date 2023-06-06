@@ -74,6 +74,8 @@ module.exports = function() {
 			    let atkTeam = fightInfo.team
 			    let seededNum = fightInfo.seededNum
 			    let defTeam = []
+			    console.log("level",level)
+			    console.log("mon_list",mon_list)
 			    let mon_list = JSON.parse(checkpointsCfg[level].mon_list)
 			    defTeam = self.standardTeam(uid,mon_list,"main",checkpointsCfg[level]["lev_limit"])
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
