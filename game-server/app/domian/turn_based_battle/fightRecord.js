@@ -1,11 +1,16 @@
+const fightCfg = require("./fightCfg.js")
 var model = function(fighting) {
 	this.fighting = fighting
 	this.list = []
 	this.stageIndex = 0
+	this.heroMap = {}
+	this.buffs = fightCfg.getCfg("buffs")
+	this.heros = fightCfg.getCfg("heros")
 }
 model.prototype.init = function() {
 	this.list = []
 	this.stageIndex = 0
+	this.heroMap = {}
 }
 model.prototype.push = function(info) {
 	this.list.push(info)
@@ -23,7 +28,8 @@ model.prototype.explain = function() {
 	var info = this.list.shift()
 	switch(info.type){
 		case "fightBegin":
-			console.log("战斗开始")
+			for(var i = 0;i < info.allHero.length;i++)
+				this.heroMap[info.allHero[i]["id"]] = this.heros[info.allHero[i]["heroId"]]["name"]+info.allHero[i]["id"]
 		break
 		case "nextRound":
 			//回合标识
@@ -31,51 +37,53 @@ model.prototype.explain = function() {
 		break
 		case "skill":
 			//使用技能(怒气隐式更新)
-			console.log("\033[36m["+info.id+"号]使用["+info.sid+"]\033[0m    怒气 "+info.changeAnger+"("+info.curAnger+")")
+			console.log("\033[36m["+this.heroMap[info.id]+"]使用["+info.sid+"]\033[0m    怒气 "+info.changeAnger+"("+info.curAnger+")")
 			if(info.attack){
 				for(var i = 0;i < info.attack.length;i++){
-					this.attackInfo(info.attack[i],"  \033[31m对["+info.attack[i]["id"]+"]\t\033[0m 造成 ")
+					this.attackInfo(info.attack[i],"  \033[31m对["+this.heroMap[info.attack[i]["id"]]+"]\t\033[0m 造成 ")
 				}
 			}
 			if(info.heal){
 				for(var i = 0;i < info.heal.length;i++){
-					console.log("\033[32m["+info.heal[i]["id"]+"] 恢复 "+info.heal[i].realValue+"血量("+info.heal[i].hp+"/"+info.heal[i].maxHP+")\033[0m\n")
+					console.log("\033[32m["+this.heroMap[info.heal[i]["id"]]+"] 恢复 "+info.heal[i].realValue+"血量("+info.heal[i].hp+"/"+info.heal[i].maxHP+")\033[0m\n")
 				}
 			}
 		break
 		case "revive":
-			console.log(info)
-			console.log("\033[32m["+info["id"]+"] 复活 (血量"+info.hp+"/"+info.maxHP+")\033[0m\n")
+			console.log("\033[32m["+this.heroMap[info["id"]]+"] 复活 (血量"+info.hp+"/"+info.maxHP+")\033[0m\n")
 		break
 		case "other_damage":
-			this.attackInfo(info,"\033[31m["+info["id"]+"] 受到 ")
+			this.attackInfo(info,"\033[31m["+this.heroMap[info["id"]]+"] 受到 ")
 		break
 		case "other_heal":
 			var str = ""
-			str += "\033[32m["+info["id"]+"] 恢复 "+info.realValue+"血量("+info.hp+"/"+info.maxHP+")\033[0m\n"
+			str += "\033[32m["+this.heroMap[info["id"]]+"] 恢复 "+info.realValue+"血量("+info.hp+"/"+info.maxHP+")\033[0m\n"
 			console.log(str)
 		break
 		case "changeAnger":
 			//怒气改变（显式更新）
-			console.log("\033[36m["+info.id+"号]\033[0m 怒气 "+info.changeAnger+"("+info.curAnger+")")
+			console.log("\033[36m["+this.heroMap[info.id]+"]\033[0m 怒气 "+info.changeAnger+"("+info.curAnger+")")
 		break
 		case "buffDamage":
 			//buff伤害
-			this.attackInfo(info,"\033[31m["+info["id"]+"]\033[0m 受到 ")
+			this.attackInfo(info,"\033[31m["+this.heroMap[info["id"]]+"]\033[0m 受到 ")
 		break
 		case "buffAdd":
+			var buffName = this.buffs[info["bId"]]["name"]
 			var str = ""
-			str += "\033[36m["+info["id"]+"]\033[0m BUFF新增 "+info.bId+ "  "+info.num+"层"
+			str += "\033[36m["+this.heroMap[info["id"]]+"]\033[0m "+buffName+ " "+info.num+"层"
 			console.log(str)
 		break
 		case "buffNum":
+			var buffName = this.buffs[info["bId"]]["name"]
 			var str = ""
-			str += "\033[36m["+info["id"]+"]\033[0m BUFF更新 "+info.bId+ "  "+info.num+"层"
+			str += "\033[36m["+this.heroMap[info["id"]]+"]\033[0m "+buffName+ " "+info.num+"层"
 			console.log(str)
 		break
 		case "buffDel":
+			var buffName = this.buffs[info["bId"]]["name"]
 			var str = ""
-			str += "\033[36m["+info["id"]+"]\033[0m BUFF消失 "+info.bId
+			str += "\033[36m["+this.heroMap[info["id"]]+"]\033[0m "+buffName+" 消失"
 			console.log(str)
 		break
 		case "fightOver":

@@ -66,6 +66,12 @@ model.prototype.init = function() {
 		this.defaultSkill.laterSkill = atk_skill
 		this.angerSkill.laterSkill = atk_skill
 	}
+	//低血量触发技能仅一次
+	if(this.talents.lowhp_skill_once)
+		this.talents.lowhp_skill_once = this.packageSkillBySid(this.talents.lowhp_skill_once)
+	//普攻触发技能
+	if(this.talents.normal_skill)
+		this.defaultSkill.laterSkill = this.packageSkillBySid(this.talents.normal_skill)
 	if(this.talents.behit_skill)
 		this.talents.behit_skill = this.packageSkillBySid(this.talents.behit_skill)
 	//被攻击触发次数
@@ -166,6 +172,8 @@ model.prototype.init = function() {
 		this.talents.survive_team_buff = this.fighting.buffManager.getBuffByData(this.talents.survive_team_buff)
 	if(this.talents.round_buff)
 		this.talents.round_buff = this.fighting.buffManager.getBuffByData(this.talents.round_buff)
+	if(this.talents.behit_buff)
+		this.talents.behit_buff = this.fighting.buffManager.getBuffByData(this.talents.behit_buff)
 	this.attInfo.hp = this.attInfo.maxHP
 	this.attInfo.speed += this.attInfo.main_hit
 }
@@ -221,6 +229,8 @@ model.prototype.after = function() {
 //整体回合开始
 model.prototype.roundBegin = function() {
 	this.isAction = false
+	if(this.buffs["turtle"])
+		this.buffs["turtle"].checkRev()
 	if(this.died)
 		return
 	if(this.talents.survive_team_buff){
@@ -236,8 +246,15 @@ model.prototype.roundBegin = function() {
 			this.fighting.skillManager.useSkill(skillInfo)
 	}
 	if(this.buffs["together"] && this.buffs["together"].attacker.died){
-		this.buffs["together"].attacker.revive(0.3 * this.buffs["together"].attacker.getTotalAtt("maxHP"))
-		this.buffs["together"].attacker.addAnger(25,true)
+		var tmpHPRate = this.buffs["together"].getBuffValue()
+		if(tmpHPRate){
+			if(this.getHPRate() < tmpHPRate)
+				return
+			this.onOtherDamage(this,Math.floor(this.attInfo.maxHP * tmpHPRate))
+		}
+		this.buffs["together"].attacker.revive(this.buffs["together"].getBuffMul() * this.buffs["together"].attacker.getTotalAtt("maxHP"))
+		if(!tmpHPRate)
+			this.buffs["together"].attacker.addAnger(25,true)
 	}
 }
 //整体回合结束
@@ -487,6 +504,13 @@ model.prototype.onHit = function(attacker,info,hitFlag,isAnger) {
 		info.value -= storeDamage
 		this.fighting.buffManager.createBuff(attacker,this,{"buffId":"store_damage","value":storeDamage,"duration":3})
 	}
+	//减伤判断
+	if(this.talents.behit_def_rate)
+		info.value = Math.floor(info.value * (1 - this.talents.behit_def_rate))
+	//双倍伤害概率
+	if(attacker.talents.double_damage && this.fighting.randomCheck(attacker.talents.double_damage)){
+		info.value = info.value * 2
+	}
 	this.lessHP(info,hitFlag)
 	//秒杀判断
 	if(hitFlag && attacker.talents.hp_seckill && this.getHPRate() < attacker.talents.hp_seckill)
@@ -506,15 +530,28 @@ model.prototype.onHitBefore = function(attacker,skill) {
 		if(attacker.talents.spe_buff_amp)
 			attacker.changeTotalTmp("amp",attacker.talents.spe_buff_amp)
 	}
+	//性别伤害加成
+	if(this.sex == 1){
+		if(attacker.buffs["man_amp"])
+			attacker.changeTotalTmp("amp",attacker.buffs["man_amp"].getBuffValue())
+	}else{
+		if(attacker.buffs["woman_amp"])
+			attacker.changeTotalTmp("amp",attacker.buffs["woman_amp"].getBuffValue())
+	}
 	if(skill.isAnger){
-		//男性伤害加成
+		//技攻对男性伤害加成
 		if(this.sex == 1 && attacker.talents.anger_man_amp)
 			attacker.changeTotalTmp("amp",attacker.talents.anger_man_amp)
+	}else{
+		//受到普攻伤害降低
+		if(this.talents.normal_def){
+			this.changeTotalTmp("ampDef",this.talents.normal_def)
+		}
 	}
 }
 //受到攻击时
 model.prototype.onHiting = function(attacker,skill,info) {
-	if(info.realValue){
+	if(info.realValue && skill.origin){
 		//相邻溅射
 		if(skill.talents.splash_nearby){
 			var splashDamage = Math.floor(skill.talents.splash_nearby * info.realValue)
@@ -531,14 +568,28 @@ model.prototype.onHiting = function(attacker,skill,info) {
 			for(var i = 0;i < targets.length;i++)
 				info.splashs.push(targets[i].onHit(this,{value:splashDamage}))
 		}
-		//普攻溅射
-		if(!skill.isAnger && attacker.buffs["normal_damage"] && this.fighting.randomCheck(attacker.buffs["normal_damage"].getBuffMul(),"normal_damage")){
-			var splashDamage = Math.floor(attacker.buffs["normal_damage"].getBuffValue() * info.realValue)
+		//攻击溅射
+		if(attacker.talents.splash_nearby_rate && this.fighting.randomCheck(attacker.talents.splash_nearby_rate,"splash_nearby_rate")){
+			var splashDamage = Math.floor(attacker.talents.splash_nearby_dmg * info.realValue)
 			var targets = this.fighting.locator.getNearby(this)
 			info.splashs = info.splashs ? info.splashs : []
 			for(var i = 0;i < targets.length;i++)
 				info.splashs.push(targets[i].onHit(attacker,{value:splashDamage}))
 		}
+		if(skill.isAnger){
+			//技攻
+
+		}else{
+			//普攻溅射
+			if(attacker.buffs["normal_damage"] && this.fighting.randomCheck(attacker.buffs["normal_damage"].getBuffMul(),"normal_damage")){
+				var splashDamage = Math.floor(attacker.buffs["normal_damage"].getBuffValue() * info.realValue)
+				var targets = this.fighting.locator.getNearby(this)
+				info.splashs = info.splashs ? info.splashs : []
+				for(var i = 0;i < targets.length;i++)
+					info.splashs.push(targets[i].onHit(attacker,{value:splashDamage}))
+			}
+		}
+
 	}
 }
 //受到攻击结束后
@@ -569,8 +620,16 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 	//血量损失触发
 	this.triggerLossHP()
 	//血量低于50%回血
-	if(this.buffs["hit_heal"] && (this.getTotalAtt("hp") / this.getTotalAtt("maxHP")) < 0.5)
-		this.onOtherHeal(this,this.buffs["hit_heal"].getBuffMul() * this.getTotalAtt("maxHP"))
+	if(this.getHPRate() < 0.5){
+		//低血量回血
+		if(this.buffs["hit_heal"])
+			this.onOtherHeal(this,this.buffs["hit_heal"].getBuffMul() * this.getTotalAtt("maxHP"))
+		//低血量触发技能
+		if(this.talents.lowhp_skill_once){
+			this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.lowhp_skill_once))
+			delete this.talents.lowhp_skill_once
+		}
+	}
 	if(this.talents.behit_healRate && this.fighting.randomCheck(this.talents.behit_healRate,"behit_healRate")){
 		this.onOtherHeal(this,this.talents.behit_healMul * this.getTotalAtt("atk"))
 		if(this.talents.behit_hpanger)
@@ -582,7 +641,8 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 	}
 	//被攻击对攻击者释放BUFF
 	if(this.talents.behit_buff)
-		this.fighting.buffManager.createBuffByData(this,attacker,this.talents.behit_buff)
+		if(this.fighting.randomCheck(this.talents.behit_buff.rate,"behit_buff"))
+			this.fighting.buffManager.createBuff(this,attacker,this.talents.behit_buff)
 	//被攻击触发技能概率
 	if(this.talents.behit_skill  && this.fighting.randomCheck(this.talents.behit_skill_rate,"behit_skill_rate"))
 		this.fighting.skillManager.useSkill(this.useOtherSkill(this.talents.behit_skill))
@@ -593,7 +653,7 @@ model.prototype.onHitAfter = function(skill,attacker,info) {
 			this.talents.atk_trigger_cur = 0
 			if(this.talents.atk_trigger_buff){
 				var tmpBuff = this.fighting.buffManager.getBuffByData(this.talents.atk_trigger_buff)
-				var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
+				var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[attacker])
 				for(var j = 0;j < buffTargets.length;j++)
 					if(this.fighting.randomCheck(tmpBuff.rate,"atk_trigger_buff"))
 						this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
@@ -645,6 +705,8 @@ model.prototype.onDie = function(info) {
 		if(!this.buffs[i].buffCfg.save)
 			this.buffs[i].destroy()
 	this.fighting.fightInfo[this.belong]["survival"]--
+	if(this.buffs["turtle"])
+		this.buffs["turtle"].trigger()
 }
 //任意角色阵亡
 model.prototype.anyDie = function(target) {
@@ -656,15 +718,22 @@ model.prototype.anyDie = function(target) {
 		for(var j = 0;j < buffTargets.length;j++)
 			this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
 	}
-	//敌对目标
 	if(target.belong != this.belong){
+		//敌对目标
 		if(this.talents.enemy_die_buff){
 			var tmpBuff = this.talents.enemy_die_buff
 			var buffTargets = this.fighting.locator.getBuffTargets(this,tmpBuff.targetType,[])
 			for(var j = 0;j < buffTargets.length;j++)
 				this.fighting.buffManager.createBuff(this,buffTargets[j],tmpBuff)
 		}
+		if(this.talents.enemy_die_heal){
+			var targets = this.fighting.locator.getTargets(this,"team_all")
+			var healValue = this.talents.enemy_die_heal * this.getTotalAtt("atk")
+			for(var i = 0;i < targets.length;i++)
+				targets[i].onOtherHeal(this,healValue)
+		}
 	}else{
+		//友方目标
 		if(this.talents.friend_die_anger){
 			this.addAnger(this.talents.friend_die_anger,true)
 		}
@@ -815,8 +884,19 @@ model.prototype.lessHP = function(info,hitFlag) {
 		this.hp_loss += tmpHPRate
 		this.addAnger(Math.floor(tmpHPRate * 80),false)
 	}
-	if(this.buffs["lowhp_heal"] && this.getHPRate() < 0.3 && this.buffs["lowhp_heal"].enoughCD())
-		this.onOtherHeal(this,this.buffs["lowhp_heal"].getBuffMul() * this.fighting.fightInfo[this.rival]["survival"] * this.attInfo.maxHP)
+	if(this.getHPRate() < 0.3){
+		if(this.buffs["lowhp_heal"] && this.buffs["lowhp_heal"].enoughCD())
+			this.onOtherHeal(this,this.buffs["lowhp_heal"].getBuffMul() * this.fighting.fightInfo[this.rival]["survival"] * this.attInfo.maxHP)
+		if(this.buffs["buff_505015"] && this.buffs["buff_505015"].enoughNum()){
+			this.dispelAllLess()
+			if(this.buffs["buff_505015"].getBuffMul()){
+				var targets = this.fighting.locator.getTargets(this,"team_all")
+				var healValue = this.buffs["buff_505015"].getBuffMul() * targets[i].getTotalAtt("maxHP")
+				for(var i = 0;i < targets.length;i++)
+					targets[i].onOtherHeal(this,healValue)
+			}
+		}
+	}
 	info.curAnger = this.curAnger
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
@@ -871,6 +951,8 @@ model.prototype.revive = function(value) {
 	this.died = false
 	this.fighting.fightInfo[this.belong]["survival"]++
 	this.fighting.fightRecord.push({type : "revive",id : this.id,hp : this.attInfo.hp,maxHP:this.attInfo.maxHP})
+	if(this.buffs["turtle"])
+		this.buffs["turtle"].close()
 }
 //添加BUFF
 model.prototype.createBuff = function(buff) {
@@ -896,6 +978,16 @@ model.prototype.removeBuff = function(buffId) {
 model.prototype.dispelLessBuff = function() {
 	this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"dispelLess"})
 	for(var i in this.buffs){
+		if(this.buffs[i].buffCfg.dispel_less){
+			this.buffs[i].delBuff()
+			return
+		}
+	}
+}
+//移除所有负面状态
+model.prototype.dispelAllLess = function() {
+	this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"dispelLess"})
+	for(var i in this.buffs){
 		if(this.buffs[i].buffCfg.dispel_less)
 			this.buffs[i].delBuff()
 	}
@@ -904,8 +996,10 @@ model.prototype.dispelLessBuff = function() {
 model.prototype.dispelAddBuff = function() {
 	this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"dispelAdd"})
 	for(var i in this.buffs){
-		if(this.buffs[i].buffCfg.dispel_add)
+		if(this.buffs[i].buffCfg.dispel_add){
 			this.buffs[i].delBuff()
+			return
+		}
 	}
 }
 //===============攻击触发
@@ -959,6 +1053,8 @@ model.prototype.onBlock = function(attacker,info) {
 		if(this.talents.block_buff2)
 			this.fighting.buffManager.createBuff(this,this,this.talents.block_buff2)
 	}
+	if(this.talents.block_heal)
+		this.onOtherHeal(this,this.talents.block_heal * this.getTotalAtt("atk"))
 }
 //触发暴击
 model.prototype.onCrit = function(attacker,info) {
@@ -1003,6 +1099,7 @@ model.prototype.attackNormalAfter = function(skill) {
 model.prototype.getSimpleInfo = function() {
 	var info = {
 		id : this.id,
+		heroId : this.heroId,
 		belong : this.belong,
 		index : this.index,
 		lv : this.lv,

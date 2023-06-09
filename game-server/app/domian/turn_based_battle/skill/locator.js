@@ -113,6 +113,10 @@ model.prototype.getTargets = function(character,targetType) {
 			return this.getEnemyMaxAnger(character)
 		case "friend_minHP":
 			return this.getFriendMinHp(character)
+		case "team_women":
+			return this.getTeamWomen(character)
+		case "enemy_man":
+			return this.getEnemyMan(character)
 		default:
 			//默认单体
 			return this.getEnemyNormal(character)
@@ -472,6 +476,28 @@ model.prototype.getFriendMinHp = function(character) {
 		return [target]
 	else
 		return []
+}
+//我方全体女性
+model.prototype.getTeamWomen = function(character) {
+    var list = []
+    var team =  character.team
+	for(var index = 0;index < team.length;index++){
+		if(team[index].checkAim() && team[index].sex == 2){
+			list.push(team[index])
+		}
+	}
+    return list
+}
+//敌方全体男性
+model.prototype.getEnemyMan = function(character) {
+    var list = []
+    var enemyTeam =  character.enemyTeam
+	for(var index = 0;index < enemyTeam.length;index++){
+		if(enemyTeam[index].checkAim() && enemyTeam[index].sex == 1){
+			list.push(enemyTeam[index])
+		}
+	}
+    return list
 }
 //计算距离 X轴权重高
 model.prototype.callDist = function(pos1,pos2) {

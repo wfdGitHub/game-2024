@@ -69,7 +69,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 			basic = Math.ceil(basic * slay)
 		}
 	}
-	info.value = basic
+	info.value = Math.max(basic,0)
 	this.onDamageOver(attacker,target,skill,info)
 	attacker.clearTmpInfo()
 	target.clearTmpInfo()

@@ -115,6 +115,11 @@ model.prototype.attackBefore = function(targets) {
 	}
 	if(this.character.buffs["jiuyang_real"])
 		this.changeTotalTmp("atk",Math.floor(this.getTotalAtt("armor") * 0.2))
+	if(this.character.buffs["vital_point_sneak"]){
+		for(var i = 0;i < targets.length;i++){
+			this.character.fighting.buffManager.createBuff(this.character,targets[i],{"buffId":"vital_point","duration":1})
+		}
+	}
 }
 //使用技攻前
 model.prototype.attackSkillBefore = function(targets) {
@@ -147,6 +152,11 @@ model.prototype.attackAfter = function(target,info) {
 		if(tmpTarget)
 			this.character.fighting.buffManager.createBuff(this.character,tmpTarget,tmpTarget.buffs["poison"].list[0].buff)
 	}
+	if(this.character.buffs["vital_point_sneak"]){
+		if(target.buffs["vital_point"] && target.buffs["vital_point"].attacker == this.character){
+			target.buffs["vital_point"].destroy()
+		}
+	}
 	if(this.isAnger)
 		this.attackSkillAfter(target,info)
 	else
@@ -154,8 +164,13 @@ model.prototype.attackAfter = function(target,info) {
 }
 //技攻结束后
 model.prototype.attackSkillAfter = function(target,info) {
-	if(this.character.talents.skill_poison_break && target.buffs["poison"] && this.character.fighting.randomCheck(this.character.talents.skill_poison_break,"skill_poison_break"))
-		target.buffs["poison"].breakOnce(this.character)
+	if(target.buffs["poison"]){
+		//目标处于中毒状态
+		if(this.character.talents.skill_poison_break && this.character.fighting.randomCheck(this.character.talents.skill_poison_break,"skill_poison_break"))
+			target.buffs["poison"].breakOnce(this.character)
+		if(this.character.talents.skill_poison_damage)
+			target.onOtherDamage(this,this.getTotalAtt("atk") * this.character.talents.skill_poison_damage)
+	}
 }
 //普攻结束后
 model.prototype.attackNormalAfter = function(target,info) {

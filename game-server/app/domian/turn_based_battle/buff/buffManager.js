@@ -76,6 +76,11 @@ model.prototype.createBuff = function(attacker,character,buff) {
 			character.fighting.fightRecord.push({type:"tag",id:character.id,tag:"uncontrol"})
 			return
 		}
+		if(character.buffs["uncontrol_once"]){
+			character.buffs["uncontrol_once"].destroy()
+			character.fighting.fightRecord.push({type:"tag",id:character.id,tag:"uncontrol"})
+			return
+		}
 	}
 	//印记状态下的目标无法获得护盾
 	if(buffId == "hudun" && character.buffs["sign_unheal"])

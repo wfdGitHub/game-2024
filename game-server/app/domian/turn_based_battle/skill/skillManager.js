@@ -34,8 +34,10 @@ model.prototype.skillAction = function(skillInfo,skill,record) {
 	}
 	this.fighting.fightRecord.push(record)
 	this.skillAfter(skillInfo,skill,record,attackTargets)
-	this.buffSkill(skill,attackTargets)
-	this.buffSkill(skill,healTargets)
+	if(attackTargets.length)
+		this.buffSkill(skill,attackTargets)
+	else if(healTargets.length)
+		this.buffSkill(skill,healTargets)
 }
 //伤害技能
 model.prototype.attackSkill = function(skillInfo,skill,record) {
@@ -64,6 +66,15 @@ model.prototype.attackSkill = function(skillInfo,skill,record) {
 //治疗技能
 model.prototype.healSkill = function(skillInfo,skill,record) {
 	record.heal = []
+	if(skill.talents.revive_friend_mul){
+		var team = skill.character.team
+		for(var i = 0;i < team.length;i++){
+			if(!team[i].isNaN && team[i].died){
+				team[i].revive(Math.floor(skill.character.getTotalAtt("atk") * skill.talents.revive_friend_mul))
+				return []
+			}
+		}
+	}
 	var targets = this.fighting.locator.getTargets(skill.character,skill.heal_aim)
 	for(var i = 0;i < targets.length;i++){
 		var info = this.fighting.formula.calHeal(skill.character, targets[i],skill)

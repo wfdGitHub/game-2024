@@ -36,6 +36,7 @@ model.prototype.addBuff = function(attacker,buff) {
 	for(var i = 0;i < count;i++){
 		if(this.list.length < this.max_count){
 			changeFlag = true
+			this.attacker = attacker
 			this.list.push({attacker:attacker,buff : buff,duration : buff.duration})
 			if(buff.num){
 				this.MAX_NUM = buff.num
@@ -113,6 +114,8 @@ model.prototype.enoughNum = function() {
 }
 //获取加成属性
 model.prototype.getAttInfo = function(name) {
+	if(this.buffId == "hudun" && name == "ampDef")
+	console.log(name)
 	if(this.attKeys[name] !== undefined){
 		var value = 0
 		for(var i = 0;i < this.list.length;i++){
