@@ -1,6 +1,7 @@
 var bearcat = require("bearcat")
 var uuid = require("uuid")
 var pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
+var fightContorl = require("../../../domain/turn_based_battle/fightContorl.js")
 var adminHandler = function(app) {
 	this.app = app
 	this.areaDeploy = this.app.get("areaDeploy")
@@ -299,6 +300,20 @@ adminHandler.prototype.endBeherrscher = function(msg, session, next) {
   this.areaManager.areaMap[areaId].endBeherrscher(uid,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
+}
+//获取战斗结果
+adminHandler.prototype.getBattleTextResult = function(msg, session, next) {
+	if(!msg.fightInfo){
+		next(null,{flag:false})
+		return
+	}
+	var fightInfo = JSON.parse(msg.fightInfo)
+	var atkTeam = fightInfo.atkTeam
+	var defTeam = fightInfo.defTeam
+	var otps = fightInfo.otps
+	fightContorl.beginFight(atkTeam,defTeam,otps)
+	var list = fightContorl.fighting.fightRecord.getTextList()
+	next(null,{flag:true,list:list})
 }
 module.exports = function(app) {
 	return bearcat.getBean({

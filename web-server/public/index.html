@@ -3670,6 +3670,15 @@
             console.log(data);
         })
       }
+      //获取战斗文字结果  fightInfo  = JSON.stringify({atkTeam,defTeam,otps})
+      var getBattleTextResult = function(fightInfo) {
+        pomelo.request("admin.adminHandler.getBattleTextResult", {fightInfo:fightInfo}, function(data) {
+          var list = data.list
+          for(var i = 0;i < list.length;i++){
+            console.log(list[i]);
+          }
+        });
+      }
     </script>
   </head>
   <body>

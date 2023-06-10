@@ -550,6 +550,7 @@ heroDao.prototype.getHeros = function(uid,cb) {
 }
 //更新英雄战力
 heroDao.prototype.updateHeroCe = function(areaId,uid,hId) {
+	return
 	var self = this
 	self.getHeroOne(uid,hId,function(flag,data) {
 		if(flag && data){
