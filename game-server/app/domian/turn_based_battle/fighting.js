@@ -76,6 +76,16 @@ model.prototype.loadEnemy = function() {
 		this.fightInfo["def"]["team"][i].enemyTeam = this.fightInfo["atk"]["team"]
 	}
 }
+//获取战斗数据
+model.prototype.getTeamData = function() {
+	//英雄初始化
+	var teamDatas = {}
+	for(var i in this.allHero){
+		this.allHero[i].init()
+		teamDatas[this.allHero[i].id] = this.allHero[i].getFullInfo()
+	}
+	return teamDatas
+}
 //战斗开始
 model.prototype.fightBegin = function() {
 	if(this.fightState !== 1){

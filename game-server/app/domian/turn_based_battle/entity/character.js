@@ -1112,6 +1112,7 @@ model.prototype.getSimpleInfo = function() {
 model.prototype.getFullInfo = function() {
 	var info = this.getSimpleInfo()
 	info.attInfo = JSON.parse(JSON.stringify(this.attInfo))
+	info.attInfo.speed = Math.floor(info.attInfo.speed)
 	return info
 }
 //结算信息

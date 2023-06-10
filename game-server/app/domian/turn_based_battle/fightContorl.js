@@ -8,6 +8,11 @@ var model = function(){
 	this.managers = {}
 	this.managers["buffManager"] = new buffManager()
 }
+//获取团队数据
+model.prototype.getTeamData = function(atkTeam,defTeam,otps) {
+	var fighting = new fightingEntity(atkTeam,defTeam,otps,this.managers)
+	return fighting.getTeamData()
+}
 //开始战斗
 model.prototype.beginFight = function(atkTeam,defTeam,otps) {
 	var fighting = new fightingEntity(atkTeam,defTeam,otps,this.managers)
