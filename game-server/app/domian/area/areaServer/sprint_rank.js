@@ -160,8 +160,10 @@ module.exports = function() {
 	}
 	//更新排行榜
 	this.updateSprintRank = function(rankType,uid,value) {
+		console.log("updateSprintRank111",rankType,uid,value)
 		self.incrbyZset(rankType,uid,value,function(data) {
 			data = Math.floor(data) + ((MAX_NUM - Date.now()) * 1e-14)
+			console.log("updateSprintRank222",data)
 			self.addZset(rankType,uid,data)
 		})
 	}

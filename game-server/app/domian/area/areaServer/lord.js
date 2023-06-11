@@ -68,6 +68,7 @@ module.exports = function() {
 	}
 	//主公获得经验值
 	this.addLordExp = function(uid,exp) {
+		console.log("addLordExp",uid,exp)
 		self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","exp",exp,function(err,value) {
 			if(err)
 				console.error(err)
