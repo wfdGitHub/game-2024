@@ -1,11 +1,11 @@
 const fightCfg = require("./fightCfg.js")
-var model = function(fighting) {
-	this.fighting = fighting
-	this.list = []
-	this.textList = []
-	this.heroMap = {}
+var model = function() {
+	this.clear()
 	this.buffs = fightCfg.getCfg("buffs")
 	this.heros = fightCfg.getCfg("heros")
+	this.skills = fightCfg.getCfg("skills")
+	this.skill_targets = fightCfg.getCfg("skill_targets")
+	this.hero_talents = fightCfg.getCfg("hero_talents")
 }
 model.prototype.clear = function() {
 	this.list = []
@@ -18,9 +18,6 @@ model.prototype.push = function(info) {
 }
 model.prototype.getList = function() {
 	return this.list.concat([])
-}
-model.prototype.isWin = function() {
-	return this.fighting.getNormalWin()
 }
 model.prototype.translate = function(info) {
 	switch(info.type){
@@ -157,4 +154,51 @@ model.prototype.attackInfo = function(info,str) {
 model.prototype.saveText = function(text) {
 	this.textList.push(text)
 }
-module.exports = model
+//获取技能数据
+model.prototype.getHeroData = function(heroInfo) {
+	var id = heroInfo.id
+	var heroData = {}
+	if(!this.heros[id]){
+		return "英雄不存在"
+	}
+	var heroCfg = this.heros[id]
+	heroData.name = heroCfg["name"]
+	//主属性
+	heroData["s0"] = {}
+	heroData["s0"].name = "普攻"
+	heroData["s0"].texts = [this.getSkillText(heroCfg["defult"],heroInfo["s0_lv"])]
+	heroData["s1"] = {}
+	heroData["s1"].name = heroCfg["s1_name"]
+	heroData["s1"].texts = {}
+	for(var j = 1;j <= 5;j++)
+		heroData["s1"].texts[j] = this.getSkillText(heroCfg["s1"]+j,heroInfo["s1_lv"])
+	for(var i = 2;i <= 5;i++){
+		var key = "s"+i
+		heroData[key] = {}
+		heroData[key].name = heroCfg["s"+i+"_name"]
+		heroData[key].texts = {}
+		for(var j = 1;j <= 5;j++){
+			if(this.hero_talents[heroCfg["s"+i]+j])
+				heroData[key].texts[j] = this.hero_talents[heroCfg["s"+i]+j]["des"]
+		}
+	}
+	return heroData
+}
+//获取技能描述
+model.prototype.getSkillText = function(sid,lv) {
+	if(!this.skills[sid])
+		return ""
+	lv = lv || 0
+	var text = this.skills[sid]["des"]
+	if(this.skills[sid]["atk_aim"] && this.skill_targets[this.skills[sid]["atk_aim"]])
+		text = text.replaceAll("atk_aim",this.skill_targets[this.skills[sid]["atk_aim"]]["name"])
+	text = text.replaceAll("atk_mul",this.skills[sid]["atk_mul"]*100+"%")
+	text = text.replaceAll("atk_value",this.skills[sid]["atk_basic"]*lv)
+	text = text.replaceAll("d_type",this.skills[sid]["d_type"]=="phy"?"外功":"内功")
+	if(this.skills[sid]["heal_aim"] && this.skill_targets[this.skills[sid]["heal_aim"]])
+		text = text.replaceAll("heal_aim",this.skill_targets[this.skills[sid]["heal_aim"]]["name"])
+	text = text.replaceAll("heal_mul",this.skills[sid]["heal_mul"]*100+"%")
+	text = text.replaceAll("heal_value",this.skills[sid]["heal_basic"]*lv)
+	return text
+}
+module.exports = new model()

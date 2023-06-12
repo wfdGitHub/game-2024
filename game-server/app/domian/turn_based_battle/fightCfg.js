@@ -1,6 +1,7 @@
 //配置模块
 const initCfg = []
 var model = function() {}
+model.maps = {}
 model.init = function() {
 	this.maps = {}
 	//加载初始配置

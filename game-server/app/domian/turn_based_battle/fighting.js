@@ -1,7 +1,7 @@
 'use strict';
 const TEAMLENGTH = 5 				//队伍人数
 const character = require("./entity/character.js")
-const fightRecordFun = require("./fightRecord.js")
+const fightRecord = require("./fightRecord.js")
 const locatorFun = require("./skill/locator.js")
 const formulaFun = require("./skill/formula.js")
 const skillManagerFun = require("./skill/skillManager.js")
@@ -11,7 +11,8 @@ var model = function(atkInfo,defInfo,otps,managers) {
 	this.fightInfo.def.info = JSON.parse(JSON.stringify(defInfo || []))
 	this.otps = JSON.parse(JSON.stringify(otps || {}))
 	this.seededNum = this.otps.seededNum || (new Date()).getTime()
-	this.fightRecord = new fightRecordFun(this)
+	this.fightRecord = fightRecord
+	this.fightRecord.clear()
 	this.locator = new locatorFun(this)
 	this.formula = new formulaFun(this)
 	this.skillManager = new skillManagerFun(this)
