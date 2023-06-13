@@ -204,7 +204,7 @@ model.prototype.getSkillText = function(sid,lv) {
 		}
 		return text
 	}catch(err){
-		console.log(sid,lv,text,err)
+		console.log(sid,lv,text,typeof(text))
 	}
 }
 module.exports = new model()
