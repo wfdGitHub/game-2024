@@ -1,7 +1,7 @@
 var bearcat = require("bearcat")
 var uuid = require("uuid")
 var pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
-var fightContorl = require("../../../domain/turn_based_battle/fightContorl.js")
+var fightContorl = require("../../../domian/turn_based_battle/fightContorl.js")
 var adminHandler = function(app) {
 	this.app = app
 	this.areaDeploy = this.app.get("areaDeploy")

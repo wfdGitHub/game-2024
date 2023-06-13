@@ -186,21 +186,25 @@ model.prototype.getHeroData = function(heroInfo) {
 }
 //获取技能描述
 model.prototype.getSkillText = function(sid,lv) {
-	if(!this.skills[sid])
-		return ""
-	lv = lv || 0
-	var text = this.skills[sid]["des"] || ""
-	if(text){
-		if(this.skills[sid]["atk_aim"] && this.skill_targets[this.skills[sid]["atk_aim"]])
-			text = text.replaceAll("atk_aim",this.skill_targets[this.skills[sid]["atk_aim"]]["name"])
-		text = text.replaceAll("atk_mul",this.skills[sid]["atk_mul"]*100+"%")
-		text = text.replaceAll("atk_value",this.skills[sid]["atk_basic"]*lv)
-		text = text.replaceAll("d_type",this.skills[sid]["d_type"]=="phy"?"外功":"内功")
-		if(this.skills[sid]["heal_aim"] && this.skill_targets[this.skills[sid]["heal_aim"]])
-			text = text.replaceAll("heal_aim",this.skill_targets[this.skills[sid]["heal_aim"]]["name"])
-		text = text.replaceAll("heal_mul",this.skills[sid]["heal_mul"]*100+"%")
-		text = text.replaceAll("heal_value",this.skills[sid]["heal_basic"]*lv)
+	try{
+		if(!this.skills[sid])
+			return ""
+		lv = lv || 0
+		var text = this.skills[sid]["des"] || ""
+		if(text){
+			if(this.skills[sid]["atk_aim"] && this.skill_targets[this.skills[sid]["atk_aim"]])
+				text = text.replaceAll("atk_aim",this.skill_targets[this.skills[sid]["atk_aim"]]["name"])
+			text = text.replaceAll("atk_mul",this.skills[sid]["atk_mul"]*100+"%")
+			text = text.replaceAll("atk_value",this.skills[sid]["atk_basic"]*lv)
+			text = text.replaceAll("d_type",this.skills[sid]["d_type"]=="phy"?"外功":"内功")
+			if(this.skills[sid]["heal_aim"] && this.skill_targets[this.skills[sid]["heal_aim"]])
+				text = text.replaceAll("heal_aim",this.skill_targets[this.skills[sid]["heal_aim"]]["name"])
+			text = text.replaceAll("heal_mul",this.skills[sid]["heal_mul"]*100+"%")
+			text = text.replaceAll("heal_value",this.skills[sid]["heal_basic"]*lv)
+		}
+		return text
+	}catch(err){
+		console.log(sid,lv,err)
 	}
-	return text
 }
 module.exports = new model()
