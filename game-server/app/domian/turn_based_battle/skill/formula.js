@@ -29,7 +29,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	//==========================开始计算伤害
 	//闪避判断
 	if(!target.buffs["vital_point"]){
-		var dodge = target.getTotalAtt("hitDef") - attacker.getTotalAtt("hit")
+		var dodge = target.getTotalAtt("hitDef") - attacker.getTotalAtt("hit") + (target.getTotalAtt("main_hit") - attacker.getTotalAtt("main_hit")) * 0.005
 		dodge = Math.min(dodge,0.9) 	//闪避率最高不超过90%
 		if(this.fighting.randomCheck(dodge,"dodge")){
 			info.dodge = true
@@ -44,16 +44,19 @@ model.prototype.calDamage = function(attacker,target,skill) {
 	else
 		basic += Math.ceil(basic * (attacker.getTotalAtt("normalAmp") - target.getTotalAtt("normalDef")))
 	//主属性增伤
-	if(info.d_type == "mag")
+	if(info.d_type == "mag"){
 		basic += Math.ceil(basic * (attacker.getTotalAtt("magAmp") - target.getTotalAtt("magDef")))
-	else if(info.d_type == "phy")
+		basic += Math.ceil(basic * (attacker.getTotalAtt("main_mag") - target.getTotalAtt("main_mag")) * 0.01)
+	}
+	else if(info.d_type == "phy"){
 		basic += Math.ceil(basic * (attacker.getTotalAtt("phyAmp") - target.getTotalAtt("phyDef")))
-
+		basic += Math.ceil(basic * (attacker.getTotalAtt("main_phy") - target.getTotalAtt("main_phy")) * 0.01)
+	}
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
-	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
+	basic = Math.ceil(basic * (1 - (target.getTotalAtt("main_dr") - 60) * 0.006))
 	//格挡判断
 	if(!target.buffs["vital_point"]){
-		var block = target.getTotalAtt("block") - attacker.getTotalAtt("blockDef")
+		var block = target.getTotalAtt("block") - attacker.getTotalAtt("blockDef") + (target.getTotalAtt("main_slay") - attacker.getTotalAtt("main_slay")) * 0.005
 		block = Math.min(block,0.9) 	//格挡率最高不超过90%
 		if(this.fighting.randomCheck(block,"block")){
 			info.block = true
@@ -65,7 +68,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef")
 		if(this.fighting.randomCheck(crit,"crit")){
 			info.crit = true
-			var slay = 1.5 + attacker.getTotalAtt("slay") - attacker.getTotalAtt("slayDef")
+			var slay = 1.5 + attacker.getTotalAtt("slay") - attacker.getTotalAtt("slayDef") + (attacker.getTotalAtt("main_slay") - 60) * 0.006
 			basic = Math.ceil(basic * slay)
 		}
 	}
@@ -81,7 +84,7 @@ model.prototype.calIndirectDamage = function(attacker,target,mul,value,d_type) {
 	basic = Math.max(basic,1) + (value || 0)
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt(d_type+"Amp") - target.getTotalAtt(d_type+"Def")))
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
-	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
+	basic = Math.ceil(basic * (1 - (target.getTotalAtt("main_dr") - 60) * 0.006))
 	if(target.buffs["buff_405095"])
 		basic += Math.ceil(target.buffs["buff_405095"].getBuffMul() * basic)
 	return basic
@@ -90,7 +93,7 @@ model.prototype.calIndirectDamage = function(attacker,target,mul,value,d_type) {
 model.prototype.calPoisonDamage = function(attacker,target,mul,value) {
 	var basic = (attacker.getTotalAtt("atk") - target.getTotalAtt("armor")) * mul
 	basic = Math.max(basic,1) + (value || 0)
-	basic = Math.ceil(basic * (1 - target.getTotalAtt("ampDefMain")))
+	basic = Math.ceil(basic * (1 - (target.getTotalAtt("main_dr") - 60) * 0.006))
 	if(target.buffs["buff_405095"])
 		basic += Math.ceil(target.buffs["buff_405095"].getBuffMul() * basic)
 	return basic

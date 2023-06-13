@@ -66,7 +66,6 @@ model.prototype.attInit = function() {
 	this.attInfo.controlDef = 0 		//免控率
 	this.attInfo.amp = 0 				//伤害加成
 	this.attInfo.ampDef = 0 			//伤害减免
-	this.attInfo.ampDefMain = 0 		//主属性减伤
 	this.attInfo.angerAmp = 0 			//技攻增伤
 	this.attInfo.angerDef = 0 			//技攻减伤
 	this.attInfo.normalAmp = 0 			//普攻增伤

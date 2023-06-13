@@ -1,4 +1,17 @@
 const fightCfg = require("./fightCfg.js")
+const serverColors = {
+	"end" : "\033[0m",
+	"blue" : "\033[36m",
+	"green" : "\033[32m",
+	"red" : "\033[31m"
+}
+const cocosColors = {
+	"end" : "</color>",
+	"blue" : "<color=blue>",
+	"green" : "<color=green>",
+	"red" : "<color=red>"
+}
+var colors = cocosColors
 var model = function() {
 	this.clear()
 	this.buffs = fightCfg.getCfg("buffs")
@@ -19,7 +32,7 @@ model.prototype.push = function(info) {
 model.prototype.getList = function() {
 	return this.list.concat([])
 }
-model.prototype.translate = function(info) {
+model.prototype.translate = function(info,type) {
 	switch(info.type){
 		case "fightBegin":
 			for(var i = 0;i < info.allHero.length;i++)
@@ -31,53 +44,53 @@ model.prototype.translate = function(info) {
 		break
 		case "skill":
 			//使用技能(怒气隐式更新)
-			this.saveText("\033[36m["+this.heroMap[info.id]+"]使用["+info.sid+"]\033[0m    怒气 "+info.changeAnger+"("+info.curAnger+")")
+			this.saveText(colors["blue"]+"["+this.heroMap[info.id]+"]使用["+info.sid+"]"+colors["end"]+"    怒气 "+info.changeAnger+"("+info.curAnger+")")
 			if(info.attack){
 				for(var i = 0;i < info.attack.length;i++){
-					this.attackInfo(info.attack[i],"  \033[31m对["+this.heroMap[info.attack[i]["id"]]+"]\t\033[0m 造成 ")
+					this.attackInfo(info.attack[i],"  "+colors["red"]+"对["+this.heroMap[info.attack[i]["id"]]+"]\t"+colors["end"]+" 造成 ")
 				}
 			}
 			if(info.heal){
 				for(var i = 0;i < info.heal.length;i++){
-					this.saveText("\033[32m["+this.heroMap[info.heal[i]["id"]]+"] 恢复 "+info.heal[i].realValue+"血量("+info.heal[i].hp+"/"+info.heal[i].maxHP+")\033[0m\n")
+					this.saveText(colors["green"]+"["+this.heroMap[info.heal[i]["id"]]+"] 恢复 "+info.heal[i].realValue+"血量("+info.heal[i].hp+"/"+info.heal[i].maxHP+")\033[0m\n")
 				}
 			}
 		break
 		case "revive":
-			this.saveText("\033[32m["+this.heroMap[info["id"]]+"] 复活 (血量"+info.hp+"/"+info.maxHP+")\033[0m\n")
+			this.saveText(colors["green"]+"["+this.heroMap[info["id"]]+"] 复活 (血量"+info.hp+"/"+info.maxHP+")\033[0m\n")
 		break
 		case "other_damage":
-			this.attackInfo(info,"\033[31m["+this.heroMap[info["id"]]+"] 受到 ")
+			this.attackInfo(info,colors["red"]+"["+this.heroMap[info["id"]]+"] 受到 ")
 		break
 		case "other_heal":
 			var str = ""
-			str += "\033[32m["+this.heroMap[info["id"]]+"] 恢复 "+info.realValue+"血量("+info.hp+"/"+info.maxHP+")\033[0m\n"
+			str += colors["green"]+"["+this.heroMap[info["id"]]+"] 恢复 "+info.realValue+"血量("+info.hp+"/"+info.maxHP+")\033[0m\n"
 			this.saveText(str)
 		break
 		case "changeAnger":
 			//怒气改变（显式更新）
-			this.saveText("\033[36m["+this.heroMap[info.id]+"]\033[0m 怒气 "+info.changeAnger+"("+info.curAnger+")")
+			this.saveText(colors["blue"]+"["+this.heroMap[info.id]+"]"+colors["end"]+" 怒气 "+info.changeAnger+"("+info.curAnger+")")
 		break
 		case "buffDamage":
 			//buff伤害
-			this.attackInfo(info,"\033[31m["+this.heroMap[info["id"]]+"]\033[0m 受到 ")
+			this.attackInfo(info,colors["red"]+"["+this.heroMap[info["id"]]+"]"+colors["end"]+" 受到 ")
 		break
 		case "buffAdd":
 			var buffName = this.buffs[info["bId"]]["name"]
 			var str = ""
-			str += "\033[36m["+this.heroMap[info["id"]]+"]\033[0m "+buffName+ " "+info.num+"层"
+			str += colors["blue"]+"["+this.heroMap[info["id"]]+"]"+colors["end"]+" "+buffName+ " "+info.num+"层"
 			this.saveText(str)
 		break
 		case "buffNum":
 			var buffName = this.buffs[info["bId"]]["name"]
 			var str = ""
-			str += "\033[36m["+this.heroMap[info["id"]]+"]\033[0m "+buffName+ " "+info.num+"层"
+			str += colors["blue"]+"["+this.heroMap[info["id"]]+"]"+colors["end"]+" "+buffName+ " "+info.num+"层"
 			this.saveText(str)
 		break
 		case "buffDel":
 			var buffName = this.buffs[info["bId"]]["name"]
 			var str = ""
-			str += "\033[36m["+this.heroMap[info["id"]]+"]\033[0m "+buffName+" 消失"
+			str += colors["blue"]+"["+this.heroMap[info["id"]]+"]"+colors["end"]+" "+buffName+" 消失"
 			this.saveText(str)
 		break
 		case "fightOver":
@@ -101,18 +114,28 @@ model.prototype.translate = function(info) {
 			this.saveText(info)
 	}
 }
+//获取客户端显示文字
+model.prototype.getCocosTextList = function() {
+	colors = cocosColors
+	var textList = this.getTextList()
+	for(var i = 0;i < this.textList.length;i++){
+		this.textList[i] = this.textList[i].replace(/\[\\033\[36m\[]/g,"<color=#ff0000>")
+	}
+	return textList
+}
 //获取文字数据
-model.prototype.getTextList = function() {
+model.prototype.getTextList = function(type) {
 	if(!this.list.length)
 		return
 	for(var i = 0;i < this.list.length;i++)
-		this.translate(this.list[i])
+		this.translate(this.list[i],type)
 	var textList = this.textList
 	this.clear()
 	return textList
 }
 //翻译文字
 model.prototype.explain = function() {
+	colors = serverColors
 	if(!this.list.length)
 		return
 	for(var i = 0;i < this.list.length;i++)
@@ -146,7 +169,7 @@ model.prototype.attackInfo = function(info,str) {
 	this.saveText(str)
 	if(info.splashs){
 		for(var i = 0;i < info.splashs.length;i++){
-			this.attackInfo(info.splashs[i],"  \033[31m溅射["+info.splashs[i]["id"]+"]\033[0m ")
+			this.attackInfo(info.splashs[i],"  "+colors["red"]+"溅射["+info.splashs[i]["id"]+"]\033[0m ")
 		}
 	}
 }

@@ -19,17 +19,7 @@ var model = function(fighting,otps) {
 model.prototype = Object.create(entity_base.prototype) //继承父类方法
 //战斗初始化
 model.prototype.init = function() {
-	//主属性增益
-	this.changeTotalAtt("hit",this.getTotalAtt("main_hit") * 0.005)
-	this.changeTotalAtt("hitDef",this.getTotalAtt("main_hit") * 0.005)
-	this.changeTotalAtt("magAmp",this.getTotalAtt("main_mag") * 0.01)
-	this.changeTotalAtt("magDef",this.getTotalAtt("main_mag") * 0.01)
-	this.changeTotalAtt("phyAmp",this.getTotalAtt("main_phy") * 0.01)
-	this.changeTotalAtt("phyDef",this.getTotalAtt("main_phy") * 0.01)
-	this.changeTotalAtt("block",this.getTotalAtt("main_slay") * 0.005)
-	this.changeTotalAtt("blockDef",this.getTotalAtt("main_slay") * 0.005)
-	this.changeTotalAtt("slay",(this.getTotalAtt("main_slay") - 60) * 0.006)
-	this.changeTotalAtt("ampDefMain",(this.getTotalAtt("main_dr") - 60) * 0.006)
+	//初始乱速
 	this.changeTotalAtt("speed",this.fighting.random())
 	//战斗属性
 	this.hp_loss = 0 			//战斗中失去生命值比例

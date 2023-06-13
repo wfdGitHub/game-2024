@@ -312,7 +312,7 @@ adminHandler.prototype.getBattleTextResult = function(msg, session, next) {
 	var defTeam = fightInfo.defTeam
 	var otps = fightInfo.otps
 	fightContorl.beginFight(atkTeam,defTeam,otps)
-	var list = fightContorl.fighting.fightRecord.getTextList()
+	var list = fightContorl.fighting.fightRecord.getCocosTextList()
 	next(null,{flag:true,list:list})
 }
 module.exports = function(app) {
