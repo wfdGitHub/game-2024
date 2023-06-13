@@ -189,7 +189,7 @@ model.prototype.getSkillText = function(sid,lv) {
 	if(!this.skills[sid])
 		return ""
 	lv = lv || 0
-	var text = this.skills[sid]["des"]
+	var text = this.skills[sid]["des"] || ""
 	if(this.skills[sid]["atk_aim"] && this.skill_targets[this.skills[sid]["atk_aim"]])
 		text = text.replaceAll("atk_aim",this.skill_targets[this.skills[sid]["atk_aim"]]["name"])
 	text = text.replaceAll("atk_mul",this.skills[sid]["atk_mul"]*100+"%")
