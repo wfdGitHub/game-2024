@@ -114,14 +114,14 @@ module.exports = function() {
 						for(var i in list){
 							list[i] = JSON.parse(list[i])
 							if(list[i]["uid"] && list[i]["uid"] > 10000)
-								self.sendMail(list[i]["uid"],"同盟竞拍成功","恭喜您竞拍成功，这是您的竞拍物品。",list[i]["item"])
+								self.sendTextToMail(list[i]["uid"],"guild_jpcg",list[i]["item"])
 							allValue += list[i]["cur"]
 						}
 						self.redisDao.db.lrange(main_name+":play:"+guildId,0,-1,function(err,data) {
 							if(!err && data && data.length){
 								var oneValue = Math.ceil(allValue / data.length)
 								for(var i = 0;i < data.length;i++){
-									self.sendMail(data[i],"同盟竞拍分红","您获得了来自同盟竞拍的分红奖励",currency+":"+oneValue)
+									self.sendTextToMail(data[i],"guild_jpfh",currency+":"+oneValue)
 								}
 							}
 						})

@@ -338,7 +338,7 @@ module.exports = function() {
 		self.getPlayerKeyByUid(targetUid,"name",function(name) {
 			self.addGuildLog(guildId,{type:"deputy",uid:targetUid,name:name})
 		})
-		self.sendMail(targetUid,"成为副盟主","您已被任命为【"+guildList[guildId]["name"]+"】的副盟主")
+		self.sendTextToMail(targetUid,"guild_fhz1",null,guildList[guildId]["name"])
 		self.setGuildInfo(guildId,"deputy",targetUid)
 		cb(true)
 	}
@@ -358,7 +358,7 @@ module.exports = function() {
 			cb(false,"玩家不存在")
 			return
 		}
-		self.sendMail(targetUid,"卸任副盟主","您已不是【"+guildList[guildId]["name"]+"】的副盟主")
+		self.sendTextToMail(targetUid,"guild_fhz2",null,guildList[guildId]["name"])
 		self.setGuildInfo(guildId,"deputy",0)
 		cb(true)
 	}
@@ -381,7 +381,7 @@ module.exports = function() {
 		self.getPlayerKeyByUid(targetUid,"name",function(name) {
 			self.addGuildLog(guildId,{type:"lead",uid:targetUid,name:name})
 		})
-		self.sendMail(targetUid,"成为盟主","您已被任命为【"+guildList[guildId]["name"]+"】的盟主")
+		self.sendTextToMail(targetUid,"guild_hz",0,guildList[guildId]["name"])
 		self.setGuildInfo(guildId,"lead",targetUid)
 		cb(true)
 	}
@@ -561,7 +561,7 @@ module.exports = function() {
 			self.incrbyGuildInfo(guildId,"num",1)
 			contributions[guildId][uid] = 0
 			self.redisDao.db.hset("guild:contributions:"+guildId,uid,0)
-			self.sendMail(uid,"加入同盟","您已成功加入【"+gname+"】")
+			self.sendTextToMail(uid,"guild_join",0,gname)
 			self.cacheDao.saveCache({"messagetype":"joinGuild","gname":gname,"uid":uid})
 			self.addGuildLog(guildId,{type:"join",uid:uid,name:applyList[guildId][uid]["name"]})
 			self.sendToGuild(guildId,{type:"joinGuild",guildId:guildId,userName:applyList[guildId][uid]["name"],uid:uid,name:gname})
@@ -585,7 +585,7 @@ module.exports = function() {
 			self.addGuildLog(guildId,{type:"quit",uid:uid,name:name})
 		})
 		self.setObj(uid,main_name,"cd",Date.now()+86400000)
-		self.sendMail(uid,"退出同盟","您已离开【"+guildList[guildId]["name"]+"】")
+		self.sendTextToMail(uid,"guild_leave",0,guildList[guildId]["name"])
 		self.cacheDao.saveCache({"messagetype":"leaveGuild","guildId":guildId,"uid":uid})
 		self.sendToUser(uid,{type:"leaveGuild",guildId : guildId,name:guildList[guildId]["name"]})
 		self.cancelGuildCityAllTeam(guildId,uid)
@@ -621,10 +621,10 @@ module.exports = function() {
 				if(guildList[guildId]["deputy"] === uid){
 					self.setGuildInfo(guildId,"deputy",0)
 				}
-				self.sendMail(guildList[guildId]["lead"],"盟主转让","您已被弹劾，不再是【"+guildList[guildId]["name"]+"】盟主")
+				self.sendTextToMail(guildList[guildId]["lead"],"guild_beimpeach",0,guildList[guildId]["name"])
 				var name = self.getLordAtt(uid,"name")
 				self.addGuildLog(guildId,{type:"lead",uid:uid,name:name})
-				self.sendMail(uid,"弹劾成功","您已成为【"+guildList[guildId]["name"]+"】的盟主")
+				self.sendTextToMail(uid,"guild_impeach",0,guildList[guildId]["name"])
 				self.setGuildInfo(guildId,"lead",uid)
 				cb(true)
 			}
