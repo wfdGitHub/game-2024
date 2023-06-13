@@ -190,21 +190,17 @@ model.prototype.getSkillText = function(sid,lv) {
 			return ""
 		lv = lv || 0
 		var text = this.skills[sid]["des"] || ""
-	try{
 		if(text){
 			if(this.skills[sid]["atk_aim"] && this.skill_targets[this.skills[sid]["atk_aim"]])
 				text = text.replace(/atk_aim/g,this.skill_targets[this.skills[sid]["atk_aim"]]["name"])
-			text = text.replace(/atk_mul/g,this.skills[sid]["atk_mul"]*100+"%")
-			text = text.replace(/atk_value/g,this.skills[sid]["atk_basic"]*lv)
+			text = text.replace(/atk_mul/g,Math.ceil(this.skills[sid]["atk_mul"]*100)+"%")
+			text = text.replace(/atk_value/g,Math.ceil(this.skills[sid]["atk_basic"]*lv))
 			text = text.replace(/d_type/g,this.skills[sid]["d_type"]=="phy"?"外功":"内功")
 			if(this.skills[sid]["heal_aim"] && this.skill_targets[this.skills[sid]["heal_aim"]])
 				text = text.replace(/heal_aim/g,this.skill_targets[this.skills[sid]["heal_aim"]]["name"])
-			text = text.replace(/heal_mul/g,this.skills[sid]["heal_mul"]*100+"%")
-			text = text.replace(/heal_value/g,this.skills[sid]["heal_basic"]*lv)
+			text = text.replace(/heal_mul/g,Math.ceil(this.skills[sid]["heal_mul"]*100)+"%")
+			text = text.replace(/heal_value/g,Math.ceil(this.skills[sid]["heal_basic"]*lv))
 		}
 		return text
-	}catch(err){
-		console.log(sid,lv,text,typeof(text),err)
-	}
 }
 module.exports = new model()
