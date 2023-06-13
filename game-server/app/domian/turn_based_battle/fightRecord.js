@@ -186,11 +186,11 @@ model.prototype.getHeroData = function(heroInfo) {
 }
 //获取技能描述
 model.prototype.getSkillText = function(sid,lv) {
-	try{
 		if(!this.skills[sid])
 			return ""
 		lv = lv || 0
 		var text = this.skills[sid]["des"] || ""
+	try{
 		if(text){
 			if(this.skills[sid]["atk_aim"] && this.skill_targets[this.skills[sid]["atk_aim"]])
 				text = text.replaceAll("atk_aim",this.skill_targets[this.skills[sid]["atk_aim"]]["name"])
@@ -204,7 +204,7 @@ model.prototype.getSkillText = function(sid,lv) {
 		}
 		return text
 	}catch(err){
-		console.log(sid,lv,err)
+		console.log(sid,lv,text,err)
 	}
 }
 module.exports = new model()
