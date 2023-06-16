@@ -53,7 +53,7 @@ model.prototype.calDamage = function(attacker,target,skill) {
 		basic += Math.ceil(basic * (attacker.getTotalAtt("main_phy") - target.getTotalAtt("main_phy")) * 0.01)
 	}
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
-	basic = Math.ceil(basic * (1 - (target.getTotalAtt("main_dr") - 60) * 0.006))
+	basic = Math.ceil(basic * (1 - (target.getTotalAtt("main_dr") - 60) / target.getTotalAtt("main_dr")))
 	//格挡判断
 	if(!target.buffs["vital_point"]){
 		var block = target.getTotalAtt("block") - attacker.getTotalAtt("blockDef") + (target.getTotalAtt("main_slay") - attacker.getTotalAtt("main_slay")) * 0.005
