@@ -1447,8 +1447,6 @@ var model = function() {
 			return
 		}
 		var heroInfo = {id : id,ad : ad,lv : lv,star : star,aptitude : aptitude,name : name}
-		if(heroInfo.aptitude || heroInfo.name)
-			heroInfo.custom = 1
 		self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
 			if(err || !data){
 				cb(false,"用户不存在")
