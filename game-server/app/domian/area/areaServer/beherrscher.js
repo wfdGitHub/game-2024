@@ -89,7 +89,7 @@ module.exports = function() {
 		local.changeData("state",0)
 		for(var i = 1;i <= 3;i++){
 			if(beherrscherInfo["seat_"+i] != 0){
-				self.sendMail(beherrscherInfo["seat_"+i],beherrscher_cfg["mail_"+i]["name"],beherrscher_cfg["mail_"+i]["value"],beherrscher_cfg["award_"+i]["value"])
+				self.sendTextToMail(beherrscherInfo["seat_"+i],"beherrs_"+i,beherrscher_cfg["award_"+i]["value"])
 			}
 		}
 	}
@@ -147,7 +147,7 @@ module.exports = function() {
 						var arr = []
 						arr.push(uid)
 						arr.push(beherrscherInfo["seat_"+index])
-						self.sendMail(beherrscherInfo["seat_"+index],beherrscher_cfg["faild_mail"]["name"],beherrscher_cfg["faild_mail"]["value"])
+						self.sendTextToMail(beherrscherInfo["seat_"+index],"beherrs_lost")
 						//记录战报
 						self.getPlayerInfoByUids(arr,function(userInfos) {
 							info.atkInfo = userInfos[0]

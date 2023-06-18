@@ -42,12 +42,12 @@ module.exports = function() {
 							var rank = 0
 							for(var i = list.length - 2;i >= 0;i -= 2){
 								rank++
-								var text = "亲爱的玩家您好，恭喜您在全服BOSS活动中获得"+rank+"名，获得排名奖励，祝您游戏愉快！"
 								if(rank >= 11){
 									rank = 11
-									text = "亲爱的玩家您好，恭喜您在全服BOSS活动中获得参与奖励，祝您游戏愉快！"
+									self.sendTextToMail(list[i],"area_boss_play",area_boss_base[curId]["rank_"+rank])
+								}else{
+									self.sendTextToMail(list[i],"area_boss_rank",area_boss_base[curId]["rank_"+rank],rank)
 								}
-								self.sendMail(list[i],"全服BOSS活动奖励",text,area_boss_base[curId]["rank_"+rank])
 							}
 							self.delZset(main_name)
 						})
@@ -136,7 +136,7 @@ module.exports = function() {
 		    	var allDamage = overInfo.atkDamage
 		    	//击杀奖励
 		    	if(area_data.less_hp < area_boss_base[area_data.bossIndex]["hp"] && (area_data.less_hp + allDamage >= area_boss_base[area_data.bossIndex]["hp"])){
-		    		self.sendMail(uid,area_boss_cfg["kill_title"]["value"],area_boss_cfg["kill_text"]["value"],area_boss_cfg["kill_award"]["value"])
+		    		self.sendTextToMail(uid,"area_boss_kill",area_boss_cfg["kill_award"]["value"])
 		    	}
 		    	info.allDamage = allDamage
 		    	area_data.less_hp += allDamage

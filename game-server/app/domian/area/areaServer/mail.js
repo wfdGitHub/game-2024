@@ -1,5 +1,6 @@
 //邮件系统
 var uuid = require("uuid")
+var mailText = require("../../../../config/gameCfg/mailText.json")
 module.exports = function() {
 	var self = this
 	this.areaMailList = {}
@@ -22,6 +23,14 @@ module.exports = function() {
 				cb(true,[])
 			}
 		})
+	}
+	//通过文本模板发送邮件
+	this.sendTextToMail = function(uid,key,atts,arg,cb) {
+		var title = mailText[key]["title"]
+		var text = mailText[key]["text"]
+		if(arg)
+			text = text.replace("xxx",arg)
+		this.sendMail(uid,title,text,atts,cb)
 	}
 	//发送邮件
 	this.sendMail = function(uid,title,text,atts,cb) {

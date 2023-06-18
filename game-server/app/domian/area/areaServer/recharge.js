@@ -256,7 +256,7 @@ module.exports = function() {
 			else
 				rate = recharge[index].normal_rate
 			var award = "202:"+Math.round(gold*rate)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",award)
+			self.sendTextToMail(uid,"recharge",award)
 			cb(true)
 		})
 	}
@@ -307,7 +307,7 @@ module.exports = function() {
 			self.incrbyObj(uid,main_name,"loop_"+loopId,1)
 			var award = "202:"+gift_loop[loopId].gold
 			award += "&"+gift_loop[loopId].award
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",award)
+			self.sendTextToMail(uid,"recharge",award)
 			cb(true)
 		})
 	}
@@ -411,7 +411,7 @@ module.exports = function() {
 				self.sendToUser(uid,notify)
 				self.setObj(uid,main_name,"highCard",1)
 				self.chageLordData(uid,"highCard",1)
-				self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["high_card_award"]["value"])
+				self.sendTextToMail(uid,"recharge",activity_cfg["high_card_award"]["value"])
 				cb(true)
 			}
 		})
@@ -428,7 +428,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",awardBag_day[index].award)
+			self.sendTextToMail(uid,"recharge",awardBag_day[index].award)
 			cb(true)
 		})
 	}
@@ -460,7 +460,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,"week_shop",index,1)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_week[index].award)
+			self.sendTextToMail(uid,"recharge",gift_week[index].award)
 			cb(true)
 		})
 	}
@@ -477,7 +477,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,"month_shop",index,1)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_month[index].award)
+			self.sendTextToMail(uid,"recharge",gift_month[index].award)
 			cb(true)
 		})
 	}
@@ -491,7 +491,7 @@ module.exports = function() {
 			}
 			self.setObj(uid,"war_horn","high",1)
 			self.incrbyObj(uid,"war_horn","exp",war_horn[curMonth]["exp"],function(exp) {
-				self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",war_horn[curMonth]["award"])
+				self.sendTextToMail(uid,"recharge",war_horn[curMonth]["award"])
 				cb(true,{exp:exp})
 			})
 		})
@@ -504,7 +504,7 @@ module.exports = function() {
 		}
 		self.getObj(uid,"limit_gift",id,function(data) {
 			if(data){
-				self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_list[id]["award"])
+				self.sendTextToMail(uid,"recharge",gift_list[id]["award"])
 				self.delObj(uid,"limit_gift",id)
 				cb(true)
 			}else{
@@ -527,7 +527,7 @@ module.exports = function() {
 				return
 			}
 			self.incrbyObj(uid,"skin",id,1)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_skin[id].award)
+			self.sendTextToMail(uid,"recharge",gift_skin[id].award)
 			cb(true)
 		})
 	}
@@ -543,7 +543,7 @@ module.exports = function() {
 			quick_pri += day31Time
 		}
 		self.chageLordData(uid,"quick_pri",quick_pri)
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["quick_award"]["value"])
+		self.sendTextToMail(uid,"recharge",activity_cfg["quick_award"]["value"])
 		cb(true,{quick_pri:quick_pri})
 	}
 	//购买三界特权
@@ -558,7 +558,7 @@ module.exports = function() {
 			tour_pri += day31Time
 		}
 		self.chageLordData(uid,"tour_pri",tour_pri)
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["tour_award"]["value"])
+		self.sendTextToMail(uid,"recharge",activity_cfg["tour_award"]["value"])
 		cb(true,{tour_pri:tour_pri})
 	}
 	//购买宝石矿场特权
@@ -573,7 +573,7 @@ module.exports = function() {
 			stone_pri += day31Time
 		}
 		self.chageLordData(uid,"stone_pri",stone_pri)
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["stone_award"]["value"])
+		self.sendTextToMail(uid,"recharge",activity_cfg["stone_award"]["value"])
 		cb(true,{stone_pri:stone_pri})
 	}
 }

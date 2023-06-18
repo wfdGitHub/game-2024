@@ -43,7 +43,7 @@ module.exports = function() {
 				rankCount++
 				if(rankCount > ancient_rank[rankIndex]["count"])
 					rankIndex++
-				self.sendMailByUid(uid,ancient_rank[rankIndex]["title"],ancient_rank[rankIndex]["text"],ancient_rank[rankIndex]["award"])
+				self.sendTextToMailById(uid,"ancient_"+rankIndex,ancient_rank[rankIndex]["award"])
 				if(uids.length < 3){
 					areaIds.push(sid)
 					uids.push(uid)

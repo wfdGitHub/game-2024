@@ -98,7 +98,7 @@ module.exports = function() {
 				}else{
 					awardId = "rank_"+rank
 				}
-				self.sendMail(list[i],title,text,world_boss_base[curbossIndex][awardId])
+				self.sendTextToMail(list[i],"worldBoss",world_boss_base[curbossIndex][awardId],rank)
 			}
 		})
 		this.worldBossCheck()
