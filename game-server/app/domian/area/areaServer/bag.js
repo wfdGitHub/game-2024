@@ -19,7 +19,7 @@ module.exports = function() {
 			cb(false,"item not exist or can't use")
 			return
 		}
-		if(!Number.isInteger(otps.value) || otps.value <= 0 || otps.value > 10000){
+		if(!Number.isInteger(otps.value) || otps.value <= 0 || otps.value > 1000000){
 			cb(false,"value error " + otps.value)
 			return
 		}
