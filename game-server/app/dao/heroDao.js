@@ -339,18 +339,6 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb,reason) {
 			strList.push(hero_ad[ad].pr)
 		if(hero_tr[heros[i].tr_lv] && hero_tr[heros[i].tr_lv]["pr"])
 			strList.push(hero_tr[heros[i].tr_lv]["pr"])
-		var tr_value = 0
-		if(heros[i].tr_maxHP)
-			tr_value += heros[i].tr_maxHP / train_arg["maxHP"]["value"]
-		if(heros[i].tr_atk)
-			tr_value += heros[i].tr_atk / train_arg["atk"]["value"]
-		if(heros[i].tr_phyDef)
-			tr_value += heros[i].tr_phyDef / train_arg["phyDef"]["value"]
-		if(heros[i].tr_magDef)
-			tr_value += heros[i].tr_magDef / train_arg["magDef"]["value"]
-		tr_value = Math.floor(tr_value * 0.75)
-		if(tr_value)
-			strList.push("1000020:"+tr_value)
 		for(var part = 1;part <= 4;part++){
 			if(heros[i]["e"+part]){
 				var oldeId = equip_level[heros[i]["e"+part]]["part_"+part]
