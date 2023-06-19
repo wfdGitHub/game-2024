@@ -139,7 +139,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	if(!info || !herosCfg[info.id]){
 		return false
 	}
-	info = Object.assign({},info)
+	info = Object.assign({"atk" : 300,"maxHP" : 2400},info)
 	info.bookAtts = bookAtts
 	let id = info.id
 	model.mergeData(info,herosCfg[id])
@@ -216,7 +216,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 		}
 	}
 	if(minETLv && equip_st[minETLv]["att"])
-		model.mergeData(info,{"self_atk_add" : equip_st[minETLv]["att"],"self_maxHP_add" : equip_st[minETLv]["att"]})
+		model.mergeData(info,{"self_atk_add" : equip_st[minETLv]["att"]})
 	//升星计算
 	if(info.star){
 		if(advanced_talent[info.id]){
@@ -363,7 +363,7 @@ model.getCharacterInfo = function(info,bookAtts,teamCfg) {
 	}
 	if(teamCfg && teamCfg["gather"]){
 		var gatherInfo = {
-		    "maxHP": teamCfg["gather"] * 10,
+		    "maxHP": teamCfg["gather"] * 26,
 		    "atk": teamCfg["gather"] * 2
 		}
 		model.mergeData(info,gatherInfo)
@@ -680,17 +680,17 @@ model.getTeamCE = function(team) {
 			if(team[i]["tr_maxHP"])
 				allCE += team[i]["tr_maxHP"]
 			if(team[i]["tr_atk"])
-				allCE += team[i]["tr_atk"] * 6
+				allCE += team[i]["tr_atk"] * 10
 			if(team[i]["tr_phyDef"])
-				allCE += team[i]["tr_phyDef"] * 3
+				allCE += team[i]["tr_phyDef"] * 4
 			if(team[i]["tr_magDef"])
-				allCE += team[i]["tr_magDef"] * 3
+				allCE += team[i]["tr_magDef"] * 4
 		}
 	}
 	if(team[6]){
 		for(var i in team[6]){
 			if(bookMap[i]){
-				allCE += book_lv[team[6][i]["lv"]]["ce"]
+				allCE += book_lv[team[6][i]["lv"]]["ce"] * book_star[team[6][i]["star"]]["add"]
 				allCE += book_star[team[6][i]["star"]]["ce"]
 			}
 		}
@@ -704,7 +704,7 @@ model.getTeamCE = function(team) {
 		if(team[6]["officer"] && officer[team[6]["officer"]] && officer[team[6]["officer"]]["ce"])
 			allCE += officer[team[6]["officer"]]["ce"]
 		if(team[6]["gather"])
-			allCE += 1000 * team[6]["gather"]
+			allCE += 46 * team[6]["gather"]
 		for(var i = 1;i <= 4;i++){
 			if(team[6]["camp_"+i]){
 				allCE += 2000 * team[6]["camp_"+i]

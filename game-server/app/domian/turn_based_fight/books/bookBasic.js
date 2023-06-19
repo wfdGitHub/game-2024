@@ -4,6 +4,7 @@ var model = function(otps) {
 	this.team = []				//所在阵容
 	this.enemy = []				//敌对阵容
 	this.belong = otps.belong   //所属阵容
+	this.career = otps.career || 2
 	this.lv = otps["lv"] || 1		//等级
 	this.star = otps["star"] || 1		//星级
 	this.teamInfo = {}

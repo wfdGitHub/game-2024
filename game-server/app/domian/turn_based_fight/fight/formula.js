@@ -3,6 +3,20 @@ var formula = function(seeded,otps={}) {
 	this.phyRate = otps.phyRate || 1
 	this.magRate = otps.magRate || 1
 }
+var careerAtts = {
+	"atk" : {
+		"1" : 1.1,
+		"2" : 1,
+		"3" : 0.9,
+		"4" : 0.9
+	},
+	"def" : {
+		"1" : 1.1,
+		"2" : 1,
+		"3" : 0.78,
+		"4" : 1.2
+	}
+}
 var restrainMap = {
 	"1_1" : 0,
 	"1_2" : -0.1,
@@ -57,7 +71,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}
 	//命中判断
 	if(!(skill.isAnger && attacker.skill_must_hit) && !target.buffs["suoding"]){
-		var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
+		var hitRate = Math.max(0.9 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate"),0.3)
 		if(target.attInfo.hp < target.attInfo.maxHP && target.low_hp_dodge){
 			hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_crit
 		}
@@ -72,7 +86,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}else if(must_crit){
 		info.crit = true
 	}else{
-		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit
+		var crit = Math.max(attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit,0.05)
 		if(attacker.attInfo.hp < attacker.attInfo.maxHP && attacker.low_hp_crit){
 			crit += Math.floor((attacker.attInfo.maxHP-attacker.attInfo.hp)/attacker.attInfo.maxHP * 10) * attacker.low_hp_crit
 		}
@@ -114,7 +128,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(attacker.realm_friend_amp){
 		mul *= 1 + (attacker.realm_friend_amp * (attacker.teamInfo["realms_survival"][attacker.realm] - 1))
 	}
-	info.value = Math.round(Math.max(atk - def,1) * skill.mul * mul)
+	info.value = Math.round((atk*atk) / (atk+def) * skill.mul * mul)
 	if(info.value < 1)
 		info.value = 1
 	if(addAmp){
@@ -129,6 +143,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	//种族克制
 	var restrainValue = restrainMap[attacker.realm+"_"+target.realm] || 0
 	info.value += Math.floor(info.value * restrainValue)
+	//职业加成
+	info.value += Math.floor(info.value * careerAtts["atk"][attacker.career] * careerAtts["def"][target.career])
 	//物理法术伤害加成减免
 	if(attacker[skill.damageType+"_add"] || target[skill.damageType+"_def"]){
 		var tmpRate = attacker[skill.damageType+"_add"] - target[skill.damageType+"_def"]
