@@ -71,7 +71,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}
 	//命中判断
 	if(!(skill.isAnger && attacker.skill_must_hit) && !target.buffs["suoding"]){
-		var hitRate = Math.max(0.9 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate"),0.3)
+		var hitRate = Math.max(0.9 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate"),0.03)
 		if(target.attInfo.hp < target.attInfo.maxHP && target.low_hp_dodge){
 			hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_crit
 		}
