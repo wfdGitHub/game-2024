@@ -32,6 +32,7 @@ var bond_list = require("../../../../config/gameCfg/bond_list.json")
 var bond_talents = require("../../../../config/gameCfg/bond_talents.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
+var fightHandler = require("./fightHandler.js")
 var character = require("../entity/character.js")
 var bookIds = ["singleAtk","backDamage","frontDamage","banishBook","angerAddBook","angerLessBook","reductionBuff","seckill","singleHeal"]
 var bookList = {}
@@ -58,10 +59,10 @@ for(var i in hufu_skill){
 	}
 }
 //战斗控制器
-var model = function() {
-	this.fighting = false
-	this.overInfo = {}
-}
+var model = function() {}
+model.fighting = false
+model.overInfo = {}
+fightHandler.call(model)
 // //自定义战斗配置// model.libertyFight = function(atkTeam,defTeam,otps) {
 // 	var fighting = new fightingFun(atkTeam,defTeam,otps)
 // 	fighting.nextRound()
