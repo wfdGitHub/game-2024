@@ -4,6 +4,7 @@ var hero_ad = require("../../../../config/gameCfg/hero_ad.json")
 var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var star_base = require("../../../../config/gameCfg/star_base.json")
 var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
+var lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 var heroHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
@@ -235,7 +236,7 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
     })
   })
 }
-//英雄升阶
+//英雄进阶
 heroHandler.prototype.upgraAdvance = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
@@ -253,6 +254,11 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
     }
     if(heroInfo.lv < hero_ad[heroInfo.ad].lv){
       next(null,{flag : false,err : "等级限制 "+heroInfo.lv+"/"+hero_ad[heroInfo.ad].lv})
+      return
+    }
+    var lv = self.areaManager.areaMap[areaId].getLordLv(uid)
+    if(heroInfo.ad >= lord_lv[lv]["max_ad"]){
+      next(null,{flag : false,err : "主公等级限制 "+lv+"/"+lord_lv[lv]["max_ad"]})
       return
     }
     var pcStr = hero_ad[heroInfo.ad].pc
