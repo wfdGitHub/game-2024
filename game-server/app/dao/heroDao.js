@@ -354,7 +354,9 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb) {
 		}
 		if(artifact !== undefined && artifact_level[artifact]){
 			var aId = artifact_talent[id]["artifact"]
-			strList.push(artifact_level[artifact]["pr"]+"&"+aId+":"+artifact_level[artifact]["all_self"])
+			if(artifact_level[artifact]["pr"])
+				strList.push(artifact_level[artifact]["pr"])
+			strList.push(aId+":"+artifact_level[artifact]["all_self"])
 		}
 		for(var j = 1;j <= 8;j++){
 			var key = "s"+j
