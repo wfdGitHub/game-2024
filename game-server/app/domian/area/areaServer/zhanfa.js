@@ -99,7 +99,6 @@ module.exports = function() {
 		}
 		//判断是否解锁
 		var key = "zf_"+index
-		var heroId = -1
 		async.waterfall([
 			function(next) {
 				//判断英雄
@@ -112,7 +111,6 @@ module.exports = function() {
 						next("英雄未觉醒")
 						return
 					}
-					heroId = heroInfo.id
 					var zhanfa = heroInfo[key]
 					if(index == 1 && !zhanfa)
 						zhanfa = 1
@@ -144,7 +142,7 @@ module.exports = function() {
 			function(next) {
 				//设置战法
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,key,zId)
-				self.setObj(uid,main_name,zId,heroId)
+				self.setObj(uid,main_name,zId,hId)
 				var info = {}
 				info[key] = zId
 				cb(true,info)
