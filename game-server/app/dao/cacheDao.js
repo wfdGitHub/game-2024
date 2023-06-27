@@ -8,8 +8,7 @@ var publish = "jianwan"
 var publish_normal = "message_"+publish+"_normal"
 var publish_chat = "message_"+publish+"_chat"
 var publish_item = "message_"+publish+"_item"
-var cacheDao = function() {
-}
+var cacheDao = function() {}
 var local = {}
 cacheDao.prototype.init = function(cb) {
 	console.log("cacheDao init")

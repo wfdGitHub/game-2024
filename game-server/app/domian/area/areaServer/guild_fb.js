@@ -161,11 +161,11 @@ module.exports = function() {
 				info.allDamage = allDamage
 				info.killFlag = killFlag
 				//奖励
-				info.awardList = self.addGuildScore(uid,guildId,guild_fb[fbId]["ctb"],"宝藏BOSS")
-				info.awardList = info.awardList.concat(self.addItemStr(uid,"201:"+guild_fb[fbId]["coin"],1,"宝藏BOSS"))
+				info.awardList = self.addGuildScore(uid,guildId,guild_fb[fbId]["ctb"],"同盟副本")
+				info.awardList = info.awardList.concat(self.addItemStr(uid,"201:"+guild_fb[fbId]["coin"],1,"同盟副本"))
 				if(self.checkLimitedTime("fuben")){
-					info.awardList = info.awardList.concat(self.addGuildScore(uid,guildId,guild_fb[fbId]["ctb"],"宝藏BOSS"))
-					info.awardList = info.awardList.concat(self.addItemStr(uid,"201:"+guild_fb[fbId]["coin"],1,"宝藏BOSS"))
+					info.awardList = info.awardList.concat(self.addGuildScore(uid,guildId,guild_fb[fbId]["ctb"],"同盟副本"))
+					info.awardList = info.awardList.concat(self.addItemStr(uid,"201:"+guild_fb[fbId]["coin"],1,"同盟副本"))
 				}
 				cb(true,info)
 			}
