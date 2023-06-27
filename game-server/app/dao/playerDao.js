@@ -34,7 +34,7 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 		officer : 0,
 		r_luck : -1,
 		freeze : 0,
-		last_id : 0,
+		last_id : 100,
 		gather : 0,
 	}
 	var self = this
