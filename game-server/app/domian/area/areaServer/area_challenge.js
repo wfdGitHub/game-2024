@@ -117,7 +117,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-			    var fightInfo = self.getFightInfo(uid)
+			    var fightInfo = self.getFightInfo(uid,"areaTrial")
 			    if(!fightInfo){
 			    	next("未准备")
 			    }else{

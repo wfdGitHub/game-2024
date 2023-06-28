@@ -37,7 +37,7 @@ module.exports = function() {
 			cb(false,"关卡不存在")
 			return
 		}
-	    var fightInfo = self.getFightInfo(uid)
+	    var fightInfo = self.getFightInfo(uid,"mysterious")
 	    if(!fightInfo){
 	    	cb(false,"未准备")
 	    	return

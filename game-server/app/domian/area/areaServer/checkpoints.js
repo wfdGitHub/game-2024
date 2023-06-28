@@ -66,7 +66,7 @@ module.exports = function() {
 				}
 			},
 			function(next) {
-				let fightInfo = self.getFightInfo(uid)
+				let fightInfo = self.getFightInfo(uid,"checkpoints")
 				if(!fightInfo){
 					next("未准备")
 					return

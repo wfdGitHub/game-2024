@@ -1036,20 +1036,18 @@ model.prototype.getCE = function() {
 model.prototype.getSimpleInfo = function() {
 	var info = {}
 	info.id = this.id
-	info.lv = this.lv
+	info.name = this.name
 	info.star = this.star
 	info.ad = this.ad
-	info.name = this.name
-	info.realm = this.realm
-	info.atk = this.attInfo.atk
-	info.maxHP = this.attInfo.maxHP
-	info.hp = this.attInfo.hp
-	info.speed = Math.floor(this.attInfo.speed)
-	info.curAnger = this.curAnger
-	info.needAnger = this.needAnger
+	info.lv = this.lv
+	return info
+}
+model.prototype.getFullInfo = function() {
+	var info = {}
+	info.id = this.id
+	info.heroId = this.heroId
 	info.totalDamage = this.totalDamage
 	info.totalHeal = this.totalHeal
-	info.heroId = this.heroId
 	return info
 }
 model.prototype.addBuff = function(releaser,buff) {

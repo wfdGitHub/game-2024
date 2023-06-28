@@ -8,7 +8,7 @@ var fightHandler = function(app) {
 fightHandler.prototype.mockFight = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var fightInfo = this.areaManager.areaMap[areaId].getFightInfo(uid)
+  var fightInfo = this.areaManager.areaMap[areaId].getFightInfo(uid,"default")
   if(fightInfo){
     var atkTeam = fightInfo.team
     var defTeam = atkTeam
@@ -30,7 +30,8 @@ fightHandler.prototype.getCheckpointsInfo = function(msg, session, next) {
 fightHandler.prototype.readyFight = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var fightInfo = this.areaManager.areaMap[areaId].readyFight(uid,function(flag,data) {
+  var type = msg.type
+  var fightInfo = this.areaManager.areaMap[areaId].readyFight(uid,type,function(flag,data) {
     next(null,{flag : flag,fightInfo : data})
   })
 }

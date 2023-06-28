@@ -52,7 +52,6 @@ var area = function(otps,app) {
 	this.connectorMap = {}
 	this.oriIds = {}
 	this.onlineNum = 0
-	this.fightInfos = {}
 	this.fightContorl = fightContorlFun
 	this.dayStr = ""
 	this.crossUids = {}
@@ -328,16 +327,6 @@ area.prototype.getAreaServerInfo = function(){
 area.prototype.getAreaPlayers = function(){
 	return this.players
 }
-//预备战斗
-area.prototype.readyFight = function(uid,cb) {
-	let team = this.getUserTeam(uid)
-	if(team){
-		this.fightInfos[uid] = {team : team,seededNum : Date.now()}
-		cb(true,this.fightInfos[uid])
-	}else{
-		cb(false,"无战斗数据")
-	}
-}
 //获取玩家防御阵容配置(被攻击阵容)
 area.prototype.getDefendTeam = function(uid,cb) {
 	var self = this
@@ -348,16 +337,6 @@ area.prototype.getDefendTeam = function(uid,cb) {
 			cb(false)
 		}
 	})
-}
-//获取玩家上阵配置(出战阵容)
-area.prototype.getFightInfo = function(uid) {
-	if(this.fightInfos[uid]){
-		var fightInfo = this.fightInfos[uid]
-		delete this.fightInfos[uid]
-		return fightInfo
-	}else{
-		return false
-	}
 }
 //战斗记录
 area.prototype.recordFight = function(atkTeam,defTeam,seededNum,readList) {

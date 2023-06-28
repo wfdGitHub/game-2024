@@ -63,7 +63,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-			    var fightInfo = self.getFightInfo(uid)
+			    var fightInfo = self.getFightInfo(uid,"ttttower")
 			    if(!fightInfo){
 			    	next("未准备")
 			    	return

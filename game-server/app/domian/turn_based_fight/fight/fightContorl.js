@@ -407,7 +407,7 @@ model.getBookInfo = function(bookId,info){
 }
 //获取团队数据
 model.getTeamData = function(team,belong) {
-	var team = team.concat([])
+	var team = JSON.parse(JSON.stringify(team))
 	var teamCfg = team[6]
     var books = {}
     var bookAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
@@ -438,7 +438,7 @@ model.getTeamData = function(team,belong) {
     var teamAdds = this.raceAdd(this.getRaceType(characters))
     var info = {team:characters,books:books,teamAdds:teamAdds,bookAtts:bookAtts}
     var teamAd = 0
-   for(var i = 0;i < 6;i++){
+	for(var i = 0;i < 6;i++){
 		if(team[i] && team[i]["ad"] && hero_ad[team[i]["ad"]]["ad"]){
 			if(!teamAd){
 				teamAd = hero_ad[team[i]["ad"]]["ad"]
@@ -457,7 +457,8 @@ model.getTeamData = function(team,belong) {
 		}else{
 			break
 		}
-   }
+	}
+	info.oriTeam = team
 	return info
 }
 //获取团队显示数据

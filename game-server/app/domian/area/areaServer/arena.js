@@ -181,7 +181,7 @@ module.exports = function() {
 			cb(false,"challengeArena targetRank error "+targetRank)
 			return
 		}
-	    var fightInfo = self.getFightInfo(uid)
+	    var fightInfo = self.getFightInfo(uid,"arena")
 	    if(!fightInfo || !fightInfo.team || !fightInfo.seededNum){
 			cb(false,"atkTeam error")
 			return

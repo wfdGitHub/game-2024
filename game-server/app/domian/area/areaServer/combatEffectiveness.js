@@ -16,6 +16,7 @@ module.exports = function() {
 	var userTeams = {}
 	var usersCes = {}
 	var userTeamMaps = {}
+	var readyFightMaps = {}
 	//加载角色阵容数据
 	this.CELoad = function(uid,cb) {
 		self.heroDao.getFightTeam(uid,function(flag,data) {
@@ -326,5 +327,27 @@ module.exports = function() {
 				cb(true)
 			})
 		}
+	}
+	//预备战斗
+	this.readyFight = function(uid,type,cb) {
+		if(typeof type !== "string")
+			type = "default"
+		if(!readyFightMaps[type])
+			readyFightMaps[type] = {}
+		var team = this.getUserTeam(uid)
+		if(team){
+			readyFightMaps[type][uid] = {team : team,seededNum : Date.now(),type:type}
+			cb(true,readyFightMaps[type][uid])
+		}else{
+			cb(false,"无战斗数据")
+		}
+	}
+	//获取玩家上阵配置(出战阵容)
+	this.getFightInfo = function(uid,type) {
+		if(!readyFightMaps[type] || !readyFightMaps[type][uid])
+			return false
+		var fightInfo = readyFightMaps[type][uid]
+		delete readyFightMaps[type][uid]
+		return fightInfo
 	}
 }
