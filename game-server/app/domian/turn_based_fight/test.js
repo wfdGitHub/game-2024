@@ -73,28 +73,5 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // var list = fightContorl.beginFight(atkTeam,defTeam,{})
 // fightRecord.explain()
 
-var binarySearchIndex = function(arr,target){
-    //var value = 0;
-    var left = 0;
-    var right = arr.length;
-    while(left <= right){
-        var center = Math.floor((left+right)/2); 
-        if(target<arr[center]){
-            right = center - 1;
-        }else{
-            left = center + 1;
-        }
-    }
-    if(right >= arr.length){
-        right = arr.length - 1
-    }
-    if(right < 0){
-        right = 0
-    }
-    return right;
-}
-
-
-var list = [1000,6000,6000]
-
-console.log(binarySearchIndex(list,6000))
+// var list = [105010,105020]
+// console.log(fightContorl.standardTeam(list,"main",1))
