@@ -1032,7 +1032,7 @@ model.prototype.getCE = function() {
 	ce += this.attInfo.healAdd * 10000
 	ce = Math.floor(ce)
 	return ce
-}1
+}
 model.prototype.getSimpleInfo = function() {
 	var info = {}
 	info.id = this.id
