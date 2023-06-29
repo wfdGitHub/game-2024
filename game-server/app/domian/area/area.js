@@ -2,44 +2,14 @@
 var bearcat = require("bearcat")
 var fightContorlFun = require("../turn_based_fight/fight/fightContorl.js")
 const async = require("async")
-const standard_dl = require("../../../config/gameCfg/standard_dl.json")
-const heros = require("../../../config/gameCfg/heros.json")
-const standard_ce_cfg = require("../../../config/gameCfg/standard_ce.json")
-const stone_lv = require("../../../config/gameCfg/stone_lv.json")
 const default_cfg = require("../../../config/gameCfg/default_cfg.json")
-const hero_tr = require("../../../config/gameCfg/hero_tr.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_city","guild_pk","limited_time","hufu","show","friend","beherrscher","exercise","endless","extremity","zhanfa","hero_rank","gather","camp_att","hero","privilege","worldBoss"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_city","guild_pk","limited_time","hufu","show","friend","beherrscher","exercise","endless","extremity","zhanfa","hero_rank","gather","camp_att","hero","privilege","worldBoss","invade"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
-var standard_ce = {}
-var standard_team_ce = {}
 var timers = {}
-for(var i in standard_ce_cfg){
-	standard_ce[i] = {
-		"lv" : standard_ce_cfg[i]["lv"],
-		"ad" : standard_ce_cfg[i]["ad"],
-		"star" : standard_ce_cfg[i]["star"]
-	}
-	if(standard_ce_cfg[i]["artifact"])
-		standard_ce[i]["artifact"] = standard_ce_cfg[i]["artifact"]
-	standard_team_ce[i] = {}
-	for(var j = 1;j <= 4;j++){
-		standard_ce[i]["e"+j] = standard_ce_cfg[i]["equip"]
-		standard_ce[i]["s"+j] = stone_lv[standard_ce_cfg[i]["stone_lv"]]["s"+j]
-		standard_team_ce[i]["g"+j] = standard_ce_cfg[i]["guild"]
-		standard_ce[i]["et"+j] = standard_ce_cfg[i]["et_lv"]
-	}
-	if(standard_ce_cfg[i]["tr_lv"] && hero_tr[standard_ce_cfg[i]["tr_lv"] - 1]){
-		standard_ce[i]["tr_maxHP"] = hero_tr[standard_ce_cfg[i]["tr_lv"] - 1]["maxHP"]
-		standard_ce[i]["tr_atk"] = hero_tr[standard_ce_cfg[i]["tr_lv"] - 1]["atk"]
-		standard_ce[i]["tr_phyDef"] = hero_tr[standard_ce_cfg[i]["tr_lv"] - 1]["phyDef"]
-		standard_ce[i]["tr_magDef"] = hero_tr[standard_ce_cfg[i]["tr_lv"] - 1]["magDef"]
-	}
-	standard_team_ce[i]["officer"] = standard_ce_cfg[i]["officer"]
-}
 var area = function(otps,app) {
 	this.areaId = otps.areaId
 	this.areaName = otps.areaName
@@ -80,6 +50,7 @@ area.prototype.init = function() {
 	this.initBeherrscher()
 	this.rebateInit()
 	this.worldBossInit()
+	this.invadeInit()
 	this.timer = setInterval(this.update.bind(this),1000)
 }
 //服务器关闭
@@ -95,6 +66,7 @@ area.prototype.destory = function() {
 area.prototype.update = function() {
 	this.runTime += 1000
 	this.worldBossUpdate()
+	this.invadeUpdate()
 	var curDayStr = (new Date()).toDateString()
 	if(this.dayStr !== curDayStr){
 		this.dayUpdate(curDayStr)
@@ -392,26 +364,9 @@ area.prototype.getBaseUser = function(uid) {
 }
 //基准战力阵容
 area.prototype.standardTeam = function(uid,list,dl,lv) {
-	team = list.concat()
 	if(!lv)
 		lv = this.getLordLv(uid)
-	let standardInfo = standard_ce[lv]
-	let dlInfo = standard_dl[dl]
-	let info = Object.assign({},standardInfo)
-	if(dlInfo.lv){
-		info.lv += dlInfo.lv
-		delete dlInfo.lv
-	}
-	info = Object.assign(info,dlInfo)
-	for(var i = 0;i < team.length;i++){
-		if(team[i]){
-			team[i] = Object.assign({id : team[i]},info)
-			if(team[i].star < heros[team[i]["id"]]["min_star"])
-				team[i].star = heros[team[i]["id"]]["min_star"]
-		}
-	}
-	team[6] = Object.assign({},standard_team_ce[lv])
-	return team
+	return this.fightContorl.standardTeam(list,dl,lv)
 }
 //获取玩家单项数据
 area.prototype.getPlayerKeyByUid = function(uid,key,cb) {

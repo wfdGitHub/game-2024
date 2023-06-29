@@ -99,7 +99,9 @@ module.exports = function() {
 	//进入结束阶段
 	local.worldBossEnd = function() {
 		var notify = {
-			type : "worldBossEnd"
+			type : "worldBossEnd",
+			state : state,
+			bossIndex : bossIndex
 		}
 		self.sendAllUser(notify)
 		//排行奖励

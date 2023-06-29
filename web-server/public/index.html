@@ -121,6 +121,27 @@
         console.log("onChat")
         console.log(data)
       })
+      //========================魔物入侵=============//
+      //获取魔物入侵数据
+      var getInvadeData = function() {
+        pomelo.request("area.activityHandler.getInvadeData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //刷新入侵怪
+      var refreshInvade = function() {
+        pomelo.request("area.activityHandler.refreshInvade", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //挑战入侵怪
+      var challengeInvade = function(index) {
+        pomelo.request("area.activityHandler.challengeInvade", {index:index}, function(data) {
+            console.log(data);
+        });
+      }
+
+
       //满星吞噬
       var heroUPDevour = function(hId,targetId) {
         pomelo.request("area.heroHandler.heroUPDevour", {hId:hId,targetId:targetId}, function(data) {
@@ -1470,12 +1491,6 @@
       //获取分享数据
       var getShareData = function(shareId) {
         pomelo.request("area.shareHandler.getShareData", {shareId:shareId}, function(data) {
-            console.log(data);
-        });
-      }
-      //挑战魔物入侵
-      var challengeInvade = function() {
-        pomelo.request("area.activityHandler.challengeInvade", {}, function(data) {
             console.log(data);
         });
       }
@@ -3068,8 +3083,8 @@
         });
       }
       //准备战斗
-      var readyFight = function() {
-        pomelo.request("area.fightHandler.readyFight",{}, function(data) {
+      var readyFight = function(type) {
+        pomelo.request("area.fightHandler.readyFight",{type:type}, function(data) {
             console.log(data);
         })
       }

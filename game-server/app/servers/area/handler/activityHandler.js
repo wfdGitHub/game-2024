@@ -447,6 +447,31 @@ activityHandler.prototype.priGainGift = function(msg, session, next) {
     next(null,{flag : flag,msg : msg})
   })
 }
+//获取魔物入侵数据
+activityHandler.prototype.getInvadeData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getInvadeData(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//刷新入侵怪
+activityHandler.prototype.refreshInvade = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].refreshInvade(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//挑战入侵怪
+activityHandler.prototype.challengeInvade = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var index = msg.index
+  this.areaManager.areaMap[areaId].challengeInvade(uid,index,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "activityHandler",
