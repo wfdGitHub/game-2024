@@ -13,8 +13,8 @@ module.exports = function() {
 	//玩法初始化
 	this.invadeInit = function() {
 		local.resetTime()
-		self.getAreaObj(main_name,["state","value_1","value_2","value_3","value_4","value_5"],function(list) {
-			state = Number(list[0]) || 0
+		self.getAreaObj(main_name,"state",function(data) {
+			state = Number(data) || 0
 		})
 	}
 	//刷新
