@@ -364,10 +364,8 @@ area.prototype.getBaseUser = function(uid) {
 }
 //基准战力阵容
 area.prototype.standardTeam = function(uid,list,dl,lv) {
-	console.log("standardTeam111",uid,list,dl,lv)
-	if(!lv)
+	if(lv === undefined)
 		lv = this.getLordLv(uid)
-	console.log("standardTeam222",uid,list,dl,lv)
 	return this.fightContorl.standardTeam(list,dl,lv)
 }
 //获取玩家单项数据
