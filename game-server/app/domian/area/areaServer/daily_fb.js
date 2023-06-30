@@ -64,7 +64,7 @@ module.exports = function() {
 				}else{
 					//挑战
 					isFight = true
-				    var fightInfo = self.getFightInfo(uid,type)
+				    var fightInfo = self.getFightInfo(uid)
 				    if(!fightInfo){
 				    	next("未准备")
 				    	return
