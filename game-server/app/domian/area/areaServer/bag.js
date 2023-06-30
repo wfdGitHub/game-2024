@@ -19,7 +19,7 @@ module.exports = function() {
 			cb(false,"item not exist or can't use")
 			return
 		}
-		if(!Number.isInteger(otps.value) || otps.value <= 0 || otps.value > 1000000){
+		if(!Number.isInteger(otps.value) || otps.value <= 0 || otps.value > 100000000){
 			cb(false,"value error " + otps.value)
 			return
 		}
@@ -33,6 +33,10 @@ module.exports = function() {
 		var value = Number(otps.value)
 		switch(itemCfg[otps.itemId].useType){
 			case "heroChip":
+				if(otps.value > 1000){
+					cb(false,"value error " + otps.value)
+					return
+				}
 				var heroId = itemCfg[otps.itemId].arg
 				var needValue = 30
 				self.heroDao.getHeroAmount(uid,function(flag,info) {
@@ -54,6 +58,10 @@ module.exports = function() {
 				})
 			break
 			case "randChip":
+				if(otps.value > 1000){
+					cb(false,"value error " + otps.value)
+					return
+				}
 				var needValue = 30
 				self.heroDao.getHeroAmount(uid,function(flag,info) {
 				  	if(info.cur + value > info.max){
@@ -72,6 +80,10 @@ module.exports = function() {
 				})
 			break
 			case "chest":
+				if(otps.value > 10000){
+					cb(false,"value error " + otps.value)
+					return
+				}
 				//宝箱
 				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝箱"+otps.itemId+"*"+value,function(flag,err) {
 					if(!flag){
@@ -84,6 +96,10 @@ module.exports = function() {
 				})
 			break
 			case "box":
+				if(otps.value > 10000){
+					cb(false,"value error " + otps.value)
+					return
+				}
 				//宝盒
 				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝盒"+otps.itemId+"*"+value,function(flag,err) {
 					if(!flag){
@@ -95,6 +111,10 @@ module.exports = function() {
 				})
 			break
 			case "optional":
+				if(otps.value > 10000){
+					cb(false,"value error " + otps.value)
+					return
+				}
 				//自选包
 				var list = JSON.parse(itemCfg[otps.itemId].arg)
 				var index = otps.index
@@ -115,6 +135,10 @@ module.exports = function() {
 			case "hook_hero":
 			case "hook_coin":
 			case "hook_power":
+				if(otps.value > 10000){
+					cb(false,"value error " + otps.value)
+					return
+				}
 				//挂机资源卡
 				var level = self.getCheckpointsInfo(uid)
 				if(!checkpointsCfg[level] || !checkpointsCfg[level][itemCfg[otps.itemId].useType]){
