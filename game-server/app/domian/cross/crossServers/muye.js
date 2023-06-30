@@ -471,7 +471,7 @@ module.exports = function() {
 				if(!challenge_free[crossUid]){
 					challenge_free[crossUid] = 0
 				}
-				if(challenge_free[crossUid] < 2){
+				if(challenge_free[crossUid] < 3){
 					challenge_free[crossUid]++
 					self.redisDao.db.hset("cross:muye:challenge_free",crossUid,challenge_free[crossUid])
 				}else{

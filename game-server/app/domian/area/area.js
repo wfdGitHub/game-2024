@@ -11,7 +11,7 @@ const hero_tr = require("../../../config/gameCfg/hero_tr.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_city","guild_pk","limited_time","hufu","show","friend","beherrscher","exercise","endless","extremity","zhanfa","hero_rank","gather","camp_att","hero","privilege"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_city","guild_pk","limited_time","hufu","show","friend","beherrscher","exercise","endless","extremity","zhanfa","hero_rank","gather","camp_att","hero","privilege","worldBoss"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var standard_ce = {}
@@ -80,6 +80,7 @@ area.prototype.init = function() {
 	this.initLimitedTime()
 	this.initBeherrscher()
 	this.rebateInit()
+	this.worldBossInit()
 	this.timer = setInterval(this.update.bind(this),1000)
 }
 //服务器关闭
@@ -94,6 +95,7 @@ area.prototype.destory = function() {
 //update
 area.prototype.update = function() {
 	this.runTime += 1000
+	this.worldBossUpdate()
 	var curDayStr = (new Date()).toDateString()
 	if(this.dayStr !== curDayStr){
 		this.dayUpdate(curDayStr)
