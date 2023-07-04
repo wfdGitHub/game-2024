@@ -174,8 +174,11 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	})
 }
 //小七订单sign
-model.prototype.x7syGameSign = function(str) {
-	str += this.sdkConfig["RSA"]
+model.prototype.x7syGameSign = function(str,os) {
+	if(os == "ios")
+		str += this.sdkConfig["iosRSA"]
+	else
+		str += this.sdkConfig["RSA"]
 	var md5 = util.md5(str)
 	return md5
 }
