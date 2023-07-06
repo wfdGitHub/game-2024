@@ -193,6 +193,7 @@ loginHandler.prototype.loginArea = function(msg, session, next) {
 				// session.set("real_rmb",playerInfo.real_rmb)
 				// session.push("real_rmb")
 				playerInfo.areaId = areaId
+				playerInfo.ip = session.__session__.__socket__.remoteAddress.ip
 				self.cacheDao.saveCache(Object.assign({"messagetype":"login"},playerInfo))
 				self.app.rpc.area.areaRemote.overdueCheck.toServer(serverId,areaId,uid,function(flag,info) {
 					if(flag){
