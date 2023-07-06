@@ -114,7 +114,8 @@ local.leave = function(self,info) {
 		accId : info.accId,
 		userName : info.name,
 		loginTime : info.beginTime,
-		playTime : info.time
+		playTime : info.time,
+		ip : info.ip
 	}
 	self.mysqlDao.db.query(sql2,info2, function(err, res) {
 		if (err) {
