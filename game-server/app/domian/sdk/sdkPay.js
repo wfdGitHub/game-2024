@@ -137,9 +137,8 @@ model.prototype.game277_order = function(data,finish_callback,req,res) {
 }
 //小七手游订单
 model.prototype.x7sy_order = function(data,finish_callback,req,res) {
-	console.log("x7sy_order",data)
 	var publicKey = ""
-	if(data.extras_params == 1){
+	if(data.extends_info_data == 1){
 		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["iosRSA"]+"\n-----END PUBLIC KEY-----"
 	}else{
 		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]+"\n-----END PUBLIC KEY-----"
@@ -168,7 +167,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 		pay_time : Date.now(),
 		amount : encryp_data.pay_price || 0,
 		status : 0,
-		extras_params : 0
+		extras_params : data.extends_info_data
 	}
 	self.payDao.finishGameOrder(info,function(flag,err,data) {
 			if(err)
