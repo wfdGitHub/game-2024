@@ -137,7 +137,13 @@ model.prototype.game277_order = function(data,finish_callback,req,res) {
 }
 //小七手游订单
 model.prototype.x7sy_order = function(data,finish_callback,req,res) {
-	var publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]+"\n-----END PUBLIC KEY-----"
+	console.log("x7sy_order",data)
+	var publicKey = ""
+	if(data.extras_params == 1){
+		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["iosRSA"]+"\n-----END PUBLIC KEY-----"
+	}else{
+		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]+"\n-----END PUBLIC KEY-----"
+	}
 	var raw_sign_data = Buffer.from(data.sign_data, 'base64')
 	delete data.sign_data
 	var source_str = local.ksort(data)
