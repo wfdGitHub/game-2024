@@ -68,7 +68,6 @@ model.prototype.quickEntry = function(data,cb) {
 }
 //小七手游登陆
 model.prototype.x7syEntry = function(data,cb) {
-	console.log("x7syEntry",data)
 	var self = this
 	var tokenkey = data.token
 	var sign = ""
