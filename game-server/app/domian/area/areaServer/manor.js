@@ -422,7 +422,7 @@ module.exports = function() {
 						rand -= builds[bId][buildLv]["quality_"+i]
 					}
 				}
-				var hufuInfo = self.gainBingfu(uid,{lv:lv})
+				var hufuInfo = self.gainRandHufu(uid,lv)
 				self.delObj(uid,main_name,bId+"_time")
 				cb(true,hufuInfo)
 			}else{
