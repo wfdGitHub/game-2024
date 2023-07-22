@@ -26,7 +26,7 @@ model.prototype.checkNext = function(uid,max,total) {
 	self.redisDao.db.hmget("player:user:"+uid+":playerInfo",["real_rmb","offline","clean"],function(err,list) {
 		var real_rmb = Number(list[0]) || 0
 		var offline = Number(list[1]) || 0
-		if(!list[2] && (real_rmb < 1) && (offline < Date.now() - CLEAN_TIME)){
+		if(!list[2] && (real_rmb <= 1000) && (offline < Date.now() - CLEAN_TIME)){
 			self.cleanPlayer(uid)
 			total++
 		}
