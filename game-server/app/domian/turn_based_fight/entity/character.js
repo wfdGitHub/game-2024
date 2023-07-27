@@ -374,6 +374,7 @@ var model = function(otps) {
 	//=========释放技能=======//
 	this.skill_free = otps.skill_free || 0					//释放技能不消耗怒气值概率
 	this.skill_attack_amp = otps.skill_attack_amp || 0		//技能伤害加成
+	this.skill_attack_def = otps.skill_attack_def || 0		//技能伤害减免
 	this.skill_heal_amp = otps.skill_heal_amp || 0			//技能治疗量加成
 	this.skill_turn_rate = otps.skill_turn_rate || 0		//技能伤害转化成生命值百分比
 	this.skill_turn_tg = otps.skill_turn_tg || 0			//技能伤害转化的生命值作用目标
@@ -430,6 +431,7 @@ var model = function(otps) {
 	this.enemy_died_amp = otps.enemy_died_amp || 0			//敌方每阵亡一人，伤害加成比例
 
 	this.single_less_anger = otps.single_less_anger || 0 	//攻击单体目标额外降低怒气
+	this.first_resurgence = otps.first_resurgence || 0 		//首次死亡复活概率
 	this.resurgence_self = otps.resurgence_self || 0 		//死亡后复活概率，恢复全部血量
 	this.resurgence_team = otps.resurgence_team || 0		//复活本方第1位阵亡的武将，并恢复其50%的生命，每场战斗只可触发1次
 	this.resurgence_realmRate = otps.resurgence_realmRate || 0 //同阵营复活血量倍率
