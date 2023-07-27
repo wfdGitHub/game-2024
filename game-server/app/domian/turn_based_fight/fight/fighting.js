@@ -470,7 +470,10 @@ model.prototype.diedListCheck = function() {
 		}
 		//复活判断
 		if(!this.diedList[i].buffs["jinhun"]){
-			if(this.diedList[i].died_resurgence){
+        	if(this.diedList[i].first_resurgence && this.seeded.random("复活判断") < this.diedList[i].first_resurgence){
+	            this.diedList[i].first_resurgence = 0
+	            this.diedList[i].resurgence(0.3)
+        	}else if(this.diedList[i].died_resurgence){
 				this.diedList[i].died_resurgence = false
 				this.diedList[i].resurgence(1,this.diedList[i])
 			}else if(this.diedList[i].resurgence_self && this.seeded.random("复活判断") < this.diedList[i].resurgence_self){
