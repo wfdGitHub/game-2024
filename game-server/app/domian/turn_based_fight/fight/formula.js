@@ -135,11 +135,11 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		mul *= 1 + skill["camp_amp_"+target.realm]
 	if(attacker.power_up && skill.skillType == "power")
 		mul *= 1 + attacker.power_up
-	info.value = Math.round((atk*atk/(atk+def)) * skill.mul * mul)
+	info.value = Math.ceil(((atk*atk)/(atk+def)) * skill.mul * mul)
 	if(info.value < 1)
 		info.value = 1
 	if(addAmp){
-		info.value = Math.round(info.value * (1+addAmp))
+		info.value = Math.ceil(info.value * (1+addAmp))
 	}
 	//破冰一击
 	if(skill.thawing_frozen && target.buffs["frozen"]){
