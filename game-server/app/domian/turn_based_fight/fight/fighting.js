@@ -91,7 +91,6 @@ model.prototype.load = function(belong,otps) {
 				}
 			}
 		}
-		this.loadHero(belong,i)
 	}
 	teamInfo["realms_survival"] = teamInfo["realms"]
 	//属性加成
@@ -103,6 +102,7 @@ model.prototype.load = function(belong,otps) {
 	//天书初始化
 	for(var i in this[belong+"Books"])
 		this[belong+"Books"][i].init(team[0].team,team[0].enemy,this.locator,this.seeded,this[belong+"Master"])
+	this.loadHero(belong,0)
 }
 //载入英雄
 model.prototype.loadHero = function(belong,index) {
