@@ -623,7 +623,7 @@ model.getBeautyInfo = function(beautyInfo){
 //获取团队数据
 model.getTeamData = function(team,belong) {
 	var team = JSON.parse(JSON.stringify(team))
-	var teamCfg = team.shift() || {}
+	var teamCfg = team[6] || {}
     var books = {}
     var masterAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
     var bookAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
