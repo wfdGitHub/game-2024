@@ -25,7 +25,6 @@ var model = function(otps) {
 	this.isAction = false 				//行动过标识
 	this.onAction = false  				//行动中标识
 	this.master = false 				//所属主角
-	this.comeon = false 				//出场标识
 	//=========基础属性=======//
 	this.attInfo = {}
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
@@ -971,7 +970,7 @@ model.prototype.after = function() {
 }
 //整体回合开始
 model.prototype.roundBegin = function() {
-	if(!this.comeon || this.died)
+	if(this.died)
 		return
 	//回合开始时前BUFF
 	for(var i = 0;i < this.round_buffs.length;i++){
@@ -986,8 +985,6 @@ model.prototype.roundBegin = function() {
 }
 //整体回合结束
 model.prototype.roundOver = function() {
-	if(!this.comeon)
-		return
 	if(this.buffs["delay_death"] && this.buffs["delay_death"].duration == 1){
 		this.buffs["delay_death"].destroy()
 		if(this.attInfo.hp <= 0){

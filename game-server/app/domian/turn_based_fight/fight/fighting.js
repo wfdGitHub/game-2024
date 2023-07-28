@@ -15,8 +15,8 @@ var maxRound = 20				//最大回合
 var teamLength = 6				//阵容人数
 var model = function(atkInfo,defInfo,otps) {
     fightRecord.init()
-    this.atkTeamInfo = {"comeId":0,"rival":"def"}
-    this.defTeamInfo = {"comeId":0,"rival":"atk"}
+    this.atkTeamInfo = {}
+    this.defTeamInfo = {}
 	this.seededNum = otps.seededNum || (new Date()).getTime()
     this.seeded = new seeded(this.seededNum)
     this.locator = new locator(this.seeded)
@@ -41,79 +41,112 @@ var model = function(atkInfo,defInfo,otps) {
     this.video = otps.video || false 	//是否为录像
 	this.masterSkills = [] 			//主角技能列表
 	this.masterIndex = 0 			//技能列表标识
-	this.globalId = 0 				//全局英雄ID
 	if(otps.masterSkills && Array.isArray(otps.masterSkills))
 		this.masterSkillsRecord = JSON.parse(JSON.stringify(otps.masterSkills))   //录像技能释放列表
 	else
 		this.masterSkillsRecord = []
-	this.load("atk",otps)
-	this.load("def",otps)
+	this.load(atkInfo.team,defInfo.team,otps)
     skillManager.init(this,this.locator,this.formula,this.seeded)
     this.skillManager = skillManager
 }
 //初始配置
-model.prototype.load = function(belong,otps) {
-	var teamAdds = JSON.parse(JSON.stringify(otps[belong+"TeamAdds"]))
-	var teamInfo = this[belong+"TeamInfo"]
-	var rival = teamInfo["rival"]
-	teamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
-	teamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
-	var team = this[belong+"Team"]
+model.prototype.load = function(atkTeam,defTeam,otps) {
+	var id = 0
+	var atkTeamAdds = Object.assign({},otps.atkTeamAdds)
+	var defTeamAdds = Object.assign({},otps.defTeamAdds)
+	this.atkTeamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
+	this.defTeamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
+	this.atkTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
+	this.defTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
 	for(var i = 0;i < teamLength;i++){
-		if(!team[i]){
-			team[i] = new character({})
-			team[i].isNaN = true
+		if(!atkTeam[i]){
+			atkTeam[i] = new character({})
+			atkTeam[i].isNaN = true
 		}else{
-			if(!teamInfo["realms"][team[i].realm])
-				teamInfo["realms"][[team[i].realm]] = 0
-			teamInfo["realms"][team[i].realm]++
+			if(!this.atkTeamInfo["realms"][atkTeam[i].realm])
+				this.atkTeamInfo["realms"][[atkTeam[i].realm]] = 0
+			this.atkTeamInfo["realms"][atkTeam[i].realm]++
 		}
-		team[i].init(this)
-		team[i].belong = "atk"
-		if(team[i].resurgence_team){
-			teamInfo["resurgence_team_character"] = team[i]
-			teamInfo["resurgence_team"] = team[i].resurgence_team
-			if(team[i]["resurgence_realmRate"]){
-				teamInfo["resurgence_realmRate"] = team[i]["resurgence_realmRate"]
-				teamInfo["resurgence_realmId"] = team[i]["realm"]
+		atkTeam[i].init(this)
+		atkTeam[i].belong = "atk"
+		if(atkTeam[i].resurgence_team){
+			this.atkTeamInfo["resurgence_team_character"] = atkTeam[i]
+			this.atkTeamInfo["resurgence_team"] = atkTeam[i].resurgence_team
+			if(atkTeam[i]["resurgence_realmRate"]){
+				this.atkTeamInfo["resurgence_realmRate"] = atkTeam[i]["resurgence_realmRate"]
+				this.atkTeamInfo["resurgence_realmId"] = atkTeam[i]["realm"]
 			}
 		}
-		team[i].team = team
-		team[i].enemy = this[rival+"Team"]
-		team[i].heroId = team[i].heroId
-		team[i].id = this.globalId++
-		if(team[i].team_adds){
-			for(var j in team[i].team_adds){
-				if(!teamAdds[j]){
-					teamAdds[j] = team[i].team_adds[j]
+		atkTeam[i].index = i
+		atkTeam[i].team = atkTeam
+		atkTeam[i].enemy = defTeam
+		atkTeam[i].heroId = atkTeam[i].heroId
+		atkTeam[i].id = id++
+		if(atkTeam[i].team_adds){
+			for(var j in atkTeam[i].team_adds){
+				if(!atkTeamAdds[j]){
+					atkTeamAdds[j] = atkTeam[i].team_adds[j]
 				}else{
-					teamAdds[j] += team[i].team_adds[j]
+					atkTeamAdds[j] += atkTeam[i].team_adds[j]
 				}
 			}
 		}
-		this.loadHero(belong,i)
+		if(!atkTeam[i].isNaN)
+			this.allHero.push(atkTeam[i])
 	}
-	teamInfo["realms_survival"] = teamInfo["realms"]
+	for(var i = 0;i < teamLength;i++){
+		if(!defTeam[i]){
+			defTeam[i] = new character({})
+			defTeam[i].isNaN = true
+		}else{
+			if(!this.defTeamInfo["realms"][defTeam[i].realm])
+				this.defTeamInfo["realms"][[defTeam[i].realm]] = 0
+			this.defTeamInfo["realms"][defTeam[i].realm]++
+		}
+		defTeam[i].init(this)
+		defTeam[i].belong = "def"
+		if(defTeam[i].resurgence_team){
+			this.defTeamInfo["resurgence_team_character"] = defTeam[i]
+			this.defTeamInfo["resurgence_team"] = defTeam[i].resurgence_team
+			if(defTeam[i]["resurgence_realmRate"]){
+				this.defTeamInfo["resurgence_realmRate"] = defTeam[i]["resurgence_realmRate"]
+				this.defTeamInfo["resurgence_realmId"] = defTeam[i]["realm"]
+			}
+		}
+		defTeam[i].index = i
+		defTeam[i].team = defTeam
+		defTeam[i].enemy = atkTeam
+		defTeam[i].heroId = defTeam[i].heroId
+		defTeam[i].id = id++
+		if(defTeam[i].team_adds){
+			for(var j in defTeam[i].team_adds){
+				if(!defTeamAdds[j]){
+					defTeamAdds[j] = defTeam[i].team_adds[j]
+				}else{
+					defTeamAdds[j] += defTeam[i].team_adds[j]
+				}
+			}
+		}
+		if(!defTeam[i].isNaN)
+			this.allHero.push(defTeam[i])
+	}
+	this.atkTeamInfo["realms_survival"] = this.atkTeamInfo["realms"]
+	this.defTeamInfo["realms_survival"] = this.defTeamInfo["realms"]
 	//属性加成
 	for(var i = 0;i < teamLength;i++){
-		team[i].calAttAdd(teamAdds)
-		team[i].teamInfo = teamInfo
+		atkTeam[i].calAttAdd(atkTeamAdds)
+		atkTeam[i].teamInfo = this.atkTeamInfo
+		defTeam[i].calAttAdd(defTeamAdds)
+		defTeam[i].teamInfo = this.defTeamInfo
 	}
-	this[belong+"Master"].init(this,team[0].team,team[0].enemy,this.locator,this.seeded,this[rival+"Master"])
+	this.atkMaster.init(this,this.atkTeam,this.defTeam,this.locator,this.seeded,this.defMaster)
+	this.defMaster.init(this,this.defTeam,this.atkTeam,this.locator,this.seeded,this.atkMaster)
 	//天书初始化
-	for(var i in this[belong+"Books"])
-		this[belong+"Books"][i].init(team[0].team,team[0].enemy,this.locator,this.seeded,this[belong+"Master"])
-}
-//载入英雄
-model.prototype.loadHero = function(belong,index) {
-	var id = this[belong+"TeamInfo"]["comeId"]
-	for(var i = id;i < this[belong+"Team"].length;i++){
-		this[belong+"TeamInfo"]["comeId"]++
-		if(!this[belong+"Team"][i].isNaN){
-			this[belong+"Team"][i].index = index
-			this.allHero.push(this[belong+"Team"][i])
-			break
-		}
+	for(var i in this.atkBooks){
+		this.atkBooks[i].init(this.atkTeam,this.defTeam,this.locator,this.seeded,this.atkMaster)
+	}
+	for(var i in this.defBooks){
+		this.defBooks[i].init(this.defTeam,this.atkTeam,this.locator,this.seeded,this.defMaster)
 	}
 }
 //战斗开始
