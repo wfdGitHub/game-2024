@@ -34,7 +34,8 @@ activityHandler.prototype.apply_recharge = function(msg, session, next) {
 //获取小七gamesign
 activityHandler.prototype.x7syGameSign = function(msg, session, next) {
   var str = msg.str
-  var gameSign = this.sdkPay.x7syGameSign(str)
+  var os = msg.os
+  var gameSign = this.sdkPay.x7syGameSign(str,os)
   next(null,{flag : true,gameSign : gameSign})
 }
 //申请支付测试接口
