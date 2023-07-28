@@ -70,7 +70,12 @@ model.prototype.quickEntry = function(data,cb) {
 model.prototype.x7syEntry = function(data,cb) {
 	var self = this
 	var tokenkey = data.token
-	var sign = util.md5(self.sdkConfig["appkey"]+tokenkey)
+	var sign = ""
+	var os = data.os
+	if(os == "ios")
+		sign = util.md5(self.sdkConfig["ioskey"]+tokenkey)
+	else
+		sign = util.md5(self.sdkConfig["appkey"]+tokenkey)
 	var url = self.sdkConfig["CheckUserInfo"]+"?tokenkey="+tokenkey+"&sign="+sign
 	https.get(url,function(res){
 	  	var _data='';
@@ -99,6 +104,7 @@ model.prototype.entrySuccess = function(uid,cb) {
 }
 //登陆失败
 model.prototype.entryFaild = function(uid,err,cb) {
+	console.log("entryFaild",uid,err)
 	cb({flag:false,err:err})
 }
 module.exports = {
