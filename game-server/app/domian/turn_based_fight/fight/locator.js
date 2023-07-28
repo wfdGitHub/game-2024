@@ -992,7 +992,7 @@ model.prototype.getFriendHorizontal = function(character) {
 }
 //敌方选中检测
 model.check = function(character) {
-	if(character.died || character.buffs["banish"] || character.buffs["sneak"] || character.buffs["ghost"])
+	if(!character.comeon || character.died || character.buffs["banish"] || character.buffs["sneak"] || character.buffs["ghost"])
 		return false
 	else
 		return true

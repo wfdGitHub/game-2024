@@ -13,6 +13,7 @@ var evenRoundEndBook = ["backDamage","frontDamage"] //偶数回合结束后释�
 var roundEndBook = ["singleHeal","seckill"]	//回合结束后释放
 var maxRound = 20				//最大回合
 var teamLength = 6				//阵容人数
+var indexMap = [4,0,2,1,3,5]
 var model = function(atkInfo,defInfo,otps) {
     fightRecord.init()
     this.atkTeamInfo = {"comeId":0,"rival":"def"}
@@ -59,7 +60,7 @@ model.prototype.load = function(belong,otps) {
 	teamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
 	teamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
 	var team = this[belong+"Team"]
-	for(var i = 0;i < teamLength;i++){
+	for(var i = 0;i < team.length;i++){
 		if(!team[i]){
 			team[i] = new character({})
 			team[i].isNaN = true
@@ -69,7 +70,6 @@ model.prototype.load = function(belong,otps) {
 			teamInfo["realms"][team[i].realm]++
 		}
 		team[i].init(this)
-		team[i].belong = "atk"
 		if(team[i].resurgence_team){
 			teamInfo["resurgence_team_character"] = team[i]
 			teamInfo["resurgence_team"] = team[i].resurgence_team
@@ -94,7 +94,7 @@ model.prototype.load = function(belong,otps) {
 	}
 	teamInfo["realms_survival"] = teamInfo["realms"]
 	//属性加成
-	for(var i = 0;i < teamLength;i++){
+	for(var i = 0;i < team.length;i++){
 		team[i].calAttAdd(teamAdds)
 		team[i].teamInfo = teamInfo
 	}
@@ -102,16 +102,24 @@ model.prototype.load = function(belong,otps) {
 	//天书初始化
 	for(var i in this[belong+"Books"])
 		this[belong+"Books"][i].init(team[0].team,team[0].enemy,this.locator,this.seeded,this[belong+"Master"])
-	this.loadHero(belong,0)
+	var comeonNum = otps[belong+"ComeonNum"] || 3
+	for(var i = 0;i < comeonNum;i++)
+		this.loadHero(belong,indexMap[i])
 }
 //载入英雄
-model.prototype.loadHero = function(belong,index) {
+model.prototype.loadHero = function(belong,index,show) {
 	var id = this[belong+"TeamInfo"]["comeId"]
 	for(var i = id;i < this[belong+"Team"].length;i++){
 		this[belong+"TeamInfo"]["comeId"]++
-		if(!this[belong+"Team"][i].isNaN){
-			this[belong+"Team"][i].index = index
-			this.allHero.push(this[belong+"Team"][i])
+		var hero = this[belong+"Team"][i]
+		if(!hero.isNaN){
+			if(show)
+				fightRecord.push({type:"hero_comeon",id:hero.id,index:index,belong:belong})
+			hero.index = index
+			hero.belong = belong
+			hero.comeon = true
+			hero.heroComeon()
+			this.allHero.push(hero)
 			break
 		}
 	}
@@ -119,76 +127,18 @@ model.prototype.loadHero = function(belong,index) {
 //战斗开始
 model.prototype.fightBegin = function() {
 	var info = {type : "fightBegin",atkTeam : [],defTeam : [],seededNum : this.seededNum,maxRound : this.maxRound}
-	for(var i = 0;i < teamLength;i++){
-		this.atkTeam[i].siteInit()
-		this.defTeam[i].siteInit()
-	}
-	for(var i = 0;i < teamLength;i++){
+	for(var i = 0;i < this.atkTeam.length;i++){
 		this.atkTeam[i].begin()
-		this.defTeam[i].begin()
 		info.atkTeam.push(this.atkTeam[i].getSimpleInfo())
+	}
+	for(var i = 0;i < this.defTeam.length;i++){
+		this.defTeam[i].begin()
 		info.defTeam.push(this.defTeam[i].getSimpleInfo())
 	}
+	info.comeonHero = []
+	for(var i = 0;i < this.allHero.length;i++)
+		info.comeonHero.push({id:this.allHero[i].id,index:this.allHero[i].index})
 	fightRecord.push(info)
-	for(var i = 0;i < teamLength;i++){
-		this.atkTeam[i].beginAction()
-		this.defTeam[i].beginAction()
-	}
-	//初始自身buff
-	for(var i = 0;i < teamLength;i++){
-		if(!this.atkTeam[i].died){
-			if(this.atkTeam[i].first_buff_list.length){
-				for(var j = 0;j < this.atkTeam[i].first_buff_list.length;j++){
-					if(this.atkTeam[i].first_buff_list[j]["buff_tg"]){
-						var targets = this.locator.getBuffTargets(this.atkTeam[i],this.atkTeam[i].first_buff_list[j]["buff_tg"])
-						for(var k = 0;k < targets.length;k++)
-							buffManager.createBuff(this.atkTeam[i],targets[k],this.atkTeam[i].first_buff_list[j])
-					}else{
-						buffManager.createBuff(this.atkTeam[i],this.atkTeam[i],this.atkTeam[i].first_buff_list[j])
-					}
-				}
-			}
-			if(this.atkTeam[i].first_realm_buff){
-				for(var j = 0;j < this.atkTeam[i].team.length;j++){
-					if(this.atkTeam[i].realm == this.atkTeam[i].team[j].realm)
-						buffManager.createBuff(this.atkTeam[i],this.atkTeam[i].team[j],this.atkTeam[i].first_realm_buff)
-				}
-			}
-			if(this.atkTeam[i].begin_realm_crit){
-				fightRecord.push({type:"show_tag",id:this.atkTeam[i].id,tag:"begin_realm_crit"})
-				for(var j = 0;j < this.atkTeam[i].team.length;j++){
-					if(!this.atkTeam[i].team[j].died)
-						buffManager.createBuff(this.atkTeam[i],this.atkTeam[i].team[j],{buffId : "crit",buffArg : this.atkTeam[i].begin_realm_crit * this.atkTeamInfo["realms"][this.atkTeam[i].realm],duration : 1})
-				}
-			}
-			if(this.atkTeam[i].ignoreInvincible)
-				fightRecord.push({type:"show_tag",id:this.atkTeam[i].id,tag:"ignoreInvincible"})
-			if(this.atkTeam[i].ignore_shild)
-				fightRecord.push({type:"show_tag",id:this.atkTeam[i].id,tag:"ignore_shild"})
-			if(this.atkTeam[i].half_hp_red)
-				fightRecord.push({type:"show_tag",id:this.atkTeam[i].id,tag:"half_hp_red"})
-		}
-		if(!this.defTeam[i].died){
-			if(this.defTeam[i].first_buff_list.length){
-				for(var j = 0;j < this.defTeam[i].first_buff_list.length;j++){
-					buffManager.createBuff(this.defTeam[i],this.defTeam[i],this.defTeam[i].first_buff_list[j])
-				}
-			}
-			if(this.defTeam[i].begin_realm_crit){
-				fightRecord.push({type:"show_tag",id:this.defTeam[i].id,tag:"begin_realm_crit"})
-				for(var j = 0;j < this.defTeam[i].team.length;j++){
-					if(!this.defTeam[i].team[j].died)
-						buffManager.createBuff(this.defTeam[i],this.defTeam[i].team[j],{buffId : "crit",buffArg : this.defTeam[i].begin_realm_crit * this.defTeamInfo["realms"][this.defTeam[i].realm],duration : 1})
-				}
-			}
-			if(this.defTeam[i].ignoreInvincible)
-				fightRecord.push({type:"show_tag",id:this.defTeam[i].id,tag:"ignoreInvincible"})
-			if(this.defTeam[i].ignore_shild)
-				fightRecord.push({type:"show_tag",id:this.defTeam[i].id,tag:"ignore_shild"})
-			if(this.defTeam[i].half_hp_red)
-				fightRecord.push({type:"show_tag",id:this.defTeam[i].id,tag:"half_hp_red"})
-		}
-	}
 	for(var i = 0; i <= fightBegin.length;i++){
 		if(this.atkBooks[fightBegin[i]])
 			this.atkBooks[fightBegin[i]].before()
@@ -206,6 +156,17 @@ model.prototype.nextRound = function() {
 	}
 	this.round++
 	fightRecord.push({type : "nextRound",round : this.round})
+	//助战上阵
+	var comeonList = []
+	for(var i = 0;i < this.allHero.length;i++){
+		if(this.allHero[i].died){
+			comeonList.push({"belong":this.allHero[i].belong,"index":this.allHero[i].index})
+			this.allHero.splice(i,1)
+			i--
+		}
+	}
+	for(var i = 0;i < comeonList.length;i++)
+		this.loadHero(comeonList[i].belong,comeonList[i].index,true)
 	// console.log("第 "+this.round+" 轮开始")
 	for(var i = 0;i < this.allHero.length;i++){
 		this.allHero[i].isAction = false

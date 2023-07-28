@@ -743,6 +743,13 @@ model.prototype.calAttAdd = function(team_adds) {
 	}
 	this.attInfo.hp = this.attInfo.maxHP
 }
+//英雄出场
+model.prototype.heroComeon = function() {
+	if(!this.died){
+		this.siteInit()
+		this.beginAction()
+	}
+}
 //站位加成
 model.prototype.siteInit = function() {
 	if(this.hor_fri_reduction){
@@ -844,6 +851,36 @@ model.prototype.beginAction = function() {
 			buffManager.createBuff(this,buffTargets[i],{buffId : buff.buffId,buffArg : buff.buffArg,duration : buff.duration})
 		}
 	}
+	if(this.first_buff_list.length){
+		for(var j = 0;j < this.first_buff_list.length;j++){
+			if(this.first_buff_list[j]["buff_tg"]){
+				var targets = this.fighting.locator.getBuffTargets(this,this.first_buff_list[j]["buff_tg"])
+				for(var k = 0;k < targets.length;k++)
+					buffManager.createBuff(this,targets[k],this.first_buff_list[j])
+			}else{
+				buffManager.createBuff(this,this,this.first_buff_list[j])
+			}
+		}
+	}
+	if(this.first_realm_buff){
+		for(var j = 0;j < this.team.length;j++){
+			if(this.realm == this.team[j].realm)
+				buffManager.createBuff(this,this.team[j],this.first_realm_buff)
+		}
+	}
+	if(this.begin_realm_crit){
+		fightRecord.push({type:"show_tag",id:this.id,tag:"begin_realm_crit"})
+		for(var j = 0;j < this.team.length;j++){
+			if(!this.team[j].died)
+				buffManager.createBuff(this,this.team[j],{buffId : "crit",buffArg : this.begin_realm_crit * this.atkTeamInfo["realms"][this.realm],duration : 1})
+		}
+	}
+	if(this.ignoreInvincible)
+		fightRecord.push({type:"show_tag",id:this.id,tag:"ignoreInvincible"})
+	if(this.ignore_shild)
+		fightRecord.push({type:"show_tag",id:this.id,tag:"ignore_shild"})
+	if(this.half_hp_red)
+		fightRecord.push({type:"show_tag",id:this.id,tag:"half_hp_red"})
 	if(this.dodgeFirst)
 		this.dodgeState = true
 }

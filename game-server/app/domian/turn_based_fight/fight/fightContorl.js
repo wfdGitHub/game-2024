@@ -125,10 +125,10 @@ model.loadFight = function(atkTeam,defTeam,otps) {
 		otps.seededNum = Date.now()
 	fightVerifyInfo.atkTeam = JSON.parse(JSON.stringify(atkTeam))
 	fightVerifyInfo.defTeam = JSON.parse(JSON.stringify(defTeam))
-	if(fightVerifyInfo.atkTeam[6])
-		delete fightVerifyInfo.atkTeam[6]["manualModel"]
-	if(fightVerifyInfo.defTeam[6])
-		delete fightVerifyInfo.defTeam[6]["manualModel"]
+	if(fightVerifyInfo.atkTeam[0])
+		delete fightVerifyInfo.atkTeam[0]["manualModel"]
+	if(fightVerifyInfo.defTeam[0])
+		delete fightVerifyInfo.defTeam[0]["manualModel"]
 	fightVerifyInfo.otps = {}
 	fightVerifyInfo.otps.seededNum = otps.seededNum
     var atkInfo = this.getTeamData(atkTeam,"atk")
@@ -677,7 +677,7 @@ model.getTeamData = function(team,belong) {
 	var coexistInfo = false
 	if(teamCfg["coexist"])
 		coexistInfo = this.getCoexistInfo(teamCfg["coexist"])
-	for(var i = 0;i < 6;i++){
+	for(var i = 0;i < team.length;i++){
 		if(team[i] && team[i]["coexist"] && coexistInfo){
 			for(var j in coexisATT){
 				if(!team[i][coexisATT[j]] || team[i][coexisATT[j]] < coexistInfo[coexisATT[j]])
@@ -734,7 +734,7 @@ model.calBingfu = function(master,team,bfStr) {
 			}
 		}
 		//英雄加成
-		for(var i = 0;i < 6;i++){
+		for(var i = 0;i < team.length;i++){
 			if(team[i]){
 				this.mergeData(team[i],bfAttMap)
 			}
@@ -906,7 +906,8 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 model.getTeamCE = function(team) {
 	var allCE = 0
 	var careers = {"1":0,"2":0,"3":0,"4":0}
-	for(var i = 0;i < 6;i++){
+	var teamCfg = team.shift() || {}
+	for(var i = 0;i < team.length;i++){
 		if(team[i]){
 			//等级计算
 			if(team[i]["lv"]){
@@ -987,46 +988,46 @@ model.getTeamCE = function(team) {
 				allCE += team[i]["tr_magDef"] * 3
 		}
 	}
-	if(team[6]){
-		for(var i in team[6]){
+	if(teamCfg){
+		for(var i in teamCfg){
 			if(bookMap[i]){
-				allCE += book_lv[team[6][i]["lv"]]["ce"]
-				allCE += book_star[team[6][i]["star"]]["ce"]
+				allCE += book_lv[teamCfg[i]["lv"]]["ce"]
+				allCE += book_star[teamCfg[i]["star"]]["ce"]
 			}
 		}
 		for(var i = 1;i <= 4;i++){
-			if(team[6]["g"+i] && guild_skill[team[6]["g"+i]]){
-				allCE += Math.ceil(guild_skill[team[6]["g"+i]]["ce"] * careers[i])
+			if(teamCfg["g"+i] && guild_skill[teamCfg["g"+i]]){
+				allCE += Math.ceil(guild_skill[teamCfg["g"+i]]["ce"] * careers[i])
 			}
 		}
-		if(team[6]["title"] && title_list[team[6]["title"]] && title_list[team[6]["title"]]["ce"])
-			allCE += title_list[team[6]["title"]]["ce"]
-		if(team[6]["officer"] && officer[team[6]["officer"]] && officer[team[6]["officer"]]["ce"])
-			allCE += officer[team[6]["officer"]]["ce"]
-		if(team[6]["gather"])
-			allCE += 1000 * team[6]["gather"]
+		if(teamCfg["title"] && title_list[teamCfg["title"]] && title_list[teamCfg["title"]]["ce"])
+			allCE += title_list[teamCfg["title"]]["ce"]
+		if(teamCfg["officer"] && officer[teamCfg["officer"]] && officer[teamCfg["officer"]]["ce"])
+			allCE += officer[teamCfg["officer"]]["ce"]
+		if(teamCfg["gather"])
+			allCE += 1000 * teamCfg["gather"]
 		for(var i = 1;i <= 5;i++){
-			if(team[6]["camp_"+i]){
-				allCE += 2000 * team[6]["camp_"+i]
+			if(teamCfg["camp_"+i]){
+				allCE += 2000 * teamCfg["camp_"+i]
 			}
 		}
-		if(team[6]["gjy"])
-			allCE += 80000 * team[6]["gjy"]
-		if(team[6]["dby"])
-			allCE += 80000 * team[6]["dby"]
-		if(team[6]["qby"])
-			allCE += 80000 * team[6]["qby"]
+		if(teamCfg["gjy"])
+			allCE += 80000 * teamCfg["gjy"]
+		if(teamCfg["dby"])
+			allCE += 80000 * teamCfg["dby"]
+		if(teamCfg["qby"])
+			allCE += 80000 * teamCfg["qby"]
 		//主动技能
 		for(var i = 1;i <= 4;i++)
-			if(team[6]["power"+i])
-				allCE += this.powerEntity.getPowerCE(team[6]["power"+i])
+			if(teamCfg["power"+i])
+				allCE += this.powerEntity.getPowerCE(teamCfg["power"+i])
 		//红颜技能
 		for(var i in beauty_base)
-			if(team[6]["beaut_"+i])
-				allCE += this.powerEntity.getBeautyCE(team[6]["beaut_"+i])
+			if(teamCfg["beaut_"+i])
+				allCE += this.powerEntity.getBeautyCE(teamCfg["beaut_"+i])
 		//兵符
-		if(team[6]["bingfu"])
-			allCE += this.bingfuEntity.getBfDataCE(team[6]["bingfu"])
+		if(teamCfg["bingfu"])
+			allCE += this.bingfuEntity.getBfDataCE(teamCfg["bingfu"])
 	}
 	return allCE
 }
@@ -1084,7 +1085,7 @@ model.standardTeam = function(uid,list,dl,lv) {
 				team[i].star = herosCfg[team[i]["id"]]["min_star"]
 		}
 	}
-	team[6] = Object.assign({},standard_team_ce[lv])
+	team.unshift(JSON.parse(JSON.stringify(standard_team_ce[lv])))
 	return team
 }
 //获取原始基准战力阵容(无属性加成)
@@ -1105,7 +1106,7 @@ model.oriStandardTeam = function(list,lv) {
 				team[i].star = herosCfg[team[i]["id"]]["min_star"]
 		}
 	}
-	team[6] = Object.assign({},standard_team_ce[lv])
+	team.unshift(JSON.parse(JSON.stringify(standard_team_ce[lv])))
 	return team
 }
 //获取共鸣属性
