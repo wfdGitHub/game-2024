@@ -17,7 +17,6 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		lvDiff = -200
 	var starDiff = attacker.star - target.star
 	var attDiff = lvDiff * 0.002 + starDiff * 0.05
-
 	if(attacker.damage_always_burn || target.buffs["burn"]){
 		if(skill.isAnger){
 			if(skill.burn_att_change_skill || skill.character.burn_att_change_skill){
@@ -130,11 +129,14 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(attacker.power_up && skill.skillType == "power")
 		mul *= 1 + attacker.power_up
 	info.value = Math.ceil(((atk*atk)/(atk+def)) * skill.mul * mul)
-	if(info.value < 1)
-		info.value = 1
-	if(addAmp){
-		info.value = Math.ceil(info.value * (1+addAmp))
+	if(skill.skillType != "power"){
+		if(skill.isAnger)
+			info.value = Math.ceil(info.value * (attacker.getTotalAtt("M_STK") * attacker.getTotalAtt("M_STK"))/(attacker.getTotalAtt("M_STK") + target.getTotalAtt("M_SEF")))
+		else
+			info.value = Math.ceil(info.value * (attacker.getTotalAtt("M_ATK") * attacker.getTotalAtt("M_ATK"))/(attacker.getTotalAtt("M_ATK") + target.getTotalAtt("M_DEF")))
 	}
+	if(addAmp)
+		info.value = Math.ceil(info.value * (1+addAmp))
 	//破冰一击
 	if(skill.thawing_frozen && target.buffs["frozen"]){
 		target.buffs["frozen"].destroy()

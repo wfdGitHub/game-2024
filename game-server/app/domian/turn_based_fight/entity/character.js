@@ -33,6 +33,12 @@ var model = function(otps) {
 	this.comeon = false 				//出场标识
 	//=========基础属性=======//
 	this.attInfo = {}
+	this.attInfo.M_HP = otps["M_HP"] || 0
+	this.attInfo.M_ATK = otps["M_ATK"] || 0
+	this.attInfo.M_DEF = otps["M_DEF"] || 0
+	this.attInfo.M_STK = otps["M_STK"] || 0
+	this.attInfo.M_SEF = otps["M_SEF"] || 0
+	this.attInfo.M_SPE = otps["M_SPE"] || 0
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
 	this.attInfo.atk = otps["atk"] || 0					//攻击力
 	this.attInfo.phyDef = otps["phyDef"] || 0			//物理防御力

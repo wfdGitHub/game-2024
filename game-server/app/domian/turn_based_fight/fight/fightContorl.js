@@ -595,6 +595,9 @@ model.getCharacterInfo = function(info,heroAtts,teamCfg) {
 			info.angerSkill = Object.assign({skillId : info.angerSkill},skillsCfg[info.angerSkill])
 		}
 	}
+	//主属性增益
+	info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
+	info["speed"] += Math.floor((info["speed"] * (info["M_SPE"]-40) / (info["M_SPE"]+120)))
 	return new character(info)
 }
 //获取天书数据
