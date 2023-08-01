@@ -10,7 +10,6 @@ var model = function(otps,character) {
 	this.skill_anger_a = 0 								//全队怒气恢复值
 	this.skill_less_anger = 0 							//降低目标怒气值
 	this.maxHP_damage = 0 								//生命上限伤害
-
 	//初始化方法
 	this.initArg = function() {
 		for(var i = 1;i <= 5;i++){

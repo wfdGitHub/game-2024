@@ -8,16 +8,21 @@ var model = function(otps) {
 	//=========身份===========//
 	this.heroId = Number(otps.id)
 	this.characterType = "hero"  //角色类型
-	this.realm = otps.realm		//国家
-	this.career = otps.career	//角色职业   healer 治疗者
-	this.sex = otps.sex 		//性别 1男 2女
+	this.realm = 1		//国家
+	this.career = 1	//角色职业   healer 治疗者
+	this.species = []
+	if(otps.species1)
+		this.species.push(this.species1)
+	if(otps.species2)
+		this.species.push(this.species2)
+	this.sex = 1 		//性别 1男 2女
 	this.belong = ""   			//所属阵容
 	this.index = 0				//所在位置
 	this.isNaN = false			//是否空位置
 	this.team = []				//所在阵容
 	this.enemy = []				//敌对阵容
 	this.lv = otps["lv"] || 1		//等级
-	this.star = otps["star"] || 5		//星级
+	this.star = otps["star"] || 1		//星级
 	this.ad = otps["ad"] || 0			//阶级
 	this.teamInfo = {}
 	this.heroAtts = otps.heroAtts

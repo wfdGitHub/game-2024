@@ -1,15 +1,9 @@
 var buffManager = require("../buff/buffManager.js")
+var species = require("../../../../config/gameCfg/species.json")
 var formula = function(seeded,otps={}) {
 	this.seeded = seeded
 	this.phyRate = otps.phyRate || 1
 	this.magRate = otps.magRate || 1
-}
-var restrainMap = {
-	"1_2" : 0.2,
-	"2_3" : 0.2,
-	"3_1" : 0.2,
-	"4_5" : 0.2,
-	"5_4" : 0.2
 }
 //伤害计算
 formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,chase) {
@@ -196,12 +190,11 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		}
 	}
 	//种族克制
-	var restrainValue = restrainMap[attacker.realm+"_"+target.realm] || 0
-	if(attacker["att_realm_"+target.realm])
-		restrainValue += attacker["att_realm_"+target.realm]
-	if(target["def_realm_"+attacker.realm])
-		restrainValue -= target["def_realm_"+attacker.realm]
-	info.value += Math.floor(info.value * restrainValue)
+	var specieRate = 1
+	for(var i = 0;i < target.species.length;i++)
+		specieRate *= species[skill.specie][target.species[i]]
+	info.spe = specieRate
+	info.value = Math.floor(info.value * specieRate)
 	//物理法术伤害加成减免
 	if(attacker[skill.damageType+"_add"] || target[skill.damageType+"_def"]){
 		var tmpRate = (attacker[skill.damageType+"_add"] || 0) - (target[skill.damageType+"_def"] || 0)
