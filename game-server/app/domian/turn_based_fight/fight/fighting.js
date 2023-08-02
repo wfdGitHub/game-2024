@@ -60,7 +60,7 @@ model.prototype.load = function(belong,otps) {
 	teamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
 	teamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
 	var team = this[belong+"Team"]
-	for(var i = 0;i < team.length;i++){
+	for(var i = 0;i < team.length || i < 6;i++){
 		if(!team[i]){
 			team[i] = new character({})
 			team[i].isNaN = true

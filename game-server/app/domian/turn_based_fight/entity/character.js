@@ -11,10 +11,10 @@ var model = function(otps) {
 	this.realm = 1		//国家
 	this.career = 1	//角色职业   healer 治疗者
 	this.species = []
-	if(otps.species1)
-		this.species.push(this.species1)
-	if(otps.species2)
-		this.species.push(this.species2)
+	if(otps.specie1)
+		this.species.push(otps.specie1)
+	if(otps.specie2)
+		this.species.push(otps.specie2)
 	this.sex = 1 		//性别 1男 2女
 	this.belong = ""   			//所属阵容
 	this.index = 0				//所在位置
@@ -33,12 +33,12 @@ var model = function(otps) {
 	this.comeon = false 				//出场标识
 	//=========基础属性=======//
 	this.attInfo = {}
-	this.attInfo.M_HP = otps["M_HP"] || 0
-	this.attInfo.M_ATK = otps["M_ATK"] || 0
-	this.attInfo.M_DEF = otps["M_DEF"] || 0
-	this.attInfo.M_STK = otps["M_STK"] || 0
-	this.attInfo.M_SEF = otps["M_SEF"] || 0
-	this.attInfo.M_SPE = otps["M_SPE"] || 0
+	this.attInfo.M_HP = otps["M_HP"] || 1
+	this.attInfo.M_ATK = otps["M_ATK"] || 1
+	this.attInfo.M_DEF = otps["M_DEF"] || 1
+	this.attInfo.M_STK = otps["M_STK"] || 1
+	this.attInfo.M_SEF = otps["M_SEF"] || 1
+	this.attInfo.M_SPE = otps["M_SPE"] || 1
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
 	this.attInfo.atk = otps["atk"] || 0					//攻击力
 	this.attInfo.phyDef = otps["phyDef"] || 0			//物理防御力

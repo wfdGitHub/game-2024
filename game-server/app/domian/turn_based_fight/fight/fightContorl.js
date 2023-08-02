@@ -155,15 +155,13 @@ model.videoFight = function(atkTeam,defTeam,otps) {
 model.getVerifyInfo = function() {
 	if(this.fighting && fightVerifyInfo){
 		fightVerifyInfo.otps.masterSkills = this.fighting.masterSkills
-		for(var i = 0;i < 6;i++){
-			if(fightVerifyInfo.atkTeam[i]){
+		for(var i = 0;i < fightVerifyInfo.atkTeam.length;i++){
 				delete fightVerifyInfo.atkTeam[i]["combat"]
 				delete fightVerifyInfo.atkTeam[i]["hId"]
-			}
-			if(fightVerifyInfo.defTeam[i]){
+		}
+		for(var i = 0;i < fightVerifyInfo.defTeam.length;i++){
 				delete fightVerifyInfo.defTeam[i]["combat"]
 				delete fightVerifyInfo.defTeam[i]["hId"]
-			}
 		}
 	}
 	return JSON.stringify(fightVerifyInfo)

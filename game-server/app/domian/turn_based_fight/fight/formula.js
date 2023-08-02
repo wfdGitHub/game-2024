@@ -131,9 +131,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	info.value = Math.ceil(((atk*atk)/(atk+def)) * skill.mul * mul)
 	if(skill.skillType != "power"){
 		if(skill.isAnger)
-			info.value = Math.ceil(info.value * (attacker.getTotalAtt("M_STK") * attacker.getTotalAtt("M_STK"))/(attacker.getTotalAtt("M_STK") + target.getTotalAtt("M_SEF")))
+			info.value = Math.ceil(info.value * (attacker.getTotalAtt("M_STK") * 2)/(attacker.getTotalAtt("M_STK") + target.getTotalAtt("M_SEF")))
 		else
-			info.value = Math.ceil(info.value * (attacker.getTotalAtt("M_ATK") * attacker.getTotalAtt("M_ATK"))/(attacker.getTotalAtt("M_ATK") + target.getTotalAtt("M_DEF")))
+			info.value = Math.ceil(info.value * (attacker.getTotalAtt("M_ATK") * 2)/(attacker.getTotalAtt("M_ATK") + target.getTotalAtt("M_DEF")))
 	}
 	if(addAmp)
 		info.value = Math.ceil(info.value * (1+addAmp))

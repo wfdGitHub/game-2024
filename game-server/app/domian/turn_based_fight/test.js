@@ -68,8 +68,8 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // console.log(atkTeam)
 // // var buff = {"buffId":"ghost","buff_tg":"team_self","buffArg":5,"duration":3,"buffRate":1}
 var seededNum = 1
-var atkTeam = [{},{"id":"205060","lv":500},{"id":"205060"},{"id":"205060"},0,0,{"id":"205060"}]
-var defTeam = [{},{"id":"205060"},{"id":"205060"},{"id":"205060"},{"id":"205060"},{"id":"205060"},{"id":"205060"},{"id":"205060"},{"id":"205060"},{"id":"205060"},{"id":"205060"},{"id":"205060"}]
+var atkTeam = [{},{"id":"101010"}]
+var defTeam = [{},{"id":"101020"}]
 var fighting = fightContorl.beginFight(atkTeam,defTeam,{"video":false,"seededNum":seededNum,"atkComeonNum":1,"defComeonNum":5})
 // var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
 fightRecord.explain()
