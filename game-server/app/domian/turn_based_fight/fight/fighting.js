@@ -145,7 +145,7 @@ model.prototype.fightBegin = function() {
 		if(this.defBooks[fightBegin[i]])
 			this.defBooks[fightBegin[i]].before()
 	}
-	this.nextRound()
+	this.trampoline(this.nextRound.bind(this))
 }
 //开始新轮次
 model.prototype.nextRound = function() {
@@ -179,7 +179,7 @@ model.prototype.nextRound = function() {
 		if(this.defBooks[roundBegin[i]])
 			this.bookAction(this.defBooks[roundBegin[i]])
 	}
-	this.runCheck()
+	return this.runCheck.bind(this)
 }
 //整体回合结束
 model.prototype.endRound = function() {
@@ -221,7 +221,7 @@ model.prototype.endRound = function() {
 	this.atkMaster.endRound()
 	this.defMaster.endRound()
 	if(!this.checkOver())
-		this.nextRound()
+		return this.nextRound.bind(this)
 }
 //运行检测
 model.prototype.runCheck = function() {
@@ -229,9 +229,9 @@ model.prototype.runCheck = function() {
 		this.runFlag = false
 		return
 	}else if(this.checkMaster()){
-		this.runCheck()
+		return this.runCheck.bind(this)
 	}else{
-		this.run()
+		return this.run.bind(this)
 	}
 }
 //轮到下一个角色行动
@@ -254,9 +254,9 @@ model.prototype.run = function() {
 	if(index != -1){
 		this.character = this.allHero[index]
 		this.character.isAction = true
-		this.before()
+		return this.before.bind(this)
 	}else{
-		this.endRound()
+		return this.endRound.bind(this)
 		return
 	}
 }
@@ -264,7 +264,7 @@ model.prototype.run = function() {
 model.prototype.before = function() {
 	fightRecord.push({type : "characterAction",id : this.character.id})
 	this.character.before()
-	this.action()
+	return this.action.bind(this)
 }
 //开始行动释放技能
 model.prototype.action = function() {
@@ -276,7 +276,7 @@ model.prototype.action = function() {
 		if(this.character.no_ation_buff)
 			buffManager.createBuff(this.character,this.character,{buffId : this.character.no_ation_buff.buffId,buffArg : this.character.no_ation_buff.buffArg,duration : this.character.no_ation_buff.duration})
 	}
-	this.after()
+	return this.after.bind(this)
 }
 //行动后结算
 model.prototype.after = function() {
@@ -296,15 +296,15 @@ model.prototype.after = function() {
 		if(this.next_character.length){
 			var next_character = this.next_character.shift()
 			if(next_character.died){
-				this.runCheck()
+				return this.runCheck.bind(this)
 			}else{
 				fightRecord.push({type : "extraAtion",id : next_character.id})
 				this.character = next_character
 				this.character.extra_count++
-				this.before()
+				return this.before.bind(this)
 			}
 		}else{
-			this.runCheck()
+			return this.runCheck.bind(this)
 		}
 	}
 }
@@ -343,7 +343,7 @@ model.prototype.bookAction = function(book) {
 	book.action()
 	this.diedListCheck()
 	//检测战斗是否结束
-	this.checkOver()
+	return this.checkOver.bind(this)
 }
 //死亡检测
 model.prototype.diedListCheck = function() {
@@ -570,5 +570,12 @@ model.prototype.fightOver = function(winFlag,roundEnd) {
 	info.masterSkills = this.masterSkills
 	fightRecord.push(info)
 	// fightRecord.explain()
+}
+//蹦床函数
+model.prototype.trampoline = function(f) {
+	while (f && f instanceof Function) {
+		f = f()
+	}
+	return f
 }
 module.exports = model
