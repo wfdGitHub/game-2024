@@ -1,4 +1,4 @@
-//主动伤害技能
+//技能基类
 var model = function(otps,character) {
 	this.otps = otps
 	this.character = character
@@ -9,6 +9,7 @@ var model = function(otps,character) {
 	this.damageType = otps.damageType || "phy" 			//伤害类型（目标防御选取）phy 物理伤害 mag 法术伤害
 	this.targetType = otps.targetType || "enemy_normal"	//目标类型  normal
 	this.mul = otps.mul || 0							//技能系数
+	this.needAnger = otps.needAnger || 4 				//技能所需怒气
 	this.skill_buffs = {}								//技能附带buff
 	//初始化参数
 	this.initArg = function() {}

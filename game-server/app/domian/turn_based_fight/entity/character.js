@@ -585,6 +585,7 @@ var model = function(otps) {
 		this.angerSkill.isAnger = true
 		if(this.skill_heal_maxHp)
 			this.angerSkill.self_heal = this.skill_heal_maxHp
+		this.needAnger = this.angerSkill.needAnger
 	}
 	if(otps.skill_buff1)
 		this.angerSkill.addBuff(otps.skill_buff1)				//技能buff1
