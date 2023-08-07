@@ -41,6 +41,7 @@ const aptitudeCfg = require("../../../../config/gameCfg/aptitude.json")
 const evolutionCfg = require("../../../../config/gameCfg/evolution.json")
 const beauty_base = require("../../../../config/gameCfg/beauty_base.json")
 var fightingFun = require("./fighting.js")
+var fightHandler = require("./fightHandler.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
 var masterEntity = require("../entity/master.js")
@@ -115,6 +116,7 @@ var model = function() {
 }
 model.bingfuEntity = bingfuEntity
 model.powerEntity = powerEntity
+fightHandler.call(model)
 // //自定义战斗配置// model.libertyFight = function(atkTeam,defTeam,otps) {
 // 	var fighting = new fightingFun(atkTeam,defTeam,otps)
 // 	fighting.nextRound()

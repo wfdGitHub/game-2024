@@ -309,13 +309,13 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
   self.heroDao.getHeroList(uid,hIds,function(flag,data) {
     if(data){
       var targetHero = data.pop()
-      hIds.pop()
-      var star = targetHero.star
-      var pc_hero = star_base[star].pc_hero
       if(!targetHero){
         next(null,{flag : false,data : "目标英雄不存在"})
         return
       }
+      hIds.pop()
+      var star = targetHero.star
+      var pc_hero = self.areaManager.fightContorl.getUpStarList(star)
       if(targetHero.star == heros[targetHero.id].max_star){
         next(null,{flag : false,data : "已达到最大星级"})
         return
@@ -326,8 +326,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
         return
       }
       //材料英雄检测
-      if(pc_hero){
-        pc_hero = JSON.parse(pc_hero)
+      if(pc_hero.length){
         if(pc_hero.length !== data.length){
           next(null,{flag : false,data : "材料英雄数量错误"})
           return
@@ -339,7 +338,7 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
           }
           switch(pc_hero[i][0]){
             case "self":
-              if(!(data[i].id == targetHero.id && data[i].star == heros[targetHero.id].min_star)){
+              if(!(data[i].id == targetHero.id && data[i].star == pc_hero[i][1])){
                 next(null,{flag : false,data : pc_hero[i][0]+"材料错误 index:"+i+" id:"+data[i].id+" star:"+data[i].star})
                 return
               }
@@ -362,6 +361,10 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
                 return
               }
             break
+            default:
+              next(null,{flag : false,data : "升星配置错误！ "+pc_hero[i][0]})
+              console.log("升星配置错误！ "+pc_hero[i][0])
+              return
           }
         }
         var pcStr = star_base[star].pc
