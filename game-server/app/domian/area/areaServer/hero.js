@@ -7,6 +7,26 @@ const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const util = require("../../../../util/util.js")
 module.exports = function() {
 	var self = this
+	//英雄召唤
+	
+	//设置心愿
+
+	//英雄升级
+
+	//英雄进化
+
+	//英雄晋升
+
+	//英雄重置
+
+	//英雄分解
+
+	//英雄洗髓
+
+	//英雄打书
+
+	//使用资质丹
+	
 	//英雄培养属性
 	this.heroTrainAtt = function(uid,hId,value,cb) {
 		var self = this

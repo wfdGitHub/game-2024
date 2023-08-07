@@ -15,6 +15,7 @@ var model = function(otps) {
 		this.species.push(otps.specie1)
 	if(otps.specie2)
 		this.species.push(otps.specie2)
+	this.otps = otps
 	this.sex = 1 		//性别 1男 2女
 	this.belong = ""   			//所属阵容
 	this.index = 0				//所在位置

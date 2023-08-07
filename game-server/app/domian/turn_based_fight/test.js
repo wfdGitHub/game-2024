@@ -67,12 +67,12 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // }
 // console.log(atkTeam)
 // // var buff = {"buffId":"ghost","buff_tg":"team_self","buffArg":5,"duration":3,"buffRate":1}
-var seededNum = 1
-var atkTeam = [{},{"id":"101010"}]
-var defTeam = [{},{"id":"101020"}]
-var fighting = fightContorl.beginFight(atkTeam,defTeam,{"video":false,"seededNum":seededNum,"atkComeonNum":1,"defComeonNum":5})
-// var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
-fightRecord.explain()
+// var seededNum = 1
+// var atkTeam = [{},{"id":"501010"}]
+// var defTeam = [{},{"id":"501020"}]
+// var fighting = fightContorl.beginFight(atkTeam,defTeam,{"video":false,"seededNum":seededNum,"atkComeonNum":1,"defComeonNum":5})
+// // var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
+// fightRecord.explain()
 // console.log(fightContorl.getTeamData(atkTeam))
 // var info = {"atkTeam":[{"id":405110,"ad":0,"lv":900,"star":20},null,null,null,null,null,{"title":"0","officer":"0","gather":"0","camp_1":0,"camp_2":0,"camp_3":0,"camp_4":0,"camp_5":0,"gjy":0,"dby":0,"qby":0,"g1":0,"g2":0,"g3":0,"g4":0}],"defTeam":[0,0,0,0,{"id":105070,"lv":75,"ad":2,"star":5,"artifact":10,"tr_lv":2,"crit":0.09,"critDef":0.045,"slay":0.09,"slayDef":0.045,"hitRate":0.09,"dodgeRate":0.045,"e1":3,"s1":400010202,"et1":14,"tr_maxHP":6400,"e2":3,"s2":400020202,"et2":14,"tr_atk":1600,"e3":3,"s3":400030202,"et3":14,"tr_phyDef":400,"e4":3,"s4":400040202,"et4":14,"tr_magDef":400,"boss":true},0,{"g1":11,"g2":11,"g3":11,"g4":11,"officer":3}],"otps":{"seededNum":1664337072575,"masterSkills":[]}}
 // var fighting = fightContorl.beginFight(info.atkTeam,info.defTeam,info.otps)

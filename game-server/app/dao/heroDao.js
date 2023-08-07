@@ -16,7 +16,6 @@ var stone_base = require("../../config/gameCfg/stone_base.json")
 var stone_skill = require("../../config/gameCfg/stone_skill.json")
 var stone_cfg = require("../../config/gameCfg/stone_cfg.json")
 var default_cfg = require("../../config/gameCfg/default_cfg.json")
-var evolutionCfg = require("../../config/gameCfg/evolution.json")
 var hufu_skill = require("../../config/gameCfg/hufu_skill.json")
 var hufu_lv = require("../../config/gameCfg/hufu_lv.json")
 var beauty_base = require("../../config/gameCfg/beauty_base.json")
@@ -432,8 +431,6 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb,reason) {
 			var bannerInfo = JSON.parse(heros[i]["banner"])
 			this.areaManager.areaMap[areaId].gainBanner(uid,bannerInfo)
 		}
-		if(heros[i]["evo"])
-			strList.push(evolutionCfg[heros[i]["evo"]].pr)
 		for(var j = 1;j <= 4;j++){
 			var key = "fs"+j
 			if(heros[i][key]){

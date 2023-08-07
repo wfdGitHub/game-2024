@@ -38,7 +38,6 @@ const manor_gjy = require("../../../../config/gameCfg/manor_gjy.json")
 const manor_dby = require("../../../../config/gameCfg/manor_dby.json")
 const manor_qby = require("../../../../config/gameCfg/manor_qby.json")
 const aptitudeCfg = require("../../../../config/gameCfg/aptitude.json")
-const evolutionCfg = require("../../../../config/gameCfg/evolution.json")
 const beauty_base = require("../../../../config/gameCfg/beauty_base.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
@@ -298,16 +297,6 @@ model.getCharacterInfo = function(info,heroAtts,teamCfg) {
 	    "atk": aptitudeCfg[aptitude].atk,
 	    "phyDef": aptitudeCfg[aptitude].phyDef,
 	    "magDef": aptitudeCfg[aptitude].magDef
-	}
-	//进化计算
-	if(info.evo){
-		if(evolutionCfg[info.evo]){
-			lvInfo.maxHP += evolutionCfg[info.evo].maxHP || 0
-			lvInfo.atk += evolutionCfg[info.evo].atk || 0
-			lvInfo.phyDef += evolutionCfg[info.evo].phyDef || 0
-			lvInfo.magDef += evolutionCfg[info.evo].magDef || 0
-			aptitude += evolutionCfg[info.evo].aptitude || 0
-		}
 	}
 	//等级计算
 	if(info.lv && lv_cfg[info.lv]){
@@ -868,12 +857,6 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 			oldCE = (oldValue || 0) * 3
 			newCE = (newValue || 0) * 3
 		break
-		case "evo":
-			if(oldValue && evolutionCfg[oldValue])
-				oldCE = evolutionCfg[oldValue]["ce"]
-			if(newValue && evolutionCfg[newValue])
-				newCE = evolutionCfg[newValue]["ce"]
-		break
 		case "fs1":
 		case "fs2":
 		case "fs3":
@@ -961,8 +944,6 @@ model.getTeamCE = function(team) {
 				if(team[i]["zf_"+j] && zhanfa[team[i]["zf_"+j]])
         			allCE += zhanfa[team[i]["zf_"+j]]["ce"]
 			}
-			if(team[i]["evo"])
-				allCE += evolutionCfg[team[i]["evo"]]["ce"]
 			//符文石计算
 			for(var j = 1;j <= 4;j++){
 				if(team[i]["fs"+j]){

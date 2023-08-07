@@ -50,7 +50,7 @@ buffFactory.createBuff = function(releaser,character,otps) {
 			return
 	}
 	//判断灼烧、中毒buff抗性
-	if(buff_cfg[buffId].hurt && character.damage_buff_lowrate && this.seeded.random("伤害buff抗性") < character.damage_buff_lowrate)
+	if(character.otps["immune_"+buffId])
 		return
 	if((buffId == "invincible" || buffId == "invincibleSuck") && character.buffs["burn"] && character.buffs["burn"].releaser.burn_not_invincible)
 		return

@@ -4,7 +4,6 @@ var hero_ad = require("../../../../config/gameCfg/hero_ad.json")
 var officer = require("../../../../config/gameCfg/officer.json")
 var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var star_base = require("../../../../config/gameCfg/star_base.json")
-var evolutionCfg = require("../../../../config/gameCfg/evolution.json")
 var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 var hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
 var hufu_lv = require("../../../../config/gameCfg/hufu_lv.json")
@@ -398,40 +397,6 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
     }else{
       next(null,{flag : false,data : "材料英雄错误"})
     }
-  })
-}
-//英雄进化
-heroHandler.prototype.upgraEvolution = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var hId = msg.hId
-  var self = this
-  self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
-    if(!flag){
-      next(null,{flag : false,err : "英雄不存在"})
-      return
-    }
-    var aimEvo = (heroInfo.evo || 0) + 1
-    if(!evolutionCfg[aimEvo]){
-      next(null,{flag : false,err : "没有下一级"})
-      return
-    }
-    var olv = self.areaManager.areaMap[areaId].getLordAtt(uid,"officer")
-    if(aimEvo > officer[olv]["officer"]){
-      next(null,{flag : false,err : "爵位限制"})
-      return
-    }
-    var pcStr = evolutionCfg[aimEvo].pc
-    self.areaManager.areaMap[areaId].consumeItems(uid,pcStr,1,"英雄进化",function(flag,err) {
-      if(!flag){
-        next(null,{flag : false,err : err})
-        return
-      }
-      self.heroDao.incrbyHeroInfo(areaId,uid,hId,"evo",1,function(flag,data) {
-        self.areaManager.areaMap[areaId].taskUpdate(uid,"evolution",1,aimEvo)
-        next(null,{flag : flag,data : data})
-      })
-    })
   })
 }
 //直升六星
