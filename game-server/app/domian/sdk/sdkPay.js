@@ -137,13 +137,18 @@ model.prototype.game277_order = function(data,finish_callback,req,res) {
 }
 //小七手游订单
 model.prototype.x7sy_order = function(data,finish_callback,req,res) {
-	var publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]+"\n-----END PUBLIC KEY-----"
+	var publicKey = ""
+	if(data.extends_info_data == 1){
+		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["iosRSA"]+"\n-----END PUBLIC KEY-----"
+	}else{
+		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]+"\n-----END PUBLIC KEY-----"
+	}
 	var raw_sign_data = Buffer.from(data.sign_data, 'base64')
 	delete data.sign_data
 	var source_str = local.ksort(data)
 	if(!local.verifySignSHA1(source_str,raw_sign_data,publicKey)){
 		res.send("签名验证失败")
-		console.error("签名验证失败")
+		console.error("签名验证失败",data)
 		return
 	}
 	res.send("success")
@@ -162,7 +167,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 		pay_time : Date.now(),
 		amount : encryp_data.pay_price || 0,
 		status : 0,
-		extras_params : 0
+		extras_params : data.extends_info_data
 	}
 	self.payDao.finishGameOrder(info,function(flag,err,data) {
 			if(err)
@@ -174,8 +179,11 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	})
 }
 //小七订单sign
-model.prototype.x7syGameSign = function(str) {
-	str += this.sdkConfig["RSA"]
+model.prototype.x7syGameSign = function(str,os) {
+	if(os == "ios")
+		str += this.sdkConfig["iosRSA"]
+	else
+		str += this.sdkConfig["RSA"]
 	var md5 = util.md5(str)
 	return md5
 }
