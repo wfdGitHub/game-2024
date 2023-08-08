@@ -67,10 +67,10 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // }
 // console.log(atkTeam)
 // // var buff = {"buffId":"ghost","buff_tg":"team_self","buffArg":5,"duration":3,"buffRate":1}
-var seededNum = Date.now()
-var atkTeam = [{"id":"205060","ad":5,"star":10,"lv":1,"artifact":25},{"id":"305050","ad":5,"star":10,"lv":1,"artifact":25},{"id":"305100","ad":5,"star":10,"lv":1,"artifact":25},{"id":"205010","ad":5,"star":10,"lv":1,"artifact":25},{"id":"105040","ad":5,"star":10,"lv":1,"artifact":25},{"id":"105070","ad":5,"star":10,"lv":1,"artifact":25},{"power1":{"id":200500,"lv":1,"star":1,"ad":1},"power2":{"id":300500,"lv":1,"star":1,"ad":1},"beaut_604100":{"ad":1,"star":1,"att1":0,"att2":0,"att3":0,"att4":0,"opinion":0,"id":"604100"}}]
-var defTeam = [{"id":"205050","ad":5,"star":10,"lv":1,"artifact":25},{"id":"305040","ad":5,"star":10,"lv":1,"artifact":25},{"id":"405100","ad":5,"star":10,"lv":1,"artifact":25},{"id":"205030","ad":5,"star":10,"lv":1,"artifact":25},{"id":"205060","ad":5,"star":10,"lv":1,"artifact":25},{"id":"205050","ad":5,"star":10,"lv":1,"artifact":25},{"power1":{"id":400300,"lv":1,"star":1,"ad":1},"power2":{"id":400900,"lv":1,"star":1,"ad":1},"beaut_603100":{"ad":1,"star":1,"att1":0,"att2":0,"att3":0,"att4":0,"opinion":0,"id":"603100"},"bcombat":"603100","beaut_604100":{"ad":1,"star":1,"att1":0,"att2":0,"att3":0,"att4":0,"opinion":0,"id":"604100"}}]
-var fighting = fightContorl.beginFight(atkTeam,defTeam,{"video":false,"seededNum":seededNum})
+// var seededNum = Date.now()
+// var atkTeam = [{"id":"205060","ad":5,"star":10,"lv":1,"artifact":25},{"id":"305050","ad":5,"star":10,"lv":1,"artifact":25},{"id":"305100","ad":5,"star":10,"lv":1,"artifact":25},{"id":"205010","ad":5,"star":10,"lv":1,"artifact":25},{"id":"105040","ad":5,"star":10,"lv":1,"artifact":25},{"id":"105070","ad":5,"star":10,"lv":1,"artifact":25},{"power1":{"id":200500,"lv":1,"star":1,"ad":1},"power2":{"id":300500,"lv":1,"star":1,"ad":1},"beaut_604100":{"ad":1,"star":1,"att1":0,"att2":0,"att3":0,"att4":0,"opinion":0,"id":"604100"}}]
+// var defTeam = [{"id":"205050","ad":5,"star":10,"lv":1,"artifact":25},{"id":"305040","ad":5,"star":10,"lv":1,"artifact":25},{"id":"405100","ad":5,"star":10,"lv":1,"artifact":25},{"id":"205030","ad":5,"star":10,"lv":1,"artifact":25},{"id":"205060","ad":5,"star":10,"lv":1,"artifact":25},{"id":"205050","ad":5,"star":10,"lv":1,"artifact":25},{"power1":{"id":400300,"lv":1,"star":1,"ad":1},"power2":{"id":400900,"lv":1,"star":1,"ad":1},"beaut_603100":{"ad":1,"star":1,"att1":0,"att2":0,"att3":0,"att4":0,"opinion":0,"id":"603100"},"bcombat":"603100","beaut_604100":{"ad":1,"star":1,"att1":0,"att2":0,"att3":0,"att4":0,"opinion":0,"id":"604100"}}]
+// var fighting = fightContorl.beginFight(atkTeam,defTeam,{"video":false,"seededNum":seededNum})
 // var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
 // fightRecord.explain()
 // console.log(fightContorl.getTeamData(atkTeam))
