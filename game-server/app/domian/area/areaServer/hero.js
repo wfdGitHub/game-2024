@@ -4,9 +4,12 @@ const hero_tr = require("../../../../config/gameCfg/hero_tr.json")
 const train_arg = require("../../../../config/gameCfg/train_arg.json")
 const equip_st = require("../../../../config/gameCfg/equip_st.json")
 const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
+const summon_list = require("../../../../config/gameCfg/summon_list.json")
+const hero_quality = require("../../../../config/gameCfg/hero_quality.json")
 const util = require("../../../../util/util.js")
 module.exports = function() {
 	var self = this
+	var local = {}
 	//英雄召唤
 	
 	//设置心愿
@@ -197,5 +200,13 @@ module.exports = function() {
 				}
 			})
 		})
+	}
+	//获得英雄
+	local.gainHero = function(uid,id,quality) {
+
+	}
+	//英雄重置资质技能
+	local.randHero = function(uid,id,quality) {
+		// body...
 	}
 }
