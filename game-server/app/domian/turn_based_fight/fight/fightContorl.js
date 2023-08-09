@@ -479,12 +479,12 @@ model.getCharacterInfo = function(info,heroAtts,teamCfg) {
 			}
 		}
 	}
-	//符文石计算
-	for(var i = 1;i <= 4;i++){
-		if(info["fs"+i]){
-			if(hufu_map[info["fs"+i]]){
-				if(!hufu_talents[hufu_map[info["fs"+i]].id] || hufu_map[info["fs"+i]].lv > hufu_talents[hufu_map[info["fs"+i]].id])
-					hufu_talents[hufu_map[info["fs"+i]].id] = hufu_map[info["fs"+i]].lv
+	//被动技能
+	for(var i = 0;i <= 10;i++){
+		if(info["PS"+i]){
+			if(hufu_map[info["PS"+i]]){
+				if(!hufu_talents[hufu_map[info["PS"+i]].id] || hufu_map[info["PS"+i]].lv > hufu_talents[hufu_map[info["PS"+i]].id])
+					hufu_talents[hufu_map[info["PS"+i]].id] = hufu_map[info["PS"+i]].lv
 			}
 		}
 	}
@@ -582,6 +582,13 @@ model.getCharacterInfo = function(info,heroAtts,teamCfg) {
 			info.angerSkill = Object.assign({skillId : info.angerSkill},skillsCfg[info.angerSkill])
 		}
 	}
+	//主属性计算
+	info["M_HP"] = Math.floor(info["M_HP"] * info["MR1"])
+	info["M_ATK"] = Math.floor(info["M_ATK"] * info["MR2"])
+	info["M_DEF"] = Math.floor(info["M_DEF"] * info["MR3"])
+	info["M_STK"] = Math.floor(info["M_STK"] * info["MR4"])
+	info["M_SEF"] = Math.floor(info["M_SEF"] * info["MR5"])
+	info["M_SPE"] = Math.floor(info["M_SPE"] * info["MR6"])
 	//主属性增益
 	info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
 	info["speed"] += Math.floor((info["speed"] * (info["M_SPE"]-40) / (info["M_SPE"]+120)))
@@ -1049,6 +1056,7 @@ model.getStandardCE = function() {
 }
 //获取基准战力阵容
 model.standardTeam = function(uid,list,dl,lv) {
+	return []
 	var team = list.concat()
 	var standardInfo = standard_ce[lv]
 	var dlInfo = standard_dl[dl]

@@ -98,6 +98,15 @@
         console.log("onChat")
         console.log(data)
       })
+      //召唤英雄
+      var summonHeroNormal = function(sId,count) {
+        pomelo.request("area.recruitHandler.summonHeroNormal", {sId:sId,count:count}, function(data) {
+            console.log(data);
+        })
+      }
+
+
+
       //锁定英雄
       var lockHero = function(hId) {
         pomelo.request("area.heroHandler.lockHero", {hId:hId}, function(data) {
@@ -3708,182 +3717,12 @@
       英雄 : 
       <input id="test" type="button" value="增加英雄背包栏" onclick="addHeroAmount()"/>
       <input id="test" type="button" value="背包栏数量" onclick="getHeroAmount()"/>
-      <input id="test" type="button" value="获得英雄" onclick="gainHero()"/>
-      <input id="test" type="button" value="删除英雄" onclick="removeHero()"/>
-      <input id="test" type="button" value="修改英雄属性" onclick="incrbyHeroInfo()"/>
+      <input id="test" type="button" value="召唤英雄" onclick="summonHeroNormal(1,1)"/>
       <input id="test" type="button" value="英雄列表" onclick="getHeros()"/>
-      <input id="test" type="button" value="护符列表" onclick="getHufuList()"/>
-      <input id="test" type="button" value="英雄图鉴" onclick="getHeroArchive()"/>
-    </div>
-    <div class="g-button">
-      竞技场 : 
-      <input id="test" type="button" value="获取排行榜" onclick="getRankList()"/>
-      <input id="test" type="button" value="获取目标列表" onclick="getTargetList()"/>
-      <input id="test" type="button" value="获取我的竞技场数据" onclick="getMyArenaInfo()"/>
-      <input id="test" type="button" value="挑战目标" onclick="challengeArena()"/>
-      <input id="test" type="button" value="购买挑战次数" onclick="buyArenaCount()"/>
-      <input id="test" type="button" value="获取挑战记录" onclick="getRerord()"/>
-    </div>
-    <div class="g-button">
-      押镖玩法 : 
-      <input id="test" type="button" value="参与押镖" onclick="getEscortInfo()"/>
-      <input id="test" type="button" value="镖车列表" onclick="getEscortList()"/>
-      <input id="test" type="button" value="开始押镖" onclick="beginEscort()"/>
-      <input id="test" type="button" value="刷新镖车" onclick="updateEscortCar()"/>
     </div>
     <div class="g-button">
       服务器相关 : 
       <input id="test" type="button" value="开启新服务器" onclick="openArea()"/>
-    </div>
-    <div class="g-button">
-      逐鹿之战 : 
-      <input id="test" type="button" value="获取逐鹿数据" onclick="getZhuluData()"/>
-      <input id="test" type="button" value="选择格子0" onclick="chooseGrid(0)"/>
-      <input id="test" type="button" value="选择格子1" onclick="chooseGrid(1)"/>
-      <input id="test" type="button" value="选择格子2" onclick="chooseGrid(2)"/>
-      <input id="test" type="button" value="逐鹿战斗数据" onclick="getZhuluFightData()"/>
-      <input id="test" type="button" value="执行格子" onclick="executeGrid()"/>
-      <input id="test" type="button" value="放弃格子" onclick="giveupGrid()"/>
-      <input id="test" type="button" value="选择战利品" onclick="chooseSpoils(1)"/>
-    </div>
-    <div class="g-button">
-      寻宝 : 
-      <input id="test" type="button" value="获取寻宝数据" onclick="getSTData()"/>
-      <input id="test" type="button" value="普通寻宝" onclick="normalSTSeek()"/>
-      <input id="test" type="button" value="普通寻宝十五次" onclick="normalSTMultiple()"/>
-      <input id="test" type="button" value="免费刷新普通寻宝" onclick="normalSTFreeRefresh()"/>
-      <input id="test" type="button" value="付费刷新普通寻宝" onclick="normalSTBuyRefresh()"/>
-      <input id="test" type="button" value="高级寻宝" onclick="highSTSeek()"/>
-      <input id="test" type="button" value="高级寻宝十次" onclick="highSTMultiple()"/>
-      <input id="test" type="button" value="免费刷新高级寻宝" onclick="highSTFreeRefresh()"/>
-      <input id="test" type="button" value="付费刷新高级寻宝" onclick="highSTBuyRefresh()"/>
-    </div>
-    <div class="g-button">
-      元神抽奖 : 
-      <input id="test" type="button" value="元神抽奖数据" onclick="getaceLottoData()"/>
-      <input id="test" type="button" value="免费元神抽奖" onclick="aceLottoFree()"/>
-      <input id="test" type="button" value="单次元神抽奖" onclick="aceLottoOnce()"/>
-      <input id="test" type="button" value="十连元神抽奖" onclick="aceLottoMultiple()"/>
-    </div>
-    <div class="g-button">
-      山海秘境 : 
-      <input id="test" type="button" value="山海秘境数据" onclick="getMysteriousData()"/>
-      <input id="test" type="button" value="购买次数" onclick="buyMysteriousCount()"/>
-      <input id="test" type="button" value="排行榜" onclick="getMysteriousRank()"/>
-    </div>
-    <div class="g-button">
-      全服BOSS : 
-      <input id="test" type="button" value="全服BOSS数据" onclick="getAreaBossData()"/>
-      <input id="test" type="button" value="挑战BOSS" onclick="challengeAreaBoss()"/>
-      <input id="test" type="button" value="购买次数" onclick="buyAreaBossCount()"/>
-      <input id="test" type="button" value="购买增强" onclick="buyAreaBossUp()"/>
-      <input id="test" type="button" value="获取排行榜" onclick="getAreaBossRank()"/>
-    </div>
-    <div class="g-button">
-      巅峰赛 : 
-      <input id="test" type="button" value="新赛程" onclick="peakBegin()"/>
-      <input id="test" type="button" value="下一阶段" onclick="peakNextState()"/>
-      <input id="test" type="button" value="巅峰赛数据" onclick="getPeakData()"/>
-      <input id="test" type="button" value="同步阵容" onclick="peakSyncFightTeam()"/>
-      <input id="test" type="button" value="选手信息" onclick="getPeakParticipantsInfo()"/>
-      <input id="test" type="button" value="当前下注" onclick="getPeakBetInfo()"/>
-      <input id="test" type="button" value="历史下注" onclick="getPeakBetHistory()"/>
-      <input id="test" type="button" value="我的比赛" onclick="getPeakMyMatch()"/>
-      <input id="test" type="button" value="十六强" onclick="getPeakBetterHistory()"/>
-    </div>
-    <div class="g-button">
-      牧野之战 : 
-      <input id="test" type="button" value="新赛季" onclick="settleMuye()"/>
-      <input id="test" type="button" value="随机阵营" onclick="muyeRandCamp()"/>
-      <input id="test" type="button" value="牧野数据" onclick="getMuyeData()"/>
-      <input id="test" type="button" value="匹配战斗" onclick="matchMuye()"/>
-    </div>
-    <div class="g-button">
-      公会 : 
-      <input id="test" type="button" value="创建公会" onclick="createGuild(Math.random().toString(36).substr(2,5))"/>
-      <input id="test" type="button" value="解散公会" onclick="dissolveGuild()"/>
-      <input id="test" type="button" value="我的公会" onclick="getMyGuild()"/>
-      <input id="test" type="button" value="公会成员" onclick="getMyGuildUsers()"/>
-      <input id="test" type="button" value="公会列表" onclick="getGuildList()"/>
-      <input id="test" type="button" value="申请列表" onclick="getGuildApplyList()"/>
-      <input id="test" type="button" value="退出公会" onclick="quitGuild()"/>
-      <input id="test" type="button" value="签到" onclick="signInGuild('sign_3')"/>
-      <input id="test" type="button" value="红包列表" onclick="getGuildGiftList()"/>
-      <input id="test" type="button" value="公会日志" onclick="getGuildLog()"/>
-      <input id="test" type="button" value="公会排行" onclick="getGuildRank()"/>
-      <input id="test" type="button" value="弹劾盟主" onclick="impeachLead()"/>
-    </div>
-    <div class="g-button">
-      宝藏BOSS : 
-      <input id="test" type="button" value="获取宝藏BOSS数据" onclick="getAuctionData()"/>
-      <input id="test" type="button" value="挑战宝藏BOSS" onclick="challengeTreasureBoss()"/>
-      <input id="test" type="button" value="获取竞拍列表" onclick="getAuctionList()"/>
-    </div>
-    <div class="g-button">
-      攻城战 : 
-      <input id="test" type="button" value="城池刷新" onclick="createGuildCityBoss()"/>
-      <input id="test" type="button" value="攻城信息" onclick="getGuildCityBossData()"/>
-      <input id="test" type="button" value="挑战BOSS" onclick="challengeGuildCityBoss(1)"/>
-      <input id="test" type="button" value="获取城池信息" onclick="getGuildCityBossInfo(1)"/>
-    </div>
-    <div class="g-button">
-      公会PK : 
-      <input id="test" type="button" value="报名" onclick="applyGuildPKRival()"/>
-      <input id="test" type="button" value="开始匹配" onclick="matchGuildPKRival()"/>
-      <input id="test" type="button" value="获取PK信息" onclick="getGuildPKInfo()"/>
-      <input id="test" type="button" value="结算PK" onclick="guildPkSettle()"/>
-    </div>
-    <div class="g-button">
-      沙盘演武 : 
-      <input id="test" type="button" value="演武数据" onclick="getExerciseData()"/>
-      <input id="test" type="button" value="复活" onclick="exerciseResurgence()"/>
-    </div>
-    <div class="g-button">
-      远古战场 : 
-      <input id="test" type="button" value="获取我的数据" onclick="getAncientData()"/>
-      <input id="test" type="button" value="获取排行榜" onclick="getAncientRank()"/>
-      <input id="test" type="button" value="获取历史挑战记录" onclick="getAncientRecord()"/>
-      <input id="test" type="button" value="目标列表" onclick="ancientGetTargetList()"/>
-      <input id="test" type="button" value="开始挑战" onclick="ancientChallenge()"/>
-    </div>
-    <div class="g-button">
-      家园 : 
-      <input id="test" type="button" value="获取家园数据" onclick="manorData()"/>
-      <input id="test" type="button" value="获取特殊地点" onclick="manorCityInfos()"/>
-      <input id="test" type="button" value="占领特殊地点1" onclick="manorOccupyCity(3)"/>
-      <input id="test" type="button" value="搜寻玩家" onclick="manorFindUser()"/>
-      <input id="test" type="button" value="占领玩家" onclick="manorOccupyUser()"/>
-      <input id="test" type="button" value="反击" onclick="manorRevolt()"/>
-      <input id="test" type="button" value="查看战报" onclick="manorRerord()"/>
-    </div>
-    <div class="g-button">
-      无双争霸赛 : 
-      <input id="test" type="button" value="玩法开启" onclick="beginBeherrscher()"/>
-      <input id="test" type="button" value="玩法关闭" onclick="endBeherrscher()"/>
-      <input id="test" type="button" value="获取数据" onclick="getBeherrscherInfo()"/>
-      <input id="test" type="button" value="挑战席位1" onclick="challengeBeherrscher(1)"/>
-      <input id="test" type="button" value="挑战席位2" onclick="challengeBeherrscher(2)"/>
-      <input id="test" type="button" value="挑战席位3" onclick="challengeBeherrscher(3)"/>
-      <input id="test" type="button" value="挑战席位4" onclick="challengeBeherrscher(4)"/>
-      <input id="test" type="button" value="挑战席位5" onclick="challengeBeherrscher(5)"/>
-      <input id="test" type="button" value="挑战席位6" onclick="challengeBeherrscher(6)"/>
-      <input id="test" type="button" value="清除CD" onclick="clearBeherrscherCD()"/>
-    </div>
-    <div class="g-button">
-      节日活动 : 
-      <input id="test" type="button" value="获取活动数据" onclick="getFestivalData()"/>
-      <input id="test" type="button" value="签到" onclick="festivalSignIn(0)"/>
-      <input id="test" type="button" value="挑战boss" onclick="challengeFestivalBoss()"/>
-      <input id="test" type="button" value="兑换物品" onclick="festivalShop(0)"/>
-    </div>
-    <div class="g-button">
-      主动技能 : 
-      <input id="test" type="button" value="主动技能数据" onclick="getPowerData()"/>
-      <input id="test" type="button" value="升星" onclick="upPowerStar(500800)"/>
-      <input id="test" type="button" value="升阶" onclick="upPowerAd(500800)"/>
-      <input id="test" type="button" value="升级" onclick="upPowerLv(500800)"/>
-      <input id="test" type="button" value="重生" onclick="resetPower(500800)"/>
-      <input id="test" type="button" value="设置偏好" onclick="setManualModel(0)"/>
     </div>
   </body>
 </html>

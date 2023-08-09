@@ -115,247 +115,25 @@ module.exports = function() {
 		}
 	}
 	//判断共鸣属性
-	this.checkCoexistMap = function(uid,hId,lv) {
-		if(userCoexistMaps[uid] && userTeams[uid]){
-			// console.log("userCoexistMaps",userCoexistMaps[uid],lv,userTeams[uid][6]["coexist"])
-			if(userCoexistMaps[uid][hId]){
-				//共鸣英雄
-				// console.log("1111111")
-				userCoexistMaps[uid][hId] = Number(lv)
-				self.setObj(uid,"coexistMap",hId,lv)
-				local.calCoexistLv(uid)
-			}else if(userCoexistLength[uid] < 6){
-				// console.log("22222222")
-				local.addCoexistHero(uid,hId,lv)
-				local.calCoexistLv(uid)
-			}else if(userTeams[uid] && lv > userTeams[uid][6]["coexist"]){
-				// console.log("3333333333")
-				//非共鸣英雄等级足够
-				var min = -1
-				var minId = ""
-				for(var i in userCoexistMaps[uid]){
-					if(min == -1 || userCoexistMaps[uid][i] < min){
-						min = userCoexistMaps[uid][i]
-						minId = i
-					}
-				}
-				if(minId && userCoexistMaps[uid][minId] < lv){
-					local.delCoexistHero(uid,minId)
-					local.addCoexistHero(uid,hId,lv)
-					local.calCoexistLv(uid)
-				}
-			}
-		}
-	}
+	this.checkCoexistMap = function(uid,hId,lv) {}
 	//移除英雄判断重构
-	this.removeCheckCoexist = function(uid,hIds) {
-		if(userCoexistMaps[uid]){
-			for(var i = 0;i < hIds.length;i++){
-				if(userCoexistMaps[uid][hIds[i]]){
-					self.resetCoexistHero(uid)
-					return
-				}
-			}
-		}
-	}
+	this.removeCheckCoexist = function(uid,hIds) {}
 	//重构共鸣英雄
-	this.resetCoexistHero = function(uid) {
-		// console.log("重构共鸣英雄",uid)
-		var minLv = 0
-		var list = []
-		self.heroDao.getHeros(uid,function(flag,data) {
-			if(flag){
-				for(var i in data){
-					if(!data[i]["coexist"] && (list.length < 6 || data[i]["lv"] > minLv)){
-						data[i]["hId"] = i
-						list.push(data[i])
-						list.sort(function(a,b) {
-							return a.lv > b.lv ? -1 : 1
-						})
-						list = list.slice(0,6)
-						minLv = list[list.length - 1]["lv"]
-					}
-				}
-				userTeams[uid][6]["coexist"] = minLv
-				self.setObj(uid,"playerInfo","coexist",minLv)
-				// console.log("重构共鸣英雄",list)
-				var maps = {}
-				for(var i = 0;i < list.length;i++)
-					maps[list[i]["hId"]] = Number(list[i]["lv"])
-				// console.log("maps",maps)
-				userCoexistMaps[uid] = maps
-				userCoexistLength[uid] = Object.keys(userCoexistMaps[uid]).length
-				// console.log("最终数据",userCoexistMaps[uid],userCoexistLength[uid],userTeams[uid][6]["coexist"])
-				self.delObjAll(uid,"coexistMap")
-				self.setHMObj(uid,"coexistMap",maps)
-				local.updateCoexistNotify(uid)
-			}
-		})
-		// console.log("userCoexistMaps",userCoexistMaps[uid])
-	}
+	this.resetCoexistHero = function(uid) {}
 	//添加共鸣英雄
-	local.addCoexistHero = function(uid,hId,lv) {
-		// console.log("添加共鸣英雄")
-		self.setObj(uid,"coexistMap",hId,lv)
-		if(userCoexistMaps[uid]){
-			userCoexistMaps[uid][hId] = Number(lv)
-			userCoexistLength[uid] = Object.keys(userCoexistMaps[uid]).length
-		}
-		// console.log("userCoexistMaps",userCoexistMaps[uid])
-	}
+	local.addCoexistHero = function(uid,hId,lv) {}
 	//移除共鸣英雄
-	local.delCoexistHero = function(uid,hId) {
-		// console.log("移除共鸣英雄")
-		self.delObj(uid,"coexistMap",hId)
-		if(userCoexistMaps[uid]){
-			delete userCoexistMaps[uid][hId]
-			userCoexistLength[uid] = Object.keys(userCoexistMaps[uid]).length
-		}
-		// console.log("userCoexistMaps",userCoexistMaps[uid])
-	}
+	local.delCoexistHero = function(uid,hId) {}
 	//计算共鸣属性
-	local.calCoexistLv = function(uid) {
-		// console.log("计算共鸣属性")
-		if(userCoexistMaps[uid] && userTeams[uid]){
-			var min = 9999
-			for(var i in userCoexistMaps[uid]){
-				if(userCoexistMaps[uid][i] < min){
-					min = userCoexistMaps[uid][i]
-				}
-			}
-			if(min != userTeams[uid][6]["coexist"]){
-				if(min > userTeams[uid][6]["coexist"]){
-					self.taskUpdate(uid,"coexist_lv",1,min)
-				}
-				userTeams[uid][6]["coexist"] = min
-				self.setObj(uid,"playerInfo","coexist",min)
-			}
-			local.updateCoexistNotify(uid)
-		}
-		// console.log("userCoexistMaps",userCoexistMaps[uid],"共鸣等级:"+min)
-	}
+	local.calCoexistLv = function(uid) {}
 	//通知共鸣数据更新
-	local.updateCoexistNotify = function(uid) {
-		if(userCoexistMaps[uid] && userTeams[uid]){
-			var notify = {
-				type : "coexist",
-				coexistMaps : userCoexistMaps[uid],
-				coexist : userTeams[uid][6]["coexist"]
-			}
-			self.sendToUser(uid,notify)
-		}
-	}
+	local.updateCoexistNotify = function(uid) {}
 	//获取共鸣英雄数据
-	this.getCoexistData = function(uid,cb) {
-		self.getObjAll(uid,"coexistList",function(coexistList) {
-			var info = {}
-			info.coexistList = coexistList || {}
-			info.coexistMaps = userCoexistMaps[uid]
-			cb(true,info)
-		})
-	}
+	this.getCoexistData = function(uid,cb) {}
 	//放置共鸣英雄
-	this.setCoexistHero = function(uid,hId,index,cb) {
-		async.waterfall([
-			function(next) {
-				if(userCoexistMaps[uid] && userCoexistMaps[uid][hId])
-					next("不能为供奉英雄")
-				else
-					next()
-			},
-			function(next) {
-				self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
-				    if(!flag){
-				      	next("英雄不存在")
-				    }else{
-				    	if(heroInfo["coexist"]){
-				    		next("该英雄已共鸣")
-				    		return
-				    	}
-				    	next()
-				    }
-				})
-			},
-			function(next) {
-				//index判断
-				if(!Number.isInteger(index) || index < 1){
-					next("index error "+index)
-					return
-				}
-				var lv = self.getLordLv(uid)
-				if(lv < lord_lv[lv]["coexistSlot"]){
-					next("主公等级限制 "+lv+"/"+lord_lv[lv]["coexistSlot"])
-					return
-				}
-				self.getHMObj(uid,"coexistList",["slot_"+index,"time_"+index],function(list) {
-					if(list[0]){
-						next("该槽位已有英雄")
-						return
-					}
-					if(list[1] && Date.now() < Number(list[1])){
-						next("槽位冷却中")
-						return
-					}
-					next()
-				})
-			},
-			function(next) {
-				self.heroDao.setHeroInfo(self.areaId,uid,hId,"coexist",1)
-				self.setObj(uid,"coexistList","slot_"+index,hId)
-				cb(true)
-			}
-		],function(err) {
-			cb(false,err)
-		})
-	}
+	this.setCoexistHero = function(uid,hId,index,cb) {}
 	//取出共鸣英雄
-	this.cleanCoexistHero = function(uid,hId,index,cb) {
-		var heroInfo = {}
-		async.waterfall([
-			function(next) {
-				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
-				    if(!flag){
-				      	next("英雄不存在")
-				    }else{
-				    	heroInfo = data
-				    	if(!heroInfo["coexist"]){
-				    		next("该英雄未共鸣")
-				    		return
-				    	}
-				    	next()
-				    }
-				})
-			},
-			function(next) {
-				//index判断
-				if(!Number.isInteger(index) || index < 1){
-					next("index error "+index)
-					return
-				}
-				self.getObj(uid,"coexistList","slot_"+index,function(data) {
-					if(!data){
-						next("该槽位没有英雄")
-						return
-					}
-					if(data != hId){
-						next("hId error "+data)
-						return
-					}
-					next()
-				})
-			},
-			function(next) {
-				var time = Date.now()+oneDayTime
-				self.heroDao.delHeroInfo(self.areaId,uid,hId,"coexist")
-				self.delObj(uid,"coexistList","slot_"+index)
-				self.setObj(uid,"coexistList","time_"+index,time)
-				self.checkCoexistMap(uid,hId,heroInfo.lv)
-				cb(true,time)
-			}
-		],function(err) {
-			cb(false,err)
-		})
-	}
+	this.cleanCoexistHero = function(uid,hId,index,cb) {}
 	//改变战力1
 	this.incrbyCE = function(uid,name,oldValue,newValue) {
 		var ce = self.fightContorl.calcCEDiff(name,oldValue,newValue)

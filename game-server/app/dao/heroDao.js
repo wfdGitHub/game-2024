@@ -176,37 +176,7 @@ heroDao.prototype.randHeroIdButId = function(type,heroId) {
 	}
 }
 //获得英雄
-heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {
-	let id = otps.id
-	if(!herosCfg[id]){
-		console.error("id error by herosCfg",id)
-		if(cb)
-			cb(false,"id error by herosCfg",id)
-		return
-	}
-	let ad = otps.ad || 0
-	let lv = otps.lv || 1
-	let star = otps.star || herosCfg[id].min_star
-	var hId
-	if(!otps.robot)
-		hId = this.areaManager.areaMap[areaId].getLordLastid(uid)
-	else 
-		hId = uuid.v1()
-	var heroInfo = {id : id,ad : ad,lv : lv,star : star,evo : 0}
-	this.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
-	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
-	heroInfo.hId = hId
-	if(!otps.robot){
-		this.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,star)
-		this.updateHeroArchive(areaId,uid,id,star)
-		this.areaManager.areaMap[areaId].checkCoexistMap(uid,hId,1)
-	}
-	if(cb)
-		cb(true,heroInfo)
-	heroInfo.hId = hId
-	this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:star,reason:"获得英雄-"+hId})
-	return heroInfo
-}
+heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {}
 //升级英雄图鉴
 heroDao.prototype.updateHeroArchive = function(areaId,uid,id,star) {
 	var self = this
@@ -473,7 +443,6 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 					break
 					case "lv":
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
-						self.areaManager.areaMap[areaId].checkCoexistMap(uid,hId,data)
 						if(self.areaManager.areaMap[areaId].players[uid] && self.areaManager.areaMap[areaId].players[uid]["heroLv"] < data)
 							self.areaManager.areaMap[areaId].chageLordData(uid,"heroLv",data)
 					break
@@ -795,15 +764,15 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 //获取出场阵容
 heroDao.prototype.getFightTeam = function(uid,cb) {
 	var self = this
+	var fightData = [{}]
 	var fightTeam = []
 	async.waterfall([
 		function(next) {
 			self.redisDao.db.get("player:user:"+uid+":fightTeam",function(err,data) {
-				if(err || !data){
-					next("未设置阵容")
-					return
-				}
-				fightTeam = JSON.parse(data)
+				if(!data)
+					fightTeam = []
+				else
+					fightTeam = JSON.parse(data)
 				var multiList = []
 				var hIds = []
 				for(var i = 0;i < fightTeam.length;i++){
@@ -825,9 +794,7 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 					}
 					for(var i = 0;i < fightTeam.length;i++){
 						if(hash[fightTeam[i]]){
-							fightTeam[i] = hash[fightTeam[i]]
-						}else{
-							fightTeam[i] = null
+							fightData.push(hash[fightTeam[i]])
 						}
 					}
 					next(null)
@@ -835,25 +802,11 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			})
 		},
 		function(next) {
-			//天书
-			self.getFightBook(uid,function(flag,data) {
-				fightTeam[6] = data
-				next()
-			})
-		},
-		function(next) {
 			//主动技能
 			self.getFightPower(uid,function(powers,manualModel) {
 				for(var i in powers)
-					fightTeam[6][i] = powers[i]
-				fightTeam[6]["manualModel"] = Number(manualModel) || 0
-				next()
-			})
-		},
-		function(next) {
-			//红颜技能
-			self.getBeautys(uid,function(beautys) {
-				Object.assign(fightTeam[6],beautys)
+					fightData[0][i] = powers[i]
+				fightData[0]["manualModel"] = Number(manualModel) || 0
 				next()
 			})
 		},
@@ -861,7 +814,7 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			//称号
 			self.redisDao.db.hget("player:user:"+uid+":playerInfo","title",function(err,data) {
 				if(data)
-					fightTeam[6]["title"] = data
+					fightData[0]["title"] = data
 				next()
 			})
 		},
@@ -869,7 +822,7 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			//官职
 			self.redisDao.db.hget("player:user:"+uid+":playerInfo","officer",function(err,data) {
 				if(data)
-					fightTeam[6]["officer"] = data
+					fightData[0]["officer"] = data
 				next()
 			})
 		},
@@ -877,20 +830,7 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			//图鉴值
 			self.redisDao.db.hget("player:user:"+uid+":playerInfo","gather",function(err,data) {
 				if(data)
-					fightTeam[6]["gather"] = data
-				next()
-			})
-		},
-		function(next) {
-			//阵营加成
-			self.redisDao.db.hmget("player:user:"+uid+":playerInfo",["camp_1","camp_2","camp_3","camp_4","camp_5"],function(err,data) {
-				if(data){
-					fightTeam[6]["camp_1"] = Number(data[0]) || 0
-					fightTeam[6]["camp_2"] = Number(data[1]) || 0
-					fightTeam[6]["camp_3"] = Number(data[2]) || 0
-					fightTeam[6]["camp_4"] = Number(data[3]) || 0
-					fightTeam[6]["camp_5"] = Number(data[4]) || 0
-				}
+					fightData[0]["gather"] = data
 				next()
 			})
 		},
@@ -898,9 +838,9 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			//家园建筑
 			self.redisDao.db.hmget("player:user:"+uid+":manor",["gjy","dby","qby"],function(err,data) {
 				if(data){
-					fightTeam[6]["gjy"] = Number(data[0]) || 0
-					fightTeam[6]["dby"] = Number(data[1]) || 0
-					fightTeam[6]["qby"] = Number(data[2]) || 0
+					fightData[0]["gjy"] = Number(data[0]) || 0
+					fightData[0]["dby"] = Number(data[1]) || 0
+					fightData[0]["qby"] = Number(data[2]) || 0
 				}
 				next()
 			})
@@ -908,14 +848,14 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 		function(next) {
 			//共鸣等级
 			self.redisDao.db.hget("player:user:"+uid+":playerInfo","coexist",function(err,data) {
-				fightTeam[6]["coexist"] = data || 0
+				fightData[0]["coexist"] = data || 0
 				next()
 			})
 		},
 		function(next) {
 			//兵符
 			self.redisDao.db.hget("player:user:"+uid+":playerInfo","bingfu",function(err,data) {
-				fightTeam[6]["bingfu"] = data || 0
+				fightData[0]["bingfu"] = data || 0
 				next()
 			})
 		},
@@ -923,12 +863,12 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			//公会技能
 			self.redisDao.db.hmget("player:user:"+uid+":guild",["skill_1","skill_2","skill_3","skill_4"],function(err,data) {
 				if(data){
-					fightTeam[6]["g1"] = Number(data[0]) || 0
-					fightTeam[6]["g2"] = Number(data[1]) || 0
-					fightTeam[6]["g3"] = Number(data[2]) || 0
-					fightTeam[6]["g4"] = Number(data[3]) || 0
+					fightData[0]["g1"] = Number(data[0]) || 0
+					fightData[0]["g2"] = Number(data[1]) || 0
+					fightData[0]["g3"] = Number(data[2]) || 0
+					fightData[0]["g4"] = Number(data[3]) || 0
 				}
-				cb(true,fightTeam)
+				cb(true,fightData)
 			})
 		}
 	],function(err) {

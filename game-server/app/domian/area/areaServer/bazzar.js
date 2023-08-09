@@ -22,17 +22,6 @@ for(let type in bazaar_cfg){
 		allWeights[type] = bazaar_goods[type][i].weight
 	}
 }
-var star_4_heros = []
-var star_5_heros = []
-for(let heroId in heros){
-	if(!heros[heroId]["NPC"]){
-		if(heros[heroId].min_star == 4){
-			star_4_heros.push(heroId)
-		}else if(heros[heroId].min_star == 5){
-			star_5_heros.push(heroId)
-		}
-	}
-}
 for(let i in ace_pack){
 	if(!ace_qualitys[ace_pack[i].quality])
 		ace_qualitys[ace_pack[i].quality] = []
@@ -145,13 +134,6 @@ module.exports = function() {
 					case "item":
 						goods.itemId = bazaar_goods[type][i]["itemId"]
 					break
-					case "heroChip":
-						if(bazaar_goods[type][i]["quality"] == 4){
-							goods.itemId = star_4_heros[Math.floor(Math.random() * star_4_heros.length)]
-						}else if(bazaar_goods[type][i]["quality"] == 5){
-							goods.itemId = star_5_heros[Math.floor(Math.random() * star_4_heros.length)]
-						}
-					break
 					case "equip":
 						let lv = self.getCheckpointsInfo(uid) || 1
 						let equipLv = checkpoints[lv]["equip"]
@@ -171,10 +153,9 @@ module.exports = function() {
 						goods.itemId = art_list[Math.floor(Math.random() * art_list.length)]
 					break
 				}
+				if(!goods.itemId || !goods.value)
+					return
 				goods.value = bazaar_goods[type][i]["value"] * item_cfg[goods.itemId]["buyNum"]
-				if(!goods.value){
-					console.error("goods.itemId ",goods.itemId,bazaar_goods[type][i]["value"],item_cfg[goods.itemId]["buyNum"])
-				}
 				goods.discount = bazaar_goods[type][i]["discount"]
 				switch(bazaar_goods[type][i].currency){
 					case "coin":

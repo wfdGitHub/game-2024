@@ -250,6 +250,8 @@ heroHandler.prototype.upgradeLevel = function(msg, session, next) {
 }
 //英雄升阶  受玩家等级限制
 heroHandler.prototype.upgraAdvance = function(msg, session, next) {
+  next(null,{flag : false,data : "已弃用"})
+  return
   var uid = session.uid
   var areaId = session.get("areaId")
   var hId = msg.hId
@@ -287,6 +289,8 @@ heroHandler.prototype.upgraAdvance = function(msg, session, next) {
 }
 //英雄升星   受玩家等级限制
 heroHandler.prototype.upgradeStar = function(msg, session, next) {
+  next(null,{flag : false,data : "已弃用"})
+  return
   var uid = session.uid
   var areaId = session.get("areaId")
   var target = msg.target
@@ -401,6 +405,8 @@ heroHandler.prototype.upgradeStar = function(msg, session, next) {
 }
 //直升六星
 heroHandler.prototype.upgradeStarSimple = function(msg, session, next) {
+  next(null,{flag : false,data : "已弃用"})
+  return
   var uid = session.uid
   var areaId = session.get("areaId")
   var hId = msg.hId
@@ -441,6 +447,8 @@ heroHandler.prototype.upgradeStarSimple = function(msg, session, next) {
 }
 //英雄重置
 heroHandler.prototype.replaceHero = function(msg, session, next) {
+  next(null,{flag : false,data : "已弃用"})
+  return
   var uid = session.uid
   var areaId = session.get("areaId")
   var hId = msg.hId
@@ -479,6 +487,8 @@ heroHandler.prototype.replaceHero = function(msg, session, next) {
 }
 //保存重置
 heroHandler.prototype.saveReplace = function(msg, session, next) {
+  next(null,{flag : false,data : "已弃用"})
+  return
   var uid = session.uid
   var areaId = session.get("areaId")
   var self = this
@@ -519,6 +529,8 @@ heroHandler.prototype.saveReplace = function(msg, session, next) {
 }
 //取消重置
 heroHandler.prototype.cancelReplace = function(msg, session, next) {
+  next(null,{flag : false,data : "已弃用"})
+  return
   var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].delPlayerData(uid,"replaceHero")
@@ -671,6 +683,8 @@ heroHandler.prototype.getHeroRankOne = function(msg, session, next) {
 }
 //升级符石
 heroHandler.prototype.upHeroFS = function(msg, session, next) {
+  next(null,{flag : false,data : "已弃用"})
+  return
   var uid = session.uid
   var areaId = session.get("areaId")
   var hId = msg.hId
@@ -724,6 +738,8 @@ heroHandler.prototype.upHeroFS = function(msg, session, next) {
 }
 //卸下符石
 heroHandler.prototype.unHeroFS = function(msg, session, next) {
+  next(null,{flag : false,data : "已弃用"})
+  return
   var uid = session.uid
   var areaId = session.get("areaId")
   var hId = msg.hId
@@ -755,6 +771,8 @@ heroHandler.prototype.unHeroFS = function(msg, session, next) {
 }
 //激活专属符石
 heroHandler.prototype.actHeroOnlyFS = function(msg, session, next) {
+  next(null,{flag : false,data : "已弃用"})
+  return
   var uid = session.uid
   var areaId = session.get("areaId")
   var hId = msg.hId

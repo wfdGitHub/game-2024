@@ -5,13 +5,87 @@ const train_arg = require("../../../../config/gameCfg/train_arg.json")
 const equip_st = require("../../../../config/gameCfg/equip_st.json")
 const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const summon_list = require("../../../../config/gameCfg/summon_list.json")
+const exalt_lv = require("../../../../config/gameCfg/exalt_lv.json")
+const heros = require("../../../../config/gameCfg/heros.json")
 const hero_quality = require("../../../../config/gameCfg/hero_quality.json")
+const species = require("../../../../config/gameCfg/species.json")
+const evolves = require("../../../../config/gameCfg/evolves.json")
+const evolve_lv = require("../../../../config/gameCfg/evolve_lv.json")
+const hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
 const util = require("../../../../util/util.js")
-module.exports = function() {
+var lv4Map = []
+for(var i in hufu_skill)
+	lv4Map.push(hufu_skill[i]["lv4"])
+for(var i in summon_list){
+	summon_list[i]["heros"] = JSON.parse(summon_list[i]["heros"])
+	summon_list[i]["items"] = JSON.parse(summon_list[i]["items"])
+	summon_list[i]["all_w"] = summon_list[i]["item_w"]
+	summon_list[i]["w0"] = summon_list[i]["item_w"]
+	for(var j = 1;j <= 5;j++){
+		summon_list[i]["w"+j] = summon_list[i]["all_w"] + summon_list[i]["hero_w"+j]
+		summon_list[i]["all_w"] = summon_list[i]["w"+j]
+	}
+}
+var model = function() {
 	var self = this
 	var local = {}
-	//英雄召唤
-	
+	//英雄召唤-自动
+	this.summonHeroNormal = function(uid,sId,count,cb) {
+		async.waterfall([
+			function(next) {
+				//参数检测
+				if(!summon_list[sId] || !Number.isInteger(count) || count < 1)
+					next("参数错误")
+				else
+					next()
+			},
+			function(next) {
+				//消耗资源
+				next()
+			},
+			function(next) {
+				//抽奖
+				var list = []
+				for(var i = 0;i < count;i++){
+					var rand = Math.random() * summon_list[sId]["all_w"]
+					var index = 0
+					for(var j = 0;j <= 5;j++){
+						if(rand < summon_list[sId]["w"+j]){
+							index = j
+							break
+						}
+					}
+					console.log("index",index)
+					if(index == 0){
+						//道具
+						list = list.concat(self.addItemStr(uid,summon_list[sId]["items"][Math.floor(summon_list[sId]["items"].length * Math.random())],1,"英雄召唤-"+sId))
+					}else{
+						//英雄
+						var id = summon_list[sId]["heros"][Math.floor(summon_list[sId]["heros"].length * Math.random())]
+						list.push({type:"hero",heroInfo:self.gainOneHero(uid,id,index)})
+						console.log(list)
+					}
+				}
+				cb(true,list)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//英雄召唤-手动
+	this.summonHeroHand = function(uid,sId,cb) {
+
+	}
+	this.gainOneHero = function(uid,id,qa) {
+		console.log("gainOneHero",uid,id,qa)
+		var hId = self.getLordLastid(uid)
+		var heroInfo = local.gainHero(id,qa)
+		heroInfo.hId = hId
+		self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
+		self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
+		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:qa,reason:"获得英雄-"+hId})
+		return heroInfo
+	}
 	//设置心愿
 
 	//英雄升级
@@ -30,6 +104,83 @@ module.exports = function() {
 
 	//使用资质丹
 	
+	//获得英雄
+	local.gainHero = function(id,qa) {
+		if(!heros[id])
+			return {}
+		var heroInfo = {}
+		heroInfo.id = id
+		heroInfo.evo = 1
+		heroInfo.exalt = heros[id]["exalt"]
+		heroInfo.qa = qa
+		heroInfo.wash = 0
+		var c_info = local.createHero(heroInfo.id,heroInfo.qa,heroInfo.wash)
+		Object.assign(heroInfo,c_info)
+		return heroInfo
+	}
+	//英雄洗练 洗练增加通灵者，通灵者满一百必出满技能，出满技能后通灵者重置
+	local.washHero = function(heroInfo) {
+		heroInfo.wash += exalt_lv[heros[heroInfo.id]["exalt"]]["wash_value"]
+		var c_info = local.createHero(heroInfo.id,heroInfo.qa,heroInfo.wash)
+		heroInfo.wash = c_info.wash
+		delete c_info.wash
+		heroInfo.save = c_info
+		return heroInfo
+	}
+	//洗练保存
+	local.saveHero = function(heroInfo) {
+		if(heroInfo.save){
+			for(var i = 0;i < 10;i++)
+				delete heroInfo["PS"+i]
+			Object.assign(heroInfo,heroInfo.save)
+			delete heroInfo.save
+		}
+		return heroInfo
+	}
+	//英雄创建资质技能
+	local.createHero = function(id,qa,wash) {
+		var c_info = {}
+		var extra = 0
+		var skillNum = 0
+		c_info.wash = wash
+		//宠物异化
+		if(qa == 4 && Math.random() < wash/300)
+			qa = 5
+		c_info.qa = qa
+		//触发资质加成
+		if(Math.random() < wash/200)
+			extra = 0.05
+		//触发技能保底
+		if(c_info.wash >= 100)
+			skillNum = heros[id]["passive_num"]
+		else
+			skillNum = Math.floor(hero_quality[qa]["skillRate"] * (Math.random() * 0.5 + 0.6) * heros[id]["passive_num"])
+		for(var i = 1;i <= 6;i++)
+			c_info["MR"+i] = hero_quality[qa]["mainRate"] * (Math.random() * (0.4 + extra) + 0.7)
+		if(skillNum == heros[id]["passive_num"])
+			c_info.wash = 0
+		var skillList = []
+		for(var i = 1; i <= skillNum;i++)
+			skillList.push(heros[id]["passive"+i])
+		skillList.sort(function(){return Math.random() > 0.5 ? 1 : -1})
+		for(var i = 0;i < skillList.length;i++)
+			c_info["PS"+i] = skillList[i]
+		//异化多一个超级技能
+		if(c_info.qa == 5)
+			c_info["PS"+skillNum] = lv4Map[Math.floor(lv4Map.length * Math.random())]
+		return c_info
+	}
+	//英雄打书
+	local.makeHeroPS = function(heroInfo,sId) {
+		var list = []
+		for(var i = 0;i < 10;i++){
+			if(heroInfo["PS"+i])
+				list.push(i)
+		}
+		var index = list[Math.floor(list.length*Math.random())]
+		heroInfo["PS"+index] = sId
+		return heroInfo
+	}
 	//英雄培养属性
 	this.heroTrainAtt = function(uid,hId,value,cb) {
 		var self = this
@@ -201,12 +352,5 @@ module.exports = function() {
 			})
 		})
 	}
-	//获得英雄
-	local.gainHero = function(uid,id,quality) {
-
-	}
-	//英雄重置资质技能
-	local.randHero = function(uid,id,quality) {
-		// body...
-	}
 }
+module.exports = model

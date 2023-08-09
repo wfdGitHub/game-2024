@@ -1856,6 +1856,12 @@ model.prototype.getSimpleInfo = function() {
 	info.totalDamage = this.totalDamage
 	info.totalHeal = this.totalHeal
 	info.heroId = this.heroId
+	info.M_HP = this.attInfo.M_HP
+	info.M_ATK = this.attInfo.M_ATK
+	info.M_DEF = this.attInfo.M_DEF
+	info.M_STK = this.attInfo.M_STK
+	info.M_SEF = this.attInfo.M_SEF
+	info.M_SPE = this.attInfo.M_SPE
 	return info
 }
 model.prototype.addBuff = function(releaser,buff) {
