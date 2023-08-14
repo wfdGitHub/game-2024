@@ -154,7 +154,6 @@ var model = function() {
 	}
 	//获得一个英雄
 	this.gainOneHero = function(uid,id,qa) {
-		console.log("gainOneHero",uid,id,qa)
 		var hId = self.getLordLastid(uid)
 		var heroInfo = local.gainHero(id,qa)
 		heroInfo.hId = hId
@@ -180,14 +179,15 @@ var model = function() {
 		cb(true)
 	}
 	//英雄升级
-	this.heroUpLv = function(uid,hId,aimLv,cb) {
+	this.heroUPLv = function(uid,hId,aimLv,cb) {
 	  self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
 	    if(!flag){
 	    	cb(false,"英雄不存在")
 	      	return
 	    }
-	    var lv = evolve_lv[heroInfo.evo].lv || 25
-	    if(aimLv <= heroInfo.lv || aimLv > lv){
+	    var lv = self.getLordLv(uid)
+	    var evoLv = evolve_lv[heroInfo.evo].lv || 1
+	    if(aimLv <= heroInfo.lv || aimLv > evoLv || aimLv > lv * 2){
 	    	cb(false,"等级限制")
 	      	return
 	    }
@@ -207,7 +207,9 @@ var model = function() {
 	  })
 	}
 	//英雄进化
+	this.heroUPEvo = function(uid,hId,hIds,cb) {
 
+	}
 	//英雄晋升
 
 	//英雄重置
