@@ -369,8 +369,7 @@ var muyeEntity = function(self,theatreId) {
 								return
 							}
 							var hIds = JSON.parse(data)
-					    	self.heroDao.getHeroWithCoexist(uid,hIds,function(flag,heros,coexist) {
-					    		bookInfo.coexist = coexist
+					    	self.heroDao.getHeroList(uid,hIds,function(flag,heros) {
 					    		atkTeams[0] = heros.splice(0,6)
 					    		atkTeams[0][6] = bookInfo
 					    		atkTeams[1] = heros.splice(0,6)
@@ -439,14 +438,10 @@ var muyeEntity = function(self,theatreId) {
 									}
 								    self.redisDao.db.hget("cross:muye:fightTeam",targetcrossUid,function(err,data) {
 								        var hIds = JSON.parse(data)
-								        self.heroDao.getHeroWithCoexist(targetUid,hIds,function(flag,heros,coexist) {
-								        	bookInfo.coexist = coexist
+								        self.heroDao.getHeroList(targetUid,hIds,function(flag,heros) {
 								            defTeams[0] = heros.splice(0,6)
-								            defTeams[0][6] = bookInfo
 								            defTeams[1] = heros.splice(0,6)
-								            defTeams[1][6] = bookInfo
 								            defTeams[2] = heros.splice(0,6)
-								            defTeams[2][6] = bookInfo
 								            self.getPlayerInfoByUid(targetUid,function(info) {
 								                targetInfo = info
 								                next()

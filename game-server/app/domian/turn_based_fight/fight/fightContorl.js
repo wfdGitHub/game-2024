@@ -100,13 +100,6 @@ for(var i in standard_ce_cfg){
 	}
 	standard_team_ce[i]["officer"] = standard_ce_cfg[i]["officer"]
 }
-const coexisATT = ["lv","ad","artifact","tr_lv","tr_maxHP","tr_atk","tr_phyDef","tr_magDef","et1","et2","et3","et4"]
-var coexistLvMap = []
-for(var i in standard_ce){
-	for(var j = coexistLvMap.length;j <= standard_ce[i]["lv"];j++){
-		coexistLvMap[j] = Object.assign({},standard_ce[i],{"lv":j})
-	}
-}
 //战斗控制器
 var model = function() {
 	this.fighting = false
@@ -669,16 +662,7 @@ model.getTeamData = function(team,belong) {
 
 	//英雄属性
 	var characters = []
-	var coexistInfo = false
-	if(teamCfg["coexist"])
-		coexistInfo = this.getCoexistInfo(teamCfg["coexist"])
 	for(var i = 0;i < team.length;i++){
-		if(team[i] && team[i]["coexist"] && coexistInfo){
-			for(var j in coexisATT){
-				if(!team[i][coexisATT[j]] || team[i][coexisATT[j]] < coexistInfo[coexisATT[j]])
-					team[i][coexisATT[j]] = coexistInfo[coexisATT[j]]
-			}
-		}
 		characters[i] = this.getCharacterInfo(team[i],heroAtts,teamCfg)
 	}
 	for(var i in books)
@@ -1096,12 +1080,5 @@ model.oriStandardTeam = function(list,lv) {
 	}
 	team.unshift(JSON.parse(JSON.stringify(standard_team_ce[lv])))
 	return team
-}
-//获取共鸣属性
-model.getCoexistInfo = function(lv) {
-	if(coexistLvMap[lv])
-		return coexistLvMap[lv]
-	else
-		return false
 }
 module.exports = model

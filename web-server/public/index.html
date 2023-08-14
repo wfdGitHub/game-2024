@@ -98,13 +98,30 @@
         console.log("onChat")
         console.log(data)
       })
-      //召唤英雄
+      //获取召唤数据
+      var getSummonData = function() {
+        pomelo.request("area.recruitHandler.getSummonData", {}, function(data) {
+            console.log(data);
+        })
+      }
+      //召唤英雄-自动
       var summonHeroNormal = function(sId,count) {
         pomelo.request("area.recruitHandler.summonHeroNormal", {sId:sId,count:count}, function(data) {
             console.log(data);
         })
       }
-
+      //召唤英雄-手动
+      var summonHeroHand = function(sId,heroId) {
+        pomelo.request("area.recruitHandler.summonHeroHand", {sId:sId,heroId:heroId}, function(data) {
+            console.log(data);
+        })
+      }
+      //设置心愿
+      var setWishHero = function(sId,wishHeros) {
+        pomelo.request("area.recruitHandler.setWishHero", {sId:sId,wishHeros:wishHeros}, function(data) {
+            console.log(data);
+        })
+      }
 
 
       //锁定英雄
@@ -3717,7 +3734,7 @@
       英雄 : 
       <input id="test" type="button" value="增加英雄背包栏" onclick="addHeroAmount()"/>
       <input id="test" type="button" value="背包栏数量" onclick="getHeroAmount()"/>
-      <input id="test" type="button" value="召唤英雄" onclick="summonHeroNormal(1,1)"/>
+      <input id="test" type="button" value="召唤英雄" onclick="summonHeroNormal(1,8)"/>
       <input id="test" type="button" value="英雄列表" onclick="getHeros()"/>
     </div>
     <div class="g-button">

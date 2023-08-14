@@ -219,8 +219,6 @@ heroDao.prototype.heroLockCheck = function(heroInfo) {
 		return "英雄不存在"
 	if(heroInfo.custom)
 		return "定制英雄"
-	if(heroInfo.coexist)
-		return "共鸣英雄"
 	if(heroInfo.combat)
 		return "英雄已出战"
 	if((heroInfo.zf_1 && heroInfo.zf_1 != 1) || (heroInfo.zf_2 && heroInfo.zf_2 != 1) || (heroInfo.zf_3 && heroInfo.zf_3 != 1))
@@ -242,7 +240,6 @@ heroDao.prototype.removeHeroList = function(areaId,uid,hIds,cb,reason) {
 			cb(false,err)
 			return
 		}
-		self.areaManager.areaMap[areaId].removeCheckCoexist(uid,hIds)
 		cb(true)
 	})
 }
@@ -485,8 +482,6 @@ heroDao.prototype.setHMHeroInfo = function(areaId,uid,hId,obj,cb) {
 		}else{
 			for(var i in obj)
 				self.areaManager.areaMap[areaId].setCEInfo(uid,hId,i,obj[i])
-			if(obj["lv"])
-				self.areaManager.areaMap[areaId].removeCheckCoexist(uid,[hId])
 			self.updateHeroCe(areaId,uid,hId)
 			if(cb)
 				cb(true,data)
@@ -598,39 +593,6 @@ heroDao.prototype.getHeroList = function(uid,hIds,cb) {
 			}
 		}
 		cb(true,list)
-	})
-}
-//获取指定英雄带共鸣
-heroDao.prototype.getHeroWithCoexist = function(uid,hIds,cb) {
-	var self = this
-	if(!hIds || !hIds.length){
-		cb(true,[])
-		return
-	}
-	var multiList = []
-	for(var i = 0;i < hIds.length;i++){
-		multiList.push(["hgetall","player:user:"+uid+":heros:"+hIds[i]])
-	}
-	self.redisDao.multi(multiList,function(err,list) {
-		if(err){
-			cb(false,err)
-			return
-		}
-		for(var i = 0;i < list.length;i++){
-			if(list[i]){
-				for(var j in list[i]){
-					var tmp = Number(list[i][j])
-					if(tmp == list[i][j])
-						list[i][j] = tmp
-				}
-			}else{
-				list[i] = 0
-			}
-		}
-		//共鸣等级
-		self.redisDao.db.hget("player:user:"+uid+":playerInfo","coexist",function(err,coexist) {
-			cb(true,list,coexist)
-		})
 	})
 }
 //获取不同玩家指定英雄列表
@@ -842,13 +804,6 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 					fightData[0]["dby"] = Number(data[1]) || 0
 					fightData[0]["qby"] = Number(data[2]) || 0
 				}
-				next()
-			})
-		},
-		function(next) {
-			//共鸣等级
-			self.redisDao.db.hget("player:user:"+uid+":playerInfo","coexist",function(err,data) {
-				fightData[0]["coexist"] = data || 0
 				next()
 			})
 		},

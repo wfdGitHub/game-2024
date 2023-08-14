@@ -78,12 +78,12 @@ module.exports = function() {
 			},
 			function(next) {
 				//获取阵容
-		    	self.heroDao.getHeroWithCoexist(uid,hIds,function(flag,list,coexist) {
+		    	self.heroDao.getHeroList(uid,hIds,function(flag,list) {
 					if(!flag || !list[0]){
 						next("英雄不存在")
 						return
 					}
-					atkTeam = [0,list[0],0,0,0,0,{coexist:coexist}]
+					atkTeam = [0,list[0],0,0,0,0]
 		    		next()
 		    	})
 			},
@@ -180,12 +180,12 @@ module.exports = function() {
 			},
 			function(next) {
 				//获取阵容
-		    	self.heroDao.getHeroWithCoexist(uid,hIds,function(flag,list,coexist) {
+		    	self.heroDao.getHeroList(uid,hIds,function(flag,list) {
 					if(!flag || (!list[0] && !list[1] && !list[2]) ){
 						next("英雄不存在")
 						return
 					}
-					atkTeam = [0,list[0],0,list[1],0,list[2],{coexist:coexist}]
+					atkTeam = [0,list[0],0,list[1],0,list[2]]
 		    		next()
 		    	})
 			},

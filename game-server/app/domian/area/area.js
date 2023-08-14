@@ -251,7 +251,6 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.mysqlDao.addDaylyData("activeNum",1)
 	this.mysqlDao.updateRetention(uid,this.players[uid]["createTime"])
 	this.taskUpdate(uid,"login",1)
-	this.resetCoexistHero(uid)
 }
 //玩家每周首次登陆
 area.prototype.weekFirstLogin = function(uid) {

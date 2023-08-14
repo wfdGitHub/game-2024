@@ -12,23 +12,34 @@ const species = require("../../../../config/gameCfg/species.json")
 const evolves = require("../../../../config/gameCfg/evolves.json")
 const evolve_lv = require("../../../../config/gameCfg/evolve_lv.json")
 const hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
+const lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 const util = require("../../../../util/util.js")
 var lv4Map = []
 for(var i in hufu_skill)
 	lv4Map.push(hufu_skill[i]["lv4"])
 for(var i in summon_list){
 	summon_list[i]["heros"] = JSON.parse(summon_list[i]["heros"])
+	summon_list[i]["heroMap"] = {}
+	for(var j = 0;j < summon_list[i]["heros"].length;j++)
+		summon_list[i]["heroMap"][summon_list[i]["heros"][j]] = 1
 	summon_list[i]["items"] = JSON.parse(summon_list[i]["items"])
-	summon_list[i]["all_w"] = summon_list[i]["item_w"]
-	summon_list[i]["w0"] = summon_list[i]["item_w"]
+	summon_list[i]["summonWeighs"] = [summon_list[i]["item_w"]]
+	summon_list[i]["summonHandWeighs"] = [summon_list[i]["item_w"]*0.5]
 	for(var j = 1;j <= 5;j++){
-		summon_list[i]["w"+j] = summon_list[i]["all_w"] + summon_list[i]["hero_w"+j]
-		summon_list[i]["all_w"] = summon_list[i]["w"+j]
+		summon_list[i]["summonWeighs"].push(summon_list[i]["summonWeighs"][j-1] + summon_list[i]["hero_w"+j])
+		summon_list[i]["summonHandWeighs"].push(summon_list[i]["summonHandWeighs"][j-1] + summon_list[i]["hero_w"+j])
 	}
 }
+const main_name = "summon"
 var model = function() {
 	var self = this
 	var local = {}
+	//获取召唤数据
+	this.getSummonData = function(uid,cb) {
+		self.getObjAll(uid,main_name,function(list) {
+			cb(true,list || {})
+		})
+	}
 	//英雄召唤-自动
 	this.summonHeroNormal = function(uid,sId,count,cb) {
 		async.waterfall([
@@ -40,30 +51,52 @@ var model = function() {
 					next()
 			},
 			function(next) {
-				//消耗资源
-				next()
+			  //判断背包上限
+			  self.heroDao.getHeroAmount(uid,function(flag,info) {
+			      if(info.cur + count > info.max){
+			        next("英雄背包已满")
+			      }else{
+			        next()
+			      }
+			  })
 			},
 			function(next) {
+				//消耗资源
+				self.consumeItems(uid,summon_list[sId]["pc"],count,"英雄召唤",function(flag,err) {
+					if(flag){
+						next()
+					}else{
+						cb(false,err)
+					}
+				})
+			},
+			function(next) {
+				//获取心愿英雄
+				self.getObj(uid,main_name,"wish_"+sId,function(wishHeros) {
+					if(wishHeros)
+						wishHeros = JSON.parse(wishHeros)
+					else
+						wishHeros = []
+					next(null,wishHeros)
+				})
+			},
+			function(wishHeros,next) {
 				//抽奖
 				var list = []
 				for(var i = 0;i < count;i++){
-					var rand = Math.random() * summon_list[sId]["all_w"]
-					var index = 0
-					for(var j = 0;j <= 5;j++){
-						if(rand < summon_list[sId]["w"+j]){
-							index = j
-							break
-						}
-					}
-					console.log("index",index)
+					var index = util.getWeightedRandomBySort(summon_list[sId]["summonWeighs"])
 					if(index == 0){
 						//道具
 						list = list.concat(self.addItemStr(uid,summon_list[sId]["items"][Math.floor(summon_list[sId]["items"].length * Math.random())],1,"英雄召唤-"+sId))
 					}else{
-						//英雄
-						var id = summon_list[sId]["heros"][Math.floor(summon_list[sId]["heros"].length * Math.random())]
-						list.push({type:"hero",heroInfo:self.gainOneHero(uid,id,index)})
-						console.log(list)
+						//英雄  心愿判断
+						if(wishHeros.length && Math.random() < 0.2){
+							var id =wishHeros[Math.floor(Math.random() * wishHeros.length)]
+							list.push({type:"hero",heroInfo:self.gainOneHero(uid,id,index)})
+						}else{
+							var id = summon_list[sId]["heros"][Math.floor(summon_list[sId]["heros"].length * Math.random())]
+							list.push({type:"hero",heroInfo:self.gainOneHero(uid,id,index)})
+						}
 					}
 				}
 				cb(true,list)
@@ -73,9 +106,53 @@ var model = function() {
 		})
 	}
 	//英雄召唤-手动
-	this.summonHeroHand = function(uid,sId,cb) {
-
+	this.summonHeroHand = function(uid,sId,heroId,cb) {
+		async.waterfall([
+			function(next) {
+				//参数检测
+				if(!summon_list[sId] || !summon_list[sId]["heroMap"][heroId])
+					next("参数错误")
+				else
+					next()
+			},
+			function(next) {
+			  //判断背包上限
+			  self.heroDao.getHeroAmount(uid,function(flag,info) {
+			      if(info.cur >= info.max){
+			        next("英雄背包已满")
+			      }else{
+			        next()
+			      }
+			  })
+			},
+			function(next) {
+				//消耗资源
+				self.consumeItems(uid,summon_list[sId]["pc"],1,"英雄召唤",function(flag,err) {
+					if(flag){
+						next()
+					}else{
+						cb(false,err)
+					}
+				})
+			},
+			function(next) {
+				//抽奖
+				var list = []
+				var index = util.getWeightedRandomBySort(summon_list[sId]["summonHandWeighs"])
+				if(index == 0){
+					//道具
+					list = list.concat(self.addItemStr(uid,summon_list[sId]["items"][Math.floor(summon_list[sId]["items"].length * Math.random())],1,"英雄召唤-"+sId))
+				}else{
+					//英雄
+					list.push({type:"hero",heroInfo:self.gainOneHero(uid,heroId,index)})
+				}
+				cb(true,list)
+			}
+		],function(err) {
+			cb(false,err)
+		})
 	}
+	//获得一个英雄
 	this.gainOneHero = function(uid,id,qa) {
 		console.log("gainOneHero",uid,id,qa)
 		var hId = self.getLordLastid(uid)
@@ -86,10 +163,49 @@ var model = function() {
 		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:qa,reason:"获得英雄-"+hId})
 		return heroInfo
 	}
-	//设置心愿
-
+	//设置心愿英雄
+	this.setWishHero = function(uid,sId,wishHeros,cb) {
+		//参数检测
+		if(!Array.isArray(wishHeros) || wishHeros.length > 3){
+			cb(false,"wishHeros error")
+			return
+		}
+		for(var i = 0;i < wishHeros.length;i++){
+			if(!summon_list[sId]["heroMap"][wishHeros[i]]){
+				cb(false,"id error "+wishHeros[i])
+				return
+			}
+		}
+		self.setObj(uid,main_name,"wish_"+sId,JSON.stringify(wishHeros))
+		cb(true)
+	}
 	//英雄升级
-
+	this.heroUpLv = function(uid,hId,aimLv,cb) {
+	  self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+	    if(!flag){
+	    	cb(false,"英雄不存在")
+	      	return
+	    }
+	    var lv = evolve_lv[heroInfo.evo].lv || 25
+	    if(aimLv <= heroInfo.lv || aimLv > lv){
+	    	cb(false,"等级限制")
+	      	return
+	    }
+	    var strList = []
+	    for(var i = heroInfo.lv;i < aimLv;i++)
+	      	strList.push(lv_cfg[i].pc)
+	    var pcStr = self.mergepcstr(strList)
+	    self.consumeItems(uid,pcStr,1,"英雄升级",function(flag,err) {
+	      	if(!flag){
+		      	cb(false,err)
+		        return
+	      	}
+	      	self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"lv",aimLv - heroInfo.lv,function(flag,data) {
+	        	cb(true,data)
+	      	})
+	    })
+	  })
+	}
 	//英雄进化
 
 	//英雄晋升
@@ -197,10 +313,6 @@ var model = function() {
 				//获取英雄数据
 				self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
 					if(flag && heroInfo){
-					    if(heroInfo.coexist){
-					      next("该英雄共鸣中")
-					      return
-					    }
 						next(null,heroInfo)
 					}else{
 						next("hero not find "+heroInfo)
@@ -279,10 +391,6 @@ var model = function() {
 	this.heroTrainLv = function(uid,hId,cb) {
 		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
 			if(flag && heroInfo){
-			    if(heroInfo.coexist){
-			      next("该英雄共鸣中")
-			      return
-			    }
 				var tr_lv = heroInfo["tr_lv"] || 0
 				var tr_maxHP = heroInfo["tr_maxHP"]  || 0
 				var tr_atk = heroInfo["tr_atk"]  || 0
@@ -327,10 +435,6 @@ var model = function() {
 				cb(false,"英雄不存在"+hId)
 				return
 			}
-		    if(heroInfo.coexist){
-		    	cb(false,"该英雄共鸣中"+hId)
-		      return
-		    }
 			var slv = Number(heroInfo[key]) || 0
 			if(!equip_st[slv+1]){
 				cb(false,"强化等级已满"+slv)

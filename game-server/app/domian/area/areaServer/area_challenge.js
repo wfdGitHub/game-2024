@@ -66,12 +66,12 @@ module.exports = function() {
 			}else if(!area_challenge[cur_chapter]["team"+bossId]){
 				cb(false,"boss错误")
 			}else{
-				self.heroDao.getHeroWithCoexist(uid,[hId],function(flag,list,coexist) {
+				self.heroDao.getHeroList(uid,[hId],function(flag,list) {
 					if(!flag){
 						cb(false,"hId error "+hId)
 					}else{
 						var seededNum = Date.now()
-						var atkTeam = [0,list[0],0,0,0,0,{coexist:coexist}]
+						var atkTeam = [0,list[0],0,0,0,0]
 						var defTeam = area_challenge[cur_chapter]["team"+bossId]
 					    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			    		var info = {}
@@ -139,13 +139,12 @@ module.exports = function() {
 			      	cb(false,"上阵数量错误 "+heroNum)
 			        return
 				  }
-				self.heroDao.getHeroWithCoexist(uid,hIds,function(flag,list,coexist) {
+				self.heroDao.getHeroList(uid,hIds,function(flag,list) {
 					if(!flag){
 						cb(false,"hIds error "+hIds)
 					}else{
 						var seededNum = Date.now()
 						var atkTeam = list
-						atkTeam[6] = {coexist:coexist}
 						var defTeam = area_challenge[cur_chapter]["team"+bossId]
 					    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 			    		var info = {}

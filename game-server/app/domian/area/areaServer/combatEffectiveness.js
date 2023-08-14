@@ -34,41 +34,21 @@ module.exports = function() {
 	var userTeams = {}            //玩家阵容
 	var usersCes = {} 			  //玩家战力
 	var userTeamMaps = {}  		  //玩家上阵英雄
-	var userCoexistMaps = {}      //玩家共鸣英雄
-	var userCoexistLength = {}    //玩家共鸣英雄长度
 	//加载角色阵容数据
 	this.CELoad = function(uid,cb) {
-		async.waterfall([
-			function(next) {
-				//共鸣英雄列表
-				self.getObjAll(uid,"coexistMap",function(data) {
-					if(!data)
-						data = {}
-					for(var i in data)
-						data[i] = Number(data[i])
-					userCoexistMaps[uid] = data
-					userCoexistLength[uid] = Object.keys(userCoexistMaps[uid]).length
-					next()
-				})
-			},
-			function(next) {
-				//玩家阵容
-				self.heroDao.getFightTeam(uid,function(flag,data) {
-					if(flag && data){
-						userTeams[uid] = data
-						userTeamMaps[uid] = {}
-						for(var i = 0;i < data.length;i++){
-							if(data[i])
-								userTeamMaps[uid][data[i].hId] = i
-						}
-						self.updateCE(uid)
-					}
-					if(cb)
-						cb(flag)
-				})
+		//玩家阵容
+		self.heroDao.getFightTeam(uid,function(flag,data) {
+			if(flag && data){
+				userTeams[uid] = data
+				userTeamMaps[uid] = {}
+				for(var i = 0;i < data.length;i++){
+					if(data[i])
+						userTeamMaps[uid][data[i].hId] = i
+				}
+				self.updateCE(uid)
 			}
-		],function(err) {
-			cb(false,err)
+			if(cb)
+				cb(flag)
 		})
 	}
 	//移除角色阵容数据
@@ -76,8 +56,6 @@ module.exports = function() {
 		delete userTeams[uid]
 		delete usersCes[uid]
 		delete userTeamMaps[uid]
-		delete userCoexistMaps[uid]
-		delete userCoexistLength[uid]
 	}
 	//获得英雄属性
 	this.getHeroInfo = function(uid,hId) {
@@ -114,27 +92,7 @@ module.exports = function() {
 			this.incrbyCE(uid,name,oldValue,userTeams[uid][index][name])
 		}
 	}
-	//判断共鸣属性
-	this.checkCoexistMap = function(uid,hId,lv) {}
-	//移除英雄判断重构
-	this.removeCheckCoexist = function(uid,hIds) {}
-	//重构共鸣英雄
-	this.resetCoexistHero = function(uid) {}
-	//添加共鸣英雄
-	local.addCoexistHero = function(uid,hId,lv) {}
-	//移除共鸣英雄
-	local.delCoexistHero = function(uid,hId) {}
-	//计算共鸣属性
-	local.calCoexistLv = function(uid) {}
-	//通知共鸣数据更新
-	local.updateCoexistNotify = function(uid) {}
-	//获取共鸣英雄数据
-	this.getCoexistData = function(uid,cb) {}
-	//放置共鸣英雄
-	this.setCoexistHero = function(uid,hId,index,cb) {}
-	//取出共鸣英雄
-	this.cleanCoexistHero = function(uid,hId,index,cb) {}
-	//改变战力1
+	//改变战力
 	this.incrbyCE = function(uid,name,oldValue,newValue) {
 		var ce = self.fightContorl.calcCEDiff(name,oldValue,newValue)
 		local.updateCENotify(uid,ce)

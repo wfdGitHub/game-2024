@@ -153,6 +153,16 @@ util.prototype.randomFigure = function(number, count) {
     }
     return list;
 }
+//根据权重概率随机  权重需提前排序
+util.prototype.getWeightedRandomBySort = function(weights) {
+    if(!weights.length)
+        return 0
+    var rand = Math.random() * weights[weights.length-1]
+    for(var i = 0;i < weights.length;i++)
+        if(rand < weights[i])
+            return i
+    return 0
+}
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;
