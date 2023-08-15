@@ -98,6 +98,24 @@
         console.log("onChat")
         console.log(data)
       })
+      //英雄打书
+      var heroPS = function(hId,itemId) {
+        pomelo.request("area.heroHandler.heroPS", {hId:hId,itemId:itemId}, function(data) {
+            console.log(data);
+        })
+      }
+      //英雄洗练
+      var heroWash = function(hId) {
+        pomelo.request("area.heroHandler.heroWash", {hId:hId}, function(data) {
+            console.log(data);
+        })
+      }
+      //洗练保存
+      var heroWashSave = function(hId) {
+        pomelo.request("area.heroHandler.heroWashSave", {hId:hId}, function(data) {
+            console.log(data);
+        })
+      }      
       //英雄升级
       var heroUPLv = function(hId,aimLv) {
         pomelo.request("area.heroHandler.heroUPLv", {hId:hId,aimLv:aimLv}, function(data) {
@@ -116,7 +134,6 @@
             console.log(data);
         })
       }
-
       //获取召唤数据
       var getSummonData = function() {
         pomelo.request("area.recruitHandler.getSummonData", {}, function(data) {

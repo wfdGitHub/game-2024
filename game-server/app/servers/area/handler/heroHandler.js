@@ -18,6 +18,34 @@ var heroHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+//英雄打书
+heroHandler.prototype.heroPS = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hId = msg.hId
+  var itemId = msg.itemId
+  this.areaManager.areaMap[areaId].heroPS(uid,hId,itemId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//英雄洗练
+heroHandler.prototype.heroWash = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].heroWash(uid,hId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//洗练保存
+heroHandler.prototype.heroWashSave = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].heroWashSave(uid,hId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 //英雄升级
 heroHandler.prototype.heroUPLv = function(msg, session, next) {
   var areaId = session.get("areaId")
@@ -373,29 +401,6 @@ heroHandler.prototype.getHeroRankOne = function(msg, session, next) {
   var hId = msg.hId
   var heroId = msg.heroId
   this.areaManager.areaMap[areaId].getHeroRankOne(uid,hId,heroId,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
-//英雄培养属性
-heroHandler.prototype.heroTrainAtt = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var hId = msg.hId
-  var value = msg.value
-  if(!Number.isInteger(value)){
-    next(null,{flag : false,err : "value error "+value})
-    return
-  }
-  this.areaManager.areaMap[areaId].heroTrainAtt(uid,hId,value,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
-//英雄培养突破
-heroHandler.prototype.heroTrainLv = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var hId = msg.hId
-  this.areaManager.areaMap[areaId].heroTrainLv(uid,hId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
