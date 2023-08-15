@@ -189,7 +189,7 @@ var model = function() {
 	    }
 	    var lv = self.getLordLv(uid)
 	    var evoLv = evolve_lv[heroInfo.evo].lv || 1
-	    if(aimLv <= heroInfo.lv || aimLv > evoLv || aimLv > lv * 2){
+	    if(aimLv <= heroInfo.lv || aimLv > evoLv || aimLv > lv + 10){
 	    	cb(false,"等级限制")
 	      	return
 	    }
