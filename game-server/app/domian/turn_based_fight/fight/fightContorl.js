@@ -45,6 +45,7 @@ var character = require("../entity/character.js")
 var masterEntity = require("../entity/master.js")
 var bingfuEntity = require("../entity/bingfuEntity.js")
 var powerEntity = require("../entity/powerEntity.js")
+var fightHandler = require("./fightHandler.js")
 var bookIds = ["singleAtk","backDamage","frontDamage","banishBook","angerAddBook","angerLessBook","reductionBuff","seckill","singleHeal"]
 var bookList = {}
 var bookMap = {}
@@ -105,6 +106,7 @@ var model = function() {
 	this.fighting = false
 	this.overInfo = {}
 }
+fightHandler.call(model)
 model.bingfuEntity = bingfuEntity
 model.powerEntity = powerEntity
 // //自定义战斗配置// model.libertyFight = function(atkTeam,defTeam,otps) {

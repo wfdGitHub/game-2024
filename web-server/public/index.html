@@ -98,6 +98,25 @@
         console.log("onChat")
         console.log(data)
       })
+      //英雄升级
+      var heroUPLv = function(hId,aimLv) {
+        pomelo.request("area.heroHandler.heroUPLv", {hId:hId,aimLv:aimLv}, function(data) {
+            console.log(data);
+        })
+      }
+      //英雄进化
+      var heroUPEvo = function(hId,hIds) {
+        pomelo.request("area.heroHandler.heroUPEvo", {hId:hId,hIds:hIds}, function(data) {
+            console.log(data);
+        })
+      }
+      //英雄晋升
+      var heroUPExalt = function(hId) {
+        pomelo.request("area.heroHandler.heroUPExalt", {hId:hId}, function(data) {
+            console.log(data);
+        })
+      }
+
       //获取召唤数据
       var getSummonData = function() {
         pomelo.request("area.recruitHandler.getSummonData", {}, function(data) {

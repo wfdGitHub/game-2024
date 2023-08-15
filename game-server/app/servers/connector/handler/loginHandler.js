@@ -75,7 +75,7 @@ loginHandler.prototype.getPlayerInfo = function(msg, session, next) {
 }
 //创建角色
 loginHandler.prototype.register = function(msg, session, next) {
-	if(this.connectorManager.runTime < 3000){
+	if(this.connectorManager.runTime < 1000){
         next(null,{flag : false,err : "服务器准备中"})
 		return
 	}
@@ -122,7 +122,7 @@ loginHandler.prototype.getRandomName = function(msg, session, next) {
 }
 //登录游戏
 loginHandler.prototype.loginArea = function(msg, session, next) {
-	if(this.connectorManager.runTime < 3000){
+	if(this.connectorManager.runTime < 1000){
         next(null,{flag : false,err : "服务器准备中"})
 		return
 	}

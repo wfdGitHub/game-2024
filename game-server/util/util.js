@@ -163,16 +163,16 @@ util.prototype.getWeightedRandomBySort = function(weights) {
             return i
     return 0
 }
-Array.prototype.indexOf = function(val) {
-    for (var i = 0; i < this.length; i++) {
-        if (this[i] == val) return i;
+util.prototype.arrayIndexOf = function(array,val) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] == val) return i;
     }
     return -1;
-};
-Array.prototype.remove = function(val) {
-    var index = this.indexOf(val);
+}
+util.prototype.arrayRemove = function(array,val) {
+    var index = this.indexOf(array,val);
     if (index > -1) {
-        this.splice(index, 1);
+        array.splice(index, 1);
     }
-};
+}
 module.exports = new util()

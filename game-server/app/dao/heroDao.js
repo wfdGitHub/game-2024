@@ -472,6 +472,10 @@ heroDao.prototype.setHeroInfo = function(areaId,uid,hId,name,value,cb) {
 		}
 	})
 }
+//仅设置属性
+heroDao.prototype.onlySetHeroInfo = function(uid,hId,name,value) {
+	this.redisDao.db.hset("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {})
+}
 heroDao.prototype.setHMHeroInfo = function(areaId,uid,hId,obj,cb) {
 	var self = this
 	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,obj,function(err,data) {

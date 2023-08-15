@@ -578,4 +578,16 @@ model.prototype.trampoline = function(f) {
 	}
 	return f
 }
+model.prototype.arrayIndexOf = function(array,val) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] == val) return i;
+    }
+    return -1;
+}
+model.prototype.arrayRemove = function(array,val) {
+    var index = this.indexOf(array,val);
+    if (index > -1) {
+        array.splice(index, 1);
+    }
+}
 module.exports = model

@@ -18,6 +18,35 @@ var heroHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+//英雄升级
+heroHandler.prototype.heroUPLv = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hId = msg.hId
+  var aimLv = msg.aimLv
+  this.areaManager.areaMap[areaId].heroUPLv(uid,hId,aimLv,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//英雄进化 已进化不能当材料
+heroHandler.prototype.heroUPEvo = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hId = msg.hId
+  var hIds = msg.hIds
+  this.areaManager.areaMap[areaId].heroUPEvo(uid,hId,hIds,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//英雄晋升 受主角等级限制
+heroHandler.prototype.heroUPExalt = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].heroUPExalt(uid,hId,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 //增加英雄背包栏
 heroHandler.prototype.addHeroAmount = function(msg, session, next) {
   next(null,{flag : false})
@@ -124,7 +153,7 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
         return
       }
     }
-    self.heroDao.removeHeroList(areaId,uid,hIds,function(flag,err) {
+    self.heroDao.rem1oveHeroList(areaId,uid,hIds,function(flag,err) {
       if(flag){
         self.heroDao.heroPrAll(areaId,uid,herolist,hIds,function(flag,awardList) {
           next(null,{flag : true,awardList : awardList})

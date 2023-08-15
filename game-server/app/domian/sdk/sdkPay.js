@@ -98,15 +98,15 @@ model.prototype.jianwan_order = function(data,finish_callback,req,res) {
 //277订单
 model.prototype.game277_order = function(data,finish_callback,req,res) {
 	res.send("succ")
-	for(var i = 0;i < ip_white_list.length;i++){
-		if(req.ip.indexOf(ip_white_list[i]) != -1){
-			res.send({
-				'error_code' : 299,
-				'message' : "ip error"
-			})
-			return
-		}
-	}
+	// for(var i = 0;i < ip_white_list.length;i++){
+	// 	if(req.ip.indexOf(ip_white_list[i]) != -1){
+	// 		res.send({
+	// 			'error_code' : 299,
+	// 			'message' : "ip error"
+	// 		})
+	// 		return
+	// 	}
+	// }
 	var v_sign = util.md5(encodeURI("amount="+data.amount+"&extendsinfo="+data.extendsinfo+"&gameid="+data.gameid+"&orderid="+data.orderid+"&out_trade_no="+data.out_trade_no+"&servername="+data.servername+"&time="+data.time+"&username="+data.username+sdkConfig["secretkey"]))
 	if(v_sign != data.sign){
 		console.error("签名验证失败")

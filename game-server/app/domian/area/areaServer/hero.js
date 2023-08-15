@@ -180,6 +180,7 @@ var model = function() {
 	}
 	//英雄升级
 	this.heroUPLv = function(uid,hId,aimLv,cb) {
+		console.log("heroUPLv",uid,hId,aimLv)
 	  self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
 	    if(!flag){
 	    	cb(false,"英雄不存在")
@@ -206,12 +207,112 @@ var model = function() {
 	    })
 	  })
 	}
-	//英雄进化
+	//英雄进化 已进化不能当材料
 	this.heroUPEvo = function(uid,hId,hIds,cb) {
-
+		var heroInfo
+		async.waterfall([
+			function(next) {
+				//材料参数检测
+				if(!Array.isArray(hIds)){
+					next("hIds error "+hIds)
+					return
+				}
+				hIds.push(hId)
+				var hIdmap = {}
+				for(var i in hIds){
+					if(hIdmap[hIds[i]]){
+					  	next("hId不能重复"+hIds[i])
+					  	return
+					}
+					hIdmap[hIds[i]] = true
+				}
+				next()
+			},
+			function(next) {
+				//英雄列表检测
+				self.heroDao.getHeroList(uid,hIds,function(flag,herolist) {
+					heroInfo = herolist.pop()
+					hIds.pop()
+					if(!heroInfo){
+					  	next("heroInfo error "+heroInfo)
+					  	return
+					}
+					if(!evolve_lv[heroInfo.evo+1]){
+						next("进化已满")
+					  	return
+					}
+					for(var i in herolist){
+					  	if(self.heroDao.heroLockCheck(herolist[i]) != false){
+					  		next(self.heroDao.heroLockCheck(herolist[i]))
+					    	return
+					  	}
+					  	if(herolist[i].evo != 1){
+					  		next("英雄已进化"+herolist[i].evo)
+					  		return
+					  	}
+					}
+				    self.heroDao.removeHeroList(self.areaId,uid,hIds,function(flag,err) {
+				      if(flag){
+				        self.heroDao.heroPrlvadnad(self.areaId,uid,herolist,hIds,function(flag,awardList) {
+				          next(null,herolist,awardList)
+				        },"英雄进化")
+				      }else{
+				        next("error "+err)
+				      }
+				    })
+				})
+			},
+			function(herolist,awardList,next) {
+				var rate = self.fightContorl.getHeroEvoRate(heroInfo,herolist)
+				console.log("rate",rate)
+				if(Math.random() < rate){
+					heroInfo.evo++
+					heroInfo.evoRate = 0
+					self.heroDao.onlySetHeroInfo(uid,hId,"evoRate",0)
+		            self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"evo",1)
+		            cb(true,{heroInfo:heroInfo,awardList:awardList})
+				}else{
+					heroInfo.evoRate = Number((rate*0.1).toFixed(2)) || 0
+		            self.heroDao.onlySetHeroInfo(uid,hId,"evoRate",heroInfo.evoRate)
+		            cb(true,{heroInfo:heroInfo,awardList:awardList})
+				}
+			}
+		],function(err) {
+			cb(false,err)
+		})
 	}
-	//英雄晋升
-
+	//英雄晋升 受主角等级限制
+	this.heroUPExalt = function(uid,hId,cb) {
+		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+			if(!heroInfo){
+				cb(false,"英雄不存在")
+				return
+			}
+			if(evolve_lv[heroInfo.evo+1]){
+				cb(false,"未满进化")
+				return
+			}
+			if(!exalt_lv[heroInfo.exalt+1]){
+				cb(false,"晋升已满")
+				return
+			}
+			var lv = self.getLordLv(uid)
+			if(lv < exalt_lv[heroInfo.exalt+1]["limit"]){
+				cb(false,"等级不足")
+				return
+			}
+			self.consumeItems(uid,exalt_lv[heroInfo.exalt]["pc"],1,"英雄晋升",function(flag,err) {
+				if(flag){
+					heroInfo.exalt++
+		            self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"exalt",1,function(flag,data) {
+		              cb(true,{heroInfo:heroInfo})
+		            })
+				}else{
+					cb(false,err)
+				}
+			})
+		})
+	}
 	//英雄重置
 
 	//英雄分解
@@ -232,6 +333,7 @@ var model = function() {
 		heroInfo.exalt = heros[id]["exalt"]
 		heroInfo.qa = qa
 		heroInfo.wash = 0
+		heroInfo.lv = 1
 		var c_info = local.createHero(heroInfo.id,heroInfo.qa,heroInfo.wash)
 		Object.assign(heroInfo,c_info)
 		return heroInfo

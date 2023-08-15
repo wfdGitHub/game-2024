@@ -1603,7 +1603,7 @@ model.prototype.resurgence = function(rate,releaser) {
 	else
 		this.attInfo.hp = Math.floor(rate * this.attInfo.maxHP) || 1
 	this.died = false
-    var index = this.fighting.teamDiedList[this.belong].indexOf(this.index);
+	var index = this.fighting.arrayIndexOf(this.fighting.teamDiedList[this.belong],this.index)
     if(index > -1)
         this.fighting.teamDiedList[this.belong].splice(index, 1);
 	this.teamInfo["realms_survival"][this["realm"]]++
