@@ -338,6 +338,9 @@ var model = function() {
 				return
 			}
 			var exalt = heros[heroInfo.id]["exalt"]
+			var rate = 1
+			if(heroInfo.qa >= 5)
+				rate = 2
 			self.consumeItems(uid,exalt_lv[exalt]["wash_pc"],1,"英雄洗练",function(flag,err) {
 				if(!flag){
 					cb(false,err)
@@ -417,7 +420,7 @@ var model = function() {
 		Object.assign(heroInfo,c_info)
 		return heroInfo
 	}
-	//英雄洗练 洗练增加通灵者，通灵者满一百必出满技能，出满技能后通灵者重置
+	//英雄洗练 洗练增加通灵值，通灵值满一百必出满技能，出满技能后通灵值重置
 	local.washHero = function(heroInfo) {
 		heroInfo.wash += exalt_lv[heros[heroInfo.id]["exalt"]]["wash_value"]
 		var c_info = local.createHero(heroInfo.id,heroInfo.qa,heroInfo.wash)

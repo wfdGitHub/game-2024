@@ -4,7 +4,6 @@ var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var power_lv = require("../../../../config/gameCfg/power_lv.json")
 var skillManager = require("../skill/skillManager.js")
 var power_base = require("../../../../config/gameCfg/power_base.json")
-var beauty_base = require("../../../../config/gameCfg/beauty_base.json")
 var skillsCfg = require("../../../../config/gameCfg/skills.json")
 //主角
 var master = function(otps) {
@@ -21,7 +20,6 @@ var master = function(otps) {
 	this.attInfo.magDef = 0								//法术防御力
 	this.lord_power = otps.lord_power || 0 				//主公威力加成值
 	this.ws_power = otps.ws_power || 0  				//无双威力加成百分比
-	this.beauty_power = otps.beauty_power || 0 			//红颜威力加成百分比
 	this.power_up = 0 									//技能系数增强
 	this.manualModel = otps.manualModel || 0    		//技能释放模式
 	this.manualIndex = 0 								//当前执行技能下标
@@ -95,20 +93,6 @@ master.prototype.addPower = function(info) {
 		powerInfo.name = power_base[info.id].name
 		powerInfo.skillId = info.id
 		powerInfo.basic = Math.floor(info.basic * (1 + this.ws_power))
-		this.powers.push(new powerSkill(powerInfo,this))
-	}
-}
-//添加红颜技能
-master.prototype.addBeautyPower = function(info) {
-	var skillId = beauty_base[info.id]["star"+info.star]
-	if(skillsCfg[skillId]){
-		var powerInfo = skillsCfg[skillId]
-		powerInfo.CUR_CD = beauty_base[info.id].CUR_CD
-		powerInfo.NEED_BP = beauty_base[info.id].NEED_BP
-		powerInfo.NEED_CD = beauty_base[info.id].NEED_CD
-		powerInfo.name = beauty_base[info.id].name
-		powerInfo.skillId = info.id
-		powerInfo.basic = Math.floor(info.basic * (1 + this.beauty_power))
 		this.powers.push(new powerSkill(powerInfo,this))
 	}
 }

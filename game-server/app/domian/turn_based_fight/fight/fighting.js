@@ -6,11 +6,6 @@ var skillManager = require("../skill/skillManager.js")
 var character = require("../entity/character.js")
 var fightRecord = require("./fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
-var fightBegin = ["angerLessBook"]		//战斗开始前
-var roundBegin = ["banishBook"]		//回合开始前
-var oddRoundEndBook = ["singleAtk","angerAddBook","angerLessBook","reductionBuff"] //奇数回合结束后释放
-var evenRoundEndBook = ["backDamage","frontDamage"] //偶数回合结束后释放
-var roundEndBook = ["singleHeal","seckill"]	//回合结束后释放
 var maxRound = 20				//最大回合
 var teamLength = 6				//阵容人数
 var indexMap = [4,0,2,1,3,5]
@@ -29,8 +24,6 @@ var model = function(atkInfo,defInfo,otps) {
 	this.maxRound = otps.maxRound || maxRound		//最大回合
 	this.atkTeam = atkInfo.team			//攻方阵容  长度为6的角色数组  位置无人则为NULL
 	this.defTeam = defInfo.team			//守方阵容
-	this.atkBooks = atkInfo.books		//攻方天书
-	this.defBooks = defInfo.books		//守方天书
 	this.atkMaster = atkInfo.master		//攻方主角
 	this.defMaster = defInfo.master		//守方主角
 	this.allHero = []				//所有英雄列表
@@ -139,12 +132,6 @@ model.prototype.fightBegin = function() {
 	for(var i = 0;i < this.allHero.length;i++)
 		info.comeonHero.push({id:this.allHero[i].id,index:this.allHero[i].index})
 	fightRecord.push(info)
-	for(var i = 0; i <= fightBegin.length;i++){
-		if(this.atkBooks[fightBegin[i]])
-			this.atkBooks[fightBegin[i]].before()
-		if(this.defBooks[fightBegin[i]])
-			this.defBooks[fightBegin[i]].before()
-	}
 	this.trampoline(this.nextRound.bind(this))
 }
 //开始新轮次
@@ -172,13 +159,6 @@ model.prototype.nextRound = function() {
 		this.allHero[i].isAction = false
 		this.allHero[i].roundBegin()
 	}
-	// this.teamIndex = 0
-	for(var i = 0; i <= roundBegin.length;i++){
-		if(this.atkBooks[roundBegin[i]])
-			this.bookAction(this.atkBooks[roundBegin[i]])
-		if(this.defBooks[roundBegin[i]])
-			this.bookAction(this.defBooks[roundBegin[i]])
-	}
 	return this.runCheck.bind(this)
 }
 //整体回合结束
@@ -194,27 +174,6 @@ model.prototype.endRound = function() {
 			if(this.seeded.random("回合结束怒气") < this.defTeam[i].round_anger_rate)
 				this.defTeam[i].addAnger(4 - this.defTeam[i].curAnger)
 		}
-	}
-	if(this.round % 2 == 1){
-		for(var i = 0; i <= oddRoundEndBook.length;i++){
-			if(this.atkBooks[oddRoundEndBook[i]])
-				this.bookAction(this.atkBooks[oddRoundEndBook[i]])
-			if(this.defBooks[oddRoundEndBook[i]])
-				this.bookAction(this.defBooks[oddRoundEndBook[i]])
-		}
-	}else{
-		for(var i = 0; i <= evenRoundEndBook.length;i++){
-			if(this.atkBooks[evenRoundEndBook[i]])
-				this.bookAction(this.atkBooks[evenRoundEndBook[i]])
-			if(this.defBooks[evenRoundEndBook[i]])
-				this.bookAction(this.defBooks[evenRoundEndBook[i]])
-		}
-	}
-	for(var i = 0; i <= roundEndBook.length;i++){
-		if(this.atkBooks[roundEndBook[i]])
-			this.bookAction(this.atkBooks[roundEndBook[i]])
-		if(this.defBooks[roundEndBook[i]])
-			this.bookAction(this.defBooks[roundEndBook[i]])
 	}
 	this.atkTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0}
 	this.defTeamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0}
@@ -334,16 +293,6 @@ model.prototype.checkOver = function() {
 		return true
 	}
 	return false
-}
-//天书行动
-model.prototype.bookAction = function(book) {
-	if(!this.isFight){
-		return
-	}
-	book.action()
-	this.diedListCheck()
-	//检测战斗是否结束
-	return this.checkOver.bind(this)
 }
 //死亡检测
 model.prototype.diedListCheck = function() {
@@ -560,12 +509,6 @@ model.prototype.fightOver = function(winFlag,roundEnd) {
 		else{
 			info.defTeam.push(null)
 		}
-	}
-	for(var i in this.atkBooks){
-		info.atkDamage += this.atkBooks[i].totalDamage
-	}
-	for(var i in this.defBooks){
-		info.defDamage += this.defBooks[i].totalDamage
 	}
 	info.masterSkills = this.masterSkills
 	fightRecord.push(info)

@@ -52,34 +52,6 @@ var model = function() {
 				case "nextRound":
 					console.log("\n\033[35m第"+info.round+"轮开始\033[0m\n")
 				break
-				case "book":
-					var str = "\033[36m天书"+info.bookId+"开始行动\033[0m"
-					for(var i = 0;i < info.targets.length;i++){
-						str += "\n  \033[31m攻击"+heroNames[info.targets[i].id]+"\t"
-						if(info.targets[i].miss){
-							str += "被闪避"
-						}else if(info.targets[i].invincible){
-							str += "免疫"
-						}else{
-							str += "造成"+ info.targets[i].value+"点伤害"
-							if(info.targets[i].crit){
-								str +="(暴击)"
-							}
-							str += "\t剩余"+info.targets[i].curValue+"/"+info.targets[i].maxHP
-							if(info.targets[i].kill){
-								str += "\t击杀目标!"
-							}
-							if(info.targets[i].seckill){
-								str += "\t秒杀!"
-							}
-							if(info.targets[i].oneblood)
-								str += "\033[32m  绝处逢生\033[0m"
-							str += "\033[0m"
-					
-						}
-					}
-					console.log(str)
-				break
 				case "master":
 					var str = ""
 					if(info.belong == "atk")

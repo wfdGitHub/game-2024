@@ -55,6 +55,7 @@ var model = function(otps) {
 	this.attInfo.healRate = otps["healRate"] || 0		//治疗暴击几率
 	this.attInfo.healAdd = otps["healAdd"] || 0			//被治疗加成
 	this.attInfo.speed = (otps["speed"] || 0) + 100 	//速度值
+	this.attInfo.speed += Math.floor((this.attInfo.speed * (this.attInfo.M_SPE-40) / (this.attInfo.M_SPE+120)))
 	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
 	this.surplus_health = otps.surplus_health			//剩余生命值比例
 
