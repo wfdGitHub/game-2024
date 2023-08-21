@@ -195,6 +195,10 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	var specieRate = 1
 	for(var i = 0;i < target.species.length;i++)
 		specieRate *= species[skill.specie][target.species[i]]
+	if(target.specie_immune == skill.specie)
+		specieRate = specieRate * 0.1
+	if(target.specie_behit && specieRate > 1)
+		specieRate = target.specie_behit * specieRate
 	info.spe = specieRate
 	info.value = Math.floor(info.value * specieRate)
 	//物理法术伤害加成减免
@@ -324,14 +328,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			}
 		}
 	}else{
-		if(attacker.maxHP_damage || skill.maxHP_damage){
-			var tmpRate = skill.maxHP_damage || 0
-			if(skill.isAnger)
-				tmpRate += attacker.maxHP_damage || 0
-			if(tmpRate > 0){
-				info.realDamage = Math.floor(target.attInfo.maxHP * tmpRate)
-				info.value += info.realDamage
-			}
+		if(skill.maxHP_damage){
+			info.realDamage = Math.floor(target.attInfo.maxHP * skill.maxHP_damage)
+			info.value += info.realDamage
 		}
 	}
 	//技能最大生命值加成
@@ -346,6 +345,10 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		}
 		if(attacker.fanzhi_damage && attacker.buffs["fanzhi"]){
 			info.realDamage = Math.floor(target.attInfo.maxHP * attacker.buffs["fanzhi"].getValue() * attacker.fanzhi_damage)
+			info.value += info.realDamage
+		}
+		if(attacker.maxHP_damage){
+			info.realDamage = Math.floor(target.attInfo.maxHP * attacker.maxHP_damage)
 			info.value += info.realDamage
 		}
 	}

@@ -73,6 +73,10 @@ var model = function(otps) {
 	this.died_buffs = {} 				//死亡时buff
 	this.passives = {} 					//被动技能
 	//==========闪光阶级========//
+	this.specie_behit = otps.specie_behit 						//对战中，对自身造成的克制伤害*0.75
+	this.full_hp_red = otps.full_hp_red 						//HP全满的时候，受到的伤害减为原来1/2
+	this.full_hp_save = otps.full_hp_save 						//HP全满时，受到一次攻击时，至少保留1点HP。
+	this.specie_immune = otps.specie_immune 					//受该属性伤害降低90%
 	this.listen_enemyBuff = otps.listen_enemyBuff 				//监听敌方获得BUFF
 	this.listen_teamBuff = otps.listen_teamBuff 				//监听我方获得BUFF
 	if(otps.listen_addBuff)
@@ -82,13 +86,12 @@ var model = function(otps) {
 	this.less_hp_buff = otps.less_hp_buff 						//生命值降低到一定程度触发BUFF
 	if(otps.round_buff1)
 		this.round_buffs.push(JSON.parse(otps.round_buff1)) //回合开始前BUFF
-	this.oneblood_round = otps.oneblood_round 				//受到致命伤害时100%概率触发保命，保留20%生命值，该技能触发后冷却4回合
 	if(otps.passive1 && passive_cfg[otps.passive1])
-		this.passives[otps.passive1] = new passive(passive_cfg[otps.passive1],otps.passiveArg1)
+		this.passives[otps.passive1] = new passive(this,passive_cfg[otps.passive1],otps.passiveArg1)
 	if(otps.passive2 && passive_cfg[otps.passive2])
-		this.passives[otps.passive2] = new passive(passive_cfg[otps.passive2],otps.passiveArg2)
+		this.passives[otps.passive2] = new passive(this,passive_cfg[otps.passive2],otps.passiveArg2)
 	if(otps.passive3 && passive_cfg[otps.passive3])
-		this.passives[otps.passive3] = new passive(passive_cfg[otps.passive3],otps.passiveArg3)
+		this.passives[otps.passive3] = new passive(this,passive_cfg[otps.passive3],otps.passiveArg3)
 	//==========MEGA属性========//
 	this.frozen_anger = otps.frozen_anger 				//冰冻后恢复怒气值
 	this.enter_skill = otps.enter_skill 				//入场后释放怒气技能
@@ -286,6 +289,7 @@ var model = function(otps) {
 	this.atkcontrol = otps.atkcontrol || 0 //控制概率增加
 	this.defcontrol = otps.defcontrol || 0 //被控概率减免
 	this.phy_turn_hp = otps.phy_turn_hp || 0 //物理伤害转生命值比例
+	this.mag_turn_hp = otps.mag_turn_hp || 0 //法术伤害转生命值比例
 	if(otps.first_armor)
 		this.first_buff_list.push({buffId : "armor",duration : 2,buffArg : otps.first_armor}) //战斗前2回合免伤提高
 	if(otps.first_amplify_mag)
@@ -1638,12 +1642,17 @@ model.prototype.lessHP = function(info,callbacks) {
 		callFlag = true
 		callbacks = []
 	}
-	if(this.half_hp_red && (this.round_damage >= (this.attInfo.maxHP / 2))){
+	if(this.half_hp_red && (this.round_damage >= (this.attInfo.maxHP / 2)))
 		info.value = 1
-	}
+	if(this.full_hp_red && this.attInfo.hp == this.attInfo.maxHP)
+		info.value = Math.ceil(info.value * 0.5)
 	info.realValue = info.value
 	if((this.attInfo.hp - info.value) <= 0){
-		if(this.bm_fz){
+		if(this.full_hp_save && this.attInfo.hp == this.attInfo.maxHP){
+			info.realValue = this.attInfo.hp - 1
+			this.attInfo.hp = 1
+			info.oneblood = true
+		}else if(this.bm_fz){
 			this.bm_fz = false
 			info.realValue = this.attInfo.hp - 1
 			this.attInfo.hp = 1
@@ -1651,22 +1660,23 @@ model.prototype.lessHP = function(info,callbacks) {
 			callbacks.push((function(){
 				buffManager.createBuff(this,this,{buffId : "banish",duration : 4})
 			}).bind(this))
+		}else if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
+			info.realValue = this.attInfo.hp - 1
+			this.attInfo.hp = 1
+			info.oneblood = true
+		}else if(this.isPassive("bm_hx",callbacks)){
+			info.oneblood = true
+			this.attInfo.hp = Math.floor(this.attInfo.maxHP * 0.2)
+		}else if(this.isPassive("bm_tx",callbacks)){
+			info.oneblood = true
+			this.attInfo.hp = 1
+		}else if(this.isPassive("bm_wd",callbacks)){
+			info.oneblood = true
+			this.attInfo.hp = 1
+			buffManager.createBuff(this,this,{buffId : "invincibleSuper",duration : 1})
 		}else{
-			if(this.oneblood_rate && this.fighting.seeded.random("判断BUFF命中率") < this.oneblood_rate){
-				info.realValue = this.attInfo.hp - 1
-				this.attInfo.hp = 1
-				info.oneblood = true
-			}else if(this.isPassive("bm_hx",callbacks)){
-				info.oneblood = true
-				this.attInfo.hp = Math.floor(this.attInfo.maxHP * 0.2)
-			}else if(this.isPassive("bm_wd",callbacks)){
-				info.oneblood = true
-				this.attInfo.hp = 1
-				buffManager.createBuff(this,this,{buffId : "invincibleSuper",duration : 1})
-			}else{
-				this.attInfo.hp -= info.value
-				this.onDie(callbacks)
-			}
+			this.attInfo.hp -= info.value
+			this.onDie(callbacks)
 		}
 	}else{
 		this.attInfo.hp -= info.value

@@ -608,8 +608,8 @@ model.useAttackSkill = function(skill,chase,point) {
 		}
 		//吸血
 		var bloodValue = 0
-		if(skill.character.phy_turn_hp && skill.damageType == "phy")
-			bloodValue += skill.character.phy_turn_hp * allDamage
+		if(skill.character[skill.damageType+"_turn_hp"])
+			bloodValue += skill.character[skill.damageType+"_turn_hp"] * allDamage
 		if(skill.character.buffs["blood"])
 			bloodValue += skill.character.buffs["blood"].getValue() * allDamage
 		if(bloodValue){
