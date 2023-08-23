@@ -56,89 +56,107 @@ equipHandler.prototype.wearEquip = function(msg, session, next) {
     next(null,{flag : false,err : err})
   })
 }
-//卸下装备
-equipHandler.prototype.unwearEquip = function(msg, session, next) {
-  let uid = session.uid
-  let areaId = session.get("areaId")
-  let hId = msg.hId
-  let part = msg.part
-  let self = this
-  async.waterfall([
-    function(cb) {
-      self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
-        if(!flag){
-          cb("英雄不存在")
-          return
-        }
-        cb(null,heroInfo)
-      })
-    },
-    function(heroInfo,cb) {
-      //卸下原装备
-      if(heroInfo["e"+part]){
-        var oldeId = equip_level[heroInfo["e"+part]]["part_"+part]
-        self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : oldeId,value : 1})
-        self.heroDao.delHeroInfo(areaId,uid,hId,"e"+part)
-        delete heroInfo["e"+part]
-        next(null,{flag : true,heroInfo : heroInfo,eId : heroInfo["e"+part]})
-      }else{
-        cb("该部位没有装备")
-      }
-    }
-  ],function(err) {
-    next(null,{flag : false,err : err})
-  })
-}
-//出售装备
-equipHandler.prototype.sellEquip = function(msg, session, next) {
+//装备打造
+equipHandler.prototype.makeEquip = function(msg, session, next){
   var uid = session.uid
   var areaId = session.get("areaId")
-  var eId = Number(msg.eId)
-  var count = Number(msg.count)
-  if(!eId || !equip_base[eId]){
-    next(null,{flag : false,err : "eId error "+eId})
-    return
-  }
-  if(!Number.isInteger(count) || count < 1){
-    next(null,{flag : false,err : "count error "+count})
-    return
-  }
-  var self = this
-  self.areaManager.areaMap[areaId].consumeItems(uid,eId+":"+count,1,"出售装备",function(flag,err) {
-    if(!flag){
-      next(null,{flag : false,err : err})
-      return
-    }
-    self.areaManager.areaMap[areaId].addItem({uid : uid,itemId : 201,value : Math.round(equip_base[eId]["sell_prize"] * count),reason : "出售装备"},function(flag,data) {
-      next(null,{flag : true,value : data})
-    })
+  var lv = msg.lv
+  var slot = msg.slot
+  var item = msg.item
+  self.areaManager.areaMap[areaId].makeEquip(uid,lv,slot,item,function(flag,data) {
+    next(null,{flag : flag,data : data})
   })
 }
-//合成装备
-equipHandler.prototype.compoundEquip = function(msg, session, next) {
+//装备洗练
+equipHandler.prototype.washEquip = function(msg, session, next){
   var uid = session.uid
   var areaId = session.get("areaId")
-  var eId = Number(msg.eId)
-  var count = Number(msg.count)
-  if(!eId || !equip_base[eId] || !equip_base[eId]["next"]){
-    next(null,{flag : false,err : "eId error "+eId})
-    return
-  }
-  if(!Number.isInteger(count) || count < 1){
-    next(null,{flag : false,err : "count error "+count})
-    return
-  }
-  var self = this
-  var pc = equip_base[eId]["compound_pc"]+"&"+eId+":"+equip_base[eId]["count"]
-  self.areaManager.areaMap[areaId].consumeItems(uid,pc,count,"合成装备",function(flag,err) {
-    if(!flag){
-      next(null,{flag : false,err : err})
-      return
-    }
-    self.areaManager.areaMap[areaId].taskUpdate(uid,"equip_compound",count)
-    self.areaManager.areaMap[areaId].changeItem({uid : uid,itemId : equip_base[eId]["next"],value : count},function(flag,data) {
-      next(null,{flag : true,eId : equip_base[eId]["next"],value : data})
-    })
+  var eId = msg.eId
+  var item = msg.item
+  self.areaManager.areaMap[areaId].washEquip(uid,eId,item,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//洗练保存
+equipHandler.prototype.saveEquip = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  self.areaManager.areaMap[areaId].saveEquip(uid,eId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//属性转化
+equipHandler.prototype.washEquipExtra = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  self.areaManager.areaMap[areaId].washEquipExtra(uid,eId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//属性保存
+equipHandler.prototype.saveEquipExtra = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  self.areaManager.areaMap[areaId].saveEquipExtra(uid,eId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//特效转化
+equipHandler.prototype.washEquipSpe = function(uid,eId,index,cb){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  var index = msg.index
+  self.areaManager.areaMap[areaId].washEquipSpe(uid,eId,index,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//特效保存
+equipHandler.prototype.saveEquipSpe = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  self.areaManager.areaMap[areaId].saveEquipSpe(uid,eId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//套装转化
+equipHandler.prototype.washEquipSuit = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  self.areaManager.areaMap[areaId].washEquipSuit(uid,eId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//套装保存
+equipHandler.prototype.saveEquipSuit = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  self.areaManager.areaMap[areaId].saveEquipSuit(uid,eId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//装备强化
+equipHandler.prototype.intensifyEquip = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var eId = msg.eId
+  self.areaManager.areaMap[areaId].intensifyEquip(uid,eId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//分解装备
+equipHandler.prototype.recycle = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var eIds = msg.eIds
+  self.areaManager.areaMap[areaId].recycle(uid,eIds,function(flag,data) {
+    next(null,{flag : flag,data : data})
   })
 }
 module.exports = function(app) {

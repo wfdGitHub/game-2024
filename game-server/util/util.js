@@ -117,6 +117,7 @@ util.prototype.randomString = function(len){
 util.prototype.md5 = function(str) {
     return md5(str)
 }
+//从数组获取指定数量的目标
 util.prototype.getRandomArray = function(arr, count) {
     if(count > arr.length)
         count = arr.length

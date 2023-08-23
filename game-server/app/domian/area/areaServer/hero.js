@@ -1,9 +1,5 @@
-//英雄培养
+//英雄系统
 const async = require("async")
-const hero_tr = require("../../../../config/gameCfg/hero_tr.json")
-const train_arg = require("../../../../config/gameCfg/train_arg.json")
-const equip_st = require("../../../../config/gameCfg/equip_st.json")
-const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const summon_list = require("../../../../config/gameCfg/summon_list.json")
 const exalt_lv = require("../../../../config/gameCfg/exalt_lv.json")
 const heros = require("../../../../config/gameCfg/heros.json")
@@ -327,7 +323,11 @@ var model = function() {
 	//英雄分解
 
 	//英雄洗练 
-	this.heroWash = function(uid,hId,cb) {
+	this.heroWash = function(uid,hId,item,cb) {
+		if(item && item != 2000050){
+			cb(false,"item error "+item)
+			return
+		}
 		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo){
 			if(!heroInfo){
 				cb(false,"英雄不存在")
@@ -341,12 +341,15 @@ var model = function() {
 			var rate = 1
 			if(heroInfo.qa >= 5)
 				rate = 2
-			self.consumeItems(uid,exalt_lv[exalt]["wash_pc"],1,"英雄洗练",function(flag,err) {
+			var pc = "2000030:"+(exalt_lv[exalt]["wash_pc"]*rate)
+			if(item)
+				pc += "&2000050:1"
+			self.consumeItems(uid,pc,1,"英雄洗练",function(flag,err) {
 				if(!flag){
 					cb(false,err)
 					return
 				}
-				heroInfo = local.washHero(heroInfo)
+				heroInfo = local.washHero(heroInfo,item)
 	            self.heroDao.onlySetHeroInfo(uid,hId,"wash",heroInfo.wash)
 				self.heroDao.onlySetHeroInfo(uid,hId,"save",heroInfo.save)
 	            cb(true,{heroInfo:heroInfo})
@@ -421,26 +424,29 @@ var model = function() {
 		return heroInfo
 	}
 	//英雄洗练 洗练增加通灵值，通灵值满一百必出满技能，出满技能后通灵值重置
-	local.washHero = function(heroInfo) {
+	local.washHero = function(heroInfo,item) {
 		heroInfo.wash += exalt_lv[heros[heroInfo.id]["exalt"]]["wash_value"]
-		var c_info = local.createHero(heroInfo.id,heroInfo.qa,heroInfo.wash)
+		var c_info = local.createHero(heroInfo.id,heroInfo.qa,heroInfo.wash,item)
 		heroInfo.wash = c_info.wash
 		delete c_info.wash
 		heroInfo.save = JSON.stringify(c_info)
 		return heroInfo
 	}
 	//英雄创建资质技能
-	local.createHero = function(id,qa,wash) {
+	local.createHero = function(id,qa,wash,item) {
 		var c_info = {}
 		var extra = 0
 		var skillNum = 0
 		c_info.wash = wash
 		//宠物异化
-		if(qa == 4 && Math.random() < wash/300)
+		var needRate = wash/300
+		if(needRate)
+			needRate += 0.2
+		if(qa == 4 && Math.random() < needRate)
 			qa = 5
 		c_info.qa = qa
 		//触发资质加成
-		if(Math.random() < wash/200)
+		if(item || Math.random() < wash/200)
 			extra = 0.05
 		//触发技能保底
 		if(c_info.wash >= 100)
@@ -477,40 +483,6 @@ var model = function() {
 		}
 		var index = list[Math.floor(list.length*Math.random())]
 		return index
-	}
-	//装备强化
-	this.heroEquipStrengthen = function(uid,hId,slot,cb) {
-		if(!Number.isInteger(slot) || slot < 1 || slot > 4){
-			cb(false,"槽位错误"+slot)
-			return
-		}
-		var key = "et"+slot
-		//todo 判定英雄是否存在
-		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo){
-			if(!flag || !heroInfo.id){
-				cb(false,"英雄不存在"+hId)
-				return
-			}
-			var slv = Number(heroInfo[key]) || 0
-			if(!equip_st[slv+1]){
-				cb(false,"强化等级已满"+slv)
-				return
-			}
-			var lv = self.getLordLv(uid)
-			if(slv >= lord_lv[lv]["st"]){
-				cb(false,"等级上限"+slv+"/"+lord_lv[lv]["st"])
-				return
-			}
-			self.consumeItems(uid,equip_st[slv]["pc"],1,"英雄培养",function(flag,err) {
-				if(flag){
-					self.taskUpdate(uid,"equip_st",1,slv+1)
-					self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,key,1)
-					cb(true,slv+1)
-				}else{
-					cb(false,err)
-				}
-			})
-		})
 	}
 }
 module.exports = model

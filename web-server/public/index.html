@@ -98,6 +98,74 @@
         console.log("onChat")
         console.log(data)
       })
+      //===================装备===================/
+      //装备打造
+      var makeEquip = function(lv,slot,item,cb){
+        pomelo.request("area.equipHandler.makeEquip", {lv:lv,slot:slot,item:item}, function(data) {
+            console.log(data);
+        })
+      }
+      //装备洗练
+      var washEquip = function(eId,item,cb){
+        pomelo.request("area.equipHandler.washEquip", {eId:eId,item:item}, function(data) {
+            console.log(data);
+        })
+      }
+      //洗练保存
+      var saveEquip = function(eId,cb){
+        pomelo.request("area.equipHandler.saveEquip", {eId:eId}, function(data) {
+            console.log(data);
+        })
+      }
+      //属性转化
+      var washEquipExtra = function(eId,cb){
+        pomelo.request("area.equipHandler.washEquipExtra", {eId:eId}, function(data) {
+            console.log(data);
+        })
+      }
+      //属性保存
+      var saveEquipExtra = function(eId,cb){
+        pomelo.request("area.equipHandler.saveEquipExtra", {eId:eId}, function(data) {
+            console.log(data);
+        })
+      }
+      //特效转化
+      var washEquipSpe = function(eId,index,cb){
+        pomelo.request("area.equipHandler.washEquipSpe", {eId:eId,index:index}, function(data) {
+            console.log(data);
+        })
+      }
+      //特效保存
+      var saveEquipSpe = function(eId,cb){
+        pomelo.request("area.equipHandler.saveEquipSpe", {eId:eId}, function(data) {
+            console.log(data);
+        })
+      }
+      //套装转化
+      var washEquipSuit = function(eId,cb){
+        pomelo.request("area.equipHandler.washEquipSuit", {eId:eId}, function(data) {
+            console.log(data);
+        })
+      }
+      //套装保存
+      var saveEquipSuit = function(eId,cb){
+        pomelo.request("area.equipHandler.saveEquipSuit", {eId:eId}, function(data) {
+            console.log(data);
+        })
+      }
+      //装备强化
+      var intensifyEquip = function(eId,cb){
+        pomelo.request("area.equipHandler.intensifyEquip", {eId:eId}, function(data) {
+            console.log(data);
+        })
+      }
+      //分解装备
+      var recycle = function(eIds,cb){
+        pomelo.request("area.equipHandler.recycle", {eIds:eIds}, function(data) {
+            console.log(data);
+        })
+      }
+
       //英雄打书
       var heroPS = function(hId,itemId) {
         pomelo.request("area.heroHandler.heroPS", {hId:hId,itemId:itemId}, function(data) {
@@ -105,8 +173,8 @@
         })
       }
       //英雄洗练
-      var heroWash = function(hId) {
-        pomelo.request("area.heroHandler.heroWash", {hId:hId}, function(data) {
+      var heroWash = function(hId,item) {
+        pomelo.request("area.heroHandler.heroWash", {hId:hId,item:item}, function(data) {
             console.log(data);
         })
       }

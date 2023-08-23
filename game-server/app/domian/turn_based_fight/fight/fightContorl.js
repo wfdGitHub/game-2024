@@ -31,6 +31,7 @@ const aptitudeCfg = require("../../../../config/gameCfg/aptitude.json")
 const exalt_lv = require("../../../../config/gameCfg/exalt_lv.json")
 const evolve_lv = require("../../../../config/gameCfg/evolve_lv.json")
 const evolves = require("../../../../config/gameCfg/evolves.json")
+const equip_suit = require("../../../../config/gameCfg/equip_suit.json")
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var character = require("../entity/character.js")
@@ -192,57 +193,6 @@ model.getOverInfo = function() {
 	else
 		return {"err":"not find overInfo"}
 }
-//获取种族加成类型
-model.getRaceType = function(team) {
-	var raceList = {"1" : 0,"2" : 0, "3" : 0, "4" : 0,"5" : 0}
-	var type = 0
-	for(var i = 0;i < team.length;i++){
-		if(team[i]){
-			raceList[team[i].realm]++
-		}
-	}
-	if(raceList[4] >= 6 || raceList[5] >= 6){
-		type = 7
-	}else if(raceList[1] >= 6 || raceList[2] >= 6 || raceList[3] >= 6){
-		type = 3
-	}else if(raceList[1] >= 1 && raceList[2] >= 1 && raceList[3] >= 1 && raceList[4] >= 1 && raceList[5] >= 1){
-		type = 8
-	}else if(raceList[1] == 2 && raceList[2] == 2 && raceList[3] == 2){
-		type = 4
-	}else if(raceList[4] >= 4 || raceList[5] >= 4){
-		type = 6
-	}else if(raceList[1] >= 4 || raceList[2] >= 4 || raceList[3] >= 4){
-		type = 2
-	}else if(raceList[4] >= 2 || raceList[5] >= 2){
-		type = 5
-	}else if(raceList[1] >= 2 || raceList[2] >= 2 || raceList[3] >= 2){
-		type = 1
-	}
-	return type
-}
-//种族加成
-model.raceAdd = function(raceType) {
-	switch(raceType){
-		case 1:
-		return {"atk" : 0.05,"maxHP" : 0.07}
-		case 2:
-		return {"atk" : 0.08,"maxHP" : 0.12}
-		case 3:
-		return {"atk" : 0.16,"maxHP" : 0.22}
-		case 4:
-		return {"atk" : 0.14,"maxHP" : 0.18}
-		case 5:
-		return {"atk" : 0.07,"maxHP" : 0.1}
-		case 6:
-		return {"atk" : 0.12,"maxHP" : 0.16}
-		case 7:
-		return {"atk" : 0.2,"maxHP" : 0.3}
-		case 8:
-		return {"atk" : 0.15,"maxHP" : 0.2}
-		default:
-		return {}
-	}
-}
 model.getFightRecord = function() {
 	return fightRecord.getList()
 }
@@ -251,9 +201,8 @@ model.getFightStageRecord = function() {
 }
 //获取角色数据
 model.getCharacterInfo = function(info,heroAtts,teamCfg) {
-	if(!info || !herosCfg[info.id]){
+	if(!info || !herosCfg[info.id])
 		return false
-	}
 	info = Object.assign({},info)
 	info.heroAtts = heroAtts
 	info.exalt = info.exalt || 1
@@ -283,6 +232,27 @@ model.getCharacterInfo = function(info,heroAtts,teamCfg) {
 		lvInfo.speed += lv_cfg[info.lv].speed
 	}
 	model.mergeData(info,lvInfo)
+	//装备计算
+	var suitMaps = {}
+	for(var i = 1;i <= 6;i++){
+		var eInfo = model.getEquipData(info["e"+i])
+		model.mergeData(info,eInfo.mainAtt)
+		model.mergeData(info,eInfo.extraAtt)
+		model.mergeData(info,eInfo.stAtt)
+		model.mergeData(info,eInfo.zfAtt)
+		for(var j = 0;j < eInfo.spe.length;i++)
+			model.mergeTalent(info,eInfo.spe[i])
+		if(eInfo.suit){
+			if(!suitMaps[eInfo.suit])
+				suitMaps[eInfo.suit] = 0
+			suitMaps[eInfo.suit]++
+		}
+	}
+	//装备套装
+	for(var i in suitMaps){
+		if(suitMaps[i] >= equip_suit[i]["count"])
+			model.mergeTalent(info,i)
+	}
 	//宝物加成
 	for(var i = 1;i <= 10;i++){
 		if(info["a"+i]){
@@ -446,7 +416,7 @@ model.getTeamData = function(team,belong) {
 	for(var i = 0;i < team.length;i++){
 		characters[i] = this.getCharacterInfo(team[i],heroAtts,teamCfg)
 	}
-    var teamAdds = this.raceAdd(this.getRaceType(characters))
+    var teamAdds = {}
     if(teamCfg){
 		for(var i = 1;i <= 4;i++)
 			if(teamCfg["power"+i])
@@ -472,29 +442,6 @@ model.getTeamShowData = function(team) {
 	var defTeam = []
 	var fighting = new fightingFun(atkInfo,defInfo,{atkTeamAdds:atkInfo.teamAdds})
 	return {atkTeam : fighting.atkTeam,masterAtts : atkInfo.masterAtts}
-}
-//计算兵符属性
-model.calBingfu = function(master,team,bfStr) {
-	if(bfStr){
-		var bfAtt = this.bingfuEntity.callBingfuData(bfStr)
-		var bfAttMap = {}
-		for(var talentId in bfAtt)
-			this.mergeTalent(bfAttMap,talentId,bfAtt[talentId])
-		//主公属性
-		var attList = ["lord_power","ws_power"]
-		for(var i = 0;i < attList.length;i++){
-			if(bfAttMap[attList[i]]){
-				master[attList[i]] += bfAttMap[attList[i]]
-				delete bfAttMap[attList[i]]
-			}
-		}
-		//英雄加成
-		for(var i = 0;i < team.length;i++){
-			if(team[i]){
-				this.mergeData(team[i],bfAttMap)
-			}
-		}
-	}
 }
 //计算差值
 model.calcCEDiff = function(name,oldValue,newValue) {
@@ -646,6 +593,8 @@ model.mergeTalent = function(info,talentId,value) {
 }
 //数据合并
 model.mergeData = function(info1,info2) {
+	if(!info2)
+		return
 	for(var i in info2){
 		if(info2[i]){
 			if(info1[i] && Number.isFinite(info2[i])){

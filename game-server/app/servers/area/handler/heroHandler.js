@@ -33,7 +33,8 @@ heroHandler.prototype.heroWash = function(msg, session, next) {
   var areaId = session.get("areaId")
   var uid = session.uid
   var hId = msg.hId
-  this.areaManager.areaMap[areaId].heroWash(uid,hId,function(flag,data) {
+  var item = msg.item
+  this.areaManager.areaMap[areaId].heroWash(uid,hId,item,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
@@ -401,16 +402,6 @@ heroHandler.prototype.getHeroRankOne = function(msg, session, next) {
   var hId = msg.hId
   var heroId = msg.heroId
   this.areaManager.areaMap[areaId].getHeroRankOne(uid,hId,heroId,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
-//英雄装备强化
-heroHandler.prototype.heroEquipStrengthen = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var hId = msg.hId
-  var slot = msg.slot
-  this.areaManager.areaMap[areaId].heroEquipStrengthen(uid,hId,slot,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
