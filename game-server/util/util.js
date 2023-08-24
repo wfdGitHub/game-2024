@@ -171,7 +171,7 @@ util.prototype.arrayIndexOf = function(array,val) {
     return -1;
 }
 util.prototype.arrayRemove = function(array,val) {
-    var index = this.indexOf(array,val);
+    var index = this.arrayIndexOf(array,val);
     if (index > -1) {
         array.splice(index, 1);
     }

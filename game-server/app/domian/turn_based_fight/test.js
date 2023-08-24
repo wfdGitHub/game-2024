@@ -79,15 +79,15 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // // var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
 // fightRecord.explain()
 
-var eInfo = {
-  lv: 6,
-  slot: 1,
-  qa: 5,
-  att: {
-    main_1: 1.2688048060781605,
-    main_2: 1.2909478501003626,
-    extra: { type: 1, M_SPE: 28, M_STK: 25 }
-  },
-  suit: '8050'
-}
-console.log(fightContorl.getEquipData(JSON.stringify(eInfo)))
+// var eInfo = {
+//   lv: 6,
+//   slot: 1,
+//   qa: 5,
+//   att: {
+//     main_1: 1.2688048060781605,
+//     main_2: 1.2909478501003626,
+//     extra: { type: 1, M_SPE: 28, M_STK: 25 }
+//   },
+//   suit: '8050'
+// }
+// console.log(fightContorl.getEquipData(JSON.stringify(eInfo)))

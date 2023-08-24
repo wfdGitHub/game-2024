@@ -28,6 +28,12 @@ const main_name = "equips"
 var model = function() {
 	var self = this
 	var local = {}
+	//获取数据
+	this.getEquipData = function(uid,cb) {
+		self.getObjAll(uid,main_name,function(data) {
+			cb(true,data)
+		})
+	}
 	//装备打造
 	this.makeEquip = function(uid,lv,slot,item,cb) {
 		async.waterfall([
@@ -48,7 +54,7 @@ var model = function() {
 				var pc = equip_lv[lv]["pc"]
 				if(item)
 					pc += "&"+item+":"+1
-				self.consumeItems(uid,,1,"装备打造",function(flag,err) {
+				self.consumeItems(uid,pc,1,"装备打造",function(flag,err) {
 					if(flag)
 						next()
 					else
@@ -101,7 +107,7 @@ var model = function() {
 			function(next) {
 				//操作
 				var id = info.id
-				info.wash = self.gainEquip(lv,slot)
+				info.wash = self.gainEquip(info.lv,info.slot)
 				info = JSON.stringify(info)
 				self.setObj(uid,main_name,id,info)
 				cb(true,info)
@@ -170,7 +176,7 @@ var model = function() {
 			},
 			function(next) {
 				//操作
-				info.washExtra = local.createAtt(info,info.att.extra.type)
+				info.washExtra = local.createExtra(info,info.att.extra.type)
 				var id = info.id
 				info = JSON.stringify(info)
 				self.setObj(uid,main_name,id,info)
@@ -248,7 +254,7 @@ var model = function() {
 				var speList = util.getRandomArray(equip_slot[info.slot]["spe_list"],3)
 				for(var i = 0;i < speList.length;i++){
 					if(!map[speList[i]]){
-						info.washSpe = info.spe
+						info.washSpe = JSON.parse(JSON.stringify(info.spe))
 						info.washSpe[index] = speList[i]
 						break
 					}
@@ -434,9 +440,8 @@ var model = function() {
 		var spe = local.createSpe(info)
 		if(spe)
 			info.spe = spe
-		var suit = local.createSuit(info)
-		if(suit)
-			info.suit = suit
+		if(info.qa >= 5)
+			info.suit = local.createSuit(info)
 		return info
 	}
 	//装备随机生成属性
@@ -486,7 +491,10 @@ var model = function() {
 	}
 	//装备随机生成套装
 	local.createSuit = function(info) {
-		return equip_lv[info.lv]["suit_list"][Math.floor(Math.random() * equip_lv[info.lv]["suit_list"].length)]
+		var index = Math.floor(Math.random() * equip_lv[info.lv]["suit_list"].length)
+		if(equip_lv[info.lv]["suit_list"][index] == info.suit)
+			index = (index+1)%equip_lv[info.lv]["suit_list"].length
+		return equip_lv[info.lv]["suit_list"][index]
 	}
 }
 module.exports = model

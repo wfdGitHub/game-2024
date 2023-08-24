@@ -7,6 +7,14 @@ var equipHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+//获取数据
+equipHandler.prototype.getEquipData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getEquipData(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //穿戴装备
 equipHandler.prototype.wearEquip = function(msg, session, next) {
   let uid = session.uid
@@ -63,7 +71,7 @@ equipHandler.prototype.makeEquip = function(msg, session, next){
   var lv = msg.lv
   var slot = msg.slot
   var item = msg.item
-  self.areaManager.areaMap[areaId].makeEquip(uid,lv,slot,item,function(flag,data) {
+  this.areaManager.areaMap[areaId].makeEquip(uid,lv,slot,item,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -73,7 +81,7 @@ equipHandler.prototype.washEquip = function(msg, session, next){
   var areaId = session.get("areaId")
   var eId = msg.eId
   var item = msg.item
-  self.areaManager.areaMap[areaId].washEquip(uid,eId,item,function(flag,data) {
+  this.areaManager.areaMap[areaId].washEquip(uid,eId,item,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -82,7 +90,7 @@ equipHandler.prototype.saveEquip = function(msg, session, next){
   var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
-  self.areaManager.areaMap[areaId].saveEquip(uid,eId,function(flag,data) {
+  this.areaManager.areaMap[areaId].saveEquip(uid,eId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -91,7 +99,7 @@ equipHandler.prototype.washEquipExtra = function(msg, session, next){
   var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
-  self.areaManager.areaMap[areaId].washEquipExtra(uid,eId,function(flag,data) {
+  this.areaManager.areaMap[areaId].washEquipExtra(uid,eId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -100,17 +108,17 @@ equipHandler.prototype.saveEquipExtra = function(msg, session, next){
   var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
-  self.areaManager.areaMap[areaId].saveEquipExtra(uid,eId,function(flag,data) {
+  this.areaManager.areaMap[areaId].saveEquipExtra(uid,eId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
 //特效转化
-equipHandler.prototype.washEquipSpe = function(uid,eId,index,cb){
+equipHandler.prototype.washEquipSpe = function(msg, session, next){
   var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
   var index = msg.index
-  self.areaManager.areaMap[areaId].washEquipSpe(uid,eId,index,function(flag,data) {
+  this.areaManager.areaMap[areaId].washEquipSpe(uid,eId,index,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -119,7 +127,7 @@ equipHandler.prototype.saveEquipSpe = function(msg, session, next){
   var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
-  self.areaManager.areaMap[areaId].saveEquipSpe(uid,eId,function(flag,data) {
+  this.areaManager.areaMap[areaId].saveEquipSpe(uid,eId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -128,7 +136,7 @@ equipHandler.prototype.washEquipSuit = function(msg, session, next){
   var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
-  self.areaManager.areaMap[areaId].washEquipSuit(uid,eId,function(flag,data) {
+  this.areaManager.areaMap[areaId].washEquipSuit(uid,eId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -137,7 +145,7 @@ equipHandler.prototype.saveEquipSuit = function(msg, session, next){
   var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
-  self.areaManager.areaMap[areaId].saveEquipSuit(uid,eId,function(flag,data) {
+  this.areaManager.areaMap[areaId].saveEquipSuit(uid,eId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -146,7 +154,7 @@ equipHandler.prototype.intensifyEquip = function(msg, session, next){
   var uid = session.uid
   var areaId = session.get("areaId")
   var eId = msg.eId
-  self.areaManager.areaMap[areaId].intensifyEquip(uid,eId,function(flag,data) {
+  this.areaManager.areaMap[areaId].intensifyEquip(uid,eId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -155,7 +163,7 @@ equipHandler.prototype.recycle = function(msg, session, next){
   var uid = session.uid
   var areaId = session.get("areaId")
   var eIds = msg.eIds
-  self.areaManager.areaMap[areaId].recycle(uid,eIds,function(flag,data) {
+  this.areaManager.areaMap[areaId].recycle(uid,eIds,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
