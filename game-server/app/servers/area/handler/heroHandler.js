@@ -6,7 +6,6 @@ var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 var star_base = require("../../../../config/gameCfg/star_base.json")
 var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 var hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
-var hufu_lv = require("../../../../config/gameCfg/hufu_lv.json")
 var lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 var hufu_map = {}
 for(var i in hufu_skill){

@@ -235,17 +235,19 @@ model.getCharacterInfo = function(info,heroAtts,teamCfg) {
 	//装备计算
 	var suitMaps = {}
 	for(var i = 1;i <= 6;i++){
-		var eInfo = model.getEquipData(info["e"+i])
-		model.mergeData(info,eInfo.mainAtt)
-		model.mergeData(info,eInfo.extraAtt)
-		model.mergeData(info,eInfo.stAtt)
-		model.mergeData(info,eInfo.zfAtt)
-		for(var j = 0;j < eInfo.spe.length;i++)
-			model.mergeTalent(info,eInfo.spe[i])
-		if(eInfo.suit){
-			if(!suitMaps[eInfo.suit])
-				suitMaps[eInfo.suit] = 0
-			suitMaps[eInfo.suit]++
+		if(info["e"+i]){
+			var eInfo = model.getEquipData(info["e"+i])
+			model.mergeData(info,eInfo.mainAtt)
+			model.mergeData(info,eInfo.extraAtt)
+			model.mergeData(info,eInfo.stAtt)
+			model.mergeData(info,eInfo.zfAtt)
+			for(var j = 0;j < eInfo.spe.length;i++)
+				model.mergeTalent(info,eInfo.spe[i])
+			if(eInfo.suit){
+				if(!suitMaps[eInfo.suit])
+					suitMaps[eInfo.suit] = 0
+				suitMaps[eInfo.suit]++
+			}
 		}
 	}
 	//装备套装
@@ -328,12 +330,14 @@ model.getCharacterInfo = function(info,heroAtts,teamCfg) {
 		}
 	}
 	//被动技能
+	var PSScore = 0
 	for(var i = 0;i <= 10;i++){
 		if(info["PS"+i]){
 			if(hufu_map[info["PS"+i]]){
 				if(!hufu_talents[hufu_map[info["PS"+i]].id] || hufu_map[info["PS"+i]].lv > hufu_talents[hufu_map[info["PS"+i]].id])
 					hufu_talents[hufu_map[info["PS"+i]].id] = hufu_map[info["PS"+i]].lv
 			}
+			PSScore += hufu_lv[hufu_map[info["PS"+i]].lv]["score"]
 		}
 	}
 	for(var i in hufu_talents)
@@ -382,6 +386,7 @@ model.getCharacterInfo = function(info,heroAtts,teamCfg) {
 	info["M_SPE"] = Math.floor(evolves[herosCfg[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
 	//主属性增益
 	info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
+	info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + aptitude * 600 + PSScore)
 	return new character(info)
 }
 //获取主动技能数据

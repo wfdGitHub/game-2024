@@ -91,3 +91,24 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 //   suit: '8050'
 // }
 // console.log(fightContorl.getEquipData(JSON.stringify(eInfo)))
+
+// var heroInfo = {
+//   id: 501200,
+//   evo: 1,
+//   exalt: 1,
+//   qa: 5,
+//   wash: 0,
+//   lv: 1,
+//   MR1: 0.6831061871242502,
+//   MR2: 0.8799767815388719,
+//   MR3: 0.9412484725412584,
+//   MR4: 0.7064259996707376,
+//   MR5: 0.692892243394845,
+//   MR6: 0.7257086665568114,
+//   PS0: 4101,
+//   PS1: 4102,
+//   PS2: 4104,
+//   PS3: 4103,
+//   PS4: 4110
+// }
+// console.log(fightContorl.getCharacterInfo(heroInfo))
