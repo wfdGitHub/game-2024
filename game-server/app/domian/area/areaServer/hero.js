@@ -318,10 +318,42 @@ var model = function() {
 			})
 		})
 	}
-	//英雄重置
+	//英雄重置 仅返还等级经验
 	
 	//英雄分解
-
+	this.heroRecycle = function(uid,hIds,cb) {
+		if(!hIds || !Array.isArray(hIds) || !hIds.length){
+			cb(false,"hIds error "+hIds)
+			return
+		}
+		var hIdmap = {}
+		for(var i = 0;i < hIds.length;i++){
+			if(hIdmap[hIds[i]]){
+			  	cb(false,"hId不能重复")
+			  	return
+			}
+			hIdmap[hIds[i]] = true
+		}
+		self.heroDao.getHeroList(uid,hIds,function(flag,list) {
+			for(var i = 0;i < list.length;i++){
+			 	if(self.heroDao.heroLockCheck(list[i])){
+			 		cb(false,"hIds error "+hIds[i])
+			 		return
+			 	}
+			 	var info = self.fightContorl.getHeroRecycle(list)
+			    self.heroDao.removeHeroList(self.areaId,uid,hIds,function(flag,err) {
+			    	if(!flag){
+			    		cb(false,err)
+			    		return
+			    	}
+					var awardList = self.addItemStr(uid,info.awardStr,1,"英雄分解")
+					for(var j = 0;j < info.hufuList.length;j++)
+						awardList.push(self.gainHufu(uid,info.hufuList[j]))
+					cb(true,awardList)
+			    })
+			}
+		})
+	}
 	//英雄洗练 
 	this.heroWash = function(uid,hId,item,cb) {
 		if(item && item != 2000050){

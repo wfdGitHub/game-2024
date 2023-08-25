@@ -4,7 +4,11 @@ const hero_quality = require("../../../../config/gameCfg/hero_quality.json")
 const equip_slot = require("../../../../config/gameCfg/equip_slot.json")
 const equip_st = require("../../../../config/gameCfg/equip_st.json")
 const equip_lv = require("../../../../config/gameCfg/equip_lv.json")
+const lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
+const artifact_level = require("../../../../config/gameCfg/artifact_level.json")
+const stone_base = require("../../../../config/gameCfg/stone_base.json")
 const extra_list = ["M_HP","M_ATK","M_DEF","M_STK","M_SEF","M_SPE"]
+const baseStone = {"1" : 4110,"2" : 4210,"3" : 4310,"4" : 4410}
 var model = function() {
 	//获取进化概率
 	this.getHeroEvoRate = function(heroInfo,herolist) {
@@ -89,6 +93,77 @@ var model = function() {
 		info.score = Math.ceil(((info.spe.length + (info.suit ? 1.5 : 0)) * 200 * Math.sqrt(info.lv)) + (eInfo.att.main_1 + eInfo.att.main_2)*equip_lv[info.lv]["mainRate"]*80 + extraNum*40)
 		info.ce = Math.ceil(info.score * 6 * (1+equip_st[info.st]["att"]))
 		return info
+	}
+	//获取英雄分解返还
+	this.getHeroRecycle = function(list) {
+		var strList = []
+		var hufuList = []
+		var map = {"2000030":0,"2000050":0}
+		for(var i = 0;i < list.length;i++){
+			var id = list[i].id
+			var lv = list[i].lv
+			map["2000030"] += Math.round(evolve_lv[list[i]["evo"]]["pr"] * exalt_lv[list[i]["lv"]]["prRate"])
+			if(list[i]["qa"] >= 5)
+				map["2000050"] += 1
+			//等级返还
+			if(lv_cfg[lv] && lv_cfg[lv].pr)
+				strList.push(lv_cfg[lv].pr)
+			//宝物返还
+			for(var j = 0;j <= 10;j++){
+				if(list[i]["a"+j])
+					strList.push(list[i]["a"+j]+":1")
+			}
+			var artifact = list[i].artifact
+			//专属返还
+			if(artifact !== undefined && artifact_level[artifact])
+				strList.push(artifact_level[artifact]["pr"])
+			//宝石返还
+			for(var j = 1;j <= 8;j++){
+				var key = "s"+j
+				if(list[i][key]){
+					//拆卸宝石
+					strList.push(list[i][key]+":1")
+					if(list[i][key+"v"] && stone_base[list[i][key]]){
+						var num = Math.floor(list[i][key+"v"] / stone_base[baseStone[j]]["value"])
+						strList.push(baseStone[j]+":"+num)
+					}
+				}
+			}
+			//护符返还
+			if(list[i]["hfLv"]){
+				var hufuInfo = {lv:list[i]["hfLv"]}
+				if(list[i]["hfs1"])
+					hufuInfo.s1 = list[i]["hfs1"]
+				if(list[i]["hfs2"])
+					hufuInfo.s2 = list[i]["hfs2"]
+				hufuList.push(hufuInfo)
+			}
+		}
+		var str = ""
+		for(var i in map)
+			if(map[i])
+				str += i+":"+map[i]+"&"
+		for(var i in strList)
+			str += strList[i]+"&"
+		str = str.substr(0,str.length-1)
+		return {awardStr : str,hufuList:hufuList}
+	}
+	//获取装备分解返还
+	this.getEquipRecycle = function(list) {
+		var map = {"201":0,"2003400":0}
+		for(var i = 0;i < list.length;i++){
+			map["201"] += equip_lv[list[i]["lv"]]["pr"]
+			if(list[i]["qa"] >= 5){
+				if(equip_lv[list[i]["lv"]]["spe"])
+					map["2003400"] += 1
+			}
+		}
+		var str = ""
+		for(var i in map)
+			if(map[i])
+				str += i+":"+map[i]+"&"
+		str = str.substr(0,str.length-1)
+		return str
 	}
 }
 module.exports = model

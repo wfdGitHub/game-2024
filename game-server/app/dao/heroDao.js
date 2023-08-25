@@ -329,31 +329,6 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb,reason) {
 		var artifact = heros[i].artifact
 		if(lv_cfg[lv] && lv_cfg[lv].pr)
 			strList.push(lv_cfg[lv].pr)
-		if(hero_ad[ad] && hero_ad[ad].pr)
-			strList.push(hero_ad[ad].pr)
-		if(hero_tr[heros[i].tr_lv] && hero_tr[heros[i].tr_lv]["pr"])
-			strList.push(hero_tr[heros[i].tr_lv]["pr"])
-		var tr_value = 0
-		if(heros[i].tr_maxHP)
-			tr_value += heros[i].tr_maxHP / train_arg["maxHP"]["value"]
-		if(heros[i].tr_atk)
-			tr_value += heros[i].tr_atk / train_arg["atk"]["value"]
-		if(heros[i].tr_phyDef)
-			tr_value += heros[i].tr_phyDef / train_arg["phyDef"]["value"]
-		if(heros[i].tr_magDef)
-			tr_value += heros[i].tr_magDef / train_arg["magDef"]["value"]
-		tr_value = Math.floor(tr_value * 0.75)
-		if(tr_value)
-			strList.push("1000020:"+tr_value)
-		for(var part = 1;part <= 4;part++){
-			if(heros[i]["e"+part]){
-				var oldeId = equip_level[heros[i]["e"+part]]["part_"+part]
-				strList.push(oldeId+":"+1)
-			}
-		}
-		for(var part = 1;part <= 4;part++)
-			if(heros[i]["et"+part])
-				strList.push(equip_st[heros[i]["et"+part]]["pr"])
 		for(var j = 0;j <= 10;j++){
 			if(heros[i]["a"+j])
 				strList.push(heros[i]["a"+j]+":1")
@@ -372,12 +347,6 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb,reason) {
 				}
 			}
 		}
-		if(heros[i]["zf_2"])
-			strList.push(star_base[10].pr)
-		if(heros[i]["zf_3"]){
-			strList.push(star_base[10].pr)
-			strList.push(star_base[10].pr)
-		}
 		if(heros[i]["hfLv"]){
 			var hufuInfo = {lv:heros[i]["hfLv"]}
 			if(heros[i]["hfs1"])
@@ -386,28 +355,6 @@ heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb,reason) {
 				hufuInfo.s2 = heros[i]["hfs2"]
 			this.areaManager.areaMap[areaId].gainHufu(uid,hufuInfo)
 		}
-		if(heros[i]["horse"]){
-			var horseInfo = JSON.parse(heros[i]["horse"])
-			this.areaManager.areaMap[areaId].gainHorse(uid,horseInfo)
-		}
-		if(heros[i]["drum"]){
-			var drumInfo = JSON.parse(heros[i]["drum"])
-			this.areaManager.areaMap[areaId].gainDrum(uid,drumInfo)
-		}
-		if(heros[i]["banner"]){
-			var bannerInfo = JSON.parse(heros[i]["banner"])
-			this.areaManager.areaMap[areaId].gainBanner(uid,bannerInfo)
-		}
-		for(var j = 1;j <= 4;j++){
-			var key = "fs"+j
-			if(heros[i][key]){
-				//拆卸符石
-				var fslv = hufu_map[heros[i][key]]["lv"]
-				strList.push("2000060:"+hufu_lv[fslv]["pr"])
-			}
-		}
-		if(heros[i]["fs5"])
-			strList.push("2000100:1")
 		this.areaManager.areaMap[areaId].remove_heroRank(uid,id,hIds[i])
 		this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+heros[i].id,value:-1,curValue:0,reason:reason+"-"+hIds[i]})
 	}

@@ -99,6 +99,24 @@
         console.log(data)
       })
       //===================装备===================/
+      //穿戴装备
+      var wearEquip = function(hId,eId) {
+        pomelo.request("area.equipHandler.wearEquip", {hId:hId,eId:eId}, function(data) {
+            console.log(data);
+        })
+      }
+      //卸下装备
+      var unWearEquip = function(hId,slot) {
+        pomelo.request("area.equipHandler.unWearEquip", {hId:hId,slot:slot}, function(data) {
+            console.log(data);
+        })
+      }
+      //分解装备
+      var recycleEquip = function(eIds) {
+        pomelo.request("area.equipHandler.recycleEquip", {eIds:eIds}, function(data) {
+            console.log(data);
+        })
+      }
       //获取数据
       var getEquipData = function() {
         pomelo.request("area.equipHandler.getEquipData", {}, function(data) {
@@ -188,7 +206,14 @@
         pomelo.request("area.heroHandler.heroWashSave", {hId:hId}, function(data) {
             console.log(data);
         })
-      }      
+      }   
+      //========================英雄=====================   
+      //英雄分解
+      var heroRecycle = function(hIds) {
+        pomelo.request("area.heroHandler.heroRecycle", {hIds:hIds}, function(data) {
+            console.log(data);
+        })
+      }
       //英雄升级
       var heroUPLv = function(hId,aimLv) {
         pomelo.request("area.heroHandler.heroUPLv", {hId:hId,aimLv:aimLv}, function(data) {

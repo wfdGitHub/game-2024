@@ -18,6 +18,16 @@ var heroHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+
+//英雄分解
+heroHandler.prototype.heroRecycle = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  var hIds = msg.hIds
+  this.areaManager.areaMap[areaId].heroRecycle(uid,hIds,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 //英雄打书
 heroHandler.prototype.heroPS = function(msg, session, next) {
   var areaId = session.get("areaId")
@@ -182,7 +192,7 @@ heroHandler.prototype.removeHeros = function(msg, session, next) {
         return
       }
     }
-    self.heroDao.rem1oveHeroList(areaId,uid,hIds,function(flag,err) {
+    self.heroDao.removeHeroList(areaId,uid,hIds,function(flag,err) {
       if(flag){
         self.heroDao.heroPrAll(areaId,uid,herolist,hIds,function(flag,awardList) {
           next(null,{flag : true,awardList : awardList})
@@ -307,39 +317,6 @@ heroHandler.prototype.incrbyHeroInfo = function(msg, session, next) {
 heroHandler.prototype.getHeros = function(msg, session, next) {
   var uid = session.uid
   this.heroDao.getHeros(uid,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
-//获取英雄图鉴
-heroHandler.prototype.getHeroArchive = function(msg, session, next) {
-  var uid = session.uid
-  this.heroDao.getHeroArchive(uid,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
-//获得已激活图鉴
-heroHandler.prototype.getHeroBook = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getHeroBook(uid,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
-//激活图鉴
-heroHandler.prototype.activateHeroBook = function(msg, session, next) {
-  var uid = session.uid
-  var id = msg.id
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].activateHeroBook(uid,id,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
-//升级图鉴
-heroHandler.prototype.upgradeHeroBook = function(msg, session, next) {
-  var uid = session.uid
-  var id = msg.id
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].upgradeHeroBook(uid,id,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

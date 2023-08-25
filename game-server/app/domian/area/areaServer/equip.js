@@ -34,6 +34,102 @@ var model = function() {
 			cb(true,data)
 		})
 	}
+	//装备穿戴
+	this.wearEquip = function(uid,hId,eId,cb) {
+		var heroInfo,eStr,eInfo,oldEquip
+		async.waterfall([
+			function(next) {
+				//检查英雄
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+					if(!data){
+						next("英雄不存在")
+						return
+					}
+					heroInfo = data
+					next()
+				})
+			},
+			function(next) {
+				//检查装备
+				self.getObj(uid,main_name,eId,function(data) {
+					if(!data){
+						next("装备不存在")
+					}else{
+						eStr = data
+						eInfo = JSON.parse(eStr)
+						next()
+					}
+				})
+			},
+			function(next) {
+				//卸下原装备
+				if(heroInfo["e"+eInfo.slot]){
+					oldEquip = JSON.parse(heroInfo["e"+eInfo.slot])
+					self.setObj(uid,main_name,oldEquip.id,heroInfo["e"+eInfo.slot])
+					delete heroInfo["e"+eInfo.slot]
+				}
+				next()
+			},
+			function(next) {
+				//穿戴装备
+				self.delObj(uid,main_name,eId,function() {
+					heroInfo["e"+eInfo.slot] = eStr
+					self.heroDao.setHeroInfo(self.areaId,uid,hId,"e"+eInfo.slot,heroInfo["e"+eInfo.slot],function(flag,data) {
+						cb(true,{heroInfo:heroInfo,oldEquip:oldEquip})
+					})
+				})
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//装备卸下
+	this.unWearEquip = function(uid,hId,slot,cb) {
+		self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+			if(!data){
+				cb(false,"英雄不存在")
+				return
+			}
+			var heroInfo = data
+			if(heroInfo["e"+slot]){
+				var eInfo = JSON.parse(heroInfo["e"+slot])
+				self.setObj(uid,main_name,eInfo.id,heroInfo["e"+slot])
+				delete heroInfo["e"+slot]
+				self.heroDao.delHeroInfo(self.areaId,uid,hId,"e"+eInfo.slot,function(flag,data) {
+					cb(true,heroInfo)
+				})
+			}
+		})
+	}
+	//装备分解
+	this.recycleEquip = function(uid,eIds,cb) {
+		if(!eIds || !Array.isArray(eIds) || !eIds.length){
+			cb(false,"eIds error "+eIds)
+			return
+		}
+		var hIdmap = {}
+		for(var i = 0;i < eIds.length;i++){
+			if(hIdmap[eIds[i]]){
+			  	cb(false,"eId不能重复")
+			  	return
+			}
+			hIdmap[eIds[i]] = true
+		}
+		self.getHMObj(uid,main_name,eIds,function(list) {
+			for(var i = 0;i < list.length;i++){
+			 	if(!list[i]){
+			 		cb(false,"eId error "+eIds[i])
+			 		return
+			 	}
+			 	list[i] = JSON.parse(list[i])
+			}
+			var str = self.fightContorl.getEquipRecycle(list)
+			for(var i = 0;i < list.length;i++)
+				self.delObj(uid,main_name,list[i]["id"])
+			var awardList = self.addItemStr(uid,str,1,"装备分解")
+			cb(true,awardList)
+		})
+	}
 	//装备打造
 	this.makeEquip = function(uid,lv,slot,item,cb) {
 		async.waterfall([
@@ -413,10 +509,6 @@ var model = function() {
 		],function(err) {
 			cb(false,err)
 		})
-	}
-	//分解装备
-	this.recycle = function(uid,eIds,cb) {
-
 	}
 	//获得装备
 	this.gainEquip = function(lv,slot,qa,item) {
