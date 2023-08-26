@@ -354,6 +354,8 @@ model.useSkill = function(skill,chase,point) {
 }
 //伤害技能
 model.useAttackSkill = function(skill,chase,point) {
+	if(skill.character.died && !skill.character.died_use_skill)
+		return []
 	var addAmp = 0
 	var allDamage = 0
 	var kill_num = 0
@@ -847,6 +849,8 @@ model.useAttackSkill = function(skill,chase,point) {
 }
 //恢复技能
 model.useHealSkill = function(skill,chase) {
+	if(skill.character.died && !skill.character.died_use_skill)
+		return []
 	var recordInfo = skill.getInfo()
 	recordInfo.targets = []
 	//技能复活
