@@ -7,26 +7,9 @@ const hero_quality = require("../../../../config/gameCfg/hero_quality.json")
 const species = require("../../../../config/gameCfg/species.json")
 const evolves = require("../../../../config/gameCfg/evolves.json")
 const evolve_lv = require("../../../../config/gameCfg/evolve_lv.json")
-const hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
 const lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 const items = require("../../../../config/gameCfg/item.json")
 const util = require("../../../../util/util.js")
-var lv4Map = []
-for(var i in hufu_skill)
-	lv4Map.push(hufu_skill[i]["lv4"])
-for(var i in summon_list){
-	summon_list[i]["heros"] = JSON.parse(summon_list[i]["heros"])
-	summon_list[i]["heroMap"] = {}
-	for(var j = 0;j < summon_list[i]["heros"].length;j++)
-		summon_list[i]["heroMap"][summon_list[i]["heros"][j]] = 1
-	summon_list[i]["items"] = JSON.parse(summon_list[i]["items"])
-	summon_list[i]["summonWeighs"] = [summon_list[i]["item_w"]]
-	summon_list[i]["summonHandWeighs"] = [summon_list[i]["item_w"]*0.5]
-	for(var j = 1;j <= 5;j++){
-		summon_list[i]["summonWeighs"].push(summon_list[i]["summonWeighs"][j-1] + summon_list[i]["hero_w"+j])
-		summon_list[i]["summonHandWeighs"].push(summon_list[i]["summonHandWeighs"][j-1] + summon_list[i]["hero_w"+j])
-	}
-}
 const main_name = "summon"
 var model = function() {
 	var self = this
@@ -152,7 +135,7 @@ var model = function() {
 	//获得一个英雄
 	this.gainOneHero = function(uid,id,qa) {
 		var hId = self.getLordLastid(uid)
-		var heroInfo = local.gainHero(id,qa)
+		var heroInfo = self.fightContorl.makeHeroData(id,qa)
 		heroInfo.hId = hId
 		self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 		self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
@@ -440,65 +423,14 @@ var model = function() {
 			})
 		})
 	}
-	//获得英雄
-	local.gainHero = function(id,qa) {
-		if(!heros[id])
-			return {}
-		var heroInfo = {}
-		heroInfo.id = id
-		heroInfo.evo = 1
-		heroInfo.exalt = heros[id]["exalt"]
-		heroInfo.qa = qa
-		heroInfo.wash = 0
-		heroInfo.lv = 1
-		var c_info = local.createHero(heroInfo.id,heroInfo.qa,heroInfo.wash)
-		Object.assign(heroInfo,c_info)
-		return heroInfo
-	}
 	//英雄洗练 洗练增加通灵值，通灵值满一百必出满技能，出满技能后通灵值重置
 	local.washHero = function(heroInfo,item) {
 		heroInfo.wash += exalt_lv[heros[heroInfo.id]["exalt"]]["wash_value"]
-		var c_info = local.createHero(heroInfo.id,heroInfo.qa,heroInfo.wash,item)
+		var c_info = self.fightContorl.createHero(heroInfo.id,heroInfo.qa,heroInfo.wash,item)
 		heroInfo.wash = c_info.wash
 		delete c_info.wash
 		heroInfo.save = JSON.stringify(c_info)
 		return heroInfo
-	}
-	//英雄创建资质技能
-	local.createHero = function(id,qa,wash,item) {
-		var c_info = {}
-		var extra = 0
-		var skillNum = 0
-		c_info.wash = wash
-		//宠物异化
-		var needRate = wash/300
-		if(needRate)
-			needRate += 0.2
-		if(qa == 4 && Math.random() < needRate)
-			qa = 5
-		c_info.qa = qa
-		//触发资质加成
-		if(item || Math.random() < wash/200)
-			extra = 0.05
-		//触发技能保底
-		if(c_info.wash >= 100)
-			skillNum = heros[id]["passive_num"]
-		else
-			skillNum = Math.floor(hero_quality[qa]["skillRate"] * (Math.random() * 0.5 + 0.6) * heros[id]["passive_num"])
-		for(var i = 1;i <= 6;i++)
-			c_info["MR"+i] = hero_quality[qa]["mainRate"] * (Math.random() * (0.4 + extra) + 0.7)
-		if(skillNum == heros[id]["passive_num"])
-			c_info.wash = 0
-		var skillList = []
-		for(var i = 1; i <= skillNum;i++)
-			skillList.push(heros[id]["passive"+i])
-		skillList.sort(function(){return Math.random() > 0.5 ? 1 : -1})
-		for(var i = 0;i < skillList.length;i++)
-			c_info["PS"+i] = skillList[i]
-		//异化多一个超级技能
-		if(c_info.qa == 5)
-			c_info["PS"+skillNum] = lv4Map[Math.floor(lv4Map.length * Math.random())]
-		return c_info
 	}
 	//英雄打书
 	local.makeHeroPS = function(heroInfo,sId) {

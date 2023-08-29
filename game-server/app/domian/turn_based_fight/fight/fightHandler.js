@@ -4,11 +4,30 @@ const hero_quality = require("../../../../config/gameCfg/hero_quality.json")
 const equip_slot = require("../../../../config/gameCfg/equip_slot.json")
 const equip_st = require("../../../../config/gameCfg/equip_st.json")
 const equip_lv = require("../../../../config/gameCfg/equip_lv.json")
+const heros = require("../../../../config/gameCfg/heros.json")
 const lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 const artifact_level = require("../../../../config/gameCfg/artifact_level.json")
 const stone_base = require("../../../../config/gameCfg/stone_base.json")
-const extra_list = ["M_HP","M_ATK","M_DEF","M_STK","M_SEF","M_SPE"]
+const summon_list = require("../../../../config/gameCfg/summon_list.json")
+const hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
 const baseStone = {"1" : 4110,"2" : 4210,"3" : 4310,"4" : 4410}
+const extra_list = ["M_HP","M_ATK","M_DEF","M_STK","M_SEF","M_SPE"]
+var lv4Map = []
+for(var i in hufu_skill)
+	lv4Map.push(hufu_skill[i]["lv4"])
+for(var i in summon_list){
+	summon_list[i]["heros"] = JSON.parse(summon_list[i]["heros"])
+	summon_list[i]["heroMap"] = {}
+	for(var j = 0;j < summon_list[i]["heros"].length;j++)
+		summon_list[i]["heroMap"][summon_list[i]["heros"][j]] = 1
+	summon_list[i]["items"] = JSON.parse(summon_list[i]["items"])
+	summon_list[i]["summonWeighs"] = [summon_list[i]["item_w"]]
+	summon_list[i]["summonHandWeighs"] = [summon_list[i]["item_w"]*0.5]
+	for(var j = 1;j <= 5;j++){
+		summon_list[i]["summonWeighs"].push(summon_list[i]["summonWeighs"][j-1] + summon_list[i]["hero_w"+j])
+		summon_list[i]["summonHandWeighs"].push(summon_list[i]["summonHandWeighs"][j-1] + summon_list[i]["hero_w"+j])
+	}
+}
 var model = function() {
 	//获取进化概率
 	this.getHeroEvoRate = function(heroInfo,herolist) {
@@ -93,6 +112,57 @@ var model = function() {
 		info.score = Math.ceil(((info.spe.length + (info.suit ? 1.5 : 0)) * 200 * Math.sqrt(info.lv)) + (eInfo.att.main_1 + eInfo.att.main_2)*equip_lv[info.lv]["mainRate"]*80 + extraNum*40)
 		info.ce = Math.ceil(info.score * 6 * (1+equip_st[info.st]["att"]))
 		return info
+	}
+	//生成一个英雄
+	this.makeHeroData = function(id,qa) {
+		if(!heros[id])
+			return {}
+		var heroInfo = {}
+		heroInfo.id = id
+		heroInfo.evo = 1
+		heroInfo.exalt = heros[id]["exalt"]
+		heroInfo.qa = qa
+		heroInfo.wash = 0
+		heroInfo.lv = 1
+		var c_info = this.createHero(heroInfo.id,heroInfo.qa,heroInfo.wash)
+		Object.assign(heroInfo,c_info)
+		return heroInfo
+	}
+	//生成英雄资质
+	this.createHero = function(id,qa,wash,item) {
+		var c_info = {}
+		var extra = 0
+		var skillNum = 0
+		c_info.wash = wash
+		//宠物异化
+		var needRate = wash/300
+		if(needRate)
+			needRate += 0.2
+		if(qa == 4 && Math.random() < needRate)
+			qa = 5
+		c_info.qa = qa
+		//触发资质加成
+		if(item || Math.random() < wash/200)
+			extra = 0.05
+		//触发技能保底
+		if(c_info.wash >= 100)
+			skillNum = heros[id]["passive_num"]
+		else
+			skillNum = Math.floor(hero_quality[qa]["skillRate"] * (Math.random() * 0.5 + 0.6) * heros[id]["passive_num"])
+		for(var i = 1;i <= 6;i++)
+			c_info["MR"+i] = hero_quality[qa]["mainRate"] * (Math.random() * (0.4 + extra) + 0.7)
+		if(skillNum == heros[id]["passive_num"])
+			c_info.wash = 0
+		var skillList = []
+		for(var i = 1; i <= skillNum;i++)
+			skillList.push(heros[id]["passive"+i])
+		skillList.sort(function(){return Math.random() > 0.5 ? 1 : -1})
+		for(var i = 0;i < skillList.length;i++)
+			c_info["PS"+i] = skillList[i]
+		//异化多一个超级技能
+		if(c_info.qa == 5)
+			c_info["PS"+skillNum] = lv4Map[Math.floor(lv4Map.length * Math.random())]
+		return c_info
 	}
 	//获取英雄分解返还
 	this.getHeroRecycle = function(list) {
