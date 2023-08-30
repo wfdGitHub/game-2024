@@ -47,7 +47,7 @@ var model = function(atkInfo,defInfo,otps) {
 }
 //初始配置
 model.prototype.load = function(belong,otps) {
-	var teamAdds = JSON.parse(JSON.stringify(otps[belong+"TeamAdds"]))
+	var teamAdds = otps[belong+"TeamAdds"] ? JSON.parse(JSON.stringify(otps[belong+"TeamAdds"])) : {}
 	var teamInfo = this[belong+"TeamInfo"]
 	var rival = teamInfo["rival"]
 	teamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
