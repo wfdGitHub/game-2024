@@ -35,13 +35,13 @@ var model = function() {
 	}
 	//获取sdkconfig
 	posts["/getSDKCFG"] = function(req,res) {
-		fs.readFile("../game-server/config/sysCfg/sdkConfig.json", (err, data) => {
+		fs.readFile("../game-server/config/gameCfg/sdkConfig.json", (err, data) => {
 			res.send(data)
 		})
 	}
 	//修改sdkconfig
 	posts["/changeSDKCFG"] = function(req,res) {
-		fs.writeFile("../game-server/config/sysCfg/sdkConfig.json", req.body.data, err => {
+		fs.writeFile("../game-server/config/gameCfg/sdkConfig.json", req.body.data, err => {
 			if (err) {
 				console.error("error：", err);
 				throw err;

@@ -7,7 +7,11 @@ const querystring = require("querystring")
 var model = function() {}
 //初始化获取配置
 model.prototype.init = function(cb) {
-	this.sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
+	// console.log("SKD登陆模块 初始化SDK配置")
+	this.sdkConfig = require("../../../config/gameCfg/sdkConfig.json")
+	for(var i in this.sdkConfig)
+		if(Number.isFinite(this.sdkConfig[i]["value"]))
+			this.sdkConfig[i]["value"] = this.sdkConfig[i]["value"].toFixed(0)
 }
 //渠道隔离
 model.prototype.entry = function(data,cb) {
@@ -15,7 +19,7 @@ model.prototype.entry = function(data,cb) {
 	async.waterfall([
 		function(next) {
 			//渠道隔离
-			if(self.sdkConfig.isolation && data.device_id){
+			if(self.sdkConfig.isolation["value"] != "0" && data.device_id){
 				self.redisDao.db.hget("device_channel",device_id,function(err,data) {
 					if(data && data != channel_code){
 						next("您已在其他平台注册，请返回原平台登录")
@@ -30,7 +34,7 @@ model.prototype.entry = function(data,cb) {
 		},
 		function(next) {
 			//渠道验证
-			switch(self.sdkConfig.sdk_type){
+			switch(self.sdkConfig.sdk_type["value"]){
 				case "quick":
 					//quick登陆
 					self.quickEntry(data,cb)
@@ -51,7 +55,7 @@ model.prototype.quickEntry = function(data,cb) {
 	var token = data.token
 	var uid = data.uid
 	var channel_code = data.channel_code
-	var url = self.sdkConfig["CheckUserInfo"]+"?token="+token+"&product_code="+self.sdkConfig.product_code+"&uid="+uid+"&channel_code="+channel_code
+	var url = self.sdkConfig["CheckUserInfo"]["value"]+"?token="+token+"&product_code="+self.sdkConfig.ProductCode["value"]+"&uid="+uid+"&channel_code="+channel_code
 	http.get(url,function(res){
 	  	res.on("data",function(data) {
 	    	if(data == 1){
@@ -61,30 +65,35 @@ model.prototype.quickEntry = function(data,cb) {
 	    	}
 	  	})
 		res.on("error", err => {
-			console.log(err.message);
 			cb({flag:false,err:err})
 		});
 	})
 }
 //小七手游登陆
 model.prototype.x7syEntry = function(data,cb) {
-	console.log("x7syEntry",data)
 	var self = this
-	var tokenkey = data.tokenkey
-	var sign = util.md5(encodeURI(self.sdkConfig["appkey"]+tokenkey))
-	console.log("sign",sign)
-	var url = self.sdkConfig["CheckUserInfo"]+"?tokenkey="+tokenkey+"&sign="+sign
-	http.get(url,function(res){
-	  	res.on("data",function(data) {
-	  		console.log(data)
-	    	if(data.errorno == 0){
-	    		self.entrySuccess(data.data.guid,cb)
+	var tokenkey = data.token
+	var sign = ""
+	var os = data.os
+	if(os == "ios")
+		sign = util.md5(self.sdkConfig["iosAppKey"]["value"]+tokenkey)
+	else
+		sign = util.md5(self.sdkConfig["AppKey"]["value"]+tokenkey)
+	var url = self.sdkConfig["CheckUserInfo"]["value"]+"?tokenkey="+tokenkey+"&sign="+sign
+	https.get(url,function(res){
+	  	var _data='';
+	  	res.on("data",function(chunk) {
+	  		_data += chunk;
+	  	})
+	  	res.on('end', function(){
+	  		var info = JSON.parse(_data)
+	    	if(info.errorno == 0){
+	    		self.entrySuccess(info.data.guid,cb)
 	    	}else{
-	    		self.entryFaild(uid,data.errormsg,cb)
+	    		self.entryFaild(tokenkey,info.errormsg,cb)
 	    	}
 	  	})
 		res.on("error", err => {
-			console.log(err.message);
 			cb({flag:false,err:err})
 		});
 	})
@@ -98,13 +107,12 @@ model.prototype.entrySuccess = function(uid,cb) {
 }
 //登陆失败
 model.prototype.entryFaild = function(uid,err,cb) {
-	console.log("entryFaild",uid,err)
 	cb({flag:false,err:err})
 }
 module.exports = {
 	id : "sdkEntry",
 	func : model,
-	init : "init",	
+	init : "init",
 	scope : "prototype",
 	props : [{
 		name : "redisDao",

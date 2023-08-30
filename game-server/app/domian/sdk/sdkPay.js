@@ -8,20 +8,24 @@ var local = {}
 //初始化获取配置
 model.prototype.init = function(cb) {
 	// console.log("SKD支付模块 初始化SDK配置")
-	this.sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
+	delete require.cache[require.resolve('../../../config/gameCfg/sdkConfig.json')]; 
+	this.sdkConfig = require("../../../config/gameCfg/sdkConfig.json")
+	for(var i in this.sdkConfig)
+		if(Number.isFinite(this.sdkConfig[i]["value"]))
+			this.sdkConfig[i]["value"] = this.sdkConfig[i]["value"].toFixed()
 }
 //收到支付回调
 model.prototype.pay_order = function(data,finish_callback,req,res) {
-	switch(this.sdkConfig.sdk_type){
+	switch(this.sdkConfig.sdk_type["value"]){
 		case "quick":
 			this.quick_order(data,finish_callback,req,res)
 		break
-		case "jianwan":
-			this.jianwan_order(data,finish_callback,req,res)
-		break
-		case "277":
-			this.game277_order(data,finish_callback,req,res)
-		break
+		// case "jianwan":
+		// 	this.jianwan_order(data,finish_callback,req,res)
+		// break
+		// case "277":
+		// 	this.game277_order(data,finish_callback,req,res)
+		// break
 		case "x7sy":
 			this.x7sy_order(data,finish_callback,req,res)
 		break
@@ -29,14 +33,14 @@ model.prototype.pay_order = function(data,finish_callback,req,res) {
 }
 //quick订单
 model.prototype.quick_order = function(data,finish_callback,req,res) {
-	res.send("SUCCESS")
 	var v_sign = util.md5(data.nt_data+data.sign+this.sdkConfig["Md5_Key"])
 	if(v_sign != data.md5Sign){
 		console.error("签名验证失败")
 		return
 	}
+	res.send("SUCCESS")
 	var self = this
-	var xmlStr = local.decode(data.nt_data,this.sdkConfig["Callback_Key"])
+	var xmlStr = local.decode(data.nt_data,this.sdkConfig["Callback_Key"]["value"])
 	parseString(xmlStr,function(err,result) {
 		var message = result.quicksdk_message.message[0]
 		var info = {
@@ -136,8 +140,12 @@ model.prototype.game277_order = function(data,finish_callback,req,res) {
 }
 //小七手游订单
 model.prototype.x7sy_order = function(data,finish_callback,req,res) {
-	console.log("x7sy_order",data)
-	var publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]+"\n-----END PUBLIC KEY-----"
+	var publicKey = ""
+	if(data.extends_info_data == 1){
+		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["iosAppKey"]["value"]+"\n-----END PUBLIC KEY-----"
+	}else{
+		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]["value"]+"\n-----END PUBLIC KEY-----"
+	}
 	var raw_sign_data = Buffer.from(data.sign_data, 'base64')
 	delete data.sign_data
 	var source_str = local.ksort(data)
@@ -150,7 +158,6 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	var raw_encryp_data = Buffer.from(data.encryp_data, 'base64')
 	var decodedata = crypto.publicDecrypt(publicKey,raw_encryp_data);
 	var encryp_data = querystring.parse(decodedata.toString())
-	console.log("encryp_data", encryp_data)
 	var self = this
 	var info = {
 		is_test : 0,
@@ -173,6 +180,15 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 				finish_callback(data.areaId,data.uid,data.amount,data.pay_id)
 			}
 	})
+}
+//小七订单sign
+model.prototype.x7syGameSign = function(str,os) {
+	if(os == "ios")
+		str += this.sdkConfig["iosRSA"]["value"]
+	else
+		str += this.sdkConfig["RSA"]["value"]
+	var md5 = util.md5(str)
+	return md5
 }
 local.decode = function(str,key){
 	if(str.length <= 0){
@@ -224,7 +240,7 @@ local.ksort = function(obj){
     sortStr += keys[i]+"="+obj[keys[i]]
   }
   return sortStr;
-};
+}
 local.verifySignSHA1 = function(data, sign, publicKey) {
     const verify = crypto.createVerify('RSA-SHA1');
     verify.update(data);
