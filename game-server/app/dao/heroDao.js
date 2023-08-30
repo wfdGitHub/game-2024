@@ -268,105 +268,6 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 	// 	})
 	// })
 }
-//重生返还资源  返回升级升阶法宝
-heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
-	var lv = heroInfo.lv
-	var ad = heroInfo.ad
-	var artifact = heroInfo.artifact
-	var strList = []
-	if(lv_cfg[lv] && lv_cfg[lv].pr)
-		strList.push(lv_cfg[lv].pr)
-	if(hero_ad[ad] && hero_ad[ad].pr)
-		strList.push(hero_ad[ad].pr)
-	if(artifact !== undefined && artifact_level[artifact])
-		strList.push(artifact_level[artifact]["pr"])
-	if(hero_tr[heroInfo.tr_lv] && hero_tr[heroInfo.tr_lv]["pr"])
-		strList.push(hero_tr[heroInfo.tr_lv]["pr"])
-	var tr_value = 0
-	if(heroInfo.tr_maxHP)
-		tr_value += heroInfo.tr_maxHP / train_arg["maxHP"]["value"]
-	if(heroInfo.tr_atk)
-		tr_value += heroInfo.tr_atk / train_arg["atk"]["value"]
-	if(heroInfo.tr_phyDef)
-		tr_value += heroInfo.tr_phyDef / train_arg["phyDef"]["value"]
-	if(heroInfo.tr_magDef)
-		tr_value += heroInfo.tr_magDef / train_arg["magDef"]["value"]
-	tr_value = Math.floor(tr_value * 0.75)
-	if(tr_value)
-		strList.push("1000020:"+tr_value)
-	for(var part = 1;part <= 4;part++)
-		if(heroInfo["et"+part])
-			strList.push(equip_st[heroInfo["et"+part]]["pr"])
-	var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
-	var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"重生返还")
-	if(cb)
-		cb(true,awardList)
-}
-//分解返还资源   返还全部
-heroDao.prototype.heroPrAll = function(areaId,uid,heros,hIds,cb,reason) {
-	var strList = []
-	for(let i = 0;i < heros.length;i++){
-		let star = heros[i].star
-		if(star_base[star] && star_base[star].pr)
-			strList.push(star_base[star].pr)
-	}
-	var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
-	var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"分解英雄")
-	this.areaManager.areaMap[areaId].taskUpdate(uid,"resolve",heros.length)
-	this.heroPrlvadnad(areaId,uid,heros,hIds,function(flag,awardList2) {
-	if(cb)
-		cb(true,awardList2.concat(awardList))
-	},reason)
-}
-//材料返还资源  返还除升星外(升级  升阶 装备 锦囊 神兵 宝石 护符 战马 战鼓 军旗)
-heroDao.prototype.heroPrlvadnad = function(areaId,uid,heros,hIds,cb,reason) {
-	var strList = []
-	for(var i = 0;i < heros.length;i++){
-		var id = heros[i].id
-		var lv = heros[i].lv
-		var ad = heros[i].ad
-		var artifact = heros[i].artifact
-		if(lv_cfg[lv] && lv_cfg[lv].pr)
-			strList.push(lv_cfg[lv].pr)
-		for(var j = 0;j <= 10;j++){
-			if(heros[i]["a"+j])
-				strList.push(heros[i]["a"+j]+":1")
-		}
-		if(artifact !== undefined && artifact_level[artifact]){
-			strList.push(artifact_level[artifact]["pr"])
-		}
-		for(var j = 1;j <= 8;j++){
-			var key = "s"+j
-			if(heros[i][key]){
-				//拆卸宝石
-				strList.push(heros[i][key]+":1")
-				if(heros[i][key+"v"] && stone_base[heros[i][key]]){
-					var num = Math.floor(heros[i][key+"v"] / stone_base[baseStone[j]]["value"])
-					strList.push(baseStone[j]+":"+num)
-				}
-			}
-		}
-		if(heros[i]["hfLv"]){
-			var hufuInfo = {lv:heros[i]["hfLv"]}
-			if(heros[i]["hfs1"])
-				hufuInfo.s1 = heros[i]["hfs1"]
-			if(heros[i]["hfs2"])
-				hufuInfo.s2 = heros[i]["hfs2"]
-			this.areaManager.areaMap[areaId].gainHufu(uid,hufuInfo)
-		}
-		this.areaManager.areaMap[areaId].remove_heroRank(uid,id,hIds[i])
-		this.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+heros[i].id,value:-1,curValue:0,reason:reason+"-"+hIds[i]})
-	}
-	if(strList.length){
-		var str = this.areaManager.areaMap[areaId].mergepcstr(strList)
-		var awardList = this.areaManager.areaMap[areaId].addItemStr(uid,str,1,"材料返还")
-		if(cb)
-			cb(true,awardList)
-	}else{
-		if(cb)
-			cb(true,[])
-	}
-}
 //修改英雄属性
 heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 	var self = this
@@ -651,7 +552,7 @@ heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
 		}
 		self.getFightTeam(uid,function(flag,team) {
 			if(flag && team){
-				for(var i = 0;i < team.length;i++){
+				for(var i = 1;i < team.length;i++){
 					if(team[i])
 						self.delHeroInfo(areaId,uid,team[i].hId,"combat")
 				}
@@ -743,14 +644,6 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			})
 		},
 		function(next) {
-			//图鉴值
-			self.redisDao.db.hget("player:user:"+uid+":playerInfo","gather",function(err,data) {
-				if(data)
-					fightData[0]["gather"] = data
-				next()
-			})
-		},
-		function(next) {
 			//家园建筑
 			self.redisDao.db.hmget("player:user:"+uid+":manor",["gjy","dby","qby"],function(err,data) {
 				if(data){
@@ -758,13 +651,6 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 					fightData[0]["dby"] = Number(data[1]) || 0
 					fightData[0]["qby"] = Number(data[2]) || 0
 				}
-				next()
-			})
-		},
-		function(next) {
-			//兵符
-			self.redisDao.db.hget("player:user:"+uid+":playerInfo","bingfu",function(err,data) {
-				fightData[0]["bingfu"] = data || 0
 				next()
 			})
 		},
@@ -782,25 +668,6 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 		}
 	],function(err) {
 		cb(false,err)
-	})
-}
-//获取出战天书
-heroDao.prototype.getFightBook = function(uid,cb) {
-	var self = this
-	self.redisDao.db.hgetall("player:user:"+uid+":book_fight",function(err,fightBooks) {
-		if(!fightBooks){
-			cb(true,{})
-		}else{
-			self.redisDao.db.hgetall("player:user:"+uid+":book",function(err,books) {
-				var info = {}
-				for(var i in fightBooks){
-					var type = fightBooks[i]
-					if(type)
-						info[type] = {lv : Number(books[type+"_lv"]),star : Number(books[type+"_star"])}
-				}
-				cb(true,info)
-			})
-		}
 	})
 }
 //获取主动技能

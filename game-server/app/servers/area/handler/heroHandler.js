@@ -329,7 +329,7 @@ heroHandler.prototype.setFightTeam = function(msg, session, next) {
     next(null,{flag : false,data : "必须传数组"})
     return
   }
-  if(hIds.length != 6){
+  if(hIds.length > 5){
     next(null,{flag : false,data : "数组长度错误"})
     return
   }

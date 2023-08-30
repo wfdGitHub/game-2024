@@ -10,6 +10,9 @@ const artifact_level = require("../../../../config/gameCfg/artifact_level.json")
 const stone_base = require("../../../../config/gameCfg/stone_base.json")
 const summon_list = require("../../../../config/gameCfg/summon_list.json")
 const hufu_skill = require("../../../../config/gameCfg/hufu_skill.json")
+const evolves = require("../../../../config/gameCfg/evolves.json")
+const hufu_lv = require("../../../../config/gameCfg/hufu_lv.json")
+const aptitudeCfg = require("../../../../config/gameCfg/aptitude.json")
 const baseStone = {"1" : 4110,"2" : 4210,"3" : 4310,"4" : 4410}
 const extra_list = ["M_HP","M_ATK","M_DEF","M_STK","M_SEF","M_SPE"]
 var lv4Map = []
@@ -26,6 +29,12 @@ for(var i in summon_list){
 	for(var j = 1;j <= 5;j++){
 		summon_list[i]["summonWeighs"].push(summon_list[i]["summonWeighs"][j-1] + summon_list[i]["hero_w"+j])
 		summon_list[i]["summonHandWeighs"].push(summon_list[i]["summonHandWeighs"][j-1] + summon_list[i]["hero_w"+j])
+	}
+}
+var hufu_map = {}
+for(var i in hufu_skill){
+	for(var j = 1;j<= 5;j++){
+		hufu_map[hufu_skill[i]["lv"+j]] = {"id":i,"lv":j}
 	}
 }
 var model = function() {
@@ -234,6 +243,87 @@ var model = function() {
 				str += i+":"+map[i]+"&"
 		str = str.substr(0,str.length-1)
 		return str
+	}
+	//获取英雄战力
+	this.getHeroCE = function(info) {
+		if(!info)
+			return 0
+		var allCE = 0
+		var evoId = evolve_lv[info.evo]["evoId"]
+		var aptitude = exalt_lv[info.exalt]["aptitude"] || 1
+		//主属性战力
+		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
+		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
+		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
+		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
+		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
+		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
+		allCE += Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 120 + aptitude * 1000)
+		//技能战力
+		for(var i = 0;i <= 10;i++)
+			if(info["PS"+i])
+				allCE += hufu_lv[hufu_map[info["PS"+i]].lv]["ce"]
+		//等级战力
+		if(info["lv"])
+			allCE += lv_cfg[info["lv"]]["ce"]
+		//专属战力
+		if(info["artifact"] !== undefined)
+			allCE += artifact_level[info["artifact"]]["ce"]
+		//宝物战力
+		for(var j = 1;j <= 10;j++)
+			if(info["a"+j])
+				allCE += ace_pack[info["a"+j]]["ce"]
+		//装备战力
+		for(var j = 1;j <= 4;j++){
+			if(info["e"+j])
+    			allCE += this.getEquipCE(info["e"+j])
+		}
+		//宝石战力
+		for(var j = 1;j <= 4;j++){
+			if(info["s"+j] && stone_base[info["s"+j]])
+    			allCE += stone_base[info["s"+j]]["ce"]
+		}
+		//技能宝石
+		for(var j = 5;j <= 8;j++){
+			if(info["s"+j] && stone_skill[info["s"+j]])
+    			allCE += stone_skill[info["s"+j]]["ce"]
+		}
+		//护符战力
+		if(info["hfLv"] && hufu_quality[info["hfLv"]]){
+			allCE += hufu_quality[info["hfLv"]]["ce"]
+			if(info["hfs1"] && hufu_map[info["hfs1"]])
+				allCE += hufu_lv[hufu_map[info["hfs1"]].lv]["ce"]
+			if(info["hfs2"] && hufu_map[info["hfs2"]])
+				allCE += hufu_lv[hufu_map[info["hfs2"]].lv]["ce"]
+		}
+		//战法战力
+		for(var j = 1;j <= 3;j++){
+			if(info["zf_"+j] && zhanfa[info["zf_"+j]])
+    			allCE += zhanfa[info["zf_"+j]]["ce"]
+		}
+		return Math.ceil(allCE)
+	}
+	//获取装备战力
+	this.getEquipCE = function(eInfo) {
+		if(!eInfo)
+			return 0
+		//计算评分  (特效*100*装备等级 套装*100*装备等级   主属性倍率*属性倍率*100   附加属性和*100)
+		var allCE = 0
+		eInfo = JSON.parse(eInfo)
+		//主属性战力
+		allCE += (eInfo.att.main_1 + eInfo.att.main_2) * equip_lv[eInfo.lv]["mainRate"] * 360
+		//附加属性战力
+		var extraNum = 0
+		for(var i in eInfo.att.extra)
+			if(i != "type")
+				extraNum += eInfo.att.extra[i]
+		allCE += extraNum * 120
+		//特效战力
+		if(eInfo.spe)
+			allCE += eInfo.spe.length * 400
+		if(eInfo.suit)
+			allCE += 600
+		return Math.ceil(allCE)
 	}
 }
 module.exports = model

@@ -1,9 +1,5 @@
 //战力
 const async = require("async")
-const book_list = require("../../../../config/gameCfg/book_list.json")
-const book_lv = require("../../../../config/gameCfg/book_lv.json")
-const book_star = require("../../../../config/gameCfg/book_star.json")
-const book_slot = require("../../../../config/gameCfg/book_slot.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const power_base = require("../../../../config/gameCfg/power_base.json")
 const power_lv = require("../../../../config/gameCfg/power_lv.json")
@@ -11,23 +7,13 @@ const power_ad = require("../../../../config/gameCfg/power_ad.json")
 const power_star = require("../../../../config/gameCfg/power_star.json")
 const power_aptitude = require("../../../../config/gameCfg/power_aptitude.json")
 const power_slot = require("../../../../config/gameCfg/power_slot.json")
-const beauty_base = require("../../../../config/gameCfg/beauty_base.json")
-const beauty_ad = require("../../../../config/gameCfg/beauty_ad.json")
-const beauty_star = require("../../../../config/gameCfg/beauty_star.json")
 const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const main_name = "CE"
 const oneDayTime = 86400000
-var bookMap = {}
-for(var i in book_list){
-	book_list[i].id = i
-	bookMap[book_list[i]["type"]] = book_list[i]
-}
 //消耗倍率
 var powerRates = {}
 for(var i in power_base)
 	powerRates[i] = power_aptitude[power_base[i]["aptitude"]]["upRate"]
-for(var i in beauty_base)
-	powerRates[i] = power_aptitude[beauty_base[i]["aptitude"]]["upRate"]
 module.exports = function() {
 	var self = this
 	var local = {}
@@ -41,7 +27,7 @@ module.exports = function() {
 			if(flag && data){
 				userTeams[uid] = data
 				userTeamMaps[uid] = {}
-				for(var i = 0;i < data.length;i++){
+				for(var i = 1;i < data.length;i++){
 					if(data[i])
 						userTeamMaps[uid][data[i].hId] = i
 				}
@@ -147,214 +133,41 @@ module.exports = function() {
 				count++
 		return count
 	}
-	//获取天书数据
-	this.getBookData = function(uid,cb) {
-		this.getObjAll(uid,"book",function(data) {
-			if(!data)
-				data = {}
-			for(var i in data){
-				data[i] = Number(data[i])
-			}
-			cb(true,data)
-		})
-	}
-	//获取上阵天书
-	this.getFightBook = function(uid,cb) {
-		self.getObjAll(uid,"book_fight",function(data) {
-			cb(true,data)
-		})
-	}
 	//升级技能属性
 	this.incrbyGuildCareerSkill = function(uid,career) {
 		self.incrbyObj(uid,"guild","skill_"+career,1)
-		if(userTeams[uid] && userTeams[uid][6] && userTeams[uid][6]["g"+career] !== undefined){
-			userTeams[uid][6]["g"+career] ++
+		if(userTeams[uid] && userTeams[uid][0] && userTeams[uid][0]["g"+career] !== undefined){
+			userTeams[uid][0]["g"+career] ++
 			this.updateCE(uid)
 		}
 	}
 	//设置天书属性
 	this.setBookInfo = function(uid,bookType,name,value) {
 		self.setObj(uid,"book",bookType+"_"+name,value)
-		if(userTeams[uid] && userTeams[uid][6] && userTeams[uid][6][bookType]){
-			userTeams[uid][6][bookType][name] = value
+		if(userTeams[uid] && userTeams[uid][0] && userTeams[uid][0][bookType]){
+			userTeams[uid][0][bookType][name] = value
 			this.updateCE(uid)
 		}
 	}
 	//更改称号
 	this.setTitle = function(uid,title) {
-		if(userTeams[uid] && userTeams[uid][6]){
-			userTeams[uid][6]["title"] = title
+		if(userTeams[uid] && userTeams[uid][0]){
+			userTeams[uid][0]["title"] = title
 			this.updateCE(uid)
 		}
 	}
 	//更改官职
 	this.setOfficer = function(uid,officer) {
-		if(userTeams[uid] && userTeams[uid][6]){
-			userTeams[uid][6]["officer"] = officer
-			this.updateCE(uid)
-		}
-	}
-	//更新图鉴值
-	this.setGather = function(uid,gather) {
-		if(userTeams[uid] && userTeams[uid][6]){
-			userTeams[uid][6]["gather"] = gather
+		if(userTeams[uid] && userTeams[uid][0]){
+			userTeams[uid][0]["officer"] = officer
 			this.updateCE(uid)
 		}
 	}
 	//更新建筑等级
 	this.setBuildLv = function(uid,bId,lv) {
-		if(userTeams[uid] && userTeams[uid][6]){
-			userTeams[uid][6][bId] = lv
+		if(userTeams[uid] && userTeams[uid][0]){
+			userTeams[uid][0][bId] = lv
 			this.updateCE(uid)
-		}
-	}
-	//更新阵营加成
-	this.setCampAtt = function(uid,camp,value) {
-		if(userTeams[uid] && userTeams[uid][6]){
-			userTeams[uid][6]["camp_"+camp] = value
-			this.updateCE(uid)
-		}
-	}
-	//激活天书
-	this.activateBook = function(uid,bookType,cb) {
-		if(!bookMap[bookType]){
-			cb(false,"天书不存在")
-			return
-		}
-		self.getObj(uid,"book",bookType+"_lv",function(data) {
-			if(data){
-				cb(false,"已激活")
-			}else{
-				self.consumeItems(uid,bookMap[bookType].id+":"+10,1,"激活天书"+bookType,function(flag,err) {
-					if(!flag){
-						cb(false,err)
-					}else{
-						self.taskUpdate(uid,"book_gain",1,bookMap[bookType].id)
-						self.setBookInfo(uid,bookType,"lv",1)
-						self.setBookInfo(uid,bookType,"star",0)
-						cb(true)
-					}
-				})
-			}
-		})
-	}
-	//升级天书
-	this.upgradeBookLv = function(uid,bookType,cb) {
-		self.getHMObj(uid,"book",[bookType+"_lv",bookType+"_star"],function(list) {
-			var lv = list[0]
-			var star = list[1]
-			if(!lv){
-				cb(false,"未激活")
-				return
-			}
-			lv = Number(lv)
-			if(!book_lv[lv] || !book_lv[lv]["pc"]){
-				cb(false,"不可升级")
-				return
-			}
-			if(lv >= book_star[star]["maxLv"]){
-				cb(false,"等级上限")
-				return
-			}
-			self.consumeItems(uid,book_lv[lv]["pc"],1,"升级天书"+bookType,function(flag,err) {
-				if(!flag){
-					cb(false,err)
-				}else{
-					lv += 1
-					self.setBookInfo(uid,bookType,"lv",lv)
-					cb(true,lv)
-				}
-			})
-		})
-	}
-	//升星天书
-	this.upgradeBookStar = function(uid,bookType,cb) {
-		self.getObj(uid,"book",bookType+"_star",function(star) {
-			if(star == undefined){
-				cb(false,"未激活")
-				return
-			}
-			star = Number(star)
-			if(!book_star[star] || !book_star[star]["item"]){
-				cb(false,"不可升星")
-				return
-			}
-			var str = bookMap[bookType]["id"]+":"+book_star[star]["bookChip"]+"&"+"1000400:"+book_star[star]["item"]
-			self.consumeItems(uid,str,1,"升星天书"+bookType,function(flag,err) {
-				if(!flag){
-					cb(false,err)
-				}else{
-					star += 1
-					self.setBookInfo(uid,bookType,"star",star)
-					cb(true,star)
-				}
-			})
-		})
-	}
-	//重生天书
-	this.resetBook = function(uid,bookType,cb) {
-		self.getObj(uid,"book",bookType+"_lv",function(lv) {
-			if(!lv){
-				cb(false,"未激活")
-				return
-			}
-			lv = Number(lv)
-			if(lv == 1){
-				cb(false,"1级天书不可重生")
-				return
-			}
-			self.consumeItems(uid,default_cfg["default_pc_2"]["value"],1,"重生天书"+bookType,function(flag,err) {
-				if(!flag){
-					cb(false,err)
-				}else{
-					var awardList = self.addItemStr(uid,book_lv[lv]["pr"],1,"重生天书"+bookType)
-					self.setBookInfo(uid,bookType,"lv",1)
-					cb(true,awardList)
-				}
-			})
-		})
-	}
-	//设置上阵天书
-	this.setBookFight = function(uid,list,cb) {
-		if(!Array.isArray(list)){
-			cb(false,"参数错误")
-			return
-		}
-		var length = list.length
-		if(length == 0){
-			self.delObjAll(uid,"book_fight",function() {
-				self.CELoad(uid)
-			})
-			cb(true)
-		}else{
-			var map = {}
-			for(var i = 0;i < list.length;i++){
-				if(list[i]){
-					if(map[list[i]]){
-						cb(false,"天书重复")
-						return
-					}
-					map[list[i]] = true
-				}
-			}
-			if(!book_slot[length] || self.getLordLv(uid) < book_slot[length]["lv"]){
-				cb(false,"开启等级不足")
-				return
-			}
-			self.getObjAll(uid,"book",function(data) {
-				var obj = {}
-				for(var i = 0;i < list.length;i++){
-					if(list[i] && !data[list[i]+"_lv"]){
-						cb(false,list[i]+"未激活")
-						return
-					}
-					obj[i] = list[i]
-				}
-				self.setHMObj(uid,"book_fight",obj,function() {
-					self.CELoad(uid)
-				})
-				cb(true)
-			})
 		}
 	}
 	//获取主动技能数据
@@ -374,10 +187,10 @@ module.exports = function() {
 	//设置技能属性
 	this.setPowerInfo = function(uid,powerId,name,value) {
 		self.setObj(uid,"power",powerId+"_"+name,value)
-		if(userTeams[uid] && userTeams[uid][6]){
+		if(userTeams[uid] && userTeams[uid][0]){
 			for(var i = 0;i <= 4;i++){
-				if(userTeams[uid][6]["power"+i] && userTeams[uid][6]["power"+i]["id"] == powerId){
-					userTeams[uid][6]["power"+i][name] = value
+				if(userTeams[uid][0]["power"+i] && userTeams[uid][0]["power"+i]["id"] == powerId){
+					userTeams[uid][0]["power"+i][name] = value
 					this.updateCE(uid)
 					break
 				}
@@ -543,153 +356,8 @@ module.exports = function() {
 			cb(false,"type error "+type)
 			return
 		}
-		userTeams[uid][6]["manualModel"] = type
+		userTeams[uid][0]["manualModel"] = type
 		self.setObj(uid,"power","manualModel",type,function(){})
 		cb(true)
-	}
-	//获取红颜技能数据
-	this.getBeautyData = function(uid,cb) {
-		this.getObjAll(uid,"beaut",function(data) {
-			cb(true,data)
-		})
-	}
-	//获取红颜属性
-	this.getBeautyInfo = function(uid,beautId) {
-		if(userTeams[uid] && userTeams[uid][6] && userTeams[uid][6]["beaut_"+beautId])
-			return userTeams[uid][6]["beaut_"+beautId]
-		else
-			return false
-	}
-	//增加红颜属性
-	this.incrbyBeautInfo = function(uid,beautId,name,value) {
-		if(name && value){
-			self.incrbyObj(uid,"beaut",beautId+"_"+name,value)
-			if(userTeams[uid] && userTeams[uid][6]){
-				if(!userTeams[uid][6]["beaut_"+beautId])
-					userTeams[uid][6]["beaut_"+beautId] = {}
-				if(!userTeams[uid][6]["beaut_"+beautId][name])
-					userTeams[uid][6]["beaut_"+beautId][name] = 0
-				userTeams[uid][6]["beaut_"+beautId][name] += value
-			}
-		}
-	}
-	//设置红颜属性
-	this.setBeautInfo = function(uid,beautId,name,value) {
-		self.setObj(uid,"beaut",beautId+"_"+name,value)
-		if(userTeams[uid] && userTeams[uid][6]){
-			if(!userTeams[uid][6]["beaut_"+beautId])
-				userTeams[uid][6]["beaut_"+beautId] = {}
-			userTeams[uid][6]["beaut_"+beautId][name] = value
-		}
-	}
-	//红颜技能升星
-	this.upBeautStar = function(uid,beautId,cb) {
-		if(!beauty_base[beautId]){
-			cb(false,"beautId not find "+beautId)
-			return
-		}
-		var rate = powerRates[beautId]
-		var item = beauty_base[beautId]["item"]
-		self.getHMObj(uid,"beaut",[beautId+"_star",beautId+"_opinion"],function(list) {
-			var star = Number(list[0]) || 0
-			var opinion = Number(list[1]) || 0
-			star++
-			if(!beauty_star[star]){
-				cb(false,"不可升星")
-				return
-			}
-			if(star > 1 && opinion < beauty_ad[beauty_star[star]["opinion"]]["opinion_value"]){
-				cb(false,"好感度不足")
-				return
-			}
-			var str = item+":"+beauty_star[star]["itemValue"]
-			self.consumeItems(uid,str,rate,"红颜技能升星"+beautId,function(flag,err) {
-				if(!flag){
-					cb(false,err)
-				}else{
-					self.setBeautInfo(uid,beautId,"star",star)
-					if(star == 1){
-						self.setBeautInfo(uid,beautId,"id",beautId)
-						self.setBeautInfo(uid,beautId,"ad",1)
-						self.setBeautInfo(uid,beautId,"att1",0)
-						self.setBeautInfo(uid,beautId,"att2",0)
-						self.setBeautInfo(uid,beautId,"att3",0)
-						self.setBeautInfo(uid,beautId,"att4",0)
-						self.setBeautInfo(uid,beautId,"opinion",0)
-						self.taskUpdate(uid,"beauty_num",1)
-					}
-					self.updateCE(uid)
-					self.taskUpdate(uid,"beauty_star",1,beautId)
-					var beautInfo = self.getBeautyInfo(uid,beautId)
-					cb(true,beautInfo)
-				}
-			})
-		})
-	}
-	//红颜技能升阶
-	this.upBeautAd = function(uid,beautId,cb) {
-		if(!beauty_base[beautId]){
-			cb(false,"beautId not find "+beautId)
-			return
-		}
-		var rate = powerRates[beautId]
-		self.getHMObj(uid,"beaut",[beautId+"_ad",beautId+"_att1",beautId+"_att2",beautId+"_att3",beautId+"_att4",beautId+"_opinion"],function(list) {
-			var ad = Number(list[0]) || 1
-			var att1 = Number(list[1]) || 0
-			var att2 = Number(list[2]) || 0
-			var att3 = Number(list[3]) || 0
-			var att4 = Number(list[4]) || 0
-			var opinion = Number(list[5]) || 0
-			if(att1 < beauty_ad[ad]["att"] || att2 < beauty_ad[ad]["att"] || att3 < beauty_ad[ad]["att"] || att4 < beauty_ad[ad]["att"]){
-				cb(false,"属性未满")
-				return
-			}
-			if(opinion < beauty_ad[ad]["opinion_value"]){
-				cb(false,"好感度不足")
-				return
-			}
-			ad++
-			self.setBeautInfo(uid,beautId,"ad",ad)
-			self.updateCE(uid)
-			var beautInfo = self.getBeautyInfo(uid,beautId)
-			cb(true,beautInfo)
-		})
-	}
-	//设置红颜技能
-	this.setBeautFight = function(uid,beautId,cb) {
-		if(!beauty_base[beautId]){
-			cb(false,"技能不存在"+beautId)
-			return
-		}
-		self.getObj(uid,"beaut",beautId+"_star",function(data) {
-			if(!data){
-				cb(false,"未激活")
-				return
-			}
-			self.setObj(uid,"beaut","bcombat",beautId)
-			cb(true)
-		})
-	}
-	//获取兵符数据
-	this.getBfData = function(uid) {
-		if(userTeams[uid] && userTeams[uid][6] && userTeams[uid][6]["bingfu"])
-			return userTeams[uid][6]["bingfu"]
-		else
-			return false
-	}
-	//设置兵符数据
-	this.setBingfuInfo = function(uid,bfData) {
-		self.updateBingfuCE(uid,bfData)
-		self.setObj(uid,"playerInfo","bingfu",bfData)
-		if(userTeams[uid] && userTeams[uid][6])
-			userTeams[uid][6]["bingfu"] = bfData
-	}
-	//兵符战力更新
-	this.updateBingfuCE = function(uid,bfData) {
-		var oldCE = 0
-		if(userTeams[uid] && userTeams[uid][6] && userTeams[uid][6]["bingfu"])
-			oldCE = self.fightContorl.bingfuEntity.getBfDataCE(userTeams[uid][6]["bingfu"])
-		var newCE = self.fightContorl.bingfuEntity.getBfDataCE(bfData)
-		local.updateCENotify(uid,newCE - oldCE)
 	}
 }

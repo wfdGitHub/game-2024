@@ -2,7 +2,7 @@ const standard_ce_cfg = require("../../../../config/gameCfg/standard_ce.json")
 const standard_dl = require("../../../../config/gameCfg/standard_dl.json")
 const stone_lv = require("../../../../config/gameCfg/stone_lv.json")
 const skillsCfg = require("../../../../config/gameCfg/skills.json")
-const herosCfg = require("../../../../config/gameCfg/heros.json")
+const heros = require("../../../../config/gameCfg/heros.json")
 const lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 const star_base = require("../../../../config/gameCfg/star_base.json")
 const hero_ad = require("../../../../config/gameCfg/hero_ad.json")
@@ -40,12 +40,12 @@ var bingfuEntity = require("../entity/bingfuEntity.js")
 var powerEntity = require("../entity/powerEntity.js")
 var fightHandler = require("./fightHandler.js")
 var gSkillAtts = {}
-var hufuSkillCes = {}
 var fightVerifyInfo = {}
 for(var i = 1;i <= 4;i++){
 	gSkillAtts[i] = JSON.parse(guild_cfg["career_"+i]["value"])
 }
 var hufu_map = {}
+var hufuSkillCes = {}
 for(var i in hufu_skill){
 	for(var j = 1;j<= 5;j++){
 		hufu_map[hufu_skill[i]["lv"+j]] = {"id":i,"lv":j}
@@ -201,7 +201,7 @@ model.getFightStageRecord = function() {
 }
 //获取角色数据
 model.getCharacterInfo = function(info,heroAtts,teamCfg) {
-	if(!info || !herosCfg[info.id])
+	if(!info || !heros[info.id])
 		return false
 	info = Object.assign({},info)
 	info.heroAtts = heroAtts
@@ -210,11 +210,11 @@ model.getCharacterInfo = function(info,heroAtts,teamCfg) {
 	info.lv = info.lv || 1
 	var id = info.id
 	var aptitude = exalt_lv[info.exalt]["aptitude"] || 1
-	model.mergeData(info,herosCfg[id])
+	model.mergeData(info,heros[id])
 	var evoId = evolve_lv[info.evo]["evoId"]
 	//被动技能
 	for(var i = 1;i <= evoId;i++)
-		model.mergeTalent(info,herosCfg[info.id]["talent"+evoId])
+		model.mergeTalent(info,heros[info.id]["talent"+evoId])
 	//初始属性
 	var lvInfo = {
 	    "maxHP":aptitudeCfg[aptitude].maxHP,
@@ -378,12 +378,12 @@ model.getCharacterInfo = function(info,heroAtts,teamCfg) {
 		}
 	}
 	//主属性计算
-	info["M_HP"] = Math.floor(evolves[herosCfg[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
-	info["M_ATK"] = Math.floor(evolves[herosCfg[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
-	info["M_DEF"] = Math.floor(evolves[herosCfg[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
-	info["M_STK"] = Math.floor(evolves[herosCfg[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
-	info["M_SEF"] = Math.floor(evolves[herosCfg[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
-	info["M_SPE"] = Math.floor(evolves[herosCfg[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
+	info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
+	info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
+	info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
+	info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
+	info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
+	info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
 	//主属性增益
 	info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
 	info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + aptitude * 600 + PSScore)
@@ -453,6 +453,15 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 	var oldCE = 0
 	var newCE = 0
 	switch(name){
+		case "e1":
+		case "e2":
+		case "e3":
+		case "e4":
+		case "e5":
+		case "e6":
+			oldCE = this.getEquipCE(oldValue)
+			newCE = this.getEquipCE(newValue)
+		break
 		case "lv":
 			oldCE = lv_cfg[oldValue || 1]["ce"] || 0
 			newCE = lv_cfg[newValue || 1]["ce"] || 0
@@ -515,64 +524,27 @@ model.calcCEDiff = function(name,oldValue,newValue) {
 }
 //获取团队战力
 model.getTeamCE = function(team) {
+	team = JSON.parse(JSON.stringify(team))
 	var allCE = 0
 	var careers = {"1":0,"2":0,"3":0,"4":0}
 	var teamCfg = team.shift() || {}
 	for(var i = 0;i < team.length;i++){
 		if(team[i]){
-			//等级计算
-			if(team[i]["lv"]){
-				var growth = aptitudeCfg[herosCfg[team[i]["id"]]["aptitude"]]["ce"]
-				allCE += Math.floor(lv_cfg[team[i]["lv"]]["ce"] * growth)
-			}
-			if(team[i]["artifact"] !== undefined)
-				allCE += artifact_level[team[i]["artifact"]]["ce"]
-			for(var j = 1;j <= 10;j++){
-				if(team[i]["a"+j]){
-					allCE += ace_pack[team[i]["a"+j]]["ce"]
-				}
-			}
-			for(var j = 1;j <= 4;j++){
-				if(team[i]["e"+j])
-        			allCE += equip_base[equip_level[team[i]["e"+j]]["part_"+j]]["ce"]
-			}
-			for(var j = 1;j <= 4;j++){
-				if(team[i]["s"+j] && stone_base[team[i]["s"+j]])
-        			allCE += stone_base[team[i]["s"+j]]["ce"]
-			}
-			for(var j = 5;j <= 8;j++){
-				if(team[i]["s"+j] && stone_skill[team[i]["s"+j]])
-        			allCE += stone_skill[team[i]["s"+j]]["ce"]
-			}
-			if(herosCfg[team[i]["id"]] && careers[herosCfg[team[i]["id"]]["career"]] != undefined)
-				careers[herosCfg[team[i]["id"]]["career"]]++
-			if(team[i]["hfLv"] && hufu_quality[team[i]["hfLv"]]){
-				allCE += hufu_quality[team[i]["hfLv"]]["ce"]
-				if(team[i]["hfs1"] && hufuSkillCes[team[i]["hfs1"]])
-					allCE += hufuSkillCes[team[i]["hfs1"]]
-				if(team[i]["hfs2"] && hufuSkillCes[team[i]["hfs2"]])
-					allCE += hufuSkillCes[team[i]["hfs2"]]
-			}
-			for(var j = 1;j <= 3;j++){
-				if(team[i]["zf_"+j] && zhanfa[team[i]["zf_"+j]])
-        			allCE += zhanfa[team[i]["zf_"+j]]["ce"]
-			}
+			allCE += this.getHeroCE(team[i])
 		}
 	}
 	if(teamCfg){
-		for(var i = 1;i <= 4;i++){
-			if(teamCfg["g"+i] && guild_skill[teamCfg["g"+i]]){
+		for(var i = 1;i <= 4;i++)
+			if(teamCfg["g"+i] && guild_skill[teamCfg["g"+i]])
 				allCE += Math.ceil(guild_skill[teamCfg["g"+i]]["ce"] * careers[i])
-			}
-		}
 		if(teamCfg["officer"] && officer[teamCfg["officer"]] && officer[teamCfg["officer"]]["ce"])
 			allCE += officer[teamCfg["officer"]]["ce"]
 		if(teamCfg["gjy"])
-			allCE += 80000 * teamCfg["gjy"]
+			allCE += 10000 * teamCfg["gjy"]
 		if(teamCfg["dby"])
-			allCE += 80000 * teamCfg["dby"]
+			allCE += 10000 * teamCfg["dby"]
 		if(teamCfg["qby"])
-			allCE += 80000 * teamCfg["qby"]
+			allCE += 10000 * teamCfg["qby"]
 		//主动技能
 		for(var i = 1;i <= 4;i++)
 			if(teamCfg["power"+i])
@@ -633,8 +605,8 @@ model.standardTeam = function(uid,list,dl,lv) {
 	for(var i = 0;i < team.length;i++){
 		if(team[i]){
 			team[i] = Object.assign({id : team[i]},info)
-			if(team[i].star < herosCfg[team[i]["id"]]["min_star"])
-				team[i].star = herosCfg[team[i]["id"]]["min_star"]
+			if(team[i].star < heros[team[i]["id"]]["min_star"])
+				team[i].star = heros[team[i]["id"]]["min_star"]
 		}
 	}
 	team.unshift(JSON.parse(JSON.stringify(standard_team_ce[lv])))
@@ -654,8 +626,8 @@ model.oriStandardTeam = function(list,lv) {
 	for(var i = 0;i < team.length;i++){
 		if(team[i]){
 			team[i] = Object.assign({id : team[i]},info)
-			if(team[i].star < herosCfg[team[i]["id"]]["min_star"])
-				team[i].star = herosCfg[team[i]["id"]]["min_star"]
+			if(team[i].star < heros[team[i]["id"]]["min_star"])
+				team[i].star = heros[team[i]["id"]]["min_star"]
 		}
 	}
 	team.unshift(JSON.parse(JSON.stringify(standard_team_ce[lv])))

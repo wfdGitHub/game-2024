@@ -160,7 +160,6 @@ var model = function() {
 	}
 	//英雄升级
 	this.heroUPLv = function(uid,hId,aimLv,cb) {
-		console.log("heroUPLv",uid,hId,aimLv)
 	  self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
 	    if(!flag){
 	    	cb(false,"英雄不存在")
@@ -252,7 +251,6 @@ var model = function() {
 			},
 			function(herolist,awardList,next) {
 				var rate = self.fightContorl.getHeroEvoRate(heroInfo,herolist)
-				console.log("rate",rate)
 				if(Math.random() < rate){
 					heroInfo.evo++
 					heroInfo.evoRate = 0
@@ -302,7 +300,23 @@ var model = function() {
 		})
 	}
 	//英雄重置 仅返还等级经验
-	
+	this.heroReset = function(uid,hId,cb) {
+		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+			if(!heroInfo){
+				cb(false,"英雄不存在")
+				return
+			}
+			var lv = heroInfo.lv
+			if(lv <= 1 || !lv_cfg[lv].pr){
+				cb(false,"未升级")
+				return
+			}
+			self.heroDao.setHeroInfo(self.areaId,uid,hId,"lv",1,function(flag) {
+				var awardList = self.addItemStr(uid,ilv_cfg[lv].pr,1,"英雄重置")
+				cb(true,awardList)
+			})
+		})
+	}
 	//英雄分解
 	this.heroRecycle = function(uid,hIds,cb) {
 		if(!hIds || !Array.isArray(hIds) || !hIds.length){
