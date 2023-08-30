@@ -73,7 +73,7 @@ var model = function() {
 //小七签名 POST + 空格 + $apiMethod + @ + $appkey + # + $gameType + . + $respTime + \n\n + $bizResp
 model.prototype.x7syhashSign = function(info) {
 	info.bizResp = JSON.stringify(info.bizResp)
-	var appkey = this.sdkPay.sdkConfig["appkey"]
+	var appkey = this.sdkPay.sdkConfig["AppKey"]["value"]
 	var payload = "POST "+info.apiMethod+"@"+appkey+"#"+info.gameType+"."+info.respTime+"\n\n"+info.bizResp
 	// console.log("payload",payload)
     info.signature = this.key.sign(payload,"base64","base64")
