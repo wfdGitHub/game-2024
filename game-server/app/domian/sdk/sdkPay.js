@@ -142,19 +142,18 @@ model.prototype.game277_order = function(data,finish_callback,req,res) {
 model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	var publicKey = ""
 	if(data.extends_info_data == 1){
-		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["iosAppKey"]["value"]+"\n-----END PUBLIC KEY-----"
+		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["iosRSA"]["value"]+"\n-----END PUBLIC KEY-----"
 	}else{
 		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]["value"]+"\n-----END PUBLIC KEY-----"
 	}
 	var raw_sign_data = Buffer.from(data.sign_data, 'base64').toString('base64')
 	delete data.sign_data
 	var source_str = local.ksort(data)
-	// if(!local.verifySignSHA1(source_str,raw_sign_data,publicKey)){
-	// 	res.send("签名验证失败")
-	// 	console.error("签名验证失败",data)
-	// 	return
-	// }
-	res.send("success")
+	if(!local.verifySignSHA1(source_str,raw_sign_data,publicKey)){
+		res.send("签名验证失败")
+		console.error("签名验证失败",data)
+		return
+	}
 	var raw_encryp_data = Buffer.from(data.encryp_data, 'base64').toString('base64')
 	var decodedata = crypto.publicDecrypt(publicKey,raw_encryp_data);
 	var encryp_data = querystring.parse(decodedata.toString())
@@ -178,6 +177,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 			if(flag){
 				//订单发货
 				finish_callback(data.areaId,data.uid,data.amount,data.pay_id)
+				res.send("success")
 			}
 	})
 }
