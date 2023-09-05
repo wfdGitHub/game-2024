@@ -211,10 +211,10 @@ normalHandler.prototype.changeName = function(msg, session, next) {
           if(!flag || level != 1)
             cb("名称含有敏感信息")
           else
-            next()
+            cb()
         })
       }else{
-        next()
+        cb()
       }
     },
     function(cb) {

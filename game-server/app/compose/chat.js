@@ -21,9 +21,8 @@ chat.prototype.say = function(talker,gname,roomName,type,arg,text,guid,os) {
 	var self = this
 	if(sdkConfig.sdk_type["value"] == "x7sy"){
 		self.sdkQuery.x7syMessageDetect(guid,os,text,function(flag,message,level) {
-			if(flag){
+			if(flag)
 				self.finishSay(talker,gname,roomName,type,arg,message)
-			}
 		})
 	}else{
 		self.finishSay(talker,gname,roomName,type,arg,text)
