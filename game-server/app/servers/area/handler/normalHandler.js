@@ -1,6 +1,7 @@
 var bearcat = require("bearcat")
 var async = require("async")
 var default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+var sdkConfig = require("../../../../config/gameCfg/sdkConfig.json")
 var normalHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
@@ -195,12 +196,27 @@ normalHandler.prototype.changeName = function(msg, session, next) {
   var areaId = session.get("areaId")
   var oriId = session.get("oriId")
   var name = msg.name
+  var guid = msg.guid
+  var os = msg.os
   var self = this
   if(name.indexOf(".") != -1){
     next(null,{flag:false,err:"不能包含特殊字符"})
     return
   }
   async.waterfall([
+    function(cb) {
+      //小七敏感词检测
+      if(sdkConfig.sdk_type["value"] == "x7sy"){
+        self.sdkQuery.x7syMessageDetect(guid,os,name,function(flag,message,level) {
+          if(!flag || level != 1)
+            cb("名称含有敏感信息")
+          else
+            cb()
+        })
+      }else{
+        cb()
+      }
+    },
     function(cb) {
       self.redisDao.db.hexists("game:nameMap",name,function(err,data) {
         if(data){
@@ -330,6 +346,9 @@ module.exports = function(app) {
     },{
       name : "CDKeyDao",
       ref : "CDKeyDao"
+    },{
+      name : "sdkQuery",
+      ref : "sdkQuery"
     }]
   })
 };
