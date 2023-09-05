@@ -146,7 +146,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	}else{
 		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]["value"]+"\n-----END PUBLIC KEY-----"
 	}
-	var raw_sign_data = Buffer.from(data.sign_data, 'base64')
+	var raw_sign_data = Buffer.from(data.sign_data, 'base64').toString('base64')
 	delete data.sign_data
 	var source_str = local.ksort(data)
 	if(!local.verifySignSHA1(source_str,raw_sign_data,publicKey)){
@@ -155,7 +155,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 		return
 	}
 	res.send("success")
-	var raw_encryp_data = Buffer.from(data.encryp_data, 'base64')
+	var raw_encryp_data = Buffer.from(data.encryp_data, 'base64').toString('base64')
 	var decodedata = crypto.publicDecrypt(publicKey,raw_encryp_data);
 	var encryp_data = querystring.parse(decodedata.toString())
 	var self = this
