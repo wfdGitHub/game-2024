@@ -149,11 +149,11 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	var raw_sign_data = Buffer.from(data.sign_data, 'base64').toString('base64')
 	delete data.sign_data
 	var source_str = local.ksort(data)
-	if(!local.verifySignSHA1(source_str,raw_sign_data,publicKey)){
-		res.send("签名验证失败")
-		console.error("签名验证失败",data)
-		return
-	}
+	// if(!local.verifySignSHA1(source_str,raw_sign_data,publicKey)){
+	// 	res.send("签名验证失败")
+	// 	console.error("签名验证失败",data)
+	// 	return
+	// }
 	res.send("success")
 	var raw_encryp_data = Buffer.from(data.encryp_data, 'base64').toString('base64')
 	var decodedata = crypto.publicDecrypt(publicKey,raw_encryp_data);
