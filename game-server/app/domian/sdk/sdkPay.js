@@ -245,7 +245,7 @@ local.verifySignSHA1 = function(data, sign, publicKey) {
     const verify = crypto.createVerify('RSA-SHA1');
     verify.update(data);
     verify.end();
-    return verify.verify(publicKey, Buffer.from(sign, 'base64'));
+    return verify.verify(publicKey, Buffer.from(sign, 'base64').toString('base64'));
 }
 module.exports = {
 	id : "sdkPay",
