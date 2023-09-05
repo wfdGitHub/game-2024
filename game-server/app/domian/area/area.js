@@ -412,7 +412,7 @@ area.prototype.getBaseUser = function(uid) {
 //基准战力阵容
 area.prototype.standardTeam = function(uid,list,dl,lv) {
 	team = list.concat()
-	if(!lv)
+	if(lv == undefined)
 		lv = this.getLordLv(uid)
 	let standardInfo = standard_ce[lv]
 	let dlInfo = standard_dl[dl]
