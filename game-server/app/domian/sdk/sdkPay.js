@@ -142,9 +142,9 @@ model.prototype.game277_order = function(data,finish_callback,req,res) {
 model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	var publicKey = ""
 	if(data.extends_info_data == 1){
-		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["iosRSA"]["value"]+"\n-----END PUBLIC KEY-----"
-	}else{
 		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]["value"]+"\n-----END PUBLIC KEY-----"
+	}else{
+		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["iosRSA"]["value"]+"\n-----END PUBLIC KEY-----"
 	}
 	var raw_sign_data = Buffer.from(data.sign_data, 'base64').toString('base64')
 	delete data.sign_data
