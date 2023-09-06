@@ -33,7 +33,7 @@ model.prototype.pay_order = function(data,finish_callback,req,res) {
 }
 //quick订单
 model.prototype.quick_order = function(data,finish_callback,req,res) {
-	var v_sign = util.md5(data.nt_data+data.sign+this.sdkConfig["Md5_Key"])
+	var v_sign = util.md5(data.nt_data+data.sign+this.sdkConfig["Md5_Key"]["value"])
 	if(v_sign != data.md5Sign){
 		console.error("签名验证失败")
 		return
@@ -142,7 +142,7 @@ model.prototype.game277_order = function(data,finish_callback,req,res) {
 model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	var publicKey = ""
 	if(data.extends_info_data == 1){
-		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["iosAppKey"]["value"]+"\n-----END PUBLIC KEY-----"
+		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["iosRSA"]["value"]+"\n-----END PUBLIC KEY-----"
 	}else{
 		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]["value"]+"\n-----END PUBLIC KEY-----"
 	}
@@ -151,7 +151,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	var source_str = local.ksort(data)
 	if(!local.verifySignSHA1(source_str,raw_sign_data,publicKey)){
 		res.send("签名验证失败")
-		console.error("签名验证失败")
+		console.error("签名验证失败",data)
 		return
 	}
 	res.send("success")
@@ -170,7 +170,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 		pay_time : Date.now(),
 		amount : encryp_data.pay_price || 0,
 		status : 0,
-		extras_params : 0
+		extras_params : data.extends_info_data
 	}
 	self.payDao.finishGameOrder(info,function(flag,err,data) {
 			if(err)
