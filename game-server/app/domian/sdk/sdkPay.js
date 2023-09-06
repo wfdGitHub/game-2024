@@ -33,12 +33,12 @@ model.prototype.pay_order = function(data,finish_callback,req,res) {
 }
 //quick订单
 model.prototype.quick_order = function(data,finish_callback,req,res) {
-	res.send("SUCCESS")
 	var v_sign = util.md5(data.nt_data+data.sign+this.sdkConfig["Md5_Key"]["value"])
 	if(v_sign != data.md5Sign){
 		console.error("签名验证失败")
 		return
 	}
+	res.send("SUCCESS")
 	var self = this
 	var xmlStr = local.decode(data.nt_data,this.sdkConfig["Callback_Key"]["value"])
 	parseString(xmlStr,function(err,result) {
