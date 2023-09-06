@@ -107,6 +107,7 @@ model.prototype.entrySuccess = function(uid,cb) {
 }
 //登陆失败
 model.prototype.entryFaild = function(uid,err,cb) {
+	console.log("entryFaild",uid,err)
 	cb({flag:false,err:err})
 }
 module.exports = {
