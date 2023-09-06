@@ -263,6 +263,9 @@ normalHandler.prototype.initNameAndSex = function(msg, session, next) {
   var oriId = session.get("oriId")
   var name = msg.name
   var sex = msg.sex
+  var guid = msg.guid
+  var os = msg.os
+  var type = msg.type
   var self = this
   if(!name || (sex !== 1 && sex !== 2)){
     next(null,{flag:false,err:"参数错误"})
@@ -271,6 +274,19 @@ normalHandler.prototype.initNameAndSex = function(msg, session, next) {
   if(sex !== 1)
     sex = 2
   async.waterfall([
+    function(cb) {
+      //小七敏感词检测
+      if(!type && sdkConfig.sdk_type["value"] == "x7sy"){
+        self.sdkQuery.x7syMessageDetect(guid,os,name,function(flag,message,level) {
+          if(!flag || level != 1)
+            cb("名称含有敏感信息")
+          else
+            cb()
+        })
+      }else{
+        cb()
+      }
+    },
     function(cb) {
       self.redisDao.db.hexists("game:nameMap",name,function(err,data) {
         if(data){
