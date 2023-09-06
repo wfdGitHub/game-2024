@@ -256,6 +256,86 @@ normalHandler.prototype.changeName = function(msg, session, next) {
     next(null,{flag : false,err : err})
   })
 }
+//初始化名称性别
+normalHandler.prototype.initNameAndSex = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var oriId = session.get("oriId")
+  var name = msg.name
+  var sex = msg.sex
+  var guid = msg.guid
+  var os = msg.os
+  var type = msg.type
+  var self = this
+  if(!name || (sex !== 1 && sex !== 2)){
+    next(null,{flag:false,err:"参数错误"})
+    return
+  }
+  if(sex !== 1)
+    sex = 2
+  async.waterfall([
+    function(cb) {
+      //小七敏感词检测
+      if(!type && sdkConfig.sdk_type["value"] == "x7sy"){
+        self.sdkQuery.x7syMessageDetect(guid,os,name,function(flag,message,level) {
+          if(!flag || level != 1)
+            cb("名称含有敏感信息")
+          else
+            cb()
+        })
+      }else{
+        cb()
+      }
+    },
+    function(cb) {
+      self.redisDao.db.hexists("game:nameMap",name,function(err,data) {
+        if(data){
+          cb("名称已存在")
+        }else{
+          cb()
+        }
+      })
+    },
+    function() {
+      self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
+        self.redisDao.db.hdel("game:nameMap",data)
+        self.redisDao.db.hset("game:nameMap",name,uid)
+        self.playerDao.setPlayerInfo({uid : uid,key : "name",value : name})
+        self.playerDao.setPlayerInfo({uid : uid,key : "sex",value : sex})
+        session.set("name",name)
+        session.push("name",function() {
+          next(null,{flag:true})
+        })
+      })
+    }
+  ],function(err) {
+    next(null,{flag : false,err : err})
+  })
+}
+//选择初始英雄
+normalHandler.prototype.chooseFirstHero = function(msg, session, next) {
+  var uid = session.uid
+  var index = msg.index
+  var areaId = session.get("areaId")
+  if(!default_cfg["choose_hero"+index]){
+    next(null,{flag:false,err:"index error"+index})
+    return
+  }
+  var self = this
+  self.redisDao.db.hget("player:user:"+uid+":playerData","choose",function(err,data) {
+    if(!data){
+      self.redisDao.db.hset("player:user:"+uid+":playerData","choose",1)
+      self.redisDao.db.hincrby("game:statistics:chooseHero",default_cfg["choose_hero"+index]["value"],1)
+      self.heroDao.gainHero(areaId,uid,{id : default_cfg["choose_hero"+index]["value"]},function(flag,heroInfo) {
+        self.heroDao.setFightTeam(areaId,uid,[null,heroInfo.hId,null,null,null,null],function(flag) {
+          next(null,{flag:true,heroInfo:heroInfo})
+        })
+      })
+    }else{
+      next(null,{flag:false})
+    }
+  })
+}
 //开启限时活动
 normalHandler.prototype.openNewLimitedTime = function(msg, session, next) {
   var limit = session.get("limit")
