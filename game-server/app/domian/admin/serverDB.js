@@ -1,5 +1,5 @@
 //数据库查询
-var sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
+var sdkConfig = require("../../../config/gameCfg/sdkConfig.json")
 var pay_cfg = require("../../../config/gameCfg/pay_cfg.json")
 var util = require("../../../util/util.js")
 var Md5_Key = sdkConfig["Md5_Key"]
@@ -245,60 +245,60 @@ var model = function() {
 	}
 	//使用激活码
 	posts["/giftcode"] = function(req,res) {
-		var data = req.body
-		var app_key = data.app_key
-		var account_id = data.account_id
-		var uid = data.role_id
-		var areaId = data.area_id
-		var key = data.giftcode
-		var app_key = data.app_key
-		if(!sdkConfig.app_keys[app_key]){
-			res.send({
-				"error_code" : 1,
-				"message" : "app_key 错误"
-			})
-			return
-		}
-		var v_sign = util.md5(data.app_key+data.account_id+data.role_id+data.area_id+data.giftcode+sdkConfig.app_keys[app_key]["secret_key"])
-		if(v_sign != data.signature){
-			res.send({
-				"error_code" : 1,
-				"message" : "签名验证失败"
-			})
-			return
-		}
-		//检查signature
-		self.playerDao.getPlayerInfo({uid:uid},function(playerInfo) {
-			if(!playerInfo || !playerInfo.areaId || !playerInfo.name){
-				res.send({
-					"error_code" : 1,
-					"message" : "Thành công"
-				})
-				return
-			}
-			if(playerInfo.areaId != areaId){
-				res.send({
-					"error_code" : 1,
-					"message" : "Thành công"
-				})
-				return
-			}
-			self.CDKeyDao.verifyCDKey(key,uid,areaId,playerInfo.name,function(flag,str) {
-				if(!flag){
-					res.send({
-						"error_code" : 1,
-						"message" : str
-					})
-				}else{
-					var serverId = self.areaDeploy.getServer(areaId)
-					self.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,"Mã gói","Bạn đã lấy được mã gói thành công!",str,null)
-					res.send({
-						"error_code" : 0,
-						"message" : "Thành công"
-					})
-				}
-			})
-		})
+		// var data = req.body
+		// var app_key = data.app_key
+		// var account_id = data.account_id
+		// var uid = data.role_id
+		// var areaId = data.area_id
+		// var key = data.giftcode
+		// var app_key = data.app_key
+		// if(!sdkConfig.app_keys[app_key]){
+		// 	res.send({
+		// 		"error_code" : 1,
+		// 		"message" : "app_key 错误"
+		// 	})
+		// 	return
+		// }
+		// var v_sign = util.md5(data.app_key+data.account_id+data.role_id+data.area_id+data.giftcode+sdkConfig.app_keys[app_key]["secret_key"])
+		// if(v_sign != data.signature){
+		// 	res.send({
+		// 		"error_code" : 1,
+		// 		"message" : "签名验证失败"
+		// 	})
+		// 	return
+		// }
+		// //检查signature
+		// self.playerDao.getPlayerInfo({uid:uid},function(playerInfo) {
+		// 	if(!playerInfo || !playerInfo.areaId || !playerInfo.name){
+		// 		res.send({
+		// 			"error_code" : 1,
+		// 			"message" : "Thành công"
+		// 		})
+		// 		return
+		// 	}
+		// 	if(playerInfo.areaId != areaId){
+		// 		res.send({
+		// 			"error_code" : 1,
+		// 			"message" : "Thành công"
+		// 		})
+		// 		return
+		// 	}
+		// 	self.CDKeyDao.verifyCDKey(key,uid,areaId,playerInfo.name,function(flag,str) {
+		// 		if(!flag){
+		// 			res.send({
+		// 				"error_code" : 1,
+		// 				"message" : str
+		// 			})
+		// 		}else{
+		// 			var serverId = self.areaDeploy.getServer(areaId)
+		// 			self.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,"Mã gói","Bạn đã lấy được mã gói thành công!",str,null)
+		// 			res.send({
+		// 				"error_code" : 0,
+		// 				"message" : "Thành công"
+		// 			})
+		// 		}
+		// 	})
+		// })
 	}
 	//添加开服计划
 	posts["/setOpenPlan"] = function(req,res) {
