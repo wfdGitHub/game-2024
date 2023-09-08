@@ -12,7 +12,7 @@ model.init = function() {
 //获取配置
 model.getCfg = function(name) {
 	if(!this.maps[name])
-		this.maps[name] = require("../../../config/gameCfg/"+name+".json")
+		this.maps[name] = require("../../../../config/gameCfg/"+name+".json")
 	return this.maps[name]
 }
 module.exports = model

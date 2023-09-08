@@ -389,6 +389,20 @@ module.exports = function() {
 				cb(false,"item not exist")
 		}
 	}
+	//获得指定道具
+	this.addItemByType = function(uid,info) {
+		switch(info.type){
+			case "hufu":
+				//护符
+			return self.gainHufu(uid,info.data)
+			case "equip":
+				//装备
+			return self.gainEquip(uid,info.data)
+			default:
+				console.log("addItemByType erro ",info)
+				return null
+		}
+	}
 	//增加物品回调
 	this.addItemCB = function(uid,itemId,value,cb) {
 		switch(itemId){

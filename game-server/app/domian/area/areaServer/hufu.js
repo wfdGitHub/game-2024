@@ -54,7 +54,7 @@ module.exports = function() {
 		})
 	}
 	//生成随机护符
-	this.gainRandHufu = function(uid,lv,id) {
+	this.gainRandHufu = function(uid,lv) {
 		if(!hufu_quality[lv]){
 			console.error("gainRandHufu lv error")
 			return
@@ -78,23 +78,15 @@ module.exports = function() {
 					break
 				}
 			}
-			if(s1Index == s2Index)
-				console.error("gainRandHufu error s1Index == s2Index",s1Index,s2Index)
 		}
-		return self.gainHufu(uid,info,id)
+		return self.gainHufu(uid,info)
 	}
 	//生成指定护符  lv s1 s2
-	this.gainHufu = function(uid,info,id){
-		if(!id)
-			id = self.getLordLastid(uid)
-		self.setObj(uid,main_name,id,JSON.stringify(info))
-		var notify = {
-			"type" : "gainHufu",
-			"id" : id,
-			"info" : info
-		}
-		self.sendToUser(uid,notify)
-		return Object.assign({id : id},info)
+	this.gainHufu = function(uid,info){
+		if(!info.id)
+			info.id = self.getLordLastid(uid)
+		self.setObj(uid,main_name,info.id,JSON.stringify(info))
+		return info
 	}
 	//穿戴护符
 	this.wearHufu = function(uid,hId,id,cb) {
@@ -276,7 +268,7 @@ module.exports = function() {
 				}
 				self.taskUpdate(uid,"reset_hufu",1)
 				self.delObj(uid,main_name,id)
-				var data = self.gainRandHufu(uid,info.lv,id)
+				var data = self.gainRandHufu(uid,info.lv)
 				cb(true,data)
 			})
 		})

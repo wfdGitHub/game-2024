@@ -344,8 +344,8 @@ var model = function() {
 			    		return
 			    	}
 					var awardList = self.addItemStr(uid,info.awardStr,1,"英雄分解")
-					for(var j = 0;j < info.hufuList.length;j++)
-						awardList.push(self.gainHufu(uid,info.hufuList[j]))
+					for(var j = 0;j < info.awards.length;j++)
+						awardList.push(self.addItemByType(uid,info.awards[i]))
 					cb(true,awardList)
 			    })
 			}

@@ -1,18 +1,10 @@
 //装备系统
 const async = require("async")
 const equip_lv = require("../../../../config/gameCfg/equip_lv.json")
-const equip_qa = require("../../../../config/gameCfg/equip_qa.json")
 const equip_slot = require("../../../../config/gameCfg/equip_slot.json")
-const equip_suit = require("../../../../config/gameCfg/equip_suit.json")
 const equip_st = require("../../../../config/gameCfg/equip_st.json")
-const equip_spe = require("../../../../config/gameCfg/equip_spe.json")
 const util = require("../../../../util/util.js")
 const extra_list = ["M_HP","M_ATK","M_DEF","M_STK","M_SEF","M_SPE"]
-for(var i in equip_qa){
-	equip_qa[i].speWeights = [equip_qa[i]["spe_0"]]
-	equip_qa[i].speWeights.push(equip_qa[i].speWeights[0] + equip_qa[i]["spe_1"])
-	equip_qa[i].speWeights.push(equip_qa[i].speWeights[1] + equip_qa[i]["spe_2"])
-}
 for(var i in equip_slot)
 	equip_slot[i]["spe_list"] = JSON.parse(equip_slot[i]["spe_list"])
 for(var i in equip_lv){
@@ -92,14 +84,21 @@ var model = function() {
 			}
 			var heroInfo = data
 			if(heroInfo["e"+slot]){
-				var eInfo = JSON.parse(heroInfo["e"+slot])
-				self.setObj(uid,main_name,eInfo.id,heroInfo["e"+slot])
+				var estr = heroInfo["e"+slot]
+				var eInfo = JSON.parse(estr)
 				delete heroInfo["e"+slot]
 				self.heroDao.delHeroInfo(self.areaId,uid,hId,"e"+eInfo.slot,function(flag,data) {
-					cb(true,heroInfo)
+					var award = self.gainEquip(uid,estr)
+					cb(true,{heroInfo:heroInfo,award:award})
 				})
 			}
 		})
+	}
+	//获得装备
+	this.gainEquip = function(uid,estr){
+		eInfo = JSON.parse(estr)
+		self.setObj(uid,main_name,eInfo.id,estr)
+		return eInfo
 	}
 	//装备分解
 	this.recycleEquip = function(uid,eIds,cb) {
@@ -159,7 +158,7 @@ var model = function() {
 			},
 			function(next) {
 				var id = self.getLordLastid(uid)
-				var info = self.gainEquip(lv,slot,0,item)
+				var info = self.fightContorl.makeEquip(lv,slot,0,item)
 				info.id = id
 				info = JSON.stringify(info)
 				self.setObj(uid,main_name,id,info)
@@ -203,7 +202,7 @@ var model = function() {
 			function(next) {
 				//操作
 				var id = info.id
-				info.wash = self.gainEquip(info.lv,info.slot)
+				info.wash = self.fightContorl.makeEquip(info.lv,info.slot)
 				info = JSON.stringify(info)
 				self.setObj(uid,main_name,id,info)
 				cb(true,info)
@@ -272,7 +271,7 @@ var model = function() {
 			},
 			function(next) {
 				//操作
-				info.washExtra = local.createExtra(info,info.att.extra.type)
+				info.washExtra = self.fightContorl.createEquipExtra(info,info.att.extra.type)
 				var id = info.id
 				info = JSON.stringify(info)
 				self.setObj(uid,main_name,id,info)
@@ -427,7 +426,7 @@ var model = function() {
 			},
 			function(next) {
 				//操作
-				info.washSuit = local.createSuit(info)
+				info.washSuit = self.fightContorl.createEquipSuit(info)
 				var id = info.id
 				info = JSON.stringify(info)
 				self.setObj(uid,main_name,id,info)
@@ -510,87 +509,5 @@ var model = function() {
 			cb(false,err)
 		})
 	}
-	//获得装备
-	this.gainEquip = function(lv,slot,qa,item) {
-		var info = {}
-		info.lv = lv
-		info.slot = slot
-		if(qa)
-			info.qa = qa
-		else{
-			if(item == 2003400){
-				//强化打造
-				info.qa = util.getWeightedRandomBySort(equip_lv[lv]["high_weights"]) + 1
-			}else if(item == 2003500){
-				//必定异化
-				info.qa = 5
-			}else{
-				info.qa = util.getWeightedRandomBySort(equip_lv[lv]["qa_weights"]) + 1
-			}
-		}
-		info.att = local.createAtt(info)
-		var spe = local.createSpe(info)
-		if(spe)
-			info.spe = spe
-		if(info.qa >= 5)
-			info.suit = local.createSuit(info)
-		return info
-	}
-	//装备随机生成属性
-	local.createAtt = function(info) {
-		var c_info = {}
-		c_info.main_1 = equip_qa[info.qa]["mainRate"] * (Math.random() * 0.1 + 0.95)
-		c_info.main_2 = equip_qa[info.qa]["mainRate"] * (Math.random() * 0.1 + 0.95)
-		c_info.extra = local.createExtra(info,Math.floor(Math.random() * 3))
-		return c_info
-	}
-	//装备随机生成额外属性
-	local.createExtra = function(info,type) {
-		var extra = {}
-		extra.type = type
-		switch(type){
-			case 0:
-				//单加属性
-				var list = util.getRandomArray(extra_list,1)
-				for(var i = 0;i < list.length;i++)
-					extra[list[i]] = Math.ceil(equip_qa[info.qa]["extraRate"] * (Math.random() * 0.2 + 0.85) * equip_lv[info.lv]["extra"] * 0.75)
-			break
-			case 1:
-				//双加属性
-				var list = util.getRandomArray(extra_list,2)
-				for(var i = 0;i < list.length;i++)
-					extra[list[i]] = Math.ceil(equip_qa[info.qa]["extraRate"] * (Math.random() * 0.2 + 0.85) * equip_lv[info.lv]["extra"] * 0.5)
-			break
-			default:
-				//加减属性
-				var list = util.getRandomArray(extra_list,2)
-				var rate = (Math.random() * 0.2 + 0.85)
-				extra[list[0]] = Math.ceil(equip_qa[info.qa]["extraRate"] * rate * equip_lv[info.lv]["extra"] * 0.9)
-				extra[list[1]] = Math.ceil(equip_qa[info.qa]["extraRate"] * rate * equip_lv[info.lv]["extra"] * -0.3)
-		}
-		return extra
-	}
-	//装备随机生成特效
-	local.createSpe = function(info) {
-		if(!equip_lv[info.lv]["spe"])
-			return false
-		var spe = []
-		var count = util.getWeightedRandomBySort(equip_qa[info.qa].speWeights)
-		if(count > 0)
-			return util.getRandomArray(equip_slot[info.slot]["spe_list"],count)
-		else
-			return false
-	}
-	//装备随机生成套装
-	local.createSuit = function(info) {
-		var index = Math.floor(Math.random() * equip_lv[info.lv]["suit_list"].length)
-		if(equip_lv[info.lv]["suit_list"][index] == info.suit)
-			index = (index+1)%equip_lv[info.lv]["suit_list"].length
-		return equip_lv[info.lv]["suit_list"][index]
-	}
 }
 module.exports = model
-
-
-// var test = new model()
-// console.log(test.gainEquip(6,1,5))
