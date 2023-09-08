@@ -282,6 +282,7 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 }
 //重生返还资源  返回 升级 升阶 法宝 培养 强化
 heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
+	var id = heroInfo.id
 	var lv = heroInfo.lv
 	var ad = heroInfo.ad
 	var artifact = heroInfo.artifact
@@ -290,8 +291,10 @@ heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
 		strList.push(lv_cfg[lv].pr)
 	if(hero_ad[ad] && hero_ad[ad].pr)
 		strList.push(hero_ad[ad].pr)
-	if(artifact !== undefined && artifact_level[artifact])
-		strList.push(artifact_level[artifact]["pr"])
+	if(artifact !== undefined && artifact_level[artifact]){
+		var aId = artifact_talent[id]["artifact"]
+		strList.push(artifact_level[artifact]["pr"]+"&"+aId+":"+artifact_level[artifact]["all_self"])
+	}
 	if(hero_tr[heroInfo.tr_lv] && hero_tr[heroInfo.tr_lv]["pr"])
 		strList.push(hero_tr[heroInfo.tr_lv]["pr"])
 	for(var i = 1;i <= 4;i++){
