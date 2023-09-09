@@ -14,6 +14,7 @@ const talent_list = fightCfg.getCfg("talent_list")
 const aptitudes = fightCfg.getCfg("aptitude")
 const skills = fightCfg.getCfg("skills")
 const character = require("../entity/character.js")
+const baseStone = {"1" : 4110,"2" : 4210,"3" : 4310,"4" : 4410}
 var lv4Map = []
 for(var i in hufu_skill)
 	lv4Map.push(hufu_skill[i]["lv4"])
@@ -38,6 +39,28 @@ var model = function(fightContorl) {
 		heroInfo.lv = 1
 		var c_info = this.createHero(heroInfo.id,heroInfo.qa,heroInfo.wash)
 		Object.assign(heroInfo,c_info)
+		return heroInfo
+	}
+	//获取基准战力英雄
+	this.makeStandardHero = function(id,qa,lv,evo,main_rate) {
+		if(!heros[id])
+			return {}
+		var heroInfo = {}
+		heroInfo.id = id
+		heroInfo.evo = evo
+		heroInfo.exalt = heros[id]["exalt"]
+		heroInfo.qa = qa
+		heroInfo.lv = lv
+		//主属性
+		for(var i = 1;i <= 6;i++)
+			heroInfo["MR"+i] = hero_quality[qa]["mainRate"] * main_rate
+		//技能
+		var skillNum = heros[id]["passive_num"]
+		var skillList = []
+		for(var i = 1; i <= skillNum;i++)
+			skillList.push(heros[id]["passive"+i])
+		for(var i = 0;i < skillList.length;i++)
+			heroInfo["PS"+i] = skillList[i]
 		return heroInfo
 	}
 	//获取进化概率

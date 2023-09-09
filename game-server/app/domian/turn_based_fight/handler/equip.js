@@ -50,6 +50,22 @@ var model = function(fightContorl) {
 			info.suit = this.createEquipSuit(info)
 		return info
 	}
+	//生成基准战力装备
+	this.makeStandardEquip = function(lv,slot,qa) {
+		if(!equip_lv[lv])
+			return ""
+		var info = {}
+		info.lv = lv
+		info.slot = slot
+		info.qa = qa
+		info.att = {}
+		info.att.main_1 = equip_qa[info.qa]["mainRate"]
+		info.att.main_2 = equip_qa[info.qa]["mainRate"]
+		info.att.extra = {}
+		for(var i = 0;i < extra_list.length;i++)
+			info.att.extra[extra_list[i]] = Math.ceil(equip_qa[info.qa]["extraRate"] * equip_lv[info.lv]["extra"] * 0.2)
+		return info
+	}
 	//获取装备属性
 	this.getEquipData = function(eInfo) {
 		eInfo = JSON.parse(eInfo)

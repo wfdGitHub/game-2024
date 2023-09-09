@@ -1,23 +1,23 @@
 var fightingFun = require("./fighting.js")
 var fightRecord = require("./fightRecord.js")
 var masterEntity = require("../entity/master.js")
-var bingfuEntity = require("../entity/bingfuEntity.js")
 var powerEntity = require("../entity/powerEntity.js")
-var fightHandler = require("./fightHandler.js")
 var fightVerifyInfo = {}
 //战斗控制器
 var model = function() {
 	this.fighting = false
 	this.overInfo = {}
 }
-fightHandler.call(model)
-model.bingfuEntity = bingfuEntity
+const handlers = ["util","equip","hero","standard"]
+for(var i = 0;i < handlers.length;i++)
+	require("../handler/"+handlers[i]+".js").call(model,model)
 model.powerEntity = powerEntity
 // //自定义战斗配置// model.libertyFight = function(atkTeam,defTeam,otps) {
 // 	var fighting = new fightingFun(atkTeam,defTeam,otps)
 // 	fighting.nextRound()
 // 	return fightRecord.getList()
 // }
+//加载战斗
 model.loadFight = function(atkTeam,defTeam,otps) {
 	if(!otps.seededNum)
 		otps.seededNum = Date.now()
@@ -53,13 +53,17 @@ model.videoFight = function(atkTeam,defTeam,otps) {
 model.getVerifyInfo = function() {
 	if(this.fighting && fightVerifyInfo){
 		fightVerifyInfo.otps.masterSkills = this.fighting.masterSkills
-		for(var i = 0;i < fightVerifyInfo.atkTeam.length;i++){
+		for(var i = 1;i < fightVerifyInfo.atkTeam.length;i++){
 				delete fightVerifyInfo.atkTeam[i]["combat"]
 				delete fightVerifyInfo.atkTeam[i]["hId"]
+				delete fightVerifyInfo.atkTeam[i]["custom"]
+				delete fightVerifyInfo.atkTeam[i]["lock"]
 		}
-		for(var i = 0;i < fightVerifyInfo.defTeam.length;i++){
+		for(var i = 1;i < fightVerifyInfo.defTeam.length;i++){
 				delete fightVerifyInfo.defTeam[i]["combat"]
 				delete fightVerifyInfo.defTeam[i]["hId"]
+				delete fightVerifyInfo.atkTeam[i]["custom"]
+				delete fightVerifyInfo.atkTeam[i]["lock"]
 		}
 	}
 	return JSON.stringify(fightVerifyInfo)
@@ -109,6 +113,7 @@ model.fightVerifyCheck = function() {
 		console.log("战斗校验成功")
 	}
 }
+//获取战斗结束数据
 model.getOverInfo = function() {
 	var overInfo = fightRecord.list[fightRecord.list.length-1]
 	if(overInfo && overInfo["type"] == "fightOver")
@@ -116,9 +121,11 @@ model.getOverInfo = function() {
 	else
 		return {"err":"not find overInfo"}
 }
+//获取战斗记录
 model.getFightRecord = function() {
 	return fightRecord.getList()
 }
+//获取阶段战斗数据
 model.getFightStageRecord = function() {
 	return fightRecord.getStageList()
 }
