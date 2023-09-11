@@ -40,7 +40,7 @@ module.exports = function() {
 		switch(state){
 			case 0:
 				//进入初始状态
-				local.resetTime()
+				local.invadeReset()
 			break
 			case 1:
 				//开始挑战
