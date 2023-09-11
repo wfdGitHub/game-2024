@@ -133,12 +133,15 @@ var model = function() {
 		})
 	}
 	//获得一个英雄
-	this.gainOneHero = function(uid,id,qa) {
+	this.gainOneHero = function(uid,id,qa,cb) {
 		var hId = self.getLordLastid(uid)
 		var heroInfo = self.fightContorl.makeHeroData(id,qa)
 		heroInfo.hId = hId
 		self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
-		self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
+		self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo,function() {
+			if(cb)
+				cb(true,heroInfo)
+		})
 		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:qa,reason:"获得英雄-"+hId})
 		return heroInfo
 	}
