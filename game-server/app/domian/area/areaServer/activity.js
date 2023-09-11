@@ -9,10 +9,8 @@ const VIP = require("../../../../config/gameCfg/VIP.json")
 const consumeTotal = require("../../../../config/gameCfg/consumeTotal.json")
 const pay_days = require("../../../../config/gameCfg/pay_days.json")
 const unlock_cfg = require("../../../../config/gameCfg/unlock_cfg.json")
-const invade = require("../../../../config/gameCfg/invade.json")
 const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
-const invade_team = JSON.parse(invade["mon_team"]["value"])
 const area_boss_base = require("../../../../config/gameCfg/area_boss_base.json")
 const activity_day = require("../../../../config/gameCfg/activity_day.json")
 const mewtwo_task = require("../../../../config/gameCfg/mewtwo_task.json")
@@ -50,7 +48,6 @@ module.exports = function() {
 		"highAward" : 0,
 		"recharge_day_1" : 0,
 		"recharge_day_2" : 0,
-		"invade" : 0,
 		"rv_normal" : 0,
 		"rv_high" : 0,
 		"rv_super" : 0
@@ -141,7 +138,6 @@ module.exports = function() {
 			data["recharge_day_1"] = 0
 			data["recharge_day_2"] = 0
 			data["free_day_1"] = 0
-			data["invade"] = 0
 			data["rv_normal"] = 0
 			data["rv_high"] = 0
 			data["rv_super"] = 0

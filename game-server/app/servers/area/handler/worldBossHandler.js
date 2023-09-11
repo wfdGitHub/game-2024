@@ -2,7 +2,7 @@
 var bearcat = require("bearcat")
 var worldBossHandler = function(app) {
   this.app = app;
-	this.areaManager = this.app.get("areaManager")
+  this.areaManager = this.app.get("areaManager")
 }
 //获取世界BOSS数据
 worldBossHandler.prototype.getWorldBossData = function(msg, session, next) {
@@ -88,11 +88,11 @@ worldBossHandler.prototype.getAreaBossRank = function(msg, session, next) {
 }
 module.exports = function(app) {
   return bearcat.getBean({
-  	id : "worldBossHandler",
-  	func : worldBossHandler,
-  	args : [{
-  		name : "app",
-  		value : app
-  	}]
+    id : "worldBossHandler",
+    func : worldBossHandler,
+    args : [{
+      name : "app",
+      value : app
+    }]
   })
 };
