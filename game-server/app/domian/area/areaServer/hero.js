@@ -11,6 +11,18 @@ const lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 const items = require("../../../../config/gameCfg/item.json")
 const util = require("../../../../util/util.js")
 const main_name = "summon"
+for(var i in summon_list){
+	summon_list[i]["heroMap"] = {}
+	for(var j = 0;j < summon_list[i]["heros"].length;j++)
+		summon_list[i]["heroMap"][summon_list[i]["heros"][j]] = 1
+	summon_list[i]["items"] = JSON.parse(summon_list[i]["items"])
+	summon_list[i]["summonWeighs"] = [summon_list[i]["item_w"]]
+	summon_list[i]["summonHandWeighs"] = [summon_list[i]["item_w"]*0.5]
+	for(var j = 1;j <= 5;j++){
+		summon_list[i]["summonWeighs"].push(summon_list[i]["summonWeighs"][j-1] + summon_list[i]["hero_w"+j])
+		summon_list[i]["summonHandWeighs"].push(summon_list[i]["summonHandWeighs"][j-1] + summon_list[i]["hero_w"+j])
+	}
+}
 var model = function() {
 	var self = this
 	var local = {}
@@ -115,7 +127,7 @@ var model = function() {
 					}
 				})
 			},
-			function(next) {
+			function(next) {1
 				//抽奖
 				var list = []
 				var index = util.getWeightedRandomBySort(summon_list[sId]["summonHandWeighs"])
