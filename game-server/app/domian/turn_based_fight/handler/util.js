@@ -2,6 +2,13 @@
 const fightCfg = require("../fight/fightCfg.js")
 const guild_skill = fightCfg.getCfg("guild_skill")
 const officer = fightCfg.getCfg("officer")
+const lv_cfg = fightCfg.getCfg("lv_cfg")
+const artifact_level = fightCfg.getCfg("artifact_level")
+const ace_pack = fightCfg.getCfg("ace_pack")
+const stone_base = fightCfg.getCfg("stone_base")
+const stone_skill = fightCfg.getCfg("stone_skill")
+const hufu_quality = fightCfg.getCfg("hufu_quality")
+const zhanfa = fightCfg.getCfg("zhanfa")
 var model = function(fightContorl) {
 	//根据权重概率随机  权重需提前排序
 	this.getWeightedRandomBySort = function(weights) {
