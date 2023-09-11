@@ -1,4 +1,7 @@
 //工具类
+const fightCfg = require("../fight/fightCfg.js")
+const guild_skill = fightCfg.getCfg("guild_skill")
+const officer = fightCfg.getCfg("officer")
 var model = function(fightContorl) {
 	//根据权重概率随机  权重需提前排序
 	this.getWeightedRandomBySort = function(weights) {
