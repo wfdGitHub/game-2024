@@ -15,7 +15,6 @@ for(var i in summon_list){
 	summon_list[i]["heroMap"] = {}
 	for(var j = 0;j < summon_list[i]["heros"].length;j++)
 		summon_list[i]["heroMap"][summon_list[i]["heros"][j]] = 1
-	summon_list[i]["items"] = JSON.parse(summon_list[i]["items"])
 	summon_list[i]["summonWeighs"] = [summon_list[i]["item_w"]]
 	summon_list[i]["summonHandWeighs"] = [summon_list[i]["item_w"]*0.5]
 	for(var j = 1;j <= 5;j++){
