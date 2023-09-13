@@ -254,10 +254,10 @@ var model = function() {
 					}
 				    self.heroDao.removeHeroList(self.areaId,uid,hIds,function(flag,err) {
 				      if(flag){
-				        var info = self.fightContorl.getHeroPrlvadnad(herolist)
-			        	var awardList = self.addItemStr(info.awardStr)
-						for(var j = 0;j < info.awards.length;j++)
-							awardList.push(self.addItemByType(uid,info.awards[i]))
+				        var awards = self.fightContorl.getHeroPrlvadnad(herolist)
+			        	var awardList = []
+						for(var j = 0;j < awards.length;j++)
+							awardList.push(self.addItemByType(uid,awards[i]))
 			          	next(null,herolist,awardList)
 				      }else{
 				        next("error "+err)
