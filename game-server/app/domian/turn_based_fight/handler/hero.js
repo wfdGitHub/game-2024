@@ -118,7 +118,6 @@ var model = function(fightContorl) {
 	//获取英雄分解返还
 	this.getHeroRecycle = function(list) {
 		var strList = []
-		var awards = []
 		var map = {"2000030":0,"2000050":0}
 		for(var i = 0;i < list.length;i++){
 			var id = list[i].id
@@ -126,6 +125,23 @@ var model = function(fightContorl) {
 			map["2000030"] += Math.round(evolve_lv[list[i]["evo"]]["pr"] * exalt_lv[list[i]["lv"]]["prRate"])
 			if(list[i]["qa"] >= 5)
 				map["2000050"] += 1
+
+		}
+		var str = ""
+		for(var i in map)
+			if(map[i])
+				str += i+":"+map[i]+"&"
+		for(var i in strList)
+			str += strList[i]+"&"
+		str = str.substr(0,str.length-1)
+		var awards = this.getHeroPrlvadnad(list)
+		return {awardStr : str,awards:awards}
+	}
+	//英雄材料返还
+	this.getHeroPrlvadnad = function(list) {
+		var awards = []
+		for(var i = 0;i < list.length;i++){
+			var lv = list[i].lv
 			//等级返还
 			if(lv_cfg[lv] && lv_cfg[lv].pr)
 				strList.push(lv_cfg[lv].pr)
@@ -164,14 +180,7 @@ var model = function(fightContorl) {
 				if(list[i]["e"+j])
 					awards.push({type : "equip",data : list[i]["e"+j]})
 		}
-		var str = ""
-		for(var i in map)
-			if(map[i])
-				str += i+":"+map[i]+"&"
-		for(var i in strList)
-			str += strList[i]+"&"
-		str = str.substr(0,str.length-1)
-		return {awardStr : str,awards:awards}
+		return awards
 	}
 	//获取英雄战力
 	this.getHeroCE = function(info) {
