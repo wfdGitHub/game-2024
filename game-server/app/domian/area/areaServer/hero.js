@@ -378,7 +378,7 @@ var model = function() {
 				cb(false,"英雄不存在")
 				return
 			}
-			if(evolve_lv[heroInfo.evo]["evolveLv"] >= 3){
+			if(evolve_lv[heroInfo.evo]["evolveLv"] < 3){
 				cb(false,"进化为觉醒体后方可洗练")
 				return
 			}
@@ -433,7 +433,7 @@ var model = function() {
 				cb(false,"英雄不存在")
 				return
 			}
-			if(evolve_lv[heroInfo.evo]["evolveLv"] < 3){
+			if(evolve_lv[heroInfo.evo]["evolveLv"] < 4){
 				cb(false,"进化为完全体后方可打书")
 				return
 			}
