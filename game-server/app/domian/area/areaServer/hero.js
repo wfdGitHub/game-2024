@@ -254,12 +254,11 @@ var model = function() {
 					}
 				    self.heroDao.removeHeroList(self.areaId,uid,hIds,function(flag,err) {
 				      if(flag){
-				        self.fightContorl.getHeroPrlvadnad(herolist,function(info) {
-				        	var awardList = self.addItemStr(info.awardStr)
-							for(var j = 0;j < info.awards.length;j++)
-								awardList.push(self.addItemByType(uid,info.awards[i]))
-				          	next(null,herolist,awardList)
-				        },"英雄进化")
+				        var info = self.fightContorl.getHeroPrlvadnad(herolist)
+			        	var awardList = self.addItemStr(info.awardStr)
+						for(var j = 0;j < info.awards.length;j++)
+							awardList.push(self.addItemByType(uid,info.awards[i]))
+			          	next(null,herolist,awardList)
 				      }else{
 				        next("error "+err)
 				      }
