@@ -25,7 +25,7 @@ for(var i in equip_lv){
 }
 var model = function(fightContorl) {
 	//生成装备
-	this.makeEquip = function(lv,slot,qa) {
+	this.makeEquip = function(lv,slot,qa,item) {
 		var info = {}
 		info.lv = lv
 		info.slot = slot

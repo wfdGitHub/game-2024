@@ -22,19 +22,19 @@ for(var i in standard_ce_cfg){
 }
 var model = function() {
 	//根据类型获取基准战力阵容  若未传难度等级则默认选择战斗配置表中的难度等级
-	this.getNPCTeamByType = function(type,list,lv,dl) {
-		if(!battle_cfg[type]){
-			console.error("getNPCTeamByType type erro ",type)
-			type = "checkpoints"
+	this.getNPCTeamByType = function(b_type,npcs,lv,dl) {
+		if(!battle_cfg[b_type]){
+			console.error("getNPCTeamByType b_type erro ",b_type)
+			b_type = "checkpoints"
 		}
 		if(!lv){
 			console.error("getNPCTeamByType lv erro ",lv)
 			lv = 1
 		}
 		if(!dl)
-			dl = battle_cfg[type]["dl"]
-		var team = this.standardTeam(list,dl,lv)
-		team[0]["comeonNum"] = battle_cfg[type]["defComeonNum"]
+			dl = battle_cfg[b_type]["dl"]
+		var team = this.standardTeam(npcs,dl,lv)
+		team[0]["comeonNum"] = battle_cfg[b_type]["defComeonNum"]
 		return team
 	}
 	//获取基准战力阵容
