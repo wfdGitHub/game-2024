@@ -3,6 +3,7 @@ const fightCfg = require("../fight/fightCfg.js")
 const standard_ce_cfg = fightCfg.getCfg("standard_ce")
 const standard_dl = fightCfg.getCfg("standard_dl")
 const stone_lv = fightCfg.getCfg("stone_lv")
+const battle_cfg = fightCfg.getCfg("battle_cfg")
 var standard_ce = {}
 var standard_team_ce = {}
 for(var i in standard_ce_cfg){
@@ -20,6 +21,22 @@ for(var i in standard_ce_cfg){
 	standard_team_ce[i]["officer"] = standard_ce_cfg[i]["officer"]
 }
 var model = function() {
+	//根据类型获取基准战力阵容  若未传难度等级则默认选择战斗配置表中的难度等级
+	this.getNPCTeamByType = function(type,list,lv,dl) {
+		if(!battle_cfg[type]){
+			console.error("getNPCTeamByType type erro ",type)
+			type = "checkpoints"
+		}
+		if(!lv){
+			console.error("getNPCTeamByType lv erro ",lv)
+			lv = 1
+		}
+		if(!dl)
+			dl = battle_cfg[type]["dl"]
+		var team = this.standardTeam(list,dl,lv)
+		team[0]["comeonNum"] = battle_cfg[type]["defComeonNum"]
+		return team
+	}
 	//获取基准战力阵容
 	this.standardTeam = function(list,dl,lv) {
 		if(!dl || !standard_dl[dl])

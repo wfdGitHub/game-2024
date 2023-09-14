@@ -177,7 +177,7 @@ model.getTeamData = function(team,belong) {
 			teamAdds["maxHP"] += teamCfg.team_maxHP_add
 		}
     }
-	return {master:master,team:characters,teamAdds:teamAdds,masterAtts:masterAtts,powerAtts:powerAtts,heroAtts:heroAtts}
+	return {master:master,team:characters,teamAdds:teamAdds,masterAtts:masterAtts,powerAtts:powerAtts,heroAtts:heroAtts,teamCfg:teamCfg}
 }
 //获取团队显示数据
 model.getTeamShowData = function(team) {

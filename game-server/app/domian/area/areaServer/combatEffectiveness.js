@@ -8,6 +8,7 @@ const power_star = require("../../../../config/gameCfg/power_star.json")
 const power_aptitude = require("../../../../config/gameCfg/power_aptitude.json")
 const power_slot = require("../../../../config/gameCfg/power_slot.json")
 const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
+const battle_team = require("../../../../config/gameCfg/battle_team.json")
 const main_name = "CE"
 const oneDayTime = 86400000
 //消耗倍率
@@ -121,9 +122,48 @@ module.exports = function() {
 	this.getCE = function(uid) {
 		return usersCes[uid] || 1
 	}
-	//获取阵容
+	//获取常规阵容
 	this.getUserTeam = function(uid) {
 		return JSON.parse(JSON.stringify(userTeams[uid]))
+	}
+	//根据类型设置阵容
+	this.setTeamByType = function(uid,type,hIds,cb) {
+		self.heroDao.setTeamByType(uid,type,hIds,function(flag,err) {
+			if(flag && type == "normal")
+				self.CELoad(uid)
+			cb(flag,err)
+		})
+	}
+	//根据类型获取阵容
+	this.getTeamByType = function(uid,type,cb) {
+		async.waterfall([
+			function(next) {
+				if(!battle_team[type]){
+					next("type error "+type)
+					return
+				}
+				if(battle_team[type]["power"]){
+					self.heroDao.getFightTeamCfgWithPower(uid,function(teamCfg) {
+						next(null,teamCfg)
+					})
+				}else{
+					self.heroDao.getFightTeamCfg(uid,function(teamCfg) {
+						next(null,teamCfg)
+					})
+				}
+			},
+			function(teamCfg,next) {
+				teamCfg["comeonNum"] = battle_team[type]["atkComeonNum"]
+				self.heroDao.getTeamByType(uid,type,function(flag,teams) {
+					var fightData = [teamCfg]
+					fightData = fightData.concat(teams)
+					cb(true,fightData)
+				})
+			}
+		],function(err) {
+			console.error("getUserTeamByType",err)
+			cb(false,[])
+		})
 	}
 	//获取上阵英雄数量
 	this.getTeamNum = function(uid) {

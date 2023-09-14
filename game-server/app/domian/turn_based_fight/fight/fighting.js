@@ -24,6 +24,8 @@ var model = function(atkInfo,defInfo,otps) {
 	this.maxRound = otps.maxRound || maxRound		//最大回合
 	this.atkTeam = atkInfo.team			//攻方阵容  长度为6的角色数组  位置无人则为NULL
 	this.defTeam = defInfo.team			//守方阵容
+	this.atkTeamCfg = atkInfo.teamCfg   //攻方团队数据
+	this.defTeamCfg = defInfo.teamCfg   //守方团队数据
 	this.atkMaster = atkInfo.master		//攻方主角
 	this.defMaster = defInfo.master		//守方主角
 	this.allHero = []				//所有英雄列表
@@ -92,10 +94,7 @@ model.prototype.load = function(belong,otps) {
 		team[i].teamInfo = teamInfo
 	}
 	this[belong+"Master"].init(this,team[0].team,team[0].enemy,this.locator,this.seeded,this[rival+"Master"])
-	//天书初始化
-	for(var i in this[belong+"Books"])
-		this[belong+"Books"][i].init(team[0].team,team[0].enemy,this.locator,this.seeded,this[belong+"Master"])
-	var comeonNum = otps[belong+"ComeonNum"] || 3
+	var comeonNum = this[belong+"TeamCfg"]["comeonNum"] || 3
 	for(var i = 0;i < comeonNum;i++)
 		this.loadHero(belong,indexMap[i])
 }

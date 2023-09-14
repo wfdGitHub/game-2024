@@ -1,28 +1,29 @@
 //英雄DB
-var uuid = require("uuid")
-var herosCfg = require("../../config/gameCfg/heros.json")
-var lv_cfg = require("../../config/gameCfg/lv_cfg.json")
-var star_base = require("../../config/gameCfg/star_base.json")
-var hero_ad = require("../../config/gameCfg/hero_ad.json")
-var hero_tr = require("../../config/gameCfg/hero_tr.json")
-var recruit_base = require("../../config/gameCfg/recruit_base.json")
-var recruit_list = require("../../config/gameCfg/recruit_list.json")
-var equip_base = require("../../config/gameCfg/equip_base.json")
-var equip_level = require("../../config/gameCfg/equip_level.json")
-var equip_st = require("../../config/gameCfg/equip_st.json")
-var artifact_level = require("../../config/gameCfg/artifact_level.json")
-var artifact_talent = require("../../config/gameCfg/artifact_talent.json")
-var stone_base = require("../../config/gameCfg/stone_base.json")
-var stone_skill = require("../../config/gameCfg/stone_skill.json")
-var stone_cfg = require("../../config/gameCfg/stone_cfg.json")
-var default_cfg = require("../../config/gameCfg/default_cfg.json")
-var hufu_skill = require("../../config/gameCfg/hufu_skill.json")
-var beauty_base = require("../../config/gameCfg/beauty_base.json")
-var train_arg = require("../../config/gameCfg/train_arg.json")
-var util = require("../../util/util.js")
-var async = require("async")
-var first_recruit = default_cfg["first_hero"]["value"]
-var baseStone = {
+const uuid = require("uuid")
+const herosCfg = require("../../config/gameCfg/heros.json")
+const lv_cfg = require("../../config/gameCfg/lv_cfg.json")
+const star_base = require("../../config/gameCfg/star_base.json")
+const hero_ad = require("../../config/gameCfg/hero_ad.json")
+const hero_tr = require("../../config/gameCfg/hero_tr.json")
+const recruit_base = require("../../config/gameCfg/recruit_base.json")
+const recruit_list = require("../../config/gameCfg/recruit_list.json")
+const equip_base = require("../../config/gameCfg/equip_base.json")
+const equip_level = require("../../config/gameCfg/equip_level.json")
+const equip_st = require("../../config/gameCfg/equip_st.json")
+const artifact_level = require("../../config/gameCfg/artifact_level.json")
+const artifact_talent = require("../../config/gameCfg/artifact_talent.json")
+const stone_base = require("../../config/gameCfg/stone_base.json")
+const stone_skill = require("../../config/gameCfg/stone_skill.json")
+const stone_cfg = require("../../config/gameCfg/stone_cfg.json")
+const default_cfg = require("../../config/gameCfg/default_cfg.json")
+const hufu_skill = require("../../config/gameCfg/hufu_skill.json")
+const beauty_base = require("../../config/gameCfg/beauty_base.json")
+const train_arg = require("../../config/gameCfg/train_arg.json")
+const battle_team = require("../../config/gameCfg/battle_team.json")
+const util = require("../../util/util.js")
+const async = require("async")
+const first_recruit = default_cfg["first_hero"]["value"]
+const baseStone = {
 	"1" : 4110,
 	"2" : 4210,
 	"3" : 4310,
@@ -66,151 +67,6 @@ heroDao.prototype.getHeroAmount = function(uid,cb) {
 		}
 		cb(true,{max : Number(list[0]) || 0,cur : Number(list[1]) || 0})
 	})
-}
-//英雄池获得英雄
-heroDao.prototype.randHero = function(areaId,uid,type,count) {
-	let allWeight = recruit_base[type]["allWeight"]
-	let weights = recruit_base[type]["weights"]
-    var heroInfos = []
-    for(let num = 0;num < count;num++){
-  	  var rand = Math.random() * allWeight
-      for(var i in weights){
-        if(rand < weights[i]){
-          var heroList = recruit_list[i].heroList
-          var heroId = heroList[Math.floor(heroList.length * Math.random())]
-          var heroInfo = this.gainHero(areaId,uid,{id : heroId})
-          heroInfos.push(heroInfo)
-          break
-        }
-      }
-    }
-  	return heroInfos
-}
-//英雄池获得英雄
-heroDao.prototype.randHeroLuck = function(areaId,uid,type,count) {
-	var allWeight = recruit_base[type]["allWeight"]
-	var weights = Object.assign({},recruit_base[type]["weights"])
-  	if(this.areaManager.areaMap[areaId].checkLimitedTime("zhaohuan")){
-  		allWeight += 200
-  		weights["hero_5"] += 200
-  	}
-    var heroInfos = []
-    var r_luck = 0
-    if(this.areaManager.areaMap[areaId] && this.areaManager.areaMap[areaId].players[uid])
-    	r_luck = this.areaManager.areaMap[areaId].players[uid]["r_luck"]
-    var star4_num = 0
-    var star5_num = 0
-    for(var num = 0;num < count;num++){
-		if(r_luck == -1){
-	    	r_luck = Math.floor(Math.random() * 3) + 10
-				var heroInfo = this.gainHero(areaId,uid,{id : first_recruit})
-				heroInfos.push(heroInfo)
-    	}else if(r_luck >= 49){
-	      var heroId = this.randHeroId("hero_5")
-				var heroInfo = this.gainHero(areaId,uid,{id : heroId})
-				heroInfos.push(heroInfo)
-    		r_luck = 0
-    		star4_num++
-    		star5_num++
-    	}else if(num == 9 && (star4_num + star5_num) == 0){
-	      	var heroId = this.randHeroId("hero_4")
-					var heroInfo = this.gainHero(areaId,uid,{id : heroId})
-					r_luck++
-					star4_num++
-					heroInfos.push(heroInfo)
-    	}else{
-			var rand = Math.random() * allWeight
-			for(var i in weights){
-				if(rand < weights[i]){
-					var heroList = recruit_list[i].heroList
-					var heroId = heroList[Math.floor(heroList.length * Math.random())]
-					if(star5_num >= 1 && herosCfg[heroId].min_star >= 5){
-						heroId = this.randHeroId("hero_4")
-					}
-					var heroInfo = this.gainHero(areaId,uid,{id : heroId})
-					heroInfos.push(heroInfo)
-					if(heroInfo.star < 5)
-						r_luck++
-					if(heroInfo.star == 4)
-						star4_num++
-					if(heroInfo.star == 5){
-						star5_num++
-						r_luck = 0
-					}
-					break
-				}
-			}
-    	}
-    }
-    this.areaManager.areaMap[areaId].chageLordData(uid,"r_luck",r_luck)
-  	return heroInfos
-}
-//英雄池获得英雄id
-heroDao.prototype.randHeroId = function(type) {
-	var allWeight = recruit_base[type]["allWeight"]
-	var weights = recruit_base[type]["weights"]
-	var rand = Math.random() * allWeight
-	for(var i in weights){
-		if(rand < weights[i]){
-		  var heroList = recruit_list[i].heroList
-		  var heroId = heroList[Math.floor(heroList.length * Math.random())]
-		  return heroId
-		}
-	}
-}
-//英雄池获得英雄id
-heroDao.prototype.randHeroIdButId = function(type,heroId) {
-	var allWeight = recruit_base[type]["allWeight"]
-	var weights = recruit_base[type]["weights"]
-	var rand = Math.random() * allWeight
-	for(var i in weights){
-		if(rand < weights[i]){
-		  var heroList = recruit_list[i].heroList
-		  var index = Math.floor(heroList.length * Math.random())
-		  if(heroList[index] == heroId)
-		  	index = (index + 1 + Math.floor((heroList.length - 1) * Math.random())) % heroList.length
-		  var heroId = heroList[index]
-		  return heroId
-		}
-	}
-}
-//获得英雄
-heroDao.prototype.gainHero = function(areaId,uid,otps,cb) {}
-//升级英雄图鉴
-heroDao.prototype.updateHeroArchive = function(areaId,uid,id,star) {
-	var self = this
-	self.redisDao.db.hget("player:user:"+uid+":heroArchive",id,function(err,data) {
-		if(!data || star > data){
-			self.redisDao.db.hset("player:user:"+uid+":heroArchive",id,star)
-			self.areaManager.areaMap[areaId].checkLimitGiftStar(uid,id,star)
-			var notify = {
-				type : "updateHeroArchive",
-				id : id,
-				star : star
-			}
-			self.areaManager.areaMap[areaId].sendToUser(uid,notify)
-			// var name = self.areaManager.areaMap[areaId].getLordAtt(uid,"name")
-			// if(name){
-	  //     var notify2 = {
-	  //       type : "sysChat",
-	  //       text : "恭喜!!!"+name+"合成出"+star+"星"+herosCfg[id].name+"英雄，实力暴涨名满三国"
-	  //     }
-	  //     self.areaManager.areaMap[areaId].sendAllUser(notify2)
-			// }
-		}
-	})
-}
-//英雄置换检测
-heroDao.prototype.heroChangeCheck = function(heroInfo) {
-	if(!heroInfo)
-		return "英雄不存在"
-	if(heroInfo.combat)
-		return "英雄已出战"
-	if(heroInfo.lock)
-		return "英雄已锁定"
-	if(heroInfo.custom)
-		return "定制英雄"
-	return false
 }
 //英雄锁定检测
 heroDao.prototype.heroLockCheck = function(heroInfo) {
@@ -327,6 +183,7 @@ heroDao.prototype.onlySetHeroInfo = function(uid,hId,name,value) {
 heroDao.prototype.onlyDelHeroInfo = function(uid,hId,name) {
 	this.redisDao.db.hdel("player:user:"+uid+":heros:"+hId,name)
 }
+//批量设置英雄属性
 heroDao.prototype.setHMHeroInfo = function(areaId,uid,hId,obj,cb) {
 	var self = this
 	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,obj,function(err,data) {
@@ -526,143 +383,24 @@ heroDao.prototype.getMultiHeroList = function(uids,hIdsList,cb) {
 		cb(true,teams)
 	})
 }
-//获取英雄图鉴
-heroDao.prototype.getHeroArchive = function(uid,cb) {
-	this.redisDao.db.hgetall("player:user:"+uid+":heroArchive",function(err,data) {
-		if(err || !data){
-			cb(true,{})
-		}else{
-			cb(true,data)
-		}
-	})
-}
-//设置出场阵容
-heroDao.prototype.setFightTeam = function(areaId,uid,hIds,cb) {
-	var self = this
-	self.getHeroList(uid,hIds,function(flag,heroList) {
-		if(!flag || !heroList){
-			cb(false,"阵容错误")
-			return
-		}
-		for(var i = 0;i < heroList.length;i++){
-			if(hIds[i] && !heroList[i]){
-				cb(false,"武将不存在"+hIds[i])
-				return
-			}
-		}
-		self.getFightTeam(uid,function(flag,team) {
-			if(flag && team){
-				for(var i = 1;i < team.length;i++){
-					if(team[i])
-						self.delHeroInfo(areaId,uid,team[i].hId,"combat")
-				}
-			}
-			self.redisDao.db.set("player:user:"+uid+":fightTeam",JSON.stringify(hIds),function(err,data) {
-				if(err){
-					if(cb)
-						cb(false,err)
-				}
-				else{
-					for(var i = 0;i < heroList.length;i++){
-						if(hIds[i]){
-							self.incrbyHeroInfo(areaId,uid,hIds[i],"combat",1)
-						}
-					}
-					if(self.areaManager.areaMap[areaId]){
-						self.areaManager.areaMap[areaId].CELoad(uid)
-					}
-					if(cb)
-						cb(true)
-				}
-			})
-		})
-	})
-}
 //获取出场阵容
 heroDao.prototype.getFightTeam = function(uid,cb) {
 	var self = this
-	var fightData = [{}]
-	var fightTeam = []
+	var fightData = []
 	async.waterfall([
 		function(next) {
-			self.redisDao.db.get("player:user:"+uid+":fightTeam",function(err,data) {
-				if(!data)
-					fightTeam = []
-				else
-					fightTeam = JSON.parse(data)
-				var multiList = []
-				var hIds = []
-				for(var i = 0;i < fightTeam.length;i++){
-					if(fightTeam[i]){
-						hIds.push(fightTeam[i])
-						multiList.push(["hgetall","player:user:"+uid+":heros:"+fightTeam[i]])
-					}
+			self.getFightTeamCfgWithPower(uid,function(teamCfg) {
+				fightData.push(teamCfg)
+				next()
+			})
+		},
+		function(next) {
+			self.getTeamByType(uid,"normal",function(flag,teams) {
+				if(!flag){
+					next(teams)
+					return
 				}
-				self.redisDao.multi(multiList,function(err,list) {
-					var hash = {}
-					for(var i = 0;i < list.length;i++){
-						for(var j in list[i]){
-							var tmp = Number(list[i][j])
-							if(tmp == list[i][j])
-								list[i][j] = tmp
-						}
-						list[i].hId = hIds[i]
-						hash[list[i].hId] = list[i]
-					}
-					for(var i = 0;i < fightTeam.length;i++){
-						if(hash[fightTeam[i]]){
-							fightData.push(hash[fightTeam[i]])
-						}
-					}
-					next(null)
-				})
-			})
-		},
-		function(next) {
-			//主动技能
-			self.getFightPower(uid,function(powers,manualModel) {
-				for(var i in powers)
-					fightData[0][i] = powers[i]
-				fightData[0]["manualModel"] = Number(manualModel) || 0
-				next()
-			})
-		},
-		function(next) {
-			//称号
-			self.redisDao.db.hget("player:user:"+uid+":playerInfo","title",function(err,data) {
-				if(data)
-					fightData[0]["title"] = data
-				next()
-			})
-		},
-		function(next) {
-			//官职
-			self.redisDao.db.hget("player:user:"+uid+":playerInfo","officer",function(err,data) {
-				if(data)
-					fightData[0]["officer"] = data
-				next()
-			})
-		},
-		function(next) {
-			//家园建筑
-			self.redisDao.db.hmget("player:user:"+uid+":manor",["gjy","dby","qby"],function(err,data) {
-				if(data){
-					fightData[0]["gjy"] = Number(data[0]) || 0
-					fightData[0]["dby"] = Number(data[1]) || 0
-					fightData[0]["qby"] = Number(data[2]) || 0
-				}
-				next()
-			})
-		},
-		function(next) {
-			//公会技能
-			self.redisDao.db.hmget("player:user:"+uid+":guild",["skill_1","skill_2","skill_3","skill_4"],function(err,data) {
-				if(data){
-					fightData[0]["g1"] = Number(data[0]) || 0
-					fightData[0]["g2"] = Number(data[1]) || 0
-					fightData[0]["g3"] = Number(data[2]) || 0
-					fightData[0]["g4"] = Number(data[3]) || 0
-				}
+				fightData = fightData.concat(teams)
 				cb(true,fightData)
 			})
 		}
@@ -742,30 +480,6 @@ heroDao.prototype.setZhuluTeam = function(areaId,uid,hIds,cb) {
 			else
 				cb(true)
 		})
-		// self.getZhuluTeam(uid,function(flag,team) {
-		// 	if(flag && team){
-		// 		for(var i = 0;i < team.length;i++){
-		// 			if(team[i])
-		// 				self.delHeroInfo(areaId,uid,team[i].hId,"zhuluCombat")
-		// 		}
-		// 	}
-		// 	self.redisDao.db.set("player:user:"+uid+":zhuluTeam",JSON.stringify(hIds),function(err,data) {
-		// 		if(err){
-		// 			if(cb)
-		// 				cb(false,err)
-		// 		}
-		// 		else{
-		// 			for(var i = 0;i < heroList.length;i++){
-		// 				if(hIds[i]){
-		// 					self.incrbyHeroInfo(areaId,uid,hIds[i],"zhuluCombat",1)
-		// 				}
-		// 			}
-		// 			self.areaManager.areaMap[areaId].CELoad(uid)
-		// 			if(cb)
-		// 				cb(true)
-		// 		}
-		// 	})
-		// })
 	})
 }
 //获取逐鹿出场阵容
@@ -803,6 +517,162 @@ heroDao.prototype.getZhuluTeam = function(uid,cb) {
 			}
 			cb(true,zhuluTeam)
 		})
+	})
+}
+//设置出场阵容
+heroDao.prototype.setTeamByType = function(uid,type,hIds,cb) {
+	var self = this
+	async.waterfall([
+		function(next) {
+			if(!battle_team[type]){
+				next("type error "+type)
+				return
+			}
+			if(!hIds.length){
+				next("至少上阵一个英雄")
+				return
+			}
+			if(hIds.length > battle_team[type]["maxNum"]){
+				next("超过最大上阵限制")
+				return
+			}
+			//参数判断
+		  for(var i = 0;i < hIds.length;i++){
+		    if(!hIds[i]){
+					next("hId error "+hIds[i])
+					return
+		    }
+		    for(var j = i + 1;j < hIds.length;j++){
+		      if(hIds[i] == hIds[j]){
+		        next(null,{flag : false,data : "不能有重复的hId"})
+		        return
+		      }
+		    }
+		  }
+		  next()
+		},
+		function(next) {
+			self.getHeroList(uid,hIds,function(flag,heroList) {
+				if(!flag || !heroList){
+					cb(false,"阵容错误")
+					return
+				}
+				for(var i = 0;i < heroList.length;i++){
+					if(hIds[i] && !heroList[i]){
+						cb(false,"英雄不存在"+hIds[i])
+						return
+					}
+				}
+				self.redisDao.db.set("player:user:"+uid+":fightTeam:"+type,JSON.stringify(hIds),function(err,data) {
+					if(err){
+						if(cb)
+							cb(false,err)
+					}else{
+						if(cb)
+							cb(true,heroList)
+					}
+				})
+			})
+		}
+	],function(err) {
+		cb(false,err)
+	})
+}
+//获取出场阵容
+heroDao.prototype.getTeamByType = function(uid,type,cb) {
+	var self = this
+	var teams = []
+	var fightTeam = []
+	self.redisDao.db.get("player:user:"+uid+":fightTeam:"+type,function(err,data) {
+		if(!data)
+			fightTeam = []
+		else
+			fightTeam = JSON.parse(data)
+		var multiList = []
+		var hIds = []
+		for(var i = 0;i < fightTeam.length;i++){
+			if(fightTeam[i]){
+				hIds.push(fightTeam[i])
+				multiList.push(["hgetall","player:user:"+uid+":heros:"+fightTeam[i]])
+			}
+		}
+		self.redisDao.multi(multiList,function(err,list) {
+			var hash = {}
+			for(var i = 0;i < list.length;i++){
+				for(var j in list[i]){
+					var tmp = Number(list[i][j])
+					if(tmp == list[i][j])
+						list[i][j] = tmp
+				}
+				list[i].hId = hIds[i]
+				hash[list[i].hId] = list[i]
+			}
+			for(var i = 0;i < fightTeam.length;i++){
+				if(hash[fightTeam[i]]){
+					teams.push(hash[fightTeam[i]])
+				}
+			}
+			cb(true,teams)
+		})
+	})
+}
+//获取出场团队数据（含主动技）
+heroDao.prototype.getFightTeamCfgWithPower = function(uid,cb) {
+	var self = this
+	self.getFightTeamCfg(uid,function(teamCfg) {
+		self.getFightPower(uid,function(powers,manualModel) {
+			for(var i in powers)
+				teamCfg[i] = powers[i]
+			cb(teamCfg)
+		})
+	})
+}
+//获取出场团队数据
+heroDao.prototype.getFightTeamCfg = function(uid,cb) {
+	var self = this
+	var teamCfg = {}
+	async.waterfall([
+		function(next) {
+			//称号
+			self.redisDao.db.hget("player:user:"+uid+":playerInfo","title",function(err,data) {
+				if(data)
+					teamCfg["title"] = Number(data) || 0
+				next()
+			})
+		},
+		function(next) {
+			//官职
+			self.redisDao.db.hget("player:user:"+uid+":playerInfo","officer",function(err,data) {
+				if(data)
+					teamCfg["officer"] = Number(data) || 0
+				next()
+			})
+		},
+		function(next) {
+			//家园建筑
+			self.redisDao.db.hmget("player:user:"+uid+":manor",["gjy","dby","qby"],function(err,data) {
+				if(data){
+					teamCfg["gjy"] = Number(data[0]) || 0
+					teamCfg["dby"] = Number(data[1]) || 0
+					teamCfg["qby"] = Number(data[2]) || 0
+				}
+				next()
+			})
+		},
+		function(next) {
+			//公会技能
+			self.redisDao.db.hmget("player:user:"+uid+":guild",["skill_1","skill_2","skill_3","skill_4"],function(err,data) {
+				if(data){
+					teamCfg["g1"] = Number(data[0]) || 0
+					teamCfg["g2"] = Number(data[1]) || 0
+					teamCfg["g3"] = Number(data[2]) || 0
+					teamCfg["g4"] = Number(data[3]) || 0
+				}
+				cb(teamCfg)
+			})
+		}
+	],function(err) {
+		cb(false,err)
 	})
 }
 module.exports = {

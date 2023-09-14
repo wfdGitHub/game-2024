@@ -98,6 +98,18 @@
         console.log("onChat")
         console.log(data)
       })
+      //设置出场阵容
+      var setTeamByType = function(type,hIds) {
+        pomelo.request("area.heroHandler.setTeamByType", {type:type,hIds:hIds}, function(data) {
+            console.log(data);
+        })
+      }
+      //获取出场阵容
+      var getTeamByType = function(type,hIds) {
+        pomelo.request("area.heroHandler.getTeamByType", {type:type,hIds:hIds}, function(data) {
+            console.log(data);
+        })
+      }
       //===================装备===================/
       //穿戴装备
       var wearEquip = function(hId,eId) {

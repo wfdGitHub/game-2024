@@ -320,46 +320,21 @@ heroHandler.prototype.getHeros = function(msg, session, next) {
   })
 }
 //设置出场阵容
-heroHandler.prototype.setFightTeam = function(msg, session, next) {
+heroHandler.prototype.setTeamByType = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
+  var type = msg.type
   var hIds = msg.hIds
-  //参数判断
-  if(!hIds instanceof Array){
-    next(null,{flag : false,data : "必须传数组"})
-    return
-  }
-  if(hIds.length > 5){
-    next(null,{flag : false,data : "数组长度错误"})
-    return
-  }
-  var heroNum = 0
-  //判断重复
-  for(var i = 0;i < hIds.length;i++){
-    if(hIds[i] == null)
-      continue
-    heroNum++
-    for(var j = i + 1;j < hIds.length;j++){
-      if(hIds[j] == null)
-        continue
-      if(hIds[i] == hIds[j]){
-        next(null,{flag : false,data : "不能有重复的hId"})
-        return
-      }
-    }
-  }
-  if(heroNum == 0){
-    next(null,{flag : false,data : "至少要有一个上阵英雄"})
-    return
-  }
-  this.heroDao.setFightTeam(areaId,uid,hIds,function(flag,data) {
+  this.areaManager.areaMap[areaId].setTeamByType(uid,type,hIds,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
 //获取出场阵容
-heroHandler.prototype.getFightTeam = function(msg, session, next) {
+heroHandler.prototype.getTeamByType = function(msg, session, next) {
   var uid = session.uid
-  this.heroDao.getFightTeam(uid,function(flag,data) {
+  var areaId = session.get("areaId")
+  var type = msg.type
+  this.areaManager.areaMap[areaId].getTeamByType(uid,type,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
