@@ -1015,6 +1015,11 @@
             console.log(data);
         });
       }
+      var challengeEndless = function(id,level,seededNum,masterSkills) {
+        pomelo.request("area.fightHandler.challengeEndless", {id:id,level:level,seededNum:seededNum,masterSkills:masterSkills}, function(data) {
+            console.log(data);
+        });
+      }
       //挑战单人试炼
       var challengeOneEndless = function(hIds,id,seededList,index,verifys) {
         pomelo.request("area.fightHandler.challengeOneEndless", {hIds:hIds,id:id,seededList:seededList,index:index,verifys:verifys}, function(data) {
@@ -2181,8 +2186,8 @@
         });
       }
       //挑战单骑救主
-      var areaChallenge = function(hId) {
-        pomelo.request("area.activityHandler.areaChallenge", {hId:hId}, function(data) {
+      var areaChallenge = function(hIds) {
+        pomelo.request("area.activityHandler.areaChallenge", {hIds:hIds}, function(data) {
             console.log(data);
         });
       }
@@ -2865,8 +2870,8 @@
         });
       }
       //获取逐鹿战斗数据
-      var getZhuluFightData = function() {
-        pomelo.request("area.zhuluHandler.getZhuluFightData", {}, function(data) {
+      var getZhuluFightData = function(hIds) {
+        pomelo.request("area.zhuluHandler.getZhuluFightData", {hIds:hIds}, function(data) {
             console.log(data);
         });
       }
@@ -3719,8 +3724,9 @@
             console.log(data);
         })
       }
-      var challengeCheckpoints = function(seededNum,readList) {
-        pomelo.request("area.fightHandler.challengeCheckpoints",{seededNum : seededNum,readList : readList}, function(data) {
+      //挑战主线关卡
+      var challengeCheckpoints = function(seededNum,masterSkills) {
+        pomelo.request("area.fightHandler.challengeCheckpoints",{seededNum : seededNum,masterSkills : masterSkills}, function(data) {
             console.log(data);
         })
       }

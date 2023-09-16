@@ -140,11 +140,7 @@ activityHandler.prototype.getAreaChallengeData = function(msg, session, next) {
 activityHandler.prototype.areaTrial = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  if(!msg.verifys || !Array.isArray(msg.verifys) || msg.verifys.length != 6){
-    next(null,{flag:false,err:"verifys error"})
-    return
-  }
-  this.areaManager.areaMap[areaId].areaTrial(uid,msg.verifys,function(flag,msg) {
+  this.areaManager.areaMap[areaId].areaTrial(uid,msg.seededNums,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }
@@ -152,25 +148,7 @@ activityHandler.prototype.areaTrial = function(msg, session, next) {
 activityHandler.prototype.areaChallenge = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].areaChallenge(uid,msg.hId,function(flag,msg) {
-    next(null,{flag : flag,msg : msg})
-  })
-}
-//挑战单骑救主(3vs3)
-activityHandler.prototype.areaChallengeThree = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].areaChallengeThree(uid,msg.hIds,function(flag,msg) {
-    next(null,{flag : flag,msg : msg})
-  })
-}
-//挑战单骑救主(6vs6)
-activityHandler.prototype.areaChallengeSix = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var verify = msg.verify
-  var masterSkills = msg.masterSkills
-  this.areaManager.areaMap[areaId].areaChallengeSix(uid,verify,masterSkills,function(flag,msg) {
+  this.areaManager.areaMap[areaId].areaChallenge(uid,msg.hIds,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

@@ -2,7 +2,6 @@ const bazaar_cfg = require("../../../../config/gameCfg/bazaar.json")
 const item_cfg = require("../../../../config/gameCfg/item.json")
 const heros = require("../../../../config/gameCfg/heros.json")
 const checkpoints = require("../../../../config/gameCfg/checkpoints.json")
-const equip_level = require("../../../../config/gameCfg/equip_level.json")
 const ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 const async = require("async")
@@ -133,16 +132,6 @@ module.exports = function() {
 				switch(bazaar_goods[type][i]["type"]){
 					case "item":
 						goods.itemId = bazaar_goods[type][i]["itemId"]
-					break
-					case "equip":
-						let lv = self.getCheckpointsInfo(uid) || 1
-						let equipLv = checkpoints[lv]["equip"]
-						if(!equipLv)
-							equipLv = 1
-						if(equipLv > 10)
-							equipLv = 10
-						let part = Math.floor(Math.random() * 4) + 1
-						goods.itemId = equip_level[equipLv]["part_"+part]
 					break
 					case "ace":
 						let quality = bazaar_goods[type][i]["quality"]

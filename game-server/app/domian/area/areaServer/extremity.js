@@ -2,10 +2,14 @@
 const extremity_award = require("../../../../config/gameCfg/extremity_award.json")
 const extremity_cfg = require("../../../../config/gameCfg/extremity_cfg.json")
 const heros = require("../../../../config/gameCfg/heros.json")
+const species = require("../../../../config/gameCfg/species.json")
 const bossId = extremity_cfg["bossId"]["value"]
 const maxRound = extremity_cfg["maxRound"]["value"]
 const main_name = "extremity"
 const async = require("async")
+var specieList = []
+for(var i in species)
+	specieList.push(i)
 module.exports = function() {
 	var self = this
 	var teamId = -1
@@ -13,7 +17,7 @@ module.exports = function() {
 	var fightInfos = {}
 	//每日更新
 	this.extremityInit = function() {
-		teamId = self.areaDay % 5 + 1
+		teamId =  specieList[self.areaDay % specieList.length]
 		self.getAreaObj(main_name,"bossLv",function(data) {
 			bossLv = Number(data) || 1
 		})
@@ -84,13 +88,10 @@ module.exports = function() {
 			function(next) {
 				self.taskUpdate(uid,"extremity",1)
 				var level = extremity_award[bossLv]["lv"]
-				var defTeam = self.standardTeam(uid,[0,0,0,0,bossId,0],"main",level)
+				var defTeam = self.fightContorl.getNPCTeamByType(main_name,[bossId],level)
 				var fightOtps = {seededNum : Date.now(),maxRound:maxRound}
-				defTeam[4].boss = true
-			    for(var i = 0;i < 6;i++){
-			    	if(atkTeam[i] && heros[atkTeam[i]["id"]] && heros[atkTeam[i]["id"]]["realm"] == teamId)
-			    		atkTeam[i]["self_atk_add"] = 0.5
-			    }
+				defTeam[1].boss = true
+			    atkTeam[0]["specieAdd"] = teamId
 			    self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
 		    	var list = self.fightContorl.getFightRecord()
 		    	var allDamage = list[list.length - 1].atkDamage

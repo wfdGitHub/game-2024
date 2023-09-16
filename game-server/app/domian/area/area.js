@@ -9,7 +9,7 @@ const hero_tr = require("../../../config/gameCfg/hero_tr.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","mysterious","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","guild_pk","limited_time","hufu","show","friend","beherrscher","exercise","endless","extremity","zhanfa","hero_rank","gather","camp_att","hero","guild_city_boss","manor","lotto","worldLevel","area_gift","equip","worldBoss","invade"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","ttttower","lord","daily_fb","task","seek_treasure","aceLotto","limit_gift","area_challenge","topicRecruit","area_boss","sprint_rank","share","rebate","stone","festival","guild","guild_fb","guild_treasure","limited_time","hufu","show","friend","beherrscher","exercise","endless","extremity","zhanfa","hero_rank","gather","camp_att","hero","guild_city_boss","manor","lotto","worldLevel","area_gift","equip","worldBoss","invade"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var timers = {}
@@ -231,7 +231,6 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.shopRefresh(uid)
 	this.activityUpdate(uid)
 	this.STDayRefresh(uid)
-	this.mysteriousDayUpdate(uid)
 	this.festivalUserDayUpdate(uid)
 	this.guildRefresh(uid)
 	this.TopicRecruitRefresh(uid)
@@ -408,7 +407,7 @@ area.prototype.getBaseUser = function(uid) {
 area.prototype.standardTeam = function(uid,list,dl,lv) {
 	if(!lv)
 		lv = this.getLordLv(uid)
-	return fightContorlFun.standardTeam(uid,list,dl,lv)
+	return fightContorlFun.standardTeam(list,dl,lv)
 }
 //获取玩家单项数据
 area.prototype.getPlayerKeyByUid = function(uid,key,cb) {
@@ -567,9 +566,9 @@ area.prototype.getFriendByUids = function(uid,uids,cb) {
 	})
 }
 //战斗校验错误
-area.prototype.verifyFaild = function(uid,verify1,verify2,source) {
+area.prototype.verifyFaild = function(uid,verify,source) {
 	console.log("verifyFaild",uid)
-	this.redisDao.db.rpush("verify_faild",JSON.stringify({uid:uid,client:verify1,server:verify2,source:source}))
+	this.redisDao.db.rpush("verify_faild",JSON.stringify({uid:uid,server:verify,source:source}))
 }
 //定时器
 area.prototype.setTimeout = function(fun,dt) {

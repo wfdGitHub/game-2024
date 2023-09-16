@@ -183,7 +183,8 @@ module.exports = function() {
 				level : guild_lv[guildLv]["level"]
 			}
 			self.redisDao.db.hset(main_name+":"+guildId,"seat_"+index,JSON.stringify(userInfo))
-			self.redisDao.db.hset(main_name+":team:"+guildId,index,guild_pk[guildLv]["npc_team"])
+			var defTeam = self.fightContorl.getNPCTeamByType("guild_pk",index,guild_pk[guildLv]["npc_team"],guild_pk[guildLv]["level"])
+			self.redisDao.db.hset(main_name+":team:"+guildId,JSON.stringify(defTeam))
 		}
 	}
 	//获取PK信息  双方阵容  排行榜   总星数
@@ -384,7 +385,7 @@ module.exports = function() {
 			function(next) {
 				//挑战结算
 				fightInfo.seededNum = Date.now()
-				for(var i = 0;i < 6;i++){
+				for(var i = 1;i < fightInfo.defTeam[i].length;i++){
 					if(fightInfo.defTeam[i]){
 						Object.assign(fightInfo.defTeam[i],star_add[star])
 					}

@@ -10,9 +10,8 @@ var async = require("async")
 var exercise_list = []
 for(var i in exercise_team){
 	var tmpList = []
-	for(var j = 0;j <= 4;j++){
-		tmpList.push(JSON.parse(exercise_team[i]["team"+j]))
-	}
+	for(var j = 0;j <= 4;j++)
+		tmpList.push(exercise_team[i]["team"+j])
 	exercise_list.push(tmpList)
 }
 const assistList = recruit_list["hero_5"]["heroList"]
@@ -71,7 +70,7 @@ module.exports = function() {
 	}
 	//开始挑战
 	this.exerciseChallenge = function(uid,team,index,cb) {
-		if(!team || team.length != 6){
+		if(!team || team.length > 5){
 			cb(false,"team error "+team)
 			return
 		}
@@ -125,8 +124,8 @@ module.exports = function() {
 			},
 			function(next) {
 				//战斗
-				var atkTeam = self.standardTeam(uid,team,"main",107)
-				var defTeam = self.standardTeam(uid,exercise_list[teamId][index],"exercise_"+level,107)
+				var atkTeam = self.fightContorl.standardTeam(team,"lv_3",175)
+				var defTeam = self.fightContorl.standardTeam(exercise_list[teamId][index],"lv_"+(level+1),175)
 				var seededNum = Date.now()
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){

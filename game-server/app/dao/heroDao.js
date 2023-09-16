@@ -7,8 +7,6 @@ const hero_ad = require("../../config/gameCfg/hero_ad.json")
 const hero_tr = require("../../config/gameCfg/hero_tr.json")
 const recruit_base = require("../../config/gameCfg/recruit_base.json")
 const recruit_list = require("../../config/gameCfg/recruit_list.json")
-const equip_base = require("../../config/gameCfg/equip_base.json")
-const equip_level = require("../../config/gameCfg/equip_level.json")
 const equip_st = require("../../config/gameCfg/equip_st.json")
 const artifact_level = require("../../config/gameCfg/artifact_level.json")
 const artifact_talent = require("../../config/gameCfg/artifact_talent.json")
@@ -538,10 +536,8 @@ heroDao.prototype.setTeamByType = function(uid,type,hIds,cb) {
 			}
 			//参数判断
 		  for(var i = 0;i < hIds.length;i++){
-		    if(!hIds[i]){
-					next("hId error "+hIds[i])
-					return
-		    }
+		    if(!hIds[i])
+		    	continue
 		    for(var j = i + 1;j < hIds.length;j++){
 		      if(hIds[i] == hIds[j]){
 		        next(null,{flag : false,data : "不能有重复的hId"})

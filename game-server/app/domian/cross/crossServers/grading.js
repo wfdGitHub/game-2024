@@ -2,12 +2,11 @@ const grading_cfg = require("../../../../config/gameCfg/grading_cfg.json")
 const grading_lv = require("../../../../config/gameCfg/grading_lv.json")
 const grading_robot = require("../../../../config/gameCfg/grading_robot.json")
 const recruit_list = require("../../../../config/gameCfg/recruit_list.json")
+const battle_cfg = require("../../../../config/gameCfg/battle_cfg.json")
 const hero_list = recruit_list["hero_5"]["heroList"]
 const util = require("../../../../util/util.js")
+const mainName = "grading"
 const async = require("async")
-for(var i in grading_robot){
-	grading_robot[i]["team"] = JSON.parse(grading_robot[i]["team"])
-}
 var max_score = 0
 var grading_lv_list = []
 for(var i in grading_lv){
@@ -218,28 +217,37 @@ var gradingEntity = function(self,theatreId) {
 						targetSid = Number(strList[0])
 						targetUid = Number(strList[1])
 						targetScore = Number(list[index*2 + 1])
-						atkTeam = self.userTeam(crossUid)
-						if(targetUid < 10000){
-							//机器人
-							defTeam = grading_robot[targetUid]["team"]
-							targetInfo = {
-								uid : targetUid,
-								name : self.namespace.getName(),
-								head : hero_list[Math.floor(Math.random() * hero_list.length)]
-							}
-							next()
-						}else{
-							//玩家
-							self.getDefendTeam(targetUid,function(team) {
-								defTeam = team
-								self.getPlayerInfoByUid(targetUid,function(info) {
-									targetInfo = info
-									next()
-								})
-							})
-						}
 					})
 				})
+			},
+			function(next) {
+				//atkTeam
+				self.heroDao.getTeamByType(uid,battle_cfg[mainName]["team"],function(flag,teams) {
+					atkTeam = teams
+					next()
+				})
+			},
+			function(next) {
+				//defTeam
+				if(targetUid < 10000){
+					//机器人
+					defTeam = self.fightContorl.getNPCTeamByType(main_name,grading_robot[targetUid]["team"],grading_robot[targetUid]["lv"])
+					targetInfo = {
+						uid : targetUid,
+						name : self.namespace.getName(),
+						head : hero_list[Math.floor(Math.random() * hero_list.length)]
+					}
+					next()
+				}else{
+					//玩家
+					self.heroDao.getTeamByType(targetUid,battle_cfg[mainName]["team"],function(flag,teams) {
+						defTeam = teams
+						self.getPlayerInfoByUid(targetUid,function(info) {
+							targetInfo = info
+							next()
+						})
+					})
+				}
 			},
 			function(next) {
 				seededNum = Date.now()

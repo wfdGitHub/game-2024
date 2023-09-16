@@ -4,8 +4,10 @@ const standard_dl = require("../../../config/gameCfg/standard_dl.json")
 const heros = require("../../../config/gameCfg/heros.json")
 const standard_ce = require("../../../config/gameCfg/standard_ce.json")
 const mailText = require("../../../config/gameCfg/mailText.json")
-var uuid = require("uuid")
-var crossServers = ["grading","escort","peakCompetition","muye","guild_pk","ancient","manorCross","theatre"]
+const battle_team = require("../../../config/gameCfg/battle_team.json")
+const uuid = require("uuid")
+const async = require("async")
+var crossServers = ["grading","escort","peakCompetition","muye","guild_pk","manorCross","theatre"]
 var crossManager = function(app) {
 	this.app = app
 	this.channelService = this.app.get("channelService")
@@ -346,6 +348,45 @@ crossManager.prototype.sendMailByGuildId  = function(guildId,key,atts) {
 //重新分配战区
 crossManager.prototype.theatreDeploy = function() {
 	this.theatreDeploy()
+}
+//根据类型获取阵容
+crossManager.prototype.getTeamByType = function(uid,type,cb) {
+	async.waterfall([
+		function(next) {
+			if(!battle_team[type]){
+				next("type error "+type)
+				return
+			}
+			if(battle_team[type]["power"]){
+				self.heroDao.getFightTeamCfgWithPower(uid,function(teamCfg) {
+					next(null,teamCfg)
+				})
+			}else{
+				self.heroDao.getFightTeamCfg(uid,function(teamCfg) {
+					next(null,teamCfg)
+				})
+			}
+		},
+		function(teamCfg,next) {
+			teamCfg["comeonNum"] = battle_team[type]["atkComeonNum"]
+			self.heroDao.getTeamByType(uid,type,function(flag,teams) {
+				if(type == "allstar"){
+					var list = []
+					list.push([teamCfg].concat(teams.splice(0,3)))
+					list.push([teamCfg].concat(teams.splice(0,3)))
+					list.push([teamCfg].concat(teams.splice(0,3)))
+					cb(true,list)
+				}else{
+					var teams = [teamCfg]
+					teams = teams.concat(teams)
+					cb(true,teams)
+				}
+			})
+		}
+	],function(err) {
+		console.error("getUserTeamByType",err)
+		cb(false,[])
+	})
 }
 module.exports = {
 	id : "crossManager",

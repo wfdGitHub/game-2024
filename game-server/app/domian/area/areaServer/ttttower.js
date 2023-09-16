@@ -6,12 +6,6 @@ const heros_cfg = require("../../../../config/gameCfg/heros.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 var async = require("async")
 var main_name = "ttt"
-for(var i in ttttower_level){
-	ttttower_level[i]["defTeam"] = JSON.parse(ttttower_level[i]["defTeam"])
-}
-for(var i in ttttower_realm){
-	ttttower_realm[i]["defTeam"] = JSON.parse(ttttower_realm[i]["defTeam"])
-}
 var realm_day = {
 	"1" : {"1":true},
 	"2" : {"2":true},
@@ -51,7 +45,7 @@ module.exports = function() {
 		})
 	}
 	//挑战通天塔
-	this.challengeTTTBoss = function(uid,verify,masterSkills,cb) {
+	this.challengeTTTBoss = function(uid,seededNum,masterSkills,cb) {
 		var level = 0
 		async.waterfall([
 			function(next) {
@@ -65,18 +59,11 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-			    var fightInfo = self.getFightInfo(uid)
-			    if(!fightInfo){
-			    	next("未准备")
-			    	return
-			    }
-			   	var atkTeam = fightInfo.team
-			   	var seededNum = fightInfo.seededNum
-			    var mon_list = ttttower_level[level]["defTeam"]
-			    var defTeam = self.standardTeam(uid,mon_list,"ttt_main",ttttower_level[level]["lv"])
-			   	var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
+			    var atkTeam = self.getUserTeam(uid)
+			    var defTeam = self.fightContorl.getNPCTeamByType(main_name,ttttower_level[level]["defTeam"],ttttower_level[level]["lv"])
+			    var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
 			    self.taskUpdate(uid,"ttt",1)
-			   	if(winFlag){
+			    if(winFlag){
 			   		self.incrbyObj(uid,main_name,"level",1)
 			   		self.taskUpdate(uid,"tttLv",1)
 			   		self.updateSprintRank("ttt_rank",uid,1)
@@ -86,11 +73,10 @@ module.exports = function() {
 						awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["awards"],1,"通天塔"+level))
 					awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["mopupAward"],1,"通天塔"+level))
 					cb(true,awardList)
-			   	}else if(verify !== self.fightContorl.getVerifyInfo()){
-			   		self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"通天塔")
-			   	}else{
-			   		cb(false)
-			   	}
+			    }else{
+			    	self.verifyFaild(uid,self.fightContorl.getVerifyInfo(),"通天塔")
+			    	cb(false,{winFlag : winFlag})
+			    }
 			}
 		],function(err) {
 				cb(false,err)
@@ -146,6 +132,8 @@ module.exports = function() {
 	}
 	//挑战阵营塔
 	this.challengeRealmBoss = function(uid,realm,heros,seededNum,verify,masterSkills,cb) {
+		cb(false,"今日未开放该阵营")
+		return
 		if(!realm_day[self.weekDay][realm]){
 			cb(false,"今日未开放该阵营")
 			return
@@ -221,6 +209,8 @@ module.exports = function() {
 	}
 	//扫荡阵营塔
 	this.realmMopup = function(uid,realm,cb) {
+		cb(false,"今日未开放该阵营")
+		return
 		if(!realm_day[self.weekDay][realm]){
 			cb(false,"今日未开放该阵营")
 			return

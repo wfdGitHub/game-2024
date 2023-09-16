@@ -50,7 +50,6 @@ var keysType = {
 	curGrid : "num",
 	curChoose : "num",
 	surplus_healths :"obj",
-	zhuluTeam : "obj",
 	grids :"obj",
 	gridList :"obj",
 	spoils : "obj",
@@ -76,7 +75,6 @@ module.exports = function() {
 					curGrid : 0,
 					curChoose : -1,
 					surplus_healths : {},
-					zhuluTeam : [],
 					grids : {},
 					gridList : {},
 					spoils : [],
@@ -86,14 +84,6 @@ module.exports = function() {
 					revive : 0,
 					reset : 0
 				}
-				// let fightTeam = self.getUserTeam(uid)
-				// for(let i = 0;i < fightTeam.length;i++){
-				// 	if(fightTeam[i] && fightTeam[i].hId)
-				// 		data.zhuluTeam.push(fightTeam[i].hId)
-				// 	else
-				// 		data.zhuluTeam.push(null)
-				// }
-				// self.heroDao.setZhuluTeam(self.areaId,uid,data.zhuluTeam)
 				for(let i = 1;i < gridCounts.length;i++){
 					data.grids[i] = []
 					for(let j = 0;j < gridCounts[i];j++){
@@ -138,15 +128,13 @@ module.exports = function() {
 			lv = 30
 		if(grid % 10 === 0){
 			//boss
-			let info = {type:"boss"}
+			var info = {type:"boss"}
 			var team = bossTeams[grid / 10]
-			team = self.standardTeam(uid,team,"zhulu_boss",lv)
+			team = self.fightContorl.getNPCTeamByType(main_name,team,lv,"lv_4")
 			var dladd = zhulu_dl[grid]
-			for(let i = 0;i <= team.length;i++){
-				if(team[i]){
+			for(var i = 1;i <= team.length;i++)
+				if(team[i])
 					self.fightContorl.mergeData(team[i],dladd)
-				}
-			}
 			info.team = team
 			return info
 		}else{
@@ -168,26 +156,21 @@ module.exports = function() {
 						case "normal":
 							//普通怪
 							var team = normal_team[Math.floor(Math.random() * normal_team.length)].concat()
-
-							team = self.standardTeam(uid,team,"zhulu_normal",lv-8)
+							team = self.fightContorl.getNPCTeamByType(main_name,team,lv,"lv_1")
 							var dladd = zhulu_dl[grid]
-							for(let i = 0;i <= team.length;i++){
-								if(team[i]){
+							for(var i = 1;i <= team.length;i++)
+								if(team[i])
 									self.fightContorl.mergeData(team[i],dladd)
-								}
-							}
 							info.team = team
 						break
 						case "elite":
 							//精英怪
 							var team = elite_team[Math.floor(Math.random() * elite_team.length)].concat()
-							team = self.standardTeam(uid,team,"zhulu_elite",lv-5)
+							team = self.fightContorl.getNPCTeamByType(main_name,team,lv,"lv_2")
 							var dladd = zhulu_dl[grid]
-							for(let i = 0;i <= team.length;i++){
-								if(team[i]){
+							for(var i = 1;i <= team.length;i++)
+								if(team[i])
 									self.fightContorl.mergeData(team[i],dladd)
-								}
-							}
 							info.team = team
 						break
 						case "heal":
@@ -265,8 +248,8 @@ module.exports = function() {
 		cb(true)
 	}
 	local.spoilsLoad = function(atkTeam,spoils) {
-		for(let i = 0;i <spoils.length;i++){
-			let targetList = []
+		for(var i = 1;i < spoils.length;i++){
+			var targetList = []
 			switch(spoils[i].type){
 				case "all":
 					targetList = [0,1,2,3,4,5]
@@ -278,63 +261,28 @@ module.exports = function() {
 					targetList = [3,4,5]
 				break
 				case "carry":
-					for(let k = 0;k < atkTeam.length;k++){
+					for(var k = 0;k < atkTeam.length;k++){
 						if(atkTeam[k] && (heros[atkTeam[k].id]["career"] == 1 || heros[atkTeam[k].id]["career"] == 2)){
 							targetList.push(k)
 						}
 					}
 				break
 				case "support":
-					for(let k = 0;k < atkTeam.length;k++){
+					for(var k = 0;k < atkTeam.length;k++){
 						if(atkTeam[k] && heros[atkTeam[k].id]["career"] == 4){
 							targetList.push(k)
 						}
 					}
 				break
 				case "tank":
-					for(let k = 0;k < atkTeam.length;k++){
+					for(var k = 0;k < atkTeam.length;k++){
 						if(atkTeam[k] && heros[atkTeam[k].id]["career"] == 3){
 							targetList.push(k)
 						}
 					}
 				break
-				case "team_1":
-					for(let k = 0;k < atkTeam.length;k++){
-						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 2){
-							targetList.push(k)
-						}
-					}
-				break
-				case "team_2":
-					for(let k = 0;k < atkTeam.length;k++){
-						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 1){
-							targetList.push(k)
-						}
-					}
-				break
-				case "team_3":
-					for(let k = 0;k < atkTeam.length;k++){
-						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 3){
-							targetList.push(k)
-						}
-					}
-				break
-				case "team_4":
-					for(let k = 0;k < atkTeam.length;k++){
-						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 4){
-							targetList.push(k)
-						}
-					}
-				break
-				case "team_5":
-					for(let k = 0;k < atkTeam.length;k++){
-						if(atkTeam[k] && heros[atkTeam[k].id]["realm"] == 5){
-							targetList.push(k)
-						}
-					}
-				break
 			}
-			for(let j = 0;j < targetList.length;j++){
+			for(var j = 0;j < targetList.length;j++){
 				if(atkTeam[targetList[j]]){
 					if(!atkTeam[targetList[j]][spoils[i].spoils_type])
 						atkTeam[targetList[j]][spoils[i].spoils_type] = spoils[i].value
@@ -346,24 +294,16 @@ module.exports = function() {
 		return atkTeam
 	}
 	//获取逐鹿战斗数据
-	this.getZhuluFightData = function(uid,cb) {
-		self.heroDao.getZhuluTeam(uid,function(flag,atkTeam) {
-			if(!flag){
-				cb(flag,atkTeam)
-			}else{
-				userFightDatas[uid] = {}
-				let grid = userDatas[uid]["curGrid"] + 1
-				atkTeam = local.spoilsLoad(atkTeam,userDatas[uid]["spoils"])
-		    	for(let i = 0;i<atkTeam.length;i++){
-		    		if(atkTeam[i] && userDatas[uid]["surplus_healths"][atkTeam[i].hId] !== undefined)
-		    			atkTeam[i].surplus_health = userDatas[uid]["surplus_healths"][atkTeam[i].hId]
-		    	}
-		    	var team = self.getUserTeam(uid)
-				if(team && team[6])
-					atkTeam[6] = team[6]
-		    	userFightDatas[uid] = {seededNum : Date.now(),atkTeam : atkTeam}
-			    cb(true,userFightDatas[uid])
-			}
+	this.getZhuluFightData = function(uid,hIds,cb) {
+		self.heroDao.getTeamByCustom(uid,hIds,function(flag,teams) {
+			userFightDatas[uid] = {}
+			var grid = userDatas[uid]["curGrid"] + 1
+			atkTeam = local.spoilsLoad(teams,userDatas[uid]["spoils"])
+	    	for(var i = 1;i < atkTeam.length;i++)
+	    		if(atkTeam[i] && userDatas[uid]["surplus_healths"][atkTeam[i].hId] !== undefined)
+	    			atkTeam[i].surplus_health = userDatas[uid]["surplus_healths"][atkTeam[i].hId]
+	    	userFightDatas[uid] = {seededNum : Date.now(),atkTeam : atkTeam}
+	    	cb(true,userFightDatas[uid])
 		})
 	}
 	//执行操作
@@ -435,13 +375,11 @@ module.exports = function() {
 			break
 			case "heal":
 				//恢复
-				for(var i = 0;i < userDatas[uid].zhuluTeam.length;i++){
-					if(userDatas[uid].zhuluTeam[i]){
-						if(userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]]){
-							userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]] += 0.5
-							if(userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]] >= 1){
-								delete userDatas[uid]["surplus_healths"][userDatas[uid].zhuluTeam[i]]
-							}
+				for(var i in userDatas[uid]["surplus_healths"]){
+					if(userDatas[uid]["surplus_healths"][i]){
+						userDatas[uid]["surplus_healths"][i] += 0.5
+						if(userDatas[uid]["surplus_healths"][i] >= 1){
+							delete userDatas[uid]["surplus_healths"][i]
 						}
 					}
 				}
@@ -535,15 +473,6 @@ module.exports = function() {
 		local.changeData(uid,"curChoose",-1)
 		cb(true,{curChoose : userDatas[uid]["curChoose"],curGrid : userDatas[uid]["curGrid"],awardList : awardList})
 	}
-	//改变逐鹿上阵阵容
-	this.setZhuluTeam = function(uid,hIds,cb) {
-		this.heroDao.setZhuluTeam(self.areaId,uid,hIds,function(flag,data) {
-			if(flag){
-				local.changeData(uid,"zhuluTeam",hIds)
-			}
-			cb(flag,data)
-		})
-	}
 	//选择战利品
 	this.chooseSpoils = function(uid,index,cb) {
 		if(userDatas[uid]["curChoose"] != -2){
@@ -617,7 +546,6 @@ module.exports = function() {
 			curGrid : 0,
 			curChoose : -1,
 			surplus_healths : {},
-			zhuluTeam : [],
 			grids : {},
 			gridList : {},
 			spoils : [],
@@ -627,14 +555,6 @@ module.exports = function() {
 			revive : 0,
 			reset : 1
 		}
-		// let fightTeam = self.getUserTeam(uid)
-		// for(let i = 0;i < fightTeam.length;i++){
-		// 	if(fightTeam[i] && fightTeam[i].hId)
-		// 		data.zhuluTeam.push(fightTeam[i].hId)
-		// 	else
-		// 		data.zhuluTeam.push(null)
-		// }
-		// self.heroDao.setZhuluTeam(self.areaId,uid,data.zhuluTeam)
 		for(let i = 1;i < gridCounts.length;i++){
 			data.grids[i] = []
 			for(let j = 0;j < gridCounts[i];j++){

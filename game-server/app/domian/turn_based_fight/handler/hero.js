@@ -13,6 +13,7 @@ const hufu_skill = fightCfg.getCfg("hufu_skill")
 const talent_list = fightCfg.getCfg("talent_list")
 const aptitudes = fightCfg.getCfg("aptitude")
 const skills = fightCfg.getCfg("skills")
+const equip_suit = fightCfg.getCfg("equip_suit")
 const character = require("../entity/character.js")
 const baseStone = {"1" : 4110,"2" : 4210,"3" : 4310,"4" : 4410}
 var lv4Map = []
@@ -254,6 +255,10 @@ var model = function(fightContorl) {
 		var aptitude = exalt_lv[info.exalt]["aptitude"] || 1
 		this.mergeData(info,heros[id])
 		var evoId = evolve_lv[info.evo]["evoId"]
+		if(evolves[heros[info.id]["evo"+evoId]]["specie1"])
+			info.specie1 = evolves[heros[info.id]["evo"+evoId]]["specie1"]
+		if(evolves[heros[info.id]["evo"+evoId]]["specie2"])
+			info.specie2 = evolves[heros[info.id]["evo"+evoId]]["specie2"]
 		//被动技能
 		for(var i = 1;i <= evoId;i++)
 			this.mergeTalent(info,heros[info.id]["talent"+evoId])
@@ -283,8 +288,8 @@ var model = function(fightContorl) {
 				this.mergeData(info,eInfo.extraAtt)
 				this.mergeData(info,eInfo.stAtt)
 				this.mergeData(info,eInfo.zfAtt)
-				for(var j = 0;j < eInfo.spe.length;i++)
-					this.mergeTalent(info,eInfo.spe[i])
+				for(var j = 0;j < eInfo.spe.length;j++)
+					this.mergeTalent(info,eInfo.spe[j])
 				if(eInfo.suit){
 					if(!suitMaps[eInfo.suit])
 						suitMaps[eInfo.suit] = 0
@@ -391,6 +396,9 @@ var model = function(fightContorl) {
 			this.mergeData(info,{"self_maxHP_add":manor_dby[teamCfg["dby"]]["add"]})
 		if(teamCfg && teamCfg["qby"])
 			this.mergeData(info,{"speed":manor_qby[teamCfg["qby"]]["add"]})
+		//===============场景属性=================//
+		if(teamCfg["specieAdd"] && (info.specie1 == teamCfg["specieAdd"] || info.specie2 == teamCfg["specieAdd"]))
+			this.mergeData(info,{"self_atk_add":0.5})
 		//战法技能
 		if(info.zf_1 && zhanfa[info.zf_1] && zhanfa[info.zf_1]["talent"])
 			this.mergeTalent(info,zhanfa[info.zf_1]["talent"])

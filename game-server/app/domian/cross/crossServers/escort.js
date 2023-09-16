@@ -356,7 +356,7 @@ module.exports = function() {
 			"user" : self.getSimpleUser(robotId),
 			"time" : Date.now(),
 			"quality" : "car"+quality,
-			"team" : self.standardTeam(team,"main",lv),
+			"team" : self.fightContorl.getNPCTeamByType("escort",team,lv,"lv_"+(quality+1)),
 			"robot" : true,
 			"robCount" : 0
 		}

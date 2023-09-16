@@ -5,11 +5,6 @@ const ancient_robot = require("../../../../config/gameCfg/ancient_robot.json")
 const util = require("../../../../util/util.js")
 const async = require("async")
 const boxs = [2,5,10,15]
-for(var i in ancient_robot){
-	ancient_robot[i]["team1"] = JSON.parse(ancient_robot[i]["team1"])
-	ancient_robot[i]["team2"] = JSON.parse(ancient_robot[i]["team2"])
-	ancient_robot[i]["team3"] = JSON.parse(ancient_robot[i]["team3"])
-}
 var ancientEntity = function(self,theatreId) {
 	var self = self
 	var mySelf = this

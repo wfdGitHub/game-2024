@@ -7,13 +7,6 @@ const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const main_name = "guild_fb"
 const oneDayTime = 86400000
 const currency = guild_cfg["currency"]["value"]
-for(var i in guild_fb){
-	guild_fb[i]["team"] = JSON.parse(guild_fb[i]["team"])
-	for(var j = 0;j < 6;j++){
-		if(guild_fb[i]["team"][j])
-			guild_fb[i]["team"][j].boss = true
-	}
-}
 module.exports = function() {
 	var self = this
 	//获取当前副本数据
@@ -112,7 +105,9 @@ module.exports = function() {
 				//挑战BOSS
 				var atkTeam = self.getUserTeam(uid)
 				var seededNum = Date.now()
-				var defTeam = guild_fb[fbId]["team"]
+				var defTeam = self.fightContorl.getNPCTeamByType(main_name,guild_fb[fbId]["team"],guild_fb[fbId]["lv"])
+				for(var i = 1;i < defTeam.length;i++)
+					defTeam[i]["boss"] = true
 				var fightOtps = {seededNum : seededNum,maxRound:5}
 			    info = {
 			    	atkTeam : atkTeam,

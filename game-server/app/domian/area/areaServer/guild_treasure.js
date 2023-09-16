@@ -9,8 +9,7 @@ const openTime = {"1":1,"3":1,"5":1,"0":1}   //开启时间
 const fightTime = 5 //战斗开始时间
 for(var i in guild_lv){
 	for(var j = 1;j <= 4;j++){
-		guild_lv[i]["team"+j] = JSON.parse(guild_lv[i]["team"+j])
-		for(var k = 0;k < 6;k++){
+		for(var k = 1;k < 6;k++){
 			if(guild_lv[i]["team"+j][k])
 				guild_lv[i]["team"+j][k].self_maxHP_add = guild_lv[i]["hpAdd"]
 		}
@@ -138,7 +137,7 @@ module.exports = function() {
 		}
 		var bossId = Math.floor((d.getDate() % 4) + 1)
 		var hours = d.getHours()
-		var surplus_health = [1,1,1,1,1,1]
+		var surplus_health = []
 		var noFight = false
 		var info = {}
 		var allDamage = 0
@@ -163,45 +162,38 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				if(surplus_health[0] === 0 && surplus_health[1] === 0 && surplus_health[2] === 0 && surplus_health[3] === 0 && surplus_health[4] === 0 && surplus_health[5] === 0){
-					noFight = true
-					next()
-				}else{
-					//获取阵容
-					var atkTeam = self.getUserTeam(uid)
-					var seededNum = Date.now()
-					var defTeam = guild_lv[lv]["team"+bossId]
-					for(var i = 0;i < 6;i++){
-						if(defTeam[i])
-							defTeam[i]["surplus_health"] = surplus_health[i]
-					}
-					var fightOtps = {seededNum : seededNum,maxRound:5}
-				    info = {
-				    	atkTeam : atkTeam,
-				    	defTeam : defTeam,
-				    	fightOtps : fightOtps
-				    }
-				    self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
-				    var overInfo = self.fightContorl.getOverInfo()
-				    surplus_health = []
-				    var diedNum = 0
-					for(var i = 0;i < 6;i++){
-						if(defTeam[i] && overInfo.defTeam[i]){
-							surplus_health[i] = overInfo.defTeam[i].hp/overInfo.defTeam[i].maxHP
-						}else{
-							surplus_health[i] = 0
-						}
-						if(surplus_health[i] <= 0)
-							diedNum++
-					}
-					allDamage = overInfo.atkDamage
-					self.redisDao.db.hset(main_name,guildId,JSON.stringify(surplus_health))
-					if(diedNum == 6){
-						//击杀目标
-						local.createTreasureAuction(guildId,lv)
-					}
-				    next()
+				//获取阵容
+				var atkTeam = self.getUserTeam(uid)
+				var seededNum = Date.now()
+				var defTeam = self.fightContorl.getNPCTeamByType(main_name,guild_lv[lv]["team"+bossId],self.getLordLv(uid))
+				for(var i = 1;i < defTeam.length;i++)
+					if(defTeam[i])
+						defTeam[i]["surplus_health"] = surplus_health[i-1]
+				if(defTeam.length < 2){
+					next("BOSS已击败")
+					return
 				}
+				var fightOtps = {seededNum : seededNum}
+			    info = {
+			    	atkTeam : atkTeam,
+			    	defTeam : defTeam,
+			    	fightOtps : fightOtps
+			    }
+			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
+			    var overInfo = self.fightContorl.getOverInfo()
+			    surplus_health = []
+				for(var i = 0;i < defTeam.length;i++){
+					if(defTeam[i] && overInfo.defTeam[i])
+						surplus_health[i] = overInfo.defTeam[i].hp/overInfo.defTeam[i].maxHP
+					else
+						surplus_health[i] = 0
+				}
+				allDamage = overInfo.atkDamage
+				self.redisDao.db.hset(main_name,guildId,JSON.stringify(surplus_health))
+				//击杀目标
+			    if(winFlag)
+					local.createTreasureAuction(guildId,lv)
+			    next()
 			},
 			function(next) {
 				//排行榜

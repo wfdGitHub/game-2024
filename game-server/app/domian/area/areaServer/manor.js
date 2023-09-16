@@ -37,11 +37,10 @@ for(var i in builds["qjf"]){
 var mon_weight = {"all":10000,"1":3000,"2":6000,"3":8000,"4":9000,"5":9600,"6":10000}
 for(var i in builds["main"]){
 	i = Number(i)
-	builds["main"][i]["boss_team"] = JSON.parse(builds["main"][i]["boss_team"])
-	builds["main"][i]["robot"] = JSON.parse(builds["main"][i]["robot"])
-	for(var j = 1;j <= 6;j++){
-		builds["main"][i]["mon_"+j] = JSON.parse(builds["main"][i]["mon_"+j])
-	}
+	builds["main"][i]["boss_team"] = builds["main"][i]["boss_team"]
+	builds["main"][i]["robot"] = builds["main"][i]["robot"]
+	for(var j = 1;j <= 6;j++)
+		builds["main"][i]["mon_"+j] = builds["main"][i]["mon_"+j]
 	//生成机器人主城配置
 	var robot_city = {}
 	var tmpLand = 0
@@ -57,7 +56,6 @@ for(var i in builds["main"]){
 }
 var citis = []
 for(var i in manor_citys){
-	manor_citys[i]["npc_team"] = JSON.parse(manor_citys[i]["npc_team"])
 	citis.push(i)
 }
 module.exports = function() {
@@ -541,7 +539,7 @@ module.exports = function() {
 				//战斗结算
 				var atkTeam = self.getUserTeam(uid)
 				var seededNum = Date.now()
-				var defTeam = self.standardTeam(uid,builds["main"][buildLv]["boss_team"],"worldBoss",self.getLordLv(uid) - 2)
+				var defTeam = self.fightContorl.getNPCTeamByType("manor_mon",builds["main"][buildLv]["boss_team"],self.getLordLv(uid),"lv_4")
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
 					var cd = Date.now() + boss_cd
@@ -606,7 +604,7 @@ module.exports = function() {
 					dl = "zhulu_boss"
 				else if(monLv >= 2)
 					dl = "zhulu_elite"
-				var defTeam = self.standardTeam(uid,builds["main"][buildLv]["mon_"+monLv],dl,self.getLordLv(uid) - 5)
+				var defTeam = self.fightContorl.getNPCTeamByType("manor_mon",builds["main"][buildLv]["mon_"+monLv],self.getLordLv(uid),"lv_2")
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
 					var cd = Date.now() + monCd
@@ -797,12 +795,12 @@ module.exports = function() {
 				//统帅厅加成
 				self.getObj(uid,main_name,"tst",function(data) {
 					if(data && builds["tst"][data]){
-						if(!atkTeam[6]["team_atk_add"])
-							atkTeam[6]["team_atk_add"] = 0
-						atkTeam[6]["team_atk_add"] += builds["tst"][data]["add"]
-						if(!atkTeam[6]["team_maxHP_add"])
-							atkTeam[6]["team_maxHP_add"] = 0
-						atkTeam[6]["team_maxHP_add"] += builds["tst"][data]["add"]
+						if(!atkTeam[0]["team_atk_add"])
+							atkTeam[0]["team_atk_add"] = 0
+						atkTeam[0]["team_atk_add"] += builds["tst"][data]["add"]
+						if(!atkTeam[0]["team_maxHP_add"])
+							atkTeam[0]["team_maxHP_add"] = 0
+						atkTeam[0]["team_maxHP_add"] += builds["tst"][data]["add"]
 					}
 					next()
 				})
@@ -1079,12 +1077,12 @@ module.exports = function() {
 				//统帅厅加成
 				self.getObj(uid,main_name,"tst",function(data) {
 					if(data && builds["tst"][data]){
-						if(!atkTeam[6]["team_atk_add"])
-							atkTeam[6]["team_atk_add"] = 0
-						atkTeam[6]["team_atk_add"] += builds["tst"][data]["add"]
-						if(!atkTeam[6]["team_maxHP_add"])
-							atkTeam[6]["team_maxHP_add"] = 0
-						atkTeam[6]["team_maxHP_add"] += builds["tst"][data]["add"]
+						if(!atkTeam[0]["team_atk_add"])
+							atkTeam[0]["team_atk_add"] = 0
+						atkTeam[0]["team_atk_add"] += builds["tst"][data]["add"]
+						if(!atkTeam[0]["team_maxHP_add"])
+							atkTeam[0]["team_maxHP_add"] = 0
+						atkTeam[0]["team_maxHP_add"] += builds["tst"][data]["add"]
 					}
 					next()
 				})
@@ -1093,7 +1091,7 @@ module.exports = function() {
 				//获取敌方队伍
 				if(target < 10000){
 					//机器人队伍
-					defTeam = builds["main"][buildLv]["robot"]
+					defTeam = self.fightContorl.getNPCTeamByType("manor_mon",builds["main"][buildLv]["robot"],self.getLordLv(uid),"lv_3")
 					next()
 				}else{
 					//玩家队伍
@@ -1231,12 +1229,12 @@ module.exports = function() {
 				//统帅厅加成
 				self.getObj(uid,main_name,"tst",function(data) {
 					if(data && builds["tst"][data]){
-						if(!atkTeam[6]["team_atk_add"])
-							atkTeam[6]["team_atk_add"] = 0
-						atkTeam[6]["team_atk_add"] += builds["tst"][data]["add"]
-						if(!atkTeam[6]["team_maxHP_add"])
-							atkTeam[6]["team_maxHP_add"] = 0
-						atkTeam[6]["team_maxHP_add"] += builds["tst"][data]["add"]
+						if(!atkTeam[0]["team_atk_add"])
+							atkTeam[0]["team_atk_add"] = 0
+						atkTeam[0]["team_atk_add"] += builds["tst"][data]["add"]
+						if(!atkTeam[0]["team_maxHP_add"])
+							atkTeam[0]["team_maxHP_add"] = 0
+						atkTeam[0]["team_maxHP_add"] += builds["tst"][data]["add"]
 					}
 					next()
 				})
@@ -1245,12 +1243,12 @@ module.exports = function() {
 				//家园特权加成
 		    	var manor_pri = self.getLordAtt(uid,"manor_pri")
 		    	if(manor_pri > Date.now()){
-					if(!atkTeam[6]["team_atk_add"])
-						atkTeam[6]["team_atk_add"] = 0
-					atkTeam[6]["team_atk_add"] += 1
-					if(!atkTeam[6]["team_maxHP_add"])
-						atkTeam[6]["team_maxHP_add"] = 0
-					atkTeam[6]["team_maxHP_add"] += 1
+					if(!atkTeam[0]["team_atk_add"])
+						atkTeam[0]["team_atk_add"] = 0
+					atkTeam[0]["team_atk_add"] += 1
+					if(!atkTeam[0]["team_maxHP_add"])
+						atkTeam[0]["team_maxHP_add"] = 0
+					atkTeam[0]["team_maxHP_add"] += 1
 		    	}
 		    	next()
 			},

@@ -295,18 +295,18 @@ var peakEntity = function(self,theatreId) {
                 //同步初始阵容
                 var count = 0
                 for(let i = 0;i < uids.length;i++){
-                    self.getDefendTeam(uids[i],function(data) {
-                        if(!data){
+					self.getTeamByType(uids[i],battle_cfg["peak"]["team"],function(flag,teams) {
+                        if(!teams){
                             console.error("获取阵容失败 "+uids[i])
-                            data = [0,0,0,0,0,0]
+                            teams = []
                         }
-                        self.redisDao.db.hset(main_name+":fightTeam",crossUids[i],JSON.stringify(data))
-                        roundTeam[crossUids[i]] = data
+                        self.redisDao.db.hset(main_name+":fightTeam",crossUids[i],JSON.stringify(teams))
+                        roundTeam[crossUids[i]] = teams
                         count++
                         if(count == totalPlayer){
                             next()
                         }
-                    })
+					})
                 }
             },
 			function(next) {
@@ -552,13 +552,13 @@ var peakEntity = function(self,theatreId) {
 			cb(false,"未进入本轮比赛")
 			return
 		}
-		self.getDefendTeam(uid,function(data){
-			if(!data){
+		self.getTeamByType(uid,battle_cfg["peak"]["team"],function(flag,teams) {
+			if(!teams){
 				cb(false,"获取阵容失败")
 			}else{
-				roundTeam[crossUid] = data
-				self.redisDao.db.hset(main_name+":fightTeam",crossUid,JSON.stringify(data))
-				cb(true,data)
+				roundTeam[crossUid] = teams
+				self.redisDao.db.hset(main_name+":fightTeam",crossUid,JSON.stringify(teams))
+				cb(true,teams)
 			}
 		})
 	}

@@ -335,9 +335,6 @@ module.exports = function() {
 						if(flag){
 							if(value > 0){
 								switch(itemCfg[itemId].type){
-									case "equip":
-										self.taskUpdate(uid,"equip",value,equip_base[itemId].lv)
-									break
 									case "ace":
 										self.taskUpdate(uid,"ace",value,ace_pack[itemId].quality)
 									break

@@ -15,7 +15,7 @@ tttHandler.prototype.getTTTInfo = function(msg, session, next) {
 tttHandler.prototype.challengeTTTBoss = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].challengeTTTBoss(uid,msg.verify,msg.masterSkills,function(flag,msg) {
+  this.areaManager.areaMap[areaId].challengeTTTBoss(uid,msg.seededNum,msg.masterSkills,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

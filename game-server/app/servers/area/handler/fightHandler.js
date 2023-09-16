@@ -38,9 +38,9 @@ fightHandler.prototype.readyFight = function(msg, session, next) {
 fightHandler.prototype.challengeCheckpoints = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var verify = msg.verify
+  var seededNum = msg.seededNum
   var masterSkills = msg.masterSkills
-  this.areaManager.areaMap[areaId].challengeCheckpoints(uid,verify,masterSkills,function(flag,result) {
+  this.areaManager.areaMap[areaId].challengeCheckpoints(uid,seededNum,masterSkills,function(flag,result) {
     next(null,{flag : flag,result : result})
   })
 }
@@ -53,14 +53,6 @@ fightHandler.prototype.gainChapterAwardBox = function(msg, session, next) {
     next(null,{flag : flag,result : result})
   })
 }
-//获取无尽试炼种子
-fightHandler.prototype.getEndlessSeededList = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getEndlessSeededList(uid,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
 //获取无尽试炼数据
 fightHandler.prototype.getEndlessData = function(msg, session, next) {
   var uid = session.uid
@@ -70,39 +62,10 @@ fightHandler.prototype.getEndlessData = function(msg, session, next) {
   })
 }
 //挑战单人试炼
-fightHandler.prototype.challengeOneEndless = function(msg, session, next) {
+fightHandler.prototype.challengeEndless = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var hIds = msg.hIds
-  var id = msg.id
-  var seededList = msg.seededList
-  var index = msg.index
-  var verifys = msg.verifys
-  var masterSkillList = msg.masterSkillList
-  this.areaManager.areaMap[areaId].challengeOneEndless(uid,hIds,id,seededList,index,verifys,masterSkillList,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
-//挑战三人试炼
-fightHandler.prototype.challengeThreeEndless = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var hIds = msg.hIds
-  var id = msg.id
-  var seededList = msg.seededList
-  var index = msg.index
-  var verifys = msg.verifys
-  var masterSkillList = msg.masterSkillList
-  this.areaManager.areaMap[areaId].challengeThreeEndless(uid,hIds,id,seededList,index,verifys,masterSkillList,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
-//获取排行榜
-fightHandler.prototype.getEndlessRank = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var type = msg.type
-  this.areaManager.areaMap[areaId].getEndlessRank(type,function(flag,data) {
+  this.areaManager.areaMap[areaId].challengeEndless(msg.uid,msg.id,msg.level,msg.seededNum,msg.masterSkills,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

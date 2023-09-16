@@ -7,7 +7,6 @@ var character = require("../entity/character.js")
 var fightRecord = require("./fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
 var maxRound = 20				//最大回合
-var teamLength = 6				//阵容人数
 var indexMap = [4,0,2,1,3,5]
 var model = function(atkInfo,defInfo,otps) {
     fightRecord.init()
@@ -104,7 +103,7 @@ model.prototype.loadHero = function(belong,index,show) {
 	for(var i = id;i < this[belong+"Team"].length;i++){
 		this[belong+"TeamInfo"]["comeId"]++
 		var hero = this[belong+"Team"][i]
-		if(!hero.isNaN){
+		if(!hero.isNaN && hero["surplus_health"] !== 0){
 			if(show)
 				fightRecord.push({type:"hero_comeon",id:hero.id,index:index,belong:belong})
 			hero.index = index
@@ -493,20 +492,16 @@ model.prototype.fightOver = function(winFlag,roundEnd) {
 	// console.log("战斗结束")
 	this.isFight = false
 	var info = {type : "fightOver",winFlag : winFlag,atkTeam:[],defTeam:[],round : this.round,roundEnd : roundEnd||false,atkDamage:0,defDamage:0}
-	for(var i = 0;i < teamLength;i++){
+	for(var i = 0;i < this.atkTeam.length;i++){
 		if(!this.atkTeam[i].isNaN){
 			info.atkDamage += this.atkTeam[i].totalDamage
 			info.atkTeam.push(this.atkTeam[i].getSimpleInfo())
 		}
-		else {
-			info.atkTeam.push(null)
-		}
+	}
+	for(var i = 0;i < this.defTeam.length;i++){
 		if(!this.defTeam[i].isNaN){
 			info.defDamage += this.defTeam[i].totalDamage
 			info.defTeam.push(this.defTeam[i].getSimpleInfo())
-		}
-		else{
-			info.defTeam.push(null)
 		}
 	}
 	info.masterSkills = this.masterSkills

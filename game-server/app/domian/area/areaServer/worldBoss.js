@@ -170,9 +170,8 @@ module.exports = function() {
 			function(next) {
 				//战斗
 				var atkTeam = self.getUserTeam(uid)
-				var defTeam = bossTeam.concat([])
-				defTeam = self.standardTeam(uid,defTeam,"worldBoss")
-				defTeam[4].boss = true
+				var defTeam =  self.fightContorl.getNPCTeamByType(main_name,bossTeam,self.getLordLv(uid))
+				defTeam[1].boss = true
 				var fightOtps = {seededNum : Date.now(),maxRound:world_boss_cfg["fightRound"]["value"]}
 				self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
 			    info = {

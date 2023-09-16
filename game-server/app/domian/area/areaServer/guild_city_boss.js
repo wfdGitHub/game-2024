@@ -89,6 +89,7 @@ module.exports = function() {
 			cb(false,fightTime+"点之后可以挑战")
 			return
 		}
+		var lv = city_boss["boss_"+index+"_lv"]
 		self.getAreaObj(main_name+":count",uid,function(count) {
 			count = Number(count) || 0
 			if(count >= 5){
@@ -102,10 +103,8 @@ module.exports = function() {
 			count++
 			self.incrbyAreaObj(main_name+":count",uid,1)
 			var atkTeam = self.getUserTeam(uid)
-			var bossInfo = guild_city_boss[city_boss["boss_"+index+"_lv"]]
-			var defTeam = self.standardTeam(uid,[0,0,0,0,guild_city[index]["bossId"],0],"main",bossInfo["lv"])
-			self.fightContorl.mergeData(defTeam[4],{amplify:bossInfo["amplify"],hitRate:bossInfo["hitRate"]})
-			defTeam[4].boss = true
+			var defTeam = self.fightContorl.getNPCTeamByType(main_name,guild_city[index]["teams"],guild_city_boss[lv]["lv"])
+			defTeam[1].boss = true
 			var fightOtps = {seededNum : Date.now(),maxRound:5}
 			var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
 			var list = self.fightContorl.getFightRecord()

@@ -25,7 +25,7 @@ zhuluHandler.prototype.chooseGrid = function(msg, session, next) {
 zhuluHandler.prototype.getZhuluFightData = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getZhuluFightData(uid,function(flag,msg) {
+  this.areaManager.areaMap[areaId].getZhuluFightData(uid,msg.hIds,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

@@ -4,6 +4,7 @@ const invade = require("../../../../config/gameCfg/invade.json")
 const oneDayTime = 86400000
 const oneHourTime = 3600000
 const main_name = "invade"
+const lv_map = {"1":"lv_1","2":"lv_1","3":"lv_2","4":"lv_3","5":"lv_4"}
 module.exports = function() {
 	var self = this
 	var local = {}
@@ -150,11 +151,6 @@ module.exports = function() {
 			cb(false,"index error "+index)
 			return
 		}
-		var fightInfo = self.getFightInfo(uid,"invade")
-		if(!fightInfo){
-			cb(false,"未准备")
-			return
-		}
 		self.getAreaHMObj(main_name,["count_"+uid,"mon_"+uid],function(list) {
 			var count = Number(list[0]) || 0
 			if(count >= invade["count"]["value"]){
@@ -168,10 +164,9 @@ module.exports = function() {
 			self.incrbyAreaObj(main_name,"count_"+uid,1)
 			list[1] = JSON.parse(list[1])
 			var monLv = list[1][index]["lv"]
-			var defTeam = JSON.parse(list[1][index]["team"])
-		    var atkTeam = fightInfo.team
-		    var seededNum = fightInfo.seededNum
-		    defTeam = self.standardTeam(uid,defTeam,"invade_"+monLv)
+		    var atkTeam = self.getUserTeam(uid)
+			var defTeam = self.fightContorl.getNPCTeamByType(main_name,JSON.parse(list[1][index]["team"]),self.getLordLv(uid),lv_map[monLv])
+		    var seededNum = Date.now()
 	    	var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 	    	if(winFlag){
 	    		local.lessMonValue(monLv,1)

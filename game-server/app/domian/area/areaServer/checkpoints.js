@@ -1,19 +1,11 @@
 const checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
 const checkpoints_task = require("../../../../config/gameCfg/checkpoints_task.json")
-const equip_base = require("../../../../config/gameCfg/equip_base.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
 const activity_cfg = require("../../../../config/gameCfg/activity_cfg.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const chapter = require("../../../../config/gameCfg/chapter.json")
 var async = require("async")
 module.exports = function() {
-	var equip_list = {}
-	for(var i in equip_base){
-		if(!equip_list[equip_base[i]["lv"]]){
-			equip_list[equip_base[i]["lv"]] = []
-		}
-		equip_list[equip_base[i]["lv"]].push(i)
-	}
 	var self = this
 	var userCheckpoints = {}
 	//加载角色关卡数据
@@ -45,7 +37,7 @@ module.exports = function() {
 	this.checkpointsFail = function(uid,level,cb) {
 	}
 	//开始挑战关卡
-	this.challengeCheckpoints = function(uid,verify,masterSkills,cb) {
+	this.challengeCheckpoints = function(uid,seededNum,masterSkills,cb) {
 		var level = 0
 		async.waterfall([
 			function(next) {
@@ -58,7 +50,7 @@ module.exports = function() {
 			},
 			function(next) {
 				// 判断主角等级
-				let lv = self.getLordLv(uid)
+				var lv = self.getLordLv(uid)
 				if(lv < checkpointsCfg[level].lev_limit){
 					next("等级限制")
 				}else{
@@ -66,16 +58,8 @@ module.exports = function() {
 				}
 			},
 			function(next) {
-				let fightInfo = self.getFightInfo(uid)
-				if(!fightInfo){
-					next("未准备")
-					return
-				}
-			    let atkTeam = fightInfo.team
-			    let seededNum = fightInfo.seededNum
-			    let defTeam = []
-			    let mon_list = JSON.parse(checkpointsCfg[level].mon_list)
-			    defTeam = self.standardTeam(uid,mon_list,"main",checkpointsCfg[level]["lev_limit"])
+			    var atkTeam = self.getUserTeam(uid)
+			    var defTeam = self.fightContorl.getNPCTeamByType("checkpoints",checkpointsCfg[level].mon_list,checkpointsCfg[level]["lev_limit"])
 			    var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
 			    if(winFlag){
 			    	var awardList = self.checkpointsSuccess(uid,level)
@@ -83,9 +67,8 @@ module.exports = function() {
 			    	self.taskUpdate(uid,"checkpoints",1,level)
 			    	self.updateSprintRank("checkpoint_rank",uid,1)
 			    	self.cacheDao.saveCache({"messagetype":"checkpoints",uid:uid,level:level})
-			    }else if(verify !== self.fightContorl.getVerifyInfo()){
-			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"主线关卡")
 			    }else{
+			    	self.verifyFaild(uid,self.fightContorl.getVerifyInfo(),"主线关卡")
 			    	cb(false,{winFlag : winFlag})
 			    }
 			}
@@ -232,12 +215,6 @@ module.exports = function() {
 				list.push(0)
 				count -= 1
 			}
-		}
-		for(var i = 0;i < list.length;i++){
-			var lv = equipLv + list[i]
-			if(awardStr)
-				awardStr += "&"
-			awardStr += equip_list[lv][Math.floor(equip_list[lv].length * Math.random())] + ":1"
 		}
 		//活动掉落
 		var dropItem = self.festivalDrop()

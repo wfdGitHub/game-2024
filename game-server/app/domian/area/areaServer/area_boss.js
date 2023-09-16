@@ -4,7 +4,6 @@ var util = require("../../../../util/util.js")
 const main_name = "area_boss"
 var maxBoss = 0
 for(var i in area_boss_base){
-	area_boss_base[i]["team"] = JSON.parse(area_boss_base[i]["team"])
 	area_boss_base[i]["less_1"] = Math.ceil(area_boss_base[i]["hp"] * 0.2)
 	area_boss_base[i]["less_2"] = Math.ceil(area_boss_base[i]["hp"] * 0.4)
 	area_boss_base[i]["less_3"] = Math.ceil(area_boss_base[i]["hp"] * 0.6)
@@ -117,11 +116,10 @@ module.exports = function() {
 				self.redisDao.db.hincrby("area:area"+self.areaId+":"+main_name,"play_"+uid,1)
 				var atkTeam = self.getUserTeam(uid)
 				var seededNum = Date.now()
-				var defTeam = area_boss_base[area_data.bossIndex]["team"]
-				for(var i = 0;i < 6;i++){
+				var defTeam = self.fightContorl.getNPCTeamByType(main_name,area_boss_base[area_data.bossIndex]["team"],self.getLordLv(uid))
+				for(var i = 1;i < defTeam.length;i++)
 					if(defTeam[i])
 						defTeam[i].boss = true
-				}
 				var fightOtps = {seededNum : seededNum,maxRound:10}
 			    var info = {
 			    	atkTeam : atkTeam,

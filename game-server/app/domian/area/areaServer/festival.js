@@ -113,8 +113,8 @@ module.exports = function() {
 				self.incrbyObj(uid,main_name,"bossCount",1)
 				var atkTeam = self.getUserTeam(uid)
 			    var seededNum = Date.now()
-			    var defTeam = self.standardTeam(uid,[0,0,0,0,festivalInfo["bossTeam"],0],"zhulu_boss",self.getLordLv(uid))
-				defTeam[4].boss = true
+			    var defTeam =  self.fightContorl.getNPCTeamByType(festival,[festivalInfo["bossTeam"]],self.getLordLv(uid))
+				defTeam[1].boss = true
 				var fightOtps = {seededNum : seededNum,maxRound:5}
 			    self.fightContorl.beginFight(atkTeam,defTeam,fightOtps)
 			    var info = {

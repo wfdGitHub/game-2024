@@ -3,7 +3,9 @@ const arena_cfg = require("../../../../config/gameCfg/arena_cfg.json")
 const arena_rank = require("../../../../config/gameCfg/arena_rank.json")
 const arena_shop = require("../../../../config/gameCfg/arena_shop.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
+const battle_cfg = require("../../../../config/gameCfg/battle_cfg.json")
 var util = require("../../../../util/util.js")
+const async = require("async")
 var mainName = "arena"
 var correctNumerator = arena_cfg["correctNumerator"]["value"]			//修正值
 var correctDenominator = arena_cfg["correctDenominator"]["value"]		//宽度值
@@ -19,7 +21,6 @@ var maxRecordNum = 10													//最大记录条数
 var rankList = []
 for(var i in arena_rank){
 	rankList.push(parseInt(i))
-	arena_rank[i]["team"] = JSON.parse(arena_rank[i]["team"])
 }
 rankList.sort(function(a,b) {
 	return a-b
@@ -181,61 +182,67 @@ module.exports = function() {
 			cb(false,"challengeArena targetRank error "+targetRank)
 			return
 		}
-	    var fightInfo = self.getFightInfo(uid)
-	    if(!fightInfo || !fightInfo.team || !fightInfo.seededNum){
-			cb(false,"atkTeam error")
-			return
-	    }
-	    var atkUser = self.getSimpleUser(uid)
-	    var atkTeam = fightInfo.team
-	    var seededNum = fightInfo.seededNum
-		local.getTargetsInfo([targetRank],function(flag,data) {
-			if(!data || !data.userInfos || !data.userInfos[0] || data.userInfos[0]["name"] !== targetName){
-				cb(false,"竞技场排名已发生改变")
-				return
-			}
-			var targetInfo = data.userInfos[0]
-			var targetUid = targetInfo.uid
-		    if(local.locks[targetUid]){
-		    	cb(false,"该玩家正在被挑战")
-		    	return
-		    }
-			local.locks[targetUid] = true
-			local.locks[uid] = true
-			self.getObjAll(uid,mainName,function(arenaInfo) {
-				arenaInfo.count = parseInt(arenaInfo.count)
-				arenaInfo.buyCount = parseInt(arenaInfo.buyCount)
-				if(arenaInfo.count >= dayCount + arenaInfo.buyCount){
-					delete local.locks[targetUid]
-					delete local.locks[uid]
-					cb(false,"挑战次数已满")
-					return
-				}
-				self.incrbyObj(uid,mainName,"count",1)
-				if(targetUid < 10000){
-					//机器人队伍
-					var range = util.binarySearch(rankList,targetRank)
-					if(!arena_rank[range] || !arena_rank[range]["team"]){
-						cb(false,"机器人配置错误")
-						delete local.locks[targetUid]
-						delete local.locks[uid]
+		var atkUser = self.getSimpleUser(uid)
+		var atkTeam = []
+		async.waterfall([
+			function(next) {
+				self.heroDao.getTeamByType(uid,battle_cfg[mainName]["team"],function(flag,teams) {
+					atkTeam = teams
+					next()
+				})
+			},
+			function(next) {
+				local.getTargetsInfo([targetRank],function(flag,data) {
+					if(!data || !data.userInfos || !data.userInfos[0] || data.userInfos[0]["name"] !== targetName){
+						cb(false,"竞技场排名已发生改变")
 						return
 					}
-					var defTeam = arena_rank[range]["team"].concat()
-					local.challengeArena(uid,targetUid,targetRank,targetInfo,atkUser,atkTeam,defTeam,seededNum,cb)
-				}else{
-					//玩家队伍
-					self.getDefendTeam(targetUid,function(defTeam) {
-						if(!defTeam){
-							cb(false,"敌方阵容错误")
+					var targetInfo = data.userInfos[0]
+					var targetUid = targetInfo.uid
+				    if(local.locks[targetUid]){
+				    	cb(false,"该玩家正在被挑战")
+				    	return
+				    }
+					local.locks[targetUid] = true
+					local.locks[uid] = true
+					self.getObjAll(uid,mainName,function(arenaInfo) {
+						arenaInfo.count = parseInt(arenaInfo.count)
+						arenaInfo.buyCount = parseInt(arenaInfo.buyCount)
+						if(arenaInfo.count >= dayCount + arenaInfo.buyCount){
 							delete local.locks[targetUid]
 							delete local.locks[uid]
+							cb(false,"挑战次数已满")
 							return
 						}
-						local.challengeArena(uid,targetUid,targetRank,targetInfo,atkUser,atkTeam,defTeam,seededNum,cb)
+						self.incrbyObj(uid,mainName,"count",1)
+						if(targetUid < 10000){
+							//机器人队伍
+							var range = util.binarySearch(rankList,targetRank)
+							if(!arena_rank[range] || !arena_rank[range]["team"]){
+								cb(false,"机器人配置错误")
+								delete local.locks[targetUid]
+								delete local.locks[uid]
+								return
+							}
+							var defTeam = self.fightContorl.getNPCTeamByType(main_name,arena_rank[range]["team"],arena_rank[range]["lv"])
+							local.challengeArena(uid,targetUid,targetRank,targetInfo,atkUser,atkTeam,defTeam,Date.now(),cb)
+						}else{
+							//玩家队伍
+							self.getDefendTeam(targetUid,function(defTeam) {
+								if(!defTeam){
+									cb(false,"敌方阵容错误")
+									delete local.locks[targetUid]
+									delete local.locks[uid]
+									return
+								}
+								local.challengeArena(uid,targetUid,targetRank,targetInfo,atkUser,atkTeam,defTeam,Date.now(),cb)
+							})
+						}
 					})
-				}
-			})
+				})
+			}
+		],function(err) {
+			cb(false,err)
 		})
 	}
 	//竞技场每日刷新
