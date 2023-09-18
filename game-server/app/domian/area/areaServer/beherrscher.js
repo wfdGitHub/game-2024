@@ -135,7 +135,7 @@ module.exports = function() {
 				//获取防守方阵容
 				if(beherrscherInfo["seat_"+index] == 0){
 					//挑战守军
-				    defTeam = beherrscher_cfg["team_"+index]
+				    defTeam = self.fightContorl.getNPCTeamByType("beherrscher",beherrscher_cfg["team_"+index],self.getLordLv(uid))
 				    next()
 				}else{
 					//挑战玩家

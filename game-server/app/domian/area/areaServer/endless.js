@@ -32,7 +32,7 @@ module.exports = function() {
 				return
 			}
 			var atkTeam = self.getUserTeam(uid)
-			var defTeam = self.fightContorl.getNPCTeamByType(main_name,endless_team[id]["team"],lv,"lv_"+level)
+			var defTeam = self.fightContorl.getNPCTeamByType(main_name,endless_team[id]["team"],lv)
 			var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
 			if(winFlag){
 				//发放奖励

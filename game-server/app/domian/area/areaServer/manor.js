@@ -809,7 +809,7 @@ module.exports = function() {
 				//获取敌方阵容
 				if(!city_infos[land]["own"]){
 					//机器人队伍
-					defTeam = self.standardTeam(uid,manor_citys[city_infos[land].id]["npc_team"],"zhulu_boss",self.getLordLv(uid))
+					defTeam = self.fightContorl.getNPCTeamByType("manor_player",manor_citys[city_infos[land].id]["npc_team"],self.getLordLv(uid))
 					targetLv = buildLv
 					next()
 				}else{
@@ -1091,7 +1091,7 @@ module.exports = function() {
 				//获取敌方队伍
 				if(target < 10000){
 					//机器人队伍
-					defTeam = self.fightContorl.getNPCTeamByType("manor_mon",builds["main"][buildLv]["robot"],self.getLordLv(uid),"lv_3")
+					defTeam = self.fightContorl.getNPCTeamByType("manor_player",builds["main"][buildLv]["robot"],self.getLordLv(uid))
 					next()
 				}else{
 					//玩家队伍

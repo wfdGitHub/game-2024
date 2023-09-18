@@ -105,8 +105,8 @@
         })
       }
       //获取出场阵容
-      var getTeamByType = function(type,hIds) {
-        pomelo.request("area.heroHandler.getTeamByType", {type:type,hIds:hIds}, function(data) {
+      var getTeamByType = function(type) {
+        pomelo.request("area.heroHandler.getTeamByType", {type:type}, function(data) {
             console.log(data);
         })
       }
