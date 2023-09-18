@@ -246,6 +246,7 @@ var model = function(fightContorl) {
 	this.getCharacterInfo = function(info,heroAtts,teamCfg) {
 		if(!info || !heros[info.id])
 			return false
+		teamCfg = teamCfg || {}
 		info = Object.assign({},info)
 		info.heroAtts = heroAtts
 		info.exalt = info.exalt || 1
