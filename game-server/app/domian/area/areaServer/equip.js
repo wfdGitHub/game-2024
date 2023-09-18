@@ -498,5 +498,387 @@ var model = function() {
 			cb(false,err)
 		})
 	}
+	//装备洗练
+	this.washEquipByHero = function(uid,hId,slot,item,cb) {
+		var heroInfo = {}
+		var info = {}
+		async.waterfall([
+			function(next) {
+				//参数判断
+				if(item && item != 2003400 && item != 2003500){
+					next("item error "+item)
+					return
+				}
+				//检查英雄
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+					if(!data){
+						next("英雄不存在")
+						return
+					}
+					heroInfo = data
+					if(!heroInfo["e"+slot]){
+						next("装备不存在")
+						return
+					}
+					info = JSON.parse(heroInfo["e"+slot])
+					next()
+				})
+			},
+			function(next) {
+				//消耗判断
+				var pc = equip_lv[info.lv]["wash_pc"]
+				if(item)
+					pc += "&"+item+":"+1
+				self.consumeItems(uid,pc,1,"装备洗练",function(flag,err) {
+					if(flag)
+						next()
+					else
+						next(err)
+				})
+			},
+			function(next) {
+				//操作
+				info.wash = self.fightContorl.makeEquip(info.lv,slot)
+				heroInfo["e"+slot] = JSON.stringify(info)
+				self.heroDao.onlySetHeroInfo(uid,hId,"e"+slot,heroInfo["e"+slot])
+				cb(true,heroInfo)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//洗练保存
+	this.saveEquipByHero = function(uid,hId,slot,cb) {
+		var heroInfo = {}
+		var info = {}
+		async.waterfall([
+			function(next) {
+				//检查英雄
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+					if(!data){
+						next("英雄不存在")
+						return
+					}
+					heroInfo = data
+					if(!heroInfo["e"+slot]){
+						next("装备不存在")
+						return
+					}
+					info = JSON.parse(heroInfo["e"+slot])
+					if(!info.washExtra){
+						next("没有可保存的洗练属性")
+						return	
+					}
+					next()
+				})
+			},
+			function(next) {
+				//操作
+				var id = info.id
+				var st = info.st
+				info = info.wash
+				info.id = id
+				info.st = st
+				heroInfo["e"+slot] = JSON.stringify(info)
+				self.heroDao.setHeroInfo(self.areaId,uid,hId,"e"+slot,heroInfo["e"+slot])
+				cb(true,heroInfo)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//属性转化
+	this.washEquipExtraByHero = function(uid,hId,slot,cb) {
+		var heroInfo = {}
+		var info = {}
+		async.waterfall([
+			function(next) {
+				//检查英雄
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+					if(!data){
+						next("英雄不存在")
+						return
+					}
+					heroInfo = data
+					if(!heroInfo["e"+slot]){
+						next("装备不存在")
+						return
+					}
+					info = JSON.parse(heroInfo["e"+slot])
+					next()
+				})
+			},
+			function(next) {
+				//消耗判断
+				self.consumeItems(uid,equip_lv[info.lv]["extra_pc"],1,"属性转化",function(flag,err) {
+					if(flag)
+						next()
+					else
+						next(err)
+				})
+			},
+			function(next) {
+				//操作
+				info.washExtra = self.fightContorl.createEquipExtra(info,info.att.extra.type)
+				heroInfo["e"+slot] = JSON.stringify(info)
+				self.heroDao.onlySetHeroInfo(uid,hId,"e"+slot,heroInfo["e"+slot])
+				cb(true,heroInfo)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//属性保存
+	this.saveEquipExtraByHero = function(uid,hId,slot,cb) {
+		var info = {}
+		async.waterfall([
+			function(next) {
+				//检查英雄
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+					if(!data){
+						next("英雄不存在")
+						return
+					}
+					heroInfo = data
+					if(!heroInfo["e"+slot]){
+						next("装备不存在")
+						return
+					}
+					info = JSON.parse(heroInfo["e"+slot])
+					if(!info.washExtra){
+						next("没有可保存的洗练属性")
+						return	
+					}
+					next()
+				})
+			},
+			function(next) {
+				//操作
+				info.att.extra = info.washExtra
+				delete info.washExtra
+				heroInfo["e"+slot] = JSON.stringify(info)
+				self.heroDao.setHeroInfo(self.areaId,uid,hId,"e"+slot,heroInfo["e"+slot])
+				cb(true,heroInfo)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//特效转化
+	this.washEquipSpeByHero = function(uid,hId,slot,index,cb) {
+		var info = {}
+		async.waterfall([
+			function(next) {
+				//参数判断
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+					if(!data){
+						next("英雄不存在")
+						return
+					}
+					heroInfo = data
+					if(!heroInfo["e"+slot]){
+						next("装备不存在")
+						return
+					}
+					info = JSON.parse(heroInfo["e"+slot])
+					if(!info.spe || !info.spe[index]){
+						next("不存在该特效")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				//消耗判断
+				self.consumeItems(uid,equip_lv[info.lv]["spe_pc"],1,"特效转化",function(flag,err) {
+					if(flag)
+						next()
+					else
+						next(err)
+				})
+			},
+			function(next) {
+				//操作
+				var map = {}
+				for(var i = 0;i < info.spe.length;i++)
+					map[info.spe[i]] = 1
+				var speList = util.getRandomArray(equip_slot[info.slot]["spe_list"],3)
+				for(var i = 0;i < speList.length;i++){
+					if(!map[speList[i]]){
+						info.washSpe = JSON.parse(JSON.stringify(info.spe))
+						info.washSpe[index] = speList[i]
+						break
+					}
+				}
+				heroInfo["e"+slot] = JSON.stringify(info)
+				self.heroDao.onlySetHeroInfo(uid,hId,"e"+slot,heroInfo["e"+slot])
+				cb(true,heroInfo)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//特效保存
+	this.saveEquipSpeByHero = function(uid,hId,slot,cb) {
+		var info = {}
+		async.waterfall([
+			function(next) {
+				//检查英雄
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+					if(!data){
+						next("英雄不存在")
+						return
+					}
+					heroInfo = data
+					if(!heroInfo["e"+slot]){
+						next("装备不存在")
+						return
+					}
+					info = JSON.parse(heroInfo["e"+slot])
+					if(!info.washSpe){
+						next("没有可保存的洗练属性")
+						return	
+					}
+					next()
+				})
+			},
+			function(next) {
+				//操作
+				info.spe = info.washSpe
+				delete info.washSpe
+				heroInfo["e"+slot] = JSON.stringify(info)
+				self.heroDao.setHeroInfo(self.areaId,uid,hId,"e"+slot,heroInfo["e"+slot])
+				cb(true,heroInfo)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//套装转化
+	this.washEquipSuitByHero = function(uid,hId,slot,cb) {
+		var info = {}
+		async.waterfall([
+			function(next) {
+				//参数判断
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+					if(!data){
+						next("英雄不存在")
+						return
+					}
+					heroInfo = data
+					if(!heroInfo["e"+slot]){
+						next("装备不存在")
+						return
+					}
+					info = JSON.parse(heroInfo["e"+slot])
+					if(!info.suit){
+						next("不存在套装效果")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				//消耗判断
+				self.consumeItems(uid,equip_lv[info.lv]["suit_pc"],1,"套装转化",function(flag,err) {
+					if(flag)
+						next()
+					else
+						next(err)
+				})
+			},
+			function(next) {
+				//操作
+				info.washSuit = self.fightContorl.createEquipSuit(info)
+				heroInfo["e"+slot] = JSON.stringify(info)
+				self.heroDao.onlySetHeroInfo(uid,hId,"e"+slot,heroInfo["e"+slot])
+				cb(true,heroInfo)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//套装保存
+	this.saveEquipSuitByHero = function(uid,hId,slot,cb) {
+		var info = {}
+		async.waterfall([
+			function(next) {
+				//参数判断
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+					if(!data){
+						next("英雄不存在")
+						return
+					}
+					heroInfo = data
+					if(!heroInfo["e"+slot]){
+						next("装备不存在")
+						return
+					}
+					info = JSON.parse(heroInfo["e"+slot])
+					if(!info.washSuit){
+						next("不存在套装效果")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				//操作
+				info.suit = info.washSuit
+				delete info.washSuit
+				heroInfo["e"+slot] = JSON.stringify(info)
+				self.heroDao.setHeroInfo(self.areaId,uid,hId,"e"+slot,heroInfo["e"+slot])
+				cb(true,heroInfo)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//装备强化
+	this.intensifyEquipByHero = function(uid,hId,slot,cb) {
+		var info = {}
+		async.waterfall([
+			function(next) {
+				//参数判断
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+					if(!data){
+						next("英雄不存在")
+						return
+					}
+					heroInfo = data
+					if(!heroInfo["e"+slot]){
+						next("装备不存在")
+						return
+					}
+					info = JSON.parse(heroInfo["e"+slot])
+					info.st = info.st || 0
+					if(info.st >= equip_lv[info.lv]["st_max"]){
+						next("强化等级已满")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				//消耗判断
+				self.consumeItems(uid,equip_st[info.st]["pc"],1,"装备强化",function(flag,err) {
+					if(flag)
+						next()
+					else
+						next(err)
+				})
+			},
+			function(next) {
+				//操作
+				var id = info.id
+				info.st++
+				heroInfo["e"+slot] = JSON.stringify(info)
+				self.heroDao.setHeroInfo(self.areaId,uid,hId,"e"+slot,heroInfo["e"+slot])
+				cb(true,heroInfo)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
 }
 module.exports = model

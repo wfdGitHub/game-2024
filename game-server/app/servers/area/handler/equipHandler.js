@@ -128,6 +128,89 @@ equipHandler.prototype.intensifyEquip = function(msg, session, next){
     next(null,{flag : flag,data : data})
   })
 }
+//装备洗练
+equipHandler.prototype.washEquipByHero = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var item = msg.item
+  this.areaManager.areaMap[areaId].washEquipByHero(uid,hId,msg.slot,item,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//洗练保存
+equipHandler.prototype.saveEquipByHero = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].saveEquipByHero(uid,hId,msg.slot,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//属性转化
+equipHandler.prototype.washEquipExtraByHero = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].washEquipExtraByHero(uid,hId,msg.slot,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//属性保存
+equipHandler.prototype.saveEquipExtraByHero = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].saveEquipExtraByHero(uid,hId,msg.slot,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//特效转化
+equipHandler.prototype.washEquipSpeByHero = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  var index = msg.index
+  this.areaManager.areaMap[areaId].washEquipSpeByHero(uid,hId,msg.slot,index,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//特效保存
+equipHandler.prototype.saveEquipSpeByHero = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].saveEquipSpeByHero(uid,hId,msg.slot,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//套装转化
+equipHandler.prototype.washEquipSuitByHero = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].washEquipSuitByHero(uid,hId,msg.slot,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//套装保存
+equipHandler.prototype.saveEquipSuitByHero = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].saveEquipSuitByHero(uid,hId,msg.slot,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//装备强化
+equipHandler.prototype.intensifyEquipByHero = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].intensifyEquipByHero(uid,hId,msg.slot,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //分解装备
 equipHandler.prototype.recycleEquip = function(msg, session, next){
   var uid = session.uid

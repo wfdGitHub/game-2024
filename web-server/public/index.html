@@ -111,6 +111,51 @@
         })
       }
       //===================装备===================/
+      var washEquipByHero = function(hId,slot,item) {
+        pomelo.request("area.equipHandler.washEquipByHero", {hId:hId,slot:slot,item:item}, function(data) {
+            console.log(data);
+        })
+      }
+      var saveEquipByHero = function(hId,slot) {
+        pomelo.request("area.equipHandler.wearEquip", {hId:hId,slot:slot}, function(data) {
+            console.log(data);
+        })
+      }
+      var washEquipExtraByHero = function(hId,slot) {
+        pomelo.request("area.equipHandler.wearEquip", {hId:hId,slot:slot}, function(data) {
+            console.log(data);
+        })
+      }
+      var saveEquipExtraByHero = function(hId,slot) {
+        pomelo.request("area.equipHandler.wearEquip", {hId:hId,slot:slot}, function(data) {
+            console.log(data);
+        })
+      }
+      var washEquipSpeByHero = function(hId,slot,index) {
+        pomelo.request("area.equipHandler.wearEquip", {hId:hId,slot:slot,index:index}, function(data) {
+            console.log(data);
+        })
+      }
+      var saveEquipSpeByHero = function(hId,slot) {
+        pomelo.request("area.equipHandler.wearEquip", {hId:hId,slot:slot}, function(data) {
+            console.log(data);
+        })
+      }
+      var washEquipSuitByHero = function(hId,slot) {
+        pomelo.request("area.equipHandler.wearEquip", {hId:hId,slot:slot}, function(data) {
+            console.log(data);
+        })
+      }
+      var saveEquipSuitByHero = function(hId,slot) {
+        pomelo.request("area.equipHandler.wearEquip", {hId:hId,slot:slot}, function(data) {
+            console.log(data);
+        })
+      }
+      var intensifyEquipByHero = function(hId,slot) {
+        pomelo.request("area.equipHandler.wearEquip", {hId:hId,slot:slot}, function(data) {
+            console.log(data);
+        })
+      }
       //穿戴装备
       var wearEquip = function(hId,eId) {
         pomelo.request("area.equipHandler.wearEquip", {hId:hId,eId:eId}, function(data) {
@@ -201,6 +246,7 @@
             console.log(data);
         })
       }
+      //========================英雄=====================   
       //英雄打书
       var heroPS = function(hId,itemId) {
         pomelo.request("area.heroHandler.heroPS", {hId:hId,itemId:itemId}, function(data) {
@@ -219,7 +265,6 @@
             console.log(data);
         })
       }   
-      //========================英雄=====================   
       //英雄分解
       var heroRecycle = function(hIds) {
         pomelo.request("area.heroHandler.heroRecycle", {hIds:hIds}, function(data) {
