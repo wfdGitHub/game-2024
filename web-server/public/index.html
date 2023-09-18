@@ -110,6 +110,31 @@
             console.log(data);
         })
       }
+      //===================神兽===================/
+      //兑换神兽
+      var gainMythical = function(id) {
+        pomelo.request("area.heroHandler.gainMythical", {id:id}, function(data) {
+            console.log(data);
+        })
+      }
+      //神兽进化
+      var mythicalUPEvo = function(hId) {
+        pomelo.request("area.heroHandler.mythicalUPEvo", {hId:hId}, function(data) {
+            console.log(data);
+        })
+      }
+      //神兽晋升
+      var mythicalUPExalt = function(hId) {
+        pomelo.request("area.heroHandler.mythicalUPExalt", {hId:hId}, function(data) {
+            console.log(data);
+        })
+      }
+      //神兽内丹
+      var mythicalPS = function(hId) {
+        pomelo.request("area.heroHandler.mythicalPS", {hId:hId}, function(data) {
+            console.log(data);
+        })
+      }
       //===================装备===================/
       var washEquipByHero = function(hId,slot,item) {
         pomelo.request("area.equipHandler.washEquipByHero", {hId:hId,slot:slot,item:item}, function(data) {
@@ -3902,6 +3927,12 @@
       //直接购买物品
       var buyItem = function(itemId,count) {
         pomelo.request("area.normalHandler.buyItem",{itemId : itemId,count : count}, function(data) {
+            console.log(data);
+        })
+      }
+      //背包列表
+      var getBagList = function() {
+        pomelo.request("area.normalHandler.getBagList",{}, function(data) {
             console.log(data);
         })
       }

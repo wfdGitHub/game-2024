@@ -9,6 +9,7 @@ const evolves = require("../../../../config/gameCfg/evolves.json")
 const evolve_lv = require("../../../../config/gameCfg/evolve_lv.json")
 const lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 const items = require("../../../../config/gameCfg/item.json")
+const mythical = require("../../../../config/gameCfg/mythical.json")
 const util = require("../../../../util/util.js")
 const main_name = "summon"
 for(var i in summon_list){
@@ -172,6 +173,137 @@ var model = function() {
 		self.setObj(uid,main_name,"wish_"+sId,JSON.stringify(wishHeros))
 		cb(true)
 	}
+	//兑换神兽
+	this.gainMythical = function(uid,id,cb) {
+		if(!heros[id]){
+			cb(false,"id error")
+			return
+		}
+		var type = heros[id]["type"]
+		if(type != 1 && type != 2){
+			cb(false,"非神兽珍兽")
+			return
+		}
+		var exaltId = heros[id]["exalt"]
+		console.log(exaltId,mythical[type]["exalt_"+exaltId])
+		self.consumeItems(uid,"201:10000",1,"兑换神兽",function(flag,err) {
+			if(!flag){
+				cb(false,err)
+				return
+			}
+			var hId = self.getLordLastid(uid)
+			var heroInfo = self.fightContorl.makeFullHeroData(id)
+			heroInfo.hId = hId
+			self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
+			self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo,function() {
+				if(cb)
+					cb(true,heroInfo)
+			})
+			self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:heroInfo.qa,reason:"获得英雄-"+hId})
+			return heroInfo
+		})
+	}
+	//神兽进化
+	this.mythicalUPEvo = function(uid,hId,cb) {
+		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+			if(!heroInfo){
+				cb(false,"英雄不存在")
+				return
+			}
+			if(!evolve_lv[heroInfo.evo+1]){
+				cb(false,"进化已满")
+			  	return
+			}
+			var type = heros[heroInfo.id]["type"]
+			if(type != 1 && type != 2){
+				cb(false,"非神兽珍兽")
+				return
+			}
+			var pc = evolve_lv[heroInfo.evo]["type_"+type]
+			self.consumeItems(uid,pc,1,"神兽进化",function(flag,err) {
+				if(!flag){
+					cb(false,err)
+					return
+				}
+				heroInfo.evo++
+	            self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"evo",1)
+	            cb(true,{heroInfo:heroInfo})
+			})
+		})
+	}
+	//神兽晋升
+	this.mythicalUPExalt = function(uid,hId,cb) {
+		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+			if(!heroInfo){
+				cb(false,"英雄不存在")
+				return
+			}
+			if(evolve_lv[heroInfo.evo+1]){
+				cb(false,"未满进化")
+				return
+			}
+			if(!exalt_lv[heroInfo.exalt+1]){
+				cb(false,"晋升已满")
+				return
+			}
+			var type = heros[heroInfo.id]["type"]
+			if(type != 1 && type != 2){
+				cb(false,"非神兽珍兽")
+				return
+			}
+			var lv = self.getLordLv(uid)
+			if(lv < exalt_lv[heroInfo.exalt+1]["limit"]){
+				cb(false,"等级不足")
+				return
+			}
+			self.consumeItems(uid,exalt_lv[heroInfo.exalt]["type_"+type],1,"英雄晋升",function(flag,err) {
+				if(!flag){
+					cb(false,err)
+					return
+				}
+				heroInfo.exalt++
+	            self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"exalt",1,function(flag,data) {
+	              cb(true,{heroInfo:heroInfo})
+	            })
+			})
+		})
+	}
+	//神兽内丹
+	this.mythicalPS = function(uid,hId,cb) {
+		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
+			if(!heroInfo){
+				cb(false,"英雄不存在")
+				return
+			}
+			if(evolve_lv[heroInfo.evo+1]){
+				cb(false,"未满进化")
+				return
+			}
+			var type = heros[heroInfo.id]["type"]
+			if(type != 1 && type != 2){
+				cb(false,"非神兽珍兽")
+				return
+			}
+			if(heroInfo.m_ps){
+				cb(false,"已获取内丹")
+				return
+			}
+			if(heroInfo.exalt < mythical[type]["ps_exalt"]){
+				cb(false,"晋升等级不满足")
+				return
+			}
+			self.consumeItems(uid,mythical[type]["ps_pc"],1,"神兽内丹",function(flag,err) {
+				if(!flag){
+					cb(false,err)
+					return
+				}
+				heroInfo.m_ps = 1
+	            self.heroDao.setHeroInfo(self.areaId,uid,hId,"m_ps",1,function(flag,data) {
+	              cb(true,{heroInfo:heroInfo})
+	            })
+			})
+		})
+	}
 	//英雄升级
 	this.heroUPLv = function(uid,hId,aimLv,cb) {
 	  self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
@@ -238,6 +370,10 @@ var model = function() {
 						cb(false,"品质4以上可进化")
 						return
 					}
+					if(heros[heroInfo.id]["type"] != 0){
+						cb(false,"神兽珍兽用专属接口")
+						return
+					}
 					for(var i in herolist){
 					  	if(self.heroDao.heroLockCheck(herolist[i]) != false){
 					  		next(self.heroDao.heroLockCheck(herolist[i]))
@@ -298,6 +434,10 @@ var model = function() {
 				cb(false,"晋升已满")
 				return
 			}
+			if(heros[heroInfo.id]["type"] != 0){
+				cb(false,"神兽珍兽用专属接口")
+				return
+			}
 			var lv = self.getLordLv(uid)
 			if(lv < exalt_lv[heroInfo.exalt+1]["limit"]){
 				cb(false,"等级不足")
@@ -353,18 +493,22 @@ var model = function() {
 			 		cb(false,"hIds error "+hIds[i])
 			 		return
 			 	}
-			 	var info = self.fightContorl.getHeroRecycle(list)
-			    self.heroDao.removeHeroList(self.areaId,uid,hIds,function(flag,err) {
-			    	if(!flag){
-			    		cb(false,err)
-			    		return
-			    	}
-					var awardList = self.addItemStr(uid,info.awardStr,1,"英雄分解")
-					for(var j = 0;j < info.awards.length;j++)
-						awardList.push(self.addItemByType(uid,info.awards[i]))
-					cb(true,awardList)
-			    })
+				if(heros[list[i].id]["type"] != 0){
+					cb(false,"神兽珍兽不可分解")
+					return
+				}
 			}
+			var info = self.fightContorl.getHeroRecycle(list)
+		    self.heroDao.removeHeroList(self.areaId,uid,hIds,function(flag,err) {
+		    	if(!flag){
+		    		cb(false,err)
+		    		return
+		    	}
+				var awardList = self.addItemStr(uid,info.awardStr,1,"英雄分解")
+				for(var j = 0;j < info.awards.length;j++)
+					awardList.push(self.addItemByType(uid,info.awards[i]))
+				cb(true,awardList)
+		    })
 		})
 	}
 	//英雄洗练 
@@ -380,6 +524,10 @@ var model = function() {
 			}
 			if(evolve_lv[heroInfo.evo]["evolveLv"] < 3){
 				cb(false,"进化为觉醒体后方可洗练")
+				return
+			}
+			if(heros[heroInfo.id]["type"] != 0){
+				cb(false,"神兽珍兽不可洗练")
 				return
 			}
 			var exalt = heros[heroInfo.id]["exalt"]

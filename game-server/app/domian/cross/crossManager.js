@@ -59,7 +59,6 @@ crossManager.prototype.dayUpdate = function(curDayStr) {
 crossManager.prototype.firstDayUpdate = function() {
 	console.log("跨服每日首次刷新")
 	this.theatreDayUpdate()
-	this.ancientDayUpdate()
 }
 crossManager.prototype.update = function() {
 	var self = this

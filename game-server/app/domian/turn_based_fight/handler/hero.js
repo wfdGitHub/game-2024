@@ -42,6 +42,23 @@ var model = function(fightContorl) {
 		Object.assign(heroInfo,c_info)
 		return heroInfo
 	}
+	//获得满属性神兽
+	this.makeFullHeroData = function(id) {
+		if(!heros[id])
+			return {}
+		var heroInfo = {}
+		heroInfo.id = id
+		heroInfo.evo = 1
+		heroInfo.exalt = heros[id]["exalt"]
+		heroInfo.qa = 5
+		heroInfo.wash = 0
+		heroInfo.lv = 1
+		for(var i = 1;i <= 6;i++)
+			heroInfo["MR"+i] = 1
+		for(var i = 0;i < heros[id]["passive_num"];i++)
+			heroInfo["PS"+i] = heros[id]["passive"+(i+1)]
+		return heroInfo
+	}
 	//获取基准战力英雄
 	this.makeStandardHero = function(id,qa,lv,evo,main_rate) {
 		if(!heros[id])
@@ -263,6 +280,9 @@ var model = function(fightContorl) {
 		//被动技能
 		for(var i = 1;i <= evoId;i++)
 			this.mergeTalent(info,heros[info.id]["talent"+evoId])
+		//神兽技能
+		if(info.m_ps)
+			this.mergeTalent(info,heros[info.id]["mythical"])
 		//初始属性
 		var lvInfo = {
 		    "maxHP":aptitudes[aptitude].maxHP,

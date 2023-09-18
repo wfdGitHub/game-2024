@@ -349,10 +349,42 @@ heroHandler.prototype.getHeroRankList = function(msg, session, next) {
 //获取单个英雄排名
 heroHandler.prototype.getHeroRankOne = function(msg, session, next) {
   var areaId = session.get("areaId")
-  var uid = msg.uid
+  var uid = session.uid
   var hId = msg.hId
   var heroId = msg.heroId
   this.areaManager.areaMap[areaId].getHeroRankOne(uid,hId,heroId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//兑换神兽
+heroHandler.prototype.gainMythical = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  this.areaManager.areaMap[areaId].gainMythical(uid,msg.id,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//神兽进化
+heroHandler.prototype.mythicalUPEvo = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  this.areaManager.areaMap[areaId].mythicalUPEvo(uid,msg.hId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//神兽晋升
+heroHandler.prototype.mythicalUPExalt = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  this.areaManager.areaMap[areaId].mythicalUPExalt(uid,msg.hId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//神兽内丹
+heroHandler.prototype.mythicalPS = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  this.areaManager.areaMap[areaId].mythicalPS(uid,msg.hId,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
