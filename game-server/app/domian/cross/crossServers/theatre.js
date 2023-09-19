@@ -24,7 +24,7 @@ module.exports = function() {
 			theatreNum = 1
 		self.peakInit(theatreNum)
 		self.gradingInit(theatreNum)
-		self.ancientInit(theatreNum)
+		// self.ancientInit(theatreNum)
 		self.muyeInit(theatreNum)
 	}
 	//战区每日首次更新
