@@ -191,7 +191,7 @@ var model = function() {
 			function(next) {
 				//操作
 				var id = info.id
-				info.wash = self.fightContorl.makeEquip(info.lv,info.slot)
+				info.wash = self.fightContorl.makeEquip(info.lv,info.slot,item)
 				info = JSON.stringify(info)
 				self.setObj(uid,main_name,id,info)
 				cb(true,info)
@@ -538,7 +538,7 @@ var model = function() {
 			},
 			function(next) {
 				//操作
-				info.wash = self.fightContorl.makeEquip(info.lv,slot)
+				info.wash = self.fightContorl.makeEquip(info.lv,slot,item)
 				heroInfo["e"+slot] = JSON.stringify(info)
 				self.heroDao.onlySetHeroInfo(uid,hId,"e"+slot,heroInfo["e"+slot])
 				cb(true,heroInfo)
