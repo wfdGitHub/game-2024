@@ -18,7 +18,7 @@ for(var i in equip_lv){
 	equip_lv[i]["qa_weights"] = [equip_lv[i]["weight_1"]]
 	for(var j = 2;j <= 5;j++)
 		equip_lv[i]["qa_weights"].push(equip_lv[i]["weight_"+j]+equip_lv[i]["qa_weights"][equip_lv[i]["qa_weights"].length-1])
-	equip_lv[i]["high_weights"] = [0,0,0,5000,9400,10000]
+	equip_lv[i]["high_weights"] = [0,0,5000,9400,10000]
 	equip_lv[i]["suit_list"] = JSON.parse(equip_lv[i]["suit_list"])
 }
 var model = function(fightContorl) {
