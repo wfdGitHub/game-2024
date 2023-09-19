@@ -565,8 +565,8 @@ var model = function() {
 						return
 					}
 					info = JSON.parse(heroInfo["e"+slot])
-					if(!info.washExtra){
-						next("没有可保存的洗练属性")
+					if(!info.wash){
+						next("没有可保存的属性")
 						return	
 					}
 					next()
