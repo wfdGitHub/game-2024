@@ -115,7 +115,7 @@ var model = function() {
 						value += gemMap[i]["value"] * gems[i]
 					}
 					//判断宝石值
-					var need = gemMap[nextId]["value"]
+					var need = gemMap[itemId]["value"]
 					if(value != need){
 						next("宝石值错误 "+value+"/"+need)
 						return
