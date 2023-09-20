@@ -1,7 +1,6 @@
 //英雄系统
 const fightCfg = require("../fight/fightCfg.js")
 const artifact_level = fightCfg.getCfg("artifact_level")
-const stone_base = fightCfg.getCfg("stone_base")
 const evolves = fightCfg.getCfg("evolves")
 const hufu_lv = fightCfg.getCfg("hufu_lv")
 const evolve_lv = fightCfg.getCfg("evolve_lv")
@@ -14,8 +13,18 @@ const talent_list = fightCfg.getCfg("talent_list")
 const aptitudes = fightCfg.getCfg("aptitude")
 const skills = fightCfg.getCfg("skills")
 const equip_suit = fightCfg.getCfg("equip_suit")
+const gem_lv = fightCfg.getCfg("gem_lv")
+const ace_pack = fightCfg.getCfg("ace_pack")
 const character = require("../entity/character.js")
-const baseStone = {"1" : 4110,"2" : 4210,"3" : 4310,"4" : 4410}
+var gemMap = {}
+for(var i in gem_lv){
+	i = Number(i)
+	for(var j = 1; j <= 7;j++){
+		gemMap[gem_lv[i]["type_"+j]] = Object.assign({type : j},gem_lv[i])
+		if(gem_lv[i+1])
+			gemMap[gem_lv[i]["type_"+j]].next = gem_lv[i+1]["type_"+j]
+	}
+}
 var lv4Map = []
 for(var i in hufu_skill)
 	lv4Map.push(hufu_skill[i]["lv4"])
@@ -172,18 +181,6 @@ var model = function(fightContorl) {
 			//专属返还
 			if(artifact !== undefined && artifact_level[artifact])
 				strList.push(artifact_level[artifact]["pr"])
-			//宝石返还
-			for(var j = 1;j <= 8;j++){
-				var key = "s"+j
-				if(list[i][key]){
-					//拆卸宝石
-					strList.push(list[i][key]+":1")
-					if(list[i][key+"v"] && stone_base[list[i][key]]){
-						var num = Math.floor(list[i][key+"v"] / stone_base[baseStone[j]]["value"])
-						strList.push(baseStone[j]+":"+num)
-					}
-				}
-			}
 			//护符返还
 			if(list[i]["hfLv"]){
 				var hufuInfo = {lv:list[i]["hfLv"]}
@@ -197,6 +194,12 @@ var model = function(fightContorl) {
 			for(var j = 1;j <= 6;j++)
 				if(list[i]["e"+j])
 					awards.push({type : "equip",data : list[i]["e"+j]})
+			//宝石返还
+			for(var j = 1;j <= 6;j++){
+				for(var k = 1;k <= 5;k++)
+				if(list[i]["e"+j+"g"+k])
+					strList.push(list[i]["e"+j+"g"+k]+":1")
+			}
 		}
 		return awards
 	}
@@ -230,19 +233,14 @@ var model = function(fightContorl) {
 			if(info["a"+j])
 				allCE += ace_pack[info["a"+j]]["ce"]
 		//装备战力
-		for(var j = 1;j <= 4;j++){
+		for(var j = 1;j <= 6;j++){
 			if(info["e"+j])
     			allCE += this.getEquipCE(info["e"+j])
-		}
-		//宝石战力
-		for(var j = 1;j <= 4;j++){
-			if(info["s"+j] && stone_base[info["s"+j]])
-    			allCE += stone_base[info["s"+j]]["ce"]
-		}
-		//技能宝石
-		for(var j = 5;j <= 8;j++){
-			if(info["s"+j] && stone_skill[info["s"+j]])
-    			allCE += stone_skill[info["s"+j]]["ce"]
+			//宝石战力
+			for(var k = 1;k <= 5;k++){
+				if(info["e"+j+"g"+k])
+	    			allCE += gemMap[info["e"+j+"g"+k]]["ce"]
+			}
 		}
 		//护符战力
 		if(info["hfLv"] && hufu_quality[info["hfLv"]]){
@@ -316,6 +314,10 @@ var model = function(fightContorl) {
 						suitMaps[eInfo.suit] = 0
 					suitMaps[eInfo.suit]++
 				}
+				//宝石
+				for(var k = 1;k <= 5;k++)
+					if(info["e"+i+"g"+k])
+						this.mergeTalent(info,info["e"+i+"g"+k])
 			}
 		}
 		//装备套装
@@ -354,22 +356,6 @@ var model = function(fightContorl) {
 				}
 			}
 		}
-		//属性宝石加成
-		var stonebaseInfo = {}
-		for(var i = 1;i <= 4;i++){
-			if(info["s"+i] && stone_base[info["s"+i]]){
-				stonebaseInfo[stone_base[info["s"+i]]["key"]] = stone_base[info["s"+i]]["arg"]
-			}
-		}
-		this.mergeData(info,stonebaseInfo)
-		//技能宝石加成
-		var stoneskillInfo = {}
-		for(var i = 5;i <= 8;i++){
-			if(info["s"+i] && stone_skill[info["s"+i]]){
-				stoneskillInfo[stone_skill[info["s"+i]]["key"]] = stone_skill[info["s"+i]]["arg"]
-			}
-		}
-		this.mergeData(info,stoneskillInfo)
 		//公会技能计算
 		if(teamCfg && teamCfg["g"+info.career] && gSkillAtts[info.career]){
 			var glv = teamCfg["g"+info.career]
@@ -493,6 +479,98 @@ var model = function(fightContorl) {
 				}
 			}
 		}
+	}
+	//计算战力差值
+	this.calcCEDiff = function(name,oldValue,newValue) {
+		var oldCE = 0
+		var newCE = 0
+		switch(name){
+			case "e1":
+			case "e2":
+			case "e3":
+			case "e4":
+			case "e5":
+			case "e6":
+				oldCE = this.getEquipCE(oldValue)
+				newCE = this.getEquipCE(newValue)
+			break
+			case "lv":
+				oldCE = lv_cfg[oldValue || 1]["ce"] || 0
+				newCE = lv_cfg[newValue || 1]["ce"] || 0
+			break
+			case "artifact":
+				if(Number.isFinite(oldValue))
+					oldCE = artifact_level[oldValue]["ce"] || 0
+				if(Number.isFinite(newValue))
+					newCE = artifact_level[newValue]["ce"] || 0
+			break
+			case "a1":
+			case "a2":
+			case "a3":
+			case "a4":
+			case "a5":
+			case "a6":
+			case "a7":
+			case "a8":
+			case "a9":
+			case "a10":
+				if(oldValue)
+					oldCE = ace_pack[oldValue]["ce"] || 0
+				if(newValue)
+					newCE = ace_pack[newValue]["ce"] || 0
+			break
+			case "hfLv":
+				if(oldValue)
+					oldCE = hufu_quality[oldValue]["ce"] || 0
+				if(newValue)
+					newCE = hufu_quality[newValue]["ce"] || 0
+			break 
+			case "zf_1":
+			case "zf_2":
+			case "zf_3":
+				if(oldValue && zhanfa[oldValue])
+					oldCE = zhanfa[oldValue]["ce"] || 0
+				if(newValue && zhanfa[newValue])
+					newCE = zhanfa[newValue]["ce"] || 0
+			break
+			case "e1g1":
+			case "e1g1":
+			case "e1g2":
+			case "e1g3":
+			case "e1g4":
+			case "e1g5":
+			case "e2g1":
+			case "e2g2":
+			case "e2g3":
+			case "e2g4":
+			case "e2g5":
+			case "e3g1":
+			case "e3g2":
+			case "e3g3":
+			case "e3g4":
+			case "e3g5":
+			case "e4g1":
+			case "e4g2":
+			case "e4g3":
+			case "e4g4":
+			case "e4g5":
+			case "e5g1":
+			case "e5g2":
+			case "e5g3":
+			case "e5g4":
+			case "e5g5":
+			case "e6g1":
+			case "e6g2":
+			case "e6g3":
+			case "e6g4":
+			case "e6g5":
+				if(oldValue && gemMap[oldValue])
+					oldCE = gemMap[oldValue]["ce"] || 0
+				if(newValue && gemMap[newValue])
+					newCE = gemMap[newValue]["ce"] || 0
+			break
+		}
+		return newCE - oldCE
 	}
 }
 module.exports = model

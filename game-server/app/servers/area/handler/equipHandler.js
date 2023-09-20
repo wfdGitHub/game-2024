@@ -220,6 +220,30 @@ equipHandler.prototype.recycleEquip = function(msg, session, next){
     next(null,{flag : flag,data : data})
   })
 }
+//装备宝石
+equipHandler.prototype.gemWear = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].gemWear(uid,msg.hId,msg.slot,msg.g_slot,msg.itemId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//升级宝石
+equipHandler.prototype.gemUpByHero = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].gemUpByHero(uid,msg.hId,msg.slot,msg.g_slot,msg.gems,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//拆卸宝石
+equipHandler.prototype.gemUnWear = function(msg, session, next){
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].gemUnWear(uid,msg.hId,msg.slot,msg.g_slot,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 module.exports = function(app) {
   return bearcat.getBean({
   	id : "equipHandler",

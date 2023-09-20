@@ -110,6 +110,26 @@
             console.log(data);
         })
       }
+
+      //===================宝石===================/
+      //装备宝石
+      var gemWear = function(hId,slot,g_slot,itemId) {
+        pomelo.request("area.equipHandler.gemWear", {hId:hId,slot:slot,g_slot:g_slot,itemId:itemId}, function(data) {
+            console.log(data);
+        })
+      }
+      //升级宝石
+      var gemUpByHero = function(hId,slot,g_slot,gems) {
+        pomelo.request("area.equipHandler.gemUpByHero", {hId:hId,slot:slot,g_slot:g_slot,gems:gems}, function(data) {
+            console.log(data);
+        })
+      }
+      //拆卸宝石
+      var gemUnWear = function(hId,slot,g_slot) {
+        pomelo.request("area.equipHandler.gemUnWear", {hId:hId,slot:slot,g_slot:g_slot}, function(data) {
+            console.log(data);
+        })
+      }
       //===================神兽===================/
       //兑换神兽
       var gainMythical = function(id) {
