@@ -79,6 +79,7 @@ buffFactory.createBuff = function(releaser,character,otps) {
 			buff.overlay(releaser,otps)
 		}else{
 			buff = new buffList[buffId](releaser,character,otps,this.fighting)
+			buff.buffManager = this
 			buff.name = buff_cfg[buffId].name
 			character.addBuff(releaser,buff)
 		}

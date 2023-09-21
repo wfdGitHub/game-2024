@@ -1,9 +1,7 @@
 //buff基础
 var fightRecord = require("../fight/fightRecord.js")
-var buffManager = require("./buffManager.js")
 var buffBasic = function(releaser,character,otps,fighting) {
 	this.fightRecord = fightRecord
-	this.buffManager = buffManager
 	this.fighting = fighting
 	this.buffId = otps.buffId
 	this.type = "buff"

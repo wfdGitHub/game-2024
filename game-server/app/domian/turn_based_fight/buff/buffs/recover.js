@@ -1,5 +1,4 @@
 //恢复
-var buffManager = require("../buffManager.js")
 var buffBasic = require("../buffBasic.js")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
@@ -12,7 +11,7 @@ var model = function(releaser,character,otps) {
 		info = buff.character.onHeal(buff.releaser,info)
 		buff.fightRecord.push(info)
 		if(!buff.releaser.died && buff.releaser.recover_anger){
-			if(buffManager.seeded.random("恢复回怒") < buff.releaser.recover_anger)
+			if(buff.buffManager.seeded.random("恢复回怒") < buff.releaser.recover_anger)
 				buff.releaser.addAnger(1)
 		}
 	}
