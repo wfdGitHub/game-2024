@@ -49,8 +49,8 @@ acepackHandler.prototype.wearAcepack = function(msg, session, next) {
           cb("英雄不存在")
           return
         }
-        if(heroInfo.evo < ace_pack_base["pos_"+pos]["evo"]){
-          cb("英雄官职限制")
+        if(heroInfo.lv < ace_pack_base["pos_"+pos]["lv"]){
+          cb("英雄等级不足")
           return
         }
         if(limits[aId] && !limits[aId][heroInfo.id]){

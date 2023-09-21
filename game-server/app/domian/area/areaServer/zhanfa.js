@@ -2,6 +2,7 @@
 const main_name = "zhanfa"
 const zhanfa = require("../../../../config/gameCfg/zhanfa.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+const exalt_lv = require("../../../../config/gameCfg/exalt_lv.json")
 const async = require("async")
 var itemId = 230
 module.exports = function() {
@@ -108,18 +109,12 @@ module.exports = function() {
 						next("英雄不存在")
 						return
 					}
-					if(heroInfo.star < 11){
-						next("英雄未觉醒")
-						return
-					}
-					var zhanfa = heroInfo[key]
-					if(index == 1 && !zhanfa)
-						zhanfa = 1
-					if(!zhanfa){
+					if(index > exalt_lv[heroInfo.exalt]["zhanfa"]){
 						next("战法栏未解锁")
 						return
 					}
-					if(zhanfa != 1){
+					var oldZid = heroInfo[key]
+					if(zId){
 						next("已穿戴战法")
 						return
 					}
@@ -166,37 +161,13 @@ module.exports = function() {
 				return
 			}
 			var zhanfa = heroInfo[key]
-			if(!zhanfa || zhanfa == 1){
+			if(!zhanfa){
 				cb(false,"未穿戴战法")
 				return
 			}
-			self.heroDao.setHeroInfo(self.areaId,uid,hId,key,1)
+			self.heroDao.delHeroInfo(self.areaId,uid,hId,key)
 			self.setObj(uid,main_name,zhanfa,1)
 			cb(true,zhanfa)
-		})
-	}
-	//解锁战法栏
-	this.unlockZhanfaGrid = function(uid,hId,index,cb) {
-		if(index != 1 && index != 2 && index != 3){
-			cb(false,"index error "+index)
-			return
-		}
-		var key = "zf_"+index
-
-		self.heroDao.getHeroOne(uid,hId,function(flag,heroInfo) {
-			if(!heroInfo){
-				cb(false,"英雄不存在")
-				return
-			}
-			var zhanfa = heroInfo[key]
-			if(zhanfa){
-				cb(false,"战法栏已解锁")
-				return
-			}
-			self.heroDao.setHeroInfo(self.areaId,uid,hId,key,1)
-			var info = {}
-			info[key] = 1
-			cb(true,info)
 		})
 	}
 }
