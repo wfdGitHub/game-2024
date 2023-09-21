@@ -32,43 +32,35 @@ module.exports = function() {
 		}
 		var value = Number(otps.value)
 		switch(itemCfg[otps.itemId].useType){
-			case "heroChip":
-				var heroId = itemCfg[otps.itemId].arg
-				var needValue = 30
+			case "hero":
+				var heroId = itemCfg[otps.itemId].value
+				var qa  = itemCfg[otps.itemId].arg
 				self.heroDao.getHeroAmount(uid,function(flag,info) {
-				  	if(info.cur + value > info.max){
+				  	if(info.cur >= info.max){
 				  		cb(false,"英雄背包已满")
 				    	return
 				  	}
-					self.consumeItems(uid,otps.itemId+":"+needValue,value,"合成英雄*"+value,function(flag,err) {
+					self.consumeItems(uid,otps.itemId+":1",1,"获得英雄",function(flag,err) {
 						if(!flag){
 							cb(false,err)
 						}else{
-							var heroList = []
-							for(var i = 0;i < value;i++){
-								heroList.push(self.heroDao.gainHero(self.areaId,uid,{id : heroId}))
-							}
-							cb(true,heroList)
+							var heroInfo = self.gainOneHero(uid,heroId,qa)
+							cb(true,heroInfo)
 						}
 					})
 				})
 			break
-			case "randChip":
-				var needValue = 30
-				self.heroDao.getHeroAmount(uid,function(flag,info) {
-				  	if(info.cur + value > info.max){
-				    	cb(false,"英雄背包已满")
-				    	return
-				  	}
-					self.consumeItems(uid,otps.itemId+":"+needValue,value,"合成英雄*"+value,function(flag,err) {
-						if(!flag){
-							cb(false,err)
-						}else{
-							var type = itemCfg[otps.itemId].arg
-					        var heroInfos = self.heroDao.randHero(self.areaId,uid,type,value)
-					        cb(true,heroInfos)
-						}
-					})
+			case "equip":
+				var eLv = itemCfg[otps.itemId].value
+				var slot = itemCfg[otps.itemId].slot
+				var qa  = itemCfg[otps.itemId].arg
+				self.consumeItems(uid,otps.itemId+":1",1,"获得装备",function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						var equipInfo = self.makeEquipByQa(uid,eLv,slot,qa)
+						cb(true,equipInfo)
+					}
 				})
 			break
 			case "chest":

@@ -118,6 +118,15 @@ var model = function() {
 			cb(true,awardList)
 		})
 	}
+	//获得指定品质装备
+	this.makeEquipByQa = function(uid,lv,slot,qa,cb) {
+		var id = self.getLordLastid(uid)
+		var info = self.fightContorl.makeEquip(lv,slot,qa)
+		info.id = id
+		info = JSON.stringify(info)
+		self.setObj(uid,main_name,id,info)
+		return info
+	}
 	//装备打造
 	this.makeEquip = function(uid,lv,slot,item,cb) {
 		async.waterfall([
