@@ -78,6 +78,7 @@ heroDao.prototype.heroLockCheck = function(heroInfo) {
 		return "英雄已穿戴战法"
 	if(heroInfo.lock)
 		return "英雄已锁定"
+	console.log(heroInfo,herosCfg[heroInfo.id])
 	if(herosCfg[heroInfo.id] && herosCfg[heroInfo.id]["type"] != 0)
 		return "神兽珍兽不可分解"
 	return false
