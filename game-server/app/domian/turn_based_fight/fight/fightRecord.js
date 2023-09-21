@@ -41,9 +41,7 @@ var model = function() {
 						if(info.defTeam[i]["heroId"])
 							heroNames[info.defTeam[i]["id"]] = herosCfg[info.defTeam[i]["heroId"]]["name"]+info.defTeam[i]["id"]
 					// console.log("战斗开始\n攻方阵容",JSON.stringify(info.atkTeam),"\n守方阵容",JSON.stringify(info.defTeam))
-						console.log("\033[34m战斗开始  初始英雄\033[0m")
-					for(var i = 0;i < info.comeonHero.length;i++)
-						console.log("\033[34m"+heroNames[info.comeonHero[i].id]+"   位置"+info.comeonHero[i].index+"\033[0m")
+						console.log("\033[34m战斗开始\033[0m")
 				break
 				case "hero_comeon":
 					var str = "\033[32m英雄"+heroNames[info.id]+"出场   位置"+info.index+"\033[0m"

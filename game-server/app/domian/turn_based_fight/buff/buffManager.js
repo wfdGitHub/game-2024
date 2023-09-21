@@ -1,17 +1,16 @@
 var fightRecord = require("../fight/fightRecord.js")
 var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var buffList = {}
-var buffFactory = function() {
+for(var buffId in buff_cfg){
+	if(buff_cfg[buffId]["default"])
+		buffList[buffId] = require("./defaultBuff.js")
+	else
+		buffList[buffId] = require("./buffs/"+buffId+".js")
+}
+var buffFactory = function() {}
+buffFactory.init = function(seeded,fighting) {
 	this.atkListenList = {}
 	this.defListenList = {}
-}
-buffFactory.init = function(seeded,fighting) {
-	for(var buffId in buff_cfg){
-		if(buff_cfg[buffId]["default"])
-			buffList[buffId] = require("./defaultBuff.js")
-		else
-			buffList[buffId] = require("./buffs/"+buffId+".js")
-	}
 	this.seeded = seeded
 	this.fighting = fighting
 	this.setListen(fighting.atkTeam,fighting.defTeam)

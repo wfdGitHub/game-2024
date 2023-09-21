@@ -84,8 +84,6 @@ var model = function(otps) {
 	this.polang_buff = otps.polang_buff 						//破浪叠满20层
 	this.less_hp_rate = otps.less_hp_rate 						//生命值降低到一定程度触发BUFF
 	this.less_hp_buff = otps.less_hp_buff 						//生命值降低到一定程度触发BUFF
-	if(otps.round_buff1)
-		this.round_buffs.push(JSON.parse(otps.round_buff1)) //回合开始前BUFF
 	if(otps.passive1 && passive_cfg[otps.passive1])
 		this.passives[otps.passive1] = new passive(this,passive_cfg[otps.passive1],otps.passiveArg1)
 	if(otps.passive2 && passive_cfg[otps.passive2])
@@ -112,15 +110,6 @@ var model = function(otps) {
 	this.cold_hit_anger = otps.cold_hit_anger || 0 			//被寒冷状态下的敌人攻击时恢复怒气
 	this.skill_again = otps.skill_again || 0 				//释放技能后再次释放概率
 	this.add_anger_maxHp = otps.add_anger_maxHp || 0 		//追加技能伤害加成
-	this.kill_buff1 = otps.kill_buff1 						//击杀后触发buff1
-	this.kill_buff2 = otps.kill_buff2 						//击杀后触发buff2
-	this.action_buff1 = otps.action_buff1 					//行动后触发buff1
-	this.action_buff2 = otps.action_buff2 					//行动后触发buff2
-	this.action_buff_s = otps.action_buff_s 				//行动后触发buff 宝石效果
-	this.died_buff1 = otps.died_buff1 						//死亡后触发buff1
-	this.died_buff2 = otps.died_buff2 						//死亡后触发buff2
-	this.died_buff3 = otps.died_buff3 						//死亡后触发buff3
-	this.died_buff_s = otps.died_buff_s 					//死亡后触发buff 宝石效果
 	if(otps.died_once_buff)
 		this.died_once_buff = JSON.parse(otps.died_once_buff) //死亡后触发buff,仅生效1
 	this.thawing_frozen = otps.thawing_frozen || 0 			//破冰一击伤害加成
@@ -160,8 +149,6 @@ var model = function(otps) {
 	this.soul_steal_anger = otps.soul_steal_anger || false  //灵魂窃取的目标怒气值转移至自身
 	this.ghost_atk_heal = otps.ghost_atk_heal || 0 			//受到亡魂状态的敌人攻击后恢复自身最大生命值
 
-	this.first_ace_buff1 = otps.first_ace_buff1 || false 	// 初始buff1
-	this.first_ace_buff2 = otps.first_ace_buff2 || false 	// 初始buff2
 	if(otps.first_realm_buff)
 		this.first_realm_buff = JSON.parse(otps.first_realm_buff)
 	this.slcj_zs = otps.slcj_zs || false  					// 释放水龙冲击时，添加1回合重伤效果
@@ -198,7 +185,6 @@ var model = function(otps) {
 	this.def_realm_5 = otps.def_realm_5 || 0 	//防御阵营5增益
 	
 	//=========其他效果=======//
-	this.first_buff_list = []			//初始BUFF
 	this.kill_shield = otps.kill_shield || 0 				//直接伤害击杀敌方英雄后，为自身添加伤害吸收盾值
 	this.skill_heal_maxHp = otps.skill_heal_maxHp || 0		//释放技能后恢复自身最大生命值
 	//=========战法效果=======//
@@ -335,8 +321,6 @@ var model = function(otps) {
 	this.kill_clear_buff = otps.kill_clear_buff || 0 //直接伤害击杀目标后，概率清除己方武将身上该目标死亡前释放的所有异常效果（灼烧、中毒、眩晕、沉默、麻痹）
 	this.control_amp = otps.control_amp || 0 //攻击正在被控制（眩晕、沉默、麻痹）的目标时，增加伤害比例
 	this.reduction_over = otps.reduction_over || 0 //受到武将直接伤害时，如果该伤害超过自身生命上限的40%，减免此次伤害的比例
-	if(otps.before_buff_s)
-		this.first_buff_list.push(JSON.parse(otps.before_buff_s)) //战斗前对自身释放BUFF
 	this.record_anger_rate = otps.record_anger_rate || 0 //释放技能后，概率获得本次技能消耗的50%的怒气，最多不超过4点
 	this.round_anger_rate = otps.round_anger_rate || 0 //整体回合结束时，如果自身怒气低于4点，将怒气回复至4点的概率
 	this.action_anger_s = otps.action_anger_s || 0 //自身行动后，回复自身1点怒气概率
@@ -474,18 +458,6 @@ var model = function(otps) {
 	this.first_amp = otps.first_amp || 0		//首回合伤害加成
 	if(this.first_crit)
 		this.must_crit = true
-	if(otps.maga_buff1)
-		this.maga_buff1 = JSON.parse(otps.maga_buff1)				//首回合附加  可选其他目标
-	if(otps.first_buff1)
-		this.first_buff_list.push(JSON.parse(otps.first_buff1))		//首回合附加BUFF1
-	if(otps.first_buff2)
-		this.first_buff_list.push(JSON.parse(otps.first_buff2))		//首回合附加BUFF1
-	if(otps.first_buff3)
-		this.first_buff_list.push(JSON.parse(otps.first_buff3))		//首回合附加BUFF1
-	if(otps.first_ace_buff1)
-		this.first_buff_list.push(JSON.parse(otps.first_ace_buff1))		//首回合附加BUFF1
-	if(otps.first_ace_buff2)
-		this.first_buff_list.push(JSON.parse(otps.first_ace_buff2))		//首回合附加BUFF2
 	
 	this.died_use_skill = otps.died_use_skill				//死亡时释放一次技能
 	this.died_burn_buff_must = otps.died_burn_buff_must 	//死亡释放buff时必定命中
@@ -593,20 +565,6 @@ var model = function(otps) {
 			this.angerSkill.self_heal = this.skill_heal_maxHp
 		this.needAnger = this.angerSkill.needAnger
 	}
-	if(otps.skill_buff1)
-		this.angerSkill.addBuff(otps.skill_buff1)				//技能buff1
-	if(otps.skill_buff2)
-		this.angerSkill.addBuff(otps.skill_buff2)				//技能buff2
-	if(otps.skill_buff3)
-		this.angerSkill.addBuff(otps.skill_buff3)				//技能buff3
-	if(otps.skill_buff_ace)
-		this.angerSkill.addBuff(otps.skill_buff_ace)			//宝物技能BUFF
-	if(otps.normal_buff1)
-		this.defaultSkill.addBuff(otps.normal_buff1) 			//普攻buff1
-	if(otps.normal_buff2)
-		this.defaultSkill.addBuff(otps.normal_buff2) 			//普攻buff2
-	if(otps.normal_buff3)
-		this.defaultSkill.addBuff(otps.normal_buff3) 			//普攻buff3
 	this.target_minHP = otps.target_minHP		//单体输出武将的所有攻击优先攻击敌方当前血量最低的武将
 	if(this.target_minHP){
 		this.defaultSkill.targetType = "enemy_minHP"
@@ -624,24 +582,28 @@ var model = function(otps) {
 }
 model.prototype.init = function(fighting) {
 	this.fighting = fighting
-	if(this.kill_buff1)
-		this.addKillBuff(this.kill_buff1)
-	if(this.kill_buff2)
-		this.addKillBuff(this.kill_buff2)
-	if(this.action_buff1)
-		this.addActionBuff(this.action_buff1)
-	if(this.action_buff2)
-		this.addActionBuff(this.action_buff2)
-	if(this.action_buff_s)
-		this.addActionBuff(this.action_buff_s)
-	if(this.died_buff1)
-		this.addDiedBuff(this.died_buff1)
-	if(this.died_buff2)
-		this.addDiedBuff(this.died_buff2)
-	if(this.died_buff3)
-		this.addDiedBuff(this.died_buff3)
-	if(this.died_buff_s)
-		this.addDiedBuff(this.died_buff_s)
+	if(this.otps.normal_buffs)
+		for(var i = 0;i < this.otps.normal_buffs.length;i++)
+			this.defaultSkill.addBuff(this.otps.normal_buffs[i])
+	if(this.otps.skill_buffs)
+		for(var i = 0;i < this.otps.skill_buffs.length;i++)
+			this.angerSkill.addBuff(this.otps.skill_buffs[i])
+	if(this.otps.round_buffs){
+		for(var i = 0;i < this.otps.round_buffs.length;i++)
+			this.round_buffs.push(JSON.parse(this.otps.round_buffs[i]))
+	}
+	if(this.otps.first_buffs)
+		for(var i = 0;i < this.otps.first_buffs.length;i++)
+			this.addFirstBuff(JSON.parse(this.otps.first_buffs[i]))
+	if(this.otps.action_buffs)
+		for(var i = 0;i < this.otps.action_buffs.length;i++)
+			this.addActionBuff(this.otps.action_buffs[i])
+	if(this.otps.kill_buffs)
+		for(var i = 0;i < this.otps.kill_buffs.length;i++)
+			this.addKillBuff(this.otps.kill_buffs[i])
+	if(this.otps.died_buffs)
+		for(var i = 0;i < this.otps.died_buffs.length;i++)
+			this.addDiedBuff(this.otps.died_buffs[i])
 	if(this.seckill)
 		this.angerSkill.seckill = true
 	this.attInfo.speed += this.fighting.seeded.random("随机速度") * 0.5
@@ -763,10 +725,20 @@ model.prototype.calAttAdd = function(team_adds) {
 }
 //英雄出场
 model.prototype.heroComeon = function() {
-	if(!this.died){
-		this.siteInit()
-		this.beginAction()
+	if(this.maxHP_rate)
+		this.attInfo.maxHP = Math.floor(this.attInfo.maxHP * this.maxHP_rate)
+	this.attInfo.hp = this.attInfo.maxHP
+	if(this.isBoss){
+		this.attInfo.hp = 99999999999
 	}
+	if(this.surplus_health === 0){
+		this.attInfo.hp = 0
+		this.died = true
+	}else if(this.surplus_health){
+		this.attInfo.hp = Math.ceil(this.attInfo.hp * this.surplus_health)
+	}
+	if(!this.died)
+		this.siteInit()
 }
 //站位加成
 model.prototype.siteInit = function() {
@@ -842,39 +814,21 @@ model.prototype.siteInit = function() {
 }
 //战斗开始
 model.prototype.begin = function() {
-	if(this.maxHP_rate)
-		this.attInfo.maxHP = Math.floor(this.attInfo.maxHP * this.maxHP_rate)
-	this.attInfo.hp = this.attInfo.maxHP
-	if(this.isBoss){
-		this.attInfo.hp = 99999999999
-	}
-	if(this.surplus_health === 0){
-		this.attInfo.hp = 0
-		this.died = true
-	}else if(this.surplus_health){
-		this.attInfo.hp = Math.ceil(this.attInfo.hp * this.surplus_health)
-	}
+	this.beginAction()
 }
 //战前准备
 model.prototype.beginAction = function() {
 	if(this.enter_skill)
 		skillManager.useSkill(this.angerSkill)
-	if(this.maga_buff1){
-		var buff = this.maga_buff1
-		var buffTargets = this.fighting.locator.getBuffTargets(this,buff.buff_tg)
-		for(var i = 0;i < buffTargets.length;i++){
-			if(buffTargets[i].died){
-				continue
-			}
-			buffManager.createBuff(this,buffTargets[i],{buffId : buff.buffId,buffArg : buff.buffArg,duration : buff.duration})
-		}
-	}
 	if(this.first_buff_list.length){
 		for(var j = 0;j < this.first_buff_list.length;j++){
 			if(this.first_buff_list[j]["buff_tg"]){
 				var targets = this.fighting.locator.getBuffTargets(this,this.first_buff_list[j]["buff_tg"])
-				for(var k = 0;k < targets.length;k++)
+				for(var k = 0;k < targets.length;k++){
+					if(targets[k].died)
+						continue
 					buffManager.createBuff(this,targets[k],this.first_buff_list[j])
+				}
 			}else{
 				buffManager.createBuff(this,this,this.first_buff_list[j])
 			}
@@ -1213,6 +1167,9 @@ model.prototype.diedClear = function() {
 				this.buffs[i].destroy()
 		}
 	}
+}
+model.prototype.addFirstBuff = function(buff) {
+	this.first_buff_list.push(buff)
 }
 model.prototype.addKillBuff = function(buffStr) {
 	var buff = JSON.parse(buffStr)

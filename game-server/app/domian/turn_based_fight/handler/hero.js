@@ -277,7 +277,7 @@ var model = function(fightContorl) {
 			info.specie2 = evolves[heros[info.id]["evo"+evoId]]["specie2"]
 		//被动技能
 		for(var i = 1;i <= evoId;i++)
-			this.mergeTalent(info,heros[info.id]["talent"+evoId])
+			this.mergeTalent(info,heros[info.id]["talent"+i])
 		//神兽技能
 		if(info.m_ps)
 			this.mergeTalent(info,heros[info.id]["mythical"])
@@ -467,16 +467,54 @@ var model = function(fightContorl) {
 		if(!info2)
 			return
 		for(var i in info2){
-			if(info2[i]){
-				if(info1[i] && Number.isFinite(info2[i])){
-					if(Number.isFinite(info1[i])){
-						info1[i] += info2[i]
-					}else{
-						info1[i] = info2[i]
+			switch(i){
+				case "normal_buff":
+					if(!info1.normal_buffs)
+						info1.normal_buffs = []
+					info1.normal_buffs.push(info2[i])
+				break
+				case "skill_buff":
+					if(!info1.skill_buffs)
+						info1.skill_buffs = []
+					info1.skill_buffs.push(info2[i])
+				break
+				case "round_buff":
+					if(!info1.round_buffs)
+						info1.round_buffs = []
+					info1.round_buffs.push(info2[i])
+				break
+				case "first_buff":
+					if(!info1.first_buffs)
+						info1.first_buffs = []
+					info1.first_buffs.push(info2[i])
+				break
+				case "action_buff":
+					if(!info1.action_buffs)
+						info1.action_buffs = []
+					info1.action_buffs.push(info2[i])
+				break
+				case "kill_buff":
+					if(!info1.kill_buffs)
+						info1.kill_buffs = []
+					info1.kill_buffs.push(info2[i])
+				break
+				case "died_buff":
+					if(!info1.died_buffs)
+						info1.died_buffs = []
+					info1.died_buffs.push(info2[i])
+				break
+				default :
+					if(info2[i]){
+						if(info1[i] && Number.isFinite(info2[i])){
+							if(Number.isFinite(info1[i])){
+								info1[i] += info2[i]
+							}else{
+								info1[i] = info2[i]
+							}
+						}else{
+							info1[i] = info2[i]
+						}
 					}
-				}else{
-					info1[i] = info2[i]
-				}
 			}
 		}
 	}
