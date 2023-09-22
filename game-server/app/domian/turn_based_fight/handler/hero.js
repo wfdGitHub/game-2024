@@ -268,7 +268,10 @@ var model = function(fightContorl) {
 		info.evo = info.evo || 1
 		info.lv = info.lv || 1
 		var id = info.id
-		var aptitude = exalt_lv[info.exalt]["aptitude"] || 1
+		info.aptitude = exalt_lv[info.exalt]["aptitude"] || 1
+		//神兽资质加成
+		if(heros[id]["type"] == 2)
+			info.aptitude += 3
 		this.mergeData(info,heros[id])
 		var evoId = evolve_lv[info.evo]["evoId"]
 		if(evolves[heros[info.id]["evo"+evoId]]["specie1"])
@@ -283,14 +286,14 @@ var model = function(fightContorl) {
 			this.mergeTalent(info,heros[info.id]["mythical"])
 		//初始属性
 		var lvInfo = {
-		    "maxHP":aptitudes[aptitude].maxHP,
-		    "atk": aptitudes[aptitude].atk,
-		    "phyDef": aptitudes[aptitude].phyDef,
-		    "magDef": aptitudes[aptitude].magDef
+		    "maxHP":aptitudes[info.aptitude].maxHP,
+		    "atk": aptitudes[info.aptitude].atk,
+		    "phyDef": aptitudes[info.aptitude].phyDef,
+		    "magDef": aptitudes[info.aptitude].magDef
 		}
 		//等级计算
 		if(info.lv && lv_cfg[info.lv]){
-			var growth = aptitudes[aptitude].growth
+			var growth = aptitudes[info.aptitude].growth
 			lvInfo.maxHP += Math.floor(lv_cfg[info.lv].maxHP * growth)
 			lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * growth)
 			lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * growth)
@@ -443,7 +446,7 @@ var model = function(fightContorl) {
 		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
 		//主属性增益
 		info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
-		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + aptitude * 600 + PSScore)
+		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore)
 		return new character(info)
 	}
 	//新增天赋
