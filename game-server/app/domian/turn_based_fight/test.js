@@ -105,4 +105,4 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 //   PS3: 4103,
 //   PS4: 4110
 // }
-// console.log(fightContorl.getCharacterInfo(heroInfo))
+console.log(fightContorl.getCharacterInfo(heroInfo))

@@ -8,7 +8,7 @@ var model = function() {
 	this.fighting = false
 	this.overInfo = {}
 }
-const handlers = ["util","equip","hero","standard"]
+const handlers = ["util","equip","fabao","hero","standard"]
 for(var i = 0;i < handlers.length;i++)
 	require("../handler/"+handlers[i]+".js").call(model,model)
 model.powerEntity = powerEntity
