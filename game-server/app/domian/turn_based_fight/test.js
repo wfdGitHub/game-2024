@@ -85,9 +85,19 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 //   suit: '8050'
 // }
 // // console.log(fightContorl.makeHeroData(501010,5))
-
+// var fabao1 = JSON.stringify({
+// 	id: '10040',
+// 	qa: 4,
+// 	lv: 1,
+// 	M1: 1.036644540879608,
+// 	M2: 1.169528828473013,
+// 	M3: 0.8386032290237847,
+// 	M4: 1.011528704254295,
+// 	slots : {1:1,2:4,3:4,4:4},
+// 	spe: [ 'fabao_8110', 'fabao_7090', 'fabao_7070', 'fabao_7060']
+//   })
 // var heroInfo = {
-//   id: 501200,
+//   id: 500110,
 //   evo: 1,
 //   exalt: 1,
 //   qa: 5,
@@ -103,6 +113,8 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 //   PS1: 4102,
 //   PS2: 4104,
 //   PS3: 4103,
-//   PS4: 4110
+//   PS4: 4110,
+//   fabao1 : fabao1
 // }
-console.log(fightContorl.getCharacterInfo(heroInfo))
+// // console.log(fightContorl.getFabaoData(fabao1))
+// console.log(fightContorl.getCharacterInfo(heroInfo).attInfo)
