@@ -53,7 +53,7 @@ var model = function() {
 						next("宝石槽位未解锁 "+g_slot)
 						return
 					}
-					if(equip_lv[eInfo.lv]["gem_type_1"] != gemMap[itemId]["type"] && equip_lv[eInfo.lv]["gem_type_2"] != gemMap[itemId]["type"]){
+					if(equip_slot[eInfo.slot]["gem_type_1"] != gemMap[itemId]["type"] && equip_slot[eInfo.slot]["gem_type_2"] != gemMap[itemId]["type"]){
 						next("宝石类型错误 "+gemMap[itemId]["type"])
 						return
 					}
