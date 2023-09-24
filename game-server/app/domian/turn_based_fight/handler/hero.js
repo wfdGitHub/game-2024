@@ -1,6 +1,5 @@
 //英雄系统
 const fightCfg = require("../fight/fightCfg.js")
-const artifact_level = fightCfg.getCfg("artifact_level")
 const evolves = fightCfg.getCfg("evolves")
 const hufu_lv = fightCfg.getCfg("hufu_lv")
 const evolve_lv = fightCfg.getCfg("evolve_lv")
@@ -177,10 +176,6 @@ var model = function(fightContorl) {
 				if(list[i]["a"+j])
 					strList.push(list[i]["a"+j]+":1")
 			}
-			var artifact = list[i].artifact
-			//专属返还
-			if(artifact !== undefined && artifact_level[artifact])
-				strList.push(artifact_level[artifact]["pr"])
 			//护符返还
 			if(list[i]["hfLv"]){
 				var hufuInfo = {lv:list[i]["hfLv"]}
@@ -200,6 +195,7 @@ var model = function(fightContorl) {
 				if(list[i]["e"+j+"g"+k])
 					strList.push(list[i]["e"+j+"g"+k]+":1")
 			}
+			//法宝返还
 		}
 		return awards
 	}
@@ -225,9 +221,6 @@ var model = function(fightContorl) {
 		//等级战力
 		if(info["lv"])
 			allCE += lv_cfg[info["lv"]]["ce"]
-		//专属战力
-		if(info["artifact"] !== undefined)
-			allCE += artifact_level[info["artifact"]]["ce"]
 		//宝物战力
 		for(var j = 1;j <= 10;j++)
 			if(info["a"+j])
@@ -241,6 +234,11 @@ var model = function(fightContorl) {
 				if(info["e"+j+"g"+k])
 	    			allCE += gemMap[info["e"+j+"g"+k]]["ce"]
 			}
+		}
+		//法宝战力
+		for(var i = 1;i <= 3;i++){
+			if(info["fabao"+i])
+				allCE += this.getFabaoCE(info["fabao"+i])
 		}
 		//护符战力
 		if(info["hfLv"] && hufu_quality[info["hfLv"]]){
@@ -285,6 +283,13 @@ var model = function(fightContorl) {
 		if(info.m_ps)
 			this.mergeTalent(info,heros[info.id]["mythical"])
 		//初始属性
+		//主属性计算
+		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
+		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
+		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
+		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
+		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
+		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
 		var lvInfo = {
 		    "maxHP":aptitudes[info.aptitude].maxHP,
 		    "atk": aptitudes[info.aptitude].atk,
@@ -335,28 +340,15 @@ var model = function(fightContorl) {
 				this.mergeTalent(info,talentId)
 			}
 		}
-		//神兵加成
-		if(info["artifact"] !== undefined){
-			var artifact = info["artifact"]
-			var lvInfo = {
-			    "maxHP": artifact_level[artifact].maxHP,
-			    "atk": artifact_level[artifact].atk,
-			    "phyDef": artifact_level[artifact].phyDef,
-			    "magDef": artifact_level[artifact].magDef,
-			    "speed" : artifact_level[artifact].speed
-			}
-			this.mergeData(info,lvInfo)
-			for(var i = 0;i <= artifact;i++){
-				if(artifact_level[i].talent){
-					var talentId = artifact_level[i].talent
-					this.mergeTalent(info,talentId)
-				}
-			}
-			if(artifact >= 25){
-				if(artifact_talent[info.id]){
-					var talentId = artifact_talent[info.id].talent
-					this.mergeTalent(info,talentId)
-				}
+		//法宝加成
+		for(var i = 1;i <= 3;i++){
+			if(info["fabao"+i]){
+				var fabaoData = this.getFabaoData(info["fabao"+i])
+				this.mergeData(info,fabaoData.realAtt)
+				for(var j = 0;j < fabaoData.spe.length;j++)
+					this.mergeTalent(info,fabaoData.spe[j])
+				for(var j = 0;j < fabaoData.slotTalents.length;j++)
+					this.mergeTalent(info,fabaoData.slotTalents[j])
 			}
 		}
 		//公会技能计算
@@ -437,13 +429,6 @@ var model = function(fightContorl) {
 				info.angerSkill = Object.assign({skillId : info.angerSkill},skills[info.angerSkill])
 			}
 		}
-		//主属性计算
-		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
-		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
-		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
-		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
-		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
-		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
 		//主属性增益
 		info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
 		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore)
@@ -539,12 +524,6 @@ var model = function(fightContorl) {
 				oldCE = lv_cfg[oldValue || 1]["ce"] || 0
 				newCE = lv_cfg[newValue || 1]["ce"] || 0
 			break
-			case "artifact":
-				if(Number.isFinite(oldValue))
-					oldCE = artifact_level[oldValue]["ce"] || 0
-				if(Number.isFinite(newValue))
-					newCE = artifact_level[newValue]["ce"] || 0
-			break
 			case "a1":
 			case "a2":
 			case "a3":
@@ -573,6 +552,12 @@ var model = function(fightContorl) {
 					oldCE = zhanfa[oldValue]["ce"] || 0
 				if(newValue && zhanfa[newValue])
 					newCE = zhanfa[newValue]["ce"] || 0
+			break
+			case "fabao1":
+			case "fabao2":
+			case "fabao3":
+				oldCE = this.getFabaoCE(oldValue)
+				newCE = this.getFabaoCE(newValue)
 			break
 			case "e1g1":
 			case "e1g1":

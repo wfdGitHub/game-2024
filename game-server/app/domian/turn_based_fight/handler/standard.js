@@ -9,8 +9,7 @@ var standard_team_ce = {}
 for(var i in standard_ce_cfg){
 	standard_ce[i] = {
 		"lv" : standard_ce_cfg[i]["lv"],
-		"equip" : standard_ce_cfg[i]["equip"],
-		"artifact" : standard_ce_cfg[i]["artifact"]
+		"equip" : standard_ce_cfg[i]["equip"]
 	}
 	standard_team_ce[i] = {}
 	for(var j = 1;j <= 4;j++){
@@ -53,9 +52,8 @@ var model = function() {
 				//装备
 				for(var j = 1;j <= 6;j++)
 					heroInfo["e"+j] = this.makeStandardEquip(lvInfo.equip,j,dlInfo.equip_qa)
-				//宝石
-				for(var j = 1;j <= 4;j++)
-					heroInfo["s"+j] = lvInfo["s"+j]
+				//基准战力宝石
+
 				team.push(heroInfo)
 			}
 		}
