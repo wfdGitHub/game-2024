@@ -1,0 +1,92 @@
+var bearcat = require("bearcat")
+var async = require("async")
+var fabaoHandler = function(app) {
+  this.app = app;
+	this.areaManager = this.app.get("areaManager")
+};
+//获取数据
+fabaoHandler.prototype.getFabaoData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getFabaoData(uid,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//法宝穿戴
+fabaoHandler.prototype.wearFabao = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].wearFabao(uid,msg.hId,msg.fId,msg.index,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//法宝卸下
+fabaoHandler.prototype.unWearFabao = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].unWearFabao(uid,msg.hId,msg.index,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//生成法宝
+fabaoHandler.prototype.makeFabao = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].makeFabao(uid,msg.qa,msg.type,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//法宝洗练
+fabaoHandler.prototype.washFabao = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].washFabao(uid,msg.fId1,msg.fId2,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//法宝洗练保存
+fabaoHandler.prototype.saveWashFabao = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].saveWashFabao(uid,msg.fId,msg.index,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//法宝升级
+fabaoHandler.prototype.upFabao = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].upFabao(uid,msg.fId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//法宝分解
+fabaoHandler.prototype.recycleFabao = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].recycleFabao(uid,msg.fIds,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//法宝重生
+fabaoHandler.prototype.resetFabaoLv = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].resetFabaoLv(uid,msg.fId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+module.exports = function(app) {
+  return bearcat.getBean({
+  	id : "fabaoHandler",
+  	func : fabaoHandler,
+  	args : [{
+  		name : "app",
+  		value : app
+  	}],
+    props : [{
+      name : "heroDao",
+      ref : "heroDao"
+    }]
+  })
+};

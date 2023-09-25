@@ -13,13 +13,13 @@ var model = function() {
 	var self = this
 	var local = {}
 	//获取数据
-	this.getEquipData = function(uid,cb) {
+	this.getFabaoData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(data) {
 			cb(true,data)
 		})
 	}
 	//法宝穿戴
-	this.wearFabao = function(uid,fId,index,cb) {
+	this.wearFabao = function(uid,hId,fId,index,cb) {
 		var lv = self.getLordLv(uid)
 		if(!Number.isInteger(index) || index < 1 || index > lord_lv[lv]["fabao"]){
 			cb(false,"法宝栏位未开放")
@@ -160,7 +160,7 @@ var model = function() {
 		})
 	}
 	//法宝升级
-	this.upFabao = function(uid,fid) {
+	this.upFabao = function(uid,fId) {
 		var fInfo
 		async.waterfall([
 			function(next) {

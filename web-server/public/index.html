@@ -98,6 +98,63 @@
         console.log("onChat")
         console.log(data)
       })
+      //====================法宝=================//
+      //获取数据
+      var getFabaoData = function() {
+        pomelo.request("area.fabaoHandler.getFabaoData", {}, function(data) {
+            console.log(data);
+        })
+      }
+      //法宝穿戴
+      var wearFabao = function(hId,fId,index) {
+        pomelo.request("area.fabaoHandler.wearFabao", {hId:hId,fId:fId,index:index}, function(data) {
+            console.log(data);
+        })
+      }
+      //法宝卸下
+      var unWearFabao = function(hId,index) {
+        pomelo.request("area.fabaoHandler.unWearFabao", {hId:hId,index:index}, function(data) {
+            console.log(data);
+        })
+      }
+      //生成法宝
+      var makeFabao = function(qa,type) {
+        pomelo.request("area.fabaoHandler.makeFabao", {qa:qa,type:type}, function(data) {
+            console.log(data);
+        })
+      }
+      //法宝洗练
+      var makeFabao = function(qa,type) {
+        pomelo.request("area.fabaoHandler.makeFabao", {qa:qa,type:type}, function(data) {
+            console.log(data);
+        })
+      }
+      //法宝洗练保存
+      var saveWashFabao = function(fId,index) {
+        pomelo.request("area.fabaoHandler.saveWashFabao", {fId:fId,index:index}, function(data) {
+            console.log(data);
+        })
+      }
+      //法宝升级
+      var upFabao = function(fId) {
+        pomelo.request("area.fabaoHandler.upFabao", {fId:fId}, function(data) {
+            console.log(data);
+        })
+      }
+      //法宝分解
+      var upFabao = function(fIds) {
+        pomelo.request("area.fabaoHandler.upFabao", {fIds:fIds}, function(data) {
+            console.log(data);
+        })
+      }
+      //法宝重生
+      var resetFabaoLv = function(fId) {
+        pomelo.request("area.fabaoHandler.upFabao", {fId:fId}, function(data) {
+            console.log(data);
+        })
+      }
+
+      
       //设置出场阵容
       var setTeamByType = function(type,hIds) {
         pomelo.request("area.heroHandler.setTeamByType", {type:type,hIds:hIds}, function(data) {

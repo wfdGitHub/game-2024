@@ -237,8 +237,6 @@ var model = function(fightContorl) {
 		}
 		return "2000:"+value
 	}
-	//获取法宝战力
-
 	//基准战力法宝
 }
 module.exports = model
