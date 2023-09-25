@@ -3,6 +3,7 @@ const async = require("async")
 const equip_lv = require("../../../../config/gameCfg/equip_lv.json")
 const gem_lv = require("../../../../config/gameCfg/gem_lv.json")
 const items = require("../../../../config/gameCfg/item.json")
+const equip_slot = require("../../../../config/gameCfg/equip_slot.json")
 const util = require("../../../../util/util.js")
 const main_name = "gem"
 var gemMap = {}
