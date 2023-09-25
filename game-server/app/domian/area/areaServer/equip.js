@@ -119,7 +119,7 @@ var model = function() {
 		})
 	}
 	//获得指定品质装备
-	this.makeEquipByQa = function(uid,lv,slot,qa,cb) {
+	this.makeEquipByQa = function(uid,lv,slot,qa) {
 		var id = self.getLordLastid(uid)
 		var info = self.fightContorl.makeEquip(lv,slot,qa)
 		info.id = id

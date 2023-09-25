@@ -28,14 +28,6 @@ fabaoHandler.prototype.unWearFabao = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
-//生成法宝
-fabaoHandler.prototype.makeFabao = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].makeFabao(uid,msg.qa,msg.type,function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
-}
 //法宝洗练
 fabaoHandler.prototype.washFabao = function(msg, session, next) {
   var uid = session.uid

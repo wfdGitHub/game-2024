@@ -36,16 +36,18 @@ module.exports = function() {
 				var heroId = itemCfg[otps.itemId].value
 				var qa  = itemCfg[otps.itemId].arg
 				self.heroDao.getHeroAmount(uid,function(flag,info) {
-				  	if(info.cur >= info.max){
+				  	if(info.cur + value >= info.max){
 				  		cb(false,"英雄背包已满")
 				    	return
 				  	}
-					self.consumeItems(uid,otps.itemId+":1",1,"获得英雄",function(flag,err) {
+					self.consumeItems(uid,otps.itemId+":"+value,1,"获得英雄",function(flag,err) {
 						if(!flag){
 							cb(false,err)
 						}else{
-							var heroInfo = self.gainOneHero(uid,heroId,qa)
-							cb(true,heroInfo)
+							var list = []
+							for(var i = 0;i < value;i++)
+								list.push({type : "hero",data:self.gainOneHero(uid,heroId,qa)})
+							cb(true,list)
 						}
 					})
 				})
@@ -54,12 +56,28 @@ module.exports = function() {
 				var eLv = itemCfg[otps.itemId].value
 				var slot = itemCfg[otps.itemId].slot
 				var qa  = itemCfg[otps.itemId].arg
-				self.consumeItems(uid,otps.itemId+":1",1,"获得装备",function(flag,err) {
+				self.consumeItems(uid,otps.itemId+":"+value,1,"获得装备",function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
-						var equipInfo = self.makeEquipByQa(uid,eLv,slot,qa)
-						cb(true,equipInfo)
+						var list = []
+						for(var i = 0;i < value;i++)
+							list.push({type : "equip",data : self.makeEquipByQa(uid,eLv,slot,qa)})
+						cb(true,list)
+					}
+				})
+			break
+			case "fabao":
+				var type = itemCfg[otps.itemId].value
+				var qa  = itemCfg[otps.itemId].arg
+				self.consumeItems(uid,otps.itemId+":"+value,1,"获得法宝",function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						var list = []
+						for(var i = 0;i < value;i++)
+							list.push({type : "fabao",data : self.makeFabaoByQa(uid,qa,type)})
+						cb(true,list)
 					}
 				})
 			break

@@ -108,6 +108,15 @@ var model = function() {
 		self.setObj(uid,main_name,fInfo.id,fstr)
 		return fstr
 	}
+	//获得指定品质装备
+	this.makeFabaoByQa = function(uid,qa,type) {
+		var id = self.getLordLastid(uid)
+		var info = self.fightContorl.makeFabao(qa,type)
+		info.id = id
+		info = JSON.stringify(info)
+		self.setObj(uid,main_name,id,info)
+		return info
+	}
 	//法宝分解
 	this.recycleFabao = function(uid,fIds,cb) {
 		if(!fIds || !Array.isArray(fIds) || !fIds.length){
