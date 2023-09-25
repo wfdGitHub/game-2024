@@ -108,6 +108,35 @@ var model = function() {
 		self.setObj(uid,main_name,fInfo.id,fstr)
 		return fstr
 	}
+	//法宝分解
+	this.recycleFabao = function(uid,fIds,cb) {
+		if(!fIds || !Array.isArray(fIds) || !fIds.length){
+			cb(false,"fIds error "+fIds)
+			return
+		}
+		var hIdmap = {}
+		for(var i = 0;i < fIds.length;i++){
+			if(hIdmap[fIds[i]]){
+			  	cb(false,"fId不能重复")
+			  	return
+			}
+			hIdmap[fIds[i]] = true
+		}
+		self.getHMObj(uid,main_name,fIds,function(list) {
+			for(var i = 0;i < list.length;i++){
+			 	if(!list[i]){
+			 		cb(false,"fId error "+fIds[i])
+			 		return
+			 	}
+			 	list[i] = JSON.parse(list[i])
+			}
+			var str = self.fightContorl.getFabaoRecycle(list)
+			for(var i = 0;i < list.length;i++)
+				self.delObj(uid,main_name,list[i]["id"])
+			var awardList = self.addItemStr(uid,str,1,"法宝分解")
+			cb(true,awardList)
+		})
+	}
 	//法宝洗练
 	this.washFabao = function(uid,fId1,fId2,cb) {
 		var fstr1,fstr2,fInfo1,fInfo2
@@ -145,19 +174,19 @@ var model = function() {
 		})
 	}
 	//法宝洗练保存
-	this.saveWashFabao = function(uid,fId,index,cb) {
+	this.saveWashFabao = function(uid,fId,select,cb) {
 		self.getObj(uid,main_name,fId,function(fstr) {
 			if(!fstr){
 				cb(false,"法宝不存在")
 				return
 			}
 			var fInfo = JSON.parse(fstr)
-			if(!fInfo["wash"+index]){
+			if(!fInfo["wash"+select]){
 				cb(false,"洗练属性不存在")
 				return
 			}
-			for(var i in fInfo["wash"+index])
-				fInfo[i] = fInfo["wash"+index][i]
+			for(var i in fInfo["wash"+select])
+				fInfo[i] = fInfo["wash"+select][i]
 			delete fInfo.wash1
 			delete fInfo.wash2
 			fInfo = JSON.stringify(fInfo)
@@ -206,35 +235,6 @@ var model = function() {
 			cb(false,err)
 		})
 	}
-	//法宝分解
-	this.recycleFabao = function(uid,fIds,cb) {
-		if(!fIds || !Array.isArray(fIds) || !fIds.length){
-			cb(false,"fIds error "+fIds)
-			return
-		}
-		var hIdmap = {}
-		for(var i = 0;i < fIds.length;i++){
-			if(hIdmap[fIds[i]]){
-			  	cb(false,"fId不能重复")
-			  	return
-			}
-			hIdmap[fIds[i]] = true
-		}
-		self.getHMObj(uid,main_name,fIds,function(list) {
-			for(var i = 0;i < list.length;i++){
-			 	if(!list[i]){
-			 		cb(false,"fId error "+fIds[i])
-			 		return
-			 	}
-			 	list[i] = JSON.parse(list[i])
-			}
-			var str = self.fightContorl.getFabaoRecycle(list)
-			for(var i = 0;i < list.length;i++)
-				self.delObj(uid,main_name,list[i]["id"])
-			var awardList = self.addItemStr(uid,str,1,"法宝分解")
-			cb(true,awardList)
-		})
-	}
 	//法宝重生
 	this.resetFabaoLv = function(uid,fId,cb) {
 		self.getObj(uid,main_name,fId,function(fstr) {
@@ -253,6 +253,155 @@ var model = function() {
 			self.setObj(uid,main_name,fId,fInfo,function() {
 				var awardList = self.addItemStr(uid,pr,1,"法宝重生")
 				cb(true,{fInfo:fInfo,awardList:awardList})
+			})
+		})
+	}
+	//法宝洗练-穿戴
+	this.washFabaoByHero = function(uid,hId,index,fId2,cb) {
+		var fstr1,fstr2,fInfo1,fInfo2,heroInfo
+		async.waterfall([
+			function(next) {
+				//获取主法宝
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+					if(!data){
+						next("英雄不存在")
+						return
+					}
+					heroInfo = data
+					if(!heroInfo["fabao"+index]){
+						next("未穿戴法宝")
+						return
+					}
+					fstr1 = heroInfo["fabao"+index]
+					fInfo1 = JSON.parse(fstr1)
+					next()
+				})
+			},
+			function(next) {
+				//获取副法宝
+				self.getObj(uid,main_name,fId2,function(data) {
+					if(!data){
+						cb(false,"法宝不存在")
+						return
+					}
+					fstr2 = data
+					fInfo2 = JSON.parse(fstr2)
+					if(fInfo1.qa < 3 || fInfo1.qa != fInfo2.qa){
+						next("品质错误")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				fInfo1.wash1 = self.fightContorl.washFabao(fstr1,fstr2)
+				fInfo1.wash2 = self.fightContorl.washFabao(fstr1,fstr2)
+				//移除法宝
+				self.delObj(uid,main_name,fId2,function() {
+					heroInfo["fabao"+index] = JSON.stringify(fInfo1)
+					self.heroDao.onlySetHeroInfo(uid,hId,"fabao"+index,heroInfo["fabao"+index])
+					cb(true,heroInfo)
+				})
+			},
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//法宝洗练保存-穿戴
+	this.saveWashFabaoByHero = function(uid,hId,index,select,cb) {
+		self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+			if(!data){
+				cb(false,"英雄不存在")
+				return
+			}
+			var heroInfo = data
+			if(!heroInfo["fabao"+index]){
+				cb(false,"法宝不存在")
+				return
+			}
+			var fInfo = JSON.parse(heroInfo["fabao"+index])
+			if(!fInfo["wash"+select]){
+				cb(false,"洗练属性不存在")
+				return
+			}
+			for(var i in fInfo["wash"+select])
+				fInfo[i] = fInfo["wash"+select][i]
+			delete fInfo.wash1
+			delete fInfo.wash2
+			heroInfo["fabao"+index] = JSON.stringify(fInfo)
+			self.heroDao.setHeroInfo(self.areaId,uid,hId,"fabao"+index,heroInfo["fabao"+index])
+			cb(true,heroInfo)
+		})
+	}
+	//法宝升级-穿戴
+	this.upFabaoByHero = function(uid,hId,index,cb) {
+		var fInfo,heroInfo
+		async.waterfall([
+			function(next) {
+				self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+					if(!data){
+						next("英雄不存在")
+						return
+					}
+					heroInfo = data
+					if(!heroInfo["fabao"+index]){
+						next("法宝不存在")
+						return
+					}
+					fInfo = JSON.parse(heroInfo["fabao"+index])
+					var lv = self.getLordLv(uid)
+					if(lv < fabao_lv[fInfo.lv]["lv"]){
+						next("主公等级不足 "+lv+"/"+fabao_lv[fInfo.lv]["lv"])
+						return
+					}
+					if(!fabao_lv[fInfo.lv+1]){
+						next("已满级")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				self.consumeItems(uid,fabao_lv[fInfo.lv]["pc"],1,"法宝升级",function(flag,err) {
+					if(flag)
+						next()
+					else
+						next(err)
+				})
+			},
+			function(next) {
+				fInfo.lv++
+				heroInfo["fabao"+index] = JSON.stringify(fInfo)
+				self.heroDao.setHeroInfo(self.areaId,uid,hId,"fabao"+index,heroInfo["fabao"+index])
+				cb(true,heroInfo)
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//法宝重生-穿戴
+	this.resetFabaoLvByHero = function(uid,hId,index,cb) {
+		self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+			if(!data){
+				cb(false,"英雄不存在")
+				return
+			}
+			var heroInfo = data
+			if(!heroInfo["fabao"+index]){
+				cb(false,"法宝不存在")
+				return
+			}
+			var fInfo = JSON.parse(heroInfo["fabao"+index])
+			if(fInfo.lv <= 1){
+				cb(false,"未升级")
+				return
+			}
+			var pr = "2000:"+fabao_lv[fInfo.lv]["pr"]
+			fInfo.lv = 1
+			heroInfo["fabao"+index] = JSON.stringify(fInfo)
+			self.heroDao.setHeroInfo(self.areaId,uid,hId,"fabao"+index,heroInfo["fabao"+index],function() {
+				var awardList = self.addItemStr(uid,pr,1,"法宝重生")
+				cb(true,{heroInfo:heroInfo,awardList:awardList})
 			})
 		})
 	}

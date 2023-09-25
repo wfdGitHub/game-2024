@@ -48,7 +48,7 @@ fabaoHandler.prototype.washFabao = function(msg, session, next) {
 fabaoHandler.prototype.saveWashFabao = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].saveWashFabao(uid,msg.fId,msg.index,function(flag,data) {
+  this.areaManager.areaMap[areaId].saveWashFabao(uid,msg.fId,msg.select,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
@@ -73,6 +73,38 @@ fabaoHandler.prototype.resetFabaoLv = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].resetFabaoLv(uid,msg.fId,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//法宝洗练-穿戴
+fabaoHandler.prototype.washFabaoByHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].washFabaoByHero(uid,msg.hId,msg.index,msg.fId2,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//法宝洗练保存-穿戴
+fabaoHandler.prototype.saveWashFabaoByHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].saveWashFabaoByHero(uid,msg.hId,msg.index,msg.select,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//法宝升级-穿戴
+fabaoHandler.prototype.upFabaoByHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].upFabaoByHero(uid,msg.hId,msg.index,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//法宝重生-穿戴
+fabaoHandler.prototype.resetFabaoLvByHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].resetFabaoLvByHero(uid,msg.hId,msg.index,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }

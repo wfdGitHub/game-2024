@@ -153,7 +153,6 @@ area.prototype.register = function(otps,cb) {
 				self.setPlayerData(playerInfo.uid,"onhookLastTime",Date.now())
                 if(login_mail_title)
                     self.sendTextToMail(playerInfo.uid,"login_mail",login_mail_atts)
-				//TODO test
 				self.incrbyAreaObj("areaInfo","day_create",1)
 				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",1000500,1)
 				self.redisDao.db.hset("player:user:"+playerInfo.uid+":bag",1000080,1)

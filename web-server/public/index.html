@@ -130,8 +130,8 @@
         })
       }
       //法宝洗练保存
-      var saveWashFabao = function(fId,index) {
-        pomelo.request("area.fabaoHandler.saveWashFabao", {fId:fId,index:index}, function(data) {
+      var saveWashFabao = function(fId,select) {
+        pomelo.request("area.fabaoHandler.saveWashFabao", {fId:fId,select:select}, function(data) {
             console.log(data);
         })
       }
@@ -153,8 +153,32 @@
             console.log(data);
         })
       }
+      //法宝洗练-穿戴
+      var washFabaoByHero = function(hId,index,fId2) {
+        pomelo.request("area.fabaoHandler.washFabaoByHero", {hId:hId,index:index,fId2:fId2}, function(data) {
+            console.log(data);
+        })
+      }
+      //法宝洗练保存-穿戴
+      var saveWashFabaoByHero = function(hId,index,select) {
+        pomelo.request("area.fabaoHandler.saveWashFabaoByHero", {hId:hId,index:index,select:select}, function(data) {
+            console.log(data);
+        })
+      }
+      //法宝升级-穿戴
+      var upFabaoByHero = function(hId,index) {
+        pomelo.request("area.fabaoHandler.upFabaoByHero", {hId:hId,index:index}, function(data) {
+            console.log(data);
+        })
+      }
+      //法宝重生-穿戴
+      var resetFabaoLvByHero = function(hId,index) {
+        pomelo.request("area.fabaoHandler.resetFabaoLvByHero", {hId:hId,index:index}, function(data) {
+            console.log(data);
+        })
+      }
 
-      
+      //==============================阵容========================//
       //设置出场阵容
       var setTeamByType = function(type,hIds) {
         pomelo.request("area.heroHandler.setTeamByType", {type:type,hIds:hIds}, function(data) {
