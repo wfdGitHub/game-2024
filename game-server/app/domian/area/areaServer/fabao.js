@@ -80,19 +80,21 @@ var model = function() {
 				return
 			}
 			var heroInfo = data
-			if(heroInfo["fabao"+index]){
-				var fstr = heroInfo["fabao"+index]
-				var fInfo = JSON.parse(fstr)
-				delete heroInfo["fabao"+index]
-				self.heroDao.delHeroInfo(self.areaId,uid,hId,"fabao"+index,function(flag,data) {
-					var award = self.gainFabao(uid,fstr)
-					cb(true,{heroInfo:heroInfo,award:award})
-				})
+			if(!heroInfo["fabao"+index]){
+				cb(false,"未穿戴法宝")
+				return
 			}
+			var fstr = heroInfo["fabao"+index]
+			var fInfo = JSON.parse(fstr)
+			delete heroInfo["fabao"+index]
+			self.heroDao.delHeroInfo(self.areaId,uid,hId,"fabao"+index,function(flag,data) {
+				var award = self.gainFabao(uid,fstr)
+				cb(true,{heroInfo:heroInfo,award:award})
+			})
 		})
 	}
 	//生成法宝
-	this.makeFabao = function(uid,type,qa,cb) {
+	this.makeFabao = function(uid,qa,type,cb) {
 		var id = self.getLordLastid(uid)
 		var info = self.fightContorl.makeFabao(qa,type)
 		info.id = id
@@ -102,12 +104,12 @@ var model = function() {
 	}
 	//获得法宝
 	this.gainFabao = function(uid,fstr){
-		fInfo = JSON.parse(fstr)
+		var fInfo = JSON.parse(fstr)
 		self.setObj(uid,main_name,fInfo.id,fstr)
-		return fInfo
+		return fstr
 	}
 	//法宝洗练
-	this.washFabao = function(uid,fId1,fId2) {
+	this.washFabao = function(uid,fId1,fId2,cb) {
 		var fstr1,fstr2,fInfo1,fInfo2
 		async.waterfall([
 			function(next) {
@@ -117,6 +119,8 @@ var model = function() {
 						next("法宝不存在")
 						return
 					}
+					fstr1 = list[0]
+					fstr2 = list[1]
 					fInfo1 = JSON.parse(list[0])
 					fInfo2 = JSON.parse(list[1])
 					if(fInfo1.qa < 3 || fInfo1.qa != fInfo2.qa){
@@ -131,7 +135,8 @@ var model = function() {
 				fInfo1.wash2 = self.fightContorl.washFabao(fstr1,fstr2)
 				//移除法宝2
 				self.delObj(uid,main_name,fId2,function() {
-					self.setObj(uid,main_name,fId1,JSON.stringify(fInfo1))
+					fInfo1 = JSON.stringify(fInfo1)
+					self.setObj(uid,main_name,fId1,fInfo1)
 					cb(true,fInfo1)
 				})
 			},
@@ -140,7 +145,7 @@ var model = function() {
 		})
 	}
 	//法宝洗练保存
-	this.saveWashFabao = function(uid,fId,index) {
+	this.saveWashFabao = function(uid,fId,index,cb) {
 		self.getObj(uid,main_name,fId,function(fstr) {
 			if(!fstr){
 				cb(false,"法宝不存在")
@@ -155,12 +160,13 @@ var model = function() {
 				fInfo[i] = fInfo["wash"+index][i]
 			delete fInfo.wash1
 			delete fInfo.wash2
-			self.setObj(uid,main_name,fId,JSON.stringify(fInfo))
+			fInfo = JSON.stringify(fInfo)
+			self.setObj(uid,main_name,fId,fInfo)
 			cb(true,fInfo)
 		})
 	}
 	//法宝升级
-	this.upFabao = function(uid,fId) {
+	this.upFabao = function(uid,fId,cb) {
 		var fInfo
 		async.waterfall([
 			function(next) {
@@ -192,7 +198,8 @@ var model = function() {
 			},
 			function(next) {
 				fInfo.lv++
-				self.setObj(uid,main_name,fId,JSON.stringify(fInfo))
+				fInfo = JSON.stringify(fInfo)
+				self.setObj(uid,main_name,fId,fInfo)
 				cb(true,fInfo)
 			}
 		],function(err) {
@@ -242,7 +249,8 @@ var model = function() {
 			}
 			var pr = "2000:"+fabao_lv[fInfo.lv]["pr"]
 			fInfo.lv = 1
-			self.setObj(uid,main_name,fId,JSON.stringify(fInfo),function() {
+			fInfo = JSON.stringify(fInfo)
+			self.setObj(uid,main_name,fId,fInfo,function() {
 				var awardList = self.addItemStr(uid,pr,1,"法宝重生")
 				cb(true,{fInfo:fInfo,awardList:awardList})
 			})

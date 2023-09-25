@@ -133,6 +133,8 @@ var model = function(fightContorl) {
 	}
 	//获取法宝战力
 	this.getFabaoCE = function(fstr) {
+		if(!fstr)
+			return 0
 		var fInfo = JSON.parse(fstr)
 		var info = {}
 		info.lv = fInfo.lv
@@ -211,6 +213,8 @@ var model = function(fightContorl) {
 		//概率提升品质
 		if(fInfo.qa < 5 && up_rand < qaData["recast_up"])
 			fInfo.qa++
+		delete fInfo.wash1
+		delete fInfo.wash2
 		return fInfo
 	}
 	//法宝加点

@@ -124,8 +124,8 @@
         })
       }
       //法宝洗练
-      var makeFabao = function(qa,type) {
-        pomelo.request("area.fabaoHandler.makeFabao", {qa:qa,type:type}, function(data) {
+      var washFabao = function(fId1,fId2) {
+        pomelo.request("area.fabaoHandler.washFabao", {fId1:fId1,fId2:fId2}, function(data) {
             console.log(data);
         })
       }
@@ -142,14 +142,14 @@
         })
       }
       //法宝分解
-      var upFabao = function(fIds) {
-        pomelo.request("area.fabaoHandler.upFabao", {fIds:fIds}, function(data) {
+      var recycleFabao = function(fIds) {
+        pomelo.request("area.fabaoHandler.recycleFabao", {fIds:fIds}, function(data) {
             console.log(data);
         })
       }
       //法宝重生
       var resetFabaoLv = function(fId) {
-        pomelo.request("area.fabaoHandler.upFabao", {fId:fId}, function(data) {
+        pomelo.request("area.fabaoHandler.resetFabaoLv", {fId:fId}, function(data) {
             console.log(data);
         })
       }
