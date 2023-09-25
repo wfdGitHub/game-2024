@@ -396,7 +396,7 @@ model.prototype.keepRun = function() {
 		this.checkVideo()
 	if(this.manual && !this.runFlag){
 		this.runFlag = true
-		this.run()
+		this.trampoline(this.run.bind(this))
 		return fightRecord.getStageList()
 	}else{
 		return false
