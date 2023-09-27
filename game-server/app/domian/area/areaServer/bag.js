@@ -30,17 +30,18 @@ module.exports = function() {
 				return
 			}
 		}
+		var itemId = Number(otps.itemId)
 		var value = Number(otps.value)
-		switch(itemCfg[otps.itemId].useType){
+		switch(itemCfg[itemId].useType){
 			case "hero":
-				var heroId = itemCfg[otps.itemId].value
-				var qa  = itemCfg[otps.itemId].arg
+				var heroId = itemCfg[itemId].value
+				var qa  = itemCfg[itemId].arg
 				self.heroDao.getHeroAmount(uid,function(flag,info) {
 				  	if(info.cur + value >= info.max){
 				  		cb(false,"英雄背包已满")
 				    	return
 				  	}
-					self.consumeItems(uid,otps.itemId+":"+value,1,"获得英雄",function(flag,err) {
+					self.consumeItems(uid,itemId+":"+value,1,"获得英雄",function(flag,err) {
 						if(!flag){
 							cb(false,err)
 						}else{
@@ -53,10 +54,10 @@ module.exports = function() {
 				})
 			break
 			case "equip":
-				var eLv = itemCfg[otps.itemId].value
-				var slot = itemCfg[otps.itemId].slot
-				var qa  = itemCfg[otps.itemId].arg
-				self.consumeItems(uid,otps.itemId+":"+value,1,"获得装备",function(flag,err) {
+				var eLv = itemCfg[itemId].value
+				var slot = itemCfg[itemId].slot
+				var qa  = itemCfg[itemId].arg
+				self.consumeItems(uid,itemId+":"+value,1,"获得装备",function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
@@ -68,9 +69,9 @@ module.exports = function() {
 				})
 			break
 			case "fabao":
-				var type = itemCfg[otps.itemId].value
-				var qa  = itemCfg[otps.itemId].arg
-				self.consumeItems(uid,otps.itemId+":"+value,1,"获得法宝",function(flag,err) {
+				var type = itemCfg[itemId].value
+				var qa  = itemCfg[itemId].arg
+				self.consumeItems(uid,itemId+":"+value,1,"获得法宝",function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
@@ -83,40 +84,50 @@ module.exports = function() {
 			break
 			case "chest":
 				//宝箱
-				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝箱"+otps.itemId+"*"+value,function(flag,err) {
+				self.consumeItems(uid,itemId+":"+value,1,"开启宝箱"+itemId+"*"+value,function(flag,err) {
 					if(!flag){
 						cb(false,err)
-					}else{
-						var chestId = itemCfg[otps.itemId].arg
-						var awardList = self.openChestAward(uid,chestId,value)
-						cb(true,awardList)
+						return
 					}
+					var list = itemCfg[itemId]["list"]
+					var map = {}
+					for(var i = 0;i < value;i++){
+						var id = list[Math.floor(list.length * Math.random())]
+						if(!map[id])
+							map[id] = 0
+						map[id]++
+					}
+					var awardList = []
+					for(var i in map)
+						awardList = awardList.concat(self.addItemStr(uid,i,map[i],"开启宝箱"+itemId))
+					cb(true,awardList)
 				})
 			break
 			case "box":
 				//宝盒
-				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝盒"+otps.itemId+"*"+value,function(flag,err) {
+				self.consumeItems(uid,itemId+":"+value,1,"开启宝盒"+itemId+"*"+value,function(flag,err) {
 					if(!flag){
 						cb(false,err)
-					}else{
-						var awardList = self.addItemStr(uid,itemCfg[otps.itemId].arg,value,"开启宝盒"+otps.itemId)
-						cb(true,awardList)
+						return
 					}
+                    var str = itemCfg[otps.itemId].arg
+                    var awardList = self.addItemStr(uid,str,value,"开启宝盒"+itemId)
+                    cb(true,awardList)
 				})
 			break
 			case "optional":
 				//自选包
-				var list = JSON.parse(itemCfg[otps.itemId].arg)
+				var list = itemCfg[otps.itemId].list
 				var index = otps.index
 				if(!Number.isInteger(index) || !list[index]){
 					cb(false,"index error "+index)
 					return
 				}
-				self.consumeItems(uid,otps.itemId+":"+value,1,"自选包"+otps.itemId+"*"+value,function(flag,err) {
+				self.consumeItems(uid,itemId+":"+value,1,"自选包"+itemId+"*"+value,function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
-						var awardList = self.addItemStr(uid,list[index],value,"自选包"+otps.itemId)
+						var awardList = self.addItemStr(uid,list[index],value,"自选包"+itemId)
 						cb(true,awardList)
 					}
 				})
@@ -127,22 +138,22 @@ module.exports = function() {
 			case "hook_power":
 				//挂机资源卡
 				var level = self.getCheckpointsInfo(uid)
-				if(!checkpointsCfg[level] || !checkpointsCfg[level][itemCfg[otps.itemId].useType]){
+				if(!checkpointsCfg[level] || !checkpointsCfg[level][itemCfg[itemId].useType]){
 					cb(false,"level config error "+level)
 					return
 				}
-				self.consumeItems(uid,otps.itemId+":"+value,1,"使用"+otps.itemId+"*"+value,function(flag,err) {
+				self.consumeItems(uid,itemId+":"+value,1,"使用"+itemId+"*"+value,function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
-						var rate = Math.floor(itemCfg[otps.itemId].arg * value)
-						var awardList = self.addItemStr(uid,checkpointsCfg[level][itemCfg[otps.itemId].useType],rate,"挂机卡"+otps.itemId)
+						var rate = Math.floor(itemCfg[itemId].arg * value)
+						var awardList = self.addItemStr(uid,checkpointsCfg[level][itemCfg[itemId].useType],rate,"挂机卡"+itemId)
 						cb(true,awardList)
 					}
 				})
 			break
 			case "dp_limit":
-				self.consumeItems(uid,otps.itemId+":"+value,1,"增加额度"+otps.itemId,function(flag,err) {
+				self.consumeItems(uid,itemId+":"+value,1,"增加额度"+itemId,function(flag,err) {
 					if(!flag){
 						cb(false,err)
 					}else{
@@ -153,7 +164,7 @@ module.exports = function() {
 				})
 			break
 			default:
-				cb(false,"类型错误"+itemCfg[otps.itemId].useType)
+				cb(false,"类型错误"+itemCfg[itemId].useType)
 		}
 	}
 	//增加背包物品
@@ -678,107 +689,5 @@ module.exports = function() {
 		self.getObjAll(uid,"shop",function(data) {
 			cb(true,data)
 		})
-	}
-	//解析奖励池str
-	this.openChestStr = function(uid,str) {
-		if(!str || typeof(str) != "string"){
-			return []
-		}
-		var awardList = []
-		var list = str.split("&")
-		list.forEach(function(m_str) {
-			var m_list = m_str.split(":")
-			var chestId = m_list[0]
-			var value = parseInt(m_list[1]) || 1
-			awardList = awardList.concat(self.openChestAward(uid,chestId,value))
-		})
-		return awardList
-	}
-	//奖励池获取奖励
-	this.openChestAward = function(uid,chestId,value) {
-		if(!chest_cfg[chestId] || !chest_cfg[chestId]["randAward"]){
-			return []
-		}
-		value = Number(value) || 1
-		var awardMap = []
-		var keyMap = []
-		var chestStr = chest_cfg[chestId]["randAward"]
-		var list = chestStr.split("&")
-		var allValue = 0
-		list.forEach(function(m_str) {
-			var m_list = m_str.split(":")
-			var itemId = m_list[0]
-			allValue += parseInt(m_list[1])
-			awardMap.push(allValue)
-			keyMap.push(itemId)
-		})
-		var strs = {}
-		for(var k = 0;k < value;k++){
-			var rand = Math.random() * allValue
-			for(var i in awardMap){
-				if(rand < awardMap[i]){
-					if(!chest_awards[keyMap[i]]){
-						console.error(chestId+"宝箱奖励未找到"+keyMap[i])
-					}else{
-						if(!strs[chest_awards[keyMap[i]]["str"]])
-							strs[chest_awards[keyMap[i]]["str"]] = 0
-						strs[chest_awards[keyMap[i]]["str"]]++
-					}
-					break
-				}
-			}
-		}
-		var awardList = []
-		for(var awardStr in strs)
-			awardList = awardList.concat(this.addItemStr(uid,awardStr,strs[awardStr],"奖励池"+awardStr))
-		return awardList
-	}
-	//解析奖励池str
-	this.openChestStrNoItem = function(str) {
-		if(!str || typeof(str) != "string"){
-			return []
-		}
-		var awardList = []
-		var list = str.split("&")
-		list.forEach(function(m_str) {
-			var m_list = m_str.split(":")
-			var chestId = m_list[0]
-			var value = parseInt(m_list[1]) || 1
-			for(var i = 0;i < value;i++)
-				awardList = awardList.concat(self.openChestAwardNoItem(chestId))
-		})
-		return awardList
-	}
-	//奖励池获取奖励
-	this.openChestAwardNoItem = function(chestId) {
-		if(!chest_cfg[chestId] || !chest_cfg[chestId]["randAward"]){
-			return []
-		}
-		var awardMap = []
-		var keyMap = []
-		var chestStr = chest_cfg[chestId]["randAward"]
-		var list = chestStr.split("&")
-		var allValue = 0
-		list.forEach(function(m_str) {
-			var m_list = m_str.split(":")
-			var itemId = m_list[0]
-			allValue += parseInt(m_list[1])
-			awardMap.push(allValue)
-			keyMap.push(itemId)
-		})
-		var str = false
-		var rand = Math.random() * allValue
-		for(var i in awardMap){
-			if(rand < awardMap[i]){
-				if(!chest_awards[keyMap[i]]){
-					console.error(chestId+"宝箱奖励未找到"+keyMap[i])
-					return [{"err" : chestId+"宝箱奖励未找到"+keyMap[i]}]
-				}else{
-					str = chest_awards[keyMap[i]]["str"]
-				}
-				break
-			}
-		}
-		return str
 	}
 }
