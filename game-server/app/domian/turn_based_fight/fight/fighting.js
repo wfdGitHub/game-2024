@@ -21,8 +21,10 @@ var model = function(atkInfo,defInfo,otps) {
 	this.runCount = 1 				//行动次数标识
 	this.round = 0					//当前回合
 	this.maxRound = otps.maxRound || maxRound		//最大回合
-	this.atkTeam = atkInfo.team			//攻方阵容  长度为6的角色数组  位置无人则为NULL
-	this.defTeam = defInfo.team			//守方阵容
+	this.atkAllTeam = atkInfo.team			//攻方阵容  长度为6的角色数组  位置无人则为NULL
+	this.defAllTeam = defInfo.team			//守方阵容
+	this.atkTeam = []
+	this.defTeam = []
 	this.atkTeamCfg = atkInfo.teamCfg   //攻方团队数据
 	this.defTeamCfg = defInfo.teamCfg   //守方团队数据
 	this.atkMaster = atkInfo.master		//攻方主角
@@ -54,26 +56,16 @@ model.prototype.load = function(belong,otps) {
 	var rival = teamInfo["rival"]
 	teamInfo["realms"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
 	teamInfo["realms_ation"] = {"1":0,"2":0,"3":0,"4":0,"5":0}
-	var team = this[belong+"Team"]
-	for(var i = 0;i < team.length || i < 6;i++){
-		if(!team[i]){
-			team[i] = new character({})
-			team[i].isNaN = true
-		}else{
-			if(!teamInfo["realms"][team[i].realm])
-				teamInfo["realms"][[team[i].realm]] = 0
-			teamInfo["realms"][team[i].realm]++
-		}
+	var zeroTeam = this[belong+"Team"]
+	for(var i = 0;i < 6;i++){
+		zeroTeam[i] = new character({})
+		zeroTeam[i].isNaN = true
+		zeroTeam[i].init(this)
+	}
+	var team = this[belong+"AllTeam"]
+	for(var i = 0;i < team.length;i++){
 		team[i].init(this)
-		if(team[i].resurgence_team){
-			teamInfo["resurgence_team_character"] = team[i]
-			teamInfo["resurgence_team"] = team[i].resurgence_team
-			if(team[i]["resurgence_realmRate"]){
-				teamInfo["resurgence_realmRate"] = team[i]["resurgence_realmRate"]
-				teamInfo["resurgence_realmId"] = team[i]["realm"]
-			}
-		}
-		team[i].team = team
+		team[i].team = this[belong+"Team"]
 		team[i].enemy = this[rival+"Team"]
 		team[i].heroId = team[i].heroId
 		team[i].id = this.globalId++
@@ -104,9 +96,9 @@ model.prototype.loadBeginHero = function(belong) {
 //载入英雄
 model.prototype.loadHero = function(belong,index) {
 	var id = this[belong+"TeamInfo"]["comeId"]
-	for(var i = id;i < this[belong+"Team"].length;i++){
+	for(var i = id;i < this[belong+"AllTeam"].length;i++){
 		this[belong+"TeamInfo"]["comeId"]++
-		var hero = this[belong+"Team"][i]
+		var hero = this[belong+"AllTeam"][i]
 		if(!hero.isNaN && hero["surplus_health"] !== 0){
 			fightRecord.push({type:"hero_comeon",id:hero.id,index:index,belong:belong})
 			hero.index = index
@@ -115,6 +107,7 @@ model.prototype.loadHero = function(belong,index) {
 			hero.heroComeon()
 			hero.begin()
 			this.allHero.push(hero)
+			this[belong+"Team"][index] = hero
 			break
 		}
 	}
@@ -122,11 +115,11 @@ model.prototype.loadHero = function(belong,index) {
 //战斗开始
 model.prototype.fightBegin = function() {
 	var info = {type : "fightBegin",atkTeam : [],defTeam : [],seededNum : this.seededNum,maxRound : this.maxRound}
-	for(var i = 0;i < this.atkTeam.length;i++){
-		info.atkTeam.push(this.atkTeam[i].getSimpleInfo())
+	for(var i = 0;i < this.atkAllTeam.length;i++){
+		info.atkTeam.push(this.atkAllTeam[i].getSimpleInfo())
 	}
-	for(var i = 0;i < this.defTeam.length;i++){
-		info.defTeam.push(this.defTeam[i].getSimpleInfo())
+	for(var i = 0;i < this.defAllTeam.length;i++){
+		info.defTeam.push(this.defAllTeam[i].getSimpleInfo())
 	}
 	info.comeonHero = []
 	for(var i = 0;i < this.allHero.length;i++)
@@ -273,8 +266,8 @@ model.prototype.after = function() {
 model.prototype.checkOver = function() {
 	this.diedListCheck()
 	var flag = true
-	for(var i = 0;i < this.atkTeam.length;i++){
-		if(!this.atkTeam[i].died && !this.atkTeam[i].buffs["ghost"]){
+	for(var i = 0;i < this.atkAllTeam.length;i++){
+		if(!this.atkAllTeam[i].died && !this.atkAllTeam[i].buffs["ghost"]){
 			flag = false
 			break
 		}
@@ -284,8 +277,8 @@ model.prototype.checkOver = function() {
 		return true
 	}
 	flag = true
-	for(var i = 0;i < this.defTeam.length;i++){
-		if(!this.defTeam[i].died && !this.defTeam[i].buffs["ghost"]){
+	for(var i = 0;i < this.defAllTeam.length;i++){
+		if(!this.defAllTeam[i].died && !this.defAllTeam[i].buffs["ghost"]){
 			flag = false
 			break
 		}
