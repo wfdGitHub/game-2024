@@ -171,7 +171,6 @@ module.exports = function() {
 	    	if(winFlag){
 	    		local.lessMonValue(monLv,1)
 	    		var awardList = self.addItemStr(uid,invade["base_award"]["level_"+monLv],1,"魔物入侵")
-	    		awardList = awardList.concat(self.openChestStr(uid,invade["chest"]["level_"+monLv]))
 	    		var monList = local.getMonList(uid)
 	    		cb(true,{winFlag:winFlag,awardList:awardList,monList:monList,mon_values:mon_values})
 	    	}else{
