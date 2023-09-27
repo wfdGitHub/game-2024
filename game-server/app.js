@@ -45,7 +45,7 @@ bearcat.start(function() {
       app.filter(pomelo.filters.timeout());
       //错误处理
       app.set('errorHandler',errorFilter.errorHandler);
-      app.before(areaFilter());
+      app.filter(areaFilter());
     });
     app.configure('production|development', 'chat', function() {
       //消息串行化
