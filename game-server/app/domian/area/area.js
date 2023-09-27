@@ -75,7 +75,7 @@ area.prototype.update = function() {
 	this.runTime += 1000
 	this.worldBossUpdate()
 	this.invadeUpdate()
-	var curDayStr = (new Date()).toDateString()
+	var curDayStr = (new Date()).toLocaleDateString()
 	if(this.dayStr !== curDayStr){
 		this.dayUpdate(curDayStr)
 	}

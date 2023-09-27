@@ -167,15 +167,6 @@ module.exports = function() {
 				cb(false,"类型错误"+itemCfg[itemId].useType)
 		}
 	}
-	//增加背包物品
-	this.addBagItem = function(uid,itemId,value,cb) {
-		this.redisDao.db.hincrby("player:user:"+uid+":bag",itemId,value,function(err,data) {
-			if(cb){
-				data = Number(data) || 0
-				cb(true,data)
-			}
-		})
-	}
 	//获取背包物品数量
 	this.getBagItem = function(uid,itemId,cb) {
 		this.redisDao.db.hget("player:user:"+uid+":bag",itemId,function(err,data) {
@@ -218,19 +209,7 @@ module.exports = function() {
 				}
 				return
 			}
-			self.addItemCB(uid,itemId,value,function(flag,curValue) {
-				if(flag){
-					var notify = {
-						"type" : "addItem",
-						"itemId" : itemId,
-						"value" : value,
-						"curValue" : curValue
-					}
-					self.sendToUser(uid,notify)
-				}
-				if(cb)
-					cb(flag,curValue)
-			})
+			self.addBagItem(uid,itemId,value)
 			return {type : "item",itemId : itemId,value : value}
 		}else{
 			console.trace("item not exist : "+itemId)
@@ -261,6 +240,25 @@ module.exports = function() {
 				return
 			}
 			switch(itemCfg[itemId].type){
+				case "ation":
+					self.addBagItem(uid,itemId,value,function(flag,curValue) {
+						if(curValue > 20000){
+							curValue = 20000
+							self.redisDao.db.hset("player:user:"+uid+":bag",itemId,curValue)
+						}
+						self.sendItemToUser(uid,itemId,value,curValue)
+					})
+				break
+				case "lordexp":
+					this.addLordExp(uid,value)
+					if(cb)
+						cb(true)
+				break
+				case "vipexp":
+					this.addUserRMB(uid,value)
+					if(cb)
+						cb(true)
+				break
 				case "hufu":
 					//护符
 					var awardList = []
@@ -283,39 +281,6 @@ module.exports = function() {
 					if(cb)
 						cb(true,1)
 				return awardList
-				case "horse":
-					//战马
-					var awardList = []
-					for(var i = 0;i < value;i++){
-						var horseInfo = self.gainRandHorse(uid,itemCfg[itemId]["arg"])
-						awardList.push({type : "horse",horseInfo : horseInfo,itemId:itemId})
-					}
-					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-					if(cb)
-						cb(true,1)
-				return awardList
-				case "drum":
-					//战鼓
-					var awardList = []
-					for(var i = 0;i < value;i++){
-						var drumInfo = self.gainRandDrum(uid,itemCfg[itemId]["arg"])
-						awardList.push({type : "drum",drumInfo : drumInfo,itemId:itemId})
-					}
-					if(cb)
-						cb(true,1)
-					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-				return awardList
-				case "banner":
-					//军旗
-					var awardList = []
-					for(var i = 0;i < value;i++){
-						var bannerInfo = self.gainRandBanner(uid,itemCfg[itemId]["arg"])
-						awardList.push({type : "banner",bannerInfo : bannerInfo,itemId:itemId})
-					}
-					if(cb)
-						cb(true,1)
-					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:1,curValue:1,reason:otps.reason})
-				return awardList
 				case "title":
 					self.gainUserTitle(uid,itemCfg[itemId]["arg"],cb)
 				return {type : "title",id : itemCfg[itemId]["arg"],itemId : itemId}
@@ -336,64 +301,14 @@ module.exports = function() {
 						self.sendToUser(uid,notify)
 					}
 				return {type : "item",itemId : itemId,value : value}
-				case "bingfu":
-					//兵符
-					var awardList = []
-					for(var i = 0;i < value;i++){
-						var bfInfo = self.gainBingfu(uid,JSON.parse(itemCfg[itemId]["arg"]))
-						awardList.push({type : "bingfu",bfInfo : bfInfo})
-					}
-					if(cb)
-						cb(true,awardList)
-					self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:value,reason:otps.reason})
-				return awardList
 				default:
-					self.addItemCB(uid,itemId,value,function(flag,curValue) {
-						if(flag){
-							if(value > 0){
-								switch(itemCfg[itemId].type){
-									case "ace":
-										self.taskUpdate(uid,"ace",value,ace_pack[itemId].quality)
-									break
-									case "art":
-										self.taskUpdate(uid,"artifact_gain",value)
-									break
-									case "stone":
-										self.taskUpdate(uid,"stone_gain",value)
-									break
-								}
-							}
-							switch(itemId){
-								case 204:
-									if(curValue > 20000){
-										curValue = 20000
-										self.redisDao.db.hset("player:user:"+uid+":bag",itemId,curValue)
-									}
-								break
-								case 200:
-									if(value < 0)
-										self.incrbyPlayerData(uid,"gold_consume",Math.abs(value))
-								break
-								case 810:
-									if(value > 0){
-										var warehouse = self.getLordAtt(uid,"warehouse")
-										if(curValue > warehouse)
-											curValue = warehouse
-										self.redisDao.db.hset("player:user:"+uid+":bag",itemId,curValue)
-									}
-								break
-							}
-							self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue,reason:otps.reason})
-							var notify = {
-								"type" : "addItem",
-								"itemId" : itemId,
-								"value" : value,
-								"curValue" : curValue
-							}
-							self.sendToUser(uid,notify)
-						}
-						if(cb)
-							cb(flag,curValue)
+					self.addBagItem(uid,itemId,value,function(flag,curValue) {
+						self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:itemId,value:value,curValue:curValue,reason:otps.reason})
+						self.sendItemToUser(uid,itemId,value,curValue)
+						if(value > 0)
+							self.bagItemAdd(uid,itemId,value,curValue)
+						else
+							self.bagItemLess(uid,itemId,value,curValue)
 					})
 				return {type : "item",itemId : itemId,value : value}
 			}
@@ -420,14 +335,6 @@ module.exports = function() {
 	//增加物品回调
 	this.addItemCB = function(uid,itemId,value,cb) {
 		switch(itemId){
-			case 100:
-				this.addLordExp(uid,value)
-				cb(true)
-			break
-			case 109:
-				this.addUserRMB(uid,value)
-				cb(true)
-			break
 			default:
 				if(itemCfg[itemId]){
 					this.addBagItem(uid,itemId,value,cb)
@@ -689,5 +596,37 @@ module.exports = function() {
 		self.getObjAll(uid,"shop",function(data) {
 			cb(true,data)
 		})
+	}
+	//增加背包物品
+	this.addBagItem = function(uid,itemId,value,cb) {
+		this.redisDao.db.hincrby("player:user:"+uid+":bag",itemId,value,function(err,curValue) {
+			if(cb)
+				cb(true,curValue)
+		})
+	}
+	//道具数量增加
+	this.bagItemAdd = function(uid,itemId,value,curValue) {
+		//任务更新
+		switch(itemCfg[itemId].type){
+			case "ace":
+				self.taskUpdate(uid,"ace",value,ace_pack[itemId].quality)
+			break
+		}
+		//记录物品获得
+		self.redisDao.db.hincrby("logs:itemAdd:"+self.dayStr,itemId,value)
+	}
+	//道具数量减少
+	this.bagItemLess = function(uid,itemId,value,curValue) {
+		//记录物品获得
+		self.redisDao.db.hincrby("logs:itemLess:"+self.dayStr,itemId,-value)
+	}
+	this.sendItemToUser = function(uid,itemId,value,curValue) {
+		var notify = {
+			"type" : "addItem",
+			"itemId" : itemId,
+			"value" : value,
+			"curValue" : curValue
+		}
+		self.sendToUser(uid,notify)
 	}
 }
