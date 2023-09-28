@@ -62,7 +62,7 @@ var model = function(fightContorl) {
 		info.att.extra = {}
 		for(var i = 0;i < extra_list.length;i++)
 			info.att.extra[extra_list[i]] = Math.ceil(equip_qa[info.qa]["extraRate"] * equip_lv[info.lv]["extra"] * 0.2)
-		return info
+		return JSON.stringify(info)
 	}
 	//获取装备属性
 	this.getEquipData = function(eInfo) {
