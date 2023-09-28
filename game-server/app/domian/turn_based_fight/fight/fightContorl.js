@@ -62,8 +62,8 @@ model.getVerifyInfo = function() {
 		for(var i = 1;i < fightVerifyInfo.defTeam.length;i++){
 				delete fightVerifyInfo.defTeam[i]["combat"]
 				delete fightVerifyInfo.defTeam[i]["hId"]
-				delete fightVerifyInfo.atkTeam[i]["custom"]
-				delete fightVerifyInfo.atkTeam[i]["lock"]
+				delete fightVerifyInfo.defTeam[i]["custom"]
+				delete fightVerifyInfo.defTeam[i]["lock"]
 		}
 	}
 	return JSON.stringify(fightVerifyInfo)
