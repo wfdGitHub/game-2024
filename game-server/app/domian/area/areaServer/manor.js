@@ -1,7 +1,9 @@
 //家园系统
-const manor_builds = require("../../../../config/gameCfg/manor_builds.json")
+const manor_type = require("../../../../config/gameCfg/manor_type.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const manor_citys = require("../../../../config/gameCfg/manor_citys.json")
+const manor_main = require("../../../../config/gameCfg/manor_main.json")
+const manor_make = require("../../../../config/gameCfg/manor_make.json")
 const async = require("async")
 const heroId = 305010
 const hourTime = 3600000
@@ -11,53 +13,26 @@ const build_time = hourTime * 23
 const boss_cd = hourTime * 6
 const mon_cd = hourTime * 2
 const main_name = "manor"
-const fightAward = "820:1&810:200"
+const fightAward = "800:120"
 const actionBasic = 10
 const builds = {}
-for(var i in manor_builds){
-	if(!builds[manor_builds[i]["basic"]])
-		builds[manor_builds[i]["basic"]] = require("../../../../config/gameCfg/manor_"+manor_builds[i]["basic"]+".json")
-}
-for(var i in builds["xmc"]){
-	builds["xmc"][i]["allWeight"] = 0
-	for(var j = 1; j <= 4;j++){
-		if(!builds["xmc"][i]["quality_"+j])
-			builds["xmc"][i]["quality_"+j] = 0
-		builds["xmc"][i]["allWeight"] += builds["xmc"][i]["quality_"+j]
-	}
-}
-for(var i in builds["qjf"]){
-	builds["qjf"][i]["allWeight"] = 0
-	for(var j = 1; j <= 4;j++){
-		if(!builds["qjf"][i]["quality_"+j])
-			builds["qjf"][i]["quality_"+j] = 0
-		builds["qjf"][i]["allWeight"] += builds["qjf"][i]["quality_"+j]
-	}
-}
 var mon_weight = {"all":10000,"1":3000,"2":6000,"3":8000,"4":9000,"5":9600,"6":10000}
-for(var i in builds["main"]){
+for(var i in manor_main){
 	i = Number(i)
-	builds["main"][i]["boss_team"] = builds["main"][i]["boss_team"]
-	builds["main"][i]["robot"] = builds["main"][i]["robot"]
+	manor_main[i]["boss_team"] = manor_main[i]["boss_team"]
+	manor_main[i]["robot"] = manor_main[i]["robot"]
 	for(var j = 1;j <= 6;j++)
-		builds["main"][i]["mon_"+j] = builds["main"][i]["mon_"+j]
+		manor_main[i]["mon_"+j] = manor_main[i]["mon_"+j]
 	//生成机器人主城配置
 	var robot_city = {}
 	var tmpLand = 0
-	for(var k in manor_builds){
-		if(manor_builds[k]["main_lv"] <= i){
-			robot_city[k] = i
-			if(!builds[manor_builds[k]["basic"]][i])
-				robot_city[k] = 4
-			robot_city["land_"+tmpLand++] = k
-		}
-	}
-	builds["main"][i]["robot_city"] = robot_city
+	for(var k in manor_type)
+		robot_city[k] = i
+	manor_main[i]["robot_city"] = robot_city
 }
 var citis = []
-for(var i in manor_citys){
+for(var i in manor_citys)
 	citis.push(i)
-}
 module.exports = function() {
 	var self = this
 	var local = {}
@@ -84,20 +59,16 @@ module.exports = function() {
 			if(!data || !data.main){
 				self.manorInit(uid,cb)
 			}else{
-				self.getBagItem(uid,"810",function(value) {
-					data["810"] = value
-					cb(true,data)
-				})
+				cb(true,data)
 			}
 		})
 	}
 	//初始化玩家家园
 	this.manorInit = function(uid,cb) {
-		self.incrbyLordData(uid,"warehouse",builds["main"][1]["food"])
-		self.updateSprintRank("manor_rank",uid,manor_builds["main"]["score_rate"])
+		self.incrbyLordData(uid,"warehouse",manor_main[1]["food"])
+		self.updateSprintRank("manor_rank",uid,manor_manor_main["score_rate"])
 		var info = {
-			"main":1,
-			"land_0":"main",
+			"manorTime":Date.now(),
 			"action":0,
 			"boss_time":0,
 			"boss_count":0,
@@ -105,17 +76,15 @@ module.exports = function() {
 			"grid_1":0,
 			"grid_2":0,
 			"grid_3":0,
-			"grid_4":-1,
-			"grid_5":-1,
-			"810" : 2000
+			"grid_4":0,
+			"grid_5":0
 		}
+		for(var i in manor_type)
+			info[i] = 1
 		for(var i = 1;i <= 6;i++){
 			info["mon_time_"+i] = 0
 			info["mon_lv_"+i] = 1
 		}
-		self.setHMObj(uid,main_name,info,function() {
-			self.addItemStr(uid,"810:2000",1,"家园初始化")
-		})
 		local.manorAddLevel(uid)
 		if(cb)
 			cb(true,info)
@@ -130,304 +99,112 @@ module.exports = function() {
 		self.setObj(uid,main_name,"boss_count",0)
 	}
 	//建设升级建筑
-	this.manorBuild = function(uid,bId,land,cb) {
-		if(!manor_builds[bId]){
+	this.manorBuild = function(uid,bId,cb) {
+		if(!manor_type[bId]){
 			cb(false,"bId error "+bId)
-			return
-		}
-		if(!Number.isInteger(land)){
-			cb(false,"land error "+land)
 			return
 		}
 		var mainLv = 0
 		var buildLv = 0
-		var basic = manor_builds[bId]["basic"]
+		var pc = ""
+		var lv = self.getLordLv(uid)
 		async.waterfall([
 			function(next) {
-				//获取主建筑等级
-				self.getObj(uid,main_name,"main",function(data) {
-					mainLv = Number(data) || 0
-					if(manor_builds[bId]["main_lv"] > mainLv){
-						next("主建筑等级不足")
+				//获取建筑等级
+				self.getHMObj(uid,main_name,["main",bId],function(list) {
+					mainLv = Number(list[0]) || 1
+					buildLv = Number(list[0]) || 1
+					if(manor_main[buildLv+1]){
+						cb(false,"已满级")
 						return
 					}
 					if(bId == "main"){
-						var olv = self.getLordAtt(uid,"officer")
-						if(mainLv >= olv){
-							next("爵位限制")
+						//主建筑
+						if(lv < manor_main[mainLv]["lv"]){
+							cb(false,"主公等级不足 "+lv+"/"+manor_main[mainLv]["lv"])
 							return
+						}
+						pc = manor_main[mainLv]["main_up"]
+						next()
+					}else{
+						//次建筑
+						if(buildLv >= mainLv){
+							cb(false,"主建筑等级不足 "+buildLv+"/"+mainLv)
+							return
+						}
+						pc = manor_main[mainLv]["build_up"]
+						next()
+					}
+				})
+			},
+			function(next) {
+				self.consumeItems(uid,pc,1,"升级建筑:"+bId+":"+buildLv,function(flag,err) {
+					if(flag){
+						buildLv++
+						next()
+					}else
+						next(err)
+				})
+			},
+			function(next) {
+				if(bId == "main"){
+					local.manorMoveLevel(uid,buildLv)
+					self.taskUpdate(uid,"manor_lv",1,buildLv)
+				}
+				self.updateSprintRank("manor_rank",uid,manor_main[mainLv]["score"])
+			}
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//获取收益
+	this.manorReap = function(uid,cb) {
+		var output = 0
+		var outadd = 1
+		var value = 0
+		var curTime = Date.now()
+		async.waterfall([
+			function(next) {
+				self.getHMObj(uid,main_name,["main","fall","manorTime"],function(list) {
+					mainLv = Number(list[0]) || 1
+					output = manor_main[mainLv]["output"]
+					var fall = Number(list[1]) || 0
+					if(!fall || fall < curTime)
+						outadd += manor_main[mainLv]["outadd"]
+					var time = Number(list[2])
+					var dt = curTime - time
+					var timeRate = Math.floor(dt / hourTime)
+					value = Math.floor(output * timeRate)
+					if(dt < 10000 || value < 1){
+						cb(false,"资源正在生产中")
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				//占领加成
+				self.getHMObj(uid,main_name,["grid_1","grid_2","grid_3","grid_4","grid_5"],function(list) {
+					for(var i = 0;i < list.length;i++){
+						if(list[i]){
+							var cityInfo = JSON.parse(list[i])
+							outadd += cityInfo["outadd"]
 						}
 					}
 					next()
 				})
 			},
 			function(next) {
-				//获取建筑等级并消耗资源
-				self.getObj(uid,main_name,bId,function(data) {
-					buildLv = Number(data) || 0
-					buildLv++
-					if(!builds[basic][buildLv]){
-						next("建筑等级已满")
-						return
-					}
-					if(bId != "main" && buildLv > mainLv){
-						next("主建筑等级不足")
-						return
-					}
-					//判断格子
-					if(buildLv == 1){
-						self.getObj(uid,main_name,"land_"+land,function(data) {
-							if(data && data != bId)
-								next("地块已被占用")
-							else
-								next()
-						})
-					}else{
-						next()
-					}
-				})
-			},
-			function(next) {
-				if(builds[basic][buildLv]["upgrade"]){
-					self.consumeItems(uid,builds[basic][buildLv]["upgrade"],1,"升级建筑:"+bId+":"+buildLv,function(flag,err) {
-						if(flag)
-							next(null,buildLv)
-						else
-							next(err)
-					})
-				}else{
-					next(null,buildLv)
-				}
-			},
-			function(buildLv,next) {
-				var info = {}
-				info.buildLv = buildLv
-				if(buildLv == 1){
-					//设置地块
-					self.setObj(uid,main_name,"land_"+land,bId)
-					if(manor_builds[bId]["type"] == "res")
-						self.setObj(uid,main_name,bId+"_time",Date.now())
-					if(bId == "yzyd_1"){
-						info["grid_4"] = 0
-						self.setObj(uid,main_name,"grid_4",0)
-					}else if(bId == "yzyd_2"){
-						info["grid_5"] = 0
-						self.setObj(uid,main_name,"grid_5",0)
-					}
-				}
-				//升级建筑
-				self.setObj(uid,main_name,bId,buildLv)
-				//建筑类型判断
-				switch(bId){
-					case "gjy":
-					case "dby":
-					case "qby":
-						self.setBuildLv(uid,bId,buildLv)
-					break
-					case "main":
-						local.manorMoveLevel(uid,buildLv)
-					case "cangku":
-						var old_food = 0
-						if(buildLv > 1)
-							old_food = builds[bId][buildLv-1]["food"]
-						var add_food = builds[bId][buildLv]["food"] - old_food
-						self.incrbyLordData(uid,"warehouse",add_food)
-					break
-				}
-				if(bId == "main")
-					self.taskUpdate(uid,"manor_lv",1,buildLv)
-				self.updateSprintRank("manor_rank",uid,manor_builds[bId]["score_rate"])
-				self.taskUpdate(uid,"manor_score",manor_builds[bId]["score_rate"])
-				cb(true,info)
+				var awardList = self.addItemStr(uid,"800:"+value,outadd,"家园获取"+bId)
+				self.setObj(uid,main_name,"manorTime",curTime)
+				cb(true,{awardList:awardList,time:curTime})
 			}
 		],function(err) {
 			cb(false,err)
 		})
 	}
-	//交换建筑
-	this.manorSwap = function(uid,land1,land2,cb) {
-		if(!Number.isInteger(land1) || !Number.isInteger(land2)){
-			cb(false,"land error "+land1+" "+land2)
-			return
-		}
-		var bId1 = ""
-		var bId2 = ""
-		self.getObj(uid,main_name,"land_"+land1,function(data) {
-			bId1 = data
-			self.getObj(uid,main_name,"land_"+land2,function(data) {
-				bId2 = data
-				if(bId2)
-					self.setObj(uid,main_name,"land_"+land1,bId2)
-				else
-					self.delObj(uid,main_name,"land_"+land1)
-				if(bId1)
-					self.setObj(uid,main_name,"land_"+land2,bId1)
-				else
-					self.delObj(uid,main_name,"land_"+land2)
-				cb(true)
-			})
-		})
-	}
-	//获取收益
-	this.manorReap = function(uid,bId,cb) {
-		if(!manor_builds[bId]){
-			cb(false,"bId error "+bId)
-			return
-		}
-		if(manor_builds[bId]["type"] != "res"){
-			cb(false,"非资源建筑")
-			return
-		}
-		var basic = manor_builds[bId]["basic"]
-		var item = manor_builds[bId]["award"]
-		var curTime = Date.now()
-		self.getHMObj(uid,main_name,[bId,bId+"_time","fall"],function(data) {
-			var buildLv = Number(data[0]) || 0
-			var time = Number(data[1]) || 0
-			var fall = Number(data[2]) || 0
-			if(!buildLv){
-				cb(false,"建筑不存在")
-				return
-			}
-			if(fall && fall > Date.now()){
-				cb(false,"被占领时不能领取收益")
-				return
-			}
-			var awardTime = curTime - time
-			var value = Math.floor(awardTime / hourTime * builds[basic][buildLv]["output"])
-			if(awardTime < 10000 || value < 1){
-				cb(false,"资源正在生产中")
-				return
-			}
-			if(value > builds[basic][buildLv]["capacity"])
-				value = builds[basic][buildLv]["capacity"]
-			var awardList = self.addItemStr(uid,item+":"+value,1,"收获"+bId)
-			self.setObj(uid,main_name,bId+"_time",curTime)
-			cb(true,{awardList:awardList,time:curTime})
-		})
-	}
-	//驯养马匹
-	this.manorStartHorse = function(uid,cb) {
-		var bId = "xmc"
-		var basic = "xmc"
-		self.getHMObj(uid,main_name,[bId,bId+"_time"],function(data) {
-			var buildLv = Number(data[0]) || 0
-			if(!buildLv){
-				cb(false,"建筑不存在")
-				return
-			}
-			if(data[1]){
-				cb(false,"正在生产中")
-				return
-			}
-			var time = Number(data[1]) || 0
-			self.consumeItems(uid,"810:"+builds[basic][buildLv]["pc"],1,"驯养马匹:"+buildLv,function(flag,err) {
-				if(flag){
-					var curTime = Date.now() + build_time
-					self.setObj(uid,main_name,bId+"_time",curTime)
-					cb(true,curTime)
-				}else{
-					cb(false,err)
-				}
-			})
-		})
-	}
-	//收取马匹
-	this.manorGainHorse = function(uid,cb) {
-		var bId = "xmc"
-		var basic = "xmc"
-		self.getHMObj(uid,main_name,[bId,bId+"_time"],function(data) {
-			var buildLv = Number(data[0]) || 0
-			if(!buildLv){
-				cb(false,"建筑不存在")
-				return
-			}
-			if(!data[1]){
-				cb(false,"不在生产中")
-				return
-			}
-			var time = Number(data[1]) || 0
-			if(Date.now() > time){
-				//获得马匹
-				var rand = Math.random() * builds[bId][buildLv]["allWeight"]
-				var lv = 1
-				for(var i = 1; i <= 4;i++){
-					if(rand < builds[bId][buildLv]["quality_"+i]){
-						lv = i
-						break
-					}else{
-						rand -= builds[bId][buildLv]["quality_"+i]
-					}
-				}
-				var horseInfo = self.gainRandHorse(uid,lv)
-				self.delObj(uid,main_name,bId+"_time")
-				cb(true,horseInfo)
-			}else{
-				cb(false,"未到收取时间")
-			}
-		})
-	}
-	//打造兵符
-	this.manorStartHufu = function(uid,cb) {
-		var bId = "qjf"
-		var basic = "qjf"
-		self.getHMObj(uid,main_name,[bId,bId+"_time"],function(data) {
-			var buildLv = Number(data[0]) || 0
-			if(!buildLv){
-				cb(false,"建筑不存在")
-				return
-			}
-			if(data[1]){
-				cb(false,"正在生产中")
-				return
-			}
-			var time = Number(data[1]) || 0
-			self.consumeItems(uid,"810:"+builds[basic][buildLv]["pc"],1,"打造兵符:"+buildLv,function(flag,err) {
-				if(flag){
-					var curTime = Date.now() + build_time
-					self.setObj(uid,main_name,bId+"_time",curTime)
-					cb(true,curTime)
-				}else{
-					cb(false,err)
-				}
-			})
-		})
-	}
-	//收取兵符
-	this.manorGainHufu = function(uid,cb) {
-		var bId = "qjf"
-		var basic = "qjf"
-		self.getHMObj(uid,main_name,[bId,bId+"_time"],function(data) {
-			var buildLv = Number(data[0]) || 0
-			if(!buildLv){
-				cb(false,"建筑不存在")
-				return
-			}
-			if(!data[1]){
-				cb(false,"不在生产中")
-				return
-			}
-			var time = Number(data[1]) || 0
-			if(Date.now() > time){
-				//收取兵符
-				var rand = Math.random() * builds[bId][buildLv]["allWeight"]
-				var lv = 1
-				for(var i = 1; i <= 4;i++){
-					if(rand < builds[bId][buildLv]["quality_"+i]){
-						lv = i
-						break
-					}else{
-						rand -= builds[bId][buildLv]["quality_"+i]
-					}
-				}
-				var hufuInfo = self.gainBingfu(uid,{lv:lv})
-				self.delObj(uid,main_name,bId+"_time")
-				cb(true,hufuInfo)
-			}else{
-				cb(false,"未到收取时间")
-			}
-		})
-	}
+	//放置属性建筑
+	
 	//===============贼寇==============//
 	//购买军令
 	this.manorBuyAction = function(uid,cb) {
@@ -526,7 +303,6 @@ module.exports = function() {
 			},
 			function(next) {
 				self.manorActionTime(uid,function(flag,data) {
-
 					if(flag){
 						action = data
 						next()
@@ -539,14 +315,14 @@ module.exports = function() {
 				//战斗结算
 				var atkTeam = self.getUserTeam(uid)
 				var seededNum = Date.now()
-				var defTeam = self.fightContorl.getNPCTeamByType("manor_mon",builds["main"][buildLv]["boss_team"],self.getLordLv(uid),"lv_4")
+				var defTeam = self.fightContorl.getNPCTeamByType("manor_mon",manor_main[buildLv]["boss_team"],self.getLordLv(uid),"lv_4")
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
 					var cd = Date.now() + boss_cd
 					self.setObj(uid,main_name,"boss_time",cd)
 					self.incrbyObj(uid,main_name,"boss_count",1)
 					bossCount++
-					var awardList = self.addItemStr(uid,builds["main"][buildLv]["boss_award"],rate,"家园BOSS")
+					var awardList = self.addItemStr(uid,manor_main[buildLv]["boss_award"],rate,"家园BOSS")
 					cb(true,{winFlag:winFlag,awardList:awardList,bossCount:bossCount,cd:cd,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
 				}else{
 					cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
@@ -604,11 +380,11 @@ module.exports = function() {
 					dl = "zhulu_boss"
 				else if(monLv >= 2)
 					dl = "zhulu_elite"
-				var defTeam = self.fightContorl.getNPCTeamByType("manor_mon",builds["main"][buildLv]["mon_"+monLv],self.getLordLv(uid),"lv_2")
+				var defTeam = self.fightContorl.getNPCTeamByType("manor_mon",manor_main[buildLv]["mon_"+monLv],self.getLordLv(uid),"lv_2")
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
 					var cd = Date.now() + monCd
-					var awardList = self.addItemStr(uid,builds["main"][buildLv]["mon_award"+monLv],rate,"家园怪物")
+					var awardList = self.addItemStr(uid,manor_main[buildLv]["mon_award"+monLv],rate,"家园怪物")
 					//新等级
 					var rand = Math.random() * mon_weight["all"]
 					var lv = 1
@@ -658,6 +434,7 @@ module.exports = function() {
 			"land" : land,  											//位置
 			"grid" : 0 													//地块
 		}
+		city_infos[land]["outadd"] = manor_citys[city_infos[land]["id"]]["outadd"]
 		local.saveCity(land)
 	}
 	local.saveCity = function(land) {
@@ -667,12 +444,6 @@ module.exports = function() {
 	local.gainCityAward = function(uid,land,grid) {
 		//结算收益
 		if(city_infos[land].own && uid == city_infos[land].own){
-			var curTime = Date.now()
-			if(curTime > city_infos[land].endTime)
-				curTime = city_infos[land].endTime
-			var awardTime = curTime - city_infos[land].occupyTime
-			var item = manor_citys[city_infos[land].id]["award"]
-			var cityId = city_infos[land].id
 			grid = city_infos[land].grid
 			city_infos[land].occupyTime = 0
 			city_infos[land].own = 0
@@ -680,19 +451,6 @@ module.exports = function() {
 			delete city_infos[land].atkInfo
 			delete city_infos[land].team
 			local.saveCity(land)
-			self.getHMObj(uid,main_name,["main","zlt"],function(list) {
-				var buildLv = Number(list[0]) || 1
-				var zlt = Number(list[1]) || 0
-				var value = Math.floor(awardTime / hourTime * manor_citys[cityId]["output"] * builds["main"][buildLv]["city_add"])
-				if(builds["zlt"][zlt])
-					value += Math.floor(builds["zlt"][zlt]["add"] * value)
-				var awardStr = ""
-				if(value)
-					awardStr = item+":"+value
-				else
-					awardStr = item+":1"
-				self.sendTextToMail(uid,"manor_tsdd",awardStr,manor_citys[cityId]["name"])
-			})
 		}
 		if(grid)
 			self.setObj(uid,main_name,"grid_"+grid,0)
@@ -700,28 +458,12 @@ module.exports = function() {
 	//玩家城池收益
 	local.gainCityUser = function(uid,cityInfo) {
 		//结算收益
-		var curTime = Date.now()
-		if(curTime > cityInfo.endTime)
-			curTime = cityInfo.endTime
-		var awardTime = curTime - cityInfo.occupyTime
 		var grid = cityInfo.grid
-		var value = Math.floor(awardTime / hourTime * cityInfo["output"])
-		self.getObj(uid,main_name,"zlt",function(data) {
-			var zlt = Number(data) || 0
-			if(builds["zlt"][zlt])
-				value += Math.floor(builds["zlt"][zlt]["add"] * value)
-			var awardStr = ""
-			if(value)
-				awardStr = "810:"+value
-			else
-				awardStr = "810:1"
-			self.sendTextToMail(uid,"manor_zlsy",awardStr,cityInfo.defInfo.name)
-			self.setObj(uid,main_name,"grid_"+grid,0)
-			self.redisDao.db.zscore("cross:manorFall",cityInfo.defInfo.uid,function(err,data) {
-				if(data && data == cityInfo.endTime){
-					self.redisDao.db.zadd("cross:manorFall",0,cityInfo.defInfo.uid)
-				}
-			})
+		self.setObj(uid,main_name,"grid_"+grid,0)
+		self.redisDao.db.zscore("cross:manorFall",cityInfo.defInfo.uid,function(err,data) {
+			if(data && data == cityInfo.endTime){
+				self.redisDao.db.zadd("cross:manorFall",0,cityInfo.defInfo.uid)
+			}
 		})
 	}
 	//获取特殊地点数据
@@ -792,20 +534,6 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//统帅厅加成
-				self.getObj(uid,main_name,"tst",function(data) {
-					if(data && builds["tst"][data]){
-						if(!atkTeam[0]["team_atk_add"])
-							atkTeam[0]["team_atk_add"] = 0
-						atkTeam[0]["team_atk_add"] += builds["tst"][data]["add"]
-						if(!atkTeam[0]["team_maxHP_add"])
-							atkTeam[0]["team_maxHP_add"] = 0
-						atkTeam[0]["team_maxHP_add"] += builds["tst"][data]["add"]
-					}
-					next()
-				})
-			},
-			function(next) {
 				//获取敌方阵容
 				if(!city_infos[land]["own"]){
 					//机器人队伍
@@ -843,19 +571,6 @@ module.exports = function() {
 					//有人 结算收益
 					if(curTime > city_infos[land].endTime)
 						curTime = city_infos[land].endTime
-					var awardTime = curTime - city_infos[land].occupyTime
-					var item = manor_citys[city_infos[land].id]["award"]
-					var value1 = Math.floor(awardTime / hourTime * manor_citys[city_infos[land].id]["output"] * builds["main"][buildLv]["city_add"] * 0.5)
-					if(!value1)
-						value1 = 1
-					var awardStr1 = item+":"+value1
-					self.sendTextToMail(uid,"manor_tsddzl",awardStr1,manor_citys[city_infos[land].id]["name"])
-					var value2 = Math.floor(awardTime / hourTime * manor_citys[city_infos[land].id]["output"] * builds["main"][targetLv]["city_add"] * 0.5)
-					var awardStr2 = ""
-					if(!value2)
-						value2 = 1
-					var awardStr2 = item+":"+value2
-					self.sendTextToMail(city_infos[land].own,"manor_bzl",awardStr2,manor_citys[city_infos[land].id]["name"])
 					self.setObj(city_infos[land].own,main_name,"grid_"+city_infos[land].grid,0)
 					city_infos[land].occupyTime = curTime
 					city_infos[land].own = uid
@@ -923,7 +638,6 @@ module.exports = function() {
 							list = data
 							next()
 						}else{
-							self.addItemStr(uid,"810:100",1,"搜寻返还")
 							next("找不到可用的目标")
 						}
 					})
@@ -937,7 +651,6 @@ module.exports = function() {
 					}
 				}
 				if(!info.uid){
-					self.addItemStr(uid,"810:100",1,"搜寻返还")
 					next("找不到可用的目标")
 					return
 				}
@@ -958,7 +671,7 @@ module.exports = function() {
 				//获取敌方队伍
 				if(info.uid < 10000){
 					//机器人队伍
-					info.defTeam = builds["main"][buildLv]["robot"]
+					info.defTeam = manor_main[buildLv]["robot"]
 					next()
 				}else{
 					//玩家队伍
@@ -976,20 +689,7 @@ module.exports = function() {
 						next()
 					})
 				}else{
-					info.cityInfo = builds["main"][buildLv]["robot_city"]
-					next()
-				}
-			},
-			function(next) {
-				if(info.uid > 10000){
-					self.redisDao.db.hget("player:user:"+info.uid+":bag","810",function(err,value) {
-						info.value = value
-						next()
-					})
-				}else{
-					info.value = builds["main"][buildLv]["robot_food"]
-					if(info.cityInfo["cangku"] && builds["cangku"][info.cityInfo["cangku"]])
-						info.value += builds["cangku"][info.cityInfo["cangku"]]["safety"]
+					info.cityInfo = manor_main[buildLv]["robot_city"]
 					next()
 				}
 			},
@@ -1074,24 +774,10 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//统帅厅加成
-				self.getObj(uid,main_name,"tst",function(data) {
-					if(data && builds["tst"][data]){
-						if(!atkTeam[0]["team_atk_add"])
-							atkTeam[0]["team_atk_add"] = 0
-						atkTeam[0]["team_atk_add"] += builds["tst"][data]["add"]
-						if(!atkTeam[0]["team_maxHP_add"])
-							atkTeam[0]["team_maxHP_add"] = 0
-						atkTeam[0]["team_maxHP_add"] += builds["tst"][data]["add"]
-					}
-					next()
-				})
-			},
-			function(next) {
 				//获取敌方队伍
 				if(target < 10000){
 					//机器人队伍
-					defTeam = self.fightContorl.getNPCTeamByType("manor_player",builds["main"][buildLv]["robot"],self.getLordLv(uid))
+					defTeam = self.fightContorl.getNPCTeamByType("manor_player",manor_main[buildLv]["robot"],self.getLordLv(uid))
 					next()
 				}else{
 					//玩家队伍
@@ -1110,31 +796,9 @@ module.exports = function() {
 				}else{
 					//失败
 					//记录战报
-					local.addRecord(winFlag,atkTeam,defTeam,atkInfo,defInfo,{seededNum : seededNum},0)
+					local.addRecord(winFlag,atkTeam,defTeam,atkInfo,defInfo,{seededNum : seededNum})
 					awardList = self.addItemStr(uid,fightAward,1,"玩家城池")
 					cb(true,{winFlag:winFlag,awardList:awardList,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
-				}
-			},
-			function(next) {
-				//获取收益
-				if(target > 10000){
-					self.getHMObj(target,main_name,["nc_1","nc_2","cangku","main"],function(data) {
-						output = 0
-						if(builds["nc"][data[0]])
-							output += builds["nc"][data[0]]["output"]
-						if(builds["nc"][data[1]])
-							output += builds["nc"][data[1]]["output"]
-						if(!output)
-							output = 100
-						var cangku = data[2] || 0
-						if(builds["cangku"][cangku])
-							safety = builds["cangku"][cangku]["safety"]
-						targetBlv = data[3] || 1
-						next()
-					})
-				}else{
-					output = builds["main"][buildLv]["robot_output"]
-					next()
 				}
 			},
 			function(next) {
@@ -1153,27 +817,9 @@ module.exports = function() {
 			function(next) {
 				//胜利
 				awardList = self.addItemStr(uid,fightAward,2,"玩家城池")
-				//获取保护资源之外的资源的30%
-				if(target > 10000){
-					self.redisDao.db.hget("player:user:"+target+":bag","810",function(err,value) {
-						if(value && value > safety){
-							diff = Math.floor((value - safety) * 0.3)
-							awardList = awardList.concat(self.addItemStr(uid,"810:"+diff,1,"玩家城池"))
-							self.redisDao.db.hincrby("player:user:"+target+":bag",810,-diff)
-							next()
-						}else{
-							next()
-						}
-						//记录战报
-						local.addRecord(winFlag,atkTeam,defTeam,atkInfo,defInfo,{seededNum : seededNum},diff)
-					})
-				}else{
-					diff = builds["main"][buildLv]["robot_food"]
-					awardList = awardList.concat(self.addItemStr(uid,"810:"+diff,1,"机器人城池"))
-					//记录战报
-					local.addRecord(winFlag,atkTeam,defTeam,atkInfo,defInfo,{seededNum : seededNum},diff)
-					next()
-				}
+				//记录战报
+				local.addRecord(winFlag,atkTeam,defTeam,atkInfo,defInfo,{seededNum : seededNum})
+				next()
 			},
 			function(next) {
 				//数据处理
@@ -1182,9 +828,9 @@ module.exports = function() {
 					"defInfo" : defInfo,    									//玩家信息
 					"occupyTime" : Date.now(),  								//占领时间
 					"endTime" : endTime,      									//结束时间
-					"output" : output, 											//产出速度
+					"outadd" : manor_main[targetBlv]["outadd"], 				//加成比例
 					"grid" : grid, 												//地块
-					"team" : defTeam 										//敌方阵容
+					"team" : defTeam 											//敌方阵容
 				}
 				self.setObj(uid,main_name,"grid_"+grid,JSON.stringify(cityInfo))
 				if(target > 10000){
@@ -1226,33 +872,6 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				//统帅厅加成
-				self.getObj(uid,main_name,"tst",function(data) {
-					if(data && builds["tst"][data]){
-						if(!atkTeam[0]["team_atk_add"])
-							atkTeam[0]["team_atk_add"] = 0
-						atkTeam[0]["team_atk_add"] += builds["tst"][data]["add"]
-						if(!atkTeam[0]["team_maxHP_add"])
-							atkTeam[0]["team_maxHP_add"] = 0
-						atkTeam[0]["team_maxHP_add"] += builds["tst"][data]["add"]
-					}
-					next()
-				})
-			},
-			function(next) {
-				//家园特权加成
-		    	var manor_pri = self.getLordAtt(uid,"manor_pri")
-		    	if(manor_pri > Date.now()){
-					if(!atkTeam[0]["team_atk_add"])
-						atkTeam[0]["team_atk_add"] = 0
-					atkTeam[0]["team_atk_add"] += 1
-					if(!atkTeam[0]["team_maxHP_add"])
-						atkTeam[0]["team_maxHP_add"] = 0
-					atkTeam[0]["team_maxHP_add"] += 1
-		    	}
-		    	next()
-			},
-			function(next) {
 				//玩家队伍
 				self.getDefendTeam(defInfo.uid,function(team) {
 					defTeam = team
@@ -1264,7 +883,7 @@ module.exports = function() {
 				winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
 					//胜利
-					local.addRecord(winFlag,atkTeam,defTeam,atkInfo,defInfo,{seededNum : seededNum},0,true)
+					local.addRecord(winFlag,atkTeam,defTeam,atkInfo,defInfo,{seededNum : seededNum},true)
 					//解除占领状态
 					self.setObj(defInfo.uid,main_name,"grid_"+defInfo.grid,0)
 					self.redisDao.db.zadd("cross:manorFall",0,uid)
@@ -1276,10 +895,10 @@ module.exports = function() {
 		})
 	}
 	//添加记录
-	local.addRecord = function(winFlag,atkTeam,defTeam,atkUser,defUser,fightInfo,diff,revolt) {
+	local.addRecord = function(winFlag,atkTeam,defTeam,atkUser,defUser,fightInfo,revolt) {
 		if(revolt){
 			if(atkUser.uid > 10000){
-				var info = {"type":"revolt_atk",atkTeam:atkTeam,defTeam:defTeam,winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
+				var info = {"type":"revolt_atk",atkTeam:atkTeam,defTeam:defTeam,winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,time : Date.now()}
 				self.redisDao.db.rpush("player:user:"+atkUser.uid+":manorRecord",JSON.stringify(info),function(err,num) {
 					if(num > 5){
 						self.redisDao.db.ltrim("player:user:"+atkUser.uid+":manorRecord",-5,-1)
@@ -1287,7 +906,7 @@ module.exports = function() {
 				})
 			}
 			if(defUser.uid > 10000){
-				var info = {"type":"revolt_def",atkTeam:atkTeam,defTeam:defTeam,winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
+				var info = {"type":"revolt_def",atkTeam:atkTeam,defTeam:defTeam,winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,time : Date.now()}
 				self.redisDao.db.rpush("player:user:"+defUser.uid+":manorRecord",JSON.stringify(info),function(err,num) {
 					if(num > 5){
 						self.redisDao.db.ltrim("player:user:"+defUser.uid+":manorRecord",-5,-1)
@@ -1296,7 +915,7 @@ module.exports = function() {
 			}
 		}else{
 			if(atkUser.uid > 10000){
-				var info = {"type":"atk",atkTeam:atkTeam,defTeam:defTeam,winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
+				var info = {"type":"atk",atkTeam:atkTeam,defTeam:defTeam,winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,time : Date.now()}
 				self.redisDao.db.rpush("player:user:"+atkUser.uid+":manorRecord",JSON.stringify(info),function(err,num) {
 					if(num > 5){
 						self.redisDao.db.ltrim("player:user:"+atkUser.uid+":manorRecord",-5,-1)
@@ -1304,7 +923,7 @@ module.exports = function() {
 				})
 			}
 			if(defUser.uid > 10000){
-				var info = {"type":"def",atkTeam:atkTeam,defTeam:defTeam,winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,diff : diff,time : Date.now()}
+				var info = {"type":"def",atkTeam:atkTeam,defTeam:defTeam,winFlag : winFlag,atkUser : atkUser,defUser : defUser,fightInfo : fightInfo,time : Date.now()}
 				self.redisDao.db.rpush("player:user:"+defUser.uid+":manorRecord",JSON.stringify(info),function(err,num) {
 					if(num > 5){
 						self.redisDao.db.ltrim("player:user:"+defUser.uid+":manorRecord",-5,-1)
