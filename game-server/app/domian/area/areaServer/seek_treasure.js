@@ -216,6 +216,8 @@ module.exports = function() {
 	}
 	//领取普通寻宝幸运宝箱
 	this.gainSTNormalBox = function(uid,boxId,cb) {
+		cb(false)
+		return
 		if(!treasure_cfg["normal_luck_"+boxId]){
 			cb(false)
 			return
@@ -353,6 +355,8 @@ module.exports = function() {
 	}
 	//领取高级寻宝幸运宝箱
 	this.gainSTHighBox = function(uid,boxId,cb) {
+		cb(false)
+		return
 		if(!treasure_cfg["high_luck_"+boxId]){
 			cb(false)
 			return
