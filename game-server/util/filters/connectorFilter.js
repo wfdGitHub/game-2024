@@ -11,12 +11,12 @@ Filter.prototype.before = function (msg, session, next) {
 	next();
 }
 Filter.prototype.after = function (err, msg, session, resp, next) {
-	var dt = Date.now() - session.handlerTime
-	this.redisDao.db.zincrby("logs:callPort:count",1,msg.__route__)
-	this.redisDao.db.zincrby("logs:callPort:dt",dt,msg.__route__)
+	var dt = (Date.now() - session.handlerTime) || 0
+	this.redisDao.db.hincrby("logs:callPort:count",msg.__route__,1)
+	this.redisDao.db.hincrby("logs:callPort:dt",msg.__route__,dt)
 	if(session.uid){
-		this.redisDao.db.zincrby("logs:callUid:count",1,session.uid)
-		this.redisDao.db.zincrby("logs:callUid:dt",dt,session.uid)
+		this.redisDao.db.hincrby("logs:callUid:count",session.uid,1)
+		this.redisDao.db.hincrby("logs:callUid:dt",session.uid,dt)
 	}
 	next(err);
 }
