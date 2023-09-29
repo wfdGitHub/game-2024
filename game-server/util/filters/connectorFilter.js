@@ -8,7 +8,7 @@ var Filter = function() {
 }
 Filter.prototype.before = function (msg, session, next) {
 	session.handlerTime = Date.now()
-		next();
+	next();
 }
 Filter.prototype.after = function (err, msg, session, resp, next) {
 	var dt = Date.now() - session.handlerTime
