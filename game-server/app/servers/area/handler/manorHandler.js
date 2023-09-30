@@ -16,18 +16,7 @@ manorHandler.prototype.manorBuild = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   var bId = msg.bId
-  var land = msg.land
-  this.areaManager.areaMap[areaId].manorBuild(uid,bId,land,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//建设升级建筑
-manorHandler.prototype.manorSwap = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  var land1 = msg.land1
-  var land2 = msg.land2
-  this.areaManager.areaMap[areaId].manorSwap(uid,land1,land2,function(flag,data) {
+  this.areaManager.areaMap[areaId].manorBuild(uid,bId,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
@@ -35,8 +24,7 @@ manorHandler.prototype.manorSwap = function(msg, session, next) {
 manorHandler.prototype.manorReap = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  var bId = msg.bId
-  this.areaManager.areaMap[areaId].manorReap(uid,bId,function(flag,data) {
+  this.areaManager.areaMap[areaId].manorReap(uid,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
@@ -45,30 +33,6 @@ manorHandler.prototype.manorStartHorse = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   this.areaManager.areaMap[areaId].manorStartHorse(uid,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//收取马匹
-manorHandler.prototype.manorGainHorse = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].manorGainHorse(uid,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//打造护符
-manorHandler.prototype.manorStartHufu = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].manorStartHufu(uid,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//收取护符
-manorHandler.prototype.manorGainHufu = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].manorGainHufu(uid,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }

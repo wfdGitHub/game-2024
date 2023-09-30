@@ -853,44 +853,14 @@
         });
       }
       //建设升级建筑
-      var manorBuild = function(bId,land) {
-        pomelo.request("area.manorHandler.manorBuild", {bId:bId,land:land}, function(data) {
-            console.log(data);
-        });
-      }
-      //建设升级建筑
-      var manorSwap = function(land1,land2) {
-        pomelo.request("area.manorHandler.manorSwap", {land1:land1,land2:land2}, function(data) {
+      var manorBuild = function(bId) {
+        pomelo.request("area.manorHandler.manorBuild", {bId:bId}, function(data) {
             console.log(data);
         });
       }
       //获取收益
-      var manorReap = function(bId) {
-        pomelo.request("area.manorHandler.manorReap", {bId:bId}, function(data) {
-            console.log(data);
-        });
-      }
-      //驯养马匹
-      var manorStartHorse = function() {
-        pomelo.request("area.manorHandler.manorStartHorse", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //收取马匹
-      var manorGainHorse = function() {
-        pomelo.request("area.manorHandler.manorGainHorse", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //打造护符
-      var manorStartHufu = function() {
-        pomelo.request("area.manorHandler.manorStartHufu", {}, function(data) {
-            console.log(data);
-        });
-      }
-      //收取护符
-      var manorGainHufu = function() {
-        pomelo.request("area.manorHandler.manorGainHufu", {}, function(data) {
+      var manorReap = function() {
+        pomelo.request("area.manorHandler.manorReap", {}, function(data) {
             console.log(data);
         });
       }
@@ -954,6 +924,10 @@
             console.log(data);
         });
       }
+
+
+
+      
       //点票支付
       var dianpiao_recharge = function(pay_id) {
         pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id}, function(data) {

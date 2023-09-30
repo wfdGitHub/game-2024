@@ -65,8 +65,6 @@ module.exports = function() {
 	}
 	//初始化玩家家园
 	this.manorInit = function(uid,cb) {
-		self.incrbyLordData(uid,"warehouse",manor_main[1]["food"])
-		self.updateSprintRank("manor_rank",uid,manor_manor_main["score_rate"])
 		var info = {
 			"manorTime":Date.now(),
 			"action":0,
@@ -80,11 +78,14 @@ module.exports = function() {
 			"grid_5":0
 		}
 		for(var i in manor_type)
-			info[i] = 1
+			info[i] = 0
 		for(var i = 1;i <= 6;i++){
 			info["mon_time_"+i] = 0
 			info["mon_lv_"+i] = 1
 		}
+		info.main = 1
+		self.setHMObj(uid,main_name,info)
+		self.updateSprintRank("manor_rank",uid,manor_main[info.main]["score"])
 		local.manorAddLevel(uid)
 		if(cb)
 			cb(true,info)
@@ -114,7 +115,7 @@ module.exports = function() {
 				self.getHMObj(uid,main_name,["main",bId],function(list) {
 					mainLv = Number(list[0]) || 1
 					buildLv = Number(list[0]) || 1
-					if(manor_main[buildLv+1]){
+					if(!manor_main[buildLv+1]){
 						cb(false,"已满级")
 						return
 					}
@@ -140,18 +141,20 @@ module.exports = function() {
 			function(next) {
 				self.consumeItems(uid,pc,1,"升级建筑:"+bId+":"+buildLv,function(flag,err) {
 					if(flag){
-						buildLv++
 						next()
 					}else
 						next(err)
 				})
 			},
 			function(next) {
+				buildLv++
 				if(bId == "main"){
 					local.manorMoveLevel(uid,buildLv)
 					self.taskUpdate(uid,"manor_lv",1,buildLv)
 				}
 				self.updateSprintRank("manor_rank",uid,manor_main[mainLv]["score"])
+				self.setObj(uid,main_name,bId,buildLv)
+				cb(true,buildLv)
 			}
 		],function(err) {
 			cb(false,err)
@@ -173,8 +176,14 @@ module.exports = function() {
 						outadd += manor_main[mainLv]["outadd"]
 					var time = Number(list[2])
 					var dt = curTime - time
-					var timeRate = Math.floor(dt / hourTime)
+					console.log("dt",dt)
+					var timeRate = dt / hourTime
+					console.log("timeRate",timeRate)
+					if(timeRate > 16)
+						timeRate = 16
 					value = Math.floor(output * timeRate)
+					console.log("output",output)
+					console.log("value",value)
 					if(dt < 10000 || value < 1){
 						cb(false,"资源正在生产中")
 						return
@@ -195,7 +204,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				var awardList = self.addItemStr(uid,"800:"+value,outadd,"家园获取"+bId)
+				var awardList = self.addItemStr(uid,"800:"+value,outadd,"家园获取")
 				self.setObj(uid,main_name,"manorTime",curTime)
 				cb(true,{awardList:awardList,time:curTime})
 			}
@@ -204,7 +213,7 @@ module.exports = function() {
 		})
 	}
 	//放置属性建筑
-	
+	//打造物品
 	//===============贼寇==============//
 	//购买军令
 	this.manorBuyAction = function(uid,cb) {
@@ -253,7 +262,7 @@ module.exports = function() {
 	this.manorActionTime = function(uid,cb) {
 		self.getHMObj(uid,main_name,["action","yzyd_1","yzyd_2"],function(list) {
 			var action = Number(list[0]) || 0
-			var actionMax = actionBasic
+			var actionMax = actionBasic * hourTime
 			var yzyd_1 = Number(list[1]) || 0
 			var yzyd_2 = Number(list[2]) || 0
 			var diff = Date.now() - action
@@ -261,12 +270,8 @@ module.exports = function() {
 				cb(false,"军令不足")
 				return
 			}
-			if(builds["yzyd"][yzyd_1])
-				actionMax += builds["yzyd"][yzyd_1]["add"]
-			if(builds["yzyd"][yzyd_2])
-				actionMax += builds["yzyd"][yzyd_2]["add"]
-			if(diff > actionMax * hourTime)
-				action = Date.now() - actionMax * hourTime
+			if(diff > actionMax)
+				action = Date.now() - actionMax
 			action += hourTime
 			self.setObj(uid,main_name,"action",action)
 			cb(true,action)

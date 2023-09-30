@@ -14,6 +14,8 @@ const skills = fightCfg.getCfg("skills")
 const equip_suit = fightCfg.getCfg("equip_suit")
 const gem_lv = fightCfg.getCfg("gem_lv")
 const ace_pack = fightCfg.getCfg("ace_pack")
+const guild_cfg = fightCfg.getCfg("guild_cfg")
+const guild_skill = fightCfg.getCfg("guild_skill")
 const character = require("../entity/character.js")
 var gemMap = {}
 for(var i in gem_lv){
@@ -33,6 +35,9 @@ for(var i in hufu_skill){
 		hufu_map[hufu_skill[i]["lv"+j]] = {"id":i,"lv":j}
 	}
 }
+var gSkillAtts = {}
+for(var i = 1;i <= 4;i++)
+	gSkillAtts[i] = JSON.parse(guild_cfg["career_"+i]["value"])
 var model = function(fightContorl) {
 	var local = {}
 	//生成一个英雄
