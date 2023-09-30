@@ -364,10 +364,38 @@ module.exports = function() {
 	}
 	//根据类型设置阵容
 	this.setTeamByType = function(uid,type,hIds,cb) {
-		self.heroDao.setTeamByType(uid,type,hIds,function(flag,err) {
-			if(flag && type == "normal")
-				self.CELoad(uid)
-			cb(flag,err)
+		async.waterfall([
+			function(next) {
+				//常规阵容移除原出战
+				if(type == "normal"){
+					self.heroDao.getTeamByType(uid,type,function(flag,team) {
+						if(flag && team){
+							for(var i = 0;i < team.length;i++)
+								if(team[i])
+									self.heroDao.onlyDelHeroInfo(uid,team[i].hId,"combat")
+						}
+						next()
+					})
+				}else{
+					next()
+				}
+			},
+			function(next) {
+				self.heroDao.setTeamByType(uid,type,hIds,function(flag,data) {
+					next(null,flag,data)
+				})
+			},
+			function(flag,data,next) {
+				//常规阵容设置出战
+				if(flag && type == "normal"){
+					for(var i = 0;i < hIds.length;i++)
+						self.heroDao.onlySetHeroInfo(uid,hIds[i],"combat",1)
+					self.CELoad(uid)
+				}
+				cb(true)
+			}
+		],function(err){
+			cb(false,err)
 		})
 	}
 	//根据阵容类型获取阵容
