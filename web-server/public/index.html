@@ -98,6 +98,25 @@
         console.log("onChat")
         console.log(data)
       })
+      //====================家园=================//
+      //打造物品
+      var manorMakeItem = function(type,index) {
+        pomelo.request("area.manorHandler.manorMakeItem", {type:type,index:index}, function(data) {
+            console.log(data);
+        })
+      }
+      //收取打造物品
+      var manorGainMake = function(type) {
+        pomelo.request("area.manorHandler.manorGainMake", {type:type}, function(data) {
+            console.log(data);
+        })
+      }
+      //加速打造
+      var manorMakeFinish = function(type) {
+        pomelo.request("area.manorHandler.manorMakeFinish", {type:type}, function(data) {
+            console.log(data);
+        })
+      }
       //====================法宝=================//
       //获取数据
       var getFabaoData = function() {

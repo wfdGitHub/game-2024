@@ -38,6 +38,14 @@ for(var i in hufu_skill){
 var gSkillAtts = {}
 for(var i = 1;i <= 4;i++)
 	gSkillAtts[i] = JSON.parse(guild_cfg["career_"+i]["value"])
+var exaltMap = {}
+for(var i in heros){
+	if(!heros[i]["NPC"] && heros[i]["type"] == 0){
+		if(!exaltMap[heros[i]["exalt"]])
+			exaltMap[heros[i]["exalt"]] = []
+		exaltMap[heros[i]["exalt"]].push(i)
+	}
+}
 var model = function(fightContorl) {
 	var local = {}
 	//生成一个英雄
@@ -71,6 +79,18 @@ var model = function(fightContorl) {
 		for(var i = 0;i < heros[id]["passive_num"];i++)
 			heroInfo["PS"+i] = heros[id]["passive"+(i+1)]
 		return heroInfo
+	}
+	//生成最近携带等级的英雄
+	this.makeHeroByLv = function(lv,qa) {
+		var exaltId = 0
+		for(var i in exalt_lv){
+			if(lv >= exalt_lv[i]["limit"])
+				exaltId = i
+			else
+				break
+		}
+		var id = exaltMap[exaltId][Math.floor(Math.random() * exaltMap[exaltId].length)]
+		return this.makeHeroData(id,qa)
 	}
 	//获取基准战力英雄
 	this.makeStandardHero = function(id,qa,lv,evo,main_rate) {

@@ -4,6 +4,7 @@ const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const manor_citys = require("../../../../config/gameCfg/manor_citys.json")
 const manor_main = require("../../../../config/gameCfg/manor_main.json")
 const manor_make = require("../../../../config/gameCfg/manor_make.json")
+const gem_lv = require("../../../../config/gameCfg/gem_lv.json")
 const async = require("async")
 const heroId = 305010
 const hourTime = 3600000
@@ -13,7 +14,7 @@ const build_time = hourTime * 23
 const boss_cd = hourTime * 6
 const mon_cd = hourTime * 2
 const main_name = "manor"
-const fightAward = "800:120"
+const fightAward = "800:10"
 const actionBasic = 10
 const builds = {}
 var mon_weight = {"all":10000,"1":3000,"2":6000,"3":8000,"4":9000,"5":9600,"6":10000}
@@ -213,7 +214,138 @@ module.exports = function() {
 		})
 	}
 	//放置属性建筑
+
 	//打造物品
+	this.manorMakeItem = function(uid,type,index,cb) {
+		async.waterfall([
+			function(next) {
+				//前置条件参数判断
+				if(!manor_make[type] || !manor_make[type]["pc_"+index]){
+					next("type error "+type)
+					return
+				}
+				self.getObj(uid,main_name,"make_"+type,function(data) {
+					if(data)
+						next("正在打造中")
+					else
+						next()
+				})
+			},
+			function(next) {
+				//道具消耗
+				self.consumeItems(uid,manor_make[type]["pc_"+index],1,"家园打造"+type,function(flag,err) {
+					if(!flag)
+						next(err)
+					else
+						next()
+				})
+			},
+			function(next) {
+				//执行操作
+				var data = {}
+				data.time = Date.now() + manor_make[type]["time_"+index]
+				data.index = index
+				self.setObj(uid,main_name,"make_"+type,JSON.stringify(data))
+				cb(true,data)
+			},
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//收取打造物品
+	this.manorGainMake = function(uid,type,cb) {
+		var info = {}
+		async.waterfall([
+			function(next) {
+				//前置条件参数判断
+				if(!manor_make[type]){
+					next("type error "+type)
+					return
+				}
+				self.getObj(uid,main_name,"make_"+type,function(data) {
+					if(!data)
+						next("当前未打造")
+					else{
+						info = JSON.parse(data)
+						if(info.time > Date.now())
+							next("未到收取时间"+info.time+"/"+Date.now())
+						else{
+							self.delObj(uid,main_name,"make_"+type,function() {
+								next()
+							})
+						}
+					}
+				})
+			},
+			function(next) {
+				//执行操作
+				var award
+				var index = info.index
+				var list = manor_make[type]["award_"+index]
+				var qa = list[Math.floor(list.length * Math.random())]
+				switch(type){
+					case "hero":
+						award = self.gainHeroByLv(uid,qa)
+					break
+					case "gem":
+						award = self.addItemStr(uid,gem_lv[qa]["type_"+Math.floor(1 + 7 * Math.random())]+":1",1,"家园打造") 
+					break
+					case "fabao":
+						award = self.makeFabao(uid,qa)
+					break
+				}
+				console.log(award)
+				cb(true,award)
+			},
+		],function(err) {
+			cb(false,err)
+		})
+	}
+	//加速打造
+	this.manorMakeFinish = function(uid,type,cb) {
+		var info = {}
+		async.waterfall([
+			function(next) {
+				//前置条件参数判断
+				if(!manor_make[type]){
+					next("type error "+type)
+					return
+				}
+				self.getObj(uid,main_name,"make_"+type,function(data) {
+					if(!data)
+						next("当前未打造")
+					else{
+						info = JSON.parse(data)
+						next()
+					}
+				})
+			},
+			function(next) {
+				//道具消耗
+				var dt = info.time - Date.now()
+				if(dt < 0){
+					next("已打造完成")
+					return
+				}
+				var value = Math.ceil(dt / 60000)
+				console.log(dt,value)
+				self.consumeItems(uid,"800:"+value,1,"打造加速",function(flag,err) {
+					if(!flag)
+						next(err)
+					else
+						next()
+				})
+			},
+			function(next) {
+				//执行操作
+				info.time = 0
+				self.setObj(uid,main_name,"make_"+type,JSON.stringify(info))
+				cb(true,info)
+			},
+		],function(err) {
+			cb(false,err)
+		})
+	}
 	//===============贼寇==============//
 	//购买军令
 	this.manorBuyAction = function(uid,cb) {

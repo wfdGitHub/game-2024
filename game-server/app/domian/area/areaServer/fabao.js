@@ -100,7 +100,9 @@ var model = function() {
 		info.id = id
 		info = JSON.stringify(info)
 		self.setObj(uid,main_name,id,info)
-		cb(true,info)
+		if(cb)
+			cb(true,info)
+		return info
 	}
 	//获得法宝
 	this.gainFabao = function(uid,fstr){

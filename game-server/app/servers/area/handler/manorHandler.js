@@ -3,6 +3,30 @@ var manorHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+//打造物品
+manorHandler.prototype.manorMakeItem = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorMakeItem(uid,msg.type,msg.index,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//收取打造物品
+manorHandler.prototype.manorGainMake = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorGainMake(uid,msg.type,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//加速打造
+manorHandler.prototype.manorMakeFinish = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorMakeFinish(uid,msg.type,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 //获取家园数据
 manorHandler.prototype.manorData = function(msg, session, next) {
   var uid = session.uid

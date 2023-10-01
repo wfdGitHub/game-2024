@@ -157,6 +157,20 @@ var model = function() {
 		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:qa,reason:"获得英雄-"+hId})
 		return heroInfo
 	}
+	//根据携带等级获取英雄
+	this.gainHeroByLv = function(uid,qa,cb) {
+		var hId = self.getLordLastid(uid)
+		var lv = self.getLordLv(uid)
+		var heroInfo = self.fightContorl.makeHeroByLv(lv,qa)
+		heroInfo.hId = hId
+		self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
+		self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo,function() {
+			if(cb)
+				cb(true,heroInfo)
+		})
+		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+heroInfo.id,value:1,curValue:qa,reason:"获得英雄-"+hId})
+		return heroInfo
+	}
 	//设置心愿英雄
 	this.setWishHero = function(uid,sId,wishHeros,cb) {
 		//参数检测
