@@ -156,6 +156,11 @@ model.getTeamData = function(team,belong) {
 	//主公属性加成
 	for(var i in masterAtts)
 		heroAtts[i] = Math.floor(masterAtts[i] / 20)
+	//家园属性 
+	if(teamCfg["manors"])
+		for(var i = 1;i <= 6;i++)
+			if(teamCfg["manors"]["slot_ATT_"+i])
+				teamCfg["manors"]["slot_ATT_"+i] = JSON.parse(teamCfg["manors"]["slot_ATT_"+i])
 	//英雄属性
 	var characters = []
 	for(var i = 0;i < team.length;i++){

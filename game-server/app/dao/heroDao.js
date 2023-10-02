@@ -133,21 +133,10 @@ heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 		else{
 			if(self.areaManager.areaMap[areaId]){
 				switch(name){
-					case "star":
-						self.areaManager.areaMap[areaId].taskUpdate(uid,"hero",1,data)
-						self.getHeroInfo(uid,hId,"id",function(id) {
-							id = Number(id) || 0
-							self.updateHeroArchive(areaId,uid,id,data)
-							self.cacheDao.saveCache({messagetype:"itemChange",areaId:areaId,uid:uid,itemId:777000000+id,value:1,curValue:data,reason:"升星-"+hId})
-						})
-					break
 					case "lv":
 						self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
 						if(self.areaManager.areaMap[areaId].players[uid] && self.areaManager.areaMap[areaId].players[uid]["heroLv"] < data)
 							self.areaManager.areaMap[areaId].chageLordData(uid,"heroLv",data)
-					break
-					case "ad":
-						self.areaManager.areaMap[areaId].taskUpdate(uid,"heroAd",1,data)
 					break
 				}
 				self.areaManager.areaMap[areaId].incrbyCEInfo(uid,hId,name,value)
@@ -433,33 +422,6 @@ heroDao.prototype.getFightPower = function(uid,cb) {
 		}
 	})
 }
-//获取红颜技能
-heroDao.prototype.getBeautys = function(uid,cb) {
-	var self = this
-	self.redisDao.db.hgetall("player:user:"+uid+":beaut",function(err,data) {
-		if(!data){
-			cb({},0)
-		}else{
-			var beautys = {}
-			for(var id in beauty_base){
-				if(data[id+"_star"]){
-					var ad = Number(data[id+"_ad"])
-					var star = Number(data[id+"_star"])
-					var att1 = Number(data[id+"_att1"])
-					var att2 = Number(data[id+"_att2"])
-					var att3 = Number(data[id+"_att3"])
-					var att4 = Number(data[id+"_att4"])
-					var opinion = Number(data[id+"_opinion"])
-					var beautyInfo = {id : id,ad:ad,star:star,att1:att1,att2:att2,att3:att3,att4:att4,opinion:opinion}
-					beautys["beaut_"+id] = beautyInfo
-				}
-			}
-			if(data["bcombat"])
-				beautys["bcombat"] = data["bcombat"] 
-			cb(beautys)
-		}
-	})
-}
 //设置逐鹿之战出场阵容
 heroDao.prototype.setZhuluTeam = function(areaId,uid,hIds,cb) {
 	var self = this
@@ -479,43 +441,6 @@ heroDao.prototype.setZhuluTeam = function(areaId,uid,hIds,cb) {
 				cb(false,err)
 			else
 				cb(true)
-		})
-	})
-}
-//获取逐鹿出场阵容
-heroDao.prototype.getZhuluTeam = function(uid,cb) {
-	var self = this
-	self.redisDao.db.get("player:user:"+uid+":zhuluTeam",function(err,data) {
-		if(err || !data){
-			cb(false,"未设置阵容")
-			return
-		}
-		var zhuluTeam = JSON.parse(data)
-		var multiList = []
-		var hIds = []
-		for(var i = 0;i < zhuluTeam.length;i++){
-			if(zhuluTeam[i]){
-				hIds.push(zhuluTeam[i])
-				multiList.push(["hgetall","player:user:"+uid+":heros:"+zhuluTeam[i]])
-			}
-		}
-		self.redisDao.multi(multiList,function(err,list) {
-			var hash = {}
-			for(var i = 0;i < list.length;i++){
-				for(var j in list[i]){
-					var tmp = Number(list[i][j])
-					if(tmp == list[i][j])
-						list[i][j] = tmp
-				}
-				if(list[i]){
-					list[i].hId = hIds[i]
-					hash[list[i].hId] = list[i]
-				}
-			}
-			for(var i = 0;i < zhuluTeam.length;i++){
-				zhuluTeam[i] = hash[zhuluTeam[i]]
-			}
-			cb(true,zhuluTeam)
 		})
 	})
 }
@@ -648,11 +573,15 @@ heroDao.prototype.getFightTeamCfg = function(uid,cb) {
 		},
 		function(next) {
 			//家园建筑
-			self.redisDao.db.hmget("player:user:"+uid+":manor",["gjy","dby","qby"],function(err,data) {
+			self.redisDao.db.hgetall("player:user:"+uid+":manor",function(err,data) {
+				teamCfg["manors"] = {}
 				if(data){
-					teamCfg["gjy"] = Number(data[0]) || 0
-					teamCfg["dby"] = Number(data[1]) || 0
-					teamCfg["qby"] = Number(data[2]) || 0
+					for(var i = 1;i <= 6;i++){
+						if(data["ATT_"+i])
+							teamCfg["manors"]["ATT_"+i] = data["ATT_"+i]
+						if(data["slot_ATT_"+i])
+							teamCfg["manors"]["slot_ATT_"+i] = data["slot_ATT_"+i]
+					}
 				}
 				next()
 			})

@@ -115,7 +115,7 @@ module.exports = function() {
 				//获取建筑等级
 				self.getHMObj(uid,main_name,["main",bId],function(list) {
 					mainLv = Number(list[0]) || 1
-					buildLv = Number(list[0]) || 1
+					buildLv = Number(list[1]) || 1
 					if(!manor_main[buildLv+1]){
 						cb(false,"已满级")
 						return
@@ -155,6 +155,7 @@ module.exports = function() {
 				}
 				self.updateSprintRank("manor_rank",uid,manor_main[mainLv]["score"])
 				self.setObj(uid,main_name,bId,buildLv)
+				self.setBuildLv(uid,bId,buildLv)
 				cb(true,buildLv)
 			}
 		],function(err) {
@@ -214,7 +215,31 @@ module.exports = function() {
 		})
 	}
 	//放置属性建筑
-
+	this.manorPutHero = function(uid,bId,list,cb) {
+		if(!manor_type[bId] || !manor_type[bId]["ATT"]){
+			cb(false,"bId error "+bId)
+			return
+		}
+		if(!Array.isArray(list)){
+			cb(false,"list error "+list)
+			return
+		}
+		self.getObj(uid,main_name,bId,function(data) {
+			if(!data){
+				cb(false,"未建设")
+				return
+			}
+			var buildLv = Number(data) || 0
+			if(!buildLv || list.length > manor_main[buildLv]["hero_slot"]){
+				cb(false,"槽位不足")
+				return
+			}
+			list = JSON.stringify(list)
+			self.setObj(uid,main_name,"slot_"+bId,list)
+			var teamCfg = self.setBuildSlot(uid,bId,list)
+			cb(true,teamCfg)
+		})
+	}
 	//打造物品
 	this.manorMakeItem = function(uid,type,index,cb) {
 		async.waterfall([

@@ -99,6 +99,12 @@
         console.log(data)
       })
       //====================家园=================//
+      //放置英雄
+      var manorPutHero = function(bId,list) {
+        pomelo.request("area.manorHandler.manorPutHero", {bId:bId,list:list}, function(data) {
+            console.log(data);
+        })
+      }
       //打造物品
       var manorMakeItem = function(type,index) {
         pomelo.request("area.manorHandler.manorMakeItem", {type:type,index:index}, function(data) {

@@ -3,6 +3,14 @@ var manorHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+//放置英雄
+manorHandler.prototype.manorPutHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].manorPutHero(uid,msg.bId,msg.list,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 //打造物品
 manorHandler.prototype.manorMakeItem = function(msg, session, next) {
   var uid = session.uid

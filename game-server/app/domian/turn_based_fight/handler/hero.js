@@ -16,6 +16,8 @@ const gem_lv = fightCfg.getCfg("gem_lv")
 const ace_pack = fightCfg.getCfg("ace_pack")
 const guild_cfg = fightCfg.getCfg("guild_cfg")
 const guild_skill = fightCfg.getCfg("guild_skill")
+const manor_main = fightCfg.getCfg("manor_main")
+const manor_type = fightCfg.getCfg("manor_type")
 const character = require("../entity/character.js")
 var gemMap = {}
 for(var i in gem_lv){
@@ -416,13 +418,22 @@ var model = function(fightContorl) {
 		}
 		for(var i in hufu_talents)
 			this.mergeTalent(info,hufu_skill[i]["lv"+hufu_talents[i]])
-		//建筑属性
-		if(teamCfg && teamCfg["gjy"])
-			this.mergeData(info,{"self_atk_add":manor_gjy[teamCfg["gjy"]]["add"]})
-		if(teamCfg && teamCfg["dby"])
-			this.mergeData(info,{"self_maxHP_add":manor_dby[teamCfg["dby"]]["add"]})
-		if(teamCfg && teamCfg["qby"])
-			this.mergeData(info,{"speed":manor_qby[teamCfg["qby"]]["add"]})
+		//家园属性
+		if(teamCfg["manors"]){
+			for(var i = 1;i <= 6;i++){
+				var key = "ATT_"+i
+				if(teamCfg["manors"][key] && teamCfg["manors"]["slot_"+key]){
+					for(var j = 0;j < teamCfg["manors"]["slot_"+key].length;j++){
+						if(teamCfg["manors"]["slot_"+key][j] == info.hId && manor_main[teamCfg["manors"][key]]){
+							var tmpInfo = {}
+							tmpInfo[manor_type[key]["ATT"]] = manor_main[teamCfg["manors"][key]]["hero_att"]
+							this.mergeData(info,tmpInfo)
+							break
+						}
+					}
+				}
+			}
+		}
 		//===============场景属性=================//
 		if(teamCfg["specieAdd"] && (info.specie1 == teamCfg["specieAdd"] || info.specie2 == teamCfg["specieAdd"]))
 			this.mergeData(info,{"self_atk_add":0.5})

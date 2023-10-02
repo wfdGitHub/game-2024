@@ -163,10 +163,22 @@ module.exports = function() {
 	}
 	//更新建筑等级
 	this.setBuildLv = function(uid,bId,lv) {
-		if(userTeams[uid] && userTeams[uid][0]){
-			userTeams[uid][0][bId] = lv
-			this.updateCE(uid)
+		var teamCfg = userTeams[uid][0]
+		if(userTeams[uid] && teamCfg){
+			if(!teamCfg["manors"])
+				teamCfg["manors"] = {}
+			teamCfg["manors"][bId] = lv
 		}
+	}
+	//更新英雄放置槽位
+	this.setBuildSlot = function(uid,bId,list) {
+		var teamCfg = userTeams[uid][0]
+		if(userTeams[uid] && teamCfg){
+			if(!teamCfg["manors"])
+				teamCfg["manors"] = {}
+			teamCfg["manors"]["slot_"+bId] = list
+		}
+		return teamCfg
 	}
 	//获取主动技能数据
 	this.getPowerData = function(uid,cb) {

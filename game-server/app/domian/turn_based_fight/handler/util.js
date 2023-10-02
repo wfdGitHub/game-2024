@@ -49,12 +49,6 @@ var model = function(fightContorl) {
 					allCE += Math.ceil(guild_skill[teamCfg["g"+i]]["ce"] * careers[i])
 			if(teamCfg["officer"] && officer[teamCfg["officer"]] && officer[teamCfg["officer"]]["ce"])
 				allCE += officer[teamCfg["officer"]]["ce"]
-			if(teamCfg["gjy"])
-				allCE += 10000 * teamCfg["gjy"]
-			if(teamCfg["dby"])
-				allCE += 10000 * teamCfg["dby"]
-			if(teamCfg["qby"])
-				allCE += 10000 * teamCfg["qby"]
 			//主动技能
 			for(var i = 1;i <= 4;i++)
 				if(teamCfg["power"+i])
