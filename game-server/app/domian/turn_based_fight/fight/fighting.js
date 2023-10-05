@@ -85,7 +85,7 @@ model.prototype.load = function(belong,otps) {
 		team[i].calAttAdd(teamAdds)
 		team[i].teamInfo = teamInfo
 	}
-	this[belong+"Master"].init(this,team[0].team,team[0].enemy,this.locator,this.seeded,this[rival+"Master"])
+	this[belong+"Master"].init(this,team,team[0].team,team[0].enemy,this.locator,this.seeded,this[rival+"Master"])
 }
 //加载初始阵容
 model.prototype.loadBeginHero = function(belong) {

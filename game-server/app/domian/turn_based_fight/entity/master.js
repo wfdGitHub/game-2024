@@ -33,15 +33,15 @@ var master = function(otps) {
 	this.otps = otps
 }
 //初始化
-master.prototype.init = function(fighting,team,enemy,locator,seeded,peerMaster) {
+master.prototype.init = function(fighting,list,team,enemy,locator,seeded,peerMaster) {
 	this.fighting = fighting
 	this.team = team
 	this.enemy = enemy
 	this.locator = locator
 	this.seeded = seeded
 	this.peerMaster = peerMaster
-	for(var i = 0;i < this.team.length;i++){
-		this.team[i].master = this
+	for(var i = 0;i < list.length;i++){
+		list[i].master = this
 	}
 }
 //技能释放判断
