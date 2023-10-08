@@ -193,14 +193,11 @@ module.exports = function() {
 		    	if(coin > world_boss_cfg["coin_max"]["value"])
 		    		coin = world_boss_cfg["coin_max"]["value"]
 		    	info.score = score
-				if(self.checkLimitedTime("saodang")){
-			    	info.award =  self.addItemStr(uid,"201:"+coin,2,"世界BOSS")
-			    	info.award = info.award.concat(self.openChestAward(uid,world_boss_cfg["chest"]["value"]))
-			    	info.award = info.award.concat(self.openChestAward(uid,world_boss_cfg["chest"]["value"]))
-				}else{
-			    	info.award =  self.addItemStr(uid,"201:"+coin,1,"世界BOSS")
-			    	info.award = info.award.concat(self.openChestAward(uid,world_boss_cfg["chest"]["value"]))
-				}
+		    	var str = world_boss_cfg["award"]["value"] + "&201:"+coin
+		    	var rate = 1
+				if(self.checkLimitedTime("saodang"))
+			    	rate = 2
+			    info.award =  self.addItemStr(uid,str,rate,"世界BOSS")
 		    	local.worldBossScoreChange(uid,score,function(value) {
 		    		info.curScore = value
 		    		cb(true,info)

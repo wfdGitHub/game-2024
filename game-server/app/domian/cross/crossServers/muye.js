@@ -422,16 +422,12 @@ var muyeEntity = function(self,theatreId) {
 				if(!challenge_free[crossUid]){
 					challenge_free[crossUid] = 0
 				}
-				if(challenge_free[crossUid] < 2){
-					challenge_free[crossUid]++
-					self.redisDao.db.hset(main_name+":challenge_free",crossUid,challenge_free[crossUid])
-				}else{
-					if(Date.now() - challenge_time[crossUid] < 3600000){
-						cb(false,"挑战冷却中")
-						return
-					}
-					challenge_time[crossUid] = Date.now()
+				if(challenge_free[crossUid] >= muye_cfg["count"]["value"]){
+					next("挑战次数已满")
+					return
 				}
+				challenge_free[crossUid]++
+				self.redisDao.db.hset(main_name+":challenge_free",crossUid,challenge_free[crossUid])
 				next()
 			},
 			function(next) {

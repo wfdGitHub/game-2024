@@ -179,43 +179,7 @@ module.exports = function() {
 	}
 	//获取挂机道具
 	this.gainOnhookItem = function(uid,level,time) {
-		var lv = self.getLordLv(uid)
-		var equipLv = checkpointsCfg[level]["equip"] || 0
-		equipLv -= 2
-		if(equipLv <= 1)
-			equipLv = 1
-		if(equipLv > 7)
-			equipLv = 7
-		var count = Math.floor(time / 60)
-		if(time % 60 / 60 > Math.random())
-			count++
-		if(count > 20)
-			count = 20
-		var list = []
 		var awardStr = ""
-		if(lv >= 40){
-			var pickaxe1 = Math.min(Math.floor(count / 3),8)
-			var pickaxe2 = Math.floor(pickaxe1 * (Math.random() * 0.3 + 0.1))
-			if(pickaxe1)
-				awardStr = "1000501:"+pickaxe1
-			if(pickaxe2){
-				if(awardStr)
-					awardStr += "&"
-				awardStr += "1000502:"+pickaxe2
-			}
-		}
-		while(count > 0){
-			if(count >= 7){
-				list.push(2)
-				count -= 7
-			}else if(count >= 3){
-				list.push(1)
-				count -= 3
-			}else{
-				list.push(0)
-				count -= 1
-			}
-		}
 		//活动掉落
 		var dropItem = self.festivalDrop()
 		if(dropItem){

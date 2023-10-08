@@ -135,7 +135,6 @@ module.exports = function() {
 			case "hook_lord":
 			case "hook_hero":
 			case "hook_coin":
-			case "hook_power":
 				//挂机资源卡
 				var level = self.getCheckpointsInfo(uid)
 				if(!checkpointsCfg[level] || !checkpointsCfg[level][itemCfg[itemId].useType]){
@@ -327,6 +326,9 @@ module.exports = function() {
 			case "equip":
 				//装备
 			return self.gainEquip(uid,info.data)
+			case "fabao":
+				//法宝
+			return self.gainFabao(uid,info.data)
 			default:
 				console.log("addItemByType erro ",info)
 				return null
@@ -467,7 +469,7 @@ module.exports = function() {
 	}
 	//直接购买物品
 	this.buyItem = function(uid,itemId,count,cb) {
-		if(!itemCfg[itemId] || !itemCfg[itemId]["buy"] || !Number.isInteger(itemCfg[itemId]["buyNum"])){
+		if(!itemCfg[itemId] || !itemCfg[itemId]["buy"]){
 			cb(false,"item not exist or cfg error")
 			return
 		}
@@ -480,7 +482,26 @@ module.exports = function() {
 				cb(flag,err)
 				return
 			}
-			var info = self.addItem({uid : uid,itemId : itemId,value : itemCfg[itemId]["buyNum"],rate : count,reason:"直接购买"+itemId})
+			var info = self.addItem({uid : uid,itemId : itemId,value : count,rate : 1,reason:"直接购买"+itemId})
+			cb(true,info)
+		})
+	}
+	//直接出售物品
+	this.sellItem = function(uid,itemId,count,cb) {
+		if(!itemCfg[itemId] || !itemCfg[itemId]["sell"]){
+			cb(false,"item not exist or cfg error")
+			return
+		}
+		if(!Number.isInteger(count) || count <= 0){
+			cb(false,"count error "+count)
+			return
+		}
+		self.consumeItems(uid,itemId+":"+count,1,"直接出售"+itemId,function(flag,err) {
+			if(!flag){
+				cb(flag,err)
+				return
+			}
+			var info = self.addItemStr(uid,itemCfg[itemId]["sell"],count,"直接出售"+itemId)
 			cb(true,info)
 		})
 	}

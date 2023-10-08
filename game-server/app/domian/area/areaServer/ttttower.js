@@ -1,6 +1,5 @@
 //通天塔模块
 const ttttower_level = require("../../../../config/gameCfg/ttttower_level.json")
-const ttttower_realm = require("../../../../config/gameCfg/ttttower_realm.json")
 const ttttower_cfg = require("../../../../config/gameCfg/ttttower_cfg.json")
 const heros_cfg = require("../../../../config/gameCfg/heros.json")
 const VIP = require("../../../../config/gameCfg/VIP.json")
@@ -24,16 +23,6 @@ module.exports = function() {
 	//玩家每日刷新
 	this.TTTdayUpdate = function(uid) {
 		self.setObj(uid,main_name,"mopup",0)
-		self.setObj(uid,main_name,"realm_count_1",0)
-		self.setObj(uid,main_name,"realm_count_2",0)
-		self.setObj(uid,main_name,"realm_count_3",0)
-		self.setObj(uid,main_name,"realm_count_4",0)
-		self.setObj(uid,main_name,"realm_count_5",0)
-		self.setObj(uid,main_name,"realm_mopup_1",0)
-		self.setObj(uid,main_name,"realm_mopup_2",0)
-		self.setObj(uid,main_name,"realm_mopup_3",0)
-		self.setObj(uid,main_name,"realm_mopup_4",0)
-		self.setObj(uid,main_name,"realm_mopup_5",0)
 	}
 	//获取通天塔数据
 	this.getTTTInfo = function(uid,cb) {

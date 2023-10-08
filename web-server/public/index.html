@@ -4030,6 +4030,12 @@
             console.log(data);
         })
       }
+      //直接出售物品
+      var sellItem = function(itemId,count) {
+        pomelo.request("area.normalHandler.sellItem",{itemId : itemId,count : count}, function(data) {
+            console.log(data);
+        })
+      }
       //背包列表
       var getBagList = function() {
         pomelo.request("area.normalHandler.getBagList",{}, function(data) {

@@ -223,6 +223,10 @@ var model = function(fightContorl) {
 					strList.push(list[i]["e"+j+"g"+k]+":1")
 			}
 			//法宝返还
+			for(var i = 1;i <= 3;i++){
+				if(info["fabao"+i])
+					awards.push({type : "fabao",data : info["fabao"+i]})
+			}
 		}
 		return awards
 	}

@@ -223,8 +223,6 @@ module.exports = function() {
 				return
 			}
 			var str = item+":"+power_star[star]["itemValue"]
-			if(power_star[star]["foodValue"])
-				str += "&1000730:"+power_star[star]["foodValue"]
 			self.consumeItems(uid,str,rate,"主动技能升星"+powerId,function(flag,err) {
 				if(!flag){
 					cb(false,err)
@@ -278,6 +276,11 @@ module.exports = function() {
 			var ad = Number(list[1]) || 1
 			if(lv < power_ad[ad]["lv_limit"]){
 				cb(false,"先升满级"+lv+"/"+power_ad[ad]["lv_limit"])
+				return
+			}
+			var lordLv = self.getLordLv(uid)
+			if(lordLv < power_ad[ad]["lord_lv"]){
+				cb(false,"主公等级不足")
 				return
 			}
 			var str = power_ad[ad]["pc"]

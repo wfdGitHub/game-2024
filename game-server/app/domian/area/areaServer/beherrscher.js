@@ -10,12 +10,6 @@ for(var i = 1;i <= seatCount;i++){
 	beherrscher_cfg["team_"+i] = JSON.parse(beherrscher_cfg["team_"+i]["value"])
 }
 const hours = 20
-var scene_otps = {}
-for(var i = 1;i <= seatCount; i++){
-	scene_otps[i] = {}
-	scene_otps[i]["amplify_"+i] = 0.3
-}
-scene_otps[6]["amplify"] = 0.3
 module.exports = function() {
 	var self = this
 	//state 0 未开赛  1 开赛中
@@ -124,10 +118,6 @@ module.exports = function() {
 		}
 		var info = {}
 		var atkTeam = this.getUserTeam(uid)
-		for(var i = 0;i < 6;i++){
-			if(atkTeam[i])
-				atkTeam[i] = Object.assign(atkTeam[i],scene_otps[index])
-		}
 		var defTeam
 		var fightOtps = Object.assign({seededNum : Date.now()})
 		async.waterfall([
