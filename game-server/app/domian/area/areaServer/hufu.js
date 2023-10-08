@@ -147,7 +147,7 @@ module.exports = function() {
 				var info = JSON.parse(hufuInfos[i])
 				count += hufu_quality[info.lv]["sell"]
 			}
-			awardList = self.addItemStr(uid,"1000040:"+count,1,"出售护符"+hufuInfos[i])
+			awardList = self.addItemStr(uid,"202:"+count,1,"出售护符"+hufuInfos[i])
 			cb(true,awardList)
 		})
 	}

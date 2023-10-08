@@ -32,7 +32,7 @@ var fbHandler = function(app) {
 fbHandler.prototype.getDailyfbInfo = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getDailyfbInfo(uid,function(msg) {
+  this.areaManager.areaMap[areaId].getDailyfbInfo(uid,function(flag,msg) {
     next(null,{flag : true,msg : msg})
   })
 }
