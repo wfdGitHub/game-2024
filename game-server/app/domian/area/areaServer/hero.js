@@ -147,7 +147,7 @@ var model = function() {
 	//获得一个英雄
 	this.gainOneHero = function(uid,id,qa,cb) {
 		var hId = self.getLordLastid(uid)
-		var heroInfo = self.fightContorl.makeHeroData(id,qa)
+		var heroInfo = self.fightContorl.makeStandardHero(id,qa,1,0.9)
 		heroInfo.hId = hId
 		self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 		self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo,function() {
