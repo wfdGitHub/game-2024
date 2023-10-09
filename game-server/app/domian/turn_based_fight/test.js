@@ -67,15 +67,11 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // }
 // console.log(atkTeam)
 // // var buff = {"buffId":"ghost","buff_tg":"team_self","buffArg":5,"duration":3,"buffRate":1}
-// var info = {"atkTeam":[{"power1":{"id":200100,"lv":1,"star":1,"ad":1},"manualModel":0},{"id":"506110","evo":1,"exalt":6,"qa":5,"wash":0,"lv":1,"MR1":1,"MR2":1,"MR3":1,"MR4":1,"MR5":1,"MR6":1,"PS0":4423,"PS1":4311,"PS2":4420,"PS3":4318,"PS4":4301}],"defTeam":[{"manualModel":0},{"id":"506060","evo":1,"exalt":6,"qa":5,"wash":0,"lv":1,"MR1":1,"MR2":1,"MR3":1,"MR4":1,"MR5":1,"MR6":1,"PS0":4305,"PS1":4315,"PS2":4228,"PS3":4301}],"fightOtps":{"seededNum":1695634112622}}
+// var info = JSON.parse("{\"atkTeam\":[{\"title\":0,\"officer\":0,\"manors\":{},\"g1\":0,\"g2\":0,\"g3\":0,\"g4\":0}],\"defTeam\":[{\"g1\":0,\"g2\":0,\"g3\":0,\"g4\":0,\"officer\":1,\"comeonNum\":3},{\"id\":501030,\"evo\":1,\"exalt\":1,\"qa\":3,\"lv\":1,\"MR1\":0.33,\"MR2\":0.33,\"MR3\":0.33,\"MR4\":0.33,\"MR5\":0.33,\"MR6\":0.33,\"PS0\":4301,\"PS1\":4117,\"PS2\":4223,\"e1\":\"\",\"e2\":\"\",\"e3\":\"\",\"e4\":\"\",\"e5\":\"\",\"e6\":\"\"}],\"otps\":{\"seededNum\":1696930947632,\"masterSkills\":[]}}")
 // var seededNum = 1
 // var atkTeam = info.atkTeam
 // var defTeam = info.defTeam
-// // var fighting = fightContorl.beginFight(atkTeam,defTeam,{})
-// var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
-// console.log(fighting.keepRun())
-// console.log(fighting.keepRun())
-// console.log(fighting.keepRun())
+// console.log(fightContorl.videoFight(atkTeam,defTeam,info.otps))
 // fightRecord.explain()
 // var eInfo = {
 //   lv: 6,
