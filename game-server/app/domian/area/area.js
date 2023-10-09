@@ -224,7 +224,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.arenadayUpdate(uid)
 	this.dailyfbUpdate(uid)
 	this.dayTaskRefresh(uid)
-	this.bazaarDayRefresh(uid)
+	// this.bazaarDayRefresh(uid)
 	this.shopRefresh(uid)
 	this.activityUpdate(uid)
 	// this.STDayRefresh(uid)
