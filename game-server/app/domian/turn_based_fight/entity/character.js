@@ -236,7 +236,7 @@ var model = function(otps) {
 	this.friend_ation_hp = otps.friend_ation_hp || 0 			//全局回合结束后，自身恢复(值*己方所有同阵营英雄回合内行动次数)生命
 	this.ignore_shild = otps.ignore_shild || false 				//造成的物理伤害无视目标伤害吸收盾
 	this.forbidden_amp = otps.forbidden_amp || 0 				//对重伤状态下的目标伤害提升
-	this.died_resurgence = otps.died_resurgence || false  		//战斗中首次死亡时复活，并恢复全部血量
+	this.died_resurgence = otps.died_resurgence || 0  			//战斗中首次死亡时复活，并恢复全部血量
 	this.extra_count = 0 										//本回合额外行动次数
 	//=========位置效果=======//
 	this.hor_fri_reduction = otps["hor_fri_reduction"]	//横排英雄免伤加成
