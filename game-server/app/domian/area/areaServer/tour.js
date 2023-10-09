@@ -86,46 +86,30 @@ module.exports = function() {
 					if(!flag){
 						cb(flag,list)
 					}else{
-						let num = 0
-						let realms = {}
-						let maxStar = 0
-						for(let i = 0;i < list.length;i++){
-							if(list[i]){
-								num++
-								realms[heros[list[i]["id"]]["realm"]] = true
-								if(list[i]["star"] > maxStar)
-									maxStar = list[i]["star"]
-							}
-						}
-						if(num > tour_quality[quality]["heroNum"]){
-							next("英雄数量超出")
-							return
-						}
-						if(maxStar < tour_quality[quality]["need_star"]){
-							next("星级不符合")
-							return
-						}
-						for(let i = 0;i < tour_task[taskId]["need_realm"].length;i++){
-							if(!realms[tour_task[taskId]["need_realm"][i]]){
-								next("种族不符合")
+						var num = 0
+						for(var i = 0;i < list.length;i++){
+							if(!list[i] || list[i]["qa"] < tour_quality[quality]["need_qa"]){
+								next("星级不符合")
 								return
 							}
 						}
+						if(list.length != tour_quality[quality]["heroNum"]){
+							next("英雄数量错误")
+							return
+						}
 						next()
-
 					}
 				})
 			},
 			function(next) {
 				//冻结判断
 				let arr = []
-				for(var i = 0;i < hIds.length;i++){
+				for(var i = 0;i < hIds.length;i++)
 					arr.push("free_"+hIds[i])
-				}
 				self.getHMObj(uid,main_name,arr,function(list) {
 					for(var i = 0;i < list.length;i++){
 						if(list[i]){
-							next("该武将已进行任务"+i)
+							next("该英雄已进行任务"+i)
 							return
 						}
 					}
@@ -134,7 +118,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//消耗游历值
-				let str = "204:"+tour_quality[quality]["tour"]
+				var str = "204:"+tour_quality[quality]["tour"]
 				self.consumeItems(uid,str,1,"游历任务",function(flag,err) {
 					if(flag)
 						next()
@@ -144,8 +128,8 @@ module.exports = function() {
 			},
 			function(next) {
 				//进行任务
-				let id = Date.now()
-				let taskInfo = {
+				var id = Date.now()
+				var taskInfo = {
 					taskId : taskId,
 					hIds : hIds,
 					time : Date.now()
