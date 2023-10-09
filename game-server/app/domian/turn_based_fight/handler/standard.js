@@ -53,7 +53,6 @@ var model = function() {
 				for(var j = 1;j <= 6;j++)
 					heroInfo["e"+j] = this.makeStandardEquip(lvInfo.equip,j,dlInfo.equip_qa)
 				//基准战力宝石
-
 				team.push(heroInfo)
 			}
 		}
