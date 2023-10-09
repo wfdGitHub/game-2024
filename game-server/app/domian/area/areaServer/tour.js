@@ -7,7 +7,6 @@ const uuid = require("uuid")
 const async = require("async")
 var tour_quality_list = {}
 for(let i in tour_task){
-	tour_task[i]["need_realm"] = JSON.parse(tour_task[i]["need_realm"])
 	if(!tour_quality_list[tour_task[i]["quality"]])
 		tour_quality_list[tour_task[i]["quality"]] = []
 	tour_quality_list[tour_task[i]["quality"]].push(Number(i))
