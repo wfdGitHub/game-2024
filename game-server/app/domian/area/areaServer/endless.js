@@ -12,6 +12,8 @@ module.exports = function() {
 	//获取数据
 	this.getEndlessData = function(uid,cb) {
 		self.getObjAll(uid,main_name,function(data) {
+			if(!data)
+				data = {}
 			if(!data.action)
 				data.action = Date.now() - BEGIN_TIME
 			self.setObj(uid,main_name,"action",data.action)
