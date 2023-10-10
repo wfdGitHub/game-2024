@@ -224,8 +224,8 @@ var model = function(fightContorl) {
 			}
 			//法宝返还
 			for(var i = 1;i <= 3;i++){
-				if(info["fabao"+i])
-					awards.push({type : "fabao",data : info["fabao"+i]})
+				if(list[i]["fabao"+i])
+					awards.push({type : "fabao",data : list[i]["fabao"+i]})
 			}
 		}
 		return awards
