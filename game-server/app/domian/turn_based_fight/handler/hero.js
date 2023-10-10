@@ -223,9 +223,9 @@ var model = function(fightContorl) {
 					strList.push(list[i]["e"+j+"g"+k]+":1")
 			}
 			//法宝返还
-			for(var i = 1;i <= 3;i++){
-				if(list[i]["fabao"+i])
-					awards.push({type : "fabao",data : list[i]["fabao"+i]})
+			for(var j = 1;j <= 3;j++){
+				if(list[i]["fabao"+j])
+					awards.push({type : "fabao",data : list[i]["fabao"+j]})
 			}
 		}
 		return awards
