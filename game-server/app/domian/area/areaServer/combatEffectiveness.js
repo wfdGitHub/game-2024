@@ -375,7 +375,6 @@ module.exports = function() {
 	}
 	//获取常规阵容
 	this.getUserTeam = function(uid) {
-		console.log("getUserTeam",uid,userTeams[uid])
 		return JSON.parse(JSON.stringify(userTeams[uid]))
 	}
 	//根据类型设置阵容

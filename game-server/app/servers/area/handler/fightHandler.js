@@ -65,7 +65,7 @@ fightHandler.prototype.getEndlessData = function(msg, session, next) {
 fightHandler.prototype.challengeEndless = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].challengeEndless(msg.uid,msg.id,msg.level,msg.seededNum,msg.masterSkills,function(flag,data) {
+  this.areaManager.areaMap[areaId].challengeEndless(uid,msg.id,msg.level,msg.seededNum,msg.masterSkills,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
