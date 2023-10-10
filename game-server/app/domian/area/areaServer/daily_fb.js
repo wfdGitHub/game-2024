@@ -61,7 +61,7 @@ module.exports = function() {
 					var awardList = self.addItemStr(uid,daily_fb_base[fbId]["award"],rate,"日常副本")
 					cb(true,{awardList:awardList,action:action,winFlag:winFlag})
 				}else{
-					cb(false,{atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,masterSkills:masterSkills,winFlag:winFlag,action:actions})
+					cb(false,{atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,masterSkills:masterSkills,winFlag:winFlag,action:action})
 				}
 			})
 		})
