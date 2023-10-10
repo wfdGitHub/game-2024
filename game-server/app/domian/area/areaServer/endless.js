@@ -48,7 +48,7 @@ module.exports = function() {
 	//消耗体力
 	this.endlessAtiontime = function(uid,cb) {
 		self.getObj(uid,main_name,"action",function(action) {
-			action = Number(list[0]) || 0
+			action = Number(action) || 0
 			var diff = Date.now() - action
 			if(diff < ONE_TIME){
 				cb(false,"体力不足")
