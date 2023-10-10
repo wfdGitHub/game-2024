@@ -6,6 +6,16 @@ var normalHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
+//使用藏宝图
+normalHandler.prototype.useCangbaotu = function(msg, session, next) {
+  var self = this
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var id = msg.id
+  this.areaManager.areaMap[areaId].useCangbaotu(uid,id,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //激活礼包码
 normalHandler.prototype.verifyCDKey = function(msg, session, next) {
   var self = this

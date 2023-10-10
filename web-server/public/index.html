@@ -98,6 +98,12 @@
         console.log("onChat")
         console.log(data)
       })
+      //使用藏宝图
+      var useCangbaotu = function(id) {
+        pomelo.request("area.normalHandler.useCangbaotu", {id:id}, function(data) {
+            console.log(data);
+        })
+      }
       //====================家园=================//
       //放置英雄
       var manorPutHero = function(bId,list) {

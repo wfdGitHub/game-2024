@@ -119,28 +119,4 @@ module.exports = function() {
 			cb(false,err)
 		})
 	}
-	//领取通天塔特权奖励
-	this.tttPriAward = function(uid,cb) {
-		var  ttt_pri = self.getLordAtt(uid,"ttt_pri")
-		if(!ttt_pri){
-			cb(false,"未开启特权")
-			return
-		}
-		self.getHMObj(uid,main_name,["level","pri_index"],function(list) {
-			var level = Number(list[0]) || 0
-			var index = Number(list[1]) || 0
-			if(index >= level){
-				cb(false,"没有可领取的奖励")
-			}else{
-				self.setObj(uid,main_name,"pri_index",level)
-				var value = 0
-				for(var i = index + 1;i <= level;i++){
-					if(ttttower_level[i])
-						value += ttttower_level[i]["pri_award"]
-				}
-				var awardList = self.addItemStr(uid,"1000050:"+value,1,"通天塔特权")
-				cb(true,awardList)
-			}
-		})
-	}
 }
