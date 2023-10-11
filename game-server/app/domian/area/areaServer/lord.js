@@ -104,7 +104,7 @@ module.exports = function() {
 		var upLv = 0
 		var gold = 0
 		for(var i = level + 1;lord_lv[i] !== undefined;i++){
-			if(exp > lord_lv[i]["exp"]){
+			if(exp >= lord_lv[i]["exp"]){
 				upLv++
 				gold += lord_lv[i]["gold"]
 			}else{
