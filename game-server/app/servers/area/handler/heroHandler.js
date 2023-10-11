@@ -19,7 +19,6 @@ var heroHandler = function(app) {
 };
 //获取首个英雄
 heroHandler.prototype.gainFirstHero = function(msg, session, next) {
-  console.log("gainFirstHero")
   var areaId = session.get("areaId")
   var uid = session.uid
   this.areaManager.areaMap[areaId].gainFirstHero(uid,function(flag,data) {

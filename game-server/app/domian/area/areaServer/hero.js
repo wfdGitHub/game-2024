@@ -92,7 +92,9 @@ var model = function() {
 						}
 					}
 				}
-				self.taskUpdate(uid,"buzhuo_score",summon_list[sId]["score"] * count)
+				var score = summon_list[sId]["score"] * count
+				self.taskUpdate(uid,"buzhuo_score",score)
+				self.updateSprintRank("buzhuo_rank",uid,score)
 				self.taskUpdate(uid,"recruit",count)
 				cb(true,list)
 			}
@@ -130,7 +132,7 @@ var model = function() {
 					}
 				})
 			},
-			function(next) {1
+			function(next) {
 				//抽奖
 				var list = []
 				var index = util.getWeightedRandomBySort(summon_list[sId]["summonHandWeighs"])
@@ -141,6 +143,9 @@ var model = function() {
 					//英雄
 					list.push({type:"hero",heroInfo:self.gainOneHero(uid,heroId,index)})
 				}
+				var score = summon_list[sId]["score"]
+				self.taskUpdate(uid,"buzhuo_score",score)
+				self.updateSprintRank("buzhuo_rank",uid,score)
 				self.taskUpdate(uid,"recruit",1)
 				cb(true,list)
 			}
@@ -629,7 +634,6 @@ var model = function() {
 	}
 	//首次获取英雄
 	this.gainFirstHero = function(uid,cb) {
-		console.log("gainFirstHero",uid)
 		self.incrbyObj(uid,main_name,"first",1,function(data) {
 			if(data > 1){
 				cb(false,"已获取")
