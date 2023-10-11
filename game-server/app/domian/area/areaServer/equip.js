@@ -125,6 +125,7 @@ var model = function() {
 		info.id = id
 		info = JSON.stringify(info)
 		self.setObj(uid,main_name,id,info)
+		self.taskUpdate(uid,"equip",1,qa)
 		return info
 	}
 	//装备打造
@@ -157,6 +158,7 @@ var model = function() {
 			function(next) {
 				var id = self.getLordLastid(uid)
 				var info = self.fightContorl.makeEquip(lv,slot,0,item)
+				self.taskUpdate(uid,"equip",1,info.qa)
 				info.id = id
 				info = JSON.stringify(info)
 				self.setObj(uid,main_name,id,info)
@@ -499,6 +501,7 @@ var model = function() {
 				//操作
 				var id = info.id
 				info.st++
+				self.taskUpdate(uid,"equip_st",1,info.st)
 				info = JSON.stringify(info)
 				self.setObj(uid,main_name,id,info)
 				cb(true,info)

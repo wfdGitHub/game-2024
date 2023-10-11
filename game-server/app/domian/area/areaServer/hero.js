@@ -10,6 +10,7 @@ const evolve_lv = require("../../../../config/gameCfg/evolve_lv.json")
 const lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 const items = require("../../../../config/gameCfg/item.json")
 const mythical = require("../../../../config/gameCfg/mythical.json")
+const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
 const util = require("../../../../util/util.js")
 const main_name = "summon"
 for(var i in summon_list){
@@ -91,6 +92,8 @@ var model = function() {
 						}
 					}
 				}
+				self.taskUpdate(uid,"buzhuo_score",summon_list[sId]["score"] * count)
+				self.taskUpdate(uid,"recruit",count)
 				cb(true,list)
 			}
 		],function(err) {
@@ -138,6 +141,7 @@ var model = function() {
 					//英雄
 					list.push({type:"hero",heroInfo:self.gainOneHero(uid,heroId,index)})
 				}
+				self.taskUpdate(uid,"recruit",1)
 				cb(true,list)
 			}
 		],function(err) {
@@ -154,6 +158,7 @@ var model = function() {
 			if(cb)
 				cb(true,heroInfo)
 		})
+		self.taskUpdate(uid,"hero",1,qa)
 		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:qa,reason:"获得英雄-"+hId})
 		return heroInfo
 	}
@@ -168,6 +173,7 @@ var model = function() {
 			if(cb)
 				cb(true,heroInfo)
 		})
+		self.taskUpdate(uid,"hero",1,qa)
 		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+heroInfo.id,value:1,curValue:qa,reason:"获得英雄-"+hId})
 		return heroInfo
 	}
@@ -240,6 +246,8 @@ var model = function() {
 					return
 				}
 				heroInfo.evo++
+				self.taskUpdate(uid,"pokemon_evolve",1)
+				self.taskUpdate(uid,"pokemon_evolveLv",1,heroInfo.evo)
 	            self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"evo",1)
 	            cb(true,{heroInfo:heroInfo})
 			})
@@ -422,6 +430,8 @@ var model = function() {
 					heroInfo.evoRate = 0
 					self.heroDao.onlySetHeroInfo(uid,hId,"evoRate",0)
 		            self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"evo",1)
+		            self.taskUpdate(uid,"pokemon_evolve",1)
+		            self.taskUpdate(uid,"pokemon_evolveLv",1,heroInfo.evo)
 		            cb(true,{heroInfo:heroInfo,awardList:awardList})
 				}else{
 					heroInfo.evoRate = Number((rate*0.1).toFixed(2)) || 0
@@ -575,6 +585,8 @@ var model = function() {
 				return
 			}
 			var info = JSON.parse(heroInfo.save)
+			if(heroInfo.qa != info.qa)
+				self.taskUpdate(uid,"hero",1,info.qa)
 			for(var i = 0;i < 10;i++){
 				delete heroInfo["PS"+i]
 				self.heroDao.onlyDelHeroInfo(uid,hId,"PS"+i)
@@ -615,7 +627,27 @@ var model = function() {
 			})
 		})
 	}
-	//英雄洗练 洗练增加通灵值，通灵值满一百必出满技能，出满技能后通灵值重置
+	//首次获取英雄
+	this.gainFirstHero = function(uid,cb) {
+		console.log("gainFirstHero",uid)
+		self.incrbyObj(uid,main_name,"first",1,function(data) {
+			if(data > 1){
+				cb(false,"已获取")
+				return
+			}
+			var hId = self.getLordLastid(uid)
+			var id = default_cfg["first_hero"]["value"]
+			var heroInfo = self.fightContorl.makeFullHeroData(id)
+			heroInfo.hId = hId
+			self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
+			self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo,function() {
+				if(cb)
+					cb(true,heroInfo)
+			})
+			self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:heroInfo.qa,reason:"获得英雄-"+hId})
+		})
+	}
+	//英雄洗练 洗练增加通灵值,通灵值满一百必出满技能,出满技能后通灵值重置
 	local.washHero = function(heroInfo,item) {
 		heroInfo.wash += exalt_lv[heros[heroInfo.id]["exalt"]]["wash_value"]
 		var c_info = self.fightContorl.createHero(heroInfo.id,heroInfo.qa,heroInfo.wash,item)

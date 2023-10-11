@@ -33,6 +33,7 @@ module.exports = function() {
 				cb(false,"体力不足")
 				return
 			}
+			self.taskUpdate(uid,"endless_count",1)
 			var atkTeam = self.getUserTeam(uid)
 			var defTeam = self.fightContorl.getNPCTeamByType(main_name,endless_team[id]["team"],lv,"lv_"+level)
 			var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})

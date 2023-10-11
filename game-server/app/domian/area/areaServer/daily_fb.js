@@ -49,6 +49,7 @@ module.exports = function() {
 					cb(false,"体力不足")
 					return
 				}
+				self.taskUpdate(uid,"fb",1)
 				var atkTeam = self.getUserTeam(uid)
 				var defTeam = self.fightContorl.getNPCTeamByType(main_name,daily_fb_base[fbId]["team"],lv)
 				var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})

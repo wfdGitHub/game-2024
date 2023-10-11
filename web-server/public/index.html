@@ -208,7 +208,6 @@
             console.log(data);
         })
       }
-
       //==============================阵容========================//
       //设置出场阵容
       var setTeamByType = function(type,hIds) {
@@ -222,7 +221,6 @@
             console.log(data);
         })
       }
-
       //===================宝石===================/
       //装备宝石
       var gemWear = function(hId,slot,g_slot,itemId) {
@@ -243,6 +241,12 @@
         })
       }
       //===================神兽===================/
+      //获取首个英雄
+      var gainFirstHero = function() {
+        pomelo.request("area.heroHandler.gainFirstHero", {}, function(data) {
+            console.log(data);
+        })
+      }
       //兑换神兽
       var gainMythical = function(id) {
         pomelo.request("area.heroHandler.gainMythical", {id:id}, function(data) {

@@ -17,7 +17,15 @@ var heroHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
-
+//获取首个英雄
+heroHandler.prototype.gainFirstHero = function(msg, session, next) {
+  console.log("gainFirstHero")
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  this.areaManager.areaMap[areaId].gainFirstHero(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
 //英雄分解
 heroHandler.prototype.heroRecycle = function(msg, session, next) {
   var areaId = session.get("areaId")

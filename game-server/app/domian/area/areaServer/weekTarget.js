@@ -10,7 +10,7 @@ module.exports = function() {
 	var index = 0
 	//每日更新
 	this.weekTaskDayUpdate = function() {
-		index = Math.ceil(self.areaDay / 7)
+		index = Math.ceil(self.areaDay / 3)
 		if(!area_party_cfg[index])
 			index = -1
 	}
