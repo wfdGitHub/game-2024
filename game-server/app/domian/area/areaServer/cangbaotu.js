@@ -20,6 +20,7 @@ var model = function() {
 			info.list1 = local.createSlot(id)
 			info.index1 = Math.floor(Math.random() * info.list1.length)
 			award = info.list1[info.index1]
+			info.award_slots = [info.index1]
 			if(award == "up"){
 				//升级
 				info.list2 = local.createSlot(id+"_up")
@@ -30,8 +31,10 @@ var model = function() {
 					case "take_2":
 						//随机两个
 						var tmps = util.getRandomArray(info.list2,5)
+						info.award_slots = []
 						for(var i = 0;i < tmps.length && awards.length < 2;i++){
 							if(tmps[i] != "take_2" && tmps[i] != "take_half" && tmps[i] != "take_all"){
+								info.award_slots.push(i)
 								awards.push(tmps[i])
 							}
 						}
@@ -42,15 +45,19 @@ var model = function() {
 							var tmps = [1,2,3,9,10,11]
 						else
 							var tmps = [3,4,5,7,8,9]
+						info.award_slots = tmps
 						for(var i = 0;i < tmps.length;i++)
 							if(info.list2[tmps[i]] != "take_2" && info.list2[tmps[i]] != "take_half" && info.list2[tmps[i]] != "take_all")
 								awards.push(info.list2[tmps[i]])
 					break
 					case "take_all":
 						//拿走全部
+						info.award_slots = []
 						for(var i = 0;i < info.list2.length;i++)
-							if(info.list2[i] != "take_2" && info.list2[i] != "take_half" && info.list2[i] != "take_all")
+							if(info.list2[i] != "take_2" && info.list2[i] != "take_half" && info.list2[i] != "take_all"){
+								info.award_slots.push(i)
 								awards.push(info.list2[i])
+							}
 					break
 					default:
 						awards = [award]

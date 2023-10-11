@@ -471,7 +471,6 @@ module.exports = function() {
 					cb(false,"已领取")
 				}
 			})
-
 		})
 	}
 	//领取战力奖励
