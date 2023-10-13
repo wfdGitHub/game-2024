@@ -61,7 +61,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 				console.error(err)
 			if(flag){
 				//订单发货
-				finish_callback(data.areaId,data.uid,data.amount,data.pay_id,info)
+				finish_callback(data.areaId,data.uid,data.amount,data.pay_id)
 			}
 		})
 	});
@@ -94,7 +94,7 @@ model.prototype.jianwan_order = function(data,finish_callback,req,res) {
 				console.error(err)
 			if(flag){
 				//订单发货
-				finish_callback(data.areaId,data.uid,data.amount,data.pay_id,info)
+				finish_callback(data.areaId,data.uid,data.amount,data.pay_id)
 			}
 	})
 }
@@ -134,14 +134,14 @@ model.prototype.game277_order = function(data,finish_callback,req,res) {
 				console.error(err)
 			if(flag){
 				//订单发货
-				finish_callback(data.areaId,data.uid,data.amount,data.pay_id,info)
+				finish_callback(data.areaId,data.uid,data.amount,data.pay_id)
 			}
 	})
 }
 //小七手游订单
 model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	var publicKey = ""
-	if(data.extends_info_data && data.extends_info_data.os == 2){
+	if(data.extends_info_data == 1){
 		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["iosRSA"]["value"]+"\n-----END PUBLIC KEY-----"
 	}else{
 		publicKey = "-----BEGIN PUBLIC KEY-----\n"+this.sdkConfig["RSA"]["value"]+"\n-----END PUBLIC KEY-----"
@@ -177,7 +177,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 				console.error(err)
 			if(flag){
 				//订单发货
-				finish_callback(data.areaId,data.uid,data.amount,data.pay_id,info)
+				finish_callback(data.areaId,data.uid,data.amount,data.pay_id)
 			}
 	})
 }

@@ -5,10 +5,10 @@ var areaRemote = function(app) {
 	this.areaManager = this.app.get("areaManager")
 }
 //充值回调
-areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,data,cb) {
+areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,cb) {
 	var self = this
 	if(self.areaManager.areaMap[areaId]){
-		self.areaManager.areaMap[areaId].finish_recharge(uid,pay_id,data,function(flag,err) {
+		self.areaManager.areaMap[areaId].finish_recharge(uid,pay_id,function(flag,err) {
 			if(!flag){
 				console.error("finish_recharge "+err)
 				var info = {
@@ -16,7 +16,6 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,data,cb) {
 					areaId : areaId,
 					uid : uid,
 					pay_id : pay_id,
-					data : data,
 					time : (new Date()).toDateString()
 				}
 				self.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))

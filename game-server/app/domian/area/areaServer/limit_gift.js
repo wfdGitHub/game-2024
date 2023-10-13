@@ -10,6 +10,12 @@ for(var i in gift_list){
 		case "lv":
 			gift_lv[gift_list[i]["arg"]] = Object.assign({id:i},gift_list[i]) 
 		break
+		case "star":
+			gift_star[gift_list[i]["arg"]] = Object.assign({id:i},gift_list[i]) 
+		break
+		case "hero":
+			gift_hero[gift_list[i]["arg"]] = Object.assign({id:i},gift_list[i]) 
+		break
 		case "sudden":
 			if(!suddens[gift_list[i]["arg"]])
 				suddens[gift_list[i]["arg"]] = []
@@ -101,7 +107,6 @@ module.exports = function() {
 			id : id,
 			limitTime : limitTime
 		}
-		self.delObj(uid,"recharge_fast",id)
 		self.sendToUser(uid,notify)
 	}
 }
