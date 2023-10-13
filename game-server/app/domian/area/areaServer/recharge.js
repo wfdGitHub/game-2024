@@ -142,13 +142,15 @@ module.exports = function() {
 		})
 	}
 	//充值成功
-	this.finish_recharge = function(uid,pay_id,cb) {
+	this.finish_recharge = function(uid,pay_id,info,cb) {
+		var rate = info.extras_params.rate || 1
 		var call_back = function(uid,flag,data) {
 			if(flag){
-				self.addUserRMB(uid,pay_cfg[pay_id].cent)
+				self.addUserRMB(uid,pay_cfg[pay_id].cent * rate)
 				var notify = {
 					type : "finish_recharge",
 					pay_id : pay_id,
+					rate : rate,
 					data : data
 				}
 				self.sendToUser(uid,notify)
@@ -170,12 +172,6 @@ module.exports = function() {
 			case "warHorn":
 				this.advanceWarHorn(uid,pay_id,call_back.bind(this,uid))
 			break
-			case "recharge":
-				this.recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "limit_gift":
-				this.buyLimitGift(uid,pay_id,call_back.bind(this,uid))
-			break
 			case "quick_pri":
 				this.buyQuickPri(uid,pay_id,call_back.bind(this,uid))
 			break
@@ -194,14 +190,14 @@ module.exports = function() {
 			case "manor_pri":
 				this.buyManorPri(uid,call_back.bind(this,uid))
 			break
-			case "wuxian":
-				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+			case "recharge":
+				this.recharge(uid,rate,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
-			case "gmLv":
-				this.buyGMLv(uid,pay_id,call_back.bind(this,uid))
+			case "limit_gift":
+				this.buyLimitGift(uid,rate,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "fast":
-				this.buyFastRecharge(uid,pay_id,call_back.bind(this,uid))
+				this.buyFastRecharge(uid,rate,pay_id,call_back.bind(this,uid))
 			break
 			case "area_gift":
 				this.buyAreaGift(uid,pay_id,call_back.bind(this,uid))
@@ -246,22 +242,22 @@ module.exports = function() {
 			cb(true)
 	}
 	//充值
-	this.recharge = function(uid,index,cb) {
+	this.recharge = function(uid,rate,index,cb) {
 		self.incrbyObj(uid,main_name,"recharge_"+index,1,function(data) {
 			var gold = recharge[index].gold
-			var rate = 0
+			var count = 0
 			if(data == 1)
-				rate = recharge[index].first_rate
+				count = recharge[index].first_rate
 			else
-				rate = recharge[index].normal_rate
-			var award = "202:"+Math.round(gold*rate)
+				count = recharge[index].normal_rate
+			var award = "202:"+Math.round(gold*count*rate)
 			self.sendTextToMail(uid,"recharge",award)
 			cb(true)
 		})
 	}
 	//快速充值
 	this.buyFastRecharge = function(uid,pay_id,cb) {
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
+		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",self.itemstrChangeRate(pay_cfg[pay_id]["award"],rate))
 		cb(true)
 	}
 	//新服限购
@@ -414,60 +410,6 @@ module.exports = function() {
 			}
 		})
 	}
-	//购买每日礼包
-	this.buyAwardBagday = function(uid,index,cb) {
-		// if(!index || !awardBag_day[index]){
-		// 	cb(false,"礼包不存在")
-		// 	return
-		// }
-		// self.getObj(uid,main_name,"bagDay_"+index,function(data) {
-		// 	if(data > 0){
-		// 		cb(false,"已购买")
-		// 		return
-		// 	}
-		// 	self.incrbyObj(uid,main_name,"bagDay_"+index,1)
-		// 	self.sendTextToMail(uid,"recharge",awardBag_day[index].award)
-		// 	cb(true)
-		// })
-	}
-	//获取每周礼包与每月礼包购买数据
-	this.getWeekAndMonthRecord = function(uid,cb) {
-		cb(true)
-	}
-	//购买每周礼包
-	this.buyAwardBagWeek = function(uid,index,cb) {
-		// if(!index || !gift_week[index]){
-		// 	cb(false,"礼包不存在")
-		// 	return
-		// }
-		// self.getObj(uid,"week_shop",index,function(data) {
-		// 	data = Number(data) || 0
-		// 	if(data >= gift_week[index]["limit"]){
-		// 		cb(false,"已限购")
-		// 		return
-		// 	}
-		// 	self.incrbyObj(uid,"week_shop",index,1)
-		// 	self.sendTextToMail(uid,"recharge",gift_week[index].award)
-		// 	cb(true)
-		// })
-	}
-	//购买每月礼包
-	this.buyAwardBagMonth = function(uid,index,cb) {
-		// if(!index || !gift_month[index]){
-		// 	cb(false,"礼包不存在")
-		// 	return
-		// }
-		// self.getObj(uid,"month_shop",index,function(data) {
-		// 	data = Number(data) || 0
-		// 	if(data >= gift_month[index]["limit"]){
-		// 		cb(false,"已限购")
-		// 		return
-		// 	}
-		// 	self.incrbyObj(uid,"month_shop",index,1)
-		// 	self.sendTextToMail(uid,"recharge",gift_month[index].award)
-		// 	cb(true)
-		// })
-	}
 	//进阶战令
 	this.advanceWarHorn = function(uid,pay_id,cb) {
 		let curMonth = (new Date()).getMonth()
@@ -485,15 +427,15 @@ module.exports = function() {
 		})
 	}
 	//购买限时礼包
-	this.buyLimitGift = function(uid,pay_id,cb) {
+	this.buyLimitGift = function(uid,rate,id,cb) {
 		if(!gift_list[pay_id] || !pay_cfg[pay_id]){
 			cb(false,"限时礼包错误")
 			return
 		}
 		self.getObj(uid,"limit_gift",pay_id,function(data) {
 			if(data){
-				self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
-				self.delObj(uid,"limit_gift",pay_id)
+				self.sendTextToMail(uid,"recharge",self.itemstrChangeRate(gift_list[id]["award"],rate))
+				self.delObj(uid,"limit_gift",id)
 				cb(true)
 			}else{
 				cb(false,"限时礼包不存在或已过期")
