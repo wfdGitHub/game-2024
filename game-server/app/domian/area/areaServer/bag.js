@@ -730,4 +730,18 @@ module.exports = function() {
 		}
 		return str
 	}
+	//奖励倍数改变
+	this.itemstrChangeRate = function(str,rate) {
+		if(!rate || parseFloat(rate) != rate || typeof(rate) != "number" || rate == 1)
+			return str
+		var list = str.split("&")
+		var newStr = ""
+		list.forEach(function(m_str) {
+			var itemId = m_list[0]
+			var value = Math.floor(m_list[1] * rate)
+			newStr += itemId+":"+value+"&"
+		})
+		newStr = newStr.substring(0,newStr.length-1)
+		return newStr
+	}
 }
