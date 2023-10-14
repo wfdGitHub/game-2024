@@ -54,7 +54,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 			pay_time : message["pay_time"]? message["pay_time"][0] : 0,
 			amount : message["amount"]? message["amount"][0] : 0,
 			status : message["status"]? message["status"][0] : 0,
-			extras_params : message["extras_params"]? message["extras_params"][0] : 0,
+			extras_params : message["extras_params"]? message["extras_params"][0] : {},
 		}
 		self.payDao.finishGameOrder(info,function(flag,err,data) {
 			if(err)
@@ -87,7 +87,7 @@ model.prototype.jianwan_order = function(data,finish_callback,req,res) {
 		pay_time : data.nt_data_json["pay_time"] || 0,
 		amount : data.nt_data_json["amount"] || 0,
 		status : data.nt_data_json["status"] || 0,
-		extras_params : data.nt_data_json["extras_params"] || 0
+		extras_params : data.nt_data_json["extras_params"] || {}
 	}
 	self.payDao.finishGameOrderJianwan(info,function(flag,err,data) {
 			if(err)
@@ -170,7 +170,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 		pay_time : Date.now(),
 		amount : encryp_data.pay_price || 0,
 		status : 0,
-		extras_params : 0
+		extras_params : data.extends_info_data || {}
 	}
 	self.payDao.finishGameOrder(info,function(flag,err,data) {
 			if(err)
