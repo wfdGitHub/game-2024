@@ -3,35 +3,11 @@ var aceLottoHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
-//获取元神抽奖数据
-aceLottoHandler.prototype.getaceLottoData = function(msg, session, next) {
+//宝物合成
+aceLottoHandler.prototype.compoundAce = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].getaceLottoData(uid,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//免费元神抽奖
-aceLottoHandler.prototype.aceLottoFree = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].aceLottoFree(uid,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//单次元神抽奖
-aceLottoHandler.prototype.aceLottoOnce = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].aceLottoOnce(uid,function(flag,data) {
-    next(null,{flag:flag,data:data})
-  })
-}
-//十连元神抽奖
-aceLottoHandler.prototype.aceLottoMultiple = function(msg, session, next) {
-  var uid = session.uid
-  var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].aceLottoMultiple(uid,function(flag,data) {
+  this.areaManager.areaMap[areaId].compoundAce(uid,msg.aId1,msg.aId2,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }

@@ -98,6 +98,12 @@
         console.log("onChat")
         console.log(data)
       })
+      //==================宝物合成===================//
+      var compoundAce = function(aId1,aId2) {
+        pomelo.request("area.aceLottoHandler.compoundAce", {aId1:aId1,aId2:aId2}, function(data) {
+            console.log(data);
+        })
+      }
       //使用藏宝图
       var useCangbaotu = function(id) {
         pomelo.request("area.normalHandler.useCangbaotu", {id:id}, function(data) {
