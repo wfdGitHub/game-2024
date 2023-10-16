@@ -22,6 +22,7 @@ for(var i in fabao_spe){
 		speList2.push(i)
 }
 const main_name = "fabao"
+console.log("fabao_qa",fabao_qa)
 var model = function(fightContorl) {
 	var local = {}
 	//生成法宝
@@ -143,6 +144,7 @@ var model = function(fightContorl) {
 		info.lv = fInfo.lv
 		info.qa = fInfo.qa
 		var qaData = fabao_qa[fInfo.qa]
+		console.log(fInfo.qa,fabao_qa,qaData)
 		info.mainAtt = {}
 		info.mainAtt["atk"] = Math.floor(fInfo["M1"] * qaData["atk"])
 		info.mainAtt["maxHP"] = Math.floor(fInfo["M2"] * qaData["maxHP"])
