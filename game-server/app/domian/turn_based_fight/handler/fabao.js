@@ -144,8 +144,8 @@ var model = function(fightContorl) {
 		var info = {}
 		info.lv = fInfo.lv
 		info.qa = fInfo.qa
-		var qaData = fabao_qa[fInfo.qa]
-		console.log(fInfo.qa,qaData)
+		var qaData = fabao_qa[info.qa]
+		console.log(info.qa,qaData)
 		info.mainAtt = {}
 		info.mainAtt["atk"] = Math.floor(fInfo["M1"] * qaData["atk"])
 		info.mainAtt["maxHP"] = Math.floor(fInfo["M2"] * qaData["maxHP"])
