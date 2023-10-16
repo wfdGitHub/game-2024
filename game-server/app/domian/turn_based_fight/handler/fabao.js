@@ -140,12 +140,12 @@ var model = function(fightContorl) {
 		if(!fstr)
 			return 0
 		var fInfo = JSON.parse(fstr)
-		console.log(fInfo)
+		console.log(fInfo,fInfo.qa)
 		var info = {}
 		info.lv = fInfo.lv
 		info.qa = fInfo.qa
 		var qaData = fabao_qa[fInfo.qa]
-		console.log(fInfo.qa,fabao_qa,qaData)
+		console.log(fInfo.qa,qaData)
 		info.mainAtt = {}
 		info.mainAtt["atk"] = Math.floor(fInfo["M1"] * qaData["atk"])
 		info.mainAtt["maxHP"] = Math.floor(fInfo["M2"] * qaData["maxHP"])
