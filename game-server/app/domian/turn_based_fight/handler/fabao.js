@@ -22,7 +22,6 @@ for(var i in fabao_spe){
 		speList2.push(i)
 }
 const main_name = "fabao"
-console.log("fabao_qa",fabao_qa)
 var model = function(fightContorl) {
 	var local = {}
 	//生成法宝
@@ -136,18 +135,13 @@ var model = function(fightContorl) {
 	}
 	//获取法宝战力
 	this.getFabaoCE = function(fstr) {
-		console.log(fstr)
 		if(!fstr)
 			return 0
 		var fInfo = JSON.parse(fstr)
-		console.log(fInfo,fInfo.qa)
-		for(var i in fInfo)
-			console.log(i,fInfo[i])
 		var info = {}
 		info.lv = fInfo.lv
 		info.qa = fInfo.qa
 		var qaData = fabao_qa[info.qa]
-		console.log(info.qa,qaData)
 		info.mainAtt = {}
 		info.mainAtt["atk"] = Math.floor(fInfo["M1"] * qaData["atk"])
 		info.mainAtt["maxHP"] = Math.floor(fInfo["M2"] * qaData["maxHP"])

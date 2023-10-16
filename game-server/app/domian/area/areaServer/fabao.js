@@ -453,7 +453,6 @@ var model = function() {
 			}
 			var fInfo = JSON.parse(fstr)
 			fInfo.slots = slots
-			fInfo = JSON.stringify(fInfo)
 			heroInfo["fabao"+index] = JSON.stringify(fInfo)
 			self.heroDao.setHeroInfo(self.areaId,uid,hId,"fabao"+index,heroInfo["fabao"+index],function() {
 				cb(true,{heroInfo:heroInfo})
