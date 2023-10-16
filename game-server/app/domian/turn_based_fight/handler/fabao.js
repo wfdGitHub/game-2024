@@ -135,6 +135,7 @@ var model = function(fightContorl) {
 	}
 	//获取法宝战力
 	this.getFabaoCE = function(fstr) {
+		console.log(fstr)
 		if(!fstr)
 			return 0
 		var fInfo = JSON.parse(fstr)
