@@ -140,6 +140,7 @@ var model = function(fightContorl) {
 		if(!fstr)
 			return 0
 		var fInfo = JSON.parse(fstr)
+		console.log(fInfo)
 		var info = {}
 		info.lv = fInfo.lv
 		info.qa = fInfo.qa
