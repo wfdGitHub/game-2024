@@ -12,6 +12,22 @@ fabaoHandler.prototype.getFabaoData = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//法宝加点
+fabaoHandler.prototype.slotPointFabao = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].slotPointFabao(uid,msg.fId,msg.slots,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
+//法宝加点-穿戴
+fabaoHandler.prototype.slotPointFabaoByHero = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].slotPointFabaoByHero(uid,msg.hId,msg.index,msg.slots,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //法宝穿戴
 fabaoHandler.prototype.wearFabao = function(msg, session, next) {
   var uid = session.uid

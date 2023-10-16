@@ -267,6 +267,24 @@ var model = function() {
 			})
 		})
 	}
+	//法宝加点
+	this.slotPointFabao = function(uid,fId,slots,cb) {
+		self.getObj(uid,main_name,fId,function(fstr) {
+			if(!fstr){
+				cb(false,"法宝不存在")
+				return
+			}
+			if(!self.fightContorl.slotPointFabao(fstr,slots)){
+				cb(false,"加点错误")
+				return
+			}
+			var fInfo = JSON.parse(fstr)
+			fInfo.slots = slots
+			fInfo = JSON.stringify(fInfo)
+			self.setObj(uid,main_name,fId,fInfo)
+			cb(true,fInfo)
+		})
+	}
 	//法宝洗练-穿戴
 	this.washFabaoByHero = function(uid,hId,index,fId2,cb) {
 		var fstr1,fstr2,fInfo1,fInfo2,heroInfo
@@ -413,6 +431,32 @@ var model = function() {
 			self.heroDao.setHeroInfo(self.areaId,uid,hId,"fabao"+index,heroInfo["fabao"+index],function() {
 				var awardList = self.addItemStr(uid,pr,1,"法宝重生")
 				cb(true,{heroInfo:heroInfo,awardList:awardList})
+			})
+		})
+	}
+	//法宝加点-穿戴
+	this.slotPointFabaoByHero = function(uid,hId,index,slots,cb) {
+		self.heroDao.getHeroOne(uid,hId,function(flag,data) {
+			if(!data){
+				cb(false,"英雄不存在")
+				return
+			}
+			var heroInfo = data
+			var fstr = heroInfo["fabao"+index]
+			if(!fstr){
+				cb(false,"法宝不存在")
+				return
+			}
+			if(!self.fightContorl.slotPointFabao(fstr,slots)){
+				cb(false,"加点错误")
+				return
+			}
+			var fInfo = JSON.parse(fstr)
+			fInfo.slots = slots
+			fInfo = JSON.stringify(fInfo)
+			heroInfo["fabao"+index] = JSON.stringify(fInfo)
+			self.heroDao.setHeroInfo(self.areaId,uid,hId,"fabao"+index,heroInfo["fabao"+index],function() {
+				cb(true,{heroInfo:heroInfo})
 			})
 		})
 	}
