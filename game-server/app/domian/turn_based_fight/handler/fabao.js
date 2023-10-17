@@ -45,6 +45,7 @@ var model = function(fightContorl) {
 		if(highCount)
 			fInfo.spe = fightContorl.getRandomArray(speList2,highCount)
 		fInfo.spe = fInfo.spe.concat(fightContorl.getRandomArray(speList1,speCount - highCount))
+		fInfo.slots = {"1" : 1}
 		return fInfo
 	}
 	//获取法宝属性
