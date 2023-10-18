@@ -60,7 +60,7 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 		}else{
 			if(data.status == 0){
 				self.faildOrder("订单已完成",otps,data)
-				cb(false,null,data)
+				cb(true)
 			}else if(Number(otps.amount) < data.amount){
 				self.faildOrder("充值金额错误",otps,data)
 				cb(false,"充值金额错误",data)

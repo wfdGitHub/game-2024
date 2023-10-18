@@ -143,7 +143,9 @@ module.exports = function() {
 	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,info,cb) {
-		var rate = info.extras_params.rate || 1
+		var rate = 1
+		if(info.extras_params && info.extras_params.rate)
+			rate = info.extras_params.rate
 		var call_back = function(uid,flag,data) {
 			if(flag){
 				self.addUserRMB(uid,pay_cfg[pay_id].cent * rate)
