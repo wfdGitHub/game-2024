@@ -38,6 +38,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 		console.error("签名验证失败")
 		return
 	}
+	res.send("SUCCESS")
 	var self = this
 	var xmlStr = local.decode(data.nt_data,this.sdkConfig["Callback_Key"]["value"])
 	parseString(xmlStr,function(err,result) {
