@@ -150,7 +150,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	var source_str = local.ksort(data)
 	if(!local.verifySignSHA1(source_str,raw_sign_data,publicKey)){
 		res.send("签名验证失败")
-		console.error("签名验证失败")
+		console.error("签名验证失败",data)
 		return
 	}
 	res.send("success")
@@ -169,7 +169,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 		pay_time : Date.now(),
 		amount : encryp_data.pay_price || 0,
 		status : 0,
-		extras_params : 0
+		extras_params : data.extends_info_data
 	}
 	self.payDao.finishGameOrder(info,function(flag,err,data) {
 			if(err)
