@@ -835,10 +835,9 @@ model.prototype.beginAction = function() {
 		}
 	}
 	if(this.first_realm_buff){
-		for(var j = 0;j < this.team.length;j++){
-			if(this.realm == this.team[j].realm)
+		for(var j = 0;j < this.team.length;j++)
+			if(!this.team[j].died)
 				buffManager.createBuff(this,this.team[j],this.first_realm_buff)
-		}
 	}
 	if(this.begin_realm_crit){
 		fightRecord.push({type:"show_tag",id:this.id,tag:"begin_realm_crit"})
@@ -1570,9 +1569,8 @@ model.prototype.resurgence = function(rate,releaser) {
         this.fighting.teamDiedList[this.belong].splice(index, 1);
 	this.teamInfo["realms_survival"][this["realm"]]++
 	fightRecord.push({type : "resurgence",curValue : this.attInfo.hp,maxHP : this.attInfo.maxHP,id : this.id,curAnger : 0})
-	if(releaser.rescue_anger){
+	if(releaser && releaser.rescue_anger)
 		this.addAnger(releaser.rescue_anger)
-	}
 	if(this.buffs["birth_fire"]){
 		this.buffs["birth_fire"].destroy()
 	}

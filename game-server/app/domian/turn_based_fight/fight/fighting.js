@@ -90,8 +90,10 @@ model.prototype.load = function(belong,otps) {
 //加载初始阵容
 model.prototype.loadBeginHero = function(belong) {
 	var comeonNum = this[belong+"TeamCfg"]["comeonNum"] || 3
+	var heros = []
 	for(var i = 0;i < comeonNum;i++)
-		this.loadHero(belong,indexMap[i])
+		heros.push(this.loadHero(belong,indexMap[i]))
+	return heros
 }
 //载入英雄
 model.prototype.loadHero = function(belong,index) {
@@ -105,10 +107,9 @@ model.prototype.loadHero = function(belong,index) {
 			hero.belong = belong
 			hero.comeon = true
 			hero.heroComeon()
-			hero.begin()
 			this.allHero.push(hero)
 			this[belong+"Team"][index] = hero
-			break
+			return hero
 		}
 	}
 }
@@ -125,8 +126,14 @@ model.prototype.fightBegin = function() {
 	for(var i = 0;i < this.allHero.length;i++)
 		info.comeonHero.push({id:this.allHero[i].id,index:this.allHero[i].index})
 	fightRecord.push(info)
-	this.loadBeginHero("atk")
-	this.loadBeginHero("def")
+	var atkheros = this.loadBeginHero("atk")
+	var defheros = this.loadBeginHero("def")
+	for(var i = 0;i < atkheros.length;i++)
+		if(atkheros[i])
+			atkheros[i].begin()
+	for(var i = 0;i < defheros.length;i++)
+		if(defheros[i])
+			defheros[i].begin()
 	this.trampoline(this.nextRound.bind(this))
 }
 //开始新轮次
@@ -147,8 +154,11 @@ model.prototype.nextRound = function() {
 			i--
 		}
 	}
-	for(var i = 0;i < comeonList.length;i++)
-		this.loadHero(comeonList[i].belong,comeonList[i].index)
+	for(var i = 0;i < comeonList.length;i++){
+		var hero = this.loadHero(comeonList[i].belong,comeonList[i].index)
+		if(hero)
+			hero.begin()
+	}
 	// console.log("第 "+this.round+" 轮开始")
 	for(var i = 0;i < this.allHero.length;i++){
 		this.allHero[i].isAction = false
@@ -211,7 +221,6 @@ model.prototype.run = function() {
 		return this.before.bind(this)
 	}else{
 		return this.endRound.bind(this)
-		return
 	}
 }
 //回合前结算
