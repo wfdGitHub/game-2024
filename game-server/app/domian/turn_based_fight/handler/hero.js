@@ -476,18 +476,18 @@ var model = function(fightContorl) {
 	}
 	//新增天赋
 	this.mergeTalent = function(info,talentId,value) {
-		if(talent_list[talentId]){
-			let tmpTalent = {}
-			for(var i = 1;i <= 2;i++){
-				if(talent_list[talentId]["key"+i]){
-					tmpTalent[talent_list[talentId]["key"+i]] = talent_list[talentId]["value"+i]
-					if(tmpTalent[talent_list[talentId]["key"+i]] == "dynamic")
-						tmpTalent[talent_list[talentId]["key"+i]] = value || 0
-				}
-			}
-			this.mergeData(info,tmpTalent)
-		}else{
+		if(!talent_list[talentId]){
 			console.error("talentId error",talentId)
+			return
+		}
+		for(var i = 1;i <= 2;i++){
+			if(talent_list[talentId]["key"+i]){
+				var tmpTalent = {}
+				tmpTalent[talent_list[talentId]["key"+i]] = talent_list[talentId]["value"+i]
+				if(tmpTalent[talent_list[talentId]["key"+i]] == "dynamic")
+					tmpTalent[talent_list[talentId]["key"+i]] = value || 0
+				this.mergeData(info,tmpTalent)
+			}
 		}
 	}
 	//数据合并
