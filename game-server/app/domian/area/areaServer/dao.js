@@ -138,6 +138,14 @@ module.exports = function() {
 			}
 		})
 	}
+	//倒序获取有序列表不带分数
+	this.zrevrange = function(zname,begin,end,cb) {
+		this.redisDao.db.zrevrange("area:area"+this.areaId+":zset:"+zname,begin,end,function(err,data) {
+			if(cb){
+				cb(data)
+			}
+		})
+	}
 	//获取有序列表带分数
 	this.zrangewithscore = function(zname,begin,end,cb) {
 		this.redisDao.db.zrange("area:area"+this.areaId+":zset:"+zname,begin,end,"WITHSCORES",function(err,data) {

@@ -410,15 +410,19 @@ module.exports = function() {
 	this.clearWeekTarget = function(uid) {
 		for(var taskId in userTaskLists[uid]){
 			if(week_target_task[taskId]){
-				if(userTaskMaps[uid]){
-					let type = task_cfg[taskId].type
-					if(userTaskMaps[uid][type])
-						util.arrayRemove(userTaskMaps[uid][type],taskId)
-				}
-				self.delObj(uid,main_name,taskId)
-				delete userTaskLists[uid][taskId]
+				this.removeTask(uid,taskId)
 			}
 		}
+	}
+	//移除任务
+	this.removeTask = function(uid,taskId) {
+		if(userTaskMaps[uid]){
+			var type = task_cfg[taskId].type
+			if(userTaskMaps[uid][type])
+				util.arrayRemove(userTaskMaps[uid][type],taskId)
+		}
+		self.delObj(uid,main_name,taskId)
+		delete userTaskLists[uid][taskId]
 	}
 	//查询任务是否存在
 	this.checkTaskExist = function(uid,taskId) {

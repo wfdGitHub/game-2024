@@ -98,6 +98,49 @@
         console.log("onChat")
         console.log(data)
       })
+      //通用接口  {"method" : "getMedalData"}
+      var commonMethod = function(msg) {
+        pomelo.request("area.areaHandler.commonMethod",msg,function(data) {
+            console.log(data);
+        })
+      }
+      //=================徽章活动===============//
+      //获取数据
+      var getMedalData = function() {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"getMedalData"},function(data) {
+            console.log(data);
+        })
+      }
+      //开启盲盒
+      var openMedalBox = function(count) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"openMedalBox","count":count},function(data) {
+            console.log(data);
+        })
+      }
+      //出售徽章
+      var sellMedal = function(slot) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"sellMedal","slot":slot},function(data) {
+            console.log(data);
+        })
+      }
+      //合成徽章
+      var composeMedal = function(slot1,slot2) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"composeMedal","slot1":slot1,"slot2":slot2},function(data) {
+            console.log(data);
+        })
+      }
+      //领取收集奖励
+      var gainMedalGatherAward = function(tId) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"gainMedalGatherAward","tId":tId},function(data) {
+            console.log(data);
+        })
+      }
+      //获取排名
+      var getMedalRank = function() {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"getMedalRank"},function(data) {
+            console.log(data);
+        })
+      }
       //==================宝物合成===================//
       var compoundAce = function(aId1,aId2) {
         pomelo.request("area.aceLottoHandler.compoundAce", {aId1:aId1,aId2:aId2}, function(data) {
