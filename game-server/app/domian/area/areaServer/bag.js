@@ -32,88 +32,128 @@ module.exports = function() {
 		}
 		var itemId = Number(otps.itemId)
 		var value = Number(otps.value)
+		async.waterfall([
+			function(next) {
+				switch(itemCfg[itemId].useType){
+					case "hero":
+						self.heroDao.getHeroAmount(uid,function(flag,info) {
+						  	if(info.cur + value >= info.max){
+						  		next("英雄背包已满")
+						    	return
+						  	}
+						  	next()
+						})
+					break
+					case "equip":
+					case "fabao":
+					case "chest":
+					case "box":
+					case "dp_limit":
+						next()
+					break
+					case "optional":
+						//自选包
+						var list = itemCfg[otps.itemId].list
+						var index = otps.index
+						if(!Number.isInteger(index) || !list[index]){
+							next("index error "+index)
+							return
+						}
+						next()
+					break
+					case "hook_lord":
+					case "hook_hero":
+					case "hook_coin":
+						//挂机资源卡
+						var level = self.getCheckpointsInfo(uid)
+						if(!checkpointsCfg[level] || !checkpointsCfg[level][itemCfg[itemId].useType]){
+							next("level config error "+level)
+							return
+						}
+						next()
+					break
+					default:
+						next("类型错误"+itemCfg[itemId].useType)
+				}
+			},
+			function(next) {
+				self.consumeItems(uid,itemId+":"+value,1,"使用道具",function(flag,err) {
+					if(!flag){
+						next(err)
+						return
+					}
+					next()
+				})
+			},
+			function(next) {
+				//获得道具
+				self.useItemCB(uid,itemId,value,function(flag,data) {
+					cb(flag,data)
+				})
+			},
+		],function(err) {
+			cb(false,err)
+		})
+
+	}
+	//道具使用后获得物品
+	this.useItemCB = function(uid,itemId,value,cb) {
 		switch(itemCfg[itemId].useType){
 			case "hero":
 				var heroId = itemCfg[itemId].value
 				var qa  = itemCfg[itemId].arg
-				self.heroDao.getHeroAmount(uid,function(flag,info) {
-				  	if(info.cur + value >= info.max){
-				  		cb(false,"英雄背包已满")
-				    	return
-				  	}
-					self.consumeItems(uid,itemId+":"+value,1,"获得英雄",function(flag,err) {
-						if(!flag){
-							cb(false,err)
-						}else{
-							var list = []
-							for(var i = 0;i < value;i++)
-								list.push({type : "hero",data:self.gainOneHero(uid,heroId,qa)})
-							cb(true,list)
-						}
-					})
-				})
+				var list = []
+				for(var i = 0;i < value;i++)
+					list.push({type : "hero",data:self.gainOneHero(uid,heroId,qa)})
+				if(cb)
+					cb(true,list)
+				return list
 			break
 			case "equip":
 				var eLv = itemCfg[itemId].value
 				var slot = itemCfg[itemId].slot
 				var qa  = itemCfg[itemId].arg
-				self.consumeItems(uid,itemId+":"+value,1,"获得装备",function(flag,err) {
-					if(!flag){
-						cb(false,err)
-					}else{
-						var list = []
-						for(var i = 0;i < value;i++)
-							list.push({type : "equip",data : self.makeEquipByQa(uid,eLv,slot,qa)})
-						cb(true,list)
-					}
-				})
+				var list = []
+				for(var i = 0;i < value;i++)
+					list.push({type : "equip",data : self.makeEquipByQa(uid,eLv,slot,qa)})
+				if(cb)
+					cb(true,list)
+				return list
 			break
 			case "fabao":
 				var type = itemCfg[itemId].value
 				var qa  = itemCfg[itemId].arg
-				self.consumeItems(uid,itemId+":"+value,1,"获得法宝",function(flag,err) {
-					if(!flag){
-						cb(false,err)
-					}else{
-						var list = []
-						for(var i = 0;i < value;i++)
-							list.push({type : "fabao",data : self.makeFabaoByQa(uid,qa,type)})
-						cb(true,list)
-					}
-				})
+				var list = []
+				for(var i = 0;i < value;i++)
+					list.push({type : "fabao",data : self.makeFabaoByQa(uid,qa,type)})
+				if(cb)
+					cb(true,list)
+				return list
 			break
 			case "chest":
 				//宝箱
-				self.consumeItems(uid,itemId+":"+value,1,"开启宝箱"+itemId+"*"+value,function(flag,err) {
-					if(!flag){
-						cb(false,err)
-						return
-					}
-					var list = itemCfg[itemId]["list"]
-					var map = {}
-					for(var i = 0;i < value;i++){
-						var id = list[Math.floor(list.length * Math.random())]
-						if(!map[id])
-							map[id] = 0
-						map[id]++
-					}
-					var awardList = []
-					for(var i in map)
-						awardList = awardList.concat(self.addItemStr(uid,i,map[i],"开启宝箱"+itemId))
-					cb(true,awardList)
-				})
+				var list = itemCfg[itemId]["list"]
+				var map = {}
+				for(var i = 0;i < value;i++){
+					var id = list[Math.floor(list.length * Math.random())]
+					if(!map[id])
+						map[id] = 0
+					map[id]++
+				}
+				var list = []
+				for(var i in map)
+					list = list.concat(self.addItemStr(uid,i,map[i],"开启宝箱"+itemId))
+				if(cb)
+					cb(true,list)
+				return list
 			break
 			case "box":
 				//宝盒
-				self.consumeItems(uid,itemId+":"+value,1,"开启宝盒"+itemId+"*"+value,function(flag,err) {
-					if(!flag){
-						cb(false,err)
-						return
-					}
-                    var str = itemCfg[otps.itemId].arg
-                    var awardList = self.addItemStr(uid,str,value,"开启宝盒"+itemId)
-                    cb(true,awardList)
-				})
+                var str = itemCfg[itemId].arg
+                var list = self.addItemStr(uid,str,value,"开启宝盒"+itemId)
+				if(cb)
+					cb(true,list)
+				return list
 			break
 			case "optional":
 				//自选包
@@ -123,14 +163,10 @@ module.exports = function() {
 					cb(false,"index error "+index)
 					return
 				}
-				self.consumeItems(uid,itemId+":"+value,1,"自选包"+itemId+"*"+value,function(flag,err) {
-					if(!flag){
-						cb(false,err)
-					}else{
-						var awardList = self.addItemStr(uid,list[index],value,"自选包"+itemId)
-						cb(true,awardList)
-					}
-				})
+				var list = self.addItemStr(uid,list[index],value,"自选包"+itemId)
+				if(cb)
+					cb(true,list)
+				return list
 			break
 			case "hook_lord":
 			case "hook_hero":
@@ -141,29 +177,23 @@ module.exports = function() {
 					cb(false,"level config error "+level)
 					return
 				}
-				self.consumeItems(uid,itemId+":"+value,1,"使用"+itemId+"*"+value,function(flag,err) {
-					if(!flag){
-						cb(false,err)
-					}else{
-						var rate = Math.floor(itemCfg[itemId].arg * value)
-						var awardList = self.addItemStr(uid,checkpointsCfg[level][itemCfg[itemId].useType],rate,"挂机卡"+itemId)
-						cb(true,awardList)
-					}
-				})
+				var rate = Math.floor(itemCfg[itemId].arg * value)
+				var list = self.addItemStr(uid,checkpointsCfg[level][itemCfg[itemId].useType],rate,"挂机卡"+itemId)
+				if(cb)
+					cb(true,list)
+				return list
 			break
 			case "dp_limit":
-				self.consumeItems(uid,itemId+":"+value,1,"增加额度"+itemId,function(flag,err) {
-					if(!flag){
-						cb(false,err)
-					}else{
-						self.incrbyLordData(uid,"dp_limit",value,function(data) {
-							cb(true,data)
-						})
-					}
+				self.incrbyLordData(uid,"dp_limit",value,function(data) {
+					if(cb)
+						cb(true,data)
 				})
+				return []
 			break
 			default:
-				cb(false,"类型错误"+itemCfg[itemId].useType)
+				if(cb)
+					cb(false,"类型错误"+itemCfg[itemId].useType)
+				return []
 		}
 	}
 	//获取背包物品数量
@@ -224,20 +254,21 @@ module.exports = function() {
 		var value = otps.value
 		var rate = otps.rate || 1
 		var reason = otps.reason
-		if(itemCfg[itemId]){
-			value = Math.floor(Number(value) * rate) || 0
-			itemId = parseInt(itemId)
-			if(itemId == 202){
-				value = Math.round(value * itemCfg["202"]["arg"])
-				itemId = 200
-			}
-			if(!itemId){
-				console.error("itemId error "+itemId)
-				if(cb){
-					cb(false,"itemId error "+itemId)
-				}
-				return
-			}
+		if(!itemId || !itemCfg[itemId]){
+			console.trace("item not exist : "+JSON.stringify(otps))
+			if(cb)
+				cb(false,"item not exist")
+			return
+		}
+		value = Math.floor(Number(value) * rate) || 0
+		itemId = parseInt(itemId)
+		if(itemId == 202){
+			value = Math.round(value * itemCfg["202"]["arg"])
+			itemId = 200
+		}
+		if(itemCfg[itemId].auto){
+			return self.useItemCB(uid,itemId,value,cb)
+		}else{
 			switch(itemCfg[itemId].type){
 				case "ation":
 					self.addBagItem(uid,itemId,value,function(flag,curValue) {
@@ -311,10 +342,6 @@ module.exports = function() {
 					})
 				return {type : "item",itemId : itemId,value : value}
 			}
-		}else{
-			console.trace("item not exist : "+JSON.stringify(otps))
-			if(cb)
-				cb(false,"item not exist")
 		}
 	}
 	//获得指定道具

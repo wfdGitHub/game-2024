@@ -265,6 +265,7 @@ area.prototype.monthFirstLogin  = function(uid) {
 	this.chageLordData(uid,"monthStr",this.monthStr)
 	this.monthTaskRefresh(uid)
 	this.userRechargeMonthUpdate(uid)
+	this.cleanSignBox(uid)
 }
 //玩家退出
 area.prototype.userLeave = function(uid) {

@@ -37,8 +37,6 @@ module.exports = function() {
 		"signDay" : 1,
 		"signCount" : 0,
 		"boxDay" : 0,
-		"box1" : 0,
-		"box2" : 0,
 		"normalCard" : 0,
 		"normalRmb" : 0,
 		"normalAward" : 0,
@@ -111,11 +109,6 @@ module.exports = function() {
 				if(data["signDay"] > 30)
 					data["signDay"] = 1
 				data["signCount"] = 0
-			}
-			if(data["boxDay"] >= 7 && data["box1"] && data["box2"]){
-				data["boxDay"] = 0
-				data["box1"] = 0
-				data["box2"] = 0
 			}
 			if(data["normalCard"]){
 				data["normalCard"]++
@@ -353,27 +346,9 @@ module.exports = function() {
 			cb(true,awardList)
 		})
 	}
-	//领取签到宝箱
-	this.gainSignInBox = function(uid,index,cb) {
-		if(!sign_in_cfg[index]){
-			cb(false,"宝箱不存在")
-			return
-		}
-		self.getHMObj(uid,main_name,["box"+index,"boxDay"],function(data) {
-			for(let i in data)
-				data[i] = Number(data[i])
-			if(data[0]){
-				cb(false,"已领取")
-				return
-			}
-			if(data[1] < sign_in_cfg[index]["day"]){
-				cb(false,"连续签到时间不足")
-				return
-			}
-			self.incrbyObj(uid,main_name,"box"+index,1)
-			let awardList = self.addItemStr(uid,sign_in_cfg[index]["award"],1,"签到宝箱"+index)
-			cb(true,awardList)
-		})
+	//签到每月刷新
+	this.cleanSignBox = function(uid) {
+		self.setObj(uid,main_name,"boxDay",0)
 	}
 	//在线奖励
 	this.gainOnlineTimeAward = function(uid,cb) {
