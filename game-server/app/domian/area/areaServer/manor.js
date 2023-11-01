@@ -178,14 +178,10 @@ module.exports = function() {
 						outadd += manor_main[mainLv]["outadd"]
 					var time = Number(list[2])
 					var dt = curTime - time
-					console.log("dt",dt)
 					var timeRate = dt / hourTime
-					console.log("timeRate",timeRate)
 					if(timeRate > 16)
 						timeRate = 16
 					value = Math.floor(output * timeRate)
-					console.log("output",output)
-					console.log("value",value)
 					if(dt < 10000 || value < 1){
 						cb(false,"资源正在生产中")
 						return
@@ -319,7 +315,6 @@ module.exports = function() {
 						award = self.makeFabao(uid,qa)
 					break
 				}
-				console.log(award)
 				cb(true,award)
 			},
 		],function(err) {
@@ -353,7 +348,6 @@ module.exports = function() {
 					return
 				}
 				var value = Math.ceil(dt / 60000)
-				console.log(dt,value)
 				self.consumeItems(uid,"800:"+value,1,"打造加速",function(flag,err) {
 					if(!flag)
 						next(err)
