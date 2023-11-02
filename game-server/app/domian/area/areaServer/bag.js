@@ -278,16 +278,19 @@ module.exports = function() {
 						}
 						self.sendItemToUser(uid,itemId,value,curValue)
 					})
+					return {type : "item",itemId : itemId,value : value}
 				break
 				case "lordexp":
 					this.addLordExp(uid,value)
 					if(cb)
 						cb(true)
+					return {type : "item",itemId : itemId,value : value}
 				break
 				case "vipexp":
 					this.addUserRMB(uid,value)
 					if(cb)
 						cb(true)
+					return {type : "item",itemId : itemId,value : value}
 				break
 				case "hufu":
 					//护符
