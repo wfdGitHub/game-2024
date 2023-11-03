@@ -8,21 +8,24 @@ var local = {}
 //初始化获取配置
 model.prototype.init = function(cb) {
 	// console.log("SKD支付模块 初始化SDK配置")
-	delete require.cache[require.resolve('../../../config/sysCfg/sdkConfig.json')]; 
-	this.sdkConfig = require("../../../config/sysCfg/sdkConfig.json")
+	delete require.cache[require.resolve('../../../config/gameCfg/sdkConfig.json')]; 
+	this.sdkConfig = require("../../../config/gameCfg/sdkConfig.json")
+	for(var i in this.sdkConfig)
+		if(Number.isFinite(this.sdkConfig[i]["value"]))
+			this.sdkConfig[i]["value"] = this.sdkConfig[i]["value"].toFixed()
 }
 //收到支付回调
 model.prototype.pay_order = function(data,finish_callback,req,res) {
-	switch(this.sdkConfig.sdk_type){
+	switch(this.sdkConfig.sdk_type["value"]){
 		case "quick":
 			this.quick_order(data,finish_callback,req,res)
 		break
-		case "jianwan":
-			this.jianwan_order(data,finish_callback,req,res)
-		break
-		case "277":
-			this.game277_order(data,finish_callback,req,res)
-		break
+		// case "jianwan":
+		// 	this.jianwan_order(data,finish_callback,req,res)
+		// break
+		// case "277":
+		// 	this.game277_order(data,finish_callback,req,res)
+		// break
 		case "x7sy":
 			this.x7sy_order(data,finish_callback,req,res)
 		break
@@ -37,7 +40,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 	}
 	res.send("SUCCESS")
 	var self = this
-	var xmlStr = local.decode(data.nt_data,this.sdkConfig["Callback_Key"])
+	var xmlStr = local.decode(data.nt_data,this.sdkConfig["Callback_Key"]["value"])
 	parseString(xmlStr,function(err,result) {
 		var message = result.quicksdk_message.message[0]
 		var info = {
@@ -148,7 +151,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	var source_str = local.ksort(data)
 	if(!local.verifySignSHA1(source_str,raw_sign_data,publicKey)){
 		res.send("签名验证失败")
-		console.error("签名验证失败")
+		console.error("签名验证失败",data)
 		return
 	}
 	res.send("success")
@@ -167,7 +170,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 		pay_time : Date.now(),
 		amount : encryp_data.pay_price || 0,
 		status : 0,
-		extras_params : 0
+		extras_params : data.extends_info_data
 	}
 	self.payDao.finishGameOrder(info,function(flag,err,data) {
 			if(err)
@@ -179,8 +182,11 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	})
 }
 //小七订单sign
-model.prototype.x7syGameSign = function(str) {
-	str += this.sdkConfig["RSA"]
+model.prototype.x7syGameSign = function(str,os) {
+	if(os == "ios")
+		str += this.sdkConfig["iosRSA"]["value"]
+	else
+		str += this.sdkConfig["RSA"]["value"]
 	var md5 = util.md5(str)
 	return md5
 }

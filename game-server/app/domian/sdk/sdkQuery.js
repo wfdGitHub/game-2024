@@ -141,7 +141,7 @@ model.prototype.getTimeStamp = function() {
 //小七回调签名 POST + 空格 + $apiMethod + @ + $appkey + # + $gameType + . + $respTime + \n\n + $bizResp
 model.prototype.x7syhashSign = function(info) {
 	info.bizResp = JSON.stringify(info.bizResp)
-	var appkey = this.sdkPay.sdkConfig["appkey"]
+	var appkey = this.sdkPay.sdkConfig["AppKey"]["value"]
 	var payload = "POST "+info.apiMethod+"@"+appkey+"#"+info.gameType+"."+info.respTime+"\n\n"+info.bizResp
     info.signature = key.sign(Buffer.from(payload),"base64").toString("base64")
 }
