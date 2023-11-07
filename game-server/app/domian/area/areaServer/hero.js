@@ -497,7 +497,7 @@ var model = function() {
 				return
 			}
 			self.heroDao.setHeroInfo(self.areaId,uid,hId,"lv",1,function(flag) {
-				var awardList = self.addItemStr(uid,ilv_cfg[lv].pr,1,"英雄重置")
+				var awardList = self.addItemStr(uid,lv_cfg[lv].pr,1,"英雄重置")
 				cb(true,awardList)
 			})
 		})
