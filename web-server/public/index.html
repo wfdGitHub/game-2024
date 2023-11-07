@@ -104,6 +104,12 @@
             console.log(data);
         })
       }
+      //获取引导道具
+      var gainGuideItem = function(id) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"gainGuideItem","id":id},function(data) {
+            console.log(data);
+        })
+      }
       //=================徽章活动===============//
       //获取数据
       var getMedalData = function() {
