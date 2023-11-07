@@ -18,6 +18,7 @@ const wuxian = require("../../../../config/gameCfg/wuxian.json")
 const recharge_week = require("../../../../config/gameCfg/recharge_week.json")
 const officer = require("../../../../config/gameCfg/officer.json")
 const pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
+const guide_item = require("../../../../config/gameCfg/guide_item.json")
 const fundMap = {
 	lv_fund : require("../../../../config/gameCfg/lv_fund.json"),
 	power_fund : require("../../../../config/gameCfg/power_fund.json"),
@@ -687,6 +688,22 @@ module.exports = function() {
 			self.incrbyObj(uid,main_name,wuxianId+"_count",1)
 			info.awardList = self.openChestAward(uid,wuxian[wuxianId]["chest"])
 			cb(true,info)
+		})
+	}
+	//获取引导道具
+	this.methods.gainGuideItem = function(uid,msg,cb) {
+		var id = msg.id
+		if(!guide_item[id]){
+			cb(false,"道具不存在")
+			return
+		}
+		self.incrbyAreaObj("guildItems",uid+"-"+id,1,function(data) {
+			if(data !== 1){
+				cb(false,"道具已领取")
+				return
+			}
+			var awardList = self.addItemStr(uid,guide_item[id]["award"],1,"引导道具")
+			cb(true,awardList)
 		})
 	}
 }
