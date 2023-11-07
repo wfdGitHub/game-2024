@@ -21,12 +21,14 @@ var model = function(atkInfo,defInfo,otps) {
 	this.runCount = 1 				//行动次数标识
 	this.round = 0					//当前回合
 	this.maxRound = otps.maxRound || maxRound		//最大回合
-	this.atkAllTeam = atkInfo.team			//攻方阵容  长度为6的角色数组  位置无人则为NULL
+	this.atkAllTeam = atkInfo.team			//攻方阵容
 	this.defAllTeam = defInfo.team			//守方阵容
 	this.atkTeam = []
 	this.defTeam = []
 	this.atkTeamCfg = atkInfo.teamCfg   //攻方团队数据
 	this.defTeamCfg = defInfo.teamCfg   //守方团队数据
+	this.atkNPCTeam = this.atkTeamCfg.npcTeam || []  	//NPC预设队伍
+	this.defNPCTeam = this.defTeamCfg.npcTeam || []  	//NPC预设队伍
 	this.atkMaster = atkInfo.master		//攻方主角
 	this.defMaster = defInfo.master		//守方主角
 	this.allHero = []				//所有英雄列表
@@ -63,6 +65,11 @@ model.prototype.load = function(belong,otps) {
 		zeroTeam[i].init(this)
 	}
 	var team = this[belong+"AllTeam"]
+	if(this[belong+"NPCTeam"]){
+		for(var i = 0;i < this[belong+"NPCTeam"].length;i++){
+			team.push(this[belong+"NPCTeam"][i]["hero"])
+		}
+	}
 	for(var i = 0;i < team.length;i++){
 		team[i].init(this)
 		team[i].team = this[belong+"Team"]
@@ -102,26 +109,32 @@ model.prototype.loadHero = function(belong,index) {
 		this[belong+"TeamInfo"]["comeId"]++
 		var hero = this[belong+"AllTeam"][i]
 		if(!hero.isNaN && hero["surplus_health"] !== 0){
-			fightRecord.push({type:"hero_comeon",id:hero.id,index:index,belong:belong})
-			hero.index = index
-			hero.belong = belong
-			hero.comeon = true
-			hero.heroComeon()
-			this.allHero.push(hero)
-			this[belong+"Team"][index] = hero
-			return hero
+			return this.heroBegin(hero,belong,index)
 		}
 	}
+}
+//英雄出战
+model.prototype.heroBegin = function(hero,belong,index) {
+	fightRecord.push({type:"hero_comeon",id:hero.id,index:index,belong:belong})
+	hero.index = index
+	hero.belong = belong
+	hero.comeon = true
+	hero.heroComeon()
+	this.allHero.push(hero)
+	this[belong+"Team"][index] = hero
+	return hero
 }
 //战斗开始
 model.prototype.fightBegin = function() {
 	var info = {type : "fightBegin",atkTeam : [],defTeam : [],seededNum : this.seededNum,maxRound : this.maxRound}
-	for(var i = 0;i < this.atkAllTeam.length;i++){
+	for(var i = 0;i < this.atkAllTeam.length;i++)
 		info.atkTeam.push(this.atkAllTeam[i].getSimpleInfo())
-	}
-	for(var i = 0;i < this.defAllTeam.length;i++){
+	for(var i = 0;i < this.defAllTeam.length;i++)
 		info.defTeam.push(this.defAllTeam[i].getSimpleInfo())
-	}
+	for(var i = 0;i < this.atkNPCTeam.length;i++)
+		info.atkTeam.push(this.atkNPCTeam[i]["hero"].getSimpleInfo())
+	for(var i = 0;i < this.defNPCTeam.length;i++)
+		info.defTeam.push(this.defNPCTeam[i]["hero"].getSimpleInfo())
 	info.comeonHero = []
 	for(var i = 0;i < this.allHero.length;i++)
 		info.comeonHero.push({id:this.allHero[i].id,index:this.allHero[i].index})
@@ -159,12 +172,24 @@ model.prototype.nextRound = function() {
 		if(hero)
 			hero.begin()
 	}
+	this.loadNPCHero("atk")
+	this.loadNPCHero("def")
 	// console.log("第 "+this.round+" 轮开始")
 	for(var i = 0;i < this.allHero.length;i++){
 		this.allHero[i].isAction = false
 		this.allHero[i].roundBegin()
 	}
 	return this.runCheck.bind(this)
+}
+//加载预设英雄
+model.prototype.loadNPCHero = function(belong) {
+	for(var i = 0;i < this[belong+"NPCTeam"].length;i++){
+		if(this[belong+"NPCTeam"][i]["round"] == this.round){
+			var index = this[belong+"NPCTeam"][i]["index"]
+			if(this[belong+"Team"][index].died)
+				this.heroBegin(this[belong+"NPCTeam"][i]["hero"],belong,index)
+		}
+	}
 }
 //整体回合结束
 model.prototype.endRound = function() {

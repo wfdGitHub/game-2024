@@ -161,10 +161,15 @@ model.getTeamData = function(team,belong) {
 		for(var i = 1;i <= 6;i++)
 			if(teamCfg["manors"]["slot_ATT_"+i])
 				teamCfg["manors"]["slot_ATT_"+i] = JSON.parse(teamCfg["manors"]["slot_ATT_"+i])
-	//英雄属性
+	//英雄
 	var characters = []
 	for(var i = 0;i < team.length;i++){
 		characters[i] = this.getCharacterInfo(team[i],heroAtts,teamCfg)
+	}
+	if(teamCfg.npcTeam){
+		for(var i = 0;i < teamCfg.npcTeam.length;i++){
+			teamCfg.npcTeam[i]["hero"] = this.getCharacterInfo(teamCfg.npcTeam[i]["hero"],heroAtts,teamCfg)
+		}
 	}
     var teamAdds = {}
     if(teamCfg){

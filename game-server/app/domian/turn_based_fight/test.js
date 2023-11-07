@@ -67,11 +67,11 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // }
 // console.log(atkTeam)
 // // var buff = {"buffId":"ghost","buff_tg":"team_self","buffArg":5,"duration":3,"buffRate":1}
-// var info = JSON.parse("{\"atkTeam\":[{\"title\":0,\"officer\":0,\"manors\":{},\"g1\":0,\"g2\":0,\"g3\":0,\"g4\":0}],\"defTeam\":[{\"g1\":0,\"g2\":0,\"g3\":0,\"g4\":0,\"officer\":1,\"comeonNum\":3},{\"id\":501030,\"evo\":1,\"exalt\":1,\"qa\":3,\"lv\":1,\"MR1\":0.33,\"MR2\":0.33,\"MR3\":0.33,\"MR4\":0.33,\"MR5\":0.33,\"MR6\":0.33,\"PS0\":4301,\"PS1\":4117,\"PS2\":4223,\"e1\":\"\",\"e2\":\"\",\"e3\":\"\",\"e4\":\"\",\"e5\":\"\",\"e6\":\"\"}],\"otps\":{\"seededNum\":1696930947632,\"masterSkills\":[]}}")
 // var seededNum = 1
-// var atkTeam = info.atkTeam
-// var defTeam = info.defTeam
-// console.log(fightContorl.videoFight(atkTeam,defTeam,info.otps))
+// var atkTeam = [{"comeonNum":1,"npcTeam":[{"hero":{"id":"501050"},"round":3,"index":1}]},{"id":"501010"}]
+// var defTeam = [{"comeonNum":2},{"id":"501020"},{"id":"501020"},{"id":"501020"},{"id":"501020"},{"id":"501020"}]
+// var fighting = fightContorl.beginFight(atkTeam,defTeam,{})
+// // // // // var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
 // fightRecord.explain()
 // var eInfo = {
 //   lv: 6,
@@ -85,19 +85,9 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 //   suit: '8050'
 // }
 // // console.log(fightContorl.makeHeroData(501010,5))
-// var fabao1 = JSON.stringify({
-// 	id: '10040',
-// 	qa: 4,
-// 	lv: 1,
-// 	M1: 1.036644540879608,
-// 	M2: 1.169528828473013,
-// 	M3: 0.8386032290237847,
-// 	M4: 1.011528704254295,
-// 	slots : {1:1,2:4,3:4,4:4},
-// 	spe: [ 'fabao_8110', 'fabao_7090', 'fabao_7070', 'fabao_7060']
-//   })
+
 // var heroInfo = {
-//   id: 500110,
+//   id: 501200,
 //   evo: 1,
 //   exalt: 1,
 //   qa: 5,
@@ -113,8 +103,6 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 //   PS1: 4102,
 //   PS2: 4104,
 //   PS3: 4103,
-//   PS4: 4110,
-//   fabao1 : fabao1
+//   PS4: 4110
 // }
-// // console.log(fightContorl.getFabaoData(fabao1))
-// console.log(fightContorl.getFabaoCE(fabao1))
+// console.log(fightContorl.getCharacterInfo(heroInfo))
