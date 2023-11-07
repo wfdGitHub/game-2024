@@ -430,7 +430,6 @@ var model = function() {
 			},
 			function(herolist,awardList,next) {
 				var rate = self.fightContorl.getHeroEvoRate(heroInfo,herolist)
-				console.log("rate",rate)
 				if(Math.random() < rate){
 					heroInfo.evo++
 					heroInfo.evoRate = 0
