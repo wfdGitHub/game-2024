@@ -143,37 +143,12 @@ heroHandler.prototype.resetHero = function(msg, session, next) {
       next(null,{flag : false,err : "英雄不存在"})
       return
     }
-    if(heroInfo.lv == 1 && heroInfo.ad == 0){
+    if(heroInfo.lv == 1){
       next(null,{flag : false,err : "当前状态不能重置"})
       return
     }
-    if(heroInfo.combat){
-      next(null,{flag : false,err : "英雄已出战"})
-      return
-    }
-    self.areaManager.areaMap[areaId].consumeItems(uid,default_cfg["hero_reset"]["value"],1,"英雄重生",function(flag,err) {
-      if(!flag){
-        next(null,{flag : false,err : err})
-        return
-      }
-      self.heroDao.heroReset(areaId,uid,heroInfo,function(flag,awardList) {
-          var info = {
-            "lv":1,
-            "ad":0,
-            "tr_lv":0,
-            "tr_maxHP":0,
-            "tr_atk":0,
-            "tr_phyDef":0,
-            "tr_magDef":0,
-            "et1":0,
-            "et2":0,
-            "et3":0,
-            "et4":0
-          }
-          self.heroDao.setHMHeroInfo(areaId,uid,hId,info)
-          self.heroDao.delHeroInfo(areaId,uid,hId,"artifact")
-          next(null,{flag : true,awardList : awardList,lv:info.lv,ad:info.ad})
-      })
+    self.areaManager.areaMap[areaId].heroReset(uid,hId,function(flag,awardList) {
+        next(null,{flag : flag,awardList : awardList})
     })
   })
 }
