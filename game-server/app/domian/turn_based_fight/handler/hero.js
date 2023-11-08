@@ -235,6 +235,7 @@ var model = function(fightContorl) {
 	this.getHeroCE = function(info) {
 		if(!info)
 			return 0
+		info = Object.assign({},info)
 		var allCE = 0
 		var evoId = evolve_lv[info.evo]["evoId"]
 		var aptitude = exalt_lv[info.exalt]["aptitude"] || 1
@@ -474,6 +475,30 @@ var model = function(fightContorl) {
 		info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
 		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore)
 		return new character(info)
+	}
+	//获取角色主数据
+	this.getCharacterMainAtt = function(info) {
+		if(!info || !heros[info.id])
+			return false
+		info = Object.assign({},info)
+		info.exalt = info.exalt || 1
+		info.evo = info.evo || 1
+		info.lv = info.lv || 1
+		var id = info.id
+		var evoId = evolve_lv[info.evo]["evoId"]
+		info.aptitude = exalt_lv[info.exalt]["aptitude"] || 1
+		//神兽资质加成
+		if(heros[id]["type"] == 2)
+			info.aptitude += 3
+		this.mergeData(info,heros[id])
+		//主属性计算
+		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
+		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
+		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
+		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
+		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
+		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
+		return info
 	}
 	//新增天赋
 	this.mergeTalent = function(info,talentId,value) {

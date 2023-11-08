@@ -68,10 +68,10 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // console.log(atkTeam)
 // // var buff = {"buffId":"ghost","buff_tg":"team_self","buffArg":5,"duration":3,"buffRate":1}
 // var seededNum = 1
-// var atkTeam = [{"comeonNum":1,"npcTeam":[{"hero":{"id":"501050"},"round":3,"index":1}]},{"id":"501010"}]
-// var defTeam = [{"comeonNum":2},{"id":"501020"},{"id":"501020"},{"id":"501020"},{"id":"501020"},{"id":"501020"}]
+// var atkTeam = [{},{"id":"501010","lv":1,"evo":1,"exalt":1,"qa":5,"wash":0,"MR1":1,"MR2":1,"MR3":1,"MR4":1,"MR5":1,"MR6":1}]
+// var defTeam = [{},{"id":"501010","lv":1,"evo":1,"exalt":1,"qa":5,"wash":0,"MR1":1,"MR2":1,"MR3":1,"MR4":1,"MR5":1,"MR6":1}]
 // var fighting = fightContorl.beginFight(atkTeam,defTeam,{})
-// // // // // var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
+// // // // // // var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
 // fightRecord.explain()
 // var eInfo = {
 //   lv: 6,
@@ -87,7 +87,7 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // // console.log(fightContorl.makeHeroData(501010,5))
 
 // var heroInfo = {
-//   id: 501200,
+//   id: 501010,
 //   evo: 1,
 //   exalt: 1,
 //   qa: 5,
@@ -105,4 +105,4 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 //   PS3: 4103,
 //   PS4: 4110
 // }
-// console.log(fightContorl.getCharacterInfo(heroInfo))
+// console.log(fightContorl.getCharacterMainAtt(heroInfo))
