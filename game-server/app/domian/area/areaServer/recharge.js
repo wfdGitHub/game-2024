@@ -80,22 +80,13 @@ module.exports = function() {
 				if(pay_cfg[pay_id]["dianpiao"] == 0){
 					self.finish_recharge(uid,pay_id,info,cb)
 				}else{
-                    var gmLv = self.getLordAtt(uid,"gmLv")
-					var dp_limit = self.getLordAtt(uid,"dp_limit") + GM_CFG[gmLv]["dianpiao"]
-					self.getPlayerData(uid,"diaopiao_use",function(value) {
-						value = Number(value) || 0
-						if((value + pay_cfg[pay_id]["dianpiao"]) > dp_limit){
-							cb(false,"可用额度不足 "+value+"/"+dp_limit)
-							return
+					self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
+						if(flag){
+							self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
+							self.finish_recharge(uid,pay_id,info,cb)
+						}else{
+							cb(false,err)
 						}
-						self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
-							if(flag){
-								self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
-								self.finish_recharge(uid,pay_id,info,cb)
-							}else{
-								cb(false,err)
-							}
-						})
 					})
 				}
 			}
