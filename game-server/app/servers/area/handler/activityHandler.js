@@ -17,7 +17,8 @@ activityHandler.prototype.dianpiao_recharge = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   var pay_id = msg.pay_id
-  this.areaManager.areaMap[areaId].dianpiao_recharge(uid,pay_id,function(flag,msg) {
+  var info = msg.info
+  this.areaManager.areaMap[areaId].dianpiao_recharge(uid,pay_id,info,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }
