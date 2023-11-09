@@ -177,6 +177,20 @@ var model = function(fightContorl) {
 		for(var i = 0;i < list.length;i++){
 			var id = list[i].id
 			var lv = list[i].lv
+			//等级返还
+			if(lv_cfg[lv] && lv_cfg[lv].pr)
+				strList.push(lv_cfg[lv].pr)
+			//宝物返还
+			for(var j = 0;j <= 10;j++){
+				if(list[i]["a"+j])
+					strList.push(list[i]["a"+j]+":1")
+			}
+			//宝石返还
+			for(var j = 1;j <= 6;j++){
+				for(var k = 1;k <= 5;k++)
+				if(list[i]["e"+j+"g"+k])
+					strList.push(list[i]["e"+j+"g"+k]+":1")
+			}
 			map["2000030"] += Math.round(evolve_lv[list[i]["evo"]]["pr"] * exalt_lv[list[i]["lv"]]["prRate"])
 			if(list[i]["qa"] >= 5)
 				map["2000050"] += 1
@@ -196,15 +210,6 @@ var model = function(fightContorl) {
 	this.getHeroPrlvadnad = function(list) {
 		var awards = []
 		for(var i = 0;i < list.length;i++){
-			var lv = list[i].lv
-			//等级返还
-			if(lv_cfg[lv] && lv_cfg[lv].pr)
-				strList.push(lv_cfg[lv].pr)
-			//宝物返还
-			for(var j = 0;j <= 10;j++){
-				if(list[i]["a"+j])
-					strList.push(list[i]["a"+j]+":1")
-			}
 			//护符返还
 			if(list[i]["hfLv"]){
 				var hufuInfo = {lv:list[i]["hfLv"]}
@@ -218,12 +223,6 @@ var model = function(fightContorl) {
 			for(var j = 1;j <= 6;j++)
 				if(list[i]["e"+j])
 					awards.push({type : "equip",data : list[i]["e"+j]})
-			//宝石返还
-			for(var j = 1;j <= 6;j++){
-				for(var k = 1;k <= 5;k++)
-				if(list[i]["e"+j+"g"+k])
-					strList.push(list[i]["e"+j+"g"+k]+":1")
-			}
 			//法宝返还
 			for(var j = 1;j <= 3;j++){
 				if(list[i]["fabao"+j])
