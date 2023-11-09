@@ -134,7 +134,6 @@ module.exports = function() {
 	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,info,cb) {
-		console.log("finish_recharge",uid,pay_id,info)
 		var rate = 1
 		if(info && info.extras_params && info.extras_params.rate)
 			rate = info.extras_params.rate
@@ -250,8 +249,7 @@ module.exports = function() {
 		})
 	}
 	//快速充值
-	this.buyFastRecharge = function(uid,pay_id,cb) {
-		console.log("buyFastRecharge",pay_id,pay_cfg[pay_id])
+	this.buyFastRecharge = function(uid,rate,pay_id,cb) {
 		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",self.itemstrChangeRate(pay_cfg[pay_id]["award"],rate))
 		cb(true)
 	}
