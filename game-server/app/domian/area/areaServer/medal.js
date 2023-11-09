@@ -223,6 +223,7 @@ module.exports = function() {
 	}
 	//领取收集奖励
 	this.methods.gainMedalGatherAward = function(uid,msg,cb) {
+		console.log(uid,msg)
 		var tId = msg.tId
 		if(!medal_gather[tId]){
 			cb(false,"奖励不存在")
@@ -232,6 +233,7 @@ module.exports = function() {
 		for(var i in medal_gather[tId]["list"])
 			arr.push("g"+medal_gather[tId]["list"][i])
 		self.getHMObj(uid,main_name,arr,function(list) {
+			console.log(list)
 			if(list[0]){
 				cb(false,"已领取")
 				return
@@ -246,6 +248,7 @@ module.exports = function() {
 				var info = {}
 				info["t"+tId] = data
 				var awardList = self.addItemStr(uid,medal_gather[tId]["award"],1,"收集徽章")
+				console.log(awardList)
 				cb(true,{info:info,awardList:awardList})
 			})
 		})
