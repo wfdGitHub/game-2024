@@ -82,7 +82,6 @@ module.exports = function() {
 			function(next) {
 				if(pay_cfg[pay_id]["dianpiao"] == 0){
 					self.finish_recharge(uid,pay_id,cb)
-					cb(true)
 				}else{
                     var gmLv = self.getLordAtt(uid,"gmLv")
 					var dp_limit = self.getLordAtt(uid,"dp_limit") + GM_CFG[gmLv]["dianpiao"]
@@ -96,7 +95,6 @@ module.exports = function() {
 							if(flag){
 								self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
 								self.finish_recharge(uid,pay_id,cb)
-								cb(true)
 							}else{
 								cb(false,err)
 							}
