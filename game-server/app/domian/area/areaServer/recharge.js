@@ -144,7 +144,7 @@ module.exports = function() {
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,info,cb) {
 		var rate = 1
-		if(info.extras_params && info.extras_params.rate)
+		if(info && info.extras_params && info.extras_params.rate)
 			rate = info.extras_params.rate
 		var call_back = function(uid,flag,data) {
 			if(flag){
