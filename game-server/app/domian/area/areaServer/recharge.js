@@ -259,6 +259,7 @@ module.exports = function() {
 	}
 	//快速充值
 	this.buyFastRecharge = function(uid,pay_id,cb) {
+		console.log("buyFastRecharge",uid,pay_id,pay_cfg[pay_id])
 		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",self.itemstrChangeRate(pay_cfg[pay_id]["award"],rate))
 		cb(true)
 	}
