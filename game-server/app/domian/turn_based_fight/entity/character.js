@@ -556,6 +556,9 @@ var model = function(otps) {
 			this.attInfo.magDef += Math.ceil(otps.magDef_grow * lvdif) || 0
 	}
 	//=========技能=======//
+	//入场技能
+	if(otps.beginSkill)
+		this.beginSkill = skillManager.createSkill(otps.beginSkill,this)
 	if(otps.defaultSkill)
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
 	if(otps.angerSkill){
@@ -723,23 +726,6 @@ model.prototype.calAttAdd = function(team_adds) {
 	}
 	this.attInfo.hp = this.attInfo.maxHP
 }
-//英雄出场
-model.prototype.heroComeon = function() {
-	if(this.maxHP_rate)
-		this.attInfo.maxHP = Math.floor(this.attInfo.maxHP * this.maxHP_rate)
-	this.attInfo.hp = this.attInfo.maxHP
-	if(this.isBoss){
-		this.attInfo.hp = 99999999999
-	}
-	if(this.surplus_health === 0){
-		this.attInfo.hp = 0
-		this.died = true
-	}else if(this.surplus_health){
-		this.attInfo.hp = Math.ceil(this.attInfo.hp * this.surplus_health)
-	}
-	if(!this.died)
-		this.siteInit()
-}
 //站位加成
 model.prototype.siteInit = function() {
 	if(this.hor_fri_reduction){
@@ -812,14 +798,26 @@ model.prototype.siteInit = function() {
 			this.attInfo.amplify += this.back_amp
 	}
 }
-//战斗开始
+//英雄战斗 开始
 model.prototype.begin = function() {
 	this.beginAction()
 }
 //战前准备
 model.prototype.beginAction = function() {
-	if(this.enter_skill)
-		skillManager.useSkill(this.angerSkill)
+	if(this.maxHP_rate)
+		this.attInfo.maxHP = Math.floor(this.attInfo.maxHP * this.maxHP_rate)
+	this.attInfo.hp = this.attInfo.maxHP
+	if(this.isBoss){
+		this.attInfo.hp = 99999999999
+	}
+	if(this.surplus_health === 0){
+		this.attInfo.hp = 0
+		this.died = true
+	}else if(this.surplus_health){
+		this.attInfo.hp = Math.ceil(this.attInfo.hp * this.surplus_health)
+	}
+	if(!this.died)
+		this.siteInit()
 	if(this.first_buff_list.length){
 		for(var j = 0;j < this.first_buff_list.length;j++){
 			if(this.first_buff_list[j]["buff_tg"]){
@@ -854,6 +852,13 @@ model.prototype.beginAction = function() {
 		fightRecord.push({type:"show_tag",id:this.id,tag:"half_hp_red"})
 	if(this.dodgeFirst)
 		this.dodgeState = true
+}
+//英雄出场
+model.prototype.heroComeon = function() {
+	if(this.enter_skill)
+		skillManager.useSkill(this.angerSkill)
+	if(this.beginSkill)
+		skillManager.useSkill(this.beginSkill)
 }
 //检查可行动
 model.prototype.checkActionable = function() {

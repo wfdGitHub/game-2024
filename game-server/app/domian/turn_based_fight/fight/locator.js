@@ -35,6 +35,18 @@ model.prototype.getTargets = function(character,targetType) {
 		case "enemy_5":
 			//敌方5个随机单体
 			return this.getEnemyRandom(character,5)
+		case "enemy_rand_12":
+			// 敌方随机1-2个目标
+			var rand = Math.floor(this.seededNum.random("enemy_rand_12") * 1) + 1
+			return this.getEnemyRandom(character,rand)
+		case "enemy_rand_13":
+			// 敌方随机1-3个目标
+			var rand = Math.floor(this.seededNum.random("enemy_rand_13") * 2) + 1
+			return this.getEnemyRandom(character,rand)
+		case "enemy_rand_23":
+			// 敌方随机2-3个目标
+			var rand = Math.floor(this.seededNum.random("enemy_rand_13") * 2) + 2
+			return this.getEnemyRandom(character,rand)
 		case "enemy_rand_24":
 			// 敌方随机2-4个目标
 			var rand = Math.floor(this.seededNum.random("enemy_rand_24") * 3) + 2
@@ -182,117 +194,9 @@ model.prototype.getTargets = function(character,targetType) {
 }
 //获取BUFF目标
 model.prototype.getBuffTargets = function(character,targetType,targets) {
-	switch(targetType){
-		case "skill_targets":
-			//技能目标
-			return targets || []
-		case "enemy_normal":
-			//默认敌人前排单体
-			return this.getTargetNormal(character)
-		case "enemy_normal_back":
-			//默认敌方后排单体
-			return this.getEnemyNormalBack(character)
-		case "enemy_1":
-			//敌方随机单体
-			return this.getEnemyRandom(character,1)
-		case "enemy_2":
-			//敌方2个随机单体
-			return this.getEnemyRandom(character,2)
-		case "enemy_3":
-			//敌方3个随机单体
-			return this.getEnemyRandom(character,3)
-		case "enemy_4":
-			//敌方4个随机单体
-			return this.getEnemyRandom(character,4)
-		case "enemy_5":
-			//敌方5个随机单体
-			return this.getEnemyRandom(character,5)
-		case "enemy_maxAtk_1":
-			//获取敌方攻击最高的1个单位
-			return this.getEnemyMaxAtk(character,1)
-		case "team_self":
-			return [character]
-		case "team_1":
-			//己方随机1个目标
-			return	this.getTeamRandom(character,1)
-		case "team_2":
-			//己方随机2个目标
-			return	this.getTeamRandom(character,2)
-		case "team_3":
-			//己方随机3个目标
-			return	this.getTeamRandom(character,3)
-		case "team_4":
-			//己方随机4个目标
-			return	this.getTeamRandom(character,4)
-		case "team_5":
-			//己方随机5个目标
-			return	this.getTeamRandom(character,5)
-		case "team_all":
-			//己方全体
-			return	this.getTeamAll(character)
-		case "team_horizontal_front":
-			//己方前排
-			return	this.getTeamHorizontalFront(character)
-		case "team_horizontal_back":
-			//己方后排
-			return	this.getTeamHorizontalBack(character)
-		case "team_maxAtk_1":
-			//获取己方攻击最高的1个单位
-			return this.getTeamMaxAtk(character,1)
-		case "team_maxAtk_2":
-			//获取己方攻击最高的2个单位
-			return this.getTeamMaxAtk(character,2)
-		break
-		case "enemy_horizontal_front":
-			//敌方前排
-			return this.getEnemyHorizontalFront(character)
-		case "enemy_horizontal_back":
-			//敌方后排
-			return this.getEnemyHorizontalBack(character)
-		case "enemy_horizontal_front_real":
-			//敌方仅前排
-			return this.getEnemyHorizontalFrontReal(character)
-		case "enemy_horizontal_back_real":
-			//敌方仅后排
-			return this.getEnemyHorizontalBackReal(character)
-		case "friend_minHp_1":
-			//获取友方生命值最少的1个单位
-			return this.getFriendRandomMinHp(character,1)
-		break
-		case "friend_minHp_2":
-			//获取友方生命值最少的2个单位
-			return this.getFriendRandomMinHp(character,2)
-		break
-		case "friend_minHp_3":
-			//获取友方生命值最少的3个单位
-			return this.getFriendRandomMinHp(character,3)
-		break
-		case "friend_minHp_4":
-			//获取友方生命值最少的4个单位
-			return this.getFriendRandomMinHp(character,4)
-		break
-		case "friend_minHp_5":
-			//获取友方生命值最少的5个单位
-			return this.getFriendRandomMinHp(character,5)
-		break
-		case "friend_maxAtk_1":
-			//获取友方攻击最高的1个单位
-			return this.getFriendMaxAtk(character,1)
-		case "realm_minHp_2":
-			//获取己方同阵营生命值最少的2个单位
-			return this.getTeamRealmMinHp(character,2)
-		case "realm_maxAtk_2":
-			//获取己方同阵营攻击最高的2个单位
-			return this.getRealmMaxAtk(character,2)
-		case "team_realm":
-			//我方同阵营英雄
-			return this.getTeamRealm(character)
-		case "enemy_all":
-			//敌方全体
-			return	this.getEnemyAll(character)
-		default :
-			return targets || []
-	}
+	if(targetType == "skill_targets")
+		return targets || []
+	return this.getTargets(character,targetType)
 }
 //获取目标类型对应目标数量
 model.prototype.getTargetsNum = function(targetType) {

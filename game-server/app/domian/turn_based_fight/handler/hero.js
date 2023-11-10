@@ -471,6 +471,14 @@ var model = function(fightContorl) {
 				info.angerSkill = Object.assign({skillId : info.angerSkill},skills[info.angerSkill])
 			}
 		}
+		if(info.beginSkill){
+			if(!skills[info.beginSkill]){
+				console.error("技能不存在",info.id,info.beginSkill)
+				info.beginSkill = false
+			}else{
+				info.beginSkill = Object.assign({skillId : info.beginSkill},skills[info.beginSkill])
+			}
+		}
 		//主属性增益
 		info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
 		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore)
