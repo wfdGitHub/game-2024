@@ -471,13 +471,11 @@ var model = function(fightContorl) {
 				info.angerSkill = Object.assign({skillId : info.angerSkill},skills[info.angerSkill])
 			}
 		}
-		if(info.beginSkill){
-			if(!skills[info.beginSkill]){
-				console.error("技能不存在",info.id,info.beginSkill)
-				info.beginSkill = false
-			}else{
-				info.beginSkill = Object.assign({skillId : info.beginSkill},skills[info.beginSkill])
-			}
+		if(info.beginSkill && skills[info.beginSkill])
+			info.beginSkill = Object.assign({skillId : info.beginSkill},skills[info.beginSkill])
+		if(info.diedSkill && skills[info.diedSkill]){
+			info.diedSkill = Object.assign({skillId : info.diedSkill},skills[info.diedSkill])
+			info.diedSkill.diedSkill = true
 		}
 		//主属性增益
 		info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))

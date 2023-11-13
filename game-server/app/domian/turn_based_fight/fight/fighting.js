@@ -339,7 +339,7 @@ model.prototype.diedListCheck = function() {
 				}
 			}
 		}
-		if(this.diedList[i].died_use_skill){
+		if(this.diedList[i].diedSkill){
 			var flag = false
 			for(var j = 0;j < this.diedList[i].team.length;j++){
 				if(!this.diedList[i].team[j].died){
@@ -348,7 +348,7 @@ model.prototype.diedListCheck = function() {
 				}
 			}
 			if(flag)
-				skillManager.useSkill(this.diedList[i].angerSkill)
+				skillManager.useSkill(this.diedList[i].diedSkill)
 		}
 		//死亡触发感电
 		if(this.diedList[i].flash_died_settle){
