@@ -242,7 +242,7 @@ module.exports = function() {
 					return
 				}
 			}
-			self.incrbyObj(uid,main_name,"t"+tId,function(data) {
+			self.incrbyObj(uid,main_name,"t"+tId,1,function(data) {
 				var info = {}
 				info["t"+tId] = data
 				var awardList = self.addItemStr(uid,medal_gather[tId]["award"],1,"收集徽章")

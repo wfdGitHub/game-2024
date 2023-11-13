@@ -119,9 +119,8 @@ normalHandler.prototype.addItem = function(msg, session, next) {
   var areaId = session.get("areaId")
   var itemId = msg.itemId
   var value = msg.value
-  this.areaManager.areaMap[areaId].addItem({uid : uid,itemId : itemId,value : value,reason : "测试功能"},function(flag,data) {
-    next(null,{flag : flag,data : data})
-  })
+  var award =   this.areaManager.areaMap[areaId].addItem({uid : uid,itemId : itemId,value : value,reason : "测试功能"})
+  next(null,{flag : true,data : award})
 }
 //增加物品str  测试功能
 normalHandler.prototype.addItemStr = function(msg, session, next) {

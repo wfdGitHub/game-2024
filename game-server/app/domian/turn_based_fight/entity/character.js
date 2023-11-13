@@ -309,6 +309,7 @@ var model = function(otps) {
 	this.burn_hit_anger = otps.burn_hit_anger || 0 //被灼烧敌人攻击时回复怒气
 	this.extraAtion = otps.extraAtion || false //释放技能后，怒气最少的其他同族英雄额外行动一回合。
 	this.dizzy_less_anger = otps.dizzy_less_anger || 0 //释放技能附加的眩晕结束时，被眩晕的目标降低怒气
+	this.dizzy_add_anger = otps.dizzy_add_anger || 0 //附加眩晕时，回怒
 	this.dizzy_hit_anger = otps.dizzy_hit_anger || 0 //攻击受到眩晕效果的目标时，额外降低目标怒气。
 	this.skill_amp_or_lessAnger = otps.skill_amp_or_lessAnger || 0 //释放技能时，如果目标怒气不足4点，技能伤害额外增加，如果目标怒气大于4点，额外降低目标1点怒气。
 	this.heal_maxHp = otps.heal_maxHp || 0 //治疗时额外恢复目标英雄生命值百分比
@@ -340,7 +341,7 @@ var model = function(otps) {
 	this.less_normal_buffRate = otps.less_normal_buffRate || 0 //普攻最高提升buff概率(目标越多效果越低)
 	this.less_buff_arg = otps.less_buff_arg || 0	//提升buff效果(目标越多效果越低)
 	this.less_clear_invincible = otps.less_clear_invincible || 0 //清除敌方武将无敌概率（目标越多效果越低）
-
+	this.anger_clear_invincible = otps.anger_clear_invincible || 0 //清除无敌盾恢复怒气
 	this.control_buff_lowrate = otps.control_buff_lowrate || 0 //被控制概率降低（麻痹、沉默、眩晕）
 	this.damage_buff_lowrate = otps.damage_buff_lowrate || 0 //降低受到的灼烧、中毒概率
 	this.damage_buff_lowArg = otps.damage_buff_lowArg || 0 //降低受到的灼烧、中毒伤害
@@ -459,7 +460,6 @@ var model = function(otps) {
 	if(this.first_crit)
 		this.must_crit = true
 	
-	this.died_use_skill = otps.died_use_skill				//死亡时释放一次技能
 	this.died_burn_buff_must = otps.died_burn_buff_must 	//死亡释放buff时必定命中
 	if(otps.died_later_buff)
 		this.died_later_buff = JSON.parse(otps.died_later_buff)	//直接伤害死亡时对击杀者释放buff
@@ -556,6 +556,12 @@ var model = function(otps) {
 			this.attInfo.magDef += Math.ceil(otps.magDef_grow * lvdif) || 0
 	}
 	//=========技能=======//
+	//入场技能
+	if(otps.beginSkill)
+		this.beginSkill = skillManager.createSkill(otps.beginSkill,this)
+	//退场技能
+	if(otps.diedSkill)
+		this.diedSkill = skillManager.createSkill(otps.diedSkill,this)
 	if(otps.defaultSkill)
 		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
 	if(otps.angerSkill){
@@ -723,23 +729,6 @@ model.prototype.calAttAdd = function(team_adds) {
 	}
 	this.attInfo.hp = this.attInfo.maxHP
 }
-//英雄出场
-model.prototype.heroComeon = function() {
-	if(this.maxHP_rate)
-		this.attInfo.maxHP = Math.floor(this.attInfo.maxHP * this.maxHP_rate)
-	this.attInfo.hp = this.attInfo.maxHP
-	if(this.isBoss){
-		this.attInfo.hp = 99999999999
-	}
-	if(this.surplus_health === 0){
-		this.attInfo.hp = 0
-		this.died = true
-	}else if(this.surplus_health){
-		this.attInfo.hp = Math.ceil(this.attInfo.hp * this.surplus_health)
-	}
-	if(!this.died)
-		this.siteInit()
-}
 //站位加成
 model.prototype.siteInit = function() {
 	if(this.hor_fri_reduction){
@@ -812,14 +801,26 @@ model.prototype.siteInit = function() {
 			this.attInfo.amplify += this.back_amp
 	}
 }
-//战斗开始
+//英雄战斗 开始
 model.prototype.begin = function() {
 	this.beginAction()
 }
 //战前准备
 model.prototype.beginAction = function() {
-	if(this.enter_skill)
-		skillManager.useSkill(this.angerSkill)
+	if(this.maxHP_rate)
+		this.attInfo.maxHP = Math.floor(this.attInfo.maxHP * this.maxHP_rate)
+	this.attInfo.hp = this.attInfo.maxHP
+	if(this.isBoss){
+		this.attInfo.hp = 99999999999
+	}
+	if(this.surplus_health === 0){
+		this.attInfo.hp = 0
+		this.died = true
+	}else if(this.surplus_health){
+		this.attInfo.hp = Math.ceil(this.attInfo.hp * this.surplus_health)
+	}
+	if(!this.died)
+		this.siteInit()
 	if(this.first_buff_list.length){
 		for(var j = 0;j < this.first_buff_list.length;j++){
 			if(this.first_buff_list[j]["buff_tg"]){
@@ -854,6 +855,13 @@ model.prototype.beginAction = function() {
 		fightRecord.push({type:"show_tag",id:this.id,tag:"half_hp_red"})
 	if(this.dodgeFirst)
 		this.dodgeState = true
+}
+//英雄出场
+model.prototype.heroComeon = function() {
+	if(this.enter_skill)
+		skillManager.useSkill(this.angerSkill)
+	if(this.beginSkill)
+		skillManager.useSkill(this.beginSkill)
 }
 //检查可行动
 model.prototype.checkActionable = function() {
@@ -1357,11 +1365,9 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 					}
 					//寒冰护盾
 					if(this.buffs["cold_shield"]){
-						if(this.fighting.seeded.random("cold_shield") < 0.3){
-							callbacks.push((function(){
-								buffManager.createBuff(this,attacker,{buffId : "cold",duration : 2})
-							}).bind(this))
-						}
+						callbacks.push((function(){
+							buffManager.createBuff(this,attacker,{buffId : "cold",duration : 2})
+						}).bind(this))
 					}
 					//受到攻击后恢复生命值
 					if(this.behit_heal){
@@ -1378,11 +1384,9 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 						}).bind(this))
 					}
 					if(this.buffs["burn_shield"]){
-						if(this.fighting.seeded.random("burn_shield") < 0.3){
-							callbacks.push((function(){
-								buffManager.createBuff(this,attacker,{"buffId" : "burn","buffArg":0.2,"duration":2})
-							}).bind(this))
-						}
+						callbacks.push((function(){
+							buffManager.createBuff(this,attacker,{"buffId" : "burn","buffArg":0.2,"duration":2})
+						}).bind(this))
 					}
 					if(this.buffs["fengzheng"] && this.buffs["fengzheng"].releaser !== attacker){
 						callbacks.push((function(){

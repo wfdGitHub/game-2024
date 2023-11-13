@@ -55,7 +55,7 @@ module.exports = function() {
 				self.delObj(uid,"recharge_fast",i)
 	}
 	//点票支付
-	this.dianpiao_recharge = function(uid,pay_id,cb) {
+	this.dianpiao_recharge = function(uid,pay_id,info,cb) {
         if(!pay_cfg[pay_id] || pay_cfg[pay_id]["dianpiao"] === undefined){
 			cb(false,"pay_id error")
 			return
@@ -78,24 +78,15 @@ module.exports = function() {
 			},
 			function(next) {
 				if(pay_cfg[pay_id]["dianpiao"] == 0){
-					self.finish_recharge(uid,pay_id,cb)
+					self.finish_recharge(uid,pay_id,info,cb)
 				}else{
-                    var gmLv = self.getLordAtt(uid,"gmLv")
-					var dp_limit = self.getLordAtt(uid,"dp_limit") + GM_CFG[gmLv]["dianpiao"]
-					self.getPlayerData(uid,"diaopiao_use",function(value) {
-						value = Number(value) || 0
-						if((value + pay_cfg[pay_id]["dianpiao"]) > dp_limit){
-							cb(false,"可用额度不足 "+value+"/"+dp_limit)
-							return
+					self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
+						if(flag){
+							self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
+							self.finish_recharge(uid,pay_id,info,cb)
+						}else{
+							cb(false,err)
 						}
-						self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
-							if(flag){
-								self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
-								self.finish_recharge(uid,pay_id,cb)
-							}else{
-								cb(false,err)
-							}
-						})
 					})
 				}
 			}
@@ -144,7 +135,7 @@ module.exports = function() {
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,info,cb) {
 		var rate = 1
-		if(info.extras_params && info.extras_params.rate)
+		if(info && info.extras_params && info.extras_params.rate)
 			rate = info.extras_params.rate
 		var call_back = function(uid,flag,data) {
 			if(flag){
@@ -258,7 +249,7 @@ module.exports = function() {
 		})
 	}
 	//快速充值
-	this.buyFastRecharge = function(uid,pay_id,cb) {
+	this.buyFastRecharge = function(uid,rate,pay_id,cb) {
 		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",self.itemstrChangeRate(pay_cfg[pay_id]["award"],rate))
 		cb(true)
 	}

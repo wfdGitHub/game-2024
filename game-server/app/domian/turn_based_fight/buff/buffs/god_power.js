@@ -18,7 +18,7 @@ var model = function(releaser,character,otps) {
 	}
 	buff.overlay = function(releaser,otps) {
 		for(var i = 0;i < otps.buffArg;i++){
-			if(count >= 3)
+			if(count >= 5)
 				break
 			this.releaser = releaser
 			if(otps.duration > this.duration)

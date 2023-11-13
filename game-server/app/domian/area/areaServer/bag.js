@@ -342,6 +342,8 @@ module.exports = function() {
 							self.bagItemAdd(uid,itemId,value,curValue)
 						else
 							self.bagItemLess(uid,itemId,value,curValue)
+						if(cb)
+							cb(true,curValue)
 					})
 				return {type : "item",itemId : itemId,value : value}
 			}

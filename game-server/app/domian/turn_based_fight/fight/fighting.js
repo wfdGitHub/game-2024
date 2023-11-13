@@ -64,7 +64,7 @@ model.prototype.load = function(belong,otps) {
 		zeroTeam[i].isNaN = true
 		zeroTeam[i].init(this)
 	}
-	var team = this[belong+"AllTeam"]
+	var team = [].concat(this[belong+"AllTeam"])
 	if(this[belong+"NPCTeam"]){
 		for(var i = 0;i < this[belong+"NPCTeam"].length;i++){
 			team.push(this[belong+"NPCTeam"][i]["hero"])
@@ -119,7 +119,7 @@ model.prototype.heroBegin = function(hero,belong,index) {
 	hero.index = index
 	hero.belong = belong
 	hero.comeon = true
-	hero.heroComeon()
+	hero.begin()
 	this.allHero.push(hero)
 	this[belong+"Team"][index] = hero
 	return hero
@@ -143,10 +143,10 @@ model.prototype.fightBegin = function() {
 	var defheros = this.loadBeginHero("def")
 	for(var i = 0;i < atkheros.length;i++)
 		if(atkheros[i])
-			atkheros[i].begin()
+			atkheros[i].heroComeon()
 	for(var i = 0;i < defheros.length;i++)
 		if(defheros[i])
-			defheros[i].begin()
+			defheros[i].heroComeon()
 	this.trampoline(this.nextRound.bind(this))
 }
 //开始新轮次
@@ -167,13 +167,14 @@ model.prototype.nextRound = function() {
 			i--
 		}
 	}
-	for(var i = 0;i < comeonList.length;i++){
-		var hero = this.loadHero(comeonList[i].belong,comeonList[i].index)
-		if(hero)
-			hero.begin()
-	}
 	this.loadNPCHero("atk")
 	this.loadNPCHero("def")
+	var heroList = []
+	for(var i = 0;i < comeonList.length;i++)
+		heroList.push(this.loadHero(comeonList[i].belong,comeonList[i].index))
+	for(var i = 0;i < heroList.length;i++)
+		if(heroList[i])
+			heroList[i].heroComeon()
 	// console.log("第 "+this.round+" 轮开始")
 	for(var i = 0;i < this.allHero.length;i++){
 		this.allHero[i].isAction = false
@@ -186,8 +187,11 @@ model.prototype.loadNPCHero = function(belong) {
 	for(var i = 0;i < this[belong+"NPCTeam"].length;i++){
 		if(this[belong+"NPCTeam"][i]["round"] == this.round){
 			var index = this[belong+"NPCTeam"][i]["index"]
-			if(this[belong+"Team"][index].died)
+			if(this[belong+"Team"][index].died){
+				this[belong+"NPCTeam"][i]["hero"].begin()
 				this.heroBegin(this[belong+"NPCTeam"][i]["hero"],belong,index)
+				this[belong+"NPCTeam"][i]["hero"].heroComeon()
+			}
 		}
 	}
 }
@@ -335,7 +339,7 @@ model.prototype.diedListCheck = function() {
 				}
 			}
 		}
-		if(this.diedList[i].died_use_skill){
+		if(this.diedList[i].diedSkill){
 			var flag = false
 			for(var j = 0;j < this.diedList[i].team.length;j++){
 				if(!this.diedList[i].team[j].died){
@@ -344,7 +348,7 @@ model.prototype.diedListCheck = function() {
 				}
 			}
 			if(flag)
-				skillManager.useSkill(this.diedList[i].angerSkill)
+				skillManager.useSkill(this.diedList[i].diedSkill)
 		}
 		//死亡触发感电
 		if(this.diedList[i].flash_died_settle){

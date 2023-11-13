@@ -370,7 +370,7 @@ model.useAttackSkill = function(skill,chase,point) {
 	var recordInfo = skill.getInfo()
 	var overflow = 0
 	recordInfo.targets = []
-	if(skill.character.died && !skill.character.died_use_skill){
+	if(skill.character.died && !skill.diedSkill){
 		return []
 	}
 	if(point){
@@ -851,7 +851,7 @@ model.useAttackSkill = function(skill,chase,point) {
 model.useHealSkill = function(skill,chase) {
 	var recordInfo = skill.getInfo()
 	recordInfo.targets = []
-	if(skill.character.died && !skill.character.died_use_skill){
+	if(skill.character.died && !skill.diedSkill){
 		return []
 	}
 	//技能复活

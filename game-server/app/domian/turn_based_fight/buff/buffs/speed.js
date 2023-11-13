@@ -18,7 +18,7 @@ var model = function(releaser,character,otps) {
 	}
 	buff.overlay = function(releaser,otps) {
 		for(var i = 0;i < otps.buffArg;i++){
-			if(count >= 3)
+			if(count >= 5)
 				break
 			this.releaser = releaser
 			if(otps.duration > this.duration)
@@ -30,7 +30,7 @@ var model = function(releaser,character,otps) {
 		buff.fightRecord.push(recordInfo)
 	}
 	buff.getValue = function() {
-		return buff.character.attInfo.speed * count * 0.05
+		return buff.character.attInfo.speed * count * 0.1
 	}
 	buff.overlay(releaser,otps)
 	return buff
