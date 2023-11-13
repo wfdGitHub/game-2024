@@ -237,15 +237,15 @@ var model = function(fightContorl) {
 			return 0
 		info = Object.assign({},info)
 		var allCE = 0
-		var evoId = heros[info.id]["evo"+evolve_lv[info.evo]["evoId"]]
+		var evoId = evolve_lv[info.evo]["evoId"]
 		var aptitude = exalt_lv[info.exalt]["aptitude"] || 1
 		//主属性战力
-		info["M_HP"] = Math.floor(evolves[evoId]["M_HP"] * (info["MR1"] || 1))
-		info["M_ATK"] = Math.floor(evolves[evoId]["M_ATK"] * (info["MR2"] || 1))
-		info["M_DEF"] = Math.floor(evolves[evoId]["M_DEF"] * (info["MR3"] || 1))
-		info["M_STK"] = Math.floor(evolves[evoId]["M_STK"] * (info["MR4"] || 1))
-		info["M_SEF"] = Math.floor(evolves[evoId]["M_SEF"] * (info["MR5"] || 1))
-		info["M_SPE"] = Math.floor(evolves[evoId]["M_SPE"] * (info["MR6"] || 1))
+		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
+		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
+		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
+		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
+		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
+		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
 		allCE += Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 120 + aptitude * 1000)
 		//技能战力
 		for(var i = 0;i <= 10;i++)
@@ -304,15 +304,15 @@ var model = function(fightContorl) {
 		if(heros[id]["type"] == 2)
 			info.aptitude += 3
 		this.mergeData(info,heros[id])
-		var evoId = heros[info.id]["evo"+evolve_lv[info.evo]["evoId"]]
-		if(!evolves[evoId]){
-			console.log("evoId error "+evoId+"-"+id)
+		var evoId = evolve_lv[info.evo]["evoId"]
+		if(!evolves[heros[info.id]["evo"+evoId]]){
+			console.log("evoId error "+heros[info.id]["evo"+evoId]+"-"+info.id)
 			return false
 		}
-		if(evolves[evoId]["specie1"])
-			info.specie1 = evolves[evoId]["specie1"]
-		if(evolves[evoId]["specie2"])
-			info.specie2 = evolves[evoId]["specie2"]
+		if(evolves[heros[info.id]["evo"+evoId]]["specie1"])
+			info.specie1 = evolves[heros[info.id]["evo"+evoId]]["specie1"]
+		if(evolves[heros[info.id]["evo"+evoId]]["specie2"])
+			info.specie2 = evolves[heros[info.id]["evo"+evoId]]["specie2"]
 		//被动技能
 		for(var i = 1;i <= evoId;i++)
 			this.mergeTalent(info,heros[info.id]["talent"+i])
@@ -321,12 +321,12 @@ var model = function(fightContorl) {
 			this.mergeTalent(info,heros[info.id]["mythical"])
 		//初始属性
 		//主属性计算
-		info["M_HP"] = Math.floor(evolves[evoId]["M_HP"] * (info["MR1"] || 1))
-		info["M_ATK"] = Math.floor(evolves[evoId]["M_ATK"] * (info["MR2"] || 1))
-		info["M_DEF"] = Math.floor(evolves[evoId]["M_DEF"] * (info["MR3"] || 1))
-		info["M_STK"] = Math.floor(evolves[evoId]["M_STK"] * (info["MR4"] || 1))
-		info["M_SEF"] = Math.floor(evolves[evoId]["M_SEF"] * (info["MR5"] || 1))
-		info["M_SPE"] = Math.floor(evolves[evoId]["M_SPE"] * (info["MR6"] || 1))
+		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
+		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
+		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
+		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
+		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
+		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
 		var lvInfo = {
 		    "maxHP":aptitudes[info.aptitude].maxHP,
 		    "atk": aptitudes[info.aptitude].atk,
@@ -495,19 +495,19 @@ var model = function(fightContorl) {
 		info.evo = info.evo || 1
 		info.lv = info.lv || 1
 		var id = info.id
-		var evoId = heros[info.id]["evo"+evolve_lv[info.evo]["evoId"]]
+		var evoId = evolve_lv[info.evo]["evoId"]
 		info.aptitude = exalt_lv[info.exalt]["aptitude"] || 1
 		//神兽资质加成
 		if(heros[id]["type"] == 2)
 			info.aptitude += 3
 		this.mergeData(info,heros[id])
 		//主属性计算
-		info["M_HP"] = Math.floor(evolves[evoId]["M_HP"] * (info["MR1"] || 1))
-		info["M_ATK"] = Math.floor(evolves[evoId]["M_ATK"] * (info["MR2"] || 1))
-		info["M_DEF"] = Math.floor(evolves[evoId]["M_DEF"] * (info["MR3"] || 1))
-		info["M_STK"] = Math.floor(evolves[evoId]["M_STK"] * (info["MR4"] || 1))
-		info["M_SEF"] = Math.floor(evolves[evoId]["M_SEF"] * (info["MR5"] || 1))
-		info["M_SPE"] = Math.floor(evolves[evoId]["M_SPE"] * (info["MR6"] || 1))
+		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
+		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
+		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
+		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
+		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
+		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
 		return info
 	}
 	//新增天赋
