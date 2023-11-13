@@ -154,6 +154,7 @@ var model = function(fightContorl) {
 			skillNum = heros[id]["passive_num"]
 		else
 			skillNum = Math.floor(hero_quality[qa]["skillRate"] * (Math.random() * 0.5 + 0.6) * heros[id]["passive_num"])
+		skillNum = Math.min(2,skillNum)
 		for(var i = 1;i <= 6;i++)
 			c_info["MR"+i] = hero_quality[qa]["mainRate"] * (Math.random() * (0.4 + extra) + 0.7)
 		if(skillNum == heros[id]["passive_num"])
@@ -176,6 +177,20 @@ var model = function(fightContorl) {
 		for(var i = 0;i < list.length;i++){
 			var id = list[i].id
 			var lv = list[i].lv
+			//等级返还
+			if(lv_cfg[lv] && lv_cfg[lv].pr)
+				strList.push(lv_cfg[lv].pr)
+			//宝物返还
+			for(var j = 0;j <= 10;j++){
+				if(list[i]["a"+j])
+					strList.push(list[i]["a"+j]+":1")
+			}
+			//宝石返还
+			for(var j = 1;j <= 6;j++){
+				for(var k = 1;k <= 5;k++)
+				if(list[i]["e"+j+"g"+k])
+					strList.push(list[i]["e"+j+"g"+k]+":1")
+			}
 			map["2000030"] += Math.round(evolve_lv[list[i]["evo"]]["pr"] * exalt_lv[list[i]["lv"]]["prRate"])
 			if(list[i]["qa"] >= 5)
 				map["2000050"] += 1
@@ -195,15 +210,6 @@ var model = function(fightContorl) {
 	this.getHeroPrlvadnad = function(list) {
 		var awards = []
 		for(var i = 0;i < list.length;i++){
-			var lv = list[i].lv
-			//等级返还
-			if(lv_cfg[lv] && lv_cfg[lv].pr)
-				strList.push(lv_cfg[lv].pr)
-			//宝物返还
-			for(var j = 0;j <= 10;j++){
-				if(list[i]["a"+j])
-					strList.push(list[i]["a"+j]+":1")
-			}
 			//护符返还
 			if(list[i]["hfLv"]){
 				var hufuInfo = {lv:list[i]["hfLv"]}
@@ -217,12 +223,6 @@ var model = function(fightContorl) {
 			for(var j = 1;j <= 6;j++)
 				if(list[i]["e"+j])
 					awards.push({type : "equip",data : list[i]["e"+j]})
-			//宝石返还
-			for(var j = 1;j <= 6;j++){
-				for(var k = 1;k <= 5;k++)
-				if(list[i]["e"+j+"g"+k])
-					strList.push(list[i]["e"+j+"g"+k]+":1")
-			}
 			//法宝返还
 			for(var j = 1;j <= 3;j++){
 				if(list[i]["fabao"+j])
@@ -235,6 +235,7 @@ var model = function(fightContorl) {
 	this.getHeroCE = function(info) {
 		if(!info)
 			return 0
+		info = Object.assign({},info)
 		var allCE = 0
 		var evoId = evolve_lv[info.evo]["evoId"]
 		var aptitude = exalt_lv[info.exalt]["aptitude"] || 1
@@ -470,10 +471,40 @@ var model = function(fightContorl) {
 				info.angerSkill = Object.assign({skillId : info.angerSkill},skills[info.angerSkill])
 			}
 		}
+		if(info.beginSkill && skills[info.beginSkill])
+			info.beginSkill = Object.assign({skillId : info.beginSkill},skills[info.beginSkill])
+		if(info.diedSkill && skills[info.diedSkill]){
+			info.diedSkill = Object.assign({skillId : info.diedSkill},skills[info.diedSkill])
+			info.diedSkill.diedSkill = true
+		}
 		//主属性增益
 		info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
 		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore)
 		return new character(info)
+	}
+	//获取角色主数据
+	this.getCharacterMainAtt = function(info) {
+		if(!info || !heros[info.id])
+			return false
+		info = Object.assign({},info)
+		info.exalt = info.exalt || 1
+		info.evo = info.evo || 1
+		info.lv = info.lv || 1
+		var id = info.id
+		var evoId = evolve_lv[info.evo]["evoId"]
+		info.aptitude = exalt_lv[info.exalt]["aptitude"] || 1
+		//神兽资质加成
+		if(heros[id]["type"] == 2)
+			info.aptitude += 3
+		this.mergeData(info,heros[id])
+		//主属性计算
+		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
+		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
+		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
+		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
+		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
+		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
+		return info
 	}
 	//新增天赋
 	this.mergeTalent = function(info,talentId,value) {
