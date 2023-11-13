@@ -150,7 +150,6 @@ module.exports = function() {
 		    	info.score = score
 		    	self.incrbyZset(main_name,uid,score)
 		    	info.awardList = self.addItemStr(uid,"201:"+coin,1,"全服BOSS挑战")
-		    	info.awardList = info.awardList.concat(self.openChestAward(uid,area_boss_cfg["chest"]["value"]))
 			    cb(true,info)
 			}
 		})
