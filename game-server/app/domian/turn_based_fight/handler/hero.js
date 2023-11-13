@@ -237,7 +237,7 @@ var model = function(fightContorl) {
 			return 0
 		info = Object.assign({},info)
 		var allCE = 0
-		var evoId = "evo"+evolve_lv[info.evo]["evoId"]
+		var evoId = heros[info.id]["evo"+evolve_lv[info.evo]["evoId"]]
 		var aptitude = exalt_lv[info.exalt]["aptitude"] || 1
 		//主属性战力
 		info["M_HP"] = Math.floor(evolves[evoId]["M_HP"] * (info["MR1"] || 1))
@@ -304,7 +304,7 @@ var model = function(fightContorl) {
 		if(heros[id]["type"] == 2)
 			info.aptitude += 3
 		this.mergeData(info,heros[id])
-		var evoId = "evo"+evolve_lv[info.evo]["evoId"]
+		var evoId = heros[info.id]["evo"+evolve_lv[info.evo]["evoId"]]
 		if(!evolves[evoId]){
 			console.log("evoId error "+evoId+"-"+id)
 			return false
@@ -495,7 +495,7 @@ var model = function(fightContorl) {
 		info.evo = info.evo || 1
 		info.lv = info.lv || 1
 		var id = info.id
-		var evoId = "evo"+evolve_lv[info.evo]["evoId"]
+		var evoId = heros[info.id]["evo"+evolve_lv[info.evo]["evoId"]]
 		info.aptitude = exalt_lv[info.exalt]["aptitude"] || 1
 		//神兽资质加成
 		if(heros[id]["type"] == 2)
