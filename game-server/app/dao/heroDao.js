@@ -384,7 +384,7 @@ heroDao.prototype.getFightTeam = function(uid,cb) {
 			})
 		},
 		function(next) {
-			self.getTeamByType(uid,"normal",function(flag,teams) {
+			self.getOnlyTeamByType(uid,"normal",function(flag,teams) {
 				if(!flag){
 					next(teams)
 					return
@@ -445,7 +445,7 @@ heroDao.prototype.setZhuluTeam = function(areaId,uid,hIds,cb) {
 	})
 }
 //设置出场阵容
-heroDao.prototype.setTeamByType = function(uid,type,hIds,cb) {
+heroDao.prototype.setOnlyTeamByType = function(uid,type,hIds,cb) {
 	var self = this
 	async.waterfall([
 		function(next) {
@@ -502,7 +502,7 @@ heroDao.prototype.setTeamByType = function(uid,type,hIds,cb) {
 	})
 }
 //获取出场阵容
-heroDao.prototype.getTeamByType = function(uid,type,cb) {
+heroDao.prototype.getOnlyTeamByType = function(uid,type,cb) {
 	var self = this
 	var teams = []
 	var fightTeam = []

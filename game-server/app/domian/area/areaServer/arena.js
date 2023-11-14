@@ -6,7 +6,7 @@ const VIP = require("../../../../config/gameCfg/VIP.json")
 const battle_cfg = require("../../../../config/gameCfg/battle_cfg.json")
 var util = require("../../../../util/util.js")
 const async = require("async")
-var mainName = "arena"
+var main_name = "arena"
 var correctNumerator = arena_cfg["correctNumerator"]["value"]			//修正值
 var correctDenominator = arena_cfg["correctDenominator"]["value"]		//宽度值
 var addOneLv = arena_cfg["addOneLv"]["value"]							//排名在此以内使用当前排名+1
@@ -63,7 +63,7 @@ module.exports = function() {
 		return list
 	}
 	local.getTargetsInfo = function(list,cb) {
-		self.redisDao.db.hmget("area:area"+self.areaId+":"+mainName,list,function(err,uids) {
+		self.redisDao.db.hmget("area:area"+self.areaId+":"+main_name,list,function(err,uids) {
 			for(var i = 0;i < uids.length;i++){
 				if(!uids[i])
 					uids[i] = list[i]
@@ -85,8 +85,8 @@ module.exports = function() {
 				highestRank : rank				//最高排名
 			}
 			player_rank[uid] = info.highestRank
-			self.setHMObj(uid,mainName,info)
-			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,uid)
+			self.setHMObj(uid,main_name,info)
+			self.redisDao.db.hset("area:area"+self.areaId+":"+main_name,rank,uid)
 			if(cb){
 				cb(true,info)
 			}
@@ -103,7 +103,7 @@ module.exports = function() {
 			cb(false,"shopId error "+shopId)
 			return
 		}
-		self.getHMObj(uid,mainName,["highestRank",shopId+"_buy"],function(list) {
+		self.getHMObj(uid,main_name,["highestRank",shopId+"_buy"],function(list) {
 			var rank = parseInt(list[0])
 			var buyNum = parseInt(list[1]) || 0
 			if(buyNum + count > shopInfo.maxBuy){
@@ -120,7 +120,7 @@ module.exports = function() {
 					return
 				}
 				self.addItemStr(uid,shopInfo.pa,count,1,"竞技场商城"+shopId)
-				self.incrbyObj(uid,mainName,shopId+"_buy",count)
+				self.incrbyObj(uid,main_name,shopId+"_buy",count)
 				cb(true,shopInfo.pa)
 			})
 		})
@@ -136,7 +136,7 @@ module.exports = function() {
 			return
 		}
 		local.timeMap[uid] = Date.now() + 10000
-		self.getObj(uid,mainName,"rank",function(rank) {
+		self.getObj(uid,main_name,"rank",function(rank) {
 			rank = parseInt(rank)
 			var list = local.calRankTargets(rank)
 			local.getTargetsInfo(list,cb)
@@ -167,7 +167,7 @@ module.exports = function() {
 	}
 	//获取我的竞技场数据
 	this.getMyArenaInfo = function(uid,cb) {
-		this.getObjAll(uid,mainName,function(data) {
+		this.getObjAll(uid,main_name,function(data) {
 			if(!data || data.areaId != self.areaId){
 				self.initArenaRank(uid,cb)
 			}else{
@@ -186,7 +186,7 @@ module.exports = function() {
 		var atkTeam = []
 		async.waterfall([
 			function(next) {
-				self.heroDao.getTeamByType(uid,battle_cfg[mainName]["team"],function(flag,teams) {
+				self.getTeamByType(uid,battle_cfg[main_name]["team"],function(flag,teams) {
 					atkTeam = teams
 					next()
 				})
@@ -205,7 +205,7 @@ module.exports = function() {
 				    }
 					local.locks[targetUid] = true
 					local.locks[uid] = true
-					self.getObjAll(uid,mainName,function(arenaInfo) {
+					self.getObjAll(uid,main_name,function(arenaInfo) {
 						arenaInfo.count = parseInt(arenaInfo.count)
 						arenaInfo.buyCount = parseInt(arenaInfo.buyCount)
 						if(arenaInfo.count >= dayCount + arenaInfo.buyCount){
@@ -214,7 +214,7 @@ module.exports = function() {
 							cb(false,"挑战次数已满")
 							return
 						}
-						self.incrbyObj(uid,mainName,"count",1)
+						self.incrbyObj(uid,main_name,"count",1)
 						if(targetUid < 10000){
 							//机器人队伍
 							var range = util.binarySearch(rankList,targetRank)
@@ -249,13 +249,13 @@ module.exports = function() {
 	this.arenadayUpdate = function(uid) {
 		local.timeMap = {}
 		//发放竞技场奖励
-		self.getObj(uid,mainName,"rank",function(rank) {
+		self.getObj(uid,main_name,"rank",function(rank) {
 			if(rank != null){
 				var info = {
 					count : 0,						//今日挑战次数
 					buyCount : 0					//今日购买挑战次数
 				}
-				self.setHMObj(uid,mainName,info)
+				self.setHMObj(uid,main_name,info)
 				rank = parseInt(rank)
 				if(rank <= 4000){
 					var range = util.binarySearch(rankList,rank)
@@ -268,7 +268,7 @@ module.exports = function() {
 	}
 	//购买挑战次数
 	this.buyArenaCount = function(uid,cb) {
-		self.getObj(uid,mainName,"buyCount",function (count) {
+		self.getObj(uid,main_name,"buyCount",function (count) {
 			count = parseInt(count) || 0
 			if(count >= buyCount + VIP[self.players[uid]["vip"]]["arena"]){
 				cb(false,"购买次数已达上限")
@@ -279,7 +279,7 @@ module.exports = function() {
 					cb(flag,err)
 					return
 				}
-				self.incrbyObj(uid,mainName,"buyCount",1,function(newCount) {
+				self.incrbyObj(uid,main_name,"buyCount",1,function(newCount) {
 					cb(true,newCount)
 				})
 			})
@@ -298,7 +298,7 @@ module.exports = function() {
     	if(self.checkLimitedTime("arena"))
     		rate = 2
 		if(winFlag){
-			self.getObjAll(uid,mainName,function(data) {
+			self.getObjAll(uid,main_name,function(data) {
 				//交换排名
 				data.rank = Number(data.rank)
 				data.highestRank = Number(data.highestRank)
@@ -330,7 +330,7 @@ module.exports = function() {
 					var value = local.calRankUpAward(data.highestRank,data.rank)
 					info.newRank = data.rank
 					info.upAward = self.addItem({uid : uid,itemId : rankUp,value : value,reason : "排名提升奖励"})
-					self.setObj(uid,mainName,"highestRank",data.rank)
+					self.setObj(uid,main_name,"highestRank",data.rank)
 					player_rank[uid] = Number(data.rank)
 				}
 				//记录
@@ -377,13 +377,13 @@ module.exports = function() {
 	}
 	//交换排名
 	local.swopRank = function(uid,rank,targetUid,targetRank,cb) {
-			self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,targetRank,uid)
-			self.setObj(uid,mainName,"rank",targetRank)
+			self.redisDao.db.hset("area:area"+self.areaId+":"+main_name,targetRank,uid)
+			self.setObj(uid,main_name,"rank",targetRank)
 			if(targetUid > 10000){
-				self.redisDao.db.hset("area:area"+self.areaId+":"+mainName,rank,targetUid)
-				self.setObj(targetUid,mainName,"rank",rank)
+				self.redisDao.db.hset("area:area"+self.areaId+":"+main_name,rank,targetUid)
+				self.setObj(targetUid,main_name,"rank",rank)
 			}else{
-				self.redisDao.db.hdel("area:area"+self.areaId+":"+mainName,rank)
+				self.redisDao.db.hdel("area:area"+self.areaId+":"+main_name,rank)
 			}
 			if(targetRank <= sysChatLv){
 				self.getPlayerInfoByUids([uid,targetUid],function(userInfos) {
