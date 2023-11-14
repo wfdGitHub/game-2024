@@ -5,6 +5,7 @@ const manor_citys = require("../../../../config/gameCfg/manor_citys.json")
 const manor_main = require("../../../../config/gameCfg/manor_main.json")
 const manor_make = require("../../../../config/gameCfg/manor_make.json")
 const gem_lv = require("../../../../config/gameCfg/gem_lv.json")
+const battle_cfg = require("../../../../config/gameCfg/battle_cfg.json")
 const async = require("async")
 const heroId = 305010
 const hourTime = 3600000
@@ -632,7 +633,7 @@ module.exports = function() {
 			cb(false,"land error "+land)
 			return
 		}
-		var atkTeam = self.getUserTeam(uid)
+		var atkTeam = []
 		var defTeam = []
 		var seededNum = Date.now()
 		var awardList = []
@@ -643,6 +644,12 @@ module.exports = function() {
 		var grid = 0
 		var atkInfo = self.getSimpleUser(uid)
 		async.waterfall([
+			function(next) {
+				self.getTeamByType(uid,battle_cfg["manor_city"]["team"],function(flag,teams) {
+					atkTeam = teams
+					next()
+				})
+			},
 			function(next) {
 				//条件判定
 				if(city_infos[land].endTime && Date.now() > city_infos[land].endTime){
@@ -862,7 +869,7 @@ module.exports = function() {
 			cb(false,"target error")
 			return
 		}
-		var atkTeam = self.getUserTeam(uid)
+		var atkTeam = []
 		var defTeam = []
 		var seededNum = Date.now()
 		var awardList = []
@@ -878,6 +885,12 @@ module.exports = function() {
 		var defInfo = {"uid" : target,"head":heroId}
 		var endTime = Date.now() + validityTime
 		async.waterfall([
+			function(next) {
+				self.getTeamByType(uid,battle_cfg["manor_player"]["team"],function(flag,teams) {
+					atkTeam = teams
+					next()
+				})
+			},
 			function(next) {
 				self.getHMObj(uid,main_name,["main","grid_1","grid_2","grid_3","grid_4","grid_5"],function(data) {
 					buildLv = Number(data[0]) || 1

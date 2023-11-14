@@ -1,6 +1,7 @@
 //挑战山海
 const area_challenge = require("../../../../config/gameCfg/area_challenge.json")
 const area_trial = require("../../../../config/gameCfg/area_trial.json")
+const battle_cfg = require("../../../../config/gameCfg/battle_cfg.json")
 const async = require("async")
 const main_name = "area_challenge"
 module.exports = function() {
@@ -166,7 +167,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				self.getTeamByType(uid,"allstar",function(flag,teams) {
+				self.getTeamByType(uid,battle_cfg["area_trial"]["team"],function(flag,teams) {
 					atkTeams = teams
 					next()
 				})
