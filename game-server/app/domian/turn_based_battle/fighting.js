@@ -16,6 +16,7 @@ var model = function(atkInfo,defInfo,otps,managers) {
 	this.locator = new locatorFun(this)
 	this.formula = new formulaFun(this)
 	this.skillManager = new skillManagerFun(this)
+	this.managers = managers
 	this.buffManager = managers.buffManager
 	this.maxRound = 20
 	//战斗数据

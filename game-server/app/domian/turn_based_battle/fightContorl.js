@@ -12,7 +12,7 @@ var model = function(){
 	this.managers["buffManager"] = new buffManager()
 	const handlers = ["util","equip","fabao","hero","standard"]
 	for(var i = 0;i < handlers.length;i++)
-		require("./handler/"+handlers[i]+".js").call(this,this)
+		require("./handler/"+handlers[i]+".js").call(this.managers,this)
 }
 //开始战斗
 model.prototype.beginFight = function(atkTeam,defTeam,otps) {

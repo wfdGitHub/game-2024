@@ -2,16 +2,16 @@
 const entity_base = require("./entity_base.js")
 const skill_base = require("../skill/skill_base.js")
 const fightCfg = require("../fightCfg.js")
-var model = function(fighting,otps) {
+var model = function(fighting,info,teamCfg) {
 	//继承父类属性
-	entity_base.call(this,fighting,otps)
+	entity_base.call(this,fighting,info)
 	if(this.isNaN)
 		return
 	//初始化技能
 	this.defaultSkill = this.packageDefaultSkill()
 	this.angerSkill = this.packageAngerSkill()
 	//初始化天赋
-	this.talents = this.packageHeroTalents(otps)
+	this.talents = fighting.managers.getCharacterInfo(info,teamCfg)
 	//回合技能
 	this.roundSkills = []
 }

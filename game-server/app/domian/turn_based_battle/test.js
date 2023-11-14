@@ -7,4 +7,3 @@ var defTeam = [{"id":206010,"s1_lv":0,"skillTalents":{"buff1":buff1}},{"id":1040
 console.log(fightContorl.beginFight(atkTeam,defTeam,{}))
 fightContorl.fighting.fightRecord.explain()
 // console.log(fightContorl.fighting.fightRecord.getTextList())
-console.log(fightRecord.getHeroData(atkTeam[0]))

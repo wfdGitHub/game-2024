@@ -305,6 +305,10 @@ var model = function(fightContorl) {
 			info.aptitude += 3
 		this.mergeData(info,heros[id])
 		var evoId = evolve_lv[info.evo]["evoId"]
+		if(!evolves[heros[info.id]["evo"+evoId]]){
+			console.log("evoId error "+heros[info.id]["evo"+evoId]+"-"+info.id)
+			return false
+		}
 		if(evolves[heros[info.id]["evo"+evoId]]["specie1"])
 			info.specie1 = evolves[heros[info.id]["evo"+evoId]]["specie1"]
 		if(evolves[heros[info.id]["evo"+evoId]]["specie2"])
