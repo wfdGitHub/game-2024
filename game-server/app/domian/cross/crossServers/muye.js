@@ -1,6 +1,7 @@
 //天命之战 3V3
 const muye_cfg = require("../../../../config/gameCfg/muye_cfg.json")
 const muye_rank = require("../../../../config/gameCfg/muye_rank.json")
+const battle_cfg = require("../../../../config/gameCfg/battle_cfg.json")
 const async = require("async")
 var util = require("../../../../util/util.js")
 var robotTeam = []
@@ -353,7 +354,7 @@ var muyeEntity = function(self,theatreId) {
 		async.waterfall([
 			function(next) {
 				//获取攻方阵容
-				self.getTeamByType(uid,"muye",function(flag,list) {
+				self.getTeamByType(uid,battle_cfg["muye"]["team"],function(flag,list) {
 					atkTeams = list
 					console.log("atkTeams",atkTeams)
 					next()
@@ -403,7 +404,7 @@ var muyeEntity = function(self,theatreId) {
 							targetSid = Number(strList[0])
 							targetUid = Number(strList[1])
 							targetScore = Number(list[1])
-							self.getTeamByType(targetUid,"muye",function(flag,list) {
+							self.getTeamByType(targetUid,battle_cfg["muye"]["team"],function(flag,list) {
 								defTeams = list
 								console.log("defTeams",defTeams)
 					            self.getPlayerInfoByUid(targetUid,function(info) {
