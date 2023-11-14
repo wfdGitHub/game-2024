@@ -42,7 +42,7 @@ module.exports = function() {
 	//家园初始化
 	this.manorInitData = function() {
 		var arr = []
-		for(var i = 0;i < 9;i++)
+		for(var i = 0;i < 5;i++)
 			arr.push("city_"+i)
 		self.getAreaHMObj(main_name,arr,function(data) {
 			city_infos = {}
@@ -796,7 +796,7 @@ module.exports = function() {
 						if(targetLv <= 10)
 							targetLv++
 					}
-					local.manorSrandmember(targetLv,2,function(flag,data) {
+					local.manorSrandmember(targetLv,6,function(flag,data) {
 						if(flag){
 							list = data
 							next()
@@ -807,57 +807,25 @@ module.exports = function() {
 				})
 			},
 			function(next) {
+				var newList = []
 				for(var i = 0;i < list.length;i++){
 					if(list[i] != uid){
-						info.uid = list[i]
+						newList.push(list[i])
 						break
 					}
 				}
-				if(!info.uid){
+				if(!newList.length){
 					next("找不到可用的目标")
 					return
 				}
+				list = newList
 				next()
 			},
 			function(next) {
-				if(info.uid > 10000){
-					self.getPlayerInfoByUids([info.uid],function(data) {
-						info.userInfo = data[0]
-						next()
-					})
-				}else{
-					info.userInfo = {"uid" : info.uid,"head":heroId,"name" : self.namespace.getNameByIndex(info.uid)}
-					next()
-				}
-			},
-			function(next) {
-				//获取敌方队伍
-				if(info.uid < 10000){
-					//机器人队伍
-					info.defTeam = manor_main[buildLv]["robot"]
-					next()
-				}else{
-					//玩家队伍
-					self.getDefendTeam(info.uid,function(team) {
-						info.defTeam = team
-						next()
-					})
-				}
-			},
-			function(next) {
-				//建筑布局
-				if(info.uid > 10000){
-					self.getObjAll(info.uid,main_name,function(data) {
-						info.cityInfo = data
-						next()
-					})
-				}else{
-					info.cityInfo = manor_main[buildLv]["robot_city"]
-					next()
-				}
-			},
-			function(next) {
-				cb(true,info)
+				self.getPlayerBaseByUids(list,function(data) {
+					info.userInfos = data
+					cb(true,info)
+				})
 			}
 		],function(err) {
 			cb(false,err)
