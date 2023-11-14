@@ -383,7 +383,7 @@ module.exports = function() {
 			function(next) {
 				//常规阵容移除原出战
 				if(type == "normal"){
-					self.heroDao.getTeamByType(uid,type,function(flag,team) {
+					self.heroDao.getOnlyTeamByType(uid,type,function(flag,team) {
 						if(flag && team){
 							for(var i = 0;i < team.length;i++)
 								if(team[i])
@@ -396,7 +396,7 @@ module.exports = function() {
 				}
 			},
 			function(next) {
-				self.heroDao.setTeamByType(uid,type,hIds,function(flag,data) {
+				self.heroDao.setOnlyTeamByType(uid,type,hIds,function(flag,data) {
 					next(null,flag,data)
 				})
 			},
@@ -433,7 +433,7 @@ module.exports = function() {
 			},
 			function(teamCfg,next) {
 				teamCfg["comeonNum"] = battle_team[type]["atkComeonNum"]
-				self.heroDao.getTeamByType(uid,type,function(flag,teams) {
+				self.heroDao.getOnlyTeamByType(uid,type,function(flag,teams) {
 					if(type == "allstar"){
 						var list = []
 						list.push([teamCfg].concat(teams.splice(0,3)))

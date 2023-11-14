@@ -368,7 +368,7 @@ crossManager.prototype.getTeamByType = function(uid,type,cb) {
 		},
 		function(teamCfg,next) {
 			teamCfg["comeonNum"] = battle_team[type]["atkComeonNum"]
-			self.heroDao.getTeamByType(uid,type,function(flag,teams) {
+			self.heroDao.getOnlyTeamByType(uid,type,function(flag,teams) {
 				if(type == "allstar"){
 					var list = []
 					list.push([teamCfg].concat(teams.splice(0,3)))
