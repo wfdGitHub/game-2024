@@ -222,7 +222,7 @@ var gradingEntity = function(self,theatreId) {
 			},
 			function(next) {
 				//atkTeam
-				self.heroDao.getTeamByType(uid,battle_cfg[mainName]["team"],function(flag,teams) {
+				self.getTeamByType(uid,battle_cfg[mainName]["team"],function(flag,teams) {
 					atkTeam = teams
 					next()
 				})
@@ -240,7 +240,7 @@ var gradingEntity = function(self,theatreId) {
 					next()
 				}else{
 					//玩家
-					self.heroDao.getTeamByType(targetUid,battle_cfg[mainName]["team"],function(flag,teams) {
+					self.getTeamByType(targetUid,battle_cfg[mainName]["team"],function(flag,teams) {
 						defTeam = teams
 						self.getPlayerInfoByUid(targetUid,function(info) {
 							targetInfo = info

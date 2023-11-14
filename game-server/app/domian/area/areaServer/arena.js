@@ -186,7 +186,7 @@ module.exports = function() {
 		var atkTeam = []
 		async.waterfall([
 			function(next) {
-				self.heroDao.getTeamByType(uid,battle_cfg[main_name]["team"],function(flag,teams) {
+				self.getTeamByType(uid,battle_cfg[main_name]["team"],function(flag,teams) {
 					atkTeam = teams
 					next()
 				})
