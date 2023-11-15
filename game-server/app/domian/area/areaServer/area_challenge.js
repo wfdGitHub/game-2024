@@ -68,7 +68,7 @@ module.exports = function() {
 				cb(false,"boss错误")
 				return
 			}
-			self.getTeamByCustom(uid,hIds,function(atkTeam) {
+			self.getTeamByCustom(uid,hIds,function(flag,atkTeam) {
 				var seededNum = Date.now()
 				var defTeam = self.fightContorl.getNPCTeamByType(main_name,area_challenge[cur_chapter]["team"+bossId],area_challenge[cur_chapter]["lv"])
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
