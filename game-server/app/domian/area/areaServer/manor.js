@@ -804,7 +804,6 @@ module.exports = function() {
 				for(var i = 0;i < list.length;i++){
 					if(list[i] != uid){
 						newList.push(list[i])
-						break
 					}
 				}
 				if(!newList.length){

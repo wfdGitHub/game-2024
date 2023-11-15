@@ -475,7 +475,8 @@ area.prototype.getPlayerBaseByUids = function(uids,cb) {
 		for(var i = 0;i < uids.length;i++){
 			let info = {}
 			if(uids[i] < 10000){
-				info = self.robots[uids[i]]
+				var rId = uids[i] % 4000 + 1
+				info = self.robots[rId]
 			}else{
 				info = {
 					uid : uids[i],
