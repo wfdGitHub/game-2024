@@ -470,7 +470,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//自身阵容
-				self.heroDao.getTeamByCustom(uid,[hId],function(atkTeam) {
+				self.getTeamByCustom(uid,[hId],function(atkTeam) {
 					next(null,atkTeam)
 				})
 			},
@@ -535,7 +535,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//自身阵容
-				self.heroDao.getTeamByCustom(uid,[hId],function(atkTeam) {
+				self.getTeamByCustom(uid,[hId],function(atkTeam) {
 					next(null,atkTeam)
 				})
 			},
