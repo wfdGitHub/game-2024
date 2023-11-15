@@ -633,8 +633,27 @@ var model = function() {
 		})
 	}
 	//首次获取英雄
+	this.gainBeginHero = function(uid,cb) {
+		self.incrbyObj(uid,main_name,"b_hero",1,function(data) {
+			if(data > 1){
+				cb(false,"已获取")
+				return
+			}
+			var hId = self.getLordLastid(uid)
+			var id = default_cfg["begin_hero"]["value"]
+			var heroInfo = self.fightContorl.makeHeroData(id,3)
+			heroInfo.hId = hId
+			self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
+			self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo,function() {
+				if(cb)
+					cb(true,heroInfo)
+			})
+			self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:heroInfo.qa,reason:"获得英雄-"+hId})
+		})
+	}
+	//首次获取英雄
 	this.gainFirstHero = function(uid,cb) {
-		self.incrbyObj(uid,main_name,"first",1,function(data) {
+		self.incrbyObj(uid,main_name,"f_hero",1,function(data) {
 			if(data > 1){
 				cb(false,"已获取")
 				return
