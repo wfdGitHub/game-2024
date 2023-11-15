@@ -471,7 +471,6 @@ module.exports = function() {
 			function(next) {
 				//自身阵容
 				self.getTeamByCustom(uid,[hId],function(flag,atkTeam) {
-					console.log("atkTeam",atkTeam)
 					next(null,atkTeam)
 				})
 			},
@@ -537,7 +536,6 @@ module.exports = function() {
 			function(next) {
 				//自身阵容
 				self.getTeamByCustom(uid,[hId],function(flag,atkTeam) {
-					console.log("atkTeam",atkTeam)
 					next(null,atkTeam)
 				})
 			},
@@ -550,7 +548,6 @@ module.exports = function() {
 				else if(monLv >= 2)
 					dl = "zhulu_elite"
 				var defTeam = self.fightContorl.getNPCTeamByType("manor_mon",manor_main[buildLv]["mon_"+monLv],self.getLordLv(uid),"lv_2")
-				console.log("atkTeam",atkTeam)
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
 					var cd = Date.now() + monCd
