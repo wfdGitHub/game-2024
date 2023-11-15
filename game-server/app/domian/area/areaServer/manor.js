@@ -789,7 +789,6 @@ module.exports = function() {
 					buildLv = Number(lv) || 1
 					var targetLv = buildLv
 					local.manorSrandmember(targetLv,6,function(flag,data) {
-						console.log("manorSrandmember",data)
 						if(flag){
 							list = data
 							next()
@@ -811,12 +810,10 @@ module.exports = function() {
 					return
 				}
 				list = newList
-				console.log("newList",newList)
 				next()
 			},
 			function(next) {
 				self.getPlayerBaseByUids(list,function(data) {
-					console.log("userInfos",data)
 					info.userInfos = data
 					cb(true,info)
 				})
