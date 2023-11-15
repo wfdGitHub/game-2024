@@ -788,15 +788,8 @@ module.exports = function() {
 				self.getObj(uid,main_name,"main",function(lv) {
 					buildLv = Number(lv) || 1
 					var targetLv = buildLv
-					var rand = Math.random()
-					if(rand < 0.3){
-						if(targetLv > 1)
-							targetLv--
-					}else if(rand > 0.9){
-						if(targetLv <= 10)
-							targetLv++
-					}
 					local.manorSrandmember(targetLv,6,function(flag,data) {
+						console.log("manorSrandmember",data)
 						if(flag){
 							list = data
 							next()
@@ -819,10 +812,12 @@ module.exports = function() {
 					return
 				}
 				list = newList
+				console.log("newList",newList)
 				next()
 			},
 			function(next) {
 				self.getPlayerBaseByUids(list,function(data) {
+					console.log("userInfos",data)
 					info.userInfos = data
 					cb(true,info)
 				})
