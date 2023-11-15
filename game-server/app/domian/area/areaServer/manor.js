@@ -470,7 +470,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//自身阵容
-				self.getTeamByCustom(uid,[hId],function(atkTeam) {
+				self.getTeamByCustom(uid,[hId],function(flag,atkTeam) {
 					console.log("atkTeam",atkTeam)
 					next(null,atkTeam)
 				})
@@ -536,7 +536,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//自身阵容
-				self.getTeamByCustom(uid,[hId],function(atkTeam) {
+				self.getTeamByCustom(uid,[hId],function(flag,atkTeam) {
 					console.log("atkTeam",atkTeam)
 					next(null,atkTeam)
 				})
