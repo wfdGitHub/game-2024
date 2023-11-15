@@ -91,10 +91,9 @@ module.exports = function() {
 	    			info.bossId = bossId
 	    			info.cur_chapter = cur_chapter
 	    			info.time = time
-		    		cb(true,info)
-			    }else{
-			    	cb(false,info)
+		    		
 			    }
+			    cb(true,info)
 			})
 		})
 	}
