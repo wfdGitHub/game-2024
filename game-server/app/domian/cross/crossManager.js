@@ -350,6 +350,7 @@ crossManager.prototype.theatreDeploy = function() {
 }
 //根据类型获取阵容
 crossManager.prototype.getTeamByType = function(uid,type,cb) {
+	var self = this
 	async.waterfall([
 		function(next) {
 			if(!battle_team[type]){
