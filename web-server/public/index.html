@@ -18,7 +18,7 @@
     </script> 
     <script type="text/javascript">
       var pomelo = window.pomelo;
-      var host = "106.55.19.184";
+      var host = "127.0.0.1";
       // host = "192.168.3.200"
       // host = "47.107.48.79"
       var queryEntry = function(callback) {
@@ -308,9 +308,15 @@
         })
       }
       //===================神兽===================/
-      //获取首个英雄
+      //获取初始英雄
       var gainFirstHero = function() {
         pomelo.request("area.heroHandler.gainFirstHero", {}, function(data) {
+            console.log(data);
+        })
+      }
+      //获取首抽英雄
+      var gainBeginHero = function() {
+        pomelo.request("area.heroHandler.gainBeginHero", {}, function(data) {
             console.log(data);
         })
       }

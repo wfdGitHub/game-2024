@@ -17,7 +17,15 @@ var heroHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 };
-//获取首个英雄
+//获取首抽英雄
+heroHandler.prototype.gainBeginHero = function(msg, session, next) {
+  var areaId = session.get("areaId")
+  var uid = session.uid
+  this.areaManager.areaMap[areaId].gainBeginHero(uid,function(flag,data) {
+    next(null,{flag:flag,data:data})
+  })
+}
+//获取初始英雄
 heroHandler.prototype.gainFirstHero = function(msg, session, next) {
   var areaId = session.get("areaId")
   var uid = session.uid

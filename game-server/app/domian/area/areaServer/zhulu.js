@@ -295,7 +295,7 @@ module.exports = function() {
 	}
 	//获取逐鹿战斗数据
 	this.getZhuluFightData = function(uid,hIds,cb) {
-		self.heroDao.getTeamByCustom(uid,hIds,function(flag,teams) {
+		self.getTeamByCustom(uid,hIds,function(flag,teams) {
 			userFightDatas[uid] = {}
 			var grid = userDatas[uid]["curGrid"] + 1
 			atkTeam = local.spoilsLoad(teams,userDatas[uid]["spoils"])

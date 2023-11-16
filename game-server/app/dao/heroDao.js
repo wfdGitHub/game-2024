@@ -20,7 +20,6 @@ const train_arg = require("../../config/gameCfg/train_arg.json")
 const battle_team = require("../../config/gameCfg/battle_team.json")
 const util = require("../../util/util.js")
 const async = require("async")
-const first_recruit = default_cfg["first_hero"]["value"]
 const baseStone = {
 	"1" : 4110,
 	"2" : 4210,

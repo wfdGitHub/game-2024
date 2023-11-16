@@ -80,7 +80,8 @@ manorHandler.prototype.manorBuyAction = function(msg, session, next) {
 manorHandler.prototype.manorBoss = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
-  this.areaManager.areaMap[areaId].manorBoss(uid,function(flag,data) {
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].manorBoss(uid,hId,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }
@@ -89,7 +90,8 @@ manorHandler.prototype.manorMon = function(msg, session, next) {
   var uid = session.uid
   var areaId = session.get("areaId")
   var monId = msg.monId
-  this.areaManager.areaMap[areaId].manorMon(uid,monId,function(flag,data) {
+  var hId = msg.hId
+  this.areaManager.areaMap[areaId].manorMon(uid,hId,monId,function(flag,data) {
     next(null,{flag:flag,data:data})
   })
 }

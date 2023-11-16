@@ -430,7 +430,7 @@ module.exports = function() {
 		})
 	}
 	//挑战首领
-	this.manorBoss = function(uid,cb) {
+	this.manorBoss = function(uid,hId,cb) {
 		var buildLv = 1
 		var bossCount = 0
 		var action = 0
@@ -469,8 +469,13 @@ module.exports = function() {
 				})
 			},
 			function(next) {
+				//自身阵容
+				self.getTeamByCustom(uid,[hId],function(flag,atkTeam) {
+					next(null,atkTeam)
+				})
+			},
+			function(atkTeam,next) {
 				//战斗结算
-				var atkTeam = self.getUserTeam(uid)
 				var seededNum = Date.now()
 				var defTeam = self.fightContorl.getNPCTeamByType("manor_mon",manor_main[buildLv]["boss_team"],self.getLordLv(uid),"lv_4")
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
@@ -490,7 +495,7 @@ module.exports = function() {
 		})
 	}
 	//挑战山贼
-	this.manorMon = function(uid,monId,cb) {
+	this.manorMon = function(uid,hId,monId,cb) {
 		var buildLv = 1
 		var monLv = 1
 		var action = 0
@@ -529,8 +534,13 @@ module.exports = function() {
 				})
 			},
 			function(next) {
+				//自身阵容
+				self.getTeamByCustom(uid,[hId],function(flag,atkTeam) {
+					next(null,atkTeam)
+				})
+			},
+			function(atkTeam,next) {
 				//战斗结算
-				var atkTeam = self.getUserTeam(uid)
 				var seededNum = Date.now()
 				var dl = "zhulu_normal"
 				if(monLv >= 4)
@@ -788,14 +798,6 @@ module.exports = function() {
 				self.getObj(uid,main_name,"main",function(lv) {
 					buildLv = Number(lv) || 1
 					var targetLv = buildLv
-					var rand = Math.random()
-					if(rand < 0.3){
-						if(targetLv > 1)
-							targetLv--
-					}else if(rand > 0.9){
-						if(targetLv <= 10)
-							targetLv++
-					}
 					local.manorSrandmember(targetLv,6,function(flag,data) {
 						if(flag){
 							list = data
@@ -811,7 +813,6 @@ module.exports = function() {
 				for(var i = 0;i < list.length;i++){
 					if(list[i] != uid){
 						newList.push(list[i])
-						break
 					}
 				}
 				if(!newList.length){
