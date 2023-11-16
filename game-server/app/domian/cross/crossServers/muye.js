@@ -350,6 +350,7 @@ var muyeEntity = function(self,theatreId) {
 		var wins = []
 		var seededNums = []
 		var voidScore = false
+		var curLv = self.players[crossUid]["playerInfo"]["level"]
 		var targetcrossUid,targetInfo,targetSid,targetUid,targetScore,begin,end
 		async.waterfall([
 			function(next) {
@@ -363,7 +364,8 @@ var muyeEntity = function(self,theatreId) {
 			function(next) {
 				self.redisDao.db.zscore([main_name+":rank:camp"+camp,crossUid],function(err,score) {
 					if(!score || score <= 0){
-						defTeams = robotTeam.concat()
+						for(var i = 0; i < robotTeam.length;i++)
+							defTeams[i] = self.fightContorl.getNPCTeamByType("muye",robotTeam[i],curLv)
 						targetInfo = {
 							name : "士兵",
 							head : "201010"
