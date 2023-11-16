@@ -217,6 +217,7 @@ var gradingEntity = function(self,theatreId) {
 						targetSid = Number(strList[0])
 						targetUid = Number(strList[1])
 						targetScore = Number(list[index*2 + 1])
+						next()
 					})
 				})
 			},
