@@ -217,6 +217,7 @@ var gradingEntity = function(self,theatreId) {
 						targetSid = Number(strList[0])
 						targetUid = Number(strList[1])
 						targetScore = Number(list[index*2 + 1])
+						next()
 					})
 				})
 			},
@@ -272,8 +273,8 @@ var gradingEntity = function(self,theatreId) {
 					self.redisDao.db.zadd(["cross:grading:realRank",curScore,crossUid])
 					if(firstFlag)
 						self.redisDao.db.hincrby("game:areaActives",self.players[crossUid]["areaId"],1)
-					next()
 				})
+				next()
 			},
 			function(next) {
 				glv = util.binarySearchIndex(grading_lv_list,curScore)

@@ -526,13 +526,16 @@ heroDao.prototype.getOnlyTeamByType = function(uid,type,cb) {
 					if(tmp == list[i][j])
 						list[i][j] = tmp
 				}
-				list[i].hId = hIds[i]
-				hash[list[i].hId] = list[i]
+				if(list[i]){
+					list[i].hId = hIds[i]
+					hash[list[i].hId] = list[i]
+				}
 			}
 			for(var i = 0;i < fightTeam.length;i++){
-				if(hash[fightTeam[i]]){
+				if(hash[fightTeam[i]])
 					teams.push(hash[fightTeam[i]])
-				}
+				else
+					teams.push(0)
 			}
 			cb(true,teams)
 		})
