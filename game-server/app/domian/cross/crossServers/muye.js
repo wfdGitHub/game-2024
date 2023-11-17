@@ -357,7 +357,6 @@ var muyeEntity = function(self,theatreId) {
 				//获取攻方阵容
 				self.getTeamByType(uid,battle_cfg["muye"]["team"],function(flag,list) {
 					atkTeams = list
-					console.log("atkTeams",atkTeams)
 					next()
 				})
 			},
@@ -408,7 +407,6 @@ var muyeEntity = function(self,theatreId) {
 							targetScore = Number(list[1])
 							self.getTeamByType(targetUid,battle_cfg["muye"]["team"],function(flag,list) {
 								defTeams = list
-								console.log("defTeams",defTeams)
 					            self.getPlayerInfoByUid(targetUid,function(info) {
 					                targetInfo = info
 					                next()
