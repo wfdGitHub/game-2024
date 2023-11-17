@@ -67,7 +67,8 @@ model.prototype.load = function(belong,otps) {
 	var team = [].concat(this[belong+"AllTeam"])
 	if(this[belong+"NPCTeam"]){
 		for(var i = 0;i < this[belong+"NPCTeam"].length;i++){
-			team.push(this[belong+"NPCTeam"][i]["hero"])
+			if(this[belong+"NPCTeam"][i])
+				team.push(this[belong+"NPCTeam"][i]["hero"])
 		}
 	}
 	for(var i = 0;i < team.length;i++){
