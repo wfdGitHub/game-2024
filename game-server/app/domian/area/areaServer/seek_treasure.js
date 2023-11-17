@@ -61,24 +61,8 @@ module.exports = function() {
 						data.high_grid = JSON.stringify(local.highSTRefresh(uid))
 					}
 				}
-				data.normal_score = Number(data.normal_score) || 0
-				data.high_score = Number(data.high_score) || 0
-				if(data["normal_luck_1"] && data["normal_luck_2"] && data["normal_luck_3"] && data["normal_luck_4"] && data["normal_luck_5"]){
-					for(var i = 1;i <= 5;i++){
-						self.delObj(uid,main_name,"normal_luck_"+i)
-						delete data["normal_luck_"+i]
-					}
-					data.normal_score -= 1000
-					self.incrbyObj(uid,main_name,"normal_score",-1000)
-				}
-				if(data["high_luck_1"] && data["high_luck_2"] && data["high_luck_3"] && data["high_luck_4"] && data["high_luck_5"]){
-					for(var i = 1;i <= 5;i++){
-						self.delObj(uid,main_name,"high_luck_"+i)
-						delete data["high_luck_"+i]
-					}
-					data.high_score -= 1000
-					self.incrbyObj(uid,main_name,"high_score",-1000)
-				}
+				data.normal_score = 0
+				data.high_score = 0
 			}
 			cb(true,data)
 		})
@@ -124,8 +108,6 @@ module.exports = function() {
 					if(!flag){
 						cb(false,err)
 					}else{
-						var score = treasure_cfg["normal_luck"]["value"]
-						self.incrbyObj(uid,main_name,"normal_score",score)
 						var index = local.getTreasure(data)
 						if(index != -1 && data[index] && treasure_cfg["normal_grid_"+index]){
 							if(treasure_cfg["normal_grid_"+index].arg){
@@ -134,7 +116,7 @@ module.exports = function() {
 								self.setObj(uid,main_name,"normal_grid",JSON.stringify(data))
 							}
 							var awardList = self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"],1,"普通寻宝")
-							cb(true,{awardList:awardList,data:data,index : index,score:score})
+							cb(true,{awardList:awardList,data:data,index : index,score:0})
 						}else{
 							console.error("奖励找不到"+curWeight+"/"+allWeight+"  "+index)
 							console.error(list)
@@ -158,8 +140,6 @@ module.exports = function() {
 						cb(false,err)
 					}else{
 						var id = false
-						var score = treasure_cfg["normal_luck"]["value"]*15
-						self.incrbyObj(uid,main_name,"normal_score",score)
 						var awardList = []
 						for(var i = 0;i < 15;i++){
 							var index = local.getTreasure(data)
@@ -176,7 +156,7 @@ module.exports = function() {
 						var dataStr = JSON.stringify(data)
 						if(dataStr != oriData)
 							self.setObj(uid,main_name,"normal_grid",dataStr)
-						cb(true,{awardList:awardList,data:data,score:score,id:id})
+						cb(true,{awardList:awardList,data:data,score:0,id:id})
 					}
 				})
 			}
@@ -252,8 +232,6 @@ module.exports = function() {
 			if(!data){
 				cb(false)
 			}else{
-				var score = treasure_cfg["high_luck"]["value"]
-				self.incrbyObj(uid,main_name,"high_score",score)
 				data = JSON.parse(data)
 				self.consumeItems(uid,"1000100:1",1,"高级寻宝",function(flag,err) {
 					if(!flag){
@@ -267,7 +245,7 @@ module.exports = function() {
 								self.setObj(uid,main_name,"high_grid",JSON.stringify(data))
 							}
 							var awardList = self.addItemStr(uid,treasure_awards[data[index]["id"]]["award"],1,"高级寻宝")
-							cb(true,{awardList:awardList,data:data,index : index,score:score})
+							cb(true,{awardList:awardList,data:data,index : index,score:0})
 						}else{
 							console.error("奖励找不到"+curWeight+"/"+allWeight+"  "+index)
 							console.error(list)
@@ -291,8 +269,6 @@ module.exports = function() {
 						cb(false,err)
 					}else{
 						var id = false
-						var score = treasure_cfg["high_luck"]["value"]*10
-						self.incrbyObj(uid,main_name,"high_score",score)
 						var awardList = []
 						for(var i = 0;i < 10;i++){
 							var index = local.getTreasure(data)
@@ -309,7 +285,7 @@ module.exports = function() {
 						var dataStr = JSON.stringify(data)
 						if(dataStr != oriData)
 							self.setObj(uid,main_name,"high_grid",dataStr)
-						cb(true,{awardList:awardList,data:data,score:score,id:id})
+						cb(true,{awardList:awardList,data:data,score:0,id:id})
 					}
 				})
 			}
