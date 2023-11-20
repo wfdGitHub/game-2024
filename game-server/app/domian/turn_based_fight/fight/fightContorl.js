@@ -164,7 +164,9 @@ model.getTeamData = function(team,belong) {
 	//英雄
 	var characters = []
 	for(var i = 0;i < team.length;i++){
-		characters[i] = this.getCharacterInfo(team[i],heroAtts,teamCfg)
+		var hero = this.getCharacterInfo(team[i],heroAtts,teamCfg)
+		if(hero)
+			characters.push(hero)
 	}
 	if(teamCfg.npcTeam){
 		for(var i = 0;i < teamCfg.npcTeam.length;i++){

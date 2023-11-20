@@ -124,8 +124,8 @@ module.exports = function() {
 			},
 			function(next) {
 				//战斗
-				var atkTeam = self.fightContorl.getNPCTeamByType(team,"lv_3",175)
-				var defTeam = self.fightContorl.getNPCTeamByType(exercise_list[teamId][index],"lv_"+(level+1),175)
+				var atkTeam = self.fightContorl.getNPCTeamByType("exercise",team,175,"lv_"+(level+1))
+				var defTeam = self.fightContorl.getNPCTeamByType("exercise",exercise_list[teamId][index],175,"lv_"+(level+1))
 				var seededNum = Date.now()
 				var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 				if(winFlag){
