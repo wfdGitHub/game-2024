@@ -68,6 +68,7 @@ module.exports = function() {
 			function(next) {
 				//获取报名同盟
 				self.redisDao.db.hgetall("guild_pk:apply",function(err,list) {
+					self.redisDao.db.del("guild_pk:apply")
 					var arr = []
 					for(var guildId in list){
 						arr.push(guildId)
@@ -178,12 +179,11 @@ module.exports = function() {
 				name : "精锐战士",
 				head : default_cfg["first_hero"]["value"],
 				figure : default_cfg["first_hero"]["value"],
-				level : guild_lv[guildLv]["level"]
+				level : guild_pk[guildLv]["level"]
 			}
 			self.redisDao.db.hset(main_name+":"+guildId,"seat_"+index,JSON.stringify(userInfo))
 			var defTeam = self.fightContorl.getNPCTeamByType("guild_pk",guild_pk[guildLv]["npc_team"],userInfo.level)
-			console.log(defTeam,guildLv,guild_pk[guildLv]["npc_team"],userInfo.level)
-			self.redisDao.db.hset(main_name+":team:"+guildId,JSON.stringify(defTeam))
+			self.redisDao.db.hset(main_name+":team:"+guildId,index,JSON.stringify(defTeam))
 		}
 	}
 	//获取PK信息  双方阵容  排行榜   总星数
