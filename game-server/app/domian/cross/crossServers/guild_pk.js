@@ -68,8 +68,6 @@ module.exports = function() {
 			function(next) {
 				//获取报名同盟
 				self.redisDao.db.hgetall("guild_pk:apply",function(err,list) {
-					console.log("guild_pk:apply",list)
-					self.redisDao.db.del("guild_pk:apply")
 					var arr = []
 					for(var guildId in list){
 						arr.push(guildId)
@@ -183,7 +181,8 @@ module.exports = function() {
 				level : guild_lv[guildLv]["level"]
 			}
 			self.redisDao.db.hset(main_name+":"+guildId,"seat_"+index,JSON.stringify(userInfo))
-			var defTeam = self.fightContorl.getNPCTeamByType("guild_pk",guild_pk[guildLv]["npc_team"],guild_pk[guildLv]["level"])
+			var defTeam = self.fightContorl.getNPCTeamByType("guild_pk",guild_pk[guildLv]["npc_team"],userInfo.level)
+			console.log(defTeam,guildLv,guild_pk[guildLv]["npc_team"],userInfo.level)
 			self.redisDao.db.hset(main_name+":team:"+guildId,JSON.stringify(defTeam))
 		}
 	}
