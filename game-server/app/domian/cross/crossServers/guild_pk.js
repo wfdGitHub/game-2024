@@ -183,7 +183,7 @@ module.exports = function() {
 				level : guild_lv[guildLv]["level"]
 			}
 			self.redisDao.db.hset(main_name+":"+guildId,"seat_"+index,JSON.stringify(userInfo))
-			var defTeam = self.fightContorl.getNPCTeamByType("guild_pk",index,guild_pk[guildLv]["npc_team"],guild_pk[guildLv]["level"])
+			var defTeam = self.fightContorl.getNPCTeamByType("guild_pk",guild_pk[guildLv]["npc_team"],guild_pk[guildLv]["level"])
 			self.redisDao.db.hset(main_name+":team:"+guildId,JSON.stringify(defTeam))
 		}
 	}
