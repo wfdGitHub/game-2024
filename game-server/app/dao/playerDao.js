@@ -1,7 +1,7 @@
 var bearcat = require("bearcat")
 const VIP = require("../../config/gameCfg/VIP.json")
 const default_cfg = require("../../config/gameCfg/default_cfg.json")
-const grading_robot = require("../../config/gameCfg/default_cfg.json")
+const grading_robot = require("../../config/gameCfg/grading_robot.json")
 var playerDao = function() {}
 var beginHero = default_cfg["begin_hero"]["value"]
 var vipLv = 1
