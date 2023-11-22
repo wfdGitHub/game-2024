@@ -611,8 +611,8 @@ heroDao.prototype.gainHeroById = function(uid,id,qa,lv) {
 	var heroInfo = fightContorl.makeHeroData(id,qa)
 	heroInfo.hId = hId
 	heroInfo.lv = lv
-	self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
-	self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
+	this.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
+	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
 	return hId
 }
 module.exports = {
