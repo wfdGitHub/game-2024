@@ -1,4 +1,5 @@
 var bearcat = require("bearcat")
+const uuid = require("uuid")
 const VIP = require("../../config/gameCfg/VIP.json")
 const default_cfg = require("../../config/gameCfg/default_cfg.json")
 const grading_robot = require("../../config/gameCfg/grading_robot.json")
@@ -74,14 +75,19 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 }
 //设置机器人阵容
 playerDao.prototype.setRobotTeam = function(areaId,playerInfo) {
+	var uid = playerInfo.uid
 	var index = Math.floor(Math.random() * 10) + 1
 	var team = grading_robot[index]["team"]
 	var lv = grading_robot[index]["lv"]
-	var arr = []
+	//获取英雄
+	var hIds = []
 	for(var i = 0;i < team.length;i++){
-		arr[i] = this.areaManager.areaMap[areaId].gainHeroById(playerInfo.uid,team[i],5,lv).hId
+		hIds[i] = this.heroDao.gainHeroById(uid,team[i],5,lv)
 	}
-	this.areaManager.areaMap[areaId].setTeamByType(playerInfo.uid,"normal",arr,function() {})
+	//设置出战
+	this.heroDao.setOnlyTeamByType(uid,"normal",hIds,function(flag,data) {})
+	for(var i = 0;i < hIds.length;i++)
+		this.heroDao.onlySetHeroInfo(uid,hIds[i],"combat",1)
 }
 //获取角色列表
 playerDao.prototype.getPlayerList = function(otps,cb) {
@@ -173,8 +179,5 @@ module.exports = {
 	},{
 		name : "mysqlDao",
 		ref : "mysqlDao"
-	},{
-		name : "areaManager",
-		ref : "areaManager"
 	}]
 }

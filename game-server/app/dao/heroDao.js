@@ -20,6 +20,7 @@ const train_arg = require("../../config/gameCfg/train_arg.json")
 const battle_team = require("../../config/gameCfg/battle_team.json")
 const util = require("../../util/util.js")
 const async = require("async")
+const fightContorl = require("../domian/turn_based_fight/fight/fightContorl.js")
 const baseStone = {
 	"1" : 4110,
 	"2" : 4210,
@@ -603,6 +604,16 @@ heroDao.prototype.getFightTeamCfg = function(uid,cb) {
 	],function(err) {
 		cb(false,err)
 	})
+}
+//获得英雄
+heroDao.prototype.gainHeroById = function(uid,id,qa,lv) {
+	var hId = uuid.v1()
+	var heroInfo = fightContorl.makeHeroData(id,qa)
+	heroInfo.hId = hId
+	heroInfo.lv = lv
+	self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
+	self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
+	return hId
 }
 module.exports = {
 	id : "heroDao",

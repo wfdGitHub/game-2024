@@ -671,16 +671,6 @@ var model = function() {
 			self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:heroInfo.qa,reason:"获得英雄-"+hId})
 		})
 	}
-	//获得英雄
-	this.gainHeroById = function(uid,id,qa,lv) {
-		var hId = uuid.v1()
-		var heroInfo = self.fightContorl.makeHeroData(id,qa)
-		heroInfo.hId = hId
-		heroInfo.lv = lv
-		self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
-		self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
-		return heroInfo
-	}
 	//英雄洗练 洗练增加通灵值,通灵值满一百必出满技能,出满技能后通灵值重置
 	local.washHero = function(heroInfo,item) {
 		heroInfo.wash += exalt_lv[heros[heroInfo.id]["exalt"]]["wash_value"]
