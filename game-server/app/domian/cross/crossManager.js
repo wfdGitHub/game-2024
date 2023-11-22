@@ -194,19 +194,19 @@ crossManager.prototype.sendTextToMail = function(crossUid,key,atts,arg,cb) {
 	var text = mailText[key]["text"]
 	if(arg)
 		text = text.replace("xxx",arg)
-	this.sendMail(crossUid,title,text,atts,cb)
+	this.sendMail(crossUid,title,text,atts,mailText[key]["type"],cb)
 }
 //发放邮件
-crossManager.prototype.sendMail = function(crossUid,title,text,atts,cb) {
+crossManager.prototype.sendMail = function(crossUid,title,text,atts,type,cb) {
 	if(this.players[crossUid]){
 		var areaId = this.players[crossUid]["areaId"]
 		var uid = this.players[crossUid]["uid"]
 		var serverId = this.players[crossUid]["serverId"]
-		this.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,cb)
+		this.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,type,cb)
 	}else{
 		var list = crossUid.split("|")
 		var uid = parseInt(list[1])
-		this.sendMailByUid(uid,title,text,atts,cb)
+		this.sendMailByUid(uid,title,text,atts,type,cb)
 	}
 }
 //通过文本模板发送邮件
@@ -215,15 +215,15 @@ crossManager.prototype.sendTextToMailById = function(uid,key,atts,arg,cb) {
 	var text = mailText[key]["text"]
 	if(arg)
 		text.replace("xxx",arg)
-	this.sendMailByUid(uid,title,text,atts,cb)
+	this.sendMailByUid(uid,title,text,atts,mailText[key]["type"],cb)
 }
 //直接发放离线邮件
-crossManager.prototype.sendMailByUid = function(uid,title,text,atts,cb) {
+crossManager.prototype.sendMailByUid = function(uid,title,text,atts,type,cb) {
 	var crossUid = this.uidMap[uid]
 	if(crossUid && this.players[crossUid]){
 		var areaId = this.players[crossUid]["areaId"]
 		var serverId = this.players[crossUid]["serverId"]
-		this.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,cb)
+		this.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,type,cb)
 	}else{
 		var mailInfo = {
 			title : title,
@@ -231,9 +231,9 @@ crossManager.prototype.sendMailByUid = function(uid,title,text,atts,cb) {
 			id : Date.now(),
 			time : Date.now()
 		}
-		if(atts){
+		mailInfo.type = type || 0
+		if(atts)
 			mailInfo.atts = atts
-		}
 		mailInfo = JSON.stringify(mailInfo)
 		this.redisDao.db.rpush("player:user:"+uid+":mail",mailInfo)
 		if(cb)
@@ -245,7 +245,7 @@ crossManager.prototype.sendAward = function(crossUid,title,text,str,reason,cb) {
 	if(this.players[crossUid]){
 		this.addItemStr(crossUid,str,1,reason,cb)
 	}else{
-		this.sendMail(crossUid,title,text,str,cb)
+		this.sendMail(crossUid,title,text,str,0,cb)
 	}
 }
 //宝箱奖励

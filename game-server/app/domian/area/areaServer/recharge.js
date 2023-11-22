@@ -250,12 +250,12 @@ module.exports = function() {
 	}
 	//快速充值
 	this.buyFastRecharge = function(uid,rate,pay_id,cb) {
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",self.itemstrChangeRate(pay_cfg[pay_id]["award"],rate))
+		self.sendTextToMail(uid,"recharge",self.itemstrChangeRate(pay_cfg[pay_id]["award"],rate))
 		cb(true)
 	}
 	//新服限购
 	this.buyAreaGift = function(uid,pay_id,cb) {
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
+		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 		self.addAreaGiftNum(pay_cfg[pay_id]["arg"])
 		cb(true)
 	}
@@ -296,7 +296,7 @@ module.exports = function() {
 				}
 				self.sendToUser(uid,notify)
 			}
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
+			self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 			cb(true)
 		})
 	}
