@@ -85,9 +85,10 @@ playerDao.prototype.setRobotTeam = function(areaId,playerInfo) {
 		hIds[i] = this.heroDao.gainHeroById(uid,team[i],5,lv)
 	}
 	//设置出战
-	this.heroDao.setOnlyTeamByType(uid,"normal",hIds,function(flag,data) {})
+	this.heroDao.setOnlyTeamByType(uid,"normal",hIds.slice(0,5),function(flag,data) {})
 	for(var i = 0;i < hIds.length;i++)
 		this.heroDao.onlySetHeroInfo(uid,hIds[i],"combat",1)
+	this.heroDao.setOnlyTeamByType(uid,"high",hIds.slice(0,8),function(flag,data) {})
 }
 //获取角色列表
 playerDao.prototype.getPlayerList = function(otps,cb) {
