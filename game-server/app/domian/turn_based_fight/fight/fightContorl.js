@@ -1,7 +1,9 @@
-var fightingFun = require("./fighting.js")
-var fightRecord = require("./fightRecord.js")
-var masterEntity = require("../entity/master.js")
-var powerEntity = require("../entity/powerEntity.js")
+const fightingFun = require("./fighting.js")
+const fightRecord = require("./fightRecord.js")
+const masterEntity = require("../entity/master.js")
+const powerEntity = require("../entity/powerEntity.js")
+const fightCfg = require("./fightCfg.js")
+const officer = fightCfg.getCfg("officer")
 var fightVerifyInfo = {}
 //战斗控制器
 var model = function() {
@@ -139,10 +141,15 @@ model.getTeamData = function(team,belong) {
 	var teamCfg = team.shift() || {}
     var masterAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
     var powerAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
-    var heroAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
+    var heroAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0,"amplify":0,"reduction":0}
     var gSkill = {}
 	//主角
 	var master = new masterEntity({belong:belong,manualModel:teamCfg["manualModel"]})
+	//爵位属性
+	if(teamCfg["officer"]){
+		heroAtts["amplify"] += officer[teamCfg["officer"]]["amplify"]
+		heroAtts["reduction"] += officer[teamCfg["officer"]]["reduction"]
+	}
 	//主动技能属性
 	for(var i = 1;i <= 4;i++){
 		if(teamCfg["power"+i]){

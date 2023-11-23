@@ -300,6 +300,8 @@ var model = function(otps) {
 	this.realm_dizzy_amp = otps.realm_dizzy_amp || 0 //眩晕时同阵营英雄伤害加成
 	if(otps.realm_heal_buff_minHp)
 		this.realm_heal_buff_minHp = JSON.parse(otps.realm_heal_buff_minHp) || false //技能治疗目标中血量最少且同阵营英雄施加BUFF
+	if(otps.dispel_sneak_buff)
+		this.dispel_sneak_buff = JSON.parse(otps.dispel_sneak_buff) || false //驱散隐身时附加BUFF
 	this.reduction_heal_maxHp = otps.reduction_heal_maxHp || 0 //释放减伤盾消失后恢复目标生命值上限
 	this.skill_add_maxAtk_anger = otps.skill_add_maxAtk_anger || 0 //释放技能后恢复攻击最高队友怒气
 	this.realm_friend_reduction = otps.realm_friend_reduction || 0 //每个存活的友方同阵营英雄提供伤害减免

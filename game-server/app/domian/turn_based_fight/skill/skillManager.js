@@ -344,14 +344,30 @@ model.useSkill = function(skill,chase,point) {
 			}
 		}
 	}
+	//清除隐身概率
+	if(skill.dispel_sneak){
+		for(var i = 0;i < targets.length;i++){
+			if(!targets[i].died && targets[i].buffs["sneak"] && this.seeded.random("清除隐身") < skill.dispel_sneak){
+				targets[i].buffs["sneak"].destroy()
+				if(skill.character.dispel_sneak_buff){
+					buffManager.createBuff(skill.character,targets[i],skill.character.dispel_sneak_buff)
+				}
+			}
+		}
+	}
 	//技能使用结束
 	skill.useSkillOver()
-	//击杀重复释放技能
-	if(!chase && diedFlag && skill.killRet && !skill.character.died){
-		this.useSkill(skill.character.userAngerSkill())
-	}
-	if(!chase && skill.isAnger && !skill.character.died && skill.character.skill_again && this.seeded.random("skill_again") < skill.character.skill_again){
-		this.useSkill(skill,true)
+	if(!chase && !skill.character.died){
+		if(diedFlag && skill.killRet){
+			//击杀重复释放技能
+			this.useSkill(skill.character.userAngerSkill())
+		}else if(!diedFlag && skill.survivalRet && this.seeded.random("survivalRet") < skill.survivalRet){
+			//未击杀重复释放技能
+			this.useSkill(skill,true,targets)
+		}else if(skill.isAnger && skill.character.skill_again && this.seeded.random("skill_again") < skill.character.skill_again){
+			//技能重复概率
+			this.useSkill(skill,true)
+		}
 	}
 }
 //伤害技能
