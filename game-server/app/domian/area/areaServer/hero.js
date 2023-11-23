@@ -355,6 +355,9 @@ var model = function() {
 		        return
 	      	}
 	      	self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"lv",aimLv - heroInfo.lv,function(flag,data) {
+				self.taskUpdate(uid,"heroLv",1,aimLv)
+				if(self.players[uid] && self.players[uid]["heroLv"] < aimLv)
+					self.chageLordData(uid,"heroLv",aimLv)
 	        	cb(true,data)
 	      	})
 	    })

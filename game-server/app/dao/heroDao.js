@@ -127,22 +127,11 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 //修改英雄属性
 heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 	var self = this
-	this.redisDao.db.hincrby("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {
-		if(err)
-			console.error(err)
-		else{
+	self.redisDao.db.hincrby("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {
 			if(self.areaManager.areaMap[areaId]){
-				switch(name){
-					case "lv":
-						self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
-						if(self.areaManager.areaMap[areaId].players[uid] && self.areaManager.areaMap[areaId].players[uid]["heroLv"] < data)
-							self.areaManager.areaMap[areaId].chageLordData(uid,"heroLv",data)
-					break
-				}
 				self.areaManager.areaMap[areaId].incrbyCEInfo(uid,hId,name,value)
 				self.updateHeroCe(areaId,uid,hId)
 			}
-		}
 		if(cb)
 			cb(true,data)
 	})
