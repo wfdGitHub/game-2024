@@ -477,6 +477,8 @@ model.useAttackSkill = function(skill,chase,point) {
 				else if(target.curAnger > 4)
 					lessAngerList.push(target)
 			}
+			if(targets[i].buffs["sneak"] && skill.character.otps.sneak_amp)
+				tmpAddAmp += skill.character.otps.sneak_amp
 			//计算伤害
 			var info = this.formula.calDamage(skill.character, target, skill,tmpAddAmp,must_crit,chase)
 			info.value += damage_save_value

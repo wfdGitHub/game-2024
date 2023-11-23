@@ -66,10 +66,10 @@ var ttttower_level = require("../../../config/gameCfg/ttttower_level.json")
 // 	}
 // }
 // console.log(atkTeam)
-// // var buff = {"buffId":"ghost","buff_tg":"team_self","buffArg":5,"duration":3,"buffRate":1}
+// var buff = {"buffId":"sneak","buff_tg":"team_self","buffArg":5,"duration":3,"buffRate":1}
 // var seededNum = 1
-// var atkTeam = [{},{"id":"501010","lv":1,"evo":1,"exalt":1,"qa":5,"wash":0,"MR1":1,"MR2":1,"MR3":1,"MR4":1,"MR5":1,"MR6":1}]
-// var defTeam = [{},{"id":"501010","lv":1,"evo":1,"exalt":1,"qa":5,"wash":0,"MR1":1,"MR2":1,"MR3":1,"MR4":1,"MR5":1,"MR6":1}]
+// var atkTeam = [{},{"id":"501010",first_buffs:[JSON.stringify(buff)]},{"id":"501010"}]
+// var defTeam = [{},{"id":"501010","preference_sneak":1,"sneak_amp":1}]
 // var fighting = fightContorl.beginFight(atkTeam,defTeam,{})
 // // // // // // var fighting = fightContorl.manualFight(atkTeam,defTeam,{})
 // fightRecord.explain()
