@@ -31,6 +31,7 @@ var peakEntity = function(self,theatreId) {
 	var main_name = "cross:"+theatreId+":peak"
 	//初始化
 	this.peakInit = function() {
+		console.log("王者巅峰赛战区"+theatreId+"初始化!")
 		async.waterfall([
 			function(next) {
 				self.redisDao.db.hgetall(main_name,function(err,data) {

@@ -25,7 +25,6 @@ module.exports = function() {
 		beherrscherInfo["seat_"+i] = 0
 	//每日更新
 	this.dayUpdateBeherrscher = function() {
-		console.log("dayUpdateBeherrscher")
 		if(ready){
 			challengeMap = {}
 			//判断开启
