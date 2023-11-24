@@ -430,7 +430,8 @@ var model = function() {
 	}
 	//增加跨服机器人
 	posts["/createRobotAccount"] = function(req,res) {
-		self.accountDao.createRobotAccount(function(flag,err) {
+		var areaId = req.body.areaId
+		self.accountDao.createRobotAccount(areaId,function(flag,err) {
 			res.send({flag:flag,err:err})
 		})
 	}

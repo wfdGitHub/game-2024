@@ -1,6 +1,5 @@
 var bearcat = require("bearcat")
 var heros = require("../../../../config/gameCfg/heros.json")
-var equip_level = require("../../../../config/gameCfg/equip_level.json")
 var async = require("async")
 var equipHandler = function(app) {
   this.app = app;
