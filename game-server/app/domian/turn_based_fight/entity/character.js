@@ -803,12 +803,8 @@ model.prototype.siteInit = function() {
 			this.attInfo.amplify += this.back_amp
 	}
 }
-//英雄战斗 开始
-model.prototype.begin = function() {
-	this.beginAction()
-}
 //战前准备
-model.prototype.beginAction = function() {
+model.prototype.begin = function() {
 	if(this.maxHP_rate)
 		this.attInfo.maxHP = Math.floor(this.attInfo.maxHP * this.maxHP_rate)
 	this.attInfo.hp = this.attInfo.maxHP
@@ -823,6 +819,9 @@ model.prototype.beginAction = function() {
 	}
 	if(!this.died)
 		this.siteInit()
+}
+//英雄出场
+model.prototype.heroComeon = function() {
 	if(this.first_buff_list.length){
 		for(var j = 0;j < this.first_buff_list.length;j++){
 			if(this.first_buff_list[j]["buff_tg"]){
@@ -857,9 +856,6 @@ model.prototype.beginAction = function() {
 		fightRecord.push({type:"show_tag",id:this.id,tag:"half_hp_red"})
 	if(this.dodgeFirst)
 		this.dodgeState = true
-}
-//英雄出场
-model.prototype.heroComeon = function() {
 	if(this.enter_skill)
 		skillManager.useSkill(this.angerSkill)
 	if(this.beginSkill)
