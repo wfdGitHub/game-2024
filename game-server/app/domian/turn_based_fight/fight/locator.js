@@ -40,11 +40,11 @@ model.prototype.getTargets = function(character,targetType) {
 			return this.getEnemyRandom(character,5)
 		case "enemy_rand_12":
 			// 敌方随机1-2个目标
-			var rand = Math.floor(this.seededNum.random("enemy_rand_12") * 1) + 1
+			var rand = Math.floor(this.seededNum.random("enemy_rand_12") * 2) + 1
 			return this.getEnemyRandom(character,rand)
 		case "enemy_rand_13":
 			// 敌方随机1-3个目标
-			var rand = Math.floor(this.seededNum.random("enemy_rand_13") * 2) + 1
+			var rand = Math.floor(this.seededNum.random("enemy_rand_13") * 3) + 1
 			return this.getEnemyRandom(character,rand)
 		case "enemy_rand_23":
 			// 敌方随机2-3个目标
