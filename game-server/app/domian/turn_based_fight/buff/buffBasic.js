@@ -9,6 +9,7 @@ var buffBasic = function(releaser,character,otps,fighting) {
 	this.duration = otps.duration
 	this.releaser = releaser
 	this.character = character
+	this.buffManager = require("./buffManager.js")
 	this.otps = otps
 }
 //clear
