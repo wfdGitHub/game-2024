@@ -848,6 +848,7 @@ module.exports = function() {
 	var self = this
 	//战区初始化
 	this.peakInit = function(theatreNum) {
+		console.lohg("peakInit",theatreNum)
 		peakList = {}
 		for(var i = 0; i < theatreNum;i++){
 			peakList[i] = new peakEntity(this,i)

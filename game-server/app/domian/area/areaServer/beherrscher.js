@@ -41,7 +41,6 @@ module.exports = function() {
 	}
 	//初始化
 	this.initBeherrscher = function() {
-		console.log("initBeherrscher")
 		self.getAreaObjAll(main_name,function(data) {
 			if(data){
 				for(var i in data){

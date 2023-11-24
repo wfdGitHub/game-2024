@@ -9,6 +9,7 @@ module.exports = function() {
 	this.theatreList = []
 	//战区初始化
 	this.theatreInit = function() {
+		console.log("战区初始化")
 		self.redisDao.db.hgetall("game:theatre",function(err,data) {
 			if(data && data.theatreMap)
 				self.theatreMap = JSON.parse(data.theatreMap)
