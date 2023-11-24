@@ -1,6 +1,7 @@
 const peak_cfg = require("../../../../config/gameCfg/peak_cfg.json")
 const peak_award = require("../../../../config/gameCfg/peak_award.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+const battle_cfg = require("../../../../config/gameCfg/battle_cfg.json")
 const async = require("async")
 //王者巅峰赛
 var peakEntity = function(self,theatreId) {
