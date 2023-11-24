@@ -451,12 +451,12 @@ var peakEntity = function(self,theatreId) {
 						betInfo[i].win = true
 						playerAmount[i] += betInfo[i].bet
 						//竞猜正确邮件
-						self.sendTextToMailById(uid,"peak_bet_right",default_cfg["peak_bet_right_atts"]["value"])
+						self.sendTextToMailById(uid,"peak_bet_right")
 					}else{
 						betInfo[i].win = false
 						playerAmount[i] -= betInfo[i].bet
 						//竞猜错误邮件
-						self.sendTextToMailById(uid,"peak_bet_wrong",default_cfg["peak_bet_wrong_atts"]["value"])
+						self.sendTextToMailById(uid,"peak_bet_wrong")
 					}
 					betInfo[i] = JSON.stringify(betInfo[i])
 				}
