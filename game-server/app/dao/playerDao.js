@@ -1,6 +1,8 @@
 var bearcat = require("bearcat")
+const uuid = require("uuid")
 const VIP = require("../../config/gameCfg/VIP.json")
 const default_cfg = require("../../config/gameCfg/default_cfg.json")
+const grading_robot = require("../../config/gameCfg/grading_robot.json")
 var playerDao = function() {}
 var beginHero = default_cfg["begin_hero"]["value"]
 var vipLv = 1
@@ -73,12 +75,20 @@ playerDao.prototype.createPlayer = function(otps,cb) {
 }
 //设置机器人阵容
 playerDao.prototype.setRobotTeam = function(areaId,playerInfo) {
-	var team = robotTeam[Math.floor(Math.random() * robotTeam.length)]
-	var arr = []
+	var uid = playerInfo.uid
+	var index = Math.floor(Math.random() * 10) + 1
+	var team = grading_robot[index]["team"]
+	var lv = grading_robot[index]["lv"]
+	//获取英雄
+	var hIds = []
 	for(var i = 0;i < team.length;i++){
-		arr[i] = this.heroDao.gainHero(areaId,playerInfo.uid,{id : team[i],star:6,lv:145,ad:5,robot:true}).hId
+		hIds[i] = this.heroDao.gainHeroById(uid,team[i],5,lv)
 	}
-	this.heroDao.setFightTeam(areaId,playerInfo.uid,arr)
+	//设置出战
+	this.heroDao.setOnlyTeamByType(uid,"normal",hIds.slice(0,5),function(flag,data) {})
+	for(var i = 0;i < hIds.length;i++)
+		this.heroDao.onlySetHeroInfo(uid,hIds[i],"combat",1)
+	this.heroDao.setOnlyTeamByType(uid,"high",hIds.slice(0,8),function(flag,data) {})
 }
 //获取角色列表
 playerDao.prototype.getPlayerList = function(otps,cb) {

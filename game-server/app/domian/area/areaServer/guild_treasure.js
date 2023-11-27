@@ -81,7 +81,7 @@ module.exports = function() {
 	}
 	//宝藏BOSS竞拍结算
 	this.guildTreasureAuctionEnd = function(guildId) {
-		var curDayStr = (new Date()).toDateString()
+		var curDayStr = self.dayStr
 		self.redisDao.db.hget(main_name+":state",guildId,function(err,data) {
 			if(data != curDayStr){
 				self.redisDao.db.hset(main_name+":state",guildId,curDayStr)

@@ -40,7 +40,6 @@ module.exports = function() {
 			if(areaLv > MAX_LEVEL)
 				areaLv = MAX_LEVEL
 			var worldLevel = Math.max(rankLv,areaLv)
-			console.log(self.areaId+"服世界等级",worldLevel,rankLv,areaLv)
 			self.redisDao.db.zadd("game:worldLevels",worldLevel,self.areaId)
 		})
 	}

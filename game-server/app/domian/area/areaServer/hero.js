@@ -1,5 +1,6 @@
 //英雄系统
 const async = require("async")
+const uuid = require("uuid")
 const summon_list = require("../../../../config/gameCfg/summon_list.json")
 const exalt_lv = require("../../../../config/gameCfg/exalt_lv.json")
 const heros = require("../../../../config/gameCfg/heros.json")
@@ -354,6 +355,9 @@ var model = function() {
 		        return
 	      	}
 	      	self.heroDao.incrbyHeroInfo(self.areaId,uid,hId,"lv",aimLv - heroInfo.lv,function(flag,data) {
+				self.taskUpdate(uid,"heroLv",1,aimLv)
+				if(self.players[uid] && self.players[uid]["heroLv"] < aimLv)
+					self.chageLordData(uid,"heroLv",aimLv)
 	        	cb(true,data)
 	      	})
 	    })

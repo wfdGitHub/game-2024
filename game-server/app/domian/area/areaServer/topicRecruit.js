@@ -5,7 +5,6 @@ const recruit_list = require("../../../../config/gameCfg/recruit_list.json")
 const recruit_topic_cfg = require("../../../../config/gameCfg/recruit_topic_cfg.json")
 const recruit_topic_hero = require("../../../../config/gameCfg/recruit_topic_hero.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
-const star_base = require("../../../../config/gameCfg/star_base.json")
 const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
 const util = require("../../../../util/util.js")
 const async = require("async")
@@ -303,41 +302,41 @@ module.exports = function() {
 		})
 	}
 	//完成主题招募英雄任务
-	this.finishTopicRecruitHeroTask = function(uid,heroId,star,cb) {
-		if(!heros[heroId]){
-			cb(false,"heroId error "+heroId)
-			return
-		}
-		if(!(Number.isInteger(star) && star_base[star] && star_base[star]["topic_award"])){
-			cb(false,"star error "+star)
-			return
-		}
-		async.waterfall([
-			function(next) {
-				self.getObj(uid,"heroArchive",heroId,function(data) {
-					if(!data || data < star)
-						next("star limit")
-					else
-						next()
-				})
-			},
-			function(next) {
-				self.getObj(uid,main_name+":"+heroId,star,function(data) {
-					if(data)
-						next("已领取")
-					else
-						next()
-				})
-			},
-			function(next) {
-				self.setObj(uid,main_name+":"+heroId,star,1)
-				var awardList = self.addItemStr(uid,star_base[star]["topic_award"],1,"升星"+heroId+":"+star)
-				cb(true,awardList)
-			}
-		],function(err) {
-			cb(false,err)
-		})
-	}
+	// this.finishTopicRecruitHeroTask = function(uid,heroId,star,cb) {
+	// 	if(!heros[heroId]){
+	// 		cb(false,"heroId error "+heroId)
+	// 		return
+	// 	}
+	// 	if(!(Number.isInteger(star) && star_base[star] && star_base[star]["topic_award"])){
+	// 		cb(false,"star error "+star)
+	// 		return
+	// 	}
+	// 	async.waterfall([
+	// 		function(next) {
+	// 			self.getObj(uid,"heroArchive",heroId,function(data) {
+	// 				if(!data || data < star)
+	// 					next("star limit")
+	// 				else
+	// 					next()
+	// 			})
+	// 		},
+	// 		function(next) {
+	// 			self.getObj(uid,main_name+":"+heroId,star,function(data) {
+	// 				if(data)
+	// 					next("已领取")
+	// 				else
+	// 					next()
+	// 			})
+	// 		},
+	// 		function(next) {
+	// 			self.setObj(uid,main_name+":"+heroId,star,1)
+	// 			var awardList = self.addItemStr(uid,star_base[star]["topic_award"],1,"升星"+heroId+":"+star)
+	// 			cb(true,awardList)
+	// 		}
+	// 	],function(err) {
+	// 		cb(false,err)
+	// 	})
+	// }
 	//提取无限十连英雄
 	this.extractInfiniteRecruit = function(uid,heroList,cb) {
 		async.waterfall([

@@ -71,7 +71,7 @@ module.exports = function() {
 		self.getObjAll(uid,main_name,function(data) {
 			if(!data || self.dayStr != data.dayStr){
 				data = {
-					dayStr : (new Date()).toDateString(),
+					dayStr : self.dayStr,
 					curGrid : 0,
 					curChoose : -1,
 					surplus_healths : {},
@@ -542,7 +542,7 @@ module.exports = function() {
     		return
     	}
 		var data = {
-			dayStr : (new Date()).toDateString(),
+			dayStr : self.dayStr,
 			curGrid : 0,
 			curChoose : -1,
 			surplus_healths : {},

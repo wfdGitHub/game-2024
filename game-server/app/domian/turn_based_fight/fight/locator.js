@@ -13,6 +13,9 @@ model.prototype.existsTarget = function(character) {
 }
 //获取目标
 model.prototype.getTargets = function(character,targetType) {
+	//选择隐身
+	if(character.otps.preference_sneak)
+		return this.getPreferenceSneak(character,targetType)
 	switch(targetType){
 		case "enemy_normal":
 			//默认敌人前排单体
@@ -37,11 +40,11 @@ model.prototype.getTargets = function(character,targetType) {
 			return this.getEnemyRandom(character,5)
 		case "enemy_rand_12":
 			// 敌方随机1-2个目标
-			var rand = Math.floor(this.seededNum.random("enemy_rand_12") * 1) + 1
+			var rand = Math.floor(this.seededNum.random("enemy_rand_12") * 2) + 1
 			return this.getEnemyRandom(character,rand)
 		case "enemy_rand_13":
 			// 敌方随机1-3个目标
-			var rand = Math.floor(this.seededNum.random("enemy_rand_13") * 2) + 1
+			var rand = Math.floor(this.seededNum.random("enemy_rand_13") * 3) + 1
 			return this.getEnemyRandom(character,rand)
 		case "enemy_rand_23":
 			// 敌方随机2-3个目标
@@ -288,6 +291,24 @@ model.prototype.getTargetsNum = function(targetType) {
 		default :
 			return 1
 	}
+}
+//优先选择隐身单位
+model.prototype.getPreferenceSneak = function(character,targetType) {
+	var count = this.getTargetsNum(targetType)
+    var list = []
+    character.enemy.forEach(function(target,index) {
+        if(model.friendCheck(target)){
+        	list.push(target)
+        }
+    })
+    for(var i = 0;i < list.length;i++)
+    	for(var j = i + 1;j < list.length;j++)
+    		if(list[j].buffs["sneak"] && !list[i].buffs["sneak"]){
+    			var tmp = list[j]
+    			list[j] = list[i]
+    			list[i] = tmp
+    		}
+    return list.slice(0,count)
 }
 //从给定目标中选择血量最多的目标
 model.prototype.getTargesMaxHP = function(targets) {
@@ -903,7 +924,7 @@ model.check = function(character) {
 }
 //潜行检测 敌方无法选中  我方可选中
 model.friendCheck = function(character) {
-	if(character.died || character.buffs["banish"] || character.buffs["ghost"])
+	if(!character.comeon || character.died || character.buffs["banish"] || character.buffs["ghost"])
 		return false
 	else
 		return true

@@ -9,14 +9,8 @@ module.exports = function() {
 	var self = this
 	//改变头像
 	this.changeHead = function(uid,id,cb) {
-		self.getObj(uid,"heroArchive",id,function(data) {
-			if(data){
-				self.chageLordData(uid,"head",id)
-				cb(true)
-			}else{
-				cb(false,"未获得该英雄")
-			}
-		})
+		self.chageLordData(uid,"head",id)
+		cb(true)
 	}
 	//改变形象
 	this.changeFigure = function(uid,id,cb) {

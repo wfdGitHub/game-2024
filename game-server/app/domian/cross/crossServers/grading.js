@@ -232,7 +232,7 @@ var gradingEntity = function(self,theatreId) {
 				//defTeam
 				if(targetUid < 10000){
 					//机器人
-					defTeam = self.fightContorl.getNPCTeamByType(main_name,grading_robot[targetUid]["team"],grading_robot[targetUid]["lv"])
+					defTeam = self.fightContorl.getNPCTeamByType("grading",grading_robot[targetUid]["team"],grading_robot[targetUid]["lv"])
 					targetInfo = {
 						uid : targetUid,
 						name : self.namespace.getName(),

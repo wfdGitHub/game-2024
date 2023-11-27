@@ -17,7 +17,7 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,data,cb) {
 					uid : uid,
 					pay_id : pay_id,
 					data : data,
-					time : (new Date()).toDateString()
+					time : (new Date()).toLocaleDateString()
 				}
 				self.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))
 				cb(false,err)
@@ -33,7 +33,7 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,data,cb) {
 			areaId : areaId,
 			pay_id : pay_id,
 			pay_id : pay_id,
-			time : (new Date()).toDateString()
+			time : (new Date()).toLocaleDateString()
 		}
 		self.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))
 		cb(false,"服务器不存在")
@@ -117,9 +117,9 @@ areaRemote.prototype.openChestAward = function(uid,areaId,chestId,rate,cb) {
 	}
 }
 //发送邮件
-areaRemote.prototype.sendMail = function(uid,areaId,title,text,atts,cb) {
+areaRemote.prototype.sendMail = function(uid,areaId,title,text,atts,type,cb) {
 	if(this.areaManager.areaMap[areaId]){
-		this.areaManager.areaMap[areaId].sendMail(uid,title,text,atts,cb)
+		this.areaManager.areaMap[areaId].sendMail(uid,title,text,atts,type,cb)
 	}else{
 		cb(false)
 	}

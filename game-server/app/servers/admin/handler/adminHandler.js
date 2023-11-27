@@ -215,7 +215,7 @@ adminHandler.prototype.adminSendMail = function(msg, session, next) {
 	        next(null,{flag : false,err : "服务器不存在"})
 	        return
 	    }
-	    self.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,function(flag,list) {
+	    self.app.rpc.area.areaRemote.sendMail.toServer(serverId,uid,areaId,title,text,atts,3,function(flag,list) {
 	    	self.cacheDao.saveCache({"messagetype":"adminSendMail",adminAccId:adminAccId,uid:uid,areaId:areaId,title:title,text:text,atts:atts})
 	    	next(null,{flag : true,list : list})
 		})

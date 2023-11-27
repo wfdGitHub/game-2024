@@ -69,7 +69,7 @@ module.exports = function() {
 	//同盟红包定时发放
 	this.guildGiveGift = function() {
 		// console.log("同盟红包定时发放")
-		var curDayStr = (new Date()).toDateString()
+		var curDayStr = self.dayStr
 		var arr = []
 		for(var guildId in guildList){
 			arr.push(guildId)

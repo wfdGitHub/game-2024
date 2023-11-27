@@ -30,19 +30,19 @@ module.exports = function() {
 		var text = mailText[key]["text"]
 		if(arg)
 			text = text.replace("xxx",arg)
-		this.sendMail(uid,title,text,atts,cb)
+		this.sendMail(uid,title,text,atts,mailText[key]["type"],cb)
 	}
 	//发送邮件
-	this.sendMail = function(uid,title,text,atts,cb) {
+	this.sendMail = function(uid,title,text,atts,type,cb) {
 		var mailInfo = {
 			title : title,
 			text : text,
 			id : self.getLordLastid(uid),
 			time : Date.now()
 		}
-		if(atts){
+		mailInfo.type = type || 0
+		if(atts)
 			mailInfo.atts = atts
-		}
 		mailInfo = JSON.stringify(mailInfo)
 		this.redisDao.db.rpush("player:user:"+uid+":mail",mailInfo,function(err,data) {
 			if(!err){
@@ -216,7 +216,7 @@ module.exports = function() {
 			for(var i = 0;i < ids.length;i++){
 				if(!list || !list[i]){
 					self.setObj(uid,"areaMail",ids[i],1)
-					self.sendMail(uid,self.areaMailList[ids[i]].title,self.areaMailList[ids[i]].text,self.areaMailList[ids[i]].atts)
+					self.sendMail(uid,self.areaMailList[ids[i]].title,self.areaMailList[ids[i]].text,self.areaMailList[ids[i]].atts,1)
 				}
 			}
 		})
@@ -229,7 +229,7 @@ module.exports = function() {
 			self.getObj(uid,"areaMail",id,function(data) {
 				if(!data){
 					self.setObj(uid,"areaMail",id,1)
-					self.sendMail(uid,self.areaMailList[id].title,self.areaMailList[id].text,self.areaMailList[id].atts)
+					self.sendMail(uid,self.areaMailList[id].title,self.areaMailList[id].text,self.areaMailList[id].atts,1)
 				}
 			})
 		}

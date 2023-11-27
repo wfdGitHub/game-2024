@@ -319,7 +319,6 @@ var model = function(fightContorl) {
 		//神兽技能
 		if(info.m_ps)
 			this.mergeTalent(info,heros[info.id]["mythical"])
-		//初始属性
 		//主属性计算
 		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
 		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))

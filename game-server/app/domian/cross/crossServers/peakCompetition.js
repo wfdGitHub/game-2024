@@ -1,6 +1,7 @@
 const peak_cfg = require("../../../../config/gameCfg/peak_cfg.json")
 const peak_award = require("../../../../config/gameCfg/peak_award.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+const battle_cfg = require("../../../../config/gameCfg/battle_cfg.json")
 const async = require("async")
 //王者巅峰赛
 var peakEntity = function(self,theatreId) {
@@ -31,6 +32,7 @@ var peakEntity = function(self,theatreId) {
 	var main_name = "cross:"+theatreId+":peak"
 	//初始化
 	this.peakInit = function() {
+		console.log("王者巅峰赛战区"+theatreId+"初始化!")
 		async.waterfall([
 			function(next) {
 				self.redisDao.db.hgetall(main_name,function(err,data) {
@@ -449,12 +451,12 @@ var peakEntity = function(self,theatreId) {
 						betInfo[i].win = true
 						playerAmount[i] += betInfo[i].bet
 						//竞猜正确邮件
-						self.sendTextToMailById(uid,"peak_bet_right",default_cfg["peak_bet_right_atts"]["value"])
+						self.sendTextToMailById(uid,"peak_bet_right")
 					}else{
 						betInfo[i].win = false
 						playerAmount[i] -= betInfo[i].bet
 						//竞猜错误邮件
-						self.sendTextToMailById(uid,"peak_bet_wrong",default_cfg["peak_bet_wrong_atts"]["value"])
+						self.sendTextToMailById(uid,"peak_bet_wrong")
 					}
 					betInfo[i] = JSON.stringify(betInfo[i])
 				}
@@ -847,6 +849,7 @@ module.exports = function() {
 	var self = this
 	//战区初始化
 	this.peakInit = function(theatreNum) {
+		console.log("peakInit",theatreNum)
 		peakList = {}
 		for(var i = 0; i < theatreNum;i++){
 			peakList[i] = new peakEntity(this,i)

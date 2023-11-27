@@ -29,7 +29,7 @@ module.exports = function() {
 			}else{
 				data = {}
 			}
-			if(data.dayStr != (new Date()).toDateString()){
+			if(data.dayStr != self.dayStr){
 				if(pk_info.open){
 					//PK结算
 					self.guildPkSettle()
@@ -61,14 +61,13 @@ module.exports = function() {
 				pk_info = {}
 				self.redisDao.db.del(main_name)
 				self.redisDao.db.del(main_name+":play")
-				pk_info.dayStr = (new Date()).toDateString()
+				pk_info.dayStr = self.dayStr
 				self.redisDao.db.hset(main_name,"dayStr",pk_info.dayStr)
 				next()
 			},
 			function(next) {
 				//获取报名同盟
 				self.redisDao.db.hgetall("guild_pk:apply",function(err,list) {
-					console.log("guild_pk:apply",list)
 					self.redisDao.db.del("guild_pk:apply")
 					var arr = []
 					for(var guildId in list){
@@ -180,11 +179,11 @@ module.exports = function() {
 				name : "精锐战士",
 				head : default_cfg["first_hero"]["value"],
 				figure : default_cfg["first_hero"]["value"],
-				level : guild_lv[guildLv]["level"]
+				level : guild_pk[guildLv]["level"]
 			}
 			self.redisDao.db.hset(main_name+":"+guildId,"seat_"+index,JSON.stringify(userInfo))
-			var defTeam = self.fightContorl.getNPCTeamByType("guild_pk",index,guild_pk[guildLv]["npc_team"],guild_pk[guildLv]["level"])
-			self.redisDao.db.hset(main_name+":team:"+guildId,JSON.stringify(defTeam))
+			var defTeam = self.fightContorl.getNPCTeamByType("guild_pk",guild_pk[guildLv]["npc_team"],userInfo.level)
+			self.redisDao.db.hset(main_name+":team:"+guildId,index,JSON.stringify(defTeam))
 		}
 	}
 	//获取PK信息  双方阵容  排行榜   总星数

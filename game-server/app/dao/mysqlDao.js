@@ -56,7 +56,7 @@ mysqlDao.prototype.getChatRecordList = function(dataNum,cb) {
 //创建今日报表
 mysqlDao.prototype.createDayTable = function() {
 	var sql = "select * from daily_table where date=?"
-	var date = (new Date()).toDateString()
+	var date = (new Date()).toLocaleDateString()
 	var args = [date]
 	var self = this
 	self.db.query(sql,args, function(err, res) {
@@ -134,7 +134,7 @@ mysqlDao.prototype.createDayTable = function() {
 }
 //更新单日报表
 mysqlDao.prototype.addDaylyData  = function(key,num) {
-	var date = (new Date()).toDateString()
+	var date = (new Date()).toLocaleDateString()
 	var sql = "update daily_table SET "+key+"="+key+"+? where date=?"
 	var args = [num,date];
 	this.db.query(sql,args, function(err, res) {
@@ -145,7 +145,7 @@ mysqlDao.prototype.addDaylyData  = function(key,num) {
 }
 //玩家登陆更新留存报表
 mysqlDao.prototype.updateRetention = function(uid,createTime) {
-	var date = (new Date(createTime)).toDateString()
+	var date = (new Date(createTime)).toLocaleDateString()
 	var day = Math.ceil((Date.now() - util.getZeroTime(createTime)) / 86400000)
 	var index = "more"
 	for(var i = 0;i < retention_days.length;i++){
@@ -159,7 +159,7 @@ mysqlDao.prototype.updateRetention = function(uid,createTime) {
 //更新留存报表
 mysqlDao.prototype.addRetentionData  = function(key,num,date) {
 	if(!date)
-		date = (new Date()).toDateString()
+		date = (new Date()).toLocaleDateString()
 	var sql = "update retention_table SET "+key+"="+key+"+? where date=?"
 	var args = [num,date];
 	this.db.query(sql,args, function(err, res) {
@@ -170,7 +170,7 @@ mysqlDao.prototype.addRetentionData  = function(key,num,date) {
 }
 //玩家充值更新LTV报表
 mysqlDao.prototype.updateLTV = function(uid,amount,createTime) {
-	var date = (new Date(createTime)).toDateString()
+	var date = (new Date(createTime)).toLocaleDateString()
 	var day = Math.ceil((Date.now() - util.getZeroTime(createTime)) / 86400000)
 	var index = "more"
 	var self = this
@@ -192,7 +192,7 @@ mysqlDao.prototype.updateLTV = function(uid,amount,createTime) {
 //更新LTV报表
 mysqlDao.prototype.addLTVData  = function(key,num,date) {
 	if(!date)
-		date = (new Date()).toDateString()
+		date = (new Date()).toLocaleDateString()
 	var sql = "update LTV_table SET "+key+"="+key+"+? where date=?"
 	var args = [num,date];
 	this.db.query(sql,args, function(err, res) {

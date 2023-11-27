@@ -2,17 +2,12 @@
 const uuid = require("uuid")
 const herosCfg = require("../../config/gameCfg/heros.json")
 const lv_cfg = require("../../config/gameCfg/lv_cfg.json")
-const star_base = require("../../config/gameCfg/star_base.json")
-const hero_ad = require("../../config/gameCfg/hero_ad.json")
 const hero_tr = require("../../config/gameCfg/hero_tr.json")
 const recruit_base = require("../../config/gameCfg/recruit_base.json")
 const recruit_list = require("../../config/gameCfg/recruit_list.json")
 const equip_st = require("../../config/gameCfg/equip_st.json")
 const artifact_level = require("../../config/gameCfg/artifact_level.json")
 const artifact_talent = require("../../config/gameCfg/artifact_talent.json")
-const stone_base = require("../../config/gameCfg/stone_base.json")
-const stone_skill = require("../../config/gameCfg/stone_skill.json")
-const stone_cfg = require("../../config/gameCfg/stone_cfg.json")
 const default_cfg = require("../../config/gameCfg/default_cfg.json")
 const hufu_skill = require("../../config/gameCfg/hufu_skill.json")
 const beauty_base = require("../../config/gameCfg/beauty_base.json")
@@ -20,6 +15,7 @@ const train_arg = require("../../config/gameCfg/train_arg.json")
 const battle_team = require("../../config/gameCfg/battle_team.json")
 const util = require("../../util/util.js")
 const async = require("async")
+const fightContorl = require("../domian/turn_based_fight/fight/fightContorl.js")
 const baseStone = {
 	"1" : 4110,
 	"2" : 4210,
@@ -126,22 +122,11 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 //修改英雄属性
 heroDao.prototype.incrbyHeroInfo = function(areaId,uid,hId,name,value,cb) {
 	var self = this
-	this.redisDao.db.hincrby("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {
-		if(err)
-			console.error(err)
-		else{
+	self.redisDao.db.hincrby("player:user:"+uid+":heros:"+hId,name,value,function(err,data) {
 			if(self.areaManager.areaMap[areaId]){
-				switch(name){
-					case "lv":
-						self.areaManager.areaMap[areaId].taskUpdate(uid,"heroLv",1,data)
-						if(self.areaManager.areaMap[areaId].players[uid] && self.areaManager.areaMap[areaId].players[uid]["heroLv"] < data)
-							self.areaManager.areaMap[areaId].chageLordData(uid,"heroLv",data)
-					break
-				}
 				self.areaManager.areaMap[areaId].incrbyCEInfo(uid,hId,name,value)
 				self.updateHeroCe(areaId,uid,hId)
 			}
-		}
 		if(cb)
 			cb(true,data)
 	})
@@ -603,6 +588,16 @@ heroDao.prototype.getFightTeamCfg = function(uid,cb) {
 	],function(err) {
 		cb(false,err)
 	})
+}
+//获得英雄
+heroDao.prototype.gainHeroById = function(uid,id,qa,lv) {
+	var hId = uuid.v1()
+	var heroInfo = fightContorl.makeHeroData(id,qa)
+	heroInfo.hId = hId
+	heroInfo.lv = lv
+	this.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
+	this.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
+	return hId
 }
 module.exports = {
 	id : "heroDao",

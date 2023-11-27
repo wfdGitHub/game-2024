@@ -25,7 +25,6 @@ module.exports = function() {
 		beherrscherInfo["seat_"+i] = 0
 	//每日更新
 	this.dayUpdateBeherrscher = function() {
-		console.log("dayUpdateBeherrscher")
 		if(ready){
 			challengeMap = {}
 			//判断开启
@@ -42,7 +41,6 @@ module.exports = function() {
 	}
 	//初始化
 	this.initBeherrscher = function() {
-		console.log("initBeherrscher")
 		self.getAreaObjAll(main_name,function(data) {
 			if(data){
 				for(var i in data){

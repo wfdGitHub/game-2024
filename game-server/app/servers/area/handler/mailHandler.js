@@ -18,7 +18,7 @@ mailHandler.prototype.sendMail = function(msg, session, next) {
   var title = msg.title
   var text = msg.text
   var atts = msg.atts
-  this.areaManager.areaMap[areaId].sendMail(uid,title,text,atts,function(flag,data) {
+  this.areaManager.areaMap[areaId].sendMail(uid,title,text,atts,0,function(flag,data) {
     next(null,{flag : flag,data : data})
   })
 }
