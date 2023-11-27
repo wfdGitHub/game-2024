@@ -311,7 +311,6 @@ var muyeEntity = function(self,theatreId) {
 				self.redisDao.db.zrem([main_name+":rank:camp"+defCamp,crossUid])
 				self.redisDao.db.zadd([main_name+":rank:camp"+camp,0,crossUid])
 				self.addItemStr(crossUid,muye_cfg["rand_camp"]["value"],1,"天命决战",function(flag,awardList) {
-					console.log(flag,awardList)
 					var info = {
 						awardList : awardList,
 						camp : camp
