@@ -15,7 +15,7 @@ accountDao.prototype.createAccount = function(otps,cb) {
 		playTime : 0,
 		dayTime : 0,
 		freeze : 0,
-		dayStr : (new Date()).toDateString()
+		dayStr : (new Date()).toLocaleDateString()
 	}
 	var self = this
 	self.redisDao.db.incrby("acc:lastid",1,function(err,accId) {
@@ -59,9 +59,9 @@ accountDao.prototype.createRobotAccount = function(areaId,cb) {
 accountDao.prototype.updatePlaytime = function(otps) {
 	var accId = otps.accId
 	var beginTime = otps.beginTime
-	var beginStr = (new Date(beginTime)).toDateString()
+	var beginStr = (new Date(beginTime)).toLocaleDateString()
 	var endTime = Date.now()
-	var endStr = (new Date(endTime)).toDateString()
+	var endStr = (new Date(endTime)).toLocaleDateString()
 	var playTime = endTime - beginTime
 	this.incrbyAccountData({accId : otps.accId,name : "playTime",value : playTime})
 	if(beginStr == endStr){
@@ -86,7 +86,7 @@ accountDao.prototype.getAccountInfo = function(otps,cb) {
 				if(err || !userInfo){
 					cb(false)
 				}else{
-					var curDayStr = (new Date()).toDateString()
+					var curDayStr = (new Date()).toLocaleDateString()
 					if(userInfo.dayStr !== curDayStr){
 						userInfo.dayStr = curDayStr
 						userInfo.dayTime = 0

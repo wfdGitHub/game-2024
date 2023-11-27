@@ -67,7 +67,7 @@ crossManager.prototype.update = function() {
 		self.escortUpdate(date)
 		self.peakUpdate(date)
 		self.manorCrossUpdate(date)
-		var curDayStr = (new Date()).toDateString()
+		var curDayStr = (new Date()).toLocaleDateString()
 		if(self.dayStr !== curDayStr){
 			self.dayUpdate(curDayStr)
 		}

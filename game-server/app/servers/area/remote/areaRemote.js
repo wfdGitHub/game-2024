@@ -17,7 +17,7 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,data,cb) {
 					uid : uid,
 					pay_id : pay_id,
 					data : data,
-					time : (new Date()).toDateString()
+					time : (new Date()).toLocaleDateString()
 				}
 				self.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))
 				cb(false,err)
@@ -33,7 +33,7 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,data,cb) {
 			areaId : areaId,
 			pay_id : pay_id,
 			pay_id : pay_id,
-			time : (new Date()).toDateString()
+			time : (new Date()).toLocaleDateString()
 		}
 		self.redisDao.db.rpush("finish_recharge_faild",JSON.stringify(info))
 		cb(false,"服务器不存在")

@@ -16,7 +16,7 @@ module.exports = function() {
 		self.getAreaObjAll(main_name,function(data) {
 			city_boss = data || {}
 			// if(openTime[day]){
-			if(city_boss.dayStr != (new Date()).toDateString()){
+			if(city_boss.dayStr != self.dayStr){
 				self.createGuildCityBoss()
 			}else{
 				for(var i in city_boss){
@@ -32,7 +32,7 @@ module.exports = function() {
 	}
 	//刷新初始BOSS
 	this.createGuildCityBoss = function() {
-		city_boss.dayStr = (new Date()).toDateString()
+		city_boss.dayStr = self.dayStr
 		for(var i in guild_city){
 			if(!city_boss["boss_"+i+"_lv"]){
 				city_boss["boss_"+i+"_lv"] = 1

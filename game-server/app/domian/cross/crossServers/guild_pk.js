@@ -29,7 +29,7 @@ module.exports = function() {
 			}else{
 				data = {}
 			}
-			if(data.dayStr != (new Date()).toDateString()){
+			if(data.dayStr != self.dayStr){
 				if(pk_info.open){
 					//PK结算
 					self.guildPkSettle()
@@ -61,7 +61,7 @@ module.exports = function() {
 				pk_info = {}
 				self.redisDao.db.del(main_name)
 				self.redisDao.db.del(main_name+":play")
-				pk_info.dayStr = (new Date()).toDateString()
+				pk_info.dayStr = self.dayStr
 				self.redisDao.db.hset(main_name,"dayStr",pk_info.dayStr)
 				next()
 			},
