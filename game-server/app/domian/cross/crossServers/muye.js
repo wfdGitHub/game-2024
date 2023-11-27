@@ -310,24 +310,23 @@ var muyeEntity = function(self,theatreId) {
 				self.redisDao.db.hset(main_name+":camps",crossUid,camp)
 				self.redisDao.db.zrem([main_name+":rank:camp"+defCamp,crossUid])
 				self.redisDao.db.zadd([main_name+":rank:camp"+camp,0,crossUid])
-				self.addItemStr(crossUid,muye_cfg["rand_camp"]["value"],1,"天命决战",function(flag,awardList) {
-					var info = {
-						awardList : awardList,
-						camp : camp
-					}
-					var hIds = []
-					var fightTeam = self.userTeam(crossUid)
-					for(var i = 0;i < 6;i++){
-						if(fightTeam[i])
-							hIds.push(fightTeam[i].hId)
-						else
-							hIds.push(null)
+				var awardList = self.addItemStr(crossUid,muye_cfg["rand_camp"]["value"],1,"天命决战",function(flag) {})
+				var info = {
+					awardList : awardList,
+					camp : camp
+				}
+				var hIds = []
+				var fightTeam = self.userTeam(crossUid)
+				for(var i = 0;i < 6;i++){
+					if(fightTeam[i])
+						hIds.push(fightTeam[i].hId)
+					else
 						hIds.push(null)
-						hIds.push(null)
-					}
-					self.muyeSetFightTeams(crossUid,hIds,function(flag,err) {
-						cb(true,info)
-					})
+					hIds.push(null)
+					hIds.push(null)
+				}
+				self.muyeSetFightTeams(crossUid,hIds,function(flag,err) {
+					cb(true,info)
 				})
 			})
 		})
