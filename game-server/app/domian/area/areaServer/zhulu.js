@@ -248,7 +248,6 @@ module.exports = function() {
 		cb(true)
 	}
 	local.spoilsLoad = function(atkTeam,spoils) {
-		console.log(atkTeam,spoils)
 		for(var i = 1;i < spoils.length;i++){
 			var targetList = []
 			switch(spoils[i].type){
@@ -262,28 +261,28 @@ module.exports = function() {
 					targetList = [3,4,5]
 				break
 				case "carry":
-					for(var k = 0;k < atkTeam.length;k++){
+					for(var k = 1;k < atkTeam.length;k++){
 						if(atkTeam[k] && (heros[atkTeam[k].id]["career"] == 1 || heros[atkTeam[k].id]["career"] == 2)){
 							targetList.push(k)
 						}
 					}
 				break
 				case "support":
-					for(var k = 0;k < atkTeam.length;k++){
+					for(var k = 1;k < atkTeam.length;k++){
 						if(atkTeam[k] && heros[atkTeam[k].id]["career"] == 4){
 							targetList.push(k)
 						}
 					}
 				break
 				case "tank":
-					for(var k = 0;k < atkTeam.length;k++){
+					for(var k = 1;k < atkTeam.length;k++){
 						if(atkTeam[k] && heros[atkTeam[k].id]["career"] == 3){
 							targetList.push(k)
 						}
 					}
 				break
 			}
-			for(var j = 0;j < targetList.length;j++){
+			for(var j = 1;j < targetList.length;j++){
 				if(atkTeam[targetList[j]]){
 					if(!atkTeam[targetList[j]][spoils[i].spoils_type])
 						atkTeam[targetList[j]][spoils[i].spoils_type] = spoils[i].value
