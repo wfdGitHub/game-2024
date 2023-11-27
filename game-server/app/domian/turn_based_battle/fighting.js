@@ -7,8 +7,8 @@ const formulaFun = require("./skill/formula.js")
 const skillManagerFun = require("./skill/skillManager.js")
 var model = function(atkTeam,defTeam,otps,managers) {
 	this.fightInfo = {"atk":{"rival":"def","team":[]},"def":{"rival":"atk","team":[]}}
-	this.fightInfo.atk.team = JSON.parse(JSON.stringify(atkTeam || []))
-	this.fightInfo.def.team = JSON.parse(JSON.stringify(defTeam || []))
+	this.fightInfo.atk.teamInfo = JSON.parse(JSON.stringify(atkTeam || []))
+	this.fightInfo.def.teamInfo = JSON.parse(JSON.stringify(defTeam || []))
 	this.otps = JSON.parse(JSON.stringify(otps || {}))
 	this.seededNum = this.otps.seededNum || (new Date()).getTime()
 	this.fightRecord = fightRecord
@@ -43,29 +43,36 @@ model.prototype.loadData = function() {
 		return
 	}
 	this.fightState = 1
-	this.loadTeam("atk",this.fightInfo.atk.team)
-	this.loadTeam("def",this.fightInfo.def.team)
+	this.loadTeam("atk")
+	this.loadTeam("def")
 	this.loadEnemy()
 }
 //载入阵容
-model.prototype.loadTeam = function(type,team) {
+model.prototype.loadTeam = function(type) {
+	var teamCfg = this.fightInfo[type]["teamInfo"].shift() || {}
 	this.fightInfo[type]["team"] = []
 	this.fightInfo[type]["survival"] = 0
 	this.fightInfo[type]["skillMonitor"] = []
 	this.fightInfo[type]["teamAtt"] = {}
-	for(var i = 0;i < TEAMLENGTH;i++){
-		var team_character = new character(this,team[i])
-		team_character.id = this.characterId++
-		team_character.index = i
-		team_character.belong = type
-		team_character.rival = this.fightInfo[type]["rival"]
-		team_character.fightInfo = this.fightInfo[type]
-		team_character.enemyTeam = this.fightInfo[this.fightInfo[type]["rival"]]["team"]
-		this.fightInfo[type]["team"][i] = team_character
-		if(!team_character.isNaN){
-			this.fightInfo[type]["survival"]++
-			this.allHero[team_character.id] = team_character
-		}
+	var teamTalents = this.managers.getTeamTalents(teamCfg)
+	for(var index = 0;index < TEAMLENGTH;index++){
+		this.loadHero(type,index,this.fightInfo[type]["teamInfo"][index],teamTalents,teamCfg)
+	}
+}
+model.prototype.loadHero = function(type,index,info,teamTalents,teamCfg) {
+	var talents = this.managers.getHeroTalents(info,teamCfg)
+	Object.assign(talents,teamTalents)
+	var team_character = new character(this,info,talents)
+	team_character.id = this.characterId++
+	team_character.index = index
+	team_character.belong = type
+	team_character.rival = this.fightInfo[type]["rival"]
+	team_character.fightInfo = this.fightInfo[type]
+	team_character.enemyTeam = this.fightInfo[this.fightInfo[type]["rival"]]["team"]
+	this.fightInfo[type]["team"][index] = team_character
+	if(!team_character.isNaN){
+		this.fightInfo[type]["survival"]++
+		this.allHero[team_character.id] = team_character
 	}
 }
 //载入敌方阵容
@@ -230,7 +237,7 @@ model.prototype.getSpecialWin = function() {
 }
 //获取战斗录像
 model.prototype.getRecordStr = function() {
-	return JSON.stringify({atkTeam:this.fightInfo.atk.team,defTeam:this.fightInfo.def.team,otps:this.otps})
+	return JSON.stringify({atkTeam:this.fightInfo.atk.teamInfo,defTeam:this.fightInfo.def.teamInfo,otps:this.otps})
 }
 //检测主动技能
 model.prototype.checkMaster = function() {

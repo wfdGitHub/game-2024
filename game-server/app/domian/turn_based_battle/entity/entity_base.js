@@ -2,8 +2,10 @@ const fightCfg = require("../fightCfg.js")
 //战斗角色基类
 var model = function(fighting,otps) {
 	this.died = false  					//死亡状态
-	var herosCfg = fightCfg.getCfg("heros")[otps.id]
-	if(!otps || !otps.id || !herosCfg){
+	this.herosCfg = false
+	if(otps && otps.id)
+		this.herosCfg = fightCfg.getCfg("heros")[otps.id]
+	if(!this.herosCfg){
 		this.isNaN = true
 		this.died = true
 		return
@@ -16,9 +18,9 @@ var model = function(fighting,otps) {
 	this.lv = 1
 	this.star = 1
 	this.ad = 1
-	this.realm = herosCfg.realm 		//阵营
+	this.realm = this.herosCfg.realm 		//阵营
 	this.career = 1 					//职业
-	this.sex = herosCfg.sex || 1 		//性别 1男 2女
+	this.sex = this.herosCfg.sex || 1 		//性别 1男 2女
 	this.talents = {}
 	this.buffs = {} 					//全部BUFF
 	this.attBuffs = {} 					//属性增益BUFF

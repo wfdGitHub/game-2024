@@ -2,16 +2,18 @@
 const entity_base = require("./entity_base.js")
 const skill_base = require("../skill/skill_base.js")
 const fightCfg = require("../fightCfg.js")
-var model = function(fighting,info,teamCfg) {
+const skills = fightCfg.getCfg("skills")
+const skill_talents = fightCfg.getCfg("skill_talents")
+var model = function(fighting,otps,talents) {
 	//继承父类属性
-	entity_base.call(this,fighting,info)
+	entity_base.call(this,fighting,otps)
 	if(this.isNaN)
 		return
 	//初始化技能
 	this.defaultSkill = this.packageDefaultSkill()
 	this.angerSkill = this.packageAngerSkill()
 	//初始化天赋
-	this.talents = fighting.managers.getCharacterInfo(info,teamCfg)
+	this.talents = talents
 	//回合技能
 	this.roundSkills = []
 }
@@ -1118,7 +1120,7 @@ model.prototype.getOverData = function() {
 }
 //组装普攻技能
 model.prototype.packageDefaultSkill = function() {
-	var sid = fightCfg.getCfg("heros")[this.heroId]["defult"]
+	var sid = this.herosCfg["defult"]
 	var star = Math.floor(this.otps.s0_star) || 0
 	var lv = Math.floor(this.otps.s0_lv) || 0
 	var skill = this.packageSkill(sid,star,lv,false)
@@ -1127,18 +1129,16 @@ model.prototype.packageDefaultSkill = function() {
 }
 //组装怒气技能
 model.prototype.packageAngerSkill = function() {
-	var sid = fightCfg.getCfg("heros")[this.heroId]["s1"]
+	var sid = this.herosCfg["s1"]
 	var star = Math.floor(this.otps.s1_star) || 1
 	var lv = Math.floor(this.otps.s1_lv) || 0
-	if(star > 5)
-		star = 5
 	var skill = this.packageSkill(sid,star,lv,true,this.otps.skillTalents)
 	skill.origin = true
 	return skill
 }
 //回合技能
 model.prototype.packageRoundSkill = function(skillId) {
-	var skillInfo = fightCfg.getCfg("skills")[skillId]
+	var skillInfo = skills[skillId]
 	var roundSkill = this.packageSkillBySid(skillId)
 	roundSkill.NEED_CD = skillInfo.CD || 99
 	roundSkill.CUR_CD = 0
@@ -1154,7 +1154,7 @@ model.prototype.packageSkillBySid = function(sid) {
 //组装技能
 model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {
 	var sid = baseSid + star
-	var skillCfg = fightCfg.getCfg("skills")[sid]
+	var skillCfg = skills[sid]
 	if(!skillCfg){
 		console.error("技能ID错误 "+baseSid+" "+sid+" star "+star)
 		return
@@ -1168,9 +1168,9 @@ model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {
 	talents = talents || {}
 	for(var i = 1;i <= star;i++){
 		baseSid++
-		skillCfg = fightCfg.getCfg("skills")[baseSid]
+		skillCfg = skills[baseSid]
 		if(skillCfg && skillCfg["talentId"]){
-			var talentInfo = fightCfg.getCfg("skill_talents")[skillCfg["talentId"]]
+			var talentInfo = skill_talents[skillCfg["talentId"]]
 			if(talentInfo){
 				for(var j = 1;j <= 4;j++){
 					var key = talentInfo["key"+j]
@@ -1190,28 +1190,5 @@ model.prototype.packageSkill = function(baseSid,star,lv,isAnger,talents) {
 model.prototype.packageBaseSkill = function(sid,atk_aim,atk_mul,d_type) {
 	var otps = {sid : sid,isAnger : isAnger,atk_aim :atk_aim,atk_mul : atk_mul,d_type : d_type}
 	return new skill_base(this,otps)
-}
-//组装自身天赋
-model.prototype.packageHeroTalents = function(opts) {
-	var talents = opts.heroTalents || {}
-	for(var index = 2;index <= 5;index++){
-		var talentId = fightCfg.getCfg("heros")[this.heroId]["s"+index]
-		for(var i = 1;i <= opts["s"+index+"_star"];i++){
-			talentId++
-			var talentInfo = fightCfg.getCfg("hero_talents")[talentId]
-			if(talentInfo){
-				for(var j = 1;j <= 4;j++){
-					var key = talentInfo["key"+j]
-					if(key){
-						if(talents[key] && Number.isFinite(talents[key]))
-							talents[key] += talentInfo["value"+j]
-						else
-							talents[key] = talentInfo["value"+j]
-					}
-				}
-			}
-		}
-	}
-	return talents
 }
 module.exports = model

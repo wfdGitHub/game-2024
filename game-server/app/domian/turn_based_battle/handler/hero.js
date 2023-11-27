@@ -288,13 +288,41 @@ var model = function(fightContorl) {
 		}
 		return Math.ceil(allCE)
 	}
-	//获取角色数据
-	this.getCharacterInfo = function(info,heroAtts,teamCfg) {
+	//获取团队天赋
+	this.getTeamTalents = function(teamCfg) {
+		var info = {}
+		//公会技能计算
+		if(teamCfg && teamCfg["g"+info.career] && gSkillAtts[info.career]){
+			var glv = teamCfg["g"+info.career]
+			var gInfo = {}
+			for(var i = 0;i < gSkillAtts[info.career].length;i++){
+				gInfo[gSkillAtts[info.career][i]] = guild_skill[glv]["pos_"+i]
+			}
+			this.mergeData(info,gInfo)
+		}
+		//家园属性
+		if(teamCfg["manors"]){
+			for(var i = 1;i <= 6;i++){
+				var key = "ATT_"+i
+				if(teamCfg["manors"][key] && teamCfg["manors"]["slot_"+key]){
+					for(var j = 0;j < teamCfg["manors"]["slot_"+key].length;j++){
+						if(teamCfg["manors"]["slot_"+key][j] == info.hId && manor_main[teamCfg["manors"][key]]){
+							var tmpInfo = {}
+							tmpInfo[manor_type[key]["ATT"]] = manor_main[teamCfg["manors"][key]]["hero_att"]
+							this.mergeData(info,tmpInfo)
+							break
+						}
+					}
+				}
+			}
+		}
+		return info
+	}
+	//获取角色天赋
+	this.getHeroTalents = function(info,teamCfg) {
 		if(!info || !heros[info.id])
 			return false
-		teamCfg = teamCfg || {}
 		info = Object.assign({},info)
-		info.heroAtts = heroAtts
 		info.exalt = info.exalt || 1
 		info.evo = info.evo || 1
 		info.lv = info.lv || 1
@@ -388,15 +416,6 @@ var model = function(fightContorl) {
 					this.mergeTalent(info,fabaoData.slotTalents[j])
 			}
 		}
-		//公会技能计算
-		if(teamCfg && teamCfg["g"+info.career] && gSkillAtts[info.career]){
-			var glv = teamCfg["g"+info.career]
-			var gInfo = {}
-			for(var i = 0;i < gSkillAtts[info.career].length;i++){
-				gInfo[gSkillAtts[info.career][i]] = guild_skill[glv]["pos_"+i]
-			}
-			this.mergeData(info,gInfo)
-		}
 		var hufu_talents = {}
 		//护符计算
 		if(info.hfLv){
@@ -428,22 +447,6 @@ var model = function(fightContorl) {
 		}
 		for(var i in hufu_talents)
 			this.mergeTalent(info,hufu_skill[i]["lv"+hufu_talents[i]])
-		//家园属性
-		if(teamCfg["manors"]){
-			for(var i = 1;i <= 6;i++){
-				var key = "ATT_"+i
-				if(teamCfg["manors"][key] && teamCfg["manors"]["slot_"+key]){
-					for(var j = 0;j < teamCfg["manors"]["slot_"+key].length;j++){
-						if(teamCfg["manors"]["slot_"+key][j] == info.hId && manor_main[teamCfg["manors"][key]]){
-							var tmpInfo = {}
-							tmpInfo[manor_type[key]["ATT"]] = manor_main[teamCfg["manors"][key]]["hero_att"]
-							this.mergeData(info,tmpInfo)
-							break
-						}
-					}
-				}
-			}
-		}
 		//===============场景属性=================//
 		if(teamCfg["specieAdd"] && (info.specie1 == teamCfg["specieAdd"] || info.specie2 == teamCfg["specieAdd"]))
 			this.mergeData(info,{"self_atk_add":0.5})
@@ -481,10 +484,7 @@ var model = function(fightContorl) {
 			info.diedSkill = Object.assign({skillId : info.diedSkill},skills[info.diedSkill])
 			info.diedSkill.diedSkill = true
 		}
-		//主属性增益
-		info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
-		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore)
-		return new character(info)
+		return info
 	}
 	//获取角色主数据
 	this.getCharacterMainAtt = function(info) {
