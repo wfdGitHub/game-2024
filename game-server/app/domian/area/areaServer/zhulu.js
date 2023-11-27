@@ -248,6 +248,7 @@ module.exports = function() {
 		cb(true)
 	}
 	local.spoilsLoad = function(atkTeam,spoils) {
+		console.log(atkTeam,spoils)
 		for(var i = 1;i < spoils.length;i++){
 			var targetList = []
 			switch(spoils[i].type){
