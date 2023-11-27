@@ -5,10 +5,10 @@ const fightRecord = require("./fightRecord.js")
 const locatorFun = require("./skill/locator.js")
 const formulaFun = require("./skill/formula.js")
 const skillManagerFun = require("./skill/skillManager.js")
-var model = function(atkInfo,defInfo,otps,managers) {
+var model = function(atkTeam,defTeam,otps,managers) {
 	this.fightInfo = {"atk":{"rival":"def","team":[]},"def":{"rival":"atk","team":[]}}
-	this.fightInfo.atk.info = JSON.parse(JSON.stringify(atkInfo || []))
-	this.fightInfo.def.info = JSON.parse(JSON.stringify(defInfo || []))
+	this.fightInfo.atk.team = JSON.parse(JSON.stringify(atkTeam || []))
+	this.fightInfo.def.team = JSON.parse(JSON.stringify(defTeam || []))
 	this.otps = JSON.parse(JSON.stringify(otps || {}))
 	this.seededNum = this.otps.seededNum || (new Date()).getTime()
 	this.fightRecord = fightRecord
@@ -43,8 +43,8 @@ model.prototype.loadData = function() {
 		return
 	}
 	this.fightState = 1
-	this.loadTeam("atk",this.fightInfo.atk.info)
-	this.loadTeam("def",this.fightInfo.def.info)
+	this.loadTeam("atk",this.fightInfo.atk.team)
+	this.loadTeam("def",this.fightInfo.def.team)
 	this.loadEnemy()
 }
 //载入阵容
@@ -230,7 +230,7 @@ model.prototype.getSpecialWin = function() {
 }
 //获取战斗录像
 model.prototype.getRecordStr = function() {
-	return JSON.stringify({atkInfo:this.fightInfo.atk.info,defInfo:this.fightInfo.def.info,otps:this.otps})
+	return JSON.stringify({atkTeam:this.fightInfo.atk.team,defTeam:this.fightInfo.def.team,otps:this.otps})
 }
 //检测主动技能
 model.prototype.checkMaster = function() {
