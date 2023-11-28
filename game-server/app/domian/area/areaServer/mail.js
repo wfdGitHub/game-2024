@@ -82,10 +82,9 @@ module.exports = function() {
 			mailInfo.read = true
 			self.redisDao.db.lset("player:user:"+uid+":mail",index,JSON.stringify(mailInfo),function(err,data) {
 				if(!err){
-					var atts = mailInfo.atts
-					self.addItemStr(uid,atts,1,"邮件:"+mailInfo.title)
+					var awardList = self.addItemStr(uid,mailInfo.atts,1,"邮件:"+mailInfo.title)
 					if(cb)
-						cb(true,atts)
+						cb(true,awardList)
 				}else{
 					if(cb)
 						cb(false,err)
