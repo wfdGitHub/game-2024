@@ -156,7 +156,7 @@ var model = function(fightContorl) {
 	}
 	//获取装备分解返还
 	this.getEquipRecycle = function(list) {
-		var map = {"201":0,"2003400":0,"2003000":2003000}
+		var map = {"201":0,"2003400":0,"2003000":0}
 		for(var i = 0;i < list.length;i++){
 			map["201"] += equip_lv[list[i]["lv"]]["pr"]
 			if(list[i]["qa"] >= 5){
