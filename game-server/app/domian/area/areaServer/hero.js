@@ -211,8 +211,7 @@ var model = function() {
 			return
 		}
 		var exaltId = heros[id]["exalt"]
-		console.log(exaltId,mythical[type]["exalt_"+exaltId])
-		self.consumeItems(uid,"201:10000",1,"兑换神兽",function(flag,err) {
+		self.consumeItems(uid,mythical[type]["exalt_"+exaltId],1,"兑换神兽",function(flag,err) {
 			if(!flag){
 				cb(false,err)
 				return
