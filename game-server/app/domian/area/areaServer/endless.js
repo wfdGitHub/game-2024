@@ -49,15 +49,20 @@ module.exports = function() {
 	//消耗体力
 	this.endlessAtiontime = function(uid,cb) {
 		self.getObj(uid,main_name,"action",function(action) {
+			console.log("action",action,new Date(action).toLocaleDateString())
 			action = Number(action) || 0
 			var diff = Date.now() - action
 			if(diff < ONE_TIME){
 				cb(false,"体力不足")
 				return
 			}
+			console.log("diff",diff)
 			if(diff > MAX_TIME)
 				action = Date.now() - MAX_TIME
 			action += ONE_TIME
+			console.log("action",action,new Date(action).toLocaleDateString())
+			console.log("ONE_TIME",ONE_TIME)
+			console.log("action",action,new Date(action).toLocaleDateString())
 			self.setObj(uid,main_name,"action",action)
 			cb(true,action)
 		})
