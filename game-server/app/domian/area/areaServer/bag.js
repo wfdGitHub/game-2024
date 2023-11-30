@@ -30,7 +30,8 @@ module.exports = function() {
 				return
 			}
 		}
-		var itemId = Number(otps.itemId)
+		otps.itemId = Number(otps.itemId)
+		var itemId = otps.itemId
 		var value = Number(otps.value)
 		async.waterfall([
 			function(next) {
@@ -87,7 +88,7 @@ module.exports = function() {
 			},
 			function(next) {
 				//获得道具
-				self.useItemCB(uid,itemId,value,function(flag,data) {
+				self.useItemCB(uid,otps,function(flag,data) {
 					cb(flag,data)
 				})
 			},
@@ -97,7 +98,9 @@ module.exports = function() {
 
 	}
 	//道具使用后获得物品
-	this.useItemCB = function(uid,itemId,value,cb) {
+	this.useItemCB = function(uid,otps,cb) {
+		var itemId = otps.itemId
+		var value = otps.value
 		switch(itemCfg[itemId].useType){
 			case "hero":
 				var heroId = itemCfg[itemId].value
@@ -158,11 +161,7 @@ module.exports = function() {
 			case "optional":
 				//自选包
 				var list = itemCfg[otps.itemId].list
-				var index = otps.index
-				if(!Number.isInteger(index) || !list[index]){
-					cb(false,"index error "+index)
-					return
-				}
+				var index = otps.index || 0
 				var list = self.addItemStr(uid,list[index],value,"自选包"+itemId)
 				if(cb)
 					cb(true,list)
@@ -250,7 +249,8 @@ module.exports = function() {
 	//获得物品
 	this.addItem = function(otps,cb) {
 		var uid = otps.uid
-		var itemId = Number(otps.itemId)
+		otps.itemId = Number(otps.itemId)
+		var itemId = otps.itemId
 		var value = otps.value
 		var rate = otps.rate || 1
 		var reason = otps.reason
@@ -267,7 +267,7 @@ module.exports = function() {
 			itemId = 200
 		}
 		if(itemCfg[itemId].auto){
-			return self.useItemCB(uid,itemId,value,cb)
+			return self.useItemCB(uid,otps,cb)
 		}else{
 			switch(itemCfg[itemId].type){
 				case "ation":
