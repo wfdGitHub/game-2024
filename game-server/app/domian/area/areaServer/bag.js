@@ -33,6 +33,10 @@ module.exports = function() {
 		otps.itemId = Number(otps.itemId)
 		var itemId = otps.itemId
 		var value = Number(otps.value)
+		if(itemCfg[itemId].useMax && value > itemCfg[itemId].useMax){
+			cb(false,"使用数量限制 "+value+"/"+itemCfg[itemId].useMax)
+			return
+		}
 		async.waterfall([
 			function(next) {
 				switch(itemCfg[itemId].useType){
