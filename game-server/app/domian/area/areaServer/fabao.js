@@ -53,7 +53,7 @@ var model = function() {
 			function(next) {
 				//卸下原法宝
 				if(heroInfo["fabao"+index]){
-					oldFabao = JSON.parse(heroInfo["e"+fInfo.slot])
+					oldFabao = JSON.parse(heroInfo["fabao"+index])
 					self.setObj(uid,main_name,oldFabao.id,heroInfo["fabao"+index])
 					delete heroInfo["fabao"+index]
 				}
