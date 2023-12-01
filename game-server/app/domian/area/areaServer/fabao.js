@@ -51,6 +51,19 @@ var model = function() {
 				})
 			},
 			function(next) {
+				//判断法宝类型
+				for(var i = 1;i <= 3;i++){
+					if(i != index && heroInfo["fabao"+i]){
+						var tmpFabao = JSON.parse(heroInfo["fabao"+i])
+						if(tmpFabao.type == fInfo.type){
+							cb(false,"不可穿戴同类型法宝")
+							return
+						}
+					}
+				}
+				next()
+			},
+			function(next) {
 				//卸下原法宝
 				if(heroInfo["fabao"+index]){
 					oldFabao = JSON.parse(heroInfo["fabao"+index])
