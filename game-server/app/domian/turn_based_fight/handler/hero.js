@@ -347,7 +347,6 @@ var model = function(fightContorl) {
 		for(var i = 1;i <= 6;i++){
 			if(info["e"+i]){
 				var eInfo = this.getEquipData(info["e"+i])
-				console.log("eInfo",eInfo.stAtt)
 				this.mergeData(info,eInfo.mainAtt)
 				this.mergeData(info,eInfo.extraAtt)
 				this.mergeData(info,eInfo.stAtt)
