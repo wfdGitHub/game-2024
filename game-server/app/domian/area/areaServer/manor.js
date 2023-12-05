@@ -116,7 +116,7 @@ module.exports = function() {
 				//获取建筑等级
 				self.getHMObj(uid,main_name,["main",bId],function(list) {
 					mainLv = Number(list[0]) || 1
-					buildLv = Number(list[1]) || 1
+					buildLv = Number(list[1]) || 0
 					if(!manor_main[buildLv+1]){
 						cb(false,"已满级")
 						return
