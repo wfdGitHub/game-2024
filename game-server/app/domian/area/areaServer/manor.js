@@ -135,7 +135,7 @@ module.exports = function() {
 							cb(false,"主建筑等级不足 "+buildLv+"/"+mainLv)
 							return
 						}
-						pc = manor_main[mainLv]["build_up"]
+						pc = manor_main[buildLv]["build_up"]
 						next()
 					}
 				})
