@@ -273,6 +273,7 @@ var model = function() {
 			}
 			var pr = "2000:"+fabao_lv[fInfo.lv]["pr"]
 			fInfo.lv = 1
+			fInfo.slots = {}
 			fInfo = JSON.stringify(fInfo)
 			self.setObj(uid,main_name,fId,fInfo,function() {
 				var awardList = self.addItemStr(uid,pr,1,"法宝重生")
