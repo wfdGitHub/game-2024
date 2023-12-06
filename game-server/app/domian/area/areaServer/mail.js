@@ -148,7 +148,7 @@ module.exports = function() {
 				if(mailInfo.atts && !mailInfo.receive){
 					mailInfo.receive = true
 					mailInfo.read = true
-					self.redisDao.db.lset("player:user:"+uid+":mail",index,JSON.stringify(mailInfo))
+					self.redisDao.db.lset("player:user:"+uid+":mail",i,JSON.stringify(mailInfo))
 					awardList = awardList.concat(self.addItemStr(uid,mailInfo.atts,1,"邮件:"+mailInfo.title))
 				}
 			}
