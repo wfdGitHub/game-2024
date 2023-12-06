@@ -146,8 +146,10 @@ module.exports = function() {
 			for(var i = 0;i < list.length;i++){
 				var mailInfo = JSON.parse(list[i])
 				if(mailInfo.atts && !mailInfo.receive){
-					awardList.push(mailInfo.atts)
-					self.gainMailAttachment(uid,i,mailInfo.id)
+					mailInfo.receive = true
+					mailInfo.read = true
+					self.redisDao.db.lset("player:user:"+uid+":mail",index,JSON.stringify(mailInfo))
+					awardList = awardList.concat(self.addItemStr(uid,mailInfo.atts,1,"邮件:"+mailInfo.title))
 				}
 			}
 			cb(true,awardList)
