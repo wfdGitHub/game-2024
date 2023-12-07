@@ -191,7 +191,7 @@ var model = function(fightContorl) {
 				if(list[i]["e"+j+"g"+k])
 					strList.push(list[i]["e"+j+"g"+k]+":1")
 			}
-			map["2000030"] += Math.round(evolve_lv[list[i]["evo"]]["pr"] * exalt_lv[list[i]["lv"]]["prRate"])
+			map["2000030"] += Math.round(evolve_lv[list[i]["evo"]]["pr"] * exalt_lv[list[i]["exalt"]]["prRate"])
 			if(list[i]["qa"] >= 5)
 				map["2000050"] += 1
 

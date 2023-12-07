@@ -538,7 +538,7 @@ var model = function() {
 		    	}
 				var awardList = self.addItemStr(uid,info.awardStr,1,"英雄分解")
 				for(var j = 0;j < info.awards.length;j++)
-					awardList.push(self.addItemByType(uid,info.awards[i]))
+					awardList.push(self.addItemByType(uid,info.awards[j]))
 				cb(true,awardList)
 		    })
 		})

@@ -528,16 +528,16 @@ model.prototype.fightOver = function(winFlag,roundEnd) {
 	// console.log("战斗结束")
 	this.isFight = false
 	var info = {type : "fightOver",winFlag : winFlag,atkTeam:[],defTeam:[],round : this.round,roundEnd : roundEnd||false,atkDamage:0,defDamage:0}
-	for(var i = 0;i < this.atkTeam.length;i++){
-		if(!this.atkTeam[i].isNaN){
-			info.atkDamage += this.atkTeam[i].totalDamage
-			info.atkTeam.push(this.atkTeam[i].getSimpleInfo())
+	for(var i = 0;i < this.atkAllTeam.length;i++){
+		if(!this.atkAllTeam[i].isNaN){
+			info.atkDamage += this.atkAllTeam[i].totalDamage
+			info.atkTeam.push(this.atkAllTeam[i].getSimpleInfo())
 		}
 	}
-	for(var i = 0;i < this.defTeam.length;i++){
-		if(!this.defTeam[i].isNaN){
-			info.defDamage += this.defTeam[i].totalDamage
-			info.defTeam.push(this.defTeam[i].getSimpleInfo())
+	for(var i = 0;i < this.defAllTeam.length;i++){
+		if(!this.defAllTeam[i].isNaN){
+			info.defDamage += this.defAllTeam[i].totalDamage
+			info.defTeam.push(this.defAllTeam[i].getSimpleInfo())
 		}
 	}
 	info.masterSkills = this.masterSkills

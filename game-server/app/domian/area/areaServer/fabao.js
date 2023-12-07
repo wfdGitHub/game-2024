@@ -51,9 +51,22 @@ var model = function() {
 				})
 			},
 			function(next) {
+				//判断法宝类型
+				for(var i = 1;i <= 3;i++){
+					if(i != index && heroInfo["fabao"+i]){
+						var tmpFabao = JSON.parse(heroInfo["fabao"+i])
+						if(tmpFabao.type == fInfo.type){
+							cb(false,"不可穿戴同类型法宝")
+							return
+						}
+					}
+				}
+				next()
+			},
+			function(next) {
 				//卸下原法宝
 				if(heroInfo["fabao"+index]){
-					oldFabao = JSON.parse(heroInfo["e"+fInfo.slot])
+					oldFabao = JSON.parse(heroInfo["fabao"+index])
 					self.setObj(uid,main_name,oldFabao.id,heroInfo["fabao"+index])
 					delete heroInfo["fabao"+index]
 				}
@@ -260,6 +273,7 @@ var model = function() {
 			}
 			var pr = "2000:"+fabao_lv[fInfo.lv]["pr"]
 			fInfo.lv = 1
+			fInfo.slots = {}
 			fInfo = JSON.stringify(fInfo)
 			self.setObj(uid,main_name,fId,fInfo,function() {
 				var awardList = self.addItemStr(uid,pr,1,"法宝重生")
@@ -427,6 +441,7 @@ var model = function() {
 			}
 			var pr = "2000:"+fabao_lv[fInfo.lv]["pr"]
 			fInfo.lv = 1
+			fInfo.slots = {}
 			heroInfo["fabao"+index] = JSON.stringify(fInfo)
 			self.heroDao.setHeroInfo(self.areaId,uid,hId,"fabao"+index,heroInfo["fabao"+index],function() {
 				var awardList = self.addItemStr(uid,pr,1,"法宝重生")

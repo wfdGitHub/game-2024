@@ -129,7 +129,6 @@ var model = function(fightContorl) {
 		}
 		//计算评分  (特效*100*装备等级 套装*100*装备等级   主属性倍率*属性倍率*100   附加属性和*100)
 		info.score = Math.ceil(((info.spe.length + (info.suit ? 1.5 : 0)) * 200 * Math.sqrt(info.lv)) + (eInfo.att.main_1 + eInfo.att.main_2)*equip_lv[info.lv]["mainRate"]*80 + extraNum*40)
-		info.ce = Math.ceil(info.score * 6 * (1+equip_st[info.st]["att"]))
 		return info
 	}
 	//获取装备战力
@@ -141,6 +140,8 @@ var model = function(fightContorl) {
 		eInfo = JSON.parse(eInfo)
 		//主属性战力
 		allCE += (eInfo.att.main_1 + eInfo.att.main_2) * equip_lv[eInfo.lv]["mainRate"] * 360
+		if(eInfo.st)
+			allCE += Math.ceil(allCE * equip_st[eInfo.st]["att"])
 		//附加属性战力
 		var extraNum = 0
 		for(var i in eInfo.att.extra)
