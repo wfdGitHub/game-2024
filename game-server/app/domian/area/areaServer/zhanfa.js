@@ -114,7 +114,7 @@ module.exports = function() {
 						return
 					}
 					var oldZid = heroInfo[key]
-					if(zId){
+					if(oldZid){
 						next("已穿戴战法")
 						return
 					}

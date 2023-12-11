@@ -19,6 +19,7 @@ const guild_skill = fightCfg.getCfg("guild_skill")
 const manor_main = fightCfg.getCfg("manor_main")
 const manor_type = fightCfg.getCfg("manor_type")
 const hufu_quality = fightCfg.getCfg("hufu_quality")
+const zhanfa = fightCfg.getCfg("zhanfa")
 const character = require("../entity/character.js")
 var gemMap = {}
 for(var i in gem_lv){
