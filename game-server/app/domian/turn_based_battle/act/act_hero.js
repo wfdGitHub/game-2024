@@ -10,9 +10,6 @@ var model = function() {
 	this.dirY = 1 						//Y轴移动方向
 	this.moveCD = 0 					//移动冷却
 	this.atkRange = 50 					//攻击距离
-	this.skills = [] 					
-	this.skills.push(new act_skill({id:"1001",name:"普攻",cd:1700}),this)
-	this.skills.push(new act_skill({id:"2001",name:"技能",cd:5000}),this)
 	this.skill = false
 }
 //定时器更新

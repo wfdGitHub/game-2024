@@ -10,8 +10,9 @@ var model = function(fighting,otps,talents) {
 	if(this.isNaN)
 		return
 	//初始化技能
-	this.defaultSkill = this.packageDefaultSkill()
-	this.angerSkill = this.packageAngerSkill()
+	this.skills = [] 					
+	this.skills.push(new skill_base(this,{id:"1001",name:"普攻",cd:1700}))
+	this.skills.push(new skill_base(this,{id:"2001",name:"技能",cd:5000}))
 	//初始化天赋
 	this.talents = talents
 	//回合技能
