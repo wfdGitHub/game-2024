@@ -386,12 +386,12 @@ module.exports = function() {
 	//合并奖励str
 	this.mergepcstr = function(strList) {
 		var pcInfo = {}
-		for(let i = 0;i < strList.length;i++){
-		    let pc = strList[i].split("&")
+		for(var i = 0;i < strList.length;i++){
+		    var pc = strList[i].split("&")
 		    pc.forEach(function(m_str) {
-		        let m_list = m_str.split(":")
-		        let itemId = Number(m_list[0])
-		        let value = Number(m_list[1])
+		        var m_list = m_str.split(":")
+		        var itemId = Number(m_list[0])
+		        var value = Number(m_list[1])
 		        if(!pcInfo[itemId]){
 		          pcInfo[itemId] = 0
 		        }
