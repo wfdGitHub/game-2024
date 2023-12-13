@@ -17,7 +17,6 @@ var model = function(fighting,otps,talents) {
 	//回合技能
 	this.roundSkills = []
 }
-//继承父类方法
 model.prototype = Object.create(entity_base.prototype) //继承父类方法
 //战斗初始化
 model.prototype.init = function() {
@@ -699,6 +698,7 @@ model.prototype.onDie = function(info) {
 	this.fighting.fightInfo[this.belong]["survival"]--
 	if(this.buffs["turtle"])
 		this.buffs["turtle"].trigger()
+	this.fighting.heroRemove(this)
 }
 //任意角色阵亡
 model.prototype.anyDie = function(target) {
@@ -941,10 +941,10 @@ model.prototype.revive = function(value) {
 		return
 	this.attInfo.hp = value
 	this.died = false
-	this.fighting.fightInfo[this.belong]["survival"]++
 	this.fighting.fightRecord.push({type : "revive",id : this.id,hp : this.attInfo.hp,maxHP:this.attInfo.maxHP})
 	if(this.buffs["turtle"])
 		this.buffs["turtle"].close()
+	this.fighting.heroAdd(this)
 }
 //添加BUFF
 model.prototype.createBuff = function(buff) {

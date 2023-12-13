@@ -1,5 +1,7 @@
 //技能基类 伤害  治疗  BUFF
+const act_skill = require("../act/act_skill.js")
 var model = function(character,otps,talents) {
+	act_skill.call(this,otps,character)
 	otps = otps || {}
 	this.character = character
 	this.sid = otps.sid || 0 		//技能ID
@@ -24,6 +26,7 @@ var model = function(character,otps,talents) {
 	this.otps = otps
 	this.init()
 }
+model.prototype = Object.create(act_skill.prototype) //继承父类方法
 //技能初始化
 model.prototype.init = function() {
 	for(var i = 1;i <= 3;i++){

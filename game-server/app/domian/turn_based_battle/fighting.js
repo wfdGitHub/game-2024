@@ -1,11 +1,13 @@
 'use strict';
-const TEAMLENGTH = 5 				//队伍人数
 const character = require("./entity/character.js")
 const fightRecord = require("./fightRecord.js")
 const locatorFun = require("./skill/locator.js")
 const formulaFun = require("./skill/formula.js")
 const skillManagerFun = require("./skill/skillManager.js")
+const TIME_LAG = 100
+const MAX_TIME = 90000
 var model = function(atkTeam,defTeam,otps,managers) {
+	console.time("fight")
 	this.fightInfo = {"atk":{"rival":"def","team":[]},"def":{"rival":"atk","team":[]}}
 	this.fightInfo.atk.teamInfo = JSON.parse(JSON.stringify(atkTeam || []))
 	this.fightInfo.def.teamInfo = JSON.parse(JSON.stringify(defTeam || []))
@@ -18,6 +20,7 @@ var model = function(atkTeam,defTeam,otps,managers) {
 	this.skillManager = new skillManagerFun(this)
 	this.managers = managers
 	this.buffManager = managers.buffManager
+	this.RUNTIME = 0 				//当前时间
 	this.maxRound = 20
 	//战斗数据
 	this.fightState = 0				//战斗状态 0 未开始  1 已加载数据  2 已开始战斗  3  已结束
@@ -48,38 +51,40 @@ model.prototype.loadData = function() {
 	this.loadEnemy()
 }
 //载入阵容
-model.prototype.loadTeam = function(type) {
-	var teamCfg = this.fightInfo[type]["teamInfo"].shift() || {}
-	this.fightInfo[type]["team"] = []
-	this.fightInfo[type]["survival"] = 0
-	this.fightInfo[type]["skillMonitor"] = []
-	this.fightInfo[type]["teamAtt"] = {}
+model.prototype.loadTeam = function(belong) {
+	var teamCfg = this.fightInfo[belong]["teamInfo"].shift() || {}
+	this.fightInfo[belong]["team"] = []
+	this.fightInfo[belong]["survival"] = 0
+	this.fightInfo[belong]["skillMonitor"] = []
+	this.fightInfo[belong]["teamAtt"] = {}
 	var teamTalents = this.managers.getTeamTalents(teamCfg)
-	for(var index = 0;index < TEAMLENGTH;index++){
-		this.loadHero(type,index,this.fightInfo[type]["teamInfo"][index],teamTalents,teamCfg)
+	for(var index = 0;index < this.fightInfo[belong]["teamInfo"].length;index++){
+		this.loadHero(belong,index,this.fightInfo[belong]["teamInfo"][index],teamTalents,teamCfg)
 	}
 }
-model.prototype.loadHero = function(type,index,info,teamTalents,teamCfg) {
+model.prototype.loadHero = function(belong,index,info,teamTalents,teamCfg) {
 	var talents = this.managers.getHeroTalents(info,teamCfg)
 	Object.assign(talents,teamTalents)
 	var team_character = new character(this,info,talents)
 	team_character.id = this.characterId++
 	team_character.index = index
-	team_character.belong = type
-	team_character.rival = this.fightInfo[type]["rival"]
-	team_character.fightInfo = this.fightInfo[type]
-	team_character.enemyTeam = this.fightInfo[this.fightInfo[type]["rival"]]["team"]
-	this.fightInfo[type]["team"][index] = team_character
+	team_character.belong = belong
+	team_character.rival = this.fightInfo[belong]["rival"]
+	team_character.fightInfo = this.fightInfo[belong]
+	team_character.enemyTeam = this.fightInfo[this.fightInfo[belong]["rival"]]["team"]
+	this.fightInfo[belong]["team"][index] = team_character
 	if(!team_character.isNaN){
-		this.fightInfo[type]["survival"]++
+		this.fightInfo[belong]["survival"]++
 		this.allHero[team_character.id] = team_character
 	}
 }
 //载入敌方阵容
 model.prototype.loadEnemy = function() {
-	for(var i = 0;i < TEAMLENGTH;i++){
+	for(var i = 0;i < this.fightInfo["atk"]["team"].length;i++){
 		this.fightInfo["atk"]["team"][i].team = this.fightInfo["atk"]["team"]
 		this.fightInfo["atk"]["team"][i].enemyTeam = this.fightInfo["def"]["team"]
+	}
+	for(var i = 0;i < this.fightInfo["def"]["team"].length;i++){
 		this.fightInfo["def"]["team"][i].team = this.fightInfo["def"]["team"]
 		this.fightInfo["def"]["team"][i].enemyTeam = this.fightInfo["atk"]["team"]
 	}
@@ -112,106 +117,41 @@ model.prototype.fightBegin = function() {
 	for(var i in this.allHero)
 		this.allHero[i].begin()
 	//开始首回合
-	this.trampoline(this.nextRound.bind(this))
+	this.trampoline(this.timeUpdate.bind(this))
 }
-//开始新整体回合
-model.prototype.nextRound = function() {
-	if(this.fightState !== 2)
-		return
-	if(this.round >= this.maxRound){
-		//达到最大轮次，战斗结束
-		this.fightOver("planish")
-		return
-	}
-	this.round++
-	this.fightRecord.push({type : "nextRound",round : this.round})
+//英雄移除
+model.prototype.heroRemove = function(hero) {
+	delete this.allHero[hero.id]
+	this.fightInfo[hero.belong]["survival"]--
+}
+//英雄添加
+model.prototype.heroAdd = function(hero) {
+	this.allHero[hero.id] = hero
+	this.fightInfo[hero.belong]["survival"]++
+}
+//刷新
+model.prototype.timeUpdate = function() {
+	this.RUNTIME += TIME_LAG
 	for(var i in this.allHero)
-		this.allHero[i].roundBegin()
-	//运行检测
-	return this.runCheck.bind(this)
-}
-//运行检测
-model.prototype.runCheck = function() {
-	if(this.manual){
-		this.runFlag = false
-		return
-	}else if(this.checkMaster()){
-		return this.runCheck.bind(this)
-	}else{
-		//下一个英雄行动
-		return this.nextCharacter.bind(this)
-	}
-}
-//选择下一个英雄
-model.prototype.nextCharacter = function() {
-	this.runCount++
-	if(!this.runFlag)
-		return
-	if(this.fightState !== 2){
-		return
-	}
-	var id = -1
-	//找出下一个行动目标
-	for(var i in this.allHero){
-		if(this.allHero[i].checkAction()){
-			if(id == -1 || this.allHero[i].getTotalAtt("speed") > this.allHero[id].getTotalAtt("speed")){
-				id = this.allHero[i].id
-			}
-		}
-	}
-	if(id != -1){
-		this.cur_character = this.allHero[id]
-		return this.beforeCharacter.bind(this)
-	}else{
-		return this.endRound.bind(this)
-	}
-}
-//英雄回合开始前
-model.prototype.beforeCharacter = function(){
-	this.insertTmpRecord()
-	this.cur_character.before()
-	return this.actionCharacter.bind(this)
-}
-//英雄回合行动
-model.prototype.actionCharacter = function(){
-	var skillInfo
-	if(this.cur_character.buffs["chaofeng"] && this.cur_character.buffs["chaofeng"].list[0].attacker){
-		skillInfo = this.cur_character.useNormalSkill()
-		if(skillInfo)
-			skillInfo.targets = [this.cur_character.buffs["chaofeng"].list[0].attacker]
-	}else{
-		skillInfo = this.cur_character.chooseSkill()
-	}
-	if(skillInfo){
-		this.skillManager.useSkill(skillInfo)
-	}else{
-		//未行动恢复怒气
-		this.cur_character.addAnger(20,true)
-	}
-	return this.afterCharacter.bind(this)
-}
-//英雄回合结束
-model.prototype.afterCharacter = function() {
-	this.cur_character.after()
-	this.checkOver()
-	return this.runCheck.bind(this)
-}
-//整体回合结束
-model.prototype.endRound = function(){
-	for(var i in this.allHero)
-		this.allHero[i].roundEnd()
-	this.checkOver()
-	return this.nextRound.bind(this)
+		this.allHero[i].timeUpdate(TIME_LAG)
+	if(!this.checkOver())
+		this.timeUpdate()
 }
 //检查结束
 model.prototype.checkOver = function() {
 	this.insertTmpRecord()
 	//判断结束
-	for(var type in this.fightInfo){
-		if(this.fightInfo[type]["survival"] <= 0){
-			return this.fightOver(this.fightInfo[type]["rival"])
+	if(this.RUNTIME >= MAX_TIME){
+		this.fightOver("def")
+		return true
+	}
+	for(var belong in this.fightInfo){
+		if(this.fightInfo[belong]["survival"] <= 0){
+			this.fightOver(this.fightInfo[belong]["rival"])
+			return true
 		}
 	}
+	return false
 }
 //战斗结束
 model.prototype.fightOver = function(teamType) {
@@ -226,6 +166,7 @@ model.prototype.fightOver = function(teamType) {
 		info.allHero.push(this.allHero[i].getOverData())
 	}
 	this.fightRecord.push(info)
+	console.timeEnd("fight")
 }
 //获取常规战斗结果，打平为守方获胜
 model.prototype.getNormalWin = function() {
@@ -292,4 +233,93 @@ model.prototype.trampoline = function(f) {
 	}
 	return f
 }
+// //开始新整体回合
+// model.prototype.nextRound = function() {
+// 	if(this.fightState !== 2)
+// 		return
+// 	if(this.round >= this.maxRound){
+// 		//达到最大轮次，战斗结束
+// 		this.fightOver("planish")
+// 		return
+// 	}
+// 	this.round++
+// 	this.fightRecord.push({type : "nextRound",round : this.round})
+// 	for(var i in this.allHero)
+// 		this.allHero[i].roundBegin()
+// 	//运行检测
+// 	return this.runCheck.bind(this)
+// }
+// //运行检测
+// model.prototype.runCheck = function() {
+// 	if(this.manual){
+// 		this.runFlag = false
+// 		return
+// 	}else if(this.checkMaster()){
+// 		return this.runCheck.bind(this)
+// 	}else{
+// 		//下一个英雄行动
+// 		return this.nextCharacter.bind(this)
+// 	}
+// }
+// //选择下一个英雄
+// model.prototype.nextCharacter = function() {
+// 	this.runCount++
+// 	if(!this.runFlag)
+// 		return
+// 	if(this.fightState !== 2){
+// 		return
+// 	}
+// 	var id = -1
+// 	//找出下一个行动目标
+// 	for(var i in this.allHero){
+// 		if(this.allHero[i].checkAction()){
+// 			if(id == -1 || this.allHero[i].getTotalAtt("speed") > this.allHero[id].getTotalAtt("speed")){
+// 				id = this.allHero[i].id
+// 			}
+// 		}
+// 	}
+// 	if(id != -1){
+// 		this.cur_character = this.allHero[id]
+// 		return this.beforeCharacter.bind(this)
+// 	}else{
+// 		return this.endRound.bind(this)
+// 	}
+// }
+// //英雄回合开始前
+// model.prototype.beforeCharacter = function(){
+// 	this.insertTmpRecord()
+// 	this.cur_character.before()
+// 	return this.actionCharacter.bind(this)
+// }
+// //英雄回合行动
+// model.prototype.actionCharacter = function(){
+// 	var skillInfo
+// 	if(this.cur_character.buffs["chaofeng"] && this.cur_character.buffs["chaofeng"].list[0].attacker){
+// 		skillInfo = this.cur_character.useNormalSkill()
+// 		if(skillInfo)
+// 			skillInfo.targets = [this.cur_character.buffs["chaofeng"].list[0].attacker]
+// 	}else{
+// 		skillInfo = this.cur_character.chooseSkill()
+// 	}
+// 	if(skillInfo){
+// 		this.skillManager.useSkill(skillInfo)
+// 	}else{
+// 		//未行动恢复怒气
+// 		this.cur_character.addAnger(20,true)
+// 	}
+// 	return this.afterCharacter.bind(this)
+// }
+// //英雄回合结束
+// model.prototype.afterCharacter = function() {
+// 	this.cur_character.after()
+// 	this.checkOver()
+// 	return this.runCheck.bind(this)
+// }
+// //整体回合结束
+// model.prototype.endRound = function(){
+// 	for(var i in this.allHero)
+// 		this.allHero[i].roundEnd()
+// 	this.checkOver()
+// 	return this.nextRound.bind(this)
+// }
 module.exports = model

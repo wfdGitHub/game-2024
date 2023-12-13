@@ -1,6 +1,9 @@
 const fightCfg = require("../fightCfg.js")
+const act_hero = require("../act/act_hero.js")
 //战斗角色基类
 var model = function(fighting,otps) {
+	//继承父类
+	act_hero.call(this,fighting,otps)
 	this.died = false  					//死亡状态
 	this.herosCfg = false
 	if(otps && otps.id)
@@ -29,6 +32,7 @@ var model = function(fighting,otps) {
 	if(!this.isNaN)
 		this.attInit()
 }
+model.prototype = Object.create(act_hero.prototype) //继承父类方法
 //属性初始化
 model.prototype.attInit = function() {
 	var heroInfo = fightCfg.getCfg("heros")[this.heroId]
