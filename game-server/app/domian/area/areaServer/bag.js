@@ -693,7 +693,8 @@ module.exports = function() {
 		var list = str.split("&")
 		var newStr = ""
 		list.forEach(function(m_str) {
-			var itemId = m_list[0]
+	        var m_list = m_str.split(":")
+	        var itemId = Number(m_list[0])
 			var value = Math.floor(m_list[1] * rate)
 			newStr += itemId+":"+value+"&"
 		})
