@@ -83,9 +83,9 @@ module.exports = function() {
 				if(pay_cfg[pay_id]["dianpiao"] == 0){
 					self.finish_recharge(uid,pay_id,info,cb)
 				}else{
-					self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],rate,"点票支付",function(flag,err) {
+					self.consumeItems(uid,"110:"+pay_cfg[pay_id]["rmb"],rate,"点票支付",function(flag,err) {
 						if(flag){
-							self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"] * rate)
+							self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["rmb"] * rate)
 							self.finish_recharge(uid,pay_id,info,cb)
 						}else{
 							cb(false,err)
