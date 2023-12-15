@@ -354,7 +354,8 @@ module.exports = function() {
 			if(data[0] == "0")
 				self.incrbyObj(uid,main_name,"boxDay",1)
 			self.incrbyObj(uid,main_name,"signCount",1)
-			let awardList = self.addItemStr(uid,sign_in_day[data[1]]["award"],1,"签到")
+			var signDay = Number(data[1]) || 1
+			var awardList = self.addItemStr(uid,sign_in_day[signDay]["award"],1,"签到")
 			cb(true,awardList)
 		})
 	}
