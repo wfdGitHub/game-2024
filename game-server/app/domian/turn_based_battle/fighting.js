@@ -1,7 +1,7 @@
 'use strict';
 const character = require("./entity/character.js")
 const fightRecord = require("./fightRecord.js")
-const locatorFun = require("./skill/locator.js")
+const locatorFun = require("./act/act_locator.js")
 const formulaFun = require("./skill/formula.js")
 const skillManagerFun = require("./skill/skillManager.js")
 const TIME_LAG = 100
@@ -71,20 +71,23 @@ model.prototype.loadHero = function(belong,index,info,teamTalents,teamCfg) {
 	team_character.belong = belong
 	team_character.rival = this.fightInfo[belong]["rival"]
 	team_character.fightInfo = this.fightInfo[belong]
-	team_character.enemyTeam = this.fightInfo[this.fightInfo[belong]["rival"]]["team"]
-	this.fightInfo[belong]["team"][index] = team_character
 	if(!team_character.isNaN){
 		this.fightInfo[belong]["survival"]++
+		this.fightInfo[belong]["team"][team_character.id] = team_character
 		this.allHero[team_character.id] = team_character
 	}
+	if(belong == "atk")
+		team_character.point = {x : 500,y : 500}
+	else
+		team_character.point = {x : 0,y : 0}
 }
 //载入敌方阵容
 model.prototype.loadEnemy = function() {
-	for(var i = 0;i < this.fightInfo["atk"]["team"].length;i++){
+	for(var i in this.fightInfo["atk"]["team"]){
 		this.fightInfo["atk"]["team"][i].team = this.fightInfo["atk"]["team"]
 		this.fightInfo["atk"]["team"][i].enemyTeam = this.fightInfo["def"]["team"]
 	}
-	for(var i = 0;i < this.fightInfo["def"]["team"].length;i++){
+	for(var i in this.fightInfo["def"]["team"]){
 		this.fightInfo["def"]["team"][i].team = this.fightInfo["def"]["team"]
 		this.fightInfo["def"]["team"][i].enemyTeam = this.fightInfo["atk"]["team"]
 	}
@@ -122,11 +125,13 @@ model.prototype.fightBegin = function() {
 //英雄移除
 model.prototype.heroRemove = function(hero) {
 	delete this.allHero[hero.id]
+	delete this.fightInfo[hero.belong]["team"][hero.id]
 	this.fightInfo[hero.belong]["survival"]--
 }
 //英雄添加
 model.prototype.heroAdd = function(hero) {
 	this.allHero[hero.id] = hero
+	this.fightInfo[hero.belong]["team"][hero.id] = hero
 	this.fightInfo[hero.belong]["survival"]++
 }
 //刷新

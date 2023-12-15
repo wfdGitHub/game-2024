@@ -12,7 +12,7 @@ var model = function(character,otps,talents) {
 	this.attTmpInfo = {}
 	//伤害参数
 	this.attInfo.atk_count = otps["atk_count"] || 1
-	this.attInfo.atk_mul = otps["atk_mul"] || 0
+	this.attInfo.atk_mul = otps["atk_mul"] || 1
 	this.attInfo.atk_value = otps["atk_value"] || 0
 	this.attInfo.real_value = 0
 	this.atk_aim = otps["atk_aim"] || 0
