@@ -36,6 +36,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 	var v_sign = util.md5(data.nt_data+data.sign+this.sdkConfig["Md5_Key"]["value"])
 	if(v_sign != data.md5Sign){
 		console.error("签名验证失败")
+		console.log(data)
 		return
 	}
 	res.send("SUCCESS")
