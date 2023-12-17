@@ -60,7 +60,6 @@ module.exports = function() {
 			   		var awardList = []
 			   		if(ttttower_level[level]["awards"])
 						awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["awards"],1,"通天塔"+level))
-					awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["mopupAward"],1,"通天塔"+level))
 					cb(true,awardList)
 			    }else{
 			    	self.verifyFaild(uid,self.fightContorl.getVerifyInfo(),"通天塔")
