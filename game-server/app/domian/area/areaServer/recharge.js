@@ -142,7 +142,7 @@ module.exports = function() {
 		var rate = 1
 		if(info && info.extras_params && info.extras_params.rate)
 			rate = info.extras_params.rate
-		console.log("finish_recharge",info,"rate")
+		console.log("finish_recharge",info,"rate",rate)
 		var call_back = function(uid,flag,data) {
 			if(flag){
 				self.addUserRMB(uid,pay_cfg[pay_id].cent * rate)

@@ -24,6 +24,7 @@ activityHandler.prototype.dianpiao_recharge = function(msg, session, next) {
 }
 //申请支付
 activityHandler.prototype.apply_recharge = function(msg, session, next) {
+  console.log(msg)
   var uid = session.uid
   var areaId = session.get("areaId")
   var unionid = session.get("unionid")
