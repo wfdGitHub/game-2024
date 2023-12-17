@@ -105,6 +105,7 @@ module.exports = function() {
 	}
 	//申请充值
 	this.apply_recharge = function(uid,unionid,pay_id,extras_params,cb) {
+		console.log("apply_recharge",extras_params)
 		if(!pay_cfg[pay_id]){
 			cb(false,"pay_id error")
 			return
@@ -138,6 +139,7 @@ module.exports = function() {
 	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,info,cb) {
+		console.log("finish_recharge",info)
 		var rate = 1
 		if(info && info.extras_params && info.extras_params.rate)
 			rate = info.extras_params.rate

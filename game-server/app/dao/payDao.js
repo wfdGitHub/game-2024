@@ -23,10 +23,13 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 		create_time : Date.now(),
 		status : 2,
 		areaId : otps.areaId,
-		extras_params : otps.extras_params || {}
+		extras_params : {}
 	}
-	if(info.extras_params.rate && Number.isInteger(info.extras_params.rate) && pay_cfg[otps.pay_id]["rate"] && info.extras_params.rate >= 1)
-		info.amount = Number(info.amount * info.extras_params.rate)
+	if(otps.extras_params){
+		var extras_params = JSON.parse(otps.extras_params)
+		if(extras_params.rate && Number.isInteger(extras_params.rate) && pay_cfg[otps.pay_id]["rate"] && extras_params.rate >= 1)
+			info.amount = Number(info.amount * extras_params.rate)
+	}
 	this.db.query(sql,info, function(err, res) {
 		if (err) {
 			// console.error('createCDType! ' + err.stack);
@@ -51,7 +54,6 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 		}
 		res =JSON.parse( JSON.stringify(res))
 		var data = res[0]
-		data.extras_params
 		if(err || !data){
 			console.error("订单不存在",err)
 			self.faildOrder("订单不存在",otps)
