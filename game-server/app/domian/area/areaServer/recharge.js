@@ -139,10 +139,10 @@ module.exports = function() {
 	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,info,cb) {
-		console.log("finish_recharge",info)
 		var rate = 1
 		if(info && info.extras_params && info.extras_params.rate)
 			rate = info.extras_params.rate
+		console.log("finish_recharge",info,"rate")
 		var call_back = function(uid,flag,data) {
 			if(flag){
 				self.addUserRMB(uid,pay_cfg[pay_id].cent * rate)
@@ -242,6 +242,7 @@ module.exports = function() {
 	}
 	//充值
 	this.recharge = function(uid,rate,index,cb) {
+		console.log("recharge",rate)
 		self.incrbyObj(uid,main_name,"recharge_"+index,1,function(data) {
 			var gold = recharge[index].gold
 			var count = 0
