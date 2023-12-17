@@ -140,8 +140,11 @@ module.exports = function() {
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,info,cb) {
 		var rate = 1
-		if(info && info.extras_params && info.extras_params.rate)
-			rate = info.extras_params.rate
+		if(info && info.extras_params){
+			var extras_params = JSON.parse(info.extras_params)
+			if(extras_params.rate)
+				rate = Math.min(1,Number(extras_params.rate) || 1)
+		}
 		console.log("finish_recharge",info,"rate",rate)
 		var call_back = function(uid,flag,data) {
 			if(flag){
