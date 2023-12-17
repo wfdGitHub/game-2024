@@ -23,12 +23,12 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 		create_time : Date.now(),
 		status : 2,
 		areaId : otps.areaId,
-		extras_params : {}
+		extras_params : ""
 	}
 	if(otps.extras_params){
-		var extras_params = JSON.parse(otps.extras_params)
-		if(extras_params.rate && Number.isInteger(extras_params.rate) && pay_cfg[otps.pay_id]["rate"] && extras_params.rate >= 1)
-			info.amount = Number(info.amount * extras_params.rate)
+		info.extras_params = JSON.stringify(otps.extras_params)
+		if(otps.extras_params.rate && Number.isInteger(otps.extras_params.rate) && pay_cfg[otps.pay_id]["rate"] && otps.extras_params.rate >= 1)
+			info.amount = Number(info.amount * otps.extras_params.rate)
 	}
 	this.db.query(sql,info, function(err, res) {
 		if (err) {
