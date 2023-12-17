@@ -28,7 +28,8 @@ activityHandler.prototype.apply_recharge = function(msg, session, next) {
   var areaId = session.get("areaId")
   var unionid = session.get("unionid")
   var pay_id = msg.pay_id
-  this.areaManager.areaMap[areaId].apply_recharge(uid,unionid,pay_id,function(flag,msg) {
+  var extras_params =  msg.extras_params
+  this.areaManager.areaMap[areaId].apply_recharge(uid,unionid,pay_id,extras_params,function(flag,msg) {
     next(null,{flag : flag,msg : msg})
   })
 }

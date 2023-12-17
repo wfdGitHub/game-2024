@@ -104,7 +104,7 @@ module.exports = function() {
 		})
 	}
 	//申请充值
-	this.apply_recharge = function(uid,unionid,pay_id,cb) {
+	this.apply_recharge = function(uid,unionid,pay_id,extras_params,cb) {
 		if(!pay_cfg[pay_id]){
 			cb(false,"pay_id error")
 			return
@@ -116,15 +116,16 @@ module.exports = function() {
 					cb(false,"购买次数已达上限")
 					return
 				}
-				self.create_recharge(uid,unionid,pay_id,cb)
+				self.create_recharge(uid,unionid,pay_id,extras_params,cb)
 			})
 		}else{
-			self.create_recharge(uid,unionid,pay_id,cb)
+			self.create_recharge(uid,unionid,pay_id,extras_params,cb)
 		}
 	}
-	this.create_recharge = function(uid,unionid,pay_id,cb) {
+	this.create_recharge = function(uid,unionid,pay_id,extras_params,cb) {
 		var info = {
 			pay_id : pay_id,
+			extras_params : extras_params,
 			userName : this.players[uid]["name"],
 			unionid : unionid,
 			accId : this.players[uid]["accId"],
