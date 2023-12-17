@@ -23,11 +23,12 @@ model.prototype.checkNext = function(uid,max,total) {
 		console.log("检查结束，总计清理"+total+"个账号")
 		return
 	}
-	self.redisDao.db.hmget("player:user:"+uid+":playerInfo",["real_rmb","offline","clean","level"],function(err,list) {
+	self.redisDao.db.hmget("player:user:"+uid+":playerInfo",["real_rmb","offline","clean","level","createTime"],function(err,list) {
 		var real_rmb = Number(list[0]) || 0
 		var offline = Number(list[1]) || 0
 		var lv = Number(list[3]) || 0
-		if(!list[2] && (real_rmb <= 1000) && lv < 40 && (offline < Date.now() - CLEAN_TIME)){
+		var createTime = Number(list[4]) || 0
+		if(!list[2] && (real_rmb <= 0) && lv < 20 && (offline < Date.now() - CLEAN_TIME) && (createTime < Date.now() - CLEAN_TIME)){
 			self.cleanPlayer(uid)
 			total++
 		}
