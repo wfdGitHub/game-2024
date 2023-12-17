@@ -28,7 +28,7 @@ model.prototype.checkNext = function(uid,max,total) {
 		var offline = Number(list[1]) || 0
 		var lv = Number(list[3]) || 0
 		var createTime = Number(list[4]) || 0
-		if(!list[2] && (real_rmb <= 1000) && lv < 40 && (offline < Date.now() - CLEAN_TIME) && (createTime < Date.now() - CLEAN_TIME)){
+		if(!list[2] && (real_rmb <= 0) && lv < 20 && (offline < Date.now() - CLEAN_TIME) && (createTime < Date.now() - CLEAN_TIME)){
 			self.cleanPlayer(uid)
 			total++
 		}
