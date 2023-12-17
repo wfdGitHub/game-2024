@@ -105,7 +105,6 @@ module.exports = function() {
 	}
 	//申请充值
 	this.apply_recharge = function(uid,unionid,pay_id,extras_params,cb) {
-		console.log("apply_recharge",extras_params)
 		if(!pay_cfg[pay_id]){
 			cb(false,"pay_id error")
 			return
@@ -142,11 +141,9 @@ module.exports = function() {
 		var rate = 1
 		if(info && info.extras_params){
 			var extras_params = JSON.parse(info.extras_params)
-			console.log(typeof(info.extras_params),console.log(JSON.parse(info.extras_params)))
 			if(extras_params.rate)
 				rate = Math.max(1,Number(extras_params.rate) || 1)
 		}
-		console.log("finish_recharge",info,"rate",rate)
 		var call_back = function(uid,flag,data) {
 			if(flag){
 				self.addUserRMB(uid,pay_cfg[pay_id].cent * rate)
@@ -246,7 +243,6 @@ module.exports = function() {
 	}
 	//充值
 	this.recharge = function(uid,rate,index,cb) {
-		console.log("recharge",rate)
 		self.incrbyObj(uid,main_name,"recharge_"+index,1,function(data) {
 			var gold = recharge[index].gold
 			var count = 0

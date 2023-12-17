@@ -25,11 +25,8 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 		areaId : otps.areaId,
 		extras_params : ""
 	}
-	console.log("createGameOrder",otps)
 	if(otps.extras_params){
 		info.extras_params = JSON.stringify(otps.extras_params)
-		console.log("222stringify",JSON.stringify(otps.extras_params))
-		console.log("333rate",otps.extras_params.rate)
 		if(otps.extras_params.rate && Number.isInteger(otps.extras_params.rate) && pay_cfg[otps.pay_id]["rate"] && otps.extras_params.rate >= 1)
 			info.amount = Number(info.amount * otps.extras_params.rate)
 	}
