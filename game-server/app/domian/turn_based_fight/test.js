@@ -15,5 +15,5 @@ var fightRecord = require("./fight/fightRecord.js")
 
 
 //定制英雄
-var info = fightContorl.gainDIYHero(901010,{"DIY_N":[0,1],"D1":[0,0],"PS1":[0,1]})
-console.log(info)
+// var info = fightContorl.gainDIYHero(901010,{"DIY_N":[0,1],"D1":[0,0],"PS1":[0,1]})
+// console.log(info)

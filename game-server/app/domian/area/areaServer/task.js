@@ -279,6 +279,9 @@ module.exports = function() {
 						taskIds.push(taskId)
 						taskValues.push(Math.min(userTaskLists[uid][taskId],task_cfg[taskId]["value"]))
 					}
+					if(task_cfg[taskId]["auto"] && value >= task_cfg[taskId]["value"]){
+						self.finishTask(uid,taskId,function(){})
+					}
 				}
 			}
 			if(taskIds.length){
