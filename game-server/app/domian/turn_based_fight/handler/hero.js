@@ -693,6 +693,7 @@ var model = function(fightContorl) {
 	this.gainDIYHero = function(id,args) {
 		if(!DIY_hero[id])
 			return false
+		args = args || {}
 		var info = {}
 		var heroInfo = this.makeStandardHero(id,DIY_hero[id].qa,1,1,1)
 		info.price = DIY_hero[id]["price"]

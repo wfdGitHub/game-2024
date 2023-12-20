@@ -104,6 +104,25 @@
             console.log(data);
         })
       }
+      //===============定制===================//
+      //获取定制数据
+      var getDIYData = function() {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"getDIYData"},function(data) {
+            console.log(data);
+        })
+      }
+      //设置定制英雄
+      var setDIYHeroArgs = function(id,args) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"setDIYHeroArgs","id":id,"args":args},function(data) {
+            console.log(data);
+        })
+      }
+      //购买定制英雄
+      var buyDIYHero = function(id) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"buyDIYHero","id":id},function(data) {
+            console.log(data);
+        })
+      }
       //获取引导道具
       var gainGuideItem = function(id) {
         pomelo.request("area.areaHandler.commonMethod",{"method":"gainGuideItem","id":id},function(data) {

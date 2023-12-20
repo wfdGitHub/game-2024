@@ -1,6 +1,7 @@
 const stringRandom = require('string-random');
 const pay_cfg = require("../../config/gameCfg/pay_cfg.json")
 const uuid = require("uuid")
+const async = require("async")
 var mysql = require("./mysql/mysql.js")
 var payDao = function() {}
 payDao.prototype.init  = function() {
@@ -25,20 +26,33 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 		areaId : otps.areaId,
 		extras_params : ""
 	}
-	if(otps.extras_params){
-		info.extras_params = JSON.stringify(otps.extras_params)
-		if(otps.extras_params.rate && Number.isInteger(otps.extras_params.rate) && pay_cfg[otps.pay_id]["rate"] && otps.extras_params.rate >= 1)
-			info.amount = Number(info.amount * otps.extras_params.rate)
-	}
-	this.db.query(sql,info, function(err, res) {
-		if (err) {
-			// console.error('createCDType! ' + err.stack);
-			cb(false,err)
-		}else{
-			info.messagetype = "createGameOrder"
-			self.cacheDao.saveCache(info)
-			cb(true,info)
+	async.waterfall([
+		function(next) {
+			if(pay_cfg[otps.pay_id]["type"] == "DIY"){
+				info.amount = otps.amount
+			}else{
+				if(otps.extras_params){
+					info.extras_params = JSON.stringify(otps.extras_params)
+					if(otps.extras_params.rate && Number.isInteger(otps.extras_params.rate) && pay_cfg[otps.pay_id]["rate"] && otps.extras_params.rate >= 1)
+						info.amount = Number(info.amount * otps.extras_params.rate)
+				}
+				next()
+			}
+		},
+		function(next) {
+			self.db.query(sql,info, function(err, res) {
+				if (err) {
+					// console.error('createCDType! ' + err.stack);
+					cb(false,err)
+				}else{
+					info.messagetype = "createGameOrder"
+					self.cacheDao.saveCache(info)
+					cb(true,info)
+				}
+			})
 		}
+	],function(err) {
+		cb(false,err)
 	})
 }
 //完成充值订单

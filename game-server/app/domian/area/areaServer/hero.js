@@ -156,16 +156,19 @@ var model = function() {
 	}
 	//获得一个英雄
 	this.gainOneHero = function(uid,id,qa,cb) {
-		var hId = self.getLordLastid(uid)
         var heroInfo = self.fightContorl.makeHeroData(id,qa)
+        return this.addPlayerHero(uid,heroInfo,cb)
+	}
+	this.addPlayerHero = function(uid,heroInfo,cb) {
+		var hId = self.getLordLastid(uid)
 		heroInfo.hId = hId
 		self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 		self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo,function() {
 			if(cb)
 				cb(true,heroInfo)
 		})
-		self.taskUpdate(uid,"hero",1,qa)
-		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:qa,reason:"获得英雄-"+hId})
+		self.taskUpdate(uid,"hero",1,heroInfo.qa)
+		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+heroInfo.id,value:1,curValue:heroInfo.qa,reason:"获得英雄-"+hId})
 		return heroInfo
 	}
 	//根据携带等级获取英雄

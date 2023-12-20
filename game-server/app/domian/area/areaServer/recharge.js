@@ -162,8 +162,6 @@ module.exports = function() {
 		}
 		switch(pay_cfg[pay_id]["type"]){
 			case "lv_fund":
-			case "power_fund":
-			case "beaty_fund":
 				this.activateFund(uid,pay_cfg[pay_id]["type"],call_back.bind(this,uid))
 			break
 			case "highCard":
@@ -205,6 +203,9 @@ module.exports = function() {
 			case "long_award":
 				this.buyLongAward(uid,pay_id,call_back.bind(this,uid))
 			break
+			case "DIY":
+				this.buyDIY(uid,pay_id,info,call_back.bind(this,uid))
+			break
 			default:
 				console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
 		}
@@ -240,6 +241,31 @@ module.exports = function() {
 		self.festivalTotalRecharge(uid,value)
 		if(cb)
 			cb(true)
+	}
+	//购买DIY道具
+	this.buyDIY = function(uid,pay_id,info,cb) {
+		console.log("buyDIY",uid,info)
+		switch(pay_cfg[pay_id]["arg"]){
+			case "hero":
+				var id = pay_cfg[pay_id]["arg2"]
+				self.getHMObj(uid,main_name,[id+"_state",id+"_price",id+"_info"],function(list) {
+					if(state || !price || !heroInfo){
+						cb(false,"不可定制")
+						self.faildOrder("不可重复定制",info,list)
+						return
+					}
+					var state = list[0]
+					var price = Number(list[1])
+					var heroInfo = list[2]
+					if(info.amount < price){
+						cb(false,"不可定制")
+						self.faildOrder("定制金额错误",info,list)
+						return
+					}
+					self.gainDIYHero(uid,id,cb)
+				})
+			break
+		}
 	}
 	//充值
 	this.recharge = function(uid,rate,index,cb) {
