@@ -279,9 +279,6 @@ module.exports = function() {
 						taskIds.push(taskId)
 						taskValues.push(Math.min(userTaskLists[uid][taskId],task_cfg[taskId]["value"]))
 					}
-					if(task_cfg[taskId]["auto"] && value >= task_cfg[taskId]["value"]){
-						self.finishTask(uid,taskId,function(){})
-					}
 				}
 			}
 			if(taskIds.length){
@@ -291,6 +288,10 @@ module.exports = function() {
 					"taskValues" : taskValues
 				}
 				self.sendToUser(uid,notify)
+			}
+			for(var i = 0;i < taskIds.length;i++){
+				if(task_cfg[taskIds[i]]["auto"] && value >= task_cfg[taskIds[i]]["value"])
+					self.finishTask(uid,taskIds[i],function(){})
 			}
 		}
 	}
