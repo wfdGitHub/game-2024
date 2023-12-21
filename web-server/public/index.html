@@ -104,6 +104,25 @@
             console.log(data);
         })
       }
+      //===============探险玩法===============//
+      //获取数据
+      var getTanxianData = function() {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"getTanxianData"},function(data) {
+            console.log(data);
+        })
+      }
+      //开始探险
+      var beginTanxian = function() {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"beginTanxian"},function(data) {
+            console.log(data);
+        })
+      }
+      //获取进度奖励
+      var gainTanxianLiveAward = function(index) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"gainTanxianLiveAward","index":index},function(data) {
+            console.log(data);
+        })
+      }
       //===============定制===================//
       //获取定制数据
       var getDIYData = function() {
