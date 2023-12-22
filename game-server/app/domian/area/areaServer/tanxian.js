@@ -29,8 +29,12 @@ module.exports = function() {
 	//获取数据
 	this.methods.getTanxianData = function(uid,msg,cb) {
 		self.getObjAll(uid,main_name,function(data) {
-			if(!data || !data.action)
-				data = {action : Date.now() - BEGIN_TIME}
+			if(!data)
+				data = {}
+			if(!data.action)
+				data.action = Date.now() - BEGIN_TIME
+			for(var i in data)
+				data[i] = Number(data[i])
 			self.setObj(uid,main_name,"action",data.action)
 			cb(true,data)
 		})
