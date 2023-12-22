@@ -85,6 +85,20 @@ module.exports = function() {
 					}
 				})
 			break
+			case "chest_single":
+				//宝箱
+				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝箱"+otps.itemId+"*"+value,function(flag,err) {
+					if(!flag){
+						cb(false,err)
+					}else{
+						var chestId = itemCfg[otps.itemId].arg
+						var awardList = []
+						for(var i = 0;i < value;i++)
+							awardList = awardList.concat(self.openChestAward(uid,chestId,1))
+						cb(true,awardList)
+					}
+				})
+			break
 			case "box":
 				//宝盒
 				self.consumeItems(uid,otps.itemId+":"+value,1,"开启宝盒"+otps.itemId,function(flag,err) {
