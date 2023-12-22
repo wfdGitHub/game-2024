@@ -10,7 +10,6 @@ var util = require("../../../../util/util.js")
 var taxianList = []
 var taxianWeight = []
 var curWeight = 0
-console.log(ONE_TIME,BEGIN_TIME,MAX_TIME)
 for(var i in tanxian_type){
 	if(tanxian_type[i]["teams"])
 		tanxian_type[i]["teams"] = JSON.parse(tanxian_type[i]["teams"])
@@ -29,12 +28,9 @@ module.exports = function() {
 	}
 	//获取数据
 	this.methods.getTanxianData = function(uid,msg,cb) {
-		console.log("getTanxianData",uid,msg)
 		self.getObjAll(uid,main_name,function(data) {
-			console.log(data)
 			if(!data || !data.action)
 				data = {action : Date.now() - BEGIN_TIME}
-			console.log(data)
 			self.setObj(uid,main_name,"action",data.action)
 			cb(true,data)
 		})
