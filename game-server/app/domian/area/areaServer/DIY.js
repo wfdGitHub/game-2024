@@ -59,7 +59,7 @@ module.exports = function() {
 				cb(false,"不可定制")
 				return
 			}
-			self.consumeItems(uid,"201:"+price,1,"定制英雄",function(flag,err) {
+			self.consumeItems(uid,DIY_hero[id]["item"]+":"+price,1,"定制英雄",function(flag,err) {
 				if(!flag){
 					cb(false,err)
 					return
