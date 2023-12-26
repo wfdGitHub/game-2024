@@ -168,7 +168,7 @@ var model = function() {
 				cb(true,heroInfo)
 		})
 		self.taskUpdate(uid,"hero",1,heroInfo.qa)
-		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+heroInfo.id,value:1,curValue:heroInfo.qa,reason:"获得英雄-"+hId})
+		self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 		return heroInfo
 	}
 	//根据携带等级获取英雄
@@ -183,7 +183,7 @@ var model = function() {
 				cb(true,heroInfo)
 		})
 		self.taskUpdate(uid,"hero",1,qa)
-		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+heroInfo.id,value:1,curValue:qa,reason:"获得英雄-"+hId})
+		self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 		return heroInfo
 	}
 	//设置心愿英雄
@@ -227,7 +227,7 @@ var model = function() {
 				if(cb)
 					cb(true,heroInfo)
 			})
-			self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:heroInfo.qa,reason:"获得英雄-"+hId})
+			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 			return heroInfo
 		})
 	}
@@ -654,7 +654,7 @@ var model = function() {
 				if(cb)
 					cb(true,heroInfo)
 			})
-			self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:heroInfo.qa,reason:"获得英雄-"+hId})
+			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 		})
 	}
 	//首次获取英雄
@@ -673,7 +673,7 @@ var model = function() {
 				if(cb)
 					cb(true,heroInfo)
 			})
-			self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:heroInfo.qa,reason:"获得英雄-"+hId})
+			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 		})
 	}
 	//英雄洗练 洗练增加通灵值,通灵值满一百必出满技能,出满技能后通灵值重置

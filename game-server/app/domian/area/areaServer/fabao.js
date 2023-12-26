@@ -111,10 +111,11 @@ var model = function() {
 		var id = self.getLordLastid(uid)
 		var info = self.fightContorl.makeFabao(qa,type)
 		info.id = id
-		info = JSON.stringify(info)
-		self.setObj(uid,main_name,id,info)
+		var fstr = JSON.stringify(info)
+		self.setObj(uid,main_name,id,fstr)
 		if(cb)
-			cb(true,info)
+			cb(true,fstr)
+		self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[info.type]["name"],id:info.id,info:info,reason:"获得法宝"})
 		return info
 	}
 	//获得法宝
@@ -153,6 +154,7 @@ var model = function() {
 			 		return
 			 	}
 			 	list[i] = JSON.parse(list[i])
+			 	self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[list[i].type]["name"],id:list[i].id,info:list[i],reason:"分解法宝"})
 			}
 			var str = self.fightContorl.getFabaoRecycle(list)
 			for(var i = 0;i < list.length;i++)
@@ -213,6 +215,7 @@ var model = function() {
 				fInfo[i] = fInfo["wash"+select][i]
 			delete fInfo.wash1
 			delete fInfo.wash2
+			self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[fInfo.type]["name"],id:fInfo.id,info:fInfo,reason:"获得法宝"})
 			fInfo = JSON.stringify(fInfo)
 			self.setObj(uid,main_name,fId,fInfo)
 			cb(true,fInfo)
@@ -371,6 +374,7 @@ var model = function() {
 				fInfo[i] = fInfo["wash"+select][i]
 			delete fInfo.wash1
 			delete fInfo.wash2
+			self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[fInfo.type]["name"],id:fInfo.id,info:fInfo,reason:"获得法宝"})
 			heroInfo["fabao"+index] = JSON.stringify(fInfo)
 			self.heroDao.setHeroInfo(self.areaId,uid,hId,"fabao"+index,heroInfo["fabao"+index])
 			cb(true,heroInfo)
