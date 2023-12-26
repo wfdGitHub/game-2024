@@ -215,7 +215,7 @@ var model = function() {
 				fInfo[i] = fInfo["wash"+select][i]
 			delete fInfo.wash1
 			delete fInfo.wash2
-			self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[fInfo.type]["name"],id:fInfo.id,info:fInfo,reason:"获得法宝"})
+			self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[fInfo.type]["name"],id:fInfo.id,info:fInfo,reason:"洗练法宝"})
 			fInfo = JSON.stringify(fInfo)
 			self.setObj(uid,main_name,fId,fInfo)
 			cb(true,fInfo)
@@ -374,7 +374,7 @@ var model = function() {
 				fInfo[i] = fInfo["wash"+select][i]
 			delete fInfo.wash1
 			delete fInfo.wash2
-			self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[fInfo.type]["name"],id:fInfo.id,info:fInfo,reason:"获得法宝"})
+			self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[fInfo.type]["name"],id:fInfo.id,info:fInfo,reason:"洗练法宝"})
 			heroInfo["fabao"+index] = JSON.stringify(fInfo)
 			self.heroDao.setHeroInfo(self.areaId,uid,hId,"fabao"+index,heroInfo["fabao"+index])
 			cb(true,heroInfo)

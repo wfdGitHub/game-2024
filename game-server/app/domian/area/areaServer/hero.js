@@ -608,6 +608,7 @@ var model = function() {
 			}
 			delete heroInfo.save
 			self.heroDao.delHeroInfo(self.areaId,uid,hId,"save")
+			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"洗练英雄"})
 			cb(true,heroInfo)
 		})
 	}

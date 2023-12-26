@@ -84,17 +84,17 @@ var model = function() {
 		})
 	}
 	//获得装备 有日志 str
-	this.gainEquip = function(uid,estr){
+	this.gainEquip = function(uid,estr,reason){
 		var eInfo = JSON.parse(estr)
 		self.setObj(uid,main_name,eInfo.id,estr)
-		self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[eInfo.lv]["name_"+eInfo.slot],id:eInfo.id,info:eInfo,reason:"获得装备"})
+		self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[eInfo.lv]["name_"+eInfo.slot],id:eInfo.id,info:eInfo,reason:reason||"获得装备"})
 		return eInfo
 	}
 	//获得装备 有日志 info
-	this.gainEquipByInfo = function(uid,eInfo){
+	this.gainEquipByInfo = function(uid,eInfo,reason){
 		var estr = JSON.stringify(eInfo)
 		self.setObj(uid,main_name,eInfo.id,estr)
-		self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[eInfo.lv]["name_"+eInfo.slot],id:eInfo.id,info:eInfo,reason:"获得装备"})
+		self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[eInfo.lv]["name_"+eInfo.slot],id:eInfo.id,info:eInfo,reason:reason||"获得装备"})
 		return estr
 	}
 	//添加装备 无日志
@@ -252,7 +252,7 @@ var model = function() {
 				info = info.wash
 				info.id = id
 				info.st = st
-				var estr = self.gainEquipByInfo(uid,info)
+				var estr = self.gainEquipByInfo(uid,info,"洗练装备")
 				cb(true,estr)
 			}
 		],function(err) {
@@ -607,7 +607,7 @@ var model = function() {
 				info.st = st
 				heroInfo["e"+slot] = JSON.stringify(info)
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,"e"+slot,heroInfo["e"+slot])
-				self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[info.lv]["name_"+info.slot],id:info.id,info:info,reason:"获得装备"})
+				self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[info.lv]["name_"+info.slot],id:info.id,info:info,reason:"洗练装备"})
 				cb(true,heroInfo)
 			}
 		],function(err) {
