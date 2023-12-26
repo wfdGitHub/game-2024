@@ -17,3 +17,9 @@ var fightRecord = require("./fight/fightRecord.js")
 //定制英雄
 // var info = fightContorl.gainDIYHero(901010,{"DIY_N":[0,1],"D1":[0,0],"PS1":[0,1]})
 // console.log(info)
+
+// var info = {"atkTeam":[{"manualModel":0},{"id":"500230","lv":1,"evo":1,"exalt":1,"qa":5,"wash":0,"MR1":1,"MR2":1,"MR3":1,"MR4":1,"MR5":1,"MR6":1,"PS0":4305,"PS1":4315,"PS2":4228,"PS3":4301,"m_ps":1}],"defTeam":[{"manualModel":0},{"id":"500130","lv":232,"evo":20,"exalt":1,"qa":5,"wash":0,"MR1":1,"MR2":1,"MR3":1,"MR4":1,"MR5":1,"MR6":1,"PS0":4213,"PS1":4318,"PS2":4330,"PS3":4411,"PS4":4204}],"fightOtps":{"seededNum":1703556647751,"manual":true}}
+// var atkTeam = info.atkTeam
+// var defTeam = info.defTeam
+// var list = fightContorl.beginFight(atkTeam,defTeam,info.fightOtps)
+// fightRecord.explain()

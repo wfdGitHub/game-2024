@@ -22,6 +22,7 @@ module.exports = function() {
 				cb(false,"参数错误")
 				return
 			}
+			self.setObj(uid,main_name,id+"_args",JSON.stringify(args))
 			self.setObj(uid,main_name,id+"_price",JSON.stringify(info.price))
 			self.setObj(uid,main_name,id+"_info",JSON.stringify(info.heroInfo))
 			cb(true,info)
