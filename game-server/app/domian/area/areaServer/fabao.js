@@ -129,6 +129,7 @@ var model = function() {
 		var id = self.getLordLastid(uid)
 		var info = self.fightContorl.makeFabao(qa,type)
 		info.id = id
+		self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[info.type]["name"],id:info.id,info:info,reason:"获得法宝"})
 		info = JSON.stringify(info)
 		self.setObj(uid,main_name,id,info)
 		return info
