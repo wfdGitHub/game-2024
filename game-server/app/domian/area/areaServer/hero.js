@@ -533,6 +533,8 @@ var model = function() {
 					return
 				}
 			}
+			for(var i = 0;i < list.length;i++)
+				self.mysqlDao.addHeroLog({uid:uid,name:heros[list[i].id]["name"],id:list[i].hId,info:list[i],reason:"分解英雄"})
 			var info = self.fightContorl.getHeroRecycle(list)
 		    self.heroDao.removeHeroList(self.areaId,uid,hIds,function(flag,err) {
 		    	if(!flag){
