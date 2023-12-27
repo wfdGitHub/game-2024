@@ -129,7 +129,7 @@ payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 			if(data.status == 0){
 				self.faildOrder("订单已完成",otps,data)
 				cb(false,null,data)
-			}else if(Number(otps.amount) != data.amount){
+			}else if(Number(otps.amount) < data.amount){
 				self.faildOrder("充值金额不对应",otps,data)
 				cb(false,"充值金额不对应",data)
 			}else{

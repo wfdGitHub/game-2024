@@ -250,7 +250,7 @@ module.exports = function() {
 				var id = pay_cfg[pay_id]["arg2"]
 				self.getHMObj(uid,"diy",[id+"_state",id+"_price",id+"_info"],function(list) {
 					var state = list[0]
-					var price = Number(list[1])
+					var price = Number(Math.ceil(Number(list[1]) / 100))
 					var heroInfo = list[2]
 					if(state){
 						cb(false,"不可重复定制")
