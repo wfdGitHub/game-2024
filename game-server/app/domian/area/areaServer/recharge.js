@@ -252,16 +252,22 @@ module.exports = function() {
 					var state = list[0]
 					var price = Number(list[1])
 					var heroInfo = list[2]
-					if(state || !price || !heroInfo){
-						cb(false,"不可定制")
+					if(state){
+						cb(false,"不可重复定制")
 						self.payDao.faildOrder("不可重复定制",info,list)
 						return
 					}
-					if(info.amount < price){
-						cb(false,"不可定制")
+					if(!heroInfo){
+						cb(false,"英雄数据错误")
+						self.payDao.faildOrder("英雄数据错误",info,list)
+						return
+					}
+					if(!price || info.amount < price){
+						cb(false,"价格错误")
 						self.payDao.faildOrder("定制金额错误",info,list)
 						return
 					}
+					self.delObj(uid,"limit_gift",pay_id)
 					self.gainDIYHero(uid,id,cb)
 				})
 			break
