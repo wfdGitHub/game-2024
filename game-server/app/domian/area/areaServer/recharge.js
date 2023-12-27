@@ -248,7 +248,7 @@ module.exports = function() {
 		switch(pay_cfg[pay_id]["arg"]){
 			case "hero":
 				var id = pay_cfg[pay_id]["arg2"]
-				self.getHMObj(uid,main_name,[id+"_state",id+"_price",id+"_info"],function(list) {
+				self.getHMObj(uid,"diy",[id+"_state",id+"_price",id+"_info"],function(list) {
 					var state = list[0]
 					var price = Number(list[1])
 					var heroInfo = list[2]
