@@ -57,6 +57,12 @@ var model = function() {
 			})
 		})
 	}
+	//获取接口调用记录
+	posts["/callPort"] = function(req,res) {
+		self.redisDao.db.hgetall("logs:callPort:count",function(err,data) {
+			res.send(data)
+		}
+	}
 	//获取表格记录
 	posts["/table_log"] = function(req,res) {
 		var data = req.body
@@ -83,7 +89,6 @@ var model = function() {
 		var sql2 = info.sql2
 		var args1 = info.args1
 		var args2 = info.args2
-		console.log(info)
 		var info = {}
 		self.mysqlDao.db.query(sql1,args1,function(err,total) {
 			info.total = JSON.parse(JSON.stringify(total))[0]["count(*)"]
