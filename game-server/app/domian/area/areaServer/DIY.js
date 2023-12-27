@@ -42,6 +42,11 @@ module.exports = function() {
 				}
 				heroInfo = JSON.parse(heroInfo)
 				heroInfo = self.addPlayerHero(uid,heroInfo)
+				var notify = {
+					"type" : "newHero",
+					"heroInfo" : heroInfo
+				}
+				self.sendToUser(uid,notify)
 				cb(true,heroInfo)
 			})
 		})
