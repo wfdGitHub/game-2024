@@ -251,7 +251,7 @@ module.exports = function() {
 				self.getHMObj(uid,main_name,[id+"_state",id+"_price",id+"_info"],function(list) {
 					if(state || !price || !heroInfo){
 						cb(false,"不可定制")
-						self.faildOrder("不可重复定制",info,list)
+						self.payDao.faildOrder("不可重复定制",info,list)
 						return
 					}
 					var state = list[0]
@@ -259,7 +259,7 @@ module.exports = function() {
 					var heroInfo = list[2]
 					if(info.amount < price){
 						cb(false,"不可定制")
-						self.faildOrder("定制金额错误",info,list)
+						self.payDao.faildOrder("定制金额错误",info,list)
 						return
 					}
 					self.gainDIYHero(uid,id,cb)
