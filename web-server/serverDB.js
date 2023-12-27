@@ -61,7 +61,7 @@ var model = function() {
 	posts["/callPort"] = function(req,res) {
 		self.redisDao.db.hgetall("logs:callPort:count",function(err,data) {
 			res.send(data)
-		}
+		})
 	}
 	//获取表格记录
 	posts["/table_log"] = function(req,res) {
