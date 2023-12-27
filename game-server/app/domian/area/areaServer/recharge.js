@@ -249,14 +249,14 @@ module.exports = function() {
 			case "hero":
 				var id = pay_cfg[pay_id]["arg2"]
 				self.getHMObj(uid,main_name,[id+"_state",id+"_price",id+"_info"],function(list) {
+					var state = list[0]
+					var price = Number(list[1])
+					var heroInfo = list[2]
 					if(state || !price || !heroInfo){
 						cb(false,"不可定制")
 						self.payDao.faildOrder("不可重复定制",info,list)
 						return
 					}
-					var state = list[0]
-					var price = Number(list[1])
-					var heroInfo = list[2]
 					if(info.amount < price){
 						cb(false,"不可定制")
 						self.payDao.faildOrder("定制金额错误",info,list)
