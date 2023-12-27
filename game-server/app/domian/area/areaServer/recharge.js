@@ -192,7 +192,7 @@ module.exports = function() {
 				this.recharge(uid,rate,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "limit_gift":
-				this.buyLimitGift(uid,rate,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+				this.buyLimitGift(uid,pay_id,rate,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "fast":
 				this.buyFastRecharge(uid,rate,pay_id,call_back.bind(this,uid))
@@ -453,7 +453,7 @@ module.exports = function() {
 		})
 	}
 	//购买限时礼包
-	this.buyLimitGift = function(uid,rate,id,cb) {
+	this.buyLimitGift = function(uid,pay_id,rate,id,cb) {
 		if(!gift_list[pay_id] || !pay_cfg[pay_id]){
 			cb(false,"限时礼包错误")
 			return
