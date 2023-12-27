@@ -29,7 +29,14 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 	async.waterfall([
 		function(next) {
 			if(pay_cfg[otps.pay_id]["type"] == "DIY"){
-				info.amount = otps.amount
+				self.redisDao.db.getObj("player:user:"+otps.uid+":diy",pay_cfg[otps.pay_id]["arg2"]+"_price",function(err,data) {
+					if(err || !data){
+						next("未定制英雄")
+					}else{
+						info.amount = Number(data)
+						next()
+					}
+				})
 			}else{
 				if(otps.extras_params){
 					info.extras_params = JSON.stringify(otps.extras_params)
