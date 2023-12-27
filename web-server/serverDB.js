@@ -33,6 +33,69 @@ var model = function() {
 			items[i] = item_cfg[i]["name"]
         }
 	}
+	//获取留存记录
+	posts["/retention_table"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var arr = []
+		var info = local.getSQL("retention_table",arr,pageSize,pageCurrent,"id")
+		var sql1 = info.sql1
+		var sql2 = info.sql2
+		var args1 = info.args1
+		var args2 = info.args2
+		var info = {}
+		self.mysqlDao.db.query(sql1,args1,function(err,total) {
+			info.total = JSON.parse(JSON.stringify(total))[0]["count(*)"]
+			self.mysqlDao.db.query(sql2,args2, function(err, list) {
+				if (err) {
+					// console.log('getCDTypeList! ' + err.stack);
+					return
+				}
+				info.list = JSON.parse(JSON.stringify(list))
+				res.send(info)
+			})
+		})
+	}
+	//获取英雄记录
+	posts["/table_log"] = function(req,res) {
+		var data = req.body
+		var table = data.table
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var key = data.key || "index"
+		var desc = data.desc
+		var arr = []
+		if(data.uid)
+			arr.push({key : "uid",value : data.uid})
+		if(data.name)
+			arr.push({key : "name",value : data.name})
+		if(data.id)
+			arr.push({key : "id",value : data.id})
+		if(data.beginTime)
+			arr.push({key : "time",value : data.beginTime,type:"more"})
+		if(data.endTime)
+			arr.push({key : "time",value : data.endTime,type:"less"})
+		if(data.reason)
+			arr.push({key : "reason",value : data.reason})
+		var info = local.getSQL(table,arr,pageSize,pageCurrent,key,desc)
+		var sql1 = info.sql1
+		var sql2 = info.sql2
+		var args1 = info.args1
+		var args2 = info.args2
+		var info = {}
+		self.mysqlDao.db.query(sql1,args1,function(err,total) {
+			info.total = JSON.parse(JSON.stringify(total))[0]["count(*)"]
+			self.mysqlDao.db.query(sql2,args2, function(err, list) {
+				if (err) {
+					// console.log('getCDTypeList! ' + err.stack);
+					return
+				}
+				info.list = JSON.parse(JSON.stringify(list))
+				res.send(info)
+			})
+		})
+	}
 	//获取sdkconfig
 	posts["/getSDKCFG"] = function(req,res) {
 		fs.readFile("../game-server/config/gameCfg/sdkConfig.json", (err, data) => {
