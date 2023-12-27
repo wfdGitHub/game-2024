@@ -63,7 +63,7 @@ var model = function() {
 		var table = data.table
 		var pageSize = data.pageSize
 		var pageCurrent = data.pageCurrent
-		var key = data.key || "index"
+		var key = data.key || "idx"
 		var desc = data.desc
 		var arr = []
 		if(data.uid)
