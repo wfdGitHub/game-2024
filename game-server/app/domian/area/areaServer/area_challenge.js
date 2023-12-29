@@ -105,7 +105,6 @@ module.exports = function() {
 	}
 	//单骑挑战通过
 	this.areaChallengePass = function(uid,lv) {
-		console.log("areaChallengePass",uid,lv,self.maxIndex)
 		if(lv > self.maxIndex){
 			self.maxIndex = lv
 			self.setAreaObj("areaInfo",main_name,self.maxIndex)
