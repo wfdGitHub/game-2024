@@ -1369,7 +1369,7 @@ var model = function() {
 		res.send({flag:true})
 	}
 	//获取道具记录
-	posts["/getItemLog"] = function(req,res) {
+	posts["/getItemStat"] = function(req,res) {
 		var data = req.body
 		var dstr = data.dstr
 		var info = {}
