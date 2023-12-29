@@ -1371,7 +1371,8 @@ var model = function() {
 	//获取道具记录
 	posts["/getItemStat"] = function(req,res) {
 		var data = req.body
-		var dstr = data.dstr
+		var time = data.time
+		var dstr = (new Date(time)).toLocaleDateString()
 		var info = {}
 		self.redisDao.db.hgetall("logs:itemLess:"+dstr,function(err,data) {
 			info.itemLess = data
