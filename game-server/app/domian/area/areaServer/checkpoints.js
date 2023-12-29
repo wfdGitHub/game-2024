@@ -61,9 +61,9 @@ module.exports = function() {
 			    var atkTeam = self.getUserTeam(uid)
 			    var defTeam = self.fightContorl.getNPCTeamByType("checkpoints",checkpointsCfg[level].mon_list,checkpointsCfg[level]["lev_limit"])
 			    if(checkpointsCfg[level]["atkNpcTeam"])
-			    	atkTeam["npcTeam"] = JSON.parse(checkpointsCfg[level]["atkNpcTeam"])
+			    	atkTeam[0]["npcTeam"] = JSON.parse(checkpointsCfg[level]["atkNpcTeam"])
 			    if(checkpointsCfg[level]["defNpcTeam"])
-			    	defTeam["npcTeam"] = JSON.parse(checkpointsCfg[level]["defNpcTeam"])
+			    	defTeam[0]["npcTeam"] = JSON.parse(checkpointsCfg[level]["defNpcTeam"])
 			    var winFlag = self.fightContorl.videoFight(atkTeam,defTeam,{seededNum : seededNum,masterSkills : masterSkills})
 			    if(winFlag){
 			    	var awardList = self.checkpointsSuccess(uid,level)
