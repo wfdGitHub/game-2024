@@ -1368,6 +1368,19 @@ var model = function() {
 		dataClean.cleanMysqlLog()
 		res.send({flag:true})
 	}
+	//获取道具记录
+	posts["/getItemLog"] = function(req,res) {
+		var data = req.body
+		var dstr = data.dstr
+		var info = {}
+		self.redisDao.db.hgetall("logs:itemLess:"+dstr,function(err,data) {
+			info.itemLess = data
+			self.redisDao.db.hgetall("logs:itemAdd:"+dstr,function(err,data) {
+				info.itemAdd = data
+				res.send({flag:true,data:info})
+			})
+		})
+	}
 	local.getPlayerBaseByUids = function(uids,cb) {
 		if(!uids.length){
 			cb([])
