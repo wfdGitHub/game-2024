@@ -466,8 +466,8 @@ module.exports = function() {
 		}
 		self.getObj(uid,"limit_gift",pay_id,function(data) {
 			if(data){
-				self.sendTextToMail(uid,"recharge",self.itemstrChangeRate(gift_list[id]["award"],rate))
-				self.delObj(uid,"limit_gift",id)
+				self.sendTextToMail(uid,"recharge",self.itemstrChangeRate(gift_list[pay_id]["award"],rate))
+				self.delObj(uid,"limit_gift",pay_id)
 				cb(true)
 			}else{
 				cb(false,"限时礼包不存在或已过期")
