@@ -8,15 +8,11 @@ const main_name = "tanxian"
 const async = require("async")
 var util = require("../../../../util/util.js")
 var taxianList = []
-var taxianWeight = []
-var curWeight = 0
 for(var i in tanxian_type){
 	if(tanxian_type[i]["teams"])
 		tanxian_type[i]["teams"] = JSON.parse(tanxian_type[i]["teams"])
 	tanxian_type[i]["id"] = i
 	taxianList.push(tanxian_type[i])
-	curWeight += tanxian_type[i]["weight"]
-	taxianWeight.push(curWeight)
 }
 module.exports = function() {
 	var self = this
@@ -57,7 +53,7 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				var index = util.getWeightedRandomBySort(taxianWeight)
+				var index = taxianList[Math.floor(taxianList.length * Math.random())]
 				info.id = taxianList[index]["id"]
 				// if(taxianList[index]["type"] == 1){
 				// 	//遇到怪物
@@ -79,7 +75,8 @@ module.exports = function() {
 					info.rate = 4
 				else if(rand < 0.6)
 					info.rate = 2
-				info.awardList = self.addItemStr(uid,taxianList[index]["award"],info.rate,"探险")
+				var award = taxianList[index]["award"][Math.floor(Math.random() * taxianList[index]["award"].length)]
+				info.awardList = self.addItemStr(uid,award,info.rate,"探险")
 				cb(true,info)
 			}
 		],function(err) {
