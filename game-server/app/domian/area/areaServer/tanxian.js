@@ -9,11 +9,10 @@ const async = require("async")
 var util = require("../../../../util/util.js")
 var taxianList = []
 for(var i in tanxian_type){
-	if(tanxian_type[i]["teams"])
-		tanxian_type[i]["teams"] = JSON.parse(tanxian_type[i]["teams"])
 	tanxian_type[i]["id"] = i
 	taxianList.push(tanxian_type[i])
 }
+console.log("taxianList",taxianList)
 module.exports = function() {
 	var self = this
 	//探险每日刷新
@@ -53,8 +52,8 @@ module.exports = function() {
 				})
 			},
 			function(next) {
-				var index = taxianList[Math.floor(taxianList.length * Math.random())]
-				info.id = taxianList[index]["id"]
+				var data = taxianList[Math.floor(taxianList.length * Math.random())]
+				info.id = data["id"]
 				// if(taxianList[index]["type"] == 1){
 				// 	//遇到怪物
 				// 	var lv = self.getLordLv()
@@ -75,7 +74,7 @@ module.exports = function() {
 					info.rate = 4
 				else if(rand < 0.6)
 					info.rate = 2
-				var award = taxianList[index]["award"][Math.floor(Math.random() * taxianList[index]["award"].length)]
+				var award = data["award"][Math.floor(Math.random() * data["award"].length)]
 				info.awardList = self.addItemStr(uid,award,info.rate,"探险")
 				cb(true,info)
 			}
