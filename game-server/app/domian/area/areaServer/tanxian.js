@@ -12,7 +12,6 @@ for(var i in tanxian_type){
 	tanxian_type[i]["id"] = i
 	taxianList.push(tanxian_type[i])
 }
-console.log("taxianList",taxianList)
 module.exports = function() {
 	var self = this
 	//探险每日刷新
