@@ -59,19 +59,27 @@ module.exports = function() {
 			function(next) {
 				var index = util.getWeightedRandomBySort(taxianWeight)
 				info.id = taxianList[index]["id"]
-				if(taxianList[index]["type"] == 1){
-					//遇到怪物
-					var lv = self.getLordLv()
-					info.atkTeam = self.getUserTeam(uid)
-					info.npcTeam = taxianList[index]["teams"][Math.floor(Math.random() * taxianList[index]["teams"].length)]
-					info.defTeam = self.fightContorl.getNPCTeamByType(main_name,info.npcTeam,lv)
-					info.winFlag = self.fightContorl.beginFight(info.atkTeam,info.defTeam,{seededNum:Date.now()})
-					if(!info.winFlag){
-						cb(false,info)
-						return
-					}
-				}
-				info.awardList = self.addItemStr(uid,taxianList[index]["award"],1,"探险")
+				// if(taxianList[index]["type"] == 1){
+				// 	//遇到怪物
+				// 	var lv = self.getLordLv()
+				// 	info.atkTeam = self.getUserTeam(uid)
+				// 	info.npcTeam = taxianList[index]["teams"][Math.floor(Math.random() * taxianList[index]["teams"].length)]
+				// 	info.defTeam = self.fightContorl.getNPCTeamByType(main_name,info.npcTeam,lv)
+				// 	info.winFlag = self.fightContorl.beginFight(info.atkTeam,info.defTeam,{seededNum:Date.now()})
+				// 	if(!info.winFlag){
+				// 		cb(false,info)
+				// 		return
+				// 	}
+				// }
+				info.rate = 1
+				var rand = Math.random()
+				if(rand < 0.05)
+					info.rate = 8
+				else if(rand < 0.2)
+					info.rate = 4
+				else if(rand < 0.6)
+					info.rate = 2
+				info.awardList = self.addItemStr(uid,taxianList[index]["award"],info.rate,"探险")
 				cb(true,info)
 			}
 		],function(err) {
