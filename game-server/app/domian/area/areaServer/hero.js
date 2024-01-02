@@ -650,7 +650,7 @@ var model = function() {
 			}
 			var hId = self.getLordLastid(uid)
 			var id = default_cfg["begin_hero"]["value"]
-			var heroInfo = self.fightContorl.makeHeroData(id,3)
+			var heroInfo = self.fightContorl.makeHeroData(id,4)
 			heroInfo.hId = hId
 			self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 			self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo,function() {
