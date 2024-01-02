@@ -78,8 +78,10 @@ module.exports = function() {
 			},
 			function(next) {
 				var rate = 1
-				if(info && info.extras_params && info.extras_params.rate)
-					rate = info.extras_params.rate
+				if(info && info.extras_params){
+					rate = info.extras_params.rate || 1
+					info.extras_params = JSON.stringify(info.extras_params)
+				}
 				if(pay_cfg[pay_id]["dianpiao"] == 0){
 					self.finish_recharge(uid,pay_id,info,cb)
 				}else{
@@ -138,7 +140,6 @@ module.exports = function() {
 	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,info,cb) {
-		console.log(uid,pay_id,info)
 		var rate = 1
 		if(info && info.extras_params){
 			var extras_params = JSON.parse(info.extras_params)
