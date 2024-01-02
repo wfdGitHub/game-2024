@@ -138,6 +138,7 @@ module.exports = function() {
 	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,info,cb) {
+		console.log(uid,pay_id,info)
 		var rate = 1
 		if(info && info.extras_params){
 			var extras_params = JSON.parse(info.extras_params)
