@@ -248,7 +248,6 @@ module.exports = function() {
 	}
 	//购买DIY道具
 	this.buyDIY = function(uid,pay_id,info,cb) {
-		console.log("buyDIY",pay_id,uid,info)
 		switch(pay_cfg[pay_id]["arg"]){
 			case "hero":
 				var id = pay_cfg[pay_id]["arg2"]
