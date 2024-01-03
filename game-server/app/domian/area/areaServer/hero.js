@@ -243,7 +243,7 @@ var model = function() {
 			  	return
 			}
 			var type = heros[heroInfo.id]["type"]
-			if(type != 1 && type != 2){
+			if(type == 0){
 				cb(false,"非神兽珍兽")
 				return
 			}
