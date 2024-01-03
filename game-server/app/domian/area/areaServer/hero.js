@@ -559,8 +559,8 @@ var model = function() {
 				cb(false,"英雄不存在")
 				return
 			}
-			if(heroInfo.qa < 4){
-				cb(false,"传说以上品质可洗练")
+			if(heroInfo.qa < 3){
+				cb(false,"珍稀以上品质可洗练")
 				return
 			}
 			if(heros[heroInfo.id]["type"] != 0){
