@@ -37,13 +37,14 @@ crossManager.prototype.init = function() {
 	})
 }
 crossManager.prototype.initLimit = function() {
+	var self = this
 	self.accountDao.createAccount({unionid:"visitor_wgl"},function(flag,userInfo) {
 		self.accountDao.setAccountData({accId:userInfo.accId,name:"limit",value:20})
 	})
 	self.accountDao.createAccount({unionid:"visitor_wfd"},function(flag,userInfo) {
 		self.accountDao.setAccountData({accId:userInfo.accId,name:"limit",value:20})
 	})
-	self.accountDao.createAccount({unionid:"visitor_sq"},function(flag,userInfo) {
+	self.accountDao.createAccount({unionid:"visitor_47"},function(flag,userInfo) {
 		self.accountDao.setAccountData({accId:userInfo.accId,name:"limit",value:20})
 	})
 	self.accountDao.createAccount({unionid:"visitor_jcn"},function(flag,userInfo) {
