@@ -531,7 +531,7 @@ var model = function(fightContorl) {
 			console.error("talentId error",talentId)
 			return
 		}
-		for(var i = 1;i <= 3;i++){
+		for(var i = 1;i <= 6;i++){
 			if(talent_list[talentId]["key"+i]){
 				var tmpTalent = {}
 				tmpTalent[talent_list[talentId]["key"+i]] = talent_list[talentId]["value"+i]

@@ -197,8 +197,12 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		specieRate *= species[skill.specie][target.species[i]]
 	if(target.specie_immune == skill.specie)
 		specieRate = specieRate * 0.1
-	if(target.specie_behit && specieRate > 1)
-		specieRate = target.specie_behit * specieRate
+	if(specieRate > 1){
+		if(target.specie_behit)
+			specieRate = target.specie_behit * specieRate
+		if(attacker.specie_hit)
+			specieRate = attacker.specie_hit * specieRate
+	}
 	info.spe = specieRate
 	info.value = Math.floor(info.value * specieRate)
 	//物理法术伤害加成减免
