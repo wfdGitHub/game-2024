@@ -32,10 +32,22 @@ crossManager.prototype.init = function() {
 	self.accountDao.getAccountInfo({unionid : "visitor_wgl"},function(flag,data) {
 		if(!flag){
 			console.log("创建初始账号")
-			self.accountDao.createAccount({unionid:"visitor_wgl"},function(flag,userInfo) {
-				self.accountDao.setAccountData({accId:userInfo.accId,name:"limit",value:20})
-			})
+			self.initLimit()
 		}
+	})
+}
+crossManager.prototype.initLimit = function() {
+	self.accountDao.createAccount({unionid:"visitor_wgl"},function(flag,userInfo) {
+		self.accountDao.setAccountData({accId:userInfo.accId,name:"limit",value:20})
+	})
+	self.accountDao.createAccount({unionid:"visitor_wfd"},function(flag,userInfo) {
+		self.accountDao.setAccountData({accId:userInfo.accId,name:"limit",value:20})
+	})
+	self.accountDao.createAccount({unionid:"visitor_sq"},function(flag,userInfo) {
+		self.accountDao.setAccountData({accId:userInfo.accId,name:"limit",value:20})
+	})
+	self.accountDao.createAccount({unionid:"visitor_jcn"},function(flag,userInfo) {
+		self.accountDao.setAccountData({accId:userInfo.accId,name:"limit",value:20})
 	})
 }
 //每日定时器
