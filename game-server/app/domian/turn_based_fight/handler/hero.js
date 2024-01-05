@@ -350,7 +350,7 @@ var model = function(fightContorl) {
 		}
 		//等级计算
 		if(info.lv && lv_cfg[info.lv]){
-			var growth = aptitudes[info.aptitude].growth
+			var growth = aptitudes[info.aptitude].growth * (1 + evolve_lv[evoId]["att_add"])
 			lvInfo.maxHP += Math.floor(lv_cfg[info.lv].maxHP * growth)
 			lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * growth)
 			lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * growth)
