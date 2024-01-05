@@ -175,6 +175,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		info.value +=  Math.floor(0.04 * target.attInfo.maxHP * count)
 		if(attacker.gd_mb && this.seeded.random("gd_mb") < attacker.gd_mb)
 			buffManager.createBuff(attacker,target,{"buffId":"disarm","duration":1})
+		//释放技能时，每命中一个感电状态下的目标恢复自身1点怒气
+		if(attacker.skill_flash_anger)
+			attacker.addAnger(attacker.skill_flash_anger)
 	}
 	if(target.buffs["weak"]){
 		if(attacker.xr_zs && this.seeded.random("xr_zs") < attacker.xr_zs)

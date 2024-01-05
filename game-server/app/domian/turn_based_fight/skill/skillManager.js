@@ -807,10 +807,6 @@ model.useAttackSkill = function(skill,chase,point) {
 		if(skill.character.skill_burn_anger && burn_num){
 			skill.character.addAnger(skill.character.skill_burn_anger * burn_num)
 		}
-		//释放技能时，每命中一个感电状态下的目标恢复自身1点怒气
-		if(skill.character.skill_flash_anger && flash_num){
-			skill.character.addAnger(skill.character.skill_flash_anger * flash_num)
-		}
 		//释放技能时，每命中一个冰冻状态下的目标恢复自身1点怒气
 		if(skill.character.skill_frozen_anger && frozen_num){
 			skill.character.addAnger(skill.character.skill_frozen_anger * frozen_num)
