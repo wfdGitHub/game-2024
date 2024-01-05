@@ -391,7 +391,11 @@ module.exports = function() {
 							return
 						}
 						if(lv < exalt_lv[heros[list[i]["id"]]["exalt"]]["limit"]){
-							next("携带等级不足 "+hIds[i] +"  "+lv+ "/"+ exalt_lv[heros[list[i]["id"]]["exalt"]]["limit"])
+							next("携带等级不足 "+list[i]["id"] +"  "+lv+ "/"+ exalt_lv[heros[list[i]["id"]]["exalt"]]["limit"])
+							return
+						}
+						if(battle_team[type] && battle_team[type]["banCareer"] == heros[list[i]["id"]]["career"]){
+							next("该职业英雄不可上阵 "+list[i]["id"])
 							return
 						}
 					}

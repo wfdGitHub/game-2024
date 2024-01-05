@@ -9,7 +9,7 @@ var model = function(otps) {
 	this.heroId = Number(otps.id)
 	this.characterType = "hero"  //角色类型
 	this.realm = 1		//国家
-	this.career = 1	//角色职业   healer 治疗者
+	this.career = 1	//角色职业   1输出  2控制   3肉盾   4治疗
 	this.species = []
 	if(otps.specie1)
 		this.species.push(otps.specie1)
