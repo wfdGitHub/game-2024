@@ -350,12 +350,19 @@ var model = function(fightContorl) {
 		}
 		//等级计算
 		if(info.lv && lv_cfg[info.lv]){
-			var growth = aptitudes[info.aptitude].growth * (1 + evolve_lv[evoId]["att_add"])
+			var growth = aptitudes[info.aptitude].growth
 			lvInfo.maxHP += Math.floor(lv_cfg[info.lv].maxHP * growth)
 			lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * growth)
 			lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * growth)
 			lvInfo.magDef += Math.floor(lv_cfg[info.lv].magDef * growth)
 			lvInfo.speed += lv_cfg[info.lv].speed
+		}
+		if(evolve_lv[info.evo]){
+			lvInfo.maxHP += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
+			lvInfo.atk += Math.floor(lvInfo.atk * evolve_lv[info.evo]["att_add"])
+			lvInfo.phyDef += Math.floor(lvInfo.phyDef * evolve_lv[info.evo]["att_add"])
+			lvInfo.magDef += Math.floor(lvInfo.magDef * evolve_lv[info.evo]["att_add"])
+			lvInfo.speed += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
 		}
 		this.mergeData(info,lvInfo)
 		//装备计算
