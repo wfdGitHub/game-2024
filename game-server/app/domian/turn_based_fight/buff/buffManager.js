@@ -147,7 +147,7 @@ buffFactory.setListen = function(atkTeam,defTeam) {
 buffFactory.checkListen = function(buffId,belong) {
 	if(belong == "atk"){
 		if(this.defListenList[buffId]){
-			for(var i in this.defListenList[buffId]){
+			for(var i = 0;i < this.defListenList[buffId].length;i++){
 				var character = this.defListenList[buffId][i]
 				if(!character["died"]){
 					var rate = character["listen_addBuff"]["buffRate"]
@@ -158,7 +158,7 @@ buffFactory.checkListen = function(buffId,belong) {
 		}
 	}else if(belong == "def"){
 		if(this.atkListenList[buffId]){
-			for(var i in this.atkListenList[buffId]){
+			for(var i = 0;i < this.atkListenList[buffId].length;i++){
 				var character = this.atkListenList[buffId][i]
 				if(!character["died"]){
 					var rate = character["listen_addBuff"]["buffRate"]
