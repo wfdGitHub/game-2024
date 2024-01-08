@@ -146,10 +146,7 @@ var model = function(fightContorl) {
 		var skillNum = 0
 		c_info.wash = wash
 		//宠物异化
-		var needRate = wash/300
-		if(needRate)
-			needRate += 0.1
-		if(qa < 5 && Math.random() < needRate)
+		if(Math.random() < exalt_lv[heros[id]["exalt"]]["wash_qa"])
 			qa++
 		c_info.qa = qa
 		//触发资质加成
