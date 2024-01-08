@@ -55,7 +55,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		}else if(!attacker.skill_must_hit && !target.buffs["suoding"]){
 			var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate") + attDiff
 			if(target.attInfo.hp < target.attInfo.maxHP && target.low_hp_dodge){
-				hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_crit
+				hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_dodge
 			}
 			if(this.seeded.random("闪避判断") > hitRate)
 				dodgeFlag = true
