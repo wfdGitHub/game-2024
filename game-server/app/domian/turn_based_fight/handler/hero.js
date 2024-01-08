@@ -148,9 +148,9 @@ var model = function(fightContorl) {
 		//宠物异化
 		var needRate = wash/300
 		if(needRate)
-			needRate += 0.2
-		if(qa == 4 && Math.random() < needRate)
-			qa = 5
+			needRate += 0.1
+		if(qa < 5 && Math.random() < needRate)
+			qa++
 		c_info.qa = qa
 		//触发资质加成
 		if(item || Math.random() < wash/200)
