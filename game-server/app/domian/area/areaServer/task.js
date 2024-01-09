@@ -270,12 +270,11 @@ module.exports = function() {
 						if(value <= userTaskLists[uid][taskId])
 							continue
 						userTaskLists[uid][taskId] = value
-						self.setObj(uid,main_name,taskId,value)
-					}else{
-						userTaskLists[uid][taskId] += value
-						self.incrbyObj(uid,main_name,taskId,value)
+					}else if(oldValue < task_cfg[taskId]["value"]){
+						userTaskLists[uid][taskId] = Math.min(userTaskLists[uid][taskId] + value,task_cfg[taskId]["value"])
 					}
-					if(!oldValue || oldValue < task_cfg[taskId]["value"]){
+					if(oldValue != userTaskLists[uid][taskId]){
+						self.setObj(uid,main_name,taskId,userTaskLists[uid][taskId])
 						taskIds.push(taskId)
 						taskValues.push(Math.min(userTaskLists[uid][taskId],task_cfg[taskId]["value"]))
 					}
@@ -290,7 +289,7 @@ module.exports = function() {
 				self.sendToUser(uid,notify)
 			}
 			for(var i = 0;i < taskIds.length;i++){
-				if(task_cfg[taskIds[i]]["auto"] && value >= task_cfg[taskIds[i]]["value"])
+				if(task_cfg[taskIds[i]]["auto"] && taskValues[i] >= task_cfg[taskIds[i]]["value"])
 					self.finishTask(uid,taskIds[i],function(){})
 			}
 		}
