@@ -582,7 +582,7 @@ var model = function() {
 				heroInfo = local.washHero(heroInfo,item)
 	            self.heroDao.onlySetHeroInfo(uid,hId,"wash",heroInfo.wash)
 				self.heroDao.onlySetHeroInfo(uid,hId,"save",heroInfo.save)
-				self.taskUpdate(uid,"equipWash",1)
+				self.taskUpdate(uid,"heroWash",1)
 	            cb(true,{heroInfo:heroInfo})
 			})
 		})

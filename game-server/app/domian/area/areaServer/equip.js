@@ -226,6 +226,7 @@ var model = function() {
 				info.wash = self.fightContorl.makeEquip(info.lv,info.slot,0,item)
 				info = JSON.stringify(info)
 				self.setObj(uid,main_name,id,info)
+				self.taskUpdate(uid,"equipWash",1)
 				cb(true,info)
 			}
 		],function(err) {
@@ -573,6 +574,7 @@ var model = function() {
 				info.wash = self.fightContorl.makeEquip(info.lv,slot,0,item)
 				heroInfo["e"+slot] = JSON.stringify(info)
 				self.heroDao.onlySetHeroInfo(uid,hId,"e"+slot,heroInfo["e"+slot])
+				self.taskUpdate(uid,"equipWash",1)
 				cb(true,heroInfo)
 			}
 		],function(err) {
