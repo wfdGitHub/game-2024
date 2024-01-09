@@ -143,8 +143,12 @@ model.getTeamData = function(team,belong) {
     var powerAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
     var heroAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0,"amplify":0,"reduction":0}
     var gSkill = {}
+    var maxLv = 0
+    for(var i = 0;i < team.length;i++)
+    	if(team[i]["lv"] > maxLv)
+    		maxLv = team[i]["lv"]
 	//主角
-	var master = new masterEntity({belong:belong,manualModel:teamCfg["manualModel"]})
+	var master = new masterEntity({belong:belong,manualModel:teamCfg["manualModel"],maxLv:maxLv})
 	//爵位属性
 	if(teamCfg["officer"]){
 		heroAtts["amplify"] += officer[teamCfg["officer"]]["amplify"]
