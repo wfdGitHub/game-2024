@@ -128,14 +128,14 @@ model.prototype.heroBegin = function(hero,belong,index) {
 //战斗开始
 model.prototype.fightBegin = function() {
 	var info = {type : "fightBegin",atkTeam : [],defTeam : [],seededNum : this.seededNum,maxRound : this.maxRound}
+	for(var i = 0;i < this.atkNPCTeam.length;i++)
+		this.atkAllTeam.push(this.atkNPCTeam[i]["hero"])
+	for(var i = 0;i < this.defNPCTeam.length;i++)
+		this.defAllTeam.push(this.defNPCTeam[i]["hero"])
 	for(var i = 0;i < this.atkAllTeam.length;i++)
 		info.atkTeam.push(this.atkAllTeam[i].getSimpleInfo())
 	for(var i = 0;i < this.defAllTeam.length;i++)
 		info.defTeam.push(this.defAllTeam[i].getSimpleInfo())
-	for(var i = 0;i < this.atkNPCTeam.length;i++)
-		info.atkTeam.push(this.atkNPCTeam[i]["hero"].getSimpleInfo())
-	for(var i = 0;i < this.defNPCTeam.length;i++)
-		info.defTeam.push(this.defNPCTeam[i]["hero"].getSimpleInfo())
 	info.comeonHero = []
 	for(var i = 0;i < this.allHero.length;i++)
 		info.comeonHero.push({id:this.allHero[i].id,index:this.allHero[i].index})
