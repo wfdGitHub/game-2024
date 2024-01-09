@@ -18,7 +18,6 @@ var model = function() {
 	//装备穿戴
 	this.wearEquip = function(uid,hId,eId,cb) {
 		var heroInfo,eStr,eInfo,oldEquip
-		var lv = self.getLordLv(uid)
 		async.waterfall([
 			function(next) {
 				//检查英雄
@@ -40,8 +39,8 @@ var model = function() {
 						eStr = data
 						eInfo = JSON.parse(eStr)
 						//判断穿戴等级
-						if(lv < equip_lv[eInfo.lv]["lv"]){
-							next("携带等级错误 "+lv+"/"+equip_lv[eInfo.lv]["lv"])
+						if(heroInfo.lv < equip_lv[eInfo.lv]["lv"]){
+							next("携带等级错误 "+heroInfo.lv+"/"+equip_lv[eInfo.lv]["lv"])
 							return
 						}
 						next()
