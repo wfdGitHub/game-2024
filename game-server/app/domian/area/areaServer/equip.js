@@ -907,6 +907,7 @@ var model = function() {
 				info.st++
 				heroInfo["e"+slot] = JSON.stringify(info)
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,"e"+slot,heroInfo["e"+slot])
+				self.taskUpdate(uid,"equip_st",1,info.st)
 				cb(true,heroInfo)
 			}
 		],function(err) {
