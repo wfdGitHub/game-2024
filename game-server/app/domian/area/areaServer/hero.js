@@ -277,8 +277,8 @@ var model = function() {
 				return
 			}
 			var type = heros[heroInfo.id]["type"]
-			if(type != 1 && type != 2){
-				cb(false,"非神兽珍兽")
+			if(type == 0){
+				cb(false,"普通宠物不可使用此晋升")
 				return
 			}
 			var lv = self.getLordLv(uid)
