@@ -55,7 +55,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		}else if(!attacker.skill_must_hit && !target.buffs["suoding"]){
 			var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate") + attDiff
 			if(target.attInfo.hp < target.attInfo.maxHP && target.low_hp_dodge){
-				hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_crit
+				hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_dodge
 			}
 			if(this.seeded.random("闪避判断") > hitRate)
 				dodgeFlag = true
@@ -175,6 +175,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		info.value +=  Math.floor(0.04 * target.attInfo.maxHP * count)
 		if(attacker.gd_mb && this.seeded.random("gd_mb") < attacker.gd_mb)
 			buffManager.createBuff(attacker,target,{"buffId":"disarm","duration":1})
+		//释放技能时，每命中一个感电状态下的目标恢复自身1点怒气
+		if(attacker.skill_flash_anger)
+			attacker.addAnger(attacker.skill_flash_anger)
 	}
 	if(target.buffs["weak"]){
 		if(attacker.xr_zs && this.seeded.random("xr_zs") < attacker.xr_zs)
@@ -197,8 +200,12 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		specieRate *= species[skill.specie][target.species[i]]
 	if(target.specie_immune == skill.specie)
 		specieRate = specieRate * 0.1
-	if(target.specie_behit && specieRate > 1)
-		specieRate = target.specie_behit * specieRate
+	if(specieRate > 1){
+		if(target.specie_behit)
+			specieRate = target.specie_behit * specieRate
+		if(attacker.specie_hit)
+			specieRate = attacker.specie_hit * specieRate
+	}
 	info.spe = specieRate
 	info.value = Math.floor(info.value * specieRate)
 	//物理法术伤害加成减免

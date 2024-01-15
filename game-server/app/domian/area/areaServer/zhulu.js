@@ -330,9 +330,10 @@ module.exports = function() {
 			    var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNum})
 		    	var list = self.fightContorl.getFightRecord()
 		    	let overInfo = list[list.length - 1]
-		    	for(var i = 0;i<atkTeam.length;i++){
-		    		if(atkTeam[i] && overInfo.atkTeam[i]){
-		    			userDatas[uid]["surplus_healths"][atkTeam[i].hId] = overInfo.atkTeam[i].hp/overInfo.atkTeam[i].maxHP
+		    	for(var i = 1;i < atkTeam.length;i++){
+		    		var index = i - 1
+		    		if(atkTeam[i] && overInfo.atkTeam[index]){
+		    			userDatas[uid]["surplus_healths"][atkTeam[i].hId] = overInfo.atkTeam[index].hp/overInfo.atkTeam[index].maxHP
 		    			if(userDatas[uid]["surplus_healths"][atkTeam[i].hId] >= 1){
 		    				delete userDatas[uid]["surplus_healths"][atkTeam[i].hId]
 		    			}

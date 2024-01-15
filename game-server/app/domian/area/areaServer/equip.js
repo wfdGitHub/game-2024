@@ -38,6 +38,11 @@ var model = function() {
 					}else{
 						eStr = data
 						eInfo = JSON.parse(eStr)
+						//判断穿戴等级
+						if(heroInfo.lv < equip_lv[eInfo.lv]["lv"]){
+							next("携带等级错误 "+heroInfo.lv+"/"+equip_lv[eInfo.lv]["lv"])
+							return
+						}
 						next()
 					}
 				})
@@ -77,15 +82,29 @@ var model = function() {
 				var eInfo = JSON.parse(estr)
 				delete heroInfo["e"+slot]
 				self.heroDao.delHeroInfo(self.areaId,uid,hId,"e"+eInfo.slot,function(flag,data) {
-					var award = self.gainEquip(uid,estr)
+					var award = self.gainEquipNotLog(uid,estr)
 					cb(true,{heroInfo:heroInfo,award:award})
 				})
 			}
 		})
 	}
-	//获得装备
-	this.gainEquip = function(uid,estr){
-		eInfo = JSON.parse(estr)
+	//获得装备 有日志 str
+	this.gainEquip = function(uid,estr,reason){
+		var eInfo = JSON.parse(estr)
+		self.setObj(uid,main_name,eInfo.id,estr)
+		self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[eInfo.lv]["name_"+eInfo.slot],id:eInfo.id,info:eInfo,reason:reason||"获得装备"})
+		return eInfo
+	}
+	//获得装备 有日志 info
+	this.gainEquipByInfo = function(uid,eInfo,reason){
+		var estr = JSON.stringify(eInfo)
+		self.setObj(uid,main_name,eInfo.id,estr)
+		self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[eInfo.lv]["name_"+eInfo.slot],id:eInfo.id,info:eInfo,reason:reason||"获得装备"})
+		return estr
+	}
+	//添加装备 无日志
+	this.gainEquipNotLog = function(uid,estr){
+		var eInfo = JSON.parse(estr)
 		self.setObj(uid,main_name,eInfo.id,estr)
 		return eInfo
 	}
@@ -110,6 +129,7 @@ var model = function() {
 			 		return
 			 	}
 			 	list[i] = JSON.parse(list[i])
+			 	self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[list[i].lv]["name_"+list[i].slot],id:list[i].id,info:list[i],reason:"分解装备"})
 			}
 			var str = self.fightContorl.getEquipRecycle(list)
 			for(var i = 0;i < list.length;i++)
@@ -205,6 +225,7 @@ var model = function() {
 				info.wash = self.fightContorl.makeEquip(info.lv,info.slot,0,item)
 				info = JSON.stringify(info)
 				self.setObj(uid,main_name,id,info)
+				self.taskUpdate(uid,"equipWash",1)
 				cb(true,info)
 			}
 		],function(err) {
@@ -237,9 +258,8 @@ var model = function() {
 				info = info.wash
 				info.id = id
 				info.st = st
-				info = JSON.stringify(info)
-				self.setObj(uid,main_name,id,info)
-				cb(true,info)
+				var estr = self.gainEquipByInfo(uid,info,"洗练装备")
+				cb(true,estr)
 			}
 		],function(err) {
 			cb(false,err)
@@ -553,6 +573,7 @@ var model = function() {
 				info.wash = self.fightContorl.makeEquip(info.lv,slot,0,item)
 				heroInfo["e"+slot] = JSON.stringify(info)
 				self.heroDao.onlySetHeroInfo(uid,hId,"e"+slot,heroInfo["e"+slot])
+				self.taskUpdate(uid,"equipWash",1)
 				cb(true,heroInfo)
 			}
 		],function(err) {
@@ -593,6 +614,7 @@ var model = function() {
 				info.st = st
 				heroInfo["e"+slot] = JSON.stringify(info)
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,"e"+slot,heroInfo["e"+slot])
+				self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[info.lv]["name_"+info.slot],id:info.id,info:info,reason:"洗练装备"})
 				cb(true,heroInfo)
 			}
 		],function(err) {
@@ -886,6 +908,7 @@ var model = function() {
 				info.st++
 				heroInfo["e"+slot] = JSON.stringify(info)
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,"e"+slot,heroInfo["e"+slot])
+				self.taskUpdate(uid,"equip_st",1,info.st)
 				cb(true,heroInfo)
 			}
 		],function(err) {

@@ -16,38 +16,17 @@ model.prototype.init = function(cb) {
 //渠道隔离
 model.prototype.entry = function(data,cb) {
 	var self = this
-	async.waterfall([
-		function(next) {
-			//渠道隔离
-			if(self.sdkConfig.isolation["value"] != "0" && data.device_id){
-				self.redisDao.db.hget("device_channel",device_id,function(err,data) {
-					if(data && data != channel_code){
-						next("您已在其他平台注册，请返回原平台登录")
-					}else{
-						self.redisDao.db.hset("device_channel",device_id,channel_code)
-						next()
-					}
-				})
-			}else{
-				next()
-			}
-		},
-		function(next) {
-			//渠道验证
-			switch(self.sdkConfig.sdk_type["value"]){
-				case "quick":
-					//quick登陆
-					self.quickEntry(data,cb)
-				break
-				case "x7sy":
-					//小七手游
-					self.x7syEntry(data,cb)
-				break
-			}
-		}
-	],function(err) {
-		cb({flag:false,err:err})
-	})
+	//渠道验证
+	switch(self.sdkConfig.sdk_type["value"]){
+		case "quick":
+			//quick登陆
+			self.quickEntry(data,cb)
+		break
+		case "x7sy":
+			//小七手游
+			self.x7syEntry(data,cb)
+		break
+	}
 }
 //quick登陆
 model.prototype.quickEntry = function(data,cb) {

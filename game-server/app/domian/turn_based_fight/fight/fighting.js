@@ -148,6 +148,10 @@ model.prototype.fightBegin = function() {
 	for(var i = 0;i < defheros.length;i++)
 		if(defheros[i])
 			defheros[i].heroComeon()
+	for(var i = 0;i < this.atkNPCTeam.length;i++)
+		this.atkAllTeam.push(this.atkNPCTeam[i]["hero"])
+	for(var i = 0;i < this.defNPCTeam.length;i++)
+		this.defAllTeam.push(this.defNPCTeam[i]["hero"])
 	this.trampoline(this.nextRound.bind(this))
 }
 //开始新轮次

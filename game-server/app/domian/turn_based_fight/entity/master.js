@@ -19,6 +19,7 @@ var master = function(otps) {
 	this.attInfo.phyDef = 0								//物理防御力
 	this.attInfo.magDef = 0								//法术防御力
 	this.lord_power = otps.lord_power || 0 				//主公威力加成值
+	this.lord_power += Math.floor(Math.pow(otps.maxLv,1.2) * 80)
 	this.ws_power = otps.ws_power || 0  				//无双威力加成百分比
 	this.power_up = 0 									//技能系数增强
 	this.manualModel = otps.manualModel || 0    		//技能释放模式

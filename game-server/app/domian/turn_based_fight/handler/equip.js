@@ -177,8 +177,8 @@ var model = function(fightContorl) {
 	//装备随机生成属性
 	this.createEquipAtt = function(info) {
 		var c_info = {}
-		c_info.main_1 = equip_qa[info.qa]["mainRate"] * (Math.random() * 0.1 + 0.95)
-		c_info.main_2 = equip_qa[info.qa]["mainRate"] * (Math.random() * 0.1 + 0.95)
+		c_info.main_1 = Number((equip_qa[info.qa]["mainRate"] * (Math.random() * 0.1 + 0.95)).toFixed(2))
+		c_info.main_2 = Number((equip_qa[info.qa]["mainRate"] * (Math.random() * 0.1 + 0.95)).toFixed(2))
 		c_info.extra = this.createEquipExtra(info,Math.floor(Math.random() * 3))
 		return c_info
 	}

@@ -8,7 +8,7 @@ const hero_tr = require("../../../config/gameCfg/hero_tr.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","ttttower","lord","daily_fb","task","limit_gift","area_challenge","area_boss","sprint_rank","share","rebate","festival","guild","guild_fb","guild_treasure","limited_time","hufu","show","friend","beherrscher","exercise","endless","extremity","zhanfa","hero_rank","hero","guild_city_boss","manor","lotto","worldLevel","area_gift","equip","worldBoss","invade","gem","fabao","cangbaotu","aceLotto","medal"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","ttttower","lord","daily_fb","task","limit_gift","area_challenge","area_boss","sprint_rank","share","rebate","festival","guild","guild_fb","guild_treasure","limited_time","hufu","show","friend","beherrscher","exercise","endless","extremity","zhanfa","hero_rank","hero","guild_city_boss","manor","lotto","worldLevel","area_gift","equip","worldBoss","invade","gem","fabao","cangbaotu","aceLotto","medal","DIY","tanxian"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var timers = {}
@@ -237,6 +237,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.lottoDayUpdate(uid)
 	this.userRechargeDayUpdate(uid)
 	this.weekTargetRefresh(uid)
+	this.tanxianDayUpdate(uid)
 	this.incrbyAreaObj("areaInfo","day_login",1)
 	this.playerDao.setPlayerInfo({uid:uid,key:"pay_state",value:0})
 	//每日随机时间

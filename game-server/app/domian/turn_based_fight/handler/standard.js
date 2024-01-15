@@ -23,11 +23,11 @@ var model = function() {
 	//根据类型获取基准战力阵容  若未传难度等级则默认选择战斗配置表中的难度等级
 	this.getNPCTeamByType = function(b_type,npcs,lv,dl) {
 		if(!battle_cfg[b_type]){
-			console.error("getNPCTeamByType b_type erro ",b_type)
+			console.trace("getNPCTeamByType b_type erro ",b_type)
 			b_type = "checkpoints"
 		}
 		if(!lv){
-			console.error("getNPCTeamByType lv erro ",lv)
+			console.trace("getNPCTeamByType lv erro ",lv)
 			lv = 1
 		}
 		if(!dl)

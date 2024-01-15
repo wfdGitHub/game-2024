@@ -201,6 +201,63 @@ mysqlDao.prototype.addLTVData  = function(key,num,date) {
 		}
 	})
 }
+//添加英雄记录 uid,name,id,info,result
+mysqlDao.prototype.addHeroLog = function(info) {
+	if(info.info && info.info.qa >= 5){
+		var sql = 'insert into hero_log SET ?'
+		var data = {
+			uid : info.uid,
+			name : info.name,
+			id : info.id,
+			info : JSON.stringify(info.info),
+			reason : info.reason,
+			time : Date.now()
+		}
+		this.db.query(sql,data, function(err, res) {
+			if (err) {
+				console.error('addHeroLog! ' + err.stack);
+			}
+		})
+	}
+}
+//添加装备记录
+mysqlDao.prototype.addEquipLog = function(info) {
+	if(info.info && info.info.qa >= 5){
+		var sql = 'insert into equip_log SET ?'
+		var data = {
+			uid : info.uid,
+			name : info.name,
+			id : info.id,
+			info : JSON.stringify(info.info),
+			reason : info.reason,
+			time : Date.now()
+		}
+		this.db.query(sql,data, function(err, res) {
+			if (err) {
+				console.error('addEquipLog! ' + err.stack);
+			}
+		})
+	}
+}
+//添加法宝记录
+mysqlDao.prototype.addFabaoLog = function(info) {
+	if(info.info && info.info.qa >= 5){
+		var sql = 'insert into fabao_log SET ?'
+		var data = {
+			uid : info.uid,
+			name : info.name,
+			id : info.id,
+			info : JSON.stringify(info.info),
+			reason : info.reason,
+			time : Date.now()
+		}
+		this.db.query(sql,data, function(err, res) {
+			if (err) {
+				console.error('addFabaoLog! ' + err.stack);
+			}
+		})
+	}
+}
 module.exports = {
 	id : "mysqlDao",
 	func : mysqlDao,

@@ -708,4 +708,19 @@ module.exports = function() {
 			cb(true,awardList)
 		})
 	}
+	//获取定制数据
+	this.methods.getDIYData = function(uid,msg,cb) {
+		self.getDIYData(uid,cb)
+	}
+	//设置定制英雄
+	this.methods.setDIYHeroArgs = function(uid,msg,cb) {
+		var id = msg.id
+		var args = msg.args
+		self.setDIYHero(uid,id,args,cb)
+	}
+	//购买定制英雄
+	this.methods.buyDIYHero = function(uid,msg,cb) {
+		var id = msg.id
+		self.buyDIYHero(uid,id,cb)
+	}
 }

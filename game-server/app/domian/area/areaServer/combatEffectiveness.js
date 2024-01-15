@@ -10,6 +10,8 @@ const power_slot = require("../../../../config/gameCfg/power_slot.json")
 const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const battle_team = require("../../../../config/gameCfg/battle_team.json")
 const battle_cfg = require("../../../../config/gameCfg/battle_cfg.json")
+const exalt_lv = require("../../../../config/gameCfg/exalt_lv.json")
+const heros = require("../../../../config/gameCfg/heros.json")
 const main_name = "CE"
 const oneDayTime = 86400000
 //消耗倍率
@@ -379,7 +381,27 @@ module.exports = function() {
 	}
 	//根据类型设置阵容
 	this.setTeamByType = function(uid,type,hIds,cb) {
+		var lv = self.getLordLv(uid)
 		async.waterfall([
+			function(next) {
+				self.heroDao.getHeroList(uid,hIds,function(flag,list) {
+					for(var i = 0;i < list.length;i++){
+						if(!list[i]){
+							next("hid error "+hIds[i])
+							return
+						}
+						if(lv < exalt_lv[heros[list[i]["id"]]["exalt"]]["limit"]){
+							next("携带等级不足 "+list[i]["id"] +"  "+lv+ "/"+ exalt_lv[heros[list[i]["id"]]["exalt"]]["limit"])
+							return
+						}
+						if(battle_team[type] && battle_team[type]["banCareer"] == heros[list[i]["id"]]["career"]){
+							next("该职业英雄不可上阵 "+list[i]["id"])
+							return
+						}
+					}
+					next()
+				})
+			},
 			function(next) {
 				//常规阵容移除原出战
 				if(type == "normal"){

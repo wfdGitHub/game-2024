@@ -34,7 +34,7 @@ var model = function(fightContorl) {
 		var qaData = fabao_qa[fInfo.qa]
 		//属性
 		for(var i = 1;i <= 4;i++)
-			fInfo["M"+i] = Math.random() * (qaData.max_rate - qaData.min_rate) + qaData.min_rate
+			fInfo["M"+i] = Number((Math.random() * (qaData.max_rate - qaData.min_rate) + qaData.min_rate).toFixed(2))
 		//特效
 		fInfo.spe = []
 		var speCount = Math.floor(Math.random() * qaData.begin) + 1

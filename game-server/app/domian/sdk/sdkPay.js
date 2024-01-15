@@ -36,6 +36,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 	var v_sign = util.md5(data.nt_data+data.sign+this.sdkConfig["Md5_Key"]["value"])
 	if(v_sign != data.md5Sign){
 		console.error("签名验证失败")
+		console.log(data)
 		return
 	}
 	res.send("SUCCESS")
@@ -151,7 +152,7 @@ model.prototype.x7sy_order = function(data,finish_callback,req,res) {
 	var source_str = local.ksort(data)
 	if(!local.verifySignSHA1(source_str,raw_sign_data,publicKey)){
 		res.send("签名验证失败")
-		console.error("签名验证失败")
+		console.error("签名验证失败",data)
 		return
 	}
 	res.send("success")

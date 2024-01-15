@@ -156,16 +156,19 @@ var model = function() {
 	}
 	//获得一个英雄
 	this.gainOneHero = function(uid,id,qa,cb) {
-		var hId = self.getLordLastid(uid)
         var heroInfo = self.fightContorl.makeHeroData(id,qa)
+        return this.addPlayerHero(uid,heroInfo,cb)
+	}
+	this.addPlayerHero = function(uid,heroInfo,cb) {
+		var hId = self.getLordLastid(uid)
 		heroInfo.hId = hId
 		self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 		self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo,function() {
 			if(cb)
 				cb(true,heroInfo)
 		})
-		self.taskUpdate(uid,"hero",1,qa)
-		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:qa,reason:"获得英雄-"+hId})
+		self.taskUpdate(uid,"hero",1,heroInfo.qa)
+		self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 		return heroInfo
 	}
 	//根据携带等级获取英雄
@@ -180,7 +183,7 @@ var model = function() {
 				cb(true,heroInfo)
 		})
 		self.taskUpdate(uid,"hero",1,qa)
-		self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+heroInfo.id,value:1,curValue:qa,reason:"获得英雄-"+hId})
+		self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 		return heroInfo
 	}
 	//设置心愿英雄
@@ -224,7 +227,7 @@ var model = function() {
 				if(cb)
 					cb(true,heroInfo)
 			})
-			self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:heroInfo.qa,reason:"获得英雄-"+hId})
+			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 			return heroInfo
 		})
 	}
@@ -240,7 +243,7 @@ var model = function() {
 			  	return
 			}
 			var type = heros[heroInfo.id]["type"]
-			if(type != 1 && type != 2){
+			if(type == 0){
 				cb(false,"非神兽珍兽")
 				return
 			}
@@ -274,8 +277,8 @@ var model = function() {
 				return
 			}
 			var type = heros[heroInfo.id]["type"]
-			if(type != 1 && type != 2){
-				cb(false,"非神兽珍兽")
+			if(type == 0){
+				cb(false,"普通宠物不可使用此晋升")
 				return
 			}
 			var lv = self.getLordLv(uid)
@@ -530,6 +533,8 @@ var model = function() {
 					return
 				}
 			}
+			for(var i = 0;i < list.length;i++)
+				self.mysqlDao.addHeroLog({uid:uid,name:heros[list[i].id]["name"],id:list[i].hId,info:list[i],reason:"分解英雄"})
 			var info = self.fightContorl.getHeroRecycle(list)
 		    self.heroDao.removeHeroList(self.areaId,uid,hIds,function(flag,err) {
 		    	if(!flag){
@@ -554,8 +559,8 @@ var model = function() {
 				cb(false,"英雄不存在")
 				return
 			}
-			if(evolve_lv[heroInfo.evo]["evolveLv"] < 3){
-				cb(false,"进化为觉醒体后方可洗练")
+			if(heroInfo.qa < 3){
+				cb(false,"珍稀以上品质可洗练")
 				return
 			}
 			if(heros[heroInfo.id]["type"] != 0){
@@ -577,6 +582,7 @@ var model = function() {
 				heroInfo = local.washHero(heroInfo,item)
 	            self.heroDao.onlySetHeroInfo(uid,hId,"wash",heroInfo.wash)
 				self.heroDao.onlySetHeroInfo(uid,hId,"save",heroInfo.save)
+				self.taskUpdate(uid,"heroWash",1)
 	            cb(true,{heroInfo:heroInfo})
 			})
 		})
@@ -605,6 +611,7 @@ var model = function() {
 			}
 			delete heroInfo.save
 			self.heroDao.delHeroInfo(self.areaId,uid,hId,"save")
+			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"洗练英雄"})
 			cb(true,heroInfo)
 		})
 	}
@@ -615,8 +622,8 @@ var model = function() {
 				cb(false,"英雄不存在")
 				return
 			}
-			if(evolve_lv[heroInfo.evo]["evolveLv"] < 4){
-				cb(false,"进化为完全体后方可打书")
+			if(heroInfo.qa < 4){
+				cb(false,"传说以上品质可打书")
 				return
 			}
 			if(!items[itemId] || items[itemId]["useType"] != "pcskill"){
@@ -644,14 +651,14 @@ var model = function() {
 			}
 			var hId = self.getLordLastid(uid)
 			var id = default_cfg["begin_hero"]["value"]
-			var heroInfo = self.fightContorl.makeHeroData(id,3)
+			var heroInfo = self.fightContorl.makeHeroData(id,4)
 			heroInfo.hId = hId
 			self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
 			self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo,function() {
 				if(cb)
 					cb(true,heroInfo)
 			})
-			self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:heroInfo.qa,reason:"获得英雄-"+hId})
+			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 		})
 	}
 	//首次获取英雄
@@ -670,7 +677,7 @@ var model = function() {
 				if(cb)
 					cb(true,heroInfo)
 			})
-			self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:777000000+id,value:1,curValue:heroInfo.qa,reason:"获得英雄-"+hId})
+			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 		})
 	}
 	//英雄洗练 洗练增加通灵值,通灵值满一百必出满技能,出满技能后通灵值重置

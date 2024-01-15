@@ -20,7 +20,12 @@ const manor_main = fightCfg.getCfg("manor_main")
 const manor_type = fightCfg.getCfg("manor_type")
 const hufu_quality = fightCfg.getCfg("hufu_quality")
 const zhanfa = fightCfg.getCfg("zhanfa")
+const DIY_hero = fightCfg.getCfg("DIY_hero")
+const DIY_skills = fightCfg.getCfg("DIY_skills")
+const DIY_talents = fightCfg.getCfg("DIY_talents")
 const character = require("../entity/character.js")
+const DIY_SKILL_KESY = ["DIY_N","DIY_S"]
+const DIY_TALENT_KESY = ["D1","D2","D3","PS0","PS1","PS2","PS3","PS4"]
 var gemMap = {}
 for(var i in gem_lv){
 	i = Number(i)
@@ -141,11 +146,10 @@ var model = function(fightContorl) {
 		var skillNum = 0
 		c_info.wash = wash
 		//宠物异化
-		var needRate = wash/300
-		if(needRate)
-			needRate += 0.2
-		if(qa == 4 && Math.random() < needRate)
-			qa = 5
+		if(qa == 3 || qa == 4){
+			if(Math.random() < exalt_lv[heros[id]["exalt"]]["wash_qa"+qa])
+				qa++
+		}
 		c_info.qa = qa
 		//触发资质加成
 		if(item || Math.random() < wash/200)
@@ -157,7 +161,7 @@ var model = function(fightContorl) {
 			skillNum = Math.floor(hero_quality[qa]["skillRate"] * (Math.random() * 0.5 + 0.6) * heros[id]["passive_num"])
 		skillNum = Math.min(2,skillNum)
 		for(var i = 1;i <= 6;i++)
-			c_info["MR"+i] = hero_quality[qa]["mainRate"] * (Math.random() * (0.4 + extra) + 0.7)
+			c_info["MR"+i] = Number((hero_quality[qa]["mainRate"] * (Math.random() * (0.4 + extra) + 0.6)).toFixed(2))
 		if(skillNum == heros[id]["passive_num"])
 			c_info.wash = 0
 		var skillList = []
@@ -314,9 +318,19 @@ var model = function(fightContorl) {
 			info.specie1 = evolves[heros[info.id]["evo"+evoId]]["specie1"]
 		if(evolves[heros[info.id]["evo"+evoId]]["specie2"])
 			info.specie2 = evolves[heros[info.id]["evo"+evoId]]["specie2"]
-		//被动技能
-		for(var i = 1;i <= evoId;i++)
-			this.mergeTalent(info,heros[info.id]["talent"+i])
+		//天赋被动
+		if(heros[id]["type"] == 3){
+			//定制英雄
+			if(info["DIY_N"])
+				info["defaultSkill"] = info["DIY_N"]
+			if(info["DIY_S"])
+				info["angerSkill"] = info["DIY_S"]
+			for(var i = 1;i <= evoId;i++)
+				this.mergeTalent(info,info["D"+i])
+		}else{
+			for(var i = 1;i <= evoId;i++)
+				this.mergeTalent(info,heros[info.id]["talent"+i])
+		}
 		//神兽技能
 		if(info.m_ps)
 			this.mergeTalent(info,heros[info.id]["mythical"])
@@ -341,6 +355,13 @@ var model = function(fightContorl) {
 			lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * growth)
 			lvInfo.magDef += Math.floor(lv_cfg[info.lv].magDef * growth)
 			lvInfo.speed += lv_cfg[info.lv].speed
+		}
+		if(evolve_lv[info.evo]){
+			lvInfo.maxHP += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
+			lvInfo.atk += Math.floor(lvInfo.atk * evolve_lv[info.evo]["att_add"])
+			lvInfo.phyDef += Math.floor(lvInfo.phyDef * evolve_lv[info.evo]["att_add"])
+			lvInfo.magDef += Math.floor(lvInfo.magDef * evolve_lv[info.evo]["att_add"])
+			lvInfo.speed += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
 		}
 		this.mergeData(info,lvInfo)
 		//装备计算
@@ -516,7 +537,7 @@ var model = function(fightContorl) {
 			console.error("talentId error",talentId)
 			return
 		}
-		for(var i = 1;i <= 3;i++){
+		for(var i = 1;i <= 6;i++){
 			if(talent_list[talentId]["key"+i]){
 				var tmpTalent = {}
 				tmpTalent[talent_list[talentId]["key"+i]] = talent_list[talentId]["value"+i]
@@ -673,6 +694,34 @@ var model = function(fightContorl) {
 			break
 		}
 		return newCE - oldCE
+	}
+	//生成定制英雄
+	this.gainDIYHero = function(id,args) {
+		if(!DIY_hero[id])
+			return false
+		args = args || {}
+		var info = {}
+		var heroInfo = this.makeStandardHero(id,DIY_hero[id].qa,1,1,1)
+		info.price = DIY_hero[id]["price"]
+		info.type = DIY_hero[id]["type"]
+		for(var i = 0;i < DIY_SKILL_KESY.length;i++){
+			if(args[DIY_SKILL_KESY[i]]){
+				var tid = DIY_hero[id][DIY_SKILL_KESY[i]][args[DIY_SKILL_KESY[i]][0]]
+				var sid = DIY_skills[tid]["list"][args[DIY_SKILL_KESY[i]][1]]
+				info.price += DIY_skills[tid]["price"]
+				heroInfo[DIY_SKILL_KESY[i]] = sid
+			}
+		}
+		for(var i = 0;i < DIY_TALENT_KESY.length;i++){
+			if(args[DIY_TALENT_KESY[i]]){
+				var tid = DIY_hero[id][DIY_TALENT_KESY[i]][args[DIY_TALENT_KESY[i]][0]]
+				var sid = DIY_talents[tid]["list"][args[DIY_TALENT_KESY[i]][1]]
+				info.price += DIY_talents[tid]["price"]
+				heroInfo[DIY_TALENT_KESY[i]] = sid
+			}
+		}
+		info.heroInfo = heroInfo
+		return info
 	}
 }
 module.exports = model

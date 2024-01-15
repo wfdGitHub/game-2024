@@ -78,8 +78,10 @@ module.exports = function() {
 			},
 			function(next) {
 				var rate = 1
-				if(info && info.extras_params && info.extras_params.rate)
-					rate = info.extras_params.rate
+				if(info && info.extras_params){
+					rate = info.extras_params.rate || 1
+					info.extras_params = JSON.stringify(info.extras_params)
+				}
 				if(pay_cfg[pay_id]["dianpiao"] == 0){
 					self.finish_recharge(uid,pay_id,info,cb)
 				}else{
@@ -87,6 +89,8 @@ module.exports = function() {
 						if(flag){
 							self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["rmb"] * rate)
 							self.finish_recharge(uid,pay_id,info,cb)
+							//触发首充
+							self.real_recharge(uid,Math.floor(pay_cfg[pay_id]["rmb"] * 100 * rate))
 						}else{
 							cb(false,err)
 						}
@@ -104,7 +108,7 @@ module.exports = function() {
 		})
 	}
 	//申请充值
-	this.apply_recharge = function(uid,unionid,pay_id,cb) {
+	this.apply_recharge = function(uid,unionid,pay_id,extras_params,cb) {
 		if(!pay_cfg[pay_id]){
 			cb(false,"pay_id error")
 			return
@@ -116,15 +120,16 @@ module.exports = function() {
 					cb(false,"购买次数已达上限")
 					return
 				}
-				self.create_recharge(uid,unionid,pay_id,cb)
+				self.create_recharge(uid,unionid,pay_id,extras_params,cb)
 			})
 		}else{
-			self.create_recharge(uid,unionid,pay_id,cb)
+			self.create_recharge(uid,unionid,pay_id,extras_params,cb)
 		}
 	}
-	this.create_recharge = function(uid,unionid,pay_id,cb) {
+	this.create_recharge = function(uid,unionid,pay_id,extras_params,cb) {
 		var info = {
 			pay_id : pay_id,
+			extras_params : extras_params,
 			userName : this.players[uid]["name"],
 			unionid : unionid,
 			accId : this.players[uid]["accId"],
@@ -138,8 +143,11 @@ module.exports = function() {
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,info,cb) {
 		var rate = 1
-		if(info && info.extras_params && info.extras_params.rate)
-			rate = info.extras_params.rate
+		if(info && info.extras_params){
+			var extras_params = JSON.parse(info.extras_params)
+			if(extras_params.rate)
+				rate = Math.max(1,Number(extras_params.rate) || 1)
+		}
 		var call_back = function(uid,flag,data) {
 			if(flag){
 				self.addUserRMB(uid,pay_cfg[pay_id].cent * rate)
@@ -158,8 +166,6 @@ module.exports = function() {
 		}
 		switch(pay_cfg[pay_id]["type"]){
 			case "lv_fund":
-			case "power_fund":
-			case "beaty_fund":
 				this.activateFund(uid,pay_cfg[pay_id]["type"],call_back.bind(this,uid))
 			break
 			case "highCard":
@@ -190,7 +196,7 @@ module.exports = function() {
 				this.recharge(uid,rate,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "limit_gift":
-				this.buyLimitGift(uid,rate,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+				this.buyLimitGift(uid,pay_id,rate,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "fast":
 				this.buyFastRecharge(uid,rate,pay_id,call_back.bind(this,uid))
@@ -200,6 +206,9 @@ module.exports = function() {
 			break
 			case "long_award":
 				this.buyLongAward(uid,pay_id,call_back.bind(this,uid))
+			break
+			case "DIY":
+				this.buyDIY(uid,pay_id,info,call_back.bind(this,uid))
 			break
 			default:
 				console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
@@ -236,6 +245,36 @@ module.exports = function() {
 		self.festivalTotalRecharge(uid,value)
 		if(cb)
 			cb(true)
+	}
+	//购买DIY道具
+	this.buyDIY = function(uid,pay_id,info,cb) {
+		switch(pay_cfg[pay_id]["arg"]){
+			case "hero":
+				var id = pay_cfg[pay_id]["arg2"]
+				self.getHMObj(uid,"diy",[id+"_state",id+"_price",id+"_info"],function(list) {
+					var state = list[0]
+					var price = Number(Math.ceil(Number(list[1]) / 100))
+					var heroInfo = list[2]
+					if(state){
+						cb(false,"不可重复定制")
+						self.payDao.faildOrder("不可重复定制",info,list)
+						return
+					}
+					if(!heroInfo){
+						cb(false,"英雄数据错误")
+						self.payDao.faildOrder("英雄数据错误",info,list)
+						return
+					}
+					if(!price || info.amount < price){
+						cb(false,"价格错误")
+						self.payDao.faildOrder("定制金额错误",info,list)
+						return
+					}
+					self.delObj(uid,"limit_gift",pay_id)
+					self.gainDIYHero(uid,id,cb)
+				})
+			break
+		}
 	}
 	//充值
 	this.recharge = function(uid,rate,index,cb) {
@@ -423,15 +462,15 @@ module.exports = function() {
 		})
 	}
 	//购买限时礼包
-	this.buyLimitGift = function(uid,rate,id,cb) {
+	this.buyLimitGift = function(uid,pay_id,rate,id,cb) {
 		if(!gift_list[pay_id] || !pay_cfg[pay_id]){
 			cb(false,"限时礼包错误")
 			return
 		}
 		self.getObj(uid,"limit_gift",pay_id,function(data) {
 			if(data){
-				self.sendTextToMail(uid,"recharge",self.itemstrChangeRate(gift_list[id]["award"],rate))
-				self.delObj(uid,"limit_gift",id)
+				self.sendTextToMail(uid,"recharge",self.itemstrChangeRate(gift_list[pay_id]["award"],rate))
+				self.delObj(uid,"limit_gift",pay_id)
 				cb(true)
 			}else{
 				cb(false,"限时礼包不存在或已过期")

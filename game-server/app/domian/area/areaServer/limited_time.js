@@ -26,12 +26,12 @@ module.exports = function() {
 				self.endNewLimitedTime(id)
 			}
 		}
-		var day = util.getTimeDifference(0,Date.now())
-		if(day % limited_time["loop_day"]["value"] == 0){
-			//开启新活动
-			var index = day % limitedList.length
-			self.openNewLimitedTime(limitedList[index],limitedDay)
-		}
+		// var day = util.getTimeDifference(0,Date.now())
+		// if(day % limited_time["loop_day"]["value"] == 0){
+		// 	//开启新活动
+		// 	var index = day % limitedList.length
+		// 	self.openNewLimitedTime(limitedList[index],limitedDay)
+		// }
 		if(self.areaDay == 1){
 			self.openNewLimitedTime(limited_time["newArea"]["value"],limited_time["newArea"]["day"])
 		}

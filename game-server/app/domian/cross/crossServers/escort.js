@@ -337,7 +337,7 @@ module.exports = function() {
 		if(local.userInfos[robotId])
 			return
 		var team = escort_cfg["robot_team"][Math.floor(Math.random() * escort_cfg["robot_team"].length)]
-		var preLv = escort_level[level-1]?escort_level[level-1]["lev_limit"] : 0
+		var preLv = escort_level[level-1]?escort_level[level-1]["lev_limit"] : 1
 		var maxLv = escort_level[level]["lev_limit"]
 		var lv = Math.floor(Math.random() * (maxLv - preLv)) + preLv
 		var rand = Math.random()
