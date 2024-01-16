@@ -35,10 +35,8 @@ model.prototype.settle = function(value) {
 		"type" : "skill",
 		"id" : this.character.id,
 		"sid" : this.sid,
-		"isAnger" : this.isAnger,
-		"changeAnger" : 0,
-		"curAnger" : 0,
-		"attack" : []
+		"attack" : [],
+		"t" : this.character.fighting.RUNTIME
 	}
 	var targets = this.targets
 	this.attackBefore(targets)

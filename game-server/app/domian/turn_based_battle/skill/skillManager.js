@@ -15,9 +15,9 @@ model.prototype.useSkill = function(skillInfo) {
 		"type" : "skill",
 		"id" : skill.character.id,
 		"sid" : skill.sid,
-		"isAnger" : skill.isAnger,
-		"changeAnger" :skillInfo.changeAnger,
-		"curAnger" : skillInfo.curAnger
+		"cha" :skillInfo.changeAnger,
+		"cua" : skillInfo.curAnger,
+		"t" : this.fighting.RUNTIME
 	}
 	skill.before()
 	this.skillAction(skillInfo,skill,record)

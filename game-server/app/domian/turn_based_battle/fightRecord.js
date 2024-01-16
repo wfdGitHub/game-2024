@@ -44,7 +44,7 @@ model.prototype.translate = function(info,type) {
 		break
 		case "skill":
 			//使用技能(怒气隐式更新)
-			this.saveText(colors["blue"]+"["+this.heroMap[info.id]+"]使用["+info.sid+"]"+colors["end"]+"    怒气 "+info.changeAnger+"("+info.curAnger+")")
+			this.saveText(info.t/1000+"s "+colors["blue"]+"["+this.heroMap[info.id]+"]使用["+info.sid+"]"+colors["end"])
 			if(info.attack){
 				for(var i = 0;i < info.attack.length;i++){
 					this.attackInfo(info.attack[i],"  "+colors["red"]+"对["+this.heroMap[info.attack[i]["id"]]+"]\t"+colors["end"]+" 造成 ")
