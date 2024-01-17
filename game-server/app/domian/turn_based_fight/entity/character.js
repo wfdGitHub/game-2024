@@ -899,7 +899,13 @@ model.prototype.before = function() {
 	//随机BUFF判断
 	if(this.begin_round_buffs){
 		var rand = Math.floor(this.fighting.seeded.random("begin_round_buffs") * this.begin_round_buffs.length)
-		buffManager.createBuff(this,this,this.begin_round_buffs[rand])
+		var buffInfo = this.begin_round_buffs[rand]
+		var buffTargets = this.fighting.locator.getBuffTargets(this,buffInfo.buff_tg)
+		for(var k = 0;k < buffTargets.length;k++){
+			if(this.fighting.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+				buffManager.createBuff(this,buffTargets[k],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+			}
+		}
 	}
 }
 //行动结束后刷新
