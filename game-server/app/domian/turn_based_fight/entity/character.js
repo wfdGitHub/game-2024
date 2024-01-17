@@ -1484,8 +1484,11 @@ model.prototype.onDie = function(callbacks) {
 		callbacks = []
 	}
 	if(this.isPassive("died_buff")){
-		var buff = {"buffId":"delay_death","buff_tg":"team_self","buffArg":1,"duration":2,"buffRate":1}
-		buffManager.createBuff(this,this,buff)
+		callbacks.push(() => {
+			var buff = {"buffId":"delay_death","buff_tg":"team_self","buffArg":1,"duration":2,"buffRate":1}
+			buffManager.createBuff(this,this,buff)
+		})
+		return
 	}
 	if(this.buffs["delay_death"])
 		return
@@ -1502,6 +1505,7 @@ model.prototype.onDie = function(callbacks) {
 	if(callFlag){
 		for(var i = 0;i < callbacks.length;i++)
 			callbacks[i]()
+		callbacks = []
 	}
 }
 //队友死亡
