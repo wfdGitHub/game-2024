@@ -1484,13 +1484,8 @@ model.prototype.onDie = function(callbacks) {
 		callbacks = []
 	}
 	if(this.isPassive("died_buff")){
-		var buff = JSON.parse(this.getPassiveArg("died_buff"))
-		var targets = this.fighting.locator.getTargets(this,buff.buff_tg)
-		if(targets.length){
-			for(var i = 0;i < targets.length;i++){
-				buffManager.createBuff(this,targets[i],buff)
-			}
-		}
+		var buff = {"buffId":"delay_death","buff_tg":"team_self","buffArg":1,"duration":2,"buffRate":1}
+		buffManager.createBuff(this,this,buff)
 	}
 	if(this.buffs["delay_death"])
 		return
