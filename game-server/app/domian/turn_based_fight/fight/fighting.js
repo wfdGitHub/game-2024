@@ -123,6 +123,7 @@ model.prototype.heroBegin = function(hero,belong,index) {
 	hero.begin()
 	this.allHero.push(hero)
 	this[belong+"Team"][index] = hero
+	buffManager.addListener(hero)
 	return hero
 }
 //战斗开始
@@ -566,5 +567,8 @@ model.prototype.arrayRemove = function(array,val) {
     if (index > -1) {
         array.splice(index, 1);
     }
+}
+model.prototype.getRival = function(belong) {
+	return belong == "atk" ? "def" : "atk"
 }
 module.exports = model

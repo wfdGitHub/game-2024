@@ -13,7 +13,6 @@ buffFactory.init = function(seeded,fighting) {
 	this.defListenList = {}
 	this.seeded = seeded
 	this.fighting = fighting
-	this.setListen(fighting.atkTeam,fighting.defTeam)
 }
 //创建BUFF
 buffFactory.createBuff = function(releaser,character,otps) {
@@ -106,39 +105,19 @@ buffFactory.createBuff = function(releaser,character,otps) {
 	}
 }
 //设置BUFF监听
-buffFactory.setListen = function(atkTeam,defTeam) {
-	this.atkListenList = {}
-	this.defListenList = {}
-	for(var i in atkTeam){
-		if(atkTeam[i] && atkTeam[i]["listen_addBuff"]){
-			if(atkTeam[i]["listen_enemyBuff"]){
-				var buffId = atkTeam[i]["listen_enemyBuff"]
-				if(!this.atkListenList[buffId])
-					this.atkListenList[buffId] = []
-				this.atkListenList[buffId].push(atkTeam[i])
-			}
-			if(atkTeam[i]["listen_teamBuff"]){
-				var buffId = atkTeam[i]["listen_teamBuff"]
-				if(!this.defListenList[buffId])
-					this.defListenList[buffId] = []
-				this.defListenList[buffId].push(atkTeam[i])
-			}
+buffFactory.addListener = function(character) {
+	var belong = character.belong
+	var rival = this.fighting.getRival(belong)
+	if(character.listen_addBuff){
+		if(character.listen_enemyBuff){
+			if(!this[belong+"ListenList"][character.listen_enemyBuff])
+				this[belong+"ListenList"][character.listen_enemyBuff] = []
+			this[belong+"ListenList"][character.listen_enemyBuff].push(character)
 		}
-	}
-	for(var i in defTeam){
-		if(defTeam[i] && defTeam[i]["listen_addBuff"]){
-			if(defTeam[i]["listen_enemyBuff"]){
-				var buffId = defTeam[i]["listen_enemyBuff"]
-				if(!this.defListenList[buffId])
-					this.defListenList[buffId] = []
-				this.defListenList[buffId].push(defTeam[i])
-			}
-			if(defTeam[i]["listen_teamBuff"]){
-				var buffId = defTeam[i]["listen_teamBuff"]
-				if(!this.atkListenList[buffId])
-					this.atkListenList[buffId] = []
-				this.atkListenList[buffId].push(defTeam[i])
-			}
+		if(character.listen_teamBuff){
+			if(!this[rival+"ListenList"][character.listen_teamBuff])
+				this[rival+"ListenList"][character.listen_teamBuff] = []
+			this[rival+"ListenList"][character.listen_teamBuff].push(character)
 		}
 	}
 }
