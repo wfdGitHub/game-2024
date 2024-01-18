@@ -162,6 +162,7 @@ module.exports = function() {
 					info.awardList = info.awardList.concat(self.addGuildScore(uid,guildId,guild_fb[fbId]["ctb"],"宝藏BOSS"))
 					info.awardList = info.awardList.concat(self.addItemStr(uid,"201:"+guild_fb[fbId]["coin"],1,"宝藏BOSS"))
 				}
+				self.taskUpdate(uid,"guild_sign",1)
 				cb(true,info)
 			}
 		],function(err) {

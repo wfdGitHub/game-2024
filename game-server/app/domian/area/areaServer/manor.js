@@ -485,6 +485,7 @@ module.exports = function() {
 					self.incrbyObj(uid,main_name,"boss_count",1)
 					bossCount++
 					var awardList = self.addItemStr(uid,manor_main[buildLv]["boss_award"],rate,"家园BOSS")
+					self.taskUpdate(uid,"manorEnemy",1)
 					cb(true,{winFlag:winFlag,awardList:awardList,bossCount:bossCount,cd:cd,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
 				}else{
 					cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
@@ -563,6 +564,7 @@ module.exports = function() {
 					}
 					self.setObj(uid,main_name,"mon_lv_"+monId,lv)
 					self.setObj(uid,main_name,"mon_time_"+monId,cd)
+					self.taskUpdate(uid,"manorEnemy",1)
 					cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,awardList:awardList,cd:cd,lv:lv,action:action})
 				}else{
 					cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})

@@ -760,6 +760,7 @@ module.exports = function() {
 					self.setObj(uid,main_name,"sign",1)
 					var awardList = self.addGuildScore(uid,guildId,guild_sign[sign]["score"],"签到")
 					self.addGuildEXP(guildId,guild_sign[sign]["exp"])
+					self.taskUpdate(uid,"guild_sign",1)
 					cb(true,awardList)
 				}else{
 					cb(false,err)
