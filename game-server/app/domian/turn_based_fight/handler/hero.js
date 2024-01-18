@@ -159,7 +159,7 @@ var model = function(fightContorl) {
 			skillNum = heros[id]["passive_num"]
 		else
 			skillNum = Math.floor(hero_quality[qa]["skillRate"] * (Math.random() * 0.5 + 0.6) * heros[id]["passive_num"])
-		skillNum = Math.min(2,skillNum)
+		skillNum = Math.max(2,skillNum)
 		for(var i = 1;i <= 6;i++)
 			c_info["MR"+i] = Number((hero_quality[qa]["mainRate"] * (Math.random() * (0.4 + extra) + 0.6)).toFixed(2))
 		if(skillNum == heros[id]["passive_num"])
