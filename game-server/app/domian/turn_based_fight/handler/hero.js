@@ -504,7 +504,7 @@ var model = function(fightContorl) {
 		}
 		//主属性增益
 		info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
-		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore)
+		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore + (Math.pow(info.qa,1.4) * 100))
 		return new character(info)
 	}
 	//获取角色主数据
