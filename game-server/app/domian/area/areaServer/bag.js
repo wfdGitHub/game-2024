@@ -270,7 +270,8 @@ module.exports = function() {
 			value = Math.round(value * itemCfg["202"]["arg"])
 			itemId = 200
 		}
-		if(itemCfg[itemId].auto){
+		console.log("addItem",itemId,value)
+		if(value > 0 && itemCfg[itemId].auto){
 			return self.useItemCB(uid,otps,cb)
 		}else{
 			switch(itemCfg[itemId].type){
