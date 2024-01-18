@@ -355,6 +355,10 @@ module.exports = function() {
 	}
 	//获得指定道具
 	this.addItemByType = function(uid,info) {
+		if(!info){
+			console.log("addItemByType",info)
+			return []
+		}
 		switch(info.type){
 			case "hufu":
 				//护符

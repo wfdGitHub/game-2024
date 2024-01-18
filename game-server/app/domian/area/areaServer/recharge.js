@@ -127,12 +127,13 @@ module.exports = function() {
 		}
 	}
 	this.create_recharge = function(uid,unionid,pay_id,extras_params,cb) {
+		var userInfo = this.players[uid] || {}
 		var info = {
 			pay_id : pay_id,
 			extras_params : extras_params,
-			userName : this.players[uid]["name"],
+			userName : userInfo["name"],
 			unionid : unionid,
-			accId : this.players[uid]["accId"],
+			accId : userInfo["accId"],
 			uid : uid,
 			areaId : self.areaId
 		}
