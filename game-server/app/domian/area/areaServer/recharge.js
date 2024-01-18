@@ -90,7 +90,7 @@ module.exports = function() {
 							self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["rmb"] * rate)
 							self.finish_recharge(uid,pay_id,info,cb)
 							//触发首充
-							self.real_recharge(uid,Math.floor(pay_cfg[pay_id]["rmb"] * 100 * rate))
+							// self.real_recharge(uid,Math.floor(pay_cfg[pay_id]["rmb"] * 100 * rate))
 						}else{
 							cb(false,err)
 						}
