@@ -494,7 +494,7 @@ var model = function(fightContorl) {
 			lvInfo.maxHP += Math.floor(lv_cfg[info.lv].maxHP * (1 + info["M_HP"] * 0.02) * growth)
 			if(info.damageType == "phy")
 				lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * (1 + info["M_ATK"] * 0.01) * growth)
-			else
+			else if(info.damageType == "mag")
 				lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * (1 + info["M_STK"] * 0.01) * growth)
 			lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * (1 + info["M_DEF"] * 0.02) * growth)
 			lvInfo.magDef += Math.floor(lv_cfg[info.lv].magDef * (1 + info["M_SEF"] * 0.02) * growth)
