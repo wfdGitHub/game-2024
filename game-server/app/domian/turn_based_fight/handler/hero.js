@@ -300,7 +300,7 @@ var model = function(fightContorl) {
 		teamCfg = teamCfg || {}
 		info = Object.assign({},info)
 		info.heroAtts = heroAtts
-		info.exalt = info.exalt || 1
+		info.exalt = info.exalt || 0
 		info.evo = info.evo || 1
 		info.lv = info.lv || 1
 		var id = info.id
@@ -518,7 +518,7 @@ var model = function(fightContorl) {
 		if(!info || !heros[info.id])
 			return false
 		info = Object.assign({},info)
-		info.exalt = info.exalt || 1
+		info.exalt = info.exalt || 0
 		info.evo = info.evo || 1
 		info.lv = info.lv || 1
 		var id = info.id
