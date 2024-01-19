@@ -490,15 +490,17 @@ var model = function(fightContorl) {
 		}
 		//等级计算
 		if(info.lv && lv_cfg[info.lv]){
+			for(var key in lvInfo)
+				lvInfo[key] += lv_cfg[info.lv][key]
 			var growth = aptitudes[info.aptitude].growth
-			lvInfo.maxHP += Math.floor(lv_cfg[info.lv].maxHP * (1 + info["M_HP"] * 0.02) * growth)
+			lvInfo.maxHP = Math.floor(lvInfo.maxHP * (1 + info["M_HP"] * 0.02) * growth)
 			if(info.damageType == "phy")
-				lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * (1 + info["M_ATK"] * 0.01) * growth)
+				lvInfo.atk = Math.floor(lvInfo.atk * (1 + info["M_ATK"] * 0.01) * growth)
 			else if(info.damageType == "mag")
-				lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * (1 + info["M_STK"] * 0.01) * growth)
-			lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * (1 + info["M_DEF"] * 0.02) * growth)
-			lvInfo.magDef += Math.floor(lv_cfg[info.lv].magDef * (1 + info["M_SEF"] * 0.02) * growth)
-			lvInfo.speed = lv_cfg[info.lv].speed * (1 + info["M_SPE"] * 0.01)
+				lvInfo.atk = Math.floor(lvInfo.atk * (1 + info["M_STK"] * 0.01) * growth)
+			lvInfo.phyDef = Math.floor(lvInfo.phyDef * (1 + info["M_DEF"] * 0.02) * growth)
+			lvInfo.magDef = Math.floor(lvInfo.magDef * (1 + info["M_SEF"] * 0.02) * growth)
+			lvInfo.speed = 100 + lv_cfg[info.lv].speed * (1 + info["M_SPE"] * 0.01)
 		}
 		if(evolve_lv[info.evo]){
 			lvInfo.maxHP += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
