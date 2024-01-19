@@ -83,7 +83,7 @@ module.exports = function() {
 			info[i] = 0
 		for(var i = 1;i <= 6;i++){
 			info["mon_time_"+i] = 0
-			info["mon_lv_"+i] = 1
+			info["mon_lv_"+i] = Math.ceil(Math.random() * 6)
 		}
 		info.main = 1
 		self.setHMObj(uid,main_name,info)
