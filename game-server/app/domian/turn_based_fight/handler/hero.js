@@ -341,29 +341,6 @@ var model = function(fightContorl) {
 		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
 		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
 		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
-		var lvInfo = {
-		    "maxHP":aptitudes[info.aptitude].maxHP,
-		    "atk": aptitudes[info.aptitude].atk,
-		    "phyDef": aptitudes[info.aptitude].phyDef,
-		    "magDef": aptitudes[info.aptitude].magDef
-		}
-		//等级计算
-		if(info.lv && lv_cfg[info.lv]){
-			var growth = aptitudes[info.aptitude].growth
-			lvInfo.maxHP += Math.floor(lv_cfg[info.lv].maxHP * growth)
-			lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * growth)
-			lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * growth)
-			lvInfo.magDef += Math.floor(lv_cfg[info.lv].magDef * growth)
-			lvInfo.speed += lv_cfg[info.lv].speed
-		}
-		if(evolve_lv[info.evo]){
-			lvInfo.maxHP += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
-			lvInfo.atk += Math.floor(lvInfo.atk * evolve_lv[info.evo]["att_add"])
-			lvInfo.phyDef += Math.floor(lvInfo.phyDef * evolve_lv[info.evo]["att_add"])
-			lvInfo.magDef += Math.floor(lvInfo.magDef * evolve_lv[info.evo]["att_add"])
-			lvInfo.speed += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
-		}
-		this.mergeData(info,lvInfo)
 		//装备计算
 		var suitMaps = {}
 		for(var i = 1;i <= 6;i++){
@@ -488,12 +465,15 @@ var model = function(fightContorl) {
 				info.defaultSkill = Object.assign({skillId : info.defaultSkill},skills[info.defaultSkill])
 			}
 		}
+		info.damageType = "phy"
 		if(info.angerSkill){
 			if(!skills[info.angerSkill]){
 				console.error("技能不存在",info.id,info.angerSkill)
 				info.angerSkill = false
 			}else{
 				info.angerSkill = Object.assign({skillId : info.angerSkill},skills[info.angerSkill])
+				if(info.angerSkill.damageType == "mag")
+					info.damageType = "mag"
 			}
 		}
 		if(info.beginSkill && skills[info.beginSkill])
@@ -502,8 +482,32 @@ var model = function(fightContorl) {
 			info.diedSkill = Object.assign({skillId : info.diedSkill},skills[info.diedSkill])
 			info.diedSkill.diedSkill = true
 		}
+		var lvInfo = {
+		    "maxHP":aptitudes[info.aptitude].maxHP,
+		    "atk": aptitudes[info.aptitude].atk,
+		    "phyDef": aptitudes[info.aptitude].phyDef,
+		    "magDef": aptitudes[info.aptitude].magDef
+		}
+		//等级计算
+		if(info.lv && lv_cfg[info.lv]){
+			var growth = aptitudes[info.aptitude].growth
+			lvInfo.maxHP += Math.floor(lv_cfg[info.lv].maxHP * (1 + info["M_HP"] * 0.02) * growth)
+			if(info.damageType == "phy")
+				lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * (1 + info["M_ATK"] * 0.01) * growth)
+			else
+				lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * (1 + info["M_STK"] * 0.01) * growth)
+			lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * (1 + info["M_DEF"] * 0.02) * growth)
+			lvInfo.magDef += Math.floor(lv_cfg[info.lv].magDef * (1 + info["M_SEF"] * 0.02) * growth)
+			lvInfo.speed = lv_cfg[info.lv].speed * (1 + info["M_SPE"] * 0.01)
+		}
+		if(evolve_lv[info.evo]){
+			lvInfo.maxHP += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
+			lvInfo.atk += Math.floor(lvInfo.atk * evolve_lv[info.evo]["att_add"])
+			lvInfo.phyDef += Math.floor(lvInfo.phyDef * evolve_lv[info.evo]["att_add"])
+			lvInfo.magDef += Math.floor(lvInfo.magDef * evolve_lv[info.evo]["att_add"])
+		}
+		this.mergeData(info,lvInfo)
 		//主属性增益
-		info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
 		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore + (Math.pow(info.qa,1.4) * 100))
 		return new character(info)
 	}
