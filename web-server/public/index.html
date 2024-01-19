@@ -98,6 +98,18 @@
         console.log("onChat")
         console.log(data)
       })
+      //获取零元购数据
+      this.getFreeTurnData = function() {
+        pomelo.request("area.activityHandler.getFreeTurnData", {}, function(data) {
+            console.log(data);
+        });
+      }
+      //购买零元购
+      this.buyFreeTurn = function(id) {
+        pomelo.request("area.activityHandler.buyFreeTurn", {id:id}, function(data) {
+            console.log(data);
+        });
+      }
       //获取玩家排行榜数据
       var getPlayerSprintRank = function(rankType) {
         pomelo.request("area.activityHandler.getPlayerSprintRank", {rankType:rankType}, function(data) {
