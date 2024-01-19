@@ -465,7 +465,7 @@ var model = function(fightContorl) {
 				info.defaultSkill = Object.assign({skillId : info.defaultSkill},skills[info.defaultSkill])
 			}
 		}
-		info.damageType = "phy"
+		info.damageType = ""
 		if(info.angerSkill){
 			if(!skills[info.angerSkill]){
 				console.error("技能不存在",info.id,info.angerSkill)
