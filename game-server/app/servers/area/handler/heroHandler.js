@@ -60,7 +60,7 @@ heroHandler.prototype.resetHero = function(msg, session, next) {
       next(null,{flag : false,err : "英雄不存在"})
       return
     }
-    if(heroInfo.lv == 1 && heroInfo.ad == 0){
+    if(heroInfo.lv == 1 && heroInfo.ad == 0 && heroInfo.artifact === undefined){
       next(null,{flag : false,err : "当前状态不能重置"})
       return
     }

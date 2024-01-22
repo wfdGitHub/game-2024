@@ -284,14 +284,19 @@ heroDao.prototype.removeHero = function(areaId,uid,hId,cb) {
 heroDao.prototype.heroReset = function(areaId,uid,heroInfo,cb) {
 	var lv = heroInfo.lv
 	var ad = heroInfo.ad
+	var id = heroInfo.id
 	var artifact = heroInfo.artifact
 	var strList = []
 	if(lv_cfg[lv] && lv_cfg[lv].pr)
 		strList.push(lv_cfg[lv].pr)
 	if(hero_ad[ad] && hero_ad[ad].pr)
 		strList.push(hero_ad[ad].pr)
-	if(artifact !== undefined && artifact_level[artifact])
-		strList.push(artifact_level[artifact]["pr"])
+	if(artifact !== undefined && artifact_level[artifact]){
+		var aId = artifact_talent[id]["artifact"]
+		if(artifact_level[artifact]["pr"])
+			strList.push(artifact_level[artifact]["pr"])
+		strList.push(aId+":"+artifact_level[artifact]["all_self"])
+	}
 	if(hero_tr[heroInfo.tr_lv] && hero_tr[heroInfo.tr_lv]["pr"])
 		strList.push(hero_tr[heroInfo.tr_lv]["pr"])
 	for(var i = 1;i <= 4;i++){
