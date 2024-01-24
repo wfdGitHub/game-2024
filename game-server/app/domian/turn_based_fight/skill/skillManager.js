@@ -270,6 +270,9 @@ model.useSkill = function(skill,chase) {
 }
 //伤害技能
 model.useAttackSkill = function(skill,chase) {
+	if(skill.character.died && !skill.character.died_use_skill){
+		return []
+	}
 	var addAmp = 0
 	var allDamage = 0
 	var kill_num = 0
@@ -352,9 +355,6 @@ model.useAttackSkill = function(skill,chase) {
 	var lessAngerList = []
 	var callbacks = []
 	for(var i = 0;i < targets.length;i++){
-		if(skill.character.died && !skill.character.died_use_skill){
-			break
-		}
 		var target = targets[i]
 		var tmpAddAmp = addAmp
 		if(skill.character.skill_amp_or_lessAnger){
@@ -710,6 +710,9 @@ model.useAttackSkill = function(skill,chase) {
 }
 //恢复技能
 model.useHealSkill = function(skill,chase) {
+	if(skill.character.died && !skill.character.died_use_skill){
+		return []
+	}
 	var recordInfo = skill.getInfo()
 	recordInfo.targets = []
 	var targetsNum = this.locator.getTargetsNum(skill.targetType)
@@ -743,9 +746,6 @@ model.useHealSkill = function(skill,chase) {
 	}
 	var callbacks = []
 	for(var i = 0;i < targets.length;i++){
-		if(skill.character.died && !skill.character.died_use_skill){
-			break
-		}
 		var target = targets[i]
 		var value = 0
 		var mul = skill.mul
