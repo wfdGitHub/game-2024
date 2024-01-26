@@ -189,7 +189,13 @@ module.exports = function() {
 		if(dropItem){
 			var dropCount = Math.floor(time / 30)
 			if(dropCount)
-				awardStr += "&"+dropItem+":"+dropCount
+				awardStr = dropItem+":"+dropCount
+		}
+		var weekendAward = self.getWeekendHook()
+		if(weekendAward){
+			var count = Math.floor(time * 0.15)
+			if(count)
+				awardStr = weekendAward+":"+count
 		}
 		return awardStr
 	}

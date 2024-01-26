@@ -54,6 +54,17 @@ util.prototype.getWeek = function(){
     var m_date = monday.getDate();
     return m_year+'-'+m_month+'-'+m_date
 }
+//获取本周周一的时间戳
+util.prototype.getWeekZeroTime = function(){
+    var nowTemp = new Date();//当前时间
+    nowTemp.setHours(0,0,0,0)
+    var oneDayLong = 24*60*60*1000 ;//一天的毫秒数
+    var c_time = nowTemp.getTime() ;//当前时间的毫秒时间
+    var c_day = nowTemp.getDay()||7;//当前时间的星期几
+    var m_time = c_time - (c_day-1)*oneDayLong;//当前周一的毫秒时间
+    var monday = new Date(m_time);//设置周一时间对象
+    return monday.getTime()
+}
 //获取今年第几周
 util.prototype.getWeekNum = function() {
     var nowTemp = new Date();//当前时间

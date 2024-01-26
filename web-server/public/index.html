@@ -123,6 +123,19 @@
             console.log(data);
         })
       }
+
+      //获取周末活动数据
+      var getWeekendData = function(id) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"getWeekendData","id":id},function(data) {
+            console.log(data);
+        })
+      }
+      //领取周末累充奖励
+      var gainWeekendLCAward = function(id) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"gainWeekendLCAward","id":id},function(data) {
+            console.log(data);
+        })
+      }
       //===============探险玩法===============//
       //获取数据
       var getTanxianData = function() {
