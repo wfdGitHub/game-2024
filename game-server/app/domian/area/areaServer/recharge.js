@@ -287,7 +287,7 @@ module.exports = function() {
 			else
 				count = recharge[index].normal_rate
 			var award = "202:"+Math.round(gold*count*rate)
-			self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",award)
+			self.sendTextToMail(uid,"recharge",award)
 			cb(true)
 		})
 	}
