@@ -410,8 +410,8 @@ module.exports = function() {
 		return pcStr
 	}
 	//扣除道具
-	//uid,str,rate,cb
-	//uid,str,rate,reason,cb
+	//self.consumeItems(uid,awardStr,rate,cb)
+	//self.consumeItems(uid,awardStr,rate,reason,cb)
 	this.consumeItems = function() {
 		var uid = arguments[0]
 		var str = arguments[1]

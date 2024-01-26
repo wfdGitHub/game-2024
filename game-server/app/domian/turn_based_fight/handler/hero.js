@@ -61,6 +61,8 @@ var model = function(fightContorl) {
 	this.makeHeroData = function(id,qa) {
 		if(!heros[id])
 			return {}
+		if(heros[id]["type"] !== 0)
+			return this.makeFullHeroData(id)
 		var heroInfo = {}
 		heroInfo.id = id
 		heroInfo.evo = 1

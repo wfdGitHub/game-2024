@@ -105,6 +105,18 @@
         })
       }
       //===============运营活动===============//
+      //获取神兽抽奖数据
+      var getTicketData = function() {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"getTicketData"},function(data) {
+            console.log(data);
+        })
+      }
+      //参与抽奖
+      var joinTicket = function() {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"joinTicket"},function(data) {
+            console.log(data);
+        })
+      }
       //获取周期活动数据
       var getPeriodData = function() {
         pomelo.request("area.areaHandler.commonMethod",{"method":"getPeriodData"},function(data) {

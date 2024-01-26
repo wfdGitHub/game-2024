@@ -287,18 +287,18 @@ module.exports = function() {
 			else
 				count = recharge[index].normal_rate
 			var award = "202:"+Math.round(gold*count*rate)
-			self.sendTextToMail(uid,"recharge",award)
+			self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",award)
 			cb(true)
 		})
 	}
 	//快速充值
 	this.buyFastRecharge = function(uid,rate,pay_id,cb) {
-		self.sendTextToMail(uid,"recharge",self.itemstrChangeRate(pay_cfg[pay_id]["award"],rate))
+		self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",self.itemstrChangeRate(pay_cfg[pay_id]["award"],rate))
 		cb(true)
 	}
 	//新服限购
 	this.buyAreaGift = function(uid,pay_id,cb) {
-		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
+		self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",pay_cfg[pay_id]["award"])
 		self.addAreaGiftNum(pay_cfg[pay_id]["arg"])
 		cb(true)
 	}
@@ -339,7 +339,7 @@ module.exports = function() {
 				}
 				self.sendToUser(uid,notify)
 			}
-			self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
+			self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",pay_cfg[pay_id]["award"])
 			cb(true)
 		})
 	}
@@ -356,7 +356,7 @@ module.exports = function() {
 	// 		self.incrbyObj(uid,main_name,"loop_"+loopId,1)
 	// 		var award = "202:"+gift_loop[loopId].gold
 	// 		award += "&"+gift_loop[loopId].award
-	// 		self.sendTextToMail(uid,"recharge",award)
+	// 		self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",award)
 	// 		cb(true)
 	// 	})
 	// }
@@ -441,7 +441,7 @@ module.exports = function() {
 				self.taskUpdate(uid,"buy_zztq",1)
 				self.setObj(uid,main_name,"highCard",1)
 				self.chageLordData(uid,"highCard",1)
-				self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
+				self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",pay_cfg[pay_id]["award"])
 				cb(true)
 			}
 		})
@@ -457,7 +457,7 @@ module.exports = function() {
 			self.setObj(uid,"war_horn","high",1)
 			self.taskUpdate(uid,"buy_zl",1)
 			self.incrbyObj(uid,"war_horn","exp",war_horn[curMonth]["exp"],function(exp) {
-				self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
+				self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",pay_cfg[pay_id]["award"])
 				cb(true,{exp:exp})
 			})
 		})
@@ -470,7 +470,7 @@ module.exports = function() {
 		}
 		self.getObj(uid,"limit_gift",pay_id,function(data) {
 			if(data){
-				self.sendTextToMail(uid,"recharge",self.itemstrChangeRate(gift_list[pay_id]["award"],rate))
+				self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",self.itemstrChangeRate(gift_list[pay_id]["award"],rate))
 				self.delObj(uid,"limit_gift",pay_id)
 				cb(true)
 			}else{
@@ -493,7 +493,7 @@ module.exports = function() {
 		// 		return
 		// 	}
 		// 	self.incrbyObj(uid,"skin",id,1)
-		// 	self.sendTextToMail(uid,"recharge",gift_skin[id].award)
+		// 	self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",gift_skin[id].award)
 		// 	cb(true)
 		// })
 	}
@@ -510,7 +510,7 @@ module.exports = function() {
 		}
 		self.taskUpdate(uid,"buy_kszz",1)
 		self.chageLordData(uid,"quick_pri",quick_pri)
-		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
+		self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",pay_cfg[pay_id]["award"])
 		cb(true,{quick_pri:quick_pri})
 	}
 	//购买三界特权
@@ -525,7 +525,7 @@ module.exports = function() {
 			tour_pri += day31Time
 		}
 		self.chageLordData(uid,"tour_pri",tour_pri)
-		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
+		self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",pay_cfg[pay_id]["award"])
 		cb(true,{tour_pri:tour_pri})
 	}
 	//购买宝石矿场特权
@@ -540,7 +540,7 @@ module.exports = function() {
 			stone_pri += day31Time
 		}
 		self.chageLordData(uid,"stone_pri",stone_pri)
-		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
+		self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",pay_cfg[pay_id]["award"])
 		cb(true,{stone_pri:stone_pri})
 	}
 	//购买通天塔特权
@@ -580,7 +580,7 @@ module.exports = function() {
 	this.buyLongAward = function(uid,pay_id,cb) {
 		var time = util.getZeroTime() + pay_cfg[pay_id]["day"] * oneDayTime
 		self.setObj(uid,main_name,"pay_"+pay_id,time)
-		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
+		self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",pay_cfg[pay_id]["award"])
 		cb(true,time)
 	}
 	//领取周卡奖励
