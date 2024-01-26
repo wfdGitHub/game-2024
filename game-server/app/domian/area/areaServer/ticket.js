@@ -14,7 +14,7 @@ module.exports = function() {
 		self.getAreaObj(main_name,"info",function(data) {
 			if(data){
 				info = JSON.parse(data)
-			}else{
+			}else if(self.areaDay > 1){
 				//开启活动
 				info["state"] = 2
 				info.endTime = util.getZeroTime() + oneDayTime * 3 - 10000
