@@ -1,9 +1,6 @@
 //背包物品系统
 var itemCfg = require("../../../../config/gameCfg/item.json")
 var shopCfg = require("../../../../config/gameCfg/shop.json")
-var chest_awards = require("../../../../config/gameCfg/chest_awards.json")
-var chest_cfg = require("../../../../config/gameCfg/chest_cfg.json")
-var equip_base = require("../../../../config/gameCfg/equip_base.json")
 var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var heros = require("../../../../config/gameCfg/heros.json")
 var checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")

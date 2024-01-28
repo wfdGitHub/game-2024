@@ -6,7 +6,6 @@ const power_lv = require("../../../../config/gameCfg/power_lv.json")
 const power_ad = require("../../../../config/gameCfg/power_ad.json")
 const power_star = require("../../../../config/gameCfg/power_star.json")
 const power_aptitude = require("../../../../config/gameCfg/power_aptitude.json")
-const power_slot = require("../../../../config/gameCfg/power_slot.json")
 const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
 const battle_team = require("../../../../config/gameCfg/battle_team.json")
 const battle_cfg = require("../../../../config/gameCfg/battle_cfg.json")
@@ -315,20 +314,9 @@ module.exports = function() {
 		}
 		var lv = self.getLordLv(uid)
 		for(var i = 0;i < list.length;i++){
-			if(list[i]){
-				if(!power_base[list[i]]){
-					cb(false,"power not find"+list[i])
-					return
-				}
-				var index = i+1
-				if(!power_slot[index]){
-					cb(false,"插槽不存在"+index)
-					return
-				}
-				if(lv < power_slot[index]["lv"]){
-					cb(false,"插槽未开启"+index)
-					return
-				}
+			if(list[i] && !power_base[list[i]]){
+				cb(false,"power not find"+list[i])
+				return
 			}
 		}
 		self.setObj(uid,"power","fightMap",JSON.stringify(list),function() {

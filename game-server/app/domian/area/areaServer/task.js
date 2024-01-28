@@ -1,6 +1,5 @@
 //任务系统
 var task_cfg = require("../../../../config/gameCfg/task_cfg.json")
-var main_task = require("../../../../config/gameCfg/main_task.json")
 var task_type = require("../../../../config/gameCfg/task_type.json")
 var liveness_cfg = require("../../../../config/gameCfg/liveness.json")
 var war_horn = require("../../../../config/gameCfg/war_horn.json")
@@ -48,12 +47,6 @@ for(var i in week_target){
 			console.error("七日目标任务不存在",task_list[j])
 		}
 	}
-}
-for(var i in main_task){
-	main_task[i].refresh = "main"
-	if(task_cfg[i])
-		console.error("taskId 重复",i)
-	task_cfg[i] = main_task[i]
 }
 module.exports = function() {
 	var self = this
