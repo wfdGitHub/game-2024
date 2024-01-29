@@ -25,7 +25,7 @@ module.exports = function() {
 		})
 	}
 	//通过文本模板发送邮件
-	this.sendTitleTextToMail = function(uid,key,title,atts,arg,cb) {
+	this.sendTitleTextToMail = function(uid,title,key,atts,arg,cb) {
 		var text = mailText[key]["text"]
 		if(arg)
 			text = text.replace("xxx",arg)
