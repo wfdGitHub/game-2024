@@ -11,7 +11,6 @@ const hufu_quality = require("../game-server/config/gameCfg/hufu_quality.json")
 const hufu_skill = require("../game-server/config/gameCfg/hufu_skill.json")
 const heros = require("../game-server/config/gameCfg/heros.json")
 const lv_cfg = require("../game-server/config/gameCfg/lv_cfg.json")
-const star_base = require("../game-server/config/gameCfg/star_base.json")
 const stringRandom = require('string-random');
 const dataClean = require("./model/dataClean.js")
 const sqlClean = require("./model/sqlClean.js")
@@ -1542,10 +1541,6 @@ var model = function() {
 		}
 		if(!lv_cfg[lv]){
 			cb(false,"英雄等级错误 "+lv)
-			return
-		}
-		if(!star_base[star]){
-			cb(false,"英雄星级错误 "+star)
 			return
 		}
 		var heroInfo = {id : id,ad : ad,lv : lv,star : star,aptitude : aptitude,name : name}

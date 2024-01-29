@@ -8,8 +8,8 @@ const fabao_att = fightCfg.getCfg("fabao_att")
 const fabao_spe = fightCfg.getCfg("fabao_spe")
 var fabaoList = []
 for(var i in fabao_type){
+	fabao_type[i].type = i
 	if(!fabao_type[i].limit){
-		fabao_type[i].type = i
 		fabaoList.push(fabao_type[i])
 	}
 }
