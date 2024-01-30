@@ -8,7 +8,7 @@ const hero_tr = require("../../../config/gameCfg/hero_tr.json")
 const login_mail_title = default_cfg["login_mail_title"]["value"]
 const login_mail_text = default_cfg["login_mail_text"]["value"]
 const login_mail_atts = default_cfg["login_mail_atts"]["value"]
-const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","ttttower","lord","daily_fb","task","limit_gift","area_challenge","area_boss","sprint_rank","share","rebate","festival","guild","guild_fb","guild_treasure","limited_time","hufu","show","friend","beherrscher","exercise","endless","extremity","zhanfa","hero_rank","hero","guild_city_boss","manor","lotto","worldLevel","area_gift","equip","worldBoss","invade","gem","fabao","cangbaotu","aceLotto","medal","DIY","tanxian"]
+const areaServers = ["recharge","activity","weekTarget","tour","zhulu","bazzar","combatEffectiveness","arena","bag","dao","checkpoints","mail","ttttower","lord","daily_fb","task","limit_gift","area_challenge","area_boss","sprint_rank","share","rebate","festival","guild","guild_fb","guild_treasure","limited_time","hufu","show","friend","beherrscher","exercise","endless","extremity","zhanfa","hero_rank","hero","guild_city_boss","manor","lotto","worldLevel","area_gift","equip","worldBoss","invade","gem","fabao","cangbaotu","aceLotto","medal","DIY","tanxian","period"]
 const oneDayTime = 86400000
 var util = require("../../../util/util.js")
 var timers = {}
@@ -85,7 +85,7 @@ area.prototype.update = function() {
 }
 //每日定时器
 area.prototype.dayUpdate = function(curDayStr) {
-	// console.log("服务器每日刷新")
+	console.log("服务器每日刷新")
 	var self = this
 	this.dayStr = curDayStr
 	this.weekDay = (new Date).getDay()
@@ -110,6 +110,7 @@ area.prototype.dayUpdate = function(curDayStr) {
 	this.worldLevelDayUpdate()
 	this.weekTaskDayUpdate()
 	this.rebateInit()
+	this.updatePeriod()
 	this.getAreaObj("areaInfo","dayStr",function(data) {
 		if(data !== self.dayStr){
 			self.setAreaObj("areaInfo","dayStr",self.dayStr)

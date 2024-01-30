@@ -104,6 +104,25 @@
             console.log(data);
         })
       }
+      //===============运营活动===============//
+      //获取周期活动数据
+      var getPeriodData = function() {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"getPeriodData"},function(data) {
+            console.log(data);
+        })
+      }
+      //领取单笔奖励
+      var gainPeriodDBAward = function(id) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"gainPeriodDBAward","id":id},function(data) {
+            console.log(data);
+        })
+      }
+      //领取累充奖励
+      var gainPeriodLCAward = function(id) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"gainPeriodLCAward","id":id},function(data) {
+            console.log(data);
+        })
+      }
       //===============探险玩法===============//
       //获取数据
       var getTanxianData = function() {
