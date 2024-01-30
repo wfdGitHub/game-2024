@@ -115,7 +115,12 @@ var model = function() {
 		self.setObj(uid,main_name,id,fstr)
 		if(cb)
 			cb(true,fstr)
-		self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[info.type]["name"],id:info.id,info:info,reason:"获得法宝"})
+		if(info.qa >= 5){
+			var lordName = self.getLordName(uid)
+			if(lordName)
+				self.addNotice("fabao",lordName,fabao_type[info.type]["name"])
+			self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[info.type]["name"],id:info.id,info:info,reason:"获得法宝"})
+		}
 		return info
 	}
 	//获得法宝
@@ -129,7 +134,12 @@ var model = function() {
 		var id = self.getLordLastid(uid)
 		var info = self.fightContorl.makeFabao(qa,type)
 		info.id = id
-		self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[info.type]["name"],id:info.id,info:info,reason:"获得法宝"})
+		if(info.qa >= 5){
+			var lordName = self.getLordName(uid)
+			if(lordName)
+				self.addNotice("fabao",lordName,fabao_type[info.type]["name"])
+			self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[info.type]["name"],id:info.id,info:info,reason:"获得法宝"})
+		}
 		info = JSON.stringify(info)
 		self.setObj(uid,main_name,id,info)
 		return info
@@ -212,11 +222,16 @@ var model = function() {
 				cb(false,"洗练属性不存在")
 				return
 			}
+			if(fInfo.qa < 5 && fInfo["wash"+select].qa >= 5){
+				var lordName = self.getLordName(uid)
+				if(lordName)
+					self.addNotice("fabao",lordName,fabao_type[info.type]["name"])
+				self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[fInfo.type]["name"],id:fInfo.id,info:fInfo,reason:"洗练法宝"})
+			}
 			for(var i in fInfo["wash"+select])
 				fInfo[i] = fInfo["wash"+select][i]
 			delete fInfo.wash1
 			delete fInfo.wash2
-			self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[fInfo.type]["name"],id:fInfo.id,info:fInfo,reason:"洗练法宝"})
 			fInfo = JSON.stringify(fInfo)
 			self.setObj(uid,main_name,fId,fInfo)
 			cb(true,fInfo)
@@ -371,11 +386,16 @@ var model = function() {
 				cb(false,"洗练属性不存在")
 				return
 			}
+			if(fInfo.qa < 5 && fInfo["wash"+select].qa >= 5){
+				var lordName = self.getLordName(uid)
+				if(lordName)
+					self.addNotice("fabao",lordName,fabao_type[info.type]["name"])
+				self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[fInfo.type]["name"],id:fInfo.id,info:fInfo,reason:"洗练法宝"})
+			}
 			for(var i in fInfo["wash"+select])
 				fInfo[i] = fInfo["wash"+select][i]
 			delete fInfo.wash1
 			delete fInfo.wash2
-			self.mysqlDao.addFabaoLog({uid:uid,name:fabao_type[fInfo.type]["name"],id:fInfo.id,info:fInfo,reason:"洗练法宝"})
 			heroInfo["fabao"+index] = JSON.stringify(fInfo)
 			self.heroDao.setHeroInfo(self.areaId,uid,hId,"fabao"+index,heroInfo["fabao"+index])
 			cb(true,heroInfo)

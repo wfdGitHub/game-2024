@@ -312,6 +312,8 @@ module.exports = function() {
 					var tmpRank = data.rank
 					data.rank = targetRank
 					targetRank = tmpRank
+					if(data.rank <= 10)
+						self.addNotice("rank",atkUser.name,targetInfo.name,data.rank)
 				}else{
 					delete local.locks[uid]
 					delete local.locks[targetUid]

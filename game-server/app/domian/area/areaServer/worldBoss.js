@@ -269,6 +269,7 @@ module.exports = function() {
 									next(null,info)
 								})
 							})
+							self.addNotice("world_boss",info.atk.name,info.def.name)
 					    }else{
 							next(null,info)	
 					    }

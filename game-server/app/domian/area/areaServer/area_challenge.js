@@ -114,6 +114,9 @@ module.exports = function() {
 			self.setAreaObj(main_name,self.maxIndex,JSON.stringify(userInfos))
 			//奖励
 			self.sendTextToMail(uid,"area_challenge",area_challenge[self.maxIndex]["pass_award"],area_challenge[self.maxIndex]["name"])
+			var lordName = self.getLordName(uid)
+			if(lordName)
+				self.addNotice("area_challenge",area_challenge[self.maxIndex]["name"])
 		}
 	}
 	//领取单骑首通奖励

@@ -31,6 +31,11 @@ module.exports = function() {
 	this.lordUnload = function(uid) {
 		delete self.players[uid]
 	}
+	//获取主公名称
+	this.getLordName = function(uid) {
+		if(self.players[uid])
+			return self.players[uid]["name"]
+	}
 	//改变数据
 	this.chageLordData = function(uid,key,value) {
 		if(self.players[uid])
