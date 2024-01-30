@@ -49,9 +49,11 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 		return fightRecord.isWin()
 	}catch(err){
 		var txt = JSON.stringify(fightVerifyInfo)
+		console.log(err)
 		console.log(txt)
 		var redisDao = bearcat.getBean("redisDao")
-		redisDao.db.rpush("fight_faild",txt)
+		if(redisDao && redisDao.db)
+			redisDao.db.rpush("fight_faild",txt)
 		return false
 	}
 }
