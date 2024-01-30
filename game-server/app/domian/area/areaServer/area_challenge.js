@@ -174,9 +174,13 @@ module.exports = function() {
 				})
 			},
 			function(next) {
+				console.log("atkTeams",atkTeams)
 				for(var i = 0;i < 3;i++){
 					var atkTeam = atkTeams[i]
 					var defTeam = self.fightContorl.getNPCTeamByType("area_trial",area_trial[trialId]["team"+(i+1)],area_trial[trialId]["lv"])
+					console.log("atkTeam",atkTeam)
+					console.log("defTeam",defTeam)
+					console.log("seededNum",seededNums[i])
 					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNums[i]})
 					if(!winFlag){
 						next("第"+i+"场战斗失败")
