@@ -87,7 +87,7 @@ module.exports = function() {
 							cb(false,"可用额度不足 "+value+"/"+dp_limit)
 							return
 						}
-						self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付",function(flag,err) {
+						self.consumeItems(uid,"110:"+pay_cfg[pay_id]["dianpiao"],1,"点票支付"+pay_id,function(flag,err) {
 							if(flag){
 								self.incrbyPlayerData(uid,"diaopiao_use",pay_cfg[pay_id]["dianpiao"])
 								self.finish_recharge(uid,pay_id,cb)
