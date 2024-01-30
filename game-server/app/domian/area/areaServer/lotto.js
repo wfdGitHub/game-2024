@@ -46,31 +46,18 @@ module.exports = function() {
     }
     //转盘元宝抽奖
     this.lottoByGold = function(uid,type,count,cb) {
-        if(!lotto_cfg[type] || !lotto_cfg[type]["count"]){
+        if(!lotto_cfg[type]){
             cb(false,"type not find "+type)
             return
         }
-        if(!lotto_cfg[type]["gold_"+count]){
-        	cb(false,"该次数不能抽奖")
-        	return
-        }
-        self.getObj(uid,main_name,type+"_count",function(data) {
-        	data = Number(data) || 0
-        	var gmLv = self.getLordAtt(uid,"gmLv")
-        	if(data && (data + count) > (lotto_cfg[type]["count"] + GM_CFG[gmLv]["lotto"])){
-        		cb(false,"抽奖次数不足")
-        		return
-        	}
-			self.consumeItems(uid,lotto_cfg[type]["gold_"+count],1,"转盘"+type,function(flag,err) {
-				if(!flag){
-					cb(false,err)
-				}else{
-		        	self.incrbyObj(uid,main_name,type+"_count",count)
-		        	local.onLotto(uid,type,count,cb)
-				}
-			})
-
-        })
+		self.consumeItems(uid,lotto_cfg[type]["gold_"+count],1,"转盘"+type,function(flag,err) {
+			if(!flag){
+				cb(false,err)
+			}else{
+	        	self.incrbyObj(uid,main_name,type+"_count",count)
+	        	local.onLotto(uid,type,count,cb)
+			}
+		})
     }
     //转盘道具抽奖
     this.lottoByItem = function(uid,type,count,cb) {
