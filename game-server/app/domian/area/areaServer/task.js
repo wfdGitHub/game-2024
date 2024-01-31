@@ -73,7 +73,6 @@ module.exports = function() {
 			this.gainTask(uid,mewtwo_task[id]["task2"],0)
 			this.gainTask(uid,mewtwo_task[id]["task3"],0)
 		}
-		this.gainTask(uid,900001,0)
 	}
 	//领取任务
 	this.gainTask = function(uid,taskId,value) {

@@ -8,6 +8,7 @@ module.exports = function() {
 	var info = {
 		"state" : 1,//1  未开启  2开启中
 		"endTime" : 0,//结束时间
+		"wins" : []
 	}
 	//活动更新
 	this.updateTicket = function() {
@@ -79,6 +80,7 @@ module.exports = function() {
 				self.sendTextToMail(wins[i],"ticket_win",ticket_cfg["win_back"]["value"])
 			for(var i = 0;i < list.length;i++)
 				self.sendTextToMail(list[i],"ticket_lose",ticket_cfg["loss_back"]["value"])
+			info.wins = wins
 		})
 	}
 }
