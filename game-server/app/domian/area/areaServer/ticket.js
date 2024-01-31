@@ -19,13 +19,13 @@ module.exports = function() {
 				//开启活动
 				info["state"] = 2
 				info.endTime = util.getZeroTime() + oneDayTime * 3 - 10000
+				self.setAreaObj(main_name,"info",JSON.stringify(info))
 			}
 			if(info.state == 2 && Date.now() > info.endTime){
 				//判断关闭
 				info.state = 3
 				self.endTicket()
 			}
-			self.setAreaObj(main_name,"info",JSON.stringify(info))
 		})
 	}
 	//获取抽奖数据
@@ -80,7 +80,10 @@ module.exports = function() {
 				self.sendTextToMail(wins[i],"ticket_win",ticket_cfg["win_back"]["value"])
 			for(var i = 0;i < list.length;i++)
 				self.sendTextToMail(list[i],"ticket_lose",ticket_cfg["loss_back"]["value"])
-			info.wins = wins
+			self.getPlayerInfoByUids(wins,function(data) {
+				info.wins = data
+				self.setAreaObj(main_name,"info",JSON.stringify(info))
+			})
 		})
 	}
 }
