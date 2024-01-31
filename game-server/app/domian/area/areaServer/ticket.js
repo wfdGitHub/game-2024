@@ -12,16 +12,16 @@ module.exports = function() {
 	//活动更新
 	this.updateTicket = function() {
 		self.getAreaObj(main_name,"info",function(data) {
-			if(data){
+			if(data)
 				info = JSON.parse(data)
-			}else if(self.areaDay >= 1){
+			if(info["state"] == 1 && self.newArea){
 				//开启活动
 				info["state"] = 2
 				info.endTime = util.getZeroTime() + oneDayTime * 3 - 10000
 			}
 			if(info.state == 2 && Date.now() > info.endTime){
 				//判断关闭
-				info.state = 1
+				info.state = 3
 				self.endTicket()
 			}
 			self.setAreaObj(main_name,"info",JSON.stringify(info))
