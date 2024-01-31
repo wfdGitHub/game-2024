@@ -175,6 +175,7 @@ module.exports = function() {
 			self.setHMObj(uid,main_name,data)
 			self.setObj(uid,main_name,"onlineIndex",0)
 		})
+		this.updateFreeTurn(uid)
 	}
 	//活动数据每周刷新
 	this.activityWeekUpdate = function(uid) {
@@ -188,6 +189,49 @@ module.exports = function() {
 		// self.setPlayerData(uid,"gold_consume",0)
 		// for(var index in consumeTotal)
 		// 	self.delObj(uid,main_name,"consumeTotal_"+index)
+	}
+	//获取零元购数据
+	this.getFreeTurnData = function(uid,cb) {
+		self.getObjAll(uid,"free_buy",function(data) {
+			cb(true,data)
+		})
+	}
+	//零元购返利更新
+	this.updateFreeTurn = function(uid) {
+		self.getObjAll(uid,"free_buy",function(data) {
+			for(var id in data){
+				if(data[id] == 1 && self.areaDay > activity_cfg["free_buy_"+id]["day"]){
+					self.setObj(uid,"free_buy",id,2)
+					self.sendTextToMail(uid,"recharge","200:"+activity_cfg["free_buy_"+id]["price"])
+				}
+			}
+		})
+	}
+	//购买零元购
+	this.buyFreeTurn = function(uid,id,cb) {
+		if(!activity_cfg["free_buy_"+id]){
+			cb(false,"id error")
+			return
+		}
+		if(self.areaDay < activity_cfg["free_buy_"+id]["day"]){
+			cb(false,"礼包未开启")
+			return
+		}
+		self.getObj(uid,"free_buy",id,function(data) {
+			if(data){
+				cb(false,"已购买")
+				return
+			}
+			self.consumeItems(uid,"200:"+activity_cfg["free_buy_"+id]["price"],1,"零元购礼包"+id,function(flag,err) {
+				if(!flag){
+					cb(false,err)
+				}else{
+					self.setObj(uid,"free_buy",id,1)
+					var awardList = self.addItemStr(uid,activity_cfg["free_buy_"+id]["value"],1,"零元购礼包"+id)
+					cb(true,awardList)
+				}
+			})
+		})
 	}
 	//领取每日免费礼包
 	this.gainFreeDayAward = function(uid,id,cb) {
