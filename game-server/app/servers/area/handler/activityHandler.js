@@ -4,6 +4,22 @@ var activityHandler = function(app) {
   this.app = app;
 	this.areaManager = this.app.get("areaManager")
 }
+//获取零元购数据
+activityHandler.prototype.getFreeTurnData = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].getFreeTurnData(uid,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
+//购买零元购
+activityHandler.prototype.buyFreeTurn = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  this.areaManager.areaMap[areaId].buyFreeTurn(uid,msg.id,function(flag,msg) {
+    next(null,{flag : flag,msg : msg})
+  })
+}
 //获取快速充值数据
 activityHandler.prototype.getRechargeFastData = function(msg, session, next) {
   var uid = session.uid
