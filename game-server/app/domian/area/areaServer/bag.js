@@ -268,6 +268,8 @@ module.exports = function() {
 			itemId = 200
 		}
 		if(value > 0 && itemCfg[itemId].auto){
+			if(otps.rate)
+				otps.value = Number(otps.value) * otps.rate
 			return self.useItemCB(uid,otps,cb)
 		}else{
 			switch(itemCfg[itemId].type){
