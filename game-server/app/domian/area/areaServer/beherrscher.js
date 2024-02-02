@@ -78,7 +78,7 @@ module.exports = function() {
 		local.changeData("state",0)
 		for(var i = 1;i <= seatCount;i++){
 			if(beherrscherInfo["seat_"+i] != 0){
-				self.sendTextToMail(beherrscherInfo["seat_"+i],"beherrs_"+i,beherrscher_cfg["award_"+i]["name"])
+				self.sendTextToMail(beherrscherInfo["seat_"+i],"beherrs_"+i,beherrscher_cfg["award_"+i]["value"])
 			}
 		}
 	}
@@ -158,7 +158,7 @@ module.exports = function() {
 							info.atkInfo = userInfos[0]
 							info.defInfo = userInfos[1]
 							local.addRecord(index,info)
-							self.addNotice("beherrscher",info.atkInfo.name,info.defInfo.name,beherrscher_cfg["award_"+i]["name"])
+							self.addNotice("beherrscher",info.atkInfo.name,info.defInfo.name,beherrscher_cfg["award_"+index]["name"])
 						})
 					}
 					local.changeData("seat_"+index,uid)
