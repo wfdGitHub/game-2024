@@ -319,8 +319,8 @@ normalHandler.prototype.initNameAndSex = function(msg, session, next) {
       self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
         self.redisDao.db.hdel("game:nameMap",data)
         self.redisDao.db.hset("game:nameMap",name,uid)
-        self.playerDao.setPlayerInfo({uid : uid,key : "name",value : name})
-        self.playerDao.setPlayerInfo({uid : uid,key : "sex",value : sex})
+        self.areaManager.areaMap[areaId].chageLordData(uid,"name",name)
+        self.areaManager.areaMap[areaId].chageLordData(uid,"sex",sex)
         session.set("name",name)
         session.push("name",function() {
           next(null,{flag:true})
