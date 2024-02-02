@@ -175,7 +175,7 @@ module.exports = function() {
 	    		if(monLv >= 4){
 					var lordName = self.getLordName(uid)
 					if(lordName)
-						self.addNotice("invade",lordName,invade["names"]["level_"+monLv])
+						self.addNotice("invade",lordName,invade["name"]["level_"+monLv])
 	    		}
 	    		cb(true,{winFlag:winFlag,awardList:awardList,monList:monList,mon_values:mon_values})
 	    	}else{

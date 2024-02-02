@@ -78,7 +78,7 @@ module.exports = function() {
 		local.changeData("state",0)
 		for(var i = 1;i <= seatCount;i++){
 			if(beherrscherInfo["seat_"+i] != 0){
-				self.sendTextToMail(beherrscherInfo["seat_"+i],"beherrs_"+i,beherrscher_cfg["award_"+i]["value"])
+				self.sendTextToMail(beherrscherInfo["seat_"+i],"beherrs_"+i,beherrscher_cfg["award_"+i]["name"])
 			}
 		}
 	}
