@@ -695,6 +695,11 @@ var model = function() {
 				if(cb)
 					cb(true,heroInfo)
 			})
+			if(heroInfo.qa < 5 && info.qa >= 5){
+				var lordName = self.getLordName(uid)
+				if(lordName)
+					self.addNotice("hero",lordName,heros[heroInfo.id]["name"])
+			}
 			// self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 		})
 	}
