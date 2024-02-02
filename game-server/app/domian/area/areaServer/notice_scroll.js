@@ -17,6 +17,7 @@ module.exports = function() {
 	}
 	//添加公告
 	this.addNotice = function(key,xxx,yyy,zzz) {
+		console.log("addNotice",key,xxx,yyy,zzz)
 		if(notice_cfg[key]){
 			var text = notice_cfg[key]["text"]
 			if(xxx)

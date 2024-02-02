@@ -116,7 +116,7 @@ module.exports = function() {
 			self.sendTextToMail(uid,"area_challenge",area_challenge[self.maxIndex]["pass_award"],area_challenge[self.maxIndex]["name"])
 			var lordName = self.getLordName(uid)
 			if(lordName)
-				self.addNotice("area_challenge",area_challenge[self.maxIndex]["name"])
+				self.addNotice("area_challenge",lordName,area_challenge[self.maxIndex]["name"])
 		}
 	}
 	//领取单骑首通奖励
