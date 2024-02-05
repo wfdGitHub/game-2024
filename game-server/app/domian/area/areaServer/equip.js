@@ -39,7 +39,7 @@ var model = function() {
 						eStr = data
 						eInfo = JSON.parse(eStr)
 						//判断穿戴等级
-						if(heroInfo.lv < equip_lv[eInfo.lv]["lv"]){
+						if(self.getLordLv(uid) < equip_lv[eInfo.lv]["lv"]){
 							next("携带等级错误 "+heroInfo.lv+"/"+equip_lv[eInfo.lv]["lv"])
 							return
 						}

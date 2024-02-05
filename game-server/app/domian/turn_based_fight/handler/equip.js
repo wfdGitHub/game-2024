@@ -122,7 +122,7 @@ var model = function(fightContorl) {
 		info.stAtt = {}
 		for(var i in info.mainAtt){
 			info.stAtt[i] = info.mainAtt[i] * equip_st[info.st]["att"] * stRate
-			if(info.stAtt[i] > 2)
+			if(info.mainAtt[i] > 2)
 				info.stAtt[i] = Math.ceil(info.stAtt[i])
 			else
 				info.stAtt[i] = Number(info.stAtt[i].toFixed(2))
