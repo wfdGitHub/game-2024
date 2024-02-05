@@ -182,6 +182,32 @@ var model = function(fightContorl) {
 		c_info.extra = this.createEquipExtra(info,Math.floor(Math.random() * 3))
 		return c_info
 	}
+	//获取装备属性预览
+	this.getEquipRange = function(lv,slot) {
+		var info = {}
+		info.minAtt = {}
+		info.minAtt[equip_slot[slot]["main_1"]] = equip_lv[lv]["mainRate"] * equip_slot[slot]["value_1"] * equip_qa[1]["mainRate"] * 0.9
+		info.minAtt[equip_slot[slot]["main_2"]] = equip_lv[lv]["mainRate"] * equip_slot[slot]["value_2"] * equip_qa[1]["mainRate"] * 0.9
+		info.maxAtt = {}
+		info.maxAtt[equip_slot[slot]["main_1"]] = equip_lv[lv]["mainRate"] * equip_slot[slot]["value_1"] * equip_qa[4]["mainRate"]
+		info.maxAtt[equip_slot[slot]["main_2"]] = equip_lv[lv]["mainRate"] * equip_slot[slot]["value_2"] * equip_qa[4]["mainRate"]
+		for(var i in info.minAtt){
+			if(info.minAtt[i] > 2)
+				info.minAtt[i] = Math.ceil(info.minAtt[i])
+			else
+				info.minAtt[i] = Number(info.minAtt[i].toFixed(2))
+		}
+		for(var i in info.maxAtt){
+			if(info.maxAtt[i] > 2)
+				info.maxAtt[i] = Math.ceil(info.maxAtt[i])
+			else
+				info.maxAtt[i] = Number(info.maxAtt[i].toFixed(2))
+		}
+		if(equip_lv[lv]["spe"])
+			info.spe_list = equip_slot[slot]["spe_list"]
+		info.suit_list = equip_lv[lv]["suit_list"]
+		return info
+	}
 	//装备随机生成额外属性
 	this.createEquipExtra = function(info,type) {
 		var extra = {}
