@@ -470,7 +470,7 @@ module.exports = function() {
 		}
 		self.getObj(uid,"limit_gift",pay_id,function(data) {
 			if(data){
-				self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",self.itemstrChangeRate(gift_list[pay_id]["award"],rate))
+				self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",self.itemstrChangeRate(pay_cfg[pay_id]["award"],rate))
 				self.delObj(uid,"limit_gift",pay_id)
 				cb(true)
 			}else{
