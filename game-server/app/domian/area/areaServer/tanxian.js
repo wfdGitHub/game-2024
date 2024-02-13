@@ -118,4 +118,8 @@ module.exports = function() {
 			cb(true,action)
 		})
 	}
+	//获得体力
+	this.tanxianAddAtion = function(uid) {
+		self.incrbyObj(uid,main_name,"action",-ONE_TIME)
+	}
 }
