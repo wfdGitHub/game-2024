@@ -6,7 +6,7 @@ for(var i in ace_pack){
 		aceList[ace_pack[i]["quality"]] = []
 	aceList[ace_pack[i]["quality"]].push(i)
 }
-const weight = {"3":0.45,"4":0.28,"5":0.08,"6":0.01}
+const weight = {"3":0.45,"4":0.28,"5":0.12,"6":0.01}
 module.exports = function() {
 	var self = this
 	this.compoundAce = function(uid,aId1,aId2,cb) {
