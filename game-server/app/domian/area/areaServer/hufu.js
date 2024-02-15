@@ -45,6 +45,7 @@ for(var i in war_banner){
 		banner_quality[war_banner[i]["quality"]] = []
 	banner_quality[war_banner[i]["quality"]].push(i)
 }
+const weight = {"1":0.35,"2":0.25,"3":0.1,"4":0.01}
 module.exports = function() {
 	var self = this
 	//护符列表
@@ -211,7 +212,9 @@ module.exports = function() {
 			}
 			for(var i = 0;i < ids.length;i++)
 				self.delObj(uid,main_name,ids[i])
-			var info = self.gainRandHufu(uid,lv+1)
+			if(Math.random() < weight[lv])
+				lv++
+			var info = self.gainRandHufu(uid,lv)
 			cb(true,info)
 		})
 	}
