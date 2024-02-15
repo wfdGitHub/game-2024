@@ -177,7 +177,7 @@ module.exports = function() {
 				self.heroDao.delHeroInfo(self.areaId,uid,hId,"hfs2")
 			}
 			self.gainHufu(uid,hufuInfo)
-			cb(true,heroInfo)
+			cb(true,heroInfo,hufuInfo)
 		})
 	}
 	//合成护符

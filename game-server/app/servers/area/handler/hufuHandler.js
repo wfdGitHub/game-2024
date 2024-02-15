@@ -44,8 +44,8 @@ hufuHandler.prototype.unwearHufu = function(msg, session, next) {
   var areaId = session.get("areaId")
   var uid = session.uid
   var hId = msg.hId
-  this.areaManager.areaMap[areaId].unwearHufu(uid,hId,function(flag,data) {
-    next(null,{flag:flag,data:data})
+  this.areaManager.areaMap[areaId].unwearHufu(uid,hId,function(flag,data,hufuInfo) {
+    next(null,{flag:flag,data:data,hufuInfo:hufuInfo})
   })
 }
 //合成护符
