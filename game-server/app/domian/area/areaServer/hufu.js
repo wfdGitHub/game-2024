@@ -186,7 +186,7 @@ module.exports = function() {
 			cb(false,"ids error")
 			return
 		}
-		if(!hufu_quality[lv] || !Number.isInteger(lv) || lv >= 4){
+		if(!hufu_quality[lv] || !Number.isInteger(lv)){
 			cb(false,"lv error "+lv)
 			return
 		}
@@ -212,7 +212,7 @@ module.exports = function() {
 			}
 			for(var i = 0;i < ids.length;i++)
 				self.delObj(uid,main_name,ids[i])
-			if(Math.random() < weight[lv])
+			if(lv < 4 Math.random() < weight[lv])
 				lv++
 			var info = self.gainRandHufu(uid,lv)
 			cb(true,info)
