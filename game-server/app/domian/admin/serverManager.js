@@ -69,7 +69,7 @@ serverManager.prototype.finish_callback = function(areaId,uid,amount,pay_id,data
 	var serverId = this.areaDeploy.getServer(this.areaDeploy.getFinalServer(areaId))
     this.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,data,function(){})
     this.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(amount) * 100),function(){})
-    this.app.rpc.area.areaRemote.real_recharge_rmb.toServer(serverId,areaId,uid,Number(pay_cfg[pay_id]["rmb"]),rate,function(){})
+    this.app.rpc.area.areaRemote.real_recharge_rmb.toServer(serverId,areaId,uid,Number(pay_cfg[pay_id]["rmb"] * 100),rate,function(){})
 }
 //update
 serverManager.prototype.update = function() {

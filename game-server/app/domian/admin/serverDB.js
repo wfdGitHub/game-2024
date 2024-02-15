@@ -415,8 +415,8 @@ var model = function() {
 				var areaId = self.areaDeploy.getFinalServer(data)
 				var serverId = self.areaDeploy.getServer(areaId)
 				if(serverId){
-					self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(pay_cfg[pay_id]["rmb"])),function(){})
-					self.app.rpc.area.areaRemote.real_recharge_rmb.toServer(serverId,areaId,uid,Math.floor(Number(pay_cfg[pay_id]["rmb"])),1,function(){})
+					self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(pay_cfg[pay_id]["rmb"] * 100)),function(){})
+					self.app.rpc.area.areaRemote.real_recharge_rmb.toServer(serverId,areaId,uid,Math.floor(Number(pay_cfg[pay_id]["rmb"] * 100)),1,function(){})
 					self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,function(flag,data) {
 						self.redisDao.db.rpush("admin:recharge",JSON.stringify({uid:uid,payInfo:pay_cfg[pay_id]}))
 						res.send({flag:true})
