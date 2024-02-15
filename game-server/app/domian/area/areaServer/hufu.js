@@ -181,7 +181,7 @@ module.exports = function() {
 	}
 	//合成护符
 	this.compoundHufu = function(uid,ids,lv,cb) {
-		if(!ids || ids.length !== 5){
+		if(!ids || ids.length !== 2){
 			cb(false,"ids error")
 			return
 		}
