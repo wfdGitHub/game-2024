@@ -212,7 +212,7 @@ module.exports = function() {
 			}
 			for(var i = 0;i < ids.length;i++)
 				self.delObj(uid,main_name,ids[i])
-			if(lv < 4 Math.random() < weight[lv])
+			if(lv < 4 && Math.random() < weight[lv])
 				lv++
 			var info = self.gainRandHufu(uid,lv)
 			cb(true,info)
