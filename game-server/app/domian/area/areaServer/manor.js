@@ -717,7 +717,7 @@ module.exports = function() {
 					next()
 				}else{
 					//玩家队伍
-					self.getTeamByType(target,battle_cfg["manor_city"]["team"],function(flag,teams) {
+					self.getTeamByType(city_infos[land]["own"],battle_cfg["manor_city"]["team"],function(flag,teams) {
 						defTeam = teams
 						self.getObj(city_infos[land]["own"],main_name,"main",function(data) {
 							targetLv = Number(data) || 1
