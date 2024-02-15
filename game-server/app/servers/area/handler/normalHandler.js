@@ -409,6 +409,16 @@ normalHandler.prototype.getPlayerBaseInfo = function(msg, session, next) {
     }
   })
 }
+//获取玩家阵容
+normalHandler.prototype.getPlayerTeamByType = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var target = msg.target
+  var type = msg.type
+  this.areaManager.areaMap[areaId].getTeamByType(target,type,function(flag,team) {
+    next(null,{flag:flag,team:team})
+  })
+}
 //GM商城购买
 normalHandler.prototype.buyGMShop = function(msg, session, next) {
   var uid = session.uid

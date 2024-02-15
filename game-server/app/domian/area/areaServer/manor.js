@@ -836,7 +836,7 @@ module.exports = function() {
 	}
 	//占领玩家
 	this.manorOccupyUser = function(uid,target,cb) {
-		if(!target || !Number.isInteger(target)){
+		if(!target){
 			cb(false,"target error")
 			return
 		}

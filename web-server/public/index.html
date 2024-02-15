@@ -110,6 +110,12 @@
             console.log(data);
         })
       }
+      //获取玩家阵容
+      var getPlayerTeamByType = function(target,type) {
+        pomelo.request("area.normalHandler.getPlayerTeamByType",{target:target,type:type},function(data) {
+            console.log(data);
+        })
+      }
       //===============运营活动===============//
       //获取神兽抽奖数据
       var getTicketData = function() {
