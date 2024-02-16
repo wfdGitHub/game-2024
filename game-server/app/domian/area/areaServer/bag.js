@@ -433,8 +433,11 @@ module.exports = function() {
 		var items = []
 		var values = []
 		var strList = str.split("&")
-		if(!rate || parseFloat(rate) != rate || typeof(rate) != "number"){
+		if(!rate || !Number.isInteger(rate))
 			rate = 1
+		if(rate < 1){
+			cb(false)
+			return
 		}
 		strList.forEach(function(m_str) {
 			var m_list = m_str.split(":")

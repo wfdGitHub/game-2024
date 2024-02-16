@@ -1126,13 +1126,10 @@
             console.log(data);
         });
       }
-
-
-
-      
       //点票支付
-      var dianpiao_recharge = function(pay_id) {
-        pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id}, function(data) {
+      var dianpiao_recharge = function(pay_id,rate) {
+        var info = {extras_params : {rate : rate}}
+        pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id,info:info}, function(data) {
             console.log(data);
         });
       }
@@ -2725,12 +2722,6 @@
       //直接充值
       var rechargeToUser = function(uid,pay_id) {
         pomelo.request("admin.adminHandler.rechargeToUser", {uid:uid,pay_id:pay_id}, function(data) {
-            console.log(data);
-        });
-      }
-      //点票充值
-      var dianpiao_recharge = function(pay_id) {
-        pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id}, function(data) {
             console.log(data);
         });
       }
