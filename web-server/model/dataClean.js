@@ -1,6 +1,6 @@
 //数据清理
 const cleanDatas = ["ST","ace_lotto","activity","areaMail","area_challenge","arena","arenaRecord","arg_gift","bag","banner","bazaar","cdkey","ctask","dailyfb","drum","endless","exercise_pass","festival","frame_list","friend_list","gather","guild","heroArchive","horse","hufu","liveness","manorRecord","month_shop","task","title_list","tour","ttt","war_horn","week_shop","week_target","zhanfa","zhulu","zhuluTeam","mysterious","pit","limit_gift","mail","privilege","recharge_fast"]
-const CLEAN_TIME = 172800000
+const CLEAN_TIME = 57600000
 const SQL_TIME = 1209600000
 var model = function(){}
 //初始化
