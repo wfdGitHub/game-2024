@@ -109,7 +109,7 @@ model.prototype.loadHero = function(belong,index) {
 	for(var i = id;i < this[belong+"AllTeam"].length;i++){
 		this[belong+"TeamInfo"]["comeId"]++
 		var hero = this[belong+"AllTeam"][i]
-		if(!hero.isNaN && hero["surplus_health"] !== 0){
+		if(!hero.isNaN){
 			return this.heroBegin(hero,belong,index)
 		}
 	}
