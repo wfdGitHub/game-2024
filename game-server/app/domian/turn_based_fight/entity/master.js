@@ -47,41 +47,10 @@ master.prototype.init = function(fighting,list,team,enemy,locator,seeded,peerMas
 }
 //技能释放判断
 master.prototype.checkManualModel = function() {
-	switch(this.manualModel){
-		case 1:
-			if(this.powers[this.manualIndex]){
-				var needBp = this.TMP_CURBP + this.powers[this.manualIndex].NEED_BP + this.ONCE_CURBP
-				if(this.BP >= needBp && this.powers[this.manualIndex].CUR_CD == 0){
-					this.masterPower(this.manualIndex)
-					var info = {
-						belong : this.belong,
-						runCount : this.fighting.runCount,
-						index : this.manualIndex
-					}
-					this.fighting.masterSkills.push(info)
-					this.manualIndex = (this.manualIndex + 1) % this.powers.length
-					return true
-				}
-			}
-		break
-		default:
-			for(var index = 0;index < this.powers.length;index++){
-				var needBp = this.TMP_CURBP + this.powers[index].NEED_BP + this.ONCE_CURBP
-				if(this.BP >= needBp && this.powers[index].CUR_CD == 0){
-					if(this.masterPower(index)){
-						var info = {
-							belong : this.belong,
-							runCount : this.fighting.runCount,
-							index : index
-						}
-						this.fighting.masterSkills.push(info)
-						return 	true
-					}else{
-						return false
-					}
-				}
-			}
-	}
+	var index = this.fighting.round / 2
+	console.log(index)
+	if(Number.isInteger(index))
+		this.masterPower(index)
 }
 //添加主动技能
 master.prototype.addPower = function(info) {
@@ -106,43 +75,43 @@ master.prototype.getTotalAtt = function(name) {
 }
 //每个英雄行动后
 master.prototype.heroAfter = function() {
-	this.changeBP(1)
+	// this.changeBP(1)
 }
 //整体回合结束后
 master.prototype.endRound = function() {
-	this.TMP_CURBP = 0
-	for(var i = 0;i < this.powers.length;i++){
-		this.powers[i].endRound()
-	}
+	// this.TMP_CURBP = 0
+	// for(var i = 0;i < this.powers.length;i++){
+	// 	this.powers[i].endRound()
+	// }
 }
 master.prototype.updateCD = function(value) {
-	for(var i = 0;i < this.powers.length;i++){
-		this.powers[i].updateCD(value)
-	}
+	// for(var i = 0;i < this.powers.length;i++){
+	// 	this.powers[i].updateCD(value)
+	// }
 }
 //使用技能
 master.prototype.masterPower = function(index) {
-	if(index == -1)
-		index = this.powers.length - 1
+	// if(index == -1)
+	// 	index = this.powers.length - 1
 	if(!this.powers[index]){
 		console.error("技能不存在 "+index)
 		return false	
 	}
-	var needBp = this.TMP_CURBP + this.powers[index].NEED_BP
-	if(this.ONCE_CURBP)
-		needBp += this.ONCE_CURBP
+	// var needBp = this.TMP_CURBP + this.powers[index].NEED_BP
+	// if(this.ONCE_CURBP)
+	// 	needBp += this.ONCE_CURBP
 	if(this.powers[index]){
-		if(this.BP < needBp){
-			console.error("BP不足,不能使用 "+this.BP+"/"+needBp)
-			return false
-		}
-		if(this.powers[index].CUR_CD !== 0){
-			console.error("冷却中,不能使用 "+this.powers[index].CUR_CD+"/"+this.powers[index].NEED_CD)
-			return false
-		}
-		this.powers[index].updateCD(this.powers[index].NEED_CD)
-		this.changeBP(-needBp)
-		this.ONCE_CURBP = 0
+		// if(this.BP < needBp){
+		// 	console.error("BP不足,不能使用 "+this.BP+"/"+needBp)
+		// 	return false
+		// }
+		// if(this.powers[index].CUR_CD !== 0){
+		// 	console.error("冷却中,不能使用 "+this.powers[index].CUR_CD+"/"+this.powers[index].NEED_CD)
+		// 	return false
+		// }
+		// this.powers[index].updateCD(this.powers[index].NEED_CD)
+		// this.changeBP(-needBp)
+		// this.ONCE_CURBP = 0
 		skillManager.useSkill(this.powers[index])
 		return true
 	}else{
@@ -151,21 +120,21 @@ master.prototype.masterPower = function(index) {
 	}
 }
 master.prototype.changeBP = function(change) {
-	if(this.BP > 12 && change > 0)
-		return
-	if(this.BP <= 0 && change  < 0)
-		return
-	this.BP = this.BP + change
-	if(this.BP < 0)
-		this.BP = 0
-	if(this.BP > 12)
-		this.BP = 12
-	var info =  {}
-	info.type = "bp_update"
-	info.belong = this.belong
-	info.change = change
-	info.BP = this.BP
-	fightRecord.push(info)
+	// if(this.BP > 12 && change > 0)
+	// 	return
+	// if(this.BP <= 0 && change  < 0)
+	// 	return
+	// this.BP = this.BP + change
+	// if(this.BP < 0)
+	// 	this.BP = 0
+	// if(this.BP > 12)
+	// 	this.BP = 12
+	// var info =  {}
+	// info.type = "bp_update"
+	// info.belong = this.belong
+	// info.change = change
+	// info.BP = this.BP
+	// fightRecord.push(info)
 }
 //获取显示数据
 master.prototype.getShowData = function() {

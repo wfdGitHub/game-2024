@@ -186,6 +186,8 @@ model.prototype.nextRound = function() {
 		this.allHero[i].isAction = false
 		this.allHero[i].roundBegin()
 	}
+	//判断技能释放
+	this.checkMaster()
 	return this.runCheck.bind(this)
 }
 //加载预设英雄
@@ -224,14 +226,15 @@ model.prototype.endRound = function() {
 }
 //运行检测
 model.prototype.runCheck = function() {
-	if(this.manual){
-		this.runFlag = false
-		return
-	}else if(this.checkMaster()){
-		return this.runCheck.bind(this)
-	}else{
-		return this.run.bind(this)
-	}
+	// if(this.manual){
+	// 	this.runFlag = false
+	// 	return
+	// }else if(this.checkMaster()){
+	// 	return this.runCheck.bind(this)
+	// }else{
+	// 	return this.run.bind(this)
+	// }
+	return this.run.bind(this)
 }
 //轮到下一个角色行动
 model.prototype.run = function() {
@@ -429,8 +432,8 @@ model.prototype.diedListCheck = function() {
 }
 //继续运行
 model.prototype.keepRun = function() {
-	if(this.video)
-		this.checkVideo()
+	// if(this.video)
+	// 	this.checkVideo()
 	if(this.manual && !this.runFlag){
 		this.runFlag = true
 		this.trampoline(this.run.bind(this))
@@ -476,25 +479,28 @@ model.prototype.getMasterShowData = function() {
 }
 //检测主动技能
 model.prototype.checkMaster = function() {
-	if(this.video){
-		//录像模式检测技能释放
-		if(this.masterSkillsRecord.length){
-			if(this.masterSkillsRecord[0]["runCount"] == this.runCount){
-				var info = this.masterSkillsRecord.shift()
-				if(info.belong == "atk"){
-					return this.atkMasterSkill(info["index"])
-				}else if(info.belong == "def"){
-					return this.defMasterSkill(info["index"])
-				}
-			}
-		}
-	}else if(this.isFight){
-		//自动战斗模式检测技能释放
-		if(this.atkMaster.checkManualModel())
-			return true
-		if(this.defMaster.checkManualModel())
-			return true
-	}
+	// if(this.video){
+	// 	//录像模式检测技能释放
+	// 	if(this.masterSkillsRecord.length){
+	// 		if(this.masterSkillsRecord[0]["runCount"] == this.runCount){
+	// 			var info = this.masterSkillsRecord.shift()
+	// 			if(info.belong == "atk"){
+	// 				return this.atkMasterSkill(info["index"])
+	// 			}else if(info.belong == "def"){
+	// 				return this.defMasterSkill(info["index"])
+	// 			}
+	// 		}
+	// 	}
+	// }else if(this.isFight){
+	// 	//自动战斗模式检测技能释放
+	// 	if(this.atkMaster.checkManualModel())
+	// 		return true
+	// 	if(this.defMaster.checkManualModel())
+	// 		return true
+	// }
+	//检测技能释放
+	this.atkMaster.checkManualModel()
+	this.defMaster.checkManualModel()
 	return false
 }
 //检查录像技能
