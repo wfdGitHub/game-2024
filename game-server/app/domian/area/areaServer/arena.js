@@ -155,10 +155,9 @@ module.exports = function() {
 			cb(true,defTeam)
 		}else{
 			//玩家队伍
-			self.getDefendTeam(targetUid,function(defTeam) {
+			self.getTeamByType(targetUid,battle_cfg[main_name]["team"],function(flag,defTeam) {
 				if(!defTeam){
 					cb(false,"敌方阵容错误")
-					return
 				}else{
 					cb(true,defTeam)
 				}
