@@ -3,8 +3,8 @@ var fightRecord = require("./fight/fightRecord.js")
 
 
 //战斗测试
-// var atkTeam = [{},{"id":"503100","D1":60140004},{}]
-// var defTeam = [{},{"id":"503110","lv":1,"evo":1,"exalt":3,"qa":5,"wash":0,"MR1":1,"MR2":1,"MR3":1,"MR4":1,"MR5":1,"MR6":1,"PS0":4201,"PS1":4420,"PS2":4223,"PS3":4215}]
+// var atkTeam = []
+// var defTeam = []
 // var list = fightContorl.beginFight(atkTeam,defTeam,{})
 // fightRecord.explain()
 

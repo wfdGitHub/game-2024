@@ -1,9 +1,6 @@
 //背包物品系统
 var itemCfg = require("../../../../config/gameCfg/item.json")
 var shopCfg = require("../../../../config/gameCfg/shop.json")
-var chest_awards = require("../../../../config/gameCfg/chest_awards.json")
-var chest_cfg = require("../../../../config/gameCfg/chest_cfg.json")
-var equip_base = require("../../../../config/gameCfg/equip_base.json")
 var ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var heros = require("../../../../config/gameCfg/heros.json")
 var checkpointsCfg = require("../../../../config/gameCfg/checkpoints.json")
@@ -270,7 +267,9 @@ module.exports = function() {
 			value = Math.round(value * itemCfg["202"]["arg"])
 			itemId = 200
 		}
-		if(itemCfg[itemId].auto){
+		if(value > 0 && itemCfg[itemId].auto){
+			if(otps.rate)
+				otps.value = Number(otps.value) * otps.rate
 			return self.useItemCB(uid,otps,cb)
 		}else{
 			switch(itemCfg[itemId].type){
@@ -355,6 +354,10 @@ module.exports = function() {
 	}
 	//获得指定道具
 	this.addItemByType = function(uid,info) {
+		if(!info){
+			console.log("addItemByType",info)
+			return []
+		}
 		switch(info.type){
 			case "hufu":
 				//护符
@@ -406,8 +409,8 @@ module.exports = function() {
 		return pcStr
 	}
 	//扣除道具
-	//uid,str,rate,cb
-	//uid,str,rate,reason,cb
+	//self.consumeItems(uid,awardStr,rate,cb)
+	//self.consumeItems(uid,awardStr,rate,reason,cb)
 	this.consumeItems = function() {
 		var uid = arguments[0]
 		var str = arguments[1]
@@ -430,8 +433,11 @@ module.exports = function() {
 		var items = []
 		var values = []
 		var strList = str.split("&")
-		if(!rate || parseFloat(rate) != rate || typeof(rate) != "number"){
+		if(!rate || !Number.isInteger(rate))
 			rate = 1
+		if(rate < 1){
+			cb(false)
+			return
 		}
 		strList.forEach(function(m_str) {
 			var m_list = m_str.split(":")

@@ -264,7 +264,7 @@ normalHandler.prototype.changeName = function(msg, session, next) {
       self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
         self.redisDao.db.hdel("game:nameMap",data)
         self.redisDao.db.hset("game:nameMap",name,uid)
-        self.playerDao.setPlayerInfo({uid : uid,key : "name",value : name})
+        self.areaManager.areaMap[areaId].chageLordData(uid,"name",name)
         session.set("name",name)
         session.push("name",function() {
           next(null,{flag:true})
@@ -319,8 +319,8 @@ normalHandler.prototype.initNameAndSex = function(msg, session, next) {
       self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
         self.redisDao.db.hdel("game:nameMap",data)
         self.redisDao.db.hset("game:nameMap",name,uid)
-        self.playerDao.setPlayerInfo({uid : uid,key : "name",value : name})
-        self.playerDao.setPlayerInfo({uid : uid,key : "sex",value : sex})
+        self.areaManager.areaMap[areaId].chageLordData(uid,"name",name)
+        self.areaManager.areaMap[areaId].chageLordData(uid,"sex",sex)
         session.set("name",name)
         session.push("name",function() {
           next(null,{flag:true})
@@ -407,6 +407,16 @@ normalHandler.prototype.getPlayerBaseInfo = function(msg, session, next) {
     }else{
       next(null,{flag:false})
     }
+  })
+}
+//获取玩家阵容
+normalHandler.prototype.getPlayerTeamByType = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var target = msg.target
+  var type = msg.type
+  this.areaManager.areaMap[areaId].getTeamByType(target,type,function(flag,team) {
+    next(null,{flag:flag,team:team})
   })
 }
 //GM商城购买

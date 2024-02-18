@@ -1,6 +1,5 @@
 //任务系统
 var task_cfg = require("../../../../config/gameCfg/task_cfg.json")
-var main_task = require("../../../../config/gameCfg/main_task.json")
 var task_type = require("../../../../config/gameCfg/task_type.json")
 var liveness_cfg = require("../../../../config/gameCfg/liveness.json")
 var war_horn = require("../../../../config/gameCfg/war_horn.json")
@@ -49,12 +48,6 @@ for(var i in week_target){
 		}
 	}
 }
-for(var i in main_task){
-	main_task[i].refresh = "main"
-	if(task_cfg[i])
-		console.error("taskId 重复",i)
-	task_cfg[i] = main_task[i]
-}
 module.exports = function() {
 	var self = this
 	var userTaskLists = {}			//玩家任务列表
@@ -80,7 +73,6 @@ module.exports = function() {
 			this.gainTask(uid,mewtwo_task[id]["task2"],0)
 			this.gainTask(uid,mewtwo_task[id]["task3"],0)
 		}
-		this.gainTask(uid,900001,0)
 	}
 	//领取任务
 	this.gainTask = function(uid,taskId,value) {
@@ -145,23 +137,12 @@ module.exports = function() {
 			cb(false,"该任务需要服务器开启时间达到才可完成 "+this.players[uid].userDay+"/"+week_target_task[taskId])
 			return
 		}
+		if(!task_cfg[taskId]){
+			console.log("taskId error ",taskId)
+			return
+		}
+		var info = {}
 		var award = task_cfg[taskId].award
-		//节日任务活动掉落
-		if(task_cfg[taskId]["refresh"] == "day"){
-			var dropItem = self.festivalDrop()
-			if(dropItem){
-				if(award)
-					award += "&"+dropItem+":1"
-				else
-					award = dropItem+":1"
-			}
-		}
-		let awardList = []
-		if(award)
-			awardList = this.addItemStr(uid,award,1,"任务奖励"+taskId)
-		let info = {
-			awardList : awardList
-		}
 		if(task_cfg[taskId].exp){
 			info.exp = task_cfg[taskId].exp
 			self.incrbyObj(uid,war_name,"exp",task_cfg[taskId].exp)
@@ -170,9 +151,13 @@ module.exports = function() {
 			info.liveness = task_cfg[taskId].liveness
 			self.incrbyObj(uid,liveness_name,"value",task_cfg[taskId].liveness)
 			self.taskUpdate(uid,"liveness",task_cfg[taskId].liveness)
+			//周末活动掉落
+			var weekendAward = self.getWeekendHook()
+			if(weekendAward)
+				award += "&"+weekendAward+":"+task_cfg[taskId].liveness
 		}
 		if(task_cfg[taskId].next){
-			let next = task_cfg[taskId].next
+			var next = task_cfg[taskId].next
 			var value = 0
 			if(task_cfg[taskId].inherit)
 				value = userTaskLists[uid][taskId]
@@ -183,12 +168,26 @@ module.exports = function() {
 			self.incrbyObj(uid,"week_target","taskCount",1)
 		}
 		if(userTaskMaps[uid]){
-			let type = task_cfg[taskId].type
+			var type = task_cfg[taskId].type
 			if(userTaskMaps[uid][type])
 				util.arrayRemove(userTaskMaps[uid][type],taskId)
 		}
 		self.delObj(uid,main_name,taskId)
 		delete userTaskLists[uid][taskId]
+		//节日任务活动掉落
+		if(task_cfg[taskId]["refresh"] == "day"){
+			var dropItem = self.festivalDrop()
+			if(dropItem){
+				if(award)
+					award += "&"+dropItem+":1"
+				else
+					award = dropItem+":1"
+			}
+		}
+		var awardList = []
+		if(award)
+			awardList = this.addItemStr(uid,award,1,"任务奖励"+taskId)
+		info.awardList = awardList
 		cb(true,info)
 	}
 	//加载角色任务数据

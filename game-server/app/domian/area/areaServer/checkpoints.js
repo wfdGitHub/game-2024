@@ -71,6 +71,7 @@ module.exports = function() {
 			    	self.taskUpdate(uid,"checkpoints",1,level)
 			    	self.updateSprintRank("checkpoint_rank",uid,1)
 			    	self.cacheDao.saveCache({"messagetype":"checkpoints",uid:uid,level:level})
+			    	self.tanxianAddAtion(uid)
 			    }else{
 			    	self.verifyFaild(uid,self.fightContorl.getVerifyInfo(),"主线关卡")
 			    	cb(false,{winFlag : winFlag})
@@ -189,7 +190,13 @@ module.exports = function() {
 		if(dropItem){
 			var dropCount = Math.floor(time / 30)
 			if(dropCount)
-				awardStr += "&"+dropItem+":"+dropCount
+				awardStr = dropItem+":"+dropCount
+		}
+		var weekendAward = self.getWeekendHook()
+		if(weekendAward){
+			var count = Math.floor(time * 0.15)
+			if(count)
+				awardStr = weekendAward+":"+count
 		}
 		return awardStr
 	}

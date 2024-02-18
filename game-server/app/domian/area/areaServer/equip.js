@@ -39,7 +39,7 @@ var model = function() {
 						eStr = data
 						eInfo = JSON.parse(eStr)
 						//判断穿戴等级
-						if(heroInfo.lv < equip_lv[eInfo.lv]["lv"]){
+						if(self.getLordLv(uid) < equip_lv[eInfo.lv]["lv"]){
 							next("携带等级错误 "+heroInfo.lv+"/"+equip_lv[eInfo.lv]["lv"])
 							return
 						}
@@ -92,14 +92,24 @@ var model = function() {
 	this.gainEquip = function(uid,estr,reason){
 		var eInfo = JSON.parse(estr)
 		self.setObj(uid,main_name,eInfo.id,estr)
-		self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[eInfo.lv]["name_"+eInfo.slot],id:eInfo.id,info:eInfo,reason:reason||"获得装备"})
+		if(eInfo.qa >= 5){
+			var lordName = self.getLordName(uid)
+			if(lordName)
+				self.addNotice("equip",lordName,equip_lv[eInfo.lv]["name_"+eInfo.slot])
+			self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[eInfo.lv]["name_"+eInfo.slot],id:eInfo.id,info:eInfo,reason:reason||"获得装备"})
+		}
 		return eInfo
 	}
 	//获得装备 有日志 info
 	this.gainEquipByInfo = function(uid,eInfo,reason){
 		var estr = JSON.stringify(eInfo)
 		self.setObj(uid,main_name,eInfo.id,estr)
-		self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[eInfo.lv]["name_"+eInfo.slot],id:eInfo.id,info:eInfo,reason:reason||"获得装备"})
+		if(eInfo.qa >= 5){
+			var lordName = self.getLordName(uid)
+			if(lordName)
+				self.addNotice("equip",lordName,equip_lv[eInfo.lv]["name_"+eInfo.slot])
+				self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[eInfo.lv]["name_"+eInfo.slot],id:eInfo.id,info:eInfo,reason:reason||"获得装备"})
+		}
 		return estr
 	}
 	//添加装备 无日志
@@ -143,6 +153,12 @@ var model = function() {
 		var id = self.getLordLastid(uid)
 		var info = self.fightContorl.makeEquip(lv,slot,qa)
 		info.id = id
+		if(info.qa >= 5){
+			var lordName = self.getLordName(uid)
+			if(lordName)
+				self.addNotice("equip",lordName,equip_lv[info.lv]["name_"+info.slot])
+			self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[info.lv]["name_"+info.slot],id:info.id,info:info,reason:"获得装备"})
+		}
 		info = JSON.stringify(info)
 		self.setObj(uid,main_name,id,info)
 		self.taskUpdate(uid,"equip",1,qa)
@@ -255,6 +271,12 @@ var model = function() {
 				//操作
 				var id = info.id
 				var st = info.st
+				if(info.qa < 5 && info.wash.qa >= 5){
+					var lordName = self.getLordName(uid)
+					if(lordName)
+						self.addNotice("equip",lordName,equip_lv[info.lv]["name_"+info.slot])
+					self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[info.lv]["name_"+info.slot],id:info.id,info:info,reason:"洗练装备"})
+				}
 				info = info.wash
 				info.id = id
 				info.st = st
@@ -609,12 +631,17 @@ var model = function() {
 				//操作
 				var id = info.id
 				var st = info.st
+				if(info.qa < 5 && info.wash.qa >= 5){
+					var lordName = self.getLordName(uid)
+					if(lordName)
+						self.addNotice("equip",lordName,equip_lv[info.lv]["name_"+info.slot])
+					self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[info.lv]["name_"+info.slot],id:info.id,info:info,reason:"洗练装备"})
+				}
 				info = info.wash
 				info.id = id
 				info.st = st
 				heroInfo["e"+slot] = JSON.stringify(info)
 				self.heroDao.setHeroInfo(self.areaId,uid,hId,"e"+slot,heroInfo["e"+slot])
-				self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[info.lv]["name_"+info.slot],id:info.id,info:info,reason:"洗练装备"})
 				cb(true,heroInfo)
 			}
 		],function(err) {

@@ -61,6 +61,8 @@ var model = function(fightContorl) {
 	this.makeHeroData = function(id,qa) {
 		if(!heros[id])
 			return {}
+		if(heros[id]["type"] !== 0)
+			return this.makeFullHeroData(id)
 		var heroInfo = {}
 		heroInfo.id = id
 		heroInfo.evo = 1
@@ -146,10 +148,9 @@ var model = function(fightContorl) {
 		var skillNum = 0
 		c_info.wash = wash
 		//宠物异化
-		if(qa == 3 || qa == 4){
+		if(c_info.wash > 0 && (qa == 3 || qa == 4))
 			if(Math.random() < exalt_lv[heros[id]["exalt"]]["wash_qa"+qa])
 				qa++
-		}
 		c_info.qa = qa
 		//触发资质加成
 		if(item || Math.random() < wash/200)
@@ -159,7 +160,7 @@ var model = function(fightContorl) {
 			skillNum = heros[id]["passive_num"]
 		else
 			skillNum = Math.floor(hero_quality[qa]["skillRate"] * (Math.random() * 0.5 + 0.6) * heros[id]["passive_num"])
-		skillNum = Math.min(2,skillNum)
+		skillNum = Math.max(2,skillNum)
 		for(var i = 1;i <= 6;i++)
 			c_info["MR"+i] = Number((hero_quality[qa]["mainRate"] * (Math.random() * (0.4 + extra) + 0.6)).toFixed(2))
 		if(skillNum == heros[id]["passive_num"])
@@ -251,7 +252,7 @@ var model = function(fightContorl) {
 		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
 		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
 		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
-		allCE += Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 120 + aptitude * 1000)
+		allCE += Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 12 + aptitude * 100)
 		//技能战力
 		for(var i = 0;i <= 10;i++)
 			if(info["PS"+i])
@@ -300,7 +301,7 @@ var model = function(fightContorl) {
 		teamCfg = teamCfg || {}
 		info = Object.assign({},info)
 		info.heroAtts = heroAtts
-		info.exalt = info.exalt || 1
+		info.exalt = info.exalt || 0
 		info.evo = info.evo || 1
 		info.lv = info.lv || 1
 		var id = info.id
@@ -341,29 +342,6 @@ var model = function(fightContorl) {
 		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
 		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
 		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
-		var lvInfo = {
-		    "maxHP":aptitudes[info.aptitude].maxHP,
-		    "atk": aptitudes[info.aptitude].atk,
-		    "phyDef": aptitudes[info.aptitude].phyDef,
-		    "magDef": aptitudes[info.aptitude].magDef
-		}
-		//等级计算
-		if(info.lv && lv_cfg[info.lv]){
-			var growth = aptitudes[info.aptitude].growth
-			lvInfo.maxHP += Math.floor(lv_cfg[info.lv].maxHP * growth)
-			lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * growth)
-			lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * growth)
-			lvInfo.magDef += Math.floor(lv_cfg[info.lv].magDef * growth)
-			lvInfo.speed += lv_cfg[info.lv].speed
-		}
-		if(evolve_lv[info.evo]){
-			lvInfo.maxHP += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
-			lvInfo.atk += Math.floor(lvInfo.atk * evolve_lv[info.evo]["att_add"])
-			lvInfo.phyDef += Math.floor(lvInfo.phyDef * evolve_lv[info.evo]["att_add"])
-			lvInfo.magDef += Math.floor(lvInfo.magDef * evolve_lv[info.evo]["att_add"])
-			lvInfo.speed += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
-		}
-		this.mergeData(info,lvInfo)
 		//装备计算
 		var suitMaps = {}
 		for(var i = 1;i <= 6;i++){
@@ -488,12 +466,15 @@ var model = function(fightContorl) {
 				info.defaultSkill = Object.assign({skillId : info.defaultSkill},skills[info.defaultSkill])
 			}
 		}
+		info.damageType = ""
 		if(info.angerSkill){
 			if(!skills[info.angerSkill]){
 				console.error("技能不存在",info.id,info.angerSkill)
 				info.angerSkill = false
 			}else{
 				info.angerSkill = Object.assign({skillId : info.angerSkill},skills[info.angerSkill])
+				if(info.angerSkill.damageType == "mag")
+					info.damageType = "mag"
 			}
 		}
 		if(info.beginSkill && skills[info.beginSkill])
@@ -502,9 +483,35 @@ var model = function(fightContorl) {
 			info.diedSkill = Object.assign({skillId : info.diedSkill},skills[info.diedSkill])
 			info.diedSkill.diedSkill = true
 		}
+		var lvInfo = {
+		    "maxHP":aptitudes[info.aptitude].maxHP,
+		    "atk": aptitudes[info.aptitude].atk,
+		    "phyDef": aptitudes[info.aptitude].phyDef,
+		    "magDef": aptitudes[info.aptitude].magDef
+		}
+		//等级计算
+		if(info.lv && lv_cfg[info.lv]){
+			for(var key in lvInfo)
+				lvInfo[key] += lv_cfg[info.lv][key]
+			var growth = aptitudes[info.aptitude].growth
+			lvInfo.maxHP = Math.floor(lvInfo.maxHP * (1 + info["M_HP"] * 0.02) * growth)
+			if(info.damageType == "phy")
+				lvInfo.atk = Math.floor(lvInfo.atk * (1 + info["M_ATK"] * 0.01) * growth)
+			else
+				lvInfo.atk = Math.floor(lvInfo.atk * (1 + info["M_STK"] * 0.01) * growth)
+			lvInfo.phyDef = Math.floor(lvInfo.phyDef * (1 + info["M_DEF"] * 0.02) * growth)
+			lvInfo.magDef = Math.floor(lvInfo.magDef * (1 + info["M_SEF"] * 0.02) * growth)
+			lvInfo.speed = 100 + lv_cfg[info.lv].speed * (1 + info["M_SPE"] * 0.01)
+		}
+		if(evolve_lv[info.evo]){
+			lvInfo.maxHP += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
+			lvInfo.atk += Math.floor(lvInfo.atk * evolve_lv[info.evo]["att_add"])
+			lvInfo.phyDef += Math.floor(lvInfo.phyDef * evolve_lv[info.evo]["att_add"])
+			lvInfo.magDef += Math.floor(lvInfo.magDef * evolve_lv[info.evo]["att_add"])
+		}
+		this.mergeData(info,lvInfo)
 		//主属性增益
-		info["maxHP"] += Math.floor((info["maxHP"] * (info["M_HP"]-40) / (info["M_HP"]+60)))
-		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore)
+		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore + (Math.pow(info.qa,1.4) * 100))
 		return new character(info)
 	}
 	//获取角色主数据
@@ -512,7 +519,7 @@ var model = function(fightContorl) {
 		if(!info || !heros[info.id])
 			return false
 		info = Object.assign({},info)
-		info.exalt = info.exalt || 1
+		info.exalt = info.exalt || 0
 		info.evo = info.evo || 1
 		info.lv = info.lv || 1
 		var id = info.id

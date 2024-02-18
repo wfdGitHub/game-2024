@@ -172,6 +172,11 @@ module.exports = function() {
 	    		local.lessMonValue(monLv,1)
 	    		var awardList = self.addItemStr(uid,invade["base_award"]["level_"+monLv],1,"魔物入侵")
 	    		var monList = local.getMonList(uid)
+	    		if(monLv >= 4){
+					var lordName = self.getLordName(uid)
+					if(lordName)
+						self.addNotice("invade",lordName,invade["name"]["level_"+monLv])
+	    		}
 	    		cb(true,{winFlag:winFlag,awardList:awardList,monList:monList,mon_values:mon_values})
 	    	}else{
 	    		var awardList = self.addItemStr(uid,invade["faild_award"]["level_"+monLv],1,"魔物入侵")

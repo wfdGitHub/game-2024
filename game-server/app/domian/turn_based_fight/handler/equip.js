@@ -122,13 +122,13 @@ var model = function(fightContorl) {
 		info.stAtt = {}
 		for(var i in info.mainAtt){
 			info.stAtt[i] = info.mainAtt[i] * equip_st[info.st]["att"] * stRate
-			if(info.stAtt[i] > 2)
+			if(info.mainAtt[i] > 2)
 				info.stAtt[i] = Math.ceil(info.stAtt[i])
 			else
 				info.stAtt[i] = Number(info.stAtt[i].toFixed(2))
 		}
 		//计算评分  (特效*100*装备等级 套装*100*装备等级   主属性倍率*属性倍率*100   附加属性和*100)
-		info.score = Math.ceil(((info.spe.length + (info.suit ? 1.5 : 0)) * 200 * Math.sqrt(info.lv)) + (eInfo.att.main_1 + eInfo.att.main_2)*equip_lv[info.lv]["mainRate"]*80 + extraNum*40)
+		info.score = Math.ceil(((info.spe.length + (info.suit ? 1.5 : 0)) * 200 * Math.sqrt(info.lv)) + (eInfo.att.main_1 + eInfo.att.main_2)*equip_lv[info.lv]["mainRate"]*80 + extraNum*40 + (Math.pow(info.qa,1.4) * 100))
 		return info
 	}
 	//获取装备战力
@@ -181,6 +181,32 @@ var model = function(fightContorl) {
 		c_info.main_2 = Number((equip_qa[info.qa]["mainRate"] * (Math.random() * 0.1 + 0.95)).toFixed(2))
 		c_info.extra = this.createEquipExtra(info,Math.floor(Math.random() * 3))
 		return c_info
+	}
+	//获取装备属性预览
+	this.getEquipRange = function(lv,slot) {
+		var info = {}
+		info.minAtt = {}
+		info.minAtt[equip_slot[slot]["main_1"]] = equip_lv[lv]["mainRate"] * equip_slot[slot]["value_1"] * equip_qa[1]["mainRate"] * 0.9
+		info.minAtt[equip_slot[slot]["main_2"]] = equip_lv[lv]["mainRate"] * equip_slot[slot]["value_2"] * equip_qa[1]["mainRate"] * 0.9
+		info.maxAtt = {}
+		info.maxAtt[equip_slot[slot]["main_1"]] = equip_lv[lv]["mainRate"] * equip_slot[slot]["value_1"] * equip_qa[4]["mainRate"]
+		info.maxAtt[equip_slot[slot]["main_2"]] = equip_lv[lv]["mainRate"] * equip_slot[slot]["value_2"] * equip_qa[4]["mainRate"]
+		for(var i in info.minAtt){
+			if(info.minAtt[i] > 2)
+				info.minAtt[i] = Math.ceil(info.minAtt[i])
+			else
+				info.minAtt[i] = Number(info.minAtt[i].toFixed(2))
+		}
+		for(var i in info.maxAtt){
+			if(info.maxAtt[i] > 2)
+				info.maxAtt[i] = Math.ceil(info.maxAtt[i])
+			else
+				info.maxAtt[i] = Number(info.maxAtt[i].toFixed(2))
+		}
+		if(equip_lv[lv]["spe"])
+			info.spe_list = equip_slot[slot]["spe_list"]
+		info.suit_list = equip_lv[lv]["suit_list"]
+		return info
 	}
 	//装备随机生成额外属性
 	this.createEquipExtra = function(info,type) {

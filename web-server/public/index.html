@@ -104,6 +104,62 @@
             console.log(data);
         })
       }
+      //获取跑马灯，每三分钟获取一次，自动在队列最后加入系统公告   请勿相信游戏内的折扣，返现，返币等虚假信息，否则后果自负。抵制不良游戏，拒绝盗版游戏。注意自我保护，谨防受骗上当。适度游戏益脑，沉迷游戏伤身。合理安排时间，享受健康生活。
+      var getScrollNotice = function() {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"getScrollNotice"},function(data) {
+            console.log(data);
+        })
+      }
+      //获取玩家阵容
+      var getPlayerTeamByType = function(target,type) {
+        pomelo.request("area.normalHandler.getPlayerTeamByType",{target:target,type:type},function(data) {
+            console.log(data);
+        })
+      }
+      //===============运营活动===============//
+      //获取神兽抽奖数据
+      var getTicketData = function() {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"getTicketData"},function(data) {
+            console.log(data);
+        })
+      }
+      //参与抽奖
+      var joinTicket = function() {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"joinTicket"},function(data) {
+            console.log(data);
+        })
+      }
+      //获取周期活动数据
+      var getPeriodData = function() {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"getPeriodData"},function(data) {
+            console.log(data);
+        })
+      }
+      //领取单笔奖励
+      var gainPeriodDBAward = function(id) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"gainPeriodDBAward","id":id},function(data) {
+            console.log(data);
+        })
+      }
+      //领取累充奖励
+      var gainPeriodLCAward = function(id) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"gainPeriodLCAward","id":id},function(data) {
+            console.log(data);
+        })
+      }
+
+      //获取周末活动数据
+      var getWeekendData = function(id) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"getWeekendData","id":id},function(data) {
+            console.log(data);
+        })
+      }
+      //领取周末累充奖励
+      var gainWeekendLCAward = function(id) {
+        pomelo.request("area.areaHandler.commonMethod",{"method":"gainWeekendLCAward","id":id},function(data) {
+            console.log(data);
+        })
+      }
       //===============探险玩法===============//
       //获取数据
       var getTanxianData = function() {
@@ -1070,13 +1126,10 @@
             console.log(data);
         });
       }
-
-
-
-      
       //点票支付
-      var dianpiao_recharge = function(pay_id) {
-        pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id}, function(data) {
+      var dianpiao_recharge = function(pay_id,rate) {
+        var info = {extras_params : {rate : rate}}
+        pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id,info:info}, function(data) {
             console.log(data);
         });
       }
@@ -2669,12 +2722,6 @@
       //直接充值
       var rechargeToUser = function(uid,pay_id) {
         pomelo.request("admin.adminHandler.rechargeToUser", {uid:uid,pay_id:pay_id}, function(data) {
-            console.log(data);
-        });
-      }
-      //点票充值
-      var dianpiao_recharge = function(pay_id) {
-        pomelo.request("area.activityHandler.dianpiao_recharge", {pay_id:pay_id}, function(data) {
             console.log(data);
         });
       }

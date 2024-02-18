@@ -21,10 +21,7 @@ module.exports = function() {
 			for(var i in data){
 				data[i] = Number(data[i])
 			}
-			if(index == -1 && !data["finish"]){
-                self.clearWeekTarget(uid)
-                self.setObj(uid,main_name,"finish",1)
-			}else if(index != 0 && data["index"] != index){
+			if(index != 0 && data["index"] != index){
 				self.gainWeekTask(uid)
 				self.setObj(uid,main_name,"index",index)
 				self.setObj(uid,"week_target","taskCount",0)

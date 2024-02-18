@@ -21,8 +21,6 @@ const pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
 const guide_item = require("../../../../config/gameCfg/guide_item.json")
 const fundMap = {
 	lv_fund : require("../../../../config/gameCfg/lv_fund.json"),
-	power_fund : require("../../../../config/gameCfg/power_fund.json"),
-	beaty_fund : require("../../../../config/gameCfg/beaty_fund.json")
 }
 const oneDayTime = 86400000
 var util = require("../../../../util/util.js")

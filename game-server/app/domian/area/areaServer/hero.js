@@ -168,7 +168,12 @@ var model = function() {
 				cb(true,heroInfo)
 		})
 		self.taskUpdate(uid,"hero",1,heroInfo.qa)
-		self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
+		if(heroInfo.qa >= 5){
+			var lordName = self.getLordName(uid)
+			if(lordName)
+				self.addNotice("hero",lordName,heros[heroInfo.id]["name"])
+			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
+		}
 		return heroInfo
 	}
 	//根据携带等级获取英雄
@@ -183,7 +188,12 @@ var model = function() {
 				cb(true,heroInfo)
 		})
 		self.taskUpdate(uid,"hero",1,qa)
-		self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
+		if(heroInfo.qa >= 5){
+			var lordName = self.getLordName(uid)
+			if(lordName)
+				self.addNotice("hero",lordName,heros[heroInfo.id]["name"])
+			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
+		}
 		return heroInfo
 	}
 	//设置心愿英雄
@@ -227,6 +237,9 @@ var model = function() {
 				if(cb)
 					cb(true,heroInfo)
 			})
+			var lordName = self.getLordName(uid)
+			if(lordName)
+				self.addNotice("hero",lordName,heros[heroInfo.id]["name"])
 			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 			return heroInfo
 		})
@@ -601,6 +614,11 @@ var model = function() {
 			var info = JSON.parse(heroInfo.save)
 			if(heroInfo.qa != info.qa)
 				self.taskUpdate(uid,"hero",1,info.qa)
+			if(heroInfo.qa < 5 && info.qa >= 5){
+				var lordName = self.getLordName(uid)
+				if(lordName)
+					self.addNotice("hero",lordName,heros[heroInfo.id]["name"])
+			}
 			for(var i = 0;i < 10;i++){
 				delete heroInfo["PS"+i]
 				self.heroDao.onlyDelHeroInfo(uid,hId,"PS"+i)
@@ -658,7 +676,7 @@ var model = function() {
 				if(cb)
 					cb(true,heroInfo)
 			})
-			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
+			// self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 		})
 	}
 	//首次获取英雄
@@ -677,7 +695,12 @@ var model = function() {
 				if(cb)
 					cb(true,heroInfo)
 			})
-			self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
+			if(heroInfo.qa >= 5){
+				var lordName = self.getLordName(uid)
+				if(lordName)
+					self.addNotice("hero",lordName,heros[heroInfo.id]["name"])
+			}
+			// self.mysqlDao.addHeroLog({uid:uid,name:heros[heroInfo.id]["name"],id:hId,info:heroInfo,reason:"获得英雄"})
 		})
 	}
 	//英雄洗练 洗练增加通灵值,通灵值满一百必出满技能,出满技能后通灵值重置

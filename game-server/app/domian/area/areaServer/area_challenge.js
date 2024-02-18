@@ -114,6 +114,9 @@ module.exports = function() {
 			self.setAreaObj(main_name,self.maxIndex,JSON.stringify(userInfos))
 			//奖励
 			self.sendTextToMail(uid,"area_challenge",area_challenge[self.maxIndex]["pass_award"],area_challenge[self.maxIndex]["name"])
+			var lordName = self.getLordName(uid)
+			if(lordName)
+				self.addNotice("area_challenge",lordName,area_challenge[self.maxIndex]["name"])
 		}
 	}
 	//领取单骑首通奖励
@@ -175,6 +178,7 @@ module.exports = function() {
 					var atkTeam = atkTeams[i]
 					var defTeam = self.fightContorl.getNPCTeamByType("area_trial",area_trial[trialId]["team"+(i+1)],area_trial[trialId]["lv"])
 					var winFlag = self.fightContorl.beginFight(atkTeam,defTeam,{seededNum : seededNums[i]})
+					console.log(self.fightContorl.getVerifyInfo())
 					if(!winFlag){
 						next("第"+i+"场战斗失败")
 						return

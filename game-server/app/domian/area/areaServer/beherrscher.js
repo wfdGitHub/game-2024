@@ -158,6 +158,7 @@ module.exports = function() {
 							info.atkInfo = userInfos[0]
 							info.defInfo = userInfos[1]
 							local.addRecord(index,info)
+							self.addNotice("beherrscher",info.atkInfo.name,info.defInfo.name,beherrscher_cfg["award_"+index]["name"])
 						})
 					}
 					local.changeData("seat_"+index,uid)

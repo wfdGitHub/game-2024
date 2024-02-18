@@ -83,7 +83,7 @@ module.exports = function() {
 			info[i] = 0
 		for(var i = 1;i <= 6;i++){
 			info["mon_time_"+i] = 0
-			info["mon_lv_"+i] = 1
+			info["mon_lv_"+i] = Math.ceil(Math.random() * 6)
 		}
 		info.main = 1
 		self.setHMObj(uid,main_name,info)
@@ -485,6 +485,7 @@ module.exports = function() {
 					self.incrbyObj(uid,main_name,"boss_count",1)
 					bossCount++
 					var awardList = self.addItemStr(uid,manor_main[buildLv]["boss_award"],rate,"家园BOSS")
+					self.taskUpdate(uid,"manorEnemy",1)
 					cb(true,{winFlag:winFlag,awardList:awardList,bossCount:bossCount,cd:cd,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
 				}else{
 					cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
@@ -563,6 +564,7 @@ module.exports = function() {
 					}
 					self.setObj(uid,main_name,"mon_lv_"+monId,lv)
 					self.setObj(uid,main_name,"mon_time_"+monId,cd)
+					self.taskUpdate(uid,"manorEnemy",1)
 					cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,awardList:awardList,cd:cd,lv:lv,action:action})
 				}else{
 					cb(true,{winFlag:winFlag,atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,action:action})
@@ -710,13 +712,13 @@ module.exports = function() {
 				//获取敌方阵容
 				if(!city_infos[land]["own"]){
 					//机器人队伍
-					defTeam = self.fightContorl.getNPCTeamByType("manor_player",manor_citys[city_infos[land].id]["npc_team"],self.getLordLv(uid))
+					defTeam = self.fightContorl.getNPCTeamByType("manor_city",manor_citys[city_infos[land].id]["npc_team"],self.getLordLv(uid))
 					targetLv = buildLv
 					next()
 				}else{
 					//玩家队伍
-					self.getDefendTeam(city_infos[land]["own"],function(team) {
-						defTeam = team
+					self.getTeamByType(city_infos[land]["own"],battle_cfg["manor_city"]["team"],function(flag,teams) {
+						defTeam = teams
 						self.getObj(city_infos[land]["own"],main_name,"main",function(data) {
 							targetLv = Number(data) || 1
 							next()
@@ -834,7 +836,7 @@ module.exports = function() {
 	}
 	//占领玩家
 	this.manorOccupyUser = function(uid,target,cb) {
-		if(!target || !Number.isInteger(target)){
+		if(!target){
 			cb(false,"target error")
 			return
 		}
@@ -919,8 +921,8 @@ module.exports = function() {
 					next()
 				}else{
 					//玩家队伍
-					self.getDefendTeam(target,function(team) {
-						defTeam = team
+					self.getTeamByType(target,battle_cfg["manor_player"]["team"],function(flag,teams) {
+						defTeam = teams
 						next()
 					})
 				}
@@ -984,7 +986,7 @@ module.exports = function() {
 	}
 	//反击
 	this.manorRevolt = function(uid,cb) {
-		var atkTeam = self.getUserTeam(uid)
+		var atkTeam = []
 		var defTeam = []
 		var seededNum = Date.now()
 		var atkInfo = self.getSimpleUser(uid)
@@ -1011,8 +1013,15 @@ module.exports = function() {
 			},
 			function(next) {
 				//玩家队伍
-				self.getDefendTeam(defInfo.uid,function(team) {
-					defTeam = team
+				self.getTeamByType(uid,battle_cfg["manor_player"]["team"],function(flag,teams) {
+					atkTeam = teams
+					next()
+				})
+			},
+			function(next) {
+				//玩家队伍
+				self.getTeamByType(defInfo.uid,battle_cfg["manor_player"]["team"],function(flag,teams) {
+					defTeam = teams
 					next()
 				})
 			},

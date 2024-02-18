@@ -25,6 +25,7 @@ var model = function(otps) {
 	this.lv = otps["lv"] || 1		//等级
 	this.star = otps["star"] || 1		//星级
 	this.ad = otps["ad"] || 0			//阶级
+	this.damageType = otps["damageType"] //伤害类型
 	this.teamInfo = {}
 	this.heroAtts = otps.heroAtts
 	this.isBoss = otps.boss || false	//是否是BOSS
@@ -41,9 +42,10 @@ var model = function(otps) {
 	this.attInfo.M_SEF = otps["M_SEF"] || 1
 	this.attInfo.M_SPE = otps["M_SPE"] || 1
 	this.attInfo.maxHP = otps["maxHP"] || 0				//最大生命值
-	this.attInfo.atk = otps["atk"] || 0					//攻击力
-	this.attInfo.phyDef = otps["phyDef"] || 0			//物理防御力
-	this.attInfo.magDef = otps["magDef"] || 0			//法术防御力
+	this.attInfo.atk = Math.ceil(otps["atk"] || 0) 		//攻击力
+	this.attInfo.magAtk = Math.ceil(otps["magAtk"] || 0)//法伤
+	this.attInfo.phyDef = Math.ceil(otps["phyDef"] || 0)//物理防御力
+	this.attInfo.magDef = Math.ceil(otps["magDef"] || 0)//法术防御力
 	this.attInfo.crit = otps["crit"] || 0				//暴击几率
 	this.attInfo.critDef = otps["critDef"] || 0			//抗暴几率
 	this.attInfo.slay = otps["slay"] || 0				//爆伤加成
@@ -54,7 +56,7 @@ var model = function(otps) {
 	this.attInfo.reduction = otps["reduction"] || 0		//伤害减免
 	this.attInfo.healRate = otps["healRate"] || 0		//治疗暴击几率
 	this.attInfo.healAdd = otps["healAdd"] || 0			//被治疗加成
-	this.attInfo.speed = (otps["speed"] || 0) + 100 	//速度值
+	this.attInfo.speed = Math.ceil((otps["speed"] || 0))//速度值
 	this.attInfo.speed += Math.floor((this.attInfo.speed * (this.attInfo.M_SPE-40) / (this.attInfo.M_SPE+120)))
 	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
 	this.surplus_health = otps.surplus_health			//剩余生命值比例
@@ -899,7 +901,13 @@ model.prototype.before = function() {
 	//随机BUFF判断
 	if(this.begin_round_buffs){
 		var rand = Math.floor(this.fighting.seeded.random("begin_round_buffs") * this.begin_round_buffs.length)
-		buffManager.createBuff(this,this,this.begin_round_buffs[rand])
+		var buffInfo = this.begin_round_buffs[rand]
+		var buffTargets = this.fighting.locator.getBuffTargets(this,buffInfo.buff_tg)
+		for(var k = 0;k < buffTargets.length;k++){
+			if(this.fighting.seeded.random("判断BUFF命中率") < buffInfo.buffRate){
+				buffManager.createBuff(this,buffTargets[k],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+			}
+		}
 	}
 }
 //行动结束后刷新
@@ -1478,13 +1486,11 @@ model.prototype.onDie = function(callbacks) {
 		callbacks = []
 	}
 	if(this.isPassive("died_buff")){
-		var buff = JSON.parse(this.getPassiveArg("died_buff"))
-		var targets = this.fighting.locator.getTargets(this,buff.buff_tg)
-		if(targets.length){
-			for(var i = 0;i < targets.length;i++){
-				buffManager.createBuff(this,targets[i],buff)
-			}
-		}
+		callbacks.push(() => {
+			var buff = {"buffId":"delay_death","buff_tg":"team_self","buffArg":1,"duration":2,"buffRate":1}
+			buffManager.createBuff(this,this,buff)
+		})
+		return
 	}
 	if(this.buffs["delay_death"])
 		return
@@ -1501,6 +1507,7 @@ model.prototype.onDie = function(callbacks) {
 	if(callFlag){
 		for(var i = 0;i < callbacks.length;i++)
 			callbacks[i]()
+		callbacks = []
 	}
 }
 //队友死亡

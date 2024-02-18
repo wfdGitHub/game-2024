@@ -79,6 +79,7 @@ module.exports = function() {
 	//获取玩家排行数据
 	this.getPlayerSprintRank = function(uid,rankType,cb) {
 		self.zrangeScoreByKey(rankType,uid,function(data) {
+			data = Math.floor(data)
 			cb(true,data)
 		})
 	}

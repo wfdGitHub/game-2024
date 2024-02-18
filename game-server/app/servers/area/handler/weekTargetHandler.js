@@ -1,5 +1,4 @@
 var bearcat = require("bearcat")
-var week_goods = require("../../../../config/gameCfg/week_goods.json")
 var week_day = require("../../../../config/gameCfg/week_day.json")
 var weekTargetHandler = function(app) {
   this.app = app;

@@ -389,12 +389,15 @@ model.useAttackSkill = function(skill,chase,point) {
 	if(skill.character.died && !skill.diedSkill){
 		return []
 	}
+	var targets = []
 	if(point){
 		var targetsNum = 1
-		var targets = [point]
+		for(var i = 0;i < point.length;i++)
+			if(!point[i].died)
+				targets.push(point[i])
 	}else{
 		var targetsNum = this.locator.getTargetsNum(skill.targetType)
-		var targets = this.locator.getTargets(skill.character,skill.targetType)
+		targets = this.locator.getTargets(skill.character,skill.targetType)
 	}
 	if(!targets.length){
 		fightRecord.push(recordInfo)

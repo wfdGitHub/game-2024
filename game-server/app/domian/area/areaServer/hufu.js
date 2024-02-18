@@ -45,6 +45,7 @@ for(var i in war_banner){
 		banner_quality[war_banner[i]["quality"]] = []
 	banner_quality[war_banner[i]["quality"]].push(i)
 }
+const weight = {"1":0.35,"2":0.25,"3":0.1,"4":0.01}
 module.exports = function() {
 	var self = this
 	//护符列表
@@ -176,16 +177,16 @@ module.exports = function() {
 				self.heroDao.delHeroInfo(self.areaId,uid,hId,"hfs2")
 			}
 			self.gainHufu(uid,hufuInfo)
-			cb(true,heroInfo)
+			cb(true,heroInfo,hufuInfo)
 		})
 	}
 	//合成护符
 	this.compoundHufu = function(uid,ids,lv,cb) {
-		if(!ids || ids.length !== 5){
+		if(!ids || ids.length !== 2){
 			cb(false,"ids error")
 			return
 		}
-		if(!hufu_quality[lv] || !Number.isInteger(lv) || lv >= 4){
+		if(!hufu_quality[lv] || !Number.isInteger(lv)){
 			cb(false,"lv error "+lv)
 			return
 		}
@@ -211,7 +212,9 @@ module.exports = function() {
 			}
 			for(var i = 0;i < ids.length;i++)
 				self.delObj(uid,main_name,ids[i])
-			var info = self.gainRandHufu(uid,lv+1)
+			if(lv < 4 && Math.random() < weight[lv])
+				lv++
+			var info = self.gainRandHufu(uid,lv)
 			cb(true,info)
 		})
 	}

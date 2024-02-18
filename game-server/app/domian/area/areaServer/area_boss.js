@@ -242,7 +242,10 @@ module.exports = function() {
 				var info = {}
 				info.userInfos = userInfos
 				info.scores = scores
-				cb(true,info)
+				self.getPlayerSprintRank(uid,main_name,function(flag,data) {
+					info.myScore = data || 0
+					cb(true,info)
+				})
 			})
 		})
 	}

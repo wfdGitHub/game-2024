@@ -99,7 +99,7 @@ module.exports = function() {
 			delete local.userInfos[crossUid]
 			return
 		}
-		if(carInfo){
+		if(carInfo && local.userInfos[crossUid]){
 			//木牛刷新
 			local.userInfos[crossUid]["quality"] = "car0"
 			var nextQuality = local.updateEscortCar(crossUid)

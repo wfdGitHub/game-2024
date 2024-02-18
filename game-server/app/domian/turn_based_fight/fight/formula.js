@@ -95,9 +95,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		def = Math.floor(def * (1 - neglect_def))
 	}
 	var mul = 1
-	if(attacker.characterType != "master"){
+	if(attacker.characterType != "master")
 		mul += attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction") + attDiff
-	}
 	if(mul < 0.1)
 		mul = 0.1
 	if(tmpAmplify)
@@ -129,12 +128,6 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(attacker.power_up && skill.skillType == "power")
 		mul *= 1 + attacker.power_up
 	info.value = Math.ceil(((atk*atk)/(atk+def)) * skill.mul * mul)
-	if(skill.skillType != "power"){
-		if(skill.isAnger)
-			info.value = Math.ceil(info.value * (attacker.getTotalAtt("M_STK") * 2)/(attacker.getTotalAtt("M_STK") + target.getTotalAtt("M_SEF")))
-		else
-			info.value = Math.ceil(info.value * (attacker.getTotalAtt("M_ATK") * 2)/(attacker.getTotalAtt("M_ATK") + target.getTotalAtt("M_DEF")))
-	}
 	if(addAmp)
 		info.value = Math.ceil(info.value * (1+addAmp))
 	//破冰一击

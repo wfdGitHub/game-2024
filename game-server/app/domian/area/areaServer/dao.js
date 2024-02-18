@@ -194,6 +194,17 @@ module.exports = function() {
 			}
 		})
 	}
+	//获取服务器hash自定义数据长度
+	this.getAreaLen = function(objName,cb) {
+		this.redisDao.db.hlen("area:area"+this.areaId+":"+objName,function(err,data) {
+			if(err){
+				console.log(err)
+				cb(false)
+			}else{
+				cb(data)
+			}
+		})
+	}
 	//批量获取服务器hash数据
 	this.getAreaHMObj = function(objName,arr,cb) {
 		this.redisDao.db.hmget("area:area"+this.areaId+":"+objName,arr,function(err,data) {

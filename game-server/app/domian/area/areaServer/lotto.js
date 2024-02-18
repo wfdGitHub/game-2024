@@ -46,31 +46,18 @@ module.exports = function() {
     }
     //转盘元宝抽奖
     this.lottoByGold = function(uid,type,count,cb) {
-        if(!lotto_cfg[type] || !lotto_cfg[type]["count"]){
+        if(!lotto_cfg[type]){
             cb(false,"type not find "+type)
             return
         }
-        if(!lotto_cfg[type]["gold_"+count]){
-        	cb(false,"该次数不能抽奖")
-        	return
-        }
-        self.getObj(uid,main_name,type+"_count",function(data) {
-        	data = Number(data) || 0
-        	var gmLv = self.getLordAtt(uid,"gmLv")
-        	if(data && (data + count) > (lotto_cfg[type]["count"] + GM_CFG[gmLv]["lotto"])){
-        		cb(false,"抽奖次数不足")
-        		return
-        	}
-			self.consumeItems(uid,lotto_cfg[type]["gold_"+count],1,"转盘"+type,function(flag,err) {
-				if(!flag){
-					cb(false,err)
-				}else{
-		        	self.incrbyObj(uid,main_name,type+"_count",count)
-		        	local.onLotto(uid,type,count,cb)
-				}
-			})
-
-        })
+		self.consumeItems(uid,lotto_cfg[type]["gold_"+count],1,"转盘"+type,function(flag,err) {
+			if(!flag){
+				cb(false,err)
+			}else{
+	        	self.incrbyObj(uid,main_name,type+"_count",count)
+	        	local.onLotto(uid,type,count,cb)
+			}
+		})
     }
     //转盘道具抽奖
     this.lottoByItem = function(uid,type,count,cb) {
@@ -92,29 +79,22 @@ module.exports = function() {
     }
     //开始抽奖
     local.onLotto = function(uid,type,count,cb) {
-		var name = self.players[uid]["name"]
-		var awards = {}
-		var awardList = []
-		var index = -1
-		for(var i = 0;i < count;i++){
-			var rand = Math.random() * allWeightMap[type]
-			for(var j = 0;j < MAX_GRID;j++){
-				if(rand < lottoMaps[type][j]["weight"]){
-					index = j
-					if(!awards[lottoMaps[type][j]["award"]])
-						awards[lottoMaps[type][j]["award"]] = 0
-					awards[lottoMaps[type][j]["award"]]++
-					if(lottoMaps[type][j]["rare"]){
-						local.saveRecord(name,type,lottoMaps[type][j]["award"])
-					}
-					break
-				}
-			}
-		}
-		for(var awardStr in awards){
-			awardList = awardList.concat(self.addItemStr(uid,awardStr,awards[awardStr],"转盘:"+type))
-		}
-		cb(true,{awardList:awardList,index:index})
+        var name = self.players[uid]["name"]
+        var awardList = []
+        var index = -1
+        for(var i = 0;i < count;i++){
+            var rand = Math.random() * allWeightMap[type]
+            for(var j = 0;j < MAX_GRID;j++){
+                if(rand < lottoMaps[type][j]["weight"]){
+                    index = j
+                    awardList = awardList.concat(self.addItemStr(uid,lottoMaps[type][j]["award"],1,"转盘:"+type))
+                    if(lottoMaps[type][j]["rare"])
+                        local.saveRecord(name,type,lottoMaps[type][j]["award"])
+                    break
+                }
+            }
+        }
+        cb(true,{awardList:awardList,index:index})
     }
     //保存转盘稀有道具记录
     local.saveRecord = function(name,type,award) {
