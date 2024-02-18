@@ -2,7 +2,6 @@
 const fightCfg = require("../fightCfg.js")
 const standard_ce_cfg = fightCfg.getCfg("standard_ce")
 const standard_dl = fightCfg.getCfg("standard_dl")
-const stone_lv = fightCfg.getCfg("stone_lv")
 const battle_cfg = fightCfg.getCfg("battle_cfg")
 var standard_ce = {}
 var standard_team_ce = {}
@@ -12,22 +11,19 @@ for(var i in standard_ce_cfg){
 		"equip" : standard_ce_cfg[i]["equip"]
 	}
 	standard_team_ce[i] = {}
-	for(var j = 1;j <= 4;j++){
-		if(stone_lv[standard_ce_cfg[i]["stone_lv"]])
-			standard_ce[i]["s"+j] = stone_lv[standard_ce_cfg[i]["stone_lv"]]["s"+j]
+	for(var j = 1;j <= 4;j++)
 		standard_team_ce[i]["g"+j] = standard_ce_cfg[i]["guild"]
-	}
 	standard_team_ce[i]["officer"] = standard_ce_cfg[i]["officer"]
 }
 var model = function() {
 	//根据类型获取基准战力阵容  若未传难度等级则默认选择战斗配置表中的难度等级
 	this.getNPCTeamByType = function(b_type,npcs,lv,dl) {
 		if(!battle_cfg[b_type]){
-			console.error("getNPCTeamByType b_type erro ",b_type)
+			console.trace("getNPCTeamByType b_type erro ",b_type)
 			b_type = "checkpoints"
 		}
 		if(!lv){
-			console.error("getNPCTeamByType lv erro ",lv)
+			console.trace("getNPCTeamByType lv erro ",lv)
 			lv = 1
 		}
 		if(!dl)
@@ -52,7 +48,7 @@ var model = function() {
 				//装备
 				for(var j = 1;j <= 6;j++)
 					heroInfo["e"+j] = this.makeStandardEquip(lvInfo.equip,j,dlInfo.equip_qa)
-				//基准战力宝石
+				//todo 基准战力宝石
 				team.push(heroInfo)
 			}
 		}

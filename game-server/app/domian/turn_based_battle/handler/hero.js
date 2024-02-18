@@ -19,7 +19,13 @@ const guild_skill = fightCfg.getCfg("guild_skill")
 const manor_main = fightCfg.getCfg("manor_main")
 const manor_type = fightCfg.getCfg("manor_type")
 const hufu_quality = fightCfg.getCfg("hufu_quality")
+const zhanfa = fightCfg.getCfg("zhanfa")
+const DIY_hero = fightCfg.getCfg("DIY_hero")
+const DIY_skills = fightCfg.getCfg("DIY_skills")
+const DIY_talents = fightCfg.getCfg("DIY_talents")
 const character = require("../entity/character.js")
+const DIY_SKILL_KESY = ["DIY_N","DIY_S"]
+const DIY_TALENT_KESY = ["D1","D2","D3","PS0","PS1","PS2","PS3","PS4"]
 var gemMap = {}
 for(var i in gem_lv){
 	i = Number(i)
@@ -55,6 +61,8 @@ var model = function(fightContorl) {
 	this.makeHeroData = function(id,qa) {
 		if(!heros[id])
 			return {}
+		if(heros[id]["type"] !== 0)
+			return this.makeFullHeroData(id)
 		var heroInfo = {}
 		heroInfo.id = id
 		heroInfo.evo = 1
@@ -140,11 +148,9 @@ var model = function(fightContorl) {
 		var skillNum = 0
 		c_info.wash = wash
 		//宠物异化
-		var needRate = wash/300
-		if(needRate)
-			needRate += 0.2
-		if(qa == 4 && Math.random() < needRate)
-			qa = 5
+		if(c_info.wash > 0 && (qa == 3 || qa == 4))
+			if(Math.random() < exalt_lv[heros[id]["exalt"]]["wash_qa"+qa])
+				qa++
 		c_info.qa = qa
 		//触发资质加成
 		if(item || Math.random() < wash/200)
@@ -154,9 +160,9 @@ var model = function(fightContorl) {
 			skillNum = heros[id]["passive_num"]
 		else
 			skillNum = Math.floor(hero_quality[qa]["skillRate"] * (Math.random() * 0.5 + 0.6) * heros[id]["passive_num"])
-		skillNum = Math.min(2,skillNum)
+		skillNum = Math.max(2,skillNum)
 		for(var i = 1;i <= 6;i++)
-			c_info["MR"+i] = hero_quality[qa]["mainRate"] * (Math.random() * (0.4 + extra) + 0.7)
+			c_info["MR"+i] = Number((hero_quality[qa]["mainRate"] * (Math.random() * (0.4 + extra) + 0.6)).toFixed(2))
 		if(skillNum == heros[id]["passive_num"])
 			c_info.wash = 0
 		var skillList = []
@@ -191,7 +197,7 @@ var model = function(fightContorl) {
 				if(list[i]["e"+j+"g"+k])
 					strList.push(list[i]["e"+j+"g"+k]+":1")
 			}
-			map["2000030"] += Math.round(evolve_lv[list[i]["evo"]]["pr"] * exalt_lv[list[i]["lv"]]["prRate"])
+			map["2000030"] += Math.round(evolve_lv[list[i]["evo"]]["pr"] * exalt_lv[list[i]["exalt"]]["prRate"])
 			if(list[i]["qa"] >= 5)
 				map["2000050"] += 1
 
@@ -246,7 +252,7 @@ var model = function(fightContorl) {
 		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
 		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
 		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
-		allCE += Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 120 + aptitude * 1000)
+		allCE += Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 12 + aptitude * 100)
 		//技能战力
 		for(var i = 0;i <= 10;i++)
 			if(info["PS"+i])
@@ -287,6 +293,322 @@ var model = function(fightContorl) {
     			allCE += zhanfa[info["zf_"+j]]["ce"]
 		}
 		return Math.ceil(allCE)
+	}
+	//获取角色数据
+	this.getCharacterInfo = function(info,heroAtts,teamCfg) {
+		if(!info || !heros[info.id])
+			return false
+		teamCfg = teamCfg || {}
+		info = Object.assign({},info)
+		info.heroAtts = heroAtts
+		info.exalt = info.exalt || 0
+		info.evo = info.evo || 1
+		info.lv = info.lv || 1
+		var id = info.id
+		info.aptitude = exalt_lv[info.exalt]["aptitude"] || 1
+		//神兽资质加成
+		if(heros[id]["type"] == 2)
+			info.aptitude += 3
+		this.mergeData(info,heros[id])
+		var evoId = evolve_lv[info.evo]["evoId"]
+		if(!evolves[heros[info.id]["evo"+evoId]]){
+			console.log("evoId error "+heros[info.id]["evo"+evoId]+"-"+info.id)
+			return false
+		}
+		if(evolves[heros[info.id]["evo"+evoId]]["specie1"])
+			info.specie1 = evolves[heros[info.id]["evo"+evoId]]["specie1"]
+		if(evolves[heros[info.id]["evo"+evoId]]["specie2"])
+			info.specie2 = evolves[heros[info.id]["evo"+evoId]]["specie2"]
+		//天赋被动
+		if(heros[id]["type"] == 3){
+			//定制英雄
+			if(info["DIY_N"])
+				info["defaultSkill"] = info["DIY_N"]
+			if(info["DIY_S"])
+				info["angerSkill"] = info["DIY_S"]
+			for(var i = 1;i <= evoId;i++)
+				this.mergeTalent(info,info["D"+i])
+		}else{
+			for(var i = 1;i <= evoId;i++)
+				this.mergeTalent(info,heros[info.id]["talent"+i])
+		}
+		//神兽技能
+		if(info.m_ps)
+			this.mergeTalent(info,heros[info.id]["mythical"])
+		//主属性计算
+		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
+		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
+		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
+		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
+		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
+		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
+		//装备计算
+		var suitMaps = {}
+		for(var i = 1;i <= 6;i++){
+			if(info["e"+i]){
+				var eInfo = this.getEquipData(info["e"+i])
+				this.mergeData(info,eInfo.mainAtt)
+				this.mergeData(info,eInfo.extraAtt)
+				this.mergeData(info,eInfo.stAtt)
+				this.mergeData(info,eInfo.zfAtt)
+				for(var j = 0;j < eInfo.spe.length;j++)
+					this.mergeTalent(info,eInfo.spe[j])
+				if(eInfo.suit){
+					if(!suitMaps[eInfo.suit])
+						suitMaps[eInfo.suit] = 0
+					suitMaps[eInfo.suit]++
+				}
+				//宝石
+				for(var k = 1;k <= 5;k++)
+					if(info["e"+i+"g"+k])
+						this.mergeTalent(info,info["e"+i+"g"+k])
+			}
+		}
+		//装备套装
+		for(var i in suitMaps){
+			if(suitMaps[i] >= equip_suit[i]["count"])
+				this.mergeTalent(info,i)
+		}
+		//宝物加成
+		for(var i = 1;i <= 10;i++){
+			if(info["a"+i]){
+				var talentId = ace_pack[info["a"+i]]["pa"]
+				this.mergeTalent(info,talentId)
+			}
+		}
+		//法宝加成
+		for(var i = 1;i <= 3;i++){
+			if(info["fabao"+i]){
+				var fabaoData = this.getFabaoData(info["fabao"+i])
+				this.mergeData(info,fabaoData.realAtt)
+				for(var j = 0;j < fabaoData.spe.length;j++)
+					this.mergeTalent(info,fabaoData.spe[j])
+				for(var j = 0;j < fabaoData.slotTalents.length;j++)
+					this.mergeTalent(info,fabaoData.slotTalents[j])
+			}
+		}
+		//公会技能计算
+		if(teamCfg && teamCfg["g"+info.career] && gSkillAtts[info.career]){
+			var glv = teamCfg["g"+info.career]
+			var gInfo = {}
+			for(var i = 0;i < gSkillAtts[info.career].length;i++){
+				gInfo[gSkillAtts[info.career][i]] = guild_skill[glv]["pos_"+i]
+			}
+			this.mergeData(info,gInfo)
+		}
+		var hufu_talents = {}
+		//护符计算
+		if(info.hfLv){
+			if(hufu_quality[info.hfLv])
+				this.mergeData(info,{"self_atk_add" : hufu_quality[info.hfLv]["atk"],"self_maxHP_add" : hufu_quality[info.hfLv]["hp"]})
+			if(info.hfs1){
+				if(hufu_map[info.hfs1]){
+					if(!hufu_talents[hufu_map[info.hfs1].id] || hufu_map[info.hfs1].lv > hufu_talents[hufu_map[info.hfs1].id])
+						hufu_talents[hufu_map[info.hfs1].id] = hufu_map[info.hfs1].lv
+				}
+			}
+			if(info.hfs2){
+				if(hufu_map[info.hfs2]){
+					if(!hufu_talents[hufu_map[info.hfs2].id] || hufu_map[info.hfs2].lv > hufu_talents[hufu_map[info.hfs2].id])
+						hufu_talents[hufu_map[info.hfs2].id] = hufu_map[info.hfs2].lv
+				}
+			}
+		}
+		//被动技能
+		var PSScore = 0
+		for(var i = 0;i <= 10;i++){
+			if(info["PS"+i]){
+				if(hufu_map[info["PS"+i]]){
+					if(!hufu_talents[hufu_map[info["PS"+i]].id] || hufu_map[info["PS"+i]].lv > hufu_talents[hufu_map[info["PS"+i]].id])
+						hufu_talents[hufu_map[info["PS"+i]].id] = hufu_map[info["PS"+i]].lv
+				}
+				PSScore += hufu_lv[hufu_map[info["PS"+i]].lv]["score"]
+			}
+		}
+		for(var i in hufu_talents)
+			this.mergeTalent(info,hufu_skill[i]["lv"+hufu_talents[i]])
+		//家园属性
+		if(teamCfg["manors"]){
+			for(var i = 1;i <= 6;i++){
+				var key = "ATT_"+i
+				if(teamCfg["manors"][key] && teamCfg["manors"]["slot_"+key]){
+					for(var j = 0;j < teamCfg["manors"]["slot_"+key].length;j++){
+						if(teamCfg["manors"]["slot_"+key][j] == info.hId && manor_main[teamCfg["manors"][key]]){
+							var tmpInfo = {}
+							tmpInfo[manor_type[key]["ATT"]] = manor_main[teamCfg["manors"][key]]["hero_att"]
+							this.mergeData(info,tmpInfo)
+							break
+						}
+					}
+				}
+			}
+		}
+		//===============场景属性=================//
+		if(teamCfg["specieAdd"] && (info.specie1 == teamCfg["specieAdd"] || info.specie2 == teamCfg["specieAdd"]))
+			this.mergeData(info,{"self_atk_add":0.5})
+		//战法技能
+		if(info.zf_1 && zhanfa[info.zf_1] && zhanfa[info.zf_1]["talent"])
+			this.mergeTalent(info,zhanfa[info.zf_1]["talent"])
+		if(info.zf_2 && zhanfa[info.zf_2] && zhanfa[info.zf_2]["talent"])
+			this.mergeTalent(info,zhanfa[info.zf_2]["talent"])
+		if(info.zf_3 && zhanfa[info.zf_3] && zhanfa[info.zf_3]["talent"])
+			this.mergeTalent(info,zhanfa[info.zf_3]["talent"])
+		//技能设置
+		if(info.normal_change)
+			info.defaultSkill = info.normal_change
+		if(info.skill_change)
+			info.angerSkill = info.skill_change
+		if(info.defaultSkill){
+			if(!skills[info.defaultSkill]){
+				console.error("技能不存在",info.id,info.defaultSkill)
+				info.defaultSkill = false
+			}else{
+				info.defaultSkill = Object.assign({skillId : info.defaultSkill},skills[info.defaultSkill])
+			}
+		}
+		info.damageType = ""
+		if(info.angerSkill){
+			if(!skills[info.angerSkill]){
+				console.error("技能不存在",info.id,info.angerSkill)
+				info.angerSkill = false
+			}else{
+				info.angerSkill = Object.assign({skillId : info.angerSkill},skills[info.angerSkill])
+				if(info.angerSkill.damageType == "mag")
+					info.damageType = "mag"
+			}
+		}
+		if(info.beginSkill && skills[info.beginSkill])
+			info.beginSkill = Object.assign({skillId : info.beginSkill},skills[info.beginSkill])
+		if(info.diedSkill && skills[info.diedSkill]){
+			info.diedSkill = Object.assign({skillId : info.diedSkill},skills[info.diedSkill])
+			info.diedSkill.diedSkill = true
+		}
+		var lvInfo = {
+		    "maxHP":aptitudes[info.aptitude].maxHP,
+		    "atk": aptitudes[info.aptitude].atk,
+		    "phyDef": aptitudes[info.aptitude].phyDef,
+		    "magDef": aptitudes[info.aptitude].magDef
+		}
+		//等级计算
+		if(info.lv && lv_cfg[info.lv]){
+			for(var key in lvInfo)
+				lvInfo[key] += lv_cfg[info.lv][key]
+			var growth = aptitudes[info.aptitude].growth
+			lvInfo.maxHP = Math.floor(lvInfo.maxHP * (1 + info["M_HP"] * 0.02) * growth)
+			if(info.damageType == "phy")
+				lvInfo.atk = Math.floor(lvInfo.atk * (1 + info["M_ATK"] * 0.01) * growth)
+			else
+				lvInfo.atk = Math.floor(lvInfo.atk * (1 + info["M_STK"] * 0.01) * growth)
+			lvInfo.phyDef = Math.floor(lvInfo.phyDef * (1 + info["M_DEF"] * 0.02) * growth)
+			lvInfo.magDef = Math.floor(lvInfo.magDef * (1 + info["M_SEF"] * 0.02) * growth)
+			lvInfo.speed = 100 + lv_cfg[info.lv].speed * (1 + info["M_SPE"] * 0.01)
+		}
+		if(evolve_lv[info.evo]){
+			lvInfo.maxHP += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
+			lvInfo.atk += Math.floor(lvInfo.atk * evolve_lv[info.evo]["att_add"])
+			lvInfo.phyDef += Math.floor(lvInfo.phyDef * evolve_lv[info.evo]["att_add"])
+			lvInfo.magDef += Math.floor(lvInfo.magDef * evolve_lv[info.evo]["att_add"])
+		}
+		this.mergeData(info,lvInfo)
+		//主属性增益
+		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore + (Math.pow(info.qa,1.4) * 100))
+		return new character(info)
+	}
+	//获取角色主数据
+	this.getCharacterMainAtt = function(info) {
+		if(!info || !heros[info.id])
+			return false
+		info = Object.assign({},info)
+		info.exalt = info.exalt || 0
+		info.evo = info.evo || 1
+		info.lv = info.lv || 1
+		var id = info.id
+		var evoId = evolve_lv[info.evo]["evoId"]
+		info.aptitude = exalt_lv[info.exalt]["aptitude"] || 1
+		//神兽资质加成
+		if(heros[id]["type"] == 2)
+			info.aptitude += 3
+		this.mergeData(info,heros[id])
+		//主属性计算
+		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
+		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
+		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
+		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
+		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
+		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
+		return info
+	}
+	//新增天赋
+	this.mergeTalent = function(info,talentId,value) {
+		if(!talent_list[talentId]){
+			console.error("talentId error",talentId)
+			return
+		}
+		for(var i = 1;i <= 6;i++){
+			if(talent_list[talentId]["key"+i]){
+				var tmpTalent = {}
+				tmpTalent[talent_list[talentId]["key"+i]] = talent_list[talentId]["value"+i]
+				if(tmpTalent[talent_list[talentId]["key"+i]] == "dynamic")
+					tmpTalent[talent_list[talentId]["key"+i]] = value || 0
+				this.mergeData(info,tmpTalent)
+			}
+		}
+	}
+	//数据合并
+	this.mergeData = function(info1,info2) {
+		if(!info2)
+			return
+		for(var i in info2){
+			switch(i){
+				case "normal_buff":
+					if(!info1.normal_buffs)
+						info1.normal_buffs = []
+					info1.normal_buffs.push(info2[i])
+				break
+				case "skill_buff":
+					if(!info1.skill_buffs)
+						info1.skill_buffs = []
+					info1.skill_buffs.push(info2[i])
+				break
+				case "round_buff":
+					if(!info1.round_buffs)
+						info1.round_buffs = []
+					info1.round_buffs.push(info2[i])
+				break
+				case "first_buff":
+					if(!info1.first_buffs)
+						info1.first_buffs = []
+					info1.first_buffs.push(info2[i])
+				break
+				case "action_buff":
+					if(!info1.action_buffs)
+						info1.action_buffs = []
+					info1.action_buffs.push(info2[i])
+				break
+				case "kill_buff":
+					if(!info1.kill_buffs)
+						info1.kill_buffs = []
+					info1.kill_buffs.push(info2[i])
+				break
+				case "died_buff":
+					if(!info1.died_buffs)
+						info1.died_buffs = []
+					info1.died_buffs.push(info2[i])
+				break
+				default :
+					if(info2[i]){
+						if(info1[i] && Number.isFinite(info2[i])){
+							if(Number.isFinite(info1[i])){
+								info1[i] += info2[i]
+							}else{
+								info1[i] = info2[i]
+							}
+						}else{
+							info1[i] = info2[i]
+						}
+					}
+			}
+		}
 	}
 	//获取团队天赋
 	this.getTeamTalents = function(teamCfg) {
@@ -486,102 +808,6 @@ var model = function(fightContorl) {
 		}
 		return info
 	}
-	//获取角色主数据
-	this.getCharacterMainAtt = function(info) {
-		if(!info || !heros[info.id])
-			return false
-		info = Object.assign({},info)
-		info.exalt = info.exalt || 1
-		info.evo = info.evo || 1
-		info.lv = info.lv || 1
-		var id = info.id
-		var evoId = evolve_lv[info.evo]["evoId"]
-		info.aptitude = exalt_lv[info.exalt]["aptitude"] || 1
-		//神兽资质加成
-		if(heros[id]["type"] == 2)
-			info.aptitude += 3
-		this.mergeData(info,heros[id])
-		//主属性计算
-		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
-		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
-		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
-		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
-		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
-		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
-		return info
-	}
-	//新增天赋
-	this.mergeTalent = function(info,talentId,value) {
-		if(!talent_list[talentId]){
-			console.error("talentId error",talentId)
-			return
-		}
-		for(var i = 1;i <= 3;i++){
-			if(talent_list[talentId]["key"+i]){
-				var tmpTalent = {}
-				tmpTalent[talent_list[talentId]["key"+i]] = talent_list[talentId]["value"+i]
-				if(tmpTalent[talent_list[talentId]["key"+i]] == "dynamic")
-					tmpTalent[talent_list[talentId]["key"+i]] = value || 0
-				this.mergeData(info,tmpTalent)
-			}
-		}
-	}
-	//数据合并
-	this.mergeData = function(info1,info2) {
-		if(!info2)
-			return
-		for(var i in info2){
-			switch(i){
-				case "normal_buff":
-					if(!info1.normal_buffs)
-						info1.normal_buffs = []
-					info1.normal_buffs.push(info2[i])
-				break
-				case "skill_buff":
-					if(!info1.skill_buffs)
-						info1.skill_buffs = []
-					info1.skill_buffs.push(info2[i])
-				break
-				case "round_buff":
-					if(!info1.round_buffs)
-						info1.round_buffs = []
-					info1.round_buffs.push(info2[i])
-				break
-				case "first_buff":
-					if(!info1.first_buffs)
-						info1.first_buffs = []
-					info1.first_buffs.push(info2[i])
-				break
-				case "action_buff":
-					if(!info1.action_buffs)
-						info1.action_buffs = []
-					info1.action_buffs.push(info2[i])
-				break
-				case "kill_buff":
-					if(!info1.kill_buffs)
-						info1.kill_buffs = []
-					info1.kill_buffs.push(info2[i])
-				break
-				case "died_buff":
-					if(!info1.died_buffs)
-						info1.died_buffs = []
-					info1.died_buffs.push(info2[i])
-				break
-				default :
-					if(info2[i]){
-						if(info1[i] && Number.isFinite(info2[i])){
-							if(Number.isFinite(info1[i])){
-								info1[i] += info2[i]
-							}else{
-								info1[i] = info2[i]
-							}
-						}else{
-							info1[i] = info2[i]
-						}
-					}
-			}
-		}
-	}
 	//计算战力差值
 	this.calcCEDiff = function(name,oldValue,newValue) {
 		var oldCE = 0
@@ -673,6 +899,34 @@ var model = function(fightContorl) {
 			break
 		}
 		return newCE - oldCE
+	}
+	//生成定制英雄
+	this.gainDIYHero = function(id,args) {
+		if(!DIY_hero[id])
+			return false
+		args = args || {}
+		var info = {}
+		var heroInfo = this.makeStandardHero(id,DIY_hero[id].qa,1,1,1)
+		info.price = DIY_hero[id]["price"]
+		info.type = DIY_hero[id]["type"]
+		for(var i = 0;i < DIY_SKILL_KESY.length;i++){
+			if(args[DIY_SKILL_KESY[i]]){
+				var tid = DIY_hero[id][DIY_SKILL_KESY[i]][args[DIY_SKILL_KESY[i]][0]]
+				var sid = DIY_skills[tid]["list"][args[DIY_SKILL_KESY[i]][1]]
+				info.price += DIY_skills[tid]["price"]
+				heroInfo[DIY_SKILL_KESY[i]] = sid
+			}
+		}
+		for(var i = 0;i < DIY_TALENT_KESY.length;i++){
+			if(args[DIY_TALENT_KESY[i]]){
+				var tid = DIY_hero[id][DIY_TALENT_KESY[i]][args[DIY_TALENT_KESY[i]][0]]
+				var sid = DIY_talents[tid]["list"][args[DIY_TALENT_KESY[i]][1]]
+				info.price += DIY_talents[tid]["price"]
+				heroInfo[DIY_TALENT_KESY[i]] = sid
+			}
+		}
+		info.heroInfo = heroInfo
+		return info
 	}
 }
 module.exports = model
