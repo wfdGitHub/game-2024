@@ -7,7 +7,7 @@ var character = require("../entity/character.js")
 var fightRecord = require("./fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
 var maxRound = 20				//最大回合
-var indexMap = [4,0,2,1,3,5]
+var indexMap = [4,0,2,3,5]
 var model = function(atkInfo,defInfo,otps) {
     fightRecord.init()
     this.atkTeamInfo = {"comeId":0,"rival":"def"}
@@ -99,7 +99,7 @@ model.prototype.load = function(belong,otps) {
 model.prototype.loadBeginHero = function(belong) {
 	var comeonNum = this[belong+"TeamCfg"]["comeonNum"] || 3
 	var heros = []
-	for(var i = 0;i < comeonNum;i++)
+	for(var i = 0;i < comeonNum && i < 5;i++)
 		heros.push(this.loadHero(belong,indexMap[i]))
 	return heros
 }
