@@ -13,19 +13,20 @@ const cocosColors = {
 }
 var colors = cocosColors
 var model = function() {
-	this.clear()
 	this.buffs = fightCfg.getCfg("buffs")
 	this.heros = fightCfg.getCfg("heros")
 	this.skills = fightCfg.getCfg("skills")
 	this.skill_targets = fightCfg.getCfg("skill_targets")
 	this.hero_talents = fightCfg.getCfg("hero_talents")
 }
-model.prototype.clear = function() {
+model.prototype.clear = function(fighting) {
 	this.list = []
 	this.textList = []
 	this.heroMap = {}
+	this.fighting = fighting
 }
 model.prototype.push = function(info) {
+	info.t = this.fighting.RUNTIME
 	this.list.push(info)
 	// this.explain()
 }
@@ -38,23 +39,18 @@ model.prototype.translate = function(info,type) {
 			for(var i = 0;i < info.allHero.length;i++)
 				this.heroMap[info.allHero[i]["id"]] = this.heros[info.allHero[i]["heroId"]]["name"]+info.allHero[i]["id"]
 		break
-		case "nextRound":
-			//回合标识
-			this.saveText("\n第"+info.round+"回合开始\n")
+		case "move":
+			//使用技能(怒气隐式更新)
+			this.saveText(info.t/1000+"s "+colors["green"]+"["+this.heroMap[info.id]+"]移动至["+info.pos.x+","+info.pos.y+"]"+colors["end"])
 		break
 		case "skill":
 			//使用技能(怒气隐式更新)
 			this.saveText(info.t/1000+"s "+colors["blue"]+"["+this.heroMap[info.id]+"]使用["+info.sid+"]"+colors["end"])
-			if(info.attack){
-				for(var i = 0;i < info.attack.length;i++){
+		break
+		case "damage":
+			if(info.attack)
+				for(var i = 0;i < info.attack.length;i++)
 					this.attackInfo(info.attack[i],"  "+colors["red"]+"对["+this.heroMap[info.attack[i]["id"]]+"]\t"+colors["end"]+" 造成 ")
-				}
-			}
-			if(info.heal){
-				for(var i = 0;i < info.heal.length;i++){
-					this.saveText(colors["green"]+"["+this.heroMap[info.heal[i]["id"]]+"] 恢复 "+info.heal[i].realValue+"血量("+info.heal[i].hp+"/"+info.heal[i].maxHP+")\033[0m\n")
-				}
-			}
 		break
 		case "revive":
 			this.saveText(colors["green"]+"["+this.heroMap[info["id"]]+"] 复活 (血量"+info.hp+"/"+info.maxHP+")\033[0m\n")

@@ -14,7 +14,7 @@ var model = function(atkTeam,defTeam,otps,managers) {
 	this.otps = JSON.parse(JSON.stringify(otps || {}))
 	this.seededNum = this.otps.seededNum || (new Date()).getTime()
 	this.fightRecord = fightRecord
-	this.fightRecord.clear()
+	this.fightRecord.clear(this)
 	this.locator = new locatorFun(this)
 	this.formula = new formulaFun(this)
 	this.skillManager = new skillManagerFun(this)
@@ -75,11 +75,11 @@ model.prototype.loadHero = function(belong,index,info,teamTalents,teamCfg) {
 		this.fightInfo[belong]["survival"]++
 		this.fightInfo[belong]["team"][team_character.id] = team_character
 		this.allHero[team_character.id] = team_character
+		if(belong == "atk")
+			team_character.pos = {x : 500,y : 0}
+		else
+			team_character.pos = {x : 0,y : 0}
 	}
-	if(belong == "atk")
-		team_character.point = {x : 500,y : 500}
-	else
-		team_character.point = {x : 0,y : 0}
 }
 //载入敌方阵容
 model.prototype.loadEnemy = function() {

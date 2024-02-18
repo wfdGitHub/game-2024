@@ -1,6 +1,6 @@
 //行动控制器
 const act_skill = require("./act_skill.js")
-const MOVE_TIME = 500                   //毫秒
+const MOVE_TIME = 300                   //毫秒
 var model = function() {
 	this.pos = {x : 0,y : 0} 			//当前位置
 	this.state = 0 						//当前状态  0 待机  1  移动中  2  释放技能
@@ -9,8 +9,6 @@ var model = function() {
 	this.target = false  				//当前主目标
 	this.dirX = 1 						//X轴移动方向
 	this.dirY = 1 						//Y轴移动方向
-	this.moveCD = 0 					//移动冷却
-	this.atkRange = 50 					//攻击距离
 	this.skill = false
 }
 //定时器更新
@@ -25,19 +23,26 @@ model.prototype.timeUpdate = function(dt) {
 			if(!this.target){
 				this.state = 0
 				return
-			}
+			}  
+			this.dirX = this.target.pos.x > this.pos.x ? 1 : -1
+			this.dirY = this.target.pos.y > this.pos.y ? 1 : -1
 			this.pos.x += Math.round(this.dirX * Math.min(this.moveSpeed * dt * 0.001,Math.abs(this.target.pos.x - this.pos.x)))
 			this.pos.y += Math.round(this.dirY * Math.min(this.moveSpeed * dt * 0.001,Math.abs(this.target.pos.y - this.pos.y)))
-			this.moveCD -= dt
-			if(this.moveCD <= 0)
+			if(this.target.died)
 				this.state = 0
+			var record = {
+				"type" : "move",
+				"id" : this.id,
+				"pos" : Object.assign({},this.pos)
+			}
+			this.fighting.fightRecord.push(record)
 		break
 		case 2:
 			//技能释放中
 			this.skill.update(dt)
 		break
 	}
-	if(this.state == 0){
+	if(this.state == 0 || this.state == 1){
 		//选择技能
 		this.skill = this.skills[0]
 		if(!this.skill)
@@ -47,21 +52,17 @@ model.prototype.timeUpdate = function(dt) {
 		if(!this.targets.length)
 			return
 		this.target = this.targets[0]
-		if(Math.abs(this.pos.x-this.target.pos.x) < this.skill.resRange && Math.abs(this.pos.y-this.target.pos.y) < this.skill.resRange){
+		if(Math.abs(this.pos.x-this.target.pos.x) <= this.skill.resRange && Math.abs(this.pos.y-this.target.pos.y) <= this.skill.resRange){
+			// console.log("释放技能")
 			//在释放距离内释放技能
 			this.state = 2
 			this.skill.resSkill(this.targets)
 		}else{
 			//移动至目标
 			this.state = 1
-			this.moveCD = MOVE_TIME
 		}
 	}
 }
-//选择目标
-
-//移动
-
 //停止技能
 model.prototype.stopSkill = function(skill) {
 	this.state = 0

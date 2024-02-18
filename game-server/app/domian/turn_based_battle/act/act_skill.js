@@ -7,8 +7,8 @@ var model = function(otps,hero) {
 	this.skillDur = otps.skillDur || 1000    //技能持续时间
 	this.resRange = otps.resRange ||  100  	 //释放距离
 	this.targetType = otps.targetType 		 //目标类型
-	this.times = otps.times || [1,200,500] 			 //结算时间列表
-	this.values = otps.values || [1,0.3,0.5]  		 //技能系数列表
+	this.times = otps.times || [1] 			 //结算时间列表
+	this.values = otps.values || [10]  		 //技能系数列表
 	//状态参数
 	this.cd = 0 							 //当前技能CD
 	this.state = 0 							 //0 未释放   1  释放中
@@ -32,11 +32,10 @@ model.prototype.update = function(dt) {
 //结算效果
 model.prototype.settle = function(value) {
 	var record = {
-		"type" : "skill",
+		"type" : "damage",
 		"id" : this.character.id,
 		"sid" : this.sid,
-		"attack" : [],
-		"t" : this.character.fighting.RUNTIME
+		"attack" : []
 	}
 	var targets = this.targets
 	this.attackBefore(targets)
@@ -62,6 +61,12 @@ model.prototype.resSkill = function(targets) {
 	this.targets = targets
 	this.target = targets[0]
 	// console.log("resSkill"+this.id)
+	var record = {
+		"type" : "skill",
+		"id" : this.character.id,
+		"sid" : this.sid
+	}
+	this.character.fighting.fightRecord.push(record)
 }
 //技能释放结束
 model.prototype.stopSkill = function() {
