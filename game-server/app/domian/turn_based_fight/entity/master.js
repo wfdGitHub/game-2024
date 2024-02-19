@@ -49,7 +49,7 @@ master.prototype.init = function(fighting,list,team,enemy,locator,seeded,peerMas
 master.prototype.checkManualModel = function() {
 	var index = this.fighting.round / 2
 	if(Number.isInteger(index))
-		this.masterPower(index)
+		this.masterPower(index - 1)
 }
 //添加主动技能
 master.prototype.addPower = function(info) {
