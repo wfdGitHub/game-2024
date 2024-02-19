@@ -53,9 +53,14 @@ model.prototype.translate = function(info) {
 			this.saveText(info.t/1000+"s "+colors["blue"]+"["+this.heroMap[info.id]+"]使用["+info.sid+"]"+colors["end"])
 		break
 		case "damage":
-			if(info.attack)
-				for(var i = 0;i < info.attack.length;i++)
-					this.attackInfo(info.attack[i],"  "+colors["red"]+"对["+this.heroMap[info.attack[i]["id"]]+"]\t"+colors["end"]+" 造成 ")
+			if(info.list)
+				for(var i = 0;i < info.list.length;i++)
+					this.attackInfo(info.list[i],"  "+colors["red"]+"对["+this.heroMap[info.list[i]["id"]]+"]\t"+colors["end"]+" 造成 ")
+		break
+		case "heal":
+			if(info.list)
+				for(var i = 0;i < info.list.length;i++)
+					this.healInfo(info.list[i],"  "+colors["green"]+"使["+this.heroMap[info.list[i]["id"]]+"]\t"+colors["end"]+" 恢复 ")
 		break
 		case "revive":
 			this.saveText(colors["green"]+"["+this.heroMap[info["id"]]+"] 复活 (血量"+info.hp+"/"+info.maxHP+")\033[0m\n")
@@ -149,9 +154,9 @@ model.prototype.explain = function() {
 model.prototype.attackInfo = function(info,str) {
 	str += info.realValue
 	if(info["d_type"] == "phy")
-		str += "外功"
+		str += "物理"
 	else if(info["d_type"] == "mag")
-		str += "内功"
+		str += "法术"
 	str += "伤害("+info.hp+"/"+info.maxHP+")"+"(怒气"+info.curAnger+")"
 	if(info.hudun)
 		str += "\t(护盾抵消"+info.hudun+")"
@@ -173,6 +178,12 @@ model.prototype.attackInfo = function(info,str) {
 			this.attackInfo(info.splashs[i],"  "+colors["red"]+"溅射["+info.splashs[i]["id"]+"]\033[0m ")
 		}
 	}
+}
+//治疗数据
+model.prototype.healInfo = function(info,str) {
+	str += info.value
+	str += "("+info.hp+"/"+info.maxHP+")"
+	this.saveText(str)
 }
 //保存进文字列表
 model.prototype.saveText = function(text) {
@@ -220,7 +231,7 @@ model.prototype.getSkillText = function(sid,lv) {
 				text = text.replace(/atk_aim/g,this.skill_targets[this.skills[sid]["atk_aim"]]["name"])
 			text = text.replace(/atk_mul/g,Math.ceil(this.skills[sid]["atk_mul"]*100)+"%")
 			text = text.replace(/atk_value/g,Math.ceil(this.skills[sid]["atk_basic"]*lv))
-			text = text.replace(/d_type/g,this.skills[sid]["d_type"]=="phy"?"外功":"内功")
+			text = text.replace(/d_type/g,this.skills[sid]["d_type"]=="phy"?"物理":"法术")
 			if(this.skills[sid]["heal_aim"] && this.skill_targets[this.skills[sid]["heal_aim"]])
 				text = text.replace(/heal_aim/g,this.skill_targets[this.skills[sid]["heal_aim"]]["name"])
 			text = text.replace(/heal_mul/g,Math.ceil(this.skills[sid]["heal_mul"]*100)+"%")

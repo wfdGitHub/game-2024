@@ -47,11 +47,6 @@ model.prototype.attInit = function() {
 	this.needAnger = 100  				//释放技能所需怒气
 	//一级属性
 	this.attInfo = {}
-	this.attInfo.main_dr = heroInfo.main_dr 			//体质  影响伤免、最大生命值
-	this.attInfo.main_mag = heroInfo.main_mag 			//内力  影响内功伤害、内功减免
-	this.attInfo.main_phy = heroInfo.main_phy 			//筋骨  影响外功伤害、外功减免
-	this.attInfo.main_hit = heroInfo.main_hit 			//身法  影响出手速度、命中、闪避
-	this.attInfo.main_slay = heroInfo.main_slay 		//悟性  影响暴击伤害、格挡、破格
 	//二级属性
 	this.attInfo.hp = 0 				//当前生命值
 	this.attInfo.maxHP = 0 				//最大生命值
@@ -78,10 +73,10 @@ model.prototype.attInit = function() {
 	this.attInfo.normalDef = 0 			//普攻减伤
 	this.attInfo.healAmp = 0 			//治疗加成
 	this.attInfo.healAdd = 0 			//受疗加成
-	this.attInfo.phyAmp = 0 			//外功增伤
-	this.attInfo.phyDef = 0 			//外功减伤
-	this.attInfo.magAmp = 0 			//内功增伤
-	this.attInfo.magDef = 0 			//内功减伤
+	this.attInfo.phyAmp = 0 			//物理增伤
+	this.attInfo.phyDef = 0 			//物理减伤
+	this.attInfo.magAmp = 0 			//法术增伤
+	this.attInfo.magDef = 0 			//法术减伤
 	this.attInfo.poisonAmp = 0 			//中毒增伤
 	this.attInfo.poisonDef = 0 			//中毒减伤
 	this.attInfo.ign_armor = 0 			//忽视护甲
@@ -90,7 +85,6 @@ model.prototype.attInit = function() {
 	this.attInfo.atk = 2000
 	this.attInfo.armor = 500
 	//属性初始化
-	this.attInfo.speed += this.attInfo.main_hit
 	this.attTmpInfo = {} 	//临时属性增益
 }
 //战斗初始化

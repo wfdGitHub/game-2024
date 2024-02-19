@@ -6,17 +6,17 @@ const normal_buff = require("./buffs/normal_buff.js")
 var model = function() {
 	this.buffCfg = fightCfg.getCfg("buffs")
 	this.buffList = {}
-	for(var buffId in this.buffCfg){
-		if(this.buffCfg[buffId].normal)
-			this.buffList[buffId] = normal_buff
-		else{
-			try{
-				this.buffList[buffId] = require("./buffs/"+buffId+".js")
-			}catch(err){
-				console.log(buffId+" not find",err)
-			}
-		}
-	}
+	// for(var buffId in this.buffCfg){
+	// 	if(this.buffCfg[buffId].normal)
+	// 		this.buffList[buffId] = normal_buff
+	// 	else{
+	// 		try{
+	// 			this.buffList[buffId] = require("./buffs/"+buffId+".js")
+	// 		}catch(err){
+	// 			console.log(buffId+" not find",err)
+	// 		}
+	// 	}
+	// }
 }
 //创建BUFF判断概率
 model.prototype.createBuffWithRate = function(skill,character,buff) {
@@ -44,9 +44,6 @@ model.prototype.createBuff = function(attacker,character,buff) {
 		this.buffList[buffId] = normal_buff
 		this.buffCfg[buffId] = {}
 	}
-	//出尘免疫异常
-	if(character.buffs["chuchen"] && (this.buffCfg[buffId].control || this.buffCfg[buffId].dispel_less))
-		return
 	//控制BUFF在行动后回合数加1
 	if(this.buffCfg[buffId].control){
 		if(character.buffs["buff_405083"] && character.fighting.randomCheck(character.buffs["buff_405083"].getBuffMul()) && character.buffs["buff_405083"].enoughCD()){

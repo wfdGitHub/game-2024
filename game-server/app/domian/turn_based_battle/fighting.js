@@ -4,7 +4,6 @@ const fightRecord = require("./fightRecord.js")
 const locatorFun = require("./act/act_locator.js")
 const act_bullets = require("./act/act_bullets.js")
 const formulaFun = require("./skill/formula.js")
-const skillManagerFun = require("./skill/skillManager.js")
 const TIME_LAG = 100
 const MAX_TIME = 90000
 var model = function(atkTeam,defTeam,otps,managers) {
@@ -19,7 +18,6 @@ var model = function(atkTeam,defTeam,otps,managers) {
 	this.locator = new locatorFun(this)
 	this.formula = new formulaFun(this)
 	this.bulletManager = new act_bullets(this)
-	this.skillManager = new skillManagerFun(this)
 	this.managers = managers
 	this.buffManager = managers.buffManager
 	this.RUNTIME = 0 				//当前时间
@@ -190,25 +188,6 @@ model.prototype.getRecordStr = function() {
 }
 //检测主动技能
 model.prototype.checkMaster = function() {
-	// if(this.video){
-	// 	//录像模式检测技能释放
-	// 	if(this.masterSkillsRecord.length){
-	// 		if(this.masterSkillsRecord[0]["runCount"] == this.runCount){
-	// 			var info = this.masterSkillsRecord.shift()
-	// 			if(info.belong == "atk"){
-	// 				return this.atkMasterSkill(info["index"])
-	// 			}else if(info.belong == "def"){
-	// 				return this.defMasterSkill(info["index"])
-	// 			}
-	// 		}
-	// 	}
-	// }else if(this.fightState){
-	// 	//自动战斗模式检测技能释放
-	// 	if(this.atkMaster.checkManualModel())
-	// 		return true
-	// 	if(this.defMaster.checkManualModel())
-	// 		return true
-	// }
 	return false
 }
 //随机数
@@ -241,93 +220,4 @@ model.prototype.trampoline = function(f) {
 	}
 	return f
 }
-// //开始新整体回合
-// model.prototype.nextRound = function() {
-// 	if(this.fightState !== 2)
-// 		return
-// 	if(this.round >= this.maxRound){
-// 		//达到最大轮次，战斗结束
-// 		this.fightOver("planish")
-// 		return
-// 	}
-// 	this.round++
-// 	this.fightRecord.push({type : "nextRound",round : this.round})
-// 	for(var i in this.allHero)
-// 		this.allHero[i].roundBegin()
-// 	//运行检测
-// 	return this.runCheck.bind(this)
-// }
-// //运行检测
-// model.prototype.runCheck = function() {
-// 	if(this.manual){
-// 		this.runFlag = false
-// 		return
-// 	}else if(this.checkMaster()){
-// 		return this.runCheck.bind(this)
-// 	}else{
-// 		//下一个英雄行动
-// 		return this.nextCharacter.bind(this)
-// 	}
-// }
-// //选择下一个英雄
-// model.prototype.nextCharacter = function() {
-// 	this.runCount++
-// 	if(!this.runFlag)
-// 		return
-// 	if(this.fightState !== 2){
-// 		return
-// 	}
-// 	var id = -1
-// 	//找出下一个行动目标
-// 	for(var i in this.allHero){
-// 		if(this.allHero[i].checkAction()){
-// 			if(id == -1 || this.allHero[i].getTotalAtt("speed") > this.allHero[id].getTotalAtt("speed")){
-// 				id = this.allHero[i].id
-// 			}
-// 		}
-// 	}
-// 	if(id != -1){
-// 		this.cur_character = this.allHero[id]
-// 		return this.beforeCharacter.bind(this)
-// 	}else{
-// 		return this.endRound.bind(this)
-// 	}
-// }
-// //英雄回合开始前
-// model.prototype.beforeCharacter = function(){
-// 	this.insertTmpRecord()
-// 	this.cur_character.before()
-// 	return this.actionCharacter.bind(this)
-// }
-// //英雄回合行动
-// model.prototype.actionCharacter = function(){
-// 	var skillInfo
-// 	if(this.cur_character.buffs["chaofeng"] && this.cur_character.buffs["chaofeng"].list[0].attacker){
-// 		skillInfo = this.cur_character.useNormalSkill()
-// 		if(skillInfo)
-// 			skillInfo.targets = [this.cur_character.buffs["chaofeng"].list[0].attacker]
-// 	}else{
-// 		skillInfo = this.cur_character.chooseSkill()
-// 	}
-// 	if(skillInfo){
-// 		this.skillManager.useSkill(skillInfo)
-// 	}else{
-// 		//未行动恢复怒气
-// 		this.cur_character.addAnger(20,true)
-// 	}
-// 	return this.afterCharacter.bind(this)
-// }
-// //英雄回合结束
-// model.prototype.afterCharacter = function() {
-// 	this.cur_character.after()
-// 	this.checkOver()
-// 	return this.runCheck.bind(this)
-// }
-// //整体回合结束
-// model.prototype.endRound = function(){
-// 	for(var i in this.allHero)
-// 		this.allHero[i].roundEnd()
-// 	this.checkOver()
-// 	return this.nextRound.bind(this)
-// }
 module.exports = model
