@@ -4,10 +4,14 @@ var model = function(otps,hero) {
 	this.id = otps.id
 	this.name = otps.name
 	this.NEEDCD = otps.cd 					 //技能CD
+	this.type = otps.type || "bullet"        //normal 立即伤害  bullet 弹道 
+
+	this.bu_spe = otps.bu_spe || 1000      	 //弹道速度
+
 	this.skillDur = otps.skillDur || 1000    //技能持续时间
-	this.resRange = otps.resRange ||  100  	 //释放距离
+	this.resRange = otps.resRange ||  1000  	 //释放距离
 	this.targetType = otps.targetType 		 //目标类型
-	this.times = otps.times || [1] 			 //结算时间列表
+	this.times = otps.times || [0] 			 //结算时间列表
 	this.values = otps.values || [10]  		 //技能系数列表
 	//状态参数
 	this.cd = 0 							 //当前技能CD
@@ -16,14 +20,34 @@ var model = function(otps,hero) {
 	this.timeIndex = 0 						 //当前结算时间ID
 	this.targets = [] 						 //当前目标列表
 	this.target = false 					 //当前目标
+	switch(this.type){
+		case "bullet":
+			this.update = this.bulletUpdate
+		break
+		default:
+			this.update = this.normalUpdate
+	}
 }
-//技能刷新
-model.prototype.update = function(dt) {
+//普通刷新
+model.prototype.normalUpdate = function(dt) {
 	if(this.state != 1)
 		return
 	this.curDur += dt
 	if(this.times[this.timeIndex] !== undefined && this.curDur >= this.times[this.timeIndex]){
 		this.settle(this.values[this.timeIndex])
+		this.timeIndex++
+	}
+	if(this.curDur >= this.skillDur)
+		this.hero.stopSkill(this)
+}
+//子弹刷新
+model.prototype.bulletUpdate = function(dt) {
+	if(this.state != 1)
+		return
+	this.curDur += dt
+	if(this.times[this.timeIndex] !== undefined && this.curDur >= this.times[this.timeIndex]){
+		for(var i = 0;i < this.targets.length;i++)
+			this.hero.fighting.bulletManager.addBullet(this.hero,this.targets[i],this,this.values[this.timeIndex])
 		this.timeIndex++
 	}
 	if(this.curDur >= this.skillDur)

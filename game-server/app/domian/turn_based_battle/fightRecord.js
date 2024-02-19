@@ -11,7 +11,7 @@ const cocosColors = {
 	"green" : "<color=green>",
 	"red" : "<color=red>"
 }
-var colors = cocosColors
+var colors = serverColors
 var model = function() {
 	this.buffs = fightCfg.getCfg("buffs")
 	this.heros = fightCfg.getCfg("heros")
@@ -27,21 +27,26 @@ model.prototype.clear = function(fighting) {
 }
 model.prototype.push = function(info) {
 	info.t = this.fighting.RUNTIME
-	this.list.push(info)
+	this.translate(info)
+	// this.list.push(info)
 	// this.explain()
 }
 model.prototype.getList = function() {
 	return this.list.concat([])
 }
-model.prototype.translate = function(info,type) {
+model.prototype.translate = function(info) {
 	switch(info.type){
 		case "fightBegin":
 			for(var i = 0;i < info.allHero.length;i++)
 				this.heroMap[info.allHero[i]["id"]] = this.heros[info.allHero[i]["heroId"]]["name"]+info.allHero[i]["id"]
 		break
 		case "move":
-			//使用技能(怒气隐式更新)
+			//英雄移动
 			this.saveText(info.t/1000+"s "+colors["green"]+"["+this.heroMap[info.id]+"]移动至["+info.pos.x+","+info.pos.y+"]"+colors["end"])
+		break
+		case "b_move":
+			//弹道移动
+			this.saveText(info.t/1000+"s "+colors["green"]+"[弹道"+info.id+"]从["+info.ori.x+","+info.ori.y+"]移动至["+info.pos.x+","+info.pos.y+"]"+colors["end"])
 		break
 		case "skill":
 			//使用技能(怒气隐式更新)
@@ -171,7 +176,8 @@ model.prototype.attackInfo = function(info,str) {
 }
 //保存进文字列表
 model.prototype.saveText = function(text) {
-	this.textList.push(text)
+	console.log(text)
+	// this.textList.push(text)
 }
 //获取技能数据
 model.prototype.getHeroData = function(heroInfo) {

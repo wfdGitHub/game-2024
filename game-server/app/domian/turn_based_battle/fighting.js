@@ -2,6 +2,7 @@
 const character = require("./entity/character.js")
 const fightRecord = require("./fightRecord.js")
 const locatorFun = require("./act/act_locator.js")
+const act_bullets = require("./act/act_bullets.js")
 const formulaFun = require("./skill/formula.js")
 const skillManagerFun = require("./skill/skillManager.js")
 const TIME_LAG = 100
@@ -17,6 +18,7 @@ var model = function(atkTeam,defTeam,otps,managers) {
 	this.fightRecord.clear(this)
 	this.locator = new locatorFun(this)
 	this.formula = new formulaFun(this)
+	this.bulletManager = new act_bullets(this)
 	this.skillManager = new skillManagerFun(this)
 	this.managers = managers
 	this.buffManager = managers.buffManager
@@ -139,6 +141,7 @@ model.prototype.timeUpdate = function() {
 	this.RUNTIME += TIME_LAG
 	for(var i in this.allHero)
 		this.allHero[i].timeUpdate(TIME_LAG)
+	this.bulletManager.timeUpdate(TIME_LAG)
 	if(!this.checkOver())
 		this.timeUpdate()
 }

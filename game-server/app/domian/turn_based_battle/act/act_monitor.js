@@ -3,9 +3,4 @@ var model = function(fighting) {
 	this.fighting = fighting
 }
 
-
-
-
-
-
 module.exports = model

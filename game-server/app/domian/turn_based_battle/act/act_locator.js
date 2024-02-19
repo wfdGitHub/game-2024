@@ -24,5 +24,15 @@ model.prototype.getEnemyNormal = function(character) {
 	}
 	return aimList
 }
-
+//计算位移
+model.prototype.callMove = function(release,target,moveSpeed,dt) {
+	var dirX = target.pos.x > release.pos.x ? 1 : -1
+	var dirY = target.pos.y > release.pos.y ? 1 : -1
+	release.pos.x += Math.round(dirX * Math.min(moveSpeed * dt * 0.001,Math.abs(target.pos.x - release.pos.x)))
+	release.pos.y += Math.round(dirY * Math.min(moveSpeed * dt * 0.001,Math.abs(target.pos.y - release.pos.y)))
+}
+//计算距离
+model.prototype.callDist = function(release,target) {
+	return Math.max(Math.abs(release.pos.x-target.pos.x),Math.abs(release.pos.y-target.pos.y))
+}
 module.exports = model

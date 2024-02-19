@@ -1,5 +1,4 @@
 //行动控制器
-const act_skill = require("./act_skill.js")
 const MOVE_TIME = 300                   //毫秒
 var model = function() {
 	this.pos = {x : 0,y : 0} 			//当前位置
@@ -7,8 +6,6 @@ var model = function() {
 	this.moveSpeed = 100 				//移动速度，每秒移动距离
 	this.targets = [] 					//当前目标列表
 	this.target = false  				//当前主目标
-	this.dirX = 1 						//X轴移动方向
-	this.dirY = 1 						//Y轴移动方向
 	this.skill = false
 }
 //定时器更新
@@ -23,11 +20,8 @@ model.prototype.timeUpdate = function(dt) {
 			if(!this.target){
 				this.state = 0
 				return
-			}  
-			this.dirX = this.target.pos.x > this.pos.x ? 1 : -1
-			this.dirY = this.target.pos.y > this.pos.y ? 1 : -1
-			this.pos.x += Math.round(this.dirX * Math.min(this.moveSpeed * dt * 0.001,Math.abs(this.target.pos.x - this.pos.x)))
-			this.pos.y += Math.round(this.dirY * Math.min(this.moveSpeed * dt * 0.001,Math.abs(this.target.pos.y - this.pos.y)))
+			}
+			this.fighting.locator.callMove(this,this.target,this.moveSpeed,dt)
 			if(this.target.died)
 				this.state = 0
 			var record = {
@@ -52,7 +46,7 @@ model.prototype.timeUpdate = function(dt) {
 		if(!this.targets.length)
 			return
 		this.target = this.targets[0]
-		if(Math.abs(this.pos.x-this.target.pos.x) <= this.skill.resRange && Math.abs(this.pos.y-this.target.pos.y) <= this.skill.resRange){
+		if(this.fighting.locator.callDist(this,this.target) <= this.skill.resRange){
 			// console.log("释放技能")
 			//在释放距离内释放技能
 			this.state = 2
