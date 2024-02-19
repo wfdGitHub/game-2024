@@ -42,7 +42,7 @@ model.prototype.init = function() {
 model.prototype.begin = function() {}
 //获得怒气
 model.prototype.addAnger = function(value,show,later) {
-	if(this.died || this.buffs["totem_friend_amp"] || this.buffs["ban_anger"] || this.buffs["buff_405085"])
+	if(this.died)
 		return 0
 	value = Math.min(value,this.maxAnger - this.curAnger)
 	this.curAnger += Math.floor(value) || 0
@@ -326,15 +326,6 @@ model.prototype.onBlock = function(attacker,info) {
 }
 //触发暴击
 model.prototype.onCrit = function(attacker,info) {
-}
-//攻击结束后
-model.prototype.attackAfter = function(skill) {
-}
-//技攻结束后
-model.prototype.attackSkillAfter = function(skill) {
-}
-//普攻结束后
-model.prototype.attackNormalAfter = function(skill) {
 }
 //===============获取信息
 //简单信息

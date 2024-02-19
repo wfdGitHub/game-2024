@@ -124,8 +124,6 @@ model.prototype.changeTotalTmp = function(name,value) {
 		this.attTmpInfo[name] = 0
 	this.attTmpInfo[name] += Number(value) || 0
 }
-//攻击者触发
-model.prototype.onAttackAfter = function() {}
 //受到攻击
 model.prototype.onHit = function(attacker,info) {}
 //受到治疗
