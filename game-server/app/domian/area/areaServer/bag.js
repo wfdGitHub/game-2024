@@ -284,7 +284,7 @@ module.exports = function() {
 					return {type : "item",itemId : itemId,value : value}
 				break
 				case "lordexp":
-					this.addLordExp(uid,value)
+					this.addLordExp(uid,value,reason)
 					if(cb)
 						cb(true)
 					return {type : "item",itemId : itemId,value : value}
