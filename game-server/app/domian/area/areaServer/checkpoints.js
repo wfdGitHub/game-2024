@@ -165,8 +165,8 @@ module.exports = function() {
 			  	var rate = 1
 			  	if(self.players[uid]["highCard"])
 			  		rate += activity_cfg["high_card_onhook"]["value"]
-			  	if(self.checkLimitedTime("guaji"))
-			  		rate *= 2
+			  	// if(self.checkLimitedTime("guaji"))
+			  	// 	rate *= 2
 			  	rate = 120 * rate
 			  	var awardList = self.addItemStr(uid,on_hook_award,rate,"快速挂机奖励")
 			  	var awardStr = self.gainOnhookItem(uid,level,120)
