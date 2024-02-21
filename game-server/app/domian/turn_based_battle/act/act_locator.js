@@ -7,10 +7,10 @@ model.prototype.getTargets = function(character,targetType,radius) {
 		case "team_near":
 			//最近友方
 			return this.getFriendNormal(character)
-		case "todo"
+		case "todo":
 			//血量最少友方
 			return
-		case "enemy_range"
+		case "enemy_range":
 			//范围内敌方目标
 		default:
 			//默认距离最近敌方单体  
@@ -24,7 +24,7 @@ model.prototype.getFriendNormal = function(character) {
 	var minDist = 99999
 	for(var i in team){
 		if(team[i] != character){
-			var dist = this.callDist(character,team[i])
+			var dist = this.callDist(character.pos,team[i].pos)
 			if(dist < minDist){
 				minDist = dist
 				aimList = [team[i]]
@@ -39,7 +39,7 @@ model.prototype.getEnemyNormal = function(character) {
 	var team =  character.enemyTeam
 	var minDist = 99999
 	for(var i in team){
-		var dist = this.callDist(character,team[i])
+		var dist = this.callDist(character.pos,team[i].pos)
 		if(dist < minDist){
 			minDist = dist
 			aimList = [team[i]]
@@ -48,38 +48,38 @@ model.prototype.getEnemyNormal = function(character) {
 	return aimList
 }
 //选择范围内敌方目标
-model.prototype.getEnemyRange = function(character,radius) {
+model.prototype.getEnemyRange = function(character,pos,radius) {
 	var aimList = []
 	var team =  character.enemyTeam
 	for(var i in team){
-		var dist = this.callDist(character,team[i])
+		var dist = this.callDist(pos,team[i].pos)
 		if(dist <= radius)
-			aimList = aimList.push(team[i])
+			aimList.push(team[i])
 	}
 	return aimList
 }
 //选择范围内友方目标
-model.prototype.getEnemyRange = function(character,radius) {
+model.prototype.getTeamRange = function(character,pos,radius) {
 	var aimList = []
 	var team =  character.team
 	for(var i in team){
-		var dist = this.callDist(character,team[i])
+		var dist = this.callDist(pos,team[i].pos)
 		if(dist <= radius)
-			aimList = aimList.push(team[i])
+			aimList.push(team[i])
 	}
 	return aimList
 }
 //计算位移
-model.prototype.callMove = function(release,target,moveSpeed,dt) {
-	var dirX = target.pos.x > release.pos.x ? 1 : -1
-	var dirY = target.pos.y > release.pos.y ? 1 : -1
-	release.pos.x += Math.round(dirX * Math.min(moveSpeed * dt * 0.001,Math.abs(target.pos.x - release.pos.x)))
-	release.pos.y += Math.round(dirY * Math.min(moveSpeed * dt * 0.001,Math.abs(target.pos.y - release.pos.y)))
+model.prototype.callMove = function(pos1,pos2,speed,dt) {
+	var dirX = pos2.x > pos1.x ? 1 : -1
+	var dirY = pos2.y > pos1.y ? 1 : -1
+	pos1.x += Math.round(dirX * Math.min(speed * dt * 0.001,Math.abs(pos2.x - pos1.x)))
+	pos1.y += Math.round(dirY * Math.min(speed * dt * 0.001,Math.abs(pos2.y - pos1.y)))
 }
 //计算距离
-model.prototype.callDist = function(release,target) {
-	var dx = release.pos.x - target.pos.x
-	var dy = release.pos.y - target.pos.y
+model.prototype.callDist = function(pos1,pos2) {
+	var dx = pos1.x - pos2.x
+	var dy = pos1.y - pos2.y
 	return Math.pow(dx*dx+dy*dy,0.5)
 }
 module.exports = model

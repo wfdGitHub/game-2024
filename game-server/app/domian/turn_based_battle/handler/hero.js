@@ -399,8 +399,6 @@ var model = function(fightContorl) {
 		var hufu_talents = {}
 		//护符计算
 		if(info.hfLv){
-			if(hufu_quality[info.hfLv])
-				this.mergeData(info,{"self_atk_add" : hufu_quality[info.hfLv]["atk"],"self_maxHP_add" : hufu_quality[info.hfLv]["hp"]})
 			if(info.hfs1){
 				if(hufu_map[info.hfs1]){
 					if(!hufu_talents[hufu_map[info.hfs1].id] || hufu_map[info.hfs1].lv > hufu_talents[hufu_map[info.hfs1].id])

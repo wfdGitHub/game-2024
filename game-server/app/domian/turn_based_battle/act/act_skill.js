@@ -5,8 +5,12 @@ var model = function(otps,hero) {
 	this.name = otps.name
 	this.NEEDCD = otps.cd 					 //技能CD
 	this.type = otps.type || "normal"        //技能类型  normal 普通 bullet 子弹  range  范围技能
-	this.bullet = otps.bullet || false       //是否为弹道
+	//弹道属性
 	this.bu_spe = otps.bu_spe || 1000      	 //弹道速度
+	//范围技能属性
+	this.rangeType = otps.rangeType || "enemy" //enemy 敌方  team 友方
+	this.rangeRadius = otps.rangeRadius || 100 //半径
+
 	this.skillDur = otps.skillDur || 100     //技能持续时间
 	this.resRange = otps.resRange ||  100    //释放距离
 	this.times = otps.times || [0] 			 //结算时间列表
@@ -20,11 +24,12 @@ var model = function(otps,hero) {
 	this.timeIndex = 0 						 //当前结算时间ID
 	this.targets = [] 						 //当前目标列表
 	this.target = false 					 //当前目标
+	this.resPos = {x:0,y:0} 				 //技能释放坐标
 	switch(this.type){
-		case "bullet"
+		case "bullet":
 			this.update = this.bulletUpdate
 		break
-		case "range"
+		case "range":
 			this.update = this.rangeUpdate
 		break
 		default:
@@ -66,7 +71,14 @@ model.prototype.rangeUpdate = function(dt) {
 		return
 	this.curDur += dt
 	if(this.times[this.timeIndex] !== undefined && this.curDur >= this.times[this.timeIndex]){
-		this.targets = this.hero.fighting.locator.get
+		if(this.rangeType == "team"){
+			//友方
+			this.targets = this.hero.fighting.locator.getTeamRange(this.hero,this.resPos,this.rangeRadius)
+		}else{
+			//敌方
+			this.targets = this.hero.fighting.locator.getEnemyRange(this.hero,this.resPos,this.rangeRadius)
+		}
+		this.settle(this.muls[this.timeIndex],this.value)
 		this.timeIndex++
 	}
 	if(this.curDur >= this.skillDur)
@@ -114,6 +126,10 @@ model.prototype.resSkill = function(targets) {
 	this.timeIndex = 0
 	this.targets = targets
 	this.target = targets[0]
+	if(this.target)
+		Object.assign(this.resPos,this.target.pos)
+	else
+		Object.assign(this.resPos,this.hero.pos)
 	var record = {
 		"type" : "skill",
 		"id" : this.character.id,

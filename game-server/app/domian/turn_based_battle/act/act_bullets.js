@@ -13,10 +13,10 @@ model.prototype.timeUpdate = function(dt) {
 			"sid" : this.bullets[i].skill.sid,
 			"ori" : Object.assign({},this.bullets[i].pos)
 		}
-		this.fighting.locator.callMove(this.bullets[i],this.bullets[i].target,this.bullets[i].skill.bu_spe,dt)
+		this.fighting.locator.callMove(this.bullets[i].pos,this.bullets[i].target.pos,this.bullets[i].skill.bu_spe,dt)
 		record.pos = Object.assign({},this.bullets[i].pos)
 		this.fighting.fightRecord.push(record)
-		if(this.fighting.locator.callDist(this.bullets[i],this.bullets[i].target) < 10){
+		if(this.fighting.locator.callDist(this.bullets[i].pos,this.bullets[i].target.pos) < 10){
 			//结算子弹
 			if(!this.bullets[i].target.died)
 				this.bullets[i].skill.settle(bulletInfo.mul,this.bullets[i].value)
