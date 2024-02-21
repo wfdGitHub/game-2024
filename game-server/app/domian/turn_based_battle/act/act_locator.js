@@ -2,25 +2,70 @@
 var model = function(fighting) {
 	this.fighting = fighting
 }
-model.prototype.getTargets = function(character,targetType) {
+model.prototype.getTargets = function(character,targetType,radius) {
 	switch(targetType){
+		case "team_near":
+			//最近友方
+			return this.getFriendNormal(character)
+		case "todo"
+			//血量最少友方
+			return
+		case "enemy_range"
+			//范围内敌方目标
 		default:
-			//默认单体
+			//默认距离最近敌方单体  
 			return this.getEnemyNormal(character)
 	}
+}
+//选择常规友方目标(距离最近)
+model.prototype.getFriendNormal = function(character) {
+	var aimList = []
+	var team =  character.team
+	var minDist = 99999
+	for(var i in team){
+		if(team[i] != character){
+			var dist = this.callDist(character,team[i])
+			if(dist < minDist){
+				minDist = dist
+				aimList = [team[i]]
+			}
+		}
+	}
+	return aimList
 }
 //选择常规敌方目标（按距离）
 model.prototype.getEnemyNormal = function(character) {
 	var aimList = []
-	var enemyTeam =  character.enemyTeam
-	var target = false
+	var team =  character.enemyTeam
 	var minDist = 99999
-	for(var i in enemyTeam){
-		var dist = Math.abs(enemyTeam[i].pos.x - character.pos.x) + Math.abs(enemyTeam[i].pos.y - character.pos.y)
+	for(var i in team){
+		var dist = this.callDist(character,team[i])
 		if(dist < minDist){
 			minDist = dist
-			aimList = [enemyTeam[i]]
+			aimList = [team[i]]
 		}
+	}
+	return aimList
+}
+//选择范围内敌方目标
+model.prototype.getEnemyRange = function(character,radius) {
+	var aimList = []
+	var team =  character.enemyTeam
+	for(var i in team){
+		var dist = this.callDist(character,team[i])
+		if(dist <= radius)
+			aimList = aimList.push(team[i])
+	}
+	return aimList
+}
+//选择范围内友方目标
+model.prototype.getEnemyRange = function(character,radius) {
+	var aimList = []
+	var team =  character.team
+	for(var i in team){
+		var dist = this.callDist(character,team[i])
+		if(dist <= radius)
+			aimList = aimList.push(team[i])
 	}
 	return aimList
 }
@@ -33,6 +78,8 @@ model.prototype.callMove = function(release,target,moveSpeed,dt) {
 }
 //计算距离
 model.prototype.callDist = function(release,target) {
-	return Math.max(Math.abs(release.pos.x-target.pos.x),Math.abs(release.pos.y-target.pos.y))
+	var dx = release.pos.x - target.pos.x
+	var dy = release.pos.y - target.pos.y
+	return Math.pow(dx*dx+dy*dy,0.5)
 }
 module.exports = model

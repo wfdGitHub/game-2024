@@ -4,15 +4,15 @@ var model = function(otps,hero) {
 	this.id = otps.id
 	this.name = otps.name
 	this.NEEDCD = otps.cd 					 //技能CD
-	this.type = otps.type || "heal"       	 //技能类型  atk 伤害 heal 治疗
+	this.type = otps.type || "normal"        //技能类型  normal 普通 bullet 子弹  range  范围技能
 	this.bullet = otps.bullet || false       //是否为弹道
 	this.bu_spe = otps.bu_spe || 1000      	 //弹道速度
-	this.skillDur = otps.skillDur || 1000    //技能持续时间
-	this.resRange = otps.resRange ||  1000   //释放距离
+	this.skillDur = otps.skillDur || 100     //技能持续时间
+	this.resRange = otps.resRange ||  100    //释放距离
 	this.times = otps.times || [0] 			 //结算时间列表
 	this.muls = otps.muls || [1]  		  	 //技能系数列表
 	this.value = otps.value || 10  		 	 //技能附加伤害
-	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤   real  真伤
+	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤   real  真伤  heal 治疗
 	//状态参数
 	this.cd = 0 							 //当前技能CD
 	this.state = 0 							 //0 未释放   1  释放中
@@ -20,11 +20,17 @@ var model = function(otps,hero) {
 	this.timeIndex = 0 						 //当前结算时间ID
 	this.targets = [] 						 //当前目标列表
 	this.target = false 					 //当前目标
-	if(this.bullet)
-		this.update = this.bulletUpdate
-	else
-		this.update = this.normalUpdate
-	if(this.type == "heal")
+	switch(this.type){
+		case "bullet"
+			this.update = this.bulletUpdate
+		break
+		case "range"
+			this.update = this.rangeUpdate
+		break
+		default:
+			this.update = this.normalUpdate
+	}
+	if(this.d_type == "heal")
 		this.settle = this.healSettle
 	else
 		this.settle = this.atkSettle
@@ -49,6 +55,18 @@ model.prototype.bulletUpdate = function(dt) {
 	if(this.times[this.timeIndex] !== undefined && this.curDur >= this.times[this.timeIndex]){
 		for(var i = 0;i < this.targets.length;i++)
 			this.hero.fighting.bulletManager.addBullet(this.hero,this.targets[i],this,this.muls[this.timeIndex],value)
+		this.timeIndex++
+	}
+	if(this.curDur >= this.skillDur)
+		this.hero.stopSkill(this)
+}
+//范围刷新
+model.prototype.rangeUpdate = function(dt) {
+	if(this.state != 1)
+		return
+	this.curDur += dt
+	if(this.times[this.timeIndex] !== undefined && this.curDur >= this.times[this.timeIndex]){
+		this.targets = this.hero.fighting.locator.get
 		this.timeIndex++
 	}
 	if(this.curDur >= this.skillDur)
