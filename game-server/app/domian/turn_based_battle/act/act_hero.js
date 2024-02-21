@@ -3,8 +3,9 @@ const MOVE_TIME = 300                   //毫秒
 var model = function() {
 	this.pos = {x : 0,y : 0} 			//当前位置
 	this.state = 0 						//当前状态  0 待机  1  移动中  2  释放技能
-	this.atkSpeed = 170 				//攻击速度
+	this.actSpeed = 1700 				//攻击速度
 	this.moveSpeed = 100 				//移动速度，每秒移动距离
+	this.actTime = 0 					//行动冷却
 	this.targets = [] 					//当前目标列表
 	this.target = false  				//当前主目标
 	this.skill = false
@@ -37,24 +38,28 @@ model.prototype.timeUpdate = function(dt) {
 			this.skill.update(dt)
 		break
 	}
-	if(this.state == 0 || this.state == 1){
-		//选择技能
-		this.skill = this.skills[0]
-		if(!this.skill)
-			return
-		//选择最近目标
-		this.targets = this.fighting.locator.getTargets(this,this.skill.targetType)
-		if(!this.targets.length)
-			return
-		this.target = this.targets[0]
-		if(this.fighting.locator.callDist(this.pos,this.target.pos) <= this.skill.resRange){
-			// console.log("释放技能")
-			//在释放距离内释放技能
-			this.state = 2
-			this.skill.resSkill(this.targets)
-		}else{
-			//移动至目标
-			this.state = 1
+	if(this.state <= 1){
+		this.actTime -= dt
+		if(this.actTime <= 0){
+			//选择技能
+			this.skill = this.skills[0]
+			if(!this.skill)
+				return
+			//选择最近目标
+			this.targets = this.fighting.locator.getTargets(this,this.skill.targetType)
+			if(!this.targets.length)
+				return
+			this.target = this.targets[0]
+			if(this.fighting.locator.callDist(this.pos,this.target.pos) <= this.skill.resRange){
+				// console.log("释放技能")
+				//在释放距离内释放技能
+				this.state = 2
+				this.actTime = this.actSpeed
+				this.skill.resSkill(this.targets)
+			}else{
+				//移动至目标
+				this.state = 1
+			}
 		}
 	}
 }
