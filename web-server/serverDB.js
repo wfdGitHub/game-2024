@@ -480,6 +480,7 @@ var model = function() {
 	}
 	//获取报错战斗
 	posts["/get_verify_faild"] = function(req,res) {
+		console.log("get_verify_faild",req.body)
 		var data = req.body
 		var pageSize = data.pageSize
 		var pageCurrent = data.pageCurrent
