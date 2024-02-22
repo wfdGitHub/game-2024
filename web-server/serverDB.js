@@ -478,6 +478,26 @@ var model = function() {
 			res.send("SUCCESS")
 		})
 	}
+	//获取报错战斗
+	posts["/get_verify_faild"] = function(req,res) {
+		var data = req.body
+		var pageSize = data.pageSize
+		var pageCurrent = data.pageCurrent
+		var info = {}
+		self.redisDao.db.llen("verify_faild",function(err,total) {
+			info.total = total
+			self.redisDao.db.lrange("verify_faild",(pageCurrent-1)*pageSize,(pageCurrent)*pageSize,function(err,data) {
+				info.list = data
+				res.send(info)
+			})
+		})
+	}
+	//清除报错战斗
+	posts["/clear_verify_faild"] = function(req,res) {
+		self.redisDao.db.del("verify_faild",function(err,data) {
+			res.send("SUCCESS")
+		})
+	}
 	//获取报错堆栈
 	posts["/get_server_error"] = function(req,res) {
 		var data = req.body
