@@ -847,7 +847,7 @@ model.prototype.heroComeon = function() {
 		fightRecord.push({type:"show_tag",id:this.id,tag:"begin_realm_crit"})
 		for(var j = 0;j < this.team.length;j++){
 			if(!this.team[j].died)
-				buffManager.createBuff(this,this.team[j],{buffId : "crit",buffArg : this.begin_realm_crit * this.atkTeamInfo["realms"][this.realm],duration : 1})
+				buffManager.createBuff(this,this.team[j],{buffId : "crit",buffArg : this.begin_realm_crit * this.fighting[this.belong+"TeamInfo"]["realms"][this.realm],duration : 1})
 		}
 	}
 	if(this.ignoreInvincible)
