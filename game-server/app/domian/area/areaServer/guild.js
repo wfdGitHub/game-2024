@@ -37,7 +37,7 @@ module.exports = function() {
 		self.delObj(uid,"guild_fb","buy")
 		self.delObj(uid,"guild_treasure","play")
 		self.delObj(uid,"guild_city","dayAward")
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		//自动报名
 		if(guildId)
 			self.redisDao.db.hset("guild_pk:apply",guildId,1)
@@ -151,7 +151,7 @@ module.exports = function() {
 	}
 	//获取我的同盟信息
 	this.getMyGuild = function(uid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(guildId && guildList[guildId]){
 			self.getHMObj(uid,main_name,["sign","skill_1","skill_2","skill_3","skill_4"],function(data) {
 				var info = Object.assign(guildList[guildId])
@@ -172,7 +172,7 @@ module.exports = function() {
 	}
 	//获取同盟成员
 	this.getMyGuildUsers = function(uid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(guildId){
 			var uids = []
 			var scores = []
@@ -283,7 +283,7 @@ module.exports = function() {
 	}
 	//设置审核状态
 	this.setGuildAudit = function(uid,audit,lv_limit,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
 			cb(false,"没有权限")
 			return
@@ -300,7 +300,7 @@ module.exports = function() {
 	}
 	//解散同盟
 	this.dissolveGuild = function(uid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
 			cb(false,"不是同盟会长")
 			return
@@ -327,7 +327,7 @@ module.exports = function() {
 	}
 	//设置成副会长
 	this.setGuildDeputy = function(uid,targetUid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
 			cb(false,"不是同盟会长")
@@ -350,7 +350,7 @@ module.exports = function() {
 	}
 	//设置成普通成员
 	this.setGuildNormal = function(uid,targetUid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
 			cb(false,"不是同盟会长")
@@ -370,7 +370,7 @@ module.exports = function() {
 	}
 	//设置成会长
 	this.setGuildLead = function(uid,targetUid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		targetUid = Number(targetUid)
 		if(!guildList[guildId] || guildList[guildId]["lead"] != uid){
 			cb(false,"不是同盟会长")
@@ -393,7 +393,7 @@ module.exports = function() {
 	}
 	//设置公告
 	this.setGuildNotify = function(uid,notify,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
 			cb(false,"没有权限")
 			return
@@ -407,7 +407,7 @@ module.exports = function() {
 	}
 	//请离玩家
 	this.kickGuildNormal = function(uid,targetUid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
 			cb(false,"没有权限")
 			return
@@ -500,7 +500,7 @@ module.exports = function() {
 	}
 	//获得申请列表
 	this.getGuildApplyList = function(uid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
 			cb(false,"没有权限")
 			return
@@ -509,7 +509,7 @@ module.exports = function() {
 	}
 	//同意申请
 	this.agreeGuildApply = function(uid,targetUid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
 			cb(false,"没有权限")
 			return
@@ -522,7 +522,7 @@ module.exports = function() {
 	}
 	//拒绝申请
 	this.refuseGuildApply = function(uid,targetUid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildList[guildId] || (guildList[guildId]["lead"] != uid  && guildList[guildId]["deputy"] != uid)){
 			cb(false,"没有权限")
 			return
@@ -537,7 +537,7 @@ module.exports = function() {
 	}
 	//退出同盟
 	this.quitGuild = function(uid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildId){
 			cb(false,"未加入同盟")
 			return
@@ -599,7 +599,7 @@ module.exports = function() {
 	}
 	//弹劾会长
 	this.impeachLead = function(uid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildId){
 			cb(false,"未加入同盟")
 			return
@@ -647,7 +647,7 @@ module.exports = function() {
 	}
 	//获取同盟日志
 	this.getGuildLog = function(uid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildId){
 			cb(false,"未加入同盟")
 			return
@@ -741,7 +741,7 @@ module.exports = function() {
 	}
 	//签到
 	this.signInGuild = function(uid,sign,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildId){
 			cb(false,"未加入同盟")
 			return
@@ -770,7 +770,7 @@ module.exports = function() {
 	}
 	//升级同盟技能
 	this.upGuildSkill = function(uid,career,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildId){
 			cb(false,"未加入同盟")
 			return
@@ -858,7 +858,7 @@ module.exports = function() {
 	}
 	//获取同盟红包列表
 	this.getGuildGiftList = function(uid,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildId){
 			cb(false,"未加入同盟")
 			return
@@ -885,7 +885,7 @@ module.exports = function() {
 	}
 	//领取同盟红包
 	this.gainGuildGift = function(uid,giftId,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildId){
 			cb(false,"未加入同盟")
 			return
@@ -934,7 +934,7 @@ module.exports = function() {
 	}
 	//同盟免费置换
 	this.guildSwapHero = function(uid,hId,heroId,cb) {
-		var guildId = self.players[uid]["gid"]
+		var guildId = self.getLordAtt(uid,"gid")
 		if(!guildId){
 			cb(false,"未加入同盟")
 			return
