@@ -13,11 +13,10 @@ const cocosColors = {
 }
 var colors = serverColors
 var model = function() {
-	this.buffs = fightCfg.getCfg("buffs")
+	this.buffs = fightCfg.getCfg("buff_cfg")
 	this.heros = fightCfg.getCfg("heros")
 	this.skills = fightCfg.getCfg("skills")
-	this.skill_targets = fightCfg.getCfg("skill_targets")
-	this.hero_talents = fightCfg.getCfg("hero_talents")
+	this.skill_targets = fightCfg.getCfg("skill_target")
 }
 model.prototype.clear = function(fighting) {
 	this.list = []
@@ -189,54 +188,5 @@ model.prototype.healInfo = function(info,str) {
 model.prototype.saveText = function(text) {
 	console.log(text)
 	// this.textList.push(text)
-}
-//获取技能数据
-model.prototype.getHeroData = function(heroInfo) {
-	var id = heroInfo.id
-	var heroData = {}
-	if(!this.heros[id]){
-		return "英雄不存在"
-	}
-	var heroCfg = this.heros[id]
-	heroData.name = heroCfg["name"]
-	//主属性
-	heroData["s0"] = {}
-	heroData["s0"].name = "普攻"
-	heroData["s0"].texts = [this.getSkillText(heroCfg["defult"],heroInfo["s0_lv"])]
-	heroData["s1"] = {}
-	heroData["s1"].name = heroCfg["s1_name"]
-	heroData["s1"].texts = {}
-	for(var j = 1;j <= 5;j++)
-		heroData["s1"].texts[j] = this.getSkillText(heroCfg["s1"]+j,heroInfo["s1_lv"])
-	for(var i = 2;i <= 5;i++){
-		var key = "s"+i
-		heroData[key] = {}
-		heroData[key].name = heroCfg["s"+i+"_name"]
-		heroData[key].texts = {}
-		for(var j = 1;j <= 5;j++){
-			if(this.hero_talents[heroCfg["s"+i]+j])
-				heroData[key].texts[j] = this.hero_talents[heroCfg["s"+i]+j]["des"]
-		}
-	}
-	return heroData
-}
-//获取技能描述
-model.prototype.getSkillText = function(sid,lv) {
-		if(!this.skills[sid])
-			return ""
-		lv = lv || 0
-		var text = this.skills[sid]["des"] || ""
-		if(text){
-			if(this.skills[sid]["atk_aim"] && this.skill_targets[this.skills[sid]["atk_aim"]])
-				text = text.replace(/atk_aim/g,this.skill_targets[this.skills[sid]["atk_aim"]]["name"])
-			text = text.replace(/atk_mul/g,Math.ceil(this.skills[sid]["atk_mul"]*100)+"%")
-			text = text.replace(/atk_value/g,Math.ceil(this.skills[sid]["atk_basic"]*lv))
-			text = text.replace(/d_type/g,this.skills[sid]["d_type"]=="phy"?"物理":"法术")
-			if(this.skills[sid]["heal_aim"] && this.skill_targets[this.skills[sid]["heal_aim"]])
-				text = text.replace(/heal_aim/g,this.skill_targets[this.skills[sid]["heal_aim"]]["name"])
-			text = text.replace(/heal_mul/g,Math.ceil(this.skills[sid]["heal_mul"]*100)+"%")
-			text = text.replace(/heal_value/g,Math.ceil(this.skills[sid]["heal_basic"]*lv))
-		}
-		return text
 }
 module.exports = new model()

@@ -4,7 +4,7 @@ const buff_entity = require("./buff_entity.js")
 const buff_base = require("./buff_base.js")
 const normal_buff = require("./buffs/normal_buff.js")
 var model = function() {
-	this.buffCfg = fightCfg.getCfg("buffs")
+	this.buffCfg = fightCfg.getCfg("buff_cfg")
 	this.buffList = {}
 	// for(var buffId in this.buffCfg){
 	// 	if(this.buffCfg[buffId].normal)

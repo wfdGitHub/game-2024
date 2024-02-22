@@ -6,7 +6,6 @@ const fightCfg = require("./fightCfg.js")
 var model = function(){
 	fightCfg.init()
 	this.heros = fightCfg.getCfg("heros")
-	this.hero_talents = fightCfg.getCfg("hero_talents")
 	this.fightVerifyInfo = false
 	this.managers = {}
 	this.managers["buffManager"] = new buffManager()

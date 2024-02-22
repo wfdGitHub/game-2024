@@ -3,7 +3,6 @@ const entity_base = require("./entity_base.js")
 const skill_base = require("../skill/skill_base.js")
 const fightCfg = require("../fightCfg.js")
 const skills = fightCfg.getCfg("skills")
-const skill_talents = fightCfg.getCfg("skill_talents")
 var model = function(fighting,otps,talents) {
 	//继承父类属性
 	entity_base.call(this,fighting,otps)
