@@ -77,6 +77,8 @@ model.prototype.load = function(belong,otps) {
 		team[i].enemy = this[rival+"Team"]
 		team[i].heroId = team[i].heroId
 		team[i].id = this.globalId++
+		if(!team[i].isNaN)
+			teamInfo["realms"][team[i].realm]++
 		if(team[i].team_adds){
 			for(var j in team[i].team_adds){
 				if(!teamAdds[j]){
