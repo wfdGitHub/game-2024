@@ -42,13 +42,13 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,data,cb) {
 //真实充值
 areaRemote.prototype.real_recharge = function(areaId,uid,value,cb) {
 	this.areaManager.areaMap[areaId].real_recharge(uid,value)
+	this.areaManager.areaMap[areaId].userWeekendRmb(uid,value)
 	// this.app.rpc.connector.connectorRemote.syncRealrmb.toServer(this.areaManager.connectorMap[uid],uid,value,null)
 	cb()
 }
 //充值档位
 areaRemote.prototype.real_recharge_rmb = function(areaId,uid,rmb,rate,cb) {
 	this.areaManager.areaMap[areaId].userPeriodRmb(uid,rmb,rate)
-	this.areaManager.areaMap[areaId].userWeekendRmb(uid,rmb,rate)
 	cb()
 }
 //创建新服务器
