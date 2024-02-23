@@ -3,7 +3,7 @@ const act_hero = require("../act/act_hero.js")
 //战斗角色基类
 var model = function(fighting,otps) {
 	//继承父类
-	act_hero.call(this,fighting,otps)
+	act_hero.call(this,otps)
 	this.died = false  					//死亡状态
 	this.herosCfg = false
 	if(otps && otps.id)

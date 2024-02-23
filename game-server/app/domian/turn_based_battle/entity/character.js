@@ -2,16 +2,17 @@
 const entity_base = require("./entity_base.js")
 const skill_base = require("../skill/skill_base.js")
 const fightCfg = require("../fightCfg.js")
+const heros = fightCfg.getCfg("heros")
 const skills = fightCfg.getCfg("skills")
 var model = function(fighting,otps,talents) {
 	//继承父类属性
+	otps = Object.assign(otps,heros[otps.id])
 	entity_base.call(this,fighting,otps)
 	if(this.isNaN)
 		return
 	//初始化技能
-	this.skills = [] 					
-	this.skills.push(new skill_base(this,{id:"1001",name:"普攻",cd:1700}))
-	this.skills.push(new skill_base(this,{id:"2001",name:"技能",cd:5000}))
+	this.skills = []
+	this.skills.push(new skill_base(this,skills[otps["defaultSkill"]]))
 	//初始化天赋
 	this.talents = talents
 	//回合技能

@@ -4,14 +4,15 @@ var model = function(fighting) {
 }
 model.prototype.getTargets = function(character,targetType,radius) {
 	switch(targetType){
+		case "enemy_near":
+			//最近敌方
+			return this.getEnemyNormal(character)
 		case "team_near":
 			//最近友方
 			return this.getFriendNormal(character)
 		case "todo":
 			//血量最少友方
 			return
-		case "enemy_range":
-			//范围内敌方目标
 		default:
 			//默认距离最近敌方单体  
 			return this.getEnemyNormal(character)

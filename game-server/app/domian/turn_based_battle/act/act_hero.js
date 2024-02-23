@@ -1,10 +1,12 @@
 //行动控制器
 const MOVE_TIME = 300                   //毫秒
-var model = function() {
+var model = function(otps) {
+	//============英雄参数====================//
+	this.actSpeed = otps.actSpeed || 1700 				//攻击速度
+	this.moveSpeed = otps.moveSpeed || 100 				//移动速度，每秒移动距离
+	//============战斗数据====================//
 	this.pos = {x : 0,y : 0} 			//当前位置
 	this.state = 0 						//当前状态  0 待机  1  移动中  2  释放技能
-	this.actSpeed = 1700 				//攻击速度
-	this.moveSpeed = 100 				//移动速度，每秒移动距离
 	this.actTime = 0 					//行动冷却
 	this.targets = [] 					//当前目标列表
 	this.target = false  				//当前主目标

@@ -19,7 +19,7 @@ model.prototype.timeUpdate = function(dt) {
 		if(this.fighting.locator.callDist(this.bullets[i].pos,this.bullets[i].target.pos) < 10){
 			//结算子弹
 			if(!this.bullets[i].target.died)
-				this.bullets[i].skill.settle(bulletInfo.mul,this.bullets[i].value)
+				this.bullets[i].skill.settle(this.bullets[i].mul,this.bullets[i].value)
 			delete this.bullets[i]
 		}
 	}

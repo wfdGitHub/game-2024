@@ -4,7 +4,7 @@ var model = function(otps,hero) {
 	this.id = otps.id
 	this.name = otps.name
 	this.NEEDCD = otps.cd 					 //技能CD
-	this.type = otps.type || "normal"        //技能类型  normal 普通 bullet 子弹  range  范围技能
+	this.type = otps.type || "normal"        //技能类型  normal 普通 bullet 弹道  range  范围技能
 	//弹道属性
 	this.bu_spe = otps.bu_spe || 1000      	 //弹道速度
 	//范围技能属性
@@ -16,7 +16,7 @@ var model = function(otps,hero) {
 	this.times = otps.times || [0] 			 //结算时间列表
 	this.muls = otps.muls || [1]  		  	 //技能系数列表
 	this.value = otps.value || 10  		 	 //技能附加伤害
-	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤   real  真伤  heal 治疗
+	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤  heal 治疗
 	//状态参数
 	this.cd = 0 							 //当前技能CD
 	this.state = 0 							 //0 未释放   1  释放中
@@ -59,7 +59,7 @@ model.prototype.bulletUpdate = function(dt) {
 	this.curDur += dt
 	if(this.times[this.timeIndex] !== undefined && this.curDur >= this.times[this.timeIndex]){
 		for(var i = 0;i < this.targets.length;i++)
-			this.hero.fighting.bulletManager.addBullet(this.hero,this.targets[i],this,this.muls[this.timeIndex],value)
+			this.hero.fighting.bulletManager.addBullet(this.hero,this.targets[i],this,this.muls[this.timeIndex],this.value)
 		this.timeIndex++
 	}
 	if(this.curDur >= this.skillDur)

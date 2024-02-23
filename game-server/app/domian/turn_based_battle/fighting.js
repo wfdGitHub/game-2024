@@ -6,6 +6,7 @@ const act_bullets = require("./act/act_bullets.js")
 const formulaFun = require("./skill/formula.js")
 const TIME_LAG = 100
 const MAX_TIME = 90000
+const DEFALT_POS = [{x:300,y:0},{x:300,y:-200},{x:300,y:200},{x:200,y:-150},{x:200,y:150}]
 var model = function(atkTeam,defTeam,otps,managers) {
 	console.time("fight")
 	this.fightInfo = {"atk":{"rival":"def","team":[]},"def":{"rival":"atk","team":[]}}
@@ -76,9 +77,9 @@ model.prototype.loadHero = function(belong,index,info,teamTalents,teamCfg) {
 		this.fightInfo[belong]["team"][team_character.id] = team_character
 		this.allHero[team_character.id] = team_character
 		if(belong == "atk")
-			team_character.pos = {x : 500,y : 0}
+			team_character.pos = {x : -DEFALT_POS[index].x,y : DEFALT_POS[index].y}
 		else
-			team_character.pos = {x : 0,y : 0}
+			team_character.pos = {x : DEFALT_POS[index].x,y : DEFALT_POS[index].y}
 	}
 }
 //载入敌方阵容
