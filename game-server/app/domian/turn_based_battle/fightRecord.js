@@ -54,7 +54,7 @@ model.prototype.translate = function(info) {
 		case "damage":
 			if(info.list)
 				for(var i = 0;i < info.list.length;i++)
-					this.attackInfo(info.list[i],colors["red"]+"(来自"+this.heroMap[info["id"]]+")"+"对["+this.heroMap[info.list[i]["id"]]+"]\t"+colors["end"]+" 造成 ")
+					this.attackInfo(info.list[i],info.t/1000+"s "+colors["red"]+"(来自"+this.heroMap[info["id"]]+")"+"对["+this.heroMap[info.list[i]["id"]]+"]\t"+colors["end"]+" 造成 ")
 		break
 		case "heal":
 			if(info.list)

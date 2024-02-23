@@ -4,6 +4,9 @@ var model = function(fighting) {
 }
 model.prototype.getTargets = function(character,targetType,radius) {
 	switch(targetType){
+		case "self":
+			//自身
+			return [character]
 		case "enemy_near":
 			//最近敌方
 			return this.getEnemyNormal(character)

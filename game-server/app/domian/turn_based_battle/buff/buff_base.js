@@ -6,7 +6,6 @@ var model = function(buffStr) {
 	this.rate = Number(otps.rate) || 0 				//buff概率
 	this.mul = Number(otps.mul) || 0 				//buff系数
 	this.value = Number(otps.value) || 0 			//buff额外数值
-	this.targetType = otps.targetType  				//buff目标
 	this.duration = otps.duration || 1 				//buff持续时间
 	this.count = Number(otps.count) || 1 			//buff层数
 	this.cd = otps.cd || 0 							//冷却回合

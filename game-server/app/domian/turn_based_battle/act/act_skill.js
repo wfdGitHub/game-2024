@@ -5,6 +5,7 @@ var model = function(otps,hero) {
 	this.name = otps.name
 	this.NEEDCD = otps.cd 					 //技能CD
 	this.type = otps.type || "normal"        //技能类型  normal 普通 bullet 弹道  range  范围技能
+	this.targetType = otps.targetType  		 //技能目标
 	//弹道属性
 	this.bu_spe = otps.bu_spe || 1000      	 //弹道速度
 	//范围技能属性
@@ -15,7 +16,7 @@ var model = function(otps,hero) {
 	this.resRange = otps.resRange ||  100    //释放距离
 	this.times = otps.times || [0] 			 //结算时间列表
 	this.muls = otps.muls || [1]  		  	 //技能系数列表
-	this.value = otps.value || 10  		 	 //技能附加伤害
+	this.value = otps.value || 0  		 	 //技能附加伤害
 	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤  heal 治疗
 	//状态参数
 	this.cd = 0 							 //当前技能CD
