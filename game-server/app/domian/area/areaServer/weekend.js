@@ -101,9 +101,8 @@ module.exports = function() {
 		})
 	}
 	//玩家充值更新
-	this.userWeekendRmb = function(uid,rmb,rate) {
-		if(info.state == 2 && rmb && rate){
-			var value = Math.round(rmb * rate)
+	this.userWeekendRmb = function(uid,value) {
+		if(info.state == 2 && value){
 			self.incrbyAreaObj(main_name,"rmb_"+uid,value)
 			self.incrbyZset(main_name+"_rank",uid,value,function(data) {
 				data = Math.floor(data) + ((MAX_NUM - Date.now()) * 1e-14)
