@@ -113,10 +113,14 @@ module.exports = function() {
 	//活动关闭
 	this.endWeekend = function() {
 		//发放排行榜
-		self.zrevrange(main_name+"_rank",0,9,function(list) {
-			for(var i = 0;i <= 9;i++){
-				var index = i+1
-				self.sendTextToMail(list[i],"weekend",weekend_cfg[info.index]["rank_"+index],index)
+		self.zrevrangewithscore(main_name+"_rank",0,9,function(list) {
+			for(var i = 0;i < list.length;i += 2){
+				var uid = list[i]
+				var score = Math.floor(list[i+1])
+				if(score >= 10000){
+					var index = i+1
+					self.sendTextToMail(list[i],"weekend",weekend_cfg[info.index]["rank_"+index],index)
+				}
 			}
 		})
 	}
