@@ -239,6 +239,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.userRechargeDayUpdate(uid)
 	this.weekTargetRefresh(uid)
 	this.tanxianDayUpdate(uid)
+	this.incrbyPassKey(uid,"day")
 	this.incrbyAreaObj("areaInfo","day_login",1)
 	this.playerDao.setPlayerInfo({uid:uid,key:"pay_state",value:0})
 	//每日随机时间

@@ -39,8 +39,6 @@ module.exports = function() {
 			return
 		self.delObjAll(uid,pId)
 		self.setObj(uid,main_name,pId,1)
-		if(game_pass_cfg[pId]["update"])
-			self.delObj(uid,main_name,game_pass_cfg[pId]["key"])
 		cb(true)
 	}
 	//领取奖励
@@ -62,12 +60,37 @@ module.exports = function() {
 				cb(false,"条件未满足")
 				return
 			}
-			self.incrbyObj(uid,pId,id,function(data) {
+			self.incrbyObj(uid,pId,id,1,function(data) {
 				if(data !== 1){
 					cb(false,"已领取")
 					return
 				}
 				var awardList = self.addItemStr(uid,game_pass_cfg[pId]["table"][id]["award"])
+				cb(true,awardList)
+			})
+		})
+	}
+	//领取免费挡位奖励
+	this.methods.gainPassFreeAward = function(uid,msg,cb) {
+		var pId = msg.pId
+		var id = msg.id
+		if(!game_pass_cfg[pId] || !game_pass_cfg[pId]["table"][id]){
+			cb(false,"pId or id error")
+			return
+		}
+		var needKey = game_pass_cfg[pId]["key"]
+		self.getObj(uid,main_name,needKey,function(value) {
+			var value = Number(value) || 0
+			if(value < game_pass_cfg[pId]["table"][id]["need"]){
+				cb(false,"条件未满足")
+				return
+			}
+			self.incrbyObj(uid,pId,"f"+id,1,function(data) {
+				if(data !== 1){
+					cb(false,"已领取")
+					return
+				}
+				var awardList = self.addItemStr(uid,game_pass_cfg[pId]["table"][id]["free"])
 				cb(true,awardList)
 			})
 		})
