@@ -1,4 +1,4 @@
-//宝物抽奖
+//宝物
 const ace_pack = require("../../../../config/gameCfg/ace_pack.json")
 var aceList = {}
 for(var i in ace_pack){
@@ -6,7 +6,7 @@ for(var i in ace_pack){
 		aceList[ace_pack[i]["quality"]] = []
 	aceList[ace_pack[i]["quality"]].push(i)
 }
-const weight = {"3":0.45,"4":0.28,"5":0.12,"6":0.01}
+const weight = {"3":0.35,"4":0.22,"5":0.08,"6":0}
 module.exports = function() {
 	var self = this
 	this.compoundAce = function(uid,aId1,aId2,cb) {
@@ -15,16 +15,12 @@ module.exports = function() {
 			return
 		}
 		var qa = ace_pack[aId1]["quality"]
-		if(!aceList[qa+1]){
-			cb(false,"该品质不能合成 "+qa)
-			return
-		}
 		self.consumeItems(uid,aId1+":1&"+aId2+":1",1,"宝物合成",function(flag,err) {
 			if(!flag){
 				cb(false,err)
 			}else{
 				var itemId
-				if(Math.random() < weight[qa])
+				if(aceList[qa+1] && Math.random() < weight[qa])
 					itemId = aceList[qa+1][Math.floor(aceList[qa+1].length * Math.random())]
 				else
 					itemId = aceList[qa][Math.floor(aceList[qa].length * Math.random())]
