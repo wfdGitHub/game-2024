@@ -297,6 +297,7 @@ module.exports = function() {
     	if(self.checkLimitedTime("arena"))
     		rate = 2
 		if(winFlag){
+			self.incrbyPassKey(uid,"arena",1)
 			self.getObjAll(uid,main_name,function(data) {
 				//交换排名
 				data.rank = Number(data.rank)
