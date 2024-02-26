@@ -1,8 +1,12 @@
 //游戏战令
 const main_name = "pass"
 const game_pass_cfg = require("../../../../config/gameCfg/game_pass_cfg.json")
-for(var i in game_pass_cfg)
+const oneDayTime = 86400000
+for(var i in game_pass_cfg){
 	game_pass_cfg[i]["table"] = require("../../../../config/gameCfg/"+game_pass_cfg[i]["cfg"]+".json")
+	if(game_pass_cfg[i]["day"])
+		game_pass_cfg[i]["activateTime"] = oneDayTime * game_pass_cfg[i]["day"]
+}
 module.exports = function() {
 	var self = this
 	//获取数据
@@ -14,14 +18,22 @@ module.exports = function() {
 		}
 		var needKey = game_pass_cfg[pId]["key"]
 		self.getHMObj(uid,main_name,[pId,needKey],function(list) {
-			console.log(list)
-			self.getObjAll(uid,pId,function(data) {
-				if(!data)
-					data = {}
-				data.state = list[0] || 0
-				data.value = list[1] || 0
+			var data = {}
+			data.activate = Number(list[0]) || 0
+			data.value = Number(list[1]) || 0
+			if(game_pass_cfg[pId]["activateTime"] && data.activate && data.activate < Date.now()){
+				self.delObj(uid,main_name,pId)
+				self.delObj(uid,main_name,needKey)
+				self.delObjAll(uid,pId)
+				data.activate = 0
+				data.value = 0
 				cb(true,data)
-			})
+			}else{
+				self.getObjAll(uid,pId,function(tmpData) {
+					Object.assign(data,tmpData)
+					cb(true,data)
+				})
+			}
 		})
 	}
 	//更新参数
@@ -37,8 +49,10 @@ module.exports = function() {
 		var pId = msg.pId
 		if(!game_pass_cfg[pId])
 			return
-		self.delObjAll(uid,pId)
-		self.setObj(uid,main_name,pId,1)
+		if(game_pass_cfg[pId]["activateTime"])
+			self.setObj(uid,main_name,pId,Date.now() + game_pass_cfg[pId]["activateTime"])
+		else
+			self.setObj(uid,main_name,pId,1)
 		cb(true)
 	}
 	//领取奖励
@@ -60,7 +74,7 @@ module.exports = function() {
 				cb(false,"条件未满足")
 				return
 			}
-			self.incrbyObj(uid,pId,id,1,function(data) {
+			self.incrbyObj(uid,pId,"p"+id,1,function(data) {
 				if(data !== 1){
 					cb(false,"已领取")
 					return
