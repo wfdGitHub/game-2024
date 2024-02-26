@@ -40,6 +40,7 @@ module.exports = function() {
 			if(winFlag){
 				//发放奖励
 				var awardList = self.addItemStr(uid,endless_team[id]["award_"+level],1,"无尽试炼")
+				self.incrbyPassKey(uid,"endless",1)
 				cb(true,{awardList:awardList,action:action,winFlag:winFlag})
 			}else{
 				cb(false,{atkTeam:atkTeam,defTeam:defTeam,seededNum:seededNum,masterSkills:masterSkills,winFlag:winFlag,action:action})

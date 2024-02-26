@@ -154,6 +154,7 @@ module.exports = function() {
 					local.manorMoveLevel(uid,buildLv)
 					self.taskUpdate(uid,"manor_lv",1,buildLv)
 				}
+				self.taskUpdate(uid,"manor_score",manor_main[mainLv]["score"])
 				self.updateSprintRank("manor_rank",uid,manor_main[mainLv]["score"])
 				self.setObj(uid,main_name,bId,buildLv)
 				self.setBuildLv(uid,bId,buildLv)

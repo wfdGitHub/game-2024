@@ -346,6 +346,16 @@ crossManager.prototype.taskUpdate  = function(crossUid,type,value,arg) {
 	var uid = this.players[crossUid]["uid"]
 	this.app.rpc.area.areaRemote.taskUpdate.toServer(serverId,areaId,uid,type,value,arg,function(){})
 }
+crossManager.prototype.incrbyPassKey  = function(crossUid,key) {
+	if(!this.players[crossUid]){
+		cb(false)
+		return
+	}
+	var areaId = this.players[crossUid]["areaId"]
+	var serverId = this.players[crossUid]["serverId"]
+	var uid = this.players[crossUid]["uid"]
+	this.app.rpc.area.areaRemote.incrbyPassKey.toServer(serverId,areaId,uid,key,function(){})
+}
 //发放公会邮件
 crossManager.prototype.sendMailByGuildId  = function(guildId,key,atts) {
 	var self = this

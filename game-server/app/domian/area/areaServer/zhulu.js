@@ -363,6 +363,7 @@ module.exports = function() {
 						awardStr += "&"+dropItem+":1"
 		    		info.awardList = self.addItemStr(uid,awardStr,rate,"逐鹿战斗")
 		    		self.taskUpdate(uid,"zhulu_monster",1)
+		    		self.incrbyPassKey(uid,"zhulu",1)
 			    }else{
 			    	for(var i = 0;i<defTeam.length;i++){
 			    		if(defTeam[i] && overInfo.defTeam[i]){

@@ -176,6 +176,12 @@ areaRemote.prototype.updateFestivalInfo = function(cb) {
 	}
 	cb(true)
 }
+//更新战令
+areaRemote.prototype.incrbyPassKey = function(areaId,uid,key,cb) {
+	if(this.areaManager.areaMap[areaId])
+		var awardList = this.areaManager.areaMap[areaId].incrbyPassKey(uid,key)
+	cb(true)
+}
 module.exports = function(app) {
 	return bearcat.getBean({
 		id : "areaRemote",

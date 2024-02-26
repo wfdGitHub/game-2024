@@ -1,8 +1,8 @@
 //战区设置
 const async = require("async")
 const util = require("../../../../util/util.js")
-const activeNum = 150    //活跃人数
-const deployDay = 14 	 //战区划分时间
+const activeNum = 140    //活跃人数
+const deployDay = 7 	 //战区划分时间
 module.exports = function() {
 	var self = this
 	this.theatreMap = {}
