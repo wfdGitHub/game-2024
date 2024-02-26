@@ -247,6 +247,7 @@ area.prototype.dayFirstLogin = function(uid) {
 	this.extremityUserUpdate(uid)
 	this.priDayUpdate(uid)
 	this.userRechargeDayUpdate(uid)
+	this.lottoDayUpdate(uid)
 	this.incrbyAreaObj("areaInfo","day_login",1)
 	this.playerDao.setPlayerInfo({uid:uid,key:"pay_state",value:0})
 	//每日随机时间
