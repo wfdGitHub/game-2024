@@ -111,21 +111,15 @@
             console.log(data);
         })
       }
-      //领取奖励
+      //领取付费奖励
       var gainPassAward = function(pId,id) {
         pomelo.request("area.areaHandler.commonMethod",{"method":"gainPassAward","pId":pId,"id":id},function(data) {
             console.log(data);
         })
       }
-      //领取奖励
+      //领取免费奖励
       var gainPassFreeAward = function(pId,id) {
         pomelo.request("area.areaHandler.commonMethod",{"method":"gainPassFreeAward","pId":pId,"id":id},function(data) {
-            console.log(data);
-        })
-      }
-      //激活战令
-      var activatePass = function(pId) {
-        pomelo.request("area.areaHandler.commonMethod",{"method":"activatePass","pId":pId},function(data) {
             console.log(data);
         })
       }
