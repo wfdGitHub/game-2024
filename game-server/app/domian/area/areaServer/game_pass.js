@@ -45,15 +45,13 @@ module.exports = function() {
 		self.setObj(uid,main_name,key,value)
 	}
 	//激活战令
-	this.methods.activatePass = function(uid,msg,cb){
-		var pId = msg.pId
+	this.activatePass = function(uid,pId){
 		if(!game_pass_cfg[pId])
 			return
 		if(game_pass_cfg[pId]["activateTime"])
 			self.setObj(uid,main_name,pId,Date.now() + game_pass_cfg[pId]["activateTime"])
 		else
 			self.setObj(uid,main_name,pId,1)
-		cb(true)
 	}
 	//领取奖励
 	this.methods.gainPassAward = function(uid,msg,cb) {
