@@ -10,11 +10,8 @@ var model = function(otps) {
 	this.characterType = "hero"  //角色类型
 	this.realm = otps.realm || 1 //国家
 	this.career = otps.career	 //角色职业   1输出  2控制   3肉盾   4治疗
-	this.species = []
-	if(otps.specie1)
-		this.species.push(otps.specie1)
-	if(otps.specie2)
-		this.species.push(otps.specie2)
+	// this.species = []
+	// this.species.push(this.realm)
 	this.otps = otps
 	this.sex = 1 		//性别 1男 2女
 	this.belong = ""   			//所属阵容

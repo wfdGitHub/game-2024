@@ -196,9 +196,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		}
 	}
 	//种族克制
-	var specieRate = 1
-	for(var i = 0;i < target.species.length;i++)
-		specieRate *= species[skill.specie][target.species[i]]
+	var specieRate = species[attacker.realm][target.realm]
 	if(target.specie_immune == skill.specie)
 		specieRate = specieRate * 0.1
 	if(specieRate > 1){
