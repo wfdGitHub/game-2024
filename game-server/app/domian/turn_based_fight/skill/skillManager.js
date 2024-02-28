@@ -345,9 +345,11 @@ model.useSkill = function(skill,chase,point) {
 		}
 	}
 	//清除隐身概率
-	if(skill.dispel_sneak){
+	if(skill.dispel_sneak || skill.character.otps.dispel_sneak){
+		var dispel_sneak = skill.dispel_sneak || 0 + skill.character.otps.dispel_sneak || 0
+		console.log("dispel_sneak",dispel_sneak)
 		for(var i = 0;i < targets.length;i++){
-			if(!targets[i].died && targets[i].buffs["sneak"] && this.seeded.random("清除隐身") < skill.dispel_sneak){
+			if(!targets[i].died && targets[i].buffs["sneak"] && this.seeded.random("清除隐身") < dispel_sneak){
 				targets[i].buffs["sneak"].destroy()
 				if(skill.character.dispel_sneak_buff){
 					buffManager.createBuff(skill.character,targets[i],skill.character.dispel_sneak_buff)
@@ -366,6 +368,7 @@ model.useSkill = function(skill,chase,point) {
 			this.useSkill(skill,true,targets)
 		}else if(skill.isAnger && skill.character.skill_again && this.seeded.random("skill_again") < skill.character.skill_again){
 			//技能重复概率
+			skill.tmpMul = skill.character.skill_again_amp
 			this.useSkill(skill,true)
 		}
 	}
@@ -707,6 +710,7 @@ model.useAttackSkill = function(skill,chase,point) {
 					buffManager.createBuff(targets[i],skill.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 				}
 			}
+			if(targets[i])
 			//被灼烧敌人攻击时回复怒气
 			if(targets[i].burn_hit_anger && skill.character.buffs["burn"]){
 				targets[i].addAnger(targets[i].burn_hit_anger,skill.skillId)
@@ -733,6 +737,12 @@ model.useAttackSkill = function(skill,chase,point) {
 			//对敌方造成法术伤害时，如果目标处于异常状态，则使其怒气降低1点
 			if(skill.character.mag_debuff_anger && skill.damageType == "mag" && targets[i].getDebuffNum()){
 				targets[i].lessAnger(1)
+			}
+			//暴击触发BUFF
+			if(info.crit && skill.character.crit_buff){
+				var buffInfo = skill.character.crit_buff
+				if(this.seeded.random("BUFF") < buffInfo.buffRate)
+					buffManager.createBuff(targets[i],skill.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 			}
 		}
 		if(!skill.isAnger && targets[i].hit_less_anger){
@@ -852,15 +862,25 @@ model.useAttackSkill = function(skill,chase,point) {
 		//追加普通攻击判断
 		if((skill.add_d_s || skill.character.skill_add_d_s)){
 			this.useSkill(skill.character.defaultSkill,true)
+		}else if(skill.character.otps.phy_skill_chase_rate){
+			if(skill.isPhySingle() && this.seeded.random("追击普攻") < skill.character.otps.phy_skill_chase_rate){
+				skill.character.defaultSkill.tmpMul = skill.character.otps.phy_skill_chase_amp
+				this.useSkill(skill.character.defaultSkill,true)
+			}
 		}
 	}else{
 		//普攻追加技能判断
-		if(skill.character.normal_add_skill && this.seeded.random("普攻追加技能判断") < skill.character.normal_add_skill){
+		if(skill.character.normal_add_skill && this.seeded.random("普攻追加技能") < skill.character.normal_add_skill){
 			this.useSkill(skill.character.angerSkill,true)
 		}
 	}
-	if(kill_num && skill.character.kill_add_d_s){
-		this.useSkill(skill.character.defaultSkill,true)
+	if(kill_num){
+		if(skill.character.kill_add_d_s)
+			this.useSkill(skill.character.defaultSkill,true)
+		else if(skill.character.otps.phy_kill_pursue && skill.isPhySingle()){
+			skill.character.defaultSkill.tmpMul = skill.character.otps.phy_kill_amp
+			this.useSkill(skill.character.defaultSkill,true)
+		}
 	}
 	return targets
 }

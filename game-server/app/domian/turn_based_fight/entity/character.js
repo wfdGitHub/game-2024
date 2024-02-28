@@ -73,7 +73,14 @@ var model = function(otps) {
 	this.action_buffs = {} 				//行动后buff
 	this.round_buffs = [] 				//回合开始前BUFF
 	this.died_buffs = {} 				//死亡时buff
+	this.behit_buffs = []
 	this.passives = {} 					//被动技能
+	//==========S11新增属性===========//
+	this.phy_crit = otps.phy_crit || 0 							//物理暴击
+	this.mag_crit = otps.mag_crit || 0 							//法术暴击
+	this.phyAtk = 0  											//物攻加成
+	this.magAtk = 0 											//法攻加成
+	this.round_hit_red = otps.round_hit_red || 0 				
 	//==========闪光阶级========//
 	this.specie_behit = otps.specie_behit 						//对战中，对自身造成的克制伤害*0.75
 	this.full_hp_red = otps.full_hp_red 						//HP全满的时候，受到的伤害减为原来1/2
@@ -111,6 +118,7 @@ var model = function(otps) {
 	this.remove_one_lower= otps.remove_one_lower || false   //行动前移除一个减益效果
 	this.cold_hit_anger = otps.cold_hit_anger || 0 			//被寒冷状态下的敌人攻击时恢复怒气
 	this.skill_again = otps.skill_again || 0 				//释放技能后再次释放概率
+	this.skill_again_amp = otps.skill_again_amp || 1 		//释放技能后再次释放伤害
 	this.add_anger_maxHp = otps.add_anger_maxHp || 0 		//追加技能伤害加成
 	if(otps.died_once_buff)
 		this.died_once_buff = JSON.parse(otps.died_once_buff) //死亡后触发buff,仅生效1
@@ -263,6 +271,8 @@ var model = function(otps) {
 	this.phy_def = otps.phy_def || 0			//物理伤害减免
 	this.mag_def = otps.mag_def || 0			//法术伤害减免
 	this.neglect_def = otps.neglect_def || 0 	//忽视防御比例
+	this.neglect_phy = otps.neglect_phy || 0 	//忽视物防比例
+	this.neglect_mag = otps.neglect_mag || 0 	//忽视法防防比例
 	this.over_buff_maxHp = otps.over_buff_maxHp || 0	//伤害超出生命值上限时释放buff的生命值比例
 	if(otps.over_buff_arg)
 		this.over_buff_arg = JSON.parse(otps.over_buff_arg) || false 	//伤害超出生命值上限时释放buff的buff参数
@@ -409,15 +419,14 @@ var model = function(otps) {
 
 	this.hit_less_anger = otps.hit_less_anger || 0	//受到普通攻击后，降低攻击自己的武将怒气
 	this.hit_anger_s = otps.hit_anger_s || 0 		//受到普通攻击后，回复自己的怒气
-	if(otps.hit_buff){
+	if(otps.hit_buff)
 		this.hit_buff = JSON.parse(otps.hit_buff)	//受到伤害给攻击者附加BUFF
-	}
-	if(otps.hit_normal_buff){
+	if(otps.hit_normal_buff)
 		this.hit_normal_buff = JSON.parse(otps.hit_normal_buff)	//受到普通攻击给攻击者附加BUFF
-	}
-	if(otps.hit_skill_buff){
+	if(otps.hit_skill_buff)
 		this.hit_skill_buff = JSON.parse(otps.hit_skill_buff)	//受到技能攻击释放buff
-	}
+	if(otps.crit_buff)
+		this.crit_buff = JSON.parse(otps.crit_buff)				//暴击触发BUFF
 	this.normal_crit = otps.normal_crit || false 				//普攻必定暴击(含治疗)	
 	this.normal_heal_amp = otps.normal_heal_amp || 0			//普攻治疗量加成
 	this.normal_add_anger = otps.normal_add_anger || 0			//普攻后恢复自身怒气
@@ -546,48 +555,21 @@ var model = function(otps) {
 	if(otps["magDef_add_"+this.realm])
 		this.addTalentValue("mag_def",otps["magDef_add_"+this.realm])
 	//=======属性加成======//
-	if(this.lv > 100){
-		var lvdif = this.lv - 100
+	if(this.lv){
 		if(otps.atk_grow)
-			this.attInfo.atk += Math.ceil(otps.atk_grow * lvdif) || 0
+			this.attInfo.atk += Math.ceil(otps.atk_grow * this.lv) || 0
 		if(otps.maxHP_grow){
-			this.attInfo.maxHP += Math.ceil(otps.maxHP_grow * lvdif) || 0
+			this.attInfo.maxHP += Math.ceil(otps.maxHP_grow * this.lv) || 0
 			this.attInfo.hp = this.attInfo.maxHP
 		}
 		if(otps.phyDef_grow)
-			this.attInfo.phyDef += Math.ceil(otps.phyDef_grow * lvdif) || 0
+			this.attInfo.phyDef += Math.ceil(otps.phyDef_grow * this.lv) || 0
 		if(otps.magDef_grow)
-			this.attInfo.magDef += Math.ceil(otps.magDef_grow * lvdif) || 0
-	}
-	//=========技能=======//
-	//入场技能
-	if(otps.beginSkill)
-		this.beginSkill = skillManager.createSkill(otps.beginSkill,this)
-	//退场技能
-	if(otps.diedSkill)
-		this.diedSkill = skillManager.createSkill(otps.diedSkill,this)
-	if(otps.defaultSkill)
-		this.defaultSkill = skillManager.createSkill(otps.defaultSkill,this)				//普通技能
-	if(otps.angerSkill){
-		this.angerSkill = skillManager.createSkill(otps.angerSkill,this)		//怒气技能
-		this.angerSkill.isAnger = true
-		if(this.skill_heal_maxHp)
-			this.angerSkill.self_heal = this.skill_heal_maxHp
-		this.needAnger = this.angerSkill.needAnger
-	}
-	this.target_minHP = otps.target_minHP		//单体输出武将的所有攻击优先攻击敌方当前血量最低的武将
-	if(this.target_minHP){
-		this.defaultSkill.targetType = "enemy_minHP"
-		this.angerSkill.targetType = "enemy_minHP"
-		if(this.kill_later_skill && this.kill_later_skill.targetType == "enemy_1"){
-			this.kill_later_skill.targetType = "enemy_minHP"
-		}
-	}
-	if(this.atkcontrol){
-		for(var id in this.angerSkill.skill_buffs){
-			if(this.angerSkill.skill_buffs[id].buffId == "disarm" || this.angerSkill.skill_buffs[id].buffId == "dizzy" || this.angerSkill.skill_buffs[id].buffId == "silence")
-				this.angerSkill.skill_buffs[id].buffRate += this.angerSkill.skill_buffs[id].buffRate * this.atkcontrol
-		}
+			this.attInfo.magDef += Math.ceil(otps.magDef_grow * this.lv) || 0
+		if(otps.phy_grow)
+			this.phyAtk += Math.ceil(otps.phy_grow * this.lv) || 0
+		if(otps.mag_grow)
+			this.magAtk += Math.ceil(otps.mag_grow * this.lv) || 0
 	}
 }
 model.prototype.init = function(fighting) {
@@ -614,9 +596,42 @@ model.prototype.init = function(fighting) {
 	if(this.otps.died_buffs)
 		for(var i = 0;i < this.otps.died_buffs.length;i++)
 			this.addDiedBuff(this.otps.died_buffs[i])
+	if(this.otps.behit_buffs)
+		for(var i = 0;i < this.otps.behit_buffs.length;i++)
+			this.addBehitBuff(this.otps.behit_buffs[i])
 	if(this.seckill)
 		this.angerSkill.seckill = true
 	this.attInfo.speed += this.fighting.seeded.random("随机速度") * 0.5
+	//=========技能=======//
+	//入场技能
+	if(this.otps.beginSkill)
+		this.beginSkill = skillManager.createSkill(this.otps.beginSkill,this)
+	//退场技能
+	if(this.otps.diedSkill)
+		this.diedSkill = skillManager.createSkill(this.otps.diedSkill,this)
+	if(this.otps.defaultSkill)
+		this.defaultSkill = skillManager.createSkill(this.otps.defaultSkill,this)				//普通技能
+	if(this.otps.angerSkill){
+		this.angerSkill = skillManager.createSkill(this.otps.angerSkill,this)		//怒气技能
+		this.angerSkill.isAnger = true
+		if(this.skill_heal_maxHp)
+			this.angerSkill.self_heal = this.skill_heal_maxHp
+		this.needAnger = this.angerSkill.needAnger
+	}
+	this.target_minHP = this.otps.target_minHP		//单体输出武将的所有攻击优先攻击敌方当前血量最低的武将
+	if(this.target_minHP){
+		this.defaultSkill.targetType = "enemy_minHP"
+		this.angerSkill.targetType = "enemy_minHP"
+		if(this.kill_later_skill && this.kill_later_skill.targetType == "enemy_1"){
+			this.kill_later_skill.targetType = "enemy_minHP"
+		}
+	}
+	if(this.atkcontrol){
+		for(var id in this.angerSkill.skill_buffs){
+			if(this.angerSkill.skill_buffs[id].buffId == "disarm" || this.angerSkill.skill_buffs[id].buffId == "dizzy" || this.angerSkill.skill_buffs[id].buffId == "silence")
+				this.angerSkill.skill_buffs[id].buffRate += this.angerSkill.skill_buffs[id].buffRate * this.atkcontrol
+		}
+	}
 }
 //选择技能
 model.prototype.chooseSkill = function() {
@@ -825,6 +840,7 @@ model.prototype.begin = function() {
 //英雄出场
 model.prototype.heroComeon = function() {
 	if(this.first_buff_list.length){
+		console.log()
 		for(var j = 0;j < this.first_buff_list.length;j++){
 			if(this.first_buff_list[j]["buff_tg"]){
 				var targets = this.fighting.locator.getBuffTargets(this,this.first_buff_list[j]["buff_tg"])
@@ -1202,6 +1218,10 @@ model.prototype.addDiedBuff = function(buffStr) {
 		buff.duration += this.buffDuration
 	this.died_buffs[buff.buffId] = buff
 }
+model.prototype.addBehitBuff = function(buffStr) {
+	var buff = JSON.parse(buffStr)
+	this.behit_buffs.push(buff)
+}
 //闪避
 model.prototype.onMiss = function() {
 	if(this.shanbi_fanzhi)
@@ -1275,7 +1295,7 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 				fightRecord.push(tmpRecord)
 			}).bind(this))
 		}
-		info.realValue = this.lessHP(info,callbacks)
+		info.realValue = this.lessHP(attacker,info,callbacks)
 		info.curValue = this.attInfo.hp
 		info.maxHP = this.attInfo.maxHP
 		if(this.damage_save)
@@ -1425,6 +1445,13 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 							delete this.less_hp_buff
 						}).bind(this))
 					}
+					//被攻击BUFF
+					if(this.behit_buffs.length){
+						callbacks.push((function(){
+							for(var i = 0;i < this.behit_buffs.length;i++)
+								buffManager.createBuff(this,this,this.behit_buffs[i])
+						}).bind(this))
+					}
 				}
 			}
 		}
@@ -1439,7 +1466,7 @@ model.prototype.onHPLoss = function() {
 	if(info.value >= this.attInfo.hp){
 		info.value = this.attInfo.hp - 1
 	}
-	info.realValue = this.lessHP(info)
+	info.realValue = this.lessHP(this,info)
 	info.curValue = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
 	fightRecord.push(info)
@@ -1523,7 +1550,7 @@ model.prototype.friendDied = function(friend,callbacks){
 				var rate = this.getPassiveArg("fh_ss")
 				var info = {type : "other_damage",id:this.id,"loss":true}
 				info.value = Math.floor(rate * this.attInfo.maxHP)
-				info.realValue = this.lessHP(info)
+				info.realValue = this.lessHP(this,info)
 				info.curValue = this.attInfo.hp
 				info.maxHP = this.attInfo.maxHP
 				fightRecord.push(info)
@@ -1597,7 +1624,7 @@ model.prototype.addHP = function(value) {
 	return realValue
 }
 //扣除血量
-model.prototype.lessHP = function(info,callbacks) {
+model.prototype.lessHP = function(attacker,info,callbacks) {
 	if(this.died || this.buffs["banish"]){
 		return 0
 	}
@@ -1638,6 +1665,13 @@ model.prototype.lessHP = function(info,callbacks) {
 			info.oneblood = true
 			this.attInfo.hp = 1
 			buffManager.createBuff(this,this,{buffId : "invincibleSuper",duration : 1})
+		}else if(!attacker.otps.refrain_huyou && this.otps.huyou && this.fighting.seeded.random("保命判断") < this.otps.huyou){
+			this.otps.huyou -= 0.05
+			this.attInfo.hp = this.attInfo.maxHP
+			info.oneblood = true
+		}else if(!attacker.otps.refrain_huyou && this.otps.guiyi && this.fighting.seeded.random("保命判断") < this.otps.guiyi){
+			this.attInfo.hp = 1
+			info.oneblood = true
 		}else{
 			this.attInfo.hp -= info.value
 			this.onDie(callbacks)
@@ -1763,6 +1797,8 @@ model.prototype.getTotalAtt = function(name) {
 				value += 0.3
 			if(this.buffs["juexing"])
 				value += 0.2
+			if(this.buffs["sneak"])
+				value -= this.buffs["sneak"].buffArg
 		break
 		case "reduction":
 			if(this.buffs["pojia"])
@@ -1779,6 +1815,10 @@ model.prototype.getTotalAtt = function(name) {
 				value += 0.3
 			if(this.buffs["kb_boss3"])
 				value += 0.3
+			if(this.buffs["fragile"])
+				value -= this.buffs["fragile"].buffArg
+			if(this.buffs["roundRed"])
+				value += this.buffs["roundRed"].buffArg * this.buffs["roundRed"].getValue()
 		break
 		case "healRate":
 			if(this.buffs["kb_boss4"])

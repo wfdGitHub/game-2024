@@ -12,10 +12,14 @@ var model = function(otps,character) {
 	this.needAnger = otps.anger || 4 					//技能所需怒气
 	this.diedSkill = otps.diedSkill  					//死亡释放技能
 	this.skill_buffs = {}								//技能附带buff
+	this.tmpMul = 1 									//临时倍率
+	this.targetNum = this.character.fighting.locator.getTargetsNum(this.targetType)
 	//初始化参数
 	this.initArg = function() {}
 	//使用技能结束
-	this.useSkillOver = function() {}
+	this.useSkillOver = function() {
+		this.tmpMul = 1
+	}
 	//击杀目标后
 	this.onKill = function() {}
 	//添加BUFF
@@ -38,5 +42,9 @@ var model = function(otps,character) {
 	}
 	//回合结束
 	this.endRound = function() {}
+	//判断是物理单体技能
+	this.isPhySingle = function() {
+		return this.type == "attack" && this.damageType == "phy" && this.targetNum == 1
+	}
 }
 module.exports = model

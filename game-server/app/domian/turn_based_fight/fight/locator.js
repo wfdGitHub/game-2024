@@ -5,9 +5,17 @@ var model = function(seededNum) {
 }
 //判断存在可攻击目标
 model.prototype.existsTarget = function(character) {
-	for(var i = 0;i < 6;i++){
-		if(model.check(character.enemy[i])){
-			return  true
+	if(character.otps.preference_sneak){
+		for(var i = 0;i < 6;i++){
+			if(model.friendCheck(character.enemy[i])){
+				return  true
+			}
+		}
+	}else{
+		for(var i = 0;i < 6;i++){
+			if(model.check(character.enemy[i])){
+				return  true
+			}
 		}
 	}
 	return false

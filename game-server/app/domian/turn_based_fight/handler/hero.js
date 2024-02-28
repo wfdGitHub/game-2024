@@ -595,6 +595,10 @@ var model = function(fightContorl) {
 						info1.died_buffs = []
 					info1.died_buffs.push(info2[i])
 				break
+				case "behit_buff":
+					if(!info1.behit_buffs)
+						info1.behit_buffs = []
+					info1.behit_buffs.push(info2[i])
 				default :
 					if(info2[i]){
 						if(info1[i] && Number.isFinite(info2[i])){

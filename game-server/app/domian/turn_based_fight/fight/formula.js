@@ -73,9 +73,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		info.crit = true
 	}else{
 		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit + attDiff
-		if(skill.tmp_crit){
+		crit += attacker[skill.damageType+"_crit"] || 0
+		if(skill.tmp_crit)
 			crit += skill.tmp_crit
-		}
 		if(attacker.attInfo.hp < attacker.attInfo.maxHP && attacker.low_hp_crit){
 			crit += Math.floor((attacker.attInfo.maxHP-attacker.attInfo.hp)/attacker.attInfo.maxHP * 10) * attacker.low_hp_crit
 		}
@@ -85,15 +85,17 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}
 	//伤害计算
 	var atk = attacker.getTotalAtt("atk")
+	atk += attacker[skill.damageType+"Atk"]
 	if(skill.skillType == "power")
 		atk += skill.basic
 	var def = target.getTotalAtt(skill.damageType+"Def")
-	if(attacker.neglect_def || skill.neglect_def){
-		var neglect_def = (attacker.neglect_def || 0) + (skill.neglect_def || 0)
-		if(neglect_def > 1)
-			neglect_def = 1
-		def = Math.floor(def * (1 - neglect_def))
-	}
+	var neglect_def = 0
+	if(attacker.neglect_def || skill.neglect_def)
+		neglect_def += (attacker.neglect_def || 0) + (skill.neglect_def || 0)
+	neglect_def += attacker["neglect_"+skill.damageType]
+	if(neglect_def > 1)
+		neglect_def = 1
+	def = Math.floor(def * (1 - neglect_def))
 	var mul = 1
 	if(attacker.characterType != "master")
 		mul += attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction") + attDiff
@@ -127,7 +129,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		mul *= 1 + skill["camp_amp_"+target.realm]
 	if(attacker.power_up && skill.skillType == "power")
 		mul *= 1 + attacker.power_up
-	info.value = Math.ceil(((atk*atk)/(atk+def)) * skill.mul * mul)
+	if(attacker.otps.refrain_huyou && (target.otps.huyou !== undefined || target.otps.guiyi !== undefined))
+		mul *= 1 + attacker.otps.refrain_huyou
+	info.value = Math.ceil(((atk*atk)/(atk+def)) * skill.mul * mul * skill.tmpMul)
 	if(addAmp)
 		info.value = Math.ceil(info.value * (1+addAmp))
 	//破冰一击
@@ -244,7 +248,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}
 	//法术伤害波动
 	if(attacker.mag_fluctuate && skill.damageType == "mag"){
-		info.value = Math.floor(info.value * (attacker.mag_fluctuate + this.seeded.random("法术波动") * 0.2))
+		info.value = Math.floor(info.value * (attacker.mag_fluctuate + this.seeded.random("法术波动") * 0.3))
 	}
 	//受击伤害加成
 	if(attacker.behit_value)
