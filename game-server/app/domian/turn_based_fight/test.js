@@ -4,7 +4,7 @@ var fightRecord = require("./fight/fightRecord.js")
 
 //战斗测试
 var atkTeam = [{},{id : "501030","refrain_huyou":0.2,"self_atk_add":0}]
-var defTeam = [{},{id : "501030","behit_buffs":[JSON.stringify({"buffId":"weak","buff_tg":"skill_targets","buffArg":1,"duration":3,"buffRate":0.35})]}]
+var defTeam = [{},{id : "501030","normal_buffs":[JSON.stringify({"buffId":"wushu","buff_tg":"skill_targets","duration":2,"buffRate":0.18})]}]
 var list = fightContorl.beginFight(atkTeam,defTeam,{})
 fightRecord.explain()
 

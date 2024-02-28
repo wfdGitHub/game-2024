@@ -574,33 +574,6 @@ var model = function(otps) {
 }
 model.prototype.init = function(fighting) {
 	this.fighting = fighting
-	if(this.otps.normal_buffs)
-		for(var i = 0;i < this.otps.normal_buffs.length;i++)
-			this.defaultSkill.addBuff(this.otps.normal_buffs[i])
-	if(this.otps.skill_buffs)
-		for(var i = 0;i < this.otps.skill_buffs.length;i++)
-			this.angerSkill.addBuff(this.otps.skill_buffs[i])
-	if(this.otps.round_buffs){
-		for(var i = 0;i < this.otps.round_buffs.length;i++)
-			this.round_buffs.push(JSON.parse(this.otps.round_buffs[i]))
-	}
-	if(this.otps.first_buffs)
-		for(var i = 0;i < this.otps.first_buffs.length;i++)
-			this.addFirstBuff(JSON.parse(this.otps.first_buffs[i]))
-	if(this.otps.action_buffs)
-		for(var i = 0;i < this.otps.action_buffs.length;i++)
-			this.addActionBuff(this.otps.action_buffs[i])
-	if(this.otps.kill_buffs)
-		for(var i = 0;i < this.otps.kill_buffs.length;i++)
-			this.addKillBuff(this.otps.kill_buffs[i])
-	if(this.otps.died_buffs)
-		for(var i = 0;i < this.otps.died_buffs.length;i++)
-			this.addDiedBuff(this.otps.died_buffs[i])
-	if(this.otps.behit_buffs)
-		for(var i = 0;i < this.otps.behit_buffs.length;i++)
-			this.addBehitBuff(this.otps.behit_buffs[i])
-	if(this.seckill)
-		this.angerSkill.seckill = true
 	this.attInfo.speed += this.fighting.seeded.random("随机速度") * 0.5
 	//=========技能=======//
 	//入场技能
@@ -632,6 +605,34 @@ model.prototype.init = function(fighting) {
 				this.angerSkill.skill_buffs[id].buffRate += this.angerSkill.skill_buffs[id].buffRate * this.atkcontrol
 		}
 	}
+	//================BUFF===============//
+	if(this.otps.normal_buffs)
+		for(var i = 0;i < this.otps.normal_buffs.length;i++)
+			this.defaultSkill.addBuff(this.otps.normal_buffs[i])
+	if(this.otps.skill_buffs)
+		for(var i = 0;i < this.otps.skill_buffs.length;i++)
+			this.angerSkill.addBuff(this.otps.skill_buffs[i])
+	if(this.otps.round_buffs){
+		for(var i = 0;i < this.otps.round_buffs.length;i++)
+			this.round_buffs.push(JSON.parse(this.otps.round_buffs[i]))
+	}
+	if(this.otps.first_buffs)
+		for(var i = 0;i < this.otps.first_buffs.length;i++)
+			this.addFirstBuff(JSON.parse(this.otps.first_buffs[i]))
+	if(this.otps.action_buffs)
+		for(var i = 0;i < this.otps.action_buffs.length;i++)
+			this.addActionBuff(this.otps.action_buffs[i])
+	if(this.otps.kill_buffs)
+		for(var i = 0;i < this.otps.kill_buffs.length;i++)
+			this.addKillBuff(this.otps.kill_buffs[i])
+	if(this.otps.died_buffs)
+		for(var i = 0;i < this.otps.died_buffs.length;i++)
+			this.addDiedBuff(this.otps.died_buffs[i])
+	if(this.otps.behit_buffs)
+		for(var i = 0;i < this.otps.behit_buffs.length;i++)
+			this.addBehitBuff(this.otps.behit_buffs[i])
+	if(this.seckill)
+		this.angerSkill.seckill = true
 }
 //选择技能
 model.prototype.chooseSkill = function() {
