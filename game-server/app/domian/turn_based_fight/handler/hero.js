@@ -425,8 +425,10 @@ var model = function(fightContorl) {
 				PSScore += hufu_lv[hufu_map[info["PS"+i]].lv]["score"]
 			}
 		}
-		for(var i in hufu_talents)
-			this.mergeTalent(info,hufu_skill[i]["lv"+hufu_talents[i]])
+		for(var i in hufu_talents){
+			if(!hufu_talents[hufu_skill[i]["reject"]])
+				this.mergeTalent(info,hufu_skill[i]["lv"+hufu_talents[i]])
+		}
 		//家园属性
 		if(teamCfg["manors"]){
 			for(var i = 1;i <= 6;i++){

@@ -3,8 +3,8 @@ var fightRecord = require("./fight/fightRecord.js")
 
 
 //战斗测试
-var atkTeam = [{},{id : "500120","ruodian_1":-0.5}]
-var defTeam = [{},{id : "500120","first_buffs":[JSON.stringify({"buffId":"qishi","duration":99,"buffArg":0.1,"buffRate":1})]}]
+var atkTeam = [{},{id : "500120","PS1":"4103","PS2":"4104"}]
+var defTeam = [{},{id : "500120"}]
 var list = fightContorl.beginFight(atkTeam,defTeam,{})
 fightRecord.explain()
 
