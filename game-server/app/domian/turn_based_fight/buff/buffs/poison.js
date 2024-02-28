@@ -63,6 +63,9 @@ var model = function(releaser,character,otps) {
 		buff.fightRecord.push(recordInfo)
 		this.destroy()
 	}
+    buff.getValue = function() {
+        return (1 - (count * BASIC_LOWHEAL))
+    }
 	buff.clear = function() {
 		if(poison_clean_damage && !buff.character.died){
 			buff.fightRecord.push({type:"show_tag",id:buff.character.id,tag:"poison_clean_damage"})
