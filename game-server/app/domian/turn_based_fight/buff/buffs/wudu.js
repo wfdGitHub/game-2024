@@ -7,7 +7,7 @@ var model = function(releaser,character,otps) {
 	var count = 0
 	var poison_clean_damage = 0
 	var MAX_COUNT = 5
-	var BASIC_DAMAGE = 0.05
+	var BASIC_DAMAGE = 0.03
 	var BASIC_LOWHEAL = 0.12
 	buff.refresh = function() {
 		var info = {type : "poisonDamage",id : buff.character.id,d_type:"mag"}
@@ -71,6 +71,9 @@ var model = function(releaser,character,otps) {
 			info = buff.character.onHit(buff.releaser,info)
 			buff.fightRecord.push(info)
 		}
+	}
+	buff.getValue = function() {
+		return (1 - (count * BASIC_LOWHEAL))
 	}
 	buff.overlay(releaser,otps)
 	return buff
