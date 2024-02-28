@@ -253,6 +253,7 @@ module.exports = function() {
 	//购买战令
 	this.buyPass = function(uid,pay_id,info,cb) {
 		this.activatePass(uid,pay_cfg[pay_id]["arg"])
+		cb(true)
 	}
 	//购买DIY道具
 	this.buyDIY = function(uid,pay_id,info,cb) {
