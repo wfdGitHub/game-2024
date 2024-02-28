@@ -8,8 +8,8 @@ var model = function(otps) {
 	//=========身份===========//
 	this.heroId = Number(otps.id)
 	this.characterType = "hero"  //角色类型
-	this.realm = 1		//国家
-	this.career = 1	//角色职业   1输出  2控制   3肉盾   4治疗
+	this.realm = otps.realm || 1 //国家
+	this.career = otps.career	 //角色职业   1输出  2控制   3肉盾   4治疗
 	this.species = []
 	if(otps.specie1)
 		this.species.push(otps.specie1)
@@ -81,6 +81,7 @@ var model = function(otps) {
 	this.phyAtk = 0  											//物攻加成
 	this.magAtk = 0 											//法攻加成
 	this.round_hit_red = otps.round_hit_red || 0 				
+	this.wushu_buff = otps.wushu_buff ? JSON.parse(otps.wushu_buff) : false  //存在巫术时添加BUFF
 	//==========闪光阶级========//
 	this.specie_behit = otps.specie_behit 						//对战中，对自身造成的克制伤害*0.75
 	this.full_hp_red = otps.full_hp_red 						//HP全满的时候，受到的伤害减为原来1/2
@@ -1267,7 +1268,7 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 	if(!attacker.ignoreInvincible){
 		//无敌吸血盾
 		if(this.buffs["invincibleSuck"]){
-			let healInfo = this.onHeal(this.buffs["invincibleSuck"].releaser,info)
+			var healInfo = this.onHeal(this.buffs["invincibleSuck"].releaser,info)
 			info.value = -info.value
 			info.realValue = -healInfo.realValue
 			info.curValue = this.attInfo.hp
@@ -1278,6 +1279,17 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 		if(this.buffs["invincibleSuper"] || this.buffs["invincible"]){
 			info.invincible = true
 			info.realValue = 0
+			return info
+		}
+	}
+	//吸收
+	if(callbacks){
+		if(this.otps["xishou_"+attacker.realm] && this.fighting.seeded.random() < this.otps["xishou_"+attacker.realm]){
+			var healInfo = this.onHeal(attacker,info)
+			info.value = -info.value
+			info.realValue = -healInfo.realValue
+			info.curValue = this.attInfo.hp
+			info.maxHP = this.attInfo.maxHP
 			return info
 		}
 	}
@@ -1764,6 +1776,8 @@ model.prototype.getTotalAtt = function(name) {
 				value += this.buffs["flame"].getValue() * 0.03
 			if(this.buffs["kb_boss1"])
 				value += 0.5
+			if(this.buffs["qishi"])
+				value += this.buffs["qishi"].buffArg * this.buffs["qishi"].getValue()
 		break
 		case "critDef":
 			if(this.buffs["kb_boss2"])
@@ -1802,6 +1816,10 @@ model.prototype.getTotalAtt = function(name) {
 				value += 0.2
 			if(this.buffs["sneak"])
 				value -= this.buffs["sneak"].buffArg
+			if(this.buffs["xushi"])
+				value += this.buffs["xushi"].buffArg * this.buffs["xushi"].getValue()
+			if(this.buffs["qishi"])
+				value += this.buffs["qishi"].buffArg * this.buffs["qishi"].getValue()
 		break
 		case "reduction":
 			if(this.buffs["pojia"])

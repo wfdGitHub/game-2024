@@ -1,7 +1,7 @@
 //巫毒
 var buffBasic = require("../buffBasic.js")
 var BASIC_DAMAGE = 0.03
-var BASIC_LOWHEAL = 0.12
+var BASIC_LOWHEAL = 0.15
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
 	var id = 0
@@ -24,17 +24,15 @@ var model = function(releaser,character,otps) {
 		buff.fightRecord.push(recordInfo)
 	}
 	buff.overlay = function(releaser,otps) {
-		for(var i = 0;i < otps.buffArg;i++){
-			if(count >= MAX_COUNT)
-				break
-			var duration = otps.duration
-			if(releaser.poison_duration)
-				duration += releaser.poison_duration
-			if(duration > this.duration)
-				this.duration = duration
-			list[id++] = {duration : duration}
-			count++
-		}
+		if(count >= MAX_COUNT)
+			return
+		var duration = otps.duration
+		if(releaser.poison_duration)
+			duration += releaser.poison_duration
+		if(duration > this.duration)
+			this.duration = duration
+		list[id++] = {duration : duration}
+		count++
 		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}
 		buff.fightRecord.push(recordInfo)
 	}

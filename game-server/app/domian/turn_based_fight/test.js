@@ -3,8 +3,8 @@ var fightRecord = require("./fight/fightRecord.js")
 
 
 //战斗测试
-var atkTeam = [{},{id : "501030","refrain_huyou":0.2,"self_atk_add":0}]
-var defTeam = [{},{id : "501030","normal_buffs":[JSON.stringify({"buffId":"wushu","buff_tg":"skill_targets","duration":2,"buffRate":0.18})]}]
+var atkTeam = [{},{id : "500120","ruodian_1":-0.5}]
+var defTeam = [{},{id : "500120","first_buffs":[JSON.stringify({"buffId":"qishi","duration":99,"buffArg":0.1,"buffRate":1})]}]
 var list = fightContorl.beginFight(atkTeam,defTeam,{})
 fightRecord.explain()
 

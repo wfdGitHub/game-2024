@@ -79,6 +79,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		if(attacker.attInfo.hp < attacker.attInfo.maxHP && attacker.low_hp_crit){
 			crit += Math.floor((attacker.attInfo.maxHP-attacker.attInfo.hp)/attacker.attInfo.maxHP * 10) * attacker.low_hp_crit
 		}
+		if(attacker.otps.wushu_crit && target.buffs["wushu"])
+			crit += attacker.otps.wushu_crit
 		if(attacker.must_crit || attacker.buffs["baonu"] || attacker.buffs["kb_polang"] || this.seeded.random("暴击判断") < crit){
 			info.crit = true
 		}
@@ -131,7 +133,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		mul *= 1 + attacker.power_up
 	if(attacker.otps.refrain_huyou && (target.otps.huyou !== undefined || target.otps.guiyi !== undefined))
 		mul *= 1 + attacker.otps.refrain_huyou
-	info.value = Math.ceil(((atk*atk)/(atk+def)) * skill.mul * mul * skill.tmpMul)
+	if(attacker.otps.refrain_wushu && target.otps.pass_wushu)
+		mul *= 1 + attacker.otps.refrain_wushu
+	info.value = Math.ceil(((atk*atk)/(atk+def)) * skill.mul * mul)
 	if(addAmp)
 		info.value = Math.ceil(info.value * (1+addAmp))
 	//破冰一击
@@ -268,6 +272,9 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(attacker.my_intensify_amp){
 		info.value += Math.floor(info.value * attacker.my_intensify_amp * attacker.getIntensifyNum())
 	}
+	//对方存在增益效果加成
+	if(attacker.otps.enemy_intensify_amp && target.getIntensifyNum())
+		info.value += Math.floor(info.value * attacker.otps.enemy_intensify_amp)
 	//战法伤害加成
 	if(attacker.zf_amp){
 		info.value += Math.floor(info.value * attacker.zf_amp)
@@ -318,6 +325,12 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(target.round_same_hit_red && target.round_same_value[attacker.id]){
 		info.value = Math.floor(info.value * Math.max((1 - (target.round_same_value[attacker.id] * target.round_same_hit_red)),0))
 	}
+	//耐力对强力减免
+	if(attacker.otps.pass_ql && target.otps.pass_nl)
+		info.value = Math.floor(info.value * 0.8)
+	//弱点加成
+	if(target.otps["ruodian_"+attacker.realm])
+		info.value += Math.floor(info.value * target.otps["ruodian_"+attacker.realm])
 	//最大生命值加成
 	if(chase){
 		if(!skill.isAnger){
@@ -362,6 +375,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			info.value = Math.floor(info.value * (1-target.reduction_over))
 		}
 	}
+	info.value = Math.floor(skill.tmpMul * info.value)
 	//最小伤害
 	if (info.value <= 1) {
 		info.value = 1

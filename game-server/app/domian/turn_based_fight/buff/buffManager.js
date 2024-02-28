@@ -61,6 +61,9 @@ buffFactory.createBuff = function(releaser,character,otps) {
 			return
 		}
 	}
+	//免疫巫术
+	if(buffId == "wushu" && character.otps.refrain_wushu)
+		return
 	//判断伤害buff伤害降低
 	if(buff_cfg[buffId].hurt && character.damage_buff_lowArg){
 		otps.buffArg = otps.buffArg * (1 - character.damage_buff_lowArg)

@@ -744,6 +744,19 @@ model.useAttackSkill = function(skill,chase,point) {
 				if(this.seeded.random("BUFF") < buffInfo.buffRate)
 					buffManager.createBuff(targets[i],skill.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 			}
+			//存在巫术时添加BUFF
+			if(skill.character.wushu_buff && targets[i].buffs["wushu"]){
+				var buffInfo = skill.character.wushu_buff
+				if(this.seeded.random("BUFF") < buffInfo.buffRate)
+					buffManager.createBuff(skill.character,targets[i],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+			}
+			//单体物攻有概率还击敌人
+			if(!chase && targets[i].otps.phy_retuan_rate && skill.isPhySingle() && this.fighting.seeded.random("还击") < targets[i].otps.phy_retuan_rate){
+				if(!skill.character.otps.refrain_return || this.fighting.seeded.random("免疫还击") > skill.character.otps.refrain_return){
+					targets[i].defaultSkill.tmpMul = targets[i].otps.phy_retuan_amp
+					this.useSkill(targets[i].defaultSkill,true,[skill.character])
+				}
+			}
 		}
 		if(!skill.isAnger && targets[i].hit_less_anger){
 			//降低攻击者怒气
@@ -762,9 +775,11 @@ model.useAttackSkill = function(skill,chase,point) {
 				}
 			}
 			if(hit_rebound_value){
-				var tmpRecord = {type : "other_damage",value : hit_rebound_value,d_type:skill.damageType}
-				tmpRecord = skill.character.onHit(targets[i],tmpRecord)
-				fightRecord.push(tmpRecord)
+				if(!skill.character.otps.refrain_return || this.seeded.random() > skill.character.otps.refrain_return){
+					var tmpRecord = {type : "other_damage",value : hit_rebound_value,d_type:skill.damageType}
+					tmpRecord = skill.character.onHit(targets[i],tmpRecord)
+					fightRecord.push(tmpRecord)
+				}
 			}
 		}
 	}

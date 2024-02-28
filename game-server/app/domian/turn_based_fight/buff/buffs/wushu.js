@@ -1,7 +1,7 @@
 //巫术
 var buffBasic = require("../buffBasic.js")
 var BASIC_DAMAGE = 0.03
-var BASIC_LOWHEAL = 0.12
+var BASIC_LOWHEAL = 0.15
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
 	buff.damage = Math.floor(BASIC_DAMAGE * buff.character.getTotalAtt("maxHP"))
