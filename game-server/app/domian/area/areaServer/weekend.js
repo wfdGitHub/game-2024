@@ -35,7 +35,7 @@ module.exports = function() {
 					self.delAreaObjAll(main_name)
 					self.delZset(main_name+"_rank")
 					info.state = 2
-					info.endTime = util.getWeekZeroTime() + oneDayTime * 7 - 10000
+					info.endTime = util.getWeekZeroTime() + oneDayTime * 9 - 10000
 					info.index = util.getWeekNum() % MAX_ID
 				}
 			}else if(info.state == 2 && Date.now() > info.endTime){
