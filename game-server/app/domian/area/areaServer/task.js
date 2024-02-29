@@ -151,6 +151,7 @@ module.exports = function() {
 			info.liveness = task_cfg[taskId].liveness
 			self.incrbyObj(uid,liveness_name,"value",task_cfg[taskId].liveness)
 			self.taskUpdate(uid,"liveness",task_cfg[taskId].liveness)
+			self.incrbyPassKey(uid,"liveness",task_cfg[taskId].liveness)
 			//周末活动掉落
 			var weekendAward = self.getWeekendHook()
 			if(weekendAward)

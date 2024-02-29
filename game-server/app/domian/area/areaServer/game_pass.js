@@ -37,8 +37,8 @@ module.exports = function() {
 		})
 	}
 	//更新参数
-	this.incrbyPassKey = function(uid,key) {
-		self.incrbyObj(uid,main_name,key,1)
+	this.incrbyPassKey = function(uid,key,value) {
+		self.incrbyObj(uid,main_name,key,value || 1)
 	}
 	//更新参数
 	this.setPassKey = function(uid,key,value) {
