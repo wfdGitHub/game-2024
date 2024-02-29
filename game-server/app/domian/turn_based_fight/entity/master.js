@@ -48,9 +48,8 @@ master.prototype.init = function(fighting,list,team,enemy,locator,seeded,peerMas
 //技能释放判断
 master.prototype.checkManualModel = function() {
 	var index = this.fighting.round / 2
-	console.log(index)
 	if(Number.isInteger(index))
-		this.masterPower(index)
+		this.masterPower(index - 1)
 }
 //添加主动技能
 master.prototype.addPower = function(info) {
@@ -94,7 +93,6 @@ master.prototype.masterPower = function(index) {
 	// if(index == -1)
 	// 	index = this.powers.length - 1
 	if(!this.powers[index]){
-		console.error("技能不存在 "+index)
 		return false	
 	}
 	// var needBp = this.TMP_CURBP + this.powers[index].NEED_BP

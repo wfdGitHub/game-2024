@@ -45,7 +45,7 @@ for(var i in war_banner){
 		banner_quality[war_banner[i]["quality"]] = []
 	banner_quality[war_banner[i]["quality"]].push(i)
 }
-const weight = {"1":0.35,"2":0.25,"3":0.1,"4":0.01}
+const weight = {"1":0.32,"2":0.16,"3":0.06,"4":0}
 module.exports = function() {
 	var self = this
 	//护符列表

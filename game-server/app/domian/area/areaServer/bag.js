@@ -284,7 +284,7 @@ module.exports = function() {
 					return {type : "item",itemId : itemId,value : value}
 				break
 				case "lordexp":
-					this.addLordExp(uid,value)
+					this.addLordExp(uid,value,reason)
 					if(cb)
 						cb(true)
 					return {type : "item",itemId : itemId,value : value}
@@ -433,7 +433,7 @@ module.exports = function() {
 		var items = []
 		var values = []
 		var strList = str.split("&")
-		if(!rate || !Number.isInteger(rate))
+		if(!rate || typeof(rate) != "number")
 			rate = 1
 		if(rate < 1){
 			cb(false)

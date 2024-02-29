@@ -256,6 +256,7 @@ var gradingEntity = function(self,theatreId) {
 				self.taskUpdate(crossUid,"grading",1)
 				if(winFlag){
 					self.taskUpdate(crossUid,"grading_win",1)
+					self.incrbyPassKey(crossUid,"grading")
 					if(targetScore > max_score)
 						change = 1
 					else

@@ -457,6 +457,7 @@ var muyeEntity = function(self,theatreId) {
 					winCounts[crossUid]++
 					self.redisDao.db.hincrby(main_name+":winCounts",crossUid,1)
 					self.taskUpdate(crossUid,"muye_win",1)
+					self.incrbyPassKey(crossUid,"muye")
 					if(change == 30)
 						awardStr = muye_cfg["victory"]["value"]
 					else

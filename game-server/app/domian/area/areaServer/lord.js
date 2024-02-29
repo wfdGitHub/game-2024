@@ -72,7 +72,7 @@ module.exports = function() {
 		self.redisDao.db.hdel("player:user:"+uid+":playerInfo",key)
 	}
 	//主公获得经验值
-	this.addLordExp = function(uid,exp) {
+	this.addLordExp = function(uid,exp,reason) {
 		self.redisDao.db.hincrby("player:user:"+uid+":playerInfo","exp",exp,function(err,value) {
 			if(err)
 				console.error(err)
@@ -87,7 +87,7 @@ module.exports = function() {
 				self.players[uid]["exp"] = value
 				self.sendToUser(uid,notify)
 				self.checkLordUpgrade(uid,value)
-				self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:100,value:exp,curValue:value,reason:"获得经验"})
+				self.cacheDao.saveCache({messagetype:"itemChange",areaId:self.areaId,uid:uid,itemId:100,value:exp,curValue:value,reason:reason})
 			}
 		})
 	}

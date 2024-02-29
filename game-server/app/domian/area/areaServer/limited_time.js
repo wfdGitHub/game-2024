@@ -32,9 +32,9 @@ module.exports = function() {
 		// 	var index = day % limitedList.length
 		// 	self.openNewLimitedTime(limitedList[index],limitedDay)
 		// }
-		if(self.areaDay == 1){
-			self.openNewLimitedTime(limited_time["newArea"]["value"],limited_time["newArea"]["day"])
-		}
+		// if(self.areaDay == 1){
+		// 	self.openNewLimitedTime(limited_time["newArea"]["value"],limited_time["newArea"]["day"])
+		// }
 	}
 	//开启新活动
 	this.openNewLimitedTime = function(id,day) {

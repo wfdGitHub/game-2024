@@ -211,6 +211,9 @@ module.exports = function() {
 			case "DIY":
 				this.buyDIY(uid,pay_id,info,call_back.bind(this,uid))
 			break
+			case "pass":
+				this.buyPass(uid,pay_id,info,call_back.bind(this,uid))
+			break
 			default:
 				console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
 		}
@@ -246,6 +249,11 @@ module.exports = function() {
 		self.festivalTotalRecharge(uid,value)
 		if(cb)
 			cb(true)
+	}
+	//购买战令
+	this.buyPass = function(uid,pay_id,info,cb) {
+		this.activatePass(uid,pay_cfg[pay_id]["arg"])
+		cb(true)
 	}
 	//购买DIY道具
 	this.buyDIY = function(uid,pay_id,info,cb) {

@@ -57,6 +57,7 @@ module.exports = function() {
 			   		self.taskUpdate(uid,"tttLv",1)
 			   		self.updateSprintRank("ttt_rank",uid,1)
 			   		self.chageLordData(uid,"ttt_lv",level)
+			   		self.setPassKey(uid,"ttt",level)
 			   		var awardList = []
 			   		if(ttttower_level[level]["awards"])
 						awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["awards"],1,"通天塔"+level))

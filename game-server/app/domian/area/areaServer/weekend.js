@@ -35,7 +35,7 @@ module.exports = function() {
 					self.delAreaObjAll(main_name)
 					self.delZset(main_name+"_rank")
 					info.state = 2
-					info.endTime = util.getWeekZeroTime() + oneDayTime * 7 - 10000
+					info.endTime = util.getWeekZeroTime() + oneDayTime * 9 - 10000
 					info.index = util.getWeekNum() % MAX_ID
 				}
 			}else if(info.state == 2 && Date.now() > info.endTime){
@@ -101,9 +101,8 @@ module.exports = function() {
 		})
 	}
 	//玩家充值更新
-	this.userWeekendRmb = function(uid,rmb,rate) {
-		if(info.state == 2 && rmb && rate){
-			var value = Math.round(rmb * rate)
+	this.userWeekendRmb = function(uid,value) {
+		if(info.state == 2 && value){
 			self.incrbyAreaObj(main_name,"rmb_"+uid,value)
 			self.incrbyZset(main_name+"_rank",uid,value,function(data) {
 				data = Math.floor(data) + ((MAX_NUM - Date.now()) * 1e-14)
@@ -114,10 +113,14 @@ module.exports = function() {
 	//活动关闭
 	this.endWeekend = function() {
 		//发放排行榜
-		self.zrevrange(main_name+"_rank",0,9,function(list) {
-			for(var i = 0;i <= 9;i++){
-				var index = i+1
-				self.sendTextToMail(list[i],"weekend",weekend_cfg[info.index]["rank_"+index],index)
+		self.zrevrangewithscore(main_name+"_rank",0,9,function(list) {
+			for(var i = 0;i < list.length;i += 2){
+				var uid = list[i]
+				var score = Math.floor(list[i+1])
+				if(score >= 10000){
+					var index = i+1
+					self.sendTextToMail(list[i],"weekend",weekend_cfg[info.index]["rank_"+index],index)
+				}
 			}
 		})
 	}

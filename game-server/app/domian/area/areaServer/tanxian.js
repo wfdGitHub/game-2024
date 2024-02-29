@@ -75,6 +75,7 @@ module.exports = function() {
 					info.rate = 2
 				var award = data["award"][Math.floor(Math.random() * data["award"].length)]
 				info.awardList = self.addItemStr(uid,award,info.rate,"探险")
+				self.incrbyPassKey(uid,"tanxian",1)
 				cb(true,info)
 			}
 		],function(err) {

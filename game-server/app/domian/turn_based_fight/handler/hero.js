@@ -25,7 +25,7 @@ const DIY_skills = fightCfg.getCfg("DIY_skills")
 const DIY_talents = fightCfg.getCfg("DIY_talents")
 const character = require("../entity/character.js")
 const DIY_SKILL_KESY = ["DIY_N","DIY_S"]
-const DIY_TALENT_KESY = ["D1","D2","D3","PS0","PS1","PS2","PS3","PS4"]
+const DIY_TALENT_KESY = ["D1","D2","D3"]
 var gemMap = {}
 for(var i in gem_lv){
 	i = Number(i)
@@ -466,7 +466,7 @@ var model = function(fightContorl) {
 				info.defaultSkill = Object.assign({skillId : info.defaultSkill},skills[info.defaultSkill])
 			}
 		}
-		info.damageType = ""
+		info.damageType = "phy"
 		if(info.angerSkill){
 			if(!skills[info.angerSkill]){
 				console.error("技能不存在",info.id,info.angerSkill)
@@ -727,6 +727,8 @@ var model = function(fightContorl) {
 				heroInfo[DIY_TALENT_KESY[i]] = sid
 			}
 		}
+		for(var i = 0;i < heros[id]["passive_num"];i++)
+			heroInfo["PS"+i] = heros[id]["passive"+(i+1)]
 		info.heroInfo = heroInfo
 		return info
 	}
