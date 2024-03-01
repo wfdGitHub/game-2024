@@ -78,14 +78,14 @@ model.prototype.timeUpdate = function(dt) {
 			this.skill = this.chooseSkill()
 			if(!this.skill)
 				return
-			//选择最近目标
-			this.targets = this.fighting.locator.getEnemyNormal(this)
-			if(!this.targets.length)
+			//选择最近敌方目标移动
+			this.target = this.fighting.locator.getEnemyNormal(this)[0]
+			if(!this.target)
 				return
-			this.target = this.targets[0]
 			if(this.fighting.locator.callDist(this.pos,this.target.pos) <= this.skill.resRange){
 				// console.log("释放技能")
 				//在释放距离内释放技能
+				this.targets = this.fighting.locator.getTargets(this,this.skill)
 				this.state = 2
 				this.actTime = this.attInfo.actSpeed
 				this.skill.resSkill(this.targets)
