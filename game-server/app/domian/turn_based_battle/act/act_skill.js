@@ -56,11 +56,11 @@ model.prototype.resSkill = function(targets) {
 	else
 		Object.assign(this.resPos,this.hero.pos)
 	if(!this.isAnger)
-		this.hero.curAnger += 10
+		this.hero.addAnger(10)
 	var record = {
 		"type" : "skill",
 		"id" : this.character.id,
-		"sid" : this.sid,
+		"sid" : this.id,
 		"curAnger" : this.hero.curAnger
 	}
 	this.character.fighting.fightRecord.push(record)

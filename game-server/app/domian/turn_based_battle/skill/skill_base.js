@@ -6,7 +6,7 @@ var model = function(character,sid) {
 	this.otps = skills[sid]
 	act_skill.call(this,this.otps,character)
 	this.character = character
-	this.sid = sid || 0 		//技能ID
+	this.id = sid || 0 		//技能ID
 	//属性
 	this.isAnger = false
 	this.attInfo = {}

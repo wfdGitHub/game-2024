@@ -17,24 +17,34 @@ var model = function(otps) {
 	this.skill = false
 	//初始化技能
 	this.skills = []
-	this.addNormalSkill(otps["defaultSkill"])
+	this.addNormalSkill(otps["angerSkill"])
 	this.addAngerSkill(otps["angerSkill"])
 }
-//增加普通技能
-model.prototype.addNormalSkill = function(sid) {
-	if(skills[sid])
-		this.skills.push(new skill_base(this,sid))
-}
-//增加怒气技能
-model.prototype.addAngerSkill = function(sid) {
-	this.angerSkill = new skill_base(this,sid)
-	this.angerSkill.NEEDCD = 0
-	this.angerSkill.isAnger = true
+//设置状态
+model.prototype.incStatus = function(status,value) {
+	if(this.status[status] == 0 && value > 0){
+		switch(status){
+			case "dizzy":
+				this.stopSkill(this.skill)
+			break
+			case "silence":
+				if(this.skill && this.skill.isAnger)
+					this.stopSkill(this.skill)
+			break
+			case "disarm":
+				if(this.skill && !this.skill.isAnger)
+					this.stopSkill(this.skill)
+		}
+	}
+	if(this.status[status] !== undefined)
+		this.status[status] += value
 }
 //定时器更新
 model.prototype.timeUpdate = function(dt) {
 	for(var i = 0;i < this.skills.length;i++)
 		this.skills[i].updateCD(dt)
+	if(this.status["dizzy"] > 0)
+		return
 	switch(this.state){
 		case 0:
 			//待机中
@@ -42,7 +52,7 @@ model.prototype.timeUpdate = function(dt) {
 		break
 		case 1:
 			//移动中
-			if(!this.target){
+			if(this.status["twine"] > 0 || !this.target){
 				this.state = 0
 				return
 			}
@@ -69,7 +79,7 @@ model.prototype.timeUpdate = function(dt) {
 			if(!this.skill)
 				return
 			//选择最近目标
-			this.targets = this.fighting.locator.getTargets(this,this.skill)
+			this.targets = this.fighting.locator.getEnemyNormal(this)
 			if(!this.targets.length)
 				return
 			this.target = this.targets[0]
@@ -88,10 +98,10 @@ model.prototype.timeUpdate = function(dt) {
 }
 //选择普通技能
 model.prototype.chooseSkill = function() {
-	if(this.curAnger >= this.needAnger){
+	if(!this.status["silence"] && this.curAnger >= this.needAnger){
 		this.curAnger -= this.needAnger
 		return this.angerSkill
-	}else{
+	}else if(!this.status["disarm"]){
 		var index = Math.floor(this.fighting.random() * this.skills.length)
 		for(var i = 0;i < this.skills.length;i++){
 			var sId = (i + index) % this.skills.length
@@ -100,9 +110,28 @@ model.prototype.chooseSkill = function() {
 		}
 	}
 }
+//增加普通技能
+model.prototype.addNormalSkill = function(sid) {
+	if(skills[sid])
+		this.skills.push(new skill_base(this,sid))
+}
+//增加怒气技能
+model.prototype.addAngerSkill = function(sid) {
+	this.angerSkill = new skill_base(this,sid)
+	this.angerSkill.NEEDCD = 0
+	this.angerSkill.isAnger = true
+}
 //停止技能
 model.prototype.stopSkill = function(skill) {
 	this.state = 0
-	skill.stopSkill()
+	if(skill){
+		skill.stopSkill()
+		var record = {
+			"type" : "skillEnd",
+			"id" : this.id,
+			"sid" : skill.id
+		}
+		this.fighting.fightRecord.push(record)
+	}
 }
 module.exports = model

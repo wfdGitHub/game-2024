@@ -191,7 +191,7 @@ model.prototype.lessHP = function(info,hitFlag) {
 	if(hitFlag){
 		var tmpHPRate = info.realValue / this.attInfo.maxHP
 		this.hp_loss += tmpHPRate
-		this.addAnger(Math.floor(tmpHPRate * 60),false)
+		this.addAnger(Math.floor(tmpHPRate * 80),false)
 	}
 	info.curAnger = this.curAnger
 	info.hp = this.attInfo.hp
