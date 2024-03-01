@@ -86,28 +86,6 @@ model.prototype.onMag = function(attacker,target,skill) {
 	if(skill.talents.mag_ign_armor)
 		attacker.changeTotalTmp("ign_armor",skill.talents.mag_ign_armor)
 }
-//外伤BUFF处理
-model.prototype.onPhy = function(attacker,target,skill) {
-	//物理暴击加成
-	if(skill.talents.phy_slay)
-		attacker.changeTotalTmp("slay",skill.talents.phy_slay)
-}
-//存在内伤BUFF处理
-model.prototype.onMagBuff = function(attacker,target,skill) {
-	if(skill.talents.mag_buff_att1 && skill.talents.mag_buff_value1)
-		attacker.changeTotalTmp(skill.talents.mag_buff_att1,skill.talents.mag_buff_value1)
-	if(skill.talents.mag_buff_att2 && skill.talents.mag_buff_value2)
-		attacker.changeTotalTmp(skill.talents.mag_buff_att2,skill.talents.mag_buff_value2)
-	if(skill.talents.mag_buff_amp)
-		attacker.changeTotalTmp(skill.talents.mag_buff_att1,skill.talents.mag_buff_value1)
-}
-//存在外伤BUFF处理
-model.prototype.onPhyBuff = function(attacker,target,skill) {
-	if(skill.talents.phy_buff_att1 && skill.talents.phy_buff_value1)
-		attacker.changeTotalTmp(skill.talents.phy_buff_att1,skill.talents.phy_buff_value1)
-	if(skill.talents.phy_buff_att2 && skill.talents.phy_buff_value2)
-		attacker.changeTotalTmp(skill.talents.phy_buff_att2,skill.talents.phy_buff_value2)
-}
 //高于50%生命值处理
 model.prototype.onHighHP = function(attacker,target,skill) {
 	if(skill.talents.high_hp_crit_slay){

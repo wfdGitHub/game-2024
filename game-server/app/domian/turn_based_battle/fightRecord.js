@@ -49,7 +49,7 @@ model.prototype.translate = function(info) {
 		break
 		case "skill":
 			//使用技能(怒气隐式更新)
-			this.saveText(info.t/1000+"s "+colors["blue"]+"["+this.heroMap[info.id]+"]使用["+info.sid+"]"+colors["end"])
+			this.saveText(info.t/1000+"s "+colors["blue"]+"["+this.heroMap[info.id]+"]使用["+info.sid+"]"+colors["end"]+" 怒气 ("+info.curAnger+")")
 		break
 		case "damage":
 			if(info.list)

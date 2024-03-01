@@ -1,28 +1,23 @@
 //技能基类 伤害  治疗  BUFF
 const act_skill = require("../act/act_skill.js")
-var model = function(character,otps,talents) {
-	act_skill.call(this,otps,character)
-	otps = otps || {}
+const fightCfg = require("../fightCfg.js")
+const skills = fightCfg.getCfg("skills")
+var model = function(character,sid) {
+	this.otps = skills[sid]
+	act_skill.call(this,this.otps,character)
 	this.character = character
-	this.sid = otps.sid || 0 		//技能ID
+	this.sid = sid || 0 		//技能ID
 	//属性
+	this.isAnger = false
 	this.attInfo = {}
 	this.attTmpInfo = {}
 	this.buffs = {} 								 //附带BUFF
-	this.talents = talents || {}
-	this.otps = otps
+	this.talents = {}
 	this.init()
 }
 model.prototype = Object.create(act_skill.prototype) //继承父类方法
 //技能初始化
-model.prototype.init = function() {
-	for(var i = 1;i <= 3;i++){
-		if(this.talents["buff"+i]){
-			var buff = this.character.fighting.buffManager.getBuffByData(this.talents["buff"+i])
-			this.buffs[buff.buffId] = buff
-		}
-	}
-}
+model.prototype.init = function() {}
 model.prototype.changeTotalTmp = function(name,value) {
 	if(!this.attTmpInfo[name])
 		this.attTmpInfo[name] = 0

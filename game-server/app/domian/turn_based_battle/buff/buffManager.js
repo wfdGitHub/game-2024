@@ -25,9 +25,6 @@ model.prototype.createBuffWithRate = function(skill,character,buff) {
 	//存在指定BUFF概率增加
 	if(skill.target_buff_key && character.buffs[skill.target_buff_key])
 		rate += Number(skill.target_buff_rate) || 0
-	//控制状态下回合数增加
-	if(skill.control_dur && character.checkControl())
-		buff.duration += skill.control_dur
 	if(character.fighting.randomCheck(rate,"buffRate"))
 		this.createBuff(skill.character,character,buff)
 	else if(buff.otps.elseBuff){
@@ -46,14 +43,6 @@ model.prototype.createBuff = function(attacker,character,buff) {
 	}
 	//控制BUFF在行动后回合数加1
 	if(this.buffCfg[buffId].control){
-		if(character.buffs["buff_405083"] && character.fighting.randomCheck(character.buffs["buff_405083"].getBuffMul()) && character.buffs["buff_405083"].enoughCD()){
-			var target = character.fighting.locator.getTargets(character,"enemy_1")[0]
-			if(target){
-				character.fighting.fightRecord.push({type:"tag",id:character.id,tag:"transfer"})
-				this.createBuff(attacker,target,buff)
-				return
-			}
-		}
 		if(character.buffs["totem_friend_amp"])
 			return
 		//控制BUFF已行动则回合数加一

@@ -2,8 +2,6 @@ const fightCfg = require("../fightCfg.js")
 const act_hero = require("../act/act_hero.js")
 //战斗角色基类
 var model = function(fighting,otps) {
-	//继承父类
-	act_hero.call(this,otps)
 	this.died = false  					//死亡状态
 	this.herosCfg = false
 	if(otps && otps.id)
@@ -29,8 +27,11 @@ var model = function(fighting,otps) {
 	this.attBuffs = {} 					//属性增益BUFF
 	this.totalDamage = 0				//累计伤害
 	this.totalHeal = 0					//累计治疗
+	this.attInfo = {}
 	if(!this.isNaN)
 		this.attInit()
+	//继承父类
+	act_hero.call(this,otps)
 }
 model.prototype = Object.create(act_hero.prototype) //继承父类方法
 //属性初始化
@@ -42,7 +43,7 @@ model.prototype.attInit = function() {
 	this.isAction = false 				//回合行动过标识
 	this.onAction = false  				//回合行动中标识
 	//基础属性
-	this.curAnger = 100 				//初始怒气
+	this.curAnger = 0 					//初始怒气
 	this.maxAnger = 100 				//最大怒气
 	this.needAnger = 100  				//释放技能所需怒气
 	//一级属性
@@ -80,7 +81,6 @@ model.prototype.attInit = function() {
 	this.attInfo.poisonAmp = 0 			//中毒增伤
 	this.attInfo.poisonDef = 0 			//中毒减伤
 	this.attInfo.ign_armor = 0 			//忽视护甲
-	this.attInfo.roundAnger = 20 		//回合回怒
 	this.attInfo.maxHP = 30000
 	this.attInfo.atk = 2000
 	this.attInfo.armor = 500

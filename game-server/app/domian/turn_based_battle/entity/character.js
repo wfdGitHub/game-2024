@@ -1,22 +1,15 @@
 //英雄
 const entity_base = require("./entity_base.js")
-const skill_base = require("../skill/skill_base.js")
 const fightCfg = require("../fightCfg.js")
 const heros = fightCfg.getCfg("heros")
-const skills = fightCfg.getCfg("skills")
 var model = function(fighting,otps,talents) {
 	//继承父类属性
 	otps = Object.assign(otps,heros[otps.id])
 	entity_base.call(this,fighting,otps)
 	if(this.isNaN)
 		return
-	//初始化技能
-	this.skills = []
-	this.skills.push(new skill_base(this,skills[otps["defaultSkill"]]))
 	//初始化天赋
 	this.talents = talents
-	//回合技能
-	this.roundSkills = []
 }
 model.prototype = Object.create(entity_base.prototype) //继承父类方法
 //战斗初始化
@@ -63,40 +56,6 @@ model.prototype.lessAnger = function(value,show) {
 	if(show && value)
 		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : -value,curAnger : this.curAnger})
 	return value
-}
-//检查可行动
-model.prototype.checkAction = function() {
-	if(this.died || this.isAction)
-		return false
-	else
-		return true
-}
-//检查可使用技能
-model.prototype.checkUseSkill = function() {
-	if(this.died || this.buffs["silence"] || this.checkForceControl())
-		return true
-	return false
-}
-//检查可使用普攻
-model.prototype.checkUseNormal = function() {
-	if(this.died || this.buffs["disarm"] || this.checkForceControl())
-		return true
-	else
-		return false
-}
-//检查硬控
-model.prototype.checkForceControl = function() {
-	if(this.buffs["petrify"] || this.buffs["frozen"] || this.buffs["dizzy"])
-		return true
-	else
-		return false
-}
-//检查被控制
-model.prototype.checkControl = function() {
-	if(this.checkForceControl() || this.buffs["disarm"] || this.buffs["silence"] || this.buffs["chaofeng"])
-		return true
-	else
-		return false
 }
 //检查可被选中
 model.prototype.checkAim = function() {
@@ -213,10 +172,6 @@ model.prototype.lessHP = function(info,hitFlag) {
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
 	info.curAnger = this.curAnger
-	if(this.buffs["chuchen"]){
-		this.buffs["chuchen"]["value"] += info.value
-		return info
-	}
 	if(this.died)
 		return info
 	if(this.attInfo.hp < info.value){
@@ -236,7 +191,7 @@ model.prototype.lessHP = function(info,hitFlag) {
 	if(hitFlag){
 		var tmpHPRate = info.realValue / this.attInfo.maxHP
 		this.hp_loss += tmpHPRate
-		this.addAnger(Math.floor(tmpHPRate * 80),false)
+		this.addAnger(Math.floor(tmpHPRate * 60),false)
 	}
 	info.curAnger = this.curAnger
 	info.hp = this.attInfo.hp

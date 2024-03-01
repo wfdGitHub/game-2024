@@ -2,7 +2,8 @@
 var model = function(fighting) {
 	this.fighting = fighting
 }
-model.prototype.getTargets = function(character,targetType,radius) {
+model.prototype.getTargets = function(character,skill,radius) {
+	var targetType = skill.targetType
 	switch(targetType){
 		case "self":
 			//自身
@@ -13,9 +14,9 @@ model.prototype.getTargets = function(character,targetType,radius) {
 		case "team_near":
 			//最近友方
 			return this.getFriendNormal(character)
-		case "todo":
+		case "team_min":
 			//血量最少友方
-			return
+			return this.getFriendMinHP(character,skill)
 		default:
 			//默认距离最近敌方单体  
 			return this.getEnemyNormal(character)
@@ -33,6 +34,18 @@ model.prototype.getFriendNormal = function(character) {
 				minDist = dist
 				aimList = [team[i]]
 			}
+		}
+	}
+	return aimList
+}
+//选择常规友方目标(血量最少)
+model.prototype.getFriendMinHP = function(character,skill) {
+	var aimList = []
+	var team =  character.team
+	for(var i in team){
+		var dist = this.callDist(character.pos,team[i].pos)
+		if(dist < skill.resRange && (!aimList[0] || team[i].attInfo.hp < aimList[0].attInfo.hp)){
+			aimList = [team[i]]
 		}
 	}
 	return aimList

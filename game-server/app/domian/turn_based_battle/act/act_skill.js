@@ -3,7 +3,7 @@ var model = function(otps,hero) {
 	this.hero = hero
 	this.id = otps.id
 	this.name = otps.name
-	this.NEEDCD = otps.cd 					 //技能CD
+	this.NEEDCD = otps.CD || 0 			 	 //技能CD
 	this.type = otps.type || "normal"        //技能类型  normal 普通 bullet 弹道  range  范围技能
 	this.targetType = otps.targetType  		 //技能目标
 	//弹道属性
@@ -19,7 +19,7 @@ var model = function(otps,hero) {
 	this.value = otps.value || 0  		 	 //技能附加伤害
 	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤  heal 治疗
 	//状态参数
-	this.cd = 0 							 //当前技能CD
+	this.CD = this.NEEDCD || 0				 //当前技能CD
 	this.state = 0 							 //0 未释放   1  释放中
 	this.curDur = 0 						 //当前持续时间
 	this.timeIndex = 0 						 //当前结算时间ID
@@ -41,10 +41,39 @@ var model = function(otps,hero) {
 	else
 		this.settle = this.atkSettle
 }
+//开始释放技能
+model.prototype.resSkill = function(targets) {
+	if(this.state == 1)
+		console.error("技能已释放"+this.id)
+	this.state = 1
+	this.curDur = 0
+	this.timeIndex = 0
+	this.targets = targets
+	this.CD = this.NEEDCD
+	this.target = targets[0]
+	if(this.target)
+		Object.assign(this.resPos,this.target.pos)
+	else
+		Object.assign(this.resPos,this.hero.pos)
+	if(!this.isAnger)
+		this.hero.curAnger += 10
+	var record = {
+		"type" : "skill",
+		"id" : this.character.id,
+		"sid" : this.sid,
+		"curAnger" : this.hero.curAnger
+	}
+	this.character.fighting.fightRecord.push(record)
+}
+//更新CD 
+model.prototype.updateCD = function(dt) {
+	this.CD -= dt
+}
 //普通刷新
 model.prototype.normalUpdate = function(dt) {
-	if(this.state != 1)
+	if(this.state != 1){
 		return
+	}
 	this.curDur += dt
 	if(this.times[this.timeIndex] !== undefined && this.curDur >= this.times[this.timeIndex]){
 		this.settle(this.muls[this.timeIndex],this.value)
@@ -118,25 +147,9 @@ model.prototype.healSettle = function(mul,value) {
 	}
 	this.character.fighting.fightRecord.push(record)
 }
-//开始释放技能
-model.prototype.resSkill = function(targets) {
-	if(this.state == 1)
-		console.error("技能已释放"+this.id)
-	this.state = 1
-	this.curDur = 0
-	this.timeIndex = 0
-	this.targets = targets
-	this.target = targets[0]
-	if(this.target)
-		Object.assign(this.resPos,this.target.pos)
-	else
-		Object.assign(this.resPos,this.hero.pos)
-	var record = {
-		"type" : "skill",
-		"id" : this.character.id,
-		"sid" : this.sid
-	}
-	this.character.fighting.fightRecord.push(record)
+//判断CD
+model.prototype.checkCD = function() {
+	return this.CD <= 0
 }
 //技能释放结束
 model.prototype.stopSkill = function() {
