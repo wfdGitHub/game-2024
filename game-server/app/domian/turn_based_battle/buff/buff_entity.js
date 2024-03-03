@@ -1,7 +1,7 @@
 //BUFF作用基类
 var model = function(fighting,character,buff,buffCfg) {
 	this.fighting = fighting
-	this.buffId = buff.buffId
+	this.id = buff.id
 	this.list = []
 	this.attacker = false
 	this.character = character
@@ -96,22 +96,6 @@ model.prototype.buffOtps = function(attacker,buff) {}
 model.prototype.domain = function() {}
 //buff结算后
 model.prototype.bufflLater = function() {}
-//判断CD满足
-model.prototype.enoughCD = function() {
-	if(this.NEED_CD && this.CUR_CD <= 0){
-		this.CUR_CD = this.NEED_CD
-		return true
-	}
-	return false
-}
-//判断次数满足
-model.prototype.enoughNum = function() {
-	if(this.MAX_NUM && this.CUR_NUM < this.MAX_NUM){
-		this.CUR_NUM++
-		return true
-	}
-	return false
-}
 //获取加成属性
 model.prototype.getAttInfo = function(name) {
 	if(this.buffId == "hudun" && name == "ampDef")
