@@ -253,6 +253,7 @@ module.exports = function() {
 	//购买战令
 	this.buyPass = function(uid,pay_id,info,cb) {
 		this.activatePass(uid,pay_cfg[pay_id]["arg"])
+		self.sendTitleTextToMail(uid,pay_cfg[pay_id]["name"],"recharge",pay_cfg[pay_id]["award"])
 		cb(true)
 	}
 	//购买DIY道具
