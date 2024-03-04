@@ -742,7 +742,7 @@ model.useAttackSkill = function(skill,chase,point) {
 			if(info.crit && skill.character.crit_buff){
 				var buffInfo = skill.character.crit_buff
 				if(this.seeded.random("BUFF") < buffInfo.buffRate)
-					buffManager.createBuff(targets[i],skill.character,{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
+					buffManager.createBuff(skill.character,targets[i],{buffId : buffInfo.buffId,buffArg : buffInfo.buffArg,duration : buffInfo.duration})
 			}
 			//存在巫术时添加BUFF
 			if(skill.character.wushu_buff && targets[i].buffs["wushu"]){

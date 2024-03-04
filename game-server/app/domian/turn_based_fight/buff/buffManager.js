@@ -17,9 +17,10 @@ buffFactory.init = function(seeded,fighting) {
 //创建BUFF
 buffFactory.createBuff = function(releaser,character,otps) {
 	var buffId = otps.buffId
-	if(character.characterType == "master"){
+	if(character.characterType == "master")
 		return
-	}
+	if(releaser.buffs["sneak"])
+		return
 	if(!buff_cfg[buffId]){
 		console.error("buff 不存在 ",buffId)
 		return

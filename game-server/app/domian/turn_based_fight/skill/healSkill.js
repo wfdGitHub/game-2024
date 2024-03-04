@@ -1,5 +1,6 @@
 //主动治疗技能
 var baseSkill = require("./baseSkill.js")
+var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var model = function(otps,character) {
 	baseSkill.call(this,otps,character)
 	//初始化参数
@@ -46,6 +47,15 @@ var model = function(otps,character) {
 					this.skill_buffs[id].buffRate += this.skill_buffs[id].buffRate * this.character.atkcontrol
 			}
 		}
+	}
+	this.addBuff = function(buffStr) {
+		var buff = JSON.parse(buffStr)
+		//治疗技能不能添加DEBUFF
+		if(buff_cfg[buff.buffId].debuff)
+			return
+		if(this.character.buffDuration)
+			buff.duration += this.character.buffDuration
+		this.skill_buffs[buff.buffId] = buff
 	}
 	//初始化完成
 	this.initArg()

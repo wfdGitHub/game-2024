@@ -1499,7 +1499,7 @@ model.prototype.onHeal = function(releaser,info) {
 	if(this.buffs["forbidden"])
 		info.value = Math.floor(info.value * 0.3)
 	if(this.buffs["wushu"])
-		info.value = Math.floor(info.value * this.buffs["wushu"].getValue())
+		info.value -= Math.floor(info.value * this.buffs["wushu"].getValue())
 	if(this.buffs["wudu"])
 		info.value = Math.floor(info.value * this.buffs["wudu"].getValue())
 	info.realValue = this.addHP(info.value)
