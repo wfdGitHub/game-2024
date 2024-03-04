@@ -151,7 +151,7 @@ module.exports = function() {
 				cb(false,"机器人配置错误")
 				return
 			}
-			var defTeam = arena_rank[range]["team"].concat()
+			var defTeam = self.fightContorl.getNPCTeamByType(main_name,arena_rank[range]["team"],arena_rank[range]["lv"])
 			cb(true,defTeam)
 		}else{
 			//玩家队伍
