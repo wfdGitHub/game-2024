@@ -27,13 +27,11 @@ model.prototype.calDamage = function(attacker,target,skill,mul,value) {
 	var basic = Math.ceil((attacker.getTotalAtt("atk") - target.getTotalAtt("armor") * Math.max(0,(1 - attacker.getTotalAtt("ign_armor")))) * mul + value)
 	basic = Math.ceil(basic * (1 + attacker.getTotalAtt("amp") - target.getTotalAtt("ampDef")))
 	//格挡判断
-	if(!target.buffs["vital_point"]){
-		var block = target.getTotalAtt("block") - attacker.getTotalAtt("blockDef") + (target.getTotalAtt("main_slay") - attacker.getTotalAtt("main_slay")) * 0.005
-		block = Math.min(block,0.9) 	//格挡率最高不超过90%
-		if(this.fighting.randomCheck(block,"block")){
-			info.block = true
-			basic = Math.ceil(basic * 0.5)
-		}
+	var block = target.getTotalAtt("block") - attacker.getTotalAtt("blockDef") + (target.getTotalAtt("main_slay") - attacker.getTotalAtt("main_slay")) * 0.005
+	block = Math.min(block,0.9) 	//格挡率最高不超过90%
+	if(this.fighting.randomCheck(block,"block")){
+		info.block = true
+		basic = Math.ceil(basic * 0.5)
 	}
 	//暴击判断
 	if(!info.block){

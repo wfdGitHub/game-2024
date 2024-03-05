@@ -212,13 +212,9 @@ model.prototype.triggerLossHP = function() {
 model.prototype.revive = function(value) {
 	if(!this.died)
 		return
-	if(this.buffs["not_revived"])
-		return
 	this.attInfo.hp = value
 	this.died = false
 	this.fighting.fightRecord.push({type : "revive",id : this.id,hp : this.attInfo.hp,maxHP:this.attInfo.maxHP})
-	if(this.buffs["turtle"])
-		this.buffs["turtle"].close()
 	this.fighting.heroAdd(this)
 }
 //添加BUFF
