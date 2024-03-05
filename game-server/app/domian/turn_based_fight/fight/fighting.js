@@ -96,6 +96,9 @@ model.prototype.load = function(belong,otps) {
 		team[i].teamInfo = teamInfo
 	}
 	this[belong+"Master"].init(this,team,this[belong+"Team"],this[rival+"Team"],this.locator,this.seeded,this[rival+"Master"])
+	for(var i = 1;i <= 4;i++)
+		if(this[belong+"TeamCfg"]["power"+i])
+			this[belong+"Master"].addPower(this[belong+"TeamCfg"]["power"+i])
 }
 //加载初始阵容
 model.prototype.loadBeginHero = function(belong) {

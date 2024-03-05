@@ -7,7 +7,7 @@ const power_star = require("../../../../config/gameCfg/power_star.json")
 var model = function() {}
 //获取无双技属性 {"id":501000,"lv":1,"star":1,"ad":1}
 model.prototype.getPowerInfo = function(powerInfo){
-	var atts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
+	var atts = {}
 	if(powerInfo.lv && power_lv[powerInfo.lv]){
 		var powerAptitude = power_base[powerInfo.id]["aptitude"]
 		if(powerInfo.ad && power_ad[powerInfo.ad])

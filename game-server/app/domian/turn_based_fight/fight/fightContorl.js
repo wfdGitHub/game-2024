@@ -150,8 +150,8 @@ model.getPowerInfo = function(powerInfo){
 model.getTeamData = function(team,belong) {
 	var team = JSON.parse(JSON.stringify(team))
 	var teamCfg = team.shift() || {}
-    var masterAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
-    var powerAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0}
+    var masterAtts = {}
+    var powerAtts = {}
     var heroAtts = {"maxHP":0,"atk":0,"phyDef":0,"magDef":0,"amplify":0,"reduction":0}
     var gSkill = {}
     var maxLv = 0
@@ -170,14 +170,9 @@ model.getTeamData = function(team,belong) {
 		if(teamCfg["power"+i]){
 			var powerInfo = teamCfg["power"+i]
 			powerAtts = this.powerEntity.getPowerInfo(powerInfo)
-			for(var att in masterAtts)
-				masterAtts[att] += powerAtts[att]
 			teamCfg["power"+i]["basic"] = powerAtts["basic"]
 		}
 	}
-	//主公属性加成
-	for(var i in masterAtts)
-		heroAtts[i] = Math.floor(masterAtts[i] / 20)
 	//家园属性 
 	if(teamCfg["manors"])
 		for(var i = 1;i <= 6;i++)
@@ -197,9 +192,6 @@ model.getTeamData = function(team,belong) {
 	}
     var teamAdds = {}
     if(teamCfg){
-		for(var i = 1;i <= 4;i++)
-			if(teamCfg["power"+i])
-				master.addPower(teamCfg["power"+i])
 		if(teamCfg.team_atk_add){
 			if(!teamAdds["atk"])
 				teamAdds["atk"] = 0

@@ -196,17 +196,19 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 		}
 	}
 	//种族克制
-	var specieRate = species[attacker.realm][target.realm]
-	if(target.specie_immune == skill.specie)
-		specieRate = specieRate * 0.1
-	if(specieRate > 1){
-		if(target.specie_behit)
-			specieRate = target.specie_behit * specieRate
-		if(attacker.specie_hit)
-			specieRate = attacker.specie_hit * specieRate
+	if(skill.skillType !== "power"){
+		var specieRate = species[attacker.realm][target.realm]
+		if(target.specie_immune == skill.specie)
+			specieRate = specieRate * 0.1
+		if(specieRate > 1){
+			if(target.specie_behit)
+				specieRate = target.specie_behit * specieRate
+			if(attacker.specie_hit)
+				specieRate = attacker.specie_hit * specieRate
+		}
+		info.spe = specieRate
+		info.value = Math.floor(info.value * specieRate)
 	}
-	info.spe = specieRate
-	info.value = Math.floor(info.value * specieRate)
 	//物理法术伤害加成减免
 	if(attacker[skill.damageType+"_add"] || target[skill.damageType+"_def"]){
 		var tmpRate = (attacker[skill.damageType+"_add"] || 0) - (target[skill.damageType+"_def"] || 0)
