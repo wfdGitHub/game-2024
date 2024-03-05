@@ -12,6 +12,7 @@ var master = function(otps) {
 	this.characterType = "master"  //角色类型
 	this.id = this.belong+"Master"
 	this.index = 1				//所在位置
+	this.realm = 1
 	this.peerMaster = {}        //对方主角
 	this.attInfo = {}
 	this.attInfo.maxHP = 0								//最大生命值
