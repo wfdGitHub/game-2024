@@ -110,14 +110,14 @@ buffFactory.setListen = function(atkTeam,defTeam) {
 		if(atkTeam[i] && atkTeam[i]["listen_addBuff"]){
 			if(atkTeam[i]["listen_enemyBuff"]){
 				var buffId = atkTeam[i]["listen_enemyBuff"]
-				console.log("开始监听BUFF",atkTeam[i].heroId,buffId)
+				// console.log("开始监听BUFF",atkTeam[i].heroId,buffId)
 				if(!this.atkListenList[buffId])
 					this.atkListenList[buffId] = []
 				this.atkListenList[buffId].push(atkTeam[i])
 			}
 			if(atkTeam[i]["listen_teamBuff"]){
 				var buffId = atkTeam[i]["listen_teamBuff"]
-				console.log("开始监听BUFF",atkTeam[i].heroId,buffId)
+				// console.log("开始监听BUFF",atkTeam[i].heroId,buffId)
 				if(!this.defListenList[buffId])
 					this.defListenList[buffId] = []
 				this.defListenList[buffId].push(atkTeam[i])
@@ -151,7 +151,7 @@ buffFactory.checkListen = function(buffId,belong) {
 			for(var i in this.defListenList[buffId]){
 				var character = this.defListenList[buffId][i]
 				if(!character["died"] && character["listen_addBuff"]){
-					// console.log(character.heroId,character["listen_addBuff"])
+					console.log(character.heroId,character["listen_addBuff"])
 					var rate = character["listen_addBuff"]["buffRate"]
 					if(this.seeded.random("listen_addBuff") < rate)
 						this.createBuff(character,character,character["listen_addBuff"])
@@ -163,7 +163,7 @@ buffFactory.checkListen = function(buffId,belong) {
 			for(var i in this.atkListenList[buffId]){
 				var character = this.atkListenList[buffId][i]
 				if(!character["died"] && character["listen_addBuff"]){
-					// console.log(character.heroId,character["listen_addBuff"])
+					console.log(character.heroId,character["listen_addBuff"])
 					var rate = character["listen_addBuff"]["buffRate"]
 					if(this.seeded.random("listen_addBuff") < rate)
 						this.createBuff(character,character,character["listen_addBuff"])
