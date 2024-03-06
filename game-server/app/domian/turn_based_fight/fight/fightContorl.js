@@ -107,6 +107,7 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 	    fighting.fightBegin()
 	    return fightRecord.isWin()
 	}catch(err){
+		console.log("战斗报错")
 		var txt = JSON.stringify(fightVerifyInfo)
 		console.log(err)
 		console.log(txt)

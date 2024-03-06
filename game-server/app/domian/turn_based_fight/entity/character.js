@@ -797,7 +797,6 @@ model.prototype.after = function() {
 		for(var i = 0;i < this.team.length;i++){
 			count += this.team[i].removeOneLower()
 		}
-		console.log("count",count)
 		if(count){
 			var targets = this.fighting.locator.getTargets(this,"enemy_1")
 			if(targets[0])
