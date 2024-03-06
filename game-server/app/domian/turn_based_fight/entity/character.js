@@ -63,7 +63,6 @@ var model = function(otps) {
 	this.listen_teamBuff = otps.listen_teamBuff 				//监听我方获得BUFF
 	if(otps.listen_addBuff){
 		this.listen_addBuff = JSON.parse(otps.listen_addBuff)  	//监听后自身获得BUFF
-		console.log("角色监听BUFF",this.heroId,this.listen_addBuff)
 	}
 	this.polang_buff = otps.polang_buff 						//破浪叠满20层
 	this.less_hp_rate = otps.less_hp_rate 						//生命值降低到一定程度触发BUFF
