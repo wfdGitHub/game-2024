@@ -144,7 +144,7 @@ buffFactory.checkListen = function(buffId,belong) {
 		if(this.defListenList[buffId]){
 			for(var i in this.defListenList[buffId]){
 				var character = this.defListenList[buffId][i]
-				if(!character["died"]){
+				if(!character["died"] && character["listen_addBuff"]){
 					var rate = character["listen_addBuff"]["buffRate"]
 					if(this.seeded.random("listen_addBuff") < rate)
 						this.createBuff(character,character,character["listen_addBuff"])
@@ -155,7 +155,7 @@ buffFactory.checkListen = function(buffId,belong) {
 		if(this.atkListenList[buffId]){
 			for(var i in this.atkListenList[buffId]){
 				var character = this.atkListenList[buffId][i]
-				if(!character["died"]){
+				if(!character["died"] && character["listen_addBuff"]){
 					var rate = character["listen_addBuff"]["buffRate"]
 					if(this.seeded.random("listen_addBuff") < rate)
 						this.createBuff(character,character,character["listen_addBuff"])
