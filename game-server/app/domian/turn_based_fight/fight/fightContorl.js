@@ -108,7 +108,7 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 	}catch(err){
 		console.log("战斗报错")
 		var txt = JSON.stringify(fightVerifyInfo)
-		console.log(err)
+		console.log(JSON.stringify(err))
 		console.log(txt)
 		var redisDao = bearcat.getBean("redisDao")
 		if(redisDao && redisDao.db)
