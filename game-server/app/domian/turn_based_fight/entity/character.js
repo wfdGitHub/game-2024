@@ -61,8 +61,10 @@ var model = function(otps) {
 	//==========闪光阶级========//
 	this.listen_enemyBuff = otps.listen_enemyBuff 				//监听敌方获得BUFF
 	this.listen_teamBuff = otps.listen_teamBuff 				//监听我方获得BUFF
-	if(otps.listen_addBuff)
+	if(otps.listen_addBuff){
 		this.listen_addBuff = JSON.parse(otps.listen_addBuff)  	//监听后自身获得BUFF
+		console.log("角色监听BUFF",this.heroId,this.listen_addBuff)
+	}
 	this.polang_buff = otps.polang_buff 						//破浪叠满20层
 	this.less_hp_rate = otps.less_hp_rate 						//生命值降低到一定程度触发BUFF
 	this.less_hp_buff = otps.less_hp_buff 						//生命值降低到一定程度触发BUFF
