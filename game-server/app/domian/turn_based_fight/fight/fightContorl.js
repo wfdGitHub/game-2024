@@ -89,7 +89,8 @@ model.loadFight = function(atkTeam,defTeam,otps) {
 		delete fightVerifyInfo.atkTeam[6]["manualModel"]
 	if(fightVerifyInfo.defTeam[6])
 		delete fightVerifyInfo.defTeam[6]["manualModel"]
-	fightVerifyInfo.otps = otps
+    fightVerifyInfo.otps = {}
+    fightVerifyInfo.otps.seededNum = otps.seededNum
     var atkInfo = this.getTeamData(atkTeam,"atk")
     var defInfo = this.getTeamData(defTeam,"def")
     var myotps = Object.assign({},otps)
