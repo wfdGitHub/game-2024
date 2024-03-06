@@ -19,19 +19,20 @@ model.prototype.timeUpdate = function(dt) {
 		if(this.fighting.locator.callDist(this.bullets[i].pos,this.bullets[i].target.pos) < 10){
 			//结算子弹
 			if(!this.bullets[i].target.died)
-				this.bullets[i].skill.settle(this.bullets[i].mul,this.bullets[i].value)
+				this.bullets[i].skill.settle(this.bullets[i].mul,this.bullets[i].value,this.bullets[i].index)
 			delete this.bullets[i]
 		}
 	}
 }
 //添加弹道   release target skill
-model.prototype.addBullet = function(release,target,skill,mul,value) {
+model.prototype.addBullet = function(release,target,skill,mul,value,index) {
 	var bulletInfo = {}
 	bulletInfo.release = release
 	bulletInfo.target = target
 	bulletInfo.skill = skill
 	bulletInfo.mul = mul
 	bulletInfo.value = value
+	bulletInfo.index = index
 	bulletInfo.pos = Object.assign({},release.pos)
 	this.bullets[this.id++] = bulletInfo
 }

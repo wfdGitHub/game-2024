@@ -4,14 +4,13 @@ const fightCfg = require("../fightCfg.js")
 const skills = fightCfg.getCfg("skills")
 var model = function(character,sid) {
 	this.otps = skills[sid]
-	act_skill.call(this,this.otps,character)
 	this.character = character
+	act_skill.call(this,this.otps,character)
 	this.id = sid || 0 		//技能ID
 	//属性
 	this.isAnger = false
 	this.attInfo = {}
 	this.attTmpInfo = {}
-	this.buffs = {} 								 //附带BUFF
 	this.talents = {}
 	this.init()
 }

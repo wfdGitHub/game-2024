@@ -1,23 +1,34 @@
 //buff管理器
 const fightCfg = require("../fightCfg.js")
 const buff_entity = require("./buff_entity.js")
-const normal_buff = require("./buffs/normal_buff.js")
-var model = function() {
+var model = function(fighting) {
+	this.fighting = fighting
 	this.buffCfg = fightCfg.getCfg("buff_cfg")
 	this.buffList = {}
 }
+const standardBuffOtps = {"id":0,"rate":0,"mul":0,"value":0,"time":1000}
+//生成基准BUFF
+model.prototype.buildBuffOtps = function(buffStr) {
+	var buffOtps = JSON.parse(buffStr)
+	if(!this.buffList[buffOtps.id])
+		console.error("!!!!!!!!!!id not find "+buffOtps.id)
+	return Object.assign({"bs":1},standardBuffOtps,buffOtps)
+}
+//判断BUFF概率
+model.prototype.checkBuffRate = function(attacker,character,buffOtps) {
+	if(this.fighting.randomCheck(buffOtps.rate))
+		this.createBuff(attacker,character,buffOtps)
+}
 //创建BUFF
-model.prototype.createBuff = function(attacker,character,buff) {
-	var buffId = buff.buffId
-	if(!character.checkAim())
+model.prototype.createBuff = function(attacker,character,buffOtps) {
+	if(!character.checkAim() || !buffOtps.bs)
 		return
-	if(!this.buffList[buffId]){
-		console.error("!!!!!!!!!!buffId not find "+buffId)
-		this.buffList[buffId] = normal_buff
-		this.buffCfg[buffId] = {}
-	}
-	if(!character.buffs[buffId])
-		character.createBuff(new this.buffList[buffId](character.fighting,character,buff,this.buffCfg[buffId]))
-	character.addBuff(attacker,buff)
+	var id = buffOtps.id
+	if(!this.buffList[id])
+		this.buffList[id] = buff_entity
+	var buffCfg = Object.assign({},this.buffCfg[id],buffOtps)
+	if(!character.buffs[id])
+		character.createBuff(new this.buffList[id](this.fighting,character,buffCfg))
+	character.addBuff(attacker,buffCfg)
 }
 module.exports = model

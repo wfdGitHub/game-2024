@@ -25,6 +25,7 @@ var model = function(fighting,otps) {
 	this.talents = {}
 	this.buffs = {} 					//全部BUFF
 	this.attBuffs = {} 					//属性增益BUFF
+	this.status = {dizzy:0,silence:0,twine:0,disarm:0} 	//当前状态 dizzy 眩晕 silence 沉默 twine 缠绕  disarm 缴械
 	this.totalDamage = 0				//累计伤害
 	this.totalHeal = 0					//累计治疗
 	this.attInfo = {}

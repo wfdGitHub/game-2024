@@ -10,7 +10,6 @@ var model = function(otps) {
 	//============战斗数据====================//
 	this.pos = {x : 0,y : 0} 			//当前位置
 	this.state = 0 						//当前状态  0 待机  1  移动中  2  释放技能
-	this.status = {dizzy:0,silence:0,twine:0,disarm:0} 	//当前状态 dizzy 眩晕 silence 沉默 twine 缠绕  disarm 缴械
 	this.actTime = 0 					//行动冷却
 	this.targets = [] 					//当前目标列表
 	this.target = false  				//当前主目标
@@ -41,6 +40,7 @@ model.prototype.incStatus = function(status,value) {
 }
 //定时器更新
 model.prototype.timeUpdate = function(dt) {
+	this.buffUpdate(dt)
 	for(var i = 0;i < this.skills.length;i++)
 		this.skills[i].updateCD(dt)
 	if(this.status["dizzy"] > 0)
@@ -87,7 +87,8 @@ model.prototype.timeUpdate = function(dt) {
 				//在释放距离内释放技能
 				this.targets = this.fighting.locator.getTargets(this,this.skill)
 				this.state = 2
-				this.actTime = this.attInfo.actSpeed
+				this.actTime = this.getTotalAtt("actSpeed")
+				console.log("actTime",this.actTime)
 				this.skill.resSkill(this.targets)
 			}else{
 				//移动至目标

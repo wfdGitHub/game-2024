@@ -4,10 +4,11 @@ const fightRecord = require("./fightRecord.js")
 const locatorFun = require("./act/act_locator.js")
 const act_bullets = require("./act/act_bullets.js")
 const formulaFun = require("./skill/formula.js")
+const buffManager = require("./buff/buffManager.js")
 const TIME_LAG = 100
 const MAX_TIME = 90000
 const DEFALT_POS = [{x:300,y:0},{x:300,y:-200},{x:300,y:200},{x:200,y:-150},{x:200,y:150}]
-var model = function(atkTeam,defTeam,otps,managers) {
+var model = function(atkTeam,defTeam,otps,fightContorl) {
 	console.time("fight")
 	this.fightInfo = {"atk":{"rival":"def","team":[]},"def":{"rival":"atk","team":[]}}
 	this.fightInfo.atk.teamInfo = JSON.parse(JSON.stringify(atkTeam || []))
@@ -19,8 +20,8 @@ var model = function(atkTeam,defTeam,otps,managers) {
 	this.locator = new locatorFun(this)
 	this.formula = new formulaFun(this)
 	this.bulletManager = new act_bullets(this)
-	this.managers = managers
-	this.buffManager = managers.buffManager
+	this.buffManager = new buffManager(this)
+	this.fightContorl = fightContorl
 	this.RUNTIME = 0 				//当前时间
 	this.maxRound = 20
 	//战斗数据
@@ -58,13 +59,13 @@ model.prototype.loadTeam = function(belong) {
 	this.fightInfo[belong]["survival"] = 0
 	this.fightInfo[belong]["skillMonitor"] = []
 	this.fightInfo[belong]["teamAtt"] = {}
-	var teamTalents = this.managers.getTeamTalents(teamCfg)
+	var teamTalents = this.fightContorl.getTeamTalents(teamCfg)
 	for(var index = 0;index < this.fightInfo[belong]["teamInfo"].length;index++){
 		this.loadHero(belong,index,this.fightInfo[belong]["teamInfo"][index],teamTalents,teamCfg)
 	}
 }
 model.prototype.loadHero = function(belong,index,info,teamTalents,teamCfg) {
-	var talents = this.managers.getHeroTalents(info,teamCfg)
+	var talents = this.fightContorl.getHeroTalents(info,teamCfg)
 	Object.assign(talents,teamTalents)
 	var team_character = new character(this,info,talents)
 	team_character.id = this.characterId++

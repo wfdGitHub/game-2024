@@ -18,6 +18,14 @@ var model = function(otps,hero) {
 	this.muls = otps.muls || [1]  		  	 //技能系数列表
 	this.value = otps.value || 0  		 	 //技能附加伤害
 	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤  heal 治疗
+	//技能BUFF
+	otps.buffs = []
+	// otps.buffs.push(JSON.stringify({"id":1,"rate":0.5,"attKey1":"actSpeed","attValue1":10000}))
+	// otps.buffs.push(JSON.stringify({"id":1,"rate":0.5}))
+	// otps.buffs.push(JSON.stringify({"id":1,"rate":0.5}))
+	this.buffs = otps.buffs || [] 			 //技能BUFF
+	for(var i = 0;i < this.buffs.length;i++)
+		this.buffs[i] = this.character.fighting.buffManager.buildBuffOtps(this.buffs[i])
 	//状态参数
 	this.CD = this.NEEDCD || 0				 //当前技能CD
 	this.state = 0 							 //0 未释放   1  释放中
@@ -76,7 +84,7 @@ model.prototype.normalUpdate = function(dt) {
 	}
 	this.curDur += dt
 	if(this.times[this.timeIndex] !== undefined && this.curDur >= this.times[this.timeIndex]){
-		this.settle(this.muls[this.timeIndex],this.value)
+		this.settle(this.muls[this.timeIndex],this.value,this.timeIndex)
 		this.timeIndex++
 	}
 	if(this.curDur >= this.skillDur)
@@ -89,7 +97,7 @@ model.prototype.bulletUpdate = function(dt) {
 	this.curDur += dt
 	if(this.times[this.timeIndex] !== undefined && this.curDur >= this.times[this.timeIndex]){
 		for(var i = 0;i < this.targets.length;i++)
-			this.hero.fighting.bulletManager.addBullet(this.hero,this.targets[i],this,this.muls[this.timeIndex],this.value)
+			this.hero.fighting.bulletManager.addBullet(this.hero,this.targets[i],this,this.muls[this.timeIndex],this.value,this.timeIndex)
 		this.timeIndex++
 	}
 	if(this.curDur >= this.skillDur)
@@ -108,14 +116,14 @@ model.prototype.rangeUpdate = function(dt) {
 			//敌方
 			this.targets = this.hero.fighting.locator.getEnemyRange(this.hero,this.resPos,this.rangeRadius)
 		}
-		this.settle(this.muls[this.timeIndex],this.value)
+		this.settle(this.muls[this.timeIndex],this.value,this.timeIndex)
 		this.timeIndex++
 	}
 	if(this.curDur >= this.skillDur)
 		this.hero.stopSkill(this)
 }
 //攻击结算
-model.prototype.atkSettle = function(mul,value) {
+model.prototype.atkSettle = function(mul,value,index) {
 	var record = {
 		"type" : "damage",
 		"id" : this.character.id,
@@ -127,12 +135,13 @@ model.prototype.atkSettle = function(mul,value) {
 		var info = this.character.fighting.formula.calDamage(this.character, targets[i],this,mul,value)
 		info.value += this.getTotalAtt("real_value")
 		info = targets[i].onHit(this.character,info,true)
+		this.checkBuff(targets[i],index)
 		record.list.push(info)
 	}
 	this.character.fighting.fightRecord.push(record)
 }
 //治疗结算
-model.prototype.healSettle = function(mul,value) {
+model.prototype.healSettle = function(mul,value,index) {
 	var record = {
 		"type" : "heal",
 		"id" : this.character.id,
@@ -143,9 +152,15 @@ model.prototype.healSettle = function(mul,value) {
 	for(var i = 0;i < targets.length;i++){
 		var info = this.character.fighting.formula.calHeal(this.character, targets[i],this,mul,value)
 		info = targets[i].onHeal(this.character,info,true)
+		this.checkBuff(targets[i],index)
 		record.list.push(info)
 	}
 	this.character.fighting.fightRecord.push(record)
+}
+//判断BUFF
+model.prototype.checkBuff = function(target,index) {
+	if(this.buffs[index] && target && !target.died)
+		this.character.fighting.buffManager.checkBuffRate(this.character,target,this.buffs[index])
 }
 //判断CD
 model.prototype.checkCD = function() {

@@ -1,56 +1,52 @@
 //BUFF作用基类
-var model = function(fighting,character,buff,buffCfg) {
+var model = function(fighting,character,buffCfg) {
 	this.fighting = fighting
-	this.id = buff.id
 	this.list = []
+	this.buffCfg = buffCfg
+	this.id = buffCfg.id
+	this.rate = buffCfg.rate || 0 				//概率
+	this.time = buffCfg.time || 0 				//BUFF持续时间
 	this.attacker = false
 	this.character = character
-	this.buffCfg = buffCfg
 	this.max_count = buffCfg["max_count"] || 1 	//最大层数
+	this.status = {}
 	this.attKeys = {}
 	this.attBuff = false
-	this.NEED_CD = 0
-	this.CUR_CD = 0
 	for(var i = 1;i <= 3;i++){
-		if(buff.otps && buff.otps["attKey"+i]){
-			this.attBuff = true
-			this.attKey = buff.otps["attKey"+i]
-			this.attKeys[buff.otps["attKey"+i]] = buff.otps["attValue"+i] || 0
-		}else if(buffCfg["attKey"+i]){
+		//属性
+		if(buffCfg["attKey"+i]){
 			this.attBuff = true
 			this.attKey = buffCfg["attKey"+i]
 			this.attKeys[buffCfg["attKey"+i]] = buffCfg["attValue"+i] || 0
 		}
+		//状态
+		if(buffCfg["status"+i])
+			this.status[buffCfg["status"+i]] = 1
 	}
-	this.record = buffCfg["icon"] || buffCfg["effects"] ? true : false
+	this.record = buffCfg["effects"] ? true : false
 	this.init()
 }
 //BUFF初始化
 model.prototype.init = function() {}
 //新增一层BUFF
-model.prototype.addBuff = function(attacker,buff) {
-	if(!buff)
+model.prototype.addBuff = function(attacker,buffCfg) {
+	if(!buffCfg)
 		return
 	var changeFlag = false
-	var count = buff.count || 1
+	var count = buffCfg.count || 1
 	for(var i = 0;i < count;i++){
 		if(this.list.length < this.max_count){
 			changeFlag = true
 			this.attacker = attacker
-			this.list.push({attacker:attacker,buff : buff,duration : buff.duration})
-			if(buff.num){
-				this.MAX_NUM = buff.num
+			this.list.push({attacker:attacker,buff : buffCfg,time : buffCfg.time})
+			if(buffCfg.num){
+				this.MAX_NUM = buffCfg.num
 				this.CUR_NUM = 0
 			}
-			if(buff.cd){
-				this.NEED_CD = buff.cd
-				this.CUR_CD = 0
-			}
-			this.buffOtps(attacker,this.list[this.list.length - 1])
 		}
 	}
 	if(changeFlag)
-		this.addRecord({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
+		this.addRecord({type : "buffNum",id : this.character.id,bId : this.id,num:this.list.length})
 }
 //移除一层BUFF
 model.prototype.delBuff = function() {
@@ -59,12 +55,11 @@ model.prototype.delBuff = function() {
 		this.destroy()
 }
 //BUFF每回合更新
-model.prototype.update = function() {
-	this.domain()
+model.prototype.update = function(dt) {
 	var num = this.list.length
 	for(var i = 0;i < this.list.length;i++){
-		this.list[i].duration--
-		if(this.list[i].duration <= 0){
+		this.list[i].time -= dt
+		if(this.list[i].time <= 0){
 			this.list.splice(i,1)
 			i--
 		}
@@ -72,13 +67,13 @@ model.prototype.update = function() {
 	if(this.list.length <= 0){
 		this.destroy()
 	}else if(num != this.list.length){
-		this.addRecord({type : "buffNum",id : this.character.id,bId : this.buffId,num:this.list.length})
+		this.addRecord({type : "buffNum",id : this.character.id,bId : this.id,num:this.list.length})
 	}
 }
 //BUFF消失
 model.prototype.destroy = function() {
-	this.addRecord({type : "buffDel",id : this.character.id,bId : this.buffId})
-	this.character.removeBuff(this.buffId)
+	this.addRecord({type : "buffDel",id : this.character.id,bId : this.id})
+	this.character.removeBuff(this.id)
 	this.bufflLater()
 }
 //获取Buff层数
@@ -90,16 +85,12 @@ model.prototype.addRecord = function(record) {
     this.fighting.nextRecord.push(record)
 }
 //=========================BUFF效果
-//新增BUFF后参数处理
-model.prototype.buffOtps = function(attacker,buff) {}
 //BUFF功能实现
 model.prototype.domain = function() {}
 //buff结算后
 model.prototype.bufflLater = function() {}
 //获取加成属性
 model.prototype.getAttInfo = function(name) {
-	if(this.buffId == "hudun" && name == "ampDef")
-	console.log(name)
 	if(this.attKeys[name] !== undefined){
 		var value = 0
 		for(var i = 0;i < this.list.length;i++){

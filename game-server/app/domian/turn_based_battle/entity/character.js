@@ -217,25 +217,37 @@ model.prototype.revive = function(value) {
 	this.fighting.fightRecord.push({type : "revive",id : this.id,hp : this.attInfo.hp,maxHP:this.attInfo.maxHP})
 	this.fighting.heroAdd(this)
 }
+//buff刷新
+model.prototype.buffUpdate = function(dt) {
+	for(var i in this.buffs)
+		this.buffs[i].update(dt)
+}
 //添加BUFF
 model.prototype.createBuff = function(buff) {
-	if(!this.buffs[buff.buffId]){
-		this.buffs[buff.buffId] = buff
+	if(!this.buffs[buff.id]){
+		this.buffs[buff.id] = buff
 		if(buff.attBuff)
-			this.attBuffs[buff.buffId] = 1
+			this.attBuffs[buff.id] = 1
+		for(var i in buff.status)
+			if(this.status[i] !== undefined)
+				this.incStatus(i,1)
 	}
 }
 //添加1层BUFF
 model.prototype.addBuff = function(attacker,buff) {
-	if(this.buffs[buff.buffId])
-		this.buffs[buff.buffId].addBuff(attacker,buff)
+	if(this.buffs[buff.id])
+		this.buffs[buff.id].addBuff(attacker,buff)
 }
 //移除BUFF
-model.prototype.removeBuff = function(buffId) {
-    if(this.buffs[buffId])
-        delete this.buffs[buffId]
-    if(this.attBuffs[buffId])
-    	delete this.attBuffs[buffId]
+model.prototype.removeBuff = function(id) {
+	if(this.buffs[id]){
+		for(var i in this.buffs[id].status)
+			if(this.status[i] !== undefined)
+				this.incStatus(i,-1)
+		delete this.buffs[id]
+	}
+    if(this.attBuffs[id])
+    	delete this.attBuffs[id]
 }
 //移除一层负面状态
 model.prototype.dispelLessBuff = function() {

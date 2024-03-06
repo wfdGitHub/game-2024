@@ -3,7 +3,7 @@ var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var buffList = {}
 for(var buffId in buff_cfg){
 	if(buff_cfg[buffId]["default"])
-		buffList[buffId] = require("./defaultBuff.js")
+		buffList[buffId] = require("./buff_entity.js")
 	else
 		buffList[buffId] = require("./buffs/"+buffId+".js")
 }
