@@ -147,11 +147,11 @@ buffFactory.setListen = function(atkTeam,defTeam) {
 buffFactory.checkListen = function(buffId,belong) {
 	if(belong == "atk"){
 		if(this.defListenList[buffId]){
-			console.log(Object.keys(this.defListenList[buffId]).length)
+			// console.log(Object.keys(this.defListenList[buffId]).length)
 			for(var i in this.defListenList[buffId]){
 				var character = this.defListenList[buffId][i]
 				if(!character["died"] && character["listen_addBuff"]){
-					console.log(character.heroId,character["listen_addBuff"])
+					// console.log(character.heroId,character["listen_addBuff"])
 					var rate = character["listen_addBuff"]["buffRate"]
 					if(this.seeded.random("listen_addBuff") < rate)
 						this.createBuff(character,character,character["listen_addBuff"])
@@ -163,7 +163,7 @@ buffFactory.checkListen = function(buffId,belong) {
 			for(var i in this.atkListenList[buffId]){
 				var character = this.atkListenList[buffId][i]
 				if(!character["died"] && character["listen_addBuff"]){
-					console.log(character.heroId,character["listen_addBuff"])
+					// console.log(character.heroId,character["listen_addBuff"])
 					var rate = character["listen_addBuff"]["buffRate"]
 					if(this.seeded.random("listen_addBuff") < rate)
 						this.createBuff(character,character,character["listen_addBuff"])
