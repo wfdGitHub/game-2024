@@ -89,8 +89,7 @@ model.loadFight = function(atkTeam,defTeam,otps) {
 		delete fightVerifyInfo.atkTeam[6]["manualModel"]
 	if(fightVerifyInfo.defTeam[6])
 		delete fightVerifyInfo.defTeam[6]["manualModel"]
-	fightVerifyInfo.otps = {}
-	fightVerifyInfo.otps.seededNum = otps.seededNum
+	fightVerifyInfo.otps = otps
     var atkInfo = this.getTeamData(atkTeam,"atk")
     var defInfo = this.getTeamData(defTeam,"def")
     var myotps = Object.assign({},otps)
@@ -109,8 +108,7 @@ model.beginFight = function(atkTeam,defTeam,otps) {
 	}catch(err){
 		console.log("战斗报错")
 		var txt = JSON.stringify(fightVerifyInfo)
-		console.log(err.name)
-		console.log(err.message)
+		console.log(err)
 		console.log(txt)
 		var redisDao = bearcat.getBean("redisDao")
 		if(redisDao && redisDao.db)
