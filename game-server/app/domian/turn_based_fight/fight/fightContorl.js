@@ -1,3 +1,4 @@
+var bearcat = require("bearcat")
 var skillsCfg = require("../../../../config/gameCfg/skills.json")
 var herosCfg = require("../../../../config/gameCfg/heros.json")
 var lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
