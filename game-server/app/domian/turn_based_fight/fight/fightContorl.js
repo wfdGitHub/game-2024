@@ -100,10 +100,20 @@ model.loadFight = function(atkTeam,defTeam,otps) {
 }
 //自动战斗
 model.beginFight = function(atkTeam,defTeam,otps) {
-	otps.manual = false
-	var fighting = model.loadFight(atkTeam,defTeam,otps)
-	fighting.fightBegin()
-	return fightRecord.isWin()
+	try{
+	    otps.manual = false
+	    var fighting = model.loadFight(atkTeam,defTeam,otps)
+	    fighting.fightBegin()
+	    return fightRecord.isWin()
+	}catch(err){
+		var txt = JSON.stringify(fightVerifyInfo)
+		console.log(err)
+		console.log(txt)
+		var redisDao = bearcat.getBean("redisDao")
+		if(redisDao && redisDao.db)
+			redisDao.db.rpush("fight_faild",txt)
+		return false
+	}
 }
 //录像战斗
 model.videoFight = function(atkTeam,defTeam,otps) {
