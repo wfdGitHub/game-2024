@@ -88,7 +88,6 @@ model.prototype.timeUpdate = function(dt) {
 				this.targets = this.fighting.locator.getTargets(this,this.skill)
 				this.state = 2
 				this.actTime = this.getTotalAtt("actSpeed")
-				console.log("actTime",this.actTime)
 				this.skill.resSkill(this.targets)
 			}else{
 				//移动至目标

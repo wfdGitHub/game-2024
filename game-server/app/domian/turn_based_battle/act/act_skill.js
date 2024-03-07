@@ -20,7 +20,7 @@ var model = function(otps,hero) {
 	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤  heal 治疗
 	//技能BUFF
 	otps.buffs = []
-	// otps.buffs.push(JSON.stringify({"id":1,"rate":0.5,"attKey1":"actSpeed","attValue1":10000}))
+	// otps.buffs.push(JSON.stringify({"id":1,"rate":0.5,"time":10000,"attKey1":"actSpeed","attValue1":1400}))
 	// otps.buffs.push(JSON.stringify({"id":1,"rate":0.5}))
 	// otps.buffs.push(JSON.stringify({"id":1,"rate":0.5}))
 	this.buffs = otps.buffs || [] 			 //技能BUFF
