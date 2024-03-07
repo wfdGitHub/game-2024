@@ -158,7 +158,7 @@ model.prototype.healSettle = function(mul,value,index) {
 //判断BUFF
 model.prototype.checkBuff = function(target,index) {
 	if(this.buffs[index] && target && !target.died)
-		this.character.fighting.buffManager.checkBuffRate(this.character,target,this.buffs[index])
+		this.character.fighting.buffManager.checkBuffRate(this,this.character,target,this.buffs[index])
 }
 //判断CD
 model.prototype.checkCD = function() {

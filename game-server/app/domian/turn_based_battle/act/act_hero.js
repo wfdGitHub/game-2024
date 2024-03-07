@@ -85,7 +85,7 @@ model.prototype.timeUpdate = function(dt) {
 			if(this.fighting.locator.callDist(this.pos,this.target.pos) <= this.skill.resRange){
 				// console.log("释放技能")
 				//在释放距离内释放技能
-				this.targets = this.fighting.locator.getTargets(this,this.skill)
+				this.targets = this.fighting.locator.getTargets(this,this.skill,this.skill.targetType)
 				this.state = 2
 				this.actTime = this.getTotalAtt("actSpeed")
 				this.skill.resSkill(this.targets)

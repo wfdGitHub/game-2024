@@ -6,18 +6,20 @@ var model = function(fighting) {
 	this.buffCfg = fightCfg.getCfg("buff_cfg")
 	this.buffList = {}
 }
-const standardBuffOtps = {"id":0,"rate":0,"mul":0,"value":0,"time":1000}
+const standardBuffOtps = {"id":0,"rate":0,"mul":0,"value":0,"time":1000,"targetType":"self"}
 //生成基准BUFF
 model.prototype.buildBuffOtps = function(buffStr) {
-	if(!buffOtps)
+	if(!buffStr)
 		return false
 	var buffOtps = JSON.parse(buffStr)
 	return Object.assign({"bs":1},standardBuffOtps,buffOtps)
 }
 //判断BUFF概率
-model.prototype.checkBuffRate = function(attacker,character,buffOtps) {
-	if(this.fighting.randomCheck(buffOtps.rate))
-		this.createBuff(attacker,character,buffOtps)
+model.prototype.checkBuffRate = function(skill,attacker,character,buffOtps) {
+	var buffTargets = this.fighting.locator.getBuffTargets(attacker,skill,buffOtps)
+	for(var i = 0;i < buffTargets.length;i++)
+		if(this.fighting.randomCheck(buffOtps.rate))
+			this.createBuff(attacker,buffTargets[i],buffOtps)
 }
 //创建BUFF
 model.prototype.createBuff = function(attacker,character,buffOtps) {
