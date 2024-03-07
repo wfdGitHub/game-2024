@@ -9,9 +9,9 @@ var model = function(fighting) {
 const standardBuffOtps = {"id":0,"rate":0,"mul":0,"value":0,"time":1000}
 //生成基准BUFF
 model.prototype.buildBuffOtps = function(buffStr) {
+	if(!buffOtps)
+		return false
 	var buffOtps = JSON.parse(buffStr)
-	if(!this.buffList[buffOtps.id])
-		console.error("!!!!!!!!!!id not find "+buffOtps.id)
 	return Object.assign({"bs":1},standardBuffOtps,buffOtps)
 }
 //判断BUFF概率

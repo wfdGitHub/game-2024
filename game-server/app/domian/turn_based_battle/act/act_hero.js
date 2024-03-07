@@ -16,7 +16,7 @@ var model = function(otps) {
 	this.skill = false
 	//初始化技能
 	this.skills = []
-	this.addNormalSkill(otps["angerSkill"])
+	this.addNormalSkill(8001010)
 	this.addAngerSkill(otps["angerSkill"])
 }
 //设置状态
