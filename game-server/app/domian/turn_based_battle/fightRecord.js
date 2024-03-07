@@ -85,13 +85,13 @@ model.prototype.translate = function(info) {
 			this.attackInfo(info,colors["red"]+"["+this.heroMap[info["id"]]+"]"+colors["end"]+" 受到 ")
 		break
 		case "buffNum":
-			var buffName = this.buffs[info["bId"]] ? this.buffs[info["bId"]]["name"] : "未知BUFF"
+			var buffName = this.buffs[info["bId"]] ? this.buffs[info["bId"]]["name"] : info["bId"]
 			var str = ""
 			str += colors["blue"]+"["+this.heroMap[info["id"]]+"]"+colors["end"]+" "+buffName+ " "+info.num+"层"
 			this.saveText(str)
 		break
 		case "buffDel":
-			var buffName = this.buffs[info["bId"]] ? this.buffs[info["bId"]]["name"] : "未知BUFF"
+			var buffName = this.buffs[info["bId"]] ? this.buffs[info["bId"]]["name"] : info["bId"]
 			var str = ""
 			str += colors["blue"]+"["+this.heroMap[info["id"]]+"]"+colors["end"]+" "+buffName+" 消失"
 			this.saveText(str)

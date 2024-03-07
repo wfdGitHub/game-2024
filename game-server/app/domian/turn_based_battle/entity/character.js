@@ -172,6 +172,11 @@ model.prototype.lessHP = function(info,hitFlag) {
 	info.hp = this.attInfo.hp
 	info.maxHP = this.attInfo.maxHP
 	info.curAnger = this.curAnger
+	//无敌状态
+	if(this.buffs["wudi"]){
+		info.wudi = true
+		return info
+	}
 	if(this.died)
 		return info
 	if(this.attInfo.hp < info.value){
@@ -224,6 +229,9 @@ model.prototype.buffUpdate = function(dt) {
 }
 //添加BUFF
 model.prototype.createBuff = function(buff) {
+	//免疫控制
+	if(buff.control && this.buffs["mianyi"])
+		return
 	if(!this.buffs[buff.id]){
 		this.buffs[buff.id] = buff
 		if(buff.attBuff)
@@ -231,6 +239,12 @@ model.prototype.createBuff = function(buff) {
 		for(var i in buff.status)
 			if(this.status[i] !== undefined)
 				this.incStatus(i,1)
+	}
+	switch(buff.id){
+		case "mianyi":
+			//清除控制BUFF
+			this.clearControlBuff()
+		break
 	}
 }
 //添加1层BUFF
@@ -249,33 +263,11 @@ model.prototype.removeBuff = function(id) {
     if(this.attBuffs[id])
     	delete this.attBuffs[id]
 }
-//移除一层负面状态
-model.prototype.dispelLessBuff = function() {
-	this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"dispelLess"})
-	for(var i in this.buffs){
-		if(this.buffs[i].buffCfg.dispel_less){
-			this.buffs[i].delBuff()
-			return
-		}
-	}
-}
-//移除所有负面状态
-model.prototype.dispelAllLess = function() {
-	this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"dispelLess"})
-	for(var i in this.buffs){
-		if(this.buffs[i].buffCfg.dispel_less)
-			this.buffs[i].delBuff()
-	}
-}
-//驱散一层增益状态
-model.prototype.dispelAddBuff = function() {
-	this.fighting.nextRecord.push({type:"tag",id:this.id,tag:"dispelAdd"})
-	for(var i in this.buffs){
-		if(this.buffs[i].buffCfg.dispel_add){
-			this.buffs[i].delBuff()
-			return
-		}
-	}
+//移除控制BUFF
+model.prototype.clearControlBuff = function() {
+	for(var i in this.buffs)
+		if(this.buffs[i].control)
+			this.removeBuff(i)
 }
 //===============攻击触发
 //触发击杀

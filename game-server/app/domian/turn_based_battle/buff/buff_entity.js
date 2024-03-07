@@ -9,7 +9,8 @@ var model = function(fighting,character,buffCfg) {
 	this.attacker = false
 	this.character = character
 	this.max_count = buffCfg["max_count"] || 1 	//最大层数
-	this.status = {}
+	this.status = {} 							//控制状态
+	this.control = false 						//是否为控制BUFF
 	this.attKeys = {}
 	this.attBuff = false
 	for(var i = 1;i <= 3;i++){
@@ -20,8 +21,10 @@ var model = function(fighting,character,buffCfg) {
 			this.attKeys[buffCfg["attKey"+i]] = buffCfg["attValue"+i] || 0
 		}
 		//状态
-		if(buffCfg["status"+i])
+		if(buffCfg["status"+i]){
+			this.control = true
 			this.status[buffCfg["status"+i]] = 1
+		}
 	}
 	this.record = buffCfg["effects"] ? true : false
 	this.init()
