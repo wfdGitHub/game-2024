@@ -65,7 +65,7 @@ module.exports = function() {
 			cb(false,"arg error")
 			return
 		}
-		var taskId,quality
+		var taskId,quality,win
 		async.waterfall([
 			function(next) {
 				//查找任务
@@ -85,17 +85,14 @@ module.exports = function() {
 					if(!flag){
 						cb(flag,list)
 					}else{
-						var num = 0
-						for(var i = 0;i < list.length;i++){
-							if(!list[i] || list[i]["qa"] < tour_quality[quality]["need_qa"]){
-								next("星级不符合")
-								return
-							}
-						}
 						if(list.length != tour_quality[quality]["heroNum"]){
 							next("英雄数量错误")
 							return
 						}
+						if(Math.random() < self.fightContorl.getTourRate(list,quality))
+							win = true
+						else
+							win = false
 						next()
 					}
 				})
@@ -131,6 +128,7 @@ module.exports = function() {
 				var taskInfo = {
 					taskId : taskId,
 					hIds : hIds,
+					win : win,
 					time : Date.now()
 				}
 				self.setObj(uid,main_name,"run_"+id,JSON.stringify(taskInfo))
@@ -164,7 +162,11 @@ module.exports = function() {
 			var rate = 1
 		  	if(self.checkLimitedTime("sanjie"))
 		  		rate = 2
-			var awardList = self.addItemStr(uid,tour_task[taskInfo.taskId]["award"],rate,"游历奖励")
+		  	var awardList = []
+		  	if(taskInfo.win)
+				awardList = self.addItemStr(uid,tour_task[taskInfo.taskId]["award"],rate,"游历奖励")
+			else
+				awardList = self.addItemStr(uid,tour_task[taskInfo.taskId]["faild"],rate,"游历奖励")
 			cb(true,awardList)
 		})
 	}
@@ -183,15 +185,9 @@ module.exports = function() {
 			let str = "202:"+tour_quality[tour_task[taskInfo.taskId]["quality"]]["speedUp"]
 			self.consumeItems(uid,str,1,"游历加速",function(flag,err) {
 				if(flag){
-					for(var i = 0;i < taskInfo.hIds.length;i++){
-						self.delObj(uid,main_name,"free_"+taskInfo.hIds[i])
-					}
-					self.delObj(uid,main_name,"run_"+id)
-					var rate = 1
-				  	if(self.checkLimitedTime("sanjie"))
-				  		rate = 2
-					var awardList = self.addItemStr(uid,tour_task[taskInfo.taskId]["award"],rate,"游历奖励")
-					cb(true,awardList)
+					taskInfo.time = 0
+					self.setObj(uid,main_name,"run_"+id,JSON.stringify(taskInfo))
+					cb(true)
 				}
 				else{
 					cb(false,err)

@@ -513,8 +513,21 @@ var model = function(fightContorl) {
 		}
 		this.mergeData(info,lvInfo)
 		//主属性增益
-		info["score"] = Math.floor((info["M_HP"]+info["M_ATK"]+info["M_DEF"]+info["M_STK"]+info["M_SEF"]+info["M_SPE"]) * 28 + info.aptitude * 600 + PSScore + (Math.pow(info.qa,1.4) * 100))
+		info["score"] = this.getHeroScore(info)
 		return new character(info)
+	}
+	//获取角色评分
+	this.getHeroScore = function(info) {
+		//主属性增益
+		var value = 0
+		for(var i = 1;i <= 6;i++)
+			value += (info["MR"+i]||1) * 224
+		value += (info.exalt||1) * (info.qa||1) * 325
+		//被动技能
+		for(var i = 0;i <= 10;i++)
+			if(info["PS"+i] && hufu_map[info["PS"+i]])
+				value += hufu_lv[hufu_map[info["PS"+i]].lv]["score"]
+		return Math.floor(value)
 	}
 	//获取角色主数据
 	this.getCharacterMainAtt = function(info) {
