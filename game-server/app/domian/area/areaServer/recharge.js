@@ -506,16 +506,9 @@ module.exports = function() {
 			cb(false,"限时礼包错误")
 			return
 		}
-		self.getObj(uid,"limit_gift",id,function(data) {
-			if(data){
-				self.sendTextToMail(uid,"recharge",gift_list[id]["award"])
-				self.delObj(uid,"limit_gift",id)
-				cb(true)
-			}else{
-				cb(false,"限时礼包不存在或已过期")
-				return
-			}
-		})
+		self.sendTextToMail(uid,"recharge",gift_list[id]["award"])
+		self.delObj(uid,"limit_gift",id)
+		cb(true)
 	}
 	//购买皮肤
 	this.buyLimitSkin = function(uid,id,cb) {
