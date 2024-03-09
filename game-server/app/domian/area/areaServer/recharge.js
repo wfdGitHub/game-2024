@@ -157,6 +157,8 @@ module.exports = function() {
 				}
 				self.sendToUser(uid,notify)
 			}
+			if(pay_cfg[pay_id]["count"])
+				self.incrbyObj(uid,"recharge_fast",pay_id,1)
 		}
 		if(!pay_cfg[pay_id]){
 			cb(false)
@@ -215,7 +217,7 @@ module.exports = function() {
 				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "gmLv":
-				this.buyGMLv(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+				this.buyGMLv(uid,pay_id,call_back.bind(this,uid))
 			break
 			case "fast":
 				this.buyFastRecharge(uid,pay_id,call_back.bind(this,uid))
@@ -226,8 +228,6 @@ module.exports = function() {
 			default:
 				console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
 		}
-		if(pay_cfg[pay_id]["count"])
-			self.incrbyObj(uid,"recharge_fast",pay_id,1)
 		var once_index = recharge_once_table[pay_id]
 		if(once_index){
 			self.incrbyObj(uid,main_name,"recharge_once_"+once_index,1,function(data) {
@@ -299,13 +299,22 @@ module.exports = function() {
 		cb(true)
 	}
 	//购买GM等级
-	this.buyGMLv = function(uid,id,cb) {
-		if(!GM_CFG[id] || !GM_CFG[id]["award"]){
+	this.buyGMLv = function(uid,pay_id,cb) {
+		if(!pay_cfg[pay_id]){
+			cb(false,"pay_id error "+pay_id)
+			return
+		}
+		var id = pay_cfg[pay_id]["arg"]
+		if(!GM_CFG[id]){
 			cb(false,"GM特权不存在")
 			return
 		}
-		var gmLv = self.getLordAtt(uid,"gmLv")
-		if(gmLv < id){
+		self.getObj(uid,"recharge_fast",pay_id,function(data) {
+			data = Number(data) || 0
+			if(data > 0){
+				cb(false,"购买次数已达上限")
+				return
+			}
 			self.chageLordData(uid,"gmLv",id)
 			var notify = {
 				type : "gmLv",
@@ -313,8 +322,8 @@ module.exports = function() {
 			}
 			self.sendToUser(uid,notify)
 			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",GM_CFG[id]["award"])
-		}
-		cb(true)
+			cb(true)
+		})
 	}
 	//购买循环礼包
 	this.buyLoopGift = function(uid,loopId,cb) {
