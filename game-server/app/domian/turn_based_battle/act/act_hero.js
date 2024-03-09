@@ -114,12 +114,17 @@ model.prototype.chooseSkill = function() {
 model.prototype.addNormalSkill = function(sid) {
 	if(skills[sid])
 		this.skills.push(new skill_base(this,sid))
+	else
+		console.log("技能不存在",sid)
 }
 //增加怒气技能
 model.prototype.addAngerSkill = function(sid) {
-	this.angerSkill = new skill_base(this,sid)
-	this.angerSkill.NEEDCD = 0
-	this.angerSkill.isAnger = true
+	if(skills[sid]){
+		this.angerSkill = new skill_base(this,sid)
+		this.angerSkill.NEEDCD = 0
+		this.angerSkill.isAnger = true
+	}else
+		console.log("技能不存在",sid)
 }
 //停止技能
 model.prototype.stopSkill = function(skill) {
