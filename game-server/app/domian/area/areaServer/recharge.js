@@ -155,6 +155,8 @@ module.exports = function() {
 				}
 				self.sendToUser(uid,notify)
 			}
+			if(pay_cfg[pay_id]["count"])
+				this.incrbyObj(uid,"recharge_fast",pay_id,1)
 		}
 		if(!pay_cfg[pay_id]){
 			cb(false)
@@ -204,14 +206,12 @@ module.exports = function() {
 				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
 			break
 			case "gmLv":
-				this.buyGMLv(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+				this.buyGMLv(uid,pay_id,call_back.bind(this,uid))
 			break
 			case "fast":
 				this.buyFastRecharge(uid,pay_id,call_back.bind(this,uid))
 			break
 		}
-		if(pay_cfg[pay_id]["count"])
-			this.incrbyObj(uid,"recharge_fast",pay_id,1)
 		var once_index = recharge_once_table[pay_id]
 		if(once_index){
 			self.incrbyObj(uid,main_name,"recharge_once_"+once_index,1,function(data) {
@@ -276,19 +276,31 @@ module.exports = function() {
 		cb(true)
 	}
 	//购买GM等级
-	this.buyGMLv = function(uid,id,cb) {
-		if(!GM_CFG[id] || !GM_CFG[id]["award"]){
+	this.buyGMLv = function(uid,pay_id,cb) {
+		if(!pay_cfg[pay_id]){
+			cb(false,"pay_id error "+pay_id)
+			return
+		}
+		var id = pay_cfg[pay_id]["arg"]
+		if(!GM_CFG[id]){
 			cb(false,"GM特权不存在")
 			return
 		}
-		self.chageLordData(uid,"gmLv",id)
-		var notify = {
-			type : "gmLv",
-			lv : id
-		}
-		self.sendToUser(uid,notify)
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",GM_CFG[id]["award"])
-		cb(true)
+		self.getObj(uid,"recharge_fast",pay_id,function(data) {
+			data = Number(data) || 0
+			if(data > 0){
+				cb(false,"购买次数已达上限")
+				return
+			}
+			self.chageLordData(uid,"gmLv",id)
+			var notify = {
+				type : "gmLv",
+				lv : id
+			}
+			self.sendToUser(uid,notify)
+			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
+			cb(true)
+		})
 	}
 	//购买循环礼包
 	this.buyLoopGift = function(uid,loopId,cb) {
@@ -526,13 +538,13 @@ module.exports = function() {
 		if(!quick_pri || Date.now() > quick_pri){
 			//新购
 			quick_pri = util.getZeroTime() + day31Time
+			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["quick_award"]["value"])
 		}else{
 			console.log("快速作战特权已购买，延长时间")
 			//延长
 			quick_pri += day31Time
 		}
 		self.chageLordData(uid,"quick_pri",quick_pri)
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["quick_award"]["value"])
 		cb(true,{quick_pri:quick_pri})
 	}
 	//购买三界特权
@@ -541,13 +553,13 @@ module.exports = function() {
 		if(!tour_pri || Date.now() > tour_pri){
 			//新购
 			tour_pri = util.getZeroTime() + day31Time
+			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["tour_award"]["value"])
 		}else{
 			console.log("三界已购买，延长时间")
 			//延长
 			tour_pri += day31Time
 		}
 		self.chageLordData(uid,"tour_pri",tour_pri)
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["tour_award"]["value"])
 		cb(true,{tour_pri:tour_pri})
 	}
 	//购买宝石矿场特权
@@ -556,13 +568,13 @@ module.exports = function() {
 		if(!stone_pri || Date.now() > stone_pri){
 			//新购
 			stone_pri = util.getZeroTime() + day31Time
+			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["stone_award"]["value"])
 		}else{
 			console.log("快速作战特权已购买，延长时间")
 			//延长
 			stone_pri += day31Time
 		}
 		self.chageLordData(uid,"stone_pri",stone_pri)
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["stone_award"]["value"])
 		cb(true,{stone_pri:stone_pri})
 	}
 }
