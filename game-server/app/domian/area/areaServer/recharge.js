@@ -518,6 +518,7 @@ module.exports = function() {
 		if(!quick_pri || Date.now() > quick_pri){
 			//新购
 			quick_pri = util.getZeroTime() + day7Time
+			self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 		}else{
 			console.log("快速作战特权已购买，延长时间")
 			//延长
@@ -525,7 +526,6 @@ module.exports = function() {
 		}
 		self.taskUpdate(uid,"buy_kszz",1)
 		self.chageLordData(uid,"quick_pri",quick_pri)
-		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 		cb(true,{quick_pri:quick_pri})
 	}
 	//购买三界特权
@@ -534,13 +534,13 @@ module.exports = function() {
 		if(!tour_pri || Date.now() > tour_pri){
 			//新购
 			tour_pri = util.getZeroTime() + day31Time
+			self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 		}else{
 			console.log("三界已购买，延长时间")
 			//延长
 			tour_pri += day31Time
 		}
 		self.chageLordData(uid,"tour_pri",tour_pri)
-		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 		cb(true,{tour_pri:tour_pri})
 	}
 	//购买宝石矿场特权
@@ -549,13 +549,13 @@ module.exports = function() {
 		if(!stone_pri || Date.now() > stone_pri){
 			//新购
 			stone_pri = util.getZeroTime() + day31Time
+			self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 		}else{
 			console.log("快速作战特权已购买，延长时间")
 			//延长
 			stone_pri += day31Time
 		}
 		self.chageLordData(uid,"stone_pri",stone_pri)
-		self.sendTextToMail(uid,"recharge",pay_cfg[pay_id]["award"])
 		cb(true,{stone_pri:stone_pri})
 	}
 	//购买通天塔特权
