@@ -549,6 +549,7 @@ module.exports = function() {
 		if(!quick_pri || Date.now() > quick_pri){
 			//新购
 			quick_pri = util.getZeroTime() + day7Time
+			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["quick_award"]["value"])
 		}else{
 			console.log("快速作战特权已购买，延长时间")
 			//延长
@@ -557,7 +558,6 @@ module.exports = function() {
 		self.addUserRMB(uid,activity_cfg["quick_pri"]["value"])
 		self.taskUpdate(uid,"buy_kszz",1)
 		self.chageLordData(uid,"quick_pri",quick_pri)
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["quick_award"]["value"])
 		cb(true,{quick_pri:quick_pri})
 	}
 	//购买三界特权
@@ -566,6 +566,7 @@ module.exports = function() {
 		if(!tour_pri || Date.now() > tour_pri){
 			//新购
 			tour_pri = util.getZeroTime() + day31Time
+			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["tour_award"]["value"])
 		}else{
 			console.log("三界已购买，延长时间")
 			//延长
@@ -573,7 +574,6 @@ module.exports = function() {
 		}
 		self.addUserRMB(uid,activity_cfg["tour_pri"]["value"])
 		self.chageLordData(uid,"tour_pri",tour_pri)
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["tour_award"]["value"])
 		cb(true,{tour_pri:tour_pri})
 	}
 	//购买宝石矿场特权
@@ -582,6 +582,7 @@ module.exports = function() {
 		if(!stone_pri || Date.now() > stone_pri){
 			//新购
 			stone_pri = util.getZeroTime() + day31Time
+			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["stone_award"]["value"])
 		}else{
 			console.log("快速作战特权已购买，延长时间")
 			//延长
@@ -589,7 +590,6 @@ module.exports = function() {
 		}
 		self.addUserRMB(uid,activity_cfg["stone_pri"]["value"])
 		self.chageLordData(uid,"stone_pri",stone_pri)
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["stone_award"]["value"])
 		cb(true,{stone_pri:stone_pri})
 	}
 }
