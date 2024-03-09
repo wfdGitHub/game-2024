@@ -153,6 +153,8 @@ module.exports = function() {
 				}
 				self.sendToUser(uid,notify)
 			}
+			if(pay_cfg[pay_id]["count"])
+				self.incrbyObj(uid,"recharge_fast",pay_id,1)
 		}
 		if(!pay_cfg[pay_id]){
 			cb(false)
@@ -212,8 +214,6 @@ module.exports = function() {
 			default:
 				console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
 		}
-		if(pay_cfg[pay_id]["count"])
-			self.incrbyObj(uid,"recharge_fast",pay_id,1)
 		var once_index = recharge_once_table[pay_id]
 		if(once_index){
 			self.incrbyObj(uid,main_name,"recharge_once_"+once_index,1,function(data) {
@@ -295,18 +295,18 @@ module.exports = function() {
 			cb(false,"GM特权不存在")
 			return
 		}
-		self.redisDao.db.hget("player:user:"+uid+":playerInfo","gmLv",function(err,data) {
-			var index = Number(data) || 0
-			if(id <= index){
-				console.error(uid+ " gm等级错误 "+id+"/"+index)
-			}else{
-				self.chageLordData(uid,"gmLv",id)
-				var notify = {
-					type : "gmLv",
-					lv : id
-				}
-				self.sendToUser(uid,notify)
+		self.getObj(uid,"recharge_fast",pay_id,function(data) {
+			data = Number(data) || 0
+			if(data > 0){
+				cb(false,"购买次数已达上限")
+				return
 			}
+			self.chageLordData(uid,"gmLv",id)
+			var notify = {
+				type : "gmLv",
+				lv : id
+			}
+			self.sendToUser(uid,notify)
 			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
 			cb(true)
 		})
