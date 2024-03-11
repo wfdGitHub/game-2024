@@ -79,7 +79,7 @@ model.prototype.timeUpdate = function(dt) {
 			if(!this.skill)
 				return
 			//选择最近敌方目标移动
-			this.target = this.fighting.locator.getEnemyNormal(this)[0]
+			this.target = this.fighting.locator.getTargets(this,this.skill,"enemy_near")[0]
 			if(!this.target)
 				return
 			if(this.fighting.locator.callDist(this.pos,this.target.pos) <= this.skill.resRange){

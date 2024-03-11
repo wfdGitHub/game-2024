@@ -11,7 +11,6 @@ var model = function(character,sid) {
 	this.isAnger = false
 	this.attInfo = {}
 	this.attTmpInfo = {}
-	this.talents = {}
 	this.init()
 }
 model.prototype = Object.create(act_skill.prototype) //继承父类方法

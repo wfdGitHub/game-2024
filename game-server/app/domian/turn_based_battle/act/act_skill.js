@@ -18,8 +18,13 @@ var model = function(otps,hero) {
 	this.muls = otps.muls || [1]  		  	 //技能系数列表
 	this.value = otps.value || 0  		 	 //技能附加伤害
 	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤  heal 治疗
+	//天赋表
+	this.talents = {}
+	for(var i = 1;i <= 5;i++)
+		if(otps["key"+i] && otps["value"+i])
+			this.talents[otps["key"+i]] = otps["value"+i]
 	//技能BUFF
-	this.buffs = [] 						 //技能BUFF
+	this.buffs = [JSON.stringify({"id":"jinnu","time":300000,"rate":1})] 						 //技能BUFF
 	if(otps.buffs)
 		this.buffs = this.buffs.concat(otps.buffs); 	 
 	for(var i = 0;i < this.buffs.length;i++)
@@ -129,14 +134,26 @@ model.prototype.atkSettle = function(mul,value,index) {
 		"list" : []
 	}
 	var targets = this.targets
+	var damage = 0
 	for(var i = 0;i < targets.length;i++){
 		var info = this.character.fighting.formula.calDamage(this.character, targets[i],this,mul,value)
 		info.value += this.getTotalAtt("real_value")
 		info = targets[i].onHit(this.character,info,true)
+		damage += info.realValue
+		//存在击退
+		if(this.talents["repel"]){
+			this.hero.fighting.locator.callRepel(this.hero.pos,targets[i].pos,this.talents["repel"])
+			info.pos = Object.assign({},targets[i].pos)
+		}
 		this.checkBuff(targets[i],index)
 		record.list.push(info)
 	}
 	this.character.fighting.fightRecord.push(record)
+	//吸血
+	var heal = Math.floor(damage * this.character.getTotalAtt(this.d_type+"Suck"))
+	if(heal)
+		var info = this.character.onOtherHeal(this.character,heal)
+	return info
 }
 //治疗结算
 model.prototype.healSettle = function(mul,value,index) {

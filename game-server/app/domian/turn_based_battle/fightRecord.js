@@ -41,7 +41,7 @@ model.prototype.translate = function(info) {
 		break
 		case "move":
 			//英雄移动
-			this.saveText(info.t/1000+"s "+colors["green"]+"["+this.heroMap[info.id]+"]移动至["+info.pos.x+","+info.pos.y+"]"+colors["end"])
+			this.saveText(info.t/1000+"s "+colors["green"]+"["+this.heroMap[info.id]+"]移动至("+info.pos.x+","+info.pos.y+")"+colors["end"])
 		break
 		case "b_move":
 			//弹道移动
@@ -169,6 +169,8 @@ model.prototype.attackInfo = function(info,str) {
 		str += "\t秒杀"
 	if(info.died)
 		str += "\t死亡"
+	if(info.pos)
+		str += "\t击退到("+info.pos.x+","+info.pos.y+")"
 	this.saveText(str)
 	if(info.splashs){
 		for(var i = 0;i < info.splashs.length;i++){

@@ -69,7 +69,7 @@ model.prototype.calHeal = function(attacker,target,skill,mul,value) {
 	var basic = Math.ceil((attacker.getTotalAtt("atk")) * mul + value)
 	basic += Math.ceil(basic * attacker.getTotalAtt("healAmp"))
 	basic += Math.ceil(basic * target.getTotalAtt("healAdd"))
-	info.value = basic
+	info.value = Math.max(basic,0)
 	return info
 }
 //物理伤害处理

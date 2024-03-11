@@ -38,7 +38,8 @@ model.prototype.addAnger = function(value,show,later) {
 	if(this.died)
 		return 0
 	value = Math.min(value,this.maxAnger - this.curAnger)
-	this.curAnger += Math.floor(value) || 0
+	this.curAnger += Math.max(Math.floor(value * this.getTotalAtt("angerRate")) || 0,0)
+	this.curAnger = Math.min(this.curAnger,this.maxAnger)
 	if(show && value){
 		if(later)
 			this.fighting.nextRecord.push({type : "changeAnger",id : this.id,changeAnger : value,curAnger : this.curAnger})
@@ -51,8 +52,8 @@ model.prototype.addAnger = function(value,show,later) {
 model.prototype.lessAnger = function(value,show) {
 	if(this.died)
 		return 0
-	value = Math.min(this.curAnger,value)
-	this.curAnger -= Math.floor(value) || 0
+	this.curAnger -= Math.min(this.curAnger,value)
+	this.curAnger = Math.max(this.curAnger,0)
 	if(show && value)
 		this.fighting.fightRecord.push({type : "changeAnger",id : this.id,changeAnger : -value,curAnger : this.curAnger})
 	return value

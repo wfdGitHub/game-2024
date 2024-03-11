@@ -8,6 +8,8 @@ model.prototype.getBuffTargets = function(release,skill,buff) {
 	return this.getTargets(release,skill,buff.targetType)
 }
 model.prototype.getTargets = function(release,skill,targetType) {
+	if(release.buffs["chaofeng"] && !release.buffs["chaofeng"].attacker.died)
+		return [release.buffs["chaofeng"].attacker]
 	switch(targetType){
 		case "self":
 			//自身
@@ -96,6 +98,13 @@ model.prototype.callMove = function(pos1,pos2,speed,dt) {
 	var dirY = pos2.y > pos1.y ? 1 : -1
 	pos1.x += Math.round(dirX * Math.min(speed * dt * 0.001,Math.abs(pos2.x - pos1.x)))
 	pos1.y += Math.round(dirY * Math.min(speed * dt * 0.001,Math.abs(pos2.y - pos1.y)))
+}
+//计算反方向移动
+model.prototype.callRepel = function(pos1,pos2,value) {
+	var dire = 1
+	if(pos1.x > pos2.x)
+		dire = -1
+	pos2.x += Math.round(dire * value) || 0
 }
 //计算距离
 model.prototype.callDist = function(pos1,pos2) {
