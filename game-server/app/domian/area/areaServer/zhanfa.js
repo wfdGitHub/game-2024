@@ -2,7 +2,7 @@
 const main_name = "zhanfa"
 const zhanfa = require("../../../../config/gameCfg/zhanfa.json")
 const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
-const exalt_lv = require("../../../../config/gameCfg/exalt_lv.json")
+const lv_cfg = require("../../../../config/gameCfg/lv_cfg.json")
 const async = require("async")
 var itemId = 230
 module.exports = function() {
@@ -109,7 +109,7 @@ module.exports = function() {
 						next("英雄不存在")
 						return
 					}
-					if(index > exalt_lv[heroInfo.exalt]["zhanfa"]){
+					if(index > lv_cfg[heroInfo.lv]["zhanfa"]){
 						next("战法栏未解锁")
 						return
 					}
