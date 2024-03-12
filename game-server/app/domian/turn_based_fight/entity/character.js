@@ -80,8 +80,9 @@ var model = function(otps) {
 	this.round_hit_red = otps.round_hit_red || 0 				
 	this.wushu_buff = otps.wushu_buff ? JSON.parse(otps.wushu_buff) : false  //存在巫术时添加BUFF
 	//==========闪光阶级========//
+	this.killRet = otps.killRet  								//击杀后重复释放技能
 	this.specie_behit = otps.specie_behit 						//对战中，对自身造成的克制伤害*0.75
-	this.full_hp_red = otps.full_hp_red 						//HP全满的时候，受到的伤害减为原来1/2
+	this.full_hp_red = otps.full_hp_red || 1 					//HP全满的时候，受到的伤害改变比例
 	this.full_hp_save = otps.full_hp_save 						//HP全满时，受到一次攻击时，至少保留1点HP。
 	this.specie_immune = otps.specie_immune 					//受该属性伤害降低90%
 	this.listen_enemyBuff = otps.listen_enemyBuff 				//监听敌方获得BUFF
@@ -1648,7 +1649,7 @@ model.prototype.lessHP = function(attacker,info,callbacks) {
 	if(this.half_hp_red && (this.round_damage >= (this.attInfo.maxHP / 2)))
 		info.value = 1
 	if(this.full_hp_red && this.attInfo.hp == this.attInfo.maxHP)
-		info.value = Math.ceil(info.value * 0.5)
+		info.value = Math.ceil(info.value * this.full_hp_red)
 	info.realValue = info.value
 	if((this.attInfo.hp - info.value) <= 0){
 		if(this.full_hp_save && this.attInfo.hp == this.attInfo.maxHP){

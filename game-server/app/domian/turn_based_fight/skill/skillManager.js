@@ -360,7 +360,7 @@ model.useSkill = function(skill,chase,point) {
 	//技能使用结束
 	skill.useSkillOver()
 	if(!chase && !skill.character.died){
-		if(diedFlag && skill.killRet){
+		if(diedFlag && skill.isAnger && (skill.killRet || skill.character.killRet)){
 			//击杀重复释放技能
 			this.useSkill(skill.character.userAngerSkill())
 		}else if(!diedFlag && skill.survivalRet && this.seeded.random("survivalRet") < skill.survivalRet){
