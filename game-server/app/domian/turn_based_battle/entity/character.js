@@ -189,10 +189,6 @@ model.prototype.lessHP = function(info,hitFlag) {
 	}
 	this.attInfo.hp -= info.value
 	info.realValue = info.value
-	//秒杀判断
-	if(this.buffs["chaodu"])
-		if(this.getHPRate() < this.buffs["chaodu"].getBuffMul())
-			return this.onSeckill(info)
 	//受击回怒
 	if(hitFlag){
 		var tmpHPRate = info.realValue / this.attInfo.maxHP

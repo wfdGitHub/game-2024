@@ -1,4 +1,5 @@
 //BUFF作用基类
+const DTIME = 1000
 var model = function(fighting,character,buffCfg) {
 	this.fighting = fighting
 	this.list = []
@@ -9,6 +10,15 @@ var model = function(fighting,character,buffCfg) {
 	this.attacker = false
 	this.character = character
 	this.max_count = buffCfg["max_count"] || 1 	//最大层数
+
+	//============伤害参数===============//
+	this.d_type = buffCfg["d_type"] 			//结算类型
+	this.d_time = DTIME 						//伤害刷新时间
+	if(this.d_type == "mag" || this.d_type == "phy")
+		this.domain = this.domain_damage
+	else if(this.d_type == "heal")
+		this.domain = this.domain_heal
+
 	this.status = {} 							//控制状态
 	this.control = false 						//是否为控制BUFF
 	this.attKeys = {}
@@ -41,11 +51,15 @@ model.prototype.addBuff = function(attacker,buffCfg) {
 		if(this.list.length < this.max_count){
 			changeFlag = true
 			this.attacker = attacker
-			this.list.push({attacker:attacker,buff : buffCfg,time : buffCfg.time})
-			if(buffCfg.num){
-				this.MAX_NUM = buffCfg.num
-				this.CUR_NUM = 0
+			var info = {attacker:attacker,buff : buffCfg,time : buffCfg.time}
+			if(this.d_type){
+				info.value = 0
+				if(buffCfg["atkRate"])
+					info.value += Math.floor(buffCfg["atkRate"] * attacker.getTotalAtt("atk")) || 0
+				if(buffCfg["hpRate"])
+					info.value += Math.floor(buffCfg["hpRate"] * this.character.getTotalAtt("maxHP")) || 0
 			}
+			this.list.push(info)
 		}
 	}
 	if(changeFlag)
@@ -57,8 +71,10 @@ model.prototype.delBuff = function() {
 	if(this.list.length <= 0)
 		this.destroy()
 }
-//BUFF每回合更新
+//BUFF更新
 model.prototype.update = function(dt) {
+	this.d_time -= dt
+	this.domain()
 	var num = this.list.length
 	for(var i = 0;i < this.list.length;i++){
 		this.list[i].time -= dt
@@ -77,7 +93,6 @@ model.prototype.update = function(dt) {
 model.prototype.destroy = function() {
 	this.addRecord({type : "buffDel",id : this.character.id,bId : this.id})
 	this.character.removeBuff(this.id)
-	this.bufflLater()
 }
 //获取Buff层数
 model.prototype.getCount = function() {
@@ -87,35 +102,34 @@ model.prototype.getCount = function() {
 model.prototype.addRecord = function(record) {
     this.fighting.nextRecord.push(record)
 }
-//=========================BUFF效果
+//=========================BUFF结算
 //BUFF功能实现
 model.prototype.domain = function() {}
-//buff结算后
-model.prototype.bufflLater = function() {}
+//伤害BUFF
+model.prototype.domain_damage = function() {
+	if(this.d_time <= 0){
+		this.d_time = DTIME
+		for(var i = 0;i < this.list.length;i++)
+			this.character.onOtherDamage(this.list[i].attacker,this.list[i].value)
+	}
+}
+//治疗BUFF
+model.prototype.domain_heal = function() {
+	if(this.d_time <= 0){
+		this.d_time = DTIME
+		for(var i = 0;i < this.list.length;i++)
+			this.character.onOtherHeal(this.list[i].attacker,this.list[i].value)
+	}
+}
+//=========================BUFF效果
 //获取加成属性
 model.prototype.getAttInfo = function(name) {
 	if(this.attKeys[name] !== undefined){
 		var value = 0
-		for(var i = 0;i < this.list.length;i++){
+		for(var i = 0;i < this.list.length;i++)
 			value += this.attKeys[name] || 0
-			value += this.list[i].num || 0
-		}
 		return value
 	}
 	return 0
-}
-//获取默认BUFF系数
-model.prototype.getBuffMul = function() {
-	var value = 0
-	for(var i = 0;i < this.list.length;i++)
-		value += Number(this.list[0].buff.mul) || 0
-	return value
-}
-//获取value
-model.prototype.getBuffValue = function() {
-	var value = 0
-	for(var i = 0;i < this.list.length;i++)
-		value += Number(this.list[0].buff.value) || 0
-	return value
 }
 module.exports = model

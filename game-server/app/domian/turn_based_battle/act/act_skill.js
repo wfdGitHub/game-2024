@@ -24,7 +24,7 @@ var model = function(otps,hero) {
 		if(otps["key"+i] && otps["value"+i])
 			this.talents[otps["key"+i]] = otps["value"+i]
 	//技能BUFF
-	this.buffs = [JSON.stringify({"id":"jinnu","time":300000,"rate":1})] 						 //技能BUFF
+	this.buffs = [JSON.stringify({"id":"poison","time":300000,"rate":1,"attKey1":"phySuck","attValue1":1})] 						 //技能BUFF
 	if(otps.buffs)
 		this.buffs = this.buffs.concat(otps.buffs); 	 
 	for(var i = 0;i < this.buffs.length;i++)
