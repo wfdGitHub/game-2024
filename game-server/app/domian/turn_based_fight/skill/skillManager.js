@@ -238,7 +238,7 @@ model.useSkill = function(skill,chase) {
 			}
 			//同阵营队友阵亡后释放技能
 			for(var j = 0;j < targets[i].team.length;j++)
-				if(targets[i].team[j].realmDiedSkill && !targets[i].team[j].died && targets[i].team[j].id != targets[i].id && targets[i].realm == targets[i].team[j].realm){
+				if(targets[i].team[j].realmDiedSkill && targets[i].team[j].checkActionable() && !targets[i].team[j].died && targets[i].team[j].id != targets[i].id && targets[i].realm == targets[i].team[j].realm){
 					var tmpSkill = targets[i].team[j].angerSkill
 					this.useSkill(tmpSkill,true)
 				}
@@ -272,6 +272,9 @@ model.useSkill = function(skill,chase) {
 }
 //伤害技能
 model.useAttackSkill = function(skill,chase) {
+	if(skill.character.died && !skill.character.died_use_skill){
+		return []
+	}
 	var addAmp = 0
 	var allDamage = 0
 	var kill_num = 0
@@ -354,9 +357,6 @@ model.useAttackSkill = function(skill,chase) {
 	var lessAngerList = []
 	var callbacks = []
 	for(var i = 0;i < targets.length;i++){
-		if(skill.character.died && !skill.character.died_use_skill){
-			break
-		}
 		var target = targets[i]
 		var tmpAddAmp = addAmp
 		if(skill.character.skill_amp_or_lessAnger){
@@ -712,6 +712,9 @@ model.useAttackSkill = function(skill,chase) {
 }
 //恢复技能
 model.useHealSkill = function(skill,chase) {
+	if(skill.character.died && !skill.character.died_use_skill){
+		return []
+	}
 	var recordInfo = skill.getInfo()
 	recordInfo.targets = []
 	var targetsNum = this.locator.getTargetsNum(skill.targetType)
@@ -745,9 +748,6 @@ model.useHealSkill = function(skill,chase) {
 	}
 	var callbacks = []
 	for(var i = 0;i < targets.length;i++){
-		if(skill.character.died && !skill.character.died_use_skill){
-			break
-		}
 		var target = targets[i]
 		var value = 0
 		var mul = skill.mul
