@@ -347,7 +347,6 @@ model.useSkill = function(skill,chase,point) {
 	//清除隐身概率
 	if(skill.dispel_sneak || skill.character.otps.dispel_sneak){
 		var dispel_sneak = skill.dispel_sneak || 0 + skill.character.otps.dispel_sneak || 0
-		console.log("dispel_sneak",dispel_sneak)
 		for(var i = 0;i < targets.length;i++){
 			if(!targets[i].died && targets[i].buffs["sneak"] && this.seeded.random("清除隐身") < dispel_sneak){
 				targets[i].buffs["sneak"].destroy()
