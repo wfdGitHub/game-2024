@@ -76,7 +76,8 @@ var model = function(otps) {
 	this.passives = {} 					//被动技能
 	//==========闪光阶级========//
 	this.killRet = otps.killRet  								//击杀后重复释放技能
-	this.specie_behit = otps.specie_behit 						//对战中，对自身造成的克制伤害*0.75
+	this.specie_behit = otps.specie_behit 						//对战中，对自身造成的克制伤害改变比例
+	this.specie_hit = otps.specie_hit 							//对战中，自身造成的克制伤害改变比例
 	this.full_hp_red = otps.full_hp_red || 1 					//HP全满的时候，受到的伤害改变比例
 	this.full_hp_save = otps.full_hp_save 						//HP全满时，受到一次攻击时，至少保留1点HP。
 	this.specie_immune = otps.specie_immune 					//受该属性伤害降低90%
