@@ -85,7 +85,7 @@ module.exports = function() {
 					if(!flag){
 						cb(flag,list)
 					}else{
-						if(list.length != tour_quality[quality]["heroNum"]){
+						if(list.length > tour_quality[quality]["heroNum"]){
 							next("英雄数量错误")
 							return
 						}
