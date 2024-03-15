@@ -510,6 +510,7 @@ var model = function(fightContorl) {
 			lvInfo.atk += Math.floor(lvInfo.atk * evolve_lv[info.evo]["att_add"])
 			lvInfo.phyDef += Math.floor(lvInfo.phyDef * evolve_lv[info.evo]["att_add"])
 			lvInfo.magDef += Math.floor(lvInfo.magDef * evolve_lv[info.evo]["att_add"])
+			this.mergeTalent(info,evolve_lv[info.evo]["talent"])
 		}
 		this.mergeData(info,lvInfo)
 		//主属性增益
