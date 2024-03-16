@@ -583,6 +583,8 @@ var model = function() {
 	}
 	//发放英雄
 	posts["/send_hero"] = function(req,res) {
+		res.send({flag:false,err:"不支持发放英雄"})
+		return
 		var data = req.body
 		var uid = data.uid
 		var otps = data.otps
