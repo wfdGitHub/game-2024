@@ -82,6 +82,7 @@ model.prototype.loadHero = function(belong,index,info,teamTalents,teamCfg) {
 		else
 			team_character.pos = {x : DEFALT_POS[index].x,y : DEFALT_POS[index].y}
 	}
+	return team_character
 }
 //载入敌方阵容
 model.prototype.loadEnemy = function() {

@@ -128,7 +128,6 @@ model.prototype.onDie = function(info) {
 	for(var i in this.buffs)
 		if(!this.buffs[i].buffCfg.save)
 			this.buffs[i].destroy()
-	this.fighting.fightInfo[this.belong]["survival"]--
 	this.fighting.heroRemove(this)
 }
 //任意角色阵亡
@@ -220,7 +219,17 @@ model.prototype.revive = function(value) {
 	this.fighting.heroAdd(this)
 }
 //buff刷新
-model.prototype.buffUpdate = function(dt) {
+model.prototype.heroUpdate = function(dt) {
+	//召唤物刷新
+	if(this.summon){
+		this.lifetime -= dt
+		if(this.lifetime <= 0){
+			var info = {type : "summonLeave",id : this.id,value : 0,realValue : 0}
+			this.onDie(info)
+			this.fighting.fightRecord.push(info)
+			return
+		}
+	}
 	for(var i in this.buffs)
 		this.buffs[i].update(dt)
 }

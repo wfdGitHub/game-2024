@@ -11,15 +11,18 @@ var model = function(fighting,otps) {
 		this.died = true
 		return
 	}
+	
+	this.summon = false 				//是否为召唤物
+	this.owner = false 					//召唤物拥有者
+	this.lifetime = 0 					//召唤物持续时间
+
 	this.otps = otps || {}
 	this.fighting = fighting
 	this.index = -1
 	this.heroId = Math.floor(this.otps.id) || 0
 	this.id = 0
-	this.lv = 1
-	this.star = 1
-	this.ad = 1
-	this.realm = this.herosCfg.realm 		//阵营
+	this.lv = otps["lv"] || 1 			//等级
+	this.realm = this.herosCfg.realm 	//阵营
 	this.career = 1 					//职业
 	this.sex = this.herosCfg.sex || 1 		//性别 1男 2女
 	this.talents = {}

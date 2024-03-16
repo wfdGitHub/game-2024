@@ -39,6 +39,14 @@ model.prototype.translate = function(info) {
 			for(var i = 0;i < info.allHero.length;i++)
 				this.heroMap[info.allHero[i]["id"]] = this.heros[info.allHero[i]["heroId"]]["name"]+info.allHero[i]["id"]
 		break
+		case "summonCome":
+			this.heroMap[info["id"]] = this.heros[info["heroId"]]["name"]+info["id"]
+			this.saveText(info.t/1000+"s "+colors["blue"]+"召唤["+this.heroMap[info.id]+"]到("+info.pos.x+","+info.pos.y+")"+colors["end"])
+		break
+		case "summonLeave":
+			this.saveText(info.t/1000+"s "+colors["red"]+"召唤物["+this.heroMap[info.id]+"]消失"+colors["end"])
+		break
+		break
 		case "move":
 			//英雄移动
 			this.saveText(info.t/1000+"s "+colors["green"]+"["+this.heroMap[info.id]+"]移动至("+info.pos.x+","+info.pos.y+")"+colors["end"])

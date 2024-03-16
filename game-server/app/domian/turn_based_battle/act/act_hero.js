@@ -40,7 +40,7 @@ model.prototype.incStatus = function(status,value) {
 }
 //定时器更新
 model.prototype.timeUpdate = function(dt) {
-	this.buffUpdate(dt)
+	this.heroUpdate(dt)
 	for(var i = 0;i < this.skills.length;i++)
 		this.skills[i].updateCD(dt)
 	if(this.status["dizzy"] > 0)
@@ -138,5 +138,17 @@ model.prototype.stopSkill = function(skill) {
 		}
 		this.fighting.fightRecord.push(record)
 	}
+}
+//召唤英雄 当前等级 默认满进化、满品质
+model.prototype.callSummon = function(id,rate,pos,time) {
+	var info = this.fighting.fightContorl.makeFullHeroData(this.heroId)
+	info.evo = 20
+	var hero = this.fighting.loadHero(this.belong,this.index,info)
+	hero.summon = true
+	hero.owner = this.hero
+	hero.lifetime = 1000
+	hero.team = this.team
+	hero.enemyTeam = this.enemyTeam
+	this.fighting.fightRecord.push({type : "summonCome",id : hero.id,heroId : hero.heroId,pos:hero.pos})
 }
 module.exports = model

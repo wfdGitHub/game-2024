@@ -25,7 +25,7 @@ const DIY_skills = fightCfg.getCfg("DIY_skills")
 const DIY_talents = fightCfg.getCfg("DIY_talents")
 const character = require("../entity/character.js")
 const DIY_SKILL_KESY = ["DIY_N","DIY_S"]
-const DIY_TALENT_KESY = ["D1","D2","D3","PS0","PS1","PS2","PS3","PS4"]
+const DIY_TALENT_KESY = ["D1","D2","D3"]
 var gemMap = {}
 for(var i in gem_lv){
 	i = Number(i)
@@ -243,7 +243,7 @@ var model = function(fightContorl) {
 			return 0
 		info = Object.assign({},info)
 		var allCE = 0
-		var evoId = evolve_lv[info.evo]["evoId"]
+		var evoId = evolve_lv[info.evo] ? evolve_lv[info.evo]["evoId"] : 1
 		var aptitude = exalt_lv[info.exalt]["aptitude"] || 1
 		//主属性战力
 		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
@@ -309,8 +309,8 @@ var model = function(fightContorl) {
 		//神兽资质加成
 		if(heros[id]["type"] == 2)
 			info.aptitude += 3
-		this.mergeData(info,heros[id])
-		var evoId = evolve_lv[info.evo]["evoId"]
+		info = Object.assign({},heros[id],info)
+		var evoId = evolve_lv[info.evo] ? evolve_lv[info.evo]["evoId"] : 1
 		if(!evolves[heros[info.id]["evo"+evoId]]){
 			console.log("evoId error "+heros[info.id]["evo"+evoId]+"-"+info.id)
 			return false
@@ -336,12 +336,12 @@ var model = function(fightContorl) {
 		if(info.m_ps)
 			this.mergeTalent(info,heros[info.id]["mythical"])
 		//主属性计算
-		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1))
-		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1))
-		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1))
-		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1))
-		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1))
-		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1))
+		info["M_HP"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_HP"] * (info["MR1"] || 1)) + (info["M_HP"] || 0)
+		info["M_ATK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_ATK"] * (info["MR2"] || 1)) + (info["M_ATK"] || 0)
+		info["M_DEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_DEF"] * (info["MR3"] || 1)) + (info["M_DEF"] || 0)
+		info["M_STK"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_STK"] * (info["MR4"] || 1)) + (info["M_STK"] || 0)
+		info["M_SEF"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SEF"] * (info["MR5"] || 1)) + (info["M_SEF"] || 0)
+		info["M_SPE"] = Math.floor(evolves[heros[info.id]["evo"+evoId]]["M_SPE"] * (info["MR6"] || 1)) + (info["M_SPE"] || 0)
 		//装备计算
 		var suitMaps = {}
 		for(var i = 1;i <= 6;i++){
@@ -464,7 +464,7 @@ var model = function(fightContorl) {
 				info.defaultSkill = Object.assign({skillId : info.defaultSkill},skills[info.defaultSkill])
 			}
 		}
-		info.damageType = ""
+		info.damageType = "phy"
 		if(info.angerSkill){
 			if(!skills[info.angerSkill]){
 				console.error("技能不存在",info.id,info.angerSkill)
@@ -521,7 +521,7 @@ var model = function(fightContorl) {
 		info.evo = info.evo || 1
 		info.lv = info.lv || 1
 		var id = info.id
-		var evoId = evolve_lv[info.evo]["evoId"]
+		var evoId = evolve_lv[info.evo] ? evolve_lv[info.evo]["evoId"] : 1
 		info.aptitude = exalt_lv[info.exalt]["aptitude"] || 1
 		//神兽资质加成
 		if(heros[id]["type"] == 2)
@@ -611,6 +611,7 @@ var model = function(fightContorl) {
 	//获取团队天赋
 	this.getTeamTalents = function(teamCfg) {
 		var info = {}
+		teamCfg = teamCfg || {}
 		//公会技能计算
 		if(teamCfg && teamCfg["g"+info.career] && gSkillAtts[info.career]){
 			var glv = teamCfg["g"+info.career]
@@ -642,6 +643,7 @@ var model = function(fightContorl) {
 	this.getHeroTalents = function(info,teamCfg) {
 		if(!info || !heros[info.id])
 			return false
+		teamCfg = teamCfg || {}
 		info = Object.assign({},info)
 		info.exalt = info.exalt || 1
 		info.evo = info.evo || 1
@@ -923,6 +925,8 @@ var model = function(fightContorl) {
 				heroInfo[DIY_TALENT_KESY[i]] = sid
 			}
 		}
+		for(var i = 0;i < heros[id]["passive_num"];i++)
+			heroInfo["PS"+i] = heros[id]["passive"+(i+1)]
 		info.heroInfo = heroInfo
 		return info
 	}

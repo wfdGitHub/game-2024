@@ -17,7 +17,7 @@ var model = function(otps,hero) {
 	this.times = otps.times || [0] 			 //结算时间列表
 	this.muls = otps.muls || [1]  		  	 //技能系数列表
 	this.value = otps.value || 0  		 	 //技能附加伤害
-	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤  heal 治疗
+	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤  heal 治疗 call  召唤
 	//天赋表
 	this.talents = {}
 	for(var i = 1;i <= 5;i++)
@@ -30,7 +30,7 @@ var model = function(otps,hero) {
 	for(var i = 0;i < this.buffs.length;i++)
 		this.buffs[i] = this.character.fighting.buffManager.buildBuffOtps(this.buffs[i])
 	//状态参数
-	this.CD = this.NEEDCD || 0				 //当前技能CD
+	this.CD = 0				 		         //当前技能CD
 	this.state = 0 							 //0 未释放   1  释放中
 	this.curDur = 0 						 //当前持续时间
 	this.timeIndex = 0 						 //当前结算时间ID
@@ -43,6 +43,9 @@ var model = function(otps,hero) {
 		break
 		case "range":
 			this.update = this.rangeUpdate
+		break
+		case "call":
+			this.update = this.callUpdate
 		break
 		default:
 			this.update = this.normalUpdate
@@ -120,6 +123,18 @@ model.prototype.rangeUpdate = function(dt) {
 			this.targets = this.hero.fighting.locator.getEnemyRange(this.hero,this.resPos,this.rangeRadius)
 		}
 		this.settle(this.muls[this.timeIndex],this.value,this.timeIndex)
+		this.timeIndex++
+	}
+	if(this.curDur >= this.skillDur)
+		this.hero.stopSkill(this)
+}
+//召唤物刷新
+model.prototype.callUpdate = function(dt) {
+	if(this.state != 1)
+		return
+	this.curDur += dt
+	if(this.times[this.timeIndex] !== undefined && this.curDur >= this.times[this.timeIndex]){
+		this.hero.callSummon(this.heroId)
 		this.timeIndex++
 	}
 	if(this.curDur >= this.skillDur)
