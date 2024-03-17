@@ -167,6 +167,16 @@ normalHandler.prototype.buyShop = function(msg, session, next) {
     next(null,{flag : flag,data : data})
   })
 }
+//直接购买物品（道具购买，有基础数量）
+normalHandler.prototype.buyItemWithValue = function(msg, session, next) {
+  var uid = session.uid
+  var areaId = session.get("areaId")
+  var itemId = msg.itemId
+  var count = msg.count
+  this.areaManager.areaMap[areaId].buyItemWithValue(uid,itemId,count,function(flag,data) {
+    next(null,{flag : flag,data : data})
+  })
+}
 //直接购买物品
 normalHandler.prototype.buyItem = function(msg, session, next) {
   var uid = session.uid
