@@ -302,7 +302,7 @@ module.exports = function() {
 				lv : id
 			}
 			self.sendToUser(uid,notify)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
+			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",GM_CFG[id]["award"])
 			cb(true)
 		})
 	}
