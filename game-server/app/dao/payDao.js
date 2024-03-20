@@ -118,6 +118,7 @@ payDao.prototype.faildOrder = function(str,sdkInfo,gameInfo) {
 	this.redisDao.db.rpush("pay_faild_order",JSON.stringify(info))
 }
 payDao.prototype.updateRmb = function(info) {
+	var self = this
 	info.amount = Number(info.amount) || 0
 	var sql = 'update user_list SET totalRmb=totalRmb+?,lateRmb=? where uid=?'
 	var args = [info.amount,info.amount,info.uid];
