@@ -36,6 +36,7 @@ model.prototype.pay_order = function(data,finish_callback,req,res) {
 //quick订单
 model.prototype.quick_order = function(data,finish_callback,req,res) {
 	var self = this
+	var info = {}
 	async.waterfall([
 		function(next) {
 			var v_sign = util.md5(data.nt_data+data.sign+self.sdkConfig["Md5_Key"]["value"])
@@ -47,7 +48,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 			var xmlStr = local.decode(data.nt_data,self.sdkConfig["Callback_Key"]["value"])
 			parseString(xmlStr,function(err,result) {
 				var message = result.quicksdk_message.message[0]
-				var info = {
+				info = {
 					is_test : message["is_test"]? message["is_test"][0] : 0,
 					channel : message["channel"]? message["channel"][0] : 0,
 					channel_name : message["channel_name"]? message["channel_name"][0] : 0,
