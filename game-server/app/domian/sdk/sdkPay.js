@@ -63,7 +63,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 				}
 				self.payDao.finishGameOrder(info,function(flag,err,orderData,orderOtps) {
 					if(!flag)
-						next(err)
+						next(err || "支付失败")
 					else{
 						next(null,orderData,orderOtps)
 					}
@@ -71,6 +71,8 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 			});
 		},
 		function(orderData,orderOtps,next) {
+			console.log("orderData",orderData)
+			console.log("orderOtps",orderOtps)
 			//订单发货
 			finish_callback(orderData.areaId,orderData.uid,orderData.amount,orderData.pay_id,info,function(flag,err) {
 				if(flag){
