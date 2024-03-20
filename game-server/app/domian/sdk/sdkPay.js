@@ -62,6 +62,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 					extras_params : message["extras_params"]? message["extras_params"][0] : {},
 				}
 				self.payDao.finishGameOrder(info,function(flag,err,orderData,orderOtps) {
+					console.log(flag,err,orderData,orderOtps)
 					if(!flag)
 						next(err || "支付失败")
 					else{
