@@ -1311,8 +1311,6 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 		info.realValue = this.lessHP(attacker,info,callbacks)
 		info.curValue = this.attInfo.hp
 		info.maxHP = this.attInfo.maxHP
-		if(this.damage_save)
-			this.damage_save_value += info.realValue
 		if(this.behit_amplify)
 			this.behit_value += this.behit_amplify
 		if(attacker && info.realValue > 0)
@@ -1699,6 +1697,8 @@ model.prototype.lessHP = function(attacker,info,callbacks) {
 		for(var i = 0;i < callbacks.length;i++)
 			callbacks[i]()
 	}
+	if(this.damage_save)
+		this.damage_save_value += info.realValue
 	return info.realValue
 }
 //恢复怒气
