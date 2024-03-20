@@ -509,6 +509,26 @@ module.exports = function() {
 			cb(true,awardList)
 		return awardList
 	}
+	//直接购买物品（道具购买，有基础数量）
+	this.buyItemWithValue = function(uid,itemId,count,cb) {
+		if(!itemCfg[itemId] || !itemCfg[itemId]["itemBuy"] || !itemCfg[itemId]["itemValue"]){
+			cb(false,"item not exist or cfg error")
+			return
+		}
+		if(!Number.isInteger(count) || count <= 0){
+			cb(false,"count error "+count)
+			return
+		}
+		var value = Math.floor((itemCfg[itemId]["itemValue"] || 1) * count)
+		self.consumeItems(uid,itemCfg[itemId]["itemBuy"],count,"道具购买"+itemId,function(flag,err) {
+			if(!flag){
+				cb(flag,err)
+				return
+			}
+			var info = self.addItem({uid : uid,itemId : itemId,value : value,rate : 1,reason:"道具购买"+itemId})
+			cb(true,info)
+		})
+	}
 	//直接购买物品
 	this.buyItem = function(uid,itemId,count,cb) {
 		if(!itemCfg[itemId] || !itemCfg[itemId]["buy"]){

@@ -1651,6 +1651,8 @@ model.prototype.lessHP = function(attacker,info,callbacks) {
 	if(this.full_hp_red && this.attInfo.hp == this.attInfo.maxHP)
 		info.value = Math.ceil(info.value * this.full_hp_red)
 	info.realValue = info.value
+	if(this.damage_save)
+		this.damage_save_value += info.realValue
 	if((this.attInfo.hp - info.value) <= 0){
 		if(this.full_hp_save && this.attInfo.hp == this.attInfo.maxHP){
 			info.realValue = this.attInfo.hp - 1

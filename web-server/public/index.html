@@ -4211,6 +4211,12 @@
             console.log(data);
         })
       }
+      //直接购买物品（道具购买，有基础数量）
+      var buyItemWithValue = function(itemId,count) {
+        pomelo.request("area.normalHandler.buyItemWithValue",{itemId : itemId,count : count}, function(data) {
+            console.log(data);
+        })
+      }
       //直接购买物品
       var buyItem = function(itemId,count) {
         pomelo.request("area.normalHandler.buyItem",{itemId : itemId,count : count}, function(data) {
