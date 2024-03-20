@@ -14,6 +14,7 @@ model.prototype.init = function(cb) {
 	for(var i in this.sdkConfig)
 		if(Number.isFinite(this.sdkConfig[i]["value"]))
 			this.sdkConfig[i]["value"] = this.sdkConfig[i]["value"].toFixed()
+	console.log("sdkConfig",this.sdkConfig)
 }
 //收到支付回调
 model.prototype.pay_order = function(data,finish_callback,req,res) {
@@ -35,16 +36,16 @@ model.prototype.pay_order = function(data,finish_callback,req,res) {
 }
 //quick订单
 model.prototype.quick_order = function(data,finish_callback,req,res) {
+	var self = this
 	async.waterfall([
 		function(next) {
-			var v_sign = util.md5(data.nt_data+data.sign+this.sdkConfig["Md5_Key"]["value"])
+			var v_sign = util.md5(data.nt_data+data.sign+self.sdkConfig["Md5_Key"]["value"])
 			if(v_sign != data.md5Sign){
 				console.error("签名验证失败")
 				console.log(data)
 				return
 			}
-			var self = this
-			var xmlStr = local.decode(data.nt_data,this.sdkConfig["Callback_Key"]["value"])
+			var xmlStr = local.decode(data.nt_data,self.sdkConfig["Callback_Key"]["value"])
 			parseString(xmlStr,function(err,result) {
 				var message = result.quicksdk_message.message[0]
 				var info = {
