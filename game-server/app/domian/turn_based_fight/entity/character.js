@@ -1280,8 +1280,6 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 		info.realValue = this.lessHP(info,callbacks)
 		info.curValue = this.attInfo.hp
 		info.maxHP = this.attInfo.maxHP
-		if(this.damage_save)
-			this.damage_save_value += info.realValue
 		if(this.behit_amplify)
 			this.behit_value += this.behit_amplify
 		if(attacker && info.realValue > 0)
@@ -1613,6 +1611,8 @@ model.prototype.lessHP = function(info,callbacks) {
 	if(this.full_hp_red && this.attInfo.hp == this.attInfo.maxHP)
 		info.value = Math.ceil(info.value * this.full_hp_red)
 	info.realValue = info.value
+	if(this.damage_save)
+		this.damage_save_value += info.realValue
 	if((this.attInfo.hp - info.value) <= 0){
 		if(this.full_hp_save && this.attInfo.hp == this.attInfo.maxHP){
 			info.realValue = this.attInfo.hp - 1
