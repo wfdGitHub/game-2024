@@ -83,7 +83,7 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 			self.faildOrder("订单不存在",otps)
 			cb(false,"finishGameOrder game_order err")
 		}else{
-			var real_amount = Number((Number(otps.amount) * recharge_rate).toFixed(2))
+			var real_amount = Number(otps.amount)
 			if(data.status == 0){
 				self.faildOrder("订单已完成",otps,data)
 				cb(true)
@@ -97,6 +97,7 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 					self.db.query(sql,[otps.status,otps.game_order],function(){})
 					cb(false,"充值失败")
 				}else{
+					otps.amount = Math.round(real_amount / recharge_rate)
 					sql = 'update game_order SET pay_time=?,status=0,order_no=?,channel_code=?,channel_uid=? where game_order = ?'
 					self.db.query(sql,[Date.now(),otps.order_no,otps.channel,otps.channel_uid,otps.game_order],function(){})
 					otps.uid = data.uid
@@ -130,7 +131,7 @@ payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 			self.faildOrder("订单不存在",otps)
 			cb(false,"finishGameOrder game_order err")
 		}else{
-			var real_amount = Number((Number(otps.amount) * recharge_rate).toFixed(2))
+			var real_amount = Number(otps.amount)
 			if(data.status == 0){
 				self.faildOrder("订单已完成",otps,data)
 				cb(false,null,data)
@@ -144,6 +145,7 @@ payDao.prototype.finishGameOrderJianwan = function(otps,cb) {
 					self.db.query(sql,[otps.status,otps.extras_params],function(){})
 					cb(false,"充值失败")
 				}else{
+					otps.amount = Math.round(real_amount / recharge_rate)
 					sql = 'update game_order SET pay_time=?,status=0,order_no=?,channel_code=?,channel_uid=? where game_order = ?'
 					self.db.query(sql,[Date.now(),otps.order_no,otps.channel,otps.channel_uid,otps.extras_params],function(){})
 					otps.uid = data.uid
