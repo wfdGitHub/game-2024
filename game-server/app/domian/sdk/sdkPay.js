@@ -14,7 +14,6 @@ model.prototype.init = function(cb) {
 	for(var i in this.sdkConfig)
 		if(Number.isFinite(this.sdkConfig[i]["value"]))
 			this.sdkConfig[i]["value"] = this.sdkConfig[i]["value"].toFixed()
-	console.log("sdkConfig",this.sdkConfig)
 }
 //收到支付回调
 model.prototype.pay_order = function(data,finish_callback,req,res) {
