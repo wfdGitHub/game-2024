@@ -62,7 +62,6 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 					extras_params : message["extras_params"]? message["extras_params"][0] : {},
 				}
 				self.payDao.finishGameOrder(info,function(flag,err,orderData,orderOtps) {
-					console.log(flag,err,orderData,orderOtps)
 					if(!flag)
 						next(err || "支付失败")
 					else{
@@ -72,17 +71,17 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 			});
 		},
 		function(orderData,orderOtps,next) {
-			console.log("orderData",orderData)
-			console.log("orderOtps",orderOtps)
+			res.send("SUCCESS")
 			//订单发货
-			finish_callback(orderData.areaId,orderData.uid,orderData.amount,orderData.pay_id,info,function(flag,err) {
-				if(flag){
-					res.send("SUCCESS")
-					self.payDao.updateRmb(orderOtps)
-				}else{
-					res.send(err)
-				}
-			})
+			if(orderData && orderOtps){
+				finish_callback(orderData.areaId,orderData.uid,orderData.amount,orderData.pay_id,info,function(flag,err) {
+					if(flag){
+						self.payDao.updateRmb(orderOtps)
+					}else{
+						res.send(err)
+					}
+				})
+			}
 		}
 	],function(err) {
 		console.error(err)
