@@ -60,6 +60,7 @@ serverManager.prototype.init = function() {
 }
 serverManager.prototype.finish_callback = function(areaId,uid,amount,pay_id,data,cb) {
 	//支付成功发货
+	var self = this
 	var rate = 1
 	if(data && data.extras_params){
 		var extras_params = JSON.parse(data.extras_params)
