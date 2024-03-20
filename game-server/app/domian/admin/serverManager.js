@@ -58,18 +58,23 @@ serverManager.prototype.init = function() {
 	adminManager.init(server2,self)
 	server2.listen(5081);
 }
-serverManager.prototype.finish_callback = function(areaId,uid,amount,pay_id,data) {
+serverManager.prototype.finish_callback = function(areaId,uid,amount,pay_id,data,cb) {
 	//支付成功发货
+	var self = this
 	var rate = 1
 	if(data && data.extras_params){
 		var extras_params = JSON.parse(data.extras_params)
 		if(extras_params.rate)
 			rate = Math.max(1,Number(extras_params.rate) || 1)
 	}
-	var serverId = this.areaDeploy.getServer(this.areaDeploy.getFinalServer(areaId))
-    this.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,data,function(){})
-    this.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(amount) * 100),function(){})
-    this.app.rpc.area.areaRemote.real_recharge_rmb.toServer(serverId,areaId,uid,Number(pay_cfg[pay_id]["rmb"] * 100),rate,function(){})
+	var serverId = self.areaDeploy.getServer(self.areaDeploy.getFinalServer(areaId))
+    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,data,function(flag,err){
+    	if(flag){
+    		self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(amount) * 100),function(){})
+    		self.app.rpc.area.areaRemote.real_recharge_rmb.toServer(serverId,areaId,uid,Number(pay_cfg[pay_id]["rmb"] * 100),rate,function(){})
+    	}
+		cb(flag,err)
+    })
 }
 //update
 serverManager.prototype.update = function() {

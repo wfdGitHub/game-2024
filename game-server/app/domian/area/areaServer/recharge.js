@@ -159,7 +159,7 @@ module.exports = function() {
 					self.getObj(uid,"recharge_fast",pay_id,function(data) {
 						data = Number(data) || 0
 						if(data >= pay_cfg[pay_id]["count"]){
-							next("购买次数已达上限不发货")
+							next("购买次数已达上限")
 							return
 						}else{
 							next()
