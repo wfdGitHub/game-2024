@@ -842,7 +842,6 @@ model.prototype.begin = function() {
 //英雄出场
 model.prototype.heroComeon = function() {
 	if(this.first_buff_list.length){
-		console.log()
 		for(var j = 0;j < this.first_buff_list.length;j++){
 			if(this.first_buff_list[j]["buff_tg"]){
 				var targets = this.fighting.locator.getBuffTargets(this,this.first_buff_list[j]["buff_tg"])
