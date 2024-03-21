@@ -23,6 +23,8 @@ const zhanfa = fightCfg.getCfg("zhanfa")
 const DIY_hero = fightCfg.getCfg("DIY_hero")
 const DIY_skills = fightCfg.getCfg("DIY_skills")
 const DIY_talents = fightCfg.getCfg("DIY_talents")
+const artifact_level = fightCfg.getCfg("artifact_level")
+const artifact_talent = fightCfg.getCfg("artifact_talent")
 const character = require("../entity/character.js")
 const DIY_SKILL_KESY = ["DIY_N","DIY_S"]
 const DIY_TALENT_KESY = ["D1","D2","D3"]
@@ -179,7 +181,7 @@ var model = function(fightContorl) {
 	//获取英雄分解返还
 	this.getHeroRecycle = function(list) {
 		var strList = []
-		var map = {"2000030":0,"2000050":0}
+		var map = {"2000030":0,"2000050":0,"1000150":0,"201":0}
 		for(var i = 0;i < list.length;i++){
 			var id = list[i].id
 			var lv = list[i].lv
@@ -200,7 +202,9 @@ var model = function(fightContorl) {
 			map["2000030"] += Math.round(evolve_lv[list[i]["evo"]]["pr"] * exalt_lv[list[i]["exalt"]]["prRate"])
 			if(list[i]["qa"] >= 5)
 				map["2000050"] += 1
-
+			//神兵返还
+			if(info["artifact"])
+				strList.push(artifact_level[info["artifact"]].pr)
 		}
 		var str = ""
 		for(var i in map)
@@ -292,6 +296,9 @@ var model = function(fightContorl) {
 			if(info["zf_"+j] && zhanfa[info["zf_"+j]])
     			allCE += zhanfa[info["zf_"+j]]["ce"]
 		}
+		//神兵战力
+		if(info["artifact"])
+			allCE += artifact_level[info["artifact"]]["ce"]
 		return Math.ceil(allCE)
 	}
 	//获取角色数据
@@ -427,6 +434,24 @@ var model = function(fightContorl) {
 		}
 		for(var i in hufu_talents)
 			this.mergeTalent(info,hufu_skill[i]["lv"+hufu_talents[i]])
+		//神器计算
+		if(info["artifact"]){
+			var artifact = info["artifact"]
+			var lvInfo = {
+			    "maxHP": artifact_level[artifact].maxHP,
+			    "atk": artifact_level[artifact].atk,
+			    "phyDef": artifact_level[artifact].phyDef,
+			    "magDef": artifact_level[artifact].magDef,
+			    "speed" : artifact_level[artifact].speed
+			}
+			model.mergeData(info,lvInfo)
+			for(var i = 1;i <= artifact_level[i].talent;i++){
+				if(artifact_talent[info.id]){
+					var talentId = artifact_talent[info.id]["talent"+i]
+					model.mergeTalent(info,talentId)
+				}
+			}
+		}
 		//家园属性
 		if(teamCfg["manors"]){
 			for(var i = 1;i <= 6;i++){

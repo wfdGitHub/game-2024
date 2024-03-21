@@ -3405,21 +3405,15 @@
         });
       }
       //============神兵相关==============//
-      //穿戴神兵
-      var wearArtifact = function(hId) {
-        pomelo.request("area.artifactHandler.wearArtifact", {hId : hId}, function(data) {
-            console.log(data);
-        });
-      }
       //神兵升级
       var upgradeArtifact = function(hId) {
         pomelo.request("area.artifactHandler.upgradeArtifact", {hId : hId}, function(data) {
             console.log(data);
         });
       }
-      //出售神兵
-      var sellArtifact = function(aId,count) {
-        pomelo.request("area.artifactHandler.sellArtifact", {aId : aId,count : count}, function(data) {
+      //卸下神兵
+      var unlordArtifact = function(hId) {
+        pomelo.request("area.artifactHandler.unlordArtifact", {hId : hId}, function(data) {
             console.log(data);
         });
       }
