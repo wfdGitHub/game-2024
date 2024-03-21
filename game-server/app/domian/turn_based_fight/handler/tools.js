@@ -8,7 +8,6 @@ var model = function(fightContorl) {
 		var score = 0
 		for(var i = 0; i < heroList.length;i++)
 			score += this.getHeroScore(heroList[i])
-		console.log(need,score)
 		return Math.min(score / need,1)
 	}
 }
