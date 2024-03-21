@@ -203,8 +203,8 @@ var model = function(fightContorl) {
 			if(list[i]["qa"] >= 5)
 				map["2000050"] += 1
 			//神兵返还
-			if(info["artifact"])
-				strList.push(artifact_level[info["artifact"]].pr)
+			if(list[i]["artifact"])
+				strList.push(artifact_level[list[i]["artifact"]].pr)
 		}
 		var str = ""
 		for(var i in map)
