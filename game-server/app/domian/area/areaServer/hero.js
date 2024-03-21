@@ -436,10 +436,11 @@ var model = function() {
 					}
 				    self.heroDao.removeHeroList(self.areaId,uid,hIds,function(flag,err) {
 				      if(flag){
-				        var awards = self.fightContorl.getHeroPrlvadnad(herolist)
-			        	var awardList = []
-						for(var j = 0;j < awards.length;j++)
-							awardList.push(self.addItemByType(uid,awards[i]))
+				      	var info = self.fightContorl.getHeroRecycle(herolist)
+						var awardList = self.addItemStr(uid,info.awardStr,1,"英雄消耗")
+						for(var j = 0;j < info.awards.length;j++)
+							awardList.push(self.addItemByType(uid,info.awards[j]))
+						cb(true,awardList)
 			          	next(null,herolist,awardList)
 				      }else{
 				        next("error "+err)
