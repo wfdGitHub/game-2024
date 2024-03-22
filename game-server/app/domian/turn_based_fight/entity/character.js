@@ -4,8 +4,10 @@ var fightRecord = require("../fight/fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
 var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var passive_cfg = require("../../../../config/gameCfg/passive_cfg.json")
+const entity_base = require("./entity_base.js")
 var model = function(otps) {
 	//=========身份===========//
+	entity_base.call(this,otps)
 	this.heroId = Number(otps.id)
 	this.characterType = "hero"  //角色类型
 	this.realm = otps.realm || 1 //国家
@@ -573,6 +575,7 @@ var model = function(otps) {
 			this.magAtk += Math.ceil(otps.mag_grow * this.lv) || 0
 	}
 }
+model.prototype = Object.create(entity_base.prototype) //继承父类方法
 model.prototype.init = function(fighting) {
 	this.fighting = fighting
 	this.attInfo.speed += this.fighting.seeded.random("随机速度") * 0.5
@@ -1746,9 +1749,17 @@ model.prototype.checkChaseSkill = function() {
 //获取属性
 model.prototype.getTotalAtt = function(name) {
 	var value = this.attInfo[name] || 0
-	if(this.buffs[name]){
+	//临时属性加成
+	value += this.attTmpInfo[name] || 0
+	//存在指定BUFF加成
+	if(this.otps.self_exist_buff_att == name && this.buffs[this.otps.self_exist_buff_name])
+		value += this.otps.self_exist_buff_value || 0
+	//自身生命值降低属性加成
+	if(this.otps.low_hp_att == name)
+		if(this.attInfo.hp < this.attInfo.maxHP)
+			value += Math.floor((this.attInfo.maxHP-this.attInfo.hp)/this.attInfo.maxHP * 10) * this.otps.low_hp_value
+	if(this.buffs[name])
 		value += this.buffs[name].getValue()
-	}
 	switch(name){
 		case "speed":
 			if(this.buffs["cold"])

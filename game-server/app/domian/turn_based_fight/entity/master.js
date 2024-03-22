@@ -5,9 +5,11 @@ var power_lv = require("../../../../config/gameCfg/power_lv.json")
 var skillManager = require("../skill/skillManager.js")
 var power_base = require("../../../../config/gameCfg/power_base.json")
 var skillsCfg = require("../../../../config/gameCfg/skills.json")
+const entity_base = require("./entity_base.js")
 //主角
 var master = function(otps) {
 	//=========基础属性=======//
+	entity_base.call(this,otps)
 	this.belong = otps.belong   //所属阵容
 	this.characterType = "master"  //角色类型
 	this.id = this.belong+"Master"
@@ -41,6 +43,7 @@ var master = function(otps) {
 	this.buffs = {}
 	this.otps = otps
 }
+master.prototype = Object.create(entity_base.prototype) //继承父类方法
 //初始化
 master.prototype.init = function(fighting,list,team,enemy,locator,seeded,peerMaster) {
 	this.fighting = fighting

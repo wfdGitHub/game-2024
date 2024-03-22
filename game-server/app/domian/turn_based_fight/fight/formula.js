@@ -10,13 +10,12 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	var info = {type : "damage",value : 0}
 	var tmpAmplify = 0
 	var tmpCrit = 0
-	var lvDiff = attacker.lv - target.lv
-	if(lvDiff > 200)
-		lvDiff = 200
-	if(lvDiff < -200)
-		lvDiff = -200
-	var starDiff = attacker.star - target.star
-	var attDiff = lvDiff * 0.002 + starDiff * 0.05
+	//攻击时目标存在对应BUFF自身属性改变
+	if(attacker.otps.target_exist_buff_name && target.buffs[attacker.otps.target_exist_buff_name])
+		attacker.changeTotalTmp(attacker.otps.target_exist_buff_att,attacker.otps.target_exist_buff_value)
+	//被攻击时敌方存在对应BUFF自身属性改变
+	if(target.otps.behit_exist_buff_name && attacker.buffs[target.otps.behit_exist_buff_name])
+		target.changeTotalTmp(target.otps.behit_exist_buff_att,target.otps.behit_exist_buff_value)
 	if(attacker.damage_always_burn || target.buffs["burn"]){
 		if(skill.isAnger){
 			if(skill.burn_att_change_skill || skill.character.burn_att_change_skill){
@@ -53,7 +52,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			target.dodgeState = false
 			dodgeFlag = true
 		}else if(!attacker.skill_must_hit && !target.buffs["suoding"]){
-			var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate") + attDiff
+			var hitRate = 1 + attacker.getTotalAtt("hitRate") - target.getTotalAtt("dodgeRate")
 			if(target.attInfo.hp < target.attInfo.maxHP && target.low_hp_dodge){
 				hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_dodge
 			}
@@ -72,7 +71,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}else if(must_crit){
 		info.crit = true
 	}else{
-		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit + attDiff
+		var crit = attacker.getTotalAtt("crit") - target.getTotalAtt("critDef") + tmpCrit
 		crit += attacker[skill.damageType+"_crit"] || 0
 		if(skill.tmp_crit)
 			crit += skill.tmp_crit
@@ -100,7 +99,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	def = Math.floor(def * (1 - neglect_def))
 	var mul = 1
 	if(attacker.characterType != "master")
-		mul += attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction") + attDiff
+		mul += attacker.getTotalAtt("amplify") - target.getTotalAtt("reduction")
 	if(mul < 0.1)
 		mul = 0.1
 	if(tmpAmplify)
@@ -377,9 +376,10 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	}
 	info.value = Math.floor(skill.tmpMul * info.value)
 	//最小伤害
-	if (info.value <= 1) {
+	if (info.value <= 1)
 		info.value = 1
-	}
+	attacker.clearTmpInfo()
+	target.clearTmpInfo()
     return info
 }
 //治疗计算
