@@ -120,9 +120,9 @@ module.exports = function() {
 			    	self.incrbyObj(uid,main_name,"count",1)
 			    	self.taskUpdate(uid,"ss_pass",1,lv)
 			    	self.taskUpdate(uid,"ss_play",1)
-			    }else if(verify !== self.fightContorl.getVerifyInfo()){
+			    }else{
 			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"英雄试炼")
-			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
+			    	next({"text":"战斗失败","fightRecord":self.fightContorl.getVerifyInfo()})
 			    	return
 			    }
 			    cb(true,info)
