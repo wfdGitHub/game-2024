@@ -23,7 +23,7 @@ model.prototype.existsTarget = function(character) {
 //获取目标
 model.prototype.getTargets = function(character,targetType) {
 	//选择隐身
-	if(character.otps.preference_sneak)
+	if(character.otps.preference_sneak && skill_target[targetType] && skill_target[targetType]["type"] == "enemy")
 		return this.getPreferenceSneak(character,targetType)
 	switch(targetType){
 		case "enemy_normal":
@@ -175,7 +175,7 @@ model.prototype.getTargets = function(character,targetType) {
 			//获取友方攻击最高的1个单位
 			return this.getFriendMaxAtk(character,1)
 		case "realm_minAnger_1":
-			//获取同阵营怒气最少的3个单位
+			//获取同阵营怒气最少的1个单位
 			return this.getRealmMinAnger(character,1)
 		break
 		case "realm_minAnger_3":
