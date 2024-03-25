@@ -16,7 +16,8 @@ var model = function(otps) {
 	this.skill = false
 	//初始化技能
 	this.skills = []
-	this.addNormalSkill(8001010)
+	// this.addNormalSkill(8001010)
+	this.addNormalSkill(otps["defaultSkill"])
 	this.addAngerSkill(otps["angerSkill"])
 }
 //设置状态
@@ -139,16 +140,16 @@ model.prototype.stopSkill = function(skill) {
 		this.fighting.fightRecord.push(record)
 	}
 }
-//召唤英雄 当前等级 默认满进化、满品质
+//召唤英雄 当前等级 默认满进化、满品质  
 model.prototype.callSummon = function(id,rate,pos,time) {
 	var info = this.fighting.fightContorl.makeFullHeroData(this.heroId)
 	info.evo = 20
 	var hero = this.fighting.loadHero(this.belong,this.index,info)
 	hero.summon = true
 	hero.owner = this.hero
-	hero.lifetime = 1000
+	hero.lifetime = time
 	hero.team = this.team
 	hero.enemyTeam = this.enemyTeam
-	this.fighting.fightRecord.push({type : "summonCome",id : hero.id,heroId : hero.heroId,pos:hero.pos})
+	this.fighting.fightRecord.push({type : "summonCome",id : hero.id,heroId : hero.heroId,pos:pos})
 }
 module.exports = model

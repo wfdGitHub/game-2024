@@ -4,7 +4,7 @@ var model = function(otps,hero) {
 	this.id = otps.id
 	this.name = otps.name
 	this.NEEDCD = otps.CD || 0 			 	 //技能CD
-	this.type = otps.type || "normal"        //技能类型  normal 普通 bullet 弹道  range  范围技能
+	this.type = "call"//otps.type || "normal"        //技能类型  normal 普通 bullet 弹道  range  范围技能 call  召唤
 	this.targetType = otps.targetType  		 //技能目标
 	//弹道属性
 	this.bu_spe = otps.bu_spe || 1000      	 //弹道速度
@@ -17,14 +17,15 @@ var model = function(otps,hero) {
 	this.times = otps.times || [0] 			 //结算时间列表
 	this.muls = otps.muls || [1]  		  	 //技能系数列表
 	this.value = otps.value || 0  		 	 //技能附加伤害
-	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤  heal 治疗 call  召唤
+	this.d_type = otps.d_type || "phy" 	 	 //phy  物伤  mag  法伤  heal 治疗
 	//天赋表
 	this.talents = {}
 	for(var i = 1;i <= 5;i++)
 		if(otps["key"+i] && otps["value"+i])
 			this.talents[otps["key"+i]] = otps["value"+i]
 	//技能BUFF
-	this.buffs = [JSON.stringify({"id":"poison","time":300000,"rate":1,"attKey1":"phySuck","attValue1":1})] 						 //技能BUFF
+	// this.buffs = [JSON.stringify({"id":"poison","time":300000,"rate":1,"attKey1":"phySuck","attValue1":1})] 						 //技能BUFF
+	this.buffs = []
 	if(otps.buffs)
 		this.buffs = this.buffs.concat(otps.buffs); 	 
 	for(var i = 0;i < this.buffs.length;i++)
@@ -134,7 +135,11 @@ model.prototype.callUpdate = function(dt) {
 		return
 	this.curDur += dt
 	if(this.times[this.timeIndex] !== undefined && this.curDur >= this.times[this.timeIndex]){
-		this.hero.callSummon(this.heroId)
+		var pos = Object.assign({},this.hero.pos)
+		var offset = Math.floor(this.hero.fighting.random() * 40 - 20)
+		pos.x += offset
+		pos.y += offset
+		this.hero.callSummon(this.heroId,1,pos,1000)
 		this.timeIndex++
 	}
 	if(this.curDur >= this.skillDur)
