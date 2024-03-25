@@ -243,7 +243,7 @@ model.useSkill = function(skill,chase,point) {
 		}
 	}
 	//技能buff 连击不触发BUFF
-	if(!chase & skill.skill_buffs){
+	if(!chase && skill.skill_buffs){
 		for(var buffId in skill.skill_buffs){
 			var buff = skill.skill_buffs[buffId]
 			var buffTargets = this.locator.getBuffTargets(skill.character,buff.buff_tg,targets)
