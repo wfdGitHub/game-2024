@@ -57,7 +57,6 @@ model.prototype.attInit = function() {
 	this.attInfo.maxHP = 0 				//最大生命值
 	this.attInfo.atk = 0 				//攻击力
 	this.attInfo.armor = 0 				//护甲
-	this.attInfo.speed = 0 				//速度
 	//三级属性
 	this.attInfo.hit = 0 				//命中率
 	this.attInfo.hitDef = 0 			//闪避率

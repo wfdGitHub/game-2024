@@ -14,8 +14,6 @@ var model = function(fighting,otps,talents) {
 model.prototype = Object.create(entity_base.prototype) //继承父类方法
 //战斗初始化
 model.prototype.init = function() {
-	//初始乱速
-	this.changeTotalAtt("speed",this.fighting.random())
 	//战斗属性
 	this.hp_loss = 0 			//战斗中失去生命值比例
 	//属性加成

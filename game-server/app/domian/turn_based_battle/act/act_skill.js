@@ -4,7 +4,7 @@ var model = function(otps,hero) {
 	this.id = otps.id
 	this.name = otps.name
 	this.NEEDCD = otps.CD || 0 			 	 //技能CD
-	this.type = "call"//otps.type || "normal"        //技能类型  normal 普通 bullet 弹道  range  范围技能 call  召唤
+	this.type = otps.type || "normal"        //技能类型  normal 普通 bullet 弹道  range  范围技能 call  召唤
 	this.targetType = otps.targetType  		 //技能目标
 	//弹道属性
 	this.bu_spe = otps.bu_spe || 1000      	 //弹道速度
@@ -139,7 +139,7 @@ model.prototype.callUpdate = function(dt) {
 		var offset = Math.floor(this.hero.fighting.random() * 40 - 20)
 		pos.x += offset
 		pos.y += offset
-		this.hero.callSummon(this.heroId,1,pos,1000)
+		this.hero.callSummon(this.otps.summon,pos)
 		this.timeIndex++
 	}
 	if(this.curDur >= this.skillDur)

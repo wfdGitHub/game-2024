@@ -1,8 +1,11 @@
 //行动控制器
 const MOVE_TIME = 300                   //毫秒
 const fightCfg = require("../fightCfg.js")
-const skills = fightCfg.getCfg("skills")
 const skill_base = require("../skill/skill_base.js")
+const heros = fightCfg.getCfg("heros")
+const skills = fightCfg.getCfg("skills")
+const attInfo = fightCfg.getCfg("attInfo")
+const summons = fightCfg.getCfg("summons")
 var model = function(otps) {
 	//============英雄参数====================//
 	this.attInfo.actSpeed = otps.actSpeed || 1700 				//攻击速度
@@ -16,7 +19,7 @@ var model = function(otps) {
 	this.skill = false
 	//初始化技能
 	this.skills = []
-	// this.addNormalSkill(8001010)
+	// this.addNormalSkill(8001080)
 	this.addNormalSkill(otps["defaultSkill"])
 	this.addAngerSkill(otps["angerSkill"])
 }
@@ -141,15 +144,32 @@ model.prototype.stopSkill = function(skill) {
 	}
 }
 //召唤英雄 当前等级 默认满进化、满品质  
-model.prototype.callSummon = function(id,rate,pos,time) {
-	var info = this.fighting.fightContorl.makeFullHeroData(this.heroId)
+model.prototype.callSummon = function(sId,pos) {
+	if(!summons[sId] || !heros[summons[sId]["heroId"]]){
+		console.log("召唤失败  ID不存在 "+sId)
+		return
+	}
+	var sInfo = summons[sId]
+	var info = this.fighting.fightContorl.makeFullHeroData(sInfo.heroId)
 	info.evo = 20
 	var hero = this.fighting.loadHero(this.belong,this.index,info)
 	hero.summon = true
 	hero.owner = this.hero
-	hero.lifetime = time
+	hero.lifetime = sInfo.time
 	hero.team = this.team
 	hero.enemyTeam = this.enemyTeam
-	this.fighting.fightRecord.push({type : "summonCome",id : hero.id,heroId : hero.heroId,pos:pos})
+	for(var i in hero.attInfo){
+		if(attInfo[i]["summon"] == 1){
+			hero.attInfo[i] = hero.attInfo[i] * sInfo.rate
+		}else if(attInfo[i]["summon"] == 2){
+			hero.attInfo[i] = hero.attInfo[i]
+		}
+		if(attInfo[i]["type"] == "num")
+			hero.attInfo[i] = Math.floor(hero.attInfo[i])
+	}
+	for(var i = 1;i <= 3;i++)
+		if(sInfo["key"+i])
+			hero.attInfo[sInfo["key"+i]] += sInfo["value"+i]
+	this.fighting.fightRecord.push({type : "summonCome",id : hero.id,heroId : hero.heroId,pos:pos,info:hero.getSimpleInfo()})
 }
 module.exports = model

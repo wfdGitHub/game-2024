@@ -439,8 +439,7 @@ var model = function(fightContorl) {
 			    "maxHP": artifact_level[artifact].maxHP,
 			    "atk": artifact_level[artifact].atk,
 			    "phyDef": artifact_level[artifact].phyDef,
-			    "magDef": artifact_level[artifact].magDef,
-			    "speed" : artifact_level[artifact].speed
+			    "magDef": artifact_level[artifact].magDef
 			}
 			model.mergeData(info,lvInfo)
 			for(var i = 1;i <= artifact_level[i].talent;i++){
@@ -524,7 +523,6 @@ var model = function(fightContorl) {
 				lvInfo.atk = Math.floor(lvInfo.atk * (1 + info["M_STK"] * 0.01) * growth)
 			lvInfo.phyDef = Math.floor(lvInfo.phyDef * (1 + info["M_DEF"] * 0.02) * growth)
 			lvInfo.magDef = Math.floor(lvInfo.magDef * (1 + info["M_SEF"] * 0.02) * growth)
-			lvInfo.speed = 100 + lv_cfg[info.lv].speed * (1 + info["M_SPE"] * 0.01)
 		}
 		if(evolve_lv[info.evo]){
 			lvInfo.maxHP += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
@@ -715,7 +713,6 @@ var model = function(fightContorl) {
 			lvInfo.atk += Math.floor(lv_cfg[info.lv].atk * growth)
 			lvInfo.phyDef += Math.floor(lv_cfg[info.lv].phyDef * growth)
 			lvInfo.magDef += Math.floor(lv_cfg[info.lv].magDef * growth)
-			lvInfo.speed += lv_cfg[info.lv].speed
 		}
 		this.mergeData(info,lvInfo)
 		//装备计算
