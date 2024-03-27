@@ -179,7 +179,7 @@ var model = function() {
 	//根据携带等级获取英雄
 	this.gainHeroByLv = function(uid,qa,cb) {
 		var hId = self.getLordLastid(uid)
-		var lv = self.getLordLv(uid)
+		var lv = 1//self.getLordLv(uid)
 		var heroInfo = self.fightContorl.makeHeroByLv(lv,qa)
 		heroInfo.hId = hId
 		self.redisDao.db.hset("player:user:"+uid+":heroMap",hId,Date.now())
