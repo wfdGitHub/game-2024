@@ -81,7 +81,6 @@ payDao.prototype.finishGameOrder = function(otps,cb) {
 	})
 }
 payDao.prototype.faildOrder = function(str,sdkInfo,gameInfo) {
-	console.error(str,sdkInfo,gameInfo)
 	var info = {
 		game_order : sdkInfo.game_order,
 		err : str,

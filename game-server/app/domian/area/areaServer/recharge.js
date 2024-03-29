@@ -143,7 +143,6 @@ module.exports = function() {
 	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,cb) {
-		console.log(uid,pay_id)
 		if(!pay_cfg[pay_id]){
 			cb(false)
 			return
@@ -247,7 +246,7 @@ module.exports = function() {
 				cb(true)
 			}
 		],function(err) {
-			self.payDao.faildOrder(err,info)
+			self.payDao.faildOrder(err)
 			cb(false,err)
 		})
 	}
