@@ -174,52 +174,52 @@ module.exports = function() {
 		            case "lv_fund":
 		            case "power_fund":
 		            case "beaty_fund":
-		                this.activateFund(uid,pay_cfg[pay_id]["type"],call_back.bind(this,uid))
+		                self.activateFund(uid,pay_cfg[pay_id]["type"],call_back.bind(self,uid))
 		            break
 		            case "highCard":
-		                this.activateHighCard(uid,pay_id,call_back.bind(this,uid))
+		                self.activateHighCard(uid,pay_id,call_back.bind(self,uid))
 		            break
 		            case "warHorn":
-		                this.advanceWarHorn(uid,pay_id,call_back.bind(this,uid))
+		                self.advanceWarHorn(uid,pay_id,call_back.bind(self,uid))
 		            break
 		            case "recharge":
-		                this.recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+		                self.recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(self,uid))
 		            break
 		            case "limit_gift":
-		                this.buyLimitGift(uid,pay_id,call_back.bind(this,uid))
+		                self.buyLimitGift(uid,pay_id,call_back.bind(self,uid))
 		            break
 		            case "quick_pri":
-		                this.buyQuickPri(uid,pay_id,call_back.bind(this,uid))
+		                self.buyQuickPri(uid,pay_id,call_back.bind(self,uid))
 		            break
 		            case "tour_pri":
-		                this.buyTourPri(uid,pay_id,call_back.bind(this,uid))
+		                self.buyTourPri(uid,pay_id,call_back.bind(self,uid))
 		            break
 		            case "stone_pri":
-		                this.buyStonePri(uid,pay_id,call_back.bind(this,uid))
+		                self.buyStonePri(uid,pay_id,call_back.bind(self,uid))
 		            break
 		            case "ttt_pri":
-		                this.buyTTTPri(uid,call_back.bind(this,uid))
+		                self.buyTTTPri(uid,call_back.bind(self,uid))
 		            break
 		            case "zhulu_pri":
-		                this.buyZhuluPri(uid,call_back.bind(this,uid))
+		                self.buyZhuluPri(uid,call_back.bind(self,uid))
 		            break
 		            case "manor_pri":
-		                this.buyManorPri(uid,call_back.bind(this,uid))
+		                self.buyManorPri(uid,call_back.bind(self,uid))
 		            break
 		            case "wuxian":
-		                this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
+		                self.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(self,uid))
 		            break
 		            case "gmLv":
-		                this.buyGMLv(uid,pay_id,call_back.bind(this,uid))
+		                self.buyGMLv(uid,pay_id,call_back.bind(self,uid))
 		            break
 		            case "fast":
-		                this.buyFastRecharge(uid,pay_id,call_back.bind(this,uid))
+		                self.buyFastRecharge(uid,pay_id,call_back.bind(self,uid))
 		            break
 		            case "area_gift":
-		                this.buyAreaGift(uid,pay_id,call_back.bind(this,uid))
+		                self.buyAreaGift(uid,pay_id,call_back.bind(self,uid))
 		            break
 		            case "long_award":
-		                this.buyLongAward(uid,pay_id,call_back.bind(this,uid))
+		                self.buyLongAward(uid,pay_id,call_back.bind(self,uid))
 		            break
 		            default:
 		                console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
