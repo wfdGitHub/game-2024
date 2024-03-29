@@ -41,16 +41,16 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 payDao.prototype.checkGameOrder = function(res,otps,cb) {
 	var self = this
 	var sql = "select * from game_order where game_order = ?"
-	self.db.query(sql,[otps.game_order], function(err, res) {
-		if(err || !res){
+	self.db.query(sql,[otps.game_order], function(err, info) {
+		if(err || !info){
 			console.error(err)
 			self.faildOrder("订单不存在",otps)
 			res.send("SUCCESS")
 			cb(false,"finishGameOrder game_order err")
 			return
 		}
-		res =JSON.parse( JSON.stringify(res))
-		var data = res[0]
+		info = JSON.parse( JSON.stringify(info))
+		var data = info[0]
 		if(err || !data){
 			console.error("订单不存在",err)
 			self.faildOrder("订单不存在",otps)
