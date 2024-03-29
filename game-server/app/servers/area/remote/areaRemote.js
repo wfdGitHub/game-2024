@@ -186,6 +186,9 @@ module.exports = function(app) {
 		},{
 			name : "sdkPay",
 			ref : "sdkPay"
+		},{
+			name : "redisDao",
+			ref : "redisDao"
 		}]
 	})
 }
