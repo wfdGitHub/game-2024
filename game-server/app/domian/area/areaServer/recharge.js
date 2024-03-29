@@ -248,7 +248,6 @@ module.exports = function() {
 				cb(true)
 			}
 		],function(err) {
-			self.payDao.faildOrder(err)
 			cb(false,err)
 		})
 	}
