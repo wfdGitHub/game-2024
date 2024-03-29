@@ -10,7 +10,6 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,data,cb) {
 	if(self.areaManager.areaMap[areaId]){
 		self.areaManager.areaMap[areaId].finish_recharge(uid,pay_id,data,function(flag,err) {
 			if(!flag){
-				console.error("finish_recharge "+err)
 				var info = {
 					err : err,
 					areaId : areaId,
@@ -26,7 +25,6 @@ areaRemote.prototype.finish_recharge = function(areaId,uid,pay_id,data,cb) {
 			}
 		})
 	}else{
-		console.error("finish_recharge "+err)
 		var info = {
 			err : "服务器不存在",
 			uid : uid,
