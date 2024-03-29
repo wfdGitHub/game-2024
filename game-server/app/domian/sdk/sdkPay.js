@@ -71,11 +71,11 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 			});
 		},
 		function(orderData,orderOtps,next) {
-			res.send("SUCCESS")
 			//订单发货
 			if(orderData && orderOtps){
 				finish_callback(orderData.areaId,orderData.uid,orderData.amount,orderData.pay_id,info,function(flag,err) {
 					if(flag){
+						res.send("SUCCESS")
 						self.payDao.updateRmb(orderOtps)
 					}else{
 						res.send(err)
