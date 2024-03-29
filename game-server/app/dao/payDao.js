@@ -38,7 +38,7 @@ payDao.prototype.createGameOrder = function(otps,cb) {
     })
 }
 //完成充值订单
-payDao.prototype.checkGameOrder = function(otps,cb) {
+payDao.prototype.checkGameOrder = function(res,otps,cb) {
 	var self = this
 	var sql = "select * from game_order where game_order = ?"
 	self.db.query(sql,[otps.game_order], function(err, res) {
@@ -57,7 +57,8 @@ payDao.prototype.checkGameOrder = function(otps,cb) {
 		}else{
 			if(data.status == 0){
 				self.faildOrder("订单已完成",otps,data)
-				cb(true)
+				res.send("SUCCESS")
+				cb(false)
 			}else if(Number(otps.amount) < data.amount){
 				self.faildOrder("充值金额错误",otps,data)
 				cb(false,"充值金额错误",data)
