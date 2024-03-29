@@ -62,7 +62,6 @@ serverManager.prototype.finish_callback = function(areaId,uid,amount,pay_id,data
 	var self = this
 	var serverId = self.areaDeploy.getServer(self.areaDeploy.getFinalServer(areaId))
     self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,function(flag,err){
-    	console.log("支付完成",flag,err)
     	if(flag)
     		self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(amount) * 100),function(){})
 		cb(flag,err)

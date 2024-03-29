@@ -147,12 +147,10 @@ module.exports = function() {
 			cb(false)
 			return
 		}
-		console.log("finish_recharge",uid,pay_id)
 		async.waterfall([
 			function(next) {
 				self.getObj(uid,"recharge_fast",pay_id,function(data) {
 					data = Number(data) || 0
-					console.log("购买次数",data,pay_cfg[pay_id]["count"])
 					if(data >= pay_cfg[pay_id]["count"]){
 						next("购买次数已达上限")
 						return
