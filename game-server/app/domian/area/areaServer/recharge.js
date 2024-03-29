@@ -211,6 +211,12 @@ module.exports = function() {
 		            case "fast":
 		                self.buyFastRecharge(uid,pay_id,call_back.bind(self,uid))
 		            break
+		            case "area_gift":
+		                self.buyAreaGift(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "long_award":
+		                self.buyLongAward(uid,pay_id,call_back.bind(self,uid))
+		            break
 		            default:
 		                console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
 		        }
