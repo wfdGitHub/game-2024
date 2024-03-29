@@ -16,7 +16,6 @@ const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
 const uuid = require("uuid")
 const async = require("async")
 const main_name = "activity"
-const day7Time = 604800000
 const day31Time = 2592000000
 var rechargeMap = {}
 var recharge_once_table = {}
@@ -25,9 +24,9 @@ for(var i in recharge){
 		rechargeMap[recharge[i]["rmb"]] = i
 }
 for(var payId in pay_cfg){
-	var rmb = pay_cfg[payId]["rmb"] * 100
-	if(rechargeMap[rmb])
-		recharge_once_table[payId] = rechargeMap[rmb]
+	var cent = pay_cfg[payId]["cent"]
+	if(rechargeMap[cent])
+		recharge_once_table[payId] = rechargeMap[cent]
 }
 var skinArr = []
 for(var i in gift_skin)
@@ -146,84 +145,105 @@ module.exports = function() {
 	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,cb) {
-		var call_back = function(uid,flag,data) {
-			if(flag){
+		if(!pay_cfg[pay_id]){
+			cb(false)
+			return
+		}
+		async.waterfall([
+			function(next) {
+				self.getObj(uid,"recharge_fast",pay_id,function(data) {
+					data = Number(data) || 0
+					if(data >= pay_cfg[pay_id]["count"]){
+						next("购买次数已达上限")
+						return
+					}else{
+						next()
+					}
+				})
+			},
+			function(next) {
+				var call_back = function(flag,data) {
+					if(flag)
+						next(null,data)
+					else
+						next(err)
+				}
+		        switch(pay_cfg[pay_id]["type"]){
+		            case "lv_fund":
+		            case "power_fund":
+		            case "beaty_fund":
+		                self.activateFund(uid,pay_cfg[pay_id]["type"],call_back.bind(self,uid))
+		            break
+		            case "highCard":
+		                self.activateHighCard(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "warHorn":
+		                self.advanceWarHorn(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "recharge":
+		                self.recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(self,uid))
+		            break
+		            case "limit_gift":
+		                self.buyLimitGift(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "quick_pri":
+		                self.buyQuickPri(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "tour_pri":
+		                self.buyTourPri(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "stone_pri":
+		                self.buyStonePri(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "ttt_pri":
+		                self.buyTTTPri(uid,call_back.bind(self,uid))
+		            break
+		            case "zhulu_pri":
+		                self.buyZhuluPri(uid,call_back.bind(self,uid))
+		            break
+		            case "manor_pri":
+		                self.buyManorPri(uid,call_back.bind(self,uid))
+		            break
+		            case "wuxian":
+		                self.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(self,uid))
+		            break
+		            case "gmLv":
+		                self.buyGMLv(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "fast":
+		                self.buyFastRecharge(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            default:
+		                console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
+		        }
+			},
+			function(data,next) {
+				//支付完成
+				var once_index = recharge_once_table[pay_id]
+				if(once_index){
+					self.incrbyObj(uid,main_name,"recharge_once_"+once_index,1,function(value) {
+						var notify = {
+							type : "recharge_once_update",
+							index : once_index,
+							curValue : value
+						}
+						self.sendToUser(uid,notify)
+					})
+				}
+				self.addUserRMB(uid,pay_cfg[pay_id].cent)
 				var notify = {
 					type : "finish_recharge",
 					pay_id : pay_id,
 					data : data
 				}
 				self.sendToUser(uid,notify)
+				if(pay_cfg[pay_id]["count"])
+					self.incrbyObj(uid,"recharge_fast",pay_id,1)
+				cb(true)
 			}
-			if(pay_cfg[pay_id]["count"])
-				this.incrbyObj(uid,"recharge_fast",pay_id,1)
-		}
-		if(!pay_cfg[pay_id]){
-			cb(false)
-			return
-		}
-		switch(pay_cfg[pay_id]["type"]){
-			case "lv_fund":
-				this.activateLvFund(uid,call_back.bind(this,uid))
-			break
-			case "highCard":
-				this.activateHighCard(uid,call_back.bind(this,uid))
-			break
-			case "warHorn":
-				this.advanceWarHorn(uid,call_back.bind(this,uid))
-			break
-			case "recharge":
-				this.recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "box_day":
-				this.buyAwardBagday(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "box_week":
-				this.buyAwardBagWeek(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "box_month":
-				this.buyAwardBagMonth(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "limit_gift":
-				this.buyLimitGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "quick_pri":
-				this.buyQuickPri(uid,call_back.bind(this,uid))
-			break
-			case "tour_pri":
-				this.buyTourPri(uid,call_back.bind(this,uid))
-			break
-			case "stone_pri":
-				this.buyStonePri(uid,call_back.bind(this,uid))
-			break
-			case "gift_loop":
-				this.buyLoopGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "gift_skin":
-				this.buyLimitSkin(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "wuxian":
-				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "gmLv":
-				this.buyGMLv(uid,pay_id,call_back.bind(this,uid))
-			break
-			case "fast":
-				this.buyFastRecharge(uid,pay_id,call_back.bind(this,uid))
-			break
-		}
-		var once_index = recharge_once_table[pay_id]
-		if(once_index){
-			self.incrbyObj(uid,main_name,"recharge_once_"+once_index,1,function(data) {
-				var notify = {
-					type : "recharge_once_update",
-					index : once_index,
-					curValue : data
-				}
-				self.sendToUser(uid,notify)
-			})
-		}
-		cb(true)
+		],function(err) {
+			cb(false,err)
+		})
 	}
 	//真实充值
 	this.real_recharge = function(uid,value,cb) {
@@ -238,13 +258,13 @@ module.exports = function() {
 				real_week : self.players[uid].real_week
 			}
 			self.sendToUser(uid,notify)
+			self.festivalTotalRecharge(uid,value)
 		}
 		if(cb)
 			cb(true)
 	}
 	//充值
 	this.recharge = function(uid,index,cb) {
-		self.addUserRMB(uid,recharge[index].rmb)
 		self.incrbyObj(uid,main_name,"recharge_"+index,1,function(data) {
 			var gold = recharge[index].gold
 			var rate = 0
@@ -253,7 +273,7 @@ module.exports = function() {
 			else
 				rate = recharge[index].normal_rate
 			var award = "202:"+Math.round(gold*rate)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",award)
+			self.sendTextToMail(uid,"recharge",award)
 			cb(true)
 		})
 	}
@@ -299,7 +319,7 @@ module.exports = function() {
 				lv : id
 			}
 			self.sendToUser(uid,notify)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",GM_CFG[id]["award"])
+			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",pay_cfg[pay_id]["award"])
 			cb(true)
 		})
 	}
@@ -313,11 +333,10 @@ module.exports = function() {
 			if(data > 0){
 				console.log("循环礼包已购买",loopId)
 			}
-			self.addUserRMB(uid,gift_loop[loopId].rmb)
 			self.incrbyObj(uid,main_name,"loop_"+loopId,1)
 			var award = "202:"+gift_loop[loopId].gold
 			award += "&"+gift_loop[loopId].award
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",award)
+			self.sendTextToMail(uid,"recharge",award)
 			cb(true)
 		})
 	}
@@ -328,7 +347,6 @@ module.exports = function() {
 				cb(false,"已激活基金")
 			}else{
 				self.setObj(uid,main_name,"lv_fund",1)
-				self.addUserRMB(uid,activity_cfg["grow_lof"]["value"])
 				cb(true)
 			}
 		})
@@ -420,11 +438,9 @@ module.exports = function() {
 					wuxianId : "wuxian_1"
 				}
 				self.sendToUser(uid,notify)
-				self.taskUpdate(uid,"buy_zztq",1)
 				self.setObj(uid,main_name,"highCard",1)
 				self.chageLordData(uid,"highCard",1)
-				self.addUserRMB(uid,activity_cfg["high_card_lof"]["value"])
-				self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["high_card_award"]["value"])
+				self.sendTextToMail(uid,"recharge",activity_cfg["high_card_award"]["value"])
 				cb(true)
 			}
 		})
@@ -440,9 +456,8 @@ module.exports = function() {
 				cb(false,"已购买")
 				return
 			}
-			self.addUserRMB(uid,awardBag_day[index].rmb)
 			self.incrbyObj(uid,main_name,"bagDay_"+index,1)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",awardBag_day[index].award)
+			self.sendTextToMail(uid,"recharge",awardBag_day[index].award)
 			cb(true)
 		})
 	}
@@ -473,9 +488,8 @@ module.exports = function() {
 				cb(false,"已限购")
 				return
 			}
-			self.addUserRMB(uid,gift_week[index].rmb)
 			self.incrbyObj(uid,"week_shop",index,1)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_week[index].award)
+			self.sendTextToMail(uid,"recharge",gift_week[index].award)
 			cb(true)
 		})
 	}
@@ -491,9 +505,8 @@ module.exports = function() {
 				cb(false,"已限购")
 				return
 			}
-			self.addUserRMB(uid,gift_month[index].rmb)
 			self.incrbyObj(uid,"month_shop",index,1)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_month[index].award)
+			self.sendTextToMail(uid,"recharge",gift_month[index].award)
 			cb(true)
 		})
 	}
@@ -505,11 +518,9 @@ module.exports = function() {
 				cb(false,"已进阶")
 				return
 			}
-			self.addUserRMB(uid,activity_cfg["war_horn"]["value"])
 			self.setObj(uid,"war_horn","high",1)
-			self.taskUpdate(uid,"buy_zl",1)
 			self.incrbyObj(uid,"war_horn","exp",war_horn[curMonth]["exp"],function(exp) {
-				self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",war_horn[curMonth]["award"])
+				self.sendTextToMail(uid,"recharge",war_horn[curMonth]["award"])
 				cb(true,{exp:exp})
 			})
 		})
@@ -520,7 +531,7 @@ module.exports = function() {
 			cb(false,"限时礼包错误")
 			return
 		}
-		self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_list[id]["award"])
+		self.sendTextToMail(uid,"recharge",gift_list[id]["award"])
 		self.delObj(uid,"limit_gift",id)
 		cb(true)
 	}
@@ -537,9 +548,8 @@ module.exports = function() {
 				cb(false,"已限购")
 				return
 			}
-			self.addUserRMB(uid,gift_skin[id].rmb)
 			self.incrbyObj(uid,"skin",id,1)
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",gift_skin[id].award)
+			self.sendTextToMail(uid,"recharge",gift_skin[id].award)
 			cb(true)
 		})
 	}
@@ -548,15 +558,13 @@ module.exports = function() {
 		var  quick_pri = self.getLordAtt(uid,"quick_pri")
 		if(!quick_pri || Date.now() > quick_pri){
 			//新购
-			quick_pri = util.getZeroTime() + day7Time
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["quick_award"]["value"])
+			quick_pri = util.getZeroTime() + day31Time
+			self.sendTextToMail(uid,"recharge",pay_cfg["1004"]["award"])
 		}else{
 			console.log("快速作战特权已购买，延长时间")
 			//延长
-			quick_pri += day7Time
+			quick_pri += day31Time
 		}
-		self.addUserRMB(uid,activity_cfg["quick_pri"]["value"])
-		self.taskUpdate(uid,"buy_kszz",1)
 		self.chageLordData(uid,"quick_pri",quick_pri)
 		cb(true,{quick_pri:quick_pri})
 	}
@@ -566,13 +574,12 @@ module.exports = function() {
 		if(!tour_pri || Date.now() > tour_pri){
 			//新购
 			tour_pri = util.getZeroTime() + day31Time
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["tour_award"]["value"])
+			self.sendTextToMail(uid,"recharge",pay_cfg["1005"]["award"])
 		}else{
 			console.log("三界已购买，延长时间")
 			//延长
 			tour_pri += day31Time
 		}
-		self.addUserRMB(uid,activity_cfg["tour_pri"]["value"])
 		self.chageLordData(uid,"tour_pri",tour_pri)
 		cb(true,{tour_pri:tour_pri})
 	}
@@ -582,13 +589,12 @@ module.exports = function() {
 		if(!stone_pri || Date.now() > stone_pri){
 			//新购
 			stone_pri = util.getZeroTime() + day31Time
-			self.sendMail(uid,"充值奖励","感谢您的充值,这是您的充值奖励,请查收。",activity_cfg["stone_award"]["value"])
+			self.sendTextToMail(uid,"recharge",pay_cfg["1006"]["award"])
 		}else{
 			console.log("快速作战特权已购买，延长时间")
 			//延长
 			stone_pri += day31Time
 		}
-		self.addUserRMB(uid,activity_cfg["stone_pri"]["value"])
 		self.chageLordData(uid,"stone_pri",stone_pri)
 		cb(true,{stone_pri:stone_pri})
 	}
