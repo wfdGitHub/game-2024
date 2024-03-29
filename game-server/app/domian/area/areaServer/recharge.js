@@ -144,8 +144,91 @@ module.exports = function() {
 	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,cb) {
-		var call_back = function(uid,flag,data) {
-			if(flag){
+		if(!pay_cfg[pay_id]){
+			cb(false)
+			return
+		}
+		async.waterfall([
+			function(next) {
+				self.getObj(uid,"recharge_fast",pay_id,function(data) {
+					data = Number(data) || 0
+					if(data >= pay_cfg[pay_id]["count"]){
+						next("购买次数已达上限")
+						return
+					}else{
+						next()
+					}
+				})
+			},
+			function(next) {
+				var call_back = function(flag,data) {
+					if(flag)
+						next(null,data)
+					else
+						next(err)
+				}
+		        switch(pay_cfg[pay_id]["type"]){
+		            case "lv_fund":
+		            case "power_fund":
+		            case "beaty_fund":
+		                self.activateFund(uid,pay_cfg[pay_id]["type"],call_back.bind(self,uid))
+		            break
+		            case "highCard":
+		                self.activateHighCard(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "warHorn":
+		                self.advanceWarHorn(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "recharge":
+		                self.recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(self,uid))
+		            break
+		            case "limit_gift":
+		                self.buyLimitGift(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "quick_pri":
+		                self.buyQuickPri(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "tour_pri":
+		                self.buyTourPri(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "stone_pri":
+		                self.buyStonePri(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "ttt_pri":
+		                self.buyTTTPri(uid,call_back.bind(self,uid))
+		            break
+		            case "zhulu_pri":
+		                self.buyZhuluPri(uid,call_back.bind(self,uid))
+		            break
+		            case "manor_pri":
+		                self.buyManorPri(uid,call_back.bind(self,uid))
+		            break
+		            case "wuxian":
+		                self.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(self,uid))
+		            break
+		            case "gmLv":
+		                self.buyGMLv(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            case "fast":
+		                self.buyFastRecharge(uid,pay_id,call_back.bind(self,uid))
+		            break
+		            default:
+		                console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
+		        }
+			},
+			function(data,next) {
+				//支付完成
+				var once_index = recharge_once_table[pay_id]
+				if(once_index){
+					self.incrbyObj(uid,main_name,"recharge_once_"+once_index,1,function(value) {
+						var notify = {
+							type : "recharge_once_update",
+							index : once_index,
+							curValue : value
+						}
+						self.sendToUser(uid,notify)
+					})
+				}
 				self.addUserRMB(uid,pay_cfg[pay_id].cent)
 				var notify = {
 					type : "finish_recharge",
@@ -153,76 +236,13 @@ module.exports = function() {
 					data : data
 				}
 				self.sendToUser(uid,notify)
+				if(pay_cfg[pay_id]["count"])
+					self.incrbyObj(uid,"recharge_fast",pay_id,1)
+				cb(true)
 			}
-		}
-		if(!pay_cfg[pay_id]){
-			cb(false)
-			return
-		}
-		switch(pay_cfg[pay_id]["type"]){
-			case "lv_fund":
-				this.activateLvFund(uid,call_back.bind(this,uid))
-			break
-			case "highCard":
-				this.activateHighCard(uid,call_back.bind(this,uid))
-			break
-			case "warHorn":
-				this.advanceWarHorn(uid,call_back.bind(this,uid))
-			break
-			case "recharge":
-				this.recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "box_day":
-				this.buyAwardBagday(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "box_week":
-				this.buyAwardBagWeek(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "box_month":
-				this.buyAwardBagMonth(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "limit_gift":
-				this.buyLimitGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "quick_pri":
-				this.buyQuickPri(uid,call_back.bind(this,uid))
-			break
-			case "tour_pri":
-				this.buyTourPri(uid,call_back.bind(this,uid))
-			break
-			case "stone_pri":
-				this.buyStonePri(uid,call_back.bind(this,uid))
-			break
-			case "gift_loop":
-				this.buyLoopGift(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "gift_skin":
-				this.buyLimitSkin(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "wuxian":
-				this.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "gmLv":
-				this.buyGMLv(uid,pay_cfg[pay_id]["arg"],call_back.bind(this,uid))
-			break
-			case "fast":
-				this.buyFastRecharge(uid,pay_id,call_back.bind(this,uid))
-			break
-		}
-		if(pay_cfg[pay_id]["count"])
-			this.incrbyObj(uid,"recharge_fast",pay_id,1)
-		var once_index = recharge_once_table[pay_id]
-		if(once_index){
-			self.incrbyObj(uid,main_name,"recharge_once_"+once_index,1,function(data) {
-				var notify = {
-					type : "recharge_once_update",
-					index : once_index,
-					curValue : data
-				}
-				self.sendToUser(uid,notify)
-			})
-		}
-		cb(true)
+		],function(err) {
+			cb(false,err)
+		})
 	}
 	//真实充值
 	this.real_recharge = function(uid,value,cb) {

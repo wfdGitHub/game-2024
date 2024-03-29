@@ -58,11 +58,15 @@ serverManager.prototype.init = function() {
 	adminManager.init(server2,self)
 	server2.listen(5081);
 }
-serverManager.prototype.finish_callback = function(areaId,uid,amount,pay_id) {
+serverManager.prototype.finish_callback = function(areaId,uid,amount,pay_id,data,cb) {
 	//支付成功发货
-	var serverId = this.areaDeploy.getServer(this.areaDeploy.getFinalServer(areaId))
-    this.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,function(){})
-    this.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(amount) * 100),function(){})
+	var self = this
+	var serverId = self.areaDeploy.getServer(self.areaDeploy.getFinalServer(areaId))
+    self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,function(flag,err){
+    	if(flag)
+    		self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(amount) * 100),function(){})
+		cb(flag,err)
+    })
 }
 //update
 serverManager.prototype.update = function() {
