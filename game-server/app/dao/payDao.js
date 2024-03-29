@@ -124,7 +124,7 @@ module.exports = {
 	props : [{
 		name : "redisDao",
 		ref : "redisDao"
-	}{
+	},{
 		name : "cacheDao",
         ref : "cacheDao"
 	},{
