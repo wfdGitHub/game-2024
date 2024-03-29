@@ -61,7 +61,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 					status : message["status"]? message["status"][0] : 0,
 					extras_params : message["extras_params"]? message["extras_params"][0] : {},
 				}
-				self.payDao.finishGameOrder(info,function(flag,err,orderData,orderOtps) {
+				self.payDao.checkGameOrder(info,function(flag,err,orderData,orderOtps) {
 					if(!flag)
 						next(err || "支付失败")
 					else{
@@ -76,6 +76,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 			if(orderData && orderOtps){
 				finish_callback(orderData.areaId,orderData.uid,orderData.amount,orderData.pay_id,info,function(flag,err) {
 					if(flag){
+						self.payDao.overGameOrder(info)
 						self.payDao.updateRmb(orderOtps)
 					}else{
 						res.send(err)
