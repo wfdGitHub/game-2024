@@ -147,6 +147,7 @@ module.exports = function() {
 			cb(false)
 			return
 		}
+		console.log("finish_recharge",uid,pay_id)
 		async.waterfall([
 			function(next) {
 				self.getObj(uid,"recharge_fast",pay_id,function(data) {
