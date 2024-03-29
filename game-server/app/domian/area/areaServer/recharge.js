@@ -143,25 +143,22 @@ module.exports = function() {
 	}
 	//充值成功
 	this.finish_recharge = function(uid,pay_id,cb) {
+		console.log(uid,pay_id)
 		if(!pay_cfg[pay_id]){
 			cb(false)
 			return
 		}
 		async.waterfall([
 			function(next) {
-				if(pay_cfg[pay_id]["limit"]){
-					self.getObj(uid,"recharge_fast",pay_id,function(data) {
-						data = Number(data) || 0
-						if(data >= pay_cfg[pay_id]["count"]){
-							next("购买次数已达上限")
-							return
-						}else{
-							next()
-						}
-					})
-				}else{
-					next()
-				}
+				self.getObj(uid,"recharge_fast",pay_id,function(data) {
+					data = Number(data) || 0
+					if(data >= pay_cfg[pay_id]["count"]){
+						next("购买次数已达上限")
+						return
+					}else{
+						next()
+					}
+				})
 			},
 			function(next) {
 				var call_back = function(flag,data) {
