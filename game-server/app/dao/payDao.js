@@ -16,7 +16,7 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 		game_order : uuid.v1(),
 		pay_id : otps.pay_id,
 		goodsName : pay_cfg[otps.pay_id]["name"],
-		amount : pay_cfg[otps.pay_id]["rmb"] || 0,
+		amount : pay_cfg[otps.pay_id]["rmb"],
 		userName : otps.userName,
 		unionid : otps.unionid,
 		accId : otps.accId,
@@ -26,16 +26,41 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 		areaId : otps.areaId,
 		extras_params : otps.extras_params || ""
 	}
-    this.db.query(sql,info, function(err, res) {
-        if (err) {
-            // console.error('createCDType! ' + err.stack);
-            cb(false,err)
-        }else{
-            info.messagetype = "createGameOrder"
-            self.cacheDao.saveCache(info)
-            cb(true,info)
-        }
-    })
+	async.waterfall([
+		function(next) {
+			if(pay_cfg[otps.pay_id]["type"] == "DIY"){
+				self.redisDao.db.getObj("player:user:"+otps.uid+":diy",pay_cfg[otps.pay_id]["arg2"]+"_price",function(err,data) {
+					if(err || !data){
+						next("未定制英雄")
+					}else{
+						info.amount = Number(data)
+						next()
+					}
+				})
+			}else{
+				if(otps.extras_params){
+					info.extras_params = JSON.stringify(otps.extras_params)
+					if(otps.extras_params.rate && Number.isInteger(otps.extras_params.rate) && pay_cfg[otps.pay_id]["rate"] && otps.extras_params.rate >= 1)
+						info.amount = Number(info.amount * otps.extras_params.rate)
+				}
+				next()
+			}
+		},
+		function(next) {
+			self.db.query(sql,info, function(err, res) {
+				if (err) {
+					// console.error('createCDType! ' + err.stack);
+					cb(false,err)
+				}else{
+					info.messagetype = "createGameOrder"
+					self.cacheDao.saveCache(info)
+					cb(true,info)
+				}
+			})
+		}
+	],function(err) {
+		cb(false,err)
+	})
 }
 //完成充值订单
 payDao.prototype.checkGameOrder = function(res,otps,cb) {
@@ -85,8 +110,8 @@ payDao.prototype.checkGameOrder = function(res,otps,cb) {
 }
 //订单支付完成
 payDao.prototype.overGameOrder = function(otps) {
-	sql = 'update game_order SET pay_time=?,status=0,order_no=?,channel_code=?,channel_uid=?,amount=? where game_order = ?'
-	this.db.query(sql,[Date.now(),otps.order_no,otps.channel,otps.channel_uid,otps.amount,otps.game_order],function(){})
+	sql = 'update game_order SET pay_time=?,status=0,order_no=?,channel_code=?,channel_uid=? where game_order = ?'
+	this.db.query(sql,[Date.now(),otps.order_no,otps.channel,otps.channel_uid,otps.game_order],function(){})
 }
 payDao.prototype.faildOrder = function(str,sdkInfo,gameInfo) {
 	var info = {
