@@ -24,61 +24,6 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 		create_time : Date.now(),
 		status : 2,
 		areaId : otps.areaId,
-		extras_params : ""
-	}
-	async.waterfall([
-		function(next) {
-			if(pay_cfg[otps.pay_id]["type"] == "DIY"){
-				self.redisDao.db.getObj("player:user:"+otps.uid+":diy",pay_cfg[otps.pay_id]["arg2"]+"_price",function(err,data) {
-					if(err || !data){
-						next("未定制英雄")
-					}else{
-						info.amount = Number(data)
-						next()
-					}
-				})
-			}else{
-				if(otps.extras_params){
-					info.extras_params = JSON.stringify(otps.extras_params)
-					if(otps.extras_params.rate && Number.isInteger(otps.extras_params.rate) && pay_cfg[otps.pay_id]["rate"] && otps.extras_params.rate >= 1)
-						info.amount = Number(info.amount * otps.extras_params.rate)
-				}
-				next()
-			}
-		},
-		function(next) {
-			self.db.query(sql,info, function(err, res) {
-				if (err) {
-					// console.error('createCDType! ' + err.stack);
-					cb(false,err)
-				}else{
-					info.messagetype = "createGameOrder"
-					self.cacheDao.saveCache(info)
-					cb(true,info)
-				}
-			})
-		}
-	],function(err) {
-		cb(false,err)
-	})
-}
-//创建充值订单
-payDao.prototype.createGameOrder = function(otps,cb) {
-	var self = this
-	sql = 'insert into game_order SET ?'
-	// console.log("createGameOrder",otps,pay_cfg[otps.pay_id])
-	var info = {
-		game_order : uuid.v1(),
-		pay_id : otps.pay_id,
-		goodsName : pay_cfg[otps.pay_id]["name"],
-		amount : pay_cfg[otps.pay_id]["rmb"],
-		userName : otps.userName,
-		unionid : otps.unionid,
-		accId : otps.accId,
-		uid : otps.uid,
-		create_time : Date.now(),
-		status : 2,
-		areaId : otps.areaId,
 		extras_params : otps.extras_params || ""
 	}
 	async.waterfall([
