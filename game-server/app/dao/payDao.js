@@ -9,7 +9,6 @@ payDao.prototype.init  = function() {
 }
 //创建充值订单
 payDao.prototype.createGameOrder = function(otps,cb) {
-	console.log("createGameOrder",otps)
 	var self = this
 	sql = 'insert into game_order SET ?'
 	// console.log("createGameOrder",otps,pay_cfg[otps.pay_id])
@@ -17,7 +16,7 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 		game_order : uuid.v1(),
 		pay_id : otps.pay_id,
 		goodsName : pay_cfg[otps.pay_id]["name"],
-		amount : pay_cfg[otps.pay_id]["rmb"],
+		amount : pay_cfg[otps.pay_id]["rmb"] || 0,
 		userName : otps.userName,
 		unionid : otps.unionid,
 		accId : otps.accId,
