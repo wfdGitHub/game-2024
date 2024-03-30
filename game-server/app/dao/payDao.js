@@ -85,8 +85,8 @@ payDao.prototype.checkGameOrder = function(res,otps,cb) {
 }
 //订单支付完成
 payDao.prototype.overGameOrder = function(otps) {
-	sql = 'update game_order SET pay_time=?,status=0,order_no=?,channel_code=?,channel_uid=? where game_order = ?'
-	this.db.query(sql,[Date.now(),otps.order_no,otps.channel,otps.channel_uid,otps.game_order],function(){})
+	sql = 'update game_order SET pay_time=?,status=0,order_no=?,channel_code=?,channel_uid=?,amount=? where game_order = ?'
+	this.db.query(sql,[Date.now(),otps.order_no,otps.channel,otps.channel_uid,otps.amount,otps.game_order],function(){})
 }
 payDao.prototype.faildOrder = function(str,sdkInfo,gameInfo) {
 	var info = {
