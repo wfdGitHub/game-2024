@@ -446,11 +446,11 @@ var model = function(fightContorl) {
 			    "magDef": artifact_level[artifact].magDef,
 			    "speed" : artifact_level[artifact].speed
 			}
-			model.mergeData(info,lvInfo)
+			this.mergeData(info,lvInfo)
 			for(var i = 1;i <= artifact_level[i].talent;i++){
 				if(artifact_talent[info.id]){
 					var talentId = artifact_talent[info.id]["talent"+i]
-					model.mergeTalent(info,talentId)
+					this.mergeTalent(info,talentId)
 				}
 			}
 		}
