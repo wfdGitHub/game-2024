@@ -447,7 +447,7 @@ var model = function(fightContorl) {
 			    "speed" : artifact_level[artifact].speed
 			}
 			this.mergeData(info,lvInfo)
-			for(var i = 1;i <= artifact_level[i].talent;i++){
+			for(var i = 1;i <= artifact_level[artifact].talent;i++){
 				if(artifact_talent[info.id]){
 					var talentId = artifact_talent[info.id]["talent"+i]
 					this.mergeTalent(info,talentId)
