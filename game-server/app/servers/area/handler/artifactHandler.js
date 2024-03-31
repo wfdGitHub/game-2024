@@ -41,7 +41,7 @@ artifactHandler.prototype.upgradeArtifact = function(msg, session, next) {
       var coin = artifact_level[lv]["coin"]
       var str = "1000150:"+needNum
       if(coin)
-        str += "201:"+coin
+        str += "&201:"+coin
       console.log(str,needNum)
       self.areaManager.areaMap[areaId].consumeItems(uid,str,1,"神兵升级",function(flag,err) {
         if(!flag){
