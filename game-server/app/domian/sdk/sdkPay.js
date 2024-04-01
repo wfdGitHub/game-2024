@@ -87,7 +87,6 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 		}
 	],function(err) {
 		console.error(err)
-		cb(false,err)
 	})
 }
 local.decode = function(str,key){
