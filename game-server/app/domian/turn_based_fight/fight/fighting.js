@@ -102,9 +102,9 @@ model.prototype.load = function(belong,otps) {
 }
 //加载初始阵容
 model.prototype.loadBeginHero = function(belong) {
-	var comeonNum = this[belong+"TeamCfg"]["comeonNum"] || 5
+	var comeonNum = this[belong+"TeamCfg"]["comeonNum"] || 6
 	var heros = []
-	for(var i = 0;i < comeonNum && i < 5;i++)
+	for(var i = 0;i < comeonNum && i < 6;i++)
 		heros.push(this.loadHero(belong,indexMap[i]))
 	return heros
 }
