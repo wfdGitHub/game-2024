@@ -1432,7 +1432,7 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 							if(this.buffs["fengzheng"]){
 								var tmpreleaser = this.buffs["fengzheng"].releaser
 								this.buffs["fengzheng"].useBuff()
-								skillManager.useSkill(tmpreleaser.defaultSkill,true,this)
+								skillManager.useSkill(tmpreleaser.defaultSkill,true,[this])
 							}
 						}).bind(this))
 					}
