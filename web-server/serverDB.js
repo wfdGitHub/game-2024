@@ -123,6 +123,10 @@ var model = function() {
 	posts["/getRechargeCfg"] = function(req,res) {
 		res.send(recharge_cfg)
 	}
+	//获取护符表
+	posts["/getHufuSkill"] = function(req,res) {
+		res.send(hufu_skill)
+	}
 	//获取系统数据
 	posts["/getOSData"] = function(req,res) {
 		var info = {}
