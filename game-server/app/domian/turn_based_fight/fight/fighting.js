@@ -472,7 +472,7 @@ model.prototype.diedListCheck = function() {
 		if(!this.diedList[i].buffs["jinhun"]){
         	if(this.diedList[i].first_resurgence && this.seeded.random("复活判断") < this.diedList[i].first_resurgence){
 	            this.diedList[i].first_resurgence = 0
-	            this.diedList[i].resurgence(0.3)
+	            this.diedList[i].resurgence(0.3,this.diedList[i])
         	}else if(this.diedList[i].died_resurgence){
 				this.diedList[i].died_resurgence = false
 				this.diedList[i].resurgence(1,this.diedList[i])
