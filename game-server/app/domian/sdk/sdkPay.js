@@ -73,7 +73,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 		function(orderData,orderOtps,next) {
 			//订单发货
 			if(orderData && orderOtps){
-				finish_callback(orderData.areaId,orderData.uid,orderData.amount,orderData.pay_id,info,function(flag,err) {
+				finish_callback(orderData.areaId,orderData.uid,info.amount,orderData.pay_id,info,function(flag,err) {
 					if(flag){
 						res.send("SUCCESS")
 						self.payDao.overGameOrder(info)

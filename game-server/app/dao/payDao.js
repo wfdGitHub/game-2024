@@ -33,7 +33,7 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 					if(err || !data){
 						next("未定制英雄")
 					}else{
-						info.amount = Number(data)
+						info.amount = Math.floor(data * 0.01)
 						next()
 					}
 				})
