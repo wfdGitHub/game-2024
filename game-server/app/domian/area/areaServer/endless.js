@@ -38,10 +38,10 @@ module.exports = function() {
 			cb(false,"hIds error "+hIds)
 			return
 		}
-		if(!Array.isArray(verifys) || verifys.length != seededList.length){
-			cb(false,"verifys error "+verifys)
-			return
-		}
+		// if(!Array.isArray(verifys) || verifys.length != seededList.length){
+		// 	cb(false,"verifys error "+verifys)
+		// 	return
+		// }
 		if(!Array.isArray(seededList) || !seededList.length || seededList.length !== index){
 			cb(false,"seededList.length != index",seededList,index)
 			return
@@ -140,10 +140,10 @@ module.exports = function() {
 			cb(false,"hIds error "+hIds)
 			return
 		}
-		if(!Array.isArray(verifys) || verifys.length != seededList.length){
-			cb(false,"verifys error "+verifys)
-			return
-		}
+		// if(!Array.isArray(verifys) || verifys.length != seededList.length){
+		// 	cb(false,"verifys error "+verifys)
+		// 	return
+		// }
 		if(!Array.isArray(seededList) || !seededList.length || seededList.length !== index){
 			cb(false,"seededList.length != index",seededList,index)
 			return
