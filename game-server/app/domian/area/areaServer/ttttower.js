@@ -86,8 +86,6 @@ module.exports = function() {
 						awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["awards"],1,"通天塔"+level))
 					awardList = awardList.concat(self.addItemStr(uid,ttttower_level[level]["mopupAward"],1,"通天塔"+level))
 					cb(true,awardList)
-			   	}else if(verify !== self.fightContorl.getVerifyInfo()){
-			   		self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"通天塔")
 			   	}else{
 			   		cb(false)
 			   	}
@@ -207,11 +205,7 @@ module.exports = function() {
 						awardList = awardList.concat(self.addItemStr(uid,ttttower_realm[level]["awards_"+realm],1,"阵营塔"+level))
 					awardList = awardList.concat(self.addItemStr(uid,ttttower_realm[level]["mopupAward_"+realm],1,"阵营塔"+level))
 					cb(true,awardList)
-			   	}else if(verify !== self.fightContorl.getVerifyInfo()){
-			    	self.verifyFaild(uid,verify,self.fightContorl.getVerifyInfo(),"阵营塔")
-			    	next({"text":"战斗验证错误","fightRecord":self.fightContorl.getVerifyInfo()})
-			    	return
-			    }else{
+			   	}else{
 			   		cb(false)
 			   	}
 			}
