@@ -7,7 +7,7 @@ var character = require("../entity/character.js")
 var fightRecord = require("./fightRecord.js")
 var buffManager = require("../buff/buffManager.js")
 var maxRound = 20				//最大回合
-var indexMap = [0,1,2,3,4,5]
+var indexMap = [4,3,5,1,0,2]
 var model = function(atkInfo,defInfo,otps) {
     fightRecord.init()
     this.atkTeamInfo = {"comeId":0,"rival":"def"}
