@@ -800,7 +800,7 @@ model.useAttackSkill = function(skill,chase,point) {
 			fightRecord.push(tmpInfo)
 		}
 		if(skill.character.overDamageToMaxHp && overflow && !skill.character.died){
-			var target = this.locator.getTargesMaxHP(targets)
+			var target = this.locator.getTargets(skill.character,"enemy_maxAtk_1")[0]
 			if(target){
 				var tmpRecord = {type : "other_damage",value : Math.ceil(skill.character.overDamageToMaxHp * overflow),d_type:skill.damageType}
 				tmpRecord = target.onHit(skill.character,tmpRecord)

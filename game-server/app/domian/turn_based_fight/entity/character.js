@@ -1690,6 +1690,7 @@ model.prototype.lessHP = function(attacker,info,callbacks) {
 			this.attInfo.hp = 1
 			info.oneblood = true
 		}else{
+			info.realValue = this.attInfo.hp
 			this.attInfo.hp -= info.value
 			this.onDie(callbacks)
 		}
