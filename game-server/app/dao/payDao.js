@@ -1,7 +1,9 @@
 const stringRandom = require('string-random');
 const pay_cfg = require("../../config/gameCfg/pay_cfg.json")
+const default_cfg = require("../../config/gameCfg/default_cfg.json")
 const uuid = require("uuid")
 const async = require("async")
+const recharge_rate = default_cfg["recharge_rate"] ? Number(default_cfg["recharge_rate"]["value"]) || 1 : 1
 var mysql = require("./mysql/mysql.js")
 var payDao = function() {}
 payDao.prototype.init  = function() {
@@ -54,6 +56,7 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 				}else{
 					info.messagetype = "createGameOrder"
 					self.cacheDao.saveCache(info)
+					info.real_amount = Number((info.amount * recharge_rate).toFixed(2))
 					cb(true,info)
 				}
 			})
@@ -82,11 +85,12 @@ payDao.prototype.checkGameOrder = function(res,otps,cb) {
 			res.send("SUCCESS")
 			cb(false,"finishGameOrder game_order err")
 		}else{
+			var real_amount = Number((Number(data.amount) * recharge_rate).toFixed(2))
 			if(data.status == 0){
 				self.faildOrder("订单已完成",otps,data)
 				res.send("SUCCESS")
 				cb(false)
-			}else if(Number(otps.amount) < data.amount){
+			}else if(real_amount < otps.amount){
 				self.faildOrder("充值金额错误",otps,data)
 				res.send("SUCCESS")
 				cb(false,"充值金额错误",data)
