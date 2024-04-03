@@ -86,10 +86,6 @@ payDao.prototype.checkGameOrder = function(res,otps,cb) {
 			cb(false,"finishGameOrder game_order err")
 		}else{
 			var real_amount = Number((Number(data.amount) * recharge_rate).toFixed(2))
-			console.log("otps",otps)
-			console.log("data",data)
-			console.log("real_amount",real_amount)
-			console.log("recharge_rate",recharge_rate)
 			if(data.status == 0){
 				self.faildOrder("订单已完成",otps,data)
 				res.send("SUCCESS")
