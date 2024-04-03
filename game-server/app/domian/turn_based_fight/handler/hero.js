@@ -537,7 +537,7 @@ var model = function(fightContorl) {
 			lvInfo.magDef += Math.floor(lvInfo.magDef * evolve_lv[info.evo]["att_add"])
 			this.mergeTalent(info,evolve_lv[info.evo]["talent"])
 			//升星天赋
-			for(var i = 1;i <= evolve_lv[info.evo]["star_talent"],i++)
+			for(var i = 1;i <= evolve_lv[info.evo]["star_talent"];i++)
 				this.mergeTalent(info,heros[id]["star"+i])
 		}
 		this.mergeData(info,lvInfo)

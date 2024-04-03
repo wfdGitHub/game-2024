@@ -124,6 +124,17 @@ module.exports = function() {
 					cb(true,list)
 				return list
 			break
+			case "equip_unrated":
+				var eLv = itemCfg[itemId].value
+				var slot = itemCfg[itemId].slot
+				var qa  = itemCfg[itemId].arg
+				var list = []
+				for(var i = 0;i < value;i++)
+					list.push({type : "equip",data : self.makeUnratedEquipByQa(uid,eLv,slot,qa)})
+				if(cb)
+					cb(true,list)
+				return list
+			break
 			case "fabao":
 				var type = itemCfg[itemId].value
 				var qa  = itemCfg[itemId].arg

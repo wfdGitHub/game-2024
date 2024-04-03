@@ -38,9 +38,10 @@ var model = function() {
 					}else{
 						eStr = data
 						eInfo = JSON.parse(eStr)
+						var equipData = self.fightContorl.getEquipData(eStr)
 						//判断穿戴等级
-						if(self.getLordLv(uid) < equip_lv[eInfo.lv]["lv"]){
-							next("携带等级错误 "+heroInfo.lv+"/"+equip_lv[eInfo.lv]["lv"])
+						if(self.getLordLv(uid) < equipData.carryLv){
+							next("携带等级错误 "+heroInfo.lv+"/"+equipData.carryLv)
 							return
 						}
 						next()
@@ -152,6 +153,22 @@ var model = function() {
 	this.makeEquipByQa = function(uid,lv,slot,qa) {
 		var id = self.getLordLastid(uid)
 		var info = self.fightContorl.makeEquip(lv,slot,qa)
+		info.id = id
+		if(info.qa >= 5){
+			var lordName = self.getLordName(uid)
+			if(lordName)
+				self.addNotice("equip",lordName,equip_lv[info.lv]["name_"+info.slot])
+			self.mysqlDao.addEquipLog({uid:uid,name:equip_lv[info.lv]["name_"+info.slot],id:info.id,info:info,reason:"获得装备"})
+		}
+		info = JSON.stringify(info)
+		self.setObj(uid,main_name,id,info)
+		self.taskUpdate(uid,"equip",1,qa)
+		return info
+	}
+	//获取无级别装备
+	this.makeUnratedEquipByQa = function(uid,lv,slot,qa) {
+		var id = self.getLordLastid(uid)
+		var info = self.fightContorl.makeFullUnratedEquip(lv,slot,qa)
 		info.id = id
 		if(info.qa >= 5){
 			var lordName = self.getLordName(uid)

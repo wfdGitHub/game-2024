@@ -48,6 +48,18 @@ var model = function(fightContorl) {
 			info.suit = this.createEquipSuit(info)
 		return info
 	}
+	//生成满属性无级别装备
+	this.makeFullUnratedEquip = function(lv,slot,qa) {
+		console.log("makeFullUnratedEquip",lv,slot,qa)
+		var info = this.makeStandardEquip(lv,slot,qa)
+		info = JSON.parse(info)
+		if(equip_lv[lv]["spe"])
+			info.spe = this.createeEquipSpe(info)
+		if(equip_lv[lv]["suit_list"])
+			info.suit = this.createEquipSuit(info)
+		info.unrated = 1
+		return info
+	}
 	//生成基准战力装备
 	this.makeStandardEquip = function(lv,slot,qa) {
 		if(!equip_lv[lv])
@@ -127,6 +139,9 @@ var model = function(fightContorl) {
 			else
 				info.stAtt[i] = Number(info.stAtt[i].toFixed(2))
 		}
+		//无级别
+		if(eInfo.unrated)
+			info.carryLv = 1
 		//计算评分  (特效*100*装备等级 套装*100*装备等级   主属性倍率*属性倍率*100   附加属性和*100)
 		info.score = Math.ceil(((info.spe.length + (info.suit ? 1.5 : 0)) * 200 * Math.sqrt(info.lv)) + (eInfo.att.main_1 + eInfo.att.main_2)*equip_lv[info.lv]["mainRate"]*80 + extraNum*40 + (Math.pow(info.qa,1.4) * 100))
 		return info
