@@ -434,6 +434,15 @@ var model = function() {
 					  		return
 					  	}
 					}
+					//限制同名
+					if(evolve_lv[heroInfo.evo+1]["equal"]){
+						for(var i in herolist){
+							if(herolist[i].id != heroInfo.id){
+						  		next("需同名英雄"+herolist[i].id)
+						  		return
+							}
+						}
+					}
 				    self.heroDao.removeHeroList(self.areaId,uid,hIds,function(flag,err) {
 				      if(flag){
 				      	var info = self.fightContorl.getHeroRecycle(herolist)
