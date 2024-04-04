@@ -31,7 +31,7 @@ payDao.prototype.createGameOrder = function(otps,cb) {
 	async.waterfall([
 		function(next) {
 			if(pay_cfg[otps.pay_id]["type"] == "DIY"){
-				self.redisDao.db.getObj("player:user:"+otps.uid+":diy",pay_cfg[otps.pay_id]["arg2"]+"_price",function(err,data) {
+				self.redisDao.db.hget("player:user:"+otps.uid+":diy",pay_cfg[otps.pay_id]["arg2"]+"_price",function(err,data) {
 					if(err || !data){
 						next("未定制英雄")
 					}else{
