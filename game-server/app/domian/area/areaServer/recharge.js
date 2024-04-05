@@ -8,6 +8,8 @@ const pay_cfg = require("../../../../config/gameCfg/pay_cfg.json")
 const wuxian = require("../../../../config/gameCfg/wuxian.json")
 const util = require("../../../../util/util.js")
 const GM_CFG = require("../../../../config/gameCfg/GM_CFG.json")
+const default_cfg = require("../../../../config/gameCfg/default_cfg.json")
+const recharge_rate = default_cfg["recharge_rate"] ? Number(default_cfg["recharge_rate"]["value"]) || 1 : 1
 const uuid = require("uuid")
 const async = require("async")
 const main_name = "activity"
@@ -299,7 +301,8 @@ module.exports = function() {
 						self.payDao.faildOrder("英雄数据错误",info,list)
 						return
 					}
-					if(!price || info.amount < price){
+					var amount = Math.round((info.amount / recharge_rate).toFixed(2))
+					if(!price || amount < price){
 						cb(false,"价格错误")
 						self.payDao.faildOrder("定制金额错误",info,list)
 						return
