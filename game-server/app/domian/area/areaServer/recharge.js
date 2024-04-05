@@ -170,7 +170,7 @@ module.exports = function() {
 					if(flag)
 						next(null,data)
 					else
-						next(err)
+						next(data)
 				}
 				switch(pay_cfg[pay_id]["type"]){
 					case "lv_fund":
