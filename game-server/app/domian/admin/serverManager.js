@@ -5,6 +5,8 @@ var adminManager = require('./adminManager.js')
 var parseString = require('xml2js').parseString;
 var util = require("../../../util/util.js")
 var pay_cfg = require("../../../config/gameCfg/pay_cfg.json")
+const default_cfg = require("../../../config/gameCfg/default_cfg.json")
+const recharge_rate = default_cfg["recharge_rate"] ? Number(default_cfg["recharge_rate"]["value"]) || 1 : 1
 var local = {}
 var serverManager = function(app) {
 	this.app = app
@@ -70,8 +72,9 @@ serverManager.prototype.finish_callback = function(areaId,uid,amount,pay_id,data
 	var serverId = self.areaDeploy.getServer(self.areaDeploy.getFinalServer(areaId))
     self.app.rpc.area.areaRemote.finish_recharge.toServer(serverId,areaId,uid,pay_id,data,function(flag,err){
     	if(flag){
-    		self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,Math.floor(Number(amount) * 100),function(){})
-    		self.app.rpc.area.areaRemote.real_recharge_rmb.toServer(serverId,areaId,uid,Math.floor(Number(amount) * 100),rate,function(){})
+    		var real_amount = Math.floor(Number(amount) / recharge_rate * 100)
+    		self.app.rpc.area.areaRemote.real_recharge.toServer(serverId,areaId,uid,real_amount,function(){})
+    		self.app.rpc.area.areaRemote.real_recharge_rmb.toServer(serverId,areaId,uid,real_amount,rate,function(){})
     	}
 		cb(flag,err)
     })
