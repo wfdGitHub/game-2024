@@ -1,4 +1,5 @@
 //buff基础
+var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var fightRecord = require("../fight/fightRecord.js")
 var buffBasic = function(releaser,character,otps,fighting) {
 	this.fightRecord = fightRecord
@@ -11,6 +12,13 @@ var buffBasic = function(releaser,character,otps,fighting) {
 	this.character = character
 	this.buffManager = require("./buffManager.js")
 	this.otps = otps
+	this.attKeys = {}
+	var buffCfg = buff_cfg[this.buffId]
+	for(var i = 1;i <= 3;i++){
+		//属性
+		if(buffCfg["attKey"+i])
+			this.attKeys[buffCfg["attKey"+i]] = buffCfg["attValue"+i] || 0
+	}
 }
 //clear
 buffBasic.prototype.clear = function() {
@@ -41,5 +49,13 @@ buffBasic.prototype.update = function(dt) {
 			this.destroy()
 		}
 	}
+}
+//获取加成属性
+model.prototype.getAttInfo = function(name) {
+	if(this.attKeys[name] !== undefined){
+		var value = this.list.length * this.attKeys[name]
+		return value || 0
+	}
+	return 0
 }
 module.exports = buffBasic
