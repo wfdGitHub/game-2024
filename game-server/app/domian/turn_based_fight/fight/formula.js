@@ -285,10 +285,6 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			count = 4
 		info.value += Math.floor(info.value * attacker.realm_action_amp * count)
 	}
-	//男性英雄伤害减免
-	if(target.man_damage_red && attacker.sex == 1){
-		info.value -= Math.floor(info.value * target.man_damage_red)
-	}
 	//每回合首次受到伤害减免
 	if(skill.isAnger && target.first_beSkill_red && target.first_beSkill_flag){
 		target.first_beSkill_flag = false
@@ -331,42 +327,29 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 	if(target.otps["ruodian_"+attacker.realm])
 		info.value += Math.floor(info.value * target.otps["ruodian_"+attacker.realm])
 	//最大生命值加成
+	var hpRate = attacker.getTotalAtt("HP_damage")
 	if(chase){
-		if(!skill.isAnger){
-			if(attacker.add_default_maxHp){
-				info.realDamage = Math.floor(target.attInfo.maxHP * attacker.add_default_maxHp)
-				info.value += info.realDamage
-			}
-		}else{
-			if(attacker.add_anger_maxHp){
-				info.realDamage = Math.floor(target.attInfo.maxHP * attacker.add_anger_maxHp)
-				info.value += info.realDamage
-			}
-		}
-	}else{
-		if(skill.maxHP_damage){
-			info.realDamage = Math.floor(target.attInfo.maxHP * skill.maxHP_damage)
-			info.value += info.realDamage
-		}
+		if(!skill.isAnger)
+			hpRate += attacker.add_default_maxHp
+		else if(attacker.add_anger_maxHp)
+				hpRate += attacker.add_anger_maxHp
 	}
+	if(skill.maxHP_damage)
+		hpRate += skill.maxHP_damage
 	//技能最大生命值加成
 	if(skill.isAnger){
-		if(attacker.polang_power && attacker.buffs["polang"]){
-			info.realDamage = Math.floor(target.attInfo.maxHP * attacker.buffs["polang"].getValue() * attacker.polang_power)
-			info.value += info.realDamage
-		}
-		if(attacker.skill_bleed_maxHp && target.buffs["bleed"]){
-			info.realDamage = Math.floor(target.attInfo.maxHP * target.buffs["bleed"].getValue() * attacker.skill_bleed_maxHp)
-			info.value += info.realDamage
-		}
-		if(attacker.fanzhi_damage && attacker.buffs["fanzhi"]){
-			info.realDamage = Math.floor(target.attInfo.maxHP * attacker.buffs["fanzhi"].getValue() * attacker.fanzhi_damage)
-			info.value += info.realDamage
-		}
-		if(attacker.maxHP_damage){
-			info.realDamage = Math.floor(target.attInfo.maxHP * attacker.maxHP_damage)
-			info.value += info.realDamage
-		}
+		if(attacker.polang_power && attacker.buffs["polang"])
+			hpRate += attacker.buffs["polang"].getValue() * attacker.polang_power
+		if(attacker.skill_bleed_maxHp && target.buffs["bleed"])
+			hpRate += target.buffs["bleed"].getValue() * attacker.skill_bleed_maxHp
+		if(attacker.fanzhi_damage && attacker.buffs["fanzhi"])
+			hpRate += attacker.buffs["fanzhi"].getValue() * attacker.fanzhi_damage
+		if(attacker.maxHP_damage)
+			hpRate += attacker.maxHP_damage
+	}
+	if(hpRate){
+		info.realDamage = Math.floor(target.attInfo.maxHP * hpRate)
+		info.value += info.realDamage
 	}
 	//减伤判断
 	if(target.reduction_over){

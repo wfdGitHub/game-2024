@@ -12,12 +12,16 @@ var buffBasic = function(releaser,character,otps,fighting) {
 	this.character = character
 	this.buffManager = require("./buffManager.js")
 	this.otps = otps
+	this.attBuff = false
 	this.attKeys = {}
+	this.list = {}
 	var buffCfg = buff_cfg[this.buffId]
 	for(var i = 1;i <= 3;i++){
 		//属性
-		if(buffCfg["attKey"+i])
+		if(buffCfg["attKey"+i]){
+			this.attBuff = true
 			this.attKeys[buffCfg["attKey"+i]] = buffCfg["attValue"+i] || 0
+		}
 	}
 }
 //clear
@@ -51,10 +55,12 @@ buffBasic.prototype.update = function(dt) {
 	}
 }
 //获取加成属性
-model.prototype.getAttInfo = function(name) {
+buffBasic.prototype.getAttInfo = function(name) {
 	if(this.attKeys[name] !== undefined){
-		var value = this.list.length * this.attKeys[name]
-		return value || 0
+		var value = 0
+		for(var i in this.list)
+			value += this.attKeys[name]
+		return value
 	}
 	return 0
 }

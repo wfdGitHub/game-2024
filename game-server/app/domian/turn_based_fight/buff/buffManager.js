@@ -2,6 +2,8 @@ var fightRecord = require("../fight/fightRecord.js")
 var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var buffList = {}
 for(var buffId in buff_cfg){
+	if(buff_cfg[buffId]["tool"])
+		continue
 	if(buff_cfg[buffId]["default"])
 		buffList[buffId] = require("./defaultBuff.js")
 	else
@@ -19,12 +21,16 @@ buffFactory.createBuff = function(releaser,character,otps) {
 	var buffId = otps.buffId
 	if(character.characterType == "master")
 		return
-	if(releaser.buffs["sneak"])
-		return
 	if(!buff_cfg[buffId]){
 		console.error("buff 不存在 ",buffId)
 		return
 	}
+	if(buff_cfg[buffId]["tool"]){
+		this.toolBuff(releaser,character,buff_cfg[buffId])
+		return
+	}
+	if(releaser.buffs["sneak"])
+		return
 	if(!otps.duration)
 		otps.duration = buff_cfg[buffId]["duration"] || 1
 	//亡魂不状态不可释放BUFF
@@ -149,6 +155,27 @@ buffFactory.checkListen = function(buffId,belong) {
 				}
 			}
 		}
+	}
+}
+//工具BUFF
+buffFactory.toolBuff = function(releaser,character,buffInfo) {
+	switch(buffInfo.toolKey){
+		case "self_anger":
+			releaser.addAnger(buffInfo.toolValue)
+		break
+		case "target_anger":
+			character.lessAnger(buffInfo.toolValue)
+		break
+		case "self_maxHP":
+			var recordInfo =  releaser.onHeal(this,{type : "heal",maxRate : buffInfo.toolValue})
+			recordInfo.type = "self_heal"
+			fightRecord.push(recordInfo)
+		break
+		case "target_maxHP":
+			var tmpRecord = {type : "other_damage",value : character.attInfo.maxHP * buffInfo.toolValue,d_type:"mag"}
+			tmpRecord = character.onHit(releaser,tmpRecord)
+			fightRecord.push(tmpRecord)
+		break
 	}
 }
 module.exports = buffFactory

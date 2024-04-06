@@ -4,14 +4,13 @@ var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
 	var id = 0
-	var list = {}
 	var count = 0
 	var max = buff_cfg[buff.buffId]["max"]
 	buff.refresh = function() {
-		for(var i in list){
-			list[i].duration--
-			if(list[i].duration <= 0){
-				delete list[i]
+		for(var i in buff.list){
+			buff.list[i].duration--
+			if(buff.list[i].duration <= 0){
+				delete buff.list[i]
 				count--
 			}
 		}
@@ -28,7 +27,7 @@ var model = function(releaser,character,otps) {
 			this.releaser = releaser
 			if(otps.duration > this.duration)
 				this.duration = otps.duration
-			list[id++] = {duration : otps.duration}
+			buff.list[id++] = {duration : otps.duration}
 			count++
 		}
 		var recordInfo = {type : "buff_num",id : buff.character.id,buffId : buff.buffId,num : count}

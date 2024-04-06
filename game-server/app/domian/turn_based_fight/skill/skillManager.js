@@ -630,11 +630,10 @@ model.useAttackSkill = function(skill,chase,point) {
 			}
 		}
 		//吸血
-		var bloodValue = 0
-		if(skill.character[skill.damageType+"_turn_hp"])
-			bloodValue += skill.character[skill.damageType+"_turn_hp"] * allDamage
+		var bloodRate = skill.character.getTotalAtt(skill.damageType+"_turn_hp")
 		if(skill.character.buffs["blood"])
-			bloodValue += skill.character.buffs["blood"].getValue() * allDamage
+			bloodRate += skill.character.buffs["blood"].getValue()
+		var bloodValue = bloodRate * allDamage
 		if(bloodValue){
 			var tmpInfo = skill.character.onHeal(skill.character,{type : "heal",value : bloodValue})
 			tmpInfo.type = "self_heal"
@@ -729,10 +728,6 @@ model.useAttackSkill = function(skill,chase,point) {
 				fightRecord.push(tmpInfo)
 				targets[i]["first_aid"] = 0
 			}
-			//受到女性英雄攻击恢复怒气
-			if(targets[i].women_damage_anger && skill.character.sex == 2){
-				targets[i].addAnger(targets[i].women_damage_anger)
-			}
 			//对敌方造成法术伤害时，如果目标处于异常状态，则使其怒气降低1点
 			if(skill.character.mag_debuff_anger && skill.damageType == "mag" && targets[i].getDebuffNum()){
 				targets[i].lessAnger(1)
@@ -754,6 +749,16 @@ model.useAttackSkill = function(skill,chase,point) {
 				if(!skill.character.otps.refrain_return || this.fighting.seeded.random("免疫还击") > skill.character.otps.refrain_return){
 					targets[i].defaultSkill.tmpMul = targets[i].otps.phy_retuan_amp
 					this.useSkill(targets[i].defaultSkill,true,[skill.character])
+				}
+			}
+			//存在指定BUFF添加BUFF
+			if(skill.character.otps.addBuff_if_buff_name && targets[i].buffs[skill.character.otps.addBuff_if_buff_name]){
+				var buffInfo = JSON.parse(skill.character.otps.addBuff_if_buff_data)
+				if(this.seeded.random("BUFF") < buffInfo.buffRate){
+					var buffTargets = this.locator.getBuffTargets(skill.character,buffInfo.buff_tg,[targets[i]])
+					for(var j = 0;j < buffTargets.length;j++)
+						if(!buffTargets[j].died)
+							buffManager.createBuff(skill.character,buffTargets[j],buffInfo)
 				}
 			}
 		}

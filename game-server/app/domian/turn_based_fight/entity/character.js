@@ -57,6 +57,9 @@ var model = function(otps) {
 	this.attInfo.healRate = otps["healRate"] || 0		//治疗暴击几率
 	this.attInfo.healAdd = otps["healAdd"] || 0			//被治疗加成
 	this.attInfo.speed = Math.ceil((otps["speed"] || 0))//速度值
+	this.attInfo.HP_damage = otps["HP_damage"] || 0 	//攻击附带目标生命上限伤害比例
+	this.attInfo.phy_turn_hp = otps["phy_turn_hp"] || 0 //物理吸血率
+	this.attInfo.mag_turn_hp = otps["mag_turn_hp"] || 0 //法术吸血率
 	this.attInfo.speed += Math.floor((this.attInfo.speed * (this.attInfo.M_SPE-40) / (this.attInfo.M_SPE+120)))
 	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
 	this.surplus_health = otps.surplus_health			//剩余生命值比例
@@ -289,8 +292,6 @@ var model = function(otps) {
 	this.wy_acc = otps.wy_acc || false	//携带威压饰品效果
 	this.atkcontrol = otps.atkcontrol || 0 //控制概率增加
 	this.defcontrol = otps.defcontrol || 0 //被控概率减免
-	this.phy_turn_hp = otps.phy_turn_hp || 0 //物理伤害转生命值比例
-	this.mag_turn_hp = otps.mag_turn_hp || 0 //法术伤害转生命值比例
 	if(otps.first_armor)
 		this.first_buff_list.push({buffId : "armor",duration : 2,buffArg : otps.first_armor}) //战斗前2回合免伤提高
 	if(otps.first_amplify_mag)
@@ -497,6 +498,7 @@ var model = function(otps) {
 	if(this.died)
 		this.isNaN = true
 	this.buffs = {}					//buff列表
+	this.attBuffs = {} 				//属性BUFF
 	//=========属性加成=======//
 	this.self_adds = {}							//自身百分比加成属性
 	this.team_adds = {}							//全队百分比加成属性
@@ -1465,6 +1467,30 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 								buffManager.createBuff(this,this,this.behit_buffs[i])
 						}).bind(this))
 					}
+					//被物攻BUFF
+					if(info.d_type == "phy" && this.otps.behit_phy_buff){
+						callbacks.push((function(){
+							buffManager.createBuff(this,this,JSON.parse(this.otps.behit_phy_buff))
+						}).bind(this))
+					}
+					//被法攻BUFF
+					if(info.d_type == "mag" && this.otps.behit_mag_buff){
+						callbacks.push((function(){
+							buffManager.createBuff(this,this,JSON.parse(this.otps.behit_mag_buff))
+						}).bind(this))
+					}
+					//被攻击时若敌方存在BUFF增加BUFF
+					if(this.otps.addBuff_behit_buff_name && attacker.buffs[this.otps.addBuff_behit_buff_name]){
+						callbacks.push((function(){
+							var buffInfo = JSON.parse(this.otps.addBuff_behit_buff_data)
+							if(this.fighting.seeded.random() < buffInfo.buffRate){
+								var buffTargets = this.fighting.locator.getBuffTargets(this,buffInfo.buff_tg,[attacker])
+								for(var j = 0;j < buffTargets.length;j++)
+									if(!buffTargets[j].died)
+										buffManager.createBuff(this,buffTargets[j],buffInfo)
+							}
+						}).bind(this))
+					}
 				}
 			}
 		}
@@ -1761,6 +1787,12 @@ model.prototype.getTotalAtt = function(name) {
 			value += Math.floor((this.attInfo.maxHP-this.attInfo.hp)/this.attInfo.maxHP * 10) * this.otps.low_hp_value
 	if(this.buffs[name])
 		value += this.buffs[name].getValue()
+  	for(var i in this.attBuffs){
+  		value += this.buffs[i].getAttInfo(name)
+  		if(name == "HP_damage"){
+  			console.log(this.buffs[i].getAttInfo(name))
+  		}
+  	}
 	switch(name){
 		case "speed":
 			if(this.buffs["cold"])
@@ -1919,11 +1951,13 @@ model.prototype.addBuff = function(releaser,buff) {
 	}else{
 		this.buffs[buff.buffId] = buff
 	}
+	if(buff.attBuff)
+		this.attBuffs[buff.buffId] = 1
 }
 model.prototype.removeBuff = function(buffId) {
-    if(this.buffs[buffId]){
+    if(this.buffs[buffId])
         delete this.buffs[buffId]
-    }
+    delete this.attBuffs[buffId]
 }
 //判断被动技能是否生效
 model.prototype.isPassive = function(id,callbacks) {
