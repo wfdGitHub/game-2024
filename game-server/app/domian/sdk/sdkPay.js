@@ -77,7 +77,7 @@ model.prototype.quick_order = function(data,finish_callback,req,res) {
 					if(flag){
 						res.send("SUCCESS")
 						self.payDao.overGameOrder(info)
-						self.payDao.updateRmb(orderOtps)
+						self.payDao.updateRmb(orderData)
 					}else{
 						self.payDao.faildOrder(err,info)
 						res.send(err)
