@@ -160,18 +160,18 @@ buffFactory.checkListen = function(buffId,belong) {
 //工具BUFF
 buffFactory.toolBuff = function(releaser,character,buffInfo) {
 	switch(buffInfo.toolKey){
-		case "self_anger":
-			releaser.addAnger(buffInfo.toolValue)
+		case "addAnger":
+			character.addAnger(buffInfo.toolValue)
 		break
-		case "target_anger":
+		case "lessAnger":
 			character.lessAnger(buffInfo.toolValue)
 		break
-		case "self_maxHP":
-			var recordInfo =  releaser.onHeal(this,{type : "heal",maxRate : buffInfo.toolValue})
+		case "addHP":
+			var recordInfo =  character.onHeal(releaser,{type : "heal",maxRate : buffInfo.toolValue})
 			recordInfo.type = "self_heal"
 			fightRecord.push(recordInfo)
 		break
-		case "target_maxHP":
+		case "lessHP":
 			var tmpRecord = {type : "other_damage",value : character.attInfo.maxHP * buffInfo.toolValue,d_type:"mag"}
 			tmpRecord = character.onHit(releaser,tmpRecord)
 			fightRecord.push(tmpRecord)
