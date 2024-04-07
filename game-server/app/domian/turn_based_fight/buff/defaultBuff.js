@@ -5,6 +5,8 @@ var model = function(releaser,character,otps) {
 	var buff = new buffBasic(releaser,character,otps)
 	var id = 0
 	var count = 0
+	buff.value = otps.value || 0
+	buff.mul = otps.mul || 0
 	var max = buff_cfg[buff.buffId]["max"]
 	buff.refresh = function() {
 		for(var i in buff.list){

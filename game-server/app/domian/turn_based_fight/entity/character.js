@@ -1089,6 +1089,17 @@ model.prototype.roundOver = function() {
 		}
 		fightRecord.push(tmpRecord)
 	}
+	if(this.buffs["together"] && this.buffs["together"].attacker.died){
+		var tmpHPRate = this.buffs["together"].value
+		if(tmpHPRate){
+			if(this.getHPRate() <= tmpHPRate)
+				return
+			this.onOtherDamage(this,Math.floor(this.attInfo.maxHP * tmpHPRate))
+		}
+		this.buffs["together"].attacker.revive(this.buffs["together"].mul * this.buffs["together"].attacker.getTotalAtt("maxHP"))
+		if(!tmpHPRate)
+			this.buffs["together"].attacker.addAnger(2,true)
+	}
 	this.phy_turn_value = 0
 	this.half_hp_shild_flag = true
 	this.first_beSkill_flag = true
@@ -1958,6 +1969,10 @@ model.prototype.removeBuff = function(buffId) {
     if(this.buffs[buffId])
         delete this.buffs[buffId]
     delete this.attBuffs[buffId]
+}
+//获取血量比例
+model.prototype.getHPRate = function() {
+	return this.attInfo.hp / this.attInfo.maxHP
 }
 //判断被动技能是否生效
 model.prototype.isPassive = function(id,callbacks) {
