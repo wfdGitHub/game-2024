@@ -15,6 +15,8 @@ buffFactory.init = function(seeded,fighting) {
 	this.defListenList = {}
 	this.seeded = seeded
 	this.fighting = fighting
+	this.listenId = 1
+	this.listenMap = {}
 }
 //创建BUFF根据字符串
 buffFactory.createBuffByData = function(releaser,character,str) {
@@ -112,11 +114,24 @@ buffFactory.createBuff = function(releaser,character,otps) {
 			fightRecord.push({type:"show_tag",id:character.id,tag:"dizzy_clear_anger"})
 			character.lessAnger(character.curAnger)
 		}
-		this.checkListen(buffId,character.belong)
+		this.checkListen(buffId,character)
 	}else{
 		console.error("buffId 不存在",buffId)
 		return false
 	}
+}
+//设置监听回调
+buffFactory.addListenerCB = function(buffId,cb) {
+	var id = this.listenId++
+	if(!this.listenMap[buffId])
+		this.listenMap[buffId] = {}
+	this.listenMap[buffId][id] = cb
+	return id
+}
+//移除监听回调
+buffFactory.delListenerCB = function(buffId,id) {
+	if(this.listenMap[buffId])
+		delete this.listenMap[buffId][id]
 }
 //设置BUFF监听
 buffFactory.addListener = function(character) {
@@ -136,8 +151,8 @@ buffFactory.addListener = function(character) {
 	}
 }
 //检测BUFF监听
-buffFactory.checkListen = function(buffId,belong) {
-	if(belong == "atk"){
+buffFactory.checkListen = function(buffId,character) {
+	if(character.belong == "atk"){
 		if(this.defListenList[buffId]){
 			for(var i in this.defListenList[buffId]){
 				var character = this.defListenList[buffId][i]
@@ -148,7 +163,7 @@ buffFactory.checkListen = function(buffId,belong) {
 				}
 			}
 		}
-	}else if(belong == "def"){
+	}else if(character.belong == "def"){
 		if(this.atkListenList[buffId]){
 			for(var i in this.atkListenList[buffId]){
 				var character = this.atkListenList[buffId][i]
@@ -159,6 +174,9 @@ buffFactory.checkListen = function(buffId,belong) {
 				}
 			}
 		}
+	}
+	for(var id in this.listenMap[buffId]){
+		this.listenMap[buffId][id](buffId,character)
 	}
 }
 //工具BUFF
