@@ -639,6 +639,24 @@ model.prototype.init = function(fighting) {
 			this.addBehitBuff(this.otps.behit_buffs[i])
 	if(this.seckill)
 		this.angerSkill.seckill = true
+	//双生属性
+	if(this.otps.twin_id){
+		for(var i = 0;i < this.team.length;i++){
+			if(this.team[i].heroId == this.otps.twin_id){
+				if(this.otps["twin_att"]){
+					if(this.otps["twin_mul"]){
+						this.changeTotalAtt(this.otps["twin_att"],this.getTotalAtt(this.otps["twin_att"]) * this.otps["twin_mul"])
+						this.team[i].changeTotalAtt(this.otps["twin_att"],this.getTotalAtt(this.otps["twin_att"]) * this.otps["twin_mul"])
+					}
+				}
+				if(this.otps["twin_buff"]){
+					this.fighting.buffManager.createBuffByData(this.team[i],this,this.otps["twin_buff"])
+					this.fighting.buffManager.createBuffByData(this,this.team[i],this.otps["twin_buff"])
+				}
+				break
+			}
+		}
+	}
 }
 //选择技能
 model.prototype.chooseSkill = function() {
@@ -1089,16 +1107,16 @@ model.prototype.roundOver = function() {
 		}
 		fightRecord.push(tmpRecord)
 	}
-	if(this.buffs["together"] && this.buffs["together"].attacker.died){
+	if(this.buffs["together"] && this.buffs["together"].releaser.died){
 		var tmpHPRate = this.buffs["together"].value
 		if(tmpHPRate){
 			if(this.getHPRate() <= tmpHPRate)
 				return
 			this.onOtherDamage(this,Math.floor(this.attInfo.maxHP * tmpHPRate))
 		}
-		this.buffs["together"].attacker.revive(this.buffs["together"].mul * this.buffs["together"].attacker.getTotalAtt("maxHP"))
+		this.buffs["together"].releaser.revive(this.buffs["together"].mul * this.buffs["together"].releaser.getTotalAtt("maxHP"))
 		if(!tmpHPRate)
-			this.buffs["together"].attacker.addAnger(2,true)
+			this.buffs["together"].releaser.addAnger(2,true)
 	}
 	this.phy_turn_value = 0
 	this.half_hp_shild_flag = true

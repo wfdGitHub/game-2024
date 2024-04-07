@@ -16,6 +16,10 @@ buffFactory.init = function(seeded,fighting) {
 	this.seeded = seeded
 	this.fighting = fighting
 }
+//创建BUFF根据字符串
+buffFactory.createBuffByData = function(releaser,character,str) {
+	buffFactory.createBuff(releaser,character,JSON.parse(str))
+}
 //创建BUFF
 buffFactory.createBuff = function(releaser,character,otps) {
 	var buffId = otps.buffId
