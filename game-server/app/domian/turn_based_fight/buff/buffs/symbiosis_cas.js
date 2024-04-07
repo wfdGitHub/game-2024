@@ -9,7 +9,7 @@ var model = function(releaser,character,otps) {
 	buff.refresh = function() {
 		if(buff.releaser.died || buff.character.died)
 			return
-		recordInfo = {type : "other_heal",targets : []}
+		var recordInfo = {type : "other_heal",targets : []}
 		recordInfo.targets.push(buff.releaser.onHeal(buff.character,{value : heal_value}))
 		buff.fightRecord.push(recordInfo)
 	}
