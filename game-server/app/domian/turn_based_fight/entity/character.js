@@ -61,6 +61,13 @@ var model = function(otps) {
 	this.attInfo.phy_turn_hp = otps["phy_turn_hp"] || 0 //物理吸血率
 	this.attInfo.mag_turn_hp = otps["mag_turn_hp"] || 0 //法术吸血率
 	this.attInfo.speed += Math.floor((this.attInfo.speed * (this.attInfo.M_SPE-40) / (this.attInfo.M_SPE+120)))
+	this.attInfo.phy_add = otps.phy_add || 0			//物理伤害加成
+	this.attInfo.mag_add = otps.mag_add || 0			//法术伤害加成
+	this.attInfo.phy_def = otps.phy_def || 0			//物理伤害减免
+	this.attInfo.mag_def = otps.mag_def || 0			//法术伤害减免
+
+
+	//===========================================///////////////////////////
 	this.attInfo.hp = this.attInfo.maxHP				//当前生命值
 	this.surplus_health = otps.surplus_health			//剩余生命值比例
 
@@ -272,10 +279,6 @@ var model = function(otps) {
 	this.front_dodgeRate = otps["front_dodgeRate"]  	//位于前排时闪避加成
 	this.front_reduction = otps["front_reduction"]  	//位于前排时免伤加成
 	//=========饰品效果=======//
-	this.phy_add = otps.phy_add || 0			//物理伤害加成
-	this.mag_add = otps.mag_add || 0			//法术伤害加成
-	this.phy_def = otps.phy_def || 0			//物理伤害减免
-	this.mag_def = otps.mag_def || 0			//法术伤害减免
 	this.neglect_def = otps.neglect_def || 0 	//忽视防御比例
 	this.neglect_phy = otps.neglect_phy || 0 	//忽视物防比例
 	this.neglect_mag = otps.neglect_mag || 0 	//忽视法防防比例
@@ -537,28 +540,6 @@ var model = function(otps) {
 		this.team_adds["crit"] = otps.team_crit_add
 	if(otps.team_critDef_add)
 		this.team_adds["critDef"] = otps.team_critDef_add
-	//=========阵营属性加成======//
-	if(otps["amplify_"+this.realm])
-		this.addAttInfo("amplify",otps["amplify_"+this.realm])
-	if(otps["crit_"+this.realm])
-		this.addAttInfo("crit",otps["crit_"+this.realm])
-	if(otps["critDef_"+this.realm])
-		this.addAttInfo("critDef",otps["critDef_"+this.realm])
-	if(otps["reduction_"+this.realm])
-		this.addAttInfo("reduction",otps["reduction_"+this.realm])
-	if(otps["hitRate_"+this.realm])
-		this.addAttInfo("hitRate",otps["hitRate_"+this.realm])
-	if(otps["dodgeRate_"+this.realm])
-		this.addAttInfo("dodgeRate",otps["dodgeRate_"+this.realm])
-	
-	if(otps["phy_amp_"+this.realm])
-		this.addTalentValue("phy_add",otps["phy_amp_"+this.realm])
-	if(otps["mag_amp_"+this.realm])
-		this.addTalentValue("mag_add",otps["mag_amp_"+this.realm])
-	if(otps["phyDef_add_"+this.realm])
-		this.addTalentValue("phy_def",otps["phyDef_add_"+this.realm])
-	if(otps["magDef_add_"+this.realm])
-		this.addTalentValue("mag_def",otps["magDef_add_"+this.realm])
 	//=======属性加成======//
 	if(this.lv){
 		if(otps.atk_grow)
@@ -639,24 +620,6 @@ model.prototype.init = function(fighting) {
 			this.addBehitBuff(this.otps.behit_buffs[i])
 	if(this.seckill)
 		this.angerSkill.seckill = true
-	//双生属性
-	if(this.otps.twin_id){
-		for(var i = 0;i < this.team.length;i++){
-			if(this.team[i].heroId == this.otps.twin_id){
-				if(this.otps["twin_att"]){
-					if(this.otps["twin_mul"]){
-						this.changeTotalAtt(this.otps["twin_att"],this.getTotalAtt(this.otps["twin_att"]) * this.otps["twin_mul"])
-						this.team[i].changeTotalAtt(this.otps["twin_att"],this.getTotalAtt(this.otps["twin_att"]) * this.otps["twin_mul"])
-					}
-				}
-				if(this.otps["twin_buff"]){
-					this.fighting.buffManager.createBuffByData(this.team[i],this,this.otps["twin_buff"])
-					this.fighting.buffManager.createBuffByData(this,this.team[i],this.otps["twin_buff"])
-				}
-				break
-			}
-		}
-	}
 }
 //选择技能
 model.prototype.chooseSkill = function() {
@@ -731,17 +694,6 @@ model.prototype.userNormalSkill = function() {
 	this.addAnger(2,true)
 	return this.defaultSkill
 }
-//添加属性
-model.prototype.addAttInfo = function(key,value) {
-	if(this.attInfo[key] !== undefined)
-		this.attInfo[key] += Number(value) || 0
-}
-//添加属性
-model.prototype.addTalentValue = function(key,value) {
-	if(!this[key])
-		this[key] = 0
-	this[key] += Number(value) || 0
-}
 //百分比属性加成
 model.prototype.calAttAdd = function(team_adds) {
 	this.show_adds = Object.assign({},this.self_adds)
@@ -775,49 +727,6 @@ model.prototype.calAttAdd = function(team_adds) {
 }
 //站位加成
 model.prototype.siteInit = function() {
-	if(this.hor_fri_reduction){
-		var list = this.fighting.locator.getFriendVertical(this)
-		for(var i = 0;i < list.length;i++){
-			list[i].attInfo.reduction += this.hor_fri_reduction
-		}
-	}
-	if(this.hor_fri_my_maxHp){
-		var list = this.fighting.locator.getFriendVertical(this)
-		for(var i = 0;i < list.length;i++){
-			list[i].attInfo.maxHP += Math.floor(this.hor_fri_my_maxHp * this.attInfo.maxHP)
-		}
-	}
-	if(this.ver_fri_reduction){
-		var list = this.fighting.locator.getFriendHorizontal(this)
-		for(var i = 0;i < list.length;i++){
-			list[i].attInfo.reduction += this.ver_fri_reduction
-		}
-	}
-	if(this.ver_fri_crit){
-		var list = this.fighting.locator.getFriendHorizontal(this)
-		for(var i = 0;i < list.length;i++){
-			list[i].attInfo.crit += this.ver_fri_crit
-		}
-	}
-	if(this.ver_fri_slay){
-		var list = this.fighting.locator.getFriendHorizontal(this)
-		for(var i = 0;i < list.length;i++){
-			list[i].attInfo.slay += this.ver_fri_slay
-		}
-	}
-	if(this.ver_fri_my_atk){
-		var list = this.fighting.locator.getFriendHorizontal(this)
-		for(var i = 0;i < list.length;i++){
-			list[i].attInfo.atk += Math.floor(this.ver_fri_my_atk * this.attInfo.atk)
-		}
-	}
-	if(this.ver_fri_amplify){
-		var list = this.fighting.locator.getFriendHorizontal(this)
-		for(var i = 0;i < list.length;i++){
-			list[i].phy_add += this.ver_fri_amplify
-			list[i].mag_add += this.ver_fri_amplify
-		}
-	}
 	if(this.index < 3){
 		//前排
 		if(this.front_critDef)
@@ -902,6 +811,27 @@ model.prototype.heroComeon = function() {
 		skillManager.useSkill(this.angerSkill)
 	if(this.beginSkill)
 		skillManager.useSkill(this.beginSkill)
+}
+//战斗开始
+model.prototype.heroFightBegin = function() {
+	//双生属性
+	if(this.otps.twin_id){
+		for(var i = 0;i < this.team.length;i++){
+			if(this.team[i].heroId == this.otps.twin_id){
+				if(this.otps["twin_att"]){
+					if(this.otps["twin_mul"]){
+						this.changeTotalAtt(this.otps["twin_att"],this.getTotalAtt(this.otps["twin_att"]) * this.otps["twin_mul"])
+						this.team[i].changeTotalAtt(this.otps["twin_att"],this.team[i].getTotalAtt(this.otps["twin_att"]) * this.otps["twin_mul"])
+					}
+				}
+				if(this.otps["twin_buff"]){
+					buffManager.createBuffByData(this.team[i],this,this.otps["twin_buff"])
+					buffManager.createBuffByData(this,this.team[i],this.otps["twin_buff"])
+				}
+				break
+			}
+		}
+	}
 }
 //检查可行动
 model.prototype.checkActionable = function() {
@@ -1112,9 +1042,11 @@ model.prototype.roundOver = function() {
 		if(tmpHPRate){
 			if(this.getHPRate() <= tmpHPRate)
 				return
-			this.onOtherDamage(this,Math.floor(this.attInfo.maxHP * tmpHPRate))
+			var tmpRecord = {type : "other_damage",value : Math.floor(this.attInfo.maxHP * tmpHPRate),d_type:"mag"}
+			tmpRecord = this.onHit(this,tmpRecord)
+			fightRecord.push(tmpRecord)
 		}
-		this.buffs["together"].releaser.revive(this.buffs["together"].mul * this.buffs["together"].releaser.getTotalAtt("maxHP"))
+		this.buffs["together"].releaser.resurgence(this.buffs["together"].mul)
 		if(!tmpHPRate)
 			this.buffs["together"].releaser.addAnger(2,true)
 	}
