@@ -140,13 +140,13 @@ module.exports = function() {
 			cb(false,"已满级")
 			return
 		}
-		officer_lv++
 		for(var i = 1;i <= 4;i++){
 			if(self.checkTaskExist(uid,officer[officer_lv]["task"+i])){
 				cb(false,"任务未完成"+officer[officer_lv]["task"+i])
 				return
 			}
 		}
+		officer_lv++
 		self.chageLordData(uid,"officer",officer_lv)
 		self.setOfficer(uid,officer_lv)
 		self.taskUpdate(uid,"officer",1,officer_lv)
