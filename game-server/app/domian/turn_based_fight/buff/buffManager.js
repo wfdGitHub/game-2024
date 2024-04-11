@@ -31,10 +31,10 @@ buffFactory.createBuff = function(releaser,character,otps) {
 		console.error("buff 不存在 ",buffId)
 		return
 	}
-	if(buff_cfg[buffId]["tool"]){
+	if(buff_cfg[buffId]["toolKey"])
 		this.toolBuff(releaser,character,buff_cfg[buffId])
+	if(buff_cfg[buffId]["tool"])
 		return
-	}
 	if(releaser.buffs["sneak"])
 		return
 	if(!otps.duration)
