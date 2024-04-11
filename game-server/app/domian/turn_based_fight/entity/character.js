@@ -957,7 +957,6 @@ model.prototype.after = function() {
 		}
 		fightRecord.push(tmpRecord)
 	}
-	this.damage_save_value = 0
 	if(this.master)
 		this.master.heroAfter()
 }
@@ -1527,6 +1526,7 @@ model.prototype.onDie = function(callbacks) {
 		delete this.teamInfo.resurgence_team
 	this.attInfo.hp = 0
 	this.died = true
+	this.damage_save_value = 0
 	this.fighting.teamDiedList[this.belong].push(this.index)
 	this.fighting.diedList.push(this)
 	this.teamInfo["realms_survival"][this["realm"]]--
@@ -1640,8 +1640,6 @@ model.prototype.lessHP = function(attacker,info,callbacks) {
 	if(this.full_hp_red && this.attInfo.hp == this.attInfo.maxHP)
 		info.value = Math.ceil(info.value * this.full_hp_red)
 	info.realValue = info.value
-	if(this.damage_save)
-		this.damage_save_value += info.realValue
 	if((this.attInfo.hp - info.value) <= 0){
 		if(this.full_hp_save && this.attInfo.hp == this.attInfo.maxHP){
 			info.realValue = this.attInfo.hp - 1
@@ -1690,7 +1688,7 @@ model.prototype.lessHP = function(attacker,info,callbacks) {
 			callbacks[i]()
 	}
 	if(this.damage_save)
-		this.damage_save_value += info.realValue
+		this.damage_save_value += Math.floor(this.damage_save * info.realValue)
 	return info.realValue
 }
 //恢复怒气
