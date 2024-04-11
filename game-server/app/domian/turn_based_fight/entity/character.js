@@ -328,7 +328,6 @@ var model = function(otps) {
 	this.recover_maxHp = otps.recover_maxHp || 0	//持续治疗目标为同阵营英雄时,结算时额外回复其生命上限的血量
 	this.invincibleSuper_again = otps.invincibleSuper_again //超级无敌消失时重复释放概率
 	this.burn_hit_anger = otps.burn_hit_anger || 0 //被灼烧敌人攻击时回复怒气
-	this.extraAtion = otps.extraAtion || false //释放技能后，怒气最少的其他同族英雄额外行动一回合。
 	this.dizzy_less_anger = otps.dizzy_less_anger || 0 //释放技能附加的眩晕结束时，被眩晕的目标降低怒气
 	this.dizzy_add_anger = otps.dizzy_add_anger || 0 //附加眩晕时，回怒
 	this.dizzy_hit_anger = otps.dizzy_hit_anger || 0 //攻击受到眩晕效果的目标时，额外降低目标怒气。

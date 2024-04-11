@@ -198,6 +198,9 @@ buffFactory.toolBuff = function(releaser,character,buffInfo) {
 			tmpRecord = character.onHit(releaser,tmpRecord)
 			fightRecord.push(tmpRecord)
 		break
+		case "extraAtion":
+			this.fighting.next_character.push(character)
+		break
 	}
 }
 module.exports = buffFactory
