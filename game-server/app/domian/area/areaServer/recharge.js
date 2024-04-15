@@ -223,7 +223,7 @@ module.exports = function() {
 		                self.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(self,uid))
 		            break
 		            case "gmLv":
-		                self.buyGMLv(uid,pay_cfg[pay_id]["arg"],call_back.bind(self,uid))
+		                self.buyGMLv(uid,pay_id,call_back.bind(self,uid))
 		            break
 		            case "fast":
 		                self.buyFastRecharge(uid,pay_id,call_back.bind(self,uid))
