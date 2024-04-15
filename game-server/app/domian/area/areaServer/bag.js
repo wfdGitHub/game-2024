@@ -281,6 +281,8 @@ module.exports = function() {
 		if(value > 0 && itemCfg[itemId].auto){
 			if(otps.rate)
 				otps.value = Number(otps.value) * otps.rate
+			if(otps.value > itemCfg[itemId]["useMax"])
+				otps.value = itemCfg[itemId]["useMax"]
 			return self.useItemCB(uid,otps,cb)
 		}else{
 			switch(itemCfg[itemId].type){
