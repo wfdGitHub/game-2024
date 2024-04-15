@@ -6,7 +6,7 @@ var model = function(releaser,character,otps) {
 		if(buff.releaser.died || buff.character.died)
 			return
 		if(buff.releaser.getTotalAtt("speed") > buff.character.getTotalAtt("speed"))
-			buff.releaser.fighting.skillManager.useSkill(buff.releaser.defaultSkill,true,buff.character)
+			buff.releaser.fighting.skillManager.useSkill(buff.releaser.defaultSkill,true,[buff.character])
 	}
 	return buff
 }
