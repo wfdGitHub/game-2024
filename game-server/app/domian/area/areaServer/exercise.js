@@ -5,6 +5,7 @@ const exercise_team = require("../../../../config/gameCfg/exercise_team.json")
 const recruit_list = require("../../../../config/gameCfg/recruit_list.json")
 const heros = require("../../../../config/gameCfg/heros.json")
 const lord_lv = require("../../../../config/gameCfg/lord_lv.json")
+const battle_cfg = require("../../../../config/gameCfg/battle_cfg.json")
 const main_name = "exercise"
 var async = require("async")
 var exercise_list = []
@@ -70,7 +71,7 @@ module.exports = function() {
 	}
 	//开始挑战
 	this.exerciseChallenge = function(uid,team,index,cb) {
-		if(!team || team.length > 5){
+		if(!team || team.length > battle_cfg["exercise"]["maxNum"]){
 			cb(false,"team error "+team)
 			return
 		}
