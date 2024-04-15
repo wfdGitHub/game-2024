@@ -374,10 +374,8 @@ module.exports = function() {
 			function(next) {
 				self.heroDao.getHeroList(uid,hIds,function(flag,list) {
 					for(var i = 0;i < list.length;i++){
-						if(!list[i]){
-							next("hid error "+hIds[i])
-							return
-						}
+						if(!list[i])
+							continue
 						if(lv < exalt_lv[heros[list[i]["id"]]["exalt"]]["limit"]){
 							next("携带等级不足 "+list[i]["id"] +"  "+lv+ "/"+ exalt_lv[heros[list[i]["id"]]["exalt"]]["limit"])
 							return
@@ -414,7 +412,8 @@ module.exports = function() {
 				//常规阵容设置出战
 				if(flag && type == "normal"){
 					for(var i = 0;i < hIds.length;i++)
-						self.heroDao.onlySetHeroInfo(uid,hIds[i],"combat",1)
+						if(hIds[i])
+							self.heroDao.onlySetHeroInfo(uid,hIds[i],"combat",1)
 					self.CELoad(uid)
 				}
 				cb(true)
