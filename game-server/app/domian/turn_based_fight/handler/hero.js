@@ -25,6 +25,7 @@ const DIY_skills = fightCfg.getCfg("DIY_skills")
 const DIY_talents = fightCfg.getCfg("DIY_talents")
 const artifact_level = fightCfg.getCfg("artifact_level")
 const artifact_talent = fightCfg.getCfg("artifact_talent")
+const main_att = fightCfg.getCfg("main_att")
 const character = require("../entity/character.js")
 const DIY_SKILL_KESY = ["DIY_N","DIY_S"]
 const DIY_TALENT_KESY = ["D1","D2","D3"]
@@ -521,14 +522,11 @@ var model = function(fightContorl) {
 			for(var key in lvInfo)
 				lvInfo[key] += lv_cfg[info.lv][key]
 			var growth = aptitudes[info.aptitude].growth
-			lvInfo.maxHP = Math.floor(lvInfo.maxHP * (1 + info["M_HP"] * 0.02) * growth)
-			if(info.damageType == "phy")
-				lvInfo.atk = Math.floor(lvInfo.atk * (1 + info["M_ATK"] * 0.01) * growth)
-			else
-				lvInfo.atk = Math.floor(lvInfo.atk * (1 + info["M_STK"] * 0.01) * growth)
-			lvInfo.phyDef = Math.floor(lvInfo.phyDef * (1 + info["M_DEF"] * 0.02) * growth)
-			lvInfo.magDef = Math.floor(lvInfo.magDef * (1 + info["M_SEF"] * 0.02) * growth)
-			lvInfo.speed = 100 + lv_cfg[info.lv].speed * (1 + info["M_SPE"] * 0.01)
+			lvInfo.maxHP = Math.floor(lvInfo.maxHP * growth)
+			lvInfo.atk = Math.floor(lvInfo.atk * growth)
+			lvInfo.phyDef = Math.floor(lvInfo.phyDef * growth)
+			lvInfo.magDef = Math.floor(lvInfo.magDef * growth)
+			lvInfo.speed = 100 + lv_cfg[info.lv].speed
 		}
 		if(evolve_lv[info.evo]){
 			lvInfo.maxHP += Math.floor(lvInfo.maxHP * evolve_lv[info.evo]["att_add"])
@@ -542,6 +540,13 @@ var model = function(fightContorl) {
 		}
 		this.mergeData(info,lvInfo)
 		//主属性增益
+		for(var i in main_att){
+			var tmpInfo = {}
+			tmpInfo[main_att[i]["att1"]] = main_att[i]["value1"] * info[i]
+			if(main_att[i]["att2"])
+				tmpInfo[main_att[i]["att2"]] = main_att[i]["value2"] * info[i]
+			this.mergeData(info,tmpInfo)
+		}
 		info["score"] = this.getHeroScore(info)
 		return new character(info)
 	}
