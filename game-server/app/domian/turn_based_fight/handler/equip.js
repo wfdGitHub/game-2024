@@ -50,7 +50,6 @@ var model = function(fightContorl) {
 	}
 	//生成满属性无级别装备
 	this.makeFullUnratedEquip = function(lv,slot,qa) {
-		console.log("makeFullUnratedEquip",lv,slot,qa)
 		var info = this.makeStandardEquip(lv,slot,qa)
 		info = JSON.parse(info)
 		if(equip_lv[lv]["spe"])
