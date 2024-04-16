@@ -54,7 +54,7 @@ var model = function(fightContorl) {
 		var info = this.makeStandardEquip(lv,slot,qa)
 		info = JSON.parse(info)
 		if(equip_lv[lv]["spe"])
-			info.spe = this.createeEquipSpe(info)
+			info.spe = this.createeEquipSpe(info,1)
 		if(equip_lv[lv]["suit_list"])
 			info.suit = this.createEquipSuit(info)
 		info.unrated = 1
@@ -250,11 +250,12 @@ var model = function(fightContorl) {
 		return extra
 	}
 	//装备随机生成特效
-	this.createeEquipSpe = function(info) {
+	this.createeEquipSpe = function(info,count) {
 		if(!equip_lv[info.lv]["spe"])
 			return false
 		var spe = []
-		var count = fightContorl.getWeightedRandomBySort(equip_qa[info.qa].speWeights)
+		if(count === undefined)
+			 count = fightContorl.getWeightedRandomBySort(equip_qa[info.qa].speWeights)
 		if(count > 0)
 			return fightContorl.getRandomArray(equip_slot[info.slot]["spe_list"],count)
 		else
