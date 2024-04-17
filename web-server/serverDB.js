@@ -1561,7 +1561,7 @@ var model = function() {
 			cb(false,"英雄ID错误 "+id)
 			return
 		}
-		var heroInfo = self.fightContorl.makeHeroData(id,5)
+		var heroInfo = fightContorl.makeHeroData(id,5)
 		heroInfo.custom = 1
 		heroInfo.name = name
 		self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
