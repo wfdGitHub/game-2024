@@ -1561,8 +1561,13 @@ var model = function() {
 			cb(false,"英雄ID错误 "+id)
 			return
 		}
+		if(heros[id]["type"] == 3){
+			cb(false,"游戏内自定义英雄不能发放 "+id)
+			return
+		}
 		var heroInfo = fightContorl.makeHeroData(id,5)
-		heroInfo.custom = 1
+		if(heros[id]["type"] !== 0)
+			heroInfo.custom = 1
 		heroInfo.name = name
 		self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
 			if(err || !data){
