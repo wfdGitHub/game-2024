@@ -11,6 +11,7 @@ const hufu_quality = require("../game-server/config/gameCfg/hufu_quality.json")
 const hufu_skill = require("../game-server/config/gameCfg/hufu_skill.json")
 const heros = require("../game-server/config/gameCfg/heros.json")
 const lv_cfg = require("../game-server/config/gameCfg/lv_cfg.json")
+const fightContorl = require("../game-server/app/domian/turn_based_fight/fight/fightContorl.js")
 const stringRandom = require('string-random');
 const dataClean = require("./model/dataClean.js")
 const sqlClean = require("./model/sqlClean.js")
@@ -1554,22 +1555,20 @@ var model = function() {
 	local.sendHero = function(uid,otps,cb) {
 		var hId = uuid.v1()
 		var id = otps.id
-		var ad = Number(otps.ad) || 0
-		var lv = Number(otps.lv) || 1
-		var star = Number(otps.star) || 5
-		var aptitude = Number(otps.aptitude) || 0
+		var lv = 1
 		var name = otps.name
 		if(!heros[id]){
 			cb(false,"英雄ID错误 "+id)
 			return
 		}
-		if(!lv_cfg[lv]){
-			cb(false,"英雄等级错误 "+lv)
+		if(heros[id]["type"] == 3){
+			cb(false,"游戏内自定义英雄不能发放 "+id)
 			return
 		}
-		var heroInfo = {id : id,ad : ad,lv : lv,star : star,aptitude : aptitude,name : name}
-		if(heroInfo.aptitude || heroInfo.name)
+		var heroInfo = fightContorl.makeHeroData(id,5)
+		if(heros[id]["type"] !== 0)
 			heroInfo.custom = 1
+		heroInfo.name = name
 		self.redisDao.db.hget("player:user:"+uid+":playerInfo","name",function(err,data) {
 			if(err || !data){
 				cb(false,"用户不存在")
@@ -1579,12 +1578,6 @@ var model = function() {
 				self.redisDao.db.hmset("player:user:"+uid+":heros:"+hId,heroInfo)
 				heroInfo.hId = hId
 				self.redisDao.db.rpush("game:sendHero",JSON.stringify({uid:uid,info:heroInfo,time:Date.now(),name:data}))
-				self.redisDao.db.hget("player:user:"+uid+":heroArchive",id,function(err,data) {
-					data = Number(data) || 0
-					if(star > data){
-						self.redisDao.db.hset("player:user:"+uid+":heroArchive",id,star)
-					}
-				})
 				cb(true)
 			}
 		})
