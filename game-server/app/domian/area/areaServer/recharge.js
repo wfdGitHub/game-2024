@@ -165,60 +165,55 @@ module.exports = function() {
 					else
 						next(err)
 				}
-		        switch(pay_cfg[pay_id]["type"]){
-		            case "lv_fund":
-		            case "power_fund":
-		            case "beaty_fund":
-		                self.activateFund(uid,pay_cfg[pay_id]["type"],call_back.bind(self,uid))
-		            break
-		            case "highCard":
-		                self.activateHighCard(uid,pay_id,call_back.bind(self,uid))
-		            break
-		            case "warHorn":
-		                self.advanceWarHorn(uid,pay_id,call_back.bind(self,uid))
-		            break
-		            case "recharge":
-		                self.recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(self,uid))
-		            break
-		            case "limit_gift":
-		                self.buyLimitGift(uid,pay_id,call_back.bind(self,uid))
-		            break
-		            case "quick_pri":
-		                self.buyQuickPri(uid,pay_id,call_back.bind(self,uid))
-		            break
-		            case "tour_pri":
-		                self.buyTourPri(uid,pay_id,call_back.bind(self,uid))
-		            break
-		            case "stone_pri":
-		                self.buyStonePri(uid,pay_id,call_back.bind(self,uid))
-		            break
-		            case "ttt_pri":
-		                self.buyTTTPri(uid,call_back.bind(self,uid))
-		            break
-		            case "zhulu_pri":
-		                self.buyZhuluPri(uid,call_back.bind(self,uid))
-		            break
-		            case "manor_pri":
-		                self.buyManorPri(uid,call_back.bind(self,uid))
-		            break
-		            case "wuxian":
-		                self.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(self,uid))
-		            break
-		            case "gmLv":
-		                self.buyGMLv(uid,pay_id,call_back.bind(self,uid))
-		            break
-		            case "fast":
-		                self.buyFastRecharge(uid,pay_id,call_back.bind(self,uid))
-		            break
-		            case "area_gift":
-		                self.buyAreaGift(uid,pay_id,call_back.bind(self,uid))
-		            break
-		            case "long_award":
-		                self.buyLongAward(uid,pay_id,call_back.bind(self,uid))
-		            break
-		            default:
-		                console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
-		        }
+	        switch(pay_cfg[pay_id]["type"]){
+	            case "lv_fund":
+	                self.activateLvFund(uid,call_back.bind(self,uid))
+	            break
+	            case "highCard":
+	                self.activateHighCard(uid,pay_id,call_back.bind(self,uid))
+	            break
+	            case "warHorn":
+	                self.advanceWarHorn(uid,pay_id,call_back.bind(self,uid))
+	            break
+	            case "recharge":
+	                self.recharge(uid,pay_cfg[pay_id]["arg"],call_back.bind(self,uid))
+	            break
+	            case "limit_gift":
+	                self.buyLimitGift(uid,pay_id,call_back.bind(self,uid))
+	            break
+	            case "quick_pri":
+	                self.buyQuickPri(uid,pay_id,call_back.bind(self,uid))
+	            break
+	            case "tour_pri":
+	                self.buyTourPri(uid,pay_id,call_back.bind(self,uid))
+	            break
+	            case "stone_pri":
+	                self.buyStonePri(uid,pay_id,call_back.bind(self,uid))
+	            break
+	            case "ttt_pri":
+	                self.buyTTTPri(uid,call_back.bind(self,uid))
+	            break
+	            case "zhulu_pri":
+	                self.buyZhuluPri(uid,call_back.bind(self,uid))
+	            break
+	            case "manor_pri":
+	                self.buyManorPri(uid,call_back.bind(self,uid))
+	            break
+	            case "wuxian":
+	                self.buyWuxian(uid,pay_cfg[pay_id]["arg"],call_back.bind(self,uid))
+	            break
+	            case "gmLv":
+	                self.buyGMLv(uid,pay_id,call_back.bind(self,uid))
+	            break
+	            case "fast":
+	                self.buyFastRecharge(uid,pay_id,call_back.bind(self,uid))
+	            break
+	            case "area_gift":
+	                self.buyAreaGift(uid,pay_id,call_back.bind(self,uid))
+	            break
+	            default:
+	                console.error("充值类型错误  "+uid+"  "+pay_id+"   "+pay_cfg[pay_id]["type"])
+	        }
 			},
 			function(data,next) {
 				//支付完成
