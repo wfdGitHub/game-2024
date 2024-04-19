@@ -56,6 +56,7 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			if(target.attInfo.hp < target.attInfo.maxHP && target.low_hp_dodge){
 				hitRate -= Math.floor((target.attInfo.maxHP-target.attInfo.hp)/target.attInfo.maxHP * 10) * target.low_hp_dodge
 			}
+			hitRate = Math.min(0.9,hitRate)
 			if(this.seeded.random("闪避判断") > hitRate)
 				dodgeFlag = true
 		}
@@ -184,7 +185,8 @@ formula.prototype.calDamage = function(attacker, target, skill,addAmp,must_crit,
 			buffManager.createBuff(attacker,target,{"buffId":"forbidden","duration":1})
 	}
 	if(info.crit){
-		info.value = Math.round(info.value * (1.5 + attacker.getTotalAtt("slay") - target.getTotalAtt("slayDef")))
+		var critRate = Math.max(1.5 + attacker.getTotalAtt("slay") - target.getTotalAtt("slayDef"),1.2)
+		info.value = Math.round(info.value * critRate)
 		
 		if(skill.isAnger && attacker.skill_crit_maxHp){
 			info.value +=  Math.floor(attacker.skill_crit_maxHp * target.attInfo.maxHP)
