@@ -1411,6 +1411,7 @@ model.prototype.onHit = function(attacker,info,callbacks) {
 							}).bind(this))
 						}
 					}
+					// console.log("less_hp_rate",this.less_hp_rate)
 					if(this.less_hp_rate && this.less_hp_buff && ((this.attInfo.hp / this.attInfo.maxHP) < this.less_hp_rate)){
 						//生命值低于一定比例触发BUFF
 						delete this.less_hp_rate
@@ -1745,12 +1746,8 @@ model.prototype.getTotalAtt = function(name) {
 			value += Math.floor((this.attInfo.maxHP-this.attInfo.hp)/this.attInfo.maxHP * 10) * this.otps.low_hp_value
 	if(this.buffs[name])
 		value += this.buffs[name].getValue()
-  	for(var i in this.attBuffs){
+  	for(var i in this.attBuffs)
   		value += this.buffs[i].getAttInfo(name)
-  		if(name == "HP_damage"){
-  			console.log(this.buffs[i].getAttInfo(name))
-  		}
-  	}
 	switch(name){
 		case "speed":
 			if(this.buffs["cold"])

@@ -2,8 +2,11 @@ var fightRecord = require("../fight/fightRecord.js")
 var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var buffList = {}
 for(var buffId in buff_cfg){
-	if(buff_cfg[buffId]["tool"])
+	if(buff_cfg[buffId]["tool"]){
+		if(buff_cfg[buffId]["toolKey"] == "round_buffs")
+			buff_cfg[buffId]["toolValue"] = JSON.parse(buff_cfg[buffId]["toolValue"])
 		continue
+	}
 	if(buff_cfg[buffId]["default"])
 		buffList[buffId] = require("./defaultBuff.js")
 	else
@@ -24,6 +27,7 @@ buffFactory.createBuffByData = function(releaser,character,str) {
 }
 //创建BUFF
 buffFactory.createBuff = function(releaser,character,otps) {
+	otps = Object.assign({},otps)
 	var buffId = otps.buffId
 	if(character.characterType == "master")
 		return
@@ -199,7 +203,14 @@ buffFactory.toolBuff = function(releaser,character,buffInfo) {
 			fightRecord.push(tmpRecord)
 		break
 		case "extraAtion":
+			//额外行动
 			this.fighting.next_character.push(character)
+		break
+		case "round_buffs":
+			//随机BUFF
+			var rand = Math.floor(this.seeded.random() * buffInfo.toolValue.length)
+			var buffInfo = buffInfo.toolValue[rand]
+			this.createBuff(releaser,character,buffInfo)
 		break
 	}
 }
