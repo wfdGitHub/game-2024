@@ -3,7 +3,7 @@ var buff_cfg = require("../../../../config/gameCfg/buff_cfg.json")
 var buffList = {}
 for(var buffId in buff_cfg){
 	if(buff_cfg[buffId]["tool"]){
-		if(buff_cfg[buffId]["toolKey"] == "round_buffs")
+		if(buff_cfg[buffId]["toolKey"] == "rand_buffs")
 			buff_cfg[buffId]["toolValue"] = JSON.parse(buff_cfg[buffId]["toolValue"])
 		continue
 	}
@@ -206,11 +206,13 @@ buffFactory.toolBuff = function(releaser,character,buffInfo) {
 			//额外行动
 			this.fighting.next_character.push(character)
 		break
-		case "round_buffs":
+		case "rand_buffs":
 			//随机BUFF
 			var rand = Math.floor(this.seeded.random() * buffInfo.toolValue.length)
 			var buffInfo = buffInfo.toolValue[rand]
-			this.createBuff(releaser,character,buffInfo)
+			var buffTargets = this.fighting.locator.getBuffTargets(releaser,buffInfo.buff_tg,[character])
+			for(var k = 0;k < buffTargets.length;k++)
+				this.createBuff(releaser,buffTargets[k],buffInfo)
 		break
 	}
 }
